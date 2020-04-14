@@ -16,9 +16,5 @@ define( 'CB_MENU_SLUG', 'cb-menu');
 
 require __DIR__ . '/vendor/autoload.php';
 
-function cbDashboard() {
-    echo \CommonsBooking\View\Dashboard::render();
-}
-
 $cbPlugin = new \CommonsBooking\Plugin();
 $cbPlugin->init();
