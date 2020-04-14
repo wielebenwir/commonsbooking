@@ -8,7 +8,7 @@ class Dashboard
 {
 
     public static function render() {
-        return '<p>dashboard</p>';
+        echo '<p>dashboard</p>';
     }
 
 }
