@@ -20,17 +20,5 @@ function cbDashboard() {
     echo \CommonsBooking\View\Dashboard::render();
 }
 
-
-
-
-function register_cb_post_types() {
-    $cbCustomPostTypes = [
-        new \CommonsBooking\PostType\Item(),
-        new \CommonsBooking\PostType\Location()
-    ];
-    /** @var \CommonsBooking\PostType\PostType $customPostType */
-    foreach ($cbCustomPostTypes as $customPostType) {
-        register_post_type( $customPostType->getPostType(), $customPostType->getArgs() );
-    }
-}
-add_action('init', 'register_cb_post_types');
+$cbPlugin = new \CommonsBooking\Plugin();
+$cbPlugin->init();
