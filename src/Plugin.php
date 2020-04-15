@@ -3,6 +3,7 @@
 
 namespace CommonsBooking;
 
+use CommonsBooking\Controller\TimeframeController;
 use CommonsBooking\Form\Timeframe;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManager;
@@ -19,7 +20,8 @@ class Plugin
     {
         return [
             new \CommonsBooking\PostType\Item(),
-            new \CommonsBooking\PostType\Location()
+            new \CommonsBooking\PostType\Location(),
+            new \CommonsBooking\PostType\Timeframe()
         ];
     }
 
@@ -32,7 +34,6 @@ class Plugin
 
         // Add menu pages
         add_action( 'admin_menu', array(self::class, 'addMenuPages'));
-
     }
 
     /**
@@ -53,9 +54,7 @@ class Plugin
             'host' => DB_HOST,
         );
 
-
         $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, null, null, false);
-
         return EntityManager::create($dbParams, $config);
     }
 
@@ -78,20 +77,11 @@ class Plugin
     public static function addMenuPages() {
         // Dashboard
         add_menu_page(
-            'Commons Booking',
-            'Commons Booking',
+            'CB Dashboard',
+            'CB Dashboard',
             'manage_options',
             'cb-dashboard',
             array(\CommonsBooking\View\Dashboard::class, 'render')
-        );
-
-        add_submenu_page(
-            'cb-dashboard',
-            'Timeframes',
-            'Timeframes',
-            'manage_options',
-            'cb-timeframes',
-            array(Timeframe::class, 'render')
         );
 
         // Custom post types
@@ -102,7 +92,9 @@ class Plugin
                 $params[1],
                 $params[2],
                 $params[3],
-                $params[4]
+                $params[4],
+                $params[5],
+                $params[6]
             );
         }
     }

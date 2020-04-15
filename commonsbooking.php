@@ -19,3 +19,5 @@ require __DIR__ . '/vendor/autoload.php';
 $cbPlugin = new \CommonsBooking\Plugin();
 $cbPlugin->init();
 $cbPlugin->initTables();
+
+

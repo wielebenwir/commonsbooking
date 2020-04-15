@@ -13,9 +13,7 @@ class Timeframe
 {
 
     public static function render() {
-
-
-        echo 'timeframe form';
+        echo '<p>timeframe form</p>';
     }
 
 }

@@ -9,7 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Timeframe
  *
- * @ORM\Entity(repositoryClass="CommonsBooking\Repository\TimeframeRepository")
+ * @ORM\Entity
+ * @ORM\Table(name="cb_timeframe")
  */
 class Timeframe
 {
@@ -21,59 +22,54 @@ class Timeframe
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="bigint", nullable=true)
      */
-    private $name;
+    private $locationId;
+
+    /**
+     * @ORM\Column(type="bigint", nullable=true)
+     */
+    private $itemId;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $startDate;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $endDate;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $grid;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $type;
 
+    private $repetition;
+
+    private $weekdays;
+
+    /**
+     * @ORM\Column(type="bigint", nullable=true)
+     */
+    private $userId;
+
+    /**
+     * @return mixed
+     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
 
-    /**
-     * @param mixed $name
-     *
-     * @return Timeframe
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
 
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param mixed $type
-     *
-     * @return Timeframe
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
 
 
 

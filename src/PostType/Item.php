@@ -51,10 +51,10 @@ class Item extends PostType
             'show_ui'             => true,
 
             // Soll es im Backend Menu sichtbar sein?
-            'show_in_menu' => 'cb-items',
+            'show_in_menu' =>     false,
 
             // Position im Menu
-//            'menu_position'       => 1,
+            'menu_position'       => 3,
 
             // Post Type in der oberen Admin-Bar anzeigen?
             'show_in_admin_bar'   => true,
@@ -91,5 +91,6 @@ class Item extends PostType
     {
         return self::TYPE;
     }
+
 
 }
