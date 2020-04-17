@@ -29,6 +29,7 @@ class Dashboard extends View
         echo self::render(
             self::$template,
             [
+                'actionUrl' => admin_url('admin.php'),
                 'currentLocation' => $location,
                 'currentItem' => $item,
                 'currentType' => $type,
