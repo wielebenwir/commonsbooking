@@ -1,0 +1,33 @@
+.timeslot--wrapper {
+    border: 0.1em solid lightgray;
+    padding: 0.2em;
+}
+
+
+.timeslot--type-1 {
+    background-color: #bb55ff;
+}
+
+.timeslot--type-2 {
+    background-color: #4ab866;
+}
+
+.timeslot--type-3 {
+    background-color: #ff8812;
+}
+
+.timeslot--type-4 {
+    background-color: #ff5818;
+}
+
+.timeslot--type-5 {
+    background-color: #ff0015;
+}
+
+.timeslot--type-6 {
+    background-color: #000000;
+}
+
+.timeslot--type-7 {
+    background-color: #696969;
+}

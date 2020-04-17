@@ -220,4 +220,5 @@ class Timeframe extends PostType
             }
         }
     }
+
 }

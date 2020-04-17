@@ -82,7 +82,7 @@ class Plugin
             'CB Dashboard',
             'manage_options',
             'cb-dashboard',
-            array(\CommonsBooking\View\Dashboard::class, 'render')
+            array(\CommonsBooking\View\Dashboard::class, 'index')
         );
 
         // Custom post types

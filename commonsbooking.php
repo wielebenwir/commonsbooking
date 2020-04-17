@@ -15,6 +15,11 @@ define('TRANSLATION_CONST', 'commonsbooking');
 define( 'CB_MENU_SLUG', 'cb-menu');
 define( 'COMMONSBOOKING__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
+function commonsbooking_admin_style() {
+    wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__).'assets/admin.css');
+}
+add_action('admin_enqueue_scripts', 'commonsbooking_admin_style');
+
 require __DIR__ . '/vendor/autoload.php';
 
 $cbPlugin = new \CommonsBooking\Plugin();

@@ -1,10 +1,26 @@
+
 <div style="float: left; width: 11%; padding: 1em;">
-    {{ day.date }}<br><br>
-    {% for timeframe in day.timeframes %}
-        Type: {{ timeframe.type }}<br>
-        ID: {{ timeframe.ID }}<br>
-        Start: {{ timeframe|get_meta_field('start-date') }}<br>
-        Ende: {{ timeframe|get_meta_field('end-date') }}<br>
-        <br>
+    {{ day.name }} {{ day.date }}<br><br>
+
+    {% for slot in day.grid %}
+        <div class="timeslot--wrapper">
+        {{ slot.timestart }} - {{ slot.timeend }}
+
+            {% if slot.timeframes|length %}
+
+                <ul>
+                    {% for timeframe in slot.timeframes %}
+                        <li class="timeslot--type-{{ timeframe.type }}">
+                            ID: {{ timeframe.ID }}<br>
+                            Start: {{ timeframe|get_meta_field('start-date') }}<br>
+                            Ende: {{ timeframe|get_meta_field('end-date') }}<br>
+                            <br>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+
     {% endfor %}
 </div>
