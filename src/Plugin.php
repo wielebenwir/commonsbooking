@@ -5,6 +5,7 @@ namespace CommonsBooking;
 
 use CommonsBooking\Controller\TimeframeController;
 use CommonsBooking\Form\Timeframe;
+use CommonsBooking\PostType\PostType;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
@@ -103,8 +104,10 @@ class Plugin
      *
      */
     public static function registerCustomPostTypes() {
+        /** @var PostType $customPostType */
         foreach (self::getCustomPostTypes() as $customPostType) {
-            register_post_type( $customPostType->getPostType(), $customPostType->getArgs() );
+            register_post_type( $customPostType::getPostType(), $customPostType->getArgs() );
+            $customPostType->initListView();
         }
     }
 

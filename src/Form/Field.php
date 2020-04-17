@@ -20,6 +20,11 @@ class Field
     protected $capability;
 
     /**
+     * @var array
+     */
+    protected $options;
+
+    /**
      * Field constructor.
      *
      * @param $name
@@ -27,14 +32,16 @@ class Field
      * @param $description
      * @param $type
      * @param $capability
+     * @param array $options
      */
-    public function __construct($name, $title, $description, $type, $capability)
+    public function __construct($name, $title, $description, $type, $capability, array $options = [])
     {
         $this->name = $name;
         $this->title = $title;
         $this->description = $description;
         $this->type = $type;
         $this->capability = $capability;
+        $this->options = $options;
     }
 
     /**
@@ -43,6 +50,14 @@ class Field
     public function getName()
     {
         return $this->name;
+    }
+
+    public function getOptionFieldNames() {
+        $fieldNames = [];
+        foreach ($this->getOptions() as $key => $label) {
+            $fieldNames[] = $this->getName() . "-" . $key;
+        }
+        return $fieldNames;
     }
 
     /**
@@ -133,6 +148,26 @@ class Field
     public function setCapability($capability)
     {
         $this->capability = $capability;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return Field
+     */
+    public function setOptions(array $options): Field
+    {
+        $this->options = $options;
 
         return $this;
     }

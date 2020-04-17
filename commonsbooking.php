@@ -13,11 +13,10 @@ defined('ABSPATH') or die("Thanks for visting");
 
 define('TRANSLATION_CONST', 'commonsbooking');
 define( 'CB_MENU_SLUG', 'cb-menu');
+define( 'COMMONSBOOKING__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 require __DIR__ . '/vendor/autoload.php';
 
 $cbPlugin = new \CommonsBooking\Plugin();
 $cbPlugin->init();
 $cbPlugin->initTables();
-
-

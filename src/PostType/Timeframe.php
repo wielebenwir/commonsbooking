@@ -8,16 +8,20 @@ use CommonsBooking\Wordpress\MetaBox;
 class Timeframe extends PostType
 {
 
-    const TYPE = 'cb_timeframe';
+    public static $postType = 'cb_timeframe';
 
     protected $metaboxes;
 
     protected $menuPosition = 1;
 
+    protected $types;
+
     protected $listColumns = [
-        'location-id' => "Location ID",
-        'item-id' => "Item ID",
-        'type' => "Type"
+        'type' => "Type",
+        'location-id' => "Location",
+        'item-id' => "Item",
+        'start-date' => "Start Date",
+        'end-date' => "End date"
     ];
 
     /**
@@ -25,6 +29,16 @@ class Timeframe extends PostType
      */
     public function __construct()
     {
+        $this->types = [
+            1 => __("Opening Hours", TRANSLATION_CONST),
+            2 => __("Bookable", TRANSLATION_CONST),
+            3 => __("Holidays", TRANSLATION_CONST),
+            4 => __("Official Holiday", TRANSLATION_CONST),
+            5 => __("Repair", TRANSLATION_CONST),
+            6 => __("Booking", TRANSLATION_CONST),
+            7 => __("Booking cancelled", TRANSLATION_CONST)
+        ];
+
         // Detail View
         /**
          * https://sltaylor.co.uk/blog/control-your-own-wordpress-custom-fields/
@@ -33,7 +47,6 @@ class Timeframe extends PostType
         add_action( 'do_meta_boxes', array( $this, 'removeDefaultCustomFields' ), 10, 3 );
         add_action( 'save_post', array( $this, 'saveCustomFields' ), 1, 2 );
 
-        $this->initListView();
         $this->removeListTitleColumn();
         $this->removeListDateColumn();
     }
@@ -108,49 +121,52 @@ class Timeframe extends PostType
 
             // Slug unseres Post Types für die redirects
             // dieser Wert wird später in der URL stehen
-            'rewrite'             => array('slug' => self::TYPE),
+            'rewrite'             => array('slug' => self::getPostType()),
         );
-    }
-
-    public function getPostType()
-    {
-        return self::TYPE;
     }
 
     protected function getCustomFields() {
         return array(
-            new Field("location-id", "Location", "", "text", "edit_posts"),
-            new Field("item-id", "Item", "", "text", "edit_posts"),
-            new Field("start-date", "start-date", "", "text", "edit_posts"),
-            new Field("end-date", "end-date", "",
-                "text",
-                "edit_pages"),
-            new Field(
-                "grid",
-                "grid", "",
-                "textarea",
-                "edit_pages"
+            new Field("location-id", __("Location", TRANSLATION_CONST), "", "selectbox", "edit_posts", Location::getAllPosts()),
+            new Field("item-id",  __("Item", TRANSLATION_CONST), "", "selectbox", "edit_posts", Item::getAllPosts()),
+            new Field("start-date",  __("Start date", TRANSLATION_CONST), "", "datetime", "edit_posts"),
+            new Field("end-date",  __("End date", TRANSLATION_CONST), "", "datetime", "edit_pages"),
+            new Field("grid", __("Grid", TRANSLATION_CONST), "", "selectbox", "edit_pages",
+                [
+                    1, 2, 3, 4
+                ]
             ),
-            new Field("type", "type", "",
-                "text",
-                "edit_pages"
+            new Field("type", __( 'Type', TRANSLATION_CONST ), "", "selectbox", "edit_pages",
+                [
+                    1 => __("Opening Hours", TRANSLATION_CONST),
+                    2 => __("Bookable", TRANSLATION_CONST),
+                    3 => __("Holidays", TRANSLATION_CONST),
+                    4 => __("Official Holiday", TRANSLATION_CONST),
+                    5 => __("Repair", TRANSLATION_CONST),
+                    6 => __("Booking", TRANSLATION_CONST),
+                    7 => __("Booking cancelled", TRANSLATION_CONST)
+                ]
             ),
-            new Field("repetition", "repetition", "",
-                "text",
-                "edit_pages"
+            new Field("repetition", __( 'Repetition', TRANSLATION_CONST ), "", "selectbox", "edit_pages",
+                [
+                    'd' => __("Daily", TRANSLATION_CONST),
+                    'w' => __("Weekly", TRANSLATION_CONST),
+                    'm' => __("Monthly", TRANSLATION_CONST),
+                    'y' => __("Yearly", TRANSLATION_CONST)
+                ]
             ),
-            new Field("weekdays", "weekdays", "",
-                "text",
-                "edit_pages"
+            new Field("weekdays", __( 'Weekdays', TRANSLATION_CONST ), "","checkboxes","edit_pages",
+                [
+                    1 => __("Monday", TRANSLATION_CONST),
+                    2 => __("Tuesday", TRANSLATION_CONST),
+                    3 => __("Wednesday", TRANSLATION_CONST),
+                    4 => __("Thursday", TRANSLATION_CONST),
+                    5 => __("Friday", TRANSLATION_CONST),
+                    6 => __("Saturday", TRANSLATION_CONST),
+                    7 => __("Sunday", TRANSLATION_CONST)
+                ]
             ),
-            new Field("repetition-end", "repetition-end", "",
-                "text",
-                "edit_pages"
-            ),
-            new Field("user-id", "user-id", "",
-                "text",
-                "edit_pages"
-            )
+            new Field("repetition-end", __( 'Repetition end', TRANSLATION_CONST ), "","date","edit_pages")
         );
     } 
 
@@ -160,9 +176,48 @@ class Timeframe extends PostType
     public function getMetaboxes(): array
     {
         if($this->metaboxes == null) {
-            $this->metaboxes[] = new MetaBox(self::TYPE . "-custom-fields", "Timeframe", array($this, 'renderMetabox'), self::TYPE );
+            $this->metaboxes[] = new MetaBox(self::getPostType() . "-custom-fields", "Timeframe", array($this, 'renderMetabox'), self::getPostType() );
         }
         return $this->metaboxes;
     }
 
+    /**
+     * Adds data to custom columns
+     * @param $column
+     * @param $post_id
+     */
+    public function setCustomColumnsData($column, $post_id) {
+        if($value = get_post_meta( $post_id , $column , true )) {
+            switch($column) {
+                case 'location-id':
+                case 'item-id':
+                    if( $post = get_post($value)) {
+                        if (get_post_type($post) == Location::getPostType() || get_post_type($post) == Item::getPostType()) {
+                            echo $post->post_title;
+                            break;
+                        }
+                    }
+                    echo '-';
+                    break;
+                case 'type':
+                    $typeField = null;
+                    $output = "-";
+                    /** @var Field $customField */
+                    foreach ($this->getCustomFields() as $customField) {
+                        if($customField->getName() == 'type') {
+                            foreach ($customField->getOptions() as $key => $label) {
+                                if($value == $key) {
+                                    $output = $label;
+                                }
+                            }
+                        }
+                    }
+                    echo $output;
+                    break;
+                default:
+                    echo $value;
+                    break;
+            }
+        }
+    }
 }

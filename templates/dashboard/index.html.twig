@@ -1,0 +1,31 @@
+<h2>Kalender Übersicht</h2>
+
+<br>
+<br>
+<br>
+
+<form method="get" action="/wp-admin/admin.php">
+
+    <h3>Filter</h3>
+    <input type="hidden" name="page" value="cb-dashboard"/>
+    <label for="location">Standort</label>
+    <select name="location" id="location">
+        <option value="">-</option>
+        {% for location in locations %}
+            <option value="{{ location.ID }}">{{ location.post_title }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="item">Item</label>
+    <select name="item" id="item">
+        <option value="">-</option>
+        {% for item in items %}
+            <option value="{{ item.ID }}">{{ item.post_title }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Anzeigen" class="button" />
+</form>
+
+{% for day in week.days %}
+    {% include '/dashboard/components/day.html.twig' with {'day': day} %}
+{% endfor %}

@@ -1,0 +1,10 @@
+<div style="float: left; width: 11%; padding: 1em;">
+    {{ day.date }}<br><br>
+    {% for timeframe in day.timeframes %}
+        Type: {{ timeframe.type }}<br>
+        ID: {{ timeframe.ID }}<br>
+        Start: {{ timeframe|get_meta_field('start-date') }}<br>
+        Ende: {{ timeframe|get_meta_field('end-date') }}<br>
+        <br>
+    {% endfor %}
+</div>

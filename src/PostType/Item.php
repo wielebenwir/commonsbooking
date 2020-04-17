@@ -5,7 +5,7 @@ namespace CommonsBooking\PostType;
 class Item extends PostType
 {
 
-    const TYPE = 'cb_item';
+    public static $postType = 'cb_item';
 
     /**
      * Item constructor.
@@ -83,14 +83,8 @@ class Item extends PostType
 
             // Slug unseres Post Types für die redirects
             // dieser Wert wird später in der URL stehen
-            'rewrite'             => array('slug' => self::TYPE),
+            'rewrite'             => array('slug' => self::getPostType()),
         );
     }
-
-    public function getPostType()
-    {
-        return self::TYPE;
-    }
-
 
 }
