@@ -23,6 +23,14 @@
             <option value="{{ item.ID }}" {% if item.ID == currentItem %} selected="selected"{% endif %}>{{ item.post_title }}</option>
         {% endfor %}
     </select>
+
+    <label for="type">Type</label>
+    <select name="type" id="type">
+        <option value="">-</option>
+        {% for key, label in types %}
+            <option value="{{ key }}" {% if key == currentType %} selected="selected"{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
     <input type="submit" value="Anzeigen" class="button" />
 </form>
 

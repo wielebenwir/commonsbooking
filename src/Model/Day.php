@@ -13,20 +13,23 @@ class Day
 
     protected $items;
 
+    protected $types;
+
     /**
      * Day constructor.
      *
      * @param $date
      * @param $locations
      * @param $items
+     * @param $types
      */
-    public function __construct($date, $locations = [], $items = [])
+    public function __construct($date, $locations = [], $items = [], $types = [])
     {
         $this->date = $date;
         $this->locations = $locations;
         $this->items = $items;
+        $this->types = $types;
     }
-
 
     /**
      * @return mixed
@@ -106,7 +109,7 @@ class Day
         );
     }
 
-    protected function getLocationItemMetaQuery($locations, $items)
+    protected function getLocationItemMetaQuery($locations, $items, $types)
     {
         $metaQuery = [
             'relation' => 'AND'
@@ -128,6 +131,14 @@ class Day
             );
         }
 
+        if (count($types)) {
+            $metaQuery[] = array(
+                'key'     => 'type',
+                'value'   => $types,
+                'compare' => 'IN'
+            );
+        }
+
         return $metaQuery;
     }
 
@@ -144,11 +155,11 @@ class Day
         );
 
         // Filtered query (items, locations)
-        if (count($this->locations) || count($this->items)) {
+        if (count($this->locations) || count($this->items) || count($this->types)) {
             $args['meta_query'] = array(
                 'relation' => 'AND',
                 [$this->getTimeRangeQuery()],
-                [$this->getLocationItemMetaQuery($this->locations, $this->items)]
+                [$this->getLocationItemMetaQuery($this->locations, $this->items, $this->types)]
             );
         }
 

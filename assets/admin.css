@@ -1,11 +1,10 @@
 .timeslot--wrapper {
     border: 0.1em solid lightgray;
     padding: 0.2em;
-    height: 100px;
+    height: 50px;
     overflow: auto;
     margin-bottom: 10px;
 }
-
 
 .timeslot--type-1 {
     background-color: #bb55ff;
