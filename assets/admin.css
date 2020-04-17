@@ -1,6 +1,9 @@
 .timeslot--wrapper {
     border: 0.1em solid lightgray;
     padding: 0.2em;
+    height: 100px;
+    overflow: auto;
+    margin-bottom: 10px;
 }
 
 

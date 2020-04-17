@@ -8,6 +8,14 @@ use CommonsBooking\Wordpress\MetaBox;
 class Timeframe extends PostType
 {
 
+    const OPENING_HOURS_ID = 1;
+    const BOOKABLE_ID = 2;
+    const HOLIDAYS_ID = 3;
+    const OFF_HOLIDAYS_ID = 4;
+    const REPAIR_ID = 5;
+    const BOOKING_ID = 6;
+    const BOOKING_CANCELED_ID = 7;
+
     public static $postType = 'cb_timeframe';
 
     protected $metaboxes;
@@ -24,20 +32,17 @@ class Timeframe extends PostType
         'end-date' => "End date"
     ];
 
+    public static $multiDayFrames = [
+        self::BOOKING_ID,
+        self::BOOKING_CANCELED_ID
+    ];
+
     /**
      * Item constructor.
      */
     public function __construct()
     {
-        $this->types = [
-            1 => __("Opening Hours", TRANSLATION_CONST),
-            2 => __("Bookable", TRANSLATION_CONST),
-            3 => __("Holidays", TRANSLATION_CONST),
-            4 => __("Official Holiday", TRANSLATION_CONST),
-            5 => __("Repair", TRANSLATION_CONST),
-            6 => __("Booking", TRANSLATION_CONST),
-            7 => __("Booking cancelled", TRANSLATION_CONST)
-        ];
+        $this->types = self::getTypes();
 
         // Detail View
         /**
@@ -137,15 +142,7 @@ class Timeframe extends PostType
                 ]
             ),
             new Field("type", __( 'Type', TRANSLATION_CONST ), "", "selectbox", "edit_pages",
-                [
-                    1 => __("Opening Hours", TRANSLATION_CONST),
-                    2 => __("Bookable", TRANSLATION_CONST),
-                    3 => __("Holidays", TRANSLATION_CONST),
-                    4 => __("Official Holiday", TRANSLATION_CONST),
-                    5 => __("Repair", TRANSLATION_CONST),
-                    6 => __("Booking", TRANSLATION_CONST),
-                    7 => __("Booking cancelled", TRANSLATION_CONST)
-                ]
+                self::getTypes()
             ),
             new Field("repetition", __( 'Repetition', TRANSLATION_CONST ), "", "selectbox", "edit_pages",
                 [
@@ -169,6 +166,26 @@ class Timeframe extends PostType
             new Field("repetition-end", __( 'Repetition end', TRANSLATION_CONST ), "","date","edit_pages")
         );
     } 
+
+    public static function getTypes() {
+        return [
+            self::OPENING_HOURS_ID => __("Opening Hours", TRANSLATION_CONST),
+            self::BOOKABLE_ID => __("Bookable", TRANSLATION_CONST),
+            self::HOLIDAYS_ID => __("Holidays", TRANSLATION_CONST),
+            self::OFF_HOLIDAYS_ID => __("Official Holiday", TRANSLATION_CONST),
+            self::REPAIR_ID => __("Repair", TRANSLATION_CONST),
+            self::BOOKING_ID => __("Booking", TRANSLATION_CONST),
+            self::BOOKING_CANCELED_ID => __("Booking cancelled", TRANSLATION_CONST)
+        ];
+    }
+
+    public static function getTypeLabel($id) {
+        if(array_key_exists($id, self::getTypes())) {
+            return self::getTypes()[$id];
+        } else {
+            throw new \Exception('invalid type id');
+        }
+    }
 
     /**
      * @return array
@@ -219,6 +236,24 @@ class Timeframe extends PostType
                     break;
             }
         }
+    }
+
+    /**
+     * Priorities:
+        1 => __("Opening Hours", TRANSLATION_CONST),
+        2 => __("Bookable", TRANSLATION_CONST),
+        3 => __("Holidays", TRANSLATION_CONST),
+        4 => __("Official Holiday", TRANSLATION_CONST),
+        5 => __("Repair", TRANSLATION_CONST),
+        6 => __("Booking", TRANSLATION_CONST),
+        7 => __("Booking cancelled", TRANSLATION_CONST)
+     * @param \WP_Post $timeframeOne
+     * @param \WP_Post $timeframeTwo
+     */
+    public static function getHigherPrioFrame(\WP_Post $timeframeOne, \WP_Post $timeframeTwo) {
+        $typeOne = get_post_meta($timeframeOne->ID, 'type', true);
+        $typeTwo = get_post_meta($timeframeTwo->ID, 'type', true);
+        //@TODO: Define visualisation.
     }
 
 }

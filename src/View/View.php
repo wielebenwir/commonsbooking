@@ -4,6 +4,7 @@
 namespace CommonsBooking\View;
 
 
+use CommonsBooking\PostType\Timeframe;
 use Twig\TwigFilter;
 
 class View
@@ -19,6 +20,11 @@ class View
             return get_post_meta($post->ID,$field, true);
         });
         $twig->addFilter($metaLoader);
+
+        $typeLoader = new TwigFilter('get_type_label', function($post) {
+            return Timeframe::getTypeLabel(get_post_meta($post->ID, 'type', true));
+        });
+        $twig->addFilter($typeLoader);
 
         return $twig;
     }

@@ -12,7 +12,7 @@
     <select name="location" id="location">
         <option value="">-</option>
         {% for location in locations %}
-            <option value="{{ location.ID }}">{{ location.post_title }}</option>
+            <option value="{{ location.ID }}" {% if location.ID == currentLocation %} selected="selected"{% endif %}>{{ location.post_title }}</option>
         {% endfor %}
     </select>
 
@@ -20,12 +20,16 @@
     <select name="item" id="item">
         <option value="">-</option>
         {% for item in items %}
-            <option value="{{ item.ID }}">{{ item.post_title }}</option>
+            <option value="{{ item.ID }}" {% if item.ID == currentItem %} selected="selected"{% endif %}>{{ item.post_title }}</option>
         {% endfor %}
     </select>
     <input type="submit" value="Anzeigen" class="button" />
 </form>
 
-{% for day in week.days %}
-    {% include '/dashboard/components/day.html.twig' with {'day': day} %}
+
+{% for week in calendar.weeks %}
+    {% for day in week.days %}
+        {% include '/dashboard/components/day.html.twig' with {'day': day} %}
+    {% endfor %}
 {% endfor %}
+

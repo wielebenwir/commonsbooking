@@ -11,10 +11,9 @@
                 <ul>
                     {% for timeframe in slot.timeframes %}
                         <li class="timeslot--type-{{ timeframe.type }}">
-                            ID: {{ timeframe.ID }}<br>
-                            Start: {{ timeframe|get_meta_field('start-date') }}<br>
-                            Ende: {{ timeframe|get_meta_field('end-date') }}<br>
-                            <br>
+                            {{ timeframe|get_type_label }} ({{ timeframe.type }}, ID: {{ timeframe.ID }})
+{#                            Start: {{ timeframe|get_meta_field('start-date') }};#}
+{#                            Ende: {{ timeframe|get_meta_field('end-date') }}#}
                         </li>
                     {% endfor %}
                 </ul>

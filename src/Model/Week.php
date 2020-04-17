@@ -11,14 +11,22 @@ class Week
      */
     protected $week;
 
+    protected $locations;
+
+    protected $items;
+
     /**
      * Week constructor.
      *
      * @param $week
+     * @param $locations
+     * @param $items
      */
-    public function __construct($week)
+    public function __construct($week, $locations = [], $items = [])
     {
         $this->week = $week;
+        $this->locations = $locations;
+        $this->items = $items;
     }
 
     /**
@@ -31,7 +39,7 @@ class Week
 
         $days = [];
         for($i = 0; $i < 7; $i++) {
-            $days[] = new Day($dto->format('Y-m-d'));
+            $days[] = new Day($dto->format('Y-m-d'), $this->locations, $this->items);
             $dto->modify('+1 day');
         }
 
