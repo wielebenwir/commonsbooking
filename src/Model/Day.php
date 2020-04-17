@@ -252,7 +252,7 @@ class Day
      */
     protected function getMinimalGridFromTimeframes($timeframes)
     {
-        $grid = 0.5;
+        $grid = 24;
         // Get grid size from existing timeframes
         foreach ($timeframes as $timeframe) {
             if ($timeframeGrid = get_post_meta($timeframe->ID, 'grid', true) < $grid) {
