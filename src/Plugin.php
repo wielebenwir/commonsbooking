@@ -33,8 +33,29 @@ class Plugin
         // Register custom post types
         add_action('init', array(self::class, 'registerCustomPostTypes'));
 
+        // Load templates
+        add_filter( 'single_template', [$this, 'getTemplate']);
+
         // Add menu pages
         add_action( 'admin_menu', array(self::class, 'addMenuPages'));
+    }
+
+    /**
+     * @param $single_template
+     *
+     * @return string
+     */
+    public function getTemplate($single_template) {
+        global $post;
+
+        /** @var PostType $customPostType */
+        foreach (self::getCustomPostTypes() as $customPostType) {
+            if ( $customPostType::getPostType() === $post->post_type ) {
+                return COMMONSBOOKING__PLUGIN_DIR . 'templates/' . $post->post_type . '-template.php';
+            }
+        }
+
+        return $single_template;
     }
 
     /**

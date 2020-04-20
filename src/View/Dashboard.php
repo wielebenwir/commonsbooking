@@ -1,17 +1,12 @@
 <?php
 
-
 namespace CommonsBooking\View;
 
-
 use CommonsBooking\Model\Calendar;
-use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Week;
 use CommonsBooking\PostType\Item;
 use CommonsBooking\PostType\Location;
 use CommonsBooking\PostType\Timeframe;
-use Twig\TwigFilter;
-use Twig\TwigFunction;
 
 class Dashboard extends View
 {

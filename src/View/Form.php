@@ -1,8 +1,6 @@
 <?php
 
-
 namespace CommonsBooking\View;
-
 
 use CommonsBooking\Form\Field;
 

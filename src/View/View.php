@@ -11,11 +11,20 @@ class View
 {
 
     protected static function getTwigLoader() {
-        return new \Twig\Loader\FilesystemLoader(COMMONSBOOKING__PLUGIN_DIR . "templates");
+        return new \Twig\Loader\FilesystemLoader(COMMONSBOOKING__PLUGIN_DIR . "Resources" . DIRECTORY_SEPARATOR . "Views");
     }
 
     protected static function getTwig() {
-        $twig = new \Twig\Environment(static::getTwigLoader());
+        $options = [];
+        if(!WP_DEBUG) {
+            $options = [
+                'cache' => COMMONSBOOKING__PLUGIN_DIR . 'cache'
+            ] ;
+        }
+        $twig = new \Twig\Environment(
+            static::getTwigLoader(),
+            $options
+        );
         $metaLoader = new TwigFilter('get_meta_field', function($post, $field) {
             return get_post_meta($post->ID,$field, true);
         });

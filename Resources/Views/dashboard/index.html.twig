@@ -34,10 +34,4 @@
     <input type="submit" value="Anzeigen" class="button" />
 </form>
 
-
-{% for week in calendar.weeks %}
-    {% for day in week.days %}
-        {% include '/dashboard/components/day.html.twig' with {'day': day} %}
-    {% endfor %}
-{% endfor %}
-
+{% include 'calendar/index.html.twig' with {'calendar': calendar} %}

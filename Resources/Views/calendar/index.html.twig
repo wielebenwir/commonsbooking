@@ -1,0 +1,5 @@
+{% for week in calendar.weeks %}
+    {% for day in week.days %}
+        {% include 'calendar/components/day.html.twig' with {'day': day} %}
+    {% endfor %}
+{% endfor %}
