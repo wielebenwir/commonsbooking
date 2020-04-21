@@ -1,0 +1,56 @@
+.cb2-admin-page {
+	.cb2-database-table {
+		border-collapse: collapse;
+		background-color: #fff;
+		border: 1px solid #d7d7d7;
+		box-shadow: 1px 1px 5px #aaa;
+		margin: 3px 5px;
+	}
+
+	.cb2-unmanaged {
+		border: 2px dotted #aaa;
+		opacity: 0.7;
+	}
+	.cb2-table-not-exist {
+		background-color:#fff0f0;
+	}
+
+	.cb2-database-stored-procedures li,
+	.cb2-database-stored-procedures,
+	.cb2-database-views li,
+	.cb2-database-views {
+		display: inline;
+		margin-right: 5px;
+		font-weight: bold;
+	}
+
+	.cb2-database-table th {
+		border: 1px solid #d7d7d7;
+		padding: 4px 4px;
+	}
+
+	.cb2-database-table td {
+		border: 1px solid #d7d7d7;
+		padding: 0px 4px;
+	}
+
+	.cb2-database-prefix {
+		font-weight: normal;
+		color: #555;
+	}
+
+	.cb2-depth-0 {
+		list-style: none;
+	}
+
+	.cb2-classname {
+		font-style: italic;
+		background-color: #e0e7e0;
+		padding: 0px 4px;
+	}
+
+	li.cb2-classname {
+		list-style: none;
+		margin-left: -4px;
+	}
+}

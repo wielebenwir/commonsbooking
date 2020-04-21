@@ -11,7 +11,7 @@ class View
 {
 
     protected static function getTwigLoader() {
-        return new \Twig\Loader\FilesystemLoader(COMMONSBOOKING__PLUGIN_DIR . "Resources" . DIRECTORY_SEPARATOR . "Views");
+        return new \Twig\Loader\FilesystemLoader(COMMONSBOOKING__PLUGIN_DIR . "Resources" . DIRECTORY_SEPARATOR . "views");
     }
 
     protected static function getTwig() {

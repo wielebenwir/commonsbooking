@@ -1,0 +1,258 @@
+/*
+ * General admin css @TODO: split into _forms, etc.
+ *
+ * @package   CommonsBooking2
+ * @author 		Annesley Newholm <annesley_newholm@yahoo.it>
+ * @license   GPL-2.0+
+ * @since 0.2
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+.cb2-admin-page {
+
+	&.cb2-status-pickup-return {
+		.wp-heading-inline {
+			.cb2-summmary-statustype {
+				display: none;
+			}
+		}
+	}
+
+
+	.cb2-summary-compact {
+		&.location-validity {
+			.cb2-summmary-validity {
+				font-weight: normal;
+			}
+		}
+	}
+
+	.cb2-bald {
+		text-decoration: none;
+	}
+
+	.cb2-advanced-menu-item {
+		font-style: italic;
+	}
+
+	.cb2-advanced {
+		float:right;
+	}
+
+	.cb2-invalid {
+		color: #888;
+	}
+
+	.cb2-advanced-menu-item.cb2-first {
+		display: block;
+		border-top: 1px dotted #d7d7d7;
+		padding-top: 6px;
+	}
+
+	.cb2-period-instance-code {
+		color: #d2434d;
+		padding:0px 5px;
+		background-color: #f6f6f6;
+		border: 1px solid #a6a6a6;
+		border-radius:4px;
+	}
+
+	.cb2-description {
+		@extend .small-text;
+	}
+
+	.cb2-column-pagination {
+		float: right;
+	}
+
+	.cb2-column-actions {
+		float: left;
+	}
+
+	&.wp-admin .cb2-disabled,
+	&.wp-admin .cb2-disabled label,
+	&.wp-admin .cb2-disabled span {
+		text-decoration: none;
+		color: #888;
+		font-weight: normal;
+	}
+	.cb2-ajax-failed {
+		border:1px solid red;
+		color:red;
+	}
+	a.cb2-selected {
+		text-decoration: none;
+		color: #555;
+		font-weight: bold;
+	}
+
+	ul.cb2-admin-column-ul {
+		margin: 0px;
+	}
+
+	input.cb2-tick-only {
+		border: none;
+		background: Transparent;
+		box-shadow: none;
+		cursor: default;
+	}
+
+	input.cb2-tick-only:not([checked]):after {
+		content: '✘';
+		color: #ff5555;
+		position: relative;
+		top: 7px;
+	}
+
+	.cb2-colour-block {
+		height: 20px;
+		width: 80px;
+	}
+
+	.ui-widget {
+		background-color: #fff;
+		padding: 4px;
+		border: 1px solid #ddd;
+		box-shadow: 3px 3px #ddd;
+	}
+
+	.cb2-help {
+		color: #773333;
+		font-family: sans;
+		font-size: 11px;
+	}
+
+	&.admin_page_cb2-reflection { // DB install, reinstall, etc
+		.cb2-admin-section {
+			display: block;
+			clear: both;
+			overflow: hidden;
+			padding: 15px;
+			margin-top: 10px;
+			background: #FFF;
+			h3 {
+				display: block;
+				margin-bottom: 2px;
+			}
+			input[type=submit] {
+				@extend .cb2-admin-button-save;
+				padding: 3px 5px ;
+			}
+			div {
+				display: block;
+				overflow: hidden;
+			}
+		}
+	}
+
+}
+
+.cb2-no-results {
+	color:#aaa;
+	font-style:italic;
+}
+
+.cb2-invalidity {
+	display: inline-block;
+	margin: 1px 4px 4px 2px;
+	padding: 0 5px;
+	min-width: 7px;
+	height: 17px;
+	border-radius: 11px;
+	background-color: #c71a1a;
+	color: #fff;
+	font-size: 12px;
+	line-height: 17px;
+	text-align: center;
+
+	&.cb2-future {
+		background-color: #f71a1a;
+	}
+
+	&.cb2-expired {
+		background-color: #c71f1a;
+	}
+
+	&.cb2-not-original {
+		background-color: #d7d7d7;
+		color: #000;
+	}
+}
+
+.cb2-usage-count-warning {
+	display: inline-block;
+	margin: 1px 0 0 2px;
+	padding: 0 5px;
+	min-width: 7px;
+	height: 17px;
+	border-radius: 11px;
+	background-color: #ca4a1f;
+	color: #fff;
+	font-size: 9px;
+	line-height: 17px;
+	text-align: center;
+}
+
+.cb2-usage-count-ok {
+	display: inline-block;
+	margin: 1px 0 0 2px;
+	padding: 0 5px;
+	min-width: 7px;
+	height: 17px;
+	border-radius: 11px;
+	background-color: #9de0f2;
+	color: #000;
+	font-size: 9px;
+	line-height: 17px;
+	text-align: center;
+}
+
+.cb2-usage-count-info {
+	display: inline-block;
+	margin: 1px 0 0 2px;
+	padding: 0 5px;
+	min-width: 7px;
+	height: 17px;
+	border-radius: 11px;
+	/* background-color: #444; */
+	color: #aaa;
+	font-size: 9px;
+	line-height: 17px;
+	text-align: center;
+	box-shadow: 0px 0px 1px #aaa;
+}
+
+/* Hide Admin elements */
+.toplevel_page_cb2-menu > .wp-submenu {
+	.cb2-calendar,
+	.cb2-calendar-advanced,
+	.cb2-timeframes,
+	.cb2-opening-hours,
+	.cb2-repairs,
+	.cb2-holidays,
+	.cb2-roles,
+	.cb2-reflection,
+	.cb2-oo,
+	.cb2-gui-setup,
+	.cb2-periods,
+	.cb2-period-globals,
+	.cb2-period-locations,
+	.cb2-period-timeframes,
+	.cb2-period-users,
+	.cb2-period-groups,
+	.cb2-periodstatustypes,
+	.cb2-post-new,
+	.cb2-post-edit,
+	.cb2-post-auto-create {
+		display:none;
+	}
+}
+
+.cb2-admin-page {
+	&.commonsbooking_page_cb2-locations,
+	&.commonsbooking_page_cb2-items {
+		.search-box, .bulkactions, .actions {
+			display: none;
+		}
+	}
+}

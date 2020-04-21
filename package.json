@@ -1,0 +1,27 @@
+{
+	"name": "commonsbooking",
+	"version": "0.0.1",
+	"description": "Wordpress plugin for managing and booking of common goods.",
+	"author": "The CommonsBooking Team <info@commonsbooking.org>",
+	"license": "SEE LICENSE IN LICENSE.txt",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wielebenwir/cb"
+	},
+	"devDependencies": {
+		"grunt": "*",
+		"grunt-contrib-compass": "*",
+		"grunt-contrib-compress": "^1.6.0",
+		"grunt-contrib-watch": "^1.1.0",
+		"grunt-wp-readme-to-markdown": "^2.0.1",
+		"matchdep": "^2.0.0"
+	},
+	"scripts": {
+		"grunt": "node node_modules/grunt/bin/grunt"
+	},
+	"dependencies": {
+		"grunt-contrib-jshint": "^1.1.0",
+		"grunt-contrib-uglify": "^3.3.0",
+		"jquery": "^3.4.1"
+	}
+}

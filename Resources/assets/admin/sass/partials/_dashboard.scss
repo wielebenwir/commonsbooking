@@ -1,0 +1,24 @@
+.cb2-admin-page {
+	.cb2-admin-cols {
+		display: flex;
+		flex-direction: row;
+		div {
+		margin-right: 15px;
+
+
+		h2 {
+			padding-top: 0;
+		}
+
+		ul {
+			li {
+				margin-top: 15px;
+				@extend .cb2-box;
+				.cb2-summmary-item {
+					font-weight: bold;
+				}
+			}
+}
+	}
+}
+}

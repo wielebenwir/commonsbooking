@@ -1,0 +1,34 @@
+/**
+ * SCSS Variables for the back end
+ *
+ * Colors: WP
+ *
+ * @package   CommonsBooking2
+ * @author Florian Egermann <florian@wielebenwir.de>
+ * @license   GPL-2.0+
+ * @since 0.2
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+
+/* Colors */
+
+$color-white: #FFFFFF;
+
+
+
+ $wp-blue: #008dc2;
+ $wp-gray: #a7a7a7;
+ $wp-gray-light: #f6f6f6;
+ $wp-red: #c41a2b;
+ $yellow-light: #FEFF97;
+
+$blue-light: #E5EFFB;
+$text-gray: #8f8f8f;
+$font-size-normal: 14px;
+
+$color-warning: $wp-red;
+
+$font-weight-bold: 600;
+$element-spacing:8px;
+$wp-font-size-normal: 13px;

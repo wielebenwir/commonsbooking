@@ -1,0 +1,594 @@
+/*
+ * Admin screens
+ *
+ * Hande the display and reordering of meta boxes on cb2 admin form screens
+ * WP List table screens: _lists.scss
+ *
+ * .post-type-cb2_prdent-tf.admin_page_cb2-post-new 					// Timeframe new (wizard page)
+ * .post-type-cb2_prdent-tf.admin_page_cb2-post-edit {} 			// Timeframe edit (calendar)
+ * .post-type-cb2_prdent-location.admin_page_cb2-post-edit {} // Opening hours edit (calendar)
+ *
+ * @package   CommonsBooking2
+ * @author Florian Egermann <florian@wielebenwir.de>
+ * @license   GPL-2.0+
+ * @since 0.2
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir+
+ */
+
+.cb2-admin-page {
+	#post-body {
+		#post-body-content {}		// Contains .cb2-tabs
+		#postbox-container-1 {} // Hidden
+		#postbox-container-2 {} // Contains #titlediv, .cb2-submitdiv: Create/Update buttons
+		#postdivrich {}					// Hidden
+		#container-main {}			// Main tab content (timeframe creation wizard form/calendar)
+		#container-options {}		// Second tab contant (timeframe options form)
+	}
+	.cb2-form-wrapper {
+		display:inline;
+	}
+}
+
+
+/* ------ general metabox extends ---*/
+
+.metabox-reset {
+	.cmb-row {
+		padding: 0;
+		margin: 0;
+	}
+}
+
+/* hide the whole top bar */
+.metabox-no-title {
+	@extend .metabox-reset;
+	button.handlediv,
+	h2 {
+		display: none;
+	}
+}
+
+/* hide the whole top bar */
+.metabox-popup {
+ @extend .metabox-no-title;
+ border: 0;
+ .inside {
+	 padding: $element-spacing;
+ }
+ .cmb-row {
+ 	// margin-bottom: $element-spacing;
+ }
+}
+/* hide the collapse hanlde only */
+.metabox-no-handle {
+	button.handlediv {
+		display: none;
+	}
+}
+
+.metabox-no-timepicker {
+	.cmb2-timepicker {
+		display: none;
+	}
+}
+
+.metabox-2-col {
+	.cmb-field-list {
+	display: flex;
+	width: auto;
+	flex-wrap: nowrap;
+	> div {
+		flex-grow: 1;
+		border-bottom: 0;
+		max-width: 50%;
+		input,
+		.cmb2-metabox-description {
+			max-width: 150px;
+			}
+			.cmb-th {
+				// width: auto;
+			}
+		}
+	}
+}
+
+// management-bar: 1 row of metaboxes, container
+.management-bar-container {
+	@extend .metabox-no-title;
+
+	display: flex;
+	width: auto;
+	flex-wrap: wrap;
+	margin: 0;
+	padding: 0;
+	.cmb-row {
+		margin: 0;
+		.cmb-td {
+			padding: 5px;
+		}
+	}
+}
+// management-bar: 1 row of metaboxes, item
+.management-bar-item {
+	margin: 0;
+	min-width: 0;
+	flex-grow: 1;
+	border: 0;
+	.inside {
+		padding: 0;
+		margin: 10px 5px;
+	}
+	a {
+		text-decoration: none;
+	}
+}
+
+
+
+/* Admin screens: Hide container & set order */
+.cb2-admin-page.post-type-cb2_prdent-tf.admin_page_cb2-post-edit,
+.cb2-admin-page.post-type-cb2_prdent-location.admin_page_cb2-post-edit,
+.cb2-admin-page.post-type-cb2_prdent-tf.admin_page_cb2-post-new {
+	#post-body {
+		display: flex;
+		flex-direction: column;
+
+		#post-body-content { // Contains .cb2-tabs, #titlediv
+			#titlediv { display: none }
+			order: 2;
+			margin: 0;
+		}
+
+		#postbox-container-1 { // Hidden
+			display: none;
+		}
+
+		#postbox-container-2 { // Contains #titlediv, .cb2-submitdiv: Create/Update buttons
+			order: 5;
+			#normal-sortables { display: none; }
+			#major-publishing-actions { overflow: hidden; }
+		}
+
+		#postdivrich { // Hidden
+			display: none;
+		}
+
+		#container-main { // Main tab content (timeframe creation wizard form/calendar)
+			order: 3;
+		}
+		#container-options { // Second tab contant (timeframe options form)
+			order: 4;
+		}
+	}
+}
+/* Single Booking */
+.cb2-admin-page.post-type-cb2_prdent-tf-user {
+	#post-body {
+		display: flex;
+		flex-direction: column;
+
+		#postdivrich, #titlediv, .cb2-tabs, #CB2_PeriodEntity_Timeframe_User_status,
+		#CB2_PeriodEntity_Timeframe_User_post_date,
+		#major-publishing-actions,
+		#CB2_PeriodEntity_Timeframe_User_period_group,
+		#submitdiv  { // Hidden
+			display: none;
+		}
+
+		#postbox-container-2 {
+			#normal-sortables {
+			display: flex;
+			flex-direction: row;
+			#CB2_PeriodEntity_Timeframe_User_location,
+			#CB2_PeriodEntity_Timeframe_User_item,
+			#CB2_PeriodEntity_Timeframe_User_user {
+				width: 33%;
+				@extend .metabox-no-title;
+				.cmb-row {
+					margin: 0; padding: 0;
+				}
+			}
+		}
+		}
+		#post-body-content { // Contains .cb2-tabs, #titlediv
+			order: 2;
+			margin: 0;
+		}
+	}
+}
+
+
+// Timeframe new (wizard page)
+.post-type-cb2_prdent-tf.admin_page_cb2-post-new {
+	#postbox-container-1,
+	.cb2-tabs {
+		display: none;
+	}
+
+	#CB2_PeriodEntity_Timeframe_status,
+	#titlediv {
+		display: none;
+	}
+	#poststuff {
+		max-width: 700px;
+	}
+	.cb2-display-type-hidden {
+		display: none;
+	}
+}
+// Edit Opening hours
+.cb2-admin-page.post-type-cb2_prdent-location.admin_page_cb2-post-edit {
+	#postbox-container-1,
+	.cb2-tabs {
+		display: none;
+	}
+}
+
+// General DOM structure
+
+
+
+/* ---------------------- all admin screens */
+.cb2-admin-page.admin_page_cb2-post-edit {
+
+	/* ----------------------------------- metabox lists: opening hours + timeframes */
+	#cmb2-metabox-CB2_Location_opening-hours-list,
+	#cmb2-metabox-CB2_Item_timeframes {
+
+		ul.cb2-subposts li {
+			@extend .bg-gray;
+		}
+		.cb2-title {
+			font-weight: bold;
+		}
+		.cb2-actions {
+			float: right;
+			.post-edit-link {
+				@extend .cb2-admin-button;
+				float: right;
+			}
+			.post-delete-link {
+				color: $color-warning;
+				margin-right: 30px;
+			}
+			.post-duplicate-link {
+				display: none;
+			}
+		}
+		.cb2-usage-count-ok, .cb2-invalidity  {
+			display: none;
+		}
+		.cb2-CTA {
+			margin-top: 30px;
+			.cb2-CTA-action:last-of-type {
+				float: right;
+			}
+		}
+	}
+
+	// General metabox styling
+	#container-main,
+	#container-options {
+		.cmb-row {
+			padding: 0;
+			&:last-of-type {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+
+}
+
+/* ------ general metabox styles ---*/
+
+
+
+body.cb2-admin-page #container-main-sortables { /* container */
+	margin-bottom: 0;
+}
+
+/* ----- individual meta boxes -----*/
+
+#CB2_PeriodEntity_Timeframe_period_validity_override__optional_ {
+	@extend .metabox-2-col;
+	@extend .metabox-no-timepicker;
+}
+
+#CB2_PeriodEntity_Timeframe_timeframe_settings {
+	@extend .metabox-2-col;
+}
+
+#CB2_PeriodEntity_Timeframe_period_group_ID_wizard {
+
+	@extend .metabox-no-handle;
+
+	.cb2-no-opening-hours-show {
+		@extend .cb2-admin-notice;
+		display: none;
+		margin: 20px 0;
+	}
+
+	.cmb2-radio-list {
+		display: flex;
+		li {
+			flex: 1;
+			input {
+				// display: block;
+			}
+			@extend .selectable;
+			padding-top: 100px;
+			text-align: center;
+
+			.cb2-options label{
+				@extend .small-text;
+			}
+
+			&.cb2-period-group-id-OPH {
+				background: url('../icons/cb2-period-group-id-OPH.png') no-repeat;
+				background-position: top;
+				background-size: 50%;
+			}
+			&.cb2-period-group-id-HRY {
+				background: url('../icons/cb2-period-group-id-HRY.png') no-repeat;
+				background-position: top;
+				background-size: 50%;
+			}
+
+			&.cb2-period-group-id-CUS {
+				background: url('../icons/cb2-period-group-id-CUS.png') no-repeat;
+				background-position: top;
+				background-size: 50%;
+			}
+
+			&.cb2-period-group-id-247 {
+				background: url('../icons/cb2-period-group-id-247.png') no-repeat;
+				background-position: top;
+				background-size: 50%;
+			}
+
+			&.cb2-period-group-id-CUS .cb2-options,
+			&.cb2-period-group-id-247 .cb2-options {
+				display: none;
+			}
+
+			&.cb2-period-group-id-CUS.cb2-selected .cb2-options,
+			&.cb2-period-group-id-247.cb2-selected .cb2-options {
+				display: block;
+			}
+
+			&.cb2-selected {
+				@extend .selectable-selected;
+			}
+		}
+	}
+}
+
+#CB2_PeriodEntity_Timeframe_location,
+#CB2_PeriodEntity_Timeframe_item {
+	@extend .metabox-no-title;
+}
+
+
+.cmb-type-text-datetime-timestamp {
+
+	width: 100%;
+	.cmb-th {
+		// width: 30%;
+
+	}
+	.cmb-td {
+		width: auto;
+		input {
+			width: 100px;
+			float:left;
+		}
+	}
+}
+
+/* Popup: Period */
+#CB2_Period_period {
+
+	@extend .metabox-popup;
+	position: relative;
+
+	// #cmb2-metabox-CB2_Period_period {
+	// 	display: flex;
+	// 	flex-direction: row;
+	// 	flex-wrap: nowrap;
+	// }
+	// .cmb-th {
+	// 	display: none;
+	// }
+
+	.cmb-field-list {
+
+	}
+
+
+	.datetime_part_period_start_date {
+		border: 0px;
+	}
+
+
+	// .cmb2-id-datetime-part-period-start .cmb-td::after {
+	// 		content: ' \2794';
+	// 		font-size: 20px;
+	// }
+
+
+	.cmb2-id-period-explanation-multidays {
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+
+}
+/* Popup: recurrence */
+#cb2-save-types {
+
+	.cb2-apply-to {
+		font-weight: bold;
+		margin-right: 20px;
+	}
+	padding: 10px;
+		@extend .metabox-popup;
+		background: $blue-light;
+		@include round-rect(all);
+		label {
+			margin-right: 5px;
+		}
+}
+
+
+
+/* Popup: Period */
+#CB2_Period_recurrence {
+	@extend .metabox-popup;
+
+	.inside {
+		background: $blue-light;
+		@include round-rect(all);
+	}
+
+	.cmb-td {
+		float: none;
+	}
+
+	.cb2-description {
+		color: $wp-blue; /* background is blue, provide contrast */
+	}
+	.cmb2-id-recurrence-sequence {
+		margin-bottom: 20px;
+	}
+
+	.cmb2-id-recurrence-sequence {
+		.cmb-th {
+			display: none;
+		}
+	}
+	.cmb2-checkbox-list {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		li {
+			background: $color-white;
+			@include round-rect(all);
+			padding: 5px;
+			margin-right: 2px;
+			flex-grow: 1;
+			text-align: center;
+			label {
+				display: block;
+			}
+		}
+	}
+	.cmb-type-text-datetime-timestamp {
+	}
+}
+
+// #PeriodEntityTimeframe - Add new ––––––––––––––––––––––––––––––––––––––––---
+#TB_window.cb2-post-new {
+	#container-main {
+		#container-main-sortables {
+			div {
+					@extend .metabox-no-title;
+			}
+			#CB2_PeriodEntity_Timeframe_item {
+				display: none;
+			}
+		}
+	}
+	#container-options {
+		display: block !important; /* prevent tabs script from hiding it */
+		#CB2_PeriodEntity_Timeframe_timeframe_settings {
+
+		}
+		#CB2_PeriodEntity_Timeframe_period_validity_override__optional_ {
+				@extend .metabox-no-title;
+		}
+	}
+}
+
+// #PeriodEntityTimeframe - Timeframe editor screen tabs ––––––––––––––––––––––
+.admin_page_cb2-post-edit.post-type-cb2_prdent-tf {
+	// empty metaboxes & content
+	#postbox-container-1,
+	#postdivrich {
+		display: none;
+	}
+
+	#cb2-submitdiv {} //@TODO styling
+
+	#container-main { // summary-bar + calendar
+
+		div.meta-box-sortables {
+
+			@extend .management-bar-container;
+
+			div.postbox {
+
+				@extend .management-bar-item;
+				margin: 0;
+
+				/* elements in summary bar */
+				&#CB2_PeriodEntity_Timeframe_post_date {
+					order: 1;
+				}
+				&#CB2_PeriodEntity_Timeframe_location {
+					order: 2;
+				}
+				&#CB2_PeriodEntity_Timeframe_item {
+					order: 3;
+				}
+				&#CB2_PeriodEntity_Timeframe_item_post_view {
+					order: 4;
+				}
+				&#CB2_PeriodEntity_Timeframe_calendar_view { /*calendar */
+					order: 6;
+					width: 100%;
+					margin-top: 20px;
+				}
+				&#CB2_PeriodEntity_Timeframe_status { /* Allow bookings */
+					display: none; //hide Allow bookings Button
+					order: 5;
+					flex-grow: 1;
+
+					.cmb2-id-enabled {
+						display: none;
+					}
+					.cmb2-id-confirmed-user-ID {
+					display:flex;
+					align-items: center;
+
+					.cmb-th {
+						width: 100px;
+					}
+					.cmb-td {
+						width: 20px;
+					}
+					}
+				}
+			}
+		}
+	}
+}
+
+// #PeriodEntityLocation - Location opening hours editor screen
+.post-type-cb2_prdent-location {
+	#CB2_PeriodEntity_Location_location,
+	#CB2_PeriodEntity_Location_post_date,
+	#postbox-container-2,
+	#CB2_PeriodEntity_Location_status {
+		display: none;
+	}
+}
+
+
+
+
+#CB2_PeriodEntity_Timeframe_period_group,
+#CB2_PeriodEntity_Timeframe_period_status_type {
+	display: none;
+}

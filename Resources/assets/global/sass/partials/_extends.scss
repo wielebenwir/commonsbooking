@@ -1,0 +1,204 @@
+/**
+ * Extends
+ *
+ * Re-usable styles, intended to be used in scss, not directly in the dom.
+ *
+ * Boxes
+ * Typography
+ *
+ * @package   CommonsBooking2
+ * @author    Annesley Newholm <annesley_newholm@yahoo.it>
+ * @copyright 2018 wielebenwir e.V.
+ * @license   GPL 2.0+
+ * @link      http://commonsbooking.wielebenwir.de
+ *
+ */
+
+/* -------------------- Boxes -------------------- */
+
+.cb2-box {
+	background: $color-gray-background;
+
+	padding: $padding $padding-big;
+	overflow: hidden;
+	border-radius: $radius;
+	margin-bottom: $padding;
+}
+
+.cb2-box-subposts {
+	background: $color-white;
+	padding: $padding;
+	border-radius: $radius;
+}
+
+/* -------------------- Tables -------------------- */
+
+.cb2-columns {
+	@include breakpoint(phablet) {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		min-width: 0;
+	}
+
+	.cb2-button-container {
+		text-align: right;
+		a {
+			display: inline-block;
+			width: auto;
+		}
+	}
+}
+
+	/* column sizes */
+	.cb2-columns-50-50 {
+
+		@include breakpoint(phablet) {
+			> :nth-child(odd) {
+				width: 48%;
+				min-width: 0;
+				img { width: 100% }
+			}
+			> :nth-child(even) {
+				width: 48%;
+				min-width: 0;
+			}
+		}
+	}
+	.cb2-columns-70-30 {
+		@include breakpoint(phablet) {
+
+			> :nth-child(odd) {
+			width: 70%;
+			}
+			> :nth-child(even) {
+				width: 30%;
+			}
+		}
+
+	}
+	.cb2-columns-20-80 {
+
+	@include breakpoint(phablet) {
+			> :nth-child(odd) {
+				width: 20%;
+
+			}
+			> :nth-child(even) {
+				width: 80%;
+			}
+		}
+	}
+
+
+
+/* -------------------- Typography -------------------- */
+
+.cb-big,
+.cb2-big {
+	font-size: $font-size-big;
+	font-weight: bold;
+}
+
+/* -------------------- Boxes -------------------- */
+
+.shadow {
+	box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.22);
+}
+
+.shadow-small {
+	box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
+}
+
+.cb2-hover {
+	@extend .shadow-small;
+	border: 1px solid $color-blue-dark;
+	border-radius: $radius;
+}
+
+.cb2-image {
+	border-radius: $radius;
+}
+
+/* -------------------- Buttons -------------------- */
+
+.cb2-button {
+	border-radius: $radius;
+	font-size: $font-size-big;
+	line-height: $font-size-big;
+	background-color: $color-success;
+	border: none !important; /* TwentyFifteen theme fix */
+	text-decoration: none !important;
+	word-break: normal !important; /* TwentyTwenty theme fix */
+
+	color: $color-white;
+	padding: $padding $padding-big;
+	font-weight: bold;
+
+
+	&:hover {
+		@extend .shadow-small;
+		color: $color-black;
+	}
+
+	&:visited {
+		color: $color-white;
+	}
+
+	&.big {
+		padding: $padding $padding-big;
+	}
+
+
+	&.cancel {
+		background-color: $color-error;
+		&.secondary {
+			background-color: $color-white;
+			color: $color-error;
+		}
+	}
+
+	&.confirm {
+		background-color: $color-success;
+	}
+
+	&.delete {
+		background-color: $color-error;
+	}
+}
+
+.cb2-button-container a {
+	@extend .cb2-button;
+}
+
+.cb2-button-icon {
+	border: 1px solid $color-gray-border;
+	background: $color-white;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	text-decoration: none;
+
+	&:before {
+		display: inline-block;
+		font-size: 20px;
+		width: 100%;
+		height: 20px;
+		line-height: 20px;
+		vertical-align: baseline;
+	}
+}
+
+.cb2-pill {
+	border-radius: $radius-pill;
+	padding: 0;
+	margin: 0;
+	a {
+		text-decoration: none;
+		color: $color-white;
+		padding: $padding-small $padding;
+		&:hover {
+		}
+	}
+}

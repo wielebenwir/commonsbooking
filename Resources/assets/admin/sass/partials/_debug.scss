@@ -1,0 +1,143 @@
+.cb2-WP_DEBUG-small,
+.cb2-WP_DEBUG,
+.cb2-todo {
+	display: none;
+}
+.cb2-WP_DEBUG-on .cb2-WP_DEBUG-small,
+.cb2-WP_DEBUG-on .cb2-WP_DEBUG,
+.cb2-WP_DEBUG-on .cb2-todo {
+	display:inline-block;
+}
+.cb2-WP_DEBUG-small {
+	color: #555;
+	font-size: 10px;
+}
+
+.cb2-WP_DEBUG-small:before {
+	content: '•';
+
+	margin: 0px 2px 0 0px;
+	padding: 0px 2px;
+	min-width: 7px;
+	border-radius:11px;
+	background-color: #500;
+	color: #fff;
+	font-size: 6px;
+	line-height:10px;
+	text-align: center;
+}
+
+.cb2-WP_DEBUG {
+	color: #555;
+}
+#adminmenu .cb2-WP_DEBUG {
+	color: rgba(240,245,250,.7);
+}
+
+.cb2-count-0,
+.cb2-count-20000 .cb2-count {
+	font-weight:bold;
+	color:#dd0000;
+}
+.cb2-cb2-table {
+	font-weight:bold;
+}
+.cb2-wordpress-table {
+	font-weight:normal;
+	color:#888;
+}
+
+.cb2-WP_DEBUG:before {
+	content: 'WP_DEBUG: ';
+
+	margin: 1px 3px 0 2px;
+	padding: 2px 5px;
+	min-width: 7px;
+	border-radius: 11px;
+	background-color: #500;
+	color: #fff;
+	font-size: 9px;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.cb2-WP_DEBUG-security {
+	float:right;
+	margin-left:2px;
+	background-color: #dd0000;
+	font-weight:bold;
+	padding:0px 3px;
+	color: white;
+	cursor:pointer;
+	font-size: 10px;
+	line-height: 10px;
+}
+
+.cb2-todo:before {
+	content: 'TODO: ';
+
+	margin: 1px 3px 0 2px;
+	padding: 2px 5px;
+	min-width: 7px;
+	border-radius: 11px;
+	background-color: #8aaa1f;
+	color: #fff;
+	font-size: 9px;
+	text-align: center;
+	text-decoration:none;
+}
+
+.cb2-calendar-krumo-show {
+	cursor: pointer;
+}
+
+.cb2-debug-control {
+	position:relative;
+	float:left;
+	font-size:10px;
+	color:#777;
+	cursor:pointer;
+}
+.cb2-debug-control span {
+	position:absolute;
+	top:-3px;
+	left:40px;
+	z-index:40;
+	border:1px dotted #000;
+	background-color:#fff;
+}
+.cb2-debug-control:before {
+	content: '•';
+
+	display: inline-block;
+	margin: 0px 2px 0 0px;
+	padding: 0px 2px;
+	min-width: 7px;
+	border-radius:11px;
+	background-color: #500;
+	color: #fff;
+	font-size: 6px;
+	line-height:10px;
+	text-align: center;
+}
+.cb2-debug {
+	background-color:Transparent;
+	font-family: Sans;
+	color:#555;
+	font-size:10px;
+	padding:4px;
+	white-space:nowrap;
+}
+.cb2-debug ul {
+	padding-left: 10px;
+}
+.cb2-debug li {
+	margin-bottom: 2px;
+}
+body .cb2-low-debug {
+	color: #777;
+}
+.cb2-high-debug {
+	font-weight:bold;
+}
+

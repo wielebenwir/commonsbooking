@@ -1,0 +1,79 @@
+
+/*
+ * Map (leaflet)
+ *
+ * @package   CommonsBooking2
+ * @author Florian Egermann <florian@wielebenwir.de>
+ * @license   GPL-2.0+
+ * @since 0.2
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+
+ .leaflet-container {
+	 min-height: 400px !important;
+	 border: none !important;
+	 border-radius: $radius;
+	 .leaflet-popup {
+		 a, a:hover {
+			 box-shadow: 0 0 transparent; /* Twentysixteen Theme annoyances */
+
+			}
+
+		h2 {
+			font-size: $font-size-big;
+			margin-bottom: 0;
+			color: $color-blue-dark;
+			font-weight: bold;
+			text-decoration: none;
+
+		}
+		.cb2-geo-address {
+			margin-bottom: $padding;
+		}
+
+
+
+	 .leaflet-popup-content-wrapper {
+		border-radius: $radius;
+
+		.leaflet-popup-content {
+			max-height: 300px;
+			overflow-y: scroll;
+		}
+
+		.cb2-template-popup-prdent-tf-items {
+			border: 1px solid $color-gray-border;
+			position: relative;
+			@extend .cb2-box;
+			background: $color-white;
+			margin-bottom: $padding;
+			padding: $padding;
+			&:hover {
+				@extend .cb2-hover;
+			}
+			cursor: pointer;
+		}
+
+		h2 {
+			font-size: $font-size-normal;
+			a {
+				text-decoration: none;
+				color: $color-blue-dark;
+			}
+		}
+		h3{
+			display: inline-block;
+			a {
+				color: $color-white;
+				padding: $padding-small $padding;
+			}
+			border-radius: $radius;
+		}
+		.cb2-time-period {
+			display: none;
+		}
+
+	 }
+ }
+	 }

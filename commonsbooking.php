@@ -16,7 +16,7 @@ define( 'CB_MENU_SLUG', 'cb-menu');
 define( 'COMMONSBOOKING__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 function commonsbooking_admin_style() {
-    wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__) . 'Resources/Assets/css/admin.css');
+    wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__) . 'Resources/assets/admin/css/admin.css');
 }
 add_action('admin_enqueue_scripts', 'commonsbooking_admin_style');
 

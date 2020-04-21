@@ -1,0 +1,100 @@
+/*
+ * Admin screens: List tables
+ *
+ * @package   CommonsBooking2
+ * @author Florian Egermann <florian@wielebenwir.de>
+ * @license   GPL-2.0+
+ * @since 0.2
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir+
+ */
+
+
+.cb2-admin-page {
+
+	/* List table: items + Locations */
+	&.commonsbooking_page_cb2-items,
+	&.commonsbooking_page_cb2-locations  {
+
+		// cleanup
+		.cb2-timeframe-title,
+		.cb2-invalidity {
+			display: none;
+		}
+
+		// Locations col, Opening hours col
+		.column-pickup_return,
+		.column-opening_hours {
+			li {
+				.cb2-actions .post-edit-link {
+					display: none;
+				}
+				.cb2-actions .post-delete-link {
+					color: $color-warning;
+					display: none;
+				}
+				&:hover {
+					.cb2-actions .post-delete-link {
+						display: inline-block;
+					}
+				}
+			}
+		}
+
+		a.cb2-edit-url {
+			font-weight: $font-weight-bold;
+		}
+
+		.column-pickup_return,
+		.column-opening_hours {
+			.cb2-period-list,
+			.cb2-period-list li,
+			div.cb2-has-location {
+				display: inline;
+			}
+			.cb2-usage-count-ok,
+			.post-delete-link,
+			.post-duplicate-link,
+			.cb2-no-results {
+				display: none;
+			}
+		}
+		.column-current_items {
+			ul li {
+				display: inline;
+				&::after {
+  				content: "/";
+				}
+				&:last-of-type::after {
+					content: "";
+				}
+			}
+			.cb2-add-inline {
+				// display: none;
+			}
+		}
+		.column-opening_hours {
+			a {
+				.cb2-title {
+					display: none;
+				}
+			}
+		}
+	}
+
+	&.commonsbooking_page_cb2-items {
+
+	}
+
+	&.commonsbooking_page_cb2-locations {
+
+	}
+
+	#cmb2-metabox-CB2_Location_opening-hours {
+		.cb2-view-selector,
+		.cb2-show-hidden-slots
+		{
+			display:none;
+		}
+	}
+}

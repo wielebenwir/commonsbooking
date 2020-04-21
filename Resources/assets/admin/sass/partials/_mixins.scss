@@ -1,0 +1,224 @@
+/*
+ * Admin: reusable elements like buttons
+ *
+ * @package   CommonsBooking2
+ * @author 		Annesley Newholm <annesley_newholm@yahoo.it>
+ * @license   GPL-2.0+
+ * @since 0.2
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+
+ /* WP button style: unfilled */
+ .cb2-admin-button {
+	display: inline-block;
+	text-decoration: none;
+	font-size: 13px;
+	line-height: 23px;
+	margin: 0;
+	padding: 0 10px;
+	cursor: pointer;
+	border-width: 1px;
+	border-style: solid;
+	-webkit-border-radius: 3px;
+	-webkit-appearance: none;
+	border-radius: 3px;
+	white-space: nowrap;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	background: #FFFFFF;
+}
+
+.cb2-admin-button-save {
+		background-color: #21759b;
+		background-image: -webkit-gradient(linear,left top,left bottom,from(#2a95c5),to(#21759b));
+		background-image: -webkit-linear-gradient(top,#2a95c5,#21759b);
+		background-image: -moz-linear-gradient(top,#2a95c5,#21759b);
+		background-image: -ms-linear-gradient(top,#2a95c5,#21759b);
+		background-image: -o-linear-gradient(top,#2a95c5,#21759b);
+		background-image: linear-gradient(to bottom,#2a95c5,#21759b);
+		border-color: #21759b;
+		border-bottom-color: #1e6a8d;
+		-webkit-box-shadow: inset 0 1px 0 rgba(120,200,230,0.5);
+		box-shadow: inset 0 1px 0 rgba(120,200,230,0.5);
+		color: #fff;
+		text-decoration: none;
+		text-shadow: 0 1px 0 rgba(0,0,0,0.1);
+		&:hover {
+		background-color: #278ab7;
+		background-image: -webkit-gradient(linear,left top,left bottom,from(#2e9fd2),to(#21759b));
+		background-image: -webkit-linear-gradient(top,#2e9fd2,#21759b);
+		background-image: -moz-linear-gradient(top,#2e9fd2,#21759b);
+		background-image: -ms-linear-gradient(top,#2e9fd2,#21759b);
+		background-image: -o-linear-gradient(top,#2e9fd2,#21759b);
+		background-image: linear-gradient(to bottom,#2e9fd2,#21759b);
+		border-color: #1b607f;
+		-webkit-box-shadow: inset 0 1px 0 rgba(120,200,230,0.6);
+		box-shadow: inset 0 1px 0 rgba(120,200,230,0.6);
+		color: #fff;
+		text-shadow: 0 -1px 0 rgba(0,0,0,0.3);
+		}
+}
+
+.bg-gray {
+	border: 1px solid #e5e5e5;
+	padding: 10px;
+	overflow: hidden;
+	line-height: 23px; /* button height + padding */
+}
+
+.small-text {
+	font-size: 13px;
+	color: $text-gray;
+}
+
+.metabox-minimal {
+	button, h2 { display: none; }
+	div.inside, .cmb-row {
+		.cmb-td {
+		line-height: 30px !important;
+		}
+		margin: 0;
+		padding: 0;
+	}
+}
+
+.selectable-selected {
+	border: 1px solid $wp-blue;
+	@extend .shadow;
+}
+
+.selectable {
+	@extend .bg-gray;
+	border: 1px solid #FFFFFF;
+}
+
+.selectable-disabled {
+}
+
+
+
+.shadow {
+	box-shadow: 1px 1px 5px #aaa;
+}
+
+.cb2-admin-notice {
+	background:  $yellow-light;
+	padding: 8px 12px;
+	font-size: $font-size-normal;
+}
+
+.admin-icons {
+		margin: 0 5px;
+		color:#a7a7a7;
+		/* copied from WordPress */
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		font-size: 20px;
+		font-family: dashicons;
+		text-decoration: inherit;
+		font-weight: 400;
+		font-style: normal;
+		vertical-align: top;
+		text-align: center;
+		transition: color .1s ease-in 0;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+}
+
+//  Toggle button checkbox
+
+.cb2-onoffswitch {
+    position: relative; width: 55px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.cb2-onoffswitch-checkbox {
+    display: none;
+}
+.cb2-onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    height: 20px; padding: 0; line-height: 20px;
+    border: 4px solid #FFFFFF; border-radius: 20px;
+    background-color: #9E9E9E;
+    transition: background-color 0.3s ease-in;
+}
+.cb2-onoffswitch-label:before {
+    content: "";
+    display: block; width: 20px; margin: 0px; height: 20px;
+    background: #FFFFFF;
+    position: absolute;
+    right: 33px;
+    border: 2px solid #FFFFFF; border-radius: 20px;
+    transition: all 0.3s ease-in 0s;
+}
+.cb2-onoffswitch-checkbox:checked + .cb2-onoffswitch-label {
+    background-color: #42A5F5;
+}
+.cb2-onoffswitch-checkbox:checked + .cb2-onoffswitch-label, .cb2-onoffswitch-checkbox:checked + .cb2-onoffswitch-label:before {
+   border-color: #42A5F5;
+}
+.cb2-onoffswitch-checkbox:checked + .cb2-onoffswitch-label:before {
+    right: 0px;
+}
+
+.processing-icon {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+	height: 80px;
+	top: 40%;
+	left: 40% ;
+ div {
+	position: absolute;
+	background: $color-white;
+  top: 33px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+
+	&:nth-child(1) {
+		left: 8px;
+		animation: animate-processing1 0.6s infinite;
+	}
+	&:nth-child(2) {
+		left: 8px;
+		animation: animate-processing2 0.6s infinite;
+	}
+	&:nth-child(3) {
+		left: 32px;
+		animation: animate-processing2 0.6s infinite;
+}
+	&:nth-child(4) {
+		left: 56px;
+		animation: animate-processing3 0.6s infinite;
+	}
+ }
+}
+
+@keyframes animate-processing1 {
+	0% {
+		transform: scale(0);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+@keyframes animate-processing3 {
+	0% {
+		transform: scale(1);
+	}
+	100% {
+		transform: scale(0);
+	}
+}
+@keyframes animate-processing2 {
+	0% {
+		transform: translate(0, 0);
+	}
+	100% {
+		transform: translate(24px, 0);
+	}
+}

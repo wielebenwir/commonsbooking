@@ -1,0 +1,568 @@
+/**
+ * Calendar base styles for admin & front-end
+ *
+ *
+ * @package   CommonsBooking2
+ * @author 		Annesley Newholm <annesley_newholm@yahoo.it>
+ * @license   GPL-2.0+
+ * @since 0.2
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+
+.cb2-debug-period-info {
+	display: none;
+}
+
+/* calendar filtering - admin only  */
+.cb2-calendar-filter {
+	margin-bottom: $padding;
+	input,
+	select {
+		font-size: $font-size-small;
+		max-width: 150px;
+	}
+}
+
+.cb2-cell-background {
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	position: absolute;
+
+	li.cb2-selectable:hover & {
+		opacity: .8;
+	}
+
+	li.cb2-selected &,
+	li.cb2-range-selected & {
+		opacity: 1 !important;
+	}
+
+	opacity: 0.3;
+}
+
+
+.cb2-calendar-pager {
+	margin: $padding-small 0;
+	display: inline-block;
+	overflow: hidden;
+	.cb2-button-small {
+		@extend .cb2-button-icon;
+		@extend %icon-hide-text;
+
+		&.cb2-next-page {
+			@extend %icon-page-next; // admin only
+		}
+		&.cb2-prev-page {
+			@extend %icon-page-prev; // admin only
+		}
+		&.cb2-zoom-first {
+			@extend %icon-zoom-first; // admin only
+		}
+	}
+	.pagination-current-view {
+		padding: 0 $padding;
+		line-height: 20px;
+		vertical-align: top;
+	}
+}
+
+.cb2-confirmed-check:before,
+.cb2-approved-check:before {
+	font-family: dashicons;
+}
+.cb2-confirmed-check:after,
+.cb2-approved-check:after {
+	content:' ';
+	clear:both;
+	display: table;
+}
+.cb2-confirmed-check:before {
+	content: "\f147";
+}
+.cb2-approved-check:before {
+	content: "\f110";
+}
+
+.pagination-current-view {
+	line-height: 30px;
+	z-index: 1;
+}
+
+
+.selection-first .cb2-dates-end,
+.selection-first .cb2-dates-separator,
+.selection-last .cb2-dates-start,
+.selection-last .cb2-dates-separator,
+.selection-middle .cb2-dates-start,
+.selection-middle .cb2-dates-end,
+.selection-middle .cb2-dates-separator	{
+		display: none;
+	}
+
+.cb2-calendar {
+	width: 100%;
+	font-family: $font-family;
+
+	ul, li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	ul.cb2-calendar-header {
+		text-align: center;
+		font-size: $font-size-small;
+		clear:both;
+
+		>li {
+			float: left;
+			font-weight: normal;
+			width: 14.28%;
+			padding: $padding 0;
+		}
+	}
+
+	.cb2-confirmed-check:before,
+	.cb2-approved-check:before {
+		float:right;
+	}
+
+		/* 1 week container */
+	li.cb2-template-list-week,
+	li.cb2-template-list-week-available {
+		margin: 0; /* theme compatibility */
+		> ul {
+			display: flex;
+			clear: both;
+			border-top: 1px solid $color-gray-border;
+		}
+		&:last-of-type {
+			border-bottom: 1px solid $color-gray-border;
+		}
+	}
+
+	/* 1 day  */
+	li.type-cb2_day {
+		display: block;
+		position: relative;
+		width: 14.28%;
+		min-height: 70px;
+		border-right: 1px solid $color-gray-border;
+		border-top: 1px solid $color-white;
+		border-bottom: 1px solid $color-white;
+		background: $color-white;
+		margin: 0; /* theme compatibility */
+
+		&:first-of-type {
+			border-left: 1px solid $color-gray-border;
+		}
+
+		padding-bottom: $padding;
+		box-sizing: border-box;
+		z-index: 1;
+
+		&.cb2-weekend {
+			background: $color-gray-background;
+		}
+
+		&.cb2-empty-pre-cell {
+
+		}
+
+		&.cb2-current {
+			background: $color-blue-background;
+		}
+
+		div.cb2-day-title {
+			padding: $padding $padding-small;
+			text-align: center;
+			color: $color-gray-silver;
+			font-size: $font-size-normal;
+
+			span {
+				display: block;
+				line-height: $font-size-normal;
+				font-size: $font-size-small;
+				word-break: keep-all;
+				&:first-child {
+					font-size: $font-size-big;
+					color: $color-blue-dark;
+				}
+			}
+		}
+
+		/* subposts container */
+		ul.cb2-subposts {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: center;
+			list-style-type: none;
+			margin-bottom:20px;
+
+				li {
+					list-style-type: none;
+				}
+		}
+	}
+
+	/* 1 period  */
+	.type-cb2_prdinst {
+
+		@extend .cb2-pill;
+		overflow: hidden;
+		color: $color-white;
+		font-size: $font-size-small;
+		padding: $padding-small;
+		margin-bottom: $padding-small;
+		text-align:center;
+		position: relative;
+
+		a {
+			text-decoration: none;
+			color: $color-white;
+			padding: 0;
+			text-align: center;
+
+			/* full click */
+			display:block;
+			width:100%;
+			height:100%;
+		}
+
+
+		&:hover,
+		&.cb2-selected,
+		&.cb2-range-selected {
+			@extend .shadow-small;
+			label {
+			color: $color-white !important;
+			}
+		}
+	}
+
+
+	/* different treatment for different calendars */
+	/* SHORTCODE: cb2_calendar */
+	li.cb2-template-list-day-items {
+		@include transition(all .1s ease);
+
+		&:hover,
+		&.cb2-selected {
+			@extend .cb2-hover;
+			z-index: 2;
+		}
+
+		ul.cb2-subposts li {
+			width: 30px;
+			margin: 2px;
+		}
+	}
+
+
+	/* SHORTCODE: cb2_booking_calendar */
+	li.cb2-template-list-day-available {
+		min-height: 100px;
+
+		ul.cb2-subposts {
+			display: block;
+			li {
+				@include transition(all .1s ease);
+				min-height: 30px;
+
+				/* Selection */
+				&.cb2-first-day,
+				&.selection-first {
+					@include round-rect(left);
+					.cb2-period-separator, .cb2-period-end { display: none; }
+				}
+
+				&.cb2-middle-day,
+				&.selection-middle {
+					@include round-rect(none);
+					.cb2-period-start, .cb2-period-end, .cb2-period-separator { display: none; }
+				}
+
+				&.cb2-last-day,
+				&.selection-last {
+					@include round-rect(right);
+					.cb2-period-separator, .cb2-period-start { display: none; }
+
+				}
+			}
+		}
+		label {
+			min-height: 30px;
+			color: $color-black;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+
+			span.cb2-time-period {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-evenly;
+				flex-wrap: wrap;
+				word-break: keep-all;
+				span.cb2-period-start,
+				span.cb2-period-end {
+					word-break: keep-all;
+				}
+			}
+		}
+	}
+
+	/* SHORTCODE: cb2_calendar_map */
+
+	&.cb2-one-row-scroll {
+		width: 100%;
+		overflow-x: scroll;
+		overflow-y: hidden;
+		border-top: 1px solid $color-gray-border;
+
+		&::-webkit-scrollbar {
+			height: 20px;
+		}
+
+		&::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+			border-radius: 10px;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			border-radius: 10px;
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+			background-color: #555;
+		}
+
+		.cb2-calendar-pager {
+			display: none;
+		}
+
+		>.cb2-entry-content {
+			width: auto;
+
+			>ul.cb2-subposts {
+				display: flex;
+				align-items: center;
+
+				>li {
+					min-width: 100px;
+					box-sizing: border-box;
+					height: 100px;
+					&:hover,
+					&.cb2-selected {
+						@extend .cb2-hover;
+						z-index: 2;
+					}
+					&.cb2-selected {
+						border: 2px solid $color-blue-dark;
+						color: $color-blue-dark;
+						border-radius: $radius;
+					}
+
+					ul.cb2-subposts {
+						/* the indicators */
+						display: flex;
+						flex-direction: row;
+						flex-wrap: wrap;
+						justify-content: center;
+						align-items: center;
+						padding: 2px;
+						li {
+							padding: 0;
+							margin: 2px;
+							height: 10px;
+							width: 10px;
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+
+	/* details container */
+	.cb2-details {
+		position: relative;
+		z-index: 2;
+
+		.cb2-item-title-short,
+		.cb2-item-name,
+		.cb2-location-name,
+		.cb2-user-name,
+		.cb2-time-period {
+			font-size: $font-size-small;
+			line-height: $font-line-height-small;
+			display: block;
+
+		}
+
+		label {
+			margin: 0 !important; /* 2020 theme compatibility */
+		}
+
+		.cb2-item-title-short,
+		.cb2-item-name {
+			font-weight: bold;
+		}
+	}
+
+
+	.cb2-template-list-day-overlaid {
+		&.type-cb2_day {
+			min-height:200px;
+		}
+		.type-cb2_prdinst {
+			margin-left: 28px;
+			min-width:50px;
+		}
+	}
+
+	.type-cb2_day {
+
+		.cb2-overlaid-inner {
+			position:absolute;
+			top:45px;
+			bottom:45px;
+			width: 100%;
+
+			.cb2-time-period {
+				display:none;
+			}
+		}
+		.cb2-overlaid-inner:after {
+			content:' ';
+			display:table;
+			clear:both;
+		}
+
+
+		&.cb2-out-of-period-entity-scope {
+			opacity: 0.4;
+
+			* {
+				font-weight: normal;
+				font-style: italic;
+			}
+
+			.cb2-add-period {
+				display: none;
+			}
+		}
+
+		&.cb2-first {
+
+			.cb2-day-title {
+				color: $color-blue-dark;
+				font-weight: bold;
+			}
+		}
+
+		&.cb2-current {
+
+			.cb2-day-title {
+				font-weight: bold;
+				color: $color-blue-dark;
+			}
+		}
+
+		> .cb2-subposts {
+			//max-height:200px;
+			// overflow-y:auto;
+		}
+	}
+
+	.cb2-status-booked,
+	.cb2-status-2 {
+		@extend .cb2-period-status-unconfirmed;
+		&.cb2-status-confirmed {
+			@extend .cb2-period-status-booked;
+		}
+	}
+
+	/* fields */
+	.cb2-blocked {
+		@extend .cb2-period-status-blocked;
+	}
+
+	/* fields */
+	.cb2-field-name {
+		display: none;
+	}
+
+	.cb2-template-list-day-indicators {
+		cursor:pointer;
+	}
+
+	.cb2-period-period-status-type-name .cb2-field-value {
+		color: #fff;
+		background-color: #000;
+		font-size: 10px;
+		padding: 1px 4px;
+	}
+
+	.cb2-periodinst-has-overlap .cb2-period-period-status-type-name .cb2-field-value {
+		background-color: #777;
+	}
+
+	.cb2-template-type-available {
+		cursor: pointer;
+	}
+
+	.cb2-add-period {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		text-align: center;
+		padding: $padding;
+		a {
+			font-size:24px;
+			color: $color-blue-dark;
+		}
+	}
+
+	ul.cb2-period-list {
+		white-space: nowrap;
+	}
+}
+
+
+/* TODO: move this in to a cb2-list file or rationalise with cb2-calendar? */
+.cb2-list > .cb2-entry-content > .cb2-subposts {
+	.type-cb2_day {
+		border-bottom: 1px solid #d7d7d7;
+	}
+
+	.type-cb2_prdinst {
+		color: #fff;
+		border-radius: 10px;
+		padding:2px 10px;
+		max-width:400px;
+
+		a {
+			color: #fff;
+		}
+
+		.cb2-time-period {
+			font-size: 11px;
+			font-weight:bold;
+			display:block;
+		}
+	}
+}
+
+.type-cb2_prdinst.status-trash,
+.cb2-periodinst-has-overlap {
+	opacity: 0.5;
+	color: #333;
+}
+
+
