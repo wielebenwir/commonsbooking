@@ -1,0 +1,43 @@
+/*
+ * CSS Reset
+ *
+ * Adapted from: http: //meyerweb.com/eric/tools/css/reset/
+ *
+ * @package   CommonsBooking2
+ */
+
+.cb2-content {
+
+	ol,
+	ul,
+	li,
+	h2,
+	h3,
+	dd,
+	dl,
+	dt,
+	.hentry {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+
+	blockquote,
+	q {
+		quotes: none;
+	}
+
+	blockquote:before,
+	blockquote:after,
+	q:before,
+	q:after {
+		content: '';
+		content: none;
+	}
+
+	table {
+		border-collapse: collapse;
+		border-spacing: 0;
+	}
+}

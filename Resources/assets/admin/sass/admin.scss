@@ -8,14 +8,8 @@
  * @copyright 2015 wielebenwir
  */
 
-/* Global variables from frameworks */
-@import "../../global/sass/partials/_variables";
-
-/* Global mixins from frameworks */
-@import "../../global/sass/partials/_mixins";
-
-/* Global extends from frameworks */
-@import "../../global/sass/partials/_extends";
+/* Global styles */
+@import "../../global/sass/global";
 
 /* Misc @TODO: move to partials */
 @import "partials/_variables";

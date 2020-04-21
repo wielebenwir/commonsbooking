@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="35px" height="47px" viewBox="0 0 35 47" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53 (72520) - https://sketchapp.com -->
+    <title>icon/location-no-availalable-iitems</title>
+    <desc>Created with Sketch.</desc>
+    <g id="icon/location-no-availalable-iitems" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon/location">
+            <g id="Group-3">
+                <path d="M17.5,0 C7.8352,0 0,7.9279 0,17.708 C0,27.4877 17.5,47 17.5,47 C17.5,47 35,27.4877 35,17.708 C35,7.9279 27.1648,0 17.5,0 Z M17.5,24.8238 C13.4358,24.8238 10.1406,21.49 10.1406,17.3764 C10.1406,13.2634 13.4358,9.9295 17.5,9.9295 C21.5647,9.9295 24.8599,13.2634 24.8599,17.3764 C24.8599,21.49 21.5647,24.8238 17.5,24.8238 Z" id="Color" fill="#D0021B"></path>
+                <path d="M17.5,24.8238 C13.4358,24.8238 10.1406,21.49 10.1406,17.3764 C10.1406,13.2634 13.4358,9.9295 17.5,9.9295 C21.5647,9.9295 24.8599,13.2634 24.8599,17.3764 C24.8599,21.49 21.5647,24.8238 17.5,24.8238 Z" id="Fill-2" fill="#FFFFFF"></path>
+            </g>
+        </g>
+    </g>
+</svg>

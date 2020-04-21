@@ -1,0 +1,94 @@
+/**
+* List styling
+*
+*
+ * @package   CommonsBooking2
+ * @author    Florian Egermann <florian@wielebenwir.de>
+ * @license   GPL-2.0+
+ * @since     0.7
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+
+
+.cb2-content {
+
+	ul {
+		padding: 0 !important;
+	}
+
+	ul.cb2-table > li,  /* item, location shortcodes */
+	&.cb2-context-list > ul > li {
+
+		@extend .cb2-box;
+
+		margin-bottom: $padding;
+		img { border-radius: $radius; }
+
+		/* elements */
+		h2, h3, h4, p, ul, li, dl {
+			margin: 0 0 $padding 0;
+			padding: 0;
+		}
+
+		h3 {
+			margin-bottom: $padding-big;
+		}
+
+		dl {
+			border-top: 1px solid $color-gray-border;
+			padding-top: $padding;
+		}
+
+
+		ul.cb2-subposts > li { /* subposts container */
+			@extend .cb2-box-subposts;
+			position: relative;
+			overflow: hidden;
+			padding-bottom: 0;
+
+			}
+
+		/* individual layouts */
+		.cb2-meta {
+			@extend .cb2-columns, .cb2-columns-50-50;
+			}
+
+		.cb2-item-summary, .cb2-location-summary {
+			.cb2-validity,
+			.cb2-location-address {
+				display: block;
+			}
+		}
+
+
+		&.has-post-thumbnail > .cb2-excerpt { /* main post has thumbnail */
+			@extend .cb2-columns, .cb2-columns-50-50;
+		}
+		ul li.has-post-thumbnail .cb2-excerpt { /* sub-post has thumbnail */
+			@extend .cb2-columns, .cb2-columns-50-50;
+
+		}
+		.cb2-period-list {
+			li {
+				margin-bottom: 0;
+			}
+		}
+
+		.cb2-location-opening-hours {
+			.cb2-date {
+				display: none;
+			}
+		}
+
+		.cb2-user-registered-on {
+			display: none;
+		}
+
+		.cb2-bookings-list,
+		.cb2-timeframes-list {
+			@extend .cb2-columns, .cb2-columns-70-30;
+		}
+	}
+
+}

@@ -50,9 +50,9 @@ module.exports = function (grunt) {
 			},
 			all: [
 				'Resources/assets/public/js/src/*.js',
-				'!assets/public/js/*.min.js',
+				'!Resources/assets/public/js/*.min.js',
 				'Resources/assets/admin/js/src/*.js',
-				'!assets/admin/js/*.min.js'
+				'!Resources/assets/admin/js/*.min.js'
 			]
 		},
 		// convert readme.txt to markdown
@@ -99,8 +99,8 @@ module.exports = function (grunt) {
 		watch: {
 			compass: {
 				files: [
-					'Resources/assets/admin/sass/**/*.sass',
-					'Resources/assets/public/sass/**/*.sass'
+					'Resources/assets/admin/sass/**/*.scss',
+					'Resources/assets/public/sass/**/*.scss'
 				],
 				tasks: [
 					'compass:adminDev', 'compass:publicDev'
@@ -127,6 +127,12 @@ module.exports = function (grunt) {
 		'compass:admin', 'compass:public'
 	]);
 	grunt.registerTask('dev', [
+		'compass:admin',
+		'compass:public',
+		'jshint',
+		'uglify:dev',
+		'uglify:dist',
+		'wp_readme_to_markdown',
 		'watch'
 	]);
 	grunt.registerTask('readme', [
@@ -136,6 +142,7 @@ module.exports = function (grunt) {
 		'compass:admin',
 		'compass:public',
 		'jshint',
+		'uglify:dev',
 		'uglify:dist',
 		'wp_readme_to_markdown'
 	]);

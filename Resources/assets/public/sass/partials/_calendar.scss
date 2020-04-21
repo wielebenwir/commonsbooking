@@ -1,0 +1,92 @@
+/**
+ * cb2 calendar
+ *
+ *  * item detail, location detail, cb2_calendar shortcode
+ *
+ * @package   CommonsBooking2
+ * @author    Florian Egermann <florian@wielebenwir.de>
+ * @license   GPL-2.0+
+ * @since     0.7
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+
+article.type-cb2_item .cb2-calendar-pager {
+		display: none;
+	}
+
+.cb2-calendar {
+
+	ul, li { /* Twentytwenty Theme compatibility */
+		font-family: sans-serif;
+	}
+
+	.cb2-no-results {
+		display:none;
+	}
+
+	a,
+	a:hover {
+		box-shadow: 0 0 transparent;
+		/* Twentysixteen Theme annoyances */
+	}
+
+	ul.cb2-subposts { /* Twentytwenty Theme compatibility */
+		margin-bottom: 0;
+	}
+
+	li.type-cb2_day {
+
+		.type-cb2_prdinst {
+			font-weight: bold;
+			color: $color-white;
+			overflow: hidden;
+
+			padding: 3px 5px;
+			align-items: center;
+			justify-content: center;
+			margin: 5px;
+			background: transparent;
+
+			/* first, middle, last */
+			&.cb2-first-day {
+				@include round-rect(left);
+				margin-right: 0;
+			}
+			&.cb2-middle-day {
+				@include round-rect(none);
+				margin-right: 0;
+				margin-left: 0;
+			}
+			&.cb2-last-day {
+				@include round-rect(right);
+				margin-left: 0;
+			}
+
+			&.cb2-status-booked {
+				border: 0 !important;
+			}
+
+
+			.cb2-item-title-short {
+
+			}
+
+			.cb2-time-period {
+
+			}
+
+			&.cb2-not-selectable {
+				cursor: not-allowed;
+			}
+		}
+
+}
+
+	li.type-cb2_prdinst {
+		input { /* @TODO fix target */
+			position: absolute;
+			left: -9999px;
+		}
+	}
+}

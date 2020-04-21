@@ -230,11 +230,7 @@
 
 
 /* ---------------------- all admin screens */
-.cb2-admin-page.admin_page_cb2-post-edit {
 
-	/* ----------------------------------- metabox lists: opening hours + timeframes */
-	#cmb2-metabox-CB2_Location_opening-hours-list,
-	#cmb2-metabox-CB2_Item_timeframes {
 
 		ul.cb2-subposts li {
 			@extend .bg-gray;
@@ -265,21 +261,8 @@
 				float: right;
 			}
 		}
-	}
-
-	// General metabox styling
-	#container-main,
-	#container-options {
-		.cmb-row {
-			padding: 0;
-			&:last-of-type {
-				margin-bottom: 0;
-			}
-		}
-	}
 
 
-}
 
 /* ------ general metabox styles ---*/
 

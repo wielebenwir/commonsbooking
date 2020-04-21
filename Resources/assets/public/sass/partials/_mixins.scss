@@ -1,0 +1,81 @@
+/*
+ * Effects & eye-candy
+ * @package   CommonsBooking2
+ * @author    Florian Egermann <florian@wielebenwir.de>
+ * @license   GPL-2.0+
+ * @since     0.7
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+
+@mixin transition($args...) {
+  -webkit-transition: $args;
+  -moz-transition: $args;
+  -ms-transition: $args;
+  -o-transition: $args;
+  transition: $args;
+}
+
+@mixin rounded($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin border-radius ($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius:    $radius;
+  border-radius:         $radius;
+
+  -moz-background-clip:    padding;
+  -webkit-background-clip: padding-box;
+  background-clip:         padding-box;
+}
+@mixin border-radiuses ($topright: 0, $bottomright: 0, $bottomleft: 0, $topleft: 0) {
+  -webkit-border-top-right-radius:    $topright;
+  -webkit-border-bottom-right-radius: $bottomright;
+  -webkit-border-bottom-left-radius:  $bottomleft;
+  -webkit-border-top-left-radius:     $topleft;
+
+  -moz-border-radius-topright:        $topright;
+  -moz-border-radius-bottomright:     $bottomright;
+  -moz-border-radius-bottomleft:      $bottomleft;
+  -moz-border-radius-topleft:         $topleft;
+
+  border-top-right-radius:            $topright;
+  border-bottom-right-radius:         $bottomright;
+  border-bottom-left-radius:          $bottomleft;
+  border-top-left-radius:             $topleft;
+
+  -moz-background-clip:    padding;
+  -webkit-background-clip: padding-box;
+  background-clip:         padding-box;
+}
+
+@mixin selection-end-round( $radius ) {
+  -webkit-border-top-right-radius:    $radius;
+  -webkit-border-bottom-right-radius: $radius;
+
+  -moz-border-radius-topright:        $radius;
+  -moz-border-radius-bottomright:     $radius;
+
+  border-top-right-radius:            $radius;
+  border-bottom-right-radius:         $radius;
+}
+
+@mixin selection-start-round( $radius ) {
+  -webkit-border-top-left-radius:    $radius;
+  -webkit-border-bottom-left-radius: $radius;
+
+  -moz-border-radius-topleft:        $radius;
+  -moz-border-radius-bottomleft:     $radius;
+
+  border-top-left-radius:            $radius;
+  border-bottom-left-radius:         $radius;
+}
+
+@mixin box-shadow( $horiz : .5em , $vert : .5em , $blur : 0px , $spread : 0px , $color : #000000 ){
+  -webkit-box-shadow: $horiz $vert $blur $spread $color;
+  -moz-box-shadow: $horiz $vert $blur $spread $color;
+  box-shadow: $horiz $vert $blur $spread $color;
+}

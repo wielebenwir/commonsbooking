@@ -1,0 +1,51 @@
+/*
+ * Notices
+ *
+ * @package   CommonsBooking2
+ * @author    Florian Egermann <florian@wielebenwir.de>
+ * @license   GPL-2.0+
+ * @since 0.2
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+
+.cb2-notice {
+	@extend .cb2-box;
+	padding: $padding $padding-big;
+	border: 0;
+	margin-bottom: $padding-big;
+	font-size: $font-size-big;
+	vertical-align: middle;
+	font-weight: bold;
+	background: $color-gray-background;
+	padding-left: 50px; /* space for icon, 30px */
+	position: relative;
+
+
+	&.action-required {
+		color: $color-white;
+		@extend %icon-info;
+			&:before {
+				color: $color-white;
+			}
+		background:  $color-status-pending;
+	}
+	&.success {
+		color: $color-white;
+		@extend %icon-success;
+			&:before {
+				color: $color-white;
+			}
+		background: $color-success;
+	}
+	&.error {
+		color: $color-white;
+		@extend %icon-error;
+			&:before {
+				color: $color-error;
+			}
+	}
+}
+
+
+

@@ -1,0 +1,39 @@
+/*
+ * Framework styles - shared in front- and backend
+ * @package   CommonsBooking2
+ * @author    Florian Egermann <florian@wielebenwir.de>
+ * @license   GPL-2.0+
+ * @since 0.2
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+
+/* Lib: reset.css */
+@import "lib/_reset";
+
+/* Lib: animate.css */
+@import "lib/_animate";
+
+/* Variables: colors, widths, padding */
+@import "partials/_variables";
+
+/* Mixins */
+@import "partials/_mixins";
+
+/* Extends */
+@import "partials/_extends";
+
+/* Elements */
+@import "partials/_base";
+
+/* Calendar styles */
+@import "partials/_calendar";
+
+/* Calendar styles */
+@import "partials/_periods";
+
+/* Map styles */
+@import "partials/_map";
+
+/* Debug only */
+@import "partials/_debug";

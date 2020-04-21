@@ -1,0 +1,15 @@
+/* This is how you would create a custom secondary theme on top of tooltipster-noir: */
+
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-shadow-customized .tooltipster-box {
+
+	border-radius: $radius;
+}
+
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-shadow-customized .tooltipster-content {
+	padding: 10px;	
+}
+
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-shadow-customized .tooltipster-arrow {
+	// height: 50px;
+
+}
