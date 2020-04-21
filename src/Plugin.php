@@ -27,7 +27,7 @@ class Plugin
     }
 
     /**
-     *
+     *  Init hooks.
      */
     public function init() {
         // Register custom post types
@@ -38,6 +38,30 @@ class Plugin
 
         // Add menu pages
         add_action( 'admin_menu', array(self::class, 'addMenuPages'));
+
+        // Parent Menu Fix
+        add_filter( 'parent_file', [$this, "setParentFile"] );
+    }
+
+    /**
+     * Fixes highlighting issue for cpt views.
+     * @param $parent_file
+     *
+     * @return string
+     */
+    public function setParentFile($parent_file) {
+        global $current_screen;
+
+        // Set 'cb-dashboard' as parent for cb post types
+        if ( in_array( $current_screen->base, array( 'post', 'edit' ))) {
+            foreach (self::getCustomPostTypes() as $customPostType) {
+                if ($customPostType::getPostType() === $current_screen->post_type) {
+                    return 'cb-dashboard';
+                }
+            }
+        }
+
+        return $parent_file;
     }
 
     /**
