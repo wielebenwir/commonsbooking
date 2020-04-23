@@ -4,7 +4,7 @@
 namespace CommonsBooking\View;
 
 
-use CommonsBooking\PostType\Timeframe;
+use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use Twig\TwigFilter;
 
 class View

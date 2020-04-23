@@ -2,7 +2,7 @@
 
 namespace CommonsBooking\Model;
 
-use CommonsBooking\PostType\Timeframe;
+use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 class Day
 {

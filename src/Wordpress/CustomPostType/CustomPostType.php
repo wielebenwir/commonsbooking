@@ -1,14 +1,14 @@
 <?php
 
 
-namespace CommonsBooking\PostType;
+namespace CommonsBooking\Wordpress\CustomPostType;
 
 
 use CommonsBooking\Form\Field;
 use CommonsBooking\View\Form;
 use CommonsBooking\Wordpress\MetaBox;
 
-abstract class PostType
+abstract class CustomPostType
 {
 
     public static $postType;
@@ -270,5 +270,6 @@ abstract class PostType
         return $posts;
     }
 
+    abstract public static function getView();
 
 }

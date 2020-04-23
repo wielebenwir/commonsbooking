@@ -4,13 +4,9 @@
 namespace CommonsBooking;
 
 use CommonsBooking\Controller\TimeframeController;
-use CommonsBooking\Form\Timeframe;
-use CommonsBooking\PostType\PostType;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use Doctrine\ORM\Tools\SchemaTool;
-use Doctrine\ORM\Tools\Setup;
+use CommonsBooking\Wordpress\CustomPostType\Item;
+use CommonsBooking\Wordpress\CustomPostType\Location;
+use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 class Plugin
 {
@@ -20,40 +16,43 @@ class Plugin
     public static function getCustomPostTypes()
     {
         return [
-            new \CommonsBooking\PostType\Item(),
-            new \CommonsBooking\PostType\Location(),
-            new \CommonsBooking\PostType\Timeframe()
+            new Item(),
+            new Location(),
+            new Timeframe()
         ];
     }
 
     /**
      *  Init hooks.
      */
-    public function init() {
+    public function init()
+    {
         // Register custom post types
         add_action('init', array(self::class, 'registerCustomPostTypes'));
 
-        // Load templates
-        add_filter( 'single_template', [$this, 'getTemplate']);
+        // Append content to content-area
+        add_filter('the_content', [$this, 'getTheContent']);
 
         // Add menu pages
-        add_action( 'admin_menu', array(self::class, 'addMenuPages'));
+        add_action('admin_menu', array(self::class, 'addMenuPages'));
 
         // Parent Menu Fix
-        add_filter( 'parent_file', [$this, "setParentFile"] );
+        add_filter('parent_file', [$this, "setParentFile"]);
     }
 
     /**
      * Fixes highlighting issue for cpt views.
+     *
      * @param $parent_file
      *
      * @return string
      */
-    public function setParentFile($parent_file) {
+    public function setParentFile($parent_file)
+    {
         global $current_screen;
 
         // Set 'cb-dashboard' as parent for cb post types
-        if ( in_array( $current_screen->base, array( 'post', 'edit' ))) {
+        if (in_array($current_screen->base, array('post', 'edit'))) {
             foreach (self::getCustomPostTypes() as $customPostType) {
                 if ($customPostType::getPostType() === $current_screen->post_type) {
                     return 'cb-dashboard';
@@ -65,62 +64,33 @@ class Plugin
     }
 
     /**
-     * @param $single_template
+     * Appends view data to content.
+     * @param $content
      *
      * @return string
      */
-    public function getTemplate($single_template) {
-        global $post;
+    public function getTheContent($content)
+    {
+        // Check if we're inside the main loop in a single post page.
+        if (is_single() && in_the_loop() && is_main_query()) {
+            global $post;
 
-        /** @var PostType $customPostType */
-        foreach (self::getCustomPostTypes() as $customPostType) {
-            if ( $customPostType::getPostType() === $post->post_type ) {
-                return COMMONSBOOKING__PLUGIN_DIR . 'templates/' . $post->post_type . '-template.php';
+            /** @var PostType $customPostType */
+            foreach (self::getCustomPostTypes() as $customPostType) {
+                if ($customPostType::getPostType() === $post->post_type) {
+                    return $content . $customPostType::getView()::content($post);
+                }
             }
         }
 
-        return $single_template;
-    }
-
-    /**
-     * @return EntityManager
-     * @throws \Doctrine\ORM\ORMException
-     */
-    public static function getEntityManager() {
-
-        $paths = array(__DIR__ . "/Entity");
-        $isDevMode = false;
-
-        // the connection configuration
-        $dbParams = array(
-            'driver'   => 'pdo_mysql',
-            'dbname' => DB_NAME,
-            'user' => DB_USER,
-            'password' => DB_PASSWORD,
-            'host' => DB_HOST,
-        );
-
-        $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, null, null, false);
-        return EntityManager::create($dbParams, $config);
-    }
-
-    /**
-     * @throws \Doctrine\ORM\ORMException
-     */
-    public function initTables() {
-        $em = self::getEntityManager();
-        $tool = new SchemaTool($em);
-        $classes = array(
-            $em->getClassMetadata(\CommonsBooking\Entity\Timeframe::class)
-        );
-
-        $tool->updateSchema($classes, true);
+        return $content;
     }
 
     /**
      *
      */
-    public static function addMenuPages() {
+    public static function addMenuPages()
+    {
         // Dashboard
         add_menu_page(
             'CommonsBooking',
@@ -158,10 +128,11 @@ class Plugin
     /**
      *
      */
-    public static function registerCustomPostTypes() {
+    public static function registerCustomPostTypes()
+    {
         /** @var PostType $customPostType */
         foreach (self::getCustomPostTypes() as $customPostType) {
-            register_post_type( $customPostType::getPostType(), $customPostType->getArgs() );
+            register_post_type($customPostType::getPostType(), $customPostType->getArgs());
             $customPostType->initListView();
         }
     }

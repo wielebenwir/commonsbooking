@@ -1,11 +1,11 @@
 <?php
 
-namespace CommonsBooking\PostType;
+namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Form\Field;
 use CommonsBooking\Wordpress\MetaBox;
 
-class Timeframe extends PostType
+class Timeframe extends CustomPostType
 {
 
     const OPENING_HOURS_ID = 1;
@@ -130,6 +130,9 @@ class Timeframe extends PostType
         );
     }
 
+    /**
+     * @return array
+     */
     protected function getCustomFields() {
         return array(
             new Field("location-id", __("Location", TRANSLATION_CONST), "", "selectbox", "edit_posts", Location::getAllPosts()),
@@ -165,8 +168,12 @@ class Timeframe extends PostType
             ),
             new Field("repetition-end", __( 'Repetition end', TRANSLATION_CONST ), "","date","edit_pages")
         );
-    } 
+    }
 
+    /**
+     * Returns timeframe types.
+     * @return array
+     */
     public static function getTypes() {
         return [
             self::OPENING_HOURS_ID => __("Opening Hours", TRANSLATION_CONST),
@@ -179,6 +186,13 @@ class Timeframe extends PostType
         ];
     }
 
+    /**
+     * Returns type label by type-id.
+     * @param $id
+     *
+     * @return mixed
+     * @throws \Exception
+     */
     public static function getTypeLabel($id) {
         if(array_key_exists($id, self::getTypes())) {
             return self::getTypes()[$id];
@@ -188,6 +202,7 @@ class Timeframe extends PostType
     }
 
     /**
+     * Returns metaboxes for timeframe.
      * @return array
      */
     public function getMetaboxes(): array
@@ -254,6 +269,14 @@ class Timeframe extends PostType
         $typeOne = get_post_meta($timeframeOne->ID, 'type', true);
         $typeTwo = get_post_meta($timeframeTwo->ID, 'type', true);
         //@TODO: Define visualisation.
+    }
+
+    /**
+     * Returns view-class.
+     * @return \CommonsBooking\View\Timeframe
+     */
+    public static function getView() {
+        return new \CommonsBooking\View\Timeframe();
     }
 
 }

@@ -5,8 +5,8 @@ namespace CommonsBooking\View;
 
 use CommonsBooking\Model\Calendar;
 use CommonsBooking\Model\Week;
-use CommonsBooking\PostType\Item;
-use CommonsBooking\PostType\Timeframe;
+use CommonsBooking\Wordpress\CustomPostType\Item;
+use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 class Location extends View
 {

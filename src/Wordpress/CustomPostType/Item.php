@@ -1,8 +1,8 @@
 <?php
 
-namespace CommonsBooking\PostType;
+namespace CommonsBooking\Wordpress\CustomPostType;
 
-class Item extends PostType
+class Item extends CustomPostType
 {
 
     public static $postType = 'cb_item';
@@ -87,4 +87,7 @@ class Item extends PostType
         );
     }
 
+    public static function getView() {
+        return new \CommonsBooking\View\Item();
+    }
 }

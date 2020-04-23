@@ -1,8 +1,8 @@
 <?php
 
-namespace CommonsBooking\PostType;
+namespace CommonsBooking\Wordpress\CustomPostType;
 
-class Location extends PostType
+class Location extends CustomPostType
 {
 
     public static $postType = 'cb_location';
@@ -85,6 +85,10 @@ class Location extends PostType
             // dieser Wert wird später in der URL stehen
             'rewrite'             => array('slug' => self::getPostType()),
         );
+    }
+
+    public static function getView() {
+        return new \CommonsBooking\View\Location();
     }
 
 }
