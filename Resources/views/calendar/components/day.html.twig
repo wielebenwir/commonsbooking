@@ -1,25 +1,18 @@
-
-<div style="float: left; width: 11%; padding: 1em;">
+<li>
     {{ day.name }} {{ day.date }}<br><br>
-
     {% for slot in day.grid %}
         <div class="timeslot--wrapper">
         {{ slot.timestart }} - {{ slot.timeend }}
 
             {% if slot.timeframes|length %}
-
                 <ul>
                     {% for timeframe in slot.timeframes %}
                         <li class="timeslot--type-{{ timeframe.type }}">
                             {{ timeframe|get_type_label }} ({{ timeframe.type }}, ID: {{ timeframe.ID }})
-{#                            Start: {{ timeframe|get_meta_field('start-date') }};#}
-{#                            Ende: {{ timeframe|get_meta_field('end-date') }}#}
                         </li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-
-
     {% endfor %}
-</div>
+</li>

@@ -1,5 +1,7 @@
 {% for week in calendar.weeks %}
-    {% for day in week.days %}
-        {% include 'calendar/components/day.html.twig' with {'day': day} %}
-    {% endfor %}
+    <ul class="cb2-calendar">
+        {% for day in week.days %}
+            {% include 'calendar/components/day.html.twig' with {'day': day} %}
+        {% endfor %}
+    </ul>
 {% endfor %}

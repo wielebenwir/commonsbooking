@@ -43,29 +43,6 @@ module.exports = function (grunt) {
 				}
 			}
 		},
-		// check our JS
-		jshint: {
-			options: {
-				'jshintrc': true
-			},
-			all: [
-				'Resources/assets/public/js/src/*.js',
-				'!Resources/assets/public/js/*.min.js',
-				'Resources/assets/admin/js/src/*.js',
-				'!Resources/assets/admin/js/*.min.js'
-			]
-		},
-		// convert readme.txt to markdown
-		wp_readme_to_markdown: {
-			your_target: {
-				files: {
-					'README.md': 'readme.txt'
-				},
-			},
-			options: {
-				screenshot_url: 'wporg-assets/{screenshot}.png',
-			},
-		},
 		// concat and minify our JS
 		uglify: {
 			dev: {
@@ -108,7 +85,8 @@ module.exports = function (grunt) {
 			},
 			js: {
 				files: [
-					'<%= jshint.all %>'
+					'Resources/assets/public/js/src/**/*.js',
+					'Resources/assets/admin/js/src/**/*.js'
 				],
 				tasks: [
 					'uglify:dev'
@@ -119,9 +97,7 @@ module.exports = function (grunt) {
 	// Load tasks
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-compass');
-	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-wp-readme-to-markdown');
 	// Register tasks
 	grunt.registerTask('default', [
 		'compass:admin', 'compass:public'
@@ -129,21 +105,14 @@ module.exports = function (grunt) {
 	grunt.registerTask('dev', [
 		'compass:admin',
 		'compass:public',
-		'jshint',
 		'uglify:dev',
 		'uglify:dist',
-		'wp_readme_to_markdown',
 		'watch'
-	]);
-	grunt.registerTask('readme', [
-		'wp_readme_to_markdown'
 	]);
 	grunt.registerTask('dist', [
 		'compass:admin',
 		'compass:public',
-		'jshint',
 		'uglify:dev',
-		'uglify:dist',
-		'wp_readme_to_markdown'
+		'uglify:dist'
 	]);
 };

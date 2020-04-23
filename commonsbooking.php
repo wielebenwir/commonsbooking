@@ -20,6 +20,12 @@ function commonsbooking_admin_style() {
 }
 add_action('admin_enqueue_scripts', 'commonsbooking_admin_style');
 
+function commonsbooking_public_style() {
+    wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__) . 'Resources/assets/public/css/public.css');
+    wp_enqueue_script( 'cb-scripts-public', plugin_dir_url(__FILE__) . 'Resources/assets/public/js/public.js', array(), '1.0.0', true );
+}
+add_action( 'wp_enqueue_scripts', 'commonsbooking_public_style' );
+
 require __DIR__ . '/vendor/autoload.php';
 
 $cbPlugin = new \CommonsBooking\Plugin();
