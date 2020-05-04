@@ -12,6 +12,9 @@
 
 .cb-calendar {
 
+	display: flex;
+	margin-bottom: 0;
+
 	&.cb-has-item {
 		.cb-item-name { display: none }
 	}
