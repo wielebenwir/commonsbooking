@@ -1,10 +1,10 @@
 
 // -------------------------------------------- document.ready and content changes
-/* global cb2_settings, cb2_dictionary */
-function cb2_process(){
+/* global cb_settings, cb_dictionary */
+function cb_process(){
 	var $     = jQuery;
-	var jRoot = $(this); // Usually document or cb2-popup
-	var WP_DEBUG = $('body.cb2-WP_DEBUG-on').length;
+	var jRoot = $(this); // Usually document or cb-popup
+	var WP_DEBUG = $('body.cb-WP_DEBUG-on').length;
 
 	jRoot.find('label p, label span').click(function(e){
 		// Browsers do not like HTML in labels
@@ -18,7 +18,7 @@ function cb2_process(){
 
 	jRoot.find('form').on('submit', function(){
 		// Show that form is being submitted
-		var jSubmit = $(this).find('.cb2-submit');
+		var jSubmit = $(this).find('.cb-submit');
 		jSubmit.val(jSubmit.val() + ' ...');
 		$(window).off( 'beforeunload.edit-post' );
 		setTimeout(function(){
@@ -29,37 +29,37 @@ function cb2_process(){
 
 	jRoot.find('form').submit(function(){
 		// Disable any non selected LI sub-option inputs
-		$(this).find('.cb2-form-disable').attr('disabled', '1');
-		$(this).find('li.cb2-selected').each(function(){
-			$(this).closest('ul').find('li:not(.cb2-selected) input').attr('disabled', '1');
+		$(this).find('.cb-form-disable').attr('disabled', '1');
+		$(this).find('li.cb-selected').each(function(){
+			$(this).closest('ul').find('li:not(.cb-selected) input').attr('disabled', '1');
 		});
 	});
 
 	jRoot.find('a.thickbox').each(function(){
 		// Hijax all thickbox hrefs so that the PHP knows it is in a popup
 		var href = $(this).attr('href');
-		if (href.indexOf('cb2_load_normal_page') == -1 && href.indexOf('cb2_load_template') == -1) {
-			href += (href.indexOf('?') == -1 ? '?' : '&' ) + 'cb2_load_normal_page=1';
+		if (href.indexOf('cb_load_normal_page') == -1 && href.indexOf('cb_load_template') == -1) {
+			href += (href.indexOf('?') == -1 ? '?' : '&' ) + 'cb_load_normal_page=1';
 			$(this).attr('href', href);
 		}
 	});
 
 	jRoot.find('.cmb2-id-period-status-type-ID input').click(function(){
 		// Add status-{ID} to the body CSS class according to selection
-		var jPopup    = $(this).closest('body, .cb2-popup');
+		var jPopup    = $(this).closest('body, .cb-popup');
 		var jPeriodStatusType = $(this).parent().find('label');
 		var css_class = jPopup.attr('class');
 		var type      = jPeriodStatusType.text().toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-+|-+$/g, '');
 		var id        = $(this).val();
 		css_class = ' ' + css_class + ' ';
-		css_class = css_class.replace(/ +cb2-status-[^ ]+/g, ' ');
-		css_class = css_class + 'cb2-status-' + type + ' cb2-status-' + id;
+		css_class = css_class.replace(/ +cb-status-[^ ]+/g, ' ');
+		css_class = css_class + 'cb-status-' + type + ' cb-status-' + id;
 		css_class = css_class.replace(/ +/, ' ').trim();
 		jPopup.attr('class', css_class);
 		jPopup.css('background-color', '');
 	});
 
-	jRoot.find('.cb2-form').on('submit', function(){
+	jRoot.find('.cb-form').on('submit', function(){
 		// Admin Form submission progress bar
 		var self = this;
 		setTimeout(function(){
@@ -70,12 +70,12 @@ function cb2_process(){
 		}, 0);
 	});
 
-	jRoot.find('.cb2-javascript-form input[type=button]').click(function(){
+	jRoot.find('.cb-javascript-form input[type=button]').click(function(){
 		var sExisting;
 		var sRedirect = document.location;
 		var sQuery    = unescape(document.location.search.replace(/^\?/, ''));
 		var aQuery    = sQuery.split('&');
-		var jForm     = $(this).closest('.cb2-javascript-form');
+		var jForm     = $(this).closest('.cb-javascript-form');
 		var jInputs   = jForm.find(":input");
 
 		jInputs.each(function(){
@@ -106,10 +106,10 @@ function cb2_process(){
 		document.location = document.location.pathname + '?' + sQuery;
 	});
 
-	jRoot.find('.cb2-template-type-available > .cb2-details').click(function(e){
+	jRoot.find('.cb-template-type-available > .cb-details').click(function(e){
 		// TODO: NOT_USED: multiple period-inst selector for admin bulk actions on calendars
 		var container      = $(this).parent();
-		var checkbox       = $(this).children('.cb2-periodinst-selector');
+		var checkbox       = $(this).children('.cb-periodinst-selector');
 		var cssClass       = $(this).attr('class').trim();
 		var target         = $(e.target);
 		var clicked_input  = (target.is(checkbox));
@@ -121,10 +121,10 @@ function cb2_process(){
 
 		if (is_checked) {
 			if (!clicked_input) checkbox.removeAttr('checked');
-			container.attr( 'class', cssClass.replace(/cb2-selected/, '') );
+			container.attr( 'class', cssClass.replace(/cb-selected/, '') );
 		} else {
 			if (!clicked_input) checkbox.attr('checked', '1');
-			container.attr( 'class', cssClass + ' cb2-selected' );
+			container.attr( 'class', cssClass + ' cb-selected' );
 		}
 
 		// Prevent any container clicks from bubbling
@@ -148,25 +148,25 @@ function cb2_process(){
 		var diff_year       = start_date.getFullYear()  - prev_start_date.getFullYear();
 		var diff_month      = start_date.getMonth()     - prev_start_date.getMonth();
 		var diff_day        = start_date.getDate()      - prev_start_date.getDate();
-		var jSubmit         = $(this).closest('body,.cb2-popup').find('.cb2-popup-form-save');
+		var jSubmit         = $(this).closest('body,.cb-popup').find('.cb-popup-form-save');
 
 		jSubmit.removeAttr('disabled');
 		if (isNaN(start_date.getTime())) {
-			$(this).addClass('cb2-error');
+			$(this).addClass('cb-error');
 			jSubmit.attr('disabled', '1');
 		} else {
-			if (!$('#datetime_part_period_start_date, #datetime_part_period_end_date').hasClass('cb2-error')) {
+			if (!$('#datetime_part_period_start_date, #datetime_part_period_end_date').hasClass('cb-error')) {
 				end_date.setFullYear( end_date.getFullYear()  + diff_year);
 				end_date.setMonth(    end_date.getMonth()     + diff_month);
 				end_date.setDate(     end_date.getDate()      + diff_day);
-				$('#datetime_part_period_end_date').val(cb2_iso_date(end_date));
+				$('#datetime_part_period_end_date').val(cb_iso_date(end_date));
 				if (window.console) console.info(diff_year + '-' + diff_month + '-' + diff_day);
 			}
 
 			// Error checking
-			$('#datetime_part_period_start_date, #datetime_part_period_end_date').removeClass('cb2-error');
+			$('#datetime_part_period_start_date, #datetime_part_period_end_date').removeClass('cb-error');
 			if (start_date > end_date) {
-				$('#datetime_part_period_end_date').addClass('cb2-error');
+				$('#datetime_part_period_end_date').addClass('cb-error');
 				jSubmit.attr('disabled', '1');
 			}
 
@@ -180,17 +180,17 @@ function cb2_process(){
 	jRoot.find('#datetime_part_period_end_date').change(function(){
 		var start_date      = new Date($('#datetime_part_period_start_date').val());
 		var end_date        = new Date($('#datetime_part_period_end_date').val());
-		var jSubmit         = $(this).closest('body,.cb2-popup').find('.cb2-popup-form-save');
+		var jSubmit         = $(this).closest('body,.cb-popup').find('.cb-popup-form-save');
 
 		jSubmit.removeAttr('disabled');
 		if (isNaN(end_date.getTime())) {
-			$(this).addClass('cb2-error');
+			$(this).addClass('cb-error');
 			jSubmit.attr('disabled', '1');
 		} else {
 			// Error checking
-			$('#datetime_part_period_start_date, #datetime_part_period_end_date').removeClass('cb2-error');
+			$('#datetime_part_period_start_date, #datetime_part_period_end_date').removeClass('cb-error');
 			if (start_date > end_date) {
-				$('#datetime_part_period_end_date').addClass('cb2-error');
+				$('#datetime_part_period_end_date').addClass('cb-error');
 				jSubmit.attr('disabled', '1');
 			}
 
@@ -202,7 +202,7 @@ function cb2_process(){
 
 	// -------------------------------------------- Save type and recurrence
 	var original_recurrence_type;
-	jRoot.find('#cb2-SOT').click(function(){ // Save Instance Only
+	jRoot.find('#cb-SOT').click(function(){ // Save Instance Only
 		// Cannot repeat
 		original_recurrence_type = $('.cmb2-id-recurrence-type :input[checked]');
 		$('#recurrence_type1').click();
@@ -216,44 +216,44 @@ function cb2_process(){
 		);
 	});
 
-	jRoot.find('#cb2-SFH, #cb2-SAI').click(function(){ // Save From Here, Save All Instances
+	jRoot.find('#cb-SFH, #cb-SAI').click(function(){ // Save From Here, Save All Instances
 		// Can repeat
 		$('.cmb2-id-recurrence-type').slideDown();
 		if (original_recurrence_type) original_recurrence_type.click();
 	});
 
-	jRoot.find('#cb2-save-types input').click(function(){
+	jRoot.find('#cb-save-types input').click(function(){
 		var updatestring = $('label[for="' + this.id + '"]').html();
-		$('#cb2-follow-cb2-save-types').html(updatestring);
+		$('#cb-follow-cb-save-types').html(updatestring);
 	});
 
 	// -------------------------------------------- nexts
-	jRoot.find('.cb2-nexts').each(function(){
+	jRoot.find('.cb-nexts').each(function(){
 		var nexts  = $(this).find('li');
 		var ids    = '';
 		var hrefs  = nexts.find('a').each(function() {
 			ids += (ids?',':'') + $(this).attr('href');
 		});
-		var panels = nexts.closest('.cb2-popup,#post-body').find(ids);
+		var panels = nexts.closest('.cb-popup,#post-body').find(ids);
 		panels.css('overflow-y', 'hidden');
 		panels.hide();
 
-		$(this).closest('.cb2-popup,body').addClass('cb2-with-nexts');
-		$(this).closest('.cb2-popup,#post-body').removeClass('columns-2');
+		$(this).closest('.cb-popup,body').addClass('cb-with-nexts');
+		$(this).closest('.cb-popup,#post-body').removeClass('columns-2');
 
 		nexts.click(function(e) {
 			// Next button also comes here by clicking the .next() LI
 			var next     = $(this);
 			var href     = next.find('a').attr( 'href' );
-			var newPanel = next.closest('.cb2-popup,body').find(href);
+			var newPanel = next.closest('.cb-popup,body').find(href);
 			var oldPanel = panels.filter(':visible');
 
-			if (!next.hasClass('cb2-selected')) {
+			if (!next.hasClass('cb-selected')) {
 				// Select next href
-				nexts.removeClass('cb2-selected');
-				nexts.addClass('cb2-unselected');
-				next.addClass('cb2-selected');
-				next.removeClass('cb2-unselected');
+				nexts.removeClass('cb-selected');
+				nexts.addClass('cb-unselected');
+				next.addClass('cb-selected');
+				next.removeClass('cb-unselected');
 
 				// Select panel
 				// TODO: prevent clicks during existing sliding (causes panel disappearance)
@@ -276,13 +276,13 @@ function cb2_process(){
 				});
 
 				// Button states
-				if (next.hasClass('cb2-last')) {
-					$('.cb2-popup-form-next').hide();
-					$('.cb2-popup-form-save').show();
+				if (next.hasClass('cb-last')) {
+					$('.cb-popup-form-next').hide();
+					$('.cb-popup-form-save').show();
 				}
 				else {
-					$('.cb2-popup-form-next').show();
-					$('.cb2-popup-form-save').hide();
+					$('.cb-popup-form-next').show();
+					$('.cb-popup-form-save').hide();
 				}
 			}
 
@@ -291,38 +291,38 @@ function cb2_process(){
 
 		// Open first next
 		if (nexts.length) {
-			var next  = nexts.filter('.cb2-selected');
+			var next  = nexts.filter('.cb-selected');
 			if (!next.length) next = nexts.eq(0);
 			var href  = next.find('a').attr( 'href' );
-			var panel = next.closest('.cb2-popup,body').find(href);
-			next.addClass('cb2-selected');
-			next.removeClass('cb2-unselected');
+			var panel = next.closest('.cb-popup,body').find(href);
+			next.addClass('cb-selected');
+			next.removeClass('cb-unselected');
 			panel.show();
 		}
 	});
 
-	$('.cb2-popup a.thickbox').click(function(e){
+	$('.cb-popup a.thickbox').click(function(e){
 		// Thickbox showing from thickbox concatenates the styles and classes
 		// so we clear them here
 		var sClass      = $('#TB_window').attr('class');
-		var aPopupTypes = sClass.match(/cb2-popup-[^ ]+/g);
+		var aPopupTypes = sClass.match(/cb-popup-[^ ]+/g);
 		var sPopupTypes = aPopupTypes.join(' ');
-		$('#TB_window').attr('class', 'cb2-popup ' + sPopupTypes);
+		$('#TB_window').attr('class', 'cb-popup ' + sPopupTypes);
 	});
 
-	jRoot.find('.cb2-popup-form-next').click(function(){
-		// Button must be 2 parents local to the cb2-nexts container element
-		var jCurrent = $(this).closest('.cb2-popup,body').find('.cb2-nexts li.cb2-selected');
+	jRoot.find('.cb-popup-form-next').click(function(){
+		// Button must be 2 parents local to the cb-nexts container element
+		var jCurrent = $(this).closest('.cb-popup,body').find('.cb-nexts li.cb-selected');
 		var jNext    = jCurrent.next();
 		jNext.click();
 	});
 
 	// auto-next panels
-	$('.cb2-popup-add #cb2-tab-type li').click(function(){
-		$('.cb2-popup-form-next').click();
+	$('.cb-popup-add #cb-tab-type li').click(function(){
+		$('.cb-popup-form-next').click();
 	});
 
-	function cb2_next_if_selects_complete(){
+	function cb_next_if_selects_complete(){
 		var allComplete = true;
 		var jSelects    = $(this).find('select:visible');
 		jSelects.each(function(){
@@ -332,17 +332,17 @@ function cb2_process(){
 			return allComplete;
 		});
 
-		if (allComplete) $('.cb2-popup-form-next').click();
+		if (allComplete) $('.cb-popup-form-next').click();
 		if (allComplete && window.console) {
 			console.info('all complete' + (jSelects.length ? '' : ' (none found)'));
 			if (jSelects.length) console.log(jSelects);
 		}
 	}
-	jRoot.find('#cb2-tab-objects').change(      cb2_next_if_selects_complete);
-	jRoot.find('#cb2-tab-objects:visible').each(cb2_next_if_selects_complete);
+	jRoot.find('#cb-tab-objects').change(      cb_next_if_selects_complete);
+	jRoot.find('#cb-tab-objects:visible').each(cb_next_if_selects_complete);
 
 	// ------------------------------------------------------- Misc
-	$(document).find('.toplevel_page_cb2-menu > .wp-submenu > li').each(function(){
+	$(document).find('.toplevel_page_cb-menu > .wp-submenu > li').each(function(){
 		// Give our WP menu LIs some classes
 		var href, matches;
 		var jA = $(this).children('a');
@@ -370,29 +370,29 @@ function cb2_process(){
 		var label    = jLabel.text();
 		var short_label = label.replace(/ .*$/, ''); // Some labels are very verbose
 		var type     = short_label.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-+|-+$/g, '');
-		var stub     = 'cb2-' + css_name + '-';
+		var stub     = 'cb-' + css_name + '-';
 
 		jLI.addClass(stub + type);
 		jLI.addClass(stub + id);
 	});
 
-	// Give parent LI of radio inputs a cb2-selected class for formatting reasons
+	// Give parent LI of radio inputs a cb-selected class for formatting reasons
 	jRoot.find('input[type=radio]').click(function(){
-		$(this).closest('ul').children('li').removeClass('cb2-selected');
-		$(this).closest('li').addClass('cb2-selected');
+		$(this).closest('ul').children('li').removeClass('cb-selected');
+		$(this).closest('li').addClass('cb-selected');
 	});
 	jRoot.find('input[type=radio]:checked').each(function(){
 		// And on startup
-		$(this).closest('ul').children('li').removeClass('cb2-selected');
-		$(this).closest('li').addClass('cb2-selected');
+		$(this).closest('ul').children('li').removeClass('cb-selected');
+		$(this).closest('li').addClass('cb-selected');
 	});
 
-	jRoot.find('.cb2-add-class-advanced').click(function(){
+	jRoot.find('.cb-add-class-advanced').click(function(){
 		// advanced links that show hidden elements through a body class
-		$(this).closest('body,.cb2-popup,.cb2-panel').addClass('cb2-advanced');
+		$(this).closest('body,.cb-popup,.cb-panel').addClass('cb-advanced');
 	});
 
-	jRoot.find('.cb2-set-href-querystring').change(function(){
+	jRoot.find('.cb-set-href-querystring').change(function(){
 
 		// Allow a > input form elements to change their parent a@href on change
 		var name      = $(this).attr('name');
@@ -409,7 +409,7 @@ function cb2_process(){
 									.replace(/[_-]ID$/g, '')
 									.replace(/[^a-z]+/g, '-')
 									.replace(/^-+|-+$/g, '');   // period-status-type
-		var css_class = 'cb2-follow cb2-follow-' + css_name;
+		var css_class = 'cb-follow cb-follow-' + css_name;
 
 		// Change any existing value
 		var found = false;
@@ -433,39 +433,39 @@ function cb2_process(){
 		// Let it bubble and click the link
 	});
 
-	jRoot.find('.cb2-tabs').each(function(){
+	jRoot.find('.cb-tabs').each(function(){
 		var tabs   = $(this).find('li');
 		var ids    = '';
 		var hrefs  = tabs.find('a').each(function() {
 			ids += (ids?',':'') + $(this).attr('href');
 		});
-		var panels = tabs.closest('.cb2-popup,body').find(ids);
+		var panels = tabs.closest('.cb-popup,body').find(ids);
 		panels.hide();
 
-		$(this).closest('.cb2-popup,body').addClass('cb2-with-tabs');
-		$(this).closest('.cb2-popup,#post-body').removeClass('columns-2');
-		$(this).addClass('cb2-processed');
+		$(this).closest('.cb-popup,body').addClass('cb-with-tabs');
+		$(this).closest('.cb-popup,#post-body').removeClass('columns-2');
+		$(this).addClass('cb-processed');
 
 		tabs.click(function(e) {
 			var tab   = $(this);
 			var href  = tab.find('a').attr( 'href' );
-			var panel = tab.closest('.cb2-popup,body').find(href);
+			var panel = tab.closest('.cb-popup,body').find(href);
 
 			// Close other tabs
-			tabs.removeClass('cb2-selected');
-			tabs.addClass('cb2-unselected');
+			tabs.removeClass('cb-selected');
+			tabs.addClass('cb-unselected');
 			panels.hide();
 			tabs.each(function(){
 				var other_href = $(this).find('a').attr( 'href' );
 				other_href = other_href.replace(/^#/, '');
-				$(this).closest('.cb2-popup,body').removeClass('cb2-tabs-' + other_href + '-selected');
+				$(this).closest('.cb-popup,body').removeClass('cb-tabs-' + other_href + '-selected');
 			});
 			href = href.replace(/^#/, '');
-			tab.closest('.cb2-popup,body').addClass('cb2-tabs-' + href + '-selected');
+			tab.closest('.cb-popup,body').addClass('cb-tabs-' + href + '-selected');
 
-			// Open target tabcb2_update_followers
-			tab.addClass('cb2-selected');
-			tab.removeClass('cb2-unselected');
+			// Open target tabcb_update_followers
+			tab.addClass('cb-selected');
+			tab.removeClass('cb-unselected');
 			panel.focus();
 			panel.show();
 
@@ -474,41 +474,41 @@ function cb2_process(){
 
 		// Open first tab
 		if (tabs.length) {
-			var tab   = tabs.filter('.cb2-selected');
+			var tab   = tabs.filter('.cb-selected');
 			if (!tab.length) tab = tabs.eq(0);
 			var href  = tab.find('a').attr( 'href' );
-			var panel = tab.closest('.cb2-popup,body').find(href);
-			tab.addClass('cb2-selected');
-			tab.removeClass('cb2-unselected');
+			var panel = tab.closest('.cb-popup,body').find(href);
+			tab.addClass('cb-selected');
+			tab.removeClass('cb-unselected');
 			href = href.replace(/^#/, '');
-			tab.closest('.cb2-popup,body').addClass('cb2-tabs-' + href + '-selected');
+			tab.closest('.cb-popup,body').addClass('cb-tabs-' + href + '-selected');
 			panel.show();
 		}
 	});
 
-	jRoot.find('.cb2-popup-form-trash').click(function() {
+	jRoot.find('.cb-popup-form-trash').click(function() {
 		var self   = this;
-		var form   = $(self).closest('.cb2-ajax-edit-form');
+		var form   = $(self).closest('.cb-ajax-edit-form');
 		var data   = form.find(':input').serialize();
 		var action = form.attr('action-trash');
 
 		$(self).attr('disabled', '1');
-		$(self).parents('.cb2-popup, body').addClass('cb2-saving');
+		$(self).parents('.cb-popup, body').addClass('cb-saving');
 		$.post({
 			url: action,
 			data: data,
 			success: function(){
 				$(self).removeAttr('disabled');
-				$(self).parents('.cb2-popup, body').removeClass('cb2-saving');
+				$(self).parents('.cb-popup, body').removeClass('cb-saving');
 				// TODO: callback based refresh => calendar ajax refresh
-				if (!$(document.body).hasClass('cb2-CB2_DEBUG-on'))
+				if (!$(document.body).hasClass('cb-cb_DEBUG-on'))
 					document.location = document.location;
-				$(self).parents('.cb2-popup, body').addClass('cb2-refreshing');
+				$(self).parents('.cb-popup, body').addClass('cb-refreshing');
 			},
 			error: function(data) {
 				var responseXML, message;
-				$(self).parents('.cb2-popup, body').removeClass('cb2-saving');
-				$(self).parents('.cb2-popup, body').addClass('cb2-ajax-failed');
+				$(self).parents('.cb-popup, body').removeClass('cb-saving');
+				$(self).parents('.cb-popup, body').addClass('cb-ajax-failed');
 				$(self).removeAttr('disabled');
 				console.log(data);
 
@@ -521,30 +521,30 @@ function cb2_process(){
 		});
 	});
 
-	jRoot.find('.cb2-popup-form-save').click(function() {
+	jRoot.find('.cb-popup-form-save').click(function() {
 		// TODO: Save all the forms, or just the visible one?
 		var self   = this;
-		var form   = $(self).closest('.cb2-ajax-edit-form');
+		var form   = $(self).closest('.cb-ajax-edit-form');
 		var data   = form.find(':input').serialize();
 		var action = form.attr('action');
 
 		$(self).attr('disabled', '1');
-		$(self).parents('.cb2-popup, body').addClass('cb2-saving');
+		$(self).parents('.cb-popup, body').addClass('cb-saving');
 		$.post({
 			url: action,
 			data: data,
 			success: function(){
 				$(self).removeAttr('disabled');
-				$(self).parents('.cb2-popup, body').removeClass('cb2-saving');
+				$(self).parents('.cb-popup, body').removeClass('cb-saving');
 				// TODO: callback based refresh => calendar ajax refresh
-				if (!$(document.body).hasClass('cb2-CB2_DEBUG-on'))
+				if (!$(document.body).hasClass('cb-cb_DEBUG-on'))
 					document.location = document.location;
-				$(self).parents('.cb2-popup, body').addClass('cb2-refreshing');
+				$(self).parents('.cb-popup, body').addClass('cb-refreshing');
 			},
 			error: function(data) {
 				var responseXML, message;
-				$(self).parents('.cb2-popup, body').removeClass('cb2-saving');
-				$(self).parents('.cb2-popup, body').addClass('cb2-ajax-failed');
+				$(self).parents('.cb-popup, body').removeClass('cb-saving');
+				$(self).parents('.cb-popup, body').addClass('cb-ajax-failed');
 				$(self).removeAttr('disabled');
 				console.log(data);
 
@@ -557,18 +557,18 @@ function cb2_process(){
 		});
 	});
 
-	jRoot.find('.cb2-calendar-krumo-show').click(function(){
-		$(this).parent().find('.cb2-calendar-krumo').show();
+	jRoot.find('.cb-calendar-krumo-show').click(function(){
+		$(this).parent().find('.cb-calendar-krumo').show();
 	});
 
-	jRoot.find('#TB_window #cb2-fullscreen').click(function() {
+	jRoot.find('#TB_window #cb-fullscreen').click(function() {
 		$('#TB_ajaxContent')
 			.css('max-width', 'none')
 			.css('width',     'auto')
 			.css('height',    'auto');
 		$("#TB_window")
 			.css('overflow-y', 'scroll')
-			.addClass('cb2-fullscreen')
+			.addClass('cb-fullscreen')
 			.animate({
 				width:  '100%',
 				height: '100%',
@@ -579,32 +579,32 @@ function cb2_process(){
 			});
 	});
 
-	var jCMB2_select_properties = $('.cb2-with-properties[name=location_ID]:visible, input[type=hidden].cb2-with-properties[name=location_ID]');
+	var jCMB2_select_properties = $('.cb-with-properties[name=location_ID]:visible, input[type=hidden].cb-with-properties[name=location_ID]');
 	if (jCMB2_select_properties.length) {
-		console.info('attaching cb2_object_selected to:');
+		console.info('attaching cb_object_selected to:');
 		console.log(jCMB2_select_properties);
 	} else {
-		console.info('no cb2-with-properties found');
+		console.info('no cb-with-properties found');
 	}
-	jCMB2_select_properties.on('cb2_object_selected', function(e, object, element){
+	jCMB2_select_properties.on('cb_object_selected', function(e, object, element){
 		// TODO: this currently fires twice because of double script inclusion in the popup
 		var has_opening_hours = object && object.last_opening_hours;
-		var jNoOpeningHours   = $('.cb2-period-group-id-OPH, .cb2-period-entity-create-OPH, .cb2-period-group-id-HRY, .cb2-period-entity-create-HRY, .cb2-ignore-location-restrictions' );
-		var jNoOHFirstOption  = $('.cb2-period-group-id-CUS, .cb2-period-entity-create-CUS');
-		var jOHFirstOption    = $('.cb2-period-group-id-OPH, .cb2-period-entity-create-OPH');
-		var jClassHolder      = $(this).closest('body,.cb2-popup');
+		var jNoOpeningHours   = $('.cb-period-group-id-OPH, .cb-period-entity-create-OPH, .cb-period-group-id-HRY, .cb-period-entity-create-HRY, .cb-ignore-location-restrictions' );
+		var jNoOHFirstOption  = $('.cb-period-group-id-CUS, .cb-period-entity-create-CUS');
+		var jOHFirstOption    = $('.cb-period-group-id-OPH, .cb-period-entity-create-OPH');
+		var jClassHolder      = $(this).closest('body,.cb-popup');
 
-		jClassHolder.removeClass('cb2-has-opening-hours').removeClass('cb2-no-opening-hours');
-		jClassHolder.addClass(has_opening_hours ? 'cb2-has-opening-hours' : 'cb2-no-opening-hours');
+		jClassHolder.removeClass('cb-has-opening-hours').removeClass('cb-no-opening-hours');
+		jClassHolder.addClass(has_opening_hours ? 'cb-has-opening-hours' : 'cb-no-opening-hours');
 
 		if (has_opening_hours) {
-			$('.cb2-no-opening-hours-show').slideUp();
-			$('.cb2-no-opening-hours-hide').slideDown();
+			$('.cb-no-opening-hours-show').slideUp();
+			$('.cb-no-opening-hours-hide').slideDown();
 			jNoOpeningHours.css('opacity','1');
 			jOHFirstOption.children('input').click();
 		} else {
-			$('.cb2-no-opening-hours-show').slideDown();
-			$('.cb2-no-opening-hours-hide').slideUp();
+			$('.cb-no-opening-hours-show').slideDown();
+			$('.cb-no-opening-hours-hide').slideUp();
 			jNoOpeningHours.css('opacity','0.5');
 			jNoOHFirstOption.children('input').click();
 		}
@@ -633,7 +633,7 @@ function cb2_process(){
 		}
 	});
 
-	$('#cb2-set-full-day').click(function() {
+	$('#cb-set-full-day').click(function() {
 		var field_list = $(this).parents('.cmb-field-list');
 		field_list.find('#datetime_part_period_start_time').val("00:00");
 		field_list.find('#datetime_part_period_end_time').val("23:59");
@@ -641,14 +641,14 @@ function cb2_process(){
 	});
 
 	// @TODO Maybe reintroduce different dates function
-	// $('.cb2-same-dates #cb2-different-dates').click(function() {
-	// 	$(this).closest('form, #cb2-ajax-edit-form').removeClass('cb2-same-dates');
+	// $('.cb-same-dates #cb-different-dates').click(function() {
+	// 	$(this).closest('form, #cb-ajax-edit-form').removeClass('cb-same-dates');
 	// 	return false;
 	// });
 
-	jRoot.find(':input').change(cb2_update_followers);
-	jRoot.find('input[type=radio]').click(cb2_update_followers);
-	cb2_update_followers();
+	jRoot.find(':input').change(cb_update_followers);
+	jRoot.find('input[type=radio]').click(cb_update_followers);
+	cb_update_followers();
 
 	var datepickers       = $('.cmb2-id-datetime-part-period-start .cmb2-datepicker, .cmb2-id-datetime-part-period-end .cmb2-datepicker');
 	var recurrence_boxes  = $('.cmb2-id-recurrence-sequence, .cmb2-id-datetime-from, .cmb2-id-datetime-to, .cmb2-id-period-explanation-selection');
@@ -668,23 +668,23 @@ function cb2_process(){
 		var end_date       = ( end_date_input.val() ? new Date( end_date_input.val() ) : undefined );
 		//datepickers.hide(); // Hide so that values still work!
 		recurrence_inputs.removeAttr('disabled');
-		recurrence_boxes.removeClass('cb2-disabled');
+		recurrence_boxes.removeClass('cb-disabled');
 
 		// Indicate new repeat type
-		$(this).closest('form, #cb2-ajax-edit-form')
-			.removeClass('cb2-repeat-D cb2-repeat-W cb2-repeat-M cb2-repeat-Y');
+		$(this).closest('form, #cb-ajax-edit-form')
+			.removeClass('cb-repeat-D cb-repeat-W cb-repeat-M cb-repeat-Y');
 		if (repeat_setting == '__Null__') {
 			recurrence_boxes.slideUp();
 		} else {
 			recurrence_boxes.slideDown();
-			$(this).closest('form, #cb2-ajax-edit-form').addClass('cb2-repeat-' + repeat_setting);
+			$(this).closest('form, #cb-ajax-edit-form').addClass('cb-repeat-' + repeat_setting);
 		}
 
 		// Show / Hide interface elements
 		switch (repeat_setting) {
 			case '__Null__': {
 				// datepickers.show();
-				recurrence_boxes.addClass('cb2-disabled');
+				recurrence_boxes.addClass('cb-disabled');
 				recurrence_inputs.attr('disabled', '1');
 				break;
 			}
@@ -700,14 +700,14 @@ function cb2_process(){
 				}
 				sequence_checks.html(options);
 				*/
-				$('.cmb2-id-period-explanation-selection .cb2-description p').html(cb2_dictionary.period_explanation_selection );
+				$('.cmb2-id-period-explanation-selection .cb-description p').html(cb_dictionary.period_explanation_selection );
 				sequence_checks.html(daily_html);
 				sequence_checks.slideDown();
 				break;
 			}
 			case 'W': {
-				var start_date_day = cb2_dayofweek_string(start_date);
-				$('.cmb2-id-period-explanation-selection .cb2-description p').html(cb2_dictionary.period_repeats_weekly_on + start_date_day);
+				var start_date_day = cb_dayofweek_string(start_date);
+				$('.cmb2-id-period-explanation-selection .cb-description p').html(cb_dictionary.period_repeats_weekly_on + start_date_day);
 				// datepickers.show();
 				sequence_checks.slideUp(undefined, function(){
 					sequence_checks.html('');
@@ -736,10 +736,10 @@ function cb2_process(){
 					case 3: suffix = 'rd'; break;
 				}
 				var day_advice = (start_date_day_of_month == 31
-					? cb2_dictionary.period_repeats_monthly
-					: cb2_dictionary.period_repeats_monthly_on + start_date_day_of_month + suffix + cb2_dictionary.period_repeats_monthly_on_day
+					? cb_dictionary.period_repeats_monthly
+					: cb_dictionary.period_repeats_monthly_on + start_date_day_of_month + suffix + cb_dictionary.period_repeats_monthly_on_day
 				);
-				$('.cmb2-id-period-explanation-selection .cb2-description p').html(day_advice);
+				$('.cmb2-id-period-explanation-selection .cb-description p').html(day_advice);
 				// datepickers.show();
 				sequence_checks.slideUp(undefined, function(){
 					sequence_checks.html('');
@@ -752,8 +752,8 @@ function cb2_process(){
 				sequence_checks.slideUp(undefined, function(){
 					sequence_checks.html('');
 				});
-				var start_date_in_year = start_date.getDate() + ' of ' + cb2_month_string(start_date);
-				$('.cmb2-id-period-explanation-selection .cb2-description p').html(cb2_dictionary.period_repeats_yearly_on + start_date_in_year + '.');
+				var start_date_in_year = start_date.getDate() + ' of ' + cb_month_string(start_date);
+				$('.cmb2-id-period-explanation-selection .cb-description p').html(cb_dictionary.period_repeats_yearly_on + start_date_in_year + '.');
 				break;
 			}
 		}
@@ -761,7 +761,7 @@ function cb2_process(){
 	jRoot.find('.cmb2-id-recurrence-type input[checked]').click();
 }
 
-function cb2_init_popup(){
+function cb_init_popup(){
 	var $ = window.jQuery;
 	var adopt_classes_from_content = $('#TB_window .TB_window_classes');
 	if (adopt_classes_from_content.length) {
@@ -781,7 +781,7 @@ function cb2_init_popup(){
 	}
 
 
-	cb2_process.apply(this);
+	cb_process.apply(this);
 
 	// TODO: is this CMB2::init() working? NO
 	if (window.CMB2) {
@@ -792,13 +792,13 @@ function cb2_init_popup(){
 
 (function($) {
   'use strict';
-  $(document).ready(cb2_process);
-	$(document).on('cb2-popup-appeared', function(){
-		// Run in the cb2-popup context
+  $(document).ready(cb_process);
+	$(document).on('cb-popup-appeared', function(){
+		// Run in the cb-popup context
 		var jPopup = $('#TB_window');
 		if (jPopup.length) {
-			if (window.console) console.info('received event cb2-popup-appeared');
-			cb2_init_popup.apply(jPopup.get(0)); // => cb2_process()
+			if (window.console) console.info('received event cb-popup-appeared');
+			cb_init_popup.apply(jPopup.get(0)); // => cb_process()
 		}
 	});
 })(jQuery);

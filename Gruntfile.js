@@ -77,6 +77,7 @@ module.exports = function (grunt) {
 			compass: {
 				files: [
 					'Resources/assets/admin/sass/**/*.scss',
+					'Resources/assets/global/sass/**/*.scss',
 					'Resources/assets/public/sass/**/*.scss'
 				],
 				tasks: [
@@ -86,6 +87,7 @@ module.exports = function (grunt) {
 			js: {
 				files: [
 					'Resources/assets/public/js/src/**/*.js',
+					'Resources/assets/global/js/src/**/*.js',
 					'Resources/assets/admin/js/src/**/*.js'
 				],
 				tasks: [

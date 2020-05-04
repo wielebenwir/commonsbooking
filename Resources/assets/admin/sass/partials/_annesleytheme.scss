@@ -9,7 +9,7 @@
  * @copyright 2015 wielebenwir
  */
 
- body.cb2-theme-annesley {
+ body.cb-theme-annesley {
 
 	.cmb2-id-period-entity-create {
 		ul.cmb2-radio-list {
@@ -25,7 +25,7 @@
 	}
  }
 /* page in popup */
- 	#TB_window.cb2-page-in-popup {
+ 	#TB_window.cb-page-in-popup {
 		/* make a standard WordPress admin screen appear ok in the popup */
 		#adminmenumain,
 		#wpadminbar,
@@ -34,10 +34,10 @@
 		.wp-heading-inline,
 		.wp-header-end,
 		#wpbody-content > .update-nag,
-		#wpbody-content > .cb2-WP_DEBUG,
-		.wrap > .cb2-WP_DEBUG,
-		#post-body-content > .cb2-WP_DEBUG-small,
-		#post-body-content > #cb2-submitdiv,
+		#wpbody-content > .cb-WP_DEBUG,
+		.wrap > .cb-WP_DEBUG,
+		#post-body-content > .cb-WP_DEBUG-small,
+		#post-body-content > #cb-submitdiv,
 		#title-prompt-text,
 		#wpfooter {
 			display:none;

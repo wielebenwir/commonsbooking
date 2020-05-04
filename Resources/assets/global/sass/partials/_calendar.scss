@@ -10,12 +10,12 @@
  * @copyright 2015 wielebenwir
  */
 
-.cb2-debug-period-info {
+.cb-debug-period-info {
 	display: none;
 }
 
 /* calendar filtering - admin only  */
-.cb2-calendar-filter {
+.cb-calendar-filter {
 	margin-bottom: $padding;
 	input,
 	select {
@@ -24,19 +24,19 @@
 	}
 }
 
-.cb2-cell-background {
+.cb-cell-background {
 	top: 0;
 	bottom: 0;
 	right: 0;
 	left: 0;
 	position: absolute;
 
-	li.cb2-selectable:hover & {
+	li.cb-selectable:hover & {
 		opacity: .8;
 	}
 
-	li.cb2-selected &,
-	li.cb2-range-selected & {
+	li.cb-selected &,
+	li.cb-range-selected & {
 		opacity: 1 !important;
 	}
 
@@ -44,21 +44,21 @@
 }
 
 
-.cb2-calendar-pager {
+.cb-calendar-pager {
 	margin: $padding-small 0;
 	display: inline-block;
 	overflow: hidden;
-	.cb2-button-small {
-		@extend .cb2-button-icon;
+	.cb-button-small {
+		@extend .cb-button-icon;
 		@extend %icon-hide-text;
 
-		&.cb2-next-page {
+		&.cb-next-page {
 			@extend %icon-page-next; // admin only
 		}
-		&.cb2-prev-page {
+		&.cb-prev-page {
 			@extend %icon-page-prev; // admin only
 		}
-		&.cb2-zoom-first {
+		&.cb-zoom-first {
 			@extend %icon-zoom-first; // admin only
 		}
 	}
@@ -69,20 +69,20 @@
 	}
 }
 
-.cb2-confirmed-check:before,
-.cb2-approved-check:before {
+.cb-confirmed-check:before,
+.cb-approved-check:before {
 	font-family: dashicons;
 }
-.cb2-confirmed-check:after,
-.cb2-approved-check:after {
+.cb-confirmed-check:after,
+.cb-approved-check:after {
 	content:' ';
 	clear:both;
 	display: table;
 }
-.cb2-confirmed-check:before {
+.cb-confirmed-check:before {
 	content: "\f147";
 }
-.cb2-approved-check:before {
+.cb-approved-check:before {
 	content: "\f110";
 }
 
@@ -92,17 +92,19 @@
 }
 
 
-.selection-first .cb2-dates-end,
-.selection-first .cb2-dates-separator,
-.selection-last .cb2-dates-start,
-.selection-last .cb2-dates-separator,
-.selection-middle .cb2-dates-start,
-.selection-middle .cb2-dates-end,
-.selection-middle .cb2-dates-separator	{
+.selection-first .cb-dates-end,
+.selection-first .cb-dates-separator,
+.selection-last .cb-dates-start,
+.selection-last .cb-dates-separator,
+.selection-middle .cb-dates-start,
+.selection-middle .cb-dates-end,
+.selection-middle .cb-dates-separator	{
 		display: none;
 	}
 
-.cb2-calendar {
+
+
+.cb-calendar {
 	width: 100%;
 	font-family: $font-family;
 
@@ -112,7 +114,7 @@
 		padding: 0;
 	}
 
-	ul.cb2-calendar-header {
+	ul.cb-calendar-header {
 		text-align: center;
 		font-size: $font-size-small;
 		clear:both;
@@ -125,14 +127,14 @@
 		}
 	}
 
-	.cb2-confirmed-check:before,
-	.cb2-approved-check:before {
+	.cb-confirmed-check:before,
+	.cb-approved-check:before {
 		float:right;
 	}
 
 		/* 1 week container */
-	li.cb2-template-list-week,
-	li.cb2-template-list-week-available {
+	li.cb-template-list-week,
+	li.cb-template-list-week-available {
 		margin: 0; /* theme compatibility */
 		> ul {
 			display: flex;
@@ -145,7 +147,7 @@
 	}
 
 	/* 1 day  */
-	li.type-cb2_day {
+	li.type-cb_day {
 		display: block;
 		position: relative;
 		width: 14.28%;
@@ -164,19 +166,19 @@
 		box-sizing: border-box;
 		z-index: 1;
 
-		&.cb2-weekend {
+		&.cb-weekend {
 			background: $color-gray-background;
 		}
 
-		&.cb2-empty-pre-cell {
+		&.cb-empty-pre-cell {
 
 		}
 
-		&.cb2-current {
+		&.cb-current {
 			background: $color-blue-background;
 		}
 
-		div.cb2-day-title {
+		div.cb-day-title {
 			padding: $padding $padding-small;
 			text-align: center;
 			color: $color-gray-silver;
@@ -195,7 +197,7 @@
 		}
 
 		/* subposts container */
-		ul.cb2-subposts {
+		ul.cb-subposts {
 			display: flex;
 			flex-direction: row;
 			flex-wrap: wrap;
@@ -211,9 +213,9 @@
 	}
 
 	/* 1 period  */
-	.type-cb2_prdinst {
+	.type-cb_prdinst {
 
-		@extend .cb2-pill;
+		@extend .cb-pill;
 		overflow: hidden;
 		color: $color-white;
 		font-size: $font-size-small;
@@ -236,8 +238,8 @@
 
 
 		&:hover,
-		&.cb2-selected,
-		&.cb2-range-selected {
+		&.cb-selected,
+		&.cb-range-selected {
 			@extend .shadow-small;
 			label {
 			color: $color-white !important;
@@ -247,50 +249,50 @@
 
 
 	/* different treatment for different calendars */
-	/* SHORTCODE: cb2_calendar */
-	li.cb2-template-list-day-items {
+	/* SHORTCODE: cb_calendar */
+	li.cb-template-list-day-items {
 		@include transition(all .1s ease);
 
 		&:hover,
-		&.cb2-selected {
-			@extend .cb2-hover;
+		&.cb-selected {
+			@extend .cb-hover;
 			z-index: 2;
 		}
 
-		ul.cb2-subposts li {
+		ul.cb-subposts li {
 			width: 30px;
 			margin: 2px;
 		}
 	}
 
 
-	/* SHORTCODE: cb2_booking_calendar */
-	li.cb2-template-list-day-available {
+	/* SHORTCODE: cb_booking_calendar */
+	li.cb-template-list-day-available {
 		min-height: 100px;
 
-		ul.cb2-subposts {
+		ul.cb-subposts {
 			display: block;
 			li {
 				@include transition(all .1s ease);
 				min-height: 30px;
 
 				/* Selection */
-				&.cb2-first-day,
+				&.cb-first-day,
 				&.selection-first {
 					@include round-rect(left);
-					.cb2-period-separator, .cb2-period-end { display: none; }
+					.cb-period-separator, .cb-period-end { display: none; }
 				}
 
-				&.cb2-middle-day,
+				&.cb-middle-day,
 				&.selection-middle {
 					@include round-rect(none);
-					.cb2-period-start, .cb2-period-end, .cb2-period-separator { display: none; }
+					.cb-period-start, .cb-period-end, .cb-period-separator { display: none; }
 				}
 
-				&.cb2-last-day,
+				&.cb-last-day,
 				&.selection-last {
 					@include round-rect(right);
-					.cb2-period-separator, .cb2-period-start { display: none; }
+					.cb-period-separator, .cb-period-start { display: none; }
 
 				}
 			}
@@ -302,23 +304,23 @@
 			flex-direction: column;
 			justify-content: center;
 
-			span.cb2-time-period {
+			span.cb-time-period {
 				display: flex;
 				flex-direction: row;
 				justify-content: space-evenly;
 				flex-wrap: wrap;
 				word-break: keep-all;
-				span.cb2-period-start,
-				span.cb2-period-end {
+				span.cb-period-start,
+				span.cb-period-end {
 					word-break: keep-all;
 				}
 			}
 		}
 	}
 
-	/* SHORTCODE: cb2_calendar_map */
+	/* SHORTCODE: cb_calendar_map */
 
-	&.cb2-one-row-scroll {
+	&.cb-one-row-scroll {
 		width: 100%;
 		overflow-x: scroll;
 		overflow-y: hidden;
@@ -339,14 +341,14 @@
 			background-color: #555;
 		}
 
-		.cb2-calendar-pager {
+		.cb-calendar-pager {
 			display: none;
 		}
 
-		>.cb2-entry-content {
+		>.cb-entry-content {
 			width: auto;
 
-			>ul.cb2-subposts {
+			>ul.cb-subposts {
 				display: flex;
 				align-items: center;
 
@@ -355,17 +357,17 @@
 					box-sizing: border-box;
 					height: 100px;
 					&:hover,
-					&.cb2-selected {
-						@extend .cb2-hover;
+					&.cb-selected {
+						@extend .cb-hover;
 						z-index: 2;
 					}
-					&.cb2-selected {
+					&.cb-selected {
 						border: 2px solid $color-blue-dark;
 						color: $color-blue-dark;
 						border-radius: $radius;
 					}
 
-					ul.cb2-subposts {
+					ul.cb-subposts {
 						/* the indicators */
 						display: flex;
 						flex-direction: row;
@@ -386,18 +388,16 @@
 	}
 
 
-
-
 	/* details container */
-	.cb2-details {
+	.cb-timeframe {
 		position: relative;
 		z-index: 2;
 
-		.cb2-item-title-short,
-		.cb2-item-name,
-		.cb2-location-name,
-		.cb2-user-name,
-		.cb2-time-period {
+		.cb-item-title-short,
+		.cb-item-name,
+		.cb-location-name,
+		.cb-user-name,
+		.cb-time-period {
 			font-size: $font-size-small;
 			line-height: $font-line-height-small;
 			display: block;
@@ -408,43 +408,82 @@
 			margin: 0 !important; /* 2020 theme compatibility */
 		}
 
-		.cb2-item-title-short,
-		.cb2-item-name {
+		.cb-item-title-short,
+		.cb-item-name {
 			font-weight: bold;
 		}
+
+
+		//&--wrapper {
+		//	border: 0.1em solid lightgray;
+		//	padding: 0.2em;
+		//	height: 50px;
+		//	overflow: auto;
+		//	margin-bottom: 10px;
+		//}
+
+		&--type-1 {
+			background-color: #bb55ff;
+		}
+
+		&--type-2 {
+			background-color: #81dd1f;
+		}
+
+		&--type-3 {
+			background-color: #ff8812;
+		}
+
+		&--type-4 {
+			background-color: #ff5818;
+		}
+
+		&--type-5 {
+			background-color: #ff0015;
+		}
+
+		&--type-6 {
+			cursor: not-allowed;
+			background-color: #bf2437 ;
+		}
+
+		&--type-7 {
+			background-color: #696969;
+		}
+
 	}
 
 
-	.cb2-template-list-day-overlaid {
-		&.type-cb2_day {
+	.cb-template-list-day-overlaid {
+		&.type-cb_day {
 			min-height:200px;
 		}
-		.type-cb2_prdinst {
+		.type-cb_prdinst {
 			margin-left: 28px;
 			min-width:50px;
 		}
 	}
 
-	.type-cb2_day {
+	.type-cb_day {
 
-		.cb2-overlaid-inner {
+		.cb-overlaid-inner {
 			position:absolute;
 			top:45px;
 			bottom:45px;
 			width: 100%;
 
-			.cb2-time-period {
+			.cb-time-period {
 				display:none;
 			}
 		}
-		.cb2-overlaid-inner:after {
+		.cb-overlaid-inner:after {
 			content:' ';
 			display:table;
 			clear:both;
 		}
 
 
-		&.cb2-out-of-period-entity-scope {
+		&.cb-out-of-period-entity-scope {
 			opacity: 0.4;
 
 			* {
@@ -452,71 +491,71 @@
 				font-style: italic;
 			}
 
-			.cb2-add-period {
+			.cb-add-period {
 				display: none;
 			}
 		}
 
-		&.cb2-first {
+		&.cb-first {
 
-			.cb2-day-title {
+			.cb-day-title {
 				color: $color-blue-dark;
 				font-weight: bold;
 			}
 		}
 
-		&.cb2-current {
+		&.cb-current {
 
-			.cb2-day-title {
+			.cb-day-title {
 				font-weight: bold;
 				color: $color-blue-dark;
 			}
 		}
 
-		> .cb2-subposts {
+		> .cb-subposts {
 			//max-height:200px;
 			// overflow-y:auto;
 		}
 	}
 
-	.cb2-status-booked,
-	.cb2-status-2 {
-		@extend .cb2-period-status-unconfirmed;
-		&.cb2-status-confirmed {
-			@extend .cb2-period-status-booked;
+	.cb-status-booked,
+	.cb-status-2 {
+		@extend .cb-period-status-unconfirmed;
+		&.cb-status-confirmed {
+			@extend .cb-period-status-booked;
 		}
 	}
 
 	/* fields */
-	.cb2-blocked {
-		@extend .cb2-period-status-blocked;
+	.cb-blocked {
+		@extend .cb-period-status-blocked;
 	}
 
 	/* fields */
-	.cb2-field-name {
+	.cb-field-name {
 		display: none;
 	}
 
-	.cb2-template-list-day-indicators {
+	.cb-template-list-day-indicators {
 		cursor:pointer;
 	}
 
-	.cb2-period-period-status-type-name .cb2-field-value {
+	.cb-period-period-status-type-name .cb-field-value {
 		color: #fff;
 		background-color: #000;
 		font-size: 10px;
 		padding: 1px 4px;
 	}
 
-	.cb2-periodinst-has-overlap .cb2-period-period-status-type-name .cb2-field-value {
+	.cb-periodinst-has-overlap .cb-period-period-status-type-name .cb-field-value {
 		background-color: #777;
 	}
 
-	.cb2-template-type-available {
+	.cb-template-type-available {
 		cursor: pointer;
 	}
 
-	.cb2-add-period {
+	.cb-add-period {
 		position: absolute;
 		bottom: 0;
 		left: 0;
@@ -529,19 +568,19 @@
 		}
 	}
 
-	ul.cb2-period-list {
+	ul.cb-period-list {
 		white-space: nowrap;
 	}
 }
 
 
-/* TODO: move this in to a cb2-list file or rationalise with cb2-calendar? */
-.cb2-list > .cb2-entry-content > .cb2-subposts {
-	.type-cb2_day {
+/* TODO: move this in to a cb-list file or rationalise with cb-calendar? */
+.cb-list > .cb-entry-content > .cb-subposts {
+	.type-cb_day {
 		border-bottom: 1px solid #d7d7d7;
 	}
 
-	.type-cb2_prdinst {
+	.type-cb_prdinst {
 		color: #fff;
 		border-radius: 10px;
 		padding:2px 10px;
@@ -551,7 +590,7 @@
 			color: #fff;
 		}
 
-		.cb2-time-period {
+		.cb-time-period {
 			font-size: 11px;
 			font-weight:bold;
 			display:block;
@@ -559,8 +598,8 @@
 	}
 }
 
-.type-cb2_prdinst.status-trash,
-.cb2-periodinst-has-overlap {
+.type-cb_prdinst.status-trash,
+.cb-periodinst-has-overlap {
 	opacity: 0.5;
 	color: #333;
 }

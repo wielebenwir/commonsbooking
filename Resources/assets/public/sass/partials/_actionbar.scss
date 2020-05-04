@@ -8,7 +8,7 @@
  * @copyright 2015 wielebenwir
  */
 
-#cb2-actionbar {
+#cb-actionbar {
 		z-index: 99;
 		position: absolute;
 		bottom: 0;
@@ -17,7 +17,7 @@
 			margin: 0;
 			padding: 0;
 			li {
-				@extend .cb2-box;
+				@extend .cb-box;
 				margin: 0 0 2px 0;
 				background: $color-error;
 				color: $color-white;
@@ -27,7 +27,7 @@
   #bb-inner {
 		position: relative;
 		@extend .shadow;
-		@extend .cb2-box;
+		@extend .cb-box;
 		background: $color-white;
 		min-height: 30px;
 		overflow: hidden;
@@ -59,11 +59,11 @@
 
 
 	#bb-submit-button {
-		@extend .cb2-button;
+		@extend .cb-button;
 		display: inline-block;
 	}
 
-	.cb2-button {
+	.cb-button {
 		float: right;
 		margin-left: $padding;
 	}
@@ -78,8 +78,8 @@
 	}
 }
 
-#cb2-actionbar-error {
-  @extend .cb2-notice;
+#cb-actionbar-error {
+  @extend .cb-notice;
   margin-bottom: $padding / 2;
   background: red;
   list-style: none;
@@ -89,7 +89,7 @@
   }
 }
 
-#cb2-booking-process-popup {
+#cb-booking-process-popup {
   display: none;
   position: fixed;
   top: 0;

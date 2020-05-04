@@ -12,11 +12,11 @@
 
 
 
-.hidden, .cb2-hidden { display: none; }
+.hidden, .cb-hidden { display: none; }
 
 /* -------------------- Resets -------------------- */
 
-.cb2-content {
+.cb-content {
 	font-size: $font-size-normal;
 	margin-top: $padding !important; /* TwentyTwenty Theme */
 	a {
@@ -24,8 +24,8 @@
 	}
 }
 
-ul.cb2-subposts,
-ul.cb2-items,
-ul.cb2-locations {
+ul.cb-subposts,
+ul.cb-items,
+ul.cb-locations {
 	list-style: none;
 }

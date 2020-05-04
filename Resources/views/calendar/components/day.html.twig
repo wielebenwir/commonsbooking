@@ -1,18 +1,29 @@
-<li>
-    {{ day.name }} {{ day.date }}<br><br>
-    {% for slot in day.grid %}
-        <div class="timeslot--wrapper">
-        {{ slot.timestart }} - {{ slot.timeend }}
+<li class="type-cb_day">
 
-            {% if slot.timeframes|length %}
-                <ul>
-                    {% for timeframe in slot.timeframes %}
-                        <li class="timeslot--type-{{ timeframe.type }}">
-                            {{ timeframe|get_type_label }} ({{ timeframe.type }}, ID: {{ timeframe.ID }})
-                        </li>
-                    {% endfor %}
-                </ul>
+    <div class="cb-day-title">
+        <span>{{ day.formattedDate('d') }}</span>
+        <span>{{ day.formattedDate('M') }}</span>
+    </div>
+    
+
+    {% for slotNr, slot in day.grid %}
+        {% if slot.timeframe %}
+            {% if slot.timeframe.type == '2' %}
+                <div class="cb-timeframe cb-timeframe--type-{{ slot.timeframe.type }}" data-type-label="{{ slot.timeframe|get_type_label }}" >
+                    <a target="_blank" href="{{ slot.timeframe|get_link }}&slot={{ slotNr }}&date={{ day.formattedDate('Y-m-d') }}">
+                        <span>
+                            {{ slot.timestart }} - {{ slot.timeend }}
+                        </span>
+                    </a>
+                </div>
             {% endif %}
-        </div>
+            {% if slot.timeframe.type == '6' %}
+                <div class="cb-timeframe cb-timeframe--type-{{ slot.timeframe.type }}" data-type-label="{{ slot.timeframe|get_type_label }}" >
+                    <span>
+                        {{ slot.timestart }} - {{ slot.timeend }}
+                    </span>
+                </div>
+            {% endif %}
+        {% endif %}
     {% endfor %}
 </li>

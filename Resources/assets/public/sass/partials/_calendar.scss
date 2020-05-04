@@ -1,7 +1,7 @@
 /**
- * cb2 calendar
+ * cb calendar
  *
- *  * item detail, location detail, cb2_calendar shortcode
+ *  * item detail, location detail, cb_calendar shortcode
  *
  * @package   CommonsBooking2
  * @author    Florian Egermann <florian@wielebenwir.de>
@@ -11,17 +11,20 @@
  * @copyright 2015 wielebenwir
  */
 
-article.type-cb2_item .cb2-calendar-pager {
+article.type-cb_item .cb-calendar-pager {
 		display: none;
 	}
 
-.cb2-calendar {
+.cb-calendar {
+
+	display: flex;
+	margin-bottom: 0;
 
 	ul, li { /* Twentytwenty Theme compatibility */
 		font-family: sans-serif;
 	}
 
-	.cb2-no-results {
+	.cb-no-results {
 		display:none;
 	}
 
@@ -31,13 +34,13 @@ article.type-cb2_item .cb2-calendar-pager {
 		/* Twentysixteen Theme annoyances */
 	}
 
-	ul.cb2-subposts { /* Twentytwenty Theme compatibility */
+	ul.cb-subposts { /* Twentytwenty Theme compatibility */
 		margin-bottom: 0;
 	}
 
-	li.type-cb2_day {
+	li.type-cb_day {
 
-		.type-cb2_prdinst {
+		.cb-time-period {
 			font-weight: bold;
 			color: $color-white;
 			overflow: hidden;
@@ -49,41 +52,41 @@ article.type-cb2_item .cb2-calendar-pager {
 			background: transparent;
 
 			/* first, middle, last */
-			&.cb2-first-day {
+			&.cb-first-day {
 				@include round-rect(left);
 				margin-right: 0;
 			}
-			&.cb2-middle-day {
+			&.cb-middle-day {
 				@include round-rect(none);
 				margin-right: 0;
 				margin-left: 0;
 			}
-			&.cb2-last-day {
+			&.cb-last-day {
 				@include round-rect(right);
 				margin-left: 0;
 			}
 
-			&.cb2-status-booked {
+			&.cb-status-booked {
 				border: 0 !important;
 			}
 
 
-			.cb2-item-title-short {
+			.cb-item-title-short {
 
 			}
 
-			.cb2-time-period {
+			.cb-time-period {
 
 			}
 
-			&.cb2-not-selectable {
+			&.cb-not-selectable {
 				cursor: not-allowed;
 			}
 		}
 
 }
 
-	li.type-cb2_prdinst {
+	li.type-cb_prdinst {
 		input { /* @TODO fix target */
 			position: absolute;
 			left: -9999px;

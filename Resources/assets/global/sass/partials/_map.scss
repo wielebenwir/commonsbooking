@@ -28,7 +28,7 @@
 			text-decoration: none;
 
 		}
-		.cb2-geo-address {
+		.cb-geo-address {
 			margin-bottom: $padding;
 		}
 
@@ -42,15 +42,15 @@
 			overflow-y: scroll;
 		}
 
-		.cb2-template-popup-prdent-tf-items {
+		.cb-template-popup-prdent-tf-items {
 			border: 1px solid $color-gray-border;
 			position: relative;
-			@extend .cb2-box;
+			@extend .cb-box;
 			background: $color-white;
 			margin-bottom: $padding;
 			padding: $padding;
 			&:hover {
-				@extend .cb2-hover;
+				@extend .cb-hover;
 			}
 			cursor: pointer;
 		}
@@ -70,7 +70,7 @@
 			}
 			border-radius: $radius;
 		}
-		.cb2-time-period {
+		.cb-time-period {
 			display: none;
 		}
 

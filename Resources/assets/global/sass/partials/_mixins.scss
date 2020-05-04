@@ -210,34 +210,34 @@
 
 /* -------------------- period statuses bgs -------------------- */
 
-.cb2-period-status-available {
+.cb-period-status-available {
 	background-color: $color-status-available;
 	@include checkered-bg($color-status-available);
 }
-.cb2-period-status-open {
+.cb-period-status-open {
 	background-color: $color-status-open;
 	@include checkered-bg($color-status-open);
 }
 
-.cb2-period-status-blocked {
+.cb-period-status-blocked {
 	background-color: $color-status-blocked;
 	@include checkered-bg($color-status-blocked);
 }
 
-.cb2-period-status-unconfirmed {
+.cb-period-status-unconfirmed {
 	@include checkered-bg($color-status-pending);
 }
 
-.cb2-period-status-booked {
+.cb-period-status-booked {
 
 	@include checkered-bg($color-status-booked);
 
-	.cb2-cell-background {
+	.cb-cell-background {
 		background: transparent !important;
 	}
 }
 
-.cb2-wrap-brackets {
+.cb-wrap-brackets {
 	&:before {
   	content: "(";
 	}

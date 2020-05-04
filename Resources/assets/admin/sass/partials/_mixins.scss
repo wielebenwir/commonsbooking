@@ -10,7 +10,7 @@
  */
 
  /* WP button style: unfilled */
- .cb2-admin-button {
+ .cb-admin-button {
 	display: inline-block;
 	text-decoration: none;
 	font-size: 13px;
@@ -30,7 +30,7 @@
 	background: #FFFFFF;
 }
 
-.cb2-admin-button-save {
+.cb-admin-button-save {
 		background-color: #21759b;
 		background-image: -webkit-gradient(linear,left top,left bottom,from(#2a95c5),to(#21759b));
 		background-image: -webkit-linear-gradient(top,#2a95c5,#21759b);
@@ -103,7 +103,7 @@
 	box-shadow: 1px 1px 5px #aaa;
 }
 
-.cb2-admin-notice {
+.cb-admin-notice {
 	background:  $yellow-light;
 	padding: 8px 12px;
 	font-size: $font-size-normal;
@@ -130,21 +130,21 @@
 
 //  Toggle button checkbox
 
-.cb2-onoffswitch {
+.cb-onoffswitch {
     position: relative; width: 55px;
     -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
 }
-.cb2-onoffswitch-checkbox {
+.cb-onoffswitch-checkbox {
     display: none;
 }
-.cb2-onoffswitch-label {
+.cb-onoffswitch-label {
     display: block; overflow: hidden; cursor: pointer;
     height: 20px; padding: 0; line-height: 20px;
     border: 4px solid #FFFFFF; border-radius: 20px;
     background-color: #9E9E9E;
     transition: background-color 0.3s ease-in;
 }
-.cb2-onoffswitch-label:before {
+.cb-onoffswitch-label:before {
     content: "";
     display: block; width: 20px; margin: 0px; height: 20px;
     background: #FFFFFF;
@@ -153,13 +153,13 @@
     border: 2px solid #FFFFFF; border-radius: 20px;
     transition: all 0.3s ease-in 0s;
 }
-.cb2-onoffswitch-checkbox:checked + .cb2-onoffswitch-label {
+.cb-onoffswitch-checkbox:checked + .cb-onoffswitch-label {
     background-color: #42A5F5;
 }
-.cb2-onoffswitch-checkbox:checked + .cb2-onoffswitch-label, .cb2-onoffswitch-checkbox:checked + .cb2-onoffswitch-label:before {
+.cb-onoffswitch-checkbox:checked + .cb-onoffswitch-label, .cb-onoffswitch-checkbox:checked + .cb-onoffswitch-label:before {
    border-color: #42A5F5;
 }
-.cb2-onoffswitch-checkbox:checked + .cb2-onoffswitch-label:before {
+.cb-onoffswitch-checkbox:checked + .cb-onoffswitch-label:before {
     right: 0px;
 }
 

@@ -1,11 +1,11 @@
 /* ---------------------- debug */
-.cb2-debug-control {
+.cb-debug-control {
 	position:relative;
 	font-size:10px;
 	color:#777;
 	cursor:pointer;
 }
-.cb2-debug-control span {
+.cb-debug-control span {
 	position:absolute;
 	top:-3px;
 	left:40px;
@@ -13,7 +13,7 @@
 	border:1px dotted #000;
 	background-color:#fff;
 }
-.cb2-debug-control:before {
+.cb-debug-control:before {
 	content: '•';
 
 	display: inline-block;
@@ -27,7 +27,7 @@
 	line-height:10px;
 	text-align: center;
 }
-.cb2-debug {
+.cb-debug {
 	background-color:Transparent;
 	font-family: Sans;
 	color:#555;
@@ -35,40 +35,40 @@
 	padding:4px;
 	white-space:nowrap;
 }
-.cb2-debug ul {
+.cb-debug ul {
 	padding-left: 10px;
 }
-.cb2-debug li {
+.cb-debug li {
 	margin-bottom: 2px;
 }
-body .cb2-low-debug {
+body .cb-low-debug {
 	color: #777;
 }
-.cb2-high-debug {
+.cb-high-debug {
 	font-weight:bold;
 }
-.cb2-dangerous,
-.cb2-warning,
-.cb2-error {
+.cb-dangerous,
+.cb-warning,
+.cb-error {
 	color:red;
 }
-.cb2-calendar .cb2-subposts .cb2-selected {
+.cb-calendar .cb-subposts .cb-selected {
 	font-weight:bold;
 }
-.cb2-calendar .cb2-range-selected {
+.cb-calendar .cb-range-selected {
 	font-weight:bold;
 }
 
-.cb2-WP_DEBUG-on div .cb-row:hover > .cb2-template-debug {
+.cb-WP_DEBUG-on div .cb-row:hover > .cb-template-debug {
 	display:block;
 	z-index:10000;
 }
-.cb2-WP_DEBUG-on div .cb-row > .cb2-template-debug:hover {
+.cb-WP_DEBUG-on div .cb-row > .cb-template-debug:hover {
 	color:#fff!important;
 	background-color:#555;
 }
 
-body.cb2-WP_DEBUG-on div .cb2-template-debug {
+body.cb-WP_DEBUG-on div .cb-template-debug {
 	position:absolute;
 	top:0px;
 	right:0px;
@@ -86,6 +86,6 @@ body.cb2-WP_DEBUG-on div .cb2-template-debug {
 	display:none;
 }
 
-.cb2-invalidity {
+.cb-invalidity {
 	display:none;
 }

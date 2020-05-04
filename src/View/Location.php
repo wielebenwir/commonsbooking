@@ -16,12 +16,14 @@ class Location extends View
     public static function content(\WP_Post $post) {
         $weekNr = isset($_GET['cw']) ? $_GET['cw'] : date('W');
         $week = new Week($weekNr);
+        $lastWeek = new Week($weekNr + 5);
         $location = $post->ID;
         $item = isset($_GET['item'])  && $_GET['item'] != "" ? $_GET['item'] : null;
         $type = isset($_GET['type'])  && $_GET['type'] != "" ? $_GET['type'] : null;
 
         echo self::render(self::$template, [
             'post' => $post,
+            'wp_nonce' => Timeframe::getWPNonceField(),
             'actionUrl' => admin_url('admin.php'),
             'currentLocation' => $location,
             'currentItem' => $item,
@@ -30,7 +32,7 @@ class Location extends View
             'types' => Timeframe::getTypes(),
             'calendar' => new Calendar(
                 $week->getDays()[0],
-                $week->getDays()[6],
+                $lastWeek->getDays()[6],
                 $location ? [$location] : [],
                 $item ? [$item] : [],
                 $type ? [$type] : []

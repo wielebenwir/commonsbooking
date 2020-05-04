@@ -26,7 +26,6 @@ abstract class CustomPostType
         return static::$postType;
     }
 
-
     public function getMenuParams()
     {
         return [
@@ -51,6 +50,7 @@ abstract class CustomPostType
     }
 
     /**
+     * @deprecated Defined in getArgs-function of CTP
      * https://knowthecode.io/docx/wordpress/remove_post_type_support
      */
     public function removeAllFormFields()
@@ -60,22 +60,33 @@ abstract class CustomPostType
         $this->removeFormImage();
     }
 
+    /**
+     * @deprecated Defined in getArgs-function of CTP
+     */
     public function removeFormTitle()
     {
         remove_post_type_support(static::getPostType(), 'title');
     }
 
+    /**
+     * @deprecated Defined in getArgs-function of CTP
+     */
     public function removeFormDescription()
     {
         remove_post_type_support(static::getPostType(), 'editor');
     }
 
+    /**
+     * @deprecated Defined in getArgs-function of CTP
+     */
     public function removeFormImage()
     {
         remove_post_type_support(static::getPostType(), 'thumbnail');
     }
 
-
+    /**
+     *
+     */
     public function createCustomFields()
     {
         if (function_exists('add_meta_box')) {
@@ -94,19 +105,33 @@ abstract class CustomPostType
         }
     }
 
+    public static function getWPAction()
+    {
+        return static::getPostType() . "-custom-fields";
+    }
+
+    public static function getWPNonceId()
+    {
+        return static::getPostType() . "-custom-fields" . '_wpnonce';
+    }
+
+    public static function getWPNonceField()
+    {
+        return wp_nonce_field(static::getWPAction(), static::getWPNonceId(), false, true);
+    }
+
     /**
      * Save the new Custom Fields values
      */
-    function saveCustomFields($post_id, $post)
+    public function saveCustomFields($post_id, $post)
     {
         if (
-            ! isset($_POST[static::getPostType() . "-custom-fields" . '_wpnonce']) ||
-            ! wp_verify_nonce($_POST[static::getPostType() . "-custom-fields" . '_wpnonce'],
-                static::getPostType() . "-custom-fields")
+            !isset($_POST[self::getWPNonceId()]) ||
+            !wp_verify_nonce($_POST[self::getWPNonceId()], static::getWPAction())
         ) {
             return;
         }
-        if ( ! current_user_can('edit_post', $post_id)) {
+        if (!current_user_can('edit_post', $post_id)) {
             return;
         }
         if ($post->post_type !== static::getPostType()) {
@@ -124,7 +149,7 @@ abstract class CustomPostType
                 }
 
                 foreach ($fieldNames as $fieldName) {
-                    if (isset($_POST[$fieldName]) &&  $value = trim($_POST[$fieldName])) {
+                    if (isset($_POST[$fieldName]) && $value = trim($_POST[$fieldName])) {
                         // Auto-paragraphs for any WYSIWYG
                         if ($customField->getType() == "wysiwyg") {
                             $value = wpautop($value);
@@ -153,7 +178,7 @@ abstract class CustomPostType
 
                 $output = true;
                 // Check capability
-                if ( ! current_user_can($customField->getCapability(), $post->ID)) {
+                if (!current_user_can($customField->getCapability(), $post->ID)) {
                     $output = false;
                 }
                 // Output if allowed
@@ -220,7 +245,7 @@ abstract class CustomPostType
         add_filter('manage_edit-' . static::getPostType() . '_sortable_columns', array($this, 'setSortableColumns'));
         if (isset($this->listColumns)) {
             add_action('pre_get_posts', function ($query) {
-                if ( ! is_admin()) {
+                if (!is_admin()) {
                     return;
                 }
 
@@ -252,7 +277,7 @@ abstract class CustomPostType
     {
         $args = array(
             'post_type' => static::getPostType(),
-            'order'     => $order
+            'order' => $order
         );
 
         return new \WP_Query($args);

@@ -1,7 +1,13 @@
-{% for week in calendar.weeks %}
-    <ul class="cb2-calendar">
-        {% for day in week.days %}
-            {% include 'calendar/components/day.html.twig' with {'day': day} %}
-        {% endfor %}
-    </ul>
-{% endfor %}
+<div class="alignwide">
+    {% for week in calendar.weeks %}
+        <ul class="cb-calendar">
+            {% for dayOfWeek in [1,2,3,4,5,6,7] %}
+                {% for day in week.days %}
+                    {% if day.dayOfWeek == dayOfWeek %}
+                        {% include 'calendar/components/day.html.twig' with {'day': day} %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</div>

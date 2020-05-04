@@ -11,16 +11,16 @@
  */
 
 
-.cb2-content {
+.cb-content {
 
 	ul {
 		padding: 0 !important;
 	}
 
-	ul.cb2-table > li,  /* item, location shortcodes */
-	&.cb2-context-list > ul > li {
+	ul.cb-table > li,  /* item, location shortcodes */
+	&.cb-context-list > ul > li {
 
-		@extend .cb2-box;
+		@extend .cb-box;
 
 		margin-bottom: $padding;
 		img { border-radius: $radius; }
@@ -41,8 +41,8 @@
 		}
 
 
-		ul.cb2-subposts > li { /* subposts container */
-			@extend .cb2-box-subposts;
+		ul.cb-subposts > li { /* subposts container */
+			@extend .cb-box-subposts;
 			position: relative;
 			overflow: hidden;
 			padding-bottom: 0;
@@ -50,44 +50,44 @@
 			}
 
 		/* individual layouts */
-		.cb2-meta {
-			@extend .cb2-columns, .cb2-columns-50-50;
+		.cb-meta {
+			@extend .cb-columns, .cb-columns-50-50;
 			}
 
-		.cb2-item-summary, .cb2-location-summary {
-			.cb2-validity,
-			.cb2-location-address {
+		.cb-item-summary, .cb-location-summary {
+			.cb-validity,
+			.cb-location-address {
 				display: block;
 			}
 		}
 
 
-		&.has-post-thumbnail > .cb2-excerpt { /* main post has thumbnail */
-			@extend .cb2-columns, .cb2-columns-50-50;
+		&.has-post-thumbnail > .cb-excerpt { /* main post has thumbnail */
+			@extend .cb-columns, .cb-columns-50-50;
 		}
-		ul li.has-post-thumbnail .cb2-excerpt { /* sub-post has thumbnail */
-			@extend .cb2-columns, .cb2-columns-50-50;
+		ul li.has-post-thumbnail .cb-excerpt { /* sub-post has thumbnail */
+			@extend .cb-columns, .cb-columns-50-50;
 
 		}
-		.cb2-period-list {
+		.cb-period-list {
 			li {
 				margin-bottom: 0;
 			}
 		}
 
-		.cb2-location-opening-hours {
-			.cb2-date {
+		.cb-location-opening-hours {
+			.cb-date {
 				display: none;
 			}
 		}
 
-		.cb2-user-registered-on {
+		.cb-user-registered-on {
 			display: none;
 		}
 
-		.cb2-bookings-list,
-		.cb2-timeframes-list {
-			@extend .cb2-columns, .cb2-columns-70-30;
+		.cb-bookings-list,
+		.cb-timeframes-list {
+			@extend .cb-columns, .cb-columns-70-30;
 		}
 	}
 

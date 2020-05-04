@@ -10,15 +10,15 @@
  */
 
 
-.cb2-admin-page {
+.cb-admin-page {
 
 	/* List table: items + Locations */
-	&.commonsbooking_page_cb2-items,
-	&.commonsbooking_page_cb2-locations  {
+	&.commonsbooking_page_cb-items,
+	&.commonsbooking_page_cb-locations  {
 
 		// cleanup
-		.cb2-timeframe-title,
-		.cb2-invalidity {
+		.cb-timeframe-title,
+		.cb-invalidity {
 			display: none;
 		}
 
@@ -26,36 +26,36 @@
 		.column-pickup_return,
 		.column-opening_hours {
 			li {
-				.cb2-actions .post-edit-link {
+				.cb-actions .post-edit-link {
 					display: none;
 				}
-				.cb2-actions .post-delete-link {
+				.cb-actions .post-delete-link {
 					color: $color-warning;
 					display: none;
 				}
 				&:hover {
-					.cb2-actions .post-delete-link {
+					.cb-actions .post-delete-link {
 						display: inline-block;
 					}
 				}
 			}
 		}
 
-		a.cb2-edit-url {
+		a.cb-edit-url {
 			font-weight: $font-weight-bold;
 		}
 
 		.column-pickup_return,
 		.column-opening_hours {
-			.cb2-period-list,
-			.cb2-period-list li,
-			div.cb2-has-location {
+			.cb-period-list,
+			.cb-period-list li,
+			div.cb-has-location {
 				display: inline;
 			}
-			.cb2-usage-count-ok,
+			.cb-usage-count-ok,
 			.post-delete-link,
 			.post-duplicate-link,
-			.cb2-no-results {
+			.cb-no-results {
 				display: none;
 			}
 		}
@@ -69,30 +69,30 @@
 					content: "";
 				}
 			}
-			.cb2-add-inline {
+			.cb-add-inline {
 				// display: none;
 			}
 		}
 		.column-opening_hours {
 			a {
-				.cb2-title {
+				.cb-title {
 					display: none;
 				}
 			}
 		}
 	}
 
-	&.commonsbooking_page_cb2-items {
+	&.commonsbooking_page_cb-items {
 
 	}
 
-	&.commonsbooking_page_cb2-locations {
+	&.commonsbooking_page_cb-locations {
 
 	}
 
-	#cmb2-metabox-CB2_Location_opening-hours {
-		.cb2-view-selector,
-		.cb2-show-hidden-slots
+	#cmb2-metabox-cb_Location_opening-hours {
+		.cb-view-selector,
+		.cb-show-hidden-slots
 		{
 			display:none;
 		}

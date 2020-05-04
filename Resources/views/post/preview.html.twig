@@ -1,0 +1,5 @@
+<div>
+    <h3><a href="{{ post|get_link }}">{{ post.post_title }}</a></h3>
+    {{ post|get_thumbnail|raw }}
+    {{ post.post_content|raw }}
+</div>

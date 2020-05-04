@@ -1,5 +1,5 @@
-.cb2-admin-page {
-	.cb2-admin-cols {
+.cb-admin-page {
+	.cb-admin-cols {
 		display: flex;
 		flex-direction: row;
 		div {
@@ -13,8 +13,8 @@
 		ul {
 			li {
 				margin-top: 15px;
-				@extend .cb2-box;
-				.cb2-summmary-item {
+				@extend .cb-box;
+				.cb-summmary-item {
 					font-weight: bold;
 				}
 			}

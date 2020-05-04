@@ -10,100 +10,100 @@
  * @copyright 2015 wielebenwir
  */
 
-.cb2-calendar {
+.cb-calendar {
 
-	&.cb2-has-item {
-		.cb2-item-name { display: none }
+	&.cb-has-item {
+		.cb-item-name { display: none }
 	}
 
-	&.cb2-has-location {
-		.cb2-location-name { display: none }
+	&.cb-has-location {
+		.cb-location-name { display: none }
 	}
 
-	.cb2-no-results {
+	.cb-no-results {
 		display: none;
 	}
 
 	/* 1 period  */
-	.type-cb2_prdinst {
+	.type-cb_prdinst {
 		padding: 5px 10px;
 		width: 100%;
 		align-items: center;
 		justify-content: center;
 		margin: $padding-small;
 		/* first, middle, last */
-		&.cb2-first-day {
+		&.cb-first-day {
 			@include round-rect(left);
 			margin-right: 0;
 		}
-		&.cb2-middle-day {
+		&.cb-middle-day {
 			@include round-rect(none);
 			margin-right: 0;
 			margin-left: 0;
 		}
-		&.cb2-last-day {
+		&.cb-last-day {
 			@include round-rect(right);
 			margin-left: 0;
 		}
 
 		// .day-header,
-		.cb2-periodstatustype-name,
-		.cb2-no-results {
+		.cb-periodstatustype-name,
+		.cb-no-results {
 			display: none;
 		}
 
-		.cb2-user-name,
-		.cb2-time-period {
+		.cb-user-name,
+		.cb-time-period {
 			display: inline-block;
 		}
 
-		.cb2-user-name {
+		.cb-user-name {
 			@extend %icon-user !optional; // admin only
 		}
 
-		.cb2-time-period {
+		.cb-time-period {
 			margin-right: $element-spacing;
 			font-weight: $font-weight-bold;
 		}
 
 		/* hide period info if navigated to a screen where the context is set  */
-		.cb2-location-name {
-			.cb2-has-location & {
+		.cb-location-name {
+			.cb-has-location & {
 				display: none;
 			}
 		}
 
-		.cb2-item-name,
-		.cb2-item-title-short {
-			.cb2-display-strategy-CB2_SingleItemAvailability &,
-			.cb2-has-item & {
+		.cb-item-name,
+		.cb-item-title-short {
+			.cb-display-strategy-cb_SingleItemAvailability &,
+			.cb-has-item & {
 				display: none;
 			}
 		}
 
-		.cb2-location-name {
-			.cb2-has-location &,
-			#cmb2-metabox-CB2_PeriodEntity_Location_calendar_view & {
+		.cb-location-name {
+			.cb-has-location &,
+			#cmb2-metabox-cb_PeriodEntity_Location_calendar_view & {
 				display: none !important;
 			}
 		}
 
 
-			.cb2-user-name {
-				.cb2-has-user & {
+			.cb-user-name {
+				.cb-has-user & {
 					display: none;
 				}
 			}
-			.cb2-location-name,
-			.cb2-user-name,
-			.cb2-time-period {
+			.cb-location-name,
+			.cb-user-name,
+			.cb-time-period {
 
-				.cb2-has-item & {
+				.cb-has-item & {
 					margin-left: 0;
 					text-align: left;
 				}
 
-				.cb2-display-strategy-CB2_SingleItemAvailability & {
+				.cb-display-strategy-cb_SingleItemAvailability & {
 					margin-left: 0;
 				}
 
@@ -114,10 +114,10 @@
 }
 
  /* Hacks for hiding... @TODO re-orgnise add classes and cleanup */
-#CB2_PeriodEntity_Global_calendar_view,
-#CB2_PeriodEntity_Location_calendar_view,
-#CB2_PeriodEntity_Timeframe_calendar_view,
-#CB2_PeriodEntity_Timeframe_User_calendar_view {
+#cb_PeriodEntity_Global_calendar_view,
+#cb_PeriodEntity_Location_calendar_view,
+#cb_PeriodEntity_Timeframe_calendar_view,
+#cb_PeriodEntity_Timeframe_User_calendar_view {
 
 	/* we currently have to do it like this because we cannot add classes to the outer wrapper :O */
 	h2,
@@ -130,25 +130,25 @@
 	}
 }
 
-.cb2-calendar-bare {
+.cb-calendar-bare {
 	.day-header {
 		>.bulkactions {
 			display: none;
 		}
 
-		>.cb2-calendar-pager {
+		>.cb-calendar-pager {
 			float: left;
 		}
 	}
 
-	.cb2-WP_DEBUG {
+	.cb-WP_DEBUG {
 		margin: 0px;
 	}
 }
 /* 100% width on Availability calendar @TODO: clean up */
-#CB2_PeriodEntity_Timeframe_calendar_view,
-#CB2_PeriodEntity_Location_calendar_view {
-	.cb2-view-selector {
+#cb_PeriodEntity_Timeframe_calendar_view,
+#cb_PeriodEntity_Location_calendar_view {
+	.cb-view-selector {
 		float: right;
 	}
 	background: transparent;
@@ -160,49 +160,9 @@
  * one set only
  * no set validity limits
  */
-#CB2_PeriodEntity_Location_calendar_view {
-	.cb2-view-selector,
-	.cb2-object-summary-bar {
+#cb_PeriodEntity_Location_calendar_view {
+	.cb-view-selector,
+	.cb-object-summary-bar {
 		display: none;
 	}
-}
-
-
-.timeslot {
-	&--wrapper {
-		border: 0.1em solid lightgray;
-		padding: 0.2em;
-		height: 50px;
-		overflow: auto;
-		margin-bottom: 10px;
-	}
-
-	&--type-1 {
-		background-color: #bb55ff;
-	}
-
-	&--type-2 {
-		background-color: #4ab866;
-	}
-
-	&--type-3 {
-		background-color: #ff8812;
-	}
-
-	&--type-4 {
-		background-color: #ff5818;
-	}
-
-	&--type-5 {
-		background-color: #ff0015;
-	}
-
-	&--type-6 {
-		background-color: #000000;
-	}
-
-	&--type-7 {
-		background-color: #696969;
-	}
-
 }

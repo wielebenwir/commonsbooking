@@ -1,7 +1,7 @@
 /*
  * Admin screen popups
  *
- * Hande the display and reordering of meta boxes on cb2 admin popup screens
+ * Hande the display and reordering of meta boxes on cb admin popup screens
  * WP List table screens: _listtables.scss
  *
  * @package   CommonsBooking2
@@ -13,7 +13,7 @@
  */
 
 
-.cb2-admin-page {
+.cb-admin-page {
 
 
 	/* General editing popup */
@@ -25,19 +25,19 @@
 			padding: 0;
 		}
 
-		.cb2-nexts, .cb2-popup-form-next {
+		.cb-nexts, .cb-popup-form-next {
 			display: none !important;
 		}
 
 		@include round-rect(all);
 		background: #FFF;
 
-		.cb2-display-type-hidden {
+		.cb-display-type-hidden {
 			display: none;
 		}
 
 		/* processing overlay */
-		.cb2-processing-overlay {
+		.cb-processing-overlay {
 			display:none;
 			position: absolute;
 			left: 0;
@@ -49,38 +49,38 @@
 		}
 
 		/* Color the background */
-		@extend .cb2-period-status-available; /*standard */
-			&.cb2-status-open  {
-				@extend .cb2-period-status-open;
+		@extend .cb-period-status-available; /*standard */
+			&.cb-status-open  {
+				@extend .cb-period-status-open;
 			}
-			&.cb2-blocked  {
-				@extend .cb2-period-status-blocked;
+			&.cb-blocked  {
+				@extend .cb-period-status-blocked;
 			}
-			&.cb2-status-booked  {
-				@extend .cb2-period-status-unconfirmed;
-				&.cb2-status-confirmed  {
-					@extend .cb2-period-status-booked;
+			&.cb-status-booked  {
+				@extend .cb-period-status-unconfirmed;
+				&.cb-status-confirmed  {
+					@extend .cb-period-status-booked;
 				}
 			}
 
 		/* Show/hide actions  */
-		&.cb2-status-pickup-return .cb2-actions {
-			.cb2-action-unconfirm,
-			.cb2-action-trash {
+		&.cb-status-pickup-return .cb-actions {
+			.cb-action-unconfirm,
+			.cb-action-trash {
 				display:none;
 			 }
 		}
-		&.cb2-status-booked .cb2-actions {
-			.cb2-action-unconfirm {
+		&.cb-status-booked .cb-actions {
+			.cb-action-unconfirm {
 				display:none;
 			 }
 		}
 
 		/* Addto */
-		&.cb2-popup-addto  {
-			#CB2_PeriodEntity_Timeframe_User_location,
-			#CB2_PeriodEntity_Timeframe_User_item,
-			#CB2_PeriodEntity_Timeframe_User_user			{ @extend .metabox-popup; }
+		&.cb-popup-addto  {
+			#cb_PeriodEntity_Timeframe_User_location,
+			#cb_PeriodEntity_Timeframe_User_item,
+			#cb_PeriodEntity_Timeframe_User_user			{ @extend .metabox-popup; }
 		}
 
 	/* HEADER */
@@ -110,7 +110,7 @@
 		flex-direction: row;
 		width: 100%;
 
-		div.cb2-period-info, .cb2-actions {
+		div.cb-period-info, .cb-actions {
 			width: 40%;
 			margin: 0;
 		}
@@ -120,19 +120,19 @@
 			margin: 0;
 		}
 
-		.cb2-actions {
+		.cb-actions {
 
 			/* Hide unwanted buttons */
-			.cb2-action-duplicate {
+			.cb-action-duplicate {
 				display: none;
 			}
 			input {
-				@extend .cb2-admin-button;
+				@extend .cb-admin-button;
 				float: right;
 				margin: 0 $element-spacing;
 			}
 		}
-		.cb2-addto & {
+		.cb-addto & {
 			a { text-decoration: none; }
 		}
 		h2, a { color: $color-white;
@@ -143,26 +143,26 @@
 
 
 	/* Period date/time picker */
-	#cb2-ajax-edit-form {
-		button#cb2-different-dates {
+	#cb-ajax-edit-form {
+		button#cb-different-dates {
 			border: 0;
 			color: $wp-blue;
 		}
-		button#cb2-set-full-day {
-			@extend .cb2-admin-button;
+		button#cb-set-full-day {
+			@extend .cb-admin-button;
 			position: absolute;
 			right: 0;
 			top: 30px;
 		}
 
 
-		#cmb2-metabox-CB2_Period_period {
+		#cmb2-metabox-cb_Period_period {
 			.cmb2-datepicker {
 				display: block;
 			}
 		}
-		// &.cb2-same-dates {	/* Do not show date field if the startdate/enddate are the same */
-		// 	#cmb2-metabox-CB2_Period_period {
+		// &.cb-same-dates {	/* Do not show date field if the startdate/enddate are the same */
+		// 	#cmb2-metabox-cb_Period_period {
 		// 		.cmb2-datepicker {
 		// 			display: none;
 		// 		}
@@ -170,9 +170,9 @@
 		// }
 	}
 
-	&.cb2-status-pickup-return,
-	&.cb2-status-open {	/* Do not show date field for opening hours & pickup/return */
-		#cmb2-metabox-CB2_Period_period {
+	&.cb-status-pickup-return,
+	&.cb-status-open {	/* Do not show date field for opening hours & pickup/return */
+		#cmb2-metabox-cb_Period_period {
 			.cmb2-datepicker {
 				display: none !important;
 			}
@@ -190,13 +190,13 @@
 
 
 		/* Addto: nexts */
-		.cb2-popup-form-next {
+		.cb-popup-form-next {
 			position: absolute;
 			right: $padding;
 			top: $padding;
 		}
 
-		ul.cb2-nexts {
+		ul.cb-nexts {
 			display: block;
 			width: 100%;
 			overflow: hidden;
@@ -207,7 +207,7 @@
 				float: left;
 			}
 			a {
-				@extend .cb2-admin-button;
+				@extend .cb-admin-button;
 			}
 		}
 
@@ -216,31 +216,31 @@
 	}
 
 
-	#TB_window.cb2-popup {
+	#TB_window.cb-popup {
 
 		/* Save button row */
-		.cb2-actions {
+		.cb-actions {
 			margin-top:10px;
 			display: flex;
 			align-items: flex-end;
 			justify-content: flex-end
 		}
-		.cb2-submit {
+		.cb-submit {
 			display:none;
 		}
-		.cb2-popup-form-save,
-		.cb2-popup-form-next,
-		.cb2-popup-form-cancel,
-		.cb2-popup-form-trash {
-			@extend .cb2-admin-button;
+		.cb-popup-form-save,
+		.cb-popup-form-next,
+		.cb-popup-form-cancel,
+		.cb-popup-form-trash {
+			@extend .cb-admin-button;
 			margin-left: $element-spacing;
 		}
-		.cb2-popup-form-save {
-			@extend .cb2-admin-button-save;
+		.cb-popup-form-save {
+			@extend .cb-admin-button-save;
 			order: 99;
 
 		}
-		.cb2-popup-form-trash {
+		.cb-popup-form-trash {
 			color:red;
 			border: none;
 			order: 1;
@@ -248,15 +248,15 @@
 			align-self: flex-start;
 			margin-right: auto;
 		}
-		.cb2-popup-form-cancel {
+		.cb-popup-form-cancel {
 			order: 2;
 		}
-		.cb2-popup-form-next {
+		.cb-popup-form-next {
 			order: 3;
 		}
 
 
-		#cb2-tab-objects .postbox {
+		#cb-tab-objects .postbox {
 			h2 {
 				/* display:block; */
 				border-bottom: none;
@@ -271,22 +271,22 @@
 		}
 
 		/* Saving effect @TODO */
-		&.cb2-saving {
-			.cb2-processing-overlay {
+		&.cb-saving {
+			.cb-processing-overlay {
 				display: block;
 				opacity:0.7;
 			}
-			.cb2-popup-form-save {
+			.cb-popup-form-save {
 				color:#aaa;
 				cursor:no-drop;
 			}
 		}
-		&.cb2-refreshing {
-			.cb2-processing-overlay {
+		&.cb-refreshing {
+			.cb-processing-overlay {
 				display: block;
 				opacity:0.7;
 			}
-			.cb2-popup-form-save {
+			.cb-popup-form-save {
 				color:#aaa;
 				cursor:no-drop;
 			}
@@ -303,58 +303,58 @@
 		/* standard simple objects for each status type
 		 * an advanced option shows all
 		 */
-		.cb2-advanced {
-			#CB2_PeriodEntity_Timeframe_User_user,
-			#CB2_PeriodEntity_Timeframe_User_item
+		.cb-advanced {
+			#cb_PeriodEntity_Timeframe_User_user,
+			#cb_PeriodEntity_Timeframe_User_item
 			{display:block!important;}
 		}
-		&.cb2-status-pickup-return,
-		&.cb2-status-1 {
-			#CB2_PeriodEntity_Timeframe_User_user
+		&.cb-status-pickup-return,
+		&.cb-status-1 {
+			#cb_PeriodEntity_Timeframe_User_user
 			{display:none;}
 		}
-		&.cb2-status-booked,
-		&.cb2-status-2 {
-			.cb2-add-class-advanced {display:none;}
+		&.cb-status-booked,
+		&.cb-status-2 {
+			.cb-add-class-advanced {display:none;}
 		}
-		&.cb2-status-closed,
-		&.cb2-status-3 {
-			#CB2_PeriodEntity_Timeframe_User_user,
-			#CB2_PeriodEntity_Timeframe_User_item
+		&.cb-status-closed,
+		&.cb-status-3 {
+			#cb_PeriodEntity_Timeframe_User_user,
+			#cb_PeriodEntity_Timeframe_User_item
 			{display:none;}
 		}
-		&.cb2-status-open,
-		&.cb2-status-4 {
-			#CB2_PeriodEntity_Timeframe_User_user,
-			#CB2_PeriodEntity_Timeframe_User_item
+		&.cb-status-open,
+		&.cb-status-4 {
+			#cb_PeriodEntity_Timeframe_User_user,
+			#cb_PeriodEntity_Timeframe_User_item
 			{display:none;}
 		}
-		&.cb2-status-repair,
-		&.cb2-status-5 {
-			.cb2-add-class-advanced {display:none;}
+		&.cb-status-repair,
+		&.cb-status-5 {
+			.cb-add-class-advanced {display:none;}
 		}
-		&.cb2-status-holiday,
-		&.cb2-status-6 {
-			#CB2_PeriodEntity_Timeframe_User_user,
-			#CB2_PeriodEntity_Timeframe_User_item
+		&.cb-status-holiday,
+		&.cb-status-6 {
+			#cb_PeriodEntity_Timeframe_User_user,
+			#cb_PeriodEntity_Timeframe_User_item
 			{display:none;}
 		}
 	}
 
-	#TB_window.cb2-popup-quick-create-opening-hours,
-	#TB_window.cb2-page-in-popup,
-	#TB_window.cb2-popup-addto,
-	#TB_window.cb2-popup-add {
+	#TB_window.cb-popup-quick-create-opening-hours,
+	#TB_window.cb-page-in-popup,
+	#TB_window.cb-popup-addto,
+	#TB_window.cb-popup-add {
 		#TB_title #TB_ajaxWindowTitle {
 			min-height:auto;
 		}
 	}
 
-	#TB_window.cb2-popup-quick-create-opening-hours #TB_title .TB_title_actions {
+	#TB_window.cb-popup-quick-create-opening-hours #TB_title .TB_title_actions {
 		display:none;
 	}
 
-	#TB_window.cb2-no-recurrence #cb2-save-types {
+	#TB_window.cb-no-recurrence #cb-save-types {
 		display:none;
 	}
 
@@ -367,15 +367,15 @@
 
 
 	/* -------------------------- specific popups ------------------- */
-	&.cb2-post-new.cb2-status-open,
-	&.cb2-post-new.cb2-status-booked,
-	&.cb2-post-new.cb2-status-pickup-return,
-	&.cb2-post-new.cb2-status-4,
-	&.cb2-post-new.cb2-status-2,
-	&.cb2-post-new.cb2-status-1 {
+	&.cb-post-new.cb-status-open,
+	&.cb-post-new.cb-status-booked,
+	&.cb-post-new.cb-status-pickup-return,
+	&.cb-post-new.cb-status-4,
+	&.cb-post-new.cb-status-2,
+	&.cb-post-new.cb-status-1 {
 		#post-body-content,
-		#CB2_PeriodEntity_Location_location,
-		#CB2_PeriodEntity_Location_status,
+		#cb_PeriodEntity_Location_location,
+		#cb_PeriodEntity_Location_status,
 		.cmb-type-post-link a {
 			display:none;
 		}
@@ -384,12 +384,12 @@
 			padding:8px;
 		}
 	}
-	&.cb2-post-new.cb2-status-2 {
-		#cmb2-metabox-CB2_PeriodEntity_Timeframe_User_period_validity_override__optional_ {
+	&.cb-post-new.cb-status-2 {
+		#cmb2-metabox-cb_PeriodEntity_Timeframe_User_period_validity_override__optional_ {
 			display:none;
 		}
 	}
 
-	&.cb2-popup-add {
+	&.cb-popup-add {
 	}
 }

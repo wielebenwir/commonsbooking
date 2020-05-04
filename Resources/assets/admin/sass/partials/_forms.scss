@@ -1,12 +1,12 @@
 /*
  * Admin screens
  *
- * Hande the display and reordering of meta boxes on cb2 admin form screens
+ * Hande the display and reordering of meta boxes on cb admin form screens
  * WP List table screens: _lists.scss
  *
- * .post-type-cb2_prdent-tf.admin_page_cb2-post-new 					// Timeframe new (wizard page)
- * .post-type-cb2_prdent-tf.admin_page_cb2-post-edit {} 			// Timeframe edit (calendar)
- * .post-type-cb2_prdent-location.admin_page_cb2-post-edit {} // Opening hours edit (calendar)
+ * .post-type-cb_prdent-tf.admin_page_cb-post-new 					// Timeframe new (wizard page)
+ * .post-type-cb_prdent-tf.admin_page_cb-post-edit {} 			// Timeframe edit (calendar)
+ * .post-type-cb_prdent-location.admin_page_cb-post-edit {} // Opening hours edit (calendar)
  *
  * @package   CommonsBooking2
  * @author Florian Egermann <florian@wielebenwir.de>
@@ -16,16 +16,16 @@
  * @copyright 2015 wielebenwir+
  */
 
-.cb2-admin-page {
+.cb-admin-page {
 	#post-body {
-		#post-body-content {}		// Contains .cb2-tabs
+		#post-body-content {}		// Contains .cb-tabs
 		#postbox-container-1 {} // Hidden
-		#postbox-container-2 {} // Contains #titlediv, .cb2-submitdiv: Create/Update buttons
+		#postbox-container-2 {} // Contains #titlediv, .cb-submitdiv: Create/Update buttons
 		#postdivrich {}					// Hidden
 		#container-main {}			// Main tab content (timeframe creation wizard form/calendar)
 		#container-options {}		// Second tab contant (timeframe options form)
 	}
-	.cb2-form-wrapper {
+	.cb-form-wrapper {
 		display:inline;
 	}
 }
@@ -127,14 +127,14 @@
 
 
 /* Admin screens: Hide container & set order */
-.cb2-admin-page.post-type-cb2_prdent-tf.admin_page_cb2-post-edit,
-.cb2-admin-page.post-type-cb2_prdent-location.admin_page_cb2-post-edit,
-.cb2-admin-page.post-type-cb2_prdent-tf.admin_page_cb2-post-new {
+.cb-admin-page.post-type-cb_prdent-tf.admin_page_cb-post-edit,
+.cb-admin-page.post-type-cb_prdent-location.admin_page_cb-post-edit,
+.cb-admin-page.post-type-cb_prdent-tf.admin_page_cb-post-new {
 	#post-body {
 		display: flex;
 		flex-direction: column;
 
-		#post-body-content { // Contains .cb2-tabs, #titlediv
+		#post-body-content { // Contains .cb-tabs, #titlediv
 			#titlediv { display: none }
 			order: 2;
 			margin: 0;
@@ -144,7 +144,7 @@
 			display: none;
 		}
 
-		#postbox-container-2 { // Contains #titlediv, .cb2-submitdiv: Create/Update buttons
+		#postbox-container-2 { // Contains #titlediv, .cb-submitdiv: Create/Update buttons
 			order: 5;
 			#normal-sortables { display: none; }
 			#major-publishing-actions { overflow: hidden; }
@@ -163,15 +163,15 @@
 	}
 }
 /* Single Booking */
-.cb2-admin-page.post-type-cb2_prdent-tf-user {
+.cb-admin-page.post-type-cb_prdent-tf-user {
 	#post-body {
 		display: flex;
 		flex-direction: column;
 
-		#postdivrich, #titlediv, .cb2-tabs, #CB2_PeriodEntity_Timeframe_User_status,
-		#CB2_PeriodEntity_Timeframe_User_post_date,
+		#postdivrich, #titlediv, .cb-tabs, #cb_PeriodEntity_Timeframe_User_status,
+		#cb_PeriodEntity_Timeframe_User_post_date,
 		#major-publishing-actions,
-		#CB2_PeriodEntity_Timeframe_User_period_group,
+		#cb_PeriodEntity_Timeframe_User_period_group,
 		#submitdiv  { // Hidden
 			display: none;
 		}
@@ -180,9 +180,9 @@
 			#normal-sortables {
 			display: flex;
 			flex-direction: row;
-			#CB2_PeriodEntity_Timeframe_User_location,
-			#CB2_PeriodEntity_Timeframe_User_item,
-			#CB2_PeriodEntity_Timeframe_User_user {
+			#cb_PeriodEntity_Timeframe_User_location,
+			#cb_PeriodEntity_Timeframe_User_item,
+			#cb_PeriodEntity_Timeframe_User_user {
 				width: 33%;
 				@extend .metabox-no-title;
 				.cmb-row {
@@ -191,7 +191,7 @@
 			}
 		}
 		}
-		#post-body-content { // Contains .cb2-tabs, #titlediv
+		#post-body-content { // Contains .cb-tabs, #titlediv
 			order: 2;
 			margin: 0;
 		}
@@ -200,27 +200,27 @@
 
 
 // Timeframe new (wizard page)
-.post-type-cb2_prdent-tf.admin_page_cb2-post-new {
+.post-type-cb_prdent-tf.admin_page_cb-post-new {
 	#postbox-container-1,
-	.cb2-tabs {
+	.cb-tabs {
 		display: none;
 	}
 
-	#CB2_PeriodEntity_Timeframe_status,
+	#cb_PeriodEntity_Timeframe_status,
 	#titlediv {
 		display: none;
 	}
 	#poststuff {
 		max-width: 700px;
 	}
-	.cb2-display-type-hidden {
+	.cb-display-type-hidden {
 		display: none;
 	}
 }
 // Edit Opening hours
-.cb2-admin-page.post-type-cb2_prdent-location.admin_page_cb2-post-edit {
+.cb-admin-page.post-type-cb_prdent-location.admin_page_cb-post-edit {
 	#postbox-container-1,
-	.cb2-tabs {
+	.cb-tabs {
 		display: none;
 	}
 }
@@ -232,16 +232,16 @@
 /* ---------------------- all admin screens */
 
 
-		ul.cb2-subposts li {
+		ul.cb-subposts li {
 			@extend .bg-gray;
 		}
-		.cb2-title {
+		.cb-title {
 			font-weight: bold;
 		}
-		.cb2-actions {
+		.cb-actions {
 			float: right;
 			.post-edit-link {
-				@extend .cb2-admin-button;
+				@extend .cb-admin-button;
 				float: right;
 			}
 			.post-delete-link {
@@ -252,12 +252,12 @@
 				display: none;
 			}
 		}
-		.cb2-usage-count-ok, .cb2-invalidity  {
+		.cb-usage-count-ok, .cb-invalidity  {
 			display: none;
 		}
-		.cb2-CTA {
+		.cb-CTA {
 			margin-top: 30px;
-			.cb2-CTA-action:last-of-type {
+			.cb-CTA-action:last-of-type {
 				float: right;
 			}
 		}
@@ -268,27 +268,27 @@
 
 
 
-body.cb2-admin-page #container-main-sortables { /* container */
+body.cb-admin-page #container-main-sortables { /* container */
 	margin-bottom: 0;
 }
 
 /* ----- individual meta boxes -----*/
 
-#CB2_PeriodEntity_Timeframe_period_validity_override__optional_ {
+#cb_PeriodEntity_Timeframe_period_validity_override__optional_ {
 	@extend .metabox-2-col;
 	@extend .metabox-no-timepicker;
 }
 
-#CB2_PeriodEntity_Timeframe_timeframe_settings {
+#cb_PeriodEntity_Timeframe_timeframe_settings {
 	@extend .metabox-2-col;
 }
 
-#CB2_PeriodEntity_Timeframe_period_group_ID_wizard {
+#cb_PeriodEntity_Timeframe_period_group_ID_wizard {
 
 	@extend .metabox-no-handle;
 
-	.cb2-no-opening-hours-show {
-		@extend .cb2-admin-notice;
+	.cb-no-opening-hours-show {
+		@extend .cb-admin-notice;
 		display: none;
 		margin: 20px 0;
 	}
@@ -304,52 +304,52 @@ body.cb2-admin-page #container-main-sortables { /* container */
 			padding-top: 100px;
 			text-align: center;
 
-			.cb2-options label{
+			.cb-options label{
 				@extend .small-text;
 			}
 
-			&.cb2-period-group-id-OPH {
-				background: url('../icons/cb2-period-group-id-OPH.png') no-repeat;
+			&.cb-period-group-id-OPH {
+				background: url('../icons/cb-period-group-id-OPH.png') no-repeat;
 				background-position: top;
 				background-size: 50%;
 			}
-			&.cb2-period-group-id-HRY {
-				background: url('../icons/cb2-period-group-id-HRY.png') no-repeat;
-				background-position: top;
-				background-size: 50%;
-			}
-
-			&.cb2-period-group-id-CUS {
-				background: url('../icons/cb2-period-group-id-CUS.png') no-repeat;
+			&.cb-period-group-id-HRY {
+				background: url('../icons/cb-period-group-id-HRY.png') no-repeat;
 				background-position: top;
 				background-size: 50%;
 			}
 
-			&.cb2-period-group-id-247 {
-				background: url('../icons/cb2-period-group-id-247.png') no-repeat;
+			&.cb-period-group-id-CUS {
+				background: url('../icons/cb-period-group-id-CUS.png') no-repeat;
 				background-position: top;
 				background-size: 50%;
 			}
 
-			&.cb2-period-group-id-CUS .cb2-options,
-			&.cb2-period-group-id-247 .cb2-options {
+			&.cb-period-group-id-247 {
+				background: url('../icons/cb-period-group-id-247.png') no-repeat;
+				background-position: top;
+				background-size: 50%;
+			}
+
+			&.cb-period-group-id-CUS .cb-options,
+			&.cb-period-group-id-247 .cb-options {
 				display: none;
 			}
 
-			&.cb2-period-group-id-CUS.cb2-selected .cb2-options,
-			&.cb2-period-group-id-247.cb2-selected .cb2-options {
+			&.cb-period-group-id-CUS.cb-selected .cb-options,
+			&.cb-period-group-id-247.cb-selected .cb-options {
 				display: block;
 			}
 
-			&.cb2-selected {
+			&.cb-selected {
 				@extend .selectable-selected;
 			}
 		}
 	}
 }
 
-#CB2_PeriodEntity_Timeframe_location,
-#CB2_PeriodEntity_Timeframe_item {
+#cb_PeriodEntity_Timeframe_location,
+#cb_PeriodEntity_Timeframe_item {
 	@extend .metabox-no-title;
 }
 
@@ -371,12 +371,12 @@ body.cb2-admin-page #container-main-sortables { /* container */
 }
 
 /* Popup: Period */
-#CB2_Period_period {
+#cb_Period_period {
 
 	@extend .metabox-popup;
 	position: relative;
 
-	// #cmb2-metabox-CB2_Period_period {
+	// #cmb2-metabox-cb_Period_period {
 	// 	display: flex;
 	// 	flex-direction: row;
 	// 	flex-wrap: nowrap;
@@ -409,9 +409,9 @@ body.cb2-admin-page #container-main-sortables { /* container */
 
 }
 /* Popup: recurrence */
-#cb2-save-types {
+#cb-save-types {
 
-	.cb2-apply-to {
+	.cb-apply-to {
 		font-weight: bold;
 		margin-right: 20px;
 	}
@@ -427,7 +427,7 @@ body.cb2-admin-page #container-main-sortables { /* container */
 
 
 /* Popup: Period */
-#CB2_Period_recurrence {
+#cb_Period_recurrence {
 	@extend .metabox-popup;
 
 	.inside {
@@ -439,7 +439,7 @@ body.cb2-admin-page #container-main-sortables { /* container */
 		float: none;
 	}
 
-	.cb2-description {
+	.cb-description {
 		color: $wp-blue; /* background is blue, provide contrast */
 	}
 	.cmb2-id-recurrence-sequence {
@@ -472,37 +472,37 @@ body.cb2-admin-page #container-main-sortables { /* container */
 }
 
 // #PeriodEntityTimeframe - Add new ––––––––––––––––––––––––––––––––––––––––---
-#TB_window.cb2-post-new {
+#TB_window.cb-post-new {
 	#container-main {
 		#container-main-sortables {
 			div {
 					@extend .metabox-no-title;
 			}
-			#CB2_PeriodEntity_Timeframe_item {
+			#cb_PeriodEntity_Timeframe_item {
 				display: none;
 			}
 		}
 	}
 	#container-options {
 		display: block !important; /* prevent tabs script from hiding it */
-		#CB2_PeriodEntity_Timeframe_timeframe_settings {
+		#cb_PeriodEntity_Timeframe_timeframe_settings {
 
 		}
-		#CB2_PeriodEntity_Timeframe_period_validity_override__optional_ {
+		#cb_PeriodEntity_Timeframe_period_validity_override__optional_ {
 				@extend .metabox-no-title;
 		}
 	}
 }
 
 // #PeriodEntityTimeframe - Timeframe editor screen tabs ––––––––––––––––––––––
-.admin_page_cb2-post-edit.post-type-cb2_prdent-tf {
+.admin_page_cb-post-edit.post-type-cb_prdent-tf {
 	// empty metaboxes & content
 	#postbox-container-1,
 	#postdivrich {
 		display: none;
 	}
 
-	#cb2-submitdiv {} //@TODO styling
+	#cb-submitdiv {} //@TODO styling
 
 	#container-main { // summary-bar + calendar
 
@@ -516,24 +516,24 @@ body.cb2-admin-page #container-main-sortables { /* container */
 				margin: 0;
 
 				/* elements in summary bar */
-				&#CB2_PeriodEntity_Timeframe_post_date {
+				&#cb_PeriodEntity_Timeframe_post_date {
 					order: 1;
 				}
-				&#CB2_PeriodEntity_Timeframe_location {
+				&#cb_PeriodEntity_Timeframe_location {
 					order: 2;
 				}
-				&#CB2_PeriodEntity_Timeframe_item {
+				&#cb_PeriodEntity_Timeframe_item {
 					order: 3;
 				}
-				&#CB2_PeriodEntity_Timeframe_item_post_view {
+				&#cb_PeriodEntity_Timeframe_item_post_view {
 					order: 4;
 				}
-				&#CB2_PeriodEntity_Timeframe_calendar_view { /*calendar */
+				&#cb_PeriodEntity_Timeframe_calendar_view { /*calendar */
 					order: 6;
 					width: 100%;
 					margin-top: 20px;
 				}
-				&#CB2_PeriodEntity_Timeframe_status { /* Allow bookings */
+				&#cb_PeriodEntity_Timeframe_status { /* Allow bookings */
 					display: none; //hide Allow bookings Button
 					order: 5;
 					flex-grow: 1;
@@ -559,11 +559,11 @@ body.cb2-admin-page #container-main-sortables { /* container */
 }
 
 // #PeriodEntityLocation - Location opening hours editor screen
-.post-type-cb2_prdent-location {
-	#CB2_PeriodEntity_Location_location,
-	#CB2_PeriodEntity_Location_post_date,
+.post-type-cb_prdent-location {
+	#cb_PeriodEntity_Location_location,
+	#cb_PeriodEntity_Location_post_date,
 	#postbox-container-2,
-	#CB2_PeriodEntity_Location_status {
+	#cb_PeriodEntity_Location_status {
 		display: none;
 	}
 }
@@ -571,7 +571,7 @@ body.cb2-admin-page #container-main-sortables { /* container */
 
 
 
-#CB2_PeriodEntity_Timeframe_period_group,
-#CB2_PeriodEntity_Timeframe_period_status_type {
+#cb_PeriodEntity_Timeframe_period_group,
+#cb_PeriodEntity_Timeframe_period_status_type {
 	display: none;
 }

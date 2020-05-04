@@ -26,8 +26,13 @@ class Day
     public function __construct($date, $locations = [], $items = [], $types = [])
     {
         $this->date = $date;
-        $this->locations = $locations;
-        $this->items = $items;
+        $this->locations = array_map(function ($location) {
+            return $location instanceof \WP_Post ? $location->ID : $location;
+        }, $locations);
+        $this->items = array_map(function ($item) {
+            return $item instanceof \WP_Post ? $item->ID : $item;
+        }, $items);
+
         $this->types = $types;
     }
 
@@ -52,6 +57,36 @@ class Day
         return $this->date;
     }
 
+    public function getFormattedDate($format)
+    {
+        return date($format, strtotime($this->getDate()));
+    }
+
+    public function getFormattedSlotStartDate($format, $slotNr)
+    {
+        $slot = $this->getSlot($slotNr);
+        $time = intval(strtotime($this->getDate() . ' ' . $slot['timestart']));
+        return date($format, $time);
+    }
+
+    public function getFormattedSlotEndDate($format, $slotNr)
+    {
+        $slot = $this->getSlot($slotNr);
+        $time = intval(strtotime($this->getDate() . ' ' . $slot['timeend'])) - 1;
+        return date($format, $time);
+    }
+
+    public function getSlot($slotNr)
+    {
+        $grid = $this->getGrid();
+
+        if (count($grid) && !empty($grid[$slotNr])) {
+            return $grid[$slotNr];
+        } else {
+            throw new \Exception(__CLASS__ . "::" . __FUNCTION__ . ": Invalid slot.");
+        }
+    }
+
     /**
      * @param mixed $date
      *
@@ -74,36 +109,36 @@ class Day
         return array(
             'relation' => "OR",
             array(
-                'key'     => 'start-date',
-                'value'   => array(
+                'key' => 'start-date',
+                'value' => array(
                     date('Y-m-d\TH:i', strtotime($this->getDate())),
                     date('Y-m-d\TH:i', strtotime($this->getDate() . 'T23:59'))
                 ),
                 'compare' => 'BETWEEN',
-                'type'    => 'DATE'
+                'type' => 'DATE'
             ),
             array(
-                'key'     => 'end-date',
-                'value'   => array(
+                'key' => 'end-date',
+                'value' => array(
                     date('Y-m-d\TH:i', strtotime($this->getDate())),
                     date('Y-m-d\TH:i', strtotime($this->getDate() . 'T23:59'))
                 ),
                 'compare' => 'BETWEEN',
-                'type'    => 'DATE'
+                'type' => 'DATE'
             ),
             array(
                 'relation' => "AND",
                 array(
-                    'key'     => 'start-date',
-                    'value'   => date('Y-m-d\TH:i', strtotime($this->getDate())),
+                    'key' => 'start-date',
+                    'value' => date('Y-m-d\TH:i', strtotime($this->getDate())),
                     'compare' => '<',
-                    'type'    => 'DATE'
+                    'type' => 'DATE'
                 ),
                 array(
-                    'key'     => 'end-date',
-                    'value'   => date('Y-m-d\TH:i', strtotime($this->getDate())),
+                    'key' => 'end-date',
+                    'value' => date('Y-m-d\TH:i', strtotime($this->getDate())),
                     'compare' => '>',
-                    'type'    => 'DATE'
+                    'type' => 'DATE'
                 )
             )
         );
@@ -117,24 +152,24 @@ class Day
 
         if (count($locations)) {
             $metaQuery[] = array(
-                'key'     => 'location-id',
-                'value'   => $locations,
+                'key' => 'location-id',
+                'value' => $locations,
                 'compare' => 'IN'
             );
         }
 
         if (count($items)) {
             $metaQuery[] = array(
-                'key'     => 'item-id',
-                'value'   => $items,
+                'key' => 'item-id',
+                'value' => $items,
                 'compare' => 'IN'
             );
         }
 
         if (count($types)) {
             $metaQuery[] = array(
-                'key'     => 'type',
-                'value'   => $types,
+                'key' => 'type',
+                'value' => $types,
                 'compare' => 'IN'
             );
         }
@@ -150,7 +185,7 @@ class Day
     {
         // Default query
         $args = array(
-            'post_type'  => Timeframe::getPostType(),
+            'post_type' => Timeframe::getPostType(),
             'meta_query' => $this->getTimeRangeQuery()
         );
 
@@ -202,18 +237,19 @@ class Day
         $multidayTimeframeTypes = Timeframe::$multiDayFrames;
         $multidayTimeframe = in_array(get_post_meta($timeframe->ID, 'type', true), $multidayTimeframeTypes);
 
-        if($multidayTimeframe) {
+        if ($multidayTimeframe) {
+
             // Check if Timeframe starts on another day before.
             if (
                 $type == 'start' &&
-                $time->getTimestamp() < $this->getDateObject()->setTime(0,0)->getTimestamp()) {
+                $time->getTimestamp() < $this->getDateObject()->setTime(0, 0)->getTimestamp()) {
                 $slot = 0;
             }
 
             // Check if Timeframe ends on another day after.
             if (
                 $type == 'end' &&
-                $time->getTimestamp() > $this->getDateObject()->setTime(23,59)->getTimestamp()) {
+                $time->getTimestamp() > $this->getDateObject()->setTime(23, 59)->getTimestamp()) {
                 $slot = 24 / $grid;
             }
         }
@@ -228,7 +264,8 @@ class Day
      *
      * @return float|int
      */
-    protected function getStartSlot(\DateTime $time, $grid, $timeframe) {
+    protected function getStartSlot(\DateTime $time, $grid, $timeframe)
+    {
         return $this->getSlotByTime($time, $grid, $timeframe, 'start');
     }
 
@@ -239,7 +276,8 @@ class Day
      *
      * @return float|int
      */
-    protected function getEndSlot(\DateTime $time, $grid, $timeframe) {
+    protected function getEndSlot(\DateTime $time, $grid, $timeframe)
+    {
         return $this->getSlotByTime($time, $grid, $timeframe, 'end');
     }
 
@@ -255,8 +293,11 @@ class Day
         $grid = 24;
         // Get grid size from existing timeframes
         foreach ($timeframes as $timeframe) {
-            if ($timeframeGrid = get_post_meta($timeframe->ID, 'grid', true) < $grid) {
-                $grid = $timeframeGrid;
+            $timeframeGrid = intval($timeframe->grid);
+            if ($timeframeGrid < $grid) {
+                if (is_numeric($timeframeGrid) && $timeframeGrid > 0) {
+                    $grid = $timeframeGrid;
+                }
             }
         }
 
@@ -287,12 +328,13 @@ class Day
 
             // Add timeframe to relevant slots
             while ($startSlot <= $endSlot) {
-                $slots[$startSlot++]['timeframes'][] = $timeframe;
+                if (!array_key_exists('timeframe', $slots[$startSlot]) || !$slots[$startSlot]['timeframe']) {
+                    $slots[$startSlot]['timeframe'] = $timeframe;
+                } else {
+                    $slots[$startSlot]['timeframe'] = Timeframe::getHigherPrioFrame($timeframe, $slots[$startSlot]['timeframe']);
+                }
 
-                //@TODO: Define main frame for calendar.
-//                if(!$slots[$startSlot+]['mainframe']) {
-//                    $slots[$startSlot++]['mainframe'] = $timeframe;
-//                }
+                $startSlot++;
             }
         }
     }
@@ -310,15 +352,15 @@ class Day
 
         $slots = [];
         $grid = $this->getMinimalGridFromTimeframes($timeframes);
+
         $slotsPerDay = 24 / $grid;
 
         // Init Slots
         for ($i = 0; $i < $slotsPerDay; $i++) {
             $slots[$i] = [
-                'timestart'  => date('H:i', $i * ((24 / $slotsPerDay) * 3600)),
-                'timeend'    => date('H:i', ($i + 1) * ((24 / $slotsPerDay) * 3600)),
-                'timeframes' => [],
-                'mainframe' => null
+                'timestart' => date('H:i', $i * ((24 / $slotsPerDay) * 3600)),
+                'timeend' => date('H:i', ($i + 1) * ((24 / $slotsPerDay) * 3600)),
+                'timeframes' => []
             ];
         }
 

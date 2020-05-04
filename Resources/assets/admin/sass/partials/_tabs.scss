@@ -8,10 +8,10 @@
  * @link      http://www.wielebenwir.de
  * @copyright 2015 wielebenwir
  */
-.cb2-admin-page {
+.cb-admin-page {
 
 	/* ------------------------------------------------------------- tabs2 */
-	.cb2-tabs {
+	.cb-tabs {
 		border-bottom:1px solid #d7d7d7;
 		margin: 20px 0px 0px 0px;
 
@@ -34,7 +34,7 @@
 			color:#666;
 			text-decoration:none;
 		}
-		li.cb2-selected {
+		li.cb-selected {
 			background:#fff;
 			border-top:1px solid #a7a7a7;
 			border-left:1px solid #a7a7a7;
@@ -44,43 +44,43 @@
 			z-index:1000;
 			position:relative;
 		}
-		li.cb2-selected a {
+		li.cb-selected a {
 			color:#0073aa;
 		}
-		li.cb2-unselected:hover {
+		li.cb-unselected:hover {
 			background-color:#fff;
 		}
 	}
-	.cb2-tabs-postbox-container-2-selected #submitdiv {
+	.cb-tabs-postbox-container-2-selected #submitdiv {
 	}
-	&.columns-2 .cb2-tabs {
+	&.columns-2 .cb-tabs {
 		/* hide tabs if sidebar available */
 		display:none;
 	}
 
 	/* ------------------------------------------------------------- Helpful chars before selection boxes */
-	.cmb-row .cb2-cmb2-inner:before {
+	.cmb-row .cb-cmb2-inner:before {
 		@extend .admin-icons;
 	}
-	.cmb-type-post-link.cmb2-id-item-ID .cb2-cmb2-inner:before {
+	.cmb-type-post-link.cmb2-id-item-ID .cb-cmb2-inner:before {
 		content: "\f480";
 	}
-	.cmb2-id-entity-post-data-post-date .cb2-cmb2-inner:before {
+	.cmb2-id-entity-post-data-post-date .cb-cmb2-inner:before {
 		content: "\f108";
 	}
-	.cmb2-id-location-ID .cb2-cmb2-inner:before {
+	.cmb2-id-location-ID .cb-cmb2-inner:before {
 		content: "\f102";
 	}
-	.cmb2-id-item-ID .cb2-cmb2-inner:before {
+	.cmb2-id-item-ID .cb-cmb2-inner:before {
 		content: "\f480";
 	}
-	#CB2_PeriodEntity_Timeframe_item_post_view .cb2-cmb2-inner:before {
+	#cb_PeriodEntity_Timeframe_item_post_view .cb-cmb2-inner:before {
 		content: "\f504";
 	}
 
-	.cmb2-id-user-ID     .cb2-cmb2-inner:before,
-	.cmb2-id-cb2-user-ID .cb2-cmb2-inner:before,
-	.cmb2-id-author-ID   .cb2-cmb2-inner:before {
+	.cmb2-id-user-ID     .cb-cmb2-inner:before,
+	.cmb2-id-cb-user-ID .cb-cmb2-inner:before,
+	.cmb2-id-author-ID   .cb-cmb2-inner:before {
 		content: "\f110";
 	}
 }

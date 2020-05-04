@@ -23,6 +23,18 @@ class Plugin
     }
 
     /**
+     * @return mixed
+     */
+    public static function getCustomPostTypesLabel()
+    {
+        return [
+            Item::getPostType(),
+            Location::getPostType(),
+            Timeframe::getPostType()
+        ];
+    }
+
+    /**
      *  Init hooks.
      */
     public function init()
