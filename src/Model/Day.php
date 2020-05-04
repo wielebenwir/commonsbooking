@@ -152,25 +152,52 @@ class Day
 
         if (count($locations)) {
             $metaQuery[] = array(
-                'key' => 'location-id',
-                'value' => $locations,
-                'compare' => 'IN'
+                'relation' => 'OR',
+                [
+                    'key' => 'location-id',
+                    'value' => $locations,
+                    'compare' => 'IN'
+                ],
+                // Not selected
+                [
+                    'key' => 'location-id',
+                    'value' => 'none',
+                    'compare' => '='
+                ]
             );
         }
 
         if (count($items)) {
             $metaQuery[] = array(
-                'key' => 'item-id',
-                'value' => $items,
-                'compare' => 'IN'
+                'relation' => 'OR',
+                [
+                    'key' => 'item-id',
+                    'value' => $items,
+                    'compare' => 'IN'
+                ],
+                // Not selected
+                [
+                    'key' => 'item-id',
+                    'value' => 'none',
+                    'compare' => '='
+                ]
             );
         }
 
         if (count($types)) {
             $metaQuery[] = array(
-                'key' => 'type',
-                'value' => $types,
-                'compare' => 'IN'
+                'relation' => 'OR',
+                [
+                    'key' => 'type',
+                    'value' => $types,
+                    'compare' => 'IN'
+                ],
+                // Not selected
+                [
+                    'key' => 'type',
+                    'value' => 'none',
+                    'compare' => '='
+                ]
             );
         }
 
