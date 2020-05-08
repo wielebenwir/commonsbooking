@@ -27,6 +27,7 @@ function commonsbooking_public_style() {
 add_action( 'wp_enqueue_scripts', 'commonsbooking_public_style' );
 
 require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/vendor/cmb2/cmb2/init.php';
 
 $cbPlugin = new \CommonsBooking\Plugin();
 $cbPlugin->init();

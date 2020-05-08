@@ -1,7 +1,7 @@
 <?php
 
 
-namespace CommonsBooking\Wordpress;
+namespace CommonsBooking\Wordpress\MetaBox;
 
 
 /**

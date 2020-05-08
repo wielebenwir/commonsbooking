@@ -1,5 +1,4 @@
-<div class="alignwide">
-    {% for week in calendar.weeks %}
+{% for week in calendar.weeks %}
         <ul class="cb-calendar">
             {% for dayOfWeek in [1,2,3,4,5,6,7] %}
                 {% for day in week.days %}
@@ -9,5 +8,4 @@
                 {% endfor %}
             {% endfor %}
         </ul>
-    {% endfor %}
-</div>
+{% endfor %}

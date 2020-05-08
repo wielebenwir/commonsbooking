@@ -1,10 +1,7 @@
 <?php
 
 
-namespace CommonsBooking\Form;
-
-
-use CommonsBooking\View\Form;
+namespace CommonsBooking\Wordpress\MetaBox;
 
 class Field
 {
@@ -43,6 +40,35 @@ class Field
         $this->capability = $capability;
         $this->options = $options;
     }
+
+    public function getParamsArray() {
+        $params = array(
+            'name' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'id' => $this->getName(),
+            'type' => $this->getType()
+        );
+
+        if($this->getType() == 'select') {
+            $params['show_option_none'] = true;
+        }
+
+        if(count($this->getOptions())) {
+            foreach ($this->getOptions() as $key => $item) {
+
+                if($item instanceof \WP_Post) {
+                    $key = $item->ID;
+                    $label = $item->post_title;
+                } else {
+                    $label = $item;
+                }
+                $params['options'][$key] = $label;
+            }
+        }
+
+        return $params;
+    }
+
 
     /**
      * @return mixed

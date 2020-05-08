@@ -11,7 +11,10 @@ class Location extends CustomPostType
      * Item constructor.
      */
     public function __construct()
-    {}
+    {
+        // Just a test...
+        add_shortcode( 'cb_location', array(\CommonsBooking\View\Location::class, 'single') );
+    }
 
     public function getArgs()
     {

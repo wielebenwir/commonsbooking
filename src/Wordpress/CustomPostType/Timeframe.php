@@ -2,8 +2,7 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-use CommonsBooking\Form\Field;
-use CommonsBooking\Wordpress\MetaBox;
+use CommonsBooking\Wordpress\MetaBox\Field;
 
 class Timeframe extends CustomPostType
 {
@@ -17,8 +16,6 @@ class Timeframe extends CustomPostType
     const BOOKING_CANCELED_ID = 7;
 
     public static $postType = 'cb_timeframe';
-
-    protected $metaboxes;
 
     protected $menuPosition = 1;
 
@@ -44,22 +41,65 @@ class Timeframe extends CustomPostType
     {
         $this->types = self::getTypes();
 
-        // Detail View
-        /**
-         * https://sltaylor.co.uk/blog/control-your-own-wordpress-custom-fields/
-         */
-        add_action('admin_menu', array($this, 'createCustomFields'));
+        // Add Meta Boxes
+        add_action( 'cmb2_admin_init', array($this, 'registerMetabox'));
+
+        // Remove not needed Meta Boxes
         add_action('do_meta_boxes', array($this, 'removeDefaultCustomFields'), 10, 3);
 
+        // List settings
         $this->removeListTitleColumn();
         $this->removeListDateColumn();
 
+        // Save-handling
         if (
             isset($_POST[self::getWPNonceId()]) &&
             wp_verify_nonce($_POST[self::getWPNonceId()], self::getWPAction())
         ) {
             add_action('save_post', array($this, 'saveCustomFields'), 1, 2);
         }
+    }
+
+    public static function getBookingByDate($startDate, $endDate, $location, $item) {
+        // Default query
+        $args = array(
+            'post_type' => Timeframe::getPostType(),
+            'meta_query' => array(
+                'relation' => "AND",
+                array(
+                    'key' => 'start-date',
+                    'value' => $startDate,
+                    'compare' => '='
+                ),
+                array(
+                    'key' => 'end-date',
+                    'value' => $endDate,
+                    'compare' => '='
+                ),
+                array(
+                    'key' => 'type',
+                    'value' => Timeframe::BOOKING_ID,
+                    'compare' => '='
+                ),
+                array(
+                    'key' => 'location-id',
+                    'value' => $location,
+                    'compare' => '='
+                ),
+                array(
+                    'key' => 'item-id',
+                    'value' => $item,
+                    'compare' => '='
+                )
+            )
+        );
+
+        $query = new \WP_Query($args);
+        if ($query->have_posts()) {
+            return $query->get_posts();
+        }
+
+        return [];
     }
 
     public static function handleFormRequest()
@@ -164,19 +204,19 @@ class Timeframe extends CustomPostType
     protected function getCustomFields()
     {
         return array(
-            new Field("location-id", __("Location", TRANSLATION_CONST), "", "selectbox", "edit_posts", Location::getAllPosts()),
-            new Field("item-id", __("Item", TRANSLATION_CONST), "", "selectbox", "edit_posts", Item::getAllPosts()),
-            new Field("start-date", __("Start date", TRANSLATION_CONST), "", "datetime", "edit_posts"),
-            new Field("end-date", __("End date", TRANSLATION_CONST), "", "datetime", "edit_pages"),
-            new Field("grid", __("Grid", TRANSLATION_CONST), "", "selectbox", "edit_pages",
+            new Field("location-id", __("Location", TRANSLATION_CONST), "", "select", "edit_posts", Location::getAllPosts()),
+            new Field("item-id", __("Item", TRANSLATION_CONST), "", "select", "edit_posts", Item::getAllPosts()),
+            new Field("start-date", __("Start date", TRANSLATION_CONST), "", "text_datetime_timestamp", "edit_posts"),
+            new Field("end-date", __("End date", TRANSLATION_CONST), "", "text_datetime_timestamp", "edit_pages"),
+            new Field("grid", __("Grid", TRANSLATION_CONST), "", "select", "edit_pages",
                 [
                     1 => 1, 2 => 2, 3 => 3, 4 => 4
                 ]
             ),
-            new Field("type", __('Type', TRANSLATION_CONST), "", "selectbox", "edit_pages",
+            new Field("type", __('Type', TRANSLATION_CONST), "", "select", "edit_pages",
                 self::getTypes()
             ),
-            new Field("repetition", __('Repetition', TRANSLATION_CONST), "", "selectbox", "edit_pages",
+            new Field("repetition", __('Repetition', TRANSLATION_CONST), "", "select", "edit_pages",
                 [
                     'd' => __("Daily", TRANSLATION_CONST),
                     'w' => __("Weekly", TRANSLATION_CONST),
@@ -184,7 +224,7 @@ class Timeframe extends CustomPostType
                     'y' => __("Yearly", TRANSLATION_CONST)
                 ]
             ),
-            new Field("weekdays", __('Weekdays', TRANSLATION_CONST), "", "checkboxes", "edit_pages",
+            new Field("weekdays", __('Weekdays', TRANSLATION_CONST), "", "multicheck", "edit_pages",
                 [
                     1 => __("Monday", TRANSLATION_CONST),
                     2 => __("Tuesday", TRANSLATION_CONST),
@@ -195,7 +235,7 @@ class Timeframe extends CustomPostType
                     7 => __("Sunday", TRANSLATION_CONST)
                 ]
             ),
-            new Field("repetition-end", __('Repetition end', TRANSLATION_CONST), "", "date", "edit_pages")
+            new Field("repetition-end", __('Repetition end', TRANSLATION_CONST), "", "text_datetime_timestamp", "edit_pages")
         );
     }
 
@@ -230,18 +270,6 @@ class Timeframe extends CustomPostType
         } else {
             throw new \Exception('invalid type id');
         }
-    }
-
-    /**
-     * Returns metaboxes for timeframe.
-     * @return array
-     */
-    public function getMetaboxes(): array
-    {
-        if ($this->metaboxes == null) {
-            $this->metaboxes[] = new MetaBox(self::getPostType() . "-custom-fields", "Timeframe", array($this, 'renderMetabox'), self::getPostType());
-        }
-        return $this->metaboxes;
     }
 
     /**

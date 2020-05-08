@@ -62,17 +62,25 @@ class Day
         return date($format, strtotime($this->getDate()));
     }
 
+    public function getSlotStartTimestamp($slotNr) {
+        $slot = $this->getSlot($slotNr);
+        return intval(strtotime($this->getDate() . ' ' . $slot['timestart']));
+    }
+
+    public function getSlotEndTimestamp($slotNr) {
+        $slot = $this->getSlot($slotNr);
+        return intval(strtotime($this->getDate() . ' ' . $slot['timeend'])) - 1;
+    }
+
     public function getFormattedSlotStartDate($format, $slotNr)
     {
-        $slot = $this->getSlot($slotNr);
-        $time = intval(strtotime($this->getDate() . ' ' . $slot['timestart']));
+        $time = $this->getSlotStartTimestamp($slotNr);
         return date($format, $time);
     }
 
     public function getFormattedSlotEndDate($format, $slotNr)
     {
-        $slot = $this->getSlot($slotNr);
-        $time = intval(strtotime($this->getDate() . ' ' . $slot['timeend'])) - 1;
+        $time = $this->getSlotEndTimestamp($slotNr);
         return date($format, $time);
     }
 
@@ -111,34 +119,34 @@ class Day
             array(
                 'key' => 'start-date',
                 'value' => array(
-                    date('Y-m-d\TH:i', strtotime($this->getDate())),
-                    date('Y-m-d\TH:i', strtotime($this->getDate() . 'T23:59'))
+                    strtotime($this->getDate()),
+                    strtotime($this->getDate() . 'T23:59')
                 ),
                 'compare' => 'BETWEEN',
-                'type' => 'DATE'
+                'type' => 'numeric'
             ),
             array(
                 'key' => 'end-date',
                 'value' => array(
-                    date('Y-m-d\TH:i', strtotime($this->getDate())),
-                    date('Y-m-d\TH:i', strtotime($this->getDate() . 'T23:59'))
+                    strtotime($this->getDate()),
+                    strtotime($this->getDate() . 'T23:59')
                 ),
                 'compare' => 'BETWEEN',
-                'type' => 'DATE'
+                'type' => 'numeric'
             ),
             array(
                 'relation' => "AND",
                 array(
                     'key' => 'start-date',
-                    'value' => date('Y-m-d\TH:i', strtotime($this->getDate())),
+                    'value' =>strtotime($this->getDate()),
                     'compare' => '<',
-                    'type' => 'DATE'
+                    'type' => 'numeric'
                 ),
                 array(
                     'key' => 'end-date',
-                    'value' => date('Y-m-d\TH:i', strtotime($this->getDate())),
+                    'value' => strtotime($this->getDate()),
                     'compare' => '>',
-                    'type' => 'DATE'
+                    'type' => 'numeric'
                 )
             )
         );
@@ -347,22 +355,25 @@ class Day
         foreach ($timeframes as $timeframe) {
             $startDateString = get_post_meta($timeframe->ID, 'start-date', true);
             $endDateString = get_post_meta($timeframe->ID, 'end-date', true);
-            $startDate = new \DateTime($startDateString);
-            $endDate = new \DateTime($endDateString);
+
+            $startDate = new \DateTime();
+            $startDate->setTimestamp($startDateString);
+            $endDate = new \DateTime();
+            $endDate->setTimestamp($endDateString);
 
             $startSlot = $this->getStartSlot($startDate, $grid, $timeframe);
             $endSlot = $this->getEndSlot($endDate, $grid, $timeframe);
 
-                // Add timeframe to relevant slots
-                while ($startSlot <= $endSlot) {
-                    if (!array_key_exists('timeframe', $slots[$startSlot]) || !$slots[$startSlot]['timeframe']) {
-                        $slots[$startSlot]['timeframe'] = $timeframe;
-                    } else {
-                        $slots[$startSlot]['timeframe'] = Timeframe::getHigherPrioFrame($timeframe, $slots[$startSlot]['timeframe']);
-                    }
-
-                    $startSlot++;
+            // Add timeframe to relevant slots
+            while ($startSlot <= $endSlot) {
+                if (!array_key_exists('timeframe', $slots[$startSlot]) || !$slots[$startSlot]['timeframe']) {
+                    $slots[$startSlot]['timeframe'] = $timeframe;
+                } else {
+                    $slots[$startSlot]['timeframe'] = Timeframe::getHigherPrioFrame($timeframe, $slots[$startSlot]['timeframe']);
                 }
+
+                $startSlot++;
+            }
         }
     }
 

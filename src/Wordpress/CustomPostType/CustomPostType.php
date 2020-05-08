@@ -3,11 +3,6 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-
-use CommonsBooking\Form\Field;
-use CommonsBooking\View\Form;
-use CommonsBooking\Wordpress\MetaBox;
-
 abstract class CustomPostType
 {
 
@@ -84,27 +79,6 @@ abstract class CustomPostType
         remove_post_type_support(static::getPostType(), 'thumbnail');
     }
 
-    /**
-     *
-     */
-    public function createCustomFields()
-    {
-        if (function_exists('add_meta_box')) {
-            /** @var MetaBox $metabox */
-            foreach ($this->getMetaboxes() as $metabox) {
-                add_meta_box(
-                    $metabox->getId(),
-                    $metabox->getTitle(),
-                    $metabox->getCallback(),
-                    $metabox->getScreen(),
-                    $metabox->getContext(),
-                    $metabox->getPriority(),
-                    $metabox->getCallbackArgs()
-                );
-            }
-        }
-    }
-
     public static function getWPAction()
     {
         return static::getPostType() . "-custom-fields";
@@ -164,31 +138,17 @@ abstract class CustomPostType
 
     }
 
-    public function renderMetabox($post, $args)
-    {
-        global $post;
-        ?>
-        <div class="form-wrap">
-            <?php
-            wp_nonce_field(static::getPostType() . "-custom-fields",
-                static::getPostType() . "-custom-fields" . '_wpnonce', false, true);
+    public function registerMetabox() {
+        $cmb = new_cmb2_box([
+            'id' => static::getPostType() . "-custom-fields",
+            'title' => "Timeframe",
+            'object_types' => array(static::getPostType())
+        ]);
 
-            /** @var Field $customField */
-            foreach ($this->getCustomFields() as $customField) {
-
-                $output = true;
-                // Check capability
-                if (!current_user_can($customField->getCapability(), $post->ID)) {
-                    $output = false;
-                }
-                // Output if allowed
-                if ($output) {
-                    Form::renderField($post, $customField);
-                }
-            }
-            ?>
-        </div>
-        <?php
+        /** @var Field $customField */
+        foreach ($this->getCustomFields() as $customField) {
+            $cmb->add_field( $customField->getParamsArray());
+        }
     }
 
     /**
