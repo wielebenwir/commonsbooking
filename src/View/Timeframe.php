@@ -19,20 +19,27 @@ class Timeframe extends View
         $item = get_post($itemId);
         $location = get_post($locationId);
 
-        $slot = isset($_GET['slot'])  && $_GET['slot'] != "" ? $_GET['slot'] : null;
-        $date = isset($_GET['date'])  && $_GET['date'] != "" ? $_GET['date'] : null;
+        $startSlot = isset($_GET['start']['slot'])  && $_GET['start']['slot'] != "" ? $_GET['start']['slot'] : null;
+        $startDate = isset($_GET['start']['date'])  && $_GET['start']['date'] != "" ? $_GET['start']['date'] : null;
+
+        $endSlot = isset($_GET['end']['slot'])  && $_GET['end']['slot'] != "" ? $_GET['end']['slot'] : null;
+        $endDate = isset($_GET['end']['date'])  && $_GET['end']['date'] != "" ? $_GET['end']['date'] : null;
 
         $timeformat = 'd.m.Y';
-        $bookingDay = new Day($date, [$location],[$item]);
-        $slotInfo = $bookingDay->getSlot($slot);
+        $bookingStartDay = new Day($startDate, [$location],[$item]);
+        $startSlotInfo = $bookingStartDay->getSlot($startSlot);
+
+        $bookingEndDay = new Day($endDate, [$location],[$item]);
+        $endSlotInfo = $bookingStartDay->getSlot($endSlot);
 
         echo self::render(self::$template, [
             'post' => $post,
             'wp_nonce' => \CommonsBooking\Wordpress\CustomPostType\Timeframe::getWPNonceField(),
             'actionUrl' => admin_url('admin.php'),
-            'slot' => $slot,
-            'start_date_string' => $bookingDay->getFormattedDate($timeformat) . ' ' . $slotInfo['timestart'],
-            'end_date_string' => $slotInfo['timeend'],
+            'startSlot' => $startSlot,
+            'endSlot' => $endSlot,
+            'start_date_string' => $bookingStartDay->getFormattedDate($timeformat) . ' ' . $startSlotInfo['timestart'],
+            'end_date_string' => $bookingEndDay->getFormattedDate($timeformat) . ' ' . $endSlotInfo['timeend'],
             'location' => array(
                 'post' => $location,
                 'thumbnail' => get_the_post_thumbnail( $location->ID, 'thumbnail' )
@@ -43,8 +50,8 @@ class Timeframe extends View
             ),
             'user' => wp_get_current_user(),
             'type' => \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID, // statically for bookings, when it works we make it dynamic
-            'startDate' => $bookingDay->getFormattedSlotStartDate('Y-m-d\TH:i', $slot),
-            'endDate' => $bookingDay->getFormattedSlotEndDate('Y-m-d\TH:i', $slot)
+            'startDate' => $bookingStartDay->getFormattedSlotStartDate('Y-m-d\TH:i', $startSlot),
+            'endDate' => $bookingEndDay->getFormattedSlotEndDate('Y-m-d\TH:i', $endSlot)
         ]);
     }
 

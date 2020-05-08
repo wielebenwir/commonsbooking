@@ -83,7 +83,7 @@ class Day
         if (count($grid) && !empty($grid[$slotNr])) {
             return $grid[$slotNr];
         } else {
-            throw new \Exception(__CLASS__ . "::" . __FUNCTION__ . ": Invalid slot.");
+            throw new \Exception(__CLASS__ . "::" . __FUNCTION__ . ": Invalid slot: " . $slotNr);
         }
     }
 
@@ -277,7 +277,7 @@ class Day
             if (
                 $type == 'end' &&
                 $time->getTimestamp() > $this->getDateObject()->setTime(23, 59)->getTimestamp()) {
-                $slot = 24 / $grid;
+                $slot = (24 / $grid) - 1;
             }
         }
 
@@ -353,16 +353,16 @@ class Day
             $startSlot = $this->getStartSlot($startDate, $grid, $timeframe);
             $endSlot = $this->getEndSlot($endDate, $grid, $timeframe);
 
-            // Add timeframe to relevant slots
-            while ($startSlot <= $endSlot) {
-                if (!array_key_exists('timeframe', $slots[$startSlot]) || !$slots[$startSlot]['timeframe']) {
-                    $slots[$startSlot]['timeframe'] = $timeframe;
-                } else {
-                    $slots[$startSlot]['timeframe'] = Timeframe::getHigherPrioFrame($timeframe, $slots[$startSlot]['timeframe']);
-                }
+                // Add timeframe to relevant slots
+                while ($startSlot <= $endSlot) {
+                    if (!array_key_exists('timeframe', $slots[$startSlot]) || !$slots[$startSlot]['timeframe']) {
+                        $slots[$startSlot]['timeframe'] = $timeframe;
+                    } else {
+                        $slots[$startSlot]['timeframe'] = Timeframe::getHigherPrioFrame($timeframe, $slots[$startSlot]['timeframe']);
+                    }
 
-                $startSlot++;
-            }
+                    $startSlot++;
+                }
         }
     }
 

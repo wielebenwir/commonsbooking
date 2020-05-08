@@ -10,7 +10,9 @@
         {% if slot.timeframe %}
             {% if slot.timeframe.type == '2' %}
                 <div class="cb-timeframe cb-timeframe--type-{{ slot.timeframe.type }}" data-type-label="{{ slot.timeframe|get_type_label }}" >
-                    {% if backend != 'true' %}<a target="_blank" href="{{ slot.timeframe|get_link }}&slot={{ slotNr }}&date={{ day.formattedDate('Y-m-d') }}">{% endif %}
+                    {% if backend != 'true' %}
+                        <a target="_blank" href="{{ slot.timeframe|get_link }}&start[slot]={{ slotNr }}&start[date]={{ day.formattedDate('Y-m-d') }}&end[slot]={{ slotNr }}&end[date]={{ day.formattedDate('Y-m-d') }}">
+                    {% endif %}
                         <span>
                             {{ slot.timestart }} - {{ slot.timeend }}
                         </span>
