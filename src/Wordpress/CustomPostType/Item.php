@@ -11,7 +11,9 @@ class Item extends CustomPostType
      * Item constructor.
      */
     public function __construct()
-    {}
+    {
+        add_filter( 'the_content', array( $this, 'getTemplate' ) );
+    }
 
     public function getArgs()
     {
@@ -87,7 +89,18 @@ class Item extends CustomPostType
         );
     }
 
+    public function getTemplate( $content ) {
+        
+        $cb_content = '';
+        if ( is_singular ( 'cb_item' ) ) {
+           $cb_content = cb_get_template_part( 'calendar', 'booking' );
+        } // if archive... 
+
+        return $cb_content . $content; 
+
+    }
+
     public static function getView() {
-        return new \CommonsBooking\View\Item();
+        // return new \CommonsBooking\View\Item();
     }
 }

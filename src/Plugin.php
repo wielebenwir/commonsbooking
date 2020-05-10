@@ -46,7 +46,7 @@ class Plugin
 //        add_filter('the_content', [$this, 'getTheContent']);
 
         // Load templates
-        add_filter( 'single_template', [$this, 'getSingleTemplate']);
+        // add_filter( 'single_template', [$this, 'getSingleTemplate']);
 
         // Add menu pages
         add_action('admin_menu', array(self::class, 'addMenuPages'));

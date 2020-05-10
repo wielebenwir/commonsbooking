@@ -2,7 +2,7 @@
 defined('ABSPATH') or die("Thanks for visting");
 
 /**
- * Plugin Name:  Commons Booking
+ * Plugin Name:  CommonsBooking
  * Plugin URI: ~
  * Description: ~
  * Version: 0.0.1
@@ -11,8 +11,9 @@ defined('ABSPATH') or die("Thanks for visting");
  * Text Domain:  commonsbooking
  */
 
-define('TRANSLATION_CONST', 'commonsbooking');
+define( 'TRANSLATION_CONST', 'commonsbooking');
 define( 'CB_MENU_SLUG', 'cb-menu');
+define( 'CB_PLUGIN_SLUG', 'commonsbooking');
 define( 'COMMONSBOOKING__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 function commonsbooking_admin_style() {
@@ -28,6 +29,7 @@ add_action( 'wp_enqueue_scripts', 'commonsbooking_public_style' );
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/cmb2/cmb2/init.php';
+require __DIR__ . '/src/inc/Template.php'; //@TODO: move to better location
 
 $cbPlugin = new \CommonsBooking\Plugin();
 $cbPlugin->init();
