@@ -9,8 +9,12 @@ class Timeframe extends View
 
     protected static $template = 'timeframe/index.html.twig';
 
-    public static function content(\WP_Post $post)
+    public static function single(\WP_Post $post = null)
     {
+        if ($post == null) {
+            global $post;
+        }
+
         $itemId = get_post_meta($post->ID, 'item-id', true);
         $locationId = get_post_meta($post->ID, 'location-id', true);
 
@@ -23,45 +27,49 @@ class Timeframe extends View
         $endSlot = isset($_GET['end']['slot'])  && $_GET['end']['slot'] != "" ? $_GET['end']['slot'] : null;
         $endDate = isset($_GET['end']['date'])  && $_GET['end']['date'] != "" ? $_GET['end']['date'] : null;
 
-        $timeformat = 'd.m.Y';
-        $bookingStartDay = new Day($startDate, [$location],[$item]);
-        $startSlotInfo = $bookingStartDay->getSlot($startSlot);
+        if($startSlot && $endSlot) {
+            $timeformat = 'd.m.Y';
+            $bookingStartDay = new Day($startDate, [$location],[$item]);
+            $startSlotInfo = $bookingStartDay->getSlot($startSlot);
 
-        $bookingEndDay = new Day($endDate, [$location],[$item]);
-        $endSlotInfo = $bookingStartDay->getSlot($endSlot);
+            $bookingEndDay = new Day($endDate, [$location],[$item]);
+            $endSlotInfo = $bookingStartDay->getSlot($endSlot);
 
-        $booking = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getBookingByDate(
-            $bookingStartDay->getSlotStartTimestamp($startSlot),
-            $bookingEndDay->getSlotEndTimestamp($endSlot),
-            $locationId,
-            $itemId
-        );
+            $booking = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getBookingByDate(
+                $bookingStartDay->getSlotStartTimestamp($startSlot),
+                $bookingEndDay->getSlotEndTimestamp($endSlot),
+                $locationId,
+                $itemId
+            );
 
-        if(empty($booking)) {
-            \CommonsBooking\Wordpress\CustomPostType\Timeframe::handleFormRequest();
+            if(empty($booking)) {
+                \CommonsBooking\Wordpress\CustomPostType\Timeframe::handleFormRequest();
+            }
+
+            echo self::render(self::$template, [
+                'post' => $post,
+                'wp_nonce' => \CommonsBooking\Wordpress\CustomPostType\Timeframe::getWPNonceField(),
+                'actionUrl' => admin_url('admin.php'),
+                'startSlot' => $startSlot,
+                'endSlot' => $endSlot,
+                'start_date_string' => $bookingStartDay->getFormattedDate($timeformat) . ' ' . $startSlotInfo['timestart'],
+                'end_date_string' => $bookingEndDay->getFormattedDate($timeformat) . ' ' . $endSlotInfo['timeend'],
+                'location' => array(
+                    'post' => $location,
+                    'thumbnail' => get_the_post_thumbnail( $location->ID, 'thumbnail' )
+                ),
+                'item' =>  array(
+                    'post' => $item,
+                    'thumbnail' => get_the_post_thumbnail( $item->ID, 'thumbnail' )
+                ),
+                'user' => wp_get_current_user(),
+                'type' => \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID, // statically for bookings, when it works we make it dynamic
+                'startDate' => $bookingStartDay->getSlotStartTimestamp($startSlot),
+                'endDate' => $bookingEndDay->getSlotEndTimestamp($endSlot)
+            ]);
+        } else {
+            echo '';
         }
-
-        echo self::render(self::$template, [
-            'post' => $post,
-            'wp_nonce' => \CommonsBooking\Wordpress\CustomPostType\Timeframe::getWPNonceField(),
-            'actionUrl' => admin_url('admin.php'),
-            'startSlot' => $startSlot,
-            'endSlot' => $endSlot,
-            'start_date_string' => $bookingStartDay->getFormattedDate($timeformat) . ' ' . $startSlotInfo['timestart'],
-            'end_date_string' => $bookingEndDay->getFormattedDate($timeformat) . ' ' . $endSlotInfo['timeend'],
-            'location' => array(
-                'post' => $location,
-                'thumbnail' => get_the_post_thumbnail( $location->ID, 'thumbnail' )
-            ),
-            'item' =>  array(
-                'post' => $item,
-                'thumbnail' => get_the_post_thumbnail( $item->ID, 'thumbnail' )
-            ),
-            'user' => wp_get_current_user(),
-            'type' => \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID, // statically for bookings, when it works we make it dynamic
-            'startDate' => $bookingStartDay->getSlotStartTimestamp($startSlot),
-            'endDate' => $bookingEndDay->getSlotEndTimestamp($endSlot)
-        ]);
     }
 
 }

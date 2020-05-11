@@ -3,6 +3,7 @@
   "description": "~",
   "version": "0.0.1",
   "autoload": {
+    "files": ["includes/Template.php"],
     "psr-4": {"CommonsBooking\\": "src/"}
   },
   "require": {

@@ -2,7 +2,7 @@
 defined('ABSPATH') or die("Thanks for visting");
 
 /**
- * Plugin Name:  Commons Booking
+ * Plugin Name:  CommonsBooking
  * Plugin URI: ~
  * Description: ~
  * Version: 0.0.1
@@ -11,8 +11,9 @@ defined('ABSPATH') or die("Thanks for visting");
  * Text Domain:  commonsbooking
  */
 
-define('TRANSLATION_CONST', 'commonsbooking');
+define( 'TRANSLATION_CONST', 'commonsbooking');
 define( 'CB_MENU_SLUG', 'cb-menu');
+define( 'CB_PLUGIN_SLUG', 'commonsbooking');
 define( 'COMMONSBOOKING__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 function commonsbooking_admin_style() {

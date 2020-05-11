@@ -42,12 +42,6 @@ class Plugin
         // Register custom post types
         add_action('init', array(self::class, 'registerCustomPostTypes'));
 
-        // Append content to content-area
-//        add_filter('the_content', [$this, 'getTheContent']);
-
-        // Load templates
-        add_filter( 'single_template', [$this, 'getSingleTemplate']);
-
         // Add menu pages
         add_action('admin_menu', array(self::class, 'addMenuPages'));
 
