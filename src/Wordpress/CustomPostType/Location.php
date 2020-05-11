@@ -12,8 +12,18 @@ class Location extends CustomPostType
      */
     public function __construct()
     {
-        // Just a test...
-        add_shortcode( 'cb_location', array(\CommonsBooking\View\Location::class, 'single') );
+        add_filter( 'the_content', array( $this, 'getTemplate' ) );
+    }
+
+    public function getTemplate( $content ) {
+
+        $cb_content = '';
+        if ( is_singular ( self::getPostType()  ) ) {
+            $cb_content = cb_get_template_part( 'calendar', 'location' );
+        } // if archive...
+
+        return $cb_content . $content;
+
     }
 
     public function getArgs()

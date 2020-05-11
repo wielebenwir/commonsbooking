@@ -29,7 +29,6 @@ add_action( 'wp_enqueue_scripts', 'commonsbooking_public_style' );
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/cmb2/cmb2/init.php';
-require __DIR__ . '/src/inc/Template.php'; //@TODO: move to better location
 
 $cbPlugin = new \CommonsBooking\Plugin();
 $cbPlugin->init();

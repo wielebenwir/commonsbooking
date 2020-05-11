@@ -6,8 +6,8 @@
  */
 ?>
 
-    Booking Form  <?php the_title();
+    Booking calendar for <?php the_title();
 
-    \CommonsBooking\View\Timeframe::single();
+    \CommonsBooking\View\Location::single();
 
 ?>

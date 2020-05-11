@@ -41,6 +41,9 @@ class Timeframe extends CustomPostType
     {
         $this->types = self::getTypes();
 
+        // Set Tepmlates
+        add_filter( 'the_content', array( $this, 'getTemplate' ) );
+
         // Add Meta Boxes
         add_action( 'cmb2_admin_init', array($this, 'registerMetabox'));
 
@@ -58,6 +61,17 @@ class Timeframe extends CustomPostType
         ) {
             add_action('save_post', array($this, 'saveCustomFields'), 1, 2);
         }
+    }
+
+    public function getTemplate( $content ) {
+
+        $cb_content = '';
+        if ( is_singular ( self::getPostType() ) ) {
+            $cb_content = cb_get_template_part( 'calendar', 'booking' );
+        } // if archive...
+
+        return $cb_content . $content;
+
     }
 
     public static function getBookingByDate($startDate, $endDate, $location, $item) {
@@ -102,6 +116,9 @@ class Timeframe extends CustomPostType
         return [];
     }
 
+    /**
+     * Handles save-Request for timeframe.
+     */
     public static function handleFormRequest()
     {
         if (
@@ -124,6 +141,10 @@ class Timeframe extends CustomPostType
         }
     }
 
+    /**
+     * Returns CPT arguments.
+     * @return array
+     */
     public function getArgs()
     {
         $labels = array(
@@ -199,6 +220,7 @@ class Timeframe extends CustomPostType
     }
 
     /**
+     * Returns custom (meta) fields for CPT.
      * @return array
      */
     protected function getCustomFields()
@@ -305,6 +327,10 @@ class Timeframe extends CustomPostType
                         }
                     }
                     echo $output;
+                    break;
+                case 'start-date':
+                case 'end-date':
+                    echo date('d.m.Y H:i', $value);
                     break;
                 default:
                     echo $value;

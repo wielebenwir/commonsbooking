@@ -92,8 +92,8 @@ class Item extends CustomPostType
     public function getTemplate( $content ) {
         
         $cb_content = '';
-        if ( is_singular ( 'cb_item' ) ) {
-           $cb_content = cb_get_template_part( 'calendar', 'booking' );
+        if ( is_singular ( self::getPostType()  ) ) {
+           $cb_content = cb_get_template_part( 'calendar', 'item' );
         } // if archive... 
 
         return $cb_content . $content; 
@@ -101,6 +101,6 @@ class Item extends CustomPostType
     }
 
     public static function getView() {
-        // return new \CommonsBooking\View\Item();
+         return new \CommonsBooking\View\Item();
     }
 }

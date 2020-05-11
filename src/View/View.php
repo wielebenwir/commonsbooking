@@ -7,7 +7,7 @@ namespace CommonsBooking\View;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use Twig\TwigFilter;
 
-class View
+abstract class View
 {
 
     protected static function getTwigLoader() {
@@ -56,5 +56,7 @@ class View
     public static function render($template, $params) {
         return static::getTwig()->render($template, $params);
     }
+
+    abstract public static function single(\WP_Post $post);
 
 }
