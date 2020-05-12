@@ -7,6 +7,7 @@ use CommonsBooking\Controller\TimeframeController;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
+use CommonsBooking\Wordpress\PostStatus\PostStatus;
 
 class Plugin
 {
@@ -41,30 +42,13 @@ class Plugin
     {
         // Register custom post types
         add_action('init', array(self::class, 'registerCustomPostTypes'));
+        add_action('init', array(self::class, 'registerPostStatuses'));
 
         // Add menu pages
         add_action('admin_menu', array(self::class, 'addMenuPages'));
 
         // Parent Menu Fix
-        add_filter('parent_file', [$this, "setParentFile"]);
-    }
-
-    /**
-     * @param $single_template
-     *
-     * @return string
-     */
-    public function getSingleTemplate($single_template) {
-        global $post;
-
-        /** @var PostType $customPostType */
-        foreach (self::getCustomPostTypes() as $customPostType) {
-            if ( $customPostType::getPostType() === $post->post_type ) {
-                return COMMONSBOOKING__PLUGIN_DIR . 'templates/single-' . $post->post_type . '.php';
-            }
-        }
-
-        return $single_template;
+        add_filter('parent_file', array($this, "setParentFile"));
     }
 
     /**
@@ -162,6 +146,12 @@ class Plugin
             register_post_type($customPostType::getPostType(), $customPostType->getArgs());
             $customPostType->initListView();
         }
+    }
+
+    public static function registerPostStatuses() {
+        $cancelled = new PostStatus("cancelled", __( 'Storniert', TRANSLATION_CONST ));
+        $confirmed = new PostStatus("confirmed", __( 'Bestätigt', TRANSLATION_CONST ));
+        $unconfirmed = new PostStatus("unconfirmed", __( 'Nicht bestätigt', TRANSLATION_CONST ));
     }
 
 }
