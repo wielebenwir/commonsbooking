@@ -57,6 +57,4 @@ abstract class View
         return static::getTwig()->render($template, $params);
     }
 
-    abstract public static function single(\WP_Post $post);
-
 }

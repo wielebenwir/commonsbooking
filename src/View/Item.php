@@ -11,7 +11,7 @@ class Item extends View
 
     protected static $template = 'item/index.html.twig';
 
-    public static function single(\WP_Post $post = null)
+    public static function index(\WP_Post $post = null)
     {
         if ($post == null) {
             global $post;

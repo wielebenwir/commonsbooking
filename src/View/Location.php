@@ -13,7 +13,7 @@ class Location extends View
 
     protected static $template = 'location/index.html.twig';
 
-    public static function single(\WP_Post $post = null)
+    public static function index(\WP_Post $post = null)
     {
         if ($post == null) {
             global $post;

@@ -54,26 +54,31 @@ class Timeframe extends CustomPostType
         $this->removeListTitleColumn();
         $this->removeListDateColumn();
 
+        add_action('save_post', array($this, 'saveCustomFields'), 1, 2);
+
         // Save-handling
-        if (
-            isset($_POST[self::getWPNonceId()]) &&
-            wp_verify_nonce($_POST[self::getWPNonceId()], self::getWPAction())
-        ) {
-            add_action('save_post', array($this, 'saveCustomFields'), 1, 2);
-        }
+        $this->handleFormRequest();
     }
 
     public function getTemplate( $content ) {
 
         $cb_content = '';
         if ( is_singular ( self::getPostType() ) ) {
-            $cb_content = cb_get_template_part( 'calendar', 'booking' );
+            global $post;
+            $cb_content = cb_get_template_part( 'booking', $post->post_status );
         } // if archive...
 
         return $cb_content . $content;
-
     }
 
+    /**
+     * @param $startDate
+     * @param $endDate
+     * @param $location
+     * @param $item
+     * @return null|\WP_Post
+     * @throws \Exception
+     */
     public static function getBookingByDate($startDate, $endDate, $location, $item) {
         // Default query
         $args = array(
@@ -82,8 +87,9 @@ class Timeframe extends CustomPostType
                 'relation' => "AND",
                 array(
                     'key' => 'start-date',
-                    'value' => $startDate,
-                    'compare' => '='
+                    'value' => intval($startDate),
+                    'compare' => '=',
+                    'type' => 'numeric'
                 ),
                 array(
                     'key' => 'end-date',
@@ -105,39 +111,67 @@ class Timeframe extends CustomPostType
                     'value' => $item,
                     'compare' => '='
                 )
-            )
+            ),
+            'post_status' => 'any'
         );
 
         $query = new \WP_Query($args);
         if ($query->have_posts()) {
-            return $query->get_posts();
-        }
+            $posts = $query->get_posts();
+            if(count($posts) == 1) {
+                return $posts[0];
+            } else {
+                throw new \Exception(__CLASS__ . "::" . __LINE__ . ": Found more then one bookings");
+            }
 
-        return [];
+        }
     }
 
     /**
      * Handles save-Request for timeframe.
      */
-    public static function handleFormRequest()
+    public function handleFormRequest()
     {
         if (
-            isset($_POST[static::getWPNonceId()]) &&
-            wp_verify_nonce($_POST[static::getWPNonceId()], static::getWPAction())
+            isset($_REQUEST[static::getWPNonceId()]) &&
+            wp_verify_nonce($_REQUEST[static::getWPNonceId()], static::getWPAction())
         ) {
-            if (!array_key_exists('post_ID', $_POST)) {
-                $postarr = array(
-                    "location-id" => $_POST["location-id"],
-                    "item-id" => $_POST["item-id"],
-                    "type" => $_POST["type"],
-                    'post_status' => 'publish',
-                    "post_type" => $_POST["post_type"],
-                    "start-date" => $_POST["start-date"],
-                    "end-date" => $_POST["end-date"]
-                );
+            $itemId = isset($_REQUEST['item-id'])  && $_REQUEST['item-id'] != "" ? $_REQUEST['item-id'] : null;
+            $locationId = isset($_REQUEST['location-id'])  && $_REQUEST['location-id'] != "" ? $_REQUEST['location-id'] : null;
 
-                wp_insert_post($postarr, true);
+            if(!get_post($itemId)) throw new \Exception('Item does not exist. ('.$itemId.')');
+            if(!get_post($locationId)) throw new \Exception('Location does not exist. ('.$locationId.')');
+
+            $startDate = isset($_REQUEST['start-date'])  && $_REQUEST['start-date'] != "" ? $_REQUEST['start-date'] : null;
+            $endDate = isset($_REQUEST['end-date'])  && $_REQUEST['end-date'] != "" ? $_REQUEST['end-date'] : null;
+
+            /** @var \WP_Post $booking */
+            $booking = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getBookingByDate(
+                $startDate,
+                $endDate,
+                $locationId,
+                $itemId
+            );
+
+            $postarr = array(
+                "location-id" => $locationId,
+                "item-id" => $itemId,
+                "type" => $_REQUEST["type"],
+                "post_status" => $_REQUEST["post_status"],
+                "post_type" => self::getPostType(),
+                "start-date" => $startDate,
+                "end-date" => $endDate
+            );
+
+            if(empty($booking)) {
+                $postId = wp_insert_post($postarr, true);
+            } else {
+                $postarr['ID'] = $booking->ID;
+                $postId = wp_update_post($postarr);
             }
+
+            wp_redirect( home_url( '?' . self::getPostType() . '=' . $postId ) );
+            exit;
         }
     }
 
