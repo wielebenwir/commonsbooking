@@ -3,6 +3,8 @@
 
 namespace CommonsBooking\View;
 
+use CommonsBooking\Wordpress\CustomPostType\Timeframe;
+
 class Booking extends View
 {
 
@@ -63,6 +65,7 @@ class Booking extends View
                 array_merge(
                     self::getDefaultParams($post),
                     array(
+                        'type' => Timeframe::BOOKING_CANCELED_ID,
                         'postStatus' => 'cancelled',
                         'submitLabel' => __( 'Stornieren', TRANSLATION_CONST )
                     )

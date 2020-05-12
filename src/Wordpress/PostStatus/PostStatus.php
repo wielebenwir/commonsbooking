@@ -32,7 +32,11 @@ class PostStatus
     {
         register_post_status($this->name, array(
             'label' => $this->label,
-            'public' => $this->public
+            'public' => $this->public,
+            'label_count'               => _n_noop(
+                $this->label . ' <span class="count">(%s)</span>',
+                $this->label . ' <span class="count">(%s)</span>'
+            )
         ));
     }
 
