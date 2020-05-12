@@ -100,14 +100,14 @@ abstract class CustomPostType
     public function saveCustomFields($post_id, $post)
     {
         if (
-            !isset($_POST[self::getWPNonceId()]) ||
-            !wp_verify_nonce($_POST[self::getWPNonceId()], static::getWPAction())
+            !isset($_REQUEST[static::getWPNonceId()]) ||
+            !wp_verify_nonce($_REQUEST[static::getWPNonceId()], static::getWPAction())
         ) {
             return;
         }
-        if (!current_user_can('edit_post', $post_id)) {
-            return;
-        }
+//        if (!current_user_can('edit_post', $post_id)) {
+//            return;
+//        }
         if ($post->post_type !== static::getPostType()) {
             return;
         }
@@ -123,7 +123,7 @@ abstract class CustomPostType
                 }
 
                 foreach ($fieldNames as $fieldName) {
-                    if (isset($_POST[$fieldName]) && $value = trim($_POST[$fieldName])) {
+                    if (isset($_REQUEST[$fieldName]) && $value = trim($_REQUEST[$fieldName])) {
                         // Auto-paragraphs for any WYSIWYG
                         if ($customField->getType() == "wysiwyg") {
                             $value = wpautop($value);
@@ -196,6 +196,9 @@ abstract class CustomPostType
         });
     }
 
+    /**
+     * Configures list-view
+     */
     public function initListView()
     {
         // List-View

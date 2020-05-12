@@ -221,7 +221,8 @@ class Day
         // Default query
         $args = array(
             'post_type' => Timeframe::getPostType(),
-            'meta_query' => $this->getTimeRangeQuery()
+            'meta_query' => $this->getTimeRangeQuery(),
+            'post_status' => array('confirmed', 'unconfirmed', 'publish', 'inherit')
         );
 
         // Filtered query (items, locations)
@@ -387,7 +388,6 @@ class Day
      */
     protected function getTimeframeSlots($timeframes)
     {
-
         $slots = [];
         $grid = $this->getMinimalGridFromTimeframes($timeframes);
 
@@ -398,14 +398,22 @@ class Day
             $slots[$i] = [
                 'timestart' => date('H:i', $i * ((24 / $slotsPerDay) * 3600)),
                 'timeend' => date('H:i', ($i + 1) * ((24 / $slotsPerDay) * 3600)),
+                'timestampstart' => $this->getSlotTimestampStart($slotsPerDay, $i),
+                'timestampend' => $this->getSlotTimestampEnd($slotsPerDay, $i),
                 'timeframes' => []
             ];
         }
 
         $this->mapTimeFrames($slots, $timeframes);
-
         return $slots;
     }
 
+    protected function getSlotTimestampStart($slotsPerDay, $slotNr) {
+        return strtotime($this->getDate()) + ($slotNr * ((24 / $slotsPerDay) * 3600));
+    }
+
+    protected function getSlotTimestampEnd($slotsPerDay, $slotNr) {
+        return strtotime($this->getDate()) + (($slotNr + 1) * ((24 / $slotsPerDay) * 3600)) - 1;
+    }
 
 }
