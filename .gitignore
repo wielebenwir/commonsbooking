@@ -1,2 +1,9 @@
 node_modules
 vendor
+cache
+src/Wordpress/.DS_Store
+src/.DS_Store
+Resources/assets/.DS_Store
+Resources/views/.DS_Store
+Resources/.DS_Store
+.DS_Store

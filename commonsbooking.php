@@ -30,5 +30,15 @@ add_action( 'wp_enqueue_scripts', 'commonsbooking_public_style' );
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/cmb2/cmb2/init.php';
 
+
+/**
+ * Adding AdminOptions page for settings configuration (using CMB2)
+ */
+if ( is_admin() ) {
+
+    require_once( COMMONSBOOKING__PLUGIN_DIR . 'admin/AdminOptions.php' );    
+	}
+
+
 $cbPlugin = new \CommonsBooking\Plugin();
 $cbPlugin->init();
