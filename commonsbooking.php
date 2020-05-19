@@ -11,33 +11,34 @@ defined('ABSPATH') or die("Thanks for visting");
  * Text Domain:  commonsbooking
  */
 
-define( 'TRANSLATION_CONST', 'commonsbooking');
-define( 'CB_MENU_SLUG', 'cb-menu');
-define( 'CB_PLUGIN_SLUG', 'commonsbooking');
-define( 'COMMONSBOOKING__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define('TRANSLATION_CONST', 'commonsbooking');
+define('CB_MENU_SLUG', 'cb-menu');
+define('CB_PLUGIN_SLUG', 'commonsbooking');
+define('COMMONSBOOKING__PLUGIN_DIR', plugin_dir_path(__FILE__));
 
-function commonsbooking_admin_style() {
+function commonsbooking_admin_style()
+{
     wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__) . 'Resources/assets/admin/css/admin.css');
 }
 add_action('admin_enqueue_scripts', 'commonsbooking_admin_style');
 
-function commonsbooking_public_style() {
+function commonsbooking_public_style()
+{
     wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__) . 'Resources/assets/public/css/public.css');
-    wp_enqueue_script( 'cb-scripts-public', plugin_dir_url(__FILE__) . 'Resources/assets/public/js/public.js', array(), '1.0.0', true );
+    wp_enqueue_script('cb-scripts-public', plugin_dir_url(__FILE__) . 'Resources/assets/public/js/public.js', array(), '1.0.0', true);
 }
-add_action( 'wp_enqueue_scripts', 'commonsbooking_public_style' );
+add_action('wp_enqueue_scripts', 'commonsbooking_public_style');
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/cmb2/cmb2/init.php';
 
 
 /**
- * Adding AdminOptions page for settings configuration (using CMB2)
+ * Adding Classes (don't know ho to do it the right way - needs to be fixed to be more OOP / Wordpress standar)
  */
-if ( is_admin() ) {
-
-    require_once( COMMONSBOOKING__PLUGIN_DIR . 'admin/AdminOptions.php' );    
-	}
+    require_once(COMMONSBOOKING__PLUGIN_DIR . 'src/Settings/Settings.php');
+    require_once(COMMONSBOOKING__PLUGIN_DIR . 'src/Messages/Messages.php');
+    
 
 
 $cbPlugin = new \CommonsBooking\Plugin();
