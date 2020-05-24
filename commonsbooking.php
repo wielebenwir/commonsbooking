@@ -11,11 +11,11 @@ defined('ABSPATH') or die("Thanks for visting");
  * Text Domain:  commonsbooking
  */
 
-define('TRANSLATION_CONST', 'commonsbooking'); //@TODO rename to CB_TEXTDOMAIN 
+define('CB_TEXTDOMAIN', 'commonsbooking');
 define('CB_VERSION', '0.0');
 define('CB_MENU_SLUG', 'cb-menu');
 define('CB_PLUGIN_SLUG', 'commonsbooking');
-define('COMMONSBOOKING__PLUGIN_DIR', plugin_dir_path(__FILE__)); // @TODO rename to CB_
+define('CB_PLUGIN_DIR', plugin_dir_path(__FILE__));
 
 function commonsbooking_admin_style()
 {
@@ -32,15 +32,6 @@ add_action('wp_enqueue_scripts', 'commonsbooking_public_style');
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/cmb2/cmb2/init.php';
-
-
-/**
- * Adding Classes (don't know ho to do it the right way - needs to be fixed to be more OOP / Wordpress standar)
- */
-    require_once(COMMONSBOOKING__PLUGIN_DIR . 'src/Settings/Settings.php');
-    require_once(COMMONSBOOKING__PLUGIN_DIR . 'src/Wordpress/Options/OptionsTab.php');
-    require_once(COMMONSBOOKING__PLUGIN_DIR . 'src/Messages/Messages.php');
-    
 
 
 $cbPlugin = new \CommonsBooking\Plugin();

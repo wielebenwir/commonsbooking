@@ -182,28 +182,28 @@ class Timeframe extends CustomPostType
     public function getArgs()
     {
         $labels = array(
-            'name' => __('Timeframes', TRANSLATION_CONST),
-            'singular_name' => __('Timeframe', TRANSLATION_CONST),
-            'add_new' => __('Hinzufügen', TRANSLATION_CONST),
-            'add_new_item' => __('Timeframe hinzufügen', TRANSLATION_CONST),
-            'edit_item' => __('Timeframe bearbeiten', TRANSLATION_CONST),
-            'new_item' => __('Timeframe hinzufügen', TRANSLATION_CONST),
-            'view_item' => __('Timeframe anzeigen', TRANSLATION_CONST),
-            'view_items' => __('Timeframes anzeigen', TRANSLATION_CONST),
-            'search_items' => __('Timeframe suchen', TRANSLATION_CONST),
-            'not_found' => __('Keine Timeframes gefunden', TRANSLATION_CONST),
-            'not_found_in_trash' => __('Keine Timeframes im Papierkorb gefunden', TRANSLATION_CONST),
-            'parent_item_colon' => __('Übergeordnete Timeframes:', TRANSLATION_CONST),
-            'all_items' => __('Alle Timeframes', TRANSLATION_CONST),
-            'archives' => __('Timeframe Archiv', TRANSLATION_CONST),
-            'attributes' => __('Timeframe Attribute', TRANSLATION_CONST),
-            'insert_into_item' => __('Zum Timeframe hinzufügen', TRANSLATION_CONST),
-            'uploaded_to_this_item' => __('Zum Timeframe hinzugefügt', TRANSLATION_CONST),
-            'featured_image' => __('Timeframebild', TRANSLATION_CONST),
-            'set_featured_image' => __('Timeframebild setzen', TRANSLATION_CONST),
-            'remove_featured_image' => __('Timeframebild entfernen', TRANSLATION_CONST),
-            'use_featured_image' => __('Als Timeframebild verwenden', TRANSLATION_CONST),
-            'menu_name' => __('Timeframes', TRANSLATION_CONST),
+            'name' => __('Timeframes', CB_TEXTDOMAIN),
+            'singular_name' => __('Timeframe', CB_TEXTDOMAIN),
+            'add_new' => __('Hinzufügen', CB_TEXTDOMAIN),
+            'add_new_item' => __('Timeframe hinzufügen', CB_TEXTDOMAIN),
+            'edit_item' => __('Timeframe bearbeiten', CB_TEXTDOMAIN),
+            'new_item' => __('Timeframe hinzufügen', CB_TEXTDOMAIN),
+            'view_item' => __('Timeframe anzeigen', CB_TEXTDOMAIN),
+            'view_items' => __('Timeframes anzeigen', CB_TEXTDOMAIN),
+            'search_items' => __('Timeframe suchen', CB_TEXTDOMAIN),
+            'not_found' => __('Keine Timeframes gefunden', CB_TEXTDOMAIN),
+            'not_found_in_trash' => __('Keine Timeframes im Papierkorb gefunden', CB_TEXTDOMAIN),
+            'parent_item_colon' => __('Übergeordnete Timeframes:', CB_TEXTDOMAIN),
+            'all_items' => __('Alle Timeframes', CB_TEXTDOMAIN),
+            'archives' => __('Timeframe Archiv', CB_TEXTDOMAIN),
+            'attributes' => __('Timeframe Attribute', CB_TEXTDOMAIN),
+            'insert_into_item' => __('Zum Timeframe hinzufügen', CB_TEXTDOMAIN),
+            'uploaded_to_this_item' => __('Zum Timeframe hinzugefügt', CB_TEXTDOMAIN),
+            'featured_image' => __('Timeframebild', CB_TEXTDOMAIN),
+            'set_featured_image' => __('Timeframebild setzen', CB_TEXTDOMAIN),
+            'remove_featured_image' => __('Timeframebild entfernen', CB_TEXTDOMAIN),
+            'use_featured_image' => __('Als Timeframebild verwenden', CB_TEXTDOMAIN),
+            'menu_name' => __('Timeframes', CB_TEXTDOMAIN),
         );
 
         // args for the new post_type
@@ -260,38 +260,38 @@ class Timeframe extends CustomPostType
     protected function getCustomFields()
     {
         return array(
-            new Field("location-id", __("Location", TRANSLATION_CONST), "", "select", "edit_posts", Location::getAllPosts()),
-            new Field("item-id", __("Item", TRANSLATION_CONST), "", "select", "edit_posts", Item::getAllPosts()),
-            new Field("start-date", __("Start date", TRANSLATION_CONST), "", "text_datetime_timestamp", "edit_posts"),
-            new Field("end-date", __("End date", TRANSLATION_CONST), "", "text_datetime_timestamp", "edit_pages"),
-            new Field("grid", __("Grid", TRANSLATION_CONST), "", "select", "edit_pages",
+            new Field("location-id", __("Location", CB_TEXTDOMAIN), "", "select", "edit_posts", Location::getAllPosts()),
+            new Field("item-id", __("Item", CB_TEXTDOMAIN), "", "select", "edit_posts", Item::getAllPosts()),
+            new Field("start-date", __("Start date", CB_TEXTDOMAIN), "", "text_datetime_timestamp", "edit_posts"),
+            new Field("end-date", __("End date", CB_TEXTDOMAIN), "", "text_datetime_timestamp", "edit_pages"),
+            new Field("grid", __("Grid", CB_TEXTDOMAIN), "", "select", "edit_pages",
                 [
                     1 => 1, 2 => 2, 3 => 3, 4 => 4
                 ]
             ),
-            new Field("type", __('Type', TRANSLATION_CONST), "", "select", "edit_pages",
+            new Field("type", __('Type', CB_TEXTDOMAIN), "", "select", "edit_pages",
                 self::getTypes()
             ),
-            new Field("repetition", __('Repetition', TRANSLATION_CONST), "", "select", "edit_pages",
+            new Field("repetition", __('Repetition', CB_TEXTDOMAIN), "", "select", "edit_pages",
                 [
-                    'd' => __("Daily", TRANSLATION_CONST),
-                    'w' => __("Weekly", TRANSLATION_CONST),
-                    'm' => __("Monthly", TRANSLATION_CONST),
-                    'y' => __("Yearly", TRANSLATION_CONST)
+                    'd' => __("Daily", CB_TEXTDOMAIN),
+                    'w' => __("Weekly", CB_TEXTDOMAIN),
+                    'm' => __("Monthly", CB_TEXTDOMAIN),
+                    'y' => __("Yearly", CB_TEXTDOMAIN)
                 ]
             ),
-            new Field("weekdays", __('Weekdays', TRANSLATION_CONST), "", "multicheck", "edit_pages",
+            new Field("weekdays", __('Weekdays', CB_TEXTDOMAIN), "", "multicheck", "edit_pages",
                 [
-                    1 => __("Monday", TRANSLATION_CONST),
-                    2 => __("Tuesday", TRANSLATION_CONST),
-                    3 => __("Wednesday", TRANSLATION_CONST),
-                    4 => __("Thursday", TRANSLATION_CONST),
-                    5 => __("Friday", TRANSLATION_CONST),
-                    6 => __("Saturday", TRANSLATION_CONST),
-                    7 => __("Sunday", TRANSLATION_CONST)
+                    1 => __("Monday", CB_TEXTDOMAIN),
+                    2 => __("Tuesday", CB_TEXTDOMAIN),
+                    3 => __("Wednesday", CB_TEXTDOMAIN),
+                    4 => __("Thursday", CB_TEXTDOMAIN),
+                    5 => __("Friday", CB_TEXTDOMAIN),
+                    6 => __("Saturday", CB_TEXTDOMAIN),
+                    7 => __("Sunday", CB_TEXTDOMAIN)
                 ]
             ),
-            new Field("repetition-end", __('Repetition end', TRANSLATION_CONST), "", "text_datetime_timestamp", "edit_pages")
+            new Field("repetition-end", __('Repetition end', CB_TEXTDOMAIN), "", "text_datetime_timestamp", "edit_pages")
         );
     }
 
@@ -302,13 +302,13 @@ class Timeframe extends CustomPostType
     public static function getTypes()
     {
         return [
-            self::OPENING_HOURS_ID => __("Opening Hours", TRANSLATION_CONST),
-            self::BOOKABLE_ID => __("Bookable", TRANSLATION_CONST),
-            self::HOLIDAYS_ID => __("Holidays", TRANSLATION_CONST),
-            self::OFF_HOLIDAYS_ID => __("Official Holiday", TRANSLATION_CONST),
-            self::REPAIR_ID => __("Repair", TRANSLATION_CONST),
-            self::BOOKING_ID => __("Booking", TRANSLATION_CONST),
-            self::BOOKING_CANCELED_ID => __("Booking cancelled", TRANSLATION_CONST)
+            self::OPENING_HOURS_ID => __("Opening Hours", CB_TEXTDOMAIN),
+            self::BOOKABLE_ID => __("Bookable", CB_TEXTDOMAIN),
+            self::HOLIDAYS_ID => __("Holidays", CB_TEXTDOMAIN),
+            self::OFF_HOLIDAYS_ID => __("Official Holiday", CB_TEXTDOMAIN),
+            self::REPAIR_ID => __("Repair", CB_TEXTDOMAIN),
+            self::BOOKING_ID => __("Booking", CB_TEXTDOMAIN),
+            self::BOOKING_CANCELED_ID => __("Booking cancelled", CB_TEXTDOMAIN)
         ];
     }
 
@@ -375,13 +375,13 @@ class Timeframe extends CustomPostType
 
     /**
      * Priorities:
-     * 1 => __("Opening Hours", TRANSLATION_CONST),
-     * 2 => __("Bookable", TRANSLATION_CONST),
-     * 3 => __("Holidays", TRANSLATION_CONST),
-     * 4 => __("Official Holiday", TRANSLATION_CONST),
-     * 5 => __("Repair", TRANSLATION_CONST),
-     * 6 => __("Booking", TRANSLATION_CONST),
-     * 7 => __("Booking cancelled", TRANSLATION_CONST)
+     * 1 => __("Opening Hours", CB_TEXTDOMAIN),
+     * 2 => __("Bookable", CB_TEXTDOMAIN),
+     * 3 => __("Holidays", CB_TEXTDOMAIN),
+     * 4 => __("Official Holiday", CB_TEXTDOMAIN),
+     * 5 => __("Repair", CB_TEXTDOMAIN),
+     * 6 => __("Booking", CB_TEXTDOMAIN),
+     * 7 => __("Booking cancelled", CB_TEXTDOMAIN)
      * @param \WP_Post $timeframeOne
      * @param \WP_Post $timeframeTwo
      * @return \WP_Post

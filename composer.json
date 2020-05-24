@@ -4,15 +4,12 @@
   "version": "0.0.1",
   "autoload": {
     "files": ["includes/Template.php"],
-    "psr-4": {"CommonsBooking\\": "src/"},
-    "files": ["vendor/cmb2/cmb2/init.php"]
+    "psr-4": {"CommonsBooking\\": "src/"}
   },
   "require": {
     "php": ">=7.2.5",
     "twig/twig": "^3.0",
-    "cmb2/cmb2": "^2.7",
-    "cmb2\/cmb2": "dev-master"
-
+    "cmb2/cmb2": "^2.7"
   },
   "require-dev": {
     "symfony/maker-bundle": "^1.15"

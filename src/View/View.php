@@ -11,14 +11,14 @@ abstract class View
 {
 
     protected static function getTwigLoader() {
-        return new \Twig\Loader\FilesystemLoader(COMMONSBOOKING__PLUGIN_DIR . "Resources" . DIRECTORY_SEPARATOR . "views");
+        return new \Twig\Loader\FilesystemLoader(CB_PLUGIN_DIR . "Resources" . DIRECTORY_SEPARATOR . "views");
     }
 
     protected static function getTwig() {
         $options = [];
         if(!WP_DEBUG) {
             $options = [
-                'cache' => COMMONSBOOKING__PLUGIN_DIR . 'cache'
+                'cache' => CB_PLUGIN_DIR . 'cache'
             ] ;
         }
         $twig = new \Twig\Environment(

@@ -3,10 +3,10 @@
 /**
  * loading the options.php needs to be replaced by wordpress standard implementatio
  */
-// require_once(COMMONSBOOKING__PLUGIN_DIR . 'src/Settings/Options.php');
+// require_once(CB_PLUGIN_DIR . 'src/Settings/Options.php');
 
 
-//namespace CommonsBooking\Settings;
+namespace CommonsBooking\Settings;
 
 class Settings
 {
@@ -47,10 +47,9 @@ class Settings
 	 * @param  mixed $field
 	 * @return void
 	 */
-	public static function GetOption($options_name, $field)
+	public static function getOption($options_name, $field)
 	{
-
-		$options_array = \get_option($options_name);
+		$options_array = cmb2_get_option($options_name);
 		$flat_array = self::flattenArray($options_array);
 
 		if (array_key_exists($field, $flat_array)) {

@@ -14,7 +14,6 @@ class Dashboard extends View
     protected static $template = 'dashboard/index.html.twig';
 
     public static function index() {
-
         $weekNr = isset($_GET['cw']) ? $_GET['cw'] : date('W');
         $week = new Week($weekNr);
         $location = isset($_GET['location']) && $_GET['location'] != "" ? $_GET['location'] : null;

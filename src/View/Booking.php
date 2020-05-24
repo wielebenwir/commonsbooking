@@ -67,7 +67,7 @@ class Booking extends View
                     array(
                         'type' => Timeframe::BOOKING_CANCELED_ID,
                         'postStatus' => 'cancelled',
-                        'submitLabel' => __( 'Stornieren', TRANSLATION_CONST )
+                        'submitLabel' => __( 'Stornieren', CB_TEXTDOMAIN )
                     )
                 )
             );
@@ -88,7 +88,7 @@ class Booking extends View
                 self::getDefaultParams($post),
                 array(
                     'postStatus' => 'confirmed',
-                    'submitLabel' => __( 'Buchen', TRANSLATION_CONST )
+                    'submitLabel' => __( 'Buchen', CB_TEXTDOMAIN )
                 )
             )
         );
