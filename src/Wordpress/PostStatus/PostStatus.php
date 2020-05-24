@@ -50,18 +50,19 @@ class PostStatus
         global $post;
 
         $active = "";
-        if($post->post_status == $this->name) {
-            $active = "jQuery( '#post-status-display' ).text( '".$this->label."' )";
-        }
+        if($post) {
+            if($post->post_status == $this->name) {
+                $active = "jQuery( '#post-status-display' ).text( '".$this->label."' )";
+            }
 
-        echo "<script>
+            echo "<script>
             jQuery(document).ready( function() {
                 jQuery( 'select[name=\"post_status\"]' ).append( '<option value=\"".$this->name."\">".$this->label."</option>' );
                 ".$active."
                 jQuery( 'select[name=\"post_status\"]' ).val('".$this->name."');
             });
         </script>";
-
+        }
     }
 
     public function addQuickedit()

@@ -33,7 +33,7 @@ function cb_process() {
             var sJSName = $(this).attr("js-name");
             if (sJSName ? $(this).attr("name", sJSName) : sJSName = $(this).attr("name"), sJSName) {
                 sJSName = sJSName.replace(/\[\d+\]/, "[]");
-                for (var i = aQuery.length; 0 < i; ) aQuery[--i].replace(/=.*/, "").replace(/\[[0-9]+\]/, "[]") == sJSName && aQuery.splice(i, 1);
+                for (var i = aQuery.length; i > 0; ) aQuery[--i].replace(/=.*/, "").replace(/\[[0-9]+\]/, "[]") == sJSName && aQuery.splice(i, 1);
             }
         }), sQuery = aQuery.join("&"), sQuery += "&", sQuery += jInputs.serialize(), sQuery += "&redirect=" + escape(sRedirect), 
         document.location = document.location.pathname + "?" + sQuery;
@@ -61,14 +61,14 @@ function cb_process() {
         end_date.setMonth(end_date.getMonth() + diff_month), end_date.setDate(end_date.getDate() + diff_day), 
         $("#datetime_part_period_end_date").val(cb_iso_date(end_date)), window.console && console.info(diff_year + "-" + diff_month + "-" + diff_day)), 
         $("#datetime_part_period_start_date, #datetime_part_period_end_date").removeClass("cb-error"), 
-        end_date < start_date && ($("#datetime_part_period_end_date").addClass("cb-error"), 
+        start_date > end_date && ($("#datetime_part_period_end_date").addClass("cb-error"), 
         jSubmit.attr("disabled", "1")), previous_datetime_part_period_start_date = $(this).val(), 
         $("#datetime_part_period_end_date").val()), !0;
     }), jRoot.find("#datetime_part_period_end_date").change(function() {
         var start_date = new Date($("#datetime_part_period_start_date").val()), end_date = new Date($("#datetime_part_period_end_date").val()), jSubmit = $(this).closest("body,.cb-popup").find(".cb-popup-form-save");
         jSubmit.removeAttr("disabled"), isNaN(end_date.getTime()) ? ($(this).addClass("cb-error"), 
         jSubmit.attr("disabled", "1")) : ($("#datetime_part_period_start_date, #datetime_part_period_end_date").removeClass("cb-error"), 
-        end_date < start_date && ($("#datetime_part_period_end_date").addClass("cb-error"), 
+        start_date > end_date && ($("#datetime_part_period_end_date").addClass("cb-error"), 
         jSubmit.attr("disabled", "1")), $(this).val()), !0;
     }), jRoot.find("#cb-SOT").click(function() {
         original_recurrence_type = $(".cmb2-id-recurrence-type :input[checked]"), $("#recurrence_type1").click(), 
@@ -128,7 +128,7 @@ function cb_process() {
     }), jRoot.find(".cb-add-class-advanced").click(function() {
         $(this).closest("body,.cb-popup,.cb-panel").addClass("cb-advanced");
     }), jRoot.find(".cb-set-href-querystring").change(function() {
-        var name = $(this).attr("name"), value = $(this).val().trim(), text = $(this).find("option:selected").html().trim(), jHref = $(this).closest("a"), title = jHref.attr("title"), parts = jHref.attr("href").split("?"), url = parts[0].trim(), qs = 1 < parts.length ? parts[1].trim() : "", qsParts = qs.split("&"), css_class = "cb-follow cb-follow-" + name.replace(/_/g, "-").replace(/[_-]ID$/g, "").replace(/[^a-z]+/g, "-").replace(/^-+|-+$/g, ""), found = !1;
+        var name = $(this).attr("name"), value = $(this).val().trim(), text = $(this).find("option:selected").html().trim(), jHref = $(this).closest("a"), title = jHref.attr("title"), parts = jHref.attr("href").split("?"), url = parts[0].trim(), qs = parts.length > 1 ? parts[1].trim() : "", qsParts = qs.split("&"), css_class = "cb-follow cb-follow-" + name.replace(/_/g, "-").replace(/[_-]ID$/g, "").replace(/[^a-z]+/g, "-").replace(/^-+|-+$/g, ""), found = !1;
         for (var i in qsParts) {
             if (qsParts[i].split("=")[0] == name) {
                 qsParts[i] = name + "=" + value, found = !0;

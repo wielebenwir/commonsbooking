@@ -31,7 +31,8 @@ class Timeframe extends CustomPostType
 
     public static $multiDayFrames = [
         self::BOOKING_ID,
-        self::BOOKING_CANCELED_ID
+        self::BOOKING_CANCELED_ID,
+        self::REPAIR_ID
     ];
 
     /**
@@ -401,6 +402,20 @@ class Timeframe extends CustomPostType
         $typeOne = get_post_meta($timeframeOne->ID, 'type', true);
         $typeTwo = get_post_meta($timeframeTwo->ID, 'type', true);
         return $prioMapping[$typeOne] > $prioMapping[$typeTwo] ? $timeframeOne : $timeframeTwo;
+    }
+
+    /**
+     * Checks if timeframe is locked, so that an item cannot get booked.
+     * @param \WP_Post $timeframe
+     * @return bool
+     */
+    public static function isLocked(\WP_Post $timeframe) {
+        $lockedTypes = [
+            self::REPAIR_ID,
+            self::HOLIDAYS_ID,
+            self::BOOKING_ID
+        ];
+        return in_array(get_post_meta($timeframe->ID, 'type', true), $lockedTypes);
     }
 
     /**

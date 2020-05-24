@@ -99,7 +99,7 @@ module.exports = function (grunt) {
 	// Load tasks
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-compass');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-uglify-es');
 	// Register tasks
 	grunt.registerTask('default', [
 		'compass:admin', 'compass:public'

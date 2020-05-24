@@ -1,4 +1,9 @@
 <div class="alignwide">
     <h2>Buchungskalender</h2>
-    {% include '/calendar/index.html.twig' with {'calendar': calendar} %}
+    {% include '/calendar/index.html.twig' with {
+        'calendar': calendar,
+        'location': location,
+        'item': item,
+        'type': type
+    } %}
 </div>
