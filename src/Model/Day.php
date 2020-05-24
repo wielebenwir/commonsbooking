@@ -366,14 +366,22 @@ class Day
             $endSlot = $this->getEndSlot($endDate, $grid, $timeframe);
 
             // Add timeframe to relevant slots
-            while ($startSlot <= $endSlot) {
+            while ($startSlot < $endSlot) {
                 if (!array_key_exists('timeframe', $slots[$startSlot]) || !$slots[$startSlot]['timeframe']) {
+                    $timeframe->locked = Timeframe::isLocked($timeframe);
                     $slots[$startSlot]['timeframe'] = $timeframe;
                 } else {
                     $slots[$startSlot]['timeframe'] = Timeframe::getHigherPrioFrame($timeframe, $slots[$startSlot]['timeframe']);
                 }
 
                 $startSlot++;
+            }
+        }
+
+        // remove slots without timeframes
+        foreach($slots as $slotNr => $slot) {
+            if(!array_key_exists('timeframe', $slot) || !($slot['timeframe'] instanceof \WP_Post)) {
+                unset($slots[$slotNr]);
             }
         }
     }
@@ -399,8 +407,7 @@ class Day
                 'timestart' => date('H:i', $i * ((24 / $slotsPerDay) * 3600)),
                 'timeend' => date('H:i', ($i + 1) * ((24 / $slotsPerDay) * 3600)),
                 'timestampstart' => $this->getSlotTimestampStart($slotsPerDay, $i),
-                'timestampend' => $this->getSlotTimestampEnd($slotsPerDay, $i),
-                'timeframes' => []
+                'timestampend' => $this->getSlotTimestampEnd($slotsPerDay, $i)
             ];
         }
 

@@ -5,7 +5,6 @@
         <span>{{ day.formattedDate('M') }}</span>
     </div>
     
-
     {% for slotNr, slot in day.grid %}
         {% if slot.timeframe %}
             {% if slot.timeframe.type == '2' %}

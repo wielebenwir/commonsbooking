@@ -22,6 +22,7 @@
 	"dependencies": {
 		"grunt-contrib-jshint": "^1.1.0",
 		"grunt-contrib-uglify": "^3.3.0",
+		"grunt-contrib-uglify-es": "github:gruntjs/grunt-contrib-uglify#harmony",
 		"jquery": "^3.4.1"
 	}
 }
