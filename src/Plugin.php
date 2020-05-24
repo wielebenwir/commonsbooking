@@ -8,7 +8,8 @@ use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
-use CommonsBooking\scr\Settings;
+use CommonsBooking\scr\Settings\Settings;
+use CommonsBooking\Wordpress\Options\OptionsTab;
 use CommonsBooking\scr\CB_Messages;
 
 class Plugin

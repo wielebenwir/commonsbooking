@@ -3,7 +3,7 @@
 /**
  * loading the options.php needs to be replaced by wordpress standard implementatio
  */
-require_once(COMMONSBOOKING__PLUGIN_DIR . 'src/Settings/Options.php');
+// require_once(COMMONSBOOKING__PLUGIN_DIR . 'src/Settings/Options.php');
 
 
 //namespace CommonsBooking\Settings;
