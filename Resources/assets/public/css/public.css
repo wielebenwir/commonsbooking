@@ -4484,6 +4484,11 @@ article.type-cb_item .cb-calendar-pager {
   left: -9999px;
 }
 
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar_new\.scss}line{font-family:\000031}}
+.litepicker {
+  font-size: 1.2em;
+}
+
 /* Floating action bar */
 /*
  * Booking bar displayed on calendar pages

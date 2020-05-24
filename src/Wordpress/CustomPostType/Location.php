@@ -22,7 +22,7 @@ class Location extends CustomPostType
             $cb_content = cb_get_template_part( 'calendar', 'location' );
         } // if archive...
 
-        return $cb_content . $content;
+        return $content . $cb_content;
 
     }
 
