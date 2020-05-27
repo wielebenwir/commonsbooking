@@ -1,6 +1,6 @@
 <?php
 
-namespace CommonsBooking\Wordpress\Options\OptionsTab;
+namespace CommonsBooking\Wordpress\Options;
 
 class OptionsTab
 {
@@ -19,7 +19,6 @@ class OptionsTab
         $this->tab_title = $this->content['title'];
 
         add_action('cmb2_admin_init', array($this, 'Register'));
-
     }
 
     public function Register()
@@ -108,15 +107,3 @@ class OptionsTab
         return $metabox_group;
     }
 }
-
-
-//@TODO: This should be moved to an Admin.php 
-require_once(CB_PLUGIN_DIR . 'includes/options_array.php');
-
-// register tabs
-foreach ($options_array as $tab_id => $tab) {
-    $field_groups = $tab['field_groups'];
-    new OptionsTab($tab_id, $tab);
-}
-
-// --------------------------------------------
