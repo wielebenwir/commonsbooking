@@ -5,6 +5,7 @@
  * 
  * Tabs -> field "groups" -> fields
  */
+use CommonsBooking\Wordpress\Options\OptionsTab;
 
 $options_array = array(
 
@@ -328,4 +329,9 @@ $options_array = array(
   /* Tab: templates end*/
 
 );
-?>
+
+// register option tabs
+foreach ($options_array as $tab_id => $tab) {
+    $field_groups = $tab['field_groups'];
+    new OptionsTab($tab_id, $tab);
+}
