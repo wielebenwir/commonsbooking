@@ -1,9 +1,11 @@
 document.addEventListener("DOMContentLoaded", function(event) {
-    Litepicker.prototype.showTooltip = function(element, text) {
+    $("#booking-form").length && (Litepicker.prototype.showTooltip = function(element, text) {
         $("#booking-form").hide();
     }, $.post(cb_ajax.ajax_url, {
         _ajax_nonce: cb_ajax.nonce,
-        action: "calendar_data"
+        action: "calendar_data",
+        item: $("#booking-form input[name=item-id]").val(),
+        location: $("#booking-form input[name=location-id]").val()
     }, function(data) {
         new Litepicker({
             minDate: data.startDate,
@@ -38,5 +40,5 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 });
             }
         });
-    });
+    }));
 });

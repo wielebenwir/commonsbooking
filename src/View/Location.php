@@ -20,21 +20,24 @@ class Location extends View
      */
     public static function get_calendar_data()
     {
-        global $post;
-        $weekNr = isset($_GET['cw']) ? $_GET['cw'] : date('W');
+        $weekNr = isset($_POST['cw']) ? $_POST['cw'] : date('W');
         $week = new Week($weekNr);
         $lastWeek = new Week($weekNr + 5);
 
-        $location = $post->ID;
-        $item = isset($_GET['item']) && $_GET['item'] != "" ? $_GET['item'] : null;
-        $type = isset($_GET['type']) && $_GET['type'] != "" ? $_GET['type'] : null;
+        $item = isset($_POST['item']) && $_POST['item'] != "" ? $_POST['item'] : false;
+        $location = isset($_POST['location']) && $_POST['location'] != "" ? $_POST['location'] : false;
+
+        if(!$item || !$location) {
+            header('Content-Type: application/json');
+            echo json_encode(false);
+            wp_die(); // All ajax handlers die when finished
+        }
 
         $calendar = new Calendar(
             $week->getDays()[0],
             $lastWeek->getDays()[6],
-            $location ? [$location] : [],
-            $item ? [$item] : [],
-            $type ? [$type] : []
+            [$location],
+            [$item]
         );
 
         $jsonResponse = [
@@ -48,7 +51,6 @@ class Location extends View
 
         /** @var Week $week */
         foreach ($calendar->getWeeks() as $week) {
-
             /** @var Day $day */
             foreach ($week->getDays() as $day) {
                 $dayArray = [
@@ -64,6 +66,11 @@ class Location extends View
                             $dayArray['locked'] = true;
                         }
                     }
+                }
+
+                // If there are no slots defined, there's nothing bookable.
+                if(!count($dayArray['slots'])) {
+                    $dayArray['locked'] = true;
                 }
 
                 $jsonResponse['days'][$day->getFormattedDate('Y-m-d')] = $dayArray;
@@ -83,32 +90,33 @@ class Location extends View
         if ($post == null) {
             global $post;
         }
-
-        $weekNr = isset($_GET['cw']) ? $_GET['cw'] : date('W');
-        $week = new Week($weekNr);
-        $lastWeek = new Week($weekNr + 5);
-
         $location = $post->ID;
-        $item = isset($_GET['item']) && $_GET['item'] != "" ? $_GET['item'] : 16;
-        $type = isset($_GET['type']) && $_GET['type'] != "" ? $_GET['type'] : 6;
-
-        echo self::render(self::$template, [
+        $args = [
             'post' => $post,
             'wp_nonce' => Timeframe::getWPNonceField(),
             'actionUrl' => admin_url('admin.php'),
             'location' => $location,
-            'item' => $item,
-            'type' => $type,
-            'items' => Item::getAllPosts(),
-            'types' => Timeframe::getTypes(),
-            'calendar' => new Calendar(
-                $week->getDays()[0],
-                $lastWeek->getDays()[6],
-                $location ? [$location] : [],
-                $item ? [$item] : [],
-                $type ? [$type] : []
-            )
-        ]);
+            'postUrl' => get_permalink($location)
+        ];
+
+        $item = isset($_GET['item']) && $_GET['item'] != "" ? $_GET['item'] : false;
+        $items = \CommonsBooking\Repository\Item::getByLocation($location);
+
+        // If theres no item selected, we'll show all available.
+        if(!$item) {
+            if(count($items)) {
+                // If there's only one item available, we'll show it directly.
+                if(count($items) == 1) {
+                    $args['item'] = $items[0];
+                } else {
+                    $args['items'] = $items;
+                }
+            }
+        } else {
+            $args['item'] = get_post($item);
+        }
+
+        echo self::render(self::$template, $args);
     }
 
 }
