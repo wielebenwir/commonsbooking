@@ -54,7 +54,7 @@ module.exports = function (grunt) {
 					'Resources/assets/public/js/public.js': [
 						/* add path to js dependencies (ie in node_modules) here */
 						'node_modules/tippy.js/dist/tippy.all.js',
-						'Resources/assets/public/js/src/*.js'
+						'Resources/assets/public/js/src/**/*.js'
 					],
 					'Resources/assets/admin/js/admin.js': [
 						/* add path to js dependencies (ie in node_modules) here */
