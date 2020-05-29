@@ -43,6 +43,6 @@ add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/cmb2/cmb2/init.php';
 
+
 $cbPlugin = new \CommonsBooking\Plugin();
 $cbPlugin->init();
-

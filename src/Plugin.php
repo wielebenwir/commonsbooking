@@ -8,9 +8,9 @@ use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
-use CommonsBooking\scr\Settings\Settings;
-use CommonsBooking\Wordpress\Options\OptionsTab;
-use CommonsBooking\scr\CB_Messages;
+use CommonsBooking\Settings;
+use CommonsBooking\Wordpress\Options;
+use CommonsBooking\Messages;
 
 class Plugin
 {
@@ -43,6 +43,9 @@ class Plugin
      */
     public function init()
     {
+        // Register custom post types taxonomy / categories
+        add_action('init', array(self::class, 'registerItemTaxonomy'));
+        
         // Register custom post types
         add_action('init', array(self::class, 'registerCustomPostTypes'));
         add_action('init', array(self::class, 'registerPostStatuses'));
@@ -151,10 +154,33 @@ class Plugin
         }
     }
 
-    public static function registerPostStatuses() {
-        $cancelled = new PostStatus("cancelled", __( 'Storniert', CB_TEXTDOMAIN ));
-        $confirmed = new PostStatus("confirmed", __( 'Bestätigt', CB_TEXTDOMAIN ));
-        $unconfirmed = new PostStatus("unconfirmed", __( 'Nicht bestätigt', CB_TEXTDOMAIN ));
+    public static function registerPostStatuses()
+    {
+        $cancelled = new PostStatus("cancelled", __('Storniert', CB_TEXTDOMAIN));
+        $confirmed = new PostStatus("confirmed", __('Bestätigt', CB_TEXTDOMAIN));
+        $unconfirmed = new PostStatus("unconfirmed", __('Nicht bestätigt', CB_TEXTDOMAIN));
     }
+
+
+
+    /**
+     * Registers category taxonomy for Custom Post Type Item
+     * @return void
+     */
+    public static function registerItemTaxonomy()
+    {
+        $customPostType = Item::getPostType();
+
+        register_taxonomy(
+            $customPostType . '_category',
+            $customPostType,
+            array(
+                'label' => __('Item Category', CB_TEXTDOMAIN),
+                'rewrite' => array('slug' => $customPostType . '-cat'),
+                'hierarchical' => true,
+            )
+        );
+    }
+    
 
 }

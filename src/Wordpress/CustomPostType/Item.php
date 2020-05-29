@@ -81,9 +81,6 @@ class Item extends CustomPostType
             // Soll der Post Type Kategorien zugeordnet werden können?
             'has_archive'         => false,
 
-            // Soll der Post Type Archiv-Seiten haben?
-            'taxonomies'         => array('category'),
-
             // Soll man den Post Type exportieren können?
             'can_export'          => false,
 
