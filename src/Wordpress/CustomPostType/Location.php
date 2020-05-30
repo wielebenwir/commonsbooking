@@ -13,6 +13,8 @@ class Location extends CustomPostType
     public function __construct()
     {
         add_filter( 'the_content', array( $this, 'getTemplate' ) );
+        add_action( 'cmb2_admin_init', array( $this, 'createLocationMetaboxes' ) );
+        
     }
 
     public function getTemplate( $content ) {
@@ -105,6 +107,127 @@ class Location extends CustomPostType
 
     public static function getView() {
         return new \CommonsBooking\View\Location();
+    }
+
+    
+    /**
+     * Creates MetaBoxes for Custom Post Type Location
+     *
+     * @return void
+     */
+    public static function createLocationMetaboxes() {
+       
+       
+        /**
+         * Initiate the metabox Adress
+         */
+        $cmb = new_cmb2_box( array(
+            'id'            => 'location_adress',
+            'title'         => __( 'Adresse', CB_TEXTDOMAIN ),
+            'object_types'  => array( 'cb_location', ), // Post type
+            'context'       => 'normal',
+            'priority'      => 'high',
+            'show_names'    => true, // Show field names on the left
+            // 'cmb_styles' => false, // false to disable the CMB stylesheet
+            // 'closed'     => true, // Keep the metabox closed by default
+        ) );
+
+        // Adress
+        $cmb->add_field( array(
+            'name'       => __( 'Straße / Hausnr.', CB_TEXTDOMAIN ),
+            'desc'       => __( 'field description (optional)', CB_TEXTDOMAIN ),
+            'id'         => 'cb_location_street',
+            'type'       => 'text',
+            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+            // 'on_front'        => false, // Optionally designate a field to wp-admin only
+            // 'repeatable'      => true,
+        ) );
+
+        // Postcode
+        $cmb->add_field( array(
+            'name'       => __( 'PLZ', CB_TEXTDOMAIN ),
+            'desc'       => __( 'field description (optional)', CB_TEXTDOMAIN ),
+            'id'         => 'cb_location_postcode',
+            'type'       => 'text',
+            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+            // 'on_front'        => false, // Optionally designate a field to wp-admin only
+            // 'repeatable'      => true,
+        ) );
+
+        // City
+        $cmb->add_field( array(
+            'name'       => __( 'Ort', CB_TEXTDOMAIN ),
+            'desc'       => __( 'field description (optional)', CB_TEXTDOMAIN ),
+            'id'         => 'cb_location_city',
+            'type'       => 'text',
+            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+            // 'on_front'        => false, // Optionally designate a field to wp-admin only
+            // 'repeatable'      => true,
+        ) );
+
+        // Country
+        $cmb->add_field( array(
+            'name'       => __( 'Land', CB_TEXTDOMAIN ),
+            'desc'       => __( 'field description (optional)', CB_TEXTDOMAIN ),
+            'id'         => 'cb_location_country',
+            'type'       => 'text',
+            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+            // 'on_front'        => false, // Optionally designate a field to wp-admin only
+            // 'repeatable'      => true,
+        ) );
+
+        /**
+         * Initiate the metabox Information
+         */
+        $cmb = new_cmb2_box( array(
+            'id'            => 'location_info',
+            'title'         => __( 'Informationen', CB_TEXTDOMAIN ),
+            'object_types'  => array( 'cb_location', ), // Post type
+            'context'       => 'normal',
+            'priority'      => 'high',
+            'show_names'    => true, // Show field names on the left
+            // 'cmb_styles' => false, // false to disable the CMB stylesheet
+            // 'closed'     => true, // Keep the metabox closed by default
+        ) );
+        
+        // short description
+        $cmb->add_field( array(
+            'name'       => __( 'Kurzbeschreibung', CB_TEXTDOMAIN ),
+            'desc'       => __( 'field description (optional)', CB_TEXTDOMAIN ),
+            'id'         => 'cb_location_shortdescription',
+            'type'       => 'text',
+            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+            // 'on_front'        => false, // Optionally designate a field to wp-admin only
+            // 'repeatable'      => true,
+        ) );
+
+
+        // pickup description
+        $cmb->add_field( array(
+            'name'       => __( 'Abhol-Informationen', CB_TEXTDOMAIN ),
+            'desc'       => __( 'field description (optional)', CB_TEXTDOMAIN ),
+            'id'         => 'cb_location_pickupinstructions',
+            'type'       => 'textarea_small',
+            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+            // 'on_front'        => false, // Optionally designate a field to wp-admin only
+            // 'repeatable'      => true,
+        ) );
+
+
+
+
     }
 
 }
