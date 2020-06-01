@@ -14,8 +14,9 @@
 	--litepickerDayIsInRange: #bbdefb;
 	--litepickerDayIsLockedColor: #656565;
 	--litepickerDayIsLockedColorBg: #a0a0a0;
-	--litepickerDayIsPartiallyLockedColor: #656565;
-	--litepickerDayIsPartiallyLockedColorBg: #a0a0a0;
+	--litepickerDayIsPartiallyLockedColor: #333;
+	--litepickerDayIsPartiallyLockedColorBgOne: #20c527;
+	--litepickerDayIsPartiallyLockedColorBgTwo: #a0a0a0;
 	--litepickerDayIsBookedColor: #9e9e9e;
 	--litepickerDayIsStartColor: #fff;
 	--litepickerDayIsStartBg: #2196f3;
@@ -211,9 +212,9 @@
 				text-decoration: none;
 				border-radius: 0px;
 				transition: color 0.3s, border 0.3s;
-				cursor: default;
 
 				&:hover {
+					cursor: pointer;
 					color: var(--litepickerDayColorHover);
 					box-shadow: inset 0 0 0 1px var(--litepickerDayColorHover);
 				}
@@ -224,23 +225,32 @@
 
 				&.is-locked {
 					color: var(--litepickerDayIsLockedColor);
-					background-color: var(--litepickerDayIsLockedColorBg);
+					background: var(--litepickerDayIsLockedColorBg) !important;
 
 					&:hover {
+						cursor: not-allowed;
 						color: var(--litepickerDayIsLockedColor);
 						box-shadow: none;
-						cursor: default;
 					}
 				}
 
-				&.is-partially-locked {
+				&.is-partially-booked {
 					color: var(--litepickerDayIsPartiallyLockedColor);
-					background-color: var(--litepickerDayIsPartiallyLockedColorBg);
+					background: linear-gradient(to bottom right,
+									var(--litepickerDayIsPartiallyLockedColorBgOne) 0%,
+									var(--litepickerDayIsPartiallyLockedColorBgOne) 50%,
+									var(--litepickerDayIsPartiallyLockedColorBgTwo) 50%,
+									var(--litepickerDayIsPartiallyLockedColorBgTwo) 100%);
 
 					&:hover {
+						cursor: pointer;
 						color: var(--litepickerDayIsPartiallyLockedColor);
+						background: linear-gradient(to bottom right,
+										lightgreen 0%,
+										lightgreen 50%,
+										lightgray 50%,
+										lightgray 100%);
 						box-shadow: none;
-						cursor: default;
 					}
 				}
 
@@ -261,45 +271,48 @@
 
 				&.is-start-date {
 					color: var(--litepickerDayIsStartColor);
+					background: var(--litepickerDayIsStartBg) !important;
 					background-color: var(--litepickerDayIsStartBg);
-					border-top-left-radius: 5px;
-					border-bottom-left-radius: 5px;
+					border-top-left-radius: 0px;
+					border-bottom-left-radius: 0px;
 					border-top-right-radius: 0;
 					border-bottom-right-radius: 0;
 
 					&.is-flipped {
 						border-top-left-radius: 0;
 						border-bottom-left-radius: 0;
-						border-top-right-radius: 5px;
-						border-bottom-right-radius: 5px;
+						border-top-right-radius: 0px;
+						border-bottom-right-radius: 0px;
 					}
 				}
 
 				&.is-end-date {
 					color: var(--litepickerDayIsEndColor);
+					background: var(--litepickerDayIsEndBg) !important;
 					background-color: var(--litepickerDayIsEndBg);
 					border-top-left-radius: 0;
 					border-bottom-left-radius: 0;
-					border-top-right-radius: 5px;
-					border-bottom-right-radius: 5px;
+					border-top-right-radius: 0px;
+					border-bottom-right-radius: 0px;
 
 					&.is-flipped {
-						border-top-left-radius: 5px;
-						border-bottom-left-radius: 5px;
+						border-top-left-radius: 0px;
+						border-bottom-left-radius: 0px;
 						border-top-right-radius: 0;
 						border-bottom-right-radius: 0;
 					}
 				}
 
 				&.is-start-date.is-end-date {
-					border-top-left-radius: 5px;
-					border-bottom-left-radius: 5px;
-					border-top-right-radius: 5px;
-					border-bottom-right-radius: 5px;
+					border-top-left-radius: 0px;
+					border-bottom-left-radius: 0px;
+					border-top-right-radius: 0px;
+					border-bottom-right-radius: 0px;
 				}
 
 				&.is-highlighted {
 					color: var(--litepickerHighlightedDayColor);
+					background: var(--litepickerHighlightedDayBg) !important;
 					background-color: var(--litepickerHighlightedDayBg);
 				}
 			}

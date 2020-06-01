@@ -40,7 +40,11 @@ class Item
 
                 if($itemId && !in_array($itemId, $itemIds)) {
                     $itemIds[] = $itemId;
-                    $items[] = get_post($itemId);
+                    $item = get_post($itemId);
+                    // add only published items
+                    if($item->post_status == 'publish') {
+                        $items[] = $item;
+                    }
                 }
             }
         }

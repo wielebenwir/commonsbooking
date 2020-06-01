@@ -89,6 +89,9 @@ class Location extends CustomPostType
             'supports'            => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions'),
 
             // Soll der Post Type Archiv-Seiten haben?
+            'taxonomies'         => array('category'),
+
+            // Soll der Post Type Archiv-Seiten haben?
             'has_archive'         => false,
 
             // Soll man den Post Type exportieren können?

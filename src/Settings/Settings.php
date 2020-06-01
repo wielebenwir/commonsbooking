@@ -1,11 +1,5 @@
 <?php
 
-/**
- * loading the options.php needs to be replaced by wordpress standard implementatio
- */
-// require_once(CB_PLUGIN_DIR . 'src/Settings/Options.php');
-
-
 namespace CommonsBooking\Settings;
 
 class Settings

@@ -40,6 +40,7 @@ class Item extends CustomPostType
             'remove_featured_image' => __( 'Itembild entfernen', CB_TEXTDOMAIN ),
             'use_featured_image'    => __( 'Als Itembild verwenden', CB_TEXTDOMAIN ),
             'menu_name'             => __( 'Items', CB_TEXTDOMAIN ),
+
         );
 
         // args for the new post_type
@@ -77,7 +78,7 @@ class Item extends CustomPostType
             // Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
             'supports'            => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions'),
 
-            // Soll der Post Type Archiv-Seiten haben?
+            // Soll der Post Type Kategorien zugeordnet werden können?
             'has_archive'         => false,
 
             // Soll man den Post Type exportieren können?

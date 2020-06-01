@@ -26,11 +26,16 @@ add_action('admin_enqueue_scripts', 'commonsbooking_admin');
 function commonsbooking_public()
 {
     wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__) . 'Resources/assets/public/css/public.css');
+    wp_enqueue_style('cb-styles-daterangepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css');
 
     wp_enqueue_script('cb-scripts-jquery', 'https://cdn.jsdelivr.net/jquery/latest/jquery.min.js', array(), '1.0.0', true);
     wp_enqueue_script('cb-scripts-moment', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js', array(), '1.0.0', true);
-    //wp_enqueue_script('cb-scripts-litepicker', 'https://cdn.jsdelivr.net/npm/litepicker/dist/js/main.js', array(), '1.0.0', true);
+    wp_enqueue_script('cb-scripts-daterangepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', array(), '1.0.0', true);
+    #wp_enqueue_script('cb-scripts-litepicker', 'https://cdn.jsdelivr.net/npm/litepicker/dist/js/main.js', array(), '1.0.0', true);
+
+    //wp_enqueue_script('cb-scripts-public', plugin_dir_url(__FILE__) . 'Resources/assets/public/js/public.js', array());
     wp_enqueue_script('cb-scripts-public', plugin_dir_url(__FILE__) . 'Resources/assets/public/js/public.js', array());
+
     wp_localize_script('cb-scripts-public', 'cb_ajax', array(
         'ajax_url' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('calendar_data')));
@@ -42,6 +47,6 @@ add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/cmb2/cmb2/init.php';
 
+
 $cbPlugin = new \CommonsBooking\Plugin();
 $cbPlugin->init();
-
