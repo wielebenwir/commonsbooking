@@ -27,7 +27,7 @@ class Location extends View
         $item = isset($_POST['item']) && $_POST['item'] != "" ? $_POST['item'] : false;
         $location = isset($_POST['location']) && $_POST['location'] != "" ? $_POST['location'] : false;
 
-        if(!$item || !$location) {
+        if (!$item || !$location) {
             header('Content-Type: application/json');
             echo json_encode(false);
             wp_die(); // All ajax handlers die when finished
@@ -56,17 +56,39 @@ class Location extends View
                 $dayArray = [
                     'date' => $day->getFormattedDate('d.m.Y'),
                     'slots' => [],
-                    'locked' => false
+                    'locked' => false,
+                    'firstSlotBooked' => null,
+                    'lastSlotBooked' => null
                 ];
 
+                // If all slots are locked, day cannot be selected
                 $allLocked = true;
+
                 foreach ($day->getGrid() as $slot) {
 
                     // Add only bookable slots for time select
-                    if(
-                        $slot['timeframe'] instanceof \WP_Post &&
-                        get_post_meta($slot['timeframe']->ID, 'type', true) == Timeframe::BOOKABLE_ID) {
-                        $dayArray['slots'][] = $slot;
+                    if ($slot['timeframe'] instanceof \WP_Post) {
+
+                        $timeFrameType = get_post_meta($slot['timeframe']->ID, 'type', true);
+
+                        // save bookable state for first and last slot
+                        if ($dayArray['firstSlotBooked'] === null) {
+                            if ($timeFrameType == Timeframe::BOOKABLE_ID) {
+                                $dayArray['firstSlotBooked'] = false;
+                            } else {
+                                $dayArray['firstSlotBooked'] = true;
+                            }
+                        } else {
+                            if ($timeFrameType == Timeframe::BOOKABLE_ID) {
+                                $dayArray['lastSlotBooked'] = false;
+                            } else {
+                                $dayArray['lastSlotBooked'] = true;
+                            }
+                        }
+
+                        if ($timeFrameType == Timeframe::BOOKABLE_ID) {
+                            $dayArray['slots'][] = $slot;
+                        }
                     }
 
                     // If there's no timeframe, nothing can be selected
@@ -82,13 +104,13 @@ class Location extends View
                 }
 
                 // If there are no slots defined, there's nothing bookable.
-                if(!count($dayArray['slots'])) {
+                if (!count($dayArray['slots'])) {
                     $dayArray['locked'] = true;
                 }
 
                 $jsonResponse['days'][$day->getFormattedDate('Y-m-d')] = $dayArray;
                 if ($dayArray['locked']) {
-                    if($allLocked) {
+                    if ($allLocked) {
                         $jsonResponse['lockDays'][] = $day->getFormattedDate('Y-m-d');
                     } else {
                         $jsonResponse['bookedDays'][] = $day->getFormattedDate('Y-m-d');
@@ -120,10 +142,10 @@ class Location extends View
         $items = \CommonsBooking\Repository\Item::getByLocation($location);
 
         // If theres no item selected, we'll show all available.
-        if(!$item) {
-            if(count($items)) {
+        if (!$item) {
+            if (count($items)) {
                 // If there's only one item available, we'll show it directly.
-                if(count($items) == 1) {
+                if (count($items) == 1) {
                     $args['item'] = $items[0];
                 } else {
                     $args['items'] = $items;

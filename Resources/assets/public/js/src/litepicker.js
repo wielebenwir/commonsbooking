@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         "singleMode": false,
                         "showWeekNumbers": false,
                         "autoApply": true,
+                        "days": data['days'],
                         "lockDays": data['lockDays'],
                         "bookedDays": data['bookedDays'],
                         "bookedDaysInclusivity": "[]",
