@@ -59,11 +59,24 @@ class Location extends View
                     'locked' => false
                 ];
 
+                $allLocked = true;
                 foreach ($day->getGrid() as $slot) {
-                    $dayArray['slots'][] = $slot;
+
+                    // Add only bookable slots for time select
+                    if(
+                        $slot['timeframe'] instanceof \WP_Post &&
+                        get_post_meta($slot['timeframe']->ID, 'type', true) == Timeframe::BOOKABLE_ID) {
+                        $dayArray['slots'][] = $slot;
+                    }
+
+                    // If there's no timeframe, nothing can be selected
                     if (!empty($slot['timeframe'])) {
+                        // If it's a locked timeframe, nothing can be selected
                         if ($slot['timeframe']->locked) {
                             $dayArray['locked'] = true;
+                        } else {
+                            // if not all slots are locked, the day should be selectable
+                            $allLocked = false;
                         }
                     }
                 }
@@ -75,7 +88,11 @@ class Location extends View
 
                 $jsonResponse['days'][$day->getFormattedDate('Y-m-d')] = $dayArray;
                 if ($dayArray['locked']) {
-                    $jsonResponse['lockDays'][] = $day->getFormattedDate('Y-m-d');
+                    if($allLocked) {
+                        $jsonResponse['lockDays'][] = $day->getFormattedDate('Y-m-d');
+                    } else {
+                        $jsonResponse['bookedDays'][] = $day->getFormattedDate('Y-m-d');
+                    }
                 }
             }
         }

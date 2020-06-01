@@ -31,8 +31,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         "autoApply": true,
                         "lockDays": data['lockDays'],
                         "bookedDays": data['bookedDays'],
+                        "bookedDaysInclusivity": "[]",
                         "highlightedDays": data['highlightedDays'],
-                        "disallowBookedDaysInRange": true,
+                        "disallowBookedDaysInRange": false,
                         "disallowLockDaysInRange": true,
                         maxDays: 3,
                         'buttonText': {
