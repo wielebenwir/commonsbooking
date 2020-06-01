@@ -31,9 +31,9 @@ function commonsbooking_public()
     wp_enqueue_script('cb-scripts-jquery', 'https://cdn.jsdelivr.net/jquery/latest/jquery.min.js', array(), '1.0.0', true);
     wp_enqueue_script('cb-scripts-moment', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js', array(), '1.0.0', true);
     wp_enqueue_script('cb-scripts-daterangepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', array(), '1.0.0', true);
-    #wp_enqueue_script('cb-scripts-litepicker', 'https://cdn.jsdelivr.net/npm/litepicker/dist/js/main.js', array(), '1.0.0', true);
 
-    //wp_enqueue_script('cb-scripts-public', plugin_dir_url(__FILE__) . 'Resources/assets/public/js/public.js', array());
+    // commented out until changes are implemented in extension
+    // wp_enqueue_script('cb-scripts-litepicker', 'https://cdn.jsdelivr.net/npm/litepicker/dist/js/main.js', array(), '1.0.0', true);
     wp_enqueue_script('cb-scripts-public', plugin_dir_url(__FILE__) . 'Resources/assets/public/js/public.js', array());
 
     wp_localize_script('cb-scripts-public', 'cb_ajax', array(
