@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         "bookedDays": data['bookedDays'],
                         "bookedDaysInclusivity": "[]",
                         "highlightedDays": data['highlightedDays'],
-                        "disallowBookedDaysInRange": false,
+                        "disallowBookedDaysInRange": true,
                         "disallowLockDaysInRange": true,
                         maxDays: 3,
                         'buttonText': {
