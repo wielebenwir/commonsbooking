@@ -9,17 +9,13 @@
             <input type="hidden" name="post_type" value="cb_timeframe" />
             <input type="hidden" name="post_status" value="unconfirmed" />
         
-            <div class="time-selection start-date">
-                <label>Abholzeit am <span class="date"></span></label>
-                <select name="start-date"></select>
-            </div>
-            <div class="time-selection end-date">
-                <label>Abgabezeit am <span class="date"></span></label>
-                <select name="end-date"></select>
-            </div>
-            <input type="submit" value="Buchen" />
+            <label>Abholzeit am <span id="start-date"></span></label>
+            <select name="start-date"></select>
+            <label>Abgabezeit am <span id="end-date"></span></label>
+            <select name="end-date"></select>
+        
+            <input type="submit" value="Buchen" style="font-size: 12px;padding:0;" />
         </form>
-        <div style="clear: both" />
     </div>
 {% else %}
     {% for week in calendar.weeks %}
