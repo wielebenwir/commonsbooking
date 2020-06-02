@@ -36,6 +36,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         "highlightedDays": data['highlightedDays'],
                         "disallowBookedDaysInRange": true,
                         "disallowLockDaysInRange": true,
+                        "mobileFriendly": true,
+                        "selectForward": true,
+                        "useResetBtn": true,
                         maxDays: 3,
                         'buttonText': {
                             apply: 'Buchen',

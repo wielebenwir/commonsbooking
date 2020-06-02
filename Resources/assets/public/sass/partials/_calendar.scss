@@ -16,8 +16,8 @@
 	--litepickerDayIsLockedColorBg: #a0a0a0;
 	--litepickerDayIsPartiallyLockedColor: #333;
 	--litepickerDayIsPartiallyLockedColorBgOne: #20c527;
-	--litepickerDayIsPartiallyLockedColorBgTwo: #a0a0a0;
-	--litepickerDayIsBookedColor: #9e9e9e;
+	--litepickerDayIsPartiallyLockedColorBgTwo: #f06f6f;
+	--litepickerDayIsBookedColor: #f06f6f;
 	--litepickerDayIsStartColor: #fff;
 	--litepickerDayIsStartBg: #2196f3;
 	--litepickerDayIsEndColor: #fff;
@@ -34,6 +34,8 @@
 
 	--litepickerHighlightedDayColor: #333;
 	--litepickerHighlightedDayBg: #ffeb3b;
+
+	--litePickerDayBorderColor: #FFFFFF;
 }
 .show-week-numbers {
 	--litepickerMonthWidth: calc(var(--litepickerDayWidth) * 8);
@@ -203,6 +205,9 @@
 			> a {
 				padding: 5px 0;
 				width: var(--litepickerDayWidth);
+				border-style: solid;
+				border-color: var(--litePickerDayBorderColor);
+				border-width: 1px;
 			}
 
 			.day-item {
@@ -212,6 +217,9 @@
 				text-decoration: none;
 				border-radius: 0px;
 				transition: color 0.3s, border 0.3s;
+				border-style: solid;
+				border-color: var(--litePickerDayBorderColor);
+				border-width: 1px;
 
 				&:hover {
 					cursor: pointer;
