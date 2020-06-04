@@ -57,6 +57,7 @@ class Location extends View
                     'date' => $day->getFormattedDate('d.m.Y'),
                     'slots' => [],
                     'locked' => false,
+                    'holiday' => true,
                     'firstSlotBooked' => null,
                     'lastSlotBooked' => null
                 ];
@@ -67,7 +68,7 @@ class Location extends View
                 foreach ($day->getGrid() as $slot) {
 
                     // Add only bookable slots for time select
-                    if ($slot['timeframe'] instanceof \WP_Post) {
+                    if (!empty($slot['timeframe']) && $slot['timeframe'] instanceof \WP_Post) {
 
                         $timeFrameType = get_post_meta($slot['timeframe']->ID, 'type', true);
 
@@ -89,10 +90,12 @@ class Location extends View
                         if ($timeFrameType == Timeframe::BOOKABLE_ID) {
                             $dayArray['slots'][] = $slot;
                         }
-                    }
 
-                    // If there's no timeframe, nothing can be selected
-                    if (!empty($slot['timeframe'])) {
+                        // Remove holiday flag, if there is at least one slot that isn't of type holiday
+                        if (!in_array($timeFrameType, [Timeframe::HOLIDAYS_ID, Timeframe::OFF_HOLIDAYS_ID])) {
+                            $dayArray['holiday'] = false;
+                        }
+
                         // If it's a locked timeframe, nothing can be selected
                         if ($slot['timeframe']->locked) {
                             $dayArray['locked'] = true;
@@ -101,6 +104,7 @@ class Location extends View
                             $allLocked = false;
                         }
                     }
+
                 }
 
                 // If there are no slots defined, there's nothing bookable.
@@ -111,7 +115,12 @@ class Location extends View
                 $jsonResponse['days'][$day->getFormattedDate('Y-m-d')] = $dayArray;
                 if ($dayArray['locked']) {
                     if ($allLocked) {
-                        $jsonResponse['lockDays'][] = $day->getFormattedDate('Y-m-d');
+                        if($dayArray['holiday']) {
+                            $jsonResponse['highlightedDays'][] = $day->getFormattedDate('Y-m-d');
+                        } else {
+                            $jsonResponse['lockDays'][] = $day->getFormattedDate('Y-m-d');
+                        }
+
                     } else {
                         $jsonResponse['bookedDays'][] = $day->getFormattedDate('Y-m-d');
                     }

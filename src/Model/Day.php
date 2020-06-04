@@ -112,136 +112,6 @@ class Day
         return date('l', strtotime($this->getDate()));
     }
 
-    protected function getTimeRangeQuery()
-    {
-        return array(
-            'relation' => "OR",
-            array(
-                'key' => 'start-date',
-                'value' => array(
-                    strtotime($this->getDate()),
-                    strtotime($this->getDate() . 'T23:59')
-                ),
-                'compare' => 'BETWEEN',
-                'type' => 'numeric'
-            ),
-            array(
-                'key' => 'end-date',
-                'value' => array(
-                    strtotime($this->getDate()),
-                    strtotime($this->getDate() . 'T23:59')
-                ),
-                'compare' => 'BETWEEN',
-                'type' => 'numeric'
-            ),
-            array(
-                'relation' => "AND",
-                array(
-                    'key' => 'start-date',
-                    'value' =>strtotime($this->getDate()),
-                    'compare' => '<',
-                    'type' => 'numeric'
-                ),
-                array(
-                    'key' => 'end-date',
-                    'value' => strtotime($this->getDate()),
-                    'compare' => '>',
-                    'type' => 'numeric'
-                )
-            )
-        );
-    }
-
-    protected function getLocationItemMetaQuery($locations, $items, $types)
-    {
-        $metaQuery = [
-            'relation' => 'AND'
-        ];
-
-        if (count($locations)) {
-            $metaQuery[] = array(
-                'relation' => 'OR',
-                [
-                    'key' => 'location-id',
-                    'value' => $locations,
-                    'compare' => 'IN'
-                ],
-                // Not selected
-                [
-                    'key' => 'location-id',
-                    'value' => 'none',
-                    'compare' => '='
-                ]
-            );
-        }
-
-        if (count($items)) {
-            $metaQuery[] = array(
-                'relation' => 'OR',
-                [
-                    'key' => 'item-id',
-                    'value' => $items,
-                    'compare' => 'IN'
-                ],
-                // Not selected
-                [
-                    'key' => 'item-id',
-                    'value' => 'none',
-                    'compare' => '='
-                ]
-            );
-        }
-
-        if (count($types)) {
-            $metaQuery[] = array(
-                'relation' => 'OR',
-                [
-                    'key' => 'type',
-                    'value' => $types,
-                    'compare' => 'IN'
-                ],
-                // Not selected
-                [
-                    'key' => 'type',
-                    'value' => 'none',
-                    'compare' => '='
-                ]
-            );
-        }
-
-        return $metaQuery;
-    }
-
-    /**
-     *
-     * @return array|int[]|\WP_Post[]
-     */
-    public function getTimeframes()
-    {
-        // Default query
-        $args = array(
-            'post_type' => Timeframe::getPostType(),
-            'meta_query' => $this->getTimeRangeQuery(),
-            'post_status' => array('confirmed', 'unconfirmed', 'publish', 'inherit')
-        );
-
-        // Filtered query (items, locations)
-        if (count($this->locations) || count($this->items) || count($this->types)) {
-            $args['meta_query'] = array(
-                'relation' => 'AND',
-                [$this->getTimeRangeQuery()],
-                [$this->getLocationItemMetaQuery($this->locations, $this->items, $this->types)]
-            );
-        }
-
-        $query = new \WP_Query($args);
-        if ($query->have_posts()) {
-            return $query->get_posts();
-        }
-
-        return [];
-    }
-
     /**
      * Returns grid of timeframes.
      * @return array
@@ -249,7 +119,12 @@ class Day
      */
     public function getGrid()
     {
-        $timeFrames = $this->getTimeframes();
+        $timeFrames = \CommonsBooking\Repository\Timeframe::get(
+            $this->locations,
+            $this->items,
+            $this->types,
+            $this->getDate()
+        );
         $slots = $this->getTimeframeSlots($timeFrames);
 
         return $slots;
