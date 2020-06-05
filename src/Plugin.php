@@ -10,7 +10,9 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
 use CommonsBooking\Settings;
 use CommonsBooking\Wordpress\Options;
-use CommonsBooking\Messages;
+use CommonsBooking\Messages\Messages;
+use CommonsBooking\Shortcodes\Shortcodes;
+
 
 class Plugin
 {
@@ -43,8 +45,13 @@ class Plugin
      */
     public function init()
     {
+        do_action( 'cmb2_init' ); 
+        
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerItemTaxonomy'));
+
+        // Register Costum Shortcodes
+        add_action('init', array(self::class, 'registerShortcodes'));
         
         // Register custom post types
         add_action('init', array(self::class, 'registerCustomPostTypes'));
@@ -181,6 +188,11 @@ class Plugin
             )
         );
     }
-    
+
+    public static function registerShortcodes()
+    {
+        return new Shortcodes();
+    }
+
 
 }

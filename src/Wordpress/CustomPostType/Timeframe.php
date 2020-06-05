@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Messages;
 use CommonsBooking\Wordpress\MetaBox\Field;
 
 class Timeframe extends CustomPostType
@@ -116,6 +117,7 @@ class Timeframe extends CustomPostType
             'post_status' => 'any'
         );
 
+
         $query = new \WP_Query($args);
         if ($query->have_posts()) {
             $posts = $query->get_posts();
@@ -124,7 +126,7 @@ class Timeframe extends CustomPostType
             } else {
                 throw new \Exception(__CLASS__ . "::" . __LINE__ . ": Found more then one bookings");
             }
-
+ 
         }
     }
 
@@ -166,9 +168,19 @@ class Timeframe extends CustomPostType
 
             if(empty($booking)) {
                 $postId = wp_insert_post($postarr, true);
+                /**
+                 ********************** TEST MAIL ****************
+                 */         
+                \CommonsBooking\Messages\Messages::SendNotificationMail('','','');
             } else {
                 $postarr['ID'] = $booking->ID;
-                $postId = wp_update_post($postarr);
+                $postId = wp_update_post($postarr);;
+               
+                /**
+                 ********************** TEST MAIL ****************
+                 */    
+                \CommonsBooking\Messages\Messages::SendNotificationMail('','','');
+                
             }
 
             wp_redirect( home_url( '?' . self::getPostType() . '=' . $postId ) );
