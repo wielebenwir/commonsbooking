@@ -43,7 +43,7 @@ class Settings
 	 */
 	public static function getOption($options_name, $field)
 	{
-		$options_array = cmb2_get_option($options_name);
+		$options_array = \get_option($options_name);
 		$flat_array = self::flattenArray($options_array);
 
 		if (array_key_exists($field, $flat_array)) {
