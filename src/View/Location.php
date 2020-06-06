@@ -116,7 +116,7 @@ class Location extends View
                 if ($dayArray['locked']) {
                     if ($allLocked) {
                         if($dayArray['holiday']) {
-                            $jsonResponse['highlightedDays'][] = $day->getFormattedDate('Y-m-d');
+                            $jsonResponse['holidays'][] = $day->getFormattedDate('Y-m-d');
                         } else {
                             $jsonResponse['lockDays'][] = $day->getFormattedDate('Y-m-d');
                         }
