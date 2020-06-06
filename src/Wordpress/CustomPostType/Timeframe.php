@@ -59,6 +59,11 @@ class Timeframe extends CustomPostType
 
         // Save-handling
         $this->handleFormRequest();
+
+        
+        add_action( 'restrict_manage_posts', array(self::class, 'cb_admin_filter_by_type' ) );
+        add_filter( 'parse_query', array($this, 'cb_timeframe_type_filter') );
+
     }
 
     public function getTemplate( $content ) {
@@ -426,5 +431,65 @@ class Timeframe extends CustomPostType
     {
         return new \CommonsBooking\View\Timeframe();
     }
+
+
+
+
+    /**
+     * First create the dropdown
+     * make sure to change POST_TYPE to the name of your custom post type
+     * 
+     * @return void
+     */
+    public static function cb_admin_filter_by_type(){
+        if (isset($_GET['post_type'])) {
+            $type = $_GET['post_type'];
+        }
+
+        //only add filter to post type you want
+        if ('cb_timeframe' == $type){
+
+            $values = self::getTypes();
+
+            ?>
+            <select name="admin_filter_type">
+            <option value=""><?php _e('Filter By Type ', CB_TEXTDOMAIN); ?></option>
+            <?php
+                $current_v = isset($_GET['admin_filter_type'])? $_GET['admin_filter_type']:'';
+                foreach ($values as $value => $label) {
+                    printf
+                        (
+                            '<option value="%s"%s>%s</option>',
+                            $value,
+                            $value == $current_v? ' selected="selected"':'',
+                            $label
+                        );
+                    }
+            ?>
+            </select>
+            <?php
+        }
+    }
+
+
+
+    /**
+     * if submitted filter by post meta
+     * @param  (wp_query object) $query
+     * 
+     * @return Void
+     */
+    public static function cb_timeframe_type_filter( $query ){
+        global $pagenow;
+        $type = "cb_timeframe";
+        if (isset($_GET['post_type'])) {
+            $type = $_GET['post_type'];
+        }
+        if ( 'cb_timeframe' == $type && is_admin() && $pagenow=='edit.php' && isset($_GET['admin_filter_type']) && $_GET['admin_filter_type'] != '') {
+            $query->query_vars['meta_key'] = 'type';
+            $query->query_vars['meta_value'] = $_GET['admin_filter_type'];
+        }
+    }
+
 
 }
