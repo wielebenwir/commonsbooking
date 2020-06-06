@@ -144,7 +144,8 @@ class Location extends View
             'wp_nonce' => Timeframe::getWPNonceField(),
             'actionUrl' => admin_url('admin.php'),
             'location' => $location,
-            'postUrl' => get_permalink($location)
+            'postUrl' => get_permalink($location),
+            'type' => Timeframe::BOOKING_ID
         ];
 
         $item = isset($_GET['item']) && $_GET['item'] != "" ? $_GET['item'] : false;
