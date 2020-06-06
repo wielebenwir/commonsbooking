@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 
-    let $bookingForm = $('#booking-form');
-    if($bookingForm.length) {
+    let bookingForm = $('#booking-form');
+    if(bookingForm.length) {
         // showTooltip-event is used here to hide date sleect
         Litepicker.prototype.showTooltip = function(element, text) {
             $('#booking-form').hide();
