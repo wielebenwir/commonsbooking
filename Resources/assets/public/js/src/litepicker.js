@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         "days": data['days'],
                         "lockDays": data['lockDays'],
                         "bookedDays": data['bookedDays'],
+                        "holidays": data['holidays'],
                         "bookedDaysInclusivity": "[]",
                         "highlightedDays": data['highlightedDays'],
                         "disallowBookedDaysInRange": true,
@@ -39,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         "mobileFriendly": true,
                         "selectForward": true,
                         "useResetBtn": true,
-                        maxDays: 3,
+                        maxDays: 5,
                         'buttonText': {
                             apply: 'Buchen',
                             cancel: 'Abbrechen',
