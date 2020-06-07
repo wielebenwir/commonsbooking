@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 location: $('#booking-form input[name=location-id]').val()
             },
             function(data) {
-                new Litepicker(
+                let picker = new Litepicker(
                     {
                         'minDate': data['startDate'],
                         'maxDate': data['endDate'],
@@ -44,6 +44,36 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         'buttonText': {
                             apply: 'Buchen',
                             cancel: 'Abbrechen',
+                        },
+                        // TODO: Implement month change.
+                        onChangeMonth: function(date, idx) {
+                            const startDate = moment(date.format('YYYY-MM-DD')).format('YYYY-MM-DD');
+                            const endDate = moment(date.format('YYYY-MM-DD')).add('months', 2).date(0).format('YYYY-MM-DD');
+                            console.log(startDate, endDate)
+
+                            $.post(
+                                cb_ajax.ajax_url,
+                                {
+                                    _ajax_nonce: cb_ajax.nonce,
+                                    action: "calendar_data",
+                                    item: $('#booking-form input[name=item-id]').val(),
+                                    location: $('#booking-form input[name=location-id]').val(),
+                                    sd: startDate,
+                                    ed: endDate
+                                },
+                                function(data) {
+                                    console.log(data);
+                                    console.log(new Date(data['startDate']), new Date(data['endDate']));
+                                    picker.setLockDays(data['lockDays']);
+                                    picker.setBookedDays(data['bookedDays']);
+                                    picker.setHolidays(data['holidays']);
+                                    picker.setHighlightedDays(data['highlightedDays']);
+                                    picker.setDateRange(new Date(data['startDate']), new Date(data['endDate']));
+                                }
+                            );
+                        },
+                        // TODO: Implement year change.
+                        onChangeYear: function(date, idx) {
                         },
                         onSelect: function(date1, date2) {
                             $('#booking-form').show();

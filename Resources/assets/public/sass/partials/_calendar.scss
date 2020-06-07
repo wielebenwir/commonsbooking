@@ -14,6 +14,8 @@
 	--litepickerDayIsInRange: #bbdefb;
 	--litepickerDayIsLockedColor: #656565;
 	--litepickerDayIsLockedColorBg: #a0a0a0;
+	--litepickerDayIsHolidayColor: #000000;
+	--litepickerDayIsHolidayColorBg: #ff9218;
 	--litepickerDayIsPartiallyLockedColor: #333;
 	--litepickerDayIsPartiallyLockedColorBgOne: #20c527;
 	--litepickerDayIsPartiallyLockedColorBgTwo: #f06f6f;
@@ -237,6 +239,15 @@
 					&:hover {
 						cursor: not-allowed;
 						color: var(--litepickerDayIsLockedColor);
+						box-shadow: none;
+					}
+				}
+
+				&.is-holiday {
+					color: var(--litepickerDayIsHolidayColor);
+					background: var(--litepickerDayIsHolidayColorBg);
+					&:hover {
+						cursor: not-allowed;
 						box-shadow: none;
 					}
 				}

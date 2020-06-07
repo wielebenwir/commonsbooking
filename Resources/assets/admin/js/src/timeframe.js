@@ -1,6 +1,38 @@
 (function ($) {
     'use strict';
     $(function () {
+        const arrayDiff = function(array1,array2) {
+            var newItems = [];
+            jQuery.grep(array2, function(i) {
+                if (jQuery.inArray(i, array1) == -1)
+                {
+                    newItems.push(i);
+                }
+            });
+            return newItems;
+        }
+
+        /**
+         * Hides set-elements.
+         * @param set
+         */
+        const hideFieldset = function (set) {
+            $.each(set, function () {
+                $(this).parents('.cmb-row').hide();
+            });
+        };
+
+        /**
+         * Show set-elements.
+         * @param set
+         */
+        const showFieldset = function (set) {
+            $.each(set, function () {
+                console.log($(this).parents('.cmb-row'));
+                $(this).parents('.cmb-row').show();
+            });
+        };
+
         const timeframeForm = $('#cmb2-metabox-cb_timeframe-custom-fields');
 
         if(timeframeForm.length) {
@@ -21,39 +53,104 @@
             const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, repetitionInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
             const noRepSet = [fullDayInput, startDateInput, startDateTimeInput, endDateInput, endDateTimeInput, gridInput];
 
-            startTimeInput.change(function () {
-                startDateTimeInput.val($(this).val());
-            });
-            endTimeInput.change(function () {
-                endDateTimeInput.val($(this).val());
-            });
-            repetitionStartInput.change(function () {
-                startDateInput.val($(this).val());
-            });
-            repetitionEndInput.change(function () {
-                endDateInput.val($(this).val());
-            });
-
+            /**
+             * Show repetition fields.
+             */
             const showRepFields = function () {
-                $.each(noRepSet, function () {
-                    $(this).parents('.cmb-row ').hide();
-                });
-                $.each(repSet, function () {
-                    $(this).parents('.cmb-row ').show();
-                });
+                showFieldset(repSet);
+                hideFieldset(arrayDiff(repSet, noRepSet));
             }
 
+            /**
+             * Show no-repetition fields.
+             */
             const showNoRepFields = function () {
-                $.each(repSet, function () {
-                    $(this).parents('.cmb-row ').hide();
+                showFieldset(noRepSet);
+                hideFieldset(arrayDiff(noRepSet, repSet));
+            }
+
+            /**
+             * Time-Select copy functions
+             */
+            const updateTimeSelectionHandlers = function () {
+                startTimeInput.change(function () {
+                    startDateTimeInput.val($(this).val());
                 });
-                $.each(noRepSet, function () {
-                    $(this).parents('.cmb-row ').show();
+                endTimeInput.change(function () {
+                    endDateTimeInput.val($(this).val());
+                });
+                repetitionStartInput.change(function () {
+                    startDateInput.val($(this).val());
+                });
+                repetitionEndInput.change(function () {
+                    endDateInput.val($(this).val());
+                });
+            };
+
+            /**
+             * Shows/hides grid selection depending on checked-state.
+             */
+            const updateFullDayHandler = function () {
+                // Full-day setting
+                if(fullDayInput.prop( "checked" )) {
+                    gridInput.prop("selected", false);
+                    gridInput.parents('.cmb-row ').hide();
+                    startTimeInput.parents('.cmb-row ').hide();
+                    endTimeInput.parents('.cmb-row ').hide();
+                } else {
+                    gridInput.parents('.cmb-row ').show();
+                    startTimeInput.parents('.cmb-row ').show();
+                    endTimeInput.parents('.cmb-row ').show();
+                }
+
+                fullDayInput.change(function () {
+                    if($(this).prop( "checked" )) {
+                        gridInput.prop("selected", false);
+                        gridInput.parents('.cmb-row ').hide();
+                        startTimeInput.parents('.cmb-row ').hide();
+                        endTimeInput.parents('.cmb-row ').hide();
+                    } else {
+                        gridInput.parents('.cmb-row ').show();
+                        startTimeInput.parents('.cmb-row ').show();
+                        endTimeInput.parents('.cmb-row ').show();
+                    }
                 });
             }
 
-            const initTypeSelect = function() {
+            const uncheck = function (checkboxes) {
+                $.each(checkboxes, function () {
+                   $(this).prop( "checked", false );
+                });
+            }
 
+            const updateRepetitionHandler = function() {
+                const selectedRep = $("option:selected", repetitionInput).val();
+                console.log(selectedRep);
+                if(selectedRep == 'w') {
+                    weekdaysInput.parents('.cmb-row').show();
+                } else {
+                    weekdaysInput.parents('.cmb-row').hide();
+                    uncheck($('input[name*=weekdays]'));
+                }
+                repetitionInput.change(function() {
+                    const selectedRep = $("option:selected", $(this)).val();
+                    if(selectedRep == 'w') {
+                        weekdaysInput.parents('.cmb-row').show();
+                    } else {
+                        weekdaysInput.parents('.cmb-row').hide();
+                        uncheck($('input[name*=weekdays]'));
+                    }
+                })
+            };
+
+            const initTypeSpecificHandlers = function() {
+                updateTimeSelectionHandlers();
+                updateFullDayHandler();
+                updateRepetitionHandler();
+            };
+
+            // Type select functions
+            const initTypeSelect = function() {
                 const selectedType = $("option:selected", typeInput).val();
 
                 if (selectedType == 'rep') {
@@ -74,7 +171,12 @@
                     if (selectedType == 'norep') {
                         showNoRepFields();
                     }
+
+                    updateFullDayHandler();
+                    updateRepetitionHandler();
                 });
+
+                initTypeSpecificHandlers();
             };
 
             initTypeSelect();

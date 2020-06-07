@@ -233,24 +233,47 @@ class Day
             // Timeframe
             $startDateString = get_post_meta($timeframe->ID, 'start-date', true);
             $endDateString = get_post_meta($timeframe->ID, 'end-date', true);
-
-            // Check for repetition timeframe selected days
-            if(get_post_meta($timeframe->ID, 'timeframe-repetition', true) == "rep") {
-                $weekdays = get_post_meta($timeframe->ID, 'weekdays', true);
-                // Day isn't relevant, we continue
-                $dayOfWeek = intval($this->getDateObject()->format('w'));
-
-                // Because of different day of week calculation we need to recalculate
-                if($dayOfWeek == 0) $dayOfWeek = 7;
-                if(is_array($weekdays) && !in_array( $dayOfWeek, $weekdays)) {
-                    continue;
-                }
-            }
-
             $startDate = new \DateTime();
             $startDate->setTimestamp($startDateString);
             $endDate = new \DateTime();
             $endDate->setTimestamp($endDateString);
+
+            // Check for repetition timeframe selected days
+            if(
+                get_post_meta($timeframe->ID, 'timeframe-repetition', true) == "rep"
+            ) {
+                // Weekly Rep
+                if(get_post_meta($timeframe->ID, 'repetition', true) == "w") {
+                    $dayOfWeek = intval($this->getDateObject()->format('w'));
+                    $timeframeWeekdays = get_post_meta($timeframe->ID, 'weekdays', true);
+
+                    // Because of different day of week calculation we need to recalculate
+                    if($dayOfWeek == 0) $dayOfWeek = 7;
+                    if(is_array($timeframeWeekdays) && !in_array( $dayOfWeek, $timeframeWeekdays)) {
+                        continue;
+                    }
+                }
+
+                // Monthly Rep
+                if(get_post_meta($timeframe->ID, 'repetition', true) == "m") {
+                    $dayOfMonth = intval($this->getDateObject()->format('j'));
+                    $timeframeStartDayOfMonth = $startDate->format('j');
+
+                    if($dayOfMonth != $timeframeStartDayOfMonth) {
+                        continue;
+                    }
+                }
+
+                // Yearly Rep
+                if(get_post_meta($timeframe->ID, 'repetition', true) == "y") {
+                    $date = intval($this->getDateObject()->format('dm'));
+                    $timeframeDate = $startDate->format('dm');
+                    if($date != $timeframeDate) {
+                        continue;
+                    }
+                }
+
+            }
 
             // Slots
             $startSlot = $this->getStartSlot($startDate, $grid, $timeframe);
