@@ -1,7 +1,6 @@
 <?php
 
 namespace CommonsBooking\Shortcodes;
-
 use CMB2;
 
 class Shortcodes
@@ -54,43 +53,51 @@ class Shortcodes
      * @param  mixed $atts
      * @return void
      */
-    public static function metabox_booking_shortcodes($atts = array())
+    public static function booking_shortcodes($atts = array())
     {
         global $post;
 
+        /**
+         * Make sure a WordPress post ID is set.
+         * We'll default to the current post/page
+         */
+        if (!isset($atts['post_id'])) {
+            $atts['post_id'] = $post->ID;
+        }
+        $object_id = $atts['post_id'];
+
         // If no metabox field is set, yell about it
         if (empty($atts['field'])) {
-            return __("Please add an 'id' attribute to specify the CMB2 form to display.", CB_TEXTDOMAIN);
+            return __("Please add an 'field' attribute to specify the costum post meta field to display.", CB_TEXTDOMAIN);
         }
 
-        // check if type is set and get meta and post data from item and location linked to the given timeframe-id
+        // check if type is set and get meta and post data from item and location related to the given timeframe-id
         if (isset($atts['type']) && ($atts['type'] == "location" || $atts['type'] == "item")) {
-            $timeframe = get_post($_GET['cb_timeframe']);
-            $atts['post_id'] = $timeframe->ID;
-
-            $post_meta = get_post_meta($timeframe->ID, $atts['type'] . '-id');
-            $atts['post_id'] = $post_meta[0];
-            $post = get_post($post_meta[0]);
+            
+            /**
+             * TODO: better solution to get timeframe_id other than via GET
+             */            
+            if (isset($_GET['cb_timeframe'] ) )
+            {
+                $timeframe = get_post($_GET['cb_timeframe']); 
+                $object_id = get_post_meta($timeframe->ID, $atts['type'] . '-id', true);;
+            } else {
+                return false;
+            }
         } else {
-            return __("Please add a 'type' attribute, should be either location or item", CB_TEXTDOMAIN);
+            return __("Please add a 'type' attribute and set it to 'location' or 'item'", CB_TEXTDOMAIN);
         }
 
         /**
          * handle special field to get standard post attributes
          */
         if ($atts['field'] == "title") {
+            $post = get_post($object_id);
             $result = $post->post_title;
+        
         } else {
 
-            /**
-             * Make sure a WordPress post ID is set.
-             * We'll default to the current post/page
-             */
-            if (!isset($atts['post_id'])) {
-                $atts['post_id'] = $post->ID;
-            }
-
-            $object_id = absint($atts['post_id']);
+            $object_id = absint($object_id);
             $metabox_id = esc_attr($atts['field']);
 
             // Get our form
