@@ -22,7 +22,7 @@ class Location extends View
     {
         $weekNr = isset($_POST['cw']) ? $_POST['cw'] : date('W');
         $week = new Week($weekNr);
-        $lastWeek = new Week($weekNr + 5);
+        $lastWeek = new Week($weekNr + 8);
 
         $item = isset($_POST['item']) && $_POST['item'] != "" ? $_POST['item'] : false;
         $location = isset($_POST['location']) && $_POST['location'] != "" ? $_POST['location'] : false;
@@ -46,6 +46,7 @@ class Location extends View
             'days' => [],
             'bookedDays' => [],
             'lockDays' => [],
+            'holidays' => [],
             'highlightedDays' => []
         ];
 
@@ -65,10 +66,15 @@ class Location extends View
                 // If all slots are locked, day cannot be selected
                 $allLocked = true;
 
+                // If no slots are existing, day shall be locked
+                $noSlots = true;
+
                 foreach ($day->getGrid() as $slot) {
 
                     // Add only bookable slots for time select
                     if (!empty($slot['timeframe']) && $slot['timeframe'] instanceof \WP_Post) {
+                        // We have at least one slot ;)
+                        $noSlots = false;
 
                         $timeFrameType = get_post_meta($slot['timeframe']->ID, 'type', true);
 
@@ -108,8 +114,9 @@ class Location extends View
                 }
 
                 // If there are no slots defined, there's nothing bookable.
-                if (!count($dayArray['slots'])) {
+                if ($noSlots) {
                     $dayArray['locked'] = true;
+                    $dayArray['holiday'] = false;
                 }
 
                 $jsonResponse['days'][$day->getFormattedDate('Y-m-d')] = $dayArray;

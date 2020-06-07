@@ -3,10 +3,6 @@
     $(function () {
         const timeframeForm = $('#cmb2-metabox-cb_timeframe-custom-fields');
 
-        var initTypeSelect = function() {
-
-        };
-
         if(timeframeForm.length) {
             const typeInput = $('#timeframe-repetition');
             const startDateInput = $('#start-date_date');
@@ -22,36 +18,66 @@
             const repetitionStartInput = $('#repetition-start');
             const repetitionEndInput = $('#repetition-end');
             const fullDayInput = $('#full-day');
-            const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, repetitionInput, weekdaysInput, repetitionStartInput, repetitionEndInput];
+            const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, repetitionInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
             const noRepSet = [fullDayInput, startDateInput, startDateTimeInput, endDateInput, endDateTimeInput, gridInput];
 
-            typeInput.change(function (e) {
-                const selectedType = e.target.options[e.target.selectedIndex].value;
-
-                if(selectedType == 'rep') {
-                    $.each(noRepSet, function () {
-                        console.log($(this).parents('.cmb-row '))
-                        $(this).parents('.cmb-row ').hide();
-                    });
-                    $.each(repSet, function () {
-                        console.log($(this).parents('.cmb-row '))
-                        $(this).parents('.cmb-row ').show();
-                    });
-                }
-
-                if(selectedType == 'norep') {
-                    $.each(repSet, function () {
-                        console.log($(this).parents('.cmb-row '))
-                        $(this).parents('.cmb-row ').hide();
-                    });
-                    $.each(noRepSet, function () {
-                        console.log($(this).parents('.cmb-row '))
-                        $(this).parents('.cmb-row ').show();
-                    });
-
-                }
+            startTimeInput.change(function () {
+                startDateTimeInput.val($(this).val());
+            });
+            endTimeInput.change(function () {
+                endDateTimeInput.val($(this).val());
+            });
+            repetitionStartInput.change(function () {
+                startDateInput.val($(this).val());
+            });
+            repetitionEndInput.change(function () {
+                endDateInput.val($(this).val());
             });
 
+            const showRepFields = function () {
+                $.each(noRepSet, function () {
+                    $(this).parents('.cmb-row ').hide();
+                });
+                $.each(repSet, function () {
+                    $(this).parents('.cmb-row ').show();
+                });
+            }
+
+            const showNoRepFields = function () {
+                $.each(repSet, function () {
+                    $(this).parents('.cmb-row ').hide();
+                });
+                $.each(noRepSet, function () {
+                    $(this).parents('.cmb-row ').show();
+                });
+            }
+
+            const initTypeSelect = function() {
+
+                const selectedType = $("option:selected", typeInput).val();
+
+                if (selectedType == 'rep') {
+                    showRepFields();
+                }
+
+                if (selectedType == 'norep') {
+                    showNoRepFields();
+                }
+
+                typeInput.change(function (e) {
+                    const selectedType = e.target.options[e.target.selectedIndex].value;
+
+                    if (selectedType == 'rep') {
+                        showRepFields();
+                    }
+
+                    if (selectedType == 'norep') {
+                        showNoRepFields();
+                    }
+                });
+            };
+
+            initTypeSelect();
         }
     });
 })(jQuery);
