@@ -52,14 +52,13 @@ class PostStatus
         $active = "";
         if($post) {
             if($post->post_status == $this->name) {
-                $active = "jQuery( '#post-status-display' ).text( '".$this->label."' )";
+                $active = "jQuery( '#post-status-display' ).text( '".$this->label."' ); jQuery( 'select[name=\"post_status\"]' ).val('".$this->name."');";
             }
 
             echo "<script>
             jQuery(document).ready( function() {
                 jQuery( 'select[name=\"post_status\"]' ).append( '<option value=\"".$this->name."\">".$this->label."</option>' );
                 ".$active."
-                jQuery( 'select[name=\"post_status\"]' ).val('".$this->name."');
             });
         </script>";
         }
