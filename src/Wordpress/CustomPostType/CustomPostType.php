@@ -135,7 +135,6 @@ abstract class CustomPostType
                 }
             }
         }
-
     }
 
     public function registerMetabox() {
