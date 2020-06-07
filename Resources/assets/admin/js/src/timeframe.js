@@ -2,6 +2,11 @@
     'use strict';
     $(function () {
         const timeframeForm = $('#cmb2-metabox-cb_timeframe-custom-fields');
+
+        var initTypeSelect = function() {
+
+        };
+
         if(timeframeForm.length) {
             const typeInput = $('#timeframe-repetition');
             const startDateInput = $('#start-date_date');
