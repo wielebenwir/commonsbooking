@@ -18,7 +18,7 @@ class Messages
         $to = "mail@cwenzel.de";
         $subject = "Test";
         $message = Settings::getOption('commonsbooking_options_templates', 'emailtemplates_mail-booking-pending-body');
-        $message = Shortcodes::getRenderedShortcodes($message);
+        $message = cb_parse_template($message);
         $headers = array('Content-Type: text/html; charset=UTF-8');
 
 
@@ -26,7 +26,7 @@ class Messages
     
   
         $result = \wp_mail($to, $subject, $message, $headers);
-
+        die();
         return $result;
    }
     
