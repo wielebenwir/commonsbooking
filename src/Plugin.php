@@ -11,6 +11,7 @@ use CommonsBooking\Wordpress\PostStatus\PostStatus;
 use CommonsBooking\Settings;
 use CommonsBooking\Wordpress\Options;
 use CommonsBooking\Messages;
+use CB;
 
 class Plugin
 {
