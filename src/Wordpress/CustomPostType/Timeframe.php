@@ -53,7 +53,6 @@ class Timeframe extends CustomPostType
         add_action('do_meta_boxes', array($this, 'removeDefaultCustomFields'), 10, 3);
 
         // List settings
-        $this->removeListTitleColumn();
         $this->removeListDateColumn();
 
         add_action('save_post', array($this, 'saveCustomFields'), 1, 2);
@@ -252,7 +251,7 @@ class Timeframe extends CustomPostType
             'exclude_from_search' => true,
 
             // Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
-            'supports' => array('custom-fields', 'revisions'),
+            'supports' => array('title', 'author', 'custom-fields', 'revisions'),
 
             // Soll der Post Type Archiv-Seiten haben?
             'has_archive' => false,
@@ -273,18 +272,31 @@ class Timeframe extends CustomPostType
     protected function getCustomFields()
     {
         return array(
+            new Field("comment", __("Comment", CB_TEXTDOMAIN), "", "textarea_small", "edit_posts"),
+            new Field("type", __('Type', CB_TEXTDOMAIN), "", "select", "edit_pages",
+                self::getTypes()
+            ),
             new Field("location-id", __("Location", CB_TEXTDOMAIN), "", "select", "edit_posts", Location::getAllPosts()),
             new Field("item-id", __("Item", CB_TEXTDOMAIN), "", "select", "edit_posts", Item::getAllPosts()),
+            new Field("title-timeframe-config", __("Configure timeframe", CB_TEXTDOMAIN), "", "title", "edit_posts"),
+            new Field("timeframe-repetition", __('Timeframe Repetition', CB_TEXTDOMAIN), "", "select", "edit_pages",
+                [
+                    'rep' => __("Repetition", CB_TEXTDOMAIN),
+                    'norep' => __("No Repetition", CB_TEXTDOMAIN)
+                ]
+            ),
+            new Field("full-day", __('Full day', CB_TEXTDOMAIN), "", "checkbox", "edit_pages"),
             new Field("start-date", __("Start date", CB_TEXTDOMAIN), "", "text_datetime_timestamp", "edit_posts"),
             new Field("end-date", __("End date", CB_TEXTDOMAIN), "", "text_datetime_timestamp", "edit_pages"),
+            new Field("start-time", __("Start time", CB_TEXTDOMAIN), "", "text_time", "edit_posts"),
+            new Field("end-time", __("End time", CB_TEXTDOMAIN), "", "text_time", "edit_pages"),
             new Field("grid", __("Grid", CB_TEXTDOMAIN), "", "select", "edit_pages",
                 [
                     1 => 1, 2 => 2, 3 => 3, 4 => 4
                 ]
             ),
-            new Field("type", __('Type', CB_TEXTDOMAIN), "", "select", "edit_pages",
-                self::getTypes()
-            ),
+            new Field("title-timeframe-rep-config", __("Configure repetition", CB_TEXTDOMAIN), "", "title", "edit_posts"),
+            new Field("repetition-start", __('Repetition start', CB_TEXTDOMAIN), "", "text_date", "edit_pages"),
             new Field("repetition", __('Repetition', CB_TEXTDOMAIN), "", "select", "edit_pages",
                 [
                     'd' => __("Daily", CB_TEXTDOMAIN),
@@ -304,7 +316,7 @@ class Timeframe extends CustomPostType
                     7 => __("Sunday", CB_TEXTDOMAIN)
                 ]
             ),
-            new Field("repetition-end", __('Repetition end', CB_TEXTDOMAIN), "", "text_datetime_timestamp", "edit_pages")
+            new Field("repetition-end", __('Repetition end', CB_TEXTDOMAIN), "", "text_date", "edit_pages")
         );
     }
 

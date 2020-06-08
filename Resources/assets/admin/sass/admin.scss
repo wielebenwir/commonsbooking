@@ -11,41 +11,8 @@
 /* Global styles */
 @import "../../global/sass/global";
 
-/* Misc @TODO: move to partials */
-@import "partials/_variables";
-
-/* Misc @TODO: move to partials */
-@import "partials/_mixins";
-
-/* Misc @TODO: move to partials */
-@import "partials/_misc";
-
 /* Dashboard */
 @import "partials/_dashboard";
 
-/* Plugin settings screen */
-@import "partials/_settings";
-
-/* Forms */
-@import "partials/_forms";
-
-/* List tables */
-@import "partials/_listtables";
-
-/* Calendar */
-@import "partials/_calendar";
-
-/* Debug */
-@import "partials/_debug";
-
-/* Debug */
-@import "partials/_reflection";
-
-/* Admin Popups */
-@import "partials/_popup";
-
-/* Admin Tabs */
-@import "partials/_tabs";
-
-/* Annesley Theme only */
-@import "partials/_annesleytheme";
+/* Timeframe Form */
+@import "partials/_form-timeframe";
