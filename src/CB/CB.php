@@ -28,7 +28,14 @@ class CB
 	{
 		// Set WP Post
 		global $post;
-		if ( is_null( $initialPost ) ) $initialPost = $post; 	
+
+		if ( is_null( $initialPost ) ) $initialPost = $post;
+		
+		// if url = ?cb_timeframe=ID then set initalpost accordingly
+		if (is_null($initialPost) AND isset($_GET['cb_timeframe'])) 
+		{
+			$initialPost = get_post($_GET['cb_timeframe']); 
+		}
 		
 		// Check post type
 		$initialPostType = get_post_type( $initialPost ); 
