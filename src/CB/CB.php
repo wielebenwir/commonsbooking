@@ -1,69 +1,77 @@
 <?php
 
-// namespace CommonsBooking\CB;
+// namespace CommonsBooking\CB; @TODO
 
 class CB
 {
 
 	public static $thePostID;
-	public static $object;
+	public static $key;
 	public static $property;
 	
-	
-	private static function setPost( $object, $property, $InitialPost )
+	public static function get( $key, $property, $thePost = NULL )
 	{
-
-		// Set WP Post
-		global $post;
-		if ( is_null( $InitialPost ) ) $InitialPost = $post; 	
+		self::substitions( $key, $property );			// substitute keys
+		self::setupPost( $thePost );							// query sub post or initial post?  
+		$tag = self::lookUp();										// Find machting methods, properties or metadata
 		
-		// Check post type
-		$initialPostType = get_post_type( $InitialPost ); 
-		$InitialPost->ID = $InitialPost->ID;
-
-		// If we are dealing with a timeframe, we may need to look up the CHILDs post meta, not the parents'
-		if ( $initialPostType == 'cb_timeframe' ) { 
-			$subPostID = get_post_meta( $InitialPost->ID , $object .'-id', TRUE );	// item-id, location-id
-			if ( get_post_status( $subPostID ) ) { // Post with that ID exists
-				$thePostID =  $subPostID; // set up the post
-			} else {
-				return 'Post ' . $thePostID . ' not found.';
-			}
-		} else { // Not a timeframe, look at original posts meta
-			$thePostID = $InitialPost->ID ;
-		}
-		self::$object 		= $object;		// e.g. item
-		self::$property 	= $property;	// e.g. title
-		self::$thePostID	= $thePostID; // item id 
-	}
-	
-	public static function get( $object, $property, $thePost = NULL )
-	{
-		self::initializer( $object, $property, $thePost );
-		self::substitions();
-		$tag = self::lookUp();
 		return apply_filters( 'cb_tag', $tag ); 
 	}
 
-	public static function echo( $object, $property, $thePost = NULL )
+	public static function echo( $key, $property, $thePost = NULL )
 	{
-		echo self::get( $object, $property, $thePost);
+		echo self::get( $key, $property, $thePost);
+	}
+	
+	private static function setupPost( $initialPost )
+	{
+		// Set WP Post
+		global $post;
+		if ( is_null( $initialPost ) ) $initialPost = $post; 	
+		
+		// Check post type
+		$initialPostType = get_post_type( $initialPost ); 
+		$initialPost->ID = $initialPost->ID;
+
+		// If we are dealing with a timeframe, we may need to look up the CHILDs post meta, not the parents'
+		if ( $initialPostType == 'cb_timeframe' ) { 
+			$subPostID = get_post_meta( $initialPost->ID , self::$key .'-id', TRUE );	// item-id, location-id
+			if ( get_post_status( $subPostID ) ) { // Post with that ID exists
+				$thePostID =  $subPostID; // we will query the sub post
+			} else {
+				return 'Post ' . $thePostID . ' not found.';
+			}
+		} else { // Not a timeframe, look at original post meta
+			$thePostID = $initialPost->ID ;
+		}
+		self::$thePostID	= $thePostID; // e.g. item id 
 	}
 
-	public static function substitutions( $object, $property, $thePost = NULL )
+	public static function substitions( $key, $property )
 	{
-		echo self::get( $object, $property, $thePost);
+		$key 	= strtolower( $key );
+		$property = strtolower( $property );
+
+		$substitutions_array = array (
+			'booking' => 'timeframe',		// so we can use booking_* 
+		);
+
+		$key 	= strtr( $key, $substitutions_array );
+		$property = strtr( $property, $substitutions_array );
+
+		self::$key 		= $key;		// e.g. item
+		self::$property 	= $property;	// e.g. mymetadata
+
 	}
 	
 	public static function lookUp() 
 	{
-		$Class 		= 'CommonsBooking\Repository\\' . ucfirst( self::$object ); // we access the Repository not the cpt class here
+		$Class 		= 'CommonsBooking\Repository\\' . ucfirst( self::$key ); // we access the Repository not the cpt class here
 		$property = self::$property;
 		$postID			= self::$thePostID;
 
 		// Look up 
 		if ( class_exists ( $Class ) && property_exists( $Class, $property ) ) { // Class has property
-			// echo( $Class . ' has property:' .  $property);
 			$obj = new $Class;
 			return $obj->$property;
 		} else if ( class_exists ( $Class ) && method_exists( $Class, $property ) ) {  // Class has method
