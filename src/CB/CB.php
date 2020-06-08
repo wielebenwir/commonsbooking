@@ -13,9 +13,10 @@ class CB
 	{
 		self::substitions( $key, $property );			// substitute keys
 		self::setupPost( $thePost );							// query sub post or initial post?  
-		$tag = self::lookUp();										// Find machting methods, properties or metadata
+		$result = self::lookUp();									// Find matching methods, properties or metadata
 		
-		return apply_filters( 'cb_tag', $tag ); 
+		$filterName = sprintf ('cb_tag_%s_%s', self::$key, self::$property);
+		return apply_filters( $filterName, $result ); 
 	}
 
 	public static function echo( $key, $property, $thePost = NULL )
@@ -39,7 +40,7 @@ class CB
 			if ( get_post_status( $subPostID ) ) { // Post with that ID exists
 				$thePostID =  $subPostID; // we will query the sub post
 			} else {
-				return 'Post ' . $thePostID . ' not found.';
+				return 'ERROR: Post ' . $thePostID . ' not found.';
 			}
 		} else { // Not a timeframe, look at original post meta
 			$thePostID = $initialPost->ID ;
@@ -52,14 +53,17 @@ class CB
 		$key 	= strtolower( $key );
 		$property = strtolower( $property );
 
-		$substitutions_array = array (
+		$key_substitutions_array = array (
 			'booking' => 'timeframe',		// so we can use booking_* 
 		);
+		$property_substitutions_array = array (	
 
-		$key 	= strtr( $key, $substitutions_array );
-		$property = strtr( $property, $substitutions_array );
+		);
 
-		self::$key 		= $key;		// e.g. item
+		$key 			= strtr( $key, $key_substitutions_array );
+		$property = strtr( $property, $property_substitutions_array );
+
+		self::$key 				= $key;				// e.g. item
 		self::$property 	= $property;	// e.g. mymetadata
 
 	}
