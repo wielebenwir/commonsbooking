@@ -280,7 +280,7 @@ class Timeframe extends CustomPostType
             new Field("end-time", __("End time", CB_TEXTDOMAIN), "", "text_time", "edit_pages"),
             new Field("grid", __("Grid", CB_TEXTDOMAIN), "", "select", "edit_pages",
                 [
-                    1 => 1, 2 => 2, 3 => 3, 4 => 4
+                    0 => __("Full slot", CB_TEXTDOMAIN), 1 => __("Hourly", CB_TEXTDOMAIN)
                 ]
             ),
             new Field("title-timeframe-rep-config", __("Configure repetition", CB_TEXTDOMAIN), "", "title", "edit_posts"),
