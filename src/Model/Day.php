@@ -197,7 +197,7 @@ class Day
      *
      * @param $timeframes
      *
-     * @return bool|float
+     * @return integer
      */
     protected function getMinimalGridFromTimeframes($timeframes)
     {
@@ -206,6 +206,8 @@ class Day
         foreach ($timeframes as $timeframe) {
             $fullday = get_post_meta($timeframe->ID, 'full-day', true);
             $timeframeGrid = !$fullday ? intval($timeframe->grid) : 24;
+
+            // Seting grid size of current timeframe, if it is smaller than the smallest before
             if ($timeframeGrid < $grid) {
                 if (is_numeric($timeframeGrid) && $timeframeGrid > 0) {
                     $grid = $timeframeGrid;
