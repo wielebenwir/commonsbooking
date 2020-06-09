@@ -94,7 +94,7 @@ class Item extends CustomPostType
         
         $cb_content = '';
         if ( is_singular ( self::getPostType()  ) ) {
-           $cb_content = cb_get_template_part( 'calendar', 'item' );
+           $cb_content = \cb_get_template_part( 'calendar', 'item' );
         } // if archive... 
 
         return $cb_content . $content; 

@@ -5,7 +5,6 @@
      * Used on item single
      */
     \CommonsBooking\View\Location::index();
-
-    CB::echo('location', 'title'); 
+    \CommonsBooking\CB\CB::echo('location', 'title');
 
 ?>

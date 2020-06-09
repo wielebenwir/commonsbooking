@@ -65,7 +65,7 @@ class Timeframe extends CustomPostType
         $cb_content = '';
         if ( is_singular ( self::getPostType() ) ) {
             global $post;
-            $cb_content = cb_get_template_part( 'booking', $post->post_status );
+            $cb_content = \cb_get_template_part( 'booking', $post->post_status );
         } // if archive...
 
         return $cb_content . $content;
