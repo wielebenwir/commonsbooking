@@ -165,6 +165,7 @@ class Day
         // Iterate through timeframes and fill slots
         foreach ($timeframes as $timeframe) {
             // Timeframe
+            $fullDay = get_post_meta($timeframe->ID, 'full-day', true);
             $startDateString = get_post_meta($timeframe->ID, 'start-date', true);
             $endDateString = get_post_meta($timeframe->ID, 'end-date', true);
             $startDate = new \DateTime();
@@ -210,8 +211,14 @@ class Day
             }
 
             // Slots
-            $startSlot = $this->getSlotByTime($startDate, $grid);
-            $endSlot = $this->getSlotByTime($endDate, $grid);
+            $startSlot = 0;
+            $endSlot = count($slots);
+
+            // If timeframe isn't configured as full day
+            if(!$fullDay) {
+                $startSlot = $this->getSlotByTime($startDate, $grid);
+                $endSlot = $this->getSlotByTime($endDate, $grid);
+            }
 
             // Add timeframe to relevant slots
             while ($startSlot < $endSlot) {
@@ -226,25 +233,39 @@ class Day
             }
         }
 
-        // remove slots without timeframes
-        foreach ($slots as $slotNr => $slot) {
-            if (!array_key_exists('timeframe', $slot) || !($slot['timeframe'] instanceof \WP_Post)) {
-                unset($slots[$slotNr]);
-            }
-        }
+        $this->removeEmptySlots($slots);
 
         // merge multiple slots if they are of same type
         foreach ($slots as $slotNr => $slot) {
             $slotBefore = $slots[$slotNr - 1];
 
-            // If Slot before is of same timframe and we have no hourly grid, we merge them.
+            // If Slot before is of same timeframe and we have no hourly grid, we merge them.
             if(
                 $slotBefore &&
                 $slotBefore['timeframe']->ID ==  $slot['timeframe']->ID &&
                 get_post_meta($slot['timeframe']->ID, 'grid', true) == 0
             ) {
+                // Take over start time from slot before
                 $slots[$slotNr]['timestart'] = $slotBefore['timestart'];
+                $slots[$slotNr]['timestampstart'] = $slotBefore['timestampstart'];
+
+                // unset timeframe from slot before
                 unset($slots[$slotNr - 1]['timeframe']);
+            }
+        }
+
+        $this->removeEmptySlots($slots);
+    }
+
+    /**
+     * remove slots without timeframes
+     * @param $slots
+     */
+    protected function removeEmptySlots(&$slots) {
+        // remove slots without timeframes
+        foreach ($slots as $slotNr => $slot) {
+            if (!array_key_exists('timeframe', $slot) || !($slot['timeframe'] instanceof \WP_Post)) {
+                unset($slots[$slotNr]);
             }
         }
     }

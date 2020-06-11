@@ -430,6 +430,7 @@ class Timeframe extends CustomPostType
         $lockedTypes = [
             self::REPAIR_ID,
             self::HOLIDAYS_ID,
+            self::OFF_HOLIDAYS_ID,
             self::BOOKING_ID
         ];
         return in_array(get_post_meta($timeframe->ID, 'type', true), $lockedTypes);
