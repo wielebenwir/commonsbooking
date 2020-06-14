@@ -15,37 +15,19 @@ class Location extends View
     protected static $template = 'location/index.html.twig';
 
     /**
-     * Returns json-formatted calendardata.
+     * @param $startDate
+     * @param $endDate
+     * @param $locations
+     * @param $items
+     * @return array
      * @throws \Exception
      */
-    public static function get_calendar_data()
-    {
-        $startDate = new Day(date('Y-m-d'));
-        $endDate = new Day(date('Y-m-d', strtotime('last day of next month')));
-
-        $startDateString = $_POST['sd'];
-        if($startDateString) {
-            $startDate = new Day($startDateString);
-        }
-        $endDateString =  $_POST['ed'];
-        if($endDateString) {
-            $endDate = new Day($endDateString);
-        }
-
-        $item = isset($_POST['item']) && $_POST['item'] != "" ? $_POST['item'] : false;
-        $location = isset($_POST['location']) && $_POST['location'] != "" ? $_POST['location'] : false;
-
-        if (!$item || !$location) {
-            header('Content-Type: application/json');
-            echo json_encode(false);
-            wp_die(); // All ajax handlers die when finished
-        }
-
+    protected static function prepareJsonResponse($startDate, $endDate, $locations, $items) {
         $calendar = new Calendar(
             $startDate,
             $endDate,
-            [$location],
-            [$item]
+            $locations,
+            $items
         );
 
         $jsonResponse = [
@@ -143,13 +125,45 @@ class Location extends View
             }
         }
 
+        return $jsonResponse;
+    }
+
+    /**
+     * Returns json-formatted calendardata.
+     * @throws \Exception
+     */
+    public static function get_calendar_data()
+    {
+        $startDate = new Day(date('Y-m-d'));
+        $endDate = new Day(date('Y-m-d', strtotime('last day of next month')));
+
+        $startDateString = $_POST['sd'];
+        if($startDateString) {
+            $startDate = new Day($startDateString);
+        }
+
+        $endDateString =  $_POST['ed'];
+        if($endDateString) {
+            $endDate = new Day($endDateString);
+        }
+
+        $item = isset($_POST['item']) && $_POST['item'] != "" ? $_POST['item'] : false;
+        $location = isset($_POST['location']) && $_POST['location'] != "" ? $_POST['location'] : false;
+
+        if (!$item || !$location) {
+            header('Content-Type: application/json');
+            echo json_encode(false);
+            wp_die(); // All ajax handlers die when finished
+        }
+
+        $jsonResponse = self::prepareJsonResponse($startDate, $endDate, [$location], [$item]);
+
         header('Content-Type: application/json');
         echo json_encode($jsonResponse);
         wp_die(); // All ajax handlers die when finished
     }
 
-    public static function index(\WP_Post $post = null)
-    {
+    public static function getTemplateData(\WP_Post $post = null) {
         if ($post == null) {
             global $post;
         }
@@ -180,7 +194,12 @@ class Location extends View
             $args['item'] = get_post($item);
         }
 
-        echo self::render(self::$template, $args);
+        return $args;
+    }
+
+    public static function index(\WP_Post $post = null)
+    {
+        echo self::render(self::$template, self::getTemplateData($post));
     }
 
 }
