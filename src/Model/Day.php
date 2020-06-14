@@ -245,8 +245,11 @@ class Day
             // If Slot before is of same timeframe and we have no hourly grid, we merge them.
             if(
                 $slotBefore &&
-                $slotBefore['timeframe']->ID ==  $slot['timeframe']->ID &&
-                get_post_meta($slot['timeframe']->ID, 'grid', true) == 0
+                $slotBefore['timeframe']->ID == $slot['timeframe']->ID &&
+                (
+                    get_post_meta($slot['timeframe']->ID, 'grid', true) == 0 ||
+                    get_post_meta($slot['timeframe']->ID, 'full-day', true)
+                )
             ) {
                 // Take over start time from slot before
                 $slots[$slotNr]['timestart'] = $slotBefore['timestart'];
