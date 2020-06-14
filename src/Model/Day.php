@@ -237,6 +237,9 @@ class Day
 
         // merge multiple slots if they are of same type
         foreach ($slots as $slotNr => $slot) {
+            if(!array_key_exists($slotNr - 1, $slots)) {
+                continue;
+            }
             $slotBefore = $slots[$slotNr - 1];
 
             // If Slot before is of same timeframe and we have no hourly grid, we merge them.
