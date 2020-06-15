@@ -247,40 +247,45 @@ class Day
      */
     protected function continueBecauseOfRepetition($timeframe)
     {
+        $repetitionType = get_post_meta($timeframe->ID, 'timeframe-repetition', true);
         if (
-            get_post_meta($timeframe->ID, 'timeframe-repetition', true) == "rep"
+            $repetitionType && $repetitionType !== "norep"
         ) {
-            // Weekly Rep
-            if (get_post_meta($timeframe->ID, 'repetition', true) == "w") {
-                $dayOfWeek = intval($this->getDateObject()->format('w'));
-                $timeframeWeekdays = get_post_meta($timeframe->ID, 'weekdays', true);
+            switch ($repetitionType) {
+                // Weekly Rep
+                case "w":
+                    $dayOfWeek = intval($this->getDateObject()->format('w'));
+                    $timeframeWeekdays = get_post_meta($timeframe->ID, 'weekdays', true);
 
-                // Because of different day of week calculation we need to recalculate
-                if ($dayOfWeek == 0) $dayOfWeek = 7;
-                if (is_array($timeframeWeekdays) && !in_array($dayOfWeek, $timeframeWeekdays)) {
-                    return true;
-                }
+                    // Because of different day of week calculation we need to recalculate
+                    if ($dayOfWeek == 0) {
+                        $dayOfWeek = 7;
+                    }
+                    if (is_array($timeframeWeekdays) && ! in_array($dayOfWeek, $timeframeWeekdays)) {
+                        return true;
+                    }
+                    break;
+
+
+                // Monthly Rep
+                case "m":
+                    $dayOfMonth = intval($this->getDateObject()->format('j'));
+                    $timeframeStartDayOfMonth = $this->getStartDate($timeframe)->format('j');
+
+                    if ($dayOfMonth != $timeframeStartDayOfMonth) {
+                        return true;
+                    }
+                    break;
+
+                // Yearly Rep
+                case "y":
+                    $date = intval($this->getDateObject()->format('dm'));
+                    $timeframeDate = $this->getStartDate($timeframe)->format('dm');
+                    if ($date != $timeframeDate) {
+                        return true;
+                    }
+                    break;
             }
-
-            // Monthly Rep
-            if (get_post_meta($timeframe->ID, 'repetition', true) == "m") {
-                $dayOfMonth = intval($this->getDateObject()->format('j'));
-                $timeframeStartDayOfMonth = $this->getStartDate($timeframe)->format('j');
-
-                if ($dayOfMonth != $timeframeStartDayOfMonth) {
-                    return true;
-                }
-            }
-
-            // Yearly Rep
-            if (get_post_meta($timeframe->ID, 'repetition', true) == "y") {
-                $date = intval($this->getDateObject()->format('dm'));
-                $timeframeDate = $this->getStartDate($timeframe)->format('dm');
-                if ($date != $timeframeDate) {
-                    return true;
-                }
-            }
-
         }
         return false;
     }
