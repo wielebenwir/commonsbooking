@@ -276,6 +276,23 @@ abstract class CustomPostType
         return $posts;
     }
 
+
+    /**
+     * generates a random slug for use as post_name in timeframes/booking to prevent easy access to bookings via get parameters
+     *
+     * @param  mixed $length
+     * @return void
+     */
+    public static function generateRandomSlug($length='24') {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
     abstract public static function getView();
 
 }

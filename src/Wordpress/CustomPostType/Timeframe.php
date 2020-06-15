@@ -98,20 +98,26 @@ class Timeframe extends CustomPostType
                 $itemId
             );
 
+
             $postarr = array(
                 "type" => $_REQUEST["type"],
                 "post_status" => $_REQUEST["post_status"],
-                "post_type" => self::getPostType()
+                "post_type" => self::getPostType(),
+                "post_title" => __("Buchung", CB_TEXTDOMAIN)
             );
 
             if(empty($booking)) {
+                $postarr['post_name'] = self::generateRandomSlug();
                 $postId = wp_insert_post($postarr, true);
             } else {
                 $postarr['ID'] = $booking->ID;
                 $postId = wp_update_post($postarr);
             }
 
-            wp_redirect( home_url( '?' . self::getPostType() . '=' . $postId ) );
+            // Generate random post slug
+            $post_slug = get_post($postId)->post_name;
+
+            wp_redirect( home_url( '?' . self::getPostType() . '=' . $post_slug ) );
             exit;
         }
     }
