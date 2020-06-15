@@ -210,8 +210,12 @@ class Timeframe extends CustomPostType
             new Field("title-timeframe-config", __("Configure timeframe", CB_TEXTDOMAIN), "", "title", "edit_posts"),
             new Field("timeframe-repetition", __('Timeframe Repetition', CB_TEXTDOMAIN), "", "select", "edit_pages",
                 [
-                    'rep' => __("Repetition", CB_TEXTDOMAIN),
-                    'norep' => __("No Repetition", CB_TEXTDOMAIN)
+                  #  'rep' => __("Repetition", CB_TEXTDOMAIN),
+                    'norep' => __("No Repetition", CB_TEXTDOMAIN),
+                    'd' => __("Daily", CB_TEXTDOMAIN),
+                    'w' => __("Weekly", CB_TEXTDOMAIN),
+                    'm' => __("Monthly", CB_TEXTDOMAIN),
+                    'y' => __("Yearly", CB_TEXTDOMAIN)
                 ]
             ),
             new Field("full-day", __('Full day', CB_TEXTDOMAIN), "", "checkbox", "edit_pages"),
@@ -226,14 +230,14 @@ class Timeframe extends CustomPostType
             ),
             new Field("title-timeframe-rep-config", __("Configure repetition", CB_TEXTDOMAIN), "", "title", "edit_posts"),
             new Field("repetition-start", __('Repetition start', CB_TEXTDOMAIN), "", "text_date", "edit_pages"),
-            new Field("repetition", __('Repetition', CB_TEXTDOMAIN), "", "select", "edit_pages",
+            /*new Field("repetition", __('Repetition', CB_TEXTDOMAIN), "", "select", "edit_pages",
                 [
                     'd' => __("Daily", CB_TEXTDOMAIN),
                     'w' => __("Weekly", CB_TEXTDOMAIN),
                     'm' => __("Monthly", CB_TEXTDOMAIN),
                     'y' => __("Yearly", CB_TEXTDOMAIN)
                 ]
-            ),
+            ),*/
             new Field("weekdays", __('Weekdays', CB_TEXTDOMAIN), "", "multicheck", "edit_pages",
                 [
                     1 => __("Monday", CB_TEXTDOMAIN),

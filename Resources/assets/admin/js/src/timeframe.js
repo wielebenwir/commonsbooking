@@ -28,7 +28,6 @@
          */
         const showFieldset = function (set) {
             $.each(set, function () {
-                console.log($(this).parents('.cmb-row'));
                 $(this).parents('.cmb-row').show();
             });
         };
@@ -42,7 +41,6 @@
             const endDateInput = $('#end-date_date');
             const endDateTimeInput = $('#end-date_time');
             const gridInput = $('#grid');
-            const repetitionInput = $('#repetition');
             const weekdaysInput = $('#weekdays1'); // TODO: find bettter solution.
             const startTimeInput = $('#start-time');
             const endTimeInput = $('#end-time');
@@ -50,7 +48,7 @@
             const repetitionStartInput = $('#repetition-start');
             const repetitionEndInput = $('#repetition-end');
             const fullDayInput = $('#full-day');
-            const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, repetitionInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
+            const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
             const noRepSet = [fullDayInput, startDateInput, startDateTimeInput, endDateInput, endDateTimeInput, gridInput];
 
             /**
@@ -124,15 +122,15 @@
             }
 
             const updateRepetitionHandler = function() {
-                const selectedRep = $("option:selected", repetitionInput).val();
-                console.log(selectedRep);
+                const selectedRep = $("option:selected", typeInput).val();
+
                 if(selectedRep == 'w') {
                     weekdaysInput.parents('.cmb-row').show();
                 } else {
                     weekdaysInput.parents('.cmb-row').hide();
                     uncheck($('input[name*=weekdays]'));
                 }
-                repetitionInput.change(function() {
+                typeInput.change(function() {
                     const selectedRep = $("option:selected", $(this)).val();
                     if(selectedRep == 'w') {
                         weekdaysInput.parents('.cmb-row').show();
@@ -153,7 +151,7 @@
             const initTypeSelect = function() {
                 const selectedType = $("option:selected", typeInput).val();
 
-                if (selectedType == 'rep') {
+                if (selectedType && selectedType !== 'norep') {
                     showRepFields();
                 }
 
@@ -161,15 +159,25 @@
                     showNoRepFields();
                 }
 
+                if(!selectedType) {
+                    hideFieldset(noRepSet);
+                    hideFieldset(repSet);
+                }
+
                 typeInput.change(function (e) {
                     const selectedType = e.target.options[e.target.selectedIndex].value;
 
-                    if (selectedType == 'rep') {
+                    if (selectedType && selectedType !== 'norep') {
                         showRepFields();
                     }
 
                     if (selectedType == 'norep') {
                         showNoRepFields();
+                    }
+
+                    if(!selectedType) {
+                        hideFieldset(noRepSet);
+                        hideFieldset(repSet);
                     }
 
                     updateFullDayHandler();
