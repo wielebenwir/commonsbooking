@@ -16,6 +16,26 @@
          * Hides set-elements.
          * @param set
          */
+        const hideFields = function (set) {
+            $.each(set, function () {
+                $(this).hide();
+            });
+        };
+
+        /**
+         * Show set-elements.
+         * @param set
+         */
+        const showFields = function (set) {
+            $.each(set, function () {
+                $(this).show();
+            });
+        };
+
+        /**
+         * Hides set-elements.
+         * @param set
+         */
         const hideFieldset = function (set) {
             $.each(set, function () {
                 $(this).parents('.cmb-row').hide();
@@ -50,13 +70,8 @@
             const fullDayInput = $('#full-day');
             const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
             const noRepSet = [fullDayInput, startDateInput, startDateTimeInput, endDateInput, endDateTimeInput, gridInput];
-            const timeFieldsSet = [
-                startDateTimeInput,
-                endDateTimeInput,
-                gridInput.parents('.cmb-row '),
-                startTimeInput.parents('.cmb-row '),
-                endTimeInput.parents('.cmb-row ')
-            ];
+            const repTimeFieldsSet = [gridInput, startTimeInput, endTimeInput];
+            const noRepTimeFieldsSet = [startDateTimeInput, endDateTimeInput];
 
             /**
              * Show repetition fields.
@@ -72,6 +87,16 @@
             const showNoRepFields = function () {
                 showFieldset(noRepSet);
                 hideFieldset(arrayDiff(noRepSet, repSet));
+            }
+
+            /**
+             * Unccheck checkboxes.
+             * @param checkboxes
+             */
+            const uncheck = function (checkboxes) {
+                $.each(checkboxes, function () {
+                    $(this).prop( "checked", false );
+                });
             }
 
             /**
@@ -91,86 +116,38 @@
                     endDateInput.val($(this).val());
                 });
             };
-
-            /**
-             * Hides time related inputs.
-             */
-            const hideTimeInputs = function () {
-                $.each(timeFieldsSet, function () {
-                    $(this).hide();
-                })
-            }
-
-            /**
-             * Shows time related inputs.
-             */
-            const showTimeInputs = function () {
-                $.each(timeFieldsSet, function () {
-                    $(this).show();
-                })
-            }
+            updateTimeSelectionHandlers();
 
             /**
              * Shows/hides grid selection depending on checked-state.
              */
-            const updateFullDayHandler = function () {
+            const handleFullDaySelection = function () {
+                const selectedRep = $("option:selected", typeInput).val();
                 // Full-day setting
                 if(fullDayInput.prop( "checked" )) {
                     gridInput.prop("selected", false);
-                    hideTimeInputs();
+                    hideFieldset(repTimeFieldsSet);
+                    hideFields(noRepTimeFieldsSet);
                 } else {
-                    showTimeInputs();
-                }
-
-                fullDayInput.change(function () {
-                    if($(this).prop( "checked" )) {
-                        gridInput.prop("selected", false);
-                        hideTimeInputs()
+                    if(selectedRep == 'norep') {
+                        showFields(noRepTimeFieldsSet);
+                        showFieldset([gridInput]);
                     } else {
-                        showTimeInputs();
+                        showFieldset(repTimeFieldsSet);
                     }
-                });
-            }
-
-            const uncheck = function (checkboxes) {
-                $.each(checkboxes, function () {
-                   $(this).prop( "checked", false );
-                });
-            }
-
-            const updateRepetitionHandler = function() {
-                const selectedRep = $("option:selected", typeInput).val();
-
-                if(selectedRep == 'w') {
-                    weekdaysInput.parents('.cmb-row').show();
-                } else {
-                    weekdaysInput.parents('.cmb-row').hide();
-                    uncheck($('input[name*=weekdays]'));
                 }
-                typeInput.change(function() {
-                    const selectedRep = $("option:selected", $(this)).val();
-                    if(selectedRep == 'w') {
-                        weekdaysInput.parents('.cmb-row').show();
-                    } else {
-                        weekdaysInput.parents('.cmb-row').hide();
-                        uncheck($('input[name*=weekdays]'));
-                    }
-                })
-            };
-
-            const initTypeSpecificHandlers = function() {
-                updateTimeSelectionHandlers();
-                updateFullDayHandler();
-                updateRepetitionHandler();
-            };
+            }
+            handleFullDaySelection();
+            fullDayInput.change(function () {
+                handleFullDaySelection();
+            });
 
             /**
-             * Updates form depending on selected type.
+             * Handles repetition selection.
              */
-            const handleTypeSelect = function () {
+            const handleRepetitionSelection = function () {
                 const selectedType = $('option:selected', typeInput).val();
 
-                initTypeSpecificHandlers();
                 if(selectedType) {
                     if (selectedType == 'norep') {
                         showNoRepFields();
@@ -178,22 +155,25 @@
                         showRepFields();
                     }
 
+                    if(selectedType == 'w') {
+                        weekdaysInput.parents('.cmb-row').show();
+                    } else {
+                        weekdaysInput.parents('.cmb-row').hide();
+                        uncheck($('input[name*=weekdays]'));
+                    }
+
+                    handleFullDaySelection();
+                    updateTimeSelectionHandlers();
                 } else {
                     hideFieldset(noRepSet);
                     hideFieldset(repSet);
                 }
+
             }
-
-            // Type select functions
-            const initTypeSelect = function() {
-                typeInput.change(function () {
-                    handleTypeSelect();
-                });
-
-                handleTypeSelect();
-            };
-
-            initTypeSelect();
+            handleRepetitionSelection();
+            typeInput.change(function() {
+                handleRepetitionSelection();
+            })
         }
     });
 })(jQuery);
