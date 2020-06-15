@@ -112,6 +112,8 @@ abstract class CustomPostType
             return;
         }
 
+        $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition'];
+
         /** @var Field $customField */
         foreach ($this->getCustomFields() as $customField) {
             if (current_user_can($customField->getCapability(), $post_id)) {
@@ -129,8 +131,25 @@ abstract class CustomPostType
                             $value = wpautop($value);
                         }
                         update_post_meta($post_id, $fieldName, $value);
+
+                        // Update time-fields by date-fields
+                        if(in_array($fieldName, ['start-date', 'end-date'])) {
+                            update_post_meta(
+                                $post_id,
+                                str_replace('date','time', $fieldName),
+                                date('h:i A', $value)
+                            );
+                        }
+
+                        // if we have a booking, there shall be set no repetition
+                        if($fieldName == "type" && $value == Timeframe::BOOKING_ID) {
+                            update_post_meta($post_id, 'timeframe-repetition', 'norep');
+                        }
+
                     } else {
-                        delete_post_meta($post_id, $fieldName);
+                        if(!in_array($fieldName, $noDeleteMetaFields)) {
+                            delete_post_meta($post_id, $fieldName);
+                        }
                     }
                 }
             }
@@ -257,7 +276,7 @@ abstract class CustomPostType
         return $posts;
     }
 
-    
+
     /**
      * generates a random slug for use as post_name in timeframes/booking to prevent easy access to bookings via get parameters
      *
@@ -271,7 +290,7 @@ abstract class CustomPostType
         for ($i = 0; $i < $length; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
-        return $randomString; 
+        return $randomString;
     }
 
     abstract public static function getView();

@@ -28,7 +28,6 @@
          */
         const showFieldset = function (set) {
             $.each(set, function () {
-                console.log($(this).parents('.cmb-row'));
                 $(this).parents('.cmb-row').show();
             });
         };
@@ -42,7 +41,6 @@
             const endDateInput = $('#end-date_date');
             const endDateTimeInput = $('#end-date_time');
             const gridInput = $('#grid');
-            const repetitionInput = $('#repetition');
             const weekdaysInput = $('#weekdays1'); // TODO: find bettter solution.
             const startTimeInput = $('#start-time');
             const endTimeInput = $('#end-time');
@@ -50,8 +48,15 @@
             const repetitionStartInput = $('#repetition-start');
             const repetitionEndInput = $('#repetition-end');
             const fullDayInput = $('#full-day');
-            const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, repetitionInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
+            const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
             const noRepSet = [fullDayInput, startDateInput, startDateTimeInput, endDateInput, endDateTimeInput, gridInput];
+            const timeFieldsSet = [
+                startDateTimeInput,
+                endDateTimeInput,
+                gridInput.parents('.cmb-row '),
+                startTimeInput.parents('.cmb-row '),
+                endTimeInput.parents('.cmb-row ')
+            ];
 
             /**
              * Show repetition fields.
@@ -88,31 +93,41 @@
             };
 
             /**
+             * Hides time related inputs.
+             */
+            const hideTimeInputs = function () {
+                $.each(timeFieldsSet, function () {
+                    $(this).hide();
+                })
+            }
+
+            /**
+             * Shows time related inputs.
+             */
+            const showTimeInputs = function () {
+                $.each(timeFieldsSet, function () {
+                    $(this).show();
+                })
+            }
+
+            /**
              * Shows/hides grid selection depending on checked-state.
              */
             const updateFullDayHandler = function () {
                 // Full-day setting
                 if(fullDayInput.prop( "checked" )) {
                     gridInput.prop("selected", false);
-                    gridInput.parents('.cmb-row ').hide();
-                    startTimeInput.parents('.cmb-row ').hide();
-                    endTimeInput.parents('.cmb-row ').hide();
+                    hideTimeInputs();
                 } else {
-                    gridInput.parents('.cmb-row ').show();
-                    startTimeInput.parents('.cmb-row ').show();
-                    endTimeInput.parents('.cmb-row ').show();
+                    showTimeInputs();
                 }
 
                 fullDayInput.change(function () {
                     if($(this).prop( "checked" )) {
                         gridInput.prop("selected", false);
-                        gridInput.parents('.cmb-row ').hide();
-                        startTimeInput.parents('.cmb-row ').hide();
-                        endTimeInput.parents('.cmb-row ').hide();
+                        hideTimeInputs()
                     } else {
-                        gridInput.parents('.cmb-row ').show();
-                        startTimeInput.parents('.cmb-row ').show();
-                        endTimeInput.parents('.cmb-row ').show();
+                        showTimeInputs();
                     }
                 });
             }
@@ -124,15 +139,15 @@
             }
 
             const updateRepetitionHandler = function() {
-                const selectedRep = $("option:selected", repetitionInput).val();
-                console.log(selectedRep);
+                const selectedRep = $("option:selected", typeInput).val();
+
                 if(selectedRep == 'w') {
                     weekdaysInput.parents('.cmb-row').show();
                 } else {
                     weekdaysInput.parents('.cmb-row').hide();
                     uncheck($('input[name*=weekdays]'));
                 }
-                repetitionInput.change(function() {
+                typeInput.change(function() {
                     const selectedRep = $("option:selected", $(this)).val();
                     if(selectedRep == 'w') {
                         weekdaysInput.parents('.cmb-row').show();
@@ -149,34 +164,33 @@
                 updateRepetitionHandler();
             };
 
-            // Type select functions
-            const initTypeSelect = function() {
-                const selectedType = $("option:selected", typeInput).val();
+            /**
+             * Updates form depending on selected type.
+             */
+            const handleTypeSelect = function () {
+                const selectedType = $('option:selected', typeInput).val();
 
-                if (selectedType == 'rep') {
-                    showRepFields();
-                }
-
-                if (selectedType == 'norep') {
-                    showNoRepFields();
-                }
-
-                typeInput.change(function (e) {
-                    const selectedType = e.target.options[e.target.selectedIndex].value;
-
-                    if (selectedType == 'rep') {
+                initTypeSpecificHandlers();
+                if(selectedType) {
+                    if (selectedType == 'norep') {
+                        showNoRepFields();
+                    } else {
                         showRepFields();
                     }
 
-                    if (selectedType == 'norep') {
-                        showNoRepFields();
-                    }
+                } else {
+                    hideFieldset(noRepSet);
+                    hideFieldset(repSet);
+                }
+            }
 
-                    updateFullDayHandler();
-                    updateRepetitionHandler();
+            // Type select functions
+            const initTypeSelect = function() {
+                typeInput.change(function () {
+                    handleTypeSelect();
                 });
 
-                initTypeSpecificHandlers();
+                handleTypeSelect();
             };
 
             initTypeSelect();
