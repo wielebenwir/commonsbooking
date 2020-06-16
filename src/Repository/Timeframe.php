@@ -12,36 +12,31 @@ class Timeframe
         return array(
             'relation' => "OR",
             array(
-                'key' => 'start-date',
-                'value' => array(
-                    strtotime($date),
-                    strtotime($date . 'T23:59')
+                'relation' => "AND",
+                array(
+                    'key' => 'start-date',
+                    'value' =>strtotime($date),
+                    'compare' => '<=',
+                    'type' => 'numeric'
                 ),
-                'compare' => 'BETWEEN',
-                'type' => 'numeric'
-            ),
-            array(
-                'key' => 'end-date',
-                'value' => array(
-                    strtotime($date),
-                    strtotime($date . 'T23:59')
-                ),
-                'compare' => 'BETWEEN',
-                'type' => 'numeric'
+                array(
+                    'key' => 'end-date',
+                    'value' => strtotime($date . 'T23:59'),
+                    'compare' => '>=',
+                    'type' => 'numeric'
+                )
             ),
             array(
                 'relation' => "AND",
                 array(
                     'key' => 'start-date',
-                    'value' =>strtotime($date),
+                    'value' => strtotime($date),
                     'compare' => '<',
                     'type' => 'numeric'
                 ),
                 array(
                     'key' => 'end-date',
-                    'value' => strtotime($date),
-                    'compare' => '>',
-                    'type' => 'numeric'
+                    'compare' => 'NOT EXISTS'
                 )
             )
         );

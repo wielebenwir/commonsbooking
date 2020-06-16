@@ -313,8 +313,10 @@ class Day
 
             // Add timeframe to relevant slots
             while ($startSlot < $endSlot) {
+                // Set locked property
+                $timeframe->locked = Timeframe::isLocked($timeframe);
+
                 if (!array_key_exists('timeframe', $slots[$startSlot]) || !$slots[$startSlot]['timeframe']) {
-                    $timeframe->locked = Timeframe::isLocked($timeframe);
                     $slots[$startSlot]['timeframe'] = $timeframe;
                 } else {
                     $slots[$startSlot]['timeframe'] = Timeframe::getHigherPrioFrame($timeframe, $slots[$startSlot]['timeframe']);
