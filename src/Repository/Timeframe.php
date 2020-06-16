@@ -11,27 +11,35 @@ class Timeframe
     {
         return array(
             'relation' => "OR",
+            // Timeframe has any overlap with current day
             array(
                 'relation' => "AND",
                 array(
                     'key' => 'start-date',
-                    'value' =>strtotime($date),
-                    'compare' => '<=',
+                    'value' => [
+                        0,
+                        strtotime($date . 'T23:59')
+                    ],
+                    'compare' => 'BETWEEN',
                     'type' => 'numeric'
                 ),
                 array(
                     'key' => 'end-date',
-                    'value' => strtotime($date . 'T23:59'),
-                    'compare' => '>=',
+                    'value' => [
+                        strtotime($date),
+                        3000000000
+                    ],
+                    'compare' => 'BETWEEN',
                     'type' => 'numeric'
                 )
             ),
+            // start date is before end of current day and there is no rep end
             array(
                 'relation' => "AND",
                 array(
                     'key' => 'start-date',
-                    'value' => strtotime($date),
-                    'compare' => '<',
+                    'value' => strtotime($date . 'T23:59'),
+                    'compare' => '<=',
                     'type' => 'numeric'
                 ),
                 array(

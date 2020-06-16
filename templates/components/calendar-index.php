@@ -5,7 +5,7 @@
     <div id="litepicker"></div>
     <div>
         <form method="get" id="booking-form" style="display:none;">
-            <?php echo $templateData['wp_nonce']; ?>123
+            <?php echo $templateData['wp_nonce']; ?>
             <input type="hidden" name="location-id" value="<?php echo $templateData['location']; ?>" />
             <input type="hidden" name="item-id" value="<?php echo $templateData['item']->ID; ?>" />
             <input type="hidden" name="type" value="<?php echo $templateData['type']; ?>" />

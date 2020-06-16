@@ -99,9 +99,9 @@ abstract class CustomPostType
      */
     public function saveCustomFields($post_id, $post)
     {
-        if (!current_user_can('edit_post', $post_id)) {
-            return;
-        }
+        // if (!current_user_can('edit_post', $post_id)) {
+        //     return;
+        // }
         if ($post->post_type !== static::getPostType()) {
             return;
         }
@@ -129,6 +129,7 @@ abstract class CustomPostType
                     $value = $_REQUEST[$fieldName];
                     if(is_string($value)) {
                         $value = trim($value);
+                        update_post_meta($post_id, $fieldName, $value);
 
                         // if we have a booking, there shall be set no repetition
                         if($fieldName == "type" && $value == Timeframe::BOOKING_ID) {
