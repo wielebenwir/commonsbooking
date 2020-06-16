@@ -161,7 +161,7 @@ class Day
         // Timeframe
         $timeframeType = get_post_meta($timeframe->ID, 'type', true);
         $fullDay = get_post_meta($timeframe->ID, 'full-day', true);
-        $startDate = $this->getStartDate($timeframe);
+        $startDate = $this->getStartTime($timeframe);
 
         // Slots
         $startSlot = 0;
@@ -193,7 +193,7 @@ class Day
         // Timeframe
         $timeframeType = get_post_meta($timeframe->ID, 'type', true);
         $fullDay = get_post_meta($timeframe->ID, 'full-day', true);
-        $endDate = $this->getEndDate($timeframe);
+        $endDate = $this->getEndTime($timeframe);
 
         // Slots
         $endSlot = count($slots);
@@ -228,6 +228,25 @@ class Day
     }
 
     /**
+     * Returns start-time DateTime.
+     * @param $timeframe
+     * @return \DateTime
+     */
+    protected function getStartTime($timeframe)
+    {
+        $startDateString = get_post_meta($timeframe->ID, 'start-date', true);
+        $startTimeString = get_post_meta($timeframe->ID, 'start-time', true);
+        $startDate = new \DateTime();
+        $startDate->setTimestamp($startDateString);
+        if($startTimeString) {
+            $startTime = new \DateTime();
+            $startTime->setTimestamp(strtotime($startTimeString));
+            $startDate->setTime($startTime->format('H'), $startTime->format('m'));
+        }
+        return $startDate;
+    }
+
+    /**
      * Returns end-date DateTime.
      * @param $timeframe
      * @return \DateTime
@@ -240,6 +259,25 @@ class Day
         return $startDate;
     }
 
+    /**
+     * Returns start-time DateTime.
+     * @param $timeframe
+     * @return \DateTime
+     */
+    protected function getEndTime($timeframe)
+    {
+        $endDateString = get_post_meta($timeframe->ID, 'end-date', true);
+        $endTimeString = get_post_meta($timeframe->ID, 'end-time', true);
+        $endDate = new \DateTime();
+        $endDate->setTimestamp($endDateString);
+        if($endTimeString) {
+            $endTime = new \DateTime();
+            $endTime->setTimestamp(strtotime($endTimeString));
+            $endDate->setTime($endTime->format('H'), $endTime->format('m'));
+        }
+        return $endDate;
+    }
+    
     /**
      * Checks if timeframe is relevant for current day/date.
      * @param $timeframe
