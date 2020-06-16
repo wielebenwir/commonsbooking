@@ -106,6 +106,8 @@ abstract class CustomPostType
             return;
         }
 
+        $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition'];
+
         /** @var Field $customField */
         foreach ($this->getCustomFields() as $customField) {
             if (current_user_can($customField->getCapability(), $post_id)) {
@@ -117,7 +119,12 @@ abstract class CustomPostType
                 }
 
                 foreach ($fieldNames as $fieldName) {
-                    if(!array_key_exists($fieldName, $_REQUEST)) continue;
+                    if(!array_key_exists($fieldName, $_REQUEST)) {
+                        if(!in_array($fieldName, $noDeleteMetaFields)) {
+                            delete_post_meta($post_id, $fieldName);
+                        }
+                        continue;
+                    }
 
                     $value = $_REQUEST[$fieldName];
                     if(is_string($value)) {
@@ -129,7 +136,7 @@ abstract class CustomPostType
                         }
                     }
 
-                    if(is_array($value)) {
+                    if (is_array($value)) {
                         // Update time-fields by date-fields
                         if(in_array($fieldName, ['start-date', 'end-date'])) {
                             update_post_meta(

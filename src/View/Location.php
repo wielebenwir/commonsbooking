@@ -75,12 +75,11 @@ class Location extends View
                             } else {
                                 $dayArray['firstSlotBooked'] = true;
                             }
+                        }
+                        if ($timeFrameType == Timeframe::BOOKABLE_ID) {
+                            $dayArray['lastSlotBooked'] = false;
                         } else {
-                            if ($timeFrameType == Timeframe::BOOKABLE_ID) {
-                                $dayArray['lastSlotBooked'] = false;
-                            } else {
-                                $dayArray['lastSlotBooked'] = true;
-                            }
+                            $dayArray['lastSlotBooked'] = true;
                         }
 
                         if ($timeFrameType == Timeframe::BOOKABLE_ID) {

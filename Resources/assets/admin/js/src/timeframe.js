@@ -114,6 +114,11 @@
                 });
                 repetitionEndInput.change(function () {
                     endDateInput.val($(this).val());
+
+                    // repetion end is removed, we need to clear enddate time input too
+                    if($(this).val() == "") {
+                        endDateTimeInput.val($(this).val());
+                    }
                 });
             };
             updateTimeSelectionHandlers();
