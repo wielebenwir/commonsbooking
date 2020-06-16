@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Repository\Booking;
 use CommonsBooking\Wordpress\MetaBox\Field;
 
 class Timeframe extends CustomPostType
@@ -77,62 +78,6 @@ class Timeframe extends CustomPostType
     }
 
     /**
-     * @param $startDate
-     * @param $endDate
-     * @param $location
-     * @param $item
-     * @return null|\WP_Post
-     * @throws \Exception
-     */
-    public static function getBookingByDate($startDate, $endDate, $location, $item) {
-        // Default query
-        $args = array(
-            'post_type' => Timeframe::getPostType(),
-            'meta_query' => array(
-                'relation' => "AND",
-                array(
-                    'key' => 'start-date',
-                    'value' => intval($startDate),
-                    'compare' => '=',
-                    'type' => 'numeric'
-                ),
-                array(
-                    'key' => 'end-date',
-                    'value' => $endDate,
-                    'compare' => '='
-                ),
-                array(
-                    'key' => 'type',
-                    'value' => Timeframe::BOOKING_ID,
-                    'compare' => '='
-                ),
-                array(
-                    'key' => 'location-id',
-                    'value' => $location,
-                    'compare' => '='
-                ),
-                array(
-                    'key' => 'item-id',
-                    'value' => $item,
-                    'compare' => '='
-                )
-            ),
-            'post_status' => 'any'
-        );
-
-        $query = new \WP_Query($args);
-        if ($query->have_posts()) {
-            $posts = $query->get_posts();
-            if(count($posts) == 1) {
-                return $posts[0];
-            } else {
-                throw new \Exception(__CLASS__ . "::" . __LINE__ . ": Found more then one bookings");
-            }
-
-        }
-    }
-
-    /**
      * Handles save-Request for timeframe.
      */
     public function handleFormRequest()
@@ -151,31 +96,33 @@ class Timeframe extends CustomPostType
             $endDate = isset($_REQUEST['end-date'])  && $_REQUEST['end-date'] != "" ? $_REQUEST['end-date'] : null;
 
             /** @var \WP_Post $booking */
-            $booking = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getBookingByDate(
+            $booking = Booking::getBookingByDate(
                 $startDate,
                 $endDate,
                 $locationId,
                 $itemId
             );
 
+
             $postarr = array(
-                "location-id" => $locationId,
-                "item-id" => $itemId,
                 "type" => $_REQUEST["type"],
                 "post_status" => $_REQUEST["post_status"],
                 "post_type" => self::getPostType(),
-                "start-date" => $startDate,
-                "end-date" => $endDate
+                "post_title" => __("Buchung", CB_TEXTDOMAIN)
             );
 
             if(empty($booking)) {
+                $postarr['post_name'] = self::generateRandomSlug();
                 $postId = wp_insert_post($postarr, true);
             } else {
                 $postarr['ID'] = $booking->ID;
                 $postId = wp_update_post($postarr);
             }
 
-            wp_redirect( home_url( '?' . self::getPostType() . '=' . $postId ) );
+            // Generate random post slug
+            $post_slug = get_post($postId)->post_name;
+
+            wp_redirect( home_url( '?' . self::getPostType() . '=' . $post_slug ) );
             exit;
         }
     }
@@ -274,8 +221,12 @@ class Timeframe extends CustomPostType
             new Field("title-timeframe-config", __("Configure timeframe", CB_TEXTDOMAIN), "", "title", "edit_posts"),
             new Field("timeframe-repetition", __('Timeframe Repetition', CB_TEXTDOMAIN), "", "select", "edit_pages",
                 [
-                    'rep' => __("Repetition", CB_TEXTDOMAIN),
-                    'norep' => __("No Repetition", CB_TEXTDOMAIN)
+                  #  'rep' => __("Repetition", CB_TEXTDOMAIN),
+                    'norep' => __("No Repetition", CB_TEXTDOMAIN),
+                    'd' => __("Daily", CB_TEXTDOMAIN),
+                    'w' => __("Weekly", CB_TEXTDOMAIN),
+                    'm' => __("Monthly", CB_TEXTDOMAIN),
+                    'y' => __("Yearly", CB_TEXTDOMAIN)
                 ]
             ),
             new Field("full-day", __('Full day', CB_TEXTDOMAIN), "", "checkbox", "edit_pages"),
@@ -290,14 +241,14 @@ class Timeframe extends CustomPostType
             ),
             new Field("title-timeframe-rep-config", __("Configure repetition", CB_TEXTDOMAIN), "", "title", "edit_posts"),
             new Field("repetition-start", __('Repetition start', CB_TEXTDOMAIN), "", "text_date", "edit_pages"),
-            new Field("repetition", __('Repetition', CB_TEXTDOMAIN), "", "select", "edit_pages",
+            /*new Field("repetition", __('Repetition', CB_TEXTDOMAIN), "", "select", "edit_pages",
                 [
                     'd' => __("Daily", CB_TEXTDOMAIN),
                     'w' => __("Weekly", CB_TEXTDOMAIN),
                     'm' => __("Monthly", CB_TEXTDOMAIN),
                     'y' => __("Yearly", CB_TEXTDOMAIN)
                 ]
-            ),
+            ),*/
             new Field("weekdays", __('Weekdays', CB_TEXTDOMAIN), "", "multicheck", "edit_pages",
                 [
                     1 => __("Monday", CB_TEXTDOMAIN),
