@@ -99,20 +99,12 @@ abstract class CustomPostType
      */
     public function saveCustomFields($post_id, $post)
     {
-        if (
-            !isset($_REQUEST[static::getWPNonceId()]) ||
-            !wp_verify_nonce($_REQUEST[static::getWPNonceId()], static::getWPAction())
-        ) {
+        if (!current_user_can('edit_post', $post_id)) {
             return;
         }
-//        if (!current_user_can('edit_post', $post_id)) {
-//            return;
-//        }
         if ($post->post_type !== static::getPostType()) {
             return;
         }
-
-        $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition'];
 
         /** @var Field $customField */
         foreach ($this->getCustomFields() as $customField) {
@@ -125,30 +117,26 @@ abstract class CustomPostType
                 }
 
                 foreach ($fieldNames as $fieldName) {
-                    if (isset($_REQUEST[$fieldName]) && $value = trim($_REQUEST[$fieldName])) {
-                        // Auto-paragraphs for any WYSIWYG
-                        if ($customField->getType() == "wysiwyg") {
-                            $value = wpautop($value);
-                        }
-                        update_post_meta($post_id, $fieldName, $value);
+                    if(!array_key_exists($fieldName, $_REQUEST)) continue;
 
-                        // Update time-fields by date-fields
-                        if(in_array($fieldName, ['start-date', 'end-date'])) {
-                            update_post_meta(
-                                $post_id,
-                                str_replace('date','time', $fieldName),
-                                date('h:i A', $value)
-                            );
-                        }
+                    $value = $_REQUEST[$fieldName];
+                    if(is_string($value)) {
+                        $value = trim($value);
 
                         // if we have a booking, there shall be set no repetition
                         if($fieldName == "type" && $value == Timeframe::BOOKING_ID) {
                             update_post_meta($post_id, 'timeframe-repetition', 'norep');
                         }
+                    }
 
-                    } else {
-                        if(!in_array($fieldName, $noDeleteMetaFields)) {
-                            delete_post_meta($post_id, $fieldName);
+                    if(is_array($value)) {
+                        // Update time-fields by date-fields
+                        if(in_array($fieldName, ['start-date', 'end-date'])) {
+                            update_post_meta(
+                                $post_id,
+                                str_replace('date','time', $fieldName),
+                                $value['time']
+                            );
                         }
                     }
                 }

@@ -43,6 +43,19 @@ class Timeframe
                     'compare' => '>',
                     'type' => 'numeric'
                 )
+            ),
+            array(
+                'relation' => "AND",
+                array(
+                    'key' => 'start-date',
+                    'value' =>strtotime($date),
+                    'compare' => '<',
+                    'type' => 'numeric'
+                ),
+                array(
+                    'key' => 'end-date',
+                    'compare' => 'NOT EXISTS'
+                )
             )
         );
     }
