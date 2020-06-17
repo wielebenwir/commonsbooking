@@ -7,6 +7,35 @@ document.addEventListener("DOMContentLoaded", function(event) {
             $('#booking-form').hide();
         };
 
+        // Updates Time-selects so that no wrong time ranges can be selected
+        const initSelectHandler = function() {
+            let bookingForm = $('#booking-form');
+            const startSelect = bookingForm.find('select[name=start-date]');
+            const endSelect = bookingForm.find('select[name=end-date]');
+
+            startSelect.change(function () {
+                const startValue = $(this).val();
+                endSelect.find('option').each(function () {
+                    if($(this).val() < startValue) {
+                        $(this).attr('disabled', 'disabled');
+                        $(this).prop("selected", false)
+                    } else {
+                        $(this).removeAttr('disabled');
+                    }
+                });
+            });
+        };
+
+        // Updates select options by time slots array
+        const updateSelectSlots = function($select, slots) {
+            $select.empty().attr('required','required');
+            $.each(slots, function(index, slot) {
+                $select.append(
+                    new Option(slot['timestart'] + ' - ' + slot['timeend'], slot['timestampstart'])
+                );
+            });
+        };
+
         $.post(
             cb_ajax.ajax_url,
             {
@@ -65,8 +94,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
                                     ed: endDate
                                 },
                                 function(data) {
-                                    console.log(data);
-                                    console.log(new Date(data['startDate']), new Date(data['endDate']));
                                     picker.setLockDays(data['lockDays']);
                                     picker.setBookedDays(data['bookedDays']);
                                     picker.setHolidays(data['holidays']);
@@ -79,25 +106,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         onChangeYear: function(date, idx) {
                         },
                         onSelect: function(date1, date2) {
-                            $('#booking-form').show();
+                            let $bookingForm = $('#booking-form');
+                            $bookingForm.show();
                             day1 = data['days'][moment(date1).format('YYYY-MM-DD')];
                             day2 = data['days'][moment(date2).format('YYYY-MM-DD')];
 
-                            $('#booking-form select[name=start-date]').empty();
-                            $('#booking-form select[name=end-date]').empty();
-                            $('#booking-form #start-date').text(moment(date1).format('DD.MM.YYYY'));
-                            $('#booking-form #end-date').text(moment(date2).format('DD.MM.YYYY'));
+                            let $startSelect = $('#booking-form select[name=start-date]');
+                            updateSelectSlots($startSelect, day1['slots']);
 
-                            $.each(day1['slots'], function(index, slot) {
-                                $('#booking-form select[name=start-date]').append(
-                                    new Option(slot['timestart'] + ' - ' + slot['timeend'], slot['timestampstart'])
-                                );
-                            });
-                            $.each(day2['slots'], function(index, slot) {
-                                $('#booking-form select[name=end-date]').append(
-                                    new Option(slot['timestart'] + ' - ' + slot['timeend'], slot['timestampend'])
-                                );
-                            });
+                            let $endSelect = $('#booking-form select[name=end-date]');
+                            updateSelectSlots($endSelect, day2['slots']);
+
+                            $('.time-selection.start-date span.date', $bookingForm).text(moment(date1).format('DD.MM.YYYY'));
+                            $('.time-selection.end-date span.date', $bookingForm).text(moment(date2).format('DD.MM.YYYY'));
+
+                            initSelectHandler();
                         }
                     }
                 );
