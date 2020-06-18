@@ -50,8 +50,8 @@ class Plugin
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerItemTaxonomy'));
 
-        // Register Costum Shortcodes
-        add_action('init', array(self::class, 'registerShortcodes'));
+        // Register custom user roles (e.g. location-owner, item-owner etc.)
+        add_action('init', array(self::class, 'addCustomUserRoles'));     
         
         // Register custom post types
         add_action('init', array(self::class, 'registerCustomPostTypes'));
@@ -189,10 +189,17 @@ class Plugin
         );
     }
 
-    public static function registerShortcodes()
+    public static function addCustomUserRoles()
     {
-        return new Shortcodes();
+        add_role(
+            'location_owner',
+            __( 'Location Owner', CB_TEXTDOMAIN ),
+            array(
+            'read'         => true,  // true allows this capability
+            'edit_posts'   => true,
+            )
+        );
     }
-
+    
 
 }

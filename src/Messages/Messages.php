@@ -21,6 +21,7 @@ class Messages
         $message = cb_parse_template($message);
         $headers = array('Content-Type: text/html; charset=UTF-8');
 
+        $from = Settings::getOption('commonsbooking_email_options', 'email_sender_mail');
 
         $subject = Settings::getOption('commonsbooking_options_templates', 'emailtemplates_mail-booking-pending-subject');
     

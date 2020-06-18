@@ -19,7 +19,8 @@
 	--litepickerDayIsPartiallyLockedColor: #333;
 	--litepickerDayIsPartiallyLockedColorBgOne: #20c527;
 	--litepickerDayIsPartiallyLockedColorBgTwo: #f06f6f;
-	--litepickerDayIsBookedColor: #f06f6f;
+	--litepickerDayIsBookedColor: #333;
+	--litepickerDayIsBookedColorBg: #f06f6f;
 	--litepickerDayIsStartColor: #fff;
 	--litepickerDayIsStartBg: #2196f3;
 	--litepickerDayIsEndColor: #fff;
@@ -274,6 +275,7 @@
 
 				&.is-booked {
 					color: var(--litepickerDayIsBookedColor);
+					background-color: var(--litepickerDayIsBookedColorBg);
 
 					&:hover {
 						color: var(--litepickerDayIsBookedColor);
