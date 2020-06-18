@@ -21,7 +21,7 @@ class Location extends CustomPostType
 
         $cb_content = '';
         if ( is_singular ( self::getPostType()  ) ) {
-            $cb_content = \cb_get_template_part( 'calendar', 'location' );
+            $cb_content = cb_get_template_part( 'calendar', 'location' );
         } // if archive...
 
         return $content . $cb_content;

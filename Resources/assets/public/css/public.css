@@ -26,7 +26,7 @@
  *
  * @package   CommonsBooking2
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_reset\.scss}line{font-family:\0000311}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_reset\.scss}line{font-family:\0000311}}
 .cb-content ol,
 .cb-content ul,
 .cb-content li,
@@ -40,12 +40,12 @@
   margin: 0;
   padding: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_reset\.scss}line{font-family:\0000326}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_reset\.scss}line{font-family:\0000326}}
 .cb-content blockquote,
 .cb-content q {
   quotes: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_reset\.scss}line{font-family:\0000331}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_reset\.scss}line{font-family:\0000331}}
 .cb-content blockquote:before,
 .cb-content blockquote:after,
 .cb-content q:before,
@@ -53,7 +53,7 @@
   content: '';
   content: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_reset\.scss}line{font-family:\0000339}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_reset\.scss}line{font-family:\0000339}}
 .cb-content table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -125,7 +125,7 @@
     transform: translate3d(0, -4px, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\0000377}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\0000377}}
 .bounce {
   -webkit-animation-name: bounce;
   animation-name: bounce;
@@ -155,7 +155,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003110}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003110}}
 .flash {
   -webkit-animation-name: flash;
   animation-name: flash;
@@ -190,7 +190,7 @@
     transform: scale3d(1, 1, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003151}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003151}}
 .pulse {
   -webkit-animation-name: pulse;
   animation-name: pulse;
@@ -256,7 +256,7 @@
     transform: scale3d(1, 1, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003230}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003230}}
 .rubberBand {
   -webkit-animation-name: rubberBand;
   animation-name: rubberBand;
@@ -306,7 +306,7 @@
     transform: translate3d(10px, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003285}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003285}}
 .shake {
   -webkit-animation-name: shake;
   animation-name: shake;
@@ -364,7 +364,7 @@
     transform: translateX(0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003354}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003354}}
 .headShake {
   -webkit-animation-timing-function: ease-in-out;
   animation-timing-function: ease-in-out;
@@ -416,7 +416,7 @@
     transform: rotate3d(0, 0, 1, 0deg);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003415}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003415}}
 .swing {
   -webkit-transform-origin: top center;
   transform-origin: top center;
@@ -480,7 +480,7 @@
     transform: scale3d(1, 1, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003488}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003488}}
 .tada {
   -webkit-animation-name: tada;
   animation-name: tada;
@@ -547,7 +547,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003569}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003569}}
 .wobble {
   -webkit-animation-name: wobble;
   animation-name: wobble;
@@ -625,7 +625,7 @@
     transform: skewX(-0.19531deg) skewY(-0.19531deg);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003662}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003662}}
 .jello {
   -webkit-animation-name: jello;
   animation-name: jello;
@@ -677,7 +677,7 @@
     transform: scale(1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003723}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003723}}
 .heartBeat {
   -webkit-animation-name: heartBeat;
   animation-name: heartBeat;
@@ -763,7 +763,7 @@
     transform: scale3d(1, 1, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003822}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003822}}
 .bounceIn {
   -webkit-animation-duration: 0.75s;
   animation-duration: 0.75s;
@@ -835,7 +835,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003905}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003905}}
 .bounceInDown {
   -webkit-animation-name: bounceInDown;
   animation-name: bounceInDown;
@@ -905,7 +905,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003986}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003986}}
 .bounceInLeft {
   -webkit-animation-name: bounceInLeft;
   animation-name: bounceInLeft;
@@ -975,7 +975,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031067}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031067}}
 .bounceInRight {
   -webkit-animation-name: bounceInRight;
   animation-name: bounceInRight;
@@ -1045,7 +1045,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031148}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031148}}
 .bounceInUp {
   -webkit-animation-name: bounceInUp;
   animation-name: bounceInUp;
@@ -1085,7 +1085,7 @@
     transform: scale3d(0.3, 0.3, 0.3);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031193}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031193}}
 .bounceOut {
   -webkit-animation-duration: 0.75s;
   animation-duration: 0.75s;
@@ -1127,7 +1127,7 @@
     transform: translate3d(0, 2000px, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031240}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031240}}
 .bounceOutDown {
   -webkit-animation-name: bounceOutDown;
   animation-name: bounceOutDown;
@@ -1157,7 +1157,7 @@
     transform: translate3d(-2000px, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031273}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031273}}
 .bounceOutLeft {
   -webkit-animation-name: bounceOutLeft;
   animation-name: bounceOutLeft;
@@ -1187,7 +1187,7 @@
     transform: translate3d(2000px, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031306}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031306}}
 .bounceOutRight {
   -webkit-animation-name: bounceOutRight;
   animation-name: bounceOutRight;
@@ -1227,7 +1227,7 @@
     transform: translate3d(0, -2000px, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031351}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031351}}
 .bounceOutUp {
   -webkit-animation-name: bounceOutUp;
   animation-name: bounceOutUp;
@@ -1249,7 +1249,7 @@
     opacity: 1;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031376}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031376}}
 .fadeIn {
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
@@ -1279,7 +1279,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031409}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031409}}
 .fadeInDown {
   -webkit-animation-name: fadeInDown;
   animation-name: fadeInDown;
@@ -1309,7 +1309,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031442}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031442}}
 .fadeInDownBig {
   -webkit-animation-name: fadeInDownBig;
   animation-name: fadeInDownBig;
@@ -1339,7 +1339,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031475}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031475}}
 .fadeInLeft {
   -webkit-animation-name: fadeInLeft;
   animation-name: fadeInLeft;
@@ -1369,7 +1369,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031508}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031508}}
 .fadeInLeftBig {
   -webkit-animation-name: fadeInLeftBig;
   animation-name: fadeInLeftBig;
@@ -1399,7 +1399,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031541}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031541}}
 .fadeInRight {
   -webkit-animation-name: fadeInRight;
   animation-name: fadeInRight;
@@ -1429,7 +1429,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031574}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031574}}
 .fadeInRightBig {
   -webkit-animation-name: fadeInRightBig;
   animation-name: fadeInRightBig;
@@ -1459,7 +1459,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031607}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031607}}
 .fadeInUp {
   -webkit-animation-name: fadeInUp;
   animation-name: fadeInUp;
@@ -1489,7 +1489,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031640}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031640}}
 .fadeInUpBig {
   -webkit-animation-name: fadeInUpBig;
   animation-name: fadeInUpBig;
@@ -1511,7 +1511,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031665}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031665}}
 .fadeOut {
   -webkit-animation-name: fadeOut;
   animation-name: fadeOut;
@@ -1537,7 +1537,7 @@
     transform: translate3d(0, 100%, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031694}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031694}}
 .fadeOutDown {
   -webkit-animation-name: fadeOutDown;
   animation-name: fadeOutDown;
@@ -1563,7 +1563,7 @@
     transform: translate3d(0, 2000px, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031723}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031723}}
 .fadeOutDownBig {
   -webkit-animation-name: fadeOutDownBig;
   animation-name: fadeOutDownBig;
@@ -1589,7 +1589,7 @@
     transform: translate3d(-100%, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031752}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031752}}
 .fadeOutLeft {
   -webkit-animation-name: fadeOutLeft;
   animation-name: fadeOutLeft;
@@ -1615,7 +1615,7 @@
     transform: translate3d(-2000px, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031781}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031781}}
 .fadeOutLeftBig {
   -webkit-animation-name: fadeOutLeftBig;
   animation-name: fadeOutLeftBig;
@@ -1641,7 +1641,7 @@
     transform: translate3d(100%, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031810}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031810}}
 .fadeOutRight {
   -webkit-animation-name: fadeOutRight;
   animation-name: fadeOutRight;
@@ -1667,7 +1667,7 @@
     transform: translate3d(2000px, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031839}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031839}}
 .fadeOutRightBig {
   -webkit-animation-name: fadeOutRightBig;
   animation-name: fadeOutRightBig;
@@ -1693,7 +1693,7 @@
     transform: translate3d(0, -100%, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031868}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031868}}
 .fadeOutUp {
   -webkit-animation-name: fadeOutUp;
   animation-name: fadeOutUp;
@@ -1719,7 +1719,7 @@
     transform: translate3d(0, -2000px, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031897}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031897}}
 .fadeOutUpBig {
   -webkit-animation-name: fadeOutUpBig;
   animation-name: fadeOutUpBig;
@@ -1789,7 +1789,7 @@
     animation-timing-function: ease-in;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031992}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031992}}
 .animated.flip {
   -webkit-backface-visibility: visible;
   backface-visibility: visible;
@@ -1853,7 +1853,7 @@
     transform: perspective(400px);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032065}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032065}}
 .flipInX {
   -webkit-backface-visibility: visible !important;
   backface-visibility: visible !important;
@@ -1917,7 +1917,7 @@
     transform: perspective(400px);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032138}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032138}}
 .flipInY {
   -webkit-backface-visibility: visible !important;
   backface-visibility: visible !important;
@@ -1957,7 +1957,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032183}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032183}}
 .flipOutX {
   -webkit-animation-duration: 0.75s;
   animation-duration: 0.75s;
@@ -1999,7 +1999,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032230}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032230}}
 .flipOutY {
   -webkit-animation-duration: 0.75s;
   animation-duration: 0.75s;
@@ -2049,7 +2049,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032287}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032287}}
 .lightSpeedIn {
   -webkit-animation-name: lightSpeedIn;
   animation-name: lightSpeedIn;
@@ -2077,7 +2077,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032318}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032318}}
 .lightSpeedOut {
   -webkit-animation-name: lightSpeedOut;
   animation-name: lightSpeedOut;
@@ -2117,7 +2117,7 @@
     opacity: 1;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032361}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032361}}
 .rotateIn {
   -webkit-animation-name: rotateIn;
   animation-name: rotateIn;
@@ -2155,7 +2155,7 @@
     opacity: 1;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032402}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032402}}
 .rotateInDownLeft {
   -webkit-animation-name: rotateInDownLeft;
   animation-name: rotateInDownLeft;
@@ -2193,7 +2193,7 @@
     opacity: 1;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032443}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032443}}
 .rotateInDownRight {
   -webkit-animation-name: rotateInDownRight;
   animation-name: rotateInDownRight;
@@ -2231,7 +2231,7 @@
     opacity: 1;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032484}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032484}}
 .rotateInUpLeft {
   -webkit-animation-name: rotateInUpLeft;
   animation-name: rotateInUpLeft;
@@ -2269,7 +2269,7 @@
     opacity: 1;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032525}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032525}}
 .rotateInUpRight {
   -webkit-animation-name: rotateInUpRight;
   animation-name: rotateInUpRight;
@@ -2303,7 +2303,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032562}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032562}}
 .rotateOut {
   -webkit-animation-name: rotateOut;
   animation-name: rotateOut;
@@ -2337,7 +2337,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032599}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032599}}
 .rotateOutDownLeft {
   -webkit-animation-name: rotateOutDownLeft;
   animation-name: rotateOutDownLeft;
@@ -2371,7 +2371,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032636}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032636}}
 .rotateOutDownRight {
   -webkit-animation-name: rotateOutDownRight;
   animation-name: rotateOutDownRight;
@@ -2405,7 +2405,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032673}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032673}}
 .rotateOutUpLeft {
   -webkit-animation-name: rotateOutUpLeft;
   animation-name: rotateOutUpLeft;
@@ -2439,7 +2439,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032710}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032710}}
 .rotateOutUpRight {
   -webkit-animation-name: rotateOutUpRight;
   animation-name: rotateOutUpRight;
@@ -2509,7 +2509,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032787}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032787}}
 .hinge {
   -webkit-animation-duration: 2s;
   animation-duration: 2s;
@@ -2561,7 +2561,7 @@
     transform: scale(1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032846}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032846}}
 .jackInTheBox {
   -webkit-animation-name: jackInTheBox;
   animation-name: jackInTheBox;
@@ -2592,7 +2592,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032881}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032881}}
 .rollIn {
   -webkit-animation-name: rollIn;
   animation-name: rollIn;
@@ -2619,7 +2619,7 @@
     transform: translate3d(100%, 0, 0) rotate3d(0, 0, 1, 120deg);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032912}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032912}}
 .rollOut {
   -webkit-animation-name: rollOut;
   animation-name: rollOut;
@@ -2645,7 +2645,7 @@
     opacity: 1;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032941}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032941}}
 .zoomIn {
   -webkit-animation-name: zoomIn;
   animation-name: zoomIn;
@@ -2683,7 +2683,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032982}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032982}}
 .zoomInDown {
   -webkit-animation-name: zoomInDown;
   animation-name: zoomInDown;
@@ -2721,7 +2721,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033023}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033023}}
 .zoomInLeft {
   -webkit-animation-name: zoomInLeft;
   animation-name: zoomInLeft;
@@ -2759,7 +2759,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033064}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033064}}
 .zoomInRight {
   -webkit-animation-name: zoomInRight;
   animation-name: zoomInRight;
@@ -2797,7 +2797,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033105}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033105}}
 .zoomInUp {
   -webkit-animation-name: zoomInUp;
   animation-name: zoomInUp;
@@ -2829,7 +2829,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033142}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033142}}
 .zoomOut {
   -webkit-animation-name: zoomOut;
   animation-name: zoomOut;
@@ -2871,7 +2871,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033187}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033187}}
 .zoomOutDown {
   -webkit-animation-name: zoomOutDown;
   animation-name: zoomOutDown;
@@ -2905,7 +2905,7 @@
     transform-origin: left center;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033224}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033224}}
 .zoomOutLeft {
   -webkit-animation-name: zoomOutLeft;
   animation-name: zoomOutLeft;
@@ -2939,7 +2939,7 @@
     transform-origin: right center;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033261}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033261}}
 .zoomOutRight {
   -webkit-animation-name: zoomOutRight;
   animation-name: zoomOutRight;
@@ -2981,7 +2981,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033306}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033306}}
 .zoomOutUp {
   -webkit-animation-name: zoomOutUp;
   animation-name: zoomOutUp;
@@ -3009,7 +3009,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033337}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033337}}
 .slideInDown {
   -webkit-animation-name: slideInDown;
   animation-name: slideInDown;
@@ -3037,7 +3037,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033368}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033368}}
 .slideInLeft {
   -webkit-animation-name: slideInLeft;
   animation-name: slideInLeft;
@@ -3065,7 +3065,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033399}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033399}}
 .slideInRight {
   -webkit-animation-name: slideInRight;
   animation-name: slideInRight;
@@ -3093,7 +3093,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033430}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033430}}
 .slideInUp {
   -webkit-animation-name: slideInUp;
   animation-name: slideInUp;
@@ -3121,7 +3121,7 @@
     transform: translate3d(0, 100%, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033461}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033461}}
 .slideOutDown {
   -webkit-animation-name: slideOutDown;
   animation-name: slideOutDown;
@@ -3149,7 +3149,7 @@
     transform: translate3d(-100%, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033492}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033492}}
 .slideOutLeft {
   -webkit-animation-name: slideOutLeft;
   animation-name: slideOutLeft;
@@ -3177,7 +3177,7 @@
     transform: translate3d(100%, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033523}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033523}}
 .slideOutRight {
   -webkit-animation-name: slideOutRight;
   animation-name: slideOutRight;
@@ -3205,13 +3205,13 @@
     transform: translate3d(0, -100%, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033554}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033554}}
 .slideOutUp {
   -webkit-animation-name: slideOutUp;
   animation-name: slideOutUp;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033559}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033559}}
 .animated {
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
@@ -3219,68 +3219,68 @@
   animation-fill-mode: both;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033566}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033566}}
 .animated.infinite {
   -webkit-animation-iteration-count: infinite;
   animation-iteration-count: infinite;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033571}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033571}}
 .animated.delay-1s {
   -webkit-animation-delay: 1s;
   animation-delay: 1s;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033576}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033576}}
 .animated.delay-2s {
   -webkit-animation-delay: 2s;
   animation-delay: 2s;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033581}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033581}}
 .animated.delay-3s {
   -webkit-animation-delay: 3s;
   animation-delay: 3s;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033586}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033586}}
 .animated.delay-4s {
   -webkit-animation-delay: 4s;
   animation-delay: 4s;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033591}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033591}}
 .animated.delay-5s {
   -webkit-animation-delay: 5s;
   animation-delay: 5s;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033596}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033596}}
 .animated.fast {
   -webkit-animation-duration: 800ms;
   animation-duration: 800ms;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033601}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033601}}
 .animated.faster {
   -webkit-animation-duration: 500ms;
   animation-duration: 500ms;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033606}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033606}}
 .animated.slow {
   -webkit-animation-duration: 2s;
   animation-duration: 2s;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033611}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033611}}
 .animated.slower {
   -webkit-animation-duration: 3s;
   animation-duration: 3s;
 }
 
 @media (print), (prefers-reduced-motion) {
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033617}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033617}}
   .animated {
     -webkit-animation: unset !important;
     animation: unset !important;
@@ -3329,28 +3329,28 @@
  */
 /* -------------------- Breakpoints (for lists) -------------------- */
 /* -------------------- ICONS -------------------- */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\0000337}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\0000337}}
 .cb-calendar-pager .cb-button-small.cb-prev-page:before {
   content: "\f141";
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\0000343}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\0000343}}
 .cb-calendar-pager .cb-button-small.cb-next-page:before {
   content: "\f139";
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\0000349}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\0000349}}
 .cb-calendar-pager .cb-button-small.cb-zoom-first:before {
   content: "\f519";
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\0000386}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\0000386}}
 .cb-calendar-pager .cb-button-small {
   font-size: 0;
   /* hide icon text */
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\0000390}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\0000390}}
 .dashicons, .cb-calendar-pager .cb-button-small.cb-prev-page:before, .cb-calendar-pager .cb-button-small.cb-next-page:before, .cb-calendar-pager .cb-button-small.cb-zoom-first:before {
   font-family: dashicons;
   font-size: 20px;
@@ -3368,7 +3368,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003106}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003106}}
 .dashicons-big {
   font-family: dashicons;
   font-size: 30px;
@@ -3379,7 +3379,7 @@
 /* -------------------- Animation -------------------- */
 /* -------------------- Round rect (periods) -------------------- */
 /* -------------------- period statuses bgs -------------------- */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003213}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003213}}
 .cb-period-status-available {
   background-color: #51b800;
   background-image: linear-gradient(45deg, #51b800 25%, #4dae00 25%, #4dae00 50%, #51b800 50%, #51b800 75%, #4dae00 75%, #4dae00 100%);
@@ -3387,7 +3387,7 @@
   box-shadow: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003217}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003217}}
 .cb-period-status-open {
   background-color: #0086bf;
   background-image: linear-gradient(45deg, #0086bf 25%, #007fb5 25%, #007fb5 50%, #0086bf 50%, #0086bf 75%, #007fb5 75%, #007fb5 100%);
@@ -3395,7 +3395,7 @@
   box-shadow: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003222}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003222}}
 .cb-period-status-blocked, .cb-calendar .cb-blocked {
   background-color: #9B9B9B;
   background-image: linear-gradient(45deg, #9B9B9B 25%, #969696 25%, #969696 50%, #9B9B9B 50%, #9B9B9B 75%, #969696 75%, #969696 100%);
@@ -3403,7 +3403,7 @@
   box-shadow: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003227}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003227}}
 .cb-period-status-unconfirmed, .cb-calendar .cb-status-booked,
 .cb-calendar .cb-status-2 {
   background-image: linear-gradient(45deg, #FFA400 25%, #f59d00 25%, #f59d00 50%, #FFA400 50%, #FFA400 75%, #f59d00 75%, #f59d00 100%);
@@ -3411,24 +3411,24 @@
   box-shadow: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003231}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003231}}
 .cb-period-status-booked, .cb-calendar .cb-status-booked.cb-status-confirmed,
 .cb-calendar .cb-status-2.cb-status-confirmed {
   background-image: linear-gradient(45deg, #E3273E 25%, #e21e36 25%, #e21e36 50%, #E3273E 50%, #E3273E 75%, #e21e36 75%, #e21e36 100%);
   background-size: 20px 20px;
   box-shadow: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003235}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003235}}
 .cb-period-status-booked .cb-cell-background, .cb-calendar .cb-status-booked.cb-status-confirmed .cb-cell-background,
 .cb-calendar .cb-status-2.cb-status-confirmed .cb-cell-background {
   background: transparent !important;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003241}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003241}}
 .cb-wrap-brackets:before {
   content: "(";
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003244}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_mixins\.scss}line{font-family:\00003244}}
 .cb-wrap-brackets:after {
   content: ")";
 }
@@ -3450,7 +3450,7 @@
  *
  */
 /* -------------------- Boxes -------------------- */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000319}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000319}}
 .cb-box, .leaflet-container .leaflet-popup .leaflet-popup-content-wrapper .cb-template-popup-prdent-tf-items {
   background: #f6f6f6;
   padding: 10px 15px;
@@ -3459,7 +3459,7 @@
   margin-bottom: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000328}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000328}}
 .cb-box-subposts {
   background: #FFF;
   padding: 10px;
@@ -3468,7 +3468,7 @@
 
 /* -------------------- Tables -------------------- */
 @media (min-width: 37.5em) {
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000336}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000336}}
   .cb-columns {
     display: flex;
     flex-direction: row;
@@ -3477,11 +3477,11 @@
     min-width: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000345}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000345}}
 .cb-columns .cb-button-container {
   text-align: right;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000347}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000347}}
 .cb-columns .cb-button-container a {
   display: inline-block;
   width: auto;
@@ -3489,16 +3489,16 @@
 
 /* column sizes */
 @media (min-width: 37.5em) {
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000358}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000358}}
   .cb-columns-50-50 > :nth-child(odd) {
     width: 48%;
     min-width: 0;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000361}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000361}}
   .cb-columns-50-50 > :nth-child(odd) img {
     width: 100%;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000363}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000363}}
   .cb-columns-50-50 > :nth-child(even) {
     width: 48%;
     min-width: 0;
@@ -3506,29 +3506,29 @@
 }
 
 @media (min-width: 37.5em) {
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000372}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000372}}
   .cb-columns-70-30 > :nth-child(odd) {
     width: 70%;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000375}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000375}}
   .cb-columns-70-30 > :nth-child(even) {
     width: 30%;
   }
 }
 
 @media (min-width: 37.5em) {
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000384}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000384}}
   .cb-columns-20-80 > :nth-child(odd) {
     width: 20%;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000388}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000388}}
   .cb-columns-20-80 > :nth-child(even) {
     width: 80%;
   }
 }
 
 /* -------------------- Typography -------------------- */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000398}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000398}}
 .cb-big,
 .cb-big {
   font-size: 18px;
@@ -3536,29 +3536,29 @@
 }
 
 /* -------------------- Boxes -------------------- */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003106}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003106}}
 .shadow {
   box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.22);
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003110}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003110}}
 .shadow-small, .cb-hover, .cb-calendar li.cb-template-list-day-items:hover, .cb-calendar li.cb-template-list-day-items.cb-selected, .cb-calendar.cb-one-row-scroll > .cb-entry-content > ul.cb-subposts > li:hover, .cb-calendar.cb-one-row-scroll > .cb-entry-content > ul.cb-subposts > li.cb-selected, .leaflet-container .leaflet-popup .leaflet-popup-content-wrapper .cb-template-popup-prdent-tf-items:hover, .cb-button:hover, .cb-button-container a:hover, .cb-calendar .type-cb_prdinst:hover, .cb-calendar .type-cb_prdinst.cb-selected, .cb-calendar .type-cb_prdinst.cb-range-selected {
   box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003114}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003114}}
 .cb-hover, .cb-calendar li.cb-template-list-day-items:hover, .cb-calendar li.cb-template-list-day-items.cb-selected, .cb-calendar.cb-one-row-scroll > .cb-entry-content > ul.cb-subposts > li:hover, .cb-calendar.cb-one-row-scroll > .cb-entry-content > ul.cb-subposts > li.cb-selected, .leaflet-container .leaflet-popup .leaflet-popup-content-wrapper .cb-template-popup-prdent-tf-items:hover {
   border: 1px solid #506CA9;
   border-radius: 8px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003120}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003120}}
 .cb-image {
   border-radius: 8px;
 }
 
 /* -------------------- Buttons -------------------- */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003126}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003126}}
 .cb-button, .cb-button-container a {
   border-radius: 8px;
   font-size: 18px;
@@ -3573,37 +3573,37 @@
   padding: 10px 15px;
   font-weight: bold;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003140}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003140}}
 .cb-button:hover, .cb-button-container a:hover {
   color: #000;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003145}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003145}}
 .cb-button:visited, .cb-button-container a:visited {
   color: #FFF;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003149}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003149}}
 .cb-button.big, .cb-button-container a.big {
   padding: 10px 15px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003154}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003154}}
 .cb-button.cancel, .cb-button-container a.cancel {
   background-color: #d5425c;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003156}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003156}}
 .cb-button.cancel.secondary, .cb-button-container a.cancel.secondary {
   background-color: #FFF;
   color: #d5425c;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003162}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003162}}
 .cb-button.confirm, .cb-button-container a.confirm {
   background-color: #74ce3c;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003166}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003166}}
 .cb-button.delete, .cb-button-container a.delete {
   background-color: #d5425c;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003175}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003175}}
 .cb-button-icon, .cb-calendar-pager .cb-button-small {
   border: 1px solid #cecece;
   background: #FFF;
@@ -3612,7 +3612,7 @@
   height: 20px;
   text-decoration: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003183}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003183}}
 .cb-button-icon:before, .cb-calendar-pager .cb-button-small:before {
   display: inline-block;
   font-size: 20px;
@@ -3622,13 +3622,13 @@
   vertical-align: baseline;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003193}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003193}}
 .cb-pill, .cb-calendar .type-cb_prdinst {
   border-radius: 8px;
   padding: 0;
   margin: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003197}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003197}}
 .cb-pill a, .cb-calendar .type-cb_prdinst a {
   text-decoration: none;
   color: #FFF;
@@ -3647,24 +3647,24 @@
  * @link      http://www.wielebenwir.de
  * @copyright 2015 wielebenwir
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_base\.scss}line{font-family:\0000315}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_base\.scss}line{font-family:\0000315}}
 .hidden, .cb-hidden {
   display: none;
 }
 
 /* -------------------- Resets -------------------- */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_base\.scss}line{font-family:\0000319}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_base\.scss}line{font-family:\0000319}}
 .cb-content {
   font-size: 14px;
   margin-top: 10px !important;
   /* TwentyTwenty Theme */
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_base\.scss}line{font-family:\0000322}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_base\.scss}line{font-family:\0000322}}
 .cb-content a {
   text-decoration: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_base\.scss}line{font-family:\0000327}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_base\.scss}line{font-family:\0000327}}
 ul.cb-subposts,
 ul.cb-items,
 ul.cb-locations {
@@ -3683,24 +3683,24 @@ ul.cb-locations {
  * @link      http://www.wielebenwir.de
  * @copyright 2015 wielebenwir
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000313}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000313}}
 .cb-debug-period-info {
   display: none;
 }
 
 /* calendar filtering - admin only  */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000318}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000318}}
 .cb-calendar-filter {
   margin-bottom: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000320}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000320}}
 .cb-calendar-filter input,
 .cb-calendar-filter select {
   font-size: 12px;
   max-width: 150px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000327}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000327}}
 .cb-cell-background {
   top: 0;
   bottom: 0;
@@ -3709,35 +3709,35 @@ ul.cb-locations {
   position: absolute;
   opacity: 0.3;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000334}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000334}}
 li.cb-selectable:hover .cb-cell-background {
   opacity: .8;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000338}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000338}}
 li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
   opacity: 1 !important;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000347}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000347}}
 .cb-calendar-pager {
   margin: 3px 0;
   display: inline-block;
   overflow: hidden;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000365}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000365}}
 .cb-calendar-pager .pagination-current-view {
   padding: 0 10px;
   line-height: 20px;
   vertical-align: top;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000372}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000372}}
 .cb-confirmed-check:before,
 .cb-approved-check:before {
   font-family: dashicons;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000376}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000376}}
 .cb-confirmed-check:after,
 .cb-approved-check:after {
   content: ' ';
@@ -3745,23 +3745,23 @@ li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
   display: table;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000382}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000382}}
 .cb-confirmed-check:before {
   content: "\f147";
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000385}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000385}}
 .cb-approved-check:before {
   content: "\f110";
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000389}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000389}}
 .pagination-current-view {
   line-height: 30px;
   z-index: 1;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000395}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\0000395}}
 .selection-first .cb-dates-end,
 .selection-first .cb-dates-separator,
 .selection-last .cb-dates-start,
@@ -3772,7 +3772,7 @@ li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
   display: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003107}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003107}}
 .cb-calendar {
   width: 100%;
   font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
@@ -3787,49 +3787,49 @@ li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
   /* fields */
   /* fields */
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003111}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003111}}
 .cb-calendar ul, .cb-calendar li {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003117}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003117}}
 .cb-calendar ul.cb-calendar-header {
   text-align: center;
   font-size: 12px;
   clear: both;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003122}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003122}}
 .cb-calendar ul.cb-calendar-header > li {
   float: left;
   font-weight: normal;
   width: 14.28%;
   padding: 10px 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003130}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003130}}
 .cb-calendar .cb-confirmed-check:before,
 .cb-calendar .cb-approved-check:before {
   float: right;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003136}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003136}}
 .cb-calendar li.cb-template-list-week,
 .cb-calendar li.cb-template-list-week-available {
   margin: 0;
   /* theme compatibility */
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003139}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003139}}
 .cb-calendar li.cb-template-list-week > ul,
 .cb-calendar li.cb-template-list-week-available > ul {
   display: flex;
   clear: both;
   border-top: 1px solid #cecece;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003144}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003144}}
 .cb-calendar li.cb-template-list-week:last-of-type,
 .cb-calendar li.cb-template-list-week-available:last-of-type {
   border-bottom: 1px solid #cecece;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003150}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003150}}
 .cb-calendar li.type-cb_day {
   display: block;
   position: relative;
@@ -3846,38 +3846,38 @@ li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
   z-index: 1;
   /* subposts container */
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003161}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003161}}
 .cb-calendar li.type-cb_day:first-of-type {
   border-left: 1px solid #cecece;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003169}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003169}}
 .cb-calendar li.type-cb_day.cb-weekend {
   background: #f6f6f6;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003177}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003177}}
 .cb-calendar li.type-cb_day.cb-current {
   background: #E5EFFB;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003181}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003181}}
 .cb-calendar li.type-cb_day div.cb-day-title {
   padding: 10px 3px;
   text-align: center;
   color: #9D9F9D;
   font-size: 14px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003187}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003187}}
 .cb-calendar li.type-cb_day div.cb-day-title span {
   display: block;
   line-height: 14px;
   font-size: 12px;
   word-break: keep-all;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003192}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003192}}
 .cb-calendar li.type-cb_day div.cb-day-title span:first-child {
   font-size: 18px;
   color: #506CA9;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003200}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003200}}
 .cb-calendar li.type-cb_day ul.cb-subposts {
   display: flex;
   flex-direction: row;
@@ -3887,11 +3887,11 @@ li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
   list-style-type: none;
   margin-bottom: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003209}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003209}}
 .cb-calendar li.type-cb_day ul.cb-subposts li {
   list-style-type: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003216}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003216}}
 .cb-calendar .type-cb_prdinst {
   overflow: hidden;
   color: #FFF;
@@ -3901,7 +3901,7 @@ li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
   text-align: center;
   position: relative;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003227}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003227}}
 .cb-calendar .type-cb_prdinst a {
   text-decoration: none;
   color: #FFF;
@@ -3912,11 +3912,11 @@ li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
   width: 100%;
   height: 100%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003244}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003244}}
 .cb-calendar .type-cb_prdinst:hover label, .cb-calendar .type-cb_prdinst.cb-selected label, .cb-calendar .type-cb_prdinst.cb-range-selected label {
   color: #FFF !important;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003253}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003253}}
 .cb-calendar li.cb-template-list-day-items {
   -webkit-transition: all 0.1s ease;
   -moz-transition: all 0.1s ease;
@@ -3924,24 +3924,24 @@ li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
   -o-transition: all 0.1s ease;
   transition: all 0.1s ease;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003256}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003256}}
 .cb-calendar li.cb-template-list-day-items:hover, .cb-calendar li.cb-template-list-day-items.cb-selected {
   z-index: 2;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003262}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003262}}
 .cb-calendar li.cb-template-list-day-items ul.cb-subposts li {
   width: 30px;
   margin: 2px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003270}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003270}}
 .cb-calendar li.cb-template-list-day-available {
   min-height: 100px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003273}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003273}}
 .cb-calendar li.cb-template-list-day-available ul.cb-subposts {
   display: block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003275}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003275}}
 .cb-calendar li.cb-template-list-day-available ul.cb-subposts li {
   -webkit-transition: all 0.1s ease;
   -moz-transition: all 0.1s ease;
@@ -3951,36 +3951,36 @@ li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
   min-height: 30px;
   /* Selection */
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003280}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003280}}
 .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.cb-first-day, .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.selection-first {
   /* top-left | top-right | bottom-right | bottom-left */
   border-radius: 8px 0 0 8px;
   margin-right: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003283}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003283}}
 .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.cb-first-day .cb-period-separator, .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.cb-first-day .cb-period-end, .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.selection-first .cb-period-separator, .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.selection-first .cb-period-end {
   display: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003286}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003286}}
 .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.cb-middle-day, .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.selection-middle {
   border-radius: 0;
   margin-right: 0;
   margin-left: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003289}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003289}}
 .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.cb-middle-day .cb-period-start, .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.cb-middle-day .cb-period-end, .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.cb-middle-day .cb-period-separator, .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.selection-middle .cb-period-start, .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.selection-middle .cb-period-end, .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.selection-middle .cb-period-separator {
   display: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003292}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003292}}
 .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.cb-last-day, .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.selection-last {
   border-radius: 0 8px 8px 0;
   margin-left: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003295}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003295}}
 .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.cb-last-day .cb-period-separator, .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.cb-last-day .cb-period-start, .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.selection-last .cb-period-separator, .cb-calendar li.cb-template-list-day-available ul.cb-subposts li.selection-last .cb-period-start {
   display: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003300}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003300}}
 .cb-calendar li.cb-template-list-day-available label {
   min-height: 30px;
   color: #000;
@@ -3988,7 +3988,7 @@ li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
   flex-direction: column;
   justify-content: center;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003307}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003307}}
 .cb-calendar li.cb-template-list-day-available label span.cb-time-period {
   display: flex;
   flex-direction: row;
@@ -3996,63 +3996,63 @@ li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
   flex-wrap: wrap;
   word-break: keep-all;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003313}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003313}}
 .cb-calendar li.cb-template-list-day-available label span.cb-time-period span.cb-period-start,
 .cb-calendar li.cb-template-list-day-available label span.cb-time-period span.cb-period-end {
   word-break: keep-all;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003323}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003323}}
 .cb-calendar.cb-one-row-scroll {
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
   border-top: 1px solid #cecece;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003329}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003329}}
 .cb-calendar.cb-one-row-scroll::-webkit-scrollbar {
   height: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003333}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003333}}
 .cb-calendar.cb-one-row-scroll::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003338}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003338}}
 .cb-calendar.cb-one-row-scroll::-webkit-scrollbar-thumb {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #555;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003344}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003344}}
 .cb-calendar.cb-one-row-scroll .cb-calendar-pager {
   display: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003348}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003348}}
 .cb-calendar.cb-one-row-scroll > .cb-entry-content {
   width: auto;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003351}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003351}}
 .cb-calendar.cb-one-row-scroll > .cb-entry-content > ul.cb-subposts {
   display: flex;
   align-items: center;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003355}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003355}}
 .cb-calendar.cb-one-row-scroll > .cb-entry-content > ul.cb-subposts > li {
   min-width: 100px;
   box-sizing: border-box;
   height: 100px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003359}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003359}}
 .cb-calendar.cb-one-row-scroll > .cb-entry-content > ul.cb-subposts > li:hover, .cb-calendar.cb-one-row-scroll > .cb-entry-content > ul.cb-subposts > li.cb-selected {
   z-index: 2;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003364}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003364}}
 .cb-calendar.cb-one-row-scroll > .cb-entry-content > ul.cb-subposts > li.cb-selected {
   border: 2px solid #506CA9;
   color: #506CA9;
   border-radius: 8px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003370}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003370}}
 .cb-calendar.cb-one-row-scroll > .cb-entry-content > ul.cb-subposts > li ul.cb-subposts {
   /* the indicators */
   display: flex;
@@ -4062,19 +4062,19 @@ li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
   align-items: center;
   padding: 2px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003378}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003378}}
 .cb-calendar.cb-one-row-scroll > .cb-entry-content > ul.cb-subposts > li ul.cb-subposts li {
   padding: 0;
   margin: 2px;
   height: 10px;
   width: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003392}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003392}}
 .cb-calendar .cb-timeframe {
   position: relative;
   z-index: 2;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003396}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003396}}
 .cb-calendar .cb-timeframe .cb-item-title-short,
 .cb-calendar .cb-timeframe .cb-item-name,
 .cb-calendar .cb-timeframe .cb-location-name,
@@ -4084,118 +4084,118 @@ li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
   line-height: 13px;
   display: block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003407}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003407}}
 .cb-calendar .cb-timeframe label {
   margin: 0 !important;
   /* 2020 theme compatibility */
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003411}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003411}}
 .cb-calendar .cb-timeframe .cb-item-title-short,
 .cb-calendar .cb-timeframe .cb-item-name {
   font-weight: bold;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003425}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003425}}
 .cb-calendar .cb-timeframe--type-1 {
   background-color: #bb55ff;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003429}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003429}}
 .cb-calendar .cb-timeframe--type-2 {
   background-color: #81dd1f;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003433}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003433}}
 .cb-calendar .cb-timeframe--type-3 {
   background-color: #ff8812;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003437}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003437}}
 .cb-calendar .cb-timeframe--type-4 {
   background-color: #ff5818;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003441}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003441}}
 .cb-calendar .cb-timeframe--type-5 {
   background-color: #ff0015;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003445}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003445}}
 .cb-calendar .cb-timeframe--type-6 {
   cursor: not-allowed;
   background-color: #bf2437;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003450}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003450}}
 .cb-calendar .cb-timeframe--type-7 {
   background-color: #696969;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003458}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003458}}
 .cb-calendar .cb-template-list-day-overlaid.type-cb_day {
   min-height: 200px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003461}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003461}}
 .cb-calendar .cb-template-list-day-overlaid .type-cb_prdinst {
   margin-left: 28px;
   min-width: 50px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003469}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003469}}
 .cb-calendar .type-cb_day .cb-overlaid-inner {
   position: absolute;
   top: 45px;
   bottom: 45px;
   width: 100%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003475}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003475}}
 .cb-calendar .type-cb_day .cb-overlaid-inner .cb-time-period {
   display: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003479}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003479}}
 .cb-calendar .type-cb_day .cb-overlaid-inner:after {
   content: ' ';
   display: table;
   clear: both;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003486}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003486}}
 .cb-calendar .type-cb_day.cb-out-of-period-entity-scope {
   opacity: 0.4;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003489}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003489}}
 .cb-calendar .type-cb_day.cb-out-of-period-entity-scope * {
   font-weight: normal;
   font-style: italic;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003494}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003494}}
 .cb-calendar .type-cb_day.cb-out-of-period-entity-scope .cb-add-period {
   display: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003501}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003501}}
 .cb-calendar .type-cb_day.cb-first .cb-day-title {
   color: #506CA9;
   font-weight: bold;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003509}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003509}}
 .cb-calendar .type-cb_day.cb-current .cb-day-title {
   font-weight: bold;
   color: #506CA9;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003535}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003535}}
 .cb-calendar .cb-field-name {
   display: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003539}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003539}}
 .cb-calendar .cb-template-list-day-indicators {
   cursor: pointer;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003543}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003543}}
 .cb-calendar .cb-period-period-status-type-name .cb-field-value {
   color: #fff;
   background-color: #000;
   font-size: 10px;
   padding: 1px 4px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003550}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003550}}
 .cb-calendar .cb-periodinst-has-overlap .cb-period-period-status-type-name .cb-field-value {
   background-color: #777;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003554}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003554}}
 .cb-calendar .cb-template-type-available {
   cursor: pointer;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003558}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003558}}
 .cb-calendar .cb-add-period {
   position: absolute;
   bottom: 0;
@@ -4204,40 +4204,40 @@ li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
   text-align: center;
   padding: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003565}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003565}}
 .cb-calendar .cb-add-period a {
   font-size: 24px;
   color: #506CA9;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003571}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003571}}
 .cb-calendar ul.cb-period-list {
   white-space: nowrap;
 }
 
 /* TODO: move this in to a cb-list file or rationalise with cb-calendar? */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003579}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003579}}
 .cb-list > .cb-entry-content > .cb-subposts .type-cb_day {
   border-bottom: 1px solid #d7d7d7;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003583}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003583}}
 .cb-list > .cb-entry-content > .cb-subposts .type-cb_prdinst {
   color: #fff;
   border-radius: 10px;
   padding: 2px 10px;
   max-width: 400px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003589}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003589}}
 .cb-list > .cb-entry-content > .cb-subposts .type-cb_prdinst a {
   color: #fff;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003593}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003593}}
 .cb-list > .cb-entry-content > .cb-subposts .type-cb_prdinst .cb-time-period {
   font-size: 11px;
   font-weight: bold;
   display: block;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003601}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_calendar\.scss}line{font-family:\00003601}}
 .type-cb_prdinst.status-trash,
 .cb-periodinst-has-overlap {
   opacity: 0.5;
@@ -4255,11 +4255,11 @@ li.cb-selected .cb-cell-background, li.cb-range-selected .cb-cell-background {
  * @link      http://www.wielebenwir.de
  * @copyright 2015 wielebenwir
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_periods\.scss}line{font-family:\0000311}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_periods\.scss}line{font-family:\0000311}}
 ul.cb-period-list {
   list-style: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_periods\.scss}line{font-family:\0000313}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_periods\.scss}line{font-family:\0000313}}
 ul.cb-period-list li {
   margin-bottom: 0;
 }
@@ -4275,18 +4275,18 @@ ul.cb-period-list li {
  * @link      http://www.wielebenwir.de
  * @copyright 2015 wielebenwir
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000313}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000313}}
 .leaflet-container {
   min-height: 400px !important;
   border: none !important;
   border-radius: 8px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000318}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000318}}
 .leaflet-container .leaflet-popup a, .leaflet-container .leaflet-popup a:hover {
   box-shadow: 0 0 transparent;
   /* Twentysixteen Theme annoyances */
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000323}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000323}}
 .leaflet-container .leaflet-popup h2 {
   font-size: 18px;
   margin-bottom: 0;
@@ -4294,20 +4294,20 @@ ul.cb-period-list li {
   font-weight: bold;
   text-decoration: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000331}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000331}}
 .leaflet-container .leaflet-popup .cb-geo-address {
   margin-bottom: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000337}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000337}}
 .leaflet-container .leaflet-popup .leaflet-popup-content-wrapper {
   border-radius: 8px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000340}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000340}}
 .leaflet-container .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content {
   max-height: 300px;
   overflow-y: scroll;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000345}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000345}}
 .leaflet-container .leaflet-popup .leaflet-popup-content-wrapper .cb-template-popup-prdent-tf-items {
   border: 1px solid #cecece;
   position: relative;
@@ -4316,47 +4316,47 @@ ul.cb-period-list li {
   padding: 10px;
   cursor: pointer;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000358}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000358}}
 .leaflet-container .leaflet-popup .leaflet-popup-content-wrapper h2 {
   font-size: 14px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000360}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000360}}
 .leaflet-container .leaflet-popup .leaflet-popup-content-wrapper h2 a {
   text-decoration: none;
   color: #506CA9;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000365}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000365}}
 .leaflet-container .leaflet-popup .leaflet-popup-content-wrapper h3 {
   display: inline-block;
   border-radius: 8px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000367}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000367}}
 .leaflet-container .leaflet-popup .leaflet-popup-content-wrapper h3 a {
   color: #FFF;
   padding: 3px 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000373}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_map\.scss}line{font-family:\0000373}}
 .leaflet-container .leaflet-popup .leaflet-popup-content-wrapper .cb-time-period {
   display: none;
 }
 
 /* Debug only */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_debug\.scss}line{font-family:\000031}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_debug\.scss}line{font-family:\000031}}
 body .cb-profile {
   color: #aa0000;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_debug\.scss}line{font-family:\000036}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_debug\.scss}line{font-family:\000036}}
 .cb-calendar .cb-logs {
   margin: 0px;
   padding: 0px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_debug\.scss}line{font-family:\0000310}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_debug\.scss}line{font-family:\0000310}}
 .cb-calendar .cb-logs li {
   background-color: #ffd7d7;
   font-style: italic;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_debug\.scss}line{font-family:\0000315}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/global\/sass\/partials\/_debug\.scss}line{font-family:\0000315}}
 .cb-calendar .cb-logs li:before {
   content: 'x';
   background-color: #ff0000;
@@ -4369,7 +4369,7 @@ body .cb-profile {
 }
 
 /* Calendar styles */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\000031}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\000031}}
 :root {
   --litepickerBgColor: #fff;
   --litepickerMonthHeaderTextColor: #333;
@@ -4389,7 +4389,8 @@ body .cb-profile {
   --litepickerDayIsPartiallyLockedColor: #333;
   --litepickerDayIsPartiallyLockedColorBgOne: #20c527;
   --litepickerDayIsPartiallyLockedColorBgTwo: #f06f6f;
-  --litepickerDayIsBookedColor: #f06f6f;
+  --litepickerDayIsBookedColor: #333;
+  --litepickerDayIsBookedColorBg: #f06f6f;
   --litepickerDayIsStartColor: #fff;
   --litepickerDayIsStartBg: #2196f3;
   --litepickerDayIsEndColor: #fff;
@@ -4406,22 +4407,22 @@ body .cb-profile {
   --litePickerDayBorderColor: #FFFFFF;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000342}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000343}}
 .show-week-numbers {
   --litepickerMonthWidth: calc(var(--litepickerDayWidth) * 8);
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000346}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000347}}
 .litepicker {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 1.2em;
   display: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000352}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000353}}
 .litepicker .container__main {
   display: flex;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000355}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000356}}
 .litepicker .container__months {
   display: flex;
   flex-wrap: wrap;
@@ -4431,30 +4432,30 @@ body .cb-profile {
   width: calc(var(--litepickerMonthWidth) + 10px);
   box-sizing: content-box;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000364}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000365}}
 .litepicker .container__months.columns-2 {
   width: calc((var(--litepickerMonthWidth) * 2) + 20px);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000368}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000369}}
 .litepicker .container__months.columns-3 {
   width: calc((var(--litepickerMonthWidth) * 3) + 30px);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000372}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000373}}
 .litepicker .container__months.columns-4 {
   width: calc((var(--litepickerMonthWidth) * 4) + 40px);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000379}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000380}}
 .litepicker .container__months.split-view .month-item-header .button-previous-month,
 .litepicker .container__months.split-view .month-item-header .button-next-month {
   visibility: visible;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000387}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000388}}
 .litepicker .container__months .month-item {
   padding: 5px;
   width: var(--litepickerMonthWidth);
   box-sizing: content-box;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000392}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\0000393}}
 .litepicker .container__months .month-item-header {
   display: flex;
   justify-content: space-between;
@@ -4464,37 +4465,37 @@ body .cb-profile {
   align-items: center;
   color: var(--litepickerMonthHeaderTextColor);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003101}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003102}}
 .litepicker .container__months .month-item-header div {
   flex: 1;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003104}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003105}}
 .litepicker .container__months .month-item-header div > .month-item-name {
   margin-right: 5px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003108}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003109}}
 .litepicker .container__months .month-item-header div > .month-item-year {
   padding: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003113}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003114}}
 .litepicker .container__months .month-item-header .reset-button {
   color: var(--litepickerButtonResetBtn);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003116}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003117}}
 .litepicker .container__months .month-item-header .reset-button > svg,
 .litepicker .container__months .month-item-header .reset-button > img {
   fill: var(--litepickerButtonResetBtn);
   pointer-events: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003122}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003123}}
 .litepicker .container__months .month-item-header .reset-button:hover {
   color: var(--litepickerButtonResetBtnHover);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003125}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003126}}
 .litepicker .container__months .month-item-header .reset-button:hover > svg {
   fill: var(--litepickerButtonResetBtnHover);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003131}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003132}}
 .litepicker .container__months .month-item-header .button-previous-month,
 .litepicker .container__months .month-item-header .button-next-month {
   visibility: hidden;
@@ -4505,7 +4506,7 @@ body .cb-profile {
   transition: color 0.3s, border 0.3s;
   cursor: default;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003141}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003142}}
 .litepicker .container__months .month-item-header .button-previous-month > svg,
 .litepicker .container__months .month-item-header .button-previous-month > img,
 .litepicker .container__months .month-item-header .button-next-month > svg,
@@ -4513,24 +4514,24 @@ body .cb-profile {
   fill: var(--litepickerMonthButton);
   pointer-events: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003147}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003148}}
 .litepicker .container__months .month-item-header .button-previous-month:hover,
 .litepicker .container__months .month-item-header .button-next-month:hover {
   color: var(--litepickerMonthButtonHover);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003150}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003151}}
 .litepicker .container__months .month-item-header .button-previous-month:hover > svg,
 .litepicker .container__months .month-item-header .button-next-month:hover > svg {
   fill: var(--litepickerMonthButtonHover);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003157}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003158}}
 .litepicker .container__months .month-item-weekdays-row {
   display: flex;
   justify-self: center;
   justify-content: flex-start;
   color: var(--litepickerMonthWeekdayColor);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003163}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003164}}
 .litepicker .container__months .month-item-weekdays-row > div {
   padding: 5px 0;
   font-size: 85%;
@@ -4538,23 +4539,23 @@ body .cb-profile {
   width: var(--litepickerDayWidth);
   text-align: center;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003173}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003174}}
 .litepicker .container__months .month-item:first-child .button-previous-month {
   visibility: visible;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003179}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003180}}
 .litepicker .container__months .month-item:last-child .button-next-month {
   visibility: visible;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003185}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003186}}
 .litepicker .container__months .month-item.no-previous-month .button-previous-month {
   visibility: hidden;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003191}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003192}}
 .litepicker .container__months .month-item.no-next-month .button-next-month {
   visibility: hidden;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003198}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003199}}
 .litepicker .container__days {
   display: flex;
   flex-wrap: wrap;
@@ -4563,7 +4564,7 @@ body .cb-profile {
   text-align: center;
   box-sizing: content-box;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003206}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003207}}
 .litepicker .container__days > div,
 .litepicker .container__days > a {
   padding: 5px 0;
@@ -4571,7 +4572,7 @@ body .cb-profile {
   border-color: var(--litePickerDayBorderColor);
   border-width: 1px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003214}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003215}}
 .litepicker .container__days .day-item {
   color: var(--litepickerDayColor);
   border-style: none;
@@ -4583,65 +4584,66 @@ body .cb-profile {
   border-color: var(--litePickerDayBorderColor);
   border-width: 1px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003225}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003226}}
 .litepicker .container__days .day-item:hover {
   cursor: pointer;
   color: var(--litepickerDayColorHover);
   box-shadow: inset 0 0 0 1px var(--litepickerDayColorHover);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003231}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003232}}
 .litepicker .container__days .day-item.is-today {
   color: var(--litepickerDayIsTodayColor);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003235}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003236}}
 .litepicker .container__days .day-item.is-locked {
   color: var(--litepickerDayIsLockedColor);
   background: var(--litepickerDayIsLockedColorBg) !important;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003239}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003240}}
 .litepicker .container__days .day-item.is-locked:hover {
   cursor: not-allowed;
   color: var(--litepickerDayIsLockedColor);
   box-shadow: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003246}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003247}}
 .litepicker .container__days .day-item.is-holiday {
   color: var(--litepickerDayIsHolidayColor);
   background: var(--litepickerDayIsHolidayColorBg);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003249}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003250}}
 .litepicker .container__days .day-item.is-holiday:hover {
   cursor: not-allowed;
   box-shadow: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003255}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003256}}
 .litepicker .container__days .day-item.is-partially-booked {
   color: var(--litepickerDayIsPartiallyLockedColor);
   background: linear-gradient(to bottom right, var(--litepickerDayIsPartiallyLockedColorBgOne) 0%, var(--litepickerDayIsPartiallyLockedColorBgOne) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 100%);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003263}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003264}}
 .litepicker .container__days .day-item.is-partially-booked:hover {
   cursor: pointer;
   color: var(--litepickerDayIsPartiallyLockedColor);
   background: linear-gradient(to bottom right, lightgreen 0%, lightgreen 50%, lightgray 50%, lightgray 100%);
   box-shadow: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003275}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003276}}
 .litepicker .container__days .day-item.is-booked {
   color: var(--litepickerDayIsBookedColor);
+  background-color: var(--litepickerDayIsBookedColorBg);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003278}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003280}}
 .litepicker .container__days .day-item.is-booked:hover {
   color: var(--litepickerDayIsBookedColor);
   box-shadow: none;
   cursor: default;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003285}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003287}}
 .litepicker .container__days .day-item.is-in-range {
   background-color: var(--litepickerDayIsInRange);
   border-radius: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003290}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003292}}
 .litepicker .container__days .day-item.is-start-date {
   color: var(--litepickerDayIsStartColor);
   background: var(--litepickerDayIsStartBg) !important;
@@ -4651,14 +4653,14 @@ body .cb-profile {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003299}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003301}}
 .litepicker .container__days .day-item.is-start-date.is-flipped {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003307}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003309}}
 .litepicker .container__days .day-item.is-end-date {
   color: var(--litepickerDayIsEndColor);
   background: var(--litepickerDayIsEndBg) !important;
@@ -4668,27 +4670,27 @@ body .cb-profile {
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003316}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003318}}
 .litepicker .container__days .day-item.is-end-date.is-flipped {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003324}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003326}}
 .litepicker .container__days .day-item.is-start-date.is-end-date {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003331}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003333}}
 .litepicker .container__days .day-item.is-highlighted {
   color: var(--litepickerHighlightedDayColor);
   background: var(--litepickerHighlightedDayBg) !important;
   background-color: var(--litepickerHighlightedDayBg);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003338}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003340}}
 .litepicker .container__days .week-number {
   display: flex;
   align-items: center;
@@ -4696,7 +4698,7 @@ body .cb-profile {
   color: #9e9e9e;
   font-size: 85%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003347}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003349}}
 .litepicker .container__footer {
   text-align: right;
   padding: 10px 5px;
@@ -4706,12 +4708,12 @@ body .cb-profile {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003356}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003358}}
 .litepicker .container__footer .preview-date-range {
   margin-right: 10px;
   font-size: 90%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003361}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003363}}
 .litepicker .container__footer .button-cancel {
   background-color: var(--litepickerButtonCancelBg);
   color: var(--litepickerButtonCancelColor);
@@ -4719,12 +4721,12 @@ body .cb-profile {
   padding: 3px 7px 4px;
   border-radius: 3px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003368}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003370}}
 .litepicker .container__footer .button-cancel > svg,
 .litepicker .container__footer .button-cancel > img {
   pointer-events: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003374}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003376}}
 .litepicker .container__footer .button-apply {
   background-color: var(--litepickerButtonApplyBg);
   color: var(--litepickerButtonApplyColor);
@@ -4734,16 +4736,16 @@ body .cb-profile {
   margin-left: 10px;
   margin-right: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003383}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003385}}
 .litepicker .container__footer .button-apply:disabled {
   opacity: 0.7;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003387}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003389}}
 .litepicker .container__footer .button-apply > svg,
 .litepicker .container__footer .button-apply > img {
   pointer-events: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003394}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003396}}
 .litepicker .container__tooltip {
   position: absolute;
   margin-top: -4px;
@@ -4756,7 +4758,7 @@ body .cb-profile {
   pointer-events: none;
   visibility: hidden;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003406}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003408}}
 .litepicker .container__tooltip:before {
   position: absolute;
   bottom: -5px;
@@ -4766,7 +4768,7 @@ body .cb-profile {
   border-left: 5px solid transparent;
   content: "";
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003416}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003418}}
 .litepicker .container__tooltip:after {
   position: absolute;
   bottom: -4px;
@@ -4776,11 +4778,11 @@ body .cb-profile {
   border-left: 4px solid transparent;
   content: "";
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003428}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003430}}
 .litepicker-open {
   overflow: hidden;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003432}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003434}}
 .litepicker-backdrop {
   display: none;
   background-color: #000;
@@ -4793,7 +4795,7 @@ body .cb-profile {
 }
 
 /* ---------------------- debug */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\000032}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\000032}}
 .cb-debug-control {
   position: relative;
   font-size: 10px;
@@ -4801,7 +4803,7 @@ body .cb-profile {
   cursor: pointer;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\000038}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\000038}}
 .cb-debug-control span {
   position: absolute;
   top: -3px;
@@ -4811,7 +4813,7 @@ body .cb-profile {
   background-color: #fff;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000316}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000316}}
 .cb-debug-control:before {
   content: 'ÔÇó';
   display: inline-block;
@@ -4826,7 +4828,7 @@ body .cb-profile {
   text-align: center;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000330}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000330}}
 .cb-debug {
   background-color: Transparent;
   font-family: Sans;
@@ -4836,56 +4838,56 @@ body .cb-profile {
   white-space: nowrap;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000338}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000338}}
 .cb-debug ul {
   padding-left: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000341}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000341}}
 .cb-debug li {
   margin-bottom: 2px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000344}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000344}}
 body .cb-low-debug {
   color: #777;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000347}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000347}}
 .cb-high-debug {
   font-weight: bold;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000350}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000350}}
 .cb-dangerous,
 .cb-warning,
 .cb-error {
   color: red;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000355}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000355}}
 .cb-calendar .cb-subposts .cb-selected {
   font-weight: bold;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000358}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000358}}
 .cb-calendar .cb-range-selected {
   font-weight: bold;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000362}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000362}}
 .cb-WP_DEBUG-on div .cb-row:hover > .cb-template-debug {
   display: block;
   z-index: 10000;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000366}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000366}}
 .cb-WP_DEBUG-on div .cb-row > .cb-template-debug:hover {
   color: #fff !important;
   background-color: #555;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000371}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000371}}
 body.cb-WP_DEBUG-on div .cb-template-debug {
   position: absolute;
   top: 0px;
@@ -4903,7 +4905,7 @@ body.cb-WP_DEBUG-on div .cb-template-debug {
   display: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/wordpress\/wordpress\/wp-content\/plugins\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000389}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/Resources\/assets\/public\/sass\/partials\/_debug\.scss}line{font-family:\0000389}}
 .cb-invalidity {
   display: none;
 }

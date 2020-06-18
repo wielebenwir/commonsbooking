@@ -62,12 +62,14 @@ class Day
         return date($format, strtotime($this->getDate()));
     }
 
-    public function getSlotStartTimestamp($slotNr) {
+    public function getSlotStartTimestamp($slotNr)
+    {
         $slot = $this->getSlot($slotNr);
         return intval(strtotime($this->getDate() . ' ' . $slot['timestart']));
     }
 
-    public function getSlotEndTimestamp($slotNr) {
+    public function getSlotEndTimestamp($slotNr)
+    {
         $slot = $this->getSlot($slotNr);
         return intval(strtotime($this->getDate() . ' ' . $slot['timeend'])) - 1;
     }
@@ -133,87 +135,197 @@ class Day
     /**
      * Returns the slot number for specific timeframe and time.
      *
-     * @param \DateTime $time
+     * @param \DateTime $date
      * @param $grid
      *
      * @return float|int
      */
-    protected function getSlotByTime(\DateTime $time, $grid, $timeframe, $type)
+    protected function getSlotByTime(\DateTime $date, $grid)
     {
-        $hourSlots = $time->format('H') / $grid;
-        $minuteSlots = $time->format('i') / 60 / $grid;
+        $hourSlots = $date->format('H') / $grid;
+        $minuteSlots = $date->format('i') / 60 / $grid;
 
         $slot = $hourSlots + $minuteSlots;
-
-        $multidayTimeframeTypes = Timeframe::$multiDayFrames;
-        $multidayTimeframe = in_array(get_post_meta($timeframe->ID, 'type', true), $multidayTimeframeTypes);
-
-        if ($multidayTimeframe) {
-
-            // Check if Timeframe starts on another day before.
-            if (
-                $type == 'start' &&
-                $time->getTimestamp() < $this->getDateObject()->setTime(0, 0)->getTimestamp()) {
-                $slot = 0;
-            }
-
-            // Check if Timeframe ends on another day after.
-            if (
-                $type == 'end' &&
-                $time->getTimestamp() > $this->getDateObject()->setTime(23, 59)->getTimestamp()) {
-                $slot = (24 / $grid) - 1;
-            }
-        }
 
         return $slot;
     }
 
     /**
-     * @param \DateTime $time
+     * Returns start-slot id.
      * @param $grid
      * @param $timeframe
-     *
      * @return float|int
      */
-    protected function getStartSlot(\DateTime $time, $grid, $timeframe)
+    protected function getStartSlot($grid, $timeframe)
     {
-        return $this->getSlotByTime($time, $grid, $timeframe, 'start');
-    }
+        // Timeframe
+        $timeframeType = get_post_meta($timeframe->ID, 'type', true);
+        $fullDay = get_post_meta($timeframe->ID, 'full-day', true);
+        $startDate = $this->getStartTime($timeframe);
 
-    /**
-     * @param \DateTime $time
-     * @param $grid
-     * @param $timeframe
-     *
-     * @return float|int
-     */
-    protected function getEndSlot(\DateTime $time, $grid, $timeframe)
-    {
-        return $this->getSlotByTime($time, $grid, $timeframe, 'end');
-    }
+        // Slots
+        $startSlot = 0;
 
-    /**
-     * Returns minimal grid from list of timeframes.
-     *
-     * @param $timeframes
-     *
-     * @return bool|float
-     */
-    protected function getMinimalGridFromTimeframes($timeframes)
-    {
-        $grid = 24;
-        // Get grid size from existing timeframes
-        foreach ($timeframes as $timeframe) {
-            $fullday = get_post_meta($timeframe->ID, 'full-day', true);
-            $timeframeGrid = !$fullday ? intval($timeframe->grid) : 24;
-            if ($timeframeGrid < $grid) {
-                if (is_numeric($timeframeGrid) && $timeframeGrid > 0) {
-                    $grid = $timeframeGrid;
-                }
-            }
+        // If timeframe isn't configured as full day
+        if (!$fullDay) {
+            $startSlot = $this->getSlotByTime($startDate, $grid);
         }
 
-        return $grid;
+        // If we have a overbooked day, we need to mark all slots as booked
+        if ($timeframeType == Timeframe::BOOKING_ID) {
+            // Check if timeframe began before the current day
+            if (strtotime($this->getDate()) > $startDate->getTimestamp()) {
+                $startSlot = 0;
+            }
+        }
+        return $startSlot;
+    }
+
+    /**
+     * Returns end-slot id.
+     * @param $slots
+     * @param $grid
+     * @param $timeframe
+     * @return float|int
+     */
+    protected function getEndSlot($slots, $grid, $timeframe)
+    {
+        // Timeframe
+        $timeframeType = get_post_meta($timeframe->ID, 'type', true);
+        $fullDay = get_post_meta($timeframe->ID, 'full-day', true);
+        $endDate = $this->getEndTime($timeframe);
+
+        // Slots
+        $endSlot = count($slots);
+
+        // If timeframe isn't configured as full day
+        if (!$fullDay) {
+            $endSlot = $this->getSlotByTime($endDate, $grid);
+        }
+
+        // If we have a overbooked day, we need to mark all slots as booked
+        if ($timeframeType == Timeframe::BOOKING_ID) {
+            // Check if timeframe ends after the current day
+            if (strtotime($this->getFormattedDate('d.m.Y 23:59')) < $endDate->getTimestamp()) {
+                $endSlot = count($slots);
+            }
+        }
+        return $endSlot;
+    }
+
+
+    /**
+     * Returns start-date DateTime.
+     * @param $timeframe
+     * @return \DateTime
+     */
+    protected function getStartDate($timeframe)
+    {
+        $startDateString = get_post_meta($timeframe->ID, 'start-date', true);
+        $startDate = new \DateTime();
+        $startDate->setTimestamp($startDateString);
+        return $startDate;
+    }
+
+    /**
+     * Returns start-time DateTime.
+     * @param $timeframe
+     * @return \DateTime
+     */
+    protected function getStartTime($timeframe)
+    {
+        $startDateString = get_post_meta($timeframe->ID, 'start-date', true);
+        $startTimeString = get_post_meta($timeframe->ID, 'start-time', true);
+        $startDate = new \DateTime();
+        $startDate->setTimestamp($startDateString);
+        if($startTimeString) {
+            $startTime = new \DateTime();
+            $startTime->setTimestamp(strtotime($startTimeString));
+            $startDate->setTime($startTime->format('H'), $startTime->format('m'));
+        }
+        return $startDate;
+    }
+
+    /**
+     * Returns end-date DateTime.
+     * @param $timeframe
+     * @return \DateTime
+     */
+    protected function getEndDate($timeframe)
+    {
+        $startDateString = get_post_meta($timeframe->ID, 'end-date', true);
+        $startDate = new \DateTime();
+        $startDate->setTimestamp($startDateString);
+        return $startDate;
+    }
+
+    /**
+     * Returns start-time DateTime.
+     * @param $timeframe
+     * @return \DateTime
+     */
+    protected function getEndTime($timeframe)
+    {
+        $endDateString = get_post_meta($timeframe->ID, 'end-date', true);
+        $endTimeString = get_post_meta($timeframe->ID, 'end-time', true);
+        $endDate = new \DateTime();
+        $endDate->setTimestamp($endDateString);
+        if($endTimeString) {
+            $endTime = new \DateTime();
+            $endTime->setTimestamp(strtotime($endTimeString));
+            $endDate->setTime($endTime->format('H'), $endTime->format('m'));
+        }
+        return $endDate;
+    }
+    
+    /**
+     * Checks if timeframe is relevant for current day/date.
+     * @param $timeframe
+     * @return bool
+     */
+    protected function continueBecauseOfRepetition($timeframe)
+    {
+        $repetitionType = get_post_meta($timeframe->ID, 'timeframe-repetition', true);
+        if (
+            $repetitionType && $repetitionType !== "norep"
+        ) {
+            switch ($repetitionType) {
+                // Weekly Rep
+                case "w":
+                    $dayOfWeek = intval($this->getDateObject()->format('w'));
+                    $timeframeWeekdays = get_post_meta($timeframe->ID, 'weekdays', true);
+
+                    // Because of different day of week calculation we need to recalculate
+                    if ($dayOfWeek == 0) {
+                        $dayOfWeek = 7;
+                    }
+                    if (is_array($timeframeWeekdays) && ! in_array($dayOfWeek, $timeframeWeekdays)) {
+                        return true;
+                    }
+                    break;
+
+
+                // Monthly Rep
+                case "m":
+                    $dayOfMonth = intval($this->getDateObject()->format('j'));
+                    $timeframeStartDayOfMonth = $this->getStartDate($timeframe)->format('j');
+
+                    if ($dayOfMonth != $timeframeStartDayOfMonth) {
+                        return true;
+                    }
+                    break;
+
+                // Yearly Rep
+                case "y":
+                    $date = intval($this->getDateObject()->format('dm'));
+                    $timeframeDate = $this->getStartDate($timeframe)->format('dm');
+                    if ($date != $timeframeDate) {
+                        return true;
+                    }
+                    break;
+            }
+        }
+        return false;
     }
 
     /**
@@ -230,59 +342,19 @@ class Day
 
         // Iterate through timeframes and fill slots
         foreach ($timeframes as $timeframe) {
-            // Timeframe
-            $startDateString = get_post_meta($timeframe->ID, 'start-date', true);
-            $endDateString = get_post_meta($timeframe->ID, 'end-date', true);
-            $startDate = new \DateTime();
-            $startDate->setTimestamp($startDateString);
-            $endDate = new \DateTime();
-            $endDate->setTimestamp($endDateString);
-
             // Check for repetition timeframe selected days
-            if(
-                get_post_meta($timeframe->ID, 'timeframe-repetition', true) == "rep"
-            ) {
-                // Weekly Rep
-                if(get_post_meta($timeframe->ID, 'repetition', true) == "w") {
-                    $dayOfWeek = intval($this->getDateObject()->format('w'));
-                    $timeframeWeekdays = get_post_meta($timeframe->ID, 'weekdays', true);
-
-                    // Because of different day of week calculation we need to recalculate
-                    if($dayOfWeek == 0) $dayOfWeek = 7;
-                    if(is_array($timeframeWeekdays) && !in_array( $dayOfWeek, $timeframeWeekdays)) {
-                        continue;
-                    }
-                }
-
-                // Monthly Rep
-                if(get_post_meta($timeframe->ID, 'repetition', true) == "m") {
-                    $dayOfMonth = intval($this->getDateObject()->format('j'));
-                    $timeframeStartDayOfMonth = $startDate->format('j');
-
-                    if($dayOfMonth != $timeframeStartDayOfMonth) {
-                        continue;
-                    }
-                }
-
-                // Yearly Rep
-                if(get_post_meta($timeframe->ID, 'repetition', true) == "y") {
-                    $date = intval($this->getDateObject()->format('dm'));
-                    $timeframeDate = $startDate->format('dm');
-                    if($date != $timeframeDate) {
-                        continue;
-                    }
-                }
-
-            }
+            if ($this->continueBecauseOfRepetition($timeframe)) continue;
 
             // Slots
-            $startSlot = $this->getStartSlot($startDate, $grid, $timeframe);
-            $endSlot = $this->getEndSlot($endDate, $grid, $timeframe);
+            $startSlot = $this->getStartSlot($grid, $timeframe);
+            $endSlot = $this->getEndSlot($slots, $grid, $timeframe);
 
             // Add timeframe to relevant slots
             while ($startSlot < $endSlot) {
+                // Set locked property
+                $timeframe->locked = Timeframe::isLocked($timeframe);
+
                 if (!array_key_exists('timeframe', $slots[$startSlot]) || !$slots[$startSlot]['timeframe']) {
-                    $timeframe->locked = Timeframe::isLocked($timeframe);
                     $slots[$startSlot]['timeframe'] = $timeframe;
                 } else {
                     $slots[$startSlot]['timeframe'] = Timeframe::getHigherPrioFrame($timeframe, $slots[$startSlot]['timeframe']);
@@ -292,9 +364,53 @@ class Day
             }
         }
 
+        $this->sanitizeSlots($slots);
+    }
+
+    /**
+     * Remove empty and merge connected slots.
+     * @param $slots
+     */
+    protected function sanitizeSlots(&$slots) {
+        $this->removeEmptySlots($slots);
+
+        // merge multiple slots if they are of same type
+        foreach ($slots as $slotNr => $slot) {
+            if (!array_key_exists($slotNr - 1, $slots)) {
+                continue;
+            }
+            $slotBefore = $slots[$slotNr - 1];
+
+            // If Slot before is of same timeframe and we have no hourly grid, we merge them.
+            if (
+                $slotBefore &&
+                $slotBefore['timeframe']->ID == $slot['timeframe']->ID &&
+                (
+                    get_post_meta($slot['timeframe']->ID, 'full-day', true) == 'on' ||
+                    get_post_meta($slot['timeframe']->ID, 'grid', true) == 0
+                )
+            ) {
+                // Take over start time from slot before
+                $slots[$slotNr]['timestart'] = $slotBefore['timestart'];
+                $slots[$slotNr]['timestampstart'] = $slotBefore['timestampstart'];
+
+                // unset timeframe from slot before
+                unset($slots[$slotNr - 1]['timeframe']);
+            }
+        }
+
+        $this->removeEmptySlots($slots);
+    }
+
+    /**
+     * remove slots without timeframes
+     * @param $slots
+     */
+    protected function removeEmptySlots(&$slots)
+    {
         // remove slots without timeframes
-        foreach($slots as $slotNr => $slot) {
-            if(!array_key_exists('timeframe', $slot) || !($slot['timeframe'] instanceof \WP_Post)) {
+        foreach ($slots as $slotNr => $slot) {
+            if (!array_key_exists('timeframe', $slot) || !($slot['timeframe'] instanceof \WP_Post)) {
                 unset($slots[$slotNr]);
             }
         }
@@ -311,9 +427,7 @@ class Day
     protected function getTimeframeSlots($timeframes)
     {
         $slots = [];
-        $grid = $this->getMinimalGridFromTimeframes($timeframes);
-
-        $slotsPerDay = 24 / $grid;
+        $slotsPerDay = 24;
 
         // Init Slots
         for ($i = 0; $i < $slotsPerDay; $i++) {
@@ -329,11 +443,13 @@ class Day
         return $slots;
     }
 
-    protected function getSlotTimestampStart($slotsPerDay, $slotNr) {
+    protected function getSlotTimestampStart($slotsPerDay, $slotNr)
+    {
         return strtotime($this->getDate()) + ($slotNr * ((24 / $slotsPerDay) * 3600));
     }
 
-    protected function getSlotTimestampEnd($slotsPerDay, $slotNr) {
+    protected function getSlotTimestampEnd($slotsPerDay, $slotNr)
+    {
         return strtotime($this->getDate()) + (($slotNr + 1) * ((24 / $slotsPerDay) * 3600)) - 1;
     }
 
