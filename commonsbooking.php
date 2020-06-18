@@ -20,6 +20,9 @@ define('CB_PLUGIN_DIR', plugin_dir_path(__FILE__));
 function commonsbooking_admin()
 {
     wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__) . 'Resources/assets/admin/css/admin.css');
+
+    #wp_enqueue_script('cb-scripts-jquery', 'https://cdn.jsdelivr.net/jquery/latest/jquery.min.js', array(), '1.0.0', true);
+    wp_enqueue_script('cb-scripts-admin', plugin_dir_url(__FILE__) . 'Resources/assets/admin/js/admin.js', array());
 }
 add_action('admin_enqueue_scripts', 'commonsbooking_admin');
 

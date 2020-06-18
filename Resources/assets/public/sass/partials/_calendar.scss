@@ -14,10 +14,13 @@
 	--litepickerDayIsInRange: #bbdefb;
 	--litepickerDayIsLockedColor: #656565;
 	--litepickerDayIsLockedColorBg: #a0a0a0;
+	--litepickerDayIsHolidayColor: #000000;
+	--litepickerDayIsHolidayColorBg: #ff9218;
 	--litepickerDayIsPartiallyLockedColor: #333;
 	--litepickerDayIsPartiallyLockedColorBgOne: #20c527;
 	--litepickerDayIsPartiallyLockedColorBgTwo: #f06f6f;
-	--litepickerDayIsBookedColor: #f06f6f;
+	--litepickerDayIsBookedColor: #333;
+	--litepickerDayIsBookedColorBg: #f06f6f;
 	--litepickerDayIsStartColor: #fff;
 	--litepickerDayIsStartBg: #2196f3;
 	--litepickerDayIsEndColor: #fff;
@@ -205,19 +208,18 @@
 			> a {
 				padding: 5px 0;
 				width: var(--litepickerDayWidth);
-				border-style: solid;
 				border-color: var(--litePickerDayBorderColor);
 				border-width: 1px;
 			}
 
 			.day-item {
 				color: var(--litepickerDayColor);
+				border-style: none;
 				background-color: var(--litepickerDayColorBg);
 				text-align: center;
 				text-decoration: none;
 				border-radius: 0px;
 				transition: color 0.3s, border 0.3s;
-				border-style: solid;
 				border-color: var(--litePickerDayBorderColor);
 				border-width: 1px;
 
@@ -238,6 +240,15 @@
 					&:hover {
 						cursor: not-allowed;
 						color: var(--litepickerDayIsLockedColor);
+						box-shadow: none;
+					}
+				}
+
+				&.is-holiday {
+					color: var(--litepickerDayIsHolidayColor);
+					background: var(--litepickerDayIsHolidayColorBg);
+					&:hover {
+						cursor: not-allowed;
 						box-shadow: none;
 					}
 				}
@@ -264,6 +275,7 @@
 
 				&.is-booked {
 					color: var(--litepickerDayIsBookedColor);
+					background-color: var(--litepickerDayIsBookedColorBg);
 
 					&:hover {
 						color: var(--litepickerDayIsBookedColor);

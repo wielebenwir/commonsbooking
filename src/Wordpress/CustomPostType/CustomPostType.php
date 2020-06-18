@@ -99,18 +99,14 @@ abstract class CustomPostType
      */
     public function saveCustomFields($post_id, $post)
     {
-        if (
-            !isset($_REQUEST[static::getWPNonceId()]) ||
-            !wp_verify_nonce($_REQUEST[static::getWPNonceId()], static::getWPAction())
-        ) {
-            return;
-        }
-//        if (!current_user_can('edit_post', $post_id)) {
-//            return;
-//        }
+        // if (!current_user_can('edit_post', $post_id)) {
+        //     return;
+        // }
         if ($post->post_type !== static::getPostType()) {
             return;
         }
+
+        $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition'];
 
         /** @var Field $customField */
         foreach ($this->getCustomFields() as $customField) {
@@ -123,19 +119,37 @@ abstract class CustomPostType
                 }
 
                 foreach ($fieldNames as $fieldName) {
-                    if (isset($_REQUEST[$fieldName]) && $value = trim($_REQUEST[$fieldName])) {
-                        // Auto-paragraphs for any WYSIWYG
-                        if ($customField->getType() == "wysiwyg") {
-                            $value = wpautop($value);
+                    if(!array_key_exists($fieldName, $_REQUEST)) {
+                        if(!in_array($fieldName, $noDeleteMetaFields)) {
+                            delete_post_meta($post_id, $fieldName);
                         }
+                        continue;
+                    }
+
+                    $value = $_REQUEST[$fieldName];
+                    if(is_string($value)) {
+                        $value = trim($value);
                         update_post_meta($post_id, $fieldName, $value);
-                    } else {
-                        delete_post_meta($post_id, $fieldName);
+
+                        // if we have a booking, there shall be set no repetition
+                        if($fieldName == "type" && $value == Timeframe::BOOKING_ID) {
+                            update_post_meta($post_id, 'timeframe-repetition', 'norep');
+                        }
+                    }
+
+                    if (is_array($value)) {
+                        // Update time-fields by date-fields
+                        if(in_array($fieldName, ['start-date', 'end-date'])) {
+                            update_post_meta(
+                                $post_id,
+                                str_replace('date','time', $fieldName),
+                                $value['time']
+                            );
+                        }
                     }
                 }
             }
         }
-
     }
 
     public function registerMetabox() {
@@ -256,6 +270,23 @@ abstract class CustomPostType
         }
 
         return $posts;
+    }
+
+
+    /**
+     * generates a random slug for use as post_name in timeframes/booking to prevent easy access to bookings via get parameters
+     *
+     * @param  mixed $length
+     * @return void
+     */
+    public static function generateRandomSlug($length='24') {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 
     abstract public static function getView();

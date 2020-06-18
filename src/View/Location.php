@@ -15,37 +15,29 @@ class Location extends View
     protected static $template = 'location/index.html.twig';
 
     /**
-     * Returns json-formatted calendardata.
+     * @param $startDate
+     * @param $endDate
+     * @param $locations
+     * @param $items
+     * @return array
      * @throws \Exception
      */
-    public static function get_calendar_data()
-    {
-        $weekNr = isset($_POST['cw']) ? $_POST['cw'] : date('W');
-        $week = new Week($weekNr);
-        $lastWeek = new Week($weekNr + 5);
-
-        $item = isset($_POST['item']) && $_POST['item'] != "" ? $_POST['item'] : false;
-        $location = isset($_POST['location']) && $_POST['location'] != "" ? $_POST['location'] : false;
-
-        if (!$item || !$location) {
-            header('Content-Type: application/json');
-            echo json_encode(false);
-            wp_die(); // All ajax handlers die when finished
-        }
-
+    protected static function prepareJsonResponse($startDate, $endDate, $locations, $items) {
         $calendar = new Calendar(
-            $week->getDays()[0],
-            $lastWeek->getDays()[6],
-            [$location],
-            [$item]
+            $startDate,
+            $endDate,
+            $locations,
+            $items
         );
 
         $jsonResponse = [
-            'startDate' => $week->getDays()[0]->getFormattedDate('Y-m-d'),
-            'endDate' => $lastWeek->getDays()[6]->getFormattedDate('Y-m-d'),
+            'startDate' => $startDate->getFormattedDate('Y-m-d'),
+            'endDate' => $endDate->getFormattedDate('Y-m-d'),
             'days' => [],
             'bookedDays' => [],
+            'partiallyBookedDays' => [],
             'lockDays' => [],
+            'holidays' => [],
             'highlightedDays' => []
         ];
 
@@ -57,6 +49,8 @@ class Location extends View
                     'date' => $day->getFormattedDate('d.m.Y'),
                     'slots' => [],
                     'locked' => false,
+                    'bookedDay' => true,
+                    'partiallyBookedDay' => false,
                     'holiday' => true,
                     'firstSlotBooked' => null,
                     'lastSlotBooked' => null
@@ -65,10 +59,15 @@ class Location extends View
                 // If all slots are locked, day cannot be selected
                 $allLocked = true;
 
+                // If no slots are existing, day shall be locked
+                $noSlots = true;
+
                 foreach ($day->getGrid() as $slot) {
 
                     // Add only bookable slots for time select
                     if (!empty($slot['timeframe']) && $slot['timeframe'] instanceof \WP_Post) {
+                        // We have at least one slot ;)
+                        $noSlots = false;
 
                         $timeFrameType = get_post_meta($slot['timeframe']->ID, 'type', true);
 
@@ -79,12 +78,11 @@ class Location extends View
                             } else {
                                 $dayArray['firstSlotBooked'] = true;
                             }
+                        }
+                        if ($timeFrameType == Timeframe::BOOKABLE_ID) {
+                            $dayArray['lastSlotBooked'] = false;
                         } else {
-                            if ($timeFrameType == Timeframe::BOOKABLE_ID) {
-                                $dayArray['lastSlotBooked'] = false;
-                            } else {
-                                $dayArray['lastSlotBooked'] = true;
-                            }
+                            $dayArray['lastSlotBooked'] = true;
                         }
 
                         if ($timeFrameType == Timeframe::BOOKABLE_ID) {
@@ -96,7 +94,17 @@ class Location extends View
                             $dayArray['holiday'] = false;
                         }
 
-                        // If it's a locked timeframe, nothing can be selected
+                        // Remove bookedDay flag, if there is at least one slot that isn't of type bookedDay
+                        if (!in_array($timeFrameType, [Timeframe::BOOKING_ID])) {
+                            $dayArray['bookedDay'] = false;
+                        }
+
+                        // Set partiallyBookedDay flag, if there is at least one slot that is of type bookedDay
+                        if (in_array($timeFrameType, [Timeframe::BOOKING_ID])) {
+                            $dayArray['partiallyBookedDay'] = true;
+                        }
+
+                        // If there's a locked timeframe, nothing can be selected
                         if ($slot['timeframe']->locked) {
                             $dayArray['locked'] = true;
                         } else {
@@ -108,33 +116,68 @@ class Location extends View
                 }
 
                 // If there are no slots defined, there's nothing bookable.
-                if (!count($dayArray['slots'])) {
+                if ($noSlots) {
                     $dayArray['locked'] = true;
+                    $dayArray['holiday'] = false;
+                    $dayArray['bookedDay'] = false;
                 }
 
                 $jsonResponse['days'][$day->getFormattedDate('Y-m-d')] = $dayArray;
-                if ($dayArray['locked']) {
+                if ($dayArray['locked'] || $allLocked) {
                     if ($allLocked) {
                         if($dayArray['holiday']) {
                             $jsonResponse['holidays'][] = $day->getFormattedDate('Y-m-d');
+                        } elseif ($dayArray['bookedDay']) {
+                            $jsonResponse['bookedDays'][] = $day->getFormattedDate('Y-m-d');
                         } else {
                             $jsonResponse['lockDays'][] = $day->getFormattedDate('Y-m-d');
                         }
-
                     } else {
-                        $jsonResponse['bookedDays'][] = $day->getFormattedDate('Y-m-d');
+                        $jsonResponse['partiallyBookedDays'][] = $day->getFormattedDate('Y-m-d');
                     }
                 }
             }
         }
+
+        return $jsonResponse;
+    }
+
+    /**
+     * Returns json-formatted calendardata.
+     * @throws \Exception
+     */
+    public static function get_calendar_data()
+    {
+        $startDate = new Day(date('Y-m-d'));
+        $endDate = new Day(date('Y-m-d', strtotime('last day of next month')));
+
+        $startDateString = $_POST['sd'];
+        if($startDateString) {
+            $startDate = new Day($startDateString);
+        }
+
+        $endDateString =  $_POST['ed'];
+        if($endDateString) {
+            $endDate = new Day($endDateString);
+        }
+
+        $item = isset($_POST['item']) && $_POST['item'] != "" ? $_POST['item'] : false;
+        $location = isset($_POST['location']) && $_POST['location'] != "" ? $_POST['location'] : false;
+
+        if (!$item || !$location) {
+            header('Content-Type: application/json');
+            echo json_encode(false);
+            wp_die(); // All ajax handlers die when finished
+        }
+
+        $jsonResponse = self::prepareJsonResponse($startDate, $endDate, [$location], [$item]);
 
         header('Content-Type: application/json');
         echo json_encode($jsonResponse);
         wp_die(); // All ajax handlers die when finished
     }
 
-    public static function index(\WP_Post $post = null)
-    {
+    public static function getTemplateData(\WP_Post $post = null) {
         if ($post == null) {
             global $post;
         }
@@ -165,7 +208,12 @@ class Location extends View
             $args['item'] = get_post($item);
         }
 
-        echo self::render(self::$template, $args);
+        return $args;
+    }
+
+    public static function index(\WP_Post $post = null)
+    {
+        echo self::render(self::$template, self::getTemplateData($post));
     }
 
 }

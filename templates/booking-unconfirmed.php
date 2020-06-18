@@ -1,3 +1,3 @@
 <?php
-    \CommonsBooking\View\Booking::unconfirmed();
+    $params = \CommonsBooking\View\Booking::unconfirmed();
 ?>
