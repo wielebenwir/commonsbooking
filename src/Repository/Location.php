@@ -5,13 +5,11 @@ namespace CommonsBooking\Repository;
 
 class Location
 {
-    private $location;
     private $locationId;
 
     function __construct($locationId)
     {
         $this->locationId = $locationId;
-        $this->name = "Test";
     }
 
 
@@ -28,6 +26,7 @@ class Location
     }
 
     /**
+     * TODO: check with markus (e.g. double methods in location and items etc.)
      * returns title 
      * @param $locationId
      * @return array

@@ -118,30 +118,25 @@ class Timeframe extends CustomPostType
             if (empty($booking)) {
                 $postarr['post_name'] = self::generateRandomSlug();
                 $postId = wp_insert_post($postarr, true);
-                /**
-                 ********************** TEST MAIL ****************
-                 */         
-                //\CommonsBooking\Messages\Messages::SendNotificationMail('','','');
+  
             } else {
                 $postarr['ID'] = $booking->ID;
-                $postId = wp_update_post($postarr);;
-               
-                /**
-                 ********************** TEST MAIL ****************
-                 */    
-                //\CommonsBooking\Messages\Messages::SendNotificationMail('','','');
+                $postId = wp_update_post($postarr);
                 
             }
 
-            // Trigger Mail
-            $booking_msg = new \CommonsBooking\Messages\Messages($postId, $_REQUEST["post_status"]);
-            $booking_msg->triggerMail();
+            // Trigger Mail, only send mail if status has changed     
+            if (!empty($booking) AND $booking->post_status != $_REQUEST["post_status"]) {
+                $booking_msg = new \CommonsBooking\Messages\Messages($postId, $_REQUEST["post_status"]);
+                $booking_msg->triggerMail();
+            }
+
     
 
             // Generate random post slug
             $post_slug = get_post($postId)->post_name;
 
-            //wp_redirect(home_url('?' . self::getPostType() . '=' . $post_slug));
+            wp_redirect(home_url('?' . self::getPostType() . '=' . $post_slug));
             exit;
         }
     }

@@ -105,7 +105,7 @@ class CB
 	
 	/**
 	 * lookUp
-	 *
+	 * 
 	 * @return void
 	 */
 	public static function lookUp()
@@ -114,12 +114,14 @@ class CB
 		$property 	= self::$property;
 		$postID		= self::$thePostID;
 
+		// TODO: check with markus about $PostID as setter variable in repository classes
+
 
 		// Look up
 		if (class_exists($Class) && property_exists($Class, $property)) { // Class has property		
 			$obj = new $Class($postID);		
 			return $obj->$property;
-			
+
 		} else if (class_exists($Class) && method_exists($Class, $property)) {  // Class has method
 			$obj = new $Class($postID);
 			return $obj->$property();

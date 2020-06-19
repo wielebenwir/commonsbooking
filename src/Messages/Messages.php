@@ -97,7 +97,7 @@ class Messages
         $to = "mail@cwenzel.de";
         $subject = "Test";
         $message = Settings::getOption('commonsbooking_options_templates', 'emailtemplates_mail-booking-pending-body');
-        $message = cb_parse_template($message);
+        $message = nl2br(cb_parse_template($message));
         $headers = array('Content-Type: text/html; charset=UTF-8');
 
 		$from = "test";
@@ -105,10 +105,11 @@ class Messages
 		$subject = "Test Mail";
 		
 		var_dump($message);
-		exit;
+
   
         $result = \wp_mail($to, $subject, $message, $headers);
-        return $result;
+		return $result;
+		exit;
    }
     
 }

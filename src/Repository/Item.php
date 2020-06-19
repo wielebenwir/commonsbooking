@@ -6,7 +6,14 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 class Item
 {
+    private $itemId;
 
+    
+    function __construct($itemId)
+    {
+        $this->itemId = $itemId;
+    }
+    
     /**
      * Returns array with items at location.
      * @param $locationId
@@ -49,6 +56,17 @@ class Item
             }
         }
         return $items;
+    }
+
+        
+    /**
+     * returns title 
+     * @param $locationId
+     * @return array
+     */
+    function name()
+    {
+        return get_the_title($this->itemId);
     }
 
 }
