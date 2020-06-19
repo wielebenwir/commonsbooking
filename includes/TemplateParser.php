@@ -1,5 +1,7 @@
 <?php
 
+use CommonsBooking\CB\CB;
+
 function cb_parse_template( String $template='' ) {
   $template = preg_replace_callback('/\{{.*?\}}/', 'cb_parse_template_callback', $template);
   return apply_filters( 'cb_template_tag', $template ); 
