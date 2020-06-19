@@ -7,25 +7,30 @@ use CommonsBooking\Shortcodes\Shortcodes;
 class Messages
 {
 
+	public $postID;
+	public $action;
+
     public function __construct($postId, $action)
     {
+		$this->postId = $postId;
+		$this->action = $action;
         
         
     }
 
 
-    public static function triggerMail($postId, $status) {
+    public function triggerMail() {
 
-        if ($status == "confirmed") {
-            sendMail($postId, $status);
+        if ($this->action == "confirmed") {
+			return $this->sendMessage();
         }
 
     }
 
     public function sendMessage() {
         
-        $this->prepareMail();
-        $this->SendNotificationMail();
+        //$this->prepareMail();
+        return $this->SendNotificationMail();
     }
 
 
@@ -33,6 +38,9 @@ class Messages
 	 * Setup the email template, headers (BCC)
 	 */
 	public function prepareMail() {
+
+		//get Booking-Data
+
 
 		// Setup email: Recipent
 		$booking_user = get_userdata($this->cb2_object->user->ID);
@@ -84,7 +92,7 @@ class Messages
 		}
 	}
 
-    public function SendNotificationMail($to, $subject, $message)
+    public function SendNotificationMail()
     {
         $to = "mail@cwenzel.de";
         $subject = "Test";
@@ -92,13 +100,14 @@ class Messages
         $message = cb_parse_template($message);
         $headers = array('Content-Type: text/html; charset=UTF-8');
 
-        $from = Settings::getOption('commonsbooking_email_options', 'email_sender_mail');
-
-        $subject = Settings::getOption('commonsbooking_options_templates', 'emailtemplates_mail-booking-pending-subject');
-    
+		$from = "test";
+		
+		$subject = "Test Mail";
+		
+		var_dump($message);
+		exit;
   
         $result = \wp_mail($to, $subject, $message, $headers);
-        die();
         return $result;
    }
     

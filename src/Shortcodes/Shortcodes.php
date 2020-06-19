@@ -32,8 +32,6 @@ class Shortcodes
     public static function getRenderedShortcodes($content)
     {
         global $shortcode_tags;
-        print "<pre>";
-        var_dump($shortcode_tags);
 
         if (preg_match_all('/' . get_shortcode_regex() . '/s', $content, $matches)) {
             foreach ($matches[2] as $i => $sc) {

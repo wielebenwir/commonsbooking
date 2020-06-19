@@ -14,8 +14,8 @@ function cb_parse_shortcode( $tag ) {
 
 function cb_parse_template_callback( $match ) {
     $match = $match[0];
-    $match = sanitize_key( $match );
-    $path = explode( '_', $match, 2);  
+    $match = preg_replace('/(\{\{)|(\}\})/m', '', $match);
+    $path = explode( ':', $match, 2);
     $replacement = CB::get( $path[0], $path[1]);
     return $replacement; 
 }

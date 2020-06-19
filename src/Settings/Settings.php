@@ -5,6 +5,12 @@ namespace CommonsBooking\Settings;
 class Settings
 {
 
+	public static $field_id;
+	public static $cb_options_array;
+	public static $options_name;
+	public static $options_key;
+
+
 	public function __construct()
 	{
 		//$this->options_name = $options_name;
@@ -41,13 +47,17 @@ class Settings
 	 * @param  mixed $field
 	 * @return void
 	 */
-	public static function getOption($options_name, $field)
+	public static function getOption($options_key, $field_id)
 	{
-		$options_array = \get_option($options_name);
-		$flat_array = self::flattenArray($options_array);
+		self::$options_key = $options_key;
+		self::$field_id = $field_id;
+	
 
-		if (array_key_exists($field, $flat_array)) {
-			$result = $flat_array[$field];
+		self::$cb_options_array = \get_option(self::$options_key);
+		$flat_array = self::flattenArray(self::$cb_options_array);
+
+		if (array_key_exists(self::$field_id, self::$cb_options_array)) {
+			$result = $flat_array[self::$field_id];
 		} else {
 			$result = false;
 		}
