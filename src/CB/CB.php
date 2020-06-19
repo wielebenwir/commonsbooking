@@ -34,7 +34,7 @@ class CB
 		// if url = ?cb_timeframe=ID then set initalpost accordingly
 		if (is_null($initialPost) AND isset($_GET['cb_timeframe']))
 		{
-			$initialPost = get_post($_GET['cb_timeframe']);
+			$initialPost = get_page_by_path($_GET['cb_timeframe']);
 		}
 
 		// Check post type
