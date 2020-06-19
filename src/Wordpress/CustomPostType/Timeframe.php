@@ -132,6 +132,9 @@ class Timeframe extends CustomPostType
                 
             }
 
+            // Trigger Mail
+            
+
             // Generate random post slug
             $post_slug = get_post($postId)->post_name;
 
