@@ -160,15 +160,15 @@ $options_array = array(
             'default' => __( 'Pending booking of {{item-name}} at {{location-name}}.', CB_TEXTDOMAIN ),
           ),
           array(
-            'name' => __( 'Booking approved email subject', CB_TEXTDOMAIN ),
-            'id' => 'emailtemplates_mail-booking-approved-subject',
+            'name' => __( 'Booking confirmed email subject', CB_TEXTDOMAIN ),
+            'id' => 'emailtemplates_mail-booking-confirmed-subject',
             'cb1_legacy_id' => 'commons-booking-settings-mail:commons-booking_mail_confirmation_subject',
             'type' => 'text',
             'default' => __( 'Your booking {{item_name}}.', CB_TEXTDOMAIN ),
           ),
           array(
-            'name' => __( 'Booking approved email body', CB_TEXTDOMAIN ),
-            'id' => 'emailtemplates_mail-booking-approved-body',
+            'name' => __( 'Booking confirmed email body', CB_TEXTDOMAIN ),
+            'id' => 'emailtemplates_mail-booking-confirmed-body',
             'cb1_legacy_id' => 'commons-booking-settings-mail:commons-booking_mail_confirmation_body',
             'type' => 'textarea',
             'default' => __( '<h2>Hi {{user-first_name}}, thanks for booking {{item_name}}!</h2>
@@ -183,16 +183,16 @@ $options_array = array(
               <p>Thanks, the Team. </p>', CB_TEXTDOMAIN ),
           ),
           array(
-            'name' => __( 'Booking canceled email subject', CB_TEXTDOMAIN ),
-            'id' => 'emailtemplates_mail-booking-canceled-subject',
+            'name' => __( 'Booking cancelled email subject', CB_TEXTDOMAIN ),
+            'id' => 'emailtemplates_mail-booking-cancelled-subject',
             'type' => 'text',
-            'default' => __( 'Canceled booking.', CB_TEXTDOMAIN ),
+            'default' => __( 'cancelled booking.', CB_TEXTDOMAIN ),
           ),
           array(
-            'name' => __( 'Booking canceled email body', CB_TEXTDOMAIN ),
-            'id' => 'emailtemplates_mail-booking-canceled-body',
+            'name' => __( 'Booking cancelled email body', CB_TEXTDOMAIN ),
+            'id' => 'emailtemplates_mail-booking-cancelled-body',
             'type' => 'textarea',
-            'default' => __( 'Canceled booking of {{item-name}} at {{location-name}}.', CB_TEXTDOMAIN ),
+            'default' => __( 'cancelled booking of {{item-name}} at {{location-name}}.', CB_TEXTDOMAIN ),
           ),
         )
       ),
@@ -218,10 +218,10 @@ $options_array = array(
             'default' => __( 'Your booking of {{item-name}} at {{location-name}} has been confirmed!', CB_TEXTDOMAIN ),
           ),
           array(
-            'name'    => __( 'Booking canceled', CB_TEXTDOMAIN ),
-            'id'      => 'messagetemplates_booking-canceled',
+            'name'    => __( 'Booking cancelled', CB_TEXTDOMAIN ),
+            'id'      => 'messagetemplates_booking-cancelled',
             'type'    => 'textarea_small',
-            'default' => __( 'Your booking has been canceled!<br>', CB_TEXTDOMAIN ),
+            'default' => __( 'Your booking has been cancelled!<br>', CB_TEXTDOMAIN ),
           ),
           array(
             'name'    => __( 'Request cancel confirmation', CB_TEXTDOMAIN ),

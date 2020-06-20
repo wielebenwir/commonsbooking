@@ -50,7 +50,7 @@ class Settings
 	public static function getOption($options_key, $field_id)
 	{
 		self::$options_key = $options_key;
-		self::$field_id = $field_id;
+		self::$field_id = $field_id;		
 	
 
 		self::$cb_options_array = \get_option(self::$options_key);

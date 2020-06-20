@@ -130,10 +130,7 @@ class Timeframe extends CustomPostType
                 $booking_msg = new \CommonsBooking\Messages\Messages($postId, $_REQUEST["post_status"]);
                 $booking_msg->triggerMail();
             }
-
-    
-
-            // Generate random post slug
+            // get slug as parameter
             $post_slug = get_post($postId)->post_name;
 
             wp_redirect(home_url('?' . self::getPostType() . '=' . $post_slug));
