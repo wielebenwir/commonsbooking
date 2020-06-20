@@ -56,17 +56,16 @@ class Messages
 		$this->body 	= nl2br(cb_parse_template($template_body));
 		$this->subject 	= cb_parse_template($template_subject);
 
+		// Setup mime type
+		$this->headers[] = "MIME-Version: 1.0";
+		$this->headers[] = "Content-Type: text/html";
+
 		// Setup email: From
 		$this->headers[] = sprintf(
-			"From: %s <%s>\r\n",
+			"From: %s <%s>",
 			'cb', //Settings::getOption( 'emailheaders_from-name'),
 			'mail@cb.local' //sanitize_email ( Settings::getOption( 'emailheaders_from-email') )
 		);
-
-		// Setup mime type
-		$this->headers[] = "MIME-Version: 1.0\r\n";
-		$this->headers[] = "Content-Type: text/html; charset=ISO-8859-1\r\n";
-
 
 		// TODO: @christian: Add later 
 		//Check settings for additionitional Recipients
@@ -107,8 +106,8 @@ class Messages
 		$to 	 = apply_filters( 'cb2_mail_to', $this->to );
 		$subject = apply_filters( 'cb2_mail_subject', $this->subject );
 		$body 	 = apply_filters( 'cb2_mail_body', $this->body );
-		$headers = $this->headers;
-
+		$headers = implode("\r\n", $this->headers);
+	
 		$result = false;
 		$result = wp_mail($to, $subject, $body, $headers);
 
