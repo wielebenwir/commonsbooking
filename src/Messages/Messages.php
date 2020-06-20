@@ -53,15 +53,19 @@ class Messages
 		$template_subject 	= Settings::getOption('commonsbooking_options_templates', 'emailtemplates_mail-booking-' . $this->action . '-subject');
 
 		// parse templates & replaces template tags (e.g. {{item:name}})
-		$this->body 	= cb_parse_template($template_body);
+		$this->body 	= nl2br(cb_parse_template($template_body));
 		$this->subject 	= cb_parse_template($template_subject);
 
 		// Setup email: From
 		$this->headers[] = sprintf(
-			"From: %s <%s>",
+			"From: %s <%s>\r\n",
 			'cb', //Settings::getOption( 'emailheaders_from-name'),
 			'mail@cb.local' //sanitize_email ( Settings::getOption( 'emailheaders_from-email') )
 		);
+
+		// Setup mime type
+		$this->headers[] = "MIME-Version: 1.0\r\n";
+		$this->headers[] = "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
 
 		// TODO: @christian: Add later 
