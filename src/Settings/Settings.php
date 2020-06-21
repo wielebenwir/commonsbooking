@@ -40,27 +40,28 @@ class Settings
 		return $result;
 	}
 
-	/**
-	 * GetOption
-	 *
+    /**
+     * GetOption
+     *
 	 * @param  mixed $options_name
 	 * @param  mixed $field
-	 * @return void
-	 */
+     * @return void
+     */
 	public static function getOption($options_key, $field_id)
 	{
 		self::$options_key = $options_key;
-		self::$field_id = $field_id;		
-	
+		self::$field_id = $field_id;
+
 
 		self::$cb_options_array = \get_option(self::$options_key);
 		$flat_array = self::flattenArray(self::$cb_options_array);
 
-		if (array_key_exists(self::$field_id, self::$cb_options_array)) {
+		if (is_array(self::$cb_options_array) && array_key_exists(self::$field_id, self::$cb_options_array)) {
 			$result = $flat_array[self::$field_id];
 		} else {
-			$result = false;
+        $result = false;
 		}
+
 		return $result;
 	}
 }

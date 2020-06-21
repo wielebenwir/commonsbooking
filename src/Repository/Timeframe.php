@@ -4,7 +4,7 @@
 namespace CommonsBooking\Repository;
 
 
-class Timeframe
+class Timeframe extends PostRepository
 {
 
     protected static function getTimeRangeQuery($date)

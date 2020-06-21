@@ -30,7 +30,7 @@ CB::echo('booking', 'myproperty');      // 'booking' is substited with 'timefram
         <i>{{item_testmeta}}</i><br>
         <strong>{{timeframe_myproperty}}</strong>
     ';
-    echo cb_parse_template( $template );
+    echo \cb_parse_template( $template );
 ?>
 
 <?php
