@@ -19,9 +19,9 @@ class CB
 	 */
 	public static function get($key, $property, $thePost = NULL)
 	{
-		self::substitions($key, $property);			// substitute keys
-		self::setupPost($thePost);							// query sub post or initial post?
-		$result = self::lookUp();									// Find matching methods, properties or metadata
+		self::substitions($key, $property);		// substitute keys
+		self::setupPost($thePost);				// query sub post or initial post?
+		$result = self::lookUp();				// Find matching methods, properties or metadata
 
 		$filterName = sprintf('cb_tag_%s_%s', self::$key, self::$property);
 		return apply_filters($filterName, $result);
@@ -58,12 +58,16 @@ class CB
 			$initialPost = get_page_by_path($_GET['cb_timeframe'], OBJECT, 'cb_timeframe');
 		}
 
+		if (is_null($initialPost)) {
+			return false;
+		}
+
 		// Check post type
 		$initialPostType = get_post_type($initialPost);
 		$initialPost->ID = $initialPost->ID;
 
-		// If we are dealing with a timeframe, we may need to look up the CHILDs post meta, not the parents'
-		if ($initialPostType == 'cb_timeframe') {
+		// If we are dealing with a timeframe and key ist not booking, we may need to look up the CHILDs post meta, not the parents'
+		if ($initialPostType == 'cb_timeframe' AND self::$key != "booking") {
 			$subPostID = get_post_meta($initialPost->ID, self::$key . '-id', TRUE);	// item-id, location-id
 			if (get_post_status($subPostID)) { // Post with that ID exists
 				$thePostID =  $subPostID; // we will query the sub post
@@ -89,7 +93,7 @@ class CB
 		$property = strtolower($property);
 
 		$key_substitutions_array = array(
-			'booking' => 'timeframe',		// so we can use booking_*
+			//'booking' => 'timeframe',		// so we can use booking_*
 		);
 		$property_substitutions_array = array(
 

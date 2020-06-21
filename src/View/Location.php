@@ -87,7 +87,7 @@ class Location extends View
 
                         if ($timeFrameType == Timeframe::BOOKABLE_ID) {
                             $dayArray['slots'][] = $slot;
-                        }
+                         }
 
                         // Remove holiday flag, if there is at least one slot that isn't of type holiday
                         if (!in_array($timeFrameType, [Timeframe::HOLIDAYS_ID, Timeframe::OFF_HOLIDAYS_ID])) {

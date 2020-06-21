@@ -13,9 +13,17 @@ function cb_parse_shortcode( $tag ) {
 }
 
 function cb_parse_template_callback( $match ) {
-    $match = $match[0];
-    $match = preg_replace('/(\{\{)|(\}\})/m', '', $match);
-    $path = explode( ':', $match, 2);
-    $replacement = CB::get( $path[0], $path[1]);
-    return $replacement; 
+    if (isset($match[0])) {
+      $match = $match[0];
+      $match = preg_replace('/(\{\{)|(\}\})/m', '', $match);
+      $path = explode( ':', $match, 2);
+      if (isset($path[0]) AND isset($path[1])) {
+        $replacement = CB::get( $path[0], $path[1]);
+        return $replacement;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
 }
