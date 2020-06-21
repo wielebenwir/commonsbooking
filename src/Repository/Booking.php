@@ -58,7 +58,7 @@ class Booking extends PostRepository
             if(count($posts) == 1) {
                 return new \CommonsBooking\Model\Booking($posts[0]);
             } else {
-                throw new \Exception(__CLASS__ . "::" . __LINE__ . ": Found more then one bookings");
+                throw new \Exception(__CLASS__ . "::" . __LINE__ . ": Found more than one bookings");
             }
 
         }
