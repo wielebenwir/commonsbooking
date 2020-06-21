@@ -27,11 +27,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
         };
 
         // Updates select options by time slots array
-        const updateSelectSlots = function($select, slots) {
-            $select.empty().attr('required','required');
+        const updateSelectSlots = function(select, slots, type = 'start') {
+            select.empty().attr('required','required');
             $.each(slots, function(index, slot) {
-                $select.append(
-                    new Option(slot['timestart'] + ' - ' + slot['timeend'], slot['timestampstart'])
+                select.append(
+                    new Option(slot['timestart'] + ' - ' + slot['timeend'], slot['timestamp' + type])
                 );
             });
         };
@@ -112,10 +112,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
                             day2 = data['days'][moment(date2).format('YYYY-MM-DD')];
 
                             let $startSelect = $('#booking-form select[name=start-date]');
-                            updateSelectSlots($startSelect, day1['slots']);
+                            updateSelectSlots($startSelect, day1['slots'], 'start');
 
                             let $endSelect = $('#booking-form select[name=end-date]');
-                            updateSelectSlots($endSelect, day2['slots']);
+                            updateSelectSlots($endSelect, day2['slots'], 'end');
 
                             $('.time-selection.start-date span.date', $bookingForm).text(moment(date1).format('DD.MM.YYYY'));
                             $('.time-selection.end-date span.date', $bookingForm).text(moment(date2).format('DD.MM.YYYY'));
