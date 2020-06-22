@@ -22,11 +22,13 @@ class CB
     public static function get($key, $property, $thePost = NULL)
     {
         self::substitions($key, $property);			// substitute keys
-        self::setupPost($thePost);							// query sub post or initial post?
-        $result = self::lookUp();									// Find matching methods, properties or metadata
+        self::setupPost($thePost);					// query sub post or initial post?
+        $result = self::lookUp();					// Find matching methods, properties or metadata
 
         $filterName = sprintf('cb_tag_%s_%s', self::$key, self::$property);
         return apply_filters($filterName, $result);
+
+        
     }
 
     /**
@@ -91,8 +93,8 @@ class CB
      */
     public static function substitions($key, $property)
     {
-        $key 	= strtolower($key);
-        $property = strtolower($property);
+        //$key 	= strtolower($key);
+        //$property = strtolower($property);
 
         $key_substitutions_array = array(
 			//'booking' => 'timeframe',		// so we can use booking_*
@@ -121,18 +123,31 @@ class CB
         $property 	= self::$property;
         $postID		= self::$thePostID;
 
+        // DEBUG
+        //echo "<pre><br>";
+        //echo $repo." -> ". self::$key . " -> "  . $property . " -> " . $postID . " = ";
+
         // Look up
         if(class_exists($repo)) {
+
             $post = $repo::getByPostById($postID);
-            if (property_exists($post, $property)) { // Class has property
+            var_dump($post->$property());
+
+            if (!empty ($post->$property) ) { // check if property has result
+                print_r($post->$property);
                 return $post->$property;
-            } else if ( method_exists($post, $property)) {  // Class has method
+
+            } elseif (!empty ( $post->$property() ) ) { // check if the method in Model-Class has result
+                print_r($post->$property());
                 return $post->$property();
             }
         }
 
         if (get_post_meta($postID, $property, TRUE)) { // Post has meta fields
+            print_r(get_post_meta($postID, $property, TRUE));
             return get_post_meta($postID, $property, TRUE);
         }
+
+       
     }
 }
