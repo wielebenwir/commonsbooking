@@ -134,17 +134,14 @@ class CB
             var_dump($post->$property());
 
             if (!empty ($post->$property) ) { // check if property has result
-                print_r($post->$property);
                 return $post->$property;
 
             } elseif (!empty ( $post->$property() ) ) { // check if the method in Model-Class has result
-                print_r($post->$property());
                 return $post->$property();
             }
         }
 
         if (get_post_meta($postID, $property, TRUE)) { // Post has meta fields
-            print_r(get_post_meta($postID, $property, TRUE));
             return get_post_meta($postID, $property, TRUE);
         }
 
