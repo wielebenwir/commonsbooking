@@ -120,6 +120,7 @@ class CB
     {
         /** @var PostRepository $repo */
         $repo 		= 'CommonsBooking\Repository\\' . ucfirst(self::$key); // we access the Repository not the cpt class here
+        $model      = 'CommonsBooking\Model\\' . ucfirst(self::$key);
         $property 	= self::$property;
         $postID		= self::$thePostID;
 
@@ -129,14 +130,16 @@ class CB
 
         // Look up
         if(class_exists($repo)) {
-
             $post = $repo::getByPostById($postID);
-            var_dump($post->$property());
 
-            if (!empty ($post->$property) ) { // check if property has result
+            if (!is_null ($post->$property) ) { // check if property has result
+                //echo "property ";
+                //print_r($post->$property); 
                 return $post->$property;
 
-            } elseif (!empty ( $post->$property() ) ) { // check if the method in Model-Class has result
+            } elseif (method_exists ( $model, $property ) ) { // check if the method in Model-Class exists 
+                //echo "method ";
+                //print_r($post->$property());  
                 return $post->$property();
             }
         }
