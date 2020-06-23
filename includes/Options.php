@@ -171,16 +171,31 @@ $options_array = array(
             'id' => 'emailtemplates_mail-booking-confirmed-body',
             'cb1_legacy_id' => 'commons-booking-settings-mail:commons-booking_mail_confirmation_body',
             'type' => 'textarea',
-            'default' => __( '<h2>Hi {{user-first_name}}, thanks for booking {{item_name}}!</h2>
-              <p>Click here to see or cancel you booking: {{booking-permalink}}.</p>
-              <h3>Pick up information</h3>
-              <p>Pick up {{item_name}} at {{location-name}}.<br>
-              Your booking periode: {{booking-periods}}<br>
-              Pick up the item here: {{location-geo_address}}<br>
-              Opening hours of the location: {{location-opening_hours}}.</p>
-              <h3>Your information</h3>
-              <p>Name: {{user-first_name}} {{user-last_name}}.</p>
-              <p>Thanks, the Team. </p>', CB_TEXTDOMAIN ),
+            'default' => __( '
+            <h2>Hi {{user-first_name}},</h2>
+            thank you for booking {{item:name}}.
+            
+            <b>Pick up information</b>
+            <p>Pick up {{item_name}} at {{location-name}}.</p>
+            
+            <p>Pickup date an time:</b>
+            <b>{{booking:pickup_datetime}}</b></p>
+            {{location:pickupinstructions}}
+            
+            <p>Location address:</p>
+            {{location:name}}<br>
+            {{location:address_complete}}<br>
+            {{location:contact}}<br>
+            </p>
+            
+            
+            <p>Click here to see or cancel your booking: {{booking-permalink}}.</p>
+            
+            <h3>Your information</h3>
+            <p>Name: {{user-first_name}} {{user-last_name}}.</p>
+            
+            <p>Thanks, the Team. </p>
+            ', CB_TEXTDOMAIN ),
           ),
           array(
             'name' => __( 'Booking cancelled email subject', CB_TEXTDOMAIN ),
