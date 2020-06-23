@@ -21,10 +21,10 @@ abstract class PostRepository
                     case \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID: //booking
                         return new \CommonsBooking\Model\Booking($post);
                         break;
-                    case \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_CANCELED_ID: //booking cancelled
+                    case \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_CANCELED_ID: //booking cancelled   
                         return new \CommonsBooking\Model\Booking($post);
                         break;
-            }
+                }
             }
 
             if($post->post_type == \CommonsBooking\Wordpress\CustomPostType\Item::getPostType()) {

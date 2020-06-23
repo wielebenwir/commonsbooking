@@ -126,10 +126,10 @@ class Timeframe extends CustomPostType
             }
 
             // Trigger Mail, only send mail if status has changed     
-            //if (!empty($booking) AND $booking->post_status != $_REQUEST["post_status"]) {
+            if (!empty($booking) AND $booking->post_status != $_REQUEST["post_status"]) {
                 $booking_msg = new \CommonsBooking\Messages\Messages($postId, $_REQUEST["post_status"]);
                 $booking_msg->triggerMail();
-            //}
+            }
             // get slug as parameter
             $post_slug = get_post($postId)->post_name;
 
