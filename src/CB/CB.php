@@ -4,6 +4,8 @@ namespace CommonsBooking\CB;
 
 use CommonsBooking\Repository\PostRepository;
 
+use function PHPUnit\Framework\isEmpty;
+
 class CB
 {
 
@@ -120,7 +122,7 @@ class CB
     {
         /** @var PostRepository $repo */
         $repo 		= 'CommonsBooking\Repository\\' . ucfirst(self::$key); // we access the Repository not the cpt class here
-        $model      = 'CommonsBooking\Model\\' . ucfirst(self::$key);
+        $model      = 'CommonsBooking\Model\\' . ucfirst(self::$key); // we check method_exists against model as workaround, cause it doesn't work on repo
         $property 	= self::$property;
         $postID		= self::$thePostID;
 
@@ -129,25 +131,28 @@ class CB
         //echo $repo." -> ". self::$key . " -> "  . $property . " -> " . $postID . " = ";
 
         // Look up
-        if(class_exists($repo)) {
+        if(class_exists($repo)) 
+        {
             $post = $repo::getByPostById($postID);
 
-            if (!is_null ($post->$property) ) { // check if property has result
-                //echo "property ";
-                //print_r($post->$property); 
-                return $post->$property;
+            if (method_exists($model, $property) ) 
+            {
+                //echo ($post->$property());
+                return $post->$property(); 
+            }
 
-            } elseif (method_exists ( $model, $property ) ) { // check if the method in Model-Class exists 
-                //echo "method ";
-                //print_r($post->$property());  
-                return $post->$property();
+            if ( $post->$property ) 
+            {
+                //echo ($post->$property);
+                return $post->$property;
             }
         }
 
         if (get_post_meta($postID, $property, TRUE)) { // Post has meta fields
+            //echo get_post_meta($postID, $property, TRUE); 
             return get_post_meta($postID, $property, TRUE);
+            
         }
-
-       
+           
     }
 }
