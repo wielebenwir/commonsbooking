@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         "anyBookedDaysAsCheckout": false,
                         "highlightedDays": data['highlightedDays'],
                         "disallowBookedDaysInRange": true,
-                        "disallowPartlyBookedDaysInRange": true,
+                        "disallowPartiallyBookedDaysInRange": true,
                         "disallowLockDaysInRange": true,
                         "mobileFriendly": true,
                         "selectForward": true,
