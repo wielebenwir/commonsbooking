@@ -21,20 +21,7 @@ $options_array = array(
         'desc'    => 'CB Version ' . CB_VERSION,
         'fields' => array(
         )
-      ),
-      'test2' => array(
-        'title' => __( 'Second group', CB_TEXTDOMAIN ),
-        'id' => 'test2',
-        'desc' => 'Second group description',
-        'fields' => array(
-          array(
-            'name'    => __( 'Item singular name', CB_TEXTDOMAIN ),
-            'id'      => 'test2',
-            'type'    => 'text',
-            'default' => __( 'fdsfd', CB_TEXTDOMAIN ),
-          ),
-        )
-      ),
+      )
     )
   ),
   /* Tab: main end*/
