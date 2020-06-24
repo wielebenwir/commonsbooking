@@ -13,7 +13,7 @@ class Location extends CustomPostType
     public function __construct()
     {
         add_filter( 'the_content', array( $this, 'getTemplate' ) );
-        #add_action( 'cmb2_admin_init', array( $this, 'addLocationMetaboxes' ) );
+        add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
         
     }
 

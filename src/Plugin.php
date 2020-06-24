@@ -10,7 +10,9 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
 use CommonsBooking\Settings;
 use CommonsBooking\Wordpress\Options;
-use CommonsBooking\Messages;
+use CommonsBooking\Messages\Messages;
+use CommonsBooking\Shortcodes\Shortcodes;
+use CB;
 
 class Plugin
 {
@@ -43,8 +45,13 @@ class Plugin
      */
     public function init()
     {
+        do_action( 'cmb2_init' ); 
+        
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerItemTaxonomy'));
+
+        // Register custom user roles (e.g. location-owner, item-owner etc.)
+        add_action('init', array(self::class, 'addCustomUserRoles'));     
         
         // Register custom post types
         add_action('init', array(self::class, 'registerCustomPostTypes'));
@@ -178,6 +185,18 @@ class Plugin
                 'label' => __('Item Category', CB_TEXTDOMAIN),
                 'rewrite' => array('slug' => $customPostType . '-cat'),
                 'hierarchical' => true,
+            )
+        );
+    }
+
+    public static function addCustomUserRoles()
+    {
+        add_role(
+            'location_owner',
+            __( 'Location Owner', CB_TEXTDOMAIN ),
+            array(
+            'read'         => true,  // true allows this capability
+            'edit_posts'   => true,
             )
         );
     }

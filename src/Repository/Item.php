@@ -4,9 +4,9 @@ namespace CommonsBooking\Repository;
 
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
-class Item
+class Item extends PostRepository
 {
-
+    
     /**
      * Returns array with items at location.
      * @param $locationId
@@ -48,6 +48,11 @@ class Item
                 }
             }
         }
+
+        foreach($items as &$item) {
+            $item = new \CommonsBooking\Model\Item($item);
+        }
+
         return $items;
     }
 
