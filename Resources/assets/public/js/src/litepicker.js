@@ -1,3 +1,7 @@
+/**
+ * @TODO: Reduce redundancy, use state machine
+ */
+
 document.addEventListener("DOMContentLoaded", function(event) {
 
     let bookingForm = $('#booking-form');
@@ -8,8 +12,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         };
 
         // Updates Time-selects so that no wrong time ranges can be selected
-        const initSelectHandler = function() {
-            let bookingForm = $('#booking-form');
+        const initSelectHandler = () => {
+            const bookingForm = $('#booking-form');
             const startSelect = bookingForm.find('select[name=start-date]');
             const endSelect = bookingForm.find('select[name=end-date]');
 
@@ -27,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         };
 
         // Updates select options by time slots array
-        const updateSelectSlots = function(select, slots, type = 'start') {
+        const updateSelectSlots = (select, slots, type = 'start') => {
             select.empty().attr('required','required');
             $.each(slots, function(index, slot) {
                 select.append(
@@ -106,21 +110,37 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         onChangeYear: function(date, idx) {
                         },
                         onSelect: function(date1, date2) {
-                            let $bookingForm = $('#booking-form');
-                            $bookingForm.show();
-                            day1 = data['days'][moment(date1).format('YYYY-MM-DD')];
-                            day2 = data['days'][moment(date2).format('YYYY-MM-DD')];
+                            let bookingForm = $('#booking-form');
+                            bookingForm.show();
+                            const day1 = data['days'][moment(date1).format('YYYY-MM-DD')];
+                            const day2 = data['days'][moment(date2).format('YYYY-MM-DD')];
+                            const startDate = moment(date1).format('DD.MM.YYYY');
+                            const endDate = moment(date2).format('DD.MM.YYYY');
 
-                            let $startSelect = $('#booking-form select[name=start-date]');
-                            updateSelectSlots($startSelect, day1['slots'], 'start');
+                            let startSelect = $('#booking-form select[name=start-date]');
+                            $('.time-selection.start-date span.date').text(startDate);
+                            if(day1['fullDay']) {
+                                $('.time-selection.start-date').find('label, select').hide();
+                            } else {
+                                $('.time-selection.start-date').find('label, select').show();
+                                updateSelectSlots(startSelect, day1['slots'], 'start');
+                            }
 
-                            let $endSelect = $('#booking-form select[name=end-date]');
-                            updateSelectSlots($endSelect, day2['slots'], 'end');
+                            let endSelect = $('#booking-form select[name=end-date]');
+                            $('.time-selection.end-date span.date').text(endDate);
+                            if(day1['fullDay']) {
+                                $('.time-selection.end-date').find('label, select').hide();
+                            } else {
+                                $('.time-selection.end-date').find('label, select').show();
+                                updateSelectSlots(endSelect, day2['slots'], 'end');
+                            }
 
-                            $('.time-selection.start-date span.date', $bookingForm).text(moment(date1).format('DD.MM.YYYY'));
-                            $('.time-selection.end-date span.date', $bookingForm).text(moment(date2).format('DD.MM.YYYY'));
-
-                            initSelectHandler();
+                            if(!day1['fullDay'] || !day2['fullDay']) {
+                                $('#fullDayInfo').text('');
+                                initSelectHandler();
+                            } else {
+                                $('#fullDayInfo').text(data['location']['fullDayInfo']);
+                            }
                         }
                     }
                 );

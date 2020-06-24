@@ -41,6 +41,9 @@ class Location extends View
             'highlightedDays' => []
         ];
 
+        if(count($locations) === 1 ) {
+            $jsonResponse['location']['fullDayInfo'] = "test123"; // @TODO read custom field
+        }
         /** @var Week $week */
         foreach ($calendar->getWeeks() as $week) {
             /** @var Day $day */
@@ -52,6 +55,7 @@ class Location extends View
                     'bookedDay' => true,
                     'partiallyBookedDay' => false,
                     'holiday' => true,
+                    'fullDay' => false,
                     'firstSlotBooked' => null,
                     'lastSlotBooked' => null
                 ];
@@ -120,6 +124,11 @@ class Location extends View
                     $dayArray['locked'] = true;
                     $dayArray['holiday'] = false;
                     $dayArray['bookedDay'] = false;
+                } else {
+                    if(count($dayArray['slots']) === 1) {
+                        $timeframe = $dayArray['slots'][0]['timeframe'];
+                        $dayArray['fullDay'] = get_post_meta($timeframe->ID, 'full-day', true) == "on";
+                    }
                 }
 
                 $jsonResponse['days'][$day->getFormattedDate('Y-m-d')] = $dayArray;

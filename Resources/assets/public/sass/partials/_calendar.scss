@@ -442,3 +442,24 @@
 		left: 0;
 	}
 }
+
+#booking-form {
+	.time-selection {
+		float: left;
+
+		span, label, select {
+			font-size: 1.6rem;
+			display: inline-block;
+			float: left;
+		}
+	}
+
+	input[type=submit] {
+		font-size: 12px;
+		padding:0;
+	}
+
+	#fullDayInfo {
+		clear: left;
+	}
+}

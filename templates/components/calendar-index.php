@@ -12,12 +12,21 @@
             <input type="hidden" name="post_type" value="cb_timeframe" />
             <input type="hidden" name="post_status" value="unconfirmed" />
 
-            <label>Abholzeit am <span id="start-date"></span></label>
-            <select name="start-date"></select>
-            <label>Abgabezeit am <span id="end-date"></span></label>
-            <select name="end-date"></select>
+            <div class="time-selection start-date">
+                <span class="date"></span>
+                <label for="start-date">Abholzeit</label>
+                <select id="start-date" name="start-date"></select>
+            </div>
 
-            <input type="submit" value="Buchen" style="font-size: 12px;padding:0;" />
+            <div class="time-selection end-date">
+                <span style="padding-left: 1em; padding-right: 1em;"> bis </span><span class="date"></span>
+                <label for="end-date">Abgabezeit: </label>
+                <select id="end-date" name="end-date"></select>
+            </div>
+
+            <p id="fullDayInfo"></p>
+
+            <input type="submit" value="Buchen" />
         </form>
     </div>
 <?php } else {
