@@ -16,6 +16,7 @@ define('CB_VERSION', '0.0');
 define('CB_MENU_SLUG', 'cb-menu');
 define('CB_PLUGIN_SLUG', 'commonsbooking');
 define('CB_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('CB_METABOX_PREFIX', '_cb_'); //Start with an underscore to hide fields from custom fields list
 
 function commonsbooking_admin()
 {
