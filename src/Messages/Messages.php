@@ -53,8 +53,8 @@ class Messages
 		$template_subject 	= Settings::getOption('commonsbooking_options_templates', 'emailtemplates_mail-booking-' . $this->action . '-subject');
 
 		// parse templates & replaces template tags (e.g. {{item:name}})
-		$this->body 	= cb_parse_template($template_body);
-		$this->subject 	= cb_parse_template($template_subject);
+		$this->body 	= \cb_parse_template($template_body);
+		$this->subject 	= \cb_parse_template($template_subject);
 
 		// Setup mime type
 		$this->headers[] = "MIME-Version: 1.0";
