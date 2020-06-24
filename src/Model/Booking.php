@@ -8,7 +8,7 @@ class Booking extends CustomPost
 {
 
     
-    public function booking_timeframe_text()
+    public function booking_timeframe_date()
     {
         $format = get_option('date_format');
         
@@ -16,12 +16,12 @@ class Booking extends CustomPost
         $enddate = date($format, get_post_meta($this->post->ID, 'end-date', true));
 
         if ($startdate == $enddate) {
-            return __(" on" . $startdate, CB_TEXTDOMAIN);
+            return sprintf( esc_html__( ' on %s ' , CB_TEXTDOMAIN), $startdate );
         } else {
-            return __(" from " . $startdate . " until " . $enddate, CB_TEXTDOMAIN);
+            return sprintf( __( ' from %1$s until %2$s ', CB_TEXTDOMAIN ), $startdate, $enddate ) ;
         }
     }
-    
+
     // TODO: add pickup timeslot (e.g. 1 hour or full slot depending on timeframe setting)
     /**
      * pickup_datetime
@@ -50,5 +50,7 @@ class Booking extends CustomPost
         $format = get_option('date_format'). ' ' . get_option('time_format');
         return date($format, $date);
     }
+
+    
 
 }
