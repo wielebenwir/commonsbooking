@@ -4,6 +4,7 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Wordpress\MetaBox\Field;
+use CommonsBooking\Messages\Messages;
 
 class Timeframe extends CustomPostType
 {
@@ -117,12 +118,19 @@ class Timeframe extends CustomPostType
             if (empty($booking)) {
                 $postarr['post_name'] = self::generateRandomSlug();
                 $postId = wp_insert_post($postarr, true);
+  
             } else {
                 $postarr['ID'] = $booking->ID;
                 $postId = wp_update_post($postarr);
+                
             }
 
-            // Generate random post slug
+            // Trigger Mail, only send mail if status has changed     
+            if (!empty($booking) AND $booking->post_status != $_REQUEST["post_status"]) {
+                $booking_msg = new \CommonsBooking\Messages\Messages($postId, $_REQUEST["post_status"]);
+                $booking_msg->triggerMail();
+            }
+            // get slug as parameter
             $post_slug = get_post($postId)->post_name;
 
             wp_redirect(home_url('?' . self::getPostType() . '=' . $post_slug));
