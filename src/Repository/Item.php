@@ -32,11 +32,7 @@ class Item extends PostRepository
         if ($query->have_posts()) {
             $timeframes = $query->get_posts();
             foreach ($timeframes as $timeframe) {
-                $result = get_post_meta($timeframe->ID, 'item-id');
-                $itemId = false;
-                if(count($result)) {
-                    $itemId = $result[0];
-                }
+                $itemId = get_post_meta($timeframe->ID, 'item-id', true);
 
                 if($itemId && !in_array($itemId, $itemIds)) {
                     $itemIds[] = $itemId;

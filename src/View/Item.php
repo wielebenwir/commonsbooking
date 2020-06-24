@@ -42,4 +42,26 @@ class Item extends View
             )
         ]);
     }
+
+    /**
+     * @param $atts
+     * @param null $content
+     *
+     * @return false|string
+     * @throws \Exception
+     */
+    public static function listLocations($atts, $content = null) {
+        if(array_key_exists('item-id', $atts)) {
+            $templateData['locations'] = \CommonsBooking\Repository\Location::getByItem($atts['item-id']);
+            if(count($templateData['locations'])) {
+                ob_start();
+                include_once CB_PLUGIN_DIR . 'templates/location-list.php';
+                return ob_get_clean();
+            } else {
+                return 'No Locations for item found..';
+            }
+        } else {
+            return 'Missing attribute item-id...' . var_export($atts, true);
+        }
+    }
 }

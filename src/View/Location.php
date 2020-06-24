@@ -225,4 +225,25 @@ class Location extends View
         echo self::render(self::$template, self::getTemplateData($post));
     }
 
+    /**
+     * @param $atts
+     * @param null $content
+     *
+     * @return false|string
+     * @throws \Exception
+     */
+    public static function listItems($atts, $content = null) {
+        if(array_key_exists('location-id', $atts)) {
+            $templateData['items'] = \CommonsBooking\Repository\Item::getByLocation($atts['location-id']);
+            if(count($templateData['items'])) {
+                ob_start();
+                include_once CB_PLUGIN_DIR . 'templates/item-list.php';
+                return ob_get_clean();
+            } else {
+                return 'No items for location found..';
+            }
+        } else {
+            return 'Missing attribute location-id...' . var_export($atts, true);
+        }
+    }
 }
