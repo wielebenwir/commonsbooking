@@ -11,15 +11,26 @@ class Location extends CustomPost
     public function location_information()
     {
         
-        $location_info = array (
-            get_post_meta($this->post->ID, 'post_title', true),
-            get_post_meta($this->post->ID, 'post_title', true),
+        $location = array (
+            get_the_title($this->post->ID),
+            get_post_meta($this->post->ID, CB_METABOX_PREFIX . 'location_street', true),
+            get_post_meta($this->post->ID, CB_METABOX_PREFIX . 'location_postcode', true),
+            get_post_meta($this->post->ID, CB_METABOX_PREFIX . 'location_city', true),
         );
-        
-        $date = get_post_meta($this->post->ID, 'end-date', true);
 
-        // TODO format pickup string on fullday-booking // we need slot duration or timestart and time-end for pickup and return
-        $format = get_option('date_format'). ' ' . get_option('time_format');
-        return date($format, $date);
+        return implode('<br>', $location);
+
+    }
+
+    public function location_contact()
+    {   
+        if (!empty(get_post_meta($this->post->ID, CB_METABOX_PREFIX . 'location_contact', true))) {
+            $contact[] = "<br>"; // needed for email template
+            $contact[] = __( 'Please contact the contact persons at the location directly if you have any questions regarding collection or return:', CB_TEXTDOMAIN );
+            $contact[] = nl2br(get_post_meta($this->post->ID, CB_METABOX_PREFIX . 'location_contact', true));
+        }
+
+        return implode('<br>', $contact);
+
     }
 }

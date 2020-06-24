@@ -117,14 +117,12 @@ class Location extends CustomPostType
      * @return void
      */
     public function registerMetabox() {
-        $prefix = "_cb_"; // Start with an underscore to hide fields from custom fields list
-       
        
         /**
          * Initiate the metabox Adress
          */
         $cmb = new_cmb2_box( array(
-            'id'            => $prefix . 'location_adress',
+            'id'            => CB_METABOX_PREFIX . 'location_adress',
             'title'         => __( 'Adresse', CB_TEXTDOMAIN ),
             'object_types'  => array( 'cb_location', ), // Post type
             'context'       => 'normal',
@@ -138,7 +136,7 @@ class Location extends CustomPostType
         $cmb->add_field( array(
             'name'       => __( 'Straße / Hausnr.', CB_TEXTDOMAIN ),
             'desc'       => __( 'field description (optional)', CB_TEXTDOMAIN ),
-            'id'         => $prefix . 'location_street',
+            'id'         => CB_METABOX_PREFIX . 'location_street',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
@@ -151,7 +149,7 @@ class Location extends CustomPostType
         $cmb->add_field( array(
             'name'       => __( 'PLZ', CB_TEXTDOMAIN ),
             'desc'       => __( 'field description (optional)', CB_TEXTDOMAIN ),
-            'id'         => $prefix . 'location_postcode',
+            'id'         => CB_METABOX_PREFIX . 'location_postcode',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
@@ -164,7 +162,7 @@ class Location extends CustomPostType
         $cmb->add_field( array(
             'name'       => __( 'Ort', CB_TEXTDOMAIN ),
             'desc'       => __( 'field description (optional)', CB_TEXTDOMAIN ),
-            'id'         => $prefix . 'location_city',
+            'id'         => CB_METABOX_PREFIX . 'location_city',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
@@ -177,7 +175,7 @@ class Location extends CustomPostType
         $cmb->add_field( array(
             'name'       => __( 'Land', CB_TEXTDOMAIN ),
             'desc'       => __( 'field description (optional)', CB_TEXTDOMAIN ),
-            'id'         => $prefix . 'location_country',
+            'id'         => CB_METABOX_PREFIX . 'location_country',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
@@ -190,7 +188,7 @@ class Location extends CustomPostType
          * Initiate the metabox Information
          */
         $cmb = new_cmb2_box( array(
-            'id'            => $prefix . 'location_info',
+            'id'            => CB_METABOX_PREFIX . 'location_info',
             'title'         => __( 'Informationen', CB_TEXTDOMAIN ),
             'object_types'  => array( 'cb_location', ), // Post type
             'context'       => 'normal',
@@ -204,7 +202,7 @@ class Location extends CustomPostType
         $cmb->add_field( array(
             'name'       => __( 'Kurzbeschreibung', CB_TEXTDOMAIN ),
             'desc'       => __( 'field description (optional)', CB_TEXTDOMAIN ),
-            'id'         => $prefix . 'location_shortdescription',
+            'id'         => CB_METABOX_PREFIX . 'location_shortdescription',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
@@ -218,7 +216,20 @@ class Location extends CustomPostType
         $cmb->add_field( array(
             'name'       => __( 'Abhol-Informationen', CB_TEXTDOMAIN ),
             'desc'       => __( 'field description (optional)', CB_TEXTDOMAIN ),
-            'id'         => $prefix . 'location_pickupinstructions',
+            'id'         => CB_METABOX_PREFIX . 'location_pickupinstructions',
+            'type'       => 'textarea_small',
+            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+            // 'on_front'        => false, // Optionally designate a field to wp-admin only
+            // 'repeatable'      => true,
+        ) );
+
+        // location contact
+        $cmb->add_field( array(
+            'name'       => __( 'Standort Kontakt', CB_TEXTDOMAIN ),
+            'desc'       => __( 'field description (optional)', CB_TEXTDOMAIN ),
+            'id'         => CB_METABOX_PREFIX . 'location_contact',
             'type'       => 'textarea_small',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
