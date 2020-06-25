@@ -54,7 +54,7 @@ class Booking extends CustomPost
 
     public function booking_link()
     {
-        return '<a href="' . site_url('?cb_timeframe=' . $this->post->post_name) . '">Link to your booking</a>';
+        return '<a href="' . site_url('?cb_timeframe=' . $this->post->post_name) . '">' . __( 'Link to your booking', CB_TEXTDOMAIN ) . '</a>';
     }
     
 
