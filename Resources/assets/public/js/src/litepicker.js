@@ -31,11 +31,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
         };
 
         // Updates select options by time slots array
-        const updateSelectSlots = (select, slots, type = 'start') => {
+        const updateSelectSlots = (select, slots, type = 'start', fullday = false) => {
             select.empty().attr('required','required');
             $.each(slots, function(index, slot) {
                 select.append(
-                    new Option(slot['timestart'] + ' - ' + slot['timeend'], slot['timestamp' + type])
+                    new Option(slot['timestart'] + ' - ' + slot['timeend'], slot['timestamp' + type], fullday, fullday)
                 );
             });
         };
@@ -119,20 +119,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
                             let startSelect = $('#booking-form select[name=start-date]');
                             $('.time-selection.start-date span.date').text(startDate);
+                            updateSelectSlots(startSelect, day1['slots'], 'start', day1['fullDay']);
                             if(day1['fullDay']) {
                                 $('.time-selection.start-date').find('label, select').hide();
                             } else {
                                 $('.time-selection.start-date').find('label, select').show();
-                                updateSelectSlots(startSelect, day1['slots'], 'start');
                             }
 
                             let endSelect = $('#booking-form select[name=end-date]');
                             $('.time-selection.end-date span.date').text(endDate);
-                            if(day1['fullDay']) {
+                            updateSelectSlots(endSelect, day2['slots'], 'end', day2['fullDay']);
+                            if(day2['fullDay']) {
                                 $('.time-selection.end-date').find('label, select').hide();
                             } else {
                                 $('.time-selection.end-date').find('label, select').show();
-                                updateSelectSlots(endSelect, day2['slots'], 'end');
                             }
 
                             if(!day1['fullDay'] || !day2['fullDay']) {
@@ -141,6 +141,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                             } else {
                                 $('#fullDayInfo').text(data['location']['fullDayInfo']);
                             }
+
                         }
                     }
                 );
