@@ -232,18 +232,22 @@ class Location extends View
      * @return false|string
      * @throws \Exception
      */
-    public static function listItems($atts, $content = null) {
-        if(array_key_exists('location-id', $atts)) {
-            $templateData['items'] = \CommonsBooking\Repository\Item::getByLocation($atts['location-id']);
-            if(count($templateData['items'])) {
-                ob_start();
-                include_once CB_PLUGIN_DIR . 'templates/item-list.php';
-                return ob_get_clean();
-            } else {
-                return 'No items for location found..';
-            }
+    public static function listLocations($atts, $content = null) {
+        $templateData['locations'] = [];
+        if(is_array($atts) && array_key_exists('item-id', $atts)) {
+            $templateData['locations'] = \CommonsBooking\Repository\Location::getByItem($atts['item-id']);
         } else {
-            return 'Missing attribute location-id...' . var_export($atts, true);
+            $templateData['locations'] = \CommonsBooking\Repository\Location::getAllPublished();
+        }
+
+        if(count($templateData['locations'])) {
+            ob_start();
+            include CB_PLUGIN_DIR . 'templates/location-list.php';
+            return ob_get_clean();
+        } else {
+            return 'No Locations for item found..';
         }
     }
+
+
 }

@@ -2,11 +2,35 @@
 
 namespace CommonsBooking\Repository;
 
-
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 class Location extends PostRepository
 {
+
+    /**
+     * Returns all published locations.
+     * @return array
+     * @throws \Exception
+     */
+    public static function getAllPublished() {
+        $items = [];
+
+        $args = array(
+            'post_type' => \CommonsBooking\Wordpress\CustomPostType\Location::$postType,
+            'post_status' => array('publish', 'inherit')
+        );
+
+        $query = new \WP_Query($args);
+
+        if ($query->have_posts()) {
+            $items = $query->get_posts();
+            foreach($items as &$item) {
+                $item = new \CommonsBooking\Model\Item($item);
+            }
+        }
+        return $items;
+    }
+
     /**
      * Returns array with locations for item.
      *
