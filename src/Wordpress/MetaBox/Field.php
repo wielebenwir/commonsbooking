@@ -53,6 +53,11 @@ class Field
             $params['show_option_none'] = true;
         }
 
+        if($this->getType() == 'text_datetime_timestamp' OR 'text_time') {
+            $params['time_format'] = get_option('time_format');
+            $params['date_format'] = get_option('date_format');
+        }
+
         if(count($this->getOptions())) {
             foreach ($this->getOptions() as $key => $item) {
 
