@@ -51,6 +51,20 @@ add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/cmb2/cmb2/init.php';
 
+// Redirect to startpage if user is not allowed to edit timeframe
+function cb_timeframe_redirect() {
+    global $post;
+    if(
+        $post &&
+        $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType
+        && !current_user_can( 'edit_post', $post->ID )
+    ) {
+        wp_redirect( home_url( '/' ) );
+        exit;
+    }
+
+}
+add_action( 'template_redirect', 'cb_timeframe_redirect' );
 
 $cbPlugin = new \CommonsBooking\Plugin();
 $cbPlugin->init();
