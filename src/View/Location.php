@@ -2,7 +2,7 @@
 
 namespace CommonsBooking\View;
 
-
+use CommonsBooking\CB\CB;
 use CommonsBooking\Model\Calendar;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Week;
@@ -42,7 +42,7 @@ class Location extends View
         ];
 
         if(count($locations) === 1 ) {
-            $jsonResponse['location']['fullDayInfo'] = "test123"; // @TODO read custom field
+            $jsonResponse['location']['fullDayInfo'] = CB::get('location', CB_METABOX_PREFIX . 'location_pickupinstructions', $locations[0]);
         }
         /** @var Week $week */
         foreach ($calendar->getWeeks() as $week) {
