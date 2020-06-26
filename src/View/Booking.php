@@ -61,7 +61,7 @@ class Booking extends View
         $current_user = wp_get_current_user();
         if(intval($current_user->ID) == intval($post->post_author)) {
             echo self::render(
-                'timeframe/booking/unconfirmed.html.twig',
+                'timeframe/booking/confirmed.html.twig',
                 array_merge(
                     self::getDefaultParams($post),
                     array(
@@ -88,7 +88,13 @@ class Booking extends View
                 self::getDefaultParams($post),
                 array(
                     'postStatus' => 'confirmed',
-                    'submitLabel' => __( 'Buchen', CB_TEXTDOMAIN )
+                    'submitLabel' => __( 'Buchen', CB_TEXTDOMAIN ),
+                    'cancellation' =>
+                    [
+                        'type' => Timeframe::BOOKING_CANCELED_ID,
+                        'postStatus' => 'cancelled',
+                        'submitLabel' => __( 'Abbrechen', CB_TEXTDOMAIN )
+                    ]
                 )
             )
         );

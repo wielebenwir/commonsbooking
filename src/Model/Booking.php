@@ -59,30 +59,6 @@ class Booking extends CustomPost
     }
 
     /**
-     * Assings relevant meta fields from related bookable timeframe to booking.
-     * @throws \Exception
-     */
-    public function assignBookableTimeframeFields() {
-        $timeframe = $this->getBookableTimeFrame();
-        $neededMetaFields = [
-            "full-day",
-            "grid",
-            "start-time",
-            "end-time"
-        ];
-        foreach($neededMetaFields as $fieldName) {
-            update_post_meta(
-                $this->post->ID,
-                $fieldName,
-                get_post_meta($timeframe->ID,
-                    $fieldName,
-                    true
-                )
-            );
-        }
-    }
-
-    /**
      * @return string
      */
     public function booking_timeframe_date()
