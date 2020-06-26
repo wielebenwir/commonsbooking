@@ -15,6 +15,7 @@ class Location extends View
     protected static $template = 'location/index.html.twig';
 
     /**
+     * Returns JSON-Data for Litepicker calendar.
      * @param $startDate
      * @param $endDate
      * @param $locations
@@ -186,6 +187,13 @@ class Location extends View
         wp_die(); // All ajax handlers die when finished
     }
 
+    /**
+     * Returns template data for frontend.
+     * @param \WP_Post|null $post
+     *
+     * @return array
+     * @throws \Exception
+     */
     public static function getTemplateData(\WP_Post $post = null) {
         if ($post == null) {
             global $post;
@@ -220,12 +228,19 @@ class Location extends View
         return $args;
     }
 
+    /**
+     * Echos Location default view.
+     * @param \WP_Post|null $post
+     *
+     * @throws \Exception
+     */
     public static function index(\WP_Post $post = null)
     {
         echo self::render(self::$template, self::getTemplateData($post));
     }
 
     /**
+     * Renders location listing.
      * @param $atts
      * @param null $content
      *

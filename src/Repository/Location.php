@@ -25,7 +25,7 @@ class Location extends PostRepository
         if ($query->have_posts()) {
             $items = $query->get_posts();
             foreach($items as &$item) {
-                $item = new \CommonsBooking\Model\Item($item);
+                $item = new \CommonsBooking\Model\Location($item);
             }
         }
         return $items;
