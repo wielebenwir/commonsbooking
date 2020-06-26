@@ -70,8 +70,10 @@ class Timeframe extends CustomPostType
     {
         $cb_content = '';
         if (is_singular(self::getPostType())) {
+            ob_start();
             global $post;
-            $cb_content = cb_get_template_part('booking', $post->post_status);
+            cb_get_template_part('booking', $post->post_status);
+            $cb_content = ob_get_clean();
         } // if archive...
 
         return $cb_content . $content;
@@ -118,15 +120,15 @@ class Timeframe extends CustomPostType
             if (empty($booking)) {
                 $postarr['post_name'] = self::generateRandomSlug();
                 $postId = wp_insert_post($postarr, true);
-  
+
             } else {
                 $postarr['ID'] = $booking->ID;
                 $postId = wp_update_post($postarr);
-                
+
             }
 
             // Trigger Mail, only send mail if status has changed     
-            if (!empty($booking) AND $booking->post_status != $_REQUEST["post_status"]) {
+            if ( ! empty($booking) and $booking->post_status != $_REQUEST["post_status"]) {
                 $booking_msg = new \CommonsBooking\Messages\Messages($postId, $_REQUEST["post_status"]);
                 $booking_msg->triggerMail();
             }
@@ -227,7 +229,8 @@ class Timeframe extends CustomPostType
             new Field("type", __('Type', CB_TEXTDOMAIN), "", "select", "edit_pages",
                 self::getTypes()
             ),
-            new Field("location-id", __("Location", CB_TEXTDOMAIN), "", "select", "edit_posts", Location::getAllPosts()),
+            new Field("location-id", __("Location", CB_TEXTDOMAIN), "", "select", "edit_posts",
+                Location::getAllPosts()),
             new Field("item-id", __("Item", CB_TEXTDOMAIN), "", "select", "edit_posts", Item::getAllPosts()),
             new Field("title-timeframe-config", __("Configure timeframe", CB_TEXTDOMAIN), "", "title", "edit_posts"),
             new Field("timeframe-repetition", __('Timeframe Repetition', CB_TEXTDOMAIN), "", "select", "edit_pages",
@@ -251,7 +254,8 @@ class Timeframe extends CustomPostType
                     1 => __("Hourly", CB_TEXTDOMAIN)
                 ]
             ),
-            new Field("title-timeframe-rep-config", __("Configure repetition", CB_TEXTDOMAIN), "", "title", "edit_posts"),
+            new Field("title-timeframe-rep-config", __("Configure repetition", CB_TEXTDOMAIN), "", "title",
+                "edit_posts"),
             new Field("repetition-start", __('Repetition start', CB_TEXTDOMAIN), "", "text_date", "edit_pages"),
             /*new Field("repetition", __('Repetition', CB_TEXTDOMAIN), "", "select", "edit_pages",
                 [
@@ -429,21 +433,21 @@ class Timeframe extends CustomPostType
         if (isset($_GET['post_type']) && self::$postType == $_GET['post_type']) {
             $values = self::getTypes();
             ?>
-                <select name="admin_filter_type">
-                    <option value=""><?php _e('Filter By Type ', CB_TEXTDOMAIN); ?></option>
-                    <?php
-                        $filterValue = isset($_GET['admin_filter_type']) ? $_GET['admin_' . self::$postType . '_filter_type'] : '';
-                        foreach ($values as $value => $label) {
-                            printf
-                            (
-                                '<option value="%s"%s>%s</option>',
-                                $value,
-                                $value == $filterValue ? ' selected="selected"' : '',
-                                $label
-                            );
-                        }
-                    ?>
-                </select>
+            <select name="admin_filter_type">
+                <option value=""><?php _e('Filter By Type ', CB_TEXTDOMAIN); ?></option>
+                <?php
+                $filterValue = isset($_GET['admin_filter_type']) ? $_GET['admin_' . self::$postType . '_filter_type'] : '';
+                foreach ($values as $value => $label) {
+                    printf
+                    (
+                        '<option value="%s"%s>%s</option>',
+                        $value,
+                        $value == $filterValue ? ' selected="selected"' : '',
+                        $label
+                    );
+                }
+                ?>
+            </select>
             <?php
         }
     }
