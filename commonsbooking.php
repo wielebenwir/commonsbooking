@@ -56,8 +56,11 @@ function cb_timeframe_redirect() {
     global $post;
     if(
         $post &&
-        $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType
-        && !current_user_can( 'edit_post', $post->ID )
+        $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType &&
+        (
+            !current_user_can('administrator') &&
+            get_current_user_id() != $post->post_author
+        )
     ) {
         wp_redirect( home_url( '/' ) );
         exit;

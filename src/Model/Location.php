@@ -4,10 +4,23 @@
 namespace CommonsBooking\Model;
 
 use CommonsBooking\CB\CB;
+use CommonsBooking\Repository\Timeframe;
 
 class Location extends CustomPost
 {
+    /**
+     * Returns bookable timeframes for location.
+     * @return array
+     */
+    public function getBookableTimeframes()
+    {
+        return Timeframe::get([$this->ID], [], [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID]);
+    }
 
+    /**
+     * Returns location infos.
+     * @return string
+     */
     public function location_information()
     {
         
@@ -22,6 +35,10 @@ class Location extends CustomPost
 
     }
 
+    /**
+     * Returns location contact info.
+     * @return string
+     */
     public function location_contact()
     {   
         if ( !empty( CB::get( 'location', CB_METABOX_PREFIX . 'location_contact') ) ) {

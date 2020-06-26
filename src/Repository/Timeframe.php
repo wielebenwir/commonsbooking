@@ -50,7 +50,7 @@ class Timeframe extends PostRepository
         );
     }
 
-    public static function get($locations = [], $items = [], $types = [], $date) {
+    public static function get($locations = [], $items = [], $types = [], $date = null) {
         $posts = [];
         // Default query
         $args = array(
@@ -59,8 +59,7 @@ class Timeframe extends PostRepository
             'post_status' => array('confirmed', 'unconfirmed', 'publish', 'inherit')
         );
 
-        // Filter by type first
-        if (count($types)) {
+        if(!count($types)) {
             $types = [
                 \CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
                 \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -68,16 +67,23 @@ class Timeframe extends PostRepository
                 \CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
                 \CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
             ];
-            $args['meta_query'] = array(
-                'relation' => 'AND',
-                [self::getTimeRangeQuery($date)],
-                [
-                    'key' => 'type',
-                    'value' => $types,
-                    'compare' => 'IN'
-                ]
-            );
         }
+
+        $args['meta_query'] = array(
+            'relation' => 'AND',
+            [
+                'key' => 'type',
+                'value' => $types,
+                'compare' => 'IN'
+            ]
+        );
+
+        if ($date) {
+            if($date) {
+                $args['meta_query'][] = [self::getTimeRangeQuery($date)];
+            }
+        }
+
         $query = new \WP_Query($args);
         if ($query->have_posts()) {
             $posts = $query->get_posts();
@@ -86,12 +92,15 @@ class Timeframe extends PostRepository
             // query result because wp_query is to slow for meta-querying them.
             if(count($locations) || count($items)) {
                 $posts = array_filter($posts, function ($post) use ($locations, $items) {
-                    $location = get_post_meta($post->ID, 'location-id', true);
-                    $item = get_post_meta($post->ID, 'item-id', true);
+                    $location = intval(get_post_meta($post->ID, 'location-id', true));
+                    $item = intval(get_post_meta($post->ID, 'item-id', true));
 
-                    return (!$location && !$item) ||
+                    return
+                        (!$location && !$item) ||
                         (!$location && in_array($item, $items)) ||
                         (in_array($location, $locations) && !$item) ||
+                        (!count($locations) && in_array($item, $items)) ||
+                        (in_array($location, $locations) && !count($items)) ||
                         (in_array($location, $locations) && in_array($item, $items));
                 });
             }

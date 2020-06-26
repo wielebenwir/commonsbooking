@@ -15,6 +15,7 @@ class Location extends View
     protected static $template = 'location/index.html.twig';
 
     /**
+     * Returns JSON-Data for Litepicker calendar.
      * @param $startDate
      * @param $endDate
      * @param $locations
@@ -186,6 +187,13 @@ class Location extends View
         wp_die(); // All ajax handlers die when finished
     }
 
+    /**
+     * Returns template data for frontend.
+     * @param \WP_Post|null $post
+     *
+     * @return array
+     * @throws \Exception
+     */
     public static function getTemplateData(\WP_Post $post = null) {
         if ($post == null) {
             global $post;
@@ -220,30 +228,41 @@ class Location extends View
         return $args;
     }
 
+    /**
+     * Echos Location default view.
+     * @param \WP_Post|null $post
+     *
+     * @throws \Exception
+     */
     public static function index(\WP_Post $post = null)
     {
         echo self::render(self::$template, self::getTemplateData($post));
     }
 
     /**
+     * Renders location listing.
      * @param $atts
      * @param null $content
      *
      * @return false|string
      * @throws \Exception
      */
-    public static function listItems($atts, $content = null) {
-        if(array_key_exists('location-id', $atts)) {
-            $templateData['items'] = \CommonsBooking\Repository\Item::getByLocation($atts['location-id']);
-            if(count($templateData['items'])) {
-                ob_start();
-                include_once CB_PLUGIN_DIR . 'templates/item-list.php';
-                return ob_get_clean();
-            } else {
-                return 'No items for location found..';
-            }
+    public static function listLocations($atts, $content = null) {
+        $templateData['locations'] = [];
+        if(is_array($atts) && array_key_exists('item-id', $atts)) {
+            $templateData['locations'] = \CommonsBooking\Repository\Location::getByItem($atts['item-id']);
         } else {
-            return 'Missing attribute location-id...' . var_export($atts, true);
+            $templateData['locations'] = \CommonsBooking\Repository\Location::getAllPublished();
+        }
+
+        if(count($templateData['locations'])) {
+            ob_start();
+            include CB_PLUGIN_DIR . 'templates/location-list.php';
+            return ob_get_clean();
+        } else {
+            return 'No Locations for item found..';
         }
     }
+
+
 }
