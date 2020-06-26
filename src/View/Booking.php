@@ -34,7 +34,7 @@ class Booking extends View
                 'post' => $item,
                 'thumbnail' => get_the_post_thumbnail( $item->ID, 'thumbnail' )
             ),
-            'user' => wp_get_current_user(),
+            'user' => get_user_by('id', $post->post_author),
             'type' => \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID, // statically for bookings, when it works we make it dynamic
             'startDate' => $startDate,
             'endDate' => $endDate
