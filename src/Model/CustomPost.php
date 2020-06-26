@@ -25,6 +25,16 @@ class CustomPost
         }
     }
 
+    /**
+     * Returns meta-field value.
+     * @param $field
+     *
+     * @return mixed
+     */
+    public function get_meta($field) {
+        return get_post_meta($this->post->ID, $field, true);
+    }
+
     public function __get($name)
     {
         if(property_exists($this->post, $name)) {

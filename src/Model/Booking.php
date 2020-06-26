@@ -4,16 +4,93 @@
 namespace CommonsBooking\Model;
 
 
+use CommonsBooking\CB\CB;
+use CommonsBooking\Repository\Timeframe;
+
 class Booking extends CustomPost
 {
 
-    
+    /**
+     * @return Location
+     * @throws \Exception
+     */
+    public function getLocation() {
+        $locationId = self::get_meta('location-id');
+        if($post = get_post($locationId)) {
+            return new Location($post);
+        }
+        return $post;
+    }
+
+    /**
+     * @return Item
+     * @throws \Exception
+     */
+    public function getItem() {
+        $itemId = self::get_meta('item-id');
+
+        if($post = get_post($itemId)) {
+            return new Item($post);
+        }
+        return $post;
+    }
+
+    /**
+     * Returns suitable bookable Timeframe for booking.
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getBookableTimeFrame() {
+        $locationId = self::get_meta('location-id');
+        $itemId = self::get_meta('item-id');
+
+        $response = Timeframe::get(
+            [$locationId],
+            [$itemId],
+            [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID],
+            date(CB::getInternalDateFormat(), self::get_meta('start-date'))
+        );
+
+        if(count($response) == 1) {
+            return array_shift($response);
+        } else {
+            throw new \Exception("more than one timeframes found");
+        }
+    }
+
+    /**
+     * Assings relevant meta fields from related bookable timeframe to booking.
+     * @throws \Exception
+     */
+    public function assignBookableTimeframeFields() {
+        $timeframe = $this->getBookableTimeFrame();
+        $neededMetaFields = [
+            "full-day",
+            "grid",
+            "start-time",
+            "end-time"
+        ];
+        foreach($neededMetaFields as $fieldName) {
+            update_post_meta(
+                $this->post->ID,
+                $fieldName,
+                get_post_meta($timeframe->ID,
+                    $fieldName,
+                    true
+                )
+            );
+        }
+    }
+
+    /**
+     * @return string
+     */
     public function booking_timeframe_date()
     {
         $format = get_option('date_format');
         
-        $startdate = date($format, get_post_meta($this->post->ID, 'start-date', true));
-        $enddate = date($format, get_post_meta($this->post->ID, 'end-date', true));
+        $startdate = date($format, self::get_meta('start-date'));
+        $enddate = date($format, self::get_meta('end-date'));
 
         if ($startdate == $enddate) {
             return sprintf( esc_html__( ' on %s ' , CB_TEXTDOMAIN), $startdate );

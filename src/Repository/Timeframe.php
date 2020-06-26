@@ -7,6 +7,11 @@ namespace CommonsBooking\Repository;
 class Timeframe extends PostRepository
 {
 
+    /**
+     * @param $date
+     *
+     * @return array
+     */
     protected static function getTimeRangeQuery($date)
     {
         return array(
@@ -24,38 +29,38 @@ class Timeframe extends PostRepository
                     'type' => 'numeric'
                 ),
                 array(
-                    'key' => 'end-date',
-                    'value' => [
-                        strtotime($date),
-                        3000000000
-                    ],
-                    'compare' => 'BETWEEN',
-                    'type' => 'numeric'
-                )
-            ),
-            // start date is before end of current day and there is no rep end
-            array(
-                'relation' => "AND",
-                array(
-                    'key' => 'start-date',
-                    'value' => strtotime($date . 'T23:59'),
-                    'compare' => '<=',
-                    'type' => 'numeric'
-                ),
-                array(
-                    'key' => 'end-date',
-                    'compare' => 'NOT EXISTS'
+                    'relation' => "OR",
+                    array(
+                        'key' => 'end-date',
+                        'value' => [
+                            strtotime($date),
+                            3000000000
+                        ],
+                        'compare' => 'BETWEEN',
+                        'type' => 'numeric'
+                    ),
+                    array(
+                        'key' => 'end-date',
+                        'compare' => 'NOT EXISTS'
+                    )
                 )
             )
         );
     }
 
+    /**
+     * @param array $locations
+     * @param array $items
+     * @param array $types
+     * @param string $date Date-String
+     *
+     * @return array
+     */
     public static function get($locations = [], $items = [], $types = [], $date = null) {
         $posts = [];
         // Default query
         $args = array(
             'post_type' => \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType(),
-            'meta_query' => self::getTimeRangeQuery($date),
             'post_status' => array('confirmed', 'unconfirmed', 'publish', 'inherit')
         );
 
@@ -69,19 +74,24 @@ class Timeframe extends PostRepository
             ];
         }
 
-        $args['meta_query'] = array(
-            'relation' => 'AND',
-            [
-                'key' => 'type',
-                'value' => $types,
-                'compare' => 'IN'
-            ]
-        );
-
-        if ($date) {
-            if($date) {
-                $args['meta_query'][] = [self::getTimeRangeQuery($date)];
-            }
+        if($date) {
+            $args['meta_query'] = array(
+                'relation' => 'AND',
+                [self::getTimeRangeQuery($date)],
+                [
+                    'key' => 'type',
+                    'value' => $types,
+                    'compare' => 'IN'
+                ]
+            );
+        } else {
+            $args['meta_query'] = array(
+                [
+                    'key' => 'type',
+                    'value' => $types,
+                    'compare' => 'IN'
+                ]
+            );
         }
 
         $query = new \WP_Query($args);

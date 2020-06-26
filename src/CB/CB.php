@@ -9,9 +9,15 @@ use function PHPUnit\Framework\isEmpty;
 class CB
 {
 
+    protected static $INTERNAL_DATE_FORMAT = 'd.m.Y';
+
     public static $thePostID;
     public static $key;
     public static $property;
+
+    public static function getInternalDateFormat() {
+        return static::$INTERNAL_DATE_FORMAT;
+    }
 
     /**
      * get
