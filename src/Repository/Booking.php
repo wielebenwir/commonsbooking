@@ -60,7 +60,6 @@ class Booking extends PostRepository
             } else {
                 throw new \Exception(__CLASS__ . "::" . __LINE__ . ": Found more than one bookings");
             }
-
         }
     }
 

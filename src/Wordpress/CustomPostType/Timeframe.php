@@ -101,14 +101,13 @@ class Timeframe extends CustomPostType
             $startDate = isset($_REQUEST['start-date']) && $_REQUEST['start-date'] != "" ? $_REQUEST['start-date'] : null;
             $endDate = isset($_REQUEST['end-date']) && $_REQUEST['end-date'] != "" ? $_REQUEST['end-date'] : null;
 
-            /** @var \WP_Post $booking */
+            /** @var \CommonsBooking\Model\Booking $booking */
             $booking = Booking::getBookingByDate(
                 $startDate,
                 $endDate,
                 $locationId,
                 $itemId
             );
-
 
             $postarr = array(
                 "type"        => $_REQUEST["type"],
@@ -121,10 +120,11 @@ class Timeframe extends CustomPostType
                 $postarr['post_name'] = self::generateRandomSlug();
                 $postId = wp_insert_post($postarr, true);
 
+                $booking = new \CommonsBooking\Model\Booking($postId);
+                $booking->assignBookableTimeframeFields();
             } else {
                 $postarr['ID'] = $booking->ID;
                 $postId = wp_update_post($postarr);
-
             }
 
             // Trigger Mail, only send mail if status has changed     
