@@ -119,9 +119,6 @@ class Timeframe extends CustomPostType
             if (empty($booking)) {
                 $postarr['post_name'] = self::generateRandomSlug();
                 $postId = wp_insert_post($postarr, true);
-
-                $booking = new \CommonsBooking\Model\Booking($postId);
-                $booking->assignBookableTimeframeFields();
             } else {
                 $postarr['ID'] = $booking->ID;
                 $postId = wp_update_post($postarr);
