@@ -21,14 +21,13 @@ class Location extends CustomPost
      * Returns location infos.
      * @return string
      */
-    public function location_information()
+    public function location_address()
     {
         
         $location = array (
-            get_the_title($this->post->ID),
-            CB::get('location', CB_METABOX_PREFIX . 'location_street'),
-            CB::get('location', CB_METABOX_PREFIX . 'location_postcode'),
-            CB::get('location', CB_METABOX_PREFIX . 'location_city'),
+            CB::get('location', CB_METABOX_PREFIX . 'location_street', $this->post->ID),
+            CB::get('location', CB_METABOX_PREFIX . 'location_postcode', $this->post->ID),
+            CB::get('location', CB_METABOX_PREFIX . 'location_city', $this->post->ID),
         );
 
         return implode('<br>', $location);
