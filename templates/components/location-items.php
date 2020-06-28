@@ -4,7 +4,8 @@
         // {% for item in items %}
         foreach($templateData['items'] as $item) {
     ?>
-        <li><a href="<?php echo $templateData['postUrl']; ?>&item=<?php echo $item->ID; ?>"><?php echo $item->post_title; ?></a></li>
+        <li>
+        <a href="<?php echo esc_url( add_query_arg( 'item', $item->ID ), $templateData['postUrl'] ); ?>"><?php echo $item->post_title; ?></a></li>
     <?php
         // {% endfor %}
         }
