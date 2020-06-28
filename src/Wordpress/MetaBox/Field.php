@@ -50,7 +50,7 @@ class Field
         );
 
         if($this->getType() == 'select') {
-            $params['show_option_none'] = true;
+            $params['show_option_none'] = __('-- Bitte auswählen --', CB_TEXTDOMAIN);
         }
 
         if(count($this->getOptions())) {
