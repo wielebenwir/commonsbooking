@@ -12,21 +12,29 @@
             <input type="hidden" name="post_type" value="cb_timeframe" />
             <input type="hidden" name="post_status" value="unconfirmed" />
 
-            <div class="time-selection start-date">
-                <span class="date"></span>
-                <label for="start-date">Abholzeit</label>
-                <select id="start-date" name="start-date"></select>
-            </div>
+            <div class="time-selection-container">
 
-            <div class="time-selection end-date">
-                <span style="padding-left: 1em; padding-right: 1em;"> bis </span><span class="date"></span>
-                <label for="end-date">Abgabezeit: </label>
-                <select id="end-date" name="end-date"></select>
+                <div class="time-selection start-date">
+                    <label for="start-date"><?php echo __('Pickup time', CB_TEXTDOMAIN); ?></label>
+                    <div class="cb-box-inner">
+                        <span class="date"></span>
+                        <select id="start-date" name="start-date"></select>
+                    </div>
+                </div>
+                <div class="cb-divider">&rarr;</div>
+                <div class="time-selection end-date">
+                    <label for="end-date"><?php echo __('Return time', CB_TEXTDOMAIN); ?> </label>
+                    <div class="cb-box-inner">
+                        <span class="date"></span>
+                        <select id="end-date" name="end-date"></select>
+                    </div>
+                </div>
+
             </div>
 
             <p id="fullDayInfo"></p>
-
-            <input type="submit" value="Buchen" />
+            
+            <input type="submit" value="<?php echo __('Book', CB_TEXTDOMAIN); ?>" />
         </form>
     </div>
 <?php } else {
