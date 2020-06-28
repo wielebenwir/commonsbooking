@@ -20,6 +20,11 @@ class Location extends CustomPost
     /**
      * Returns location infos.
      * @return string
+     */    
+    /**
+     * location_address
+     *
+     * @return void
      */
     public function location_address()
     {
