@@ -18,78 +18,17 @@
 
 .cb-box {
 	background: $color-gray-background;
-
 	padding: $padding $padding-big;
 	overflow: hidden;
 	border-radius: $radius;
 	margin-bottom: $padding;
 }
 
-.cb-box-subposts {
+.cb-box-inner {
 	background: $color-white;
 	padding: $padding;
 	border-radius: $radius;
 }
-
-/* -------------------- Tables -------------------- */
-
-.cb-columns {
-	@include breakpoint(phablet) {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-		min-width: 0;
-	}
-
-	.cb-button-container {
-		text-align: right;
-		a {
-			display: inline-block;
-			width: auto;
-		}
-	}
-}
-
-	/* column sizes */
-	.cb-columns-50-50 {
-
-		@include breakpoint(phablet) {
-			> :nth-child(odd) {
-				width: 48%;
-				min-width: 0;
-				img { width: 100% }
-			}
-			> :nth-child(even) {
-				width: 48%;
-				min-width: 0;
-			}
-		}
-	}
-	.cb-columns-70-30 {
-		@include breakpoint(phablet) {
-
-			> :nth-child(odd) {
-			width: 70%;
-			}
-			> :nth-child(even) {
-				width: 30%;
-			}
-		}
-
-	}
-	.cb-columns-20-80 {
-
-	@include breakpoint(phablet) {
-			> :nth-child(odd) {
-				width: 20%;
-
-			}
-			> :nth-child(even) {
-				width: 80%;
-			}
-		}
-	}
 
 
 
@@ -149,14 +88,14 @@
 	&.big {
 		padding: $padding $padding-big;
 	}
-
+	&.secondary {
+		background-color: $color-white;
+		color: $color-error;
+	}
 
 	&.cancel {
 		background-color: $color-error;
-		&.secondary {
-			background-color: $color-white;
-			color: $color-error;
-		}
+
 	}
 
 	&.confirm {

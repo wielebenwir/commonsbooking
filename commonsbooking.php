@@ -30,6 +30,8 @@ add_action('admin_enqueue_scripts', 'commonsbooking_admin');
 function commonsbooking_public()
 {
     wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__) . 'Resources/assets/public/css/public.css');
+
+    wp_enqueue_style('cb-styles-global', plugin_dir_url(__FILE__) . 'Resources/assets/global/css/global.css');
     wp_enqueue_style('cb-styles-daterangepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css');
 
     wp_enqueue_script('cb-scripts-jquery', 'https://cdn.jsdelivr.net/jquery/latest/jquery.min.js', array(), '1.0.0', true);

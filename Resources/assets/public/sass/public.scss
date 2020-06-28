@@ -11,9 +11,16 @@
 /* Global styles */
 @import "../../global/sass/global";
 
+/* List styles */
+@import "partials/_layouts";
+
+/* List styles */
+@import "partials/_lists";
+
+/* List styles */
+@import "partials/_forms";
+
 /* Calendar styles */
 @import "partials/_calendar";
 
 @import "partials/_debug";
-
-@import "themes/_kasimir";
