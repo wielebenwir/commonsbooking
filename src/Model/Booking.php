@@ -71,6 +71,7 @@ class Booking extends CustomPost
         if ($startdate == $enddate) {
             return sprintf( esc_html__( ' on %s ' , CB_TEXTDOMAIN), $startdate );
         } else {
+            /* translators: %1 = startdate, %2 = enddate in wordpress defined format */
             return sprintf( __( ' from %1$s until %2$s ', CB_TEXTDOMAIN ), $startdate, $enddate ) ;
         }
     }

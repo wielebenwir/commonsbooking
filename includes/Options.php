@@ -51,7 +51,7 @@ $options_array = array(
           array(
             'name'    => __( 'Items slug', CB_TEXTDOMAIN ),
             'id'      => 'posttypes_items-slug',
-            'description' => sprintf ( __( 'The url for the items archive. E.g: %s ', CB_TEXTDOMAIN ), network_site_url('/cb2-items/') ),
+            'description' => sprintf ( __( 'The url for the items archive. E.g: %s ', CB_TEXTDOMAIN ), network_site_url('/cb_items/') ),
             'type'    => 'text',
             'default' => __( 'cb2_item', CB_TEXTDOMAIN ),
           ),

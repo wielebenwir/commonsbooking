@@ -36,25 +36,25 @@ class Location extends CustomPostType
         $labels = array(
             'name'                  => __('Locations', CB_TEXTDOMAIN),
             'singular_name'         => __('Location', CB_TEXTDOMAIN),
-            'add_new'               => __('Hinzufügen', CB_TEXTDOMAIN),
-            'add_new_item'          => __('Location hinzufügen', CB_TEXTDOMAIN),
-            'edit_item'             => __('Location bearbeiten', CB_TEXTDOMAIN),
-            'new_item'              => __('Location hinzufügen', CB_TEXTDOMAIN),
-            'view_item'             => __('Location anzeigen', CB_TEXTDOMAIN),
-            'view_items'            => __('Locations anzeigen', CB_TEXTDOMAIN),
-            'search_items'          => __('Location suchen', CB_TEXTDOMAIN),
-            'not_found'             => __('Keine Locations gefunden', CB_TEXTDOMAIN),
-            'not_found_in_trash'    => __('Keine Locations im Papierkorb gefunden', CB_TEXTDOMAIN),
-            'parent_item_colon'     => __('Übergeordnete Locations:', CB_TEXTDOMAIN),
-            'all_items'             => __('Alle Locations', CB_TEXTDOMAIN),
-            'archives'              => __('Location Archiv', CB_TEXTDOMAIN),
-            'attributes'            => __('Location Attribute', CB_TEXTDOMAIN),
-            'insert_into_item'      => __('Zum Location hinzufügen', CB_TEXTDOMAIN),
-            'uploaded_to_this_item' => __('Zum Location hinzugefügt', CB_TEXTDOMAIN),
-            'featured_image'        => __('Locationbild', CB_TEXTDOMAIN),
-            'set_featured_image'    => __('Locationbild setzen', CB_TEXTDOMAIN),
-            'remove_featured_image' => __('Locationbild entfernen', CB_TEXTDOMAIN),
-            'use_featured_image'    => __('Als Locationbild verwenden', CB_TEXTDOMAIN),
+            'add_new'               => __('Add new', CB_TEXTDOMAIN),
+            'add_new_item'          => __('Add new location', CB_TEXTDOMAIN),
+            'edit_item'             => __('Edit location', CB_TEXTDOMAIN),
+            'new_item'              => __('Add new location', CB_TEXTDOMAIN),
+            'view_item'             => __('Show location', CB_TEXTDOMAIN),
+            'view_items'            => __('Show locations', CB_TEXTDOMAIN),
+            'search_items'          => __('Search locations', CB_TEXTDOMAIN),
+            'not_found'             => __('location not found', CB_TEXTDOMAIN),
+            'not_found_in_trash'    => __('No locations found in trash', CB_TEXTDOMAIN),
+            'parent_item_colon'     => __('Parent location:', CB_TEXTDOMAIN),
+            'all_items'             => __('All locations', CB_TEXTDOMAIN),
+            'archives'              => __('Location archive', CB_TEXTDOMAIN),
+            'attributes'            => __('Location attributes', CB_TEXTDOMAIN),
+            'insert_into_item'      => __('Add to location', CB_TEXTDOMAIN),
+            'uploaded_to_this_item' => __('Added to location', CB_TEXTDOMAIN),
+            'featured_image'        => __('Location image', CB_TEXTDOMAIN),
+            'set_featured_image'    => __('set location image', CB_TEXTDOMAIN),
+            'remove_featured_image' => __('remove location image', CB_TEXTDOMAIN),
+            'use_featured_image'    => __('use as location image', CB_TEXTDOMAIN),
             'menu_name'             => __('Locations', CB_TEXTDOMAIN),
         );
 
@@ -128,7 +128,7 @@ class Location extends CustomPostType
          */
         $cmb = new_cmb2_box(array(
             'id'           => CB_METABOX_PREFIX . 'location_adress',
-            'title'        => __('Adresse', CB_TEXTDOMAIN),
+            'title'        => __('Address', CB_TEXTDOMAIN),
             'object_types' => array('cb_location',), // Post type
             'context'      => 'normal',
             'priority'     => 'high',
@@ -139,7 +139,7 @@ class Location extends CustomPostType
 
         // Adress
         $cmb->add_field(array(
-            'name'       => __('Straße / Hausnr.', CB_TEXTDOMAIN),
+            'name'       => __('Street / No.', CB_TEXTDOMAIN),
             'desc'       => __('field description (optional)', CB_TEXTDOMAIN),
             'id'         => CB_METABOX_PREFIX . 'location_street',
             'type'       => 'text',
@@ -152,7 +152,7 @@ class Location extends CustomPostType
 
         // Postcode
         $cmb->add_field(array(
-            'name'       => __('PLZ', CB_TEXTDOMAIN),
+            'name'       => __('Postcode', CB_TEXTDOMAIN),
             'desc'       => __('field description (optional)', CB_TEXTDOMAIN),
             'id'         => CB_METABOX_PREFIX . 'location_postcode',
             'type'       => 'text',
@@ -165,7 +165,7 @@ class Location extends CustomPostType
 
         // City
         $cmb->add_field(array(
-            'name'       => __('Ort', CB_TEXTDOMAIN),
+            'name'       => __('City', CB_TEXTDOMAIN),
             'desc'       => __('field description (optional)', CB_TEXTDOMAIN),
             'id'         => CB_METABOX_PREFIX . 'location_city',
             'type'       => 'text',
@@ -178,7 +178,7 @@ class Location extends CustomPostType
 
         // Country
         $cmb->add_field(array(
-            'name'       => __('Land', CB_TEXTDOMAIN),
+            'name'       => __('Country', CB_TEXTDOMAIN),
             'desc'       => __('field description (optional)', CB_TEXTDOMAIN),
             'id'         => CB_METABOX_PREFIX . 'location_country',
             'type'       => 'text',
@@ -194,7 +194,7 @@ class Location extends CustomPostType
          */
         $cmb = new_cmb2_box(array(
             'id'           => CB_METABOX_PREFIX . 'location_info',
-            'title'        => __('Informationen', CB_TEXTDOMAIN),
+            'title'        => __('General Location information', CB_TEXTDOMAIN),
             'object_types' => array('cb_location',), // Post type
             'context'      => 'normal',
             'priority'     => 'high',
@@ -205,7 +205,7 @@ class Location extends CustomPostType
 
         // short description
         $cmb->add_field(array(
-            'name'       => __('Kurzbeschreibung', CB_TEXTDOMAIN),
+            'name'       => __('Shortdescription', CB_TEXTDOMAIN),
             'desc'       => __('field description (optional)', CB_TEXTDOMAIN),
             'id'         => CB_METABOX_PREFIX . 'location_shortdescription',
             'type'       => 'text',
@@ -219,7 +219,7 @@ class Location extends CustomPostType
 
         // pickup description
         $cmb->add_field(array(
-            'name'       => __('Abhol-Informationen', CB_TEXTDOMAIN),
+            'name'       => __('Pickup instructions', CB_TEXTDOMAIN),
             'desc'       => __('field description (optional)', CB_TEXTDOMAIN),
             'id'         => CB_METABOX_PREFIX . 'location_pickupinstructions',
             'type'       => 'textarea_small',
@@ -232,7 +232,7 @@ class Location extends CustomPostType
 
         // location contact
         $cmb->add_field(array(
-            'name'       => __('Standort Kontakt', CB_TEXTDOMAIN),
+            'name'       => __('Location contact information', CB_TEXTDOMAIN),
             'desc'       => __('field description (optional)', CB_TEXTDOMAIN),
             'id'         => CB_METABOX_PREFIX . 'location_contact',
             'type'       => 'textarea_small',

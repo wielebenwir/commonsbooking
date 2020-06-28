@@ -113,7 +113,7 @@ class Timeframe extends CustomPostType
                 "type"        => $_REQUEST["type"],
                 "post_status" => $_REQUEST["post_status"],
                 "post_type"   => self::getPostType(),
-                "post_title"  => __("Buchung", CB_TEXTDOMAIN)
+                "post_title"  => __("Booking", CB_TEXTDOMAIN)
             );
 
             if (empty($booking)) {
@@ -146,25 +146,25 @@ class Timeframe extends CustomPostType
         $labels = array(
             'name'                  => __('Timeframes', CB_TEXTDOMAIN),
             'singular_name'         => __('Timeframe', CB_TEXTDOMAIN),
-            'add_new'               => __('Hinzufügen', CB_TEXTDOMAIN),
-            'add_new_item'          => __('Timeframe hinzufügen', CB_TEXTDOMAIN),
-            'edit_item'             => __('Timeframe bearbeiten', CB_TEXTDOMAIN),
-            'new_item'              => __('Timeframe hinzufügen', CB_TEXTDOMAIN),
-            'view_item'             => __('Timeframe anzeigen', CB_TEXTDOMAIN),
-            'view_items'            => __('Timeframes anzeigen', CB_TEXTDOMAIN),
-            'search_items'          => __('Timeframe suchen', CB_TEXTDOMAIN),
-            'not_found'             => __('Keine Timeframes gefunden', CB_TEXTDOMAIN),
-            'not_found_in_trash'    => __('Keine Timeframes im Papierkorb gefunden', CB_TEXTDOMAIN),
-            'parent_item_colon'     => __('Übergeordnete Timeframes:', CB_TEXTDOMAIN),
-            'all_items'             => __('Alle Timeframes', CB_TEXTDOMAIN),
-            'archives'              => __('Timeframe Archiv', CB_TEXTDOMAIN),
-            'attributes'            => __('Timeframe Attribute', CB_TEXTDOMAIN),
-            'insert_into_item'      => __('Zum Timeframe hinzufügen', CB_TEXTDOMAIN),
-            'uploaded_to_this_item' => __('Zum Timeframe hinzugefügt', CB_TEXTDOMAIN),
-            'featured_image'        => __('Timeframebild', CB_TEXTDOMAIN),
-            'set_featured_image'    => __('Timeframebild setzen', CB_TEXTDOMAIN),
-            'remove_featured_image' => __('Timeframebild entfernen', CB_TEXTDOMAIN),
-            'use_featured_image'    => __('Als Timeframebild verwenden', CB_TEXTDOMAIN),
+            'add_new'               => __('Add new', CB_TEXTDOMAIN),
+            'add_new_item'          => __('Add new timeframe', CB_TEXTDOMAIN),
+            'edit_item'             => __('Edit timeframe', CB_TEXTDOMAIN),
+            'new_item'              => __('Add new timeframe', CB_TEXTDOMAIN),
+            'view_item'             => __('Show timeframe', CB_TEXTDOMAIN),
+            'view_items'            => __('Show timeframes', CB_TEXTDOMAIN),
+            'search_items'          => __('Search timeframes', CB_TEXTDOMAIN),
+            'not_found'             => __('Timeframes not found', CB_TEXTDOMAIN),
+            'not_found_in_trash'    => __('No timeframes found in trash', CB_TEXTDOMAIN),
+            'parent_item_colon'     => __('Parent timeframes:', CB_TEXTDOMAIN),
+            'all_items'             => __('All timeframes', CB_TEXTDOMAIN),
+            'archives'              => __('Timeframe archive', CB_TEXTDOMAIN),
+            'attributes'            => __('Timeframe attributes', CB_TEXTDOMAIN),
+            'insert_into_item'      => __('Add to timeframe', CB_TEXTDOMAIN),
+            'uploaded_to_this_item' => __('Added to timeframe', CB_TEXTDOMAIN),
+            'featured_image'        => __('Timeframe image', CB_TEXTDOMAIN),
+            'set_featured_image'    => __('set timeframe image', CB_TEXTDOMAIN),
+            'remove_featured_image' => __('remove timeframe image', CB_TEXTDOMAIN),
+            'use_featured_image'    => __('use as timeframe image', CB_TEXTDOMAIN),
             'menu_name'             => __('Timeframes', CB_TEXTDOMAIN),
         );
 

@@ -163,9 +163,9 @@ class Plugin
 
     public static function registerPostStatuses()
     {
-        $cancelled = new PostStatus("cancelled", __('Storniert', CB_TEXTDOMAIN));
-        $confirmed = new PostStatus("confirmed", __('Bestätigt', CB_TEXTDOMAIN));
-        $unconfirmed = new PostStatus("unconfirmed", __('Nicht bestätigt', CB_TEXTDOMAIN));
+        $cancelled = new PostStatus("cancelled", __('Cancelled', CB_TEXTDOMAIN));
+        $confirmed = new PostStatus("confirmed", __('Confirmed', CB_TEXTDOMAIN));
+        $unconfirmed = new PostStatus("unconfirmed", __('Unconfirmed', CB_TEXTDOMAIN));
     }
 
 

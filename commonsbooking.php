@@ -4,6 +4,8 @@ defined('ABSPATH') or die("Thanks for visting");
 /**
  * Plugin Name:  CommonsBooking
  * Plugin URI: ~
+ * Author: wielebenwir e.V.
+ * Domain Path: /languages
  * Description: ~
  * Version: 0.1.0
  * License: GPL2
@@ -47,6 +49,11 @@ function commonsbooking_public()
 
 add_action('wp_enqueue_scripts', 'commonsbooking_public');
 add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 'get_calendar_data'));
+
+function commonsbooking_load_plugin_textdomain() {
+    load_plugin_textdomain( CB_TEXTDOMAIN, FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+}
+add_action( 'plugins_loaded', 'commonsbooking_load_plugin_textdomain' );
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/cmb2/cmb2/init.php';
