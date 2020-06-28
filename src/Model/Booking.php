@@ -69,9 +69,10 @@ class Booking extends CustomPost
         $enddate = date($format, self::get_meta('end-date'));
 
         if ($startdate == $enddate) {
-            return sprintf( esc_html__( ' on %s ' , CB_TEXTDOMAIN), $startdate );
+            return sprintf( esc_html__( ' on %s ' , 'commonsbooking'), $startdate );
         } else {
-            return sprintf( __( ' from %1$s until %2$s ', CB_TEXTDOMAIN ), $startdate, $enddate ) ;
+            /* translators: %1 = startdate, %2 = enddate in wordpress defined format */
+            return sprintf( __( ' from %1$s until %2$s ', 'commonsbooking' ), $startdate, $enddate ) ;
         }
     }
 
@@ -107,7 +108,7 @@ class Booking extends CustomPost
 
     public function booking_link()
     {
-        return '<a href="' . site_url('?cb_timeframe=' . $this->post->post_name) . '">' . __( 'Link to your booking', CB_TEXTDOMAIN ) . '</a>';
+        return '<a href="' . site_url('?cb_timeframe=' . $this->post->post_name) . '">' . __( 'Link to your booking', 'commonsbooking' ) . '</a>';
     }
     
 

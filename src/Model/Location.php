@@ -47,7 +47,7 @@ class Location extends CustomPost
     {   
         if ( !empty( CB::get( 'location', CB_METABOX_PREFIX . 'location_contact') ) ) {
             $contact[] = "<br>"; // needed for email template
-            $contact[] = __( 'Please contact the contact persons at the location directly if you have any questions regarding collection or return:', CB_TEXTDOMAIN );
+            $contact[] = __( 'Please contact the contact persons at the location directly if you have any questions regarding collection or return:', 'commonsbooking' );
             $contact[] = nl2br(CB::get('location',  CB_METABOX_PREFIX . 'location_contact'));
         }
 
