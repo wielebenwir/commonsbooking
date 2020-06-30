@@ -110,6 +110,17 @@ class Booking extends CustomPost
     {
         return '<a href="' . site_url('?cb_timeframe=' . $this->post->post_name) . '">' . __( 'Link to your booking', 'commonsbooking' ) . '</a>';
     }
+
+
+    public function submitLabel()
+    {
+        return __('Book', 'commonsbooking'); 
+    }
+
+    public function cancelLabel()
+    {
+        return __('Cancel', 'commonsbooking'); 
+    }
     
 
 }
