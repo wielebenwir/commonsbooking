@@ -20,23 +20,23 @@
 			display: inline;
 		}
 		.cb-table-header {
-			 span {
-			}
 			display:block;
 			overflow: hidden;
 			img { float: right;}
 		}
 
 		&.cb-timeframe {
-			@extend .cb-columns; 
+			@extend .cb-cols; 
 			text-align: center;
 			span {
 				@extend .cb-big;
 			}
 		}
 
-		h2, h3 {
+		h2, h3, h4 {
 			@extend .cb-big;
+			margin: 0;
+			padding: 0;
 		}
 
 		> div.cb-meta {
@@ -44,7 +44,7 @@
 			margin-top: $padding;
 			@extend .cb-box-inner;
 			> div {
-				@extend .cb-columns;
+				@extend .cb-cols;
 			}
 			div {
 					padding: $padding / 2 0;
