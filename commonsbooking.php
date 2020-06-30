@@ -53,6 +53,7 @@ function commonsbooking_public()
 }
 
 add_action('wp_enqueue_scripts', 'commonsbooking_public');
+add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 'get_calendar_data'));
 add_action('wp_ajax_nopriv_calendar_data', array(\CommonsBooking\View\Location::class, 'get_calendar_data'));
 
 //public function commonsbooking_load_plugin_textdomain() {
