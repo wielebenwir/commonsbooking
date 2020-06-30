@@ -17,8 +17,8 @@ class Booking extends View
         $item = get_post($itemId);
         $location = get_post($locationId);
 
-        $startDate = get_post_meta($post->ID, 'start-date', true);
-        $endDate = get_post_meta($post->ID, 'end-date', true);
+        $startDate = intval(get_post_meta($post->ID, 'start-date', true));
+        $endDate = intval(get_post_meta($post->ID, 'end-date', true));
 
         return array(
             'post' => $post,
@@ -34,7 +34,7 @@ class Booking extends View
                 'post' => $item,
                 'thumbnail' => get_the_post_thumbnail( $item->ID, 'thumbnail' )
             ),
-            'user' => wp_get_current_user(),
+            'user' => get_user_by('id', $post->post_author),
             'type' => \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID, // statically for bookings, when it works we make it dynamic
             'startDate' => $startDate,
             'endDate' => $endDate
@@ -61,13 +61,13 @@ class Booking extends View
         $current_user = wp_get_current_user();
         if(intval($current_user->ID) == intval($post->post_author)) {
             echo self::render(
-                'timeframe/booking/unconfirmed.html.twig',
+                'timeframe/booking/confirmed.html.twig',
                 array_merge(
                     self::getDefaultParams($post),
                     array(
                         'type' => Timeframe::BOOKING_CANCELED_ID,
                         'postStatus' => 'cancelled',
-                        'submitLabel' => __( 'Stornieren', CB_TEXTDOMAIN )
+                        'submitLabel' => __( 'Cancel', 'commonsbooking' )
                     )
                 )
             );
@@ -88,7 +88,13 @@ class Booking extends View
                 self::getDefaultParams($post),
                 array(
                     'postStatus' => 'confirmed',
-                    'submitLabel' => __( 'Buchen', CB_TEXTDOMAIN )
+                    'submitLabel' => __( 'Book', 'commonsbooking' ),
+                    'cancellation' =>
+                    [
+                        'type' => Timeframe::BOOKING_CANCELED_ID,
+                        'postStatus' => 'cancelled',
+                        'submitLabel' => __( 'Cancel', 'commonsbooking' )
+                    ]
                 )
             )
         );

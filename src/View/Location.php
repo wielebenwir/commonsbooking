@@ -2,7 +2,7 @@
 
 namespace CommonsBooking\View;
 
-
+use CommonsBooking\CB\CB;
 use CommonsBooking\Model\Calendar;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Week;
@@ -15,6 +15,7 @@ class Location extends View
     protected static $template = 'location/index.html.twig';
 
     /**
+     * Returns JSON-Data for Litepicker calendar.
      * @param $startDate
      * @param $endDate
      * @param $locations
@@ -41,6 +42,9 @@ class Location extends View
             'highlightedDays' => []
         ];
 
+        if(count($locations) === 1 ) {
+            $jsonResponse['location']['fullDayInfo'] = CB::get('location', CB_METABOX_PREFIX . 'location_pickupinstructions', $locations[0]);
+        }
         /** @var Week $week */
         foreach ($calendar->getWeeks() as $week) {
             /** @var Day $day */
@@ -52,6 +56,7 @@ class Location extends View
                     'bookedDay' => true,
                     'partiallyBookedDay' => false,
                     'holiday' => true,
+                    'fullDay' => false,
                     'firstSlotBooked' => null,
                     'lastSlotBooked' => null
                 ];
@@ -87,7 +92,7 @@ class Location extends View
 
                         if ($timeFrameType == Timeframe::BOOKABLE_ID) {
                             $dayArray['slots'][] = $slot;
-                        }
+                         }
 
                         // Remove holiday flag, if there is at least one slot that isn't of type holiday
                         if (!in_array($timeFrameType, [Timeframe::HOLIDAYS_ID, Timeframe::OFF_HOLIDAYS_ID])) {
@@ -120,6 +125,11 @@ class Location extends View
                     $dayArray['locked'] = true;
                     $dayArray['holiday'] = false;
                     $dayArray['bookedDay'] = false;
+                } else {
+                    if(count($dayArray['slots']) === 1) {
+                        $timeframe = $dayArray['slots'][0]['timeframe'];
+                        $dayArray['fullDay'] = get_post_meta($timeframe->ID, 'full-day', true) == "on";
+                    }
                 }
 
                 $jsonResponse['days'][$day->getFormattedDate('Y-m-d')] = $dayArray;
@@ -177,6 +187,13 @@ class Location extends View
         wp_die(); // All ajax handlers die when finished
     }
 
+    /**
+     * Returns template data for frontend.
+     * @param \WP_Post|null $post
+     *
+     * @return array
+     * @throws \Exception
+     */
     public static function getTemplateData(\WP_Post $post = null) {
         if ($post == null) {
             global $post;
@@ -211,9 +228,41 @@ class Location extends View
         return $args;
     }
 
+    /**
+     * Echos Location default view.
+     * @param \WP_Post|null $post
+     *
+     * @throws \Exception
+     */
     public static function index(\WP_Post $post = null)
     {
         echo self::render(self::$template, self::getTemplateData($post));
     }
+
+    /**
+     * Renders location listing.
+     * @param $atts
+     * @param null $content
+     *
+     * @return false|string
+     * @throws \Exception
+     */
+    public static function listLocations($atts, $content = null) {
+        $templateData['locations'] = [];
+        if(is_array($atts) && array_key_exists('item-id', $atts)) {
+            $templateData['locations'] = \CommonsBooking\Repository\Location::getByItem($atts['item-id']);
+        } else {
+            $templateData['locations'] = \CommonsBooking\Repository\Location::getAllPublished();
+        }
+
+        if(count($templateData['locations'])) {
+            ob_start();
+            include CB_PLUGIN_DIR . 'templates/location-list.php';
+            return ob_get_clean();
+        } else {
+            return 'No Locations for item found..';
+        }
+    }
+
 
 }

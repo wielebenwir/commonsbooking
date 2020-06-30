@@ -1,0 +1,879 @@
+# Copyright (C) 2020 wielebenwir e.V.
+# This file is distributed under the same license as the CommonsBooking plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: CommonsBooking 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2020-06-28T18:36:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
+
+#. Plugin Name of the plugin
+msgid "CommonsBooking"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Description of the plugin
+msgid "~"
+msgstr ""
+
+#. Author of the plugin
+msgid "wielebenwir e.V."
+msgstr ""
+
+#: includes/Options.php:13
+msgid "Welcome"
+msgstr ""
+
+#: includes/Options.php:19
+msgid "Welcome to CommonsBooking"
+msgstr ""
+
+#: includes/Options.php:30
+msgid "General"
+msgstr ""
+
+#: includes/Options.php:35
+msgid "Naming and permalinks"
+msgstr ""
+
+#: includes/Options.php:40
+msgid "Item singular name"
+msgstr ""
+
+#: includes/Options.php:43
+msgid "item"
+msgstr ""
+
+#: includes/Options.php:46
+msgid "Items plural name"
+msgstr ""
+
+#: includes/Options.php:49
+msgid "items"
+msgstr ""
+
+#: includes/Options.php:52
+msgid "Items slug"
+msgstr ""
+
+#: includes/Options.php:54
+msgid "The url for the items archive. E.g: %s "
+msgstr ""
+
+#: includes/Options.php:56
+msgid "cb2_item"
+msgstr ""
+
+#: includes/Options.php:59
+msgid "Create an item post type archive"
+msgstr ""
+
+#: includes/Options.php:65
+msgid "Location singular name"
+msgstr ""
+
+#: includes/Options.php:68
+msgid "location"
+msgstr ""
+
+#: includes/Options.php:71
+msgid "Locations plural name"
+msgstr ""
+
+#: includes/Options.php:74
+msgid "locations"
+msgstr ""
+
+#: includes/Options.php:77
+msgid "Locations slug"
+msgstr ""
+
+#: includes/Options.php:79
+msgid "The url for the locations archive. E.g: %s "
+msgstr ""
+
+#: includes/Options.php:81
+msgid "cb2_location"
+msgstr ""
+
+#: includes/Options.php:84
+msgid "Create a locations post type archive"
+msgstr ""
+
+#: includes/Options.php:90
+msgid "Bookings slug"
+msgstr ""
+
+#: includes/Options.php:92
+msgid "The url for the bookings archive. E.g: %s "
+msgstr ""
+
+#: includes/Options.php:94
+msgid "cb2_booking"
+msgstr ""
+
+#: includes/Options.php:100
+msgid "Formats"
+msgstr ""
+
+#: includes/Options.php:104
+msgid "Calendar date format"
+msgstr ""
+
+#: includes/Options.php:107
+msgid "Documentation of date and time formatting"
+msgstr ""
+
+#: includes/Options.php:111
+msgid "Address format"
+msgstr ""
+
+#: includes/Options.php:125
+msgid "Templates"
+msgstr ""
+
+#: includes/Options.php:129
+msgid "Email templates"
+msgstr ""
+
+#: includes/Options.php:136
+msgid "Booking pending email subject"
+msgstr ""
+
+#: includes/Options.php:140
+msgid "Pending booking"
+msgstr ""
+
+#: includes/Options.php:143
+msgid "Booking pending email body"
+msgstr ""
+
+#: includes/Options.php:147
+msgid "Pending booking of {{item-name}} at {{location-name}}."
+msgstr ""
+
+#: includes/Options.php:150
+msgid "Booking confirmed email subject"
+msgstr ""
+
+#: includes/Options.php:154
+msgid "Your booking {{item_name}}."
+msgstr ""
+
+#: includes/Options.php:157
+msgid "Booking confirmed email body"
+msgstr ""
+
+#: includes/Options.php:161
+msgid ""
+"\n"
+"            <h2>Hi {{user-first_name}},</h2>\n"
+"            thank you for booking {{item:name}}.\n"
+"            \n"
+"            <b>Pick up information</b>\n"
+"            <p>Pick up {{item_name}} at {{location-name}}.</p>\n"
+"            \n"
+"            <p>Pickup date an time:</b>\n"
+"            <b>{{booking:pickup_datetime}}</b></p>\n"
+"            {{location:pickupinstructions}}\n"
+"            \n"
+"            <p>Location address:</p>\n"
+"            {{location:name}}<br>\n"
+"            {{location:address_complete}}<br>\n"
+"            {{location:contact}}<br>\n"
+"            </p>\n"
+"            \n"
+"            \n"
+"            <p>Click here to see or cancel your booking: {{booking-permalink}}.</p>\n"
+"            \n"
+"            <h3>Your information</h3>\n"
+"            <p>Name: {{user-first_name}} {{user-last_name}}.</p>\n"
+"            \n"
+"            <p>Thanks, the Team. </p>\n"
+"            "
+msgstr ""
+
+#: includes/Options.php:188
+msgid "Booking cancelled email subject"
+msgstr ""
+
+#: includes/Options.php:191
+msgid "cancelled booking."
+msgstr ""
+
+#: includes/Options.php:194
+msgid "Booking cancelled email body"
+msgstr ""
+
+#: includes/Options.php:197
+msgid "cancelled booking of {{item-name}} at {{location-name}}."
+msgstr ""
+
+#: includes/Options.php:204
+msgid "Booking process messages"
+msgstr ""
+
+#: includes/Options.php:209
+msgid "Please confirm your booking"
+msgstr ""
+
+#: includes/Options.php:213
+msgid "Please review your booking of {{item-name}} at {{location-name}} and confirm it."
+msgstr ""
+
+#: includes/Options.php:216
+msgid "Booking confirmed"
+msgstr ""
+
+#: includes/Options.php:220
+msgid "Your booking of {{item-name}} at {{location-name}} has been confirmed!"
+msgstr ""
+
+#: includes/Options.php:223
+#: src/Wordpress/CustomPostType/Timeframe.php:293
+msgid "Booking cancelled"
+msgstr ""
+
+#: includes/Options.php:226
+msgid "Your booking has been cancelled!<br>"
+msgstr ""
+
+#: includes/Options.php:229
+msgid "Request cancel confirmation"
+msgstr ""
+
+#: includes/Options.php:232
+msgid "Click \"OK\" to cancel the booking."
+msgstr ""
+
+#: includes/Options.php:235
+msgid "Request un-cancel confirmation"
+msgstr ""
+
+#: includes/Options.php:238
+msgid "Click \"OK\" to un-cancel your booking."
+msgstr ""
+
+#: includes/Options.php:241
+msgid "Access not allowed"
+msgstr ""
+
+#: includes/Options.php:244
+msgid "You are not allowed to access this booking."
+msgstr ""
+
+#: includes/Options.php:247
+msgid "No bookings"
+msgstr ""
+
+#: includes/Options.php:250
+msgid "No bookings yet."
+msgstr ""
+
+#: includes/Options.php:253
+msgid "Not logged in"
+msgstr ""
+
+#: includes/Options.php:256
+msgid "You have to be logged in to access your bookings. {{site-registration-link}}"
+msgstr ""
+
+#: includes/Options.php:259
+msgid "Not available"
+msgstr ""
+
+#: includes/Options.php:262
+msgid "This item is currently not available."
+msgstr ""
+
+#: includes/Options.php:269
+msgid "Bookingbar strings"
+msgstr ""
+
+#: includes/Options.php:274
+msgid "Intro text"
+msgstr ""
+
+#: includes/Options.php:275
+msgid "{{max-slots}} will be replaced with max slots."
+msgstr ""
+
+#: includes/Options.php:278
+msgid "Choose bookable slots on the calendar"
+msgstr ""
+
+#: includes/Options.php:281
+msgid "Notice: Too few slots selected"
+msgstr ""
+
+#: includes/Options.php:282
+msgid "Displayed if a user tries to select too few slots than allowed."
+msgstr ""
+
+#: includes/Options.php:285
+msgid "You need to book more slots."
+msgstr ""
+
+#: includes/Options.php:288
+msgid "Notice: Too many slots selected"
+msgstr ""
+
+#: includes/Options.php:289
+msgid "Displayed if a user tries to select more slots than allowed. {{max-slots}} will be replaced with max slots."
+msgstr ""
+
+#: includes/Options.php:292
+msgid "You can not book more than {{max-slots}} slots."
+msgstr ""
+
+#: includes/Options.php:295
+msgid "Notice: Booking over another booking"
+msgstr ""
+
+#: includes/Options.php:296
+msgid "Displayed if a user tries to create a selection that would include a non-includable slot (e.g. another booking) ."
+msgstr ""
+
+#: includes/Options.php:299
+msgid "Your selection contains another booking."
+msgstr ""
+
+#: includes/Options.php:302
+msgid "Notice: Not logged in"
+msgstr ""
+
+#: includes/Options.php:303
+msgid "Displayed if a visitor clicks the calendar) ."
+msgstr ""
+
+#: includes/Options.php:306
+msgid "You need to be logged in to book."
+msgstr ""
+
+#: includes/Options.php:309
+msgid "Pickup from"
+msgstr ""
+
+#: includes/Options.php:312
+msgid "Pickup from:"
+msgstr ""
+
+#: includes/Options.php:315
+msgid "Return until"
+msgstr ""
+
+#: includes/Options.php:318
+msgid "Return until:"
+msgstr ""
+
+#: includes/Options.php:321
+msgid "Button Label"
+msgstr ""
+
+#: includes/Options.php:324
+msgid "Book"
+msgstr ""
+
+#: src/Model/Booking.php:72
+msgid " on %s "
+msgstr ""
+
+#. translators: %1 = startdate, %2 = enddate in wordpress defined format
+#: src/Model/Booking.php:75
+msgid " from %1$s until %2$s "
+msgstr ""
+
+#: src/Model/Booking.php:111
+msgid "Link to your booking"
+msgstr ""
+
+#: src/Model/Location.php:50
+msgid "Please contact the contact persons at the location directly if you have any questions regarding collection or return:"
+msgstr ""
+
+#: src/Plugin.php:166
+msgid "Cancelled"
+msgstr ""
+
+#: src/Plugin.php:167
+msgid "Confirmed"
+msgstr ""
+
+#: src/Plugin.php:168
+msgid "Not confirmed"
+msgstr ""
+
+#: src/Plugin.php:185
+msgid "Item Category"
+msgstr ""
+
+#: src/Plugin.php:196
+msgid "Location Owner"
+msgstr ""
+
+#: src/Shortcodes/Shortcodes.php:69
+msgid "Please add an 'field' attribute to specify the costum post meta field to display."
+msgstr ""
+
+#: src/Shortcodes/Shortcodes.php:86
+msgid "Please add a 'type' attribute and set it to 'location' or 'item'"
+msgstr ""
+
+#: src/Shortcodes/Shortcodes.php:123
+msgid "You do not have permissions to edit this post."
+msgstr ""
+
+#: src/Shortcodes/Shortcodes.php:136
+msgid "Please add an 'id' attribute to specify the CMB2 form to display."
+msgstr ""
+
+#: src/View/Booking.php:70
+msgid "Stornieren"
+msgstr ""
+
+#: src/View/Booking.php:91
+msgid "Buchen"
+msgstr ""
+
+#: src/View/Booking.php:96
+msgid "Abbrechen"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:24
+#: src/Wordpress/CustomPostType/Item.php:45
+msgid "Items"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:25
+#: src/Wordpress/CustomPostType/Timeframe.php:231
+msgid "Item"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:26
+#: src/Wordpress/CustomPostType/Location.php:39
+#: src/Wordpress/CustomPostType/Timeframe.php:149
+msgid "Add new"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:27
+#: src/Wordpress/CustomPostType/Item.php:29
+msgid "Add new item"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:28
+msgid "Edit item"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:30
+msgid "Show item"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:31
+msgid "Show items"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:32
+msgid "Search items"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:33
+msgid "items not found"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:34
+msgid "No items found in trash"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:35
+msgid "Parent items:"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:36
+msgid "All items"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:37
+msgid "Item archive"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:38
+msgid "Item attributes"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:39
+msgid "Add to item"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:40
+msgid "Added to item"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:41
+msgid "Item image"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:42
+msgid "set item image"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:43
+msgid "remove item image"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:44
+msgid "use as item image"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:37
+#: src/Wordpress/CustomPostType/Location.php:58
+msgid "Locations"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:38
+#: src/Wordpress/CustomPostType/Timeframe.php:229
+msgid "Location"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:40
+#: src/Wordpress/CustomPostType/Location.php:42
+msgid "Add new location"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:41
+msgid "Edit location"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:43
+msgid "Show location"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:44
+msgid "Show locations"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:45
+msgid "Search locations"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:46
+msgid "location not found"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:47
+msgid "No locations found in trash"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:48
+msgid "Parent location:"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:49
+msgid "All locations"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:50
+msgid "Location archive"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:51
+msgid "Location attributes"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:52
+msgid "Add to location"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:53
+msgid "Added to location"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:54
+msgid "Location image"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:55
+msgid "set location image"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:56
+msgid "remove location image"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:57
+msgid "use as location image"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:131
+msgid "Address"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:142
+msgid "Street / No."
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:143
+#: src/Wordpress/CustomPostType/Location.php:156
+#: src/Wordpress/CustomPostType/Location.php:169
+#: src/Wordpress/CustomPostType/Location.php:182
+#: src/Wordpress/CustomPostType/Location.php:209
+#: src/Wordpress/CustomPostType/Location.php:223
+#: src/Wordpress/CustomPostType/Location.php:236
+msgid "field description (optional)"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:155
+msgid "Postcode"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:168
+msgid "City"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:181
+msgid "Country"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:197
+msgid "General Location information"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:208
+msgid "Shortdescription"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:222
+msgid "Pickup instructions"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:235
+msgid "Location contact information"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:116
+#: src/Wordpress/CustomPostType/Timeframe.php:292
+msgid "Booking"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:147
+#: src/Wordpress/CustomPostType/Timeframe.php:168
+msgid "Timeframes"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:148
+msgid "Timeframe"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:150
+#: src/Wordpress/CustomPostType/Timeframe.php:152
+msgid "Add new timeframe"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:151
+msgid "Edit timeframe"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:153
+msgid "Show timeframe"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:154
+msgid "Show timeframes"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:155
+msgid "Search timeframes"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:156
+msgid "Timeframes not found"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:157
+msgid "No timeframes found in trash"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:158
+msgid "Parent timeframes:"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:159
+msgid "All timeframes"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:160
+msgid "Timeframe archive"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:161
+msgid "Timeframe attributes"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:162
+msgid "Add to timeframe"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:163
+msgid "Added to timeframe"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:164
+msgid "Timeframe image"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:165
+msgid "set timeframe image"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:166
+msgid "remove timeframe image"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:167
+msgid "use as timeframe image"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:225
+msgid "Comment"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:226
+msgid "Type"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:232
+msgid "Configure timeframe"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:233
+msgid "Timeframe Repetition"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:236
+msgid "No Repetition"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:237
+msgid "Daily"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:238
+msgid "Weekly"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:239
+msgid "Monthly"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:240
+msgid "Yearly"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:243
+msgid "Full day"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:244
+msgid "Start date"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:245
+msgid "End date"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:246
+msgid "Start time"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:247
+msgid "End time"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:248
+msgid "Grid"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:250
+msgid "Full slot"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:251
+msgid "Hourly"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:254
+msgid "Configure repetition"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:256
+msgid "Repetition start"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:265
+msgid "Weekdays"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:267
+msgid "Monday"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:268
+msgid "Tuesday"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:269
+msgid "Wednesday"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:270
+msgid "Thursday"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:271
+msgid "Friday"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:272
+msgid "Saturday"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:273
+msgid "Sunday"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:276
+msgid "Repetition end"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:287
+msgid "Opening Hours"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:288
+msgid "Bookable"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:289
+msgid "Holidays"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:290
+msgid "Official Holiday"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:291
+msgid "Repair"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:434
+msgid "Filter By Type "
+msgstr ""
+
+#: src/Wordpress/MetaBox/Field.php:53
+msgid "-- Please select --"
+msgstr ""

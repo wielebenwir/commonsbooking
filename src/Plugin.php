@@ -10,7 +10,9 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
 use CommonsBooking\Settings;
 use CommonsBooking\Wordpress\Options;
-use CommonsBooking\Messages;
+use CommonsBooking\Messages\Messages;
+use CommonsBooking\Shortcodes\Shortcodes;
+use CB;
 
 class Plugin
 {
@@ -43,8 +45,13 @@ class Plugin
      */
     public function init()
     {
+        do_action( 'cmb2_init' ); 
+        
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerItemTaxonomy'));
+
+        // Register custom user roles (e.g. location-owner, item-owner etc.)
+        add_action('init', array(self::class, 'addCustomUserRoles'));     
         
         // Register custom post types
         add_action('init', array(self::class, 'registerCustomPostTypes'));
@@ -156,9 +163,9 @@ class Plugin
 
     public static function registerPostStatuses()
     {
-        $cancelled = new PostStatus("cancelled", __('Storniert', CB_TEXTDOMAIN));
-        $confirmed = new PostStatus("confirmed", __('Bestätigt', CB_TEXTDOMAIN));
-        $unconfirmed = new PostStatus("unconfirmed", __('Nicht bestätigt', CB_TEXTDOMAIN));
+        $cancelled = new PostStatus("cancelled", __('Cancelled', 'commonsbooking'));
+        $confirmed = new PostStatus("confirmed", __('Confirmed', 'commonsbooking'));
+        $unconfirmed = new PostStatus("unconfirmed", __('Unconfirmed', 'commonsbooking'));
     }
 
 
@@ -175,9 +182,21 @@ class Plugin
             $customPostType . '_category',
             $customPostType,
             array(
-                'label' => __('Item Category', CB_TEXTDOMAIN),
+                'label' => __('Item Category', 'commonsbooking'),
                 'rewrite' => array('slug' => $customPostType . '-cat'),
                 'hierarchical' => true,
+            )
+        );
+    }
+
+    public static function addCustomUserRoles()
+    {
+        add_role(
+            'location_owner',
+            __( 'Location Owner', 'commonsbooking' ),
+            array(
+            'read'         => true,  // true allows this capability
+            'edit_posts'   => true,
             )
         );
     }

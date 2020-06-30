@@ -7,16 +7,19 @@ class Shortcodes
 {
     public function __construct()
     {
+
+
         /**
          * Adding all shortcodes 
          * shortcodes can be used in mail-templates or frontend-templates via shortcode-tag [shortcode]
          */
 
+
         // CMB2 method to register shortcodes for all cmb2 metaboxes
         add_shortcode('cb-field', array($this, 'postmeta_shortcode'));
 
-        // Register special booking related shortcodes 
-        add_shortcode('cb-booking', array($this, 'booking_shortcodes'));
+        // Register cb-booking shortcode 
+        add_shortcode('cb-booking', array($this, 'metabox_booking_shortcodes'));
     }
 
     /**
@@ -28,6 +31,8 @@ class Shortcodes
      */
     public static function getRenderedShortcodes($content)
     {
+        global $shortcode_tags;
+
         if (preg_match_all('/' . get_shortcode_regex() . '/s', $content, $matches)) {
             foreach ($matches[2] as $i => $sc) {
                 $shortcode = $matches[0][$i];
@@ -61,7 +66,7 @@ class Shortcodes
 
         // If no metabox field is set, yell about it
         if (empty($atts['field'])) {
-            return __("Please add an 'field' attribute to specify the costum post meta field to display.", CB_TEXTDOMAIN);
+            return __("Please add an 'field' attribute to specify the costum post meta field to display.", 'commonsbooking');
         }
 
         // check if type is set and get meta and post data from item and location related to the given timeframe-id
@@ -78,7 +83,7 @@ class Shortcodes
                 return false;
             }
         } else {
-            return __("Please add a 'type' attribute and set it to 'location' or 'item'", CB_TEXTDOMAIN);
+            return __("Please add a 'type' attribute and set it to 'location' or 'item'", 'commonsbooking');
         }
 
         /**

@@ -4,15 +4,45 @@ namespace CommonsBooking\Repository;
 
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
-class Item
+class Item extends PostRepository
 {
 
     /**
-     * Returns array with items at location.
-     * @param $locationId
+     * Returns all published items.
      * @return array
+     * @throws \Exception
+     */
+    public static function getAllPublished() {
+        $items = [];
+
+        $args = array(
+            'post_type' => \CommonsBooking\Wordpress\CustomPostType\Item::$postType,
+            'post_status' => array('publish', 'inherit')
+        );
+
+        $query = new \WP_Query($args);
+
+        if ($query->have_posts()) {
+            $items = $query->get_posts();
+            foreach($items as &$item) {
+                $item = new \CommonsBooking\Model\Item($item);
+            }
+        }
+        return $items;
+    }
+
+    /**
+     * Returns array with items at location.
+     *
+     * @param $locationId
+     *
+     * @return array
+     * @throws \Exception
      */
     public static function getByLocation($locationId) {
+        if($locationId instanceof \WP_Post) {
+            $locationId = $locationId->ID;
+        }
         $items = [];
         $itemIds = [];
 
@@ -32,11 +62,7 @@ class Item
         if ($query->have_posts()) {
             $timeframes = $query->get_posts();
             foreach ($timeframes as $timeframe) {
-                $result = get_post_meta($timeframe->ID, 'item-id');
-                $itemId = false;
-                if(count($result)) {
-                    $itemId = $result[0];
-                }
+                $itemId = get_post_meta($timeframe->ID, 'item-id', true);
 
                 if($itemId && !in_array($itemId, $itemIds)) {
                     $itemIds[] = $itemId;
@@ -48,6 +74,11 @@ class Item
                 }
             }
         }
+
+        foreach($items as &$item) {
+            $item = new \CommonsBooking\Model\Item($item);
+        }
+
         return $items;
     }
 

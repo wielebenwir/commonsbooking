@@ -3,7 +3,12 @@
   "description": "~",
   "version": "0.0.1",
   "autoload": {
-    "files": ["includes/Template.php", "includes/Options.php"],
+    "files": [
+      "includes/Options.php",
+      "includes/Shortcodes.php",
+      "includes/Template.php",
+      "includes/TemplateParser.php"
+    ],
     "psr-4": {"CommonsBooking\\": "src/"}
   },
   "require": {

@@ -6,7 +6,7 @@ namespace CommonsBooking\Repository;
 
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
-class Booking
+class Booking extends PostRepository
 {
     /**
      * @param $startDate
@@ -56,11 +56,10 @@ class Booking
         if ($query->have_posts()) {
             $posts = $query->get_posts();
             if(count($posts) == 1) {
-                return $posts[0];
+                return new \CommonsBooking\Model\Booking($posts[0]);
             } else {
-                throw new \Exception(__CLASS__ . "::" . __LINE__ . ": Found more then one bookings");
+                throw new \Exception(__CLASS__ . "::" . __LINE__ . ": Found more than one bookings");
             }
-
         }
     }
 

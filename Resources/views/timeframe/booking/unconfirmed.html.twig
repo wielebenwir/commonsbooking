@@ -18,5 +18,10 @@
     
     <div>
         {% include '/timeframe/form.html.twig' %}
+
+        {% include '/timeframe/form.html.twig' with {
+            'submitLabel': cancellation.submitLabel,
+            'type': cancellation.type,
+            'postStatus': cancellation.postStatus } %}
     </div>
 </div>
