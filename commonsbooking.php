@@ -19,6 +19,7 @@ define('CB_PLUGIN_SLUG', 'commonsbooking');
 define('CB_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('CB_METABOX_PREFIX', '_cb_'); //Start with an underscore to hide fields from custom fields list
 
+
 function commonsbooking_admin()
 {
     wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__) . 'Resources/assets/admin/css/admin.css');
@@ -49,10 +50,9 @@ function commonsbooking_public()
 add_action('wp_enqueue_scripts', 'commonsbooking_public');
 add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 'get_calendar_data'));
 
-function commonsbooking_load_plugin_textdomain() {
-    load_plugin_textdomain( 'commonsbooking', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
-}
-add_action( 'plugins_loaded', 'commonsbooking_load_plugin_textdomain' );
+//public function commonsbooking_load_plugin_textdomain() {
+    load_plugin_textdomain( 'commonsbooking', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' ); // should be loaded via add_action, but wasnt working in admin menu
+//}
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/cmb2/cmb2/init.php';

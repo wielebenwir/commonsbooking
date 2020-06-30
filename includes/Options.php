@@ -25,101 +25,105 @@ $options_array = array(
     )
   ),
   /* Tab: main end*/
-  /* Tab: general start*/
-  'general' => array(
-    'title' => __( 'General', 'commonsbooking' ),
-    'id' => 'general',
-    'field_groups' => array ( 
-      /* posttype: naming, rewrite, archives start */
-      'posttypes' => array(
-        'title' => __( 'Naming and permalinks', 'commonsbooking' ),
-        'id' => 'posttypes',
-        'desc' => 'Customize names & slugs.',
-        'fields' => array(
-          array(
-            'name'    => __( 'Item singular name', 'commonsbooking' ),
-            'id'      => 'posttypes_items-singular',
-            'type'    => 'text',
-            'default' => __( 'item', 'commonsbooking' ),
-          ),
-          array(
-            'name'    => __( 'Items plural name', 'commonsbooking' ),
-            'id'      => 'posttypes_items-plural',
-            'type'    => 'text',
-            'default' => __( 'items', 'commonsbooking' ),
-          ),
-          array(
-            'name'    => __( 'Items slug', 'commonsbooking' ),
-            'id'      => 'posttypes_items-slug',
-            'description' => sprintf ( __( 'The url for the items archive. E.g: %s ', 'commonsbooking' ), network_site_url('/cb_items/') ),
-            'type'    => 'text',
-            'default' => __( 'cb2_item', 'commonsbooking' ),
-          ),
-          array(
-            'name'    => __( 'Create an item post type archive', 'commonsbooking' ),
-            'id'      => 'posttypes_items-archive',
-            'type'    => 'checkbox',
-            // 'default' => cmb2_set_checkbox_default_for_new_post( TRUE ),
-          ),
-          array(
-            'name'    => __( 'Location singular name', 'commonsbooking' ),
-            'id'      => 'posttypes_locations-singular',
-            'type'    => 'text',
-            'default' => __( 'location', 'commonsbooking' ),
-          ),
-          array(
-            'name'    => __( 'Locations plural name', 'commonsbooking' ),
-            'id'      => 'posttypes_locations-plural',
-            'type'    => 'text',
-            'default' => __( 'locations', 'commonsbooking' ),
-          ),
-          array(
-            'name'    => __( 'Locations slug', 'commonsbooking' ),
-            'id'      => 'posttypes_locations-slug',
-            'description' => sprintf ( __( 'The url for the locations archive. E.g: %s ', 'commonsbooking' ), network_site_url('/cb-locations/') ),
-            'type'    => 'text',
-            'default' => __( 'cb2_location', 'commonsbooking' ),
-          ),
-          array(
-            'name'    => __( 'Create a locations post type archive', 'commonsbooking' ),
-            'id'      => 'posttypes_locations-archive',
-            'type'    => 'checkbox',
-            // 'default' => cmb2_set_checkbox_default_for_new_post( TRUE ),
-          ),
-          array(
-            'name'    => __( 'Bookings slug', 'commonsbooking' ),
-            'id'      => 'posttypes_bookings-slug',
-            'description' => sprintf ( __( 'The url for the bookings archive. E.g: %s ', 'commonsbooking' ), network_site_url('/cb-bookings/') ),
-            'type'    => 'text',
-            'default' => __( 'cb2_booking', 'commonsbooking' ),
-          ),
-        )
-      ),
-      /* designation: formats start */
-      'formats'  => array(
-        'title'  => __( 'Formats', 'commonsbooking' ),
-        'id'     => 'formats',
-        'fields' => array(
-          array(
-            'name'    => __('Calendar date format', 'commonsbooking'),
-            'id'      => 'formats_date',
-            'type'    => 'text',
-            'description' => '<a href="https://wordpress.org/support/article/formatting-date-and-time/" target="_blank">' . __( 'Documentation of date and time formatting', 'commonsbooking') . '</a>',
-            'default' =>  'j M'
-          ),
-          array(
-            'name'    => __('Address format', 'commonsbooking'),
-            'id'      => 'formats_address',
-            'type'    => 'textarea',
-            'desc' => '', 
-            'default' =>  '{{location-geo_street}}, {{location-geo_postcode}} {{location-geo_city}}'
-          ),
-        ),
-      ),
-    /* designation: formats end */
-    )
-  ), 
-  /* Tab: general end*/
+
+  // /* Tab: general start*/
+  // 'general' => array(
+  //   'title' => __( 'General', 'commonsbooking' ),
+  //   'id' => 'general',
+  //   'field_groups' => array ( 
+  //     /* posttype: naming, rewrite, archives start */
+  //     'posttypes' => array(
+  //       'title' => __( 'Naming and permalinks', 'commonsbooking' ),
+  //       'id' => 'posttypes',
+  //       'desc' => 'Customize names & slugs.',
+  //       'fields' => array(
+  //         array(
+  //           'name'    => __( 'Item singular name', 'commonsbooking' ),
+  //           'id'      => 'posttypes_items-singular',
+  //           'type'    => 'text',
+  //           'default' => __( 'item', 'commonsbooking' ),
+  //         ),
+  //         array(
+  //           'name'    => __( 'Items plural name', 'commonsbooking' ),
+  //           'id'      => 'posttypes_items-plural',
+  //           'type'    => 'text',
+  //           'default' => __( 'items', 'commonsbooking' ),
+  //         ),
+  //         array(
+  //           'name'    => __( 'Items slug', 'commonsbooking' ),
+  //           'id'      => 'posttypes_items-slug',
+  //           'description' => sprintf ( __( 'The url for the items archive. E.g: %s ', 'commonsbooking' ), network_site_url('/cb_items/') ),
+  //           'type'    => 'text',
+  //           'default' => __( 'cb2_item', 'commonsbooking' ),
+  //         ),
+  //         array(
+  //           'name'    => __( 'Create an item post type archive', 'commonsbooking' ),
+  //           'id'      => 'posttypes_items-archive',
+  //           'type'    => 'checkbox',
+  //           // 'default' => cmb2_set_checkbox_default_for_new_post( TRUE ),
+  //         ),
+  //         array(
+  //           'name'    => __( 'Location singular name', 'commonsbooking' ),
+  //           'id'      => 'posttypes_locations-singular',
+  //           'type'    => 'text',
+  //           'default' => __( 'location', 'commonsbooking' ),
+  //         ),
+  //         array(
+  //           'name'    => __( 'Locations plural name', 'commonsbooking' ),
+  //           'id'      => 'posttypes_locations-plural',
+  //           'type'    => 'text',
+  //           'default' => __( 'locations', 'commonsbooking' ),
+  //         ),
+  //         array(
+  //           'name'    => __( 'Locations slug', 'commonsbooking' ),
+  //           'id'      => 'posttypes_locations-slug',
+  //           'description' => sprintf ( __( 'The url for the locations archive. E.g: %s ', 'commonsbooking' ), network_site_url('/cb-locations/') ),
+  //           'type'    => 'text',
+  //           'default' => __( 'cb2_location', 'commonsbooking' ),
+  //         ),
+  //         array(
+  //           'name'    => __( 'Create a locations post type archive', 'commonsbooking' ),
+  //           'id'      => 'posttypes_locations-archive',
+  //           'type'    => 'checkbox',
+  //           // 'default' => cmb2_set_checkbox_default_for_new_post( TRUE ),
+  //         ),
+  //         array(
+  //           'name'    => __( 'Bookings slug', 'commonsbooking' ),
+  //           'id'      => 'posttypes_bookings-slug',
+  //           'description' => sprintf ( __( 'The url for the bookings archive. E.g: %s ', 'commonsbooking' ), network_site_url('/cb-bookings/') ),
+  //           'type'    => 'text',
+  //           'default' => __( 'cb2_booking', 'commonsbooking' ),
+  //         ),
+  //       )
+  //     ),
+  //     /* designation: formats start */
+  //     'formats'  => array(
+  //       'title'  => __( 'Formats', 'commonsbooking' ),
+  //       'id'     => 'formats',
+  //       'fields' => array(
+  //         array(
+  //           'name'    => __('Calendar date format', 'commonsbooking'),
+  //           'id'      => 'formats_date',
+  //           'type'    => 'text',
+  //           'description' => '<a href="https://wordpress.org/support/article/formatting-date-and-time/" target="_blank">' . __( 'Documentation of date and time formatting', 'commonsbooking') . '</a>',
+  //           'default' =>  'j M'
+  //         ),
+  //         array(
+  //           'name'    => __('Address format', 'commonsbooking'),
+  //           'id'      => 'formats_address',
+  //           'type'    => 'textarea',
+  //           'desc' => '', 
+  //           'default' =>  '{{location-geo_street}}, {{location-geo_postcode}} {{location-geo_city}}'
+  //         ),
+  //       ),
+  //     ),
+  //   /* designation: formats end */
+  //   )
+  // ), 
+  // /* Tab: general end*/
+
+
+
   /* Tab: templates start*/
   'templates' => array(
     'title' => __( 'Templates', 'commonsbooking' ),
@@ -134,14 +138,14 @@ $options_array = array(
           // TODO: old commons-booking_mail_registration_body?
           array(
             'name' => __( 'Booking pending email subject', 'commonsbooking' ),
-            'desc' => __('', 'commonsbooking'),
+            'desc' => __('description', 'commonsbooking'),
             'id' => 'emailtemplates_mail-booking-pending-subject',
             'type' => 'text',
             'default' => __( 'Pending booking', 'commonsbooking' ),
           ),
           array(
             'name' => __( 'Booking pending email body', 'commonsbooking' ),
-            'desc' => __('', 'commonsbooking'),
+            'desc' => __('description', 'commonsbooking'),
             'id' => 'emailtemplates_mail-booking-pending-body',
             'type' => 'textarea',
             'default' => __( 'Pending booking of {{item-name}} at {{location-name}}.', 'commonsbooking' ),

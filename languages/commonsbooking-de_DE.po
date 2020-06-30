@@ -1,11 +1,8 @@
-# Copyright (C) 2020 wielebenwir e.V.
-# This file is distributed under the same license as the CommonsBooking plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: CommonsBooking 0.1.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2020-06-28T18:36:00+00:00\n"
-"PO-Revision-Date: 2020-06-30 14:40+0200\n"
+"Project-Id-Version: CommonsBooking\n"
+"POT-Creation-Date: 2020-06-30 15:23+0200\n"
+"PO-Revision-Date: 2020-06-30 15:32+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -13,21 +10,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.3.1\n"
+"X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#. Plugin Name of the plugin
-msgid "CommonsBooking"
-msgstr "CommonsBooking"
-
-#. Plugin URI of the plugin
-#. Description of the plugin
-#, fuzzy
-msgid "~"
-msgstr "~"
-
-#. Author of the plugin
-msgid "wielebenwir e.V."
-msgstr "wielebenwir e.V."
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: commonsbooking.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
+"X-Poedit-SearchPathExcluded-2: node_modules\n"
 
 #: includes/Options.php:13
 msgid "Welcome"
@@ -37,146 +31,49 @@ msgstr "Willkommen"
 msgid "Welcome to CommonsBooking"
 msgstr "Willkommen bei CommonsBooking"
 
-#: includes/Options.php:30
-msgid "General"
-msgstr "Allgemein"
-
-#: includes/Options.php:35
-msgid "Naming and permalinks"
-msgstr "Namen und Permalinks"
-
-#: includes/Options.php:40
-msgid "Item singular name"
-msgstr "Artikel Name Einzahl"
-
-#: includes/Options.php:43
-msgid "item"
-msgstr "Artikel"
-
-#: includes/Options.php:46
-msgid "Items plural name"
-msgstr "Pluralname für Artikel"
-
-#: includes/Options.php:49
-msgid "items"
-msgstr "Artikel"
-
-#: includes/Options.php:52
-msgid "Items slug"
-msgstr "Artikel slug"
-
-#: includes/Options.php:54
-msgid "The url for the items archive. E.g: %s "
-msgstr "Die URL für das Artikel-Archiv. z.B.: %s "
-
-#: includes/Options.php:56
-#, fuzzy
-msgid "cb2_item"
-msgstr "cb2_item"
-
-#: includes/Options.php:59
-msgid "Create an item post type archive"
-msgstr "Archiv für Artikel erstellen"
-
-#: includes/Options.php:65
-msgid "Location singular name"
-msgstr "Standort Singularname"
-
-#: includes/Options.php:68
-msgid "location"
-msgstr "Standort"
-
-#: includes/Options.php:71
-msgid "Locations plural name"
-msgstr "Pluralname der Standorte"
-
-#: includes/Options.php:74
-msgid "locations"
-msgstr "Standorte"
-
-#: includes/Options.php:77
-msgid "Locations slug"
-msgstr "Standorte Slug"
-
-#: includes/Options.php:79
-msgid "The url for the locations archive. E.g: %s "
-msgstr "Die URL für das Standortarchiv. Z.B.: %s "
-
-#: includes/Options.php:81
-#, fuzzy
-msgid "cb2_location"
-msgstr "cb2_location"
-
-#: includes/Options.php:84
-msgid "Create a locations post type archive"
-msgstr "Archiv für Standorte erstellen"
-
-#: includes/Options.php:90
-msgid "Bookings slug"
-msgstr "Slug für Buchungen"
-
-#: includes/Options.php:92
-msgid "The url for the bookings archive. E.g: %s "
-msgstr "Die URL für das Buchungsarchiv. Z.B.: %s "
-
-#: includes/Options.php:94
-#, fuzzy
-msgid "cb2_booking"
-msgstr "cb2_booking"
-
-#: includes/Options.php:100
-msgid "Formats"
-msgstr "Formate"
-
-#: includes/Options.php:104
-msgid "Calendar date format"
-msgstr "Kalenderdatumsformat"
-
-#: includes/Options.php:107
-msgid "Documentation of date and time formatting"
-msgstr "Dokumentation der Datums- und Uhrzeitformatierung"
-
-#: includes/Options.php:111
-msgid "Address format"
-msgstr "Adressformat"
-
-#: includes/Options.php:125
+#: includes/Options.php:129
 msgid "Templates"
 msgstr "Vorlagen"
 
-#: includes/Options.php:129
+#: includes/Options.php:133
 msgid "Email templates"
 msgstr "E-Mail Vorlagen"
 
-#: includes/Options.php:136
+#: includes/Options.php:140
 msgid "Booking pending email subject"
 msgstr "E-Mail Betreff für ausstehende Buchungen"
 
-#: includes/Options.php:140
+#: includes/Options.php:141 includes/Options.php:148
+#, fuzzy
+#| msgid "Shortdescription"
+msgid "description"
+msgstr "Kurzbeschreibung"
+
+#: includes/Options.php:144
 msgid "Pending booking"
 msgstr "Ausstehende Buchung"
 
-#: includes/Options.php:143
+#: includes/Options.php:147
 msgid "Booking pending email body"
 msgstr "E-Mail-Text für ausstehende Buchungen"
 
-#: includes/Options.php:147
+#: includes/Options.php:151
 msgid "Pending booking of {{item-name}} at {{location-name}}."
 msgstr "Ausstehende Buchung von {{item-name}} an {{Location-Name}}."
 
-#: includes/Options.php:150
+#: includes/Options.php:154
 msgid "Booking confirmed email subject"
 msgstr "E-Mail-Betreff für bestätigte Buchungen"
 
-#: includes/Options.php:154
+#: includes/Options.php:158
 msgid "Your booking {{item_name}}."
 msgstr "Deine Buchung von {{item_name}}."
 
-#: includes/Options.php:157
+#: includes/Options.php:161
 msgid "Booking confirmed email body"
 msgstr "E-Mail-Text für bestätige Buchungen"
 
-#: includes/Options.php:161
+#: includes/Options.php:165
 #, fuzzy
 msgid ""
 "\n"
@@ -227,31 +124,31 @@ msgstr ""
 "            \n"
 "            <p>Danke, das Team.</p>"
 
-#: includes/Options.php:188
+#: includes/Options.php:192
 msgid "Booking cancelled email subject"
 msgstr "E-Mail-Betreff für stornierte Buchungen"
 
-#: includes/Options.php:191
+#: includes/Options.php:195
 msgid "cancelled booking."
 msgstr "stornierte Buchung."
 
-#: includes/Options.php:194
+#: includes/Options.php:198
 msgid "Booking cancelled email body"
 msgstr "E-Mail-Text für stornierte Buchungen"
 
-#: includes/Options.php:197
+#: includes/Options.php:201
 msgid "cancelled booking of {{item-name}} at {{location-name}}."
 msgstr "Stornierte Buchung von {{item:name}} unter \"Standortname\"."
 
-#: includes/Options.php:204
+#: includes/Options.php:208
 msgid "Booking process messages"
 msgstr "Buchungsprozess-Meldungen"
 
-#: includes/Options.php:209
+#: includes/Options.php:213
 msgid "Please confirm your booking"
 msgstr "Bitte bestätige deine Buchung"
 
-#: includes/Options.php:213
+#: includes/Options.php:217
 msgid ""
 "Please review your booking of {{item-name}} at {{location-name}} and confirm "
 "it."
@@ -259,110 +156,110 @@ msgstr ""
 "Bitte überprüfe deine Buchung von {{item:name}} am Standort {{location:"
 "name}} und bestätige dies."
 
-#: includes/Options.php:216
+#: includes/Options.php:220
 msgid "Booking confirmed"
 msgstr "Buchung bestätigt"
 
-#: includes/Options.php:220
+#: includes/Options.php:224
 msgid "Your booking of {{item-name}} at {{location-name}} has been confirmed!"
 msgstr ""
 "Deine Buchung von {{item:name}} am Standort {{location:name}} wurde "
 "bestätigt!"
 
-#: includes/Options.php:223 src/Wordpress/CustomPostType/Timeframe.php:293
+#: includes/Options.php:227 src/Wordpress/CustomPostType/Timeframe.php:293
 msgid "Booking cancelled"
 msgstr "Buchung storniert"
 
-#: includes/Options.php:226
+#: includes/Options.php:230
 msgid "Your booking has been cancelled!<br>"
 msgstr "Deine Buchung wurde storniert!<br>"
 
-#: includes/Options.php:229
+#: includes/Options.php:233
 msgid "Request cancel confirmation"
 msgstr "Stornierungsbestätigung anfordern"
 
-#: includes/Options.php:232
+#: includes/Options.php:236
 msgid "Click \"OK\" to cancel the booking."
 msgstr "Klicke auf \"OK\", um die Buchung zu stornieren."
 
-#: includes/Options.php:235
+#: includes/Options.php:239
 msgid "Request un-cancel confirmation"
 msgstr "Rücknahme deiner Stornierung anfordern"
 
-#: includes/Options.php:238
+#: includes/Options.php:242
 msgid "Click \"OK\" to un-cancel your booking."
 msgstr "Klicke auf \"OK\", um deine Buchungs-Stornierung rückgängig zu machen."
 
-#: includes/Options.php:241
+#: includes/Options.php:245
 msgid "Access not allowed"
 msgstr "Zugriff nicht erlaubt"
 
-#: includes/Options.php:244
+#: includes/Options.php:248
 msgid "You are not allowed to access this booking."
 msgstr "Du darfst nicht auf diese Buchung zugreifen."
 
-#: includes/Options.php:247
+#: includes/Options.php:251
 msgid "No bookings"
 msgstr "Keine Buchungen"
 
-#: includes/Options.php:250
+#: includes/Options.php:254
 msgid "No bookings yet."
 msgstr "Noch keine Buchungen vorhanden."
 
-#: includes/Options.php:253
+#: includes/Options.php:257
 msgid "Not logged in"
 msgstr "Nicht angemeldet"
 
-#: includes/Options.php:256
+#: includes/Options.php:260
 msgid ""
 "You have to be logged in to access your bookings. {{site-registration-link}}"
 msgstr ""
 "Du musst eingeloggt sein, um auf deine Buchungen zugreifen zu können. {{Site-"
 "Registrierungs-Link}}"
 
-#: includes/Options.php:259
+#: includes/Options.php:263
 msgid "Not available"
 msgstr "Nicht verfügbar"
 
-#: includes/Options.php:262
+#: includes/Options.php:266
 msgid "This item is currently not available."
 msgstr "Dieser Artikel ist derzeit nicht verfügbar."
 
-#: includes/Options.php:269
+#: includes/Options.php:273
 msgid "Bookingbar strings"
 msgstr "Bookingbar-Zeichenfolgen"
 
-#: includes/Options.php:274
+#: includes/Options.php:278
 msgid "Intro text"
 msgstr "Einführungstext"
 
-#: includes/Options.php:275
+#: includes/Options.php:279
 msgid "{{max-slots}} will be replaced with max slots."
 msgstr "Die Anzahl von {{max-slots}} wird durch max-Buchungsfenster ersetzt."
 
-#: includes/Options.php:278
+#: includes/Options.php:282
 msgid "Choose bookable slots on the calendar"
 msgstr "Wähle buchbare Buchungsfenster im Kalender"
 
-#: includes/Options.php:281
+#: includes/Options.php:285
 msgid "Notice: Too few slots selected"
 msgstr "Hinweis: Zu wenige Buchungsfenster ausgewählt"
 
-#: includes/Options.php:282
+#: includes/Options.php:286
 msgid "Displayed if a user tries to select too few slots than allowed."
 msgstr ""
 "Wird angezeigt, wenn ein Benutzer versucht, zu wenige Buchungsfenster als "
 "zulässig auszuwählen."
 
-#: includes/Options.php:285
+#: includes/Options.php:289
 msgid "You need to book more slots."
 msgstr "Bitte weitere Buchungsfenster auswählen."
 
-#: includes/Options.php:288
+#: includes/Options.php:292
 msgid "Notice: Too many slots selected"
 msgstr "Hinweis: Zu viele Buchungsfenster ausgewählt"
 
-#: includes/Options.php:289
+#: includes/Options.php:293
 msgid ""
 "Displayed if a user tries to select more slots than allowed. {{max-slots}} "
 "will be replaced with max slots."
@@ -371,15 +268,15 @@ msgstr ""
 "zulässig auszuwählen. Die Anzahl der Buchungsfenster wird durch {{max-"
 "slots}} ersetzt."
 
-#: includes/Options.php:292
+#: includes/Options.php:296
 msgid "You can not book more than {{max-slots}} slots."
 msgstr "Du kannst nicht mehr als {{max-slots}} Buchungsfenster auswählen."
 
-#: includes/Options.php:295
+#: includes/Options.php:299
 msgid "Notice: Booking over another booking"
 msgstr "Hinweis: Buchung über eine andere Buchung"
 
-#: includes/Options.php:296
+#: includes/Options.php:300
 msgid ""
 "Displayed if a user tries to create a selection that would include a non-"
 "includable slot (e.g. another booking) ."
@@ -387,52 +284,55 @@ msgstr ""
 "Wird angezeigt, wenn ein Benutzer versucht, eine Auswahl zu erstellen, die "
 "ein nicht verfügbares Buchungsfenster (z. B. eine andere Buchung) enthält."
 
-#: includes/Options.php:299
+#: includes/Options.php:303
 msgid "Your selection contains another booking."
 msgstr "Ihre Auswahl enthält eine weitere Buchung."
 
-#: includes/Options.php:302
+#: includes/Options.php:306
 msgid "Notice: Not logged in"
 msgstr "Hinweis: Nicht angemeldet"
 
-#: includes/Options.php:303
+#: includes/Options.php:307
 msgid "Displayed if a visitor clicks the calendar) ."
 msgstr "Wird angezeigt, wenn ein Besucher auf den Kalender klickt) ."
 
-#: includes/Options.php:306
+#: includes/Options.php:310
 msgid "You need to be logged in to book."
 msgstr "Du musst eingeloggt sein, um zu buchen."
 
-#: includes/Options.php:309
+#: includes/Options.php:313
 msgid "Pickup from"
 msgstr "Abholung von"
 
-#: includes/Options.php:312
+#: includes/Options.php:316
 msgid "Pickup from:"
 msgstr "Abholung von:"
 
-#: includes/Options.php:315
+#: includes/Options.php:319
 msgid "Return until"
 msgstr "Rückkehr bis"
 
-#: includes/Options.php:318
+#: includes/Options.php:322
 msgid "Return until:"
 msgstr "Rückkehr bis:"
 
-#: includes/Options.php:321
+#: includes/Options.php:325
 msgid "Button Label"
 msgstr "Button Beschriftung"
 
-#: includes/Options.php:324
+#: includes/Options.php:328 src/View/Booking.php:91
 msgid "Book"
 msgstr "Buchen"
 
 #: src/Model/Booking.php:72
+#, php-format
 msgid " on %s "
 msgstr " am %s "
 
 #. translators: %1 = startdate, %2 = enddate in wordpress defined format
 #: src/Model/Booking.php:75
+#, fuzzy, php-format
+#| msgid " from %1$s until %2$s "
 msgid " from %1$s until %2$s "
 msgstr " von %1$s bis %2%s "
 
@@ -448,23 +348,25 @@ msgstr ""
 "Bitte kontaktiere die Kontaktpersonen vor Ort direkt, wenn du Fragen zur "
 "Abholung oder Rückgabe hast:"
 
-#: src/Plugin.php:166
+#: src/Plugin.php:193
 msgid "Cancelled"
 msgstr "Abgebrochen"
 
-#: src/Plugin.php:167
+#: src/Plugin.php:194
 msgid "Confirmed"
 msgstr "Bestätigt"
 
-#: src/Plugin.php:168
-msgid "Not confirmed"
-msgstr "Nicht bestätigt"
+#: src/Plugin.php:195
+#, fuzzy
+#| msgid "Confirmed"
+msgid "Unconfirmed"
+msgstr "Bestätigt"
 
-#: src/Plugin.php:185
+#: src/Plugin.php:212
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:196
+#: src/Plugin.php:223
 msgid "Location Owner"
 msgstr "Standortbesitzer"
 
@@ -492,17 +394,11 @@ msgstr ""
 "Fügen Sie ein 'id'-Attribut hinzu, um das anzuzeigende CMB2-Formular "
 "anzugeben."
 
-#: src/View/Booking.php:70
-msgid "Stornieren"
-msgstr "Stornieren"
-
-#: src/View/Booking.php:91
-msgid "Buchen"
-msgstr "Buchen"
-
-#: src/View/Booking.php:96
-msgid "Abbrechen"
-msgstr "Abbrechen"
+#: src/View/Booking.php:70 src/View/Booking.php:96
+#, fuzzy
+#| msgid "Cancelled"
+msgid "Cancel"
+msgstr "Abgebrochen"
 
 #: src/Wordpress/CustomPostType/Item.php:24
 #: src/Wordpress/CustomPostType/Item.php:45
@@ -937,15 +833,117 @@ msgstr "Filtern nach Typ "
 msgid "-- Please select --"
 msgstr "— Bitte auswählen —"
 
+#. Plugin Name of the plugin/theme
+#: src/Wordpress/Options/OptionsTab.php:38
+msgid "CommonsBooking"
+msgstr "CommonsBooking"
+
+#: src/Wordpress/PostStatus/PostStatus.php:37
+#, php-format
+msgid " <span class=\"count\">(%s)</span>"
+msgid_plural " <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#. Plugin URI of the plugin/theme
+#. Description of the plugin/theme
 #, fuzzy
-#~| msgid "Confirmed"
-#~ msgid "Unconfirmed"
-#~ msgstr "Bestätigt"
+msgid "~"
+msgstr "~"
+
+#. Author of the plugin/theme
+msgid "wielebenwir e.V."
+msgstr "wielebenwir e.V."
+
+#~ msgid "General"
+#~ msgstr "Allgemein"
+
+#~ msgid "Naming and permalinks"
+#~ msgstr "Namen und Permalinks"
+
+#~ msgid "Item singular name"
+#~ msgstr "Artikel Name Einzahl"
+
+#~ msgid "item"
+#~ msgstr "Artikel"
+
+#~ msgid "Items plural name"
+#~ msgstr "Pluralname für Artikel"
+
+#~ msgid "items"
+#~ msgstr "Artikel"
+
+#~ msgid "Items slug"
+#~ msgstr "Artikel slug"
+
+#~ msgid "The url for the items archive. E.g: %s "
+#~ msgstr "Die URL für das Artikel-Archiv. z.B.: %s "
 
 #, fuzzy
-#~| msgid "Cancelled"
-#~ msgid "Cancel"
-#~ msgstr "Abgebrochen"
+#~ msgid "cb2_item"
+#~ msgstr "cb2_item"
+
+#~ msgid "Create an item post type archive"
+#~ msgstr "Archiv für Artikel erstellen"
+
+#~ msgid "Location singular name"
+#~ msgstr "Standort Singularname"
+
+#~ msgid "location"
+#~ msgstr "Standort"
+
+#~ msgid "Locations plural name"
+#~ msgstr "Pluralname der Standorte"
+
+#~ msgid "locations"
+#~ msgstr "Standorte"
+
+#~ msgid "Locations slug"
+#~ msgstr "Standorte Slug"
+
+#~ msgid "The url for the locations archive. E.g: %s "
+#~ msgstr "Die URL für das Standortarchiv. Z.B.: %s "
+
+#, fuzzy
+#~ msgid "cb2_location"
+#~ msgstr "cb2_location"
+
+#~ msgid "Create a locations post type archive"
+#~ msgstr "Archiv für Standorte erstellen"
+
+#~ msgid "Bookings slug"
+#~ msgstr "Slug für Buchungen"
+
+#~ msgid "The url for the bookings archive. E.g: %s "
+#~ msgstr "Die URL für das Buchungsarchiv. Z.B.: %s "
+
+#, fuzzy
+#~ msgid "cb2_booking"
+#~ msgstr "cb2_booking"
+
+#~ msgid "Formats"
+#~ msgstr "Formate"
+
+#~ msgid "Calendar date format"
+#~ msgstr "Kalenderdatumsformat"
+
+#~ msgid "Documentation of date and time formatting"
+#~ msgstr "Dokumentation der Datums- und Uhrzeitformatierung"
+
+#~ msgid "Address format"
+#~ msgstr "Adressformat"
+
+#~ msgid "Not confirmed"
+#~ msgstr "Nicht bestätigt"
+
+#~ msgid "Stornieren"
+#~ msgstr "Stornieren"
+
+#~ msgid "Buchen"
+#~ msgstr "Buchen"
+
+#~ msgid "Abbrechen"
+#~ msgstr "Abbrechen"
 
 #~ msgid "-- Bitte auswählen --"
 #~ msgstr "— Please select —"
