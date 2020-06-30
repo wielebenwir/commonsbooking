@@ -66,7 +66,7 @@ class Shortcodes
 
         // If no metabox field is set, yell about it
         if (empty($atts['field'])) {
-            return __("Please add an 'field' attribute to specify the costum post meta field to display.", CB_TEXTDOMAIN);
+            return __("Please add an 'field' attribute to specify the costum post meta field to display.", 'commonsbooking');
         }
 
         // check if type is set and get meta and post data from item and location related to the given timeframe-id
@@ -83,7 +83,7 @@ class Shortcodes
                 return false;
             }
         } else {
-            return __("Please add a 'type' attribute and set it to 'location' or 'item'", CB_TEXTDOMAIN);
+            return __("Please add a 'type' attribute and set it to 'location' or 'item'", 'commonsbooking');
         }
 
         /**

@@ -13,7 +13,6 @@ defined('ABSPATH') or die("Thanks for visting");
  * Text Domain:  commonsbooking
  */
 
-define('CB_TEXTDOMAIN', 'commonsbooking');
 define('CB_VERSION', '0.0');
 define('CB_MENU_SLUG', 'cb-menu');
 define('CB_PLUGIN_SLUG', 'commonsbooking');
@@ -51,7 +50,7 @@ add_action('wp_enqueue_scripts', 'commonsbooking_public');
 add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 'get_calendar_data'));
 
 function commonsbooking_load_plugin_textdomain() {
-    load_plugin_textdomain( CB_TEXTDOMAIN, FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+    load_plugin_textdomain( 'commonsbooking', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'plugins_loaded', 'commonsbooking_load_plugin_textdomain' );
 

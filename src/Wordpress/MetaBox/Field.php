@@ -50,7 +50,7 @@ class Field
         );
 
         if($this->getType() == 'select') {
-            $params['show_option_none'] = __('-- Please select --', CB_TEXTDOMAIN);
+            $params['show_option_none'] = __('-- Please select --', 'commonsbooking');
         }
 
         if(count($this->getOptions())) {
