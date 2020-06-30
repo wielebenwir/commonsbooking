@@ -1,6 +1,6 @@
 #cb-action {
   @extend .cb-box;
-  @extend .cb-cols;
+  @extend .cb-columns;
 
   /* Hack for now: we should be able to target the <input> directly by id/class. */
   flex-direction: row-reverse; 
@@ -15,30 +15,6 @@
   input {
     @extend .cb-button;
   }
-}
-
-#booking-form {
-    text-align: center;
-    input {
-    @extend .cb-button;
-  }
-  .time-selection-container {
-    @extend .cb-cols;
-    > div {
-      text-align: center;
-      span, label, select {     
-        display: block;
-        float: none;
-      }
-      span, select  {
-        @extend .cb-big;
-      }
-      .cb-divider {
-        font-size: 40px;
-      }
-    }
-  }
-
 }
 .cb-notice {
   @extend .cb-box;

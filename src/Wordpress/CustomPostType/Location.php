@@ -24,7 +24,6 @@ class Location extends CustomPostType
         $cb_content = '';
         if (is_singular(self::getPostType())) {
             ob_start();
-            cb_get_template_part('meta', 'location');
             cb_get_template_part('calendar', 'location');
             $cb_content = ob_get_clean();
         } // if archive...
@@ -35,28 +34,28 @@ class Location extends CustomPostType
     public function getArgs()
     {
         $labels = array(
-            'name'                  => __('Locations', 'commonsbooking'),
-            'singular_name'         => __('Location', 'commonsbooking'),
-            'add_new'               => __('Add new', 'commonsbooking'),
-            'add_new_item'          => __('Add new location', 'commonsbooking'),
-            'edit_item'             => __('Edit location', 'commonsbooking'),
-            'new_item'              => __('Add new location', 'commonsbooking'),
-            'view_item'             => __('Show location', 'commonsbooking'),
-            'view_items'            => __('Show locations', 'commonsbooking'),
-            'search_items'          => __('Search locations', 'commonsbooking'),
-            'not_found'             => __('location not found', 'commonsbooking'),
-            'not_found_in_trash'    => __('No locations found in trash', 'commonsbooking'),
-            'parent_item_colon'     => __('Parent location:', 'commonsbooking'),
-            'all_items'             => __('All locations', 'commonsbooking'),
-            'archives'              => __('Location archive', 'commonsbooking'),
-            'attributes'            => __('Location attributes', 'commonsbooking'),
-            'insert_into_item'      => __('Add to location', 'commonsbooking'),
-            'uploaded_to_this_item' => __('Added to location', 'commonsbooking'),
-            'featured_image'        => __('Location image', 'commonsbooking'),
-            'set_featured_image'    => __('set location image', 'commonsbooking'),
-            'remove_featured_image' => __('remove location image', 'commonsbooking'),
-            'use_featured_image'    => __('use as location image', 'commonsbooking'),
-            'menu_name'             => __('Locations', 'commonsbooking'),
+            'name'                  => __('Locations', CB_TEXTDOMAIN),
+            'singular_name'         => __('Location', CB_TEXTDOMAIN),
+            'add_new'               => __('Hinzufügen', CB_TEXTDOMAIN),
+            'add_new_item'          => __('Location hinzufügen', CB_TEXTDOMAIN),
+            'edit_item'             => __('Location bearbeiten', CB_TEXTDOMAIN),
+            'new_item'              => __('Location hinzufügen', CB_TEXTDOMAIN),
+            'view_item'             => __('Location anzeigen', CB_TEXTDOMAIN),
+            'view_items'            => __('Locations anzeigen', CB_TEXTDOMAIN),
+            'search_items'          => __('Location suchen', CB_TEXTDOMAIN),
+            'not_found'             => __('Keine Locations gefunden', CB_TEXTDOMAIN),
+            'not_found_in_trash'    => __('Keine Locations im Papierkorb gefunden', CB_TEXTDOMAIN),
+            'parent_item_colon'     => __('Übergeordnete Locations:', CB_TEXTDOMAIN),
+            'all_items'             => __('Alle Locations', CB_TEXTDOMAIN),
+            'archives'              => __('Location Archiv', CB_TEXTDOMAIN),
+            'attributes'            => __('Location Attribute', CB_TEXTDOMAIN),
+            'insert_into_item'      => __('Zum Location hinzufügen', CB_TEXTDOMAIN),
+            'uploaded_to_this_item' => __('Zum Location hinzugefügt', CB_TEXTDOMAIN),
+            'featured_image'        => __('Locationbild', CB_TEXTDOMAIN),
+            'set_featured_image'    => __('Locationbild setzen', CB_TEXTDOMAIN),
+            'remove_featured_image' => __('Locationbild entfernen', CB_TEXTDOMAIN),
+            'use_featured_image'    => __('Als Locationbild verwenden', CB_TEXTDOMAIN),
+            'menu_name'             => __('Locations', CB_TEXTDOMAIN),
         );
 
         // args for the new post_type
@@ -129,7 +128,7 @@ class Location extends CustomPostType
          */
         $cmb = new_cmb2_box(array(
             'id'           => CB_METABOX_PREFIX . 'location_adress',
-            'title'        => __('Address', 'commonsbooking'),
+            'title'        => __('Adresse', CB_TEXTDOMAIN),
             'object_types' => array('cb_location',), // Post type
             'context'      => 'normal',
             'priority'     => 'high',
@@ -140,8 +139,8 @@ class Location extends CustomPostType
 
         // Adress
         $cmb->add_field(array(
-            'name'       => __('Street / No.', 'commonsbooking'),
-            'desc'       => __('field description (optional)', 'commonsbooking'),
+            'name'       => __('Straße / Hausnr.', CB_TEXTDOMAIN),
+            'desc'       => __('field description (optional)', CB_TEXTDOMAIN),
             'id'         => CB_METABOX_PREFIX . 'location_street',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -153,8 +152,8 @@ class Location extends CustomPostType
 
         // Postcode
         $cmb->add_field(array(
-            'name'       => __('Postcode', 'commonsbooking'),
-            'desc'       => __('field description (optional)', 'commonsbooking'),
+            'name'       => __('PLZ', CB_TEXTDOMAIN),
+            'desc'       => __('field description (optional)', CB_TEXTDOMAIN),
             'id'         => CB_METABOX_PREFIX . 'location_postcode',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -166,8 +165,8 @@ class Location extends CustomPostType
 
         // City
         $cmb->add_field(array(
-            'name'       => __('City', 'commonsbooking'),
-            'desc'       => __('field description (optional)', 'commonsbooking'),
+            'name'       => __('Ort', CB_TEXTDOMAIN),
+            'desc'       => __('field description (optional)', CB_TEXTDOMAIN),
             'id'         => CB_METABOX_PREFIX . 'location_city',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -179,8 +178,8 @@ class Location extends CustomPostType
 
         // Country
         $cmb->add_field(array(
-            'name'       => __('Country', 'commonsbooking'),
-            'desc'       => __('field description (optional)', 'commonsbooking'),
+            'name'       => __('Land', CB_TEXTDOMAIN),
+            'desc'       => __('field description (optional)', CB_TEXTDOMAIN),
             'id'         => CB_METABOX_PREFIX . 'location_country',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -195,7 +194,7 @@ class Location extends CustomPostType
          */
         $cmb = new_cmb2_box(array(
             'id'           => CB_METABOX_PREFIX . 'location_info',
-            'title'        => __('General Location information', 'commonsbooking'),
+            'title'        => __('Informationen', CB_TEXTDOMAIN),
             'object_types' => array('cb_location',), // Post type
             'context'      => 'normal',
             'priority'     => 'high',
@@ -206,8 +205,8 @@ class Location extends CustomPostType
 
         // short description
         $cmb->add_field(array(
-            'name'       => __('Shortdescription', 'commonsbooking'),
-            'desc'       => __('field description (optional)', 'commonsbooking'),
+            'name'       => __('Kurzbeschreibung', CB_TEXTDOMAIN),
+            'desc'       => __('field description (optional)', CB_TEXTDOMAIN),
             'id'         => CB_METABOX_PREFIX . 'location_shortdescription',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -220,8 +219,8 @@ class Location extends CustomPostType
 
         // pickup description
         $cmb->add_field(array(
-            'name'       => __('Pickup instructions', 'commonsbooking'),
-            'desc'       => __('field description (optional)', 'commonsbooking'),
+            'name'       => __('Abhol-Informationen', CB_TEXTDOMAIN),
+            'desc'       => __('field description (optional)', CB_TEXTDOMAIN),
             'id'         => CB_METABOX_PREFIX . 'location_pickupinstructions',
             'type'       => 'textarea_small',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -233,8 +232,8 @@ class Location extends CustomPostType
 
         // location contact
         $cmb->add_field(array(
-            'name'       => __('Location contact information', 'commonsbooking'),
-            'desc'       => __('field description (optional)', 'commonsbooking'),
+            'name'       => __('Standort Kontakt', CB_TEXTDOMAIN),
+            'desc'       => __('field description (optional)', CB_TEXTDOMAIN),
             'id'         => CB_METABOX_PREFIX . 'location_contact',
             'type'       => 'textarea_small',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value

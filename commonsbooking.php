@@ -11,6 +11,7 @@ defined('ABSPATH') or die("Thanks for visting");
  * Text Domain:  commonsbooking
  */
 
+define('CB_TEXTDOMAIN', 'commonsbooking');
 define('CB_VERSION', '0.0');
 define('CB_MENU_SLUG', 'cb-menu');
 define('CB_PLUGIN_SLUG', 'commonsbooking');
@@ -30,6 +31,7 @@ function commonsbooking_public()
 {
     wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__) . 'Resources/assets/public/css/public.css');
 
+    wp_enqueue_style('cb-styles-global', plugin_dir_url(__FILE__) . 'Resources/assets/global/css/global.css');
     wp_enqueue_style('cb-styles-daterangepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css');
 
     wp_enqueue_script('cb-scripts-jquery', 'https://cdn.jsdelivr.net/jquery/latest/jquery.min.js', array(), '1.0.0', true);
@@ -47,11 +49,6 @@ function commonsbooking_public()
 
 add_action('wp_enqueue_scripts', 'commonsbooking_public');
 add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 'get_calendar_data'));
-
-function commonsbooking_load_plugin_textdomain() {
-    load_plugin_textdomain( 'commonsbooking', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
-}
-add_action( 'plugins_loaded', 'commonsbooking_load_plugin_textdomain' );
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/cmb2/cmb2/init.php';
