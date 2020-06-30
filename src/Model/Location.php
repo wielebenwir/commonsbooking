@@ -34,20 +34,6 @@ class Location extends CustomPost
         return implode('<br>', $location);
 
     }
-    /**
-     * Return Address @TODO Formatting 
-     * @return string
-     */
-    public function address()
-    {
-        return sprintf(
-            '%s, %s %s',
-            CB::get('location', CB_METABOX_PREFIX . 'location_street'),
-            CB::get('location', CB_METABOX_PREFIX . 'location_postcode'),
-            CB::get('location', CB_METABOX_PREFIX . 'location_city')
-        );
-
-    }
 
     /**
      * Returns location contact info.

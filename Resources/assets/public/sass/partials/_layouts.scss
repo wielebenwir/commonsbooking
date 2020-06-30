@@ -1,9 +1,6 @@
 /* -------------------- Tables -------------------- */
 
-.cb-cols {
-	div {
-		padding: $padding;
-	}
+.cb-columns {
 	@include breakpoint(phablet) {
 		display: flex;
 		flex-direction: row;
@@ -14,6 +11,12 @@
   > :nth-child(odd) {
     font-weight: bold;
   }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  border-bottom: 1px solid $color-gray-border;
 }
 
 	/* column sizes */

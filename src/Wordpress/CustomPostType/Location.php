@@ -24,7 +24,6 @@ class Location extends CustomPostType
         $cb_content = '';
         if (is_singular(self::getPostType())) {
             ob_start();
-            cb_get_template_part('meta', 'location');
             cb_get_template_part('calendar', 'location');
             $cb_content = ob_get_clean();
         } // if archive...
