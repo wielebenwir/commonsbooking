@@ -1,7 +1,4 @@
 <?php
-
-use CommonsBooking\CB\CB;
-
 foreach ($templateData['items'] as $item) {
     ?>
     <div class="cb-item-wrapper cb-box" >
@@ -31,7 +28,7 @@ foreach ($templateData['items'] as $item) {
                     <a href="<?php echo $bookingUrl; ?>" class="cb-button align-right"> Hier buchen</a>
                     <span class="cb-date"><?php echo $dateString; ?></span>
                     <span class="cb-location-name"><?php echo $location->post_title; ?></span>
-                    <span class="cb-address"><?php echo CB::get('location', 'location_address', $location->ID); ?> </span>
+                    <span class="cb-address">Rathenauplatz 35, 50674 Köln, </span>
                 </div>
             <?php
             }

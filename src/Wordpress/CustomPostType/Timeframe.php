@@ -113,7 +113,7 @@ class Timeframe extends CustomPostType
                 "type"        => $_REQUEST["type"],
                 "post_status" => $_REQUEST["post_status"],
                 "post_type"   => self::getPostType(),
-                "post_title"  => __("Booking", 'commonsbooking')
+                "post_title"  => __("Buchung", CB_TEXTDOMAIN)
             );
 
             if (empty($booking)) {
@@ -144,28 +144,28 @@ class Timeframe extends CustomPostType
     public function getArgs()
     {
         $labels = array(
-            'name'                  => __('Timeframes', 'commonsbooking'),
-            'singular_name'         => __('Timeframe', 'commonsbooking'),
-            'add_new'               => __('Add new', 'commonsbooking'),
-            'add_new_item'          => __('Add new timeframe', 'commonsbooking'),
-            'edit_item'             => __('Edit timeframe', 'commonsbooking'),
-            'new_item'              => __('Add new timeframe', 'commonsbooking'),
-            'view_item'             => __('Show timeframe', 'commonsbooking'),
-            'view_items'            => __('Show timeframes', 'commonsbooking'),
-            'search_items'          => __('Search timeframes', 'commonsbooking'),
-            'not_found'             => __('Timeframes not found', 'commonsbooking'),
-            'not_found_in_trash'    => __('No timeframes found in trash', 'commonsbooking'),
-            'parent_item_colon'     => __('Parent timeframes:', 'commonsbooking'),
-            'all_items'             => __('All timeframes', 'commonsbooking'),
-            'archives'              => __('Timeframe archive', 'commonsbooking'),
-            'attributes'            => __('Timeframe attributes', 'commonsbooking'),
-            'insert_into_item'      => __('Add to timeframe', 'commonsbooking'),
-            'uploaded_to_this_item' => __('Added to timeframe', 'commonsbooking'),
-            'featured_image'        => __('Timeframe image', 'commonsbooking'),
-            'set_featured_image'    => __('set timeframe image', 'commonsbooking'),
-            'remove_featured_image' => __('remove timeframe image', 'commonsbooking'),
-            'use_featured_image'    => __('use as timeframe image', 'commonsbooking'),
-            'menu_name'             => __('Timeframes', 'commonsbooking'),
+            'name'                  => __('Timeframes', CB_TEXTDOMAIN),
+            'singular_name'         => __('Timeframe', CB_TEXTDOMAIN),
+            'add_new'               => __('Hinzufügen', CB_TEXTDOMAIN),
+            'add_new_item'          => __('Timeframe hinzufügen', CB_TEXTDOMAIN),
+            'edit_item'             => __('Timeframe bearbeiten', CB_TEXTDOMAIN),
+            'new_item'              => __('Timeframe hinzufügen', CB_TEXTDOMAIN),
+            'view_item'             => __('Timeframe anzeigen', CB_TEXTDOMAIN),
+            'view_items'            => __('Timeframes anzeigen', CB_TEXTDOMAIN),
+            'search_items'          => __('Timeframe suchen', CB_TEXTDOMAIN),
+            'not_found'             => __('Keine Timeframes gefunden', CB_TEXTDOMAIN),
+            'not_found_in_trash'    => __('Keine Timeframes im Papierkorb gefunden', CB_TEXTDOMAIN),
+            'parent_item_colon'     => __('Übergeordnete Timeframes:', CB_TEXTDOMAIN),
+            'all_items'             => __('Alle Timeframes', CB_TEXTDOMAIN),
+            'archives'              => __('Timeframe Archiv', CB_TEXTDOMAIN),
+            'attributes'            => __('Timeframe Attribute', CB_TEXTDOMAIN),
+            'insert_into_item'      => __('Zum Timeframe hinzufügen', CB_TEXTDOMAIN),
+            'uploaded_to_this_item' => __('Zum Timeframe hinzugefügt', CB_TEXTDOMAIN),
+            'featured_image'        => __('Timeframebild', CB_TEXTDOMAIN),
+            'set_featured_image'    => __('Timeframebild setzen', CB_TEXTDOMAIN),
+            'remove_featured_image' => __('Timeframebild entfernen', CB_TEXTDOMAIN),
+            'use_featured_image'    => __('Als Timeframebild verwenden', CB_TEXTDOMAIN),
+            'menu_name'             => __('Timeframes', CB_TEXTDOMAIN),
         );
 
         // args for the new post_type
@@ -222,58 +222,58 @@ class Timeframe extends CustomPostType
     protected function getCustomFields()
     {
         return array(
-            new Field("comment", __("Comment", 'commonsbooking'), "", "textarea_small", "edit_posts"),
-            new Field("type", __('Type', 'commonsbooking'), "", "select", "edit_pages",
+            new Field("comment", __("Comment", CB_TEXTDOMAIN), "", "textarea_small", "edit_posts"),
+            new Field("type", __('Type', CB_TEXTDOMAIN), "", "select", "edit_pages",
                 self::getTypes()
             ),
-            new Field("location-id", __("Location", 'commonsbooking'), "", "select", "edit_posts",
+            new Field("location-id", __("Location", CB_TEXTDOMAIN), "", "select", "edit_posts",
                 Location::getAllPosts()),
-            new Field("item-id", __("Item", 'commonsbooking'), "", "select", "edit_posts", Item::getAllPosts()),
-            new Field("title-timeframe-config", __("Configure timeframe", 'commonsbooking'), "", "title", "edit_posts"),
-            new Field("timeframe-repetition", __('Timeframe Repetition', 'commonsbooking'), "", "select", "edit_pages",
+            new Field("item-id", __("Item", CB_TEXTDOMAIN), "", "select", "edit_posts", Item::getAllPosts()),
+            new Field("title-timeframe-config", __("Configure timeframe", CB_TEXTDOMAIN), "", "title", "edit_posts"),
+            new Field("timeframe-repetition", __('Timeframe Repetition', CB_TEXTDOMAIN), "", "select", "edit_pages",
                 [
-                    #  'rep' => __("Repetition", 'commonsbooking'),
-                    'norep' => __("No Repetition", 'commonsbooking'),
-                    'd'     => __("Daily", 'commonsbooking'),
-                    'w'     => __("Weekly", 'commonsbooking'),
-                    'm'     => __("Monthly", 'commonsbooking'),
-                    'y'     => __("Yearly", 'commonsbooking')
+                    #  'rep' => __("Repetition", CB_TEXTDOMAIN),
+                    'norep' => __("No Repetition", CB_TEXTDOMAIN),
+                    'd'     => __("Daily", CB_TEXTDOMAIN),
+                    'w'     => __("Weekly", CB_TEXTDOMAIN),
+                    'm'     => __("Monthly", CB_TEXTDOMAIN),
+                    'y'     => __("Yearly", CB_TEXTDOMAIN)
                 ]
             ),
-            new Field("full-day", __('Full day', 'commonsbooking'), "", "checkbox", "edit_pages"),
-            new Field("start-date", __("Start date", 'commonsbooking'), "", "text_datetime_timestamp", "edit_posts"),
-            new Field("end-date", __("End date", 'commonsbooking'), "", "text_datetime_timestamp", "edit_pages"),
-            new Field("start-time", __("Start time", 'commonsbooking'), "", "text_time", "edit_posts"),
-            new Field("end-time", __("End time", 'commonsbooking'), "", "text_time", "edit_pages"),
-            new Field("grid", __("Grid", 'commonsbooking'), "", "select", "edit_pages",
+            new Field("full-day", __('Full day', CB_TEXTDOMAIN), "", "checkbox", "edit_pages"),
+            new Field("start-date", __("Start date", CB_TEXTDOMAIN), "", "text_datetime_timestamp", "edit_posts"),
+            new Field("end-date", __("End date", CB_TEXTDOMAIN), "", "text_datetime_timestamp", "edit_pages"),
+            new Field("start-time", __("Start time", CB_TEXTDOMAIN), "", "text_time", "edit_posts"),
+            new Field("end-time", __("End time", CB_TEXTDOMAIN), "", "text_time", "edit_pages"),
+            new Field("grid", __("Grid", CB_TEXTDOMAIN), "", "select", "edit_pages",
                 [
-                    0 => __("Full slot", 'commonsbooking'),
-                    1 => __("Hourly", 'commonsbooking')
+                    0 => __("Full slot", CB_TEXTDOMAIN),
+                    1 => __("Hourly", CB_TEXTDOMAIN)
                 ]
             ),
-            new Field("title-timeframe-rep-config", __("Configure repetition", 'commonsbooking'), "", "title",
+            new Field("title-timeframe-rep-config", __("Configure repetition", CB_TEXTDOMAIN), "", "title",
                 "edit_posts"),
-            new Field("repetition-start", __('Repetition start', 'commonsbooking'), "", "text_date", "edit_pages"),
-            /*new Field("repetition", __('Repetition', 'commonsbooking'), "", "select", "edit_pages",
+            new Field("repetition-start", __('Repetition start', CB_TEXTDOMAIN), "", "text_date", "edit_pages"),
+            /*new Field("repetition", __('Repetition', CB_TEXTDOMAIN), "", "select", "edit_pages",
                 [
-                    'd' => __("Daily", 'commonsbooking'),
-                    'w' => __("Weekly", 'commonsbooking'),
-                    'm' => __("Monthly", 'commonsbooking'),
-                    'y' => __("Yearly", 'commonsbooking')
+                    'd' => __("Daily", CB_TEXTDOMAIN),
+                    'w' => __("Weekly", CB_TEXTDOMAIN),
+                    'm' => __("Monthly", CB_TEXTDOMAIN),
+                    'y' => __("Yearly", CB_TEXTDOMAIN)
                 ]
             ),*/
-            new Field("weekdays", __('Weekdays', 'commonsbooking'), "", "multicheck", "edit_pages",
+            new Field("weekdays", __('Weekdays', CB_TEXTDOMAIN), "", "multicheck", "edit_pages",
                 [
-                    1 => __("Monday", 'commonsbooking'),
-                    2 => __("Tuesday", 'commonsbooking'),
-                    3 => __("Wednesday", 'commonsbooking'),
-                    4 => __("Thursday", 'commonsbooking'),
-                    5 => __("Friday", 'commonsbooking'),
-                    6 => __("Saturday", 'commonsbooking'),
-                    7 => __("Sunday", 'commonsbooking')
+                    1 => __("Monday", CB_TEXTDOMAIN),
+                    2 => __("Tuesday", CB_TEXTDOMAIN),
+                    3 => __("Wednesday", CB_TEXTDOMAIN),
+                    4 => __("Thursday", CB_TEXTDOMAIN),
+                    5 => __("Friday", CB_TEXTDOMAIN),
+                    6 => __("Saturday", CB_TEXTDOMAIN),
+                    7 => __("Sunday", CB_TEXTDOMAIN)
                 ]
             ),
-            new Field("repetition-end", __('Repetition end', 'commonsbooking'), "", "text_date", "edit_pages")
+            new Field("repetition-end", __('Repetition end', CB_TEXTDOMAIN), "", "text_date", "edit_pages")
         );
     }
 
@@ -284,13 +284,13 @@ class Timeframe extends CustomPostType
     public static function getTypes()
     {
         return [
-            self::OPENING_HOURS_ID    => __("Opening Hours", 'commonsbooking'),
-            self::BOOKABLE_ID         => __("Bookable", 'commonsbooking'),
-            self::HOLIDAYS_ID         => __("Holidays", 'commonsbooking'),
-            self::OFF_HOLIDAYS_ID     => __("Official Holiday", 'commonsbooking'),
-            self::REPAIR_ID           => __("Repair", 'commonsbooking'),
-            self::BOOKING_ID          => __("Booking", 'commonsbooking'),
-            self::BOOKING_CANCELED_ID => __("Booking cancelled", 'commonsbooking')
+            self::OPENING_HOURS_ID    => __("Opening Hours", CB_TEXTDOMAIN),
+            self::BOOKABLE_ID         => __("Bookable", CB_TEXTDOMAIN),
+            self::HOLIDAYS_ID         => __("Holidays", CB_TEXTDOMAIN),
+            self::OFF_HOLIDAYS_ID     => __("Official Holiday", CB_TEXTDOMAIN),
+            self::REPAIR_ID           => __("Repair", CB_TEXTDOMAIN),
+            self::BOOKING_ID          => __("Booking", CB_TEXTDOMAIN),
+            self::BOOKING_CANCELED_ID => __("Booking cancelled", CB_TEXTDOMAIN)
         ];
     }
 
@@ -359,13 +359,13 @@ class Timeframe extends CustomPostType
 
     /**
      * Priorities:
-     * 1 => __("Opening Hours", 'commonsbooking'),
-     * 2 => __("Bookable", 'commonsbooking'),
-     * 3 => __("Holidays", 'commonsbooking'),
-     * 4 => __("Official Holiday", 'commonsbooking'),
-     * 5 => __("Repair", 'commonsbooking'),
-     * 6 => __("Booking", 'commonsbooking'),
-     * 7 => __("Booking cancelled", 'commonsbooking')
+     * 1 => __("Opening Hours", CB_TEXTDOMAIN),
+     * 2 => __("Bookable", CB_TEXTDOMAIN),
+     * 3 => __("Holidays", CB_TEXTDOMAIN),
+     * 4 => __("Official Holiday", CB_TEXTDOMAIN),
+     * 5 => __("Repair", CB_TEXTDOMAIN),
+     * 6 => __("Booking", CB_TEXTDOMAIN),
+     * 7 => __("Booking cancelled", CB_TEXTDOMAIN)
      *
      * @param \WP_Post $timeframeOne
      * @param \WP_Post $timeframeTwo
@@ -431,7 +431,7 @@ class Timeframe extends CustomPostType
             $values = self::getTypes();
             ?>
             <select name="admin_filter_type">
-                <option value=""><?php _e('Filter By Type ', 'commonsbooking'); ?></option>
+                <option value=""><?php _e('Filter By Type ', CB_TEXTDOMAIN); ?></option>
                 <?php
                 $filterValue = isset($_GET['admin_filter_type']) ? $_GET['admin_' . self::$postType . '_filter_type'] : '';
                 foreach ($values as $value => $label) {

@@ -163,9 +163,9 @@ class Plugin
 
     public static function registerPostStatuses()
     {
-        $cancelled = new PostStatus("cancelled", __('Cancelled', 'commonsbooking'));
-        $confirmed = new PostStatus("confirmed", __('Confirmed', 'commonsbooking'));
-        $unconfirmed = new PostStatus("unconfirmed", __('Unconfirmed', 'commonsbooking'));
+        $cancelled = new PostStatus("cancelled", __('Storniert', CB_TEXTDOMAIN));
+        $confirmed = new PostStatus("confirmed", __('Bestätigt', CB_TEXTDOMAIN));
+        $unconfirmed = new PostStatus("unconfirmed", __('Nicht bestätigt', CB_TEXTDOMAIN));
     }
 
 
@@ -182,7 +182,7 @@ class Plugin
             $customPostType . '_category',
             $customPostType,
             array(
-                'label' => __('Item Category', 'commonsbooking'),
+                'label' => __('Item Category', CB_TEXTDOMAIN),
                 'rewrite' => array('slug' => $customPostType . '-cat'),
                 'hierarchical' => true,
             )
@@ -193,7 +193,7 @@ class Plugin
     {
         add_role(
             'location_owner',
-            __( 'Location Owner', 'commonsbooking' ),
+            __( 'Location Owner', CB_TEXTDOMAIN ),
             array(
             'read'         => true,  // true allows this capability
             'edit_posts'   => true,
