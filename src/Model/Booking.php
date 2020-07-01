@@ -195,7 +195,7 @@ class Booking extends CustomPost
         }
 
         if ($grid > 0) {
-            $time_start = $time_end - (60 * 60 * $grid);
+            $time_start = date($time_format, $this->get_meta('end-date') +1 -(60 * 60 * $grid) );
         }
 
         if ($grid == 0) { // if grid is set to slot duration
@@ -261,7 +261,7 @@ class Booking extends CustomPost
 
         if ($current_status == "confirmed")
         {
-            return __('Your booking is confirmed. <br>A confirmation mail has been sent to you. Enjoy your cargo bike trip', 'commonsbooking' );
+            return __('Your booking is confirmed. A confirmation mail has been sent to you. <br> Enjoy your cargo bike trip :-)', 'commonsbooking' );
         }
 
         if ($current_status == "cancelled")

@@ -29,22 +29,29 @@ use CommonsBooking\Model\Booking;
             <img src="https://via.placeholder.com/50">
         </div><!-- . cb-table-header-->
         <div class="cb-meta cb-location-meta">
+
         <div class="cb-address col-30-70">
                 <div><?php echo __('Pickup', 'commonsbooking'); ?></div>
                 <div><?php echo CB::get('booking', 'pickup_datetime'); ?></div>
             </div><!-- .cb-address -->
+
         <div class="cb-address col-30-70">
             <div><?php echo __('Return', 'commonsbooking'); ?></div>
             <div><?php echo CB::get('booking', 'return_datetime'); ?></div>
         </div><!-- .cb-address -->
+
+        <?php if (!empty(CB::get( 'location', CB_METABOX_PREFIX . 'location_pickupinstructions'))) { ?>
+        <div class="cb-pickup-info col-30-70">
+            <div>Pickup and return info</div>
+            <div><?php echo CB::get( 'location', CB_METABOX_PREFIX . 'location_pickupinstructions') ?></div>
+        </div><!-- .cb-pickup-info -->
+         <?php } // end if pickupinstructions ?>
+
             <div class="cb-address col-30-70">
                 <div>Adress</div>
                 <div><?php echo CB::get('location', 'location_address'); ?></div>
-            </div><!-- .cb-address -->
-            <div class="cb-pickup-info col-30-70">
-                <div>Pickup</div>
-                <div><?php echo CB::get( 'location', CB_METABOX_PREFIX . 'location_pickupinstructions') ?></div>
-            </div><!-- .cb-pickup-info -->
+        </div><!-- .cb-address -->
+
         </div><!-- .cb-location-meta -->
     </div><!-- .cb-location -->
     <div class="cb-item">
