@@ -17,7 +17,7 @@
 		@extend .cb-box;
 		margin-bottom: $padding;
 		h3 {
-			display: inline;
+			margin-bottom: $padding-big;
 		}
 		.cb-table-header {
 			display:block;
