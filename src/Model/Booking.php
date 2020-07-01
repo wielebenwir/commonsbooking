@@ -87,10 +87,11 @@ class Booking extends CustomPost
      */
     public function booking_timeframe_date()
     {
-        $format = get_option('date_format');
+        $date_format = get_option('date_format');
+        $time_format = get_option('time_format');
         
-        $startdate = date($format, self::get_meta('start-date'));
-        $enddate = date($format, self::get_meta('end-date'));
+        $startdate = date($date_format, $this->get_meta('start-date'));
+        $enddate = date($date_format, $this->get_meta('end-date'));
 
         if ($startdate == $enddate) {
             return sprintf( esc_html__( ' on %s ' , 'commonsbooking'), $startdate );
@@ -100,7 +101,47 @@ class Booking extends CustomPost
         }
     }
 
-    // TODO: add pickup timeslot (e.g. 1 hour or full slot depending on timeframe setting)
+
+    function render_pickupreturn($action) {
+
+        if ($action == "pickup") {
+            $date_type = "start";
+        } elseif ($action == "return") {
+            $date_type = "end";
+        } else {
+            return false;
+        }
+
+        $date_format = get_option('date_format');
+        $time_format = get_option('time_format');
+        
+        $date = date($date_format, $this->get_meta($date_type .'-date'));
+        $time_start = date($time_format, $this->get_meta($date_type . '-date'));
+
+        $grid = $this->get_meta('grid');
+        $full_day = $this->get_meta('full-day');
+
+        var_dump($grid);
+        var_dump($full_day);
+
+        if ($full_day == "on") {
+            return $date;
+        }
+
+        if ($grid > 0) {
+            $time_end = date($time_format, $this->get_meta($date_type . '-date') + (60 * 60 * $grid));
+        }
+
+        if ($grid == 0) { // if grid is set to slot duration
+            $time_end = date($time_format, $this->get_meta($date_type . '-date'));
+        }
+
+        return $date . ' ' . $time_start . ' - ' . $time_end;
+
+    }
+    
+    
+    
     /**
      * pickup_datetime
      *
@@ -108,11 +149,29 @@ class Booking extends CustomPost
      */
     public function pickup_datetime()
     {
-        $date = get_post_meta($this->post->ID, 'start-date', true);
 
-        // TODO format pickup string on fullday-booking // we need slot duration or timestart and time-end for pickup and return
-        $format = get_option('date_format'). ' ' . get_option('time_format');
-        return date($format, $date);
+        $date_format = get_option('date_format');
+        $time_format = get_option('time_format');
+        
+        $date_start = date($date_format, $this->get_meta('start-date'));
+        $time_start = date($time_format, $this->get_meta('start-date'));
+
+        $grid = $this->get_meta('grid');
+        $full_day = $this->get_meta('full-day');
+
+        if ($full_day == "on") {
+            return $date_start;
+        }
+
+        if ($grid > 0) { // if bookable grid is set to hour
+            $time_end = date($time_format, $this->get_meta('start-date') + (60 * 60 * $grid));
+        }
+
+        if ($grid == 0) { // if grid is set to slot duration
+            $time_end = date($time_format, strtotime($this->get_meta('end-time')));
+        }
+
+        return $date_start . ' ' . $time_start . ' - ' . $time_end;;
     }
     
     /**
@@ -122,28 +181,94 @@ class Booking extends CustomPost
      */
     public function return_datetime()
     {
-        $date = get_post_meta($this->post->ID, 'end-date', true);
+        $date_format = get_option('date_format');
+        $time_format = get_option('time_format');
+        
+        $date_end = date($date_format, $this->get_meta('end-date'));
+        $time_end = date($time_format, $this->get_meta('end-date') + 60 ); // we add 60 seconds because internal timestamp is set to hh:59 
 
-        // TODO format pickup string on fullday-booking // we need slot duration or timestart and time-end for pickup and return
-        $format = get_option('date_format'). ' ' . get_option('time_format');
-        return date($format, $date);
+        $grid = $this->get_meta('grid');
+        $full_day = $this->get_meta('full-day');
+
+        if ($full_day == "on") {
+            return $date_end;
+        }
+
+        if ($grid > 0) {
+            $time_start = date($time_format, $this->get_meta('end-date') +1 -(60 * 60 * $grid) );
+        }
+
+        if ($grid == 0) { // if grid is set to slot duration
+            $time_start = date($time_format, strtotime($this->get_meta('start-time')));
+        }
+
+        return $date_end . ' ' . $time_start . ' - ' . $time_end;;
     }
 
-
-    public function booking_link()
+    
+    /**
+     * booking_action_button
+     *
+     * @param  mixed $form_action
+     * @return void
+     */
+    public function booking_action_button($form_action)
     {
-        return '<a href="' . site_url('?cb_timeframe=' . $this->post->post_name) . '">' . __( 'Link to your booking', 'commonsbooking' ) . '</a>';
-    }
+        global $post;
+        $booking = new Booking($post->ID); // is used in template booking-action-form.php 
+        $current_status = $this->post->post_status;
 
-    public function submitLabel()
-    {
-        return __('Book', 'commonsbooking'); 
-    }
+        // return form with action button based on current booking status and defined form-action
 
-    public function cancelLabel()
-    {
-        return __('Cancel', 'commonsbooking'); 
+        If ($current_status == 'unconfirmed' AND $form_action == "cancel") 
+        {
+            $form_post_status = 'cancelled';
+            $button_label = __('Cancel', 'commonsbooking');
+        }
+
+        If ($current_status == 'unconfirmed' AND $form_action == "confirm") 
+        {
+            $form_post_status = 'confirmed';
+            $button_label = __('Confirm Booking', 'commonsbooking');
+        }
+
+        If ($current_status == 'confirmed' AND $form_action == "cancel") 
+        {
+            $form_post_status = 'cancelled';
+            $button_label = __('Cancel Booking', 'commonsbooking');
+        }
+
+        if (isset($form_post_status)) {       
+            include CB_PLUGIN_DIR . 'templates/components/booking-action-form.php';
+        }
+
     }
     
+    
+    /**
+     * show booking notice
+     *
+     * @return void
+     */
+    public function booking_notice()
+    {
+        $current_status = $this->post->post_status;
+
+        if ($current_status == "unconfirmed")
+        {
+            return __('Please check your booking and click confirm booking', 'commonsbooking' );
+        }
+
+        if ($current_status == "confirmed")
+        {
+            return __('Your booking is confirmed. A confirmation mail has been sent to you. <br> Enjoy your cargo bike trip :-)', 'commonsbooking' );
+        }
+
+        if ($current_status == "cancelled")
+        {
+            return __('Your booking has been cancelled.', 'commonsbooking' );
+        }
+
+    }
 
 }

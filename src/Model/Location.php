@@ -30,6 +30,7 @@ class Location extends CustomPost
     {
         
         $location = array (
+            CB::get('location', 'name', $this->post->ID),
             CB::get('location', CB_METABOX_PREFIX . 'location_street', $this->post->ID),
             CB::get('location', CB_METABOX_PREFIX . 'location_postcode', $this->post->ID),
             CB::get('location', CB_METABOX_PREFIX . 'location_city', $this->post->ID),
@@ -39,7 +40,7 @@ class Location extends CustomPost
 
     }
     /**
-     * Return Address @TODO Formatting 
+     * 
      * @return string
      */
     public function address()
