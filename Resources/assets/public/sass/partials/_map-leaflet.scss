@@ -25,7 +25,7 @@
 			margin: 0;
 
 		ul > li.has-post-thumbnail > .cb-excerpt {
-			@extend .cb-columns, .cb-columns-50-50;
+			@extend .cb-cols, .cb-cols-50-50;
 		}
 	}
 	/* one row scroller */

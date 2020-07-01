@@ -34,44 +34,34 @@
 		h3 {
 			margin-bottom: $padding-big;
 		}
-
-		dl {
-			border-top: 1px solid $color-gray-border;
-			padding-top: $padding;
-		}
-
-
-		ul.cb-subposts > li { /* subposts container */
-			@extend .cb-box-subposts;
-			position: relative;
+		.cb-table-header {
+			display:block;
 			overflow: hidden;
-			padding-bottom: 0;
+			img { float: right;}
+		}
 
-			}
-
-		/* individual layouts */
-		.cb-meta {
-			@extend .cb-columns, .cb-columns-50-50;
-			}
-
-		.cb-item-summary, .cb-location-summary {
-			.cb-validity,
-			.cb-location-address {
-				display: block;
+		&.cb-timeframe {
+			@extend .cb-cols; 
+			text-align: center;
+			span {
+				@extend .cb-big;
 			}
 		}
 
-
-		&.has-post-thumbnail > .cb-excerpt { /* main post has thumbnail */
-			@extend .cb-columns, .cb-columns-50-50;
+		h2, h3, h4 {
+			@extend .cb-big;
+			margin: 0;
+			padding: 0;
 		}
 		ul li.has-post-thumbnail .cb-excerpt { /* sub-post has thumbnail */
 			@extend .cb-columns, .cb-columns-50-50;
 
-		}
-		.cb-period-list {
-			li {
-				margin-bottom: 0;
+		> div.cb-meta {
+			display: block;
+			margin-top: $padding;
+			@extend .cb-box-inner;
+			> div {
+				@extend .cb-cols;
 			}
 		}
 
