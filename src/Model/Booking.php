@@ -36,6 +36,30 @@ class Booking extends CustomPost
     }
 
     /**
+     * Assings relevant meta fields from related bookable timeframe to booking.
+     * @throws \Exception
+     */
+    public function assignBookableTimeframeFields() {
+        $timeframe = $this->getBookableTimeFrame();
+        $neededMetaFields = [
+            "full-day",
+            "grid",
+            "start-time",
+            "end-time"
+        ];
+        foreach($neededMetaFields as $fieldName) {
+            update_post_meta(
+                $this->post->ID,
+                $fieldName,
+                get_post_meta($timeframe->ID,
+                    $fieldName,
+                    true
+                )
+            );
+        }
+    }
+
+    /**
      * Returns suitable bookable Timeframe for booking.
      * @return mixed
      * @throws \Exception
@@ -69,10 +93,9 @@ class Booking extends CustomPost
         $enddate = date($format, self::get_meta('end-date'));
 
         if ($startdate == $enddate) {
-            return sprintf( esc_html__( ' on %s ' , 'commonsbooking'), $startdate );
+            return sprintf( esc_html__( ' on %s ' , CB_TEXTDOMAIN), $startdate );
         } else {
-            /* translators: %1 = startdate, %2 = enddate in wordpress defined format */
-            return sprintf( __( ' from %1$s until %2$s ', 'commonsbooking' ), $startdate, $enddate ) ;
+            return sprintf( __( ' from %1$s until %2$s ', CB_TEXTDOMAIN ), $startdate, $enddate ) ;
         }
     }
 
@@ -108,7 +131,7 @@ class Booking extends CustomPost
 
     public function booking_link()
     {
-        return '<a href="' . site_url('?cb_timeframe=' . $this->post->post_name) . '">' . __( 'Link to your booking', 'commonsbooking' ) . '</a>';
+        return '<a href="' . site_url('?cb_timeframe=' . $this->post->post_name) . '">' . __( 'Link to your booking', CB_TEXTDOMAIN ) . '</a>';
     }
     
 
