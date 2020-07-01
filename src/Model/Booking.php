@@ -89,8 +89,8 @@ class Booking extends CustomPost
     {
         $format = get_option('date_format');
         
-        $startdate = date($format, self::get_meta('start-date'));
-        $enddate = date($format, self::get_meta('end-date'));
+        $startdate = date($format, $this->get_meta('start-date'));
+        $enddate = date($format, $this->get_meta('end-date'));
 
         if ($startdate == $enddate) {
             return sprintf( esc_html__( ' on %s ' , 'commonsbooking'), $startdate );
@@ -129,21 +129,70 @@ class Booking extends CustomPost
         return date($format, $date);
     }
 
-
-    public function booking_link()
+    
+    /**
+     * booking_action_button
+     *
+     * @param  mixed $form_action
+     * @return void
+     */
+    public function booking_action_button($form_action)
     {
-        return '<a href="' . site_url('?cb_timeframe=' . $this->post->post_name) . '">' . __( 'Link to your booking', 'commonsbooking' ) . '</a>';
-    }
+        global $post;
+        $booking = new Booking($post->ID); // is used in template booking-action-form.php 
+        $current_status = $this->post->post_status;
 
-    public function submitLabel()
-    {
-        return __('Book', 'commonsbooking'); 
-    }
+        // return form with action button based on current booking status and defined form-action
 
-    public function cancelLabel()
-    {
-        return __('Cancel', 'commonsbooking'); 
+        If ($current_status == 'unconfirmed' AND $form_action == "cancel") 
+        {
+            $form_post_status = 'cancelled';
+            $button_label = __('Cancel', 'commonsbooking');
+            include CB_PLUGIN_DIR . 'templates/components/booking-action-form.php';
+        }
+
+        If ($current_status == 'unconfirmed' AND $form_action == "confirm") 
+        {
+            $form_post_status = 'confirmed';
+            $button_label = __('Confirm Booking', 'commonsbooking');
+            include CB_PLUGIN_DIR . 'templates/components/booking-action-form.php';
+        }
+
+        If ($current_status == 'confirmed' AND $form_action == "cancel") 
+        {
+            $form_post_status = 'cancelled';
+            $button_label = __('Cancel Booking', 'commonsbooking');
+            include CB_PLUGIN_DIR . 'templates/components/booking-action-form.php';
+        }
+
+
     }
     
+    
+    /**
+     * show booking notice
+     *
+     * @return void
+     */
+    public function booking_notice()
+    {
+        $current_status = $this->post->post_status;
+
+        if ($current_status == "unconfirmed")
+        {
+            return __('Please check your booking and click confirm booking', 'commonsbooking' );
+        }
+
+        if ($current_status == "confirmed")
+        {
+            return __('Your booking is confirmed. <br>A confirmation mail has been sent to you. Enjoy your cargo bike trip', 'commonsbooking' );
+        }
+
+        if ($current_status == "cancelled")
+        {
+            return __('Your booking has been cancelled.', 'commonsbooking' );
+        }
+
+    }
 
 }

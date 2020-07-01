@@ -1,6 +1,7 @@
 <?php
 
 use CommonsBooking\CB\CB;
+use CommonsBooking\Model\Booking;
 
 // \CommonsBooking\View\Booking::unconfirmed();
 
@@ -10,7 +11,7 @@ use CommonsBooking\CB\CB;
 ?>
 
 <div class="cb-notice">
-    Please confirm your booking!
+    <?php echo CB::get('booking', 'booking_notice'); ?>
 </div><!-- .cb-table -->
 <div class="cb-table">
     <div class="cb-timeframe">
@@ -64,15 +65,6 @@ use CommonsBooking\CB\CB;
 </div><!-- .cb-table -->
 
 <div id="cb-action">
-    <?php include __DIR__ . '/components/booking-form.php'; ?>
-
-    <!-- {% include '/timeframe/form.html.twig' %}
-
-    {% include '/timeframe/form.html.twig' with {
-        'submitLabel': cancellation.submitLabel,
-        'type': cancellation.type,
-        'postStatus': cancellation.postStatus } %}
- -->
-
-
+    <?php echo CB::get('booking', 'booking_action_button', NULL, 'confirm') ?>
+    <?php echo CB::get('booking', 'booking_action_button', NULL, 'cancel') ?>
 </div>
