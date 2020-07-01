@@ -119,9 +119,16 @@ class Timeframe extends CustomPostType
             if (empty($booking)) {
                 $postarr['post_name'] = self::generateRandomSlug();
                 $postId = wp_insert_post($postarr, true);
+                $booking_metafield = new \CommonsBooking\Model\Booking($postId);      
+                // we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
+                $booking_metafield->assignBookableTimeframeFields();
+              ;
             } else {
                 $postarr['ID'] = $booking->ID;
                 $postId = wp_update_post($postarr);
+                $booking_metafield = new \CommonsBooking\Model\Booking($postId);
+                // we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe  
+                $booking_metafield->assignBookableTimeframeFields();
             }
 
             // Trigger Mail, only send mail if status has changed     
@@ -131,6 +138,7 @@ class Timeframe extends CustomPostType
             }
             // get slug as parameter
             $post_slug = get_post($postId)->post_name;
+
 
             wp_redirect(home_url('?' . self::getPostType() . '=' . $post_slug));
             exit;
