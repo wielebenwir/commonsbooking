@@ -87,10 +87,19 @@ class Booking extends CustomPost
      */
     public function booking_timeframe_date()
     {
-        $format = get_option('date_format');
+        $date_format = get_option('date_format');
+        $time_format = get_option('time_format');
         
-        $startdate = date($format, $this->get_meta('start-date'));
-        $enddate = date($format, $this->get_meta('end-date'));
+        $startdate = date($date_format, $this->get_meta('start-date'));
+        $enddate = date($date_format, $this->get_meta('end-date'));
+        $starttime = date($time_format, $this->get_meta('start-date'));
+
+        $grid = $this->get_meta('grid');
+        $full_day = $this->get_meta('full-day');
+
+        if ($grid > 0) {
+
+        }
 
         if ($startdate == $enddate) {
             return sprintf( esc_html__( ' on %s ' , 'commonsbooking'), $startdate );
@@ -108,11 +117,22 @@ class Booking extends CustomPost
      */
     public function pickup_datetime()
     {
-        $date = get_post_meta($this->post->ID, 'start-date', true);
+        $date_format = get_option('date_format');
+        $time_format = get_option('time_format');
+        
+        $startdate = date($date_format, $this->get_meta('start-date'));
+        $enddate = date($date_format, $this->get_meta('end-date'));
+        $starttime = date($time_format, $this->get_meta('start-date'));
 
-        // TODO format pickup string on fullday-booking // we need slot duration or timestart and time-end for pickup and return
-        $format = get_option('date_format'). ' ' . get_option('time_format');
-        return date($format, $date);
+        $grid = $this->get_meta('grid');
+        $full_day = $this->get_meta('full-day');
+
+        var_dump($grid);
+        var_dump($full_day);
+
+        if ($grid > 0) {
+
+        }
     }
     
     /**

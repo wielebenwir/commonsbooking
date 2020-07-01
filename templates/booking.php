@@ -28,6 +28,10 @@ use CommonsBooking\Model\Booking;
             <img src="https://via.placeholder.com/50">
         </div><!-- . cb-table-header-->
         <div class="cb-meta cb-location-meta">
+        <div class="cb-address col-30-70">
+                <div><?php echo __('Pickup and return', 'commonsbooking'); ?></div>
+                <div><?php echo CB::get('booking', 'pickup_datetime'); ?></div>
+            </div><!-- .cb-address -->
             <div class="cb-address col-30-70">
                 <div>Adress</div>
                 <div><?php echo CB::get('location', 'location_address'); ?></div>
