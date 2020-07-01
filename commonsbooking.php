@@ -62,9 +62,6 @@ load_plugin_textdomain('commonsbooking', false,
     basename(dirname(__FILE__)) . '/languages/'); // should be loaded via add_action, but wasnt working in admin menu
 //}
 
-//function commonsbooking_load_plugin_textdomain() {
-    load_plugin_textdomain( 'commonsbooking', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
-//}
 //add_action( 'plugins_loaded', 'commonsbooking_load_plugin_textdomain' );
 
 require __DIR__ . '/vendor/autoload.php';
