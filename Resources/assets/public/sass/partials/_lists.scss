@@ -10,27 +10,12 @@
  * @copyright 2015 wielebenwir
  */
 
-
 .cb-content {
 
-	ul {
-		padding: 0 !important;
-	}
-
-	ul.cb-table > li,  /* item, location shortcodes */
-	&.cb-context-list > ul > li {
-
+	.cb-table > div {  
+ 
 		@extend .cb-box;
-
 		margin-bottom: $padding;
-		img { border-radius: $radius; }
-
-		/* elements */
-		h2, h3, h4, p, ul, li, dl {
-			margin: 0 0 $padding 0;
-			padding: 0;
-		}
-
 		h3 {
 			margin-bottom: $padding-big;
 		}
@@ -53,8 +38,6 @@
 			margin: 0;
 			padding: 0;
 		}
-		ul li.has-post-thumbnail .cb-excerpt { /* sub-post has thumbnail */
-			@extend .cb-columns, .cb-columns-50-50;
 
 		> div.cb-meta {
 			display: block;
@@ -63,22 +46,9 @@
 			> div {
 				@extend .cb-cols;
 			}
-		}
-
-		.cb-location-opening-hours {
-			.cb-date {
-				display: none;
+			div {
+					padding: $padding / 2 0;
 			}
 		}
-
-		.cb-user-registered-on {
-			display: none;
-		}
-
-		.cb-bookings-list,
-		.cb-timeframes-list {
-			@extend .cb-columns, .cb-columns-70-30;
-		}
 	}
-
 }
