@@ -14,6 +14,7 @@ class CB
     public static $thePostID;
     public static $key;
     public static $property;
+    public static $args;
 
     public static function getInternalDateFormat() {
         return static::$INTERNAL_DATE_FORMAT;
@@ -25,17 +26,21 @@ class CB
      * @param  mixed $key
      * @param  mixed $property
      * @param  mixed $thePost
+     * @param  mixed $args
      * @return void
      */
-    public static function get($key, $property, $thePost = NULL)
+    public static function get($key, $property, $thePost = NULL, $args = NULL)
     {
+        self::$args = $args;
         self::substitions($key, $property);         // substitute keys
         self::setupPost($thePost);                  // query sub post or initial post?     
-        $result = self::lookUp();               // Find matching methods, properties or metadata
-                
+        $result = self::lookUp($args);               // Find matching methods, properties or metadata
+        
 
         $filterName = sprintf('cb_tag_%s_%s', self::$key, self::$property);
         return apply_filters($filterName, $result);
+
+
     }
 
     /**
@@ -137,8 +142,7 @@ class CB
         $repo        = 'CommonsBooking\Repository\\' . ucfirst(self::$key); // we access the Repository not the cpt class here
         $model      = 'CommonsBooking\Model\\' . ucfirst(self::$key); // we check method_exists against model as workaround, cause it doesn't work on repo
         $property     = self::$property;
-        $postID        = self::$thePostID;
-
+        $postID        = self::$thePostID;;
 
         // DEBUG
         //echo "<pre><br>";
@@ -149,8 +153,8 @@ class CB
             $post = $repo::getByPostById($postID);
 
             if (method_exists($model, $property)) {
-                //echo ($post->$property());
-                return $post->$property();
+                //echo ($post->$property(self::$args));
+                return $post->$property(self::$args);
             }
 
             if ($post->$property) {
