@@ -10,7 +10,21 @@
  * @copyright 2015 wielebenwir
  */
 
-.cb-content {
+
+	.cb-item-wrapper .cb-table .cb-row {
+		margin-bottom: $padding;
+		@extend .cb-box-inner;
+		span {
+			display: block;
+		}
+		.cb-location-name {
+			font-weight: bold;
+		}
+		.cb-button {
+			float: right;
+		}
+
+	}
 
 	.cb-table > div {  
  
@@ -35,20 +49,21 @@
 
 		h2, h3, h4 {
 			@extend .cb-big;
-			margin: 0;
-			padding: 0;
+
 		}
 
-		> div.cb-meta {
+		> div.cb-meta, 
+		> div.cb-row  {
 			display: block;
 			margin-top: $padding;
 			@extend .cb-box-inner;
 			> div {
 				@extend .cb-cols;
 			}
+
 			div {
 					padding: $padding / 2 0;
 			}
 		}
 	}
-}
+

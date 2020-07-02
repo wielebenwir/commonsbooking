@@ -18,27 +18,30 @@
 }
 
 #booking-form {
-    text-align: center;
+    width: 532px; /* do not extend litepicker width */
     input {
     @extend .cb-button;
   }
   .time-selection-container {
-    @extend .cb-cols;
+    display: block;
+    margin-top: $padding;
+    
     > div {
-      text-align: center;
+      @extend .cb-box-inner;
+      margin-bottom: $padding;
+      text-align: left;
+      display: block;
+      overflow: hidden;
       span, label, select {     
-        display: block;
-        float: none;
+        width: 33%;
+        float: left;
       }
-      span, select  {
-        @extend .cb-big;
-      }
-      .cb-divider {
-        font-size: 40px;
+      label  {
+        font-weight: bold;
+        // @extend .cb-big;
       }
     }
   }
-
 }
 .cb-notice {
   @extend .cb-box;
