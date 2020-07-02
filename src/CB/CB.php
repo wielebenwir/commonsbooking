@@ -185,6 +185,7 @@ class CB
     {
     
 
+        $repo   = 'CommonsBooking\Repository\\' . ucfirst(self::$key); // we access the Repository not the cpt class here
         $model  = 'CommonsBooking\Model\\' . ucfirst(self::$key); // we check method_exists against model as workaround, cause it doesn't work on repo 
         $property = self::$property;
         //$userID = self::$theObjectID;
@@ -195,22 +196,22 @@ class CB
 
        
 
-        $cb_user = new \WP_User($userID);
-    
+            $cb_user = \get_user_by('ID', $userID);
+        
 
-        if (method_exists($model, $property)) {
-            echo ($cb_user->$property(self::$args));
-            return $cb_user->$property(self::$args);
-        }
+            if (method_exists($model, $property)) {
+                echo ($cb_user->$property(self::$args));
+                return $cb_user->$property(self::$args);
+            }
 
-        if ($cb_user->$property) {
-            echo ($cb_user->$property);
-            return $cb_user->$property;
-        }
+            if ($cb_user->$property) {
+                echo ($cb_user->$property);
+                return $cb_user->$property;
+            }
 
-        if (get_user_meta($userID, $property, TRUE)) { // User has meta fields
-            echo get_user_meta($userID, $property, TRUE);
-            return $cb_user->get_meta($property);
-        }
+            if (get_user_meta($userID, $property, TRUE)) { // User has meta fields
+                echo get_user_meta($userID, $property, TRUE);
+                return $cb_user->get_meta($property);
+            }
     }
 }
