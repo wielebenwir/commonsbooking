@@ -59,7 +59,7 @@ use CommonsBooking\Model\Booking;
 
 
             <div class="cb-address col-30-70">
-                <div>A<?php echo __('Address', 'commonsbooking'); ?></div>
+                <div><?php echo __('Address', 'commonsbooking'); ?></div>
                 <div><?php echo CB::get('location', 'location_address'); ?></div>
         </div><!-- .cb-address -->
 
