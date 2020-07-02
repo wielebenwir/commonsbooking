@@ -137,6 +137,20 @@ $options_array = array(
           // TODO: old commons-booking_mail_registration_subject?
           // TODO: old commons-booking_mail_registration_body?
           array(
+            'name' => __( 'Mail-Header from E-Mail', 'commonsbooking' ),
+            'desc' => __('E-Mail that will be shown as sender in generated emails', 'commonsbooking'),
+            'id' => 'emailheaders_from-email',
+            'type' => 'text',
+            //'default' => __( 'c', 'commonsbooking' ),
+          ),
+          array(
+            'name' => __( 'Mail-Header from Name', 'commonsbooking' ),
+            'desc' => __('Name that will be shown as sender in generated emails', 'commonsbooking'),
+            'id' => 'emailheaders_from-name',
+            'type' => 'text',
+            //'default' => __( '', 'commonsbooking' ),
+          ),
+          array(
             'name' => __( 'Booking pending email subject', 'commonsbooking' ),
             'desc' => __('description', 'commonsbooking'),
             'id' => 'emailtemplates_mail-booking-pending-subject',

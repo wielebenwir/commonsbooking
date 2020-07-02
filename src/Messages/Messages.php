@@ -68,8 +68,8 @@ class Messages
         // Setup email: From
         $this->headers[] = sprintf(
             "From: %s <%s>",
-            'cb', //Settings::getOption( 'emailheaders_from-name'),
-            'mail@cb.local' //sanitize_email ( Settings::getOption( 'emailheaders_from-email') )
+            Settings::getOption( 'emailheaders_from-name'),
+            sanitize_email ( Settings::getOption( 'emailheaders_from-email') )
         );
 
         // TODO: @christian: Add later
