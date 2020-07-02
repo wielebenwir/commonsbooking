@@ -90,8 +90,8 @@ class Booking extends CustomPost
         $date_format = get_option('date_format');
         $time_format = get_option('time_format');
         
-        $startdate = date($date_format, $this->get_meta('start-date'));
-        $enddate = date($date_format, $this->get_meta('end-date'));
+        $startdate = date_i18n($date_format, $this->get_meta('start-date'));
+        $enddate = date_i18n($date_format, $this->get_meta('end-date'));
 
         if ($startdate == $enddate) {
             return sprintf( esc_html__( ' on %s ' , 'commonsbooking'), $startdate );
