@@ -13,6 +13,11 @@ use CommonsBooking\Model\Booking;
 <div class="cb-notice">
     <?php echo CB::get('booking', 'booking_notice'); ?>
 </div><!-- .cb-table -->
+
+<div id="cb-action">
+    <?php echo CB::get('booking', 'booking_action_button', NULL, 'confirm') ?>
+    <?php echo CB::get('booking', 'booking_action_button', NULL, 'cancel') ?>
+</div>
 <div class="cb-table">
     <!-- <div class="cb-timeframe">
         <div class="cb-datetime-start">
@@ -60,7 +65,7 @@ use CommonsBooking\Model\Booking;
             <img src="https://via.placeholder.com/50">
         </div><!-- . cb-table-header-->
         <div class="cb-meta cb-item-meta">
-           Quia aut modi et voluptates aperiam ducimus. Ipsam et illo qui quaerat soluta consequuntur. Debitis consequuntur sit ipsum nihil. Cum qui sed aliquid voluptas adipisci. Reiciendis id at quis magnam quia eum. Quis error et sint minus eaque voluptas voluptatem.           
+           <?php echo CB::get('item', 'short_description'); ?>           
         </div><!-- .cb-item-meta -->
     </div><!-- .cb-item -->
     <div class="cb-user">
@@ -69,12 +74,14 @@ use CommonsBooking\Model\Booking;
         </div><!-- . cb-table-header-->
         <div class="cb-meta cb-user-meta">
             <div class="cb-user-info col-30-70">       
+                <div><?php echo __('User E-Mail', 'commonsbooking') ?></div>
                 <div><?php CB::get('user', 'user_email'); ?></div>
-                <div>sowieso@dsad.com</div>
-                <div>Username:</div>
-                <div>dev</div>
-                <div>Name</div>
-                <div>Martin Mustermann</div>
+                <div><?php echo __('Login Name', 'commonsbooking') ?></div>
+                <div><?php CB::get('user', 'user_login'); ?></div>
+                <div><?php echo __('User Name', 'commonsbooking') ?></div>
+                <div><?php echo CB::get('user', 'first_name'); ?> <?php echo CB::get('user', 'last_name'); ?><br>
+                <?php echo CB::get('user', 'user_address'); ?> 
+        </div>
             </div><!-- .cb-user-info -->
         </div><!-- .cb-user-meta -->
     </div><!-- .cb-user -->
