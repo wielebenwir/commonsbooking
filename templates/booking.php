@@ -31,9 +31,14 @@ use CommonsBooking\Model\Booking;
     <div class="cb-location">
         <div class="cb-table-header">
             <h3><span class="cb-location-name"><?php echo __('Booking information', 'commonsbooking'); ?></span></h3>
-            <img src="https://via.placeholder.com/50">
+            <!-- <img src="https://via.placeholder.com/50"> -->
         </div><!-- . cb-table-header-->
         <div class="cb-meta cb-location-meta">
+
+        <div class="cb-address col-30-70">
+                <div><?php echo __('Item', 'commonsbooking'); ?></div>
+                <div><?php echo CB::get('item', 'name'); ?></div>
+            </div><!-- .cb-address -->
 
         <div class="cb-address col-30-70">
                 <div><?php echo __('Pickup', 'commonsbooking'); ?></div>
@@ -47,30 +52,31 @@ use CommonsBooking\Model\Booking;
 
         <?php if (!empty(CB::get( 'location', CB_METABOX_PREFIX . 'location_pickupinstructions'))) { ?>
         <div class="cb-pickup-info col-30-70">
-            <div>Pickup and return info</div>
+            <div><?php echo __('Pickup and return information', 'commonsbooking'); ?></div>
             <div><?php echo CB::get( 'location', CB_METABOX_PREFIX . 'location_pickupinstructions') ?></div>
         </div><!-- .cb-pickup-info -->
          <?php } // end if pickupinstructions ?>
 
+
             <div class="cb-address col-30-70">
-                <div>Adress</div>
+                <div>A<?php echo __('Address', 'commonsbooking'); ?></div>
                 <div><?php echo CB::get('location', 'location_address'); ?></div>
         </div><!-- .cb-address -->
 
+        <?php if (!empty(CB::get( 'location', CB_METABOX_PREFIX . 'location_contact'))) { ?>
+        <div class="cb-pickup-info col-30-70">
+            <div><?php echo __('Location contact', 'commonsbooking'); ?></div>
+            <div><?php echo nl2br(CB::get( 'location', CB_METABOX_PREFIX . 'location_contact')) ?></div>
+        </div><!-- .cb-pickup-info -->
+         <?php } // end if location contact ?>
+
         </div><!-- .cb-location-meta -->
     </div><!-- .cb-location -->
-    <div class="cb-item">
-        <div class="cb-table-header">
-            <h3>Item: <span class="cb-item-name"><?php echo CB::get('item', 'name'); ?></span></h3>
-            <img src="https://via.placeholder.com/50">
-        </div><!-- . cb-table-header-->
-        <div class="cb-meta cb-item-meta">
-           <?php echo CB::get('item', 'short_description'); ?>           
-        </div><!-- .cb-item-meta -->
-    </div><!-- .cb-item -->
+
+
     <div class="cb-user">
         <div class="cb-table-header">
-            <h3><span class="cb-user-name">My profile</span></h3>
+            <h3><span class="cb-user-name"><?php echo __('Your profile data', 'commonsbooking'); ?></span></h3>
         </div><!-- . cb-table-header-->
         <div class="cb-meta cb-user-meta">
             <div class="cb-user-info col-30-70">       
