@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\CB;
 
+use CommonsBooking\Model\User;
 use CommonsBooking\Repository\PostRepository;
 
 use function PHPUnit\Framework\isEmpty;
@@ -11,7 +12,7 @@ class CB
 
     protected static $INTERNAL_DATE_FORMAT = 'd.m.Y';
 
-    public static $thePostID;
+    public static $theObjectID;
     public static $key;
     public static $property;
     public static $args;
@@ -25,15 +26,17 @@ class CB
      *
      * @param  mixed $key
      * @param  mixed $property
-     * @param  mixed $thePost
+     * @param  mixed $theObject
      * @param  mixed $args
      * @return void
      */
-    public static function get($key, $property, $thePost = NULL, $args = NULL)
+    public static function get($key, $property, $theObject = NULL, $args = NULL)
     {
+        
+        self::$key = $key;
         self::$args = $args;
         self::substitions($key, $property);         // substitute keys
-        self::setupPost($thePost);                  // query sub post or initial post?     
+        self::setupPost($theObject);                  // query sub post or initial post?     
         $result = self::lookUp($args);               // Find matching methods, properties or metadata
         
 
@@ -48,12 +51,12 @@ class CB
      *
      * @param  mixed $key
      * @param  mixed $property
-     * @param  mixed $thePost
+     * @param  mixed $theObject
      * @return void
      */
-    public static function echo($key, $property, $thePost = NULL)
+    public static function echo($key, $property, $theObject = NULL)
     {
-        echo self::get($key, $property, $thePost);
+        echo self::get($key, $property, $theObject);
     }
 
     /**
@@ -88,6 +91,15 @@ class CB
            return false;
         }
 
+        // var_dump($initialPost);
+
+        // check if we need to get a user
+        if (self::$key == "user") {
+            $userID = intval($initialPost->post_author);
+            return self::getUser($userID);
+        }
+        
+
         // Check post type
         $initialPostType = get_post_type($initialPost);
 
@@ -95,15 +107,15 @@ class CB
         if ($initialPostType == 'cb_timeframe' and self::$key != "booking") {
             $subPostID = get_post_meta($initialPost->ID, self::$key . '-id', TRUE);    // item-id, location-id
             if (get_post_status($subPostID)) { // Post with that ID exists
-                $thePostID =  $subPostID; // we will query the sub post
+                $theObjectID =  $subPostID; // we will query the sub post
             } else {
                 return 'ERROR: Post ' . $subPostID . ' not found.';
             }
         } else { // Not a timeframe, look at original post meta
-            $thePostID = $initialPost->ID;
+            $theObjectID = $initialPost->ID;
         }
 
-        self::$thePostID    = $thePostID; // e.g. item id
+        self::$theObjectID    = $theObjectID; // e.g. item id
     }
 
     /**
@@ -142,7 +154,7 @@ class CB
         $repo        = 'CommonsBooking\Repository\\' . ucfirst(self::$key); // we access the Repository not the cpt class here
         $model      = 'CommonsBooking\Model\\' . ucfirst(self::$key); // we check method_exists against model as workaround, cause it doesn't work on repo
         $property     = self::$property;
-        $postID        = self::$thePostID;;
+        $postID        = self::$theObjectID;;
 
         // DEBUG
         //echo "<pre><br>";
@@ -167,5 +179,39 @@ class CB
             //echo get_post_meta($postID, $property, TRUE);
             return get_post_meta($postID, $property, TRUE);
         }
+    }
+
+    public static function getUser($userID)
+    {
+    
+
+        $repo   = 'CommonsBooking\Repository\\' . ucfirst(self::$key); // we access the Repository not the cpt class here
+        $model  = 'CommonsBooking\Model\\' . ucfirst(self::$key); // we check method_exists against model as workaround, cause it doesn't work on repo 
+        $property = self::$property;
+        //$userID = self::$theObjectID;
+
+        // DEBUG
+        //echo "<pre><br>";
+        //echo $model . " -> " . self::$key . " -> "  . $property . " -> " . $userID . " = ";
+
+       
+
+            $cb_user = \get_user_by('ID', $userID);
+        
+
+            if (method_exists($model, $property)) {
+                echo ($cb_user->$property(self::$args));
+                return $cb_user->$property(self::$args);
+            }
+
+            if ($cb_user->$property) {
+                echo ($cb_user->$property);
+                return $cb_user->$property;
+            }
+
+            if (get_user_meta($userID, $property, TRUE)) { // User has meta fields
+                echo get_user_meta($userID, $property, TRUE);
+                return $cb_user->get_meta($property);
+            }
     }
 }

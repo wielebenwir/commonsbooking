@@ -16,25 +16,20 @@
 
                 <div class="time-selection start-date">
                     <label for="start-date"><?php echo __('Pickup time', 'commonsbooking'); ?></label>
-                    <div class="cb-box-inner">
                         <span class="date"></span>
                         <select id="start-date" name="start-date"></select>
-                    </div>
                 </div>
-                <div class="cb-divider">&rarr;</div>
-                <div class="time-selection end-date">
+                  <div class="time-selection end-date">
                     <label for="end-date"><?php echo __('Return time', 'commonsbooking'); ?> </label>
-                    <div class="cb-box-inner">
                         <span class="date"></span>
                         <select id="end-date" name="end-date"></select>
-                    </div>
                 </div>
-
-            </div>
-
             <p id="fullDayInfo"></p>
             
             <input type="submit" value="<?php echo __('Book', 'commonsbooking'); ?>" />
+            </div>
+
+
         </form>
     </div>
 <?php } else {
