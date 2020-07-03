@@ -3,17 +3,17 @@ defined('ABSPATH') or die("Thanks for visting");
 
 /**
  * Plugin Name:  CommonsBooking
- * Plugin URI: ~
+ * Plugin URI: commonsbooking.org
  * Author: wielebenwir e.V.
  * Domain Path: /languages
  * Description: ~
- * Version: 0.1.0
+ * Version: 2.0.0-ALPHA
  * License: GPL2
  * License URI:  https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:  commonsbooking
  */
 
-define('CB_VERSION', '0.0');
+define('CB_VERSION', '2.0.0-ALPHA');
 define('CB_MENU_SLUG', 'cb-menu');
 define('CB_PLUGIN_SLUG', 'commonsbooking');
 define('CB_PLUGIN_DIR', plugin_dir_path(__FILE__));
