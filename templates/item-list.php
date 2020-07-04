@@ -40,5 +40,6 @@ foreach ($templateData['items'] as $item) {
     </div>
     <?php
 }
+
 ?>
 
