@@ -284,10 +284,10 @@ class Timeframe extends CustomPostType
     public static function getTypes()
     {
         return [
-            self::OPENING_HOURS_ID    => __("Opening Hours", 'commonsbooking'),
-            self::BOOKABLE_ID         => __("Bookable", 'commonsbooking'),
-            self::HOLIDAYS_ID         => __("Holidays", 'commonsbooking'),
-            self::OFF_HOLIDAYS_ID     => __("Official Holiday", 'commonsbooking'),
+            //self::OPENING_HOURS_ID    => __("Opening Hours", 'commonsbooking'), // deactivated for early relases. is not implement in calendar logic right now
+            self::BOOKABLE_ID         => __("Bookable Timeframe", 'commonsbooking'),
+            self::HOLIDAYS_ID         => __("Holidays / Away", 'commonsbooking'),
+            //self::OFF_HOLIDAYS_ID     => __("Official Holiday", 'commonsbooking'), // deactivated. Can be used to import global official holidays. Not implemented right now
             self::REPAIR_ID           => __("Repair", 'commonsbooking'),
             self::BOOKING_ID          => __("Booking", 'commonsbooking'),
             self::BOOKING_CANCELED_ID => __("Booking cancelled", 'commonsbooking')
