@@ -261,7 +261,7 @@ class Timeframe extends CustomPostType
             ),
             new Field("title-timeframe-rep-config", __("Configure repetition", 'commonsbooking'), "", "title",
                 "edit_posts"),
-            new Field("repetition-start", __('Repetition start', 'commonsbooking'), "", "text_date", "edit_pages"),
+            new Field("repetition-start", __('Repetition start', 'commonsbooking'), "", "text_date_timestamp", "edit_pages"),
             /*new Field("repetition", __('Repetition', 'commonsbooking'), "", "select", "edit_pages",
                 [
                     'd' => __("Daily", 'commonsbooking'),
@@ -281,7 +281,7 @@ class Timeframe extends CustomPostType
                     7 => __("Sunday", 'commonsbooking')
                 ]
             ),
-            new Field("repetition-end", __('Repetition end', 'commonsbooking'), "", "text_date", "edit_pages")
+            new Field("repetition-end", __('Repetition end', 'commonsbooking'), "", "text_date_timestamp", "edit_pages")
         );
     }
 
@@ -292,10 +292,10 @@ class Timeframe extends CustomPostType
     public static function getTypes()
     {
         return [
-            self::OPENING_HOURS_ID    => __("Opening Hours", 'commonsbooking'),
+            self::OPENING_HOURS_ID    => __("Opening Hours", 'commonsbooking'), // disabled as its not implemented yet
             self::BOOKABLE_ID         => __("Bookable", 'commonsbooking'),
             self::HOLIDAYS_ID         => __("Holidays", 'commonsbooking'),
-            self::OFF_HOLIDAYS_ID     => __("Official Holiday", 'commonsbooking'),
+            self::OFF_HOLIDAYS_ID     => __("Official Holiday", 'commonsbooking'), // disabled as its not implemented yet
             self::REPAIR_ID           => __("Repair", 'commonsbooking'),
             self::BOOKING_ID          => __("Booking", 'commonsbooking'),
             self::BOOKING_CANCELED_ID => __("Booking cancelled", 'commonsbooking')

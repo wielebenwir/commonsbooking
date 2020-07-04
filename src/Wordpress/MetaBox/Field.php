@@ -54,7 +54,7 @@ class Field
         }
 
         // set time/date format to wordpress defined time format for time picker
-        if($this->getType() == 'text_datetime_timestamp' OR 'text_time') {
+        if($this->getType() == 'text_datetime_timestamp' OR 'text_time' OR 'text_date_timestamp') {
             $params['time_format'] = get_option('time_format');
             $params['date_format'] = get_option('date_format');
         }
