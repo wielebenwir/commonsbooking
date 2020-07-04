@@ -6,11 +6,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     let bookingForm = $('#booking-form');
     if(bookingForm.length) {
-        // showTooltip-event is used here to hide date sleect
-        Litepicker.prototype.showTooltip = function(element, text) {
-            $('#booking-form').hide();
-        };
-
         // Updates Time-selects so that no wrong time ranges can be selected
         const initSelectHandler = () => {
             const bookingForm = $('#booking-form');
@@ -80,6 +75,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         'buttonText': {
                             apply: 'Buchen',
                             cancel: 'Abbrechen',
+                        },
+                        onAutoApply: (datePicked) => {
+                            if(datePicked) {
+                                $('#booking-form').show();
+                            }
+                        },
+                        resetBtnCallback: () => {
+                            $('#booking-form').hide();
                         },
                         // TODO: Implement month change.
                         onChangeMonth: function(date, idx) {
