@@ -1,16 +1,16 @@
 <?php
 
-use CommonsBooking\CB\CB;
+use CommonsBooking\CB\CB; 
 
 foreach ($templateData['items'] as $item) {
     ?>
-    <div class="cb-item-wrapper cb-box" >
+    <div class="cb-item-wrapper cb-box">
         <h2 class="cb-big"><a href="<?php echo get_permalink($item->ID); ?>"><?php echo $item->post_title; ?></a></h2>
-        <div class="cb-list-item-description">
-            <div class="align-left">
+        <div class="cb-excerpt">
+            <div class="cb-thumb">
                 <?php echo get_the_post_thumbnail($item->ID, 'thumbnail'); ?>
             </div>
-            <?php echo $item->post_content; ?>
+                <?php echo $item->post_content; ?>
         </div>
         <div class="cb-table">
             <?php
@@ -31,7 +31,7 @@ foreach ($templateData['items'] as $item) {
                     <a href="<?php echo $bookingUrl; ?>" class="cb-button align-right"> Hier buchen</a>
                     <span class="cb-date"><?php echo $dateString; ?></span>
                     <span class="cb-location-name"><?php echo $location->post_title; ?></span>
-                    <span class="cb-address"><?php echo CB::get('location', 'location_address', $location->ID); ?> </span>
+                    <span class="cb-address"><?php echo CB::get('location', 'adress', $location->ID); ?> </span>
                 </div>
             <?php
             }
@@ -40,4 +40,6 @@ foreach ($templateData['items'] as $item) {
     </div>
     <?php
 }
+
 ?>
+

@@ -72,7 +72,7 @@ class Timeframe extends CustomPostType
         if (is_singular(self::getPostType())) {
             ob_start();
             global $post;
-            cb_get_template_part('booking', $post->post_status);
+            cb_get_template_part('booking');     
             $cb_content = ob_get_clean();
         } // if archive...
 
@@ -119,9 +119,16 @@ class Timeframe extends CustomPostType
             if (empty($booking)) {
                 $postarr['post_name'] = self::generateRandomSlug();
                 $postId = wp_insert_post($postarr, true);
+                $booking_metafield = new \CommonsBooking\Model\Booking($postId);      
+                // we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
+                $booking_metafield->assignBookableTimeframeFields();
+              ;
             } else {
                 $postarr['ID'] = $booking->ID;
                 $postId = wp_update_post($postarr);
+                $booking_metafield = new \CommonsBooking\Model\Booking($postId);
+                // we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe  
+                $booking_metafield->assignBookableTimeframeFields();
             }
 
             // Trigger Mail, only send mail if status has changed     
@@ -131,6 +138,7 @@ class Timeframe extends CustomPostType
             }
             // get slug as parameter
             $post_slug = get_post($postId)->post_name;
+
 
             wp_redirect(home_url('?' . self::getPostType() . '=' . $post_slug));
             exit;
@@ -284,10 +292,10 @@ class Timeframe extends CustomPostType
     public static function getTypes()
     {
         return [
-            //self::OPENING_HOURS_ID    => __("Opening Hours", 'commonsbooking'), // deactivated for early relases. is not implement in calendar logic right now
-            self::BOOKABLE_ID         => __("Bookable Timeframe", 'commonsbooking'),
-            self::HOLIDAYS_ID         => __("Holidays / Away", 'commonsbooking'),
-            //self::OFF_HOLIDAYS_ID     => __("Official Holiday", 'commonsbooking'), // deactivated. Can be used to import global official holidays. Not implemented right now
+            self::OPENING_HOURS_ID    => __("Opening Hours", 'commonsbooking'),
+            self::BOOKABLE_ID         => __("Bookable", 'commonsbooking'),
+            self::HOLIDAYS_ID         => __("Holidays", 'commonsbooking'),
+            self::OFF_HOLIDAYS_ID     => __("Official Holiday", 'commonsbooking'),
             self::REPAIR_ID           => __("Repair", 'commonsbooking'),
             self::BOOKING_ID          => __("Booking", 'commonsbooking'),
             self::BOOKING_CANCELED_ID => __("Booking cancelled", 'commonsbooking')

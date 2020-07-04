@@ -12,6 +12,7 @@ use CommonsBooking\Settings;
 use CommonsBooking\Wordpress\Options;
 use CommonsBooking\Messages\Messages;
 use CommonsBooking\Shortcodes\Shortcodes;
+use CommonsBooking\Model\User;
 use CB;
 
 class Plugin
