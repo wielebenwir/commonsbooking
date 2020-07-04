@@ -187,7 +187,7 @@ $options_array = array(
             
             Return date and time:<br>
             <b>{{booking:return_datetime}}</b>
-            <br>
+            <br><br>
             <b>Location address</b><br>
             {{location:location_address}}
             {{location:location_contact}}
