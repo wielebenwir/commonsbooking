@@ -1,6 +1,5 @@
 <div class="cb-box">
-    <div class="cb-cols col-30-70">
-        <div>
+        <div style="float:left; margin-right: 15px;">
             <?php echo get_the_post_thumbnail( $templateData['item']->ID, 'thumbnail' ); ?>
         </div>
         <div>
@@ -8,7 +7,8 @@
             <a href="<?php echo get_permalink( $templateData['item']->ID); ?>"><?php echo $templateData['item']->post_title; ?></a></h3>
         </div>
     </div>
-
+</div>
+<div class="cb-box">
 <?php
     include __DIR__ . '/calendar-index.php';
 ?>
