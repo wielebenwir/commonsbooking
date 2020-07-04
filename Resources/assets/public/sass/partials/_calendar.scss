@@ -272,17 +272,6 @@
 					}
 				}
 
-				&.is-booked {
-					color: var(--litepickerDayIsBookedColor);
-					background-color: var(--litepickerDayIsBookedColorBg);
-
-					&:hover {
-						color: var(--litepickerDayIsBookedColor);
-						box-shadow: none;
-						cursor: default;
-					}
-				}
-
 				&.is-in-range {
 					background-color: var(--litepickerDayIsInRange);
 					border-radius: 0;
@@ -333,6 +322,17 @@
 					color: var(--litepickerHighlightedDayColor);
 					background: var(--litepickerHighlightedDayBg) !important;
 					background-color: var(--litepickerHighlightedDayBg);
+				}
+
+				&.is-booked {
+					color: var(--litepickerDayIsBookedColor);
+					background-color: var(--litepickerDayIsBookedColorBg);
+
+					&:hover {
+						color: var(--litepickerDayIsBookedColor);
+						box-shadow: none;
+						cursor: default;
+					}
 				}
 			}
 
