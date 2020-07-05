@@ -25,11 +25,16 @@
                         <select id="end-date" name="end-date"></select>
                 </div>
             <p id="fullDayInfo"></p>
-            
-            <input type="submit" value="<?php echo __('Book', 'commonsbooking'); ?>" />
+            <?php
+            if(is_user_logged_in()) { ?>
+                <input type="submit" value="<?php echo __('Book', 'commonsbooking'); ?>" />
+            <?php } else {
+                $current_url = $_SERVER['REQUEST_URI'];
+            ?>
+            Um Buchen zu können, musst du dich <a href="<?php echo esc_url( wp_login_url( $current_url )  ); ?>">einloggen</a> oder
+                <a href="<?php echo esc_url( wp_registration_url() ); ?>">registrieren</a>.
+            <?php } ?>
             </div>
-
-
         </form>
     </div>
 <?php } else {
