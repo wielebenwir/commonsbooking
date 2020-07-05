@@ -69,8 +69,7 @@ class CB
     {
         // Set WP Post
         global $post;
-
-        
+    
         
         // we read the post object from the global post if no postID is set
         if (is_null( $initialPostId ) ) {
@@ -91,20 +90,13 @@ class CB
            return false;
         }
 
-        // var_dump($initialPost);
-
-        // check if we need to get a user
-        if (self::$key == "user") {
-            $userID = intval($initialPost->post_author);
-            return self::getUser($userID);
-        }
-        
+        //var_dump($initialPost);       
 
         // Check post type
         $initialPostType = get_post_type($initialPost);
 
         // If we are dealing with a timeframe and key ist not booking, we may need to look up the CHILDs post meta, not the parents'
-        if ($initialPostType == 'cb_timeframe' and self::$key != "booking") {
+        if ($initialPostType == 'cb_timeframe' and self::$key != "booking" AND self::$key != 'user') {
             $subPostID = get_post_meta($initialPost->ID, self::$key . '-id', TRUE);    // item-id, location-id
             if (get_post_status($subPostID)) { // Post with that ID exists
                 $theObjectID =  $subPostID; // we will query the sub post
@@ -114,6 +106,8 @@ class CB
         } else { // Not a timeframe, look at original post meta
             $theObjectID = $initialPost->ID;
         }
+
+        
 
         self::$theObjectID    = $theObjectID; // e.g. item id
     }
@@ -154,14 +148,18 @@ class CB
         $repo        = 'CommonsBooking\Repository\\' . ucfirst(self::$key); // we access the Repository not the cpt class here
         $model      = 'CommonsBooking\Model\\' . ucfirst(self::$key); // we check method_exists against model as workaround, cause it doesn't work on repo
         $property     = self::$property;
-        $postID        = self::$theObjectID;;
+        $postID        = self::$theObjectID;
 
         // DEBUG
         //echo "<pre><br>";
         //echo $repo . " -> " . self::$key . " -> "  . $property . " -> " . $postID . " = ";
 
-        // Look up
-        if (class_exists($repo)) {
+        /**
+         * TODO: Better integration of user class and handling user data / just a first draft right now
+         */
+        
+        // Look up        
+        if (class_exists($repo) AND self::$key != 'user') {
             $post = $repo::getByPostById($postID);
 
             if (method_exists($model, $property)) {
@@ -178,40 +176,31 @@ class CB
         if (get_post_meta($postID, $property, TRUE)) { // Post has meta fields
             //echo get_post_meta($postID, $property, TRUE);
             return get_post_meta($postID, $property, TRUE);
-        }
-    }
 
-    public static function getUser($userID)
-    {
-    
+        
+        // if we need user data    
+        } elseif (self::$key == 'user') {
 
-        $repo   = 'CommonsBooking\Repository\\' . ucfirst(self::$key); // we access the Repository not the cpt class here
-        $model  = 'CommonsBooking\Model\\' . ucfirst(self::$key); // we check method_exists against model as workaround, cause it doesn't work on repo 
-        $property = self::$property;
-        //$userID = self::$theObjectID;
-
-        // DEBUG
-        //echo "<pre><br>";
-        //echo $model . " -> " . self::$key . " -> "  . $property . " -> " . $userID . " = ";
-
-       
-
+            $userID = intval(get_post($postID)->post_author);
             $cb_user = \get_user_by('ID', $userID);
         
-
             if (method_exists($model, $property)) {
-                echo ($cb_user->$property(self::$args));
+                //echo ($cb_user->$property(self::$args));
                 return $cb_user->$property(self::$args);
             }
 
             if ($cb_user->$property) {
-                echo ($cb_user->$property);
+                //echo ($cb_user->$property);
                 return $cb_user->$property;
             }
 
             if (get_user_meta($userID, $property, TRUE)) { // User has meta fields
-                echo get_user_meta($userID, $property, TRUE);
+                //echo get_user_meta($userID, $property, TRUE);
                 return $cb_user->get_meta($property);
             }
+
+
+        }
     }
+    
 }
