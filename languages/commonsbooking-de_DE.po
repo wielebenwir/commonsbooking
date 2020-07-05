@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "POT-Creation-Date: 2020-07-05T08:50:41+00:00\n"
-"PO-Revision-Date: 2020-07-05 10:51+0200\n"
+"PO-Revision-Date: 2020-07-05 11:02+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -30,9 +30,12 @@ msgid "CommonsBooking"
 msgstr "CommonsBooking"
 
 #. Plugin URI of the plugin
+msgid "commonsbooking.org"
+msgstr "commonsbooking.org"
+
 #. Description of the plugin
-msgid "~"
-msgstr "~"
+msgid "A wordpress plugin for management and booking of common goods."
+msgstr "Ein Wordpress-Plugin für die Verwaltung und Buchung von Gemeingütern."
 
 #. Author of the plugin
 msgid "wielebenwir e.V."
@@ -54,58 +57,56 @@ msgstr "Vorlagen"
 msgid "Email templates"
 msgstr "E-Mail Vorlagen"
 
-#: includes/Options.php:140
-msgid "Booking pending email subject"
-msgstr "E-Mail Betreff für ausstehende Buchungen"
+#: includes/Options.php:138
+msgid "Mail-Header from E-Mail"
+msgstr "Absender E-Mail Mail-Adresse"
 
-#: includes/Options.php:141 includes/Options.php:148
-msgid "description"
-msgstr "Beschreibung"
+#: includes/Options.php:139
+msgid "E-Mail that will be shown as sender in generated emails"
+msgstr ""
+"E-Mail, die als Absender in automatisch versendeten E-Mails angezeigt wird"
 
-#: includes/Options.php:144
-msgid "Pending booking"
-msgstr "Ausstehende Buchung"
+#: includes/Options.php:145
+msgid "Mail-Header from Name"
+msgstr "Absender E-Mail Name"
 
-#: includes/Options.php:147
-msgid "Booking pending email body"
-msgstr "E-Mail-Text für ausstehende Buchungen"
+#: includes/Options.php:146
+msgid "Name that will be shown as sender in generated emails"
+msgstr ""
+"Name, der als Absender in automatisch versendeten E-Mails angezeigt wird"
 
-#: includes/Options.php:151
-msgid "Pending booking of {{item-name}} at {{location-name}}."
-msgstr "Ausstehende Buchung von {{item-name}} an {{Location-Name}}."
-
-#: includes/Options.php:154
+#: includes/Options.php:166
 msgid "Booking confirmed email subject"
 msgstr "E-Mail-Betreff für bestätigte Buchungen"
 
-#: includes/Options.php:158
-msgid "Your booking {{item_name}}."
-msgstr "Deine Buchung von {{item_name}}."
+#: includes/Options.php:170
+msgid "Your booking {{item:name}} at {{location:name}}"
+msgstr "Deine Buchung von {{item:name}} am Standort {{location:name}}."
 
-#: includes/Options.php:161
+#: includes/Options.php:173
 msgid "Booking confirmed email body"
 msgstr "E-Mail-Text für bestätige Buchungen"
 
-#: includes/Options.php:165
-#, fuzzy
+#: includes/Options.php:177
 msgid ""
 "\n"
-"            <h2>Hi {{user-first_name}},</h2>\n"
-"            thank you for booking {{item:name}}.\n"
-"            \n"
-"            <b>Pick up information</b>\n"
-"            <p>Pick up {{item_name}} at {{location-name}}.</p>\n"
-"            \n"
-"            <p>Pickup date an time:</b>\n"
-"            <b>{{booking:pickup_datetime}}</b></p>\n"
-"            {{location:pickupinstructions}}\n"
-"            \n"
-"            <p>Location address:</p>\n"
-"            {{location:name}}<br>\n"
-"            {{location:address_complete}}<br>\n"
-"            {{location:contact}}<br>\n"
+"            Hi {{user:first_name}},<br>\n"
+"            <p>thank you for booking {{item:name}} {{booking:"
+"booking_timeframe_date}}.\n"
 "            </p>\n"
 "            \n"
+"            Pick up date and time:<br>\n"
+"            <b>{{booking:pickup_datetime}}</b>\n"
+"            {{location:pickupinstructions}}\n"
+"            \n"
+"            <br><br>\n"
+"            \n"
+"            Return date and time:<br>\n"
+"            <b>{{booking:return_datetime}}</b>\n"
+"            <br><br>\n"
+"            <b>Location address</b><br>\n"
+"            {{location:location_address}}\n"
+"            {{location:location_contact}}\n"
 "            \n"
 "            <p>Click here to see or cancel your booking: {{booking:"
 "booking_link}}.</p><br>\n"
@@ -115,23 +116,30 @@ msgid ""
 "            please login first and then click the link again.<br><br>\n"
 "            \n"
 "            <h3>Your information</h3>\n"
-"            <p>Name: {{user-first_name}} {{user-last_name}}.</p>\n"
+"            <p>Login: {{user:user_nicename}}<br>\n"
+"            <p>Name: {{user:first_name}} {{user:last_name}}.</p>\n"
 "            \n"
 "            <p>Thanks, the Team. </p>\n"
 "            "
 msgstr ""
-" <h2>Hallo {{Benutzer-first_name}},</h2>vielen Dank für die Buchung von "
-"{{item:name}}.\n"
-"            \n"
-"<b>Informationen für die Abholung</b>\n"
-"            <p>Hole {{item_name}} an Standort {{location:name}}“.</p>\n"
-"            \n"
-"            <p>Abholdatum eine Uhrzeit:\n"
-"            <b>.booking:pickup_datetime</b></p>Standort:Pickup-"
-"Anweisungen<p>Standortadresse:</p>Standort:Name<br>Standort:address_complete."
-"<br>\"Standort:Kontakt\"<br>\n"
+"\n"
+"            Hallo {{user:first_name}},<br>\n"
+"            <p>vielen Dank für deine Buchung von {{item:name}} {{booking:"
+"booking_timeframe_date}}.\n"
 "            </p>\n"
 "            \n"
+"            Abholinformationen:<br>\n"
+"            <b>{{booking:pickup_datetime}}</b>\n"
+"            {{location:pickupinstructions}}\n"
+"            \n"
+"            <br><br>\n"
+"            \n"
+"           Rückgabeinformationen:<br>\n"
+"            <b>{{booking:return_datetime}}</b>\n"
+"            <br><br>\n"
+"            <b>Standort:</b><br>\n"
+"            {{location:location_address}}\n"
+"            {{location:location_contact}}\n"
 "            \n"
 "            <p>Klicke auf den Link, um deine Buchung zu sehen oder zu "
 "stornieren: {{booking:booking_link}}.</p><br>\n"
@@ -139,10 +147,14 @@ msgstr ""
 "Falls dich der Link zur Startseite führt, logge dich bitte zunächst\n"
 "ein und klicke dann erneut auf den Link in der E-Mail.<br><br>\n"
 "            \n"
-"            <h3>Ihre Informationen</h3>\n"
-"            <p>Name: ,,Benutzer-first_name\" \"Benutzer-last_name\".</p>\n"
+"            <b>Deine gespeicherten Informationen</b>\n"
+"<br>\n"
+"\n"
+" <p>Login: {{user:user_nicename}}<br>\n"
+"            <p>Name: {{user:first_name}} {{user:last_name}}.</p>\n"
 "            \n"
-"            <p>Danke, das Team.</p>"
+"            <p>Vielen Dank für deine Buchung.</p>\n"
+"            "
 
 #: includes/Options.php:208
 msgid "Booking cancelled email subject"
@@ -158,180 +170,31 @@ msgstr "E-Mail-Text für stornierte Buchungen"
 
 #: includes/Options.php:217
 msgid ""
-"Please review your booking of {{item-name}} at {{location-name}} and confirm "
-"it."
+"\n"
+"            Hi {{user:first_name}},<br>\n"
+"            <p>your booking {{item:name}} at {{item:name}} {{booking:"
+"booking_timeframe_date}} has been cancelled.\n"
+"            </p>\n"
+"            \n"
+"            <h3>Your information</h3>\n"
+"            <p>Login: {{user:user_nicename}}<br>\n"
+"            <p>Name: {{user:first_name}} {{user:last_name}}.</p>\n"
+"            \n"
+"            <p>Thanks, the Team. </p>  \n"
+"          "
 msgstr ""
-"Bitte überprüfe deine Buchung von {{item:name}} am Standort {{location:"
-"name}} und bestätige dies."
-
-#: includes/Options.php:220
-msgid "Booking confirmed"
-msgstr "Buchung bestätigt"
-
-#: includes/Options.php:224
-msgid "Your booking of {{item-name}} at {{location-name}} has been confirmed!"
-msgstr ""
-"Deine Buchung von {{item:name}} am Standort {{location:name}} wurde "
-"bestätigt!"
-
-#: includes/Options.php:227 src/Wordpress/CustomPostType/Timeframe.php:301
-msgid "Booking cancelled"
-msgstr "Buchung storniert"
-
-#: includes/Options.php:230
-msgid "Your booking has been cancelled!<br>"
-msgstr "Deine Buchung wurde storniert!<br>"
-
-#: includes/Options.php:233
-msgid "Request cancel confirmation"
-msgstr "Stornierungsbestätigung anfordern"
-
-#: includes/Options.php:236
-msgid "Click \"OK\" to cancel the booking."
-msgstr "Klicke auf \"OK\", um die Buchung zu stornieren."
-
-#: includes/Options.php:239
-msgid "Request un-cancel confirmation"
-msgstr "Rücknahme deiner Stornierung anfordern"
-
-#: includes/Options.php:242
-msgid "Click \"OK\" to un-cancel your booking."
-msgstr "Klicke auf \"OK\", um deine Buchungs-Stornierung rückgängig zu machen."
-
-#: includes/Options.php:245
-msgid "Access not allowed"
-msgstr "Zugriff nicht erlaubt"
-
-#: includes/Options.php:248
-msgid "You are not allowed to access this booking."
-msgstr "Du darfst nicht auf diese Buchung zugreifen."
-
-#: includes/Options.php:251
-msgid "No bookings"
-msgstr "Keine Buchungen"
-
-#: includes/Options.php:254
-msgid "No bookings yet."
-msgstr "Noch keine Buchungen vorhanden."
-
-#: includes/Options.php:257
-msgid "Not logged in"
-msgstr "Nicht angemeldet"
-
-#: includes/Options.php:260
-msgid ""
-"You have to be logged in to access your bookings. {{site-registration-link}}"
-msgstr ""
-"Du musst eingeloggt sein, um auf deine Buchungen zugreifen zu können. {{Site-"
-"Registrierungs-Link}}"
-
-#: includes/Options.php:263
-msgid "Not available"
-msgstr "Nicht verfügbar"
-
-#: includes/Options.php:266
-msgid "This item is currently not available."
-msgstr "Dieser Artikel ist derzeit nicht verfügbar."
-
-#: includes/Options.php:273
-msgid "Bookingbar strings"
-msgstr "Bookingbar-Zeichenfolgen"
-
-#: includes/Options.php:278
-msgid "Intro text"
-msgstr "Einführungstext"
-
-#: includes/Options.php:279
-msgid "{{max-slots}} will be replaced with max slots."
-msgstr "Die Anzahl von {{max-slots}} wird durch max-Buchungsfenster ersetzt."
-
-#: includes/Options.php:282
-msgid "Choose bookable slots on the calendar"
-msgstr "Wähle buchbare Buchungsfenster im Kalender"
-
-#: includes/Options.php:285
-msgid "Notice: Too few slots selected"
-msgstr "Hinweis: Zu wenige Buchungsfenster ausgewählt"
-
-#: includes/Options.php:286
-msgid "Displayed if a user tries to select too few slots than allowed."
-msgstr ""
-"Wird angezeigt, wenn ein Benutzer versucht, zu wenige Buchungsfenster als "
-"zulässig auszuwählen."
-
-#: includes/Options.php:289
-msgid "You need to book more slots."
-msgstr "Bitte weitere Buchungsfenster auswählen."
-
-#: includes/Options.php:292
-msgid "Notice: Too many slots selected"
-msgstr "Hinweis: Zu viele Buchungsfenster ausgewählt"
-
-#: includes/Options.php:293
-msgid ""
-"Displayed if a user tries to select more slots than allowed. {{max-slots}} "
-"will be replaced with max slots."
-msgstr ""
-"Wird angezeigt, wenn ein Benutzer versucht, mehr Buchungsfenster als "
-"zulässig auszuwählen. Die Anzahl der Buchungsfenster wird durch {{max-"
-"slots}} ersetzt."
-
-#: includes/Options.php:296
-msgid "You can not book more than {{max-slots}} slots."
-msgstr "Du kannst nicht mehr als {{max-slots}} Buchungsfenster auswählen."
-
-#: includes/Options.php:299
-msgid "Notice: Booking over another booking"
-msgstr "Hinweis: Buchung über eine andere Buchung"
-
-#: includes/Options.php:300
-msgid ""
-"Displayed if a user tries to create a selection that would include a non-"
-"includable slot (e.g. another booking) ."
-msgstr ""
-"Wird angezeigt, wenn ein Benutzer versucht, eine Auswahl zu erstellen, die "
-"ein nicht verfügbares Buchungsfenster (z. B. eine andere Buchung) enthält."
-
-#: includes/Options.php:303
-msgid "Your selection contains another booking."
-msgstr "Ihre Auswahl enthält eine weitere Buchung."
-
-#: includes/Options.php:306
-msgid "Notice: Not logged in"
-msgstr "Hinweis: Nicht angemeldet"
-
-#: includes/Options.php:307
-msgid "Displayed if a visitor clicks the calendar) ."
-msgstr "Wird angezeigt, wenn ein Besucher auf den Kalender klickt) ."
-
-#: includes/Options.php:310
-msgid "You need to be logged in to book."
-msgstr "Du musst eingeloggt sein, um zu buchen."
-
-#: includes/Options.php:313
-msgid "Pickup from"
-msgstr "Abholung von"
-
-#: includes/Options.php:316
-msgid "Pickup from:"
-msgstr "Abholung von:"
-
-#: includes/Options.php:319
-msgid "Return until"
-msgstr "Rückkehr bis"
-
-#: includes/Options.php:322
-msgid "Return until:"
-msgstr "Rückkehr bis:"
-
-#: includes/Options.php:325
-msgid "Button Label"
-msgstr "Button Beschriftung"
-
-#: includes/Options.php:328 src/View/Booking.php:91
-#: templates/components/calendar-index.php:37
-msgid "Book"
-msgstr "Buchen"
+"\n"
+"            Hallo {{user:first_name}},<br>\n"
+"            <p>deine Buchung von {{item:name}} an der Station {{item:name}} "
+"{{booking:booking_timeframe_date}} wurde storniert.\n"
+"            </p>\n"
+"            \n"
+"            <h3>Deine Informationen:</h3>\n"
+"            <p>Login: {{user:user_nicename}}<br>\n"
+"            <p>Name: {{user:first_name}} {{user:last_name}}.</p>\n"
+"            \n"
+"            <p>Viele Grüße, dein Team </p>  \n"
+"          "
 
 #: src/Model/Booking.php:97
 msgid " on %s "
@@ -342,23 +205,23 @@ msgstr " am %s "
 msgid " from %1$s until %2$s "
 msgstr " von %1$s bis %2$s "
 
-#: src/Model/Booking.php:226 src/View/Booking.php:70 src/View/Booking.php:96
+#: src/Model/Booking.php:224 src/View/Booking.php:70 src/View/Booking.php:96
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/Model/Booking.php:232
+#: src/Model/Booking.php:230
 msgid "Confirm Booking"
 msgstr "Buchung bestätigen"
 
-#: src/Model/Booking.php:238
+#: src/Model/Booking.php:236
 msgid "Cancel Booking"
 msgstr "Buchung stornieren"
 
-#: src/Model/Booking.php:259
+#: src/Model/Booking.php:257
 msgid "Please check your booking and click confirm booking"
 msgstr "Bitte überprüfe die Buchung und klicke auf „Buchung bestätigen“"
 
-#: src/Model/Booking.php:264
+#: src/Model/Booking.php:262
 msgid ""
 "Your booking is confirmed. A confirmation mail has been sent to you. <br> "
 "Enjoy your cargo bike trip :-)"
@@ -366,9 +229,13 @@ msgstr ""
 "Deine Buchung wurde bestätigt. Du hast eine Bestätigungs-E-Mail erhalten."
 "<br>Viel Spaß bei deiner Lastenrad-Tour  :-)"
 
-#: src/Model/Booking.php:269
+#: src/Model/Booking.php:267
 msgid "Your booking has been cancelled."
 msgstr "Deine Buchung wurde storniert."
+
+#: src/Model/Booking.php:275
+msgid "Link to your booking"
+msgstr "Link zu deiner Buchung"
 
 #: src/Model/Location.php:65
 msgid ""
@@ -411,6 +278,10 @@ msgid "Please add a 'type' attribute and set it to 'location' or 'item'"
 msgstr ""
 "Fügen Sie ein 'type'-Attribut hinzu und legen Sie es auf 'location' oder "
 "'item' fest."
+
+#: src/View/Booking.php:91 templates/components/calendar-index.php:29
+msgid "Book"
+msgstr "Buchen"
 
 #: src/Wordpress/CustomPostType/Item.php:24
 #: src/Wordpress/CustomPostType/Item.php:45
@@ -588,9 +459,9 @@ msgstr "Straße / Nr."
 #: src/Wordpress/CustomPostType/Location.php:157
 #: src/Wordpress/CustomPostType/Location.php:170
 #: src/Wordpress/CustomPostType/Location.php:183
-#: src/Wordpress/CustomPostType/Location.php:210
 #: src/Wordpress/CustomPostType/Location.php:224
-#: src/Wordpress/CustomPostType/Location.php:237
+#: src/Wordpress/CustomPostType/Location.php:238
+#: src/Wordpress/CustomPostType/Location.php:251
 msgid "field description (optional)"
 msgstr "Feldbeschreibung (optional)"
 
@@ -611,14 +482,25 @@ msgid "General Location information"
 msgstr "Allgemeine Standortinformationen"
 
 #: src/Wordpress/CustomPostType/Location.php:209
+msgid "Location email"
+msgstr "Standort-Bild"
+
+#: src/Wordpress/CustomPostType/Location.php:210
+msgid ""
+"email-address to get copy of booking confirmation and cancellation mails"
+msgstr ""
+"E-Mail-Adresse, an die eine Kopie der Buchungs- und Stornierungs-E-Mails "
+"gesendet wird"
+
+#: src/Wordpress/CustomPostType/Location.php:223
 msgid "Shortdescription"
 msgstr "Kurzbeschreibung"
 
-#: src/Wordpress/CustomPostType/Location.php:223 templates/meta-location.php:22
+#: src/Wordpress/CustomPostType/Location.php:237 templates/meta-location.php:22
 msgid "Pickup instructions"
 msgstr "Abhol-Hinweise"
 
-#: src/Wordpress/CustomPostType/Location.php:236
+#: src/Wordpress/CustomPostType/Location.php:250
 msgid "Location contact information"
 msgstr "Standortkontaktinformationen"
 
@@ -837,6 +719,10 @@ msgstr "Offizieller Feiertag"
 msgid "Repair"
 msgstr "Reparatur"
 
+#: src/Wordpress/CustomPostType/Timeframe.php:301
+msgid "Booking cancelled"
+msgstr "Buchung storniert"
+
 #: src/Wordpress/CustomPostType/Timeframe.php:442
 msgid "Filter By Type "
 msgstr "Filtern nach Typ "
@@ -885,18 +771,191 @@ msgstr "Benutzername"
 msgid "Pickup time"
 msgstr "Abholung"
 
-#: templates/components/calendar-index.php:26
+#: templates/components/calendar-index.php:23
 msgid "Return time"
 msgstr "Rückgabe"
 
 #: templates/meta-location.php:17
-#, fuzzy
-#| msgid "Address"
 msgid "Adress"
 msgstr "Adresse"
 
-#~ msgid "Link to your booking"
-#~ msgstr "Link zu deiner Buchung"
+#~ msgid ""
+#~ "Your booking of {{item:name}} at {{location:name}} {{booking:"
+#~ "booking_timeframe_date}} has been cancelled.<br>"
+#~ msgstr ""
+#~ "Deine Buchung von {{item:name}} am Standort {{location:name}} {{booking:"
+#~ "booking_timeframe_date}} wurde storniert.<br>"
+
+#~ msgid "Booking process messages"
+#~ msgstr "Buchungsprozess-Meldungen"
+
+#~ msgid "Please confirm your booking"
+#~ msgstr "Bitte bestätige deine Buchung"
+
+#~ msgid ""
+#~ "Please review your booking of {{item-name}} at {{location-name}} and "
+#~ "confirm it."
+#~ msgstr ""
+#~ "Bitte überprüfe deine Buchung von {{item:name}} am Standort {{location:"
+#~ "name}} und bestätige dies."
+
+#~ msgid "Booking confirmed"
+#~ msgstr "Buchung bestätigt"
+
+#~ msgid ""
+#~ "Your booking of {{item-name}} at {{location-name}} has been confirmed!"
+#~ msgstr ""
+#~ "Deine Buchung von {{item:name}} am Standort {{location:name}} wurde "
+#~ "bestätigt!"
+
+#~ msgid "Your booking has been cancelled!<br>"
+#~ msgstr "Deine Buchung wurde storniert!<br>"
+
+#~ msgid "Request cancel confirmation"
+#~ msgstr "Stornierungsbestätigung anfordern"
+
+#~ msgid "Click \"OK\" to cancel the booking."
+#~ msgstr "Klicke auf \"OK\", um die Buchung zu stornieren."
+
+#~ msgid "Request un-cancel confirmation"
+#~ msgstr "Rücknahme deiner Stornierung anfordern"
+
+#~ msgid "Click \"OK\" to un-cancel your booking."
+#~ msgstr ""
+#~ "Klicke auf \"OK\", um deine Buchungs-Stornierung rückgängig zu machen."
+
+#~ msgid "Access not allowed"
+#~ msgstr "Zugriff nicht erlaubt"
+
+#~ msgid "You are not allowed to access this booking."
+#~ msgstr "Du darfst nicht auf diese Buchung zugreifen."
+
+#~ msgid "No bookings"
+#~ msgstr "Keine Buchungen"
+
+#~ msgid "No bookings yet."
+#~ msgstr "Noch keine Buchungen vorhanden."
+
+#~ msgid "Not logged in"
+#~ msgstr "Nicht angemeldet"
+
+#~ msgid ""
+#~ "You have to be logged in to access your bookings. {{site-registration-"
+#~ "link}}"
+#~ msgstr ""
+#~ "Du musst eingeloggt sein, um auf deine Buchungen zugreifen zu können. "
+#~ "{{Site-Registrierungs-Link}}"
+
+#~ msgid "Not available"
+#~ msgstr "Nicht verfügbar"
+
+#~ msgid "This item is currently not available."
+#~ msgstr "Dieser Artikel ist derzeit nicht verfügbar."
+
+#~ msgid "Bookingbar strings"
+#~ msgstr "Bookingbar-Zeichenfolgen"
+
+#~ msgid "Intro text"
+#~ msgstr "Einführungstext"
+
+#~ msgid "{{max-slots}} will be replaced with max slots."
+#~ msgstr ""
+#~ "Die Anzahl von {{max-slots}} wird durch max-Buchungsfenster ersetzt."
+
+#~ msgid "Choose bookable slots on the calendar"
+#~ msgstr "Wähle buchbare Buchungsfenster im Kalender"
+
+#~ msgid "Notice: Too few slots selected"
+#~ msgstr "Hinweis: Zu wenige Buchungsfenster ausgewählt"
+
+#~ msgid "Displayed if a user tries to select too few slots than allowed."
+#~ msgstr ""
+#~ "Wird angezeigt, wenn ein Benutzer versucht, zu wenige Buchungsfenster als "
+#~ "zulässig auszuwählen."
+
+#~ msgid "You need to book more slots."
+#~ msgstr "Bitte weitere Buchungsfenster auswählen."
+
+#~ msgid "Notice: Too many slots selected"
+#~ msgstr "Hinweis: Zu viele Buchungsfenster ausgewählt"
+
+#~ msgid ""
+#~ "Displayed if a user tries to select more slots than allowed. {{max-"
+#~ "slots}} will be replaced with max slots."
+#~ msgstr ""
+#~ "Wird angezeigt, wenn ein Benutzer versucht, mehr Buchungsfenster als "
+#~ "zulässig auszuwählen. Die Anzahl der Buchungsfenster wird durch {{max-"
+#~ "slots}} ersetzt."
+
+#~ msgid "You can not book more than {{max-slots}} slots."
+#~ msgstr "Du kannst nicht mehr als {{max-slots}} Buchungsfenster auswählen."
+
+#~ msgid "Notice: Booking over another booking"
+#~ msgstr "Hinweis: Buchung über eine andere Buchung"
+
+#~ msgid ""
+#~ "Displayed if a user tries to create a selection that would include a non-"
+#~ "includable slot (e.g. another booking) ."
+#~ msgstr ""
+#~ "Wird angezeigt, wenn ein Benutzer versucht, eine Auswahl zu erstellen, "
+#~ "die ein nicht verfügbares Buchungsfenster (z. B. eine andere Buchung) "
+#~ "enthält."
+
+#~ msgid "Your selection contains another booking."
+#~ msgstr "Ihre Auswahl enthält eine weitere Buchung."
+
+#~ msgid "Notice: Not logged in"
+#~ msgstr "Hinweis: Nicht angemeldet"
+
+#~ msgid "Displayed if a visitor clicks the calendar) ."
+#~ msgstr "Wird angezeigt, wenn ein Besucher auf den Kalender klickt) ."
+
+#~ msgid "You need to be logged in to book."
+#~ msgstr "Du musst eingeloggt sein, um zu buchen."
+
+#~ msgid "Pickup from"
+#~ msgstr "Abholung von"
+
+#~ msgid "Pickup from:"
+#~ msgstr "Abholung von:"
+
+#~ msgid "Return until"
+#~ msgstr "Rückkehr bis"
+
+#~ msgid "Return until:"
+#~ msgstr "Rückkehr bis:"
+
+#~ msgid "Button Label"
+#~ msgstr "Button Beschriftung"
+
+#, fuzzy
+#~| msgid "Pending booking of {{item-name}} at {{location-name}}."
+#~ msgid "{{item:name}} at {{location:name}}"
+#~ msgstr "Ausstehende Buchung von {{item-name}} an {{Location-Name}}."
+
+#~ msgid "~"
+#~ msgstr "~"
+
+#~ msgid "Booking pending email subject"
+#~ msgstr "E-Mail Betreff für ausstehende Buchungen"
+
+#~ msgid "description"
+#~ msgstr "Beschreibung"
+
+#~ msgid "Pending booking"
+#~ msgstr "Ausstehende Buchung"
+
+#~ msgid "Booking pending email body"
+#~ msgstr "E-Mail-Text für ausstehende Buchungen"
+
+#~ msgid "Your booking {{item_name}}."
+#~ msgstr "Deine Buchung von {{item_name}}."
+
+#~ msgid "cancelled booking."
+#~ msgstr "stornierte Buchung."
+
+#~ msgid "cancelled booking of {{item-name}} at {{location-name}}."
+#~ msgstr "Stornierte Buchung von {{item:name}} unter \"Standortname\"."
 
 #~ msgid "You do not have permissions to edit this post."
 #~ msgstr "Sie sind nicht berechtigt, diesen Beitrag zu bearbeiten."
