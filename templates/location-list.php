@@ -18,10 +18,10 @@
                     $itemId = get_post_meta($bookableTimeFrame->ID, 'item-id', true);
                     $item = get_post($itemId);
                     $bookingUrl = get_permalink($location->ID) . "&item=" . $itemId;
-                    $dateString = ($endDateTimestamp ? "" : "Ab ") . date(get_option('date_format'),
+                    $dateString = ($endDateTimestamp ? "" : "Ab ") . date_i18n(get_option('date_format'),
                             $startDateTimestamp);
                     if ($endDateTimestamp) {
-                        $dateString .= " - " . date(get_option('date_format'), $endDateTimestamp);
+                        $dateString .= " - " . date_i18n(get_option('date_format'), $endDateTimestamp);
                     }
                     ?>
                     <div class="cb-row">
