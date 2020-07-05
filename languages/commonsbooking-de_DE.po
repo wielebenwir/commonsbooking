@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2020-07-05T08:16:36+00:00\n"
-"PO-Revision-Date: 2020-07-05 10:19+0200\n"
+"POT-Creation-Date: 2020-07-05T08:50:41+00:00\n"
+"PO-Revision-Date: 2020-07-05 11:02+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -109,7 +109,11 @@ msgid ""
 "            {{location:location_contact}}\n"
 "            \n"
 "            <p>Click here to see or cancel your booking: {{booking:"
-"booking_link}}.</p>\n"
+"booking_link}}.</p><br>\n"
+"            <b>Notice:</b> You need to be logged in to see your booking. "
+"<br>\n"
+"            If the link leads you to the homepage of the webseite,\n"
+"            please login first and then click the link again.<br><br>\n"
 "            \n"
 "            <h3>Your information</h3>\n"
 "            <p>Login: {{user:user_nicename}}<br>\n"
@@ -138,29 +142,33 @@ msgstr ""
 "            {{location:location_contact}}\n"
 "            \n"
 "            <p>Klicke auf den Link, um deine Buchung zu sehen oder zu "
-"stornieren: {{booking:booking_link}}.</p>\n"
+"stornieren: {{booking:booking_link}}.</p><br>\n"
+"<b>Hinweis</b>: Du musst angemeldet sein, um deine Buchung sehen zu können. "
+"Falls dich der Link zur Startseite führt, logge dich bitte zunächst\n"
+"ein und klicke dann erneut auf den Link in der E-Mail.<br><br>\n"
 "            \n"
 "            <b>Deine gespeicherten Informationen</b>\n"
 "<br>\n"
+"\n"
 " <p>Login: {{user:user_nicename}}<br>\n"
 "            <p>Name: {{user:first_name}} {{user:last_name}}.</p>\n"
 "            \n"
 "            <p>Vielen Dank für deine Buchung.</p>\n"
 "            "
 
-#: includes/Options.php:205
+#: includes/Options.php:208
 msgid "Booking cancelled email subject"
 msgstr "E-Mail-Betreff für stornierte Buchungen"
 
-#: includes/Options.php:208
+#: includes/Options.php:211
 msgid "Booking cancelled: {{item:name}} at {{location:name}}"
 msgstr "Buchung storniert: {{item:name}} am Standort {{location:name}}"
 
-#: includes/Options.php:211
+#: includes/Options.php:214
 msgid "Booking cancelled email body"
 msgstr "E-Mail-Text für stornierte Buchungen"
 
-#: includes/Options.php:214
+#: includes/Options.php:217
 msgid ""
 "\n"
 "            Hi {{user:first_name}},<br>\n"
