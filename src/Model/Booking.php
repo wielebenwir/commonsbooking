@@ -72,7 +72,7 @@ class Booking extends CustomPost
             [$locationId],
             [$itemId],
             [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID],
-            date(CB::getInternalDateFormat(), self::get_meta('start-date'))
+            date(CB::getInternalDateFormat(), self::get_meta('repetition-start'))
         );
 
         if(count($response) == 1) {
@@ -88,10 +88,9 @@ class Booking extends CustomPost
     public function booking_timeframe_date()
     {
         $date_format = get_option('date_format');
-        $time_format = get_option('time_format');
         
-        $startdate = date_i18n($date_format, $this->get_meta('start-date'));
-        $enddate = date_i18n($date_format, $this->get_meta('end-date'));
+        $startdate = date_i18n($date_format, $this->get_meta('repetition-start'));
+        $enddate = date_i18n($date_format, $this->get_meta('repetition-end'));
 
         if ($startdate == $enddate) {
             return sprintf( esc_html__( ' on %s ' , 'commonsbooking'), $startdate );
@@ -151,8 +150,8 @@ class Booking extends CustomPost
         $date_format = get_option('date_format');
         $time_format = get_option('time_format');
         
-        $date_start = date_i18n($date_format, $this->get_meta('start-date'));
-        $time_start = date_i18n($time_format, $this->get_meta('start-date'));
+        $date_start = date_i18n($date_format, $this->get_meta('repetition-start'));
+        $time_start = date_i18n($time_format, $this->get_meta('repetition-start'));
 
         $grid = $this->get_meta('grid');
         $full_day = $this->get_meta('full-day');
@@ -162,7 +161,7 @@ class Booking extends CustomPost
         }
 
         if ($grid > 0) { // if bookable grid is set to hour
-            $time_end = date_i18n($time_format, $this->get_meta('start-date') + (60 * 60 * $grid));
+            $time_end = date_i18n($time_format, $this->get_meta('repetition-start') + (60 * 60 * $grid));
         }
 
         if ($grid == 0) { // if grid is set to slot duration
@@ -182,8 +181,8 @@ class Booking extends CustomPost
         $date_format = get_option('date_format');
         $time_format = get_option('time_format');
         
-        $date_end = date_i18n($date_format, $this->get_meta('end-date'));
-        $time_end = date_i18n($time_format, $this->get_meta('end-date') + 60 ); // we add 60 seconds because internal timestamp is set to hh:59 
+        $date_end = date_i18n($date_format, $this->get_meta('repetition-end'));
+        $time_end = date_i18n($time_format, $this->get_meta('repetition-end') + 60 ); // we add 60 seconds because internal timestamp is set to hh:59 
 
         $grid = $this->get_meta('grid');
         $full_day = $this->get_meta('full-day');
@@ -193,7 +192,7 @@ class Booking extends CustomPost
         }
 
         if ($grid > 0) {
-            $time_start = date_i18n($time_format, $this->get_meta('end-date') +1 -(60 * 60 * $grid) );
+            $time_start = date_i18n($time_format, $this->get_meta('repetition-end') +1 -(60 * 60 * $grid) );
         }
 
         if ($grid == 0) { // if grid is set to slot duration

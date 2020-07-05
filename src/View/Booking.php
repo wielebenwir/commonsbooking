@@ -17,8 +17,8 @@ class Booking extends View
         $item = get_post($itemId);
         $location = get_post($locationId);
 
-        $startDate = intval(get_post_meta($post->ID, 'start-date', true));
-        $endDate = intval(get_post_meta($post->ID, 'end-date', true));
+        $startDate = intval(get_post_meta($post->ID, 'repetition-start', true));
+        $endDate = intval(get_post_meta($post->ID, 'repetition-end', true));
 
         return array(
             'post' => $post,

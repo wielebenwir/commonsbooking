@@ -139,13 +139,13 @@ abstract class CustomPostType
 
                     if (is_array($value)) {
                         // Update time-fields by date-fields
-                        if(in_array($fieldName, ['start-date', 'end-date'])) {
+                        /*if(in_array($fieldName, ['repetition-start', 'repetition-end'])) {
                             update_post_meta(
                                 $post_id,
                                 str_replace('date','time', $fieldName),
                                 $value['time']
                             );
-                        }
+                        }*/
                     }
                 }
             }

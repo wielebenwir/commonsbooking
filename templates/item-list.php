@@ -14,12 +14,20 @@ foreach ($templateData['items'] as $item) {
         </div>
         <div class="cb-table">
             <?php
+            $startDates = [];
             foreach ($item->getBookableTimeFrames() as $bookableTimeFrame) {
-                $startDateTimestamp = intval(get_post_meta($bookableTimeFrame->ID, 'start-date', true));
-                $endDateTimestamp = intval(get_post_meta($bookableTimeFrame->ID, 'end-date', true));
+                $startDateTimestamp = intval(get_post_meta($bookableTimeFrame->ID, 'repetition-start', true));
+                $formattedStartDate = date(get_option('date_format'), $startDateTimestamp);
+                $endDateTimestamp = intval(get_post_meta($bookableTimeFrame->ID, 'repetition-end', true));
+                $formattedEndDate = date(get_option('date_format'), $endDateTimestamp);
 
                 $locationId = get_post_meta($bookableTimeFrame->ID, 'location-id', true);
                 $location = get_post($locationId);
+
+                // Continue if we have the same startdate for this location
+                if(array_key_exists($locationId, $startDates) && in_array($formattedStartDate, $startDates)) continue;
+                $startDates[$locationId] = $formattedStartDate;
+
                 $bookingUrl = get_permalink($locationId) . "&item=" . $item->ID;
                 $dateString = ($endDateTimestamp ? "" : "Ab ") . date(get_option('date_format'),
                         $startDateTimestamp);

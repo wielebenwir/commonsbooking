@@ -23,13 +23,13 @@ class Booking extends PostRepository
             'meta_query' => array(
                 'relation' => "AND",
                 array(
-                    'key' => 'start-date',
+                    'key' => 'repetition-start',
                     'value' => intval($startDate),
                     'compare' => '=',
                     'type' => 'numeric'
                 ),
                 array(
-                    'key' => 'end-date',
+                    'key' => 'repetition-end',
                     'value' => $endDate,
                     'compare' => '='
                 ),

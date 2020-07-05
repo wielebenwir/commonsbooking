@@ -11,8 +11,8 @@
         <input type="hidden" name="type" value="<?php echo $booking->get_meta('type'); ?>" />
         <input type="hidden" name="post_type" value="cb_timeframe" />
         <input type="hidden" name="post_status" value="<?php echo $form_post_status; ?>" />
-        <input type="hidden" name="start-date" value="<?php echo $booking->get_meta('start-date'); ?>">
-        <input type="hidden" name="end-date" value="<?php echo $booking->get_meta('end-date'); ?>">
+        <input type="hidden" name="repetition-start" value="<?php echo $booking->get_meta('repetition-start'); ?>">
+        <input type="hidden" name="repetition-end" value="<?php echo $booking->get_meta('repetition-end'); ?>">
         <input type="submit" value="<?php echo $button_label; ?>" />
     </form>
 

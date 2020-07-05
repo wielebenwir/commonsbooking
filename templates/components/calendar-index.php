@@ -14,15 +14,15 @@
 
             <div class="time-selection-container">
 
-                <div class="time-selection start-date">
-                    <label for="start-date"><?php echo __('Pickup time', 'commonsbooking'); ?></label>
+                <div class="time-selection repetition-start">
+                    <label for="repetition-start"><?php echo __('Pickup time', 'commonsbooking'); ?></label>
                         <span class="date"></span>
-                        <select id="start-date" name="start-date"></select>
+                        <select id="repetition-start" name="repetition-start"></select>
                 </div>
-                  <div class="time-selection end-date">
-                    <label for="end-date"><?php echo __('Return time', 'commonsbooking'); ?> </label>
+                  <div class="time-selection repetition-end">
+                    <label for="repetition-end"><?php echo __('Return time', 'commonsbooking'); ?> </label>
                         <span class="date"></span>
-                        <select id="end-date" name="end-date"></select>
+                        <select id="repetition-end" name="repetition-end"></select>
                 </div>
             <p id="fullDayInfo"></p>
             <?php
