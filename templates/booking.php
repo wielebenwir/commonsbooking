@@ -81,9 +81,9 @@ use CommonsBooking\Model\Booking;
         <div class="cb-meta cb-user-meta">
             <div class="cb-user-info col-30-70">       
                 <div><?php echo __('User E-Mail', 'commonsbooking') ?></div>
-                <div><?php CB::get('user', 'user_email'); ?></div>
+                <div><?php echo CB::get('user', 'user_email'); ?></div>
                 <div><?php echo __('Login Name', 'commonsbooking') ?></div>
-                <div><?php CB::get('user', 'user_login'); ?></div>
+                <div><?php echo CB::get('user', 'user_login'); ?></div>
                 <div><?php echo __('User Name', 'commonsbooking') ?></div>
                 <div><?php echo CB::get('user', 'first_name'); ?> <?php echo CB::get('user', 'last_name'); ?><br>
                 <?php echo CB::get('user', 'user_address'); ?> 
