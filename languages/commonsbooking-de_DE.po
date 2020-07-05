@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2020-07-02T21:29:54+00:00\n"
-"PO-Revision-Date: 2020-07-02 23:36+0200\n"
+"POT-Creation-Date: 2020-07-05T08:50:41+00:00\n"
+"PO-Revision-Date: 2020-07-05 10:51+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -107,8 +107,12 @@ msgid ""
 "            </p>\n"
 "            \n"
 "            \n"
-"            <p>Click here to see or cancel your booking: {{booking-"
-"permalink}}.</p>\n"
+"            <p>Click here to see or cancel your booking: {{booking:"
+"booking_link}}.</p><br>\n"
+"            <b>Notice:</b> You need to be logged in to see your booking. "
+"<br>\n"
+"            If the link leads you to the homepage of the webseite,\n"
+"            please login first and then click the link again.<br><br>\n"
 "            \n"
 "            <h3>Your information</h3>\n"
 "            <p>Name: {{user-first_name}} {{user-last_name}}.</p>\n"
@@ -129,37 +133,28 @@ msgstr ""
 "            </p>\n"
 "            \n"
 "            \n"
-"            <p>Klicken Sie hier, um Ihre Buchung zu sehen oder zu "
-"stornieren: .booking-permalink.</p>\n"
+"            <p>Klicke auf den Link, um deine Buchung zu sehen oder zu "
+"stornieren: {{booking:booking_link}}.</p><br>\n"
+"<b>Hinweis</b>: Du musst angemeldet sein, um deine Buchung sehen zu können. "
+"Falls dich der Link zur Startseite führt, logge dich bitte zunächst\n"
+"ein und klicke dann erneut auf den Link in der E-Mail.<br><br>\n"
 "            \n"
 "            <h3>Ihre Informationen</h3>\n"
 "            <p>Name: ,,Benutzer-first_name\" \"Benutzer-last_name\".</p>\n"
 "            \n"
 "            <p>Danke, das Team.</p>"
 
-#: includes/Options.php:192
+#: includes/Options.php:208
 msgid "Booking cancelled email subject"
 msgstr "E-Mail-Betreff für stornierte Buchungen"
 
-#: includes/Options.php:195
-msgid "cancelled booking."
-msgstr "stornierte Buchung."
+#: includes/Options.php:211
+msgid "Booking cancelled: {{item:name}} at {{location:name}}"
+msgstr "Buchung storniert: {{item:name}} am Standort {{location:name}}"
 
-#: includes/Options.php:198
+#: includes/Options.php:214
 msgid "Booking cancelled email body"
 msgstr "E-Mail-Text für stornierte Buchungen"
-
-#: includes/Options.php:201
-msgid "cancelled booking of {{item-name}} at {{location-name}}."
-msgstr "Stornierte Buchung von {{item:name}} unter \"Standortname\"."
-
-#: includes/Options.php:208
-msgid "Booking process messages"
-msgstr "Buchungsprozess-Meldungen"
-
-#: includes/Options.php:213
-msgid "Please confirm your booking"
-msgstr "Bitte bestätige deine Buchung"
 
 #: includes/Options.php:217
 msgid ""

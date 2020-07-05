@@ -194,7 +194,10 @@ $options_array = array(
             </p>
             
             
-            <p>Click here to see or cancel your booking: {{booking-permalink}}.</p>
+            <p>Click here to see or cancel your booking: {{booking:booking_link}}.</p><br>
+            <b>Notice:</b> You need to be logged in to see your booking. <br>
+            If the link leads you to the homepage of the webseite,
+            please login first and then click the link again.<br><br>
             
             <h3>Your information</h3>
             <p>Login: {{user:user_nicename}}<br>
