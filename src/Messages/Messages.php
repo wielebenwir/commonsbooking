@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Messages;
 
+use CommonsBooking\CB\CB;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Shortcodes\Shortcodes;
 
@@ -75,7 +76,7 @@ class Messages
         // TODO: @christian: Add later
         //Check settings for additionitional Recipients
         // $bcc_roles    = CB2_Settings::get( 'bookingemails_bcc-roles' ); /* WP roles that should recieve the email */
-        // $bcc_adresses = CB2_Settings::get( 'bookingemails_bcc-adresses' ); /*  email adresses, comma-seperated  */
+        $bcc_adresses = CB::get('location', CB_METABOX_PREFIX . 'location_email' ); /*  email adresses, comma-seperated  */
 
         // TODO: @christian: add later - we have to implement user reference in location and item first (cmb2 issue user select)
         // Get users
@@ -88,20 +89,22 @@ class Messages
         // 	if ( in_array ( 'location-owner-bcc', $bcc_roles )) { $this->add_bcc ( $location_owner_user->user_email ); }
         // }
 
-        // if (! empty ( $bcc_adresses ) ) {
-        // 	$adresses_array = explode ( ',', $bcc_adresses );
-        // 	foreach ( $adresses_array as $adress ) {
-        // 		$this->add_bcc( $adress );
-        // 	}
-        // }
+        if (! empty ( $bcc_adresses ) ) {
+        	$adresses_array = explode ( ',', $bcc_adresses );
+        	foreach ( $adresses_array as $adress ) {
+        		$this->add_bcc( $adress );
+        	}
+        }
     }
 
     public function add_bcc($adress)
     {
         if ( ! in_array($adress, $this->headers)) { // prevent double emails, e.g. if admin=item owner
-            $this->headers[] = sprintf("Bcc:%s", sanitize_email($adress));
+            $this->headers[] = sprintf("CC: %s", sanitize_email($adress));
         }
     }
+
+
 
 
     /**
@@ -110,9 +113,9 @@ class Messages
     public function SendNotificationMail()
     {
 
-        $to = apply_filters('cb2_mail_to', $this->to);
-        $subject = apply_filters('cb2_mail_subject', $this->subject);
-        $body = apply_filters('cb2_mail_body', $this->body);
+        $to = apply_filters('cb_mail_to', $this->to);
+        $subject = apply_filters('cb_mail_subject', $this->subject);
+        $body = apply_filters('cb_mail_body', $this->body);
         $headers = implode("\r\n", $this->headers);
 
         $result = false;
@@ -121,7 +124,7 @@ class Messages
         // WPML: Reset system lang
         do_action('wpml_reset_language_after_mailing');
 
-        do_action('cb2_mail_sent', $this->action, $result);
+        do_action('cb_mail_sent', $this->action, $result);
 
     }
 
