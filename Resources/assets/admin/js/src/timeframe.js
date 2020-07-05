@@ -56,10 +56,6 @@
 
         if(timeframeForm.length) {
             const typeInput = $('#timeframe-repetition');
-            const startDateInput = $('#start-date_date');
-            const startDateTimeInput = $('#start-date_time');
-            const endDateInput = $('#end-date_date');
-            const endDateTimeInput = $('#end-date_time');
             const gridInput = $('#grid');
             const weekdaysInput = $('#weekdays1'); // TODO: find bettter solution.
             const startTimeInput = $('#start-time');
@@ -69,9 +65,8 @@
             const repetitionEndInput = $('#repetition-end');
             const fullDayInput = $('#full-day');
             const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
-            const noRepSet = [fullDayInput, startDateInput, startDateTimeInput, endDateInput, endDateTimeInput, gridInput];
+            const noRepSet = [fullDayInput, gridInput, repetitionStartInput, repetitionEndInput];
             const repTimeFieldsSet = [gridInput, startTimeInput, endTimeInput];
-            const noRepTimeFieldsSet = [startDateTimeInput, endDateTimeInput];
 
             /**
              * Show repetition fields.
@@ -100,30 +95,6 @@
             }
 
             /**
-             * Time-Select copy functions
-             */
-            const updateTimeSelectionHandlers = function () {
-                startTimeInput.change(function () {
-                    startDateTimeInput.val($(this).val());
-                });
-                endTimeInput.change(function () {
-                    endDateTimeInput.val($(this).val());
-                });
-                repetitionStartInput.change(function () {
-                    startDateInput.val($(this).val());
-                });
-                repetitionEndInput.change(function () {
-                    endDateInput.val($(this).val());
-
-                    // repetion end is removed, we need to clear enddate time input too
-                    if($(this).val() == "") {
-                        endDateTimeInput.val($(this).val());
-                    }
-                });
-            };
-            updateTimeSelectionHandlers();
-
-            /**
              * Shows/hides grid selection depending on checked-state.
              */
             const handleFullDaySelection = function () {
@@ -132,10 +103,8 @@
                 if(fullDayInput.prop( "checked" )) {
                     gridInput.prop("selected", false);
                     hideFieldset(repTimeFieldsSet);
-                    hideFields(noRepTimeFieldsSet);
                 } else {
                     if(selectedRep == 'norep') {
-                        showFields(noRepTimeFieldsSet);
                         showFieldset([gridInput]);
                     } else {
                         showFieldset(repTimeFieldsSet);

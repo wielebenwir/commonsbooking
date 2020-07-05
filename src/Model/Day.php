@@ -215,13 +215,13 @@ class Day
 
 
     /**
-     * Returns start-date DateTime.
+     * Returns repetition-start DateTime.
      * @param $timeframe
      * @return \DateTime
      */
     protected function getStartDate($timeframe)
     {
-        $startDateString = get_post_meta($timeframe->ID, 'start-date', true);
+        $startDateString = get_post_meta($timeframe->ID, 'repetition-start', true);
         $startDate = new \DateTime();
         $startDate->setTimestamp($startDateString);
         return $startDate;
@@ -234,7 +234,7 @@ class Day
      */
     protected function getStartTime($timeframe)
     {
-        $startDateString = get_post_meta($timeframe->ID, 'start-date', true);
+        $startDateString = get_post_meta($timeframe->ID, 'repetition-start', true);
         $startTimeString = get_post_meta($timeframe->ID, 'start-time', true);
         $startDate = new \DateTime();
         $startDate->setTimestamp($startDateString);

@@ -27,8 +27,8 @@ class Timeframe extends CustomPostType
         'type'        => "Type",
         'location-id' => "Location",
         'item-id'     => "Item",
-        'start-date'  => "Start Date",
-        'end-date'    => "End date"
+        'repetition-start'  => "Start Date",
+        'repetition-end'    => "End date"
     ];
 
     public static $multiDayFrames = [
@@ -98,8 +98,8 @@ class Timeframe extends CustomPostType
                 throw new \Exception('Location does not exist. (' . $locationId . ')');
             }
 
-            $startDate = isset($_REQUEST['start-date']) && $_REQUEST['start-date'] != "" ? $_REQUEST['start-date'] : null;
-            $endDate = isset($_REQUEST['end-date']) && $_REQUEST['end-date'] != "" ? $_REQUEST['end-date'] : null;
+            $startDate = isset($_REQUEST['repetition-start']) && $_REQUEST['repetition-start'] != "" ? $_REQUEST['repetition-start'] : null;
+            $endDate = isset($_REQUEST['repetition-end']) && $_REQUEST['repetition-end'] != "" ? $_REQUEST['repetition-end'] : null;
 
             /** @var \CommonsBooking\Model\Booking $booking */
             $booking = Booking::getBookingByDate(
@@ -240,7 +240,6 @@ class Timeframe extends CustomPostType
             new Field("title-timeframe-config", __("Configure timeframe", 'commonsbooking'), "", "title", "edit_posts"),
             new Field("timeframe-repetition", __('Timeframe Repetition', 'commonsbooking'), "", "select", "edit_pages",
                 [
-                    #  'rep' => __("Repetition", 'commonsbooking'),
                     'norep' => __("No Repetition", 'commonsbooking'),
                     'd'     => __("Daily", 'commonsbooking'),
                     'w'     => __("Weekly", 'commonsbooking'),
@@ -249,8 +248,6 @@ class Timeframe extends CustomPostType
                 ]
             ),
             new Field("full-day", __('Full day', 'commonsbooking'), "", "checkbox", "edit_pages"),
-            new Field("start-date", __("Start date", 'commonsbooking'), "", "text_datetime_timestamp", "edit_posts"),
-            new Field("end-date", __("End date", 'commonsbooking'), "", "text_datetime_timestamp", "edit_pages"),
             new Field("start-time", __("Start time", 'commonsbooking'), "", "text_time", "edit_posts"),
             new Field("end-time", __("End time", 'commonsbooking'), "", "text_time", "edit_pages"),
             new Field("grid", __("Grid", 'commonsbooking'), "", "select", "edit_pages",
@@ -261,15 +258,7 @@ class Timeframe extends CustomPostType
             ),
             new Field("title-timeframe-rep-config", __("Configure repetition", 'commonsbooking'), "", "title",
                 "edit_posts"),
-            new Field("repetition-start", __('Repetition start', 'commonsbooking'), "", "text_date", "edit_pages"),
-            /*new Field("repetition", __('Repetition', 'commonsbooking'), "", "select", "edit_pages",
-                [
-                    'd' => __("Daily", 'commonsbooking'),
-                    'w' => __("Weekly", 'commonsbooking'),
-                    'm' => __("Monthly", 'commonsbooking'),
-                    'y' => __("Yearly", 'commonsbooking')
-                ]
-            ),*/
+            new Field("repetition-start", __('Repetition start', 'commonsbooking'), "", "text_date_timestamp", "edit_pages"),
             new Field("weekdays", __('Weekdays', 'commonsbooking'), "", "multicheck", "edit_pages",
                 [
                     1 => __("Monday", 'commonsbooking'),
@@ -281,7 +270,7 @@ class Timeframe extends CustomPostType
                     7 => __("Sunday", 'commonsbooking')
                 ]
             ),
-            new Field("repetition-end", __('Repetition end', 'commonsbooking'), "", "text_date", "edit_pages")
+            new Field("repetition-end", __('Repetition end', 'commonsbooking'), "", "text_date_timestamp", "edit_pages")
         );
     }
 
@@ -354,8 +343,8 @@ class Timeframe extends CustomPostType
                     }
                     echo $output;
                     break;
-                case 'start-date':
-                case 'end-date':
+                case 'repetition-start':
+                case 'repetition-end':
                     echo date('d.m.Y H:i', $value);
                     break;
                 default:

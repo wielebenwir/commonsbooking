@@ -15,8 +15,8 @@ foreach ($templateData['items'] as $item) {
         <div class="cb-table">
             <?php
             foreach ($item->getBookableTimeFrames() as $bookableTimeFrame) {
-                $startDateTimestamp = intval(get_post_meta($bookableTimeFrame->ID, 'start-date', true));
-                $endDateTimestamp = intval(get_post_meta($bookableTimeFrame->ID, 'end-date', true));
+                $startDateTimestamp = intval(get_post_meta($bookableTimeFrame->ID, 'repetition-start', true));
+                $endDateTimestamp = intval(get_post_meta($bookableTimeFrame->ID, 'repetition-end', true));
 
                 $locationId = get_post_meta($bookableTimeFrame->ID, 'location-id', true);
                 $location = get_post($locationId);
