@@ -21,8 +21,8 @@
                             <input type="hidden" name="type" value="6" />
                             <input type="hidden" name="post_type" value="cb_timeframe" />
                             <input type="hidden" name="post_status" value="unconfirmed" />
-                            <input type="hidden" name="start-date" value="{{ slot.timestampstart }}">
-                            <input type="hidden" name="end-date" value="{{ slot.timestampend }}">
+                            <input type="hidden" name="repetition-start" value="{{ slot.timestampstart }}">
+                            <input type="hidden" name="repetition-end" value="{{ slot.timestampend }}">
                             <input type="submit" value="Buchen" style="font-size: 12px;padding:0;" />
                         </form>
                         {% endif %}

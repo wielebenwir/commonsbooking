@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         // Updates Time-selects so that no wrong time ranges can be selected
         const initSelectHandler = () => {
             const bookingForm = $('#booking-form');
-            const startSelect = bookingForm.find('select[name=start-date]');
-            const endSelect = bookingForm.find('select[name=end-date]');
+            const startSelect = bookingForm.find('select[name=repetition-start]');
+            const endSelect = bookingForm.find('select[name=repetition-end]');
 
             startSelect.change(function () {
                 const startValue = $(this).val();
@@ -120,22 +120,22 @@ document.addEventListener("DOMContentLoaded", function(event) {
                             const startDate = moment(date1).format('DD.MM.YYYY');
                             const endDate = moment(date2).format('DD.MM.YYYY');
 
-                            let startSelect = $('#booking-form select[name=start-date]');
-                            $('.time-selection.start-date span.date').text(startDate);
+                            let startSelect = $('#booking-form select[name=repetition-start]');
+                            $('.time-selection.repetition-start span.date').text(startDate);
                             updateSelectSlots(startSelect, day1['slots'], 'start', day1['fullDay']);
                             if(day1['fullDay']) {
-                                $('.time-selection.start-date').find('label, select').hide();
+                                $('.time-selection.repetition-start').find('label, select').hide();
                             } else {
-                                $('.time-selection.start-date').find('label, select').show();
+                                $('.time-selection.repetition-start').find('label, select').show();
                             }
 
-                            let endSelect = $('#booking-form select[name=end-date]');
-                            $('.time-selection.end-date span.date').text(endDate);
+                            let endSelect = $('#booking-form select[name=repetition-end]');
+                            $('.time-selection.repetition-end span.date').text(endDate);
                             updateSelectSlots(endSelect, day2['slots'], 'end', day2['fullDay']);
                             if(day2['fullDay']) {
-                                $('.time-selection.end-date').find('label, select').hide();
+                                $('.time-selection.repetition-end').find('label, select').hide();
                             } else {
-                                $('.time-selection.end-date').find('label, select').show();
+                                $('.time-selection.repetition-end').find('label, select').show();
                             }
 
                             if(!day1['fullDay'] || !day2['fullDay']) {
@@ -144,7 +144,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
                             } else {
                                 $('#fullDayInfo').text(data['location']['fullDayInfo']);
                             }
-
                         }
                     }
                 );
