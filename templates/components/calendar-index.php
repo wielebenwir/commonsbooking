@@ -25,16 +25,24 @@
                         <select id="repetition-end" name="repetition-end"></select>
                 </div>
             <p id="fullDayInfo"></p>
+            </div>
             <?php
             if(is_user_logged_in()) { ?>
                 <input type="submit" value="<?php echo __('Book', 'commonsbooking'); ?>" />
             <?php } else {
                 $current_url = $_SERVER['REQUEST_URI'];
             ?>
-            Um Buchen zu können, musst du dich <a href="<?php echo esc_url( wp_login_url( $current_url )  ); ?>">einloggen</a> oder
-                <a href="<?php echo esc_url( wp_registration_url() ); ?>">registrieren</a>.
+            <div class="cb-notice">
+            <?php
+            printf(
+                /* translators: %1$s: wp_login_url, 1$s: wp_registration_url */
+                __( 'To be able to book, you must first <a href="%1$s">login</a> or <a href="%2$s">register as new user</a>.', 'commonsbooking' ),
+                esc_url( wp_login_url( $current_url ) ), esc_url( wp_registration_url() )
+            );
+            ?>
+            </div> 
             <?php } ?>
-            </div>
+            
         </form>
     </div>
 <?php } else {
