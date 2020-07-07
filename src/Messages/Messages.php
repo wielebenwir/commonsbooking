@@ -100,7 +100,7 @@ class Messages
     public function add_bcc($adress)
     {
         if ( ! in_array($adress, $this->headers)) { // prevent double emails, e.g. if admin=item owner
-            $this->headers[] = sprintf("CC: %s", sanitize_email($adress));
+            $this->headers[] = sprintf("BCC:%s", sanitize_email($adress));
         }
     }
 

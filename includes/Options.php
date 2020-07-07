@@ -134,8 +134,6 @@ $options_array = array(
         'id' => 'emailtemplates',
         'desc' => '',
         'fields' => array(
-          // TODO: old commons-booking_mail_registration_subject?
-          // TODO: old commons-booking_mail_registration_body?
           array(
             'name' => __( 'Mail-Header from E-Mail', 'commonsbooking' ),
             'desc' => __('E-Mail that will be shown as sender in generated emails', 'commonsbooking'),
@@ -150,26 +148,26 @@ $options_array = array(
             'type' => 'text',
             //'default' => __( '', 'commonsbooking' ),
           ),
-          array(
-            'name' => __( 'Booking pending email subject', 'commonsbooking' ),
-            'desc' => __('description', 'commonsbooking'),
-            'id' => 'emailtemplates_mail-booking-pending-subject',
-            'type' => 'text',
-            'default' => __( 'Pending booking', 'commonsbooking' ),
-          ),
-          array(
-            'name' => __( 'Booking pending email body', 'commonsbooking' ),
-            'desc' => __('description', 'commonsbooking'),
-            'id' => 'emailtemplates_mail-booking-pending-body',
-            'type' => 'textarea',
-            'default' => __( 'Pending booking of {{item-name}} at {{location-name}}.', 'commonsbooking' ),
-          ),
+          // array(
+          //   'name' => __( 'Booking pending email subject', 'commonsbooking' ),
+          //   'desc' => __('description', 'commonsbooking'),
+          //   'id' => 'emailtemplates_mail-booking-pending-subject',
+          //   'type' => 'text',
+          //   'default' => __( 'Pending booking', 'commonsbooking' ),
+          // ),
+          // array(
+          //   'name' => __( 'Booking pending email body', 'commonsbooking' ),
+          //   'desc' => __('description', 'commonsbooking'),
+          //   'id' => 'emailtemplates_mail-booking-pending-body',
+          //   'type' => 'textarea',
+          //   'default' => __( 'Pending booking of {{item-name}} at {{location-name}}.', 'commonsbooking' ),
+          // ),
           array(
             'name' => __( 'Booking confirmed email subject', 'commonsbooking' ),
             'id' => 'emailtemplates_mail-booking-confirmed-subject',
             'cb1_legacy_id' => 'commons-booking-settings-mail:commons-booking_mail_confirmation_subject',
             'type' => 'text',
-            'default' => __( 'Your booking {{item_name}}.', 'commonsbooking' ),
+            'default' => __( 'Your booking {{item:name}} at {{location:name}}', 'commonsbooking' ),
           ),
           array(
             'name' => __( 'Booking confirmed email body', 'commonsbooking' ),
@@ -177,22 +175,22 @@ $options_array = array(
             'cb1_legacy_id' => 'commons-booking-settings-mail:commons-booking_mail_confirmation_body',
             'type' => 'textarea',
             'default' => __( '
-            <h2>Hi {{user-first_name}},</h2>
-            thank you for booking {{item:name}}.
-            
-            <b>Pick up information</b>
-            <p>Pick up {{item_name}} at {{location-name}}.</p>
-            
-            <p>Pickup date an time:</b>
-            <b>{{booking:pickup_datetime}}</b></p>
-            {{location:pickupinstructions}}
-            
-            <p>Location address:</p>
-            {{location:name}}<br>
-            {{location:address_complete}}<br>
-            {{location:contact}}<br>
+            Hi {{user:first_name}},<br>
+            <p>thank you for booking {{item:name}} {{booking:booking_timeframe_date}}.
             </p>
             
+            Pick up date and time:<br>
+            <b>{{booking:pickup_datetime}}</b>
+            {{location:pickupinstructions}}
+            
+            <br><br>
+            
+            Return date and time:<br>
+            <b>{{booking:return_datetime}}</b>
+            <br><br>
+            <b>Location address</b><br>
+            {{location:location_address}}
+            {{location:location_contact}}
             
             <p>Click here to see or cancel your booking: {{booking:booking_link}}.</p><br>
             <b>Notice:</b> You need to be logged in to see your booking. <br>
@@ -210,7 +208,7 @@ $options_array = array(
             'name' => __( 'Booking cancelled email subject', 'commonsbooking' ),
             'id' => 'emailtemplates_mail-booking-cancelled-subject',
             'type' => 'text',
-            'default' => __( 'cancelled booking.', 'commonsbooking' ),
+            'default' => __( 'Booking cancelled: {{item:name}} at {{location:name}}', 'commonsbooking' ),
           ),
           array(
             'name' => __( 'Booking cancelled email body', 'commonsbooking' ),
