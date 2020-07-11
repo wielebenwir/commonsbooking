@@ -75,10 +75,8 @@ class Booking extends CustomPost
             date(CB::getInternalDateFormat(), self::get_meta('repetition-start'))
         );
 
-        if(count($response) == 1) {
+        if(count($response)) {
             return array_shift($response);
-        } else {
-            throw new \Exception("more than one timeframes found");
         }
     }
 
