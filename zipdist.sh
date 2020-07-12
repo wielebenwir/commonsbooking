@@ -1,2 +1,2 @@
 #!/bin/sh
-zip -r commonsbooking .
+git archive -o commonsbooking.zip HEAD
