@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         "lang": 'de-DE',
         "numberOfMonths": numberOfMonths,
         "numberOfColumns": numberOfColumns,
+        "moveByOneMonth": true,
         "singleMode": false,
         "showWeekNumbers": false,
         "autoApply": true,
