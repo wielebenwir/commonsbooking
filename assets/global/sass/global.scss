@@ -9,31 +9,31 @@
  */
 
 /* Lib: reset.css */
-@import "lib/reset";
+@import "lib/_reset";
 
 /* Lib: animate.css */
-@import "lib/animate";
+@import "lib/_animate";
 
 /* Variables: colors, widths, padding */
-@import "partials/variables";
+@import "partials/_variables";
 
 /* Mixins */
-@import "partials/mixins";
+@import "partials/_mixins";
 
 /* Extends */
-@import "partials/extends";
+@import "partials/_extends";
 
 /* Elements */
-@import "partials/base";
+@import "partials/_base";
 
 /* Calendar styles */
-@import "partials/calendar";
+@import "partials/_calendar";
 
 /* Calendar styles */
-@import "partials/periods";
+@import "partials/_periods";
 
 /* Map styles */
-@import "partials/map";
+@import "partials/_map";
 
 /* Debug only */
-@import "partials/debug";
+@import "partials/_debug";
