@@ -31,10 +31,13 @@ class Timeframe extends CustomPostType
         'repetition-end'    => "End date"
     ];
 
-    public static $multiDayFrames = [
-        self::BOOKING_ID,
-        self::BOOKING_CANCELED_ID,
-        self::REPAIR_ID
+    /**
+     * Timeframetypes which cannot be "overbooked"
+     * @var int[]
+     */
+    public static $multiDayBlockingFrames = [
+        self::REPAIR_ID,
+        self::BOOKING_ID
     ];
 
     /**
@@ -404,6 +407,16 @@ class Timeframe extends CustomPostType
         ];
 
         return in_array(get_post_meta($timeframe->ID, 'type', true), $lockedTypes);
+    }
+
+    /**
+     * Returns true if frame is overbookable.
+     * @param \WP_Post $timeframe
+     *
+     * @return bool
+     */
+    public static function isOverBookable(\WP_Post $timeframe) {
+        return !in_array(get_post_meta($timeframe->ID, 'type', true), self::$multiDayBlockingFrames);
     }
 
     /**

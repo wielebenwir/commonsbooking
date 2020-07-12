@@ -16,26 +16,6 @@
          * Hides set-elements.
          * @param set
          */
-        const hideFields = function (set) {
-            $.each(set, function () {
-                $(this).hide();
-            });
-        };
-
-        /**
-         * Show set-elements.
-         * @param set
-         */
-        const showFields = function (set) {
-            $.each(set, function () {
-                $(this).show();
-            });
-        };
-
-        /**
-         * Hides set-elements.
-         * @param set
-         */
         const hideFieldset = function (set) {
             $.each(set, function () {
                 $(this).parents('.cmb-row').hide();
@@ -65,7 +45,7 @@
             const repetitionEndInput = $('#repetition-end');
             const fullDayInput = $('#full-day');
             const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
-            const noRepSet = [fullDayInput, gridInput, repetitionStartInput, repetitionEndInput];
+            const noRepSet = [fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput];
             const repTimeFieldsSet = [gridInput, startTimeInput, endTimeInput];
 
             /**
