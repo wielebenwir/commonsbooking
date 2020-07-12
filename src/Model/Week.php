@@ -6,8 +6,13 @@ class Week
 {
 
     /**
+     * @var integer
+     */
+    protected $year;
+
+    /**
      * Week of year.
-     * @var
+     * @var integer
      */
     protected $week;
 
@@ -20,13 +25,16 @@ class Week
     /**
      * Week constructor.
      *
+     * @param null $year
      * @param $week
-     * @param $locations
-     * @param $items
-     * @param $types
+     * @param array $locations
+     * @param array $items
+     * @param array $types
      */
-    public function __construct($week, $locations = [], $items = [], $types = [])
+    public function __construct($year = null, $week, $locations = [], $items = [], $types = [])
     {
+        if($year === null) $year = date('Y');
+        $this->year = $year;
         $this->week = $week;
         $this->locations = $locations;
         $this->items = $items;
@@ -40,7 +48,7 @@ class Week
      */
     public function getDays() {
         $dto = new \DateTime();
-        $dto->setISODate(date('Y'), $this->getWeek());
+        $dto->setISODate($this->getYear(), $this->getWeek());
 
         $days = [];
         for($i = 0; $i < 7; $i++) {
@@ -49,6 +57,14 @@ class Week
         }
 
         return $days;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getYear()
+    {
+        return $this->year;
     }
 
     /**
