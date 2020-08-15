@@ -20,7 +20,7 @@ if ( !function_exists( 'cb_get_template_part' ) ) {
     function cb_get_template_part( $slug, $name = '', $include = true, $before = '', $after = '' ) {
       $template = '';
       $plugin_slug = CB_PLUGIN_SLUG . '/';
-      $path = WP_PLUGIN_DIR . '/'. $plugin_slug . 'templates/';
+      $path = CB_PLUGIN_DIR . 'templates/';
 
       // Add CB content wrapper
       $before_html  = ! empty( $before )  ? $before : '<div class="cb-content">';  
