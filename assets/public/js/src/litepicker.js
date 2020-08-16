@@ -2,8 +2,9 @@
  * @TODO: Reduce redundancy, use state machine
  */
 
-document.addEventListener("DOMContentLoaded", function(event) {
-    // Updates Time-selects so that no wrong time ranges can be selected
+//document.addEventListener("DOMContentLoaded",);
+window.onload = function(event) {
+        // Updates Time-selects so that no wrong time ranges can be selected
     const initSelectHandler = () => {
         const bookingForm = $('#booking-form');
         const startSelect = bookingForm.find('select[name=repetition-start]');
@@ -33,8 +34,22 @@ document.addEventListener("DOMContentLoaded", function(event) {
     };
 
     // init datepicker
-    const numberOfMonths = 2;
-    const numberOfColumns = 2;
+    let numberOfMonths = 2;
+    let numberOfColumns = 2;
+
+    switch (screen.orientation.angle) {
+        case -90:
+        case 90:
+            numberOfMonths = 2;
+            numberOfColumns = 2;
+            break;
+
+        default:
+            numberOfMonths = 1;
+            numberOfColumns = 1;
+            break;
+    }
+
     let picker = new Litepicker({
         "element": document.getElementById('litepicker'),
         "inlineMode": true,
@@ -162,4 +177,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
             }
         )
     }
-});
+}

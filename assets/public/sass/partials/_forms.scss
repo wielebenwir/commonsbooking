@@ -18,7 +18,7 @@
 }
 
 #booking-form {
-    width: 532px; /* do not extend litepicker width */
+    width: 100%; /* do not extend litepicker width */
     input {
     @extend .cb-button;
   }
