@@ -198,7 +198,7 @@ class Location extends View
         if ($post == null) {
             global $post;
         }
-        $location = $post->ID;
+        $location = $post;
         $args = [
             'post' => $post,
             'wp_nonce' => Timeframe::getWPNonceField(),
@@ -209,7 +209,7 @@ class Location extends View
         ];
 
         $item = isset($_GET['item']) && $_GET['item'] != "" ? $_GET['item'] : false;
-        $items = \CommonsBooking\Repository\Item::getByLocation($location);
+        $items = \CommonsBooking\Repository\Item::getByLocation($location->ID);
 
         // If theres no item selected, we'll show all available.
         if (!$item) {
