@@ -102,7 +102,8 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify-es');
 	// Register tasks
 	grunt.registerTask('default', [
-		'compass:admin', 'compass:public'
+		'compass:admin', 'compass:public','uglify:dev',
+		'uglify:dist'
 	]);
 	grunt.registerTask('dev', [
 		'compass:admin',
