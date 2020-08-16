@@ -1,11 +1,11 @@
 <div class="cb-box">
-        <div style="float:left; margin-right: 15px;">
-            <?php echo get_the_post_thumbnail( $templateData['item']->ID, 'thumbnail' ); ?>
-        </div>
-        <div>
+    <div style="float:left; margin-right: 15px;">
+        <?php echo get_the_post_thumbnail( $templateData['item']->ID, 'thumbnail' ); ?>
+    </div>
+    <div>
         <h3>
-            <a href="<?php echo get_permalink( $templateData['item']->ID); ?>"><?php echo $templateData['item']->post_title; ?></a></h3>
-        </div>
+            <a href="<?php echo get_permalink( $templateData['item']->ID); ?>"><?php echo $templateData['item']->post_title; ?></a>
+        </h3>
     </div>
 </div>
 <div class="cb-box">
