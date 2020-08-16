@@ -7,8 +7,8 @@ node_modules
 src/Wordpress/.DS_Store
 src/.DS_Store
 assets/.DS_Store
-assets/admin/css
-assets/global/css
-assets/public/css
-vendor
+#assets/admin/css
+#assets/global/css
+#assets/public/css
+#vendor
 views/.DS_Store
