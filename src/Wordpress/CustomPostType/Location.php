@@ -2,6 +2,9 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Plugin;
+use CommonsBooking\Repository\UserRepository;
+
 class Location extends CustomPostType
 {
 
@@ -17,6 +20,39 @@ class Location extends CustomPostType
 
         // Listing of items for location
         add_shortcode('cb_items', array(\CommonsBooking\View\Item::class, 'listItems'));
+
+        // Setting role permissions
+        add_action('admin_init',array($this, 'addRoleCaps'),999);
+    }
+
+    public function addRoleCaps() {
+        // Add the roles you'd like to administer the custom post types
+        $roles = array(Plugin::$LOCATION_ADMIN_ID, 'administrator');
+
+        // Loop through each role and assign capabilities
+        foreach($roles as $the_role) {
+            $role = get_role($the_role);
+
+            $role->add_cap( 'read_' . self::$postType);
+            $role->add_cap( 'manage_' . CB_PLUGIN_SLUG . '_' . self::$postType);
+            $role->add_cap( 'read_private_' . self::$postType . 's' );
+
+            $role->add_cap( 'edit_' . self::$postType);
+            $role->add_cap( 'edit_' . self::$postType . 's');
+            $role->add_cap( 'edit_others_' . self::$postType . 's');
+            $role->add_cap( 'edit_private_' . self::$postType . 's');
+            $role->add_cap( 'edit_published_' . self::$postType . 's');
+
+            $role->add_cap( 'publish_' . self::$postType . 's' );
+
+            $role->add_cap( 'delete_' . self::$postType );
+            $role->add_cap( 'delete_' . self::$postType . 's' );
+            $role->add_cap( 'delete_private_' . self::$postType . 's' );
+            $role->add_cap( 'delete_published_' . self::$postType . 's' );
+            $role->add_cap( 'delete_others_' . self::$postType . 's' );
+
+            $role->add_cap( 'create_' . self::$postType . 's' );
+        }
     }
 
     public function getTemplate($content)
@@ -83,7 +119,9 @@ class Location extends CustomPostType
 
             // Hier können Berechtigungen in einem Array gesetzt werden
             // oder die standart Werte post und page in form eines Strings gesetzt werden
-            'capability_type'     => 'post',
+            'capability_type'     => array(self::$postType,self::$postType . 's'),
+
+            'map_meta_cap'        => true,
 
             // Soll es im Frontend abrufbar sein?
             'publicly_queryable'  => true,
@@ -105,7 +143,7 @@ class Location extends CustomPostType
 
             // Slug unseres Post Types für die redirects
             // dieser Wert wird später in der URL stehen
-            'rewrite'             => array('slug' => self::getPostType()),
+            'rewrite'             => array('slug' => self::getPostType())
         );
     }
 
@@ -113,7 +151,6 @@ class Location extends CustomPostType
     {
         return new \CommonsBooking\View\Location();
     }
-
 
     /**
      * Creates MetaBoxes for Custom Post Type Location using CMB2
@@ -123,10 +160,7 @@ class Location extends CustomPostType
      */
     public function registerMetabox()
     {
-
-        /**
-         * Initiate the metabox Adress
-         */
+        // Initiate the metabox Adress
         $cmb = new_cmb2_box(array(
             'id'           => CB_METABOX_PREFIX . 'location_adress',
             'title'        => __('Address', 'commonsbooking'),
@@ -190,9 +224,7 @@ class Location extends CustomPostType
             // 'repeatable'      => true,
         ));
 
-        /**
-         * Initiate the metabox Information
-         */
+        // Initiate the metabox Information
         $cmb = new_cmb2_box(array(
             'id'           => CB_METABOX_PREFIX . 'location_info',
             'title'        => __('General Location information', 'commonsbooking'),
@@ -217,7 +249,6 @@ class Location extends CustomPostType
             // 'repeatable'      => true,
         ));
 
-
         // short description
         $cmb->add_field(array(
             'name'       => __('Shortdescription', 'commonsbooking'),
@@ -230,7 +261,6 @@ class Location extends CustomPostType
             // 'on_front'        => false, // Optionally designate a field to wp-admin only
             // 'repeatable'      => true,
         ));
-
 
         // pickup description
         $cmb->add_field(array(
@@ -258,7 +288,23 @@ class Location extends CustomPostType
             // 'repeatable'      => true,
         ));
 
+        // Location admin selection
+        $users = UserRepository::getCBLocationAdmins();
+        $userOptions = [];
+        foreach ($users as $user) {
+            $userOptions[$user->ID] = $user->get('user_nicename') . " (" .$user->last_name . " " . $user->last_name . ")";
+        }
 
+        $cmb->add_field( array(
+            'name'       => __('Location Admin(s)', 'commonsbooking'),
+            'desc'       => __('Location Admin(s) field description (optional)', 'commonsbooking'),
+            'id'      => CB_METABOX_PREFIX . 'location_admins',
+            'type'    => 'pw_multiselect',
+            'options' => $userOptions,
+            'attributes' => array(
+                'placeholder' => __('Select location admins.', 'commonsbooking')
+            ),
+        ) );
     }
 
 }

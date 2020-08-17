@@ -27,7 +27,6 @@ function commonsbooking_admin()
     #wp_enqueue_script('cb-scripts-jquery', 'https://cdn.jsdelivr.net/jquery/latest/jquery.min.js', array(), '1.0.0', true);
     wp_enqueue_script('cb-scripts-admin', plugin_dir_url(__FILE__) . 'assets/admin/js/admin.js', array());
 }
-
 add_action('admin_enqueue_scripts', 'commonsbooking_admin');
 
 function commonsbooking_public()
@@ -52,8 +51,8 @@ function commonsbooking_public()
         'nonce'    => wp_create_nonce('calendar_data')
     ));
 }
-
 add_action('wp_enqueue_scripts', 'commonsbooking_public');
+
 add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 'get_calendar_data'));
 add_action('wp_ajax_nopriv_calendar_data', array(\CommonsBooking\View\Location::class, 'get_calendar_data'));
 
@@ -66,6 +65,7 @@ load_plugin_textdomain('commonsbooking', false,
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/cmb2/cmb2/init.php';
+require __DIR__ . '/vendor/mustardBees/cmb-field-select2/cmb-field-select2.php';
 
 // Redirect to startpage if user is not allowed to edit timeframe
 function cb_timeframe_redirect()
@@ -87,7 +87,6 @@ function cb_timeframe_redirect()
     }
 
 }
-
 add_action('template_redirect', 'cb_timeframe_redirect');
 
 $cbPlugin = new \CommonsBooking\Plugin();

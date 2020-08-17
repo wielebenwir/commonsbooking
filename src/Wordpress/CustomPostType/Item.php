@@ -2,6 +2,9 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Plugin;
+use CommonsBooking\Repository\UserRepository;
+
 class Item extends CustomPostType
 {
 
@@ -13,9 +16,42 @@ class Item extends CustomPostType
     public function __construct()
     {
         add_filter('the_content', array($this, 'getTemplate'));
+        add_action('cmb2_admin_init', array($this, 'registerMetabox'));
 
         // Listing of locations for item
         add_shortcode('cb_locations', array(\CommonsBooking\View\Location::class, 'listLocations'));
+
+        // Setting role permissions
+        add_action('admin_init',array($this, 'addRoleCaps'),999);
+    }
+
+    public function addRoleCaps() {
+        // Add the roles you'd like to administer the custom post types
+        $roles = array(Plugin::$ITEM_ADMIN_ID, 'administrator');
+
+        // Loop through each role and assign capabilities
+        foreach($roles as $the_role) {
+            $role = get_role($the_role);
+            $role->add_cap( 'read_' . self::$postType);
+            $role->add_cap( 'manage_' . CB_PLUGIN_SLUG . '_' . self::$postType);
+            $role->add_cap( 'read_private_' . self::$postType . 's' );
+
+            $role->add_cap( 'edit_' . self::$postType );
+            $role->add_cap( 'edit_' . self::$postType . 's' );
+            $role->add_cap( 'edit_others_' . self::$postType . 's' );
+            $role->add_cap( 'edit_private_' . self::$postType . 's' );
+            $role->add_cap( 'edit_published_' . self::$postType . 's' );
+
+            $role->add_cap( 'publish_' . self::$postType . 's' );
+
+            $role->add_cap( 'delete_' . self::$postType );
+            $role->add_cap( 'delete_' . self::$postType . 's' );
+            $role->add_cap( 'delete_private_' . self::$postType . 's' );
+            $role->add_cap( 'delete_published_' . self::$postType . 's' );
+            $role->add_cap( 'delete_others_' . self::$postType . 's', false );
+
+            $role->add_cap( 'create_' . self::$postType . 's');
+        }
     }
 
     public function getArgs()
@@ -70,7 +106,9 @@ class Item extends CustomPostType
 
             // Hier können Berechtigungen in einem Array gesetzt werden
             // oder die standart Werte post und page in form eines Strings gesetzt werden
-            'capability_type'     => 'post',
+            'capability_type'     => array(self::$postType,self::$postType . 's'),
+
+            'map_meta_cap'        => true,
 
             // Soll es im Frontend abrufbar sein?
             'publicly_queryable'  => true,
@@ -103,6 +141,44 @@ class Item extends CustomPostType
         } // if archive... 
 
         return $cb_content . $content;
+    }
+
+    /**
+     * Creates MetaBoxes for Custom Post Type Location using CMB2
+     * more information on usage: https://cmb2.io/
+     *
+     * @return void
+     */
+    public function registerMetabox()
+    {
+        // Initiate the metabox Adress
+        $cmb = new_cmb2_box(array(
+            'id'           => CB_METABOX_PREFIX . 'item_info',
+            'title'        => __('Item Info', 'commonsbooking'),
+            'object_types' => array(self::$postType), // Post type
+            'context'      => 'normal',
+            'priority'     => 'high',
+            'show_names'   => true, // Show field names on the left
+            // 'cmb_styles' => false, // false to disable the CMB stylesheet
+            // 'closed'     => true, // Keep the metabox closed by default
+        ));
+
+        $users = UserRepository::getCBItemAdmins();
+        $userOptions = [];
+        foreach ($users as $user) {
+            $userOptions[$user->ID] = $user->get('user_nicename') . " (" .$user->last_name . " " . $user->last_name . ")";
+        }
+
+        $cmb->add_field( array(
+            'name'       => __('Item Admin(s)', 'commonsbooking'),
+            'desc'       => __('Item Admin(s) field description (optional)', 'commonsbooking'),
+            'id'      => CB_METABOX_PREFIX . 'item_admins',
+            'type'    => 'pw_multiselect',
+            'options' => $userOptions,
+            'attributes' => array(
+                'placeholder' => __('Select item admins.', 'commonsbooking')
+            ),
+        ) );
     }
 
     public static function getView()

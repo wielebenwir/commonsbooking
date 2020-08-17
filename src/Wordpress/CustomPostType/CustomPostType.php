@@ -27,7 +27,7 @@ abstract class CustomPostType
             'cb-dashboard',
             $this->getArgs()['labels']['name'],
             $this->getArgs()['labels']['name'],
-            'manage_options',
+            'manage_' . CB_PLUGIN_SLUG,
             'edit.php?post_type=' . static::getPostType(),
             '',
             $this->menuPosition ?: null
