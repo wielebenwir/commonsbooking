@@ -240,7 +240,7 @@ class Day
         if($startTimeString) {
             $startTime = new \DateTime();
             $startTime->setTimestamp(strtotime($startTimeString));
-            $startDate->setTime($startTime->format('H'), $startTime->format('m'));
+            $startDate->setTime($startTime->format('H'), $startTime->format('i'));
         }
         return $startDate;
     }
@@ -272,7 +272,7 @@ class Day
         if($endTimeString) {
             $endTime = new \DateTime();
             $endTime->setTimestamp(strtotime($endTimeString));
-            $endDate->setTime($endTime->format('H'), $endTime->format('m'));
+            $endDate->setTime($endTime->format('H'), $endTime->format('i'));
         }
         return $endDate;
     }
