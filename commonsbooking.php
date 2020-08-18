@@ -89,5 +89,27 @@ function cb_timeframe_redirect()
 }
 add_action('template_redirect', 'cb_timeframe_redirect');
 
+// Listing restriction for item and location admins
+add_filter('the_posts', function($posts, $query) {
+    if (!is_admin()) {
+        return;
+    }
+    if($query->is_main_query()) {
+        $current_user = wp_get_current_user();
+        foreach ($posts as $key => $post) {
+            // post-related admins
+            $admins = get_post_meta($post->ID, '_'. $post->post_type .'_admins', TRUE);
+
+            // show only if current user is author or in admin list
+            if((is_array($admins) && !in_array($current_user->ID, $admins)) && $current_user->ID != $post->post_author) {
+                unset($posts[$key]);
+            }
+
+        }
+    }
+    return $posts;
+}, 10, 2);
+
+
 $cbPlugin = new \CommonsBooking\Plugin();
 $cbPlugin->init();
