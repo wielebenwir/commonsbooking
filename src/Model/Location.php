@@ -83,7 +83,7 @@ class Location extends CustomPost
         if ( !empty( CB::get( 'location', CB_METABOX_PREFIX . 'location_contact') ) AND $post->post_status == "confirmed" ) {
             return nl2br(CB::get('location',  CB_METABOX_PREFIX . 'location_contact'));
         } else {
-            return __('Location contact will be shown afer booking confirmation', 'commonsbooking');
+            return __('Location contact will be shown after booking confirmation', 'commonsbooking');
         }
     }
 }

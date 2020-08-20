@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2020-08-20T11:50:36+00:00\n"
-"PO-Revision-Date: 2020-08-20 13:52+0200\n"
+"POT-Creation-Date: 2020-08-20T12:09:56+00:00\n"
+"PO-Revision-Date: 2020-08-20 14:11+0200\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -279,8 +279,8 @@ msgstr ""
 "Abholung oder Rückgabe hast:"
 
 #: src/Model/Location.php:86
-msgid "Location contact will be shown afer booking confirmation"
-msgstr "Kontaktinformationen werden nach der Buchungsbestätigung angezeigt"
+msgid "Location contact will be shown after booking confirmation"
+msgstr "Kontaktinformationen werden nach Bestätigung der Buchung angezeigt"
 
 #: src/Plugin.php:167
 msgid "Cancelled"
