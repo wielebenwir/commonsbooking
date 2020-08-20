@@ -94,19 +94,37 @@ add_filter('the_posts', function($posts, $query) {
     if (!is_admin()) {
         return;
     }
+
+
     if($query->is_main_query()) {
         $current_user = wp_get_current_user();
+
         foreach ($posts as $key => $post) {
-            // post-related admins
+            // post-related admins (returns string if single result and array if multiple results)
             $admins = get_post_meta($post->ID, '_'. $post->post_type .'_admins', TRUE);
 
-            // show only if current user is author or in admin list
-            if((is_array($admins) && !in_array($current_user->ID, $admins)) && $current_user->ID != $post->post_author) {
-                unset($posts[$key]);
+
+            // if result = single result
+            if (is_string($admins)) {
+                if($current_user->ID != $admins AND $current_user->ID != $post->post_author) {
+                    unset($posts[$key]);
+                }
+            }
+
+            // if is array
+            if (is_array($admins)) {
+                foreach ($admins as $adminkey => $admin_id) {
+                    echo $current_user->ID . "->" . $admin_id;
+                    if($current_user->ID != $admin_id AND $current_user->ID != $post->post_author) {
+                        unset($posts[$key]);
+                    }
+                }
             }
 
         }
+
     }
+
     return $posts;
 }, 10, 2);
 
