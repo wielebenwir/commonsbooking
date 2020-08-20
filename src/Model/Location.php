@@ -69,4 +69,21 @@ class Location extends CustomPost
         return implode('<br>', $contact);
 
     }
+
+
+     
+    /**
+     * Returns location contact info on booking page if booking is confirmed
+     * @return string
+     */
+    public function location_contact_bookingpage()
+    {   
+        global $post;
+        
+        if ( !empty( CB::get( 'location', CB_METABOX_PREFIX . 'location_contact') ) AND $post->post_status == "confirmed" ) {
+            return nl2br(CB::get('location',  CB_METABOX_PREFIX . 'location_contact'));
+        } else {
+            return __('Location contact will be shown afer booking confirmation', 'commonsbooking');
+        }
+    }
 }

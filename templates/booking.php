@@ -8,6 +8,7 @@ use CommonsBooking\Model\Booking;
     // Beispiel um Infos bzgl. Bucbarem Timeframe zu finden.
      $booking = new \CommonsBooking\Model\Booking($post->ID);
      $timeframe = $booking->getBookableTimeFrame();
+
 ?>
 
 <div class="cb-notice">
@@ -66,7 +67,7 @@ use CommonsBooking\Model\Booking;
         <?php if (!empty(CB::get( 'location', CB_METABOX_PREFIX . 'location_contact'))) { ?>
         <div class="cb-pickup-info col-30-70">
             <div><?php echo __('Location contact', 'commonsbooking'); ?></div>
-            <div><?php echo nl2br(CB::get( 'location', CB_METABOX_PREFIX . 'location_contact')) ?></div>
+            <div><?php echo CB::get( 'location', 'location_contact_bookingpage') ?></div>
         </div><!-- .cb-pickup-info -->
          <?php } // end if location contact ?>
 
