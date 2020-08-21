@@ -95,15 +95,35 @@ add_filter('the_posts', function($posts, $query) {
         return;
     }
 
-    if($query->is_main_query()) {
+    // Post type of current list
+    $postType = $query->query['post_type'];
+
+    // Check if it is the main query and one of our custom post types
+    if($query->is_main_query() && in_array($postType, \CommonsBooking\Plugin::getCustomPostTypesLabel())) {
         $current_user = wp_get_current_user();
 
         foreach ($posts as $key => $post) {
-            // post-related admins (returns string if single result and array if multiple results)
-            $admins = get_post_meta($post->ID, '_'. $post->post_type .'_admins', TRUE);
-
             // check if current user is author or at least assigned to post
             if($current_user->ID != $post->post_author) {
+                $admins = [];
+
+                // Get allowed admins for timeframe listing
+                if ( $postType == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType) {
+                    // Get assigned location
+                    $locationId = get_post_meta($post->ID, 'location-id', TRUE);
+                    $admins = get_post_meta($locationId, '_cb_location_admins', TRUE);
+                }
+
+                // Get allowed admins for Location / Item Listing
+                if ( in_array($postType, [
+                        \CommonsBooking\Wordpress\CustomPostType\Location::$postType,
+                        \CommonsBooking\Wordpress\CustomPostType\Item::$postType
+                    ])
+                ) {
+                    // post-related admins (returns string if single result and array if multiple results)
+                    $admins = get_post_meta($post->ID, '_'. $post->post_type .'_admins', TRUE);
+                }
+
                 if (
                     (is_string($admins) && $current_user->ID != $admins) ||
                     is_array($admins) && !in_array($current_user->ID, $admins)
@@ -112,7 +132,6 @@ add_filter('the_posts', function($posts, $query) {
                 }
             }
         }
-
     }
 
     return $posts;

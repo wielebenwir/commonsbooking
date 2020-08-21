@@ -274,7 +274,7 @@ class Timeframe extends CustomPostType
                 self::getTypes()
             ),
             new Field("location-id", __("Location", 'commonsbooking'), "", "select", "edit_posts",
-                Location::getAllPosts()),
+                \CommonsBooking\Repository\Location::getByCurrentUser()),
             new Field("item-id", __("Item", 'commonsbooking'), "", "select", "edit_posts", Item::getAllPosts()),
             new Field("title-timeframe-config", __("Configure timeframe", 'commonsbooking'), "", "title", "edit_posts"),
             new Field("timeframe-repetition", __('Timeframe Repetition', 'commonsbooking'), "", "select", "edit_pages",

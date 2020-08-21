@@ -260,7 +260,7 @@ abstract class CustomPostType
         return new \WP_Query($args);
     }
 
-    public static function getAllPosts($order = 'ASC')
+    public static function getAllPosts()
     {
         /** @var \WP_Query $query */
         $query = static::getAllPostsQuery();
@@ -271,7 +271,6 @@ abstract class CustomPostType
 
         return $posts;
     }
-
 
     /**
      * generates a random slug for use as post_name in timeframes/booking to prevent easy access to bookings via get parameters
