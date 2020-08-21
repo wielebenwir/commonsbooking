@@ -95,7 +95,6 @@ add_filter('the_posts', function($posts, $query) {
         return;
     }
 
-
     if($query->is_main_query()) {
         $current_user = wp_get_current_user();
 
@@ -103,24 +102,15 @@ add_filter('the_posts', function($posts, $query) {
             // post-related admins (returns string if single result and array if multiple results)
             $admins = get_post_meta($post->ID, '_'. $post->post_type .'_admins', TRUE);
 
-
-            // if result = single result
-            if (is_string($admins)) {
-                if($current_user->ID != $admins AND $current_user->ID != $post->post_author) {
+            // check if current user is author or at least assigned to post
+            if($current_user->ID != $post->post_author) {
+                if (
+                    (is_string($admins) && $current_user->ID != $admins) ||
+                    is_array($admins) && !in_array($current_user->ID, $admins)
+                ) {
                     unset($posts[$key]);
                 }
             }
-
-            // if is array
-            if (is_array($admins)) {
-                foreach ($admins as $adminkey => $admin_id) {
-                    echo $current_user->ID . "->" . $admin_id;
-                    if($current_user->ID != $admin_id AND $current_user->ID != $post->post_author) {
-                        unset($posts[$key]);
-                    }
-                }
-            }
-
         }
 
     }
