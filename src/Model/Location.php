@@ -18,11 +18,18 @@ class Location extends CustomPost
     }
 
     /**
-     * Returns location infos.
-     * @return string
-     */    
+     * Returns Locations, bookable in connection with item.
+     * @param $itemId
+     *
+     * @return array
+     */
+    public function getBookableTimeframesByItem($itemId)
+    {
+        return Timeframe::get([$this->ID], [$itemId], [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID]);
+    }
+
     /**
-     * location_address
+     * Returns location infos.
      *
      * @return void
      */
@@ -39,6 +46,7 @@ class Location extends CustomPost
         return implode('<br>', $location);
 
     }
+
     /**
      * 
      * @return string
@@ -70,8 +78,6 @@ class Location extends CustomPost
 
     }
 
-
-     
     /**
      * Returns location contact info on booking page if booking is confirmed
      * @return string
