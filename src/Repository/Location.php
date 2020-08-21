@@ -74,10 +74,12 @@ class Location extends PostRepository
      *
      * @param $itemId
      *
+     * @param bool $bookable
+     *
      * @return array
      * @throws \Exception
      */
-    public static function getByItem($itemId)
+    public static function getByItem($itemId, $bookable = false)
     {
         if($itemId instanceof \WP_Post) {
             $itemId = $itemId->ID;
@@ -114,8 +116,11 @@ class Location extends PostRepository
             }
         }
 
-        foreach ($locations as &$location) {
+        foreach ($locations as $key => &$location) {
             $location = new \CommonsBooking\Model\Location($location);
+            if($bookable && !$location->getBookableTimeframesByItem($itemId)) {
+                unset($locations[$key]);
+            }
         }
 
         return $locations;
