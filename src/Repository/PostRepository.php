@@ -37,4 +37,39 @@ abstract class PostRepository
         return $post;
     }
 
+     /**
+     * Returns CB posttypes by label
+     * @param $postTypeLabel
+     * @return string
+     * @throws \Exception
+     */
+    public static function labelToPosttype($postTypeLabel) {
+
+        // 'cb_items', 'cb_locations'… 
+       switch ($postTypeLabel) {
+            case 'cb_items':
+                $postType = Item::getPostType();
+                break;
+            case 'cb_locations':
+                $postType = Location::getPostType();
+                break;
+            case 'cb_timeframes':
+            case 'cb_bookings':
+                $postType = Timeframe::getPostType();
+                break;
+            default:
+                throw new \Exception(__CLASS__ . "::" . __FUNCTION__ . ": Invalid or empty post type: " . ($args['post_type']));
+        };
+        return $postType;
+    }
+     /**
+     * Filters to Query @TODO
+     * @param $postTypeLabel
+     * @return string
+     * @throws \Exception
+     */
+    public static function filtersToQuery($filters=array()) {
+
+        return $query;
+    }
 }

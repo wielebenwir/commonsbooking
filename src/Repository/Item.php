@@ -9,18 +9,50 @@ class Item extends PostRepository
 
     /**
      * Returns all published items.
+     * @param $args
      * @return array
      * @throws \Exception
      */
-    public static function getAllPublished() {
+    public static function getAllPublished($args = array()) {
+        
         $items = [];
 
-        $args = array(
+        $defaults = array(
             'post_type' => \CommonsBooking\Wordpress\CustomPostType\Item::$postType,
             'post_status' => array('publish', 'inherit')
         );
 
-        $query = new \WP_Query($args);
+        $queryArgs = wp_parse_args($args, $defaults);
+
+        $query = new \WP_Query($queryArgs);
+
+        if ($query->have_posts()) {
+            $items = $query->get_posts();
+            foreach($items as &$item) {
+                $item = new \CommonsBooking\Model\Item($item);
+            }
+        }
+        return $items;
+    }
+
+     /**
+     * Returns an array of CB item post objects
+     * 
+     * @param $args
+     * @return array
+     * @throws \Exception
+     */
+    public static function get($args = array()) {
+        
+        // $args['post_type'] =  Item::getPostType(); // how do i get this to work????
+        $args['post_type'] =  \CommonsBooking\Wordpress\CustomPostType\Item::getPostType(); // how do i get this to work????
+             
+        $defaults = array(
+            'post_status' => array('publish', 'inherit'),
+        );
+
+        $queryArgs = wp_parse_args($args, $defaults);
+        $query = new \WP_Query($queryArgs);
 
         if ($query->have_posts()) {
             $items = $query->get_posts();
@@ -82,4 +114,31 @@ class Item extends PostRepository
         return $items;
     }
 
+    /**
+    * cb_items shortcode
+    * 
+    * A list of items with timeframes.
+    */
+    public static function shortcode($atts)
+    {
+        $itemArgs = array (
+            'post_type'    => 'cb_item'
+        );
+
+        //@TODO: parse args
+        // $atts = shortcode_atts( $args, $atts, 'cb_locations');
+        
+        $items = \CommonsBooking\Repository\Item::get($itemArgs);
+
+        
+        ob_start();
+        echo '<div class="cb-content">';
+        foreach ( $items as $item ) {           
+            setup_postdata($item); // this does not work, post is page not this sub-post
+            cb_get_template_part('shortcode', 'items', TRUE, FALSE, FALSE ); 
+        }
+        echo '</div>';
+        return ob_get_clean();
+        
+    }
 }

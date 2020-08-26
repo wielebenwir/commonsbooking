@@ -14,8 +14,8 @@ class Item extends CustomPostType
     {
         add_filter('the_content', array($this, 'getTemplate'));
 
-        // Listing of locations for item
-        add_shortcode('cb_locations', array(\CommonsBooking\View\Location::class, 'listLocations'));
+          // Listing of items for location
+        add_shortcode('cb_items', array(\CommonsBooking\Repository\Item::class, 'shortcode'));
     }
 
     public function getArgs()
