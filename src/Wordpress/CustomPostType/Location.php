@@ -15,8 +15,9 @@ class Location extends CustomPostType
         add_filter('the_content', array($this, 'getTemplate'));
         add_action('cmb2_admin_init', array($this, 'registerMetabox'));
 
-        // Listing of items for location
-        add_shortcode('cb_items', array(\CommonsBooking\View\Item::class, 'listItems'));
+        // Listing of locations
+        add_shortcode('cb_locations', array(\CommonsBooking\View\Location::class, 'shortcode'));
+
     }
 
     public function getTemplate($content)

@@ -8,6 +8,31 @@ class Location extends PostRepository
 {
 
     /**
+     * Returns an array of CB location post objects
+     * 
+     * @param $args WP Post args
+     * @return array
+     */
+    public static function get($args = array()) {
+        
+        $args['post_type'] =  \CommonsBooking\Wordpress\CustomPostType\Location::getPostType();
+             
+        $defaults = array(
+            'post_status' => array('publish', 'inherit'),
+        );
+
+        $queryArgs = wp_parse_args($args, $defaults);
+        $query = new \WP_Query($queryArgs);
+
+        if ($query->have_posts()) {
+            $locations = $query->get_posts();
+            foreach($locations as &$location) {
+                $location = new \CommonsBooking\Model\Location($location);
+            }
+        }
+        return $locations;
+    }
+    /**
      * Returns all published locations.
      * @return array
      * @throws \Exception

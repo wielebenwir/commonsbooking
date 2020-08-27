@@ -2,21 +2,17 @@
 /** 
 * Timeframe summary with location
 * 
-* Post: Timeframe
-* Use CB::get() to get data from the associacted location & item
+* WP Post properties for timeframe are available as $timeframe->property
+* Timeframe Model methods are available as $timeframe->myMethod()   
+* 
+* Model: Timeframe
 */
 
-use CommonsBooking\CB\CB;
-
-$location_permalink = CB::get('location', 'permalink');
-$location_name	  	= CB::get('location', 'name');
-$location_address   = CB::get('location', 'address');
-$button_text		    = __('Book here', 'commonsbooking');
-$dates			  	    = CB::get('timeframe', 'dates');
-
+$location       = $timeframe->getLocation();
+$button_label   = __('Book here', 'commonsbooking');
 ?>
 
-<h4 class="cb-name cb-location-name"><?php echo $location_name; ?></h4>
-<span class="cb-dates cb-timeframe-dates"><?php echo $dates; ?></span>
-<span class="cb-address cb-location-address"><?php echo $location_address; ?></span>
-<a href="<?php echo $location_permalink; ?>" class="cb-button"><?php echo $button_text; ?></a>
+<h4 class="cb-name cb-location-name"><?php echo $location->post_title; ?></h4>
+<span class="cb-dates cb-timeframe-dates"><?php echo $timeframe->residence(); ?></span>
+<span class="cb-address cb-location-address"><?php echo $location->address(); ?></span>
+<a href="<?php echo get_the_permalink($location->ID); ?>" class="cb-button"><?php echo $button_label; ?></a>

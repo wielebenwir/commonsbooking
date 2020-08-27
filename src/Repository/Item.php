@@ -38,14 +38,13 @@ class Item extends PostRepository
      /**
      * Returns an array of CB item post objects
      * 
-     * @param $args
+     * 
+     * @param $args WP Post args
      * @return array
-     * @throws \Exception
      */
     public static function get($args = array()) {
         
-        // $args['post_type'] =  Item::getPostType(); // how do i get this to work????
-        $args['post_type'] =  \CommonsBooking\Wordpress\CustomPostType\Item::getPostType(); // how do i get this to work????
+        $args['post_type'] =  \CommonsBooking\Wordpress\CustomPostType\Item::getPostType();
              
         $defaults = array(
             'post_status' => array('publish', 'inherit'),
@@ -114,31 +113,4 @@ class Item extends PostRepository
         return $items;
     }
 
-    /**
-    * cb_items shortcode
-    * 
-    * A list of items with timeframes.
-    */
-    public static function shortcode($atts)
-    {
-        $itemArgs = array (
-            'post_type'    => 'cb_item'
-        );
-
-        //@TODO: parse args
-        // $atts = shortcode_atts( $args, $atts, 'cb_locations');
-        
-        $items = \CommonsBooking\Repository\Item::get($itemArgs);
-
-        
-        ob_start();
-        echo '<div class="cb-content">';
-        foreach ( $items as $item ) {           
-            setup_postdata($item); // this does not work, post is page not this sub-post
-            cb_get_template_part('shortcode', 'items', TRUE, FALSE, FALSE ); 
-        }
-        echo '</div>';
-        return ob_get_clean();
-        
-    }
 }

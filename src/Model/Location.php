@@ -10,11 +10,14 @@ class Location extends CustomPost
 {
     /**
      * Returns bookable timeframes for location.
+     * 
+     * @TODO: should support $args 
+     *
      * @return array
      */
     public function getBookableTimeframes()
     {
-        return Timeframe::get([$this->ID], [], [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID]);
+        return Timeframe::get([$this->ID], [], [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID], NULL, TRUE);
     }
 
     /**
@@ -23,6 +26,9 @@ class Location extends CustomPost
      */    
     /**
      * location_address
+     * 
+     * @TODO: retire. should be: address()
+     * @TODO: Use WP standard geo meta. geo_postcode, etc. 
      *
      * @return void
      */
@@ -43,7 +49,7 @@ class Location extends CustomPost
      * 
      * @return string
      */
-    public function address()
+    public function address( )
     {
         return sprintf(
             '%s, %s %s',
@@ -69,4 +75,5 @@ class Location extends CustomPost
         return implode('<br>', $contact);
 
     }
+
 }

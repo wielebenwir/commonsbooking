@@ -2,22 +2,19 @@
 /** 
 * Timeframe summary with item
 * 
-* Post: Timeframe
-* Use CB::get() to get data from the associacted location & item
+* WP Post properties for timeframe are available as $timeframe->property
+* Timeframe Model methods are available as $timeframe->myMethod()   
+* 
+* Model: Timeframe
 */
 
-use CommonsBooking\CB\CB;
-
-$item_permalink = CB::get('item', 'permalink');
-$item_name	  	= CB::get('item', 'name');
-$item_id	  	  = CB::get('item', 'id');
-$button_text		= __('Book item', 'commonsbooking');
-$dates			  	= CB::get('timeframe', 'dates');
+$item           = $timeframe->getitem();
+$thumbnail 		= ( has_post_thumbnail($item->ID) ) ? get_the_post_thumbnail($item->ID) : '';
+$button_label   = __('Book item', 'commonsbooking');
 
 ?>
-<?php if (has_post_thumbnail($item_id))
-  echo get_the_post_thumbnail($item_id, 'thumbnail');
-?>
-<h4 class="cb-name cb-item-name"><?php echo $item_name; ?></h4>
-<span class="cb-dates cb-timeframe-dates"><?php // echo $dates; ?></span>
-<a href="<?php echo $item_permalink; ?>" class="cb-button"><?php echo $button_text; ?></a>
+
+<h4 class="cb-name cb-item-name"><?php echo $item->post_title; ?></h4>
+<?php echo $thumbnail; ?>
+<span class="cb-dates cb-timeframe-dates"><?php echo $timeframe->residence(); ?></span>
+<a href="<?php echo get_the_permalink($item->ID); ?>" class="cb-button"><?php echo $button_label; ?></a>
