@@ -35,7 +35,7 @@ class Timeframe extends CustomPost
      * 
      * @return string
      */
-    public function residence()
+    public function formattedBookableDate()
     {
         $format = self::getDateFormat();
   
@@ -50,7 +50,7 @@ class Timeframe extends CustomPost
         $label      = __('Available here', 'commonsbooking');
         $availableString = '';
 
-        // @TODO: how are we treating no start and end date? is it available?  
+        // we check if there is no timeframe in daterange
         if ( ( $endDate < $today ) OR ( $endDate == 0 && $startDate == 0 ) ) 
             return __('Currently not available here', 'commonsbooking');  
 
