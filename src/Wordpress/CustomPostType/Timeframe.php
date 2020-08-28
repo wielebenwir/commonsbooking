@@ -143,7 +143,7 @@ class Timeframe extends CustomPostType
             $post_slug = get_post($postId)->post_name;
 
 
-            wp_redirect(home_url('?' . self::getPostType() . '=' . $post_slug));
+            wp_redirect(add_query_arg(self::getPostType(), $post_slug, home_url()));
             exit;
         }
     }
@@ -227,7 +227,7 @@ class Timeframe extends CustomPostType
     }
 
     /**
-     * Returns custom (meta) fields for CPT.
+     * Returns custom (meta) fields for Coostum Post Type Timeframe.
      * @return array
      */
     protected function getCustomFields()
@@ -429,8 +429,7 @@ class Timeframe extends CustomPostType
     }
 
     /**
-     * First create the dropdown
-     * make sure to change POST_TYPE to the name of your custom post type
+     * Adds filter dropdown // filter by type (eg. bookable, repair etc.) in timeframe List
      *
      * @return void
      */
@@ -461,7 +460,7 @@ class Timeframe extends CustomPostType
 
 
     /**
-     * if submitted filter by post meta
+     * Filters admin list by type (e.g. bookable, repair etc. )
      *
      * @param  (wp_query object) $query
      *

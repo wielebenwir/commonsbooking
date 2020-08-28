@@ -32,7 +32,9 @@ class Item extends View
             'type' => Timeframe::BOOKING_ID
         ];
 
-        $location = isset($_GET['location']) && $_GET['location'] != "" ? $_GET['location'] : false;
+        //$location = isset($_GET['location']) && $_GET['location'] != "" ? $_GET['location'] : false;
+        $location = (get_query_var('location') && get_query_var('location') != "") ? get_query_var('location') : false;
+        
         $locations = \CommonsBooking\Repository\Location::getByItem($item->ID, true);
 
         // If theres no location selected, we'll show all available.

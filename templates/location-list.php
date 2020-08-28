@@ -26,7 +26,7 @@
                     $startDates[$itemId] = $formattedStartDate;
 
 
-                    $bookingUrl = get_permalink($location->ID) . "&item=" . $itemId;
+                    $bookingUrl = add_query_arg('item', $itemId, get_permalink($location->ID) );
                     $dateString = ($endDateTimestamp ? "" : "Ab ") . $formattedStartDate;
                     if ($endDateTimestamp) {
                         $dateString .= " - " . $formattedEndDate;
