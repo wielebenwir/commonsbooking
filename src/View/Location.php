@@ -209,7 +209,7 @@ class Location extends View
         ];
 
         $item = isset($_GET['item']) && $_GET['item'] != "" ? $_GET['item'] : false;
-        $items = \CommonsBooking\Repository\Item::getByLocation($location->ID);
+        $items = \CommonsBooking\Repository\Item::getByLocation($location->ID, true);
 
         // If theres no item selected, we'll show all available.
         if (!$item) {
