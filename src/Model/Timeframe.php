@@ -90,9 +90,7 @@ class Timeframe extends CustomPost
         return get_option('time_format');
     }
     /**
-     * Return Start date
-     * 
-     * @TODO: i could not access "start-date" and "end-date", so using this for now. 
+     * Return Start (repetition) date
      * 
      * @return string
      */
@@ -100,9 +98,7 @@ class Timeframe extends CustomPost
         return get_post_meta( $this->ID, 'repetition-start', TRUE);
     }
     /**
-     * Return End date
-     * 
-     * @TODO: i could not access "start-date" and "end-date", so using this for now. 
+     * Return End (repetition) date
      * 
      * @return string
      */
