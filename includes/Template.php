@@ -53,7 +53,7 @@ if ( !function_exists( 'cb_get_template_part' ) ) {
 
       $template_classes = array (
         'cb-' . $slug . '-' . $name,
-        'template-' . basename($template),
+        'template-' . basename($template, '.php'),
         'post-' .get_post_type(), //@TODO: this returns "page", not the type (e.g. "item") that is queried.
         $has_post_thumbnail
       );
