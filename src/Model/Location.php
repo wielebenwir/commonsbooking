@@ -18,11 +18,18 @@ class Location extends CustomPost
     }
 
     /**
-     * Returns location infos.
-     * @return string
-     */    
+     * Returns Locations, bookable in connection with item.
+     * @param $itemId
+     *
+     * @return array
+     */
+    public function getBookableTimeframesByItem($itemId)
+    {
+        return Timeframe::get([$this->ID], [$itemId], [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID]);
+    }
+
     /**
-     * location_address
+     * Returns location infos.
      *
      * @return void
      */
@@ -30,12 +37,28 @@ class Location extends CustomPost
     {
         
         $location = array (
+            CB::get('location', 'name', $this->post->ID),
             CB::get('location', CB_METABOX_PREFIX . 'location_street', $this->post->ID),
             CB::get('location', CB_METABOX_PREFIX . 'location_postcode', $this->post->ID),
             CB::get('location', CB_METABOX_PREFIX . 'location_city', $this->post->ID),
         );
 
         return implode('<br>', $location);
+
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function address()
+    {
+        return sprintf(
+            '%s, %s %s',
+            CB::get('location', CB_METABOX_PREFIX . 'location_street'),
+            CB::get('location', CB_METABOX_PREFIX . 'location_postcode'),
+            CB::get('location', CB_METABOX_PREFIX . 'location_city')
+        );
 
     }
 
@@ -53,5 +76,20 @@ class Location extends CustomPost
 
         return implode('<br>', $contact);
 
+    }
+
+    /**
+     * Returns location contact info on booking page if booking is confirmed
+     * @return string
+     */
+    public function location_contact_bookingpage()
+    {   
+        global $post;
+        
+        if ( !empty( CB::get( 'location', CB_METABOX_PREFIX . 'location_contact') ) AND $post->post_status == "confirmed" ) {
+            return nl2br(CB::get('location',  CB_METABOX_PREFIX . 'location_contact'));
+        } else {
+            return __('Location contact will be shown after booking confirmation', 'commonsbooking');
+        }
     }
 }

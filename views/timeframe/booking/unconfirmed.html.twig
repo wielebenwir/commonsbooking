@@ -1,0 +1,94 @@
+
+<!-- Static template for booking start -->
+
+<div class="cb-notice">
+    Please confirm your booking!
+</div><!-- .cb-table -->
+<div class="cb-table">
+    <div class="cb-timeframe">
+        <div class="cb-datetime-start">
+            <span class="cb-date">23.3.2020</span> <span class="cb-time">9:00</span>
+        </div><!-- .cb-timeframe-start -->
+        <div class="cb-divider">&rarr;</div>
+        <div class="cb-datetime-end">
+            <span class="cb-date">24.3.2020</span> <span class="cb-time">9:00</span>
+        </div><!-- .cb-timeframe-end -->
+    </div><!-- .cb-timeframe -->
+    <div class="cb-location">
+        <div class="cb-table-header">
+            <h3>Pickup and return at: <span class="cb-location-name">My Location</span></h3>
+            <img src="https://via.placeholder.com/50">
+        </div><!-- . cb-table-header-->
+        <div class="cb-meta cb-location-meta">
+            <div class="cb-address col-30-70">
+                <div>Adress</div>
+                <div>Antoniastr. 5, 51105 Köln</div>
+            </div><!-- .cb-address -->
+            <div class="cb-pickup-info col-30-70">
+                <div>Pickup</div>
+                <div>Quia aut modi et voluptates aperiam ducimus. Ipsam et illo qui quaerat soluta consequuntur. </div>
+            </div><!-- .cb-pickup-info -->
+        </div><!-- .cb-location-meta -->
+    </div><!-- .cb-location -->
+    <div class="cb-item">
+        <div class="cb-table-header">
+            <h3>Item: <span class="cb-item-name">My item</span></h3>
+            <img src="https://via.placeholder.com/50">
+        </div><!-- . cb-table-header-->
+        <div class="cb-meta cb-item-meta">
+           Quia aut modi et voluptates aperiam ducimus. Ipsam et illo qui quaerat soluta consequuntur. Debitis consequuntur sit ipsum nihil. Cum qui sed aliquid voluptas adipisci. Reiciendis id at quis magnam quia eum. Quis error et sint minus eaque voluptas voluptatem.           
+        </div><!-- .cb-item-meta -->
+    </div><!-- .cb-item -->
+    <div class="cb-user">
+        <div class="cb-table-header">
+            <h3><span class="cb-user-name">My profile</span></h3>
+        </div><!-- . cb-table-header-->
+        <div class="cb-meta cb-user-meta">
+            <div class="cb-user-info col-30-70">       
+                <div>Email:</div>
+                <div>sowieso@dsad.com</div>
+                <div>Username:</div>
+                <div>dev</div>
+                <div>Name</div>
+                <div>Martin Mustermann</div>
+            </div><!-- .cb-user-info -->
+        </div><!-- .cb-user-meta -->
+    </div><!-- .cb-user -->
+</div><!-- .cb-table -->
+
+<div id="cb-action">
+
+    {% include '/timeframe/form.html.twig' %}
+
+    {% include '/timeframe/form.html.twig' with {
+        'submitLabel': cancellation.submitLabel,
+        'type': cancellation.type,
+        'postStatus': cancellation.postStatus } %}
+
+</div>
+
+
+<!-- Static template for booking end -->
+
+<div class="alignwide">
+    <div>
+        <h3>{{ start_date_string }} - {{ end_date_string }}</h3>
+    </div>
+    
+    <div>
+
+    </div>
+    
+    <div>
+        {% include '/post/preview.html.twig'  with {'post': item.post} %}
+    </div>
+    
+    <div>
+        <h3><a href="{{ user|get_link }}">{{ user.display_name }}</a></h3>
+        E-Mail. {{ user.user_email }}
+    </div>
+    
+    <div>
+
+    </div>
+</div>

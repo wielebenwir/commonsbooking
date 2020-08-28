@@ -159,22 +159,21 @@ class Day
     protected function getStartSlot($grid, $timeframe)
     {
         // Timeframe
-        $timeframeType = get_post_meta($timeframe->ID, 'type', true);
         $fullDay = get_post_meta($timeframe->ID, 'full-day', true);
-        $startDate = $this->getStartTime($timeframe);
+        $startTime = $this->getStartTime($timeframe);
 
         // Slots
         $startSlot = 0;
 
         // If timeframe isn't configured as full day
         if (!$fullDay) {
-            $startSlot = $this->getSlotByTime($startDate, $grid);
+            $startSlot = $this->getSlotByTime($startTime, $grid);
         }
 
         // If we have a overbooked day, we need to mark all slots as booked
-        if ($timeframeType == Timeframe::BOOKING_ID) {
+        if (!Timeframe::isOverBookable($timeframe)) {
             // Check if timeframe began before the current day
-            if (strtotime($this->getDate()) > $startDate->getTimestamp()) {
+            if (strtotime($this->getDate()) > $startTime->getTimestamp()) {
                 $startSlot = 0;
             }
         }
@@ -191,20 +190,20 @@ class Day
     protected function getEndSlot($slots, $grid, $timeframe)
     {
         // Timeframe
-        $timeframeType = get_post_meta($timeframe->ID, 'type', true);
         $fullDay = get_post_meta($timeframe->ID, 'full-day', true);
-        $endDate = $this->getEndTime($timeframe);
+        $endTime = $this->getEndTime($timeframe);
+        $endDate = $this->getEndDate($timeframe);
 
         // Slots
         $endSlot = count($slots);
 
         // If timeframe isn't configured as full day
         if (!$fullDay) {
-            $endSlot = $this->getSlotByTime($endDate, $grid);
+            $endSlot = $this->getSlotByTime($endTime, $grid);
         }
 
         // If we have a overbooked day, we need to mark all slots as booked
-        if ($timeframeType == Timeframe::BOOKING_ID) {
+        if (!Timeframe::isOverBookable($timeframe)) {
             // Check if timeframe ends after the current day
             if (strtotime($this->getFormattedDate('d.m.Y 23:59')) < $endDate->getTimestamp()) {
                 $endSlot = count($slots);
@@ -215,13 +214,13 @@ class Day
 
 
     /**
-     * Returns start-date DateTime.
+     * Returns repetition-start DateTime.
      * @param $timeframe
      * @return \DateTime
      */
     protected function getStartDate($timeframe)
     {
-        $startDateString = get_post_meta($timeframe->ID, 'start-date', true);
+        $startDateString = get_post_meta($timeframe->ID, 'repetition-start', true);
         $startDate = new \DateTime();
         $startDate->setTimestamp($startDateString);
         return $startDate;
@@ -234,7 +233,7 @@ class Day
      */
     protected function getStartTime($timeframe)
     {
-        $startDateString = get_post_meta($timeframe->ID, 'start-date', true);
+        $startDateString = get_post_meta($timeframe->ID, 'repetition-start', true);
         $startTimeString = get_post_meta($timeframe->ID, 'start-time', true);
         $startDate = new \DateTime();
         $startDate->setTimestamp($startDateString);
@@ -253,7 +252,7 @@ class Day
      */
     protected function getEndDate($timeframe)
     {
-        $startDateString = get_post_meta($timeframe->ID, 'end-date', true);
+        $startDateString = get_post_meta($timeframe->ID, 'repetition-end', true);
         $startDate = new \DateTime();
         $startDate->setTimestamp($startDateString);
         return $startDate;
@@ -266,7 +265,7 @@ class Day
      */
     protected function getEndTime($timeframe)
     {
-        $endDateString = get_post_meta($timeframe->ID, 'end-date', true);
+        $endDateString = get_post_meta($timeframe->ID, 'repetition-end', true);
         $endTimeString = get_post_meta($timeframe->ID, 'end-time', true);
         $endDate = new \DateTime();
         $endDate->setTimestamp($endDateString);
@@ -277,7 +276,7 @@ class Day
         }
         return $endDate;
     }
-    
+
     /**
      * Checks if timeframe is relevant for current day/date.
      * @param $timeframe

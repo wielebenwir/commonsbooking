@@ -1,0 +1,58 @@
+/* -------------------- Tables -------------------- */
+
+.cb-cols {
+	div {
+		padding: $padding;
+	}
+	@include breakpoint(phablet) {
+		display: flex;
+		flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+		align-items: center;
+  }
+  > :nth-child(odd) {
+    font-weight: bold;
+  }
+}
+
+	/* column sizes */
+	.col-50-50 {
+
+		@include breakpoint(phablet) {
+			> :nth-child(odd) {
+				width: 50%;
+				min-width: 0;
+				img { width: 100% }
+			}
+			> :nth-child(even) {
+				width: 50%;
+				min-width: 0;
+			}
+		}
+	}
+	.col-70-30 {
+		@include breakpoint(phablet) {
+
+			> :nth-child(odd) {
+			width: 70%;
+			}
+			> :nth-child(even) {
+				width: 30%;
+			}
+		}
+
+	}
+	.col-30-70 {
+
+	@include breakpoint(phablet) {
+			> :nth-child(odd) {
+				width: 30%;
+
+			}
+			> :nth-child(even) {
+				width: 70%;
+			}
+		}
+	}
+

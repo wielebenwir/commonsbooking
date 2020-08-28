@@ -1,0 +1,54 @@
+#cb-action {
+  @extend .cb-box;
+  @extend .cb-cols;
+
+  /* Hack for now: we should be able to target the <input> directly by id/class. */
+  flex-direction: row-reverse; 
+  form {
+    &:last-of-type {
+      input {
+        background: transparent;
+        color: $color-gray-silver;
+      }
+    }
+  }
+  input {
+    @extend .cb-button;
+  }
+}
+
+#booking-form {
+    width: 100%; /* do not extend litepicker width */
+    input {
+    @extend .cb-button;
+  }
+  .time-selection-container {
+    display: block;
+    margin-top: $padding;
+    
+    > div {
+      @extend .cb-box-inner;
+      margin-bottom: $padding;
+      text-align: left;
+      display: block;
+      overflow: hidden;
+      span, label, select {     
+        width: 33%;
+        float: left;
+      }
+      label  {
+        font-weight: bold;
+        // @extend .cb-big;
+      }
+    }
+  }
+}
+.cb-notice {
+  @extend .cb-box;
+	margin-bottom: $padding-big;
+	font-size: $font-size-big;
+	vertical-align: middle;
+	font-weight: bold;
+	background: $color-yellow-background;
+  position: relative;
+}

@@ -21,11 +21,8 @@ if ( !function_exists( 'cb_get_template_part' ) ) {
       $template = '';
       $plugin_slug = CB_PLUGIN_SLUG . '/';
       $path = WP_PLUGIN_DIR . '/'. $plugin_slug . 'templates/';
-
-      // Add CB content wrapper
-      $before_html  = ! empty( $before )  ? $before : '<div class="cb-content">';  
-      $after_html   = ! empty( $after )   ? $after  : '</div>';  
-      
+      $class = array();
+     
       // Look in yourtheme/slug-name.php and yourtheme/plugin-name/slug-name.php
       if ( $name ) {
         $template = locate_template( array( "{$slug}-{$name}.php", $plugin_slug . "{$slug}-{$name}.php" ) );
@@ -52,12 +49,27 @@ if ( !function_exists( 'cb_get_template_part' ) ) {
       // Allow 3rd party plugin filter template file from their plugin
       $template = apply_filters( 'cb_get_template_part', $template, $slug, $name, $plugin_slug );
 
-      // Display debug message
+      $has_post_thumbnail = (has_post_thumbnail()) ? 'has-post-thumbnail' : '';
+
+      $template_classes = array (
+        'cb-' . $slug . '-' . $name,
+        'template-' . basename($template),
+        'post-' .get_post_type(), 
+        $has_post_thumbnail
+      );
+
+      $css_classes = implode(' ', $template_classes);
+
+      // Add CB content wrapper & classes 
+      $before_html  = ( $before != '' ) ? $before : '<div class="cb-wrapper ' . $css_classes .'">';  
+      $after_html   =  ( $after != '' )  ? $after  : '</div>';  
+
+            // Display debug message
       if ( WP_DEBUG ) { 
         if ( empty ( $template ) ) {
-          echo ( '<div class="cb-debug">Template file not found</div>' );
+          $before_html .= ( '<div class="cb-debug">Template file not found</div>' );
         } else {
-          echo ( '<div class="cb-debug">Using template:' . $template . '</div>' );
+          $before_html .= ( '<div class="cb-debug">Template:<strong>' . basename($template) . '</strong></div>' );
         }
       }
 

@@ -4,16 +4,16 @@ module.exports = function (grunt) {
 		compass: {
 			admin: {
 				options: {
-					sassDir: 'Resources/assets/admin/sass',
-					cssDir: 'Resources/assets/admin/css',
+					sassDir: 'assets/admin/sass',
+					cssDir: 'assets/admin/css',
 					environment: 'production',
 					relativeAssets: true
 				}
 			},
 			public: {
 				options: {
-					sassDir: 'Resources/assets/public/sass',
-					cssDir: 'Resources/assets/public/css',
+					sassDir: 'assets/public/sass',
+					cssDir: 'assets/public/css',
 					environment: 'production',
 					relativeAssets: true
 				}
@@ -23,8 +23,8 @@ module.exports = function (grunt) {
 					environment: 'development',
 					debugInfo: true,
 					noLineComments: false,
-					sassDir: 'Resources/assets/admin/sass',
-					cssDir: 'Resources/assets/admin/css',
+					sassDir: 'assets/admin/sass',
+					cssDir: 'assets/admin/css',
 					outputStyle: 'expanded',
 					relativeAssets: true,
 					sourcemap: true
@@ -35,8 +35,8 @@ module.exports = function (grunt) {
 					environment: 'development',
 					debugInfo: true,
 					noLineComments: false,
-					sassDir: 'Resources/assets/public/sass',
-					cssDir: 'Resources/assets/public/css',
+					sassDir: 'assets/public/sass',
+					cssDir: 'assets/public/css',
 					outputStyle: 'expanded',
 					relativeAssets: true,
 					sourcemap: true
@@ -51,24 +51,24 @@ module.exports = function (grunt) {
 					mangle: false
 				},
 				files: {
-					'Resources/assets/public/js/public.js': [
+					'assets/public/js/public.js': [
 						/* add path to js dependencies (ie in node_modules) here */
 						'node_modules/tippy.js/dist/tippy.all.js',
-						'Resources/assets/public/js/src/**/*.js',
+						'assets/public/js/src/**/*.js',
 					],
-					'Resources/assets/admin/js/admin.js': [
+					'assets/admin/js/admin.js': [
 						/* add path to js dependencies (ie in node_modules) here */
-						'Resources/assets/admin/js/src/*.js'
+						'assets/admin/js/src/*.js'
 					]
 				}
 			},
 			dist: {
 				files: {
-					'Resources/assets/public/js/public.min.js': [
-						'Resources/assets/public/js/public.js'
+					'assets/public/js/public.min.js': [
+						'assets/public/js/public.js'
 					],
-					'Resources/assets/admin/js/admin.min.js': [
-						'Resources/assets/admin/js/admin.js'
+					'assets/admin/js/admin.min.js': [
+						'assets/admin/js/admin.js'
 					]
 				}
 			}
@@ -76,9 +76,9 @@ module.exports = function (grunt) {
 		watch: {
 			compass: {
 				files: [
-					'Resources/assets/admin/sass/**/*.scss',
-					'Resources/assets/global/sass/**/*.scss',
-					'Resources/assets/public/sass/**/*.scss'
+					'assets/admin/sass/**/*.scss',
+					'assets/global/sass/**/*.scss',
+					'assets/public/sass/**/*.scss'
 				],
 				tasks: [
 					'compass:adminDev', 'compass:publicDev'
@@ -86,9 +86,9 @@ module.exports = function (grunt) {
 			},
 			js: {
 				files: [
-					'Resources/assets/public/js/src/**/*.js',
-					'Resources/assets/global/js/src/**/*.js',
-					'Resources/assets/admin/js/src/**/*.js'
+					'assets/public/js/src/**/*.js',
+					'assets/global/js/src/**/*.js',
+					'assets/admin/js/src/**/*.js'
 				],
 				tasks: [
 					'uglify:dev'
@@ -102,7 +102,8 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify-es');
 	// Register tasks
 	grunt.registerTask('default', [
-		'compass:admin', 'compass:public'
+		'compass:admin', 'compass:public','uglify:dev',
+		'uglify:dist'
 	]);
 	grunt.registerTask('dev', [
 		'compass:admin',

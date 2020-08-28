@@ -27,14 +27,17 @@ class Timeframe extends CustomPostType
         'type'        => "Type",
         'location-id' => "Location",
         'item-id'     => "Item",
-        'start-date'  => "Start Date",
-        'end-date'    => "End date"
+        'repetition-start'  => "Start Date",
+        'repetition-end'    => "End date"
     ];
 
-    public static $multiDayFrames = [
-        self::BOOKING_ID,
-        self::BOOKING_CANCELED_ID,
-        self::REPAIR_ID
+    /**
+     * Timeframetypes which cannot be "overbooked"
+     * @var int[]
+     */
+    public static $multiDayBlockingFrames = [
+        self::REPAIR_ID,
+        self::BOOKING_ID
     ];
 
     /**
@@ -72,7 +75,7 @@ class Timeframe extends CustomPostType
         if (is_singular(self::getPostType())) {
             ob_start();
             global $post;
-            cb_get_template_part('booking', $post->post_status);
+            cb_get_template_part('booking');     
             $cb_content = ob_get_clean();
         } // if archive...
 
@@ -98,8 +101,8 @@ class Timeframe extends CustomPostType
                 throw new \Exception('Location does not exist. (' . $locationId . ')');
             }
 
-            $startDate = isset($_REQUEST['start-date']) && $_REQUEST['start-date'] != "" ? $_REQUEST['start-date'] : null;
-            $endDate = isset($_REQUEST['end-date']) && $_REQUEST['end-date'] != "" ? $_REQUEST['end-date'] : null;
+            $startDate = isset($_REQUEST['repetition-start']) && $_REQUEST['repetition-start'] != "" ? $_REQUEST['repetition-start'] : null;
+            $endDate = isset($_REQUEST['repetition-end']) && $_REQUEST['repetition-end'] != "" ? $_REQUEST['repetition-end'] : null;
 
             /** @var \CommonsBooking\Model\Booking $booking */
             $booking = Booking::getBookingByDate(
@@ -119,9 +122,16 @@ class Timeframe extends CustomPostType
             if (empty($booking)) {
                 $postarr['post_name'] = self::generateRandomSlug();
                 $postId = wp_insert_post($postarr, true);
+                $booking_metafield = new \CommonsBooking\Model\Booking($postId);      
+                // we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
+                $booking_metafield->assignBookableTimeframeFields();
+              ;
             } else {
                 $postarr['ID'] = $booking->ID;
                 $postId = wp_update_post($postarr);
+                $booking_metafield = new \CommonsBooking\Model\Booking($postId);
+                // we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe  
+                $booking_metafield->assignBookableTimeframeFields();
             }
 
             // Trigger Mail, only send mail if status has changed     
@@ -131,6 +141,7 @@ class Timeframe extends CustomPostType
             }
             // get slug as parameter
             $post_slug = get_post($postId)->post_name;
+
 
             wp_redirect(home_url('?' . self::getPostType() . '=' . $post_slug));
             exit;
@@ -232,7 +243,6 @@ class Timeframe extends CustomPostType
             new Field("title-timeframe-config", __("Configure timeframe", 'commonsbooking'), "", "title", "edit_posts"),
             new Field("timeframe-repetition", __('Timeframe Repetition', 'commonsbooking'), "", "select", "edit_pages",
                 [
-                    #  'rep' => __("Repetition", 'commonsbooking'),
                     'norep' => __("No Repetition", 'commonsbooking'),
                     'd'     => __("Daily", 'commonsbooking'),
                     'w'     => __("Weekly", 'commonsbooking'),
@@ -241,8 +251,6 @@ class Timeframe extends CustomPostType
                 ]
             ),
             new Field("full-day", __('Full day', 'commonsbooking'), "", "checkbox", "edit_pages"),
-            new Field("start-date", __("Start date", 'commonsbooking'), "", "text_datetime_timestamp", "edit_posts"),
-            new Field("end-date", __("End date", 'commonsbooking'), "", "text_datetime_timestamp", "edit_pages"),
             new Field("start-time", __("Start time", 'commonsbooking'), "", "text_time", "edit_posts"),
             new Field("end-time", __("End time", 'commonsbooking'), "", "text_time", "edit_pages"),
             new Field("grid", __("Grid", 'commonsbooking'), "", "select", "edit_pages",
@@ -253,15 +261,7 @@ class Timeframe extends CustomPostType
             ),
             new Field("title-timeframe-rep-config", __("Configure repetition", 'commonsbooking'), "", "title",
                 "edit_posts"),
-            new Field("repetition-start", __('Repetition start', 'commonsbooking'), "", "text_date", "edit_pages"),
-            /*new Field("repetition", __('Repetition', 'commonsbooking'), "", "select", "edit_pages",
-                [
-                    'd' => __("Daily", 'commonsbooking'),
-                    'w' => __("Weekly", 'commonsbooking'),
-                    'm' => __("Monthly", 'commonsbooking'),
-                    'y' => __("Yearly", 'commonsbooking')
-                ]
-            ),*/
+            new Field("repetition-start", __('Repetition start', 'commonsbooking'), "", "text_date_timestamp", "edit_pages"),
             new Field("weekdays", __('Weekdays', 'commonsbooking'), "", "multicheck", "edit_pages",
                 [
                     1 => __("Monday", 'commonsbooking'),
@@ -273,7 +273,7 @@ class Timeframe extends CustomPostType
                     7 => __("Sunday", 'commonsbooking')
                 ]
             ),
-            new Field("repetition-end", __('Repetition end', 'commonsbooking'), "", "text_date", "edit_pages")
+            new Field("repetition-end", __('Repetition end', 'commonsbooking'), "", "text_date_timestamp", "edit_pages")
         );
     }
 
@@ -284,10 +284,10 @@ class Timeframe extends CustomPostType
     public static function getTypes()
     {
         return [
-            self::OPENING_HOURS_ID    => __("Opening Hours", 'commonsbooking'),
+            self::OPENING_HOURS_ID    => __("Opening Hours", 'commonsbooking'), // disabled as its not implemented yet
             self::BOOKABLE_ID         => __("Bookable", 'commonsbooking'),
             self::HOLIDAYS_ID         => __("Holidays", 'commonsbooking'),
-            self::OFF_HOLIDAYS_ID     => __("Official Holiday", 'commonsbooking'),
+            self::OFF_HOLIDAYS_ID     => __("Official Holiday", 'commonsbooking'), // disabled as its not implemented yet
             self::REPAIR_ID           => __("Repair", 'commonsbooking'),
             self::BOOKING_ID          => __("Booking", 'commonsbooking'),
             self::BOOKING_CANCELED_ID => __("Booking cancelled", 'commonsbooking')
@@ -346,8 +346,8 @@ class Timeframe extends CustomPostType
                     }
                     echo $output;
                     break;
-                case 'start-date':
-                case 'end-date':
+                case 'repetition-start':
+                case 'repetition-end':
                     echo date('d.m.Y H:i', $value);
                     break;
                 default:
@@ -407,6 +407,16 @@ class Timeframe extends CustomPostType
         ];
 
         return in_array(get_post_meta($timeframe->ID, 'type', true), $lockedTypes);
+    }
+
+    /**
+     * Returns true if frame is overbookable.
+     * @param \WP_Post $timeframe
+     *
+     * @return bool
+     */
+    public static function isOverBookable(\WP_Post $timeframe) {
+        return !in_array(get_post_meta($timeframe->ID, 'type', true), self::$multiDayBlockingFrames);
     }
 
     /**

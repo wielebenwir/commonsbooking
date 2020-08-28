@@ -1,0 +1,14 @@
+
+    <form method="post">
+        {{ wp_nonce|raw }}
+        {% if post.ID %}<input type="hidden" name="post_ID" value="{{post.ID}}" />{% endif %}
+        <input type="hidden" name="location-id" value="{{location.post.ID}}" />
+        <input type="hidden" name="item-id" value="{{item.post.ID}}" />
+        <input type="hidden" name="type" value="{{ type }}" />
+        <input type="hidden" name="post_type" value="cb_timeframe" />
+        <input type="hidden" name="post_status" value="{{ postStatus }}" />
+        <input type="hidden" name="start-date" value="{{ startDate }}">
+        <input type="hidden" name="end-date" value="{{endDate}}">
+        <input type="submit" value="{{submitLabel}}" />
+    </form>
+

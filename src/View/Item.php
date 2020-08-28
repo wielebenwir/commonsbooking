@@ -11,6 +11,47 @@ class Item extends View
 
     protected static $template = 'item/index.html.twig';
 
+    /**
+     * Returns template data for frontend.
+     * @param \WP_Post|null $post
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public static function getTemplateData(\WP_Post $post = null) {
+        if ($post == null) {
+            global $post;
+        }
+        $item = $post;
+        $args = [
+            'post' => $post,
+            'wp_nonce' => Timeframe::getWPNonceField(),
+            'actionUrl' => admin_url('admin.php'),
+            'item' => $item,
+            'postUrl' => get_permalink($item),
+            'type' => Timeframe::BOOKING_ID
+        ];
+
+        $location = isset($_GET['location']) && $_GET['location'] != "" ? $_GET['location'] : false;
+        $locations = \CommonsBooking\Repository\Location::getByItem($item->ID, true);
+
+        // If theres no location selected, we'll show all available.
+        if (!$location) {
+            if (count($locations)) {
+                // If there's only one location  available, we'll show it directly.
+                if (count($locations) == 1) {
+                    $args['location'] = $locations[0];
+                } else {
+                    $args['locations'] = $locations;
+                }
+            }
+        } else {
+            $args['location'] = get_post($location);
+        }
+
+        return $args;
+    }
+
     public static function index(\WP_Post $post = null)
     {
         if ($post == null) {

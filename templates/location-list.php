@@ -11,17 +11,25 @@
             </div>
             <div class="cb-table">
                 <?php
+                $startDates = [];
                 foreach ($location->getBookableTimeFrames() as $bookableTimeFrame) {
-                    $startDateTimestamp = intval(get_post_meta($bookableTimeFrame->ID, 'start-date', true));
-                    $endDateTimestamp = intval(get_post_meta($bookableTimeFrame->ID, 'end-date', true));
+                    $startDateTimestamp = intval(get_post_meta($bookableTimeFrame->ID, 'repetition-start', true));
+                    $formattedStartDate = date(get_option('date_format'), $startDateTimestamp);
+                    $endDateTimestamp = intval(get_post_meta($bookableTimeFrame->ID, 'repetition-end', true));
+                    $formattedEndDate = date(get_option('date_format'), $endDateTimestamp);
 
                     $itemId = get_post_meta($bookableTimeFrame->ID, 'item-id', true);
                     $item = get_post($itemId);
+
+                    // Continue if we have the same startdate for this item
+                    if(array_key_exists($itemId, $startDates) && in_array($formattedStartDate, $startDates)) continue;
+                    $startDates[$itemId] = $formattedStartDate;
+
+
                     $bookingUrl = get_permalink($location->ID) . "&item=" . $itemId;
-                    $dateString = ($endDateTimestamp ? "" : "Ab ") . date(get_option('date_format'),
-                            $startDateTimestamp);
+                    $dateString = ($endDateTimestamp ? "" : "Ab ") . $formattedStartDate;
                     if ($endDateTimestamp) {
-                        $dateString .= " - " . date(get_option('date_format'), $endDateTimestamp);
+                        $dateString .= " - " . $formattedEndDate;
                     }
                     ?>
                     <div class="cb-row">

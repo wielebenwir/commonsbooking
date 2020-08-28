@@ -20,7 +20,7 @@ class Timeframe extends PostRepository
             array(
                 'relation' => "AND",
                 array(
-                    'key' => 'start-date',
+                    'key' => 'repetition-start',
                     'value' => [
                         0,
                         strtotime($date . 'T23:59')
@@ -31,7 +31,7 @@ class Timeframe extends PostRepository
                 array(
                     'relation' => "OR",
                     array(
-                        'key' => 'end-date',
+                        'key' => 'repetition-end',
                         'value' => [
                             strtotime($date),
                             3000000000
@@ -40,7 +40,7 @@ class Timeframe extends PostRepository
                         'type' => 'numeric'
                     ),
                     array(
-                        'key' => 'end-date',
+                        'key' => 'repetition-end',
                         'compare' => 'NOT EXISTS'
                     )
                 )

@@ -24,6 +24,7 @@ class Location extends CustomPostType
         $cb_content = '';
         if (is_singular(self::getPostType())) {
             ob_start();
+            cb_get_template_part('meta', 'location');
             cb_get_template_part('calendar', 'location');
             $cb_content = ob_get_clean();
         } // if archive...
@@ -202,6 +203,20 @@ class Location extends CustomPostType
             // 'cmb_styles' => false, // false to disable the CMB stylesheet
             // 'closed'     => true, // Keep the metabox closed by default
         ));
+
+        // short description
+        $cmb->add_field(array(
+            'name'       => __('Location email', 'commonsbooking'),
+            'desc'       => __('email-address to get copy of booking confirmation and cancellation mails', 'commonsbooking'),
+            'id'         => CB_METABOX_PREFIX . 'location_email',
+            'type'       => 'text',
+            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+            // 'on_front'        => false, // Optionally designate a field to wp-admin only
+            // 'repeatable'      => true,
+        ));
+
 
         // short description
         $cmb->add_field(array(

@@ -1,0 +1,26 @@
+/*
+ * This stylesheet is used to style the public-facing components of the plugin
+ * @package   CommonsBooking2
+ * @author    Florian Egermann <florian@wielebenwir.de>
+ * @license   GPL-2.0+
+ * @since 0.2
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+
+/* Global styles */
+@import "../../global/sass/global";
+
+/* List styles */
+@import "partials/_layouts";
+
+/* List styles */
+@import "partials/_lists";
+
+/* Form styles */
+@import "partials/_forms";
+
+/* Calendar styles */
+@import "partials/_calendar";
+
+@import "partials/_debug";
