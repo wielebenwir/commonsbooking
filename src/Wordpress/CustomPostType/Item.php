@@ -98,7 +98,10 @@ class Item extends CustomPostType
         $cb_content = '';
         if (is_singular(self::getPostType())) {
             ob_start();
-            cb_get_template_part('calendar', 'item');
+            global $post;
+            $item = new \CommonsBooking\Model\Item($post);
+            set_query_var( 'item', $item );
+            cb_get_template_part('item', 'single');
             $cb_content = ob_get_clean();
         } // if archive... 
 

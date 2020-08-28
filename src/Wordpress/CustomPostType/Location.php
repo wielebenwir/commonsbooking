@@ -25,8 +25,10 @@ class Location extends CustomPostType
         $cb_content = '';
         if (is_singular(self::getPostType())) {
             ob_start();
-            cb_get_template_part('meta', 'location');
-            cb_get_template_part('calendar', 'location');
+            global $post;
+            $location = new \CommonsBooking\Model\Location($post);
+            set_query_var('location', $location);
+            cb_get_template_part('location', 'single');
             $cb_content = ob_get_clean();
         } // if archive...
 

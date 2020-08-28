@@ -33,4 +33,4 @@ $noResultText = __("This item is currently not available.", "commonsbooking");
 		} 
 	} else { ?>
 		<div class="cb-status cb-availability-status cb-no-residency"><?php echo ( $noResultText ); ?>
-	<?php } // end if ($timeframes) ?>
+<?php } // end if ($timeframes) ?>
