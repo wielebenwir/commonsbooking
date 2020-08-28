@@ -61,7 +61,7 @@ use CommonsBooking\Model\Booking;
 
             <div class="cb-address col-30-70">
                 <div><?php echo __('Address', 'commonsbooking'); ?></div>
-                <div><?php echo CB::get('location', 'location_address'); ?></div>
+                <div><?php echo CB::get('location', 'formattedAdress'); ?></div>
         </div><!-- .cb-address -->
 
         <?php if (!empty(CB::get( 'location', CB_METABOX_PREFIX . 'location_contact'))) { ?>

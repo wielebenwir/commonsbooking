@@ -56,7 +56,7 @@ class Timeframe extends PostRepository
      *
      * @return array
      */
-    public static function get($locations = [], $items = [], $types = [], $date = null, $asModel = FALSE) {
+    public static function get($locations = [], $items = [], $types = [], $date = null, $returnAsModel = FALSE) {
         $posts = [];
         // Default query
         $args = array(
@@ -115,7 +115,10 @@ class Timeframe extends PostRepository
                 });
             }
         }
-        if ($asModel) { // @TODO:  move to external function?
+
+
+        // if returnAsModel == TRUE the result is a timeframe model instead of a wordpress object
+        if ($returnAsModel) { 
             foreach ($posts as &$post) {
                 $post = new \CommonsBooking\Model\Timeframe($post);
             }

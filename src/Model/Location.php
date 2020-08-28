@@ -20,11 +20,14 @@ class Location extends CustomPost
         return Timeframe::get([$this->ID], [], [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID], NULL, TRUE);
     }
 
+   
     /**
-     * Returns Locations, bookable in connection with item.
-     * @param $itemId
+     * getBookableTimeframesByItem
+     * 
+     * returns bookable timeframes for a given itemID 
      *
-     * @return array
+     * @param  mixed $itemId
+     * @return array 
      */
     public function getBookableTimeframesByItem($itemId)
     {
@@ -32,14 +35,14 @@ class Location extends CustomPost
     }
 
     /**
-     * location_address
+     * formattedAddress
      * 
-     * @TODO: retire. should be: address()
-     * @TODO: Use WP standard geo meta. geo_postcode, etc. 
+     * Returns the location address including location name in multiple lanes with <br> line breaks
+     * 
      *
-     * @return void
+     * @return string
      */
-    public function location_address()
+    public function formattedAddress()
     {
         
         $location = array (
@@ -53,11 +56,15 @@ class Location extends CustomPost
 
     }
 
+
     /**
+     * formattedAddressOneLine
      * 
-     * @return string
+     * Returns the formatted Location address in one line, separated by comma
+     *
+     * @return void
      */
-    public function address( )
+    public function formattedAddressOneLine()
     {
         return sprintf(
             '%s, %s %s',
@@ -69,10 +76,13 @@ class Location extends CustomPost
     }
 
     /**
-     * Returns location contact info.
+     * formattedContactInfo
+     * 
+     * Returns formatted location contact info with info text
+     * 
      * @return string
      */
-    public function location_contact()
+    public function formattedContactInfo()
     {   
         if ( !empty( CB::get( 'location', CB_METABOX_PREFIX . 'location_contact') ) ) {
             $contact[] = "<br>"; // needed for email template
