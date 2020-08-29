@@ -30,5 +30,5 @@ $noResultText = __("This item is currently not available.", "commonsbooking");
 			cb_get_template_part( 'timeframe', 'withlocation' ); // file: timeframe-withlocation.php
 		} 
 	} else { ?>
-		<div class="cb-status cb-availability-status cb-no-residency"><?php echo ( $noResultText ); ?>
+		<div class="cb-status cb-availability-status cb-no-residency"><?php echo ( $noResultText ); ?></div>
 <?php } // end if ($timeframes) ?>
