@@ -3,6 +3,8 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Plugin;
+
 abstract class CustomPostType
 {
 
@@ -19,6 +21,49 @@ abstract class CustomPostType
     public static function getPostType()
     {
         return static::$postType;
+    }
+
+    public function addRoleCaps() {
+        // Add the roles you'd like to administer the custom post types
+        $roles = array(Plugin::$CB_MANAGER_ID, 'administrator');
+
+        if(self::getPostType() == Location::$postType) {
+            $roles[] = Plugin::$LOCATION_ADMIN_ID;
+        }
+        if(self::getPostType() == Item::$postType) {
+            $roles[] = Plugin::$ITEM_ADMIN_ID;
+        }
+
+        // Loop through each role and assign capabilities
+        foreach($roles as $the_role) {
+            $role = get_role($the_role);
+            $role->add_cap( 'read_' . static::$postType);
+            $role->add_cap( 'manage_' . CB_PLUGIN_SLUG . '_' . static::$postType);
+
+            $role->add_cap( 'edit_' . static::$postType );
+            $role->add_cap( 'edit_' . static::$postType . 's' ); // show item list
+            $role->add_cap( 'edit_private_' . static::$postType . 's' );
+            $role->add_cap( 'edit_published_' . static::$postType . 's' );
+
+            $role->add_cap( 'publish_' . static::$postType . 's' );
+
+            $role->add_cap( 'delete_' . static::$postType );
+            $role->add_cap( 'delete_' . static::$postType . 's' );
+
+            $role->add_cap( 'read_private_' . static::$postType . 's' );
+            $role->add_cap( 'edit_others_' . static::$postType . 's' );
+            $role->add_cap( 'delete_private_' . static::$postType . 's' );
+            $role->add_cap( 'delete_published_' . static::$postType . 's' ); // delete user post
+            $role->add_cap( 'delete_others_' . static::$postType . 's' );
+
+            $role->add_cap( 'edit_posts' ); // general: create posts -> even wp_post, affects all cpts
+
+            if($the_role == Plugin::$CB_MANAGER_ID) {
+                $role->remove_cap( 'read_private_' . static::$postType . 's' );
+                $role->remove_cap( 'delete_private_' . static::$postType . 's' );
+                $role->remove_cap( 'delete_others_' . static::$postType . 's' );
+            }
+        }
     }
 
     public function getMenuParams()
@@ -250,6 +295,11 @@ abstract class CustomPostType
         }
     }
 
+    /**
+     * @param string $order
+     *
+     * @return \WP_Query
+     */
     public static function getAllPostsQuery($order = 'ASC')
     {
         $args = array(
@@ -260,6 +310,9 @@ abstract class CustomPostType
         return new \WP_Query($args);
     }
 
+    /**
+     * @return array
+     */
     public static function getAllPosts()
     {
         /** @var \WP_Query $query */

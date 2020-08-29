@@ -23,7 +23,7 @@ class UserRepository
      * @return mixed
      */
     public static function getCBLocationAdmins() {
-        $blogusers = get_users( [ 'role__in' => [ Plugin::$LOCATION_ADMIN_ID ] ] );
+        $blogusers = get_users( [ 'role__in' => [ Plugin::$LOCATION_ADMIN_ID, Plugin::$CB_MANAGER_ID ] ] );
         return $blogusers;
     }
 
@@ -32,7 +32,7 @@ class UserRepository
      * @return mixed
      */
     public static function getCBItemAdmins() {
-        $blogusers = get_users( [ 'role__in' => [ Plugin::$ITEM_ADMIN_ID ] ] );
+        $blogusers = get_users( [ 'role__in' => [ Plugin::$ITEM_ADMIN_ID, Plugin::$CB_MANAGER_ID ] ] );
         return $blogusers;
     }
 

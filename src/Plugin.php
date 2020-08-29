@@ -8,10 +8,6 @@ use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
-use CommonsBooking\Settings;
-use CommonsBooking\Wordpress\Options;
-use CommonsBooking\Messages\Messages;
-use CommonsBooking\Shortcodes\Shortcodes;
 use CommonsBooking\Model\User;
 use CB;
 
@@ -20,6 +16,7 @@ class Plugin
 
     public static $LOCATION_ADMIN_ID = 'location_admin';
     public static $ITEM_ADMIN_ID = 'item_admin';
+    public static $CB_MANAGER_ID = 'cb_manager';
 
     /**
      *  Init hooks.
@@ -205,12 +202,14 @@ class Plugin
         $roleCapMapping = [
             Plugin::$LOCATION_ADMIN_ID => [
                 'read' => true,
-                'manage_' . CB_PLUGIN_SLUG => true,
-                'edit_posts' => true
+                'manage_' . CB_PLUGIN_SLUG => true
             ],
             Plugin::$ITEM_ADMIN_ID => [
                 'read' => true,
-                'edit_posts' => true,
+                'manage_' . CB_PLUGIN_SLUG => true
+            ],
+            Plugin::$CB_MANAGER_ID => [
+                'read' => true,
                 'manage_' . CB_PLUGIN_SLUG => true
             ],
             'administrator' => [

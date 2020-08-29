@@ -25,36 +25,6 @@ class Location extends CustomPostType
         add_action('admin_init',array($this, 'addRoleCaps'),999);
     }
 
-    public function addRoleCaps() {
-        // Add the roles you'd like to administer the custom post types
-        $roles = array(Plugin::$LOCATION_ADMIN_ID, 'administrator');
-
-        // Loop through each role and assign capabilities
-        foreach($roles as $the_role) {
-            $role = get_role($the_role);
-
-            $role->add_cap( 'read_' . self::$postType);
-            $role->add_cap( 'manage_' . CB_PLUGIN_SLUG . '_' . self::$postType);
-            $role->add_cap( 'read_private_' . self::$postType . 's' );
-
-            $role->add_cap( 'edit_' . self::$postType);
-            $role->add_cap( 'edit_' . self::$postType . 's');
-            $role->add_cap( 'edit_others_' . self::$postType . 's');
-            $role->add_cap( 'edit_private_' . self::$postType . 's');
-            $role->add_cap( 'edit_published_' . self::$postType . 's');
-
-            $role->add_cap( 'publish_' . self::$postType . 's' );
-
-            $role->add_cap( 'delete_' . self::$postType );
-            $role->add_cap( 'delete_' . self::$postType . 's' );
-            $role->add_cap( 'delete_private_' . self::$postType . 's' );
-            $role->add_cap( 'delete_published_' . self::$postType . 's' );
-            $role->add_cap( 'delete_others_' . self::$postType . 's' );
-
-            $role->add_cap( 'create_' . self::$postType . 's' );
-        }
-    }
-
     public function getTemplate($content)
     {
         $cb_content = '';
