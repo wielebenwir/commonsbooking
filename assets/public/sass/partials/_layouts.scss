@@ -1,20 +1,30 @@
 /* -------------------- Tables -------------------- */
 
-.cb-cols {
-	div {
-		padding: $padding;
-	}
-	@include breakpoint(phablet) {
+.cb-2col {
+		@include breakpoint(phablet) {
 		display: flex;
 		flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
-		align-items: center;
+    // justify-content: space-between;
+    // flex-wrap: wrap;
+		// align-items: center;
+
+		> div {
+			width: 30%;
+		}
+
+		> :nth-child(odd) {
+				width: 30%;
+				font-weight: bold;
+
+			}
+			> :nth-child(even) {
+				// width: 70%;
+			}
+	}
+
+
   }
-  > :nth-child(odd) {
-    font-weight: bold;
-  }
-}
+
 
 	/* column sizes */
 	.col-50-50 {
@@ -42,17 +52,5 @@
 			}
 		}
 
-	}
-	.col-30-70 {
-
-	@include breakpoint(phablet) {
-			> :nth-child(odd) {
-				width: 30%;
-
-			}
-			> :nth-child(even) {
-				width: 70%;
-			}
-		}
 	}
 

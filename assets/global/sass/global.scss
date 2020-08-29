@@ -23,17 +23,8 @@
 /* Extends */
 @import "partials/_extends";
 
-/* Elements */
-@import "partials/_base";
+/* Utilites */
+@import "partials/_utilities";
 
 /* Calendar styles */
 @import "partials/_calendar";
-
-/* Calendar styles */
-@import "partials/_periods";
-
-/* Map styles */
-@import "partials/_map";
-
-/* Debug only */
-@import "partials/_debug";

@@ -56,7 +56,7 @@
 	border-radius: $radius;
 }
 
-.cb-image {
+.cb-thumbnail {
 	border-radius: $radius;
 }
 
@@ -110,25 +110,6 @@
 .cb-button-container a {
 	@extend .cb-button;
 }
-
-.cb-button-icon {
-	border: 1px solid $color-gray-border;
-	background: $color-white;
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	text-decoration: none;
-
-	&:before {
-		display: inline-block;
-		font-size: 20px;
-		width: 100%;
-		height: 20px;
-		line-height: 20px;
-		vertical-align: baseline;
-	}
-}
-
 .cb-pill {
 	border-radius: $radius-pill;
 	padding: 0;
@@ -137,7 +118,5 @@
 		text-decoration: none;
 		color: $color-white;
 		padding: $padding-small $padding;
-		&:hover {
-		}
 	}
 }

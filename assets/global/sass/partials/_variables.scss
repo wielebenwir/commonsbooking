@@ -39,18 +39,11 @@ $color-white: #FFF;
 /* Colors: Message statuses */
 
 $color-error: #d5425c;
-$color-warning: #d5425c;
+$color-warning: $color-error;
 $color-success: #74ce3c;
 
-/* Colors: Period types/statuses */
-$color-status-available: #51b800;
-$color-status-open: #0086bf;
-$color-status-booked: #E3273E;
-$color-status-pending: #FFA400; /* is booked, but not confirmed/approved */
-$color-status-blocked: #9B9B9B;
 
 /* Font sizes */
-
 $font-size-small: 12px;
 $font-line-height-small: 13px;
 $font-size-normal: 14px;
@@ -58,11 +51,9 @@ $font-size-big: 18px;
 $font-size-huge: 24px;
 
 /* Font stack */
-
 $font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
 
 /* Layout Variables */
-
 $padding-big: 15px;
 $padding: 10px;
 $padding-small: 3px;

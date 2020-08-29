@@ -10,60 +10,85 @@
  * @copyright 2015 wielebenwir
  */
 
+.cb-wrapper {
 
-	.cb-item-wrapper .cb-table .cb-row {
-		margin-bottom: $padding;
+	h1, h2, h3, h4 {
+		margin: 0;
+		padding-bottom: $padding-small;
+		padding-top: 0;
+	}
+	position: relative;
+	clear: both;
+	display: block;
+
+	margin-bottom: $padding;
+	@extend .cb-box;
+
+	> .cb-wrapper {
 		@extend .cb-box-inner;
-		span {
-			display: block;
+		&:hover {
+			@extend .shadow-small;
+
 		}
-		.cb-location-name {
-			font-weight: bold;
-		}
-		.cb-button {
-			float: right;
-		}
+	}
+
+	.cb-button {
+		float: right;
+	}
 
 	}
 
+.cb-list-header {
+
+}	
+
+.cb-thumbnail {
+	margin-bottom: $padding;
+}
+
+.cb-list-content {
+	
+	overflow: hidden;
+}
+
 	.cb-table > div {  
  
-		@extend .cb-box;
-		margin-bottom: $padding;
-		h3 {
-			margin-bottom: $padding-big;
-		}
-		.cb-table-header {
-			display:block;
-			overflow: hidden;
-			img { float: right;}
-		}
+		// @extend .cb-box;
+		// margin-bottom: $padding;
+		// h3 {
+		// 	margin-bottom: $padding-big;
+		// }
+		// .cb-table-header {
+		// 	display:block;
+		// 	overflow: hidden;
+		// 	img { float: right;}
+		// }
 
-		&.cb-timeframe {
-			@extend .cb-cols; 
-			text-align: center;
-			span {
-				@extend .cb-big;
-			}
-		}
+		// &.cb-timeframe {
+		// 	@extend .cb-cols; 
+		// 	text-align: center;
+		// 	span {
+		// 		@extend .cb-big;
+		// 	}
+		// }
 
-		h2, h3, h4 {
-			@extend .cb-big;
+		// h2, h3, h4 {
+		// 	@extend .cb-big;
 
-		}
+		// }
 
-		> div.cb-meta, 
-		> div.cb-row  {
-			display: block;
-			margin-top: $padding;
-			@extend .cb-box-inner;
-			> div {
-				@extend .cb-cols;
-			}
+		// > div.cb-meta, 
+		// > div.cb-row  {
+		// 	display: block;
+		// 	margin-top: $padding;
+		// 	@extend .cb-box-inner;
+		// 	> div {
+		// 		@extend .cb-cols;
+		// 	}
 
-			div {
-					padding: $padding / 2 0;
-			}
-		}
+		// 	div {
+		// 			padding: $padding / 2 0;
+		// 	}
+		// }
 	}
 

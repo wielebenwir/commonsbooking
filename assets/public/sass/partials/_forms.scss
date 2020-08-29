@@ -1,6 +1,6 @@
 #cb-action {
   @extend .cb-box;
-  @extend .cb-cols;
+  @extend .cb-2col;
 
   /* Hack for now: we should be able to target the <input> directly by id/class. */
   flex-direction: row-reverse; 
