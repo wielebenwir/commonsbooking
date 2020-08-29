@@ -95,7 +95,7 @@ class Location extends CustomPostType
             'exclude_from_search' => true,
 
             // Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
-            'supports'            => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions'),
+            'supports'            => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions', 'excerpt'),
 
             // Soll der Post Type Kategien haben?
             //'taxonomies'         => array('category'),
@@ -219,21 +219,6 @@ class Location extends CustomPostType
             // 'on_front'        => false, // Optionally designate a field to wp-admin only
             // 'repeatable'      => true,
         ));
-
-
-        // short description
-        $cmb->add_field(array(
-            'name'       => __('Shortdescription', 'commonsbooking'),
-            'desc'       => __('field description (optional)', 'commonsbooking'),
-            'id'         => CB_METABOX_PREFIX . 'location_shortdescription',
-            'type'       => 'text',
-            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
-            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
-            // 'on_front'        => false, // Optionally designate a field to wp-admin only
-            // 'repeatable'      => true,
-        ));
-
 
         // pickup description
         $cmb->add_field(array(

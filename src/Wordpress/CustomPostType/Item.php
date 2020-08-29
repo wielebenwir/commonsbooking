@@ -79,7 +79,8 @@ class Item extends CustomPostType
             'exclude_from_search' => true,
 
             // Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
-            'supports'            => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions'),
+            'supports'            => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions', 
+        'excerpt'),
 
             // Soll der Post Type Kategorien zugeordnet werden können?
             'has_archive'         => false,

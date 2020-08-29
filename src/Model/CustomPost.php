@@ -54,8 +54,18 @@ class CustomPost
     }
 
     /**
-     * returns title
-     * @return string
+     * Return Excerpt 
+     *
+     * @return html
+     */
+    public function excerpt()
+    {
+        $excerpt = '';
+        if (has_excerpt($this->ID)) {
+            $excerpt .= wp_strip_all_tags( get_the_excerpt( $this->ID ) );
+        }
+        return $excerpt;
+    }
      */
     public function name()
     {
