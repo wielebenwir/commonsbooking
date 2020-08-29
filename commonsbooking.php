@@ -93,7 +93,15 @@ function isCurrentUserAllowedToEdit($post)
         if ($post->post_type == Timeframe::$postType) {
             // Get assigned location
             $locationId = get_post_meta($post->ID, 'location-id', true);
-            $admins = get_post_meta($locationId, '_' . Location::$postType . '_admins', true);
+            $locationAdminIds = get_post_meta($locationId, '_' . Location::$postType . '_admins', true);
+            if(is_string($locationAdminIds)) $locationAdminIds = [$locationAdminIds];
+
+            // Get assigned item
+            $itemId = get_post_meta($post->ID, 'item-id', true);
+            $itemAdminIds = get_post_meta($itemId, '_' . Item::$postType . '_admins', true);
+            if(is_string($itemAdminIds)) $itemAdminIds = [$itemAdminIds];
+
+            $admins = array_intersect($locationAdminIds, $itemAdminIds);
         }
 
         // Get allowed admins for Location / Item Listing
@@ -140,28 +148,25 @@ add_action('current_screen', 'validate_user_on_edit', 10, 1);
  * Applies listing restriction for item and location admins.
  */
 add_filter('the_posts', function ($posts, $query) {
-    if ( ! is_admin()) {
-        return;
-    }
+    if ( is_admin()) {
+        // Post type of current list
+        $postType = $query->query['post_type'];
 
-    // Post type of current list
-    $postType = $query->query['post_type'];
+        $current_user = wp_get_current_user();
+        $isAdmin = false;
+        if (in_array('administrator', (array)$current_user->roles)) {
+            $isAdmin = true;
+        }
 
-    $current_user = wp_get_current_user();
-    $isAdmin = false;
-    if (in_array('administrator', (array)$current_user->roles)) {
-        $isAdmin = true;
-    }
-
-    // Check if it is the main query and one of our custom post types
-    if ( ! $isAdmin && $query->is_main_query() && in_array($postType, Plugin::getCustomPostTypesLabel())) {
-        foreach ($posts as $key => $post) {
-            if ( ! isCurrentUserAllowedToEdit($post)) {
-                unset($posts[$key]);
+        // Check if it is the main query and one of our custom post types
+        if ( ! $isAdmin && $query->is_main_query() && in_array($postType, Plugin::getCustomPostTypesLabel())) {
+            foreach ($posts as $key => $post) {
+                if ( ! isCurrentUserAllowedToEdit($post)) {
+                    unset($posts[$key]);
+                }
             }
         }
     }
-
     return $posts;
 }, 10, 2);
 
