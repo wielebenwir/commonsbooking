@@ -75,7 +75,7 @@ class Timeframe extends CustomPostType
         if (is_singular(self::getPostType())) {
             ob_start();
             global $post;
-            cb_get_template_part('booking');     
+            cb_get_template_part('booking', 'single');     
             $cb_content = ob_get_clean();
         } // if archive...
 
