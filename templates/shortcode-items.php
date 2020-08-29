@@ -10,19 +10,17 @@
  *  
  */
 
-$titleLink 		= sprintf('<h2><a href="%s">%s</a></h2>', get_the_permalink($item->ID), $item->post_title );
-$thumbnail 		= ( has_post_thumbnail($item->ID) ) ? get_the_post_thumbnail($item->ID) : '';
 $timeframes 	= $item->getBookableTimeframes(); // @TODO: Model 
 $noResultText = __("This item is currently not available.", "commonsbooking");
 
 ?>
 <div class="cb-list-header">
-	<?php echo $titleLink; ?>
-	<?php echo $thumbnail; ?>
+	<h2><?php echo $item->titleLink(); ?></h2>
+	<?php echo $item->thumbnail(); ?>
 </div><!-- .cb-list-header -->
 
 <div class="cb-list-content">
-	<?php echo get_the_excerpt($item->ID); ?>
+	<?php echo $item->excerpt(); ?>
 </div><!-- .cb-list-content -->
 
 <?php 

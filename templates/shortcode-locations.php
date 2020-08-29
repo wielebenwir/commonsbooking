@@ -10,19 +10,18 @@
  *  
  */
 
-$titleLink 		= sprintf('<h2><a href="%s">%s</a></h2>', get_the_permalink($location->ID), $location->post_title );
-$thumbnail 		= ( has_post_thumbnail($location->ID) ) ? get_the_post_thumbnail($location->ID) : '';
 $timeframes 	= $location->getBookableTimeframes();
 $noResultText = __("No bike available at this location.", "commonsbooking");
+
 ?>
 
 <div class="cb-list-header">
-	<?php echo $titleLink; ?>
-	<?php echo $thumbnail; ?>
+	<h2><?php echo $location->titleLink(); ?></h2>
+	<?php echo $location->thumbnail(); ?>
 </div><!-- .cb-list-header -->
 
 <div class="cb-list-content">
-	<?php echo get_the_excerpt($location->ID); ?>
+	<?php echo $location->excerpt(); ?>
 </div><!-- .cb-list-content -->
 
 <?php 

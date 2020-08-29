@@ -66,9 +66,24 @@ class CustomPost
         }
         return $excerpt;
     }
+
+    /**
+     * Return Title with permalink
+     *
+     * @return html
      */
-    public function name()
+    public function titleLink()
     {
-        return $this->post->post_title;
+        return sprintf('<a href="%s">%s</a>', get_the_permalink($this->ID), $this->post_title );
+    }
+
+    /**
+     * Return Thumbnail 
+     *
+     * @return html
+     */
+    public function thumbnail()
+    {
+        return get_the_post_thumbnail($this->ID, 'thumbnail' , array( 'class' => 'alignleft cb-thumbnail' ) );
     }
 }

@@ -24,6 +24,9 @@ class CB
     /**
      * get
      *
+     * @TODO: i feel we should not pass ids or args into CB::get(), but instead use a differnt function.
+     * it was primaruly built for parsing email templates where we do not have the possibility. 
+     * 
      * @param  mixed $key
      * @param  mixed $property
      * @param  mixed $theObject

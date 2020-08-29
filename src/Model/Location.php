@@ -80,10 +80,15 @@ class Location extends CustomPost
      * 
      * Returns formatted location contact info with info text
      * 
+     * @TODO: do not add any text in here, any text should be in the backend email text field! 
+     * @TODO: in cb1, we had: location info that could be hidden until a successful booking. no longer important? 
+     * @TODO: "pickup instructions" and "contact information" fulfill the same purpouse, retire one of them?   
+     * 
      * @return string
      */
     public function formattedContactInfo()
     {   
+        $contact = array();
         if ( !empty( CB::get( 'location', CB_METABOX_PREFIX . 'location_contact') ) ) {
             $contact[] = "<br>"; // needed for email template
             $contact[] = __( 'Please contact the contact persons at the location directly if you have any questions regarding collection or return:', 'commonsbooking' );
@@ -93,5 +98,25 @@ class Location extends CustomPost
         return implode('<br>', $contact);
 
     }
-
+    /**
+     * formattedContactInfoOneLine
+     * 
+     * Returns formatted location contact info
+     * 
+     * @return string
+     */
+    public function formattedContactInfoOneLine()
+    {   
+        return CB::get( 'location', CB_METABOX_PREFIX . 'location_contact');
+    }
+    /**
+     * Return Location pickup instructions
+     * 
+     * 
+     * @return string
+     */
+    public function pickupInstructions()
+    {   
+        return CB::get( 'location', CB_METABOX_PREFIX . 'location_pickupinstructions');
+    }
 }

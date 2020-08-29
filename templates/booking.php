@@ -1,100 +1,81 @@
 <?php
 
+/**
+ * Booking Single
+ */
+
 use CommonsBooking\CB\CB;
 use CommonsBooking\Model\Booking;
 
-// \CommonsBooking\View\Booking::unconfirmed();
+//@TODO: I removed the second confirmation button from the top.   
 
-    // Beispiel um Infos bzgl. Bucbarem Timeframe zu finden.
-     $booking = new \CommonsBooking\Model\Booking($post->ID);
-     $timeframe = $booking->getBookableTimeFrame();
-
+$booking       = new \CommonsBooking\Model\Booking($post->ID);
+$timeframe     = $booking->getBookableTimeFrame();
+$location      = $booking->getLocation();
+$item          = $booking->getItem();
 ?>
 
 <div class="cb-notice">
     <?php echo CB::get('booking', 'booking_notice'); ?>
-</div><!-- .cb-table -->
+</div><!-- .cb-notice -->
 
-<div id="cb-action">
-    <?php echo CB::get('booking', 'booking_action_button', NULL, 'confirm') ?>
-    <?php echo CB::get('booking', 'booking_action_button', NULL, 'cancel') ?>
+<div class="cb-wrapper cb-booking-item">
+    <div class="cb-list-header 2-col">
+        <?php echo $item->thumbnail();?>
+        <h3><?php echo __('Item', 'commonsbooking'); ?>: <?php echo $item->titleLink(); ?></h3>
+        <?php echo $item->excerpt();?>
+    </div>
 </div>
-<div class="cb-table">
-    <!-- <div class="cb-timeframe">
-        <div class="cb-datetime-start">
-            <span class="cb-date"><?php echo CB::get('booking', 'booking_timeframe_date'); ?></span>
-         <div class="cb-divider">&rarr;</div>
-        <div class="cb-datetime-end">
-            <span class="cb-date">24.3.2020</span> <span class="cb-time">9:00</span>
-        </div>
-        cb-timeframe-end 
-    </div> cb-timeframe -->
-    <div class="cb-location">
-        <div class="cb-table-header">
-            <h3><span class="cb-location-name"><?php echo __('Booking information', 'commonsbooking'); ?></span></h3>
-            <!-- <img src="https://via.placeholder.com/50"> -->
-        </div><!-- . cb-table-header-->
-        <div class="cb-meta cb-location-meta">
 
-        <div class="cb-address col-30-70">
-                <div><?php echo __('Item', 'commonsbooking'); ?></div>
-                <div><?php echo CB::get('item', 'name'); ?></div>
-            </div><!-- .cb-address -->
-
-        <div class="cb-address col-30-70">
-                <div><?php echo __('Pickup', 'commonsbooking'); ?></div>
-                <div><?php echo CB::get('booking', 'pickup_datetime'); ?></div>
-            </div><!-- .cb-address -->
-
-        <div class="cb-address col-30-70">
-            <div><?php echo __('Return', 'commonsbooking'); ?></div>
-            <div><?php echo CB::get('booking', 'return_datetime'); ?></div>
+<div class="cb-wrapper cb-booking-datetime">
+    <div class="cb-list-header 2-col">
+        <div class="cb-list-content cb-datetime 2-col">
+            <div><?php echo __('Pickup from', 'commonsbooking'); ?></div>
+            <div><?php echo $booking->pickup_datetime(); ?></div>
         </div><!-- .cb-address -->
-
-        <?php if (!empty(CB::get( 'location', CB_METABOX_PREFIX . 'location_pickupinstructions'))) { ?>
-        <div class="cb-pickup-info col-30-70">
-            <div><?php echo __('Pickup and return information', 'commonsbooking'); ?></div>
-            <div><?php echo CB::get( 'location', CB_METABOX_PREFIX . 'location_pickupinstructions') ?></div>
-        </div><!-- .cb-pickup-info -->
-         <?php } // end if pickupinstructions ?>
-
-
-            <div class="cb-address col-30-70">
-                <div><?php echo __('Address', 'commonsbooking'); ?></div>
-                <div><?php echo CB::get('location', 'formattedAdress'); ?></div>
+        <div class="cb-list-content cb-datetime 2-col">
+            <div><?php echo __('Return until', 'commonsbooking'); ?></div>
+            <div><?php echo $booking->return_datetime(); ?></div>
         </div><!-- .cb-address -->
+    </div><!-- .cb-list-header -->
+</div><!-- cb-booking-datetime -->
 
-        <?php if (!empty(CB::get( 'location', CB_METABOX_PREFIX . 'location_contact'))) { ?>
-        <div class="cb-pickup-info col-30-70">
-            <div><?php echo __('Location contact', 'commonsbooking'); ?></div>
-            <div><?php echo CB::get( 'location', 'location_contact_bookingpage') ?></div>
-        </div><!-- .cb-pickup-info -->
-         <?php } // end if location contact ?>
+<!-- Location -->
+<div class="cb-wrapper cb-booking-location">
+    <div class="cb-list-header">
+        <h3><?php echo $location->titleLink();?></h3>
+    </div>
+    <div class="cb-list-content cb-address 2-col">
+        <div><?php echo __('Address', 'commonsbooking'); ?></div>
+        <div><?php echo $location->formattedAddressOneLine(); ?></div>
+    </div><!-- .cb-address -->
+    <div class="cb-list-content cb-contact 2-col">
+        <div><?php echo __('Contact', 'commonsbooking'); ?></div>
+        <div><?php echo $location->formattedContactInfoOneLine(); ?></div>
+    </div><!-- .cb-contact -->
+    <div class="cb-list-content cb-pickupinstructions 2-col">
+        <div><?php echo __('Pickup instructions', 'commonsbooking'); ?></div>
+        <div><?php echo $location->pickupInstructions(); ?></div>
+    </div><!-- .cb-cb-pickupinstructions -->
+</div><!-- cb-booking-location -->
 
-        </div><!-- .cb-location-meta -->
-    </div><!-- .cb-location -->
-
-
-    <div class="cb-user">
-        <div class="cb-table-header">
-            <h3><span class="cb-user-name"><?php echo __('Your profile data', 'commonsbooking'); ?></span></h3>
-        </div><!-- . cb-table-header-->
-        <div class="cb-meta cb-user-meta">
-            <div class="cb-user-info col-30-70">       
-                <div><?php echo __('User E-Mail', 'commonsbooking') ?></div>
-                <div><?php echo CB::get('user', 'user_email'); ?></div>
-                <div><?php echo __('Login Name', 'commonsbooking') ?></div>
-                <div><?php echo CB::get('user', 'user_login'); ?></div>
-                <div><?php echo __('User Name', 'commonsbooking') ?></div>
-                <div><?php echo CB::get('user', 'first_name'); ?> <?php echo CB::get('user', 'last_name'); ?><br>
-                <?php echo CB::get('user', 'user_address'); ?> 
+<!-- User @TODO: User Class so we can query everything the same way. -->
+<div class="cb-wrapper cb-booking-user">
+    <div class="cb-list-header">
+        <h3><?php echo __('Your profile', 'commonsbooking'); ?></h3>
+    </div>
+    <div class="cb-list-content cb-user 2-col">
+        <div><?php echo __('Your E-Mail', 'commonsbooking') ?></div>
+        <div><?php echo CB::get('user', 'user_email'); ?></div>
+        <div><?php echo __('Your User name', 'commonsbooking') ?></div>
+        <div><?php echo CB::get('user', 'first_name'); ?> <?php echo CB::get('user', 'last_name'); ?><br>
+        <?php echo CB::get('user', 'user_address'); ?> 
         </div>
-            </div><!-- .cb-user-info -->
-        </div><!-- .cb-user-meta -->
-    </div><!-- .cb-user -->
-</div><!-- .cb-table -->
+    </div>
+</div>
 
-<div id="cb-action">
-    <?php echo CB::get('booking', 'booking_action_button', NULL, 'confirm') ?>
-    <?php echo CB::get('booking', 'booking_action_button', NULL, 'cancel') ?>
+<!-- Buttons & Form action -->
+<div class="cb-action cb-wrapper">
+    <?php $booking->booking_action_button('confirm'); ?>
+    <?php $booking->booking_action_button('cancel'); ?>
 </div>
