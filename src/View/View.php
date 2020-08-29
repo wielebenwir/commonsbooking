@@ -11,7 +11,7 @@ abstract class View
 {
 
     protected static function getTwigLoader() {
-        return new \Twig\Loader\FilesystemLoader(CB_PLUGIN_DIR . "Resources" . DIRECTORY_SEPARATOR . "views");
+        return new \Twig\Loader\FilesystemLoader(CB_PLUGIN_DIR . "views");
     }
 
     protected static function getTwig() {

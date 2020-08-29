@@ -48,15 +48,36 @@ class Booking extends CustomPost
             "end-time"
         ];
         foreach($neededMetaFields as $fieldName) {
+            $fieldValue = get_post_meta(
+                $timeframe->ID,
+                $fieldName,
+                true
+            );
+            if(in_array($fieldName, ['start-time', 'end-time'])) {
+                $fieldValue = $this->sanitizeTimeField($fieldName);
+            }
             update_post_meta(
                 $this->post->ID,
                 $fieldName,
-                get_post_meta($timeframe->ID,
-                    $fieldName,
-                    true
-                )
+                $fieldValue
             );
         }
+    }
+
+    /**
+     * Returns time from repetition-[start/end] field
+     * @param $fieldName
+     *
+     * @return string
+     */
+    private function sanitizeTimeField($fieldName) {
+        $time = new \DateTime();
+        $fieldValue = self::get_meta('repetition-start');
+        if($fieldName == "end-time") {
+            $fieldValue = self::get_meta('repetition-end');
+        }
+        $time->setTimestamp($fieldValue);
+        return $time->format('H:i');
     }
 
     /**

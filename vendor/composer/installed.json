@@ -55,6 +55,44 @@
         ]
     },
     {
+        "name": "mustardBees/cmb-field-select2",
+        "version": "v3.0.3",
+        "version_normalized": "3.0.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mustardBees/cmb-field-select2.git",
+            "reference": "67358fa33f7b949de444562cd6108da122c7d15f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/mustardBees/cmb-field-select2/zipball/67358fa33f7b949de444562cd6108da122c7d15f",
+            "reference": "67358fa33f7b949de444562cd6108da122c7d15f",
+            "shasum": ""
+        },
+        "time": "2016-08-25T15:52:11+00:00",
+        "type": "wordpress-plugin",
+        "installation-source": "dist",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Phil Wylie",
+                "homepage": "http://www.philwylie.co.uk/"
+            }
+        ],
+        "description": "Select2 field type for CMB2",
+        "homepage": "https://github.com/mustardBees/cmb-field-select2",
+        "keywords": [
+            "plugin",
+            "wordpress"
+        ],
+        "support": {
+            "source": "https://github.com/mustardBees/cmb-field-select2/tree/v3.0.3",
+            "issues": "https://github.com/mustardBees/cmb-field-select2/issues"
+        }
+    },
+    {
         "name": "symfony/polyfill-ctype",
         "version": "v1.18.1",
         "version_normalized": "1.18.1.0",

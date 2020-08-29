@@ -60,7 +60,7 @@ class Item extends View
             global $post;
         }
         $weekNr = isset($_GET['cw']) ? $_GET['cw'] : date('W');
-        $week = new Week($weekNr);
+        $week = new Week(date('Y'), $weekNr);
         $lastWeek = new Week($weekNr + 5);
 
         $item = $post->ID;

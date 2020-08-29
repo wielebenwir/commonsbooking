@@ -21,6 +21,8 @@ class Field
      */
     protected $options;
 
+    protected $required;
+
     /**
      * Field constructor.
      *
@@ -31,7 +33,7 @@ class Field
      * @param $capability
      * @param array $options
      */
-    public function __construct($name, $title, $description, $type, $capability, array $options = [])
+    public function __construct($name, $title, $description, $type, $capability, array $options = [], $required = false)
     {
         $this->name = $name;
         $this->title = $title;
@@ -39,6 +41,7 @@ class Field
         $this->type = $type;
         $this->capability = $capability;
         $this->options = $options;
+        $this->required = $required;
     }
 
     public function getParamsArray() {
@@ -58,7 +61,14 @@ class Field
             $params['time_format'] = get_option('time_format');
             $params['date_format'] = get_option('date_format');
         }
-        
+
+        // Adding required-attribute for frontend validation
+        if($this->required) {
+            $params['attributes'] = array(
+                'required'    => 'required',
+            );
+        }
+
         if(count($this->getOptions())) {
             foreach ($this->getOptions() as $key => $item) {
 

@@ -13,7 +13,7 @@ class Location extends PostRepository
      * @throws \Exception
      */
     public static function getAllPublished() {
-        $items = [];
+        $locations = [];
 
         $args = array(
             'post_type' => \CommonsBooking\Wordpress\CustomPostType\Location::$postType,
@@ -23,12 +23,50 @@ class Location extends PostRepository
         $query = new \WP_Query($args);
 
         if ($query->have_posts()) {
-            $items = $query->get_posts();
-            foreach($items as &$item) {
+            $locations = $query->get_posts();
+            foreach($locations as &$item) {
                 $item = new \CommonsBooking\Model\Location($item);
             }
         }
-        return $items;
+        return $locations;
+    }
+
+    /**
+     * Get all Locations current user is allowed to see/edit
+     * @return array
+     */
+    public static function getByCurrentUser() {
+        $current_user = wp_get_current_user();
+        $locations = [];
+
+        // Get all Locations where current user is author
+        $args = array(
+            'post_type' => \CommonsBooking\Wordpress\CustomPostType\Location::$postType,
+            'author' => $current_user->ID
+        );
+        $query = new \WP_Query($args);
+        if ($query->have_posts()) {
+            $locations = array_merge($locations, $query->get_posts());
+        }
+
+        // get all locations where current user is assigned as admin
+        $args = array(
+            'post_type' => \CommonsBooking\Wordpress\CustomPostType\Location::$postType,
+            'meta_query'  => array(
+                'relation' => 'AND',
+                array(
+                    'key'   => '_' . \CommonsBooking\Wordpress\CustomPostType\Location::$postType . '_admins',
+                    'value' => '"' . $current_user->ID . '"',
+                    'compare' => 'like'
+                )
+            )
+        );
+        $query = new \WP_Query($args);
+        if ($query->have_posts()) {
+            $locations = array_merge($locations, $query->get_posts());
+        }
+
+        return $locations;
     }
 
     /**

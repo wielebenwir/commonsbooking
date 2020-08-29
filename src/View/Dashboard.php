@@ -15,7 +15,7 @@ class Dashboard extends View
 
     public static function index() {
         $weekNr = isset($_GET['cw']) ? $_GET['cw'] : date('W');
-        $week = new Week($weekNr);
+        $week = new Week(date('Y'), $weekNr);
         $location = isset($_GET['location']) && $_GET['location'] != "" ? $_GET['location'] : null;
         $item = isset($_GET['item'])  && $_GET['item'] != "" ? $_GET['item'] : null;
         $type = isset($_GET['type'])  && $_GET['type'] != "" ? $_GET['type'] : null;

@@ -32,6 +32,44 @@ class Item extends PostRepository
     }
 
     /**
+     * Get all Locations current user is allowed to see/edit
+     * @return array
+     */
+    public static function getByCurrentUser() {
+        $current_user = wp_get_current_user();
+        $items = [];
+
+        // Get all Locations where current user is author
+        $args = array(
+            'post_type' => \CommonsBooking\Wordpress\CustomPostType\Item::$postType,
+            'author' => $current_user->ID
+        );
+        $query = new \WP_Query($args);
+        if ($query->have_posts()) {
+            $items = array_merge($items, $query->get_posts());
+        }
+
+        // get all locations where current user is assigned as admin
+        $args = array(
+            'post_type' => \CommonsBooking\Wordpress\CustomPostType\Item::$postType,
+            'meta_query'  => array(
+                'relation' => 'AND',
+                array(
+                    'key'   => '_' . \CommonsBooking\Wordpress\CustomPostType\Item::$postType . '_admins',
+                    'value' => '"' . $current_user->ID . '"',
+                    'compare' => 'like'
+                )
+            )
+        );
+        $query = new \WP_Query($args);
+        if ($query->have_posts()) {
+            $items = array_merge($items, $query->get_posts());
+        }
+
+        return $items;
+    }
+
+    /**
      * Returns array with items at location.
      *
      * @param $locationId
