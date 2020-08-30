@@ -9,7 +9,6 @@
 
 $location_address   =  $location->formattedAddressOneLine();
 $location_contact   =  $location->formattedContactInfoOneLine();
-
 ?>
 
 <div class="cb-list-content cb-location-address cb-2col">

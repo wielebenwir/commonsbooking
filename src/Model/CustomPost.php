@@ -74,7 +74,7 @@ class CustomPost
      */
     public function titleLink()
     {
-        return sprintf('<a href="%s">%s</a>', get_the_permalink($this->ID), $this->post_title );
+        return sprintf('<a href="%s" class="cb-title cb-title-link">%s</a>', get_the_permalink($this->ID), $this->post_title );
     }
 
     /**
@@ -82,8 +82,8 @@ class CustomPost
      *
      * @return html
      */
-    public function thumbnail()
+    public function thumbnail( $size='thumbnail')
     {
-        return get_the_post_thumbnail($this->ID, 'thumbnail' , array( 'class' => 'alignleft cb-thumbnail' ) );
+        return get_the_post_thumbnail($this->ID, $size , array( 'class' => 'alignleft cb-thumbnail cb-image' ) );
     }
 }

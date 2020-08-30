@@ -12,23 +12,36 @@
 
 .cb-wrapper {
 
+	position: relative;
+	clear: both;
+	display: block;
+
+	/* headline */
 	h1, h2, h3, h4 {
 		margin: 0;
 		padding-bottom: $padding-small;
 		padding-top: 0;
 	}
-	position: relative;
-	clear: both;
-	display: block;
+
+	.cb-thumbnail {
+		max-width: 100px;
+		height: auto;
+	}
 
 	margin-bottom: $padding;
 	@extend .cb-box;
 
 	> .cb-wrapper {
 		@extend .cb-box-inner;
+		> div {
+			border-bottom: 1px $color-gray-silver;
+			&:last-of-type {
+				border-bottom: none;
+			}
+
+		}
 		&:hover {
 			@extend .shadow-small;
-
 		}
 	}
 

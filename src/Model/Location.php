@@ -68,11 +68,10 @@ class Location extends CustomPost
     {
         return sprintf(
             '%s, %s %s',
-            CB::get('location', CB_METABOX_PREFIX . 'location_street'),
-            CB::get('location', CB_METABOX_PREFIX . 'location_postcode'),
-            CB::get('location', CB_METABOX_PREFIX . 'location_city')
+            CB::get('location', CB_METABOX_PREFIX . 'location_street', $this->post->ID),
+            CB::get('location', CB_METABOX_PREFIX . 'location_postcode', $this->post->ID),
+            CB::get('location', CB_METABOX_PREFIX . 'location_city', $this->post->ID)
         );
-
     }
 
     /**

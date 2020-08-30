@@ -1,29 +1,31 @@
 /* -------------------- Tables -------------------- */
 
 .cb-2col {
-		@include breakpoint(phablet) {
+	@include breakpoint(phablet) {
 		display: flex;
 		flex-direction: row;
     // justify-content: space-between;
     // flex-wrap: wrap;
-		// align-items: center;
-
-		> div {
-			width: 30%;
-		}
+		align-items: center;
 
 		> :nth-child(odd) {
 				width: 30%;
 				font-weight: bold;
-
 			}
-			> :nth-child(even) {
-				// width: 70%;
-			}
+		> :nth-child(even) {
+			width: 70%;
+		}
 	}
-
-
-  }
+}
+.cb-multi-col {
+	@include breakpoint(phablet) {
+		display: flex;
+		flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+		align-items: center;
+	}
+}
 
 
 	/* column sizes */
