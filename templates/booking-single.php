@@ -7,8 +7,6 @@
 use CommonsBooking\CB\CB;
 use CommonsBooking\Model\Booking;
 
-//@TODO: I removed the second confirmation button from the top.   
-
 $booking       = new \CommonsBooking\Model\Booking($post->ID);
 $timeframe     = $booking->getBookableTimeFrame();
 $location      = $booking->getLocation();
@@ -57,7 +55,7 @@ $item          = $booking->getItem();
     </div><!-- .cb-cb-pickupinstructions -->
 </div><!-- cb-booking-location -->
 
-<!-- User @TODO: User Class so we can query everything the same way. -->
+<!-- User TODO User Class so we can query everything the same way. -->
 <div class="cb-wrapper cb-booking-user">
     <div class="cb-list-header">
         <h3><?php echo __('Your profile', 'commonsbooking'); ?></h3>
