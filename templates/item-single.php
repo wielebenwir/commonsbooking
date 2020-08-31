@@ -18,12 +18,12 @@ $location_selected = isset($_GET['location']);
 <?php 
   if ( $timeframes ) { 
     if ( $location_selected ) { // location selected + has timeframes
-        //set_query_var( 'templateData', $templateData); 
         include __DIR__ . '/timeframe-calendar.php'; //@TODO: This is not ideal, should use same system as other templates 
-    } elseif ( ! $location_selected  ) {  // no location selected+ has timeframes
+    } elseif ( ! $location_selected  ) {  // no location selected, so display list of items
+      echo ("<h3>" . __('Available at the following locations:') . "</h3>" );
       foreach ($timeframes as $timeframe ) { 
         set_query_var( 'timeframe', $timeframe );
-        cb_get_template_part( 'timeframe', 'withlocation' ); // file: timeframe-widthlocation.php
+        cb_get_template_part( 'timeframe', 'withlocation' ); // file: timeframe-withlocation.php
       } 
     } // $location_selected 
   } else {

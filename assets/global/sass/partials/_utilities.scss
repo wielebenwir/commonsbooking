@@ -1,5 +1,5 @@
 /**
- * Base styles
+ * Debug
  *
  * @package   CommonsBooking
  * @author 		Florian Egermann <hallo@fleg.de>
@@ -10,5 +10,15 @@
  */
 
 .cb-hidden { display: none; }
-.cb-debug { position: absolute; right: 0; top: 0; font-size: 10px; }
+.cb-debug { 
+  opacity: 0;
+  position: absolute; 
+  right: 0; 
+  top: 0; 
+  font-size: 10px; 
+  background: transparent !important;
+}
 
+.cb-wrapper:hover .cb-debug {
+  opacity: 1;
+}

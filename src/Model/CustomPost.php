@@ -82,8 +82,11 @@ class CustomPost
      *
      * @return html
      */
-    public function thumbnail( $size='thumbnail')
+    public function thumbnail( $size='thumbnail' )
     {
-        return get_the_post_thumbnail($this->ID, $size , array( 'class' => 'alignleft cb-thumbnail cb-image' ) );
+        if ( has_post_thumbnail($this->ID) ) {
+            return '<div class="cb-thumbnail">' . get_the_post_thumbnail($this->ID, $size , array( 'class' => 'alignleft cb-image' ) ) . '</div>';
+        }
+       return '';
     }
 }

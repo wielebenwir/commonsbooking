@@ -1,11 +1,11 @@
 /* -------------------- Tables -------------------- */
 
-.cb-2col {
+/* 30-70 standard for lists, first item is description */
+.cb-col-30-70 {
 	@include breakpoint(phablet) {
 		display: flex;
 		flex-direction: row;
-    // justify-content: space-between;
-    // flex-wrap: wrap;
+    flex-wrap: wrap;
 		align-items: center;
 
 		> :nth-child(odd) {
@@ -17,42 +17,50 @@
 		}
 	}
 }
-.cb-multi-col {
+/* 50-50 */
+.cb-col-50-50 {
+	@include breakpoint(phablet) {
+		display: flex;
+		> :nth-child(odd) {
+			width: 50%;
+			min-width: 0;
+			img { width: 100% }
+		}
+		> :nth-child(even) {
+			width: 50%;
+			min-width: 0;
+		}
+	}
+}
+.cb-col-auto { /* 2 fixed cols, 1 flexible in the middle */
 	@include breakpoint(phablet) {
 		display: flex;
 		flex-direction: row;
     justify-content: space-between;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+		align-items: center;
+		> div.cb-thumbnail {
+			flex: 0 0 20%;
+			margin-right: $spacer-big;
+		}
+		> div.cb-list-info {
+			flex: 1 0 50%;
+			border: none;
+		}
+		> div.cb-action {
+			flex: 1 0 30%;
+			a {
+				width: auto;
+			}
+		}
+	}
+}
+.cb-col-20-50-30 {
+	@include breakpoint(phablet) {
+		display: flex;
+		flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap;
 		align-items: center;
 	}
 }
-
-
-	/* column sizes */
-	.col-50-50 {
-
-		@include breakpoint(phablet) {
-			> :nth-child(odd) {
-				width: 50%;
-				min-width: 0;
-				img { width: 100% }
-			}
-			> :nth-child(even) {
-				width: 50%;
-				min-width: 0;
-			}
-		}
-	}
-	.col-70-30 {
-		@include breakpoint(phablet) {
-
-			> :nth-child(odd) {
-			width: 70%;
-			}
-			> :nth-child(even) {
-				width: 30%;
-			}
-		}
-
-	}
-

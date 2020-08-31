@@ -86,7 +86,7 @@ class Timeframe extends CustomPost
      * 
      * @return string
      */
-    public function getTimeFormat( ) {
+    public function getTimeFormat() {
         return get_option('time_format');
     }
     /**
@@ -94,7 +94,7 @@ class Timeframe extends CustomPost
      * 
      * @return string
      */
-    public function getStartDate( ) {
+    public function getStartDate() {
         return get_post_meta( $this->ID, 'repetition-start', TRUE);
     }
     /**
@@ -102,7 +102,7 @@ class Timeframe extends CustomPost
      * 
      * @return string
      */
-    public function getEndDate( ) {
+    public function getEndDate() {
         return get_post_meta( $this->ID, 'repetition-end', TRUE);
     }
 

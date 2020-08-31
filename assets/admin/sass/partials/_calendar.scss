@@ -33,7 +33,7 @@
 		width: 100%;
 		align-items: center;
 		justify-content: center;
-		margin: $padding-small;
+		margin: $spacer-small;
 		/* first, middle, last */
 		&.cb-first-day {
 			@include round-rect(left);

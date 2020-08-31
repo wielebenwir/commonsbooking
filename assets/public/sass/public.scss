@@ -11,14 +11,21 @@
 /* Global styles */
 @import "../../global/sass/global";
 
-/* List styles */
+/* Multi-column layouts */
 @import "partials/_layouts";
 
 /* List styles */
-@import "partials/_lists";
+@import "partials/_list";
+
+/* List styles */
+@import "partials/_single";
 
 /* Form styles */
 @import "partials/_forms";
 
 /* Calendar styles */
 @import "partials/_calendar";
+
+/* Fixes for specific WP Themes */
+@import "partials/_themeoptimization";
+

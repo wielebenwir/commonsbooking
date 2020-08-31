@@ -1,0 +1,24 @@
+/**
+ * Tweaks to make CB play nice with popular themes.
+ *
+ * @package   CommonsBooking
+ * @author    Florian Egermann <florian@wielebenwir.de>
+ * @license   GPL-2.0+
+ * @since     0.7
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+
+
+.cb-wrapper {
+  /* Twenty Nineteen Theme*/
+  h2::before {
+    content: '';
+    margin: 0;
+    background: transparent;
+  }
+  /* Twenty Twenty Theme*/
+    h1, h2, h3, h4 {
+      margin: 0 !important;
+    }  
+}

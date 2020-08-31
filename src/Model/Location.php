@@ -39,6 +39,10 @@ class Location extends CustomPost
      * 
      * Returns the location address including location name in multiple lanes with <br> line breaks
      * 
+     * @TODO: turn this into a user-configurable template. 
+     * E.g. a textarea "location format" in the backend that gets run through CB::get():
+     * {{location_street}}<br>{{location_postcode}} {{location_city}}
+     * 
      *
      * @return string
      */
@@ -61,6 +65,8 @@ class Location extends CustomPost
      * formattedAddressOneLine
      * 
      * Returns the formatted Location address in one line, separated by comma
+     * 
+     * @TODO: Do not return tags (,) if values are empty. This applies to  formattedAddress(), too
      *
      * @return void
      */
@@ -81,7 +87,7 @@ class Location extends CustomPost
      * 
      * @TODO: do not add any text in here, any text should be in the backend email text field! 
      * @TODO: in cb1, we had: location info that could be hidden until a successful booking. no longer important? 
-     * @TODO: "pickup instructions" and "contact information" fulfill the same purpouse, retire one of them?   
+     * @TODO: "pickup instructions" and "contact information" fulfill the same purpouse? retire one of them?   
      * 
      * @return string
      */

@@ -3303,7 +3303,8 @@
  * @link      http://www.wielebenwir.de
  * @copyright 2015 wielebenwir
  */
-/* Colors: Brand */
+/* Colors: CB Brand */
+/* Colors: Theme */
 /* Colors: Backgrounds */
 /* Colors: text */
 /* Colors: Message statuses */
@@ -3408,7 +3409,7 @@
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000379}}
 .cb-button:hover, .cb-button-container a:hover {
-  color: #000;
+  background: #506CA9;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000384}}
 .cb-button:visited, .cb-button-container a:visited {
@@ -3446,12 +3447,12 @@
 .cb-pill a {
   text-decoration: none;
   color: #FFF;
-  padding: 3px 10px;
+  padding: 5px 10px;
 }
 
 /* Utilites */
 /**
- * Base styles
+ * Debug
  *
  * @package   CommonsBooking
  * @author 		Florian Egermann <hallo@fleg.de>
@@ -3467,10 +3468,17 @@
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/global\/sass\/partials\/_utilities\.scss}line{font-family:\0000313}}
 .cb-debug {
+  opacity: 0;
   position: absolute;
   right: 0;
   top: 0;
   font-size: 10px;
+  background: transparent !important;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/global\/sass\/partials\/_utilities\.scss}line{font-family:\0000322}}
+.cb-wrapper:hover .cb-debug {
+  opacity: 1;
 }
 
 /* Calendar styles */

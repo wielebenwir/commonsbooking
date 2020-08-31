@@ -3,7 +3,7 @@
     if(!array_key_exists('backend', $templateData) || $templateData['backend'] != true) {
 ?>
     <div id="litepicker"></div>
-    <div>
+    <div id="booking-form-container">
         <form method="get" id="booking-form" style="display:none;">
             <?php echo $templateData['wp_nonce']; ?>
             <input type="hidden" name="location-id" value="<?php echo $templateData['location']->ID; ?>" />

@@ -16,8 +16,8 @@ $noResultText = __("No bike available at this location.", "commonsbooking");
 ?>
 
 <div class="cb-list-header">
-	<h2><?php echo $location->titleLink(); ?></h2>
 	<?php echo $location->thumbnail(); ?>
+	<h2><?php echo $location->titleLink(); ?></h2>
 </div><!-- .cb-list-header -->
 
 <div class="cb-list-content">

@@ -11,12 +11,12 @@ $location_address   =  $location->formattedAddressOneLine();
 $location_contact   =  $location->formattedContactInfoOneLine();
 ?>
 
-<div class="cb-list-content cb-location-address cb-2col">
+<div class="cb-list-content cb-location-address cb-col-30-70">
   <div><?php echo __('Adress', 'commonsbooking'); ?></div>
   <div><?php echo $location->formattedAddressOneLine(); ?></div>
 </div>
 <?php if ( $location_contact ) { ?>
-<div class="cb-list-content cb-location-pickup-instructions cb-2col">
+<div class="cb-list-content cb-location-pickup-instructions cb-col-30-70">
   <div><?php echo __('Location contact', 'commonsbooking'); ?></div>
   <div><?php echo $location_contact; ?></div>
 </div>

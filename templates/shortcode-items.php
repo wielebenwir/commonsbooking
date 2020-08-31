@@ -15,8 +15,8 @@ $noResultText = __("This item is currently not available.", "commonsbooking");
 
 ?>
 <div class="cb-list-header">
-	<h2><?php echo $item->titleLink(); ?></h2>
 	<?php echo $item->thumbnail(); ?>
+	<h2><?php echo $item->titleLink(); ?></h2>
 </div><!-- .cb-list-header -->
 
 <div class="cb-list-content">
