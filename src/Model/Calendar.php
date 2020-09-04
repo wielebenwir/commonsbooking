@@ -45,12 +45,12 @@ class Calendar
     public function getWeeks()
     {
         $weeks = [];
-        $currentDate = strtotime($this->startDate->getDate());
+        $startDate = strtotime($this->startDate->getDate());
         $endDate = strtotime($this->endDate->getDate());
 
-        while($currentDate <= $endDate) {
-            $weeks[] = new Week(date('Y', $currentDate), date('W', $currentDate), $this->locations, $this->items, $this->types);
-            $currentDate = strtotime("+7 day", $currentDate);
+        while($startDate <= $endDate) {
+            $weeks[] = new Week(date('Y', $startDate), date('W', $startDate), $this->locations, $this->items, $this->types);
+            $startDate = strtotime("next monday", $startDate);
         }
 
         return $weeks;
