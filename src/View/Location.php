@@ -203,7 +203,7 @@ class Location extends View
             'post' => $post,
             'wp_nonce' => Timeframe::getWPNonceField(),
             'actionUrl' => admin_url('admin.php'),
-            'location' => $location,
+            'location' => new \CommonsBooking\Model\Location($location),
             'postUrl' => get_permalink($location),
             'type' => Timeframe::BOOKING_ID
         ];

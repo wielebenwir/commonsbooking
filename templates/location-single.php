@@ -9,8 +9,9 @@
 * 
 * Model: Location
 */
-$templateData = \CommonsBooking\View\location::getTemplateData(); //@TODO: Clean up templatedata array 
+$templateData = \CommonsBooking\View\Location::getTemplateData(); //@TODO: Clean up templatedata array
 
+$location = $templateData['location'];
 $timeframes 	= $location->getBookableTimeframes();
 $noResultText = __("This item is currently not available.", "commonsbooking");
 
