@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Plugin;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Wordpress\MetaBox\Field;
 use CommonsBooking\Messages\Messages;
@@ -24,11 +25,11 @@ class Timeframe extends CustomPostType
     protected $types;
 
     protected $listColumns = [
-        'type'        => "Type",
-        'location-id' => "Location",
-        'item-id'     => "Item",
-        'repetition-start'  => "Start Date",
-        'repetition-end'    => "End date"
+        'type'             => "Type",
+        'location-id'      => "Location",
+        'item-id'          => "Item",
+        'repetition-start' => "Start Date",
+        'repetition-end'   => "End date"
     ];
 
     /**
@@ -67,6 +68,9 @@ class Timeframe extends CustomPostType
         // Add type filter to backend list view
         add_action('restrict_manage_posts', array(self::class, 'addAdminTypeFilter'));
         add_filter('parse_query', array($this, 'filterAdminList'));
+
+        // Setting role permissions
+        add_action('admin_init', array($this, 'addRoleCaps'), 999);
     }
 
     public function getTemplate($content)
@@ -76,9 +80,9 @@ class Timeframe extends CustomPostType
             ob_start();
             global $post;
             if  ( current_user_can('administrator') OR get_current_user_id() == $post->post_author ) {
-                cb_get_template_part('booking', 'single');     
+                cb_get_template_part('booking', 'single');
             } else {
-                cb_get_template_part('booking', 'single-notallowed');   
+                cb_get_template_part('booking', 'single-notallowed');
             }
             $cb_content = ob_get_clean();
         } // if archive...
@@ -126,10 +130,9 @@ class Timeframe extends CustomPostType
             if (empty($booking)) {
                 $postarr['post_name'] = self::generateRandomSlug();
                 $postId = wp_insert_post($postarr, true);
-                $booking_metafield = new \CommonsBooking\Model\Booking($postId);      
+                $booking_metafield = new \CommonsBooking\Model\Booking($postId);
                 // we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
                 $booking_metafield->assignBookableTimeframeFields();
-              ;
             } else {
                 $postarr['ID'] = $booking->ID;
                 $postId = wp_update_post($postarr);
@@ -147,7 +150,7 @@ class Timeframe extends CustomPostType
             $post_slug = get_post($postId)->post_name;
 
 
-            wp_redirect(home_url('?' . self::getPostType() . '=' . $post_slug));
+            wp_redirect(add_query_arg(self::getPostType(), $post_slug, home_url()));
             exit;
         }
     }
@@ -185,29 +188,31 @@ class Timeframe extends CustomPostType
 
         // args for the new post_type
         return array(
-            'labels'              => $labels,
+            'labels'            => $labels,
 
             // Sichtbarkeit des Post Types
-            'public'              => false,
+            'public'            => false,
 
             // Standart Ansicht im Backend aktivieren (Wie Artikel / Seiten)
-            'show_ui'             => true,
+            'show_ui'           => true,
 
             // Soll es im Backend Menu sichtbar sein?
-            'show_in_menu'        => false,
+            'show_in_menu'      => false,
 
             // Position im Menu
-            'menu_position'       => 2,
+            'menu_position'     => 2,
 
             // Post Type in der oberen Admin-Bar anzeigen?
-            'show_in_admin_bar'   => true,
+            'show_in_admin_bar' => true,
 
             // in den Navigations Menüs sichtbar machen?
-            'show_in_nav_menus'   => true,
+            'show_in_nav_menus' => true,
 
             // Hier können Berechtigungen in einem Array gesetzt werden
             // oder die standart Werte post und page in form eines Strings gesetzt werden
-            'capability_type'     => 'post',
+            'capability_type'   => array(self::$postType, self::$postType . 's'),
+
+            'map_meta_cap'        => true,
 
             // Soll es im Frontend abrufbar sein?
             'publicly_queryable'  => true,
@@ -231,7 +236,7 @@ class Timeframe extends CustomPostType
     }
 
     /**
-     * Returns custom (meta) fields for CPT.
+     * Returns custom (meta) fields for Coostum Post Type Timeframe.
      * @return array
      */
     protected function getCustomFields()
@@ -242,8 +247,9 @@ class Timeframe extends CustomPostType
                 self::getTypes()
             ),
             new Field("location-id", __("Location", 'commonsbooking'), "", "select", "edit_posts",
-                Location::getAllPosts()),
-            new Field("item-id", __("Item", 'commonsbooking'), "", "select", "edit_posts", Item::getAllPosts()),
+                \CommonsBooking\Repository\Location::getByCurrentUser(), true),
+            new Field("item-id", __("Item", 'commonsbooking'), "", "select", "edit_posts",
+                \CommonsBooking\Repository\Item::getByCurrentUser(), true),
             new Field("title-timeframe-config", __("Configure timeframe", 'commonsbooking'), "", "title", "edit_posts"),
             new Field("timeframe-repetition", __('Timeframe Repetition', 'commonsbooking'), "", "select", "edit_pages",
                 [
@@ -265,7 +271,8 @@ class Timeframe extends CustomPostType
             ),
             new Field("title-timeframe-rep-config", __("Configure repetition", 'commonsbooking'), "", "title",
                 "edit_posts"),
-            new Field("repetition-start", __('Repetition start', 'commonsbooking'), "", "text_date_timestamp", "edit_pages"),
+            new Field("repetition-start", __('Repetition start', 'commonsbooking'), "", "text_date_timestamp",
+                "edit_pages"),
             new Field("weekdays", __('Weekdays', 'commonsbooking'), "", "multicheck", "edit_pages",
                 [
                     1 => __("Monday", 'commonsbooking'),
@@ -288,10 +295,12 @@ class Timeframe extends CustomPostType
     public static function getTypes()
     {
         return [
-            self::OPENING_HOURS_ID    => __("Opening Hours", 'commonsbooking'), // disabled as its not implemented yet
+            self::OPENING_HOURS_ID    => __("Opening Hours", 'commonsbooking'),
+            // disabled as its not implemented yet
             self::BOOKABLE_ID         => __("Bookable", 'commonsbooking'),
             self::HOLIDAYS_ID         => __("Holidays", 'commonsbooking'),
-            self::OFF_HOLIDAYS_ID     => __("Official Holiday", 'commonsbooking'), // disabled as its not implemented yet
+            self::OFF_HOLIDAYS_ID     => __("Official Holiday", 'commonsbooking'),
+            // disabled as its not implemented yet
             self::REPAIR_ID           => __("Repair", 'commonsbooking'),
             self::BOOKING_ID          => __("Booking", 'commonsbooking'),
             self::BOOKING_CANCELED_ID => __("Booking cancelled", 'commonsbooking')
@@ -419,8 +428,9 @@ class Timeframe extends CustomPostType
      *
      * @return bool
      */
-    public static function isOverBookable(\WP_Post $timeframe) {
-        return !in_array(get_post_meta($timeframe->ID, 'type', true), self::$multiDayBlockingFrames);
+    public static function isOverBookable(\WP_Post $timeframe)
+    {
+        return ! in_array(get_post_meta($timeframe->ID, 'type', true), self::$multiDayBlockingFrames);
     }
 
     /**
@@ -433,8 +443,7 @@ class Timeframe extends CustomPostType
     }
 
     /**
-     * First create the dropdown
-     * make sure to change POST_TYPE to the name of your custom post type
+     * Adds filter dropdown // filter by type (eg. bookable, repair etc.) in timeframe List
      *
      * @return void
      */
@@ -465,7 +474,7 @@ class Timeframe extends CustomPostType
 
 
     /**
-     * if submitted filter by post meta
+     * Filters admin list by type (e.g. bookable, repair etc. )
      *
      * @param  (wp_query object) $query
      *

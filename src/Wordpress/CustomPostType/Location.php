@@ -2,6 +2,9 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Plugin;
+use CommonsBooking\Repository\UserRepository;
+
 class Location extends CustomPostType
 {
 
@@ -15,9 +18,11 @@ class Location extends CustomPostType
         add_filter('the_content', array($this, 'getTemplate'));
         add_action('cmb2_admin_init', array($this, 'registerMetabox'));
 
-        // Listing of locations
-        add_shortcode('cb_locations', array(\CommonsBooking\View\Location::class, 'shortcode'));
+        // Listing of items for location
+        add_shortcode('cb_items', array(\CommonsBooking\View\Item::class, 'listItems'));
 
+        // Setting role permissions
+        add_action('admin_init',array($this, 'addRoleCaps'),999);
     }
 
     public function getTemplate($content)
@@ -86,7 +91,9 @@ class Location extends CustomPostType
 
             // Hier können Berechtigungen in einem Array gesetzt werden
             // oder die standart Werte post und page in form eines Strings gesetzt werden
-            'capability_type'     => 'post',
+            'capability_type'     => array(self::$postType,self::$postType . 's'),
+
+            'map_meta_cap'        => true,
 
             // Soll es im Frontend abrufbar sein?
             'publicly_queryable'  => true,
@@ -108,7 +115,7 @@ class Location extends CustomPostType
 
             // Slug unseres Post Types für die redirects
             // dieser Wert wird später in der URL stehen
-            'rewrite'             => array('slug' => self::getPostType()),
+            'rewrite'             => array('slug' => self::getPostType())
         );
     }
 
@@ -116,7 +123,6 @@ class Location extends CustomPostType
     {
         return new \CommonsBooking\View\Location();
     }
-
 
     /**
      * Creates MetaBoxes for Custom Post Type Location using CMB2
@@ -126,10 +132,7 @@ class Location extends CustomPostType
      */
     public function registerMetabox()
     {
-
-        /**
-         * Initiate the metabox Adress
-         */
+        // Initiate the metabox Adress
         $cmb = new_cmb2_box(array(
             'id'           => CB_METABOX_PREFIX . 'location_adress',
             'title'        => __('Address', 'commonsbooking'),
@@ -193,9 +196,7 @@ class Location extends CustomPostType
             // 'repeatable'      => true,
         ));
 
-        /**
-         * Initiate the metabox Information
-         */
+        // Initiate the metabox Information
         $cmb = new_cmb2_box(array(
             'id'           => CB_METABOX_PREFIX . 'location_info',
             'title'        => __('General Location information', 'commonsbooking'),
@@ -212,6 +213,19 @@ class Location extends CustomPostType
             'name'       => __('Location email', 'commonsbooking'),
             'desc'       => __('email-address to get copy of booking confirmation and cancellation mails', 'commonsbooking'),
             'id'         => CB_METABOX_PREFIX . 'location_email',
+            'type'       => 'text',
+            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+            // 'on_front'        => false, // Optionally designate a field to wp-admin only
+            // 'repeatable'      => true,
+        ));
+
+        // short description
+        $cmb->add_field(array(
+            'name'       => __('Shortdescription', 'commonsbooking'),
+            'desc'       => __('field description (optional)', 'commonsbooking'),
+            'id'         => CB_METABOX_PREFIX . 'location_shortdescription',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
@@ -246,7 +260,23 @@ class Location extends CustomPostType
             // 'repeatable'      => true,
         ));
 
+        // Location admin selection
+        $users = UserRepository::getCBLocationAdmins();
+        $userOptions = [];
+        foreach ($users as $user) {
+            $userOptions[$user->ID] = $user->get('user_nicename') . " (" .$user->last_name . " " . $user->last_name . ")";
+        }
 
+        $cmb->add_field( array(
+            'name'       => __('Location Admin(s)', 'commonsbooking'),
+            'desc'       => __('Location Admin(s) field description (optional)', 'commonsbooking'),
+            'id'      => CB_METABOX_PREFIX . 'location_admins',
+            'type'    => 'pw_multiselect',
+            'options' => $userOptions,
+            'attributes' => array(
+                'placeholder' => __('Select location admins.', 'commonsbooking')
+            ),
+        ) );
     }
 
 }

@@ -2,6 +2,11 @@
 
 namespace CommonsBooking\Settings;
 
+/**
+ * Settings
+ * 
+ * 
+ */
 class Settings
 {
 
@@ -42,6 +47,8 @@ class Settings
 
     /**
      * GetOption
+	 * 
+	 * Retrieves a single value from the options table based on the options key and field_id
      *
 	 * @param  mixed $options_name
 	 * @param  mixed $field
@@ -54,6 +61,8 @@ class Settings
 
 
 		self::$cb_options_array = \get_option(self::$options_key);
+
+		// as multiple values can be  stored as an multidimensional array we need to flatten the array into one dimensional array
 		$flat_array = self::flattenArray(self::$cb_options_array);
 
 		if (is_array(self::$cb_options_array) && array_key_exists(self::$field_id, self::$cb_options_array)) {

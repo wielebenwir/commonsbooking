@@ -13,3 +13,4 @@ assets/.DS_Store
 #assets/public/css
 #vendor
 views/.DS_Store
+/composer.phar
