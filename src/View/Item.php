@@ -51,17 +51,29 @@ class Item extends View
     }
 
     /**
-    * cb_items shortcode
-    * 
-    * A list of items with timeframes.
-    */
+     * cb_items shortcode
+     *
+     * A list of items with timeframes.
+     *
+     * @param $atts
+     *
+     * @return false|string
+     * @throws \Exception
+     */
     public static function shortcode($atts)
     {
         global $templateData;
         $templateData = [];
+        $items = [];
         $queryArgs = shortcode_atts( static::$allowedShortCodeArgs, $atts, \CommonsBooking\Wordpress\CustomPostType\Item::getPostType());
-        $items = \CommonsBooking\Repository\Item::get($queryArgs, true);
-        
+
+        if(is_array($atts) && array_key_exists('location-id', $atts)) {
+            $item = \CommonsBooking\Repository\Item::getByLocation($atts['location-id'], true);
+            $items[] = $item;
+        } else {
+            $items = \CommonsBooking\Repository\Item::get($queryArgs, true);
+        }
+
         ob_start();
         foreach ( $items as $item ) {
             $templateData['item'] = $item;

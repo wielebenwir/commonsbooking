@@ -9,7 +9,8 @@
  * Item Model methods are available as $item->myMethod()    
  *  
  */
-
+global $templateData;
+$item = $templateData['item'];
 $timeframes 	= $item->getBookableTimeframes(); // @TODO: Model 
 $noResultText = __("This item is currently not available.", "commonsbooking");
 

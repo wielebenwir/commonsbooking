@@ -227,47 +227,33 @@ class Location extends View
     }
 
     /**
-     * Renders location listing.
+     * cb_locations shortcode
+     *
+     * A list of locations with timeframes.
+     *
      * @param $atts
-     * @param null $content
      *
      * @return false|string
      * @throws \Exception
      */
-    public static function listLocations($atts, $content = null) {
-        $templateData['locations'] = [];
-        if(is_array($atts) && array_key_exists('item-id', $atts)) {
-            $templateData['locations'] = \CommonsBooking\Repository\Location::getByItem($atts['item-id']);
-        } else {
-            $templateData['locations'] = \CommonsBooking\Repository\Location::getAllPublished();
-        }
-
-        if(count($templateData['locations'])) {
-            ob_start();
-            include CB_PLUGIN_DIR . 'templates/location-list.php';
-            return ob_get_clean();
-        } else {
-            return 'No Locations for item found..';
-        }
-    }
-
-    /**
-    * cb_locations shortcode
-    * 
-    * A list of locations with timeframes.
-    */
     public static function shortcode($atts)
     {
         global $templateData;
         $templateData = [];
+        $locations = [];
         $queryArgs = shortcode_atts( static::$allowedShortCodeArgs, $atts, \CommonsBooking\Wordpress\CustomPostType\Location::getPostType());
-        $locations = \CommonsBooking\Repository\Location::get($queryArgs, true);
+
+        if(is_array($atts) && array_key_exists('item-id', $atts)) {
+            $location = \CommonsBooking\Repository\Location::getByItem($atts['item-id'], true);
+            $locations[] = $location;
+        } else {
+            $locations = \CommonsBooking\Repository\Location::get($queryArgs, true);
+        }
 
         ob_start();
         foreach ( $locations as $location ) {
             $templateData['location'] = $location;
-//            set_query_var( 'location', $location );
-            cb_get_template_part('shortcode', 'locations', TRUE, FALSE, FALSE ); 
+            cb_get_template_part('shortcode', 'locations', TRUE, FALSE, FALSE );
         }
         return ob_get_clean();
     }
