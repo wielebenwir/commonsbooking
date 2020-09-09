@@ -4,7 +4,6 @@ namespace CommonsBooking\Messages;
 
 use CommonsBooking\CB\CB;
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\Shortcodes\Shortcodes;
 
 class Messages
 {

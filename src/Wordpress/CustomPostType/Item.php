@@ -88,7 +88,8 @@ class Item extends CustomPostType
             'exclude_from_search' => true,
 
             // Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
-            'supports'            => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions'),
+            'supports'            => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions',
+        'excerpt'),
 
             // Soll der Post Type Kategorien zugeordnet werden können?
             'has_archive'         => false,
@@ -107,7 +108,10 @@ class Item extends CustomPostType
         $cb_content = '';
         if (is_singular(self::getPostType())) {
             ob_start();
-            cb_get_template_part('calendar', 'item');
+            global $post;
+            $item = new \CommonsBooking\Model\Item($post);
+            set_query_var( 'item', $item );
+            cb_get_template_part('item', 'single');
             $cb_content = ob_get_clean();
         } // if archive... 
 

@@ -5,6 +5,7 @@ cache
 commonsbooking.zip
 node_modules
 src/Wordpress/.DS_Store
+vendor
 src/.DS_Store
 assets/.DS_Store
 #assets/admin/css

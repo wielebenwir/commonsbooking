@@ -27,14 +27,12 @@ class Item extends View
             'post' => $post,
             'wp_nonce' => Timeframe::getWPNonceField(),
             'actionUrl' => admin_url('admin.php'),
-            'item' => $item,
+            'item' => new \CommonsBooking\Model\Item($item),
             'postUrl' => get_permalink($item),
             'type' => Timeframe::BOOKING_ID
         ];
 
-        //$location = isset($_GET['location']) && $_GET['location'] != "" ? $_GET['location'] : false;
-        $location = (get_query_var('location') && get_query_var('location') != "") ? get_query_var('location') : false;
-        
+        $location = isset($_GET['location']) && $_GET['location'] != "" ? $_GET['location'] : false;
         $locations = \CommonsBooking\Repository\Location::getByItem($item->ID, true);
 
         // If theres no location selected, we'll show all available.
@@ -48,7 +46,7 @@ class Item extends View
                 }
             }
         } else {
-            $args['location'] = get_post($location);
+            $args['location'] = new \CommonsBooking\Model\Location(get_post($location));
         }
 
         return $args;
@@ -87,26 +85,43 @@ class Item extends View
     }
 
     /**
-     * @param $atts
-     * @param null $content
-     *
-     * @return false|string
-     * @throws \Exception
-     */
-    public static function listItems($atts, $content = null) {
-        $templateData['items'] = [];
-        if(is_array($atts) && array_key_exists('location-id', $atts)) {
-            $templateData['items'] = \CommonsBooking\Repository\Item::getByLocation($atts['location-id']);
-        } else {
-            $templateData['items'] = \CommonsBooking\Repository\Item::getAllPublished();
-        }
+    * cb_items shortcode
+    * 
+    * A list of items with timeframes.
+    */
+    public static function shortcode($atts)
+    {
+        // @TODO: allowedArgs should be placed in a central place so that all cb post types (e.g. location shortcode can use the same set)
+        $allowedArgs= array(
+            'p'             => '', // post id
+            // Author: https://developer.wordpress.org/reference/classes/wp_query/#author-parameters
+            'author'        => '',
+            'author_name'   => '',
+            // Category: https://developer.wordpress.org/reference/classes/wp_query/#category-parameters
+            'cat'           => '',
+            'cat_name'      => '',
+            // Tag: https://developer.wordpress.org/reference/classes/wp_query/#tag-parameters
+            'tag'           => '',
+            'tag_id'        => '',
+            // Status https://developer.wordpress.org/reference/classes/wp_query/#status-parameters
+            'post_status'   => '',  
+            // Pagination: https://developer.wordpress.org/reference/classes/wp_query/#pagination-parameters
+            'posts_per_page'=> '',
+            'nopaging'      => '',
+            'offset'        => ''
+        );
 
-        if(count($templateData['items'])) {
-            ob_start();
-            include CB_PLUGIN_DIR . 'templates/item-list.php';
-            return ob_get_clean();
-        } else {
-            return 'No items for location found..';
+        
+        $queryArgs = shortcode_atts( $allowedArgs, $atts, 'cb_items');   
+        
+        $items = \CommonsBooking\Repository\Item::get($queryArgs);
+        
+        ob_start();
+        foreach ( $items as $item ) {   
+            set_query_var( 'item', $item );
+            cb_get_template_part('shortcode', 'items', TRUE, FALSE, FALSE ); 
         }
+        return ob_get_clean();
+        
     }
 }

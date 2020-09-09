@@ -1,0 +1,29 @@
+/**
+ * Single item, single location, single booking view
+ *
+ * @package   CommonsBooking
+ * @author    Florian Egermann <florian@wielebenwir.de>
+ * @license   GPL-2.0+
+ * @since     2.0
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+
+.cb-wrapper {
+  /* invert the color scheme from the lists: wrapper has no bg, sub-wrapper colored */
+  &.template-location-single,
+  &.template-item-single,
+  &.template-booking-single {
+    background: transparent;
+    padding: 0;
+    > div:not(.cb-notice) { 
+      @extend .cb-box;
+      > div { /* sub list items */
+        border-bottom: 1px solid $color-white;
+        &:last-of-type {
+          border-bottom: 0;
+        }
+      }
+    }
+  }
+}

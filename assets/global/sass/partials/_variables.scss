@@ -14,43 +14,41 @@
  * @copyright 2015 wielebenwir
  */
 
-/* Colors: Brand */
-
+/* Colors: CB Brand */
 $color-green-bright: #A3BC55;
 $color-green-dark: #84AE53;
 $color-blue-dark: #506CA9;
 
-/* Colors: Backgrounds */
+/* Colors: Theme */
+$color-primary:   $color-blue-dark;
+$color-secondary: $color-green-bright;
 
+$color-bg       : #f6f6f6;
+$color-bg-alt   : #ffffff;
+
+
+/* Colors: Backgrounds */
 $color-gray-background: #f6f6f6;
 $color-white-background: #ffffff;
-$color-gray-border: rgb(206, 206, 206);
+$color-gray-border: $color-gray-background; 
 $color-blue-background: #E5EFFB;
 $color-blue-border: #E5EFFB;
 $color-yellow-background: #FFF9C5;
 
-/* Colors: text */
 
+
+/* Colors: text */
 $color-gray-dark: #444;
 $color-gray-silver: #9D9F9D;
 $color-black: #000;
 $color-white: #FFF;
 
 /* Colors: Message statuses */
-
 $color-error: #d5425c;
-$color-warning: #d5425c;
 $color-success: #74ce3c;
 
-/* Colors: Period types/statuses */
-$color-status-available: #51b800;
-$color-status-open: #0086bf;
-$color-status-booked: #E3273E;
-$color-status-pending: #FFA400; /* is booked, but not confirmed/approved */
-$color-status-blocked: #9B9B9B;
 
 /* Font sizes */
-
 $font-size-small: 12px;
 $font-line-height-small: 13px;
 $font-size-normal: 14px;
@@ -58,14 +56,12 @@ $font-size-big: 18px;
 $font-size-huge: 24px;
 
 /* Font stack */
-
 $font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
 
 /* Layout Variables */
-
-$padding-big: 15px;
-$padding: 10px;
-$padding-small: 3px;
+$spacer-big: 15px;
+$spacer: 10px;
+$spacer-small: 5px;
 $radius: 8px;
 $radius-pill: $radius;
 

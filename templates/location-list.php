@@ -1,4 +1,6 @@
 <?php
+    global $templateData;
+
     foreach ($templateData['locations'] as $location) {
         ?>
         <div class="cb-item-wrapper cb-box" >

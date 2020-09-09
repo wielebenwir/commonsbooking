@@ -25,6 +25,7 @@ define('CB_PLUGIN_SLUG', 'commonsbooking');
 define('CB_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('CB_METABOX_PREFIX', '_cb_'); //Start with an underscore to hide fields from custom fields list
 
+// @TODO: move all of this to either /Public.php or /Admin.php
 
 function commonsbooking_admin()
 {
@@ -56,7 +57,6 @@ function commonsbooking_public()
         'nonce'    => wp_create_nonce('calendar_data')
     ));
 }
-
 add_action('wp_enqueue_scripts', 'commonsbooking_public');
 
 add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 'get_calendar_data'));
@@ -169,6 +169,29 @@ add_filter('the_posts', function ($posts, $query) {
     }
     return $posts;
 }, 10, 2);
+
+// Redirect to startpage if user is not allowed to edit timeframe
+function cb_timeframe_redirect()
+{
+    global $post;
+    if (
+        $post &&
+        $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType &&
+        (
+            (
+                ! current_user_can('administrator') &&
+                get_current_user_id() != $post->post_author
+            ) ||
+            !is_user_logged_in()
+        )
+    ) {
+        wp_redirect(home_url('/'));
+        exit;
+    }
+
+}
+
+add_action('template_redirect', 'cb_timeframe_redirect');
 
 $cbPlugin = new Plugin();
 $cbPlugin->init();

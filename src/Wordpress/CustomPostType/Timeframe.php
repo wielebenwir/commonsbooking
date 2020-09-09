@@ -73,13 +73,22 @@ class Timeframe extends CustomPostType
         add_action('admin_init', array($this, 'addRoleCaps'), 999);
     }
 
+    /**
+     * @param $content
+     *
+     * @return string
+     */
     public function getTemplate($content)
     {
         $cb_content = '';
         if (is_singular(self::getPostType())) {
             ob_start();
             global $post;
-            cb_get_template_part('booking');
+            if  ( current_user_can('administrator') OR get_current_user_id() == $post->post_author ) {
+                cb_get_template_part('booking', 'single');
+            } else {
+                cb_get_template_part('booking', 'single-notallowed');
+            }
             $cb_content = ob_get_clean();
         } // if archive...
 

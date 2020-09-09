@@ -1,54 +1,61 @@
-#cb-action {
-  @extend .cb-box;
-  @extend .cb-cols;
+.cb-wrapper {
+  .cb-action {
+    @extend .cb-box;
+    @extend .cb-col-30-70;
 
-  /* Hack for now: we should be able to target the <input> directly by id/class. */
-  flex-direction: row-reverse; 
-  form {
-    &:last-of-type {
-      input {
-        background: transparent;
-        color: $color-gray-silver;
+    /* Hack for now: we should be able to target the <input> directly by id/class. */
+    flex-direction: row-reverse; 
+    form {
+      &:last-of-type {
+        input {
+          background: transparent;
+          color: $color-gray-silver;
+        }
       }
     }
-  }
-  input {
-    @extend .cb-button;
-  }
-}
-
-#booking-form {
-    width: 100%; /* do not extend litepicker width */
     input {
-    @extend .cb-button;
+      @extend .cb-button;
+    }
   }
-  .time-selection-container {
-    display: block;
-    margin-top: $padding;
-    
-    > div {
-      @extend .cb-box-inner;
-      margin-bottom: $padding;
-      text-align: left;
+  #booking-form-container, 
+  #booking-form-container div{
+    border-bottom: 0;
+  }
+
+  #booking-form {
+      width: 100%; /* do not extend litepicker width */
+      input {
+      @extend .cb-button;
+      float: right;
+    }
+    .time-selection-container {
       display: block;
-      overflow: hidden;
-      span, label, select {     
-        width: 33%;
-        float: left;
-      }
-      label  {
-        font-weight: bold;
-        // @extend .cb-big;
+      margin-top: $spacer;
+      
+      > div {
+        @extend .cb-box-inner;
+        margin-bottom: $spacer;
+        text-align: left;
+        display: block;
+        overflow: hidden;
+        span, label, select {     
+          width: 33%;
+          float: left;
+        }
+        label  {
+          font-weight: bold;
+          // @extend .cb-big;
+        }
       }
     }
   }
-}
-.cb-notice {
-  @extend .cb-box;
-	margin-bottom: $padding-big;
-	font-size: $font-size-big;
-	vertical-align: middle;
-	font-weight: bold;
-	background: $color-yellow-background;
-  position: relative;
+  .cb-notice {
+    @extend .cb-box;
+    margin-bottom: $spacer-big;
+    font-size: $font-size-big;
+    vertical-align: middle;
+    font-weight: bold;
+    background: $color-yellow-background;
+    position: relative;
+  }
 }

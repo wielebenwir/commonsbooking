@@ -49,12 +49,12 @@ if ( !function_exists( 'cb_get_template_part' ) ) {
       // Allow 3rd party plugin filter template file from their plugin
       $template = apply_filters( 'cb_get_template_part', $template, $slug, $name, $plugin_slug );
 
-      $has_post_thumbnail = (has_post_thumbnail()) ? 'has-post-thumbnail' : '';
+      $has_post_thumbnail = (has_post_thumbnail()) ? 'has-post-thumbnail' : 'no-post-thumbnail'; //@TODO this feils because we have no global post anymore
 
       $template_classes = array (
         'cb-' . $slug . '-' . $name,
-        'template-' . basename($template),
-        'post-' .get_post_type(), 
+        'template-' . basename($template, '.php'),
+        'post-' .get_post_type(), //@TODO: this returns "page", not the type (e.g. "item") that is queried.
         $has_post_thumbnail
       );
 
@@ -69,7 +69,7 @@ if ( !function_exists( 'cb_get_template_part' ) ) {
         if ( empty ( $template ) ) {
           $before_html .= ( '<div class="cb-debug">Template file not found</div>' );
         } else {
-          $before_html .= ( '<div class="cb-debug">Template:<strong>' . basename($template) . '</strong></div>' );
+          $before_html .= ( '<div class="cb-debug error">Template:<strong>' . basename($template) . '</strong></div>' );
         }
       }
 

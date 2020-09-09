@@ -203,7 +203,7 @@ class Location extends View
             'post' => $post,
             'wp_nonce' => Timeframe::getWPNonceField(),
             'actionUrl' => admin_url('admin.php'),
-            'location' => $location,
+            'location' => new \CommonsBooking\Model\Location($location),
             'postUrl' => get_permalink($location),
             'type' => Timeframe::BOOKING_ID
         ];
@@ -222,7 +222,7 @@ class Location extends View
                 }
             }
         } else {
-            $args['item'] = get_post($item);
+            $args['item'] = new \CommonsBooking\Model\Item(get_post($item));
         }
 
         return $args;
@@ -264,5 +264,21 @@ class Location extends View
         }
     }
 
+    /**
+    * cb_locations shortcode
+    * 
+    * A list of locations with timeframes.
+    */
+    public static function shortcode($atts)
+    {
+        $queryArgs = shortcode_atts( static::$allowedShortCodeArgs, $atts, \CommonsBooking\Wordpress\CustomPostType\Location::getPostType());
+        $locations = \CommonsBooking\Repository\Location::get($queryArgs);
 
+        ob_start();
+        foreach ( $locations as $location ) {   
+            set_query_var( 'location', $location );
+            cb_get_template_part('shortcode', 'locations', TRUE, FALSE, FALSE ); 
+        }
+        return ob_get_clean();
+    }
 }

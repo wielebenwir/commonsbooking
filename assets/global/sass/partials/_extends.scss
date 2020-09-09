@@ -18,15 +18,15 @@
 
 .cb-box {
 	background: $color-gray-background;
-	padding: $padding $padding-big;
+	padding: $spacer $spacer-big;
 	overflow: hidden;
 	border-radius: $radius;
-	margin-bottom: $padding;
+	margin-bottom: $spacer;
 }
 
 .cb-box-inner {
 	background: $color-white;
-	padding: $padding;
+	padding: $spacer;
 	border-radius: $radius;
 }
 
@@ -56,7 +56,7 @@
 	border-radius: $radius;
 }
 
-.cb-image {
+.cb-thumbnail {
 	border-radius: $radius;
 }
 
@@ -72,13 +72,13 @@
 	word-break: normal !important; /* TwentyTwenty theme fix */
 
 	color: $color-white;
-	padding: $padding $padding-big;
+	padding: $spacer $spacer-big;
 	font-weight: bold;
 
 
 	&:hover {
 		@extend .shadow-small;
-		color: $color-black;
+		background: $color-blue-dark;
 	}
 
 	&:visited {
@@ -86,7 +86,7 @@
 	}
 
 	&.big {
-		padding: $padding $padding-big;
+		padding: $spacer $spacer-big;
 	}
 	&.secondary {
 		background-color: $color-white;
@@ -110,25 +110,6 @@
 .cb-button-container a {
 	@extend .cb-button;
 }
-
-.cb-button-icon {
-	border: 1px solid $color-gray-border;
-	background: $color-white;
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	text-decoration: none;
-
-	&:before {
-		display: inline-block;
-		font-size: 20px;
-		width: 100%;
-		height: 20px;
-		line-height: 20px;
-		vertical-align: baseline;
-	}
-}
-
 .cb-pill {
 	border-radius: $radius-pill;
 	padding: 0;
@@ -136,8 +117,6 @@
 	a {
 		text-decoration: none;
 		color: $color-white;
-		padding: $padding-small $padding;
-		&:hover {
-		}
+		padding: $spacer-small $spacer;
 	}
 }

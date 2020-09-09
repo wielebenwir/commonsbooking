@@ -30,8 +30,7 @@ class Location extends CustomPostType
         $cb_content = '';
         if (is_singular(self::getPostType())) {
             ob_start();
-            cb_get_template_part('meta', 'location');
-            cb_get_template_part('calendar', 'location');
+            cb_get_template_part('location', 'single');
             $cb_content = ob_get_clean();
         } // if archive...
 
@@ -100,7 +99,7 @@ class Location extends CustomPostType
             'exclude_from_search' => true,
 
             // Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
-            'supports'            => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions'),
+            'supports'            => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions', 'excerpt'),
 
             // Soll der Post Type Kategien haben?
             //'taxonomies'         => array('category'),

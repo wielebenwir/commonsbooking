@@ -34,6 +34,19 @@ class Booking extends CustomPost
         }
         return $post;
     }
+    /**
+     * @TODO: User
+    //  * @return User
+    //  * @throws \Exception
+    //  */
+    // public function getUser() {
+    //     $userId = self::get_meta('User-id');
+
+    //     if($post = get_post($userId)) {
+    //         return new User($post);
+    //     }
+    //     return $post;
+    // }
 
     /**
      * Assings relevant meta fields from related bookable timeframe to booking.
@@ -160,7 +173,12 @@ class Booking extends CustomPost
     
     /**
      * pickup_datetime
-     *
+     * 
+     * @TODO: This will change if the timeframe is edited! 
+     * @TODO: This is not the place for grid/time calculations, they should happen in a centralised function that does not return formatting
+     * @TODO: wrap in spans <span class="cb-date">date</span> so we can format these tags
+     * @TODO: 
+     * 
      * @return void
      */
     public function pickup_datetime()
@@ -187,12 +205,15 @@ class Booking extends CustomPost
             $time_end = date_i18n($time_format, strtotime($this->get_meta('end-time')));
         }
 
-        return $date_start . ' ' . $time_start . ' - ' . $time_end;;
+        return $date_start . ' ' . $time_start . ' - ' . $time_end;
     }
     
     /**
      * return_datetime
      *
+     * @TODO: This will change when the timeframe changes. 
+     * @TODO: This is not the place for grid/time calculations
+     * 
      * @return void
      */
     public function return_datetime()
@@ -218,13 +239,15 @@ class Booking extends CustomPost
             $time_start = date_i18n($time_format, strtotime($this->get_meta('start-time')));
         }
 
-        return $date_end . ' ' . $time_start . ' - ' . $time_end;;
+        return $date_end . ' ' . $time_start . ' - ' . $time_end;
     }
 
     
     /**
      * booking_action_button
      *
+     * @TODO: This calculation should only happen once (it happens twice, for confirm button and cancel button)
+     * 
      * @param  mixed $form_action
      * @return void
      */
@@ -255,7 +278,7 @@ class Booking extends CustomPost
         }
 
         if (isset($form_post_status)) {       
-            include CB_PLUGIN_DIR . 'templates/components/booking-action-form.php';
+            include CB_PLUGIN_DIR . 'templates/booking-single-form.php';
         }
 
     }
@@ -287,10 +310,15 @@ class Booking extends CustomPost
 
     }
 
-
+    /**
+     * Return HTML Link to booking
+     *
+     * @return HTML
+     */
     public function booking_link()
     {
-        return '<a href="' . site_url('?cb_timeframe=' . $this->post->post_name) . '">' . __( 'Link to your booking', 'commonsbooking' ) . '</a>';
+        return sprintf( '<a href="%s">%s</a>', get_permalink( $this->ID), __( 'Link to your booking', 'commonsbooking' ) );
+
     }
 
 }

@@ -9,6 +9,8 @@ class CustomPost
 
     protected $post;
 
+    protected $date;
+
     /**
      * CustomPost constructor.
      *
@@ -21,7 +23,7 @@ class CustomPost
         } elseif (is_int($post)) {
             $this->post = get_post($post);
         } else {
-            throw new \Exception("invalid post param. needed WP_Post or ID (int)");
+            throw new \Exception("Invalid post param. Needed WP_Post or ID (int)");
         }
     }
 
@@ -54,11 +56,64 @@ class CustomPost
     }
 
     /**
-     * returns title
-     * @return string
+     * Return Excerpt 
+     *
+     * @return html
      */
-    public function name()
+    public function excerpt()
     {
-        return $this->post->post_title;
+        $excerpt = '';
+        if (has_excerpt($this->ID)) {
+            $excerpt .= wp_strip_all_tags( get_the_excerpt( $this->ID ) );
+        }
+        return $excerpt;
     }
+
+    /**
+     * Return Title with permalink
+     *
+     * @return html
+     */
+    public function titleLink()
+    {
+        return sprintf('<a href="%s" class="cb-title cb-title-link">%s</a>', get_the_permalink($this->ID), $this->post_title );
+    }
+
+    /**
+     * Return Thumbnail
+     *
+     * @param string $size
+     *
+     * @return string html
+     */
+    public function thumbnail($size = 'thumbnail')
+    {
+        if (has_post_thumbnail($this->ID)) {
+            return '<div class="cb-thumbnail">' . get_the_post_thumbnail($this->ID, $size,
+                    array('class' => 'alignleft cb-image')) . '</div>';
+        }
+
+        return '';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param string|null $date Date-String
+     *
+     * @return CustomPost
+     */
+    public function setDate(string $date = null)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
 }

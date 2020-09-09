@@ -9,18 +9,49 @@ class Item extends PostRepository
 
     /**
      * Returns all published items.
+     * @param $args
      * @return array
      * @throws \Exception
      */
-    public static function getAllPublished() {
+    public static function getAllPublished($args = array()) {
+        
         $items = [];
 
-        $args = array(
+        $defaults = array(
             'post_type' => \CommonsBooking\Wordpress\CustomPostType\Item::$postType,
             'post_status' => array('publish', 'inherit')
         );
 
-        $query = new \WP_Query($args);
+        $queryArgs = wp_parse_args($args, $defaults);
+
+        $query = new \WP_Query($queryArgs);
+
+        if ($query->have_posts()) {
+            $items = $query->get_posts();
+            foreach($items as &$item) {
+                $item = new \CommonsBooking\Model\Item($item);
+            }
+        }
+        return $items;
+    }
+
+     /**
+     * Returns an array of CB item post objects
+     * 
+     * 
+     * @param $args WP Post args
+     * @return array
+     */
+    public static function get($args = array()) {
+        
+        $args['post_type'] =  \CommonsBooking\Wordpress\CustomPostType\Item::getPostType();
+             
+        $defaults = array(
+            'post_status' => array('publish', 'inherit'),
+        );
+
+        $queryArgs = wp_parse_args($args, $defaults);
+        $query = new \WP_Query($queryArgs);
 
         if ($query->have_posts()) {
             $items = $query->get_posts();
