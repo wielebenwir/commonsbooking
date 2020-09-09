@@ -73,6 +73,11 @@ class Timeframe extends CustomPostType
         add_action('admin_init', array($this, 'addRoleCaps'), 999);
     }
 
+    /**
+     * @param $content
+     *
+     * @return string
+     */
     public function getTemplate($content)
     {
         $cb_content = '';

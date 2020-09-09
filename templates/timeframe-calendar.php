@@ -1,5 +1,5 @@
 <?php
-    // {% if backend != 'true' %}
+    global $templateData;
     if(!array_key_exists('backend', $templateData) || $templateData['backend'] != true) {
 ?>
     <div id="litepicker"></div>
@@ -46,7 +46,6 @@
         </form>
     </div>
 <?php } else {
-    //{% for week in calendar.weeks %}
     foreach ($templateData['calendar']['weeks'] as $week) {
 ?>
         <ul class="cb-calendar">

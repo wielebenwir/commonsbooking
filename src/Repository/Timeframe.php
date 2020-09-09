@@ -8,11 +8,11 @@ class Timeframe extends PostRepository
 {
 
     /**
-     * @param $date
+     * @param string|null $date Date-String
      *
      * @return array
      */
-    protected static function getTimeRangeQuery($date)
+    protected static function getTimeRangeQuery(?string $date = null)
     {
         return array(
             'relation' => "OR",
@@ -52,11 +52,14 @@ class Timeframe extends PostRepository
      * @param array $locations
      * @param array $items
      * @param array $types
-     * @param string $date Date-String
+     * @param string|null $date Date-String
+     *
+     * @param bool $returnAsModel
      *
      * @return array
+     * @throws \Exception
      */
-    public static function get($locations = [], $items = [], $types = [], $date = null, $returnAsModel = FALSE) {
+    public static function get($locations = [], $items = [], $types = [], ?string $date = null, $returnAsModel = false) {
         $posts = [];
         // Default query
         $args = array(
@@ -115,7 +118,6 @@ class Timeframe extends PostRepository
                 });
             }
         }
-
 
         // if returnAsModel == TRUE the result is a timeframe model instead of a wordpress object
         if ($returnAsModel) { 

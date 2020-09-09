@@ -222,7 +222,7 @@ class Location extends View
                 }
             }
         } else {
-            $args['item'] = get_post($item);
+            $args['item'] = new \CommonsBooking\Model\Item(get_post($item));
         }
 
         return $args;
@@ -263,6 +263,7 @@ class Location extends View
             return 'No Locations for item found..';
         }
     }
+
     /**
     * cb_locations shortcode
     * 
@@ -270,31 +271,9 @@ class Location extends View
     */
     public static function shortcode($atts)
     {
-        // @TODO: allowedArgs should be placed in a central place so that all cb post types (e.g. location shortcode can use the same set)
-        $allowedArgs= array(
-            'p'             => '', // post id
-            // Author: https://developer.wordpress.org/reference/classes/wp_query/#author-parameters
-            'author'        => '',
-            'author_name'   => '',
-            // Category: https://developer.wordpress.org/reference/classes/wp_query/#category-parameters
-            'cat'           => '',
-            'cat_name'      => '',
-            // Tag: https://developer.wordpress.org/reference/classes/wp_query/#tag-parameters
-            'tag'           => '',
-            'tag_id'        => '',
-            // Status https://developer.wordpress.org/reference/classes/wp_query/#status-parameters
-            'post_status'   => '',  
-            // Pagination: https://developer.wordpress.org/reference/classes/wp_query/#pagination-parameters
-            'posts_per_page'=> '',
-            'nopaging'      => '',
-            'offset'        => ''
-        );
-
-        
-        $queryArgs = shortcode_atts( $allowedArgs, $atts, 'cb_locations');   
-        
+        $queryArgs = shortcode_atts( static::$allowedShortCodeArgs, $atts, \CommonsBooking\Wordpress\CustomPostType\Location::getPostType());
         $locations = \CommonsBooking\Repository\Location::get($queryArgs);
-        
+
         ob_start();
         foreach ( $locations as $location ) {   
             set_query_var( 'location', $location );

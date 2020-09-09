@@ -27,14 +27,12 @@ class Item extends View
             'post' => $post,
             'wp_nonce' => Timeframe::getWPNonceField(),
             'actionUrl' => admin_url('admin.php'),
-            'item' => $item,
+            'item' => new \CommonsBooking\Model\Item($item),
             'postUrl' => get_permalink($item),
             'type' => Timeframe::BOOKING_ID
         ];
 
-        //$location = isset($_GET['location']) && $_GET['location'] != "" ? $_GET['location'] : false;
-        $location = (get_query_var('location') && get_query_var('location') != "") ? get_query_var('location') : false;
-        
+        $location = isset($_GET['location']) && $_GET['location'] != "" ? $_GET['location'] : false;
         $locations = \CommonsBooking\Repository\Location::getByItem($item->ID, true);
 
         // If theres no location selected, we'll show all available.
@@ -48,7 +46,7 @@ class Item extends View
                 }
             }
         } else {
-            $args['location'] = get_post($location);
+            $args['location'] = new \CommonsBooking\Model\Location(get_post($location));
         }
 
         return $args;

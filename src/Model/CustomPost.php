@@ -9,6 +9,8 @@ class CustomPost
 
     protected $post;
 
+    protected $date;
+
     /**
      * CustomPost constructor.
      *
@@ -21,7 +23,7 @@ class CustomPost
         } elseif (is_int($post)) {
             $this->post = get_post($post);
         } else {
-            throw new \Exception("invalid post param. needed WP_Post or ID (int)");
+            throw new \Exception("Invalid post param. Needed WP_Post or ID (int)");
         }
     }
 
@@ -78,15 +80,40 @@ class CustomPost
     }
 
     /**
-     * Return Thumbnail 
+     * Return Thumbnail
      *
-     * @return html
+     * @param string $size
+     *
+     * @return string html
      */
-    public function thumbnail( $size='thumbnail' )
+    public function thumbnail($size = 'thumbnail')
     {
-        if ( has_post_thumbnail($this->ID) ) {
-            return '<div class="cb-thumbnail">' . get_the_post_thumbnail($this->ID, $size , array( 'class' => 'alignleft cb-image' ) ) . '</div>';
+        if (has_post_thumbnail($this->ID)) {
+            return '<div class="cb-thumbnail">' . get_the_post_thumbnail($this->ID, $size,
+                    array('class' => 'alignleft cb-image')) . '</div>';
         }
-       return '';
+
+        return '';
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param string|null $date Date-String
+     *
+     * @return CustomPost
+     */
+    public function setDate(string $date = null)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
 }

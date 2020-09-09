@@ -20,18 +20,21 @@ class Location extends CustomPost
         return Timeframe::get([$this->ID], [], [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID], NULL, TRUE);
     }
 
-   
+
     /**
      * getBookableTimeframesByItem
-     * 
-     * returns bookable timeframes for a given itemID 
      *
-     * @param  mixed $itemId
-     * @return array 
+     * returns bookable timeframes for a given itemID
+     *
+     * @param mixed $itemId
+     * @param bool $asModel
+     *
+     * @return array
+     * @throws \Exception
      */
-    public function getBookableTimeframesByItem($itemId)
+    public function getBookableTimeframesByItem($itemId, $asModel = false)
     {
-        return Timeframe::get([$this->ID], [$itemId], [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID]);
+        return Timeframe::get([$this->ID], [$itemId], [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID], null, $asModel);
     }
 
     /**

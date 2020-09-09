@@ -1,11 +1,14 @@
 <?php
 /**
  * Location meta like address & pickupinfo
- * 
+ *
  * WP Post properties for location are available as $location->property
- * location Model methods are available as $location->myMethod()   
- * 
+ * location Model methods are available as $location->myMethod()
+ *
  */
+
+global $templateData;
+$location = $templateData['location'];
 
 $location_address   =  $location->formattedAddressOneLine();
 $location_contact   =  $location->formattedContactInfoOneLine();
@@ -20,4 +23,4 @@ $location_contact   =  $location->formattedContactInfoOneLine();
   <div><?php echo __('Location contact', 'commonsbooking'); ?></div>
   <div><?php echo $location_contact; ?></div>
 </div>
-<?php } // if ( $location_contact ) 
+<?php } // if ( $location_contact )
