@@ -9,7 +9,8 @@
  * location Model methods are available as $location->myMethod()    
  *  
  */
-
+global $templateData;
+$location = $templateData['location'];
 $timeframes 	= $location->getBookableTimeframes();
 $noResultText = __("No bike available at this location.", "commonsbooking");
 

@@ -19,7 +19,6 @@
   ],
   "require": {
     "php": ">=7.2.5",
-    "twig/twig": "^3.0",
     "cmb2/cmb2": "^2.7",
     "mustardbees/cmb-field-select2": "^3.0"
   }

@@ -4,34 +4,9 @@ namespace CommonsBooking\Repository;
 
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
-class Location extends PostRepository
+class Location extends BookablePost
 {
 
-    /**
-     * Returns an array of CB location post objects
-     * 
-     * @param $args WP Post args
-     * @return array
-     */
-    public static function get($args = array()) {
-        
-        $args['post_type'] =  \CommonsBooking\Wordpress\CustomPostType\Location::getPostType();
-             
-        $defaults = array(
-            'post_status' => array('publish', 'inherit'),
-        );
-
-        $queryArgs = wp_parse_args($args, $defaults);
-        $query = new \WP_Query($queryArgs);
-
-        if ($query->have_posts()) {
-            $locations = $query->get_posts();
-            foreach($locations as &$location) {
-                $location = new \CommonsBooking\Model\Location($location);
-            }
-        }
-        return $locations;
-    }
     /**
      * Returns all published locations.
      * @return array
@@ -151,4 +126,19 @@ class Location extends PostRepository
         return $locations;
     }
 
+    /**
+     * @return mixed
+     */
+    protected static function getPostType()
+    {
+        return \CommonsBooking\Wordpress\CustomPostType\Location::getPostType();
+    }
+
+    /**
+     * @return string
+     */
+    protected static function getModelClass()
+    {
+        return \CommonsBooking\Model\Location::class;
+    }
 }

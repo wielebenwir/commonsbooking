@@ -4,7 +4,7 @@ namespace CommonsBooking\Repository;
 
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
-class Item extends PostRepository
+class Item extends BookablePost
 {
 
     /**
@@ -24,33 +24,6 @@ class Item extends PostRepository
 
         $queryArgs = wp_parse_args($args, $defaults);
 
-        $query = new \WP_Query($queryArgs);
-
-        if ($query->have_posts()) {
-            $items = $query->get_posts();
-            foreach($items as &$item) {
-                $item = new \CommonsBooking\Model\Item($item);
-            }
-        }
-        return $items;
-    }
-
-     /**
-     * Returns an array of CB item post objects
-     * 
-     * 
-     * @param $args WP Post args
-     * @return array
-     */
-    public static function get($args = array()) {
-        
-        $args['post_type'] =  \CommonsBooking\Wordpress\CustomPostType\Item::getPostType();
-             
-        $defaults = array(
-            'post_status' => array('publish', 'inherit'),
-        );
-
-        $queryArgs = wp_parse_args($args, $defaults);
         $query = new \WP_Query($queryArgs);
 
         if ($query->have_posts()) {
@@ -158,4 +131,19 @@ class Item extends PostRepository
         return $items;
     }
 
+    /**
+     * @return mixed
+     */
+    protected static function getPostType()
+    {
+        return \CommonsBooking\Wordpress\CustomPostType\Item::getPostType();
+    }
+
+    /**
+     * @return string
+     */
+    protected static function getModelClass()
+    {
+        return \CommonsBooking\Model\Item::class;
+    }
 }

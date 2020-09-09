@@ -6,21 +6,8 @@ namespace CommonsBooking\Model;
 use CommonsBooking\CB\CB;
 use CommonsBooking\Repository\Timeframe;
 
-class Location extends CustomPost
+class Location extends BookablePost
 {
-    /**
-     * Returns bookable timeframes for location.
-     * 
-     * @TODO: should support $args 
-     *
-     * @return array
-     */
-    public function getBookableTimeframes()
-    {
-        return Timeframe::get([$this->ID], [], [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID], NULL, TRUE);
-    }
-
-
     /**
      * getBookableTimeframesByItem
      *
