@@ -65,6 +65,14 @@ add_action('wp_ajax_nopriv_calendar_data', array(\CommonsBooking\View\Location::
 // should be loaded via add_action, but wasnt working in admin menu
 load_plugin_textdomain('commonsbooking', false, basename(dirname(__FILE__)) . '/languages/');
 
+function commonsbooking_query_vars( $qvars ) {
+    $qvars[] = 'location';
+    $qvars[] = 'item';
+    $qvars[] = 'type';
+    return $qvars;
+}
+add_filter( 'query_vars', 'commonsbooking_query_vars' );
+
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/cmb2/cmb2/init.php';
 require __DIR__ . '/vendor/mustardBees/cmb-field-select2/cmb-field-select2.php';

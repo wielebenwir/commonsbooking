@@ -12,8 +12,6 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 class Location extends View
 {
 
-    protected static $template = 'location/index.html.twig';
-
     /**
      * Returns JSON-Data for Litepicker calendar.
      * @param $startDate
@@ -208,7 +206,7 @@ class Location extends View
             'type' => Timeframe::BOOKING_ID
         ];
 
-        $item = isset($_GET['item']) && $_GET['item'] != "" ? $_GET['item'] : false;
+        $item = get_query_var('item')?: false;
         $items = \CommonsBooking\Repository\Item::getByLocation($location->ID, true);
 
         // If theres no item selected, we'll show all available.
@@ -229,55 +227,33 @@ class Location extends View
     }
 
     /**
-     * Echos Location default view.
-     * @param \WP_Post|null $post
+     * cb_locations shortcode
      *
-     * @throws \Exception
-     */
-    public static function index(\WP_Post $post = null)
-    {
-        echo self::render(self::$template, self::getTemplateData($post));
-    }
-
-    /**
-     * Renders location listing.
+     * A list of locations with timeframes.
+     *
      * @param $atts
-     * @param null $content
      *
      * @return false|string
      * @throws \Exception
      */
-    public static function listLocations($atts, $content = null) {
-        $templateData['locations'] = [];
-        if(is_array($atts) && array_key_exists('item-id', $atts)) {
-            $templateData['locations'] = \CommonsBooking\Repository\Location::getByItem($atts['item-id']);
-        } else {
-            $templateData['locations'] = \CommonsBooking\Repository\Location::getAllPublished();
-        }
-
-        if(count($templateData['locations'])) {
-            ob_start();
-            include CB_PLUGIN_DIR . 'templates/location-list.php';
-            return ob_get_clean();
-        } else {
-            return 'No Locations for item found..';
-        }
-    }
-
-    /**
-    * cb_locations shortcode
-    * 
-    * A list of locations with timeframes.
-    */
     public static function shortcode($atts)
     {
+        global $templateData;
+        $templateData = [];
+        $locations = [];
         $queryArgs = shortcode_atts( static::$allowedShortCodeArgs, $atts, \CommonsBooking\Wordpress\CustomPostType\Location::getPostType());
-        $locations = \CommonsBooking\Repository\Location::get($queryArgs);
+
+        if(is_array($atts) && array_key_exists('item-id', $atts)) {
+            $location = \CommonsBooking\Repository\Location::getByItem($atts['item-id'], true);
+            $locations[] = $location;
+        } else {
+            $locations = \CommonsBooking\Repository\Location::get($queryArgs, true);
+        }
 
         ob_start();
-        foreach ( $locations as $location ) {   
-            set_query_var( 'location', $location );
-            cb_get_template_part('shortcode', 'locations', TRUE, FALSE, FALSE ); 
+        foreach ( $locations as $location ) {
+            $templateData['location'] = $location;
+            cb_get_template_part('shortcode', 'locations', TRUE, FALSE, FALSE );
         }
         return ob_get_clean();
     }

@@ -7,25 +7,8 @@ namespace CommonsBooking\Model;
 use CommonsBooking\Repository\Timeframe;
 use Exception;
 
-class Item extends CustomPost
+class Item extends BookablePost
 {
-    /**
-     * @return array
-     *
-     * @TODO: should support $args
-     * @throws Exception
-     */
-    public function getBookableTimeframes()
-    {
-        return Timeframe::get(
-            [],
-            [$this->ID],
-            [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID],
-            $this->getDate() ?: null,
-            true
-        );
-    }
-
     /**
      * Returns bookable timeframes for a specific location
      *

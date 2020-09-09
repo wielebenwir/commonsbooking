@@ -56,29 +56,28 @@ class Timeframe extends CustomPost
         $availableString = '';
 
         // we check if there is no timeframe in daterange
-        if (
-            ($endDate !== 0 && $endDate < $today) |
-            ($startDate !== 0 && $startDate > $today) |
-            ($endDate == 0 && $startDate == 0)
-        ) {
-            return __('Currently not available here', 'commonsbooking');
-        }
+//        if (
+//            ($endDate !== 0 && $endDate < $today) |
+//            ($startDate !== 0 && $startDate > $today) |
+//            ($endDate == 0 && $startDate == 0)
+//        ) {
+//            return __('Currently not available here', 'commonsbooking');
+//        }
 
-
-        if ($startDate == $endDate) { // available only one day 
+        if ($startDate !== 0 && $endDate !== 0 && $startDate == $endDate) { // available only one day
             $availableString = sprintf(__('on %s', 'commonsbooking'), $startDateFormatted);
         } elseif ($startDate > 0 && ($endDate == 0)) { // start but no end date
             if ($startDate > $today) { // start is in the future
                 $availableString = sprintf(__('from %s', 'commonsbooking'), $startDateFormatted);
             } else { // start has passed, no end date, probably a fixed location
-                $availableString = '';
+                $availableString = ' permanently';
             }
         } elseif ($startDate > 0 && $endDate > 0) { // start AND end date
             if ($startDate > $today) { // start is in the future, with an end date
-                $availableString = sprintf(__('from %s until %s', 'commonsbooking'), $startDateFormatted,
+                $availableString = sprintf(__(' from %s until %s', 'commonsbooking'), $startDateFormatted,
                     $endDateFormatted);
             } else { // start has passed, with an end date
-                $availableString = sprintf(__('until %s', 'commonsbooking'), $endDateFormatted);
+                $availableString = sprintf(__(' until %s', 'commonsbooking'), $endDateFormatted);
             }
         }
 

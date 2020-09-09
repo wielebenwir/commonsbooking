@@ -19,7 +19,7 @@ class Item extends CustomPostType
         add_action('cmb2_admin_init', array($this, 'registerMetabox'));
 
         // Listing of locations for item
-        add_shortcode('cb_locations', array(\CommonsBooking\View\Location::class, 'listLocations'));
+        add_shortcode('cb_locations', array(\CommonsBooking\View\Location::class, 'shortcode'));
 
         // Setting role permissions
         add_action('admin_init',array($this, 'addRoleCaps'),999);
