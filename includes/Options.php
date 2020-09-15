@@ -180,7 +180,7 @@ $options_array = array(
             </p>
             
             Pick up date and time:<br>
-            <b>{{booking:pickup_datetime}}</b>
+            <b>{{booking:pickup_datetime}}</b><br>
             {{location:pickupInstructions}}
             
             <br><br>
