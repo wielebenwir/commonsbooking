@@ -146,7 +146,7 @@ class Item extends CustomPostType
 
         $cmb->add_field( array(
             'name'       => __('Item Admin(s)', 'commonsbooking'),
-            'desc'       => __('Item Admin(s) field description (optional)', 'commonsbooking'),
+            'desc'       => __('choose one or more users to give them the permisssion to edit and manage this specific item. Only users with the role cb_manager can be selected here', 'commonsbooking'),
             'id'      => CB_METABOX_PREFIX . 'item_admins',
             'type'    => 'pw_multiselect',
             'options' => $userOptions,
