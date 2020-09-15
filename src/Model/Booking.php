@@ -300,7 +300,7 @@ class Booking extends CustomPost
 
         if ($current_status == "confirmed")
         {
-            return __('Your booking is confirmed. A confirmation mail has been sent to you. <br> Enjoy your cargo bike trip :-)', 'commonsbooking' );
+            return __('Your booking is confirmed. A confirmation mail has been sent to you.', 'commonsbooking' );
         }
 
         if ($current_status == "cancelled")
