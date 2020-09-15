@@ -312,12 +312,13 @@ class Booking extends CustomPost
 
     /**
      * Return HTML Link to booking
+     * @TODO: optimize booking link to support different permalink settings or set individual slug (e.g. booking instead of cb_timeframe)
      *
      * @return HTML
      */
     public function booking_link()
     {
-        return sprintf( '<a href="%s">%s</a>', get_permalink( $this->ID), __( 'Link to your booking', 'commonsbooking' ) );
+        return sprintf( '<a href="%s">%s</a>', add_query_arg($this->post->post_type, $this->post->post_name, home_url()), __( 'Link to your booking', 'commonsbooking' ) );
 
     }
 
