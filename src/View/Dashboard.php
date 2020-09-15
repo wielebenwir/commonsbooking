@@ -14,7 +14,7 @@ class Dashboard extends View
     public static function index() {
         ob_start();
         cb_get_template_part('dashboard', 'index');
-        return ob_get_clean();
+        echo ob_get_clean();
     }
 
 }
