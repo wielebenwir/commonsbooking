@@ -167,7 +167,7 @@ $options_array = array(
             'id' => 'emailtemplates_mail-booking-confirmed-subject',
             'cb1_legacy_id' => 'commons-booking-settings-mail:commons-booking_mail_confirmation_subject',
             'type' => 'text',
-            'default' => __( 'Your booking {{item:name}} at {{location:name}}', 'commonsbooking' ),
+            'default' => __( 'Your booking {{item:post_name}} at {{location:post_name}}', 'commonsbooking' ),
           ),
           array(
             'name' => __( 'Booking confirmed email body', 'commonsbooking' ),
@@ -176,12 +176,12 @@ $options_array = array(
             'type' => 'textarea',
             'default' => __( '
             Hi {{user:first_name}},<br>
-            <p>thank you for booking {{item:name}} {{booking:booking_timeframe_date}}.
+            <p>thank you for booking {{item:post_name}} {{booking:booking_timeframe_date}}.
             </p>
             
             Pick up date and time:<br>
             <b>{{booking:pickup_datetime}}</b>
-            {{location:pickupinstructions}}
+            {{location:pickupInstructions}}
             
             <br><br>
             
@@ -189,8 +189,9 @@ $options_array = array(
             <b>{{booking:return_datetime}}</b>
             <br><br>
             <b>Location address</b><br>
-            {{location:location_address}}
-            {{location:location_contact}}
+            {{location:post_name}}
+            {{location:formattedAddress}}
+            {{location:formattedContactInfoOneLine}}
             
             <p>Click here to see or cancel your booking: {{booking:booking_link}}.</p><br>
             <b>Notice:</b> You need to be logged in to see your booking. <br>
@@ -208,7 +209,7 @@ $options_array = array(
             'name' => __( 'Booking cancelled email subject', 'commonsbooking' ),
             'id' => 'emailtemplates_mail-booking-cancelled-subject',
             'type' => 'text',
-            'default' => __( 'Booking cancelled: {{item:name}} at {{location:name}}', 'commonsbooking' ),
+            'default' => __( 'Booking cancelled: {{item:post_name}} at {{location:post_name}}', 'commonsbooking' ),
           ),
           array(
             'name' => __( 'Booking cancelled email body', 'commonsbooking' ),
@@ -216,10 +217,10 @@ $options_array = array(
             'type' => 'textarea',
             'default' => __( '
             Hi {{user:first_name}},<br>
-            <p>your booking {{item:name}} at {{item:name}} {{booking:booking_timeframe_date}} has been cancelled.
+            <p>your booking {{item:post_name}} at {{item:post_name}} {{booking:booking_timeframe_date}} has been cancelled.
             </p>
             
-            <h3>Your information</h3>
+            <b>Your information</b>
             <p>Login: {{user:user_nicename}}<br>
             <p>Name: {{user:first_name}} {{user:last_name}}.</p>
             
