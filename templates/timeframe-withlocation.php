@@ -11,7 +11,7 @@
 $location       = $timeframe->getLocation();
 $item           = $timeframe->getItem();
 $button_label   = __('Book here', 'commonsbooking');
-$permalink      = add_query_arg ( 'item', $item->ID, get_the_permalink($location->ID) );
+$permalink      = add_query_arg ( 'location', $location->ID, get_the_permalink($item->ID) );
 
 ?>
 <?php echo $location->thumbnail(); // div.thumbnail is printed by function ?>
