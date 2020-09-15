@@ -19,7 +19,7 @@ defined('ABSPATH') or die("Thanks for visting");
  * Text Domain:  commonsbooking
  */
 
-define('CB_VERSION', '2.0.0-ALPHA');
+define('CB_VERSION', '2.1.2-ALPHA');
 define('CB_MENU_SLUG', 'cb-menu');
 define('CB_PLUGIN_SLUG', 'commonsbooking');
 define('CB_PLUGIN_DIR', plugin_dir_path(__FILE__));
