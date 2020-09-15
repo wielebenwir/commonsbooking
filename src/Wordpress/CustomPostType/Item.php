@@ -115,7 +115,7 @@ class Item extends CustomPostType
             $cb_content = ob_get_clean();
         } // if archive... 
 
-        return $cb_content . $content;
+        return $content . $cb_content;
     }
 
     /**
