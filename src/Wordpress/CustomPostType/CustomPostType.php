@@ -155,7 +155,10 @@ abstract class CustomPostType
         foreach ($this->getCustomFields() as $customField) {
 
             //@TODO: Find better solution for capability check for bookings
-            if ($_REQUEST['type'] == Timeframe::BOOKING_ID || current_user_can($customField->getCapability(), $post_id)) {
+            if (
+                (array_key_exists('type', $_REQUEST) && $_REQUEST['type'] == Timeframe::BOOKING_ID) ||
+                current_user_can($customField->getCapability(), $post_id)
+            ) {
                 $fieldNames = [];
                 if ($customField->getType() == "checkboxes") {
                     $fieldNames = $customField->getOptionFieldNames();
