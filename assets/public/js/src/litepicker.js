@@ -90,10 +90,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
         onAutoApply: (datePicked) => {
             if(datePicked) {
                 $('#booking-form').show();
+                $('.cb-notice.date-select').hide();
             }
         },
         resetBtnCallback: () => {
             $('#booking-form').hide();
+            $('.cb-notice.date-select').show();
         },
         onChangeMonth: function(date, idx) {
             const startDate = moment(date.format('YYYY-MM-DD')).format('YYYY-MM-DD');
@@ -135,6 +137,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 onSelect: function(date1, date2) {
                     let bookingForm = $('#booking-form');
                     bookingForm.show();
+                    $('.cb-notice.date-select').hide();
+                    
                     const day1 = data['days'][moment(date1).format('YYYY-MM-DD')];
                     const day2 = data['days'][moment(date2).format('YYYY-MM-DD')];
                     const startDate = moment(date1).format('DD.MM.YYYY');
