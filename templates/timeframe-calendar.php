@@ -4,6 +4,11 @@
 ?>
     <div id="litepicker"></div>
     <div id="booking-form-container">
+        <div class="cb-notice date-select">
+        <?php
+            print(__( 'Please select pickup date / Please select return date', 'commonsbooking' ));
+        ?>
+        </div>
         <form method="get" id="booking-form" style="display:none;">
             <?php echo $templateData['wp_nonce']; ?>
             <input type="hidden" name="location-id" value="<?php echo $templateData['location']->ID; ?>" />
@@ -33,16 +38,15 @@
                 $current_url = $_SERVER['REQUEST_URI'];
             ?>
             <div class="cb-notice">
-            <?php
-            printf(
-                /* translators: %1$s: wp_login_url, 1$s: wp_registration_url */
-                __( 'To be able to book, you must first <a href="%1$s">login</a> or <a href="%2$s">register as new user</a>.', 'commonsbooking' ),
-                esc_url( wp_login_url( $current_url ) ), esc_url( wp_registration_url() )
-            );
-            ?>
+                <?php
+                printf(
+                    /* translators: %1$s: wp_login_url, 1$s: wp_registration_url */
+                    __( 'To be able to book, you must first <a href="%1$s">login</a> or <a href="%2$s">register as new user</a>.', 'commonsbooking' ),
+                    esc_url( wp_login_url( $current_url ) ), esc_url( wp_registration_url() )
+                );
+                ?>
             </div> 
             <?php } ?>
-            
         </form>
     </div>
 <?php } else {
