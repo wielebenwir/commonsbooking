@@ -4,6 +4,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Plugin;
+use CommonsBooking\Wordpress\MetaBox\Field;
 
 abstract class CustomPostType
 {
@@ -144,9 +145,6 @@ abstract class CustomPostType
      */
     public function saveCustomFields($post_id, $post)
     {
-        // if (!current_user_can('edit_post', $post_id)) {
-        //     return;
-        // }
         if ($post->post_type !== static::getPostType()) {
             return;
         }
@@ -155,7 +153,9 @@ abstract class CustomPostType
 
         /** @var Field $customField */
         foreach ($this->getCustomFields() as $customField) {
-            if (current_user_can($customField->getCapability(), $post_id)) {
+
+            //@TODO: Find better solution for capability check for bookings
+            if ($_REQUEST['type'] == Timeframe::BOOKING_ID || current_user_can($customField->getCapability(), $post_id)) {
                 $fieldNames = [];
                 if ($customField->getType() == "checkboxes") {
                     $fieldNames = $customField->getOptionFieldNames();
