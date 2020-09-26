@@ -248,7 +248,7 @@ class Timeframe extends CustomPostType
     {
         return array(
             new Field("comment", __("Comment", 'commonsbooking'), "", "textarea_small", "edit_posts"),
-            new Field("type", __('Type', 'commonsbooking'), "", "select", "edit_pages",
+            new Field("type", __('Type', 'commonsbooking'), "", "select", "edit_posts",
                 self::getTypes()
             ),
             new Field("location-id", __("Location", 'commonsbooking'), "", "select", "edit_posts",
@@ -256,7 +256,7 @@ class Timeframe extends CustomPostType
             new Field("item-id", __("Item", 'commonsbooking'), "", "select", "edit_posts",
                 \CommonsBooking\Repository\Item::getByCurrentUser(), true),
             new Field("title-timeframe-config", __("Configure timeframe", 'commonsbooking'), "", "title", "edit_posts"),
-            new Field("timeframe-repetition", __('Timeframe Repetition', 'commonsbooking'), "", "select", "edit_pages",
+            new Field("timeframe-repetition", __('Timeframe Repetition', 'commonsbooking'), "", "select", "edit_posts",
                 [
                     'norep' => __("No Repetition", 'commonsbooking'),
                     'd'     => __("Daily", 'commonsbooking'),
@@ -265,10 +265,10 @@ class Timeframe extends CustomPostType
                     'y'     => __("Yearly", 'commonsbooking')
                 ]
             ),
-            new Field("full-day", __('Full day', 'commonsbooking'), "", "checkbox", "edit_pages"),
+            new Field("full-day", __('Full day', 'commonsbooking'), "", "checkbox", "edit_posts"),
             new Field("start-time", __("Start time", 'commonsbooking'), "", "text_time", "edit_posts"),
-            new Field("end-time", __("End time", 'commonsbooking'), "", "text_time", "edit_pages"),
-            new Field("grid", __("Grid", 'commonsbooking'), "", "select", "edit_pages",
+            new Field("end-time", __("End time", 'commonsbooking'), "", "text_time", "edit_posts"),
+            new Field("grid", __("Grid", 'commonsbooking'), "", "select", "edit_posts",
                 [
                     0 => __("Full slot", 'commonsbooking'),
                     1 => __("Hourly", 'commonsbooking')
@@ -277,8 +277,8 @@ class Timeframe extends CustomPostType
             new Field("title-timeframe-rep-config", __("Configure repetition", 'commonsbooking'), "", "title",
                 "edit_posts"),
             new Field("repetition-start", __('Repetition start', 'commonsbooking'), "", "text_date_timestamp",
-                "edit_pages"),
-            new Field("weekdays", __('Weekdays', 'commonsbooking'), "", "multicheck", "edit_pages",
+                "edit_posts"),
+            new Field("weekdays", __('Weekdays', 'commonsbooking'), "", "multicheck", "edit_posts",
                 [
                     1 => __("Monday", 'commonsbooking'),
                     2 => __("Tuesday", 'commonsbooking'),
@@ -289,7 +289,7 @@ class Timeframe extends CustomPostType
                     7 => __("Sunday", 'commonsbooking')
                 ]
             ),
-            new Field("repetition-end", __('Repetition end', 'commonsbooking'), "", "text_date_timestamp", "edit_pages")
+            new Field("repetition-end", __('Repetition end', 'commonsbooking'), "", "text_date_timestamp", "edit_posts")
         );
     }
 
