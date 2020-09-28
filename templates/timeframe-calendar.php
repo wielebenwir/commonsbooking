@@ -6,7 +6,7 @@
     <div id="booking-form-container">
         <div class="cb-notice date-select">
         <?php
-            print(__( 'Please select pickup date / Please select return date', 'commonsbooking' ));
+            print(__( 'Please click on the pickup date first. Then click on the return date to set the booking period. Now select the pickup and return times, if they are listed.', 'commonsbooking' ));
         ?>
         </div>
         <form method="get" id="booking-form" style="display:none;">
@@ -33,7 +33,7 @@
             </div>
             <?php
             if(is_user_logged_in()) { ?>
-                <input type="submit" value="<?php echo __('Book', 'commonsbooking'); ?>" />
+                <input type="submit" value="<?php echo __('Continue to check booking data', 'commonsbooking'); ?>" />
             <?php } else {
                 $current_url = $_SERVER['REQUEST_URI'];
             ?>

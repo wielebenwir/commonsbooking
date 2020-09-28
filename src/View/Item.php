@@ -33,6 +33,7 @@ class Item extends View
         $location = get_query_var('location')?: false;
         $locations = \CommonsBooking\Repository\Location::getByItem($item->ID, true);
 
+
         // If theres no location selected, we'll show all available.
         if (!$location) {
             if (count($locations)) {

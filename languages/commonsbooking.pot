@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the CommonsBooking plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: CommonsBooking 2.0.0-ALPHA\n"
+"Project-Id-Version: CommonsBooking 2.1.2-ALPHA\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-09-15T13:13:15+00:00\n"
+"POT-Creation-Date: 2020-09-28T10:09:40+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -169,7 +169,7 @@ msgstr ""
 msgid "Your booking has been cancelled."
 msgstr ""
 
-#: src/Model/Booking.php:320
+#: src/Model/Booking.php:321
 msgid "Link to your booking"
 msgstr ""
 
@@ -687,6 +687,10 @@ msgstr ""
 msgid "Return until"
 msgstr ""
 
+#: templates/booking-single.php:42
+msgid "Location: "
+msgstr ""
+
 #: templates/booking-single.php:49
 msgid "Contact"
 msgstr ""
@@ -735,20 +739,24 @@ msgstr ""
 msgid "No article available at this location."
 msgstr ""
 
-#: templates/timeframe-calendar.php:18
-msgid "Pickup time"
+#: templates/timeframe-calendar.php:9
+msgid "Please click on the pickup date first. Then click on the return date to set the booking period. Now select the pickup and return times, if they are listed."
 msgstr ""
 
 #: templates/timeframe-calendar.php:23
+msgid "Pickup time"
+msgstr ""
+
+#: templates/timeframe-calendar.php:28
 msgid "Return time"
 msgstr ""
 
-#: templates/timeframe-calendar.php:31
-msgid "Book"
+#: templates/timeframe-calendar.php:36
+msgid "Continue to check booking data"
 msgstr ""
 
 #. translators: %1$s: wp_login_url, 1$s: wp_registration_url
-#: templates/timeframe-calendar.php:39
+#: templates/timeframe-calendar.php:44
 msgid "To be able to book, you must first <a href=\"%1$s\">login</a> or <a href=\"%2$s\">register as new user</a>."
 msgstr ""
 
