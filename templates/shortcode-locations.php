@@ -12,7 +12,7 @@
 global $templateData;
 $location = $templateData['location'];
 $timeframes 	= $location->getBookableTimeframes();
-$noResultText = __("No bike available at this location.", "commonsbooking");
+$noResultText = __("No article available at this location.", "commonsbooking");
 
 ?>
 <div class="cb-list-header">

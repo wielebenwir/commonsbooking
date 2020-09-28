@@ -144,7 +144,7 @@ class Location extends CustomPostType
         // Adress
         $cmb->add_field(array(
             'name'       => __('Street / No.', 'commonsbooking'),
-            'desc'       => __('field description (optional)', 'commonsbooking'),
+            //'desc'       => __('', 'commonsbooking'),
             'id'         => CB_METABOX_PREFIX . 'location_street',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -157,7 +157,7 @@ class Location extends CustomPostType
         // Postcode
         $cmb->add_field(array(
             'name'       => __('Postcode', 'commonsbooking'),
-            'desc'       => __('field description (optional)', 'commonsbooking'),
+            //'desc'       => __('', 'commonsbooking'),
             'id'         => CB_METABOX_PREFIX . 'location_postcode',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -170,7 +170,7 @@ class Location extends CustomPostType
         // City
         $cmb->add_field(array(
             'name'       => __('City', 'commonsbooking'),
-            'desc'       => __('field description (optional)', 'commonsbooking'),
+            //'desc'       => __('field description (optional)', 'commonsbooking'),
             'id'         => CB_METABOX_PREFIX . 'location_city',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -183,7 +183,7 @@ class Location extends CustomPostType
         // Country
         $cmb->add_field(array(
             'name'       => __('Country', 'commonsbooking'),
-            'desc'       => __('field description (optional)', 'commonsbooking'),
+            //'desc'       => __('field description (optional)', 'commonsbooking'),
             'id'         => CB_METABOX_PREFIX . 'location_country',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -218,23 +218,11 @@ class Location extends CustomPostType
             // 'repeatable'      => true,
         ));
 
-        // short description
-        $cmb->add_field(array(
-            'name'       => __('Shortdescription', 'commonsbooking'),
-            'desc'       => __('field description (optional)', 'commonsbooking'),
-            'id'         => CB_METABOX_PREFIX . 'location_shortdescription',
-            'type'       => 'text',
-            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
-            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
-            // 'on_front'        => false, // Optionally designate a field to wp-admin only
-            // 'repeatable'      => true,
-        ));
 
         // pickup description
         $cmb->add_field(array(
             'name'       => __('Pickup instructions', 'commonsbooking'),
-            'desc'       => __('field description (optional)', 'commonsbooking'),
+            'desc'       => __('Type in information about the pickup process (e.g. detailed route description, opening hours, etc.). This will be shown to user in booking process and booking confirmation mail', 'commonsbooking'),
             'id'         => CB_METABOX_PREFIX . 'location_pickupinstructions',
             'type'       => 'textarea_small',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -247,7 +235,7 @@ class Location extends CustomPostType
         // location contact
         $cmb->add_field(array(
             'name'       => __('Location contact information', 'commonsbooking'),
-            'desc'       => __('field description (optional)', 'commonsbooking'),
+            'desc'       => __('information about how to contact the location (e.g. contact person, phone number, e-mail etc.). This will be shown to user in booking process and booking confirmation mail', 'commonsbooking'),
             'id'         => CB_METABOX_PREFIX . 'location_contact',
             'type'       => 'textarea_small',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -266,7 +254,7 @@ class Location extends CustomPostType
 
         $cmb->add_field( array(
             'name'       => __('Location Admin(s)', 'commonsbooking'),
-            'desc'       => __('Location Admin(s) field description (optional)', 'commonsbooking'),
+            'desc'       => __('choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role cb_manager can be selected here.', 'commonsbooking'),
             'id'      => CB_METABOX_PREFIX . 'location_admins',
             'type'    => 'pw_multiselect',
             'options' => $userOptions,

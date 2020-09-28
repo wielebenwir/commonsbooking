@@ -14,8 +14,8 @@ $location = $templateData['location'];
 /** @var \CommonsBooking\Model\Item $item */
 $item = $templateData['item'];
 
-$button_label = __('Book location', 'commonsbooking');
-$permalink = add_query_arg('item', $item->ID, get_the_permalink($location->ID));
+$button_label = __('Book item at this location', 'commonsbooking');
+$permalink    = add_query_arg ( 'location', $location->ID, get_the_permalink($item->ID) );
 
 $timeframes = $location->getBookableTimeframesByItem($item->ID, true);
 ?>
