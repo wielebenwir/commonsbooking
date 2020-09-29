@@ -36,13 +36,23 @@
 		img.alignleft {
 			max-width: 100%;
 			border-radius: $radius;
+			margin:0 $spacer-big $spacer-big 0;
 		}
+		float: left;
 	}
 
 	/* sub lists */
 	> .cb-wrapper {
 		overflow: hidden;
 		@extend .cb-box-inner;
+		
+		.cb-thumbnail {
+			img,
+			img.alignleft {
+				margin:0;
+			}
+		}
+		
 		> div { /* sub list items */
 			border-bottom: 1px solid $color-gray-border;
 			padding: $spacer-small 0;
