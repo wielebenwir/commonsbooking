@@ -1,7 +1,12 @@
 /* -------------------- Tables -------------------- */
 
-/* 30-70 standard for lists, first item is description */
+/* 30-70 standard for lists, first item is title */
 .cb-col-30-70 {
+	
+	> :nth-child(odd) { /* this is the title column , e.g. "Name" */ 
+		font-weight: bold;
+	}
+	
 	@include breakpoint(phablet) {
 		display: flex;
 		flex-direction: row;
@@ -10,7 +15,6 @@
 
 		> :nth-child(odd) {
 				width: 30%;
-				font-weight: bold;
 			}
 		> :nth-child(even) {
 			width: 70%;
@@ -32,6 +36,7 @@
 		}
 	}
 }
+
 .cb-col-auto { /* 2 fixed cols, 1 flexible in the middle */
 	@include breakpoint(phablet) {
 		display: flex;
