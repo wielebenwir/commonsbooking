@@ -57,7 +57,20 @@
     font-size: $font-size-big;
     vertical-align: middle;
     font-weight: bold;
-    background: $color-yellow-background;
     position: relative;
+    
+    /* Post status */
+    &.cb-status-unconfirmed {
+      background: $color-notice;
+    }    
+    &.cb-status-confirmed {
+      background: $color-success;
+    }    
+    &.cb-status-cancelled {
+      background: $color-success;
+    }    
+    &.error {
+      background: $color-error;
+    }
   }
 }

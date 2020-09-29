@@ -13,9 +13,7 @@ $location      = $booking->getLocation();
 $item          = $booking->getItem();
 ?>
 
-<div class="cb-notice">
-    <?php echo CB::get('booking', 'booking_notice'); ?>
-</div><!-- .cb-notice -->
+<?php echo $booking->bookingNotice(); ?>
 
 <div class="cb-wrapper cb-booking-item">
     <div class="cb-list-header">

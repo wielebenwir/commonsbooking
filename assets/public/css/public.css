@@ -3777,8 +3777,24 @@
   font-size: 18px;
   vertical-align: middle;
   font-weight: bold;
-  background: #FFF9C5;
   position: relative;
+  /* Post status */
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000363}}
+.cb-wrapper .cb-notice.cb-status-unconfirmed {
+  background: #FFF9C5;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000366}}
+.cb-wrapper .cb-notice.cb-status-confirmed {
+  background: #74ce3c;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000369}}
+.cb-wrapper .cb-notice.cb-status-cancelled {
+  background: #74ce3c;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000372}}
+.cb-wrapper .cb-notice.error {
+  background: #d5425c;
 }
 
 /* Calendar styles */
