@@ -3540,20 +3540,20 @@
 /* 50-50 */
 @media (min-width: 37.5em) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_layouts\.scss}line{font-family:\0000338}}
-  .cb-col-50-50, .cb-wrapper .cb-action {
+  .cb-col-50-50 {
     display: flex;
   }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_layouts\.scss}line{font-family:\0000341}}
-  .cb-col-50-50 > :nth-child(odd), .cb-wrapper .cb-action > :nth-child(odd) {
+  .cb-col-50-50 > :nth-child(odd) {
     width: 50%;
     min-width: 0;
   }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_layouts\.scss}line{font-family:\0000344}}
-  .cb-col-50-50 > :nth-child(odd) img, .cb-wrapper .cb-action > :nth-child(odd) img {
+  .cb-col-50-50 > :nth-child(odd) img {
     width: 100%;
   }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_layouts\.scss}line{font-family:\0000346}}
-  .cb-col-50-50 > :nth-child(even), .cb-wrapper .cb-action > :nth-child(even) {
+  .cb-col-50-50 > :nth-child(even) {
     width: 50%;
     min-width: 0;
   }
@@ -3719,59 +3719,57 @@
 /* Form styles */
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\000032}}
 .cb-wrapper .cb-action {
-  /* Hack for now: we should be able to target the <input> directly by id/class. */
-  flex-direction: row-reverse;
+  text-align: right;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\000039}}
-.cb-wrapper .cb-action form input {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\000037}}
+.cb-wrapper .cb-action input {
   float: right;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000310}}
-.cb-wrapper .cb-action form:last-of-type {
-  /* this is the cancel button */
-}
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000311}}
-.cb-wrapper .cb-action form:last-of-type input {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000314}}
+.cb-wrapper .cb-action form#cb-booking-form-set-cancelled input {
   background: transparent;
   color: #9D9F9D;
-  float: left;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000322}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000321}}
+.cb-wrapper .cb-action form#cb-booking-form-set-confirmed input {
+  margin-left: 15px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000327}}
 .cb-wrapper #booking-form-container,
 .cb-wrapper #booking-form-container div {
   border-bottom: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000327}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000332}}
 .cb-wrapper #booking-form {
   width: 100%;
   /* do not extend litepicker width */
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000329}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000334}}
 .cb-wrapper #booking-form input {
   float: right;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000333}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000338}}
 .cb-wrapper #booking-form .time-selection-container {
   display: block;
   margin-top: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000337}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000342}}
 .cb-wrapper #booking-form .time-selection-container > div {
   margin-bottom: 10px;
   text-align: left;
   display: block;
   overflow: hidden;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000343}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000348}}
 .cb-wrapper #booking-form .time-selection-container > div span, .cb-wrapper #booking-form .time-selection-container > div label, .cb-wrapper #booking-form .time-selection-container > div select {
   width: 33%;
   float: left;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000347}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000352}}
 .cb-wrapper #booking-form .time-selection-container > div label {
   font-weight: bold;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000354}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000359}}
 .cb-wrapper .cb-notice {
   margin-bottom: 15px;
   font-size: 18px;
@@ -3780,19 +3778,19 @@
   position: relative;
   /* Post status */
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000363}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000368}}
 .cb-wrapper .cb-notice.cb-status-unconfirmed {
   background: #FFF9C5;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000366}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000371}}
 .cb-wrapper .cb-notice.cb-status-confirmed {
   background: #74ce3c;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000369}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000374}}
 .cb-wrapper .cb-notice.cb-status-cancelled {
   background: #74ce3c;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000372}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_forms\.scss}line{font-family:\0000377}}
 .cb-wrapper .cb-notice.error {
   background: #d5425c;
 }

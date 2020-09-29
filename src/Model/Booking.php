@@ -280,9 +280,7 @@ class Booking extends CustomPost
         if (isset($form_post_status)) {       
             include CB_PLUGIN_DIR . 'templates/booking-single-form.php';
         }
-
-    }
-    
+    }   
     
     /**
      * show booking notice
