@@ -235,4 +235,15 @@ class Plugin
         }
     }
 
+    /**
+     * Renders error for backend_notice.
+     */
+    public static function renderError() {
+        if ( $error = get_transient( "timeframeValidationFailed" ) ) {
+            $class = 'notice notice-error';
+            printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $error ) );
+            delete_transient("timeframeValidationFailed");
+        }
+    }
+
 }

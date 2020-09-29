@@ -74,6 +74,65 @@ class Timeframe extends CustomPostType
     }
 
     /**
+     * Save the new Custom Fields values
+     */
+    public function saveCustomFields($post_id, $post)
+    {
+        if ($post->post_type !== static::getPostType()) {
+            return;
+        }
+
+        $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition'];
+
+        /** @var Field $customField */
+        foreach ($this->getCustomFields() as $customField) {
+
+            //@TODO: Find better solution for capability check for bookings
+            if (
+                (array_key_exists('type', $_REQUEST) && $_REQUEST['type'] == Timeframe::BOOKING_ID) ||
+                current_user_can($customField->getCapability(), $post_id)
+            ) {
+                $fieldNames = [];
+                if ($customField->getType() == "checkboxes") {
+                    $fieldNames = $customField->getOptionFieldNames();
+                } else {
+                    $fieldNames[] = $customField->getName();
+                }
+
+                foreach ($fieldNames as $fieldName) {
+                    if(!array_key_exists($fieldName, $_REQUEST)) {
+                        if(!in_array($fieldName, $noDeleteMetaFields)) {
+                            delete_post_meta($post_id, $fieldName);
+                        }
+                        continue;
+                    }
+
+                    $value = $_REQUEST[$fieldName];
+                    if(is_string($value)) {
+                        $value = trim($value);
+                        update_post_meta($post_id, $fieldName, $value);
+
+                        // if we have a booking, there shall be set no repetition
+                        if($fieldName == "type" && $value == Timeframe::BOOKING_ID) {
+                            update_post_meta($post_id, 'timeframe-repetition', 'norep');
+                        }
+                    }
+                }
+            }
+        }
+
+        // Validate timeframe
+        $timeframe = new \CommonsBooking\Model\Timeframe($post_id);
+        if(!$timeframe->isValid()) {
+            // set post_status to draft if not valid
+            if($post->post_status !== 'draft') {
+                $post->post_status = 'draft';
+                wp_update_post( $post );
+            }
+        }
+    }
+
+    /**
      * @param $content
      *
      * @return string

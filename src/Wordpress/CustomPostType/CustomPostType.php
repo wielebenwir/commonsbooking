@@ -82,6 +82,10 @@ abstract class CustomPostType
 
     /**
      * Remove the default Custom Fields meta box
+     *
+     * @param $type
+     * @param $context
+     * @param $post
      */
     public function removeDefaultCustomFields($type, $context, $post)
     {
@@ -91,113 +95,27 @@ abstract class CustomPostType
     }
 
     /**
-     * @deprecated Defined in getArgs-function of CTP
-     * https://knowthecode.io/docx/wordpress/remove_post_type_support
+     * @return string
      */
-    public function removeAllFormFields()
-    {
-        $this->removeFormTitle();
-        $this->removeFormDescription();
-        $this->removeFormImage();
-    }
-
-    /**
-     * @deprecated Defined in getArgs-function of CTP
-     */
-    public function removeFormTitle()
-    {
-        remove_post_type_support(static::getPostType(), 'title');
-    }
-
-    /**
-     * @deprecated Defined in getArgs-function of CTP
-     */
-    public function removeFormDescription()
-    {
-        remove_post_type_support(static::getPostType(), 'editor');
-    }
-
-    /**
-     * @deprecated Defined in getArgs-function of CTP
-     */
-    public function removeFormImage()
-    {
-        remove_post_type_support(static::getPostType(), 'thumbnail');
-    }
-
     public static function getWPAction()
     {
         return static::getPostType() . "-custom-fields";
     }
 
+    /**
+     * @return string
+     */
     public static function getWPNonceId()
     {
         return static::getPostType() . "-custom-fields" . '_wpnonce';
     }
 
+    /**
+     * @return mixed
+     */
     public static function getWPNonceField()
     {
         return wp_nonce_field(static::getWPAction(), static::getWPNonceId(), false, true);
-    }
-
-    /**
-     * Save the new Custom Fields values
-     */
-    public function saveCustomFields($post_id, $post)
-    {
-        if ($post->post_type !== static::getPostType()) {
-            return;
-        }
-
-        $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition'];
-
-        /** @var Field $customField */
-        foreach ($this->getCustomFields() as $customField) {
-
-            //@TODO: Find better solution for capability check for bookings
-            if (
-                (array_key_exists('type', $_REQUEST) && $_REQUEST['type'] == Timeframe::BOOKING_ID) ||
-                current_user_can($customField->getCapability(), $post_id)
-            ) {
-                $fieldNames = [];
-                if ($customField->getType() == "checkboxes") {
-                    $fieldNames = $customField->getOptionFieldNames();
-                } else {
-                    $fieldNames[] = $customField->getName();
-                }
-
-                foreach ($fieldNames as $fieldName) {
-                    if(!array_key_exists($fieldName, $_REQUEST)) {
-                        if(!in_array($fieldName, $noDeleteMetaFields)) {
-                            delete_post_meta($post_id, $fieldName);
-                        }
-                        continue;
-                    }
-
-                    $value = $_REQUEST[$fieldName];
-                    if(is_string($value)) {
-                        $value = trim($value);
-                        update_post_meta($post_id, $fieldName, $value);
-
-                        // if we have a booking, there shall be set no repetition
-                        if($fieldName == "type" && $value == Timeframe::BOOKING_ID) {
-                            update_post_meta($post_id, 'timeframe-repetition', 'norep');
-                        }
-                    }
-
-                    if (is_array($value)) {
-                        // Update time-fields by date-fields
-                        /*if(in_array($fieldName, ['repetition-start', 'repetition-end'])) {
-                            update_post_meta(
-                                $post_id,
-                                str_replace('date','time', $fieldName),
-                                $value['time']
-                            );
-                        }*/
-                    }
-                }
-            }
-        }
     }
 
     public function registerMetabox() {

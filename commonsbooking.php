@@ -201,10 +201,11 @@ function cb_timeframe_redirect()
         wp_redirect(home_url('/'));
         exit;
     }
-
 }
-
 add_action('template_redirect', 'cb_timeframe_redirect');
+
+// Shows Errors in Backend
+add_action('admin_notices',array(Plugin::class, 'renderError'));
 
 $cbPlugin = new Plugin();
 $cbPlugin->init();
