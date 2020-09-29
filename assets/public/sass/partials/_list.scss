@@ -30,9 +30,13 @@
 	}
 
 	.cb-thumbnail {
-		max-width: 100px;
-		height: auto;
-		margin-bottom: $spacer;
+		height: auto;	
+		overflow: hidden;
+		img,
+		img.alignleft {
+			max-width: 100%;
+			border-radius: $radius;
+		}
 	}
 
 	/* sub lists */
