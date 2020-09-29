@@ -20,7 +20,7 @@ $item          = $booking->getItem();
 <div class="cb-wrapper cb-booking-item">
     <div class="cb-list-header">
         <?php echo $item->thumbnail();?>
-        <h3><?php echo __('Item', 'commonsbooking'); ?>: <?php echo $item->titleLink(); ?></h3>
+        <h3><?php echo __('Item', 'commonsbooking'); ?>: <?php echo $item->title(); ?></h3>
         <?php echo $item->excerpt();?>
     </div>
 </div>
@@ -39,7 +39,7 @@ $item          = $booking->getItem();
 <!-- Location -->
 <div class="cb-wrapper cb-booking-location">
     <div class="cb-list-header">
-        <h3><?php echo __('Location: ', 'commonsbooking'); ?> <?php echo $location->titleLink();?></h3>
+        <h3><?php echo __('Location: ', 'commonsbooking'); ?> <?php echo $location->title();?></h3>
     </div>
     <div class="cb-list-content cb-address cb-col-30-70">
         <div><?php echo __('Address', 'commonsbooking'); ?></div>
