@@ -1,15 +1,17 @@
 .cb-wrapper {
   .cb-action {
     @extend .cb-box;
-    @extend .cb-col-30-70;
+    @extend .cb-col-50-50;
 
     /* Hack for now: we should be able to target the <input> directly by id/class. */
     flex-direction: row-reverse; 
     form {
-      &:last-of-type {
+      input { float: right; }
+      &:last-of-type { /* this is the cancel button */
         input {
           background: transparent;
           color: $color-gray-silver;
+          float: left; 
         }
       }
     }

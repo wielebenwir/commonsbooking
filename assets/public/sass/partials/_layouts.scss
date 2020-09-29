@@ -5,7 +5,7 @@
 	@include breakpoint(phablet) {
 		display: flex;
 		flex-direction: row;
-    flex-wrap: wrap;
+	    flex-wrap: wrap;
 		align-items: center;
 
 		> :nth-child(odd) {
@@ -36,16 +36,17 @@
 	@include breakpoint(phablet) {
 		display: flex;
 		flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: nowrap;
+	    justify-content: space-between;
+	    flex-wrap: nowrap;
 		align-items: center;
 		> div.cb-thumbnail {
 			flex: 0 0 20%;
-			margin-right: $spacer-big;
+			
 		}
 		> div.cb-list-info {
 			flex: 1 0 50%;
 			border: none;
+			padding: 0 $spacer-big;
 		}
 		> div.cb-action {
 			flex: 1 0 30%;
@@ -59,8 +60,8 @@
 	@include breakpoint(phablet) {
 		display: flex;
 		flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: nowrap;
+	    justify-content: space-between;
+	    flex-wrap: nowrap;
 		align-items: center;
 	}
 }
