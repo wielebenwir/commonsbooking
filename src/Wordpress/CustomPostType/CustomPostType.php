@@ -58,6 +58,7 @@ abstract class CustomPostType
             $role->add_cap( 'delete_others_' . static::$postType . 's' );
 
             $role->add_cap( 'edit_posts' ); // general: create posts -> even wp_post, affects all cpts
+            $role->add_cap( 'upload_files' ); // general: change post image
 
             if($the_role == Plugin::$CB_MANAGER_ID) {
                 $role->remove_cap( 'read_private_' . static::$postType . 's' );
