@@ -35,7 +35,8 @@
         const timeframeForm = $('#cmb2-metabox-cb_timeframe-custom-fields');
 
         if(timeframeForm.length) {
-            const typeInput = $('#timeframe-repetition');
+            const timeframeRepetitionInput = $('#timeframe-repetition');
+            const typeInput = $('#type');
             const gridInput = $('#grid');
             const weekdaysInput = $('#weekdays1'); // TODO: find bettter solution.
             const startTimeInput = $('#start-time');
@@ -44,6 +45,7 @@
             const repetitionStartInput = $('#repetition-start');
             const repetitionEndInput = $('#repetition-end');
             const fullDayInput = $('#full-day');
+            const maxDaysSelect = $('.cmb2-id-timeframe-max-days');
             const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
             const noRepSet = [fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput];
             const repTimeFieldsSet = [gridInput, startTimeInput, endTimeInput];
@@ -75,10 +77,27 @@
             }
 
             /**
+             * Shows/hides max day selection depending on timeframe type (for bookings).
+             */
+            const handleTypeSelection = function () {
+                const selectedType = $("option:selected", typeInput).val();
+
+                if(selectedType == 2) {
+                    maxDaysSelect.show();
+                } else {
+                    maxDaysSelect.hide();
+                }
+            }
+            handleTypeSelection();
+            typeInput.change(function () {
+                handleTypeSelection();
+            });
+
+            /**
              * Shows/hides grid selection depending on checked-state.
              */
             const handleFullDaySelection = function () {
-                const selectedRep = $("option:selected", typeInput).val();
+                const selectedRep = $("option:selected", timeframeRepetitionInput).val();
                 // Full-day setting
                 if(fullDayInput.prop( "checked" )) {
                     gridInput.prop("selected", false);
@@ -100,7 +119,7 @@
              * Handles repetition selection.
              */
             const handleRepetitionSelection = function () {
-                const selectedType = $('option:selected', typeInput).val();
+                const selectedType = $('option:selected', timeframeRepetitionInput).val();
 
                 if(selectedType) {
                     if (selectedType == 'norep') {
@@ -124,7 +143,7 @@
 
             }
             handleRepetitionSelection();
-            typeInput.change(function() {
+            timeframeRepetitionInput.change(function() {
                 handleRepetitionSelection();
             })
         }

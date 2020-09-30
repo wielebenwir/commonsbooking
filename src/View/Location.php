@@ -14,14 +14,17 @@ class Location extends View
 
     /**
      * Returns JSON-Data for Litepicker calendar.
+     *
      * @param $startDate
      * @param $endDate
      * @param $locations
      * @param $items
+     *
      * @return array
      * @throws \Exception
      */
-    protected static function prepareJsonResponse($startDate, $endDate, $locations, $items) {
+    protected static function prepareJsonResponse($startDate, $endDate, $locations, $items)
+    {
         $calendar = new Calendar(
             $startDate,
             $endDate,
@@ -30,33 +33,35 @@ class Location extends View
         );
 
         $jsonResponse = [
-            'startDate' => $startDate->getFormattedDate('Y-m-d'),
-            'endDate' => $endDate->getFormattedDate('Y-m-d'),
-            'days' => [],
-            'bookedDays' => [],
+            'startDate'           => $startDate->getFormattedDate('Y-m-d'),
+            'endDate'             => $endDate->getFormattedDate('Y-m-d'),
+            'days'                => [],
+            'bookedDays'          => [],
             'partiallyBookedDays' => [],
-            'lockDays' => [],
-            'holidays' => [],
-            'highlightedDays' => []
+            'lockDays'            => [],
+            'holidays'            => [],
+            'highlightedDays'     => [],
+            'maxDays'             => null
         ];
 
-        if(count($locations) === 1 ) {
-            $jsonResponse['location']['fullDayInfo'] = CB::get('location', CB_METABOX_PREFIX . 'location_pickupinstructions', $locations[0]);
+        if (count($locations) === 1) {
+            $jsonResponse['location']['fullDayInfo'] = CB::get('location',
+                CB_METABOX_PREFIX . 'location_pickupinstructions', $locations[0]);
         }
         /** @var Week $week */
         foreach ($calendar->getWeeks() as $week) {
             /** @var Day $day */
             foreach ($week->getDays() as $day) {
                 $dayArray = [
-                    'date' => $day->getFormattedDate('d.m.Y'),
-                    'slots' => [],
-                    'locked' => false,
-                    'bookedDay' => true,
+                    'date'               => $day->getFormattedDate('d.m.Y'),
+                    'slots'              => [],
+                    'locked'             => false,
+                    'bookedDay'          => true,
                     'partiallyBookedDay' => false,
-                    'holiday' => true,
-                    'fullDay' => false,
-                    'firstSlotBooked' => null,
-                    'lastSlotBooked' => null
+                    'holiday'            => true,
+                    'fullDay'            => false,
+                    'firstSlotBooked'    => null,
+                    'lastSlotBooked'     => null
                 ];
 
                 // If all slots are locked, day cannot be selected
@@ -68,7 +73,7 @@ class Location extends View
                 foreach ($day->getGrid() as $slot) {
 
                     // Add only bookable slots for time select
-                    if (!empty($slot['timeframe']) && $slot['timeframe'] instanceof \WP_Post) {
+                    if ( ! empty($slot['timeframe']) && $slot['timeframe'] instanceof \WP_Post) {
                         // We have at least one slot ;)
                         $noSlots = false;
 
@@ -78,6 +83,12 @@ class Location extends View
                         if ($dayArray['firstSlotBooked'] === null) {
                             if ($timeFrameType == Timeframe::BOOKABLE_ID) {
                                 $dayArray['firstSlotBooked'] = false;
+
+                                // Set max-days setting based on first found timeframe
+                                if($jsonResponse['maxDays'] == null) {
+                                    $timeframeMaxDays = get_post_meta($slot['timeframe']->ID, 'timeframe-max-days', true);
+                                    $jsonResponse['maxDays'] = intval($timeframeMaxDays ?: 3);
+                                }
                             } else {
                                 $dayArray['firstSlotBooked'] = true;
                             }
@@ -90,15 +101,15 @@ class Location extends View
 
                         if ($timeFrameType == Timeframe::BOOKABLE_ID) {
                             $dayArray['slots'][] = $slot;
-                         }
+                        }
 
                         // Remove holiday flag, if there is at least one slot that isn't of type holiday
-                        if (!in_array($timeFrameType, [Timeframe::HOLIDAYS_ID, Timeframe::OFF_HOLIDAYS_ID])) {
+                        if ( ! in_array($timeFrameType, [Timeframe::HOLIDAYS_ID, Timeframe::OFF_HOLIDAYS_ID])) {
                             $dayArray['holiday'] = false;
                         }
 
                         // Remove bookedDay flag, if there is at least one slot that isn't of type bookedDay
-                        if (!in_array($timeFrameType, [Timeframe::BOOKING_ID])) {
+                        if ( ! in_array($timeFrameType, [Timeframe::BOOKING_ID])) {
                             $dayArray['bookedDay'] = false;
                         }
 
@@ -115,7 +126,6 @@ class Location extends View
                             $allLocked = false;
                         }
                     }
-
                 }
 
                 // If there are no slots defined, there's nothing bookable.
@@ -124,7 +134,7 @@ class Location extends View
                     $dayArray['holiday'] = false;
                     $dayArray['bookedDay'] = false;
                 } else {
-                    if(count($dayArray['slots']) === 1) {
+                    if (count($dayArray['slots']) === 1) {
                         $timeframe = $dayArray['slots'][0]['timeframe'];
                         $dayArray['fullDay'] = get_post_meta($timeframe->ID, 'full-day', true) == "on";
                     }
@@ -133,7 +143,7 @@ class Location extends View
                 $jsonResponse['days'][$day->getFormattedDate('Y-m-d')] = $dayArray;
                 if ($dayArray['locked'] || $allLocked) {
                     if ($allLocked) {
-                        if($dayArray['holiday']) {
+                        if ($dayArray['holiday']) {
                             $jsonResponse['holidays'][] = $day->getFormattedDate('Y-m-d');
                         } elseif ($dayArray['bookedDay']) {
                             $jsonResponse['bookedDays'][] = $day->getFormattedDate('Y-m-d');
@@ -160,19 +170,19 @@ class Location extends View
         $endDate = new Day(date('Y-m-d', strtotime('last day of next month')));
 
         $startDateString = $_POST['sd'];
-        if($startDateString) {
+        if ($startDateString) {
             $startDate = new Day($startDateString);
         }
 
-        $endDateString =  $_POST['ed'];
-        if($endDateString) {
+        $endDateString = $_POST['ed'];
+        if ($endDateString) {
             $endDate = new Day($endDateString);
         }
 
         $item = isset($_POST['item']) && $_POST['item'] != "" ? $_POST['item'] : false;
         $location = isset($_POST['location']) && $_POST['location'] != "" ? $_POST['location'] : false;
 
-        if (!$item || !$location) {
+        if ( ! $item || ! $location) {
             header('Content-Type: application/json');
             echo json_encode(false);
             wp_die(); // All ajax handlers die when finished
@@ -187,30 +197,32 @@ class Location extends View
 
     /**
      * Returns template data for frontend.
+     *
      * @param \WP_Post|null $post
      *
      * @return array
      * @throws \Exception
      */
-    public static function getTemplateData(\WP_Post $post = null) {
+    public static function getTemplateData(\WP_Post $post = null)
+    {
         if ($post == null) {
             global $post;
         }
         $location = $post;
         $args = [
-            'post' => $post,
-            'wp_nonce' => Timeframe::getWPNonceField(),
+            'post'      => $post,
+            'wp_nonce'  => Timeframe::getWPNonceField(),
             'actionUrl' => admin_url('admin.php'),
-            'location' => new \CommonsBooking\Model\Location($location),
-            'postUrl' => get_permalink($location),
-            'type' => Timeframe::BOOKING_ID
+            'location'  => new \CommonsBooking\Model\Location($location),
+            'postUrl'   => get_permalink($location),
+            'type'      => Timeframe::BOOKING_ID
         ];
 
-        $item = get_query_var('item')?: false;
+        $item = get_query_var('item') ?: false;
         $items = \CommonsBooking\Repository\Item::getByLocation($location->ID, true);
 
         // If theres no item selected, we'll show all available.
-        if (!$item) {
+        if ( ! $item) {
             if (count($items)) {
                 // If there's only one item available, we'll show it directly.
                 if (count($items) == 1) {
@@ -241,9 +253,10 @@ class Location extends View
         global $templateData;
         $templateData = [];
         $locations = [];
-        $queryArgs = shortcode_atts( static::$allowedShortCodeArgs, $atts, \CommonsBooking\Wordpress\CustomPostType\Location::getPostType());
+        $queryArgs = shortcode_atts(static::$allowedShortCodeArgs, $atts,
+            \CommonsBooking\Wordpress\CustomPostType\Location::getPostType());
 
-        if(is_array($atts) && array_key_exists('item-id', $atts)) {
+        if (is_array($atts) && array_key_exists('item-id', $atts)) {
             $location = \CommonsBooking\Repository\Location::getByItem($atts['item-id'], true);
             $locations[] = $location;
         } else {
@@ -251,10 +264,11 @@ class Location extends View
         }
 
         ob_start();
-        foreach ( $locations as $location ) {
+        foreach ($locations as $location) {
             $templateData['location'] = $location;
-            cb_get_template_part('shortcode', 'locations', TRUE, FALSE, FALSE );
+            cb_get_template_part('shortcode', 'locations', true, false, false);
         }
+
         return ob_get_clean();
     }
 }

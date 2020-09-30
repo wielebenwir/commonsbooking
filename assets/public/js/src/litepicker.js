@@ -82,8 +82,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         "mobileFriendly": true,
         "selectForward": true,
         "useResetBtn": true,
-        maxDays: 5,
-        'buttonText': {
+        "maxDays": 3,
+        "buttonText": {
             apply: 'Buchen',
             cancel: 'Abbrechen',
         },
@@ -126,9 +126,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const updatePicker = (data) => {
         picker.setOptions(
             {
-                'minDate': data['startDate'],
-                'maxDate': data['endDate'],
+                "minDate": data['startDate'],
+                "maxDate": data['endDate'],
                 "days": data['days'],
+                "maxDays": data['maxDays'],
                 "lockDays": data['lockDays'],
                 "bookedDays": data['bookedDays'],
                 "partiallyBookedDays": data['partiallyBookedDays'],
