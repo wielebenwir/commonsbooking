@@ -74,6 +74,23 @@ class Timeframe extends CustomPostType
     }
 
     /**
+     * Registers metaboxes for cpt.
+     */
+    public function registerMetabox()
+    {
+        $cmb = new_cmb2_box([
+            'id'           => static::getPostType() . "-custom-fields",
+            'title'        => "Timeframe",
+            'object_types' => array(static::getPostType())
+        ]);
+
+
+        foreach ($this->getCustomFields() as $customField) {
+            $cmb->add_field($customField);
+        }
+    }
+
+    /**
      * Save the new Custom Fields values
      */
     public function saveCustomFields($post_id, $post)
@@ -84,36 +101,37 @@ class Timeframe extends CustomPostType
 
         $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition'];
 
-        /** @var Field $customField */
         foreach ($this->getCustomFields() as $customField) {
 
             //@TODO: Find better solution for capability check for bookings
             if (
                 (array_key_exists('type', $_REQUEST) && $_REQUEST['type'] == Timeframe::BOOKING_ID) ||
-                current_user_can($customField->getCapability(), $post_id)
+                current_user_can('edit_post', $post_id)
             ) {
                 $fieldNames = [];
-                if ($customField->getType() == "checkboxes") {
-                    $fieldNames = $customField->getOptionFieldNames();
+                if ($customField['type'] == "checkboxes") {
+                    foreach ($customField['options'] as $key => $label) {
+                        $fieldNames[] = $customField['id'] . "-" . $key;
+                    }
                 } else {
-                    $fieldNames[] = $customField->getName();
+                    $fieldNames[] = $customField['id'];
                 }
 
                 foreach ($fieldNames as $fieldName) {
-                    if(!array_key_exists($fieldName, $_REQUEST)) {
-                        if(!in_array($fieldName, $noDeleteMetaFields)) {
+                    if ( ! array_key_exists($fieldName, $_REQUEST)) {
+                        if ( ! in_array($fieldName, $noDeleteMetaFields)) {
                             delete_post_meta($post_id, $fieldName);
                         }
                         continue;
                     }
 
                     $value = $_REQUEST[$fieldName];
-                    if(is_string($value)) {
+                    if (is_string($value)) {
                         $value = trim($value);
                         update_post_meta($post_id, $fieldName, $value);
 
                         // if we have a booking, there shall be set no repetition
-                        if($fieldName == "type" && $value == Timeframe::BOOKING_ID) {
+                        if ($fieldName == "type" && $value == Timeframe::BOOKING_ID) {
                             update_post_meta($post_id, 'timeframe-repetition', 'norep');
                         }
                     }
@@ -123,11 +141,11 @@ class Timeframe extends CustomPostType
 
         // Validate timeframe
         $timeframe = new \CommonsBooking\Model\Timeframe($post_id);
-        if(!$timeframe->isValid()) {
+        if ( ! $timeframe->isValid()) {
             // set post_status to draft if not valid
-            if($post->post_status !== 'draft') {
+            if ($post->post_status !== 'draft') {
                 $post->post_status = 'draft';
-                wp_update_post( $post );
+                wp_update_post($post);
             }
         }
     }
@@ -143,7 +161,7 @@ class Timeframe extends CustomPostType
         if (is_singular(self::getPostType())) {
             ob_start();
             global $post;
-            if  ( current_user_can('administrator') OR get_current_user_id() == $post->post_author ) {
+            if (current_user_can('administrator') or get_current_user_id() == $post->post_author) {
                 cb_get_template_part('booking', 'single');
             } else {
                 cb_get_template_part('booking', 'single-notallowed');
@@ -306,17 +324,99 @@ class Timeframe extends CustomPostType
     protected function getCustomFields()
     {
         return array(
-            new Field("comment", __("Comment", 'commonsbooking'), "", "textarea_small", "edit_posts"),
-            new Field("type", __('Type', 'commonsbooking'), "", "select", "edit_posts",
-                self::getTypes()
+            array(
+                'name'       => __("Comment", 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'         => "comment",
+                'type'       => 'textarea_small',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
             ),
-            new Field("location-id", __("Location", 'commonsbooking'), "", "select", "edit_posts",
-                \CommonsBooking\Repository\Location::getByCurrentUser(), true),
-            new Field("item-id", __("Item", 'commonsbooking'), "", "select", "edit_posts",
-                \CommonsBooking\Repository\Item::getByCurrentUser(), true),
-            new Field("title-timeframe-config", __("Configure timeframe", 'commonsbooking'), "", "title", "edit_posts"),
-            new Field("timeframe-repetition", __('Timeframe Repetition', 'commonsbooking'), "", "select", "edit_posts",
-                [
+            array(
+                'name'       => __('Type', 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'         => "type",
+                'type'       => 'select',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
+                'options'    => self::getTypes()
+            ),
+            array(
+                'name'       => __('Maximum booking duration', 'commonsbooking'),
+                'desc'       => __('Maximum booking duration in days', 'commonsbooking'),
+                'id'         => "timeframe-max-days",
+                'type'       => 'select',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
+                'options'    => [
+                    '1'  => 1,
+                    '2'  => 2,
+                    '3'  => 3,
+                    '4'  => 4,
+                    '5'  => 5,
+                    '6'  => 6,
+                    '7'  => 7,
+                    '8'  => 8,
+                    '9'  => 9,
+                    '10' => 10
+                ],
+                'default' => 3
+            ),
+            array(
+                'name'       => __("Location", 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'         => "location-id",
+                'type'       => 'select',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
+                'options'    => self::sanitizeOptions(\CommonsBooking\Repository\Location::getByCurrentUser())
+            ),
+            array(
+                'name'       => __("Item", 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'         => "item-id",
+                'type'       => 'select',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
+                'options'    => self::sanitizeOptions(\CommonsBooking\Repository\Item::getByCurrentUser(), true)
+            ),
+            array(
+                'name'       => __("Configure timeframe", 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'         => "title-timeframe-config",
+                'type'       => 'title',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
+            ),
+            array(
+                'name'       => __('Timeframe Repetition', 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'         => "timeframe-repetition",
+                'type'       => 'select',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
+                'options'    => [
                     'norep' => __("No Repetition", 'commonsbooking'),
                     'd'     => __("Daily", 'commonsbooking'),
                     'w'     => __("Weekly", 'commonsbooking'),
@@ -324,21 +424,93 @@ class Timeframe extends CustomPostType
                     'y'     => __("Yearly", 'commonsbooking')
                 ]
             ),
-            new Field("full-day", __('Full day', 'commonsbooking'), "", "checkbox", "edit_posts"),
-            new Field("start-time", __("Start time", 'commonsbooking'), "", "text_time", "edit_posts"),
-            new Field("end-time", __("End time", 'commonsbooking'), "", "text_time", "edit_posts"),
-            new Field("grid", __("Grid", 'commonsbooking'), "", "select", "edit_posts",
-                [
+            array(
+                'name'       => __('Full day', 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'         => "full-day",
+                'type'       => 'checkbox',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
+            ),
+            array(
+                'name'        => __("Start time", 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'          => "start-time",
+                'type'        => 'text_time',
+                'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
+                'time_format' => get_option('time_format'),
+                'date_format' => get_option('date_format')
+            ),
+            array(
+                'name'        => __("End time", 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'          => "end-time",
+                'type'        => 'text_time',
+                'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
+                'time_format' => get_option('time_format'),
+                'date_format' => get_option('date_format')
+            ),
+            array(
+                'name'       => __("Grid", 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'         => "grid",
+                'type'       => 'select',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
+                'options'    => [
                     0 => __("Full slot", 'commonsbooking'),
                     1 => __("Hourly", 'commonsbooking')
                 ]
             ),
-            new Field("title-timeframe-rep-config", __("Configure repetition", 'commonsbooking'), "", "title",
-                "edit_posts"),
-            new Field("repetition-start", __('Repetition start', 'commonsbooking'), "", "text_date_timestamp",
-                "edit_posts"),
-            new Field("weekdays", __('Weekdays', 'commonsbooking'), "", "multicheck", "edit_posts",
-                [
+            array(
+                'name'       => __("Configure repetition", 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'         => "title-timeframe-rep-config",
+                'type'       => 'title',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
+            ),
+            array(
+                'name'        => __('Repetition start', 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'          => "repetition-start",
+                'type'        => 'text_date_timestamp',
+                'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
+                'time_format' => get_option('time_format'),
+                'date_format' => get_option('date_format')
+            ),
+            array(
+                'name'       => __('Weekdays', 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'         => "weekdays",
+                'type'       => 'multicheck',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
+                'options'    => [
                     1 => __("Monday", 'commonsbooking'),
                     2 => __("Tuesday", 'commonsbooking'),
                     3 => __("Wednesday", 'commonsbooking'),
@@ -348,7 +520,19 @@ class Timeframe extends CustomPostType
                     7 => __("Sunday", 'commonsbooking')
                 ]
             ),
-            new Field("repetition-end", __('Repetition end', 'commonsbooking'), "", "text_date_timestamp", "edit_posts")
+            array(
+                'name'        => __('Repetition end', 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'          => "repetition-end",
+                'type'        => 'text_date_timestamp',
+                'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
+                'time_format' => get_option('time_format'),
+                'date_format' => get_option('date_format')
+            )
         );
     }
 
@@ -411,10 +595,10 @@ class Timeframe extends CustomPostType
                 case 'type':
                     $typeField = null;
                     $output = "-";
-                    /** @var Field $customField */
+
                     foreach ($this->getCustomFields() as $customField) {
-                        if ($customField->getName() == 'type') {
-                            foreach ($customField->getOptions() as $key => $label) {
+                        if ($customField['id'] == 'type') {
+                            foreach ($customField['options'] as $key => $label) {
                                 if ($value == $key) {
                                     $output = $label;
                                 }
@@ -488,6 +672,7 @@ class Timeframe extends CustomPostType
 
     /**
      * Returns true if frame is overbookable.
+     *
      * @param \WP_Post $timeframe
      *
      * @return bool

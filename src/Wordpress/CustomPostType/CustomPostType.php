@@ -118,17 +118,24 @@ abstract class CustomPostType
         return wp_nonce_field(static::getWPAction(), static::getWPNonceId(), false, true);
     }
 
-    public function registerMetabox() {
-        $cmb = new_cmb2_box([
-            'id' => static::getPostType() . "-custom-fields",
-            'title' => "Timeframe",
-            'object_types' => array(static::getPostType())
-        ]);
-
-        /** @var Field $customField */
-        foreach ($this->getCustomFields() as $customField) {
-            $cmb->add_field( $customField->getParamsArray());
+    /**
+     * Replaces WP_Posts by their title for options array.
+     * @param $data
+     *
+     * @return array
+     */
+    public static function sanitizeOptions($data) {
+        $options = [];
+        foreach ($data as $key => $item) {
+            if($item instanceof \WP_Post) {
+                $key = $item->ID;
+                $label = $item->post_title;
+            } else {
+                $label = $item;
+            }
+            $options[$key] = $label;
         }
+        return $options;
     }
 
     /**
