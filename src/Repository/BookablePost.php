@@ -40,7 +40,6 @@ abstract class BookablePost extends PostRepository
                     unset($posts[$key]);
                 }
             }
-
         }
         return $posts;
     }
