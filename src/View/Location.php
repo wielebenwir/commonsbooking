@@ -71,61 +71,7 @@ class Location extends View
                 $noSlots = true;
 
                 foreach ($day->getGrid() as $slot) {
-
-                    // Add only bookable slots for time select
-                    if ( ! empty($slot['timeframe']) && $slot['timeframe'] instanceof \WP_Post) {
-                        // We have at least one slot ;)
-                        $noSlots = false;
-
-                        $timeFrameType = get_post_meta($slot['timeframe']->ID, 'type', true);
-
-                        // save bookable state for first and last slot
-                        if ($dayArray['firstSlotBooked'] === null) {
-                            if ($timeFrameType == Timeframe::BOOKABLE_ID) {
-                                $dayArray['firstSlotBooked'] = false;
-
-                                // Set max-days setting based on first found timeframe
-                                if($jsonResponse['maxDays'] == null) {
-                                    $timeframeMaxDays = get_post_meta($slot['timeframe']->ID, 'timeframe-max-days', true);
-                                    $jsonResponse['maxDays'] = intval($timeframeMaxDays ?: 3);
-                                }
-                            } else {
-                                $dayArray['firstSlotBooked'] = true;
-                            }
-                        }
-                        if ($timeFrameType == Timeframe::BOOKABLE_ID) {
-                            $dayArray['lastSlotBooked'] = false;
-                        } else {
-                            $dayArray['lastSlotBooked'] = true;
-                        }
-
-                        if ($timeFrameType == Timeframe::BOOKABLE_ID) {
-                            $dayArray['slots'][] = $slot;
-                        }
-
-                        // Remove holiday flag, if there is at least one slot that isn't of type holiday
-                        if ( ! in_array($timeFrameType, [Timeframe::HOLIDAYS_ID, Timeframe::OFF_HOLIDAYS_ID])) {
-                            $dayArray['holiday'] = false;
-                        }
-
-                        // Remove bookedDay flag, if there is at least one slot that isn't of type bookedDay
-                        if ( ! in_array($timeFrameType, [Timeframe::BOOKING_ID])) {
-                            $dayArray['bookedDay'] = false;
-                        }
-
-                        // Set partiallyBookedDay flag, if there is at least one slot that is of type bookedDay
-                        if (in_array($timeFrameType, [Timeframe::BOOKING_ID])) {
-                            $dayArray['partiallyBookedDay'] = true;
-                        }
-
-                        // If there's a locked timeframe, nothing can be selected
-                        if ($slot['timeframe']->locked) {
-                            $dayArray['locked'] = true;
-                        } else {
-                            // if not all slots are locked, the day should be selectable
-                            $allLocked = false;
-                        }
-                    }
+                    self::processSlot($slot, $dayArray, $jsonResponse, $allLocked, $noSlots);
                 }
 
                 // If there are no slots defined, there's nothing bookable.
@@ -161,10 +107,79 @@ class Location extends View
     }
 
     /**
+     * Extracts calendar relevant data from slot.
+     * @param $slot
+     * @param $dayArray
+     * @param $jsonResponse
+     * @param $allLocked
+     * @param $noSlots
+     */
+    protected static function processSlot($slot, &$dayArray, &$jsonResponse, &$allLocked, &$noSlots) {
+        // Add only bookable slots for time select
+        if ( ! empty($slot['timeframe']) && $slot['timeframe'] instanceof \WP_Post) {
+            // We have at least one slot ;)
+            $noSlots = false;
+
+            $timeFrameType = get_post_meta($slot['timeframe']->ID, 'type', true);
+
+            // save bookable state for first and last slot
+            if ($dayArray['firstSlotBooked'] === null) {
+                if ($timeFrameType == Timeframe::BOOKABLE_ID) {
+                    $dayArray['firstSlotBooked'] = false;
+
+                    // Set max-days setting based on first found timeframe
+                    if($jsonResponse['maxDays'] == null) {
+                        $timeframeMaxDays = get_post_meta($slot['timeframe']->ID, 'timeframe-max-days', true);
+                        $jsonResponse['maxDays'] = intval($timeframeMaxDays ?: 3);
+                    }
+                } else {
+                    $dayArray['firstSlotBooked'] = true;
+                }
+            }
+
+            // Checks if last slot is booked.
+            if ($timeFrameType == Timeframe::BOOKABLE_ID) {
+                $dayArray['lastSlotBooked'] = false;
+            } else {
+                $dayArray['lastSlotBooked'] = true;
+            }
+
+            // We need only bookable slots...
+            if ($timeFrameType == Timeframe::BOOKABLE_ID) {
+                $dayArray['slots'][] = $slot;
+            }
+
+            // Remove holiday flag, if there is at least one slot that isn't of type holiday
+            if ( ! in_array($timeFrameType, [Timeframe::HOLIDAYS_ID, Timeframe::OFF_HOLIDAYS_ID])) {
+                $dayArray['holiday'] = false;
+            }
+
+            // Remove bookedDay flag, if there is at least one slot that isn't of type bookedDay
+            if ( ! in_array($timeFrameType, [Timeframe::BOOKING_ID])) {
+                $dayArray['bookedDay'] = false;
+            }
+
+            // Set partiallyBookedDay flag, if there is at least one slot that is of type bookedDay
+            if (in_array($timeFrameType, [Timeframe::BOOKING_ID])) {
+                $dayArray['partiallyBookedDay'] = true;
+            }
+
+            // If there's a locked timeframe, nothing can be selected
+            if ($slot['timeframe']->locked) {
+                $dayArray['locked'] = true;
+            } else {
+                // if not all slots are locked, the day should be selectable
+                $allLocked = false;
+            }
+        }
+    }
+
+
+    /**
      * Returns json-formatted calendardata.
      * @throws \Exception
      */
-    public static function get_calendar_data()
+    public static function getCalendarData()
     {
         $startDate = new Day(date('Y-m-d'));
         $endDate = new Day(date('Y-m-d', strtotime('last day of next month')));

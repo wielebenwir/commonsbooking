@@ -2,12 +2,14 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-use CommonsBooking\Plugin;
 use CommonsBooking\Repository\UserRepository;
 
 class Item extends CustomPostType
 {
 
+    /**
+     * @var string
+     */
     public static $postType = 'cb_item';
 
     /**
@@ -25,6 +27,10 @@ class Item extends CustomPostType
         add_action('admin_init',array($this, 'addRoleCaps'),999);
     }
 
+    /**
+     * Returns CPT args.
+     * @return array|mixed
+     */
     public function getArgs()
     {
         $labels = array(
@@ -134,8 +140,6 @@ class Item extends CustomPostType
             'context'      => 'normal',
             'priority'     => 'high',
             'show_names'   => true, // Show field names on the left
-            // 'cmb_styles' => false, // false to disable the CMB stylesheet
-            // 'closed'     => true, // Keep the metabox closed by default
         ));
 
         $users = UserRepository::getCBItemAdmins();

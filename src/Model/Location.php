@@ -38,7 +38,6 @@ class Location extends BookablePost
      */
     public function formattedAddress()
     {
-        
         $location = array (
             CB::get('location', 'name', $this->post->ID),
             CB::get('location', CB_METABOX_PREFIX . 'location_street', $this->post->ID),
@@ -47,9 +46,7 @@ class Location extends BookablePost
         );
 
         return implode('<br>', $location);
-
     }
-
 
     /**
      * formattedAddressOneLine

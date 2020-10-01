@@ -16,8 +16,8 @@
                         {% if backend != 'true' %}
                         <form method="get">
                             {{ wp_nonce|raw }}
-                            <input type="hidden" name="location-id" value="{{ slot.timeframe|get_meta_field('location-id') }}" />
-                            <input type="hidden" name="item-id" value="{{ slot.timeframe|get_meta_field('item-id') }}" />
+                            <input type="hidden" name="location-id" value="{{ slot.timeframe|getMeta_field('location-id') }}" />
+                            <input type="hidden" name="item-id" value="{{ slot.timeframe|getMeta_field('item-id') }}" />
                             <input type="hidden" name="type" value="6" />
                             <input type="hidden" name="post_type" value="cb_timeframe" />
                             <input type="hidden" name="post_status" value="unconfirmed" />

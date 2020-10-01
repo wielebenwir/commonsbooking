@@ -6,35 +6,6 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 class Item extends BookablePost
 {
-
-    /**
-     * Returns all published items.
-     * @param $args
-     * @return array
-     * @throws \Exception
-     */
-    public static function getAllPublished($args = array()) {
-        
-        $items = [];
-
-        $defaults = array(
-            'post_type' => \CommonsBooking\Wordpress\CustomPostType\Item::$postType,
-            'post_status' => array('publish', 'inherit')
-        );
-
-        $queryArgs = wp_parse_args($args, $defaults);
-
-        $query = new \WP_Query($queryArgs);
-
-        if ($query->have_posts()) {
-            $items = $query->get_posts();
-            foreach($items as &$item) {
-                $item = new \CommonsBooking\Model\Item($item);
-            }
-        }
-        return $items;
-    }
-
     /**
      * Get all Locations current user is allowed to see/edit
      * @return array

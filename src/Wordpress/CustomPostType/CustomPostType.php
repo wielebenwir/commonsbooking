@@ -9,16 +9,24 @@ use CommonsBooking\Wordpress\MetaBox\Field;
 abstract class CustomPostType
 {
 
+    /**
+     * @var string
+     */
     public static $postType;
 
-    protected $customFields;
-
+    /**
+     * @var
+     */
     protected $menuPosition;
 
-    protected $listFields = [];
-
+    /**
+     * @return mixed
+     */
     abstract public function getArgs();
 
+    /**
+     * @return string
+     */
     public static function getPostType()
     {
         return static::$postType;
@@ -71,6 +79,10 @@ abstract class CustomPostType
         }
     }
 
+    /**
+     * Returns param for backend menu.
+     * @return array
+     */
     public function getMenuParams()
     {
         return [
@@ -87,11 +99,11 @@ abstract class CustomPostType
     /**
      * Remove the default Custom Fields meta box
      *
-     * @param $type
-     * @param $context
-     * @param $post
+     * @param string $post_type
+     * @param string $context
+     * @param WP_Post|object|string $post
      */
-    public function removeDefaultCustomFields($type, $context, $post)
+    public function removeDefaultCustomFields($post_type, $context, $post)
     {
         foreach (array('normal', 'advanced', 'side') as $context) {
             remove_meta_box('postcustom', static::getPostType(), $context);
@@ -160,6 +172,11 @@ abstract class CustomPostType
         return $columns;
     }
 
+    /**
+     * @param $columns
+     *
+     * @return mixed
+     */
     public function setSortableColumns($columns)
     {
         if (isset($this->listColumns)) {
@@ -171,6 +188,9 @@ abstract class CustomPostType
         return $columns;
     }
 
+    /**
+     * Removes title column from backend listing.
+     */
     public function removeListTitleColumn()
     {
         add_filter('manage_' . static::getPostType() . '_posts_columns', function ($columns) {
@@ -179,6 +199,9 @@ abstract class CustomPostType
         });
     }
 
+    /**
+     * Removes date column from backend listing.
+     */
     public function removeListDateColumn()
     {
         add_filter('manage_' . static::getPostType() . '_posts_columns', function ($columns) {
@@ -233,36 +256,6 @@ abstract class CustomPostType
     }
 
     /**
-     * @param string $order
-     *
-     * @return \WP_Query
-     */
-    public static function getAllPostsQuery($order = 'ASC')
-    {
-        $args = array(
-            'post_type' => static::getPostType(),
-            'order' => $order
-        );
-
-        return new \WP_Query($args);
-    }
-
-    /**
-     * @return array
-     */
-    public static function getAllPosts()
-    {
-        /** @var \WP_Query $query */
-        $query = static::getAllPostsQuery();
-        $posts = [];
-        if ($query->have_posts()) {
-            $posts = $query->get_posts();
-        }
-
-        return $posts;
-    }
-
-    /**
      * generates a random slug for use as post_name in timeframes/booking to prevent easy access to bookings via get parameters
      *
      * @param  mixed $length
@@ -278,6 +271,9 @@ abstract class CustomPostType
         return $randomString;
     }
 
+    /**
+     * @return mixed
+     */
     abstract public static function getView();
 
 }

@@ -208,6 +208,9 @@ class Plugin
         );
     }
 
+    /**
+     * Adds cb user roles to wordpress.
+     */
     public static function addCustomUserRoles()
     {
         $cbPostTypeNames = [];
