@@ -24,6 +24,9 @@ abstract class CustomPostType
         return static::$postType;
     }
 
+    /**
+     * Adds permissions for cb users.
+     */
     public function addRoleCaps() {
         // Add the roles you'd like to administer the custom post types
         $roles = array(Plugin::$CB_MANAGER_ID, 'administrator');
@@ -180,6 +183,7 @@ abstract class CustomPostType
     {
         add_filter('manage_' . static::getPostType() . '_posts_columns', function ($columns) {
             unset($columns['date']);
+            $columns[ 'author' ] = 'Nutzer*in';
             return $columns;
         });
     }
@@ -220,7 +224,11 @@ abstract class CustomPostType
         if ($value = get_post_meta($post_id, $column, true)) {
             echo $value;
         } else {
-            echo '-';
+            if ( property_exists($post = get_post($post_id), $column)) {
+                echo $post->{$column};
+            } else {
+                echo '-';
+            }
         }
     }
 

@@ -11,6 +11,16 @@ class Booking extends CustomPost
 {
 
     /**
+     * Booking states.
+     * @var string[]
+     */
+    public static $bookingStates = [
+        "cancelled",
+        "confirmed",
+        "unconfirmed"
+    ];
+
+    /**
      * @return Location
      * @throws \Exception
      */
