@@ -5,10 +5,19 @@ namespace CommonsBooking\Wordpress\PostStatus;
 class PostStatus
 {
 
+    /**
+     * @var string
+     */
     protected $name;
 
+    /**
+     * @var string
+     */
     protected $label;
 
+    /**
+     * @var bool
+     */
     protected $public;
 
     /**
@@ -27,7 +36,9 @@ class PostStatus
         $this->addActions();
     }
 
-
+    /**
+     * Registers current post status.
+     */
     public function registerPostStatus()
     {
         register_post_status($this->name, array(
@@ -40,12 +51,18 @@ class PostStatus
         ));
     }
 
+    /**
+     * Adds edit actions for post-status to backend.
+     */
     public function addActions()
     {
         add_action('admin_footer-edit.php', array($this, 'addQuickedit'));
         add_action('admin_footer', array($this, 'addOption'));
     }
 
+    /**
+     * Adds poststatus option to backend.
+     */
     public function addOption() {
         global $post;
 
@@ -64,6 +81,9 @@ class PostStatus
         }
     }
 
+    /**
+     * Adds poststatus quickedit to backend.
+     */
     public function addQuickedit()
     {
         echo "<script>

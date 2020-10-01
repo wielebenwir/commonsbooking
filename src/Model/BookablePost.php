@@ -43,12 +43,10 @@ class BookablePost extends CustomPost
     /**
      * Returns bookable timeframes for a specific location
      *
-     * @param bool $asModel
-     *
      * @return array
      * @throws \Exception
      */
-    public function isBookable($asModel = false)
+    public function isBookable()
     {
         return count($this->getBookableTimeframes());
     }

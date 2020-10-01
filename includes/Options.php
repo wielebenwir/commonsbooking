@@ -180,20 +180,20 @@ $options_array = array(
             </p>
             
             Pick up date and time:<br>
-            <b>{{booking:pickup_datetime}}</b><br>
+            <b>{{booking:pickupDatetime}}</b><br>
             {{location:pickupInstructions}}
             
             <br><br>
             
             Return date and time:<br>
-            <b>{{booking:return_datetime}}</b>
+            <b>{{booking:returnDatetime}}</b>
             <br><br>
             <b>Location address</b><br>
             {{location:post_name}}
             {{location:formattedAddress}}
             {{location:formattedContactInfoOneLine}}
             
-            <p>Click here to see or cancel your booking: {{booking:booking_link}}.</p><br>
+            <p>Click here to see or cancel your booking: {{booking:bookingLink}}.</p><br>
             <b>Notice:</b> You need to be logged in to see your booking. <br>
             If the link leads you to the homepage of the webseite,
             please login first and then click the link again.<br><br>

@@ -2,7 +2,6 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-use CommonsBooking\Plugin;
 use CommonsBooking\Repository\UserRepository;
 
 class Location extends CustomPostType
@@ -22,7 +21,7 @@ class Location extends CustomPostType
         add_shortcode('cb_items', array(\CommonsBooking\View\Item::class, 'shortcode'));
 
         // Setting role permissions
-        add_action('admin_init',array($this, 'addRoleCaps'),999);
+        add_action('admin_init', array($this, 'addRoleCaps'), 999);
     }
 
     public function getTemplate($content)
@@ -66,29 +65,29 @@ class Location extends CustomPostType
 
         // args for the new post_type
         return array(
-            'labels'              => $labels,
+            'labels'            => $labels,
 
             // Sichtbarkeit des Post Types
-            'public'              => true,
+            'public'            => true,
 
             // Standart Ansicht im Backend aktivieren (Wie Artikel / Seiten)
-            'show_ui'             => true,
+            'show_ui'           => true,
 
             // Soll es im Backend Menu sichtbar sein?
-            'show_in_menu'        => false,
+            'show_in_menu'      => false,
 
             // Position im Menu
-            'menu_position'       => 4,
+            'menu_position'     => 4,
 
             // Post Type in der oberen Admin-Bar anzeigen?
-            'show_in_admin_bar'   => true,
+            'show_in_admin_bar' => true,
 
             // in den Navigations Menüs sichtbar machen?
-            'show_in_nav_menus'   => true,
+            'show_in_nav_menus' => true,
 
             // Hier können Berechtigungen in einem Array gesetzt werden
             // oder die standart Werte post und page in form eines Strings gesetzt werden
-            'capability_type'     => array(self::$postType,self::$postType . 's'),
+            'capability_type'   => array(self::$postType, self::$postType . 's'),
 
             'map_meta_cap'        => true,
 
@@ -137,8 +136,6 @@ class Location extends CustomPostType
             'context'      => 'normal',
             'priority'     => 'high',
             'show_names'   => true, // Show field names on the left
-            // 'cmb_styles' => false, // false to disable the CMB stylesheet
-            // 'closed'     => true, // Keep the metabox closed by default
         ));
 
         // Adress
@@ -148,10 +145,6 @@ class Location extends CustomPostType
             'id'         => CB_METABOX_PREFIX . 'location_street',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
-            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
-            // 'on_front'        => false, // Optionally designate a field to wp-admin only
-            // 'repeatable'      => true,
         ));
 
         // Postcode
@@ -161,10 +154,6 @@ class Location extends CustomPostType
             'id'         => CB_METABOX_PREFIX . 'location_postcode',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
-            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
-            // 'on_front'        => false, // Optionally designate a field to wp-admin only
-            // 'repeatable'      => true,
         ));
 
         // City
@@ -174,9 +163,6 @@ class Location extends CustomPostType
             'id'         => CB_METABOX_PREFIX . 'location_city',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
-            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
-            // 'on_front'        => false, // Optionally designate a field to wp-admin only
             // 'repeatable'      => true,
         ));
 
@@ -187,10 +173,6 @@ class Location extends CustomPostType
             'id'         => CB_METABOX_PREFIX . 'location_country',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
-            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
-            // 'on_front'        => false, // Optionally designate a field to wp-admin only
-            // 'repeatable'      => true,
         ));
 
         // Initiate the metabox Information
@@ -201,20 +183,16 @@ class Location extends CustomPostType
             'context'      => 'normal',
             'priority'     => 'high',
             'show_names'   => true, // Show field names on the left
-            // 'cmb_styles' => false, // false to disable the CMB stylesheet
-            // 'closed'     => true, // Keep the metabox closed by default
         ));
 
         // short description
         $cmb->add_field(array(
             'name'       => __('Location email', 'commonsbooking'),
-            'desc'       => __('email-address to get copy of booking confirmation and cancellation mails', 'commonsbooking'),
+            'desc'       => __('email-address to get copy of booking confirmation and cancellation mails',
+                'commonsbooking'),
             'id'         => CB_METABOX_PREFIX . 'location_email',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
-            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
-            // 'on_front'        => false, // Optionally designate a field to wp-admin only
             // 'repeatable'      => true,
         ));
 
@@ -222,46 +200,41 @@ class Location extends CustomPostType
         // pickup description
         $cmb->add_field(array(
             'name'       => __('Pickup instructions', 'commonsbooking'),
-            'desc'       => __('Type in information about the pickup process (e.g. detailed route description, opening hours, etc.). This will be shown to user in booking process and booking confirmation mail', 'commonsbooking'),
+            'desc'       => __('Type in information about the pickup process (e.g. detailed route description, opening hours, etc.). This will be shown to user in booking process and booking confirmation mail',
+                'commonsbooking'),
             'id'         => CB_METABOX_PREFIX . 'location_pickupinstructions',
             'type'       => 'textarea_small',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
-            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
-            // 'on_front'        => false, // Optionally designate a field to wp-admin only
             // 'repeatable'      => true,
         ));
 
         // location contact
         $cmb->add_field(array(
             'name'       => __('Location contact information', 'commonsbooking'),
-            'desc'       => __('information about how to contact the location (e.g. contact person, phone number, e-mail etc.). This will be shown to user in booking process and booking confirmation mail', 'commonsbooking'),
+            'desc'       => __('information about how to contact the location (e.g. contact person, phone number, e-mail etc.). This will be shown to user in booking process and booking confirmation mail',
+                'commonsbooking'),
             'id'         => CB_METABOX_PREFIX . 'location_contact',
             'type'       => 'textarea_small',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-            // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
-            // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
-            // 'on_front'        => false, // Optionally designate a field to wp-admin only
-            // 'repeatable'      => true,
         ));
 
         // Location admin selection
         $users = UserRepository::getCBLocationAdmins();
         $userOptions = [];
         foreach ($users as $user) {
-            $userOptions[$user->ID] = $user->get('user_nicename') . " (" .$user->last_name . " " . $user->last_name . ")";
+            $userOptions[$user->ID] = $user->get('user_nicename') . " (" . $user->last_name . " " . $user->last_name . ")";
         }
-
-        $cmb->add_field( array(
+        $cmb->add_field(array(
             'name'       => __('Location Admin(s)', 'commonsbooking'),
-            'desc'       => __('choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role cb_manager can be selected here.', 'commonsbooking'),
-            'id'      => CB_METABOX_PREFIX . 'location_admins',
-            'type'    => 'pw_multiselect',
-            'options' => $userOptions,
+            'desc'       => __('choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role cb_manager can be selected here.',
+                'commonsbooking'),
+            'id'         => CB_METABOX_PREFIX . 'location_admins',
+            'type'       => 'pw_multiselect',
+            'options'    => $userOptions,
             'attributes' => array(
                 'placeholder' => __('Select location admins.', 'commonsbooking')
             ),
-        ) );
+        ));
     }
 
 }

@@ -2,8 +2,10 @@
 
 namespace CommonsBooking\Model;
 
-use CommonsBooking\Plugin;
-
+/**
+ * Class Timeframe
+ * @package CommonsBooking\Model
+ */
 class Timeframe extends CustomPost
 {
     /**
@@ -12,7 +14,7 @@ class Timeframe extends CustomPost
      */
     public function getLocation()
     {
-        $locationId = self::get_meta('location-id');
+        $locationId = self::getMeta('location-id');
         if ($post = get_post($locationId)) {
             return new Location($post);
         }
@@ -26,7 +28,7 @@ class Timeframe extends CustomPost
      */
     public function getItem()
     {
-        $itemId = self::get_meta('item-id');
+        $itemId = self::getMeta('item-id');
 
         if ($post = get_post($itemId)) {
             return new Item($post);
@@ -46,7 +48,7 @@ class Timeframe extends CustomPost
     {
         $format = self::getDateFormat();
 
-        //  workaround because we need to calculate, and get_meta returns empty *string* if not set
+        //  workaround because we need to calculate, and getMeta returns empty *string* if not set
         $startDate = $this->getStartDate() ? $this->getStartDate() : 0;
         $endDate = $this->getEndDate() ? $this->getEndDate() : 0;
         $today = strtotime('now');
@@ -104,7 +106,7 @@ class Timeframe extends CustomPost
      */
     public function getStartDate()
     {
-        return self::get_meta('repetition-start');
+        return self::getMeta('repetition-start');
     }
 
     /**
@@ -114,7 +116,7 @@ class Timeframe extends CustomPost
      */
     public function getEndDate()
     {
-        return self::get_meta('repetition-end');
+        return self::getMeta('repetition-end');
     }
 
     /**
@@ -123,7 +125,7 @@ class Timeframe extends CustomPost
      */
     public function getGrid()
     {
-        return self::get_meta('grid');
+        return self::getMeta('grid');
     }
 
     /**
@@ -132,7 +134,7 @@ class Timeframe extends CustomPost
      */
     public function getType()
     {
-        return self::get_meta('type');
+        return self::getMeta('type');
     }
 
     /**
@@ -140,7 +142,7 @@ class Timeframe extends CustomPost
      * @return mixed
      */
     public function getStartTime() {
-        return self::get_meta('start-time');
+        return self::getMeta('start-time');
     }
 
     /**
@@ -148,12 +150,13 @@ class Timeframe extends CustomPost
      * @return mixed
      */
     public function getEndTime() {
-        return self::get_meta('end-time');
+        return self::getMeta('end-time');
     }
 
     /**
-     * Checks if Timeframe is valid, if not timeframe will be removed!!!
+     * Checks if Timeframe is valid.
      * @throws \Exception
+     * @return bool
      */
     public function isValid()
     {

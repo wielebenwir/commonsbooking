@@ -2,28 +2,67 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-use CommonsBooking\Plugin;
 use CommonsBooking\Repository\Booking;
-use CommonsBooking\Wordpress\MetaBox\Field;
-use CommonsBooking\Messages\Messages;
 
 class Timeframe extends CustomPostType
 {
 
+    /**
+     * "Opening Hours" timeframe type id.
+     */
     const OPENING_HOURS_ID = 1;
+
+    /**
+     * "Bookable" timeframe type id.
+     */
     const BOOKABLE_ID = 2;
+
+    /**
+     * "Holidays" timeframe type id.
+     */
     const HOLIDAYS_ID = 3;
+
+    /**
+     * "Official Holidays" timeframe type id.
+     */
     const OFF_HOLIDAYS_ID = 4;
+
+    /**
+     * "Repair" timeframe type id.
+     */
     const REPAIR_ID = 5;
+
+    /**
+     * "Booking" timeframe type id.
+     */
     const BOOKING_ID = 6;
+
+    /**
+     * "Booking cancelled" timeframe type id.
+     */
     const BOOKING_CANCELED_ID = 7;
 
+    /**
+     * CPT type.
+     * @var string
+     */
     public static $postType = 'cb_timeframe';
 
+    /**
+     * Position in backend menu.
+     * @var int
+     */
     protected $menuPosition = 1;
 
+    /**
+     * @var array
+     */
     protected $types;
 
+    /**
+     * Backend listing columns.
+     * @var string[]
+     */
     protected $listColumns = [
         'type'             => "Type",
         'item-id'          => "Item",
@@ -35,7 +74,7 @@ class Timeframe extends CustomPostType
     ];
 
     /**
-     * Timeframetypes which cannot be "overbooked"
+     * Timeframetypes which cannot be "overbooked".
      * @var int[]
      */
     public static $multiDayBlockingFrames = [
@@ -43,9 +82,6 @@ class Timeframe extends CustomPostType
         self::BOOKING_ID
     ];
 
-    /**
-     * Item constructor.
-     */
     public function __construct()
     {
         $this->types = self::getTypes();
@@ -145,6 +181,17 @@ class Timeframe extends CustomPostType
         }
 
         // Validate timeframe
+        $this->validateTimeFrame($post_id, $post);
+    }
+
+    /**
+     * Validates timeframe and sets state to draft if invalid.
+     * @param $post_id
+     * @param $post
+     *
+     * @throws \Exception
+     */
+    protected function validateTimeFrame($post_id, $post) {
         $timeframe = new \CommonsBooking\Model\Timeframe($post_id);
         if ( ! $timeframe->isValid()) {
             // set post_status to draft if not valid
@@ -214,12 +261,14 @@ class Timeframe extends CustomPostType
                 "post_title"  => __("Booking", 'commonsbooking')
             );
 
+            // New booking
             if (empty($booking)) {
                 $postarr['post_name'] = self::generateRandomSlug();
                 $postId = wp_insert_post($postarr, true);
                 $booking_metafield = new \CommonsBooking\Model\Booking($postId);
                 // we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
                 $booking_metafield->assignBookableTimeframeFields();
+            // Existing booking
             } else {
                 $postarr['ID'] = $booking->ID;
                 $postId = wp_update_post($postarr);
@@ -233,9 +282,9 @@ class Timeframe extends CustomPostType
                 $booking_msg = new \CommonsBooking\Messages\Messages($postId, $_REQUEST["post_status"]);
                 $booking_msg->triggerMail();
             }
+
             // get slug as parameter
             $post_slug = get_post($postId)->post_name;
-
 
             wp_redirect(add_query_arg(self::getPostType(), $post_slug, home_url()));
             exit;
@@ -323,7 +372,7 @@ class Timeframe extends CustomPostType
     }
 
     /**
-     * Returns custom (meta) fields for Coostum Post Type Timeframe.
+     * Returns custom (meta) fields for Costum Post Type Timeframe.
      * @return array
      */
     protected function getCustomFields()
@@ -362,7 +411,7 @@ class Timeframe extends CustomPostType
                     '9'  => 9,
                     '10' => 10
                 ],
-                'default' => 3
+                'default'    => 3
             ),
             array(
                 'name'       => __("Location", 'commonsbooking'),
@@ -410,10 +459,6 @@ class Timeframe extends CustomPostType
                 'id'         => "timeframe-max-days",
                 'type'       => 'select',
                 'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
-                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
-                // 'on_front'        => false, // Optionally designate a field to wp-admin only
-                // 'repeatable'      => true,
                 'options'    => [
                     '1'  => 1,
                     '2'  => 2,
@@ -426,7 +471,7 @@ class Timeframe extends CustomPostType
                     '9'  => 9,
                     '10' => 10
                 ],
-                'default' => 3
+                'default'    => 3
             ),
 
             array(
@@ -515,23 +560,6 @@ class Timeframe extends CustomPostType
     }
 
     /**
-     * Returns type label by type-id.
-     *
-     * @param $id
-     *
-     * @return mixed
-     * @throws \Exception
-     */
-    public static function getTypeLabel($id)
-    {
-        if (array_key_exists($id, self::getTypes())) {
-            return self::getTypes()[$id];
-        } else {
-            throw new \Exception('invalid type id');
-        }
-    }
-
-    /**
      * Adds data to custom columns
      *
      * @param $column
@@ -582,7 +610,7 @@ class Timeframe extends CustomPostType
 
             if (
                 property_exists($post = get_post($post_id), $column) && (
-                    !in_array($column, $bookingColumns) ||
+                    ! in_array($column, $bookingColumns) ||
                     get_post_meta($post_id, 'type', true) == Timeframe::BOOKING_ID
                 )
             ) {
@@ -608,7 +636,6 @@ class Timeframe extends CustomPostType
      */
     public static function getHigherPrioFrame(\WP_Post $timeframeOne, \WP_Post $timeframeTwo)
     {
-
         $prioMapping = [
             self::REPAIR_ID        => 10,
             self::BOOKING_ID       => 9,
@@ -684,7 +711,7 @@ class Timeframe extends CustomPostType
     public static function addAdminItemFilter()
     {
         $items = \CommonsBooking\Repository\Item::get();
-        if($items) {
+        if ($items) {
             $values = [];
             foreach ($items as $item) {
                 $values[$item->ID] = $item->post_title;
@@ -704,7 +731,7 @@ class Timeframe extends CustomPostType
     public static function addAdminLocationFilter()
     {
         $items = \CommonsBooking\Repository\Location::get();
-        if($items) {
+        if ($items) {
             $values = [];
             foreach ($items as $item) {
                 $values[$item->ID] = $item->post_title;
@@ -736,11 +763,13 @@ class Timeframe extends CustomPostType
 
     /**
      * Renders backend list filter.
+     *
      * @param $label
      * @param $key
      * @param $values
      */
-    public static function renderFilter($label, $key, $values) {
+    public static function renderFilter($label, $key, $values)
+    {
         //only add filter to post type you want
         if (isset($_GET['post_type']) && self::$postType == $_GET['post_type']) {
             ?>
@@ -784,12 +813,12 @@ class Timeframe extends CustomPostType
                 'relation' => 'AND'
             );
             $meta_filters = [
-                'type' => 'admin_filter_type',
-                'item-id' => 'admin_filter_item',
+                'type'        => 'admin_filter_type',
+                'item-id'     => 'admin_filter_item',
                 'location-id' => 'admin_filter_location'
             ];
             foreach ($meta_filters as $key => $filter) {
-                if(
+                if (
                     isset($_GET[$filter]) &&
                     $_GET[$filter] != ''
                 ) {
@@ -805,7 +834,7 @@ class Timeframe extends CustomPostType
                 'post_status' => 'admin_filter_post_status'
             ];
             foreach ($post_filters as $key => $filter) {
-                if(
+                if (
                     isset($_GET[$filter]) &&
                     $_GET[$filter] != ''
                 ) {

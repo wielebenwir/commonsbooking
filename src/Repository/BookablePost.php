@@ -6,7 +6,14 @@ namespace CommonsBooking\Repository;
 
 abstract class BookablePost extends PostRepository
 {
+    /**
+     * @return string
+     */
     abstract protected static function getPostType();
+
+    /**
+     * @return mixed
+     */
     abstract protected static function getModelClass();
 
     /**

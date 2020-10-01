@@ -7,12 +7,24 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 class Day
 {
 
+    /**
+     * @var
+     */
     protected $date;
 
+    /**
+     * @var array
+     */
     protected $locations;
 
+    /**
+     * @var array
+     */
     protected $items;
 
+    /**
+     * @var array|mixed
+     */
     protected $types;
 
     /**
@@ -44,6 +56,10 @@ class Day
         return date('w', strtotime($this->getDate()));
     }
 
+    /**
+     * @return \DateTime
+     * @throws \Exception
+     */
     public function getDateObject()
     {
         return new \DateTime($this->getDate());
@@ -57,35 +73,24 @@ class Day
         return $this->date;
     }
 
+    /**
+     * Returns formatted date.
+     * @param $format string Date format
+     *
+     * @return false|string
+     */
     public function getFormattedDate($format)
     {
         return date($format, strtotime($this->getDate()));
     }
 
-    public function getSlotStartTimestamp($slotNr)
-    {
-        $slot = $this->getSlot($slotNr);
-        return intval(strtotime($this->getDate() . ' ' . $slot['timestart']));
-    }
-
-    public function getSlotEndTimestamp($slotNr)
-    {
-        $slot = $this->getSlot($slotNr);
-        return intval(strtotime($this->getDate() . ' ' . $slot['timeend'])) - 1;
-    }
-
-    public function getFormattedSlotStartDate($format, $slotNr)
-    {
-        $time = $this->getSlotStartTimestamp($slotNr);
-        return date($format, $time);
-    }
-
-    public function getFormattedSlotEndDate($format, $slotNr)
-    {
-        $time = $this->getSlotEndTimestamp($slotNr);
-        return date($format, $time);
-    }
-
+    /**
+     * Returns timeslot by nr.
+     * @param $slotNr
+     *
+     * @return mixed
+     * @throws \Exception
+     */
     public function getSlot($slotNr)
     {
         $grid = $this->getGrid();
@@ -109,13 +114,17 @@ class Day
         return $this;
     }
 
+    /**
+     * Returns name of the day.
+     * @return false|string
+     */
     public function getName()
     {
         return date('l', strtotime($this->getDate()));
     }
 
     /**
-     * Returns grid of timeframes.
+     * Returns grid for the day defined by the timeframes.
      * @return array
      * @throws \Exception
      */
@@ -212,7 +221,6 @@ class Day
         return $endSlot;
     }
 
-
     /**
      * Returns repetition-start DateTime.
      * @param $timeframe
@@ -279,8 +287,11 @@ class Day
 
     /**
      * Checks if timeframe is relevant for current day/date.
+     *
      * @param $timeframe
+     *
      * @return bool
+     * @throws \Exception
      */
     protected function continueBecauseOfRepetition($timeframe)
     {
@@ -328,7 +339,7 @@ class Day
     }
 
     /**
-     * Fills timeslots with timeframes.
+     * Maps timeframes to timeslots.
      *
      * @param $slots
      * @param $timeframes
@@ -442,11 +453,25 @@ class Day
         return $slots;
     }
 
+    /**
+     * Returns timestamp when $slotNr starts.
+     * @param $slotsPerDay
+     * @param $slotNr
+     *
+     * @return false|float|int
+     */
     protected function getSlotTimestampStart($slotsPerDay, $slotNr)
     {
         return strtotime($this->getDate()) + ($slotNr * ((24 / $slotsPerDay) * 3600));
     }
 
+    /**
+     * Returns timestamp when $slotNr ends.
+     * @param $slotsPerDay
+     * @param $slotNr
+     *
+     * @return false|float|int
+     */
     protected function getSlotTimestampEnd($slotsPerDay, $slotNr)
     {
         return strtotime($this->getDate()) + (($slotNr + 1) * ((24 / $slotsPerDay) * 3600)) - 1;
