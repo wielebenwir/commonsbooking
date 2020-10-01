@@ -403,6 +403,32 @@ class Timeframe extends CustomPostType
                 'type'       => 'checkbox',
                 'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             ),
+
+            array(
+                'name'       => __('Maximum booking duration', 'commonsbooking'),
+                'desc'       => __('Maximum booking duration in days', 'commonsbooking'),
+                'id'         => "timeframe-max-days",
+                'type'       => 'select',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                // 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
+                // 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
+                // 'on_front'        => false, // Optionally designate a field to wp-admin only
+                // 'repeatable'      => true,
+                'options'    => [
+                    '1'  => 1,
+                    '2'  => 2,
+                    '3'  => 3,
+                    '4'  => 4,
+                    '5'  => 5,
+                    '6'  => 6,
+                    '7'  => 7,
+                    '8'  => 8,
+                    '9'  => 9,
+                    '10' => 10
+                ],
+                'default' => 3
+            ),
+
             array(
                 'name'        => __("Start time", 'commonsbooking'),
                 'id'          => "start-time",
