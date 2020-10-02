@@ -36,6 +36,15 @@ class Location extends BookablePost
                 )
             )
         );
+
+        // workaround: if user has admin-role all locations are available
+        // TODO: better solution to check if user has administrator role
+        if ( in_array( 'administrator', $current_user->roles ) ) {
+            $args = array(
+                'post_type' => \CommonsBooking\Wordpress\CustomPostType\Location::$postType,
+            );
+        }
+
         $query = new \WP_Query($args);
         if ($query->have_posts()) {
             $locations = array_merge($locations, $query->get_posts());
