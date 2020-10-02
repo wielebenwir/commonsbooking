@@ -170,7 +170,7 @@ class Timeframe extends CustomPost
 
             if($this->getStartTime() && !$this->getEndTime()) {
                 set_transient("timeframeValidationFailed",
-                    __("Es wurde eine Startzeit, aber keine Endzeit gesetzt.", 'commonsbooking'), 45);
+                    __("A pickup time but no return time has been set. Please set the return time.", 'commonsbooking'), 45);
                 return false;
             }
 
@@ -198,14 +198,16 @@ class Timeframe extends CustomPost
                     // Compare grid types
                     if ($timeframe->getGrid() != $this->getGrid()) {
                         set_transient("timeframeValidationFailed",
-                            __("Sich überlagernde buchbare Timeframes dürfen nur das gleiche Raster haben. (Timeframe (ID: ".$timeframe->ID."): '".$timeframe->post_title."')", 'commonsbooking'), 5);
+                            #translators: first %s = timeframe-ID, second %s is timeframe post_title
+                            sprintf(__('Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %s: %s', 'commonsbooking', 5), $timeframe->ID, $timeframe->post_title ));
                         return false;
                     }
 
                     // Check if day slots overlap
                     if( $this->hasTimeframeTimeOverlap($this, $timeframe)) {
                         set_transient("timeframeValidationFailed",
-                            __("Zeiträume dürfen sich nicht überlagern. (Timeframe (ID: ".$timeframe->ID."): '".$timeframe->post_title."')", 'commonsbooking'), 5);
+                            #translators: first %s = timeframe-ID, second %s is timeframe post_title
+                            sprintf(__('time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day.. See affected timeframe ID: %s: %s', 'commonsbooking', 5), $timeframe->ID, $timeframe->post_title ));
                         return false;
                     }
                 }
