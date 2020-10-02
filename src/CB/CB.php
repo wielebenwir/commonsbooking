@@ -162,21 +162,18 @@ class CB
         
         // Look up        
         if (class_exists($repo) AND self::$key != 'user') {
-            $post = $repo::getByPostById($postID);
+            $post = $repo::getPostById($postID);
 
             if (method_exists($model, $property)) {
-                //echo ($post->$property(self::$args));
                 return $post->$property(self::$args);
             }
 
             if ($post->$property) {
-                //echo ($post->$property);
                 return $post->$property;
             }
         }
 
         if (get_post_meta($postID, $property, TRUE)) { // Post has meta fields
-            //echo get_post_meta($postID, $property, TRUE);
             return get_post_meta($postID, $property, TRUE);
 
         
@@ -187,18 +184,15 @@ class CB
             $cb_user = \get_user_by('ID', $userID);
         
             if (method_exists($model, $property)) {
-                //echo ($cb_user->$property(self::$args));
                 return $cb_user->$property(self::$args);
             }
 
             if ($cb_user->$property) {
-                //echo ($cb_user->$property);
                 return $cb_user->$property;
             }
 
             if (get_user_meta($userID, $property, TRUE)) { // User has meta fields
-                //echo get_user_meta($userID, $property, TRUE);
-                return $cb_user->get_meta($property);
+                return $cb_user->getMeta($property);
             }
 
 

@@ -4,6 +4,7 @@
 namespace CommonsBooking;
 
 use CommonsBooking\Controller\TimeframeController;
+use CommonsBooking\Model\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
@@ -14,8 +15,22 @@ use CB;
 class Plugin
 {
 
+    /**
+     * Location admin id.
+     * @var string
+     */
     public static $LOCATION_ADMIN_ID = 'location_admin';
+
+    /**
+     * Item admin id.
+     * @var string
+     */
     public static $ITEM_ADMIN_ID = 'item_admin';
+
+    /**
+     * CB-Manager id.
+     * @var string
+     */
     public static $CB_MANAGER_ID = 'cb_manager';
 
     /**
@@ -23,7 +38,7 @@ class Plugin
      */
     public function init()
     {
-        do_action( 'cmb2_init' );
+        do_action('cmb2_init');
 
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerItemTaxonomy'));
@@ -33,7 +48,7 @@ class Plugin
 
         // Register custom post types
         add_action('init', array(self::class, 'registerCustomPostTypes'));
-        add_action('init', array(self::class, 'registerPostStatuses'));
+        add_action('init', array(self::class, 'registerPostStates'));
 
         // Add menu pages
         add_action('admin_menu', array(self::class, 'addMenuPages'));
@@ -91,6 +106,7 @@ class Plugin
 
     /**
      * Appends view data to content.
+     *
      * @param $content
      *
      * @return string
@@ -166,11 +182,11 @@ class Plugin
     /**
      * Registers additional post statuses.
      */
-    public static function registerPostStatuses()
+    public static function registerPostStates()
     {
-        $cancelled = new PostStatus("cancelled", __('Cancelled', 'commonsbooking'));
-        $confirmed = new PostStatus("confirmed", __('Confirmed', 'commonsbooking'));
-        $unconfirmed = new PostStatus("unconfirmed", __('Unconfirmed', 'commonsbooking'));
+        foreach (Booking::$bookingStates as $bookingState) {
+            new PostStatus($bookingState, __(ucfirst($bookingState), 'commonsbooking'));
+        }
     }
 
     /**
@@ -185,46 +201,49 @@ class Plugin
             $customPostType . '_category',
             $customPostType,
             array(
-                'label' => __('Item Category', 'commonsbooking'),
-                'rewrite' => array('slug' => $customPostType . '-cat'),
+                'label'        => __('Item Category', 'commonsbooking'),
+                'rewrite'      => array('slug' => $customPostType . '-cat'),
                 'hierarchical' => true,
             )
         );
     }
 
+    /**
+     * Adds cb user roles to wordpress.
+     */
     public static function addCustomUserRoles()
     {
         $cbPostTypeNames = [];
-        foreach(Plugin::getCustomPostTypes() as $postType) {
+        foreach (Plugin::getCustomPostTypes() as $postType) {
             $cbPostTypeNames[] = $postType::$postType;
         };
 
         $roleCapMapping = [
             Plugin::$LOCATION_ADMIN_ID => [
-                'read' => true,
+                'read'                     => true,
                 'manage_' . CB_PLUGIN_SLUG => true
             ],
-            Plugin::$ITEM_ADMIN_ID => [
-                'read' => true,
+            Plugin::$ITEM_ADMIN_ID     => [
+                'read'                     => true,
                 'manage_' . CB_PLUGIN_SLUG => true
             ],
-            Plugin::$CB_MANAGER_ID => [
-                'read' => true,
+            Plugin::$CB_MANAGER_ID     => [
+                'read'                     => true,
                 'manage_' . CB_PLUGIN_SLUG => true
             ],
-            'administrator' => [
-                'read' => true,
-                'edit_posts' => true,
+            'administrator'            => [
+                'read'                     => true,
+                'edit_posts'               => true,
                 'manage_' . CB_PLUGIN_SLUG => true
             ]
         ];
 
         foreach ($roleCapMapping as $roleName => $caps) {
-            $role = get_role( $roleName );
-            if(!$role) {
+            $role = get_role($roleName);
+            if ( ! $role) {
                 $role = add_role(
                     $roleName,
-                    __( $roleName, CB_PLUGIN_SLUG )
+                    __($roleName, CB_PLUGIN_SLUG)
                 );
             }
 
@@ -232,6 +251,18 @@ class Plugin
                 $role->remove_cap($cap);
                 $role->add_cap($cap, $grant);
             }
+        }
+    }
+
+    /**
+     * Renders error for backend_notice.
+     */
+    public static function renderError()
+    {
+        if ($error = get_transient("timeframeValidationFailed")) {
+            $class = 'notice notice-error';
+            printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($error));
+            delete_transient("timeframeValidationFailed");
         }
     }
 

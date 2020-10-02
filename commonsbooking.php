@@ -59,8 +59,8 @@ function commonsbooking_public()
 }
 add_action('wp_enqueue_scripts', 'commonsbooking_public');
 
-add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 'get_calendar_data'));
-add_action('wp_ajax_nopriv_calendar_data', array(\CommonsBooking\View\Location::class, 'get_calendar_data'));
+add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 'getCalendarData'));
+add_action('wp_ajax_nopriv_calendar_data', array(\CommonsBooking\View\Location::class, 'getCalendarData'));
 
 // should be loaded via add_action, but wasnt working in admin menu
 load_plugin_textdomain('commonsbooking', false, basename(dirname(__FILE__)) . '/languages/');
@@ -191,20 +191,18 @@ function cb_timeframe_redirect()
         $post &&
         $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType &&
         (
-            (
-                ! current_user_can('administrator') &&
-                get_current_user_id() != $post->post_author
-            ) ||
+            ( ! current_user_can('administrator') && get_current_user_id() != $post->post_author ) ||
             !is_user_logged_in()
         )
     ) {
         wp_redirect(home_url('/'));
         exit;
     }
-
 }
-
 add_action('template_redirect', 'cb_timeframe_redirect');
+
+// Shows Errors in Backend
+add_action('admin_notices',array(Plugin::class, 'renderError'));
 
 $cbPlugin = new Plugin();
 $cbPlugin->init();
