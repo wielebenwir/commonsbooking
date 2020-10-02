@@ -1,7 +1,25 @@
+/**
+ * Layouts for tables/lists
+ * Breakpoints for arranging elements
+ *
+ * @package   CommonsBooking
+ * @author Florian Egermann <florian@wielebenwir.de>
+ * @license   GPL-2.0+
+ * @since 2.0
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+
+
 /* -------------------- Tables -------------------- */
 
-/* 30-70 standard for lists, first item is description */
+/* 30-70 standard for lists, first item is title */
 .cb-col-30-70 {
+	
+	> :nth-child(odd) { /* this is the title column , e.g. "Name" */ 
+		font-weight: bold;
+	}
+	
 	@include breakpoint(phablet) {
 		display: flex;
 		flex-direction: row;
@@ -10,7 +28,6 @@
 
 		> :nth-child(odd) {
 				width: 30%;
-				font-weight: bold;
 			}
 		> :nth-child(even) {
 			width: 70%;
@@ -32,7 +49,12 @@
 		}
 	}
 }
+
 .cb-col-auto { /* 2 fixed cols, 1 flexible in the middle */
+	
+	display: flex;
+	flex-direction: column;
+	
 	@include breakpoint(phablet) {
 		display: flex;
 		flex-direction: row;

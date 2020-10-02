@@ -18,7 +18,12 @@
 
 .cb-box {
 	background: $color-gray-background;
-	padding: $spacer $spacer-big;
+	
+	padding: $spacer-small;
+	@include breakpoint(phablet) {
+		padding: $spacer $spacer-big;
+	}
+	
 	overflow: hidden;
 	border-radius: $radius;
 	margin-bottom: $spacer;
@@ -26,7 +31,12 @@
 
 .cb-box-inner {
 	background: $color-white;
-	padding: $spacer;
+
+	padding: $spacer-small;
+	@include breakpoint(phablet) {
+		padding: $spacer;
+	}
+	
 	border-radius: $radius;
 }
 
@@ -79,6 +89,7 @@
 	&:hover {
 		@extend .shadow-small;
 		background: $color-blue-dark;
+		color: $color-white; /* Various themes fix */
 	}
 
 	&:visited {

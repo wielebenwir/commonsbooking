@@ -289,33 +289,32 @@ class Booking extends CustomPost
         if (isset($form_post_status)) {       
             include CB_PLUGIN_DIR . 'templates/booking-single-form.php';
         }
-
-    }
-    
+    }   
     
     /**
      * show booking notice
      *
-     * @return void
+     * @return text|html
      */
     public function bookingNotice()
     {
-        $current_status = $this->post->post_status;
-
-        if ($current_status == "unconfirmed")
+        
+        $currentStatus = $this->post->post_status;
+        
+        if ($currentStatus == "unconfirmed")
         {
-            return __('Please check your booking and click confirm booking', 'commonsbooking' );
+            $noticeText = __('Please check your booking and click confirm booking', 'commonsbooking' );
+        } else if ($currentStatus == "confirmed")
+        {
+            $noticeText = __('Your booking is confirmed. A confirmation mail has been sent to you.', 'commonsbooking' );
         }
 
-        if ($current_status == "confirmed")
+        if ($currentStatus == "cancelled")
         {
-            return __('Your booking is confirmed. A confirmation mail has been sent to you.', 'commonsbooking' );
+            $noticeText = __('Your booking has been cancelled.', 'commonsbooking' );
         }
-
-        if ($current_status == "cancelled")
-        {
-            return __('Your booking has been cancelled.', 'commonsbooking' );
-        }
+        
+        return sprintf ('<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $currentStatus, $noticeText);
 
     }
 

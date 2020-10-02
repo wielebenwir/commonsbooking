@@ -49,6 +49,8 @@
 
 	font-size: 1.2em;
 	display: none;
+	
+	width: 100%; // Fix: calendars would not adjust correctly (one below the other) on mobile
 
 	.container {
 		&__main {

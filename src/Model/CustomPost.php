@@ -88,8 +88,16 @@ class CustomPost
      */
     public function titleLink()
     {
-        return sprintf('<a href="%s" class="cb-title cb-title-link">%s</a>', get_the_permalink($this->ID),
-            $this->post_title);
+        return sprintf('<a href="%s" class="cb-title cb-title-link">%s</a>', get_the_permalink($this->ID), $this->post_title );
+    }    
+    /**
+     * Return Title 
+     *
+     * @return html
+     */
+    public function title()
+    {
+        return sprintf('<span class="cb-title">%s</span>', $this->post_title );
     }
 
     /**

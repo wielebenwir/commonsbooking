@@ -1,22 +1,27 @@
 .cb-wrapper {
   .cb-action {
     @extend .cb-box;
-    @extend .cb-col-50-50;
-
-    /* Hack for now: we should be able to target the <input> directly by id/class. */
-    flex-direction: row-reverse; 
-    form {
-      input { float: right; }
-      &:last-of-type { /* this is the cancel button */
-        input {
-          background: transparent;
-          color: $color-gray-silver;
-          float: left; 
-        }
-      }
-    }
+    
+    text-align: right;
+    
     input {
       @extend .cb-button;
+      float: right;
+    }
+    
+    form {
+      &#cb-booking-form-set-cancelled { // cancel OR delete button
+        input {
+                background: transparent;
+                color: $color-gray-silver;
+                
+            }      
+        }      
+      &#cb-booking-form-set-confirmed { // confirm button
+        input {        
+          margin-left: $spacer-big;
+        }
+      }   
     }
   }
   #booking-form-container, 
@@ -57,7 +62,21 @@
     font-size: $font-size-big;
     vertical-align: middle;
     font-weight: bold;
-    background: $color-yellow-background;
     position: relative;
+    background: $color-notice;
+    
+    /* Post status */
+    &.cb-status-unconfirmed {
+      background: $color-notice;
+    }    
+    &.cb-status-confirmed {
+      background: $color-success;
+    }    
+    &.cb-status-cancelled {
+      background: $color-success;
+    }    
+    &.error {
+      background: $color-error;
+    }
   }
 }
