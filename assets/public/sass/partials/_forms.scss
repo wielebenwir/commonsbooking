@@ -63,6 +63,7 @@
     vertical-align: middle;
     font-weight: bold;
     position: relative;
+    background: $color-notice;
     
     /* Post status */
     &.cb-status-unconfirmed {
