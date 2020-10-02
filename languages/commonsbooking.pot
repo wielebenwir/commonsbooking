@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-10-02T13:12:27+00:00\n"
+"POT-Creation-Date: 2020-10-02T14:56:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -157,19 +157,19 @@ msgstr ""
 msgid "Cancel Booking"
 msgstr ""
 
-#: src/Model/Booking.php:307
+#: src/Model/Booking.php:306
 msgid "Please check your booking and click confirm booking"
 msgstr ""
 
-#: src/Model/Booking.php:312
+#: src/Model/Booking.php:309
 msgid "Your booking is confirmed. A confirmation mail has been sent to you."
 msgstr ""
 
-#: src/Model/Booking.php:317
+#: src/Model/Booking.php:314
 msgid "Your booking has been cancelled."
 msgstr ""
 
-#: src/Model/Booking.php:330
+#: src/Model/Booking.php:329
 msgid "Link to your booking"
 msgstr ""
 
@@ -187,6 +187,10 @@ msgstr ""
 
 #: src/Model/Timeframe.php:66
 msgid "from %s"
+msgstr ""
+
+#: src/Model/Timeframe.php:68
+msgid "permanently"
 msgstr ""
 
 #: src/Model/Timeframe.php:72
@@ -222,7 +226,7 @@ msgstr ""
 
 #: src/Wordpress/CustomPostType/Item.php:38
 #: src/Wordpress/CustomPostType/Timeframe.php:424
-#: templates/booking-single.php:23
+#: templates/booking-single.php:21
 msgid "Item"
 msgstr ""
 
@@ -397,7 +401,7 @@ msgid "use as location image"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Location.php:134
-#: templates/booking-single.php:45
+#: templates/booking-single.php:43
 msgid "Address"
 msgstr ""
 
@@ -430,7 +434,7 @@ msgid "email-address to get copy of booking confirmation and cancellation mails"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Location.php:202
-#: templates/booking-single.php:53
+#: templates/booking-single.php:51
 msgid "Pickup instructions"
 msgstr ""
 
@@ -699,31 +703,31 @@ msgstr ""
 msgid "Login to your account"
 msgstr ""
 
-#: templates/booking-single.php:30
+#: templates/booking-single.php:28
 msgid "Pickup from"
 msgstr ""
 
-#: templates/booking-single.php:34
+#: templates/booking-single.php:32
 msgid "Return until"
 msgstr ""
 
-#: templates/booking-single.php:42
+#: templates/booking-single.php:40
 msgid "Location: "
 msgstr ""
 
-#: templates/booking-single.php:49
+#: templates/booking-single.php:47
 msgid "Contact"
 msgstr ""
 
-#: templates/booking-single.php:61
+#: templates/booking-single.php:59
 msgid "Your profile"
 msgstr ""
 
-#: templates/booking-single.php:64
+#: templates/booking-single.php:62
 msgid "Your E-Mail"
 msgstr ""
 
-#: templates/booking-single.php:68
+#: templates/booking-single.php:66
 msgid "Your User name"
 msgstr ""
 

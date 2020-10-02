@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2020-10-02T13:12:27+00:00\n"
-"PO-Revision-Date: 2020-10-02 15:14+0200\n"
+"POT-Creation-Date: 2020-10-02T14:56:31+00:00\n"
+"PO-Revision-Date: 2020-10-02 16:57+0200\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -221,20 +221,20 @@ msgstr "Buchung bestätigen"
 msgid "Cancel Booking"
 msgstr "Buchung stornieren"
 
-#: src/Model/Booking.php:307
+#: src/Model/Booking.php:306
 msgid "Please check your booking and click confirm booking"
 msgstr "Bitte überprüfe die Buchung und klicke auf „Buchung bestätigen“"
 
-#: src/Model/Booking.php:312
+#: src/Model/Booking.php:309
 msgid "Your booking is confirmed. A confirmation mail has been sent to you."
 msgstr ""
 "Deine Buchung wurde bestätigt. Du hast eine Bestätigungs-E-Mail erhalten."
 
-#: src/Model/Booking.php:317
+#: src/Model/Booking.php:314
 msgid "Your booking has been cancelled."
 msgstr "Deine Buchung wurde storniert."
 
-#: src/Model/Booking.php:330
+#: src/Model/Booking.php:329
 msgid "Link to your booking"
 msgstr "Link zu deiner Buchung"
 
@@ -257,6 +257,10 @@ msgstr "am %s"
 #: src/Model/Timeframe.php:66
 msgid "from %s"
 msgstr "von %s"
+
+#: src/Model/Timeframe.php:68
+msgid "permanently"
+msgstr "dauerhaft"
 
 #: src/Model/Timeframe.php:72
 msgid " from %s until %s"
@@ -304,7 +308,7 @@ msgstr "Artikel"
 
 #: src/Wordpress/CustomPostType/Item.php:38
 #: src/Wordpress/CustomPostType/Timeframe.php:424
-#: templates/booking-single.php:23
+#: templates/booking-single.php:21
 msgid "Item"
 msgstr "Artikel"
 
@@ -484,7 +488,7 @@ msgid "use as location image"
 msgstr "Verwendung als Standortbild"
 
 #: src/Wordpress/CustomPostType/Location.php:134
-#: templates/booking-single.php:45
+#: templates/booking-single.php:43
 msgid "Address"
 msgstr "Adresse"
 
@@ -520,7 +524,7 @@ msgstr ""
 "gesendet wird"
 
 #: src/Wordpress/CustomPostType/Location.php:202
-#: templates/booking-single.php:53
+#: templates/booking-single.php:51
 msgid "Pickup instructions"
 msgstr "Abhol-Hinweise"
 
@@ -807,31 +811,31 @@ msgstr "Filtern nach Status "
 msgid "Login to your account"
 msgstr "Login zu deinem Nutzerkonto"
 
-#: templates/booking-single.php:30
+#: templates/booking-single.php:28
 msgid "Pickup from"
 msgstr "Abholung von"
 
-#: templates/booking-single.php:34
+#: templates/booking-single.php:32
 msgid "Return until"
 msgstr "Rückkehr bis"
 
-#: templates/booking-single.php:42
+#: templates/booking-single.php:40
 msgid "Location: "
 msgstr "Standort: "
 
-#: templates/booking-single.php:49
+#: templates/booking-single.php:47
 msgid "Contact"
 msgstr "Kontakt"
 
-#: templates/booking-single.php:61
+#: templates/booking-single.php:59
 msgid "Your profile"
 msgstr "Deine Profildaten"
 
-#: templates/booking-single.php:64
+#: templates/booking-single.php:62
 msgid "Your E-Mail"
 msgstr "Deine E-Mail"
 
-#: templates/booking-single.php:68
+#: templates/booking-single.php:66
 msgid "Your User name"
 msgstr "Dein Benutzername"
 

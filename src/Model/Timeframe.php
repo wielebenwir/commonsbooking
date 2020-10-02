@@ -65,7 +65,7 @@ class Timeframe extends CustomPost
             if ($startDate > $today) { // start is in the future
                 $availableString = sprintf(__('from %s', 'commonsbooking'), $startDateFormatted);
             } else { // start has passed, no end date, probably a fixed location
-                $availableString = ' permanently';
+                $availableString = __('permanently', 'commonsbooking');
             }
         } elseif ($startDate > 0 && $endDate > 0) { // start AND end date
             if ($startDate > $today) { // start is in the future, with an end date
