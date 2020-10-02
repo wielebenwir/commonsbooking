@@ -47,7 +47,7 @@ module.exports = function (grunt) {
 		uglify: {
 			dev: {
 				options: {
-					beautify: false,
+					beautify: true,
 					mangle: false
 				},
 				files: {
@@ -63,6 +63,10 @@ module.exports = function (grunt) {
 				}
 			},
 			dist: {
+				options: {
+					beautify: false,
+					mangle: true
+				},
 				files: {
 					'assets/public/js/public.min.js': [
 						'assets/public/js/public.js'
@@ -102,14 +106,12 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify-es');
 	// Register tasks
 	grunt.registerTask('default', [
-		'compass:admin', 'compass:public','uglify:dev',
-		'uglify:dist'
+		'compass:adminDev', 'compass:publicDev','uglify:dev'
 	]);
 	grunt.registerTask('dev', [
-		'compass:admin',
-		'compass:public',
+		'compass:adminDev',
+		'compass:publicDev',
 		'uglify:dev',
-		'uglify:dist',
 		'watch'
 	]);
 	grunt.registerTask('dist', [

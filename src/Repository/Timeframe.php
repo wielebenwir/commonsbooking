@@ -124,9 +124,9 @@ class Timeframe extends PostRepository
             foreach ($posts as &$post) {
                 $post = new \CommonsBooking\Model\Timeframe($post);
             }
-        } 
-        return $posts;
+        }
 
+        return $posts;
     }
 
 }

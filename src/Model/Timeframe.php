@@ -2,6 +2,10 @@
 
 namespace CommonsBooking\Model;
 
+/**
+ * Class Timeframe
+ * @package CommonsBooking\Model
+ */
 class Timeframe extends CustomPost
 {
     /**
@@ -10,7 +14,7 @@ class Timeframe extends CustomPost
      */
     public function getLocation()
     {
-        $locationId = self::get_meta('location-id');
+        $locationId = self::getMeta('location-id');
         if ($post = get_post($locationId)) {
             return new Location($post);
         }
@@ -24,7 +28,7 @@ class Timeframe extends CustomPost
      */
     public function getItem()
     {
-        $itemId = self::get_meta('item-id');
+        $itemId = self::getMeta('item-id');
 
         if ($post = get_post($itemId)) {
             return new Item($post);
@@ -44,7 +48,7 @@ class Timeframe extends CustomPost
     {
         $format = self::getDateFormat();
 
-        //  workaround because we need to calculate, and get_meta returns empty *string* if not set
+        //  workaround because we need to calculate, and getMeta returns empty *string* if not set
         $startDate = $this->getStartDate() ? $this->getStartDate() : 0;
         $endDate = $this->getEndDate() ? $this->getEndDate() : 0;
         $today = strtotime('now');
@@ -54,15 +58,6 @@ class Timeframe extends CustomPost
 
         $label = __('Available here', 'commonsbooking');
         $availableString = '';
-
-        // we check if there is no timeframe in daterange
-//        if (
-//            ($endDate !== 0 && $endDate < $today) |
-//            ($startDate !== 0 && $startDate > $today) |
-//            ($endDate == 0 && $startDate == 0)
-//        ) {
-//            return __('Currently not available here', 'commonsbooking');
-//        }
 
         if ($startDate !== 0 && $endDate !== 0 && $startDate == $endDate) { // available only one day
             $availableString = sprintf(__('on %s', 'commonsbooking'), $startDateFormatted);
@@ -111,7 +106,7 @@ class Timeframe extends CustomPost
      */
     public function getStartDate()
     {
-        return self::get_meta('repetition-start');
+        return self::getMeta('repetition-start');
     }
 
     /**
@@ -121,8 +116,159 @@ class Timeframe extends CustomPost
      */
     public function getEndDate()
     {
-        return self::get_meta('repetition-end');
+        return self::getMeta('repetition-end');
     }
 
+    /**
+     * Returns grit type id
+     * @return mixed
+     */
+    public function getGrid()
+    {
+        return self::getMeta('grid');
+    }
+
+    /**
+     * Returns type id
+     * @return mixed
+     */
+    public function getType()
+    {
+        return self::getMeta('type');
+    }
+
+    /**
+     * Returns start time for day-slots.
+     * @return mixed
+     */
+    public function getStartTime() {
+        return self::getMeta('start-time');
+    }
+
+    /**
+     * Returns end time for day-slots.
+     * @return mixed
+     */
+    public function getEndTime() {
+        return self::getMeta('end-time');
+    }
+
+    /**
+     * Checks if Timeframe is valid.
+     * @throws \Exception
+     * @return bool
+     */
+    public function isValid()
+    {
+        if (
+            $this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID &&
+            $this->getLocation() &&
+            $this->getItem() &&
+            $this->getStartDate()
+        ) {
+            $postId = $this->ID;
+
+            if($this->getStartTime() && !$this->getEndTime()) {
+                set_transient("timeframeValidationFailed",
+                    __("Es wurde eine Startzeit, aber keine Endzeit gesetzt.", 'commonsbooking'), 45);
+                return false;
+            }
+
+            // Get Timeframes with same location, item and a startdate
+            $existingTimeframes = \CommonsBooking\Repository\Timeframe::get(
+                [$this->getLocation()->ID],
+                [$this->getItem()->ID],
+                [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID],
+                null,
+                true
+            );
+
+            // filter current timeframe
+            $existingTimeframes = array_filter($existingTimeframes, function ($timeframe) use ($postId) {
+                return $timeframe->ID !== $postId && $timeframe->getStartDate();
+            });
+
+            // Validate against existing other timeframes
+            foreach ($existingTimeframes as $timeframe) {
+
+                // check if timeframes overlap
+                if (
+                    $this->hasTimeframeDateOverlap($this, $timeframe)
+                ) {
+                    // Compare grid types
+                    if ($timeframe->getGrid() != $this->getGrid()) {
+                        set_transient("timeframeValidationFailed",
+                            __("Sich überlagernde buchbare Timeframes dürfen nur das gleiche Raster haben. (Timeframe (ID: ".$timeframe->ID."): '".$timeframe->post_title."')", 'commonsbooking'), 5);
+                        return false;
+                    }
+
+                    // Check if day slots overlap
+                    if( $this->hasTimeframeTimeOverlap($this, $timeframe)) {
+                        set_transient("timeframeValidationFailed",
+                            __("Zeiträume dürfen sich nicht überlagern. (Timeframe (ID: ".$timeframe->ID."): '".$timeframe->post_title."')", 'commonsbooking'), 5);
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if timeframes are overlapping in date range.
+     * @param $timeframe1
+     * @param $timeframe2
+     *
+     * @return bool
+     */
+    protected function hasTimeframeDateOverlap($timeframe1, $timeframe2) {
+        return
+            !$timeframe1->getEndDate() && !$timeframe2->getEndDate() ||
+            (
+                $timeframe1->getEndDate() && !$timeframe2->getEndDate() &&
+                $timeframe2->getStartDate() <= $timeframe1->getEndDate() &&
+                $timeframe2->getStartDate() >= $timeframe1->getStartDate()
+            ) ||
+            (
+                !$timeframe1->getEndDate() && $timeframe2->getEndDate() &&
+                $timeframe2->getEndDate() > $timeframe1->getStartDate()
+            ) ||
+            (
+                $timeframe1->getEndDate() && $timeframe2->getEndDate() &&
+                (
+                    ($timeframe1->getEndDate() > $timeframe2->getStartDate() && $timeframe1->getEndDate() < $timeframe2->getEndDate()) ||
+                    ($timeframe2->getEndDate() > $timeframe1->getStartDate() && $timeframe2->getEndDate() < $timeframe1->getEndDate())
+                )
+            );
+    }
+
+    /**
+     * Checks if timeframes are overlapping in daily slots.
+     * @param $timeframe1
+     * @param $timeframe2
+     *
+     * @return bool
+     */
+    protected function hasTimeframeTimeOverlap($timeframe1, $timeframe2) {
+        return
+            !strtotime($timeframe1->getEndTime()) && !strtotime($timeframe2->getEndTime()) ||
+            (
+                strtotime($timeframe1->getEndTime()) && !strtotime($timeframe2->getEndTime()) &&
+                strtotime($timeframe2->getStartTime()) <= strtotime($timeframe1->getEndTime()) &&
+                strtotime($timeframe2->getStartTime()) >= strtotime($timeframe1->getStartTime())
+            ) ||
+            (
+                !strtotime($timeframe1->getEndTime()) && strtotime($timeframe2->getEndTime()) &&
+                strtotime($timeframe2->getEndTime()) > strtotime($timeframe1->getStartTime())
+            ) ||
+            (
+                strtotime($timeframe1->getEndTime()) && strtotime($timeframe2->getEndTime()) &&
+                (
+                    (strtotime($timeframe1->getEndTime()) > strtotime($timeframe2->getStartTime()) && strtotime($timeframe1->getEndTime()) < strtotime($timeframe2->getEndTime())) ||
+                    (strtotime($timeframe2->getEndTime()) > strtotime($timeframe1->getStartTime()) && strtotime($timeframe2->getEndTime()) < strtotime($timeframe1->getEndTime()))
+                )
+            );
+    }
 
 }

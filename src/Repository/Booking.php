@@ -13,7 +13,7 @@ class Booking extends PostRepository
      * @param $endDate
      * @param $location
      * @param $item
-     * @return null|\WP_Post
+     * @return null|\CommonsBooking\Model\Booking
      * @throws \Exception
      */
     public static function getBookingByDate($startDate, $endDate, $location, $item) {

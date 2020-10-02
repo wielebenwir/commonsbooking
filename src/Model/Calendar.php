@@ -15,12 +15,24 @@ class Calendar
      */
     protected $endDate;
 
+    /**
+     * @var array
+     */
     protected $items;
 
+    /**
+     * @var array
+     */
     protected $locations;
 
+    /**
+     * @var array
+     */
     protected $types;
 
+    /**
+     * @var
+     */
     protected $weeks;
 
     /**
@@ -41,7 +53,10 @@ class Calendar
         $this->types = $types;
     }
 
-
+    /**
+     * Returns weeks for calendar time range.
+     * @return array
+     */
     public function getWeeks()
     {
         $weeks = [];

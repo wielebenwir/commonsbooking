@@ -1,14 +1,22 @@
 <?php
 
-
 namespace CommonsBooking\Model;
 
-
+/**
+ * Class CustomPost
+ * Pseudo extends WP_Post class.
+ * @package CommonsBooking\Model
+ */
 class CustomPost
 {
-
+    /**
+     * @var WP_Post|\WP_Post
+     */
     protected $post;
 
+    /**
+     * @var
+     */
     protected $date;
 
     /**
@@ -18,7 +26,7 @@ class CustomPost
      */
     public function __construct($post)
     {
-        if($post instanceof \WP_Post) {
+        if ($post instanceof \WP_Post) {
             $this->post = $post;
         } elseif (is_int($post)) {
             $this->post = get_post($post);
@@ -29,50 +37,54 @@ class CustomPost
 
     /**
      * Returns meta-field value.
+     *
      * @param $field
      *
      * @return mixed
      */
-    public function get_meta($field) {
+    public function getMeta($field)
+    {
         return get_post_meta($this->post->ID, $field, true);
     }
 
     public function __get($name)
     {
-        if(property_exists($this->post, $name)) {
+        if (property_exists($this->post, $name)) {
             return $this->post->$name;
         }
     }
 
     public function __call($name, $arguments)
     {
-        if(method_exists($this->post, $name)) {
+        if (method_exists($this->post, $name)) {
             $reflectionMethod = new \ReflectionMethod($this->post, $name);
+
             return $reflectionMethod->invokeArgs($this->post, $arguments);
         }
-        if(property_exists($this->post, $name)) {
+        if (property_exists($this->post, $name)) {
             return $this->post->$name;
         }
     }
 
     /**
-     * Return Excerpt 
+     * Return Excerpt
      *
-     * @return html
+     * @return string html
      */
     public function excerpt()
     {
         $excerpt = '';
         if (has_excerpt($this->ID)) {
-            $excerpt .= wp_strip_all_tags( get_the_excerpt( $this->ID ) );
+            $excerpt .= wp_strip_all_tags(get_the_excerpt($this->ID));
         }
+
         return $excerpt;
     }
 
     /**
      * Return Title with permalink
      *
-     * @return html
+     * @return string html
      */
     public function titleLink()
     {

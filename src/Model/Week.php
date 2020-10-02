@@ -16,10 +16,19 @@ class Week
      */
     protected $week;
 
+    /**
+     * @var array
+     */
     protected $locations;
 
+    /**
+     * @var array
+     */
     protected $items;
 
+    /**
+     * @var array
+     */
     protected $types;
 
     /**
@@ -31,7 +40,7 @@ class Week
      * @param array $items
      * @param array $types
      */
-    public function __construct($year = null, $week, $locations = [], $items = [], $types = [])
+    public function __construct($year, $week, $locations = [], $items = [], $types = [])
     {
         if($year === null) $year = date('Y');
         $this->year = $year;
@@ -40,7 +49,6 @@ class Week
         $this->items = $items;
         $this->types = $types;
     }
-
 
     /**
      * @return array

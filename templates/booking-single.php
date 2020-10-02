@@ -26,11 +26,11 @@ $item          = $booking->getItem();
 <div class="cb-wrapper cb-booking-datetime">
     <div class="cb-list-header cb-col-30-70 cb-datetime">
         <div><?php echo __('Pickup from', 'commonsbooking'); ?></div>
-        <div><?php echo $booking->pickup_datetime(); ?></div>
+        <div><?php echo $booking->pickupDatetime(); ?></div>
     </div><!-- .cb-datetime -->
     <div class="cb-list-content cb-datetime cb-col-30-70">
         <div><?php echo __('Return until', 'commonsbooking'); ?></div>
-        <div><?php echo $booking->return_datetime(); ?></div>
+        <div><?php echo $booking->returnDatetime(); ?></div>
     </div><!-- .cb-address -->
 </div><!-- cb-booking-datetime -->
 
@@ -72,6 +72,6 @@ $item          = $booking->getItem();
 
 <!-- Buttons & Form action -->
 <div class="cb-action cb-wrapper">
-    <?php $booking->booking_action_button('confirm'); ?>
-    <?php $booking->booking_action_button('cancel'); ?>
+    <?php $booking->bookingActionButton('confirm'); ?>
+    <?php $booking->bookingActionButton('cancel'); ?>
 </div>
