@@ -9,21 +9,32 @@ use CommonsBooking\Wordpress\MetaBox\Field;
 abstract class CustomPostType
 {
 
+    /**
+     * @var string
+     */
     public static $postType;
 
-    protected $customFields;
-
+    /**
+     * @var
+     */
     protected $menuPosition;
 
-    protected $listFields = [];
-
+    /**
+     * @return mixed
+     */
     abstract public function getArgs();
 
+    /**
+     * @return string
+     */
     public static function getPostType()
     {
         return static::$postType;
     }
 
+    /**
+     * Adds permissions for cb users.
+     */
     public function addRoleCaps() {
         // Add the roles you'd like to administer the custom post types
         $roles = array(Plugin::$CB_MANAGER_ID, 'administrator');
@@ -58,6 +69,7 @@ abstract class CustomPostType
             $role->add_cap( 'delete_others_' . static::$postType . 's' );
 
             $role->add_cap( 'edit_posts' ); // general: create posts -> even wp_post, affects all cpts
+            $role->add_cap( 'upload_files' ); // general: change post image
 
             if($the_role == Plugin::$CB_MANAGER_ID) {
                 $role->remove_cap( 'read_private_' . static::$postType . 's' );
@@ -67,6 +79,10 @@ abstract class CustomPostType
         }
     }
 
+    /**
+     * Returns param for backend menu.
+     * @return array
+     */
     public function getMenuParams()
     {
         return [
@@ -82,8 +98,12 @@ abstract class CustomPostType
 
     /**
      * Remove the default Custom Fields meta box
+     *
+     * @param string $post_type
+     * @param string $context
+     * @param WP_Post|object|string $post
      */
-    public function removeDefaultCustomFields($type, $context, $post)
+    public function removeDefaultCustomFields($post_type, $context, $post)
     {
         foreach (array('normal', 'advanced', 'side') as $context) {
             remove_meta_box('postcustom', static::getPostType(), $context);
@@ -91,126 +111,47 @@ abstract class CustomPostType
     }
 
     /**
-     * @deprecated Defined in getArgs-function of CTP
-     * https://knowthecode.io/docx/wordpress/remove_post_type_support
+     * @return string
      */
-    public function removeAllFormFields()
-    {
-        $this->removeFormTitle();
-        $this->removeFormDescription();
-        $this->removeFormImage();
-    }
-
-    /**
-     * @deprecated Defined in getArgs-function of CTP
-     */
-    public function removeFormTitle()
-    {
-        remove_post_type_support(static::getPostType(), 'title');
-    }
-
-    /**
-     * @deprecated Defined in getArgs-function of CTP
-     */
-    public function removeFormDescription()
-    {
-        remove_post_type_support(static::getPostType(), 'editor');
-    }
-
-    /**
-     * @deprecated Defined in getArgs-function of CTP
-     */
-    public function removeFormImage()
-    {
-        remove_post_type_support(static::getPostType(), 'thumbnail');
-    }
-
     public static function getWPAction()
     {
         return static::getPostType() . "-custom-fields";
     }
 
+    /**
+     * @return string
+     */
     public static function getWPNonceId()
     {
         return static::getPostType() . "-custom-fields" . '_wpnonce';
     }
 
+    /**
+     * @return mixed
+     */
     public static function getWPNonceField()
     {
         return wp_nonce_field(static::getWPAction(), static::getWPNonceId(), false, true);
     }
 
     /**
-     * Save the new Custom Fields values
+     * Replaces WP_Posts by their title for options array.
+     * @param $data
+     *
+     * @return array
      */
-    public function saveCustomFields($post_id, $post)
-    {
-        if ($post->post_type !== static::getPostType()) {
-            return;
-        }
-
-        $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition'];
-
-        /** @var Field $customField */
-        foreach ($this->getCustomFields() as $customField) {
-
-            //@TODO: Find better solution for capability check for bookings
-            if (
-                (array_key_exists('type', $_REQUEST) && $_REQUEST['type'] == Timeframe::BOOKING_ID) ||
-                current_user_can($customField->getCapability(), $post_id)
-            ) {
-                $fieldNames = [];
-                if ($customField->getType() == "checkboxes") {
-                    $fieldNames = $customField->getOptionFieldNames();
-                } else {
-                    $fieldNames[] = $customField->getName();
-                }
-
-                foreach ($fieldNames as $fieldName) {
-                    if(!array_key_exists($fieldName, $_REQUEST)) {
-                        if(!in_array($fieldName, $noDeleteMetaFields)) {
-                            delete_post_meta($post_id, $fieldName);
-                        }
-                        continue;
-                    }
-
-                    $value = $_REQUEST[$fieldName];
-                    if(is_string($value)) {
-                        $value = trim($value);
-                        update_post_meta($post_id, $fieldName, $value);
-
-                        // if we have a booking, there shall be set no repetition
-                        if($fieldName == "type" && $value == Timeframe::BOOKING_ID) {
-                            update_post_meta($post_id, 'timeframe-repetition', 'norep');
-                        }
-                    }
-
-                    if (is_array($value)) {
-                        // Update time-fields by date-fields
-                        /*if(in_array($fieldName, ['repetition-start', 'repetition-end'])) {
-                            update_post_meta(
-                                $post_id,
-                                str_replace('date','time', $fieldName),
-                                $value['time']
-                            );
-                        }*/
-                    }
-                }
+    public static function sanitizeOptions($data) {
+        $options = [];
+        foreach ($data as $key => $item) {
+            if($item instanceof \WP_Post) {
+                $key = $item->ID;
+                $label = $item->post_title;
+            } else {
+                $label = $item;
             }
+            $options[$key] = $label;
         }
-    }
-
-    public function registerMetabox() {
-        $cmb = new_cmb2_box([
-            'id' => static::getPostType() . "-custom-fields",
-            'title' => "Timeframe",
-            'object_types' => array(static::getPostType())
-        ]);
-
-        /** @var Field $customField */
-        foreach ($this->getCustomFields() as $customField) {
-            $cmb->add_field( $customField->getParamsArray());
-        }
+        return $options;
     }
 
     /**
@@ -231,6 +172,11 @@ abstract class CustomPostType
         return $columns;
     }
 
+    /**
+     * @param $columns
+     *
+     * @return mixed
+     */
     public function setSortableColumns($columns)
     {
         if (isset($this->listColumns)) {
@@ -242,6 +188,9 @@ abstract class CustomPostType
         return $columns;
     }
 
+    /**
+     * Removes title column from backend listing.
+     */
     public function removeListTitleColumn()
     {
         add_filter('manage_' . static::getPostType() . '_posts_columns', function ($columns) {
@@ -250,10 +199,14 @@ abstract class CustomPostType
         });
     }
 
+    /**
+     * Removes date column from backend listing.
+     */
     public function removeListDateColumn()
     {
         add_filter('manage_' . static::getPostType() . '_posts_columns', function ($columns) {
             unset($columns['date']);
+            $columns[ 'author' ] = 'Nutzer*in';
             return $columns;
         });
     }
@@ -294,38 +247,12 @@ abstract class CustomPostType
         if ($value = get_post_meta($post_id, $column, true)) {
             echo $value;
         } else {
-            echo '-';
+            if ( property_exists($post = get_post($post_id), $column)) {
+                echo $post->{$column};
+            } else {
+                echo '-';
+            }
         }
-    }
-
-    /**
-     * @param string $order
-     *
-     * @return \WP_Query
-     */
-    public static function getAllPostsQuery($order = 'ASC')
-    {
-        $args = array(
-            'post_type' => static::getPostType(),
-            'order' => $order
-        );
-
-        return new \WP_Query($args);
-    }
-
-    /**
-     * @return array
-     */
-    public static function getAllPosts()
-    {
-        /** @var \WP_Query $query */
-        $query = static::getAllPostsQuery();
-        $posts = [];
-        if ($query->have_posts()) {
-            $posts = $query->get_posts();
-        }
-
-        return $posts;
     }
 
     /**
@@ -344,6 +271,9 @@ abstract class CustomPostType
         return $randomString;
     }
 
+    /**
+     * @return mixed
+     */
     abstract public static function getView();
 
 }

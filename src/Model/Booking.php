@@ -11,11 +11,21 @@ class Booking extends CustomPost
 {
 
     /**
+     * Booking states.
+     * @var string[]
+     */
+    public static $bookingStates = [
+        "cancelled",
+        "confirmed",
+        "unconfirmed"
+    ];
+
+    /**
      * @return Location
      * @throws \Exception
      */
     public function getLocation() {
-        $locationId = self::get_meta('location-id');
+        $locationId = self::getMeta('location-id');
         if($post = get_post($locationId)) {
             return new Location($post);
         }
@@ -27,7 +37,7 @@ class Booking extends CustomPost
      * @throws \Exception
      */
     public function getItem() {
-        $itemId = self::get_meta('item-id');
+        $itemId = self::getMeta('item-id');
 
         if($post = get_post($itemId)) {
             return new Item($post);
@@ -40,7 +50,7 @@ class Booking extends CustomPost
     //  * @throws \Exception
     //  */
     // public function getUser() {
-    //     $userId = self::get_meta('User-id');
+    //     $userId = self::getMeta('User-id');
 
     //     if($post = get_post($userId)) {
     //         return new User($post);
@@ -85,9 +95,9 @@ class Booking extends CustomPost
      */
     private function sanitizeTimeField($fieldName) {
         $time = new \DateTime();
-        $fieldValue = self::get_meta('repetition-start');
+        $fieldValue = self::getMeta('repetition-start');
         if($fieldName == "end-time") {
-            $fieldValue = self::get_meta('repetition-end');
+            $fieldValue = self::getMeta('repetition-end');
         }
         $time->setTimestamp($fieldValue);
         return $time->format('H:i');
@@ -99,14 +109,14 @@ class Booking extends CustomPost
      * @throws \Exception
      */
     public function getBookableTimeFrame() {
-        $locationId = self::get_meta('location-id');
-        $itemId = self::get_meta('item-id');
+        $locationId = self::getMeta('location-id');
+        $itemId = self::getMeta('item-id');
 
         $response = Timeframe::get(
             [$locationId],
             [$itemId],
             [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID],
-            date(CB::getInternalDateFormat(), self::get_meta('repetition-start'))
+            date(CB::getInternalDateFormat(), self::getMeta('repetition-start'))
         );
 
         if(count($response)) {
@@ -121,8 +131,8 @@ class Booking extends CustomPost
     {
         $date_format = get_option('date_format');
         
-        $startdate = date_i18n($date_format, $this->get_meta('repetition-start'));
-        $enddate = date_i18n($date_format, $this->get_meta('repetition-end'));
+        $startdate = date_i18n($date_format, $this->getMeta('repetition-start'));
+        $enddate = date_i18n($date_format, $this->getMeta('repetition-end'));
 
         if ($startdate == $enddate) {
             return sprintf( esc_html__( ' on %s ' , 'commonsbooking'), $startdate );
@@ -146,11 +156,11 @@ class Booking extends CustomPost
         $date_format = get_option('date_format');
         $time_format = get_option('time_format');
         
-        $date = date_i18n($date_format, $this->get_meta($date_type .'-date'));
-        $time_start = date_i18n($time_format, $this->get_meta($date_type . '-date'));
+        $date = date_i18n($date_format, $this->getMeta($date_type .'-date'));
+        $time_start = date_i18n($time_format, $this->getMeta($date_type . '-date'));
 
-        $grid = $this->get_meta('grid');
-        $full_day = $this->get_meta('full-day');
+        $grid = $this->getMeta('grid');
+        $full_day = $this->getMeta('full-day');
 
 
         if ($full_day == "on") {
@@ -158,21 +168,20 @@ class Booking extends CustomPost
         }
 
         if ($grid > 0) {
-            $time_end = date($time_format, $this->get_meta($date_type . '-date') + (60 * 60 * $grid));
+            $time_end = date($time_format, $this->getMeta($date_type . '-date') + (60 * 60 * $grid));
         }
 
         if ($grid == 0) { // if grid is set to slot duration
-            $time_end = date($time_format, $this->get_meta($date_type . '-date'));
+            $time_end = date($time_format, $this->getMeta($date_type . '-date'));
         }
 
         return $date . ' ' . $time_start . ' - ' . $time_end;
 
     }
-    
-    
+
     
     /**
-     * pickup_datetime
+     * pickupDatetime
      * 
      * @TODO: This will change if the timeframe is edited! 
      * @TODO: This is not the place for grid/time calculations, they should happen in a centralised function that does not return formatting
@@ -181,62 +190,62 @@ class Booking extends CustomPost
      * 
      * @return void
      */
-    public function pickup_datetime()
+    public function pickupDatetime()
     {
 
         $date_format = get_option('date_format');
         $time_format = get_option('time_format');
         
-        $date_start = date_i18n($date_format, $this->get_meta('repetition-start'));
-        $time_start = date_i18n($time_format, $this->get_meta('repetition-start'));
+        $date_start = date_i18n($date_format, $this->getMeta('repetition-start'));
+        $time_start = date_i18n($time_format, $this->getMeta('repetition-start'));
 
-        $grid = $this->get_meta('grid');
-        $full_day = $this->get_meta('full-day');
+        $grid = $this->getMeta('grid');
+        $full_day = $this->getMeta('full-day');
 
         if ($full_day == "on") {
             return $date_start;
         }
 
         if ($grid > 0) { // if bookable grid is set to hour
-            $time_end = date_i18n($time_format, $this->get_meta('repetition-start') + (60 * 60 * $grid));
+            $time_end = date_i18n($time_format, $this->getMeta('repetition-start') + (60 * 60 * $grid));
         }
 
         if ($grid == 0) { // if grid is set to slot duration
-            $time_end = date_i18n($time_format, strtotime($this->get_meta('end-time')));
+            $time_end = date_i18n($time_format, strtotime($this->getMeta('end-time')));
         }
 
         return $date_start . ' ' . $time_start . ' - ' . $time_end;
     }
     
     /**
-     * return_datetime
+     * returnDatetime
      *
      * @TODO: This will change when the timeframe changes. 
      * @TODO: This is not the place for grid/time calculations
      * 
      * @return void
      */
-    public function return_datetime()
+    public function returnDatetime()
     {
         $date_format = get_option('date_format');
         $time_format = get_option('time_format');
         
-        $date_end = date_i18n($date_format, $this->get_meta('repetition-end'));
-        $time_end = date_i18n($time_format, $this->get_meta('repetition-end') + 60 ); // we add 60 seconds because internal timestamp is set to hh:59 
+        $date_end = date_i18n($date_format, $this->getMeta('repetition-end'));
+        $time_end = date_i18n($time_format, $this->getMeta('repetition-end') + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
 
-        $grid = $this->get_meta('grid');
-        $full_day = $this->get_meta('full-day');
+        $grid = $this->getMeta('grid');
+        $full_day = $this->getMeta('full-day');
 
         if ($full_day == "on") {
             return $date_end;
         }
 
         if ($grid > 0) {
-            $time_start = date_i18n($time_format, $this->get_meta('repetition-end') +1 -(60 * 60 * $grid) );
+            $time_start = date_i18n($time_format, $this->getMeta('repetition-end') +1 -(60 * 60 * $grid) );
         }
 
         if ($grid == 0) { // if grid is set to slot duration
-            $time_start = date_i18n($time_format, strtotime($this->get_meta('start-time')));
+            $time_start = date_i18n($time_format, strtotime($this->getMeta('start-time')));
         }
 
         return $date_end . ' ' . $time_start . ' - ' . $time_end;
@@ -244,14 +253,14 @@ class Booking extends CustomPost
 
     
     /**
-     * booking_action_button
+     * bookingActionButton
      *
      * @TODO: This calculation should only happen once (it happens twice, for confirm button and cancel button)
      * 
      * @param  mixed $form_action
      * @return void
      */
-    public function booking_action_button($form_action)
+    public function bookingActionButton($form_action)
     {
         global $post;
         $booking = new Booking($post->ID); // is used in template booking-action-form.php 
@@ -289,7 +298,7 @@ class Booking extends CustomPost
      *
      * @return void
      */
-    public function booking_notice()
+    public function bookingNotice()
     {
         $current_status = $this->post->post_status;
 
@@ -316,7 +325,7 @@ class Booking extends CustomPost
      *
      * @return HTML
      */
-    public function booking_link()
+    public function bookingLink()
     {
         return sprintf( '<a href="%s">%s</a>', add_query_arg($this->post->post_type, $this->post->post_name, home_url()), __( 'Link to your booking', 'commonsbooking' ) );
 

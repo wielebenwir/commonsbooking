@@ -2,38 +2,79 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-use CommonsBooking\Plugin;
 use CommonsBooking\Repository\Booking;
-use CommonsBooking\Wordpress\MetaBox\Field;
-use CommonsBooking\Messages\Messages;
 
 class Timeframe extends CustomPostType
 {
 
+    /**
+     * "Opening Hours" timeframe type id.
+     */
     const OPENING_HOURS_ID = 1;
+
+    /**
+     * "Bookable" timeframe type id.
+     */
     const BOOKABLE_ID = 2;
+
+    /**
+     * "Holidays" timeframe type id.
+     */
     const HOLIDAYS_ID = 3;
+
+    /**
+     * "Official Holidays" timeframe type id.
+     */
     const OFF_HOLIDAYS_ID = 4;
+
+    /**
+     * "Repair" timeframe type id.
+     */
     const REPAIR_ID = 5;
+
+    /**
+     * "Booking" timeframe type id.
+     */
     const BOOKING_ID = 6;
+
+    /**
+     * "Booking cancelled" timeframe type id.
+     */
     const BOOKING_CANCELED_ID = 7;
 
+    /**
+     * CPT type.
+     * @var string
+     */
     public static $postType = 'cb_timeframe';
 
+    /**
+     * Position in backend menu.
+     * @var int
+     */
     protected $menuPosition = 1;
 
+    /**
+     * @var array
+     */
     protected $types;
 
+    /**
+     * Backend listing columns.
+     * @var string[]
+     */
     protected $listColumns = [
         'type'             => "Type",
-        'location-id'      => "Location",
         'item-id'          => "Item",
+        'location-id'      => "Location",
+        'post_date'        => "Buchungszeitpunkt",
         'repetition-start' => "Start Date",
-        'repetition-end'   => "End date"
+        'repetition-end'   => "End date",
+        'post_status'      => "Buchungs-Status"
     ];
 
     /**
-     * Timeframetypes which cannot be "overbooked"
+     * Timeframetypes which cannot be "overbooked".
      * @var int[]
      */
     public static $multiDayBlockingFrames = [
@@ -41,9 +82,6 @@ class Timeframe extends CustomPostType
         self::BOOKING_ID
     ];
 
-    /**
-     * Item constructor.
-     */
     public function __construct()
     {
         $this->types = self::getTypes();
@@ -67,10 +105,101 @@ class Timeframe extends CustomPostType
 
         // Add type filter to backend list view
         add_action('restrict_manage_posts', array(self::class, 'addAdminTypeFilter'));
-        add_filter('parse_query', array($this, 'filterAdminList'));
+        add_action('restrict_manage_posts', array(self::class, 'addAdminItemFilter'));
+        add_action('restrict_manage_posts', array(self::class, 'addAdminLocationFilter'));
+        add_action('restrict_manage_posts', array(self::class, 'addAdminStatusFilter'));
+        add_action('pre_get_posts', array($this, 'filterAdminList'));
 
         // Setting role permissions
         add_action('admin_init', array($this, 'addRoleCaps'), 999);
+    }
+
+    /**
+     * Registers metaboxes for cpt.
+     */
+    public function registerMetabox()
+    {
+        $cmb = new_cmb2_box([
+            'id'           => static::getPostType() . "-custom-fields",
+            'title'        => "Timeframe",
+            'object_types' => array(static::getPostType())
+        ]);
+
+
+        foreach ($this->getCustomFields() as $customField) {
+            $cmb->add_field($customField);
+        }
+    }
+
+    /**
+     * Save the new Custom Fields values
+     */
+    public function saveCustomFields($post_id, $post)
+    {
+        if ($post->post_type !== static::getPostType()) {
+            return;
+        }
+
+        $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition'];
+
+        foreach ($this->getCustomFields() as $customField) {
+
+            //@TODO: Find better solution for capability check for bookings
+            if (
+                (array_key_exists('type', $_REQUEST) && $_REQUEST['type'] == Timeframe::BOOKING_ID) ||
+                current_user_can('edit_post', $post_id)
+            ) {
+                $fieldNames = [];
+                if ($customField['type'] == "checkboxes") {
+                    foreach ($customField['options'] as $key => $label) {
+                        $fieldNames[] = $customField['id'] . "-" . $key;
+                    }
+                } else {
+                    $fieldNames[] = $customField['id'];
+                }
+
+                foreach ($fieldNames as $fieldName) {
+                    if ( ! array_key_exists($fieldName, $_REQUEST)) {
+                        if ( ! in_array($fieldName, $noDeleteMetaFields)) {
+                            delete_post_meta($post_id, $fieldName);
+                        }
+                        continue;
+                    }
+
+                    $value = $_REQUEST[$fieldName];
+                    if (is_string($value)) {
+                        $value = trim($value);
+                        update_post_meta($post_id, $fieldName, $value);
+
+                        // if we have a booking, there shall be set no repetition
+                        if ($fieldName == "type" && $value == Timeframe::BOOKING_ID) {
+                            update_post_meta($post_id, 'timeframe-repetition', 'norep');
+                        }
+                    }
+                }
+            }
+        }
+
+        // Validate timeframe
+        $this->validateTimeFrame($post_id, $post);
+    }
+
+    /**
+     * Validates timeframe and sets state to draft if invalid.
+     * @param $post_id
+     * @param $post
+     *
+     * @throws \Exception
+     */
+    protected function validateTimeFrame($post_id, $post) {
+        $timeframe = new \CommonsBooking\Model\Timeframe($post_id);
+        if ( ! $timeframe->isValid()) {
+            // set post_status to draft if not valid
+            if ($post->post_status !== 'draft') {
+                $post->post_status = 'draft';
+                wp_update_post($post);
+            }
+        }
     }
 
     /**
@@ -84,7 +213,7 @@ class Timeframe extends CustomPostType
         if (is_singular(self::getPostType())) {
             ob_start();
             global $post;
-            if  ( current_user_can('administrator') OR get_current_user_id() == $post->post_author ) {
+            if (current_user_can('administrator') or get_current_user_id() == $post->post_author) {
                 cb_get_template_part('booking', 'single');
             } else {
                 cb_get_template_part('booking', 'single-notallowed');
@@ -132,12 +261,14 @@ class Timeframe extends CustomPostType
                 "post_title"  => __("Booking", 'commonsbooking')
             );
 
+            // New booking
             if (empty($booking)) {
                 $postarr['post_name'] = self::generateRandomSlug();
                 $postId = wp_insert_post($postarr, true);
                 $booking_metafield = new \CommonsBooking\Model\Booking($postId);
                 // we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
                 $booking_metafield->assignBookableTimeframeFields();
+            // Existing booking
             } else {
                 $postarr['ID'] = $booking->ID;
                 $postId = wp_update_post($postarr);
@@ -151,9 +282,9 @@ class Timeframe extends CustomPostType
                 $booking_msg = new \CommonsBooking\Messages\Messages($postId, $_REQUEST["post_status"]);
                 $booking_msg->triggerMail();
             }
+
             // get slug as parameter
             $post_slug = get_post($postId)->post_name;
-
 
             wp_redirect(add_query_arg(self::getPostType(), $post_slug, home_url()));
             exit;
@@ -241,23 +372,73 @@ class Timeframe extends CustomPostType
     }
 
     /**
-     * Returns custom (meta) fields for Coostum Post Type Timeframe.
+     * Returns custom (meta) fields for Costum Post Type Timeframe.
      * @return array
      */
     protected function getCustomFields()
     {
         return array(
-            new Field("comment", __("Comment", 'commonsbooking'), "", "textarea_small", "edit_posts"),
-            new Field("type", __('Type', 'commonsbooking'), "", "select", "edit_posts",
-                self::getTypes()
+            array(
+                'name'       => __("Comment", 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'         => "comment",
+                'type'       => 'textarea_small',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             ),
-            new Field("location-id", __("Location", 'commonsbooking'), "", "select", "edit_posts",
-                \CommonsBooking\Repository\Location::getByCurrentUser(), true),
-            new Field("item-id", __("Item", 'commonsbooking'), "", "select", "edit_posts",
-                \CommonsBooking\Repository\Item::getByCurrentUser(), true),
-            new Field("title-timeframe-config", __("Configure timeframe", 'commonsbooking'), "", "title", "edit_posts"),
-            new Field("timeframe-repetition", __('Timeframe Repetition', 'commonsbooking'), "", "select", "edit_posts",
-                [
+            array(
+                'name'       => __('Type', 'commonsbooking'),
+                //'desc'       => __('', 'commonsbooking'),
+                'id'         => "type",
+                'type'       => 'select',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'options'    => self::getTypes()
+            ),
+            array(
+                'name'       => __('Maximum booking duration', 'commonsbooking'),
+                'desc'       => __('Maximum booking duration in days', 'commonsbooking'),
+                'id'         => "timeframe-max-days",
+                'type'       => 'select',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'options'    => [
+                    '1'  => 1,
+                    '2'  => 2,
+                    '3'  => 3,
+                    '4'  => 4,
+                    '5'  => 5,
+                    '6'  => 6,
+                    '7'  => 7,
+                    '8'  => 8,
+                    '9'  => 9,
+                    '10' => 10
+                ],
+                'default'    => 3
+            ),
+            array(
+                'name'       => __("Location", 'commonsbooking'),
+                'id'         => "location-id",
+                'type'       => 'select',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'options'    => self::sanitizeOptions(\CommonsBooking\Repository\Location::getByCurrentUser())
+            ),
+            array(
+                'name'       => __("Item", 'commonsbooking'),
+                'id'         => "item-id",
+                'type'       => 'select',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'options'    => self::sanitizeOptions(\CommonsBooking\Repository\Item::getByCurrentUser(), true)
+            ),
+            array(
+                'name'       => __("Configure timeframe", 'commonsbooking'),
+                'id'         => "title-timeframe-config",
+                'type'       => 'title',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+            ),
+            array(
+                'name'       => __('Timeframe Repetition', 'commonsbooking'),
+                'id'         => "timeframe-repetition",
+                'type'       => 'select',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'options'    => [
                     'norep' => __("No Repetition", 'commonsbooking'),
                     'd'     => __("Daily", 'commonsbooking'),
                     'w'     => __("Weekly", 'commonsbooking'),
@@ -265,21 +446,80 @@ class Timeframe extends CustomPostType
                     'y'     => __("Yearly", 'commonsbooking')
                 ]
             ),
-            new Field("full-day", __('Full day', 'commonsbooking'), "", "checkbox", "edit_posts"),
-            new Field("start-time", __("Start time", 'commonsbooking'), "", "text_time", "edit_posts"),
-            new Field("end-time", __("End time", 'commonsbooking'), "", "text_time", "edit_posts"),
-            new Field("grid", __("Grid", 'commonsbooking'), "", "select", "edit_posts",
-                [
+            array(
+                'name'       => __('Full day', 'commonsbooking'),
+                'id'         => "full-day",
+                'type'       => 'checkbox',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+            ),
+
+            array(
+                'name'       => __('Maximum booking duration', 'commonsbooking'),
+                'desc'       => __('Maximum booking duration in days', 'commonsbooking'),
+                'id'         => "timeframe-max-days",
+                'type'       => 'select',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'options'    => [
+                    '1'  => 1,
+                    '2'  => 2,
+                    '3'  => 3,
+                    '4'  => 4,
+                    '5'  => 5,
+                    '6'  => 6,
+                    '7'  => 7,
+                    '8'  => 8,
+                    '9'  => 9,
+                    '10' => 10
+                ],
+                'default'    => 3
+            ),
+
+            array(
+                'name'        => __("Start time", 'commonsbooking'),
+                'id'          => "start-time",
+                'type'        => 'text_time',
+                'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'time_format' => get_option('time_format'),
+                'date_format' => get_option('date_format')
+            ),
+            array(
+                'name'        => __("End time", 'commonsbooking'),
+                'id'          => "end-time",
+                'type'        => 'text_time',
+                'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'time_format' => get_option('time_format'),
+                'date_format' => get_option('date_format')
+            ),
+            array(
+                'name'       => __("Grid", 'commonsbooking'),
+                'id'         => "grid",
+                'type'       => 'select',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'options'    => [
                     0 => __("Full slot", 'commonsbooking'),
                     1 => __("Hourly", 'commonsbooking')
                 ]
             ),
-            new Field("title-timeframe-rep-config", __("Configure repetition", 'commonsbooking'), "", "title",
-                "edit_posts"),
-            new Field("repetition-start", __('Repetition start', 'commonsbooking'), "", "text_date_timestamp",
-                "edit_posts"),
-            new Field("weekdays", __('Weekdays', 'commonsbooking'), "", "multicheck", "edit_posts",
-                [
+            array(
+                'name'       => __("Configure repetition", 'commonsbooking'),
+                'id'         => "title-timeframe-rep-config",
+                'type'       => 'title',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+            ),
+            array(
+                'name'        => __('Repetition start', 'commonsbooking'),
+                'id'          => "repetition-start",
+                'type'        => 'text_date_timestamp',
+                'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'time_format' => get_option('time_format'),
+                'date_format' => get_option('date_format')
+            ),
+            array(
+                'name'       => __('Weekdays', 'commonsbooking'),
+                'id'         => "weekdays",
+                'type'       => 'multicheck',
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'options'    => [
                     1 => __("Monday", 'commonsbooking'),
                     2 => __("Tuesday", 'commonsbooking'),
                     3 => __("Wednesday", 'commonsbooking'),
@@ -289,7 +529,14 @@ class Timeframe extends CustomPostType
                     7 => __("Sunday", 'commonsbooking')
                 ]
             ),
-            new Field("repetition-end", __('Repetition end', 'commonsbooking'), "", "text_date_timestamp", "edit_posts")
+            array(
+                'name'        => __('Repetition end', 'commonsbooking'),
+                'id'          => "repetition-end",
+                'type'        => 'text_date_timestamp',
+                'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'time_format' => get_option('time_format'),
+                'date_format' => get_option('date_format')
+            )
         );
     }
 
@@ -310,23 +557,6 @@ class Timeframe extends CustomPostType
             self::BOOKING_ID          => __("Booking", 'commonsbooking'),
             self::BOOKING_CANCELED_ID => __("Booking cancelled", 'commonsbooking')
         ];
-    }
-
-    /**
-     * Returns type label by type-id.
-     *
-     * @param $id
-     *
-     * @return mixed
-     * @throws \Exception
-     */
-    public static function getTypeLabel($id)
-    {
-        if (array_key_exists($id, self::getTypes())) {
-            return self::getTypes()[$id];
-        } else {
-            throw new \Exception('invalid type id');
-        }
     }
 
     /**
@@ -352,10 +582,10 @@ class Timeframe extends CustomPostType
                 case 'type':
                     $typeField = null;
                     $output = "-";
-                    /** @var Field $customField */
+
                     foreach ($this->getCustomFields() as $customField) {
-                        if ($customField->getName() == 'type') {
-                            foreach ($customField->getOptions() as $key => $label) {
+                        if ($customField['id'] == 'type') {
+                            foreach ($customField['options'] as $key => $label) {
                                 if ($value == $key) {
                                     $output = $label;
                                 }
@@ -371,6 +601,20 @@ class Timeframe extends CustomPostType
                 default:
                     echo $value;
                     break;
+            }
+        } else {
+            $bookingColumns = [
+                'post_date',
+                'post_status'
+            ];
+
+            if (
+                property_exists($post = get_post($post_id), $column) && (
+                    ! in_array($column, $bookingColumns) ||
+                    get_post_meta($post_id, 'type', true) == Timeframe::BOOKING_ID
+                )
+            ) {
+                echo $post->{$column};
             }
         }
     }
@@ -392,7 +636,6 @@ class Timeframe extends CustomPostType
      */
     public static function getHigherPrioFrame(\WP_Post $timeframeOne, \WP_Post $timeframeTwo)
     {
-
         $prioMapping = [
             self::REPAIR_ID        => 10,
             self::BOOKING_ID       => 9,
@@ -429,6 +672,7 @@ class Timeframe extends CustomPostType
 
     /**
      * Returns true if frame is overbookable.
+     *
      * @param \WP_Post $timeframe
      *
      * @return bool
@@ -454,14 +698,85 @@ class Timeframe extends CustomPostType
      */
     public static function addAdminTypeFilter()
     {
+        self::renderFilter(
+            __('Filter By Type ', 'commonsbooking'),
+            'filter_type',
+            self::getTypes()
+        );
+    }
+
+    /**
+     * Adds filter dropdown // filter by item in timeframe List
+     */
+    public static function addAdminItemFilter()
+    {
+        $items = \CommonsBooking\Repository\Item::get();
+        if ($items) {
+            $values = [];
+            foreach ($items as $item) {
+                $values[$item->ID] = $item->post_title;
+            }
+
+            self::renderFilter(
+                __('Filter By Item ', 'commonsbooking'),
+                'filter_item',
+                $values
+            );
+        }
+    }
+
+    /**
+     * Adds filter dropdown // filter by location in timeframe List
+     */
+    public static function addAdminLocationFilter()
+    {
+        $items = \CommonsBooking\Repository\Location::get();
+        if ($items) {
+            $values = [];
+            foreach ($items as $item) {
+                $values[$item->ID] = $item->post_title;
+            }
+
+            self::renderFilter(
+                __('Filter By Location ', 'commonsbooking'),
+                'filter_location',
+                $values
+            );
+        }
+    }
+
+    /**
+     * Adds filter dropdown // filter by location in timeframe List
+     */
+    public static function addAdminStatusFilter()
+    {
+        $values = [];
+        foreach (\CommonsBooking\Model\Booking::$bookingStates as $bookingState) {
+            $values[$bookingState] = $bookingState;
+        }
+        self::renderFilter(
+            __('Filter By Status ', 'commonsbooking'),
+            'filter_post_status',
+            $values
+        );
+    }
+
+    /**
+     * Renders backend list filter.
+     *
+     * @param $label
+     * @param $key
+     * @param $values
+     */
+    public static function renderFilter($label, $key, $values)
+    {
         //only add filter to post type you want
         if (isset($_GET['post_type']) && self::$postType == $_GET['post_type']) {
-            $values = self::getTypes();
             ?>
-            <select name="admin_filter_type">
-                <option value=""><?php _e('Filter By Type ', 'commonsbooking'); ?></option>
+            <select name="<?php echo 'admin_' . $key; ?>">
+                <option value=""><?php echo $label; ?></option>
                 <?php
-                $filterValue = isset($_GET['admin_filter_type']) ? $_GET['admin_' . self::$postType . '_filter_type'] : '';
+                $filterValue = isset($_GET['admin_' . $key]) ? $_GET['admin_' . $key] : '';
                 foreach ($values as $value => $label) {
                     printf
                     (
@@ -477,7 +792,6 @@ class Timeframe extends CustomPostType
         }
     }
 
-
     /**
      * Filters admin list by type (e.g. bookable, repair etc. )
      *
@@ -488,15 +802,46 @@ class Timeframe extends CustomPostType
     public static function filterAdminList($query)
     {
         global $pagenow;
+
         if (
-            is_admin() &&
+            is_admin() && $query->is_main_query() &&
             isset($_GET['post_type']) && self::$postType == $_GET['post_type'] &&
-            isset($_GET['admin_filter_type']) &&
-            $pagenow == 'edit.php' &&
-            $_GET['admin_filter_type'] != ''
+            $pagenow == 'edit.php'
         ) {
-            $query->query_vars['meta_key'] = 'type';
-            $query->query_vars['meta_value'] = $_GET['admin_filter_type'];
+            // Meta value filtering
+            $query->query_vars['meta_query'] = array(
+                'relation' => 'AND'
+            );
+            $meta_filters = [
+                'type'        => 'admin_filter_type',
+                'item-id'     => 'admin_filter_item',
+                'location-id' => 'admin_filter_location'
+            ];
+            foreach ($meta_filters as $key => $filter) {
+                if (
+                    isset($_GET[$filter]) &&
+                    $_GET[$filter] != ''
+                ) {
+                    $query->query_vars['meta_query'][] = array(
+                        'key'   => $key,
+                        'value' => $_GET[$filter]
+                    );
+                }
+            }
+
+            // Post field filtering
+            $post_filters = [
+                'post_status' => 'admin_filter_post_status'
+            ];
+            foreach ($post_filters as $key => $filter) {
+                if (
+                    isset($_GET[$filter]) &&
+                    $_GET[$filter] != ''
+                ) {
+                    $query->query_vars[$key] = $_GET[$filter];
+                }
+            }
+
         }
     }
 

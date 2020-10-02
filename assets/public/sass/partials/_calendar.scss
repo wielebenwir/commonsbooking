@@ -4,6 +4,7 @@
 	--litepickerMonthHeaderTextColor: #333;
 	--litepickerMonthButton: #9e9e9e;
 	--litepickerMonthButtonHover: #2196f3;
+	--litepickerDayWidth: 36px;
 	--litepickerMonthWidth: calc(var(--litepickerDayWidth) * 7); // 7 days
 	--litepickerMonthWeekdayColor: #9e9e9e;
 
@@ -25,7 +26,7 @@
 	--litepickerDayIsStartBg: #2196f3;
 	--litepickerDayIsEndColor: #fff;
 	--litepickerDayIsEndBg: #2196f3;
-	--litepickerDayWidth: 38px;
+
 
 	--litepickerButtonCancelColor: #fff;
 	--litepickerButtonCancelBg: #9e9e9e;

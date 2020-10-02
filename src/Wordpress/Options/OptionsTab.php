@@ -18,19 +18,19 @@ class OptionsTab
         $this->groups = $content['field_groups'];
         $this->tab_title = $this->content['title'];
 
-        add_action('cmb2_admin_init', array($this, 'Register'));
+        add_action('cmb2_admin_init', array($this, 'register'));
     }
 
-    public function Register()
+    public function register()
     {
-        $this->RegisterOptionsTab();
-        $this->RegisterOptionsGroups();
+        $this->registerOptionsTab();
+        $this->registerOptionsGroups();
     }
 
     /**
      * Register Tab
      */
-    public function RegisterOptionsTab()
+    public function registerOptionsTab()
     {
 
         $default_args = array(
@@ -61,12 +61,12 @@ class OptionsTab
     /**
      * Register Tab Contents (Groups + Fields)
      */
-    public function RegisterOptionsGroups()
+    public function registerOptionsGroups()
     {
 
         foreach ($this->groups as $group_id => $group) {
 
-            $group = $this->PrependTitle($group); /* prepend title + description html */
+            $group = $this->prependTitle($group); /* prepend title + description html */
 
             // Add Fields
             $fields = $group['fields'];
@@ -82,7 +82,7 @@ class OptionsTab
      * @param array $metabox_group
      * @return array $metabox_group with title + description added as row
      */
-    public static function PrependTitle($metabox_group)
+    public static function prependTitle($metabox_group)
     {
 
         if (isset ($metabox_group['title']) OR isset ($metabox_group['desc'])) {
