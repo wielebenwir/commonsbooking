@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2020-10-02T14:56:31+00:00\n"
-"PO-Revision-Date: 2020-10-02 16:57+0200\n"
+"POT-Creation-Date: 2020-10-03T13:53:27+00:00\n"
+"PO-Revision-Date: 2020-10-03 15:54+0200\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -209,32 +209,32 @@ msgstr " am %s "
 msgid " from %1$s until %2$s "
 msgstr " von %1$s bis %2$s "
 
-#: src/Model/Booking.php:274
+#: src/Model/Booking.php:236
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/Model/Booking.php:280
+#: src/Model/Booking.php:242
 msgid "Confirm Booking"
 msgstr "Buchung bestätigen"
 
-#: src/Model/Booking.php:286
+#: src/Model/Booking.php:248
 msgid "Cancel Booking"
 msgstr "Buchung stornieren"
 
-#: src/Model/Booking.php:306
+#: src/Model/Booking.php:268
 msgid "Please check your booking and click confirm booking"
 msgstr "Bitte überprüfe die Buchung und klicke auf „Buchung bestätigen“"
 
-#: src/Model/Booking.php:309
+#: src/Model/Booking.php:271
 msgid "Your booking is confirmed. A confirmation mail has been sent to you."
 msgstr ""
 "Deine Buchung wurde bestätigt. Du hast eine Bestätigungs-E-Mail erhalten."
 
-#: src/Model/Booking.php:314
+#: src/Model/Booking.php:276
 msgid "Your booking has been cancelled."
 msgstr "Deine Buchung wurde storniert."
 
-#: src/Model/Booking.php:329
+#: src/Model/Booking.php:291
 msgid "Link to your booking"
 msgstr "Link zu deiner Buchung"
 
@@ -297,7 +297,7 @@ msgstr ""
 "überlappende Zeiträume an einem bestimmten Tag zu vermeiden. Siehe "
 "betroffene Zeitrahmen-ID: %s: %s"
 
-#: src/Plugin.php:204
+#: src/Plugin.php:226
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
@@ -496,39 +496,39 @@ msgstr "Adresse"
 msgid "Street / No."
 msgstr "Straße / Nr."
 
-#: src/Wordpress/CustomPostType/Location.php:152
+#: src/Wordpress/CustomPostType/Location.php:155
 msgid "Postcode"
 msgstr "Postleitzahl"
 
-#: src/Wordpress/CustomPostType/Location.php:161
+#: src/Wordpress/CustomPostType/Location.php:167
 msgid "City"
 msgstr "Stadt"
 
-#: src/Wordpress/CustomPostType/Location.php:171
+#: src/Wordpress/CustomPostType/Location.php:180
 msgid "Country"
 msgstr "Land"
 
-#: src/Wordpress/CustomPostType/Location.php:181
+#: src/Wordpress/CustomPostType/Location.php:193
 msgid "General Location information"
 msgstr "Allgemeine Standortinformationen"
 
-#: src/Wordpress/CustomPostType/Location.php:190
+#: src/Wordpress/CustomPostType/Location.php:202
 msgid "Location email"
 msgstr "Standort E-Mail"
 
-#: src/Wordpress/CustomPostType/Location.php:191
+#: src/Wordpress/CustomPostType/Location.php:203
 msgid ""
 "email-address to get copy of booking confirmation and cancellation mails"
 msgstr ""
 "E-Mail-Adresse, an die eine Kopie der Buchungs- und Stornierungs-E-Mails "
 "gesendet wird"
 
-#: src/Wordpress/CustomPostType/Location.php:202
+#: src/Wordpress/CustomPostType/Location.php:214
 #: templates/booking-single.php:51
 msgid "Pickup instructions"
 msgstr "Abhol-Hinweise"
 
-#: src/Wordpress/CustomPostType/Location.php:203
+#: src/Wordpress/CustomPostType/Location.php:215
 msgid ""
 "Type in information about the pickup process (e.g. detailed route "
 "description, opening hours, etc.). This will be shown to user in booking "
@@ -538,11 +538,11 @@ msgstr ""
 "Routenbeschreibung, Öffnungszeiten usw.). Dies wird dem Benutzenden im "
 "Buchungsprozess und in der Buchungsbestätigungs-Email angezeigt"
 
-#: src/Wordpress/CustomPostType/Location.php:213
+#: src/Wordpress/CustomPostType/Location.php:225
 msgid "Location contact information"
 msgstr "Standortkontaktinformationen"
 
-#: src/Wordpress/CustomPostType/Location.php:214
+#: src/Wordpress/CustomPostType/Location.php:226
 msgid ""
 "information about how to contact the location (e.g. contact person, phone "
 "number, e-mail etc.). This will be shown to user in booking process and "
@@ -552,11 +552,11 @@ msgstr ""
 "Telefonnummer, E-Mail usw.). Dies wird dem Nutzenden im Buchungsprozess und "
 "bei der Buchungsbestätigungs-Email angezeigt"
 
-#: src/Wordpress/CustomPostType/Location.php:228
+#: src/Wordpress/CustomPostType/Location.php:240
 msgid "Location Admin(s)"
 msgstr "Standort-Administrator(en)"
 
-#: src/Wordpress/CustomPostType/Location.php:229
+#: src/Wordpress/CustomPostType/Location.php:241
 msgid ""
 "choose one or more users to give them the permisssion to edit and manage "
 "this specific location. Only users with the role cb_manager can be selected "
@@ -566,7 +566,7 @@ msgstr ""
 "diesen bestimmten Standort zu bearbeiten und zu verwalten. Hier können nur "
 "Benutzer mit der Rolle cb_manager ausgewählt werden."
 
-#: src/Wordpress/CustomPostType/Location.php:235
+#: src/Wordpress/CustomPostType/Location.php:247
 msgid "Select location admins."
 msgstr "Wähle Standort-Admins."
 
@@ -812,12 +812,12 @@ msgid "Login to your account"
 msgstr "Login zu deinem Nutzerkonto"
 
 #: templates/booking-single.php:28
-msgid "Pickup from"
-msgstr "Abholung von"
+msgid "Pickup"
+msgstr "Abholung"
 
 #: templates/booking-single.php:32
-msgid "Return until"
-msgstr "Rückkehr bis"
+msgid "Return"
+msgstr "Rückgabe"
 
 #: templates/booking-single.php:40
 msgid "Location: "
@@ -880,11 +880,11 @@ msgstr ""
 
 #: templates/timeframe-calendar.php:23
 msgid "Pickup time"
-msgstr "Abholung"
+msgstr "Abholzeit"
 
 #: templates/timeframe-calendar.php:28
 msgid "Return time"
-msgstr "Rückgabe"
+msgstr "Rückgabezeit"
 
 #: templates/timeframe-calendar.php:36
 msgid "Continue to check booking data"
@@ -902,6 +902,12 @@ msgstr ""
 #: templates/timeframe-withlocation.php:13
 msgid "Book here"
 msgstr "Hier buchen"
+
+#~ msgid "Pickup from"
+#~ msgstr "Abholung von"
+
+#~ msgid "Return until"
+#~ msgstr "Rückkehr bis"
 
 #~ msgid "Es wurde eine Startzeit, aber keine Endzeit gesetzt."
 #~ msgstr "Es wurde eine Startzeit, aber keine Endzeit gesetzt."
@@ -954,12 +960,6 @@ msgstr "Hier buchen"
 
 #~ msgid "Shortdescription"
 #~ msgstr "Kurzbeschreibung"
-
-#~ msgid "Pickup"
-#~ msgstr "Abholung"
-
-#~ msgid "Return"
-#~ msgstr "Rückgabe"
 
 #~ msgid "Pickup and return information"
 #~ msgstr "Abhol- und Rückgabe-Informationen"
