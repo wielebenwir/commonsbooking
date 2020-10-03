@@ -4,13 +4,7 @@
 namespace CommonsBooking\API;
 
 
-use CommonsBooking\Model\Location;
-use CommonsBooking\Model\Timeframe;
-use Geocoder\Geocoder;
-use Geocoder\Provider\Nominatim\Model\NominatimAddress;
-use Geocoder\Provider\Provider;
-use Geocoder\Query\GeocodeQuery;
-use Http\Adapter\Guzzle6\Client;
+use CommonsBooking\Repository\UserRepository;
 
 class OwnersRoute extends BaseRoute
 {
@@ -38,15 +32,52 @@ class OwnersRoute extends BaseRoute
     {
         $data = new \stdClass();
         $data->owners = [];
+
+        foreach (UserRepository::getOwners() as $owner) {
+            $data->owners[] = $this->prepare_item_for_response($owner, $request);
+        }
+
         return $data;
     }
 
+    public function prepare_item_for_response($owner, $request)
+    {
+        $ownerObject = new \stdClass();
+        $ownerObject->id = $owner->ID;
+        $ownerObject->name = get_user_meta($owner->ID, 'first_name', true) . ' ' . get_user_meta($owner->ID, 'last_name', true);
+        $ownerObject->url = $owner->user_url;
+
+        if($items = \CommonsBooking\Repository\Item::getByUserId($owner->ID, true)) {
+            $ownerObject->items = [];
+            $itemsRoute = new ItemsRoute();
+            foreach($items as $item) {
+                $ownerObject->items[] = $itemsRoute->prepare_item_for_response($item, new \WP_REST_Request());
+            }
+        }
+
+        if($locations = \CommonsBooking\Repository\Location::getByUserId($owner->ID, true)) {
+            $ownerObject->locations = [];
+            $locationsRoute = new LocationsRoute();
+            foreach($locations as $location) {
+                $ownerObject->locations[] = $locationsRoute->prepare_item_for_response($location, new \WP_REST_Request());
+            }
+        }
+        return $ownerObject;
+    }
+
+
     /**
-     * Get a collection of items
+     * Get a single item
      */
     public function get_item($request)
     {
-        return $this->get_items($request);
+        //get parameters from request
+        $params = $request->get_params();
+        $owner = get_user_by('id', $params['id']);
+        $data = new \stdClass();
+        $data->owners[] = $this->prepare_item_for_response($owner, $request);
+
+        return new \WP_REST_Response($data, 200);
     }
 
     /**

@@ -142,14 +142,16 @@ abstract class CustomPostType
      */
     public static function sanitizeOptions($data) {
         $options = [];
-        foreach ($data as $key => $item) {
-            if($item instanceof \WP_Post) {
-                $key = $item->ID;
-                $label = $item->post_title;
-            } else {
-                $label = $item;
+        if($data) {
+            foreach ($data as $key => $item) {
+                if($item instanceof \WP_Post) {
+                    $key = $item->ID;
+                    $label = $item->post_title;
+                } else {
+                    $label = $item;
+                }
+                $options[$key] = $label;
             }
-            $options[$key] = $label;
         }
         return $options;
     }
