@@ -377,6 +377,16 @@ class Timeframe extends CustomPostType
      */
     protected function getCustomFields()
     {
+        // We need static types, because german month names dont't work for datepicker
+        $dateFormat = "d/m/Y";
+        if(strpos(get_locale(), 'de_') !== false) {
+            $dateFormat = "d.m.Y";
+        }
+
+        if(strpos(get_locale(), 'en_') !== false) {
+            $dateFormat = "m/d/Y";
+        }
+
         return array(
             array(
                 'name'       => __("Comment", 'commonsbooking'),
@@ -480,7 +490,7 @@ class Timeframe extends CustomPostType
                 'type'        => 'text_time',
                 'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
                 'time_format' => get_option('time_format'),
-                'date_format' => get_option('date_format')
+                'date_format' => $dateFormat
             ),
             array(
                 'name'        => __("End time", 'commonsbooking'),
@@ -488,7 +498,7 @@ class Timeframe extends CustomPostType
                 'type'        => 'text_time',
                 'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
                 'time_format' => get_option('time_format'),
-                'date_format' => get_option('date_format')
+                'date_format' => $dateFormat
             ),
             array(
                 'name'       => __("Grid", 'commonsbooking'),
@@ -512,7 +522,7 @@ class Timeframe extends CustomPostType
                 'type'        => 'text_date_timestamp',
                 'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
                 'time_format' => get_option('time_format'),
-                'date_format' => get_option('date_format')
+                'date_format' => $dateFormat
             ),
             array(
                 'name'       => __('Weekdays', 'commonsbooking'),
@@ -535,7 +545,7 @@ class Timeframe extends CustomPostType
                 'type'        => 'text_date_timestamp',
                 'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
                 'time_format' => get_option('time_format'),
-                'date_format' => get_option('date_format')
+                'date_format' => $dateFormat
             )
         );
     }
