@@ -186,9 +186,7 @@ class Booking extends CustomPost
      * 
      * @return string
      */
-     * 
-     * @return void
-     */
+
     public function returnDatetime()
     {
         $date_format = get_option('date_format');
