@@ -206,3 +206,4 @@ add_action('admin_notices',array(Plugin::class, 'renderError'));
 
 $cbPlugin = new Plugin();
 $cbPlugin->init();
+$cbPlugin->initRoutes();
