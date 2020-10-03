@@ -34,6 +34,58 @@ class Plugin
     public static $CB_MANAGER_ID = 'cb_manager';
 
     /**
+     * Deletes cb transients.
+     * @param $param
+     */
+    public static function clearCache($param = "") {
+        global $wpdb;
+        $sql = "
+            DELETE 
+            FROM {$wpdb->options}
+            WHERE option_name like '\_transient\_commonsbooking%".$param."%'
+        ";
+        $wpdb->query($sql);
+    }
+
+    /**
+     * Returns cache id, based on calling class, function and args.
+     * @param null $custom_id
+     *
+     * @return string
+     */
+    public static function getCacheId($custom_id = null) {
+        $backtrace = debug_backtrace()[2];
+        $namespace = str_replace('\\','_', strtolower($backtrace['class']));
+        $namespace .= '_'. $backtrace['function'];
+        $namespace .= '_'. md5( serialize($backtrace['args']));
+        if($custom_id) {
+            $namespace .= $custom_id;
+        }
+        return $namespace;
+    }
+
+    /**
+     * Returns cache item based on calling class, function and args.
+     * @param null $custom_id
+     *
+     * @return mixed
+     */
+    public static function getCacheItem($custom_id = null) {
+        return get_transient(self::getCacheId($custom_id));
+    }
+
+    /**
+     * Saves cache item based on calling class, function and args.
+     * @param $value
+     * @param null $custom_id
+     *
+     * @return mixed
+     */
+    public static function setCacheItem($value, $custom_id = null) {
+        return set_transient(self::getCacheId($custom_id), $value);
+    }
+
+    /**
      *  Init hooks.
      */
     public function init()
@@ -55,6 +107,27 @@ class Plugin
 
         // Parent Menu Fix
         add_filter('parent_file', array($this, "setParentFile"));
+
+        // Remove cache items on save.
+        add_action( 'save_post', array( $this, 'savePostActions' ), 10, 2 );
+    }
+
+    /**
+     * Removes cache item in connection to post_type.
+     * @param $post_id
+     * @param $post
+     */
+    public function savePostActions($post_id, $post)
+    {
+        if (!in_array($post->post_type, self::getCustomPostTypesLabels())) {
+            return;
+        }
+        self::clearCache(str_replace('cb_','', $post->post_type));
+
+        // Remove cache for timeframe repos
+        if($post->post_type == Timeframe::$postType) {
+            self::clearCache('book');
+        }
     }
 
     /**
@@ -94,7 +167,7 @@ class Plugin
     /**
      * @return mixed
      */
-    public static function getCustomPostTypesLabel()
+    public static function getCustomPostTypesLabels()
     {
         return [
             Item::getPostType(),

@@ -3,6 +3,15 @@
  */
 
 document.addEventListener("DOMContentLoaded", function(event) {
+
+    const fadeOutCalendar = () => {
+        $('#litepicker .litepicker .container__days').css('visibility','hidden');
+    }
+
+    const fadeInCalendar = () => {
+        $('#litepicker .litepicker .container__days').fadeTo('fast',1);
+    }
+
     // Updates Time-selects so that no wrong time ranges can be selected
     const initSelectHandler = () => {
         const bookingForm = $('#booking-form');
@@ -98,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             $('.cb-notice.date-select').show();
         },
         onChangeMonth: function(date, idx) {
+            fadeOutCalendar()
             const startDate = moment(date.format('YYYY-MM-DD')).format('YYYY-MM-DD');
             // Last day of month before
             const calStartDate = moment(date.format('YYYY-MM-DD')).date(0).format('YYYY-MM-DD');
@@ -121,9 +131,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
             );
         }
     });
+    $('#litepicker .litepicker').hide();
+
 
     // update datepicker data
     const updatePicker = (data) => {
+        fadeOutCalendar()
         picker.setOptions(
             {
                 "minDate": data['startDate'],
@@ -172,6 +185,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 }
             }
         );
+        fadeInCalendar();
     };
 
     let bookingForm = $('#booking-form');
@@ -191,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             },
             function(data) {
                 updatePicker(data);
-                picker.gotoDate(startDate)
+                picker.gotoDate(startDate);
             }
         )
     }
