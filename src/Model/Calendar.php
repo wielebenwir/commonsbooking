@@ -38,13 +38,13 @@ class Calendar
     /**
      * Calendar constructor.
      *
-     * @param $startDate
-     * @param $endDate
+     * @param Day $startDate
+     * @param Day $endDate
      * @param array $locations
      * @param array $items
      * @param array $types
      */
-    public function __construct($startDate, $endDate, $locations = [], $items = [], $types = [])
+    public function __construct(Day $startDate, Day $endDate, $locations = [], $items = [], $types = [])
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;

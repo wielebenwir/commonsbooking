@@ -58,6 +58,28 @@ class Plugin
     }
 
     /**
+     * Function to register our new routes from the controller.
+     */
+    public function initRoutes() {
+        add_action(
+            'rest_api_init',
+            function () {
+                $routes = [
+                    new \CommonsBooking\API\AvailabilityRoute(),
+                    new \CommonsBooking\API\ItemsRoute(),
+                    new \CommonsBooking\API\LocationsRoute(),
+                    new \CommonsBooking\API\OwnersRoute(),
+                    new \CommonsBooking\API\ProjectsRoute()
+
+                ];
+                foreach($routes as $route) {
+                    $route->register_routes();
+                }
+            }
+        );
+    }
+
+    /**
      * @return mixed
      */
     public static function getCustomPostTypes()

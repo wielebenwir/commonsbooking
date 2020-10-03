@@ -18,6 +18,7 @@ class BookablePost extends CustomPost
      */
     public function getBookableTimeframes($asModel = true)
     {
+        $bookableTimeframes = [];
         if(get_called_class() == Location::class) {
             $bookableTimeframes = Timeframe::get(
                 [$this->ID],
@@ -43,7 +44,7 @@ class BookablePost extends CustomPost
     /**
      * Returns bookable timeframes for a specific location
      *
-     * @return array
+     * @return int
      * @throws \Exception
      */
     public function isBookable()

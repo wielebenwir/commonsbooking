@@ -15,15 +15,15 @@ class Location extends View
     /**
      * Returns JSON-Data for Litepicker calendar.
      *
-     * @param $startDate
-     * @param $endDate
+     * @param Day $startDate
+     * @param Day $endDate
      * @param $locations
      * @param $items
      *
      * @return array
      * @throws \Exception
      */
-    protected static function prepareJsonResponse($startDate, $endDate, $locations, $items)
+    protected static function prepareJsonResponse(Day $startDate, Day $endDate, $locations, $items)
     {
         $calendar = new Calendar(
             $startDate,

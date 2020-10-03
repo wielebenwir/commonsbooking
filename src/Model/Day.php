@@ -260,7 +260,7 @@ class Day
      */
     protected function getEndDate($timeframe)
     {
-        $startDateString = get_post_meta($timeframe->ID, 'repetition-end', true);
+        $startDateString = intval(get_post_meta($timeframe->ID, 'repetition-end', true));
         $startDate = new \DateTime();
         $startDate->setTimestamp($startDateString);
         return $startDate;
@@ -273,7 +273,7 @@ class Day
      */
     protected function getEndTime($timeframe)
     {
-        $endDateString = get_post_meta($timeframe->ID, 'repetition-end', true);
+        $endDateString = $this->getDateObject()->getTimestamp();
         $endTimeString = get_post_meta($timeframe->ID, 'end-time', true);
         $endDate = new \DateTime();
         $endDate->setTimestamp($endDateString);
