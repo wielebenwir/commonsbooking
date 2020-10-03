@@ -142,53 +142,14 @@ class Booking extends CustomPost
         }
     }
 
-
-    function render_pickupreturn($action) {
-
-        if ($action == "pickup") {
-            $date_type = "start";
-        } elseif ($action == "return") {
-            $date_type = "end";
-        } else {
-            return false;
-        }
-
-        $date_format = get_option('date_format');
-        $time_format = get_option('time_format');
-        
-        $date = date_i18n($date_format, $this->getMeta($date_type .'-date'));
-        $time_start = date_i18n($time_format, $this->getMeta($date_type . '-date'));
-
-        $grid = $this->getMeta('grid');
-        $full_day = $this->getMeta('full-day');
-
-
-        if ($full_day == "on") {
-            return $date;
-        }
-
-        if ($grid > 0) {
-            $time_end = date($time_format, $this->getMeta($date_type . '-date') + (60 * 60 * $grid));
-        }
-
-        if ($grid == 0) { // if grid is set to slot duration
-            $time_end = date($time_format, $this->getMeta($date_type . '-date'));
-        }
-
-        return $date . ' ' . $time_start . ' - ' . $time_end;
-
-    }
-
     
     /**
      * pickupDatetime
      * 
-     * @TODO: This will change if the timeframe is edited! 
-     * @TODO: This is not the place for grid/time calculations, they should happen in a centralised function that does not return formatting
-     * @TODO: wrap in spans <span class="cb-date">date</span> so we can format these tags
-     * @TODO: 
+     * renders the pickup date and time information and returns a formatted string
+     * this is used in templates/booking-single.php and in email-templates (configuration via admin options)
      * 
-     * @return void
+     * @return string
      */
     public function pickupDatetime()
     {
@@ -206,7 +167,7 @@ class Booking extends CustomPost
             return $date_start;
         }
 
-        if ($grid > 0) { // if bookable grid is set to hour
+        if ($grid > 0) { // if grid is set to hourly (grid = 1) or a multiple of an hour
             $time_end = date_i18n($time_format, $this->getMeta('repetition-start') + (60 * 60 * $grid));
         }
 
@@ -218,10 +179,13 @@ class Booking extends CustomPost
     }
     
     /**
-     * returnDatetime
-     *
-     * @TODO: This will change when the timeframe changes. 
-     * @TODO: This is not the place for grid/time calculations
+     * pickupDatetime
+     * 
+     * renders the return date and time information and returns a formatted string
+     * this is used in templates/booking-single.php and in email-templates (configuration via admin options)
+     * 
+     * @return string
+     */
      * 
      * @return void
      */
@@ -240,7 +204,7 @@ class Booking extends CustomPost
             return $date_end;
         }
 
-        if ($grid > 0) {
+        if ($grid > 0) { // if grid is set to hourly (grid = 1) or a multiple of an hour
             $time_start = date_i18n($time_format, $this->getMeta('repetition-end') +1 -(60 * 60 * $grid) );
         }
 
