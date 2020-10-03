@@ -6,6 +6,7 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 class Location extends BookablePost
 {
+
     /**
      * Get all Locations current user is allowed to see/edit
      * @return array
