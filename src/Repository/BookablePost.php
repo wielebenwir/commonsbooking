@@ -26,7 +26,7 @@ abstract class BookablePost extends PostRepository
      * @return array
      */
     public static function get($args = array(), $bookable = false) {
-
+        $posts = [];
         $args['post_type'] =  static::getPostType();
 
         $defaults = array(
