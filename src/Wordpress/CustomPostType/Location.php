@@ -132,7 +132,7 @@ class Location extends CustomPostType
         $cmb = new_cmb2_box(array(
             'id'           => CB_METABOX_PREFIX . 'location_adress',
             'title'        => __('Address', 'commonsbooking'),
-            'object_types' => array('cb_location',), // Post type
+            'object_types' => array(self::$postType), // Post type
             'context'      => 'normal',
             'priority'     => 'high',
             'show_names'   => true, // Show field names on the left
@@ -145,6 +145,9 @@ class Location extends CustomPostType
             'id'         => CB_METABOX_PREFIX . 'location_street',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+            'attributes' => array(
+                'required' => 'required',
+            ),
         ));
 
         // Postcode
@@ -154,6 +157,9 @@ class Location extends CustomPostType
             'id'         => CB_METABOX_PREFIX . 'location_postcode',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+            'attributes' => array(
+                'required' => 'required',
+            ),
         ));
 
         // City
@@ -164,6 +170,9 @@ class Location extends CustomPostType
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             // 'repeatable'      => true,
+            'attributes' => array(
+                'required' => 'required',
+            ),
         ));
 
         // Country
@@ -173,13 +182,16 @@ class Location extends CustomPostType
             'id'         => CB_METABOX_PREFIX . 'location_country',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+            'attributes' => array(
+                'required' => 'required',
+            ),
         ));
 
         // Initiate the metabox Information
         $cmb = new_cmb2_box(array(
             'id'           => CB_METABOX_PREFIX . 'location_info',
             'title'        => __('General Location information', 'commonsbooking'),
-            'object_types' => array('cb_location',), // Post type
+            'object_types' => array(self::$postType), // Post type
             'context'      => 'normal',
             'priority'     => 'high',
             'show_names'   => true, // Show field names on the left
