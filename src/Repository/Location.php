@@ -37,7 +37,7 @@ class Location extends BookablePost
             )
         );
 
-        // workaround: if user has admin-role all locations are available
+        // workaround: if user has admin-role get all available locations
         // TODO: better solution to check if user has administrator role
         if ( in_array( 'administrator', $current_user->roles ) ) {
             $args = array(

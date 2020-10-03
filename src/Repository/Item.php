@@ -24,7 +24,7 @@ class Item extends BookablePost
             $items = array_merge($items, $query->get_posts());
         }
 
-        // get all locations where current user is assigned as admin
+        // get all items where current user is assigned as admin
         $args = array(
             'post_type' => \CommonsBooking\Wordpress\CustomPostType\Item::$postType,
             'meta_query'  => array(
@@ -37,7 +37,7 @@ class Item extends BookablePost
             )
         );
 
-         // workaround: if user has admin-role all locations are available
+         // workaround: if user has admin-role get all available items
         // TODO: better solution to check if user has administrator role
         if ( in_array( 'administrator', $current_user->roles ) ) {
             unset($args);
