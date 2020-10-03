@@ -29,7 +29,8 @@ class Location extends View
             $startDate,
             $endDate,
             $locations,
-            $items
+            $items,
+            [Timeframe::BOOKABLE_ID]
         );
 
         $jsonResponse = [
@@ -45,8 +46,11 @@ class Location extends View
         ];
 
         if (count($locations) === 1) {
-            $jsonResponse['location']['fullDayInfo'] = CB::get('location',
-                CB_METABOX_PREFIX . 'location_pickupinstructions', $locations[0]);
+            $jsonResponse['location']['fullDayInfo'] = CB::get(
+                'location',
+                CB_METABOX_PREFIX . 'location_pickupinstructions',
+                $locations[0]
+            );
         }
         /** @var Week $week */
         foreach ($calendar->getWeeks() as $week) {

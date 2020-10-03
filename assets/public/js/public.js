@@ -1362,7 +1362,9 @@
         });
     } ]).Litepicker;
 }), document.addEventListener("DOMContentLoaded", function(event) {
-    const initSelectHandler = () => {
+    const fadeOutCalendar = () => {
+        $("#litepicker .litepicker .container__days").css("visibility", "hidden");
+    }, initSelectHandler = () => {
         const bookingForm = $("#booking-form"), startSelect = bookingForm.find("select[name=repetition-start]"), endSelect = bookingForm.find("select[name=repetition-end]");
         startSelect.change(function() {
             const startValue = $(this).val();
@@ -1419,6 +1421,7 @@
             $("#booking-form").hide(), $(".cb-notice.date-select").show();
         },
         onChangeMonth: function(date, idx) {
+            fadeOutCalendar();
             const startDate = moment(date.format("YYYY-MM-DD")).format("YYYY-MM-DD"), calStartDate = moment(date.format("YYYY-MM-DD")).date(0).format("YYYY-MM-DD"), calEndDate = moment(date.format("YYYY-MM-DD")).add(numberOfMonths, "months").date(1).format("YYYY-MM-DD");
             $.post(cb_ajax.ajax_url, {
                 _ajax_nonce: cb_ajax.nonce,
@@ -1432,8 +1435,9 @@
             });
         }
     });
+    $("#litepicker .litepicker").hide();
     const updatePicker = data => {
-        picker.setOptions({
+        fadeOutCalendar(), picker.setOptions({
             minDate: data.startDate,
             maxDate: data.endDate,
             days: data.days,
@@ -1455,7 +1459,7 @@
                 day1.fullDay && day2.fullDay ? $("#fullDayInfo").text(data.location.fullDayInfo) : ($("#fullDayInfo").text(""), 
                 initSelectHandler());
             }
-        });
+        }), $("#litepicker .litepicker .container__days").fadeTo("fast", 1);
     };
     if ($("#booking-form").length) {
         const startDate = moment().format("YYYY-MM-DD"), calStartDate = moment().date(1).format("YYYY-MM-DD"), calEndDate = moment().add(numberOfMonths + 2, "months").date(0).format("YYYY-MM-DD");

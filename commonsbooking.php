@@ -145,7 +145,7 @@ function isCurrentUserAllowedToEdit($post)
  */
 function validate_user_on_edit($current_screen)
 {
-    if ($current_screen->base == "post" && in_array($current_screen->id, Plugin::getCustomPostTypesLabel())) {
+    if ($current_screen->base == "post" && in_array($current_screen->id, Plugin::getCustomPostTypesLabels())) {
         if (array_key_exists('action', $_GET) && $_GET['action'] == 'edit') {
             $post = get_post($_GET['post']);
             if ( ! isCurrentUserAllowedToEdit($post)) {
@@ -172,7 +172,7 @@ add_filter('the_posts', function ($posts, $query) {
         }
 
         // Check if it is the main query and one of our custom post types
-        if ( ! $isAdmin && $query->is_main_query() && in_array($postType, Plugin::getCustomPostTypesLabel())) {
+        if ( ! $isAdmin && $query->is_main_query() && in_array($postType, Plugin::getCustomPostTypesLabels())) {
             foreach ($posts as $key => $post) {
                 if ( ! isCurrentUserAllowedToEdit($post)) {
                     unset($posts[$key]);
