@@ -42,7 +42,7 @@ class Plugin
         $sql = "
             DELETE 
             FROM {$wpdb->options}
-            WHERE option_name like '\_transient\_commonsbooking%".$param."%'
+            WHERE option_name like '_transient_commonsbooking%".$param."%'
         ";
         $wpdb->query($sql);
     }

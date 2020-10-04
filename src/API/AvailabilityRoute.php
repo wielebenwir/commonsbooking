@@ -30,8 +30,7 @@ class AvailabilityRoute extends BaseRoute
             new Day(date('Y-m-d',time())),
             new Day(date('Y-m-d',strtotime('+2 weeks'))),
             [],
-            $id ? [$id] : [],
-            [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID]
+            $id ? [$id] : []
         );
 
         $doneSlots = [];
@@ -41,6 +40,11 @@ class AvailabilityRoute extends BaseRoute
             foreach ($week->getDays() as $day) {
                 foreach($day->getGrid() as $slot) {
                     $timeframe = new Timeframe($slot['timeframe']);
+                    $timeFrameType = get_post_meta($slot['timeframe']->ID, 'type', true);
+
+                    if ($timeFrameType != \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID) {
+                        continue;
+                    }
                     $availabilitySlot = new \stdClass();
                     $availabilitySlot->start = date('Y-m-d\Th:m:i', $slot['timestampstart']);
                     $availabilitySlot->end = date('Y-m-d\Th:m:i', $slot['timestampend']);

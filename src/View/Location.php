@@ -29,8 +29,7 @@ class Location extends View
             $startDate,
             $endDate,
             $locations,
-            $items,
-            [Timeframe::BOOKABLE_ID]
+            $items
         );
 
         $jsonResponse = [
