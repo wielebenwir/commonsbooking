@@ -35,8 +35,7 @@ class ProjectsRoute extends BaseRoute
      * @return \stdClass
      */
     public function getItemData($request) {
-        $data = new \stdClass();
-        $data->projects = [
+        $data = [
             (object) [
                 "id" => "1",
                 "name" => get_bloginfo('name'),
@@ -61,7 +60,8 @@ class ProjectsRoute extends BaseRoute
      */
     public function get_items($request)
     {
-        $data = $this->getItemData($request);
+        $data = new \stdClass();
+        $data->projects = $this->getItemData($request);
 
         $this->validateData($data);
         return new \WP_REST_Response($data, 200);

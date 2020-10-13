@@ -30,11 +30,10 @@ class OwnersRoute extends BaseRoute
      */
     public function getItemData($request)
     {
-        $data = new \stdClass();
-        $data->owners = [];
+        $data = [];
 
         foreach (UserRepository::getOwners() as $owner) {
-            $data->owners[] = $this->prepare_item_for_response($owner, $request);
+            $data[] = $this->prepare_item_for_response($owner, $request);
         }
 
         return $data;
@@ -89,7 +88,8 @@ class OwnersRoute extends BaseRoute
      */
     public function get_items($request)
     {
-        $data = $this->getItemData($request);
+        $data = new \stdClass();
+        $data->owners = $this->getItemData($request);
         return new \WP_REST_Response($data, 200);
     }
 
