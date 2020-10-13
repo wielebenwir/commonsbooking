@@ -22,27 +22,27 @@ class Timeframe extends PostRepository
             array(
                 'relation' => "AND",
                 array(
-                    'key' => 'repetition-start',
-                    'value' => [
+                    'key'     => 'repetition-start',
+                    'value'   => [
                         0,
                         strtotime($date . 'T23:59')
                     ],
                     'compare' => 'BETWEEN',
-                    'type' => 'numeric'
+                    'type'    => 'numeric'
                 ),
                 array(
                     'relation' => "OR",
                     array(
-                        'key' => 'repetition-end',
-                        'value' => [
+                        'key'     => 'repetition-end',
+                        'value'   => [
                             strtotime($date),
                             3000000000
                         ],
                         'compare' => 'BETWEEN',
-                        'type' => 'numeric'
+                        'type'    => 'numeric'
                     ),
                     array(
-                        'key' => 'repetition-end',
+                        'key'     => 'repetition-end',
                         'compare' => 'NOT EXISTS'
                     )
                 )
@@ -61,43 +61,43 @@ class Timeframe extends PostRepository
      * @return array
      * @throws \Exception
      */
-    public static function get($locations = [], $items = [], $types = [], ?string $date = null, $returnAsModel = false) {
+    public static function get($locations = [], $items = [], $types = [], ?string $date = null, $returnAsModel = false)
+    {
         $posts = [];
-        if(Plugin::getCacheItem()) {
+        if ( ! count($types)) {
+            $types = [
+                \CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
+                \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+                \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
+                \CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
+                \CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
+            ];
+        }
+
+        if (Plugin::getCacheItem()) {
             return Plugin::getCacheItem();
         } else {
             // Default query
             $args = array(
-                'post_type' => \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType(),
+                'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType(),
                 'post_status' => array('confirmed', 'unconfirmed', 'publish', 'inherit')
             );
 
-            if(!count($types)) {
-                $types = [
-                    \CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
-                    \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-                    \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
-                    \CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
-                    \CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
-                ];
-            }
-
-            if($date) {
+            if ($date) {
                 $args['meta_query'] = array(
                     'relation' => 'AND',
                     [self::getTimeRangeQuery($date)],
                     [
-                        'key' => 'type',
-                        'value' => $types,
+                        'key'     => 'type',
+                        'value'   => $types,
                         'compare' => 'IN'
                     ]
                 );
-            }
-            else {
+            } else {
                 $args['meta_query'] = array(
                     [
-                        'key' => 'type',
-                        'value' => $types,
+                        'key'     => 'type',
+                        'value'   => $types,
                         'compare' => 'IN'
                     ]
                 );
@@ -109,17 +109,17 @@ class Timeframe extends PostRepository
 
                 // If there are locations or items to be filtered, we iterate through
                 // query result because wp_query is to slow for meta-querying them.
-                if(count($locations) || count($items)) {
+                if (count($locations) || count($items)) {
                     $posts = array_filter($posts, function ($post) use ($locations, $items) {
                         $location = intval(get_post_meta($post->ID, 'location-id', true));
                         $item = intval(get_post_meta($post->ID, 'item-id', true));
 
                         return
-                            (!$location && !$item) ||
-                            (!$location && in_array($item, $items)) ||
-                            (in_array($location, $locations) && !$item) ||
-                            (!count($locations) && in_array($item, $items)) ||
-                            (in_array($location, $locations) && !count($items)) ||
+                            ( ! $location && ! $item) ||
+                            ( ! $location && in_array($item, $items)) ||
+                            (in_array($location, $locations) && ! $item) ||
+                            ( ! count($locations) && in_array($item, $items)) ||
+                            (in_array($location, $locations) && ! count($items)) ||
                             (in_array($location, $locations) && in_array($item, $items));
                     });
                 }
@@ -133,6 +133,7 @@ class Timeframe extends PostRepository
             }
 
             Plugin::setCacheItem($posts);
+
             return $posts;
         }
     }
