@@ -91,14 +91,11 @@ class LocationsRoute extends BaseRoute
 
         $locations = \CommonsBooking\Repository\Location::get($args);
 
-        $data = new \stdClass();
-        $data->locations = new \stdClass();
-        $data->locations->type = "FeatureCollection";
-        $data->locations->features = [];
+        $data = [];
 
         foreach ($locations as $location) {
             $itemdata = $this->prepare_item_for_response($location, $request);
-            $data->locations->features[] = $itemdata;
+            $data[] = $itemdata;
         }
         return $data;
     }
@@ -124,7 +121,10 @@ class LocationsRoute extends BaseRoute
      */
     public function get_items($request)
     {
-        $data = $this->getItemData($request);
+        $data = new \stdClass();
+        $data->locations = new \stdClass();
+        $data->locations->type = "FeatureCollection";
+        $data->locations->features = $this->getItemData($request);
 
         $this->validateData($data);
         return new \WP_REST_Response($data, 200);
