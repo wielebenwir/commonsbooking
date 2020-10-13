@@ -142,12 +142,11 @@ abstract class BookablePost extends PostRepository
     public static function get($args = array(), $bookable = false)
     {
         $posts = [];
+        $args['post_type'] = static::getPostType();
 
         if (Plugin::getCacheItem()) {
             return Plugin::getCacheItem();
         } else {
-            $args['post_type'] = static::getPostType();
-
             $defaults = array(
                 'post_status' => array('publish', 'inherit'),
             );
@@ -169,6 +168,7 @@ abstract class BookablePost extends PostRepository
             }
 
             Plugin::setCacheItem($posts);
+
             return $posts;
         }
     }
