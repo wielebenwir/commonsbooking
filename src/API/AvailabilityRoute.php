@@ -46,8 +46,8 @@ class AvailabilityRoute extends BaseRoute
                         continue;
                     }
                     $availabilitySlot = new \stdClass();
-                    $availabilitySlot->start = date('Y-m-d\Th:m:i', $slot['timestampstart']);
-                    $availabilitySlot->end = date('Y-m-d\Th:m:i', $slot['timestampend']);
+                    $availabilitySlot->start = date('Y-m-d\TH:i:s', $slot['timestampstart']);
+                    $availabilitySlot->end = date('Y-m-d\TH:i:s', $slot['timestampend']);
                     $availabilitySlot->locationId = $timeframe->getLocation()->ID . "";
                     $availabilitySlot->itemId = $timeframe->getItem()->ID . "";
 
