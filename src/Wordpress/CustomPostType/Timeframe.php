@@ -489,6 +489,13 @@ class Timeframe extends CustomPostType
                 'id'          => "start-time",
                 'type'        => 'text_time',
                 'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'attributes' => array(
+                    'data-timepicker' => json_encode(
+                        array(
+                            'stepMinute' => 60
+                        )
+                    ),
+                ),
                 'time_format' => get_option('time_format'),
                 'date_format' => $dateFormat
             ),
@@ -497,6 +504,13 @@ class Timeframe extends CustomPostType
                 'id'          => "end-time",
                 'type'        => 'text_time',
                 'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'attributes' => array(
+                     'data-timepicker' => json_encode(
+                        array(
+                            'stepMinute' => 60
+                        )
+                     ),
+                 ),
                 'time_format' => get_option('time_format'),
                 'date_format' => $dateFormat
             ),
