@@ -4,6 +4,7 @@ namespace CommonsBooking\View;
 
 use CommonsBooking\CB\CB;
 use CommonsBooking\Model\Calendar;
+use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Week;
 use CommonsBooking\Wordpress\CustomPostType\Item;
@@ -177,28 +178,39 @@ class Location extends View
         }
     }
 
-
     /**
-     * Returns json-formatted calendardata.
+     * Returns calendar data
+     * @return array
      * @throws \Exception
      */
-    public static function getCalendarData()
-    {
+    public static function getCalendarDataArray() {
         $startDate = new Day(date('Y-m-d'));
         $endDate = new Day(date('Y-m-d', strtotime('last day of next month')));
 
-        $startDateString = $_POST['sd'];
+        $startDateString = array_key_exists('sd', $_POST) ? $_POST['sd'] : date('Y-m-d', strtotime('first day of this month', time()));
         if ($startDateString) {
             $startDate = new Day($startDateString);
         }
 
-        $endDateString = $_POST['ed'];
+        $endDateString = array_key_exists('ed', $_POST) ? $_POST['ed'] : date('Y-m-d', strtotime('last day of next month', time()));
         if ($endDateString) {
             $endDate = new Day($endDateString);
         }
 
         $item = isset($_POST['item']) && $_POST['item'] != "" ? $_POST['item'] : false;
+        if($item === false) {
+            $item = get_query_var('item') ?: false;
+            if($item instanceof \WP_Post || $item instanceof CustomPost) {
+                $item = $item->ID;
+            }
+        }
         $location = isset($_POST['location']) && $_POST['location'] != "" ? $_POST['location'] : false;
+        if($location === false) {
+            $location = get_query_var('location')?: false;
+            if($location instanceof \WP_Post || $location instanceof CustomPost) {
+                $location = $location->ID;
+            }
+        }
 
         if ( ! $item || ! $location) {
             header('Content-Type: application/json');
@@ -206,7 +218,16 @@ class Location extends View
             wp_die(); // All ajax handlers die when finished
         }
 
-        $jsonResponse = self::prepareJsonResponse($startDate, $endDate, [$location], [$item]);
+        return self::prepareJsonResponse($startDate, $endDate, [$location], [$item]);
+    }
+
+    /**
+     * Returns json-formatted calendardata.
+     * @throws \Exception
+     */
+    public static function getCalendarData()
+    {
+        $jsonResponse = self::getCalendarDataArray();
 
         header('Content-Type: application/json');
         echo json_encode($jsonResponse);
@@ -233,7 +254,8 @@ class Location extends View
             'actionUrl' => admin_url('admin.php'),
             'location'  => new \CommonsBooking\Model\Location($location),
             'postUrl'   => get_permalink($location),
-            'type'      => Timeframe::BOOKING_ID
+            'type'      => Timeframe::BOOKING_ID,
+            'calendar_data' => json_encode(self::getCalendarDataArray())
         ];
 
         $item = get_query_var('item') ?: false;

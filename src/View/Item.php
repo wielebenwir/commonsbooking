@@ -27,7 +27,8 @@ class Item extends View
             'actionUrl' => admin_url('admin.php'),
             'item' => new \CommonsBooking\Model\Item($item),
             'postUrl' => get_permalink($item),
-            'type' => Timeframe::BOOKING_ID
+            'type' => Timeframe::BOOKING_ID,
+            'calendar_data' => json_encode(Location::getCalendarDataArray())
         ];
 
         $location = get_query_var('location')?: false;

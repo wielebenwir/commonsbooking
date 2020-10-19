@@ -117,7 +117,6 @@ module.exports = function (grunt) {
 	grunt.registerTask('dist', [
 		'compass:admin',
 		'compass:public',
-		'uglify:dev',
 		'uglify:dist'
 	]);
 };

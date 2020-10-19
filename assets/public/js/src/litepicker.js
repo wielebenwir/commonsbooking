@@ -193,6 +193,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
         const startDate = moment().format('YYYY-MM-DD');
         const calStartDate = moment().date(1).format('YYYY-MM-DD');
         const calEndDate = moment().add(numberOfMonths + 2,'months').date(0).format('YYYY-MM-DD');
+
+        if(typeof data !== 'undefined') {
+            updatePicker(data);
+        }
+
         $.post(
             cb_ajax.ajax_url,
             {

@@ -2,6 +2,11 @@
     global $templateData;
     if(!array_key_exists('backend', $templateData) || $templateData['backend'] != true) {
 ?>
+    <script type="text/javascript">
+        <?
+            echo "let data = " . $templateData['calendar_data'] . ';';
+        ?>
+    </script>
     <div id="litepicker"></div>
     <div id="booking-form-container">
         <div class="cb-notice date-select">
