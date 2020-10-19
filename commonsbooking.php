@@ -50,7 +50,11 @@ function commonsbooking_public()
 
     // commented out until changes are implemented in extension
     // wp_enqueue_script('cb-scripts-litepicker', 'https://cdn.jsdelivr.net/npm/litepicker/dist/js/main.js', array(), '1.0.0', true);
-    wp_enqueue_script('cb-scripts-public', plugin_dir_url(__FILE__) . 'assets/public/js/public.js', array());
+    if(WP_DEBUG) {
+        wp_enqueue_script('cb-scripts-public', plugin_dir_url(__FILE__) . 'assets/public/js/public.js', array());
+    } else {
+        wp_enqueue_script('cb-scripts-public', plugin_dir_url(__FILE__) . 'assets/public/js/public.min.js', array());
+    }
 
     wp_localize_script('cb-scripts-public', 'cb_ajax', array(
         'ajax_url' => admin_url('admin-ajax.php'),

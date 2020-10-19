@@ -754,11 +754,11 @@ class Timeframe extends CustomPostType
      */
     public static function addAdminLocationFilter()
     {
-        $items = \CommonsBooking\Repository\Location::get();
-        if ($items) {
+        $locations = \CommonsBooking\Repository\Location::get();
+        if ($locations) {
             $values = [];
-            foreach ($items as $item) {
-                $values[$item->ID] = $item->post_title;
+            foreach ($locations as $location) {
+                $values[$location->ID] = $location->post_title;
             }
 
             self::renderFilter(

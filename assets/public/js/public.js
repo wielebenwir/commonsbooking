@@ -1463,7 +1463,7 @@
     };
     if ($("#booking-form").length) {
         const startDate = moment().format("YYYY-MM-DD"), calStartDate = moment().date(1).format("YYYY-MM-DD"), calEndDate = moment().add(numberOfMonths + 2, "months").date(0).format("YYYY-MM-DD");
-        $.post(cb_ajax.ajax_url, {
+        "undefined" != typeof data && updatePicker(data), $.post(cb_ajax.ajax_url, {
             _ajax_nonce: cb_ajax.nonce,
             action: "calendar_data",
             item: $("#booking-form input[name=item-id]").val(),
