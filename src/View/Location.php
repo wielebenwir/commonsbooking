@@ -112,13 +112,15 @@ class Location extends View
 
     /**
      * Extracts calendar relevant data from slot.
+     *
      * @param $slot
      * @param $dayArray
      * @param $jsonResponse
      * @param $allLocked
      * @param $noSlots
      */
-    protected static function processSlot($slot, &$dayArray, &$jsonResponse, &$allLocked, &$noSlots) {
+    protected static function processSlot($slot, &$dayArray, &$jsonResponse, &$allLocked, &$noSlots)
+    {
         // Add only bookable slots for time select
         if ( ! empty($slot['timeframe']) && $slot['timeframe'] instanceof \WP_Post) {
             // We have at least one slot ;)
@@ -132,7 +134,7 @@ class Location extends View
                     $dayArray['firstSlotBooked'] = false;
 
                     // Set max-days setting based on first found timeframe
-                    if($jsonResponse['maxDays'] == null) {
+                    if ($jsonResponse['maxDays'] == null) {
                         $timeframeMaxDays = get_post_meta($slot['timeframe']->ID, 'timeframe-max-days', true);
                         $jsonResponse['maxDays'] = intval($timeframeMaxDays ?: 3);
                     }
@@ -180,45 +182,69 @@ class Location extends View
 
     /**
      * Returns calendar data
+     *
+     * @param null $item
+     * @param null $location
+     *
      * @return array
      * @throws \Exception
      */
-    public static function getCalendarDataArray() {
+    public static function getCalendarDataArray($item = null, $location = null)
+    {
         $startDate = new Day(date('Y-m-d'));
         $endDate = new Day(date('Y-m-d', strtotime('last day of next month')));
 
-        $startDateString = array_key_exists('sd', $_POST) ? $_POST['sd'] : date('Y-m-d', strtotime('first day of this month', time()));
+        $startDateString = array_key_exists('sd', $_POST) ? $_POST['sd'] : date('Y-m-d',
+            strtotime('first day of this month', time()));
         if ($startDateString) {
             $startDate = new Day($startDateString);
         }
 
-        $endDateString = array_key_exists('ed', $_POST) ? $_POST['ed'] : date('Y-m-d', strtotime('last day of next month', time()));
+        $endDateString = array_key_exists('ed', $_POST) ? $_POST['ed'] : date('Y-m-d',
+            strtotime('last day of next month', time()));
         if ($endDateString) {
             $endDate = new Day($endDateString);
         }
 
-        $item = isset($_POST['item']) && $_POST['item'] != "" ? $_POST['item'] : false;
-        if($item === false) {
-            $item = get_query_var('item') ?: false;
-            if($item instanceof \WP_Post || $item instanceof CustomPost) {
+        // item by param
+        if ($item === null) {
+            // item by post-param
+            $item = isset($_POST['item']) && $_POST['item'] != "" ? $_POST['item'] : false;
+            if ($item === false) {
+                // item by query var
+                $item = get_query_var('item') ?: false;
+                if ($item instanceof \WP_Post || $item instanceof CustomPost) {
+                    $item = $item->ID;
+                }
+            }
+        } else {
+            if ($item instanceof \WP_Post || $item instanceof CustomPost) {
                 $item = $item->ID;
             }
         }
-        $location = isset($_POST['location']) && $_POST['location'] != "" ? $_POST['location'] : false;
-        if($location === false) {
-            $location = get_query_var('location')?: false;
-            if($location instanceof \WP_Post || $location instanceof CustomPost) {
+
+        // location by param
+        if ($location === null) {
+            // location by post param
+            $location = isset($_POST['location']) && $_POST['location'] != "" ? $_POST['location'] : false;
+            if ($location === false) {
+                // location by query param
+                $location = get_query_var('location') ?: false;
+                if ($location instanceof \WP_Post || $location instanceof CustomPost) {
+                    $location = $location->ID;
+                }
+            }
+        } else {
+            if ($location instanceof \WP_Post || $location instanceof CustomPost) {
                 $location = $location->ID;
             }
         }
 
-        if ( ! $item || ! $location) {
-            header('Content-Type: application/json');
-            echo json_encode(false);
-            wp_die(); // All ajax handlers die when finished
+        if ( ! $item && ! $location) {
+            throw new \Exception('item or location could not be found');
         }
 
-        return self::prepareJsonResponse($startDate, $endDate, [$location], [$item]);
+        return self::prepareJsonResponse($startDate, $endDate, $location ? [$location] : [], $item ? [$item] : []);
     }
 
     /**
@@ -248,18 +274,18 @@ class Location extends View
             global $post;
         }
         $location = $post;
-        $args = [
-            'post'      => $post,
-            'wp_nonce'  => Timeframe::getWPNonceField(),
-            'actionUrl' => admin_url('admin.php'),
-            'location'  => new \CommonsBooking\Model\Location($location),
-            'postUrl'   => get_permalink($location),
-            'type'      => Timeframe::BOOKING_ID,
-            'calendar_data' => json_encode(self::getCalendarDataArray())
-        ];
-
         $item = get_query_var('item') ?: false;
         $items = \CommonsBooking\Repository\Item::getByLocation($location->ID, true);
+
+        $args = [
+            'post'          => $post,
+            'wp_nonce'      => Timeframe::getWPNonceField(),
+            'actionUrl'     => admin_url('admin.php'),
+            'location'      => new \CommonsBooking\Model\Location($location),
+            'postUrl'       => get_permalink($location),
+            'type'          => Timeframe::BOOKING_ID,
+            'calendar_data' => json_encode(self::getCalendarDataArray($item ?: null, $location))
+        ];
 
         // If theres no item selected, we'll show all available.
         if ( ! $item) {

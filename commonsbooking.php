@@ -165,7 +165,7 @@ add_action('current_screen', 'validate_user_on_edit', 10, 1);
  * Applies listing restriction for item and location admins.
  */
 add_filter('the_posts', function ($posts, $query) {
-    if ( is_admin()) {
+    if ( is_admin() && array_key_exists('post_type', $query->query)) {
         // Post type of current list
         $postType = $query->query['post_type'];
 
