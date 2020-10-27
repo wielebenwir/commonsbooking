@@ -4,6 +4,7 @@
 namespace CommonsBooking\Migration;
 
 
+use CommonsBooking\Repository\CB1;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
@@ -42,6 +43,45 @@ class Migration
     }
 
     /**
+     * @return int[]
+     * @throws \Exception
+     */
+    public static function migrateAll()
+    {
+        $results = [
+            'locations'  => 0,
+            'items'      => 0,
+            'timeframes' => 0,
+            'bookings'   => 0
+        ];
+        foreach (CB1::getLocations() as $location) {
+            if (Migration::migrateLocation($location)) {
+                $results['locations'] += 1;
+            }
+        }
+
+        foreach (CB1::getItems() as $item) {
+            if (Migration::migrateItem($item)) {
+                $results['items'] += 1;
+            }
+        }
+
+        foreach (CB1::getTimeframes() as $timeframe) {
+            if (Migration::migrateTimeframe($timeframe)) {
+                $results['timeframes'] += 1;
+            }
+        }
+
+        foreach (CB1::getBookings() as $booking) {
+            if (Migration::migrateBooking($booking)) {
+                $results['bookings'] += 1;
+            }
+        }
+
+        return $results;
+    }
+
+    /**
      * @param \WP_Post $item
      *
      * @throws \Exception
@@ -65,7 +105,8 @@ class Migration
         ];
 
         $existingPost = self::getExistingPost($item->ID, Item::$postType);
-        self::savePostData($existingPost, $postData, $postMeta);
+
+        return self::savePostData($existingPost, $postData, $postMeta);
     }
 
     /**
@@ -105,7 +146,8 @@ class Migration
         ];
 
         $existingPost = self::getExistingPost($location->ID, Location::$postType);
-        self::savePostData($existingPost, $postData, $postMeta);
+
+        return self::savePostData($existingPost, $postData, $postMeta);
     }
 
     /**
@@ -146,7 +188,8 @@ class Migration
         ];
 
         $existingPost = self::getExistingPost($timeframe['id'], Timeframe::$postType);
-        self::savePostData($existingPost, $postData, $postMeta);
+
+        return self::savePostData($existingPost, $postData, $postMeta);
     }
 
     /**
@@ -188,13 +231,16 @@ class Migration
         ];
 
         $existingPost = self::getExistingPost($booking['id'], Timeframe::$postType);
-        self::savePostData($existingPost, $postData, $postMeta);
+
+        return self::savePostData($existingPost, $postData, $postMeta);
     }
 
     /**
      * @param $existingPost
      * @param $postData array Post data
      * @param $postMeta array Post meta
+     *
+     * @return bool
      */
     protected static function savePostData($existingPost, $postData, array $postMeta)
     {
@@ -212,7 +258,11 @@ class Migration
                     $value
                 );
             }
+
+            return true;
         }
+
+        return false;
     }
 
 }
