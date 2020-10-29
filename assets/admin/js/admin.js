@@ -31,8 +31,8 @@
                 handleTypeSelection();
             });
             const handleFullDaySelection = function() {
-                const selectedRep = $("option:selected", timeframeRepetitionInput).val();
-                fullDayInput.prop("checked") ? (gridInput.prop("selected", !1), hideFieldset(repTimeFieldsSet)) : showFieldset("norep" == selectedRep ? [ gridInput ] : repTimeFieldsSet);
+                $("option:selected", timeframeRepetitionInput).val();
+                fullDayInput.prop("checked") ? (gridInput.prop("selected", !1), hideFieldset(repTimeFieldsSet)) : showFieldset(repTimeFieldsSet);
             };
             handleFullDaySelection(), fullDayInput.change(function() {
                 handleFullDaySelection();
