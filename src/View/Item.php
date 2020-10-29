@@ -21,6 +21,9 @@ class Item extends View
             global $post;
         }
         $item = $post;
+        $location = get_query_var('location')?: false;
+        $locations = \CommonsBooking\Repository\Location::getByItem($item->ID, true);
+
         $args = [
             'post' => $post,
             'wp_nonce' => Timeframe::getWPNonceField(),
@@ -28,12 +31,8 @@ class Item extends View
             'item' => new \CommonsBooking\Model\Item($item),
             'postUrl' => get_permalink($item),
             'type' => Timeframe::BOOKING_ID,
-            'calendar_data' => json_encode(Location::getCalendarDataArray())
+            'calendar_data' => json_encode(Location::getCalendarDataArray($item, $location ?: null))
         ];
-
-        $location = get_query_var('location')?: false;
-        $locations = \CommonsBooking\Repository\Location::getByItem($item->ID, true);
-
 
         // If theres no location selected, we'll show all available.
         if (!$location) {

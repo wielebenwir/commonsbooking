@@ -2,16 +2,14 @@
 
 namespace CommonsBooking\View;
 
-use CommonsBooking\Model\Calendar;
-use CommonsBooking\Model\Week;
-use CommonsBooking\Wordpress\CustomPostType\Item;
-use CommonsBooking\Wordpress\CustomPostType\Location;
-use CommonsBooking\Wordpress\CustomPostType\Timeframe;
+use CommonsBooking\Migration\Migration;
+use CommonsBooking\Repository\CB1;
 
 class Dashboard extends View
 {
 
-    public static function index() {
+    public static function index()
+    {
         ob_start();
         cb_get_template_part('dashboard', 'index');
         echo ob_get_clean();
