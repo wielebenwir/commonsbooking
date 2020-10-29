@@ -103,11 +103,7 @@
                     gridInput.prop("selected", false);
                     hideFieldset(repTimeFieldsSet);
                 } else {
-                    if(selectedRep == 'norep') {
-                        showFieldset([gridInput]);
-                    } else {
-                        showFieldset(repTimeFieldsSet);
-                    }
+                    showFieldset(repTimeFieldsSet);
                 }
             }
             handleFullDaySelection();
