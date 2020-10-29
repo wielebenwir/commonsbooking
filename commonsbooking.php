@@ -25,6 +25,9 @@ define('CB_PLUGIN_SLUG', 'commonsbooking');
 define('CB_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('CB_METABOX_PREFIX', '_cb_'); //Start with an underscore to hide fields from custom fields list
 
+global $cb_db_version;
+$cb_db_version = '1.0';
+
 // @TODO: move all of this to either /Public.php or /Admin.php
 
 function commonsbooking_admin()
@@ -208,6 +211,37 @@ add_action('template_redirect', 'cb_timeframe_redirect');
 // Shows Errors in Backend
 add_action('admin_notices',array(Plugin::class, 'renderError'));
 
+
+function deleteBookingCodes() {
+    global $post;
+    if (
+        $post &&
+        $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType
+    ) {
+        global $wpdb;
+        $query = $wpdb->prepare( 'SELECT timeframe FROM wp_cb_bookingcodes WHERE timeframe = %d', $post->ID );
+        $var = $wpdb->get_var( $query );
+        if ( $var ) {
+            $query2 = $wpdb->prepare( 'DELETE FROM wp_cb_bookingcodes WHERE timeframe = %d', $post->ID );
+            $wpdb->query( $query2 );
+        }
+    }
+}
+add_action( 'delete_post', 'deleteBookingCodes', 10 );
+
+function wpdocs_codex_sync( $pid ) {
+    global $wpdb;
+    $query = $wpdb->prepare( 'SELECT post_id FROM codex_postmeta WHERE post_id = %d', $pid );
+    $var = $wpdb->get_var( $query );
+    if ( $var ) {
+        $query2 = $wpdb->prepare( 'DELETE FROM codex_postmeta WHERE post_id = %d', $pid );
+        $wpdb->query( $query2 );
+    }
+}
+
 $cbPlugin = new Plugin();
 $cbPlugin->init();
 $cbPlugin->initRoutes();
+
+// @TODO: init only on plugin activation.
+\CommonsBooking\Repository\BookingCodes::initBookingCodesTable();

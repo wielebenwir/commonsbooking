@@ -3,6 +3,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Repository\Booking;
+use CommonsBooking\Repository\BookingCodes;
 
 class Timeframe extends CustomPostType
 {
@@ -181,7 +182,14 @@ class Timeframe extends CustomPostType
         }
 
         // Validate timeframe
-        $this->validateTimeFrame($post_id, $post);
+        $isValid = $this->validateTimeFrame($post_id, $post);
+
+        if($isValid) {
+            $timeframe = new \CommonsBooking\Model\Timeframe($post_id);
+            if($timeframe->bookingCodesApplieable()) {
+                BookingCodes::generate($post_id);
+            }
+        }
     }
 
     /**
@@ -199,7 +207,9 @@ class Timeframe extends CustomPostType
                 $post->post_status = 'draft';
                 wp_update_post($post);
             }
+            return false;
         }
+        return true;
     }
 
     /**
@@ -392,15 +402,13 @@ class Timeframe extends CustomPostType
                 'name'       => __("Comment", 'commonsbooking'),
                 //'desc'       => __('', 'commonsbooking'),
                 'id'         => "comment",
-                'type'       => 'textarea_small',
-                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'type'       => 'textarea_small'
             ),
             array(
                 'name'       => __('Type', 'commonsbooking'),
                 //'desc'       => __('', 'commonsbooking'),
                 'id'         => "type",
                 'type'       => 'select',
-                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
                 'options'    => self::getTypes()
             ),
             array(
@@ -408,7 +416,6 @@ class Timeframe extends CustomPostType
                 'desc'       => __('Maximum booking duration in days', 'commonsbooking'),
                 'id'         => "timeframe-max-days",
                 'type'       => 'select',
-                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
                 'options'    => [
                     '1'  => 1,
                     '2'  => 2,
@@ -427,27 +434,23 @@ class Timeframe extends CustomPostType
                 'name'       => __("Location", 'commonsbooking'),
                 'id'         => "location-id",
                 'type'       => 'select',
-                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
                 'options'    => self::sanitizeOptions(\CommonsBooking\Repository\Location::getByCurrentUser())
             ),
             array(
                 'name'       => __("Item", 'commonsbooking'),
                 'id'         => "item-id",
                 'type'       => 'select',
-                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
                 'options'    => self::sanitizeOptions(\CommonsBooking\Repository\Item::getByCurrentUser(), true)
             ),
             array(
                 'name'       => __("Configure timeframe", 'commonsbooking'),
                 'id'         => "title-timeframe-config",
                 'type'       => 'title',
-                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             ),
             array(
                 'name'       => __('Timeframe Repetition', 'commonsbooking'),
                 'id'         => "timeframe-repetition",
                 'type'       => 'select',
-                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
                 'options'    => [
                     'norep' => __("No Repetition", 'commonsbooking'),
                     'd'     => __("Daily", 'commonsbooking'),
@@ -460,9 +463,7 @@ class Timeframe extends CustomPostType
                 'name'       => __('Full day', 'commonsbooking'),
                 'id'         => "full-day",
                 'type'       => 'checkbox',
-                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             ),
-
             array(
                 'name'       => __('Maximum booking duration', 'commonsbooking'),
                 'desc'       => __('Maximum booking duration in days', 'commonsbooking'),
@@ -483,7 +484,6 @@ class Timeframe extends CustomPostType
                 ],
                 'default'    => 3
             ),
-
             array(
                 'name'        => __("Start time", 'commonsbooking'),
                 'id'          => "start-time",
@@ -503,7 +503,6 @@ class Timeframe extends CustomPostType
                 'name'        => __("End time", 'commonsbooking'),
                 'id'          => "end-time",
                 'type'        => 'text_time',
-                'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
                 'attributes' => array(
                      'data-timepicker' => json_encode(
                         array(
@@ -518,7 +517,6 @@ class Timeframe extends CustomPostType
                 'name'       => __("Grid", 'commonsbooking'),
                 'id'         => "grid",
                 'type'       => 'select',
-                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
                 'options'    => [
                     0 => __("Full slot", 'commonsbooking'),
                     1 => __("Hourly", 'commonsbooking')
@@ -528,13 +526,11 @@ class Timeframe extends CustomPostType
                 'name'       => __("Configure repetition", 'commonsbooking'),
                 'id'         => "title-timeframe-rep-config",
                 'type'       => 'title',
-                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             ),
             array(
                 'name'        => __('Repetition start', 'commonsbooking'),
                 'id'          => "repetition-start",
                 'type'        => 'text_date_timestamp',
-                'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
                 'time_format' => get_option('time_format'),
                 'date_format' => $dateFormat
             ),
@@ -542,7 +538,6 @@ class Timeframe extends CustomPostType
                 'name'       => __('Weekdays', 'commonsbooking'),
                 'id'         => "weekdays",
                 'type'       => 'multicheck',
-                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
                 'options'    => [
                     1 => __("Monday", 'commonsbooking'),
                     2 => __("Tuesday", 'commonsbooking'),
@@ -557,11 +552,30 @@ class Timeframe extends CustomPostType
                 'name'        => __('Repetition end', 'commonsbooking'),
                 'id'          => "repetition-end",
                 'type'        => 'text_date_timestamp',
-                'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
                 'time_format' => get_option('time_format'),
                 'date_format' => $dateFormat
+            ),
+            array(
+                'name'       => __('Create Booking Codes', 'commonsbooking'),
+                'id'         => "create-booking-codes",
+                'type'       => 'checkbox'
+            ),
+            array(
+                'name' => __('Booking Codes', 'commonsbooking'),
+                'id'   => 'booking-codes-list',
+                'type' => 'title',
+                'render_row_cb' => array(self::class, 'show_booking_code_checkbox'), // function should return a bool value
             )
         );
+    }
+
+    /**
+     * Callback function for booking code list.
+     * @param $field_args
+     * @param $field
+     */
+    public static function show_booking_code_checkbox( $field_args, $field ) {
+        \CommonsBooking\View\BookingCodes::renderTable($field->object_id());
     }
 
     /**
