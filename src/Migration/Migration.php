@@ -161,7 +161,8 @@ class Migration
         $cbLocation = self::getExistingPost($timeframe['location_id'], Location::$postType);
 
         if ( ! $cbItem || ! $cbLocation) {
-            throw new \Exception('timeframe could not created, because linked location or item does not exist.');
+            //throw new \Exception('timeframe could not created, because linked location or item does not exist.');
+            echo "timeframe could not created, because linked location or item does not exist";
         }
 
         // Collect post data
@@ -204,7 +205,7 @@ class Migration
         $cbLocation = self::getExistingPost($booking['location_id'], Location::$postType);
 
         if ( ! $user || ! $cbItem || ! $cbLocation) {
-            throw new \Exception('booking could not created, because user or linked location or item does not exist.');
+            //throw new \Exception('booking could not created, because user or linked location or item does not exist.');
         }
 
         // Collect post data
