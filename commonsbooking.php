@@ -13,13 +13,13 @@ defined('ABSPATH') or die("Thanks for visting");
  * Author: wielebenwir e.V.
  * Domain Path: /languages
  * Description: A wordpress plugin for management and booking of common goods.
- * Version: 2.0.0-ALPHA
+ * Version: 2.2.0-ALPHA
  * License: GPL2
  * License URI:  https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:  commonsbooking
  */
 
-define('CB_VERSION', '2.0.0-ALPHA');
+define('CB_VERSION', '2.2.0-ALPHA');
 define('CB_MENU_SLUG', 'cb-menu');
 define('CB_PLUGIN_SLUG', 'commonsbooking');
 define('CB_PLUGIN_DIR', plugin_dir_path(__FILE__));
