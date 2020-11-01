@@ -5,6 +5,7 @@ namespace CommonsBooking\Model;
 
 
 use CommonsBooking\CB\CB;
+use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\Timeframe;
 
 class Booking extends CustomPost
@@ -44,19 +45,14 @@ class Booking extends CustomPost
         }
         return $post;
     }
-    /**
-     * @TODO: User
-    //  * @return User
-    //  * @throws \Exception
-    //  */
-    // public function getUser() {
-    //     $userId = self::getMeta('User-id');
 
-    //     if($post = get_post($userId)) {
-    //         return new User($post);
-    //     }
-    //     return $post;
-    // }
+    /**
+     * Returns the booking code.
+     * @return mixed
+     */
+    public function getBookingCode() {
+        return self::getMeta('_cb_bookingcode');
+    }
 
     /**
      * Assings relevant meta fields from related bookable timeframe to booking.
@@ -83,6 +79,21 @@ class Booking extends CustomPost
                 $this->post->ID,
                 $fieldName,
                 $fieldValue
+            );
+        }
+
+        // If there exists a booking code, add it.
+        $bookingCode = BookingCodes::getCode(
+            $timeframe->ID,
+            $this->getItem()->ID,
+            $this->getLocation()->ID,
+            date('Y-m-d',strtotime($this->returnDatetime()))
+        );
+        if($bookingCode) {
+            update_post_meta(
+                $this->post->ID,
+                '_cb_bookingcode',
+                $bookingCode->getCode()
             );
         }
     }

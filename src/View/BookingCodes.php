@@ -14,7 +14,7 @@ class BookingCodes
      * @param $timeframeId
      */
     public static function renderTable($timeframeId) {
-        $bookingCodes = \CommonsBooking\Repository\BookingCodes::get($timeframeId);
+        $bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes($timeframeId);
 
         echo '
             <div class="cmb-row cmb2-id-booking-codes-list">
@@ -48,7 +48,7 @@ class BookingCodes
         if($timeframeId == null) {
             $timeframeId = $_GET['post'];
         }
-        $bookingCodes = \CommonsBooking\Repository\BookingCodes::get($timeframeId);
+        $bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes($timeframeId);
         header("Content-type: text/csv");
         header("Content-Disposition: attachment; filename=buchungscode-$timeframeId.csv");
         header("Pragma: no-cache");

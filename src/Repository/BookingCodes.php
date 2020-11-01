@@ -26,7 +26,7 @@ class BookingCodes
      *
      * @return array
      */
-    public static function get($timeframeId)
+    public static function getCodes($timeframeId)
     {
         global $wpdb;
         $table_name = $wpdb->prefix . self::$tablename;
@@ -53,6 +53,45 @@ class BookingCodes
         }
 
         return $codes;
+    }
+
+    /**
+     * @param $timeframeId
+     * @param $itemId
+     * @param $locationId
+     * @param $date
+     *
+     * @return array
+     */
+    public static function getCode($timeframeId, $itemId, $locationId, $date) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . self::$tablename;
+
+        $bookingCodes = $wpdb->get_results(
+            "
+                SELECT *
+                FROM $table_name
+                WHERE 
+                    timeframe = '$timeframeId' AND 
+                    item = '$itemId' AND 
+                    location = '$locationId' AND 
+                    date = '$date'
+                ORDER BY item ASC ,date ASC
+            "
+        );
+
+        $bookingCodeObject = null;
+        if(count($bookingCodes)) {
+            $bookingCodeObject = new BookingCode(
+                $bookingCodes[0]->date,
+                $bookingCodes[0]->item,
+                $bookingCodes[0]->location,
+                $bookingCodes[0]->timeframe,
+                $bookingCodes[0]->code
+            );
+        }
+
+        return $bookingCodeObject;
     }
 
     /**
