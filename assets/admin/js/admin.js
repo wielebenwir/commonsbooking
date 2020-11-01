@@ -16,7 +16,7 @@
             });
         };
         if ($("#cmb2-metabox-cb_timeframe-custom-fields").length) {
-            const timeframeRepetitionInput = $("#timeframe-repetition"), typeInput = $("#type"), gridInput = $("#grid"), weekdaysInput = $("#weekdays1"), startTimeInput = $("#start-time"), endTimeInput = $("#end-time"), repConfigTitle = $("#title-timeframe-rep-config"), repetitionStartInput = $("#repetition-start"), repetitionEndInput = $("#repetition-end"), fullDayInput = $("#full-day"), createBookingCodesInput = $("#create-booking-codes"), maxDaysSelect = $(".cmb2-id-timeframe-max-days"), repSet = [ repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput ], noRepSet = [ fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput ], repTimeFieldsSet = [ gridInput, startTimeInput, endTimeInput ], showRepFields = function() {
+            const timeframeRepetitionInput = $("#timeframe-repetition"), typeInput = $("#type"), gridInput = $("#grid"), weekdaysInput = $("#weekdays1"), startTimeInput = $("#start-time"), endTimeInput = $("#end-time"), repConfigTitle = $("#title-timeframe-rep-config"), repetitionStartInput = $("#repetition-start"), repetitionEndInput = $("#repetition-end"), fullDayInput = $("#full-day"), createBookingCodesInput = $("#create-booking-codes"), bookingCodesList = $("#booking-codes-list"), maxDaysSelect = $(".cmb2-id-timeframe-max-days"), repSet = [ repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput ], noRepSet = [ fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput ], repTimeFieldsSet = [ gridInput, startTimeInput, endTimeInput ], bookingCodeSet = [ createBookingCodesInput, bookingCodesList ], showRepFields = function() {
                 showFieldset(repSet), hideFieldset(arrayDiff(repSet, noRepSet));
             }, showNoRepFields = function() {
                 showFieldset(noRepSet), hideFieldset(arrayDiff(noRepSet, repSet));
@@ -48,8 +48,10 @@
             });
             const handleBookingCodesSelection = function() {
                 let repStart = repetitionStartInput.val(), repEnd = repetitionEndInput.val(), fullday = fullDayInput.prop("checked"), type = typeInput.val();
-                repStart && repEnd && fullday && 2 == type ? showFieldset([ createBookingCodesInput ]) : hideFieldset([ createBookingCodesInput ]);
-            }, bookingCodeSelectionInputs = [ repetitionStartInput, repetitionEndInput, fullDayInput, typeInput ];
+                repStart && repEnd && fullday && 2 == type ? showFieldset(bookingCodeSet) : hideFieldset(bookingCodeSet);
+            };
+            handleBookingCodesSelection();
+            const bookingCodeSelectionInputs = [ repetitionStartInput, repetitionEndInput, fullDayInput, typeInput ];
             $.each(bookingCodeSelectionInputs, function(key, input) {
                 input.change(function() {
                     handleBookingCodesSelection();

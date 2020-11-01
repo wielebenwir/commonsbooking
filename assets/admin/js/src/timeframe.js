@@ -46,10 +46,12 @@
             const repetitionEndInput = $('#repetition-end');
             const fullDayInput = $('#full-day');
             const createBookingCodesInput = $('#create-booking-codes');
+            const bookingCodesList = $('#booking-codes-list');
             const maxDaysSelect = $('.cmb2-id-timeframe-max-days');
             const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
             const noRepSet = [fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput];
             const repTimeFieldsSet = [gridInput, startTimeInput, endTimeInput];
+            const bookingCodeSet = [createBookingCodesInput, bookingCodesList];
 
             /**
              * Show repetition fields.
@@ -151,11 +153,14 @@
                 let type = typeInput.val();
 
                 if( repStart && repEnd && fullday && type == 2) {
-                    showFieldset([createBookingCodesInput]);
+                    showFieldset(bookingCodeSet);
                 } else {
-                    hideFieldset([createBookingCodesInput])
+                    hideFieldset(bookingCodeSet)
                 }
             };
+            handleBookingCodesSelection();
+
+            // Add handler to relevant fields
             const bookingCodeSelectionInputs = [
                 repetitionStartInput,
                 repetitionEndInput,
