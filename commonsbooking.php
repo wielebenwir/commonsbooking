@@ -25,6 +25,9 @@ define('CB_PLUGIN_SLUG', 'commonsbooking');
 define('CB_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('CB_METABOX_PREFIX', '_cb_'); //Start with an underscore to hide fields from custom fields list
 
+global $cb_db_version;
+$cb_db_version = '1.0';
+
 // @TODO: move all of this to either /Public.php or /Admin.php
 
 function commonsbooking_admin()
@@ -211,3 +214,4 @@ add_action('admin_notices',array(Plugin::class, 'renderError'));
 $cbPlugin = new Plugin();
 $cbPlugin->init();
 $cbPlugin->initRoutes();
+$cbPlugin->initBookingcodes();

@@ -92,8 +92,6 @@ class CB
            return false;
         }
 
-        //var_dump($initialPost);       
-
         // Check post type
         $initialPostType = get_post_type($initialPost);
 

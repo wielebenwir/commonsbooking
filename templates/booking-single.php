@@ -32,6 +32,10 @@ $item          = $booking->getItem();
         <div><?php echo __('Return', 'commonsbooking'); ?></div>
         <div><?php echo $booking->returnDatetime(); ?></div>
     </div><!-- .cb-address -->
+    <div class="cb-list-content cb-datetime cb-col-30-70">
+        <div><?php echo __('Booking Code', 'commonsbooking'); ?></div>
+        <div><?php echo $booking->getBookingCode(); ?></div>
+    </div>
 </div><!-- cb-booking-datetime -->
 
 <!-- Location -->

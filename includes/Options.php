@@ -22,6 +22,27 @@ $options_array = array(
             )
         )
     ),
+
+    'bookingcodes' => array(
+       'title' => __( 'Booking Codes', 'commonsbooking' ),
+       'id' => 'general',
+       'field_groups' => array (
+         /* posttype: naming, rewrite, archives start */
+         'bookingcodes' => array(
+           'title' => __( 'Booking Codes', 'commonsbooking' ),
+           'id' => 'bookingcodes',
+           'desc' => '',
+           'fields' => array(
+             array(
+               'name'    => __( 'Booking Codes', 'commonsbooking' ),
+               'id'      => 'bookingcodes',
+               'type'    => 'textarea',
+             ),
+           )
+         )
+       )
+    ),
+
     /* Tab: main end*/
 
     // /* Tab: general start*/
