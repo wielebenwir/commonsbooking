@@ -5,6 +5,7 @@ namespace CommonsBooking;
 
 use CommonsBooking\Controller\TimeframeController;
 use CommonsBooking\Model\Booking;
+use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
@@ -150,6 +151,14 @@ class Plugin
                 }
             }
         );
+    }
+
+    /**
+     * Adds bookingcode actions.
+     */
+    public function initBookingcodes() {
+        add_action( 'before_delete_post', array(BookingCodes::class,'deleteBookingCodes'), 10 );
+        add_action( "admin_action_csvexport", array(\CommonsBooking\View\BookingCodes::class, 'renderCSV'), 10, 0 );
     }
 
     /**

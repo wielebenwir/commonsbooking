@@ -21,6 +21,7 @@ class BookingCodes
 
     /**
      * Returns booking codes for timeframe.
+     *
      * @param $timeframeId
      *
      * @return array
@@ -40,7 +41,7 @@ class BookingCodes
         );
 
         $codes = [];
-        foreach ( $bookingCodes as $bookingCode ) {
+        foreach ($bookingCodes as $bookingCode) {
             $bookingCodeObject = new BookingCode(
                 $bookingCode->date,
                 $bookingCode->item,
@@ -50,6 +51,7 @@ class BookingCodes
             );
             $codes[] = $bookingCodeObject;
         }
+
         return $codes;
     }
 
@@ -80,6 +82,7 @@ class BookingCodes
 
     /**
      * Generates booking codes for timeframe.
+     *
      * @param $timeframeId
      *
      * @throws \Exception
@@ -88,8 +91,10 @@ class BookingCodes
     {
         $bookablePost = new \CommonsBooking\Model\Timeframe($timeframeId);
 
-        $begin = new DateTime($bookablePost->getStartDate());
-        $end = new DateTime($bookablePost->getEndDate());
+        $begin = new DateTime();
+        $begin->setTimestamp($bookablePost->getStartDate());
+        $end = new DateTime();
+        $end->setTimestamp($bookablePost->getEndDate());
         $end->setTimestamp($end->getTimestamp() + 1);
 
         $interval = DateInterval::createFromDateString('1 day');
@@ -97,6 +102,11 @@ class BookingCodes
 
         $bookingCodes = Settings::getOption('commonsbooking_options_bookingcodes', 'bookingcodes');
         $bookingCodesArray = explode(',', $bookingCodes);
+        $bookingCodesRandomizer = count($bookingCodesArray);
+        $bookingCodesRandomizer += intval($timeframeId);
+        $bookingCodesRandomizer += $bookablePost->getItem()->ID;
+        $bookingCodesRandomizer += $bookablePost->getLocation()->ID;
+
 
         foreach ($period as $key => $dt) {
             $bookingCode = new BookingCode(
@@ -104,7 +114,7 @@ class BookingCodes
                 $bookablePost->getItem()->ID,
                 $bookablePost->getLocation()->ID,
                 $timeframeId,
-                $bookingCodesArray[$dt->format('z') % count($bookingCodesArray)]
+                $bookingCodesArray[$dt->format('z') % $bookingCodesRandomizer]
             );
             self::persist($bookingCode);
         }
@@ -134,6 +144,32 @@ class BookingCodes
         $wpdb->show_errors(1);
 
         return $result;
+    }
+
+    /**
+     * Deletes booking codes for current post.
+     *
+     * @param null $post
+     */
+    public static function deleteBookingCodes($postId = null)
+    {
+        if($postId) {
+            $post = get_post($postId);
+        } else {
+            global $post;
+        }
+        if (
+            $post &&
+            $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType
+        ) {
+            global $wpdb;
+            $query = $wpdb->prepare('SELECT timeframe FROM wp_cb_bookingcodes WHERE timeframe = %d', $post->ID);
+            $var = $wpdb->get_var($query);
+            if ($var) {
+                $query2 = $wpdb->prepare('DELETE FROM wp_cb_bookingcodes WHERE timeframe = %d', $post->ID);
+                $wpdb->query($query2);
+            }
+        }
     }
 
 }

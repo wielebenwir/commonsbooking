@@ -17,9 +17,10 @@ class BookingCodes
         $bookingCodes = \CommonsBooking\Repository\BookingCodes::get($timeframeId);
 
         echo '
-            <div class="cmb-row cmb-type-checkbox cmb2-id-create-booking-codes" data-fieldtype="checkbox">
+            <div class="cmb-row cmb2-id-booking-codes-list">
                 <div class="cmb-th">
-                    <label for="create-booking-codes">Booking Codes</label>
+                    <label for="booking-codes-list">Booking Codes</label>
+                    <a id="booking-codes-list" href="'. esc_url(admin_url('post.php')) . '?post='.$timeframeId.'&action=csvexport" target="_blank">Download</a>
                 </div>
                     <div class="cmb-td">
                         <table>
@@ -38,6 +39,27 @@ class BookingCodes
         echo '    </table>
                 </div>
             </div>';
+    }
+
+    /**
+     * @param $timeframeId
+     */
+    public static function renderCSV($timeframeId = null) {
+        if($timeframeId == null) {
+            $timeframeId = $_GET['post'];
+        }
+        $bookingCodes = \CommonsBooking\Repository\BookingCodes::get($timeframeId);
+        header("Content-type: text/csv");
+        header("Content-Disposition: attachment; filename=buchungscode-$timeframeId.csv");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        foreach ($bookingCodes as $bookingCode) {
+            echo $bookingCode->getDate() .
+                 "," . $bookingCode->getItemName() .
+                 ",".  $bookingCode->getCode() . "\n";
+        }
+        die;
     }
 
 }
