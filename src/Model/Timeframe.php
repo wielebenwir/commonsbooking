@@ -67,7 +67,12 @@ class Timeframe extends CustomPost
      */
     public function getStartDate()
     {
-        return self::getMeta('repetition-start');
+        $startDate = self::getMeta('repetition-start');
+
+        if((string) intval($startDate) !== $startDate) {
+            $startDate = strtotime($startDate);
+        }
+        return $startDate;
     }
 
     /**
@@ -77,7 +82,11 @@ class Timeframe extends CustomPost
      */
     public function getEndDate()
     {
-        return self::getMeta('repetition-end');
+        $endDate = self::getMeta('repetition-end');
+        if((string) intval($endDate) !== $endDate) {
+            $endDate = strtotime($endDate);
+        }
+        return $endDate;
     }
 
     /**
@@ -195,12 +204,17 @@ class Timeframe extends CustomPost
                     }
 
                     // Check if day slots overlap
-                    if ($this->hasTimeframeTimeOverlap($this, $timeframe)) {
+                    if (!$this->getMeta('full-day') && $this->hasTimeframeTimeOverlap($this, $timeframe)) {
                         set_transient("timeframeValidationFailed",
                             #translators: first %s = timeframe-ID, second %s is timeframe post_title
                             sprintf(__('time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day.. See affected timeframe ID: %s: %s',
                                 'commonsbooking', 5), $timeframe->ID, $timeframe->post_title));
 
+                        return false;
+                    } else {
+                        set_transient("timeframeValidationFailed",
+                            sprintf(__('Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %s: %s',
+                                'commonsbooking', 5), $timeframe->ID, $timeframe->post_title));
                         return false;
                     }
                 }
@@ -252,8 +266,8 @@ class Timeframe extends CustomPost
             (
                 $timeframe1->getEndDate() && $timeframe2->getEndDate() &&
                 (
-                    ($timeframe1->getEndDate() > $timeframe2->getStartDate() && $timeframe1->getEndDate() < $timeframe2->getEndDate()) ||
-                    ($timeframe2->getEndDate() > $timeframe1->getStartDate() && $timeframe2->getEndDate() < $timeframe1->getEndDate())
+                    ($timeframe1->getEndDate() >= $timeframe2->getStartDate() && $timeframe1->getEndDate() <= $timeframe2->getEndDate()) ||
+                    ($timeframe2->getEndDate() >= $timeframe1->getStartDate() && $timeframe2->getEndDate() <= $timeframe1->getEndDate())
                 )
             );
     }
