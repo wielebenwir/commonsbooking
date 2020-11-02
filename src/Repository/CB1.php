@@ -25,6 +25,11 @@ class CB1
     /**
      * @var string
      */
+    public static $BOOKINGCODES_TABLE = 'cb_codes';
+
+    /**
+     * @var string
+     */
     public static $TIMEFRAMES_TABLE = 'cb_timeframes';
 
     /**
@@ -83,6 +88,73 @@ class CB1
         $table_timeframes = $wpdb->prefix . self::$TIMEFRAMES_TABLE;
 
         return $wpdb->get_results("SELECT * FROM $table_timeframes", ARRAY_A);
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getBookingCodes()
+    {
+        global $wpdb;
+        $table_bookingcodes = $wpdb->prefix . self::$BOOKINGCODES_TABLE;
+
+        return $wpdb->get_results(
+            "SELECT
+                c.booking_date,
+                c.item_id,
+                t.id as timeframe_id,
+                t.location_id,
+                c.bookingcode
+            FROM $table_bookingcodes c, wp_cb_timeframes t
+            WHERE
+                c.item_id = t.item_id AND
+                c.booking_date >= t.date_start AND
+                c.booking_date <= t.date_end
+            ",
+            ARRAY_A
+        );
+    }
+
+    /**
+     * Returns CB2 Location-ID.
+     *
+     * @param $locationId CB1 Location-ID
+     *
+     * @return int|false
+     */
+    public static function getCB2LocationId($locationId) {
+        return self::getCB2PostIdByType($locationId, \CommonsBooking\Wordpress\CustomPostType\Location::$postType);
+    }
+
+    /**
+     * Returns CB2 Location-ID.
+     *
+     * @param $locationId CB1 Location-ID
+     *
+     * @return int|false
+     */
+    public static function getCB2ItemId($locationId) {
+        return self::getCB2PostIdByType($locationId, \CommonsBooking\Wordpress\CustomPostType\Item::$postType);
+    }
+
+    public static function getCB2TimeframeId($locationId) {
+        return self::getCB2PostIdByType($locationId, \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType);
+    }
+
+    protected static function getCB2PostIdByType($id, $type) {
+        global $wpdb;
+        $result = $wpdb->get_results("
+            SELECT post_id FROM wp_postmeta
+            WHERE
+                meta_key = '_cb_cb1_post_post_ID' AND
+                meta_value = $id AND
+                post_id in (SELECT id from wp_posts where post_type = '". $type ."');
+        ");
+
+        if($result && count($result) > 0) {
+            return $result[0]->post_id;
+        }
+        return false;
     }
 
 }

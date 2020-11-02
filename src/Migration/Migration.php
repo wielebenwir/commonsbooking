@@ -4,6 +4,8 @@
 namespace CommonsBooking\Migration;
 
 
+use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\CB1;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
@@ -14,99 +16,50 @@ class Migration
 {
 
     /**
-     * @param $id
-     * @param $type
-     *
-     * @return mixed
-     * @throws \Exception
-     */
-    public static function getExistingPost($id, $type)
-    {
-        $args = array(
-            'meta_key'     => CB_METABOX_PREFIX . 'cb1_post_post_ID',
-            'meta_value'   => $id,
-            'meta_compare' => '=',
-            'post_type'    => $type
-        );
-
-        /** @var WP_Query $query */
-        $query = new \WP_Query($args);
-        if ($query->have_posts()) {
-            $posts = $query->get_posts();
-            if (count($posts) > 1) {
-                throw new \Exception('Migration duplicates found.');
-            }
-            if (count($posts) == 1) {
-                return $posts[0];
-            }
-        }
-    }
-
-    /**
      * @return int[]
      * @throws \Exception
      */
     public static function migrateAll()
     {
         $results = [
-            'locations'  => 0,
-            'items'      => 0,
-            'timeframes' => 0,
-            'bookings'   => 0
+            'locations'    => 0,
+            'items'        => 0,
+            'timeframes'   => 0,
+            'bookings'     => 0,
+            'bookingCodes' => 0
         ];
+
         foreach (CB1::getLocations() as $location) {
-            if (Migration::migrateLocation($location)) {
+            if (self::migrateLocation($location)) {
                 $results['locations'] += 1;
             }
         }
 
         foreach (CB1::getItems() as $item) {
-            if (Migration::migrateItem($item)) {
+            if (self::migrateItem($item)) {
                 $results['items'] += 1;
             }
         }
 
         foreach (CB1::getTimeframes() as $timeframe) {
-            if (Migration::migrateTimeframe($timeframe)) {
+            if (self::migrateTimeframe($timeframe)) {
                 $results['timeframes'] += 1;
             }
         }
 
         foreach (CB1::getBookings() as $booking) {
-            if (Migration::migrateBooking($booking)) {
+            if (self::migrateBooking($booking)) {
                 $results['bookings'] += 1;
             }
         }
 
+        foreach (CB1::getBookingCodes() as $bookingCode) {
+            if (self::migrateBookingCode($bookingCode)) {
+                $results['bookingCodes'] += 1;
+            }
+        }
+
         return $results;
-    }
-
-    /**
-     * @param \WP_Post $item
-     *
-     * @throws \Exception
-     */
-    public static function migrateItem(\WP_Post $item)
-    {
-        // Collect post data
-        $postData = array_merge($item->to_array(), [
-                'post_type' => Item::$postType
-            ]
-        );
-
-        // Remove existing post id
-        unset($postData['ID']);
-
-        // CB2 <-> CB1
-        $postMeta = [
-            CB_METABOX_PREFIX . 'item_info'        => get_post_meta($item->ID,
-                'commons-booking_item_descr', true),
-            CB_METABOX_PREFIX . 'cb1_post_post_ID' => $item->ID,
-        ];
-
-        $existingPost = self::getExistingPost($item->ID, Item::$postType);
-
-        return self::savePostData($existingPost, $postData, $postMeta);
     }
 
     /**
@@ -146,6 +99,93 @@ class Migration
         ];
 
         $existingPost = self::getExistingPost($location->ID, Location::$postType);
+
+        return self::savePostData($existingPost, $postData, $postMeta);
+    }
+
+    /**
+     * @param $id
+     * @param $type
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function getExistingPost($id, $type)
+    {
+        $args = array(
+            'meta_key'     => CB_METABOX_PREFIX . 'cb1_post_post_ID',
+            'meta_value'   => $id,
+            'meta_compare' => '=',
+            'post_type'    => $type
+        );
+
+        /** @var WP_Query $query */
+        $query = new \WP_Query($args);
+        if ($query->have_posts()) {
+            $posts = $query->get_posts();
+            if (count($posts) > 1) {
+                throw new \Exception('Migration duplicates found.');
+            }
+            if (count($posts) == 1) {
+                return $posts[0];
+            }
+        }
+    }
+
+    /**
+     * @param $existingPost
+     * @param $postData array Post data
+     * @param $postMeta array Post meta
+     *
+     * @return bool
+     */
+    protected static function savePostData($existingPost, $postData, array $postMeta)
+    {
+        if ($existingPost instanceof \WP_Post) {
+            $updatedPost = array_merge($existingPost->to_array(), $postData);
+            $postId = wp_update_post($updatedPost);
+        } else {
+            $postId = wp_insert_post($postData);
+        }
+        if ($postId) {
+            foreach ($postMeta as $key => $value) {
+                update_post_meta(
+                    $postId,
+                    $key,
+                    $value
+                );
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \WP_Post $item
+     *
+     * @throws \Exception
+     */
+    public static function migrateItem(\WP_Post $item)
+    {
+        // Collect post data
+        $postData = array_merge($item->to_array(), [
+                'post_type' => Item::$postType
+            ]
+        );
+
+        // Remove existing post id
+        unset($postData['ID']);
+
+        // CB2 <-> CB1
+        $postMeta = [
+            CB_METABOX_PREFIX . 'item_info'        => get_post_meta($item->ID,
+                'commons-booking_item_descr', true),
+            CB_METABOX_PREFIX . 'cb1_post_post_ID' => $item->ID,
+        ];
+
+        $existingPost = self::getExistingPost($item->ID, Item::$postType);
 
         return self::savePostData($existingPost, $postData, $postMeta);
     }
@@ -236,33 +276,29 @@ class Migration
     }
 
     /**
-     * @param $existingPost
-     * @param $postData array Post data
-     * @param $postMeta array Post meta
+     * Migrates CB1 Booking Code to CB2.
      *
-     * @return bool
+     * @param $bookingCode
+     *
+     * @return mixed
      */
-    protected static function savePostData($existingPost, $postData, array $postMeta)
+    public static function migrateBookingCode($bookingCode)
     {
-        if ($existingPost instanceof \WP_Post) {
-            $updatedPost = array_merge($existingPost->to_array(), $postData);
-            $postId = wp_update_post($updatedPost);
-        } else {
-            $postId = wp_insert_post($postData);
-        }
-        if ($postId) {
-            foreach ($postMeta as $key => $value) {
-                update_post_meta(
-                    $postId,
-                    $key,
-                    $value
-                );
-            }
+        $cb2LocationId = CB1::getCB2LocationId($bookingCode['location_id']);
+        $cb2ItemId = CB1::getCB2ItemId($bookingCode['item_id']);
+        $cb2TimeframeId = CB1::getCB2TimeframeId($bookingCode['timeframe_id']);
+        $date = $bookingCode['booking_date'];
+        $code = $bookingCode['bookingcode'];
 
-            return true;
-        }
+        $bookingCode = new BookingCode(
+            $date,
+            $cb2ItemId,
+            $cb2LocationId,
+            $cb2TimeframeId,
+            $code
+        );
 
-        return false;
+        return BookingCodes::persist($bookingCode);
     }
 
 }
