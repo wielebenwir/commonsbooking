@@ -81,8 +81,12 @@ class ItemsRoute extends BaseRoute
 
         // Add availability data
         if(!array_key_exists('availability', $params) || $params['availability'] != "false") {
-            $availabilityRoute = new AvailabilityRoute();
-            $data->availability = $availabilityRoute->getItemData();
+            $data->availability = [];
+            foreach($data->items as $item) {
+                $availabilityRoute = new AvailabilityRoute();
+                $data->availability = array_merge($data->availability, $availabilityRoute->getItemData($item->id));
+            }
+            
         }
 
         $this->validateData($data);
