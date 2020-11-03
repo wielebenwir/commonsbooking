@@ -5,6 +5,7 @@ namespace CommonsBooking\Repository;
 
 
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Model\Day;
 use CommonsBooking\Settings\Settings;
 use DateInterval;
 use DatePeriod;
@@ -63,7 +64,8 @@ class BookingCodes
      *
      * @return array
      */
-    public static function getCode($timeframeId, $itemId, $locationId, $date) {
+    public static function getCode($timeframeId, $itemId, $locationId, $date)
+    {
         global $wpdb;
         $table_name = $wpdb->prefix . self::$tablename;
 
@@ -81,7 +83,7 @@ class BookingCodes
         );
 
         $bookingCodeObject = null;
-        if(count($bookingCodes)) {
+        if (count($bookingCodes)) {
             $bookingCodeObject = new BookingCode(
                 $bookingCodes[0]->date,
                 $bookingCodes[0]->item,
@@ -146,14 +148,17 @@ class BookingCodes
         $bookingCodesRandomizer += $bookablePost->getLocation()->ID;
 
         foreach ($period as $key => $dt) {
-            $bookingCode = new BookingCode(
-                $dt->format('Y-m-d'),
-                $bookablePost->getItem()->ID,
-                $bookablePost->getLocation()->ID,
-                $timeframeId,
-                $bookingCodesArray[($dt->format('z') + $bookingCodesRandomizer) % count($bookingCodesArray)]
-            );
-            self::persist($bookingCode);
+            $day = new Day($dt->format('Y-m-d'));
+            if ( !$day->isInTimeframe($bookablePost)) {
+                $bookingCode = new BookingCode(
+                    $dt->format('Y-m-d'),
+                    $bookablePost->getItem()->ID,
+                    $bookablePost->getLocation()->ID,
+                    $timeframeId,
+                    $bookingCodesArray[($dt->format('z') + $bookingCodesRandomizer) % count($bookingCodesArray)]
+                );
+                self::persist($bookingCode);
+            }
         }
     }
 
@@ -190,7 +195,7 @@ class BookingCodes
      */
     public static function deleteBookingCodes($postId = null)
     {
-        if($postId) {
+        if ($postId) {
             $post = get_post($postId);
         } else {
             global $post;
