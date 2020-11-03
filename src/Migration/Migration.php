@@ -167,7 +167,9 @@ class Migration
     {
         // Collect post data
         $postData = array_merge($item->to_array(), [
-                'post_type' => Item::$postType
+                'post_type' => Item::$postType,
+                'post_content' => get_post_meta($item->ID,
+                    'commons-booking_item_descr', true)
             ]
         );
 
@@ -176,8 +178,6 @@ class Migration
 
         // CB2 <-> CB1
         $postMeta = [
-            CB_METABOX_PREFIX . 'item_info'        => get_post_meta($item->ID,
-                'commons-booking_item_descr', true),
             CB_METABOX_PREFIX . 'cb1_post_post_ID' => $item->ID,
             '_thumbnail_id' => get_post_meta($item->ID, '_thumbnail_id', true)
         ];
