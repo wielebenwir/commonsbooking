@@ -116,6 +116,31 @@ class CB1
     }
 
     /**
+     * @param $id
+     *
+     * @return mixed
+     */
+    public static function getBookingCode($id)
+    {
+        global $wpdb;
+        $table_bookingcodes = $wpdb->prefix . self::$BOOKINGCODES_TABLE;
+
+        $result = $wpdb->get_results(
+            "SELECT
+                bookingcode
+            FROM $table_bookingcodes
+            WHERE
+                id = $id
+            ",
+            ARRAY_A
+        );
+
+        if($result && count($result) > 0) {
+            return $result[0]['bookingcode'];
+        }
+    }
+
+    /**
      * Returns CB2 Location-ID.
      *
      * @param $locationId CB1 Location-ID
