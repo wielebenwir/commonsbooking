@@ -159,13 +159,6 @@ class Item extends CustomPostType
             ),
         ) );
 
-        // item info
-        $cmb->add_field(array(
-            'name'       => __('Item information', 'commonsbooking'),
-            'id'         => CB_METABOX_PREFIX . 'item_info',
-            'type'       => 'textarea_small',
-            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-        ));
     }
 
     public static function getView()
