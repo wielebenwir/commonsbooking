@@ -141,11 +141,9 @@ class BookingCodes
 
         $bookingCodes = Settings::getOption('commonsbooking_options_bookingcodes', 'bookingcodes');
         $bookingCodesArray = explode(',', $bookingCodes);
-        $bookingCodesRandomizer = count($bookingCodesArray);
-        $bookingCodesRandomizer += intval($timeframeId);
+        $bookingCodesRandomizer = intval($timeframeId);
         $bookingCodesRandomizer += $bookablePost->getItem()->ID;
         $bookingCodesRandomizer += $bookablePost->getLocation()->ID;
-
 
         foreach ($period as $key => $dt) {
             $bookingCode = new BookingCode(
@@ -153,7 +151,7 @@ class BookingCodes
                 $bookablePost->getItem()->ID,
                 $bookablePost->getLocation()->ID,
                 $timeframeId,
-                $bookingCodesArray[$dt->format('z') % $bookingCodesRandomizer]
+                $bookingCodesArray[($dt->format('z') + $bookingCodesRandomizer) % count($bookingCodesArray)]
             );
             self::persist($bookingCode);
         }

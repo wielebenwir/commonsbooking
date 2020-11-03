@@ -211,6 +211,8 @@ add_action('template_redirect', 'cb_timeframe_redirect');
 // Shows Errors in Backend
 add_action('admin_notices',array(Plugin::class, 'renderError'));
 
+register_activation_hook( __FILE__, array(\CommonsBooking\Repository\BookingCodes::class, 'initBookingCodesTable') );
+
 $cbPlugin = new Plugin();
 $cbPlugin->init();
 $cbPlugin->initRoutes();
