@@ -1392,6 +1392,7 @@
     }
     let picker = new Litepicker({
         element: document.getElementById("litepicker"),
+        minDate: moment().format("YYYY-MM-DD"),
         inlineMode: !0,
         firstDay: 1,
         lang: "de-DE",
@@ -1438,7 +1439,7 @@
     $("#litepicker .litepicker").hide();
     const updatePicker = data => {
         fadeOutCalendar(), picker.setOptions({
-            minDate: data.startDate,
+            minDate: moment().isAfter(data.startDate) ? moment().format("YYYY-MM-DD") : data.startDate,
             maxDate: data.endDate,
             days: data.days,
             maxDays: data.maxDays,

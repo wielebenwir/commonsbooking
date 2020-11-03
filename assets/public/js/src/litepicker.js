@@ -74,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     let picker = new Litepicker({
         "element": document.getElementById('litepicker'),
+        "minDate": moment().format('YYYY-MM-DD'),
         "inlineMode": true,
         "firstDay": 1,
         "lang": 'de-DE',
@@ -139,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         fadeOutCalendar()
         picker.setOptions(
             {
-                "minDate": data['startDate'],
+                "minDate": moment().isAfter(data['startDate']) ? moment().format('YYYY-MM-DD') : data['startDate'],
                 "maxDate": data['endDate'],
                 "days": data['days'],
                 "maxDays": data['maxDays'],
