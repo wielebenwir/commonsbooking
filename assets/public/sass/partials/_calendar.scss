@@ -245,17 +245,6 @@
 					color: var(--litepickerDayIsTodayColor);
 				}
 
-				&.is-locked {
-					color: var(--litepickerDayIsLockedColor);
-					background: var(--litepickerDayIsLockedColorBg) !important;
-
-					&:hover {
-						cursor: not-allowed;
-						color: var(--litepickerDayIsLockedColor);
-						box-shadow: none;
-					}
-				}
-
 				&.is-holiday {
 					color: var(--litepickerDayIsHolidayColor);
 					background: var(--litepickerDayIsHolidayColorBg);
@@ -345,6 +334,17 @@
 						color: var(--litepickerDayIsBookedColor);
 						box-shadow: none;
 						cursor: default;
+					}
+				}
+
+				&.is-locked {
+					color: var(--litepickerDayIsLockedColor);
+					background: var(--litepickerDayIsLockedColorBg) !important;
+
+					&:hover {
+						cursor: not-allowed;
+						color: var(--litepickerDayIsLockedColor);
+						box-shadow: none;
 					}
 				}
 			}
