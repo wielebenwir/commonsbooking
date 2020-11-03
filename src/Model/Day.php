@@ -30,12 +30,12 @@ class Day
     /**
      * Day constructor.
      *
-     * @param $date
-     * @param $locations
-     * @param $items
-     * @param $types
+     * @param string $date
+     * @param array $locations
+     * @param array $items
+     * @param array $types
      */
-    public function __construct($date, $locations = [], $items = [], $types = [])
+    public function __construct(string $date, $locations = [], $items = [], $types = [])
     {
         $this->date = $date;
         $this->locations = array_map(function ($location) {
@@ -293,7 +293,7 @@ class Day
      * @return bool
      * @throws \Exception
      */
-    protected function continueBecauseOfRepetition($timeframe)
+    public function isInTimeframe($timeframe)
     {
         $repetitionType = get_post_meta($timeframe->ID, 'timeframe-repetition', true);
         if (
@@ -353,7 +353,7 @@ class Day
         // Iterate through timeframes and fill slots
         foreach ($timeframes as $timeframe) {
             // Check for repetition timeframe selected days
-            if ($this->continueBecauseOfRepetition($timeframe)) continue;
+            if ($this->isInTimeframe($timeframe)) continue;
 
             // Slots
             $startSlot = $this->getStartSlot($grid, $timeframe);

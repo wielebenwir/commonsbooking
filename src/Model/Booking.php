@@ -87,8 +87,9 @@ class Booking extends CustomPost
             $timeframe->ID,
             $this->getItem()->ID,
             $this->getLocation()->ID,
-            date('Y-m-d',strtotime($this->returnDatetime()))
+            date('Y-m-d',$this->getMeta('repetition-start'))
         );
+
         if($bookingCode) {
             update_post_meta(
                 $this->post->ID,
