@@ -80,17 +80,17 @@ class Migration
 
         // CB2 <-> CB1
         $postMeta = [
-            CB_METABOX_PREFIX . 'location_street' => get_post_meta($location->ID,
+            CB_METABOX_PREFIX . 'location_street'   => get_post_meta($location->ID,
                 'commons-booking_location_adress_street', true),
-            CB_METABOX_PREFIX . 'location_city' => get_post_meta($location->ID,
+            CB_METABOX_PREFIX . 'location_city'     => get_post_meta($location->ID,
                 'commons-booking_location_adress_city', true),
             CB_METABOX_PREFIX . 'location_postcode' => get_post_meta($location->ID,
                 'commons-booking_location_adress_zip', true),
-            CB_METABOX_PREFIX . 'location_country' => get_post_meta($location->ID,
+            CB_METABOX_PREFIX . 'location_country'  => get_post_meta($location->ID,
                 'commons-booking_location_adress_country', true),
-            CB_METABOX_PREFIX . 'location_contact' => get_post_meta($location->ID,
+            CB_METABOX_PREFIX . 'location_contact'  => get_post_meta($location->ID,
                 'commons-booking_location_contactinfo_text', true),
-            CB_METABOX_PREFIX . 'cb1_post_post_ID' => $location->ID,
+            CB_METABOX_PREFIX . 'cb1_post_post_ID'  => $location->ID,
             '_thumbnail_id' => get_post_meta($location->ID, '_thumbnail_id', true)
         ];
 
@@ -167,7 +167,7 @@ class Migration
     {
         // Collect post data
         $postData = array_merge($item->to_array(), [
-                'post_type' => Item::$postType,
+                'post_type'    => Item::$postType,
                 'post_content' => get_post_meta($item->ID,
                     'commons-booking_item_descr', true)
             ]
@@ -265,6 +265,7 @@ class Migration
             'end-time'                             => '23:59',
             'full-day'                             => 'on',
             'grid'                                 => '0',
+            CB_METABOX_PREFIX . 'bookingcode'      => CB1::getBookingCode($booking['code_id'])
         ];
 
         $existingPost = self::getExistingPost($booking['id'], Timeframe::$postType);

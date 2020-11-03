@@ -565,8 +565,27 @@ class Timeframe extends CustomPostType
                 'id'   => 'booking-codes-list',
                 'type' => 'title',
                 'render_row_cb' => array(self::class, 'show_booking_code_checkbox'), // function should return a bool value
+            ),
+            array(
+                'name' => __('Booking Code', 'commonsbooking'),
+                'id'   => CB_METABOX_PREFIX . 'bookingcode',
+                'type' => 'text',
+                'show_on_cb' => array(self::class, 'show_booking_code'),
+                'attributes' => array(
+                    'disabled' => 'disabled',
+                )
             )
         );
+    }
+
+    /**
+     * Returns true, if timeframe is of type booking.
+     * @param $field
+     *
+     * @return bool
+     */
+    public static function show_booking_code( $field ) {
+        return get_post_meta( $field->object_id, 'type', true ) == self::BOOKING_ID;
     }
 
     /**

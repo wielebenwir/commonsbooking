@@ -51,7 +51,7 @@ class Booking extends CustomPost
      * @return mixed
      */
     public function getBookingCode() {
-        return self::getMeta('_cb_bookingcode');
+        return self::getMeta(CB_METABOX_PREFIX . 'bookingcode');
     }
 
     /**
@@ -93,7 +93,7 @@ class Booking extends CustomPost
         if($bookingCode) {
             update_post_meta(
                 $this->post->ID,
-                '_cb_bookingcode',
+                CB_METABOX_PREFIX . 'bookingcode',
                 $bookingCode->getCode()
             );
         }
