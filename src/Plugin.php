@@ -96,6 +96,9 @@ class Plugin
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerItemTaxonomy'));
 
+        // Register custom post types taxonomy / categories
+        add_action('init', array(self::class, 'registerLocationTaxonomy'));
+
         // Register custom user roles (e.g. location-owner, item-owner etc.)
         add_action('admin_init', array(self::class, 'addCustomUserRoles'));
 
@@ -306,6 +309,25 @@ class Plugin
             $customPostType,
             array(
                 'label'        => __('Item Category', 'commonsbooking'),
+                'rewrite'      => array('slug' => $customPostType . '-cat'),
+                'hierarchical' => true,
+            )
+        );
+    }
+
+    /**
+     * Registers category taxonomy for Custom Post Type Location
+     * @return void
+     */
+    public static function registerLocationTaxonomy()
+    {
+        $customPostType = Location::getPostType();
+
+        register_taxonomy(
+            $customPostType . '_category',
+            $customPostType,
+            array(
+                'label'        => __('Location Category', 'commonsbooking'),
                 'rewrite'      => array('slug' => $customPostType . '-cat'),
                 'hierarchical' => true,
             )
