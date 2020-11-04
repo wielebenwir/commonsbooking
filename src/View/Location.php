@@ -329,9 +329,16 @@ class Location extends View
             $locations = \CommonsBooking\Repository\Location::get($queryArgs, true);
         }
 
+        $locationData = [];
+        /** @var \CommonsBooking\Model\Location $location */
+        foreach($locations as $location) {
+            $locationData[$location->ID] = self::getShortcodeData($location, 'Item');
+        }
+
         ob_start();
-        foreach ($locations as $location) {
-            $templateData['location'] = $location;
+        foreach ($locationData as $id => $data) {
+            $templateData['location'] = $id;
+            $templateData['data'] = $data;
             cb_get_template_part('shortcode', 'locations', true, false, false);
         }
 

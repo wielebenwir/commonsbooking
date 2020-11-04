@@ -75,12 +75,19 @@ class Item extends View
             $items = \CommonsBooking\Repository\Item::get($queryArgs, true);
         }
 
-        ob_start();
-        foreach ( $items as $item ) {
-            $templateData['item'] = $item;
-            cb_get_template_part('shortcode', 'items', TRUE, FALSE, FALSE ); 
+        $itemData = [];
+        /** @var \CommonsBooking\Model\Item $item */
+        foreach($items as $item) {
+            $itemData[$item->ID] = self::getShortcodeData($item, 'Location');
         }
+
+        ob_start();
+        foreach ($itemData as $id => $data) {
+            $templateData['item'] = $id;
+            $templateData['data'] = $data;
+            cb_get_template_part('shortcode', 'items', true, false, false);
+        }
+      
         return ob_get_clean();
-        
     }
 }

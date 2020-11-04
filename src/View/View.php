@@ -29,4 +29,42 @@ abstract class View
         'offset'        => ''
     );
 
+    /**
+     * Generates data needed for shortcode listing.
+     * @param $cpt
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public static function getShortcodeData($cpt, $type) {
+        $cptData = [];
+        $timeframes = $cpt->getBookableTimeframes(true);
+        /** @var \CommonsBooking\Model\Timeframe $timeframe */
+        foreach ($timeframes as $timeframe) {
+            $item = $timeframe->{'get' . $type}();
+
+            if(!array_key_exists($item->ID, $cptData)) {
+                $cptData[$item->ID] = [
+                    'start_date' => false,
+                    'end_date' => false
+                ];
+            }
+
+            if(
+                !$cptData[$item->ID]['start_date'] ||
+                $cptData[$item->ID]['start_date'] > $timeframe->getStartDate()
+            ) {
+                $cptData[$item->ID]['start_date'] = $timeframe->getStartDate();
+            }
+
+            if(
+                !$cptData[$item->ID]['end_date'] ||
+                $cptData[$item->ID]['end_date'] > $timeframe->getStartDate()
+            ) {
+                $cptData[$item->ID]['end_date'] = $timeframe->getEndDate();
+            }
+        }
+        return $cptData;
+    }
+
 }

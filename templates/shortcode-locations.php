@@ -10,8 +10,7 @@
  *  
  */
 global $templateData;
-$location = $templateData['location'];
-$timeframes 	= $location->getBookableTimeframes();
+$location = new \CommonsBooking\Model\Location($templateData['location']);
 $noResultText = __("No article available at this location.", "commonsbooking");
 
 ?>
@@ -24,11 +23,14 @@ $noResultText = __("No article available at this location.", "commonsbooking");
 	<?php echo $location->excerpt(); ?>
 </div><!-- .cb-list-content -->
 
-<?php 
-	if ($timeframes) {
-		foreach ($timeframes as $timeframe ) { 
-			set_query_var( 'timeframe', $timeframe );
-			cb_get_template_part( 'timeframe', 'withitem' ); // file: timeframe-withlocation.php
+<?php
+	if (array_key_exists('data', $templateData)) {
+		foreach ($templateData['data'] as $itemId => $data ) {
+            $item = new \CommonsBooking\Model\Item($itemId);
+            set_query_var( 'item', $item );
+            set_query_var( 'location', $location );
+            set_query_var( 'data', $data );
+            cb_get_template_part( 'timeframe', 'withitem' ); // file: timeframe-withlocation.php
 		} 
 	} else { ?>
 		<div class="cb-status cb-availability-status"><?php echo ( $noResultText ); ?>
