@@ -10,47 +10,6 @@ class Timeframe extends PostRepository
 {
 
     /**
-     * @param string|null $date Date-String
-     *
-     * @return array
-     */
-    protected static function getTimeRangeQuery(?string $date = null)
-    {
-        return array(
-            'relation' => "OR",
-            // Timeframe has any overlap with current day
-            array(
-                'relation' => "AND",
-                array(
-                    'key'     => 'repetition-start',
-                    'value'   => [
-                        0,
-                        strtotime($date . 'T23:59')
-                    ],
-                    'compare' => 'BETWEEN',
-                    'type'    => 'numeric'
-                ),
-                array(
-                    'relation' => "OR",
-                    array(
-                        'key'     => 'repetition-end',
-                        'value'   => [
-                            strtotime($date),
-                            3000000000
-                        ],
-                        'compare' => 'BETWEEN',
-                        'type'    => 'numeric'
-                    ),
-                    array(
-                        'key'     => 'repetition-end',
-                        'compare' => 'NOT EXISTS'
-                    )
-                )
-            )
-        );
-    }
-
-    /**
      * @param array $locations
      * @param array $items
      * @param array $types
@@ -58,11 +17,19 @@ class Timeframe extends PostRepository
      *
      * @param bool $returnAsModel
      *
+     * @param null $minTimestamp
+     *
      * @return array
      * @throws \Exception
      */
-    public static function get($locations = [], $items = [], $types = [], ?string $date = null, $returnAsModel = false)
-    {
+    public static function get(
+        $locations = [],
+        $items = [],
+        $types = [],
+        ?string $date = null,
+        $returnAsModel = false,
+        $minTimestamp = null
+    ) {
         $posts = [];
         if ( ! count($types)) {
             $types = [
@@ -103,6 +70,22 @@ class Timeframe extends PostRepository
                 );
             }
 
+            // Filter only from a specific start date.
+            if($minTimestamp) {
+                $args['meta_query'] = array_merge(
+                    [
+                        'relation' => 'AND',
+                        [
+                            'key'     => 'repetition-end',
+                            'value'   => $minTimestamp,
+                            'compare' => '>',
+                            'type'    => 'numeric'
+                        ]
+                    ],
+                    $args['meta_query']
+                );
+            }
+
             $query = new \WP_Query($args);
             if ($query->have_posts()) {
                 $posts = $query->get_posts();
@@ -136,6 +119,47 @@ class Timeframe extends PostRepository
 
             return $posts;
         }
+    }
+
+    /**
+     * @param string|null $date Date-String
+     *
+     * @return array
+     */
+    protected static function getTimeRangeQuery(?string $date = null)
+    {
+        return array(
+            'relation' => "OR",
+            // Timeframe has any overlap with current day
+            array(
+                'relation' => "AND",
+                array(
+                    'key'     => 'repetition-start',
+                    'value'   => [
+                        0,
+                        strtotime($date . 'T23:59')
+                    ],
+                    'compare' => 'BETWEEN',
+                    'type'    => 'numeric'
+                ),
+                array(
+                    'relation' => "OR",
+                    array(
+                        'key'     => 'repetition-end',
+                        'value'   => [
+                            strtotime($date),
+                            3000000000
+                        ],
+                        'compare' => 'BETWEEN',
+                        'type'    => 'numeric'
+                    ),
+                    array(
+                        'key'     => 'repetition-end',
+                        'compare' => 'NOT EXISTS'
+                    )
+                )
+            )
+        );
     }
 
 }

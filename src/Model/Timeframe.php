@@ -17,11 +17,19 @@ class Timeframe extends CustomPost
      */
     public function formattedBookableDate()
     {
-        $format = self::getDateFormat();
-
-        //  workaround because we need to calculate, and getMeta returns empty *string* if not set
         $startDate = $this->getStartDate() ? $this->getStartDate() : 0;
         $endDate = $this->getEndDate() ? $this->getEndDate() : 0;
+        return self::formatBookableDate($startDate, $endDate);
+    }
+
+    /**
+     * @param $startDate
+     * @param $endDate
+     *
+     * @return string
+     */
+    public static function formatBookableDate($startDate, $endDate) {
+        $format = self::getDateFormat();
         $today = strtotime('now');
 
         $startDateFormatted = date($format, $startDate);
@@ -55,7 +63,7 @@ class Timeframe extends CustomPost
      *
      * @return string
      */
-    public function getDateFormat()
+    public static function getDateFormat()
     {
         return get_option('date_format');
     }
