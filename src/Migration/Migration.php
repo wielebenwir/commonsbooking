@@ -217,7 +217,7 @@ class Migration
             'item-id'                              => $cbItem->ID,
             'location-id'                          => $cbLocation->ID,
             'type'                                 => Timeframe::BOOKABLE_ID,
-            'timeframe-repetition'                 => 'norep',
+            'timeframe-repetition'                 => 'd',
             'start-time'                           => '00:00',
             'end-time'                             => '23:59',
             'full-day'                             => 'on',
