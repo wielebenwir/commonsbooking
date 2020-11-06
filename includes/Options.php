@@ -387,10 +387,22 @@ $options_array = array(
         'title'        => __('Migration', 'commonsbooking'),
         'id'           => 'migration',
         'field_groups' => array(
+            'cb1-user-fields' => array(
+                'title'       => __('CommonsBooking Version 0.X user fields', 'commonsbooking'),
+                'id'          => 'cb1-user-fields',
+                'desc'        => __('Enable legacy CommonsBooking Version 0.X user fields', 'commonsbooking'),
+                'fields'      => [
+                    array(
+                        'name'          => __('Enable', 'commonsbooking'),
+                        'id'            => 'enable-cb1-user-fields',
+                        'type'          => 'checkbox',
+                    )
+                ]
+            ),            
             'migration' => array(
                 'title'       => __('Migrate', 'commonsbooking'),
                 'id'          => 'migration',
-                'desc'        => '',
+                'desc'        => __('Migrate data from CommonsBooking Version 0.X', 'commonsbooking'),
                 'fields'      => [
                     array(
                         'name'          => __('Start Migration', 'commonsbooking'),

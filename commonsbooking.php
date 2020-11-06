@@ -84,6 +84,8 @@ require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/cmb2/cmb2/init.php';
 require __DIR__ . '/vendor/mustardBees/cmb-field-select2/cmb-field-select2.php';
 
+require __DIR__ . '/src/Repository/CB1UserFields.php'; //@TODO: import with Autoload 
+
 /**
  * Checks if current user is allowed to edit custom post.
  *
