@@ -42,7 +42,7 @@ class CustomPost
      *
      * @return mixed
      */
-    public static function getMeta($field)
+    public function getMeta($field)
     {
         return get_post_meta($this->post->ID, $field, true);
     }
