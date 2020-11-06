@@ -168,7 +168,7 @@ class Migration
         // Collect post data
         $postData = array_merge($item->to_array(), [
                 'post_type'    => Item::$postType,
-                'post_content' => get_post_meta($item->ID,
+                'post_excerpt' => get_post_meta($item->ID,
                     'commons-booking_item_descr', true)
             ]
         );
