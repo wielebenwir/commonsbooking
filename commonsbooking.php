@@ -9,17 +9,20 @@ defined('ABSPATH') or die("Thanks for visting");
 
 /**
  * Plugin Name:  CommonsBooking
- * Plugin URI: commonsbooking.org
- * Author: wielebenwir e.V.
- * Domain Path: /languages
+ * Version: 2.1.3-ALPHA
+ * Plugin URI: https://commonsbooking.org
  * Description: A wordpress plugin for management and booking of common goods.
- * Version: 2.1.2-ALPHA
- * License: GPL2
- * License URI:  https://www.gnu.org/licenses/gpl-2.0.html
+ * Author: wielebenwir e.V.
+ * Author URI: https://wielebenwir.de/
+ * Domain Path: /languages
  * Text Domain:  commonsbooking
+ * License: GPL v2 or later
+ * License URI:  https://www.gnu.org/licenses/gpl-2.0.html
+
  */
 
-define('CB_VERSION', '2.1.2-ALPHA');
+
+define('CB_VERSION', '2.1.3-ALPHA');
 define('CB_MENU_SLUG', 'cb-menu');
 define('CB_PLUGIN_SLUG', 'commonsbooking');
 define('CB_PLUGIN_DIR', plugin_dir_path(__FILE__));
@@ -211,6 +214,7 @@ add_action('template_redirect', 'cb_timeframe_redirect');
 // Shows Errors in Backend
 add_action('admin_notices',array(Plugin::class, 'renderError'));
 
+// Initialize booking codes table
 register_activation_hook( __FILE__, array(\CommonsBooking\Repository\BookingCodes::class, 'initBookingCodesTable') );
 
 $cbPlugin = new Plugin();

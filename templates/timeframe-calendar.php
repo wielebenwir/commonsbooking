@@ -3,7 +3,7 @@
     if(!array_key_exists('backend', $templateData) || $templateData['backend'] != true) {
 ?>
     <script type="text/javascript">
-        <?
+        <?php
             echo "let data = " . $templateData['calendar_data'] . ';';
         ?>
     </script>
