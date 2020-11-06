@@ -147,6 +147,7 @@ class Booking extends CustomPost
         $enddate = date_i18n($date_format, $this->getMeta('repetition-end'));
 
         if ($startdate == $enddate) {
+            /* translators: %s = date in wordpress defined format */
             return sprintf( esc_html__( ' on %s ' , 'commonsbooking'), $startdate );
         } else {
             /* translators: %1 = startdate, %2 = enddate in wordpress defined format */
