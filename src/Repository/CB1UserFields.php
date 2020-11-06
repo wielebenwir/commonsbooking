@@ -3,6 +3,8 @@
  * CB1 Legacy User Profile Fields
  * Adapted from CB1
  */
+ 
+ 
 namespace CommonsBooking\Repository;
  
  
@@ -23,7 +25,7 @@ class CB1UserFields {
 	  add_action( 'edit_user_profile', 		 array( $this, 'show_extra_profile_fields' ));	
 	  add_action( 'show_user_profile', 		 array( $this, 'show_extra_profile_fields' ));	
 
-	// $this->termsservices_url = $this->settings->get_settings('pages', 'termsservices_url');
+	$this->termsservices_url = get_option('commonsbooking_options_migration', 'cb1-terms-url');
 
 	$this->registration_fields = array ( 
 	  'username', 
@@ -211,29 +213,6 @@ class CB1UserFields {
 	  
 	  $this->user_vars[$key] = $value;
   }
-
-  /**
-   * Get the user_vars array  
-   *
-   * @since    0.5.3
-   * 
-   */
-  public function get_user_vars( ) {
-
-	  return $this->user_vars;
-  }
-
-  /**
-   * Set the activation url   
-   *
-   * @since    0.5.3
-   * 
-   */
-  public function set_activation_url($key, $login) {
-
-	  $activation_url = network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($login), 'login');
-  }
-
 
   /**
    * Backend: Show the extra profile fields

@@ -19,17 +19,18 @@ class Migration
         ?><div class="cmb-row cmb-type-text "><?php
         
         if ( ! $cb1Installed ) { 
-            echo __('We could not detect a version of CommonsBooking 1 (Version 0.X).'); 
+            echo '<strong style="color:red">' . __('We could not detect a version of CommonsBooking 1 (Version 0.X).') . '</strong>'; 
         } else { 
-            echo __('Found a version of CommonsBooking 1 (Version 0.X). You can migrate.'); 
+            echo '<strong style="color:green">' . __('Found a version of CommonsBooking 1 (Version 0.X). You can migrate.') . '</strong>'; 
         }
-        echo ('<br>');
+        echo ('<br><br>');
 
       
         if($startMigration) {
             $results = \CommonsBooking\Migration\Migration::migrateAll();
             foreach ($results as $type => $count) {
                 echo "$count $type updated/saved.<br>";
+                
             }
         }
         ?>

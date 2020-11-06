@@ -386,19 +386,7 @@ $options_array = array(
     'migration' => array(
         'title'        => __('Migration', 'commonsbooking'),
         'id'           => 'migration',
-        'field_groups' => array(
-            'cb1-user-fields' => array(
-                'title'       => __('CommonsBooking Version 0.X user fields', 'commonsbooking'),
-                'id'          => 'cb1-user-fields',
-                'desc'        => __('Enable legacy CommonsBooking Version 0.X user fields', 'commonsbooking'),
-                'fields'      => [
-                    array(
-                        'name'          => __('Enable', 'commonsbooking'),
-                        'id'            => 'enable-cb1-user-fields',
-                        'type'          => 'checkbox',
-                    )
-                ]
-            ),            
+        'field_groups' => array(          
             'migration' => array(
                 'title'       => __('Migrate', 'commonsbooking'),
                 'id'          => 'migration',
@@ -409,6 +397,23 @@ $options_array = array(
                         'id'            => 'migration-custom-field',
                         'type'          => 'text',
                         'render_row_cb' => array(\CommonsBooking\View\Migration::class, 'renderMigrationForm'),
+                    )
+                ]
+            ),
+            'cb1-user-fields' => array(
+                'title'       => __('CommonsBooking Version 0.X profile fields', 'commonsbooking'),
+                'id'          => 'cb1-user-fields',
+                'desc'        => __('Enable the following legacy CommonsBooking Version 0.X user profile fields:', 'commonsbooking') . '<br><i> first_name,  last_name,  phone,  address,   terms_accepted </i>',
+                'fields'      => [
+                    array(
+                        'name'          => __('Enable', 'commonsbooking'),
+                        'id'            => 'enable-cb1-user-fields',
+                        'type'          => 'checkbox',
+                    ),                    
+                    array(
+                        'name'          => __('Terms+Services Url', 'commonsbooking'),
+                        'id'            => 'cb1-terms-url',
+                        'type'          => 'text',
                     )
                 ]
             )
