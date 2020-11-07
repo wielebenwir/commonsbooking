@@ -33,7 +33,7 @@ $item          = $booking->getItem();
         <div><?php echo $booking->returnDatetime(); ?></div>
     </div><!-- .cb-bookigcode -->
     <?php
-    if ($booking->getBookingCode() && $booking->post_status == "confirmed") {
+    if ($booking->getBookingCode() && $booking->post_status == "confirmed") { // start if bookingcode
     ?>
         <div class="cb-list-content cb-datetime cb-col-30-70">
             <div><?php echo __('Booking Code', 'commonsbooking'); ?></div>
