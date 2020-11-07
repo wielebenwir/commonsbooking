@@ -55,8 +55,8 @@ class Booking extends CustomPost
     }
 
 
-        /**
-     * Returns the booking code.
+    /**
+     * Returns rendered booking code for using in email-template (booking confirmation mail) 
      * @return mixed
      */
     public function renderBookingCodeEmail() {
@@ -64,9 +64,6 @@ class Booking extends CustomPost
             return sprintf( __( 'Your booking code is: %s' , 'commonsbooking' ) , self::getMeta( CB_METABOX_PREFIX . 'bookingcode') ) ;
         }
     }
-
-
-
 
     /**
      * Assings relevant meta fields from related bookable timeframe to booking.
