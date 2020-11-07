@@ -54,6 +54,21 @@ class Booking extends CustomPost
         return self::getMeta(CB_METABOX_PREFIX . 'bookingcode');
     }
 
+
+        /**
+     * Returns the booking code.
+     * @return mixed
+     */
+    public function renderBookingCodeEmail() {
+
+        // check if booking is based on a full day timeslot, because only full day slots 
+        if ($this->getMeta('full-day'))
+        return self::getMeta(CB_METABOX_PREFIX . 'bookingcode');
+    }
+
+
+
+
     /**
      * Assings relevant meta fields from related bookable timeframe to booking.
      * @throws \Exception
@@ -90,7 +105,9 @@ class Booking extends CustomPost
             date('Y-m-d',$this->getMeta('repetition-start'))
         );
 
-        if($bookingCode) {
+        // @TODO: @markus-mw check if this is the right place for handling booking code implementation in booking timeframe
+        // only add booking code if the booking is based on a full day timeframe
+        if($bookingCode && $this->getMeta('full-day') == "on") {
             update_post_meta(
                 $this->post->ID,
                 CB_METABOX_PREFIX . 'bookingcode',
