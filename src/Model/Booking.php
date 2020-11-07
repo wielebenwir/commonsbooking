@@ -60,10 +60,9 @@ class Booking extends CustomPost
      * @return mixed
      */
     public function renderBookingCodeEmail() {
-
-        // check if booking is based on a full day timeslot, because only full day slots 
-        if ($this->getMeta('full-day'))
-        return self::getMeta(CB_METABOX_PREFIX . 'bookingcode');
+        if (self::getMeta(CB_METABOX_PREFIX . 'bookingcode')) {
+            return sprintf( __( 'Your booking code is: %s' , 'commonsbooking' ) , self::getMeta( CB_METABOX_PREFIX . 'bookingcode') ) ;
+        }
     }
 
 
