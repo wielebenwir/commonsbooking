@@ -1381,13 +1381,13 @@
         $("#booking-form select[name=repetition-end], #booking-form .time-selection.repetition-end .date").hide();
         let startSelect = $("#booking-form select[name=repetition-start]");
         $(".time-selection.repetition-start span.date").text(startDate), updateSelectSlots(startSelect, day1.slots, "start", day1.fullDay), 
-        day1.fullDay ? $(".time-selection.repetition-start").find("label, select").hide() : $(".time-selection.repetition-start").find("label, select").show();
+        day1.fullDay ? $(".time-selection.repetition-start").find("select").hide() : $(".time-selection.repetition-start").find("select").show();
     }, initEndSelect = date => {
         const day2 = data.days[moment(date).format("YYYY-MM-DD")], endDate = moment(date).format("DD.MM.YYYY");
         let endSelect = $("#booking-form select[name=repetition-end]");
         $(".time-selection.repetition-end span.date").text(endDate), updateSelectSlots(endSelect, day2.slots, "end", day2.fullDay), 
-        day2.fullDay ? $(".time-selection.repetition-end").find("label, select").hide() : $(".time-selection.repetition-end").find("label, select").show(), 
-        $("#booking-form select[name=repetition-end], #booking-form .time-selection.repetition-end .date").show();
+        $("#booking-form select[name=repetition-end], #booking-form .time-selection.repetition-end .date").show(), 
+        day2.fullDay ? $(".time-selection.repetition-end").find("select").hide() : $(".time-selection.repetition-end").find("select").show();
     };
     let numberOfMonths = 2, numberOfColumns = 2;
     if ((() => {
@@ -1462,8 +1462,8 @@
             holidays: data.holidays,
             onDayHover: function(date, attributes) {
                 if ($.inArray("is-start-date", attributes) > -1 || $.inArray("is-end-date", attributes) > -1) {
-                    console.log(date), $("#booking-form").show(), $(".cb-notice.date-select").hide(), 
-                    $.inArray("is-start-date", attributes) > -1 ? initStartSelect(date) : $.inArray("is-end-date", attributes) > -1 && initEndSelect(date);
+                    $("#booking-form").show(), $.inArray("is-start-date", attributes) > -1 ? (initStartSelect(date), 
+                    -1 == $.inArray("is-end-date", attributes) ? $(".cb-notice.date-select").hide() : initEndSelect(date)) : $.inArray("is-end-date", attributes) > -1 && initEndSelect(date);
                 }
             },
             onSelect: function(date1, date2) {

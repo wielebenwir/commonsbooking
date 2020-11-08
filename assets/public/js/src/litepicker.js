@@ -2,14 +2,14 @@
  * @TODO: Reduce redundancy, use state machine
  */
 
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function (event) {
 
     const fadeOutCalendar = () => {
-        $('#litepicker .litepicker .container__days').css('visibility','hidden');
+        $('#litepicker .litepicker .container__days').css('visibility', 'hidden');
     }
 
     const fadeInCalendar = () => {
-        $('#litepicker .litepicker .container__days').fadeTo('fast',1);
+        $('#litepicker .litepicker .container__days').fadeTo('fast', 1);
     }
 
     // Updates Time-selects so that no wrong time ranges can be selected
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         startSelect.change(function () {
             const startValue = $(this).val();
             endSelect.find('option').each(function () {
-                if($(this).val() < startValue) {
+                if ($(this).val() < startValue) {
                     $(this).attr('disabled', 'disabled');
                     $(this).prop("selected", false)
                 } else {
@@ -33,8 +33,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     // Updates select options by time slots array
     const updateSelectSlots = (select, slots, type = 'start', fullday = false) => {
-        select.empty().attr('required','required');
-        $.each(slots, function(index, slot) {
+        select.empty().attr('required', 'required');
+        $.each(slots, function (index, slot) {
             select.append(
                 new Option(slot['timestart'] + ' - ' + slot['timeend'], slot['timestamp' + type], fullday, fullday)
             );
@@ -63,34 +63,38 @@ document.addEventListener("DOMContentLoaded", function(event) {
         let startSelect = $('#booking-form select[name=repetition-start]');
         $('.time-selection.repetition-start span.date').text(startDate);
         updateSelectSlots(startSelect, day1['slots'], 'start', day1['fullDay']);
-        if(day1['fullDay']) {
-            $('.time-selection.repetition-start').find('label, select').hide();
+        if (day1['fullDay']) {
+            $('.time-selection.repetition-start').find('select').hide();
         } else {
-            $('.time-selection.repetition-start').find('label, select').show();
+            $('.time-selection.repetition-start').find('select').show();
         }
     }
 
     const initEndSelect = (date) => {
         const day2 = data['days'][moment(date).format('YYYY-MM-DD')];
         const endDate = moment(date).format('DD.MM.YYYY');
+
         let endSelect = $('#booking-form select[name=repetition-end]');
         $('.time-selection.repetition-end span.date').text(endDate);
         updateSelectSlots(endSelect, day2['slots'], 'end', day2['fullDay']);
-        if(day2['fullDay']) {
-            $('.time-selection.repetition-end').find('label, select').hide();
-        } else {
-            $('.time-selection.repetition-end').find('label, select').show();
-        }
 
         let endSelectData = $('#booking-form select[name=repetition-end], #booking-form .time-selection.repetition-end .date');
         endSelectData.show();
+
+        if (day2['fullDay']) {
+            $('.time-selection.repetition-end').find('select').hide();
+        } else {
+            $('.time-selection.repetition-end').find('select').show();
+        }
+
+
     }
 
     // init datepicker
     let numberOfMonths = 2;
     let numberOfColumns = 2;
 
-    if(isMobile()) {
+    if (isMobile()) {
         switch (screen.orientation.angle) {
             case -90:
             case 90:
@@ -131,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             cancel: 'Abbrechen',
         },
         onAutoApply: (datePicked) => {
-            if(datePicked) {
+            if (datePicked) {
                 $('#booking-form').show();
                 $('.cb-notice.date-select').hide();
             }
@@ -140,13 +144,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
             $('#booking-form').hide();
             $('.cb-notice.date-select').show();
         },
-        onChangeMonth: function(date, idx) {
+        onChangeMonth: function (date, idx) {
             fadeOutCalendar()
             const startDate = moment(date.format('YYYY-MM-DD')).format('YYYY-MM-DD');
             // Last day of month before
             const calStartDate = moment(date.format('YYYY-MM-DD')).date(0).format('YYYY-MM-DD');
             // first day of next month selection
-            const calEndDate = moment(date.format('YYYY-MM-DD')).add(numberOfMonths,'months').date(1).format('YYYY-MM-DD');
+            const calEndDate = moment(date.format('YYYY-MM-DD')).add(numberOfMonths, 'months').date(1).format('YYYY-MM-DD');
 
             $.post(
                 cb_ajax.ajax_url,
@@ -158,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     sd: calStartDate,
                     ed: calEndDate
                 },
-                function(data) {
+                function (data) {
                     updatePicker(data);
                     picker.gotoDate(startDate);
                 }
@@ -184,26 +188,32 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 "holidays": data['holidays'],
                 onDayHover: function (date, attributes) {
 
-                    if(
-                        $.inArray('is-start-date',attributes) > -1 ||
-                        $.inArray('is-end-date',attributes) > -1
+                    if (
+                        $.inArray('is-start-date', attributes) > -1 ||
+                        $.inArray('is-end-date', attributes) > -1
                     ) {
-                        console.log(date);
-
                         let bookingForm = $('#booking-form');
                         bookingForm.show();
-                        $('.cb-notice.date-select').hide();
 
-                        if( $.inArray('is-start-date',attributes) > -1 ) {
+                        // Start-Date selected or End-Date == Start-Date selected
+                        if ($.inArray('is-start-date', attributes) > -1) {
                             initStartSelect(date);
+                            // Start-Date !== End-Date
+                            if ($.inArray('is-end-date', attributes) == -1) {
+                                $('.cb-notice.date-select').hide();
+                            } else {
+                                // Init End-Select if Start-Date == End-Date
+                                initEndSelect(date);
+                            }
                         } else {
-                            if( $.inArray('is-end-date',attributes) > -1 ) {
+                            // End-Date Selected
+                            if ($.inArray('is-end-date', attributes) > -1) {
                                 initEndSelect(date);
                             }
                         }
                     }
                 },
-                onSelect: function(date1, date2) {
+                onSelect: function (date1, date2) {
                     let bookingForm = $('#booking-form');
                     bookingForm.show();
                     $('.cb-notice.date-select').hide();
@@ -214,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     initStartSelect(date1);
                     initEndSelect(date2);
 
-                    if(!day1['fullDay'] || !day2['fullDay']) {
+                    if (!day1['fullDay'] || !day2['fullDay']) {
                         $('#fullDayInfo').text('');
                         initSelectHandler();
                     } else {
@@ -227,12 +237,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     };
 
     let bookingForm = $('#booking-form');
-    if(bookingForm.length) {
+    if (bookingForm.length) {
         const startDate = moment().format('YYYY-MM-DD');
         const calStartDate = moment().date(1).format('YYYY-MM-DD');
-        const calEndDate = moment().add(numberOfMonths + 2,'months').date(0).format('YYYY-MM-DD');
+        const calEndDate = moment().add(numberOfMonths + 2, 'months').date(0).format('YYYY-MM-DD');
 
-        if(typeof data !== 'undefined') {
+        if (typeof data !== 'undefined') {
             updatePicker(data);
         }
 
@@ -246,7 +256,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 sd: calStartDate,
                 ed: calEndDate
             },
-            function(data) {
+            function (data) {
                 updatePicker(data);
                 picker.gotoDate(startDate);
             }
