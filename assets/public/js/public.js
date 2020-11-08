@@ -1376,7 +1376,19 @@
         select.empty().attr("required", "required"), $.each(slots, function(index, slot) {
             select.append(new Option(slot.timestart + " - " + slot.timeend, slot["timestamp" + type], fullday, fullday));
         });
-    }, getOrientation = () => window.matchMedia("(orientation: portrait)").matches ? "portrait" : "landscape";
+    }, getOrientation = () => window.matchMedia("(orientation: portrait)").matches ? "portrait" : "landscape", initStartSelect = date => {
+        const day1 = data.days[moment(date).format("YYYY-MM-DD")], startDate = moment(date).format("DD.MM.YYYY");
+        $("#booking-form select[name=repetition-end], #booking-form .time-selection.repetition-end .date").hide();
+        let startSelect = $("#booking-form select[name=repetition-start]");
+        $(".time-selection.repetition-start span.date").text(startDate), updateSelectSlots(startSelect, day1.slots, "start", day1.fullDay), 
+        day1.fullDay ? $(".time-selection.repetition-start").find("label, select").hide() : $(".time-selection.repetition-start").find("label, select").show();
+    }, initEndSelect = date => {
+        const day2 = data.days[moment(date).format("YYYY-MM-DD")], endDate = moment(date).format("DD.MM.YYYY");
+        let endSelect = $("#booking-form select[name=repetition-end]");
+        $(".time-selection.repetition-end span.date").text(endDate), updateSelectSlots(endSelect, day2.slots, "end", day2.fullDay), 
+        day2.fullDay ? $(".time-selection.repetition-end").find("label, select").hide() : $(".time-selection.repetition-end").find("label, select").show(), 
+        $("#booking-form select[name=repetition-end], #booking-form .time-selection.repetition-end .date").show();
+    };
     let numberOfMonths = 2, numberOfColumns = 2;
     if ((() => {
         const isPortrait = "portrait" === getOrientation();
@@ -1448,16 +1460,16 @@
             partiallyBookedDays: data.partiallyBookedDays,
             highlightedDays: data.highlightedDays,
             holidays: data.holidays,
+            onDayHover: function(date, attributes) {
+                if ($.inArray("is-start-date", attributes) > -1 || $.inArray("is-end-date", attributes) > -1) {
+                    console.log(date), $("#booking-form").show(), $(".cb-notice.date-select").hide(), 
+                    $.inArray("is-start-date", attributes) > -1 ? initStartSelect(date) : $.inArray("is-end-date", attributes) > -1 && initEndSelect(date);
+                }
+            },
             onSelect: function(date1, date2) {
                 $("#booking-form").show(), $(".cb-notice.date-select").hide();
-                const day1 = data.days[moment(date1).format("YYYY-MM-DD")], day2 = data.days[moment(date2).format("YYYY-MM-DD")], startDate = moment(date1).format("DD.MM.YYYY"), endDate = moment(date2).format("DD.MM.YYYY");
-                let startSelect = $("#booking-form select[name=repetition-start]");
-                $(".time-selection.repetition-start span.date").text(startDate), updateSelectSlots(startSelect, day1.slots, "start", day1.fullDay), 
-                day1.fullDay ? $(".time-selection.repetition-start").find("label, select").hide() : $(".time-selection.repetition-start").find("label, select").show();
-                let endSelect = $("#booking-form select[name=repetition-end]");
-                $(".time-selection.repetition-end span.date").text(endDate), updateSelectSlots(endSelect, day2.slots, "end", day2.fullDay), 
-                day2.fullDay ? $(".time-selection.repetition-end").find("label, select").hide() : $(".time-selection.repetition-end").find("label, select").show(), 
-                day1.fullDay && day2.fullDay ? $("#fullDayInfo").text(data.location.fullDayInfo) : ($("#fullDayInfo").text(""), 
+                const day1 = data.days[moment(date1).format("YYYY-MM-DD")], day2 = data.days[moment(date2).format("YYYY-MM-DD")];
+                initStartSelect(date1), initEndSelect(date2), day1.fullDay && day2.fullDay ? $("#fullDayInfo").text(data.location.fullDayInfo) : ($("#fullDayInfo").text(""), 
                 initSelectHandler());
             }
         }), $("#litepicker .litepicker .container__days").fadeTo("fast", 1);
