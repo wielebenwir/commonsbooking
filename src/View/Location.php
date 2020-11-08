@@ -192,7 +192,7 @@ class Location extends View
     public static function getCalendarDataArray($item = null, $location = null)
     {
         $startDate = new Day(date('Y-m-d'));
-        $endDate = new Day(date('Y-m-d', strtotime('last day of next month')));
+        $endDate = new Day(date('Y-m-d', strtotime('+3 months')));
 
         $startDateString = array_key_exists('sd', $_POST) ? $_POST['sd'] : date('Y-m-d',
             strtotime('first day of this month', time()));
@@ -201,7 +201,7 @@ class Location extends View
         }
 
         $endDateString = array_key_exists('ed', $_POST) ? $_POST['ed'] : date('Y-m-d',
-            strtotime('last day of next month', time()));
+            strtotime('+3 months', time()));
         if ($endDateString) {
             $endDate = new Day($endDateString);
         }
