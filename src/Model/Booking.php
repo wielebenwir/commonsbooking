@@ -54,6 +54,17 @@ class Booking extends CustomPost
         return self::getMeta(CB_METABOX_PREFIX . 'bookingcode');
     }
 
+
+    /**
+     * Returns rendered booking code for using in email-template (booking confirmation mail) 
+     * @return mixed
+     */
+    public function renderBookingCodeEmail() {
+        if (self::getMeta(CB_METABOX_PREFIX . 'bookingcode')) {
+            return sprintf( __( 'Your booking code is: %s' , 'commonsbooking' ) , self::getMeta( CB_METABOX_PREFIX . 'bookingcode') ) ;
+        }
+    }
+
     /**
      * Assings relevant meta fields from related bookable timeframe to booking.
      * @throws \Exception
@@ -90,7 +101,9 @@ class Booking extends CustomPost
             date('Y-m-d',$this->getMeta('repetition-start'))
         );
 
-        if($bookingCode) {
+        // @TODO: @markus-mw check if this is the right place for handling booking code implementation in booking timeframe
+        // only add booking code if the booking is based on a full day timeframe
+        if($bookingCode && $this->getMeta('full-day') == "on") {
             update_post_meta(
                 $this->post->ID,
                 CB_METABOX_PREFIX . 'bookingcode',
@@ -147,6 +160,7 @@ class Booking extends CustomPost
         $enddate = date_i18n($date_format, $this->getMeta('repetition-end'));
 
         if ($startdate == $enddate) {
+            /* translators: %s = date in wordpress defined format */
             return sprintf( esc_html__( ' on %s ' , 'commonsbooking'), $startdate );
         } else {
             /* translators: %1 = startdate, %2 = enddate in wordpress defined format */

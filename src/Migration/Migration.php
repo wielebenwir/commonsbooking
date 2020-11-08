@@ -168,7 +168,7 @@ class Migration
         // Collect post data
         $postData = array_merge($item->to_array(), [
                 'post_type'    => Item::$postType,
-                'post_content' => get_post_meta($item->ID,
+                'post_excerpt' => get_post_meta($item->ID,
                     'commons-booking_item_descr', true)
             ]
         );
@@ -198,7 +198,7 @@ class Migration
         $cbLocation = self::getExistingPost($timeframe['location_id'], Location::$postType);
 
         if ( ! $cbItem || ! $cbLocation) {
-            throw new \Exception('timeframe could not created, because linked location or item does not exist.');
+            //throw new \Exception('timeframe could not created, because linked location or item does not exist.');
         }
 
         // Collect post data
@@ -217,7 +217,7 @@ class Migration
             'item-id'                              => $cbItem->ID,
             'location-id'                          => $cbLocation->ID,
             'type'                                 => Timeframe::BOOKABLE_ID,
-            'timeframe-repetition'                 => 'norep',
+            'timeframe-repetition'                 => 'd',
             'start-time'                           => '00:00',
             'end-time'                             => '23:59',
             'full-day'                             => 'on',
@@ -241,7 +241,8 @@ class Migration
         $cbLocation = self::getExistingPost($booking['location_id'], Location::$postType);
 
         if ( ! $user || ! $cbItem || ! $cbLocation) {
-            throw new \Exception('booking could not created, because user or linked location or item does not exist.');
+            //throw new \Exception('booking could not created, because user or linked location or item does not exist.');
+            echo __('booking could not created because user or linked location or item does not exist', 'commonsbooking');
         }
 
         // Collect post data

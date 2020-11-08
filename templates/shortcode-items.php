@@ -12,7 +12,7 @@
 global $templateData;
 /** @var \CommonsBooking\Model\Item $item */
 $item = new \CommonsBooking\Model\Item($templateData['item']);
-$noResultText = __("No article available at this item.", "commonsbooking");
+$noResultText = __("No item available.", "commonsbooking");
 
 ?>
 <div class="cb-list-header">

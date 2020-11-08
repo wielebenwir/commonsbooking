@@ -17,7 +17,20 @@ $options_array = array(
             'welcome' => array(
                 'title'  => __('Welcome to CommonsBooking', 'commonsbooking'),
                 'id'     => 'welcome',
-                'desc'   => 'CB Version ' . CB_VERSION,
+                'desc'   => '
+                You are using CommonsBooking Version ' . CB_VERSION . '
+
+                <h2>How to start</h2>
+                <p>To get startet visit our tutorials and documentation on <a href="https://commonsbooking.org/documentation">https://commonsbooking.org/documentation</a></p>
+
+                <h2>Questions or bug reports?</h2>
+                <p>Ask your questions or send us your bug reports here https://commonsbooking.org/support</p>
+
+                <h2>Contribute</h2>
+                The future of this plugin depends on your support. You can support us by make a donation on our website: <a href="https://www.wielebenwir.de/verein/unterstutzen">wielebenwir</a>
+            
+                
+                ',
                 'fields' => array()
             )
         )

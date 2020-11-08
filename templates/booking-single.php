@@ -31,11 +31,17 @@ $item          = $booking->getItem();
     <div class="cb-list-content cb-datetime cb-col-30-70">
         <div><?php echo __('Return', 'commonsbooking'); ?></div>
         <div><?php echo $booking->returnDatetime(); ?></div>
-    </div><!-- .cb-address -->
-    <div class="cb-list-content cb-datetime cb-col-30-70">
-        <div><?php echo __('Booking Code', 'commonsbooking'); ?></div>
-        <div><?php echo $booking->getBookingCode(); ?></div>
-    </div>
+    </div><!-- .cb-bookigcode -->
+    <?php
+    if ($booking->getBookingCode() && $booking->post_status == "confirmed") { // start if bookingcode
+    ?>
+        <div class="cb-list-content cb-datetime cb-col-30-70">
+            <div><?php echo __('Booking Code', 'commonsbooking'); ?></div>
+            <div><strong><?php echo $booking->getBookingCode(); ?></strong></div>
+        </div>
+    <?php
+    } // end if bookingcode
+    ?>
 </div><!-- cb-booking-datetime -->
 
 <!-- Location -->

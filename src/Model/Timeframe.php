@@ -39,18 +39,22 @@ class Timeframe extends CustomPost
         $availableString = '';
 
         if ($startDate !== 0 && $endDate !== 0 && $startDate == $endDate) { // available only one day
+            /* translators: %s = date in wordpress defined format */
             $availableString = sprintf(__('on %s', 'commonsbooking'), $startDateFormatted);
         } elseif ($startDate > 0 && ($endDate == 0)) { // start but no end date
             if ($startDate > $today) { // start is in the future
+                /* translators: %s = date in wordpress defined format */
                 $availableString = sprintf(__('from %s', 'commonsbooking'), $startDateFormatted);
             } else { // start has passed, no end date, probably a fixed location
                 $availableString = __('permanently', 'commonsbooking');
             }
         } elseif ($startDate > 0 && $endDate > 0) { // start AND end date
             if ($startDate > $today) { // start is in the future, with an end date
-                $availableString = sprintf(__(' from %s until %s', 'commonsbooking'), $startDateFormatted,
+                /* translators: %1$s = startdate, second %2$s = enddate in wordpress defined format */
+                $availableString = sprintf(__(' from %1$s until %1$s', 'commonsbooking'), $startDateFormatted,
                     $endDateFormatted);
             } else { // start has passed, with an end date
+                /* translators: %s = enddate in wordpress defined format */
                 $availableString = sprintf(__(' until %s', 'commonsbooking'), $endDateFormatted);
             }
         }
@@ -204,8 +208,8 @@ class Timeframe extends CustomPost
                     // Compare grid types
                     if ($timeframe->getGrid() != $this->getGrid()) {
                         set_transient("timeframeValidationFailed",
-                            #translators: first %s = timeframe-ID, second %s is timeframe post_title
-                            sprintf(__('Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %s: %s',
+                            /* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
+                            sprintf(__('Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s: %2$s',
                                 'commonsbooking', 5), $timeframe->ID, $timeframe->post_title));
 
                         return false;
@@ -214,14 +218,15 @@ class Timeframe extends CustomPost
                     // Check if day slots overlap
                     if (!$this->getMeta('full-day') && $this->hasTimeframeTimeOverlap($this, $timeframe)) {
                         set_transient("timeframeValidationFailed",
-                            #translators: first %s = timeframe-ID, second %s is timeframe post_title
-                            sprintf(__('time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day.. See affected timeframe ID: %s: %s',
+                            /* translators: first %s = timeframe-ID, second %s is timeframe post_title */
+                            sprintf(__('time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s: %2$s',
                                 'commonsbooking', 5), $timeframe->ID, $timeframe->post_title));
 
                         return false;
                     } else {
                         set_transient("timeframeValidationFailed",
-                            sprintf(__('Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %s: %s',
+                            /* translators: first %s = timeframe-ID, second %s is timeframe post_title */
+                            sprintf(__('Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s: %2$s',
                                 'commonsbooking', 5), $timeframe->ID, $timeframe->post_title));
                         return false;
                     }
