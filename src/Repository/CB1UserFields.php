@@ -4,9 +4,9 @@
  * Adapted from CB1
  */
  
- 
 namespace CommonsBooking\Repository;
  
+use CommonsBooking\Settings\Settings;
  
 class CB1UserFields {
 
@@ -25,7 +25,8 @@ class CB1UserFields {
 	  add_action( 'edit_user_profile', 		 array( $this, 'show_extra_profile_fields' ));	
 	  add_action( 'show_user_profile', 		 array( $this, 'show_extra_profile_fields' ));	
 
-	$this->termsservices_url = get_option('commonsbooking_options_migration', 'cb1-terms-url');
+	 // = get_option('commonsbooking_options_migration', 'cb1-terms-url');
+	$this->termsservices_url = Settings::getOption('commonsbooking_options_migration', 'cb1-terms-url');
 
 	$this->registration_fields = array ( 
 	  'username', 

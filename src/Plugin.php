@@ -401,9 +401,8 @@ class Plugin
      */
     public static function maybeEnableCB1UserFields()
     {   
-        // $enabled = get_option( string $option, mixed $default = false ) 
         $enabled = Settings::getOption('commonsbooking_options_migration', 'enable-cb1-user-fields');
-        if ( $enabled ) {
+        if ( $enabled == 'on') {
             new CB1UserFields;
         }
     }
