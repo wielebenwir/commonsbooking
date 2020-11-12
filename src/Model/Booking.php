@@ -26,7 +26,7 @@ class Booking extends CustomPost
      * @throws \Exception
      */
     public function getLocation() {
-        $locationId = self::getMeta('location-id');
+        $locationId = $this->getMeta('location-id');
         if($post = get_post($locationId)) {
             return new Location($post);
         }
@@ -38,7 +38,7 @@ class Booking extends CustomPost
      * @throws \Exception
      */
     public function getItem() {
-        $itemId = self::getMeta('item-id');
+        $itemId = $this->getMeta('item-id');
 
         if($post = get_post($itemId)) {
             return new Item($post);
@@ -51,7 +51,7 @@ class Booking extends CustomPost
      * @return mixed
      */
     public function getBookingCode() {
-        return self::getMeta(CB_METABOX_PREFIX . 'bookingcode');
+        return $this->getMeta(CB_METABOX_PREFIX . 'bookingcode');
     }
 
 
@@ -60,8 +60,8 @@ class Booking extends CustomPost
      * @return mixed
      */
     public function renderBookingCodeEmail() {
-        if (self::getMeta(CB_METABOX_PREFIX . 'bookingcode')) {
-            return sprintf( __( 'Your booking code is: %s' , 'commonsbooking' ) , self::getMeta( CB_METABOX_PREFIX . 'bookingcode') ) ;
+        if ($this->getMeta(CB_METABOX_PREFIX . 'bookingcode')) {
+            return sprintf( __( 'Your booking code is: %s' , 'commonsbooking' ) , $this->getMeta( CB_METABOX_PREFIX . 'bookingcode') ) ;
         }
     }
 
@@ -120,9 +120,9 @@ class Booking extends CustomPost
      */
     private function sanitizeTimeField($fieldName) {
         $time = new \DateTime();
-        $fieldValue = self::getMeta('repetition-start');
+        $fieldValue = $this->getMeta('repetition-start');
         if($fieldName == "end-time") {
-            $fieldValue = self::getMeta('repetition-end');
+            $fieldValue = $this->getMeta('repetition-end');
         }
         $time->setTimestamp($fieldValue);
         return $time->format('H:i');
@@ -134,14 +134,14 @@ class Booking extends CustomPost
      * @throws \Exception
      */
     public function getBookableTimeFrame() {
-        $locationId = self::getMeta('location-id');
-        $itemId = self::getMeta('item-id');
+        $locationId = $this->getMeta('location-id');
+        $itemId = $this->getMeta('item-id');
 
         $response = Timeframe::get(
             [$locationId],
             [$itemId],
             [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID],
-            date(CB::getInternalDateFormat(), self::getMeta('repetition-start'))
+            date(CB::getInternalDateFormat(), $this->getMeta('repetition-start'))
         );
 
         if(count($response)) {

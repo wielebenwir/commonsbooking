@@ -109,67 +109,71 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     }
 
-    let picker = new Litepicker({
-        "element": document.getElementById('litepicker'),
-        "minDate": moment().format('YYYY-MM-DD'),
-        "inlineMode": true,
-        "firstDay": 1,
-        "lang": 'de-DE',
-        "numberOfMonths": numberOfMonths,
-        "numberOfColumns": numberOfColumns,
-        "moveByOneMonth": true,
-        "singleMode": false,
-        "showWeekNumbers": false,
-        "autoApply": true,
-        "bookedDaysInclusivity": "[]",
-        "anyBookedDaysAsCheckout": false,
-        "disallowBookedDaysInRange": true,
-        "disallowPartiallyBookedDaysInRange": true,
-        "disallowLockDaysInRange": true,
-        "mobileFriendly": true,
-        "selectForward": true,
-        "useResetBtn": true,
-        "maxDays": 3,
-        "buttonText": {
-            apply: 'Buchen',
-            cancel: 'Abbrechen',
-        },
-        onAutoApply: (datePicked) => {
-            if (datePicked) {
-                $('#booking-form').show();
-                $('.cb-notice.date-select').hide();
-            }
-        },
-        resetBtnCallback: () => {
-            $('#booking-form').hide();
-            $('.cb-notice.date-select').show();
-        },
-        onChangeMonth: function (date, idx) {
-            fadeOutCalendar()
-            const startDate = moment(date.format('YYYY-MM-DD')).format('YYYY-MM-DD');
-            // Last day of month before
-            const calStartDate = moment(date.format('YYYY-MM-DD')).date(0).format('YYYY-MM-DD');
-            // first day of next month selection
-            const calEndDate = moment(date.format('YYYY-MM-DD')).add(numberOfMonths, 'months').date(1).format('YYYY-MM-DD');
+    let picker = false;
 
-            $.post(
-                cb_ajax.ajax_url,
-                {
-                    _ajax_nonce: cb_ajax.nonce,
-                    action: "calendar_data",
-                    item: $('#booking-form input[name=item-id]').val(),
-                    location: $('#booking-form input[name=location-id]').val(),
-                    sd: calStartDate,
-                    ed: calEndDate
-                },
-                function (data) {
-                    updatePicker(data);
-                    picker.gotoDate(startDate);
+    const initPicker = () => {
+        picker = new Litepicker({
+            "element": document.getElementById('litepicker'),
+            "minDate": moment().format('YYYY-MM-DD'),
+            "inlineMode": true,
+            "firstDay": 1,
+            "lang": 'de-DE',
+            "numberOfMonths": numberOfMonths,
+            "numberOfColumns": numberOfColumns,
+            "moveByOneMonth": true,
+            "singleMode": false,
+            "showWeekNumbers": false,
+            "autoApply": true,
+            "bookedDaysInclusivity": "[]",
+            "anyBookedDaysAsCheckout": false,
+            "disallowBookedDaysInRange": true,
+            "disallowPartiallyBookedDaysInRange": true,
+            "disallowLockDaysInRange": true,
+            "mobileFriendly": true,
+            "selectForward": true,
+            "useResetBtn": true,
+            "maxDays": 3,
+            "buttonText": {
+                apply: 'Buchen',
+                cancel: 'Abbrechen',
+            },
+            onAutoApply: (datePicked) => {
+                if(datePicked) {
+                    $('#booking-form').show();
+                    $('.cb-notice.date-select').hide();
                 }
-            );
-        }
-    });
-    $('#litepicker .litepicker').hide();
+            },
+            resetBtnCallback: () => {
+                $('#booking-form').hide();
+                $('.cb-notice.date-select').show();
+            },
+            onChangeMonth: function(date, idx) {
+                fadeOutCalendar()
+                const startDate = moment(date.format('YYYY-MM-DD')).format('YYYY-MM-DD');
+                // Last day of month before
+                const calStartDate = moment(date.format('YYYY-MM-DD')).date(0).format('YYYY-MM-DD');
+                // first day of next month selection
+                const calEndDate = moment(date.format('YYYY-MM-DD')).add(numberOfMonths,'months').date(1).format('YYYY-MM-DD');
+
+                $.post(
+                    cb_ajax.ajax_url,
+                    {
+                        _ajax_nonce: cb_ajax.nonce,
+                        action: "calendar_data",
+                        item: $('#booking-form input[name=item-id]').val(),
+                        location: $('#booking-form input[name=location-id]').val(),
+                        sd: calStartDate,
+                        ed: calEndDate
+                    },
+                    function(data) {
+                        updatePicker(data);
+                        picker.gotoDate(startDate);
+                    }
+                );
+            }
+        });
+        $('#litepicker .litepicker').hide();
+    };
 
 
     // update datepicker data
@@ -237,29 +241,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
     };
 
     let bookingForm = $('#booking-form');
-    if (bookingForm.length) {
-        const startDate = moment().format('YYYY-MM-DD');
-        const calStartDate = moment().date(1).format('YYYY-MM-DD');
-        const calEndDate = moment().add(numberOfMonths + 2, 'months').date(0).format('YYYY-MM-DD');
-
-        if (typeof data !== 'undefined') {
+    if(bookingForm.length) {
+        if(typeof data !== 'undefined') {
+            initPicker();
             updatePicker(data);
         }
-
-        $.post(
-            cb_ajax.ajax_url,
-            {
-                _ajax_nonce: cb_ajax.nonce,
-                action: "calendar_data",
-                item: $('#booking-form input[name=item-id]').val(),
-                location: $('#booking-form input[name=location-id]').val(),
-                sd: calStartDate,
-                ed: calEndDate
-            },
-            function (data) {
-                updatePicker(data);
-                picker.gotoDate(startDate);
-            }
-        )
     }
 });
