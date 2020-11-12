@@ -823,43 +823,45 @@ class Timeframe extends CustomPostType
      */
     public static function addAdmindateFilter()
     {
-        $startDateInputName = 'admin_filter_startdate';
-        $endDateInputName = 'admin_filter_enddate';
+        if (isset($_GET['post_type']) && self::$postType == $_GET['post_type']) {
+            $startDateInputName = 'admin_filter_startdate';
+            $endDateInputName = 'admin_filter_enddate';
 
-        $from = ( isset( $_GET[$startDateInputName] ) && $_GET[$startDateInputName] ) ? $_GET[$startDateInputName] : '';
-        $to = ( isset( $_GET[$endDateInputName] ) && $_GET[$endDateInputName] ) ? $_GET[$endDateInputName] : '';
+            $from = ( isset( $_GET[$startDateInputName] ) && $_GET[$startDateInputName] ) ? $_GET[$startDateInputName] : '';
+            $to = ( isset( $_GET[$endDateInputName] ) && $_GET[$endDateInputName] ) ? $_GET[$endDateInputName] : '';
 
-        echo '<style>
-		    input[name=' . $startDateInputName . '], 
-		    input[name=' . $endDateInputName . ']{
-                line-height: 28px;
-                height: 28px;
-                margin: 0;
-                width:150px;
-            }
-		</style>
- 
-		<input type="text" name="' . $startDateInputName . '" placeholder="'. __('Repetition start', 'commonsbooking') .'" value="' . esc_attr( $from ) . '" />
-		<input type="text" name="' . $endDateInputName . '" placeholder="' . __('Repetition end', 'commonsbooking') . '" value="' . esc_attr( $to ) . '" />
- 
-		<script>
-		jQuery( function($) {
-			var from = $(\'input[name=' . $startDateInputName . ']\'),
-			    to = $(\'input[name=' . $endDateInputName . ']\');
- 
-			$(\'input[name=' . $startDateInputName . '], input[name=' . $endDateInputName . ']\' ).datepicker( 
-			    {
-                    dateFormat : "yy-mm-dd"
-			    }
-            );
-            from.on( \'change\', function() {
-				to.datepicker( \'option\', \'minDate\', from.val() );
-			}); 
-			to.on( \'change\', function() {
-				from.datepicker( \'option\', \'maxDate\', to.val() );
-			}); 
-		});
-		</script>';
+            echo '<style>
+                input[name=' . $startDateInputName . '], 
+                input[name=' . $endDateInputName . ']{
+                    line-height: 28px;
+                    height: 28px;
+                    margin: 0;
+                    width:150px;
+                }
+            </style>
+     
+            <input type="text" name="' . $startDateInputName . '" placeholder="'. __('Repetition start', 'commonsbooking') .'" value="' . esc_attr( $from ) . '" />
+            <input type="text" name="' . $endDateInputName . '" placeholder="' . __('Repetition end', 'commonsbooking') . '" value="' . esc_attr( $to ) . '" />
+     
+            <script>
+            jQuery( function($) {
+                var from = $(\'input[name=' . $startDateInputName . ']\'),
+                    to = $(\'input[name=' . $endDateInputName . ']\');
+     
+                $(\'input[name=' . $startDateInputName . '], input[name=' . $endDateInputName . ']\' ).datepicker( 
+                    {
+                        dateFormat : "yy-mm-dd"
+                    }
+                );
+                from.on( \'change\', function() {
+                    to.datepicker( \'option\', \'minDate\', from.val() );
+                }); 
+                to.on( \'change\', function() {
+                    from.datepicker( \'option\', \'maxDate\', to.val() );
+                }); 
+            });
+            </script>';
+        }
     }
 
     /**
