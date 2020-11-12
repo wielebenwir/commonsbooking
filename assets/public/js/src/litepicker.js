@@ -53,16 +53,25 @@ document.addEventListener("DOMContentLoaded", function (event) {
         return 'landscape';
     }
 
+    // Init start date selection
     const initStartSelect = (date) => {
         const day1 = data['days'][moment(date).format('YYYY-MM-DD')];
         const startDate = moment(date).format('DD.MM.YYYY');
 
+        // Hide select hint for start, show for end again
+        $('.time-selection.repetition-start').find('.hint-selection').hide();
+        $('.time-selection.repetition-end').find('.hint-selection').show();
+
+        // Hide end date selection if new start date was chosen
         let endSelectData = $('#booking-form select[name=repetition-end], #booking-form .time-selection.repetition-end .date');
         endSelectData.hide();
 
+        // update select slots
         let startSelect = $('#booking-form select[name=repetition-start]');
         $('.time-selection.repetition-start span.date').text(startDate);
         updateSelectSlots(startSelect, day1['slots'], 'start', day1['fullDay']);
+
+        // hide time selection if we have a full day slot
         if (day1['fullDay']) {
             $('.time-selection.repetition-start').find('select').hide();
         } else {
@@ -70,24 +79,29 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     }
 
+    // Init end date selection
     const initEndSelect = (date) => {
         const day2 = data['days'][moment(date).format('YYYY-MM-DD')];
         const endDate = moment(date).format('DD.MM.YYYY');
 
+        // Hide select hint
+        $('.time-selection.repetition-end').find('.hint-selection').hide();
+
+        // update select slots
         let endSelect = $('#booking-form select[name=repetition-end]');
         $('.time-selection.repetition-end span.date').text(endDate);
         updateSelectSlots(endSelect, day2['slots'], 'end', day2['fullDay']);
 
+        // show end date selection if new start date was chosen
         let endSelectData = $('#booking-form select[name=repetition-end], #booking-form .time-selection.repetition-end .date');
         endSelectData.show();
 
+        // hide time selection if we have a full day slot
         if (day2['fullDay']) {
             $('.time-selection.repetition-end').find('select').hide();
         } else {
             $('.time-selection.repetition-end').find('select').show();
         }
-
-
     }
 
     // init datepicker
@@ -191,7 +205,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 "highlightedDays": data['highlightedDays'],
                 "holidays": data['holidays'],
                 onDayHover: function (date, attributes) {
-
                     if (
                         $.inArray('is-start-date', attributes) > -1 ||
                         $.inArray('is-end-date', attributes) > -1

@@ -28,4 +28,17 @@
     if(!array_key_exists('item', $templateData) && !array_key_exists('items', $templateData)) { ?>
         <div class="cb-status cb-availability-status cb-no-residency"><?php echo ( $noResultText );
     }
+    if(!is_user_logged_in()) {
+        $current_url = $_SERVER['REQUEST_URI'];
 ?>
+        <div class="cb-notice">
+<?php
+            printf(
+                /* translators: %1$s: wp_login_url, 1$s: wp_registration_url */
+                __( 'To be able to book, you must first <a href="%1$s">login</a> or <a href="%2$s">register as new user</a>.', 'commonsbooking' ),
+                esc_url( wp_login_url( $current_url ) ), esc_url( wp_registration_url() )
+            );
+?>
+        </div>
+<?php
+    }
