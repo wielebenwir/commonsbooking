@@ -1432,7 +1432,7 @@
         anyBookedDaysAsCheckout: !1,
         disallowBookedDaysInRange: !0,
         disallowPartiallyBookedDaysInRange: !0,
-        disallowLockDaysInRange: !0,
+        disallowLockDaysInRange: !1,
         mobileFriendly: !0,
         selectForward: !0,
         useResetBtn: !0,

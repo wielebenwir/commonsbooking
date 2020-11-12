@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             "anyBookedDaysAsCheckout": false,
             "disallowBookedDaysInRange": true,
             "disallowPartiallyBookedDaysInRange": true,
-            "disallowLockDaysInRange": true,
+            "disallowLockDaysInRange": false,
             "mobileFriendly": true,
             "selectForward": true,
             "useResetBtn": true,
