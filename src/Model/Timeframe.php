@@ -79,7 +79,7 @@ class Timeframe extends CustomPost
      */
     public function getStartDate()
     {
-        $startDate = self::getMeta('repetition-start');
+        $startDate = $this->getMeta('repetition-start');
 
         if((string) intval($startDate) !== $startDate) {
             $startDate = strtotime($startDate);
@@ -94,7 +94,7 @@ class Timeframe extends CustomPost
      */
     public function getEndDate()
     {
-        $endDate = self::getMeta('repetition-end');
+        $endDate = $this->getMeta('repetition-end');
         if((string) intval($endDate) !== $endDate) {
             $endDate = strtotime($endDate);
         }
@@ -129,7 +129,7 @@ class Timeframe extends CustomPost
      */
     public function getLocation()
     {
-        $locationId = self::getMeta('location-id');
+        $locationId = $this->getMeta('location-id');
         if ($post = get_post($locationId)) {
             return new Location($post);
         }
@@ -143,7 +143,7 @@ class Timeframe extends CustomPost
      */
     public function getItem()
     {
-        $itemId = self::getMeta('item-id');
+        $itemId = $this->getMeta('item-id');
 
         if ($post = get_post($itemId)) {
             return new Item($post);
@@ -158,7 +158,7 @@ class Timeframe extends CustomPost
      */
     public function getType()
     {
-        return self::getMeta('type');
+        return $this->getMeta('type');
     }
 
     /**
@@ -243,7 +243,7 @@ class Timeframe extends CustomPost
      */
     public function getStartTime()
     {
-        return self::getMeta('start-time');
+        return $this->getMeta('start-time');
     }
 
     /**
@@ -252,7 +252,7 @@ class Timeframe extends CustomPost
      */
     public function getEndTime()
     {
-        return self::getMeta('end-time');
+        return $this->getMeta('end-time');
     }
 
     /**
@@ -291,7 +291,7 @@ class Timeframe extends CustomPost
      */
     public function getGrid()
     {
-        return self::getMeta('grid');
+        return $this->getMeta('grid');
     }
 
     /**
