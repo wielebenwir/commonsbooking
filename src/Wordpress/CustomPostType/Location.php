@@ -3,6 +3,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Repository\UserRepository;
+use CommonsBooking\Settings\Settings;
 
 class Location extends CustomPostType
 {
@@ -63,6 +64,8 @@ class Location extends CustomPostType
             'menu_name'             => __('Locations', 'commonsbooking'),
         );
 
+        $slug = Settings::getOption('commonsbooking_options_general', 'posttypes_locations-slug');
+
         // args for the new post_type
         return array(
             'labels'            => $labels,
@@ -111,7 +114,7 @@ class Location extends CustomPostType
 
             // Slug unseres Post Types für die redirects
             // dieser Wert wird später in der URL stehen
-            'rewrite'             => array('slug' => self::getPostType())
+            'rewrite'             => array('slug' => $slug)
         );
     }
 
