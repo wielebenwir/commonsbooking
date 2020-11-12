@@ -3810,7 +3810,7 @@
   --litepickerDayColorBg: #74ce3c;
   --litepickerDayColorHover: #506CA9;
   --litepickerDayIsTodayColor: #f44336;
-  --litepickerDayIsInRange: #bbdefb;
+  --litepickerDayIsInRange: #2096f3;
   --litepickerDayIsLockedColor: #9e9e9e;
   --litepickerDayIsLockedColorBg: transparent;
   --litepickerDayIsHolidayColor: #000000;
@@ -4008,7 +4008,7 @@
 @media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003227}}
 .litepicker .container__days .day-item {
   color: var(--litepickerDayColor);
-  border-style: none;
+  border-style: solid;
   background-color: var(--litepickerDayColorBg);
   text-align: center;
   text-decoration: none;
@@ -4051,10 +4051,11 @@
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003277}}
 .litepicker .container__days .day-item.is-in-range {
+  color: var(--litepickerDayIsStartColor);
   background-color: var(--litepickerDayIsInRange);
   border-radius: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003282}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003283}}
 .litepicker .container__days .day-item.is-start-date {
   color: var(--litepickerDayIsStartColor);
   background: var(--litepickerDayIsStartBg) !important;
@@ -4064,14 +4065,14 @@
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003291}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003292}}
 .litepicker .container__days .day-item.is-start-date.is-flipped {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003299}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003300}}
 .litepicker .container__days .day-item.is-end-date {
   color: var(--litepickerDayIsEndColor);
   background: var(--litepickerDayIsEndBg) !important;
@@ -4081,49 +4082,49 @@
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003308}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003309}}
 .litepicker .container__days .day-item.is-end-date.is-flipped {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003316}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003317}}
 .litepicker .container__days .day-item.is-start-date.is-end-date {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003323}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003324}}
 .litepicker .container__days .day-item.is-highlighted {
   color: var(--litepickerHighlightedDayColor);
   background: var(--litepickerHighlightedDayBg) !important;
   background-color: var(--litepickerHighlightedDayBg);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003329}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003330}}
 .litepicker .container__days .day-item.is-booked {
   color: var(--litepickerDayIsBookedColor);
   background-color: var(--litepickerDayIsBookedColorBg);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003333}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003334}}
 .litepicker .container__days .day-item.is-booked:hover {
   color: var(--litepickerDayIsBookedColor);
   box-shadow: none;
   cursor: default;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003340}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003341}}
 .litepicker .container__days .day-item.is-locked {
   color: var(--litepickerDayIsLockedColor);
   background: var(--litepickerDayIsLockedColorBg) !important;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003344}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003345}}
 .litepicker .container__days .day-item.is-locked:hover {
   cursor: not-allowed;
   color: var(--litepickerDayIsLockedColor);
   box-shadow: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003352}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003353}}
 .litepicker .container__days .week-number {
   display: flex;
   align-items: center;
@@ -4131,7 +4132,7 @@
   color: #9e9e9e;
   font-size: 85%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003361}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003362}}
 .litepicker .container__footer {
   text-align: right;
   padding: 10px 5px;
@@ -4141,12 +4142,12 @@
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003370}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003371}}
 .litepicker .container__footer .preview-date-range {
   margin-right: 10px;
   font-size: 90%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003375}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003376}}
 .litepicker .container__footer .button-cancel {
   background-color: var(--litepickerButtonCancelBg);
   color: var(--litepickerButtonCancelColor);
@@ -4154,12 +4155,12 @@
   padding: 3px 7px 4px;
   border-radius: 3px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003382}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003383}}
 .litepicker .container__footer .button-cancel > svg,
 .litepicker .container__footer .button-cancel > img {
   pointer-events: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003388}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003389}}
 .litepicker .container__footer .button-apply {
   background-color: var(--litepickerButtonApplyBg);
   color: var(--litepickerButtonApplyColor);
@@ -4169,16 +4170,16 @@
   margin-left: 10px;
   margin-right: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003397}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003398}}
 .litepicker .container__footer .button-apply:disabled {
   opacity: 0.7;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003401}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003402}}
 .litepicker .container__footer .button-apply > svg,
 .litepicker .container__footer .button-apply > img {
   pointer-events: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003408}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003409}}
 .litepicker .container__tooltip {
   position: absolute;
   margin-top: -4px;
@@ -4191,7 +4192,7 @@
   pointer-events: none;
   visibility: hidden;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003420}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003421}}
 .litepicker .container__tooltip:before {
   position: absolute;
   bottom: -5px;
@@ -4201,7 +4202,7 @@
   border-left: 5px solid transparent;
   content: "";
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003430}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003431}}
 .litepicker .container__tooltip:after {
   position: absolute;
   bottom: -4px;
@@ -4211,11 +4212,11 @@
   border-left: 4px solid transparent;
   content: "";
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003442}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003443}}
 .litepicker-open {
   overflow: hidden;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003446}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003447}}
 .litepicker-backdrop {
   display: none;
   background-color: #000;
@@ -4227,7 +4228,7 @@
   left: 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003460}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_calendar\.scss}line{font-family:\00003461}}
 #booking-form #fullDayInfo {
   clear: left;
 }
