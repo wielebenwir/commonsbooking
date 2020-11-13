@@ -20,17 +20,17 @@
             <div class="time-selection-container">
                 <div class="time-selection repetition-start">
                     <label for="repetition-start">
-                        <?php echo __('Pickup time', 'commonsbooking'); ?>:
+                        <?php echo __('Pickup', 'commonsbooking'); ?>:
                     </label>
-                    <span class="hint-selection"><?php echo __('Please select', 'commonsbooking'); ?></span>
+                    <span class="hint-selection"><?php echo __('Please select the pickup date in the calendar', 'commonsbooking'); ?></span>
                     <span class="date"></span>
                     <select style="display: none" id="repetition-start" name="repetition-start"></select>
                 </div>
                   <div class="time-selection repetition-end">
                     <label for="repetition-end">
-                        <?php echo __('Return time', 'commonsbooking'); ?>:
+                        <?php echo __('Return', 'commonsbooking'); ?>:
                     </label>
-                    <span class="hint-selection"><?php echo __('Please select', 'commonsbooking'); ?></span>
+                    <span class="hint-selection"><?php echo __('Please select the return date in the calendar', 'commonsbooking'); ?></span>
                     <span class="date"></span>
                     <select style="display: none" id="repetition-end" name="repetition-end"></select>
                 </div>
@@ -38,7 +38,7 @@
             </div>
             <?php
             if(is_user_logged_in()) { ?>
-                <input type="submit" value="<?php echo __('Continue to check booking data', 'commonsbooking'); ?>" />
+                <input type="submit" value="<?php echo __('Continue to check booking', 'commonsbooking'); ?>" />
             <?php } ?>
         </form>
     </div>
