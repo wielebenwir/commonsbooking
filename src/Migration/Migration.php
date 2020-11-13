@@ -7,6 +7,7 @@ namespace CommonsBooking\Migration;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\CB1;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
@@ -26,7 +27,8 @@ class Migration
             'items'        => 0,
             'timeframes'   => 0,
             'bookings'     => 0,
-            'bookingCodes' => 0
+            'bookingCodes' => 0, 
+            'termsUrl'     => 0
         ];
 
         foreach (CB1::getLocations() as $location) {
@@ -58,7 +60,10 @@ class Migration
                 $results['bookingCodes'] += 1;
             }
         }
-
+        
+        if (self::migrateUserAgreementUrl()) {
+            $results['termsUrl'] += 1;
+        }        
         return $results;
     }
 
@@ -298,6 +303,24 @@ class Migration
         );
 
         return BookingCodes::persist($bookingCode);
+    }    
+    /**
+     * Migrates CB1 user agreement url option to CB2.
+     * Only relevant for legacy user profile.
+     *
+     * @return mixed
+     */
+    public static function migrateUserAgreementUrl()
+    {
+        $cb1_url = Settings::getOption ('commons-booking-settings-pages', 'commons-booking_termsservices_url');
+        
+        $options_array = array(
+            'cb1-terms-url' => $cb1_url
+
+        );
+        
+        update_option('commonsbooking_options_migration', $options_array);
+        return TRUE;
     }
 
 }

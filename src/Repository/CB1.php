@@ -33,6 +33,19 @@ class CB1
     public static $TIMEFRAMES_TABLE = 'cb_timeframes';
 
     /**
+     * @return bool
+     */
+    public static function isInstalled()
+    {    
+        $option_set_by_cb1 = get_option('commons-booking-settings-pages'); // we check for pages, since they have to be set up for the plugin to function. 
+        
+        if ( $option_set_by_cb1 ) { 
+            return TRUE;
+        } else { 
+            return FALSE;
+        }
+    }
+    /**
      * @param $postType
      *
      * @return array
@@ -180,6 +193,14 @@ class CB1
             return $result[0]->post_id;
         }
         return false;
+    }
+    
+    /**
+     * @return 
+     */
+    public static function enableLegacyUserRegistrationFields()
+    {    
+        
     }
 
 }
