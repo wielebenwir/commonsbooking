@@ -95,6 +95,8 @@ class Migration
                 'commons-booking_location_adress_country', true),
             CB_METABOX_PREFIX . 'location_contact'  => get_post_meta($location->ID,
                 'commons-booking_location_contactinfo_text', true),
+            CB_METABOX_PREFIX . 'location_pickupinstructions'  => get_post_meta($location->ID,
+            'commons-booking_location_openinghours', true),
             CB_METABOX_PREFIX . 'cb1_post_post_ID'  => $location->ID,
             '_thumbnail_id' => get_post_meta($location->ID, '_thumbnail_id', true)
         ];
