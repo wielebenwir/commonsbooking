@@ -3,6 +3,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Repository\UserRepository;
+use CommonsBooking\Settings\Settings;
 
 class Item extends CustomPostType
 {
@@ -59,6 +60,7 @@ class Item extends CustomPostType
 
         );
 
+        $slug = Settings::getOption('commonsbooking_options_general', 'posttypes_items-slug');
         // args for the new post_type
         return array(
             'labels'              => $labels,
@@ -105,7 +107,7 @@ class Item extends CustomPostType
 
             // Slug unseres Post Types für die redirects
             // dieser Wert wird später in der URL stehen
-            'rewrite'             => array('slug' => self::getPostType()),
+            'rewrite'             => array('slug' => $slug),
         );
     }
 

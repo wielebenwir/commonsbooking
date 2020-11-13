@@ -109,6 +109,7 @@ class Timeframe extends CustomPostType
         add_action('restrict_manage_posts', array(self::class, 'addAdminItemFilter'));
         add_action('restrict_manage_posts', array(self::class, 'addAdminLocationFilter'));
         add_action('restrict_manage_posts', array(self::class, 'addAdminStatusFilter'));
+        add_action('restrict_manage_posts', array(self::class, 'addAdminDateFilter'));
         add_action('pre_get_posts', array($this, 'filterAdminList'));
 
         // Setting role permissions
@@ -818,6 +819,52 @@ class Timeframe extends CustomPostType
     }
 
     /**
+     * Adds filter dropdown // filter by location in timeframe List
+     */
+    public static function addAdmindateFilter()
+    {
+        if (isset($_GET['post_type']) && self::$postType == $_GET['post_type']) {
+            $startDateInputName = 'admin_filter_startdate';
+            $endDateInputName = 'admin_filter_enddate';
+
+            $from = ( isset( $_GET[$startDateInputName] ) && $_GET[$startDateInputName] ) ? $_GET[$startDateInputName] : '';
+            $to = ( isset( $_GET[$endDateInputName] ) && $_GET[$endDateInputName] ) ? $_GET[$endDateInputName] : '';
+
+            echo '<style>
+                input[name=' . $startDateInputName . '], 
+                input[name=' . $endDateInputName . ']{
+                    line-height: 28px;
+                    height: 28px;
+                    margin: 0;
+                    width:150px;
+                }
+            </style>
+     
+            <input type="text" name="' . $startDateInputName . '" placeholder="'. __('Repetition start', 'commonsbooking') .'" value="' . esc_attr( $from ) . '" />
+            <input type="text" name="' . $endDateInputName . '" placeholder="' . __('Repetition end', 'commonsbooking') . '" value="' . esc_attr( $to ) . '" />
+     
+            <script>
+            jQuery( function($) {
+                var from = $(\'input[name=' . $startDateInputName . ']\'),
+                    to = $(\'input[name=' . $endDateInputName . ']\');
+     
+                $(\'input[name=' . $startDateInputName . '], input[name=' . $endDateInputName . ']\' ).datepicker( 
+                    {
+                        dateFormat : "yy-mm-dd"
+                    }
+                );
+                from.on( \'change\', function() {
+                    to.datepicker( \'option\', \'minDate\', from.val() );
+                }); 
+                to.on( \'change\', function() {
+                    from.datepicker( \'option\', \'maxDate\', to.val() );
+                }); 
+            });
+            </script>';
+        }
+    }
+
+    /**
      * Renders backend list filter.
      *
      * @param $label
@@ -885,6 +932,31 @@ class Timeframe extends CustomPostType
                 }
             }
 
+            // Timerange filtering
+            // Start date
+            if (
+                isset($_GET['admin_filter_startdate']) &&
+                $_GET['admin_filter_startdate'] != ''
+            ) {
+                $query->query_vars['meta_query'][] = array(
+                    'key'   => 'repetition-start',
+                    'value' => strtotime($_GET['admin_filter_startdate']),
+                    'compare' => ">="
+                );
+            }
+
+            // End date
+            if (
+                isset($_GET['admin_filter_enddate']) &&
+                $_GET['admin_filter_enddate'] != ''
+            ) {
+                $query->query_vars['meta_query'][] = array(
+                    'key'   => 'repetition-end',
+                    'value' => strtotime($_GET['admin_filter_enddate']),
+                    'compare' => "<="
+                );
+            }
+            
             // Post field filtering
             $post_filters = [
                 'post_status' => 'admin_filter_post_status'
@@ -900,6 +972,5 @@ class Timeframe extends CustomPostType
 
         }
     }
-
 
 }
