@@ -2,14 +2,14 @@
  * @TODO: Reduce redundancy, use state machine
  */
 
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function (event) {
 
     const fadeOutCalendar = () => {
-        $('#litepicker .litepicker .container__days').css('visibility','hidden');
+        $('#litepicker .litepicker .container__days').css('visibility', 'hidden');
     }
 
     const fadeInCalendar = () => {
-        $('#litepicker .litepicker .container__days').fadeTo('fast',1);
+        $('#litepicker .litepicker .container__days').fadeTo('fast', 1);
     }
 
     // Updates Time-selects so that no wrong time ranges can be selected
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         startSelect.change(function () {
             const startValue = $(this).val();
             endSelect.find('option').each(function () {
-                if($(this).val() < startValue) {
+                if ($(this).val() < startValue) {
                     $(this).attr('disabled', 'disabled');
                     $(this).prop("selected", false)
                 } else {
@@ -33,8 +33,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     // Updates select options by time slots array
     const updateSelectSlots = (select, slots, type = 'start', fullday = false) => {
-        select.empty().attr('required','required');
-        $.each(slots, function(index, slot) {
+        select.empty().attr('required', 'required');
+        $.each(slots, function (index, slot) {
             select.append(
                 new Option(slot['timestart'] + ' - ' + slot['timeend'], slot['timestamp' + type], fullday, fullday)
             );
@@ -53,11 +53,62 @@ document.addEventListener("DOMContentLoaded", function(event) {
         return 'landscape';
     }
 
+    // Init start date selection
+    const initStartSelect = (date) => {
+        const day1 = data['days'][moment(date).format('YYYY-MM-DD')];
+        const startDate = moment(date).format('DD.MM.YYYY');
+
+        // Hide select hint for start, show for end again
+        $('.time-selection.repetition-start').find('.hint-selection').hide();
+        $('.time-selection.repetition-end').find('.hint-selection').show();
+
+        // Hide end date selection if new start date was chosen
+        let endSelectData = $('#booking-form select[name=repetition-end], #booking-form .time-selection.repetition-end .date');
+        endSelectData.hide();
+
+        // update select slots
+        let startSelect = $('#booking-form select[name=repetition-start]');
+        $('.time-selection.repetition-start span.date').text(startDate);
+        updateSelectSlots(startSelect, day1['slots'], 'start', day1['fullDay']);
+
+        // hide time selection if we have a full day slot
+        if (day1['fullDay']) {
+            $('.time-selection.repetition-start').find('select').hide();
+        } else {
+            $('.time-selection.repetition-start').find('select').show();
+        }
+    }
+
+    // Init end date selection
+    const initEndSelect = (date) => {
+        const day2 = data['days'][moment(date).format('YYYY-MM-DD')];
+        const endDate = moment(date).format('DD.MM.YYYY');
+
+        // Hide select hint
+        $('.time-selection.repetition-end').find('.hint-selection').hide();
+
+        // update select slots
+        let endSelect = $('#booking-form select[name=repetition-end]');
+        $('.time-selection.repetition-end span.date').text(endDate);
+        updateSelectSlots(endSelect, day2['slots'], 'end', day2['fullDay']);
+
+        // show end date selection if new start date was chosen
+        let endSelectData = $('#booking-form select[name=repetition-end], #booking-form .time-selection.repetition-end .date');
+        endSelectData.show();
+
+        // hide time selection if we have a full day slot
+        if (day2['fullDay']) {
+            $('.time-selection.repetition-end').find('select').hide();
+        } else {
+            $('.time-selection.repetition-end').find('select').show();
+        }
+    }
+
     // init datepicker
     let numberOfMonths = 2;
     let numberOfColumns = 2;
 
-    if(isMobile()) {
+    if (isMobile()) {
         switch (screen.orientation.angle) {
             case -90:
             case 90:
@@ -153,35 +204,44 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 "partiallyBookedDays": data['partiallyBookedDays'],
                 "highlightedDays": data['highlightedDays'],
                 "holidays": data['holidays'],
-                onSelect: function(date1, date2) {
+                onDayHover: function (date, attributes) {
+                    if (
+                        $.inArray('is-start-date', attributes) > -1 ||
+                        $.inArray('is-end-date', attributes) > -1
+                    ) {
+                        let bookingForm = $('#booking-form');
+                        bookingForm.show();
+
+                        // Start-Date selected or End-Date == Start-Date selected
+                        if ($.inArray('is-start-date', attributes) > -1) {
+                            initStartSelect(date);
+                            // Start-Date !== End-Date
+                            if ($.inArray('is-end-date', attributes) == -1) {
+                                $('.cb-notice.date-select').hide();
+                            } else {
+                                // Init End-Select if Start-Date == End-Date
+                                initEndSelect(date);
+                            }
+                        } else {
+                            // End-Date Selected
+                            if ($.inArray('is-end-date', attributes) > -1) {
+                                initEndSelect(date);
+                            }
+                        }
+                    }
+                },
+                onSelect: function (date1, date2) {
                     let bookingForm = $('#booking-form');
                     bookingForm.show();
                     $('.cb-notice.date-select').hide();
-                    
+
                     const day1 = data['days'][moment(date1).format('YYYY-MM-DD')];
                     const day2 = data['days'][moment(date2).format('YYYY-MM-DD')];
-                    const startDate = moment(date1).format('DD.MM.YYYY');
-                    const endDate = moment(date2).format('DD.MM.YYYY');
 
-                    let startSelect = $('#booking-form select[name=repetition-start]');
-                    $('.time-selection.repetition-start span.date').text(startDate);
-                    updateSelectSlots(startSelect, day1['slots'], 'start', day1['fullDay']);
-                    if(day1['fullDay']) {
-                        $('.time-selection.repetition-start').find('label, select').hide();
-                    } else {
-                        $('.time-selection.repetition-start').find('label, select').show();
-                    }
+                    initStartSelect(date1);
+                    initEndSelect(date2);
 
-                    let endSelect = $('#booking-form select[name=repetition-end]');
-                    $('.time-selection.repetition-end span.date').text(endDate);
-                    updateSelectSlots(endSelect, day2['slots'], 'end', day2['fullDay']);
-                    if(day2['fullDay']) {
-                        $('.time-selection.repetition-end').find('label, select').hide();
-                    } else {
-                        $('.time-selection.repetition-end').find('label, select').show();
-                    }
-
-                    if(!day1['fullDay'] || !day2['fullDay']) {
+                    if (!day1['fullDay'] || !day2['fullDay']) {
                         $('#fullDayInfo').text('');
                         initSelectHandler();
                     } else {
