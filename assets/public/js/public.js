@@ -1417,7 +1417,7 @@
             highlightedDays: data.highlightedDays,
             holidays: data.holidays,
             onDayHover: function(date, attributes) {
-                if (console.log(date), $.inArray("is-start-date", attributes) > -1 || $.inArray("is-end-date", attributes) > -1) {
+                if ($.inArray("is-start-date", attributes) > -1 || $.inArray("is-end-date", attributes) > -1) {
                     $("#booking-form").show(), $.inArray("is-start-date", attributes) > -1 ? (initStartSelect(date), 
                     -1 == $.inArray("is-end-date", attributes) ? $(".cb-notice.date-select").hide() : initEndSelect(date)) : $.inArray("is-end-date", attributes) > -1 && initEndSelect(date);
                 }
