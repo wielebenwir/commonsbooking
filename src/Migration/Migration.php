@@ -67,6 +67,19 @@ class Migration
         return $results;
     }
 
+    
+    /**
+     * fetchEmails
+     * extract mails from a given string and return an array with email addresses
+     * 
+     * @param  mixed $text
+     * @return ARRAY
+     */
+    public static function fetchEmails($text) {
+        $words = str_word_count($text, 1, '.@-_');
+        return array_filter($words, function($word) {return filter_var($word, FILTER_VALIDATE_EMAIL);});
+    }
+
     /**
      * @param \WP_Post $location CB1 Location
      *
@@ -83,6 +96,11 @@ class Migration
         // Remove existing post id
         unset($postData['ID']);
 
+        // Exctract e-mails from CB1 contactinfo field so we can migrate it into new cb2 field _cb_location_email
+        $cb1_location_emails = self::fetchEmails( get_post_meta( $location->ID, 'commons-booking_location_contactinfo_text', true ) );
+        $cb1_location_email_string = implode(',', $cb1_location_emails);
+
+
         // CB2 <-> CB1
         $postMeta = [
             CB_METABOX_PREFIX . 'location_street'   => get_post_meta($location->ID,
@@ -97,6 +115,7 @@ class Migration
                 'commons-booking_location_contactinfo_text', true),
             CB_METABOX_PREFIX . 'location_pickupinstructions'  => get_post_meta($location->ID,
             'commons-booking_location_openinghours', true),
+            CB_METABOX_PREFIX . 'location_email'  => $cb1_location_email_string,
             CB_METABOX_PREFIX . 'cb1_post_post_ID'  => $location->ID,
             '_thumbnail_id' => get_post_meta($location->ID, '_thumbnail_id', true)
         ];
