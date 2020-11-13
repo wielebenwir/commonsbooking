@@ -98,7 +98,12 @@ class Migration
 
         // Exctract e-mails from CB1 contactinfo field so we can migrate it into new cb2 field _cb_location_email
         $cb1_location_emails = self::fetchEmails( get_post_meta( $location->ID, 'commons-booking_location_contactinfo_text', true ) );
-        $cb1_location_email_string = implode(',', $cb1_location_emails);
+
+        if ($cb1_location_emails) {
+            $cb1_location_email_string = implode(',', $cb1_location_emails);
+        } else {
+            $cb1_location_email_string = '';
+        }
 
 
         // CB2 <-> CB1
