@@ -39,7 +39,7 @@ class Location extends BookablePost
     public function formattedAddress()
     {
         $location = array (
-            CB::get('location', 'name', $this->post->ID),
+            CB::get('location', 'post_name', $this->post->ID),
             CB::get('location', CB_METABOX_PREFIX . 'location_street', $this->post->ID),
             CB::get('location', CB_METABOX_PREFIX . 'location_postcode', $this->post->ID),
             CB::get('location', CB_METABOX_PREFIX . 'location_city', $this->post->ID),
