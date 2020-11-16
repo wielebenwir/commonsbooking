@@ -230,7 +230,10 @@ abstract class CustomPostType
                 }
 
                 $orderby = $query->get('orderby');
-                if (in_array($orderby, array_keys($this->listColumns))) {
+                if (
+                    strpos($orderby, 'post_') === false &&
+                    in_array($orderby, array_keys($this->listColumns))
+                ) {
                     $query->set('meta_key', $orderby);
                     $query->set('orderby', 'meta_value');
                 }
