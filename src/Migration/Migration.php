@@ -7,6 +7,7 @@ namespace CommonsBooking\Migration;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\CB1;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
@@ -26,7 +27,8 @@ class Migration
             'items'        => 0,
             'timeframes'   => 0,
             'bookings'     => 0,
-            'bookingCodes' => 0
+            'bookingCodes' => 0, 
+            'termsUrl'     => 0
         ];
 
         foreach (CB1::getLocations() as $location) {
@@ -58,8 +60,24 @@ class Migration
                 $results['bookingCodes'] += 1;
             }
         }
-
+        
+        if (self::migrateUserAgreementUrl()) {
+            $results['termsUrl'] += 1;
+        }        
         return $results;
+    }
+
+    
+    /**
+     * fetchEmails
+     * extract mails from a given string and return an array with email addresses
+     * 
+     * @param  mixed $text
+     * @return ARRAY
+     */
+    public static function fetchEmails($text) {
+        $words = str_word_count($text, 1, '.@-_');
+        return array_filter($words, function($word) {return filter_var($word, FILTER_VALIDATE_EMAIL);});
     }
 
     /**
@@ -78,6 +96,16 @@ class Migration
         // Remove existing post id
         unset($postData['ID']);
 
+        // Exctract e-mails from CB1 contactinfo field so we can migrate it into new cb2 field _cb_location_email
+        $cb1_location_emails = self::fetchEmails( get_post_meta( $location->ID, 'commons-booking_location_contactinfo_text', true ) );
+
+        if ($cb1_location_emails) {
+            $cb1_location_email_string = implode(',', $cb1_location_emails);
+        } else {
+            $cb1_location_email_string = '';
+        }
+
+
         // CB2 <-> CB1
         $postMeta = [
             CB_METABOX_PREFIX . 'location_street'   => get_post_meta($location->ID,
@@ -90,6 +118,9 @@ class Migration
                 'commons-booking_location_adress_country', true),
             CB_METABOX_PREFIX . 'location_contact'  => get_post_meta($location->ID,
                 'commons-booking_location_contactinfo_text', true),
+            CB_METABOX_PREFIX . 'location_pickupinstructions'  => get_post_meta($location->ID,
+            'commons-booking_location_openinghours', true),
+            CB_METABOX_PREFIX . 'location_email'  => $cb1_location_email_string,
             CB_METABOX_PREFIX . 'cb1_post_post_ID'  => $location->ID,
             '_thumbnail_id' => get_post_meta($location->ID, '_thumbnail_id', true)
         ];
@@ -298,6 +329,24 @@ class Migration
         );
 
         return BookingCodes::persist($bookingCode);
+    }    
+    /**
+     * Migrates CB1 user agreement url option to CB2.
+     * Only relevant for legacy user profile.
+     *
+     * @return mixed
+     */
+    public static function migrateUserAgreementUrl()
+    {
+        $cb1_url = Settings::getOption ('commons-booking-settings-pages', 'commons-booking_termsservices_url');
+        
+        $options_array = array(
+            'cb1-terms-url' => $cb1_url
+
+        );
+        
+        update_option('commonsbooking_options_migration', $options_array);
+        return TRUE;
     }
 
 }

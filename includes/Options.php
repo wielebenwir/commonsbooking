@@ -21,7 +21,7 @@ $options_array = array(
                 You are using CommonsBooking Version ' . CB_VERSION . '
 
                 <h2>How to start</h2>
-                <p>To get startet visit our tutorials and documentation on <a href="https://commonsbooking.org/documentation">https://commonsbooking.org/documentation</a></p>
+                <p>To get startet visit our tutorials and documentation on <a href="https://commonsbooking.org/docs">https://commonsbooking.org/docs</a></p>
 
                 <h2>Questions or bug reports?</h2>
                 <p>Ask your questions or send us your bug reports here https://commonsbooking.org/support</p>
@@ -36,123 +36,123 @@ $options_array = array(
         )
     ),
 
-    'bookingcodes' => array(
-       'title' => __( 'Booking Codes', 'commonsbooking' ),
-       'id' => 'general',
-       'field_groups' => array (
-         /* posttype: naming, rewrite, archives start */
-         'bookingcodes' => array(
-           'title' => __( 'Booking Codes', 'commonsbooking' ),
-           'id' => 'bookingcodes',
-           'desc' => '',
-           'fields' => array(
-             array(
-               'name'    => __( 'Booking Codes', 'commonsbooking' ),
-               'id'      => 'bookingcodes',
-               'type'    => 'textarea',
-             ),
-           )
-         )
-       )
-    ),
-
     /* Tab: main end*/
 
     // /* Tab: general start*/
-    // 'general' => array(
-    //   'title' => __( 'General', 'commonsbooking' ),
-    //   'id' => 'general',
-    //   'field_groups' => array (
-    //     /* posttype: naming, rewrite, archives start */
-    //     'posttypes' => array(
-    //       'title' => __( 'Naming and permalinks', 'commonsbooking' ),
-    //       'id' => 'posttypes',
-    //       'desc' => 'Customize names & slugs.',
-    //       'fields' => array(
-    //         array(
-    //           'name'    => __( 'Item singular name', 'commonsbooking' ),
-    //           'id'      => 'posttypes_items-singular',
-    //           'type'    => 'text',
-    //           'default' => __( 'item', 'commonsbooking' ),
-    //         ),
-    //         array(
-    //           'name'    => __( 'Items plural name', 'commonsbooking' ),
-    //           'id'      => 'posttypes_items-plural',
-    //           'type'    => 'text',
-    //           'default' => __( 'items', 'commonsbooking' ),
-    //         ),
-    //         array(
-    //           'name'    => __( 'Items slug', 'commonsbooking' ),
-    //           'id'      => 'posttypes_items-slug',
-    //           'description' => sprintf ( __( 'The url for the items archive. E.g: %s ', 'commonsbooking' ), network_site_url('/cb_items/') ),
-    //           'type'    => 'text',
-    //           'default' => __( 'cb2_item', 'commonsbooking' ),
-    //         ),
-    //         array(
-    //           'name'    => __( 'Create an item post type archive', 'commonsbooking' ),
-    //           'id'      => 'posttypes_items-archive',
-    //           'type'    => 'checkbox',
-    //           // 'default' => cmb2_set_checkbox_default_for_new_post( TRUE ),
-    //         ),
-    //         array(
-    //           'name'    => __( 'Location singular name', 'commonsbooking' ),
-    //           'id'      => 'posttypes_locations-singular',
-    //           'type'    => 'text',
-    //           'default' => __( 'location', 'commonsbooking' ),
-    //         ),
-    //         array(
-    //           'name'    => __( 'Locations plural name', 'commonsbooking' ),
-    //           'id'      => 'posttypes_locations-plural',
-    //           'type'    => 'text',
-    //           'default' => __( 'locations', 'commonsbooking' ),
-    //         ),
-    //         array(
-    //           'name'    => __( 'Locations slug', 'commonsbooking' ),
-    //           'id'      => 'posttypes_locations-slug',
-    //           'description' => sprintf ( __( 'The url for the locations archive. E.g: %s ', 'commonsbooking' ), network_site_url('/cb-locations/') ),
-    //           'type'    => 'text',
-    //           'default' => __( 'cb2_location', 'commonsbooking' ),
-    //         ),
-    //         array(
-    //           'name'    => __( 'Create a locations post type archive', 'commonsbooking' ),
-    //           'id'      => 'posttypes_locations-archive',
-    //           'type'    => 'checkbox',
-    //           // 'default' => cmb2_set_checkbox_default_for_new_post( TRUE ),
-    //         ),
-    //         array(
-    //           'name'    => __( 'Bookings slug', 'commonsbooking' ),
-    //           'id'      => 'posttypes_bookings-slug',
-    //           'description' => sprintf ( __( 'The url for the bookings archive. E.g: %s ', 'commonsbooking' ), network_site_url('/cb-bookings/') ),
-    //           'type'    => 'text',
-    //           'default' => __( 'cb2_booking', 'commonsbooking' ),
-    //         ),
-    //       )
-    //     ),
-    //     /* designation: formats start */
-    //     'formats'  => array(
-    //       'title'  => __( 'Formats', 'commonsbooking' ),
-    //       'id'     => 'formats',
-    //       'fields' => array(
-    //         array(
-    //           'name'    => __('Calendar date format', 'commonsbooking'),
-    //           'id'      => 'formats_date',
-    //           'type'    => 'text',
-    //           'description' => '<a href="https://wordpress.org/support/article/formatting-date-and-time/" target="_blank">' . __( 'Documentation of date and time formatting', 'commonsbooking') . '</a>',
-    //           'default' =>  'j M'
-    //         ),
-    //         array(
-    //           'name'    => __('Address format', 'commonsbooking'),
-    //           'id'      => 'formats_address',
-    //           'type'    => 'textarea',
-    //           'desc' => '',
-    //           'default' =>  '{{location-geo_street}}, {{location-geo_postcode}} {{location-geo_city}}'
-    //         ),
-    //       ),
-    //     ),
-    //   /* designation: formats end */
-    //   )
-    // ),
+     'general' => array(
+       'title' => __( 'General', 'commonsbooking' ),
+       'id' => 'general',
+       'field_groups' => array (
+         /* posttype: naming, rewrite, archives start */
+         'posttypes' => array(
+           'title' => __( 'Naming and permalinks', 'commonsbooking' ),
+           'id' => 'posttypes',
+           'desc' => __( 'Customize names & slugs. <br><b>Important:</b> After changing these settings, the option <a href="' . admin_url('options-permalink.php') . '">Permalinks</a> in Wordpress settings must be called and saved once for the changes to take effect.' , 'commonsbooking' ),
+           'fields' => array(
+//             array(
+//               'name'    => __( 'Item singular name', 'commonsbooking' ),
+//               'id'      => 'posttypes_items-singular',
+//               'type'    => 'text',
+//               'default' => __( 'item', 'commonsbooking' ),
+//             ),
+//             array(
+//               'name'    => __( 'Items plural name', 'commonsbooking' ),
+//               'id'      => 'posttypes_items-plural',
+//               'type'    => 'text',
+//               'default' => __( 'items', 'commonsbooking' ),
+//             ),
+             array(
+               'name'    => __( 'Items slug', 'commonsbooking' ),
+               'id'      => 'posttypes_items-slug',
+               'description' => sprintf ( __( 'The url for the items archive. E.g: %s ', 'commonsbooking' ), network_site_url('/cb_items/') ),
+               'type'    => 'text',
+               'default' => \CommonsBooking\Wordpress\CustomPostType\Item::$postType,
+             ),
+//             array(
+//               'name'    => __( 'Create an item post type archive', 'commonsbooking' ),
+//               'id'      => 'posttypes_items-archive',
+//               'type'    => 'checkbox',
+//               // 'default' => cmb2_set_checkbox_default_for_new_post( TRUE ),
+//             ),
+//             array(
+//               'name'    => __( 'Location singular name', 'commonsbooking' ),
+//               'id'      => 'posttypes_locations-singular',
+//               'type'    => 'text',
+//               'default' => __( 'location', 'commonsbooking' ),
+//             ),
+//             array(
+//               'name'    => __( 'Locations plural name', 'commonsbooking' ),
+//               'id'      => 'posttypes_locations-plural',
+//               'type'    => 'text',
+//               'default' => __( 'locations', 'commonsbooking' ),
+//             ),
+             array(
+               'name'    => __( 'Locations slug', 'commonsbooking' ),
+               'id'      => 'posttypes_locations-slug',
+               'description' => sprintf ( __( 'The url for the locations archive. E.g: %s ', 'commonsbooking' ), network_site_url('/cb-locations/') ),
+               'type'    => 'text',
+               'default' => \CommonsBooking\Wordpress\CustomPostType\Location::$postType,
+             ),
+//             array(
+//               'name'    => __( 'Create a locations post type archive', 'commonsbooking' ),
+//               'id'      => 'posttypes_locations-archive',
+//               'type'    => 'checkbox',
+//               // 'default' => cmb2_set_checkbox_default_for_new_post( TRUE ),
+//             ),
+//             array(
+//               'name'    => __( 'Bookings slug', 'commonsbooking' ),
+//               'id'      => 'posttypes_bookings-slug',
+//               'description' => sprintf ( __( 'The url for the bookings archive. E.g: %s ', 'commonsbooking' ), network_site_url('/cb-bookings/') ),
+//               'type'    => 'text',
+//               'default' => __( 'cb2_booking', 'commonsbooking' ),
+//             ),
+           )
+         ),
+         /* designation: formats start */
+//         'formats'  => array(
+//           'title'  => __( 'Formats', 'commonsbooking' ),
+//           'id'     => 'formats',
+//           'fields' => array(
+//             array(
+//               'name'    => __('Calendar date format', 'commonsbooking'),
+//               'id'      => 'formats_date',
+//               'type'    => 'text',
+//               'description' => '<a href="https://wordpress.org/support/article/formatting-date-and-time/" target="_blank">' . __( 'Documentation of date and time formatting', 'commonsbooking') . '</a>',
+//               'default' =>  'j M'
+//             ),
+//             array(
+//               'name'    => __('Address format', 'commonsbooking'),
+//               'id'      => 'formats_address',
+//               'type'    => 'textarea',
+//               'desc' => '',
+//               'default' =>  '{{location-geo_street}}, {{location-geo_postcode}} {{location-geo_city}}'
+//             ),
+//           ),
+//         ),
+       /* designation: formats end */
+       )
+     ),
     // /* Tab: general end*/
+
+    'bookingcodes' => array(
+        'title' => __( 'Booking Codes', 'commonsbooking' ),
+        'id' => 'general',
+        'field_groups' => array (
+            /* posttype: naming, rewrite, archives start */
+            'bookingcodes' => array(
+                'title' => __( 'Booking Codes', 'commonsbooking' ),
+                'id' => 'bookingcodes',
+                'desc' => '',
+                'fields' => array(
+                    array(
+                        'name'    => __( 'Booking Codes', 'commonsbooking' ),
+                        'id'      => 'bookingcodes',
+                        'type'    => 'textarea',
+                    ),
+                )
+            )
+        )
+    ),
 
     /* Tab: templates start*/
     'templates' => array(
@@ -206,35 +206,33 @@ $options_array = array(
                         'cb1_legacy_id' => 'commons-booking-settings-mail:commons-booking_mail_confirmation_body',
                         'type'          => 'textarea',
                         'default'       => __('
-            Hi {{user:first_name}},<br>
-            <p>thank you for booking {{item:post_name}} {{booking:booking_timeframe_date}}.
-            </p>
-            
-            Pick up date and time:<br>
-            <b>{{booking:pickupDatetime}}</b><br>
-            {{location:pickupInstructions}}
-            
-            <br><br>
-            
-            Return date and time:<br>
-            <b>{{booking:returnDatetime}}</b>
-            <br><br>
-            <b>Location address</b><br>
-            {{location:post_name}}
-            {{location:formattedAddress}}
-            {{location:formattedContactInfoOneLine}}
-            
-            <p>Click here to see or cancel your booking: {{booking:bookingLink}}.</p><br>
-            <b>Notice:</b> You need to be logged in to see your booking. <br>
-            If the link leads you to the homepage of the webseite,
-            please login first and then click the link again.<br><br>
-            
-            <h3>Your information</h3>
-            <p>Login: {{user:user_nicename}}<br>
-            <p>Name: {{user:first_name}} {{user:last_name}}.</p>
-            
-            <p>Thanks, the Team. </p>
-            ', 'commonsbooking'),
+                            Hi {{user:first_name}},<br>
+                            <p>thank you for booking {{item:post_name}} {{booking:booking_timeframe_date}}.
+                            </p>
+                            
+                            Pick up date and time: <b>{{booking:pickupDatetime}}</b><br>
+                            {{location:pickupInstructions}}
+                            {{booking:formattedBookingCode}}
+                            <br>
+                            Return date and time:
+                            <b>{{booking:returnDatetime}}</b>
+                            <br><br>
+                            <b>Location address</b><br>
+                            {{location:formattedAddress}}<br>
+                            {{location:formattedContactInfoOneLine}}
+                            
+                            <p>Click here to see or cancel your booking: {{booking:bookingLink}}.</p><br>
+                            <b>Notice:</b> You need to be logged in to see your booking. <br>
+                            If the link leads you to the homepage of the webseite,
+                            please login first and then click the link again.<br><br>
+                            
+                            <h3>Your information</h3>
+                            <p>Login: {{user:user_nicename}}<br>
+                            <p>Name: {{user:first_name}} {{user:last_name}}.</p>
+                            
+                            <p>Thanks, the Team. </p>
+                        
+                            ', 'commonsbooking'),
                     ),
                     array(
                         'name'    => __('Booking cancelled email subject', 'commonsbooking'),
@@ -248,20 +246,22 @@ $options_array = array(
                         'id'      => 'emailtemplates_mail-booking-cancelled-body',
                         'type'    => 'textarea',
                         'default' => __('
-            Hi {{user:first_name}},<br>
-            <p>your booking {{item:post_name}} at {{item:post_name}} {{booking:booking_timeframe_date}} has been cancelled.
-            </p>
-            
-            <b>Your information</b>
-            <p>Login: {{user:user_nicename}}<br>
-            <p>Name: {{user:first_name}} {{user:last_name}}.</p>
-            
-            <p>Thanks, the Team. </p>  
+                            Hi {{user:first_name}},<br>
+                            <p>your booking {{item:post_name}} at {{location:post_name}} {{booking:booking_timeframe_date}} has been cancelled.
+                            </p>               
+                            <b>Your information</b>
+                            <p>Login: {{user:user_nicename}}<br>
+                            <p>Name: {{user:first_name}} {{user:last_name}}.</p>
+                            
+                            <p>Thanks, the Team. </p>  
           ', 'commonsbooking'),
                     ),
                 )
             ),
             /* email templates end */
+
+
+
             /* message templates start */
             // 'messagetemplates' => array(
             //   'title' => __( 'Booking process messages', 'commonsbooking' ),
@@ -399,17 +399,34 @@ $options_array = array(
     'migration' => array(
         'title'        => __('Migration', 'commonsbooking'),
         'id'           => 'migration',
-        'field_groups' => array(
+        'field_groups' => array(          
             'migration' => array(
-                'title'       => __('Migrate', 'commonsbooking'),
+                'title'       => __('Migrate from Commons Booking Version 0.X', 'commonsbooking'),
                 'id'          => 'migration',
-                'desc'        => '',
+                'desc'        => __('Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br>Please read the documentation on <a href="https://commonsbooking.org/docs/">https://commonsbooking.org/docs/</a> before you start migration.', 'commonsbooking'),
                 'fields'      => [
                     array(
                         'name'          => __('Start Migration', 'commonsbooking'),
                         'id'            => 'migration-custom-field',
                         'type'          => 'text',
                         'render_row_cb' => array(\CommonsBooking\View\Migration::class, 'renderMigrationForm'),
+                    )
+                ]
+            ),
+            'cb1-user-fields' => array(
+                'title'       => __('CommonsBooking Version 0.X profile fields', 'commonsbooking'),
+                'id'          => 'cb1-user-fields',
+                'desc'        => __('Enable the following legacy CommonsBooking Version 0.X user profile fields:', 'commonsbooking') . '<br><i> first_name,  last_name,  phone,  address,   terms_accepted </i>',
+                'fields'      => [
+                    array(
+                        'name'          => __('Enable', 'commonsbooking'),
+                        'id'            => 'enable-cb1-user-fields',
+                        'type'          => 'checkbox',
+                    ),                    
+                    array(
+                        'name'          => __('Terms+Services Url', 'commonsbooking'),
+                        'id'            => 'cb1-terms-url',
+                        'type'          => 'text',
                     )
                 ]
             )

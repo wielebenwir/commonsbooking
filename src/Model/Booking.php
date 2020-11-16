@@ -59,9 +59,10 @@ class Booking extends CustomPost
      * Returns rendered booking code for using in email-template (booking confirmation mail) 
      * @return mixed
      */
-    public function renderBookingCodeEmail() {
+    public function formattedBookingCode() {
         if ($this->getMeta(CB_METABOX_PREFIX . 'bookingcode')) {
-            return sprintf( __( 'Your booking code is: %s' , 'commonsbooking' ) , $this->getMeta( CB_METABOX_PREFIX . 'bookingcode') ) ;
+            $htmloutput = '<br>' . sprintf( __( 'Your booking code is: %s' , 'commonsbooking' ) , $this->getMeta( CB_METABOX_PREFIX . 'bookingcode') ) . '<br>' ; 
+            return $htmloutput;
         }
     }
 

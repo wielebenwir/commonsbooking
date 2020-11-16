@@ -37,8 +37,9 @@ function commonsbooking_admin()
 {
     wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__) . 'assets/admin/css/admin.css');
     wp_enqueue_script('cb-scripts-admin', plugin_dir_url(__FILE__) . 'assets/admin/js/admin.js', array());
+    wp_enqueue_style( 'jquery-ui', '//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css' );
+    wp_enqueue_script( 'jquery-ui-datepicker' );
 }
-
 add_action('admin_enqueue_scripts', 'commonsbooking_admin');
 
 function commonsbooking_public()
@@ -86,6 +87,8 @@ add_filter( 'query_vars', 'commonsbooking_query_vars' );
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/cmb2/cmb2/init.php';
 require __DIR__ . '/vendor/mustardBees/cmb-field-select2/cmb-field-select2.php';
+
+require __DIR__ . '/src/Repository/CB1UserFields.php'; //@TODO: import with Autoload 
 
 /**
  * Checks if current user is allowed to edit custom post.
@@ -164,7 +167,6 @@ function validate_user_on_edit($current_screen)
         }
     }
 }
-
 add_action('current_screen', 'validate_user_on_edit', 10, 1);
 
 /**
