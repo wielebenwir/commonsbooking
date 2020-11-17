@@ -332,7 +332,10 @@ class Location extends View
         $locationData = [];
         /** @var \CommonsBooking\Model\Location $location */
         foreach($locations as $location) {
-            $locationData[$location->ID] = self::getShortcodeData($location, 'Item');
+            $shortCodeData = self::getShortcodeData($location, 'Item');
+            if(count($shortCodeData)) {
+                $locationData[$location->ID] = self::getShortcodeData($location, 'Item');
+            }
         }
 
         ob_start();

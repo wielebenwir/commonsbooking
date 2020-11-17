@@ -43,6 +43,9 @@ abstract class View
         foreach ($timeframes as $timeframe) {
             $item = $timeframe->{'get' . $type}();
 
+            // We need only published items
+            if($item->post_status !== 'publish') continue;
+
             if(!array_key_exists($item->ID, $cptData)) {
                 $cptData[$item->ID] = [
                     'start_date' => false,
