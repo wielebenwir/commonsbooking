@@ -42,7 +42,8 @@ class Location extends View
             'lockDays'            => [],
             'holidays'            => [],
             'highlightedDays'     => [],
-            'maxDays'             => null
+            'maxDays'             => null,
+            'disallowLockDaysInRange' => true
         ];
 
         if (count($locations) === 1) {

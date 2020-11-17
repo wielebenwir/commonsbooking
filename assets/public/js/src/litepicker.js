@@ -142,11 +142,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
             "anyBookedDaysAsCheckout": false,
             "disallowBookedDaysInRange": true,
             "disallowPartiallyBookedDaysInRange": true,
-            "disallowLockDaysInRange": false,
+            "disallowLockDaysInRange": data['disallowLockDaysInRange'],
             "mobileFriendly": true,
             "selectForward": true,
             "useResetBtn": true,
-            "maxDays": 3,
+            "maxDays": data['maxDays'],
             "buttonText": {
                 apply: 'Buchen',
                 cancel: 'Abbrechen',
