@@ -106,7 +106,6 @@
 
 	&.cancel {
 		background-color: $color-error;
-
 	}
 
 	&.confirm {
@@ -115,6 +114,11 @@
 
 	&.delete {
 		background-color: $color-error;
+	}
+
+	&[disabled=disabled] {
+		background-color: lighten($color-gray-dark, 50);
+		color: lighten($color-gray-dark, 80);
 	}
 }
 
