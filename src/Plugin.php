@@ -95,12 +95,6 @@ class Plugin
     {
         do_action('cmb2_init');
 
-        // Register custom post types taxonomy / categories
-        add_action('init', array(self::class, 'registerItemTaxonomy'));
-
-        // Register custom post types taxonomy / categories
-        add_action('init', array(self::class, 'registerLocationTaxonomy'));
-
         // Register custom user roles (e.g. location-owner, item-owner etc.)
         add_action('admin_init', array(self::class, 'addCustomUserRoles'));
         
@@ -110,6 +104,12 @@ class Plugin
         // Register custom post types
         add_action('init', array(self::class, 'registerCustomPostTypes'));
         add_action('init', array(self::class, 'registerPostStates'));
+
+        // Register custom post types taxonomy / categories
+        add_action('init', array(self::class, 'registerItemTaxonomy'), 0);
+
+        // Register custom post types taxonomy / categories
+        add_action('init', array(self::class, 'registerLocationTaxonomy'), 0);
 
         // Add menu pages
         add_action('admin_menu', array(self::class, 'addMenuPages'));
@@ -309,8 +309,8 @@ class Plugin
     {
         $customPostType = Item::getPostType();
 
-        register_taxonomy(
-            $customPostType . '_category',
+        $result = register_taxonomy(
+            $customPostType . 's_category',
             $customPostType,
             array(
                 'label'        => __('Item Category', 'commonsbooking'),
@@ -318,6 +318,11 @@ class Plugin
                 'hierarchical' => true,
             )
         );
+
+        // If error, yell about it.
+        if ( is_wp_error( $result ) ) {
+            wp_die( $result->get_error_message() );
+        }
     }
 
     /**
@@ -328,8 +333,8 @@ class Plugin
     {
         $customPostType = Location::getPostType();
 
-        register_taxonomy(
-            $customPostType . '_category',
+        $result = register_taxonomy(
+            $customPostType . 's_category',
             $customPostType,
             array(
                 'label'        => __('Location Category', 'commonsbooking'),
@@ -337,6 +342,11 @@ class Plugin
                 'hierarchical' => true,
             )
         );
+
+        // If error, yell about it.
+        if ( is_wp_error( $result ) ) {
+            wp_die( $result->get_error_message() );
+        }
     }
 
     /**

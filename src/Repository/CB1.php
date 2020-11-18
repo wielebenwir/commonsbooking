@@ -36,13 +36,13 @@ class CB1
      * @return bool
      */
     public static function isInstalled()
-    {    
+    {
         $option_set_by_cb1 = get_option('commons-booking-settings-pages'); // we check for pages, since they have to be set up for the plugin to function. 
-        
-        if ( $option_set_by_cb1 ) { 
-            return TRUE;
-        } else { 
-            return FALSE;
+
+        if ($option_set_by_cb1) {
+            return true;
+        } else {
+            return false;
         }
     }
     /**
@@ -148,7 +148,7 @@ class CB1
             ARRAY_A
         );
 
-        if($result && count($result) > 0) {
+        if ($result && count($result) > 0) {
             return $result[0]['bookingcode'];
         }
     }
@@ -160,7 +160,8 @@ class CB1
      *
      * @return int|false
      */
-    public static function getCB2LocationId($locationId) {
+    public static function getCB2LocationId($locationId)
+    {
         return self::getCB2PostIdByType($locationId, \CommonsBooking\Wordpress\CustomPostType\Location::$postType);
     }
 
@@ -179,28 +180,57 @@ class CB1
         return self::getCB2PostIdByType($locationId, \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType);
     }
 
-    protected static function getCB2PostIdByType($id, $type) {
+    protected static function getCB2PostIdByType($id, $type)
+    {
         global $wpdb;
         $result = $wpdb->get_results("
             SELECT post_id FROM wp_postmeta
             WHERE
                 meta_key = '_cb_cb1_post_post_ID' AND
                 meta_value = $id AND
-                post_id in (SELECT id from wp_posts where post_type = '". $type ."');
+                post_id in (SELECT id from wp_posts where post_type = '" . $type . "');
         ");
 
-        if($result && count($result) > 0) {
+        if ($result && count($result) > 0) {
             return $result[0]->post_id;
         }
+
         return false;
     }
-    
+
     /**
-     * @return 
+     * @return
      */
     public static function enableLegacyUserRegistrationFields()
-    {    
-        
+    {
+
+    }
+
+    /**
+     * Returns CB1 taxonomies.
+     * @return mixed
+     */
+    public static function getCB1Taxonomies()
+    {
+        global $wpdb;
+
+        return $wpdb->get_results("
+            SELECT
+                tr.*, 
+                tt.taxonomy,
+                t.slug as term
+            FROM wp_term_relationships tr 
+            LEFT JOIN wp_term_taxonomy tt ON
+                tr.term_taxonomy_id = tt.term_id
+            LEFT JOIN wp_terms t ON
+                t.term_id = tt.term_id
+            WHERE tr.object_id IN (
+                SELECT meta_value
+                FROM wp_postmeta
+                WHERE
+                    meta_key = '_cb_cb1_post_post_ID'
+            );
+        ");
     }
 
 }

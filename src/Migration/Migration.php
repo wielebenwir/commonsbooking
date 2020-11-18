@@ -27,8 +27,9 @@ class Migration
             'items'        => 0,
             'timeframes'   => 0,
             'bookings'     => 0,
-            'bookingCodes' => 0, 
-            'termsUrl'     => 0
+            'bookingCodes' => 0,
+            'termsUrl'     => 0,
+            'taxonomies'   => 0
         ];
 
         foreach (CB1::getLocations() as $location) {
@@ -60,18 +61,25 @@ class Migration
                 $results['bookingCodes'] += 1;
             }
         }
-        
+
         if (self::migrateUserAgreementUrl()) {
             $results['termsUrl'] += 1;
-        }        
+        }
+
+        foreach(CB1::getCB1Taxonomies() as $cb1Taxonomy) {
+            if (self::migrateTaxonomy($cb1Taxonomy)) {
+                $results['taxonomies'] += 1;
+            }
+        }
+
         return $results;
     }
 
-    
+
     /**
      * fetchEmails
      * extract mails from a given string and return an array with email addresses
-     * 
+     *
      * @param  mixed $text
      * @return ARRAY
      */
@@ -329,7 +337,8 @@ class Migration
         );
 
         return BookingCodes::persist($bookingCode);
-    }    
+    }
+
     /**
      * Migrates CB1 user agreement url option to CB2.
      * Only relevant for legacy user profile.
@@ -338,15 +347,33 @@ class Migration
      */
     public static function migrateUserAgreementUrl()
     {
-        $cb1_url = Settings::getOption ('commons-booking-settings-pages', 'commons-booking_termsservices_url');
-        
+        $cb1_url = Settings::getOption('commons-booking-settings-pages', 'commons-booking_termsservices_url');
+
         $options_array = array(
             'cb1-terms-url' => $cb1_url
 
         );
-        
+
         update_option('commonsbooking_options_migration', $options_array);
-        return TRUE;
+
+        return true;
+    }
+
+    /**
+     * Migrates CB1 taxonomy to CB2 posts.
+     * @param $cb1Taxonomies
+     *
+     * @return bool
+     */
+    public static function migrateTaxonomy($cb1Taxonomies)
+    {
+        $cb2PostId = CB1::getCB2PostIdByCB1Id($cb1Taxonomies->object_id);
+        try {
+            wp_set_object_terms($cb2PostId, $cb1Taxonomies->term, $cb1Taxonomies->taxonomy);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
 }
