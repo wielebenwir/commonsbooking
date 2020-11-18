@@ -38,7 +38,7 @@
             </div>
             <?php
             if(is_user_logged_in()) { ?>
-                <input type="submit" value="<?php echo __('Continue to check booking', 'commonsbooking'); ?>" />
+                <input type="submit" disabled="disabled" value="<?php echo __('Continue to check booking', 'commonsbooking'); ?>" />
             <?php } ?>
         </form>
     </div>
