@@ -47,7 +47,7 @@ $options_array = array(
          'posttypes' => array(
            'title' => __( 'Naming and permalinks', 'commonsbooking' ),
            'id' => 'posttypes',
-           'desc' => __( 'Customize names & slugs. <br><b>Important:</b> After changing these settings, the option <a href="' . admin_url('options-permalink.php') . '">Permalinks</a> in Wordpress settings must be called and saved once for the changes to take effect.' , 'commonsbooking' ),
+           'desc' => sprintf ( __( 'Customize names & slugs. <br><b>Important:</b> After changing these settings, the option <a href="%s">Permalinks</a> in Wordpress settings must be called and saved once for the changes to take effect.' , 'commonsbooking' ), admin_url('options-permalink.php') ),
            'fields' => array(
 //             array(
 //               'name'    => __( 'Item singular name', 'commonsbooking' ),
@@ -64,6 +64,7 @@ $options_array = array(
              array(
                'name'    => __( 'Items slug', 'commonsbooking' ),
                'id'      => 'posttypes_items-slug',
+               // translators: %s = example url (like website.com/cb-items/)
                'description' => sprintf ( __( 'The url for the items archive. E.g: %s ', 'commonsbooking' ), network_site_url('/cb_items/') ),
                'type'    => 'text',
                'default' => \CommonsBooking\Wordpress\CustomPostType\Item::$postType,
@@ -89,6 +90,7 @@ $options_array = array(
              array(
                'name'    => __( 'Locations slug', 'commonsbooking' ),
                'id'      => 'posttypes_locations-slug',
+               // translators: %s = example url (like website.com/cb-locations/)
                'description' => sprintf ( __( 'The url for the locations archive. E.g: %s ', 'commonsbooking' ), network_site_url('/cb-locations/') ),
                'type'    => 'text',
                'default' => \CommonsBooking\Wordpress\CustomPostType\Location::$postType,

@@ -160,6 +160,7 @@ class CB1UserFields {
    */
   public function get_termsservices_string() {
 	if ( !empty ( $this->termsservices_url ) ) {
+		// translators: %s = terms and service url
 	  $string = sprintf( __( '<a href="%s" target=_blank">Read the terms and services</a>', 'commonsbooking'), 
 		$this->termsservices_url );
 	} else {

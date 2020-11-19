@@ -556,7 +556,9 @@
             }, e.prototype.onClick = function(t) {
                 var e = this, i = t.target;
                 if (i && this.picker) if (this.shouldShown(i)) this.show(i); else if (i.closest("." + h.litepicker)) if (i.classList.contains(h.dayItem)) {
-                    if (t.preventDefault(), !this.isSamePicker(i)) return;
+                    if (t.preventDefault(), console.log("click on date"), console.log(typeof this.options.onDaySelect), 
+                    "function" == typeof this.options.onDaySelect && this.options.onDaySelect.call(this, c.DateTime.parseDateTime(i.dataset.time), this.datePicked.length), 
+                    !this.isSamePicker(i)) return;
                     if (i.classList.contains(h.isLocked)) return;
                     if (i.classList.contains(h.isHoliday)) return;
                     if (i.classList.contains(h.isBooked)) return;
@@ -830,6 +832,7 @@
                     onChangeMonth: null,
                     onChangeYear: null,
                     onDayHover: null,
+                    onDaySelect: null,
                     resetBtnCallback: null,
                     moduleRanges: null,
                     moduleNavKeyboard: null
@@ -922,20 +925,20 @@
                 var w = document.createElement("div");
                 w.className = r.monthItemWeekdaysRow, this.options.showWeekNumbers && (w.innerHTML = "<div>W</div>");
                 for (var M = 1; M <= 7; M += 1) {
-                    var x = 3 + this.options.firstDay + M, B = document.createElement("div");
-                    B.innerHTML = this.weekdayName(x), B.title = this.weekdayName(x, "long"), w.appendChild(B);
+                    var x = 3 + this.options.firstDay + M, T = document.createElement("div");
+                    T.innerHTML = this.weekdayName(x), T.title = this.weekdayName(x, "long"), w.appendChild(T);
                 }
-                var T = document.createElement("div");
-                T.className = r.containerDays;
+                var B = document.createElement("div");
+                B.className = r.containerDays;
                 var _ = this.calcSkipDays(i);
-                this.options.showWeekNumbers && _ && T.appendChild(this.renderWeekNumber(i));
+                this.options.showWeekNumbers && _ && B.appendChild(this.renderWeekNumber(i));
                 for (var I = 0; I < _; I += 1) {
                     var L = document.createElement("div");
-                    T.appendChild(L);
+                    B.appendChild(L);
                 }
-                for (I = 1; I <= o; I += 1) i.setDate(I), this.options.showWeekNumbers && i.getDay() === this.options.firstDay && T.appendChild(this.renderWeekNumber(i)), 
-                T.appendChild(this.renderDay(i));
-                return n.appendChild(s), n.appendChild(w), n.appendChild(T), n;
+                for (I = 1; I <= o; I += 1) i.setDate(I), this.options.showWeekNumbers && i.getDay() === this.options.firstDay && B.appendChild(this.renderWeekNumber(i)), 
+                B.appendChild(this.renderDay(i));
+                return n.appendChild(s), n.appendChild(w), n.appendChild(B), n;
             }, t.prototype.renderDay = function(t) {
                 var e = this;
                 t.setHours();
@@ -957,7 +960,7 @@
                     var l = 0;
                     if (!this.options.disallowLockDaysInRange) {
                         for (var d = this.datePicked[0].clone(), c = this.options.maxDays, h = [], p = 0; p < this.options.lockDays.length; p++) this.datePicked[0].getTime() < this.options.lockDays[p].getTime() && h.push(this.options.lockDays[p]);
-                        for (var u = !1; c > 0; ) for (c--, d = d.add(1, "day"), p = 0; p < h.length; p++) h[p].getTime() == d.getTime() && (this.dateIsBooked(d, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(d, this.options.partiallyBookedDaysInclusivity) || this.dateIsHoliday(d, this.options.holidaysInclusivity) || 0 != u ? u = !1 : (l++, 
+                        for (var u = !1; c > 0; ) for (c -= 1, d = d.add(1, "day"), p = 0; p < h.length; p++) h[p].getTime() === d.getTime() && (this.dateIsBooked(d, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(d, this.options.partiallyBookedDaysInclusivity) || this.dateIsHoliday(d, this.options.holidaysInclusivity) || !1 !== u ? u = !1 : (l += 1, 
                         u = !0));
                     }
                     s = this.datePicked[0].clone().add(this.options.maxDays + l + o, "day"), t.isSameOrBefore(n) && i.classList.add(r.isLocked), 
@@ -1391,7 +1394,8 @@
     }, getOrientation = () => window.matchMedia("(orientation: portrait)").matches ? "portrait" : "landscape", initStartSelect = date => {
         const day1 = data.days[moment(date).format("YYYY-MM-DD")], startDate = moment(date).format("DD.MM.YYYY");
         $(".time-selection.repetition-start").find(".hint-selection").hide(), $(".time-selection.repetition-end").find(".hint-selection").show(), 
-        $("#booking-form select[name=repetition-end], #booking-form .time-selection.repetition-end .date").hide();
+        $("#booking-form select[name=repetition-end],#booking-form .time-selection.repetition-end .date").hide(), 
+        $("#booking-form input[type=submit]").attr("disabled", "disabled");
         let startSelect = $("#booking-form select[name=repetition-start]");
         $(".time-selection.repetition-start span.date").text(startDate), updateSelectSlots(startSelect, day1.slots, "start", day1.fullDay), 
         day1.fullDay ? $(".time-selection.repetition-start").find("select").hide() : $(".time-selection.repetition-start").find("select").show();
@@ -1400,8 +1404,8 @@
         $(".time-selection.repetition-end").find(".hint-selection").hide();
         let endSelect = $("#booking-form select[name=repetition-end]");
         $(".time-selection.repetition-end span.date").text(endDate), updateSelectSlots(endSelect, day2.slots, "end", day2.fullDay), 
-        $("#booking-form select[name=repetition-end], #booking-form .time-selection.repetition-end .date").show(), 
-        day2.fullDay ? $(".time-selection.repetition-end").find("select").hide() : $(".time-selection.repetition-end").find("select").show();
+        $("#booking-form select[name=repetition-end],#booking-form .time-selection.repetition-end .date").show(), 
+        $("#booking-form input[type=submit]").removeAttr("disabled"), day2.fullDay ? $(".time-selection.repetition-end").find("select").hide() : $(".time-selection.repetition-end").find("select").show();
     };
     let numberOfMonths = 2, numberOfColumns = 2;
     if ((() => {
@@ -1428,10 +1432,10 @@
             partiallyBookedDays: data.partiallyBookedDays,
             highlightedDays: data.highlightedDays,
             holidays: data.holidays,
-            onDayHover: function(date, attributes) {
-                if ($.inArray("is-start-date", attributes) > -1 || $.inArray("is-end-date", attributes) > -1) {
-                    $("#booking-form").show(), $.inArray("is-start-date", attributes) > -1 ? (initStartSelect(date), 
-                    -1 == $.inArray("is-end-date", attributes) ? $(".cb-notice.date-select").hide() : initEndSelect(date)) : $.inArray("is-end-date", attributes) > -1 && initEndSelect(date);
+            onDaySelect: function(date, datepicked) {
+                if (0 == datepicked || 1 == datepicked) {
+                    $("#booking-form").show(), 0 == datepicked && (console.log("ondayselect 1"), initStartSelect(date), 
+                    $(".cb-notice.date-select").hide()), 1 == datepicked && initEndSelect(date);
                 }
             },
             onSelect: function(date1, date2) {

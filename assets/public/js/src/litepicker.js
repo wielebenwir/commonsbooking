@@ -63,8 +63,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $('.time-selection.repetition-end').find('.hint-selection').show();
 
         // Hide end date selection if new start date was chosen
-        let endSelectData = $('#booking-form select[name=repetition-end], #booking-form .time-selection.repetition-end .date');
+        let endSelectData = $(
+            '#booking-form select[name=repetition-end],' +
+            '#booking-form .time-selection.repetition-end .date'
+        );
         endSelectData.hide();
+        $('#booking-form input[type=submit]').attr('disabled','disabled');
 
         // update select slots
         let startSelect = $('#booking-form select[name=repetition-start]');
@@ -93,8 +97,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
         updateSelectSlots(endSelect, day2['slots'], 'end', day2['fullDay']);
 
         // show end date selection if new start date was chosen
-        let endSelectData = $('#booking-form select[name=repetition-end], #booking-form .time-selection.repetition-end .date');
+        let endSelectData = $(
+            '#booking-form select[name=repetition-end],' +
+            '#booking-form .time-selection.repetition-end .date'
+        );
         endSelectData.show();
+        $('#booking-form input[type=submit]').removeAttr('disabled');
 
         // hide time selection if we have a full day slot
         if (day2['fullDay']) {
@@ -204,29 +212,25 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 "partiallyBookedDays": data['partiallyBookedDays'],
                 "highlightedDays": data['highlightedDays'],
                 "holidays": data['holidays'],
-                onDayHover: function (date, attributes) {
+                onDaySelect: function (date, datepicked) {
                     if (
-                        $.inArray('is-start-date', attributes) > -1 ||
-                        $.inArray('is-end-date', attributes) > -1
+                        datepicked == 0 ||
+                        datepicked == 1
                     ) {
                         let bookingForm = $('#booking-form');
                         bookingForm.show();
 
                         // Start-Date selected or End-Date == Start-Date selected
-                        if ($.inArray('is-start-date', attributes) > -1) {
+                        if (datepicked == 0) {
+                            console.log("ondayselect 1");
                             initStartSelect(date);
                             // Start-Date !== End-Date
-                            if ($.inArray('is-end-date', attributes) == -1) {
-                                $('.cb-notice.date-select').hide();
-                            } else {
-                                // Init End-Select if Start-Date == End-Date
-                                initEndSelect(date);
-                            }
-                        } else {
-                            // End-Date Selected
-                            if ($.inArray('is-end-date', attributes) > -1) {
-                                initEndSelect(date);
-                            }
+                            $('.cb-notice.date-select').hide();
+                        }
+                        
+                        // End-Date Selected
+                        if (datepicked == 1) {
+                            initEndSelect(date);
                         }
                     }
                 },

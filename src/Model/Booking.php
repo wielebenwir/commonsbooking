@@ -61,6 +61,7 @@ class Booking extends CustomPost
      */
     public function formattedBookingCode() {
         if ($this->getMeta(CB_METABOX_PREFIX . 'bookingcode')) {
+            // translators: %s = Booking code
             $htmloutput = '<br>' . sprintf( __( 'Your booking code is: %s' , 'commonsbooking' ) , $this->getMeta( CB_METABOX_PREFIX . 'bookingcode') ) . '<br>' ; 
             return $htmloutput;
         }
