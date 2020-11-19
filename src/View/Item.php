@@ -31,7 +31,6 @@ class Item extends View
             'item' => new \CommonsBooking\Model\Item($item),
             'postUrl' => get_permalink($item),
             'type' => Timeframe::BOOKING_ID,
-            'calendar_data' => json_encode(Location::getCalendarDataArray($item, $location ?: null))
         ];
 
         // If theres no location selected, we'll show all available.
@@ -47,6 +46,8 @@ class Item extends View
         } else {
             $args['location'] = new \CommonsBooking\Model\Location(get_post($location));
         }
+
+        $args['calendar_data'] = json_encode(Location::getCalendarDataArray($item, $args['location'] ?: null));
 
         return $args;
     }

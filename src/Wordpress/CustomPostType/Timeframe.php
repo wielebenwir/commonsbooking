@@ -432,11 +432,6 @@ class Timeframe extends CustomPostType
                 'default'    => 3
             ),
             array(
-                'name'       => __('Allow locked day overbooking', 'commonsbooking'),
-                'id'         => "allow-lockdays-in-range",
-                'type'       => 'checkbox',
-            ),
-            array(
                 'name'       => __("Location", 'commonsbooking'),
                 'id'         => "location-id",
                 'type'       => 'select',

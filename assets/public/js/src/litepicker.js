@@ -214,22 +214,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 "holidays": data['holidays'],
                 onDaySelect: function (date, datepicked) {
                     if (
-                        datepicked == 0 ||
-                        datepicked == 1
+                        datepicked >= 0
                     ) {
                         let bookingForm = $('#booking-form');
                         bookingForm.show();
 
                         // Start-Date selected or End-Date == Start-Date selected
-                        if (datepicked == 0) {
-                            console.log("ondayselect 1");
+                        if (datepicked == 1) {
                             initStartSelect(date);
                             // Start-Date !== End-Date
                             $('.cb-notice.date-select').hide();
                         }
                         
                         // End-Date Selected
-                        if (datepicked == 1) {
+                        if (datepicked == 2) {
                             initEndSelect(date);
                         }
                     }
