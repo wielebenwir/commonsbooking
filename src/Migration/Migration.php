@@ -113,6 +113,11 @@ class Migration
             $cb1_location_email_string = '';
         }
 
+        // Allow overbooking of locked days where no timeframes are defined
+        $allowClosed = \CommonsBooking\Settings\Settings::getOption(
+            'commons-booking-settings-bookings',
+            'commons-booking_bookingsettings_allowclosed'
+        ) == 'on';
 
         // CB2 <-> CB1
         $postMeta = [
@@ -130,7 +135,8 @@ class Migration
             'commons-booking_location_openinghours', true),
             CB_METABOX_PREFIX . 'location_email'  => $cb1_location_email_string,
             CB_METABOX_PREFIX . 'cb1_post_post_ID'  => $location->ID,
-            '_thumbnail_id' => get_post_meta($location->ID, '_thumbnail_id', true)
+            '_thumbnail_id' => get_post_meta($location->ID, '_thumbnail_id', true),
+            CB_METABOX_PREFIX . 'allow_lockdays_in_range' => $allowClosed
         ];
 
         $existingPost = self::getExistingPost($location->ID, Location::$postType);

@@ -556,9 +556,7 @@
             }, e.prototype.onClick = function(t) {
                 var e = this, i = t.target;
                 if (i && this.picker) if (this.shouldShown(i)) this.show(i); else if (i.closest("." + h.litepicker)) if (i.classList.contains(h.dayItem)) {
-                    if (t.preventDefault(), console.log("click on date"), console.log(typeof this.options.onDaySelect), 
-                    "function" == typeof this.options.onDaySelect && this.options.onDaySelect.call(this, c.DateTime.parseDateTime(i.dataset.time), this.datePicked.length), 
-                    !this.isSamePicker(i)) return;
+                    if (t.preventDefault(), !this.isSamePicker(i)) return;
                     if (i.classList.contains(h.isLocked)) return;
                     if (i.classList.contains(h.isHoliday)) return;
                     if (i.classList.contains(h.isBooked)) return;
@@ -596,7 +594,8 @@
                             return t instanceof Array ? t[0].isBetween(e.datePicked[0], e.datePicked[1], y) || t[1].isBetween(e.datePicked[0], e.datePicked[1], y) : t.isBetween(e.datePicked[0], e.datePicked[1], y);
                         }).length) && (this.datePicked.length = 0, "function" == typeof this.options.onError && this.options.onError.call(this, "INVALID_RANGE"));
                     }
-                    if (this.render(), this.options.autoApply) {
+                    if ("function" == typeof this.options.onDaySelect && this.options.onDaySelect.call(this, c.DateTime.parseDateTime(i.dataset.time), this.datePicked.length), 
+                    this.render(), this.options.autoApply) {
                         var f = !1;
                         this.options.singleMode && this.datePicked.length ? (this.setDate(this.datePicked[0]), 
                         this.hide(), f = !0) : this.options.singleMode || 2 !== this.datePicked.length || (this.setDateRange(this.datePicked[0], this.datePicked[1]), 
@@ -1433,9 +1432,9 @@
             highlightedDays: data.highlightedDays,
             holidays: data.holidays,
             onDaySelect: function(date, datepicked) {
-                if (0 == datepicked || 1 == datepicked) {
-                    $("#booking-form").show(), 0 == datepicked && (console.log("ondayselect 1"), initStartSelect(date), 
-                    $(".cb-notice.date-select").hide()), 1 == datepicked && initEndSelect(date);
+                if (datepicked >= 0) {
+                    $("#booking-form").show(), 1 == datepicked && (initStartSelect(date), $(".cb-notice.date-select").hide()), 
+                    2 == datepicked && initEndSelect(date);
                 }
             },
             onSelect: function(date1, date2) {
@@ -1462,11 +1461,11 @@
         anyBookedDaysAsCheckout: !1,
         disallowBookedDaysInRange: !0,
         disallowPartiallyBookedDaysInRange: !0,
-        disallowLockDaysInRange: !0,
+        disallowLockDaysInRange: data.disallowLockDaysInRange,
         mobileFriendly: !0,
         selectForward: !0,
         useResetBtn: !0,
-        maxDays: 3,
+        maxDays: data.maxDays,
         buttonText: {
             apply: "Buchen",
             cancel: "Abbrechen"
