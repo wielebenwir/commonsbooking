@@ -199,6 +199,30 @@ class CB1
     }
 
     /**
+     * Returns CB2 post id for CB1 post id, if available.
+     * @param $id
+     *
+     * @return false
+     */
+    public static function getCB2PostIdByCB1Id($id)
+    {
+        global $wpdb;
+        $result = $wpdb->get_results("
+            SELECT meta_value as cb1_id, post_id as cb2_id 
+            FROM wp_postmeta 
+            WHERE
+                meta_key = '_cb_cb1_post_post_ID' AND 
+                meta_value = '$id';
+        ");
+
+        if ($result && count($result) > 0) {
+            return $result[0]->cb2_id;
+        }
+
+        return false;
+    }
+
+    /**
      * @return
      */
     public static function enableLegacyUserRegistrationFields()

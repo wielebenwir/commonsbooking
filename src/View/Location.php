@@ -52,7 +52,11 @@ class Location extends View
                 CB_METABOX_PREFIX . 'location_pickupinstructions',
                 $locations[0]
             );
-            $allowLockedDaysInRange = get_post_meta($locations[0], 'allow-lockdays-in-range', true);
+            $allowLockedDaysInRange = get_post_meta(
+                $locations[0],
+                CB_METABOX_PREFIX . 'allow_lockdays_in_range',
+                true
+            );
             $jsonResponse['disallowLockDaysInRange'] = $allowLockedDaysInRange !== 'on';
         }
 
