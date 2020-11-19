@@ -10,6 +10,14 @@ module.exports = function (grunt) {
 					relativeAssets: true
 				}
 			},
+			themes: {
+				options: {
+					sassDir: 'assets/public/sass/themes',
+					cssDir: 'assets/public/css',
+					environment: 'production',
+					relativeAssets: true
+				}
+			},
 			public: {
 				options: {
 					sassDir: 'assets/public/sass',
@@ -106,17 +114,19 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify-es');
 	// Register tasks
 	grunt.registerTask('default', [
-		'compass:adminDev', 'compass:publicDev','uglify:dev'
+		'compass:adminDev', 'compass:publicDev','uglify:dev','compass:themes'
 	]);
 	grunt.registerTask('dev', [
 		'compass:adminDev',
 		'compass:publicDev',
 		'uglify:dev',
+		'compass:themes',
 		'watch'
 	]);
 	grunt.registerTask('dist', [
 		'compass:admin',
 		'compass:public',
+		'compass:themes',
 		'uglify:dist'
 	]);
 };
