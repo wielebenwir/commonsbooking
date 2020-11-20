@@ -19,6 +19,8 @@ class Timeframe extends PostRepository
      *
      * @param null $minTimestamp
      *
+     * @param string[] $postStatus
+     *
      * @return array
      * @throws \Exception
      */
@@ -28,7 +30,8 @@ class Timeframe extends PostRepository
         $types = [],
         ?string $date = null,
         $returnAsModel = false,
-        $minTimestamp = null
+        $minTimestamp = null,
+        $postStatus = ['confirmed', 'unconfirmed', 'publish', 'inherit']
     ) {
         $posts = [];
         if ( ! count($types)) {
@@ -47,7 +50,7 @@ class Timeframe extends PostRepository
             // Default query
             $args = array(
                 'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType(),
-                'post_status' => array('confirmed', 'unconfirmed', 'publish', 'inherit')
+                'post_status' => $postStatus
             );
 
             if ($date) {

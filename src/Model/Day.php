@@ -134,7 +134,10 @@ class Day
             $this->locations,
             $this->items,
             $this->types,
-            $this->getDate()
+            $this->getDate(),
+            false,
+            null,
+            ['publish', 'confirmed', 'unconfirmed']
         );
         $slots = $this->getTimeframeSlots($timeFrames);
 

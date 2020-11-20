@@ -167,10 +167,12 @@ class Migration
      * @param $id
      * @param $type
      *
+     * @param null $timeframe_type
+     *
      * @return mixed
      * @throws \Exception
      */
-    public static function getExistingPost($id, $type)
+    public static function getExistingPost($id, $type, $timeframe_type = null)
     {
         $args = array(
             'meta_key'     => CB_METABOX_PREFIX . 'cb1_post_post_ID',
@@ -178,6 +180,25 @@ class Migration
             'meta_compare' => '=',
             'post_type'    => $type
         );
+
+        // If we're searching for a timeframe, we need the type
+        if($timeframe_type) {
+            $args = array(
+                'post_type'    => $type,
+                'meta_query' => array(
+                    'relation' => 'AND',
+                    array(
+                        'key'     => CB_METABOX_PREFIX . 'cb1_post_post_ID',
+                        'value'   => $id,
+                        'compare' => '='
+                    ),
+                    array(
+                        'key'     => 'type',
+                        'value'   => "".$timeframe_type
+                    )
+                )
+            );
+        }
 
         /** @var WP_Query $query */
         $query = new \WP_Query($args);
@@ -260,7 +281,6 @@ class Migration
     {
         $cbItem = self::getExistingPost($timeframe['item_id'], Item::$postType);
         $cbLocation = self::getExistingPost($timeframe['location_id'], Location::$postType);
-        $cb1_closeddays = '';
         $weekdays = '';
 
         //get closed days in cb1 timeframe to migrate them into new cb timeframe weekdays (inversion of days)
@@ -273,38 +293,39 @@ class Migration
             $timeframe_repetition = "d"; // set repetition to daily
         }
 
-
+        // If we have no item and no location we throw an error.
         if ( ! $cbItem || ! $cbLocation) {
             //throw new \Exception('timeframe could not created, because linked location or item does not exist.');
+            return false;
+        } else {
+            // Collect post data
+            $postData = [
+                'post_title'  => $timeframe['timeframe_title'],
+                'post_type'   => Timeframe::$postType,
+                'post_name'   => CustomPostType::generateRandomSlug(),
+                'post_status' => 'publish'
+            ];
+
+            // CB2 <-> CB1
+            $postMeta = [
+                CB_METABOX_PREFIX . 'cb1_post_post_ID' => $timeframe['id'],
+                'repetition-start'                     => strtotime($timeframe['date_start']),
+                'repetition-end'                       => strtotime($timeframe['date_end']),
+                'item-id'                              => $cbItem->ID,
+                'location-id'                          => $cbLocation->ID,
+                'type'                                 => Timeframe::BOOKABLE_ID,
+                'timeframe-repetition'                 => $timeframe_repetition,
+                'start-time'                           => '00:00',
+                'end-time'                             => '23:59',
+                'full-day'                             => 'on',
+                'grid'                                 => '0',
+                'weekdays'                             => $weekdays,
+            ];
+
+            $existingPost = self::getExistingPost($timeframe['id'], Timeframe::$postType, Timeframe::BOOKABLE_ID);
+
+            return self::savePostData($existingPost, $postData, $postMeta);
         }
-
-        // Collect post data
-        $postData = [
-            'post_title'  => $timeframe['timeframe_title'],
-            'post_type'   => Timeframe::$postType,
-            'post_name'   => CustomPostType::generateRandomSlug(),
-            'post_status' => 'confirmed'
-        ];
-
-        // CB2 <-> CB1
-        $postMeta = [
-            CB_METABOX_PREFIX . 'cb1_post_post_ID' => $timeframe['id'],
-            'repetition-start'                     => strtotime($timeframe['date_start']),
-            'repetition-end'                       => strtotime($timeframe['date_end']),
-            'item-id'                              => $cbItem->ID,
-            'location-id'                          => $cbLocation->ID,
-            'type'                                 => Timeframe::BOOKABLE_ID,
-            'timeframe-repetition'                 => $timeframe_repetition,
-            'start-time'                           => '00:00',
-            'end-time'                             => '23:59',
-            'full-day'                             => 'on',
-            'grid'                                 => '0',
-            'weekdays'                             => $weekdays,
-        ];
-
-        $existingPost = self::getExistingPost($timeframe['id'], Timeframe::$postType);
-
-        return self::savePostData($existingPost, $postData, $postMeta);
     }
 
     /**
@@ -352,7 +373,7 @@ class Migration
             CB_METABOX_PREFIX . 'bookingcode'      => CB1::getBookingCode($booking['code_id'])
         ];
 
-        $existingPost = self::getExistingPost($booking['id'], Timeframe::$postType);
+        $existingPost = self::getExistingPost($booking['id'], Timeframe::$postType, Timeframe::BOOKING_ID);
 
         return self::savePostData($existingPost, $postData, $postMeta);
     }

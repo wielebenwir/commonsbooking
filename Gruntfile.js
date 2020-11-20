@@ -13,7 +13,7 @@ module.exports = function (grunt) {
 			themes: {
 				options: {
 					sassDir: 'assets/public/sass/themes',
-					cssDir: 'assets/public/css',
+					cssDir: 'assets/public/css/themes',
 					environment: 'production',
 					relativeAssets: true
 				}
