@@ -27,6 +27,7 @@ class Migration
 
       
         if($startMigration) {
+            ob_implicit_flush(true);
 
             echo '<strong style="animation: blinker 0.6s linear infinite">migration in process .. please wait ... </strong><br><br>';
 
