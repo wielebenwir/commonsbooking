@@ -417,7 +417,8 @@ class Migration
             'post_type'   => Timeframe::$postType,
             'post_name'   => CustomPostType::generateRandomSlug(),
             'post_status' => 'confirmed',
-            'post_date'   => $booking['booking_time']
+            'post_date'   => $booking['booking_time'],
+            'post_author' => $booking['user_id']
 
         ];
 
