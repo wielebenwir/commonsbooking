@@ -60,10 +60,16 @@ class Migration
         }
 
         if ($type == "bookings") {
+            $bookingcounter = 1;
             foreach (CB1::getBookings() as $booking) {
+                $bookingcounter += 1;
+                if ($bookingcounter % 200 == 0) {
+                    echo "... pause ... ";
+                    flush();
+                    sleep(1);
+                }
                 if (self::migrateBooking($booking)) {
                     $results['bookings'] += 1;
-                    sleep(0.2);
                 }
             }
         }
