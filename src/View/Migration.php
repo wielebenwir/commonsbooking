@@ -27,12 +27,29 @@ class Migration
 
       
         if($startMigration) {
-            $results = \CommonsBooking\Migration\Migration::migrateAll();
-            foreach ($results as $type => $count) {
-                echo $count . ' ' . $type . __('updated/saved', 'commonsbooking') . '<br>';
-                
+
+            echo '<strong style="animation: blinker 0.6s linear infinite">migration in process .. please wait ... </strong><br><br>';
+
+            $migrationTypes = array (
+                'locations',
+                'items',
+                'timeframes',
+                'bookings',
+                'bookingCodes',
+                'termsUrl',
+                'taxonomies',
+            );
+
+            foreach ($migrationTypes AS $value) {
+                $results = \CommonsBooking\Migration\Migration::migrateAll($value);
+                echo $results[$value] . ' ' . $value . __(' updated/saved', 'commonsbooking') . '<br>';
+                flush();
+                //sleep(1);
             }
+
+            echo '<br><strong style="color: green">Migration finished</strong><br><br>';
         }
+
         ?>
             <br>
             <a class="button button-primary" href="<?php echo esc_url(admin_url('admin.php')); ?>?page=commonsbooking_options_migration&migration=true"> <?php echo __('Start Migration', 'commonsbooking'); ?></a>

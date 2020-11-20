@@ -20,8 +20,10 @@ class Migration
      * @return int[]
      * @throws \Exception
      */
-    public static function migrateAll()
+    public static function migrateAll($type)
     {
+        
+        
         $results = [
             'locations'    => 0,
             'items'        => 0,
@@ -32,43 +34,60 @@ class Migration
             'taxonomies'   => 0
         ];
 
-        foreach (CB1::getLocations() as $location) {
-            if (self::migrateLocation($location)) {
-                $results['locations'] += 1;
+        if ($type == "locations") {
+            foreach (CB1::getLocations() as $location) {
+                if (self::migrateLocation($location)) {
+                    $results['locations'] += 1;
+                }
             }
         }
 
-        foreach (CB1::getItems() as $item) {
-            if (self::migrateItem($item)) {
-                $results['items'] += 1;
+        if ($type == "items") {
+            foreach (CB1::getItems() as $item) {
+                if (self::migrateItem($item)) {
+                    $results['items'] += 1;
+                }
             }
         }
 
-        foreach (CB1::getTimeframes() as $timeframe) {
-            if (self::migrateTimeframe($timeframe)) {
-                $results['timeframes'] += 1;
+        
+        if ($type == "timeframes") {
+            foreach (CB1::getTimeframes() as $timeframe) {
+                if (self::migrateTimeframe($timeframe)) {
+                    $results['timeframes'] += 1;
+                }
             }
         }
 
-        foreach (CB1::getBookings() as $booking) {
-            if (self::migrateBooking($booking)) {
-                $results['bookings'] += 1;
+        if ($type == "bookings") {
+            foreach (CB1::getBookings() as $booking) {
+                if (self::migrateBooking($booking)) {
+                    $results['bookings'] += 1;
+                }
+            }
+        }
+          
+
+        if ($type == "bookingCodes") {
+            foreach (CB1::getBookingCodes() as $bookingCode) {
+                if (self::migrateBookingCode($bookingCode)) {
+                    $results['bookingCodes'] += 1;
+                }
+            }
+        }        
+        
+
+        if ($type == "termsUrl") {
+            if (self::migrateUserAgreementUrl()) {
+                $results['termsUrl'] += 1;
             }
         }
 
-        foreach (CB1::getBookingCodes() as $bookingCode) {
-            if (self::migrateBookingCode($bookingCode)) {
-                $results['bookingCodes'] += 1;
-            }
-        }
-
-        if (self::migrateUserAgreementUrl()) {
-            $results['termsUrl'] += 1;
-        }
-
-        foreach(CB1::getCB1Taxonomies() as $cb1Taxonomy) {
-            if (self::migrateTaxonomy($cb1Taxonomy)) {
-                $results['taxonomies'] += 1;
+        if ($type == "taxonomies") {
+            foreach(CB1::getCB1Taxonomies() as $cb1Taxonomy) {
+                if (self::migrateTaxonomy($cb1Taxonomy)) {
+                    $results['taxonomies'] += 1;
+                }
             }
         }
 
@@ -301,6 +320,7 @@ class Migration
 
         if ( ! $user || ! $cbItem || ! $cbLocation) {
                 echo "booking from id: " . $booking['id'] . "could not be created, because one of the following entries are missing: user-id: " . $booking['user_id'] . " | item-id: " . $booking['item_id'] . " | location-id: " . $booking['location_id'] . "<br>" ;
+                flush();
                 return false;
             }
 
