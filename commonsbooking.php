@@ -48,7 +48,7 @@ function commonsbooking_public()
 
     // Template specific styles
     $template = wp_get_theme()->template;
-    wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__) . 'assets/public/css/theme/' . $template . '.css');
+    wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__) . 'assets/public/css/themes/' . $template . '.css');
 
     wp_enqueue_style('cb-styles-daterangepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css');
 
