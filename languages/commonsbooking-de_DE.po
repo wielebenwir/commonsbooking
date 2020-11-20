@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "POT-Creation-Date: 2020-11-20T11:31:02+00:00\n"
-"PO-Revision-Date: 2020-11-20 12:38+0100\n"
+"PO-Revision-Date: 2020-11-20 12:48+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -522,7 +522,7 @@ msgstr ""
 #: src/View/Migration.php:24
 msgid "Found a version of CommonsBooking 1 (Version 0.X). You can migrate."
 msgstr ""
-"Es wurde eine Version von CommonsBooking 1 (Version 0.X) gefunden. D kannst "
+"Es wurde eine Version von CommonsBooking 1 (Version 0.X) gefunden. Du kannst "
 "migrieren."
 
 #: src/View/Migration.php:32
