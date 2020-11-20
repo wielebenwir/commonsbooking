@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-11-20T09:02:28+00:00\n"
+"POT-Creation-Date: 2020-11-20T11:31:02+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -43,6 +43,23 @@ msgstr ""
 msgid "Welcome to CommonsBooking"
 msgstr ""
 
+#. translators: %s = version number
+#: includes/Options.php:22
+msgid ""
+"You are using CommonsBooking Version %s\n"
+"\n"
+"                <h2>How to start</h2>\n"
+"                <p>To get startet visit our tutorials and documentation on <a href=\"https://commonsbooking.org/docs\">https://commonsbooking.org/docs</a></p>\n"
+"\n"
+"                <h2>Questions or bug reports?</h2>\n"
+"                <p>Ask your questions or send us your bug reports here https://commonsbooking.org/support</p>\n"
+"\n"
+"                <h2>Contribute</h2>\n"
+"                The future of this plugin depends on your support. You can support us by make a donation on our website: <a href=\"https://www.wielebenwir.de/verein/unterstutzen\">wielebenwir</a>\n"
+"                          \n"
+"                "
+msgstr ""
+
 #: includes/Options.php:43
 msgid "General"
 msgstr ""
@@ -51,72 +68,72 @@ msgstr ""
 msgid "Naming and permalinks"
 msgstr ""
 
-#: includes/Options.php:50
+#: includes/Options.php:51
 msgid "Customize names & slugs. <br><b>Important:</b> After changing these settings, the option <a href=\"%s\">Permalinks</a> in Wordpress settings must be called and saved once for the changes to take effect."
 msgstr ""
 
-#: includes/Options.php:65
+#: includes/Options.php:66
 msgid "Items slug"
 msgstr ""
 
 #. translators: %s = example url (like website.com/cb-items/)
-#: includes/Options.php:68
+#: includes/Options.php:69
 msgid "The url for the items archive. E.g: %s "
 msgstr ""
 
-#: includes/Options.php:91
+#: includes/Options.php:92
 msgid "Locations slug"
 msgstr ""
 
 #. translators: %s = example url (like website.com/cb-locations/)
-#: includes/Options.php:94
+#: includes/Options.php:95
 msgid "The url for the locations archive. E.g: %s "
 msgstr ""
 
-#: includes/Options.php:140
-#: includes/Options.php:145
-#: includes/Options.php:150
+#: includes/Options.php:141
+#: includes/Options.php:146
+#: includes/Options.php:151
 #: src/Wordpress/CustomPostType/Timeframe.php:565
 msgid "Booking Codes"
 msgstr ""
 
-#: includes/Options.php:161
+#: includes/Options.php:162
 msgid "Templates"
 msgstr ""
 
-#: includes/Options.php:165
+#: includes/Options.php:166
 msgid "Email templates"
 msgstr ""
 
-#: includes/Options.php:170
+#: includes/Options.php:171
 msgid "Mail-Header from E-Mail"
 msgstr ""
 
-#: includes/Options.php:171
+#: includes/Options.php:172
 msgid "E-Mail that will be shown as sender in generated emails"
 msgstr ""
 
-#: includes/Options.php:177
+#: includes/Options.php:178
 msgid "Mail-Header from Name"
 msgstr ""
 
-#: includes/Options.php:178
+#: includes/Options.php:179
 msgid "Name that will be shown as sender in generated emails"
 msgstr ""
 
-#: includes/Options.php:198
+#: includes/Options.php:199
 msgid "Booking confirmed email subject"
 msgstr ""
 
-#: includes/Options.php:202
+#: includes/Options.php:203
 msgid "Your booking {{item:post_name}} at {{location:post_name}}"
 msgstr ""
 
-#: includes/Options.php:206
+#: includes/Options.php:207
 msgid "Booking confirmed email body"
 msgstr ""
 
-#: includes/Options.php:210
+#: includes/Options.php:211
 msgid ""
 "\n"
 "                            Hi {{user:first_name}},<br>\n"
@@ -148,19 +165,19 @@ msgid ""
 "                            "
 msgstr ""
 
-#: includes/Options.php:240
+#: includes/Options.php:241
 msgid "Booking cancelled email subject"
 msgstr ""
 
-#: includes/Options.php:243
+#: includes/Options.php:244
 msgid "Booking cancelled: {{item:post_name}} at {{location:post_name}}"
 msgstr ""
 
-#: includes/Options.php:247
+#: includes/Options.php:248
 msgid "Booking cancelled email body"
 msgstr ""
 
-#: includes/Options.php:250
+#: includes/Options.php:251
 msgid ""
 "\n"
 "                            Hi {{user:first_name}},<br>\n"
@@ -174,35 +191,36 @@ msgid ""
 "          "
 msgstr ""
 
-#: includes/Options.php:402
+#: includes/Options.php:403
 msgid "Migration"
 msgstr ""
 
-#: includes/Options.php:406
+#: includes/Options.php:407
 msgid "Migrate from Commons Booking Version 0.X"
 msgstr ""
 
-#: includes/Options.php:408
+#: includes/Options.php:409
 msgid "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br>Please read the documentation on <a href=\"https://commonsbooking.org/docs/\">https://commonsbooking.org/docs/</a> before you start migration."
 msgstr ""
 
-#: includes/Options.php:411
+#: includes/Options.php:412
+#: src/View/Migration.php:38
 msgid "Start Migration"
 msgstr ""
 
-#: includes/Options.php:419
+#: includes/Options.php:420
 msgid "CommonsBooking Version 0.X profile fields"
 msgstr ""
 
-#: includes/Options.php:421
+#: includes/Options.php:422
 msgid "Enable the following legacy CommonsBooking Version 0.X user profile fields:"
 msgstr ""
 
-#: includes/Options.php:424
+#: includes/Options.php:425
 msgid "Enable"
 msgstr ""
 
-#: includes/Options.php:429
+#: includes/Options.php:430
 msgid "Terms+Services Url"
 msgstr ""
 
@@ -350,6 +368,10 @@ msgstr ""
 msgid "Terms and Conditions"
 msgstr ""
 
+#: src/Repository/CB1UserFields.php:75
+msgid "I accept the terms & conditions"
+msgstr ""
+
 #: src/Repository/CB1UserFields.php:76
 msgid "Please accept the terms & conditions"
 msgstr ""
@@ -357,6 +379,18 @@ msgstr ""
 #. translators: %s = terms and service url
 #: src/Repository/CB1UserFields.php:164
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
+msgstr ""
+
+#: src/View/Migration.php:22
+msgid "We could not detect a version of CommonsBooking 1 (Version 0.X)."
+msgstr ""
+
+#: src/View/Migration.php:24
+msgid "Found a version of CommonsBooking 1 (Version 0.X). You can migrate."
+msgstr ""
+
+#: src/View/Migration.php:32
+msgid "updated/saved"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Item.php:38
@@ -602,7 +636,7 @@ msgid "Allow locked day overbooking"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Location.php:256
-msgid "Not selected or by any timeframe defined days my be oberbooked. "
+msgid "If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation on <a href=\"https://commonsbooking.org\">commonsbooking.org</a> for more information."
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Timeframe.php:272

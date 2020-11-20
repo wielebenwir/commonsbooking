@@ -253,7 +253,7 @@ class Location extends CustomPostType
 
         $cmb->add_field(array(
             'name'       => __('Allow locked day overbooking', 'commonsbooking'),
-            'desc'       => __('Not selected or by any timeframe defined days my be oberbooked. ', 'commonsbooking'),
+            'desc'       => __('If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation on <a href="https://commonsbooking.org">commonsbooking.org</a> for more information.', 'commonsbooking'),
             'id'         => CB_METABOX_PREFIX . 'allow_lockdays_in_range',
             'type'       => 'checkbox',
         ));

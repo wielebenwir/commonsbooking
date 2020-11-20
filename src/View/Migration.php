@@ -19,9 +19,9 @@ class Migration
         ?><div class="cmb-row cmb-type-text "><?php
         
         if ( ! $cb1Installed ) { 
-            echo '<strong style="color:red">' . __('We could not detect a version of CommonsBooking 1 (Version 0.X).') . '</strong>'; 
+            echo '<strong style="color:red">' . __('We could not detect a version of CommonsBooking 1 (Version 0.X).', 'commonsbooking') . '</strong>'; 
         } else { 
-            echo '<strong style="color:green">' . __('Found a version of CommonsBooking 1 (Version 0.X). You can migrate.') . '</strong>'; 
+            echo '<strong style="color:green">' . __('Found a version of CommonsBooking 1 (Version 0.X). You can migrate.', 'commonsbooking') . '</strong>'; 
         }
         echo ('<br><br>');
 
@@ -29,13 +29,13 @@ class Migration
         if($startMigration) {
             $results = \CommonsBooking\Migration\Migration::migrateAll();
             foreach ($results as $type => $count) {
-                echo "$count $type updated/saved.<br>";
+                echo $count . ' ' . $type . __('updated/saved', 'commonsbooking') . '<br>';
                 
             }
         }
         ?>
             <br>
-            <a class="button button-primary" href="<?php echo esc_url(admin_url('admin.php')); ?>?page=commonsbooking_options_migration&migration=true">Start Migration</a>
+            <a class="button button-primary" href="<?php echo esc_url(admin_url('admin.php')); ?>?page=commonsbooking_options_migration&migration=true"> <?php echo __('Start Migration', 'commonsbooking'); ?></a>
             </div>
         <?php
     }
