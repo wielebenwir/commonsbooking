@@ -17,94 +17,138 @@ class Migration
 {
 
     /**
-     * @return int[]
-     * @throws \Exception
+     * @return void
      */
-    public static function migrateAll($type)
+    public static function migrateAll()
     {
-        
-        
-        $results = [
-            'locations'    => 0,
-            'items'        => 0,
-            'timeframes'   => 0,
-            'bookings'     => 0,
-            'bookingCodes' => 0,
-            'termsUrl'     => 0,
-            'taxonomies'   => 0
+        if ($_POST['data'] == 'false') {
+            $tasks = [
+                'locations'    => [
+                    'index'    => 0,
+                    'complete' => 0,
+                    'failed'   => 0
+                ],
+                'items'        => [
+                    'index'    => 0,
+                    'complete' => 0,
+                    'failed'   => 0
+                ],
+                'timeframes'   => [
+                    'index'    => 0,
+                    'complete' => 0,
+                    'failed'   => 0
+                ],
+                'bookings'     => [
+                    'index'    => 0,
+                    'complete' => 0,
+                    'failed'   => 0
+                ],
+                'bookingCodes' => [
+                    'index'    => 0,
+                    'complete' => 0,
+                    'failed'   => 0
+                ],
+                'termsUrl'     => [
+                    'index'    => 0,
+                    'complete' => 0,
+                    'failed'   => 0
+                ],
+                'taxonomies'   => [
+                    'index'    => 0,
+                    'complete' => 0,
+                    'failed'   => 0
+                ]
+            ];
+        } else {
+            $tasks = $_POST['data'];
+        }
+
+        $taskIndex = 0;
+        $taskLimit = 50;
+
+        $taskFunctions = [
+            'locations'    => [
+                'repoFunction'      => 'getLocations',
+                'migrationFunction' => 'migrateLocation'
+            ],
+            'items'        => [
+                'repoFunction'      => 'getItems',
+                'migrationFunction' => 'migrateItem'
+            ],
+            'timeframes'   => [
+                'repoFunction'      => 'getTimeframes',
+                'migrationFunction' => 'migrateTimeframe'
+            ],
+            'bookings'     => [
+                'repoFunction'      => 'getBookings',
+                'migrationFunction' => 'migrateBooking'
+            ],
+            'bookingCodes' => [
+                'repoFunction'      => 'getBookingCodes',
+                'migrationFunction' => 'migrateBookingCode'
+            ],
+            'termsUrl'     => [
+                'repoFunction'      => false,
+                'migrationFunction' => 'migrateUserAgreementUrl'
+            ],
+            'taxonomies'   => [
+                'repoFunction'      => 'getCB1Taxonomies',
+                'migrationFunction' => 'migrateTaxonomy'
+            ]
         ];
 
-        if ($type == "locations") {
-            foreach (CB1::getLocations() as $location) {
-                if (self::migrateLocation($location)) {
-                    $results['locations'] += 1;
+        foreach ($tasks as $key => &$task) {
+            if (
+                $task['complete'] == 0 &&
+                array_key_exists('migrationFunction', $taskFunctions[$key]) &&
+                $taskFunctions[$key]['migrationFunction']
+            ) {
+
+                if ($taskIndex >= $taskLimit) break;
+
+                // Multi migration
+                if(
+                    array_key_exists('repoFunction', $taskFunctions[$key]) &&
+                    $taskFunctions[$key]['repoFunction']
+                ) {
+                    $items = CB1::{$taskFunctions[$key]['repoFunction']}();
+
+                    // If there are items to migrate
+                    if(count($items)) {
+                        for ($index = $task['index']; $index < count($items); $index++) {
+
+                            if ($taskIndex++ >= $taskLimit) break;
+
+                            $item = $items[$index];
+                            if (!self::{$taskFunctions[$key]['migrationFunction']}($item)) {
+                                $task['failed'] += 1;
+                            }
+                            $task['index'] += 1;
+                        }
+                        if($task['index'] == count($items)) {
+                            $task['complete'] = 1;
+                        }
+
+                    // No items for migration found
+                    } else {
+                        if ($taskIndex++ >= $taskLimit) break;
+                        $task['complete'] = 1;
+                    }
+
+                // Single Migration
+                } else {
+                    if ($taskIndex++ >= $taskLimit) break;
+
+                    if (!self::{$taskFunctions[$key]['migrationFunction']}()) {
+                        $task['failed'] += 1;
+                    }
+                    $task['index'] += 1;
+                    $task['complete'] = 1;
                 }
             }
         }
 
-        if ($type == "items") {
-            foreach (CB1::getItems() as $item) {
-                if (self::migrateItem($item)) {
-                    $results['items'] += 1;
-                }
-            }
-        }
-
-        
-        if ($type == "timeframes") {
-            foreach (CB1::getTimeframes() as $timeframe) {
-                if (self::migrateTimeframe($timeframe)) {
-                    $results['timeframes'] += 1;
-                }
-            }
-        }
-
-        if ($type == "bookings") {
-            foreach (CB1::getBookings() as $booking) {
-                if (self::migrateBooking($booking)) {
-                    $results['bookings'] += 1;
-                }
-            }
-        }
-          
-
-        if ($type == "bookingCodes") {
-            foreach (CB1::getBookingCodes() as $bookingCode) {
-                if (self::migrateBookingCode($bookingCode)) {
-                    $results['bookingCodes'] += 1;
-                }
-            }
-        }        
-        
-
-        if ($type == "termsUrl") {
-            if (self::migrateUserAgreementUrl()) {
-                $results['termsUrl'] += 1;
-            }
-        }
-
-        if ($type == "taxonomies") {
-            foreach(CB1::getCB1Taxonomies() as $cb1Taxonomy) {
-                if (self::migrateTaxonomy($cb1Taxonomy)) {
-                    $results['taxonomies'] += 1;
-                }
-            }
-        }
-
-        return $results;
-    }
-
-
-    /**
-     * fetchEmails
-     * extract mails from a given string and return an array with email addresses
-     *
-     * @param  mixed $text
-     * @return ARRAY
-     */
-    public static function fetchEmails($text) {
-        $words = str_word_count($text, 1, '.@-_');
-        return array_filter($words, function($word) {return filter_var($word, FILTER_VALIDATE_EMAIL);});
+        wp_send_json($tasks);
     }
 
     /**
@@ -124,7 +168,8 @@ class Migration
         unset($postData['ID']);
 
         // Exctract e-mails from CB1 contactinfo field so we can migrate it into new cb2 field _cb_location_email
-        $cb1_location_emails = self::fetchEmails( get_post_meta( $location->ID, 'commons-booking_location_contactinfo_text', true ) );
+        $cb1_location_emails = self::fetchEmails(get_post_meta($location->ID,
+            'commons-booking_location_contactinfo_text', true));
 
         if ($cb1_location_emails) {
             $cb1_location_email_string = implode(',', $cb1_location_emails);
@@ -134,33 +179,50 @@ class Migration
 
         // Allow overbooking of locked days where no timeframes are defined
         $allowClosed = \CommonsBooking\Settings\Settings::getOption(
-            'commons-booking-settings-bookings',
-            'commons-booking_bookingsettings_allowclosed'
-        ) == 'on';
+                'commons-booking-settings-bookings',
+                'commons-booking_bookingsettings_allowclosed'
+            ) == 'on';
 
         // CB2 <-> CB1
         $postMeta = [
-            CB_METABOX_PREFIX . 'location_street'   => get_post_meta($location->ID,
+            CB_METABOX_PREFIX . 'location_street'             => get_post_meta($location->ID,
                 'commons-booking_location_adress_street', true),
-            CB_METABOX_PREFIX . 'location_city'     => get_post_meta($location->ID,
+            CB_METABOX_PREFIX . 'location_city'               => get_post_meta($location->ID,
                 'commons-booking_location_adress_city', true),
-            CB_METABOX_PREFIX . 'location_postcode' => get_post_meta($location->ID,
+            CB_METABOX_PREFIX . 'location_postcode'           => get_post_meta($location->ID,
                 'commons-booking_location_adress_zip', true),
-            CB_METABOX_PREFIX . 'location_country'  => get_post_meta($location->ID,
+            CB_METABOX_PREFIX . 'location_country'            => get_post_meta($location->ID,
                 'commons-booking_location_adress_country', true),
-            CB_METABOX_PREFIX . 'location_contact'  => get_post_meta($location->ID,
+            CB_METABOX_PREFIX . 'location_contact'            => get_post_meta($location->ID,
                 'commons-booking_location_contactinfo_text', true),
-            CB_METABOX_PREFIX . 'location_pickupinstructions'  => get_post_meta($location->ID,
-            'commons-booking_location_openinghours', true),
-            CB_METABOX_PREFIX . 'location_email'  => $cb1_location_email_string,
-            CB_METABOX_PREFIX . 'cb1_post_post_ID'  => $location->ID,
-            '_thumbnail_id' => get_post_meta($location->ID, '_thumbnail_id', true),
-            CB_METABOX_PREFIX . 'allow_lockdays_in_range' => $allowClosed
+            CB_METABOX_PREFIX . 'location_pickupinstructions' => get_post_meta($location->ID,
+                'commons-booking_location_openinghours', true),
+            CB_METABOX_PREFIX . 'location_email'              => $cb1_location_email_string,
+            CB_METABOX_PREFIX . 'cb1_post_post_ID'            => $location->ID,
+            '_thumbnail_id'                                   => get_post_meta($location->ID, '_thumbnail_id', true),
+            CB_METABOX_PREFIX . 'allow_lockdays_in_range'     => $allowClosed
         ];
 
         $existingPost = self::getExistingPost($location->ID, Location::$postType);
 
         return self::savePostData($existingPost, $postData, $postMeta);
+    }
+
+    /**
+     * fetchEmails
+     * extract mails from a given string and return an array with email addresses
+     *
+     * @param mixed $text
+     *
+     * @return ARRAY
+     */
+    public static function fetchEmails($text)
+    {
+        $words = str_word_count($text, 1, '.@-_');
+
+        return array_filter($words, function ($word) {
+            return filter_var($word, FILTER_VALIDATE_EMAIL);
+        });
     }
 
     /**
@@ -182,9 +244,9 @@ class Migration
         );
 
         // If we're searching for a timeframe, we need the type
-        if($timeframe_type) {
+        if ($timeframe_type) {
             $args = array(
-                'post_type'    => $type,
+                'post_type'  => $type,
                 'meta_query' => array(
                     'relation' => 'AND',
                     array(
@@ -193,8 +255,8 @@ class Migration
                         'compare' => '='
                     ),
                     array(
-                        'key'     => 'type',
-                        'value'   => "".$timeframe_type
+                        'key'   => 'type',
+                        'value' => "" . $timeframe_type
                     )
                 )
             );
@@ -264,7 +326,7 @@ class Migration
         // CB2 <-> CB1
         $postMeta = [
             CB_METABOX_PREFIX . 'cb1_post_post_ID' => $item->ID,
-            '_thumbnail_id' => get_post_meta($item->ID, '_thumbnail_id', true)
+            '_thumbnail_id'                        => get_post_meta($item->ID, '_thumbnail_id', true)
         ];
 
         $existingPost = self::getExistingPost($item->ID, Item::$postType);
@@ -286,7 +348,7 @@ class Migration
         //get closed days in cb1 timeframe to migrate them into new cb timeframe weekdays (inversion of days)
         $cb1_closeddays = get_post_meta($timeframe['location_id'], 'commons-booking_location_closeddays', true);
         if (is_array($cb1_closeddays)) {
-            $weekdays = array(1,2,3,4,5,6,7);
+            $weekdays = array(1, 2, 3, 4, 5, 6, 7);
             $weekdays = array_diff($weekdays, $cb1_closeddays);
             $timeframe_repetition = "w"; //set repetition do weekly
         } else {
@@ -340,13 +402,14 @@ class Migration
         $cbLocation = self::getExistingPost($booking['location_id'], Location::$postType);
 
         if ( ! $user || ! $cbItem || ! $cbLocation) {
-                echo "booking from id: " . $booking['id'] . "could not be created, because one of the following entries are missing: user-id: " . $booking['user_id'] . " | item-id: " . $booking['item_id'] . " | location-id: " . $booking['location_id'] . "<br>" ;
-                return false;
-            }
+            echo "booking from id: " . $booking['id'] . "could not be created, because one of the following entries are missing: user-id: " . $booking['user_id'] . " | item-id: " . $booking['item_id'] . " | location-id: " . $booking['location_id'] . "<br>";
 
-            //throw new \Exception('booking could not created, because user or linked location or item does not exist.');
-            //echo __('booking could not created because user or linked location or item does not exist', 'commonsbooking');
-        
+            return false;
+        }
+
+        //throw new \Exception('booking could not created, because user or linked location or item does not exist.');
+        //echo __('booking could not created because user or linked location or item does not exist', 'commonsbooking');
+
 
         // Collect post data
         $postData = [
@@ -427,6 +490,7 @@ class Migration
 
     /**
      * Migrates CB1 taxonomy to CB2 posts.
+     *
      * @param $cb1Taxonomies
      *
      * @return bool
@@ -436,6 +500,7 @@ class Migration
         $cb2PostId = CB1::getCB2PostIdByCB1Id($cb1Taxonomies->object_id);
         try {
             wp_set_object_terms($cb2PostId, $cb1Taxonomies->term, $cb1Taxonomies->taxonomy);
+
             return true;
         } catch (\Exception $e) {
             return false;
