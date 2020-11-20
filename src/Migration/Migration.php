@@ -241,6 +241,19 @@ class Migration
     {
         $cbItem = self::getExistingPost($timeframe['item_id'], Item::$postType);
         $cbLocation = self::getExistingPost($timeframe['location_id'], Location::$postType);
+        $cb1_closeddays = '';
+        $weekdays = '';
+
+        //get closed days in cb1 timeframe to migrate them into new cb timeframe weekdays (inversion of days)
+        $cb1_closeddays = get_post_meta($timeframe['location_id'], 'commons-booking_location_closeddays', true);
+        if (is_array($cb1_closeddays)) {
+            $weekdays = array(1,2,3,4,5,6,7);
+            $weekdays = array_diff($weekdays, $cb1_closeddays);
+            $timeframe_repetition = "w"; //set repetition do weekly
+        } else {
+            $timeframe_repetition = "d"; // set repetition to daily
+        }
+
 
         if ( ! $cbItem || ! $cbLocation) {
             //throw new \Exception('timeframe could not created, because linked location or item does not exist.');
@@ -262,11 +275,12 @@ class Migration
             'item-id'                              => $cbItem->ID,
             'location-id'                          => $cbLocation->ID,
             'type'                                 => Timeframe::BOOKABLE_ID,
-            'timeframe-repetition'                 => 'd',
+            'timeframe-repetition'                 => $timeframe_repetition,
             'start-time'                           => '00:00',
             'end-time'                             => '23:59',
             'full-day'                             => 'on',
             'grid'                                 => '0',
+            'weekdays'                             => $weekdays,
         ];
 
         $existingPost = self::getExistingPost($timeframe['id'], Timeframe::$postType);
