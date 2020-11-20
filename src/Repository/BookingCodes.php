@@ -149,7 +149,7 @@ class BookingCodes
 
         foreach ($period as $key => $dt) {
             $day = new Day($dt->format('Y-m-d'));
-            if ( !$day->isInTimeframe($bookablePost)) {
+            if ( ! $day->isInTimeframe($bookablePost)) {
                 $bookingCode = new BookingCode(
                     $dt->format('Y-m-d'),
                     $bookablePost->getItem()->ID,
@@ -173,7 +173,7 @@ class BookingCodes
         $wpdb->show_errors(0);
         $table_name = $wpdb->prefix . self::$tablename;
 
-        $result = $wpdb->insert(
+        $result = $wpdb->replace(
             $table_name,
             array(
                 'timeframe' => $bookingCode->getTimeframe(),
