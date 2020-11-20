@@ -39,6 +39,11 @@ function commonsbooking_admin()
     wp_enqueue_script('cb-scripts-admin', plugin_dir_url(__FILE__) . 'assets/admin/js/admin.js', array());
     wp_enqueue_style( 'jquery-ui', '//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css' );
     wp_enqueue_script( 'jquery-ui-datepicker' );
+
+    wp_localize_script('cb-scripts-admin', 'cb_ajax', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce'    => wp_create_nonce('start_migration')
+    ));
 }
 add_action('admin_enqueue_scripts', 'commonsbooking_admin');
 
@@ -76,6 +81,9 @@ add_action('wp_enqueue_scripts', 'commonsbooking_public');
 
 add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 'getCalendarData'));
 add_action('wp_ajax_nopriv_calendar_data', array(\CommonsBooking\View\Location::class, 'getCalendarData'));
+if ( is_admin() ) {
+    add_action('wp_ajax_start_migration', array(\CommonsBooking\Migration\Migration::class, 'migrateAll'));
+}
 
 // should be loaded via add_action, but wasnt working in admin menu
 load_plugin_textdomain('commonsbooking', false, basename(dirname(__FILE__)) . '/languages/');
