@@ -402,7 +402,7 @@ class Migration
         $cbLocation = self::getExistingPost($booking['location_id'], Location::$postType);
 
         if ( ! $user || ! $cbItem || ! $cbLocation) {
-            echo "booking from id: " . $booking['id'] . "could not be created, because one of the following entries are missing: user-id: " . $booking['user_id'] . " | item-id: " . $booking['item_id'] . " | location-id: " . $booking['location_id'] . "<br>";
+            //echo "booking from id: " . $booking['id'] . "could not be created, because one of the following entries are missing: user-id: " . $booking['user_id'] . " | item-id: " . $booking['item_id'] . " | location-id: " . $booking['location_id'] . "<br>";
 
             return false;
         }
