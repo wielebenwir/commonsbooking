@@ -34,8 +34,8 @@ class Migration
             $migrationTypes = array (
                 'locations',
                 'items',
-                'timeframes',
-                'bookings',
+                //'timeframes',
+                //'bookings',
                 'bookingCodes',
                 'termsUrl',
                 'taxonomies',
