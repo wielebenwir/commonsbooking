@@ -32,11 +32,11 @@ class Migration
             flush();
 
             $migrationTypes = array (
-                //'locations',
-                //'items',
-                //'timeframes',
-                //'bookings',
-                //'bookingCodes',
+                'locations',
+                'items',
+                'timeframes',
+                'bookings',
+                'bookingCodes',
                 'termsUrl',
                 'taxonomies',
             );
@@ -44,8 +44,6 @@ class Migration
             foreach ($migrationTypes AS $value) {
                 $results = \CommonsBooking\Migration\Migration::migrateAll($value);
                 echo $results[$value] . ' ' . $value . __(' updated/saved', 'commonsbooking') . '<br>';
-                flush();
-                //sleep(1);
             }
 
             echo '<br><strong style="color: green">Migration finished</strong><br><br>';

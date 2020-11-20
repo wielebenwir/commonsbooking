@@ -63,6 +63,7 @@ class Migration
             foreach (CB1::getBookings() as $booking) {
                 if (self::migrateBooking($booking)) {
                     $results['bookings'] += 1;
+                    sleep(0.2);
                 }
             }
         }
