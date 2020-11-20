@@ -20,8 +20,10 @@ class Migration
      * @return int[]
      * @throws \Exception
      */
-    public static function migrateAll()
+    public static function migrateAll($type)
     {
+        
+        
         $results = [
             'locations'    => 0,
             'items'        => 0,
@@ -32,43 +34,67 @@ class Migration
             'taxonomies'   => 0
         ];
 
-        foreach (CB1::getLocations() as $location) {
-            if (self::migrateLocation($location)) {
-                $results['locations'] += 1;
+        if ($type == "locations") {
+            foreach (CB1::getLocations() as $location) {
+                if (self::migrateLocation($location)) {
+                    $results['locations'] += 1;
+                }
             }
         }
 
-        foreach (CB1::getItems() as $item) {
-            if (self::migrateItem($item)) {
-                $results['items'] += 1;
+        if ($type == "items") {
+            foreach (CB1::getItems() as $item) {
+                if (self::migrateItem($item)) {
+                    $results['items'] += 1;
+                }
             }
         }
 
-        foreach (CB1::getTimeframes() as $timeframe) {
-            if (self::migrateTimeframe($timeframe)) {
-                $results['timeframes'] += 1;
+        
+        if ($type == "timeframes") {
+            foreach (CB1::getTimeframes() as $timeframe) {
+                if (self::migrateTimeframe($timeframe)) {
+                    $results['timeframes'] += 1;
+                }
             }
         }
 
-        foreach (CB1::getBookings() as $booking) {
-            if (self::migrateBooking($booking)) {
-                $results['bookings'] += 1;
+        if ($type == "bookings") {
+            $bookingcounter = 1;
+            foreach (CB1::getBookings() as $booking) {
+                $bookingcounter += 1;
+                if ($bookingcounter % 200 == 0) {
+                    echo "... pause ... ";
+                    flush();
+                    sleep(1);
+                }
+                if (self::migrateBooking($booking)) {
+                    $results['bookings'] += 1;
+                }
+            }
+        }
+          
+
+        if ($type == "bookingCodes") {
+            foreach (CB1::getBookingCodes() as $bookingCode) {
+                if (self::migrateBookingCode($bookingCode)) {
+                    $results['bookingCodes'] += 1;
+                }
+            }
+        }        
+        
+
+        if ($type == "termsUrl") {
+            if (self::migrateUserAgreementUrl()) {
+                $results['termsUrl'] += 1;
             }
         }
 
-        foreach (CB1::getBookingCodes() as $bookingCode) {
-            if (self::migrateBookingCode($bookingCode)) {
-                $results['bookingCodes'] += 1;
-            }
-        }
-
-        if (self::migrateUserAgreementUrl()) {
-            $results['termsUrl'] += 1;
-        }
-
-        foreach(CB1::getCB1Taxonomies() as $cb1Taxonomy) {
-            if (self::migrateTaxonomy($cb1Taxonomy)) {
-                $results['taxonomies'] += 1;
+        if ($type == "taxonomies") {
+            foreach(CB1::getCB1Taxonomies() as $cb1Taxonomy) {
+                if (self::migrateTaxonomy($cb1Taxonomy)) {
+                    $results['taxonomies'] += 1;
+                }
             }
         }
 
@@ -262,6 +288,19 @@ class Migration
     {
         $cbItem = self::getExistingPost($timeframe['item_id'], Item::$postType);
         $cbLocation = self::getExistingPost($timeframe['location_id'], Location::$postType);
+        $cb1_closeddays = '';
+        $weekdays = '';
+
+        //get closed days in cb1 timeframe to migrate them into new cb timeframe weekdays (inversion of days)
+        $cb1_closeddays = get_post_meta($timeframe['location_id'], 'commons-booking_location_closeddays', true);
+        if (is_array($cb1_closeddays)) {
+            $weekdays = array(1,2,3,4,5,6,7);
+            $weekdays = array_diff($weekdays, $cb1_closeddays);
+            $timeframe_repetition = "w"; //set repetition do weekly
+        } else {
+            $timeframe_repetition = "d"; // set repetition to daily
+        }
+
 
         if ( ! $cbItem || ! $cbLocation) {
             //throw new \Exception('timeframe could not created, because linked location or item does not exist.');
@@ -283,11 +322,12 @@ class Migration
             'item-id'                              => $cbItem->ID,
             'location-id'                          => $cbLocation->ID,
             'type'                                 => Timeframe::BOOKABLE_ID,
-            'timeframe-repetition'                 => 'd',
+            'timeframe-repetition'                 => $timeframe_repetition,
             'start-time'                           => '00:00',
             'end-time'                             => '23:59',
             'full-day'                             => 'on',
             'grid'                                 => '0',
+            'weekdays'                             => $weekdays,
         ];
 
         $existingPost = self::getExistingPost($timeframe['id'], Timeframe::$postType, Timeframe::BOOKABLE_ID);
@@ -307,9 +347,14 @@ class Migration
         $cbLocation = self::getExistingPost($booking['location_id'], Location::$postType);
 
         if ( ! $user || ! $cbItem || ! $cbLocation) {
+                echo "booking from id: " . $booking['id'] . "could not be created, because one of the following entries are missing: user-id: " . $booking['user_id'] . " | item-id: " . $booking['item_id'] . " | location-id: " . $booking['location_id'] . "<br>" ;
+                flush();
+                return false;
+            }
+
             //throw new \Exception('booking could not created, because user or linked location or item does not exist.');
-            echo __('booking could not created because user or linked location or item does not exist', 'commonsbooking');
-        }
+            //echo __('booking could not created because user or linked location or item does not exist', 'commonsbooking');
+        
 
         // Collect post data
         $postData = [

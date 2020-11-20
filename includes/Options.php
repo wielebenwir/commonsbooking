@@ -17,8 +17,9 @@ $options_array = array(
             'welcome' => array(
                 'title'  => __('Welcome to CommonsBooking', 'commonsbooking'),
                 'id'     => 'welcome',
-                'desc'   => '
-                You are using CommonsBooking Version ' . CB_VERSION . '
+                'desc'   => 
+                // translators: %s = version number
+                sprintf (__ ( 'You are using CommonsBooking Version %s
 
                 <h2>How to start</h2>
                 <p>To get startet visit our tutorials and documentation on <a href="https://commonsbooking.org/docs">https://commonsbooking.org/docs</a></p>
@@ -28,9 +29,8 @@ $options_array = array(
 
                 <h2>Contribute</h2>
                 The future of this plugin depends on your support. You can support us by make a donation on our website: <a href="https://www.wielebenwir.de/verein/unterstutzen">wielebenwir</a>
-            
-                
-                ',
+                          
+                ', 'commonsbooking' ), CB_VERSION ),
                 'fields' => array()
             )
         )
@@ -47,6 +47,7 @@ $options_array = array(
          'posttypes' => array(
            'title' => __( 'Naming and permalinks', 'commonsbooking' ),
            'id' => 'posttypes',
+           // tranlsators: %s = admin url options page
            'desc' => sprintf ( __( 'Customize names & slugs. <br><b>Important:</b> After changing these settings, the option <a href="%s">Permalinks</a> in Wordpress settings must be called and saved once for the changes to take effect.' , 'commonsbooking' ), admin_url('options-permalink.php') ),
            'fields' => array(
 //             array(
@@ -134,6 +135,9 @@ $options_array = array(
        /* designation: formats end */
        )
      ),
+
+
+
     // /* Tab: general end*/
 
     'bookingcodes' => array(

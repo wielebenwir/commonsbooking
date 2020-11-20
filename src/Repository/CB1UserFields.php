@@ -72,7 +72,7 @@ class CB1UserFields {
 		  'title' => __( 'Terms and Conditions', 'commonsbooking'), 
 		  'field_name' => 'terms_accepted', 
 		  'type' => 'checkbox', 
-		  'description' => __( 'I accept the terms & conditions' ),
+		  'description' => __( 'I accept the terms & conditions', 'commonsbooking' ),
 		  'errormessage' => __('Please accept the terms & conditions', 'commonsbooking') 
 		  )
 	  );
