@@ -148,10 +148,12 @@ class Migration
      * @param $id
      * @param $type
      *
+     * @param null $timeframe_type
+     *
      * @return mixed
      * @throws \Exception
      */
-    public static function getExistingPost($id, $type)
+    public static function getExistingPost($id, $type, $timeframe_type = null)
     {
         $args = array(
             'meta_key'     => CB_METABOX_PREFIX . 'cb1_post_post_ID',
@@ -159,6 +161,25 @@ class Migration
             'meta_compare' => '=',
             'post_type'    => $type
         );
+
+        // If we're searching for a timeframe, we need the type
+        if($timeframe_type) {
+            $args = array(
+                'post_type'    => $type,
+                'meta_query' => array(
+                    'relation' => 'AND',
+                    array(
+                        'key'     => CB_METABOX_PREFIX . 'cb1_post_post_ID',
+                        'value'   => $id,
+                        'compare' => '='
+                    ),
+                    array(
+                        'key'     => 'type',
+                        'value'   => "".$timeframe_type
+                    )
+                )
+            );
+        }
 
         /** @var WP_Query $query */
         $query = new \WP_Query($args);
@@ -251,7 +272,7 @@ class Migration
             'post_title'  => $timeframe['timeframe_title'],
             'post_type'   => Timeframe::$postType,
             'post_name'   => CustomPostType::generateRandomSlug(),
-            'post_status' => 'confirmed'
+            'post_status' => 'publish'
         ];
 
         // CB2 <-> CB1
@@ -269,7 +290,7 @@ class Migration
             'grid'                                 => '0',
         ];
 
-        $existingPost = self::getExistingPost($timeframe['id'], Timeframe::$postType);
+        $existingPost = self::getExistingPost($timeframe['id'], Timeframe::$postType, Timeframe::BOOKABLE_ID);
 
         return self::savePostData($existingPost, $postData, $postMeta);
     }
@@ -314,7 +335,7 @@ class Migration
             CB_METABOX_PREFIX . 'bookingcode'      => CB1::getBookingCode($booking['code_id'])
         ];
 
-        $existingPost = self::getExistingPost($booking['id'], Timeframe::$postType);
+        $existingPost = self::getExistingPost($booking['id'], Timeframe::$postType, Timeframe::BOOKING_ID);
 
         return self::savePostData($existingPost, $postData, $postMeta);
     }
