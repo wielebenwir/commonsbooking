@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "POT-Creation-Date: 2020-11-20T11:31:02+00:00\n"
-"PO-Revision-Date: 2020-11-20 12:48+0100\n"
+"PO-Revision-Date: 2020-11-20 17:36+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1133,7 +1133,7 @@ msgstr "Bitte wähle das Abholdatum im Kalender"
 
 #: templates/timeframe-calendar.php:33
 msgid "Please select the return date in the calendar"
-msgstr "Bitte wähl das Rückgabedatum im Kalender aus"
+msgstr "Bitte wähle das Rückgabedatum im Kalender aus"
 
 #: templates/timeframe-calendar.php:41
 msgid "Continue to check booking"
