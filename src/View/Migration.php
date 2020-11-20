@@ -28,15 +28,15 @@ class Migration
       
         if($startMigration) {
 
-            echo '<strong style="animation: blinker 0.6s linear infinite">migration in process .. please wait ... </strong><br><br>';
+            print '<strong style="animation: blinker 0.6s linear infinite">migration in process .. please wait ... </strong><br><br>';
             flush();
 
             $migrationTypes = array (
-                'locations',
-                'items',
+                //'locations',
+                //'items',
                 //'timeframes',
                 //'bookings',
-                'bookingCodes',
+                //'bookingCodes',
                 'termsUrl',
                 'taxonomies',
             );
