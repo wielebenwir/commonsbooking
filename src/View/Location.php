@@ -209,7 +209,7 @@ class Location extends View
         }
 
         $endDateString = array_key_exists('ed', $_POST) ? $_POST['ed'] : date('Y-m-d',
-            strtotime('+3 months', time()));
+            strtotime('+62 days', time()));
         if ($endDateString) {
             $endDate = new Day($endDateString);
         }

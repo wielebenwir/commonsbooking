@@ -136,7 +136,7 @@ class Day
             $this->types,
             $this->getDate(),
             false,
-            null,
+            $this->getDateObject()->getTimestamp(),
             ['publish', 'confirmed', 'unconfirmed']
         );
         $slots = $this->getTimeframeSlots($timeFrames);

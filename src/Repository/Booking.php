@@ -55,7 +55,8 @@ class Booking extends PostRepository
                         'compare' => '='
                     )
                 ),
-                'post_status' => 'any'
+                'post_status' => 'any',
+                'nopaging' => true
             );
 
             $query = new \WP_Query($args);
