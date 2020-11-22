@@ -149,6 +149,7 @@ abstract class BookablePost extends PostRepository
         } else {
             $defaults = array(
                 'post_status' => array('publish', 'inherit'),
+                'nopaging' => true
             );
 
             $queryArgs = wp_parse_args($args, $defaults);

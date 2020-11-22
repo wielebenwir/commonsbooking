@@ -38,7 +38,8 @@ class Item extends BookablePost
                         'key' => 'location-id',
                         'value' => $locationId
                     )
-                )
+                ),
+                'nopaging' => true
             );
 
             $query = new \WP_Query($args);
