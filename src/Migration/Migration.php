@@ -53,6 +53,11 @@ class Migration
                     'complete' => 0,
                     'failed'   => 0
                 ],
+                'options'     => [
+                    'index'    => 0,
+                    'complete' => 0,
+                    'failed'   => 0
+                ],
                 'taxonomies'   => [
                     'index'    => 0,
                     'complete' => 0,
@@ -90,6 +95,10 @@ class Migration
             'termsUrl'     => [
                 'repoFunction'      => false,
                 'migrationFunction' => 'migrateUserAgreementUrl'
+            ],
+            'options'     => [
+                'repoFunction'      => false,
+                'migrationFunction' => 'migrateCB1Options'
             ],
             'taxonomies'   => [
                 'repoFunction'      => 'getCB1Taxonomies',
@@ -488,6 +497,39 @@ class Migration
 
         return true;
     }
+
+    /**
+     * Migrates some of the CB1 Options that can be transfered to CB2
+     *
+     * @return mixed
+     */
+    public static function migrateCB1Options()
+    {
+
+        // migrate Booking-Codes
+        $cb1_bookingcodes = Settings::getOption('commons-booking-settings-codes', 'commons-booking_codes_pool');
+        $options_bookingcode_array = array('bookingcodes' => $cb1_bookingcodes);
+        update_option( 'commonsbooking_options_bookingcodes', $options_bookingcode_array);
+
+        // sender e-mail
+        $cb1_sender_email = Settings::getOption('commons-booking-settings-mail', 'commons-booking_mail_from');
+        $options_array['emailheaders_from-email'] = $cb1_sender_email;
+
+        // sender name
+        $cb1_sender_name = Settings::getOption('commons-booking-settings-mail', 'commons-booking_mail_from_name');
+        $options_array['emailheaders_from-name'] = $cb1_sender_name;
+
+        // update options-templates tab
+        update_option('commonsbooking_options_templates', $options_array);
+
+        return true;
+    }
+
+
+
+
+
+
 
     /**
      * Migrates CB1 taxonomy to CB2 posts.
