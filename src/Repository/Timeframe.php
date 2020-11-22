@@ -47,15 +47,16 @@ class Timeframe extends PostRepository
             return Plugin::getCacheItem();
         } else {
             global $wpdb;
+            $posts = [];
 
             // Get Post-IDs considerung types, items and locations
             $postIds = self::getPostIdsByType($types, $items, $locations);
+            if ($postIds && count($postIds)) {
+                $dateQuery = "";
 
-            $dateQuery = "";
-
-            // Filter by date
-            if ($date && ! $minTimestamp) {
-                $dateQuery = "
+                // Filter by date
+                if ($date && ! $minTimestamp) {
+                    $dateQuery = "
                     INNER JOIN wp_postmeta pm4 ON
                         pm4.post_id = pm1.post_id AND
                         pm4.meta_key = 'repetition-start'
@@ -65,11 +66,11 @@ class Timeframe extends PostRepository
                         pm5.meta_key = 'repetition-end' AND
                         pm5.meta_value BETWEEN " . strtotime($date) . " AND 3000000000                        
                 ";
-            }
+                }
 
-            // Filter only from a specific start date.
-            if ($minTimestamp) {
-                $dateQuery = "
+                // Filter only from a specific start date.
+                if ($minTimestamp) {
+                    $dateQuery = "
                     INNER JOIN wp_postmeta pm4 ON
                         pm4.post_id = wp_posts.id AND
                         pm4.meta_key = 'repetition-end' AND
@@ -79,24 +80,22 @@ class Timeframe extends PostRepository
                         pm5.meta_key = 'repetition-start' AND
                         pm5.meta_value <= " . $minTimestamp . "
                 ";
-            }
+                }
+                // Complete query
+                $query = "
+                    SELECT wp_posts.* from wp_posts
+                    " . $dateQuery . "
+                    WHERE
+                        wp_posts.id in (" . implode(",", $postIds) . ") AND
+                        wp_posts.post_type = '" . \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() . "' AND
+                        wp_posts.post_status IN ('" . implode("','", $postStatus) . "')
+                ";
 
-            // Complete query
-            $query = "
-                SELECT wp_posts.* from wp_posts
-                " . $dateQuery . "
-                WHERE
-                    wp_posts.id in (" . implode(",", $postIds) . ") AND
-                    wp_posts.post_type = '" . \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() . "' AND
-                    wp_posts.post_status IN ('" . implode("','", $postStatus) . "')
-            ";
-
-
-            $posts = $wpdb->get_results($query, ARRAY_N);
-
-            // Get posts from result
-            foreach ($posts as &$post) {
-                $post = get_post($post[0]);
+                $posts = $wpdb->get_results($query, ARRAY_N);
+                // Get posts from result
+                foreach ($posts as &$post) {
+                    $post = get_post($post[0]);
+                }
             }
 
             if ($posts && count($posts)) {
@@ -191,17 +190,17 @@ class Timeframe extends PostRepository
             ";
 
             // Run query
-            $bookingCodes = $wpdb->get_results(
+            $posts = $wpdb->get_results(
                 $query, ARRAY_N);
 
             // Get Post-IDs
-            foreach ($bookingCodes as &$bookingCode) {
-                $bookingCode = $bookingCode[0];
+            foreach ($posts as &$post) {
+                $post = $post[0];
             }
 
-            Plugin::setCacheItem($bookingCodes, 'getPostIdsByType');
+            Plugin::setCacheItem($posts, 'getPostIdsByType');
 
-            return $bookingCodes;
+            return $posts;
         }
     }
 
