@@ -37,6 +37,7 @@ class Migration
                 <span id="bookingCodes-count">0</span> BookingCodes ' . __(' updated/saved', 'commonsbooking') . '<br>
                 <span id="termsUrl-count">0</span> TermsUrls ' . __(' updated/saved', 'commonsbooking') . '<br>
                 <span id="taxonomies-count">0</span> Taxonomies ' . __(' updated/saved', 'commonsbooking') . '<br>
+                <span id="options-count">0</span> Options ' . __(' updated/saved', 'commonsbooking') . '<br>
             </div>
             
             <div id="migration-done" style="display: none;">
