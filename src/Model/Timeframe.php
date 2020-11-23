@@ -215,7 +215,7 @@ class Timeframe extends CustomPost
                         return false;
                     }
 
-                    // Check if day slots overlap
+                    // Check if in day slots overlap
                     if (!$this->getMeta('full-day') && $this->hasTimeframeTimeOverlap($this, $timeframe)) {
                         set_transient("timeframeValidationFailed",
                             /* translators: first %s = timeframe-ID, second %s is timeframe post_title */
@@ -223,7 +223,10 @@ class Timeframe extends CustomPost
                                 'commonsbooking', 5), $timeframe->ID, $timeframe->post_title));
 
                         return false;
-                    } else {
+                    }
+
+                    // Check if full-day slots overlap
+                    if ($this->getMeta('full-day')) {
                         set_transient("timeframeValidationFailed",
                             /* translators: first %s = timeframe-ID, second %s is timeframe post_title */
                             sprintf(__('Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s: %2$s',
