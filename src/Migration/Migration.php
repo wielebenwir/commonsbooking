@@ -53,7 +53,7 @@ class Migration
                     'complete' => 0,
                     'failed'   => 0
                 ],
-                'options'     => [
+                'options'      => [
                     'index'    => 0,
                     'complete' => 0,
                     'failed'   => 0
@@ -96,7 +96,7 @@ class Migration
                 'repoFunction'      => false,
                 'migrationFunction' => 'migrateUserAgreementUrl'
             ],
-            'options'     => [
+            'options'      => [
                 'repoFunction'      => false,
                 'migrationFunction' => 'migrateCB1Options'
             ],
@@ -113,42 +113,50 @@ class Migration
                 $taskFunctions[$key]['migrationFunction']
             ) {
 
-                if ($taskIndex >= $taskLimit) break;
+                if ($taskIndex >= $taskLimit) {
+                    break;
+                }
 
                 // Multi migration
-                if(
+                if (
                     array_key_exists('repoFunction', $taskFunctions[$key]) &&
                     $taskFunctions[$key]['repoFunction']
                 ) {
                     $items = CB1::{$taskFunctions[$key]['repoFunction']}();
 
                     // If there are items to migrate
-                    if(count($items)) {
+                    if (count($items)) {
                         for ($index = $task['index']; $index < count($items); $index++) {
 
-                            if ($taskIndex++ >= $taskLimit) break;
+                            if ($taskIndex++ >= $taskLimit) {
+                                break;
+                            }
 
                             $item = $items[$index];
-                            if (!self::{$taskFunctions[$key]['migrationFunction']}($item)) {
+                            if ( ! self::{$taskFunctions[$key]['migrationFunction']}($item)) {
                                 $task['failed'] += 1;
                             }
                             $task['index'] += 1;
                         }
-                        if($task['index'] == count($items)) {
+                        if ($task['index'] == count($items)) {
                             $task['complete'] = 1;
                         }
 
-                    // No items for migration found
+                        // No items for migration found
                     } else {
-                        if ($taskIndex++ >= $taskLimit) break;
+                        if ($taskIndex++ >= $taskLimit) {
+                            break;
+                        }
                         $task['complete'] = 1;
                     }
 
-                // Single Migration
+                    // Single Migration
                 } else {
-                    if ($taskIndex++ >= $taskLimit) break;
+                    if ($taskIndex++ >= $taskLimit) {
+                        break;
+                    }
 
-                    if (!self::{$taskFunctions[$key]['migrationFunction']}()) {
+                    if ( ! self::{$taskFunctions[$key]['migrationFunction']}()) {
                         $task['failed'] += 1;
                     }
                     $task['index'] += 1;
@@ -364,39 +372,33 @@ class Migration
             $timeframe_repetition = "d"; // set repetition to daily
         }
 
-        // If we have no item and no location we throw an error.
-        if ( ! $cbItem || ! $cbLocation) {
-            //throw new \Exception('timeframe could not created, because linked location or item does not exist.');
-            return false;
-        } else {
-            // Collect post data
-            $postData = [
-                'post_title'  => $timeframe['timeframe_title'],
-                'post_type'   => Timeframe::$postType,
-                'post_name'   => CustomPostType::generateRandomSlug(),
-                'post_status' => 'publish'
-            ];
+        // Collect post data
+        $postData = [
+            'post_title'  => $timeframe['timeframe_title'],
+            'post_type'   => Timeframe::$postType,
+            'post_name'   => CustomPostType::generateRandomSlug(),
+            'post_status' => 'publish'
+        ];
 
-            // CB2 <-> CB1
-            $postMeta = [
-                CB_METABOX_PREFIX . 'cb1_post_post_ID' => $timeframe['id'],
-                'repetition-start'                     => strtotime($timeframe['date_start']),
-                'repetition-end'                       => strtotime($timeframe['date_end']),
-                'item-id'                              => $cbItem->ID,
-                'location-id'                          => $cbLocation->ID,
-                'type'                                 => Timeframe::BOOKABLE_ID,
-                'timeframe-repetition'                 => $timeframe_repetition,
-                'start-time'                           => '00:00',
-                'end-time'                             => '23:59',
-                'full-day'                             => 'on',
-                'grid'                                 => '0',
-                'weekdays'                             => $weekdays,
-            ];
+        // CB2 <-> CB1
+        $postMeta = [
+            CB_METABOX_PREFIX . 'cb1_post_post_ID' => $timeframe['id'],
+            'repetition-start'                     => strtotime($timeframe['date_start']),
+            'repetition-end'                       => strtotime($timeframe['date_end']),
+            'item-id'                              => $cbItem ? $cbItem->ID : '',
+            'location-id'                          => $cbLocation ? $cbLocation->ID : '',
+            'type'                                 => Timeframe::BOOKABLE_ID,
+            'timeframe-repetition'                 => $timeframe_repetition,
+            'start-time'                           => '00:00',
+            'end-time'                             => '23:59',
+            'full-day'                             => 'on',
+            'grid'                                 => '0',
+            'weekdays'                             => $weekdays,
+        ];
 
-            $existingPost = self::getExistingPost($timeframe['id'], Timeframe::$postType, Timeframe::BOOKABLE_ID);
+        $existingPost = self::getExistingPost($timeframe['id'], Timeframe::$postType, Timeframe::BOOKABLE_ID);
 
-            return self::savePostData($existingPost, $postData, $postMeta);
-        }
+        return self::savePostData($existingPost, $postData, $postMeta);
     }
 
     /**
@@ -410,19 +412,14 @@ class Migration
         $cbItem = self::getExistingPost($booking['item_id'], Item::$postType);
         $cbLocation = self::getExistingPost($booking['location_id'], Location::$postType);
 
-        if ( ! $user || ! $cbItem || ! $cbLocation) {
-            //echo "booking from id: " . $booking['id'] . "could not be created, because one of the following entries are missing: user-id: " . $booking['user_id'] . " | item-id: " . $booking['item_id'] . " | location-id: " . $booking['location_id'] . "<br>";
-
-           // return false;
+        // Collect post data
+        $userName = 'unknown user';
+        if ($user) {
+            $userName = $user->get('user_nicename');
         }
 
-        //throw new \Exception('booking could not created, because user or linked location or item does not exist.');
-        //echo __('booking could not created because user or linked location or item does not exist', 'commonsbooking');
-
-
-        // Collect post data
         $postData = [
-            'post_title'  => 'Buchung CB1-Import ' . $user->get('user_nicename') . ' - ' . $booking['date_start'],
+            'post_title'  => 'Buchung CB1-Import ' . $userName . ' - ' . $booking['date_start'],
             'post_type'   => Timeframe::$postType,
             'post_name'   => CustomPostType::generateRandomSlug(),
             'post_status' => 'confirmed',
@@ -436,8 +433,8 @@ class Migration
             CB_METABOX_PREFIX . 'cb1_post_post_ID' => $booking['id'],
             'repetition-start'                     => strtotime($booking['date_start']),
             'repetition-end'                       => strtotime($booking['date_end']),
-            'item-id'                              => $cbItem->ID,
-            'location-id'                          => $cbLocation->ID,
+            'item-id'                              => $cbItem ? $cbItem->ID : '',
+            'location-id'                          => $cbLocation ? $cbLocation->ID : '',
             'type'                                 => Timeframe::BOOKING_ID,
             'timeframe-repetition'                 => 'norep',
             'start-time'                           => '00:00',
@@ -509,7 +506,7 @@ class Migration
         // migrate Booking-Codes
         $cb1_bookingcodes = Settings::getOption('commons-booking-settings-codes', 'commons-booking_codes_pool');
         $options_bookingcode_array = array('bookingcodes' => $cb1_bookingcodes);
-        update_option( 'commonsbooking_options_bookingcodes', $options_bookingcode_array);
+        update_option('commonsbooking_options_bookingcodes', $options_bookingcode_array);
 
         // sender e-mail
         $cb1_sender_email = Settings::getOption('commons-booking-settings-mail', 'commons-booking_mail_from');
@@ -526,11 +523,6 @@ class Migration
     }
 
 
-
-
-
-
-
     /**
      * Migrates CB1 taxonomy to CB2 posts.
      *
@@ -543,7 +535,6 @@ class Migration
         $cb2PostId = CB1::getCB2PostIdByCB1Id($cb1Taxonomies->object_id);
         try {
             wp_set_object_terms($cb2PostId, $cb1Taxonomies->term, $cb1Taxonomies->taxonomy);
-
             return true;
         } catch (\Exception $e) {
             return false;
