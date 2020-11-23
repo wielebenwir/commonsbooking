@@ -42,25 +42,25 @@ class OwnersRoute extends BaseRoute
     public function prepare_item_for_response($owner, $request)
     {
         $ownerObject = new \stdClass();
-        $ownerObject->id = $owner->ID;
+        $ownerObject->id = "" . $owner->ID;
         $ownerObject->name = get_user_meta($owner->ID, 'first_name', true) . ' ' . get_user_meta($owner->ID, 'last_name', true);
         $ownerObject->url = $owner->user_url;
 
-        if($items = \CommonsBooking\Repository\Item::getByUserId($owner->ID, true)) {
-            $ownerObject->items = [];
-            $itemsRoute = new ItemsRoute();
-            foreach($items as $item) {
-                $ownerObject->items[] = $itemsRoute->prepare_item_for_response($item, new \WP_REST_Request());
-            }
-        }
-
-        if($locations = \CommonsBooking\Repository\Location::getByUserId($owner->ID, true)) {
-            $ownerObject->locations = [];
-            $locationsRoute = new LocationsRoute();
-            foreach($locations as $location) {
-                $ownerObject->locations[] = $locationsRoute->prepare_item_for_response($location, new \WP_REST_Request());
-            }
-        }
+//        if($items = \CommonsBooking\Repository\Item::getByUserId($owner->ID, true)) {
+//            $ownerObject->items = [];
+//            $itemsRoute = new ItemsRoute();
+//            foreach($items as $item) {
+//                $ownerObject->items[] = $itemsRoute->prepare_item_for_response($item, new \WP_REST_Request());
+//            }
+//        }
+//
+//        if($locations = \CommonsBooking\Repository\Location::getByUserId($owner->ID, true)) {
+//            $ownerObject->locations = [];
+//            $locationsRoute = new LocationsRoute();
+//            foreach($locations as $location) {
+//                $ownerObject->locations[] = $locationsRoute->prepare_item_for_response($location, new \WP_REST_Request());
+//            }
+//        }
         return $ownerObject;
     }
 
