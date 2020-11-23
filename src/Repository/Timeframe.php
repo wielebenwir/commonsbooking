@@ -58,11 +58,11 @@ class Timeframe extends PostRepository
                 if ($date && ! $minTimestamp) {
                     $dateQuery = "
                     INNER JOIN wp_postmeta pm4 ON
-                        pm4.post_id = pm1.post_id AND
-                        pm4.meta_key = 'repetition-start'
+                        pm4.post_id = pm1.id AND
+                        pm4.meta_key = 'repetition-start' AND
                         pm4.meta_value BETWEEN 0 AND " . strtotime($date . 'T23:59') . " 
                     INNER JOIN wp_postmeta pm5 ON
-                        pm5.post_id = pm1.post_id AND
+                        pm5.post_id = pm1.id AND
                         pm5.meta_key = 'repetition-end' AND
                         pm5.meta_value BETWEEN " . strtotime($date) . " AND 3000000000                        
                 ";
@@ -72,23 +72,23 @@ class Timeframe extends PostRepository
                 if ($minTimestamp) {
                     $dateQuery = "
                     INNER JOIN wp_postmeta pm4 ON
-                        pm4.post_id = wp_posts.id AND
+                        pm4.post_id = pm1.id AND
                         pm4.meta_key = 'repetition-end' AND
                         pm4.meta_value > " . $minTimestamp . "
                     INNER JOIN wp_postmeta pm5 ON
-                        pm5.post_id = wp_posts.id AND
+                        pm5.post_id = pm1.id AND
                         pm5.meta_key = 'repetition-start' AND
                         pm5.meta_value <= " . $minTimestamp . "
                 ";
                 }
                 // Complete query
                 $query = "
-                    SELECT wp_posts.* from wp_posts
+                    SELECT pm1.* from wp_posts pm1
                     " . $dateQuery . "
                     WHERE
-                        wp_posts.id in (" . implode(",", $postIds) . ") AND
-                        wp_posts.post_type = '" . \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() . "' AND
-                        wp_posts.post_status IN ('" . implode("','", $postStatus) . "')
+                        pm1.id in (" . implode(",", $postIds) . ") AND
+                        pm1.post_type = '" . \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() . "' AND
+                        pm1.post_status IN ('" . implode("','", $postStatus) . "')
                 ";
 
                 $posts = $wpdb->get_results($query, ARRAY_N);
