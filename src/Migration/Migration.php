@@ -413,7 +413,7 @@ class Migration
         if ( ! $user || ! $cbItem || ! $cbLocation) {
             //echo "booking from id: " . $booking['id'] . "could not be created, because one of the following entries are missing: user-id: " . $booking['user_id'] . " | item-id: " . $booking['item_id'] . " | location-id: " . $booking['location_id'] . "<br>";
 
-            return false;
+           // return false;
         }
 
         //throw new \Exception('booking could not created, because user or linked location or item does not exist.');
