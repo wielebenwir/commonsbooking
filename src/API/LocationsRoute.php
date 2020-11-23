@@ -91,12 +91,16 @@ class LocationsRoute extends BaseRoute
 
         $locations = \CommonsBooking\Repository\Location::get($args);
 
-        $data = [];
+        $features = [];
 
         foreach ($locations as $location) {
             $itemdata = $this->prepare_item_for_response($location, $request);
-            $data[] = $itemdata;
+            $features[] = $itemdata;
         }
+        $data = new \stdClass();
+        $data->type = "FeatureCollection";
+        $data->features = $features;
+
         return $data;
     }
 

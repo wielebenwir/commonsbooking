@@ -121,7 +121,7 @@ class ItemsRoute extends BaseRoute
         $preparedItem->url         = get_permalink($item->ID);
         $preparedItem->description = $item->post_content;
         $preparedItem->ownerId     = $item->post_author;
-        $preparedItem->projectId   = get_bloginfo('name');
+        $preparedItem->projectId   = "1";
 
         if(get_the_post_thumbnail_url($item->ID, 'full')) {
             $preparedItem->image =get_the_post_thumbnail_url($item->ID, 'full');
