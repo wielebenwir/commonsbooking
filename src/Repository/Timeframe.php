@@ -69,6 +69,8 @@ class Timeframe extends PostRepository
                 }
 
                 // Filter only from a specific start date.
+                // Rep-End must be > Min Date (0:00)
+                // Rep-Start must be <= End of the Min Date (23:59)
                 if ($minTimestamp) {
                     $dateQuery = "
                     INNER JOIN wp_postmeta pm4 ON
@@ -78,9 +80,10 @@ class Timeframe extends PostRepository
                     INNER JOIN wp_postmeta pm5 ON
                         pm5.post_id = pm1.id AND
                         pm5.meta_key = 'repetition-start' AND
-                        pm5.meta_value <= " . $minTimestamp . "
+                        pm5.meta_value <= " . ( $minTimestamp + 86400 ) . "
                 ";
                 }
+
                 // Complete query
                 $query = "
                     SELECT pm1.* from wp_posts pm1

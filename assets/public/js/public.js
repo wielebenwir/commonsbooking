@@ -1380,16 +1380,18 @@
     const fadeOutCalendar = () => {
         $("#litepicker .litepicker .container__days").css("visibility", "hidden");
     }, initSelectHandler = () => {
-        const bookingForm = $("#booking-form"), startSelect = bookingForm.find("select[name=repetition-start]"), endSelect = bookingForm.find("select[name=repetition-end]");
-        startSelect.change(function() {
-            const startValue = $(this).val();
-            endSelect.find("option").each(function() {
-                $(this).val() < startValue ? ($(this).attr("disabled", "disabled"), $(this).prop("selected", !1)) : $(this).removeAttr("disabled");
-            });
+        bookingForm.find("select[name=repetition-start]").change(function() {
+            updateEndSelectTimeOptions();
+        });
+    }, updateEndSelectTimeOptions = () => {
+        const bookingForm = $("#booking-form"), startSelect = bookingForm.find("select[name=repetition-start]"), endSelect = bookingForm.find("select[name=repetition-end]"), startValue = startSelect.val();
+        endSelect.find("option").each(function() {
+            $(this).val() < startValue && ($(this).attr("disabled", "disabled"), $(this).prop("selected", !1));
         });
     }, updateSelectSlots = (select, slots, type = "start", fullday = !1) => {
         select.empty().attr("required", "required"), $.each(slots, function(index, slot) {
-            select.append(new Option(slot.timestart + " - " + slot.timeend, slot["timestamp" + type], fullday, fullday));
+            let option = new Option(slot.timestart + " - " + slot.timeend, slot["timestamp" + type], fullday, fullday);
+            slot.disabled && (option.disabled = !0), select.append(option);
         });
     }, getOrientation = () => window.matchMedia("(orientation: portrait)").matches ? "portrait" : "landscape", initStartSelect = date => {
         const day1 = data.days[moment(date).format("YYYY-MM-DD")], startDate = moment(date).format("DD.MM.YYYY");
@@ -1405,7 +1407,8 @@
         let endSelect = $("#booking-form select[name=repetition-end]");
         $(".time-selection.repetition-end span.date").text(endDate), updateSelectSlots(endSelect, day2.slots, "end", day2.fullDay), 
         $("#booking-form select[name=repetition-end],#booking-form .time-selection.repetition-end .date").show(), 
-        $("#booking-form input[type=submit]").removeAttr("disabled"), day2.fullDay ? $(".time-selection.repetition-end").find("select").hide() : $(".time-selection.repetition-end").find("select").show();
+        $("#booking-form input[type=submit]").removeAttr("disabled"), updateEndSelectTimeOptions(), 
+        day2.fullDay ? $(".time-selection.repetition-end").find("select").hide() : $(".time-selection.repetition-end").find("select").show();
     };
     let numberOfMonths = 2, numberOfColumns = 2;
     if ((() => {
@@ -1441,12 +1444,13 @@
             onSelect: function(date1, date2) {
                 $("#booking-form").show(), $(".cb-notice.date-select").hide();
                 const day1 = data.days[moment(date1).format("YYYY-MM-DD")], day2 = data.days[moment(date2).format("YYYY-MM-DD")];
-                initStartSelect(date1), initEndSelect(date2), day1.fullDay && day2.fullDay ? $("#fullDayInfo").text(data.location.fullDayInfo) : ($("#fullDayInfo").text(""), 
+                initEndSelect(date2), day1.fullDay && day2.fullDay ? $("#fullDayInfo").text(data.location.fullDayInfo) : ($("#fullDayInfo").text(""), 
                 initSelectHandler());
             }
         }), $("#litepicker .litepicker .container__days").fadeTo("fast", 1);
     };
-    $("#booking-form").length && "undefined" != typeof data && (picker = new Litepicker({
+    let bookingForm = $("#booking-form");
+    bookingForm.length && "undefined" != typeof data && (picker = new Litepicker({
         element: document.getElementById("litepicker"),
         minDate: moment().format("YYYY-MM-DD"),
         inlineMode: !0,

@@ -14,20 +14,23 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     // Updates Time-selects so that no wrong time ranges can be selected
     const initSelectHandler = () => {
+        const startSelect = bookingForm.find('select[name=repetition-start]');
+        startSelect.change(function () {
+            updateEndSelectTimeOptions();
+        });
+    };
+
+    // Update End-Date Select, so that only relevant selections are possible
+    const updateEndSelectTimeOptions = () => {
         const bookingForm = $('#booking-form');
         const startSelect = bookingForm.find('select[name=repetition-start]');
         const endSelect = bookingForm.find('select[name=repetition-end]');
-
-        startSelect.change(function () {
-            const startValue = $(this).val();
-            endSelect.find('option').each(function () {
-                if ($(this).val() < startValue) {
-                    $(this).attr('disabled', 'disabled');
-                    $(this).prop("selected", false)
-                } else {
-                    $(this).removeAttr('disabled');
-                }
-            });
+        const startValue = startSelect.val();
+        endSelect.find('option').each(function () {
+            if ($(this).val() < startValue) {
+                $(this).attr('disabled', 'disabled');
+                $(this).prop("selected", false)
+            }
         });
     };
 
@@ -35,9 +38,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const updateSelectSlots = (select, slots, type = 'start', fullday = false) => {
         select.empty().attr('required', 'required');
         $.each(slots, function (index, slot) {
-            select.append(
-                new Option(slot['timestart'] + ' - ' + slot['timeend'], slot['timestamp' + type], fullday, fullday)
-            );
+            let option = new Option(slot['timestart'] + ' - ' + slot['timeend'], slot['timestamp' + type], fullday, fullday);
+            if(slot['disabled']) {
+                option.disabled = true;
+            }
+            select.append(option);
         });
     };
 
@@ -104,6 +109,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         endSelectData.show();
         $('#booking-form input[type=submit]').removeAttr('disabled');
 
+        updateEndSelectTimeOptions();
+
         // hide time selection if we have a full day slot
         if (day2['fullDay']) {
             $('.time-selection.repetition-end').find('select').hide();
@@ -132,7 +139,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     let picker = false;
-
     const initPicker = () => {
         picker = new Litepicker({
             "element": document.getElementById('litepicker'),
@@ -197,7 +203,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $('#litepicker .litepicker').hide();
     };
 
-
     // update datepicker data
     const updatePicker = (data) => {
         fadeOutCalendar()
@@ -240,7 +245,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     const day1 = data['days'][moment(date1).format('YYYY-MM-DD')];
                     const day2 = data['days'][moment(date2).format('YYYY-MM-DD')];
 
-                    initStartSelect(date1);
                     initEndSelect(date2);
 
                     if (!day1['fullDay'] || !day2['fullDay']) {
