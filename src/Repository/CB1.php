@@ -37,32 +37,15 @@ class CB1
      */
     public static function isInstalled()
     {
-        $option_set_by_cb1 = get_option('commons-booking-settings-pages'); // we check for pages, since they have to be set up for the plugin to function. 
+        $option_set_by_cb1 = get_option(
+            'commons-booking-settings-pages'
+        ); // we check for pages, since they have to be set up for the plugin to function.
 
         if ($option_set_by_cb1) {
             return true;
         } else {
             return false;
         }
-    }
-    /**
-     * @param $postType
-     *
-     * @return array
-     */
-    protected static function get($postType)
-    {
-        $posts = [];
-        $args = array(
-            'post_type' => $postType
-        );
-        /** @var WP_Query $query */
-        $query = new \WP_Query($args);
-        if ($query->have_posts()) {
-            $posts = $query->get_posts();
-        }
-
-        return $posts;
     }
 
     /**
@@ -71,6 +54,26 @@ class CB1
     public static function getLocations()
     {
         return self::get(self::$LOCATION_TYPE_ID);
+    }
+
+    /**
+     * @param $postType
+     *
+     * @return array
+     */
+    protected static function get($postType)
+    {
+        $posts = [];
+        $args  = array(
+            'post_type' => $postType,
+        );
+        /** @var WP_Query $query */
+        $query = new \WP_Query($args);
+        if ($query->have_posts()) {
+            $posts = $query->get_posts();
+        }
+
+        return $posts;
     }
 
     /**
@@ -87,7 +90,7 @@ class CB1
     public static function getBookings()
     {
         global $wpdb;
-        $table_bookings = $wpdb->prefix . self::$BOOKINGS_TABLE;
+        $table_bookings = $wpdb->prefix.self::$BOOKINGS_TABLE;
 
         return $wpdb->get_results("SELECT * FROM $table_bookings", ARRAY_A);
     }
@@ -98,7 +101,7 @@ class CB1
     public static function getTimeframes()
     {
         global $wpdb;
-        $table_timeframes = $wpdb->prefix . self::$TIMEFRAMES_TABLE;
+        $table_timeframes = $wpdb->prefix.self::$TIMEFRAMES_TABLE;
 
         return $wpdb->get_results("SELECT * FROM $table_timeframes", ARRAY_A);
     }
@@ -109,7 +112,7 @@ class CB1
     public static function getBookingCodes()
     {
         global $wpdb;
-        $table_bookingcodes = $wpdb->prefix . self::$BOOKINGCODES_TABLE;
+        $table_bookingcodes = $wpdb->prefix.self::$BOOKINGCODES_TABLE;
 
         return $wpdb->get_results(
             "SELECT
@@ -136,7 +139,7 @@ class CB1
     public static function getBookingCode($id)
     {
         global $wpdb;
-        $table_bookingcodes = $wpdb->prefix . self::$BOOKINGCODES_TABLE;
+        $table_bookingcodes = $wpdb->prefix.self::$BOOKINGCODES_TABLE;
 
         $result = $wpdb->get_results(
             "SELECT
@@ -165,31 +168,18 @@ class CB1
         return self::getCB2PostIdByType($locationId, \CommonsBooking\Wordpress\CustomPostType\Location::$postType);
     }
 
-    /**
-     * Returns CB2 Location-ID.
-     *
-     * @param $locationId CB1 Location-ID
-     *
-     * @return int|false
-     */
-    public static function getCB2ItemId($locationId) {
-        return self::getCB2PostIdByType($locationId, \CommonsBooking\Wordpress\CustomPostType\Item::$postType);
-    }
-
-    public static function getCB2TimeframeId($locationId) {
-        return self::getCB2PostIdByType($locationId, \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType);
-    }
-
     protected static function getCB2PostIdByType($id, $type)
     {
         global $wpdb;
-        $result = $wpdb->get_results("
+        $result = $wpdb->get_results(
+            "
             SELECT post_id FROM wp_postmeta
             WHERE
                 meta_key = '_cb_cb1_post_post_ID' AND
                 meta_value = $id AND
-                post_id in (SELECT id from wp_posts where post_type = '" . $type . "');
-        ");
+                post_id in (SELECT id from wp_posts where post_type = '".$type."');
+        "
+        );
 
         if ($result && count($result) > 0) {
             return $result[0]->post_id;
@@ -199,7 +189,25 @@ class CB1
     }
 
     /**
+     * Returns CB2 Location-ID.
+     *
+     * @param $locationId CB1 Location-ID
+     *
+     * @return int|false
+     */
+    public static function getCB2ItemId($locationId)
+    {
+        return self::getCB2PostIdByType($locationId, \CommonsBooking\Wordpress\CustomPostType\Item::$postType);
+    }
+
+    public static function getCB2TimeframeId($locationId)
+    {
+        return self::getCB2PostIdByType($locationId, \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType);
+    }
+
+    /**
      * Returns CB2 post id for CB1 post id, if available.
+     *
      * @param $id
      *
      * @return false
@@ -207,27 +215,21 @@ class CB1
     public static function getCB2PostIdByCB1Id($id)
     {
         global $wpdb;
-        $result = $wpdb->get_results("
+        $result = $wpdb->get_results(
+            "
             SELECT meta_value as cb1_id, post_id as cb2_id 
             FROM wp_postmeta 
             WHERE
                 meta_key = '_cb_cb1_post_post_ID' AND 
                 meta_value = '$id';
-        ");
+        "
+        );
 
         if ($result && count($result) > 0) {
             return $result[0]->cb2_id;
         }
 
         return false;
-    }
-
-    /**
-     * @return
-     */
-    public static function enableLegacyUserRegistrationFields()
-    {
-
     }
 
     /**
@@ -238,7 +240,8 @@ class CB1
     {
         global $wpdb;
 
-        return $wpdb->get_results("
+        return $wpdb->get_results(
+            "
             SELECT
                 tr.*, 
                 tt.taxonomy,
@@ -254,7 +257,8 @@ class CB1
                 WHERE
                     meta_key = '_cb_cb1_post_post_ID'
             );
-        ");
+        "
+        );
     }
 
 }
