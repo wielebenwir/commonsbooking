@@ -767,7 +767,11 @@ class Timeframe extends CustomPostType
      */
     public static function addAdminItemFilter()
     {
-        $items = \CommonsBooking\Repository\Item::get();
+        $items = \CommonsBooking\Repository\Item::get(
+            [
+                'post_status' => 'any',
+            ]
+        );
         if ($items) {
             $values = [];
             foreach ($items as $item) {
@@ -787,7 +791,11 @@ class Timeframe extends CustomPostType
      */
     public static function addAdminLocationFilter()
     {
-        $locations = \CommonsBooking\Repository\Location::get();
+        $locations = \CommonsBooking\Repository\Location::get(
+            [
+                'post_status' => 'any',
+            ]
+        );
         if ($locations) {
             $values = [];
             foreach ($locations as $location) {
