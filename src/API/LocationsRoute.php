@@ -97,11 +97,8 @@ class LocationsRoute extends BaseRoute
             $itemdata = $this->prepare_item_for_response($location, $request);
             $features[] = $itemdata;
         }
-        $data = new \stdClass();
-        $data->type = "FeatureCollection";
-        $data->features = $features;
 
-        return $data;
+        return $features;
     }
 
     /**
@@ -130,7 +127,9 @@ class LocationsRoute extends BaseRoute
         $data->locations->type = "FeatureCollection";
         $data->locations->features = $this->getItemData($request);
 
-        $this->validateData($data);
+        if(WP_DEBUG) {
+            $this->validateData($data);
+        }
         return new \WP_REST_Response($data, 200);
     }
 
@@ -153,7 +152,18 @@ class LocationsRoute extends BaseRoute
         $preparedItem->properties->url = get_permalink($item->ID);
         $preparedItem->properties->address = $item->formattedAddressOneLine();
 
-        if ($item->formattedAddressOneLine()) {
+        $latitude = get_post_meta($item->ID, 'geo_latitude', true);
+        $longitude = get_post_meta($item->ID, 'geo_longitude', true);
+
+        // If we have latitude and longitude definec, we use them.
+        if($latitude && $longitude) {
+            $preparedItem->geometry = new \stdClass();
+            $preparedItem->geometry->type = "Point";
+            $preparedItem->geometry->coordinates = [
+                floatval($latitude),
+                floatval($longitude)
+            ];
+        } else if ($item->formattedAddressOneLine()) {
             $addresses = $this->getGeocoder()->geocodeQuery(GeocodeQuery::create($item->formattedAddressOneLine()));
             if ( ! $addresses->isEmpty()) {
                 /** @var NominatimAddress $address */
