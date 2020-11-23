@@ -555,7 +555,8 @@
                 return this.options.disallowBookedDaysInRange && this.options.bookedDays.length && 2 === this.datePicked.length;
             }, e.prototype.onClick = function(t) {
                 var e = this, i = t.target;
-                if (i && this.picker) if (this.shouldShown(i)) this.show(i); else if (i.closest("." + h.litepicker)) if (i.classList.contains(h.dayItem)) {
+                if (i && this.picker) if (this.shouldShown(i)) this.show(i); else if (i.closest("." + h.litepicker), 
+                i.classList.contains(h.dayItem)) {
                     if (t.preventDefault(), !this.isSamePicker(i)) return;
                     if (i.classList.contains(h.isLocked)) return;
                     if (i.classList.contains(h.isHoliday)) return;
@@ -628,7 +629,7 @@
                         this.options.singleMode && this.datePicked.length ? this.setDate(this.datePicked[0]) : this.options.singleMode || 2 !== this.datePicked.length || this.setDateRange(this.datePicked[0], this.datePicked[1]), 
                         this.hide();
                     }
-                } else this.hide();
+                }
             }, e.prototype.showTooltip = function(t, e) {
                 var i = this.picker.querySelector("." + h.containerTooltip);
                 i.style.visibility = "visible", i.innerHTML = e;
