@@ -59,7 +59,7 @@ class Timeframe extends PostRepository
                     $dateQuery = "
                     INNER JOIN wp_postmeta pm4 ON
                         pm4.post_id = pm1.post_id AND
-                        pm4.meta_key = 'repetition-start'
+                        pm4.meta_key = 'repetition-start' AND
                         pm4.meta_value BETWEEN 0 AND " . strtotime($date . 'T23:59') . " 
                     INNER JOIN wp_postmeta pm5 ON
                         pm5.post_id = pm1.post_id AND
