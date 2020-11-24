@@ -26,7 +26,7 @@ class ProjectsRoute extends BaseRoute
      * Commons-API schema definition.
      * @var string
      */
-    protected $schemaUrl = "https://raw.githubusercontent.com/wielebenwir/commons-api/master/commons-api.projects.schema.json";
+    protected $schemaUrl = CB_PLUGIN_DIR . "node_modules/commons-api/commons-api.projects.schema.json";
 
     /**
      * Returns raw data collection.

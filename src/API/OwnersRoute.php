@@ -20,7 +20,7 @@ class OwnersRoute extends BaseRoute
      * Commons-API schema definition.
      * @var string
      */
-    protected $schemaUrl = "https://raw.githubusercontent.com/wielebenwir/commons-api/master/commons-api.owners.schema.json";
+    protected $schemaUrl = CB_PLUGIN_DIR . "node_modules/commons-api/commons-api.owners.schema.json";
 
     /**
      * Returns raw data collection.

@@ -19,7 +19,7 @@ class ItemsRoute extends BaseRoute
      * Commons-API schema definition.
      * @var string
      */
-    protected $schemaUrl = "https://raw.githubusercontent.com/wielebenwir/commons-api/master/commons-api.items.schema.json";
+    protected $schemaUrl = CB_PLUGIN_DIR . "node_modules/commons-api/commons-api.items.schema.json";
 
     /**
      * Returns raw data collection.
