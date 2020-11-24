@@ -20,6 +20,7 @@
 		"grunt": "node node_modules/grunt/bin/grunt"
 	},
 	"dependencies": {
+		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
 		"grunt-contrib-jshint": "^1.1.0",
 		"grunt-contrib-uglify": "^3.3.0",
 		"grunt-contrib-uglify-es": "github:gruntjs/grunt-contrib-uglify#harmony",
