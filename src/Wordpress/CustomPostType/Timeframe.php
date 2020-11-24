@@ -944,6 +944,8 @@ class Timeframe extends CustomPostType
             // Slug unseres Post Types für die redirects
             // dieser Wert wird später in der URL stehen
             'rewrite'             => array('slug' => self::getPostType()),
+
+            'show_in_rest'        => true
         );
     }
 
