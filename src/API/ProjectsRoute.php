@@ -63,7 +63,9 @@ class ProjectsRoute extends BaseRoute
         $data = new \stdClass();
         $data->projects = $this->getItemData($request);
 
-        $this->validateData($data);
+        if(WP_DEBUG) {
+            $this->validateData($data);
+        }
         return new \WP_REST_Response($data, 200);
     }
 

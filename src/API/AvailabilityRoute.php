@@ -74,7 +74,9 @@ class AvailabilityRoute extends BaseRoute
 
         //return a response or error based on some conditional
         if (count($data->availability)) {
-            $this->validateData($data);
+            if(WP_DEBUG) {
+                $this->validateData($data);
+            }
             return new \WP_REST_Response($data, 200);
         } else {
             return new \WP_Error('code', __('message', 'text-domain'));
@@ -93,8 +95,9 @@ class AvailabilityRoute extends BaseRoute
         $data = new \stdClass();
         $data->availability = $this->getItemData();;
 
-
-        $this->validateData($data);
+        if(WP_DEBUG) {
+            $this->validateData($data);
+        }
         return new \WP_REST_Response($data, 200);
     }
 
