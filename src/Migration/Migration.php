@@ -257,13 +257,17 @@ class Migration
             'meta_key'     => CB_METABOX_PREFIX . 'cb1_post_post_ID',
             'meta_value'   => $id,
             'meta_compare' => '=',
-            'post_type'    => $type
+            'post_type'    => $type,
+            'post_status' => 'any',
+            'nopaging' => true
         );
 
         // If we're searching for a timeframe, we need the type
         if ($timeframe_type) {
             $args = array(
                 'post_type'  => $type,
+                'post_status' => 'any',
+                'nopaging' => true,
                 'meta_query' => array(
                     'relation' => 'AND',
                     array(
@@ -299,7 +303,7 @@ class Migration
      *
      * @return bool
      */
-    protected static function savePostData($existingPost, $postData, array $postMeta)
+    protected static function savePostData($existingPost, array $postData, array $postMeta)
     {
         if ($existingPost instanceof \WP_Post) {
             $updatedPost = array_merge($existingPost->to_array(), $postData);
@@ -422,7 +426,7 @@ class Migration
             'post_title'  => 'Buchung CB1-Import ' . $userName . ' - ' . $booking['date_start'],
             'post_type'   => Timeframe::$postType,
             'post_name'   => CustomPostType::generateRandomSlug(),
-            'post_status' => 'confirmed',
+            'post_status' => $booking['status'],
             'post_date'   => $booking['booking_time'],
             'post_author' => $booking['user_id']
 

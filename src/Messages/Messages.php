@@ -25,7 +25,7 @@ class Messages
             return $this->sendMessage();
         }
 
-        if ($this->action == "cancelled") {
+        if ($this->action == "canceled") {
             return $this->sendMessage();
         }
 

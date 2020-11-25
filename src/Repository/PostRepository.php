@@ -29,7 +29,7 @@ abstract class PostRepository
                     switch ($type) {
                         case \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID: //booking
                             return new \CommonsBooking\Model\Booking($post);
-                        case \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_CANCELED_ID: //booking cancelled
+                        case \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_CANCELED_ID: //booking canceled
                             return new \CommonsBooking\Model\Booking($post);
                     }
                 }

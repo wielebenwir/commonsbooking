@@ -39,7 +39,7 @@ class Timeframe extends CustomPostType
     const BOOKING_ID = 6;
 
     /**
-     * "Booking cancelled" timeframe type id.
+     * "Booking canceled" timeframe type id.
      */
     const BOOKING_CANCELED_ID = 7;
 
@@ -126,7 +126,7 @@ class Timeframe extends CustomPostType
             // disabled as its not implemented yet
             self::REPAIR_ID           => __("Repair", 'commonsbooking'),
             self::BOOKING_ID          => __("Booking", 'commonsbooking'),
-            self::BOOKING_CANCELED_ID => __("Booking cancelled", 'commonsbooking'),
+            self::BOOKING_CANCELED_ID => __("Booking canceled", 'commonsbooking'),
         ];
     }
 
@@ -228,7 +228,7 @@ class Timeframe extends CustomPostType
      * 4 => __("Official Holiday", 'commonsbooking'),
      * 5 => __("Repair", 'commonsbooking'),
      * 6 => __("Booking", 'commonsbooking'),
-     * 7 => __("Booking cancelled", 'commonsbooking')
+     * 7 => __("Booking canceled", 'commonsbooking')
      *
      * @param \WP_Post $timeframeOne
      * @param \WP_Post $timeframeTwo
@@ -345,6 +345,9 @@ class Timeframe extends CustomPostType
         $items = \CommonsBooking\Repository\Item::get(
             [
                 'post_status' => 'any',
+                'orderby' => 'post_title',
+                'order' => 'asc',
+                'nopaging' => true
             ]
         );
         if ($items) {
@@ -369,6 +372,9 @@ class Timeframe extends CustomPostType
         $locations = \CommonsBooking\Repository\Location::get(
             [
                 'post_status' => 'any',
+                'orderby' => 'post_title',
+                'order' => 'asc',
+                'nopaging' => true
             ]
         );
         if ($locations) {

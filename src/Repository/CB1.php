@@ -66,6 +66,8 @@ class CB1
         $posts = [];
         $args  = array(
             'post_type' => $postType,
+            'post_status' => 'any',
+            'nopaging' => true
         );
         /** @var WP_Query $query */
         $query = new \WP_Query($args);

@@ -159,9 +159,12 @@ class Timeframe extends PostRepository
             global $wpdb;
             $itemQuery = "";
 
+            $items = array_filter($items);
+            $locations = array_filter($locations);
+
             // Query for item(s)
-            if (count($items)) {
-                $itemQuery = "
+            if (count($items) > 0) {
+                $itemQuery = " 
                     INNER JOIN wp_postmeta pm2 ON
                         pm2.post_id = pm1.post_id AND
                         pm2.meta_key = 'item-id' AND
@@ -171,8 +174,8 @@ class Timeframe extends PostRepository
 
             // Query for location(s)
             $locationQuery = "";
-            if (count($locations)) {
-                $locationQuery = "
+            if (count($locations) > 0) {
+                $locationQuery = " 
                     INNER JOIN wp_postmeta pm3 ON
                         pm3.post_id = pm1.post_id AND
                         pm3.meta_key = 'location-id' AND
