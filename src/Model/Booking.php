@@ -16,7 +16,7 @@ class Booking extends CustomPost
      * @var string[]
      */
     public static $bookingStates = [
-        "cancelled",
+        "canceled",
         "confirmed",
         "unconfirmed"
     ];
@@ -260,7 +260,7 @@ class Booking extends CustomPost
 
         If ($current_status == 'unconfirmed' AND $form_action == "cancel") 
         {
-            $form_post_status = 'cancelled';
+            $form_post_status = 'canceled';
             $button_label = __('Cancel', 'commonsbooking');
         }
 
@@ -272,7 +272,7 @@ class Booking extends CustomPost
 
         If ($current_status == 'confirmed' AND $form_action == "cancel") 
         {
-            $form_post_status = 'cancelled';
+            $form_post_status = 'canceled';
             $button_label = __('Cancel Booking', 'commonsbooking');
         }
 
@@ -299,9 +299,9 @@ class Booking extends CustomPost
             $noticeText = __('Your booking is confirmed. A confirmation mail has been sent to you.', 'commonsbooking' );
         }
 
-        if ($currentStatus == "cancelled")
+        if ($currentStatus == "canceled")
         {
-            $noticeText = __('Your booking has been cancelled.', 'commonsbooking' );
+            $noticeText = __('Your booking has been canceled.', 'commonsbooking' );
         }
         
         return sprintf ('<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $currentStatus, $noticeText);
