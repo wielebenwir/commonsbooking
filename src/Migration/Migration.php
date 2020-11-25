@@ -422,7 +422,7 @@ class Migration
             'post_title'  => 'Buchung CB1-Import ' . $userName . ' - ' . $booking['date_start'],
             'post_type'   => Timeframe::$postType,
             'post_name'   => CustomPostType::generateRandomSlug(),
-            'post_status' => 'confirmed',
+            'post_status' => $booking['status'],
             'post_date'   => $booking['booking_time'],
             'post_author' => $booking['user_id']
 
