@@ -80,7 +80,7 @@ class Timeframe extends PostRepository
                     INNER JOIN wp_postmeta pm5 ON
                         pm5.post_id = pm1.id AND
                         pm5.meta_key = 'repetition-start' AND
-                        pm5.meta_value <= " . ( $minTimestamp + 86400 ) . "
+                        pm5.meta_value < " . ( $minTimestamp + 86400 ) . "
                 ";
                 }
 
