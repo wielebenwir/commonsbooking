@@ -769,10 +769,10 @@ class Timeframe extends CustomPostType
         }
 
         // Keep meta attributes after trashing
-        if ( ! wp_verify_nonce(
-            $_POST['prevent_delete_meta_movetotrash'],
-            plugin_basename(__FILE__)
-        )) {
+        if (
+            array_key_exists('action', $_REQUEST) &&
+            $_REQUEST['action'] == 'trash'
+        ) {
             return;
         }
 
