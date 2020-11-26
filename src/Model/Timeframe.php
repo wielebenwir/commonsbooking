@@ -32,8 +32,8 @@ class Timeframe extends CustomPost
         $format = self::getDateFormat();
         $today = strtotime('now');
 
-        $startDateFormatted = date($format, $startDate);
-        $endDateFormatted = date($format, $endDate);
+        $startDateFormatted = date_i18n($format, $startDate);
+        $endDateFormatted = date_i18n($format, $endDate);
 
         $label = __('Available here', 'commonsbooking');
         $availableString = '';
