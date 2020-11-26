@@ -771,7 +771,7 @@ class Timeframe extends CustomPostType
         // Keep meta attributes after trashing
         if (
             array_key_exists('action', $_REQUEST) &&
-            $_REQUEST['action'] == 'trash'
+            ( $_REQUEST['action'] == 'trash' || $_REQUEST['action'] == 'untrash')
         ) {
             return;
         }
