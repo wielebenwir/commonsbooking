@@ -241,14 +241,14 @@ $options_array = array(
                             ', 'commonsbooking'),
                     ),
                     array(
-                        'name'    => __('Booking cancelled email subject', 'commonsbooking'),
-                        'id'      => 'emailtemplates_mail-booking-cancelled-subject',
+                        'name'    => __('Booking canceled email subject', 'commonsbooking'),
+                        'id'      => 'emailtemplates_mail-booking-canceled-subject',
                         'type'    => 'text',
-                        'default' => __('Booking cancelled: {{item:post_name}} at {{location:post_name}}',
+                        'default' => __('Booking canceled: {{item:post_name}} at {{location:post_name}}',
                             'commonsbooking'),
                     ),
                     array(
-                        'name'    => __('Booking cancelled email body', 'commonsbooking'),
+                        'name'    => __('Booking canceled email body', 'commonsbooking'),
                         'id'      => 'emailtemplates_mail-booking-canceled-body',
                         'type'    => 'textarea',
                         'default' => __('
