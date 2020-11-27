@@ -203,7 +203,7 @@ $options_array = array(
                         'id'            => 'emailtemplates_mail-booking-confirmed-subject',
                         'cb1_legacy_id' => 'commons-booking-settings-mail:commons-booking_mail_confirmation_subject',
                         'type'          => 'text',
-                        'default'       => __('Your booking {{item:post_name}} at {{location:post_name}}',
+                        'default'       => __('Your booking {{item:post_name}} at {{location:post_name}} {{booking:booking_timeframe_date}} ',
                             'commonsbooking'),
                     ),
                     array(
@@ -226,11 +226,11 @@ $options_array = array(
                             <b>Location address</b><br>
                             {{location:formattedAddress}}<br>
                             {{location:formattedContactInfoOneLine}}
-                            
-                            <p>Click here to see or cancel your booking: {{booking:bookingLink}}.</p><br>
+                            <br>
+                            <p>Click here to see or cancel your booking: {{booking:bookingLink}}.<br>
                             <b>Notice:</b> You need to be logged in to see your booking. <br>
                             If the link leads you to the homepage of the webseite,
-                            please login first and then click the link again.<br><br>
+                            please login first and then click the link again.<br></p>
                             
                             <h3>Your information</h3>
                             <p>Login: {{user:user_nicename}}<br>
@@ -244,7 +244,7 @@ $options_array = array(
                         'name'    => __('Booking canceled email subject', 'commonsbooking'),
                         'id'      => 'emailtemplates_mail-booking-canceled-subject',
                         'type'    => 'text',
-                        'default' => __('Booking canceled: {{item:post_name}} at {{location:post_name}}',
+                        'default' => __('Booking canceled: {{item:post_name}} at {{location:post_name}} {{booking:booking_timeframe_date}}',
                             'commonsbooking'),
                     ),
                     array(
