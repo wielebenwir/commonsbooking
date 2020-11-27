@@ -9,7 +9,7 @@ defined('ABSPATH') or die("Thanks for visting");
 
 /**
  * Plugin Name:  CommonsBooking
- * Version: 2.2.1-ALPHA
+ * Version: 2.2.2
  * Plugin URI: https://commonsbooking.org
  * Description: A wordpress plugin for management and booking of common goods.
  * Author: wielebenwir e.V.
@@ -22,7 +22,7 @@ defined('ABSPATH') or die("Thanks for visting");
  */
 
 
-define('CB_VERSION', '2.2.1-ALPHA');
+define('CB_VERSION', '2.2.2');
 define('CB_MENU_SLUG', 'cb-menu');
 define('CB_PLUGIN_SLUG', 'commonsbooking');
 define('CB_PLUGIN_DIR', plugin_dir_path(__FILE__));
