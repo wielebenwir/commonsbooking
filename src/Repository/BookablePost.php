@@ -33,7 +33,8 @@ abstract class BookablePost extends PostRepository
             // Get all Locations where current user is author
             $args = array(
                 'post_type' => static::getPostType(),
-                'author'    => $current_user->ID
+                'author'    => $current_user->ID,
+                'nopaging'  => true
             );
             $query = new \WP_Query($args);
             if ($query->have_posts()) {
@@ -50,7 +51,8 @@ abstract class BookablePost extends PostRepository
                         'value'   => '"' . $current_user->ID . '"',
                         'compare' => 'like'
                     )
-                )
+                ),
+                'nopaging'  => true
             );
 
             // workaround: if user has admin-role get all available items
@@ -59,6 +61,7 @@ abstract class BookablePost extends PostRepository
                 unset($args);
                 $args = array(
                     'post_type' => static::getPostType(),
+                    'nopaging'  => true
                 );
             }
 
