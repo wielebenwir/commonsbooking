@@ -342,7 +342,7 @@ class Location extends View
         foreach($locations as $location) {
             $shortCodeData = self::getShortcodeData($location, 'Item');
             if(count($shortCodeData)) {
-                $locationData[$location->ID] = self::getShortcodeData($location, 'Item');
+                $locationData[$location->ID] = $shortCodeData;
             }
         }
 
