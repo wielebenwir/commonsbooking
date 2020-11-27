@@ -276,40 +276,44 @@ register_activation_hook(__FILE__, array(\CommonsBooking\Repository\BookingCodes
 // Ad new cron-Interval
 function custom_cron_job_recurrence($schedules)
 {
-    if(!isset($schedules['tenmins']))
-    {
+    if ( ! isset($schedules['tenmins'])) {
         $schedules['tenmins'] = array(
             'display'  => 'Every 10 Minutes',
             'interval' => 600,
         );
     }
+
     return $schedules;
 }
+
 add_filter('cron_schedules', 'custom_cron_job_recurrence');
 
-// Add cleanup cronjob
+// Removes all uncofirmed bookings older than 10 minutes
 function cleanupBookings()
 {
     $args = array(
-        'post_type' => Timeframe::$postType,
+        'post_type'   => Timeframe::$postType,
         'post_status' => 'unconfirmed',
-        'meta_key' => 'type',
-        'meta_value' => Timeframe::BOOKING_ID,
-        'date_query' => array(
-            'after' => date('Y-m-d', strtotime('-10 minutes'))
+        'meta_key'    => 'type',
+        'meta_value'  => Timeframe::BOOKING_ID,
+        'date_query'  => array(
+            'before' => date('Y-m-d H:i:s', strtotime('-10 minutes')),
         ),
-        'nopaging' => true
+        'nopaging'    => true,
     );
+
     $query = new \WP_Query($args);
     if ($query->have_posts()) {
         foreach ($query->get_posts() as $post) {
-            if($post->post_status == 'unconfirmed') continue;
+            if ($post->post_status !== 'unconfirmed') {
+                continue;
+            }
             wp_delete_post($post->ID);
         }
     }
 }
 add_action('cb_cron_hook', 'cleanupBookings');
-
+// @TODO: Check why scheduled event doesn't fires
 if ( ! wp_next_scheduled('cb_cron_hook')) {
     wp_schedule_event(time(), 'tenmins', 'cb_cron_hook');
 }
