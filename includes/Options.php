@@ -249,7 +249,7 @@ $options_array = array(
                     ),
                     array(
                         'name'    => __('Booking cancelled email body', 'commonsbooking'),
-                        'id'      => 'emailtemplates_mail-booking-cancelled-body',
+                        'id'      => 'emailtemplates_mail-booking-canceled-body',
                         'type'    => 'textarea',
                         'default' => __('
                             Hi {{user:first_name}},<br>
@@ -290,7 +290,7 @@ $options_array = array(
             //     ),
             //     array(
             //       'name'    => __( 'Booking cancelled', 'commonsbooking' ),
-            //       'id'      => 'messagetemplates_booking-cancelled',
+            //       'id'      => 'messagetemplates_booking-canceled',
             //       'type'    => 'textarea_small',
             //       'default' => __( 'Your booking has been cancelled!<br>', 'commonsbooking' ),
             //     ),
