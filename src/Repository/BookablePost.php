@@ -9,32 +9,24 @@ use CommonsBooking\Plugin;
 abstract class BookablePost extends PostRepository
 {
     /**
-     * @return string
-     */
-    abstract protected static function getPostType();
-
-    /**
-     * @return mixed
-     */
-    abstract protected static function getModelClass();
-
-    /**
      * Get all Locations current user is allowed to see/edit
      * @return array
      */
     public static function getByCurrentUser()
     {
         $current_user = wp_get_current_user();
-        $items = [];
+        $items        = [];
 
         if (Plugin::getCacheItem(static::getPostType())) {
             return Plugin::getCacheItem(static::getPostType());
         } else {
             // Get all Locations where current user is author
-            $args = array(
+            $args  = array(
                 'post_type' => static::getPostType(),
                 'author'    => $current_user->ID,
-                'nopaging'  => true
+                'nopaging'  => true,
+                'orderby'   => 'post_title',
+                'order'     => 'asc',
             );
             $query = new \WP_Query($args);
             if ($query->have_posts()) {
@@ -47,12 +39,14 @@ abstract class BookablePost extends PostRepository
                 'meta_query' => array(
                     'relation' => 'AND',
                     array(
-                        'key'     => '_' . static::getPostType() . '_admins',
-                        'value'   => '"' . $current_user->ID . '"',
-                        'compare' => 'like'
-                    )
+                        'key'     => '_'.static::getPostType().'_admins',
+                        'value'   => '"'.$current_user->ID.'"',
+                        'compare' => 'like',
+                    ),
                 ),
-                'nopaging'  => true
+                'nopaging'   => true,
+                'orderby'    => 'post_title',
+                'order'      => 'asc',
             );
 
             // workaround: if user has admin-role get all available items
@@ -61,7 +55,9 @@ abstract class BookablePost extends PostRepository
                 unset($args);
                 $args = array(
                     'post_type' => static::getPostType(),
-                    'nopaging'  => true
+                    'nopaging'  => true,
+                    'orderby'   => 'post_title',
+                    'order'     => 'asc',
                 );
             }
 
@@ -76,6 +72,11 @@ abstract class BookablePost extends PostRepository
             return $items;
         }
     }
+
+    /**
+     * @return string
+     */
+    abstract protected static function getPostType();
 
     /**
      * Returns cb-posts for a user (respects author and assigned admins).
@@ -93,9 +94,9 @@ abstract class BookablePost extends PostRepository
             return Plugin::getCacheItem();
         } else {
             // Get all Locations where current user is author
-            $args = array(
+            $args  = array(
                 'post_type' => static::getPostType(),
-                'author'    => $userId
+                'author'    => $userId,
             );
             $query = new \WP_Query($args);
             if ($query->have_posts()) {
@@ -108,11 +109,11 @@ abstract class BookablePost extends PostRepository
                 'meta_query' => array(
                     'relation' => 'AND',
                     array(
-                        'key'     => '_' . static::getPostType() . '_admins',
-                        'value'   => '"' . $userId . '"',
-                        'compare' => 'like'
-                    )
-                )
+                        'key'     => '_'.static::getPostType().'_admins',
+                        'value'   => '"'.$userId.'"',
+                        'compare' => 'like',
+                    ),
+                ),
             );
 
             $query = new \WP_Query($args);
@@ -122,7 +123,7 @@ abstract class BookablePost extends PostRepository
 
             if ($asModel) {
                 foreach ($cbPosts as &$cbPost) {
-                    $class = static::getModelClass();
+                    $class  = static::getModelClass();
                     $cbPost = new $class($cbPost);
                 }
             }
@@ -132,6 +133,11 @@ abstract class BookablePost extends PostRepository
             return $cbPosts;
         }
     }
+
+    /**
+     * @return mixed
+     */
+    abstract protected static function getModelClass();
 
     /**
      * Returns an array of CB item post objects
@@ -144,7 +150,7 @@ abstract class BookablePost extends PostRepository
      */
     public static function get($args = array(), $bookable = false)
     {
-        $posts = [];
+        $posts             = [];
         $args['post_type'] = static::getPostType();
 
         if (Plugin::getCacheItem(static::getPostType())) {
@@ -152,17 +158,17 @@ abstract class BookablePost extends PostRepository
         } else {
             $defaults = array(
                 'post_status' => array('publish', 'inherit'),
-                'nopaging' => true
+                'nopaging'    => true,
             );
 
             $queryArgs = wp_parse_args($args, $defaults);
-            $query = new \WP_Query($queryArgs);
+            $query     = new \WP_Query($queryArgs);
 
             if ($query->have_posts()) {
                 $posts = $query->get_posts();
                 foreach ($posts as $key => &$post) {
                     $class = static::getModelClass();
-                    $post = new $class($post);
+                    $post  = new $class($post);
 
                     // If items shall be bookable, we need to check...
                     if ($bookable && ! $post->isBookable()) {
@@ -172,6 +178,7 @@ abstract class BookablePost extends PostRepository
             }
 
             Plugin::setCacheItem($posts, static::getPostType());
+
             return $posts;
         }
     }
