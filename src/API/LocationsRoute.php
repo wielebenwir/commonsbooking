@@ -160,8 +160,8 @@ class LocationsRoute extends BaseRoute
             $preparedItem->geometry = new \stdClass();
             $preparedItem->geometry->type = "Point";
             $preparedItem->geometry->coordinates = [
-                floatval($latitude),
-                floatval($longitude)
+                floatval($longitude),
+                floatval($latitude)
             ];
         } else if ($item->formattedAddressOneLine()) {
             $addresses = $this->getGeocoder()->geocodeQuery(GeocodeQuery::create($item->formattedAddressOneLine()));
@@ -171,6 +171,18 @@ class LocationsRoute extends BaseRoute
                 $preparedItem->geometry = new \stdClass();
                 $preparedItem->geometry->type = "Point";
                 $preparedItem->geometry->coordinates = $address->getCoordinates()->toArray();
+
+                // Save data to items
+                update_post_meta(
+                    $item->ID,
+                    "geo_latitude",
+                    $preparedItem->geometry->coordinates[1]
+                );
+                update_post_meta(
+                    $item->ID,
+                    "geo_longitude",
+                    $preparedItem->geometry->coordinates[0]
+                );
             }
         }
         return $preparedItem;
