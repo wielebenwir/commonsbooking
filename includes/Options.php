@@ -203,7 +203,7 @@ $options_array = array(
                         'id'            => 'emailtemplates_mail-booking-confirmed-subject',
                         'cb1_legacy_id' => 'commons-booking-settings-mail:commons-booking_mail_confirmation_subject',
                         'type'          => 'text',
-                        'default'       => __('Your booking {{item:post_name}} at {{location:post_name}} {{booking:booking_timeframe_date}} ',
+                        'default'       => __('Your booking {{item:post_title}} at {{location:post_title}} {{booking:booking_timeframe_date}} ',
                             'commonsbooking'),
                     ),
                     array(
@@ -213,7 +213,7 @@ $options_array = array(
                         'type'          => 'textarea',
                         'default'       => __('
                             Hi {{user:first_name}},<br>
-                            <p>thank you for booking {{item:post_name}} {{booking:booking_timeframe_date}}.
+                            <p>thank you for booking {{item:post_title}} {{booking:booking_timeframe_date}}.
                             </p>
                             
                             Pick up date and time: <b>{{booking:pickupDatetime}}</b><br>
@@ -244,7 +244,7 @@ $options_array = array(
                         'name'    => __('Booking canceled email subject', 'commonsbooking'),
                         'id'      => 'emailtemplates_mail-booking-canceled-subject',
                         'type'    => 'text',
-                        'default' => __('Booking canceled: {{item:post_name}} at {{location:post_name}} {{booking:booking_timeframe_date}}',
+                        'default' => __('Booking canceled: {{item:post_title}} at {{location:post_title}} {{booking:booking_timeframe_date}}',
                             'commonsbooking'),
                     ),
                     array(
@@ -253,7 +253,7 @@ $options_array = array(
                         'type'    => 'textarea',
                         'default' => __('
                             Hi {{user:first_name}},<br>
-                            <p>your booking {{item:post_name}} at {{location:post_name}} {{booking:booking_timeframe_date}} has been cancelled.
+                            <p>your booking {{item:post_title}} at {{location:post_title}} {{booking:booking_timeframe_date}} has been cancelled.
                             </p>               
                             <b>Your information</b>
                             <p>Login: {{user:user_nicename}}<br>
