@@ -274,19 +274,15 @@ add_action('admin_notices', array(Plugin::class, 'renderError'));
 register_activation_hook(__FILE__, array(\CommonsBooking\Repository\BookingCodes::class, 'initBookingCodesTable'));
 
 // Ad new cron-Interval
-function custom_cron_job_recurrence($schedules)
+function commonsbooking_cron_interval($schedules)
 {
-    if ( ! isset($schedules['tenmins'])) {
-        $schedules['tenmins'] = array(
-            'display'  => 'Every 10 Minutes',
-            'interval' => 600,
-        );
-    }
-
+    $schedules['ten_minutes'] = array(
+        'display'  => 'Every 10 Minutes',
+        'interval' => 600,
+    );
     return $schedules;
 }
-
-add_filter('cron_schedules', 'custom_cron_job_recurrence');
+add_filter('cron_schedules', 'commonsbooking_cron_interval');
 
 // Removes all uncofirmed bookings older than 10 minutes
 function cleanupBookings()
@@ -313,9 +309,15 @@ function cleanupBookings()
     }
 }
 add_action('cb_cron_hook', 'cleanupBookings');
-// @TODO: Check why scheduled event doesn't fires
 if ( ! wp_next_scheduled('cb_cron_hook')) {
-    wp_schedule_event(time(), 'tenmins', 'cb_cron_hook');
+    wp_schedule_event(time(), 'ten_minutes', 'cb_cron_hook');
+}
+
+// Remove schedule on module deactivation
+register_deactivation_hook( __FILE__, 'cb_cron_deactivate' );
+function cb_cron_deactivate() {
+    $timestamp = wp_next_scheduled( 'cb_cron_hook' );
+    wp_unschedule_event( $timestamp, 'cb_cron_hook' );
 }
 
 $cbPlugin = new Plugin();
