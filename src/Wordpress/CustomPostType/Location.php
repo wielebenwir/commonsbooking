@@ -187,9 +187,6 @@ class Location extends CustomPostType
             'id'         => CB_METABOX_PREFIX . 'location_country',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-            'attributes' => array(
-                'required' => 'required',
-            ),
         ));
 
         // Initiate the metabox Information
