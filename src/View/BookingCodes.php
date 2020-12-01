@@ -25,7 +25,7 @@ class BookingCodes
                     <div class="cmb-td">
                         <table>
                             <tr>
-                                <td><b>'.__('Item').'</b></td><td><b>'.__('Startdatum').'</b></td><td><b>'.__('Code').'</b></td>
+                                <td><b>'.__('Item').'</b></td><td><b>'.__('Start date', 'commonsbooking').'</b></td><td><b>'.__('Code', 'commonsbooking').'</b></td>
                             </tr>';
 
         /** @var BookingCode $bookingCode */

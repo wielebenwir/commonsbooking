@@ -69,19 +69,21 @@ class Timeframe extends CustomPostType
      * Backend listing columns.
      * @var string[]
      */
-    protected $listColumns = [
-        'type'             => "Type",
-        'item-id'          => "Item",
-        'location-id'      => "Location",
-        'post_date'        => "Buchungszeitpunkt",
-        'repetition-start' => "Start Date",
-        'repetition-end'   => "End date",
-        'post_status'      => "Buchungs-Status",
-    ];
+    public $listColumns;
 
     public function __construct()
     {
         $this->types = self::getTypes();
+            
+        $this->listColumns = array (
+            'type'             => __('Type', 'commonsbooking'),
+            'item-id'          => __('Item', 'commonsbooking'),
+            'location-id'      => __('Location', 'commonsbooking'),
+            'post_date'        => __('Booking date/time', 'commonsbooking'),
+            'repetition-start' => __('Start date', 'commonsbooking'),
+            'repetition-end'   => __('End date', 'commonsbooking'),
+            'post_status'      => __('Booking status', 'commonsbooking'),
+        );    
 
         // Set Tepmlates
         add_filter('the_content', array($this, 'getTemplate'));
