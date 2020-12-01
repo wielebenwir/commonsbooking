@@ -71,18 +71,17 @@ class Item extends View
         $queryArgs = shortcode_atts( static::$allowedShortCodeArgs, $atts, \CommonsBooking\Wordpress\CustomPostType\Item::getPostType());
 
         if(is_array($atts) && array_key_exists('location-id', $atts)) {
-            $item = \CommonsBooking\Repository\Item::getByLocation($atts['location-id'], true);
+            $item = \CommonsBooking\Repository\Item::getByLocation($atts['location-id']);
             $items[] = $item;
         } else {
-            $items = \CommonsBooking\Repository\Item::get($queryArgs, true);
+            $items = \CommonsBooking\Repository\Item::get($queryArgs);
         }
+
         $itemData = [];
         /** @var \CommonsBooking\Model\Item $item */
         foreach($items as $item) {
             $shortCodeData = self::getShortcodeData($item, 'Location');
-            if(count($shortCodeData)) {
-                $itemData[$item->ID] = $shortCodeData;
-            }
+            $itemData[$item->ID] = $shortCodeData;
         }
 
         ob_start();
@@ -91,7 +90,7 @@ class Item extends View
             $templateData['data'] = $data;
             cb_get_template_part('shortcode', 'items', true, false, false);
         }
-      
+
         return ob_get_clean();
     }
 }

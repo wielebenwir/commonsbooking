@@ -10,7 +10,6 @@
  *
  */
 global $templateData;
-/** @var \CommonsBooking\Model\Item $item */
 $item = new \CommonsBooking\Model\Item($templateData['item']);
 $noResultText = __("No item available.", "commonsbooking");
 
@@ -25,7 +24,7 @@ $noResultText = __("No item available.", "commonsbooking");
 </div><!-- .cb-list-content -->
 
 <?php
-if (array_key_exists('data', $templateData)) {
+if (array_key_exists('data', $templateData) && count($templateData['data'])) {
     foreach ($templateData['data'] as $locationId => $data ) {
         $location = new \CommonsBooking\Model\Location($locationId);
         set_query_var( 'item', $item );
@@ -34,5 +33,5 @@ if (array_key_exists('data', $templateData)) {
         cb_get_template_part( 'timeframe', 'withlocation' );
     }
 } else { ?>
-<div class="cb-status cb-availability-status"><?php echo ( $noResultText ); ?>
-    <?php } // end if ($timeframes) ?>
+    <div class="cb-status cb-availability-status"><?php echo ( $noResultText ); ?></div>
+<?php } // end if ($timeframes) ?>
