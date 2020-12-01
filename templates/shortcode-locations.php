@@ -1,13 +1,13 @@
 <?php
-/** 
+/**
  * Shortcode [cb_locations]
  * Model: location
  *
  * List all locations, with one or more associated timeframes (with location info)
- * 
+ *
  * WP Post properties for locations are available as $location->property
- * location Model methods are available as $location->myMethod()    
- *  
+ * location Model methods are available as $location->myMethod()
+ *
  */
 global $templateData;
 $location = new \CommonsBooking\Model\Location($templateData['location']);
@@ -24,14 +24,14 @@ $noResultText = __("No article available at this location.", "commonsbooking");
 </div><!-- .cb-list-content -->
 
 <?php
-	if (array_key_exists('data', $templateData)) {
-		foreach ($templateData['data'] as $itemId => $data ) {
-            $item = new \CommonsBooking\Model\Item($itemId);
-            set_query_var( 'item', $item );
-            set_query_var( 'location', $location );
-            set_query_var( 'data', $data );
-            cb_get_template_part( 'timeframe', 'withitem' ); // file: timeframe-withlocation.php
-		} 
-	} else { ?>
-		<div class="cb-status cb-availability-status"><?php echo ( $noResultText ); ?>
-	<?php } // end if ($timeframes) ?>
+if (array_key_exists('data', $templateData) && count($templateData['data'])) {
+    foreach ($templateData['data'] as $itemId => $data ) {
+        $item = new \CommonsBooking\Model\Item($itemId);
+        set_query_var( 'item', $item );
+        set_query_var( 'location', $location );
+        set_query_var( 'data', $data );
+        cb_get_template_part( 'timeframe', 'withitem' ); // file: timeframe-withlocation.php
+    }
+} else { ?>
+    <div class="cb-status cb-availability-status"><?php echo ( $noResultText ); ?></div>
+<?php } // end if ($timeframes) ?>

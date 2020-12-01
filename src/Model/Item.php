@@ -25,8 +25,9 @@ class Item extends BookablePost
             [$locationId],
             [$this->ID],
             [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID],
-            $this->getDate() ?: null,
-            $asModel
+            null,
+            $asModel,
+            time()
         );
     }
 }

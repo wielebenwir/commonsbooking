@@ -131,7 +131,8 @@ class Plugin
         if (!in_array($post->post_type, self::getCustomPostTypesLabels())) {
             return;
         }
-        self::clearCache(str_replace('cb_','', $post->post_type));
+//        self::clearCache(str_replace('cb_','', $post->post_type));
+        self::clearCache();
 
         // Remove cache for timeframe repos
         if($post->post_type == Timeframe::$postType) {

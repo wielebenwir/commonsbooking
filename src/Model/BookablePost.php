@@ -25,7 +25,8 @@ class BookablePost extends CustomPost
                 [],
                 [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID],
                 $this->getDate() ?: null,
-                $asModel
+                $asModel,
+                time()
             );
 
         }
@@ -35,7 +36,8 @@ class BookablePost extends CustomPost
                 [$this->ID],
                 [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID],
                 $this->getDate() ?: null,
-                $asModel
+                $asModel,
+                time()
             );
         }
         return $bookableTimeframes;

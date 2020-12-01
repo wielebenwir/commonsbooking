@@ -20,26 +20,26 @@ class Location extends BookablePost
      */
     public static function getByItem($itemId, $bookable = false)
     {
-        if($itemId instanceof \WP_Post) {
+        if ($itemId instanceof \WP_Post) {
             $itemId = $itemId->ID;
         }
 
-        if(Plugin::getCacheItem()) {
+        if (Plugin::getCacheItem()) {
             return Plugin::getCacheItem();
         } else {
-            $locations = [];
+            $locations   = [];
             $locationIds = [];
-            $args = array(
+            $args        = array(
                 'post_type'   => Timeframe::getPostType(),
                 'post_status' => array('confirmed', 'unconfirmed', 'publish', 'inherit'),
                 'meta_query'  => array(
                     'relation' => 'AND',
                     array(
                         'key'   => 'item-id',
-                        'value' => $itemId
-                    )
+                        'value' => $itemId,
+                    ),
                 ),
-                'nopaging' => true
+                'nopaging'    => true,
             );
 
             $query = new \WP_Query($args);
@@ -49,7 +49,7 @@ class Location extends BookablePost
                     $locationId = get_post_meta($timeframe->ID, 'location-id', true);
                     if ($locationId && ! in_array($locationId, $locationIds)) {
                         $locationIds[] = $locationId;
-                        $location = get_post($locationId);
+                        $location      = get_post($locationId);
 
                         // add only published items
                         if ($location->post_status == 'publish') {
@@ -61,11 +61,12 @@ class Location extends BookablePost
 
             foreach ($locations as $key => &$location) {
                 $location = new \CommonsBooking\Model\Location($location);
-                if($bookable && !$location->getBookableTimeframesByItem($itemId)) {
+                if ($bookable && ! $location->getBookableTimeframesByItem($itemId)) {
                     unset($locations[$key]);
                 }
             }
             Plugin::setCacheItem($locations);
+
             return $locations;
         }
     }

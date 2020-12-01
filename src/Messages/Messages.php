@@ -117,7 +117,6 @@ class Messages
         $body = apply_filters('cb_mail_body', $this->body);
         $headers = implode("\r\n", $this->headers);
 
-        $result = false;
         $result = wp_mail($to, $subject, $body, $headers);
 
         // WPML: Reset system lang
