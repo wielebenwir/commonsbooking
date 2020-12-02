@@ -81,6 +81,12 @@ class Item extends View
         /** @var \CommonsBooking\Model\Item $item */
         foreach($items as $item) {
             $shortCodeData = self::getShortcodeData($item, 'Location');
+
+            // Sort by start_date
+            uasort($shortCodeData, function ($a,$b) {
+                return $a['start_date'] > $b['start_date'];
+            });
+
             $itemData[$item->ID] = $shortCodeData;
         }
 

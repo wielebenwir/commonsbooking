@@ -341,6 +341,12 @@ class Location extends View
         /** @var \CommonsBooking\Model\Location $location */
         foreach($locations as $location) {
             $shortCodeData = self::getShortcodeData($location, 'Item');
+
+            // Sort by start_date
+            uasort($shortCodeData, function ($a,$b) {
+                return $a['start_date'] > $b['start_date'];
+            });
+
             $locationData[$location->ID] = $shortCodeData;
         }
 
