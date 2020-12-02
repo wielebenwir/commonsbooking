@@ -19,18 +19,6 @@ class Plugin
 {
 
     /**
-     * Location admin id.
-     * @var string
-     */
-    public static $LOCATION_ADMIN_ID = 'location_admin';
-
-    /**
-     * Item admin id.
-     * @var string
-     */
-    public static $ITEM_ADMIN_ID = 'item_admin';
-
-    /**
      * CB-Manager id.
      * @var string
      */
@@ -97,7 +85,7 @@ class Plugin
 
         // Register custom user roles (e.g. location-owner, item-owner etc.)
         add_action('admin_init', array(self::class, 'addCustomUserRoles'));
-        
+
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'maybeEnableCB1UserFields'));
 
@@ -361,14 +349,6 @@ class Plugin
         };
 
         $roleCapMapping = [
-            Plugin::$LOCATION_ADMIN_ID => [
-                'read'                     => true,
-                'manage_' . CB_PLUGIN_SLUG => true
-            ],
-            Plugin::$ITEM_ADMIN_ID     => [
-                'read'                     => true,
-                'manage_' . CB_PLUGIN_SLUG => true
-            ],
             Plugin::$CB_MANAGER_ID     => [
                 'read'                     => true,
                 'manage_' . CB_PLUGIN_SLUG => true
@@ -406,12 +386,13 @@ class Plugin
             printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($error));
             delete_transient("timeframeValidationFailed");
         }
-    }    
+    }
+
     /**
      * Enable Legacy CB1 profile fields.
      */
     public static function maybeEnableCB1UserFields()
-    {   
+    {
         $enabled = Settings::getOption('commonsbooking_options_migration', 'enable-cb1-user-fields');
         if ( $enabled == 'on') {
             new CB1UserFields;

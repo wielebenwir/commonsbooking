@@ -233,7 +233,7 @@ class Location extends CustomPostType
         ));
 
         // Location admin selection
-        $users = UserRepository::getCBLocationAdmins();
+        $users = UserRepository::getCBManagers();
         $userOptions = [];
         foreach ($users as $user) {
             $userOptions[$user->ID] = $user->get('user_nicename') . " (" . $user->last_name . " " . $user->last_name . ")";

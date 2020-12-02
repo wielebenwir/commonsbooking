@@ -575,13 +575,11 @@ class Timeframe extends CustomPostType
         return array(
             array(
                 'name' => __("Comment", 'commonsbooking'),
-                //'desc'       => __('', 'commonsbooking'),
                 'id'   => "comment",
                 'type' => 'textarea_small',
             ),
             array(
                 'name'    => __('Type', 'commonsbooking'),
-                //'desc'       => __('', 'commonsbooking'),
                 'id'      => "type",
                 'type'    => 'select',
                 'options' => self::getTypes(),
@@ -615,7 +613,7 @@ class Timeframe extends CustomPostType
                 'name'    => __("Item", 'commonsbooking'),
                 'id'      => "item-id",
                 'type'    => 'select',
-                'options' => self::sanitizeOptions(\CommonsBooking\Repository\Item::getByCurrentUser(), true),
+                'options' => self::sanitizeOptions(\CommonsBooking\Repository\Item::getByCurrentUser()),
             ),
             array(
                 'name' => __("Configure timeframe", 'commonsbooking'),

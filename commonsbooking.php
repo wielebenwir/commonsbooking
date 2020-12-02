@@ -155,21 +155,31 @@ function isCurrentUserAllowedToEdit($post)
             $locationId       = get_post_meta($post->ID, 'location-id', true);
             $locationAdminIds = get_post_meta($locationId, '_'.Location::$postType.'_admins', true);
             if (is_string($locationAdminIds)) {
-                $locationAdminIds = [$locationAdminIds];
+                if(strlen($locationAdminIds) > 0) {
+                    $locationAdminIds = [$locationAdminIds];
+                } else {
+                    $locationAdminIds = [];
+                }
             }
+            $locationAdminIds[] = get_post_field('post_author', $locationId);
 
             // Get assigned item
             $itemId       = get_post_meta($post->ID, 'item-id', true);
             $itemAdminIds = get_post_meta($itemId, '_'.Item::$postType.'_admins', true);
             if (is_string($itemAdminIds)) {
-                $itemAdminIds = [$itemAdminIds];
+                if(strlen($itemAdminIds) > 0) {
+                    $itemAdminIds = [$itemAdminIds];
+                } else {
+                    $itemAdminIds = [];
+                }
             }
+            $itemAdminIds[] = get_post_field('post_author', $itemId);
 
             if (
                 is_array($locationAdminIds) && count($locationAdminIds) &&
                 is_array($itemAdminIds) && count($itemAdminIds)
             ) {
-                $admins = array_intersect($locationAdminIds, $itemAdminIds);
+                $admins = array_merge($locationAdminIds, $itemAdminIds);
             }
         }
 
