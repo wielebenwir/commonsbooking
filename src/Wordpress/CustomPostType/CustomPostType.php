@@ -37,14 +37,10 @@ abstract class CustomPostType
      */
     public function addRoleCaps() {
         // Add the roles you'd like to administer the custom post types
-        $roles = array(Plugin::$CB_MANAGER_ID, 'administrator');
-
-        if(self::getPostType() == Location::$postType) {
-            $roles[] = Plugin::$LOCATION_ADMIN_ID;
-        }
-        if(self::getPostType() == Item::$postType) {
-            $roles[] = Plugin::$ITEM_ADMIN_ID;
-        }
+        $roles = array(
+            Plugin::$CB_MANAGER_ID,
+            'administrator'
+        );
 
         // Loop through each role and assign capabilities
         foreach($roles as $the_role) {

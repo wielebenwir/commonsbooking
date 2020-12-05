@@ -20,8 +20,10 @@ abstract class BookablePost extends PostRepository
         $current_user = wp_get_current_user();
         $items        = [];
 
-        if (Plugin::getCacheItem(static::getPostType())) {
-            return Plugin::getCacheItem(static::getPostType());
+        $customId = md5($current_user->ID . static::getPostType());
+
+        if (Plugin::getCacheItem($customId)) {
+            return Plugin::getCacheItem($customId);
         } else {
             // Get all Locations where current user is author
             $args  = array(
@@ -77,7 +79,7 @@ abstract class BookablePost extends PostRepository
                 $items = array_merge($items, $query->get_posts());
             }
 
-            Plugin::setCacheItem($items, static::getPostType());
+            Plugin::setCacheItem($items,$customId);
 
             return $items;
         }
