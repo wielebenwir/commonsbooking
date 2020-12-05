@@ -10,9 +10,12 @@ abstract class BookablePost extends PostRepository
 {
     /**
      * Get all Locations current user is allowed to see/edit
+     *
+     * @param bool $publishedOnly
+     *
      * @return array
      */
-    public static function getByCurrentUser()
+    public static function getByCurrentUser($publishedOnly = false)
     {
         $current_user = wp_get_current_user();
         $items        = [];
@@ -30,6 +33,10 @@ abstract class BookablePost extends PostRepository
                 'orderby'   => 'post_title',
                 'order'     => 'asc',
             );
+            if($publishedOnly) {
+                $args['post_status'] = 'publish';
+            }
+
             $query = new \WP_Query($args);
             if ($query->have_posts()) {
                 $items = array_merge($items, $query->get_posts());
@@ -64,6 +71,9 @@ abstract class BookablePost extends PostRepository
             }
 
 
+            if($publishedOnly) {
+                $args['post_status'] = 'publish';
+            }
             $query = new \WP_Query($args);
             if ($query->have_posts()) {
                 $items = array_merge($items, $query->get_posts());

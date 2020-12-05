@@ -607,13 +607,13 @@ class Timeframe extends CustomPostType
                 'name'    => __("Location", 'commonsbooking'),
                 'id'      => "location-id",
                 'type'    => 'select',
-                'options' => self::sanitizeOptions(\CommonsBooking\Repository\Location::getByCurrentUser()),
+                'options' => self::sanitizeOptions(\CommonsBooking\Repository\Location::getByCurrentUser(true)),
             ),
             array(
                 'name'    => __("Item", 'commonsbooking'),
                 'id'      => "item-id",
                 'type'    => 'select',
-                'options' => self::sanitizeOptions(\CommonsBooking\Repository\Item::getByCurrentUser()),
+                'options' => self::sanitizeOptions(\CommonsBooking\Repository\Item::getByCurrentUser(true))
             ),
             array(
                 'name' => __("Configure timeframe", 'commonsbooking'),
