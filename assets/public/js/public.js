@@ -1292,7 +1292,7 @@
             let option = new Option(slot.timestart + " - " + slot.timeend, slot["timestamp" + type], fullday, fullday);
             slot.disabled && (option.disabled = !0), select.append(option);
         });
-    }, getOrientation = () => window.matchMedia("(orientation: portrait)").matches ? "portrait" : "landscape", initStartSelect = date => {
+    }, initStartSelect = date => {
         const day1 = data.days[moment(date).format("YYYY-MM-DD")], startDate = moment(date).format("DD.MM.YYYY");
         $(".time-selection.repetition-start").find(".hint-selection").hide(), $(".time-selection.repetition-end").find(".hint-selection").show(), 
         $("#booking-form select[name=repetition-end],#booking-form .time-selection.repetition-end .date").hide(), 
@@ -1309,19 +1309,6 @@
         $("#booking-form input[type=submit]").removeAttr("disabled"), updateEndSelectTimeOptions(), 
         day2.fullDay ? $(".time-selection.repetition-end").find("select").hide() : $(".time-selection.repetition-end").find("select").show();
     };
-    let numberOfMonths = 2, numberOfColumns = 2;
-    if ((() => {
-        const isPortrait = "portrait" === getOrientation();
-        return window.matchMedia(`(max-device-${isPortrait ? "width" : "height"}: 480px)`).matches;
-    })()) switch (screen.orientation.angle) {
-      case -90:
-      case 90:
-        numberOfMonths = 2, numberOfColumns = 2;
-        break;
-
-      default:
-        numberOfMonths = 1, numberOfColumns = 1;
-    }
     let picker = !1;
     const updatePicker = data => {
         fadeOutCalendar(), picker.setOptions({
@@ -1355,8 +1342,8 @@
         inlineMode: !0,
         firstDay: 1,
         lang: "de-DE",
-        numberOfMonths: numberOfMonths,
-        numberOfColumns: numberOfColumns,
+        numberOfMonths: 2,
+        numberOfColumns: 2,
         moveByOneMonth: !0,
         singleMode: !1,
         showWeekNumbers: !1,
@@ -1382,7 +1369,7 @@
         },
         onChangeMonth: function(date, idx) {
             fadeOutCalendar();
-            const startDate = moment(date.format("YYYY-MM-DD")).format("YYYY-MM-DD"), calStartDate = moment(date.format("YYYY-MM-DD")).date(0).format("YYYY-MM-DD"), calEndDate = moment(date.format("YYYY-MM-DD")).add(numberOfMonths, "months").date(1).format("YYYY-MM-DD");
+            const startDate = moment(date.format("YYYY-MM-DD")).format("YYYY-MM-DD"), calStartDate = moment(date.format("YYYY-MM-DD")).date(0).format("YYYY-MM-DD"), calEndDate = moment(date.format("YYYY-MM-DD")).add(2, "months").date(1).format("YYYY-MM-DD");
             $.post(cb_ajax.ajax_url, {
                 _ajax_nonce: cb_ajax.nonce,
                 action: "calendar_data",
