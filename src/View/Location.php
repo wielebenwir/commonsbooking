@@ -331,19 +331,23 @@ class Location extends View
             \CommonsBooking\Wordpress\CustomPostType\Location::getPostType());
 
         if (is_array($atts) && array_key_exists('item-id', $atts)) {
-            $location = \CommonsBooking\Repository\Location::getByItem($atts['item-id'], true);
+            $location = \CommonsBooking\Repository\Location::getByItem($atts['item-id']);
             $locations[] = $location;
         } else {
-            $locations = \CommonsBooking\Repository\Location::get($queryArgs, true);
+            $locations = \CommonsBooking\Repository\Location::get($queryArgs);
         }
 
         $locationData = [];
         /** @var \CommonsBooking\Model\Location $location */
         foreach($locations as $location) {
             $shortCodeData = self::getShortcodeData($location, 'Item');
-            if(count($shortCodeData)) {
-                $locationData[$location->ID] = $shortCodeData;
-            }
+
+            // Sort by start_date
+            uasort($shortCodeData, function ($a,$b) {
+                return $a['start_date'] > $b['start_date'];
+            });
+
+            $locationData[$location->ID] = $shortCodeData;
         }
 
         ob_start();

@@ -123,7 +123,7 @@ class Item extends CustomPostType
             set_query_var( 'item', $item );
             cb_get_template_part('item', 'single');
             $cb_content = ob_get_clean();
-        } // if archive... 
+        } // if archive...
 
         return $content . $cb_content;
     }
@@ -146,7 +146,7 @@ class Item extends CustomPostType
             'show_names'   => true, // Show field names on the left
         ));
 
-        $users = UserRepository::getCBItemAdmins();
+        $users = UserRepository::getCBManagers();
         $userOptions = [];
         foreach ($users as $user) {
             $userOptions[$user->ID] = $user->get('user_nicename') . " (" .$user->last_name . " " . $user->last_name . ")";

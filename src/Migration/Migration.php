@@ -198,7 +198,7 @@ class Migration
         $allowClosed = \CommonsBooking\Settings\Settings::getOption(
                 'commons-booking-settings-bookings',
                 'commons-booking_bookingsettings_allowclosed'
-            ) == 'on';
+            ) == 'on' ? 'on' : 'off';
 
         // CB2 <-> CB1
         $postMeta = [

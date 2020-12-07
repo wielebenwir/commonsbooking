@@ -187,9 +187,6 @@ class Location extends CustomPostType
             'id'         => CB_METABOX_PREFIX . 'location_country',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-            'attributes' => array(
-                'required' => 'required',
-            ),
         ));
 
         // Initiate the metabox Information
@@ -236,7 +233,7 @@ class Location extends CustomPostType
         ));
 
         // Location admin selection
-        $users = UserRepository::getCBLocationAdmins();
+        $users = UserRepository::getCBManagers();
         $userOptions = [];
         foreach ($users as $user) {
             $userOptions[$user->ID] = $user->get('user_nicename') . " (" . $user->last_name . " " . $user->last_name . ")";
