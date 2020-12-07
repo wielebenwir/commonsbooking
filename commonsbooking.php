@@ -1,25 +1,26 @@
 <?php
 
+/**
+ * Plugin Name:         CommonsBooking
+ * Version:             2.2.3
+ * Requires at least:   5.2
+ * Requires PHP:        7.0
+ * Plugin URI:          https://commonsbooking.org
+ * Description:         A wordpress plugin for management and booking of common goods.
+ * Author:              wielebenwir e.V.
+ * Author URI:          https://wielebenwir.de/
+ * Domain Path:         /languages
+ * Text Domain:         commonsbooking
+ * License:             GPL v2 or later
+ * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
+ */
+
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 defined('ABSPATH') or die("Thanks for visting");
-
-/**
- * Plugin Name:  CommonsBooking
- * Version: 2.2.3
- * Plugin URI: https://commonsbooking.org
- * Description: A wordpress plugin for management and booking of common goods.
- * Author: wielebenwir e.V.
- * Author URI: https://wielebenwir.de/
- * Domain Path: /languages
- * Text Domain:  commonsbooking
- * License: GPL v2 or later
- * License URI:  https://www.gnu.org/licenses/gpl-2.0.html
- */
-
 
 define('CB_VERSION', '2.2.3');
 define('CB_MENU_SLUG', 'cb-menu');
