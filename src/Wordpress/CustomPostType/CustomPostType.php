@@ -204,10 +204,14 @@ abstract class CustomPostType
     {
         add_filter('manage_' . static::getPostType() . '_posts_columns', function ($columns) {
             unset($columns['date']);
-            $columns[ 'author' ] = 'Nutzer*in';
+            unset ($columns[ 'author' ]); // = 'Nutzer*in';
             return $columns;
         });
     }
+
+
+
+
 
     /**
      * Configures list-view
@@ -244,7 +248,8 @@ abstract class CustomPostType
      * @param $post_id
      */
     public function setCustomColumnsData($column, $post_id)
-    {
+    {        
+        
         if ($value = get_post_meta($post_id, $column, true)) {
             echo $value;
         } else {
