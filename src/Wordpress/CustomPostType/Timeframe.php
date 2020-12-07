@@ -70,6 +70,7 @@ class Timeframe extends CustomPostType
      * @var string[]
      */
     protected $listColumns = [
+        'timeframe-author' => "User",    
         'type'             => "Type",
         'item-id'          => "Item",
         'location-id'      => "Location",
@@ -961,6 +962,15 @@ class Timeframe extends CustomPostType
      */
     public function setCustomColumnsData($column, $post_id)
     {
+        
+        // we alter the  author column data and link the username to the user profile
+        if ($column == "timeframe-author") {
+            $post = get_post($post_id);
+            $timeframe_user = get_user_by('id', $post->post_author);
+            echo '<a href="' . get_edit_user_link( $timeframe_user->ID )  . '">' . $timeframe_user->user_login  . '</a>';
+        }
+
+        
         if ($value = get_post_meta($post_id, $column, true)) {
             switch ($column) {
                 case 'location-id':
