@@ -140,8 +140,8 @@ class Timeframe extends CustomPostType
             isset($_REQUEST[static::getWPNonceId()]) &&
             wp_verify_nonce($_REQUEST[static::getWPNonceId()], static::getWPAction())
         ) {
-            $itemId     = isset($_REQUEST['item-id']) && $_REQUEST['item-id'] != "" ? $_REQUEST['item-id'] : null;
-            $locationId = isset($_REQUEST['location-id']) && $_REQUEST['location-id'] != "" ? $_REQUEST['location-id'] : null;
+            $itemId     = isset($_REQUEST['item-id']) && $_REQUEST['item-id'] != "" ? sanitize_text_field($_REQUEST['item-id']) : null;
+            $locationId = isset($_REQUEST['location-id']) && $_REQUEST['location-id'] != "" ? sanitize_text_field($_REQUEST['location-id']) : null;
 
             if ( ! get_post($itemId)) {
                 throw new \Exception('Item does not exist. ('.$itemId.')');
@@ -150,8 +150,8 @@ class Timeframe extends CustomPostType
                 throw new \Exception('Location does not exist. ('.$locationId.')');
             }
 
-            $startDate = isset($_REQUEST['repetition-start']) && $_REQUEST['repetition-start'] != "" ? $_REQUEST['repetition-start'] : null;
-            $endDate   = isset($_REQUEST['repetition-end']) && $_REQUEST['repetition-end'] != "" ? $_REQUEST['repetition-end'] : null;
+            $startDate = isset($_REQUEST['repetition-start']) && $_REQUEST['repetition-start'] != "" ? sanitize_text_field($_REQUEST['repetition-start']) : null;
+            $endDate   = isset($_REQUEST['repetition-end']) && $_REQUEST['repetition-end'] != "" ? sanitize_text_field($_REQUEST['repetition-end']) : null;
 
             /** @var \CommonsBooking\Model\Booking $booking */
             $booking = Booking::getBookingByDate(
@@ -162,8 +162,8 @@ class Timeframe extends CustomPostType
             );
 
             $postarr = array(
-                "type"        => $_REQUEST["type"],
-                "post_status" => $_REQUEST["post_status"],
+                "type"        => sanitize_text_field($_REQUEST["type"]),
+                "post_status" => sanitize_text_field($_REQUEST["post_status"]),
                 "post_type"   => self::getPostType(),
                 "post_title"  => __("Booking", 'commonsbooking'),
             );
@@ -417,8 +417,8 @@ class Timeframe extends CustomPostType
             $startDateInputName = 'admin_filter_startdate';
             $endDateInputName   = 'admin_filter_enddate';
 
-            $from = (isset($_GET[$startDateInputName]) && $_GET[$startDateInputName]) ? $_GET[$startDateInputName] : '';
-            $to   = (isset($_GET[$endDateInputName]) && $_GET[$endDateInputName]) ? $_GET[$endDateInputName] : '';
+            $from = (isset($_GET[$startDateInputName]) && $_GET[$startDateInputName]) ? sanitize_text_field($_GET[$startDateInputName]) : '';
+            $to   = (isset($_GET[$endDateInputName]) && $_GET[$endDateInputName]) ? sanitize_text_field($_GET[$endDateInputName]) : '';
 
             echo '<style>
                 input[name='.$startDateInputName.'], 
@@ -492,7 +492,7 @@ class Timeframe extends CustomPostType
                 ) {
                     $query->query_vars['meta_query'][] = array(
                         'key'   => $key,
-                        'value' => $_GET[$filter],
+                        'value' => sanitize_text_field($_GET[$filter]),
                     );
                 }
             }
@@ -505,7 +505,7 @@ class Timeframe extends CustomPostType
             ) {
                 $query->query_vars['meta_query'][] = array(
                     'key'     => 'repetition-start',
-                    'value'   => strtotime($_GET['admin_filter_startdate']),
+                    'value'   => strtotime(sanitize_text_field($_GET['admin_filter_startdate'])),
                     'compare' => ">=",
                 );
             }
@@ -517,7 +517,7 @@ class Timeframe extends CustomPostType
             ) {
                 $query->query_vars['meta_query'][] = array(
                     'key'     => 'repetition-end',
-                    'value'   => strtotime($_GET['admin_filter_enddate']),
+                    'value'   => strtotime(sanitize_text_field($_GET['admin_filter_enddate'])),
                     'compare' => "<=",
                 );
             }
@@ -531,7 +531,7 @@ class Timeframe extends CustomPostType
                     isset($_GET[$filter]) &&
                     $_GET[$filter] != ''
                 ) {
-                    $query->query_vars[$key] = $_GET[$filter];
+                    $query->query_vars[$key] = sanitize_text_field($_GET[$filter]);
                 }
             }
 
@@ -801,7 +801,7 @@ class Timeframe extends CustomPostType
                         continue;
                     }
 
-                    $value = $_REQUEST[$fieldName];
+                    $value = sanitize_text_field($_REQUEST[$fieldName]);
                     if (is_string($value)) {
                         $value = trim($value);
                         update_post_meta($post_id, $fieldName, $value);
