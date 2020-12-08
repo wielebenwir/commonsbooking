@@ -46,7 +46,7 @@ class BookingCodes
      */
     public static function renderCSV($timeframeId = null) {
         if($timeframeId == null) {
-            $timeframeId = $_GET['post'];
+            $timeframeId = sanitize_text_field($_GET['post']);
         }
         $bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes($timeframeId);
         header("Content-type: text/csv");
