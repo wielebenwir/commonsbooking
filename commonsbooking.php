@@ -22,11 +22,11 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 defined('ABSPATH') or die("Thanks for visting");
 
-define('CB_VERSION', '2.2.3');
-define('CB_MENU_SLUG', 'cb-menu');
-define('CB_PLUGIN_SLUG', 'commonsbooking');
-define('CB_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('CB_METABOX_PREFIX', '_cb_'); //Start with an underscore to hide fields from custom fields list
+define('COMMONSBOOKING_VERSION', '2.2.3');
+define('COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking');
+define('COMMONSBOOKING_MENU_SLUG', COMMONSBOOKING_PLUGIN_SLUG . '-menu');
+define('COMMONSBOOKING_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('COMMONSBOOKING_METABOX_PREFIX', '_cb_'); //Start with an underscore to hide fields from custom fields list
 
 global $cb_db_version;
 $cb_db_version = '1.0';

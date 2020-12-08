@@ -121,7 +121,7 @@ class Item extends CustomPostType
             global $post;
             $item = new \CommonsBooking\Model\Item($post);
             set_query_var( 'item', $item );
-            cb_get_template_part('item', 'single');
+            commonsbooking_get_template_part('item', 'single');
             $cb_content = ob_get_clean();
         } // if archive...
 
@@ -138,7 +138,7 @@ class Item extends CustomPostType
     {
         // Initiate the metabox Adress
         $cmb = new_cmb2_box(array(
-            'id'           => CB_METABOX_PREFIX . 'item_info',
+            'id'           => COMMONSBOOKING_METABOX_PREFIX . 'item_info',
             'title'        => __('Item Info', 'commonsbooking'),
             'object_types' => array(self::$postType), // Post type
             'context'      => 'normal',
@@ -155,7 +155,7 @@ class Item extends CustomPostType
         $cmb->add_field( array(
             'name'       => __('Item Admin(s)', 'commonsbooking'),
             'desc'       => __('choose one or more users to give them the permisssion to edit and manage this specific item. Only users with the role cb_manager can be selected here', 'commonsbooking'),
-            'id'      => CB_METABOX_PREFIX . 'item_admins',
+            'id'      => COMMONSBOOKING_METABOX_PREFIX . 'item_admins',
             'type'    => 'pw_multiselect',
             'options' => $userOptions,
             'attributes' => array(

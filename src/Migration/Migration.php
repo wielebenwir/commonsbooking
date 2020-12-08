@@ -202,22 +202,22 @@ class Migration
 
         // CB2 <-> CB1
         $postMeta = [
-            CB_METABOX_PREFIX . 'location_street'             => get_post_meta($location->ID,
+            COMMONSBOOKING_METABOX_PREFIX . 'location_street'             => get_post_meta($location->ID,
                 'commons-booking_location_adress_street', true),
-            CB_METABOX_PREFIX . 'location_city'               => get_post_meta($location->ID,
+            COMMONSBOOKING_METABOX_PREFIX . 'location_city'               => get_post_meta($location->ID,
                 'commons-booking_location_adress_city', true),
-            CB_METABOX_PREFIX . 'location_postcode'           => get_post_meta($location->ID,
+            COMMONSBOOKING_METABOX_PREFIX . 'location_postcode'           => get_post_meta($location->ID,
                 'commons-booking_location_adress_zip', true),
-            CB_METABOX_PREFIX . 'location_country'            => get_post_meta($location->ID,
+            COMMONSBOOKING_METABOX_PREFIX . 'location_country'            => get_post_meta($location->ID,
                 'commons-booking_location_adress_country', true),
-            CB_METABOX_PREFIX . 'location_contact'            => get_post_meta($location->ID,
+            COMMONSBOOKING_METABOX_PREFIX . 'location_contact'            => get_post_meta($location->ID,
                 'commons-booking_location_contactinfo_text', true),
-            CB_METABOX_PREFIX . 'location_pickupinstructions' => get_post_meta($location->ID,
+            COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions' => get_post_meta($location->ID,
                 'commons-booking_location_openinghours', true),
-            CB_METABOX_PREFIX . 'location_email'              => $cb1_location_email_string,
-            CB_METABOX_PREFIX . 'cb1_post_post_ID'            => $location->ID,
+            COMMONSBOOKING_METABOX_PREFIX . 'location_email'              => $cb1_location_email_string,
+            COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID'            => $location->ID,
             '_thumbnail_id'                                   => get_post_meta($location->ID, '_thumbnail_id', true),
-            CB_METABOX_PREFIX . 'allow_lockdays_in_range'     => $allowClosed
+            COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range'     => $allowClosed
         ];
 
         $existingPost = self::getExistingPost($location->ID, Location::$postType);
@@ -254,7 +254,7 @@ class Migration
     public static function getExistingPost($id, $type, $timeframe_type = null)
     {
         $args = array(
-            'meta_key'     => CB_METABOX_PREFIX . 'cb1_post_post_ID',
+            'meta_key'     => COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID',
             'meta_value'   => $id,
             'meta_compare' => '=',
             'post_type'    => $type,
@@ -271,7 +271,7 @@ class Migration
                 'meta_query' => array(
                     'relation' => 'AND',
                     array(
-                        'key'     => CB_METABOX_PREFIX . 'cb1_post_post_ID',
+                        'key'     => COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID',
                         'value'   => $id,
                         'compare' => '='
                     ),
@@ -346,7 +346,7 @@ class Migration
 
         // CB2 <-> CB1
         $postMeta = [
-            CB_METABOX_PREFIX . 'cb1_post_post_ID' => $item->ID,
+            COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID' => $item->ID,
             '_thumbnail_id'                        => get_post_meta($item->ID, '_thumbnail_id', true)
         ];
 
@@ -386,7 +386,7 @@ class Migration
 
         // CB2 <-> CB1
         $postMeta = [
-            CB_METABOX_PREFIX . 'cb1_post_post_ID' => $timeframe['id'],
+            COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID' => $timeframe['id'],
             'repetition-start'                     => strtotime($timeframe['date_start']),
             'repetition-end'                       => strtotime($timeframe['date_end']),
             'item-id'                              => $cbItem ? $cbItem->ID : '',
@@ -434,7 +434,7 @@ class Migration
 
         // CB2 <-> CB1
         $postMeta = [
-            CB_METABOX_PREFIX . 'cb1_post_post_ID' => $booking['id'],
+            COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID' => $booking['id'],
             'repetition-start'                     => strtotime($booking['date_start']),
             'repetition-end'                       => strtotime($booking['date_end']),
             'item-id'                              => $cbItem ? $cbItem->ID : '',
@@ -445,7 +445,7 @@ class Migration
             'end-time'                             => '23:59',
             'full-day'                             => 'on',
             'grid'                                 => '0',
-            CB_METABOX_PREFIX . 'bookingcode'      => CB1::getBookingCode($booking['code_id'])
+            COMMONSBOOKING_METABOX_PREFIX . 'bookingcode'      => CB1::getBookingCode($booking['code_id'])
         ];
 
         $existingPost = self::getExistingPost($booking['id'], Timeframe::$postType, Timeframe::BOOKING_ID);

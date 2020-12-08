@@ -58,8 +58,8 @@ class Messages
             'emailtemplates_mail-booking-' . $this->action . '-subject');
 
         // parse templates & replaces template tags (e.g. {{item:name}})
-        $this->body = \cb_parse_template($template_body);
-        $this->subject = \cb_parse_template($template_subject);
+        $this->body = \commonsbooking_parse_template($template_body);
+        $this->subject = \commonsbooking_parse_template($template_subject);
 
         // Setup mime type
         $this->headers[] = "MIME-Version: 1.0";
@@ -75,7 +75,7 @@ class Messages
         // TODO: @christian: Add later
         //Check settings for additionitional Recipients
         // $bcc_roles    = CB2_Settings::get( 'bookingemails_bcc-roles' ); /* WP roles that should recieve the email */
-        $bcc_adresses = CB::get('location', CB_METABOX_PREFIX . 'location_email' ); /*  email adresses, comma-seperated  */
+        $bcc_adresses = CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_email' ); /*  email adresses, comma-seperated  */
 
         // TODO: @christian: add later - we have to implement user reference in location and item first (cmb2 issue user select)
         // Get users

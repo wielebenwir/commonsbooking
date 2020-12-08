@@ -19,7 +19,7 @@ class BaseRoute extends \WP_REST_Controller
     public function register_routes()
     {
         $version = '1';
-        $namespace = CB_PLUGIN_SLUG . '/v' . $version;
+        $namespace = COMMONSBOOKING_PLUGIN_SLUG . '/v' . $version;
         register_rest_route($namespace, '/' . $this->rest_base, array(
             array(
                 'methods'  => \WP_REST_Server::READABLE,

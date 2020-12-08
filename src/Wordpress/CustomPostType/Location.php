@@ -30,7 +30,7 @@ class Location extends CustomPostType
         $cb_content = '';
         if (is_singular(self::getPostType())) {
             ob_start();
-            cb_get_template_part('location', 'single');
+            commonsbooking_get_template_part('location', 'single');
             $cb_content = ob_get_clean();
         } // if archive...
 
@@ -135,7 +135,7 @@ class Location extends CustomPostType
     {
         // Initiate the metabox Adress
         $cmb = new_cmb2_box(array(
-            'id'           => CB_METABOX_PREFIX . 'location_adress',
+            'id'           => COMMONSBOOKING_METABOX_PREFIX . 'location_adress',
             'title'        => __('Address', 'commonsbooking'),
             'object_types' => array(self::$postType), // Post type
             'context'      => 'normal',
@@ -147,7 +147,7 @@ class Location extends CustomPostType
         $cmb->add_field(array(
             'name'       => __('Street / No.', 'commonsbooking'),
             //'desc'       => __('', 'commonsbooking'),
-            'id'         => CB_METABOX_PREFIX . 'location_street',
+            'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_street',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             'attributes' => array(
@@ -159,7 +159,7 @@ class Location extends CustomPostType
         $cmb->add_field(array(
             'name'       => __('Postcode', 'commonsbooking'),
             //'desc'       => __('', 'commonsbooking'),
-            'id'         => CB_METABOX_PREFIX . 'location_postcode',
+            'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_postcode',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             'attributes' => array(
@@ -171,7 +171,7 @@ class Location extends CustomPostType
         $cmb->add_field(array(
             'name'       => __('City', 'commonsbooking'),
             //'desc'       => __('field description (optional)', 'commonsbooking'),
-            'id'         => CB_METABOX_PREFIX . 'location_city',
+            'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_city',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             // 'repeatable'      => true,
@@ -184,14 +184,14 @@ class Location extends CustomPostType
         $cmb->add_field(array(
             'name'       => __('Country', 'commonsbooking'),
             //'desc'       => __('field description (optional)', 'commonsbooking'),
-            'id'         => CB_METABOX_PREFIX . 'location_country',
+            'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_country',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
         ));
 
         // Initiate the metabox Information
         $cmb = new_cmb2_box(array(
-            'id'           => CB_METABOX_PREFIX . 'location_info',
+            'id'           => COMMONSBOOKING_METABOX_PREFIX . 'location_info',
             'title'        => __('General Location information', 'commonsbooking'),
             'object_types' => array(self::$postType), // Post type
             'context'      => 'normal',
@@ -204,7 +204,7 @@ class Location extends CustomPostType
             'name'       => __('Location email', 'commonsbooking'),
             'desc'       => __('email-address to get copy of booking confirmation and cancellation mails',
                 'commonsbooking'),
-            'id'         => CB_METABOX_PREFIX . 'location_email',
+            'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_email',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             // 'repeatable'      => true,
@@ -216,7 +216,7 @@ class Location extends CustomPostType
             'name'       => __('Pickup instructions', 'commonsbooking'),
             'desc'       => __('Type in information about the pickup process (e.g. detailed route description, opening hours, etc.). This will be shown to user in booking process and booking confirmation mail',
                 'commonsbooking'),
-            'id'         => CB_METABOX_PREFIX . 'location_pickupinstructions',
+            'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions',
             'type'       => 'textarea_small',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
             // 'repeatable'      => true,
@@ -227,7 +227,7 @@ class Location extends CustomPostType
             'name'       => __('Location contact information', 'commonsbooking'),
             'desc'       => __('information about how to contact the location (e.g. contact person, phone number, e-mail etc.). This will be shown to user in booking process and booking confirmation mail',
                 'commonsbooking'),
-            'id'         => CB_METABOX_PREFIX . 'location_contact',
+            'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_contact',
             'type'       => 'textarea_small',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
         ));
@@ -242,7 +242,7 @@ class Location extends CustomPostType
             'name'       => __('Location Admin(s)', 'commonsbooking'),
             'desc'       => __('choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role cb_manager can be selected here.',
                 'commonsbooking'),
-            'id'         => CB_METABOX_PREFIX . 'location_admins',
+            'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_admins',
             'type'       => 'pw_multiselect',
             'options'    => $userOptions,
             'attributes' => array(
@@ -253,7 +253,7 @@ class Location extends CustomPostType
         $cmb->add_field(array(
             'name'       => __('Allow locked day overbooking', 'commonsbooking'),
             'desc'       => __('If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation on <a href="https://commonsbooking.org">commonsbooking.org</a> for more information.', 'commonsbooking'),
-            'id'         => CB_METABOX_PREFIX . 'allow_lockdays_in_range',
+            'id'         => COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
             'type'       => 'checkbox',
         ));
     }

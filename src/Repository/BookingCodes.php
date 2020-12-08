@@ -118,7 +118,7 @@ class BookingCodes
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
-        add_option(CB_PLUGIN_SLUG . '_bookingcodes_db_version', $cb_db_version);
+        add_option(COMMONSBOOKING_PLUGIN_SLUG . '_bookingcodes_db_version', $cb_db_version);
     }
 
     /**

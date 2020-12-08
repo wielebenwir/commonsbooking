@@ -5,7 +5,7 @@ namespace CommonsBooking\Wordpress\Options;
 class OptionsTab
 {
 
-    public $option_key = CB_PLUGIN_SLUG . '_options';
+    public $option_key = COMMONSBOOKING_PLUGIN_SLUG . '_options';
     public $id;
     public $tab_title;
     public $content;
