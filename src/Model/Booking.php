@@ -51,18 +51,18 @@ class Booking extends CustomPost
      * @return mixed
      */
     public function getBookingCode() {
-        return $this->getMeta(CB_METABOX_PREFIX . 'bookingcode');
+        return $this->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'bookingcode');
     }
 
 
     /**
-     * Returns rendered booking code for using in email-template (booking confirmation mail) 
+     * Returns rendered booking code for using in email-template (booking confirmation mail)
      * @return mixed
      */
     public function formattedBookingCode() {
-        if ($this->getMeta(CB_METABOX_PREFIX . 'bookingcode')) {
+        if ($this->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'bookingcode')) {
             // translators: %s = Booking code
-            $htmloutput = '<br>' . sprintf( __( 'Your booking code is: %s' , 'commonsbooking' ) , $this->getMeta( CB_METABOX_PREFIX . 'bookingcode') ) . '<br>' ; 
+            $htmloutput = '<br>' . sprintf( __( 'Your booking code is: %s' , 'commonsbooking' ) , $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode') ) . '<br>' ;
             return $htmloutput;
         }
     }
@@ -108,7 +108,7 @@ class Booking extends CustomPost
         if($bookingCode && $this->getMeta('full-day') == "on") {
             update_post_meta(
                 $this->post->ID,
-                CB_METABOX_PREFIX . 'bookingcode',
+                COMMONSBOOKING_METABOX_PREFIX . 'bookingcode',
                 $bookingCode->getCode()
             );
         }
@@ -157,7 +157,7 @@ class Booking extends CustomPost
     public function booking_timeframe_date()
     {
         $date_format = get_option('date_format');
-        
+
         $startdate = date_i18n($date_format, $this->getMeta('repetition-start'));
         $enddate = date_i18n($date_format, $this->getMeta('repetition-end'));
 
@@ -170,13 +170,13 @@ class Booking extends CustomPost
         }
     }
 
-    
+
     /**
      * pickupDatetime
-     * 
+     *
      * renders the pickup date and time information and returns a formatted string
      * this is used in templates/booking-single.php and in email-templates (configuration via admin options)
-     * 
+     *
      * @return string
      */
     public function pickupDatetime()
@@ -184,7 +184,7 @@ class Booking extends CustomPost
 
         $date_format = get_option('date_format');
         $time_format = get_option('time_format');
-        
+
         $date_start = date_i18n($date_format, $this->getMeta('repetition-start'));
         $time_start = date_i18n($time_format, $this->getMeta('repetition-start'));
 
@@ -205,13 +205,13 @@ class Booking extends CustomPost
 
         return $date_start . ' ' . $time_start . ' - ' . $time_end;
     }
-    
+
     /**
      * pickupDatetime
-     * 
+     *
      * renders the return date and time information and returns a formatted string
      * this is used in templates/booking-single.php and in email-templates (configuration via admin options)
-     * 
+     *
      * @return string
      */
 
@@ -219,7 +219,7 @@ class Booking extends CustomPost
     {
         $date_format = get_option('date_format');
         $time_format = get_option('time_format');
-        
+
         $date_end = date_i18n($date_format, $this->getMeta('repetition-end'));
         $time_end = date_i18n($time_format, $this->getMeta('repetition-end') + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
 
@@ -241,46 +241,48 @@ class Booking extends CustomPost
         return $date_end . ' ' . $time_start . ' - ' . $time_end;
     }
 
-    
+
     /**
      * bookingActionButton
      *
      * @TODO: This calculation should only happen once (it happens twice, for confirm button and cancel button)
-     * 
-     * @param  mixed $form_action
+     *
+     * @param mixed $form_action
+     *
      * @return void
+     * @throws \Exception
      */
     public function bookingActionButton($form_action)
     {
         global $post;
-        $booking = new Booking($post->ID); // is used in template booking-action-form.php 
+        $booking = new Booking($post->ID); // is used in template booking-action-form.php
         $current_status = $this->post->post_status;
 
         // return form with action button based on current booking status and defined form-action
 
-        If ($current_status == 'unconfirmed' AND $form_action == "cancel") 
+        If ($current_status == 'unconfirmed' AND $form_action == "cancel")
         {
             $form_post_status = 'canceled';
             $button_label = __('Cancel', 'commonsbooking');
         }
 
-        If ($current_status == 'unconfirmed' AND $form_action == "confirm") 
+        If ($current_status == 'unconfirmed' AND $form_action == "confirm")
         {
             $form_post_status = 'confirmed';
             $button_label = __('Confirm Booking', 'commonsbooking');
         }
 
-        If ($current_status == 'confirmed' AND $form_action == "cancel") 
+        If ($current_status == 'confirmed' AND $form_action == "cancel")
         {
             $form_post_status = 'canceled';
             $button_label = __('Cancel Booking', 'commonsbooking');
         }
 
-        if (isset($form_post_status)) {       
-            include CB_PLUGIN_DIR . 'templates/booking-single-form.php';
+        if (isset($form_post_status)) {
+            include COMMONSBOOKING_PLUGIN_DIR . 'templates/booking-single-form.php';
         }
-    }   
-    
+    }
+
     /**
      * show booking notice
      *
@@ -288,9 +290,9 @@ class Booking extends CustomPost
      */
     public function bookingNotice()
     {
-        
+
         $currentStatus = $this->post->post_status;
-        
+
         if ($currentStatus == "unconfirmed")
         {
             $noticeText = __('Please check your booking and click confirm booking', 'commonsbooking' );
@@ -303,7 +305,7 @@ class Booking extends CustomPost
         {
             $noticeText = __('Your booking has been canceled.', 'commonsbooking' );
         }
-        
+
         return sprintf ('<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $currentStatus, $noticeText);
 
     }

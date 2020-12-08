@@ -49,12 +49,12 @@ class Location extends View
         if (count($locations) === 1) {
             $jsonResponse['location']['fullDayInfo'] = CB::get(
                 'location',
-                CB_METABOX_PREFIX . 'location_pickupinstructions',
+                COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions',
                 $locations[0]
             );
             $allowLockedDaysInRange = get_post_meta(
                 $locations[0],
-                CB_METABOX_PREFIX . 'allow_lockdays_in_range',
+                COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
                 true
             );
             $jsonResponse['disallowLockDaysInRange'] = $allowLockedDaysInRange !== 'on';
@@ -354,7 +354,7 @@ class Location extends View
         foreach ($locationData as $id => $data) {
             $templateData['location'] = $id;
             $templateData['data'] = $data;
-            cb_get_template_part('shortcode', 'locations', true, false, false);
+            commonsbooking_get_template_part('shortcode', 'locations', true, false, false);
         }
 
         return ob_get_clean();

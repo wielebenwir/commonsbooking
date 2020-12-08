@@ -1,28 +1,28 @@
 <?php
 /**
  * Template loader
- * 
+ *
  * based on https://github.com/WPBP/template/blob/master/template.php
  */
 
-if ( !function_exists( 'cb_get_template_part' ) ) {
+if ( !function_exists( 'commonsbooking_get_template_part' ) ) {
     /**
      * Load template files of the plugin also include a filter pn_get_template_part<br>
      * Based on WooCommerce function<br>
-     * 
+     *
      * @param string $slug
      * @param string $name
      * @param bool   $include
-     * @param string $before 
-     * @param string $after 
+     * @param string $before
+     * @param string $after
      * @return string
      */
-    function cb_get_template_part( $slug, $name = '', $include = true, $before = '', $after = '' ) {
+    function commonsbooking_get_template_part( $slug, $name = '', $include = true, $before = '', $after = '' ) {
       $template = '';
-      $plugin_slug = CB_PLUGIN_SLUG . '/';
-      $path = CB_PLUGIN_DIR . 'templates/';
+      $plugin_slug = COMMONSBOOKING_PLUGIN_SLUG . '/';
+      $path = COMMONSBOOKING_PLUGIN_DIR . 'templates/';
       $class = array();
-     
+
       // Look in yourtheme/slug-name.php and yourtheme/plugin-name/slug-name.php
       if ( $name ) {
         $template = locate_template( array( "{$slug}-{$name}.php", $plugin_slug . "{$slug}-{$name}.php" ) );
@@ -47,7 +47,7 @@ if ( !function_exists( 'cb_get_template_part' ) ) {
       }
 
       // Allow 3rd party plugin filter template file from their plugin
-      $template = apply_filters( 'cb_get_template_part', $template, $slug, $name, $plugin_slug );
+      $template = apply_filters( 'commonsbooking_get_template_part', $template, $slug, $name, $plugin_slug );
 
       $has_post_thumbnail = (has_post_thumbnail()) ? 'has-post-thumbnail' : 'no-post-thumbnail'; //@TODO this feils because we have no global post anymore
 
@@ -60,12 +60,12 @@ if ( !function_exists( 'cb_get_template_part' ) ) {
 
       $css_classes = implode(' ', $template_classes);
 
-      // Add CB content wrapper & classes 
-      $before_html  = ( $before != '' ) ? $before : '<div class="cb-wrapper ' . $css_classes .'">';  
-      $after_html   =  ( $after != '' )  ? $after  : '</div>';  
+      // Add CB content wrapper & classes
+      $before_html  = ( $before != '' ) ? $before : '<div class="cb-wrapper ' . $css_classes .'">';
+      $after_html   =  ( $after != '' )  ? $after  : '</div>';
 
             // Display debug message
-      if ( WP_DEBUG ) { 
+      if ( WP_DEBUG ) {
         if ( empty ( $template ) ) {
           $before_html .= ( '<div class="cb-debug">Template file not found</div>' );
         } else {

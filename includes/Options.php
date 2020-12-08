@@ -17,7 +17,7 @@ $options_array = array(
             'welcome' => array(
                 'title'  => __('Welcome to CommonsBooking', 'commonsbooking'),
                 'id'     => 'welcome',
-                'desc'   => 
+                'desc'   =>
                 // translators: %s = version number
                 sprintf (__ ( 'You are using CommonsBooking Version %s
 
@@ -30,7 +30,7 @@ $options_array = array(
                 <h2>Contribute</h2>
                 The future of this plugin depends on your support. You can support us by make a donation on our website: <a href="https://www.wielebenwir.de/verein/unterstutzen">wielebenwir</a>
                           
-                ', 'commonsbooking' ), CB_VERSION ),
+                ', 'commonsbooking' ), COMMONSBOOKING_VERSION ),
                 'fields' => array()
             )
         )
@@ -405,7 +405,7 @@ $options_array = array(
     'migration' => array(
         'title'        => __('Migration', 'commonsbooking'),
         'id'           => 'migration',
-        'field_groups' => array(          
+        'field_groups' => array(
             'migration' => array(
                 'title'       => __('Migrate from Commons Booking Version 0.X', 'commonsbooking'),
                 'id'          => 'migration',
@@ -428,7 +428,7 @@ $options_array = array(
                         'name'          => __('Enable', 'commonsbooking'),
                         'id'            => 'enable-cb1-user-fields',
                         'type'          => 'checkbox',
-                    ),                    
+                    ),
                     array(
                         'name'          => __('Terms+Services Url', 'commonsbooking'),
                         'id'            => 'cb1-terms-url',

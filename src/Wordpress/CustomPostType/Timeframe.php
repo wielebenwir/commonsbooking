@@ -70,7 +70,7 @@ class Timeframe extends CustomPostType
      * @var string[]
      */
     protected $listColumns = [
-        'timeframe-author' => "User",    
+        'timeframe-author' => "User",
         'type'             => "Type",
         'item-id'          => "Item",
         'location-id'      => "Location",
@@ -743,7 +743,7 @@ class Timeframe extends CustomPostType
             ),
             array(
                 'name'       => __('Booking Code', 'commonsbooking'),
-                'id'         => CB_METABOX_PREFIX.'bookingcode',
+                'id'         => COMMONSBOOKING_METABOX_PREFIX.'bookingcode',
                 'type'       => 'text',
                 'show_on_cb' => array(self::class, 'show_booking_code'),
                 'attributes' => array(
@@ -862,9 +862,9 @@ class Timeframe extends CustomPostType
             ob_start();
             global $post;
             if (current_user_can('administrator') or get_current_user_id() == $post->post_author) {
-                cb_get_template_part('booking', 'single');
+                commonsbooking_get_template_part('booking', 'single');
             } else {
-                cb_get_template_part('booking', 'single-notallowed');
+                commonsbooking_get_template_part('booking', 'single-notallowed');
             }
             $cb_content = ob_get_clean();
         } // if archive...
@@ -962,7 +962,7 @@ class Timeframe extends CustomPostType
      */
     public function setCustomColumnsData($column, $post_id)
     {
-        
+
         // we alter the  author column data and link the username to the user profile
         if ($column == "timeframe-author") {
             $post = get_post($post_id);
@@ -970,7 +970,7 @@ class Timeframe extends CustomPostType
             echo '<a href="' . get_edit_user_link( $timeframe_user->ID )  . '">' . $timeframe_user->user_login  . '</a>';
         }
 
-        
+
         if ($value = get_post_meta($post_id, $column, true)) {
             switch ($column) {
                 case 'location-id':

@@ -30,7 +30,7 @@ if (array_key_exists('data', $templateData) && count($templateData['data'])) {
         set_query_var( 'item', $item );
         set_query_var( 'location', $location );
         set_query_var( 'data', $data );
-        cb_get_template_part( 'timeframe', 'withitem' ); // file: timeframe-withlocation.php
+        commonsbooking_get_template_part( 'timeframe', 'withitem' ); // file: timeframe-withlocation.php
     }
 } else { ?>
     <div class="cb-status cb-availability-status"><?php echo ( $noResultText ); ?></div>

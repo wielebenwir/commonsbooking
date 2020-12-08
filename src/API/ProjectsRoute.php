@@ -26,7 +26,7 @@ class ProjectsRoute extends BaseRoute
      * Commons-API schema definition.
      * @var string
      */
-    protected $schemaUrl = CB_PLUGIN_DIR . "node_modules/commons-api/commons-api.projects.schema.json";
+    protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "node_modules/commons-api/commons-api.projects.schema.json";
 
     /**
      * Returns raw data collection.

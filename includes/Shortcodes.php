@@ -1,14 +1,14 @@
 <?php
 
-function cbtag($atts)
+function commonsbooking_tag($atts)
 {
     $atts = shortcode_atts(array(
         'tag' => '',
     ), $atts, 'cb');
 
-    echo cb_parse_shortcode($atts['tag']);
+    echo commonsbooking_parse_shortcode($atts['tag']);
 }
 
-add_shortcode('cb', 'cbtag');
+add_shortcode('cb', 'commonsbooking_tag');
 
 
