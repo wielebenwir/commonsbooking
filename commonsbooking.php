@@ -227,40 +227,8 @@ function validate_user_on_edit($current_screen)
         }
     }
 }
-
 add_action('current_screen', 'validate_user_on_edit', 10, 1);
 
-/**
- * Applies listing restriction for item and location admins.
- */
-//add_filter(
-//    'the_posts',
-//    function ($posts, $query) {
-//        if (is_admin() && array_key_exists('post_type', $query->query)) {
-//            // Post type of current list
-//            $postType = $query->query['post_type'];
-//
-//            $current_user = wp_get_current_user();
-//            $isAdmin      = false;
-//            if (in_array('administrator', (array)$current_user->roles)) {
-//                $isAdmin = true;
-//            }
-//
-//            // Check if it is the main query and one of our custom post types
-//            if ( ! $isAdmin && $query->is_main_query() && in_array($postType, Plugin::getCustomPostTypesLabels())) {
-//                foreach ($posts as $key => $post) {
-//                    if ( ! isCurrentUserAllowedToEdit($post)) {
-//                        unset($posts[$key]);
-//                    }
-//                }
-//            }
-//        }
-//
-//        return $posts;
-//    },
-//    10,
-//    2
-//);
 
 // Redirect to startpage if user is not allowed to edit timeframe
 function cb_timeframe_redirect()

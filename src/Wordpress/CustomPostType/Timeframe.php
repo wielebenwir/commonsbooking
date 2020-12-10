@@ -108,29 +108,6 @@ class Timeframe extends CustomPostType
         add_action('restrict_manage_posts', array(self::class, 'addAdminStatusFilter'));
         add_action('restrict_manage_posts', array(self::class, 'addAdminDateFilter'));
         add_action('pre_get_posts', array($this, 'filterAdminList'));
-//        wp_count_posts
-
-
-//        add_filter('wp_count_posts', function($counts, $type, $perm) {
-//            global $wpdb;
-//
-//            // We only want to modify the counts shown in admin and depending on $perm being 'readable'
-//            if (!is_admin() || 'readable' !== $perm) return $counts;
-//
-//            var_dump($counts);
-//            var_dump("count posts");die;
-//
-//            // Only modify the counts if the user is not allowed to edit the posts of others
-//            $post_type_object = get_post_type_object($type);
-//            if (current_user_can( $post_type_object->cap->edit_others_posts ) ) {   return $counts; }
-//
-//            $query = "SELECT post_status, COUNT( * ) AS num_posts FROM {$wpdb->posts} WHERE post_type = %s AND (post_author = %d) GROUP BY post_status";
-//            $results = (array) $wpdb->get_results($wpdb->prepare( $query, $type, get_current_user_id() ), ARRAY_A);
-//            $counts = array_fill_keys(get_post_stati(), 0);
-//
-//            foreach ($results as $row) { $counts[ $row['post_status'] ] = $row['num_posts']; }
-//            return (object) $counts;
-//        }, 10, 3);
 
         // Setting role permissions
         add_action('admin_init', array($this, 'addRoleCaps'), 999);
@@ -494,21 +471,15 @@ class Timeframe extends CustomPostType
     {
         global $pagenow;
 
-        // Only target the main query
-        if ( ! $query->is_main_query() )
-            return;
-
         if (
             is_admin() && $query->is_main_query() &&
-            isset($_GET['post_type']) &&
-            self::$postType == $_GET['post_type'] &&
+            isset($_GET['post_type']) && self::$postType == $_GET['post_type'] &&
             $pagenow == 'edit.php'
         ) {
             // Meta value filtering
             $query->query_vars['meta_query'] = array(
                 'relation' => 'AND',
             );
-//            $query->query_vars['nopaging'] = true;
             $meta_filters                    = [
                 'type'        => 'admin_filter_type',
                 'item-id'     => 'admin_filter_item',
@@ -597,7 +568,6 @@ class Timeframe extends CustomPostType
                 );
             }
         }
-
     }
 
     /**
