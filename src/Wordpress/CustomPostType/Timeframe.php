@@ -508,7 +508,7 @@ class Timeframe extends CustomPostType
             $query->query_vars['meta_query'] = array(
                 'relation' => 'AND',
             );
-            $query->query_vars['nopaging'] = true;
+//            $query->query_vars['nopaging'] = true;
             $meta_filters                    = [
                 'type'        => 'admin_filter_type',
                 'item-id'     => 'admin_filter_item',
