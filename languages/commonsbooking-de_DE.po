@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2020-12-13T13:10:32+00:00\n"
-"PO-Revision-Date: 2020-12-13 14:11+0100\n"
+"POT-Creation-Date: 2020-12-13T14:34:16+00:00\n"
+"PO-Revision-Date: 2020-12-13 15:34+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -259,21 +259,6 @@ msgid "Booking canceled email body"
 msgstr "E-Mail-Text für stornierte Buchungen"
 
 #: includes/Options.php:194
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "                            Hi {{user:first_name}},<br>\n"
-#| "                            <p>your booking {{item:post_title}} at "
-#| "{{location:post_title}} {{booking:booking_timeframe_date}} has been "
-#| "cancelled.\n"
-#| "                            </p>               \n"
-#| "                            <b>Your information</b>\n"
-#| "                            <p>Login: {{user:user_nicename}}<br>\n"
-#| "                            <p>Name: {{user:first_name}} {{user:"
-#| "last_name}}.</p>\n"
-#| "                            \n"
-#| "                            <p>Thanks, the Team. </p>  \n"
-#| "                            "
 msgid ""
 "\n"
 "                            Hi {{user:first_name}},<br>\n"
@@ -300,8 +285,7 @@ msgstr ""
 "                            <p>Name: {{user:first_name}} {{user:last_name}}."
 "</p>\n"
 "                            \n"
-"                            <p>Vielen Dank.</p>  \n"
-"          "
+"                            <p>Vielen Dank.</p>  "
 
 #: includes/Options.php:282
 msgid "Migration"
@@ -345,6 +329,14 @@ msgstr "Aktivieren"
 #: includes/Options.php:309
 msgid "Terms & Services Url"
 msgstr "Nutzungsbedingungen & Services URL"
+
+#: src/Messages/Messages.php:62
+msgid ""
+"Could not send email because mail-template was not available. Check options -"
+"> templates"
+msgstr ""
+"E-Mail konnte nicht gesendet werden, da keine E-Mail-Vorlage verfügbar war. "
+"Optionen überprüfen -> Vorlagen"
 
 #. translators: %s = Booking code
 #: src/Model/Booking.php:65

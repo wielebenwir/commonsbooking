@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the CommonsBooking plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: CommonsBooking 2.2.3\n"
+"Project-Id-Version: CommonsBooking 2.2.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-12-13T13:10:32+00:00\n"
+"POT-Creation-Date: 2020-12-13T14:34:16+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -219,6 +219,10 @@ msgstr ""
 
 #: includes/Options.php:309
 msgid "Terms & Services Url"
+msgstr ""
+
+#: src/Messages/Messages.php:62
+msgid "Could not send email because mail-template was not available. Check options -> templates"
 msgstr ""
 
 #. translators: %s = Booking code
