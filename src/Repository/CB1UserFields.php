@@ -44,38 +44,38 @@ class CB1UserFields
         $this->extra_profile_fields = array(
             'first_name'     => array(
                 'field_name'   => 'first_name',
-                'title'        => __('First Name', 'commonsbooking'),
+                'title'        => sanitizeHTML( __('First Name', 'commonsbooking') ),
                 'type'         => 'input',
                 'description'  => '',
-                'errormessage' => __('Please enter your first name', 'commonsbooking'),
+                'errormessage' => sanitizeHTML( __('Please enter your first name', 'commonsbooking') ),
             ),
             'last_name'      => array(
                 'field_name'   => 'last_name',
-                'title'        => __('Last Name', 'commonsbooking'),
+                'title'        => sanitizeHTML( __('Last Name', 'commonsbooking') ),
                 'type'         => 'input',
                 'description'  => '',
-                'errormessage' => __('Please enter your last name', 'commonsbooking'),
+                'errormessage' => sanitizeHTML( __('Please enter your last name', 'commonsbooking') ),
             ),
             'phone'          => array(
                 'field_name'   => 'phone',
-                'title'        => __('Phone Number', 'commonsbooking'),
+                'title'        => sanitizeHTML( __('Phone Number', 'commonsbooking') ),
                 'type'         => 'input',
                 'description'  => '',
-                'errormessage' => __('Please enter your phone number', 'commonsbooking'),
+                'errormessage' => sanitizeHTML( __('Please enter your phone number', 'commonsbooking') ),
             ),
             'address'        => array(
                 'field_name'   => 'address',
-                'title'        => __('Address', 'commonsbooking'),
+                'title'        => sanitizeHTML( __('Address', 'commonsbooking') ),
                 'type'         => 'input',
                 'description'  => '',
-                'errormessage' => __('Please enter your address', 'commonsbooking'),
+                'errormessage' => sanitizeHTML( __('Please enter your address', 'commonsbooking') ),
             ),
             'terms_accepted' => array(
-                'title'        => __('Terms and Conditions', 'commonsbooking'),
+                'title'        => sanitizeHTML( __('Terms and Conditions', 'commonsbooking') ),
                 'field_name'   => 'terms_accepted',
                 'type'         => 'checkbox',
-                'description'  => __('I accept the terms & conditions', 'commonsbooking'),
-                'errormessage' => __('Please accept the terms & conditions', 'commonsbooking'),
+                'description'  => sanitizeHTML( __('I accept the terms & conditions', 'commonsbooking') ),
+                'errormessage' => sanitizeHTML( __('Please accept the terms & conditions', 'commonsbooking') ),
             ),
         );
 
@@ -169,7 +169,7 @@ class CB1UserFields
         if ( ! empty ($this->termsservices_url)) {
             // translators: %s = terms and service url
             $string = sprintf(
-                __('<a href="%s" target=_blank">Read the terms and services</a>', 'commonsbooking'),
+                sanitizeHTML( __('<a href="%s" target=_blank">Read the terms and services</a>', 'commonsbooking') ),
                 $this->termsservices_url
             );
         } else {
@@ -258,11 +258,11 @@ class CB1UserFields
     public function show_extra_profile_fields($user)
     { ?>
 
-        <h3><?php _e('Extra Fields', 'commons-booking'); ?> </h3>
+        <h3><?php sanitizeHTML( _e('Extra Fields', 'commons-booking') ); ?> </h3>
 
         <table class="form-table">
             <tr>
-                <th><label for="phone"><?php _e('Phone number', 'commons-booking'); ?></label></th>
+                <th><label for="phone"><?php esc_html_e('Phone number', 'commons-booking'); ?></label></th>
                 <td>
                     <input type="text" name="phone" id="phone"
                            value="<?php echo esc_attr(get_the_author_meta('phone', $user->ID)); ?>"
@@ -270,7 +270,7 @@ class CB1UserFields
                 </td>
             </tr>
             <tr>
-                <th><label for="address"><?php _e('Address', 'commons-booking'); ?></label></th>
+                <th><label for="address"><?php esc_html_e('Address', 'commons-booking'); ?></label></th>
                 <td>
                     <input type="textarea" name="address" id="address"
                            value="<?php echo esc_attr(get_the_author_meta('address', $user->ID)); ?>"
@@ -278,12 +278,12 @@ class CB1UserFields
                 </td>
             </tr>
             <tr>
-                <th><label for="terms_accepted"><?php _e('Terms and conditions', 'commons-booking'); ?></label></th>
+                <th><label for="terms_accepted"><?php esc_html_e('Terms and conditions', 'commons-booking'); ?></label></th>
                 <td>
                     <input type="checkbox" name="terms_accepted" id=" terms_accepted " disabled
                            value="yes" <?php if (esc_attr(get_the_author_meta("terms_accepted", $user->ID)) == "yes") {
                         echo "checked";
-                    } ?> /><?php __('Accepted Terms & Conditions', 'commons-booking'); ?><br/>
+                    } ?> /><?php esc_html_e('Accepted Terms & Conditions', 'commons-booking'); ?><br/>
                 </td>
             </tr>
         </table>

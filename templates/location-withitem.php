@@ -14,7 +14,7 @@ $location = $templateData['location'];
 /** @var \CommonsBooking\Model\Item $item */
 $item = $templateData['item'];
 
-$button_label = __('Book item', 'commonsbooking');
+$button_label = esc_html__('Book item', 'commonsbooking');
 $permalink    = add_query_arg ( 'location', $location->ID, get_the_permalink($item->ID) ); // booking link set to item detail page with location ID
 
 

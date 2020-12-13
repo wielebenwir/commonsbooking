@@ -25,7 +25,7 @@ class BookingCodes
                     <div class="cmb-td">
                         <table>
                             <tr>
-                                <td><b>'.__('Item').'</b></td><td><b>'.__('Startdatum').'</b></td><td><b>'.__('Code').'</b></td>
+                                <td><b>'.esc_html_e('Item', 'commonsbooking').'</b></td><td><b>' . esc_html_e('Pickup date', 'commonsbooking').'</b></td><td><b>'.esc_html_e('Code', 'commonsbooking').'</b></td>
                             </tr>';
 
         /** @var BookingCode $bookingCode */

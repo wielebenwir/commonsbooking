@@ -62,7 +62,7 @@ class Booking extends CustomPost
     public function formattedBookingCode() {
         if ($this->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'bookingcode')) {
             // translators: %s = Booking code
-            $htmloutput = '<br>' . sprintf( __( 'Your booking code is: %s' , 'commonsbooking' ) , $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode') ) . '<br>' ;
+            $htmloutput = '<br>' . sprintf( sanitizeHTML( __( 'Your booking code is: %s' , 'commonsbooking' ) ), $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode') ) . '<br>' ;
             return $htmloutput;
         }
     }
@@ -163,10 +163,10 @@ class Booking extends CustomPost
 
         if ($startdate == $enddate) {
             /* translators: %s = date in wordpress defined format */
-            return sprintf( esc_html__( ' on %s ' , 'commonsbooking'), $startdate );
+            return sprintf( sanitize_text_field( __( ' on %s ' , 'commonsbooking') ), $startdate );
         } else {
             /* translators: %1 = startdate, %2 = enddate in wordpress defined format */
-            return sprintf( __( ' from %1$s until %2$s ', 'commonsbooking' ), $startdate, $enddate ) ;
+            return sprintf( sanitize_text_field( __( ' from %1$s until %2$s ', 'commonsbooking' ) ), $startdate, $enddate );
         }
     }
 
@@ -263,19 +263,19 @@ class Booking extends CustomPost
         If ($current_status == 'unconfirmed' AND $form_action == "cancel")
         {
             $form_post_status = 'canceled';
-            $button_label = __('Cancel', 'commonsbooking');
+            $button_label = esc_html__('Cancel', 'commonsbooking');
         }
 
         If ($current_status == 'unconfirmed' AND $form_action == "confirm")
         {
             $form_post_status = 'confirmed';
-            $button_label = __('Confirm Booking', 'commonsbooking');
+            $button_label = esc_html__('Confirm Booking', 'commonsbooking');
         }
 
         If ($current_status == 'confirmed' AND $form_action == "cancel")
         {
             $form_post_status = 'canceled';
-            $button_label = __('Cancel Booking', 'commonsbooking');
+            $button_label = esc_html__('Cancel Booking', 'commonsbooking');
         }
 
         if (isset($form_post_status)) {
@@ -295,15 +295,15 @@ class Booking extends CustomPost
 
         if ($currentStatus == "unconfirmed")
         {
-            $noticeText = __('Please check your booking and click confirm booking', 'commonsbooking' );
+            $noticeText = sanitizeHTML ( __('Please check your booking and click confirm booking', 'commonsbooking' ) );
         } else if ($currentStatus == "confirmed")
         {
-            $noticeText = __('Your booking is confirmed. A confirmation mail has been sent to you.', 'commonsbooking' );
+            $noticeText = sanitizeHTML( __('Your booking is confirmed. A confirmation mail has been sent to you.', 'commonsbooking' ) );
         }
 
         if ($currentStatus == "canceled")
         {
-            $noticeText = __('Your booking has been canceled.', 'commonsbooking' );
+            $noticeText = sanitizeHTML( __('Your booking has been canceled.', 'commonsbooking' ) );
         }
 
         return sprintf ('<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $currentStatus, $noticeText);
@@ -318,7 +318,7 @@ class Booking extends CustomPost
      */
     public function bookingLink()
     {
-        return sprintf( '<a href="%s">%s</a>', add_query_arg($this->post->post_type, $this->post->post_name, home_url()), __( 'Link to your booking', 'commonsbooking' ) );
+        return sprintf( '<a href="%s">%s</a>', add_query_arg($this->post->post_type, $this->post->post_name, home_url()), esc_html__( 'Link to your booking', 'commonsbooking' ) );
 
     }
 

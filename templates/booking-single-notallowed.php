@@ -7,11 +7,11 @@
 
 <div class="cb-notice error">
   <?php 
-    echo __('You are not allowed to access this booking.') . '<br>'; 
+    echo esc_html__('You are not allowed to access this booking.') . '<br>'; 
     if ( ! is_user_logged_in() ) {
       printf( '<a href="%s">%s</a>', 
         esc_url( wp_login_url()), 
-        __('Login to your account', 'commonsbooking')
+        esc_html__('Login to your account', 'commonsbooking')
       );
     } 
      ?>

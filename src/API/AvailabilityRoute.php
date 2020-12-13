@@ -79,7 +79,7 @@ class AvailabilityRoute extends BaseRoute
             }
             return new \WP_REST_Response($data, 200);
         } else {
-            return new \WP_Error('code', __('message', 'text-domain'));
+            return new \WP_Error('code', esc_html__('message', 'text-domain'));
         }
     }
 

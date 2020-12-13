@@ -1,17 +1,19 @@
 <?php
 /**
- * Shortcode [cb_locations]
+ * Shortcode [cb_items]
  * Model: location
  *
- * List all locations, with one or more associated timeframes (with location info)
+ * List all items, with one or more associated timeframes (with location info)
  *
  * WP Post properties for locations are available as $item->property
  * location Model methods are available as $item->myMethod()
  *
  */
+
+
 global $templateData;
 $item = new \CommonsBooking\Model\Item($templateData['item']);
-$noResultText = __("No item available.", "commonsbooking");
+$noResultText = esc_html__("Item currently not available.", "commonsbooking");
 
 ?>
 <div class="cb-list-header">

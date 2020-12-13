@@ -20,17 +20,17 @@
             <div class="time-selection-container">
                 <div class="time-selection repetition-start">
                     <label for="repetition-start">
-                        <?php echo __('Pickup', 'commonsbooking'); ?>:
+                        <?php echo esc_html__('Pickup', 'commonsbooking'); ?>:
                     </label>
-                    <span class="hint-selection"><?php echo __('Please select the pickup date in the calendar', 'commonsbooking'); ?></span>
+                    <span class="hint-selection"><?php echo esc_html__('Please select the pickup date in the calendar', 'commonsbooking'); ?></span>
                     <span class="date"></span>
                     <select style="display: none" id="repetition-start" name="repetition-start"></select>
                 </div>
                   <div class="time-selection repetition-end">
                     <label for="repetition-end">
-                        <?php echo __('Return', 'commonsbooking'); ?>:
+                        <?php echo esc_html__('Return', 'commonsbooking'); ?>:
                     </label>
-                    <span class="hint-selection"><?php echo __('Please select the return date in the calendar', 'commonsbooking'); ?></span>
+                    <span class="hint-selection"><?php echo esc_html__('Please select the return date in the calendar', 'commonsbooking'); ?></span>
                     <span class="date"></span>
                     <select style="display: none" id="repetition-end" name="repetition-end"></select>
                 </div>
@@ -38,7 +38,7 @@
             </div>
             <?php
             if(is_user_logged_in()) { ?>
-                <input type="submit" disabled="disabled" value="<?php echo __('Continue to booking confirmation', 'commonsbooking'); ?>" />
+                <input type="submit" disabled="disabled" value="<?php echo esc_html__('Continue to booking confirmation', 'commonsbooking'); ?>" />
             <?php } ?>
         </form>
     </div>

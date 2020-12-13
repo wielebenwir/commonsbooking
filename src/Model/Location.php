@@ -33,7 +33,7 @@ class Location extends BookablePost
     }
 
     /**
-     * formattedAddress
+     * 
      *
      * Returns the location address including location name in multiple lanes with <br> line breaks
      *
@@ -47,7 +47,7 @@ class Location extends BookablePost
     public function formattedAddress()
     {
         $location = array (
-            CB::get('location', 'post_name', $this->post->ID),
+            CB::get('location', 'post_title', $this->post->ID),
             CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_street', $this->post->ID),
             CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post->ID),
             CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_city', $this->post->ID),
@@ -91,7 +91,7 @@ class Location extends BookablePost
         $contact = array();
         if ( !empty( CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact') ) ) {
             $contact[] = "<br>"; // needed for email template
-            $contact[] = __( 'Please contact the contact persons at the location directly if you have any questions regarding collection or return:', 'commonsbooking' );
+            $contact[] = esc_html__( 'Please contact the contact persons at the location directly if you have any questions regarding collection or return:', 'commonsbooking' );
             $contact[] = nl2br(CB::get('location',  COMMONSBOOKING_METABOX_PREFIX . 'location_contact'));
         }
 
