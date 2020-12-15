@@ -19,7 +19,7 @@ class Messages
     }
 
     public function triggerMail()
-    {
+    {   
 
         if ($this->action == "confirmed") {
             return $this->sendMessage();
@@ -127,7 +127,7 @@ class Messages
         // WPML: Reset system lang
         do_action('wpml_reset_language_after_mailing');
 
-        do_action('cb_mail_sent', $this->action, $result);
+        do_action('commonsbooking_mail_sent', $this->action, $result);
 
     }
 
