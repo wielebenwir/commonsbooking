@@ -302,7 +302,7 @@ class Plugin
             $customPostType . 's_category',
             $customPostType,
             array(
-                'label'        => __('Item Category', 'commonsbooking'),
+                'label'        => esc_html__('Item Category', 'commonsbooking'),
                 'rewrite'      => array('slug' => $customPostType . '-cat'),
                 'hierarchical' => true,
             )
@@ -326,7 +326,7 @@ class Plugin
             $customPostType . 's_category',
             $customPostType,
             array(
-                'label'        => __('Location Category', 'commonsbooking'),
+                'label'        => esc_html__('Location Category', 'commonsbooking'),
                 'rewrite'      => array('slug' => $customPostType . '-cat'),
                 'hierarchical' => true,
             )

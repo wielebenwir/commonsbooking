@@ -35,7 +35,7 @@ class OptionsTab
 
         $default_args = array(
             'id' => $this->id,
-            'title' => __('CommonsBooking', 'commonsbooking'),
+            'title' => esc_html__('CommonsBooking', 'commonsbooking'),
             'object_types' => array('options-page'),
             'option_key' => $this->option_key . '_' . $this->id,
             'tab_group' => $this->option_key,

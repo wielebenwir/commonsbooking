@@ -6,11 +6,11 @@
      */
     global $templateData;
     $templateData = \CommonsBooking\View\Item::getTemplateData();
-    $noResultText = __("This item is currently not available.", "commonsbooking");
+    $noResultText = esc_html__("This item is currently not available.", "commonsbooking");
 
     // Single Item View
     if(array_key_exists('location', $templateData) && $templateData['location']) { // item selected, so we display the booking calendar
-        echo '<h2>' . __( 'Book item at this location', 'commonsbooking') . '</h2>';
+        echo '<h2>' . esc_html__( 'Book item at this location', 'commonsbooking') . '</h2>';
         commonsbooking_get_template_part( 'location', 'calendar-header' ); // file: item-calendar-header.php
         commonsbooking_get_template_part( 'timeframe', 'calendar' ); // file: timeframe-calendar.php
     }
@@ -34,7 +34,7 @@
 <?php
             printf(
                 /* translators: %1$s: wp_login_url, 1$s: wp_registration_url */
-                __( 'To be able to book, you must first <a href="%1$s">login</a> or <a href="%2$s">register as new user</a>.', 'commonsbooking' ),
+                sanitizeHTML( __( 'To be able to book, you must first <a href="%1$s">login</a> or <a href="%2$s">register as new user</a>.', 'commonsbooking' ) ),
                 esc_url( wp_login_url( $current_url ) ), esc_url( wp_registration_url() )
             );
 ?>

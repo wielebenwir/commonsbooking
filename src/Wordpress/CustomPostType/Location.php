@@ -40,28 +40,28 @@ class Location extends CustomPostType
     public function getArgs()
     {
         $labels = array(
-            'name'                  => __('Locations', 'commonsbooking'),
-            'singular_name'         => __('Location', 'commonsbooking'),
-            'add_new'               => __('Add new', 'commonsbooking'),
-            'add_new_item'          => __('Add new location', 'commonsbooking'),
-            'edit_item'             => __('Edit location', 'commonsbooking'),
-            'new_item'              => __('Add new location', 'commonsbooking'),
-            'view_item'             => __('Show location', 'commonsbooking'),
-            'view_items'            => __('Show locations', 'commonsbooking'),
-            'search_items'          => __('Search locations', 'commonsbooking'),
-            'not_found'             => __('location not found', 'commonsbooking'),
-            'not_found_in_trash'    => __('No locations found in trash', 'commonsbooking'),
-            'parent_item_colon'     => __('Parent location:', 'commonsbooking'),
-            'all_items'             => __('All locations', 'commonsbooking'),
-            'archives'              => __('Location archive', 'commonsbooking'),
-            'attributes'            => __('Location attributes', 'commonsbooking'),
-            'insert_into_item'      => __('Add to location', 'commonsbooking'),
-            'uploaded_to_this_item' => __('Added to location', 'commonsbooking'),
-            'featured_image'        => __('Location image', 'commonsbooking'),
-            'set_featured_image'    => __('set location image', 'commonsbooking'),
-            'remove_featured_image' => __('remove location image', 'commonsbooking'),
-            'use_featured_image'    => __('use as location image', 'commonsbooking'),
-            'menu_name'             => __('Locations', 'commonsbooking'),
+            'name'                  => esc_html__('Locations', 'commonsbooking'),
+            'singular_name'         => esc_html__('Location', 'commonsbooking'),
+            'add_new'               => esc_html__('Add new', 'commonsbooking'),
+            'add_new_item'          => esc_html__('Add new location', 'commonsbooking'),
+            'edit_item'             => esc_html__('Edit location', 'commonsbooking'),
+            'new_item'              => esc_html__('Add new location', 'commonsbooking'),
+            'view_item'             => esc_html__('Show location', 'commonsbooking'),
+            'view_items'            => esc_html__('Show locations', 'commonsbooking'),
+            'search_items'          => esc_html__('Search locations', 'commonsbooking'),
+            'not_found'             => esc_html__('location not found', 'commonsbooking'),
+            'not_found_in_trash'    => esc_html__('No locations found in trash', 'commonsbooking'),
+            'parent_item_colon'     => esc_html__('Parent location:', 'commonsbooking'),
+            'all_items'             => esc_html__('All locations', 'commonsbooking'),
+            'archives'              => esc_html__('Location archive', 'commonsbooking'),
+            'attributes'            => esc_html__('Location attributes', 'commonsbooking'),
+            'insert_into_item'      => esc_html__('Add to location', 'commonsbooking'),
+            'uploaded_to_this_item' => esc_html__('Added to location', 'commonsbooking'),
+            'featured_image'        => esc_html__('Location image', 'commonsbooking'),
+            'set_featured_image'    => esc_html__('set location image', 'commonsbooking'),
+            'remove_featured_image' => esc_html__('remove location image', 'commonsbooking'),
+            'use_featured_image'    => esc_html__('use as location image', 'commonsbooking'),
+            'menu_name'             => esc_html__('Locations', 'commonsbooking'),
         );
 
         $slug = Settings::getOption('commonsbooking_options_general', 'posttypes_locations-slug');
@@ -136,7 +136,7 @@ class Location extends CustomPostType
         // Initiate the metabox Adress
         $cmb = new_cmb2_box(array(
             'id'           => COMMONSBOOKING_METABOX_PREFIX . 'location_adress',
-            'title'        => __('Address', 'commonsbooking'),
+            'title'        => esc_html__('Address', 'commonsbooking'),
             'object_types' => array(self::$postType), // Post type
             'context'      => 'normal',
             'priority'     => 'high',
@@ -145,8 +145,8 @@ class Location extends CustomPostType
 
         // Adress
         $cmb->add_field(array(
-            'name'       => __('Street / No.', 'commonsbooking'),
-            //'desc'       => __('', 'commonsbooking'),
+            'name'       => esc_html__('Street / No.', 'commonsbooking'),
+            //'desc'       => esc_html__('', 'commonsbooking'),
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_street',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -157,8 +157,8 @@ class Location extends CustomPostType
 
         // Postcode
         $cmb->add_field(array(
-            'name'       => __('Postcode', 'commonsbooking'),
-            //'desc'       => __('', 'commonsbooking'),
+            'name'       => esc_html__('Postcode', 'commonsbooking'),
+            //'desc'       => esc_html__('', 'commonsbooking'),
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_postcode',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -169,8 +169,8 @@ class Location extends CustomPostType
 
         // City
         $cmb->add_field(array(
-            'name'       => __('City', 'commonsbooking'),
-            //'desc'       => __('field description (optional)', 'commonsbooking'),
+            'name'       => esc_html__('City', 'commonsbooking'),
+            //'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_city',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -182,8 +182,8 @@ class Location extends CustomPostType
 
         // Country
         $cmb->add_field(array(
-            'name'       => __('Country', 'commonsbooking'),
-            //'desc'       => __('field description (optional)', 'commonsbooking'),
+            'name'       => esc_html__('Country', 'commonsbooking'),
+            //'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_country',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -192,7 +192,7 @@ class Location extends CustomPostType
         // Initiate the metabox Information
         $cmb = new_cmb2_box(array(
             'id'           => COMMONSBOOKING_METABOX_PREFIX . 'location_info',
-            'title'        => __('General Location information', 'commonsbooking'),
+            'title'        => esc_html__('General Location information', 'commonsbooking'),
             'object_types' => array(self::$postType), // Post type
             'context'      => 'normal',
             'priority'     => 'high',
@@ -201,8 +201,8 @@ class Location extends CustomPostType
 
         // short description
         $cmb->add_field(array(
-            'name'       => __('Location email', 'commonsbooking'),
-            'desc'       => __('email-address to get copy of booking confirmation and cancellation mails',
+            'name'       => esc_html__('Location email', 'commonsbooking'),
+            'desc'       => esc_html__('email-address to get copy of booking confirmation and cancellation mails',
                 'commonsbooking'),
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_email',
             'type'       => 'text',
@@ -213,8 +213,8 @@ class Location extends CustomPostType
 
         // pickup description
         $cmb->add_field(array(
-            'name'       => __('Pickup instructions', 'commonsbooking'),
-            'desc'       => __('Type in information about the pickup process (e.g. detailed route description, opening hours, etc.). This will be shown to user in booking process and booking confirmation mail',
+            'name'       => esc_html__('Pickup instructions', 'commonsbooking'),
+            'desc'       => esc_html__('Type in information about the pickup process (e.g. detailed route description, opening hours, etc.). This will be shown to user in booking process and booking confirmation mail',
                 'commonsbooking'),
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions',
             'type'       => 'textarea_small',
@@ -224,8 +224,8 @@ class Location extends CustomPostType
 
         // location contact
         $cmb->add_field(array(
-            'name'       => __('Location contact information', 'commonsbooking'),
-            'desc'       => __('information about how to contact the location (e.g. contact person, phone number, e-mail etc.). This will be shown to user in booking process and booking confirmation mail',
+            'name'       => esc_html__('Location contact information', 'commonsbooking'),
+            'desc'       => esc_html__('information about how to contact the location (e.g. contact person, phone number, e-mail etc.). This will be shown to user in booking process and booking confirmation mail',
                 'commonsbooking'),
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_contact',
             'type'       => 'textarea_small',
@@ -239,20 +239,20 @@ class Location extends CustomPostType
             $userOptions[$user->ID] = $user->get('user_nicename') . " (" . $user->last_name . " " . $user->last_name . ")";
         }
         $cmb->add_field(array(
-            'name'       => __('Location Admin(s)', 'commonsbooking'),
-            'desc'       => __('choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role cb_manager can be selected here.',
+            'name'       => esc_html__('Location Admin(s)', 'commonsbooking'),
+            'desc'       => esc_html__('choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role cb_manager can be selected here.',
                 'commonsbooking'),
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_admins',
             'type'       => 'pw_multiselect',
             'options'    => $userOptions,
             'attributes' => array(
-                'placeholder' => __('Select location admins.', 'commonsbooking')
+                'placeholder' => esc_html__('Select location admins.', 'commonsbooking')
             ),
         ));
 
         $cmb->add_field(array(
-            'name'       => __('Allow locked day overbooking', 'commonsbooking'),
-            'desc'       => __('If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation on <a href="https://commonsbooking.org">commonsbooking.org</a> for more information.', 'commonsbooking'),
+            'name'       => esc_html__('Allow locked day overbooking', 'commonsbooking'),
+            'desc'       => sanitizeHTML( __('If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation on <a href="https://commonsbooking.org">commonsbooking.org</a> for more information.', 'commonsbooking') ),
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
             'type'       => 'checkbox',
         ));

@@ -11,7 +11,7 @@
  */
 global $templateData;
 $location = new \CommonsBooking\Model\Location($templateData['location']);
-$noResultText = __("No article available at this location.", "commonsbooking");
+$noResultText = esc_html__("No article available at this location.", "commonsbooking");
 
 ?>
 <div class="cb-list-header">

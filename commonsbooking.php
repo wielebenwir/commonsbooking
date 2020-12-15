@@ -286,6 +286,33 @@ add_action('template_redirect', 'cb_timeframe_redirect');
 // Shows Errors in Backend
 add_action('admin_notices', array(Plugin::class, 'renderError'));
 
+/**
+ * sanitizeHTML
+ * Filters text content and strips out disallowed HTML.
+ *
+ * @param  mixed $string
+ * @param  mixed $textdomain
+ * @return void
+ */
+function sanitizeHTML($string)
+{
+    $allowed_html = [
+        'a'      => [
+            'href'  => [],
+            'title' => [],
+        ],
+        'br'     => [],
+        'em'     => [],
+        'strong' => [],
+        'p' => [],
+        'h1' => [],
+        'h2' => [],
+        'h3' => [],
+    ];
+
+    return wp_kses( $string, $allowed_html );
+}
+
 // Initialize booking codes table
 register_activation_hook(__FILE__, array(\CommonsBooking\Repository\BookingCodes::class, 'initBookingCodesTable'));
 
