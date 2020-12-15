@@ -143,8 +143,9 @@ class Timeframe extends CustomPostType
             isset($_REQUEST[static::getWPNonceId()]) &&
             wp_verify_nonce($_REQUEST[static::getWPNonceId()], static::getWPAction())
         ) {
-            $itemId     = isset($_REQUEST['item-id']) && $_REQUEST['item-id'] != "" ? sanitize_text_field($_REQUEST['item-id']) : null;
-            $locationId = isset($_REQUEST['location-id']) && $_REQUEST['location-id'] != "" ? sanitize_text_field($_REQUEST['location-id']) : null;
+            $itemId      = isset($_REQUEST['item-id']) && $_REQUEST['item-id'] != "" ? sanitize_text_field($_REQUEST['item-id']) : null;
+            $locationId  = isset($_REQUEST['location-id']) && $_REQUEST['location-id'] != "" ? sanitize_text_field($_REQUEST['location-id']) : null;
+            $post_status = isset($_REQUEST['post_status']) && $_REQUEST['post_status'] != "" ? sanitize_text_field($_REQUEST['post_status']) : null;
 
             if ( ! get_post($itemId)) {
                 throw new \Exception('Item does not exist. ('.$itemId.')');
@@ -188,8 +189,8 @@ class Timeframe extends CustomPostType
             }
 
             // Trigger Mail, only send mail if status has changed
-            if ( ! empty($booking) and $booking->post_status != $_REQUEST["post_status"]) {
-                $booking_msg = new \CommonsBooking\Messages\Messages($postId, $_REQUEST["post_status"]);
+            if ( ! empty($booking) and $booking->post_status != $post_status) {
+                $booking_msg = new \CommonsBooking\Messages\Messages($postId, $post_status);
                 $booking_msg->triggerMail();
             }
 
@@ -325,7 +326,7 @@ class Timeframe extends CustomPostType
             <select name="<?php echo 'admin_'.$key; ?>">
                 <option value=""><?php echo $label; ?></option>
                 <?php
-                $filterValue = isset($_GET['admin_'.$key]) ? $_GET['admin_'.$key] : '';
+                $filterValue = isset($_GET['admin_'.$key]) ? sanitize_text_field( $_GET['admin_'.$key] ) : '';
                 foreach ($values as $value => $label) {
                     printf
                     (

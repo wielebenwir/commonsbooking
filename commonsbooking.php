@@ -265,7 +265,7 @@ add_filter(
 );
 
 // Redirect to startpage if user is not allowed to edit timeframe
-function cb_timeframe_redirect()
+function commonsbooking_timeframe_redirect()
 {
     global $post;
     if (
@@ -281,20 +281,20 @@ function cb_timeframe_redirect()
     }
 }
 
-add_action('template_redirect', 'cb_timeframe_redirect');
+add_action('template_redirect', 'commonsbooking_timeframe_redirect');
 
 // Shows Errors in Backend
 add_action('admin_notices', array(Plugin::class, 'renderError'));
 
 /**
- * sanitizeHTML
+ * commonsbooking_sanitizeHTML
  * Filters text content and strips out disallowed HTML.
  *
  * @param  mixed $string
  * @param  mixed $textdomain
  * @return void
  */
-function sanitizeHTML($string)
+function commonsbooking_sanitizeHTML($string)
 {
     $allowed_html = [
         'a'      => [
@@ -357,8 +357,8 @@ if ( ! wp_next_scheduled('cb_cron_hook')) {
 }
 
 // Remove schedule on module deactivation
-register_deactivation_hook( __FILE__, 'cb_cron_deactivate' );
-function cb_cron_deactivate() {
+register_deactivation_hook( __FILE__, 'commonsbooking_cron_deactivate' );
+function commonsbooking_cron_deactivate() {
     $timestamp = wp_next_scheduled( 'cb_cron_hook' );
     wp_unschedule_event( $timestamp, 'cb_cron_hook' );
 }

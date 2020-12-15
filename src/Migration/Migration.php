@@ -21,6 +21,8 @@ class Migration
      */
     public static function migrateAll()
     {
+
+
         if ($_POST['data'] == 'false') {
             $tasks = [
                 'locations'    => [
@@ -65,11 +67,15 @@ class Migration
                 ]
             ];
         } else {
-            $tasks = $_POST['data'];
+            if (is_array($_POST['data'])) {
+                $tasks = filter_var_array($_POST['data'], FILTER_SANITIZE_STRING);
+            }
         }
 
+        
+
         $taskIndex = 0;
-        $taskLimit = 50;
+        $taskLimit = 40;
 
         $taskFunctions = [
             'locations'    => [
