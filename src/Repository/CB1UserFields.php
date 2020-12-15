@@ -44,38 +44,38 @@ class CB1UserFields
         $this->extra_profile_fields = array(
             'first_name'     => array(
                 'field_name'   => 'first_name',
-                'title'        => sanitizeHTML( __('First Name', 'commonsbooking') ),
+                'title'        => commonsbooking_sanitizeHTML( __('First Name', 'commonsbooking') ),
                 'type'         => 'input',
                 'description'  => '',
-                'errormessage' => sanitizeHTML( __('Please enter your first name', 'commonsbooking') ),
+                'errormessage' => commonsbooking_sanitizeHTML( __('Please enter your first name', 'commonsbooking') ),
             ),
             'last_name'      => array(
                 'field_name'   => 'last_name',
-                'title'        => sanitizeHTML( __('Last Name', 'commonsbooking') ),
+                'title'        => commonsbooking_sanitizeHTML( __('Last Name', 'commonsbooking') ),
                 'type'         => 'input',
                 'description'  => '',
-                'errormessage' => sanitizeHTML( __('Please enter your last name', 'commonsbooking') ),
+                'errormessage' => commonsbooking_sanitizeHTML( __('Please enter your last name', 'commonsbooking') ),
             ),
             'phone'          => array(
                 'field_name'   => 'phone',
-                'title'        => sanitizeHTML( __('Phone Number', 'commonsbooking') ),
+                'title'        => commonsbooking_sanitizeHTML( __('Phone Number', 'commonsbooking') ),
                 'type'         => 'input',
                 'description'  => '',
-                'errormessage' => sanitizeHTML( __('Please enter your phone number', 'commonsbooking') ),
+                'errormessage' => commonsbooking_sanitizeHTML( __('Please enter your phone number', 'commonsbooking') ),
             ),
             'address'        => array(
                 'field_name'   => 'address',
-                'title'        => sanitizeHTML( __('Address', 'commonsbooking') ),
+                'title'        => commonsbooking_sanitizeHTML( __('Address', 'commonsbooking') ),
                 'type'         => 'input',
                 'description'  => '',
-                'errormessage' => sanitizeHTML( __('Please enter your address', 'commonsbooking') ),
+                'errormessage' => commonsbooking_sanitizeHTML( __('Please enter your address', 'commonsbooking') ),
             ),
             'terms_accepted' => array(
-                'title'        => sanitizeHTML( __('Terms and Conditions', 'commonsbooking') ),
+                'title'        => commonsbooking_sanitizeHTML( __('Terms and Conditions', 'commonsbooking') ),
                 'field_name'   => 'terms_accepted',
                 'type'         => 'checkbox',
-                'description'  => sanitizeHTML( __('I accept the terms & conditions', 'commonsbooking') ),
-                'errormessage' => sanitizeHTML( __('Please accept the terms & conditions', 'commonsbooking') ),
+                'description'  => commonsbooking_sanitizeHTML( __('I accept the terms & conditions', 'commonsbooking') ),
+                'errormessage' => commonsbooking_sanitizeHTML( __('Please accept the terms & conditions', 'commonsbooking') ),
             ),
         );
 
@@ -169,7 +169,7 @@ class CB1UserFields
         if ( ! empty ($this->termsservices_url)) {
             // translators: %s = terms and service url
             $string = sprintf(
-                sanitizeHTML( __('<a href="%s" target=_blank">Read the terms and services</a>', 'commonsbooking') ),
+                commonsbooking_sanitizeHTML( __('<a href="%s" target=_blank">Read the terms and services</a>', 'commonsbooking') ),
                 $this->termsservices_url
             );
         } else {
@@ -258,7 +258,7 @@ class CB1UserFields
     public function show_extra_profile_fields($user)
     { ?>
 
-        <h3><?php sanitizeHTML( _e('Extra Fields', 'commons-booking') ); ?> </h3>
+        <h3><?php commonsbooking_sanitizeHTML( _e('Extra Fields', 'commons-booking') ); ?> </h3>
 
         <table class="form-table">
             <tr>

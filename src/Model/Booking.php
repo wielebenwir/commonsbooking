@@ -62,7 +62,7 @@ class Booking extends CustomPost
     public function formattedBookingCode() {
         if ($this->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'bookingcode')) {
             // translators: %s = Booking code
-            $htmloutput = '<br>' . sprintf( sanitizeHTML( __( 'Your booking code is: %s' , 'commonsbooking' ) ), $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode') ) . '<br>' ;
+            $htmloutput = '<br>' . sprintf( commonsbooking_sanitizeHTML( __( 'Your booking code is: %s' , 'commonsbooking' ) ), $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode') ) . '<br>' ;
             return $htmloutput;
         }
     }
@@ -295,15 +295,15 @@ class Booking extends CustomPost
 
         if ($currentStatus == "unconfirmed")
         {
-            $noticeText = sanitizeHTML ( __('Please check your booking and click confirm booking', 'commonsbooking' ) );
+            $noticeText = commonsbooking_sanitizeHTML ( __('Please check your booking and click confirm booking', 'commonsbooking' ) );
         } else if ($currentStatus == "confirmed")
         {
-            $noticeText = sanitizeHTML( __('Your booking is confirmed. A confirmation mail has been sent to you.', 'commonsbooking' ) );
+            $noticeText = commonsbooking_sanitizeHTML( __('Your booking is confirmed. A confirmation mail has been sent to you.', 'commonsbooking' ) );
         }
 
         if ($currentStatus == "canceled")
         {
-            $noticeText = sanitizeHTML( __('Your booking has been canceled.', 'commonsbooking' ) );
+            $noticeText = commonsbooking_sanitizeHTML( __('Your booking has been canceled.', 'commonsbooking' ) );
         }
 
         return sprintf ('<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $currentStatus, $noticeText);
