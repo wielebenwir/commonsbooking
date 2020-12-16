@@ -22,8 +22,18 @@ class Migration
     public static function migrateAll()
     {
 
-
+        //sanitize
         if ($_POST['data'] == 'false') {
+            $post_data = "false";
+        } else {
+            $post_data = isset( $_POST['data'] ) ? (array) $_POST['data'] : array();
+            $post_data = commonsbooking_sanitizeArrayorString($post_data);
+        }
+
+
+
+
+        if ($post_data == 'false') {
             $tasks = [
                 'locations'    => [
                     'index'    => 0,
@@ -67,9 +77,7 @@ class Migration
                 ]
             ];
         } else {
-            if (is_array($_POST['data'])) {
-                $tasks = filter_var_array($_POST['data'], FILTER_SANITIZE_STRING);
-            }
+                $tasks = $post_data;
         }
 
         

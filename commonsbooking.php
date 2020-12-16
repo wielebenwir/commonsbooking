@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name:         CommonsBooking
- * Version:             2.2.4
+ * Version:             2.2.6
  * Requires at least:   5.2
  * Requires PHP:        7.0
  * Plugin URI:          https://commonsbooking.org
@@ -22,7 +22,7 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 defined('ABSPATH') or die("Thanks for visting");
 
-define('COMMONSBOOKING_VERSION', '2.2.4');
+define('COMMONSBOOKING_VERSION', '2.2.6');
 define('COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking');
 define('COMMONSBOOKING_MENU_SLUG', COMMONSBOOKING_PLUGIN_SLUG . '-menu');
 define('COMMONSBOOKING_PLUGIN_DIR', plugin_dir_path(__FILE__));
@@ -142,7 +142,7 @@ require __DIR__.'/src/Repository/CB1UserFields.php'; //@TODO: import with Autolo
  *
  * @return bool
  */
-function isCurrentUserAllowedToEdit($post)
+function commonsbooking_isCurrentUserAllowedToEdit($post)
 {
     $current_user = wp_get_current_user();
     $isAuthor     = intval($current_user->ID) == intval($post->post_author);
@@ -218,19 +218,19 @@ function isCurrentUserAllowedToEdit($post)
  *
  * @param $current_screen
  */
-function validate_user_on_edit($current_screen)
+function commonsbooking_validate_user_on_edit($current_screen)
 {
     if ($current_screen->base == "post" && in_array($current_screen->id, Plugin::getCustomPostTypesLabels())) {
         if (array_key_exists('action', $_GET) && $_GET['action'] == 'edit') {
             $post = get_post($_GET['post']);
-            if ( ! isCurrentUserAllowedToEdit($post)) {
+            if ( ! commonsbooking_isCurrentUserAllowedToEdit($post)) {
                 die('Access denied');
             };
         }
     }
 }
 
-add_action('current_screen', 'validate_user_on_edit', 10, 1);
+add_action('current_screen', 'commonsbooking_validate_user_on_edit', 10, 1);
 
 /**
  * Applies listing restriction for item and location admins.
@@ -251,7 +251,7 @@ add_filter(
             // Check if it is the main query and one of our custom post types
             if ( ! $isAdmin && $query->is_main_query() && in_array($postType, Plugin::getCustomPostTypesLabels())) {
                 foreach ($posts as $key => $post) {
-                    if ( ! isCurrentUserAllowedToEdit($post)) {
+                    if ( ! commonsbooking_isCurrentUserAllowedToEdit($post)) {
                         unset($posts[$key]);
                     }
                 }
@@ -313,6 +313,31 @@ function commonsbooking_sanitizeHTML($string)
     return wp_kses( $string, $allowed_html );
 }
 
+
+/**
+ * Recursive sanitation for text or array
+ * 
+ * @param $array_or_string (array|string)
+ * @since  0.1
+ * @return mixed
+ */
+function commonsbooking_sanitizeArrayorString($array_or_string) {
+    if( is_string($array_or_string) ){
+        $array_or_string = sanitize_text_field($array_or_string);
+    }elseif( is_array($array_or_string) ){
+        foreach ( $array_or_string as $key => &$value ) {
+            if ( is_array( $value ) ) {
+                $value = commonsbooking_sanitizeArrayorString($value);
+            }
+            else {
+                $value = commonsbooking_sanitizeArrayorString( $value );
+            }
+        }
+    }
+
+    return $array_or_string;
+}
+
 // Initialize booking codes table
 register_activation_hook(__FILE__, array(\CommonsBooking\Repository\BookingCodes::class, 'initBookingCodesTable'));
 
@@ -328,7 +353,7 @@ function commonsbooking_cron_interval($schedules)
 add_filter('cron_schedules', 'commonsbooking_cron_interval');
 
 // Removes all uncofirmed bookings older than 10 minutes
-function cleanupBookings()
+function commonsbooking_cleanupBookings()
 {
     $args = array(
         'post_type'   => Timeframe::$postType,
@@ -351,7 +376,7 @@ function cleanupBookings()
         }
     }
 }
-add_action('cb_cron_hook', 'cleanupBookings');
+add_action('cb_cron_hook', 'commonsbooking_cleanupBookings');
 if ( ! wp_next_scheduled('cb_cron_hook')) {
     wp_schedule_event(time(), 'ten_minutes', 'cb_cron_hook');
 }
