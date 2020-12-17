@@ -318,7 +318,7 @@ class Booking extends CustomPost
      */
     public function bookingLink()
     {
-        return sprintf( '<a href="%s">%s</a>', add_query_arg($this->post->post_type, $this->post->post_name, home_url()), esc_html__( 'Link to your booking', 'commonsbooking' ) );
+       return sprintf( '<a href="%1$s">%2$s</a>', add_query_arg( $this->post->post_type, $this->post->post_name, home_url('/') ) , esc_html__( 'Link to your booking', 'commonsbooking' ) );
 
     }
 
