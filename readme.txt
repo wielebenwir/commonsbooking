@@ -5,7 +5,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar, 
 Requires at least: 5.0
 Tested up to: 5.5.2
-Stable Tag: 2.2.0
+Stable Tag: 2.2.6
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -86,6 +86,13 @@ New in this version:
 4. User bookings list
 
 == Changelog ==
+
+= 2.2.6 =
+
+* Enhanced import wizard for automatic migration from previous Commons Booking version (version < 1.0). Migration of time frames, articles, locations, bookings, booking codes, settings for blocked days. During migration, parallel operation of the old and new version is possible. No data from the previous installation is deleted or changed.
+* Unconfirmed bookings are automatically deleted (after approx. 10 minutes)
+* Several usability improvements and bug fixes
+* Improvements of the CommonsBooking API
 
 = 2.2.0 =
 
