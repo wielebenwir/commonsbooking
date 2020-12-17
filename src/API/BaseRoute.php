@@ -99,4 +99,15 @@ class BaseRoute extends \WP_REST_Controller
         return array_merge($schema, $schemaArray);
     }
 
+    /**
+     * Escapes JSON String for output.
+     * @param $string
+     *
+     * @return false|string
+     */
+    public function escapeJsonString($string) {
+
+        return substr(json_encode($string),1,-1) ?: "";
+    }
+
 }

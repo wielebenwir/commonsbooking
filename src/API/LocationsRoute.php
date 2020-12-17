@@ -148,7 +148,7 @@ class LocationsRoute extends BaseRoute
 
         $preparedItem->properties->id = $item->ID . "";
         $preparedItem->properties->name = $item->post_title;
-        $preparedItem->properties->description = $item->post_content;
+        $preparedItem->properties->description = $this->escapeJsonString($item->post_content);
         $preparedItem->properties->url = get_permalink($item->ID);
         $preparedItem->properties->address = $item->formattedAddressOneLine();
 
