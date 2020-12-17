@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-12-17T00:26:03+00:00\n"
+"POT-Creation-Date: 2020-12-17T12:04:48+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -52,7 +52,7 @@ msgid ""
 "                            <p>To get startet visit our tutorials and documentation on <a href=\"https://commonsbooking.org/docs\">https://commonsbooking.org/docs</a></p>\n"
 "\n"
 "                            <h2>Questions or bug reports?</h2>\n"
-"                            <p>Ask your questions or send us your bug reports here https://commonsbooking.org/support</p>\n"
+"                            <p>Ask your questions or send us your bug reports here <a href=\"https://commonsbooking.org/kontakt/\">https://commonsbooking.org/kontakt/</a></p>\n"
 "\n"
 "                            <h2>Contribute</h2>\n"
 "                            The future of this plugin depends on your support. You can support us by make a donation on our website: <a href=\"https://www.wielebenwir.de/verein/unterstutzen\">wielebenwir</a>"
@@ -159,23 +159,22 @@ msgid ""
 "                            Name: {{user:first_name}} {{user:last_name}}.</p>\n"
 "                            \n"
 "                            <p>Thanks, the Team. </p>\n"
-"                        \n"
-"                            "
+"                        "
 msgstr ""
 
-#: includes/Options.php:185
+#: includes/Options.php:184
 msgid "Booking canceled email subject"
 msgstr ""
 
-#: includes/Options.php:188
+#: includes/Options.php:187
 msgid "Booking canceled: {{item:post_title}} at {{location:post_title}} {{booking:booking_timeframe_date}}"
 msgstr ""
 
-#: includes/Options.php:191
+#: includes/Options.php:190
 msgid "Booking canceled email body"
 msgstr ""
 
-#: includes/Options.php:194
+#: includes/Options.php:193
 msgid ""
 "\n"
 "                            Hi {{user:first_name}},<br>\n"
@@ -189,35 +188,35 @@ msgid ""
 "                            "
 msgstr ""
 
-#: includes/Options.php:282
+#: includes/Options.php:281
 msgid "Migration"
 msgstr ""
 
-#: includes/Options.php:286
+#: includes/Options.php:285
 msgid "Migrate from Commons Booking Version 0.X"
 msgstr ""
 
-#: includes/Options.php:288
+#: includes/Options.php:287
 msgid "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br>Please read the documentation on <a href=\"https://commonsbooking.org/docs/\">https://commonsbooking.org/docs/</a> before you start migration."
 msgstr ""
 
-#: includes/Options.php:291
+#: includes/Options.php:290
 msgid "Start Migration"
 msgstr ""
 
-#: includes/Options.php:299
+#: includes/Options.php:298
 msgid "CommonsBooking Version 0.X profile fields"
 msgstr ""
 
-#: includes/Options.php:301
+#: includes/Options.php:300
 msgid "Enable the following legacy CommonsBooking Version 0.X user profile fields:"
 msgstr ""
 
-#: includes/Options.php:304
+#: includes/Options.php:303
 msgid "Enable"
 msgstr ""
 
-#: includes/Options.php:309
+#: includes/Options.php:308
 msgid "Terms & Services Url"
 msgstr ""
 
@@ -352,6 +351,7 @@ msgid "Please enter your phone number"
 msgstr ""
 
 #: src/Repository/CB1UserFields.php:68
+#: src/Repository/CB1UserFields.php:273
 #: src/Wordpress/CustomPostType/Location.php:139
 #: templates/booking-single.php:53
 msgid "Address"
@@ -376,6 +376,22 @@ msgstr ""
 #. translators: %s = terms and service url
 #: src/Repository/CB1UserFields.php:172
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
+msgstr ""
+
+#: src/Repository/CB1UserFields.php:261
+msgid "Extra Fields"
+msgstr ""
+
+#: src/Repository/CB1UserFields.php:265
+msgid "Phone number"
+msgstr ""
+
+#: src/Repository/CB1UserFields.php:281
+msgid "Terms and conditions"
+msgstr ""
+
+#: src/Repository/CB1UserFields.php:286
+msgid "Accepted Terms & Conditions"
 msgstr ""
 
 #: src/View/BookingCodes.php:28
@@ -963,6 +979,10 @@ msgstr ""
 
 #: src/Wordpress/CustomPostType/Timeframe.php:909
 msgid "use as timeframe image"
+msgstr ""
+
+#: templates/booking-single-notallowed.php:10
+msgid "You are not allowed to access this booking."
 msgstr ""
 
 #: templates/booking-single-notallowed.php:14

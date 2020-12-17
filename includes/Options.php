@@ -178,8 +178,7 @@ $options_array = array(
                             Name: {{user:first_name}} {{user:last_name}}.</p>
                             
                             <p>Thanks, the Team. </p>
-                        
-                            ', 'commonsbooking') ),
+                        ', 'commonsbooking') ),
                     ),
                     array(
                         'name'    => commonsbooking_sanitizeHTML( __('Booking canceled email subject', 'commonsbooking') ),
