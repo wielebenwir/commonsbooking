@@ -75,7 +75,7 @@ New in this version:
 = Where can i find help/report bugs? =
 
 * [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues)
-* [Support] (https://commonsbooking.org/kontakt/)
+* [Support](https://commonsbooking.org/kontakt/)
 
 
 == Screenshots ==

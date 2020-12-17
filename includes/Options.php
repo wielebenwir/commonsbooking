@@ -22,7 +22,7 @@ $options_array = array(
                             sprintf( commonsbooking_sanitizeHTML( __( 'You are using CommonsBooking Version %s
 
                             <h2>How to start</h2>
-                            <p>To get startet visit our tutorials and documentation on <a href="https://commonsbooking.org/docs">https://commonsbooking.org/docs</a></p>
+                            <p>To get startet visit our tutorials and documentation on <a href="https://commonsbooking.org/dokumentation">https://commonsbooking.org/dokumentation</a></p>
 
                             <h2>Questions or bug reports?</h2>
                             <p>Ask your questions or send us your bug reports here <a href="https://commonsbooking.org/kontakt/">https://commonsbooking.org/kontakt/</a></p>
@@ -284,7 +284,7 @@ $options_array = array(
             'migration' => array(
                 'title'       => __('Migrate from Commons Booking Version 0.X', 'commonsbooking'),
                 'id'          => 'migration',
-                'desc'        => commonsbooking_sanitizeHTML( __('Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br>Please read the documentation on <a href="https://commonsbooking.org/docs/">https://commonsbooking.org/docs/</a> before you start migration.', 'commonsbooking') ),
+                'desc'        => commonsbooking_sanitizeHTML( __('Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br>Please read the documentation on <a href="https://commonsbooking.org/dokumentation/">https://commonsbooking.org/dokumentation/</a> before you start migration.', 'commonsbooking') ),
                 'fields'      => [
                     array(
                         'name'          => commonsbooking_sanitizeHTML( __('Start Migration', 'commonsbooking') ),
