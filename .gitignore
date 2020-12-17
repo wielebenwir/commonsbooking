@@ -15,3 +15,4 @@ assets/.DS_Store
 #vendor
 views/.DS_Store
 /composer.phar
+copy-svn.sh
