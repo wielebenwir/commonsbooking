@@ -580,11 +580,13 @@ class Timeframe extends CustomPostType
         return array(
             array(
                 'name' => esc_html__("Comment", 'commonsbooking'),
+                'desc' => esc_html__('Internal comment. Will not be shown to users', 'commonsbooking'),
                 'id'   => "comment",
                 'type' => 'textarea_small',
             ),
             array(
                 'name'    => esc_html__('Type', 'commonsbooking'),
+                'desc'    => esc_html__('Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information.', 'commonsbooking'),
                 'id'      => "type",
                 'type'    => 'select',
                 'options' => self::getTypes(),
@@ -627,6 +629,7 @@ class Timeframe extends CustomPostType
             ),
             array(
                 'name'    => esc_html__('Timeframe Repetition', 'commonsbooking'),
+                'desc' => esc_html__('Select the recurrence type of the time frame. If you select "weekly", you can select days of the week. ', 'commonsbooking'),
                 'id'      => "timeframe-repetition",
                 'type'    => 'select',
                 'options' => [
@@ -644,7 +647,7 @@ class Timeframe extends CustomPostType
             ),
             array(
                 'name'       => esc_html__('Maximum booking duration', 'commonsbooking'),
-                'desc'       => esc_html__('Maximum booking duration in days', 'commonsbooking'),
+                'desc'       => esc_html__('Maximum booking duration in days per booking.', 'commonsbooking'),
                 'id'         => "timeframe-max-days",
                 'type'       => 'select',
                 'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
