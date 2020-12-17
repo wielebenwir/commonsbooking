@@ -10,7 +10,7 @@ Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A WordPress plugin for management and booking of common goods. 
+Commons Booking is a plugin for management and booking of common goods. 
 
 == Description ==
 
@@ -18,7 +18,7 @@ This plugin gives associations, groups and individuals the ability to share item
 
 CommonsBooking was developed for the ["Commons Cargobike" movement](http://commons-cargobikes.org/), but it can be used for any kind items.
 
-This is a new version of CommonsBooking, [CommonsBooking V.09](https://de.wordpress.org/plugins/commons-booking/) will be retired some time in the future.
+This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordpress.org/plugins/commons-booking/) will be retired some time in the future.
 
 **Unique features:**
 
@@ -43,7 +43,7 @@ This is a new version of CommonsBooking, [CommonsBooking V.09](https://de.wordpr
 
 New in this version: 
 
-* inital stable release 
+* Updated translation and minor text edits
 
 == Installation ==
 
@@ -86,6 +86,11 @@ New in this version:
 4. User bookings list
 
 == Changelog ==
+
+
+= 2.2.8 =
+
+* Updated translation and minor text edits
 
 = 2.2.7 =
 

@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name:         CommonsBooking
- * Version:             2.2.7
+ * Version:             2.2.8
  * Requires at least:   5.2
  * Requires PHP:        7.0
  * Plugin URI:          https://commonsbooking.org
@@ -22,7 +22,7 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 defined('ABSPATH') or die("Thanks for visting");
 
-define('COMMONSBOOKING_VERSION', '2.2.7');
+define('COMMONSBOOKING_VERSION', '2.2.8');
 define('COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking');
 define('COMMONSBOOKING_MENU_SLUG', COMMONSBOOKING_PLUGIN_SLUG . '-menu');
 define('COMMONSBOOKING_PLUGIN_DIR', plugin_dir_path(__FILE__));
