@@ -5,7 +5,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar, 
 Requires at least: 5.0
 Tested up to: 5.5.2
-Stable Tag: 2.2.6
+Stable Tag: 2.2.7
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -86,6 +86,10 @@ New in this version:
 4. User bookings list
 
 == Changelog ==
+
+= 2.2.7 =
+
+* Updated translation
 
 = 2.2.6 =
 
