@@ -1,6 +1,6 @@
 === CommonsBooking ===
 
-Contributors: wielebenwirteam, flegfleg
+Contributors: wielebenwirteam, m0rb, flegfleg
 Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar, 
 Requires at least: 5.0
