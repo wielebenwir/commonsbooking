@@ -115,8 +115,9 @@ class Location extends BookablePost
      *
      * @return string
      */
-    public function pickupInstructions()
+    public function formattedPickupInstructions()
     {
-        return CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions');
+        $html_output = '<br>' . CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions') . '<br>';
+        return $html_output;
     }
 }

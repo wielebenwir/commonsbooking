@@ -196,7 +196,7 @@ class CB
 
         if ($result) {
             // sanitize output
-            return wp_filter_post_kses($result);
+            return commonsbooking_sanitizeHTML($result);
 
         }
     }
