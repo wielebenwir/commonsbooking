@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2020-12-17T12:04:48+00:00\n"
-"PO-Revision-Date: 2020-12-17 13:06+0100\n"
+"POT-Creation-Date: 2020-12-17T12:53:59+00:00\n"
+"PO-Revision-Date: 2020-12-17 13:54+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -241,7 +241,8 @@ msgstr ""
 "\n"
 " <p>Login: {{user:user_nicename}}<br>\n"
 " Name: {{user:first_name}} {{user:last_name}}.</p>\n"
-"            <p>Vielen Dank, das Team</p> "
+"            <p>Vielen Dank, das Team</p>\n"
+"                        "
 
 #: includes/Options.php:184
 msgid "Booking canceled email subject"
@@ -286,7 +287,8 @@ msgstr ""
 "                            <p>Name: {{user:first_name}} {{user:last_name}}."
 "</p>\n"
 "                            \n"
-"                            <p>Vielen Dank.</p>  "
+"                            <p>Vielen Dank.</p>\n"
+"                            "
 
 #: includes/Options.php:281
 msgid "Migration"
@@ -411,7 +413,7 @@ msgstr "dauerhaft"
 
 #. translators: %1$s = startdate, second %2$s = enddate in wordpress defined format
 #: src/Model/Timeframe.php:54
-msgid " from %1$s until %1$s"
+msgid " from %1$s until %2$s"
 msgstr " von %1$s bis %2$s"
 
 #. translators: %s = enddate in wordpress defined format
@@ -985,7 +987,7 @@ msgid ""
 "Select the recurrence type of the time frame. If you select \"weekly\", you "
 "can select days of the week. "
 msgstr ""
-"Wähle den Serientyp des Zeitrahmens aus. Wenn Du \"wöchentlich\" auswählst, "
+"Wähle den Serientyp des Zeitrahmens aus. Wenn Du wöchentlich auswählst, "
 "kannst Du einzelne Wochentage definieren "
 
 #: src/Wordpress/CustomPostType/Timeframe.php:636
@@ -1256,6 +1258,10 @@ msgstr "Bitte wähle das Rückgabedatum im Kalender aus"
 #: templates/timeframe-calendar.php:41
 msgid "Continue to booking confirmation"
 msgstr "Weiter zur Buchungsprüfung"
+
+#, php-format
+#~ msgid " from %1$s until %1$s"
+#~ msgstr " von %1$s bis %2$s"
 
 #, fuzzy
 #~| msgid "The url for the items archive. E.g: %s "

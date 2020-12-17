@@ -51,7 +51,7 @@ class Timeframe extends CustomPost
         } elseif ($startDate > 0 && $endDate > 0) { // start AND end date
             if ($startDate > $today) { // start is in the future, with an end date
                 /* translators: %1$s = startdate, second %2$s = enddate in wordpress defined format */
-                $availableString = sprintf( commonsbooking_sanitizeHTML( __(' from %1$s until %1$s', 'commonsbooking') ), $startDateFormatted,
+                $availableString = sprintf( commonsbooking_sanitizeHTML( __(' from %1$s until %2$s', 'commonsbooking') ), $startDateFormatted,
                     $endDateFormatted);
             } else { // start has passed, with an end date
                 /* translators: %s = enddate in wordpress defined format */
