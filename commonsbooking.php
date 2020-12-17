@@ -264,6 +264,7 @@ add_filter(
     2
 );
 
+// TODO: Check if still necessary. User check is implemented in CustomPostType/Timframe -> getTemplate()
 // Redirect to startpage if user is not allowed to edit timeframe
 function commonsbooking_timeframe_redirect()
 {
@@ -281,7 +282,8 @@ function commonsbooking_timeframe_redirect()
     }
 }
 
-add_action('template_redirect', 'commonsbooking_timeframe_redirect');
+// removed redirect because we link to booking-single-notallowd.php (defined in )
+    //add_action('template_redirect', 'commonsbooking_timeframe_redirect');
 
 // Shows Errors in Backend
 add_action('admin_notices', array(Plugin::class, 'renderError'));

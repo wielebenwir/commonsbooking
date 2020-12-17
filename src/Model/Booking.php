@@ -154,7 +154,7 @@ class Booking extends CustomPost
     /**
      * @return string
      */
-    public function booking_timeframe_date()
+    public function formattedBookingDate()
     {
         $date_format = get_option('date_format');
 
