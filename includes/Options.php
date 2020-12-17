@@ -130,14 +130,14 @@ $options_array = array(
                         'desc' => commonsbooking_sanitizeHTML( __('E-Mail that will be shown as sender in generated emails', 'commonsbooking') ),
                         'id'   => 'emailheaders_from-email',
                         'type' => 'text',
-                        //'default' => __( '', 'commonsbooking' ),
+                        'default' => get_option('admin_email'),
                     ),
                     array(
                         'name' => commonsbooking_sanitizeHTML( __( 'Mail-Header from Name', 'commonsbooking') ),
                         'desc' => commonsbooking_sanitizeHTML( __('Name that will be shown as sender in generated emails', 'commonsbooking') ),
                         'id'   => 'emailheaders_from-name',
                         'type' => 'text',
-                        //'default' => commonsbooking_sanitizeHTML( '', 'commonsbooking' ),
+                        'default' => get_option('blogname'),
                     ),
                     array(
                         'name'          => commonsbooking_sanitizeHTML( __('Booking confirmed email subject', 'commonsbooking') ),
