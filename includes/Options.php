@@ -123,7 +123,6 @@ $options_array = array(
             'emailtemplates' => array(
                 'title'  => commonsbooking_sanitizeHTML( __('Email templates', 'commonsbooking') ),
                 'id'     => 'emailtemplates',
-                'desc'   => '',
                 'fields' => array(
                     array(
                         'name' => commonsbooking_sanitizeHTML( __('Mail-Header from E-Mail', 'commonsbooking') ),
@@ -153,31 +152,30 @@ $options_array = array(
                         'cb1_legacy_id' => 'commons-booking-settings-mail:commons-booking_mail_confirmation_body',
                         'type'          => 'textarea',
                         'default'       => commonsbooking_sanitizeHTML( __('
-                            Hi {{user:first_name}},<br>
-                            <p>thank you for booking {{item:post_title}} {{booking:booking_timeframe_date}}.
-                            </p>
-                            
-                            Pick up date and time: <b>{{booking:pickupDatetime}}</b><br>
-                            {{location:pickupInstructions}}
-                            {{booking:formattedBookingCode}}
-                            <br>
-                            Return date and time:
-                            <b>{{booking:returnDatetime}}</b>
-                            <br><br>
-                            <b>Location address</b><br>
-                            {{location:formattedAddress}}<br>
-                            {{location:formattedContactInfoOneLine}}
-                            <br>
-                            <p>Click here to see or cancel your booking: {{booking:bookingLink}}.<br>
-                            <b>Notice:</b> You need to be logged in to see your booking. <br>
-                            If the link leads you to the homepage of the webseite,
-                            please login first and then click the link again.<br></p>
-                            
-                            <h3>Your information</h3>
-                            <p>Login: {{user:user_nicename}}<br>
-                            Name: {{user:first_name}} {{user:last_name}}.</p>
-                            
-                            <p>Thanks, the Team. </p>
+Hi {{user:first_name}},<br>
+<br>
+thank you for booking {{item:post_title}} {{booking:formattedBookingDate}}.<br>
+<br>
+Pick up date and time: <strong>{{booking:pickupDatetime}}</strong><br>
+Return date and time: <strong>{{booking:returnDatetime}}</strong><br>
+<br>
+{{location:formattedPickupInstructions}}
+{{booking:formattedBookingCode}}
+<strong>Location</strong><br>
+{{location:formattedAddress}}
+{{location:formattedContactInfoOneLine}}<br>
+<br>
+<strong>Click here to see or cancel your booking: {{booking:bookingLink}}</strong><br>
+<br>
+<strong>Notice:</strong> You need to be logged in to see your booking.<br>
+If the link leads you to the homepage of the webseite,
+please login first and then click the link again.<br>
+<br>
+<strong>Your information:</strong><br>
+Login: {{user:user_login}}<br>
+Name: {{user:first_name}} {{user:last_name}}<br>
+<br>
+Thanks, the Team.
                         ', 'commonsbooking') ),
                     ),
                     array(
@@ -191,14 +189,11 @@ $options_array = array(
                         'id'      => 'emailtemplates_mail-booking-canceled-body',
                         'type'    => 'textarea',
                         'default' => commonsbooking_sanitizeHTML( __('
-                            Hi {{user:first_name}},<br>
-                            <p>your booking {{item:post_title}} at {{location:post_title}} {{booking:booking_timeframe_date}} has been cancelled.
-                            </p>               
-                            <h3>Your information</h3>
-                            <p>Login: {{user:user_nicename}}<br>
-                            Name: {{user:first_name}} {{user:last_name}}.</p>
-                            
-                            <p>Thanks, the Team. </p>
+Hi {{user:first_name}},<br>
+<br>
+your booking of {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} has been cancelled.<br>
+<br>          
+Thanks, the Team.
                             ', 'commonsbooking') ),
                     ),
                 )
