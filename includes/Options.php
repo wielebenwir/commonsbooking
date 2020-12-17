@@ -25,7 +25,7 @@ $options_array = array(
                             <p>To get startet visit our tutorials and documentation on <a href="https://commonsbooking.org/docs">https://commonsbooking.org/docs</a></p>
 
                             <h2>Questions or bug reports?</h2>
-                            <p>Ask your questions or send us your bug reports here https://commonsbooking.org/support</p>
+                            <p>Ask your questions or send us your bug reports here <a href="https://commonsbooking.org/kontakt/">https://commonsbooking.org/kontakt/</a></p>
 
                             <h2>Contribute</h2>
                             The future of this plugin depends on your support. You can support us by make a donation on our website: <a href="https://www.wielebenwir.de/verein/unterstutzen">wielebenwir</a>'
