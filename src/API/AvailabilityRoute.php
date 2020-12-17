@@ -60,8 +60,15 @@ class AvailabilityRoute extends BaseRoute
                     $dateTimeend->setTimestamp($slot['timestampend']);
                     $availabilitySlot->end = $dateTimeend->format('Y-m-d\TH:i:sP');
 
-                    $availabilitySlot->locationId = $timeframe->getLocation()->ID . "";
-                    $availabilitySlot->itemId = $timeframe->getItem()->ID . "";
+                    $availabilitySlot->locationId = "";
+                    if($timeframe->getLocation()) {
+                        $availabilitySlot->locationId = $timeframe->getLocation()->ID . "";
+                    }
+
+                    $availabilitySlot->itemId = "";
+                    if($timeframe->getLocation()) {
+                        $availabilitySlot->itemId = $timeframe->getItem()->ID . "";
+                    }
 
                     $slotId = md5(serialize($availabilitySlot));
                     if(!in_array($slotId, $doneSlots)) {
