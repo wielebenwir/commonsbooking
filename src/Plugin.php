@@ -93,6 +93,8 @@ class Plugin
         add_action('init', array(self::class, 'registerCustomPostTypes'));
         add_action('init', array(self::class, 'registerPostStates'));
 
+
+
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerItemTaxonomy'), 0);
 
@@ -278,6 +280,9 @@ class Plugin
             register_post_type($customPostType::getPostType(), $customPostType->getArgs());
             $customPostType->initListView();
         }
+
+        // Clear the permalinks after the post types has been registered to avoid 404-errors.
+        flush_rewrite_rules(); 
     }
 
     /**
@@ -396,6 +401,41 @@ class Plugin
         $enabled = Settings::getOption('commonsbooking_options_migration', 'enable-cb1-user-fields');
         if ( $enabled == 'on') {
             new CB1UserFields;
+        }
+    }
+
+    /**
+     * set default option values if option field is empty and a default value is set in Options.php
+     *
+     * @return void
+     */
+    public function setDefaultOptionsonActivation() {
+
+        global $options_array;
+
+        var_dump($options_array);
+        
+        foreach ($this->groups as $group_id => $group) {
+
+            $fields = $group['fields'];
+            $option_key = $this->option_key . '_' . $this->id;
+            $option = array();
+            
+            foreach ($fields as $field) {
+                
+                // we check if there there is a default value for this field
+                if (array_key_exists( 'default', $field ) ) {
+                    // if field-value is not set already we add the default value to the options array
+                    if ( empty ( Settings::getOption($option_key, $field['id'] ) ) ) {
+                        $option[$field['id']] = $field['default'];
+                    }
+                }
+            }
+
+            // update option 
+            if (!empty ( $option ) ) {
+                update_option($option_key, $option);
+            }
         }
     }
 }
