@@ -123,7 +123,7 @@ class ItemsRoute extends BaseRoute
         $preparedItem->id = $item->ID . '';
         $preparedItem->name = $item->post_title;
         $preparedItem->url         = get_permalink($item->ID);
-        $preparedItem->description = $item->post_content;
+        $preparedItem->description = $this->escapeJsonString($item->post_content);
         $preparedItem->ownerId     = $item->post_author;
         $preparedItem->projectId   = "1";
 
