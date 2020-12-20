@@ -81,10 +81,15 @@ class OptionsTab
     
     /**
      * set default option values if option field is empty and a default value is set in Options.php
+     * TODO: needs to be checked and optimized
      *
      * @return void
      */
     public function setDefaultPluginOptions() {
+
+        include(COMMONSBOOKING_PLUGIN_DIR . '/includes/Options.php');
+
+        $options_array;  
 
         foreach ($this->groups as $group_id => $group) {
 
