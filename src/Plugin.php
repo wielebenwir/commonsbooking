@@ -93,6 +93,8 @@ class Plugin
         add_action('init', array(self::class, 'registerCustomPostTypes'));
         add_action('init', array(self::class, 'registerPostStates'));
 
+
+
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerItemTaxonomy'), 0);
 
