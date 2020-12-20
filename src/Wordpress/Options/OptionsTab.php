@@ -78,37 +78,6 @@ class OptionsTab
         }
     }
     
-    /**
-     * set default option values if option field is empty and a default value is set in OptionsArray.php
-     * TODO: needs to be checked and optimized - we need to call this on plugin activation hook / its not called right now from anywhere
-     *
-     * @return void
-     */
-    public function setDefaultPluginOptions() {
-
-        foreach ($this->groups as $group_id => $group) {
-
-            $fields = $group['fields'];
-            $option_key = $this->option_key . '_' . $this->id;
-            $option = array();
-            
-            foreach ($fields as $field) {
-                
-                // we check if there there is a default value for this field
-                if (array_key_exists( 'default', $field ) ) {
-                    // if field-value is not set already we add the default value to the options array
-                    if ( empty ( Settings::getOption($option_key, $field['id'] ) ) ) {
-                        $option[$field['id']] = $field['default'];
-                    }
-                }
-            }
-
-            // update option 
-            if (!empty ( $option ) ) {
-                update_option($option_key, $option);
-            }
-        }
-    }
 
     /**
      * If array contains title or description, create a new row contaning this text
