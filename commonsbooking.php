@@ -26,6 +26,7 @@ define('COMMONSBOOKING_VERSION', '2.2.8');
 define('COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking');
 define('COMMONSBOOKING_MENU_SLUG', COMMONSBOOKING_PLUGIN_SLUG . '-menu');
 define('COMMONSBOOKING_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('COMMONSBOOKING_PLUGIN_FILE', __FILE__);
 define('COMMONSBOOKING_METABOX_PREFIX', '_cb_'); //Start with an underscore to hide fields from custom fields list
 
 global $cb_db_version;
@@ -394,6 +395,9 @@ function commonsbooking_sanitizeArrayorString($array_or_string) {
 }
 
 // Initialize booking codes table
+register_activation_hook(__FILE__, array(\CommonsBooking\Repository\BookingCodes::class, 'initBookingCodesTable'));
+
+// set default options
 register_activation_hook(__FILE__, array(\CommonsBooking\Repository\BookingCodes::class, 'initBookingCodesTable'));
 
 // Ad new cron-Interval

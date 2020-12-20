@@ -94,6 +94,10 @@ class Plugin
         add_action('init', array(self::class, 'registerCustomPostTypes'));
         add_action('init', array(self::class, 'registerPostStates'));
 
+        // flush rewrite rules on plugin registration to set permalinks for registered costum post types
+        register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'FlushRewriteRulesonActivation' ) );
+        register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'FlushRewriteRules' ) );
+
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerItemTaxonomy'), 0);
 
@@ -117,7 +121,7 @@ class Plugin
         add_action('init', array(self::class, 'RegisterAdminOptions'), 0);
 
         // set Options default values on admin activation
-        register_activation_hook( __FILE__, array( \CommonsBooking\Wordpress\Options::class, 'SetOptionsDefaultValues' ) );
+        register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( \CommonsBooking\Wordpress\Options::class, 'SetOptionsDefaultValues' ) );
     }
 
     /**
