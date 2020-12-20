@@ -397,9 +397,6 @@ function commonsbooking_sanitizeArrayorString($array_or_string) {
 // Initialize booking codes table
 register_activation_hook(__FILE__, array(\CommonsBooking\Repository\BookingCodes::class, 'initBookingCodesTable'));
 
-// set default options
-register_activation_hook(__FILE__, array(\CommonsBooking\Repository\BookingCodes::class, 'initBookingCodesTable'));
-
 // Ad new cron-Interval
 function commonsbooking_cron_interval($schedules)
 {
