@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2020-12-17 14:28+0100\n"
-"PO-Revision-Date: 2020-12-17 14:28+0100\n"
+"POT-Creation-Date: 2020-12-20T23:29:53+00:00\n"
+"PO-Revision-Date: 2020-12-21 00:34+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -24,24 +24,44 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-1: vendor\n"
 "X-Poedit-SearchPathExcluded-2: node_modules\n"
 
-#: includes/Options.php:12
+#. Plugin Name of the plugin
+#: src/Wordpress/Options/OptionsTab.php:40
+msgid "CommonsBooking"
+msgstr "CommonsBooking"
+
+#. Plugin URI of the plugin
+msgid "https://commonsbooking.org"
+msgstr "https://commonsbooking.org"
+
+#. Description of the plugin
+msgid "A wordpress plugin for management and booking of common goods."
+msgstr "Ein Wordpress-Plugin für die Verwaltung und Buchung von Gemeingütern."
+
+#. Author of the plugin
+msgid "wielebenwir e.V."
+msgstr "wielebenwir e.V."
+
+#. Author URI of the plugin
+msgid "https://wielebenwir.de/"
+msgstr "https://wielebenwir.de/"
+
+#: includes/OptionsArray.php:12
 msgid "Welcome"
 msgstr "Willkommen"
 
-#: includes/Options.php:18
+#: includes/OptionsArray.php:18
 msgid "Welcome to CommonsBooking"
 msgstr "Willkommen bei CommonsBooking"
 
 #. translators: %s = version number
-#: includes/Options.php:22
-#, php-format
+#: includes/OptionsArray.php:22
 msgid ""
 "You are using CommonsBooking Version %s\n"
 "\n"
 "                            <h2>How to start</h2>\n"
 "                            <p>To get startet visit our tutorials and "
-"documentation on <a href=\"https://commonsbooking.org/docs\">https://"
-"commonsbooking.org/docs</a></p>\n"
+"documentation on <a href=\"https://commonsbooking.org/dokumentation"
+"\">https://commonsbooking.org/dokumentation</a></p>\n"
 "\n"
 "                            <h2>Questions or bug reports?</h2>\n"
 "                            <p>Ask your questions or send us your bug "
@@ -57,8 +77,8 @@ msgstr ""
 "\n"
 "                <h2>Wie Du startest</h2>\n"
 "                <p>Um zu starten, schaue dir unsere Tutorials und "
-"Dokumentation auf <a href=\"https://commonsbooking.org/docs\">https://"
-"commonsbooking.org/docs</a> an</p>\n"
+"Dokumentation auf <a href=\"https://commonsbooking.org/"
+"dokumentation“>https://commonsbooking.org/docs</a> an</p>\n"
 "\n"
 "                <h2>Fragen oder Fehlermeldungen?</h2>\n"
 "                <p>Stelle deine Fragen oder sende uns Fehlermeldungen unter: "
@@ -70,16 +90,15 @@ msgstr ""
 "Unterstützung. Du kannst uns mit einer Spende unterstützen unter:  <a href="
 "\"https://www.wielebenwir.de/verein/unterstutzen\">wielebenwir.de</a>"
 
-#: includes/Options.php:42
+#: includes/OptionsArray.php:42
 msgid "General"
 msgstr "Allgemein"
 
-#: includes/Options.php:47
+#: includes/OptionsArray.php:47
 msgid "Naming and permalinks"
 msgstr "Namen und Permalinks"
 
-#: includes/Options.php:52
-#, php-format
+#: includes/OptionsArray.php:51
 msgid ""
 "Customize names & slugs. <br><b>Important:</b> After changing these "
 "settings, the option <a href=\"%s\">Permalinks</a> in Wordpress settings "
@@ -90,233 +109,210 @@ msgstr ""
 "\">Permalinks</a> aufgerufen und erneut gespeichert werden, um die hier "
 "gemachten Änderungen zu aktivieren."
 
-#: includes/Options.php:68
+#: includes/OptionsArray.php:68
 msgid "Items slug"
 msgstr "Artikel slug"
 
-#: includes/Options.php:73
-#, php-format
+#. translators: %s = example url (like website.com/cb-items/)
+#: includes/OptionsArray.php:72
 msgid "The url for the items archive. E.g: %s"
 msgstr "Die URL für das Buchungsarchiv. Z.B.: %s"
 
-#: includes/Options.php:79
+#: includes/OptionsArray.php:79
 msgid "Locations slug"
 msgstr "Standorte Slug"
 
-#: includes/Options.php:84
-#, php-format
+#. translators: %s = example url (like website.com/cb-locations/)
+#: includes/OptionsArray.php:83
 msgid "The url for the locations archive. E.g: %s"
 msgstr "Die URL für das Buchungsarchiv. Z.B.: %s"
 
-#: includes/Options.php:99 includes/Options.php:104 includes/Options.php:109
-#: src/Wordpress/CustomPostType/Timeframe.php:745
+#: includes/OptionsArray.php:99 includes/OptionsArray.php:104
+#: includes/OptionsArray.php:109 src/Wordpress/CustomPostType/Timeframe.php:745
 msgid "Booking Codes"
 msgstr "Buchungs-Codes"
 
-#: includes/Options.php:120
+#: includes/OptionsArray.php:120
 msgid "Templates"
 msgstr "Vorlagen"
 
-#: includes/Options.php:124
+#: includes/OptionsArray.php:124
 msgid "Email templates"
 msgstr "E-Mail Vorlagen"
 
-#: includes/Options.php:129
+#: includes/OptionsArray.php:128
 msgid "Mail-Header from E-Mail"
 msgstr "Absender E-Mail Mail-Adresse"
 
-#: includes/Options.php:130
+#: includes/OptionsArray.php:129
 msgid "E-Mail that will be shown as sender in generated emails"
 msgstr ""
 "E-Mail, die als Absender in automatisch versendeten E-Mails angezeigt wird"
 
-#: includes/Options.php:136
+#: includes/OptionsArray.php:135
 msgid "Mail-Header from Name"
 msgstr "Absender E-Mail Name"
 
-#: includes/Options.php:137
+#: includes/OptionsArray.php:136
 msgid "Name that will be shown as sender in generated emails"
 msgstr ""
 "Name, der als Absender in automatisch versendeten E-Mails angezeigt wird"
 
-#: includes/Options.php:143
+#: includes/OptionsArray.php:142
 msgid "Booking confirmed email subject"
 msgstr "E-Mail-Betreff für bestätigte Buchungen"
 
-#: includes/Options.php:147
+#: includes/OptionsArray.php:146
 msgid ""
 "Your booking {{item:post_title}} at {{location:post_title}} {{booking:"
-"booking_timeframe_date}} "
+"formattedBookingDate}} "
 msgstr ""
 "Deine Buchung von {{item:post_title}} am Standort {{location:post_title}} "
-"{{booking:booking_timeframe_date}} "
+"{{booking:formattedBookingDate}} "
 
-#: includes/Options.php:151
+#: includes/OptionsArray.php:150
 msgid "Booking confirmed email body"
 msgstr "E-Mail-Text für bestätige Buchungen"
 
-#: includes/Options.php:155
+#: includes/OptionsArray.php:154
 msgid ""
 "\n"
-"                            Hi {{user:first_name}},<br>\n"
-"                            <p>thank you for booking {{item:post_title}} "
-"{{booking:booking_timeframe_date}}.\n"
-"                            </p>\n"
-"                            \n"
-"                            Pick up date and time: <b>{{booking:"
-"pickupDatetime}}</b><br>\n"
-"                            {{location:pickupInstructions}}\n"
-"                            {{booking:formattedBookingCode}}\n"
-"                            <br>\n"
-"                            Return date and time:\n"
-"                            <b>{{booking:returnDatetime}}</b>\n"
-"                            <br><br>\n"
-"                            <b>Location address</b><br>\n"
-"                            {{location:formattedAddress}}<br>\n"
-"                            {{location:formattedContactInfoOneLine}}\n"
-"                            <br>\n"
-"                            <p>Click here to see or cancel your booking: "
-"{{booking:bookingLink}}.<br>\n"
-"                            <b>Notice:</b> You need to be logged in to see "
-"your booking. <br>\n"
-"                            If the link leads you to the homepage of the "
-"webseite,\n"
-"                            please login first and then click the link again."
-"<br></p>\n"
-"                            \n"
-"                            <h3>Your information</h3>\n"
-"                            <p>Login: {{user:user_nicename}}<br>\n"
-"                            Name: {{user:first_name}} {{user:last_name}}.</"
-"p>\n"
-"                            \n"
-"                            <p>Thanks, the Team. </p>\n"
+"Hi {{user:first_name}},<br>\n"
+"<br>\n"
+"thank you for booking {{item:post_title}} {{booking:formattedBookingDate}}."
+"<br>\n"
+"<br>\n"
+"Pick up: <strong>{{booking:pickupDatetime}}</strong><br>\n"
+"Return date: <strong>{{booking:returnDatetime}}</strong>\n"
+"{{location:formattedPickupInstructions}}\n"
+"{{booking:formattedBookingCode}}\n"
+"<br>\n"
+"<strong>Location</strong><br>\n"
+"{{location:formattedAddress}}\n"
+"{{location:formattedContactInfoOneLine}}\n"
+"<br>\n"
+"<strong>Click here to see or cancel your booking: {{booking:bookingLink}}</"
+"strong><br>\n"
+"<br>\n"
+"<strong>Notice:</strong> You need to be logged in to see your booking.<br>\n"
+"If the link leads you to the homepage of the webseite,\n"
+"please login first and then click the link again.<br>\n"
+"<br>\n"
+"<strong>Your information:</strong><br>\n"
+"Login: {{user:user_login}}<br>\n"
+"Name: {{user:first_name}} {{user:last_name}}<br>\n"
+"<br>\n"
+"Thanks, the Team.\n"
 "                        "
 msgstr ""
 "\n"
-"            Hallo {{user:first_name}},<br>\n"
-"            <p>vielen Dank für deine Buchung von {{item:post_title}} "
-"{{booking:booking_timeframe_date}}.\n"
-"            </p>\n"
-"            \n"
-"            Abholung: <b>{{booking:pickupDatetime}}</b><br>\n"
-"            {{location:pickupInstructions}}\n"
-"             {{booking:formattedBookingCode}}\n"
-"            <br>\n"
-"            \n"
-"           Rückgabe:\n"
-"            <b>{{booking:returnDatetime}}</b>\n"
-"            <br><br>\n"
-"            <b>Standort:</b><br>\n"
-"             {{location:formattedAddress}}<br>\n"
-"            {{location:formattedContactInfoOneLine}}\n"
-"\n"
+"Hallo {{user:first_name}},<br>\n"
 "<br>\n"
-"            <p>Klicke auf den Link, um deine Buchung zu sehen oder zu "
-"stornieren: {{booking:bookingLink}}.<br>\n"
-"<b>Hinweis</b>: Du musst angemeldet sein, um deine Buchung sehen zu können. "
-"Falls dich der Link zur Startseite führt, logge dich bitte zunächst\n"
-"ein und klicke dann erneut auf den Link in der E-Mail.</p><br>\n"
-"            \n"
-"            <b>Deine gespeicherten Informationen</b>\n"
+"vielen Dank für deine Buchung von {{item:post_title}} {{booking:"
+"formattedBookingDate}}.<br>\n"
 "<br>\n"
-"\n"
-" <p>Login: {{user:user_nicename}}<br>\n"
-" Name: {{user:first_name}} {{user:last_name}}.</p>\n"
-"            <p>Vielen Dank, das Team</p>\n"
+"Abholung: <strong>{{booking:pickupDatetime}}</strong><br>\n"
+"Rückgabe: <strong>{{booking:returnDatetime}}</strong>\n"
+"{{location:formattedPickupInstructions}}\n"
+"{{booking:formattedBookingCode}}\n"
+"<br>\n"
+"<strong>Standort</strong><br>\n"
+"{{location:formattedAddress}}\n"
+"{{location:formattedContactInfoOneLine}}\n"
+"<br>\n"
+"<strong>Klicke hier, um deine Buchung zu sehen und zu stornieren: {{booking:"
+"bookingLink}}</strong><br>\n"
+"<br>\n"
+"<strong>Hinweis:</strong> Du musst eingeloggt sein, um deine Buchung sehen "
+"zu können.<br>\n"
+"Wenn dich der Link zur Hauptseite führt,\n"
+"logge dich zunächst ein und klicke dann erneut auf den Link.<br>\n"
+"<br>\n"
+"<strong>Deine Daten:</strong><br>\n"
+"Login: {{user:user_login}}<br>\n"
+"Name: {{user:first_name}} {{user:last_name}}<br>\n"
+"<br>\n"
+"Vielen Dank, das Team.\n"
 "                        "
 
-#: includes/Options.php:184
+#: includes/OptionsArray.php:182
 msgid "Booking canceled email subject"
 msgstr "E-Mail-Betreff für stornierte Buchungen"
 
-#: includes/Options.php:187
+#: includes/OptionsArray.php:185
 msgid ""
 "Booking canceled: {{item:post_title}} at {{location:post_title}} {{booking:"
-"booking_timeframe_date}}"
+"formattedBookingDate}}"
 msgstr ""
 "Buchung storniert: {{item:post_title}} am Standort {{location:post_title}} "
-"{{booking:booking_timeframe_date}}"
+"{{booking:formattedBookingDate}}"
 
-#: includes/Options.php:190
+#: includes/OptionsArray.php:188
 msgid "Booking canceled email body"
 msgstr "E-Mail-Text für stornierte Buchungen"
 
-#: includes/Options.php:193
+#: includes/OptionsArray.php:191
 msgid ""
 "\n"
-"                            Hi {{user:first_name}},<br>\n"
-"                            <p>your booking {{item:post_title}} at "
-"{{location:post_title}} {{booking:booking_timeframe_date}} has been "
-"cancelled.\n"
-"                            </p>               \n"
-"                            <h3>Your information</h3>\n"
-"                            <p>Login: {{user:user_nicename}}<br>\n"
-"                            Name: {{user:first_name}} {{user:last_name}}.</"
-"p>\n"
-"                            \n"
-"                            <p>Thanks, the Team. </p>\n"
+"Hi {{user:first_name}},<br>\n"
+"<br>\n"
+"your booking of {{item:post_title}} at {{location:post_title}} {{booking:"
+"formattedBookingDate}} has been canceled.<br>\n"
+"<br>          \n"
+"Thanks, the Team.\n"
 "                            "
 msgstr ""
 "\n"
-"                            Hallo {{user:first_name}},<br>\n"
-"                            <p>Deine Buchung von {{item:post_title}} am "
-"Standort {{location:post_title}} {{booking:booking_timeframe_date}} wurde "
-"storniert.\n"
-"                            </p>               \n"
-"                            <b>Deine Informationen</b>\n"
-"                            <p>Login: {{user:user_nicename}}<br>\n"
-"                            <p>Name: {{user:first_name}} {{user:last_name}}."
-"</p>\n"
-"                            \n"
-"                            <p>Vielen Dank.</p>\n"
+"Hallo {{user:first_name}},<br>\n"
+"<br>\n"
+"Deine Buchung von {{item:post_title}} am Standort {{location:post_title}} "
+"{{booking:formattedBookingDate}} wurde storniert.<br>\n"
+"<br>          \n"
+"Vielen Dank, das Team.\n"
 "                            "
 
-#: includes/Options.php:281
+#: includes/OptionsArray.php:276
 msgid "Migration"
 msgstr "Migration"
 
-#: includes/Options.php:285
+#: includes/OptionsArray.php:280
 msgid "Migrate from Commons Booking Version 0.X"
 msgstr "Migriere von Commons Booking Version 0.X"
 
-#: includes/Options.php:287
+#: includes/OptionsArray.php:282
 msgid ""
 "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: "
 "locations, items, timeframes and bookings. <br>Please read the documentation "
-"on <a href=\"https://commonsbooking.org/docs/\">https://commonsbooking.org/"
-"docs/</a> before you start migration."
+"on <a href=\"https://commonsbooking.org/dokumentation/\">https://"
+"commonsbooking.org/dokumentation/</a> before you start migration."
 msgstr ""
-"Migriere  Daten aus CommonsBooking Version 0.X. <br>Die Migration umfasst: "
+"Migriere Daten aus CommonsBooking Version 0.X. <br>Die Migration umfasst: "
 "Standorte, Artikel, Zeitrahmen und Buchungen. <br>Bitte lies die "
-"Dokumentation auf <a href=\"https://commonsbooking.org/docs/\">https://"
-"commonsbooking.org/docs/,</a> bevor Du mit der Migration beginnst."
+"Dokumentation auf <a href=\"https://commonsbooking.org/dokumentation/"
+"„>https://commonsbooking.org/docs/,</a> bevor Du mit der Migration beginnst."
 
-#: includes/Options.php:290
+#: includes/OptionsArray.php:285
 msgid "Start Migration"
 msgstr "Migration starten"
 
-#: includes/Options.php:298
+#: includes/OptionsArray.php:293
 msgid "CommonsBooking Version 0.X profile fields"
 msgstr "CommonsBooking Version 0.X Nutzerprofil-Felder"
 
-#: includes/Options.php:300
+#: includes/OptionsArray.php:295
 msgid ""
 "Enable the following legacy CommonsBooking Version 0.X user profile fields:"
 msgstr ""
 "Aktiviere die folgenden veralteten Nutzer-Profilfelder aus Commons Booking "
 "Version 0.X:"
 
-#: includes/Options.php:303
+#: includes/OptionsArray.php:298
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: includes/Options.php:308
+#: includes/OptionsArray.php:303
 msgid "Terms & Services Url"
 msgstr "Nutzungsbedingungen & Services URL"
-
-#: src/API/AvailabilityRoute.php:82
-msgid "message"
-msgstr ""
 
 #: src/Messages/Messages.php:62
 msgid ""
@@ -328,19 +324,16 @@ msgstr ""
 
 #. translators: %s = Booking code
 #: src/Model/Booking.php:65
-#, php-format
 msgid "Your booking code is: %s"
 msgstr "Dein Buchungscode lautet: %s"
 
 #. translators: %s = date in wordpress defined format
 #: src/Model/Booking.php:166
-#, php-format
 msgid " on %s "
 msgstr " am %s "
 
 #. translators: %1 = startdate, %2 = enddate in wordpress defined format
 #: src/Model/Booking.php:169
-#, php-format
 msgid " from %1$s until %2$s "
 msgstr " von %1$s bis %2$s "
 
@@ -387,13 +380,11 @@ msgstr "Hier verfügbar"
 
 #. translators: %s = date in wordpress defined format
 #: src/Model/Timeframe.php:43
-#, php-format
 msgid "on %s"
 msgstr "am %s"
 
 #. translators: %s = date in wordpress defined format
 #: src/Model/Timeframe.php:47
-#, php-format
 msgid "from %s"
 msgstr "von %s"
 
@@ -403,13 +394,11 @@ msgstr "dauerhaft"
 
 #. translators: %1$s = startdate, second %2$s = enddate in wordpress defined format
 #: src/Model/Timeframe.php:54
-#, php-format
 msgid " from %1$s until %2$s"
 msgstr " von %1$s bis %2$s"
 
 #. translators: %s = enddate in wordpress defined format
 #: src/Model/Timeframe.php:58
-#, php-format
 msgid " until %s"
 msgstr " bis %s"
 
@@ -422,7 +411,6 @@ msgstr ""
 
 #. translators: %1$s = timeframe-ID, %2$s is timeframe post_title
 #: src/Model/Timeframe.php:212
-#, php-format
 msgid ""
 "Overlapping bookable timeframes are only allowed to have the same grid. See "
 "overlapping timeframe ID: %1$s: %2$s"
@@ -432,7 +420,6 @@ msgstr ""
 
 #. translators: first %s = timeframe-ID, second %s is timeframe post_title
 #: src/Model/Timeframe.php:222
-#, php-format
 msgid ""
 "time periods are not allowed to overlap. Please check the other timeframe to "
 "avoid overlapping time periods during one specific day. See affected "
@@ -444,7 +431,6 @@ msgstr ""
 
 #. translators: first %s = timeframe-ID, second %s is timeframe post_title
 #: src/Model/Timeframe.php:232
-#, php-format
 msgid ""
 "Date periods are not allowed to overlap. Please check the other timeframe to "
 "avoid overlapping Date periods. See affected timeframe ID: %1$s: %2$s"
@@ -453,11 +439,11 @@ msgstr ""
 "überlappende Zeiträume an einem bestimmten Tag zu vermeiden. Siehe "
 "betroffene Zeitrahmen-ID: %1$s: %2$s"
 
-#: src/Plugin.php:305
+#: src/Plugin.php:322
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:329
+#: src/Plugin.php:346
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
@@ -507,8 +493,8 @@ msgstr "Ich akzeptiere die Nutzungsbedindungen"
 msgid "Please accept the terms & conditions"
 msgstr "Bitte akzeptiere die Nutzungsbedindungen"
 
+#. translators: %s = terms and service url
 #: src/Repository/CB1UserFields.php:172
-#, php-format
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
 msgstr "<a href=\"%s\" target=\"_blank\">Lies die Nutzungsbedingungen</a>"
 
@@ -936,11 +922,11 @@ msgstr "Filtern nach Standort "
 msgid "Filter By Status "
 msgstr "Filtern nach Status "
 
-#: src/Wordpress/CustomPostType/Timeframe.php:438
+#: src/Wordpress/CustomPostType/Timeframe.php:437
 msgid "Start date"
 msgstr "Startdatum"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:442
+#: src/Wordpress/CustomPostType/Timeframe.php:441
 msgid "End date"
 msgstr "Enddatum"
 
@@ -1164,18 +1150,6 @@ msgstr "Zeitrahmenbild entfernen"
 msgid "use as timeframe image"
 msgstr "Verwendung als Zeitrahmenbild"
 
-#. Plugin Name of the plugin/theme
-#: src/Wordpress/Options/OptionsTab.php:38
-msgid "CommonsBooking"
-msgstr "CommonsBooking"
-
-#: src/Wordpress/PostStatus/PostStatus.php:48
-#, php-format
-msgid " <span class=\"count\">(%s)</span>"
-msgid_plural " <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
-
 #: templates/booking-single-notallowed.php:10
 msgid "You are not allowed to access this booking."
 msgstr "Du darfst nicht auf diese Buchung zugreifen."
@@ -1222,7 +1196,6 @@ msgstr "Buche den Artikel an dieser Station"
 
 #. translators: %1$s: wp_login_url, 1$s: wp_registration_url
 #: templates/item-single.php:37 templates/location-single.php:38
-#, php-format
 msgid ""
 "To be able to book, you must first <a href=\"%1$s\">login</a> or <a href="
 "\"%2$s\">register as new user</a>."
@@ -1267,21 +1240,104 @@ msgstr "Bitte wähle das Rückgabedatum im Kalender aus"
 msgid "Continue to booking confirmation"
 msgstr "Weiter zur Buchungsprüfung"
 
-#. Plugin URI of the plugin/theme
-msgid "https://commonsbooking.org"
-msgstr "https://commonsbooking.org"
+#~ msgid ""
+#~ "\n"
+#~ "                            Hi {{user:first_name}},<br>\n"
+#~ "                            <p>thank you for booking {{item:post_title}} "
+#~ "{{booking:booking_timeframe_date}}.\n"
+#~ "                            </p>\n"
+#~ "                            \n"
+#~ "                            Pick up date and time: <b>{{booking:"
+#~ "pickupDatetime}}</b><br>\n"
+#~ "                            {{location:pickupInstructions}}\n"
+#~ "                            {{booking:formattedBookingCode}}\n"
+#~ "                            <br>\n"
+#~ "                            Return date and time:\n"
+#~ "                            <b>{{booking:returnDatetime}}</b>\n"
+#~ "                            <br><br>\n"
+#~ "                            <b>Location address</b><br>\n"
+#~ "                            {{location:formattedAddress}}<br>\n"
+#~ "                            {{location:formattedContactInfoOneLine}}\n"
+#~ "                            <br>\n"
+#~ "                            <p>Click here to see or cancel your booking: "
+#~ "{{booking:bookingLink}}.<br>\n"
+#~ "                            <b>Notice:</b> You need to be logged in to "
+#~ "see your booking. <br>\n"
+#~ "                            If the link leads you to the homepage of the "
+#~ "webseite,\n"
+#~ "                            please login first and then click the link "
+#~ "again.<br></p>\n"
+#~ "                            \n"
+#~ "                            <h3>Your information</h3>\n"
+#~ "                            <p>Login: {{user:user_nicename}}<br>\n"
+#~ "                            Name: {{user:first_name}} {{user:last_name}}."
+#~ "</p>\n"
+#~ "                            \n"
+#~ "                            <p>Thanks, the Team. </p>\n"
+#~ "                        "
+#~ msgstr ""
+#~ "\n"
+#~ "            Hallo {{user:first_name}},<br>\n"
+#~ "            <p>vielen Dank für deine Buchung von {{item:post_title}} "
+#~ "{{booking:booking_timeframe_date}}.\n"
+#~ "            </p>\n"
+#~ "            \n"
+#~ "            Abholung: <b>{{booking:pickupDatetime}}</b><br>\n"
+#~ "            {{location:pickupInstructions}}\n"
+#~ "             {{booking:formattedBookingCode}}\n"
+#~ "            <br>\n"
+#~ "            \n"
+#~ "           Rückgabe:\n"
+#~ "            <b>{{booking:returnDatetime}}</b>\n"
+#~ "            <br><br>\n"
+#~ "            <b>Standort:</b><br>\n"
+#~ "             {{location:formattedAddress}}<br>\n"
+#~ "            {{location:formattedContactInfoOneLine}}\n"
+#~ "\n"
+#~ "<br>\n"
+#~ "            <p>Klicke auf den Link, um deine Buchung zu sehen oder zu "
+#~ "stornieren: {{booking:bookingLink}}.<br>\n"
+#~ "<b>Hinweis</b>: Du musst angemeldet sein, um deine Buchung sehen zu "
+#~ "können. Falls dich der Link zur Startseite führt, logge dich bitte "
+#~ "zunächst\n"
+#~ "ein und klicke dann erneut auf den Link in der E-Mail.</p><br>\n"
+#~ "            \n"
+#~ "            <b>Deine gespeicherten Informationen</b>\n"
+#~ "<br>\n"
+#~ "\n"
+#~ " <p>Login: {{user:user_nicename}}<br>\n"
+#~ " Name: {{user:first_name}} {{user:last_name}}.</p>\n"
+#~ "            <p>Vielen Dank, das Team</p>\n"
+#~ "                        "
 
-#. Description of the plugin/theme
-msgid "A wordpress plugin for management and booking of common goods."
-msgstr "Ein Wordpress-Plugin für die Verwaltung und Buchung von Gemeingütern."
-
-#. Author of the plugin/theme
-msgid "wielebenwir e.V."
-msgstr "wielebenwir e.V."
-
-#. Author URI of the plugin/theme
-msgid "https://wielebenwir.de/"
-msgstr "https://wielebenwir.de/"
+#~ msgid ""
+#~ "\n"
+#~ "                            Hi {{user:first_name}},<br>\n"
+#~ "                            <p>your booking {{item:post_title}} at "
+#~ "{{location:post_title}} {{booking:booking_timeframe_date}} has been "
+#~ "cancelled.\n"
+#~ "                            </p>               \n"
+#~ "                            <h3>Your information</h3>\n"
+#~ "                            <p>Login: {{user:user_nicename}}<br>\n"
+#~ "                            Name: {{user:first_name}} {{user:last_name}}."
+#~ "</p>\n"
+#~ "                            \n"
+#~ "                            <p>Thanks, the Team. </p>\n"
+#~ "                            "
+#~ msgstr ""
+#~ "\n"
+#~ "                            Hallo {{user:first_name}},<br>\n"
+#~ "                            <p>Deine Buchung von {{item:post_title}} am "
+#~ "Standort {{location:post_title}} {{booking:booking_timeframe_date}} wurde "
+#~ "storniert.\n"
+#~ "                            </p>               \n"
+#~ "                            <b>Deine Informationen</b>\n"
+#~ "                            <p>Login: {{user:user_nicename}}<br>\n"
+#~ "                            <p>Name: {{user:first_name}} {{user:"
+#~ "last_name}}.</p>\n"
+#~ "                            \n"
+#~ "                            <p>Vielen Dank.</p>\n"
+#~ "                            "
 
 #, php-format
 #~ msgid " from %1$s until %1$s"

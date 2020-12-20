@@ -2,20 +2,20 @@
 # This file is distributed under the same license as the CommonsBooking plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: CommonsBooking 2.2.7\n"
+"Project-Id-Version: CommonsBooking 2.2.8\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-12-17T12:56:50+00:00\n"
+"POT-Creation-Date: 2020-12-20T23:29:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
 
 #. Plugin Name of the plugin
-#: src/Wordpress/Options/OptionsTab.php:38
+#: src/Wordpress/Options/OptionsTab.php:40
 msgid "CommonsBooking"
 msgstr ""
 
@@ -35,21 +35,21 @@ msgstr ""
 msgid "https://wielebenwir.de/"
 msgstr ""
 
-#: includes/Options.php:12
+#: includes/OptionsArray.php:12
 msgid "Welcome"
 msgstr ""
 
-#: includes/Options.php:18
+#: includes/OptionsArray.php:18
 msgid "Welcome to CommonsBooking"
 msgstr ""
 
 #. translators: %s = version number
-#: includes/Options.php:22
+#: includes/OptionsArray.php:22
 msgid ""
 "You are using CommonsBooking Version %s\n"
 "\n"
 "                            <h2>How to start</h2>\n"
-"                            <p>To get startet visit our tutorials and documentation on <a href=\"https://commonsbooking.org/docs\">https://commonsbooking.org/docs</a></p>\n"
+"                            <p>To get startet visit our tutorials and documentation on <a href=\"https://commonsbooking.org/dokumentation\">https://commonsbooking.org/dokumentation</a></p>\n"
 "\n"
 "                            <h2>Questions or bug reports?</h2>\n"
 "                            <p>Ask your questions or send us your bug reports here <a href=\"https://commonsbooking.org/kontakt/\">https://commonsbooking.org/kontakt/</a></p>\n"
@@ -58,165 +58,161 @@ msgid ""
 "                            The future of this plugin depends on your support. You can support us by make a donation on our website: <a href=\"https://www.wielebenwir.de/verein/unterstutzen\">wielebenwir</a>"
 msgstr ""
 
-#: includes/Options.php:42
+#: includes/OptionsArray.php:42
 msgid "General"
 msgstr ""
 
-#: includes/Options.php:47
+#: includes/OptionsArray.php:47
 msgid "Naming and permalinks"
 msgstr ""
 
-#: includes/Options.php:51
+#: includes/OptionsArray.php:51
 msgid "Customize names & slugs. <br><b>Important:</b> After changing these settings, the option <a href=\"%s\">Permalinks</a> in Wordpress settings must be called and saved once for the changes to take effect."
 msgstr ""
 
-#: includes/Options.php:68
+#: includes/OptionsArray.php:68
 msgid "Items slug"
 msgstr ""
 
 #. translators: %s = example url (like website.com/cb-items/)
-#: includes/Options.php:72
+#: includes/OptionsArray.php:72
 msgid "The url for the items archive. E.g: %s"
 msgstr ""
 
-#: includes/Options.php:79
+#: includes/OptionsArray.php:79
 msgid "Locations slug"
 msgstr ""
 
 #. translators: %s = example url (like website.com/cb-locations/)
-#: includes/Options.php:83
+#: includes/OptionsArray.php:83
 msgid "The url for the locations archive. E.g: %s"
 msgstr ""
 
-#: includes/Options.php:99
-#: includes/Options.php:104
-#: includes/Options.php:109
+#: includes/OptionsArray.php:99
+#: includes/OptionsArray.php:104
+#: includes/OptionsArray.php:109
 #: src/Wordpress/CustomPostType/Timeframe.php:745
 msgid "Booking Codes"
 msgstr ""
 
-#: includes/Options.php:120
+#: includes/OptionsArray.php:120
 msgid "Templates"
 msgstr ""
 
-#: includes/Options.php:124
+#: includes/OptionsArray.php:124
 msgid "Email templates"
 msgstr ""
 
-#: includes/Options.php:129
+#: includes/OptionsArray.php:128
 msgid "Mail-Header from E-Mail"
 msgstr ""
 
-#: includes/Options.php:130
+#: includes/OptionsArray.php:129
 msgid "E-Mail that will be shown as sender in generated emails"
 msgstr ""
 
-#: includes/Options.php:136
+#: includes/OptionsArray.php:135
 msgid "Mail-Header from Name"
 msgstr ""
 
-#: includes/Options.php:137
+#: includes/OptionsArray.php:136
 msgid "Name that will be shown as sender in generated emails"
 msgstr ""
 
-#: includes/Options.php:143
+#: includes/OptionsArray.php:142
 msgid "Booking confirmed email subject"
 msgstr ""
 
-#: includes/Options.php:147
-msgid "Your booking {{item:post_title}} at {{location:post_title}} {{booking:booking_timeframe_date}} "
+#: includes/OptionsArray.php:146
+msgid "Your booking {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} "
 msgstr ""
 
-#: includes/Options.php:151
+#: includes/OptionsArray.php:150
 msgid "Booking confirmed email body"
 msgstr ""
 
-#: includes/Options.php:155
+#: includes/OptionsArray.php:154
 msgid ""
 "\n"
-"                            Hi {{user:first_name}},<br>\n"
-"                            <p>thank you for booking {{item:post_title}} {{booking:booking_timeframe_date}}.\n"
-"                            </p>\n"
-"                            \n"
-"                            Pick up date and time: <b>{{booking:pickupDatetime}}</b><br>\n"
-"                            {{location:pickupInstructions}}\n"
-"                            {{booking:formattedBookingCode}}\n"
-"                            <br>\n"
-"                            Return date and time:\n"
-"                            <b>{{booking:returnDatetime}}</b>\n"
-"                            <br><br>\n"
-"                            <b>Location address</b><br>\n"
-"                            {{location:formattedAddress}}<br>\n"
-"                            {{location:formattedContactInfoOneLine}}\n"
-"                            <br>\n"
-"                            <p>Click here to see or cancel your booking: {{booking:bookingLink}}.<br>\n"
-"                            <b>Notice:</b> You need to be logged in to see your booking. <br>\n"
-"                            If the link leads you to the homepage of the webseite,\n"
-"                            please login first and then click the link again.<br></p>\n"
-"                            \n"
-"                            <h3>Your information</h3>\n"
-"                            <p>Login: {{user:user_nicename}}<br>\n"
-"                            Name: {{user:first_name}} {{user:last_name}}.</p>\n"
-"                            \n"
-"                            <p>Thanks, the Team. </p>\n"
+"Hi {{user:first_name}},<br>\n"
+"<br>\n"
+"thank you for booking {{item:post_title}} {{booking:formattedBookingDate}}.<br>\n"
+"<br>\n"
+"Pick up: <strong>{{booking:pickupDatetime}}</strong><br>\n"
+"Return date: <strong>{{booking:returnDatetime}}</strong>\n"
+"{{location:formattedPickupInstructions}}\n"
+"{{booking:formattedBookingCode}}\n"
+"<br>\n"
+"<strong>Location</strong><br>\n"
+"{{location:formattedAddress}}\n"
+"{{location:formattedContactInfoOneLine}}\n"
+"<br>\n"
+"<strong>Click here to see or cancel your booking: {{booking:bookingLink}}</strong><br>\n"
+"<br>\n"
+"<strong>Notice:</strong> You need to be logged in to see your booking.<br>\n"
+"If the link leads you to the homepage of the webseite,\n"
+"please login first and then click the link again.<br>\n"
+"<br>\n"
+"<strong>Your information:</strong><br>\n"
+"Login: {{user:user_login}}<br>\n"
+"Name: {{user:first_name}} {{user:last_name}}<br>\n"
+"<br>\n"
+"Thanks, the Team.\n"
 "                        "
 msgstr ""
 
-#: includes/Options.php:184
+#: includes/OptionsArray.php:182
 msgid "Booking canceled email subject"
 msgstr ""
 
-#: includes/Options.php:187
-msgid "Booking canceled: {{item:post_title}} at {{location:post_title}} {{booking:booking_timeframe_date}}"
+#: includes/OptionsArray.php:185
+msgid "Booking canceled: {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}}"
 msgstr ""
 
-#: includes/Options.php:190
+#: includes/OptionsArray.php:188
 msgid "Booking canceled email body"
 msgstr ""
 
-#: includes/Options.php:193
+#: includes/OptionsArray.php:191
 msgid ""
 "\n"
-"                            Hi {{user:first_name}},<br>\n"
-"                            <p>your booking {{item:post_title}} at {{location:post_title}} {{booking:booking_timeframe_date}} has been cancelled.\n"
-"                            </p>               \n"
-"                            <h3>Your information</h3>\n"
-"                            <p>Login: {{user:user_nicename}}<br>\n"
-"                            Name: {{user:first_name}} {{user:last_name}}.</p>\n"
-"                            \n"
-"                            <p>Thanks, the Team. </p>\n"
+"Hi {{user:first_name}},<br>\n"
+"<br>\n"
+"your booking of {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} has been canceled.<br>\n"
+"<br>          \n"
+"Thanks, the Team.\n"
 "                            "
 msgstr ""
 
-#: includes/Options.php:281
+#: includes/OptionsArray.php:276
 msgid "Migration"
 msgstr ""
 
-#: includes/Options.php:285
+#: includes/OptionsArray.php:280
 msgid "Migrate from Commons Booking Version 0.X"
 msgstr ""
 
-#: includes/Options.php:287
-msgid "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br>Please read the documentation on <a href=\"https://commonsbooking.org/docs/\">https://commonsbooking.org/docs/</a> before you start migration."
+#: includes/OptionsArray.php:282
+msgid "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br>Please read the documentation on <a href=\"https://commonsbooking.org/dokumentation/\">https://commonsbooking.org/dokumentation/</a> before you start migration."
 msgstr ""
 
-#: includes/Options.php:290
+#: includes/OptionsArray.php:285
 msgid "Start Migration"
 msgstr ""
 
-#: includes/Options.php:298
+#: includes/OptionsArray.php:293
 msgid "CommonsBooking Version 0.X profile fields"
 msgstr ""
 
-#: includes/Options.php:300
+#: includes/OptionsArray.php:295
 msgid "Enable the following legacy CommonsBooking Version 0.X user profile fields:"
 msgstr ""
 
-#: includes/Options.php:303
+#: includes/OptionsArray.php:298
 msgid "Enable"
 msgstr ""
 
-#: includes/Options.php:308
+#: includes/OptionsArray.php:303
 msgid "Terms & Services Url"
 msgstr ""
 
@@ -318,11 +314,11 @@ msgstr ""
 msgid "Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s: %2$s"
 msgstr ""
 
-#: src/Plugin.php:305
+#: src/Plugin.php:322
 msgid "Item Category"
 msgstr ""
 
-#: src/Plugin.php:329
+#: src/Plugin.php:346
 msgid "Location Category"
 msgstr ""
 
