@@ -1,15 +1,14 @@
 <?php
 
 namespace CommonsBooking\Wordpress\Options;
-
 use CommonsBooking\Settings\Settings;
 
-class Options
+class AdminOptions
 {
     private static $option_key = COMMONSBOOKING_PLUGIN_SLUG . '_options';
     
     /**
-     * set default values to admin options field as defined in includes/Optionsp.php
+     * set default values to admin options fields as defined in includes/OptionsArray.php
      *
      * @return void
      */
@@ -45,6 +44,5 @@ class Options
 
         }
     }
-
 
 }

@@ -13,8 +13,10 @@ use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
 use CommonsBooking\Model\User;
+use CommonsBooking\Wordpress\Options;
 use CB;
-use \CommonsBooking\Wordpress\Options;
+use CommonsBooking\Migration\Migration;
+use CommonsBooking\Wordpress\Options\AdminOptions;
 
 class Plugin
 {
@@ -121,7 +123,7 @@ class Plugin
         add_action('init', array(self::class, 'RegisterAdminOptions'), 0);
 
         // set Options default values on admin activation
-        register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( \CommonsBooking\Wordpress\Options::class, 'SetOptionsDefaultValues' ) );
+        register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( AdminOptions::class, 'SetOptionsDefaultValues' ) );
     }
 
     /**
