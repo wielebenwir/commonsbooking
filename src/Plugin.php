@@ -14,6 +14,7 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
 use CommonsBooking\Model\User;
 use CB;
+use \CommonsBooking\Wordpress\Options;
 
 class Plugin
 {
@@ -93,8 +94,6 @@ class Plugin
         add_action('init', array(self::class, 'registerCustomPostTypes'));
         add_action('init', array(self::class, 'registerPostStates'));
 
-
-
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerItemTaxonomy'), 0);
 
@@ -117,6 +116,8 @@ class Plugin
         // register admin options page
         add_action('init', array(self::class, 'RegisterAdminOptions'), 0);
 
+        // set Options default values on admin activation
+        register_activation_hook( __FILE__, array( \CommonsBooking\Wordpress\Options::class, 'SetOptionsDefaultValues' ) );
     }
 
     /**
@@ -432,8 +433,7 @@ class Plugin
      */
     public static function RegisterAdminOptions()
     {
-        include(COMMONSBOOKING_PLUGIN_DIR . '/includes/Options.php');
-        
+        include(COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php');        
         foreach ($options_array as $tab_id => $tab) {
             new \CommonsBooking\Wordpress\Options\OptionsTab($tab_id, $tab);
         }

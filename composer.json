@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "autoload": {
     "files": [
-      "includes/Options.php",
+      "includes/OptionsArray.php",
       "includes/Shortcodes.php",
       "includes/Template.php",
       "includes/TemplateParser.php"
