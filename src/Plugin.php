@@ -280,9 +280,6 @@ class Plugin
             register_post_type($customPostType::getPostType(), $customPostType->getArgs());
             $customPostType->initListView();
         }
-
-        // Clear the permalinks after the post types has been registered to avoid 404-errors.
-        flush_rewrite_rules(); 
     }
 
     /**
