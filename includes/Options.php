@@ -312,6 +312,6 @@ Thanks, the Team.
 );
 
 // register option tabs
-foreach ($options_array as $tab_id => $tab) {
-    new CommonsBooking\Wordpress\Options\OptionsTab($tab_id, $tab);
-}
+//foreach ($options_array as $tab_id => $tab) {
+//    new CommonsBooking\Wordpress\Options\OptionsTab($tab_id, $tab);
+//}
