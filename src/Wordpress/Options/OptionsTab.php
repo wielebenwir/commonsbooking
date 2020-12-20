@@ -27,7 +27,6 @@ class OptionsTab
     {
         $this->registerOptionsTab();
         $this->registerOptionsGroups();
-        $this->setDefaultPluginOptions();
     }
 
     /**
@@ -81,7 +80,7 @@ class OptionsTab
     
     /**
      * set default option values if option field is empty and a default value is set in Options.php
-     * TODO: needs to be checked and optimized
+     * TODO: needs to be checked and optimized - we need to call this on plugin activation hook / its not called right now from anywhere
      *
      * @return void
      */
