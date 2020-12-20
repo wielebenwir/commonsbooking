@@ -2,6 +2,8 @@
 
 namespace CommonsBooking\Wordpress\Options;
 
+use CommonsBooking\Settings\Settings;
+
 class OptionsTab
 {
 
@@ -25,6 +27,7 @@ class OptionsTab
     {
         $this->registerOptionsTab();
         $this->registerOptionsGroups();
+        $this->setDefaultPluginOptions();
     }
 
     /**
@@ -72,6 +75,42 @@ class OptionsTab
             $fields = $group['fields'];
             foreach ($fields as $field) {
                 $this->metabox->add_field($field);
+            }
+        }
+    }
+    
+    /**
+     * set default option values if option field is empty and a default value is set in Options.php
+     * TODO: needs to be checked and optimized
+     *
+     * @return void
+     */
+    public function setDefaultPluginOptions() {
+
+        include(COMMONSBOOKING_PLUGIN_DIR . '/includes/Options.php');
+
+        $options_array;  
+
+        foreach ($this->groups as $group_id => $group) {
+
+            $fields = $group['fields'];
+            $option_key = $this->option_key . '_' . $this->id;
+            $option = array();
+            
+            foreach ($fields as $field) {
+                
+                // we check if there there is a default value for this field
+                if (array_key_exists( 'default', $field ) ) {
+                    // if field-value is not set already we add the default value to the options array
+                    if ( empty ( Settings::getOption($option_key, $field['id'] ) ) ) {
+                        $option[$field['id']] = $field['default'];
+                    }
+                }
+            }
+
+            // update option 
+            if (!empty ( $option ) ) {
+                update_option($option_key, $option);
             }
         }
     }
