@@ -54,7 +54,7 @@ class Migration
         if ($cb1Installed) { 
         ?>
         <a id="migration-start" class="button button-primary"
-           href="<?php echo esc_url(admin_url('admin.php')); ?>?page=commonsbooking_options_migration&migration=true"> <?php echo esc_html('Start Migration',
+           href="<?php echo esc_url(admin_url('admin.php')); ?>?page=commonsbooking_options_migration&migration=true"> <?php echo esc_html__('Start Migration',
                 'commonsbooking'); ?></a>
         <?php
         } // end if cb1installed
