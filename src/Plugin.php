@@ -93,7 +93,9 @@ class Plugin
         add_action('init', array(self::class, 'registerCustomPostTypes'));
         add_action('init', array(self::class, 'registerPostStates'));
 
-
+        // flush rewrite rules on plugin registration to set permalinks for registered costum post types
+        register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'FlushRewriteRulesonActivation' ) );
+        register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'FlushRewriteRules' ) );
 
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerItemTaxonomy'), 0);
@@ -109,6 +111,19 @@ class Plugin
 
         // Remove cache items on save.
         add_action( 'save_post', array( $this, 'savePostActions' ), 10, 2 );
+
+        // flush rewrite rules after slug options has been saved   // see: https://wordpress.stackexchange.com/questions/302190/wordpress-cmb2-run-function-on-save/327179
+        add_action( 'cmb2_save_options-page_fields_posttypes_items-slug', array( self::class, 'FlushRewriteRules' ), 10, 3 );
+        add_action( 'cmb2_save_options-page_fields_posttypes_posttypes_locations-slug-slug', array( self::class, 'FlushRewriteRules' ), 10, 3 );
+
+        // register admin options page
+        add_action('init', array(self::class, 'RegisterAdminOptions'), 0);
+
+        // set Options default values on plugin activation
+        register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( AdminOptions::class, 'SetOptionsDefaultValues' ) );
+
+        // Tasks to run after an upgrade has been completed
+        add_action( 'admin_init', array( self::class, 'runTasksAfterUpdate' ), 10 );
     }
 
     /**
@@ -404,23 +419,23 @@ class Plugin
 
         
     /**
-     * This function runs when WordPress completes its upgrade process
-     * It iterates through each plugin updated to see if ours is included
-     * @param $upgrader_object Array
-     * @param $options Array
+     * Check if plugin is upgraded an run tasks
      */
-    public static function commonsboking_upgrade_completed( $upgrader_object, $options ) {
+    public static function runTasksAfterUpdate() {
 
-        // If an update has taken place and the updated type is plugins and the plugins element exists
-        if( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
-            // Iterate through the plugins being updated and check if ours is there
-            foreach( $options['plugins'] as $plugin ) {
-                if( $plugin == COMMONSBOOKING_PLUGIN_SLUG ) {
-                    // Set a transient to record that our plugin has just been updated
-                    set_transient( 'commonsbooking_updated', 1 );
-                    
-                }
-            }
+        $commonsbooking_version_option = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
+
+        // set version option if not already set
+        if ( COMMONSBOOKING_VERSION !== get_option( $commonsbooking_version_option ) ) {
+            
+            // set Options default values (e.g. if there are new fields added)
+            AdminOptions::SetOptionsDefaultValues();
+
+            // add more tasks if necessary
+            // ... 
+
+            // update version number in options
+            update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
         }
     }
    
