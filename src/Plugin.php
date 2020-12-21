@@ -13,7 +13,10 @@ use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
 use CommonsBooking\Model\User;
+use CommonsBooking\Wordpress\Options;
 use CB;
+use CommonsBooking\Migration\Migration;
+use CommonsBooking\Wordpress\Options\AdminOptions;
 
 class Plugin
 {
@@ -86,7 +89,7 @@ class Plugin
         // Register custom user roles (e.g. location-owner, item-owner etc.)
         add_action('admin_init', array(self::class, 'addCustomUserRoles'));
 
-        // Register custom post types taxonomy / categories
+        // Enable CB1 User Fields (needed in case of migration from cb 0.9.x)
         add_action('init', array(self::class, 'maybeEnableCB1UserFields'));
 
         // Register custom post types
@@ -417,6 +420,33 @@ class Plugin
     }
 
 
+    /**
+     * flush rewrite rules to enable custom post type permalinks 
+     */
+    public static function FlushRewriteRulesonActivation()
+    {
+        self::registerCustomPostTypes();
+        flush_rewrite_rules(false);
+    }
+
+    /**
+     * flush rewrite rules to enable custom post type permalinks 
+     */
+    public static function FlushRewriteRules()
+    {
+        flush_rewrite_rules(false);
+    }
+
+     /**
+     * Register Admin-Options
+     */
+    public static function RegisterAdminOptions()
+    {
+        include(COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php');        
+        foreach ($options_array as $tab_id => $tab) {
+            new \CommonsBooking\Wordpress\Options\OptionsTab($tab_id, $tab);
+        }
+    }
         
     /**
      * Check if plugin is upgraded an run tasks
@@ -438,7 +468,5 @@ class Plugin
             update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
         }
     }
-   
-    add_action( 'upgrader_process_complete', 'wp_upe_upgrade_completed', 10, 2 );
 
 }
