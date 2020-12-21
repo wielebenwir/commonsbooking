@@ -19,7 +19,7 @@ class ItemsRoute extends BaseRoute
      * Commons-API schema definition.
      * @var string
      */
-    protected $schemaUrl = CB_PLUGIN_DIR . "node_modules/commons-api/commons-api.items.schema.json";
+    protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "node_modules/commons-api/commons-api.items.schema.json";
 
     /**
      * Returns raw data collection.
@@ -86,7 +86,7 @@ class ItemsRoute extends BaseRoute
                 $availabilityRoute = new AvailabilityRoute();
                 $data->availability = array_merge($data->availability, $availabilityRoute->getItemData($item->id));
             }
-            
+
         }
 
         if(WP_DEBUG) {
@@ -123,7 +123,7 @@ class ItemsRoute extends BaseRoute
         $preparedItem->id = $item->ID . '';
         $preparedItem->name = $item->post_title;
         $preparedItem->url         = get_permalink($item->ID);
-        $preparedItem->description = $item->post_content;
+        $preparedItem->description = $this->escapeJsonString($item->post_content);
         $preparedItem->ownerId     = $item->post_author;
         $preparedItem->projectId   = "1";
 

@@ -13,7 +13,10 @@ use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
 use CommonsBooking\Model\User;
+use CommonsBooking\Wordpress\Options;
 use CB;
+use CommonsBooking\Migration\Migration;
+use CommonsBooking\Wordpress\Options\AdminOptions;
 
 class Plugin
 {
@@ -86,12 +89,16 @@ class Plugin
         // Register custom user roles (e.g. location-owner, item-owner etc.)
         add_action('admin_init', array(self::class, 'addCustomUserRoles'));
 
-        // Register custom post types taxonomy / categories
+        // Enable CB1 User Fields (needed in case of migration from cb 0.9.x)
         add_action('init', array(self::class, 'maybeEnableCB1UserFields'));
 
         // Register custom post types
         add_action('init', array(self::class, 'registerCustomPostTypes'));
         add_action('init', array(self::class, 'registerPostStates'));
+
+        // flush rewrite rules on plugin registration to set permalinks for registered costum post types
+        register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRulesonActivation' ) );
+        register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRules' ) );
 
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerItemTaxonomy'), 0);
@@ -107,6 +114,21 @@ class Plugin
 
         // Remove cache items on save.
         add_action( 'save_post', array( $this, 'savePostActions' ), 10, 2 );
+
+        // flush rewrite rules after slug options has been saved   // see: https://wordpress.stackexchange.com/questions/302190/wordpress-cmb2-run-function-on-save/327179
+        add_action( 'cmb2_save_options-page_fields_posttypes_items-slug',
+            array( self::class, 'flushRewriteRules' ), 10, 3 );
+        add_action( 'cmb2_save_options-page_fields_posttypes_posttypes_locations-slug-slug',
+            array( self::class, 'flushRewriteRules' ), 10, 3 );
+
+        // register admin options page
+        add_action('init', array(self::class, 'registerAdminOptions'), 0);
+
+        // set Options default values on admin activation
+        register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( AdminOptions::class, 'setOptionsDefaultValues' ) );
+
+        // Tasks to run after an upgrade has been completed
+        add_action( 'admin_init', array( self::class, 'runTasksAfterUpdate' ), 10 );
     }
 
     /**
@@ -238,7 +260,7 @@ class Plugin
         add_menu_page(
             'CommonsBooking',
             'CommonsBooking',
-            'manage_' . CB_PLUGIN_SLUG,
+            'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
             'cb-dashboard',
             array(\CommonsBooking\View\Dashboard::class, 'index'),
             'data:image/svg+xml;base64,' . base64_encode('<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg width="100%" height="100%" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"><path fill="black" d="M12.94,5.68l0,-5.158l6.132,1.352l0,5.641c0.856,-0.207 1.787,-0.31 2.792,-0.31c3.233,0 5.731,1.017 7.493,3.05c1.762,2.034 2.643,4.661 2.643,7.88l0,0.458c0,3.232 -0.884,5.862 -2.653,7.89c-1.769,2.027 -4.283,3.04 -7.542,3.04c-1.566,0 -2.965,-0.268 -4.196,-0.806c1.449,-1.329 2.491,-2.998 3.015,-4.546c0.335,0.123 0.729,0.185 1.181,0.185c1.311,0 2.222,-0.51 2.732,-1.53c0.51,-1.021 0.765,-2.432 0.765,-4.233l0,-0.458c0,-1.749 -0.255,-3.146 -0.765,-4.193c-0.51,-1.047 -1.401,-1.57 -2.673,-1.57c-0.527,0 -0.978,0.107 -1.351,0.321c-1.051,-3.59 -4.047,-6.125 -7.573,-7.013Zm6.06,15.774c0.05,0.153 0.042,0.325 0.042,0.338c-0.001,2.138 -0.918,4.209 -2.516,5.584c-0.172,0.148 -0.346,0.288 -0.523,0.42c-0.209,-0.153 -0.411,-0.316 -0.608,-0.489c-1.676,-1.477 -2.487,-3.388 -2.434,-5.733l0.039,-0.12l6,0Zm-6.06,-13.799c3.351,1.058 5.949,3.88 6.092,7.332c0.011,0.254 0.11,0.416 -0.032,0.843l-6,0l-0.036,-0.108l-0.024,0l0,-8.067Z" /><path fill="black" d="M21.805,24.356c-0.901,0 -1.57,-0.245 -2.008,-0.735c-0.437,-0.491 -0.656,-1.213 -0.656,-2.167l-6.141,0l-0.039,0.12c-0.053,2.345 0.758,4.256 2.434,5.733c1.676,1.478 3.813,2.216 6.41,2.216c3.259,0 5.773,-1.013 7.542,-3.04c1.769,-2.028 2.653,-4.658 2.653,-7.89l0,-0.458c0,-3.219 -6.698,-1.749 -6.698,0l0,0.458c0,1.801 -0.255,3.212 -0.765,4.233c-0.51,1.02 -1.421,1.53 -2.732,1.53Z" /><path fill="black" d="M14.244,28.78c-1.195,0.495 -2.545,0.743 -4.049,0.743c-3.259,0 -5.773,-1.013 -7.542,-3.04c-1.769,-2.028 -2.653,-4.658 -2.653,-7.89l0,-0.458c0,-3.219 0.881,-5.846 2.643,-7.88c1.762,-2.033 4.26,-3.05 7.493,-3.05c0.917,0 1.773,0.086 2.566,0.258c1.566,0.34 2.891,1.016 3.972,2.027c1.63,1.524 2.418,3.597 2.365,6.221l-0.039,0.119l-6.141,0c0,-1.02 -0.226,-1.852 -0.676,-2.494c-0.451,-0.643 -1.133,-0.964 -2.047,-0.964c-1.272,0 -2.163,0.523 -2.673,1.57c-0.51,1.047 -0.765,2.444 -0.765,4.193l0,0.458c0,1.801 0.255,3.212 0.765,4.233c0.51,1.02 1.421,1.53 2.732,1.53c0.32,0 0.61,-0.031 0.871,-0.093c0.517,1.648 1.73,3.281 3.178,4.517Zm-1.244,-7.326l6,0l0.039,0.12c0.053,2.345 -0.758,4.256 -2.434,5.733c-0.134,0.118 -0.27,0.231 -0.409,0.339c-1.85,-1.327 -3.122,-3.233 -3.227,-5.424c-0.011,-0.228 -0.105,-0.357 0.031,-0.768Z" /></svg>')
@@ -247,7 +269,7 @@ class Plugin
             'cb-dashboard',
             'Dashboard',
             'Dashboard',
-            'manage_' . CB_PLUGIN_SLUG,
+            'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
             'cb-dashboard',
             array(\CommonsBooking\View\Dashboard::class, 'index'),
             0
@@ -302,7 +324,7 @@ class Plugin
             $customPostType . 's_category',
             $customPostType,
             array(
-                'label'        => __('Item Category', 'commonsbooking'),
+                'label'        => esc_html__('Item Category', 'commonsbooking'),
                 'rewrite'      => array('slug' => $customPostType . '-cat'),
                 'hierarchical' => true,
             )
@@ -326,7 +348,7 @@ class Plugin
             $customPostType . 's_category',
             $customPostType,
             array(
-                'label'        => __('Location Category', 'commonsbooking'),
+                'label'        => esc_html__('Location Category', 'commonsbooking'),
                 'rewrite'      => array('slug' => $customPostType . '-cat'),
                 'hierarchical' => true,
             )
@@ -351,12 +373,12 @@ class Plugin
         $roleCapMapping = [
             Plugin::$CB_MANAGER_ID     => [
                 'read'                     => true,
-                'manage_' . CB_PLUGIN_SLUG => true
+                'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true
             ],
             'administrator'            => [
                 'read'                     => true,
                 'edit_posts'               => true,
-                'manage_' . CB_PLUGIN_SLUG => true
+                'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true
             ]
         ];
 
@@ -365,7 +387,7 @@ class Plugin
             if ( ! $role) {
                 $role = add_role(
                     $roleName,
-                    __($roleName, CB_PLUGIN_SLUG)
+                    __($roleName, COMMONSBOOKING_PLUGIN_SLUG)
                 );
             }
 
@@ -398,4 +420,55 @@ class Plugin
             new CB1UserFields;
         }
     }
+
+
+    /**
+     * flush rewrite rules to enable custom post type permalinks
+     */
+    public static function flushRewriteRulesonActivation()
+    {
+        self::registerCustomPostTypes();
+        flush_rewrite_rules(false);
+    }
+
+    /**
+     * flush rewrite rules to enable custom post type permalinks
+     */
+    public static function flushRewriteRules()
+    {
+        flush_rewrite_rules(false);
+    }
+
+     /**
+     * Register Admin-Options
+     */
+    public static function registerAdminOptions()
+    {
+        $options_array = include(COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php');
+        foreach ($options_array as $tab_id => $tab) {
+            new \CommonsBooking\Wordpress\Options\OptionsTab($tab_id, $tab);
+        }
+    }
+        
+    /**
+     * Check if plugin is upgraded an run tasks
+     */
+    public static function runTasksAfterUpdate() {
+
+        $commonsbooking_version_option = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
+
+        // set version option if not already set
+        if ( COMMONSBOOKING_VERSION !== get_option( $commonsbooking_version_option ) ) {
+            
+            // set Options default values (e.g. if there are new fields added)
+            AdminOptions::SetOptionsDefaultValues();
+
+            // add more tasks if necessary
+            // ... 
+
+            // update version number in options
+            update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
+        }
+    }
+
 }

@@ -46,7 +46,7 @@ abstract class CustomPostType
         foreach($roles as $the_role) {
             $role = get_role($the_role);
             $role->add_cap( 'read_' . static::$postType);
-            $role->add_cap( 'manage_' . CB_PLUGIN_SLUG . '_' . static::$postType);
+            $role->add_cap( 'manage_' . COMMONSBOOKING_PLUGIN_SLUG . '_' . static::$postType);
 
             $role->add_cap( 'edit_' . static::$postType );
             $role->add_cap( 'edit_' . static::$postType . 's' ); // show item list
@@ -85,7 +85,7 @@ abstract class CustomPostType
             'cb-dashboard',
             $this->getArgs()['labels']['name'],
             $this->getArgs()['labels']['name'],
-            'manage_' . CB_PLUGIN_SLUG,
+            'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
             'edit.php?post_type=' . static::getPostType(),
             '',
             $this->menuPosition ?: null
@@ -204,10 +204,14 @@ abstract class CustomPostType
     {
         add_filter('manage_' . static::getPostType() . '_posts_columns', function ($columns) {
             unset($columns['date']);
-            $columns[ 'author' ] = 'Nutzer*in';
+            unset ($columns[ 'author' ]); // = 'Nutzer*in';
             return $columns;
         });
     }
+
+
+
+
 
     /**
      * Configures list-view
@@ -245,6 +249,7 @@ abstract class CustomPostType
      */
     public function setCustomColumnsData($column, $post_id)
     {
+
         if ($value = get_post_meta($post_id, $column, true)) {
             echo $value;
         } else {

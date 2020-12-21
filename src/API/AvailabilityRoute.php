@@ -22,7 +22,7 @@ class AvailabilityRoute extends BaseRoute
      * Commons-API schema definition.
      * @var string
      */
-    protected $schemaUrl = CB_PLUGIN_DIR . "node_modules/commons-api/commons-api.availability.schema.json";
+    protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "node_modules/commons-api/commons-api.availability.schema.json";
 
     public function getItemData($id = false) {
         $slots = [];
@@ -46,10 +46,29 @@ class AvailabilityRoute extends BaseRoute
                         continue;
                     }
                     $availabilitySlot = new \stdClass();
-                    $availabilitySlot->start = date('Y-m-d\TH:i:s', $slot['timestampstart']);
-                    $availabilitySlot->end = date('Y-m-d\TH:i:s', $slot['timestampend']);
-                    $availabilitySlot->locationId = $timeframe->getLocation()->ID . "";
-                    $availabilitySlot->itemId = $timeframe->getItem()->ID . "";
+
+                    // Init default timezone
+                    $timezone = new \DateTimeZone('Europe/Berlin');
+
+                    // Init DateTime object for start
+                    $dateTimeStart = new \DateTime('now', $timezone);
+                    $dateTimeStart->setTimestamp($slot['timestampstart']);
+                    $availabilitySlot->start = $dateTimeStart->format('Y-m-d\TH:i:sP');
+
+                    // Init DateTime object for end
+                    $dateTimeend = new \DateTime('now', $timezone);
+                    $dateTimeend->setTimestamp($slot['timestampend']);
+                    $availabilitySlot->end = $dateTimeend->format('Y-m-d\TH:i:sP');
+
+                    $availabilitySlot->locationId = "";
+                    if($timeframe->getLocation()) {
+                        $availabilitySlot->locationId = $timeframe->getLocation()->ID . "";
+                    }
+
+                    $availabilitySlot->itemId = "";
+                    if($timeframe->getLocation()) {
+                        $availabilitySlot->itemId = $timeframe->getItem()->ID . "";
+                    }
 
                     $slotId = md5(serialize($availabilitySlot));
                     if(!in_array($slotId, $doneSlots)) {
@@ -74,12 +93,12 @@ class AvailabilityRoute extends BaseRoute
 
         //return a response or error based on some conditional
         if (count($data->availability)) {
-            if(WP_DEBUG) {
-                $this->validateData($data);
-            }
+//            if(WP_DEBUG) {
+//                $this->validateData($data);
+//            }
             return new \WP_REST_Response($data, 200);
         } else {
-            return new \WP_Error('code', __('message', 'text-domain'));
+            return new \WP_Error('code', esc_html__('message', 'text-domain'));
         }
     }
 
@@ -95,9 +114,9 @@ class AvailabilityRoute extends BaseRoute
         $data = new \stdClass();
         $data->availability = $this->getItemData();;
 
-        if(WP_DEBUG) {
-            $this->validateData($data);
-        }
+//        if(WP_DEBUG) {
+//            $this->validateData($data);
+//        }
         return new \WP_REST_Response($data, 200);
     }
 

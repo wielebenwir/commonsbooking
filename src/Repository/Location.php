@@ -51,9 +51,11 @@ class Location extends BookablePost
                         $locationIds[] = $locationId;
                         $location      = get_post($locationId);
 
-                        // add only published items
-                        if ($location->post_status == 'publish') {
-                            $locations[] = $location;
+                        if($location) {
+                            // add only published items
+                            if ($location->post_status == 'publish') {
+                                $locations[] = $location;
+                            }
                         }
                     }
                 }

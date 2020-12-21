@@ -1,28 +1,29 @@
 === CommonsBooking ===
 
-Contributors: wielebenwirteam
+Contributors: wielebenwirteam, m0rb, flegfleg
 Donate link: https://www.wielebenwir.de/verein/unterstutzen
-Tags: booking, commons, sharing
-Requires at least: 3.9
-Tested up to: 5.5.2
-Stable Tag: 2.2.0
+Tags: booking, commons, sharing, calendar, 
+Requires at least: 5.2
+Tested up to: 5.6
+Stable Tag: 2.2.9
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A WordPress plugin for management and booking of commons goods. 
+Commons Booking is a plugin for management and booking of common goods. 
 
 == Description ==
 
-This plugin gives associations, groups and individuals the ability to share items (e.g. cargobikes, tools) with users. It is based on the idea of Commons and sharing resources for the benefit of the community. 
+This plugin gives associations, groups and individuals the ability to share items (e.g. cargo bikes, tools) with users. It is based on the idea of Commons and sharing resources for the benefit of the community. 
 
-It was developed for the ["commons cargo bike" movement](http://www.wielebenwir.de/mobilitaet/free-nomadic-cargo-bikes-are-changing-the-urban-landscape) across Germany and Austria, but it can use it for any kind items.
+CommonsBooking was developed for the ["Commons Cargobike" movement](http://commons-cargobikes.org/), but it can be used for any kind items.
 
+This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordpress.org/plugins/commons-booking/) will be retired some time in the future.
 
 **Unique features:**
 
-* Items, locations and timeframes: No need for a "centralised storage", items can be assigned to different locations for the duration of a timeframe, each with their own contact information.  
-* Simple booking process:  bookable timeframes can be configured with hourly slots oder daily slots. simple booking process for users: just click pickup and return date.
+* Items can be assigned to different locations for the duration of a timeframe, each with their own contact information.  
+* Simple booking process:  bookable timeframes can be configured with hourly slots oder daily slots.
 * Auto-accept bookings: A registered user can book items without the need for administration. 
 * Codes: The plugin automatically generates booking codes, which are used at the station to validate the booking. 
 * Managers can set holidays or repair slots to prevent items from beeing booked.
@@ -30,7 +31,7 @@ It was developed for the ["commons cargo bike" movement](http://www.wielebenwir.
 
 **Use cases:**
 
-* You/your associations owns special tools that are not in use every day, and you want to make them available to a local group.
+* Your association owns special tools that are not in use every day, and you want to make them available to a local group.
 * You own a cargo bike that you want to share with the community, and it will be placed at different locations throughout the year.
 
 **Plugin websites**
@@ -42,7 +43,7 @@ It was developed for the ["commons cargo bike" movement](http://www.wielebenwir.
 
 New in this version: 
 
-* inital stable release 
+* Updated translation and minor text edits
 
 == Installation ==
 
@@ -74,7 +75,7 @@ New in this version:
 = Where can i find help/report bugs? =
 
 * [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues)
-* [Support] (https://commonsbooking.org/kontakt/)
+* [Support](https://commonsbooking.org/kontakt/)
 
 
 == Screenshots ==
@@ -85,6 +86,29 @@ New in this version:
 4. User bookings list
 
 == Changelog ==
+
+= 2.2.9 =
+* Fixed:
+** Fixed template issup pickup instructions not shown on booking page
+
+= 2.2.8 =
+* Added:
+** Updated translation and minor text edits
+** Set default values on activation and upates
+
+* Fixed:
+** Fix: 404-page after installation because of missing permalink refresh
+
+= 2.2.7 =
+
+* add: Updated translation
+
+= 2.2.6 =
+
+* Enhanced import wizard for automatic migration from previous Commons Booking version (version < 1.0). Migration of time frames, articles, locations, bookings, booking codes, settings for blocked days. During migration, parallel operation of the old and new version is possible. No data from the previous installation is deleted or changed.
+* Unconfirmed bookings are automatically deleted (after approx. 10 minutes)
+* Several usability improvements and bug fixes
+* Improvements of the CommonsBooking API
 
 = 2.2.0 =
 

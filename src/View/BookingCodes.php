@@ -25,7 +25,7 @@ class BookingCodes
                     <div class="cmb-td">
                         <table>
                             <tr>
-                                <td><b>'.__('Item').'</b></td><td><b>'.__('Startdatum').'</b></td><td><b>'.__('Code').'</b></td>
+                                <td><b>'.esc_html__('Item', 'commonsbooking').'</b></td><td><b>' . esc_html__('Pickup date', 'commonsbooking').'</b></td><td><b>'.esc_html__('Code', 'commonsbooking').'</b></td>
                             </tr>';
 
         /** @var BookingCode $bookingCode */
@@ -46,7 +46,7 @@ class BookingCodes
      */
     public static function renderCSV($timeframeId = null) {
         if($timeframeId == null) {
-            $timeframeId = $_GET['post'];
+            $timeframeId = sanitize_text_field($_GET['post']);
         }
         $bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes($timeframeId);
         header("Content-type: text/csv");

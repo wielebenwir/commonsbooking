@@ -35,27 +35,27 @@ class Timeframe extends CustomPost
         $startDateFormatted = date_i18n($format, $startDate);
         $endDateFormatted = date_i18n($format, $endDate);
 
-        $label = __('Available here', 'commonsbooking');
+        $label = commonsbooking_sanitizeHTML( __('Available here', 'commonsbooking') );
         $availableString = '';
 
         if ($startDate !== 0 && $endDate !== 0 && $startDate == $endDate) { // available only one day
             /* translators: %s = date in wordpress defined format */
-            $availableString = sprintf(__('on %s', 'commonsbooking'), $startDateFormatted);
+            $availableString = sprintf( commonsbooking_sanitizeHTML( __('on %s', 'commonsbooking') ), $startDateFormatted);
         } elseif ($startDate > 0 && ($endDate == 0)) { // start but no end date
             if ($startDate > $today) { // start is in the future
                 /* translators: %s = date in wordpress defined format */
-                $availableString = sprintf(__('from %s', 'commonsbooking'), $startDateFormatted);
+                $availableString = sprintf(commonsbooking_sanitizeHTML( __('from %s', 'commonsbooking') ), $startDateFormatted);
             } else { // start has passed, no end date, probably a fixed location
-                $availableString = __('permanently', 'commonsbooking');
+                $availableString = commonsbooking_sanitizeHTML( __('permanently', 'commonsbooking') );
             }
         } elseif ($startDate > 0 && $endDate > 0) { // start AND end date
             if ($startDate > $today) { // start is in the future, with an end date
                 /* translators: %1$s = startdate, second %2$s = enddate in wordpress defined format */
-                $availableString = sprintf(__(' from %1$s until %1$s', 'commonsbooking'), $startDateFormatted,
+                $availableString = sprintf( commonsbooking_sanitizeHTML( __(' from %1$s until %2$s', 'commonsbooking') ), $startDateFormatted,
                     $endDateFormatted);
             } else { // start has passed, with an end date
                 /* translators: %s = enddate in wordpress defined format */
-                $availableString = sprintf(__(' until %s', 'commonsbooking'), $endDateFormatted);
+                $availableString = sprintf( commonsbooking_sanitizeHTML( __(' until %s', 'commonsbooking') ), $endDateFormatted);
             }
         }
 
@@ -178,7 +178,7 @@ class Timeframe extends CustomPost
 
             if ($this->getStartTime() && ! $this->getEndTime()) {
                 set_transient("timeframeValidationFailed",
-                    __("A pickup time but no return time has been set. Please set the return time.", 'commonsbooking'),
+                    commonsbooking_sanitizeHTML( __("A pickup time but no return time has been set. Please set the return time.", 'commonsbooking') ),
                     45);
 
                 return false;
@@ -209,8 +209,8 @@ class Timeframe extends CustomPost
                     if ($timeframe->getGrid() != $this->getGrid()) {
                         set_transient("timeframeValidationFailed",
                             /* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
-                            sprintf(__('Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s: %2$s',
-                                'commonsbooking', 5), $timeframe->ID, $timeframe->post_title));
+                            sprintf( commonsbooking_sanitizeHTML( __('Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s: %2$s',
+                                'commonsbooking', 5) ), $timeframe->ID, $timeframe->post_title));
 
                         return false;
                     }
@@ -219,8 +219,8 @@ class Timeframe extends CustomPost
                     if (!$this->getMeta('full-day') && $this->hasTimeframeTimeOverlap($this, $timeframe)) {
                         set_transient("timeframeValidationFailed",
                             /* translators: first %s = timeframe-ID, second %s is timeframe post_title */
-                            sprintf(__('time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s: %2$s',
-                                'commonsbooking', 5), $timeframe->ID, $timeframe->post_title));
+                            sprintf( commonsbooking_sanitizeHTML( __('time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s: %2$s',
+                                'commonsbooking', 5) ), $timeframe->ID, $timeframe->post_title ) );
 
                         return false;
                     }
@@ -229,8 +229,8 @@ class Timeframe extends CustomPost
                     if ($this->getMeta('full-day')) {
                         set_transient("timeframeValidationFailed",
                             /* translators: first %s = timeframe-ID, second %s is timeframe post_title */
-                            sprintf(__('Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s: %2$s',
-                                'commonsbooking', 5), $timeframe->ID, $timeframe->post_title));
+                            sprintf( commonsbooking_sanitizeHTML( __('Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s: %2$s',
+                                'commonsbooking', 5) ), $timeframe->ID, $timeframe->post_title) );
                         return false;
                     }
                 }

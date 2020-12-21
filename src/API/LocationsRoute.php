@@ -26,7 +26,7 @@ class LocationsRoute extends BaseRoute
      * Commons-API schema definition.
      * @var string
      */
-    protected $schemaUrl = CB_PLUGIN_DIR . "node_modules/commons-api/commons-api.locations.schema.json";
+    protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "node_modules/commons-api/commons-api.locations.schema.json";
 
     /**
      * @var Client
@@ -80,7 +80,11 @@ class LocationsRoute extends BaseRoute
         return $this->geocoder;
     }
 
-    public function getItemData($request) {
+    public function getItemData($request)
+    {
+        $data = new \stdClass();
+        $data->type = "FeatureCollection";
+
         $params = $request->get_params();
         $args = [];
         if(array_key_exists('id', $params)) {
@@ -90,7 +94,6 @@ class LocationsRoute extends BaseRoute
         }
 
         $locations = \CommonsBooking\Repository\Location::get($args);
-
         $features = [];
 
         foreach ($locations as $location) {
@@ -98,7 +101,8 @@ class LocationsRoute extends BaseRoute
             $features[] = $itemdata;
         }
 
-        return $features;
+        $data->features = $features;
+        return $data;
     }
 
     /**
@@ -123,9 +127,7 @@ class LocationsRoute extends BaseRoute
     public function get_items($request)
     {
         $data = new \stdClass();
-        $data->locations = new \stdClass();
-        $data->locations->type = "FeatureCollection";
-        $data->locations->features = $this->getItemData($request);
+        $data->locations = $this->getItemData($request);
 
         if(WP_DEBUG) {
             $this->validateData($data);
@@ -148,7 +150,7 @@ class LocationsRoute extends BaseRoute
 
         $preparedItem->properties->id = $item->ID . "";
         $preparedItem->properties->name = $item->post_title;
-        $preparedItem->properties->description = $item->post_content;
+        $preparedItem->properties->description = $this->escapeJsonString($item->post_content);
         $preparedItem->properties->url = get_permalink($item->ID);
         $preparedItem->properties->address = $item->formattedAddressOneLine();
 

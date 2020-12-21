@@ -33,24 +33,24 @@ class Location extends BookablePost
     }
 
     /**
-     * formattedAddress
      * 
+     *
      * Returns the location address including location name in multiple lanes with <br> line breaks
-     * 
-     * @TODO: turn this into a user-configurable template. 
+     *
+     * @TODO: turn this into a user-configurable template.
      * E.g. a textarea "location format" in the backend that gets run through CB::get():
      * {{location_street}}<br>{{location_postcode}} {{location_city}}
-     * 
+     *
      *
      * @return string
      */
     public function formattedAddress()
     {
         $location = array (
-            CB::get('location', 'post_name', $this->post->ID),
-            CB::get('location', CB_METABOX_PREFIX . 'location_street', $this->post->ID),
-            CB::get('location', CB_METABOX_PREFIX . 'location_postcode', $this->post->ID),
-            CB::get('location', CB_METABOX_PREFIX . 'location_city', $this->post->ID),
+            CB::get('location', 'post_title', $this->post->ID),
+            CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_street', $this->post->ID),
+            CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post->ID),
+            CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_city', $this->post->ID),
         );
 
         return implode('<br>', $location);
@@ -58,9 +58,9 @@ class Location extends BookablePost
 
     /**
      * formattedAddressOneLine
-     * 
+     *
      * Returns the formatted Location address in one line, separated by comma
-     * 
+     *
      * @TODO: Do not return tags (,) if values are empty. This applies to  formattedAddress(), too
      *
      * @return void
@@ -69,30 +69,30 @@ class Location extends BookablePost
     {
         return sprintf(
             '%s, %s %s',
-            CB::get('location', CB_METABOX_PREFIX . 'location_street', $this->post->ID),
-            CB::get('location', CB_METABOX_PREFIX . 'location_postcode', $this->post->ID),
-            CB::get('location', CB_METABOX_PREFIX . 'location_city', $this->post->ID)
+            CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_street', $this->post->ID),
+            CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post->ID),
+            CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_city', $this->post->ID)
         );
     }
 
     /**
      * formattedContactInfo
-     * 
+     *
      * Returns formatted location contact info with info text
-     * 
-     * @TODO: do not add any text in here, any text should be in the backend email text field! 
-     * @TODO: in cb1, we had: location info that could be hidden until a successful booking. no longer important? 
-     * @TODO: "pickup instructions" and "contact information" fulfill the same purpouse? retire one of them?   
-     * 
+     *
+     * @TODO: do not add any text in here, any text should be in the backend email text field!
+     * @TODO: in cb1, we had: location info that could be hidden until a successful booking. no longer important?
+     * @TODO: "pickup instructions" and "contact information" fulfill the same purpouse? retire one of them?
+     *
      * @return string
      */
     public function formattedContactInfo()
-    {   
+    {
         $contact = array();
-        if ( !empty( CB::get( 'location', CB_METABOX_PREFIX . 'location_contact') ) ) {
+        if ( !empty( CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact') ) ) {
             $contact[] = "<br>"; // needed for email template
-            $contact[] = __( 'Please contact the contact persons at the location directly if you have any questions regarding collection or return:', 'commonsbooking' );
-            $contact[] = nl2br(CB::get('location',  CB_METABOX_PREFIX . 'location_contact'));
+            $contact[] = esc_html__( 'Please contact the contact persons at the location directly if you have any questions regarding collection or return:', 'commonsbooking' );
+            $contact[] = nl2br(CB::get('location',  COMMONSBOOKING_METABOX_PREFIX . 'location_contact'));
         }
 
         return implode('<br>', $contact);
@@ -100,23 +100,25 @@ class Location extends BookablePost
     }
     /**
      * formattedContactInfoOneLine
-     * 
+     *
      * Returns formatted location contact info
-     * 
+     *
      * @return string
      */
     public function formattedContactInfoOneLine()
-    {   
-        return CB::get( 'location', CB_METABOX_PREFIX . 'location_contact');
+    {
+        $html_output = CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact') . '<br>';
+        return $html_output;
     }
     /**
      * Return Location pickup instructions
-     * 
-     * 
+     *
+     *
      * @return string
      */
-    public function pickupInstructions()
-    {   
-        return CB::get( 'location', CB_METABOX_PREFIX . 'location_pickupinstructions');
+    public function formattedPickupInstructions()
+    {
+        $html_output = '<br>' . CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions') . '<br>';
+        return $html_output;
     }
 }

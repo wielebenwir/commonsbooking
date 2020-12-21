@@ -1,11 +1,12 @@
 .sass-cache
 .DS_Store
 .nova
+yarn.lock
 cache
 commonsbooking.zip
 node_modules
 src/Wordpress/.DS_Store
-vendor
+/vendor
 src/.DS_Store
 assets/.DS_Store
 #assets/admin/css
@@ -14,3 +15,4 @@ assets/.DS_Store
 #vendor
 views/.DS_Store
 /composer.phar
+copy-svn.sh

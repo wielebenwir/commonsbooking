@@ -49,12 +49,12 @@ class Location extends View
         if (count($locations) === 1) {
             $jsonResponse['location']['fullDayInfo'] = CB::get(
                 'location',
-                CB_METABOX_PREFIX . 'location_pickupinstructions',
+                COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions',
                 $locations[0]
             );
             $allowLockedDaysInRange = get_post_meta(
                 $locations[0],
-                CB_METABOX_PREFIX . 'allow_lockdays_in_range',
+                COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
                 true
             );
             $jsonResponse['disallowLockDaysInRange'] = $allowLockedDaysInRange !== 'on';
@@ -202,13 +202,13 @@ class Location extends View
         $startDate = new Day(date('Y-m-d'));
         $endDate = new Day(date('Y-m-d', strtotime('+3 months')));
 
-        $startDateString = array_key_exists('sd', $_POST) ? $_POST['sd'] : date('Y-m-d',
+        $startDateString = array_key_exists('sd', $_POST) ? sanitize_text_field($_POST['sd']) : date('Y-m-d',
             strtotime('first day of this month', time()));
         if ($startDateString) {
             $startDate = new Day($startDateString);
         }
 
-        $endDateString = array_key_exists('ed', $_POST) ? $_POST['ed'] : date('Y-m-d',
+        $endDateString = array_key_exists('ed', $_POST) ? sanitize_text_field($_POST['ed']) : date('Y-m-d',
             strtotime('+62 days', time()));
         if ($endDateString) {
             $endDate = new Day($endDateString);
@@ -217,7 +217,7 @@ class Location extends View
         // item by param
         if ($item === null) {
             // item by post-param
-            $item = isset($_POST['item']) && $_POST['item'] != "" ? $_POST['item'] : false;
+            $item = isset($_POST['item']) && $_POST['item'] != "" ? sanitize_text_field($_POST['item']) : false;
             if ($item === false) {
                 // item by query var
                 $item = get_query_var('item') ?: false;
@@ -234,7 +234,7 @@ class Location extends View
         // location by param
         if ($location === null) {
             // location by post param
-            $location = isset($_POST['location']) && $_POST['location'] != "" ? $_POST['location'] : false;
+            $location = isset($_POST['location']) && $_POST['location'] != "" ? sanitize_text_field($_POST['location']) : false;
             if ($location === false) {
                 // location by query param
                 $location = get_query_var('location') ?: false;
@@ -300,7 +300,7 @@ class Location extends View
             if (count($items)) {
                 // If there's only one item available, we'll show it directly.
                 if (count($items) == 1) {
-                    $args['item'] = $items[0];
+                    $args['item'] = array_values($items)[0];
                 } else {
                     $args['items'] = $items;
                 }
@@ -354,7 +354,7 @@ class Location extends View
         foreach ($locationData as $id => $data) {
             $templateData['location'] = $id;
             $templateData['data'] = $data;
-            cb_get_template_part('shortcode', 'locations', true, false, false);
+            commonsbooking_get_template_part('shortcode', 'locations', true, false, false);
         }
 
         return ob_get_clean();

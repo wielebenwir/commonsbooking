@@ -2,10 +2,12 @@
 
 namespace CommonsBooking\Wordpress\Options;
 
+use CommonsBooking\Settings\Settings;
+
 class OptionsTab
 {
 
-    public $option_key = CB_PLUGIN_SLUG . '_options';
+    public $option_key = COMMONSBOOKING_PLUGIN_SLUG . '_options';
     public $id;
     public $tab_title;
     public $content;
@@ -35,7 +37,7 @@ class OptionsTab
 
         $default_args = array(
             'id' => $this->id,
-            'title' => __('CommonsBooking', 'commonsbooking'),
+            'title' => esc_html__('CommonsBooking', 'commonsbooking'),
             'object_types' => array('options-page'),
             'option_key' => $this->option_key . '_' . $this->id,
             'tab_group' => $this->option_key,
@@ -75,6 +77,7 @@ class OptionsTab
             }
         }
     }
+    
 
     /**
      * If array contains title or description, create a new row contaning this text

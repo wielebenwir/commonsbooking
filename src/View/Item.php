@@ -38,7 +38,7 @@ class Item extends View
             if (count($locations)) {
                 // If there's only one location  available, we'll show it directly.
                 if (count($locations) == 1) {
-                    $args['location'] = $locations[0];
+                    $args['location'] = array_values($locations)[0];
                 } else {
                     $args['locations'] = $locations;
                 }
@@ -94,7 +94,7 @@ class Item extends View
         foreach ($itemData as $id => $data) {
             $templateData['item'] = $id;
             $templateData['data'] = $data;
-            cb_get_template_part('shortcode', 'items', true, false, false);
+            commonsbooking_get_template_part('shortcode', 'items', true, false, false);
         }
 
         return ob_get_clean();

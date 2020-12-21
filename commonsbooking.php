@@ -1,5 +1,20 @@
 <?php
 
+/**
+ * Plugin Name:         CommonsBooking
+ * Version:             2.2.9
+ * Requires at least:   5.2
+ * Requires PHP:        7.0
+ * Plugin URI:          https://commonsbooking.org
+ * Description:         A wordpress plugin for management and booking of common goods.
+ * Author:              wielebenwir e.V.
+ * Author URI:          https://wielebenwir.de/
+ * Domain Path:         /languages
+ * Text Domain:         commonsbooking
+ * License:             GPL v2 or later
+ * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
+ */
+
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
@@ -7,25 +22,12 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 defined('ABSPATH') or die("Thanks for visting");
 
-/**
- * Plugin Name:  CommonsBooking
- * Version: 2.2.3
- * Plugin URI: https://commonsbooking.org
- * Description: A wordpress plugin for management and booking of common goods.
- * Author: wielebenwir e.V.
- * Author URI: https://wielebenwir.de/
- * Domain Path: /languages
- * Text Domain:  commonsbooking
- * License: GPL v2 or later
- * License URI:  https://www.gnu.org/licenses/gpl-2.0.html
- */
-
-
-define('CB_VERSION', '2.2.3');
-define('CB_MENU_SLUG', 'cb-menu');
-define('CB_PLUGIN_SLUG', 'commonsbooking');
-define('CB_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('CB_METABOX_PREFIX', '_cb_'); //Start with an underscore to hide fields from custom fields list
+define('COMMONSBOOKING_VERSION', '2.2.9');
+define('COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking');
+define('COMMONSBOOKING_MENU_SLUG', COMMONSBOOKING_PLUGIN_SLUG . '-menu');
+define('COMMONSBOOKING_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('COMMONSBOOKING_PLUGIN_FILE', __FILE__);
+define('COMMONSBOOKING_METABOX_PREFIX', '_cb_'); //Start with an underscore to hide fields from custom fields list
 
 global $cb_db_version;
 $cb_db_version = '1.0';
@@ -36,7 +38,7 @@ function commonsbooking_admin()
 {
     wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__).'assets/admin/css/admin.css');
     wp_enqueue_script('cb-scripts-admin', plugin_dir_url(__FILE__).'assets/admin/js/admin.js', array());
-    wp_enqueue_style('jquery-ui', '//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css');
+    wp_enqueue_style('jquery-ui', plugin_dir_url(__FILE__) . 'assets/public/css/themes/jquery/jquery-ui.min.css');
     wp_enqueue_script('jquery-ui-datepicker');
 
     wp_localize_script(
@@ -59,32 +61,37 @@ function commonsbooking_public()
     $template = wp_get_theme()->template;
     wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/themes/'.$template.'.css');
 
-    wp_enqueue_style('cb-styles-daterangepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css');
+    wp_enqueue_style(
+        'cb-styles-daterangepicker',
+        plugin_dir_url(__FILE__) . 'assets/public/css/themes/daterangepicker/daterangepicker.css'
+    );
 
     wp_enqueue_script(
         'cb-scripts-jquery',
-        'https://cdn.jsdelivr.net/jquery/latest/jquery.min.js',
-        array(),
-        '1.0.0',
-        true
-    );
-    wp_enqueue_script(
-        'cb-scripts-moment',
-        'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js',
-        array(),
-        '1.0.0',
-        true
-    );
-    wp_enqueue_script(
-        'cb-scripts-daterangepicker',
-        'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js',
+        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/jquery.min.js',
         array(),
         '1.0.0',
         true
     );
 
-    // commented out until changes are implemented in extension
-    // wp_enqueue_script('cb-scripts-litepicker', 'https://cdn.jsdelivr.net/npm/litepicker/dist/js/main.js', array(), '1.0.0', true);
+    // Moment.js
+    wp_enqueue_script(
+        'cb-scripts-moment',
+        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/moment.min.js',
+        array(),
+        '1.0.0',
+        true
+    );
+
+    // Daterangepicker
+    wp_enqueue_script(
+        'cb-scripts-daterangepicker',
+        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/daterangepicker.min.js',
+        array(),
+        '1.0.0',
+        true
+    );
+
     if (WP_DEBUG) {
         wp_enqueue_script('cb-scripts-public', plugin_dir_url(__FILE__).'assets/public/js/public.js', array());
     } else {
@@ -136,7 +143,7 @@ require __DIR__.'/src/Repository/CB1UserFields.php'; //@TODO: import with Autolo
  *
  * @return bool
  */
-function isCurrentUserAllowedToEdit($post)
+function commonsbooking_isCurrentUserAllowedToEdit($post)
 {
     $current_user = wp_get_current_user();
     $isAuthor     = intval($current_user->ID) == intval($post->post_author);
@@ -212,19 +219,19 @@ function isCurrentUserAllowedToEdit($post)
  *
  * @param $current_screen
  */
-function validate_user_on_edit($current_screen)
+function commonsbooking_validate_user_on_edit($current_screen)
 {
     if ($current_screen->base == "post" && in_array($current_screen->id, Plugin::getCustomPostTypesLabels())) {
         if (array_key_exists('action', $_GET) && $_GET['action'] == 'edit') {
             $post = get_post($_GET['post']);
-            if ( ! isCurrentUserAllowedToEdit($post)) {
+            if ( ! commonsbooking_isCurrentUserAllowedToEdit($post)) {
                 die('Access denied');
             };
         }
     }
 }
 
-add_action('current_screen', 'validate_user_on_edit', 10, 1);
+add_action('current_screen', 'commonsbooking_validate_user_on_edit', 10, 1);
 
 /**
  * Applies listing restriction for item and location admins.
@@ -245,7 +252,7 @@ add_filter(
             // Check if it is the main query and one of our custom post types
             if ( ! $isAdmin && $query->is_main_query() && in_array($postType, Plugin::getCustomPostTypesLabels())) {
                 foreach ($posts as $key => $post) {
-                    if ( ! isCurrentUserAllowedToEdit($post)) {
+                    if ( ! commonsbooking_isCurrentUserAllowedToEdit($post)) {
                         unset($posts[$key]);
                     }
                 }
@@ -258,8 +265,9 @@ add_filter(
     2
 );
 
+// TODO: Check if still necessary. User check is implemented in CustomPostType/Timframe -> getTemplate()
 // Redirect to startpage if user is not allowed to edit timeframe
-function cb_timeframe_redirect()
+function commonsbooking_timeframe_redirect()
 {
     global $post;
     if (
@@ -275,10 +283,116 @@ function cb_timeframe_redirect()
     }
 }
 
-add_action('template_redirect', 'cb_timeframe_redirect');
+// removed redirect because we link to booking-single-notallowd.php (defined in )
+    //add_action('template_redirect', 'commonsbooking_timeframe_redirect');
 
 // Shows Errors in Backend
 add_action('admin_notices', array(Plugin::class, 'renderError'));
+
+/**
+ * commonsbooking_sanitizeHTML
+ * Filters text content and strips out disallowed HTML.
+ *
+ * @param  mixed $string
+ * @param  mixed $textdomain
+ * @return void
+ */
+function commonsbooking_sanitizeHTML($string)
+{
+
+    global $allowedposttags;
+
+    $allowed_atts = array(
+        'align'      => array(),
+        'class'      => array(),
+        'type'       => array(),
+        'id'         => array(),
+        'dir'        => array(),
+        'lang'       => array(),
+        'style'      => array(),
+        'xml:lang'   => array(),
+        'src'        => array(),
+        'alt'        => array(),
+        'href'       => array(),
+        'rel'        => array(),
+        'rev'        => array(),
+        'target'     => array(),
+        'novalidate' => array(),
+        'type'       => array(),
+        'value'      => array(),
+        'name'       => array(),
+        'tabindex'   => array(),
+        'action'     => array(),
+        'method'     => array(),
+        'for'        => array(),
+        'width'      => array(),
+        'height'     => array(),
+        'data'       => array(),
+        'title'      => array(),
+    );
+
+    $allowedposttags['form']     = $allowed_atts;
+    $allowedposttags['label']    = $allowed_atts;
+    $allowedposttags['input']    = $allowed_atts;
+    $allowedposttags['textarea'] = $allowed_atts;
+    $allowedposttags['iframe']   = $allowed_atts;
+    $allowedposttags['script']   = $allowed_atts;
+    $allowedposttags['style']    = $allowed_atts;
+    $allowedposttags['strong']   = $allowed_atts;
+    $allowedposttags['small']    = $allowed_atts;
+    $allowedposttags['table']    = $allowed_atts;
+    $allowedposttags['span']     = $allowed_atts;
+    $allowedposttags['abbr']     = $allowed_atts;
+    $allowedposttags['code']     = $allowed_atts;
+    $allowedposttags['pre']      = $allowed_atts;
+    $allowedposttags['div']      = $allowed_atts;
+    $allowedposttags['img']      = $allowed_atts;
+    $allowedposttags['h1']       = $allowed_atts;
+    $allowedposttags['h2']       = $allowed_atts;
+    $allowedposttags['h3']       = $allowed_atts;
+    $allowedposttags['h4']       = $allowed_atts;
+    $allowedposttags['h5']       = $allowed_atts;
+    $allowedposttags['h6']       = $allowed_atts;
+    $allowedposttags['ol']       = $allowed_atts;
+    $allowedposttags['ul']       = $allowed_atts;
+    $allowedposttags['li']       = $allowed_atts;
+    $allowedposttags['em']       = $allowed_atts;
+    $allowedposttags['hr']       = $allowed_atts;
+    $allowedposttags['br']       = $allowed_atts;
+    $allowedposttags['tr']       = $allowed_atts;
+    $allowedposttags['td']       = $allowed_atts;
+    $allowedposttags['p']        = $allowed_atts;
+    $allowedposttags['a']        = $allowed_atts;
+    $allowedposttags['b']        = $allowed_atts;
+    $allowedposttags['i']        = $allowed_atts;
+
+    return wp_kses( $string, $allowedposttags );
+}
+
+
+/**
+ * Recursive sanitation for text or array
+ * 
+ * @param $array_or_string (array|string)
+ * @since  0.1
+ * @return mixed
+ */
+function commonsbooking_sanitizeArrayorString($array_or_string) {
+    if( is_string($array_or_string) ){
+        $array_or_string = sanitize_text_field($array_or_string);
+    }elseif( is_array($array_or_string) ){
+        foreach ( $array_or_string as $key => &$value ) {
+            if ( is_array( $value ) ) {
+                $value = commonsbooking_sanitizeArrayorString($value);
+            }
+            else {
+                $value = commonsbooking_sanitizeArrayorString( $value );
+            }
+        }
+    }
+
+    return $array_or_string;
+}
 
 // Initialize booking codes table
 register_activation_hook(__FILE__, array(\CommonsBooking\Repository\BookingCodes::class, 'initBookingCodesTable'));
@@ -295,7 +409,7 @@ function commonsbooking_cron_interval($schedules)
 add_filter('cron_schedules', 'commonsbooking_cron_interval');
 
 // Removes all uncofirmed bookings older than 10 minutes
-function cleanupBookings()
+function commonsbooking_cleanupBookings()
 {
     $args = array(
         'post_type'   => Timeframe::$postType,
@@ -318,14 +432,14 @@ function cleanupBookings()
         }
     }
 }
-add_action('cb_cron_hook', 'cleanupBookings');
+add_action('cb_cron_hook', 'commonsbooking_cleanupBookings');
 if ( ! wp_next_scheduled('cb_cron_hook')) {
     wp_schedule_event(time(), 'ten_minutes', 'cb_cron_hook');
 }
 
 // Remove schedule on module deactivation
-register_deactivation_hook( __FILE__, 'cb_cron_deactivate' );
-function cb_cron_deactivate() {
+register_deactivation_hook( __FILE__, 'commonsbooking_cron_deactivate' );
+function commonsbooking_cron_deactivate() {
     $timestamp = wp_next_scheduled( 'cb_cron_hook' );
     wp_unschedule_event( $timestamp, 'cb_cron_hook' );
 }
