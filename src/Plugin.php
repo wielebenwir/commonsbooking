@@ -401,4 +401,29 @@ class Plugin
         }
     }
 
+
+        
+    /**
+     * This function runs when WordPress completes its upgrade process
+     * It iterates through each plugin updated to see if ours is included
+     * @param $upgrader_object Array
+     * @param $options Array
+     */
+    public static function commonsboking_upgrade_completed( $upgrader_object, $options ) {
+
+        // If an update has taken place and the updated type is plugins and the plugins element exists
+        if( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
+            // Iterate through the plugins being updated and check if ours is there
+            foreach( $options['plugins'] as $plugin ) {
+                if( $plugin == COMMONSBOOKING_PLUGIN_SLUG ) {
+                    // Set a transient to record that our plugin has just been updated
+                    set_transient( 'commonsbooking_updated', 1 );
+                    
+                }
+            }
+        }
+    }
+   
+    add_action( 'upgrader_process_complete', 'wp_upe_upgrade_completed', 10, 2 );
+
 }
