@@ -126,6 +126,9 @@ class Plugin
 
         // set Options default values on admin activation
         register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( AdminOptions::class, 'setOptionsDefaultValues' ) );
+
+        // Tasks to run after an upgrade has been completed
+        add_action( 'admin_init', array( self::class, 'runTasksAfterUpdate' ), 10 );
     }
 
     /**
