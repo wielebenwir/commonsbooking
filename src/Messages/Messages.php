@@ -63,8 +63,8 @@ class Messages
         }
 
         // parse templates & replaces template tags (e.g. {{item:name}})
-        $this->body = \commonsbooking_parse_template($template_body );
-        $this->subject = wp_kses_post( \commonsbooking_parse_template($template_subject ) );
+        $this->body = commonsbooking_sanitizeHTML (\commonsbooking_parse_template($template_body ) );
+        $this->subject = commonsbooking_sanitizeHTML( \commonsbooking_parse_template($template_subject ) );
        
         // Setup mime type
         $this->headers[] = "MIME-Version: 1.0";
