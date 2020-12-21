@@ -89,7 +89,7 @@ class Plugin
         // Register custom user roles (e.g. location-owner, item-owner etc.)
         add_action('admin_init', array(self::class, 'addCustomUserRoles'));
 
-        // Register custom post types taxonomy / categories
+        // Enable CB1 User Fields (needed in case of migration from cb 0.9.x)
         add_action('init', array(self::class, 'maybeEnableCB1UserFields'));
 
         // Register custom post types
@@ -126,6 +126,9 @@ class Plugin
 
         // set Options default values on admin activation
         register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( AdminOptions::class, 'setOptionsDefaultValues' ) );
+
+        // Tasks to run after an upgrade has been completed
+        add_action( 'admin_init', array( self::class, 'runTasksAfterUpdate' ), 10 );
     }
 
     /**
@@ -444,6 +447,27 @@ class Plugin
         $options_array = include(COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php');
         foreach ($options_array as $tab_id => $tab) {
             new \CommonsBooking\Wordpress\Options\OptionsTab($tab_id, $tab);
+        }
+    }
+        
+    /**
+     * Check if plugin is upgraded an run tasks
+     */
+    public static function runTasksAfterUpdate() {
+
+        $commonsbooking_version_option = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
+
+        // set version option if not already set
+        if ( COMMONSBOOKING_VERSION !== get_option( $commonsbooking_version_option ) ) {
+            
+            // set Options default values (e.g. if there are new fields added)
+            AdminOptions::SetOptionsDefaultValues();
+
+            // add more tasks if necessary
+            // ... 
+
+            // update version number in options
+            update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
         }
     }
 

@@ -3,6 +3,9 @@
 namespace CommonsBooking\Wordpress\Options;
 use CommonsBooking\Settings\Settings;
 
+/**
+ * AdminOptions
+ */
 class AdminOptions
 {
     private static $option_key = COMMONSBOOKING_PLUGIN_SLUG . '_options';
@@ -16,11 +19,9 @@ class AdminOptions
 
         $options_array = include(COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php');
         foreach ($options_array as $tab_id => $tab) {
-
             $groups = $tab['field_groups'];
 
             foreach ($groups as $group_id => $group) {
-
                 $fields = $group['fields'];
                 $option_key = self::$option_key . '_' . $tab_id;
                 $option = array();
