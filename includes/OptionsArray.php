@@ -143,7 +143,7 @@ $options_array = array(
                         'id'            => 'emailtemplates_mail-booking-confirmed-subject',
                         'cb1_legacy_id' => 'commons-booking-settings-mail:commons-booking_mail_confirmation_subject',
                         'type'          => 'text',
-                        'default'       => commonsbooking_sanitizeHTML( __('Your booking {{item:post_title}} at {{location:post_title}} {{booking:booking_timeframe_date}} ',
+                        'default'       => commonsbooking_sanitizeHTML( __('Your booking {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} ',
                             'commonsbooking') ),
                     ),
                     array(
@@ -156,14 +156,14 @@ Hi {{user:first_name}},<br>
 <br>
 thank you for booking {{item:post_title}} {{booking:formattedBookingDate}}.<br>
 <br>
-Pick up date and time: <strong>{{booking:pickupDatetime}}</strong><br>
-Return date and time: <strong>{{booking:returnDatetime}}</strong><br>
-<br>
+Pick up: <strong>{{booking:pickupDatetime}}</strong><br>
+Return date: <strong>{{booking:returnDatetime}}</strong>
 {{location:formattedPickupInstructions}}
 {{booking:formattedBookingCode}}
+<br>
 <strong>Location</strong><br>
 {{location:formattedAddress}}
-{{location:formattedContactInfoOneLine}}<br>
+{{location:formattedContactInfoOneLine}}
 <br>
 <strong>Click here to see or cancel your booking: {{booking:bookingLink}}</strong><br>
 <br>
@@ -182,7 +182,7 @@ Thanks, the Team.
                         'name'    => commonsbooking_sanitizeHTML( __('Booking canceled email subject', 'commonsbooking') ),
                         'id'      => 'emailtemplates_mail-booking-canceled-subject',
                         'type'    => 'text',
-                        'default' => commonsbooking_sanitizeHTML( __('Booking canceled: {{item:post_title}} at {{location:post_title}} {{booking:booking_timeframe_date}}', 'commonsbooking') ),
+                        'default' => commonsbooking_sanitizeHTML( __('Booking canceled: {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}}', 'commonsbooking') ),
                     ),
                     array(
                         'name'    => commonsbooking_sanitizeHTML( __('Booking canceled email body', 'commonsbooking') ),
@@ -191,7 +191,7 @@ Thanks, the Team.
                         'default' => commonsbooking_sanitizeHTML( __('
 Hi {{user:first_name}},<br>
 <br>
-your booking of {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} has been cancelled.<br>
+your booking of {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} has been canceled.<br>
 <br>          
 Thanks, the Team.
                             ', 'commonsbooking') ),
