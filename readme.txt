@@ -3,9 +3,9 @@
 Contributors: wielebenwirteam, m0rb, flegfleg
 Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar, 
-Requires at least: 5.0
-Tested up to: 5.5.2
-Stable Tag: 2.2.7
+Requires at least: 5.2
+Tested up to: 5.6
+Stable Tag: 2.2.8
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -89,12 +89,16 @@ New in this version:
 
 
 = 2.2.8 =
+* Added:
+** Updated translation and minor text edits
+** Set default values on activation and upates
 
-* Updated translation and minor text edits
+* Fixed:
+** Fix: 404-page after installation because of missing permalink refresh
 
 = 2.2.7 =
 
-* Updated translation
+* add: Updated translation
 
 = 2.2.6 =
 
