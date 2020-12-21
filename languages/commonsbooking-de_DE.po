@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2020-12-21T12:37:02+00:00\n"
-"PO-Revision-Date: 2020-12-21 13:38+0100\n"
+"POT-Creation-Date: 2020-12-21T12:52:50+00:00\n"
+"PO-Revision-Date: 2020-12-21 13:53+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -286,9 +286,9 @@ msgstr ""
 "Migriere Daten aus CommonsBooking Version 0.X. <br>Die Migration umfasst: "
 "Standorte, Artikel, Zeitrahmen und Buchungen. <br>Bitte lies die "
 "Dokumentation auf <a href=\"https://commonsbooking.org/dokumentation/"
-"„>https://commonsbooking.org/docs/,</a> bevor Du mit der Migration beginnst."
+"\">https://commonsbooking.org/docs/,</a> bevor Du mit der Migration beginnst."
 
-#: includes/OptionsArray.php:283
+#: includes/OptionsArray.php:283 src/View/Migration.php:57
 msgid "Start Migration"
 msgstr "Migration starten"
 
@@ -436,11 +436,11 @@ msgstr ""
 "überlappende Zeiträume an einem bestimmten Tag zu vermeiden. Siehe "
 "betroffene Zeitrahmen-ID: %1$s: %2$s"
 
-#: src/Plugin.php:324
+#: src/Plugin.php:327
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:348
+#: src/Plugin.php:351
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
