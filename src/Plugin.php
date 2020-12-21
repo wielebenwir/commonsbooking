@@ -13,7 +13,10 @@ use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
 use CommonsBooking\Model\User;
+use CommonsBooking\Wordpress\Options;
 use CB;
+use CommonsBooking\Migration\Migration;
+use CommonsBooking\Wordpress\Options\AdminOptions;
 
 class Plugin
 {
@@ -94,8 +97,8 @@ class Plugin
         add_action('init', array(self::class, 'registerPostStates'));
 
         // flush rewrite rules on plugin registration to set permalinks for registered costum post types
-        register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'FlushRewriteRulesonActivation' ) );
-        register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'FlushRewriteRules' ) );
+        register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRulesonActivation' ) );
+        register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRules' ) );
 
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerItemTaxonomy'), 0);
@@ -113,9 +116,16 @@ class Plugin
         add_action( 'save_post', array( $this, 'savePostActions' ), 10, 2 );
 
         // flush rewrite rules after slug options has been saved   // see: https://wordpress.stackexchange.com/questions/302190/wordpress-cmb2-run-function-on-save/327179
-        add_action( 'cmb2_save_options-page_fields_posttypes_items-slug', array( self::class, 'FlushRewriteRules' ), 10, 3 );
-        add_action( 'cmb2_save_options-page_fields_posttypes_posttypes_locations-slug-slug', array( self::class, 'FlushRewriteRules' ), 10, 3 );
+        add_action( 'cmb2_save_options-page_fields_posttypes_items-slug',
+            array( self::class, 'flushRewriteRules' ), 10, 3 );
+        add_action( 'cmb2_save_options-page_fields_posttypes_posttypes_locations-slug-slug',
+            array( self::class, 'flushRewriteRules' ), 10, 3 );
 
+        // register admin options page
+        add_action('init', array(self::class, 'registerAdminOptions'), 0);
+
+        // set Options default values on admin activation
+        register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( AdminOptions::class, 'setOptionsDefaultValues' ) );
     }
 
     /**
@@ -410,20 +420,31 @@ class Plugin
 
 
     /**
-     * flush rewrite rules to enable custom post type permalinks 
+     * flush rewrite rules to enable custom post type permalinks
      */
-    public static function FlushRewriteRulesonActivation()
+    public static function flushRewriteRulesonActivation()
     {
         self::registerCustomPostTypes();
         flush_rewrite_rules(false);
     }
 
     /**
-     * flush rewrite rules to enable custom post type permalinks 
+     * flush rewrite rules to enable custom post type permalinks
      */
-    public static function FlushRewriteRules()
+    public static function flushRewriteRules()
     {
         flush_rewrite_rules(false);
+    }
+
+     /**
+     * Register Admin-Options
+     */
+    public static function registerAdminOptions()
+    {
+        $options_array = include(COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php');
+        foreach ($options_array as $tab_id => $tab) {
+            new \CommonsBooking\Wordpress\Options\OptionsTab($tab_id, $tab);
+        }
     }
 
 }
