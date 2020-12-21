@@ -38,7 +38,7 @@ class Item extends View
             if (count($locations)) {
                 // If there's only one location  available, we'll show it directly.
                 if (count($locations) == 1) {
-                    $args['location'] = $locations[0];
+                    $args['location'] = array_values($locations)[0];
                 } else {
                     $args['locations'] = $locations;
                 }

@@ -300,7 +300,7 @@ class Location extends View
             if (count($items)) {
                 // If there's only one item available, we'll show it directly.
                 if (count($items) == 1) {
-                    $args['item'] = $items[0];
+                    $args['item'] = array_values($items)[0];
                 } else {
                     $args['items'] = $items;
                 }

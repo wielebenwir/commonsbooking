@@ -51,9 +51,12 @@ class Item extends BookablePost
                     if($itemId && !in_array($itemId, $itemIds)) {
                         $itemIds[] = $itemId;
                         $item = get_post($itemId);
-                        // add only published items
-                        if($item->post_status == 'publish') {
-                            $items[] = $item;
+
+                        if($item) {
+                            // add only published items
+                            if($item->post_status == 'publish') {
+                                $items[] = $item;
+                            }
                         }
                     }
                 }
