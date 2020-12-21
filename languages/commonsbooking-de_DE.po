@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2020-12-20T23:29:53+00:00\n"
-"PO-Revision-Date: 2020-12-21 00:34+0100\n"
+"POT-Creation-Date: 2020-12-21T12:37:02+00:00\n"
+"PO-Revision-Date: 2020-12-21 13:38+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -100,69 +100,66 @@ msgstr "Namen und Permalinks"
 
 #: includes/OptionsArray.php:51
 msgid ""
-"Customize names & slugs. <br><b>Important:</b> After changing these "
-"settings, the option <a href=\"%s\">Permalinks</a> in Wordpress settings "
-"must be called and saved once for the changes to take effect."
+"Customize names & slugs. You can set an individual slugs for items and "
+"locations to create individual permalinks."
 msgstr ""
-"Passe Namen & Slugs an. <br><b>Wichtig:</b> Nach dem Ändern dieser "
-"Einstellungen muss in den Wordpress-Einstellungen die Seite <a href=\"%s"
-"\">Permalinks</a> aufgerufen und erneut gespeichert werden, um die hier "
-"gemachten Änderungen zu aktivieren."
+"Passe Namen und Slugs an. Du kannst individuelle Slugs für Artikel und "
+"Standorte festlegen, um individuelle Permalinks zu erstellen."
 
-#: includes/OptionsArray.php:68
+#: includes/OptionsArray.php:66
 msgid "Items slug"
 msgstr "Artikel slug"
 
 #. translators: %s = example url (like website.com/cb-items/)
-#: includes/OptionsArray.php:72
-msgid "The url for the items archive. E.g: %s"
-msgstr "Die URL für das Buchungsarchiv. Z.B.: %s"
+#: includes/OptionsArray.php:70
+msgid "The url for the items detail page. E.g: %s"
+msgstr "Die URL für die Artikel-Detailseite. Z.B.: %s"
 
-#: includes/OptionsArray.php:79
+#: includes/OptionsArray.php:77
 msgid "Locations slug"
 msgstr "Standorte Slug"
 
 #. translators: %s = example url (like website.com/cb-locations/)
-#: includes/OptionsArray.php:83
-msgid "The url for the locations archive. E.g: %s"
-msgstr "Die URL für das Buchungsarchiv. Z.B.: %s"
+#: includes/OptionsArray.php:81
+msgid "The url for the locations detail page. E.g: %s"
+msgstr "Die URL für die Standort-Detailseite. Z.B.: %s"
 
-#: includes/OptionsArray.php:99 includes/OptionsArray.php:104
-#: includes/OptionsArray.php:109 src/Wordpress/CustomPostType/Timeframe.php:745
+#: includes/OptionsArray.php:97 includes/OptionsArray.php:102
+#: includes/OptionsArray.php:107 src/Wordpress/CustomPostType/Timeframe.php:745
 msgid "Booking Codes"
 msgstr "Buchungs-Codes"
 
-#: includes/OptionsArray.php:120
+#: includes/OptionsArray.php:118
 msgid "Templates"
 msgstr "Vorlagen"
 
-#: includes/OptionsArray.php:124
+#: includes/OptionsArray.php:122
 msgid "Email templates"
 msgstr "E-Mail Vorlagen"
 
-#: includes/OptionsArray.php:128
+#: includes/OptionsArray.php:126
 msgid "Mail-Header from E-Mail"
 msgstr "Absender E-Mail Mail-Adresse"
 
-#: includes/OptionsArray.php:129
+#: includes/OptionsArray.php:127
 msgid "E-Mail that will be shown as sender in generated emails"
 msgstr ""
 "E-Mail, die als Absender in automatisch versendeten E-Mails angezeigt wird"
 
-#: includes/OptionsArray.php:135
+#: includes/OptionsArray.php:133
 msgid "Mail-Header from Name"
 msgstr "Absender E-Mail Name"
 
-#: includes/OptionsArray.php:136
+#: includes/OptionsArray.php:134
 msgid "Name that will be shown as sender in generated emails"
 msgstr ""
 "Name, der als Absender in automatisch versendeten E-Mails angezeigt wird"
 
-#: includes/OptionsArray.php:142
+#: includes/OptionsArray.php:140
 msgid "Booking confirmed email subject"
 msgstr "E-Mail-Betreff für bestätigte Buchungen"
 
-#: includes/OptionsArray.php:146
+#: includes/OptionsArray.php:144
 msgid ""
 "Your booking {{item:post_title}} at {{location:post_title}} {{booking:"
 "formattedBookingDate}} "
@@ -170,11 +167,11 @@ msgstr ""
 "Deine Buchung von {{item:post_title}} am Standort {{location:post_title}} "
 "{{booking:formattedBookingDate}} "
 
-#: includes/OptionsArray.php:150
+#: includes/OptionsArray.php:148
 msgid "Booking confirmed email body"
 msgstr "E-Mail-Text für bestätige Buchungen"
 
-#: includes/OptionsArray.php:154
+#: includes/OptionsArray.php:152
 msgid ""
 "\n"
 "Hi {{user:first_name}},<br>\n"
@@ -235,11 +232,11 @@ msgstr ""
 "Vielen Dank, das Team.\n"
 "                        "
 
-#: includes/OptionsArray.php:182
+#: includes/OptionsArray.php:180
 msgid "Booking canceled email subject"
 msgstr "E-Mail-Betreff für stornierte Buchungen"
 
-#: includes/OptionsArray.php:185
+#: includes/OptionsArray.php:183
 msgid ""
 "Booking canceled: {{item:post_title}} at {{location:post_title}} {{booking:"
 "formattedBookingDate}}"
@@ -247,11 +244,11 @@ msgstr ""
 "Buchung storniert: {{item:post_title}} am Standort {{location:post_title}} "
 "{{booking:formattedBookingDate}}"
 
-#: includes/OptionsArray.php:188
+#: includes/OptionsArray.php:186
 msgid "Booking canceled email body"
 msgstr "E-Mail-Text für stornierte Buchungen"
 
-#: includes/OptionsArray.php:191
+#: includes/OptionsArray.php:189
 msgid ""
 "\n"
 "Hi {{user:first_name}},<br>\n"
@@ -271,15 +268,15 @@ msgstr ""
 "Vielen Dank, das Team.\n"
 "                            "
 
-#: includes/OptionsArray.php:276
+#: includes/OptionsArray.php:274
 msgid "Migration"
 msgstr "Migration"
 
-#: includes/OptionsArray.php:280
+#: includes/OptionsArray.php:278
 msgid "Migrate from Commons Booking Version 0.X"
 msgstr "Migriere von Commons Booking Version 0.X"
 
-#: includes/OptionsArray.php:282
+#: includes/OptionsArray.php:280
 msgid ""
 "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: "
 "locations, items, timeframes and bookings. <br>Please read the documentation "
@@ -291,26 +288,26 @@ msgstr ""
 "Dokumentation auf <a href=\"https://commonsbooking.org/dokumentation/"
 "„>https://commonsbooking.org/docs/,</a> bevor Du mit der Migration beginnst."
 
-#: includes/OptionsArray.php:285
+#: includes/OptionsArray.php:283
 msgid "Start Migration"
 msgstr "Migration starten"
 
-#: includes/OptionsArray.php:293
+#: includes/OptionsArray.php:291
 msgid "CommonsBooking Version 0.X profile fields"
 msgstr "CommonsBooking Version 0.X Nutzerprofil-Felder"
 
-#: includes/OptionsArray.php:295
+#: includes/OptionsArray.php:293
 msgid ""
 "Enable the following legacy CommonsBooking Version 0.X user profile fields:"
 msgstr ""
 "Aktiviere die folgenden veralteten Nutzer-Profilfelder aus Commons Booking "
 "Version 0.X:"
 
-#: includes/OptionsArray.php:298
+#: includes/OptionsArray.php:296
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: includes/OptionsArray.php:303
+#: includes/OptionsArray.php:301
 msgid "Terms & Services Url"
 msgstr "Nutzungsbedingungen & Services URL"
 
@@ -439,11 +436,11 @@ msgstr ""
 "überlappende Zeiträume an einem bestimmten Tag zu vermeiden. Siehe "
 "betroffene Zeitrahmen-ID: %1$s: %2$s"
 
-#: src/Plugin.php:322
+#: src/Plugin.php:324
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:346
+#: src/Plugin.php:348
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
@@ -1239,6 +1236,16 @@ msgstr "Bitte wähle das Rückgabedatum im Kalender aus"
 #: templates/timeframe-calendar.php:41
 msgid "Continue to booking confirmation"
 msgstr "Weiter zur Buchungsprüfung"
+
+#~ msgid ""
+#~ "Customize names & slugs. <br><b>Important:</b> After changing these "
+#~ "settings, the option <a href=\"%s\">Permalinks</a> in Wordpress settings "
+#~ "must be called and saved once for the changes to take effect."
+#~ msgstr ""
+#~ "Passe Namen & Slugs an. <br><b>Wichtig:</b> Nach dem Ändern dieser "
+#~ "Einstellungen muss in den Wordpress-Einstellungen die Seite <a href=\"%s"
+#~ "\">Permalinks</a> aufgerufen und erneut gespeichert werden, um die hier "
+#~ "gemachten Änderungen zu aktivieren."
 
 #~ msgid ""
 #~ "\n"
