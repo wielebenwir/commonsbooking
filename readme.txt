@@ -87,6 +87,9 @@ New in this version:
 
 == Changelog ==
 
+= 2.2.9 =
+* Fixed:
+** Fixed template issup pickup instructions not shown on booking page
 
 = 2.2.8 =
 * Added:
