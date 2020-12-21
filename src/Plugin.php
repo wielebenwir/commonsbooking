@@ -89,7 +89,7 @@ class Plugin
         // Register custom user roles (e.g. location-owner, item-owner etc.)
         add_action('admin_init', array(self::class, 'addCustomUserRoles'));
 
-        // Register custom post types taxonomy / categories
+        // Enable CB1 User Fields (needed in case of migration from cb 0.9.x)
         add_action('init', array(self::class, 'maybeEnableCB1UserFields'));
 
         // Register custom post types
@@ -99,6 +99,9 @@ class Plugin
         // flush rewrite rules on plugin registration to set permalinks for registered costum post types
         register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'FlushRewriteRulesonActivation' ) );
         register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'FlushRewriteRules' ) );
+        
+        // Tasks to run after an upgrade has been completed
+        add_action( 'upgrader_process_complete', array( self::class, 'UpgradeCompleted' ), 10, 2 );
 
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerItemTaxonomy'), 0);
@@ -448,24 +451,25 @@ class Plugin
     /**
      * This function runs when WordPress completes its upgrade process
      * It iterates through each plugin updated to see if ours is included
+     * more on: https://developer.wordpress.org/reference/hooks/upgrader_process_complete/
      * @param $upgrader_object Array
      * @param $options Array
      */
-    public static function commonsboking_upgrade_completed( $upgrader_object, $options ) {
+    public static function UpgradeCompleted( $upgrader_object, $options ) {
 
         // If an update has taken place and the updated type is plugins and the plugins element exists
-        if( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
+        if ( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
             // Iterate through the plugins being updated and check if ours is there
-            foreach( $options['plugins'] as $plugin ) {
-                if( $plugin == COMMONSBOOKING_PLUGIN_SLUG ) {
+            foreach ( $options['plugins'] as $plugin ) {
+                if ( $plugin == COMMONSBOOKING_PLUGIN_SLUG ) {
                     // Set a transient to record that our plugin has just been updated
                     set_transient( 'commonsbooking_updated', 1 );
-                    
+
+                    // maybe set Option default values
+                    AdminOptions::SetOptionsDefaultValues(); 
                 }
             }
         }
     }
-   
-    add_action( 'upgrader_process_complete', 'wp_upe_upgrade_completed', 10, 2 );
 
 }
