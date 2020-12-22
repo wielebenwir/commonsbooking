@@ -59,7 +59,7 @@ $item          = $booking->getItem();
     </div><!-- .cb-contact -->
     <div class="cb-list-content cb-pickupinstructions cb-col-30-70">
         <div><?php echo esc_html__('Pickup instructions', 'commonsbooking'); ?></div>
-        <div><?php echo $location->formattedPickupInstructions(); ?></div>
+        <div><?php echo $location->formattedPickupInstructionsOneLine(); ?></div>
     </div><!-- .cb-cb-pickupinstructions -->
 </div><!-- cb-booking-location -->
 
