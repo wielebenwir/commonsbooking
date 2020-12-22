@@ -188,7 +188,7 @@ class CB
             }
 
             if (get_user_meta($userID, $property, TRUE)) { // User has meta fields
-                $result =  $cb_user->getMeta($property);
+                $result = get_user_meta($userID, $property, true);
             }
 
 
