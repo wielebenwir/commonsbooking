@@ -87,17 +87,16 @@ New in this version:
 
 == Changelog ==
 
+= 2.2.10 =
+* Fixed template issues (usernmame not shown, formatting issues in mail an booking template)
+
 = 2.2.9 =
-* Fixed:
-** Fixed template issup pickup instructions not shown on booking page
+* Fixed template issup pickup instructions not shown on booking page
 
 = 2.2.8 =
-* Added:
-** Updated translation and minor text edits
-** Set default values on activation and upates
-
-* Fixed:
-** Fix: 404-page after installation because of missing permalink refresh
+* Updated translation and minor text edits
+* Set default values on activation and upates
+* Fix: 404-page after installation because of missing permalink refresh
 
 = 2.2.7 =
 
