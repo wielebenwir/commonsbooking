@@ -8,6 +8,11 @@ class BookingCode
 {
 
     /**
+     * Error type id.
+     */
+    public const ERROR_TYPE = "bookingCodeCreationError";
+
+    /**
      * Datestring
      * @var string
      */

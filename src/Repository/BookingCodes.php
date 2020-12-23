@@ -142,7 +142,20 @@ class BookingCodes
         $period = new DatePeriod($begin, $interval, $end);
 
         $bookingCodes = Settings::getOption('commonsbooking_options_bookingcodes', 'bookingcodes');
-        $bookingCodesArray = explode(',', $bookingCodes);
+        $bookingCodesArray = array_filter(explode(',', trim($bookingCodes)));
+
+        // Check if codes are available, show error if not.
+        if(!count($bookingCodesArray)) {
+            set_transient(
+                BookingCode::ERROR_TYPE,
+                commonsbooking_sanitizeHTML(
+                    __("Es konnten keine Buchungscodes angelegt werden, da keine Buchungscodes zur Auswahl standen. Bitte hinterlege Buchungscodes in den CommonsBooking-Einstellungen.", 'commonsbooking')
+                ),
+                45
+            );
+            return false;
+        }
+
         $bookingCodesRandomizer = intval($timeframeId);
         $bookingCodesRandomizer += $bookablePost->getItem()->ID;
         $bookingCodesRandomizer += $bookablePost->getLocation()->ID;
