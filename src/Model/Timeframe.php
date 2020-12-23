@@ -9,6 +9,11 @@ namespace CommonsBooking\Model;
 class Timeframe extends CustomPost
 {
     /**
+     * Error type id.
+     */
+    public const ERROR_TYPE = "timeframeValidationFailed";
+
+    /**
      * Return residence in a human readable format
      *
      * "From xx.xx.",  "Until xx.xx.", "From xx.xx. until xx.xx.", "no longer available"
@@ -177,7 +182,7 @@ class Timeframe extends CustomPost
             $postId = $this->ID;
 
             if ($this->getStartTime() && ! $this->getEndTime()) {
-                set_transient("timeframeValidationFailed",
+                set_transient(self::ERROR_TYPE,
                     commonsbooking_sanitizeHTML( __("A pickup time but no return time has been set. Please set the return time.", 'commonsbooking') ),
                     45);
 
@@ -207,7 +212,7 @@ class Timeframe extends CustomPost
                 ) {
                     // Compare grid types
                     if ($timeframe->getGrid() != $this->getGrid()) {
-                        set_transient("timeframeValidationFailed",
+                        set_transient(self::ERROR_TYPE,
                             /* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
                             sprintf( commonsbooking_sanitizeHTML( __('Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s: %2$s',
                                 'commonsbooking', 5) ), $timeframe->ID, $timeframe->post_title));
@@ -217,7 +222,7 @@ class Timeframe extends CustomPost
 
                     // Check if in day slots overlap
                     if (!$this->getMeta('full-day') && $this->hasTimeframeTimeOverlap($this, $timeframe)) {
-                        set_transient("timeframeValidationFailed",
+                        set_transient(self::ERROR_TYPE,
                             /* translators: first %s = timeframe-ID, second %s is timeframe post_title */
                             sprintf( commonsbooking_sanitizeHTML( __('time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s: %2$s',
                                 'commonsbooking', 5) ), $timeframe->ID, $timeframe->post_title ) );
@@ -227,7 +232,7 @@ class Timeframe extends CustomPost
 
                     // Check if full-day slots overlap
                     if ($this->getMeta('full-day')) {
-                        set_transient("timeframeValidationFailed",
+                        set_transient(self::ERROR_TYPE,
                             /* translators: first %s = timeframe-ID, second %s is timeframe post_title */
                             sprintf( commonsbooking_sanitizeHTML( __('Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s: %2$s',
                                 'commonsbooking', 5) ), $timeframe->ID, $timeframe->post_title) );

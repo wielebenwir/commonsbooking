@@ -5,6 +5,7 @@ namespace CommonsBooking;
 
 use CommonsBooking\Controller\TimeframeController;
 use CommonsBooking\Model\Booking;
+use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\CB1UserFields;
 use CommonsBooking\Settings\Settings;
@@ -403,10 +404,21 @@ class Plugin
      */
     public static function renderError()
     {
-        if ($error = get_transient("timeframeValidationFailed")) {
-            $class = 'notice notice-error';
-            printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($error));
-            delete_transient("timeframeValidationFailed");
+        $errorTypes = [
+            \CommonsBooking\Model\Timeframe::ERROR_TYPE,
+            BookingCode::ERROR_TYPE,
+        ];
+
+        foreach ($errorTypes as $errorType) {
+            if ($error = get_transient($errorType)) {
+                $class = 'notice notice-error';
+                printf(
+                    '<div class="%1$s"><p>%2$s</p></div>',
+                    esc_attr($class),
+                    esc_html($error)
+                );
+                delete_transient($errorType);
+            }
         }
     }
 
@@ -449,7 +461,7 @@ class Plugin
             new \CommonsBooking\Wordpress\Options\OptionsTab($tab_id, $tab);
         }
     }
-        
+
     /**
      * Check if plugin is upgraded an run tasks
      */
@@ -459,12 +471,12 @@ class Plugin
 
         // set version option if not already set
         if ( COMMONSBOOKING_VERSION !== get_option( $commonsbooking_version_option ) ) {
-            
+
             // set Options default values (e.g. if there are new fields added)
             AdminOptions::SetOptionsDefaultValues();
 
             // add more tasks if necessary
-            // ... 
+            // ...
 
             // update version number in options
             update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
