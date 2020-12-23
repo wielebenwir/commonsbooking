@@ -737,6 +737,11 @@ class Timeframe extends CustomPostType
                 'date_format' => $dateFormat,
             ),
             array(
+                'name' => esc_html__('Show Booking Codes', 'commonsbooking'),
+                'id'   => "show-booking-codes",
+                'type' => 'checkbox',
+            ),
+            array(
                 'name' => esc_html__('Create Booking Codes', 'commonsbooking'),
                 'id'   => "create-booking-codes",
                 'type' => 'checkbox',
