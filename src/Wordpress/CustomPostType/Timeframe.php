@@ -123,7 +123,7 @@ class Timeframe extends CustomPostType
     {
         return [
             // Opening Hours disabled as its not implemented yet
-            //self::OPENING_HOURS_ID    => esc_html__("Opening Hours", 'commonsbooking'),  
+            //self::OPENING_HOURS_ID    => esc_html__("Opening Hours", 'commonsbooking'),
             self::BOOKABLE_ID         => esc_html__("Bookable", 'commonsbooking'),
             self::HOLIDAYS_ID         => esc_html__("Holidays", 'commonsbooking'),
             // Off Holidays disabled as its not implemented yet
@@ -827,7 +827,9 @@ class Timeframe extends CustomPostType
 
         if ($isValid) {
             $timeframe = new \CommonsBooking\Model\Timeframe($post_id);
-            if ($timeframe->bookingCodesApplieable()) {
+            $createBookingCodes = get_post_meta($post_id, 'create-booking-codes', true);
+
+            if ($createBookingCodes == "on" && $timeframe->bookingCodesApplieable()) {
                 BookingCodes::generate($post_id);
             }
         }
