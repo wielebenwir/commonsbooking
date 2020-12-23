@@ -1377,123 +1377,133 @@
         });
     } ]).Litepicker;
 }), document.addEventListener("DOMContentLoaded", function(event) {
-    const fadeOutCalendar = () => {
-        $("#litepicker .litepicker .container__days").css("visibility", "hidden");
-    }, initSelectHandler = () => {
-        bookingForm.find("select[name=repetition-start]").change(function() {
-            updateEndSelectTimeOptions();
-        });
-    }, updateEndSelectTimeOptions = () => {
-        const bookingForm = $("#booking-form"), startSelect = bookingForm.find("select[name=repetition-start]"), endSelect = bookingForm.find("select[name=repetition-end]"), startValue = startSelect.val();
-        endSelect.find("option").each(function() {
-            $(this).val() < startValue && ($(this).attr("disabled", "disabled"), $(this).prop("selected", !1));
-        });
-    }, updateSelectSlots = (select, slots, type = "start", fullday = !1) => {
-        select.empty().attr("required", "required"), $.each(slots, function(index, slot) {
-            let option = new Option(slot.timestart + " - " + slot.timeend, slot["timestamp" + type], fullday, fullday);
-            slot.disabled && (option.disabled = !0), select.append(option);
-        });
-    }, getOrientation = () => window.matchMedia("(orientation: portrait)").matches ? "portrait" : "landscape", initStartSelect = date => {
-        const day1 = data.days[moment(date).format("YYYY-MM-DD")], startDate = moment(date).format("DD.MM.YYYY");
-        $(".time-selection.repetition-start").find(".hint-selection").hide(), $(".time-selection.repetition-end").find(".hint-selection").show(), 
-        $("#booking-form select[name=repetition-end],#booking-form .time-selection.repetition-end .date").hide(), 
-        $("#booking-form input[type=submit]").attr("disabled", "disabled");
-        let startSelect = $("#booking-form select[name=repetition-start]");
-        $(".time-selection.repetition-start span.date").text(startDate), updateSelectSlots(startSelect, day1.slots, "start", day1.fullDay), 
-        day1.fullDay ? $(".time-selection.repetition-start").find("select").hide() : $(".time-selection.repetition-start").find("select").show();
-    }, initEndSelect = date => {
-        const day2 = data.days[moment(date).format("YYYY-MM-DD")], endDate = moment(date).format("DD.MM.YYYY");
-        $(".time-selection.repetition-end").find(".hint-selection").hide();
-        let endSelect = $("#booking-form select[name=repetition-end]");
-        $(".time-selection.repetition-end span.date").text(endDate), updateSelectSlots(endSelect, day2.slots, "end", day2.fullDay), 
-        $("#booking-form select[name=repetition-end],#booking-form .time-selection.repetition-end .date").show(), 
-        $("#booking-form input[type=submit]").removeAttr("disabled"), updateEndSelectTimeOptions(), 
-        day2.fullDay ? $(".time-selection.repetition-end").find("select").hide() : $(".time-selection.repetition-end").find("select").show();
-    };
-    let numberOfMonths = 2, numberOfColumns = 2;
-    if ((() => {
-        const isPortrait = "portrait" === getOrientation();
-        return window.matchMedia(`(max-device-${isPortrait ? "width" : "height"}: 480px)`).matches;
-    })()) switch (screen.orientation.angle) {
-      case -90:
-      case 90:
-        numberOfMonths = 2, numberOfColumns = 2;
-        break;
-
-      default:
-        numberOfMonths = 1, numberOfColumns = 1;
-    }
-    let picker = !1;
-    const updatePicker = data => {
-        fadeOutCalendar(), picker.setOptions({
-            minDate: moment().isAfter(data.startDate) ? moment().format("YYYY-MM-DD") : data.startDate,
-            maxDate: data.endDate,
-            days: data.days,
-            maxDays: data.maxDays,
-            lockDays: data.lockDays,
-            bookedDays: data.bookedDays,
-            partiallyBookedDays: data.partiallyBookedDays,
-            highlightedDays: data.highlightedDays,
-            holidays: data.holidays,
-            onDaySelect: function(date, datepicked) {
-                if (datepicked >= 0) {
-                    $("#booking-form").show(), 1 == datepicked && (initStartSelect(date), $(".cb-notice.date-select").hide()), 
-                    2 == datepicked && initEndSelect(date);
-                }
-            },
-            onSelect: function(date1, date2) {
-                $("#booking-form").show(), $(".cb-notice.date-select").hide();
-                const day1 = data.days[moment(date1).format("YYYY-MM-DD")], day2 = data.days[moment(date2).format("YYYY-MM-DD")];
-                initEndSelect(date2), day1.fullDay && day2.fullDay ? $("#fullDayInfo").text(data.location.fullDayInfo) : ($("#fullDayInfo").text(""), 
-                initSelectHandler());
-            }
-        }), $("#litepicker .litepicker .container__days").fadeTo("fast", 1);
-    };
-    let bookingForm = $("#booking-form");
-    bookingForm.length && "undefined" != typeof data && (picker = new Litepicker({
-        element: document.getElementById("litepicker"),
-        minDate: moment().format("YYYY-MM-DD"),
-        inlineMode: !0,
-        firstDay: 1,
-        lang: "de-DE",
-        numberOfMonths: numberOfMonths,
-        numberOfColumns: numberOfColumns,
-        moveByOneMonth: !0,
-        singleMode: !1,
-        showWeekNumbers: !1,
-        autoApply: !0,
-        bookedDaysInclusivity: "[]",
-        anyBookedDaysAsCheckout: !1,
-        disallowBookedDaysInRange: !0,
-        disallowPartiallyBookedDaysInRange: !0,
-        disallowLockDaysInRange: data.disallowLockDaysInRange,
-        mobileFriendly: !0,
-        selectForward: !0,
-        useResetBtn: !0,
-        maxDays: data.maxDays,
-        buttonText: {
-            apply: "Buchen",
-            cancel: "Abbrechen"
-        },
-        onAutoApply: datePicked => {
-            datePicked && ($("#booking-form").show(), $(".cb-notice.date-select").hide());
-        },
-        resetBtnCallback: () => {
-            $("#booking-form").hide(), $(".cb-notice.date-select").show();
-        },
-        onChangeMonth: function(date, idx) {
-            fadeOutCalendar();
-            const startDate = moment(date.format("YYYY-MM-DD")).format("YYYY-MM-DD"), calStartDate = moment(date.format("YYYY-MM-DD")).date(0).format("YYYY-MM-DD"), calEndDate = moment(date.format("YYYY-MM-DD")).add(numberOfMonths, "months").date(1).format("YYYY-MM-DD");
-            $.post(cb_ajax.ajax_url, {
-                _ajax_nonce: cb_ajax.nonce,
-                action: "calendar_data",
-                item: $("#booking-form input[name=item-id]").val(),
-                location: $("#booking-form input[name=location-id]").val(),
-                sd: calStartDate,
-                ed: calEndDate
-            }, function(data) {
-                updatePicker(data), picker.gotoDate(startDate);
+    if ("undefined" != typeof data) {
+        let globalCalendarData = data;
+        const fadeOutCalendar = () => {
+            $("#litepicker .litepicker .container__days").css("visibility", "hidden");
+        }, fadeInCalendar = () => {
+            $("#litepicker .litepicker .container__days").fadeTo("fast", 1);
+        }, initSelectHandler = () => {
+            bookingForm.find("select[name=repetition-start]").change(function() {
+                updateEndSelectTimeOptions();
             });
+        }, updateEndSelectTimeOptions = () => {
+            const bookingForm = $("#booking-form"), startSelect = bookingForm.find("select[name=repetition-start]"), endSelect = bookingForm.find("select[name=repetition-end]"), startValue = startSelect.val();
+            endSelect.find("option").each(function() {
+                $(this).val() < startValue && ($(this).attr("disabled", "disabled"), $(this).prop("selected", !1));
+            });
+        }, updateSelectSlots = (select, slots, type = "start", fullday = !1) => {
+            select.empty().attr("required", "required"), $.each(slots, function(index, slot) {
+                let option = new Option(slot.timestart + " - " + slot.timeend, slot["timestamp" + type], fullday, fullday);
+                slot.disabled && (option.disabled = !0), select.append(option);
+            });
+        }, isMobile = () => {
+            const isPortrait = "portrait" === getOrientation();
+            return window.matchMedia(`(max-device-${isPortrait ? "width" : "height"}: 480px)`).matches;
+        }, getOrientation = () => window.matchMedia("(orientation: portrait)").matches ? "portrait" : "landscape", initStartSelect = date => {
+            const day1 = globalCalendarData.days[moment(date).format("YYYY-MM-DD")], startDate = moment(date).format("DD.MM.YYYY");
+            $(".time-selection.repetition-start").find(".hint-selection").hide(), $(".time-selection.repetition-end").find(".hint-selection").show(), 
+            $("#booking-form select[name=repetition-end],#booking-form .time-selection.repetition-end .date").hide(), 
+            $("#booking-form input[type=submit]").attr("disabled", "disabled");
+            let startSelect = $("#booking-form select[name=repetition-start]");
+            $(".time-selection.repetition-start span.date").text(startDate), updateSelectSlots(startSelect, day1.slots, "start", day1.fullDay), 
+            day1.fullDay ? $(".time-selection.repetition-start").find("select").hide() : $(".time-selection.repetition-start").find("select").show();
+        }, initEndSelect = date => {
+            const day2 = globalCalendarData.days[moment(date).format("YYYY-MM-DD")], endDate = moment(date).format("DD.MM.YYYY");
+            $(".time-selection.repetition-end").find(".hint-selection").hide();
+            let endSelect = $("#booking-form select[name=repetition-end]");
+            $(".time-selection.repetition-end span.date").text(endDate), updateSelectSlots(endSelect, day2.slots, "end", day2.fullDay), 
+            $("#booking-form select[name=repetition-end],#booking-form .time-selection.repetition-end .date").show(), 
+            $("#booking-form input[type=submit]").removeAttr("disabled"), updateEndSelectTimeOptions(), 
+            day2.fullDay ? $(".time-selection.repetition-end").find("select").hide() : $(".time-selection.repetition-end").find("select").show();
+        };
+        let numberOfMonths = 2, numberOfColumns = 2;
+        if (isMobile()) switch (screen.orientation.angle) {
+          case -90:
+          case 90:
+            numberOfMonths = 2, numberOfColumns = 2;
+            break;
+
+          default:
+            numberOfMonths = 1, numberOfColumns = 1;
         }
-    }), $("#litepicker .litepicker").hide(), updatePicker(data));
+        let picker = !1;
+        const initPicker = () => {
+            picker = new Litepicker({
+                element: document.getElementById("litepicker"),
+                minDate: moment().format("YYYY-MM-DD"),
+                inlineMode: !0,
+                firstDay: 1,
+                lang: "de-DE",
+                numberOfMonths: numberOfMonths,
+                numberOfColumns: numberOfColumns,
+                moveByOneMonth: !0,
+                singleMode: !1,
+                showWeekNumbers: !1,
+                autoApply: !0,
+                bookedDaysInclusivity: "[]",
+                anyBookedDaysAsCheckout: !1,
+                disallowBookedDaysInRange: !0,
+                disallowPartiallyBookedDaysInRange: !0,
+                disallowLockDaysInRange: globalCalendarData.disallowLockDaysInRange,
+                mobileFriendly: !0,
+                selectForward: !0,
+                useResetBtn: !0,
+                maxDays: globalCalendarData.maxDays,
+                buttonText: {
+                    apply: "Buchen",
+                    cancel: "Abbrechen"
+                },
+                onAutoApply: datePicked => {
+                    datePicked && ($("#booking-form").show(), $(".cb-notice.date-select").hide());
+                },
+                resetBtnCallback: () => {
+                    $("#booking-form").hide(), $(".cb-notice.date-select").show();
+                },
+                onChangeMonth: function(date, idx) {
+                    fadeOutCalendar();
+                    const startDate = moment(date.format("YYYY-MM-DD")).format("YYYY-MM-DD"), calStartDate = moment(date.format("YYYY-MM-DD")).date(0).format("YYYY-MM-DD"), calEndDate = moment(date.format("YYYY-MM-DD")).add(numberOfMonths, "months").date(1).format("YYYY-MM-DD");
+                    $.post(cb_ajax.ajax_url, {
+                        _ajax_nonce: cb_ajax.nonce,
+                        action: "calendar_data",
+                        item: $("#booking-form input[name=item-id]").val(),
+                        location: $("#booking-form input[name=location-id]").val(),
+                        sd: calStartDate,
+                        ed: calEndDate
+                    }, function(data) {
+                        globalCalendarData.days = {
+                            ...globalCalendarData.days,
+                            ...data.days
+                        }, updatePicker(data), picker.gotoDate(startDate);
+                    });
+                }
+            }), $("#litepicker .litepicker").hide();
+        }, updatePicker = globalCalendarData => {
+            fadeOutCalendar(), picker.setOptions({
+                minDate: moment().isAfter(globalCalendarData.startDate) ? moment().format("YYYY-MM-DD") : data.startDate,
+                maxDate: globalCalendarData.endDate,
+                days: globalCalendarData.days,
+                maxDays: globalCalendarData.maxDays,
+                lockDays: globalCalendarData.lockDays,
+                bookedDays: globalCalendarData.bookedDays,
+                partiallyBookedDays: globalCalendarData.partiallyBookedDays,
+                highlightedDays: globalCalendarData.highlightedDays,
+                holidays: globalCalendarData.holidays,
+                onDaySelect: function(date, datepicked) {
+                    if (datepicked >= 0) {
+                        $("#booking-form").show(), 1 == datepicked && (initStartSelect(date), $(".cb-notice.date-select").hide()), 
+                        2 == datepicked && initEndSelect(date);
+                    }
+                },
+                onSelect: function(date1, date2) {
+                    $("#booking-form").show(), $(".cb-notice.date-select").hide();
+                    const day1 = globalCalendarData.days[moment(date1).format("YYYY-MM-DD")], day2 = globalCalendarData.days[moment(date2).format("YYYY-MM-DD")];
+                    initEndSelect(date2), day1.fullDay && day2.fullDay ? $("#fullDayInfo").text(globalCalendarData.location.fullDayInfo) : ($("#fullDayInfo").text(""), 
+                    initSelectHandler());
+                }
+            }), fadeInCalendar();
+        };
+        let bookingForm = $("#booking-form");
+        bookingForm.length && "undefined" != typeof data && (initPicker(), updatePicker(globalCalendarData));
+    }
 });
