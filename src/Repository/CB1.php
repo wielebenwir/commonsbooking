@@ -262,10 +262,10 @@ class CB1
                 tr.*, 
                 tt.taxonomy,
                 t.slug as term
-            FROM $table_term_relationships  tr 
-            LEFT JOIN $table_term_taxonomy  tt ON
+            FROM $table_term_relationships tr 
+            LEFT JOIN $table_term_taxonomy tt ON
                 tr.term_taxonomy_id = tt.term_id
-            LEFT JOIN $table_terms ON
+            LEFT JOIN $table_terms t ON
                 t.term_id = tt.term_id
             WHERE tr.object_id IN (
                 SELECT meta_value
