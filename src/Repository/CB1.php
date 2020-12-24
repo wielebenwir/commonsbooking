@@ -115,6 +115,8 @@ class CB1
     {
         global $wpdb;
         $table_bookingcodes = $wpdb->prefix.self::$BOOKINGCODES_TABLE;
+        $table_timeframes = $wpdb->prefix.self::$TIMEFRAMES_TABLE;
+        
 
         return $wpdb->get_results(
             "SELECT
@@ -123,7 +125,7 @@ class CB1
                 t.id as timeframe_id,
                 t.location_id,
                 c.bookingcode
-            FROM $table_bookingcodes c, wp_cb_timeframes t
+            FROM $table_bookingcodes c, $table_timeframes t
             WHERE
                 c.item_id = t.item_id AND
                 c.booking_date >= t.date_start AND
@@ -173,13 +175,18 @@ class CB1
     protected static function getCB2PostIdByType($id, $type)
     {
         global $wpdb;
+        $table_postmeta = $wpdb->prefix . 'postmeta'; 
+        $table_posts = $wpdb->prefix . 'posts'; 
+
+        
+
         $result = $wpdb->get_results(
             "
-            SELECT post_id FROM wp_postmeta
+            SELECT post_id FROM $table_postmeta
             WHERE
                 meta_key = '_cb_cb1_post_post_ID' AND
                 meta_value = $id AND
-                post_id in (SELECT id from wp_posts where post_type = '".$type."');
+                post_id in (SELECT id from $table_posts where post_type = '".$type."');
         "
         );
 
@@ -217,10 +224,13 @@ class CB1
     public static function getCB2PostIdByCB1Id($id)
     {
         global $wpdb;
+        $table_postmeta = $wpdb->prefix . 'postmeta';
+
+
         $result = $wpdb->get_results(
             "
             SELECT meta_value as cb1_id, post_id as cb2_id 
-            FROM wp_postmeta 
+            FROM $table_postmeta
             WHERE
                 meta_key = '_cb_cb1_post_post_ID' AND 
                 meta_value = '$id';
@@ -241,6 +251,10 @@ class CB1
     public static function getCB1Taxonomies()
     {
         global $wpdb;
+        $table_postmeta = $wpdb->prefix . 'postmeta';
+        $table_term_relationships = $wpdb->prefix . 'term_relationships';
+        $table_term_taxonomy = $wpdb->prefix . 'term_taxonomy';
+        $table_terms = $wpdb->prefix . 'terms';
 
         return $wpdb->get_results(
             "
@@ -248,14 +262,14 @@ class CB1
                 tr.*, 
                 tt.taxonomy,
                 t.slug as term
-            FROM wp_term_relationships tr 
-            LEFT JOIN wp_term_taxonomy tt ON
+            FROM $table_term_relationships  tr 
+            LEFT JOIN $table_term_taxonomy  tt ON
                 tr.term_taxonomy_id = tt.term_id
-            LEFT JOIN wp_terms t ON
+            LEFT JOIN $table_terms ON
                 t.term_id = tt.term_id
             WHERE tr.object_id IN (
                 SELECT meta_value
-                FROM wp_postmeta
+                FROM $table_postmeta
                 WHERE
                     meta_key = '_cb_cb1_post_post_ID'
             );
