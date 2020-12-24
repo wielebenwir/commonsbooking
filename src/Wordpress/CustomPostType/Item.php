@@ -99,7 +99,11 @@ class Item extends CustomPostType
             'supports'            => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions',
         'excerpt'),
 
-            // Soll der Post Type Kategorien zugeordnet werden können?
+
+            // Soll der Post Type Kategien haben?
+            'taxonomies'         => array(self::$postType.'s_category'),
+
+            // Soll der Post Type Archiv-Seiten haben?
             'has_archive'         => false,
 
             // Soll man den Post Type exportieren können?
