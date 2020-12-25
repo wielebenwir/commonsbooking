@@ -5,7 +5,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar, 
 Requires at least: 5.2
 Tested up to: 5.6
-Stable Tag: 2.2.13
+Stable Tag: 2.2.14
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -86,6 +86,12 @@ New in this version:
 4. User bookings list
 
 == Changelog ==
+
+= 2.2.14 =
+* fixed: error when using individual table prefix other than wp_
+* fixed: refresh permalink on save individual slug (no need to call permalinks settings page after saving slug)
+* fixed: categories not shown in gutenberg editor
+* added: You can set if booking codes should be shown to user or not on fullday booking slots in timeframe settings (timeframe editor)
 
 = 2.2.13 =
 * Added notice to refresh permalinks due to unsolved issue
