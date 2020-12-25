@@ -332,4 +332,12 @@ class Timeframe extends CustomPost
             );
     }
 
+    /**
+     * Returns true if booking codes shall be shown in frontend.
+     * @return bool
+     */
+    public function showBookingCodes() {
+        return $this->getMeta("show-booking-codes") == "on";
+    }
+
 }

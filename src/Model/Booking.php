@@ -60,7 +60,11 @@ class Booking extends CustomPost
      * @return mixed
      */
     public function formattedBookingCode() {
-        if ($this->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'bookingcode')) {
+        if (
+            $this->getBookableTimeFrame() &&
+            $this->getBookableTimeFrame()->showBookingCodes() &&
+            $this->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'bookingcode')
+        ) {
             // translators: %s = Booking code
             $htmloutput = '<br>' . sprintf( commonsbooking_sanitizeHTML( __( 'Your booking code is: %s' , 'commonsbooking' ) ), $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode') ) . '<br>' ;
             return $htmloutput;
@@ -69,6 +73,7 @@ class Booking extends CustomPost
 
     /**
      * Assings relevant meta fields from related bookable timeframe to booking.
+     * @TODO: Think about ID relation, so that the exact timeframe may be found.
      * @throws \Exception
      */
     public function assignBookableTimeframeFields() {
@@ -132,7 +137,7 @@ class Booking extends CustomPost
 
     /**
      * Returns suitable bookable Timeframe for booking.
-     * @return mixed
+     * @return null|\CommonsBooking\Model\Timeframe
      * @throws \Exception
      */
     public function getBookableTimeFrame() {
@@ -143,7 +148,8 @@ class Booking extends CustomPost
             [$locationId],
             [$itemId],
             [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID],
-            date(CB::getInternalDateFormat(), $this->getMeta('repetition-start'))
+            date(CB::getInternalDateFormat(), $this->getMeta('repetition-start')),
+            true
         );
 
         if(count($response)) {
