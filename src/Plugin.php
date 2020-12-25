@@ -85,6 +85,14 @@ class Plugin
      */
     public function init()
     {
+        
+        // flush rewrite rules on plugin registration to set permalinks for registered costum post types
+        register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRulesonActivation' ) );
+        register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRules' ) );
+
+        // check if we have a new version and run tasks
+        add_action( 'plugins_loaded', array( self::class, 'runTasksAfterUpdate' ), 10 );
+        
         do_action('cmb2_init');
 
         // Register custom user roles (e.g. location-owner, item-owner etc.)
@@ -94,18 +102,18 @@ class Plugin
         add_action('init', array(self::class, 'maybeEnableCB1UserFields'));
 
         // Register custom post types
-        add_action('init', array(self::class, 'registerCustomPostTypes'));
-        add_action('init', array(self::class, 'registerPostStates'));
+        add_action('init', array(self::class, 'registerCustomPostTypes'), 0);
+        add_action('init', array(self::class, 'registerPostStates'), 0);
 
-        // flush rewrite rules on plugin registration to set permalinks for registered costum post types
-        register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRulesonActivation' ) );
-        register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRules' ) );
-
-        // Register custom post types taxonomy / categories
-        add_action('init', array(self::class, 'registerItemTaxonomy'), 0);
+        // register admin options page
+        add_action('init', array(self::class, 'registerAdminOptions'), 0);
 
         // Register custom post types taxonomy / categories
-        add_action('init', array(self::class, 'registerLocationTaxonomy'), 0);
+        add_action('init', array(self::class, 'registerItemTaxonomy'), 30);
+
+        // Register custom post types taxonomy / categories
+        add_action('init', array(self::class, 'registerLocationTaxonomy'), 30);
+
 
         // Add menu pages
         add_action('admin_menu', array(self::class, 'addMenuPages'));
@@ -118,18 +126,14 @@ class Plugin
 
         // flush rewrite rules after slug options has been saved   // see: https://wordpress.stackexchange.com/questions/302190/wordpress-cmb2-run-function-on-save/327179
         add_action( 'cmb2_save_options-page_fields_posttypes_items-slug',
-            array( self::class, 'flushRewriteRules' ), 10, 3 );
-        add_action( 'cmb2_save_options-page_fields_posttypes_posttypes_locations-slug-slug',
-            array( self::class, 'flushRewriteRules' ), 10, 3 );
+            array( self::class, 'flushRewriteRules' ), 10);
+        add_action( 'cmb2_save_options-page_fields_posttypes_locations-slug',
+            array( self::class, 'flushRewriteRules' ), 10);
 
-        // register admin options page
-        add_action('init', array(self::class, 'registerAdminOptions'), 0);
 
         // set Options default values on admin activation
         //register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( AdminOptions::class, 'setOptionsDefaultValues' ) );
 
-        // check if we have a new version and run tasks
-        add_action( 'plugins_loaded', array( self::class, 'runTasksAfterUpdate' ), 10 );
     }
 
     /**
@@ -328,6 +332,7 @@ class Plugin
                 'label'        => esc_html__('Item Category', 'commonsbooking'),
                 'rewrite'      => array('slug' => $customPostType . '-cat'),
                 'hierarchical' => true,
+                'show_in_rest' => true,
             )
         );
 
@@ -352,6 +357,7 @@ class Plugin
                 'label'        => esc_html__('Location Category', 'commonsbooking'),
                 'rewrite'      => array('slug' => $customPostType . '-cat'),
                 'hierarchical' => true,
+                'show_in_rest' => true,
             )
         );
 

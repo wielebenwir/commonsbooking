@@ -104,7 +104,7 @@ class Location extends CustomPostType
             'supports'            => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions', 'excerpt'),
 
             // Soll der Post Type Kategien haben?
-            //'taxonomies'         => array('category'),
+            'taxonomies'         => array(self::$postType.'s_category'),
 
             // Soll der Post Type Archiv-Seiten haben?
             'has_archive'         => false,
