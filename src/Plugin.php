@@ -87,11 +87,9 @@ class Plugin
     {
         
         // flush rewrite rules on plugin registration to set permalinks for registered costum post types
-        register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRulesonActivation' ) );
-        register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRules' ) );
+        //register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRulesonActivation' ) );
+        //register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRules' ) );
 
-        // check if we have a new version and run tasks
-        add_action( 'plugins_loaded', array( self::class, 'runTasksAfterUpdate' ), 10 );
         
         do_action('cmb2_init');
 
@@ -129,6 +127,9 @@ class Plugin
             array( self::class, 'flushRewriteRules' ), 10);
         add_action( 'cmb2_save_options-page_fields_posttypes_locations-slug',
             array( self::class, 'flushRewriteRules' ), 10);
+
+        // check if we have a new version and run tasks
+        add_action( 'init', array( self::class, 'runTasksAfterUpdate' ), 35 );
 
 
         // set Options default values on admin activation
@@ -481,11 +482,14 @@ class Plugin
             // set Options default values (e.g. if there are new fields added)
             AdminOptions::SetOptionsDefaultValues();
 
+            // flush rewrite rules
+            flush_rewrite_rules();
+
             // add more tasks if necessary
             // ...
 
             // update version number in options
-            update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
+            //update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
         }
     }
 
