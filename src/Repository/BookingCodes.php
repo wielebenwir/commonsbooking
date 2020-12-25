@@ -149,7 +149,7 @@ class BookingCodes
             set_transient(
                 BookingCode::ERROR_TYPE,
                 commonsbooking_sanitizeHTML(
-                    __("Es konnten keine Buchungscodes angelegt werden, da keine Buchungscodes zur Auswahl standen. Bitte hinterlege Buchungscodes in den CommonsBooking-Einstellungen.", 'commonsbooking')
+                    __("No booking codes could be created because there were no booking codes to choose from. Please set some booking codes in the CommonsBooking settings.", 'commonsbooking')
                 ),
                 45
             );
@@ -218,10 +218,13 @@ class BookingCodes
             $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType
         ) {
             global $wpdb;
-            $query = $wpdb->prepare('SELECT timeframe FROM wp_cb_bookingcodes WHERE timeframe = %d', $post->ID);
+            $table_name = $wpdb->prefix . self::$tablename;
+
+
+            $query = $wpdb->prepare('SELECT timeframe FROM ' . $table_name . ' WHERE timeframe = %d', $post->ID);
             $var = $wpdb->get_var($query);
             if ($var) {
-                $query2 = $wpdb->prepare('DELETE FROM wp_cb_bookingcodes WHERE timeframe = %d', $post->ID);
+                $query2 = $wpdb->prepare('DELETE FROM ' . $table_name . ' WHERE timeframe = %d', $post->ID);
                 $wpdb->query($query2);
             }
         }
