@@ -58,4 +58,26 @@ class Settings
 
 		return $result;
 	}
+	
+	
+	/**
+	 * Updates a single field in a multidimensional options-array in wp_options
+	 * re
+	 *
+	 * @param  mixed $option_name the options name as defined in wp_options table, column option_name
+	 * @param  mixed $field_id the field_id in the array
+	 * @param  mixed $field_value the new value
+	 * @return true
+	 */
+	public static function updateOption($option_name, $field_id, $field_value) {
+		// Load all of the option values from wp_options
+		$options = get_option($option_name);
+
+		// Update just the specific field
+		$options[$field_id] = $field_value;
+
+		// Save to wp_options
+		return update_option($option_name, $options);
+
+	}
 }

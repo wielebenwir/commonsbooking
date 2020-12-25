@@ -112,6 +112,9 @@ class Plugin
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerLocationTaxonomy'), 30);
 
+        // check if we have a new version and run tasks
+        add_action( 'init', array( self::class, 'runTasksAfterUpdate' ), 30 );
+
 
         // Add menu pages
         add_action('admin_menu', array(self::class, 'addMenuPages'));
@@ -128,8 +131,7 @@ class Plugin
         add_action( 'cmb2_save_options-page_fields_posttypes_locations-slug',
             array( self::class, 'flushRewriteRules' ), 10);
 
-        // check if we have a new version and run tasks
-        add_action( 'init', array( self::class, 'runTasksAfterUpdate' ), 35 );
+
 
 
         // set Options default values on admin activation
@@ -475,9 +477,11 @@ class Plugin
     public static function runTasksAfterUpdate() {
 
         $commonsbooking_version_option = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
+        $commonsbooking_installed_version = get_option ( $commonsbooking_version_option );
+
 
         // set version option if not already set
-        if ( COMMONSBOOKING_VERSION !== get_option( $commonsbooking_version_option ) ) {
+        if ( COMMONSBOOKING_VERSION !== get_option( $commonsbooking_version_option ) OR !isset( $commonsbooking_installed_version ) ) {
 
             // set Options default values (e.g. if there are new fields added)
             AdminOptions::SetOptionsDefaultValues();
@@ -489,7 +493,7 @@ class Plugin
             // ...
 
             // update version number in options
-            //update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
+            update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
         }
     }
 
