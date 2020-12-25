@@ -5,7 +5,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar, 
 Requires at least: 5.2
 Tested up to: 5.6
-Stable Tag: 2.2.14
+Stable Tag: 2.2.15
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -86,6 +86,11 @@ New in this version:
 4. User bookings list
 
 == Changelog ==
+
+= 2.2.15 =
+* optmizized migration process
+* fixed issue when default options fields are missing after migration
+* added: set show booking-codes default=on to all imported timeframes from cb1
 
 = 2.2.14 =
 * fixed: error when using individual table prefix other than wp_
