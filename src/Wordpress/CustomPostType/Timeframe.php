@@ -787,7 +787,7 @@ class Timeframe extends CustomPostType
             return;
         }
 
-        $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition'];
+        $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition', 'weekdays'];
 
         foreach ($this->getCustomFields() as $customField) {
 
