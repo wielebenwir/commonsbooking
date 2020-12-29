@@ -85,6 +85,7 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 = 2.2.16 () =
 * Optimized timframe validation so that not overlapping weekdays on overlapping timeframes doesn't result in an validation error
 * Enhanced API route
+* Removed default limitation of 2 months for maxium advance booking time. Now users can book as long as the timeframe is defined in advance. In a future release we will add the option to set the maximum advance booking time in admin options.
 
 = 2.2.15 (25.12.2020) =
 * optmizized migration process
