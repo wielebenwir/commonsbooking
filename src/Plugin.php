@@ -85,12 +85,7 @@ class Plugin
      */
     public function init()
     {
-        
-        // flush rewrite rules on plugin registration to set permalinks for registered costum post types
-        //register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRulesonActivation' ) );
-        //register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRules' ) );
-
-        
+                
         do_action('cmb2_init');
 
         // Register custom user roles (e.g. location-owner, item-owner etc.)
@@ -115,7 +110,6 @@ class Plugin
         // check if we have a new version and run tasks
         add_action( 'init', array( self::class, 'runTasksAfterUpdate' ), 30 );
 
-
         // Add menu pages
         add_action('admin_menu', array(self::class, 'addMenuPages'));
 
@@ -125,18 +119,8 @@ class Plugin
         // Remove cache items on save.
         add_action( 'save_post', array( $this, 'savePostActions' ), 10, 2 );
 
-        // flush rewrite rules after slug options has been saved   // see: https://wordpress.stackexchange.com/questions/302190/wordpress-cmb2-run-function-on-save/327179
-        add_action( 'cmb2_save_options-page_fields_posttypes_items-slug',
-            array( self::class, 'flushRewriteRules' ), 10);
-        add_action( 'cmb2_save_options-page_fields_posttypes_locations-slug',
-            array( self::class, 'flushRewriteRules' ), 10);
-
-
-
-
-        // set Options default values on admin activation
-        //register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( AdminOptions::class, 'setOptionsDefaultValues' ) );
-
+        // actions after saving plugin options
+        add_action( 'admin_init', array (self::class, 'saveOptionsActions'), 100 ); 
     }
 
     /**
@@ -444,21 +428,21 @@ class Plugin
 
 
     /**
-     * flush rewrite rules to enable custom post type permalinks
+     * run actions after plugin options are saved
      */
-    public static function flushRewriteRulesonActivation()
+    public static function saveOptionsActions()
     {
-        self::registerCustomPostTypes();
-        flush_rewrite_rules(false);
+        if ( get_transient('commonsbooking_options_saved') == 1) {
+            // restore default values if necessary
+            AdminOptions::SetOptionsDefaultValues();
+
+            // flush rewrite rules to get permalinks working
+            flush_rewrite_rules();
+
+            set_transient('commonsbooking_options_saved', 0);
+        }   
     }
 
-    /**
-     * flush rewrite rules to enable custom post type permalinks
-     */
-    public static function flushRewriteRules()
-    {
-        flush_rewrite_rules(false);
-    }
 
      /**
      * Register Admin-Options
@@ -472,7 +456,7 @@ class Plugin
     }
 
     /**
-     * Check if plugin is upgraded an run tasks
+     * Check if plugin is installled or updated an run tasks
      */
     public static function runTasksAfterUpdate() {
 
@@ -480,8 +464,8 @@ class Plugin
         $commonsbooking_installed_version = get_option ( $commonsbooking_version_option );
 
 
-        // set version option if not already set
-        if ( COMMONSBOOKING_VERSION !== get_option( $commonsbooking_version_option ) OR !isset( $commonsbooking_installed_version ) ) {
+        // check if installed version differs from plugin version in database
+        if ( COMMONSBOOKING_VERSION !== $commonsbooking_installed_version OR !isset( $commonsbooking_installed_version ) ) {
 
             // set Options default values (e.g. if there are new fields added)
             AdminOptions::SetOptionsDefaultValues();

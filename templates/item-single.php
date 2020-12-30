@@ -6,7 +6,7 @@
      */
     global $templateData;
     $templateData = \CommonsBooking\View\Item::getTemplateData();
-    $noResultText = esc_html__("This item is currently not available.", "commonsbooking");
+    $noResultText = \CommonsBooking\Settings\Settings::getOption('commonsbooking_options_templates', 'item-not-available');
 
     // Single Item View
     if(array_key_exists('location', $templateData) && $templateData['location']) { // item selected, so we display the booking calendar

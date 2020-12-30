@@ -20,32 +20,49 @@ class AdminOptions
         $options_array = include(COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php');
         foreach ($options_array as $tab_id => $tab) {
             $groups = $tab['field_groups'];
+            $option_key = self::$option_key . '_' . $tab_id;
 
             foreach ($groups as $group_id => $group) {
-                $fields = $group['fields'];
-                $option_key = self::$option_key . '_' . $tab_id;
-                $option = array();
+                $fields = $group['fields'];         
 
                 foreach ($fields as $field) {
 
                     $field_id = $field['id'];
 
                     // set to current value from wp_options
-                    $option[$field_id] = Settings::getOption( $option_key, $field_id );
+                    $field_value = Settings::getOption( $option_key, $field_id );
                     
                     if (array_key_exists( 'default', $field ) ) {
                         // if field-value is not set already we add the default value to the options array
-                        if ( empty ( $option[$field_id] ) ) {
-                            $option[$field_id] = $field['default'];
+                        if ( empty ( $field_value ) ) {
+                            Settings::updateOption($option_key, $field_id, $field['default']);
+                            $restored_fields[] = $field['name'];
                         }
                     }
-                }
-
-                // update option     
-                    update_option($option_key, $option);            
+                }         
             }
-
         }
-    }
 
+        // maybe show admin notice
+        self::setDefaultsAdminNotice($restored_fields);
+    }
+    
+    /**
+     * Display admin notice if option fields are set to their default values
+     *
+     * @param  mixed $fields
+     * @return void
+     */
+    public static function setDefaultsAdminNotice($fields = false) {
+
+        if ($fields AND is_array($fields)) {   
+
+            ?>
+                    <div class="notice notice-info is-dismissible">
+                        <p><?php echo commonsbooking_sanitizeHTML('<strong>Default values for following fields automatically restored, because they were empty:</strong><br> ', 'commonsbooking'); 
+                        echo implode("<br> ", $fields); ?></p>
+                    </div>
+            <?php 
+        }   
+    }
 }

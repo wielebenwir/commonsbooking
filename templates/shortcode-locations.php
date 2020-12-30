@@ -3,7 +3,7 @@
  * Shortcode [cb_locations]
  * Model: location
  *
- * List all locations, with one or more associated timeframes (with location info)
+ * List all locations, with one or more associated timeframes (with item info)
  *
  * WP Post properties for locations are available as $location->property
  * location Model methods are available as $location->myMethod()
@@ -11,7 +11,9 @@
  */
 global $templateData;
 $location = new \CommonsBooking\Model\Location($templateData['location']);
-$noResultText = esc_html__("No article available at this location.", "commonsbooking");
+
+// the location without items message is shown if there are currently no available items at this location. Can be defined via plugin options -> message templates
+$noResultText = \CommonsBooking\Settings\Settings::getOption('commonsbooking_options_templates', 'location-without-items');
 
 ?>
 <div class="cb-list-header">
