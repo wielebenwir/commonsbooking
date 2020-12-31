@@ -32,31 +32,31 @@ class Booking extends PostRepository
                         'key'     => 'repetition-start',
                         'value'   => intval($startDate),
                         'compare' => '=',
-                        'type'    => 'numeric'
+                        'type'    => 'numeric',
                     ),
                     array(
                         'key'     => 'repetition-end',
                         'value'   => $endDate,
-                        'compare' => '='
+                        'compare' => '=',
                     ),
                     array(
                         'key'     => 'type',
                         'value'   => Timeframe::BOOKING_ID,
-                        'compare' => '='
+                        'compare' => '=',
                     ),
                     array(
                         'key'     => 'location-id',
                         'value'   => $location,
-                        'compare' => '='
+                        'compare' => '=',
                     ),
                     array(
                         'key'     => 'item-id',
                         'value'   => $item,
-                        'compare' => '='
-                    )
+                        'compare' => '=',
+                    ),
                 ),
                 'post_status' => 'any',
-                'nopaging' => true
+                'nopaging'    => true,
             );
 
             $query = new \WP_Query($args);
@@ -68,9 +68,57 @@ class Booking extends PostRepository
 
                     return $booking;
                 } else {
-                    throw new \Exception(__CLASS__ . "::" . __LINE__ . ": Found more than one bookings");
+                    throw new \Exception(__CLASS__."::".__LINE__.": Found more than one bookings");
                 }
             }
+        }
+    }
+
+    /**
+     * Returns all bookings, allowed to see/edit for current user.
+     */
+    public static function getForCurrentUser()
+    {
+        $args = array(
+            'post_type'   => Timeframe::$postType,
+            'meta_query'  => array(
+                'relation' => "AND",
+                array(
+                    'key'     => 'type',
+                    'value'   => Timeframe::BOOKING_ID,
+                    'compare' => '=',
+                ),
+            ),
+            'post_status' => 'any',
+            'nopaging'    => true,
+        );
+
+        $query = new \WP_Query($args);
+        if ($query->have_posts()) {
+            $posts = $query->get_posts();
+
+            $current_user = wp_get_current_user();
+            $isAdmin      = false;
+            if (in_array('administrator', (array)$current_user->roles)) {
+                $isAdmin = true;
+            }
+
+            // Check if it is the main query and one of our custom post types
+            if ( ! $isAdmin ) {
+                foreach ($posts as $key => $post) {
+                    if ( ! commonsbooking_isCurrentUserAllowedToEdit($post)) {
+                        unset($posts[$key]);
+                    }
+                }
+            }
+
+            if(count($posts)) {
+                foreach ($posts as &$post) {
+                    $post = new \CommonsBooking\Model\Booking($post);
+                }
+            }
+
+            return $posts;
         }
     }
 

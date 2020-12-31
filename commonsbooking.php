@@ -136,6 +136,24 @@ require __DIR__.'/vendor/mustardBees/cmb-field-select2/cmb-field-select2.php';
 
 require __DIR__.'/src/Repository/CB1UserFields.php'; //@TODO: import with Autoload
 
+function commonsbooking_isCurrentUserAdmin() {
+    $current_user = wp_get_current_user();
+    $isAdmin      = false;
+
+    if (
+        count(array_intersect(
+        [
+            'administrator',
+            Plugin::$CB_MANAGER_ID
+        ],
+        (array)$current_user->roles))
+    ) {
+        $isAdmin = true;
+    }
+
+    return $isAdmin;
+}
+
 /**
  * Checks if current user is allowed to edit custom post.
  *
@@ -372,7 +390,7 @@ function commonsbooking_sanitizeHTML($string)
 
 /**
  * Recursive sanitation for text or array
- * 
+ *
  * @param $array_or_string (array|string)
  * @since  0.1
  * @return mixed
