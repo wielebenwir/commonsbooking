@@ -215,7 +215,7 @@ Thanks, the Team.
                   'id'      => 'item-not-available',
                   'type'    => 'textarea_small',
                   'desc'    => commonsbooking_sanitizeHTML('This text is shown on item listings (shortcode cb_items) and item detail page if there is no valid bookable timeframe set for this item', 'commonsbooking'),
-                  'default' => esc_html__( 'This item is currently not bookable at this location.', 'commonsbooking' ),
+                  'default' => esc_html__( 'This item is currently not bookable.', 'commonsbooking' ),
                 ),
                 array(
                     'name'    => commonsbooking_sanitizeHTML( 'Location without available items', 'commonsbooking' ),
