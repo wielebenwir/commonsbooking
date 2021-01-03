@@ -80,7 +80,7 @@ $item          = $booking->getItem();
     <div class="cb-list-content cb-user cb-col-30-70">
         <div><?php echo esc_html__('Your User name', 'commonsbooking') ?></div>
         <div><?php echo CB::get('user', 'first_name'); ?> <?php echo CB::get('user', 'last_name'); ?><br>
-        <?php echo CB::get('user', 'user_address'); ?>
+        <?php echo CB::get('user', 'address'); ?>
         </div>
     </div>
 </div>
