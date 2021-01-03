@@ -18,6 +18,8 @@ class AdminOptions
     public static function setOptionsDefaultValues() {
 
         $options_array = include(COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php');
+        $restored_fields = false;
+
         foreach ($options_array as $tab_id => $tab) {
             $groups = $tab['field_groups'];
             $option_key = self::$option_key . '_' . $tab_id;
@@ -43,7 +45,7 @@ class AdminOptions
             }
         }
 
-        // maybe show admin notice
+        // maybe show admin notice if fields are restored to hreir default value
         self::setDefaultsAdminNotice($restored_fields);
     }
     
@@ -55,7 +57,7 @@ class AdminOptions
      */
     public static function setDefaultsAdminNotice($fields = false) {
 
-        if ($fields AND is_array($fields)) {   
+        if ($fields && is_array($fields)) {   
 
             ?>
                     <div class="notice notice-info is-dismissible">

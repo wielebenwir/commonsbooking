@@ -285,13 +285,10 @@ function commonsbooking_timeframe_redirect()
 }
 
 // removed redirect because we link to booking-single-notallowd.php (defined in )
-    //add_action('template_redirect', 'commonsbooking_timeframe_redirect');
+// add_action('template_redirect', 'commonsbooking_timeframe_redirect');
 
 // Shows Errors in Backend
 add_action('admin_notices', array(Plugin::class, 'renderError') );
-
-// show admin notice if option values has been set do default values if they were empty on save options
-add_action('admin_notices', array(AdminOptions::class, 'setDefaultsAdminNotice') );
 
 
 /**

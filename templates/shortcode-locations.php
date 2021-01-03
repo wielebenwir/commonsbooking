@@ -13,7 +13,7 @@ global $templateData;
 $location = new \CommonsBooking\Model\Location($templateData['location']);
 
 // the location without items message is shown if there are currently no available items at this location. Can be defined via plugin options -> message templates
-$noResultText = \CommonsBooking\Settings\Settings::getOption('commonsbooking_options_templates', 'location-without-items');
+$noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'location-without-items' );
 
 ?>
 <div class="cb-list-header">

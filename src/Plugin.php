@@ -108,7 +108,7 @@ class Plugin
         add_action('init', array(self::class, 'registerLocationTaxonomy'), 30);
 
         // check if we have a new version and run tasks
-        add_action( 'init', array( self::class, 'runTasksAfterUpdate' ), 30 );
+        add_action( 'admin_init', array( self::class, 'runTasksAfterUpdate' ), 30 );
 
         // Add menu pages
         add_action('admin_menu', array(self::class, 'addMenuPages'));
@@ -456,7 +456,7 @@ class Plugin
     }
 
     /**
-     * Check if plugin is installled or updated an run tasks
+     * Check if plugin is installed or updated an run tasks
      */
     public static function runTasksAfterUpdate() {
 

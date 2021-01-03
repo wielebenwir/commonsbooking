@@ -6,7 +6,7 @@
      */
     global $templateData;
     $templateData = \CommonsBooking\View\Location::getTemplateData();
-    $noResultText = \CommonsBooking\Settings\Settings::getOption('commonsbooking_options_templates', 'location-without-items');
+    $noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'location-without-items' );
 
     commonsbooking_get_template_part( 'location', 'single-meta' ); // file: location-single-meta.php
 

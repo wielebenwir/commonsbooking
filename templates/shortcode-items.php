@@ -15,7 +15,7 @@ global $templateData;
 $item = new \CommonsBooking\Model\Item($templateData['item']);
 
 // the item-not-available message (if item ist currently not available) can be defined via plugin options -> message templates
-$noResultText = \CommonsBooking\Settings\Settings::getOption('commonsbooking_options_templates', 'item-not-available');
+$noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'item-not-available' );
 
 ?>
 <div class="cb-list-header">
