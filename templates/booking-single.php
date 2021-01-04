@@ -8,6 +8,7 @@ use CommonsBooking\CB\CB;
 use CommonsBooking\Model\Booking;
 
 $booking       = new \CommonsBooking\Model\Booking($post->ID);
+/** @var \CommonsBooking\Model\Timeframe $timeframe */
 $timeframe     = $booking->getBookableTimeFrame();
 $location      = $booking->getLocation();
 $item          = $booking->getItem();
@@ -33,7 +34,11 @@ $item          = $booking->getItem();
         <div><?php echo $booking->returnDatetime(); ?></div>
     </div><!-- .cb-bookigcode -->
     <?php
-    if ($booking->getBookingCode() && $booking->post_status == "confirmed") { // start if bookingcode
+    if (
+            $timeframe->showBookingCodes() &&
+            $booking->getBookingCode() &&
+            $booking->post_status == "confirmed")
+    { // start if bookingcode
     ?>
         <div class="cb-list-content cb-datetime cb-col-30-70">
             <div><?php echo esc_html__('Booking Code', 'commonsbooking'); ?></div>
@@ -59,7 +64,7 @@ $item          = $booking->getItem();
     </div><!-- .cb-contact -->
     <div class="cb-list-content cb-pickupinstructions cb-col-30-70">
         <div><?php echo esc_html__('Pickup instructions', 'commonsbooking'); ?></div>
-        <div><?php echo $location->formattedPickupInstructions(); ?></div>
+        <div><?php echo $location->formattedPickupInstructionsOneLine(); ?></div>
     </div><!-- .cb-cb-pickupinstructions -->
 </div><!-- cb-booking-location -->
 
@@ -75,7 +80,7 @@ $item          = $booking->getItem();
     <div class="cb-list-content cb-user cb-col-30-70">
         <div><?php echo esc_html__('Your User name', 'commonsbooking') ?></div>
         <div><?php echo CB::get('user', 'first_name'); ?> <?php echo CB::get('user', 'last_name'); ?><br>
-        <?php echo CB::get('user', 'user_address'); ?> 
+        <?php echo CB::get('user', 'address'); ?>
         </div>
     </div>
 </div>

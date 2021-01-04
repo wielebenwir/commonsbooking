@@ -28,19 +28,21 @@ class AdminOptions
 
                 foreach ($fields as $field) {
 
-                    // we check if there there is a default value for this field
+                    $field_id = $field['id'];
+
+                    // set to current value from wp_options
+                    $option[$field_id] = Settings::getOption( $option_key, $field_id );
+                    
                     if (array_key_exists( 'default', $field ) ) {
                         // if field-value is not set already we add the default value to the options array
-                        if ( empty ( Settings::getOption($option_key, $field['id'] ) ) ) {
-                            $option[$field['id']] = $field['default'];
+                        if ( empty ( $option[$field_id] ) ) {
+                            $option[$field_id] = $field['default'];
                         }
                     }
                 }
 
-                // update option
-                if (!empty ( $option ) ) {
-                    update_option($option_key, $option);
-                }
+                // update option     
+                    update_option($option_key, $option);            
             }
 
         }

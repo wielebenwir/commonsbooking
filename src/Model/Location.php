@@ -46,14 +46,13 @@ class Location extends BookablePost
      */
     public function formattedAddress()
     {
-        $location = array (
-            CB::get('location', 'post_title', $this->post->ID),
-            CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_street', $this->post->ID),
-            CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post->ID),
-            CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_city', $this->post->ID),
-        );
+        $html_after = '<br>';
+        $html_output[] = CB::get('location', 'post_title', $this->post->ID) . $html_after; 
+        $html_output[] = CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_street', $this->post->ID) . $html_after; 
+        $html_output[] = CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post->ID) . ' '; 
+        $html_output[] = CB::get('location', COMMONSBOOKING_METABOX_PREFIX . 'location_city', $this->post->ID) . $html_after;
 
-        return implode('<br>', $location);
+        return implode(' ', $html_output);
     }
 
     /**
@@ -63,7 +62,7 @@ class Location extends BookablePost
      *
      * @TODO: Do not return tags (,) if values are empty. This applies to  formattedAddress(), too
      *
-     * @return void
+     * @return string html
      */
     public function formattedAddressOneLine()
     {
@@ -113,12 +112,26 @@ class Location extends BookablePost
     /**
      * Return Location pickup instructions
      *
-     *
-     * @return string
+     * @param mixed $html set to true, if html br tags should be added before and after
+     * @return string html
      */
     public function formattedPickupInstructions()
     {
-        $html_output = '<br>' . CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions') . '<br>';
+        $html_br = '<br>';
+        $html_output = $html_br.$html_br . CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions') . $html_br;
+        return $html_output;
+    }
+
+        /**
+     * Return Location pickup instructions
+     *
+     * @param mixed $html set to true, if html br tags should be added before and after
+     * @return string html
+     */
+    public function formattedPickupInstructionsOneLine()
+    {
+
+        $html_output = CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions');
         return $html_output;
     }
 }

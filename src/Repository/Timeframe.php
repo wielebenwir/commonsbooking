@@ -47,6 +47,10 @@ class Timeframe extends PostRepository
             return Plugin::getCacheItem();
         } else {
             global $wpdb;
+            $table_postmeta = $wpdb->prefix . 'postmeta';
+            $table_posts = $wpdb->prefix . 'posts';
+
+
             $posts = [];
 
             // Get Post-IDs considerung types, items and locations
@@ -57,11 +61,11 @@ class Timeframe extends PostRepository
                 // Filter by date
                 if ($date && ! $minTimestamp) {
                     $dateQuery = "
-                    INNER JOIN wp_postmeta pm4 ON
+                    INNER JOIN $table_postmeta pm4 ON
                         pm4.post_id = pm1.id AND
                         pm4.meta_key = 'repetition-start' AND
                         pm4.meta_value BETWEEN 0 AND " . strtotime($date . 'T23:59') . " 
-                    INNER JOIN wp_postmeta pm5 ON
+                    INNER JOIN $table_postmeta pm5 ON
                         pm5.post_id = pm1.id AND
                         pm5.meta_key = 'repetition-end' AND
                         pm5.meta_value BETWEEN " . strtotime($date) . " AND 3000000000                        
@@ -72,7 +76,7 @@ class Timeframe extends PostRepository
                 // Rep-End must be > Min Date (0:00)
                 if ($minTimestamp) {
                     $dateQuery = "
-                    INNER JOIN wp_postmeta pm4 ON
+                    INNER JOIN $table_postmeta pm4 ON
                         pm4.post_id = pm1.id AND
                         pm4.meta_key = 'repetition-end' AND
                         pm4.meta_value > " . $minTimestamp . "
@@ -81,7 +85,7 @@ class Timeframe extends PostRepository
 
                 // Complete query
                 $query = "
-                    SELECT pm1.* from wp_posts pm1
+                    SELECT pm1.* from $table_posts pm1
                     " . $dateQuery . "
                     WHERE
                         pm1.id in (" . implode(",", $postIds) . ") AND
@@ -152,6 +156,9 @@ class Timeframe extends PostRepository
             return Plugin::getCacheItem();
         } else {
             global $wpdb;
+            $table_postmeta = $wpdb->prefix . 'postmeta';
+
+
             $itemQuery = "";
 
             $items = array_filter($items);
@@ -160,7 +167,7 @@ class Timeframe extends PostRepository
             // Query for item(s)
             if (count($items) > 0) {
                 $itemQuery = " 
-                    INNER JOIN wp_postmeta pm2 ON
+                    INNER JOIN $table_postmeta pm2 ON
                         pm2.post_id = pm1.post_id AND
                         pm2.meta_key = 'item-id' AND
                         pm2.meta_value IN (" . implode(',', $items) . ")
@@ -171,7 +178,7 @@ class Timeframe extends PostRepository
             $locationQuery = "";
             if (count($locations) > 0) {
                 $locationQuery = " 
-                    INNER JOIN wp_postmeta pm3 ON
+                    INNER JOIN $table_postmeta pm3 ON
                         pm3.post_id = pm1.post_id AND
                         pm3.meta_key = 'location-id' AND
                         pm3.meta_value IN (" . implode(',', $locations) . ")
@@ -180,7 +187,7 @@ class Timeframe extends PostRepository
 
             // Complete query, including types
             $query = "
-                SELECT DISTINCT pm1.post_id from wp_postmeta pm1 
+                SELECT DISTINCT pm1.post_id from $table_postmeta pm1 
                 " .
                      $itemQuery .
                      $locationQuery .

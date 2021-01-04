@@ -123,7 +123,7 @@ class Timeframe extends CustomPostType
     {
         return [
             // Opening Hours disabled as its not implemented yet
-            //self::OPENING_HOURS_ID    => esc_html__("Opening Hours", 'commonsbooking'),  
+            //self::OPENING_HOURS_ID    => esc_html__("Opening Hours", 'commonsbooking'),
             self::BOOKABLE_ID         => esc_html__("Bookable", 'commonsbooking'),
             self::HOLIDAYS_ID         => esc_html__("Holidays", 'commonsbooking'),
             // Off Holidays disabled as its not implemented yet
@@ -550,7 +550,7 @@ class Timeframe extends CustomPostType
         $cmb = new_cmb2_box(
             [
                 'id'           => static::getPostType()."-custom-fields",
-                'title'        => "Timeframe",
+                'title'        => esc_html__('Timeframe', 'commonsbooking'),
                 'object_types' => array(static::getPostType()),
             ]
         );
@@ -629,7 +629,9 @@ class Timeframe extends CustomPostType
             ),
             array(
                 'name'    => esc_html__('Timeframe Repetition', 'commonsbooking'),
-                'desc' => esc_html__('Select the recurrence type of the time frame. If you select "weekly", you can select days of the week. ', 'commonsbooking'),
+                'desc' => esc_html__(
+                    'Choose whether the time frame should repeat at specific intervals. The repetitions refer to the unit of a day. With the start and end date you define when the repetition interval starts and ends. If you choose "weekly", you can select specific days of the week below. Read the documentation for more information and examples.'
+                    , 'commonsbooking'),
                 'id'      => "timeframe-repetition",
                 'type'    => 'select',
                 'options' => [
@@ -642,6 +644,9 @@ class Timeframe extends CustomPostType
             ),
             array(
                 'name' => esc_html__('Full day', 'commonsbooking'),
+                'desc' => esc_html__(
+                    'If this option is selected, users can choose only whole days for pickup and return. No specific time slots for pickup or return are offered. Select this option if the pickup/return should be arranged personally between the location and the user. '
+                    , 'commonsbooking'),
                 'id'   => "full-day",
                 'type' => 'checkbox',
             ),
@@ -696,6 +701,7 @@ class Timeframe extends CustomPostType
             ),
             array(
                 'name'    => esc_html__("Grid", 'commonsbooking'),
+                'desc'    => esc_html__('Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation for more information.', 'commonsbooking'),
                 'id'      => "grid",
                 'type'    => 'select',
                 'options' => [
@@ -705,11 +711,13 @@ class Timeframe extends CustomPostType
             ),
             array(
                 'name' => esc_html__("Configure repetition", 'commonsbooking'),
+                'desc' => esc_html__('Below you can make settings regarding the time frame repetition. ', 'commonsbooking'),
                 'id'   => "title-timeframe-rep-config",
                 'type' => 'title',
             ),
             array(
-                'name'        => esc_html__('Repetition start', 'commonsbooking'),
+                'name'        => esc_html__('Start date', 'commonsbooking'),
+                'desc'        => esc_html__('Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking'),
                 'id'          => "repetition-start",
                 'type'        => 'text_date_timestamp',
                 'time_format' => get_option('time_format'),
@@ -730,14 +738,22 @@ class Timeframe extends CustomPostType
                 ],
             ),
             array(
-                'name'        => esc_html__('Repetition end', 'commonsbooking'),
+                'name'        => esc_html__('End date', 'commonsbooking'),
+                'desc'        => esc_html__('Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.', 'commonsbooking'),
                 'id'          => "repetition-end",
                 'type'        => 'text_date_timestamp',
                 'time_format' => get_option('time_format'),
                 'date_format' => $dateFormat,
             ),
             array(
+                'name' => esc_html__('Show Booking Codes', 'commonsbooking'),
+                'desc' => esc_html__('Select whether users should be shown a booking code when booking.', 'commonsbooking'),
+                'id'   => "show-booking-codes",
+                'type' => 'checkbox',
+            ),
+            array(
                 'name' => esc_html__('Create Booking Codes', 'commonsbooking'),
+                'desc' => esc_html__('Select to generate booking codes for each day within the start/end date. The booking codes will be generated after clicking "Save / Update".', 'commonsbooking'),              
                 'id'   => "create-booking-codes",
                 'type' => 'checkbox',
             ),
@@ -782,7 +798,7 @@ class Timeframe extends CustomPostType
             return;
         }
 
-        $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition'];
+        $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition', 'weekdays'];
 
         foreach ($this->getCustomFields() as $customField) {
 
@@ -827,7 +843,9 @@ class Timeframe extends CustomPostType
 
         if ($isValid) {
             $timeframe = new \CommonsBooking\Model\Timeframe($post_id);
-            if ($timeframe->bookingCodesApplieable()) {
+            $createBookingCodes = get_post_meta($post_id, 'create-booking-codes', true);
+
+            if ($createBookingCodes == "on" && $timeframe->bookingCodesApplieable()) {
                 BookingCodes::generate($post_id);
             }
         }

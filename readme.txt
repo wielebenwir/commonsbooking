@@ -5,7 +5,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar, 
 Requires at least: 5.2
 Tested up to: 5.6
-Stable Tag: 2.2.9
+Stable Tag: 2.2.16
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -39,11 +39,6 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 * [Official Website](https://commonsbooking.org)
 * [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues) 
 
-== Upgrade Notice ==
-
-New in this version: 
-
-* Updated translation and minor text edits
 
 == Installation ==
 
@@ -87,17 +82,41 @@ New in this version:
 
 == Changelog ==
 
+= 2.2.16 () =
+* Added customizable avilablity messages for location and item pages (can be set in options -> templates)
+* added automatic reset to default values for some options if they are empty but needed for the plugin to work properly
+* reworked save options process so that permalink page refresh is not longer needed after updating url slugs
+* Optimized timframe validation so that not overlapping weekdays on overlapping timeframes doesn't result in an validation error
+* Enhanced API route
+* Removed default limitation of 2 months for maxium advance booking time. Now users can book as long as the timeframe is defined in advance. In a future release we will add the option to set the maximum advance booking time in admin options.
+
+= 2.2.15 (25.12.2020) =
+* optmizized migration process
+* fixed issue when default options fields are missing after migration
+* added: set show booking-codes default=on to all imported timeframes from cb1
+
+= 2.2.14 =
+* fixed: error when using individual table prefix other than wp_
+* fixed: refresh permalink on save individual slug (no need to call permalinks settings page after saving slug)
+* fixed: categories not shown in gutenberg editor
+* added: You can set if booking codes should be shown to user or not on fullday booking slots in timeframe settings (timeframe editor)
+
+= 2.2.13 =
+* Added notice to refresh permalinks due to unsolved issue
+
+= 2.2.11 =
+* Fixed bug default options not set on update
+
+= 2.2.10 =
+* Fixed template issues (usernmame not shown, formatting issues in mail an booking template)
+
 = 2.2.9 =
-* Fixed:
-** Fixed template issup pickup instructions not shown on booking page
+* Fixed template issup pickup instructions not shown on booking page
 
 = 2.2.8 =
-* Added:
-** Updated translation and minor text edits
-** Set default values on activation and upates
-
-* Fixed:
-** Fix: 404-page after installation because of missing permalink refresh
+* Updated translation and minor text edits
+* Set default values on activation and upates
+* Fix: 404-page after installation because of missing permalink refresh
 
 = 2.2.7 =
 

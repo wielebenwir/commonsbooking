@@ -9,6 +9,11 @@ namespace CommonsBooking\Model;
 class Timeframe extends CustomPost
 {
     /**
+     * Error type id.
+     */
+    public const ERROR_TYPE = "timeframeValidationFailed";
+
+    /**
      * Return residence in a human readable format
      *
      * "From xx.xx.",  "Until xx.xx.", "From xx.xx. until xx.xx.", "no longer available"
@@ -18,58 +23,9 @@ class Timeframe extends CustomPost
     public function formattedBookableDate()
     {
         $startDate = $this->getStartDate() ? $this->getStartDate() : 0;
-        $endDate = $this->getEndDate() ? $this->getEndDate() : 0;
+        $endDate   = $this->getEndDate() ? $this->getEndDate() : 0;
+
         return self::formatBookableDate($startDate, $endDate);
-    }
-
-    /**
-     * @param $startDate
-     * @param $endDate
-     *
-     * @return string
-     */
-    public static function formatBookableDate($startDate, $endDate) {
-        $format = self::getDateFormat();
-        $today = strtotime('now');
-
-        $startDateFormatted = date_i18n($format, $startDate);
-        $endDateFormatted = date_i18n($format, $endDate);
-
-        $label = commonsbooking_sanitizeHTML( __('Available here', 'commonsbooking') );
-        $availableString = '';
-
-        if ($startDate !== 0 && $endDate !== 0 && $startDate == $endDate) { // available only one day
-            /* translators: %s = date in wordpress defined format */
-            $availableString = sprintf( commonsbooking_sanitizeHTML( __('on %s', 'commonsbooking') ), $startDateFormatted);
-        } elseif ($startDate > 0 && ($endDate == 0)) { // start but no end date
-            if ($startDate > $today) { // start is in the future
-                /* translators: %s = date in wordpress defined format */
-                $availableString = sprintf(commonsbooking_sanitizeHTML( __('from %s', 'commonsbooking') ), $startDateFormatted);
-            } else { // start has passed, no end date, probably a fixed location
-                $availableString = commonsbooking_sanitizeHTML( __('permanently', 'commonsbooking') );
-            }
-        } elseif ($startDate > 0 && $endDate > 0) { // start AND end date
-            if ($startDate > $today) { // start is in the future, with an end date
-                /* translators: %1$s = startdate, second %2$s = enddate in wordpress defined format */
-                $availableString = sprintf( commonsbooking_sanitizeHTML( __(' from %1$s until %2$s', 'commonsbooking') ), $startDateFormatted,
-                    $endDateFormatted);
-            } else { // start has passed, with an end date
-                /* translators: %s = enddate in wordpress defined format */
-                $availableString = sprintf( commonsbooking_sanitizeHTML( __(' until %s', 'commonsbooking') ), $endDateFormatted);
-            }
-        }
-
-        return $label . ' ' . $availableString;
-    }
-
-    /**
-     * Return date format
-     *
-     * @return string
-     */
-    public static function getDateFormat()
-    {
-        return get_option('date_format');
     }
 
     /**
@@ -81,9 +37,10 @@ class Timeframe extends CustomPost
     {
         $startDate = $this->getMeta('repetition-start');
 
-        if((string) intval($startDate) !== $startDate) {
+        if ((string)intval($startDate) !== $startDate) {
             $startDate = strtotime($startDate);
         }
+
         return $startDate;
     }
 
@@ -95,10 +52,65 @@ class Timeframe extends CustomPost
     public function getEndDate()
     {
         $endDate = $this->getMeta('repetition-end');
-        if((string) intval($endDate) !== $endDate) {
+        if ((string)intval($endDate) !== $endDate) {
             $endDate = strtotime($endDate);
         }
+
         return $endDate;
+    }
+
+    /**
+     * @param $startDate
+     * @param $endDate
+     *
+     * @return string
+     */
+    public static function formatBookableDate($startDate, $endDate)
+    {
+        $format = self::getDateFormat();
+        $today  = strtotime('now');
+
+        $startDateFormatted = date_i18n($format, $startDate);
+        $endDateFormatted   = date_i18n($format, $endDate);
+
+        $label           = commonsbooking_sanitizeHTML(__('Available here', 'commonsbooking'));
+        $availableString = '';
+
+        if ($startDate !== 0 && $endDate !== 0 && $startDate == $endDate) { // available only one day
+            /* translators: %s = date in wordpress defined format */
+            $availableString = sprintf(commonsbooking_sanitizeHTML(__('on %s', 'commonsbooking')), $startDateFormatted);
+        } elseif ($startDate > 0 && ($endDate == 0)) { // start but no end date
+            if ($startDate > $today) { // start is in the future
+                /* translators: %s = date in wordpress defined format */
+                $availableString = sprintf(commonsbooking_sanitizeHTML(__('from %s', 'commonsbooking')),
+                    $startDateFormatted);
+            } else { // start has passed, no end date, probably a fixed location
+                $availableString = commonsbooking_sanitizeHTML(__('permanently', 'commonsbooking'));
+            }
+        } elseif ($startDate > 0 && $endDate > 0) { // start AND end date
+            if ($startDate > $today) { // start is in the future, with an end date
+                /* translators: %1$s = startdate, second %2$s = enddate in wordpress defined format */
+                $availableString = sprintf(commonsbooking_sanitizeHTML(__(' from %1$s until %2$s', 'commonsbooking')),
+                    $startDateFormatted,
+                    $endDateFormatted);
+            } else { // start has passed, with an end date
+                /* translators: %s = enddate in wordpress defined format */
+                $availableString = sprintf(commonsbooking_sanitizeHTML(__(' until %s', 'commonsbooking')),
+                    $endDateFormatted);
+            }
+        }
+
+        return $label.' '.$availableString;
+    }
+
+    /**
+     * Return date format
+     *
+     * @return string
+     */
+    public static function getDateFormat()
+    {
+        return get_option('date_format');
     }
 
     /**
@@ -177,8 +189,9 @@ class Timeframe extends CustomPost
             $postId = $this->ID;
 
             if ($this->getStartTime() && ! $this->getEndTime()) {
-                set_transient("timeframeValidationFailed",
-                    commonsbooking_sanitizeHTML( __("A pickup time but no return time has been set. Please set the return time.", 'commonsbooking') ),
+                set_transient(self::ERROR_TYPE,
+                    commonsbooking_sanitizeHTML(__("A pickup time but no return time has been set. Please set the return time.",
+                        'commonsbooking')),
                     45);
 
                 return false;
@@ -205,32 +218,45 @@ class Timeframe extends CustomPost
                 if (
                 $this->hasTimeframeDateOverlap($this, $timeframe)
                 ) {
+
                     // Compare grid types
                     if ($timeframe->getGrid() != $this->getGrid()) {
-                        set_transient("timeframeValidationFailed",
+                        set_transient(self::ERROR_TYPE,
                             /* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
-                            sprintf( commonsbooking_sanitizeHTML( __('Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s: %2$s',
-                                'commonsbooking', 5) ), $timeframe->ID, $timeframe->post_title));
+                            sprintf(commonsbooking_sanitizeHTML(__('Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s: %2$s',
+                                'commonsbooking', 5)), $timeframe->ID, $timeframe->post_title));
 
                         return false;
                     }
 
+                    // Check if different weekdays are set
+                    if (
+                        array_key_exists('weekdays', $_REQUEST) &&
+                        is_array($_REQUEST['weekdays']) &&
+                        $timeframe->getWeekDays()
+                    ) {
+                        if(!array_intersect($timeframe->getWeekDays(), $_REQUEST['weekdays'])) {
+                            return true;
+                        }
+                    }
+
                     // Check if in day slots overlap
-                    if (!$this->getMeta('full-day') && $this->hasTimeframeTimeOverlap($this, $timeframe)) {
-                        set_transient("timeframeValidationFailed",
+                    if ( ! $this->getMeta('full-day') && $this->hasTimeframeTimeOverlap($this, $timeframe)) {
+                        set_transient(self::ERROR_TYPE,
                             /* translators: first %s = timeframe-ID, second %s is timeframe post_title */
-                            sprintf( commonsbooking_sanitizeHTML( __('time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s: %2$s',
-                                'commonsbooking', 5) ), $timeframe->ID, $timeframe->post_title ) );
+                            sprintf(commonsbooking_sanitizeHTML(__('time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s: %2$s',
+                                'commonsbooking', 5)), $timeframe->ID, $timeframe->post_title));
 
                         return false;
                     }
 
                     // Check if full-day slots overlap
                     if ($this->getMeta('full-day')) {
-                        set_transient("timeframeValidationFailed",
+                        set_transient(self::ERROR_TYPE,
                             /* translators: first %s = timeframe-ID, second %s is timeframe post_title */
-                            sprintf( commonsbooking_sanitizeHTML( __('Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s: %2$s',
-                                'commonsbooking', 5) ), $timeframe->ID, $timeframe->post_title) );
+                            sprintf(commonsbooking_sanitizeHTML(__('Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s: %2$s',
+                                'commonsbooking', 5)), $timeframe->ID, $timeframe->post_title));
+
                         return false;
                     }
                 }
@@ -289,6 +315,15 @@ class Timeframe extends CustomPost
     }
 
     /**
+     * Returns weekdays array.
+     * @return mixed
+     */
+    public function getWeekDays()
+    {
+        return $this->getMeta('weekdays');
+    }
+
+    /**
      * Returns grit type id
      * @return mixed
      */
@@ -325,6 +360,15 @@ class Timeframe extends CustomPost
                     (strtotime($timeframe2->getEndTime()) > strtotime($timeframe1->getStartTime()) && strtotime($timeframe2->getEndTime()) < strtotime($timeframe1->getEndTime()))
                 )
             );
+    }
+
+    /**
+     * Returns true if booking codes shall be shown in frontend.
+     * @return bool
+     */
+    public function showBookingCodes()
+    {
+        return $this->getMeta("show-booking-codes") == "on";
     }
 
 }
