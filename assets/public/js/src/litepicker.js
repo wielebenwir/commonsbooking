@@ -92,36 +92,31 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         }
 
-        // Init end date selection
-        const initEndSelect = (date) => {
-            const day2 = globalCalendarData['days'][moment(date).format('YYYY-MM-DD')];
-            const endDate = moment(date).format('DD.MM.YYYY');
+    // returns columns in relation to viewport
+    const getCalendarColumns = () => {
+        let columns = 2;
+        if (isMobile()) {
+            columns = 1;
 
-            // Hide select hint
-            $('.time-selection.repetition-end').find('.hint-selection').hide();
-
-            // update select slots
-            let endSelect = $('#booking-form select[name=repetition-end]');
-            $('.time-selection.repetition-end span.date').text(endDate);
-            updateSelectSlots(endSelect, day2['slots'], 'end', day2['fullDay']);
-
-            // show end date selection if new start date was chosen
-            let endSelectData = $(
-                '#booking-form select[name=repetition-end],' +
-                '#booking-form .time-selection.repetition-end .date'
-            );
-            endSelectData.show();
-            $('#booking-form input[type=submit]').removeAttr('disabled');
-
-            updateEndSelectTimeOptions();
-
-            // hide time selection if we have a full day slot
-            if (day2['fullDay']) {
-                $('.time-selection.repetition-end').find('select').hide();
-            } else {
-                $('.time-selection.repetition-end').find('select').show();
+            // Landscape mode
+            if (window.innerHeight < window.innerWidth) {
+                columns = 2;
             }
         }
+        return columns;
+    };
+
+    // updates columns for calendar
+    const updateCalendarColumns = (picker) => {
+        picker.setOptions({
+            "numberOfMonths": getCalendarColumns(),
+            "numberOfColumns": getCalendarColumns()
+        });
+    };
+
+    // init datepicker
+    let numberOfMonths = getCalendarColumns();
+    let numberOfColumns = numberOfMonths;
 
         // init datepicker
         let numberOfMonths = 2;
@@ -140,39 +135,47 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     numberOfColumns = 1;
                     break;
             }
-        }
+        });
+        $('#litepicker .litepicker').hide();
 
-        let picker = false;
-        const initPicker = () => {
-            picker = new Litepicker({
-                "element": document.getElementById('litepicker'),
-                "minDate": moment().format('YYYY-MM-DD'),
-                "inlineMode": true,
-                "firstDay": 1,
-                "lang": 'de-DE',
-                "numberOfMonths": numberOfMonths,
-                "numberOfColumns": numberOfColumns,
-                "moveByOneMonth": true,
-                "singleMode": false,
-                "showWeekNumbers": false,
-                "autoApply": true,
-                "bookedDaysInclusivity": "[]",
-                "anyBookedDaysAsCheckout": false,
-                "disallowBookedDaysInRange": true,
-                "disallowPartiallyBookedDaysInRange": true,
-                "disallowLockDaysInRange": globalCalendarData['disallowLockDaysInRange'],
-                "mobileFriendly": true,
-                "selectForward": true,
-                "useResetBtn": true,
-                "maxDays": globalCalendarData['maxDays'],
-                "buttonText": {
-                    apply: 'Buchen',
-                    cancel: 'Abbrechen',
-                },
-                onAutoApply: (datePicked) => {
-                    if(datePicked) {
-                        $('#booking-form').show();
-                        $('.cb-notice.date-select').hide();
+        // If orientation changes, update columns for calendar
+        $( window ).on( "orientationchange", function( event ) {
+            updateCalendarColumns(picker);
+        });
+    };
+
+    // update datepicker data
+    const updatePicker = (data) => {
+        fadeOutCalendar()
+        picker.setOptions(
+            {
+                "minDate": moment().isAfter(data['startDate']) ? moment().format('YYYY-MM-DD') : data['startDate'],
+                "maxDate": data['endDate'],
+                "days": data['days'],
+                "maxDays": data['maxDays'],
+                "lockDays": data['lockDays'],
+                "bookedDays": data['bookedDays'],
+                "partiallyBookedDays": data['partiallyBookedDays'],
+                "highlightedDays": data['highlightedDays'],
+                "holidays": data['holidays'],
+                onDaySelect: function (date, datepicked) {
+                    if (
+                        datepicked >= 0
+                    ) {
+                        let bookingForm = $('#booking-form');
+                        bookingForm.show();
+
+                        // Start-Date selected or End-Date == Start-Date selected
+                        if (datepicked == 1) {
+                            initStartSelect(date);
+                            // Start-Date !== End-Date
+                            $('.cb-notice.date-select').hide();
+                        }
+
+                        // End-Date Selected
+                        if (datepicked == 2) {
+                            initEndSelect(date);
+                        }
                     }
                 },
                 resetBtnCallback: () => {
