@@ -85,12 +85,12 @@ class Plugin
      */
     public function init()
     {
-        
+
         // flush rewrite rules on plugin registration to set permalinks for registered costum post types
         //register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRulesonActivation' ) );
         //register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRules' ) );
 
-        
+
         do_action('cmb2_init');
 
         // Register custom user roles (e.g. location-owner, item-owner etc.)

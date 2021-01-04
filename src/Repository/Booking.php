@@ -76,8 +76,14 @@ class Booking extends PostRepository
 
     /**
      * Returns all bookings, allowed to see/edit for current user.
+     *
+     * @param $offset
+     * @param $postsPerPage
+     *
+     * @return array
+     * @throws \Exception
      */
-    public static function getForCurrentUser()
+    public static function getForCurrentUser($offset = 0, $postsPerPage = 0)
     {
         $args = array(
             'post_type'   => Timeframe::$postType,
@@ -96,6 +102,7 @@ class Booking extends PostRepository
         $query = new \WP_Query($args);
         if ($query->have_posts()) {
             $posts = $query->get_posts();
+            $totalCount = count($posts);
 
             $current_user = wp_get_current_user();
             $isAdmin      = false;
@@ -113,12 +120,25 @@ class Booking extends PostRepository
             }
 
             if(count($posts)) {
-                foreach ($posts as &$post) {
+                $index = 0;
+                $pageCounter = 0;
+                foreach ($posts as $key => &$post) {
+                    if($offset > $index++) {
+                        unset($posts[$key]);
+                        continue;
+                    }
+                    if($postsPerPage && $postsPerPage <= $pageCounter++) {
+                        unset($posts[$key]);
+                        continue;
+                    }
                     $post = new \CommonsBooking\Model\Booking($post);
                 }
             }
 
-            return $posts;
+            return [
+                "rows" => $posts,
+                "total" => $totalCount
+            ];
         }
     }
 

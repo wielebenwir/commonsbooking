@@ -12,7 +12,12 @@
 		"grunt": "*",
 		"grunt-contrib-compass": "*",
 		"grunt-contrib-compress": "^1.6.0",
+		"grunt-contrib-concat": "^1.0.1",
 		"grunt-contrib-watch": "^1.1.0",
+		"grunt-contrib-jshint": "^1.1.0",
+		"grunt-contrib-uglify": "^3.3.0",
+		"grunt-contrib-uglify-es": "github:gruntjs/grunt-contrib-uglify#harmony",
+		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
 		"grunt-wp-readme-to-markdown": "^2.0.1",
 		"matchdep": "^2.0.0"
 	},
@@ -20,10 +25,12 @@
 		"grunt": "node node_modules/grunt/bin/grunt"
 	},
 	"dependencies": {
-		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
-		"grunt-contrib-jshint": "^1.1.0",
-		"grunt-contrib-uglify": "^3.3.0",
-		"grunt-contrib-uglify-es": "github:gruntjs/grunt-contrib-uglify#harmony",
-		"jquery": "^3.4.1"
+		"@popperjs/core": "^2.6.0",
+		"bootstrap": "^4.5.3",
+		"bootstrap-table": "^1.18.1",
+		"jquery": "^3.5.1",
+		"jquery-ui": "^1.12.1",
+		"jquery-ui-dist": "^1.12.1",
+		"moment": "^2.29.1"
 	}
 }

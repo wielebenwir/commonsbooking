@@ -1,3 +1,17 @@
+function ajaxRequest(params) {
+    jQuery.post(cb_ajax_bookings.ajax_url, {
+        _ajax_nonce: cb_ajax_bookings.nonce,
+        action: "bookings_data",
+        limit: params.data.limit,
+        offset: params.data.offset,
+        order: params.data.order,
+        search: params.data.search,
+        sort: params.data.sort
+    }, function(data) {
+        params.success(data);
+    });
+}
+
 !function(t, e) {
     "object" == typeof exports && "object" == typeof module ? module.exports = e() : "function" == typeof define && define.amd ? define("Litepicker", [], e) : "object" == typeof exports ? exports.Litepicker = e() : t.Litepicker = e();
 }(window, function() {
@@ -372,7 +386,7 @@
         }();
         e.DateTime = o;
     }, function(t, e, i) {
-        var o = i(6), n = i(7);
+        var o = i(6), n = i(7), s;
         "string" == typeof (n = n.__esModule ? n.default : n) && (n = [ [ t.i, n, "" ] ]), 
         o(n, {
             insert: function(t) {
@@ -897,8 +911,7 @@
                     for (t.getFullYear() > g && ((p = document.createElement("option")).value = String(t.getFullYear()), 
                     p.text = String(t.getFullYear()), p.selected = !0, p.disabled = !0, y.appendChild(p)), 
                     h = g; h >= f; h -= 1) {
-                        p = document.createElement("option");
-                        var k = new a.DateTime(new Date(h, 0, 1, 0, 0, 0));
+                        var p = document.createElement("option"), k = new a.DateTime(new Date(h, 0, 1, 0, 0, 0));
                         p.value = h, p.text = h, p.disabled = this.options.minDate && k.isBefore(new a.DateTime(this.options.minDate), "year") || this.options.maxDate && k.isAfter(new a.DateTime(this.options.maxDate), "year"), 
                         p.selected = t.getFullYear() === h, y.appendChild(p);
                     }
@@ -1046,7 +1059,10 @@
         e.Calendar = d;
     }, function(t, e, i) {
         "use strict";
-        var o, s = function() {
+        var o, n = function() {
+            return void 0 === o && (o = Boolean(window && document && document.all && !window.atob)), 
+            o;
+        }, s = function() {
             var t = {};
             return function(e) {
                 if (void 0 === t[e]) {
@@ -1110,20 +1126,21 @@
                 a[e] && t.removeChild(a[e]), a.length ? t.insertBefore(s, a[e]) : t.appendChild(s);
             }
         }
+        function u(t, e, i) {
+            var o = i.css, n = i.media, s = i.sourceMap;
+            if (n ? t.setAttribute("media", n) : t.removeAttribute("media"), s && btoa && (o += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(s)))), " */")), 
+            t.styleSheet) t.styleSheet.cssText = o; else {
+                for (;t.firstChild; ) t.removeChild(t.firstChild);
+                t.appendChild(document.createTextNode(o));
+            }
+        }
         var m = null, y = 0;
         function f(t, e) {
             var i, o, n;
             if (e.singleton) {
                 var s = y++;
                 i = m || (m = d(e)), o = p.bind(null, i, s, !1), n = p.bind(null, i, s, !0);
-            } else i = d(e), o = function(t, e, i) {
-                var o = i.css, n = i.media, s = i.sourceMap;
-                if (n ? t.setAttribute("media", n) : t.removeAttribute("media"), s && btoa && (o += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(s)))), " */")), 
-                t.styleSheet) t.styleSheet.cssText = o; else {
-                    for (;t.firstChild; ) t.removeChild(t.firstChild);
-                    t.appendChild(document.createTextNode(o));
-                }
-            }.bind(null, i, e), n = function() {
+            } else i = d(e), o = u.bind(null, i, e), n = function() {
                 !function(t) {
                     if (null === t.parentNode) return !1;
                     t.parentNode.removeChild(t);
@@ -1137,8 +1154,7 @@
             };
         }
         t.exports = function(t, e) {
-            (e = e || {}).singleton || "boolean" == typeof e.singleton || (e.singleton = (void 0 === o && (o = Boolean(window && document && document.all && !window.atob)), 
-            o));
+            (e = e || {}).singleton || "boolean" == typeof e.singleton || (e.singleton = n());
             var i = l(t = t || [], e);
             return function(t) {
                 if (t = t || [], "[object Array]" === Object.prototype.toString.call(t)) {
@@ -1204,7 +1220,7 @@
             return e.toString = function() {
                 return this.map(function(e) {
                     var i = function(t, e) {
-                        var a, r, l, i = t[1] || "", o = t[3];
+                        var i = t[1] || "", o = t[3], a, r, l;
                         if (!o) return i;
                         if (e && "function" == typeof btoa) {
                             var n = (a = o, r = btoa(unescape(encodeURIComponent(JSON.stringify(a)))), l = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(r), 
@@ -1384,7 +1400,8 @@
         }, fadeInCalendar = () => {
             $("#litepicker .litepicker .container__days").fadeTo("fast", 1);
         }, initSelectHandler = () => {
-            bookingForm.find("select[name=repetition-start]").change(function() {
+            const startSelect = bookingForm.find("select[name=repetition-start]");
+            startSelect.change(function() {
                 updateEndSelectTimeOptions();
             });
         }, updateEndSelectTimeOptions = () => {
@@ -1402,6 +1419,7 @@
             return window.matchMedia(`(max-device-${isPortrait ? "width" : "height"}: 480px)`).matches;
         }, getOrientation = () => window.matchMedia("(orientation: portrait)").matches ? "portrait" : "landscape", initStartSelect = date => {
             const day1 = globalCalendarData.days[moment(date).format("YYYY-MM-DD")], startDate = moment(date).format("DD.MM.YYYY");
+            let endSelectData;
             $(".time-selection.repetition-start").find(".hint-selection").hide(), $(".time-selection.repetition-end").find(".hint-selection").show(), 
             $("#booking-form select[name=repetition-end],#booking-form .time-selection.repetition-end .date").hide(), 
             $("#booking-form input[type=submit]").attr("disabled", "disabled");
@@ -1411,7 +1429,7 @@
         }, initEndSelect = date => {
             const day2 = globalCalendarData.days[moment(date).format("YYYY-MM-DD")], endDate = moment(date).format("DD.MM.YYYY");
             $(".time-selection.repetition-end").find(".hint-selection").hide();
-            let endSelect = $("#booking-form select[name=repetition-end]");
+            let endSelect = $("#booking-form select[name=repetition-end]"), endSelectData;
             $(".time-selection.repetition-end span.date").text(endDate), updateSelectSlots(endSelect, day2.slots, "end", day2.fullDay), 
             $("#booking-form select[name=repetition-end],#booking-form .time-selection.repetition-end .date").show(), 
             $("#booking-form input[type=submit]").removeAttr("disabled"), updateEndSelectTimeOptions(), 
@@ -1491,11 +1509,13 @@
                 holidays: globalCalendarData.holidays,
                 onDaySelect: function(date, datepicked) {
                     if (datepicked >= 0) {
+                        let bookingForm;
                         $("#booking-form").show(), 1 == datepicked && (initStartSelect(date), $(".cb-notice.date-select").hide()), 
                         2 == datepicked && initEndSelect(date);
                     }
                 },
                 onSelect: function(date1, date2) {
+                    let bookingForm;
                     $("#booking-form").show(), $(".cb-notice.date-select").hide();
                     const day1 = globalCalendarData.days[moment(date1).format("YYYY-MM-DD")], day2 = globalCalendarData.days[moment(date2).format("YYYY-MM-DD")];
                     initEndSelect(date2), day1.fullDay && day2.fullDay ? $("#fullDayInfo").text(globalCalendarData.location.fullDayInfo) : ($("#fullDayInfo").text(""), 

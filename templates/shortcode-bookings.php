@@ -14,44 +14,28 @@ global $templateData;
 $noResultText = esc_html__("No bookings available.", "commonsbooking");
 
 if(count($templateData['bookings'])) {?>
-    <table>
+
+    <table
+            id="table"
+            data-toggle="table"
+            data-ajax="ajaxRequest"
+            data-side-pagination="server"
+            data-pagination="true"
+    >
         <thead>
         <tr>
-            <th>Startdatum</th>
-            <th>Enddatum</th>
-            <th>Item</th>
-            <th>Location</th>
-            <th>BookingDate</th>
-            <th>User</th>
-            <th>Status</th>
-            <th>Aktionen</th>
+            <th data-field="startDate">Startdatum</th>
+            <th data-field="endDate">Enddatum</th>
+            <th data-field="item">Item</th>
+            <th data-field="location">Location</th>
+            <th data-field="bookingDate">BookingDate</th>
+            <th data-field="user">User</th>
+            <th data-field="status">Status</th>
+            <th data-field="actions">Aktionen</th>
         </tr>
         </thead>
-        <tbody>
-        <?php
-        /** @var \CommonsBooking\Model\Booking $booking */
-        foreach ($templateData['bookings'] as $booking) {
-            $userInfo = get_userdata($booking->post_author);
-            ?>
-            <tr>
-            <td><?php echo date('d.m.Y H:i', $booking->getStartDate()); ?></td>
-            <td><?php echo date('d.m.Y H:i', $booking->getEndDate()); ?></td>
-            <td><?php echo $booking->getItem()->title(); ?></td>
-            <td><?php echo $booking->getLocation()->title(); ?></td>
-            <td><?php echo date('d.m.Y H:i', strtotime($booking->post_date)); ?></td>
-            <td><?php echo $userInfo->user_login; ?></td>
-            <td><?php echo $booking->post_status; ?></td>
-            <td><?php
-                $editLink = get_permalink($booking->ID);
-                if(commonsbooking_isCurrentUserAdmin()) {
-                    $editLink = get_edit_post_link($booking->ID);
-                }
-                echo '<a href="' . $editLink . '">'.__('editieren', COMMONSBOOKING_PLUGIN_SLUG).'</a>';
-            ?></td>
-        </tr>
-        <?php } ?>
-        </tbody>
     </table>
+
 <?php
 
 } else {
