@@ -61,61 +61,27 @@
                 if (e instanceof t) return e.clone().getDateInstance();
                 if (/^-?\d{10,}$/.test(e)) return t.getDateZeroTime(new Date(Number(e)));
                 if ("string" == typeof e) {
-                    var n = i.match(/\[([^\]]+)]|Y{2,4}|M{1,4}|D{1,2}|d{1,4}/g);
-                    if (n) {
-                        var s = {
-                            year: 1,
-                            month: 2,
-                            day: 3,
+                    for (var n = [], s = null; null != (s = t.regex.exec(i)); ) "\\" !== s[1] && n.push(s);
+                    if (n.length) {
+                        var a = {
+                            year: null,
+                            month: null,
+                            shortMonth: null,
+                            longMonth: null,
+                            day: null,
                             value: ""
-                        }, a = null, r = null;
-                        -1 !== n.indexOf("MMM") && (a = this.MONTH_JS.map(function(t) {
-                            return new Date(2019, t).toLocaleString(o, {
-                                month: "short"
-                            });
-                        })), -1 !== n.indexOf("MMMM") && (r = this.MONTH_JS.map(function(t) {
-                            return new Date(2019, t).toLocaleString(o, {
-                                month: "long"
-                            });
-                        }));
-                        for (var l = 0, d = Object.entries(n); l < d.length; l++) {
-                            var c = d[l], h = c[0], p = c[1], u = Number(h), m = String(p);
-                            switch (u > 0 && (s.value += ".*?"), m) {
-                              case "YY":
-                              case "YYYY":
-                                s.year = u + 1, s.value += "(\\d{" + m.length + "})";
-                                break;
-
-                              case "M":
-                                s.month = u + 1, s.value += "(\\d{1,2})";
-                                break;
-
-                              case "MM":
-                                s.month = u + 1, s.value += "(\\d{" + m.length + "})";
-                                break;
-
-                              case "MMM":
-                                s.month = u + 1, s.value += "(" + a.join("|") + ")";
-                                break;
-
-                              case "MMMM":
-                                s.month = u + 1, s.value += "(" + r.join("|") + ")";
-                                break;
-
-                              case "D":
-                                s.day = u + 1, s.value += "(\\d{1,2})";
-                                break;
-
-                              case "DD":
-                                s.day = u + 1, s.value += "(\\d{" + m.length + "})";
-                            }
+                        };
+                        n[0].index > 0 && (a.value += ".*?");
+                        for (var r = 0, l = Object.entries(n); r < l.length; r++) {
+                            var d = l[r], c = d[0], h = d[1], p = Number(c), u = t.formatPatterns(h[0], o), m = u.group, f = u.pattern;
+                            a[m] = p + 1, a.value += f, a.value += ".*?";
                         }
-                        var y = new RegExp("^" + s.value + "$");
+                        var y = new RegExp("^" + a.value + "$");
                         if (y.test(e)) {
-                            var f = y.exec(e), g = Number(f[s.year]), k = Number(f[s.month]) - 1;
-                            a ? k = a.indexOf(f[s.month]) : r && (k = r.indexOf(f[s.month]));
-                            var D = Number(f[s.day]) || 1;
-                            return new Date(g, k, D, 0, 0, 0, 0);
+                            var g = y.exec(e), k = Number(g[a.year]), D = null;
+                            a.month ? D = Number(g[a.month]) - 1 : a.shortMonth ? D = t.shortMonths(o).indexOf(g[a.shortMonth]) : a.longMonth && (D = t.longMonths(o).indexOf(g[a.longMonth]));
+                            var v = Number(g[a.day]) || 1;
+                            return new Date(k, D, v, 0, 0, 0, 0);
                         }
                     }
                 }
@@ -128,6 +94,63 @@
                 });
             }, t.getDateZeroTime = function(t) {
                 return new Date(t.getFullYear(), t.getMonth(), t.getDate(), 0, 0, 0, 0);
+            }, t.shortMonths = function(e) {
+                return t.MONTH_JS.map(function(t) {
+                    return new Date(2019, t).toLocaleString(e, {
+                        month: "short"
+                    });
+                });
+            }, t.longMonths = function(e) {
+                return t.MONTH_JS.map(function(t) {
+                    return new Date(2019, t).toLocaleString(e, {
+                        month: "long"
+                    });
+                });
+            }, t.formatPatterns = function(e, i) {
+                switch (e) {
+                  case "YY":
+                  case "YYYY":
+                    return {
+                        group: "year",
+                        pattern: "(\\d{" + e.length + "})"
+                    };
+
+                  case "M":
+                    return {
+                        group: "month",
+                        pattern: "(\\d{1,2})"
+                    };
+
+                  case "MM":
+                    return {
+                        group: "month",
+                        pattern: "(\\d{2})"
+                    };
+
+                  case "MMM":
+                    return {
+                        group: "shortMonth",
+                        pattern: "(" + t.shortMonths(i).join("|") + ")"
+                    };
+
+                  case "MMMM":
+                    return {
+                        group: "longMonth",
+                        pattern: "(" + t.longMonths(i).join("|") + ")"
+                    };
+
+                  case "D":
+                    return {
+                        group: "day",
+                        pattern: "(\\d{1,2})"
+                    };
+
+                  case "DD":
+                    return {
+                        group: "day",
+                        pattern: "(\\d{2})"
+                    };
+                }
             }, t.prototype.getDateInstance = function() {
                 return this.dateInstance;
             }, t.prototype.toLocaleString = function(t, e) {
@@ -313,62 +336,49 @@
                 }
             }, t.prototype.format = function(e, i) {
                 void 0 === i && (i = "en-US");
-                var o = "", n = e.match(/\[([^\]]+)]|Y{2,4}|M{1,4}|D{1,2}|d{1,4}/g);
-                if (n) {
-                    var s = null, a = null;
-                    -1 !== n.indexOf("MMM") && (s = t.MONTH_JS.map(function(t) {
-                        return new Date(2019, t).toLocaleString(i, {
-                            month: "short"
-                        });
-                    })), n.indexOf("MMMM") && (a = t.MONTH_JS.map(function(t) {
-                        return new Date(2019, t).toLocaleString(i, {
-                            month: "long"
-                        });
-                    }));
-                    for (var r = 0, l = Object.entries(n); r < l.length; r++) {
-                        var d = l[r], c = d[0], h = d[1], p = Number(c), u = String(h);
-                        if (p > 0) {
-                            var m = n[p - 1];
-                            o += e.substring(e.indexOf(m) + m.length, e.indexOf(u));
-                        }
-                        switch (u) {
-                          case "YY":
-                            o += String(this.getFullYear()).slice(-2);
-                            break;
-
-                          case "YYYY":
-                            o += String(this.getFullYear());
-                            break;
-
-                          case "M":
-                            o += String(this.getMonth() + 1);
-                            break;
-
-                          case "MM":
-                            o += ("0" + (this.getMonth() + 1)).slice(-2);
-                            break;
-
-                          case "MMM":
-                            o += s[this.getMonth()];
-                            break;
-
-                          case "MMMM":
-                            o += a[this.getMonth()];
-                            break;
-
-                          case "D":
-                            o += String(this.getDate());
-                            break;
-
-                          case "DD":
-                            o += ("0" + this.getDate()).slice(-2);
-                        }
+                for (var o = "", n = [], s = null; null != (s = t.regex.exec(e)); ) "\\" !== s[1] && n.push(s);
+                if (n.length) {
+                    n[0].index > 0 && (o += e.substring(0, n[0].index));
+                    for (var a = 0, r = Object.entries(n); a < r.length; a++) {
+                        var l = r[a], d = l[0], c = l[1], h = Number(d);
+                        o += this.formatTokens(c[0], i), n[h + 1] && (o += e.substring(c.index + c[0].length, n[h + 1].index)), 
+                        h === n.length - 1 && (o += e.substring(c.index + c[0].length));
                     }
                 }
-                return o;
+                return o.replace(/\\/g, "");
             }, t.prototype.timestamp = function() {
                 return new Date(this.getFullYear(), this.getMonth(), this.getDate(), 0, 0, 0, 0).getTime();
-            }, t.MONTH_JS = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ], t;
+            }, t.prototype.formatTokens = function(e, i) {
+                switch (e) {
+                  case "YY":
+                    return String(this.getFullYear()).slice(-2);
+
+                  case "YYYY":
+                    return String(this.getFullYear());
+
+                  case "M":
+                    return String(this.getMonth() + 1);
+
+                  case "MM":
+                    return ("0" + (this.getMonth() + 1)).slice(-2);
+
+                  case "MMM":
+                    return t.shortMonths(i)[this.getMonth()];
+
+                  case "MMMM":
+                    return t.longMonths(i)[this.getMonth()];
+
+                  case "D":
+                    return String(this.getDate());
+
+                  case "DD":
+                    return ("0" + this.getDate()).slice(-2);
+
+                  default:
+                    return "";
+                }
+            }, t.regex = /(\\)?(Y{2,4}|M{1,4}|D{1,2}|d{1,4})/g, t.MONTH_JS = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ], 
+            t;
         }();
         e.DateTime = o;
     }, function(t, e, i) {
@@ -483,56 +493,65 @@
             }
             return n(e, t), e.prototype.onInit = function() {
                 var t = this;
-                document.addEventListener("click", function(e) {
+                if (document.addEventListener("click", function(e) {
                     return t.onClick(e);
                 }, !0), this.picker = document.createElement("div"), this.picker.className = h.litepicker, 
                 this.picker.style.display = "none", this.picker.addEventListener("mouseenter", function(e) {
                     return t.onMouseEnter(e);
                 }, !0), this.picker.addEventListener("mouseleave", function(e) {
                     return t.onMouseLeave(e);
-                }, !1), this.options.element instanceof HTMLElement && this.options.element.addEventListener("change", function(e) {
-                    return t.onInput(e);
-                }, !0), this.options.elementEnd instanceof HTMLElement && this.options.elementEnd.addEventListener("change", function(e) {
-                    return t.onInput(e);
-                }, !0), this.options.autoRefresh && (this.options.element instanceof HTMLElement && this.options.element.addEventListener("keyup", function(e) {
+                }, !1), this.options.autoRefresh ? (this.options.element instanceof HTMLElement && this.options.element.addEventListener("keyup", function(e) {
                     return t.onInput(e);
                 }, !0), this.options.elementEnd instanceof HTMLElement && this.options.elementEnd.addEventListener("keyup", function(e) {
                     return t.onInput(e);
-                }, !0)), this.options.moduleNavKeyboard && "function" == typeof this.enableModuleNavKeyboard && this.enableModuleNavKeyboard.call(this, this), 
+                }, !0)) : (this.options.element instanceof HTMLElement && this.options.element.addEventListener("change", function(e) {
+                    return t.onInput(e);
+                }, !0), this.options.elementEnd instanceof HTMLElement && this.options.elementEnd.addEventListener("change", function(e) {
+                    return t.onInput(e);
+                }, !0)), this.options.moduleNavKeyboard) {
+                    if ("function" != typeof this.enableModuleNavKeyboard) throw new Error("moduleNavKeyboard is on but library does not included. See https://github.com/wakirin/litepicker-module-navkeyboard.");
+                    this.enableModuleNavKeyboard.call(this, this);
+                }
                 this.render(), this.options.parentEl ? this.options.parentEl instanceof HTMLElement ? this.options.parentEl.appendChild(this.picker) : document.querySelector(this.options.parentEl).appendChild(this.picker) : this.options.inlineMode ? this.options.element instanceof HTMLInputElement ? this.options.element.parentNode.appendChild(this.picker) : this.options.element.appendChild(this.picker) : document.body.appendChild(this.picker), 
                 this.options.mobileFriendly && (this.backdrop = document.createElement("div"), this.backdrop.className = h.litepickerBackdrop, 
                 this.backdrop.addEventListener("click", this.hide()), this.options.element && this.options.element.parentNode && this.options.element.parentNode.appendChild(this.backdrop), 
-                window.addEventListener("orientationchange", function() {
-                    if (t.options.mobileFriendly && t.isShowning()) {
-                        switch (screen.orientation.angle) {
-                          case -90:
-                          case 90:
-                            t.options.numberOfMonths = 2, t.options.numberOfColumns = 2;
-                            break;
+                window.addEventListener("orientationchange", function(e) {
+                    var i = function() {
+                        if (p.isMobile() && t.isShowning()) {
+                            switch (p.getOrientation()) {
+                              case "landscape":
+                                t.options.numberOfMonths = 2, t.options.numberOfColumns = 2;
+                                break;
 
-                          default:
-                            t.options.numberOfMonths = 1, t.options.numberOfColumns = 1;
+                              default:
+                                t.options.numberOfMonths = 1, t.options.numberOfColumns = 1;
+                            }
+                            if (t.render(), !t.options.inlineMode) {
+                                var e = t.picker.getBoundingClientRect();
+                                t.picker.style.top = "calc(50% - " + e.height / 2 + "px)", t.picker.style.left = "calc(50% - " + e.width / 2 + "px)";
+                            }
                         }
-                        t.render();
-                        var e = t.picker.getBoundingClientRect();
-                        t.picker.style.top = "calc(50% - " + e.height / 2 + "px)", t.picker.style.left = "calc(50% - " + e.width / 2 + "px)";
-                    }
-                })), this.options.inlineMode && this.show(), this.updateInput();
+                        window.removeEventListener("resize", i);
+                    };
+                    window.addEventListener("resize", i);
+                })), this.options.inlineMode && (this.show(), this.options.mobileFriendly && p.isMobile() && (window.dispatchEvent(new Event("orientationchange")), 
+                window.dispatchEvent(new Event("resize")))), this.updateInput();
             }, e.prototype.parseInput = function() {
+                var t = this.options.delimiter, e = new RegExp("" + t), i = this.options.element instanceof HTMLInputElement ? this.options.element.value.split(t) : [];
                 if (this.options.elementEnd) {
-                    if (this.options.element instanceof HTMLInputElement && this.options.element.value.length && this.options.elementEnd instanceof HTMLInputElement && this.options.elementEnd.value.length) return [ new c.DateTime(this.options.element.value), new c.DateTime(this.options.elementEnd.value) ];
+                    if (this.options.element instanceof HTMLInputElement && this.options.element.value.length && this.options.elementEnd instanceof HTMLInputElement && this.options.elementEnd.value.length) return [ new c.DateTime(this.options.element.value, this.options.format), new c.DateTime(this.options.elementEnd.value, this.options.format) ];
                 } else if (this.options.singleMode) {
-                    if (this.options.element instanceof HTMLInputElement && this.options.element.value.length) return [ new c.DateTime(this.options.element.value) ];
-                } else if (/\s\-\s/.test(this.options.element.value)) {
-                    var t = this.options.element.value.split(" - ");
-                    if (2 === t.length) return [ new c.DateTime(t[0]), new c.DateTime(t[1]) ];
+                    if (this.options.element instanceof HTMLInputElement && this.options.element.value.length) return [ new c.DateTime(this.options.element.value, this.options.format) ];
+                } else if (this.options.element instanceof HTMLInputElement && e.test(this.options.element.value) && i.length && i.length % 2 == 0) {
+                    var o = i.slice(0, i.length / 2).join(t), n = i.slice(i.length / 2).join(t);
+                    return [ new c.DateTime(o, this.options.format), new c.DateTime(n, this.options.format) ];
                 }
                 return [];
             }, e.prototype.updateInput = function() {
                 if (this.options.element instanceof HTMLInputElement) {
                     if (this.options.singleMode && this.options.startDate) this.options.element.value = this.options.startDate.format(this.options.format, this.options.lang); else if (!this.options.singleMode && this.options.startDate && this.options.endDate) {
                         var t = this.options.startDate.format(this.options.format, this.options.lang), e = this.options.endDate.format(this.options.format, this.options.lang);
-                        this.options.elementEnd ? (this.options.element.value = t, this.options.elementEnd.value = e) : this.options.element.value = t + " - " + e;
+                        this.options.elementEnd ? (this.options.element.value = t, this.options.elementEnd.value = e) : this.options.element.value = "" + t + this.options.delimiter + e;
                     }
                     this.options.startDate || this.options.endDate || (this.options.element.value = "", 
                     this.options.elementEnd && (this.options.elementEnd.value = ""));
@@ -590,17 +609,17 @@
                         m && !u && (this.datePicked.length = 0, "function" == typeof this.options.onError && this.options.onError.call(this, "INVALID_RANGE"));
                     }
                     if (this.shouldCheckBookedDays()) {
-                        var m, y = this.options.bookedDaysInclusivity;
+                        var m, f = this.options.bookedDaysInclusivity;
                         (m = this.options.bookedDays.filter(function(t) {
-                            return t instanceof Array ? t[0].isBetween(e.datePicked[0], e.datePicked[1], y) || t[1].isBetween(e.datePicked[0], e.datePicked[1], y) : t.isBetween(e.datePicked[0], e.datePicked[1], y);
+                            return t instanceof Array ? t[0].isBetween(e.datePicked[0], e.datePicked[1], f) || t[1].isBetween(e.datePicked[0], e.datePicked[1], f) : t.isBetween(e.datePicked[0], e.datePicked[1], f);
                         }).length) && (this.datePicked.length = 0, "function" == typeof this.options.onError && this.options.onError.call(this, "INVALID_RANGE"));
                     }
                     if ("function" == typeof this.options.onDaySelect && this.options.onDaySelect.call(this, c.DateTime.parseDateTime(i.dataset.time), this.datePicked.length), 
                     this.render(), this.options.autoApply) {
-                        var f = !1;
+                        var y = !1;
                         this.options.singleMode && this.datePicked.length ? (this.setDate(this.datePicked[0]), 
-                        this.hide(), f = !0) : this.options.singleMode || 2 !== this.datePicked.length || (this.setDateRange(this.datePicked[0], this.datePicked[1]), 
-                        this.hide(), f = !0), "function" == typeof this.options.onAutoApply && this.options.onAutoApply.call(this, f);
+                        this.hide(), y = !0) : this.options.singleMode || 2 !== this.datePicked.length || (this.setDateRange(this.datePicked[0], this.datePicked[1]), 
+                        this.hide(), y = !0), "function" == typeof this.options.onAutoApply && this.options.onAutoApply.call(this, y);
                     }
                 } else {
                     if (i.classList.contains(h.buttonPreviousMonth)) {
@@ -638,7 +657,8 @@
                     var l = this.picker.parentNode.getBoundingClientRect();
                     a -= l.top, r -= l.left;
                 } else a -= o.top, r -= o.left;
-                a -= n.height, r -= n.width / 2, r += s.width / 2, i.style.top = a + "px", i.style.left = r + "px";
+                a -= n.height, r -= n.width / 2, r += s.width / 2, i.style.top = a + "px", i.style.left = r + "px", 
+                "function" == typeof this.options.onShowTooltip && this.options.onShowTooltip.call(this, i, t);
             }, e.prototype.hideTooltip = function() {
                 this.picker.querySelector("." + h.containerTooltip).style.visibility = "hidden";
             }, e.prototype.shouldAllowMouseEnter = function(t) {
@@ -649,7 +669,7 @@
                 return t.classList.contains(h.dayItem);
             }, e.prototype.onMouseEnter = function(t) {
                 var e = this, i = t.target;
-                if (this.isDayItem(i) && ("function" == typeof this.options.onDayHover && this.options.onDayHover.call(this, c.DateTime.parseDateTime(i.dataset.time), i.classList.toString().split(/\s/)), 
+                if (this.isDayItem(i) && ("function" == typeof this.options.onDayHover && this.options.onDayHover.call(this, c.DateTime.parseDateTime(i.dataset.time), i.classList.toString().split(/\s/), i), 
                 this.shouldAllowMouseEnter(i))) {
                     if (this.shouldAllowRepick() && (this.triggerElement === this.options.element ? this.datePicked[0] = this.options.endDate.clone() : this.triggerElement === this.options.elementEnd && (this.datePicked[0] = this.options.startDate.clone())), 
                     1 !== this.datePicked.length) return;
@@ -680,7 +700,7 @@
                 this.render());
             }, e.prototype.onInput = function(t) {
                 var e = this.parseInput(), i = e[0], o = e[1], n = this.options.format;
-                if (this.options.elementEnd ? i instanceof c.DateTime && o instanceof c.DateTime && i.format(n) === this.options.element.value && o.format(n) === this.options.elementEnd.value : this.options.singleMode ? i instanceof c.DateTime && i.format(n) === this.options.element.value : i instanceof c.DateTime && o instanceof c.DateTime && i.format(n) + " - " + o.format(n) === this.options.element.value) {
+                if (this.options.elementEnd ? i instanceof c.DateTime && o instanceof c.DateTime && i.format(n) === this.options.element.value && o.format(n) === this.options.elementEnd.value : this.options.singleMode ? i instanceof c.DateTime && i.format(n) === this.options.element.value : i instanceof c.DateTime && o instanceof c.DateTime && "" + i.format(n) + this.options.delimiter + o.format(n) === this.options.element.value) {
                     if (o && i.getTime() > o.getTime()) {
                         var s = i.clone();
                         i = o.clone(), o = s.clone();
@@ -689,8 +709,9 @@
                     o && (this.options.endDate = new c.DateTime(o, this.options.format, this.options.lang)), 
                     this.updateInput(), this.render();
                     var a = i.clone(), r = 0;
-                    (this.options.elementEnd ? i.format(n) === t.target.value : t.target.value.startWith(i.format(n))) || (a = o.clone(), 
-                    r = this.options.numberOfMonths - 1), this.gotoDate(a, r);
+                    (this.options.elementEnd ? i.format(n) === t.target.value : t.target.value.startsWith(i.format(n))) || (a = o.clone(), 
+                    r = this.options.numberOfMonths - 1), "function" == typeof this.options.onSelect && this.options.onSelect.call(this, this.getStartDate(), this.getEndDate()), 
+                    this.gotoDate(a, r);
                 }
             }, e.prototype.isShowning = function() {
                 return this.picker && "none" !== this.picker.style.display;
@@ -758,6 +779,7 @@
                     firstDay: 1,
                     format: "YYYY-MM-DD",
                     lang: "en-US",
+                    delimiter: " - ",
                     numberOfMonths: 1,
                     numberOfColumns: 1,
                     startDate: null,
@@ -833,6 +855,7 @@
                     onChangeYear: null,
                     onDayHover: null,
                     onDaySelect: null,
+                    onShowTooltip: null,
                     resetBtnCallback: null,
                     moduleRanges: null,
                     moduleNavKeyboard: null
@@ -857,8 +880,11 @@
                         e.preventDefault(), t.clearSelection(), "function" == typeof t.options.resetBtnCallback && t.options.resetBtnCallback.call(t);
                     }), e.querySelector("." + r.monthItem + ":last-child").querySelector("." + r.monthItemHeader).appendChild(c);
                 }
-                this.picker.appendChild(e), this.options.autoApply && !this.options.footerHTML || this.picker.appendChild(this.renderFooter()), 
-                this.options.showTooltip && this.picker.appendChild(this.renderTooltip()), this.options.moduleRanges && "function" == typeof this.enableModuleRanges && this.enableModuleRanges.call(this, this), 
+                if (this.picker.appendChild(e), this.options.autoApply && !this.options.footerHTML || this.picker.appendChild(this.renderFooter()), 
+                this.options.showTooltip && this.picker.appendChild(this.renderTooltip()), this.options.moduleRanges) {
+                    if ("function" != typeof this.enableModuleRanges) throw new Error("moduleRanges is on but library does not included. See https://github.com/wakirin/litepicker-module-ranges.");
+                    this.enableModuleRanges.call(this, this);
+                }
                 "function" == typeof this.options.onRender && this.options.onRender.call(this, this.picker);
             }, t.prototype.renderMonth = function(t) {
                 var e = this, i = t.clone(), o = 32 - new Date(i.getFullYear(), i.getMonth(), 32).getDate(), n = document.createElement("div");
@@ -891,54 +917,60 @@
                     }), d.appendChild(m);
                 }
                 if (this.options.dropdowns.years) {
-                    var y = document.createElement("select");
-                    y.className = r.monthItemYear;
-                    var f = this.options.dropdowns.minYear, g = this.options.dropdowns.maxYear ? this.options.dropdowns.maxYear : new Date().getFullYear();
+                    var f = document.createElement("select");
+                    f.className = r.monthItemYear;
+                    var y = this.options.dropdowns.minYear, g = this.options.dropdowns.maxYear ? this.options.dropdowns.maxYear : new Date().getFullYear();
                     for (t.getFullYear() > g && ((p = document.createElement("option")).value = String(t.getFullYear()), 
-                    p.text = String(t.getFullYear()), p.selected = !0, p.disabled = !0, y.appendChild(p)), 
-                    h = g; h >= f; h -= 1) {
+                    p.text = String(t.getFullYear()), p.selected = !0, p.disabled = !0, f.appendChild(p)), 
+                    h = g; h >= y; h -= 1) {
                         p = document.createElement("option");
                         var k = new a.DateTime(new Date(h, 0, 1, 0, 0, 0));
                         p.value = h, p.text = h, p.disabled = this.options.minDate && k.isBefore(new a.DateTime(this.options.minDate), "year") || this.options.maxDate && k.isAfter(new a.DateTime(this.options.maxDate), "year"), 
-                        p.selected = t.getFullYear() === h, y.appendChild(p);
+                        p.selected = t.getFullYear() === h, f.appendChild(p);
                     }
-                    t.getFullYear() < f && ((p = document.createElement("option")).value = String(t.getFullYear()), 
-                    p.text = String(t.getFullYear()), p.selected = !0, p.disabled = !0, y.appendChild(p)), 
-                    y.addEventListener("change", function(t) {
+                    if (t.getFullYear() < y && ((p = document.createElement("option")).value = String(t.getFullYear()), 
+                    p.text = String(t.getFullYear()), p.selected = !0, p.disabled = !0, f.appendChild(p)), 
+                    "asc" === this.options.dropdowns.years) {
+                        var D = Array.prototype.slice.call(f.childNodes).reverse();
+                        f.innerHTML = "", D.forEach(function(t) {
+                            t.innerHTML = t.value, f.appendChild(t);
+                        });
+                    }
+                    f.addEventListener("change", function(t) {
                         var i = t.target, o = 0;
                         if (e.options.splitView) {
                             var n = i.closest("." + r.monthItem);
                             o = l.findNestedMonthItem(n);
                         }
                         e.calendars[o].setFullYear(Number(i.value)), e.render(), "function" == typeof e.options.onChangeYear && e.options.onChangeYear.call(e, e.calendars[o], o);
-                    }), d.appendChild(y);
+                    }), d.appendChild(f);
                 } else {
-                    var D = document.createElement("span");
-                    D.className = r.monthItemYear, D.innerHTML = String(t.getFullYear()), d.appendChild(D);
+                    var v = document.createElement("span");
+                    v.className = r.monthItemYear, v.innerHTML = String(t.getFullYear()), d.appendChild(v);
                 }
-                var v = document.createElement("a");
-                v.href = "#", v.className = r.buttonPreviousMonth, v.innerHTML = this.options.buttonText.previousMonth;
                 var b = document.createElement("a");
-                b.href = "#", b.className = r.buttonNextMonth, b.innerHTML = this.options.buttonText.nextMonth, 
-                s.appendChild(v), s.appendChild(d), s.appendChild(b), this.options.minDate && i.isSameOrBefore(new a.DateTime(this.options.minDate), "month") && n.classList.add(r.noPreviousMonth), 
+                b.href = "#", b.className = r.buttonPreviousMonth, b.innerHTML = this.options.buttonText.previousMonth;
+                var w = document.createElement("a");
+                w.href = "#", w.className = r.buttonNextMonth, w.innerHTML = this.options.buttonText.nextMonth, 
+                s.appendChild(b), s.appendChild(d), s.appendChild(w), this.options.minDate && i.isSameOrBefore(new a.DateTime(this.options.minDate), "month") && n.classList.add(r.noPreviousMonth), 
                 this.options.maxDate && i.isSameOrAfter(new a.DateTime(this.options.maxDate), "month") && n.classList.add(r.noNextMonth);
-                var w = document.createElement("div");
-                w.className = r.monthItemWeekdaysRow, this.options.showWeekNumbers && (w.innerHTML = "<div>W</div>");
-                for (var M = 1; M <= 7; M += 1) {
-                    var x = 3 + this.options.firstDay + M, T = document.createElement("div");
-                    T.innerHTML = this.weekdayName(x), T.title = this.weekdayName(x, "long"), w.appendChild(T);
+                var M = document.createElement("div");
+                M.className = r.monthItemWeekdaysRow, this.options.showWeekNumbers && (M.innerHTML = "<div>W</div>");
+                for (var x = 1; x <= 7; x += 1) {
+                    var T = 3 + this.options.firstDay + x, B = document.createElement("div");
+                    B.innerHTML = this.weekdayName(T), B.title = this.weekdayName(T, "long"), M.appendChild(B);
                 }
-                var B = document.createElement("div");
-                B.className = r.containerDays;
-                var _ = this.calcSkipDays(i);
-                this.options.showWeekNumbers && _ && B.appendChild(this.renderWeekNumber(i));
-                for (var I = 0; I < _; I += 1) {
-                    var L = document.createElement("div");
-                    B.appendChild(L);
+                var _ = document.createElement("div");
+                _.className = r.containerDays;
+                var I = this.calcSkipDays(i);
+                this.options.showWeekNumbers && I && _.appendChild(this.renderWeekNumber(i));
+                for (var L = 0; L < I; L += 1) {
+                    var P = document.createElement("div");
+                    _.appendChild(P);
                 }
-                for (I = 1; I <= o; I += 1) i.setDate(I), this.options.showWeekNumbers && i.getDay() === this.options.firstDay && B.appendChild(this.renderWeekNumber(i)), 
-                B.appendChild(this.renderDay(i));
-                return n.appendChild(s), n.appendChild(w), n.appendChild(B), n;
+                for (L = 1; L <= o; L += 1) i.setDate(L), this.options.showWeekNumbers && i.getDay() === this.options.firstDay && _.appendChild(this.renderWeekNumber(i)), 
+                _.appendChild(this.renderDay(i));
+                return n.appendChild(s), n.appendChild(M), n.appendChild(_), n;
             }, t.prototype.renderDay = function(t) {
                 var e = this;
                 t.setHours();
@@ -972,7 +1004,7 @@
                 this.options.selectBackward && 1 === this.datePicked.length && t.isAfter(this.datePicked[0]) && i.classList.add(r.isHoliday), 
                 this.options.lockDays.length && this.options.lockDays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.lockDaysInclusivity) : i.isSame(t, "day");
-                }).length && i.classList.add(r.isLocked), this.options.bookedDays.length && (f = this.options.bookedDays.filter(function(i) {
+                }).length && i.classList.add(r.isLocked), this.options.bookedDays.length && (y = this.options.bookedDays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.bookedDaysInclusivity) : i.isSame(t, "day");
                 }).length) && i.classList.add(r.isBooked), this.options.partiallyBookedDays.length && (w = this.options.partiallyBookedDays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.partiallyBookedDaysInclusivity) : i.isSame(t, "day");
@@ -984,14 +1016,14 @@
                 }).length && i.classList.add(r.isHighlighted), this.datePicked.length <= 1) {
                     var m = t.clone();
                     if (m.subtract(1, "day"), t.clone().add(1, "day"), this.options.bookedDays.length) {
-                        var y = this.options.bookedDaysInclusivity;
-                        this.options.hotelMode && 1 === this.datePicked.length && (y = "()");
-                        var f = this.dateIsBooked(t, y), g = this.dateIsBooked(m, "[]"), k = this.dateIsBooked(t, "(]"), D = 0 === this.datePicked.length && f || 1 === this.datePicked.length && g && f || 1 === this.datePicked.length && g && k, v = this.options.anyBookedDaysAsCheckout && 1 === this.datePicked.length;
+                        var f = this.options.bookedDaysInclusivity;
+                        this.options.hotelMode && 1 === this.datePicked.length && (f = "()");
+                        var y = this.dateIsBooked(t, f), g = this.dateIsBooked(m, "[]"), k = this.dateIsBooked(t, "(]"), D = 0 === this.datePicked.length && y || 1 === this.datePicked.length && g && y || 1 === this.datePicked.length && g && k, v = this.options.anyBookedDaysAsCheckout && 1 === this.datePicked.length;
                         D && !v && i.classList.add(r.isBooked);
                     }
                     if (this.options.partiallyBookedDays.length) {
-                        y = this.options.partiallyBookedDaysInclusivity, this.options.hotelMode && 1 === this.datePicked.length && (y = "()");
-                        var b, w = this.dateIsPartiallyBooked(t, y), M = (g = this.dateIsPartiallyBooked(m, "[]"), 
+                        f = this.options.partiallyBookedDaysInclusivity, this.options.hotelMode && 1 === this.datePicked.length && (f = "()");
+                        var b, w = this.dateIsPartiallyBooked(t, f), M = (g = this.dateIsPartiallyBooked(m, "[]"), 
                         k = this.dateIsPartiallyBooked(t, "(]"), 0 === this.datePicked.length && w || 1 === this.datePicked.length && g && w || 1 === this.datePicked.length && g && k), x = this.options.anyPartiallyBookedDaysAsCheckout && 1 === this.datePicked.length;
                         M && !x && (!1 === (b = this.options.days[t.format(this.options.format)]).firstSlotBooked && i.classList.add(r.isPartiallyBookedStart), 
                         !1 === b.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd));
@@ -1012,7 +1044,7 @@
                 2 === this.datePicked.length) {
                     e = this.datePicked[0].format(this.options.format, this.options.lang);
                     var i = this.datePicked[1].format(this.options.format, this.options.lang);
-                    t.querySelector("." + r.previewDateRange).innerHTML = e + " - " + i;
+                    t.querySelector("." + r.previewDateRange).innerHTML = "" + e + this.options.delimiter + i;
                 }
                 return t;
             }, t.prototype.renderWeekNumber = function(t) {
@@ -1079,7 +1111,7 @@
                 };
                 -1 !== h ? (a[h].references++, a[h].updater(p)) : a.push({
                     identifier: c,
-                    updater: f(p, e),
+                    updater: y(p, e),
                     references: 1
                 }), o.push(c);
             }
@@ -1110,11 +1142,11 @@
                 a[e] && t.removeChild(a[e]), a.length ? t.insertBefore(s, a[e]) : t.appendChild(s);
             }
         }
-        var m = null, y = 0;
-        function f(t, e) {
+        var m = null, f = 0;
+        function y(t, e) {
             var i, o, n;
             if (e.singleton) {
-                var s = y++;
+                var s = f++;
                 i = m || (m = d(e)), o = p.bind(null, i, s, !1), n = p.bind(null, i, s, !0);
             } else i = d(e), o = function(t, e, i) {
                 var o = i.css, n = i.media, s = i.sourceMap;
@@ -1295,9 +1327,9 @@
             this.picker.style.zIndex = this.options.zIndex;
             var s = e.getBoundingClientRect(), a = this.picker.getBoundingClientRect(), r = s.bottom, l = s.left, h = 0, p = 0, u = 0, m = 0;
             if (this.options.parentEl) {
-                var y = this.picker.parentNode.getBoundingClientRect();
-                r -= y.bottom, (r += s.height) + a.height > window.innerHeight && s.top - y.top - s.height > 0 && (u = s.top - y.top - s.height), 
-                (l -= y.left) + a.width > window.innerWidth && s.right - y.right - a.width > 0 && (m = s.right - y.right - a.width);
+                var f = this.picker.parentNode.getBoundingClientRect();
+                r -= f.bottom, (r += s.height) + a.height > window.innerHeight && s.top - f.top - s.height > 0 && (u = s.top - f.top - s.height), 
+                (l -= f.left) + a.width > window.innerWidth && s.right - f.right - a.width > 0 && (m = s.right - f.right - a.width);
             } else h = window.scrollX || window.pageXOffset, p = window.scrollY || window.pageYOffset, 
             r + a.height > window.innerHeight && s.top - a.height > 0 && (u = s.top - a.height), 
             l + a.width > window.innerWidth && s.right - a.width > 0 && (m = s.right - a.width);
