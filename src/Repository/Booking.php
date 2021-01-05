@@ -18,7 +18,7 @@ class Booking extends PostRepository
      * @return null|\CommonsBooking\Model\Booking
      * @throws \Exception
      */
-    public static function getBookingByDate($startDate, $endDate, $location, $item)
+    public static function getBookingByDate($startDate, $endDate, $location, $item): ?\CommonsBooking\Model\Booking
     {
         if (Plugin::getCacheItem()) {
             return Plugin::getCacheItem();
@@ -77,13 +77,12 @@ class Booking extends PostRepository
     /**
      * Returns all bookings, allowed to see/edit for current user.
      *
-     * @param $offset
-     * @param $postsPerPage
+     * @param bool $asModel
      *
      * @return array
      * @throws \Exception
      */
-    public static function getForCurrentUser($offset = 0, $postsPerPage = 0)
+    public static function getForCurrentUser($asModel = false): array
     {
         $args = array(
             'post_type'   => Timeframe::$postType,
@@ -102,7 +101,6 @@ class Booking extends PostRepository
         $query = new \WP_Query($args);
         if ($query->have_posts()) {
             $posts = $query->get_posts();
-            $totalCount = count($posts);
 
             $current_user = wp_get_current_user();
             $isAdmin      = false;
@@ -111,7 +109,7 @@ class Booking extends PostRepository
             }
 
             // Check if it is the main query and one of our custom post types
-            if ( ! $isAdmin ) {
+            if ( ! $isAdmin) {
                 foreach ($posts as $key => $post) {
                     if ( ! commonsbooking_isCurrentUserAllowedToEdit($post)) {
                         unset($posts[$key]);
@@ -119,26 +117,14 @@ class Booking extends PostRepository
                 }
             }
 
-            if(count($posts)) {
-                $index = 0;
-                $pageCounter = 0;
+            // Init posts as Booking-Model
+            if ($asModel) {
                 foreach ($posts as $key => &$post) {
-                    if($offset > $index++) {
-                        unset($posts[$key]);
-                        continue;
-                    }
-                    if($postsPerPage && $postsPerPage <= $pageCounter++) {
-                        unset($posts[$key]);
-                        continue;
-                    }
                     $post = new \CommonsBooking\Model\Booking($post);
                 }
             }
 
-            return [
-                "rows" => $posts,
-                "total" => $totalCount
-            ];
+            return $posts;
         }
     }
 

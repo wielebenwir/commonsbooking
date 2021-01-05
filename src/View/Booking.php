@@ -16,38 +16,69 @@ class Booking extends View
      * @return array
      * @throws \Exception
      */
-    public static function getTemplateData()
+    public static function getTemplateData(): array
     {
         $postsPerPage = sanitize_text_field($_POST['limit']);
         $offset = sanitize_text_field($_POST['offset']);
-        $order = sanitize_text_field($_POST['order']);
         $search = sanitize_text_field($_POST['search']);
         $sort = sanitize_text_field($_POST['sort']);
+        $order = sanitize_text_field($_POST['order']);
 
-        $bookingData = \CommonsBooking\Repository\Booking::getForCurrentUser($offset, $postsPerPage);
         $bookingDataArray = [];
+        $posts = \CommonsBooking\Repository\Booking::getForCurrentUser(true);
 
-        foreach ($bookingData['rows'] as $booking) {
+        // Prepare Templatedata and remove invalid posts
+        foreach ($posts as $booking) {
+
+            // Get user infos
             $userInfo = get_userdata($booking->post_author);
+
+            // Decide which edit link to use
             $editLink = get_permalink($booking->ID);
             if(commonsbooking_isCurrentUserAdmin()) {
                 $editLink = get_edit_post_link($booking->ID);
             }
             $actions = '<a href="' . $editLink . '">'.__('editieren', COMMONSBOOKING_PLUGIN_SLUG).'</a>';
 
-            $bookingDataArray['rows'][] = [
+            // Prepare row data
+            $rowData = [
                 "startDate"   => date('d.m.Y H:i', $booking->getStartDate()),
                 "endDate"     => date('d.m.Y H:i', $booking->getStartDate()),
                 "item"        => $booking->getItem()->title(),
                 "location"    => $booking->getLocation()->title(),
                 "bookingDate" => date('d.m.Y H:i', strtotime($booking->post_date)),
                 "user"        => $userInfo->user_login,
-                "status"      => $booking->post_status,
-                "actions"     => $actions
+                "status"      => $booking->post_status
             ];
+
+            // If search term was submitted, filter for it.
+            if(
+                !$search ||
+                count(preg_grep('/.*' . $search . '.*/i', $rowData)) > 0
+            ) {
+                $rowData['actions'] = $actions;
+                $bookingDataArray['rows'][] = $rowData;
+            }
         }
 
-        $bookingDataArray['total'] = $bookingData['total'];
+        $totalCount = count($bookingDataArray['rows']);
+        $bookingDataArray['total'] = $totalCount;
+
+        if($totalCount) {
+            // Apply pagination...
+            $index = 0;
+            $pageCounter = 0;
+            foreach ($bookingDataArray['rows'] as $key => $post) {
+                if($offset > $index++) {
+                    unset($bookingDataArray['rows'][$key]);
+                    continue;
+                }
+                if($postsPerPage && $postsPerPage <= $pageCounter++) {
+                    unset($bookingDataArray['rows'][$key]);
+                    continue;
+                }
+            }
+        }
 
         header('Content-Type: application/json');
         echo json_encode($bookingDataArray);

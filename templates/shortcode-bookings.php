@@ -20,6 +20,7 @@ if(count($templateData['bookings'])) {?>
             data-toggle="table"
             data-ajax="ajaxRequest"
             data-pagination="true"
+            data-search="true"
             data-side-pagination="server"
     >
         <thead>
