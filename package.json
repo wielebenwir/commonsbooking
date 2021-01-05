@@ -25,7 +25,6 @@
 		"grunt": "node node_modules/grunt/bin/grunt"
 	},
 	"dependencies": {
-		"@popperjs/core": "^2.6.0",
 		"bootstrap": "^4.5.3",
 		"bootstrap-table": "^1.18.1",
 		"jquery": "^3.5.1",

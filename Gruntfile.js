@@ -100,8 +100,7 @@ module.exports = function (grunt) {
 			distJs: {
 				src: [
 					'node_modules/moment/moment.js',
-					'node_modules/@popperjs/core/dist/umd/popper.min.js',
-					'node_modules/bootstrap/dist/js/bootstrap.min.js',
+					'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
 					'node_modules/bootstrap-table/dist/bootstrap-table.js',
 				],
 				dest: 'assets/global/js/vendor.js',

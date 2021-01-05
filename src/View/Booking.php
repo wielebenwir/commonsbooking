@@ -18,12 +18,13 @@ class Booking extends View
      */
     public static function getTemplateData()
     {
-        $limit = sanitize_text_field($_POST['limit']);
+        $postsPerPage = sanitize_text_field($_POST['limit']);
         $offset = sanitize_text_field($_POST['offset']);
         $order = sanitize_text_field($_POST['order']);
         $search = sanitize_text_field($_POST['search']);
+        $sort = sanitize_text_field($_POST['sort']);
 
-        $bookingData = \CommonsBooking\Repository\Booking::getForCurrentUser($offset);
+        $bookingData = \CommonsBooking\Repository\Booking::getForCurrentUser($offset, $postsPerPage);
         $bookingDataArray = [];
 
         foreach ($bookingData['rows'] as $booking) {

@@ -19,19 +19,19 @@ if(count($templateData['bookings'])) {?>
             id="table"
             data-toggle="table"
             data-ajax="ajaxRequest"
-            data-side-pagination="server"
             data-pagination="true"
+            data-side-pagination="server"
     >
         <thead>
         <tr>
-            <th data-field="startDate">Startdatum</th>
-            <th data-field="endDate">Enddatum</th>
-            <th data-field="item">Item</th>
-            <th data-field="location">Location</th>
-            <th data-field="bookingDate">BookingDate</th>
-            <th data-field="user">User</th>
-            <th data-field="status">Status</th>
-            <th data-field="actions">Aktionen</th>
+            <th data-field="startDate" data-sortable="true">Startdatum</th>
+            <th data-field="endDate" data-sortable="true">Enddatum</th>
+            <th data-field="item" data-sortable="true">Item</th>
+            <th data-field="location" data-sortable="true">Location</th>
+            <th data-field="bookingDate" data-sortable="true">BookingDate</th>
+            <th data-field="user" data-sortable="true">User</th>
+            <th data-field="status" data-sortable="true">Status</th>
+            <th data-field="actions" data-sortable="true">Aktionen</th>
         </tr>
         </thead>
     </table>
