@@ -102,13 +102,16 @@ module.exports = function (grunt) {
 					'node_modules/moment/moment.js',
 					'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
 					'node_modules/bootstrap-table/dist/bootstrap-table.js',
+					'node_modules/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.js',
+					'node_modules/bootstrap-table/dist/extensions/cookie/bootstrap-table-cookie.js',
 				],
 				dest: 'assets/global/js/vendor.js',
 			},
 			distCss: {
 				src: [
 					'node_modules/bootstrap/dist/css/bootstrap.min.css',
-					'node_modules/bootstrap-table/dist/bootstrap-table.min.css'
+					'node_modules/bootstrap-table/dist/bootstrap-table.min.css',
+					'node_modules/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.css'
 				],
 				dest: 'assets/global/css/vendor.css',
 			},

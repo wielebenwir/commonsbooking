@@ -22,17 +22,20 @@ if(count($templateData['bookings'])) {?>
             data-pagination="true"
             data-search="true"
             data-side-pagination="server"
+            data-filter-control="true"
+            data-cookie="true"
+            data-cookie-id-table="saveId"
     >
         <thead>
         <tr>
             <th data-field="startDate" data-sortable="true">Startdatum</th>
             <th data-field="endDate" data-sortable="true">Enddatum</th>
-            <th data-field="item" data-sortable="true">Item</th>
-            <th data-field="location" data-sortable="true">Location</th>
+            <th data-field="item" data-sortable="true" data-filter-control="input">Item</th>
+            <th data-field="location" data-sortable="true" data-filter-control="input">Location</th>
             <th data-field="bookingDate" data-sortable="true">BookingDate</th>
-            <th data-field="user" data-sortable="true">User</th>
-            <th data-field="status" data-sortable="true">Status</th>
-            <th data-field="actions" data-sortable="true">Aktionen</th>
+            <th data-field="user" data-sortable="true" data-filter-control="input">User</th>
+            <th data-field="status" data-sortable="true" data-filter-control="input">Status</th>
+            <th data-field="actions">Aktionen</th>
         </tr>
         </thead>
     </table>

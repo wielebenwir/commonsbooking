@@ -44,8 +44,8 @@ class Booking extends View
             $rowData = [
                 "startDate"   => date('d.m.Y H:i', $booking->getStartDate()),
                 "endDate"     => date('d.m.Y H:i', $booking->getStartDate()),
-                "item"        => $booking->getItem()->title(),
-                "location"    => $booking->getLocation()->title(),
+                "item"        => $booking->getItem()->post_title,
+                "location"    => $booking->getLocation()->post_title,
                 "bookingDate" => date('d.m.Y H:i', strtotime($booking->post_date)),
                 "user"        => $userInfo->user_login,
                 "status"      => $booking->post_status
@@ -63,6 +63,23 @@ class Booking extends View
 
         $totalCount = count($bookingDataArray['rows']);
         $bookingDataArray['total'] = $totalCount;
+
+        // Init function to pass sort and order param to sorting callback
+        $sorter = function ($sort, $order) {
+            return function ($a, $b) use ($sort, $order) {
+                if($order == 'asc') {
+                    return strcasecmp($a[$sort], $b[$sort]);
+                } else {
+                    return strcasecmp($b[$sort], $a[$sort]);
+                }
+            };
+        };
+
+        // Sorting
+        usort(
+            $bookingDataArray['rows'],
+            $sorter($sort, $order)
+        );
 
         if($totalCount) {
             // Apply pagination...
