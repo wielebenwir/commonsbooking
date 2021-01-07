@@ -83,6 +83,7 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 == Changelog ==
 
 = 2.2.16 () =
+* fixed: booking caelndar not shown on some iphone models in portrait mode
 * Added customizable avilablity messages for location and item pages (can be set in options -> templates)
 * added automatic reset to default values for some options if they are empty but needed for the plugin to work properly
 * reworked save options process so that permalink page refresh is not longer needed after updating url slugs

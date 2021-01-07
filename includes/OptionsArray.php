@@ -49,7 +49,7 @@ return array(
            'id' => 'posttypes',
            // tranlsators: %s = admin url options page
            'desc' =>
-                commonsbooking_sanitizeHTML( __('Customize names & slugs. You can set an individual slugs for items and locations to create individual permalinks. <b>Notice</b>: You must click on the Settings -> Permalinks page after saving these settings to refresh the Wordpress permalink settings.', 'commonsbooking' ) ),
+                commonsbooking_sanitizeHTML( __('Customize names & slugs. You can set an individual slugs for items and locations to create individual permalinks. <b>Notice</b>: If the new settings do not work directly (you will get a 404 page error on frontend pages), you must click on the Settings -> Permalinks page after saving these settings to refresh the Wordpress permalink settings.', 'commonsbooking' ) ),
            'fields' => array(
 //             array(
 //               'name'    => esc_html_e( 'Item singular name', 'commonsbooking' ),
