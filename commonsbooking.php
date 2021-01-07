@@ -19,6 +19,7 @@ use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
+use CommonsBooking\Wordpress\Options\AdminOptions;
 
 defined('ABSPATH') or die("Thanks for visting");
 
@@ -284,10 +285,11 @@ function commonsbooking_timeframe_redirect()
 }
 
 // removed redirect because we link to booking-single-notallowd.php (defined in )
-    //add_action('template_redirect', 'commonsbooking_timeframe_redirect');
+// add_action('template_redirect', 'commonsbooking_timeframe_redirect');
 
 // Shows Errors in Backend
-add_action('admin_notices', array(Plugin::class, 'renderError'));
+add_action('admin_notices', array(Plugin::class, 'renderError') );
+
 
 /**
  * commonsbooking_sanitizeHTML
