@@ -123,24 +123,31 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         }
 
-        // init datepicker
-        let numberOfMonths = 2;
-        let numberOfColumns = 2;
+        // returns columns in relation to viewport
+        const getCalendarColumns = () => {
+            let columns = 2;
+            if (isMobile()) {
+                columns = 1;
 
-        if (isMobile()) {
-            switch (screen.orientation.angle) {
-                case -90:
-                case 90:
-                    numberOfMonths = 2;
-                    numberOfColumns = 2;
-                    break;
-
-                default:
-                    numberOfMonths = 1;
-                    numberOfColumns = 1;
-                    break;
+                // Landscape mode
+                if (window.innerHeight < window.innerWidth) {
+                    columns = 2;
+                }
             }
-        }
+            return columns;
+        };
+
+        // updates columns for calendar
+        const updateCalendarColumns = (picker) => {
+            picker.setOptions({
+                "numberOfMonths": getCalendarColumns(),
+                "numberOfColumns": getCalendarColumns()
+            });
+        };
+
+        // init datepicker
+        let numberOfMonths = getCalendarColumns();
+        let numberOfColumns = numberOfMonths;
 
         let picker = false;
         const initPicker = () => {
@@ -208,6 +215,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 }
             });
             $('#litepicker .litepicker').hide();
+
+            // If orientation changes, update columns for calendar
+            $( window ).on( "orientationchange", function( event ) {
+                updateCalendarColumns(picker);
+            });
         };
 
         // update datepicker data

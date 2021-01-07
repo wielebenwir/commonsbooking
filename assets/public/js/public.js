@@ -1448,18 +1448,17 @@
             $("#booking-form select[name=repetition-end],#booking-form .time-selection.repetition-end .date").show(), 
             $("#booking-form input[type=submit]").removeAttr("disabled"), updateEndSelectTimeOptions(), 
             day2.fullDay ? $(".time-selection.repetition-end").find("select").hide() : $(".time-selection.repetition-end").find("select").show();
+        }, getCalendarColumns = () => {
+            let columns = 2;
+            return isMobile() && (columns = 1, window.innerHeight < window.innerWidth && (columns = 2)), 
+            columns;
+        }, updateCalendarColumns = picker => {
+            picker.setOptions({
+                numberOfMonths: getCalendarColumns(),
+                numberOfColumns: getCalendarColumns()
+            });
         };
-        let numberOfMonths = 2, numberOfColumns = 2;
-        if (isMobile()) switch (screen.orientation.angle) {
-          case -90:
-          case 90:
-            numberOfMonths = 2, numberOfColumns = 2;
-            break;
-
-          default:
-            numberOfMonths = 1, numberOfColumns = 1;
-        }
-        let picker = !1;
+        let numberOfMonths = getCalendarColumns(), numberOfColumns = numberOfMonths, picker = !1;
         const initPicker = () => {
             picker = new Litepicker({
                 element: document.getElementById("litepicker"),
@@ -1509,7 +1508,9 @@
                         }, updatePicker(data), picker.gotoDate(startDate);
                     });
                 }
-            }), $("#litepicker .litepicker").hide();
+            }), $("#litepicker .litepicker").hide(), $(window).on("orientationchange", function(event) {
+                updateCalendarColumns(picker);
+            });
         }, updatePicker = globalCalendarData => {
             fadeOutCalendar(), picker.setOptions({
                 minDate: moment().isAfter(globalCalendarData.startDate) ? moment().format("YYYY-MM-DD") : data.startDate,
