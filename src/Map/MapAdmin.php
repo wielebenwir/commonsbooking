@@ -124,20 +124,19 @@ class MapAdmin
 
     public static function add_meta_boxes()
     {
-        self::add_settings_meta_box('cb_map_admin',
-            cb_map\__('CB_MAP_ADMIN_METABOX_TITLE', 'commons-booking-map', 'Map Configuration'));
+        self::add_settings_meta_box(
+            'cb_map_admin',
+            Map::__('CB_MAP_ADMIN_METABOX_TITLE', 'commons-booking-map', 'Map Configuration'));
     }
 
     public static function add_settings_meta_box($meta_box_id, $meta_box_title)
     {
         global $post;
 
-        $cb_map_admin = new self();
-
         $plugin_prefix = 'cb_map_post_type_';
 
         $html_id_attribute = $plugin_prefix.$meta_box_id.'_meta_box';
-        $callback          = 'CB_Map_Admin::render_options_page';
+        $callback          = array(MapAdmin::class, 'render_options_page');
         $show_on_post_type = 'cb_map';
         $box_placement     = 'normal';
         $box_priority      = 'high';
@@ -215,6 +214,7 @@ class MapAdmin
             $input = $_POST['cb_map_options'];
         }
 
+
         //map_type
         if (isset($input['map_type']) && (int)$input['map_type'] >= 1 && $input['map_type'] <= 3) {
             $validated_input['map_type'] = (int)$input['map_type'];
@@ -250,7 +250,9 @@ class MapAdmin
         }
 
         //custom_no_locations_message
-        $validated_input['custom_no_locations_message'] = sanitize_text_field($input['custom_no_locations_message']);
+        if (isset($input['custom_no_locations_message'])) {
+            $validated_input['custom_no_locations_message'] = sanitize_text_field($input['custom_no_locations_message']);
+        }
 
         //enable_map_data_export
         if (isset($input['enable_map_data_export'])) {
@@ -543,14 +545,14 @@ class MapAdmin
         wp_enqueue_media();
 
         //load image upload script
-        $script_path = CB_MAP_ASSETS_URL.'js/cb-map-marker-upload.js';
+        $script_path = COMMONSBOOKING_MAP_ASSETS_URL.'js/cb-map-marker-upload.js';
         echo '<script src="'.$script_path.'"></script>';
 
         //map translation
         $translation = [
-            'SELECT_IMAGE'              => cb_map\__('SELECT_IMAGE', 'commons-booking-map', 'Select an image'),
-            'SAVE'                      => cb_map\__('SAVE', 'commons-booking-map', 'save'),
-            'MARKER_IMAGE_MEASUREMENTS' => cb_map\__('MARKER_IMAGE_MEASUREMENTS', 'commons-booking-map',
+            'SELECT_IMAGE'              => Map::__('SELECT_IMAGE', 'commons-booking-map', 'Select an image'),
+            'SAVE'                      => Map::__('SAVE', 'commons-booking-map', 'save'),
+            'MARKER_IMAGE_MEASUREMENTS' => Map::__('MARKER_IMAGE_MEASUREMENTS', 'commons-booking-map',
                 'measurements'),
         ];
         echo '<script>cb_map_marker_upload.translation = '.json_encode($translation).';</script>';
@@ -569,7 +571,7 @@ class MapAdmin
             'id="cb_items_available_category-', $available_categories_checklist_markup);
 
         //rearrange to nummeric array, because object property order isn't stable in js
-        $cb_items_available_categories = CB_Map_Admin::get_option($cb_map_id, 'cb_items_available_categories');
+        $cb_items_available_categories = self::get_option($cb_map_id, 'cb_items_available_categories');
         $available_categories          = [];
         foreach ($cb_items_available_categories as $id => $content) {
             $available_categories[] = [
@@ -594,9 +596,9 @@ class MapAdmin
 
         $data_export_base_url = get_site_url(null, '', null).'/wp-admin/admin-ajax.php';
 
-        wp_enqueue_style('cb_map_admin_css', CB_MAP_ASSETS_URL.'css/cb-map-admin.css');
+        wp_enqueue_style('cb_map_admin_css', COMMONSBOOKING_MAP_ASSETS_URL.'css/cb-map-admin.css');
 
-        include_once(CB_MAP_PATH.'templates/admin-page-template.php');
+        include_once(COMMONSBOOKING_MAP_PATH.'templates/admin-page-template.php');
 
     }
 

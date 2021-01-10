@@ -1,5 +1,7 @@
 <?php
 
+use CommonsBooking\Plugin;
+
 
 /**
  * Checks if current user is allowed to edit custom post.

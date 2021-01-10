@@ -7,23 +7,25 @@ class MapFilter
 
     /**
      * get all the locations of the map with provided id that belong to timeframes and filter by given categories
-     **/
+     *
+     * @param $locations
+     * @param $cb_map_id
+     * @param array $preset_categories
+     *
+     * @return array
+     */
     public static function filter_locations_by_timeframes_and_categories(
         $locations,
         $cb_map_id,
         $preset_categories = []
     ) {
-        //trigger_error('filter_locations_by_timeframes_and_categories');
-        //var_dump($preset_categories);
-
-        $cb_data = new CB_Data();
-        require_once(CB_MAP_PATH.'classes/class-cb-map-item-availability.php');
+//        $cb_data = new CB_Data();
 
         $result     = [];
-        $timeframes = CB_Map::get_timeframes($cb_map_id);
+        $timeframes = Map::get_timeframes($cb_map_id);
 
-        //$category_tree = CB_Map::get_structured_cb_items_category_tree();
-        $preset_category_groups = CB_Map::get_cb_items_category_groups($preset_categories);
+        //$category_tree = Map::get_structured_cb_items_category_tree();
+        $preset_category_groups = Map::get_cb_items_category_groups($preset_categories);
 
         foreach ($timeframes as $timeframe) {
             $location_id   = $timeframe['location_id'];
@@ -66,12 +68,12 @@ class MapFilter
                     ];
 
                     //add timeframe hint
-                    $now = new DateTime();
+                    $now = new \DateTime();
 
-                    $date_start = new DateTime();
+                    $date_start = new \DateTime();
                     $date_start->setTimestamp(strtotime($timeframe['date_start']));
 
-                    $date_end = new DateTime();
+                    $date_end = new \DateTime();
                     $date_end->setTimestamp(strtotime($timeframe['date_end']));
                     $diff_end = $date_end->diff($now)->format("%a");
 
@@ -83,13 +85,14 @@ class MapFilter
                         ];
                     }
 
+                    // @TODO: Check what it's for...
                     //show hint for near end of timeframe if it's before the last possible day to book (CB settings)
-                    if ($diff_end <= $cb_data->daystoshow) {
-                        $result[$location_id]['items'][$timeframe['item']['id']]['timeframe_hints'][] = [
-                            'type'      => 'until',
-                            'timestamp' => strtotime($timeframe['date_end']),
-                        ];
-                    }
+//                    if ($diff_end <= $cb_data->daystoshow) {
+//                        $result[$location_id]['items'][$timeframe['item']['id']]['timeframe_hints'][] = [
+//                            'type'      => 'until',
+//                            'timestamp' => strtotime($timeframe['date_end']),
+//                        ];
+//                    }
 
                 }
             }

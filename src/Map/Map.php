@@ -2,8 +2,43 @@
 
 namespace CommonsBooking\Map;
 
+use CommonsBooking\Repository\Item;
+use CommonsBooking\Repository\Timeframe;
+use CommonsBooking\Wordpress\CustomPostType\Location;
+
 class Map
 {
+
+    /**
+     * returns the directory path of the given plugin main file relative to the plugin directory,
+     * i.e. commons-booking/commons-booking.php for $plugin_name = commons-booking.php
+     **/
+    public static function get_active_plugin_directory($plugin_name)
+    {
+        $active_plugins = apply_filters('active_plugins', get_option('active_plugins'));
+        foreach ($active_plugins as $plugin) {
+            $plugin_file_path = COMMONSBOOKING_MAP_PATH.'../'.$plugin;
+            if (strpos($plugin, $plugin_name) !== false && file_exists($plugin_file_path)) {
+                var_dump($plugin);
+
+                return dirname($plugin);
+            }
+        }
+
+        return null;
+    }
+
+    public static function __($text, $domain = 'default', $default = null)
+    {
+
+        $translation = \__($text, $domain);
+
+        if ($translation == $text && isset($default)) {
+            $translation = $default;
+        }
+
+        return $translation;
+    }
 
     /**
      * register cb_map as custom post type
@@ -11,22 +46,22 @@ class Map
     public static function register_cb_map_post_type()
     {
         $labels = array(
-            'name'               => cb_map\__('POST_LABELS_NAME', 'commons-booking-map', 'Commons Booking maps'),
-            'singular_name'      => cb_map\__('POST_LABELS_SINGULAR_NAME', 'commons-booking-map',
+            'name'               => self::__('POST_LABELS_NAME', 'commons-booking-map', 'Commons Booking maps'),
+            'singular_name'      => self::__('POST_LABELS_SINGULAR_NAME', 'commons-booking-map',
                 'Commons Booking map'),
-            'add_new'            => cb_map\__('POST_LABELS_ADD_NEW', 'commons-booking-map', 'create CB map'),
-            'add_new_item'       => cb_map\__('POST_LABELS_ADD_NEW_ITEM', 'commons-booking-map',
+            'add_new'            => self::__('POST_LABELS_ADD_NEW', 'commons-booking-map', 'create CB map'),
+            'add_new_item'       => self::__('POST_LABELS_ADD_NEW_ITEM', 'commons-booking-map',
                 'create Commons Booking map'),
-            'edit_item'          => cb_map\__('POST_LABELS_EDIT_ITEM', 'commons-booking-map',
+            'edit_item'          => self::__('POST_LABELS_EDIT_ITEM', 'commons-booking-map',
                 'edit Commons Booking map'),
-            'new_item'           => cb_map\__('POST_LABELS_NEW_ITEM', 'commons-booking-map', 'create CB map'),
-            'view_item'          => cb_map\__('POST_LABELS_VIEW_ITEM', 'commons-booking-map', 'view CB map'),
-            'search_items'       => cb_map\__('POST_LABELS_SEARCH_ITEMS', 'commons-booking-map', 'search CB maps'),
-            'not_found'          => cb_map\__('POST_LABELS_NOT_FOUND', 'commons-booking-map',
+            'new_item'           => self::__('POST_LABELS_NEW_ITEM', 'commons-booking-map', 'create CB map'),
+            'view_item'          => self::__('POST_LABELS_VIEW_ITEM', 'commons-booking-map', 'view CB map'),
+            'search_items'       => self::__('POST_LABELS_SEARCH_ITEMS', 'commons-booking-map', 'search CB maps'),
+            'not_found'          => self::__('POST_LABELS_NOT_FOUND', 'commons-booking-map',
                 'no Commons Booking map found'),
-            'not_found_in_trash' => cb_map\__('POST_LABELS_NOT_FOUND_IN_TRASH', 'commons-booking-map',
+            'not_found_in_trash' => self::__('POST_LABELS_NOT_FOUND_IN_TRASH', 'commons-booking-map',
                 'no Commons Booking map found in the trash'),
-            'parent_item_colon'  => cb_map\__('POST_LABELS_PARENT_ITEM_COLON', 'commons-booking-map', 'parent CB maps'),
+            'parent_item_colon'  => self::__('POST_LABELS_PARENT_ITEM_COLON', 'commons-booking-map', 'parent CB maps'),
         );
 
         $supports = array(
@@ -37,7 +72,7 @@ class Map
         $args = array(
             'labels'              => $labels,
             'hierarchical'        => false,
-            'description'         => cb_map\__('POST_TYPE_DESCRIPTION', 'commons-booking-map',
+            'description'         => self::__('POST_TYPE_DESCRIPTION', 'commons-booking-map',
                 'Maps to show Commons Booking Locations and their Items'),
             'supports'            => $supports,
             'public'              => false,
@@ -64,7 +99,7 @@ class Map
     public static function activate()
     {
         //schedule daily event to update import data
-        $date_time = new DateTime();
+        $date_time = new \DateTime();
         $date_time->setTime(23, 00);
         wp_schedule_event($date_time->getTimestamp(), 'daily', 'cb_map_import');
     }
@@ -81,30 +116,28 @@ class Map
     /**
      * load all timeframes from db (that end in the future and it's item's status is 'publish')
      **/
-    public static function get_timeframes($cb_map_id)
+    public static function get_timeframes()
     {
-        global $wpdb;
+        $timeframes = Timeframe::get(
+            [],
+            [],
+            [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID],
+            false,
+            true,
+            time()
+        );
 
-        $item_draft_appearance = CB_Map_Admin::get_option($cb_map_id, 'item_draft_appearance');
+        /** @var \CommonsBooking\Model\Timeframe $timeframe */
+        foreach ($timeframes as $timeframe) {
+            $item = $timeframe->getItem();
+            $location = $timeframe->getLocation();
 
-        $result = [];
-
-        $now          = new DateTime();
-        $min_date_end = $now->format('Y-m-d');
-
-        $table_name = $wpdb->prefix.'cb_timeframes';
-        $sql        = $wpdb->prepare("SELECT * FROM $table_name WHERE date_end >= %s", $min_date_end);
-        $timeframes = $wpdb->get_results($sql, ARRAY_A);
-
-        foreach ($timeframes as $key => $timeframe) {
-            $item = get_post($timeframe['item_id']);
-
-            if (self::has_item_valid_status($item, $item_draft_appearance)) {
-                $item_desc = get_post_meta($timeframe['item_id'], 'commons-booking_item_descr', true);
+            if($item && $location) {
+                $item_desc = $item->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'location_info');
                 $thumbnail = get_the_post_thumbnail_url($item, 'thumbnail');
 
                 $result[] = [
-                    'location_id' => $timeframe['location_id'],
+                    'location_id' => $timeframe->getLocation()->ID,
                     'item'        => [
                         'id'         => $item->ID,
                         'name'       => $item->post_title,
@@ -113,8 +146,8 @@ class Map
                         'thumbnail'  => $thumbnail ? $thumbnail : null,
                         'status'     => $item->post_status,
                     ],
-                    'date_start'  => $timeframe['date_start'],
-                    'date_end'    => $timeframe['date_end'],
+                    'date_start'  => $timeframe->getStartDate(),
+                    'date_end'    => $timeframe->getEndDate(),
                 ];
             }
         }
@@ -141,56 +174,70 @@ class Map
      */
     public static function get_locations($cb_map_id)
     {
-        global $wpdb;
         $locations = [];
 
-        $show_location_contact       = CB_Map_Admin::get_option($cb_map_id, 'show_location_contact');
-        $show_location_opening_hours = CB_Map_Admin::get_option($cb_map_id, 'show_location_opening_hours');
+        $show_location_contact       = MapAdmin::get_option($cb_map_id, 'show_location_contact');
+        $show_location_opening_hours = MapAdmin::get_option($cb_map_id, 'show_location_opening_hours');
 
         $args = [
-            'post_type'      => 'cb_locations',
+            'post_type'      => Location::$postType,
             'posts_per_page' => -1,
             'post_status'    => 'publish',
             'meta_query'     => [
                 [
-                    'key'          => 'cb-map_latitude',
+                    'key'          => COMMONSBOOKING_METABOX_PREFIX . 'geo_longitude',
                     'meta_compare' => 'EXISTS',
-                ]/*,
-        [
-          'key' => 'cb-map_longitude',
-          'meta_compare' => 'EXISTS'
-        ]*/
+                ],
             ],
         ];
 
-        $query = new WP_Query($args);
+        $locationObjects = \CommonsBooking\Repository\Location::get(
+            $args,
+            true
 
-        foreach ($query->posts as $post) {
+        );
+
+        /** @var \CommonsBooking\Model\Location $post */
+        foreach ($locationObjects as $post) {
             $location_meta = get_post_meta($post->ID, null, true);
 
             //set serialized empty array if not set
             $closed_days = isset($location_meta['commons-booking_location_closeddays']) ? $location_meta['commons-booking_location_closeddays'][0] : 'a:0:{}';
 
+            $items = [];
+            foreach(Item::getByLocation($post->ID, true) as $item) {
+                $items[] = [
+                    'post' => $item,
+                    'id' => $item->ID,
+                    'name' => $item->post_title,
+                    'short_desc' => has_excerpt($item->ID) ? wp_strip_all_tags(get_the_excerpt($item->ID)) : "",
+                    'status' => $item->post_status,
+                    'terms' => [],
+                    'link' => add_query_arg('item', $item->ID, get_permalink($post->ID) )
+                ];
+            }
+
             $locations[$post->ID] = [
-                'lat'           => (float)$location_meta['cb-map_latitude'][0],
-                'lon'           => (float)$location_meta['cb-map_longitude'][0],
+                'lat'           => (float)$location_meta[COMMONSBOOKING_METABOX_PREFIX . 'geo_latitude'][0],
+                'lon'           => (float)$location_meta[COMMONSBOOKING_METABOX_PREFIX . 'geo_longitude'][0],
                 'location_name' => $post->post_title,
                 'closed_days'   => unserialize($closed_days),
                 'address'       => [
-                    'street' => $location_meta['commons-booking_location_adress_street'][0],
-                    'city'   => $location_meta['commons-booking_location_adress_city'][0],
-                    'zip'    => $location_meta['commons-booking_location_adress_zip'][0],
+                    'street' => $location_meta[COMMONSBOOKING_METABOX_PREFIX . 'location_street'][0],
+                    'city'   => $location_meta[COMMONSBOOKING_METABOX_PREFIX . 'location_city'][0],
+                    'zip'    => $location_meta[COMMONSBOOKING_METABOX_PREFIX . 'location_postcode'][0],
                 ],
-                'items'         => [],
+                'items'         => $items,
             ];
 
-            if ($show_location_contact) {
-                $locations[$post->ID]['contact'] = $location_meta['commons-booking_location_contactinfo_text'][0];
-            }
-
-            if ($show_location_opening_hours) {
-                $locations[$post->ID]['opening_hours'] = $location_meta['commons-booking_location_openinghours'][0];
-            }
+            //@TODO: Check fields
+//            if ($show_location_contact) {
+//                $locations[$post->ID]['contact'] = $location_meta['commons-booking_location_contactinfo_text'][0];
+//            }
+//
+//            if ($show_location_opening_hours) {
+//                $locations[$post->ID]['opening_hours'] = $location_meta['commons-booking_location_openinghours'][0];
+//            }
         }
 
         return $locations;
@@ -221,7 +268,7 @@ class Map
     {
         $groups               = [];
         $current_group_id     = null;
-        $available_categories = CB_Map_Admin::get_option($cb_map_id, 'cb_items_available_categories');
+        $available_categories = MapAdmin::get_option($cb_map_id, 'cb_items_available_categories');
 
         //create array for each group
         foreach ($available_categories as $key => $content) {
@@ -276,7 +323,7 @@ class Map
         $post = get_post($cb_map_id);
 
         if ($post && $post->post_type == 'cb_map') {
-            $map_type = CB_Map_Admin::get_option($cb_map_id, 'map_type');
+            $map_type = MapAdmin::get_option($cb_map_id, 'map_type');
 
             if ($map_type == 2) {
                 $args = [
@@ -317,12 +364,12 @@ class Map
     {
 
         if (self::is_json($string)) {
-            require_once CB_MAP_PATH.'libs/vendor/autoload.php';
+            require_once COMMONSBOOKING_MAP_PATH.'libs/vendor/autoload.php';
 
             $data = json_decode($string);
 
             $validator        = new JsonSchema\Validator;
-            $schema_file_path = CB_MAP_PATH.'schemas/locations-import.json';
+            $schema_file_path = COMMONSBOOKING_MAP_PATH.'schemas/locations-import.json';
             $validator->validate($data, (object)['$ref' => 'file://'.$schema_file_path],
                 JsonSchema\Constraints\Constraint::CHECK_MODE_COERCE_TYPES);
 
@@ -408,8 +455,8 @@ class Map
 
         $new_map_imports = [];
 
-        CB_Map_Admin::load_options($cb_map_id, true);
-        $import_sources = CB_Map_Admin::get_option($cb_map_id, 'import_sources');
+        MapAdmin::load_options($cb_map_id, true);
+        $import_sources = MapAdmin::get_option($cb_map_id, 'import_sources');
 
         foreach ($import_sources['urls'] as $key => $url) {
             $code      = $import_sources['codes'][$key];
@@ -536,7 +583,7 @@ class Map
                 }
             }
 
-            wp_register_script('cb_map_replace_map_link_js', CB_MAP_ASSETS_URL.'js/cb-map-replace-link.js');
+            wp_register_script('cb_map_replace_map_link_js', COMMONSBOOKING_MAP_ASSETS_URL.'js/cb-map-replace-link.js');
 
             wp_add_inline_script('cb_map_replace_map_link_js',
                 "cb_map_timeframes_geo = ".json_encode($geo_coordinates).";");

@@ -4,10 +4,12 @@
   "version": "0.0.1",
   "autoload": {
     "files": [
+      "includes/Map.php",
       "includes/OptionsArray.php",
       "includes/Shortcodes.php",
       "includes/Template.php",
-      "includes/TemplateParser.php"
+      "includes/TemplateParser.php",
+      "includes/Users.php"
     ],
     "psr-4": {"CommonsBooking\\": "src/"}
   },

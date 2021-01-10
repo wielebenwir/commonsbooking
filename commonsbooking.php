@@ -30,6 +30,11 @@ define('COMMONSBOOKING_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('COMMONSBOOKING_PLUGIN_FILE', __FILE__);
 define('COMMONSBOOKING_METABOX_PREFIX', '_cb_'); //Start with an underscore to hide fields from custom fields list
 
+define( 'COMMONSBOOKING_MAP_PATH', plugin_dir_path( __FILE__ ) );
+define( 'COMMONSBOOKING_MAP_ASSETS_URL', plugins_url( 'assets/map/', __FILE__ ));
+define( 'COMMONSBOOKING_MAP_LANG_PATH', dirname( plugin_basename( __FILE__ )) . '/languages/' );
+define ('COMMONSBOOKING_MAP_PLUGIN_DATA', get_file_data( __FILE__, array('Version' => 'Version'), false));
+
 global $cb_db_version;
 $cb_db_version = '1.0';
 
@@ -135,16 +140,11 @@ require __DIR__.'/vendor/autoload.php';
 require __DIR__.'/vendor/cmb2/cmb2/init.php';
 require __DIR__.'/vendor/mustardBees/cmb-field-select2/cmb-field-select2.php';
 
-require __DIR__.'/src/Repository/CB1UserFields.php'; //@TODO: import with Autoload
-
-require __DIR__.''
-
 // removed redirect because we link to booking-single-notallowd.php (defined in )
 // add_action('template_redirect', 'commonsbooking_timeframe_redirect');
 
 // Shows Errors in Backend
 add_action('admin_notices', array(Plugin::class, 'renderError') );
-
 
 /**
  * commonsbooking_sanitizeHTML
@@ -225,7 +225,6 @@ function commonsbooking_sanitizeHTML($string)
 
     return wp_kses( $string, $allowedposttags );
 }
-
 
 /**
  * Recursive sanitation for text or array
