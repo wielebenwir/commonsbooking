@@ -2,18 +2,22 @@
 
 namespace CommonsBooking\Map;
 
+use CommonsBooking\Wordpress\CustomPostType\Map;
+
 class MapSettings
 {
 
     const OPTION_KEYS = ['booking_page_link_replacement'];
 
-    const BOOKING_PAGE_LINK_REPLACEMENT_DEFAULT = true;
-
     public static $options;
 
     /**
      * option getter
-     **/
+     *
+     * @param $key
+     *
+     * @return mixed
+     */
     public static function get_option($key)
     {
         self::load_options();
@@ -37,8 +41,6 @@ class MapSettings
      **/
     public static function populate_option_defaults($options)
     {
-        //var_dump($options);
-
         foreach (self::OPTION_KEYS as $key) {
             if ( ! isset($options[$key])) {
                 $options[$key] = self::get_option_default($key);
@@ -88,7 +90,6 @@ class MapSettings
      **/
     public function validate_options($input = array())
     {
-        //var_dump($input);
         self::load_options();
 
         $validated_input = self::populate_option_defaults([]);

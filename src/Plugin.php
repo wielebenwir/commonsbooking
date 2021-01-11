@@ -11,6 +11,7 @@ use CommonsBooking\Repository\CB1UserFields;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
+use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
 use CommonsBooking\Model\User;
@@ -85,7 +86,7 @@ class Plugin
      */
     public function init()
     {
-                
+
         do_action('cmb2_init');
 
         // Register custom user roles (e.g. location-owner, item-owner etc.)
@@ -120,7 +121,7 @@ class Plugin
         add_action( 'save_post', array( $this, 'savePostActions' ), 10, 2 );
 
         // actions after saving plugin options
-        add_action( 'admin_init', array (self::class, 'saveOptionsActions'), 100 ); 
+        add_action( 'admin_init', array (self::class, 'saveOptionsActions'), 100 );
     }
 
     /**
@@ -180,7 +181,8 @@ class Plugin
         return [
             new Item(),
             new Location(),
-            new Timeframe()
+            new Timeframe(),
+            new Map()
         ];
     }
 
@@ -440,7 +442,7 @@ class Plugin
             flush_rewrite_rules();
 
             set_transient('commonsbooking_options_saved', 0);
-        }   
+        }
     }
 
 

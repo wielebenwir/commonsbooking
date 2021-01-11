@@ -61,7 +61,7 @@ class MapItemAvailable
                     $startDay,
                     $endDay,
                     [$location_id],
-                    [$item['post']->ID]
+                    [$item['id']]
                 );
 
                 //mark days in timeframe

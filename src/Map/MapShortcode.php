@@ -3,6 +3,7 @@
 namespace CommonsBooking\Map;
 
 use DateTime;
+use CommonsBooking\Wordpress\CustomPostType\Map;
 
 class MapShortcode
 {
@@ -23,81 +24,68 @@ class MapShortcode
             if ($post && $post->post_type == 'cb_map') {
                 $cb_map_id = $post->ID;
 
-                $map_type = MapAdmin::get_option($cb_map_id, 'map_type');
-
                 if ($post->post_status == 'publish') {
-                    if ($map_type == 1 || $map_type == 2) {
-                        //leaflet
-                        wp_enqueue_style('cb_map_leaflet_css', COMMONSBOOKING_MAP_ASSETS_URL.'leaflet/leaflet.css');
-                        wp_enqueue_script('cb_map_leaflet_js', COMMONSBOOKING_MAP_ASSETS_URL.'leaflet/leaflet.js');
 
-                        //leaflet markercluster plugin
-                        wp_enqueue_style('cb_map_leaflet_markercluster_css',
-                            COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-markercluster/MarkerCluster.css');
-                        wp_enqueue_style('cb_map_leaflet_markercluster_default_css',
-                            COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-markercluster/MarkerCluster.Default.css');
-                        wp_enqueue_script('cb_map_leaflet_markercluster_js',
-                            COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-markercluster/leaflet.markercluster.js');
+                    //leaflet
+                    wp_enqueue_style('cb_map_leaflet_css', COMMONSBOOKING_MAP_ASSETS_URL.'leaflet/leaflet.css');
+                    wp_enqueue_script('cb_map_leaflet_js', COMMONSBOOKING_MAP_ASSETS_URL.'leaflet/leaflet.js');
 
-                        //leaflet messagebox plugin
-                        wp_enqueue_style('cb_map_leaflet_messagebox_css',
-                            COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-messagebox/leaflet-messagebox.css');
-                        wp_enqueue_script('cb_map_leaflet_messagebox_js',
-                            COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-messagebox/leaflet-messagebox.js');
+                    //leaflet markercluster plugin
+                    wp_enqueue_style('cb_map_leaflet_markercluster_css',
+                        COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-markercluster/MarkerCluster.css');
+                    wp_enqueue_style('cb_map_leaflet_markercluster_default_css',
+                        COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-markercluster/MarkerCluster.Default.css');
+                    wp_enqueue_script('cb_map_leaflet_markercluster_js',
+                        COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-markercluster/leaflet.markercluster.js');
 
-                        //leaflet spin & dependencies
-                        wp_enqueue_style('cb_map_spin_css', COMMONSBOOKING_MAP_ASSETS_URL.'spin-js/spin.css');
-                        wp_enqueue_script('cb_map_spin_js', COMMONSBOOKING_MAP_ASSETS_URL.'spin-js/spin.min.js');
-                        wp_enqueue_script('cb_map_leaflet_spin_js',
-                            COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-spin/leaflet.spin.min.js');
+                    //leaflet messagebox plugin
+                    wp_enqueue_style('cb_map_leaflet_messagebox_css',
+                        COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-messagebox/leaflet-messagebox.css');
+                    wp_enqueue_script('cb_map_leaflet_messagebox_js',
+                        COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-messagebox/leaflet-messagebox.js');
 
-                        //leaflet easybutton
-                        wp_enqueue_style('cb_map_leaflet_easybutton_css',
-                            COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-easybutton/easy-button.css');
-                        wp_enqueue_script('cb_map_leaflet_easybutton_js',
-                            COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-easybutton/easy-button.js');
+                    //leaflet spin & dependencies
+                    wp_enqueue_style('cb_map_spin_css', COMMONSBOOKING_MAP_ASSETS_URL.'spin-js/spin.css');
+                    wp_enqueue_script('cb_map_spin_js', COMMONSBOOKING_MAP_ASSETS_URL.'spin-js/spin.min.js');
+                    wp_enqueue_script('cb_map_leaflet_spin_js',
+                        COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-spin/leaflet.spin.min.js');
 
-                        //dashicons
-                        wp_enqueue_style('dashicons');
+                    //leaflet easybutton
+                    wp_enqueue_style('cb_map_leaflet_easybutton_css',
+                        COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-easybutton/easy-button.css');
+                    wp_enqueue_script('cb_map_leaflet_easybutton_js',
+                        COMMONSBOOKING_MAP_ASSETS_URL.'leaflet-easybutton/easy-button.js');
 
-                        //overscroll
-                        wp_enqueue_script('cb_map_slider_js', COMMONSBOOKING_MAP_ASSETS_URL.'overscroll/jquery.overscroll.js');
+                    //dashicons
+                    wp_enqueue_style('dashicons');
 
-                        //cb map shortcode
-                        wp_enqueue_style('cb_map_shortcode_css',
-                            COMMONSBOOKING_MAP_ASSETS_URL.'css/cb-map-shortcode.css?pv='.COMMONSBOOKING_MAP_PLUGIN_DATA['Version']);
-                        wp_register_script('cb_map_shortcode_js',
-                            COMMONSBOOKING_MAP_ASSETS_URL.'js/cb-map-shortcode.js?pv='.COMMONSBOOKING_MAP_PLUGIN_DATA['Version']);
+                    //overscroll
+                    wp_enqueue_script('cb_map_slider_js', COMMONSBOOKING_MAP_ASSETS_URL.'overscroll/jquery.overscroll.js');
 
-                        wp_register_script('MapFilters_js',
-                            COMMONSBOOKING_MAP_ASSETS_URL.'js/cb-map-filters.js?pv='.COMMONSBOOKING_MAP_PLUGIN_DATA['Version']);
-                        wp_enqueue_script('MapFilters_js');
+                    //cb map shortcode
+                    wp_enqueue_style('cb_map_shortcode_css',
+                        COMMONSBOOKING_MAP_ASSETS_URL.'css/cb-map-shortcode.css?pv='.COMMONSBOOKING_MAP_PLUGIN_DATA['Version']);
+                    wp_register_script('cb_map_shortcode_js',
+                        COMMONSBOOKING_MAP_ASSETS_URL.'js/cb-map-shortcode.js?pv='.COMMONSBOOKING_MAP_PLUGIN_DATA['Version']);
 
-                        wp_add_inline_script('cb_map_shortcode_js',
-                            "jQuery(document).ready(function ($) {
-                var cb_map = new CB_Map();
-                cb_map.settings = ".json_encode(self::get_settings($cb_map_id)).";
-                cb_map.translation = ".json_encode(self::get_translation($cb_map_id)).";
-                cb_map.init_filters($);
-                cb_map.init_map();
-            });");
+                    wp_register_script('MapFilters_js',
+                        COMMONSBOOKING_MAP_ASSETS_URL.'js/cb-map-filters.js?pv='.COMMONSBOOKING_MAP_PLUGIN_DATA['Version']);
+                    wp_enqueue_script('MapFilters_js');
 
-                        wp_enqueue_script('cb_map_shortcode_js');
+                    wp_add_inline_script('cb_map_shortcode_js',
+                        "jQuery(document).ready(function ($) {
+                        var cb_map = new CB_Map();
+                        cb_map.settings = ".json_encode(self::get_settings($cb_map_id)).";
+                        cb_map.translation = ".json_encode(self::get_translation($cb_map_id)).";
+                        cb_map.init_filters($);
+                        cb_map.init_map();
+                    });");
 
-                        //cb map export
-                        if (MapAdmin::get_option($cb_map_id, 'enable_map_data_export') == true) {
-                            wp_register_script('cb_map_export_js',
-                                COMMONSBOOKING_MAP_ASSETS_URL.'js/cb-map-export.js?pv='.COMMONSBOOKING_MAP_PLUGIN_DATA['Version']);
-                            wp_enqueue_script('cb_map_export_js');
-                        }
+                    wp_enqueue_script('cb_map_shortcode_js');
 
-                        $map_height = MapAdmin::get_option($cb_map_id, 'map_height');
+                    $map_height = MapAdmin::get_option($cb_map_id, 'map_height');
+                    return '<div id="cb-map-'.$cb_map_id.'" style="width: 100%; height: '.$map_height.'px;"></div>';
 
-                        return '<div id="cb-map-'.$cb_map_id.'" style="width: 100%; height: '.$map_height.'px;"></div>';
-                    } else {
-                        return '<div>'.Map::__('NO_VALID_MAP_TYPE', 'commons-booking-map',
-                                'no valid map type').'</div>';
-                    }
                 } else {
                     return '<div>'.Map::__('NO_VALID_POST_STATUS', 'commons-booking-map',
                             'map is not published').'</div>';
@@ -149,7 +137,6 @@ class MapShortcode
         $pass_through = [
             'base_map',
             'show_scale',
-            'enable_map_data_export',
             'zoom_min',
             'zoom_max',
             'zoom_start',
@@ -211,7 +198,7 @@ class MapShortcode
                     ];
                 }
             } //categories are only meant to be shown on local maps
-            elseif ($key == 'cb_items_available_categories' && $options['map_type'] == 1) {
+            elseif ($key == 'cb_items_available_categories') {
                 $settings['filter_cb_item_categories'] = [];
                 $current_group_id                      = null;
                 foreach ($options['cb_items_available_categories'] as $key => $content) {
@@ -354,45 +341,14 @@ class MapShortcode
      **/
     public static function get_locations()
     {
-        //handle export
-        if (isset($_POST['code'])) {
-
-            //find map with corresponding code
-            $args    = [
-                'post_type'   => 'cb_map',
-                'numberposts' => -1,
-            ];
-            $cb_maps = get_posts($args);
-
-            foreach ($cb_maps as $cb_map) {
-                $options = get_post_meta($cb_map->ID, 'cb_map_options', true);
-
-                //var_dump($options);
-
-                if ($options['map_type'] == 3 && $options['export_code'] == $_POST['code']) {
-                    $cb_map_id = $cb_map->ID;
-                    $map_type  = 3;
-                    $post      = $cb_map;
-                    break;
-                }
-            }
-
-            if ( ! isset($cb_map_id)) {
-                wp_send_json_error(['error' => 1], 404);
-
-                return wp_die();
-            }
-        } //handle local/import map
-        elseif (isset($_POST['cb_map_id'])) {
+        //handle local/import map
+        if (isset($_POST['cb_map_id'])) {
             check_ajax_referer('cb_map_locations', 'nonce');
 
             $post = get_post((int)$_POST['cb_map_id']);
 
             if ($post && $post->post_type == 'cb_map') {
                 $cb_map_id = $post->ID;
-
-                //prepare response payload
-                $map_type = MapAdmin::get_option($cb_map_id, 'map_type');
             } else {
                 wp_send_json_error(['error' => 2], 400);
 
@@ -408,59 +364,29 @@ class MapShortcode
 
         if ($post->post_status == 'publish') {
             //local - get the locations
-            if ($map_type == 1) {
 
-                $locations = Map::get_locations($cb_map_id);
+            $locations = Map::get_locations($cb_map_id);
 
-                // @TODO check if really needed
+            // @TODO check if really needed
 //                $locations = CB_Map_Filter::filter_locations_by_timeframes_and_categories($locations, $cb_map_id,
 //                    $preset_categories);
 
-                $settings           = self::get_settings($cb_map_id);
-                $default_date_start = $settings['filter_availability']['date_min'];
-                $default_date_end   = $settings['filter_availability']['date_max'];
+            $settings           = self::get_settings($cb_map_id);
+            $default_date_start = $settings['filter_availability']['date_min'];
+            $default_date_end   = $settings['filter_availability']['date_max'];
 
-                //create availabilities
-                $show_item_availability = MapAdmin::get_option($cb_map_id, 'show_item_availability');
+            //create availabilities
+            $show_item_availability = MapAdmin::get_option($cb_map_id, 'show_item_availability');
 
-                if ($show_item_availability) {
-                    $locations = MapItemAvailable::create_items_availabilities(
-                        $locations,
-                        $default_date_start,
-                        $default_date_end);
-                }
-
-                $locations = array_values($locations); //locations to indexed array
-                $locations = Map::cleanup_location_data($locations, '<br>', $map_type);
-
+            if ($show_item_availability) {
+                $locations = MapItemAvailable::create_items_availabilities(
+                    $locations,
+                    $default_date_start,
+                    $default_date_end);
             }
 
-            //import - get locations that are imported and stored in db
-            if ($map_type == 2) {
-                $map_imports = get_post_meta($cb_map_id, 'cb_map_imports', true);
-
-                $locations = [];
-
-                if (is_array($map_imports)) {
-                    foreach ($map_imports as $import_locations_string) {
-                        $import_locations = json_decode(base64_decode($import_locations_string), true);
-                        if (is_array($import_locations)) {
-                            $locations = array_merge($locations, $import_locations);
-                        }
-                    }
-                }
-            }
-
-            //export - get the locations that are supposed to be provided for external usage
-            if ($map_type == 3) {
-                $preset_categories = MapAdmin::get_option($cb_map_id, 'cb_items_preset_categories');
-                $locations         = Map::get_locations($cb_map_id);
-                $locations         = MapFilter::filter_locations_by_timeframes_and_categories($locations,
-                    $cb_map_id, $preset_categories);
-
-                $locations = array_values($locations); //locations to indexed array
-                $locations = Map::cleanup_location_data($locations, '<br>', $map_type);
-            }
+            $locations = array_values($locations); //locations to indexed array
+            $locations = Map::cleanup_location_data($locations, '<br>');
 
             header('Content-Type: application/json');
             echo json_encode($locations, JSON_UNESCAPED_UNICODE);

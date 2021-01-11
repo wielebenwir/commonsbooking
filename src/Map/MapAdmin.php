@@ -2,6 +2,8 @@
 
 namespace CommonsBooking\Map;
 
+use CommonsBooking\Wordpress\CustomPostType\Map;
+
 /**
  *
  **/
@@ -9,14 +11,10 @@ class MapAdmin
 {
 
     const OPTION_KEYS = [
-        'map_type',
-        'export_code',
-        'import_sources',
         'base_map',
         'show_scale',
         'map_height',
         'custom_no_locations_message',
-        'enable_map_data_export',
         'zoom_min',
         'zoom_max',
         'zoom_start',
@@ -70,7 +68,6 @@ class MapAdmin
     const MAX_CLUSTER_RADIUS_VALUE_MIN = 0;
     const MAX_CLUSTER_RADIUS_VALUE_MAX = 1000;
 
-    const MAP_TYPE_DEFAULT = 1;
     const EXPORT_CODE_DEFAULT = "";
     const IMPORT_SOURCES_DEFAULT = [];
     const BASE_MAP_DEFAULT = 1;
@@ -131,8 +128,6 @@ class MapAdmin
 
     public static function add_settings_meta_box($meta_box_id, $meta_box_title)
     {
-        global $post;
-
         $plugin_prefix = 'cb_map_post_type_';
 
         $html_id_attribute = $plugin_prefix.$meta_box_id.'_meta_box';
@@ -214,28 +209,6 @@ class MapAdmin
             $input = $_POST['cb_map_options'];
         }
 
-
-        //map_type
-        if (isset($input['map_type']) && (int)$input['map_type'] >= 1 && $input['map_type'] <= 3) {
-            $validated_input['map_type'] = (int)$input['map_type'];
-        }
-
-        //export_code
-        if (isset($input['export_code']) && ctype_alnum($input['export_code']) && strlen($input['export_code']) >= self::EXPORT_CODE_VALUE_MIN_LENGTH) {
-            $validated_input['export_code'] = $input['export_code'];
-        }
-
-        if (isset($input['import_sources'])) {
-            if (is_array($input['import_sources']['urls']) && is_array($input['import_sources']['codes'])) {
-                $validated_input['import_sources']['urls']  = [];
-                $validated_input['import_sources']['codes'] = [];
-                foreach ($input['import_sources']['urls'] as $key => $url) {
-                    $validated_input['import_sources']['urls'][]  = sanitize_text_field($url);
-                    $validated_input['import_sources']['codes'][] = ctype_alnum($input['export_code']) && strlen($input['export_code']) >= self::EXPORT_CODE_VALUE_MIN_LENGTH ? $input['import_sources']['codes'][$key] : '';
-                }
-            }
-        }
-
         //base_map
         if (isset($input['base_map']) && $input['base_map'] >= 1 && $input['base_map'] <= 4) {
             $validated_input['base_map'] = (int)$input['base_map'];
@@ -252,13 +225,6 @@ class MapAdmin
         //custom_no_locations_message
         if (isset($input['custom_no_locations_message'])) {
             $validated_input['custom_no_locations_message'] = sanitize_text_field($input['custom_no_locations_message']);
-        }
-
-        //enable_map_data_export
-        if (isset($input['enable_map_data_export'])) {
-            $validated_input['enable_map_data_export'] = true;
-        } else {
-            $validated_input['enable_map_data_export'] = false;
         }
 
         //zoom_min
@@ -501,10 +467,6 @@ class MapAdmin
 
         update_post_meta($cb_map_id, 'cb_map_options', $validated_input);
 
-        if ($validated_input['map_type'] == 2) {
-            self::start_import_from_all_sources_of_map($cb_map_id);
-        }
-
         return $validated_input;
     }
 
@@ -594,12 +556,9 @@ class MapAdmin
             $preset_categories_checklist_markup);
 
 
-        $data_export_base_url = get_site_url(null, '', null).'/wp-admin/admin-ajax.php';
-
         wp_enqueue_style('cb_map_admin_css', COMMONSBOOKING_MAP_ASSETS_URL.'css/cb-map-admin.css');
 
         include_once(COMMONSBOOKING_MAP_PATH.'templates/admin-page-template.php');
-
     }
 
     /**
