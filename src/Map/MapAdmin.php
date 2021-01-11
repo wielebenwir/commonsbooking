@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Map;
 
+use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Map;
 
 /**
@@ -429,7 +430,7 @@ class MapAdmin
 
         //cb_items_available_categories
         $category_terms = get_terms([
-            'taxonomy'   => 'cb_items_category',
+            'taxonomy'   => Item::$postType . 's_category',
             'hide_empty' => false,
         ]);
         $valid_term_ids = [];

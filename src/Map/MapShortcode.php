@@ -366,10 +366,8 @@ class MapShortcode
             //local - get the locations
 
             $locations = Map::get_locations($cb_map_id);
-
-            // @TODO check if really needed
-//                $locations = CB_Map_Filter::filter_locations_by_timeframes_and_categories($locations, $cb_map_id,
-//                    $preset_categories);
+//            $locations = MapFilter::filter_locations_by_timeframes_and_categories($locations, $cb_map_id,
+//                $preset_categories);
 
             $settings           = self::get_settings($cb_map_id);
             $default_date_start = $settings['filter_availability']['date_min'];

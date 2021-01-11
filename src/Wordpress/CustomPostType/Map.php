@@ -248,14 +248,25 @@ class Map extends CustomPostType
 
             $items = [];
             foreach (Item::getByLocation($post->ID, true) as $item) {
+                $item_terms = wp_get_post_terms( $item->ID, \CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category');
+                if(is_array($item_terms) && count($item_terms)) {
+                    $item_terms = array_map(
+                        function($item) {
+                            return $item->term_id;
+                        },
+                        $item_terms
+                    );
+                }
+
+                $thumbnail = get_the_post_thumbnail_url($item->ID, 'thumbnail');
                 $items[] = [
-                    'post'       => $item,
                     'id'         => $item->ID,
                     'name'       => $item->post_title,
                     'short_desc' => has_excerpt($item->ID) ? wp_strip_all_tags(get_the_excerpt($item->ID)) : "",
                     'status'     => $item->post_status,
-                    'terms'      => [],
+                    'terms'      => $item_terms,
                     'link'       => add_query_arg('item', $item->ID, get_permalink($post->ID)),
+                    'thumbnail' => $thumbnail ? $thumbnail : null,
                 ];
             }
 
@@ -272,11 +283,11 @@ class Map extends CustomPostType
                 'items'         => $items,
             ];
 
-            //@TODO: Check fields
-//            if ($show_location_contact) {
-//                $locations[$post->ID]['contact'] = $location_meta['commons-booking_location_contactinfo_text'][0];
-//            }
-//
+            if ($show_location_contact) {
+                $locations[$post->ID]['contact'] = $location_meta[COMMONSBOOKING_METABOX_PREFIX . 'location_contact'][0];
+            }
+
+            //@TODO: Check field -> we don't have such a field at the moment.
 //            if ($show_location_opening_hours) {
 //                $locations[$post->ID]['opening_hours'] = $location_meta['commons-booking_location_openinghours'][0];
 //            }
