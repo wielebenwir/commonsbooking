@@ -67,18 +67,20 @@ function commonsbooking_public()
     $template = wp_get_theme()->template;
     wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/themes/'.$template.'.css');
 
+    wp_enqueue_script('jquery');
+
     wp_enqueue_style(
         'cb-styles-daterangepicker',
         plugin_dir_url(__FILE__) . 'assets/public/css/themes/daterangepicker/daterangepicker.css'
     );
 
-    wp_enqueue_script(
-        'cb-scripts-jquery',
-        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/jquery.min.js',
-        array(),
-        '1.0.0',
-        true
-    );
+//    wp_enqueue_script(
+//        'cb-scripts-jquery',
+//        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/jquery.min.js',
+//        array(),
+//        '1.0.0',
+//        true
+//    );
 
     // Moment.js
     wp_enqueue_script(
