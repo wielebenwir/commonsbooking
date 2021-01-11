@@ -7,6 +7,8 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
 class MapSettings
 {
 
+    const BOOKING_PAGE_LINK_REPLACEMENT_DEFAULT = true;
+
     const OPTION_KEYS = ['booking_page_link_replacement'];
 
     public static $options;
