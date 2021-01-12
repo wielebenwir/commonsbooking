@@ -66,7 +66,7 @@ class MapAdmin
     const LAT_VALUE_MAX = 90;
     const LON_VALUE_MIN = -180;
     const LON_VALUE_MAX = 180;
-    const MAX_CLUSTER_RADIUS_VALUE_MIN = 0;
+    const MAX_CLUSTER_RADIUS_VALUE_MIN = 10;
     const MAX_CLUSTER_RADIUS_VALUE_MAX = 1000;
 
     const EXPORT_CODE_DEFAULT = "";
