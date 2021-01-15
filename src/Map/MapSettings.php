@@ -73,10 +73,10 @@ class MapSettings
 
         add_action('admin_menu', function () {
             add_options_page(
-                Map::__('SETTINGS_TITLE', 'commons-booking-map', 'Settings for Commons Booking Map'),
-                Map::__('SETTINGS_MENU', 'commons-booking-map', 'Commons Booking Map'),
+                esc_html__('Settings for Commons Booking Map', 'commonsbooking'),
+                esc_html__('Commons Booking Map', 'commonsbooking'),
                 'manage_options',
-                'commons-booking-map',
+                'commonsbooking',
                 array($this, 'render_settings_page')
             );
         });
@@ -85,6 +85,7 @@ class MapSettings
             register_setting('cb-map-settings', 'cb_map_options', array($this, 'validate_options'));
         });
 
+        add_filter("plugin_action_links_".plugin_basename(__FILE__), array($this, 'add_settings_link'));
     }
 
     /**
@@ -119,7 +120,7 @@ class MapSettings
     {
         wp_enqueue_style('cb_map_admin_css', COMMONSBOOKING_MAP_ASSETS_URL.'css/cb-map-admin.css');
 
-        include_once(COMMONSBOOKING_MAP_PATH.'templates/settings-page-template.php');
+        include_once(COMMONSBOOKING_MAP_PATH.'templates/map-settings-page-template.php');
     }
 }
 

@@ -194,7 +194,8 @@ class Plugin
         return [
             Item::getPostType(),
             Location::getPostType(),
-            Timeframe::getPostType()
+            Timeframe::getPostType(),
+            Map::getPostType()
         ];
     }
 

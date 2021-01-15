@@ -124,7 +124,7 @@ class MapAdmin
     {
         self::add_settings_meta_box(
             'cb_map_admin',
-            Map::__('CB_MAP_ADMIN_METABOX_TITLE', 'commons-booking-map', 'Map Configuration'));
+            esc_html__( 'Map Configuration', 'commonsbooking'));
     }
 
     public static function add_settings_meta_box($meta_box_id, $meta_box_title)
@@ -478,6 +478,7 @@ class MapAdmin
 
     /**
      * asynchronously import locations from all sources of given map
+     * TODO: deprecated, should be deleted
      **/
     public static function start_import_from_all_sources_of_map($cb_map_id)
     {
@@ -513,10 +514,9 @@ class MapAdmin
 
         //map translation
         $translation = [
-            'SELECT_IMAGE'              => Map::__('SELECT_IMAGE', 'commons-booking-map', 'Select an image'),
-            'SAVE'                      => Map::__('SAVE', 'commons-booking-map', 'save'),
-            'MARKER_IMAGE_MEASUREMENTS' => Map::__('MARKER_IMAGE_MEASUREMENTS', 'commons-booking-map',
-                'measurements'),
+            'SELECT_IMAGE'              => esc_html__('Select an image', 'commonsbooking'),
+            'SAVE'                      => esc_html__('save', 'commonsbooking'),
+            'MARKER_IMAGE_MEASUREMENTS' => esc_html__('measurements', 'commonsbooking'),
         ];
         echo '<script>cb_map_marker_upload.translation = '.json_encode($translation).';</script>';
 
@@ -559,7 +559,7 @@ class MapAdmin
 
         wp_enqueue_style('cb_map_admin_css', COMMONSBOOKING_MAP_ASSETS_URL.'css/cb-map-admin.css');
 
-        include_once(COMMONSBOOKING_MAP_PATH.'templates/admin-page-template.php');
+        include_once(COMMONSBOOKING_MAP_PATH.'templates/map-admin-page-template.php');
     }
 
     /**

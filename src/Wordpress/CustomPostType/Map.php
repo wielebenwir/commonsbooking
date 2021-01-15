@@ -6,8 +6,10 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Map\MapAdmin;
 use CommonsBooking\Map\MapSettings;
+use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\Repository\Item;
 use CommonsBooking\Repository\Timeframe;
+use CommonsBooking\Settings\Settings;
 
 class Map extends CustomPostType
 {
@@ -27,6 +29,17 @@ class Map extends CustomPostType
         if ($cb_map_settings->get_option('booking_page_link_replacement')) {
             add_action('wp_enqueue_scripts', array(Map::class, 'replace_map_link_target'), 11);
         }
+
+        // Setting role permissions
+        add_action('admin_init', array($this, 'addRoleCaps'), 999);
+
+        // Add shortcodes
+        add_shortcode('cb_map', array(MapShortcode::class, 'execute') );
+
+        // Add actions
+        add_action('save_post_cb_map', array(MapAdmin::class, 'validate_options'), 10, 3);
+        add_action('add_meta_boxes_cb_map', array(MapAdmin::class, 'add_meta_boxes'));
+        add_action('add_meta_boxes_cb_map', array(MapAdmin::class, 'add_meta_boxes'));
     }
 
     /**
@@ -51,22 +64,17 @@ class Map extends CustomPostType
     public function getArgs()
     {
         $labels = array(
-            'name'               => self::__('POST_LABELS_NAME', 'commons-booking-map', 'Commons Booking maps'),
-            'singular_name'      => self::__('POST_LABELS_SINGULAR_NAME', 'commons-booking-map',
-                'Commons Booking map'),
-            'add_new'            => self::__('POST_LABELS_ADD_NEW', 'commons-booking-map', 'create CB map'),
-            'add_new_item'       => self::__('POST_LABELS_ADD_NEW_ITEM', 'commons-booking-map',
-                'create Commons Booking map'),
-            'edit_item'          => self::__('POST_LABELS_EDIT_ITEM', 'commons-booking-map',
-                'edit Commons Booking map'),
-            'new_item'           => self::__('POST_LABELS_NEW_ITEM', 'commons-booking-map', 'create CB map'),
-            'view_item'          => self::__('POST_LABELS_VIEW_ITEM', 'commons-booking-map', 'view CB map'),
-            'search_items'       => self::__('POST_LABELS_SEARCH_ITEMS', 'commons-booking-map', 'search CB maps'),
-            'not_found'          => self::__('POST_LABELS_NOT_FOUND', 'commons-booking-map',
-                'no Commons Booking map found'),
-            'not_found_in_trash' => self::__('POST_LABELS_NOT_FOUND_IN_TRASH', 'commons-booking-map',
-                'no Commons Booking map found in the trash'),
-            'parent_item_colon'  => self::__('POST_LABELS_PARENT_ITEM_COLON', 'commons-booking-map', 'parent CB maps'),
+            'name'               => self::__('Maps', 'commonsbooking'),
+            'singular_name'      => self::__('Map', 'commonsbooking'),
+            'add_new'            => self::__('create CB map', 'commonsbooking'),
+            'add_new_item'       => self::__('create Commons Booking map', 'commonsbooking'),
+            'edit_item'          => self::__('edit Commons Booking map', 'commonsbooking'),
+            'new_item'           => self::__('create CB map', 'commonsbooking'),
+            'view_item'          => self::__('view CB map', 'commonsbooking'),
+            'search_items'       => self::__('search CB maps', 'commonsbooking'),
+            'not_found'          => self::__('no Commons Booking map found', 'commonsbooking'),
+            'not_found_in_trash' => self::__('no Commons Booking map found in the trash', 'commonsbooking'),
+            'parent_item_colon'  => self::__('parent CB maps', 'commonsbooking'),
         );
 
         $supports = array(
@@ -75,24 +83,36 @@ class Map extends CustomPostType
         );
 
         $args = array(
-            'labels'              => $labels,
-            'hierarchical'        => false,
-            'description'         => self::__('POST_TYPE_DESCRIPTION', 'commons-booking-map',
-                'Maps to show Commons Booking Locations and their Items'),
-            'supports'            => $supports,
-            'public'              => false,
-            'show_ui'             => true,
-            'show_in_menu'        => true,
-            'menu_position'       => 5, // below posts
+            'labels'            => $labels,
+
+            // Sichtbarkeit des Post Types
+            'public'            => true,
+
+            // Standart Ansicht im Backend aktivieren (Wie Artikel / Seiten)
+            'show_ui'           => true,
+
+            // Soll es im Backend Menu sichtbar sein?
+            'show_in_menu'      => false,
+
+            // Position im Menu
+            'menu_position'     => 5,
+
+            // Post Type in der oberen Admin-Bar anzeigen?
+            'show_in_admin_bar' => true,
+
+            // in den Navigations Menüs sichtbar machen?
+            'show_in_nav_menus' => true,
+            'hierarchical'      => false,
+            'description'       => self::__('Maps to show Commons Booking Locations and their Items', 'commonsbooking'),
+            'supports'          => $supports,
             'menu_icon'           => 'dashicons-location',
-            'show_in_nav_menus'   => true,
             'publicly_queryable'  => false,
             'exclude_from_search' => false,
             'has_archive'         => false,
             'query_var'           => false,
             'can_export'          => false,
             'delete_with_user'    => false,
-            'capability_type'     => 'post',
+            'capability_type'     => array(self::$postType, self::$postType.'s'),
         );
         return $args;
     }
@@ -265,7 +285,7 @@ class Map extends CustomPostType
                     'short_desc' => has_excerpt($item->ID) ? wp_strip_all_tags(get_the_excerpt($item->ID)) : "",
                     'status'     => $item->post_status,
                     'terms'      => $item_terms,
-                    'link'       => add_query_arg('item', $item->ID, get_permalink($post->ID)),
+                    'link'       => add_query_arg('location', $post->ID, get_permalink($item->ID)),
                     'thumbnail' => $thumbnail ? $thumbnail : null,
                 ];
             }

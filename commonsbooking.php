@@ -15,6 +15,7 @@
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
  */
 
+use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
@@ -118,11 +119,18 @@ function commonsbooking_public()
 
 add_action('wp_enqueue_scripts', 'commonsbooking_public');
 
+// Calendar data ajax
 add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 'getCalendarData'));
 add_action('wp_ajax_nopriv_calendar_data', array(\CommonsBooking\View\Location::class, 'getCalendarData'));
 if (is_admin()) {
     add_action('wp_ajax_start_migration', array(\CommonsBooking\Migration\Migration::class, 'migrateAll'));
 }
+
+// Map ajax
+add_action('wp_ajax_cb_map_locations', array(MapShortcode::class, 'get_locations'));
+add_action('wp_ajax_nopriv_cb_map_locations', array(MapShortcode::class, 'get_locations'));
+add_action('wp_ajax_cb_map_geo_search', array(MapShortcode::class, 'geo_search'));
+add_action('wp_ajax_nopriv_cb_map_geo_search', array(MapShortcode::class, 'geo_search'));
 
 // should be loaded via add_action, but wasnt working in admin menu
 load_plugin_textdomain('commonsbooking', false, basename(dirname(__FILE__)).'/languages/');

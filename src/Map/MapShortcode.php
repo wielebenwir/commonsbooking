@@ -87,15 +87,14 @@ class MapShortcode
                     return '<div id="cb-map-'.$cb_map_id.'" style="width: 100%; height: '.$map_height.'px;"></div>';
 
                 } else {
-                    return '<div>'.Map::__('NO_VALID_POST_STATUS', 'commons-booking-map',
-                            'map is not published').'</div>';
+                    return '<div>'.esc_html__('map is not published', 'commonsbooking').'</div>';
                 }
             } else {
-                return '<div>'.Map::__('NO_VALID_MAP_ID', 'commons-booking-map', 'no valid map id provided').'</div>';
+                return '<div>'.esc_html__( 'no valid map id provided', 'commonsbooking').'</div>';
             }
 
         } else {
-            return '<div>'.Map::__('NO_VALID_MAP_ID', 'commons-booking-map', 'no valid map id provided').'</div>';
+            return '<div>'.esc_html__( 'no valid map id provided', 'commonsbooking').'</div>';
         }
 
     }
@@ -235,29 +234,21 @@ class MapShortcode
         $label_location_distance_filter = MapAdmin::get_option($cb_map_id, 'label_location_distance_filter');
 
         $translation = [
-            'OPENING_HOURS'          => strlen($label_location_opening_hours) > 0 ? $label_location_opening_hours : Map::__('OPENING_HOURS',
-                'commons-booking-map', 'opening hours'),
-            'CONTACT'                => strlen($label_location_contact) > 0 ? $label_location_contact : Map::__('CONTACT',
-                'commons-booking-map', 'contact'),
-            'FROM'                   => Map::__('FROM', 'commons-booking-map', 'from'),
-            'UNTIL'                  => Map::__('UNTIL', 'commons-booking-map', 'until'),
-            'AT_LEAST'               => Map::__('AT_LEAST', 'commons-booking-map', 'for at least'),
-            'DAYS'                   => Map::__('DAYS', 'commons-booking-map', 'day(s)'),
-            'NO_LOCATIONS_MESSAGE'   => strlen($custom_no_locations_message) > 0 ? $custom_no_locations_message : Map::__('NO_LOCATIONS_MESSAGE',
-                'commons-booking-map', 'Sorry, no locations found.'),
-            'FILTER'                 => Map::__('FILTER', 'commons-booking-map', 'filter'),
-            'AVAILABILITY'           => strlen($label_item_availability_filter) > 0 ? $label_item_availability_filter : Map::__('AVAILABILITY',
-                'commons-booking-map', 'availability'),
-            'CATEGORIES'             => strlen($label_item_category_filter) > 0 ? $label_item_category_filter : Map::__('CATEGORIES',
-                'commons-booking-map', 'categories'),
-            'DISTANCE'               => strlen($label_location_distance_filter) > 0 ? $label_location_distance_filter : Map::__('DISTANCE',
-                'commons-booking-map', 'distance'),
-            'ADDRESS'                => Map::__('ADDRESS', 'commons-booking-map', 'address'),
-            'GEO_SEARCH_ERROR'       => Map::__('GEO_SEARCH_ERROR', 'commons-booking-map',
-                'Sorry, an error occured during your request. Please try again later.'),
-            'GEO_SEARCH_UNAVAILABLE' => Map::__('GEO_SEARCH_UNAVAILABLE', 'commons-booking-map',
-                'The service is currently not available. Please try again later.'),
-            'COMING_SOON'            => Map::__('COMING_SOON', 'commons-booking-map', 'comming soon'),
+            'OPENING_HOURS'          => strlen($label_location_opening_hours) > 0 ? $label_location_opening_hours : esc_html__('opening hours', 'commonsbooking'),
+            'CONTACT'                => strlen($label_location_contact) > 0 ? $label_location_contact : esc_html__('contact', 'commonsbooking'),
+            'FROM'                   => esc_html__('from', 'commonsbooking'),
+            'UNTIL'                  => esc_html__('until', 'commonsbooking'),
+            'AT_LEAST'               => esc_html__('for at least', 'commonsbooking'),
+            'DAYS'                   => esc_html__('day(s)', 'commonsbooking'),
+            'NO_LOCATIONS_MESSAGE'   => strlen($custom_no_locations_message) > 0 ? $custom_no_locations_message : esc_html__('Sorry, no locations found.', 'commonsbooking'),
+            'FILTER'                 => esc_html__('filter', 'commonsbooking'),
+            'AVAILABILITY'           => strlen($label_item_availability_filter) > 0 ? $label_item_availability_filter : esc_html__('availability', 'commonsbooking'),
+            'CATEGORIES'             => strlen($label_item_category_filter) > 0 ? $label_item_category_filter : esc_html__('categories', 'commonsbooking'),
+            'DISTANCE'               => strlen($label_location_distance_filter) > 0 ? $label_location_distance_filter : esc_html__('distance', 'commonsbooking'),
+            'ADDRESS'                => esc_html__('address', 'commonsbooking'),
+            'GEO_SEARCH_ERROR'       => esc_html__('Sorry, an error occured during your request. Please try again later.', 'commonsbooking'),
+            'GEO_SEARCH_UNAVAILABLE' => esc_html__('The service is currently not available. Please try again later.', 'commonsbooking'),
+            'COMING_SOON'            => esc_html__('comming soon', 'commonsbooking'),
         ];
 
         return $translation;

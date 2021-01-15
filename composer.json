@@ -4,7 +4,6 @@
   "version": "0.0.1",
   "autoload": {
     "files": [
-      "includes/Map.php",
       "includes/OptionsArray.php",
       "includes/Shortcodes.php",
       "includes/Template.php",
