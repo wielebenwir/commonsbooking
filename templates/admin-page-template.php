@@ -27,7 +27,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                               title="<?php echo commonsbooking_sanitizeHTML( __('the base map defines the rendering style of the map tiles' ,'commonsbooking')); ?>"></span>
                     </th>
                     <td>
-                        <?php $selected_base_map = MapAdmin::get_option($cb_map_id, 'base_map')); ?>
+                        <?php $selected_base_map = MapAdmin::get_option($cb_map_id, 'base_map'); ?>
                         <select name="cb_map_options[base_map]">
                             <option value="1" <?php echo  $selected_base_map == 1 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( 'OSM - mapnik' ,'commonsbooking')); ?></option>
                             <option value="2" <?php echo  $selected_base_map == 2 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( 'OSM - german style' ,'commonsbooking')); ?></option>
@@ -66,7 +66,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                     </th>
                     <td><textarea
                                 name="cb_map_options[custom_no_locations_message]"><?php echo esc_attr(MapAdmin::get_option($cb_map_id,
-                                'custom_no_locations_message'))); ?></textarea></td>
+                                'custom_no_locations_message')); ?></textarea></td>
                 </tr>
                 <tr>
                     <th>
@@ -221,7 +221,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                     </th>
                     <td><input type="text" name="cb_map_options[label_location_opening_hours]"
                                placeholder="<?php echo commonsbooking_sanitizeHTML( __( 'opening hours' ,'commonsbooking')); ?>"
-                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'label_location_opening_hours')); ?>"></td>
+                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'label_location_opening_hours'); ?>"></td>
                 </tr>
                 <tr>
                     <th>
@@ -241,7 +241,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                     </th>
                     <td><input type="text" name="cb_map_options[label_location_contact]"
                                placeholder="<?php echo commonsbooking_sanitizeHTML( __( 'opening hours' ,'commonsbooking')); ?>"
-                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'label_location_contact')); ?>"></td>
+                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'label_location_contact'); ?>"></td>
                 </tr>
                 <tr>
                     <th>
@@ -282,7 +282,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                                      'custom_marker_media_id')); ?>">
                         </div>
                         <input type="hidden" name="cb_map_options[custom_marker_media_id]"
-                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'custom_marker_media_id')); ?>">
+                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'custom_marker_media_id'); ?>">
                     </td>
                     <td>
                         <div id="marker-image-preview-measurements"></div>
@@ -368,7 +368,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                                      'custom_marker_cluster_media_id')); ?>">
                         </div>
                         <input type="hidden" name="cb_map_options[custom_marker_cluster_media_id]"
-                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'custom_marker_cluster_media_id')); ?>">
+                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'custom_marker_cluster_media_id'); ?>">
                     </td>
                     <td>
                         <div id="marker-cluster-image-preview-measurements"></div>
@@ -406,7 +406,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                               title="<?php echo commonsbooking_sanitizeHTML( __('how locations with items that are in draft status should be handled' ,'commonsbooking')); ?>"></span>
                     </th>
                     <td>
-                        <?php $item_draft_appearance = MapAdmin::get_option($cb_map_id, 'item_draft_appearance')); ?>
+                        <?php $item_draft_appearance = MapAdmin::get_option($cb_map_id, 'item_draft_appearance'); ?>
                         <select id="item_draft_appearance" name="cb_map_options[item_draft_appearance]">
                             <option value="1" <?php echo  $item_draft_appearance == 1 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( "don't show drafts")); ?></option>
                             <option value="2" <?php echo  $item_draft_appearance == 2 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( "show only drafts")); ?></option>
@@ -443,7 +443,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                                      'marker_item_draft_media_id')); ?>">
                         </div>
                         <input type="hidden" name="cb_map_options[marker_item_draft_media_id]"
-                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'marker_item_draft_media_id')); ?>">
+                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'marker_item_draft_media_id'); ?>">
                     </td>
                     <td>
                         <div id="marker-item-draft-image-preview-measurements"></div>
@@ -505,7 +505,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                     </th>
                     <td><input type="text" name="cb_map_options[label_location_distance_filter]"
                                placeholder="<?php echo commonsbooking_sanitizeHTML( __( 'distance' ,'commonsbooking')); ?>"
-                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'label_location_distance_filter')); ?>"></td>
+                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'label_location_distance_filter'); ?>"></td>
                 </tr>
                 <tr>
                     <th>
@@ -559,7 +559,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                     </th>
                     <td><input type="text" name="cb_map_options[label_item_availability_filter]"
                                placeholder="<?php echo commonsbooking_sanitizeHTML( __( 'availability' ,'commonsbooking')); ?>"
-                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'label_item_availability_filter')); ?>"></td>
+                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'label_item_availability_filter'); ?>"></td>
                 </tr>
                 <tr>
                     <th>
@@ -569,7 +569,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                     </th>
                     <td><input type="text" name="cb_map_options[label_item_category_filter]"
                                placeholder="<?php echo commonsbooking_sanitizeHTML( __( 'categories' ,'commonsbooking')); ?>"
-                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'label_item_category_filter')); ?>"></td>
+                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'label_item_category_filter'); ?>"></td>
                 </tr>
 
                 <tr>

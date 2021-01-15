@@ -64,8 +64,8 @@ class Map extends CustomPostType
     public function getArgs()
     {
         $labels = array(
-            'name'               => self::__('Commons Booking maps', 'commonsbooking'),
-            'singular_name'      => self::__('Commons Booking map', 'commonsbooking'),
+            'name'               => self::__('Maps', 'commonsbooking'),
+            'singular_name'      => self::__('Map', 'commonsbooking'),
             'add_new'            => self::__('create CB map', 'commonsbooking'),
             'add_new_item'       => self::__('create Commons Booking map', 'commonsbooking'),
             'edit_item'          => self::__('edit Commons Booking map', 'commonsbooking'),
