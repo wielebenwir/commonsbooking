@@ -124,7 +124,7 @@ class MapAdmin
     {
         self::add_settings_meta_box(
             'cb_map_admin',
-            Map::__('CB_MAP_ADMIN_METABOX_TITLE', 'commons-booking-map', 'Map Configuration'));
+            Map::__( 'Map Configuration', 'commonsbooking'));
     }
 
     public static function add_settings_meta_box($meta_box_id, $meta_box_title)
@@ -513,10 +513,9 @@ class MapAdmin
 
         //map translation
         $translation = [
-            'SELECT_IMAGE'              => Map::__('SELECT_IMAGE', 'commons-booking-map', 'Select an image'),
-            'SAVE'                      => Map::__('SAVE', 'commons-booking-map', 'save'),
-            'MARKER_IMAGE_MEASUREMENTS' => Map::__('MARKER_IMAGE_MEASUREMENTS', 'commons-booking-map',
-                'measurements'),
+            'SELECT_IMAGE'              => Map::__('Select an image', 'commonsbooking'),
+            'SAVE'                      => Map::__('save', 'commonsbooking'),
+            'MARKER_IMAGE_MEASUREMENTS' => Map::__('measurements', 'commonsbooking'),
         ];
         echo '<script>cb_map_marker_upload.translation = '.json_encode($translation).';</script>';
 

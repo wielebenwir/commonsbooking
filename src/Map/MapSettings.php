@@ -73,10 +73,10 @@ class MapSettings
 
         add_action('admin_menu', function () {
             add_options_page(
-                Map::__('SETTINGS_TITLE', 'commons-booking-map', 'Settings for Commons Booking Map'),
-                Map::__('SETTINGS_MENU', 'commons-booking-map', 'Commons Booking Map'),
+                Map::__('SETTINGS_TITLE', 'commonsbooking', 'Settings for Commons Booking Map'),
+                Map::__('SETTINGS_MENU', 'commonsbooking', 'Commons Booking Map'),
                 'manage_options',
-                'commons-booking-map',
+                'commonsbooking',
                 array($this, 'render_settings_page')
             );
         });
