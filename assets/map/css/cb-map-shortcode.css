@@ -1,0 +1,242 @@
+.leaflet-popup-content {
+  min-width: 300px;
+}
+
+.cb-map-filters {
+  margin-top: 5px;
+}
+
+.cb-map-filters fieldset {
+  display: inline-block;
+  margin-right: 10px;
+  border-radius: 5px;
+  padding: 5px;
+  vertical-align: top;
+}
+
+@media screen and (max-width: 600px) {
+  .cb-map-filters fieldset {
+    width: 100%;
+  }
+}
+
+.cb-map-filters legend {
+  padding: 0.2em 0.5em;
+}
+
+.cb-map-filters input[type="checkbox"] {
+  margin-left: 10px;
+}
+
+.cb-map-filters label {
+  margin-right: 10px;
+}
+
+.cb-map-marker-cluster-icon {
+  width: 100% !important;
+  height: 100% !important;
+  font-weight: bold !important;
+  background-size: cover;
+}
+
+.cb-map-popup-item {
+  margin-top: 10px;
+}
+
+.cb-map-popup-item-thumbnail {
+  display: inline-block;
+  width: 25%;
+  margin-right: 5%;
+}
+
+.cb-map-popup-item-info {
+  display: inline-block;
+  width: 70%;
+  vertical-align: top;
+}
+
+.cb-map-popup-item-link {
+
+}
+
+.cb-map-popup-item-availability {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+
+  -webkit-overflow-scrolling: touch;
+  margin: 3px 0;
+}
+
+.cb-map-popup-item-availability-day {
+  flex: 0 0 auto;
+
+  color: #000;
+  font-weight: normal;
+  padding: 3px;
+
+  width: 30px;
+  text-align: center;
+  border: 1px solid #fff;
+
+  border-radius: 7px;
+  background-clip: padding-box;
+}
+
+.cb-map-popup-item-availability-day.available {
+  background-color: rgb(127, 198, 0);
+}
+.cb-map-popup-item-availability-day.location-closed {
+  background-color: #ddd;
+  color: #222;
+}
+.cb-map-popup-item-availability-day.no-timeframe {
+  background-color: #ddd;
+  color: #fff;
+}
+.cb-map-popup-item-availability-day.booked {
+  color: #444;
+  background: linear-gradient(to top left, rgb(238, 116, 0) 0%, rgb(238, 116, 0) calc(50% - 1px), #333 50%, rgb(238, 116, 0) calc(50% + 1px), rgb(238, 116, 0) 100%);
+}
+
+.cb-map-popup-item-desc {
+
+}
+
+/*
+.cb-map-popup-item-info span.dashicons-calendar-alt {
+  cursor: pointer;
+  padding-left: 3px;
+  padding-top: -3px;
+}
+*/
+
+.leaflet-popup-content {
+  min-width: 300px;
+}
+
+.cb-map-location-info-name b {
+  line-height: 25px;
+}
+.cb-map-location-info-name span.dashicons-search {
+  cursor: pointer;
+  padding-left: 5px;
+  padding-top: 2.5px;
+}
+
+.cb-map-location-info-opening-hours {
+  margin-top: 10px;
+}
+
+.cb-map-location-info-contact {
+  margin-top: 10px;
+}
+
+.cb-map-filter-group-label {
+  font-weight: 700;
+  margin-top: 5px;
+}
+
+.cb-map-filter-group {
+  margin-top: 5px;
+  width: 100%;
+}
+
+.cb-map-filters input[type="date"] {
+  margin-right: 10px;
+  display: inline;
+  width: 25%;
+}
+
+@media screen and (max-width: 600px) {
+  .cb-map-filters input[type="date"] {
+    width:100%;
+  }
+}
+
+.cb-map-filters select {
+  margin-top: 3px;
+  margin-right: 10px;
+  height: 52px;
+}
+
+.cb-map-button-wrapper {
+  margin-top: 5px;
+}
+
+.cb-map-filter-input-group {
+  display: inline;
+}
+
+@media screen and (max-width: 600px) {
+  .cb-map-filter-input-group {
+    width: 100%;
+  }
+}
+
+.cb-map-filter-group input {
+  margin-top: 3px;
+}
+
+.cb-map-filter-group input[type="text"] {
+  width: 50%
+}
+
+@media screen and (max-width: 600px) {
+  .cb-map-filter-group input[type="text"] {
+    width: calc(100% - 96px);
+  }
+}
+
+.cb-map-filter-group button {
+  margin-left: 0;
+  height: 52px;
+  line-height: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.cb-map-filter-group button[disabled]:hover {
+  margin-left: 0;
+  height: 52px;
+  line-height: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.cb-map-filter-group .no-right-radius {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.cb-map-filter-group .no-left-radius {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+@media screen and (max-width: 600px) {
+  .cb-map-filter-group .no-left-radius {
+    margin-right: 0px !important;
+  }
+}
+
+.cb-map-filter-group .no-left-radius[disabled]:hover {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.cb-map-filter-group button.no-left-radius {
+  margin-right: 10px;
+}
+
+.cb-map-filters input[type="number"] {
+  margin-right: 10px;
+  width: 10%;
+  min-width: 75px;
+}
+
+.highlight-border {
+  border-color: rgb(238, 116, 0) !important;
+}
+
+.leaflet-bar button {
+  font-size: 6.5px;
+}

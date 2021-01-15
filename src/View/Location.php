@@ -18,13 +18,13 @@ class Location extends View
      *
      * @param Day $startDate
      * @param Day $endDate
-     * @param $locations
-     * @param $items
+     * @param $locations<int|string>
+     * @param $items<int|string>
      *
      * @return array
      * @throws \Exception
      */
-    protected static function prepareJsonResponse(Day $startDate, Day $endDate, $locations, $items)
+    public static function prepareJsonResponse(Day $startDate, Day $endDate, $locations, $items)
     {
         $calendar = new Calendar(
             $startDate,

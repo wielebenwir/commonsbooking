@@ -189,6 +189,24 @@ class Location extends CustomPostType
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
         ));
 
+        // Latitude
+        $cmb->add_field(array(
+            'name'       => esc_html__('Latitude', 'commonsbooking'),
+            //'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
+            'id'         => COMMONSBOOKING_METABOX_PREFIX . 'geo_latitude',
+            'type'       => 'text',
+            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+        ));
+
+        // Longitude
+        $cmb->add_field(array(
+            'name'       => esc_html__('Longitude', 'commonsbooking'),
+            //'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
+            'id'         => COMMONSBOOKING_METABOX_PREFIX . "geo_longitude",
+            'type'       => 'text',
+            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+        ));
+
         // Initiate the metabox Information
         $cmb = new_cmb2_box(array(
             'id'           => COMMONSBOOKING_METABOX_PREFIX . 'location_info',
