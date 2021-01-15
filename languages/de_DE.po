@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2021-01-15T16:31:55+00:00\n"
-"PO-Revision-Date: 2021-01-15 17:49+0100\n"
+"POT-Creation-Date: 2021-01-15T16:57:34+00:00\n"
+"PO-Revision-Date: 2021-01-15 17:59+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -49,7 +49,7 @@ msgstr "https://wielebenwir.de/"
 msgid "Welcome"
 msgstr "Willkommen"
 
-#: includes/OptionsArray.php:19
+#: includes/OptionsArray.php:19 templates/dashboard-index.php:6
 msgid "Welcome to CommonsBooking"
 msgstr "Willkommen bei CommonsBooking"
 
@@ -359,8 +359,8 @@ msgstr "Karte ist nicht veröffentlicht"
 msgid "no valid map id provided"
 msgstr "keine gültige Karten-ID angegeben"
 
-#: src/Map/MapShortcode.php:237 templates/admin-page-template.php:223
-#: templates/admin-page-template.php:243
+#: src/Map/MapShortcode.php:237 templates/map-admin-page-template.php:223
+#: templates/map-admin-page-template.php:243
 msgid "opening hours"
 msgstr "Öffnungszeiten"
 
@@ -392,15 +392,15 @@ msgstr "Leider wurden keine Standorte gefunden."
 msgid "filter"
 msgstr "Filter"
 
-#: src/Map/MapShortcode.php:245 templates/admin-page-template.php:561
+#: src/Map/MapShortcode.php:245 templates/map-admin-page-template.php:561
 msgid "availability"
 msgstr "Verfügbarkeit"
 
-#: src/Map/MapShortcode.php:246 templates/admin-page-template.php:571
+#: src/Map/MapShortcode.php:246 templates/map-admin-page-template.php:571
 msgid "categories"
 msgstr "Kategorien"
 
-#: src/Map/MapShortcode.php:247 templates/admin-page-template.php:507
+#: src/Map/MapShortcode.php:247 templates/map-admin-page-template.php:507
 msgid "distance"
 msgstr "Entfernung"
 
@@ -555,6 +555,10 @@ msgstr "Artikel-Kategorie"
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
+#: src/Plugin.php:387
+msgid "CommonsBooking Manager"
+msgstr "CommonsBooking Manager"
+
 #: src/Repository/BookingCodes.php:152
 msgid ""
 "No booking codes could be created because there were no booking codes to "
@@ -703,7 +707,7 @@ msgid "Migration finished"
 msgstr "Migration beendet"
 
 #: src/Wordpress/CustomPostType/Item.php:38
-#: src/Wordpress/CustomPostType/Item.php:59
+#: src/Wordpress/CustomPostType/Item.php:59 templates/dashboard-index.php:14
 msgid "Items"
 msgstr "Artikel"
 
@@ -805,6 +809,7 @@ msgstr "Wähle Artikel-Administrierende aus."
 
 #: src/Wordpress/CustomPostType/Location.php:43
 #: src/Wordpress/CustomPostType/Location.php:64
+#: templates/dashboard-index.php:15
 msgid "Locations"
 msgstr "Standorte"
 
@@ -958,12 +963,12 @@ msgstr "Standort-Administrator(en)"
 #: src/Wordpress/CustomPostType/Location.php:261
 msgid ""
 "choose one or more users to give them the permisssion to edit and manage "
-"this specific location. Only users with the role cb_manager can be selected "
-"here."
+"this specific location. Only users with the role CommonsBooking Manager can "
+"be selected here."
 msgstr ""
 "Wähle einen oder mehrere Benutzer aus, um ihnen die Möglichkeit zu geben, "
 "diesen bestimmten Standort zu bearbeiten und zu verwalten. Hier können nur "
-"Benutzer mit der Rolle cb_manager ausgewählt werden."
+"Benutzer mit der Rolle CommonsBooking Manager ausgewählt werden."
 
 #: src/Wordpress/CustomPostType/Location.php:267
 msgid "Select location admins."
@@ -1315,6 +1320,7 @@ msgstr "Buchungscode"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:913
 #: src/Wordpress/CustomPostType/Timeframe.php:934
+#: templates/dashboard-index.php:16
 msgid "Timeframes"
 msgstr "Zeitrahmen"
 
@@ -1387,438 +1393,6 @@ msgstr "Zeitrahmenbild entfernen"
 msgid "use as timeframe image"
 msgstr "Verwendung als Zeitrahmenbild"
 
-#: templates/admin-page-template.php:9
-msgid ""
-"These settings help you to configure the usage and appearance of Commons "
-"Booking Map."
-msgstr ""
-"Diese Einstellungen helfen Dir, die Verwendung und das Erscheinungsbild der "
-"CommonsBooking Karten zu konfigurieren."
-
-#: templates/admin-page-template.php:13
-msgid "Map Presentation"
-msgstr "Kartendarstellung"
-
-#: templates/admin-page-template.php:17
-msgid "shortcode"
-msgstr "Shortcode"
-
-#: templates/admin-page-template.php:19
-msgid "with this shortcode the map can be included in posts or pages"
-msgstr ""
-"Mit diesem Shortcode kann die Karte in Beiträge oder Seiten eingebunden "
-"werden"
-
-#: templates/admin-page-template.php:25
-msgid "base map"
-msgstr "Basiskarte"
-
-#: templates/admin-page-template.php:27
-msgid "the base map defines the rendering style of the map tiles"
-msgstr "Die Grundkarte definiert den Rendering-Stil der Kartenkacheln"
-
-#: templates/admin-page-template.php:32
-msgid "OSM - mapnik"
-msgstr "OSM - mapnik"
-
-#: templates/admin-page-template.php:33
-msgid "OSM - german style"
-msgstr "OSM - deutscher Stil"
-
-#: templates/admin-page-template.php:34
-msgid "OSM - hike and bike"
-msgstr "OSM - Wanderung und Fahrrad"
-
-#: templates/admin-page-template.php:35
-msgid "OSM - lokaler (min. zoom: 9)"
-msgstr "OSM - Lokaler (min. Zoom: 9)"
-
-#: templates/admin-page-template.php:41
-msgid "show scale"
-msgstr "Maßstab anzeigen"
-
-#: templates/admin-page-template.php:43
-msgid "show the current scale in the left bottom corner of the map"
-msgstr "Zeigen Sie den aktuellen Maßstab in der linken unteren Ecke der Karte"
-
-#: templates/admin-page-template.php:52
-msgid "map height"
-msgstr "Kartenhöhe"
-
-#: templates/admin-page-template.php:54
-msgid ""
-"the height the map is rendered with - the width is the same as of the parent "
-"element"
-msgstr ""
-"Die Höhe, mit der die Karte gerendert wird - die Breite ist die gleiche wie "
-"beim übergeordneten Element"
-
-#: templates/admin-page-template.php:63
-msgid "no locations message"
-msgstr "Meldung, wenn keine Locations gefunden wurden"
-
-#: templates/admin-page-template.php:65
-msgid ""
-"in case a user filters locations and gets no result, a message is shown - "
-"here the text can be customized"
-msgstr ""
-"Falls ein Benutzer Standorte filtert und kein Ergebnis erhält, wird eine "
-"Meldung angezeigt - hier kann der Text angepasst werden"
-
-#: templates/admin-page-template.php:73
-msgid "enable data export"
-msgstr "Datenexport aktivieren"
-
-#: templates/admin-page-template.php:75
-msgid ""
-"activate to enable a button that allows the export of map data (geojson "
-"format)"
-msgstr ""
-"Aktiviere, um eine Schaltfläche zu aktivieren, die den Export von "
-"Kartendaten ermöglicht (Geojson-Format)"
-
-#: templates/admin-page-template.php:87
-msgid "Zoom"
-msgstr "Zoom"
-
-#: templates/admin-page-template.php:91
-msgid "min. zoom level"
-msgstr "min. Zoomstufe"
-
-#: templates/admin-page-template.php:93
-msgid "the minimal zoom level a user can choose"
-msgstr "die minimale Zoomstufe, die ein*e Benutzer*in auswählen kann"
-
-#: templates/admin-page-template.php:101
-msgid "max. zoom level"
-msgstr "max. Zoomstufe"
-
-#: templates/admin-page-template.php:103
-msgid "the maximal zoom level a user can choose"
-msgstr "die maximale Zoomstufe, die ein*e Benutzer*in auswählen kann"
-
-#: templates/admin-page-template.php:111
-msgid "start zoom level"
-msgstr "Initiale Zoomstufe"
-
-#: templates/admin-page-template.php:113
-msgid "the zoom level that will be set when the map is loaded"
-msgstr "die Zoomstufe, die beim Laden der Karte festgelegt wird"
-
-#: templates/admin-page-template.php:125
-msgid "Map Positioning (center) at Intialization"
-msgstr "Kartenpositionierung (Mitte) bei Intialisierung"
-
-#: templates/admin-page-template.php:129
-msgid "start latitude"
-msgstr "Start-Breitengrad"
-
-#: templates/admin-page-template.php:131
-msgid "the latitude of the map center when the map is loaded"
-msgstr "der Breitengrad des Kartenzentrums, wenn die Karte geladen wird"
-
-#: templates/admin-page-template.php:139
-msgid "start longitude"
-msgstr "Initialer Längengrad"
-
-#: templates/admin-page-template.php:141
-msgid "the longitude of the map center when the map is loaded"
-msgstr "der Breitengrad des Kartenzentrums, wenn die Karte geladen wird"
-
-#: templates/admin-page-template.php:152
-msgid "Adaptive Map Section"
-msgstr "Adaptiver Kartenabschnitt"
-
-#: templates/admin-page-template.php:156
-msgid "initial adjustment to marker bounds"
-msgstr "anfängliche Anpassung an Markergrenzen"
-
-#: templates/admin-page-template.php:158
-msgid ""
-"adjust map section to bounds of shown markers automatically when map is "
-"loaded"
-msgstr ""
-"Kartenabschnitt automatisch an Grenzen der angezeigten Marker anpassen, wenn "
-"die Karte geladen wird"
-
-#: templates/admin-page-template.php:168
-msgid "adjustment to marker bounds on filter"
-msgstr "Anpassung an Markergrenzen am Filter"
-
-#: templates/admin-page-template.php:170
-msgid ""
-"adjust map section to bounds of shown markers automatically when filtered by "
-"users"
-msgstr ""
-"Kartenabschnitt automatisch an die Grenzen der angezeigten Marker anpassen, "
-"wenn sie von Benutzern gefiltert werden"
-
-#: templates/admin-page-template.php:184
-msgid "Marker Tooltip"
-msgstr "Kartenmarker Tooltip"
-
-#: templates/admin-page-template.php:189
-msgid "show permanently"
-msgstr "permanent anzeigen"
-
-#: templates/admin-page-template.php:191
-msgid "activate to show the marker tooltips permanently"
-msgstr "aktivieren, um die Marker-Tooltips dauerhaft anzuzeigen"
-
-#: templates/admin-page-template.php:203
-msgid "Marker Popup"
-msgstr "Marker Popup"
-
-#: templates/admin-page-template.php:207
-msgid "show location opening hours"
-msgstr "zeige Standort-Öffnungszeiten"
-
-#: templates/admin-page-template.php:209
-msgid "activate to show the opening hours of locations in the marker popup"
-msgstr ""
-"aktivieren, um die Öffnungszeiten der Standorte im Marker-Popup anzuzeigen"
-
-#: templates/admin-page-template.php:217 templates/admin-page-template.php:238
-msgid "label for opening hours"
-msgstr "Bezeichnung für Öffnungszeiten"
-
-#: templates/admin-page-template.php:220
-msgid ""
-"alternative label for the opening hours of locations in the marker popup"
-msgstr ""
-"alternative Bezeichnung für die Öffnungszeiten der Standorte im Marker-Popup"
-
-#: templates/admin-page-template.php:228
-msgid "show location contact"
-msgstr "zeige Standort-Kontakt"
-
-#: templates/admin-page-template.php:230
-msgid "activate to show the location contact details in the marker popup"
-msgstr "aktivieren, um die Standortkontaktdetails im Marker-Popup anzuzeigen"
-
-#: templates/admin-page-template.php:240
-msgid ""
-"alternative label for the contact information of locations in the marker "
-"popup"
-msgstr ""
-"alternative Bezeichnung für die Kontaktinformationen von Standorten im "
-"Marker-Popup"
-
-#: templates/admin-page-template.php:248
-msgid "show item availability"
-msgstr "Artikelverfügbarkeit anzeigen"
-
-#: templates/admin-page-template.php:250
-msgid "activate to show the item availability in the marker popup"
-msgstr "aktivieren, um die Artikelverfügbarkeit im Marker-Popup anzuzeigen"
-
-#: templates/admin-page-template.php:262
-msgid "Custom Marker"
-msgstr "Benutzerdefinierter Marker"
-
-#: templates/admin-page-template.php:266 templates/admin-page-template.php:352
-#: templates/admin-page-template.php:427
-msgid "image file"
-msgstr "Bilddatei"
-
-#: templates/admin-page-template.php:268 templates/admin-page-template.php:354
-#: templates/admin-page-template.php:429
-msgid "the default marker icon can be replaced by a custom image"
-msgstr ""
-"Das Standardmarkersymbol kann durch ein benutzerdefiniertes Bild ersetzt "
-"werden"
-
-#: templates/admin-page-template.php:272 templates/admin-page-template.php:358
-#: templates/admin-page-template.php:433
-msgid "select"
-msgstr "auswählen"
-
-#: templates/admin-page-template.php:274 templates/admin-page-template.php:360
-#: templates/admin-page-template.php:435
-msgid "remove"
-msgstr "entfernen"
-
-#: templates/admin-page-template.php:293 templates/admin-page-template.php:379
-#: templates/admin-page-template.php:454
-msgid "icon size"
-msgstr "Symbolgröße"
-
-#: templates/admin-page-template.php:295 templates/admin-page-template.php:381
-#: templates/admin-page-template.php:456
-msgid "the size of the custom marker icon image as it is shown on the map"
-msgstr ""
-"die Größe des benutzerdefinierten Markersymbolbildes, wie es auf der Karte "
-"angezeigt wird"
-
-#: templates/admin-page-template.php:309 templates/admin-page-template.php:469
-msgid "anchor point"
-msgstr "Ankerpunkt"
-
-#: templates/admin-page-template.php:311 templates/admin-page-template.php:471
-msgid ""
-"the position of the anchor point of the icon image, seen from the left top "
-"corner of the icon, often it is half of the width and full height of the "
-"icon size - this point is used to place the marker on the geo coordinates"
-msgstr ""
-"die Position des Ankerpunkts des Symbolbildes, von der linken oberen Ecke "
-"des Symbols aus gesehen, oft ist es die Hälfte der Breite und der vollen "
-"Höhe der Symbolgröße - dieser Punkt wird verwendet, um den Marker auf den "
-"Geo-Koordinaten zu platzieren"
-
-#: templates/admin-page-template.php:328
-msgid "Cluster"
-msgstr "Cluster"
-
-#: templates/admin-page-template.php:332
-msgid "max. cluster radius"
-msgstr "max. Clusterradius"
-
-#: templates/admin-page-template.php:334
-msgid "combine markers to a cluster within given radius - 0 for deactivation"
-msgstr ""
-"Marker zu einem Cluster innerhalb eines bestimmten Radius kombinieren - 0 "
-"für die Deaktivierung"
-
-#: templates/admin-page-template.php:347
-msgid "Custom Cluster Marker"
-msgstr "Benutzerdefinierte Cluster-Marker"
-
-#: templates/admin-page-template.php:399
-msgid "Appearance by Item Status"
-msgstr "Darstellung nach Artikelstatus"
-
-#: templates/admin-page-template.php:404
-msgid "appearance"
-msgstr "Erscheinen"
-
-#: templates/admin-page-template.php:406
-msgid "how locations with items that are in draft status should be handled"
-msgstr ""
-"Wie Standorte mit Artikeln, die sich im Entwurfsstatus befinden, behandelt "
-"werden sollen"
-
-#: templates/admin-page-template.php:423
-msgid "Custom Item Draft Marker"
-msgstr "Benutzerdefinierte Artikel-Entwurfsmarkierung"
-
-#: templates/admin-page-template.php:488
-msgid "Filter for Users"
-msgstr "Filter für Benutzer"
-
-#: templates/admin-page-template.php:492
-msgid "show location distance filter"
-msgstr "Filter für Standort-Entfernung anzeigen"
-
-#: templates/admin-page-template.php:494
-msgid "activate to show the location distance filter"
-msgstr "aktivieren, um den Standortentfernungsfilter anzuzeigen"
-
-#: templates/admin-page-template.php:502
-msgid "label for location distance filter"
-msgstr "Bezeichnung für Standortentfernungsfilter"
-
-#: templates/admin-page-template.php:504
-msgid "alternative label for the location distance filter"
-msgstr "alternative Bezeichnung für den Positionsentfernungsfilter"
-
-#: templates/admin-page-template.php:512
-msgid "address search bounds - left bottom"
-msgstr "Begrenzung Adressuche - links unten"
-
-#: templates/admin-page-template.php:514
-msgid "the bottom left corner of the address search bounds"
-msgstr ""
-"die linke untere Ecke des Bereichs, in dem Adressen in Geokoordinaten "
-"aufgelöst werden"
-
-#: templates/admin-page-template.php:518 templates/admin-page-template.php:535
-msgid "longitude"
-msgstr "Längengrad"
-
-#: templates/admin-page-template.php:522 templates/admin-page-template.php:539
-msgid "latitude"
-msgstr "Breitengrad"
-
-#: templates/admin-page-template.php:529
-msgid "address search bounds - right top"
-msgstr "Begrenzung Adressuche - rechts oben"
-
-#: templates/admin-page-template.php:531
-msgid "the top right corner of the address search bounds"
-msgstr "die obere rechte Ecke der Adresssuchegrenzen"
-
-#: templates/admin-page-template.php:546
-msgid "show item availability filter"
-msgstr "Artikelverfügbarkeitsfilter anzeigen"
-
-#: templates/admin-page-template.php:548
-msgid "activate to show the item availability filter"
-msgstr "aktivieren, um den Artikelverfügbarkeitsfilter anzuzeigen"
-
-#: templates/admin-page-template.php:556
-msgid "label for item availability filter"
-msgstr "Bezeichnung für Artikelverfügbarkeitsfilter"
-
-#: templates/admin-page-template.php:558
-msgid "alternative label for the item availability filter"
-msgstr "alternative Bezeichnung für den Artikelverfügbarkeitsfilter"
-
-#: templates/admin-page-template.php:566
-msgid "label for item category filter"
-msgstr "Bezeichnung für Artikelkategoriefilter"
-
-#: templates/admin-page-template.php:568
-msgid "alternative label for the item category filter"
-msgstr "Alternative Bezeichnung für den Artikelkategoriefilter"
-
-#: templates/admin-page-template.php:577
-msgid "available categories"
-msgstr "verfügbare Kategorien"
-
-#: templates/admin-page-template.php:579
-msgid ""
-"select the categories that are presented the users to filter items - none "
-"for no filters"
-msgstr ""
-"Wählen Sie die Kategorien aus, die den Benutzern zum Filtern von Elementen "
-"angezeigt werden - keine für keine Filter"
-
-#: templates/admin-page-template.php:593
-msgid "grouping of and custom markup for filters"
-msgstr "Gruppieren von und benutzerdefiniertem Markup für Filter"
-
-#: templates/admin-page-template.php:596
-msgid "add filter group"
-msgstr "Filtergruppe hinzufügen"
-
-#: templates/admin-page-template.php:605
-msgid "Filter Presets"
-msgstr "Filter Voreinstellungen"
-
-#: templates/admin-page-template.php:609
-msgid "preset categories"
-msgstr "voreingestellte Kategorien"
-
-#: templates/admin-page-template.php:611
-msgid ""
-"select the categories that are used to prefilter the items that are shown on "
-"the map - none for all items"
-msgstr ""
-"Wähle die Kategorien, die benutzt werden um die Artikel, die auf der Karte "
-"angezeigt werden, vorzufiltern - leer lassen, um alle Artikel anzuzeigen"
-
-#: templates/admin-page-template.php:670
-msgid "filter group"
-msgstr "Filter-Gruppe"
-
-#: templates/admin-page-template.php:670
-msgid "group name"
-msgstr "Filter-Gruppe"
-
-#: templates/admin-page-template.php:673
-msgid "remove filter group"
-msgstr "Filter-Gruppe entfernen"
-
 #: templates/booking-single-notallowed.php:10
 msgid "You are not allowed to access this booking."
 msgstr "Du darfst nicht auf diese Buchung zugreifen."
@@ -1855,6 +1429,30 @@ msgstr "Deine E-Mail"
 msgid "Your User name"
 msgstr "Dein Benutzername"
 
+#: templates/dashboard-index.php:12
+msgid "Jump to..."
+msgstr "Springe zu …"
+
+#: templates/dashboard-index.php:17
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: templates/dashboard-index.php:21
+msgid "Support"
+msgstr "Unterstützung"
+
+#: templates/dashboard-index.php:23
+msgid "Documentation & Tutorials"
+msgstr "Dokumentation & Tutorials"
+
+#: templates/dashboard-index.php:24
+msgid "Support Forum"
+msgstr "Support Forum"
+
+#: templates/dashboard-index.php:25
+msgid "Contact & Newsletter"
+msgstr "Kontakt & Newsletter"
+
 #: templates/item-single.php:13 templates/item-withlocation.php:17
 msgid "Book item at this location"
 msgstr "Buche den Artikel an dieser Station"
@@ -1885,19 +1483,462 @@ msgstr "Buche diesen Artikel"
 msgid "Book item"
 msgstr "Artikel buchen"
 
-#: templates/settings-page-template.php:9
+#: templates/map-admin-page-template.php:9
+msgid ""
+"These settings help you to configure the usage and appearance of Commons "
+"Booking Map."
+msgstr ""
+"Diese Einstellungen helfen Dir, die Verwendung und das Erscheinungsbild der "
+"CommonsBooking Karten zu konfigurieren."
+
+#: templates/map-admin-page-template.php:13
+msgid "Map Presentation"
+msgstr "Kartendarstellung"
+
+#: templates/map-admin-page-template.php:17
+msgid "shortcode"
+msgstr "Shortcode"
+
+#: templates/map-admin-page-template.php:19
+msgid "with this shortcode the map can be included in posts or pages"
+msgstr ""
+"Mit diesem Shortcode kann die Karte in Beiträge oder Seiten eingebunden "
+"werden"
+
+#: templates/map-admin-page-template.php:25
+msgid "base map"
+msgstr "Basiskarte"
+
+#: templates/map-admin-page-template.php:27
+msgid "the base map defines the rendering style of the map tiles"
+msgstr "Die Grundkarte definiert den Rendering-Stil der Kartenkacheln"
+
+#: templates/map-admin-page-template.php:32
+msgid "OSM - mapnik"
+msgstr "OSM - mapnik"
+
+#: templates/map-admin-page-template.php:33
+msgid "OSM - german style"
+msgstr "OSM - deutscher Stil"
+
+#: templates/map-admin-page-template.php:34
+msgid "OSM - hike and bike"
+msgstr "OSM - Wanderung und Fahrrad"
+
+#: templates/map-admin-page-template.php:35
+msgid "OSM - lokaler (min. zoom: 9)"
+msgstr "OSM - Lokaler (min. Zoom: 9)"
+
+#: templates/map-admin-page-template.php:41
+msgid "show scale"
+msgstr "Maßstab anzeigen"
+
+#: templates/map-admin-page-template.php:43
+msgid "show the current scale in the left bottom corner of the map"
+msgstr "Zeigen Sie den aktuellen Maßstab in der linken unteren Ecke der Karte"
+
+#: templates/map-admin-page-template.php:52
+msgid "map height"
+msgstr "Kartenhöhe"
+
+#: templates/map-admin-page-template.php:54
+msgid ""
+"the height the map is rendered with - the width is the same as of the parent "
+"element"
+msgstr ""
+"Die Höhe, mit der die Karte gerendert wird - die Breite ist die gleiche wie "
+"beim übergeordneten Element"
+
+#: templates/map-admin-page-template.php:63
+msgid "no locations message"
+msgstr "Meldung, wenn keine Locations gefunden wurden"
+
+#: templates/map-admin-page-template.php:65
+msgid ""
+"in case a user filters locations and gets no result, a message is shown - "
+"here the text can be customized"
+msgstr ""
+"Falls ein Benutzer Standorte filtert und kein Ergebnis erhält, wird eine "
+"Meldung angezeigt - hier kann der Text angepasst werden"
+
+#: templates/map-admin-page-template.php:73
+msgid "enable data export"
+msgstr "Datenexport aktivieren"
+
+#: templates/map-admin-page-template.php:75
+msgid ""
+"activate to enable a button that allows the export of map data (geojson "
+"format)"
+msgstr ""
+"Aktiviere, um eine Schaltfläche zu aktivieren, die den Export von "
+"Kartendaten ermöglicht (Geojson-Format)"
+
+#: templates/map-admin-page-template.php:87
+msgid "Zoom"
+msgstr "Zoom"
+
+#: templates/map-admin-page-template.php:91
+msgid "min. zoom level"
+msgstr "min. Zoomstufe"
+
+#: templates/map-admin-page-template.php:93
+msgid "the minimal zoom level a user can choose"
+msgstr "die minimale Zoomstufe, die ein*e Benutzer*in auswählen kann"
+
+#: templates/map-admin-page-template.php:101
+msgid "max. zoom level"
+msgstr "max. Zoomstufe"
+
+#: templates/map-admin-page-template.php:103
+msgid "the maximal zoom level a user can choose"
+msgstr "die maximale Zoomstufe, die ein*e Benutzer*in auswählen kann"
+
+#: templates/map-admin-page-template.php:111
+msgid "start zoom level"
+msgstr "Initiale Zoomstufe"
+
+#: templates/map-admin-page-template.php:113
+msgid "the zoom level that will be set when the map is loaded"
+msgstr "die Zoomstufe, die beim Laden der Karte festgelegt wird"
+
+#: templates/map-admin-page-template.php:125
+msgid "Map Positioning (center) at Intialization"
+msgstr "Kartenpositionierung (Mitte) bei Intialisierung"
+
+#: templates/map-admin-page-template.php:129
+msgid "start latitude"
+msgstr "Start-Breitengrad"
+
+#: templates/map-admin-page-template.php:131
+msgid "the latitude of the map center when the map is loaded"
+msgstr "der Breitengrad des Kartenzentrums, wenn die Karte geladen wird"
+
+#: templates/map-admin-page-template.php:139
+msgid "start longitude"
+msgstr "Initialer Längengrad"
+
+#: templates/map-admin-page-template.php:141
+msgid "the longitude of the map center when the map is loaded"
+msgstr "der Breitengrad des Kartenzentrums, wenn die Karte geladen wird"
+
+#: templates/map-admin-page-template.php:152
+msgid "Adaptive Map Section"
+msgstr "Adaptiver Kartenabschnitt"
+
+#: templates/map-admin-page-template.php:156
+msgid "initial adjustment to marker bounds"
+msgstr "anfängliche Anpassung an Markergrenzen"
+
+#: templates/map-admin-page-template.php:158
+msgid ""
+"adjust map section to bounds of shown markers automatically when map is "
+"loaded"
+msgstr ""
+"Kartenabschnitt automatisch an Grenzen der angezeigten Marker anpassen, wenn "
+"die Karte geladen wird"
+
+#: templates/map-admin-page-template.php:168
+msgid "adjustment to marker bounds on filter"
+msgstr "Anpassung an Markergrenzen am Filter"
+
+#: templates/map-admin-page-template.php:170
+msgid ""
+"adjust map section to bounds of shown markers automatically when filtered by "
+"users"
+msgstr ""
+"Kartenabschnitt automatisch an die Grenzen der angezeigten Marker anpassen, "
+"wenn sie von Benutzern gefiltert werden"
+
+#: templates/map-admin-page-template.php:184
+msgid "Marker Tooltip"
+msgstr "Kartenmarker Tooltip"
+
+#: templates/map-admin-page-template.php:189
+msgid "show permanently"
+msgstr "permanent anzeigen"
+
+#: templates/map-admin-page-template.php:191
+msgid "activate to show the marker tooltips permanently"
+msgstr "aktivieren, um die Marker-Tooltips dauerhaft anzuzeigen"
+
+#: templates/map-admin-page-template.php:203
+msgid "Marker Popup"
+msgstr "Marker Popup"
+
+#: templates/map-admin-page-template.php:207
+msgid "show location opening hours"
+msgstr "zeige Standort-Öffnungszeiten"
+
+#: templates/map-admin-page-template.php:209
+msgid "activate to show the opening hours of locations in the marker popup"
+msgstr ""
+"aktivieren, um die Öffnungszeiten der Standorte im Marker-Popup anzuzeigen"
+
+#: templates/map-admin-page-template.php:217
+#: templates/map-admin-page-template.php:238
+msgid "label for opening hours"
+msgstr "Bezeichnung für Öffnungszeiten"
+
+#: templates/map-admin-page-template.php:220
+msgid ""
+"alternative label for the opening hours of locations in the marker popup"
+msgstr ""
+"alternative Bezeichnung für die Öffnungszeiten der Standorte im Marker-Popup"
+
+#: templates/map-admin-page-template.php:228
+msgid "show location contact"
+msgstr "zeige Standort-Kontakt"
+
+#: templates/map-admin-page-template.php:230
+msgid "activate to show the location contact details in the marker popup"
+msgstr "aktivieren, um die Standortkontaktdetails im Marker-Popup anzuzeigen"
+
+#: templates/map-admin-page-template.php:240
+msgid ""
+"alternative label for the contact information of locations in the marker "
+"popup"
+msgstr ""
+"alternative Bezeichnung für die Kontaktinformationen von Standorten im "
+"Marker-Popup"
+
+#: templates/map-admin-page-template.php:248
+msgid "show item availability"
+msgstr "Artikelverfügbarkeit anzeigen"
+
+#: templates/map-admin-page-template.php:250
+msgid "activate to show the item availability in the marker popup"
+msgstr "aktivieren, um die Artikelverfügbarkeit im Marker-Popup anzuzeigen"
+
+#: templates/map-admin-page-template.php:262
+msgid "Custom Marker"
+msgstr "Benutzerdefinierter Marker"
+
+#: templates/map-admin-page-template.php:266
+#: templates/map-admin-page-template.php:352
+#: templates/map-admin-page-template.php:427
+msgid "image file"
+msgstr "Bilddatei"
+
+#: templates/map-admin-page-template.php:268
+#: templates/map-admin-page-template.php:354
+#: templates/map-admin-page-template.php:429
+msgid "the default marker icon can be replaced by a custom image"
+msgstr ""
+"Das Standardmarkersymbol kann durch ein benutzerdefiniertes Bild ersetzt "
+"werden"
+
+#: templates/map-admin-page-template.php:272
+#: templates/map-admin-page-template.php:358
+#: templates/map-admin-page-template.php:433
+msgid "select"
+msgstr "auswählen"
+
+#: templates/map-admin-page-template.php:274
+#: templates/map-admin-page-template.php:360
+#: templates/map-admin-page-template.php:435
+msgid "remove"
+msgstr "entfernen"
+
+#: templates/map-admin-page-template.php:293
+#: templates/map-admin-page-template.php:379
+#: templates/map-admin-page-template.php:454
+msgid "icon size"
+msgstr "Symbolgröße"
+
+#: templates/map-admin-page-template.php:295
+#: templates/map-admin-page-template.php:381
+#: templates/map-admin-page-template.php:456
+msgid "the size of the custom marker icon image as it is shown on the map"
+msgstr ""
+"die Größe des benutzerdefinierten Markersymbolbildes, wie es auf der Karte "
+"angezeigt wird"
+
+#: templates/map-admin-page-template.php:309
+#: templates/map-admin-page-template.php:469
+msgid "anchor point"
+msgstr "Ankerpunkt"
+
+#: templates/map-admin-page-template.php:311
+#: templates/map-admin-page-template.php:471
+msgid ""
+"the position of the anchor point of the icon image, seen from the left top "
+"corner of the icon, often it is half of the width and full height of the "
+"icon size - this point is used to place the marker on the geo coordinates"
+msgstr ""
+"die Position des Ankerpunkts des Symbolbildes, von der linken oberen Ecke "
+"des Symbols aus gesehen, oft ist es die Hälfte der Breite und der vollen "
+"Höhe der Symbolgröße - dieser Punkt wird verwendet, um den Marker auf den "
+"Geo-Koordinaten zu platzieren"
+
+#: templates/map-admin-page-template.php:328
+msgid "Cluster"
+msgstr "Cluster"
+
+#: templates/map-admin-page-template.php:332
+msgid "max. cluster radius"
+msgstr "max. Clusterradius"
+
+#: templates/map-admin-page-template.php:334
+msgid "combine markers to a cluster within given radius - 0 for deactivation"
+msgstr ""
+"Marker zu einem Cluster innerhalb eines bestimmten Radius kombinieren - 0 "
+"für die Deaktivierung"
+
+#: templates/map-admin-page-template.php:347
+msgid "Custom Cluster Marker"
+msgstr "Benutzerdefinierte Cluster-Marker"
+
+#: templates/map-admin-page-template.php:399
+msgid "Appearance by Item Status"
+msgstr "Darstellung nach Artikelstatus"
+
+#: templates/map-admin-page-template.php:404
+msgid "appearance"
+msgstr "Erscheinen"
+
+#: templates/map-admin-page-template.php:406
+msgid "how locations with items that are in draft status should be handled"
+msgstr ""
+"Wie Standorte mit Artikeln, die sich im Entwurfsstatus befinden, behandelt "
+"werden sollen"
+
+#: templates/map-admin-page-template.php:423
+msgid "Custom Item Draft Marker"
+msgstr "Benutzerdefinierte Artikel-Entwurfsmarkierung"
+
+#: templates/map-admin-page-template.php:488
+msgid "Filter for Users"
+msgstr "Filter für Benutzer"
+
+#: templates/map-admin-page-template.php:492
+msgid "show location distance filter"
+msgstr "Filter für Standort-Entfernung anzeigen"
+
+#: templates/map-admin-page-template.php:494
+msgid "activate to show the location distance filter"
+msgstr "aktivieren, um den Standortentfernungsfilter anzuzeigen"
+
+#: templates/map-admin-page-template.php:502
+msgid "label for location distance filter"
+msgstr "Bezeichnung für Standortentfernungsfilter"
+
+#: templates/map-admin-page-template.php:504
+msgid "alternative label for the location distance filter"
+msgstr "alternative Bezeichnung für den Positionsentfernungsfilter"
+
+#: templates/map-admin-page-template.php:512
+msgid "address search bounds - left bottom"
+msgstr "Begrenzung Adressuche - links unten"
+
+#: templates/map-admin-page-template.php:514
+msgid "the bottom left corner of the address search bounds"
+msgstr ""
+"die linke untere Ecke des Bereichs, in dem Adressen in Geokoordinaten "
+"aufgelöst werden"
+
+#: templates/map-admin-page-template.php:518
+#: templates/map-admin-page-template.php:535
+msgid "longitude"
+msgstr "Längengrad"
+
+#: templates/map-admin-page-template.php:522
+#: templates/map-admin-page-template.php:539
+msgid "latitude"
+msgstr "Breitengrad"
+
+#: templates/map-admin-page-template.php:529
+msgid "address search bounds - right top"
+msgstr "Begrenzung Adressuche - rechts oben"
+
+#: templates/map-admin-page-template.php:531
+msgid "the top right corner of the address search bounds"
+msgstr "die obere rechte Ecke der Adresssuchegrenzen"
+
+#: templates/map-admin-page-template.php:546
+msgid "show item availability filter"
+msgstr "Artikelverfügbarkeitsfilter anzeigen"
+
+#: templates/map-admin-page-template.php:548
+msgid "activate to show the item availability filter"
+msgstr "aktivieren, um den Artikelverfügbarkeitsfilter anzuzeigen"
+
+#: templates/map-admin-page-template.php:556
+msgid "label for item availability filter"
+msgstr "Bezeichnung für Artikelverfügbarkeitsfilter"
+
+#: templates/map-admin-page-template.php:558
+msgid "alternative label for the item availability filter"
+msgstr "alternative Bezeichnung für den Artikelverfügbarkeitsfilter"
+
+#: templates/map-admin-page-template.php:566
+msgid "label for item category filter"
+msgstr "Bezeichnung für Artikelkategoriefilter"
+
+#: templates/map-admin-page-template.php:568
+msgid "alternative label for the item category filter"
+msgstr "Alternative Bezeichnung für den Artikelkategoriefilter"
+
+#: templates/map-admin-page-template.php:577
+msgid "available categories"
+msgstr "verfügbare Kategorien"
+
+#: templates/map-admin-page-template.php:579
+msgid ""
+"select the categories that are presented the users to filter items - none "
+"for no filters"
+msgstr ""
+"Wählen Sie die Kategorien aus, die den Benutzern zum Filtern von Elementen "
+"angezeigt werden - keine für keine Filter"
+
+#: templates/map-admin-page-template.php:593
+msgid "grouping of and custom markup for filters"
+msgstr "Gruppieren von und benutzerdefiniertem Markup für Filter"
+
+#: templates/map-admin-page-template.php:596
+msgid "add filter group"
+msgstr "Filtergruppe hinzufügen"
+
+#: templates/map-admin-page-template.php:605
+msgid "Filter Presets"
+msgstr "Filter Voreinstellungen"
+
+#: templates/map-admin-page-template.php:609
+msgid "preset categories"
+msgstr "voreingestellte Kategorien"
+
+#: templates/map-admin-page-template.php:611
+msgid ""
+"select the categories that are used to prefilter the items that are shown on "
+"the map - none for all items"
+msgstr ""
+"Wähle die Kategorien, die benutzt werden um die Artikel, die auf der Karte "
+"angezeigt werden, vorzufiltern - leer lassen, um alle Artikel anzuzeigen"
+
+#: templates/map-admin-page-template.php:670
+msgid "filter group"
+msgstr "Filter-Gruppe"
+
+#: templates/map-admin-page-template.php:670
+msgid "group name"
+msgstr "Filter-Gruppe"
+
+#: templates/map-admin-page-template.php:673
+msgid "remove filter group"
+msgstr "Filter-Gruppe entfernen"
+
+#: templates/map-settings-page-template.php:9
 msgid "Settings for the Map"
 msgstr "Karten-Einstellungen"
 
-#: templates/settings-page-template.php:11
+#: templates/map-settings-page-template.php:11
 msgid "general settings regarding the behaviour of the Map"
 msgstr "Allgemeine Einstellungen zum Verhalten der Karte"
 
-#: templates/settings-page-template.php:22
+#: templates/map-settings-page-template.php:22
 msgid "replace map link on booking page"
 msgstr "Kartenlink auf Buchungsseite ersetzen"
 
-#: templates/settings-page-template.php:23
+#: templates/map-settings-page-template.php:23
 msgid "set the target of the map link on booking page to openstreetmap"
 msgstr ""
 "Lege das Ziel des Kartenlinks auf der Buchungsseite auf openstreetmap fest"
