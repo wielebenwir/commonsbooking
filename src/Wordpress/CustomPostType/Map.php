@@ -285,7 +285,7 @@ class Map extends CustomPostType
                     'short_desc' => has_excerpt($item->ID) ? wp_strip_all_tags(get_the_excerpt($item->ID)) : "",
                     'status'     => $item->post_status,
                     'terms'      => $item_terms,
-                    'link'       => add_query_arg('item', $item->ID, get_permalink($post->ID)),
+                    'link'       => add_query_arg('location', $post->ID, get_permalink($item->ID)),
                     'thumbnail' => $thumbnail ? $thumbnail : null,
                 ];
             }
