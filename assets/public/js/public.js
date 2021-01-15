@@ -1425,7 +1425,7 @@
                 jQuery(this).val() < startValue && (jQuery(this).attr("disabled", "disabled"), jQuery(this).prop("selected", !1));
             });
         }, updateSelectSlots = (select, slots, type = "start", fullday = !1) => {
-            select.empty().attr("required", "required"), $.each(slots, function(index, slot) {
+            select.empty().attr("required", "required"), jQuery.each(slots, function(index, slot) {
                 let option = new Option(slot.timestart + " - " + slot.timeend, slot["timestamp" + type], fullday, fullday);
                 slot.disabled && (option.disabled = !0), select.append(option);
             });
@@ -1494,7 +1494,7 @@
                 onChangeMonth: function(date, idx) {
                     fadeOutCalendar();
                     const startDate = moment(date.format("YYYY-MM-DD")).format("YYYY-MM-DD"), calStartDate = moment(date.format("YYYY-MM-DD")).date(0).format("YYYY-MM-DD"), calEndDate = moment(date.format("YYYY-MM-DD")).add(numberOfMonths, "months").date(1).format("YYYY-MM-DD");
-                    $.post(cb_ajax.ajax_url, {
+                    jQuery.post(cb_ajax.ajax_url, {
                         _ajax_nonce: cb_ajax.nonce,
                         action: "calendar_data",
                         item: jQuery("#booking-form input[name=item-id]").val(),

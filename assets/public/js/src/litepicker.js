@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         // Updates select options by time slots array
         const updateSelectSlots = (select, slots, type = 'start', fullday = false) => {
             select.empty().attr('required', 'required');
-            $.each(slots, function (index, slot) {
+           jQuery.each(slots, function (index, slot) {
                 let option = new Option(slot['timestart'] + ' - ' + slot['timeend'], slot['timestamp' + type], fullday, fullday);
                 if(slot['disabled']) {
                     option.disabled = true;
@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     // first day of next month selection
                     const calEndDate = moment(date.format('YYYY-MM-DD')).add(numberOfMonths,'months').date(1).format('YYYY-MM-DD');
 
-                    $.post(
+                   jQuery.post(
                         cb_ajax.ajax_url,
                         {
                             _ajax_nonce: cb_ajax.nonce,
