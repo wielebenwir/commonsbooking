@@ -24,6 +24,10 @@
 		"grunt-contrib-jshint": "^1.1.0",
 		"grunt-contrib-uglify": "^3.3.0",
 		"grunt-contrib-uglify-es": "github:gruntjs/grunt-contrib-uglify#harmony",
-		"jquery": "^3.4.1"
+		"jquery": "^3.4.1",
+		"leaflet": "^1.7.1",
+		"leaflet-easybutton": "^2.4.0",
+		"leaflet-spin": "^1.1.2",
+		"leaflet.markercluster": "^1.4.1"
 	}
 }
