@@ -240,7 +240,7 @@ class Location extends CustomPostType
         }
         $cmb->add_field(array(
             'name'       => esc_html__('Location Admin(s)', 'commonsbooking'),
-            'desc'       => esc_html__('choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role cb_manager can be selected here.',
+            'desc'       => esc_html__('choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role CommonsBooking Manager can be selected here.',
                 'commonsbooking'),
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_admins',
             'type'       => 'pw_multiselect',
