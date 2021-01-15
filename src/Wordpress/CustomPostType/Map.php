@@ -6,8 +6,10 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Map\MapAdmin;
 use CommonsBooking\Map\MapSettings;
+use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\Repository\Item;
 use CommonsBooking\Repository\Timeframe;
+use CommonsBooking\Settings\Settings;
 
 class Map extends CustomPostType
 {
@@ -27,6 +29,17 @@ class Map extends CustomPostType
         if ($cb_map_settings->get_option('booking_page_link_replacement')) {
             add_action('wp_enqueue_scripts', array(Map::class, 'replace_map_link_target'), 11);
         }
+
+        // Setting role permissions
+        add_action('admin_init', array($this, 'addRoleCaps'), 999);
+
+        // Add shortcodes
+        add_shortcode('cb_map', array(MapShortcode::class, 'execute') );
+
+        // Add actions
+        add_action('save_post_cb_map', array(MapAdmin::class, 'validate_options'), 10, 3);
+        add_action('add_meta_boxes_cb_map', array(MapAdmin::class, 'add_meta_boxes'));
+        add_action('add_meta_boxes_cb_map', array(MapAdmin::class, 'add_meta_boxes'));
     }
 
     /**
@@ -75,24 +88,38 @@ class Map extends CustomPostType
         );
 
         $args = array(
-            'labels'              => $labels,
-            'hierarchical'        => false,
-            'description'         => self::__('POST_TYPE_DESCRIPTION', 'commons-booking-map',
+            'labels'            => $labels,
+
+            // Sichtbarkeit des Post Types
+            'public'            => true,
+
+            // Standart Ansicht im Backend aktivieren (Wie Artikel / Seiten)
+            'show_ui'           => true,
+
+            // Soll es im Backend Menu sichtbar sein?
+            'show_in_menu'      => false,
+
+            // Position im Menu
+            'menu_position'     => 5,
+
+            // Post Type in der oberen Admin-Bar anzeigen?
+            'show_in_admin_bar' => true,
+
+            // in den Navigations Menüs sichtbar machen?
+            'show_in_nav_menus' => true,
+            'hierarchical'      => false,
+            'description'       => self::__('POST_TYPE_DESCRIPTION', 'commons-booking-map',
                 'Maps to show Commons Booking Locations and their Items'),
-            'supports'            => $supports,
-            'public'              => false,
-            'show_ui'             => true,
-            'show_in_menu'        => true,
-            'menu_position'       => 5, // below posts
+            'supports'          => $supports,
+
             'menu_icon'           => 'dashicons-location',
-            'show_in_nav_menus'   => true,
             'publicly_queryable'  => false,
             'exclude_from_search' => false,
             'has_archive'         => false,
             'query_var'           => false,
             'can_export'          => false,
             'delete_with_user'    => false,
-            'capability_type'     => 'post',
+            'capability_type'     => array(self::$postType, self::$postType.'s'),
         );
         return $args;
     }

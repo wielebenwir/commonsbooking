@@ -85,6 +85,7 @@ class MapSettings
             register_setting('cb-map-settings', 'cb_map_options', array($this, 'validate_options'));
         });
 
+        add_filter("plugin_action_links_".plugin_basename(__FILE__), array($this, 'add_settings_link'));
     }
 
     /**
