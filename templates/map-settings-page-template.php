@@ -6,9 +6,9 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
 ?>
 <div class="wrap">
 
-  <h1><?php echo  commonsbooking_sanitizeHTML( __('Settings for Commons Booking Map', 'commonsbooking')); ?></h1>
+  <h1><?php echo  commonsbooking_sanitizeHTML( __('Settings for the Map', 'commonsbooking')); ?></h1>
 
-  <p><?php echo  commonsbooking_sanitizeHTML( __('general settings regarding the behaviour of the Commons Booking Map plugin', 'commonsbooking')); ?></p>
+  <p><?php echo  commonsbooking_sanitizeHTML( __('general settings regarding the behaviour of the Map', 'commonsbooking')); ?></p>
 
   <form method="post" action="options.php">
     <?php
