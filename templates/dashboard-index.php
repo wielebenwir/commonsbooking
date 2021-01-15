@@ -6,7 +6,7 @@
 			<h2><?php echo __('Welcome to CommonsBooking', 'commonsbooking') ;?>.</h2>
 			<div class="welcome-panel-column-container">
 				<div class="welcome-panel-column">
-					<img src="<?php echo plugin_dir_url( __DIR__  ).'assets/global/cb-ci/logo.png'; ?>" style="width:80%">
+					<img src="<?php echo plugin_dir_url( __DIR__  ).'assets/global/cb-ci/logo.png'; ?>" style="width:200px">
 				</div><!-- .welcome-panel-column -->
 				<div class="welcome-panel-column">
 					<h3><?php echo __('Jump to...', 'commonsbooking') ;?>.</h3>
