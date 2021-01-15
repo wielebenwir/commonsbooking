@@ -49,7 +49,9 @@ return array(
            'id' => 'posttypes',
            // tranlsators: %s = admin url options page
            'desc' =>
-                commonsbooking_sanitizeHTML( __('Customize names & slugs. You can set an individual slugs for items and locations to create individual permalinks. <b>Notice</b>: If the new settings do not work directly (you will get a 404 page error on frontend pages), you must click on the Settings -> Permalinks page after saving these settings to refresh the Wordpress permalink settings.', 'commonsbooking' ) ),
+                esc_html__(
+                    'Customize names & slugs. You can set an individual slug for items and locations to create individual permalinks. <b>Notice</b>: If the new settings do not work directly (you will get a 404 page error on frontend pages), you must click on the Settings -> Permalinks page after saving these settings to refresh the Wordpress permalink settings.'
+                    , 'commonsbooking' ),
            'fields' => array(
 //             array(
 //               'name'    => esc_html_e( 'Item singular name', 'commonsbooking' ),
@@ -206,22 +208,22 @@ Thanks, the Team.
 
             /* field group template and booking message templates start */
             'messagetemplates' => array(
-              'title' => commonsbooking_sanitizeHTML( 'Template and booking process messages', 'commonsbooking' ),
+              'title' => commonsbooking_sanitizeHTML( __( 'Template and booking process messages', 'commonsbooking' ) ),
               'id' => 'messagetemplates',
               'desc' => '',
               'fields' => array(
                 array(
-                  'name'    => commonsbooking_sanitizeHTML( 'Item not available', 'commonsbooking' ),
+                  'name'    => commonsbooking_sanitizeHTML ( __( 'Item not available', 'commonsbooking' ) ),
                   'id'      => 'item-not-available',
                   'type'    => 'textarea_small',
-                  'desc'    => commonsbooking_sanitizeHTML('This text is shown on item listings (shortcode cb_items) and item detail page if there is no valid bookable timeframe set for this item', 'commonsbooking'),
+                  'desc'    => commonsbooking_sanitizeHTML( __('This text is shown on item listings (shortcode cb_items) and item detail page if there is no valid bookable timeframe set for this item', 'commonsbooking') ),
                   'default' => esc_html__( 'This item is currently not bookable.', 'commonsbooking' ),
                 ),
                 array(
-                    'name'    => commonsbooking_sanitizeHTML( 'Location without available items', 'commonsbooking' ),
+                    'name'    => esc_html__( 'Location without available items', 'commonsbooking' ),
                     'id'      => 'location-without-items',
                     'type'    => 'textarea_small',
-                    'desc'    => commonsbooking_sanitizeHTML('This text is shown on location listings and location detail page if there are no items available at this location', 'commonsbooking'),
+                    'desc'    => esc_html__('This text is shown on location listings and location detail page if there are no items available at this location', 'commonsbooking'),
                     'default' => esc_html__( 'No items available at this location right now.', 'commonsbooking' ),
                   ),
               )
@@ -237,7 +239,7 @@ Thanks, the Team.
         'id'           => 'migration',
         'field_groups' => array(
             'migration' => array(
-                'title'       => __('Migrate from Commons Booking Version 0.X', 'commonsbooking'),
+                'title'       => esc_html__('Migrate from Commons Booking Version 0.X', 'commonsbooking'),
                 'id'          => 'migration',
                 'desc'        => commonsbooking_sanitizeHTML( __('Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br>Please read the documentation on <a href="https://commonsbooking.org/dokumentation/">https://commonsbooking.org/dokumentation/</a> before you start migration.', 'commonsbooking') ),
                 'fields'      => [

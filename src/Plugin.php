@@ -122,7 +122,14 @@ class Plugin
 
         // actions after saving plugin options
         add_action( 'admin_init', array (self::class, 'saveOptionsActions'), 100 );
+
+        add_action( 'plugins_loaded', array ($this, 'commonsbooking_load_textdomain'), 20 );
     }
+
+    public function commonsbooking_load_textdomain() {
+        load_plugin_textdomain( 'commonsbooking', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' ); 
+    }
+    
 
     /**
      * Removes cache item in connection to post_type.

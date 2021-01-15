@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-01-15T16:57:34+00:00\n"
+"POT-Creation-Date: 2021-01-15T22:36:09+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -68,71 +68,71 @@ msgid "Naming and permalinks"
 msgstr ""
 
 #: includes/OptionsArray.php:52
-msgid "Customize names & slugs. You can set an individual slugs for items and locations to create individual permalinks. <b>Notice</b>: If the new settings do not work directly (you will get a 404 page error on frontend pages), you must click on the Settings -> Permalinks page after saving these settings to refresh the Wordpress permalink settings."
+msgid "Customize names & slugs. You can set an individual slug for items and locations to create individual permalinks. <b>Notice</b>: If the new settings do not work directly (you will get a 404 page error on frontend pages), you must click on the Settings -> Permalinks page after saving these settings to refresh the Wordpress permalink settings."
 msgstr ""
 
-#: includes/OptionsArray.php:67
+#: includes/OptionsArray.php:69
 msgid "Items slug"
 msgstr ""
 
 #. translators: %s = example url (like website.com/cb-items/)
-#: includes/OptionsArray.php:71
+#: includes/OptionsArray.php:73
 msgid "The url for the items detail page. E.g: %s"
 msgstr ""
 
-#: includes/OptionsArray.php:78
+#: includes/OptionsArray.php:80
 msgid "Locations slug"
 msgstr ""
 
 #. translators: %s = example url (like website.com/cb-locations/)
-#: includes/OptionsArray.php:82
+#: includes/OptionsArray.php:84
 msgid "The url for the locations detail page. E.g: %s"
 msgstr ""
 
-#: includes/OptionsArray.php:100
-#: includes/OptionsArray.php:104
-#: includes/OptionsArray.php:109
+#: includes/OptionsArray.php:102
+#: includes/OptionsArray.php:106
+#: includes/OptionsArray.php:111
 #: src/Wordpress/CustomPostType/Timeframe.php:767
 msgid "Booking Codes"
 msgstr ""
 
-#: includes/OptionsArray.php:120
+#: includes/OptionsArray.php:122
 msgid "Templates"
 msgstr ""
 
-#: includes/OptionsArray.php:125
+#: includes/OptionsArray.php:127
 msgid "Email templates"
 msgstr ""
 
-#: includes/OptionsArray.php:129
+#: includes/OptionsArray.php:131
 msgid "Mail-Header from E-Mail"
 msgstr ""
 
-#: includes/OptionsArray.php:130
+#: includes/OptionsArray.php:132
 msgid "E-Mail that will be shown as sender in generated emails"
 msgstr ""
 
-#: includes/OptionsArray.php:136
+#: includes/OptionsArray.php:138
 msgid "Mail-Header from Name"
 msgstr ""
 
-#: includes/OptionsArray.php:137
+#: includes/OptionsArray.php:139
 msgid "Name that will be shown as sender in generated emails"
 msgstr ""
 
-#: includes/OptionsArray.php:143
+#: includes/OptionsArray.php:145
 msgid "Booking confirmed email subject"
 msgstr ""
 
-#: includes/OptionsArray.php:147
+#: includes/OptionsArray.php:149
 msgid "Your booking {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} "
 msgstr ""
 
-#: includes/OptionsArray.php:151
+#: includes/OptionsArray.php:153
 msgid "Booking confirmed email body"
 msgstr ""
 
-#: includes/OptionsArray.php:155
+#: includes/OptionsArray.php:157
 msgid ""
 "\n"
 "Hi {{user:first_name}},<br>\n"
@@ -162,19 +162,19 @@ msgid ""
 "                        "
 msgstr ""
 
-#: includes/OptionsArray.php:183
+#: includes/OptionsArray.php:185
 msgid "Booking canceled email subject"
 msgstr ""
 
-#: includes/OptionsArray.php:186
+#: includes/OptionsArray.php:188
 msgid "Booking canceled: {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}}"
 msgstr ""
 
-#: includes/OptionsArray.php:189
+#: includes/OptionsArray.php:191
 msgid "Booking canceled email body"
 msgstr ""
 
-#: includes/OptionsArray.php:192
+#: includes/OptionsArray.php:194
 msgid ""
 "\n"
 "Hi {{user:first_name}},<br>\n"
@@ -185,44 +185,64 @@ msgid ""
 "                            "
 msgstr ""
 
-#: includes/OptionsArray.php:218
+#: includes/OptionsArray.php:211
+msgid "Template and booking process messages"
+msgstr ""
+
+#: includes/OptionsArray.php:216
+msgid "Item not available"
+msgstr ""
+
+#: includes/OptionsArray.php:219
+msgid "This text is shown on item listings (shortcode cb_items) and item detail page if there is no valid bookable timeframe set for this item"
+msgstr ""
+
+#: includes/OptionsArray.php:220
 msgid "This item is currently not bookable."
 msgstr ""
 
-#: includes/OptionsArray.php:225
+#: includes/OptionsArray.php:223
+msgid "Location without available items"
+msgstr ""
+
+#: includes/OptionsArray.php:226
+msgid "This text is shown on location listings and location detail page if there are no items available at this location"
+msgstr ""
+
+#: includes/OptionsArray.php:227
 msgid "No items available at this location right now."
 msgstr ""
 
-#: includes/OptionsArray.php:236
+#: includes/OptionsArray.php:238
 msgid "Migration"
 msgstr ""
 
-#: includes/OptionsArray.php:240
+#: includes/OptionsArray.php:242
 msgid "Migrate from Commons Booking Version 0.X"
 msgstr ""
 
-#: includes/OptionsArray.php:242
+#: includes/OptionsArray.php:244
 msgid "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br>Please read the documentation on <a href=\"https://commonsbooking.org/dokumentation/\">https://commonsbooking.org/dokumentation/</a> before you start migration."
 msgstr ""
 
-#: includes/OptionsArray.php:245
+#: includes/OptionsArray.php:247
 #: src/View/Migration.php:57
 msgid "Start Migration"
 msgstr ""
 
-#: includes/OptionsArray.php:253
+#: includes/OptionsArray.php:255
 msgid "CommonsBooking Version 0.X profile fields"
 msgstr ""
 
-#: includes/OptionsArray.php:255
+#: includes/OptionsArray.php:257
 msgid "Enable the following legacy CommonsBooking Version 0.X user profile fields:"
 msgstr ""
 
-#: includes/OptionsArray.php:258
+#: includes/OptionsArray.php:260
 msgid "Enable"
 msgstr ""
 
-#: includes/OptionsArray.php:263
+#: includes/OptionsArray.php:265
 msgid "Terms & Services Url"
 msgstr ""
 
@@ -422,15 +442,15 @@ msgstr ""
 msgid "Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s: %2$s"
 msgstr ""
 
-#: src/Plugin.php:322
+#: src/Plugin.php:329
 msgid "Item Category"
 msgstr ""
 
-#: src/Plugin.php:347
+#: src/Plugin.php:354
 msgid "Location Category"
 msgstr ""
 
-#: src/Plugin.php:387
+#: src/Plugin.php:394
 msgid "CommonsBooking Manager"
 msgstr ""
 
@@ -1176,6 +1196,10 @@ msgstr ""
 msgid "use as timeframe image"
 msgstr ""
 
+#: src/Wordpress/Options/AdminOptions.php:64
+msgid "<strong>Default values for following fields automatically set or restored, because they were empty:</strong><br> "
+msgstr ""
+
 #: templates/booking-single-notallowed.php:10
 msgid "You are not allowed to access this booking."
 msgstr ""
@@ -1536,6 +1560,18 @@ msgstr ""
 
 #: templates/map-admin-page-template.php:406
 msgid "how locations with items that are in draft status should be handled"
+msgstr ""
+
+#: templates/map-admin-page-template.php:411
+msgid "don't show drafts"
+msgstr ""
+
+#: templates/map-admin-page-template.php:412
+msgid "show only drafts"
+msgstr ""
+
+#: templates/map-admin-page-template.php:413
+msgid "show all together"
 msgstr ""
 
 #: templates/map-admin-page-template.php:423

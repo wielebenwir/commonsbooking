@@ -61,7 +61,7 @@ class AdminOptions
 
             ?>
                     <div class="notice notice-info is-dismissible">
-                        <p><?php echo commonsbooking_sanitizeHTML('<strong>Default values for following fields automatically restored, because they were empty:</strong><br> ', 'commonsbooking'); 
+                        <p><?php echo commonsbooking_sanitizeHTML( __('<strong>Default values for following fields automatically set or restored, because they were empty:</strong><br> ', 'commonsbooking' ) ); 
                         echo implode("<br> ", $fields); ?></p>
                     </div>
             <?php 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2021-01-15T16:57:34+00:00\n"
-"PO-Revision-Date: 2021-01-15 18:04+0100\n"
+"POT-Creation-Date: 2021-01-15T22:36:09+00:00\n"
+"PO-Revision-Date: 2021-01-15 23:38+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2;commonsbooking_sanitizeHTML\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 "X-Poedit-SearchPathExcluded-1: vendor\n"
@@ -100,7 +100,7 @@ msgstr "Namen und Permalinks"
 
 #: includes/OptionsArray.php:52
 msgid ""
-"Customize names & slugs. You can set an individual slugs for items and "
+"Customize names & slugs. You can set an individual slug for items and "
 "locations to create individual permalinks. <b>Notice</b>: If the new "
 "settings do not work directly (you will get a 404 page error on frontend "
 "pages), you must click on the Settings -> Permalinks page after saving these "
@@ -113,60 +113,60 @@ msgstr ""
 "dieser Einstellungen auf die Seite Einstellungen -> Permalinks klicken, um "
 "die Wordpress Permalink-Einstellungen zu aktualisieren."
 
-#: includes/OptionsArray.php:67
+#: includes/OptionsArray.php:69
 msgid "Items slug"
 msgstr "Artikel slug"
 
 #. translators: %s = example url (like website.com/cb-items/)
-#: includes/OptionsArray.php:71
+#: includes/OptionsArray.php:73
 msgid "The url for the items detail page. E.g: %s"
 msgstr "Die URL für die Artikel-Detailseite. Z.B.: %s"
 
-#: includes/OptionsArray.php:78
+#: includes/OptionsArray.php:80
 msgid "Locations slug"
 msgstr "Standorte Slug"
 
 #. translators: %s = example url (like website.com/cb-locations/)
-#: includes/OptionsArray.php:82
+#: includes/OptionsArray.php:84
 msgid "The url for the locations detail page. E.g: %s"
 msgstr "Die URL für die Standort-Detailseite. Z.B.: %s"
 
-#: includes/OptionsArray.php:100 includes/OptionsArray.php:104
-#: includes/OptionsArray.php:109 src/Wordpress/CustomPostType/Timeframe.php:767
+#: includes/OptionsArray.php:102 includes/OptionsArray.php:106
+#: includes/OptionsArray.php:111 src/Wordpress/CustomPostType/Timeframe.php:767
 msgid "Booking Codes"
 msgstr "Buchungs-Codes"
 
-#: includes/OptionsArray.php:120
+#: includes/OptionsArray.php:122
 msgid "Templates"
 msgstr "Vorlagen"
 
-#: includes/OptionsArray.php:125
+#: includes/OptionsArray.php:127
 msgid "Email templates"
 msgstr "E-Mail Vorlagen"
 
-#: includes/OptionsArray.php:129
+#: includes/OptionsArray.php:131
 msgid "Mail-Header from E-Mail"
 msgstr "Absender E-Mail Mail-Adresse"
 
-#: includes/OptionsArray.php:130
+#: includes/OptionsArray.php:132
 msgid "E-Mail that will be shown as sender in generated emails"
 msgstr ""
 "E-Mail, die als Absender in automatisch versendeten E-Mails angezeigt wird"
 
-#: includes/OptionsArray.php:136
+#: includes/OptionsArray.php:138
 msgid "Mail-Header from Name"
 msgstr "Absender E-Mail Name"
 
-#: includes/OptionsArray.php:137
+#: includes/OptionsArray.php:139
 msgid "Name that will be shown as sender in generated emails"
 msgstr ""
 "Name, der als Absender in automatisch versendeten E-Mails angezeigt wird"
 
-#: includes/OptionsArray.php:143
+#: includes/OptionsArray.php:145
 msgid "Booking confirmed email subject"
 msgstr "E-Mail-Betreff für bestätigte Buchungen"
 
-#: includes/OptionsArray.php:147
+#: includes/OptionsArray.php:149
 msgid ""
 "Your booking {{item:post_title}} at {{location:post_title}} {{booking:"
 "formattedBookingDate}} "
@@ -174,11 +174,11 @@ msgstr ""
 "Deine Buchung von {{item:post_title}} am Standort {{location:post_title}} "
 "{{booking:formattedBookingDate}} "
 
-#: includes/OptionsArray.php:151
+#: includes/OptionsArray.php:153
 msgid "Booking confirmed email body"
 msgstr "E-Mail-Text für bestätige Buchungen"
 
-#: includes/OptionsArray.php:155
+#: includes/OptionsArray.php:157
 msgid ""
 "\n"
 "Hi {{user:first_name}},<br>\n"
@@ -239,11 +239,11 @@ msgstr ""
 "Vielen Dank, das Team.\n"
 "                        "
 
-#: includes/OptionsArray.php:183
+#: includes/OptionsArray.php:185
 msgid "Booking canceled email subject"
 msgstr "E-Mail-Betreff für stornierte Buchungen"
 
-#: includes/OptionsArray.php:186
+#: includes/OptionsArray.php:188
 msgid ""
 "Booking canceled: {{item:post_title}} at {{location:post_title}} {{booking:"
 "formattedBookingDate}}"
@@ -251,11 +251,11 @@ msgstr ""
 "Buchung storniert: {{item:post_title}} am Standort {{location:post_title}} "
 "{{booking:formattedBookingDate}}"
 
-#: includes/OptionsArray.php:189
+#: includes/OptionsArray.php:191
 msgid "Booking canceled email body"
 msgstr "E-Mail-Text für stornierte Buchungen"
 
-#: includes/OptionsArray.php:192
+#: includes/OptionsArray.php:194
 msgid ""
 "\n"
 "Hi {{user:first_name}},<br>\n"
@@ -275,23 +275,52 @@ msgstr ""
 "Vielen Dank, das Team.\n"
 "                            "
 
-#: includes/OptionsArray.php:218
+#: includes/OptionsArray.php:211
+msgid "Template and booking process messages"
+msgstr "Template und Buchungsprozess-Meldungen"
+
+#: includes/OptionsArray.php:216
+msgid "Item not available"
+msgstr "Artikel nicht verfügbar"
+
+#: includes/OptionsArray.php:219
+msgid ""
+"This text is shown on item listings (shortcode cb_items) and item detail "
+"page if there is no valid bookable timeframe set for this item"
+msgstr ""
+"Dieser Text wird auf Artikellisten (Shortoce cb_items) und der "
+"Artikeldetailseite angezeigt, wenn kein gültiger buchbarer Zeitrahmen für "
+"diesen Artikel festgelegt ist"
+
+#: includes/OptionsArray.php:220
 msgid "This item is currently not bookable."
 msgstr "Dieser Artikel ist derzeit nicht buchbar."
 
-#: includes/OptionsArray.php:225
+#: includes/OptionsArray.php:223
+msgid "Location without available items"
+msgstr "Standort ohne verfügbare Artikel"
+
+#: includes/OptionsArray.php:226
+msgid ""
+"This text is shown on location listings and location detail page if there "
+"are no items available at this location"
+msgstr ""
+"Dieser Text wird auf der Standortliste und auf der Standortdetailseite "
+"angezeigt, wenn an diesem Standort keine Artikel verfügbar sind"
+
+#: includes/OptionsArray.php:227
 msgid "No items available at this location right now."
 msgstr "Keine Artikel an diesem Standort verfügbar."
 
-#: includes/OptionsArray.php:236
+#: includes/OptionsArray.php:238
 msgid "Migration"
 msgstr "Migration"
 
-#: includes/OptionsArray.php:240
+#: includes/OptionsArray.php:242
 msgid "Migrate from Commons Booking Version 0.X"
 msgstr "Migriere von Commons Booking Version 0.X"
 
-#: includes/OptionsArray.php:242
+#: includes/OptionsArray.php:244
 msgid ""
 "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: "
 "locations, items, timeframes and bookings. <br>Please read the documentation "
@@ -304,26 +333,26 @@ msgstr ""
 "\">https://commonsbooking.org/dokumentation/,</a> bevor Du mit der Migration "
 "beginnst."
 
-#: includes/OptionsArray.php:245 src/View/Migration.php:57
+#: includes/OptionsArray.php:247 src/View/Migration.php:57
 msgid "Start Migration"
 msgstr "Migration starten"
 
-#: includes/OptionsArray.php:253
+#: includes/OptionsArray.php:255
 msgid "CommonsBooking Version 0.X profile fields"
 msgstr "CommonsBooking Version 0.X Nutzerprofil-Felder"
 
-#: includes/OptionsArray.php:255
+#: includes/OptionsArray.php:257
 msgid ""
 "Enable the following legacy CommonsBooking Version 0.X user profile fields:"
 msgstr ""
 "Aktiviere die folgenden veralteten Nutzer-Profilfelder aus Commons Booking "
 "Version 0.X:"
 
-#: includes/OptionsArray.php:258
+#: includes/OptionsArray.php:260
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: includes/OptionsArray.php:263
+#: includes/OptionsArray.php:265
 msgid "Terms & Services Url"
 msgstr "Nutzungsbedingungen & Services URL"
 
@@ -547,15 +576,15 @@ msgstr ""
 "überlappende Zeiträume an einem bestimmten Tag zu vermeiden. Siehe "
 "betroffene Zeitrahmen-ID: %1$s: %2$s"
 
-#: src/Plugin.php:322
+#: src/Plugin.php:329
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:347
+#: src/Plugin.php:354
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
-#: src/Plugin.php:387
+#: src/Plugin.php:394
 msgid "CommonsBooking Manager"
 msgstr "CommonsBooking Manager"
 
@@ -1393,6 +1422,14 @@ msgstr "Zeitrahmenbild entfernen"
 msgid "use as timeframe image"
 msgstr "Verwendung als Zeitrahmenbild"
 
+#: src/Wordpress/Options/AdminOptions.php:64
+msgid ""
+"<strong>Default values for following fields automatically set or restored, "
+"because they were empty:</strong><br> "
+msgstr ""
+"<strong>Standardwerte für folgende Felder wurden automatisch festgelegt oder "
+"wiederhergestellt, da sie leer waren:</strong><br> "
+
 #: templates/booking-single-notallowed.php:10
 msgid "You are not allowed to access this booking."
 msgstr "Du darfst nicht auf diese Buchung zugreifen."
@@ -1802,6 +1839,18 @@ msgstr ""
 "Wie Standorte mit Artikeln, die sich im Entwurfsstatus befinden, behandelt "
 "werden sollen"
 
+#: templates/map-admin-page-template.php:411
+msgid "don't show drafts"
+msgstr "Entwürfe nicht anzeigen"
+
+#: templates/map-admin-page-template.php:412
+msgid "show only drafts"
+msgstr "Nur Entwürfe anzeigen"
+
+#: templates/map-admin-page-template.php:413
+msgid "show all together"
+msgstr "Alle anzeigen"
+
 #: templates/map-admin-page-template.php:423
 msgid "Custom Item Draft Marker"
 msgstr "Benutzerdefinierte Artikel-Entwurfsmarkierung"
@@ -1975,9 +2024,6 @@ msgstr "Weiter zur Buchungsprüfung"
 
 #~ msgid "Repetition end"
 #~ msgstr "Wiederholungsende"
-
-#~ msgid "Item currently not available."
-#~ msgstr "Dieser Artikel ist derzeit nicht verfügbar."
 
 #~ msgid ""
 #~ "Customize names & slugs. <br><b>Important:</b> After changing these "
@@ -2229,9 +2275,6 @@ msgstr "Weiter zur Buchungsprüfung"
 
 #~ msgid "cancelled booking."
 #~ msgstr "stornierte Buchung."
-
-#~ msgid "Booking process messages"
-#~ msgstr "Buchungsprozess-Meldungen"
 
 #~ msgid ""
 #~ "Please review your booking of {{item-name}} at {{location-name}} and "

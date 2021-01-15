@@ -408,9 +408,9 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                     <td>
                         <?php $item_draft_appearance = MapAdmin::get_option($cb_map_id, 'item_draft_appearance'); ?>
                         <select id="item_draft_appearance" name="cb_map_options[item_draft_appearance]">
-                            <option value="1" <?php echo  $item_draft_appearance == 1 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( "don't show drafts")); ?></option>
-                            <option value="2" <?php echo  $item_draft_appearance == 2 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( "show only drafts")); ?></option>
-                            <option value="3" <?php echo  $item_draft_appearance == 3 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( "show all together")); ?></option>
+                            <option value="1" <?php echo  $item_draft_appearance == 1 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( "don't show drafts", 'commonsbooking') ); ?></option>
+                            <option value="2" <?php echo  $item_draft_appearance == 2 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( "show only drafts", 'commonsbooking') ); ?></option>
+                            <option value="3" <?php echo  $item_draft_appearance == 3 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( "show all together", 'commonsbooking') ); ?></option>
                         </select>
                     </td>
                 </tr>
@@ -420,7 +420,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
 
     <div class="option-group" id="option-group-item-status-appearance">
         <details>
-            <summary><?php echo commonsbooking_sanitizeHTML( __(         'Custom Item Draft Marker' ,'commonsbooking')); ?></summary>
+            <summary><?php echo commonsbooking_sanitizeHTML( __( 'Custom Item Draft Marker' ,'commonsbooking') ); ?></summary>
             <table class="text-left">
                 <tr>
                     <th>

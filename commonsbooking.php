@@ -133,7 +133,8 @@ add_action('wp_ajax_cb_map_geo_search', array(MapShortcode::class, 'geo_search')
 add_action('wp_ajax_nopriv_cb_map_geo_search', array(MapShortcode::class, 'geo_search'));
 
 // should be loaded via add_action, but wasnt working in admin menu
-load_plugin_textdomain('commonsbooking', false, basename(dirname(__FILE__)).'/languages/');
+// moved to Plugin->init
+//load_plugin_textdomain('commonsbooking', false, basename(dirname(__FILE__)).'/languages/');
 
 function commonsbooking_query_vars($qvars)
 {
