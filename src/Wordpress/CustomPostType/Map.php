@@ -51,22 +51,17 @@ class Map extends CustomPostType
     public function getArgs()
     {
         $labels = array(
-            'name'               => self::__('POST_LABELS_NAME', 'commons-booking-map', 'Commons Booking maps'),
-            'singular_name'      => self::__('POST_LABELS_SINGULAR_NAME', 'commons-booking-map',
-                'Commons Booking map'),
-            'add_new'            => self::__('POST_LABELS_ADD_NEW', 'commons-booking-map', 'create CB map'),
-            'add_new_item'       => self::__('POST_LABELS_ADD_NEW_ITEM', 'commons-booking-map',
-                'create Commons Booking map'),
-            'edit_item'          => self::__('POST_LABELS_EDIT_ITEM', 'commons-booking-map',
-                'edit Commons Booking map'),
-            'new_item'           => self::__('POST_LABELS_NEW_ITEM', 'commons-booking-map', 'create CB map'),
-            'view_item'          => self::__('POST_LABELS_VIEW_ITEM', 'commons-booking-map', 'view CB map'),
-            'search_items'       => self::__('POST_LABELS_SEARCH_ITEMS', 'commons-booking-map', 'search CB maps'),
-            'not_found'          => self::__('POST_LABELS_NOT_FOUND', 'commons-booking-map',
-                'no Commons Booking map found'),
-            'not_found_in_trash' => self::__('POST_LABELS_NOT_FOUND_IN_TRASH', 'commons-booking-map',
-                'no Commons Booking map found in the trash'),
-            'parent_item_colon'  => self::__('POST_LABELS_PARENT_ITEM_COLON', 'commons-booking-map', 'parent CB maps'),
+            'name'               => self::__('Commons Booking maps', 'commonsbooking'),
+            'singular_name'      => self::__('Commons Booking map', 'commonsbooking'),
+            'add_new'            => self::__('create CB map', 'commonsbooking'),
+            'add_new_item'       => self::__('create Commons Booking map', 'commonsbooking'),
+            'edit_item'          => self::__('edit Commons Booking map', 'commonsbooking'),
+            'new_item'           => self::__('create CB map', 'commonsbooking'),
+            'view_item'          => self::__('view CB map', 'commonsbooking'),
+            'search_items'       => self::__('search CB maps', 'commonsbooking'),
+            'not_found'          => self::__('no Commons Booking map found', 'commonsbooking'),
+            'not_found_in_trash' => self::__('no Commons Booking map found in the trash', 'commonsbooking'),
+            'parent_item_colon'  => self::__('parent CB maps', 'commonsbooking'),
         );
 
         $supports = array(
@@ -77,8 +72,7 @@ class Map extends CustomPostType
         $args = array(
             'labels'              => $labels,
             'hierarchical'        => false,
-            'description'         => self::__('POST_TYPE_DESCRIPTION', 'commons-booking-map',
-                'Maps to show Commons Booking Locations and their Items'),
+            'description'         => self::__('Maps to show Commons Booking Locations and their Items', 'commonsbooking'),
             'supports'            => $supports,
             'public'              => false,
             'show_ui'             => true,
