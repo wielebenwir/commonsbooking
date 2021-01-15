@@ -22,7 +22,7 @@
 					<ul>
 						<li><a href="https://commonsbooking.org/dokumentation" target="_blank"><?php echo __('Documentation & Tutorials', 'commonsbooking') ;?></a></li>		
 						<li><a href="https://commonsbooking.org/forums/forum/support/" target="_blank"><?php echo __('Support Forum', 'commonsbooking') ;?></a></li>
-						<li><a href="https://commonsbooking.org/kontakt/" target="_blank"><?php echo __('Contact us', 'commonsbooking') ;?></a></li>
+						<li><a href="https://commonsbooking.org/kontakt/" target="_blank"><?php echo __('Contact & Newsletter', 'commonsbooking') ;?></a></li>
 					</ul>
 				</div><!-- .welcome-panel-column -->
 			</div><!-- .welcome-panel-column-container -->
