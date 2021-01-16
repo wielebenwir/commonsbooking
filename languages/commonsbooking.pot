@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-01-15T22:36:09+00:00\n"
+"POT-Creation-Date: 2021-01-16T21:17:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -391,7 +391,7 @@ msgstr ""
 msgid "Link to your booking"
 msgstr ""
 
-#: src/Model/Location.php:93
+#: src/Model/Location.php:96
 msgid "Please contact the contact persons at the location directly if you have any questions regarding collection or return:"
 msgstr ""
 
@@ -442,15 +442,15 @@ msgstr ""
 msgid "Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s: %2$s"
 msgstr ""
 
-#: src/Plugin.php:329
+#: src/Plugin.php:333
 msgid "Item Category"
 msgstr ""
 
-#: src/Plugin.php:354
+#: src/Plugin.php:358
 msgid "Location Category"
 msgstr ""
 
-#: src/Plugin.php:394
+#: src/Plugin.php:398
 msgid "CommonsBooking Manager"
 msgstr ""
 
@@ -484,7 +484,7 @@ msgstr ""
 
 #: src/Repository/CB1UserFields.php:68
 #: src/Repository/CB1UserFields.php:273
-#: src/Wordpress/CustomPostType/Location.php:139
+#: src/Wordpress/CustomPostType/Location.php:158
 #: templates/booking-single.php:58
 msgid "Address"
 msgstr ""
@@ -597,7 +597,7 @@ msgid "Items"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Item.php:40
-#: src/Wordpress/CustomPostType/Location.php:45
+#: src/Wordpress/CustomPostType/Location.php:64
 #: src/Wordpress/CustomPostType/Timeframe.php:915
 msgid "Add new"
 msgstr ""
@@ -687,157 +687,161 @@ msgstr ""
 msgid "Select item admins."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:43
-#: src/Wordpress/CustomPostType/Location.php:64
+#: src/Wordpress/CustomPostType/Location.php:62
+#: src/Wordpress/CustomPostType/Location.php:83
 #: templates/dashboard-index.php:15
 msgid "Locations"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:44
+#: src/Wordpress/CustomPostType/Location.php:63
 #: src/Wordpress/CustomPostType/Timeframe.php:82
 #: src/Wordpress/CustomPostType/Timeframe.php:620
 msgid "Location"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:46
-#: src/Wordpress/CustomPostType/Location.php:48
+#: src/Wordpress/CustomPostType/Location.php:65
+#: src/Wordpress/CustomPostType/Location.php:67
 msgid "Add new location"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:47
+#: src/Wordpress/CustomPostType/Location.php:66
 msgid "Edit location"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:49
+#: src/Wordpress/CustomPostType/Location.php:68
 msgid "Show location"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:50
+#: src/Wordpress/CustomPostType/Location.php:69
 msgid "Show locations"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:51
+#: src/Wordpress/CustomPostType/Location.php:70
 msgid "Search locations"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:52
+#: src/Wordpress/CustomPostType/Location.php:71
 msgid "location not found"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:53
+#: src/Wordpress/CustomPostType/Location.php:72
 msgid "No locations found in trash"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:54
+#: src/Wordpress/CustomPostType/Location.php:73
 msgid "Parent location:"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:55
+#: src/Wordpress/CustomPostType/Location.php:74
 msgid "All locations"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:56
+#: src/Wordpress/CustomPostType/Location.php:75
 msgid "Location archive"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:57
+#: src/Wordpress/CustomPostType/Location.php:76
 msgid "Location attributes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:58
+#: src/Wordpress/CustomPostType/Location.php:77
 msgid "Add to location"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:59
+#: src/Wordpress/CustomPostType/Location.php:78
 msgid "Added to location"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:60
+#: src/Wordpress/CustomPostType/Location.php:79
 msgid "Location image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:61
+#: src/Wordpress/CustomPostType/Location.php:80
 msgid "set location image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:62
+#: src/Wordpress/CustomPostType/Location.php:81
 msgid "remove location image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:63
+#: src/Wordpress/CustomPostType/Location.php:82
 msgid "use as location image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:148
+#: src/Wordpress/CustomPostType/Location.php:167
 msgid "Street / No."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:160
+#: src/Wordpress/CustomPostType/Location.php:179
 msgid "Postcode"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:172
+#: src/Wordpress/CustomPostType/Location.php:191
 msgid "City"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:185
+#: src/Wordpress/CustomPostType/Location.php:204
 msgid "Country"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:194
+#: src/Wordpress/CustomPostType/Location.php:213
 msgid "Latitude"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:203
+#: src/Wordpress/CustomPostType/Location.php:222
 msgid "Longitude"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:213
+#: src/Wordpress/CustomPostType/Location.php:231
+msgid "Position"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:241
 msgid "General Location information"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:222
+#: src/Wordpress/CustomPostType/Location.php:250
 msgid "Location email"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:223
+#: src/Wordpress/CustomPostType/Location.php:251
 msgid "email-address to get copy of booking confirmation and cancellation mails"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:234
+#: src/Wordpress/CustomPostType/Location.php:261
 #: templates/booking-single.php:66
 msgid "Pickup instructions"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:235
+#: src/Wordpress/CustomPostType/Location.php:262
 msgid "Type in information about the pickup process (e.g. detailed route description, opening hours, etc.). This will be shown to user in booking process and booking confirmation mail"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:245
+#: src/Wordpress/CustomPostType/Location.php:272
 msgid "Location contact information"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:246
+#: src/Wordpress/CustomPostType/Location.php:273
 msgid "information about how to contact the location (e.g. contact person, phone number, e-mail etc.). This will be shown to user in booking process and booking confirmation mail"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:260
+#: src/Wordpress/CustomPostType/Location.php:287
 msgid "Location Admin(s)"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:261
+#: src/Wordpress/CustomPostType/Location.php:288
 msgid "choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role CommonsBooking Manager can be selected here."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:267
+#: src/Wordpress/CustomPostType/Location.php:294
 msgid "Select location admins."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:272
+#: src/Wordpress/CustomPostType/Location.php:299
 msgid "Allow locked day overbooking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:273
+#: src/Wordpress/CustomPostType/Location.php:300
 msgid "If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation on <a href=\"https://commonsbooking.org\">commonsbooking.org</a> for more information."
 msgstr ""
 
