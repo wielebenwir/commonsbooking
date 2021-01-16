@@ -5,7 +5,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar, 
 Requires at least: 5.2
 Tested up to: 5.6
-Stable Tag: 2.2.15
+Stable Tag: 2.3.1
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -81,6 +81,9 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 4. User bookings list
 
 == Changelog ==
+
+= 2.3.1 (16.01.2021) =
+* FIXED: minor translation issue
 
 = 2.3 (15.01.2021) =
 * NEW: Map Feature now included in CommonsBooking. Map Feature was originally based on the Map Plugin made by fLotte Berlin. Many many thanks to fLotte for their great work and support.
