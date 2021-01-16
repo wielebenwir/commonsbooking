@@ -193,7 +193,7 @@ class Location extends CustomPostType
         $cmb->add_field(array(
             'name'       => esc_html__('Latitude', 'commonsbooking'),
             //'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
-            'id'         => COMMONSBOOKING_METABOX_PREFIX . 'geo_latitude',
+            'id'         => 'geo_latitude',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
         ));
@@ -202,7 +202,7 @@ class Location extends CustomPostType
         $cmb->add_field(array(
             'name'       => esc_html__('Longitude', 'commonsbooking'),
             //'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
-            'id'         => COMMONSBOOKING_METABOX_PREFIX . "geo_longitude",
+            'id'         => 'geo_longitude',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
         ));

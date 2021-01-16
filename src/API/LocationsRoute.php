@@ -125,8 +125,8 @@ class LocationsRoute extends BaseRoute
         $preparedItem->properties->url         = get_permalink($item->ID);
         $preparedItem->properties->address     = $item->formattedAddressOneLine();
 
-        $latitude  = get_post_meta($item->ID, COMMONSBOOKING_METABOX_PREFIX . 'geo_latitude', true);
-        $longitude = get_post_meta($item->ID, COMMONSBOOKING_METABOX_PREFIX . 'geo_longitude', true);
+        $latitude  = get_post_meta($item->ID, 'geo_latitude', true);
+        $longitude = get_post_meta($item->ID, 'geo_longitude', true);
 
         // If we have latitude and longitude definec, we use them.
         if ($latitude && $longitude) {
@@ -148,12 +148,12 @@ class LocationsRoute extends BaseRoute
                 // Save data to items
                 update_post_meta(
                     $item->ID,
-                    COMMONSBOOKING_METABOX_PREFIX . "geo_latitude",
+                    'geo_latitude',
                     $preparedItem->geometry->coordinates[1]
                 );
                 update_post_meta(
                     $item->ID,
-                    COMMONSBOOKING_METABOX_PREFIX . "geo_longitude",
+                    'geo_longitude',
                     $preparedItem->geometry->coordinates[0]
                 );
             } else {
