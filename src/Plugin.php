@@ -3,22 +3,23 @@
 
 namespace CommonsBooking;
 
-use CommonsBooking\Controller\TimeframeController;
+use CB;
+use CommonsBooking\Model\User;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Settings\Settings;
+use CommonsBooking\Wordpress\Options;
+use CommonsBooking\Migration\Migration;
+use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\CB1UserFields;
-use CommonsBooking\Settings\Settings;
-use CommonsBooking\Wordpress\CustomPostType\Item;
-use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Map;
-use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use CommonsBooking\Wordpress\PostStatus\PostStatus;
-use CommonsBooking\Model\User;
-use CommonsBooking\Wordpress\Options;
-use CB;
-use CommonsBooking\Migration\Migration;
+use CommonsBooking\Wordpress\CustomPostType\Item;
+use CommonsBooking\Controller\TimeframeController;
 use CommonsBooking\Wordpress\Options\AdminOptions;
+use CommonsBooking\Wordpress\PostStatus\PostStatus;
+use CommonsBooking\Wordpress\CustomPostType\Location;
+use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 class Plugin
 {
@@ -124,6 +125,9 @@ class Plugin
         add_action( 'admin_init', array (self::class, 'saveOptionsActions'), 100 );
 
         add_action( 'plugins_loaded', array ($this, 'commonsbooking_load_textdomain'), 20 );
+
+        $map_admin = new LocationMapAdmin();
+        add_action( 'plugins_loaded', array($map_admin, 'load_location_map_admin'));
     }
 
     public function commonsbooking_load_textdomain() {
@@ -162,7 +166,7 @@ class Plugin
                     new \CommonsBooking\API\ItemsRoute(),
                     new \CommonsBooking\API\LocationsRoute(),
                     new \CommonsBooking\API\OwnersRoute(),
-                    new \CommonsBooking\API\ProjectsRoute()
+                    new \CommonsBooking\API\ProjectsRoute(),
 
                 ];
                 foreach($routes as $route) {
@@ -189,7 +193,7 @@ class Plugin
             new Item(),
             new Location(),
             new Timeframe(),
-            new Map()
+            new Map(),
         ];
     }
 
@@ -202,7 +206,7 @@ class Plugin
             Item::getPostType(),
             Location::getPostType(),
             Timeframe::getPostType(),
-            Map::getPostType()
+            Map::getPostType(),
         ];
     }
 
@@ -377,13 +381,13 @@ class Plugin
         $roleCapMapping = [
             Plugin::$CB_MANAGER_ID     => [
                 'read'                     => true,
-                'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true
+                'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
             ],
             'administrator'            => [
                 'read'                     => true,
                 'edit_posts'               => true,
-                'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true
-            ]
+                'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
+            ],
         ];
 
         foreach ($roleCapMapping as $roleName => $caps) {
@@ -473,7 +477,6 @@ class Plugin
         $commonsbooking_version_option = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
         $commonsbooking_installed_version = get_option ( $commonsbooking_version_option );
 
-
         // check if installed version differs from plugin version in database
         if ( COMMONSBOOKING_VERSION !== $commonsbooking_installed_version OR !isset( $commonsbooking_installed_version ) ) {
 
@@ -485,9 +488,24 @@ class Plugin
 
             // add more tasks if necessary
             // ...
+            self::updateLocationCoordinates();
 
             // update version number in options
             update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
+        }
+    }
+
+    /**
+     * Gets location position for locations without coordinates.
+     * @throws \Geocoder\Exception\Exception
+     */
+    public static function updateLocationCoordinates() {
+        $locations = \CommonsBooking\Repository\Location::get();
+
+        foreach ($locations as $location) {
+            if(!($location->getMeta('geo_latitude') && $location->getMeta('geo_longitude'))) {
+                $location->updateGeoLocation();
+            }
         }
     }
 

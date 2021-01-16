@@ -247,7 +247,7 @@ class Map extends CustomPostType
             'post_status'    => 'publish',
             'meta_query'     => [
                 [
-                    'key'          => COMMONSBOOKING_METABOX_PREFIX.'geo_longitude',
+                    'key'          => 'geo_longitude',
                     'meta_compare' => 'EXISTS',
                 ],
             ],
@@ -291,8 +291,8 @@ class Map extends CustomPostType
             }
 
             $locations[$post->ID] = [
-                'lat'           => (float)$location_meta[COMMONSBOOKING_METABOX_PREFIX.'geo_latitude'][0],
-                'lon'           => (float)$location_meta[COMMONSBOOKING_METABOX_PREFIX.'geo_longitude'][0],
+                'lat'           => (float)$location_meta['geo_latitude'][0],
+                'lon'           => (float)$location_meta['geo_longitude'][0],
                 'location_name' => $post->post_title,
                 'closed_days'   => unserialize($closed_days),
                 'address'       => [
