@@ -3,22 +3,23 @@
 
 namespace CommonsBooking;
 
-use CommonsBooking\Controller\TimeframeController;
+use CB;
+use CommonsBooking\Model\User;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Settings\Settings;
+use CommonsBooking\Wordpress\Options;
+use CommonsBooking\Migration\Migration;
+use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\CB1UserFields;
-use CommonsBooking\Settings\Settings;
-use CommonsBooking\Wordpress\CustomPostType\Item;
-use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Map;
-use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use CommonsBooking\Wordpress\PostStatus\PostStatus;
-use CommonsBooking\Model\User;
-use CommonsBooking\Wordpress\Options;
-use CB;
-use CommonsBooking\Migration\Migration;
+use CommonsBooking\Wordpress\CustomPostType\Item;
+use CommonsBooking\Controller\TimeframeController;
 use CommonsBooking\Wordpress\Options\AdminOptions;
+use CommonsBooking\Wordpress\PostStatus\PostStatus;
+use CommonsBooking\Wordpress\CustomPostType\Location;
+use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 class Plugin
 {
@@ -122,6 +123,9 @@ class Plugin
 
         // actions after saving plugin options
         add_action( 'admin_init', array (self::class, 'saveOptionsActions'), 100 );
+
+        $map_admin = new LocationMapAdmin();
+        add_action( 'plugins_loaded', array($map_admin, 'load_location_map_admin'));
     }
 
     /**
