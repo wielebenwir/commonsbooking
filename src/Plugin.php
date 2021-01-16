@@ -159,7 +159,7 @@ class Plugin
                     new \CommonsBooking\API\ItemsRoute(),
                     new \CommonsBooking\API\LocationsRoute(),
                     new \CommonsBooking\API\OwnersRoute(),
-                    new \CommonsBooking\API\ProjectsRoute()
+                    new \CommonsBooking\API\ProjectsRoute(),
 
                 ];
                 foreach($routes as $route) {
@@ -186,7 +186,7 @@ class Plugin
             new Item(),
             new Location(),
             new Timeframe(),
-            new Map()
+            new Map(),
         ];
     }
 
@@ -199,7 +199,7 @@ class Plugin
             Item::getPostType(),
             Location::getPostType(),
             Timeframe::getPostType(),
-            Map::getPostType()
+            Map::getPostType(),
         ];
     }
 
@@ -374,13 +374,13 @@ class Plugin
         $roleCapMapping = [
             Plugin::$CB_MANAGER_ID     => [
                 'read'                     => true,
-                'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true
+                'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
             ],
             'administrator'            => [
                 'read'                     => true,
                 'edit_posts'               => true,
-                'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true
-            ]
+                'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
+            ],
         ];
 
         foreach ($roleCapMapping as $roleName => $caps) {
@@ -470,7 +470,6 @@ class Plugin
         $commonsbooking_version_option = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
         $commonsbooking_installed_version = get_option ( $commonsbooking_version_option );
 
-
         // check if installed version differs from plugin version in database
         if ( COMMONSBOOKING_VERSION !== $commonsbooking_installed_version OR !isset( $commonsbooking_installed_version ) ) {
 
@@ -482,9 +481,24 @@ class Plugin
 
             // add more tasks if necessary
             // ...
+            self::updateLocationCoordinates();
 
             // update version number in options
             update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
+        }
+    }
+
+    /**
+     * Gets location position for locations without coordinates.
+     * @throws \Geocoder\Exception\Exception
+     */
+    public static function updateLocationCoordinates() {
+        $locations = \CommonsBooking\Repository\Location::get();
+
+        foreach ($locations as $location) {
+            if(!($location->getMeta('geo_latitude') && $location->getMeta('geo_longitude'))) {
+                $location->updateGeoLocation();
+            }
         }
     }
 
