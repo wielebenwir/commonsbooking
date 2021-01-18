@@ -249,9 +249,44 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                         <span class="dashicons dashicons-editor-help"
                               title="<?php echo commonsbooking_sanitizeHTML( __('activate to show the item availability in the marker popup' ,'commonsbooking')); ?>"></span>
                     </th>
-                    <td><input type="checkbox"
+                    <td>
+                        <input type="checkbox"
                                name="cb_map_options[show_item_availability]" <?php echo  MapAdmin::get_option($cb_map_id,
-                            'show_item_availability') ? 'checked="checked"' : '' ?> value="on"></td>
+                            'show_item_availability') ? 'checked="checked"' : '' ?> value="on">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <?php echo commonsbooking_sanitizeHTML( __( 'Calendar period', 'commonsbooking' )); ?>:
+                        <span
+                            class="dashicons dashicons-editor-help"
+                            title="<?php
+                                echo commonsbooking_sanitizeHTML(
+                                        __(
+                                            'Set how many days are displayed on the booking calendar (starting from today)',
+                                            'commonsbooking'
+                                        )
+                                ); ?>">
+                        </span>
+                    </th>
+                    <td><input type="text" name="cb_map_options[availability_max_days_to_show]"
+                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'availability_max_days_to_show'); ?>">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <?php echo commonsbooking_sanitizeHTML( __( 'Maximum booking days', 'commonsbooking' ) ); ?>:
+                        <span
+                                class="dashicons dashicons-editor-help"
+                                title="<?php
+                                echo commonsbooking_sanitizeHTML(
+                                    __( 'Users can only book this many days at once', 'commonsbooking' )
+                                ); ?>">
+                        </span>
+                    </th>
+                    <td><input type="text" name="cb_map_options[availability_max_day_count]"
+                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'availability_max_day_count'); ?>">
+                    </td>
                 </tr>
             </table>
         </details>

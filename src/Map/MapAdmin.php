@@ -115,6 +115,8 @@ class MapAdmin
     const MARKER_ITEM_DRAFT_ICON_HEIGHT_DEFAULT = 0;
     const MARKER_ITEM_DRAFT_ICON_ANCHOR_X_DEFAULT = 0;
     const MARKER_ITEM_DRAFT_ICON_ANCHOR_Y_DEFAULT = 0;
+    const AVAILABILITY_MAX_DAYS_TO_SHOW_DEFAULT = 11;
+    const AVAILABILITY_MAX_DAY_COUNT_DEFAULT = 20;
 
     //const MARKER_POPUP_CONTENT_DEFAULT = "'<b>' + location.location_name + '</b><br>' + location.address.street + '<br>' + location.address.zip + ' ' + location.address.city + '<p>' + location.opening_hours + '</p>'";
 
@@ -189,12 +191,32 @@ class MapAdmin
 
     private static function get_option_default($option_name)
     {
-
         $default_name = strtoupper($option_name).'_DEFAULT';
-
         $const_value = constant("self::$default_name");
 
         return isset($const_value) ? $const_value : null;
+    }
+
+    /**
+     * @param $input
+     * @param $key
+     *
+     * @return bool
+     */
+    protected static function validateStringInput($input, $key): bool
+    {
+        return isset($input[$key]) && strlen($input[$key]) > 0;
+    }
+
+    /**
+     * @param $input
+     * @param $key
+     *
+     * @return bool
+     */
+    protected static function validateCheckboxInput($input, $key): bool
+    {
+        return isset($input[$key]);
     }
 
     /**
@@ -206,6 +228,7 @@ class MapAdmin
 
         $validated_input = self::populate_option_defaults([]);
 
+        $input = [];
         if (isset($_POST['cb_map_options'])) {
             $input = $_POST['cb_map_options'];
         }
@@ -214,9 +237,6 @@ class MapAdmin
         if (isset($input['base_map']) && $input['base_map'] >= 1 && $input['base_map'] <= 4) {
             $validated_input['base_map'] = (int)$input['base_map'];
         }
-
-        //show_scale
-        $validated_input['show_scale'] = isset($input['show_scale']) ? true : false;
 
         //map_height
         if (isset($input['map_height']) && (int)$input['map_height'] >= self::MAP_HEIGHT_VALUE_MIN && $input['map_height'] <= self::MAP_HEIGHT_VALUE_MAX) {
@@ -252,162 +272,107 @@ class MapAdmin
         }
 
         //lat_start
-        if (isset($input['lat_start']) && strlen($input['lat_start']) > 0 && (float)$input['lat_start'] >= self::LAT_VALUE_MIN && (float)$input['lat_start'] <= self::LAT_VALUE_MAX) {
+        if (self::validateStringInput($input, 'lat_start') && (float)$input['lat_start'] >= self::LAT_VALUE_MIN && (float)$input['lat_start'] <= self::LAT_VALUE_MAX) {
             $validated_input['lat_start'] = (float)$input['lat_start'];
         }
 
         //lon_start
-        if (isset($input['lon_start']) && strlen($input['lon_start']) > 0 && (float)$input['lon_start'] >= self::LON_VALUE_MIN && (float)$input['lon_start'] <= self::LON_VALUE_MAX) {
+        if (self::validateStringInput($input, 'lon_start') && (float)$input['lon_start'] >= self::LON_VALUE_MIN && (float)$input['lon_start'] <= self::LON_VALUE_MAX) {
             $validated_input['lon_start'] = (float)$input['lon_start'];
         }
-
-        //marker_map_bounds_initial
-        $validated_input['marker_map_bounds_initial'] = isset($input['marker_map_bounds_initial']) ? true : false;
-
-        //marker_map_bounds_filter
-        $validated_input['marker_map_bounds_filter'] = isset($input['marker_map_bounds_filter']) ? true : false;
 
         //max_cluster_radius
         if (isset($input['max_cluster_radius']) && (int)$input['max_cluster_radius'] >= self::MAX_CLUSTER_RADIUS_VALUE_MIN && $input['max_cluster_radius'] <= self::MAX_CLUSTER_RADIUS_VALUE_MAX) {
             $validated_input['max_cluster_radius'] = (int)$input['max_cluster_radius'];
         }
 
-        //marker_tooltip_permanent
-        if (isset($input['marker_tooltip_permanent'])) {
-            $validated_input['marker_tooltip_permanent'] = true;
-        } else {
-            $validated_input['marker_tooltip_permanent'] = false;
+        $checkboxInputs = [
+            'show_scale',
+            'marker_map_bounds_initial',
+            'marker_map_bounds_filter',
+            'marker_tooltip_permanent',
+            'show_location_contact',
+            'show_location_opening_hours',
+            'show_item_availability',
+            'show_location_distance_filter'
+        ];
+
+        foreach ($checkboxInputs as $checkboxInput) {
+            $validated_input[$checkboxInput] = self::validateCheckboxInput($input, $checkboxInput);
         }
 
-        // custom_marker_media_id
-        if (isset($input['custom_marker_media_id'])) {
-            $validated_input['custom_marker_media_id'] = abs((int)$input['custom_marker_media_id']);
+        $integerInputs = [
+            'custom_marker_media_id',
+            'custom_marker_cluster_media_id',
+            'marker_item_draft_media_id',
+            'availability_max_days_to_show',
+            'availability_max_day_count',
+        ];
+
+        foreach ($integerInputs as $integerInput) {
+            if (isset($input[$integerInput])) {
+                $validated_input[$integerInput] = abs((int)$input[$integerInput]);
+            }
         }
 
-        //marker_icon_width
-        if (isset($input['marker_icon_width'])) {
-            $validated_input['marker_icon_width'] = abs((float)$input['marker_icon_width']);
-        }
+        $floatInputs = [
+            'marker_icon_width',
+            'marker_icon_height',
+            'marker_icon_anchor_x',
+            'marker_icon_anchor_y',
+            'marker_cluster_icon_width',
+            'marker_cluster_icon_height',
+            'marker_item_draft_icon_width',
+            'marker_item_draft_icon_height',
+            'marker_item_draft_icon_anchor_x',
+            'marker_item_draft_icon_anchor_y'
+        ];
 
-        //marker_icon_height
-        if (isset($input['marker_icon_height'])) {
-            $validated_input['marker_icon_height'] = abs((float)$input['marker_icon_height']);
-        }
-
-        //marker_icon_anchor_x
-        if (isset($input['marker_icon_anchor_x'])) {
-            $validated_input['marker_icon_anchor_x'] = (float)$input['marker_icon_anchor_x'];
-        }
-
-        //marker_icon_anchor_y
-        if (isset($input['marker_icon_anchor_y'])) {
-            $validated_input['marker_icon_anchor_y'] = (float)$input['marker_icon_anchor_y'];
-        }
-
-        //show_location_contact
-        if (isset($input['show_location_contact'])) {
-            $validated_input['show_location_contact'] = true;
-        } else {
-            $validated_input['show_location_contact'] = false;
-        }
-
-        //show_location_opening_hours
-        if (isset($input['show_location_opening_hours'])) {
-            $validated_input['show_location_opening_hours'] = true;
-        } else {
-            $validated_input['show_location_opening_hours'] = false;
+        foreach($floatInputs as $floatInput) {
+            if (isset($input[$floatInput])) {
+                $validated_input[$floatInput] = (float)$input[$floatInput];
+            }
         }
 
         //label_location_opening_hours
-        if (isset($input['label_location_opening_hours']) && strlen($input['label_location_opening_hours']) > 0) {
+        if (self::validateStringInput($input, 'label_location_opening_hours')) {
             $validated_input['label_location_opening_hours'] = sanitize_text_field($input['label_location_opening_hours']);
         }
 
-        //show_item_availability
-        if (isset($input['show_item_availability'])) {
-            $validated_input['show_item_availability'] = true;
-        } else {
-            $validated_input['show_item_availability'] = false;
-        }
-
-        // custom_marker_cluster_media_id
-        if (isset($input['custom_marker_cluster_media_id'])) {
-            $validated_input['custom_marker_cluster_media_id'] = abs((int)$input['custom_marker_cluster_media_id']);
-        }
 
         //label_location_contact
-        if (isset($input['label_location_contact']) && strlen($input['label_location_contact']) > 0) {
+        if (self::validateStringInput($input, 'label_location_contact')) {
             $validated_input['label_location_contact'] = sanitize_text_field($input['label_location_contact']);
         }
 
-        //marker_cluster_icon_width
-        if (isset($input['marker_cluster_icon_width'])) {
-            $validated_input['marker_cluster_icon_width'] = abs((float)$input['marker_cluster_icon_width']);
-        }
-
-        //marker_cluster_icon_height
-        if (isset($input['marker_cluster_icon_height'])) {
-            $validated_input['marker_cluster_icon_height'] = abs((float)$input['marker_cluster_icon_height']);
-        }
 
         //item_draft_appearance
         if (isset($input['item_draft_appearance']) && $input['item_draft_appearance'] >= 1 && $input['item_draft_appearance'] <= 3) {
             $validated_input['item_draft_appearance'] = $input['item_draft_appearance'];
         }
 
-        // marker_item_draft_media_id
-        if (isset($input['marker_item_draft_media_id'])) {
-            $validated_input['marker_item_draft_media_id'] = abs((int)$input['marker_item_draft_media_id']);
-        }
-
-        //marker_item_draft_icon_width
-        if (isset($input['marker_item_draft_icon_width'])) {
-            $validated_input['marker_item_draft_icon_width'] = abs((float)$input['marker_item_draft_icon_width']);
-        }
-
-        //marker_item_draft_icon_height
-        if (isset($input['marker_item_draft_icon_height'])) {
-            $validated_input['marker_item_draft_icon_height'] = abs((float)$input['marker_item_draft_icon_height']);
-        }
-
-        //marker_item_draft_icon_anchor_x
-        if (isset($input['marker_item_draft_icon_anchor_x'])) {
-            $validated_input['marker_item_draft_icon_anchor_x'] = (float)$input['marker_item_draft_icon_anchor_x'];
-        }
-
-        //marker_item_draft_icon_anchor_y
-        if (isset($input['marker_item_draft_icon_anchor_y'])) {
-            $validated_input['marker_item_draft_icon_anchor_y'] = (float)$input['marker_item_draft_icon_anchor_y'];
-        }
-
-        //show_location_distance_filter
-        if (isset($input['show_location_distance_filter'])) {
-            $validated_input['show_location_distance_filter'] = true;
-        } else {
-            $validated_input['show_location_distance_filter'] = false;
-        }
 
         //address_search_bounds_left_bottom_lat
-        if (isset($input['address_search_bounds_left_bottom_lat']) && strlen($input['address_search_bounds_left_bottom_lat']) > 0 && (float)$input['address_search_bounds_left_bottom_lat'] >= self::LAT_VALUE_MIN && (float)$input['address_search_bounds_left_bottom_lat'] <= self::LAT_VALUE_MAX) {
+        if (self::validateStringInput($input, 'address_search_bounds_left_bottom_lat') && (float)$input['address_search_bounds_left_bottom_lat'] >= self::LAT_VALUE_MIN && (float)$input['address_search_bounds_left_bottom_lat'] <= self::LAT_VALUE_MAX) {
             $validated_input['address_search_bounds_left_bottom_lat'] = (float)$input['address_search_bounds_left_bottom_lat'];
         }
 
-        if (isset($input['address_search_bounds_left_bottom_lon']) && strlen($input['address_search_bounds_left_bottom_lon']) > 0 && (float)$input['address_search_bounds_left_bottom_lon'] >= self::LON_VALUE_MIN && (float)$input['address_search_bounds_left_bottom_lon'] <= self::LON_VALUE_MAX) {
+        if (self::validateStringInput($input, 'address_search_bounds_left_bottom_lon') && (float)$input['address_search_bounds_left_bottom_lon'] >= self::LON_VALUE_MIN && (float)$input['address_search_bounds_left_bottom_lon'] <= self::LON_VALUE_MAX) {
             $validated_input['address_search_bounds_left_bottom_lon'] = (float)$input['address_search_bounds_left_bottom_lon'];
         }
 
         //address_search_bounds_right_top_lat
-        if (isset($input['address_search_bounds_right_top_lat']) && strlen($input['address_search_bounds_right_top_lat']) > 0 && (float)$input['address_search_bounds_right_top_lat'] >= self::LAT_VALUE_MIN && (float)$input['address_search_bounds_right_top_lat'] <= self::LAT_VALUE_MAX) {
+        if (self::validateStringInput($input, 'address_search_bounds_right_top_lat') && (float)$input['address_search_bounds_right_top_lat'] >= self::LAT_VALUE_MIN && (float)$input['address_search_bounds_right_top_lat'] <= self::LAT_VALUE_MAX) {
             $validated_input['address_search_bounds_right_top_lat'] = (float)$input['address_search_bounds_right_top_lat'];
         }
 
         //address_search_bounds_right_top_lon
-        if (isset($input['address_search_bounds_right_top_lon']) && strlen($input['address_search_bounds_right_top_lon']) > 0 && (float)$input['address_search_bounds_right_top_lon'] >= self::LON_VALUE_MIN && (float)$input['address_search_bounds_right_top_lon'] <= self::LON_VALUE_MAX) {
+        if (self::validateStringInput($input, 'address_search_bounds_right_top_lon') && (float)$input['address_search_bounds_right_top_lon'] >= self::LON_VALUE_MIN && (float)$input['address_search_bounds_right_top_lon'] <= self::LON_VALUE_MAX) {
             $validated_input['address_search_bounds_right_top_lon'] = (float)$input['address_search_bounds_right_top_lon'];
         }
 
         //label_location_distance_filter
-        if (isset($input['label_location_distance_filter']) && strlen($input['label_location_distance_filter']) > 0) {
+        if (self::validateStringInput($input, 'label_location_distance_filter')) {
             $validated_input['label_location_distance_filter'] = sanitize_text_field($input['label_location_distance_filter']);
         }
 
@@ -419,12 +384,12 @@ class MapAdmin
         }
 
         //label_item_availability_filter
-        if (isset($input['label_item_availability_filter']) && strlen($input['label_item_availability_filter']) > 0) {
+        if (self::validateStringInput($input, 'label_item_availability_filter')) {
             $validated_input['label_item_availability_filter'] = sanitize_text_field($input['label_item_availability_filter']);
         }
 
         //label_item_category_filter
-        if (isset($input['label_item_category_filter']) && strlen($input['label_item_category_filter']) > 0) {
+        if (self::validateStringInput($input, 'label_item_category_filter')) {
             $validated_input['label_item_category_filter'] = sanitize_text_field($input['label_item_category_filter']);
         }
 
@@ -476,29 +441,6 @@ class MapAdmin
         return preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $input);
     }
 
-    /**
-     * asynchronously import locations from all sources of given map
-     * TODO: deprecated, should be deleted
-     **/
-    public static function start_import_from_all_sources_of_map($cb_map_id)
-    {
-        $url       = get_site_url(null, '', null).'/wp-admin/admin-ajax.php';
-        $auth_code = CB_Map::create_import_auth_code();
-
-        update_post_meta($cb_map_id, 'cb_map_import_auth_code', $auth_code);
-
-        $args = [
-            'blocking' => false,
-            'body'     => [
-                'action'    => 'cb_map_location_import_of_map',
-                'cb_map_id' => $cb_map_id,
-                'auth_code' => $auth_code,
-            ],
-        ];
-
-        wp_safe_remote_post($url, $args);
-
-    }
 
     public static function render_options_page($post)
     {
@@ -564,12 +506,21 @@ class MapAdmin
 
     /**
      * option getter
-     **/
+     *
+     * @param null $cb_map_id
+     * @param $key
+     *
+     * @return mixed
+     */
     public static function get_option($cb_map_id = null, $key)
     {
         self::load_options($cb_map_id);
 
-        return self::$options[$key];
+        if(array_key_exists($key, self::$options)) {
+            return self::$options[$key];
+        } else {
+            return self::get_option_default($key);
+        }
     }
 
 }
