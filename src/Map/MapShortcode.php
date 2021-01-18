@@ -104,20 +104,12 @@ class MapShortcode
      **/
     public static function get_settings($cb_map_id)
     {
-        // @TODO: replace with map based settings
-        $commons_booking_settings = get_option('commons-booking-settings-bookings');
-
         $date_min           = new DateTime();
         $date_min           = $date_min->format('Y-m-d');
-        // @TODO: replace hotfix with proper solution, issue #455
-        $max_days_in_future = 11; 
-        // $max_days_in_future = $commons_booking_settings['commons-booking_bookingsettings_daystoshow'];
+        $max_days_in_future = MapAdmin::get_option($cb_map_id, 'availability_max_days_to_show');
         $date_max           = new DateTime($date_min.' + '.$max_days_in_future.' days');
         $date_max           = $date_max->format('Y-m-d');
-
-        //$maxdays = $commons_booking_settings['commons-booking_bookingsettings_maxdays'];
-        // @TODO: replace hotfix with proper solution, issue #455
-        $maxdays = 30;
+        $maxdays            = MapAdmin::get_option($cb_map_id, 'availability_max_day_count');
 
         $settings = [
             'data_url'                     => get_site_url(null, '', null).'/wp-admin/admin-ajax.php',
