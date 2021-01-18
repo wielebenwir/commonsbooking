@@ -131,7 +131,7 @@ class Plugin
     }
 
     public function commonsbooking_load_textdomain() {
-        load_plugin_textdomain( 'commonsbooking', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' ); 
+        load_plugin_textdomain( 'commonsbooking', false, COMMONSBOOKING_PLUGIN_DIR . 'languages' );
     }
     
 
@@ -508,5 +508,4 @@ class Plugin
             }
         }
     }
-
 }

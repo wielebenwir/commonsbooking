@@ -311,6 +311,29 @@ function commonsbooking_cron_deactivate() {
     wp_unschedule_event( $timestamp, 'cb_cron_hook' );
 }
 
+/**
+ * writes messages to error_log file 
+ *
+ * @param  mixed $log can be a string, array or object
+ * @param  bool $backtrace if set true the file-path and line of the calling file will be added to the error message
+ * @return void
+ */
+function commmonsbooking_write_log ( $log, $backtrace = true )  {
+
+    if ($backtrace) {
+        $bt =  debug_backtrace();
+        $file = $bt[0]['file'];
+        $line = $bt[0]['line'];
+        $log = $file . ':' . $line . ' ' . $log;
+    }
+
+    if ( is_array( $log ) || is_object( $log ) ) {
+        error_log( print_r( $log, true ) );
+    } else {
+        error_log( $log );
+    }
+}
+
 $cbPlugin = new Plugin();
 $cbPlugin->init();
 $cbPlugin->initRoutes();
