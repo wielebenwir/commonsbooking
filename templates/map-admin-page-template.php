@@ -153,7 +153,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
             <table class="text-left">
                 <tr>
                     <th>
-                        <?php echo commonsbooking_sanitizeHTML( __(     'initial adjustment to marker bounds' ,'commonsbooking')); ?>:
+                        <?php echo commonsbooking_sanitizeHTML( __( 'initial adjustment to marker bounds' ,'commonsbooking')); ?>:
                         <span class="dashicons dashicons-editor-help"
                               title="<?php echo commonsbooking_sanitizeHTML( __('adjust map section to bounds of shown markers automatically when map is loaded' ,'commonsbooking')); ?>"></span>
                     </th>
@@ -165,7 +165,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                 </tr>
                 <tr>
                     <th>
-                        <?php echo commonsbooking_sanitizeHTML( __(     'adjustment to marker bounds on filter' ,'commonsbooking')); ?>:
+                        <?php echo commonsbooking_sanitizeHTML( __( 'adjustment to marker bounds on filter' ,'commonsbooking')); ?>:
                         <span class="dashicons dashicons-editor-help"
                               title="<?php echo commonsbooking_sanitizeHTML( __('adjust map section to bounds of shown markers automatically when filtered by users' ,'commonsbooking')); ?>"></span>
                     </th>
@@ -257,34 +257,34 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                 </tr>
                 <tr>
                     <th>
-                        <?php echo commonsbooking_sanitizeHTML( __( 'Calendar period', 'commonsbooking' )); ?>:
+                        <?php echo commonsbooking_sanitizeHTML( __( 'Max. available days in popup', 'commonsbooking' )); ?>:
                         <span
                             class="dashicons dashicons-editor-help"
                             title="<?php
                                 echo commonsbooking_sanitizeHTML(
                                         __(
-                                            'Set how many days are displayed on the booking calendar (starting from today)',
+                                            'Set how many days are displayed on the popup (starting from today)',
                                             'commonsbooking'
                                         )
                                 ); ?>">
                         </span>
                     </th>
-                    <td><input type="text" name="cb_map_options[availability_max_days_to_show]"
+                    <td><input type="number" min="<?php echo  MapAdmin::AVAILABILITY_MAX_DAYS_TO_SHOW_DEFAULT_MIN ?>" name="cb_map_options[availability_max_days_to_show]"
                                value="<?php echo  MapAdmin::get_option($cb_map_id, 'availability_max_days_to_show'); ?>">
                     </td>
                 </tr>
                 <tr>
                     <th>
-                        <?php echo commonsbooking_sanitizeHTML( __( 'Maximum booking days', 'commonsbooking' ) ); ?>:
+                        <?php echo commonsbooking_sanitizeHTML( __( 'Maximum availability days to show in popup', 'commonsbooking' ) ); ?>:
                         <span
                                 class="dashicons dashicons-editor-help"
                                 title="<?php
                                 echo commonsbooking_sanitizeHTML(
-                                    __( 'Users can only book this many days at once', 'commonsbooking' )
+                                    __( 'Notice: This setting is not active right now. Just leave it as it is.', 'commonsbooking' )
                                 ); ?>">
                         </span>
                     </th>
-                    <td><input type="text" name="cb_map_options[availability_max_day_count]"
+                    <td><input readonly type="text" name="cb_map_options[availability_max_day_count]"
                                value="<?php echo  MapAdmin::get_option($cb_map_id, 'availability_max_day_count'); ?>">
                     </td>
                 </tr>

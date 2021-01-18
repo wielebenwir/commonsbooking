@@ -106,7 +106,8 @@ class MapShortcode
     {
         $date_min           = new DateTime();
         $date_min           = $date_min->format('Y-m-d');
-        $max_days_in_future = MapAdmin::get_option($cb_map_id, 'availability_max_days_to_show');
+        // @TODO: fix issue that max-days in map are shown as max_days_in_future + 1. Didn't find were this +1 day was added so I added -1 in the max_days_in_future 
+        $max_days_in_future = MapAdmin::get_option($cb_map_id, 'availability_max_days_to_show')-1;
         $date_max           = new DateTime($date_min.' + '.$max_days_in_future.' days');
         $date_max           = $date_max->format('Y-m-d');
         $maxdays            = MapAdmin::get_option($cb_map_id, 'availability_max_day_count');
