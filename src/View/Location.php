@@ -18,13 +18,13 @@ class Location extends View
      *
      * @param Day $startDate
      * @param Day $endDate
-     * @param $locations
-     * @param $items
+     * @param $locations<int|string>
+     * @param $items<int|string>
      *
      * @return array
      * @throws \Exception
      */
-    protected static function prepareJsonResponse(Day $startDate, Day $endDate, $locations, $items)
+    public static function prepareJsonResponse(Day $startDate, Day $endDate, $locations, $items)
     {
         $calendar = new Calendar(
             $startDate,
@@ -300,7 +300,7 @@ class Location extends View
             if (count($items)) {
                 // If there's only one item available, we'll show it directly.
                 if (count($items) == 1) {
-                    $args['item'] = $items[0];
+                    $args['item'] = array_values($items)[0];
                 } else {
                     $args['items'] = $items;
                 }

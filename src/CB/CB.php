@@ -142,15 +142,15 @@ class CB
      */
     public static function lookUp()
     {
+        
+        $result = false;
+        
         /** @var PostRepository $repo */
         $repo        = 'CommonsBooking\Repository\\' . ucfirst(self::$key); // we access the Repository not the cpt class here
         $model      = 'CommonsBooking\Model\\' . ucfirst(self::$key); // we check method_exists against model as workaround, cause it doesn't work on repo
         $property     = self::$property;
         $postID        = self::$theObjectID;
 
-        // DEBUG
-        //echo "<pre><br>";
-        //echo $repo . " -> " . self::$key . " -> "  . $property . " -> " . $postID . " = ";
 
         /**
          * TODO: Better integration of user class and handling user data / just a first draft right now
@@ -161,16 +161,16 @@ class CB
             $post = $repo::getPostById($postID);
 
             if (method_exists($model, $property)) {
-                return $post->$property(self::$args);
+                $result =  $post->$property(self::$args);
             }
 
             if ($post->$property) {
-                return $post->$property;
+                $result =  $post->$property;
             }
         }
 
         if (get_post_meta($postID, $property, TRUE)) { // Post has meta fields
-            return get_post_meta($postID, $property, TRUE);
+            $result =  get_post_meta($postID, $property, TRUE);
 
 
         // if we need user data
@@ -180,17 +180,23 @@ class CB
             $cb_user = \get_user_by('ID', $userID);
 
             if (method_exists($model, $property)) {
-                return $cb_user->$property(self::$args);
+                $result =  $cb_user->$property(self::$args);
             }
 
             if ($cb_user->$property) {
-                return $cb_user->$property;
+                $result =  $cb_user->$property;
             }
 
             if (get_user_meta($userID, $property, TRUE)) { // User has meta fields
-                return $cb_user->getMeta($property);
+                $result = get_user_meta($userID, $property, true);
             }
 
+
+        }
+
+        if ($result) {
+            // sanitize output
+            return commonsbooking_sanitizeHTML($result);
 
         }
     }

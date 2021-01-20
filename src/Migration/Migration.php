@@ -21,7 +21,19 @@ class Migration
      */
     public static function migrateAll()
     {
+
+        //sanitize
         if ($_POST['data'] == 'false') {
+            $post_data = "false";
+        } else {
+            $post_data = isset( $_POST['data'] ) ? (array) $_POST['data'] : array();
+            $post_data = commonsbooking_sanitizeArrayorString($post_data);
+        }
+
+
+
+
+        if ($post_data == 'false') {
             $tasks = [
                 'locations'    => [
                     'index'    => 0,
@@ -65,11 +77,13 @@ class Migration
                 ]
             ];
         } else {
-            $tasks = $_POST['data'];
+                $tasks = $post_data;
         }
 
+        
+
         $taskIndex = 0;
-        $taskLimit = 50;
+        $taskLimit = 40;
 
         $taskFunctions = [
             'locations'    => [
@@ -216,7 +230,7 @@ class Migration
                 'commons-booking_location_openinghours', true),
             COMMONSBOOKING_METABOX_PREFIX . 'location_email'              => $cb1_location_email_string,
             COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID'            => $location->ID,
-            '_thumbnail_id'                                   => get_post_meta($location->ID, '_thumbnail_id', true),
+            '_thumbnail_id'                                               => get_post_meta($location->ID, '_thumbnail_id', true),
             COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range'     => $allowClosed
         ];
 
@@ -398,6 +412,7 @@ class Migration
             'full-day'                             => 'on',
             'grid'                                 => '0',
             'weekdays'                             => $weekdays,
+            'show-booking-codes'                   => 'on',
         ];
 
         $existingPost = self::getExistingPost($timeframe['id'], Timeframe::$postType, Timeframe::BOOKABLE_ID);
@@ -488,15 +503,7 @@ class Migration
     public static function migrateUserAgreementUrl()
     {
         $cb1_url = Settings::getOption('commons-booking-settings-pages', 'commons-booking_termsservices_url');
-
-        $options_array = array(
-            'cb1-terms-url' => $cb1_url
-
-        );
-
-        update_option('commonsbooking_options_migration', $options_array);
-
-        return true;
+        return Settings::updateOption('commonsbooking_options_migration', 'cb1-terms-url', $cb1_url);
     }
 
     /**
@@ -509,21 +516,17 @@ class Migration
 
         // migrate Booking-Codes
         $cb1_bookingcodes = Settings::getOption('commons-booking-settings-codes', 'commons-booking_codes_pool');
-        $options_bookingcode_array = array('bookingcodes' => $cb1_bookingcodes);
-        update_option('commonsbooking_options_bookingcodes', $options_bookingcode_array);
+        Settings::updateOption('commonsbooking_options_bookingcodes', 'bookingcodes', $cb1_bookingcodes);
 
-        // sender e-mail
+        // update sender e-mail
         $cb1_sender_email = Settings::getOption('commons-booking-settings-mail', 'commons-booking_mail_from');
-        $options_array['emailheaders_from-email'] = $cb1_sender_email;
+        Settings::updateOption('commonsbooking_options_templates', 'emailheaders_from-email', $cb1_sender_email );
 
         // sender name
         $cb1_sender_name = Settings::getOption('commons-booking-settings-mail', 'commons-booking_mail_from_name');
-        $options_array['emailheaders_from-name'] = $cb1_sender_name;
+        Settings::updateOption('commonsbooking_options_templates', 'emailheaders_from-name', $cb1_sender_name );
 
-        // update options-templates tab
-        update_option('commonsbooking_options_templates', $options_array);
-
-        return true;
+        return;
     }
 
 

@@ -4,6 +4,7 @@
 namespace CommonsBooking\API;
 
 
+use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Timeframe;
 use Geocoder\Geocoder;
@@ -26,7 +27,7 @@ class LocationsRoute extends BaseRoute
      * Commons-API schema definition.
      * @var string
      */
-    protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "node_modules/commons-api/commons-api.locations.schema.json";
+    protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR."node_modules/commons-api/commons-api.locations.schema.json";
 
     /**
      * @var Client
@@ -42,64 +43,6 @@ class LocationsRoute extends BaseRoute
      * @var Geocoder
      */
     protected $geocoder;
-
-    /**
-     * @return Client
-     */
-    public function getHttpClient(): Client
-    {
-        if ($this->httpClient == null) {
-            $this->httpClient = new Client();
-        }
-
-        return $this->httpClient;
-    }
-
-    /**
-     * @return Provider
-     */
-    public function getProvider(): Provider
-    {
-        if ($this->provider == null) {
-            $this->provider = \Geocoder\Provider\Nominatim\Nominatim::withOpenStreetMapServer($this->getHttpClient(),
-                $_SERVER['HTTP_USER_AGENT']);;
-        }
-
-        return $this->provider;
-    }
-
-    /**
-     * @return Geocoder
-     */
-    public function getGeocoder(): Geocoder
-    {
-        if ($this->geocoder == null) {
-            $this->geocoder = new \Geocoder\StatefulGeocoder($this->getProvider(), 'en');
-        }
-
-        return $this->geocoder;
-    }
-
-    public function getItemData($request) {
-        $params = $request->get_params();
-        $args = [];
-        if(array_key_exists('id', $params)) {
-            $args = [
-                'p' => $params['id']
-            ];
-        }
-
-        $locations = \CommonsBooking\Repository\Location::get($args);
-
-        $features = [];
-
-        foreach ($locations as $location) {
-            $itemdata = $this->prepare_item_for_response($location, $request);
-            $features[] = $itemdata;
-        }
-
-        return $features;
-    }
 
     /**
      * Get one item from the collection
@@ -122,15 +65,46 @@ class LocationsRoute extends BaseRoute
      */
     public function get_items($request)
     {
-        $data = new \stdClass();
-        $data->locations = new \stdClass();
-        $data->locations->type = "FeatureCollection";
-        $data->locations->features = $this->getItemData($request);
+        $data            = new \stdClass();
+        $data->locations = $this->getItemData($request);
 
-        if(WP_DEBUG) {
+        if (WP_DEBUG) {
             $this->validateData($data);
         }
+
         return new \WP_REST_Response($data, 200);
+    }
+
+    public function getItemData($request)
+    {
+        $data       = new \stdClass();
+        $data->type = "FeatureCollection";
+
+        $params = $request->get_params();
+        $args   = [];
+        if (array_key_exists('id', $params)) {
+            $args = [
+                'p' => $params['id'],
+            ];
+        }
+
+        $locations = \CommonsBooking\Repository\Location::get($args);
+        $features  = [];
+
+        foreach ($locations as $location) {
+            try {
+                $itemdata   = $this->prepare_item_for_response($location, $request);
+                $features[] = $itemdata;
+            } catch (\Exception $exception) {
+                if (WP_DEBUG) {
+                    error_log($exception->getMessage());
+                }
+            }
+        }
+
+        $data->features = $features;
+
+        return $data;
     }
 
     /**
@@ -142,49 +116,50 @@ class LocationsRoute extends BaseRoute
      */
     public function prepare_item_for_response($item, $request)
     {
-        $preparedItem = new \stdClass();
-        $preparedItem->type = 'Feature';
+        $preparedItem             = new \stdClass();
+        $preparedItem->type       = 'Feature';
         $preparedItem->properties = new \stdClass();
 
-        $preparedItem->properties->id = $item->ID . "";
-        $preparedItem->properties->name = $item->post_title;
-        $preparedItem->properties->description = $item->post_content;
-        $preparedItem->properties->url = get_permalink($item->ID);
-        $preparedItem->properties->address = $item->formattedAddressOneLine();
+        $preparedItem->properties->id          = $item->ID."";
+        $preparedItem->properties->name        = $item->post_title;
+        $preparedItem->properties->description = $this->escapeJsonString($item->post_content);
+        $preparedItem->properties->url         = get_permalink($item->ID);
+        $preparedItem->properties->address     = $item->formattedAddressOneLine();
 
-        $latitude = get_post_meta($item->ID, 'geo_latitude', true);
+        $latitude  = get_post_meta($item->ID, 'geo_latitude', true);
         $longitude = get_post_meta($item->ID, 'geo_longitude', true);
 
         // If we have latitude and longitude definec, we use them.
-        if($latitude && $longitude) {
-            $preparedItem->geometry = new \stdClass();
-            $preparedItem->geometry->type = "Point";
+        if ($latitude && $longitude) {
+            $preparedItem->geometry              = new \stdClass();
+            $preparedItem->geometry->type        = "Point";
             $preparedItem->geometry->coordinates = [
                 floatval($longitude),
-                floatval($latitude)
+                floatval($latitude),
             ];
-        } else if ($item->formattedAddressOneLine()) {
-            $addresses = $this->getGeocoder()->geocodeQuery(GeocodeQuery::create($item->formattedAddressOneLine()));
-            if ( ! $addresses->isEmpty()) {
-                /** @var NominatimAddress $address */
-                $address = $addresses->first();
-                $preparedItem->geometry = new \stdClass();
-                $preparedItem->geometry->type = "Point";
+        } elseif ($item->formattedAddressOneLine()) {
+            $address = GeoHelper::getAddressData($item->formattedAddressOneLine());
+            if ( ! $address) {
+                $preparedItem->geometry              = new \stdClass();
+                $preparedItem->geometry->type        = "Point";
                 $preparedItem->geometry->coordinates = $address->getCoordinates()->toArray();
 
                 // Save data to items
                 update_post_meta(
                     $item->ID,
-                    "geo_latitude",
+                    'geo_latitude',
                     $preparedItem->geometry->coordinates[1]
                 );
                 update_post_meta(
                     $item->ID,
-                    "geo_longitude",
+                    'geo_longitude',
                     $preparedItem->geometry->coordinates[0]
                 );
+            } else {
+                throw new \Exception('Location address missing. (ID: '.$item->ID.')');
             }
         }
+
         return $preparedItem;
     }
 

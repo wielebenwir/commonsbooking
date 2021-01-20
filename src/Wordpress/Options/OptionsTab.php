@@ -2,6 +2,8 @@
 
 namespace CommonsBooking\Wordpress\Options;
 
+use CommonsBooking\Settings\Settings;
+
 class OptionsTab
 {
 
@@ -19,6 +21,9 @@ class OptionsTab
         $this->tab_title = $this->content['title'];
 
         add_action('cmb2_admin_init', array($this, 'register'));
+
+        add_action( 'cmb2_save_options-page_fields', array (self::class, 'savePostOptions'), 10 ); 
+
     }
 
     public function register()
@@ -35,7 +40,7 @@ class OptionsTab
 
         $default_args = array(
             'id' => $this->id,
-            'title' => __('CommonsBooking', 'commonsbooking'),
+            'title' => esc_html__('CommonsBooking', 'commonsbooking'),
             'object_types' => array('options-page'),
             'option_key' => $this->option_key . '_' . $this->id,
             'tab_group' => $this->option_key,
@@ -75,6 +80,7 @@ class OptionsTab
             }
         }
     }
+    
 
     /**
      * If array contains title or description, create a new row contaning this text
@@ -105,5 +111,16 @@ class OptionsTab
         }
 
         return $metabox_group;
+    }
+
+    /**
+     * actions to be fired after the options page was saved
+     *
+     * @return void
+     */
+    public static function savePostOptions() {
+
+        // we set transient to be able to flush rewrites at an ini hook in Plugin.php to set permalinks properly
+        set_transient('commonsbooking_options_saved', 1);
     }
 }

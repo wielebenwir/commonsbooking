@@ -1,17 +1,21 @@
 <?php
 /**
- * Shortcode [cb_locations]
+ * Shortcode [cb_items]
  * Model: location
  *
- * List all locations, with one or more associated timeframes (with location info)
+ * List all items, with one or more associated timeframes (with location info)
  *
  * WP Post properties for locations are available as $item->property
  * location Model methods are available as $item->myMethod()
  *
  */
+
+
 global $templateData;
 $item = new \CommonsBooking\Model\Item($templateData['item']);
-$noResultText = __("No item available.", "commonsbooking");
+
+// the item-not-available message (if item ist currently not available) can be defined via plugin options -> message templates
+$noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'item-not-available' );
 
 ?>
 <div class="cb-list-header">

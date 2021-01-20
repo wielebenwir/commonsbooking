@@ -19,7 +19,7 @@ class Messages
     }
 
     public function triggerMail()
-    {
+    {   
 
         if ($this->action == "confirmed") {
             return $this->sendMessage();
@@ -57,10 +57,15 @@ class Messages
         $template_subject = Settings::getOption('commonsbooking_options_templates',
             'emailtemplates_mail-booking-' . $this->action . '-subject');
 
-        // parse templates & replaces template tags (e.g. {{item:name}})
-        $this->body = \commonsbooking_parse_template($template_body);
-        $this->subject = \commonsbooking_parse_template($template_subject);
+        // check if templates are available
+        if (!$template_body OR !$template_subject) {
+            return new \WP_Error( 'e-mail ', esc_html( __( "Could not send email because mail-template was not available. Check options -> templates", "commonsbooking" ) ) );
+        }
 
+        // parse templates & replaces template tags (e.g. {{item:name}})
+        $this->body = commonsbooking_sanitizeHTML (\commonsbooking_parse_template($template_body ) );
+        $this->subject = commonsbooking_sanitizeHTML( \commonsbooking_parse_template($template_subject ) );
+       
         // Setup mime type
         $this->headers[] = "MIME-Version: 1.0";
         $this->headers[] = "Content-Type: text/html";
@@ -98,9 +103,7 @@ class Messages
 
     public function add_bcc($adress)
     {
-        if ( ! in_array($adress, $this->headers)) { // prevent double emails, e.g. if admin=item owner
             $this->headers[] = sprintf("BCC:%s", sanitize_email($adress));
-        }
     }
 
 
@@ -122,19 +125,8 @@ class Messages
         // WPML: Reset system lang
         do_action('wpml_reset_language_after_mailing');
 
-        do_action('cb_mail_sent', $this->action, $result);
+        do_action('commonsbooking_mail_sent', $this->action, $result);
 
-    }
-
-
-    /**
-     * Print mail debug
-     */
-    function cb_mail_error_debug($wp_error)
-    {
-        echo "<pre>";
-        print_r($wp_error);
-        echo "</pre>";
     }
 
 }

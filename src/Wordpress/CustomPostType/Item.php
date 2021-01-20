@@ -79,28 +79,28 @@ class Item extends CustomPostType
     public function getArgs()
     {
         $labels = array(
-            'name'                  => __('Items', 'commonsbooking'),
-            'singular_name'         => __('Item', 'commonsbooking'),
-            'add_new'               => __('Add new', 'commonsbooking'),
-            'add_new_item'          => __('Add new item', 'commonsbooking'),
-            'edit_item'             => __('Edit item', 'commonsbooking'),
-            'new_item'              => __('Add new item', 'commonsbooking'),
-            'view_item'             => __('Show item', 'commonsbooking'),
-            'view_items'            => __('Show items', 'commonsbooking'),
-            'search_items'          => __('Search items', 'commonsbooking'),
-            'not_found'             => __('items not found', 'commonsbooking'),
-            'not_found_in_trash'    => __('No items found in trash', 'commonsbooking'),
-            'parent_item_colon'     => __('Parent items:', 'commonsbooking'),
-            'all_items'             => __('All items', 'commonsbooking'),
-            'archives'              => __('Item archive', 'commonsbooking'),
-            'attributes'            => __('Item attributes', 'commonsbooking'),
-            'insert_into_item'      => __('Add to item', 'commonsbooking'),
-            'uploaded_to_this_item' => __('Added to item', 'commonsbooking'),
-            'featured_image'        => __('Item image', 'commonsbooking'),
-            'set_featured_image'    => __('set item image', 'commonsbooking'),
-            'remove_featured_image' => __('remove item image', 'commonsbooking'),
-            'use_featured_image'    => __('use as item image', 'commonsbooking'),
-            'menu_name'             => __('Items', 'commonsbooking'),
+            'name'                  => esc_html__('Items', 'commonsbooking'),
+            'singular_name'         => esc_html__('Item', 'commonsbooking'),
+            'add_new'               => esc_html__('Add new', 'commonsbooking'),
+            'add_new_item'          => esc_html__('Add new item', 'commonsbooking'),
+            'edit_item'             => esc_html__('Edit item', 'commonsbooking'),
+            'new_item'              => esc_html__('Add new item', 'commonsbooking'),
+            'view_item'             => esc_html__('Show item', 'commonsbooking'),
+            'view_items'            => esc_html__('Show items', 'commonsbooking'),
+            'search_items'          => esc_html__('Search items', 'commonsbooking'),
+            'not_found'             => esc_html__('items not found', 'commonsbooking'),
+            'not_found_in_trash'    => esc_html__('No items found in trash', 'commonsbooking'),
+            'parent_item_colon'     => esc_html__('Parent items:', 'commonsbooking'),
+            'all_items'             => esc_html__('All items', 'commonsbooking'),
+            'archives'              => esc_html__('Item archive', 'commonsbooking'),
+            'attributes'            => esc_html__('Item attributes', 'commonsbooking'),
+            'insert_into_item'      => esc_html__('Add to item', 'commonsbooking'),
+            'uploaded_to_this_item' => esc_html__('Added to item', 'commonsbooking'),
+            'featured_image'        => esc_html__('Item image', 'commonsbooking'),
+            'set_featured_image'    => esc_html__('set item image', 'commonsbooking'),
+            'remove_featured_image' => esc_html__('remove item image', 'commonsbooking'),
+            'use_featured_image'    => esc_html__('use as item image', 'commonsbooking'),
+            'menu_name'             => esc_html__('Items', 'commonsbooking'),
 
         );
 
@@ -150,7 +150,11 @@ class Item extends CustomPostType
                 'excerpt',
             ),
 
-            // Soll der Post Type Kategorien zugeordnet werden können?
+
+            // Soll der Post Type Kategien haben?
+            'taxonomies'         => array(self::$postType.'s_category'),
+
+            // Soll der Post Type Archiv-Seiten haben?
             'has_archive'         => false,
 
             // Soll man den Post Type exportieren können?
@@ -188,16 +192,14 @@ class Item extends CustomPostType
     public function registerMetabox()
     {
         // Initiate the metabox Adress
-        $cmb = new_cmb2_box(
-            array(
-                'id'           => COMMONSBOOKING_METABOX_PREFIX.'item_info',
-                'title'        => __('Item Info', 'commonsbooking'),
-                'object_types' => array(self::$postType), // Post type
-                'context'      => 'normal',
-                'priority'     => 'high',
-                'show_names'   => true, // Show field names on the left
-            )
-        );
+        $cmb = new_cmb2_box(array(
+            'id'           => COMMONSBOOKING_METABOX_PREFIX . 'item_info',
+            'title'        => esc_html__('Item Info', 'commonsbooking'),
+            'object_types' => array(self::$postType), // Post type
+            'context'      => 'normal',
+            'priority'     => 'high',
+            'show_names'   => true, // Show field names on the left
+        ));
 
         $users       = UserRepository::getCBManagers();
         $userOptions = [];
@@ -205,21 +207,16 @@ class Item extends CustomPostType
             $userOptions[$user->ID] = $user->get('user_nicename')." (".$user->last_name." ".$user->last_name.")";
         }
 
-        $cmb->add_field(
-            array(
-                'name'       => __('Item Admin(s)', 'commonsbooking'),
-                'desc'       => __(
-                    'choose one or more users to give them the permisssion to edit and manage this specific item. Only users with the role cb_manager can be selected here',
-                    'commonsbooking'
-                ),
-                'id'         => COMMONSBOOKING_METABOX_PREFIX.'item_admins',
-                'type'       => 'pw_multiselect',
-                'options'    => $userOptions,
-                'attributes' => array(
-                    'placeholder' => __('Select item admins.', 'commonsbooking'),
-                ),
-            )
-        );
+        $cmb->add_field( array(
+            'name'       => esc_html__('Item Admin(s)', 'commonsbooking'),
+            'desc'       => esc_html__('choose one or more users to give them the permisssion to edit and manage this specific item. Only users with the role cb_manager can be selected here', 'commonsbooking'),
+            'id'      => COMMONSBOOKING_METABOX_PREFIX . 'item_admins',
+            'type'    => 'pw_multiselect',
+            'options' => $userOptions,
+            'attributes' => array(
+                'placeholder' => esc_html__('Select item admins.', 'commonsbooking')
+            ),
+        ) );
 
     }
 }
