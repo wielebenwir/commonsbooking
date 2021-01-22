@@ -13,32 +13,34 @@
 global $templateData;
 $noResultText = esc_html__("No bookings available.", "commonsbooking");
 
-if(count($templateData['bookings'])) {?>
+if(count($templateData['bookings'])) {
 
-    <table
-            id="table"
-            data-toggle="table"
-            data-ajax="ajaxRequest"
-            data-pagination="true"
-            data-search="true"
-            data-side-pagination="server"
-            data-filter-control="true"
-            data-cookie="true"
-            data-cookie-id-table="saveId"
-    >
-        <thead>
-        <tr>
-            <th data-field="startDate" data-sortable="true">Startdatum</th>
-            <th data-field="endDate" data-sortable="true">Enddatum</th>
-            <th data-field="item" data-sortable="true" data-filter-control="input">Item</th>
-            <th data-field="location" data-sortable="true" data-filter-control="input">Location</th>
-            <th data-field="bookingDate" data-sortable="true">BookingDate</th>
-            <th data-field="user" data-sortable="true" data-filter-control="input">User</th>
-            <th data-field="status" data-sortable="true" data-filter-control="input">Status</th>
-            <th data-field="actions">Aktionen</th>
-        </tr>
-        </thead>
-    </table>
+//    var_dump($templateData['bookings']);
+    ?>
+
+
+<!--    <label for="filters-search-input" class="filter-label">Search</label>-->
+<!--    <input style="font-size: 1rem" class="textfield filter__search js-shuffle-search" type="search" id="filters-search-input" />-->
+
+
+    <p class="filter-label">Filter</p>
+    <div class="filter-options">
+        <button style="font-size: 1rem" data-group="space">Space</button>
+        <button style="font-size: 1rem" data-group="nature">Nature</button>
+        <button style="font-size: 1rem" data-group="animal">Animal</button>
+        <button style="font-size: 1rem" data-group="city">City</button>
+    </div>
+
+<!--    <legend class="filter-label">Sort</legend>-->
+<!--    <input type="radio" name="sort-value" value="dom" checked /> Default-->
+<!--    <input type="radio" name="sort-value" value="title" /> Title-->
+<!--    <input type="radio" name="sort-value" value="date-created" /> Date Created-->
+
+    <div class="container">
+        <div id="grid" class="row my-shuffle-container">
+        </div>
+    </div>
+
 
 <?php
 

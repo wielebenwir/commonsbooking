@@ -72,6 +72,8 @@ class Booking extends PostRepository
                 }
             }
         }
+
+        return null;
     }
 
     /**

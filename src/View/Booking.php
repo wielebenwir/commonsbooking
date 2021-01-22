@@ -18,13 +18,17 @@ class Booking extends View
      */
     public static function getTemplateData(): array
     {
-        $postsPerPage = sanitize_text_field($_POST['limit']);
-        $offset = sanitize_text_field($_POST['offset']);
+        $postsPerPage = sanitize_text_field($_POST['limit']) ?: 6;
+        $page = sanitize_text_field($_POST['page']) ?: 1;
+
         $search = sanitize_text_field($_POST['search']);
         $sort = sanitize_text_field($_POST['sort']);
         $order = sanitize_text_field($_POST['order']);
 
         $bookingDataArray = [];
+        $bookingDataArray['page'] = $page;
+        $bookingDataArray['per_page'] = $postsPerPage;
+
         $posts = \CommonsBooking\Repository\Booking::getForCurrentUser(true);
 
         // Prepare Templatedata and remove invalid posts
@@ -57,12 +61,13 @@ class Booking extends View
                 count(preg_grep('/.*' . $search . '.*/i', $rowData)) > 0
             ) {
                 $rowData['actions'] = $actions;
-                $bookingDataArray['rows'][] = $rowData;
+                $bookingDataArray['data'][] = $rowData;
             }
         }
 
-        $totalCount = count($bookingDataArray['rows']);
+        $totalCount = count($bookingDataArray['data']);
         $bookingDataArray['total'] = $totalCount;
+        $bookingDataArray['total_pages'] = ceil($totalCount / $postsPerPage);
 
         // Init function to pass sort and order param to sorting callback
         $sorter = function ($sort, $order) {
@@ -77,7 +82,7 @@ class Booking extends View
 
         // Sorting
         usort(
-            $bookingDataArray['rows'],
+            $bookingDataArray['data'],
             $sorter($sort, $order)
         );
 
@@ -85,13 +90,16 @@ class Booking extends View
             // Apply pagination...
             $index = 0;
             $pageCounter = 0;
-            foreach ($bookingDataArray['rows'] as $key => $post) {
+
+            $offset = ($page - 1) * $postsPerPage;
+
+            foreach ($bookingDataArray['data'] as $key => $post) {
                 if($offset > $index++) {
-                    unset($bookingDataArray['rows'][$key]);
+                    unset($bookingDataArray['data'][$key]);
                     continue;
                 }
                 if($postsPerPage && $postsPerPage <= $pageCounter++) {
-                    unset($bookingDataArray['rows'][$key]);
+                    unset($bookingDataArray['data'][$key]);
                     continue;
                 }
             }

@@ -1,5 +1,6 @@
 module.exports = function (grunt) {
-	grunt.initConfig({
+	grunt.initConfig(
+		{
 		pkg: grunt.file.readJSON('package.json'),
 		compass: {
 			admin: {
@@ -93,28 +94,16 @@ module.exports = function (grunt) {
 				}
 			}
 		},
-		concat: {
-			// options : {
-			// 	sourceMap :true
-			// },
-			distJs: {
-				src: [
-					'node_modules/moment/moment.js',
-					'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
-					'node_modules/bootstrap-table/dist/bootstrap-table.js',
-					'node_modules/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.js',
-					'node_modules/bootstrap-table/dist/extensions/cookie/bootstrap-table-cookie.js',
-				],
-				dest: 'assets/global/js/vendor.js',
+		babel: {
+			options: {
+				sourceMap: true,
+				presets: ['@babel/preset-env']
 			},
-			distCss: {
-				src: [
-					'node_modules/bootstrap/dist/css/bootstrap.min.css',
-					'node_modules/bootstrap-table/dist/bootstrap-table.min.css',
-					'node_modules/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.css'
-				],
-				dest: 'assets/global/css/vendor.css',
-			},
+			dist: {
+				files: {
+					'assets/global/js/vendor.js': 'node_modules/shufflejs/dist/shuffle.js'
+				}
+			}
 		},
 		watch: {
 			compass: {
@@ -124,7 +113,7 @@ module.exports = function (grunt) {
 					'assets/public/sass/**/*.scss'
 				],
 				tasks: [
-					'compass:adminDev', 'compass:publicDev', 'concat:distCss'
+					'compass:adminDev', 'compass:publicDev'
 				]
 			},
 			js: {
@@ -134,7 +123,7 @@ module.exports = function (grunt) {
 					'assets/admin/js/src/**/*.js'
 				],
 				tasks: [
-					'uglify:dev', 'concat:distJs'
+					'uglify:dev', 'babel'
 				]
 			}
 		}
@@ -145,7 +134,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-compass');
 	grunt.loadNpmTasks('grunt-contrib-uglify-es');
 	grunt.loadNpmTasks('grunt-contrib-concat');
-
+	grunt.loadNpmTasks('grunt-babel');
 
 	// Register tasks
 	grunt.registerTask('default', [
@@ -154,16 +143,14 @@ module.exports = function (grunt) {
 		'compass:themes',
 		'uglify:dev',
 		'uglify:dist',
-		'concat:distJs',
-		'concat:distCss'
+		'babel',
 	]);
 	grunt.registerTask('dev', [
 		'compass:adminDev',
 		'compass:publicDev',
 		'compass:themes',
 		'uglify:dev',
-		'concat:distJs',
-		'concat:distCss',
+		'babel',
 		'watch'
 	]);
 	grunt.registerTask('dist', [
@@ -171,7 +158,6 @@ module.exports = function (grunt) {
 		'compass:public',
 		'compass:themes',
 		'uglify:dist',
-		'concat:distJs',
-		'concat:distCss'
+		'babel'
 	]);
 };

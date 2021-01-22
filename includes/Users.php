@@ -152,3 +152,21 @@ function commonsbooking_timeframe_redirect()
         exit;
     }
 }
+
+function commonsbooking_isCurrentUserAdmin() {
+    $current_user = wp_get_current_user();
+    $isAdmin      = false;
+
+    if (
+    count(array_intersect(
+        [
+            'administrator',
+            Plugin::$CB_MANAGER_ID
+        ],
+        (array)$current_user->roles))
+    ) {
+        $isAdmin = true;
+    }
+
+    return $isAdmin;
+}
