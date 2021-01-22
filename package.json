@@ -25,11 +25,19 @@
 		"grunt": "node node_modules/grunt/bin/grunt"
 	},
 	"dependencies": {
+		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
+		"grunt-contrib-jshint": "^1.1.0",
+		"grunt-contrib-uglify": "^3.3.0",
+		"grunt-contrib-uglify-es": "github:gruntjs/grunt-contrib-uglify#harmony",
 		"bootstrap": "^4.5.3",
 		"bootstrap-table": "^1.18.1",
 		"jquery": "^3.5.1",
 		"jquery-ui": "^1.12.1",
 		"jquery-ui-dist": "^1.12.1",
-		"moment": "^2.29.1"
+		"moment": "^2.29.1",
+		"leaflet": "^1.7.1",
+		"leaflet-easybutton": "^2.4.0",
+		"leaflet-spin": "^1.1.2",
+		"leaflet.markercluster": "^1.4.1"
 	}
 }

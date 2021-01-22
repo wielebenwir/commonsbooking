@@ -3,21 +3,23 @@
 
 namespace CommonsBooking;
 
-use CommonsBooking\Controller\TimeframeController;
+use CB;
+use CommonsBooking\Model\User;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Settings\Settings;
+use CommonsBooking\Wordpress\Options;
+use CommonsBooking\Migration\Migration;
+use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\CB1UserFields;
-use CommonsBooking\Settings\Settings;
+use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\CustomPostType\Item;
+use CommonsBooking\Controller\TimeframeController;
+use CommonsBooking\Wordpress\Options\AdminOptions;
+use CommonsBooking\Wordpress\PostStatus\PostStatus;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use CommonsBooking\Wordpress\PostStatus\PostStatus;
-use CommonsBooking\Model\User;
-use CommonsBooking\Wordpress\Options;
-use CB;
-use CommonsBooking\Migration\Migration;
-use CommonsBooking\Wordpress\Options\AdminOptions;
 
 class Plugin
 {
@@ -86,11 +88,6 @@ class Plugin
     public function init()
     {
 
-        // flush rewrite rules on plugin registration to set permalinks for registered costum post types
-        //register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRulesonActivation' ) );
-        //register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( self::class, 'flushRewriteRules' ) );
-
-
         do_action('cmb2_init');
 
         // Register custom user roles (e.g. location-owner, item-owner etc.)
@@ -113,8 +110,7 @@ class Plugin
         add_action('init', array(self::class, 'registerLocationTaxonomy'), 30);
 
         // check if we have a new version and run tasks
-        add_action( 'init', array( self::class, 'runTasksAfterUpdate' ), 30 );
-
+        add_action( 'admin_init', array( self::class, 'runTasksAfterUpdate' ), 30 );
 
         // Add menu pages
         add_action('admin_menu', array(self::class, 'addMenuPages'));
@@ -125,19 +121,19 @@ class Plugin
         // Remove cache items on save.
         add_action( 'save_post', array( $this, 'savePostActions' ), 10, 2 );
 
-        // flush rewrite rules after slug options has been saved   // see: https://wordpress.stackexchange.com/questions/302190/wordpress-cmb2-run-function-on-save/327179
-        add_action( 'cmb2_save_options-page_fields_posttypes_items-slug',
-            array( self::class, 'flushRewriteRules' ), 10);
-        add_action( 'cmb2_save_options-page_fields_posttypes_locations-slug',
-            array( self::class, 'flushRewriteRules' ), 10);
+        // actions after saving plugin options
+        add_action( 'admin_init', array (self::class, 'saveOptionsActions'), 100 );
 
+        add_action( 'plugins_loaded', array ($this, 'commonsbooking_load_textdomain'), 20 );
 
-
-
-        // set Options default values on admin activation
-        //register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( AdminOptions::class, 'setOptionsDefaultValues' ) );
-
+        $map_admin = new LocationMapAdmin();
+        add_action( 'plugins_loaded', array($map_admin, 'load_location_map_admin'));
     }
+
+    public function commonsbooking_load_textdomain() {
+        load_plugin_textdomain( 'commonsbooking', false, COMMONSBOOKING_PLUGIN_DIR . 'languages' );
+    }
+
 
     /**
      * Removes cache item in connection to post_type.
@@ -170,7 +166,7 @@ class Plugin
                     new \CommonsBooking\API\ItemsRoute(),
                     new \CommonsBooking\API\LocationsRoute(),
                     new \CommonsBooking\API\OwnersRoute(),
-                    new \CommonsBooking\API\ProjectsRoute()
+                    new \CommonsBooking\API\ProjectsRoute(),
 
                 ];
                 foreach($routes as $route) {
@@ -196,7 +192,8 @@ class Plugin
         return [
             new Item(),
             new Location(),
-            new Timeframe()
+            new Timeframe(),
+            new Map(),
         ];
     }
 
@@ -208,7 +205,8 @@ class Plugin
         return [
             Item::getPostType(),
             Location::getPostType(),
-            Timeframe::getPostType()
+            Timeframe::getPostType(),
+            Map::getPostType(),
         ];
     }
 
@@ -383,13 +381,13 @@ class Plugin
         $roleCapMapping = [
             Plugin::$CB_MANAGER_ID     => [
                 'read'                     => true,
-                'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true
+                'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
             ],
             'administrator'            => [
                 'read'                     => true,
                 'edit_posts'               => true,
-                'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true
-            ]
+                'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
+            ],
         ];
 
         foreach ($roleCapMapping as $roleName => $caps) {
@@ -397,7 +395,7 @@ class Plugin
             if ( ! $role) {
                 $role = add_role(
                     $roleName,
-                    __($roleName, COMMONSBOOKING_PLUGIN_SLUG)
+                    __('CommonsBooking Manager', 'commonsbooking')
                 );
             }
 
@@ -444,21 +442,21 @@ class Plugin
 
 
     /**
-     * flush rewrite rules to enable custom post type permalinks
+     * run actions after plugin options are saved
      */
-    public static function flushRewriteRulesonActivation()
+    public static function saveOptionsActions()
     {
-        self::registerCustomPostTypes();
-        flush_rewrite_rules(false);
+        if ( get_transient('commonsbooking_options_saved') == 1) {
+            // restore default values if necessary
+            AdminOptions::SetOptionsDefaultValues();
+
+            // flush rewrite rules to get permalinks working
+            flush_rewrite_rules();
+
+            set_transient('commonsbooking_options_saved', 0);
+        }
     }
 
-    /**
-     * flush rewrite rules to enable custom post type permalinks
-     */
-    public static function flushRewriteRules()
-    {
-        flush_rewrite_rules(false);
-    }
 
      /**
      * Register Admin-Options
@@ -472,16 +470,15 @@ class Plugin
     }
 
     /**
-     * Check if plugin is upgraded an run tasks
+     * Check if plugin is installed or updated an run tasks
      */
     public static function runTasksAfterUpdate() {
 
         $commonsbooking_version_option = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
         $commonsbooking_installed_version = get_option ( $commonsbooking_version_option );
 
-
-        // set version option if not already set
-        if ( COMMONSBOOKING_VERSION !== get_option( $commonsbooking_version_option ) OR !isset( $commonsbooking_installed_version ) ) {
+        // check if installed version differs from plugin version in database
+        if ( COMMONSBOOKING_VERSION !== $commonsbooking_installed_version OR !isset( $commonsbooking_installed_version ) ) {
 
             // set Options default values (e.g. if there are new fields added)
             AdminOptions::SetOptionsDefaultValues();
@@ -491,10 +488,24 @@ class Plugin
 
             // add more tasks if necessary
             // ...
+            self::updateLocationCoordinates();
 
             // update version number in options
             update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
         }
     }
 
+    /**
+     * Gets location position for locations without coordinates.
+     * @throws \Geocoder\Exception\Exception
+     */
+    public static function updateLocationCoordinates() {
+        $locations = \CommonsBooking\Repository\Location::get();
+
+        foreach ($locations as $location) {
+            if(!($location->getMeta('geo_latitude') && $location->getMeta('geo_longitude'))) {
+                $location->updateGeoLocation();
+            }
+        }
+    }
 }

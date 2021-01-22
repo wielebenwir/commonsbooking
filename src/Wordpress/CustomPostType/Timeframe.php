@@ -159,48 +159,54 @@ class Timeframe extends CustomPostType
 
             $startDate = isset($_REQUEST['repetition-start']) && $_REQUEST['repetition-start'] != "" ? sanitize_text_field($_REQUEST['repetition-start']) : null;
             $endDate   = isset($_REQUEST['repetition-end']) && $_REQUEST['repetition-end'] != "" ? sanitize_text_field($_REQUEST['repetition-end']) : null;
+            $isBooking = array_key_exists('type', $_REQUEST) && self::BOOKING_ID == sanitize_text_field($_REQUEST['type']);
 
-            /** @var \CommonsBooking\Model\Booking $booking */
-            $booking = Booking::getBookingByDate(
-                $startDate,
-                $endDate,
-                $locationId,
-                $itemId
-            );
+            if($isBooking) {
+                if($startDate == null || $endDate == null) {
+                    throw new \Exception('Start- and/or enddate missing.');
+                }
 
-            $postarr = array(
-                "type"        => sanitize_text_field($_REQUEST["type"]),
-                "post_status" => sanitize_text_field($_REQUEST["post_status"]),
-                "post_type"   => self::getPostType(),
-                "post_title"  => esc_html__("Booking", 'commonsbooking'),
-            );
+                /** @var \CommonsBooking\Model\Booking $booking */
+                $booking = Booking::getBookingByDate(
+                    $startDate,
+                    $endDate,
+                    $locationId,
+                    $itemId
+                );
 
-            // New booking
-            if (empty($booking)) {
-                $postarr['post_name'] = self::generateRandomSlug();
-                $postId               = wp_insert_post($postarr, true);
-                $booking_metafield    = new \CommonsBooking\Model\Booking($postId);
-                // we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
-                $booking_metafield->assignBookableTimeframeFields();
-                // Existing booking
-            } else {
-                $postarr['ID']     = $booking->ID;
-                $postId            = wp_update_post($postarr);
+                $postarr = array(
+                    "type"        => sanitize_text_field($_REQUEST["type"]),
+                    "post_status" => sanitize_text_field($_REQUEST["post_status"]),
+                    "post_type"   => self::getPostType(),
+                    "post_title"  => esc_html__("Booking", 'commonsbooking'),
+                );
+
+                $postId = null;
+                // New booking
+                if (empty($booking)) {
+                    $postarr['post_name'] = self::generateRandomSlug();
+                    $postId               = wp_insert_post($postarr, true);
+                    // Existing booking
+                } else {
+                    $postarr['ID']     = $booking->ID;
+                    $postId            = wp_update_post($postarr);
+                }
+
                 $booking_metafield = new \CommonsBooking\Model\Booking($postId);
                 // we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
                 $booking_metafield->assignBookableTimeframeFields();
+
+                // Trigger Mail, only send mail if status has changed
+                if ( ! empty($booking) and $booking->post_status != $post_status) {
+                    $booking_msg = new \CommonsBooking\Messages\Messages($postId, $post_status);
+                    $booking_msg->triggerMail();
+                }
+
+                // get slug as parameter
+                $post_slug = get_post($postId)->post_name;
+                wp_redirect(add_query_arg(self::getPostType(), $post_slug, home_url()));
             }
 
-            // Trigger Mail, only send mail if status has changed
-            if ( ! empty($booking) and $booking->post_status != $post_status) {
-                $booking_msg = new \CommonsBooking\Messages\Messages($postId, $post_status);
-                $booking_msg->triggerMail();
-            }
-
-            // get slug as parameter
-            $post_slug = get_post($postId)->post_name;
-
-            wp_redirect(add_query_arg(self::getPostType(), $post_slug, home_url()));
             exit;
         }
     }
@@ -756,7 +762,7 @@ class Timeframe extends CustomPostType
             ),
             array(
                 'name' => esc_html__('Create Booking Codes', 'commonsbooking'),
-                'desc' => esc_html__('Select to generate booking codes for each day within the start/end date. The booking codes will be generated after clicking "Save / Update".', 'commonsbooking'),              
+                'desc' => esc_html__('Select to generate booking codes for each day within the start/end date. The booking codes will be generated after clicking "Save / Update".', 'commonsbooking'),
                 'id'   => "create-booking-codes",
                 'type' => 'checkbox',
             ),

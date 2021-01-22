@@ -4,6 +4,7 @@
  * Plugin Options
  *
  * Tabs -> field "groups" -> fields
+ * Notice: options are stored in database wp_options with prefix 'commonsboking_options_' followed by the tab id (e.g. commonsbooking_options_main)
  */
 return array(
 
@@ -48,7 +49,9 @@ return array(
            'id' => 'posttypes',
            // tranlsators: %s = admin url options page
            'desc' =>
-                commonsbooking_sanitizeHTML( __('Customize names & slugs. You can set an individual slugs for items and locations to create individual permalinks. <b>Notice</b>: You must click on the Settings -> Permalinks page after saving these settings to refresh the Wordpress permalink settings.', 'commonsbooking' ) ),
+                esc_html__(
+                    'Customize names & slugs. You can set an individual slug for items and locations to create individual permalinks. <b>Notice</b>: If the new settings do not work directly (you will get a 404 page error on frontend pages), you must click on the Settings -> Permalinks page after saving these settings to refresh the Wordpress permalink settings.'
+                    , 'commonsbooking' ),
            'fields' => array(
 //             array(
 //               'name'    => esc_html_e( 'Item singular name', 'commonsbooking' ),
@@ -91,13 +94,14 @@ return array(
 
 
 
-    // /* Tab: general end*/
+    /* Tab: general end*/
 
+
+    /* Tab Booking Codes start */
     'bookingcodes' => array(
         'title' => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
-        'id' => 'general',
+        'id' => 'bookingcodes',
         'field_groups' => array (
-            /* posttype: naming, rewrite, archives start */
             'bookingcodes' => array(
                 'title' => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
                 'id' => 'bookingcodes',
@@ -117,6 +121,7 @@ return array(
     'templates' => array(
         'title'        => commonsbooking_sanitizeHTML( __('Templates', 'commonsbooking') ),
         'id'           => 'templates',
+        // field group email templates start
         'field_groups' => array(
             'emailtemplates' => array(
                 'title'  => commonsbooking_sanitizeHTML( __('Email templates', 'commonsbooking') ),
@@ -196,74 +201,33 @@ Thanks, the Team.
                     ),
                 )
             ),
-            /* email templates end */
+            /* field group email templates end */
 
 
 
-            /* message templates start */
-            // 'messagetemplates' => array(
-            //   'title' => commonsbooking_sanitizeHTML( 'Booking process messages', 'commonsbooking' ),
-            //   'id' => 'messagetemplates',
-            //   'desc' => '',
-            //   'fields' => array(
-            //     array(
-            //       'name'    => commonsbooking_sanitizeHTML( 'Please confirm your booking', 'commonsbooking' ),
-            //       'id'      => 'messagetemplates_please-confirm',
-            //       'cb1_legacy_id'  => 'commons-booking-settings-messages:commons-booking_messages_booking_pleaseconfirm',
-            //       'type'    => 'textarea_small',
-            //       'default' => commonsbooking_sanitizeHTML('Please review your booking of {{item-name}} at {{location-name}} and confirm it.', 'commonsbooking'),
-            //     ),
-            //     array(
-            //       'name'    => commonsbooking_sanitizeHTML( 'Booking confirmed', 'commonsbooking' ),
-            //       'id'      => 'messagetemplates_booking-confirmed',
-            //       'cb1_legacy_id'  => 'commons-booking-settings-messages:commons-booking_messages_booking_confirmed',
-            //       'type'    => 'textarea_small',
-            //       'default' => commonsbooking_sanitizeHTML( 'Your booking of {{item-name}} at {{location-name}} has been confirmed!', 'commonsbooking' ),
-            //     ),
-            //     array(
-            //       'name'    => commonsbooking_sanitizeHTML( 'Booking cancelled', 'commonsbooking' ),
-            //       'id'      => 'messagetemplates_booking-canceled',
-            //       'type'    => 'textarea_small',
-            //       'default' => commonsbooking_sanitizeHTML( 'Your booking has been cancelled!<br>', 'commonsbooking' ),
-            //     ),
-            //     array(
-            //       'name'    => commonsbooking_sanitizeHTML( 'Request cancel confirmation', 'commonsbooking' ),
-            //       'id'      => 'messagetemplates_booking-cancel-request-text',
-            //       'type'    => 'textarea_small',
-            //       'default' => commonsbooking_sanitizeHTML( 'Click "OK" to cancel the booking.', 'commonsbooking' ),
-            //     ),
-            //     array(
-            //       'name'    => commonsbooking_sanitizeHTML( 'Request un-cancel confirmation', 'commonsbooking' ),
-            //       'id'      => 'messagetemplates_booking-uncancel-request-text',
-            //       'type'    => 'textarea_small',
-            //       'default' => commonsbooking_sanitizeHTML( 'Click "OK" to un-cancel your booking.', 'commonsbooking' ),
-            //     ),
-            //     array(
-            //       'name'    => commonsbooking_sanitizeHTML( 'Access not allowed', 'commonsbooking' ),
-            //       'id'      => 'messagetemplates_booking-not-allowed',
-            //       'type'    => 'textarea_small',
-            //       'default' => commonsbooking_sanitizeHTML( 'You are not allowed to access this booking.', 'commonsbooking' ),
-            //     ),
-            //     array(
-            //       'name'    => commonsbooking_sanitizeHTML( 'No bookings', 'commonsbooking' ),
-            //       'id'      => 'messagetemplates_booking-no_bookings',
-            //       'type'    => 'textarea_small',
-            //       'default' => commonsbooking_sanitizeHTML( 'No bookings yet.', 'commonsbooking' ),
-            //     ),
-            //     array(
-            //       'name'    => commonsbooking_sanitizeHTML( 'Not logged in', 'commonsbooking' ),
-            //       'id'      => 'messagetemplates_booking-not_logged-in',
-            //       'type'    => 'textarea_small',
-            //       'default' => commonsbooking_sanitizeHTML( 'You have to be logged in to access your bookings. {{site-registration-link}}', 'commonsbooking' ),
-            //     ),
-            //     array(
-            //       'name'    => commonsbooking_sanitizeHTML( 'Not available', 'commonsbooking' ),
-            //       'id'      => 'messagetemplates_item-not-available',
-            //       'type'    => 'textarea_small',
-            //       'default' => commonsbooking_sanitizeHTML( 'This item is currently not available.', 'commonsbooking' ),
-            //     ),
-            //   )
-            // ),
+
+            /* field group template and booking message templates start */
+            'messagetemplates' => array(
+              'title' => commonsbooking_sanitizeHTML( __( 'Template and booking process messages', 'commonsbooking' ) ),
+              'id' => 'messagetemplates',
+              'desc' => '',
+              'fields' => array(
+                array(
+                  'name'    => commonsbooking_sanitizeHTML ( __( 'Item not available', 'commonsbooking' ) ),
+                  'id'      => 'item-not-available',
+                  'type'    => 'textarea_small',
+                  'desc'    => commonsbooking_sanitizeHTML( __('This text is shown on item listings (shortcode cb_items) and item detail page if there is no valid bookable timeframe set for this item', 'commonsbooking') ),
+                  'default' => esc_html__( 'This item is currently not bookable.', 'commonsbooking' ),
+                ),
+                array(
+                    'name'    => esc_html__( 'Location without available items', 'commonsbooking' ),
+                    'id'      => 'location-without-items',
+                    'type'    => 'textarea_small',
+                    'desc'    => esc_html__('This text is shown on location listings and location detail page if there are no items available at this location', 'commonsbooking'),
+                    'default' => esc_html__( 'No items available at this location right now.', 'commonsbooking' ),
+                  ),
+              )
+            ),
             /* message templates end */
         )
     ),
@@ -275,7 +239,7 @@ Thanks, the Team.
         'id'           => 'migration',
         'field_groups' => array(
             'migration' => array(
-                'title'       => __('Migrate from Commons Booking Version 0.X', 'commonsbooking'),
+                'title'       => esc_html__('Migrate from Commons Booking Version 0.X', 'commonsbooking'),
                 'id'          => 'migration',
                 'desc'        => commonsbooking_sanitizeHTML( __('Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br>Please read the documentation on <a href="https://commonsbooking.org/dokumentation/">https://commonsbooking.org/dokumentation/</a> before you start migration.', 'commonsbooking') ),
                 'fields'      => [
