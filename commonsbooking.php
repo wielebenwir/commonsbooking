@@ -67,6 +67,7 @@ function commonsbooking_public()
     wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/themes/'.$template.'.css');
 
     wp_enqueue_script('jquery');
+    wp_enqueue_script('jquery-ui-datepicker', array('jquery'));
 
     wp_enqueue_script(
         'cb-scripts-vendor',
@@ -86,13 +87,25 @@ function commonsbooking_public()
         plugin_dir_url(__FILE__) . 'assets/public/css/themes/daterangepicker/daterangepicker.css'
     );
 
-//    wp_enqueue_script(
-//        'cb-scripts-jquery',
-//        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/jquery.min.js',
-//        array(),
-//        '1.0.0',
-//        true
-//    );
+    wp_enqueue_script(
+        'cb-scripts-daterangepicker',
+        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/daterangepicker.min.js',
+        array(),
+        '1.0.0'
+    );
+
+    // Select 2
+    wp_enqueue_style(
+        'cb-styles-select2',
+        plugin_dir_url(__FILE__) . 'assets/public/css/themes/select2/select2.min.css'
+    );
+
+    wp_enqueue_script(
+        'cb-scripts-select2',
+        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/select2.min.js',
+        array('jquery'),
+        '1.0.0'
+    );
 
     // Moment.js
     wp_enqueue_script(
@@ -101,14 +114,6 @@ function commonsbooking_public()
         array(),
         '1.0.0',
         true
-    );
-
-    // Daterangepicker
-    wp_enqueue_script(
-        'cb-scripts-daterangepicker',
-        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/daterangepicker.min.js',
-        array(),
-        '1.0.0'
     );
 
     /**

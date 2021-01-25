@@ -1,158 +1,400 @@
-
 var Shuffle = window.Shuffle;
 
-class Demo {
+class BookingList {
     constructor(element) {
         this.currentPage = 1;
         this.totalPages = 0;
         this.loadMoreButton = document.getElementById('load-more-button');
-        this.shuffleInstance;
-
+        this.pagination = document.getElementById('booking-list--pagination');
         this.element = element;
-        // this.shuffle = new Shuffle(element/*, {
-        //     itemSelector: '.picture-item',
-        //     sizer: element.querySelector('.my-sizer-element'),
-        // }*/);
+        this.users = Array.from(document.querySelectorAll('.filter-users option'));
+        this.items = Array.from(document.querySelectorAll('.filter-items option'));
+        this.locations = Array.from(document.querySelectorAll('.filter-locations option'));
 
-        let listParams = new FormData();
+        this.startDate = document.querySelector('.filter-startdate input');
+        jQuery('#startDate-datepicker').datepicker({
+            dateFormat: "yy-mm-dd",
+            altFormat: "@",
+            altField: "#startDate"
+        });
 
-        listParams.append("_ajax_nonce", cb_ajax_bookings.nonce);
-        listParams.append("action", "bookings_data");
-        listParams.append("page", this.currentPage);
-        // listParams.append("limit", params.data.limit);
-        // listParams.append("offset", params.data.offset);
+        this.endDate = document.querySelector('.filter-enddate input');
+        jQuery('#endDate-datepicker').datepicker({
+            dateFormat: "yy-mm-dd",
+            altFormat: "@",
+            altField: "#endDate"
+        });
+
+        this.filters = {
+            users: [],
+            items: [],
+            locations: [],
+            startDate: [],
+            endDate: []
+        }
+
+        this.shuffle = new Shuffle(element);
+
+        this.resetListParams();
+        // this.listParams.append("posts_per_page", 100);
         // listParams.append("order", params.data.order);
         // listParams.append("search", params.data.search);
         // listParams.append("sort", params.data.sort);
 
+        this.reloadData();
+        // this.addSorting();
+        // this.addSearchFilter();
+        this._bindEventListeners();
+    }
+
+    resetListParams() {
+        this.listParams = new FormData();
+        this.listParams.append("_ajax_nonce", cb_ajax_bookings.nonce);
+        this.listParams.append("action", "bookings_data");
+        this.listParams.append("page", 1);
+    };
+
+    _bindEventListeners() {
+        this._onUserChange = this._handleUserChange.bind(this);
+        this._onItemChange = this._handleItemChange.bind(this);
+        this._onLocationChange = this._handleLocationChange.bind(this);
+        this._onStartDateChange = this._handleStartDateChange.bind(this);
+        this._onEndDateChange = this._handleEndDateChange.bind(this);
+
+        var userSelect = document.querySelectorAll('.filter-users select');
+        userSelect.item(0).addEventListener('change', this._onUserChange);
+
+        var itemSelect = document.querySelectorAll('.filter-items select');
+        itemSelect.item(0).addEventListener('change', this._onItemChange);
+
+        var locationSelect = document.querySelectorAll('.filter-locations select');
+        locationSelect.item(0).addEventListener('change', this._onLocationChange);
+
+        jQuery('#startDate-datepicker').datepicker("option", "onSelect", this._onStartDateChange);
+        jQuery('#startDate-datepicker').change(this._onStartDateChange);
+
+
+        jQuery('#endDate-datepicker').datepicker("option", "onSelect", this._onEndDateChange);
+        jQuery('#endDate-datepicker').change(this._onEndDateChange);
+    };
+
+    _handleStartDateChange() {
+        this.filters.startDate = [];
+
+        if(jQuery('#startDate-datepicker').datepicker( "getDate" )) {
+            const timezoneOffsetGermany = 3600;
+            let startDate = parseInt(document.querySelector('#startDate').value.slice(0,-3)) + timezoneOffsetGermany;
+            this.filters.startDate = [startDate + ''];
+        }
+
+        this.filter();
+    };
+
+    _handleEndDateChange() {
+        this.filters.endDate = [];
+
+        if(jQuery('#endDate-datepicker').datepicker( "getDate" )) {
+            const timezoneOffsetGermany = 3600;
+            let endDate = parseInt(document.querySelector('#endDate').value.slice(0,-3)) + timezoneOffsetGermany;
+            this.filters.endDate = [endDate + ''];
+        }
+
+        this.filter();
+    };
+
+    _handleUserChange() {
+        this.filters.users = this._getCurrentUserFilters();
+        if (this.filters.users[0] == 'all') {
+            this.filters.users = [];
+        }
+        this.filter();
+    };
+
+    _getCurrentUserFilters() {
+        return this.users.filter(function (input) {
+            return input.selected;
+        }).map(function (input) {
+            return input.value;
+        });
+    };
+
+    _handleItemChange() {
+        this.filters.items = this._getCurrentItemFilters();
+        if (this.filters.items[0] == 'all') {
+            this.filters.items = [];
+        }
+
+        this.filter();
+    };
+
+    _getCurrentItemFilters() {
+        return this.items.filter(
+            function (input) {
+                return input.selected;
+            }).map(function (input) {
+            return input.value;
+        });
+    };
+
+    _handleLocationChange() {
+        this.filters.locations = this._getCurrentLocationFilters();
+        if (this.filters.locations[0] == 'all') {
+            this.filters.locations = [];
+        }
+        this.filter();
+    };
+
+    _getCurrentLocationFilters() {
+        return this.locations.filter(function (input) {
+            return input.selected;
+        }).map(function (input) {
+            return input.value;
+        });
+    };
+
+    reloadData() {
+        this._renderPagination = this._handleRenderPagination.bind(this);
         var self = this;
 
-        fetch( cb_ajax_bookings.ajax_url, {
+        fetch(cb_ajax_bookings.ajax_url, {
             method: 'POST',
-            body: listParams
+            body: this.listParams
         })
             .then(function (response) {
                 return response.json();
             })
             .then(function (response) {
-
                 // Store the total number of pages so we know when to disable the "load more" button.
                 self.totalPages = response.total_pages;
 
                 // Check if there are any more pages to load.
-                if (self.currentPage === self.totalPages) {
-                    self._replaceLoadMoreButton();
+                self._renderPagination(self.totalPages, response.page);
+
+                if (self.totalPages < 2 && typeof self.pagination !== 'undefined') {
+                    self.pagination.style.display = 'none';
                 }
 
                 // Create and insert the markup.
                 var markup = self._getItemMarkup(response.data);
                 self._appendMarkupToGrid(markup);
 
-                // Add click listener to button to load the next page.
-                if(self._loadMoreButton) {
-                    self._loadMoreButton.addEventListener('click', self._fetchNextPage);
-                }
+                // Initialize Shuffle now that there are items.
+                self.shuffle = new Shuffle(self.element, {
+                    itemSelector: '.js-item',
+                    sizer: '.my-sizer-element',
+                });
             });
+    };
 
-        // Initialize Shuffle now that there are items.
-        this.shuffle = new Shuffle(this.element, {
-            itemSelector: '.js-item',
-            sizer: '.my-sizer-element',
+    _handleRenderPagination(pages, currentPage) {
+        this.pagination.innerHTML = '';
+
+        if (this.totalPages > 1) {
+            let markup = '<ul>';
+
+            for (let i = 1; i <= pages; i++) {
+                let active = '';
+                if (i == currentPage) {
+                    active = ' class="active" ';
+                }
+                markup += '<li data-page="' + i + '"' + active + '>' + i + '</li>';
+            }
+            markup += '</ul';
+            this.pagination.insertAdjacentHTML('beforeend', markup);
+            this.pagination.style.display = 'block';
+            this._bindPaginationHandler();
+        } else {
+            this.pagination.style.display = 'none';
+        }
+    }
+
+    _bindPaginationHandler() {
+        this._onPageChange = this._handlePageChange.bind(this);
+
+        var self = this;
+        var pages = document.querySelectorAll('#booking-list--pagination ul li');
+
+        pages.forEach(function (page) {
+            page.addEventListener('click', self._onPageChange);
         });
+    }
 
-        // Log events.
-        this.addShuffleEventListeners();
-        this._activeFilters = [];
-        this.addFilterButtons();
-
-        // this.addSorting();
-        // this.addSearchFilter();
-
+    _handlePageChange(evt) {
+        var page = evt.currentTarget.dataset.page;
+        this.listParams.set('page', page);
+        this.reloadData();
     }
 
     /**
-     * Shuffle uses the CustomEvent constructor to dispatch events. You can listen
-     * for them like you normally would (with jQuery for example).
+     * Filter shuffle based on the current state of filters.
      */
-    addShuffleEventListeners() {
-        this.shuffle.on(Shuffle.EventType.LAYOUT, (data) => {
-            console.log('layout. data:', data);
-        });
-        this.shuffle.on(Shuffle.EventType.REMOVED, (data) => {
-            console.log('removed. data:', data);
-        });
-    }
+    filter() {
+        if (this.hasActiveFilters()) {
 
-    addFilterButtons() {
-        const options = document.querySelector('.filter-options');
-        if (!options) {
-            return;
-        }
+            if (this.filters.startDate.length) {
+                this.listParams.set('startDate', this.filters.startDate);
+            } else {
+                this.listParams.delete('startDate');
+            }
 
-        const filterButtons = Array.from(options.children);
-        const onClick = this._handleFilterClick.bind(this);
-        filterButtons.forEach((button) => {
-            button.addEventListener('click', onClick, false);
-        });
-    }
+            if (this.filters.endDate.length) {
+                this.listParams.set('endDate', this.filters.endDate);
+            } else {
+                this.listParams.delete('endDate');
+            }
 
-    _handleFilterClick(evt) {
-        const btn = evt.currentTarget;
-        const isActive = btn.classList.contains('active');
-        const btnGroup = btn.getAttribute('data-group');
+            if (this.filters.items.length) {
+                this.listParams.set('item', this.filters.items[0]);
+            } else {
+                this.listParams.delete('item');
+            }
 
-        this._removeActiveClassFromChildren(btn.parentNode);
+            if (this.filters.users.length) {
+                this.listParams.set('user', this.filters.users[0]);
+            } else {
+                this.listParams.delete('user');
+            }
 
-        let filterGroup;
-        if (isActive) {
-            btn.classList.remove('active');
-            filterGroup = Shuffle.ALL_ITEMS;
+            if (this.filters.locations.length) {
+                this.listParams.set('location', this.filters.locations[0]);
+            } else {
+                this.listParams.delete('location');
+            }
+
+            this.reloadData();
+            this.shuffle.filter(this.itemPassesFilters.bind(this));
         } else {
-            btn.classList.add('active');
-            filterGroup = btnGroup;
+            this.resetListParams();
+            this.reloadData();
+            this.shuffle.filter(Shuffle.ALL_ITEMS);
+        }
+    };
+
+    /**
+     * If any of the arrays in the `filters` property have a length of more than zero,
+     * that means there is an active filter.
+     * @return {boolean}
+     */
+    hasActiveFilters() {
+        return Object.keys(this.filters).some(function (key) {
+            return this.filters[key].length > 0;
+        }, this);
+    };
+
+    /**
+     * Determine whether an element passes the current filters.
+     * @param {Element} element Element to test.
+     * @return {boolean} Whether it satisfies all current filters.
+     */
+    itemPassesFilters(element) {
+
+        var users = this.filters.users;
+        var items = this.filters.items;
+        var locations = this.filters.locations;
+        var user = element.getAttribute('data-user');
+        var item = element.getAttribute('data-item');
+        var location = element.getAttribute('data-location');
+
+        if (users.length > 0 && !users.includes(user)) {
+            return false;
         }
 
-        this.shuffle.filter(filterGroup);
-    }
+        if (items.length > 0 && !items.includes(item)) {
+            return false;
+        }
 
-    _removeActiveClassFromChildren(parent) {
-        const { children } = parent;
-        for (let i = children.length - 1; i >= 0; i--) {
-            children[i].classList.remove('active');
+        if (locations.length > 0 && !locations.includes(location)) {
+            return false;
+        }
+
+        return true;
+    };
+
+    // Add click listener to button to load the next page.
+    addPagination() {
+        if (this.loadMoreButton) {
+            const onClick = this._fetchNextPage.bind(this);
+            this.loadMoreButton.addEventListener('click', onClick);
         }
     }
 
     _fetchNextPage() {
         this.currentPage += 1;
-        listParams.set('page', currentPage);
+        this.listParams.set('page', this.currentPage);
+
+        var self = this;
 
         fetch(cb_ajax_bookings.ajax_url, {
             method: 'POST',
-            body: listParams
+            body: this.listParams
         })
             .then(function (response) {
                 return response.json();
             })
             .then(function (response) {
                 // Create and insert the markup.
-                var markup = getItemMarkup(response.data);
-                appendMarkupToGrid(markup);
+                var markup = self._getItemMarkup(response.data);
+                self._appendMarkupToGrid(markup);
 
                 // Check if there are any more pages to load.
-                if (currentPage === totalPages) {
-                    replaceLoadMoreButton();
+                if (self.currentPage === self.totalPages) {
+                    self._replaceLoadMoreButton();
                 }
 
                 // Save the total number of new items returned from the API.
                 var itemsFromResponse = response.data.length;
                 // Get an array of elements that were just added to the grid above.
-                var allItemsInGrid = Array.from(gridContainerElement.children);
+                var allItemsInGrid = Array.from(self.element.children);
                 // Use negative beginning index to extract items from the end of the array.
                 var newItems = allItemsInGrid.slice(-itemsFromResponse);
 
                 // Notify the shuffle instance that new items were added.
-                shuffleInstance.add(newItems);
+                self.shuffle.add(newItems);
             });
+    }
+
+    _initItemElement(item) {
+        var itemElement = document.createElement('div');
+        itemElement.classList.add('js-item');
+        itemElement.classList.add('cb-wrapper');
+        itemElement.dataset.user = item.user;
+        itemElement.dataset.item = item.item;
+        itemElement.dataset.location = item.location;
+
+        return itemElement;
+    }
+
+    _initHeadlineElement(item) {
+        var headline = document.createElement('h4');
+        headline.classList.add('cb-title');
+        headline.classList.add('cb-item-title');
+        headline.append(document.createTextNode(item.item + ' @ ' + item.location))
+        return headline;
+
+
+        var headlineElement = document.createElement('div');
+        headlineElement.classList.add('js-item--headline');
+        headlineElement.append(headline);
+
+        return headlineElement;
+    }
+
+    _initContentElement(item) {
+        var contentElement = document.createElement('p');
+        contentElement.append(document.createTextNode(
+            item.startDateFormatted + ' -> ' + item.endDateFormatted + ' / User: ' + item.user + ' / ' + item.status
+        ));
+
+        return contentElement;
+    }
+
+    _initActionsElement(item) {
+        var actionsElement = document.createElement('div');
+        actionsElement.classList.add('js-item--action');
+        actionsElement.classList.add('cb-action');
+        actionsElement.insertAdjacentHTML('beforeend', item.actions);
+
+        return actionsElement;
     }
 
     /**
@@ -162,15 +404,17 @@ class Demo {
      */
     _getMarkupFromData(dataForSingleItem) {
         var i = dataForSingleItem;
-        var name = i.bookingDate + ' - ' + i.item + ' ' + i.location;
-        var randomColor = ('000000' + Math.random().toString(16).slice(2, 8)).slice(-6);
-        return [
-            '<div class="js-item col-3@xs col-3@sm person-item" data-id="' + name + '" data-groups=\'["nature"]\'>',
-            '<div class="person-item__inner" style="background-color:#' + randomColor + '">',
-            '<span>' + name + '</span>',
-            '</div>',
-            '</div>',
-        ].join('');
+        var item = this._initItemElement(i);
+
+        var contentWrapperElement = document.createElement('div');
+        contentWrapperElement.classList.add('content-wrapper');
+
+        contentWrapperElement.append(this._initHeadlineElement(i));
+        contentWrapperElement.append(this._initContentElement(i));
+        item.append(contentWrapperElement);
+        item.append(this._initActionsElement(i));
+
+        return item.outerHTML;
     }
 
     /**
@@ -180,9 +424,12 @@ class Demo {
      */
     _getItemMarkup(items) {
         let self = this;
-        return items.reduce(function (str, item) {
-            return str + self._getMarkupFromData(item);
-        }, '');
+        if(items) {
+            return items.reduce(function (str, item) {
+                return str + self._getMarkupFromData(item);
+            }, '');
+        }
+        return '';
     }
 
     /**
@@ -190,6 +437,7 @@ class Demo {
      * @param {string} markup A string of HTML.
      */
     _appendMarkupToGrid(markup) {
+        this.element.innerHTML = '';
         this.element.insertAdjacentHTML('beforeend', markup);
     }
 
@@ -197,11 +445,11 @@ class Demo {
      * Remove the load more button so that the user cannot click it again.
      */
     _replaceLoadMoreButton() {
-        if( this.loadMoreButton) {
+        if (this.loadMoreButton) {
             var text = document.createTextNode('All users loaded');
             var replacement = document.createElement('p');
             replacement.appendChild(text);
-            this.loadMoreButton.parentNode.replaceChild(replacement, loadMoreButton);
+            this.loadMoreButton.parentNode.replaceChild(replacement, this.loadMoreButton);
         }
     }
 
@@ -283,5 +531,5 @@ class Demo {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    window.demo = new Demo(document.getElementById('grid'));
+    window.demo = new BookingList(document.getElementById('booking-list--results'));
 });

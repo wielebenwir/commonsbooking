@@ -4239,6 +4239,121 @@
   clear: left;
 }
 
+/** Booking list styles */
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\000031}}
+#ui-datepicker-div {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\000036}}
+#ui-datepicker-div .ui-datepicker-calendar {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000310}}
+#ui-datepicker-div .ui-datepicker-calendar td a {
+  color: #84AE53;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000315}}
+#ui-datepicker-div .ui-datepicker-next,
+#ui-datepicker-div .ui-datepicker-prev {
+  cursor: pointer;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000320}}
+#ui-datepicker-div .ui-datepicker-next {
+  right: 1.5rem;
+  position: absolute;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000325}}
+#ui-datepicker-div .ui-datepicker-title {
+  margin-top: 1rem;
+  color: black;
+  clear: both;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000331}}
+#ui-datepicker-div .ui-corner-all {
+  color: #84AE53;
+}
+
+@media (max-width: 400px) {
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000337}}
+  .booking-list--filters {
+    width: 100%;
+  }
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000345}}
+.booking-list--filters .filter-wrapper {
+  font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+  float: left;
+  width: 200px;
+  height: 100px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000352}}
+.booking-list--filters .filter-wrapper .filter-label {
+  margin-bottom: 1rem;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000357}}
+.booking-list--filters .select2 {
+  width: 80%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000361}}
+.booking-list--filters #endDate-datepicker,
+.booking-list--filters #startDate-datepicker {
+  width: 80%;
+  padding: 0.25rem 0.5rem;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000368}}
+.booking-list #booking-list--results {
+  width: 100%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000377}}
+.booking-list #booking-list--results .js-item {
+  width: 100%;
+  padding: 2rem 1rem;
+  background-color: white;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000383}}
+.booking-list #booking-list--results .js-item .content-wrapper {
+  float: left;
+  width: 50%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000387}}
+.booking-list #booking-list--results .js-item .content-wrapper h4 {
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000394}}
+.booking-list #booking-list--results .js-item--action a {
+  font-size: 1.4rem;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003100}}
+.booking-list #booking-list--results .my-sizer-element {
+  clear: both;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003105}}
+.booking-list #booking-list--pagination {
+  text-align: center;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003108}}
+.booking-list #booking-list--pagination ul {
+  float: left;
+  position: relative;
+  left: 50%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003112}}
+.booking-list #booking-list--pagination ul li {
+  cursor: pointer;
+  list-style-type: none;
+  float: left;
+  position: relative;
+  left: -50%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003119}}
+.booking-list #booking-list--pagination ul li.active {
+  font-weight: bold;
+}
+
 /* Fixes for specific WP Themes */
 /**
  * Tweaks to make CB play nice with popular themes.

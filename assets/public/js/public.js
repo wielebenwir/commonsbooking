@@ -1,89 +1,217 @@
 var Shuffle = window.Shuffle;
 
-class Demo {
+class BookingList {
     constructor(element) {
         this.currentPage = 1, this.totalPages = 0, this.loadMoreButton = document.getElementById("load-more-button"), 
-        this.shuffleInstance, this.element = element;
-        let listParams = new FormData();
-        listParams.append("_ajax_nonce", cb_ajax_bookings.nonce), listParams.append("action", "bookings_data"), 
-        listParams.append("page", this.currentPage);
+        this.pagination = document.getElementById("booking-list--pagination"), this.element = element, 
+        this.users = Array.from(document.querySelectorAll(".filter-users option")), this.items = Array.from(document.querySelectorAll(".filter-items option")), 
+        this.locations = Array.from(document.querySelectorAll(".filter-locations option")), 
+        this.startDate = document.querySelector(".filter-startdate input"), jQuery("#startDate-datepicker").datepicker({
+            dateFormat: "yy-mm-dd",
+            altFormat: "@",
+            altField: "#startDate"
+        }), this.endDate = document.querySelector(".filter-enddate input"), jQuery("#endDate-datepicker").datepicker({
+            dateFormat: "yy-mm-dd",
+            altFormat: "@",
+            altField: "#endDate"
+        }), this.filters = {
+            users: [],
+            items: [],
+            locations: [],
+            startDate: [],
+            endDate: []
+        }, this.shuffle = new Shuffle(element), this.resetListParams(), this.reloadData(), 
+        this._bindEventListeners();
+    }
+    resetListParams() {
+        this.listParams = new FormData(), this.listParams.append("_ajax_nonce", cb_ajax_bookings.nonce), 
+        this.listParams.append("action", "bookings_data"), this.listParams.append("page", 1);
+    }
+    _bindEventListeners() {
+        var userSelect, itemSelect, locationSelect;
+        this._onUserChange = this._handleUserChange.bind(this), this._onItemChange = this._handleItemChange.bind(this), 
+        this._onLocationChange = this._handleLocationChange.bind(this), this._onStartDateChange = this._handleStartDateChange.bind(this), 
+        this._onEndDateChange = this._handleEndDateChange.bind(this), document.querySelectorAll(".filter-users select").item(0).addEventListener("change", this._onUserChange), 
+        document.querySelectorAll(".filter-items select").item(0).addEventListener("change", this._onItemChange), 
+        document.querySelectorAll(".filter-locations select").item(0).addEventListener("change", this._onLocationChange), 
+        jQuery("#startDate-datepicker").datepicker("option", "onSelect", this._onStartDateChange), 
+        jQuery("#startDate-datepicker").change(this._onStartDateChange), jQuery("#endDate-datepicker").datepicker("option", "onSelect", this._onEndDateChange), 
+        jQuery("#endDate-datepicker").change(this._onEndDateChange);
+    }
+    _handleStartDateChange() {
+        if (this.filters.startDate = [], jQuery("#startDate-datepicker").datepicker("getDate")) {
+            const timezoneOffsetGermany = 3600;
+            let startDate = parseInt(document.querySelector("#startDate").value.slice(0, -3)) + timezoneOffsetGermany;
+            this.filters.startDate = [ startDate + "" ];
+        }
+        this.filter();
+    }
+    _handleEndDateChange() {
+        if (this.filters.endDate = [], jQuery("#endDate-datepicker").datepicker("getDate")) {
+            const timezoneOffsetGermany = 3600;
+            let endDate = parseInt(document.querySelector("#endDate").value.slice(0, -3)) + timezoneOffsetGermany;
+            this.filters.endDate = [ endDate + "" ];
+        }
+        this.filter();
+    }
+    _handleUserChange() {
+        this.filters.users = this._getCurrentUserFilters(), "all" == this.filters.users[0] && (this.filters.users = []), 
+        this.filter();
+    }
+    _getCurrentUserFilters() {
+        return this.users.filter(function(input) {
+            return input.selected;
+        }).map(function(input) {
+            return input.value;
+        });
+    }
+    _handleItemChange() {
+        this.filters.items = this._getCurrentItemFilters(), "all" == this.filters.items[0] && (this.filters.items = []), 
+        this.filter();
+    }
+    _getCurrentItemFilters() {
+        return this.items.filter(function(input) {
+            return input.selected;
+        }).map(function(input) {
+            return input.value;
+        });
+    }
+    _handleLocationChange() {
+        this.filters.locations = this._getCurrentLocationFilters(), "all" == this.filters.locations[0] && (this.filters.locations = []), 
+        this.filter();
+    }
+    _getCurrentLocationFilters() {
+        return this.locations.filter(function(input) {
+            return input.selected;
+        }).map(function(input) {
+            return input.value;
+        });
+    }
+    reloadData() {
+        this._renderPagination = this._handleRenderPagination.bind(this);
         var self = this;
         fetch(cb_ajax_bookings.ajax_url, {
             method: "POST",
-            body: listParams
+            body: this.listParams
         }).then(function(response) {
             return response.json();
         }).then(function(response) {
-            self.totalPages = response.total_pages, self.currentPage === self.totalPages && self._replaceLoadMoreButton();
+            self.totalPages = response.total_pages, self._renderPagination(self.totalPages, response.page), 
+            self.totalPages < 2 && void 0 !== self.pagination && (self.pagination.style.display = "none");
             var markup = self._getItemMarkup(response.data);
-            self._appendMarkupToGrid(markup), self._loadMoreButton && self._loadMoreButton.addEventListener("click", self._fetchNextPage);
-        }), this.shuffle = new Shuffle(this.element, {
-            itemSelector: ".js-item",
-            sizer: ".my-sizer-element"
-        }), this.addShuffleEventListeners(), this._activeFilters = [], this.addFilterButtons();
-    }
-    addShuffleEventListeners() {
-        this.shuffle.on(Shuffle.EventType.LAYOUT, data => {
-            console.log("layout. data:", data);
-        }), this.shuffle.on(Shuffle.EventType.REMOVED, data => {
-            console.log("removed. data:", data);
+            self._appendMarkupToGrid(markup), self.shuffle = new Shuffle(self.element, {
+                itemSelector: ".js-item",
+                sizer: ".my-sizer-element"
+            });
         });
     }
-    addFilterButtons() {
-        const options = document.querySelector(".filter-options");
-        if (!options) return;
-        const filterButtons = Array.from(options.children), onClick = this._handleFilterClick.bind(this);
-        filterButtons.forEach(button => {
-            button.addEventListener("click", onClick, !1);
+    _handleRenderPagination(pages, currentPage) {
+        if (this.pagination.innerHTML = "", this.totalPages > 1) {
+            let markup = "<ul>";
+            for (let i = 1; i <= pages; i++) {
+                let active = "";
+                i == currentPage && (active = ' class="active" '), markup += '<li data-page="' + i + '"' + active + ">" + i + "</li>";
+            }
+            markup += "</ul", this.pagination.insertAdjacentHTML("beforeend", markup), this.pagination.style.display = "block", 
+            this._bindPaginationHandler();
+        } else this.pagination.style.display = "none";
+    }
+    _bindPaginationHandler() {
+        this._onPageChange = this._handlePageChange.bind(this);
+        var self = this, pages;
+        document.querySelectorAll("#booking-list--pagination ul li").forEach(function(page) {
+            page.addEventListener("click", self._onPageChange);
         });
     }
-    _handleFilterClick(evt) {
-        const btn = evt.currentTarget, isActive = btn.classList.contains("active"), btnGroup = btn.getAttribute("data-group");
-        let filterGroup;
-        this._removeActiveClassFromChildren(btn.parentNode), isActive ? (btn.classList.remove("active"), 
-        filterGroup = Shuffle.ALL_ITEMS) : (btn.classList.add("active"), filterGroup = btnGroup), 
-        this.shuffle.filter(filterGroup);
+    _handlePageChange(evt) {
+        var page = evt.currentTarget.dataset.page;
+        this.listParams.set("page", page), this.reloadData();
     }
-    _removeActiveClassFromChildren(parent) {
-        const {children: children} = parent;
-        for (let i = children.length - 1; i >= 0; i--) children[i].classList.remove("active");
+    filter() {
+        this.hasActiveFilters() ? (this.filters.startDate.length ? this.listParams.set("startDate", this.filters.startDate) : this.listParams.delete("startDate"), 
+        this.filters.endDate.length ? this.listParams.set("endDate", this.filters.endDate) : this.listParams.delete("endDate"), 
+        this.filters.items.length ? this.listParams.set("item", this.filters.items[0]) : this.listParams.delete("item"), 
+        this.filters.users.length ? this.listParams.set("user", this.filters.users[0]) : this.listParams.delete("user"), 
+        this.filters.locations.length ? this.listParams.set("location", this.filters.locations[0]) : this.listParams.delete("location"), 
+        this.reloadData(), this.shuffle.filter(this.itemPassesFilters.bind(this))) : (this.resetListParams(), 
+        this.reloadData(), this.shuffle.filter(Shuffle.ALL_ITEMS));
+    }
+    hasActiveFilters() {
+        return Object.keys(this.filters).some(function(key) {
+            return this.filters[key].length > 0;
+        }, this);
+    }
+    itemPassesFilters(element) {
+        var users = this.filters.users, items = this.filters.items, locations = this.filters.locations, user = element.getAttribute("data-user"), item = element.getAttribute("data-item"), location = element.getAttribute("data-location");
+        return !(users.length > 0 && !users.includes(user)) && (!(items.length > 0 && !items.includes(item)) && !(locations.length > 0 && !locations.includes(location)));
+    }
+    addPagination() {
+        if (this.loadMoreButton) {
+            const onClick = this._fetchNextPage.bind(this);
+            this.loadMoreButton.addEventListener("click", onClick);
+        }
     }
     _fetchNextPage() {
-        this.currentPage += 1, listParams.set("page", currentPage), fetch(cb_ajax_bookings.ajax_url, {
+        this.currentPage += 1, this.listParams.set("page", this.currentPage);
+        var self = this;
+        fetch(cb_ajax_bookings.ajax_url, {
             method: "POST",
-            body: listParams
+            body: this.listParams
         }).then(function(response) {
             return response.json();
         }).then(function(response) {
-            var markup = getItemMarkup(response.data);
-            appendMarkupToGrid(markup), currentPage === totalPages && replaceLoadMoreButton();
-            var itemsFromResponse = response.data.length, allItemsInGrid, newItems = Array.from(gridContainerElement.children).slice(-itemsFromResponse);
-            shuffleInstance.add(newItems);
+            var markup = self._getItemMarkup(response.data);
+            self._appendMarkupToGrid(markup), self.currentPage === self.totalPages && self._replaceLoadMoreButton();
+            var itemsFromResponse = response.data.length, allItemsInGrid, newItems = Array.from(self.element.children).slice(-itemsFromResponse);
+            self.shuffle.add(newItems);
         });
     }
+    _initItemElement(item) {
+        var itemElement = document.createElement("div");
+        return itemElement.classList.add("js-item"), itemElement.classList.add("cb-wrapper"), 
+        itemElement.dataset.user = item.user, itemElement.dataset.item = item.item, itemElement.dataset.location = item.location, 
+        itemElement;
+    }
+    _initHeadlineElement(item) {
+        var headline = document.createElement("h4"), headlineElement;
+        return headline.classList.add("cb-title"), headline.classList.add("cb-item-title"), 
+        headline.append(document.createTextNode(item.item + " @ " + item.location)), headline;
+    }
+    _initContentElement(item) {
+        var contentElement = document.createElement("p");
+        return contentElement.append(document.createTextNode(item.startDateFormatted + " -> " + item.endDateFormatted + " / User: " + item.user + " / " + item.status)), 
+        contentElement;
+    }
+    _initActionsElement(item) {
+        var actionsElement = document.createElement("div");
+        return actionsElement.classList.add("js-item--action"), actionsElement.classList.add("cb-action"), 
+        actionsElement.insertAdjacentHTML("beforeend", item.actions), actionsElement;
+    }
     _getMarkupFromData(dataForSingleItem) {
-        var i = dataForSingleItem, name = i.bookingDate + " - " + i.item + " " + i.location, randomColor;
-        return [ '<div class="js-item col-3@xs col-3@sm person-item" data-id="' + name + '" data-groups=\'["nature"]\'>', '<div class="person-item__inner" style="background-color:#' + ("000000" + Math.random().toString(16).slice(2, 8)).slice(-6) + '">', "<span>" + name + "</span>", "</div>", "</div>" ].join("");
+        var i = dataForSingleItem, item = this._initItemElement(i), contentWrapperElement = document.createElement("div");
+        return contentWrapperElement.classList.add("content-wrapper"), contentWrapperElement.append(this._initHeadlineElement(i)), 
+        contentWrapperElement.append(this._initContentElement(i)), item.append(contentWrapperElement), 
+        item.append(this._initActionsElement(i)), item.outerHTML;
     }
     _getItemMarkup(items) {
         let self = this;
-        return items.reduce(function(str, item) {
+        return items ? items.reduce(function(str, item) {
             return str + self._getMarkupFromData(item);
-        }, "");
+        }, "") : "";
     }
     _appendMarkupToGrid(markup) {
-        this.element.insertAdjacentHTML("beforeend", markup);
+        this.element.innerHTML = "", this.element.insertAdjacentHTML("beforeend", markup);
     }
     _replaceLoadMoreButton() {
         if (this.loadMoreButton) {
             var text = document.createTextNode("All users loaded"), replacement = document.createElement("p");
-            replacement.appendChild(text), this.loadMoreButton.parentNode.replaceChild(replacement, loadMoreButton);
+            replacement.appendChild(text), this.loadMoreButton.parentNode.replaceChild(replacement, this.loadMoreButton);
         }
     }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    window.demo = new Demo(document.getElementById("grid"));
+    window.demo = new BookingList(document.getElementById("booking-list--results"));
 }), function(t, e) {
     "object" == typeof exports && "object" == typeof module ? module.exports = e() : "function" == typeof define && define.amd ? define("Litepicker", [], e) : "object" == typeof exports ? exports.Litepicker = e() : t.Litepicker = e();
 }(window, function() {

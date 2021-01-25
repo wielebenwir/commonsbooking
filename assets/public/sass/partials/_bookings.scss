@@ -1,0 +1,126 @@
+#ui-datepicker-div {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+
+    .ui-datepicker-calendar {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+
+        td a {
+            color: #84AE53;
+        }
+    }
+
+    .ui-datepicker-next,
+    .ui-datepicker-prev {
+        cursor: pointer;
+    }
+
+    .ui-datepicker-next {
+        right: 1.5rem;
+        position: absolute;
+    }
+
+    .ui-datepicker-title {
+        margin-top: 1rem;
+        color: black;
+        clear: both;
+    }
+
+    .ui-corner-all {
+        color: #84AE53;
+    }
+}
+
+.booking-list {
+    &--filters {
+        //width: 20%;
+        //float: left;
+
+        @media (max-width: 400px) {
+            width: 100%;
+        }
+
+        .filter-wrapper {
+
+            font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+            float: left;
+            width: 200px;
+            height: 100px;
+
+            .filter-label {
+                margin-bottom: 1rem;
+            }
+        }
+
+        .select2 {
+            width: 80%;
+        }
+
+        #endDate-datepicker,
+        #startDate-datepicker {
+            width: 80%;
+            padding: 0.25rem 0.5rem;
+        }
+    }
+
+    #booking-list--results {
+        width: 100%;
+        //min-height: 660px !important;
+
+        @media (min-width: 400px) {
+            //float: right;
+            //width: 80%;
+        }
+
+        .js-item {
+            width: 100%;
+            //border-bottom: 1px solid black;
+            padding: 2rem 1rem;
+            background-color: white;
+
+            .content-wrapper {
+                float: left;
+                width: 50%;
+
+                h4 {
+                    font-weight: bold;
+                    font-size: 1.4rem;
+                }
+            }
+
+            &--action {
+                a {
+                    font-size: 1.4rem;
+                }
+            }
+        }
+
+        .my-sizer-element {
+            clear: both;
+        }
+    }
+
+    #booking-list--pagination {
+        text-align: center;
+
+        ul {
+            float: left;
+            position: relative;
+            left: 50%;
+            li {
+                cursor: pointer;
+                list-style-type: none;
+                float: left;
+                position: relative;
+                left: -50%;
+
+                &.active {
+                    font-weight: bold;
+                }
+            }
+
+        }
+    }
+}

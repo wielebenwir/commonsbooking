@@ -13,37 +13,53 @@
 global $templateData;
 $noResultText = esc_html__("No bookings available.", "commonsbooking");
 
-if(count($templateData['bookings'])) {
+echo sprintf("<h2>%s</h2>", __('Bookings', 'commonsbooking'));
 
-//    var_dump($templateData['bookings']);
+if ($templateData['total'] > 0) {
+
     ?>
+    <div class="booking-list">
+        <div class="booking-list--filters">
+    <?php
+
+    echo "<div class='filter-wrapper'>";
+    echo "<p class=\"filter-label\">Startdatum</p>";
+    echo "<div class=\"filter-startdate\">";
+    echo '<input id="startDate-datepicker" type="text" value="">';
+    echo '<input id="startDate" type="hidden" value="">';
+    echo '</div>';
+    echo '</div>';
+
+    echo "<div class='filter-wrapper'>";
+    echo "<p class=\"filter-label\">Enddatum</p>";
+    echo "<div class=\"filter-enddate\">";
+    echo '<input id="endDate-datepicker" type="text" value="">';
+    echo '<input id="endDate" type="hidden" value="">';
+    echo '</div>';
+    echo '</div>';
 
 
-<!--    <label for="filters-search-input" class="filter-label">Search</label>-->
-<!--    <input style="font-size: 1rem" class="textfield filter__search js-shuffle-search" type="search" id="filters-search-input" />-->
+    foreach ($templateData['filters'] as $label => $values) {
+        echo "<div class='filter-wrapper'>";
+        echo "<p class=\"filter-label\">" . __(ucfirst($label), 'commonsbooking') . "</p>";
+        echo "<div class=\"filter-".$label."s\">";
+        echo sprintf('<select class="select2">');
 
+        echo sprintf('<option type="checkbox" value="all" selected="selected">%s</option>', __('All', 'commonsbooking'));
 
-    <p class="filter-label">Filter</p>
-    <div class="filter-options">
-        <button style="font-size: 1rem" data-group="space">Space</button>
-        <button style="font-size: 1rem" data-group="nature">Nature</button>
-        <button style="font-size: 1rem" data-group="animal">Animal</button>
-        <button style="font-size: 1rem" data-group="city">City</button>
-    </div>
-
-<!--    <legend class="filter-label">Sort</legend>-->
-<!--    <input type="radio" name="sort-value" value="dom" checked /> Default-->
-<!--    <input type="radio" name="sort-value" value="title" /> Title-->
-<!--    <input type="radio" name="sort-value" value="date-created" /> Date Created-->
-
-    <div class="container">
-        <div id="grid" class="row my-shuffle-container">
+        foreach ($values as $value) {
+            echo sprintf('<option type="checkbox" value="%s">%s</option>', $value, $value);
+        }
+        echo '</select>
+        </div></div>';
+    }
+?>
         </div>
-    </div>
-
-
+        <div id="booking-list--results">
+            <div class="my-sizer-element"></div>
+        </div>
+        <div id="booking-list--pagination" style="display: none"></div>
 <?php
-
 } else {
     echo $noResultText;
 }
