@@ -153,10 +153,17 @@ class Location extends BookablePost
         $postCode   = $this->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'location_postcode');
         $city   = $this->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'location_city');
         $country   = $this->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'location_country');
+        $geo_latitude   = $this->getMeta('geo_latitude');
+        $geo_longitude   = $this->getMeta('geo_longitude');
 
         $addressString = $street.", ".$postCode." ".$city.", ".$country;
         $addressData   = GeoHelper::getAddressData($addressString);
 
+        // if geo coordinates already exist do not update from geocoder
+        if(!empty( $geo_latitude ) && !empty( $geo_longitude)) {
+            return;
+        }
+        
         if ($addressData) {
             $coordinates = $addressData->getCoordinates()->toArray();
 
