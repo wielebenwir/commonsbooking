@@ -128,6 +128,11 @@ class Plugin
 
         $map_admin = new LocationMapAdmin();
         add_action( 'plugins_loaded', array($map_admin, 'load_location_map_admin'));
+
+        // register User Widget
+        add_action( 'widgets_init', array ($this, 'registerUserWidget' ) );
+
+
     }
 
     public function commonsbooking_load_textdomain() {
@@ -508,4 +513,10 @@ class Plugin
             }
         }
     }
+
+    public function registerUserWidget() {
+        register_widget( '\CommonsBooking\Wordpress\Widget\UserWidget' );
+    }
+
+
 }
