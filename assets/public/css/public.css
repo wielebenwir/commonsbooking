@@ -4305,7 +4305,7 @@
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000365}}
 .booking-list--filters .reset-filters {
-  padding: 3.5rem;
+  padding-top: 20px;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000370}}
 .booking-list #booking-list--results {
