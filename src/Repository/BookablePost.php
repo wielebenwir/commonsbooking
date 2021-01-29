@@ -48,10 +48,14 @@ abstract class BookablePost extends PostRepository
                 'meta_query' => array(
                     'relation' => 'AND',
                     array(
+                        'key' => '_'.static::getPostType().'_admins',
+                        'compare' => 'EXISTS',
+                    ),
+                    array(
                         'key'     => '_'.static::getPostType().'_admins',
                         'value'   => '"'.$current_user->ID.'"',
                         'compare' => 'like',
-                    ),
+                    )
                 ),
                 'nopaging'   => true,
                 'orderby'    => 'post_title',
@@ -74,6 +78,7 @@ abstract class BookablePost extends PostRepository
             if($publishedOnly) {
                 $args['post_status'] = 'publish';
             }
+
             $query = new \WP_Query($args);
             if ($query->have_posts()) {
                 $items = array_merge($items, $query->get_posts());
