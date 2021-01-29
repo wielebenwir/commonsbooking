@@ -87,10 +87,12 @@ class Booking extends View
 
                 // Decide which edit link to use
                 $editLink = get_permalink($booking->ID);
-                if (commonsbooking_isCurrentUserAdmin()) {
-                    $editLink = get_edit_post_link($booking->ID);
-                }
-                $actions = '<a class="cb-button" href="'.$editLink.'">'.__('editieren',
+
+                // Admin edit link
+//                if (commonsbooking_isCurrentUserAdmin()) {
+//                    $editLink = get_edit_post_link($booking->ID);
+//                }
+                $actions = '<a class="cb-button" href="'.$editLink.'">'.__('Booking',
                         COMMONSBOOKING_PLUGIN_SLUG).'</a>';
 
                 // Prepare row data
@@ -104,6 +106,7 @@ class Booking extends View
                     "bookingDate" => date('d.m.Y H:i', strtotime($booking->post_date)),
                     "user"        => $userInfo->user_login,
                     "status"      => $booking->post_status,
+                    "calendarLink" => add_query_arg('item', $booking->getItem()->ID, get_permalink($booking->getLocation()->ID))
                 ];
 
                 $continue = false;

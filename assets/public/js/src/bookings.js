@@ -186,6 +186,12 @@ class BookingList {
             });
     };
 
+    /**
+     * Renders pagination list.
+     * @param pages
+     * @param currentPage
+     * @private
+     */
     _handleRenderPagination(pages, currentPage) {
         this.pagination.innerHTML = '';
 
@@ -336,11 +342,6 @@ class BookingList {
                 var markup = self._getItemMarkup(response.data);
                 self._appendMarkupToGrid(markup);
 
-                // Check if there are any more pages to load.
-                if (self.currentPage === self.totalPages) {
-                    self._replaceLoadMoreButton();
-                }
-
                 // Save the total number of new items returned from the API.
                 var itemsFromResponse = response.data.length;
                 // Get an array of elements that were just added to the grid above.
@@ -368,15 +369,14 @@ class BookingList {
         var headline = document.createElement('h4');
         headline.classList.add('cb-title');
         headline.classList.add('cb-item-title');
-        headline.append(document.createTextNode(item.item + ' @ ' + item.location))
+
+        var link = document.createElement('a');
+        link.href = item.calendarLink;
+        link.text = item.item + ' @ ' + item.location;
+        link.target = '_blank';
+
+        headline.append(link)
         return headline;
-
-
-        var headlineElement = document.createElement('div');
-        headlineElement.classList.add('js-item--headline');
-        headlineElement.append(headline);
-
-        return headlineElement;
     }
 
     _initContentElement(item) {
@@ -441,17 +441,6 @@ class BookingList {
         this.element.insertAdjacentHTML('beforeend', markup);
     }
 
-    /**
-     * Remove the load more button so that the user cannot click it again.
-     */
-    _replaceLoadMoreButton() {
-        if (this.loadMoreButton) {
-            var text = document.createTextNode('All users loaded');
-            var replacement = document.createElement('p');
-            replacement.appendChild(text);
-            this.loadMoreButton.parentNode.replaceChild(replacement, this.loadMoreButton);
-        }
-    }
 
     // addSorting() {
     //     const buttonGroup = document.querySelector('.sort-options');

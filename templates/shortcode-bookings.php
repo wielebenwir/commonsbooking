@@ -13,8 +13,6 @@
 global $templateData;
 $noResultText = esc_html__("No bookings available.", "commonsbooking");
 
-echo sprintf("<h2>%s</h2>", __('Bookings', 'commonsbooking'));
-
 if ($templateData['total'] > 0) {
 
     ?>
@@ -22,7 +20,7 @@ if ($templateData['total'] > 0) {
         <div class="booking-list--filters">
     <?php
 
-    echo "<div class='filter-wrapper'>";
+    echo "<div class=\"filter-wrapper\">";
     echo "<p class=\"filter-label\">Startdatum</p>";
     echo "<div class=\"filter-startdate\">";
     echo '<input id="startDate-datepicker" type="text" value="">';

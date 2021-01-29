@@ -161,7 +161,7 @@ class BookingList {
             return response.json();
         }).then(function(response) {
             var markup = self._getItemMarkup(response.data);
-            self._appendMarkupToGrid(markup), self.currentPage === self.totalPages && self._replaceLoadMoreButton();
+            self._appendMarkupToGrid(markup);
             var itemsFromResponse = response.data.length, allItemsInGrid, newItems = Array.from(self.element.children).slice(-itemsFromResponse);
             self.shuffle.add(newItems);
         });
@@ -173,9 +173,11 @@ class BookingList {
         itemElement;
     }
     _initHeadlineElement(item) {
-        var headline = document.createElement("h4"), headlineElement;
-        return headline.classList.add("cb-title"), headline.classList.add("cb-item-title"), 
-        headline.append(document.createTextNode(item.item + " @ " + item.location)), headline;
+        var headline = document.createElement("h4");
+        headline.classList.add("cb-title"), headline.classList.add("cb-item-title");
+        var link = document.createElement("a");
+        return link.href = item.calendarLink, link.text = item.item + " @ " + item.location, 
+        link.target = "_blank", headline.append(link), headline;
     }
     _initContentElement(item) {
         var contentElement = document.createElement("p");
@@ -201,12 +203,6 @@ class BookingList {
     }
     _appendMarkupToGrid(markup) {
         this.element.innerHTML = "", this.element.insertAdjacentHTML("beforeend", markup);
-    }
-    _replaceLoadMoreButton() {
-        if (this.loadMoreButton) {
-            var text = document.createTextNode("All users loaded"), replacement = document.createElement("p");
-            replacement.appendChild(text), this.loadMoreButton.parentNode.replaceChild(replacement, this.loadMoreButton);
-        }
     }
 }
 
