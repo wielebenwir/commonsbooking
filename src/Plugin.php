@@ -486,9 +486,11 @@ class Plugin
             // flush rewrite rules
             flush_rewrite_rules();
 
-            // add more tasks if necessary
-            // ...
+            // Update Location Coordinates
             self::updateLocationCoordinates();
+
+            // remove deprecated user roles
+
 
             // update version number in options
             update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
@@ -507,5 +509,21 @@ class Plugin
                 $location->updateGeoLocation();
             }
         }
+    }
+
+    
+    /**
+     * remove deprecated user roles
+     *
+     * @return void
+     */
+    public static function removeDeprecatedUserRoles() {
+            wp_roles()->remove_role( 'location_admin' );
+            wp_roles()->remove_role( 'item_admin' );
+            wp_roles()->remove_role( 'location_owner' );
+            wp_roles()->remove_role( 'custom_editor' );
+            wp_roles()->remove_role( 'cb2_subscriber' );
+            wp_roles()->remove_role( 'cb2_contributor' );
+
     }
 }
