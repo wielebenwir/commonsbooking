@@ -35,19 +35,17 @@ class BookingList {
 
         this.shuffle = new Shuffle(element);
 
-        this.resetListParams();
-        // this.listParams.append("posts_per_page", 100);
-        // listParams.append("order", params.data.order);
-        // listParams.append("search", params.data.search);
-        // listParams.append("sort", params.data.sort);
-
-        this.reloadData();
-        // this.addSorting();
-        // this.addSearchFilter();
+        this._resetListParams();
+        this._addSorting();
+        this._reloadData();
         this._bindEventListeners();
     }
 
-    resetListParams() {
+    /**
+     * Resets list params for ajax request.
+     * @private
+     */
+    _resetListParams() {
         this.listParams = new FormData();
         this.listParams.append("_ajax_nonce", cb_ajax_bookings.nonce);
         this.listParams.append("action", "bookings_data");
@@ -55,25 +53,26 @@ class BookingList {
     };
 
     _bindEventListeners() {
-        this._onUserChange = this._handleUserChange.bind(this);
-        this._onItemChange = this._handleItemChange.bind(this);
-        this._onLocationChange = this._handleLocationChange.bind(this);
-        this._onStartDateChange = this._handleStartDateChange.bind(this);
-        this._onEndDateChange = this._handleEndDateChange.bind(this);
+        this._onFilterReset = this._handleFilterReset.bind(this);
+        jQuery('#reset-filters').on('click', this._onFilterReset);
 
+        this._onUserChange = this._handleUserChange.bind(this);
         var userSelect = document.querySelectorAll('.filter-users select');
         userSelect.item(0).addEventListener('change', this._onUserChange);
 
+        this._onItemChange = this._handleItemChange.bind(this);
         var itemSelect = document.querySelectorAll('.filter-items select');
         itemSelect.item(0).addEventListener('change', this._onItemChange);
 
+        this._onLocationChange = this._handleLocationChange.bind(this);
         var locationSelect = document.querySelectorAll('.filter-locations select');
         locationSelect.item(0).addEventListener('change', this._onLocationChange);
 
+        this._onStartDateChange = this._handleStartDateChange.bind(this);
         jQuery('#startDate-datepicker').datepicker("option", "onSelect", this._onStartDateChange);
         jQuery('#startDate-datepicker').change(this._onStartDateChange);
 
-
+        this._onEndDateChange = this._handleEndDateChange.bind(this);
         jQuery('#endDate-datepicker').datepicker("option", "onSelect", this._onEndDateChange);
         jQuery('#endDate-datepicker').change(this._onEndDateChange);
     };
@@ -152,8 +151,73 @@ class BookingList {
         });
     };
 
-    reloadData() {
+    /**
+     * Resets all Filters
+     * @private
+     */
+    _handleFilterReset() {
+        if(typeof this.filters !== "undefined") {
+            for (const [filter] of Object.entries(this.filters)) {
+
+                let select  = document.getElementById('filter-' + filter.substring(0,filter.length - 1));
+                if(select && typeof select != "undefined") {
+                    // Remove all option, but all
+                    var length = select .options.length;
+                    for (var i = length-1; i >= 0; i--) {
+
+                        const optionValue = select.options[i].value;
+                        select.options[i].style.display = 'inline';
+                        select.options[i].selected = false;
+                        if(optionValue == 'all') {
+                            select.options[i].selected = true;
+                        }
+                    }
+                }
+
+                this.startDate.value = "";
+                this.endDate.value = "";
+
+                this.filters[filter] = [];
+            }
+            this.filter();
+        }
+    }
+
+    /**
+     * Hides options which aren't available based on selected filters.
+     * @param response
+     * @private
+     */
+    _handleFilterUpdate(response) {
+        if(typeof response.filters !== "undefined") {
+            for (const [filter, values] of Object.entries(response.filters)) {
+
+                let select  = document.getElementById('filter-' + filter);
+
+                // Remove all option, but all
+                var length = select .options.length;
+                for (var i = length-1; i >= 0; i--) {
+
+                    const optionValue = select.options[i].value;
+
+                    if(optionValue !== 'all' && !values.includes(optionValue) ) {
+                        select.options[i].style.display = 'none';
+                    } else {
+                        select.options[i].style.display = 'inline';
+                    }
+
+                }
+            }
+        }
+    }
+
+    /**
+     * Reloads list data.
+     * @private
+     */
+    _reloadData() {
         this._renderPagination = this._handleRenderPagination.bind(this);
+        this._filterUpdate = this._handleFilterUpdate.bind(this);
         var self = this;
 
         fetch(cb_ajax_bookings.ajax_url, {
@@ -169,6 +233,8 @@ class BookingList {
 
                 // Check if there are any more pages to load.
                 self._renderPagination(self.totalPages, response.page);
+
+                self._filterUpdate(response);
 
                 if (self.totalPages < 2 && typeof self.pagination !== 'undefined') {
                     self.pagination.style.display = 'none';
@@ -203,7 +269,26 @@ class BookingList {
                 if (i == currentPage) {
                     active = ' class="active" ';
                 }
-                markup += '<li data-page="' + i + '"' + active + '>' + i + '</li>';
+
+                if(
+                    i == 1 ||
+                    i == pages ||
+                    (
+                        i < (parseInt(currentPage) + 3 ) &&
+                        i > (parseInt(currentPage) - 3 )
+                    )
+
+                ) {
+                    markup += '<li data-page="' + i + '"' + active + '>' + i + '</li>';
+                }
+
+                if(
+                    i == (parseInt(currentPage) + 3 ) ||
+                    i == (parseInt(currentPage) - 3 )
+
+                ) {
+                    markup += '<li >...</li>';
+                }
             }
             markup += '</ul';
             this.pagination.insertAdjacentHTML('beforeend', markup);
@@ -221,14 +306,16 @@ class BookingList {
         var pages = document.querySelectorAll('#booking-list--pagination ul li');
 
         pages.forEach(function (page) {
-            page.addEventListener('click', self._onPageChange);
+            if(page.dataset.page) {
+                page.addEventListener('click', self._onPageChange);
+            }
         });
     }
 
     _handlePageChange(evt) {
         var page = evt.currentTarget.dataset.page;
         this.listParams.set('page', page);
-        this.reloadData();
+        this._reloadData();
     }
 
     /**
@@ -267,12 +354,12 @@ class BookingList {
                 this.listParams.delete('location');
             }
 
-            this.reloadData();
             this.shuffle.filter(this.itemPassesFilters.bind(this));
+            this._reloadData();
         } else {
-            this.resetListParams();
-            this.reloadData();
+            this._resetListParams();
             this.shuffle.filter(Shuffle.ALL_ITEMS);
+            this._reloadData();
         }
     };
 
@@ -315,44 +402,6 @@ class BookingList {
 
         return true;
     };
-
-    // Add click listener to button to load the next page.
-    addPagination() {
-        if (this.loadMoreButton) {
-            const onClick = this._fetchNextPage.bind(this);
-            this.loadMoreButton.addEventListener('click', onClick);
-        }
-    }
-
-    _fetchNextPage() {
-        this.currentPage += 1;
-        this.listParams.set('page', this.currentPage);
-
-        var self = this;
-
-        fetch(cb_ajax_bookings.ajax_url, {
-            method: 'POST',
-            body: this.listParams
-        })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (response) {
-                // Create and insert the markup.
-                var markup = self._getItemMarkup(response.data);
-                self._appendMarkupToGrid(markup);
-
-                // Save the total number of new items returned from the API.
-                var itemsFromResponse = response.data.length;
-                // Get an array of elements that were just added to the grid above.
-                var allItemsInGrid = Array.from(self.element.children);
-                // Use negative beginning index to extract items from the end of the array.
-                var newItems = allItemsInGrid.slice(-itemsFromResponse);
-
-                // Notify the shuffle instance that new items were added.
-                self.shuffle.add(newItems);
-            });
-    }
 
     _initItemElement(item) {
         var itemElement = document.createElement('div');
@@ -441,82 +490,32 @@ class BookingList {
         this.element.insertAdjacentHTML('beforeend', markup);
     }
 
+    _addSorting() {
+        const sortSelect = document.getElementById('sorting');
+        if (!sortSelect) {
+            return;
+        }
+        sortSelect.addEventListener('change', this._handleSortChange.bind(this));
 
-    // addSorting() {
-    //     const buttonGroup = document.querySelector('.sort-options');
-    //     if (!buttonGroup) {
-    //         return;
-    //     }
-    //     buttonGroup.addEventListener('change', this._handleSortChange.bind(this));
-    // }
-    //
-    // _handleSortChange(evt) {
-    //     // Add and remove `active` class from buttons.
-    //     const buttons = Array.from(evt.currentTarget.children);
-    //     buttons.forEach((button) => {
-    //         if (button.querySelector('input').value === evt.target.value) {
-    //             button.classList.add('active');
-    //         } else {
-    //             button.classList.remove('active');
-    //         }
-    //     });
-    //
-    //     // Create the sort options to give to Shuffle.
-    //     const { value } = evt.target;
-    //     let options = {};
-    //
-    //     function sortByDate(element) {
-    //         return element.getAttribute('data-created');
-    //     }
-    //
-    //     function sortByTitle(element) {
-    //         return element.getAttribute('data-title').toLowerCase();
-    //     }
-    //
-    //     if (value === 'date-created') {
-    //         options = {
-    //             reverse: true,
-    //             by: sortByDate,
-    //         };
-    //     } else if (value === 'title') {
-    //         options = {
-    //             by: sortByTitle,
-    //         };
-    //     }
-    //     this.shuffle.sort(options);
-    // }
-    //
-    // // Advanced filtering
-    // addSearchFilter() {
-    //     const searchInput = document.querySelector('.js-shuffle-search');
-    //     if (!searchInput) {
-    //         return;
-    //     }
-    //     searchInput.addEventListener('keyup', this._handleSearchKeyup.bind(this));
-    // }
-    //
-    // /**
-    //  * Filter the shuffle instance by items with a title that matches the search input.
-    //  * @param {Event} evt Event object.
-    //  */
-    // _handleSearchKeyup(evt) {
-    //     const searchText = evt.target.value.toLowerCase();
-    //     this.shuffle.filter((element, shuffle) => {
-    //         // If there is a current filter applied, ignore elements that don't match it.
-    //         if (shuffle.group !== Shuffle.ALL_ITEMS) {
-    //             // Get the item's groups.
-    //             const groups = JSON.parse(element.getAttribute('data-groups'));
-    //             const isElementInCurrentGroup = groups.indexOf(shuffle.group) !== -1;
-    //             // Only search elements in the current group
-    //             if (!isElementInCurrentGroup) {
-    //                 return false;
-    //             }
-    //         }
-    //         const titleElement = element.querySelector('.picture-item__title');
-    //         const titleText = titleElement.textContent.toLowerCase().trim();
-    //         return titleText.indexOf(searchText) !== -1;
-    //     });
-    // }
+        const orderSelect = document.getElementById('order');
+        if (!orderSelect) {
+            return;
+        }
+        orderSelect.addEventListener('change', this._handleSortChange.bind(this));
+    }
+
+    _handleSortChange() {
+        const sortSelect = document.getElementById('sorting');
+        const sortSelectedOption = sortSelect.options[sortSelect.selectedIndex].value;
+
+        const orderSelect = document.getElementById('order');
+        const orderSelectedOption = orderSelect.options[orderSelect.selectedIndex].value;
+
+        this.listParams.set('sort', sortSelectedOption);
+        this.listParams.set('order', orderSelectedOption);
+        this._reloadData();
+    }
+
 }
 
 document.addEventListener('DOMContentLoaded', () => {

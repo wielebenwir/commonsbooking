@@ -35,8 +35,6 @@
 
 .booking-list {
     &--filters {
-        //width: 20%;
-        //float: left;
 
         @media (max-width: 400px) {
             width: 100%;
@@ -62,6 +60,10 @@
         #startDate-datepicker {
             width: 80%;
             padding: 0.25rem 0.5rem;
+        }
+
+        .reset-filters {
+            padding: 3.5rem;
         }
     }
 
@@ -109,8 +111,8 @@
             float: left;
             position: relative;
             left: 50%;
+
             li {
-                cursor: pointer;
                 list-style-type: none;
                 float: left;
                 position: relative;
@@ -119,6 +121,10 @@
                 &.active {
                     font-weight: bold;
                 }
+            }
+
+            li[data-page] {
+                cursor: pointer;
             }
 
         }

@@ -4282,76 +4282,83 @@
     width: 100%;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000345}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000343}}
 .booking-list--filters .filter-wrapper {
   font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
   float: left;
   width: 200px;
   height: 100px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000352}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000350}}
 .booking-list--filters .filter-wrapper .filter-label {
   margin-bottom: 1rem;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000357}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000355}}
 .booking-list--filters .select2 {
   width: 80%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000361}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000359}}
 .booking-list--filters #endDate-datepicker,
 .booking-list--filters #startDate-datepicker {
   width: 80%;
   padding: 0.25rem 0.5rem;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000368}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000365}}
+.booking-list--filters .reset-filters {
+  padding: 3.5rem;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000370}}
 .booking-list #booking-list--results {
   width: 100%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000377}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000379}}
 .booking-list #booking-list--results .js-item {
   width: 100%;
   padding: 2rem 1rem;
   background-color: white;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000383}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000385}}
 .booking-list #booking-list--results .js-item .content-wrapper {
   float: left;
   width: 50%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000387}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000389}}
 .booking-list #booking-list--results .js-item .content-wrapper h4 {
   font-weight: bold;
   font-size: 1.4rem;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000394}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\0000396}}
 .booking-list #booking-list--results .js-item--action a {
   font-size: 1.4rem;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003100}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003102}}
 .booking-list #booking-list--results .my-sizer-element {
   clear: both;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003105}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003107}}
 .booking-list #booking-list--pagination {
   text-align: center;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003108}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003110}}
 .booking-list #booking-list--pagination ul {
   float: left;
   position: relative;
   left: 50%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003112}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003115}}
 .booking-list #booking-list--pagination ul li {
-  cursor: pointer;
   list-style-type: none;
   float: left;
   position: relative;
   left: -50%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003119}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003121}}
 .booking-list #booking-list--pagination ul li.active {
   font-weight: bold;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/public\/sass\/partials\/_bookings\.scss}line{font-family:\00003126}}
+.booking-list #booking-list--pagination ul li[data-page] {
+  cursor: pointer;
 }
 
 /* Fixes for specific WP Themes */
