@@ -143,6 +143,9 @@ class BookingCodes
 
         $bookingCodes = Settings::getOption('commonsbooking_options_bookingcodes', 'bookingcodes');
         $bookingCodesArray = array_filter(explode(',', trim($bookingCodes)));
+        $bookingCodesArray = array_map(function ($item) {
+            return preg_replace("/\r|\n/", "", $item);
+        }, $bookingCodesArray);
 
         // Check if codes are available, show error if not.
         if(!count($bookingCodesArray)) {
