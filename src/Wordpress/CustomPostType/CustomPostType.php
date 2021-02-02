@@ -209,10 +209,6 @@ abstract class CustomPostType
         });
     }
 
-
-
-
-
     /**
      * Configures list-view
      */
