@@ -313,23 +313,26 @@ class Location extends CustomPostType
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
         ));
 
-        // Location admin selection
-        $users       = UserRepository::getCBManagers();
-        $userOptions = [];
-        foreach ($users as $user) {
-            $userOptions[$user->ID] = $user->get('user_nicename')." (".$user->last_name." ".$user->last_name.")";
+        // Show selection only to admins
+        if (commonsbooking_isCurrentUserAdmin()) {
+            // Location admin selection
+            $users       = UserRepository::getCBManagers();
+            $userOptions = [];
+            foreach ($users as $user) {
+                $userOptions[$user->ID] = $user->get('user_nicename')." (".$user->last_name." ".$user->last_name.")";
+            }
+            $cmb->add_field(array(
+                'name'       => esc_html__('Location Admin(s)', 'commonsbooking'),
+                'desc'       => esc_html__('choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role CommonsBooking Manager can be selected here.',
+                    'commonsbooking'),
+                'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_admins',
+                'type'       => 'pw_multiselect',
+                'options'    => $userOptions,
+                'attributes' => array(
+                    'placeholder' => esc_html__('Select location admins.', 'commonsbooking')
+                ),
+            ));
         }
-        $cmb->add_field(array(
-            'name'       => esc_html__('Location Admin(s)', 'commonsbooking'),
-            'desc'       => esc_html__('choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role CommonsBooking Manager can be selected here.',
-                'commonsbooking'),
-            'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_admins',
-            'type'       => 'pw_multiselect',
-            'options'    => $userOptions,
-            'attributes' => array(
-                'placeholder' => esc_html__('Select location admins.', 'commonsbooking')
-            ),
-        ));
 
         $cmb->add_field(array(
             'name'       => esc_html__('Allow locked day overbooking', 'commonsbooking'),

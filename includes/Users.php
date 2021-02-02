@@ -152,3 +152,9 @@ function commonsbooking_timeframe_redirect()
         exit;
     }
 }
+
+// Check if current user has admin role
+function commonsbooking_isCurrentUserAdmin() {
+    $user = wp_get_current_user();
+    return in_array('administrator', $user->roles);
+}
