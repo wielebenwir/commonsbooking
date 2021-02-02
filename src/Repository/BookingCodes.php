@@ -159,6 +159,9 @@ class BookingCodes
             return false;
         }
 
+        // Before we add new codes, we remove old ones, that are not relevant anymore
+        self::deleteOldCodes($timeframeId, $bookablePost->getLocation()->ID, $bookablePost->getItem()->ID);
+
         $bookingCodesRandomizer = intval($timeframeId);
         $bookingCodesRandomizer += $bookablePost->getItem()->ID;
         $bookingCodesRandomizer += $bookablePost->getLocation()->ID;
@@ -205,9 +208,9 @@ class BookingCodes
     }
 
     /**
-     * Deletes booking codes for current post.
+     * Deletes booking codes for current post or if posted for post with $postId.
      *
-     * @param null $post
+     * @param null $postId
      */
     public static function deleteBookingCodes($postId = null)
     {
@@ -231,6 +234,24 @@ class BookingCodes
                 $wpdb->query($query2);
             }
         }
+    }
+
+    /**
+     * Removes all codes for the post, that don't have the current location-id or item-id.
+     * @param $postId
+     * @param $locationId
+     * @param $itemId
+     */
+    public static function deleteOldCodes($postId, $locationId, $itemId) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . self::$tablename;
+
+        $query = $wpdb->prepare('DELETE FROM ' . $table_name . ' WHERE timeframe = %d AND (location != %d OR item != %d)',
+            $postId,
+            $locationId,
+            $itemId
+        );
+        $wpdb->query($query);
     }
 
 }
