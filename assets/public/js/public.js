@@ -183,8 +183,13 @@ class BookingList {
     }
     _initContentElement(item) {
         var contentElement = document.createElement("p");
-        return contentElement.append(document.createTextNode(item.startDateFormatted + " -> " + item.endDateFormatted + " / User: " + item.user + " / " + item.status)), 
+        return contentElement.className = "booking-list-element", contentElement.append(document.createTextNode(item.startDateFormatted + " - " + item.endDateFormatted)), 
         contentElement;
+    }
+    _initContentElement2(item) {
+        var contentElement2 = document.createElement("p");
+        return contentElement2.className = "booking-list-element", contentElement2.append(document.createTextNode("User: " + item.user + " Status: " + item.status)), 
+        contentElement2;
     }
     _initActionsElement(item) {
         var actionsElement = document.createElement("div");
@@ -194,8 +199,8 @@ class BookingList {
     _getMarkupFromData(dataForSingleItem) {
         var i = dataForSingleItem, item = this._initItemElement(i), contentWrapperElement = document.createElement("div");
         return contentWrapperElement.classList.add("content-wrapper"), contentWrapperElement.append(this._initHeadlineElement(i)), 
-        contentWrapperElement.append(this._initContentElement(i)), item.append(contentWrapperElement), 
-        item.append(this._initActionsElement(i)), item.outerHTML;
+        contentWrapperElement.append(this._initContentElement(i)), contentWrapperElement.append(this._initContentElement2(i)), 
+        item.append(contentWrapperElement), item.append(this._initActionsElement(i)), item.outerHTML;
     }
     _getItemMarkup(items) {
         let self = this;

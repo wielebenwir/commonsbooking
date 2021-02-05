@@ -430,11 +430,22 @@ class BookingList {
 
     _initContentElement(item) {
         var contentElement = document.createElement('p');
+        contentElement.className = 'booking-list-element'
         contentElement.append(document.createTextNode(
-            item.startDateFormatted + ' -> ' + item.endDateFormatted + ' / User: ' + item.user + ' / ' + item.status
+            item.startDateFormatted + ' - ' + item.endDateFormatted
         ));
-
         return contentElement;
+
+    }
+
+    _initContentElement2(item) {
+        var contentElement2 = document.createElement('p');
+        contentElement2.className = 'booking-list-element'
+        contentElement2.append(document.createTextNode(
+            'User: ' + item.user + ' Status: ' + item.status
+        ));
+        return contentElement2;
+
     }
 
     _initActionsElement(item) {
@@ -460,6 +471,7 @@ class BookingList {
 
         contentWrapperElement.append(this._initHeadlineElement(i));
         contentWrapperElement.append(this._initContentElement(i));
+        contentWrapperElement.append(this._initContentElement2(i));
         item.append(contentWrapperElement);
         item.append(this._initActionsElement(i));
 
