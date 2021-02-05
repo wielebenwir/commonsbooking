@@ -546,9 +546,10 @@ class Plugin
                 $message .= implode('<br>', $user_login);
                 new \CommonsBooking\Messages\AdminMessage($message);
 
-                foreach ($roles_array AS $role_key => $role ) {
-                    remove_role($role);
                 }
+
+            foreach ($roles_array AS $role_key => $role ) {
+                remove_role($role);
             }
 
     }
