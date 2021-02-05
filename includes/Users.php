@@ -135,24 +135,6 @@ add_filter(
     2
 );
 
-// TODO: Check if still necessary. User check is implemented in CustomPostType/Timframe -> getTemplate()
-// Redirect to startpage if user is not allowed to edit timeframe
-function commonsbooking_timeframe_redirect()
-{
-    global $post;
-    if (
-        $post &&
-        $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType &&
-        (
-            ( ! current_user_can('administrator') && get_current_user_id() != $post->post_author) ||
-            ! is_user_logged_in()
-        )
-    ) {
-        wp_redirect(home_url('/'));
-        exit;
-    }
-}
-
 // Check if current user has admin role
 function commonsbooking_isCurrentUserAdmin() {
     $user = wp_get_current_user();
