@@ -248,6 +248,13 @@ class Booking extends CustomPost
         return $date_end . ' ' . $time_start . ' - ' . $time_end;
     }
 
+    public function getStartDate() {
+        return $this->getMeta('repetition-start');
+    }
+
+    public function getEndDate() {
+        return $this->getMeta('repetition-end');
+    }
 
     /**
      * bookingActionButton

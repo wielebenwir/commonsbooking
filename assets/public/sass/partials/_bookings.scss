@@ -1,0 +1,148 @@
+#ui-datepicker-div {
+    display: none;
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+
+    .ui-datepicker-calendar {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        min-width: 10rem;
+
+        td a {
+            color: #84AE53;
+        }
+    }
+
+    .ui-datepicker-next,
+    .ui-datepicker-prev {
+        cursor: pointer;
+    }
+
+    .ui-datepicker-next {
+        right: 1.5rem;
+        position: absolute;
+    }
+
+    .ui-datepicker-title {
+        margin-top: 1rem;
+        color: black;
+        clear: both;
+    }
+
+    .ui-corner-all {
+        color: #84AE53;
+    }
+}
+
+.booking-list {
+    &--filters {
+        display: flex;
+        flex-wrap: wrap;
+
+        @media (max-width: 400px) {
+            width: 100%;
+        }
+
+        .filter-wrapper {
+
+            font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+            float: left;
+            height: 75px;
+            min-width: 200px;
+            flex-grow:1;
+            flex-basis: 0;
+            margin-right: 20px;
+
+            .filter-label {
+                margin-bottom: 0.3rem;
+                margin-left: 0;
+            }
+        }
+
+        .select2 {
+            width: 100%;
+            padding: 0.25rem 0.5rem;
+        }
+
+        #endDate-datepicker,
+        #startDate-datepicker {
+            width: 100%;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .reset-filters {
+            padding-top: 35px;
+        }
+        .reset-filters  > .cb-button {
+            float: right;
+            line-height: inherit;
+        }
+    }
+
+    #booking-list--results {
+        width: 100%;
+        //min-height: 660px !important;
+
+        @media (min-width: 400px) {
+            //float: right;
+            //width: 80%;
+        }
+
+        .js-item {
+            width: 100%;
+            //border-bottom: 1px solid black;
+            //padding: 2rem 1rem;
+            background-color: white;
+
+            .content-wrapper {
+                p {
+                    margin: 0;
+                }
+
+                h4 {
+                    font-weight: bold;
+                    font-size: 1.4rem;
+                    padding: 0;
+                }
+            }
+
+            &--action {
+                a {
+                    font-size: 1.2rem;
+                }
+            }
+        }
+
+        .my-sizer-element {
+            clear: both;
+        }
+    }
+
+    #booking-list--pagination {
+        text-align: center;
+
+        ul {
+            float: left;
+            position: relative;
+            left: 50%;
+
+            li {
+                list-style-type: none;
+                float: left;
+                position: relative;
+                left: -50%;
+                padding: 0 5px 0 5px;
+
+                &.active {
+                    font-weight: bold;
+                }
+            }
+
+            li[data-page] {
+                cursor: pointer;
+            }
+
+        }
+    }
+}

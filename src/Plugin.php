@@ -134,7 +134,7 @@ class Plugin
     public function commonsbooking_load_textdomain() {
         load_plugin_textdomain( 'commonsbooking', false, COMMONSBOOKING_PLUGIN_DIR . 'languages' );
     }
-    
+
 
     /**
      * Removes cache item in connection to post_type.

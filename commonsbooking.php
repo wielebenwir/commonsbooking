@@ -45,8 +45,6 @@ function commonsbooking_admin()
 {
     wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__).'assets/admin/css/admin.css');
     wp_enqueue_script('cb-scripts-admin', plugin_dir_url(__FILE__).'assets/admin/js/admin.js', array());
-    wp_enqueue_style('jquery-ui', plugin_dir_url(__FILE__) . 'assets/public/css/themes/jquery/jquery-ui.min.css');
-    wp_enqueue_script('jquery-ui-datepicker');
 
     wp_localize_script(
         'cb-scripts-admin',
@@ -61,26 +59,52 @@ add_action('admin_enqueue_scripts', 'commonsbooking_admin');
 
 function commonsbooking_public()
 {
-    wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/public.css');
+    wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/public.css', array(), COMMONSBOOKING_VERSION);
 
     // Template specific styles
     $template = wp_get_theme()->template;
     wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/themes/'.$template.'.css');
 
     wp_enqueue_script('jquery');
+    wp_enqueue_script('jquery-ui-datepicker', array('jquery'));
 
+    wp_enqueue_script(
+        'cb-scripts-vendor',
+        plugin_dir_url(__FILE__) . 'assets/global/js/vendor.js',
+        array( 'jquery' ),
+        '1.0.0'
+    );
+
+    wp_enqueue_style(
+        'cb-styles-vendor',
+        plugin_dir_url(__FILE__) . 'assets/global/css/vendor.css'
+    );
+
+    // Daterangepicker
     wp_enqueue_style(
         'cb-styles-daterangepicker',
         plugin_dir_url(__FILE__) . 'assets/public/css/themes/daterangepicker/daterangepicker.css'
     );
 
-//    wp_enqueue_script(
-//        'cb-scripts-jquery',
-//        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/jquery.min.js',
-//        array(),
-//        '1.0.0',
-//        true
-//    );
+    wp_enqueue_script(
+        'cb-scripts-daterangepicker',
+        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/daterangepicker.min.js',
+        array(),
+        '1.0.0'
+    );
+
+    // Select 2
+    wp_enqueue_style(
+        'cb-styles-select2',
+        plugin_dir_url(__FILE__) . 'assets/public/css/themes/select2/select2.min.css'
+    );
+
+    wp_enqueue_script(
+        'cb-scripts-select2',
+        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/select2.min.js',
+        array('jquery'),
+        '1.0.0'
+    );
 
     // Moment.js
     wp_enqueue_script(
@@ -91,21 +115,30 @@ function commonsbooking_public()
         true
     );
 
-    // Daterangepicker
-    wp_enqueue_script(
-        'cb-scripts-daterangepicker',
-        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/daterangepicker.min.js',
-        array(),
-        '1.0.0',
-        true
-    );
-
+    /**
+     * Public scripts
+     */
     if (WP_DEBUG) {
-        wp_enqueue_script('cb-scripts-public', plugin_dir_url(__FILE__).'assets/public/js/public.js', array());
+        wp_enqueue_script(
+            'cb-scripts-public',
+            plugin_dir_url(__FILE__).'assets/public/js/public.js',
+            array( 'jquery' ),
+            '1.0.0',
+            true
+        );
     } else {
-        wp_enqueue_script('cb-scripts-public', plugin_dir_url(__FILE__).'assets/public/js/public.min.js', array());
+        wp_enqueue_script(
+            'cb-scripts-public',
+            plugin_dir_url(__FILE__).'assets/public/js/public.min.js',
+            array( 'jquery' ),
+            '1.0.0',
+            true
+        );
     }
 
+    /**
+     * Ajax - calendar data
+     */
     wp_localize_script(
         'cb-scripts-public',
         'cb_ajax',
@@ -114,12 +147,29 @@ function commonsbooking_public()
             'nonce'    => wp_create_nonce('calendar_data'),
         )
     );
+
+    /**
+     * Ajax - bookings
+     */
+    wp_localize_script(
+        'cb-scripts-public',
+        'cb_ajax_bookings',
+        array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce'    => wp_create_nonce('bookings_data'),
+        )
+    );
+
 }
 add_action('wp_enqueue_scripts', 'commonsbooking_public');
 
 // Calendar data ajax
 add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 'getCalendarData'));
 add_action('wp_ajax_nopriv_calendar_data', array(\CommonsBooking\View\Location::class, 'getCalendarData'));
+
+add_action('wp_ajax_bookings_data', array(\CommonsBooking\View\Booking::class, 'getTemplateData'));
+add_action('wp_ajax_nopriv_bookings_data', array(\CommonsBooking\View\Booking::class, 'getTemplateData'));
+
 if (is_admin()) {
     add_action('wp_ajax_start_migration', array(\CommonsBooking\Migration\Migration::class, 'migrateAll'));
 }
@@ -149,122 +199,6 @@ require __DIR__.'/vendor/autoload.php';
 require __DIR__.'/vendor/cmb2/cmb2/init.php';
 require __DIR__.'/vendor/mustardBees/cmb-field-select2/cmb-field-select2.php';
 require __DIR__.'/src/Repository/CB1UserFields.php'; //@TODO: import with Autoload
-
-/**
- * Checks if current user is allowed to edit custom post.
- *
- * @param $post
- *
- * @return bool
- */
-function isCurrentUserAllowedToEdit($post)
-{
-    $current_user = wp_get_current_user();
-    $isAuthor     = intval($current_user->ID) == intval($post->post_author);
-    $isAdmin      = false;
-    if (in_array('administrator', (array)$current_user->roles)) {
-        $isAdmin = true;
-    }
-
-    // Check if it is the main query and one of our custom post types
-    if ( ! $isAdmin && ! $isAuthor) {
-        $admins = [];
-
-        // Get allowed admins for timeframe listing
-        if ($post->post_type == Timeframe::$postType) {
-            // Get assigned location
-            $locationId       = get_post_meta($post->ID, 'location-id', true);
-            $locationAdminIds = get_post_meta($locationId, '_'.Location::$postType.'_admins', true);
-            if (is_string($locationAdminIds)) {
-                if(strlen($locationAdminIds) > 0) {
-                    $locationAdminIds = [$locationAdminIds];
-                } else {
-                    $locationAdminIds = [];
-                }
-            }
-            $locationAdminIds[] = get_post_field('post_author', $locationId);
-
-            // Get assigned item
-            $itemId       = get_post_meta($post->ID, 'item-id', true);
-            $itemAdminIds = get_post_meta($itemId, '_'.Item::$postType.'_admins', true);
-            if (is_string($itemAdminIds)) {
-                if(strlen($itemAdminIds) > 0) {
-                    $itemAdminIds = [$itemAdminIds];
-                } else {
-                    $itemAdminIds = [];
-                }
-            }
-            $itemAdminIds[] = get_post_field('post_author', $itemId);
-
-            if (
-                is_array($locationAdminIds) && count($locationAdminIds) &&
-                is_array($itemAdminIds) && count($itemAdminIds)
-            ) {
-                $admins = array_merge($locationAdminIds, $itemAdminIds);
-            }
-        }
-
-        // Get allowed admins for Location / Item Listing
-        if (in_array(
-            $post->post_type,
-            [
-                Location::$postType,
-                Item::$postType,
-            ]
-        )
-        ) {
-            // post-related admins (returns string if single result and array if multiple results)
-            $admins = get_post_meta($post->ID, '_'.$post->post_type.'_admins', true);
-        }
-
-        if (
-            (is_string($admins) && $current_user->ID != $admins) ||
-            is_array($admins) && ! in_array($current_user->ID, $admins)
-        ) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-/**
- * Validates if current user is allowed to edit current post in admin.
- *
- * @param $current_screen
- */
-function validate_user_on_edit($current_screen)
-{
-    if ($current_screen->base == "post" && in_array($current_screen->id, Plugin::getCustomPostTypesLabels())) {
-        if (array_key_exists('action', $_GET) && $_GET['action'] == 'edit') {
-            $post = get_post($_GET['post']);
-            if ( ! isCurrentUserAllowedToEdit($post)) {
-                die('Access denied');
-            };
-        }
-    }
-}
-add_action('current_screen', 'validate_user_on_edit', 10, 1);
-
-
-// Redirect to startpage if user is not allowed to edit timeframe
-function cb_timeframe_redirect()
-{
-    global $post;
-    if (
-        $post &&
-        $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType &&
-        (
-            ( ! current_user_can('administrator') && get_current_user_id() != $post->post_author) ||
-            ! is_user_logged_in()
-        )
-    ) {
-        wp_redirect(home_url('/'));
-        exit;
-    }
-}
-
-add_action('template_redirect', 'cb_timeframe_redirect');
 
 // Shows Errors in Backend
 add_action('admin_notices', array(Plugin::class, 'renderError') );
