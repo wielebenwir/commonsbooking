@@ -153,20 +153,8 @@ function commonsbooking_timeframe_redirect()
     }
 }
 
+// Check if current user has admin role
 function commonsbooking_isCurrentUserAdmin() {
-    $current_user = wp_get_current_user();
-    $isAdmin      = false;
-
-    if (
-    count(array_intersect(
-        [
-            'administrator',
-            Plugin::$CB_MANAGER_ID
-        ],
-        (array)$current_user->roles))
-    ) {
-        $isAdmin = true;
-    }
-
-    return $isAdmin;
+    $user = wp_get_current_user();
+    return in_array('administrator', $user->roles);
 }

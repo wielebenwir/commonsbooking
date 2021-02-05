@@ -548,6 +548,38 @@ class Timeframe extends CustomPostType
                 }
             }
 
+            $current_user = wp_get_current_user();
+            $isAdmin      = false;
+            if (in_array('administrator', (array)$current_user->roles)) {
+                $isAdmin = true;
+            }
+
+            // Check if current user is allowed to see posts
+            if ( ! $isAdmin) {
+
+                $locations = \CommonsBooking\Repository\Location::getByCurrentUser();
+                array_walk($locations, function(&$item, $key) {
+                    $item = $item->ID;
+                });
+                $items = \CommonsBooking\Repository\Item::getByCurrentUser();
+                array_walk($items, function(&$item, $key) {
+                    $item = $item->ID;
+                });
+
+                $query->query_vars['meta_query'][] = array(
+                    'relation' => 'OR',
+                    array(
+                        'key'     => 'location-id',
+                        'value'   => $locations,
+                        'compare' => 'IN'
+                    ),
+                    array(
+                        'key'     => 'item-id',
+                        'value'   => $items,
+                        'compare' => 'IN'
+                    ),
+                );
+            }
         }
     }
 

@@ -82,6 +82,12 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 
 == Changelog ==
 
+= 2.3.3 (xxx.2021) =
+* FIXED: issue with filtered item list with role CB Manager (pagination based on inital filter)
+* NEW: User Widget available. You can use User Widget to display my bookings, login, logout link 
+* NEW: Bookings List in frontend for endusers and location Managers
+* FIXED: minor issue: Headers already sent error on restore default options
+
 = 2.3.2 (18.01.2021) =
 * FIXED: map error due to missing option value
 

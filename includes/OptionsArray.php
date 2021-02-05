@@ -3,8 +3,11 @@
 /**
  * Plugin Options
  *
+ * This file is used and included in functions that register or set admin options (search for includes/OptionsArray.php to get references)
+ * 
  * Tabs -> field "groups" -> fields
  * Notice: options are stored in database wp_options with prefix 'commonsboking_options_' followed by the tab id (e.g. commonsbooking_options_main)
+ * 
  */
 return array(
 

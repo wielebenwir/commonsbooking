@@ -319,7 +319,9 @@ class Booking extends CustomPost
             $noticeText = commonsbooking_sanitizeHTML( __('Your booking has been canceled.', 'commonsbooking' ) );
         }
 
-        return sprintf ('<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $currentStatus, $noticeText);
+        if (isset($noticeText)) {
+            return sprintf ('<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $currentStatus, $noticeText);
+        }
 
     }
 
