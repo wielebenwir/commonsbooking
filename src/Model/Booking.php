@@ -60,15 +60,28 @@ class Booking extends CustomPost
      * @return mixed
      */
     public function formattedBookingCode() {
+        $htmloutput = "";
         if (
-            $this->getBookableTimeFrame() &&
-            $this->getBookableTimeFrame()->showBookingCodes() &&
-            $this->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'bookingcode')
+            $this->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'bookingcode') &&
+            $this->post_status == "confirmed" && (
+                $this->showBookingCodes() ||
+                ( $this->getBookableTimeFrame() && $this->getBookableTimeFrame()->showBookingCodes() )
+            )
         ) {
             // translators: %s = Booking code
             $htmloutput = '<br>' . sprintf( commonsbooking_sanitizeHTML( __( 'Your booking code is: %s' , 'commonsbooking' ) ), $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode') ) . '<br>' ;
-            return $htmloutput;
         }
+
+        return $htmloutput;
+    }
+
+    /**
+     * Returns true if booking codes shall be shown in frontend.
+     * @return bool
+     */
+    public function showBookingCodes()
+    {
+        return $this->getMeta("show-booking-codes") == "on";
     }
 
     /**
