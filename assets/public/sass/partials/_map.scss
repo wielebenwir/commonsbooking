@@ -140,16 +140,7 @@
 	.cb-map-button-wrapper button {
 		@extend .cb-button;
 	}
-	
-	fieldset {
-		@extend .cb-box-inner;
-		border: none;
-		margin: 0 $spacer-big * 2 0 0;
-		legend {
-			margin: 0;
-			font-weight: normal;
-		}
-	}
+
 
 	.cb-map-filter-group-label {
 		@extend .cb-big;
@@ -166,26 +157,14 @@
 		}
 	}
 	
-	
+	/* all filter groups */
 	.cb-map-filter-group { 
 				
 		input {
-			width: 100%;
+			// width: 100%;
 			border: 1px solid $color-gray-silver;
 			border-radius: $radius;
 			margin-bottom: $spacer-small;
-		}
-		
-		@include breakpoint(phablet) {
-			display: flex;
-			justify-content: flex-start;
-			flex-direction: row;
-			align-items: center;
-			
-			input {
-				width: auto;
-				margin-bottom: 0;
-			}
 		}
 
 		label {
@@ -202,6 +181,52 @@
 			background: transparent;
 			color: $color-black;
 		}
-
 	}
+	
+	/* filter groups availability & distance */
+	.cb-map-availability-filter,
+	.cb-map-distance-filter {
+		.cb-map-filter-group {
+			input {
+				width: 95%;
+			}
+			@include breakpoint(phablet) {
+				display: flex;
+				justify-content: flex-start;
+				flex-direction: row;
+				align-items: center;
+				
+				input {
+					width: auto;
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+	/* filter groups availability & distance */
+	.cb-map-category-filter{
+		.cb-map-filter-group{		
+			display:flex;
+			flex-wrap: wrap;
+			
+			fieldset { // category filter
+				@extend .cb-box-inner;
+				flex-grow: 1;
+				border: none;
+				margin: 0 $spacer;
+
+			
+				legend {
+					margin: 0;
+					font-weight: normal;
+				}
+				label {
+					margin-right: $spacer-big;
+					color: $color-primary;
+				}
+	
+			}
+		}
+	}
+
 }

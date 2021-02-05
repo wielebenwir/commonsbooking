@@ -3361,14 +3361,14 @@
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000332}}
-.cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months, .cb-map-filters fieldset {
+.cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months, .cb-map-filters .cb-map-category-filter .cb-map-filter-group fieldset {
   background: #FFF;
   padding: 5px;
   border-radius: 8px;
 }
 @media (min-width: 37.5em) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000332}}
-  .cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months, .cb-map-filters fieldset {
+  .cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months, .cb-map-filters .cb-map-category-filter .cb-map-filter-group fieldset {
     padding: 10px;
   }
 }
@@ -4363,6 +4363,9 @@
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003123}}
 .cb-map-filters {
   margin-top: 10px;
+  /* all filter groups */
+  /* filter groups availability & distance */
+  /* filter groups availability & distance */
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003128}}
 .cb-map-filters input[type="checkbox"] {
@@ -4378,66 +4381,83 @@
   /* is inline */
   margin: 0 5px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003144}}
-.cb-map-filters fieldset {
-  border: none;
-  margin: 0 30px 0 0;
-}
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003148}}
-.cb-map-filters fieldset legend {
-  margin: 0;
-  font-weight: normal;
-}
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003154}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003145}}
 .cb-map-filters .cb-map-filter-group-label {
   color: #506CA9;
   margin-bottom: 5px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003160}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003151}}
 .cb-map-filters .cb-filter-options > div {
   border-bottom: 1px solid #ffffff;
   padding: 0 0 10px 0;
   margin-bottom: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003164}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003155}}
 .cb-map-filters .cb-filter-options > div:last-of-type {
   border-bottom: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003172}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003163}}
 .cb-map-filters .cb-map-filter-group input {
-  width: 100%;
   border: 1px solid #9D9F9D;
   border-radius: 8px;
   margin-bottom: 5px;
 }
-@media (min-width: 37.5em) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003170}}
-  .cb-map-filters .cb-map-filter-group {
+.cb-map-filters .cb-map-filter-group label {
+  margin: 0 5px 0 0;
+}
+@media screen and (max-width: 600px) {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003175}}
+  .cb-map-filters .cb-map-filter-group label {
+    width: 100%;
+  }
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003180}}
+.cb-map-filters .cb-map-filter-group button.undo-geo-search, .cb-map-filters .cb-map-filter-group button.geo-search {
+  background: transparent;
+  color: #000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003190}}
+.cb-map-filters .cb-map-availability-filter .cb-map-filter-group input,
+.cb-map-filters .cb-map-distance-filter .cb-map-filter-group input {
+  width: 95%;
+}
+@media (min-width: 37.5em) {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003189}}
+  .cb-map-filters .cb-map-availability-filter .cb-map-filter-group,
+  .cb-map-filters .cb-map-distance-filter .cb-map-filter-group {
     display: flex;
     justify-content: flex-start;
     flex-direction: row;
     align-items: center;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003185}}
-  .cb-map-filters .cb-map-filter-group input {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003199}}
+  .cb-map-filters .cb-map-availability-filter .cb-map-filter-group input,
+  .cb-map-filters .cb-map-distance-filter .cb-map-filter-group input {
     width: auto;
     margin-bottom: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003191}}
-.cb-map-filters .cb-map-filter-group label {
-  margin: 0 5px 0 0;
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003208}}
+.cb-map-filters .cb-map-category-filter .cb-map-filter-group {
+  display: flex;
+  flex-wrap: wrap;
 }
-@media screen and (max-width: 600px) {
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003196}}
-  .cb-map-filters .cb-map-filter-group label {
-    width: 100%;
-  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003212}}
+.cb-map-filters .cb-map-category-filter .cb-map-filter-group fieldset {
+  flex-grow: 1;
+  border: none;
+  margin: 0 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003201}}
-.cb-map-filters .cb-map-filter-group button.undo-geo-search, .cb-map-filters .cb-map-filter-group button.geo-search {
-  background: transparent;
-  color: #000;
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003219}}
+.cb-map-filters .cb-map-category-filter .cb-map-filter-group fieldset legend {
+  margin: 0;
+  font-weight: normal;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/public\/sass\/partials\/_map\.scss}line{font-family:\00003223}}
+.cb-map-filters .cb-map-category-filter .cb-map-filter-group fieldset label {
+  margin-right: 15px;
+  color: #506CA9;
 }
 
 /* Fixes for specific WP Themes */
