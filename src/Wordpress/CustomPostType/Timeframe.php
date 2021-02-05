@@ -4,7 +4,6 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Repository\BookingCodes;
-
 class Timeframe extends CustomPostType
 {
 
@@ -218,7 +217,7 @@ class Timeframe extends CustomPostType
      *
      * @return bool
      */
-    public static function show_booking_code($field)
+    public static function isOfTypeBooking($field)
     {
         return get_post_meta($field->object_id, 'type', true) == self::BOOKING_ID;
     }
@@ -229,7 +228,7 @@ class Timeframe extends CustomPostType
      * @param $field_args
      * @param $field
      */
-    public static function show_booking_code_checkbox($field_args, $field)
+    public static function renderBookingCodeList($field_args, $field)
     {
         \CommonsBooking\View\BookingCodes::renderTable($field->object_id());
     }
@@ -802,14 +801,14 @@ class Timeframe extends CustomPostType
                 'name'          => esc_html__('Booking Codes', 'commonsbooking'),
                 'id'            => 'booking-codes-list',
                 'type'          => 'title',
-                'render_row_cb' => array(self::class, 'show_booking_code_checkbox'),
+                'render_row_cb' => array(self::class, 'renderBookingCodeList'),
                 // function should return a bool value
             ),
             array(
                 'name'       => esc_html__('Booking Code', 'commonsbooking'),
                 'id'         => COMMONSBOOKING_METABOX_PREFIX.'bookingcode',
                 'type'       => 'text',
-                'show_on_cb' => array(self::class, 'show_booking_code'),
+                'show_on_cb' => array(self::class, 'isOfTypeBooking'),
                 'attributes' => array(
                     'disabled' => 'disabled',
                 ),
@@ -917,6 +916,8 @@ class Timeframe extends CustomPostType
     }
 
     /**
+     * loads template according and returns content
+     * 
      * @param $content
      *
      * @return string
@@ -927,7 +928,11 @@ class Timeframe extends CustomPostType
         if (is_singular(self::getPostType())) {
             ob_start();
             global $post;
-            if(commonsbooking_isCurrentUserAllowedToEdit($post)) {
+            // we check if user try to open a timeframe other than a booking
+            if (!in_array( get_post_meta($post->ID, 'type', true), array(self::BOOKING_ID, self::BOOKING_CANCELED_ID) ) ) {
+                commonsbooking_get_template_part('timeframe', 'notallowed');
+            // we check if user has right to open booking
+            } elseif (current_user_can('administrator') or get_current_user_id() == $post->post_author) {
                 commonsbooking_get_template_part('booking', 'single');
             } else {
                 commonsbooking_get_template_part('booking', 'single-notallowed');
