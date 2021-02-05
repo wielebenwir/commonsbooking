@@ -927,7 +927,7 @@ class Timeframe extends CustomPostType
         if (is_singular(self::getPostType())) {
             ob_start();
             global $post;
-            if (current_user_can('administrator') or get_current_user_id() == $post->post_author) {
+            if(commonsbooking_isCurrentUserAllowedToEdit($post)) {
                 commonsbooking_get_template_part('booking', 'single');
             } else {
                 commonsbooking_get_template_part('booking', 'single-notallowed');

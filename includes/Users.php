@@ -13,7 +13,7 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
  *
  * @return bool
  */
-function commonsbooking_isCurrentUserAllowedToEdit($post)
+function commonsbooking_isCurrentUserAllowedToEdit($post): bool
 {
     $current_user = wp_get_current_user();
     $isAuthor     = intval($current_user->ID) == intval($post->post_author);
