@@ -10,6 +10,7 @@ use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\Options;
 use CommonsBooking\Migration\Migration;
+use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\CB1UserFields;
@@ -90,7 +91,7 @@ class Plugin
 
         do_action('cmb2_init');
 
-        // Register custom user roles (e.g. location-owner, item-owner etc.)
+        // Register custom user roles (e.g. cb_manager)
         add_action('admin_init', array(self::class, 'addCustomUserRoles'));
 
         // Enable CB1 User Fields (needed in case of migration from cb 0.9.x)
@@ -478,7 +479,7 @@ class Plugin
         $commonsbooking_installed_version = get_option ( $commonsbooking_version_option );
 
         // check if installed version differs from plugin version in database
-        if ( COMMONSBOOKING_VERSION !== $commonsbooking_installed_version OR !isset( $commonsbooking_installed_version ) ) {
+        if ( COMMONSBOOKING_VERSION == $commonsbooking_installed_version OR !isset( $commonsbooking_installed_version ) ) {
 
             // set Options default values (e.g. if there are new fields added)
             AdminOptions::SetOptionsDefaultValues();
@@ -486,9 +487,11 @@ class Plugin
             // flush rewrite rules
             flush_rewrite_rules();
 
-            // add more tasks if necessary
-            // ...
+            // Update Location Coordinates
             self::updateLocationCoordinates();
+
+            // remove deprecated user roles
+            self::removeDeprecatedUserRoles();
 
             // update version number in options
             update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
@@ -507,5 +510,46 @@ class Plugin
                 $location->updateGeoLocation();
             }
         }
+    }
+
+    
+    /**
+     * remove deprecated user roles
+     * @TODO: Can be removed after a while (exists since version 2.3.3)
+     *
+     * @return void
+     */
+    public static function removeDeprecatedUserRoles() {
+
+            $users = false;
+            $roles_array = array(
+                'location_admin',
+                'item_admin',
+                'location_owner',
+                'cb2_subscriber',
+                'cb2_contributor',    
+            );
+
+            // get users with one of the deprecated roles
+            $users =  get_users( array( 'role__in' => $roles_array ) );
+
+            if ($users) {
+                foreach ($users AS $key => $user) {
+                    foreach ($roles_array AS $role_key => $role) {
+                        $user->remove_role($role);
+                        $user->add_role('subscriber');
+                    }
+                    $user_login[] = $user->user_login;
+                }
+
+                $message = commonsbooking_sanitizeHTML('<strong>Notice:</strong> Some deprecated user roles from older CommonsBooking versions have been removed because they are not used anymore. The following users were assigned to one of these deprecated user roles. They are assigned now to the default Subscriber role. Please check if these users should be assigned to another role, e.g. CommonsBooking Manager. Please copy and past this list in case you need it for detailed checks. This message will not be shown again. <br>');
+                $message .= implode('<br>', $user_login);
+                new \CommonsBooking\Messages\AdminMessage($message);
+
+                foreach ($roles_array AS $role_key => $role ) {
+                    remove_role($role);
+                }
+            }
+
     }
 }
