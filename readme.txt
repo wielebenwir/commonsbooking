@@ -82,10 +82,16 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 
 == Changelog ==
 
-= 2.3.3 (xxx.2021) =
+2.4.0 (xxxx.2021)
+* NEW: Booking list for frontend users now available (my bookings)
+* NEW: Booking Widget now available (Widget shows link to my bookings, login, logout) 
+* MODIFIED: Permissions changed so that only administrators can assign CBManagers to locations and items. #478
+* ENHANCED: Implementent message if backend users try to open preview of timeframes other than bookings
+* FIXED: generated duplicate booking codes if location was changed in existing timeframe. Now booking codes deleted if location is not assigned to a timeframe #466
+* FIXED: Export booking codes as CSV caused formatting issues when opening in Excel for some users due to incorrect character encoding. UTF-8 encoding added to avoid this error. #467
+* FIXED: Small Commons API compatibility issues #281
+* ENHANCED: Added internal Class for better admin message management
 * FIXED: issue with filtered item list with role CB Manager (pagination based on inital filter)
-* NEW: User Widget available. You can use User Widget to display my bookings, login, logout link 
-* NEW: Bookings List in frontend for endusers and location Managers
 * FIXED: minor issue: Headers already sent error on restore default options
 
 = 2.3.2 (18.01.2021) =
