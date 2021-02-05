@@ -4,7 +4,6 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Repository\BookingCodes;
-
 class Timeframe extends CustomPostType
 {
 
@@ -210,6 +209,7 @@ class Timeframe extends CustomPostType
 
     /**
      * Returns true, if timeframe is of type booking.
+     * TODO @markus-mw description seems not to be correct "Returns true, if timeframe is of type booking." seems that function name doesnt represent its real function?
      *
      * @param $field
      *
@@ -914,6 +914,8 @@ class Timeframe extends CustomPostType
     }
 
     /**
+     * loads template according and returns content
+     * 
      * @param $content
      *
      * @return string
@@ -924,7 +926,11 @@ class Timeframe extends CustomPostType
         if (is_singular(self::getPostType())) {
             ob_start();
             global $post;
-            if (current_user_can('administrator') or get_current_user_id() == $post->post_author) {
+            // we check if user try to open a timeframe other than a booking
+            if (!in_array( get_post_meta($post->ID, 'type', true), array(self::BOOKING_ID, self::BOOKING_CANCELED_ID) ) ) {
+                commonsbooking_get_template_part('timeframe', 'notallowed');
+            // we check if user has right to open booking
+            } elseif (current_user_can('administrator') or get_current_user_id() == $post->post_author) {
                 commonsbooking_get_template_part('booking', 'single');
             } else {
                 commonsbooking_get_template_part('booking', 'single-notallowed');
