@@ -59,7 +59,7 @@ add_action('admin_enqueue_scripts', 'commonsbooking_admin');
 
 function commonsbooking_public()
 {
-    wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/public.css');
+    wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/public.css', array(), COMMONSBOOKING_VERSION);
 
     // Template specific styles
     $template = wp_get_theme()->template;
