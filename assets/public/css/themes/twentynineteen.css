@@ -1,1 +1,12 @@
-.cb-wrapper h2::before{content:'';margin:0;background:transparent}
+@media -sass-debug-info{filename{font-family:file\:\/\/D\:\/workspace\/cb\/commonsbooking\/assets\/public\/sass\/themes\/twentynineteen\.scss}line{font-family:\000031}}
+.cb-wrapper {
+  /* Twenty Nineteen Theme*/
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/D\:\/workspace\/cb\/commonsbooking\/assets\/public\/sass\/themes\/twentynineteen\.scss}line{font-family:\000033}}
+.cb-wrapper h2::before {
+  content: '';
+  margin: 0;
+  background: transparent;
+}
+
+/*# sourceMappingURL=twentynineteen.css.map */
