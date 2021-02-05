@@ -929,7 +929,7 @@ class Timeframe extends CustomPostType
             if (!in_array( get_post_meta($post->ID, 'type', true), array(self::BOOKING_ID, self::BOOKING_CANCELED_ID) ) ) {
                 commonsbooking_get_template_part('timeframe', 'notallowed');
             // we check if user has right to open booking
-            } elseif (current_user_can('administrator') or get_current_user_id() == $post->post_author) {
+            } elseif ( commonsbooking_isCurrentUserAllowedToEdit($post) ) {
                 commonsbooking_get_template_part('booking', 'single');
             } else {
                 commonsbooking_get_template_part('booking', 'single-notallowed');
