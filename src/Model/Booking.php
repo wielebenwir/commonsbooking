@@ -82,7 +82,8 @@ class Booking extends CustomPost
             "full-day",
             "grid",
             "start-time",
-            "end-time"
+            "end-time",
+            "show-booking-codes"
         ];
         foreach($neededMetaFields as $fieldName) {
             $fieldValue = get_post_meta(
