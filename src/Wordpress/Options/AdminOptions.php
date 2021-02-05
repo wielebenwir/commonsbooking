@@ -1,6 +1,8 @@
 <?php
 
 namespace CommonsBooking\Wordpress\Options;
+
+use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Settings\Settings;
 
 /**
@@ -47,25 +49,10 @@ class AdminOptions
         }
 
         // maybe show admin notice if fields are restored to hreir default value
-        self::setDefaultsAdminNotice($restored_fields);
-    }
-    
-    /**
-     * Display admin notice if option fields are set to their default values
-     *
-     * @param  mixed $fields
-     * @return void
-     */
-    public static function setDefaultsAdminNotice($fields = false) {
-
-        if ($fields && is_array($fields)) {   
-
-            ?>
-                    <div class="notice notice-info is-dismissible">
-                        <p><?php echo commonsbooking_sanitizeHTML( __('<strong>Default values for following fields automatically set or restored, because they were empty:</strong><br> ', 'commonsbooking' ) ); 
-                        echo implode("<br> ", $fields); ?></p>
-                    </div>
-            <?php 
-        }   
+        if ($restored_fields) {
+            $message = commonsbooking_sanitizeHTML( __('<strong>Default values for following fields automatically set or restored, because they were empty:</strong><br> ', 'commonsbooking' ) ); 
+            $message .= implode("<br> ", $restored_fields);
+            new AdminMessage($message);
+        }
     }
 }
