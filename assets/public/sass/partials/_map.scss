@@ -115,10 +115,10 @@
 		
 		.cb-map-popup-item-desc {
 		
-		}
-
-		
+		}		
 }
+
+
 /* Filters */
 .cb-map-filters {
 	
@@ -129,7 +129,7 @@
 		margin: 0 $spacer-small 0 0;
 	}
 	
-	input[type="date"],  input[type="number"] { /* is inline */ 
+	input[type="date"], input[type="number"] { /* is inline */ 
 		margin: 0 $spacer-small;
 	}
 	  
@@ -137,23 +137,24 @@
 		margin: 0 $spacer-small;
 	}
 	
-	fieldset {
-		@extend .cb-box-inner;
-		margin: 0 $spacer-big * 2 0 0;
-		legend {
-			font-weight: bold;		
-			margin: 0;
-		}
-	}
-	
-	button {
+	.cb-map-button-wrapper button {
 		@extend .cb-button;
 	}
 	
+	fieldset {
+		@extend .cb-box-inner;
+		border: none;
+		margin: 0 $spacer-big * 2 0 0;
+		legend {
+			margin: 0;
+			font-weight: normal;
+		}
+	}
 
 	.cb-map-filter-group-label {
 		@extend .cb-big;
 		color: $color-primary;
+		margin-bottom: $spacer-small;
 	}
 	
 	.cb-filter-options > div { // the individual filters: distance, availability, category
@@ -165,13 +166,36 @@
 		}
 	}
 	
+	
 	.cb-map-filter-group { 
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
+				
+		input {
+			width: 100%;
+			border: 1px solid $color-gray-silver;
+			border-radius: $radius;
+			margin-bottom: $spacer-small;
+		}
+		
+		@include breakpoint(phablet) {
+			display: flex;
+			justify-content: flex-start;
+			flex-direction: row;
+			align-items: center;
+			
+			input {
+				width: auto;
+				margin-bottom: 0;
+			}
+		}
 
 		label {
 			margin: 0 $spacer-small 0 0;
+		}
+		
+		@media screen and (max-width: 600px) {
+		   label {
+			width: 100%;
+		  }
 		}
 
 		button.undo-geo-search, button.geo-search {
