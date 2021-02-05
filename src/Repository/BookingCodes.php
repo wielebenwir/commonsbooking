@@ -143,6 +143,9 @@ class BookingCodes
 
         $bookingCodes = Settings::getOption('commonsbooking_options_bookingcodes', 'bookingcodes');
         $bookingCodesArray = array_filter(explode(',', trim($bookingCodes)));
+        $bookingCodesArray = array_map(function ($item) {
+            return preg_replace("/\r|\n/", "", $item);
+        }, $bookingCodesArray);
 
         // Check if codes are available, show error if not.
         if(!count($bookingCodesArray)) {
@@ -155,6 +158,9 @@ class BookingCodes
             );
             return false;
         }
+
+        // Before we add new codes, we remove old ones, that are not relevant anymore
+        self::deleteOldCodes($timeframeId, $bookablePost->getLocation()->ID, $bookablePost->getItem()->ID);
 
         $bookingCodesRandomizer = intval($timeframeId);
         $bookingCodesRandomizer += $bookablePost->getItem()->ID;
@@ -202,9 +208,9 @@ class BookingCodes
     }
 
     /**
-     * Deletes booking codes for current post.
+     * Deletes booking codes for current post or if posted for post with $postId.
      *
-     * @param null $post
+     * @param null $postId
      */
     public static function deleteBookingCodes($postId = null)
     {
@@ -228,6 +234,24 @@ class BookingCodes
                 $wpdb->query($query2);
             }
         }
+    }
+
+    /**
+     * Removes all codes for the post, that don't have the current location-id or item-id.
+     * @param $postId
+     * @param $locationId
+     * @param $itemId
+     */
+    public static function deleteOldCodes($postId, $locationId, $itemId) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . self::$tablename;
+
+        $query = $wpdb->prepare('DELETE FROM ' . $table_name . ' WHERE timeframe = %d AND (location != %d OR item != %d)',
+            $postId,
+            $locationId,
+            $itemId
+        );
+        $wpdb->query($query);
     }
 
 }
