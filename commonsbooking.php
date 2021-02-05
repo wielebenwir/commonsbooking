@@ -297,25 +297,6 @@ function validate_user_on_edit($current_screen)
 add_action('current_screen', 'validate_user_on_edit', 10, 1);
 
 
-// Redirect to startpage if user is not allowed to edit timeframe
-function cb_timeframe_redirect()
-{
-    global $post;
-    if (
-        $post &&
-        $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType &&
-        (
-            ( ! current_user_can('administrator') && get_current_user_id() != $post->post_author) ||
-            ! is_user_logged_in()
-        )
-    ) {
-        wp_redirect(home_url('/'));
-        exit;
-    }
-}
-
-add_action('template_redirect', 'cb_timeframe_redirect');
-
 // Shows Errors in Backend
 add_action('admin_notices', array(Plugin::class, 'renderError') );
 
