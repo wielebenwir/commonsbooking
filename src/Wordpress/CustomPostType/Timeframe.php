@@ -209,13 +209,12 @@ class Timeframe extends CustomPostType
 
     /**
      * Returns true, if timeframe is of type booking.
-     * TODO @markus-mw description seems not to be correct "Returns true, if timeframe is of type booking." seems that function name doesnt represent its real function?
      *
      * @param $field
      *
      * @return bool
      */
-    public static function show_booking_code($field)
+    public static function isOfTypeBooking($field)
     {
         return get_post_meta($field->object_id, 'type', true) == self::BOOKING_ID;
     }
@@ -226,7 +225,7 @@ class Timeframe extends CustomPostType
      * @param $field_args
      * @param $field
      */
-    public static function show_booking_code_checkbox($field_args, $field)
+    public static function renderBookingCodeList($field_args, $field)
     {
         \CommonsBooking\View\BookingCodes::renderTable($field->object_id());
     }
@@ -799,14 +798,14 @@ class Timeframe extends CustomPostType
                 'name'          => esc_html__('Booking Codes', 'commonsbooking'),
                 'id'            => 'booking-codes-list',
                 'type'          => 'title',
-                'render_row_cb' => array(self::class, 'show_booking_code_checkbox'),
+                'render_row_cb' => array(self::class, 'renderBookingCodeList'),
                 // function should return a bool value
             ),
             array(
                 'name'       => esc_html__('Booking Code', 'commonsbooking'),
                 'id'         => COMMONSBOOKING_METABOX_PREFIX.'bookingcode',
                 'type'       => 'text',
-                'show_on_cb' => array(self::class, 'show_booking_code'),
+                'show_on_cb' => array(self::class, 'isOfTypeBooking'),
                 'attributes' => array(
                     'disabled' => 'disabled',
                 ),
