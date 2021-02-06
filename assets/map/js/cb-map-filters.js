@@ -203,7 +203,7 @@ function CB_Map_Filters($, cb_map) {
   }
 
   this.init_distance_filter = function($, $filter_options) {
-    var $container = $('<div><div class="cb-map-filter-group-label">' + cb_map.translation['DISTANCE'] + '</div></div>');
+    var $container = $('<div class="cb-map-distance-filter"><div class="cb-map-filter-group-label">' + cb_map.translation['DISTANCE'] + '</div></div>');
     var $wrapper = $('<div class="cb-map-filter-group"></div>');
     $container.append($wrapper);
 
@@ -247,7 +247,7 @@ function CB_Map_Filters($, cb_map) {
 
   this.init_availability_filter = function($, $filter_options) {
 
-    var $container = $('<div><div class="cb-map-filter-group-label">' + cb_map.translation['AVAILABILITY'] + '</div></div>');
+    var $container = $('<div class="cb-map-availability-filter"><div class="cb-map-filter-group-label">' + cb_map.translation['AVAILABILITY'] + '</div></div>');
     var $wrapper = $('<div class="cb-map-filter-group"></div>');
     $container.append($wrapper);
 
@@ -271,7 +271,7 @@ function CB_Map_Filters($, cb_map) {
   },
 
   this.init_category_filter = function($, $filter_options) {
-    var $container = $('<div><div class="cb-map-filter-group-label">' + cb_map.translation['CATEGORIES'] + '</div></div>');
+    var $container = $('<div class="cb-map-category-filter"><div class="cb-map-filter-group-label">' + cb_map.translation['CATEGORIES'] + '</div></div>');
     var $wrapper = $('<div class="cb-map-filter-group"></div>');
     $container.append($wrapper);
 
@@ -282,11 +282,17 @@ function CB_Map_Filters($, cb_map) {
       }
 
       $.each(group.elements, function(element_index, category) {
-        var $input = $('<input type="checkbox" name="cb_item_categories[]" value="' + category.cat_id + '">')
-        var $label = $('<label></label>');
+        var $wrapper = $('<div class="cb-fieldgroup-row"></div>');
+        var $input = $('<input type="checkbox" name="cb_item_categories[]" id="cb_item_categories' + category.cat_id  +'"  value="' + category.cat_id + '">')
+        var $label = $('<label for="cb_item_categories' + category.cat_id + '"></label>');
         $label.html(category.markup);
-        $fieldset.append($input);
-        $fieldset.append($label);
+        $wrapper.append($input);
+        $wrapper.append($label);
+        // $row.append($label);
+        // $fieldset.append($input);
+        // $fieldset.append($label);
+        $fieldset.append($wrapper);
+        
       });
 
       $wrapper.append($fieldset);
