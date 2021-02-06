@@ -35,9 +35,9 @@ $item          = $booking->getItem();
     </div><!-- .cb-bookigcode -->
     <?php
     if (
-            $timeframe->showBookingCodes() &&
-            $booking->getBookingCode() &&
-            $booking->post_status == "confirmed")
+        $booking->getBookingCode() && $booking->post_status == "confirmed" &&
+        ( $booking->showBookingCodes() || ($timeframe && $timeframe->showBookingCodes()) )
+    )
     { // start if bookingcode
     ?>
         <div class="cb-list-content cb-datetime cb-col-30-70">

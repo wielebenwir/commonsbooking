@@ -45,8 +45,6 @@ function commonsbooking_admin()
 {
     wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__).'assets/admin/css/admin.css');
     wp_enqueue_script('cb-scripts-admin', plugin_dir_url(__FILE__).'assets/admin/js/admin.js', array());
-    wp_enqueue_style('jquery-ui', plugin_dir_url(__FILE__) . 'assets/public/css/themes/jquery/jquery-ui.min.css');
-    wp_enqueue_script('jquery-ui-datepicker');
 
     wp_localize_script(
         'cb-scripts-admin',
@@ -57,31 +55,56 @@ function commonsbooking_admin()
         )
     );
 }
-
 add_action('admin_enqueue_scripts', 'commonsbooking_admin');
 
 function commonsbooking_public()
 {
-    wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/public.css');
+    wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/public.css', array(), COMMONSBOOKING_VERSION);
 
     // Template specific styles
     $template = wp_get_theme()->template;
     wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/themes/'.$template.'.css');
 
     wp_enqueue_script('jquery');
+    wp_enqueue_script('jquery-ui-datepicker', array('jquery'));
 
+    wp_enqueue_script(
+        'cb-scripts-vendor',
+        plugin_dir_url(__FILE__) . 'assets/global/js/vendor.js',
+        array( 'jquery' ),
+        '1.0.0'
+    );
+
+    wp_enqueue_style(
+        'cb-styles-vendor',
+        plugin_dir_url(__FILE__) . 'assets/global/css/vendor.css'
+    );
+
+    // Daterangepicker
     wp_enqueue_style(
         'cb-styles-daterangepicker',
         plugin_dir_url(__FILE__) . 'assets/public/css/themes/daterangepicker/daterangepicker.css'
     );
 
-//    wp_enqueue_script(
-//        'cb-scripts-jquery',
-//        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/jquery.min.js',
-//        array(),
-//        '1.0.0',
-//        true
-//    );
+    wp_enqueue_script(
+        'cb-scripts-daterangepicker',
+        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/daterangepicker.min.js',
+        array(),
+        '1.0.0'
+    );
+
+    // Select 2
+    wp_enqueue_style(
+        'cb-styles-select2',
+        plugin_dir_url(__FILE__) . 'assets/public/css/themes/select2/select2.min.css'
+    );
+
+    wp_enqueue_script(
+        'cb-scripts-select2',
+        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/select2.min.js',
+        array('jquery'),
+        '1.0.0'
+    );
 
     // Moment.js
     wp_enqueue_script(
@@ -92,21 +115,30 @@ function commonsbooking_public()
         true
     );
 
-    // Daterangepicker
-    wp_enqueue_script(
-        'cb-scripts-daterangepicker',
-        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/daterangepicker.min.js',
-        array(),
-        '1.0.0',
-        true
-    );
-
+    /**
+     * Public scripts
+     */
     if (WP_DEBUG) {
-        wp_enqueue_script('cb-scripts-public', plugin_dir_url(__FILE__).'assets/public/js/public.js', array());
+        wp_enqueue_script(
+            'cb-scripts-public',
+            plugin_dir_url(__FILE__).'assets/public/js/public.js',
+            array( 'jquery' ),
+            '1.0.0',
+            true
+        );
     } else {
-        wp_enqueue_script('cb-scripts-public', plugin_dir_url(__FILE__).'assets/public/js/public.min.js', array());
+        wp_enqueue_script(
+            'cb-scripts-public',
+            plugin_dir_url(__FILE__).'assets/public/js/public.min.js',
+            array( 'jquery' ),
+            '1.0.0',
+            true
+        );
     }
 
+    /**
+     * Ajax - calendar data
+     */
     wp_localize_script(
         'cb-scripts-public',
         'cb_ajax',
@@ -115,13 +147,29 @@ function commonsbooking_public()
             'nonce'    => wp_create_nonce('calendar_data'),
         )
     );
-}
 
+    /**
+     * Ajax - bookings
+     */
+    wp_localize_script(
+        'cb-scripts-public',
+        'cb_ajax_bookings',
+        array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce'    => wp_create_nonce('bookings_data'),
+        )
+    );
+
+}
 add_action('wp_enqueue_scripts', 'commonsbooking_public');
 
 // Calendar data ajax
 add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 'getCalendarData'));
 add_action('wp_ajax_nopriv_calendar_data', array(\CommonsBooking\View\Location::class, 'getCalendarData'));
+
+add_action('wp_ajax_bookings_data', array(\CommonsBooking\View\Booking::class, 'getTemplateData'));
+add_action('wp_ajax_nopriv_bookings_data', array(\CommonsBooking\View\Booking::class, 'getTemplateData'));
+
 if (is_admin()) {
     add_action('wp_ajax_start_migration', array(\CommonsBooking\Migration\Migration::class, 'migrateAll'));
 }
@@ -150,9 +198,7 @@ add_filter('query_vars', 'commonsbooking_query_vars');
 require __DIR__.'/vendor/autoload.php';
 require __DIR__.'/vendor/cmb2/cmb2/init.php';
 require __DIR__.'/vendor/mustardBees/cmb-field-select2/cmb-field-select2.php';
-
-// removed redirect because we link to booking-single-notallowd.php (defined in )
-// add_action('template_redirect', 'commonsbooking_timeframe_redirect');
+require __DIR__.'/src/Repository/CB1UserFields.php'; //@TODO: import with Autoload
 
 // Shows Errors in Backend
 add_action('admin_notices', array(Plugin::class, 'renderError') );
@@ -312,7 +358,7 @@ function commonsbooking_cron_deactivate() {
 }
 
 /**
- * writes messages to error_log file 
+ * writes messages to error_log file
  *
  * @param  mixed $log can be a string, array or object
  * @param  bool $backtrace if set true the file-path and line of the calling file will be added to the error message

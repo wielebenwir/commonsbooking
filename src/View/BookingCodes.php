@@ -49,7 +49,7 @@ class BookingCodes
             $timeframeId = sanitize_text_field($_GET['post']);
         }
         $bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes($timeframeId);
-        header("Content-type: text/csv");
+        header("content-type:application/csv;charset=UTF-8");
         header("Content-Disposition: attachment; filename=buchungscode-$timeframeId.csv");
         header("Pragma: no-cache");
         header("Expires: 0");

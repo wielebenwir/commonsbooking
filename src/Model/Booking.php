@@ -60,15 +60,28 @@ class Booking extends CustomPost
      * @return mixed
      */
     public function formattedBookingCode() {
+        $htmloutput = "";
         if (
-            $this->getBookableTimeFrame() &&
-            $this->getBookableTimeFrame()->showBookingCodes() &&
-            $this->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'bookingcode')
+            $this->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'bookingcode') &&
+            $this->post_status == "confirmed" && (
+                $this->showBookingCodes() ||
+                ( $this->getBookableTimeFrame() && $this->getBookableTimeFrame()->showBookingCodes() )
+            )
         ) {
             // translators: %s = Booking code
             $htmloutput = '<br>' . sprintf( commonsbooking_sanitizeHTML( __( 'Your booking code is: %s' , 'commonsbooking' ) ), $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode') ) . '<br>' ;
-            return $htmloutput;
         }
+
+        return $htmloutput;
+    }
+
+    /**
+     * Returns true if booking codes shall be shown in frontend.
+     * @return bool
+     */
+    public function showBookingCodes()
+    {
+        return $this->getMeta("show-booking-codes") == "on";
     }
 
     /**
@@ -82,7 +95,8 @@ class Booking extends CustomPost
             "full-day",
             "grid",
             "start-time",
-            "end-time"
+            "end-time",
+            "show-booking-codes"
         ];
         foreach($neededMetaFields as $fieldName) {
             $fieldValue = get_post_meta(
@@ -247,6 +261,13 @@ class Booking extends CustomPost
         return $date_end . ' ' . $time_start . ' - ' . $time_end;
     }
 
+    public function getStartDate() {
+        return $this->getMeta('repetition-start');
+    }
+
+    public function getEndDate() {
+        return $this->getMeta('repetition-end');
+    }
 
     /**
      * bookingActionButton
