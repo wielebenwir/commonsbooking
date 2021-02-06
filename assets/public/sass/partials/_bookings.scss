@@ -48,7 +48,7 @@
 
             font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
             float: left;
-            height: 75px;
+            margin-top: 10px;
             min-width: 200px;
             flex-grow:1;
             flex-basis: 0;
@@ -63,16 +63,18 @@
         .select2 {
             width: 100%;
             padding: 0.25rem 0.5rem;
+            border: none;
         }
 
         #endDate-datepicker,
         #startDate-datepicker {
             width: 100%;
             padding: 0.25rem 0.5rem;
+            border: none;
         }
 
         .reset-filters {
-            padding-top: 35px;
+            padding-top: 15px;
         }
         .reset-filters  > .cb-button {
             float: right;
@@ -81,23 +83,34 @@
     }
 
     #booking-list--results {
+        font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
         width: 100%;
-        //min-height: 660px !important;
 
         @media (min-width: 400px) {
-            //float: right;
-            //width: 80%;
         }
 
         .js-item {
             width: 100%;
-            //border-bottom: 1px solid black;
-            //padding: 2rem 1rem;
             background-color: white;
 
             .content-wrapper {
+                display: flex;
+                margin-bottom: 5px;
+                font-size: 0.9em;
+                .infos {
+                    display: flex;
+                }
                 p {
                     margin: 0;
+                    border-right: 1px dashed #ccc;
+                    margin-right: 8px;
+                    padding-right: 8px;
+                    span {
+                        display: flex;
+                    }
+                }
+                p:last-child {
+                    border: none;
                 }
 
                 h4 {
@@ -108,8 +121,12 @@
             }
 
             &--action {
+                height: 30px;
+                padding: 0;
                 a {
-                    font-size: 1.2rem;
+                    font-size: 0.9rem;
+                    padding: 4px 20px;
+                    margin: 0 8px;
                 }
             }
         }
@@ -120,23 +137,24 @@
     }
 
     #booking-list--pagination {
-        text-align: center;
-
+        font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
         ul {
-            float: left;
-            position: relative;
-            left: 50%;
+            display: flex;
+            justify-content: center;
+            padding: 0;
 
             li {
                 list-style-type: none;
-                float: left;
                 position: relative;
-                left: -50%;
                 padding: 0 5px 0 5px;
 
                 &.active {
                     font-weight: bold;
                 }
+                &:hover {
+                    color: #84AE53;
+                }
+
             }
 
             li[data-page] {
@@ -146,3 +164,4 @@
         }
     }
 }
+
