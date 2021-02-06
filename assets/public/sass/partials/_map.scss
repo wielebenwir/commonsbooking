@@ -137,8 +137,14 @@
 		margin: 0 $spacer-small;
 	}
 	
-	.cb-map-button-wrapper button {
-		@extend .cb-button;
+	.cb-map-button-wrapper {
+		
+		button {		
+			@extend .cb-button;
+			float: right;
+			margin: 0 $spacer $spacer 0;
+			}
+
 	}
 
 
@@ -148,7 +154,7 @@
 		margin-bottom: $spacer-small;
 	}
 	
-	.cb-filter-options > div { // the individual filters: distance, availability, category
+	.cb-filter-options > div { // the individual filters rows: distance, availability, category
 		border-bottom: 1px solid $color-bg-alt;
 		padding: 0 0 $spacer 0;
 		margin-bottom: $spacer;
@@ -183,6 +189,10 @@
 		}
 	}
 	
+	.cb-map-button-wrapper {
+		
+	}
+	
 	/* filter groups availability & distance */
 	.cb-map-availability-filter,
 	.cb-map-distance-filter {
@@ -214,7 +224,10 @@
 				flex-grow: 1;
 				border: none;
 				margin: 0 $spacer;
-
+				
+				.cb-fieldgroup-row {
+					display: inline-block;
+				}
 			
 				legend {
 					margin: 0;
@@ -228,5 +241,4 @@
 			}
 		}
 	}
-
 }

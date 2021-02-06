@@ -282,11 +282,17 @@ function CB_Map_Filters($, cb_map) {
       }
 
       $.each(group.elements, function(element_index, category) {
+        var $wrapper = $('<div class="cb-fieldgroup-row"></div>');
         var $input = $('<input type="checkbox" name="cb_item_categories[]" id="cb_item_categories' + category.cat_id  +'"  value="' + category.cat_id + '">')
         var $label = $('<label for="cb_item_categories' + category.cat_id + '"></label>');
         $label.html(category.markup);
-        $fieldset.append($input);
-        $fieldset.append($label);
+        $wrapper.append($input);
+        $wrapper.append($label);
+        // $row.append($label);
+        // $fieldset.append($input);
+        // $fieldset.append($label);
+        $fieldset.append($wrapper);
+        
       });
 
       $wrapper.append($fieldset);
