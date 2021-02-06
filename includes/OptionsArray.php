@@ -90,6 +90,17 @@ return array(
                'type'    => 'text',
                'default' => \CommonsBooking\Wordpress\CustomPostType\Location::$postType,
              ),
+             array(
+                'name'    => esc_html__( 'Bookings Page', 'commonsbooking' ),
+                'id'      => 'bookings_page',
+                // translators: %s = example url (like website.com/cb-locations/)
+                'description' =>
+                             sprintf ( commonsbooking_sanitizeHTML( __(
+                                 'The page where you included the [cb_bookings] shortcode. This is used in the Users Widgets Plugin',
+                                 'commonsbooking' ) ), network_site_url('/bookings/') ),
+                'type'    => 'select',
+                'options' => \CommonsBooking\Helper\Wordpress::getPageListTitle(),
+              ),
            )
          ),
        )
