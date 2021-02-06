@@ -1,0 +1,244 @@
+/**
+* Map + Leaflet Filter Styling
+*
+* [cb_items], [cb_locations shortcode]
+* 
+*
+* @package   CommonsBooking
+* @author    Florian Egermann <florian@wielebenwir.de>
+* @license   GPL-2.0+
+* @since     2.0
+* @link      http://www.wielebenwir.de
+* @copyright 2020 wielebenwir
+*/
+
+
+/* Leaflet Map */
+.leaflet-container {
+	.cb-map-marker-cluster-icon {
+		  width: 100% !important;
+		  height: 100% !important;
+		  font-weight: bold !important;
+		  background-size: cover;
+		}
+		
+		.cb-map-location-info-name b {
+		  line-height: 25px;
+		}
+		.cb-map-location-info-name span.dashicons-search {
+		  cursor: pointer;
+		  padding-left: 5px;
+		  padding-top: 2.5px;
+		}
+		
+		.cb-map-location-info-opening-hours {
+		  margin-top: 10px;
+		}
+		
+		.cb-map-location-info-contact {
+		  margin-top: 10px;
+		}
+		
+		.highlight-border {
+		  border-color: rgb(238, 116, 0) !important;
+		}
+		
+		.leaflet-bar button {
+		  font-size: 6.5px;
+		}
+		
+}
+
+/* Popup */
+.leaflet-popup-content {
+	  min-width: 300px;
+	
+	.cb-map-popup-item {
+		  margin-top: 10px;
+		}
+		
+		.cb-map-popup-item-thumbnail {
+		  display: inline-block;
+		  width: 25%;
+		  margin-right: 5%;
+		}
+		
+		.cb-map-popup-item-info {
+		  display: inline-block;
+		  width: 70%;
+		  vertical-align: top;
+		}
+		
+		.cb-map-popup-item-link {
+		
+		}
+		
+		.cb-map-popup-item-availability {
+		  display: flex;
+		  flex-wrap: nowrap;
+		  overflow-x: auto;
+		
+		  -webkit-overflow-scrolling: touch;
+		  margin: 3px 0;
+		}
+		
+		.cb-map-popup-item-availability-day {
+		  flex: 0 0 auto;
+		
+		  color: #000;
+		  font-weight: normal;
+		  padding: 3px;
+		
+		  width: 30px;
+		  text-align: center;
+		  border: 1px solid #fff;
+		
+		  border-radius: 7px;
+		  background-clip: padding-box;
+		}
+		
+		.cb-map-popup-item-availability-day.available {
+		  background-color: rgb(127, 198, 0);
+		}
+		.cb-map-popup-item-availability-day.location-closed {
+		  background-color: #ddd;
+		  color: #222;
+		}
+		.cb-map-popup-item-availability-day.no-timeframe {
+		  background-color: #ddd;
+		  color: #fff;
+		}
+		.cb-map-popup-item-availability-day.booked {
+		  color: #444;
+		  background: linear-gradient(to top left, rgb(238, 116, 0) 0%, rgb(238, 116, 0) calc(50% - 1px), #333 50%, rgb(238, 116, 0) calc(50% + 1px), rgb(238, 116, 0) 100%);
+		}
+		
+		.cb-map-popup-item-desc {
+		
+		}		
+}
+
+
+/* Filters */
+.cb-map-filters {
+	
+	margin-top: $spacer;
+	@extend .cb-box;
+	
+	input[type="checkbox"] {
+		margin: 0 $spacer-small 0 0;
+	}
+	
+	input[type="date"], input[type="number"] { /* is inline */ 
+		margin: 0 $spacer-small;
+	}
+	  
+	 select { /* is inline */ 
+		margin: 0 $spacer-small;
+	}
+	
+	.cb-map-button-wrapper {
+		
+		button {		
+			@extend .cb-button;
+			float: right;
+			margin: 0 $spacer $spacer 0;
+			}
+
+	}
+
+
+	.cb-map-filter-group-label {
+		@extend .cb-big;
+		color: $color-primary;
+		margin-bottom: $spacer-small;
+	}
+	
+	.cb-filter-options > div { // the individual filters rows: distance, availability, category
+		border-bottom: 1px solid $color-bg-alt;
+		padding: 0 0 $spacer 0;
+		margin-bottom: $spacer;
+		&:last-of-type {
+			border-bottom: none;
+		}
+	}
+	
+	/* all filter groups */
+	.cb-map-filter-group { 
+				
+		input {
+			// width: 100%;
+			border: 1px solid $color-gray-silver;
+			border-radius: $radius;
+			margin-bottom: $spacer-small;
+		}
+
+		label {
+			margin: 0 $spacer-small 0 0;
+		}
+		
+		@media screen and (max-width: 600px) {
+		   label {
+			width: 100%;
+		  }
+		}
+
+		button.undo-geo-search, button.geo-search {
+			background: transparent;
+			color: $color-black;
+		}
+	}
+	
+	.cb-map-button-wrapper {
+		
+	}
+	
+	/* filter groups availability & distance */
+	.cb-map-availability-filter,
+	.cb-map-distance-filter {
+		.cb-map-filter-group {
+			input {
+				width: 95%;
+			}
+			@include breakpoint(phablet) {
+				display: flex;
+				justify-content: flex-start;
+				flex-direction: row;
+				align-items: center;
+				
+				input {
+					width: auto;
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+	/* filter groups availability & distance */
+	.cb-map-category-filter{
+		.cb-map-filter-group{		
+			display:flex;
+			flex-wrap: wrap;
+			
+			fieldset { // category filter
+				@extend .cb-box-inner;
+				flex-grow: 1;
+				border: none;
+				margin: 0 $spacer;
+				
+				.cb-fieldgroup-row {
+					display: inline-block;
+				}
+			
+				legend {
+					margin: 0;
+					font-weight: normal;
+				}
+				label {
+					margin-right: $spacer-big;
+					color: $color-primary;
+				}
+	
+			}
+		}
+	}
+}
