@@ -1,12 +1,10 @@
 <?php
 /**
- * Shortcode [cb_items]
- * Model: location
+ * Shortcode [cb_bookings]
+ * Model: Booking
  *
- * List all items, with one or more associated timeframes (with location info)
- *
- * WP Post properties for locations are available as $item->property
- * location Model methods are available as $item->myMethod()
+ * List all allowed bookings for current user
+ * 
  *
  */
 
@@ -14,7 +12,7 @@ global $templateData;
 $noResultText = esc_html__("No bookings available.", "commonsbooking");
 $response = '';
 
-if ($templateData['total'] > 0) {
+if ($templateData && $templateData['total'] > 0) {
 
     $response .= '
 <div class="booking-list">

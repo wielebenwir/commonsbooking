@@ -175,21 +175,14 @@ class BookingList {
         itemElement;
     }
     _initHeadlineElement(item) {
-        var headline = document.createElement("h4");
-        headline.classList.add("cb-title"), headline.classList.add("cb-item-title");
-        var link = document.createElement("a");
-        return link.href = item.calendarLink, link.text = item.item + " @ " + item.location, 
-        link.target = "_blank", headline.append(link), headline;
+        var headline = document.createElement("p");
+        return headline.classList.add("cb-title"), headline.innerHTML = item.item + " @ " + item.location, 
+        headline;
     }
     _initContentElement(item) {
-        var contentElement = document.createElement("p");
-        return contentElement.className = "booking-list-element", contentElement.append(document.createTextNode(item.startDateFormatted + " - " + item.endDateFormatted)), 
+        var contentElement = document.createElement("div");
+        return contentElement.classList.add("infos"), contentElement.innerHTML = "<p><span>" + item.startDateFormatted + " &ndash; </span><span>" + item.endDateFormatted + "</span></p><p>User: " + item.user + "</p><p> Status: " + item.status + "</p>", 
         contentElement;
-    }
-    _initContentElement2(item) {
-        var contentElement2 = document.createElement("p");
-        return contentElement2.className = "booking-list-element", contentElement2.append(document.createTextNode("User: " + item.user + " Status: " + item.status)), 
-        contentElement2;
     }
     _initActionsElement(item) {
         var actionsElement = document.createElement("div");
@@ -199,8 +192,8 @@ class BookingList {
     _getMarkupFromData(dataForSingleItem) {
         var i = dataForSingleItem, item = this._initItemElement(i), contentWrapperElement = document.createElement("div");
         return contentWrapperElement.classList.add("content-wrapper"), contentWrapperElement.append(this._initHeadlineElement(i)), 
-        contentWrapperElement.append(this._initContentElement(i)), contentWrapperElement.append(this._initContentElement2(i)), 
-        item.append(contentWrapperElement), item.append(this._initActionsElement(i)), item.outerHTML;
+        contentWrapperElement.append(this._initContentElement(i)), item.append(contentWrapperElement), 
+        item.append(this._initActionsElement(i)), item.outerHTML;
     }
     _getItemMarkup(items) {
         let self = this;

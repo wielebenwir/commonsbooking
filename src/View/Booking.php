@@ -79,6 +79,10 @@ class Booking extends View
 
             $posts = \CommonsBooking\Repository\Booking::getForCurrentUser(true);
 
+            if (!$posts) {
+                return false;
+            }
+
             // Prepare Templatedata and remove invalid posts
             foreach ($posts as $booking) {
 
