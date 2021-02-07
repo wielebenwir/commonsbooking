@@ -415,36 +415,28 @@ class BookingList {
     }
 
     _initHeadlineElement(item) {
-        var headline = document.createElement('h4');
+        var headline = document.createElement('p');
         headline.classList.add('cb-title');
-        headline.classList.add('cb-item-title');
+        //headline.classList.add('cb-item-title');
 
-        var link = document.createElement('a');
-        link.href = item.calendarLink;
-        link.text = item.item + ' @ ' + item.location;
-        link.target = '_blank';
+        //var link = document.createElement('a');
+        //link.href = item.calendarLink;
+        //link.href = item.actions;
+        headline.innerHTML = item.item + ' @ ' + item.location;
+        //link.target = '_blank';
 
-        headline.append(link)
+        //headline.append(link)
         return headline;
     }
 
     _initContentElement(item) {
-        var contentElement = document.createElement('p');
-        contentElement.className = 'booking-list-element'
-        contentElement.append(document.createTextNode(
-            item.startDateFormatted + ' - ' + item.endDateFormatted
-        ));
+        var contentElement = document.createElement('div');
+        //contentElement.className = 'booking-list-element'
+        contentElement.classList.add('infos')
+        contentElement.innerHTML = '<p><span>' + item.startDateFormatted + ' &ndash; </span><span>' + item.endDateFormatted + '</span></p>'
+            + '<p>' + 'User: ' + item.user + '</p>'
+            + '<p>' + ' Status: ' + item.status  + '</p>'
         return contentElement;
-
-    }
-
-    _initContentElement2(item) {
-        var contentElement2 = document.createElement('p');
-        contentElement2.className = 'booking-list-element'
-        contentElement2.append(document.createTextNode(
-            'User: ' + item.user + ' Status: ' + item.status
-        ));
-        return contentElement2;
 
     }
 
@@ -471,7 +463,6 @@ class BookingList {
 
         contentWrapperElement.append(this._initHeadlineElement(i));
         contentWrapperElement.append(this._initContentElement(i));
-        contentWrapperElement.append(this._initContentElement2(i));
         item.append(contentWrapperElement);
         item.append(this._initActionsElement(i));
 
