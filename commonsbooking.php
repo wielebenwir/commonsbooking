@@ -387,7 +387,8 @@ function commmonsbooking_write_log ( $log, $backtrace = true )  {
     if ( is_array( $log ) || is_object( $log ) ) {
         error_log( print_r( $log, true ) );
     } else {
-        error_log( $log );
+        $logfile = COMMONSBOOKING_PLUGIN_DIR . '/commonsbooking_log.txt';
+        error_log( $log, 3, $logfile );
     }
 }
 
