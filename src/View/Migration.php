@@ -57,7 +57,7 @@ class Migration
                 <input type="checkbox" class="cmb2-option cmb2-list" name="get-geo-locations" id="get-geo-locations" checked>
                 <label for="get-geo-locations"><?php echo esc_html__('Retrieve location geo coordinates.', 'commonsbooking'); ?></label>
                 <p class="cmb2-metabox-description">
-                    <?php echo esc_html__('The process of retrieving geo data decreases migration by 1 second/location.', 'commonsbooking'); ?>
+                    <?php echo esc_html__('If this option is enabled, CommonsBooking will try to derive the matching geo-coordinates from the address data of the locations during import. We use an interface to a GeoCoder service (Nominatim) for this task. This service allows only one query per second, so the runtime of the migration is increased by 1 second per location. The geo-coordinates are needed to use the location map integrated in CommonsBooking.', 'commonsbooking'); ?>
                 </p>
             </div>
         </div>
