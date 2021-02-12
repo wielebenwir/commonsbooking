@@ -2,15 +2,11 @@
  * Extends
  *
  * Re-usable styles, intended to be used in scss, not directly in the dom.
+ * Utilizes Breakpoints
  *
  * Boxes
  * Typography
  *
- * @package   CommonsBooking2
- * @author    Annesley Newholm <annesley_newholm@yahoo.it>
- * @copyright 2018 wielebenwir e.V.
- * @license   GPL 2.0+
- * @link      http://commonsbooking.wielebenwir.de
  *
  */
 
@@ -39,8 +35,6 @@
 	
 	border-radius: $radius;
 }
-
-
 
 /* -------------------- Typography -------------------- */
 

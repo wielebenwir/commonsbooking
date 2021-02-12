@@ -69,7 +69,7 @@ if ( !function_exists( 'commonsbooking_get_template_part' ) ) {
         if ( empty ( $template ) ) {
           $before_html .= ( '<div class="cb-debug">Template file not found</div>' );
         } else {
-          $before_html .= ( '<div class="cb-debug error">Template:<strong>' . basename($template) . '</strong></div>' );
+          $before_html .= ( '<div class="cb-debug">Template:<strong>' . basename($template) . '</strong></div>' );
         }
       }
 

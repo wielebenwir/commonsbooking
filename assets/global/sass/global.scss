@@ -1,11 +1,7 @@
 /*
- * Framework styles - shared in front- and backend
- * @package   CommonsBooking2
- * @author    Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
+ * Framework styles
+ * 
+ * Shared in Front- and Backend
  */
 
 /* Lib: reset.css */
@@ -25,7 +21,4 @@
 
 /* Utilites */
 @import "partials/_utilities";
-
-/* Calendar styles */
-@import "partials/_calendar";
 
