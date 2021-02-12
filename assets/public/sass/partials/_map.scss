@@ -1,7 +1,7 @@
 /**
 * Map + Leaflet Filter Styling
 *
-* [cb_items], [cb_locations shortcode]
+* shortcode [cb_map]
 * 
 *
 * @package   CommonsBooking
@@ -12,115 +12,127 @@
 * @copyright 2020 wielebenwir
 */
 
-
-/* Leaflet Map */
-.leaflet-container {
-	.cb-map-marker-cluster-icon {
-		  width: 100% !important;
-		  height: 100% !important;
-		  font-weight: bold !important;
-		  background-size: cover;
-		}
-		
-		.cb-map-location-info-name b {
-		  line-height: 25px;
-		}
-		.cb-map-location-info-name span.dashicons-search {
-		  cursor: pointer;
-		  padding-left: 5px;
-		  padding-top: 2.5px;
-		}
-		
-		.cb-map-location-info-opening-hours {
-		  margin-top: 10px;
-		}
-		
-		.cb-map-location-info-contact {
-		  margin-top: 10px;
-		}
-		
-		.highlight-border {
-		  border-color: rgb(238, 116, 0) !important;
-		}
-		
-		.leaflet-bar button {
-		  font-size: 6.5px;
-		}
-		
-}
-
-/* Popup */
-.leaflet-popup-content {
-	  min-width: 300px;
+.cb-wrapper {	
 	
-	.cb-map-popup-item {
-		  margin-top: 10px;
-		}
+	/* Leaflet Map */
+	.leaflet-container {
 		
-		.cb-map-popup-item-thumbnail {
-		  display: inline-block;
-		  width: 25%;
-		  margin-right: 5%;
-		}
 		
-		.cb-map-popup-item-info {
-		  display: inline-block;
-		  width: 70%;
-		  vertical-align: top;
-		}
 		
-		.cb-map-popup-item-link {
-		
-		}
-		
-		.cb-map-popup-item-availability {
-		  display: flex;
-		  flex-wrap: nowrap;
-		  overflow-x: auto;
-		
-		  -webkit-overflow-scrolling: touch;
-		  margin: 3px 0;
-		}
-		
-		.cb-map-popup-item-availability-day {
-		  flex: 0 0 auto;
-		
-		  color: #000;
-		  font-weight: normal;
-		  padding: 3px;
-		
-		  width: 30px;
-		  text-align: center;
-		  border: 1px solid #fff;
-		
-		  border-radius: 7px;
-		  background-clip: padding-box;
-		}
-		
-		.cb-map-popup-item-availability-day.available {
-		  background-color: rgb(127, 198, 0);
-		}
-		.cb-map-popup-item-availability-day.location-closed {
-		  background-color: #ddd;
-		  color: #222;
-		}
-		.cb-map-popup-item-availability-day.no-timeframe {
-		  background-color: #ddd;
-		  color: #fff;
-		}
-		.cb-map-popup-item-availability-day.booked {
-		  color: #444;
-		  background: linear-gradient(to top left, rgb(238, 116, 0) 0%, rgb(238, 116, 0) calc(50% - 1px), #333 50%, rgb(238, 116, 0) calc(50% + 1px), rgb(238, 116, 0) 100%);
-		}
-		
-		.cb-map-popup-item-desc {
-		
-		}		
-}
+		.cb-map-marker-cluster-icon {
+			  width: 100% !important;
+			  height: 100% !important;
+			  font-weight: bold !important;
+			  background-size: cover;
+			}
+			
+			.cb-map-location-info-name b {
+			  line-height: 25px;
+			}
+			.cb-map-location-info-name span.dashicons-search {
+			  cursor: pointer;
+			  padding-left: 5px;
+			  padding-top: 2.5px;
+			}
+			
+			.cb-map-location-info-opening-hours {
+			  margin-top: 10px;
+			}
+			
+			.cb-map-location-info-contact {
+			  margin-top: 10px;
+			}
+			
+			.highlight-border {
+			  border-color: rgb(238, 116, 0) !important;
+			}
+			
+			.leaflet-bar button {
+			  font-size: 6.5px;
+			}
+			
+	}
 
+	/* Popup */
+	.leaflet-popup-content {
+		  min-width: 300px;
+		  font-size: $font-size-normal;
+		  
+		.cb-map-popup-item {
+			  margin-top: 10px;
+			}
+			
+			.cb-map-popup-item-thumbnail {
+			  display: inline-block;
+			  width: 25%;
+			  margin-right: 5%;
+			  img {
+			  	border-radius: $radius;
+			  }
+			}
+			
+			.cb-map-popup-item-info {
+			  display: inline-block;
+			  width: 70%;
+			  vertical-align: top;
+			}
+			
+			.cb-map-popup-item-link b a {
+				font-size: $font-size-big;
+				color: $color-blue-dark;
+				text-decoration: none;
+			}
+			
+			.cb-map-popup-item-availability {
+			  display: flex;
+			  flex-wrap: nowrap;
+			  overflow-x: auto;
+			
+			  -webkit-overflow-scrolling: touch;
+			  margin: 3px 0;
+			}
+			
+			.cb-map-popup-item-availability-day {
+			  flex: 0 0 auto;
+			
+			  color: #000;
+			  font-weight: normal;
+			  padding: 3px;
+			
+			  width: 30px;
+			  text-align: center;
+			  border: 1px solid #fff;
+			
+			  border-radius: 7px;
+			  background-clip: padding-box;
+			}
+			
+			.cb-map-popup-item-availability-day.available {
+			  background-color: rgb(127, 198, 0);
+			}
+			.cb-map-popup-item-availability-day.location-closed {
+			  background-color: #ddd;
+			  color: #222;
+			}
+			.cb-map-popup-item-availability-day.no-timeframe {
+			  background-color: #ddd;
+			  color: #fff;
+			}
+			.cb-map-popup-item-availability-day.booked {
+			  color: #444;
+			  background: linear-gradient(to top left, rgb(238, 116, 0) 0%, rgb(238, 116, 0) calc(50% - 1px), #333 50%, rgb(238, 116, 0) calc(50% + 1px), rgb(238, 116, 0) 100%);
+			}
+			
+			.cb-map-popup-item-desc {
+				display: none;
+			}
+				
+	}
+
+}
 
 /* Filters */
-.cb-map-filters {
+.cb-map-filters.cb-wrapper {
 	
 	margin-top: $spacer;
 	@extend .cb-box;
@@ -225,3 +237,4 @@
 		}
 	}
 }
+

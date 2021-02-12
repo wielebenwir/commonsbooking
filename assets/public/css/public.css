@@ -3346,7 +3346,7 @@
  */
 /* -------------------- Boxes -------------------- */
 /* line 19, ../../global/sass/partials/_extends.scss */
-.cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters {
+.cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper {
   background: #f6f6f6;
   padding: 5px;
   overflow: hidden;
@@ -3355,7 +3355,7 @@
 }
 @media (min-width: 37.5em) {
   /* line 19, ../../global/sass/partials/_extends.scss */
-  .cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters {
+  .cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper {
     padding: 10px 15px;
   }
 }
@@ -3375,7 +3375,7 @@
 
 /* -------------------- Typography -------------------- */
 /* line 47, ../../global/sass/partials/_extends.scss */
-.cb-big, .cb-map-filters .cb-map-filter-group-label {
+.cb-big, .cb-map-filters.cb-wrapper .cb-map-filter-group-label {
   font-size: 18px;
   font-weight: bold;
 }
@@ -3387,7 +3387,7 @@
 }
 
 /* line 58, ../../global/sass/partials/_extends.scss */
-.shadow-small, .cb-hover, .cb-button:hover, .cb-button-container a:hover, .cb-wrapper .cb-action input:hover, .cb-wrapper #booking-form input:hover, .cb-map-filters .cb-map-button-wrapper button:hover {
+.shadow-small, .cb-hover, .cb-button:hover, .cb-button-container a:hover, .cb-wrapper .cb-action input:hover, .cb-wrapper #booking-form input:hover, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:hover {
   box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -3404,7 +3404,7 @@
 
 /* -------------------- Buttons -------------------- */
 /* line 74, ../../global/sass/partials/_extends.scss */
-.cb-button, .cb-button-container a, .cb-wrapper .cb-action input, .cb-wrapper #booking-form input, .cb-map-filters .cb-map-button-wrapper button {
+.cb-button, .cb-button-container a, .cb-wrapper .cb-action input, .cb-wrapper #booking-form input, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button {
   border-radius: 8px;
   font-size: 18px;
   line-height: 18px;
@@ -3419,47 +3419,47 @@
   font-weight: bold;
 }
 /* line 88, ../../global/sass/partials/_extends.scss */
-.cb-button:hover, .cb-button-container a:hover, .cb-wrapper .cb-action input:hover, .cb-wrapper #booking-form input:hover, .cb-map-filters .cb-map-button-wrapper button:hover {
+.cb-button:hover, .cb-button-container a:hover, .cb-wrapper .cb-action input:hover, .cb-wrapper #booking-form input:hover, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:hover {
   background: #506CA9;
   color: #FFF;
   /* Various themes fix */
 }
 /* line 94, ../../global/sass/partials/_extends.scss */
-.cb-button:visited, .cb-button-container a:visited, .cb-wrapper .cb-action input:visited, .cb-wrapper #booking-form input:visited, .cb-map-filters .cb-map-button-wrapper button:visited {
+.cb-button:visited, .cb-button-container a:visited, .cb-wrapper .cb-action input:visited, .cb-wrapper #booking-form input:visited, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:visited {
   color: #FFF;
 }
 /* line 98, ../../global/sass/partials/_extends.scss */
-.cb-button.big, .cb-button-container a.big, .cb-wrapper .cb-action input.big, .cb-wrapper #booking-form input.big, .cb-map-filters .cb-map-button-wrapper button.big {
+.cb-button.big, .cb-button-container a.big, .cb-wrapper .cb-action input.big, .cb-wrapper #booking-form input.big, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.big {
   padding: 10px 15px;
 }
 /* line 101, ../../global/sass/partials/_extends.scss */
-.cb-button.secondary, .cb-button-container a.secondary, .cb-wrapper .cb-action input.secondary, .cb-wrapper #booking-form input.secondary, .cb-map-filters .cb-map-button-wrapper button.secondary {
+.cb-button.secondary, .cb-button-container a.secondary, .cb-wrapper .cb-action input.secondary, .cb-wrapper #booking-form input.secondary, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.secondary {
   background-color: #FFF;
   color: #d5425c;
 }
 /* line 106, ../../global/sass/partials/_extends.scss */
-.cb-button.cancel, .cb-button-container a.cancel, .cb-wrapper .cb-action input.cancel, .cb-wrapper #booking-form input.cancel, .cb-map-filters .cb-map-button-wrapper button.cancel {
+.cb-button.cancel, .cb-button-container a.cancel, .cb-wrapper .cb-action input.cancel, .cb-wrapper #booking-form input.cancel, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.cancel {
   background-color: #d5425c;
 }
 /* line 110, ../../global/sass/partials/_extends.scss */
-.cb-button.confirm, .cb-button-container a.confirm, .cb-wrapper .cb-action input.confirm, .cb-wrapper #booking-form input.confirm, .cb-map-filters .cb-map-button-wrapper button.confirm {
+.cb-button.confirm, .cb-button-container a.confirm, .cb-wrapper .cb-action input.confirm, .cb-wrapper #booking-form input.confirm, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.confirm {
   background-color: #74ce3c;
 }
 /* line 114, ../../global/sass/partials/_extends.scss */
-.cb-button.delete, .cb-button-container a.delete, .cb-wrapper .cb-action input.delete, .cb-wrapper #booking-form input.delete, .cb-map-filters .cb-map-button-wrapper button.delete {
+.cb-button.delete, .cb-button-container a.delete, .cb-wrapper .cb-action input.delete, .cb-wrapper #booking-form input.delete, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.delete {
   background-color: #d5425c;
 }
 /* line 118, ../../global/sass/partials/_extends.scss */
-.cb-button[disabled=disabled], .cb-button-container a[disabled=disabled], .cb-wrapper .cb-action input[disabled=disabled], .cb-wrapper #booking-form input[disabled=disabled], .cb-map-filters .cb-map-button-wrapper button[disabled=disabled] {
+.cb-button[disabled=disabled], .cb-button-container a[disabled=disabled], .cb-wrapper .cb-action input[disabled=disabled], .cb-wrapper #booking-form input[disabled=disabled], .cb-map-filters.cb-wrapper .cb-map-button-wrapper button[disabled=disabled] {
   background-color: #c4c4c4;
   color: white;
 }
 /* line 123, ../../global/sass/partials/_extends.scss */
-.cb-button.no-right-radius, .cb-button-container a.no-right-radius, .cb-wrapper .cb-action input.no-right-radius, .cb-wrapper #booking-form input.no-right-radius, .cb-map-filters .cb-map-button-wrapper button.no-right-radius {
+.cb-button.no-right-radius, .cb-button-container a.no-right-radius, .cb-wrapper .cb-action input.no-right-radius, .cb-wrapper #booking-form input.no-right-radius, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.no-right-radius {
   border-radius: 8px 0;
 }
 /* line 126, ../../global/sass/partials/_extends.scss */
-.cb-button.no-left-radius, .cb-button-container a.no-left-radius, .cb-wrapper .cb-action input.no-left-radius, .cb-wrapper #booking-form input.no-left-radius, .cb-map-filters .cb-map-button-wrapper button.no-left-radius {
+.cb-button.no-left-radius, .cb-button-container a.no-left-radius, .cb-wrapper .cb-action input.no-left-radius, .cb-wrapper #booking-form input.no-left-radius, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.no-left-radius {
   border-radius: 0 8px;
 }
 
@@ -3572,8 +3572,8 @@
 }
 
 /* line 55, ../sass/partials/_layouts.scss */
-.cb-col-50-50-filter > div, .cb-map-filters .cb-map-availability-filter .cb-map-filter-group > div,
-.cb-map-filters .cb-map-distance-filter .cb-map-filter-group > div {
+.cb-col-50-50-filter > div, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div,
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div {
   margin-bottom: 10px;
   width: 100%;
   display: flex;
@@ -3581,19 +3581,19 @@
   flex-wrap: nowrap;
 }
 /* line 62, ../sass/partials/_layouts.scss */
-.cb-col-50-50-filter > div label, .cb-map-filters .cb-map-availability-filter .cb-map-filter-group > div label,
-.cb-map-filters .cb-map-distance-filter .cb-map-filter-group > div label {
+.cb-col-50-50-filter > div label, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div label,
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div label {
   flex: 0 0 30%;
 }
 /* line 65, ../sass/partials/_layouts.scss */
-.cb-col-50-50-filter > div input, .cb-map-filters .cb-map-availability-filter .cb-map-filter-group > div input,
-.cb-map-filters .cb-map-distance-filter .cb-map-filter-group > div input {
+.cb-col-50-50-filter > div input, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div input,
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div input {
   flex: 0 1 50%;
 }
 @media (min-width: 37.5em) {
   /* line 54, ../sass/partials/_layouts.scss */
-  .cb-col-50-50-filter, .cb-map-filters .cb-map-availability-filter .cb-map-filter-group,
-  .cb-map-filters .cb-map-distance-filter .cb-map-filter-group {
+  .cb-col-50-50-filter, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group,
+  .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
@@ -3601,8 +3601,8 @@
     flex-wrap: wrap;
   }
   /* line 79, ../sass/partials/_layouts.scss */
-  .cb-col-50-50-filter > div, .cb-map-filters .cb-map-availability-filter .cb-map-filter-group > div,
-  .cb-map-filters .cb-map-distance-filter .cb-map-filter-group > div {
+  .cb-col-50-50-filter > div, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div,
+  .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div {
     width: 50%;
   }
 }
@@ -4332,7 +4332,7 @@
 /**
 * Map + Leaflet Filter Styling
 *
-* [cb_items], [cb_locations shortcode]
+* shortcode [cb_map]
 * 
 *
 * @package   CommonsBooking
@@ -4342,72 +4342,85 @@
 * @link      http://www.wielebenwir.de
 * @copyright 2020 wielebenwir
 */
-/* Leaflet Map */
-/* line 18, ../sass/partials/_map.scss */
-.leaflet-container .cb-map-marker-cluster-icon {
+/* line 15, ../sass/partials/_map.scss */
+.cb-wrapper {
+  /* Leaflet Map */
+  /* Popup */
+}
+/* line 22, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-container .cb-map-marker-cluster-icon {
   width: 100% !important;
   height: 100% !important;
   font-weight: bold !important;
   background-size: cover;
 }
-/* line 25, ../sass/partials/_map.scss */
-.leaflet-container .cb-map-location-info-name b {
+/* line 29, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-container .cb-map-location-info-name b {
   line-height: 25px;
 }
-/* line 28, ../sass/partials/_map.scss */
-.leaflet-container .cb-map-location-info-name span.dashicons-search {
+/* line 32, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-container .cb-map-location-info-name span.dashicons-search {
   cursor: pointer;
   padding-left: 5px;
   padding-top: 2.5px;
 }
-/* line 34, ../sass/partials/_map.scss */
-.leaflet-container .cb-map-location-info-opening-hours {
-  margin-top: 10px;
-}
 /* line 38, ../sass/partials/_map.scss */
-.leaflet-container .cb-map-location-info-contact {
+.cb-wrapper .leaflet-container .cb-map-location-info-opening-hours {
   margin-top: 10px;
 }
 /* line 42, ../sass/partials/_map.scss */
-.leaflet-container .highlight-border {
-  border-color: #ee7400 !important;
-}
-/* line 46, ../sass/partials/_map.scss */
-.leaflet-container .leaflet-bar button {
-  font-size: 6.5px;
-}
-
-/* Popup */
-/* line 53, ../sass/partials/_map.scss */
-.leaflet-popup-content {
-  min-width: 300px;
-}
-/* line 56, ../sass/partials/_map.scss */
-.leaflet-popup-content .cb-map-popup-item {
+.cb-wrapper .leaflet-container .cb-map-location-info-contact {
   margin-top: 10px;
 }
-/* line 60, ../sass/partials/_map.scss */
-.leaflet-popup-content .cb-map-popup-item-thumbnail {
+/* line 46, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-container .highlight-border {
+  border-color: #ee7400 !important;
+}
+/* line 50, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-container .leaflet-bar button {
+  font-size: 6.5px;
+}
+/* line 57, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content {
+  min-width: 300px;
+  font-size: 14px;
+}
+/* line 61, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item {
+  margin-top: 10px;
+}
+/* line 65, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-thumbnail {
   display: inline-block;
   width: 25%;
   margin-right: 5%;
 }
-/* line 66, ../sass/partials/_map.scss */
-.leaflet-popup-content .cb-map-popup-item-info {
+/* line 69, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-thumbnail img {
+  border-radius: 8px;
+}
+/* line 74, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-info {
   display: inline-block;
   width: 70%;
   vertical-align: top;
 }
-/* line 76, ../sass/partials/_map.scss */
-.leaflet-popup-content .cb-map-popup-item-availability {
+/* line 80, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-link b a {
+  font-size: 18px;
+  color: #506CA9;
+  text-decoration: none;
+}
+/* line 86, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   margin: 3px 0;
 }
-/* line 85, ../sass/partials/_map.scss */
-.leaflet-popup-content .cb-map-popup-item-availability-day {
+/* line 95, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day {
   flex: 0 0 auto;
   color: #000;
   font-weight: normal;
@@ -4418,116 +4431,120 @@
   border-radius: 7px;
   background-clip: padding-box;
 }
-/* line 100, ../sass/partials/_map.scss */
-.leaflet-popup-content .cb-map-popup-item-availability-day.available {
+/* line 110, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.available {
   background-color: #7fc600;
 }
-/* line 103, ../sass/partials/_map.scss */
-.leaflet-popup-content .cb-map-popup-item-availability-day.location-closed {
+/* line 113, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.location-closed {
   background-color: #ddd;
   color: #222;
 }
-/* line 107, ../sass/partials/_map.scss */
-.leaflet-popup-content .cb-map-popup-item-availability-day.no-timeframe {
+/* line 117, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.no-timeframe {
   background-color: #ddd;
   color: #fff;
 }
-/* line 111, ../sass/partials/_map.scss */
-.leaflet-popup-content .cb-map-popup-item-availability-day.booked {
+/* line 121, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.booked {
   color: #444;
   background: linear-gradient(to top left, #ee7400 0%, #ee7400 calc(50% - 1px), #333 50%, #ee7400 calc(50% + 1px), #ee7400 100%);
 }
+/* line 126, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-desc {
+  display: none;
+}
 
 /* Filters */
-/* line 123, ../sass/partials/_map.scss */
-.cb-map-filters {
+/* line 135, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper {
   margin-top: 10px;
   /* layout for filter  availability & distance */
   /* styles for specific filters */
   /* layout for filter category */
 }
-/* line 128, ../sass/partials/_map.scss */
-.cb-map-filters input[type="checkbox"] {
+/* line 140, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper input[type="checkbox"] {
   margin: 0 5px 0 0;
 }
-/* line 132, ../sass/partials/_map.scss */
-.cb-map-filters input[type="date"], .cb-map-filters input[type="number"] {
+/* line 144, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper input[type="date"], .cb-map-filters.cb-wrapper input[type="number"] {
   /* is inline */
   margin: 0 5px;
 }
-/* line 136, ../sass/partials/_map.scss */
-.cb-map-filters input[type="number"] {
+/* line 148, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper input[type="number"] {
   max-width: 100px;
 }
-/* line 140, ../sass/partials/_map.scss */
-.cb-map-filters select {
+/* line 152, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper select {
   /* is inline */
   margin: 0 5px;
 }
-/* line 144, ../sass/partials/_map.scss */
-.cb-map-filters button {
+/* line 156, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper button {
   padding: 5px;
 }
-/* line 149, ../sass/partials/_map.scss */
-.cb-map-filters .cb-filter-options > div {
+/* line 161, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-filter-options > div {
   margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #444;
 }
-/* line 156, ../sass/partials/_map.scss */
-.cb-map-filters .cb-map-filter-group-label {
+/* line 168, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-filter-group-label {
   color: #506CA9;
   margin-bottom: 5px;
 }
-/* line 173, ../sass/partials/_map.scss */
-.cb-map-filters .cb-map-distance-filter .cb-map-filter-input-group {
+/* line 185, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group {
   background: #506CA9;
   border-radius: 8px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
 }
-/* line 179, ../sass/partials/_map.scss */
-.cb-map-filters .cb-map-distance-filter .cb-map-filter-input-group input {
+/* line 191, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group input {
   flex: 1 1 100% !important;
   /* overwrite layout */
 }
-/* line 182, ../sass/partials/_map.scss */
-.cb-map-filters .cb-map-distance-filter .cb-map-filter-input-group button.undo-geo-search, .cb-map-filters .cb-map-distance-filter .cb-map-filter-input-group button.geo-search {
+/* line 194, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.undo-geo-search, .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.geo-search {
   background: transparent;
   color: #FFF;
 }
-/* line 191, ../sass/partials/_map.scss */
-.cb-map-filters .cb-map-category-filter .cb-map-filter-group {
+/* line 203, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
-/* line 196, ../sass/partials/_map.scss */
-.cb-map-filters .cb-map-category-filter .cb-map-filter-group fieldset {
+/* line 208, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset {
   flex: 1 0 50%;
   border: none;
   margin: 0;
   padding: 0;
   margin-bottom: 10px;
 }
-/* line 203, ../sass/partials/_map.scss */
-.cb-map-filters .cb-map-category-filter .cb-map-filter-group fieldset .cb-fieldgroup-row {
+/* line 215, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset .cb-fieldgroup-row {
   display: inline-block;
 }
-/* line 207, ../sass/partials/_map.scss */
-.cb-map-filters .cb-map-category-filter .cb-map-filter-group fieldset legend {
+/* line 219, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset legend {
   margin: 0;
   padding: 0;
   font-weight: normal;
 }
-/* line 212, ../sass/partials/_map.scss */
-.cb-map-filters .cb-map-category-filter .cb-map-filter-group fieldset label {
+/* line 224, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset label {
   margin-right: 15px;
   color: #506CA9;
 }
-/* line 221, ../sass/partials/_map.scss */
-.cb-map-filters .cb-map-button-wrapper {
+/* line 233, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-button-wrapper {
   text-align: right;
 }
 
@@ -4615,7 +4632,7 @@
   padding-top: 15px;
 }
 /* line 79, ../sass/partials/_bookings.scss */
-.booking-list--filters .reset-filters > .cb-button, .booking-list--filters .cb-button-container .reset-filters > a, .cb-button-container .booking-list--filters .reset-filters > a, .booking-list--filters .cb-wrapper .cb-action .reset-filters > input, .cb-wrapper .cb-action .booking-list--filters .reset-filters > input, .booking-list--filters .cb-wrapper #booking-form .reset-filters > input, .cb-wrapper #booking-form .booking-list--filters .reset-filters > input, .booking-list--filters .cb-map-filters .cb-map-button-wrapper .reset-filters > button, .cb-map-filters .cb-map-button-wrapper .booking-list--filters .reset-filters > button {
+.booking-list--filters .reset-filters > .cb-button, .booking-list--filters .cb-button-container .reset-filters > a, .cb-button-container .booking-list--filters .reset-filters > a, .booking-list--filters .cb-wrapper .cb-action .reset-filters > input, .cb-wrapper .cb-action .booking-list--filters .reset-filters > input, .booking-list--filters .cb-wrapper #booking-form .reset-filters > input, .cb-wrapper #booking-form .booking-list--filters .reset-filters > input, .booking-list--filters .cb-map-filters.cb-wrapper .cb-map-button-wrapper .reset-filters > button, .cb-map-filters.cb-wrapper .cb-map-button-wrapper .booking-list--filters .reset-filters > button {
   float: right;
   line-height: inherit;
 }
