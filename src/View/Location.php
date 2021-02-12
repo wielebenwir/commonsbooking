@@ -34,6 +34,7 @@ class Location extends View
         );
 
         $jsonResponse = [
+            'minDate'             => $startDate->getFormattedDate('Y-m-d'),
             'startDate'           => $startDate->getFormattedDate('Y-m-d'),
             'endDate'             => $endDate->getFormattedDate('Y-m-d'),
             'days'                => [],
@@ -250,6 +251,25 @@ class Location extends View
 
         if ( ! $item && ! $location) {
             throw new \Exception('item or location could not be found');
+        }
+
+        if($item && $location) {
+            $bookableTimeframes = \CommonsBooking\Repository\Timeframe::get(
+                [$location],
+                [$item],
+                [Timeframe::BOOKABLE_ID],
+                null,
+                true
+            );
+
+            if(count($bookableTimeframes)) {
+                /** @var \CommonsBooking\Model\Timeframe $firstBookableTimeframe */
+                $firstBookableTimeframe = $bookableTimeframes[0];
+
+                $startDateTimestamp = $firstBookableTimeframe->getStartDate();
+                $startDate = new Day(date('Y-m-d', $startDateTimestamp));
+                $endDate = new Day(date('Y-m-d', strtotime('+3 months', $startDateTimestamp)));
+            }
         }
 
         return self::prepareJsonResponse($startDate, $endDate, $location ? [$location] : [], $item ? [$item] : []);
