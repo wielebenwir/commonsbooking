@@ -18,9 +18,13 @@ $item          = $booking->getItem();
 
 <div class="cb-wrapper cb-booking-item">
     <div class="cb-list-header">
-        <?php echo $item->thumbnail();?>
-        <h3><?php echo esc_html__('Item', 'commonsbooking'); ?>: <?php echo $item->title(); ?></h3>
-        <?php echo $item->excerpt();?>
+        <div class="cb-thumbnail">
+            <?php echo $item->thumbnail();?>
+        </div>
+        <div class="cb-list-info">
+            <h3><?php echo esc_html__('Item', 'commonsbooking'); ?>: <?php echo $item->title(); ?></h3>
+            <?php echo $item->excerpt();?>
+        </div>
     </div>
 </div>
 

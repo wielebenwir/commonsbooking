@@ -24,7 +24,7 @@
     } // $item_is_selected
 
     if(!array_key_exists('location', $templateData) && !array_key_exists('locations', $templateData)) { ?>
-        <div class="cb-status cb-availability-status cb-no-residency"><?php echo ( $noResultText );
+        <div class="cb-status cb-availability-status cb-status-not-available"><?php echo ( $noResultText );
     }
 
     if(!is_user_logged_in()) {
