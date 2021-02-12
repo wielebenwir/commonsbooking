@@ -1,4 +1,5 @@
 module.exports = function (grunt) {
+	grunt.util.linefeed = '\n';
 	grunt.initConfig(
 		{
 		pkg: grunt.file.readJSON('package.json'),
@@ -30,7 +31,6 @@ module.exports = function (grunt) {
 			adminDev: {
 				options: {
 					environment: 'development',
-					debugInfo: true,
 					noLineComments: false,
 					sassDir: 'assets/admin/sass',
 					cssDir: 'assets/admin/css',
@@ -42,7 +42,6 @@ module.exports = function (grunt) {
 			publicDev: {
 				options: {
 					environment: 'development',
-					debugInfo: true,
 					noLineComments: false,
 					sassDir: 'assets/public/sass',
 					cssDir: 'assets/public/css',

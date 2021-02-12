@@ -8,7 +8,10 @@
 @import "../../global/sass/global";
 
 /* Dashboard */
-@import "partials/_dashboard";
+@import "./partials/_dashboard";
 
 /* Timeframe Form */
-@import "partials/_form-timeframe";
+@import "./partials/_form-timeframe";
+
+/** Migration Settings */
+@import "./partials/_migration";
