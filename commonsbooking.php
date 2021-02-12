@@ -42,16 +42,6 @@ $cb_db_version = '1.0';
 // @TODO: move all of this to either /Public.php or /Admin.php
 
 
-// set exception handler to log all uncaught exceptions
-function commonsbooking_exception_handler($exception) {
-    $msg =  "Nicht aufgefangene Exception: " . $exception->getMessage() . "\n";
-    echo $msg;
-    commmonsbooking_write_log($msg);
-}
-  
-  set_exception_handler('exception_handler');
-
-
 function commonsbooking_admin()
 {
     wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__).'assets/admin/css/admin.css');
