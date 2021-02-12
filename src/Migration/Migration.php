@@ -30,9 +30,6 @@ class Migration
             $post_data = commonsbooking_sanitizeArrayorString($post_data);
         }
 
-
-
-
         if ($post_data == 'false') {
             $tasks = [
                 'locations'    => [
@@ -214,25 +211,37 @@ class Migration
                 'commons-booking_bookingsettings_allowclosed'
             ) == 'on' ? 'on' : 'off';
 
+
+        $cbMetaMappings = [
+            COMMONSBOOKING_METABOX_PREFIX . 'location_street'             => 'commons-booking_location_adress_street',
+            COMMONSBOOKING_METABOX_PREFIX . 'location_city'               => 'commons-booking_location_adress_city',
+            COMMONSBOOKING_METABOX_PREFIX . 'location_postcode'           => 'commons-booking_location_adress_zip',
+            COMMONSBOOKING_METABOX_PREFIX . 'location_country'            => 'commons-booking_location_adress_country',
+            COMMONSBOOKING_METABOX_PREFIX . 'location_contact'            => 'commons-booking_location_contactinfo_text',
+            COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions' => 'commons-booking_location_openinghours',
+            '_thumbnail_id'                                               => '_thumbnail_id'
+        ];
+
+//        echo '<pre>';
+//        var_dump(
+//            array_map(
+//                function ($item) {
+//                    return $item[0];
+//                },
+//                get_post_meta($location->ID)
+//            ))
+//        ;
+
         // CB2 <-> CB1
         $postMeta = [
-            COMMONSBOOKING_METABOX_PREFIX . 'location_street'             => get_post_meta($location->ID,
-                'commons-booking_location_adress_street', true),
-            COMMONSBOOKING_METABOX_PREFIX . 'location_city'               => get_post_meta($location->ID,
-                'commons-booking_location_adress_city', true),
-            COMMONSBOOKING_METABOX_PREFIX . 'location_postcode'           => get_post_meta($location->ID,
-                'commons-booking_location_adress_zip', true),
-            COMMONSBOOKING_METABOX_PREFIX . 'location_country'            => get_post_meta($location->ID,
-                'commons-booking_location_adress_country', true),
-            COMMONSBOOKING_METABOX_PREFIX . 'location_contact'            => get_post_meta($location->ID,
-                'commons-booking_location_contactinfo_text', true),
-            COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions' => get_post_meta($location->ID,
-                'commons-booking_location_openinghours', true),
             COMMONSBOOKING_METABOX_PREFIX . 'location_email'              => $cb1_location_email_string,
             COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID'            => $location->ID,
-            '_thumbnail_id'                                               => get_post_meta($location->ID, '_thumbnail_id', true),
             COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range'     => $allowClosed
         ];
+
+        foreach ($cbMetaMappings as $cb2Field => $cb1Field) {
+            $postMeta[$cb2Field] = get_post_meta($location->ID, $cb1Field, true);
+        }
 
         $existingPost = self::getExistingPost($location->ID, Location::$postType);
 
