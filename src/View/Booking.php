@@ -110,7 +110,13 @@ class Booking extends View
                     "bookingDate" => date('d.m.Y H:i', strtotime($booking->post_date)),
                     "user"        => $userInfo->user_login,
                     "status"      => $booking->post_status,
-                    "calendarLink" => add_query_arg('item', $booking->getItem()->ID, get_permalink($booking->getLocation()->ID))
+                    "calendarLink" => add_query_arg('item', $booking->getItem()->ID, get_permalink($booking->getLocation()->ID)),
+                    "content" => [
+                        __('Item', 'commonsbooking')        => $booking->getItem()->post_title,
+                        __('Location', 'commonsbooking')     => $booking->getLocation()->post_title,
+                        __('User', 'commonsbooking')         => $userInfo->user_login,
+                        __('Status', 'commonsbooking')       => __($booking->post_status, 'commonsbooking'),
+                    ]
                 ];
 
                 $continue = false;
