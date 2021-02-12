@@ -483,7 +483,7 @@ class Plugin
         $commonsbooking_installed_version = get_option ( $commonsbooking_version_option );
 
         // check if installed version differs from plugin version in database
-        if ( COMMONSBOOKING_VERSION == $commonsbooking_installed_version OR !isset( $commonsbooking_installed_version ) ) {
+        if ( COMMONSBOOKING_VERSION != $commonsbooking_installed_version OR !isset( $commonsbooking_installed_version ) ) {
 
             // set Options default values (e.g. if there are new fields added)
             AdminOptions::SetOptionsDefaultValues();
@@ -551,7 +551,7 @@ class Plugin
                     $user_login[] = $user->user_login;
                 }
 
-                $message = commonsbooking_sanitizeHTML('<strong>Notice:</strong> Some deprecated user roles from older CommonsBooking versions have been removed because they are not used anymore. The following users were assigned to one of these deprecated user roles. They are assigned now to the default Subscriber role. Please check if these users should be assigned to another role, e.g. CommonsBooking Manager. Please copy and past this list in case you need it for detailed checks. This message will not be shown again. <br>');
+                $message = commonsbooking_sanitizeHTML('<strong>Notice:</strong> Some deprecated user roles from older CommonsBooking versions have been removed because they are not used anymore. The following users were assigned to one of these deprecated user roles. They are assigned now to the default Subscriber role. Please check if these users should be assigned to another role, e.g. CommonsBooking Manager. Please copy and paste this list in case you need it for detailed checks. This message will not be shown again. <br>');
                 $message .= implode('<br>', $user_login);
                 new \CommonsBooking\Messages\AdminMessage($message);
 
@@ -560,6 +560,14 @@ class Plugin
             foreach ($roles_array AS $role_key => $role ) {
                 remove_role($role);
             }
+
+    }
+
+
+    public static function updateUserRoleName() {
+
+        $cb_manager  = get_role('cb_manager');
+
 
     }
 }
