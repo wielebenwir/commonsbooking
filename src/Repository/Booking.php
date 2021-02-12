@@ -84,7 +84,7 @@ class Booking extends PostRepository
      * @return array
      * @throws \Exception
      */
-    public static function getForCurrentUser($asModel = false): array
+    public static function getForCurrentUser($asModel = false)
     {
         $args = array(
             'post_type'   => Timeframe::$postType,
