@@ -61,10 +61,14 @@ class UserWidget extends \WP_Widget {
             $bookings_page_url = get_home_url();
         }
 
+        // translators: $s = user first name
         $content .= sprintf( __( 'Welcome, %s.', 'commonsbooking' ), $current_user->first_name);
         $content .= ' <ul>'; 
+        // translators: $s = bookings page url
         $content .= sprintf( __( '<li><a href="%s">My Bookings</a></li>', 'commonsbooking' ),  $bookings_page_url );
+        // translators: $s = user profile url
         $content .= sprintf( __( '<li><a href="%s">My Profile</a></li>', 'commonsbooking' ),  get_edit_profile_url() );     
+        // translators: $s =  wp logout url
         $content .= sprintf( __( '<li><a href="%s">Log out</a></li>', 'commonsbooking' ),  wp_logout_url() ); 
         $content .= '</ul>';   
 
@@ -72,7 +76,9 @@ class UserWidget extends \WP_Widget {
 
         $content = __('You are not logged in.', 'commonsbooking');
         $content .= "<ul>";
+        // translators: $s = wp login url
         $content .= sprintf(__('<li><a href="%s">Login</a></li>', 'commonsbooking'), wp_login_url()  );
+        // translators: $s = wp registration url
         $content .= sprintf(__('<li><a href="%s">Register</a></li>', 'commonsbooking'), wp_registration_url()  );
         $content .= "</ul>";
     }

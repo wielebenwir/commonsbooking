@@ -15,13 +15,11 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 class Migration
 {
-
     /**
      * @return void
      */
     public static function migrateAll()
     {
-
         //sanitize
         if ($_POST['data'] == 'false') {
             $post_data = "false";
@@ -76,8 +74,6 @@ class Migration
         } else {
                 $tasks = $post_data;
         }
-
-        
 
         $taskIndex = 0;
         $taskLimit = 40;
@@ -134,6 +130,7 @@ class Migration
                     $taskFunctions[$key]['repoFunction']
                 ) {
                     $items = CB1::{$taskFunctions[$key]['repoFunction']}();
+                    $task['count'] = count($items);
 
                     // If there are items to migrate
                     if (count($items)) {
@@ -328,6 +325,8 @@ class Migration
      */
     protected static function savePostData($existingPost, array $postData, array $postMeta)
     {
+        $includeGeoData = array_key_exists('geodata',$_POST) && $_POST['geodata'] == "true";
+
         if ($existingPost instanceof \WP_Post) {
             $updatedPost = array_merge($existingPost->to_array(), $postData);
             $postId = wp_update_post($updatedPost);
@@ -341,6 +340,12 @@ class Migration
                     $key,
                     $value
                 );
+            }
+
+            if(get_post_type($postId) == Location::$postType && $includeGeoData) {
+                $location = new \CommonsBooking\Model\Location($postId);
+                $location->updateGeoLocation();
+                sleep(1);
             }
 
             return true;

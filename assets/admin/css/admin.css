@@ -3543,4 +3543,13 @@
   display: none;
 }
 
+/** Migration Settings */
+/* line 1, ../sass/partials/_migration.scss */
+#migration-in-progress,
+#migration-state,
+#migration-done {
+  margin-top: 1rem;
+  display: none;
+}
+
 /*# sourceMappingURL=admin.css.map */

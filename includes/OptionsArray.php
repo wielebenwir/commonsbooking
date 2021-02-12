@@ -26,13 +26,13 @@ return array(
                             sprintf( commonsbooking_sanitizeHTML( __( 'You are using CommonsBooking Version %s
 
                             <h2>How to start</h2>
-                            <p>To get startet visit our tutorials and documentation on <a href="https://commonsbooking.org/dokumentation">https://commonsbooking.org/dokumentation</a></p>
+                            <p>To get startet visit our tutorials and documentation on <a target="_blank" href="https://commonsbooking.org/dokumentation">https://commonsbooking.org/dokumentation</a></p>
 
                             <h2>Questions or bug reports?</h2>
-                            <p>Ask your questions or send us your bug reports here <a href="https://commonsbooking.org/kontakt/">https://commonsbooking.org/kontakt/</a></p>
+                            <p>Ask your questions or send us your bug reports here <a target="_blank" href="https://commonsbooking.org/kontakt/">https://commonsbooking.org/kontakt/</a></p>
 
                             <h2>Contribute</h2>
-                            The future of this plugin depends on your support. You can support us by make a donation on our website: <a href="https://www.wielebenwir.de/verein/unterstutzen">wielebenwir</a>'
+                            The future of this plugin depends on your support. You can support us by make a donation on our website: <a target="_blank" href="https://www.wielebenwir.de/verein/unterstutzen">wielebenwir</a>'
                             , 'commonsbooking' ) ), COMMONSBOOKING_VERSION ),
                 'fields' => array()
             )
@@ -52,9 +52,9 @@ return array(
            'id' => 'posttypes',
            // tranlsators: %s = admin url options page
            'desc' =>
-                esc_html__(
-                    'Customize names & slugs. You can set an individual slug for items and locations to create individual permalinks. <b>Notice</b>: If the new settings do not work directly (you will get a 404 page error on frontend pages), you must click on the Settings -> Permalinks page after saving these settings to refresh the Wordpress permalink settings.'
-                    , 'commonsbooking' ),
+            commonsbooking_sanitizeHTML( __( 
+                    'Customize names & slugs. You can set an individual slug for items and locations to create individual permalinks. <br><b>Notice</b>: If the new settings do not work directly (you will get a 404 page error on frontend pages), you must click on the Settings -> Permalinks page after saving these settings to refresh the Wordpress permalink settings.'
+                    , 'commonsbooking' ) ),
            'fields' => array(
 //             array(
 //               'name'    => esc_html_e( 'Item singular name', 'commonsbooking' ),
@@ -74,8 +74,8 @@ return array(
                // translators: %s = example url (like website.com/cb-items/)
                'description' =>
                             sprintf ( commonsbooking_sanitizeHTML( __(
-                                'The url for the items detail page. E.g: %s',
-                                'commonsbooking' ) ), network_site_url( '/cb_items/' ) ),
+                                'The slug for article detail page. Type in the slug without slashes. Example: <strong>cb_item</strong> or <strong>article</strong>.  The url for the items detail will be like %s',
+                                'commonsbooking' ) ), network_site_url( '/cb_item/' ) ),
                'type'    => 'text',
                'default' => \CommonsBooking\Wordpress\CustomPostType\Item::$postType,
              ),
@@ -85,8 +85,8 @@ return array(
                // translators: %s = example url (like website.com/cb-locations/)
                'description' =>
                             sprintf ( commonsbooking_sanitizeHTML( __(
-                                'The url for the locations detail page. E.g: %s',
-                                'commonsbooking' ) ), network_site_url('/cb-locations/') ),
+                                'The slug for location detail page. Type in the slug without slashes. Example: <strong>cb_location</strong> or <strong>location</strong>.  The url for the items detail will be like %s',
+                                'commonsbooking' ) ), network_site_url('/cb_location/') ),
                'type'    => 'text',
                'default' => \CommonsBooking\Wordpress\CustomPostType\Location::$postType,
              ),
@@ -96,7 +96,7 @@ return array(
                 // translators: %s = example url (like website.com/cb-locations/)
                 'description' =>
                              sprintf ( commonsbooking_sanitizeHTML( __(
-                                 'The page where you included the [cb_bookings] shortcode. This is used in the Users Widgets Plugin',
+                                 'The page where you included the [cb_bookings] shortcode. This is used in the Users Widget',
                                  'commonsbooking' ) ), network_site_url('/bookings/') ),
                 'type'    => 'select',
                 'options' => \CommonsBooking\Helper\Wordpress::getPageListTitle(),
@@ -119,7 +119,9 @@ return array(
             'bookingcodes' => array(
                 'title' => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
                 'id' => 'bookingcodes',
-                'desc' => '',
+                'desc' => 
+                 commonsbooking_sanitizeHTML( __('Enter the booking codes to be generated in advance for booking types with all-day booking time frames.  Enter booking codes as a comma separated list, e.g.: Code1,Code2,Code3,Code4
+                <br>More information in the documentation: <a href="https://commonsbooking.org/?p=870" target="_blank">Booking Codes</a>' ) ),
                 'fields' => array(
                     array(
                         'name'    => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
@@ -255,7 +257,7 @@ Thanks, the Team.
             'migration' => array(
                 'title'       => esc_html__('Migrate from Commons Booking Version 0.X', 'commonsbooking'),
                 'id'          => 'migration',
-                'desc'        => commonsbooking_sanitizeHTML( __('Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br>Please read the documentation on <a href="https://commonsbooking.org/dokumentation/">https://commonsbooking.org/dokumentation/</a> before you start migration.', 'commonsbooking') ),
+                'desc'        => commonsbooking_sanitizeHTML( __('Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br>Please read the documentation <a target="_blank" href="https://commonsbooking.org/dokumentation/?p=434">How to migrate from version 0.9.x to 2.x.x </a> before you start migration.', 'commonsbooking') ),
                 'fields'      => [
                     array(
                         'name'          => commonsbooking_sanitizeHTML( __('Start Migration', 'commonsbooking') ),
