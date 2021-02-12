@@ -3,7 +3,6 @@
  *
  */
 
-
 .cb-admin-page {
 	.cb-admin-cols {
 		display: flex;
@@ -17,14 +16,14 @@
 		}
 
 		ul {
-			li {
-				margin-top: 15px;
-				@extend .cb-box;
-				.cb-summmary-item {
-					font-weight: bold;
+				li {
+					margin-top: 15px;
+					@extend .cb-box;
+					.cb-summmary-item {
+						font-weight: bold;
+					}
 				}
 			}
-}
+		}
 	}
-}
 }

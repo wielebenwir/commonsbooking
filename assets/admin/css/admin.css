@@ -5,7 +5,7 @@
  */
 /* Global styles */
 /*
- * Framework styles
+ * Global styles
  * 
  * Shared in Front- and Backend
  */
@@ -3287,13 +3287,6 @@
  * Colors: Backgrounds
  * Font sizes
  * Layout variables
- *
- * @package   CommonsBooking2
- * @author Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
 /* Colors: CB Brand */
 /* Colors: Theme */
@@ -3328,7 +3321,7 @@
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000315}}
 .cb-box, .cb-admin-page .cb-admin-cols div ul li {
   background: #f6f6f6;
-  padding: 5px;
+  padding: 2.5px 5px;
   overflow: hidden;
   border-radius: 8px;
   margin-bottom: 10px;
@@ -3480,24 +3473,24 @@
  * Dashboard admin page 
  *
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/admin\/sass\/partials\/_dashboard\.scss}line{font-family:\000038}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/admin\/sass\/partials\/_dashboard\.scss}line{font-family:\000037}}
 .cb-admin-page .cb-admin-cols {
   display: flex;
   flex-direction: row;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/admin\/sass\/partials\/_dashboard\.scss}line{font-family:\0000311}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/admin\/sass\/partials\/_dashboard\.scss}line{font-family:\0000310}}
 .cb-admin-page .cb-admin-cols div {
   margin-right: 15px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/admin\/sass\/partials\/_dashboard\.scss}line{font-family:\0000315}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/admin\/sass\/partials\/_dashboard\.scss}line{font-family:\0000314}}
 .cb-admin-page .cb-admin-cols div h2 {
   padding-top: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/admin\/sass\/partials\/_dashboard\.scss}line{font-family:\0000320}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/admin\/sass\/partials\/_dashboard\.scss}line{font-family:\0000319}}
 .cb-admin-page .cb-admin-cols div ul li {
   margin-top: 15px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/admin\/sass\/partials\/_dashboard\.scss}line{font-family:\0000323}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fleg\/WorkBench\/3\%20DEV\/Apache\/commonsbooking\/wp-content\/plugins\/commonsbooking\/assets\/admin\/sass\/partials\/_dashboard\.scss}line{font-family:\0000322}}
 .cb-admin-page .cb-admin-cols div ul li .cb-summmary-item {
   font-weight: bold;
 }
