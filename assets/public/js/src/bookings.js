@@ -417,25 +417,20 @@ class BookingList {
     _initHeadlineElement(item) {
         var headline = document.createElement('p');
         headline.classList.add('cb-title');
-        //headline.classList.add('cb-item-title');
-
-        //var link = document.createElement('a');
-        //link.href = item.calendarLink;
-        //link.href = item.actions;
         headline.innerHTML = item.item + ' @ ' + item.location;
-        //link.target = '_blank';
-
-        //headline.append(link)
         return headline;
     }
 
     _initContentElement(item) {
         var contentElement = document.createElement('div');
-        //contentElement.className = 'booking-list-element'
-        contentElement.classList.add('infos')
-        contentElement.innerHTML = '<p><span>' + item.startDateFormatted + ' &ndash; </span><span>' + item.endDateFormatted + '</span></p>'
-            + '<p>' + 'User: ' + item.user + '</p>'
-            + '<p>' + ' Status: ' + item.status  + '</p>'
+        contentElement.classList.add('infos');
+        let html = '<p><span>' + item.startDateFormatted + ' &ndash; </span><span>' + item.endDateFormatted + '</span></p>';
+
+        for(const [key, value] of Object.entries(item.content)) {
+            html += '<p>' + key + ': ' + value + '</p>';
+        }
+
+        contentElement.innerHTML = html;
         return contentElement;
 
     }

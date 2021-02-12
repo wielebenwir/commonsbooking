@@ -24,7 +24,7 @@ use CommonsBooking\Wordpress\Options\AdminOptions;
 
 defined('ABSPATH') or die("Thanks for visting");
 
-define('COMMONSBOOKING_VERSION', '2.4');
+define('COMMONSBOOKING_VERSION', '2.4.1');
 define('COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking');
 define('COMMONSBOOKING_MENU_SLUG', COMMONSBOOKING_PLUGIN_SLUG . '-menu');
 define('COMMONSBOOKING_PLUGIN_DIR', plugin_dir_path(__FILE__));
@@ -124,7 +124,7 @@ function commonsbooking_public()
             'cb-scripts-public',
             plugin_dir_url(__FILE__).'assets/public/js/public.js',
             array( 'jquery' ),
-            '1.0.0',
+            time(),
             true
         );
     } else {
@@ -132,7 +132,7 @@ function commonsbooking_public()
             'cb-scripts-public',
             plugin_dir_url(__FILE__).'assets/public/js/public.min.js',
             array( 'jquery' ),
-            '1.0.0',
+            COMMONSBOOKING_VERSION,
             true
         );
     }

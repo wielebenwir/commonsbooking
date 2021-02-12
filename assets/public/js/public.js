@@ -181,8 +181,10 @@ class BookingList {
     }
     _initContentElement(item) {
         var contentElement = document.createElement("div");
-        return contentElement.classList.add("infos"), contentElement.innerHTML = "<p><span>" + item.startDateFormatted + " &ndash; </span><span>" + item.endDateFormatted + "</span></p><p>User: " + item.user + "</p><p> Status: " + item.status + "</p>", 
-        contentElement;
+        contentElement.classList.add("infos");
+        let html = "<p><span>" + item.startDateFormatted + " &ndash; </span><span>" + item.endDateFormatted + "</span></p>";
+        for (const [key, value] of Object.entries(item.content)) html += "<p>" + key + ": " + value + "</p>";
+        return contentElement.innerHTML = html, contentElement;
     }
     _initActionsElement(item) {
         var actionsElement = document.createElement("div");
