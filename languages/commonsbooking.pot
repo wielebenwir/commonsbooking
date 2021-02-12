@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the CommonsBooking plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: CommonsBooking 2.3.2\n"
+"Project-Id-Version: CommonsBooking 2.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-02-12T16:02:45+00:00\n"
+"POT-Creation-Date: 2021-02-12T17:35:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -231,7 +231,7 @@ msgid "Migrate from Commons Booking Version 0.X"
 msgstr ""
 
 #: includes/OptionsArray.php:260
-msgid "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br>Please read the documentation <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/?p=434\">How to migrate from version 0.9.x to 2.x.x </a> before you start migration."
+msgid "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br><span style=\"color:red\">If you have clicked \"Migrate\" before, starting the migration again will overwrite any changes you made to  locations, items, timeframes and bookings</span>.<br>Please read the documentation <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/?p=434\">How to migrate from version 0.9.x to 2.x.x </a> before you start migration."
 msgstr ""
 
 #: includes/OptionsArray.php:263

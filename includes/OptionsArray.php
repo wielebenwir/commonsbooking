@@ -257,7 +257,7 @@ Thanks, the Team.
             'migration' => array(
                 'title'       => esc_html__('Migrate from Commons Booking Version 0.X', 'commonsbooking'),
                 'id'          => 'migration',
-                'desc'        => commonsbooking_sanitizeHTML( __('Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br>Please read the documentation <a target="_blank" href="https://commonsbooking.org/dokumentation/?p=434">How to migrate from version 0.9.x to 2.x.x </a> before you start migration.', 'commonsbooking') ),
+                'desc'        => commonsbooking_sanitizeHTML( __('Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br><span style="color:red">If you have clicked "Migrate" before, starting the migration again will overwrite any changes you made to  locations, items, timeframes and bookings</span>.<br>Please read the documentation <a target="_blank" href="https://commonsbooking.org/dokumentation/?p=434">How to migrate from version 0.9.x to 2.x.x </a> before you start migration.', 'commonsbooking') ),
                 'fields'      => [
                     array(
                         'name'          => commonsbooking_sanitizeHTML( __('Start Migration', 'commonsbooking') ),
