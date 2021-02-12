@@ -26,39 +26,48 @@ class Migration
                     'commonsbooking') . '</strong>';
         }
         echo('
-            <br><br>
             
-            <div id="migration-state" style="display: none;">
-                <strong style="color: red">' . esc_html__('migration in process .. please wait ...', 'commonsbooking') . '</strong><br><br>
-                <span id="locations-count">0</span> ' . esc_html__(' Locations updated/saved', 'commonsbooking') . '<br>
-                <span id="items-count">0</span>' . esc_html__(' Items updated/saved', 'commonsbooking') . '<br>
-                <span id="timeframes-count">0</span>' . esc_html__(' Timeframes updated/saved', 'commonsbooking') . '<br>
-                <span id="bookings-count">0</span>' . esc_html__(' Bookings updated/saved', 'commonsbooking') . '<br>
-                <span id="bookingCodes-count">0</span>' . esc_html__(' Booking Codes updated/saved', 'commonsbooking') . '<br>
+            <div id="migration-state">                
+                <span id="locations-index">0</span>/<span id="locations-count">0</span> ' . esc_html__(' Locations updated/saved', 'commonsbooking') . '<br>
+                <span id="items-index">0</span>/<span id="items-count">0</span>' . esc_html__(' Items updated/saved', 'commonsbooking') . '<br>
+                <span id="timeframes-index">0</span>/<span id="timeframes-count">0</span>' . esc_html__(' Timeframes updated/saved', 'commonsbooking') . '<br>
+                <span id="bookings-index">0</span>/<span id="bookings-count">0</span>' . esc_html__(' Bookings updated/saved', 'commonsbooking') . '<br>
+                <span id="bookingCodes-index">0</span>/<span id="bookingCodes-count">0</span>' . esc_html__(' Booking Codes updated/saved', 'commonsbooking') . '<br>
                 <span id="termsUrl-count">0</span>' . esc_html__(' Terms & Urls updated/saved', 'commonsbooking') . '<br>
-                <span id="taxonomies-count">0</span>' . esc_html__(' Taxonomies updated/saved', 'commonsbooking') . '<br>
+                <span id="taxonomies-index">0</span>/<span id="taxonomies-count">0</span>' . esc_html__(' Taxonomies updated/saved', 'commonsbooking') . '<br>
                 <span id="options-count">0</span>' . esc_html__(' Options updated/saved', 'commonsbooking') . '<br>
             </div>
-            
-            <div id="migration-done" style="display: none;">
-                <br><strong style="color: green">' . esc_html__('Migration finished', 'commonsbooking') . '</strong><br><br>
-            </div>
-            
+            <div id="migration-in-progress">
+                <strong style="color: red">
+                ' . esc_html__('migration in process .. please wait ...', 'commonsbooking') . '
+                </strong>
+            </div>            
+            <div id="migration-done">
+                <strong style="color: green">
+                ' . esc_html__('Migration finished', 'commonsbooking') . '
+                </strong>
+            </div>            
         ');
 
-
-        ?>
-        <br>
-
-        <?php 
         if ($cb1Installed) { 
         ?>
-        <a id="migration-start" class="button button-primary"
-           href="<?php echo esc_url(admin_url('admin.php')); ?>?page=commonsbooking_options_migration&migration=true"> <?php echo esc_html__('Start Migration',
-                'commonsbooking'); ?></a>
-        <?php
-        } // end if cb1installed
-        ?>
+        </div>
+        <div class="cmb-row cmb-type-text">
+            <div class="cmb-td">
+                <input type="checkbox" class="cmb2-option cmb2-list" name="get-geo-locations" id="get-geo-locations" checked>
+                <label for="get-geo-locations"><?php echo esc_html__('Retrieve location geo coordinates.', 'commonsbooking'); ?></label>
+                <p class="cmb2-metabox-description">
+                    <?php echo esc_html__('The process of retrieving geo data decreases migration by 1 second/location.', 'commonsbooking'); ?>
+                </p>
+            </div>
+        </div>
+        <div class="cmb-row cmb-type-text">
+            <a id="migration-start" class="button button-primary" href="#">
+                <?php echo esc_html__('Start Migration', 'commonsbooking'); ?>
+            </a>
+            <?php
+            } // end if cb1installed
+            ?>
         </div>
         <?php
     }

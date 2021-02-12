@@ -3,8 +3,8 @@
     $(function () {
         $('#cmb2-metabox-migration #migration-start').on('click', function (event) {
             event.preventDefault();
-
             $('#migration-state').show();
+            $('#migration-in-progress').show();
 
             const runMigration = (data) => {
                 $.post(
@@ -12,12 +12,14 @@
                     {
                         _ajax_nonce: cb_ajax.nonce,
                         action: "start_migration",
-                        data: data
+                        data: data,
+                        geodata: $('#get-geo-locations').is(':checked')
                     },
                     function (data) {
                         let allComplete = true;
                         $.each(data, function (index, value) {
-                            $('#' + index + '-count').text(value.index);
+                            $('#' + index + '-index').text(value.index);
+                            $('#' + index + '-count').text(value.count);
                             if (value.complete == "0") {
                                 allComplete = false;
                             }
@@ -26,6 +28,7 @@
                         if (!allComplete) {
                             runMigration(data);
                         } else {
+                            $('#migration-in-progress').hide();
                             $('#migration-done').show();
                         }
                     }

@@ -2,17 +2,19 @@
     "use strict";
     $(function() {
         $("#cmb2-metabox-migration #migration-start").on("click", function(event) {
-            event.preventDefault(), $("#migration-state").show();
+            event.preventDefault(), $("#migration-state").show(), $("#migration-in-progress").show();
             const runMigration = data => {
                 $.post(cb_ajax.ajax_url, {
                     _ajax_nonce: cb_ajax.nonce,
                     action: "start_migration",
-                    data: data
+                    data: data,
+                    geodata: $("#get-geo-locations").is(":checked")
                 }, function(data) {
                     let allComplete = !0;
                     $.each(data, function(index, value) {
-                        $("#" + index + "-count").text(value.index), "0" == value.complete && (allComplete = !1);
-                    }), allComplete ? $("#migration-done").show() : runMigration(data);
+                        $("#" + index + "-index").text(value.index), $("#" + index + "-count").text(value.count), 
+                        "0" == value.complete && (allComplete = !1);
+                    }), allComplete ? ($("#migration-in-progress").hide(), $("#migration-done").show()) : runMigration(data);
                 });
             };
             runMigration(!1);
