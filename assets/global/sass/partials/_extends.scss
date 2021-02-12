@@ -73,7 +73,7 @@
 	border: none !important; /* TwentyFifteen theme fix */
 	text-decoration: none !important;
 	word-break: normal !important; /* TwentyTwenty theme fix */
-
+	white-space: nowrap;
 	color: $color-white;
 	padding: $spacer $spacer-big;
 	font-weight: bold;

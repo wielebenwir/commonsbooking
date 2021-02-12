@@ -1,0 +1,43 @@
+/**
+ * Notices
+ *
+ * Block-Level and inline
+ *
+ */
+
+
+
+.cb-wrapper {	
+	.cb-notice {
+		@extend .cb-box;
+		margin-bottom: $spacer-big;
+		font-size: $font-size-big;
+		vertical-align: middle;
+		font-weight: bold;
+		position: relative;
+		background: $color-notice;
+		
+		/* Post status */
+		&.cb-status-unconfirmed {
+		  background: $color-notice;
+		}    
+		&.cb-status-confirmed {
+		  background: $color-success;
+		}    
+		&.cb-status-cancelled {
+		  background: $color-success;
+		}    
+		&.error {
+		  background: $color-error;
+		}
+	  }
+	 .cb-notice-inline {
+		 @extend .cb-pill;
+		 padding: $spacer-small;
+		 display: inline-block;
+		 
+		&.cb-status-not-available {
+			color: $color-gray-silver;
+		}
+	 }
+}

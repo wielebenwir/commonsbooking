@@ -10,8 +10,7 @@
 .cb-wrapper {
 
   .cb-action {
-    @extend .cb-box;
-    
+
     text-align: right;
     
     input {
@@ -20,11 +19,10 @@
     }
     
     form {
-      &#cb-booking-form-set-cancelled { // cancel OR delete button
+      &#cb-booking-form-set-canceled { // cancel OR delete button
         input {
                 background: transparent;
-                color: $color-gray-silver;
-                
+                color: $color-warning;            
             }      
         }      
       &#cb-booking-form-set-confirmed { // confirm button
@@ -63,29 +61,6 @@
           // @extend .cb-big;
         }
       }
-    }
-  }
-  .cb-notice {
-    @extend .cb-box;
-    margin-bottom: $spacer-big;
-    font-size: $font-size-big;
-    vertical-align: middle;
-    font-weight: bold;
-    position: relative;
-    background: $color-notice;
-    
-    /* Post status */
-    &.cb-status-unconfirmed {
-      background: $color-notice;
-    }    
-    &.cb-status-confirmed {
-      background: $color-success;
-    }    
-    &.cb-status-cancelled {
-      background: $color-success;
-    }    
-    &.error {
-      background: $color-error;
     }
   }
 }
