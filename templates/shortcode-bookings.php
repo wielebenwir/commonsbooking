@@ -9,7 +9,12 @@
  */
 
 global $templateData;
-$noResultText = esc_html__("No bookings available.", "commonsbooking");
+if ( !is_user_logged_in() )  {
+    $noResultText = sprintf( commonsbooking_sanitizeHTML(  __('Please <a href="%s"> login in </a> to see your bookings.', 'commonsbooking') ), wp_login_url() );
+} else { 
+    $noResultText = commonsbooking_sanitizeHTML(  __("No bookings available.", "commonsbooking") );
+}
+
 $response = '';
 
 if ($templateData && $templateData['total'] > 0) {
