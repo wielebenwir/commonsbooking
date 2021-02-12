@@ -5,7 +5,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar, 
 Requires at least: 5.2
 Tested up to: 5.6
-Stable Tag: 2.3.2
+Stable Tag: 2.4
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -82,7 +82,7 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 
 == Changelog ==
 
-2.4.0 (xxxx.2021)
+= 2.4.0 (12.02.2021) = 
 * NEW: Booking list for frontend users now available (my bookings)
 * NEW: Booking Widget now available (Widget display links to my bookings, login, logout) 
 * MODIFIED: Permissions changed so that only administrators can assign CBManagers to locations and items. #478
@@ -94,7 +94,8 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 * ENHANCED: Added internal Class for better admin message management
 * FIXED: issue with filtered item list with role CB Manager (pagination based on inital filter)
 * FIXED: minor issue: Headers already sent error on restore default options
-* ADDED: function to remove deprecated user roles from former commonsbooking versions. affected users will get the role 'subsriber'
+* ADDED: function to remove deprecated user roles from former commonsbooking versions. affected users will get the role 'subscriber'
+* FIXED: migration issues when using elementor are solved. all postmeta fields are imported
 
 = 2.3.2 (18.01.2021) =
 * FIXED: map error due to missing option value
