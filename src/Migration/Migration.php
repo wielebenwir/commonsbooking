@@ -442,12 +442,6 @@ class Migration
             'post_status' => 'publish'
         ];
 
-        // Get all post meta;
-        $postMeta = self::getFlatPostMeta(get_post_meta($timeframe->ID));
-
-        // Remove no needed fields
-        $postMeta = self::removeArrayItemsByKeys($postMeta, self::$ignoredMetaFields);
-
         // CB2 <-> CB1
         $postMeta[COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID'] = $timeframe['id'];
         $postMeta['repetition-start'] = strtotime($timeframe['date_start']);
