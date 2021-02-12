@@ -3361,14 +3361,14 @@
 }
 
 /* line 32, ../../global/sass/partials/_extends.scss */
-.cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months, .cb-map-filters .cb-map-category-filter .cb-map-filter-group fieldset {
+.cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months {
   background: #FFF;
   padding: 5px;
   border-radius: 8px;
 }
 @media (min-width: 37.5em) {
   /* line 32, ../../global/sass/partials/_extends.scss */
-  .cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months, .cb-map-filters .cb-map-category-filter .cb-map-filter-group fieldset {
+  .cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months {
     padding: 10px;
   }
 }
@@ -3454,14 +3454,22 @@
   background-color: #c4c4c4;
   color: white;
 }
+/* line 123, ../../global/sass/partials/_extends.scss */
+.cb-button.no-right-radius, .cb-button-container a.no-right-radius, .cb-wrapper .cb-action input.no-right-radius, .cb-wrapper #booking-form input.no-right-radius, .cb-map-filters .cb-map-button-wrapper button.no-right-radius {
+  border-radius: 8px 0;
+}
+/* line 126, ../../global/sass/partials/_extends.scss */
+.cb-button.no-left-radius, .cb-button-container a.no-left-radius, .cb-wrapper .cb-action input.no-left-radius, .cb-wrapper #booking-form input.no-left-radius, .cb-map-filters .cb-map-button-wrapper button.no-left-radius {
+  border-radius: 0 8px;
+}
 
-/* line 127, ../../global/sass/partials/_extends.scss */
+/* line 134, ../../global/sass/partials/_extends.scss */
 .cb-pill {
   border-radius: 8px;
   padding: 0;
   margin: 0;
 }
-/* line 131, ../../global/sass/partials/_extends.scss */
+/* line 138, ../../global/sass/partials/_extends.scss */
 .cb-pill a {
   text-decoration: none;
   color: #FFF;
@@ -3563,7 +3571,43 @@
   }
 }
 
-/* line 53, ../sass/partials/_layouts.scss */
+/* line 55, ../sass/partials/_layouts.scss */
+.cb-col-50-50-filter > div, .cb-map-filters .cb-map-availability-filter .cb-map-filter-group > div,
+.cb-map-filters .cb-map-distance-filter .cb-map-filter-group > div {
+  margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+/* line 62, ../sass/partials/_layouts.scss */
+.cb-col-50-50-filter > div label, .cb-map-filters .cb-map-availability-filter .cb-map-filter-group > div label,
+.cb-map-filters .cb-map-distance-filter .cb-map-filter-group > div label {
+  flex: 0 0 30%;
+}
+/* line 65, ../sass/partials/_layouts.scss */
+.cb-col-50-50-filter > div input, .cb-map-filters .cb-map-availability-filter .cb-map-filter-group > div input,
+.cb-map-filters .cb-map-distance-filter .cb-map-filter-group > div input {
+  flex: 0 1 50%;
+}
+@media (min-width: 37.5em) {
+  /* line 54, ../sass/partials/_layouts.scss */
+  .cb-col-50-50-filter, .cb-map-filters .cb-map-availability-filter .cb-map-filter-group,
+  .cb-map-filters .cb-map-distance-filter .cb-map-filter-group {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  /* line 79, ../sass/partials/_layouts.scss */
+  .cb-col-50-50-filter > div, .cb-map-filters .cb-map-availability-filter .cb-map-filter-group > div,
+  .cb-map-filters .cb-map-distance-filter .cb-map-filter-group > div {
+    width: 50%;
+  }
+}
+
+/* line 85, ../sass/partials/_layouts.scss */
 .cb-col-auto, .cb-wrapper .template-timeframe-withitem,
 .cb-wrapper .template-timeframe-withlocation {
   /* 2 fixed cols, 1 flexible in the middle */
@@ -3571,7 +3615,7 @@
   flex-direction: column;
 }
 @media (min-width: 37.5em) {
-  /* line 53, ../sass/partials/_layouts.scss */
+  /* line 85, ../sass/partials/_layouts.scss */
   .cb-col-auto, .cb-wrapper .template-timeframe-withitem,
   .cb-wrapper .template-timeframe-withlocation {
     display: flex;
@@ -3580,24 +3624,24 @@
     flex-wrap: nowrap;
     align-items: center;
   }
-  /* line 64, ../sass/partials/_layouts.scss */
+  /* line 96, ../sass/partials/_layouts.scss */
   .cb-col-auto > div.cb-thumbnail, .cb-wrapper .template-timeframe-withitem > div.cb-thumbnail,
   .cb-wrapper .template-timeframe-withlocation > div.cb-thumbnail {
     flex: 0 0 20%;
   }
-  /* line 68, ../sass/partials/_layouts.scss */
+  /* line 100, ../sass/partials/_layouts.scss */
   .cb-col-auto > div.cb-list-info, .cb-wrapper .template-timeframe-withitem > div.cb-list-info,
   .cb-wrapper .template-timeframe-withlocation > div.cb-list-info {
     flex: 1 0 50%;
     border: none;
     padding: 0 15px;
   }
-  /* line 73, ../sass/partials/_layouts.scss */
+  /* line 105, ../sass/partials/_layouts.scss */
   .cb-col-auto > div.cb-action, .cb-wrapper .template-timeframe-withitem > div.cb-action,
   .cb-wrapper .template-timeframe-withlocation > div.cb-action {
     flex: 1 0 30%;
   }
-  /* line 75, ../sass/partials/_layouts.scss */
+  /* line 107, ../sass/partials/_layouts.scss */
   .cb-col-auto > div.cb-action a, .cb-wrapper .template-timeframe-withitem > div.cb-action a,
   .cb-wrapper .template-timeframe-withlocation > div.cb-action a {
     width: auto;
@@ -3605,7 +3649,7 @@
 }
 
 @media (min-width: 37.5em) {
-  /* line 81, ../sass/partials/_layouts.scss */
+  /* line 113, ../sass/partials/_layouts.scss */
   .cb-col-20-50-30 {
     display: flex;
     flex-direction: row;
@@ -3732,59 +3776,94 @@
  * @link      http://www.wielebenwir.de
  * @copyright 2015 wielebenwir
  */
-/* line 16, ../sass/partials/_forms.scss */
+/* line 13, ../sass/partials/_forms.scss */
+.cb-wrapper {
+  /* General form elements */
+}
+/* line 18, ../sass/partials/_forms.scss */
+.cb-wrapper input[type="text"],
+.cb-wrapper input[type="password"],
+.cb-wrapper input[type="email"],
+.cb-wrapper input[type="url"],
+.cb-wrapper input[type="date"],
+.cb-wrapper input[type="month"],
+.cb-wrapper input[type="time"],
+.cb-wrapper input[type="datetime"],
+.cb-wrapper input[type="datetime-local"],
+.cb-wrapper input[type="week"],
+.cb-wrapper input[type="number"],
+.cb-wrapper input[type="search"],
+.cb-wrapper input[type="tel"],
+.cb-wrapper input[type="color"],
+.cb-wrapper textarea,
+.cb-wrapper select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: #FFF;
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 0.1rem;
+  border-color: #506CA9;
+  box-shadow: none;
+  display: block;
+  margin: 0;
+  font-size: 14px;
+  max-width: 100%;
+  padding: 10px 10px;
+}
+/* line 51, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-action {
   text-align: right;
 }
-/* line 21, ../sass/partials/_forms.scss */
+/* line 56, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-action input {
   float: right;
 }
-/* line 28, ../sass/partials/_forms.scss */
+/* line 63, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-action form#cb-booking-form-set-cancelled input {
   background: transparent;
   color: #9D9F9D;
 }
-/* line 35, ../sass/partials/_forms.scss */
+/* line 70, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-action form#cb-booking-form-set-confirmed input {
   margin-left: 15px;
 }
-/* line 41, ../sass/partials/_forms.scss */
+/* line 76, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form-container,
 .cb-wrapper #booking-form-container div {
   border-bottom: 0;
 }
-/* line 46, ../sass/partials/_forms.scss */
+/* line 81, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form {
   width: 100%;
   /* do not extend litepicker width */
 }
-/* line 48, ../sass/partials/_forms.scss */
+/* line 83, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form input {
   float: right;
 }
-/* line 52, ../sass/partials/_forms.scss */
+/* line 87, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container {
   display: block;
   margin-top: 10px;
 }
-/* line 55, ../sass/partials/_forms.scss */
+/* line 90, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div {
   margin-bottom: 10px;
   text-align: left;
   display: block;
   overflow: hidden;
 }
-/* line 61, ../sass/partials/_forms.scss */
+/* line 96, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div span, .cb-wrapper #booking-form .time-selection-container > div label, .cb-wrapper #booking-form .time-selection-container > div select {
   width: 33%;
   float: left;
 }
-/* line 65, ../sass/partials/_forms.scss */
+/* line 100, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div label {
   font-weight: bold;
 }
-/* line 72, ../sass/partials/_forms.scss */
+/* line 107, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice {
   margin-bottom: 15px;
   font-size: 18px;
@@ -3794,19 +3873,19 @@
   background: #FFF9C5;
   /* Post status */
 }
-/* line 82, ../sass/partials/_forms.scss */
+/* line 117, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-unconfirmed {
   background: #FFF9C5;
 }
-/* line 85, ../sass/partials/_forms.scss */
+/* line 120, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-confirmed {
   background: #74ce3c;
 }
-/* line 88, ../sass/partials/_forms.scss */
+/* line 123, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-cancelled {
   background: #74ce3c;
 }
-/* line 91, ../sass/partials/_forms.scss */
+/* line 126, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.error {
   background: #d5425c;
 }
@@ -4363,9 +4442,9 @@
 /* line 123, ../sass/partials/_map.scss */
 .cb-map-filters {
   margin-top: 10px;
-  /* all filter groups */
-  /* filter groups availability & distance */
-  /* filter groups availability & distance */
+  /* layout for filter  availability & distance */
+  /* styles for specific filters */
+  /* layout for filter category */
 }
 /* line 128, ../sass/partials/_map.scss */
 .cb-map-filters input[type="checkbox"] {
@@ -4377,96 +4456,79 @@
   margin: 0 5px;
 }
 /* line 136, ../sass/partials/_map.scss */
+.cb-map-filters input[type="number"] {
+  max-width: 100px;
+}
+/* line 140, ../sass/partials/_map.scss */
 .cb-map-filters select {
   /* is inline */
   margin: 0 5px;
 }
-/* line 142, ../sass/partials/_map.scss */
-.cb-map-filters .cb-map-button-wrapper button {
-  float: right;
-  margin: 0 10px 10px 0;
+/* line 144, ../sass/partials/_map.scss */
+.cb-map-filters button {
+  padding: 5px;
 }
-/* line 151, ../sass/partials/_map.scss */
+/* line 149, ../sass/partials/_map.scss */
+.cb-map-filters .cb-filter-options > div {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #444;
+}
+/* line 156, ../sass/partials/_map.scss */
 .cb-map-filters .cb-map-filter-group-label {
   color: #506CA9;
   margin-bottom: 5px;
 }
-/* line 157, ../sass/partials/_map.scss */
-.cb-map-filters .cb-filter-options > div {
-  border-bottom: 1px solid #ffffff;
-  padding: 0 0 10px 0;
-  margin-bottom: 10px;
-}
-/* line 161, ../sass/partials/_map.scss */
-.cb-map-filters .cb-filter-options > div:last-of-type {
-  border-bottom: none;
-}
-/* line 169, ../sass/partials/_map.scss */
-.cb-map-filters .cb-map-filter-group input {
-  border: 1px solid #9D9F9D;
+/* line 173, ../sass/partials/_map.scss */
+.cb-map-filters .cb-map-distance-filter .cb-map-filter-input-group {
+  background: #506CA9;
   border-radius: 8px;
-  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
-/* line 176, ../sass/partials/_map.scss */
-.cb-map-filters .cb-map-filter-group label {
-  margin: 0 5px 0 0;
+/* line 179, ../sass/partials/_map.scss */
+.cb-map-filters .cb-map-distance-filter .cb-map-filter-input-group input {
+  flex: 1 1 100% !important;
+  /* overwrite layout */
 }
-@media screen and (max-width: 600px) {
-  /* line 181, ../sass/partials/_map.scss */
-  .cb-map-filters .cb-map-filter-group label {
-    width: 100%;
-  }
-}
-/* line 186, ../sass/partials/_map.scss */
-.cb-map-filters .cb-map-filter-group button.undo-geo-search, .cb-map-filters .cb-map-filter-group button.geo-search {
+/* line 182, ../sass/partials/_map.scss */
+.cb-map-filters .cb-map-distance-filter .cb-map-filter-input-group button.undo-geo-search, .cb-map-filters .cb-map-distance-filter .cb-map-filter-input-group button.geo-search {
   background: transparent;
-  color: #000;
+  color: #FFF;
 }
-/* line 200, ../sass/partials/_map.scss */
-.cb-map-filters .cb-map-availability-filter .cb-map-filter-group input,
-.cb-map-filters .cb-map-distance-filter .cb-map-filter-group input {
-  width: 95%;
-}
-@media (min-width: 37.5em) {
-  /* line 199, ../sass/partials/_map.scss */
-  .cb-map-filters .cb-map-availability-filter .cb-map-filter-group,
-  .cb-map-filters .cb-map-distance-filter .cb-map-filter-group {
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: row;
-    align-items: center;
-  }
-  /* line 209, ../sass/partials/_map.scss */
-  .cb-map-filters .cb-map-availability-filter .cb-map-filter-group input,
-  .cb-map-filters .cb-map-distance-filter .cb-map-filter-group input {
-    width: auto;
-    margin-bottom: 0;
-  }
-}
-/* line 218, ../sass/partials/_map.scss */
+/* line 191, ../sass/partials/_map.scss */
 .cb-map-filters .cb-map-category-filter .cb-map-filter-group {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
-/* line 222, ../sass/partials/_map.scss */
+/* line 196, ../sass/partials/_map.scss */
 .cb-map-filters .cb-map-category-filter .cb-map-filter-group fieldset {
-  flex-grow: 1;
+  flex: 1 0 50%;
   border: none;
-  margin: 0 10px;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
 }
-/* line 228, ../sass/partials/_map.scss */
+/* line 203, ../sass/partials/_map.scss */
 .cb-map-filters .cb-map-category-filter .cb-map-filter-group fieldset .cb-fieldgroup-row {
   display: inline-block;
 }
-/* line 232, ../sass/partials/_map.scss */
+/* line 207, ../sass/partials/_map.scss */
 .cb-map-filters .cb-map-category-filter .cb-map-filter-group fieldset legend {
   margin: 0;
+  padding: 0;
   font-weight: normal;
 }
-/* line 236, ../sass/partials/_map.scss */
+/* line 212, ../sass/partials/_map.scss */
 .cb-map-filters .cb-map-category-filter .cb-map-filter-group fieldset label {
   margin-right: 15px;
   color: #506CA9;
+}
+/* line 221, ../sass/partials/_map.scss */
+.cb-map-filters .cb-map-button-wrapper {
+  text-align: right;
 }
 
 /* Booking list styles */

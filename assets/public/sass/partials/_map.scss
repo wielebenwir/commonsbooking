@@ -132,21 +132,26 @@
 	input[type="date"], input[type="number"] { /* is inline */ 
 		margin: 0 $spacer-small;
 	}
-	  
+	
+	 input[type="number"] { 
+		max-width: 100px;
+	}
+	
 	 select { /* is inline */ 
 		margin: 0 $spacer-small;
 	}
 	
-	.cb-map-button-wrapper {
-		
-		button {		
-			@extend .cb-button;
-			float: right;
-			margin: 0 $spacer $spacer 0;
-			}
-
+	button {
+		padding: $spacer-small;
 	}
-
+	
+	.cb-filter-options {
+		> div {
+			margin-bottom: $spacer;
+			padding-bottom: $spacer;
+			border-bottom: 1px solid $color-gray-dark;
+		}
+	}
 
 	.cb-map-filter-group-label {
 		@extend .cb-big;
@@ -154,76 +159,46 @@
 		margin-bottom: $spacer-small;
 	}
 	
-	.cb-filter-options > div { // the individual filters rows: distance, availability, category
-		border-bottom: 1px solid $color-bg-alt;
-		padding: 0 0 $spacer 0;
-		margin-bottom: $spacer;
-		&:last-of-type {
-			border-bottom: none;
-		}
-	}
-	
-	/* all filter groups */
-	.cb-map-filter-group { 
-				
-		input {
-			// width: 100%;
-			border: 1px solid $color-gray-silver;
-			border-radius: $radius;
-			margin-bottom: $spacer-small;
-		}
-
-		label {
-			margin: 0 $spacer-small 0 0;
-		}
 		
-		@media screen and (max-width: 600px) {
-		   label {
-			width: 100%;
-		  }
-		}
-
-		button.undo-geo-search, button.geo-search {
-			background: transparent;
-			color: $color-black;
-		}
-	}
-	
-	.cb-map-button-wrapper {
-		
-	}
-	
-	/* filter groups availability & distance */
+	/* layout for filter  availability & distance */
 	.cb-map-availability-filter,
 	.cb-map-distance-filter {
 		.cb-map-filter-group {
-			input {
-				width: 95%;
+			@extend .cb-col-50-50-filter;
 			}
-			@include breakpoint(phablet) {
-				display: flex;
-				justify-content: flex-start;
-				flex-direction: row;
-				align-items: center;
-				
-				input {
-					width: auto;
-					margin-bottom: 0;
-				}
+	}
+	
+	/* styles for specific filters */
+	.cb-map-distance-filter {
+		.cb-map-filter-input-group {
+			background: $color-blue-dark;
+			border-radius: $radius;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			input {
+				flex: 1 1 100% !important; /* overwrite layout */
+			}
+			button.undo-geo-search, button.geo-search {
+				background: transparent;
+				color: $color-white;
 			}
 		}
 	}
-	/* filter groups availability & distance */
+	
+	/* layout for filter category */
 	.cb-map-category-filter{
 		.cb-map-filter-group{		
 			display:flex;
 			flex-wrap: wrap;
+			justify-content: space-between;
 			
 			fieldset { // category filter
-				@extend .cb-box-inner;
-				flex-grow: 1;
+				flex: 1 0 50%;
 				border: none;
-				margin: 0 $spacer;
+				margin: 0;
+				padding: 0;
+				margin-bottom: $spacer;
 				
 				.cb-fieldgroup-row {
 					display: inline-block;
@@ -231,6 +206,7 @@
 			
 				legend {
 					margin: 0;
+					padding: 0;
 					font-weight: normal;
 				}
 				label {
@@ -239,6 +215,13 @@
 				}
 	
 			}
+		}
+	}
+	
+	.cb-map-button-wrapper {
+		text-align: right;
+		button {
+			@extend .cb-button;
 		}
 	}
 }

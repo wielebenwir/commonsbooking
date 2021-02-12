@@ -119,6 +119,13 @@
 		background-color: lighten($color-gray-dark, 50);
 		color: lighten($color-gray-dark, 80);
 	}
+	
+	&.no-right-radius {
+		border-radius: $radius 0 ;
+	}	
+	&.no-left-radius {
+		border-radius: 0  $radius;
+	}
 }
 
 .cb-button-container a {

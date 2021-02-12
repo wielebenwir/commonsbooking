@@ -3454,14 +3454,22 @@
   background-color: #c4c4c4;
   color: white;
 }
+/* line 123, ../../global/sass/partials/_extends.scss */
+.cb-button.no-right-radius, .cb-button-container a.no-right-radius {
+  border-radius: 8px 0;
+}
+/* line 126, ../../global/sass/partials/_extends.scss */
+.cb-button.no-left-radius, .cb-button-container a.no-left-radius {
+  border-radius: 0 8px;
+}
 
-/* line 127, ../../global/sass/partials/_extends.scss */
+/* line 134, ../../global/sass/partials/_extends.scss */
 .cb-pill {
   border-radius: 8px;
   padding: 0;
   margin: 0;
 }
-/* line 131, ../../global/sass/partials/_extends.scss */
+/* line 138, ../../global/sass/partials/_extends.scss */
 .cb-pill a {
   text-decoration: none;
   color: #FFF;

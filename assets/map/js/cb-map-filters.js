@@ -14,7 +14,7 @@ function CB_Map_Filters($, cb_map) {
   this.$form = null;
 
   this.init = function($) {
-    var $filter_container = $('<div class="cb-map-filters"></div>');
+    var $filter_container = $('<div class="cb-map-filters cb-wrapper"></div>');
 
     this.show_filters.location_distance = cb_map.settings.show_location_distance_filter;
     this.show_filters.item_availability =  cb_map.settings.show_item_availability_filter;
@@ -216,9 +216,13 @@ function CB_Map_Filters($, cb_map) {
     var $geo_search_button = $('<button class="geo-search no-left-radius"><span class="dashicons dashicons-location-alt"></span></button>');
     $geo_search_input_group.append($geo_search_button);
     $wrapper.append($geo_search_input_group);
+    
+    var $cb_map_distance_group = $('<div class="cb-map-filter-distance-group"></div>');
+    
     var $distance_input = $('<input name="max_distance" class="cb-map-distance" type="number" min="0" value="2.5" step="0.25"></input>');
-    $wrapper.append($distance_input);
-    $wrapper.append('<label>km</label>');
+    $cb_map_distance_group.append($distance_input);
+    $cb_map_distance_group.append('<label>km</label>');
+    $wrapper.append($cb_map_distance_group);
 
     $undo_geo_search_button.click(function(event) {
       event.preventDefault();
@@ -258,14 +262,25 @@ function CB_Map_Filters($, cb_map) {
       var show_value = d == 0 ? '-' : d;
       $day_count_select.append('<option value="' + d + '">' + show_value + '</option>')
     }
-
-    $wrapper.append('<label>' + cb_map.translation['FROM'] + '</label>');
-    $wrapper.append($date_start_input);
-    $wrapper.append('<label>' + cb_map.translation['UNTIL'] + '</label>');
-    $wrapper.append($date_end_input);
-    $wrapper.append('<label>' + cb_map.translation['AT_LEAST'] + '</label>');
-    $wrapper.append($day_count_select);
-    $wrapper.append('<label>' + cb_map.translation['DAYS'] + '</label>');
+    
+    
+    var $wrapper_from = $('<div class="date-col-from"></div>');
+    $wrapper_from.append('<label>' + cb_map.translation['FROM'] + '</label>');
+    $wrapper_from.append($date_start_input);
+    
+    var $wrapper_until = $('<div class="date-col-until"></div>');
+    $wrapper_until.append('<label>' + cb_map.translation['UNTIL'] + '</label>');
+    $wrapper_until.append($date_end_input);  
+    
+    var $wrapper_atleast = $('<div class="date-col-atleast"></div>');
+    $wrapper_atleast.append('<label>' + cb_map.translation['AT_LEAST'] + '</label>');
+    $wrapper_atleast.append($day_count_select);
+    $wrapper_atleast.append('<label>' + cb_map.translation['DAYS'] + '</label>');
+    
+   $wrapper.append( $wrapper_from);    
+   $wrapper.append( $wrapper_until);    
+   $wrapper.append( $wrapper_atleast);    
+  
 
     $filter_options.append($container);
   },

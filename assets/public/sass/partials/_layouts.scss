@@ -50,6 +50,38 @@
 	}
 }
 
+
+.cb-col-50-50-filter {
+	> div {
+		margin-bottom: $spacer;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		flex-wrap: nowrap;
+		
+		label {
+			flex: 0 0 30%;
+		}
+		input {
+			flex: 0 1 50%;
+		}
+	}
+
+	@include breakpoint(phablet) {
+		
+		display: flex;
+		justify-content: space-between;
+		flex-direction: row;
+		align-items: center;
+		
+		flex-wrap: wrap;
+		
+		> div {
+			width: 50%;
+		}	
+	}
+}
+
 .cb-col-auto { /* 2 fixed cols, 1 flexible in the middle */
 	
 	display: flex;
