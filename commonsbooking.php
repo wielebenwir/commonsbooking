@@ -44,7 +44,7 @@ $cb_db_version = '1.0';
 
 function commonsbooking_admin()
 {
-    wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__).'assets/admin/css/admin.css');
+    wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__).'assets/admin/css/admin.css', array(), COMMONSBOOKING_VERSION);
     wp_enqueue_script('cb-scripts-admin', plugin_dir_url(__FILE__).'assets/admin/js/admin.js', array());
 
     wp_localize_script(
@@ -64,7 +64,7 @@ function commonsbooking_public()
 
     // Template specific styles
     $template = wp_get_theme()->template;
-    wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/themes/'.$template.'.css');
+    wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/themes/'.$template.'.css', array(), COMMONSBOOKING_VERSION);
 
     wp_enqueue_script('jquery');
     wp_enqueue_script('jquery-ui-datepicker', array('jquery'));
@@ -78,13 +78,13 @@ function commonsbooking_public()
 
     wp_enqueue_style(
         'cb-styles-vendor',
-        plugin_dir_url(__FILE__) . 'assets/global/css/vendor.css'
+        plugin_dir_url(__FILE__) . 'assets/global/css/vendor.css', array(), COMMONSBOOKING_VERSION
     );
 
     // Daterangepicker
     wp_enqueue_style(
         'cb-styles-daterangepicker',
-        plugin_dir_url(__FILE__) . 'assets/public/css/themes/daterangepicker/daterangepicker.css'
+        plugin_dir_url(__FILE__) . 'assets/public/css/themes/daterangepicker/daterangepicker.css', array(), COMMONSBOOKING_VERSION
     );
 
     wp_enqueue_script(
@@ -97,7 +97,7 @@ function commonsbooking_public()
     // Select 2
     wp_enqueue_style(
         'cb-styles-select2',
-        plugin_dir_url(__FILE__) . 'assets/public/css/themes/select2/select2.min.css'
+        plugin_dir_url(__FILE__) . 'assets/public/css/themes/select2/select2.min.css', array(), COMMONSBOOKING_VERSION
     );
 
     wp_enqueue_script(
