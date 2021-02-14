@@ -438,7 +438,7 @@ class BookingList {
 
         let html = '';
         for(const [key, contentItem] of Object.entries(item.content)) {
-            html += '<span><b>' + contentItem.label + '</b>: ' + contentItem.value + '</span>';
+            html += '<span>' + contentItem.label + ': ' + contentItem.value + '</span>';
         }
         html += '';
         contentElement.innerHTML = html;

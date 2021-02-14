@@ -96,8 +96,7 @@ class Booking extends View
 //                if (commonsbooking_isCurrentUserAdmin()) {
 //                    $editLink = get_edit_post_link($booking->ID);
 //                }
-                $actions = '<a class="cb-button" href="'.$editLink.'">'.__('Booking',
-                        COMMONSBOOKING_PLUGIN_SLUG).'</a>';
+                $actions = '<a class="cb-button" href="'.$editLink.'">'. commonsbooking_sanitizeHTML( __('Details', 'commonsbooking') ).'</a>';
 
                 // Prepare row data
                 $rowData = [
@@ -113,12 +112,12 @@ class Booking extends View
                     "calendarLink" => add_query_arg('item', $booking->getItem()->ID, get_permalink($booking->getLocation()->ID)),
                     "content" => [
                         'user' => [
-                            'label' => __('User', 'commonsbooking'),
-                            'value' => $userInfo->user_login
+                            'label' => commonsbooking_sanitizeHTML( __('User', 'commonsbooking') ),
+                            'value' => $userInfo->first_name . ' ' . $userInfo->last_name .' (' . $userInfo->user_login . ')',
                         ],
                         'status' => [
-                            'label' => __('Status', 'commonsbooking'),
-                            'value' => __($booking->post_status, 'commonsbooking')
+                            'label' => commonsbooking_sanitizeHTML( __('Status', 'commonsbooking') ),
+                            'value' => $booking->getBookingStateLabel(),
                         ]
                     ]
                 ];

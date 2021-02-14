@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2021-02-12T17:35:10+00:00\n"
-"PO-Revision-Date: 2021-02-12 18:38+0100\n"
+"POT-Creation-Date: 2021-02-14T12:36:22+00:00\n"
+"PO-Revision-Date: 2021-02-14 13:37+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -492,47 +492,59 @@ msgstr ""
 "E-Mail konnte nicht gesendet werden, da keine E-Mail-Vorlage verfügbar war. "
 "Optionen überprüfen -> Vorlagen"
 
+#: src/Model/Booking.php:34
+msgid "canceled"
+msgstr "storniert"
+
+#: src/Model/Booking.php:37
+msgid "confirmed"
+msgstr "bestätigt"
+
+#: src/Model/Booking.php:40
+msgid "unconfirmed"
+msgstr "unbestätigt"
+
 #. translators: %s = Booking code
-#: src/Model/Booking.php:72
+#: src/Model/Booking.php:94
 msgid "Your booking code is: %s"
 msgstr "Dein Buchungscode lautet: %s"
 
 #. translators: %s = date in wordpress defined format
-#: src/Model/Booking.php:186
+#: src/Model/Booking.php:208
 msgid " on %s "
 msgstr " am %s "
 
 #. translators: %1 = startdate, %2 = enddate in wordpress defined format
-#: src/Model/Booking.php:189
+#: src/Model/Booking.php:211
 msgid " from %1$s until %2$s "
 msgstr " von %1$s bis %2$s "
 
-#: src/Model/Booking.php:293
+#: src/Model/Booking.php:315
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/Model/Booking.php:299
+#: src/Model/Booking.php:321
 msgid "Confirm Booking"
 msgstr "Buchung bestätigen"
 
-#: src/Model/Booking.php:305
+#: src/Model/Booking.php:327
 msgid "Cancel Booking"
 msgstr "Buchung stornieren"
 
-#: src/Model/Booking.php:325
+#: src/Model/Booking.php:347
 msgid "Please check your booking and click confirm booking"
 msgstr "Bitte überprüfe die Buchung und klicke auf „Buchung bestätigen“"
 
-#: src/Model/Booking.php:328
+#: src/Model/Booking.php:350
 msgid "Your booking is confirmed. A confirmation mail has been sent to you."
 msgstr ""
 "Deine Buchung wurde bestätigt. Du hast eine Bestätigungs-E-Mail erhalten."
 
-#: src/Model/Booking.php:333
+#: src/Model/Booking.php:355
 msgid "Your booking has been canceled."
 msgstr "Deine Buchung wurde storniert."
 
-#: src/Model/Booking.php:350
+#: src/Model/Booking.php:372
 msgid "Link to your booking"
 msgstr "Link zu deiner Buchung"
 
@@ -696,6 +708,19 @@ msgstr "Nutzungsbedingungen"
 #: src/Repository/CB1UserFields.php:286
 msgid "Accepted Terms & Conditions"
 msgstr "Nutzungbedingungen akzeptiert"
+
+#: src/View/Booking.php:99
+msgid "Details"
+msgstr "Details"
+
+#: src/View/Booking.php:115 src/Wordpress/CustomPostType/Timeframe.php:78
+#: templates/shortcode-bookings.php:64
+msgid "User"
+msgstr "Nutzende*r"
+
+#: src/View/Booking.php:119
+msgid "Status"
+msgstr "Status"
 
 #: src/View/BookingCodes.php:28 src/Wordpress/CustomPostType/Item.php:83
 #: src/Wordpress/CustomPostType/Timeframe.php:80
@@ -1122,11 +1147,6 @@ msgstr "Übergeordnete CB-Karten"
 #: src/Wordpress/CustomPostType/Map.php:106
 msgid "Maps to show Commons Booking Locations and their Items"
 msgstr "Karten, um CommonsBooking Standorte und deren Artikel anzuzeigen"
-
-#: src/Wordpress/CustomPostType/Timeframe.php:78
-#: templates/shortcode-bookings.php:64
-msgid "User"
-msgstr "Nutzende*r"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:79
 #: src/Wordpress/CustomPostType/Timeframe.php:628
@@ -2395,14 +2415,8 @@ msgstr ""
 #~ msgid "Es wurde eine Startzeit, aber keine Endzeit gesetzt."
 #~ msgstr "Es wurde eine Startzeit, aber keine Endzeit gesetzt."
 
-#~ msgid "Cancelled"
-#~ msgstr "Abgebrochen"
-
 #~ msgid "Confirmed"
 #~ msgstr "Bestätigt"
-
-#~ msgid "Unconfirmed"
-#~ msgstr "Unbestätigt"
 
 #~ msgid "-- Please select --"
 #~ msgstr "— Bitte auswählen —"

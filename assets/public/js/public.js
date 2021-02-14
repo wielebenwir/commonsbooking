@@ -187,7 +187,7 @@ class BookingList {
         var contentElement = document.createElement("div");
         contentElement.classList.add("js-item--infos");
         let html = "";
-        for (const [key, contentItem] of Object.entries(item.content)) html += "<span><b>" + contentItem.label + "</b>: " + contentItem.value + "</span>";
+        for (const [key, contentItem] of Object.entries(item.content)) html += "<span>" + contentItem.label + ": " + contentItem.value + "</span>";
         return html += "", contentElement.innerHTML = html, contentElement;
     }
     _initActionsElement(item) {
