@@ -492,7 +492,8 @@ class Plugin
             flush_rewrite_rules();
 
             // Update Location Coordinates
-            self::updateLocationCoordinates();
+            // TODO: Improve implementation to avoid geo coder exception on update, see #499
+            //self::updateLocationCoordinates();
 
             // remove deprecated user roles
             self::removeDeprecatedUserRoles();
