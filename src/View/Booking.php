@@ -112,8 +112,8 @@ class Booking extends View
                     "status"      => $booking->post_status,
                     "calendarLink" => add_query_arg('item', $booking->getItem()->ID, get_permalink($booking->getLocation()->ID)),
                     "content" => [
-                        __('Item', 'commonsbooking')        => $booking->getItem()->post_title,
-                        __('Location', 'commonsbooking')     => $booking->getLocation()->post_title,
+//                        __('Item', 'commonsbooking')        => $booking->getItem()->post_title,
+//                        __('Location', 'commonsbooking')     => $booking->getLocation()->post_title,
                         __('User', 'commonsbooking')         => $userInfo->user_login,
                         __('Status', 'commonsbooking')       => __($booking->post_status, 'commonsbooking'),
                     ]
