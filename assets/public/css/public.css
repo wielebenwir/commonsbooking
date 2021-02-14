@@ -4484,43 +4484,43 @@
   min-width: 10rem;
   text-align: center;
 }
-/* line 12, ../sass/partials/_bookings.scss */
+/* line 13, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-datepicker-calendar td a {
   color: #84AE53;
 }
-/* line 17, ../sass/partials/_bookings.scss */
+/* line 18, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-datepicker-next,
 #ui-datepicker-div .ui-datepicker-prev {
   cursor: pointer;
 }
-/* line 22, ../sass/partials/_bookings.scss */
+/* line 23, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-datepicker-next {
   right: 1.5rem;
   position: absolute;
 }
-/* line 27, ../sass/partials/_bookings.scss */
+/* line 28, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-datepicker-title {
   margin-top: 1rem;
   color: black;
   clear: both;
 }
-/* line 33, ../sass/partials/_bookings.scss */
+/* line 34, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-corner-all {
   color: #84AE53;
 }
 
-/* line 39, ../sass/partials/_bookings.scss */
+/* line 40, ../sass/partials/_bookings.scss */
 .booking-list--filters {
   display: flex;
   flex-wrap: wrap;
 }
 @media (max-width: 400px) {
-  /* line 39, ../sass/partials/_bookings.scss */
+  /* line 40, ../sass/partials/_bookings.scss */
   .booking-list--filters {
     width: 100%;
   }
 }
-/* line 47, ../sass/partials/_bookings.scss */
+/* line 48, ../sass/partials/_bookings.scss */
 .booking-list--filters .filter-wrapper {
   font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
   float: left;
@@ -4530,114 +4530,149 @@
   flex-basis: 0;
   margin-right: 20px;
 }
-/* line 57, ../sass/partials/_bookings.scss */
+/* line 58, ../sass/partials/_bookings.scss */
 .booking-list--filters .filter-wrapper .filter-label {
   margin-bottom: 0.3rem;
   margin-left: 0;
 }
-/* line 63, ../sass/partials/_bookings.scss */
+/* line 64, ../sass/partials/_bookings.scss */
 .booking-list--filters .select2 {
   width: 100%;
   padding: 0.25rem 0.5rem;
   border: none;
 }
-/* line 69, ../sass/partials/_bookings.scss */
+/* line 70, ../sass/partials/_bookings.scss */
 .booking-list--filters #endDate-datepicker,
 .booking-list--filters #startDate-datepicker {
   width: 100%;
   padding: 0.25rem 0.5rem;
   border: none;
 }
-/* line 76, ../sass/partials/_bookings.scss */
+/* line 77, ../sass/partials/_bookings.scss */
 .booking-list--filters .reset-filters {
   padding-top: 15px;
 }
-/* line 79, ../sass/partials/_bookings.scss */
+/* line 81, ../sass/partials/_bookings.scss */
 .booking-list--filters .reset-filters > .cb-button, .booking-list--filters .cb-button-container .reset-filters > a, .cb-button-container .booking-list--filters .reset-filters > a, .booking-list--filters .cb-wrapper .cb-action .reset-filters > input, .cb-wrapper .cb-action .booking-list--filters .reset-filters > input, .booking-list--filters .cb-wrapper #booking-form .reset-filters > input, .cb-wrapper #booking-form .booking-list--filters .reset-filters > input, .booking-list--filters .cb-map-filters .cb-map-button-wrapper .reset-filters > button, .cb-map-filters .cb-map-button-wrapper .booking-list--filters .reset-filters > button {
   float: right;
   line-height: inherit;
 }
-/* line 85, ../sass/partials/_bookings.scss */
+/* line 87, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results {
   font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
   width: 100%;
 }
-/* line 92, ../sass/partials/_bookings.scss */
+/* line 94, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item {
   width: 100%;
   background-color: white;
 }
-/* line 96, ../sass/partials/_bookings.scss */
+/* line 98, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper {
   display: flex;
   margin-bottom: 5px;
   font-size: 0.9em;
 }
-/* line 100, ../sass/partials/_bookings.scss */
-.booking-list #booking-list--results .js-item .content-wrapper .infos {
-  display: flex;
+@media only screen and (max-width: 600px) {
+  /* line 98, ../sass/partials/_bookings.scss */
+  .booking-list #booking-list--results .js-item .content-wrapper {
+    display: block;
+  }
 }
-/* line 103, ../sass/partials/_bookings.scss */
-.booking-list #booking-list--results .js-item .content-wrapper p {
+/* line 106, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item .content-wrapper > p, .booking-list #booking-list--results .js-item .content-wrapper > div {
+  display: flex;
   margin: 0;
   border-right: 1px dashed #ccc;
   margin-right: 8px;
-  padding-right: 8px;
+  padding: 0 8px;
 }
-/* line 108, ../sass/partials/_bookings.scss */
+@media only screen and (max-width: 600px) {
+  /* line 106, ../sass/partials/_bookings.scss */
+  .booking-list #booking-list--results .js-item .content-wrapper > p, .booking-list #booking-list--results .js-item .content-wrapper > div {
+    border: none;
+    margin-bottom: 0;
+    padding: 4px 0;
+  }
+}
+/* line 121, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item .content-wrapper > p:last-child, .booking-list #booking-list--results .js-item .content-wrapper > div:last-child {
+  border: none;
+}
+/* line 127, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper p span {
   display: flex;
 }
-/* line 112, ../sass/partials/_bookings.scss */
-.booking-list #booking-list--results .js-item .content-wrapper p:last-child {
-  border: none;
+/* line 130, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item .content-wrapper p span.cb-date {
+  font-size: 0.8em;
 }
-/* line 116, ../sass/partials/_bookings.scss */
+/* line 137, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper h4 {
   font-weight: bold;
   font-size: 1.4rem;
   padding: 0;
 }
-/* line 123, ../sass/partials/_bookings.scss */
-.booking-list #booking-list--results .js-item--action {
-  height: 30px;
-  padding: 0;
+/* line 144, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item--headline {
+  width: 50%;
+  flex-direction: column;
 }
-/* line 126, ../sass/partials/_bookings.scss */
+/* line 149, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item--infos {
+  width: 30%;
+  flex-direction: column;
+}
+/* line 154, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item--action {
+  width: 20%;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  flex-direction: row-reverse;
+}
+/* line 163, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item--action a {
-  font-size: 0.9rem;
+  font-size: 0.9em;
   padding: 4px 20px;
   margin: 0 8px;
+  height: 30px;
 }
-/* line 134, ../sass/partials/_bookings.scss */
+@media only screen and (max-width: 600px) {
+  /* line 173, ../sass/partials/_bookings.scss */
+  .booking-list #booking-list--results .js-item--headline, .booking-list #booking-list--results .js-item--infos, .booking-list #booking-list--results .js-item--action {
+    width: 100%;
+  }
+}
+/* line 181, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .my-sizer-element {
   clear: both;
 }
-/* line 139, ../sass/partials/_bookings.scss */
+/* line 186, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination {
   font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
 }
-/* line 141, ../sass/partials/_bookings.scss */
+/* line 189, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul {
   display: flex;
   justify-content: center;
   padding: 0;
 }
-/* line 146, ../sass/partials/_bookings.scss */
+/* line 194, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li {
   list-style-type: none;
   position: relative;
   padding: 0 5px 0 5px;
 }
-/* line 151, ../sass/partials/_bookings.scss */
+/* line 199, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li.active {
   font-weight: bold;
 }
-/* line 154, ../sass/partials/_bookings.scss */
+/* line 203, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li:hover {
   color: #84AE53;
 }
-/* line 160, ../sass/partials/_bookings.scss */
+/* line 209, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li[data-page] {
   cursor: pointer;
 }
