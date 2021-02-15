@@ -82,10 +82,11 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 
 == Changelog ==
 
+= 2.4.2 (15.02.2021) = 
+* FIXED: Fixed permission issue on booking lists
 
 = 2.4.1 (14.02.2021) = 
 * FIXED: Avoid Uncaught Exception during Geo Coding on Update
-
 
 = 2.4.0 (12.02.2021) = 
 * NEW: Booking list for frontend users now available (my bookings)
