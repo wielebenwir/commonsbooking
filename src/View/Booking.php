@@ -75,7 +75,7 @@ class Booking extends View
             serialize(wp_get_current_user()->ID)
         );
 
-        if (Plugin::getCacheItem($customId)) {
+        if (false && Plugin::getCacheItem($customId)) {
             return Plugin::getCacheItem($customId);
         } else {
             $bookingDataArray             = [];

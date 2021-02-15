@@ -94,7 +94,8 @@ class Booking extends PostRepository
             [Timeframe::BOOKING_ID],
             null,
             $asModel,
-            $startDate
+            $startDate,
+            ['canceled', 'confirmed', 'unconfirmed', 'publish', 'inherit']
         );
 
         if ($posts) {
