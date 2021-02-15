@@ -23,6 +23,10 @@ class Booking extends View
         wp_die(); // All ajax handlers die when finished
     }
 
+    /**
+     * @return array|false|mixed
+     * @throws \Exception
+     */
     public static function getBookingListData()
     {
         $postsPerPage = 6;
@@ -68,8 +72,9 @@ class Booking extends View
             __CLASS__.__FUNCTION__ .
             serialize($_POST) .
             serialize(is_user_logged_in()).
-            serialize(wp_get_current_user())
+            serialize(wp_get_current_user()->ID)
         );
+
         if (Plugin::getCacheItem($customId)) {
             return Plugin::getCacheItem($customId);
         } else {
