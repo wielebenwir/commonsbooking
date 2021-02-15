@@ -130,7 +130,7 @@ class Booking extends View
                         ],
                         'status' => [
                             'label' => commonsbooking_sanitizeHTML( __('Status', 'commonsbooking') ),
-                            'value' => $booking->getBookingStateLabel(),
+                            'value' => commonsbooking_sanitizeHTML( __('confirmed', 'commonsbooking') ),
                         ]
                     ]
                 ];
