@@ -95,7 +95,7 @@ class Booking extends PostRepository
             null,
             $asModel,
             $startDate,
-            ['canceled', 'confirmed', 'unconfirmed', 'publish', 'inherit']
+            ['canceled', 'confirmed', 'unconfirmed']
         );
 
         if ($posts) {
