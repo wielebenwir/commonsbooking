@@ -86,6 +86,8 @@ class Booking extends PostRepository
      */
     public static function getForCurrentUser($asModel = false)
     {
+        if (!is_user_logged_in()) return [];
+
         $args = array(
             'post_type'   => Timeframe::$postType,
             'meta_query'  => array(
@@ -112,11 +114,9 @@ class Booking extends PostRepository
 
             // Check if it is the main query and one of our custom post types
             if ( ! $isAdmin) {
-                foreach ($posts as $key => $post) {
-                    if ( ! commonsbooking_isCurrentUserAllowedToEdit($post)) {
-                        unset($posts[$key]);
-                    }
-                }
+                $posts = array_filter($posts, function ($post) {
+                    return commonsbooking_isCurrentUserAllowedToEdit($post);
+                });
             }
 
             // Init posts as Booking-Model

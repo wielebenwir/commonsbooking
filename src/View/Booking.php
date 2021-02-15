@@ -64,8 +64,13 @@ class Booking extends View
             }
         }
 
-        $customId = md5(__CLASS__.__FUNCTION__.serialize($_POST));
-        if (false && Plugin::getCacheItem($customId)) {
+        $customId = md5(
+            __CLASS__.__FUNCTION__ .
+            serialize($_POST) .
+            serialize(is_user_logged_in()).
+            serialize(wp_get_current_user())
+        );
+        if (Plugin::getCacheItem($customId)) {
             return Plugin::getCacheItem($customId);
         } else {
             $bookingDataArray             = [];
@@ -223,7 +228,6 @@ class Booking extends View
     {
         global $templateData;
         $templateData             = [];
-        $templateData['bookings'] = \CommonsBooking\Repository\Booking::getForCurrentUser();
         $templateData             = self::getBookingListData();
 
         ob_start();
