@@ -87,7 +87,10 @@ class Booking extends View
                 'location' => [],
             ];
 
-            $posts = \CommonsBooking\Repository\Booking::getForCurrentUser(true);
+            $posts = \CommonsBooking\Repository\Booking::getForCurrentUser(
+                true,
+                $filters['startDate'] ?: null
+            );
 
             if (!$posts) {
                 return false;
