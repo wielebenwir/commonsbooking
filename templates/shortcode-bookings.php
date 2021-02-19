@@ -21,7 +21,7 @@ if ($templateData && $templateData['total'] > 0) {
 
     $response .= '
 <div class="booking-list">
-  <div class="booking-list--filters">
+  <div class="booking-list--filters cb-filters">
     <div class="filter-wrapper">
         <p class="filter-label">' . __('Startdate', 'commonsbooking') . '</p>
          <div class="filter-startdate" id="filter-startdate">        
