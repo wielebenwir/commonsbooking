@@ -1,5 +1,3 @@
-var Shuffle = window.Shuffle;
-
 class BookingList {
     constructor(element) {
         this.currentPage = 1;
@@ -528,5 +526,8 @@ class BookingList {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    window.demo = new BookingList(document.getElementById('booking-list--results'));
+    var bookingList = document.getElementById('booking-list--results');
+    if(bookingList) {
+        window.demo = new BookingList(bookingList);
+    }
 });
