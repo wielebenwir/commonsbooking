@@ -9,6 +9,7 @@
         margin-bottom: 1rem;
         min-width: 10rem;
         text-align: center;
+
         td a {
             color: #84AE53;
         }
@@ -50,7 +51,7 @@
             float: left;
             margin-top: 10px;
             min-width: 200px;
-            flex-grow:1;
+            flex-grow: 1;
             flex-basis: 0;
             margin-right: 20px;
 
@@ -76,7 +77,8 @@
         .reset-filters {
             padding-top: 15px;
         }
-        .reset-filters  > .cb-button {
+
+        .reset-filters > .cb-button {
             float: right;
             line-height: inherit;
         }
@@ -95,22 +97,41 @@
 
             .content-wrapper {
                 display: flex;
+                @media only screen and (max-width: 600px) {
+                    display: block;
+                }
                 margin-bottom: 5px;
                 font-size: 0.9em;
-                .infos {
+
+                & > p,
+                & > div {
                     display: flex;
-                }
-                p {
                     margin: 0;
                     border-right: 1px dashed #ccc;
                     margin-right: 8px;
-                    padding-right: 8px;
-                    span {
-                        display: flex;
+                    padding: 0 8px;
+
+                    @media only screen and (max-width: 600px) {
+                        border: none;
+                        margin-bottom: 0;
+                        padding: 4px 0;
+                    }
+
+
+                    &:last-child {
+                        border: none;
                     }
                 }
-                p:last-child {
-                    border: none;
+
+                p {
+                    span {
+                        display: flex;
+
+                        &.cb-date {
+                            font-size: 0.8em;
+                        }
+                    }
+
                 }
 
                 h4 {
@@ -120,13 +141,39 @@
                 }
             }
 
+            &--headline {
+                width: 40%;
+                flex-direction: column;
+            }
+
+            &--infos {
+                width: 40%;
+                flex-direction: column;
+            }
+
             &--action {
-                height: 30px;
+                width: 20%;
+
+                height: 40px;
                 padding: 0;
+
+                display: flex;
+                flex-direction: row-reverse;
+
                 a {
-                    font-size: 0.9rem;
+                    font-size: 0.9em;
                     padding: 4px 20px;
                     margin: 0 8px;
+                    height: 30px;
+                }
+            }
+
+
+            @media only screen and (max-width: 600px) {
+                &--headline,
+                &--infos,
+                &--action {
+                    width: 100%;
                 }
             }
         }
@@ -138,6 +185,7 @@
 
     #booking-list--pagination {
         font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+
         ul {
             display: flex;
             justify-content: center;
@@ -151,6 +199,7 @@
                 &.active {
                     font-weight: bold;
                 }
+
                 &:hover {
                     color: #84AE53;
                 }

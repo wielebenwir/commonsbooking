@@ -176,15 +176,19 @@ class BookingList {
     }
     _initHeadlineElement(item) {
         var headline = document.createElement("p");
-        return headline.classList.add("cb-title"), headline.innerHTML = item.item + " @ " + item.location, 
-        headline;
+        headline.classList.add("js-item--headline");
+        var date = document.createElement("span");
+        date.classList.add("cb-date"), date.innerText = item.startDateFormatted + " - " + item.endDateFormatted;
+        var title = document.createElement("span");
+        return title.classList.add("cb-title"), title.innerText = item.item + " @ " + item.location, 
+        headline.append(date), headline.append(title), headline;
     }
     _initContentElement(item) {
         var contentElement = document.createElement("div");
-        contentElement.classList.add("infos");
-        let html = "<p><span>" + item.startDateFormatted + " &ndash; </span><span>" + item.endDateFormatted + "</span></p>";
-        for (const [key, value] of Object.entries(item.content)) html += "<p>" + key + ": " + value + "</p>";
-        return contentElement.innerHTML = html, contentElement;
+        contentElement.classList.add("js-item--infos");
+        let html = "";
+        for (const [key, contentItem] of Object.entries(item.content)) html += "<span>" + contentItem.label + ": " + contentItem.value + "</span>";
+        return html += "", contentElement.innerHTML = html, contentElement;
     }
     _initActionsElement(item) {
         var actionsElement = document.createElement("div");
@@ -194,8 +198,8 @@ class BookingList {
     _getMarkupFromData(dataForSingleItem) {
         var i = dataForSingleItem, item = this._initItemElement(i), contentWrapperElement = document.createElement("div");
         return contentWrapperElement.classList.add("content-wrapper"), contentWrapperElement.append(this._initHeadlineElement(i)), 
-        contentWrapperElement.append(this._initContentElement(i)), item.append(contentWrapperElement), 
-        item.append(this._initActionsElement(i)), item.outerHTML;
+        contentWrapperElement.append(this._initContentElement(i)), contentWrapperElement.append(this._initActionsElement(i)), 
+        item.append(contentWrapperElement), item.outerHTML;
     }
     _getItemMarkup(items) {
         let self = this;

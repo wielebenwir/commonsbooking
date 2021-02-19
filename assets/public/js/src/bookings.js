@@ -416,20 +416,31 @@ class BookingList {
 
     _initHeadlineElement(item) {
         var headline = document.createElement('p');
-        headline.classList.add('cb-title');
-        headline.innerHTML = item.item + ' @ ' + item.location;
+        headline.classList.add('js-item--headline')
+
+        var date = document.createElement('span');
+        date.classList.add('cb-date')
+        date.innerText = item.startDateFormatted + ' - ' + item.endDateFormatted;
+
+        var title = document.createElement('span');
+        title.classList.add('cb-title')
+        title.innerText = item.item + ' @ ' + item.location;
+
+        headline.append(date);
+        headline.append(title);
+
         return headline;
     }
 
     _initContentElement(item) {
         var contentElement = document.createElement('div');
-        contentElement.classList.add('infos');
-        let html = '<p><span>' + item.startDateFormatted + ' &ndash; </span><span>' + item.endDateFormatted + '</span></p>';
+        contentElement.classList.add('js-item--infos');
 
-        for(const [key, value] of Object.entries(item.content)) {
-            html += '<p>' + key + ': ' + value + '</p>';
+        let html = '';
+        for(const [key, contentItem] of Object.entries(item.content)) {
+            html += '<span>' + contentItem.label + ': ' + contentItem.value + '</span>';
         }
-
+        html += '';
         contentElement.innerHTML = html;
         return contentElement;
 
@@ -458,8 +469,8 @@ class BookingList {
 
         contentWrapperElement.append(this._initHeadlineElement(i));
         contentWrapperElement.append(this._initContentElement(i));
+        contentWrapperElement.append(this._initActionsElement(i));
         item.append(contentWrapperElement);
-        item.append(this._initActionsElement(i));
 
         return item.outerHTML;
     }
