@@ -181,7 +181,7 @@ class BookingList {
     }
     _initContentElement(item) {
         var contentElement = document.createElement("div");
-        return contentElement.classList.add("infos"), contentElement.innerHTML = "<p><span>" + item.startDateFormatted + " &ndash; </span><span>" + item.endDateFormatted + "</span></p><p>User: " + item.user + "</p><p> Status: " + item.status + "</p>", 
+        return contentElement.classList.add("infos"), contentElement.innerHTML = '<p class="cb-timeframe-dates"><span class="cb-start-date">' + item.startDateFormatted + ' &ndash; </span><span class="cb-end-date">' + item.endDateFormatted + '</span></p><p class="cb-user-name">User: ' + item.user + '</p><p class="cb-status"> Status: ' + item.status + "</p>", 
         contentElement;
     }
     _initActionsElement(item) {

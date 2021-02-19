@@ -14,7 +14,7 @@ function CB_Map_Filters($, cb_map) {
   this.$form = null;
 
   this.init = function($) {
-    var $filter_container = $('<div class="cb-map-filters cb-wrapper cb-filters"></div>');
+    var $filter_container = $('<div class="cb-map-filters cb-wrapper cb-filter"></div>');
 
     this.show_filters.location_distance = cb_map.settings.show_location_distance_filter;
     this.show_filters.item_availability =  cb_map.settings.show_item_availability_filter;

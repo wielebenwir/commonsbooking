@@ -1,21 +1,11 @@
 /*
  * This stylesheet is used to style the public-facing components of the plugin
- * @package   CommonsBooking2
- * @author    Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
 /* Global styles */
 /*
- * Framework styles - shared in front- and backend
- * @package   CommonsBooking2
- * @author    Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
+ * Global styles
+ * 
+ * Shared in Front- and Backend
  */
 /* Lib: reset.css */
 /*
@@ -3295,13 +3285,6 @@
  * Colors: Backgrounds
  * Font sizes
  * Layout variables
- *
- * @package   CommonsBooking2
- * @author Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
 /* Colors: CB Brand */
 /* Colors: Theme */
@@ -3315,95 +3298,83 @@
 /**
  * Framework mixins
  *
- * Icons
+ * Breakpoints
  * Animation
- *
- * @package   CommonsBooking2
- * @author Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
 /* -------------------- Breakpoints (for lists) -------------------- */
 /* -------------------- Animation -------------------- */
-/* -------------------- Round rect (periods) -------------------- */
 /* Extends */
 /**
  * Extends
  *
  * Re-usable styles, intended to be used in scss, not directly in the dom.
+ * Utilizes Breakpoints
  *
  * Boxes
  * Typography
  *
- * @package   CommonsBooking2
- * @author    Annesley Newholm <annesley_newholm@yahoo.it>
- * @copyright 2018 wielebenwir e.V.
- * @license   GPL 2.0+
- * @link      http://commonsbooking.wielebenwir.de
  *
  */
 /* -------------------- Boxes -------------------- */
-/* line 19, ../../global/sass/partials/_extends.scss */
+/* line 15, ../../global/sass/partials/_extends.scss */
 .cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper {
   background: #f6f6f6;
-  padding: 5px;
+  padding: 2.5px 5px;
   overflow: hidden;
   border-radius: 8px;
   margin-bottom: 10px;
 }
 @media (min-width: 37.5em) {
-  /* line 19, ../../global/sass/partials/_extends.scss */
+  /* line 15, ../../global/sass/partials/_extends.scss */
   .cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper {
     padding: 10px 15px;
   }
 }
 
-/* line 32, ../../global/sass/partials/_extends.scss */
+/* line 28, ../../global/sass/partials/_extends.scss */
 .cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months {
   background: #FFF;
   padding: 5px;
   border-radius: 8px;
 }
 @media (min-width: 37.5em) {
-  /* line 32, ../../global/sass/partials/_extends.scss */
+  /* line 28, ../../global/sass/partials/_extends.scss */
   .cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months {
     padding: 10px;
   }
 }
 
 /* -------------------- Typography -------------------- */
-/* line 47, ../../global/sass/partials/_extends.scss */
+/* line 41, ../../global/sass/partials/_extends.scss */
 .cb-big, .cb-map-filters.cb-wrapper .cb-map-filter-group-label {
   font-size: 18px;
   font-weight: bold;
 }
 
 /* -------------------- Boxes -------------------- */
-/* line 54, ../../global/sass/partials/_extends.scss */
+/* line 48, ../../global/sass/partials/_extends.scss */
 .shadow {
   box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.22);
 }
 
-/* line 58, ../../global/sass/partials/_extends.scss */
+/* line 52, ../../global/sass/partials/_extends.scss */
 .shadow-small, .cb-hover, .cb-button:hover, .cb-button-container a:hover, .cb-wrapper .cb-action input:hover, .cb-wrapper #booking-form input:hover, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:hover {
   box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* line 62, ../../global/sass/partials/_extends.scss */
+/* line 56, ../../global/sass/partials/_extends.scss */
 .cb-hover {
   border: 1px solid #506CA9;
   border-radius: 8px;
 }
 
-/* line 68, ../../global/sass/partials/_extends.scss */
+/* line 62, ../../global/sass/partials/_extends.scss */
 .cb-thumbnail {
   border-radius: 8px;
 }
 
 /* -------------------- Buttons -------------------- */
-/* line 74, ../../global/sass/partials/_extends.scss */
+/* line 68, ../../global/sass/partials/_extends.scss */
 .cb-button, .cb-button-container a, .cb-wrapper .cb-action input, .cb-wrapper #booking-form input, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button {
   border-radius: 8px;
   font-size: 18px;
@@ -3414,63 +3385,64 @@
   text-decoration: none !important;
   word-break: normal !important;
   /* TwentyTwenty theme fix */
+  white-space: nowrap;
   color: #FFF;
   padding: 10px 15px;
   font-weight: bold;
 }
-/* line 88, ../../global/sass/partials/_extends.scss */
+/* line 82, ../../global/sass/partials/_extends.scss */
 .cb-button:hover, .cb-button-container a:hover, .cb-wrapper .cb-action input:hover, .cb-wrapper #booking-form input:hover, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:hover {
   background: #506CA9;
   color: #FFF;
   /* Various themes fix */
 }
-/* line 94, ../../global/sass/partials/_extends.scss */
+/* line 88, ../../global/sass/partials/_extends.scss */
 .cb-button:visited, .cb-button-container a:visited, .cb-wrapper .cb-action input:visited, .cb-wrapper #booking-form input:visited, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:visited {
   color: #FFF;
 }
-/* line 98, ../../global/sass/partials/_extends.scss */
+/* line 92, ../../global/sass/partials/_extends.scss */
 .cb-button.big, .cb-button-container a.big, .cb-wrapper .cb-action input.big, .cb-wrapper #booking-form input.big, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.big {
   padding: 10px 15px;
 }
-/* line 101, ../../global/sass/partials/_extends.scss */
+/* line 95, ../../global/sass/partials/_extends.scss */
 .cb-button.secondary, .cb-button-container a.secondary, .cb-wrapper .cb-action input.secondary, .cb-wrapper #booking-form input.secondary, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.secondary {
   background-color: #FFF;
   color: #d5425c;
 }
-/* line 106, ../../global/sass/partials/_extends.scss */
+/* line 100, ../../global/sass/partials/_extends.scss */
 .cb-button.cancel, .cb-button-container a.cancel, .cb-wrapper .cb-action input.cancel, .cb-wrapper #booking-form input.cancel, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.cancel {
   background-color: #d5425c;
 }
-/* line 110, ../../global/sass/partials/_extends.scss */
+/* line 104, ../../global/sass/partials/_extends.scss */
 .cb-button.confirm, .cb-button-container a.confirm, .cb-wrapper .cb-action input.confirm, .cb-wrapper #booking-form input.confirm, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.confirm {
   background-color: #74ce3c;
 }
-/* line 114, ../../global/sass/partials/_extends.scss */
+/* line 108, ../../global/sass/partials/_extends.scss */
 .cb-button.delete, .cb-button-container a.delete, .cb-wrapper .cb-action input.delete, .cb-wrapper #booking-form input.delete, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.delete {
   background-color: #d5425c;
 }
-/* line 118, ../../global/sass/partials/_extends.scss */
+/* line 112, ../../global/sass/partials/_extends.scss */
 .cb-button[disabled=disabled], .cb-button-container a[disabled=disabled], .cb-wrapper .cb-action input[disabled=disabled], .cb-wrapper #booking-form input[disabled=disabled], .cb-map-filters.cb-wrapper .cb-map-button-wrapper button[disabled=disabled] {
   background-color: #c4c4c4;
   color: white;
 }
-/* line 123, ../../global/sass/partials/_extends.scss */
+/* line 117, ../../global/sass/partials/_extends.scss */
 .cb-button.no-right-radius, .cb-button-container a.no-right-radius, .cb-wrapper .cb-action input.no-right-radius, .cb-wrapper #booking-form input.no-right-radius, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.no-right-radius {
   border-radius: 8px 0;
 }
-/* line 126, ../../global/sass/partials/_extends.scss */
+/* line 120, ../../global/sass/partials/_extends.scss */
 .cb-button.no-left-radius, .cb-button-container a.no-left-radius, .cb-wrapper .cb-action input.no-left-radius, .cb-wrapper #booking-form input.no-left-radius, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.no-left-radius {
   border-radius: 0 8px;
 }
 
-/* line 134, ../../global/sass/partials/_extends.scss */
-.cb-pill {
+/* line 128, ../../global/sass/partials/_extends.scss */
+.cb-pill, .cb-wrapper .cb-notice-inline {
   border-radius: 8px;
   padding: 0;
   margin: 0;
 }
-/* line 138, ../../global/sass/partials/_extends.scss */
-.cb-pill a {
+/* line 132, ../../global/sass/partials/_extends.scss */
+.cb-pill a, .cb-wrapper .cb-notice-inline a {
   text-decoration: none;
   color: #FFF;
   padding: 5px 10px;
@@ -3480,19 +3452,14 @@
 /**
  * Debug
  *
- * @package   CommonsBooking
- * @author 		Florian Egermann <hallo@fleg.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
-/* line 12, ../../global/sass/partials/_utilities.scss */
+/* line 6, ../../global/sass/partials/_utilities.scss */
 .cb-hidden {
   display: none;
 }
 
-/* line 13, ../../global/sass/partials/_utilities.scss */
+/* Template name in content */
+/* line 9, ../../global/sass/partials/_utilities.scss */
 .cb-debug {
   opacity: 0;
   position: absolute;
@@ -3502,48 +3469,38 @@
   background: transparent !important;
 }
 
-/* line 22, ../../global/sass/partials/_utilities.scss */
+/* line 18, ../../global/sass/partials/_utilities.scss */
 .cb-wrapper:hover .cb-debug {
   opacity: 1;
 }
 
-/* Calendar styles */
-/**
- * Calendar base styles for admin & front-end
- *
- */
 /* Multi-column layouts */
 /**
  * Layouts for tables/lists
+ *
  * Breakpoints for arranging elements
  *
- * @package   CommonsBooking
- * @author Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 2.0
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
 /* -------------------- Tables -------------------- */
 /* 30-70 standard for lists, first item is title */
-/* line 19, ../sass/partials/_layouts.scss */
+/* line 14, ../sass/partials/_layouts.scss */
 .cb-col-30-70 > :nth-child(odd) {
   /* this is the title column , e.g. "Name" */
   font-weight: bold;
 }
 @media (min-width: 37.5em) {
-  /* line 17, ../sass/partials/_layouts.scss */
+  /* line 12, ../sass/partials/_layouts.scss */
   .cb-col-30-70 {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
   }
-  /* line 29, ../sass/partials/_layouts.scss */
+  /* line 24, ../sass/partials/_layouts.scss */
   .cb-col-30-70 > :nth-child(odd) {
     width: 30%;
   }
-  /* line 32, ../sass/partials/_layouts.scss */
+  /* line 27, ../sass/partials/_layouts.scss */
   .cb-col-30-70 > :nth-child(even) {
     width: 70%;
   }
@@ -3551,27 +3508,27 @@
 
 /* 50-50 */
 @media (min-width: 37.5em) {
-  /* line 38, ../sass/partials/_layouts.scss */
+  /* line 33, ../sass/partials/_layouts.scss */
   .cb-col-50-50 {
     display: flex;
   }
-  /* line 41, ../sass/partials/_layouts.scss */
+  /* line 36, ../sass/partials/_layouts.scss */
   .cb-col-50-50 > :nth-child(odd) {
     width: 50%;
     min-width: 0;
   }
-  /* line 44, ../sass/partials/_layouts.scss */
+  /* line 39, ../sass/partials/_layouts.scss */
   .cb-col-50-50 > :nth-child(odd) img {
     width: 100%;
   }
-  /* line 46, ../sass/partials/_layouts.scss */
+  /* line 41, ../sass/partials/_layouts.scss */
   .cb-col-50-50 > :nth-child(even) {
     width: 50%;
     min-width: 0;
   }
 }
 
-/* line 55, ../sass/partials/_layouts.scss */
+/* line 50, ../sass/partials/_layouts.scss */
 .cb-col-50-50-filter > div, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div,
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div {
   margin-bottom: 10px;
@@ -3580,18 +3537,18 @@
   align-items: center;
   flex-wrap: nowrap;
 }
-/* line 62, ../sass/partials/_layouts.scss */
+/* line 57, ../sass/partials/_layouts.scss */
 .cb-col-50-50-filter > div label, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div label,
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div label {
   flex: 0 0 30%;
 }
-/* line 65, ../sass/partials/_layouts.scss */
+/* line 60, ../sass/partials/_layouts.scss */
 .cb-col-50-50-filter > div input, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div input,
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div input {
   flex: 0 1 50%;
 }
 @media (min-width: 37.5em) {
-  /* line 54, ../sass/partials/_layouts.scss */
+  /* line 49, ../sass/partials/_layouts.scss */
   .cb-col-50-50-filter, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group,
   .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group {
     display: flex;
@@ -3600,56 +3557,92 @@
     align-items: center;
     flex-wrap: wrap;
   }
-  /* line 79, ../sass/partials/_layouts.scss */
+  /* line 74, ../sass/partials/_layouts.scss */
   .cb-col-50-50-filter > div, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div,
   .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div {
     width: 50%;
   }
 }
 
-/* line 85, ../sass/partials/_layouts.scss */
+/* line 80, ../sass/partials/_layouts.scss */
 .cb-col-auto, .cb-wrapper .template-timeframe-withitem,
-.cb-wrapper .template-timeframe-withlocation {
+.cb-wrapper .template-timeframe-withlocation,
+.cb-wrapper .template-item-withlocation, .cb-wrapper .cb-list-header {
   /* 2 fixed cols, 1 flexible in the middle */
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+/* line 86, ../sass/partials/_layouts.scss */
+.cb-col-auto > div.cb-thumbnail, .cb-wrapper .template-timeframe-withitem > div.cb-thumbnail,
+.cb-wrapper .template-timeframe-withlocation > div.cb-thumbnail,
+.cb-wrapper .template-item-withlocation > div.cb-thumbnail, .cb-wrapper .cb-list-header > div.cb-thumbnail {
+  flex: 0 0 20%;
+  padding-right: 15px;
+}
+/* line 90, ../sass/partials/_layouts.scss */
+.cb-col-auto > div.cb-list-info, .cb-wrapper .template-timeframe-withitem > div.cb-list-info,
+.cb-wrapper .template-timeframe-withlocation > div.cb-list-info,
+.cb-wrapper .template-item-withlocation > div.cb-list-info, .cb-wrapper .cb-list-header > div.cb-list-info {
+  flex: 1 0 50%;
+  border: none;
+}
+/* line 94, ../sass/partials/_layouts.scss */
+.cb-col-auto > div.cb-action, .cb-wrapper .template-timeframe-withitem > div.cb-action,
+.cb-wrapper .template-timeframe-withlocation > div.cb-action,
+.cb-wrapper .template-item-withlocation > div.cb-action, .cb-wrapper .cb-list-header > div.cb-action {
+  /* optional */
+  flex: 0 0 100%;
+  text-align: right;
 }
 @media (min-width: 37.5em) {
-  /* line 85, ../sass/partials/_layouts.scss */
+  /* line 80, ../sass/partials/_layouts.scss */
   .cb-col-auto, .cb-wrapper .template-timeframe-withitem,
-  .cb-wrapper .template-timeframe-withlocation {
+  .cb-wrapper .template-timeframe-withlocation,
+  .cb-wrapper .template-item-withlocation, .cb-wrapper .cb-list-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: nowrap;
     align-items: center;
   }
-  /* line 96, ../sass/partials/_layouts.scss */
+  /* line 106, ../sass/partials/_layouts.scss */
   .cb-col-auto > div.cb-thumbnail, .cb-wrapper .template-timeframe-withitem > div.cb-thumbnail,
-  .cb-wrapper .template-timeframe-withlocation > div.cb-thumbnail {
+  .cb-wrapper .template-timeframe-withlocation > div.cb-thumbnail,
+  .cb-wrapper .template-item-withlocation > div.cb-thumbnail, .cb-wrapper .cb-list-header > div.cb-thumbnail {
     flex: 0 0 20%;
+    padding-right: 15px;
   }
-  /* line 100, ../sass/partials/_layouts.scss */
+  /* line 111, ../sass/partials/_layouts.scss */
   .cb-col-auto > div.cb-list-info, .cb-wrapper .template-timeframe-withitem > div.cb-list-info,
-  .cb-wrapper .template-timeframe-withlocation > div.cb-list-info {
-    flex: 1 0 50%;
+  .cb-wrapper .template-timeframe-withlocation > div.cb-list-info,
+  .cb-wrapper .template-item-withlocation > div.cb-list-info, .cb-wrapper .cb-list-header > div.cb-list-info {
+    flex: 1 1 auto;
     border: none;
-    padding: 0 15px;
   }
-  /* line 105, ../sass/partials/_layouts.scss */
+  /* line 115, ../sass/partials/_layouts.scss */
   .cb-col-auto > div.cb-action, .cb-wrapper .template-timeframe-withitem > div.cb-action,
-  .cb-wrapper .template-timeframe-withlocation > div.cb-action {
-    flex: 1 0 30%;
+  .cb-wrapper .template-timeframe-withlocation > div.cb-action,
+  .cb-wrapper .template-item-withlocation > div.cb-action, .cb-wrapper .cb-list-header > div.cb-action {
+    flex: 1 0 auto;
   }
-  /* line 107, ../sass/partials/_layouts.scss */
+  /* line 117, ../sass/partials/_layouts.scss */
   .cb-col-auto > div.cb-action a, .cb-wrapper .template-timeframe-withitem > div.cb-action a,
-  .cb-wrapper .template-timeframe-withlocation > div.cb-action a {
+  .cb-wrapper .template-timeframe-withlocation > div.cb-action a,
+  .cb-wrapper .template-item-withlocation > div.cb-action a, .cb-wrapper .cb-list-header > div.cb-action a {
     width: auto;
   }
 }
 
+/* line 124, ../sass/partials/_layouts.scss */
+.cb-col-list-with-image {
+  /*first */
+  display: flex;
+  flex-direction: column;
+}
+
 @media (min-width: 37.5em) {
-  /* line 113, ../sass/partials/_layouts.scss */
+  /* line 132, ../sass/partials/_layouts.scss */
   .cb-col-20-50-30 {
     display: flex;
     flex-direction: row;
@@ -3663,9 +3656,8 @@
 /**
 * List styling
 *
-* [cb_items], [cb_locations shortcode]
+* Shortcodes: [cb_items], [cb_locations], @TODO: [cb_bookings] 
 * 
-*
 * @package   CommonsBooking
 * @author    Florian Egermann <florian@wielebenwir.de>
 * @license   GPL-2.0+
@@ -3674,92 +3666,66 @@
 * @copyright 2020 wielebenwir
 */
 /* main wrapper */
-/* line 16, ../sass/partials/_list.scss */
+/* line 15, ../sass/partials/_lists.scss */
 .cb-wrapper {
   position: relative;
   clear: both;
   display: block;
   margin-top: 15px;
   /* headline */
-  /* sub lists */
+  /* sub lists wrapper */
 }
-/* line 26, ../sass/partials/_list.scss */
+/* line 25, ../sass/partials/_lists.scss */
 .cb-wrapper h1, .cb-wrapper h2, .cb-wrapper h3, .cb-wrapper h4 {
   margin: 0;
   padding-bottom: 10px;
   padding-top: 0;
 }
-/* line 32, ../sass/partials/_list.scss */
+/* line 31, ../sass/partials/_lists.scss */
 .cb-wrapper .cb-title {
   color: #84AE53;
 }
-/* line 36, ../sass/partials/_list.scss */
-.cb-wrapper .cb-thumbnail {
-  height: auto;
-  overflow: hidden;
-  float: left;
-}
-/* line 39, ../sass/partials/_list.scss */
-.cb-wrapper .cb-thumbnail img,
-.cb-wrapper .cb-thumbnail img.alignleft {
-  max-width: 100%;
-  border-radius: 8px;
-  margin: 0 15px 15px 0;
-}
-/* line 49, ../sass/partials/_list.scss */
+/* line 40, ../sass/partials/_lists.scss */
 .cb-wrapper > .cb-wrapper {
   overflow: hidden;
 }
-/* line 54, ../sass/partials/_list.scss */
-.cb-wrapper > .cb-wrapper .cb-thumbnail img,
-.cb-wrapper > .cb-wrapper .cb-thumbnail img.alignleft {
-  margin-bottom: 0;
-}
-/* line 60, ../sass/partials/_list.scss */
+/* line 45, ../sass/partials/_lists.scss */
 .cb-wrapper > .cb-wrapper > div {
   /* sub list items */
-  border-bottom: 1px solid #f6f6f6;
   padding: 5px 0;
 }
-/* line 63, ../sass/partials/_list.scss */
+/* line 48, ../sass/partials/_lists.scss */
 .cb-wrapper > .cb-wrapper > div:last-of-type {
   border-bottom: none;
 }
-/* line 75, ../sass/partials/_list.scss */
-.cb-wrapper .cb-list-header img {
-  clear: both;
-}
-/* line 78, ../sass/partials/_list.scss */
+/* line 66, ../sass/partials/_lists.scss */
 .cb-wrapper .cb-action {
   background: transparent;
+}
+/* line 68, ../sass/partials/_lists.scss */
+.cb-wrapper .cb-action .cb-button, .cb-wrapper .cb-action .cb-button-container a, .cb-button-container .cb-wrapper .cb-action a, .cb-wrapper .cb-action input, .cb-wrapper .cb-action #booking-form input, .cb-wrapper #booking-form .cb-action input, .cb-map-filters.cb-wrapper .cb-action .cb-map-button-wrapper button, .cb-map-filters.cb-wrapper .cb-map-button-wrapper .cb-action button {
+  display: inline-block;
 }
 
 /* List styles */
 /**
  * Single item, single location, single booking view
  *
- * @package   CommonsBooking
- * @author    Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since     2.0
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
-/* line 12, ../sass/partials/_single.scss */
+/* line 6, ../sass/partials/_single.scss */
 .cb-wrapper {
   /* invert the color scheme from the lists: wrapper has no bg, sub-wrapper colored */
 }
-/* line 14, ../sass/partials/_single.scss */
+/* line 8, ../sass/partials/_single.scss */
 .cb-wrapper.template-location-single, .cb-wrapper.template-item-single, .cb-wrapper.template-booking-single {
   background: transparent;
   padding: 0;
 }
-/* line 21, ../sass/partials/_single.scss */
+/* line 15, ../sass/partials/_single.scss */
 .cb-wrapper.template-location-single > div:not(.cb-notice) > div, .cb-wrapper.template-item-single > div:not(.cb-notice) > div, .cb-wrapper.template-booking-single > div:not(.cb-notice) > div {
   /* sub list items */
-  border-bottom: 1px solid #FFF;
 }
-/* line 23, ../sass/partials/_single.scss */
+/* line 16, ../sass/partials/_single.scss */
 .cb-wrapper.template-location-single > div:not(.cb-notice) > div:last-of-type, .cb-wrapper.template-item-single > div:not(.cb-notice) > div:last-of-type, .cb-wrapper.template-booking-single > div:not(.cb-notice) > div:last-of-type {
   border-bottom: 0;
 }
@@ -3891,7 +3857,13 @@
 }
 
 /* Calendar styles */
-/* line 1, ../sass/partials/_calendar.scss */
+/**
+ * Booking Calendar
+ * 
+ * Styles for the litepicker javascript
+ *
+ */
+/* line 8, ../sass/partials/_calendar.scss */
 :root {
   --litepickerBgColor: transparent;
   --litepickerMonthHeaderTextColor: #333;
@@ -3929,27 +3901,27 @@
   --litePickerDayBorderColor: #FFFFFF;
 }
 
-/* line 44, ../sass/partials/_calendar.scss */
+/* line 51, ../sass/partials/_calendar.scss */
 .show-week-numbers {
   --litepickerMonthWidth: calc(var(--litepickerDayWidth) * 8);
 }
 
-/* line 48, ../sass/partials/_calendar.scss */
+/* line 55, ../sass/partials/_calendar.scss */
 .litepicker {
   font-size: 1.2em;
   display: none;
   width: 100%;
 }
-/* line 55, ../sass/partials/_calendar.scss */
+/* line 62, ../sass/partials/_calendar.scss */
 .litepicker a {
   text-decoration: none !important;
 }
-/* line 60, ../sass/partials/_calendar.scss */
+/* line 67, ../sass/partials/_calendar.scss */
 .litepicker .container__main {
   display: flex;
   justify-content: space-around;
 }
-/* line 65, ../sass/partials/_calendar.scss */
+/* line 72, ../sass/partials/_calendar.scss */
 .litepicker .container__months {
   background: transparent;
   box-shadow: none;
@@ -3958,30 +3930,30 @@
   width: calc(var(--litepickerMonthWidth) + 10px);
   box-sizing: content-box;
 }
-/* line 76, ../sass/partials/_calendar.scss */
+/* line 83, ../sass/partials/_calendar.scss */
 .litepicker .container__months.columns-2 {
   width: calc((var(--litepickerMonthWidth) * 2) + 20px);
 }
-/* line 80, ../sass/partials/_calendar.scss */
+/* line 87, ../sass/partials/_calendar.scss */
 .litepicker .container__months.columns-3 {
   width: calc((var(--litepickerMonthWidth) * 3) + 30px);
 }
-/* line 84, ../sass/partials/_calendar.scss */
+/* line 91, ../sass/partials/_calendar.scss */
 .litepicker .container__months.columns-4 {
   width: calc((var(--litepickerMonthWidth) * 4) + 40px);
 }
-/* line 91, ../sass/partials/_calendar.scss */
+/* line 98, ../sass/partials/_calendar.scss */
 .litepicker .container__months.split-view .month-item-header .button-previous-month,
 .litepicker .container__months.split-view .month-item-header .button-next-month {
   visibility: visible;
 }
-/* line 99, ../sass/partials/_calendar.scss */
+/* line 106, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item {
   padding: 5px;
   width: var(--litepickerMonthWidth);
   box-sizing: content-box;
 }
-/* line 104, ../sass/partials/_calendar.scss */
+/* line 111, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header {
   display: flex;
   justify-content: space-between;
@@ -3991,38 +3963,38 @@
   align-items: center;
   color: var(--litepickerMonthHeaderTextColor);
 }
-/* line 113, ../sass/partials/_calendar.scss */
+/* line 120, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header div {
   flex: 1;
 }
-/* line 116, ../sass/partials/_calendar.scss */
+/* line 123, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header div > .month-item-name {
   margin-right: 5px;
 }
-/* line 120, ../sass/partials/_calendar.scss */
+/* line 127, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header div > .month-item-year {
   padding: 0;
 }
-/* line 125, ../sass/partials/_calendar.scss */
+/* line 132, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .reset-button {
   display: none;
   color: var(--litepickerButtonResetBtn);
 }
-/* line 129, ../sass/partials/_calendar.scss */
+/* line 136, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .reset-button > svg,
 .litepicker .container__months .month-item-header .reset-button > img {
   fill: var(--litepickerButtonResetBtn);
   pointer-events: none;
 }
-/* line 135, ../sass/partials/_calendar.scss */
+/* line 142, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .reset-button:hover {
   color: var(--litepickerButtonResetBtnHover);
 }
-/* line 138, ../sass/partials/_calendar.scss */
+/* line 145, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .reset-button:hover > svg {
   fill: var(--litepickerButtonResetBtnHover);
 }
-/* line 144, ../sass/partials/_calendar.scss */
+/* line 151, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .button-previous-month,
 .litepicker .container__months .month-item-header .button-next-month {
   visibility: hidden;
@@ -4033,7 +4005,7 @@
   transition: color 0.3s, border 0.3s;
   cursor: default;
 }
-/* line 154, ../sass/partials/_calendar.scss */
+/* line 161, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .button-previous-month > svg,
 .litepicker .container__months .month-item-header .button-previous-month > img,
 .litepicker .container__months .month-item-header .button-next-month > svg,
@@ -4041,24 +4013,24 @@
   fill: var(--litepickerMonthButton);
   pointer-events: none;
 }
-/* line 160, ../sass/partials/_calendar.scss */
+/* line 167, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .button-previous-month:hover,
 .litepicker .container__months .month-item-header .button-next-month:hover {
   color: var(--litepickerMonthButtonHover);
 }
-/* line 163, ../sass/partials/_calendar.scss */
+/* line 170, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .button-previous-month:hover > svg,
 .litepicker .container__months .month-item-header .button-next-month:hover > svg {
   fill: var(--litepickerMonthButtonHover);
 }
-/* line 170, ../sass/partials/_calendar.scss */
+/* line 177, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-weekdays-row {
   display: flex;
   justify-self: center;
   justify-content: flex-start;
   color: var(--litepickerMonthWeekdayColor);
 }
-/* line 176, ../sass/partials/_calendar.scss */
+/* line 183, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-weekdays-row > div {
   padding: 5px 0;
   font-size: 85%;
@@ -4066,23 +4038,23 @@
   width: var(--litepickerDayWidth);
   text-align: center;
 }
-/* line 186, ../sass/partials/_calendar.scss */
+/* line 193, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item:first-child .button-previous-month {
   visibility: visible;
 }
-/* line 192, ../sass/partials/_calendar.scss */
+/* line 199, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item:last-child .button-next-month {
   visibility: visible;
 }
-/* line 198, ../sass/partials/_calendar.scss */
+/* line 205, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item.no-previous-month .button-previous-month {
   visibility: hidden;
 }
-/* line 204, ../sass/partials/_calendar.scss */
+/* line 211, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item.no-next-month .button-next-month {
   visibility: hidden;
 }
-/* line 211, ../sass/partials/_calendar.scss */
+/* line 218, ../sass/partials/_calendar.scss */
 .litepicker .container__days {
   display: flex;
   flex-wrap: wrap;
@@ -4091,7 +4063,7 @@
   text-align: center;
   box-sizing: content-box;
 }
-/* line 219, ../sass/partials/_calendar.scss */
+/* line 226, ../sass/partials/_calendar.scss */
 .litepicker .container__days > div,
 .litepicker .container__days > a {
   padding: 5px 0;
@@ -4100,7 +4072,7 @@
   border-width: 1px;
   text-decoration: none;
 }
-/* line 228, ../sass/partials/_calendar.scss */
+/* line 235, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item {
   color: var(--litepickerDayColor);
   border-style: solid;
@@ -4112,45 +4084,45 @@
   border-radius: 0px;
   box-sizing: border-box;
 }
-/* line 239, ../sass/partials/_calendar.scss */
+/* line 246, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item:hover {
   cursor: pointer;
   color: var(--litepickerDayColorHover);
   box-shadow: inset 0 0 0 1px var(--litepickerDayColorHover);
 }
-/* line 245, ../sass/partials/_calendar.scss */
+/* line 252, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-today {
   color: var(--litepickerDayIsTodayColor);
 }
-/* line 249, ../sass/partials/_calendar.scss */
+/* line 256, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-holiday {
   color: var(--litepickerDayIsHolidayColor);
   background: var(--litepickerDayIsHolidayColorBg);
 }
-/* line 252, ../sass/partials/_calendar.scss */
+/* line 259, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-holiday:hover {
   cursor: not-allowed;
   box-shadow: none;
 }
-/* line 258, ../sass/partials/_calendar.scss */
+/* line 265, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-partially-booked {
   color: var(--litepickerDayIsPartiallyLockedColor);
   background: linear-gradient(to bottom right, var(--litepickerDayIsPartiallyLockedColorBgOne) 0%, var(--litepickerDayIsPartiallyLockedColorBgOne) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 100%);
 }
-/* line 266, ../sass/partials/_calendar.scss */
+/* line 273, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-partially-booked:hover {
   cursor: pointer;
   color: var(--litepickerDayIsPartiallyLockedColor);
   background: linear-gradient(to bottom right, lightgreen 0%, lightgreen 50%, lightgray 50%, lightgray 100%);
   box-shadow: none;
 }
-/* line 278, ../sass/partials/_calendar.scss */
+/* line 285, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-in-range {
   color: var(--litepickerDayIsStartColor);
   background-color: var(--litepickerDayIsInRange);
   border-radius: 0;
 }
-/* line 284, ../sass/partials/_calendar.scss */
+/* line 291, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-start-date {
   color: var(--litepickerDayIsStartColor);
   background: var(--litepickerDayIsStartBg) !important;
@@ -4160,14 +4132,14 @@
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-/* line 293, ../sass/partials/_calendar.scss */
+/* line 300, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-start-date.is-flipped {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
 }
-/* line 301, ../sass/partials/_calendar.scss */
+/* line 308, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-end-date {
   color: var(--litepickerDayIsEndColor);
   background: var(--litepickerDayIsEndBg) !important;
@@ -4177,49 +4149,49 @@
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
 }
-/* line 310, ../sass/partials/_calendar.scss */
+/* line 317, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-end-date.is-flipped {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-/* line 318, ../sass/partials/_calendar.scss */
+/* line 325, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-start-date.is-end-date {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
 }
-/* line 325, ../sass/partials/_calendar.scss */
+/* line 332, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-highlighted {
   color: var(--litepickerHighlightedDayColor);
   background: var(--litepickerHighlightedDayBg) !important;
   background-color: var(--litepickerHighlightedDayBg);
 }
-/* line 331, ../sass/partials/_calendar.scss */
+/* line 338, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-booked {
   color: var(--litepickerDayIsBookedColor);
   background-color: var(--litepickerDayIsBookedColorBg);
 }
-/* line 335, ../sass/partials/_calendar.scss */
+/* line 342, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-booked:hover {
   color: var(--litepickerDayIsBookedColor);
   box-shadow: none;
   cursor: default;
 }
-/* line 342, ../sass/partials/_calendar.scss */
+/* line 349, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-locked {
   color: var(--litepickerDayIsLockedColor);
   background: var(--litepickerDayIsLockedColorBg) !important;
 }
-/* line 346, ../sass/partials/_calendar.scss */
+/* line 353, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item.is-locked:hover {
   cursor: not-allowed;
   color: var(--litepickerDayIsLockedColor);
   box-shadow: none;
 }
-/* line 354, ../sass/partials/_calendar.scss */
+/* line 361, ../sass/partials/_calendar.scss */
 .litepicker .container__days .week-number {
   display: flex;
   align-items: center;
@@ -4227,7 +4199,7 @@
   color: #9e9e9e;
   font-size: 85%;
 }
-/* line 363, ../sass/partials/_calendar.scss */
+/* line 370, ../sass/partials/_calendar.scss */
 .litepicker .container__footer {
   text-align: right;
   padding: 10px 5px;
@@ -4237,12 +4209,12 @@
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-/* line 372, ../sass/partials/_calendar.scss */
+/* line 379, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .preview-date-range {
   margin-right: 10px;
   font-size: 90%;
 }
-/* line 377, ../sass/partials/_calendar.scss */
+/* line 384, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .button-cancel {
   background-color: var(--litepickerButtonCancelBg);
   color: var(--litepickerButtonCancelColor);
@@ -4250,12 +4222,12 @@
   padding: 3px 7px 4px;
   border-radius: 3px;
 }
-/* line 384, ../sass/partials/_calendar.scss */
+/* line 391, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .button-cancel > svg,
 .litepicker .container__footer .button-cancel > img {
   pointer-events: none;
 }
-/* line 390, ../sass/partials/_calendar.scss */
+/* line 397, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .button-apply {
   background-color: var(--litepickerButtonApplyBg);
   color: var(--litepickerButtonApplyColor);
@@ -4265,16 +4237,16 @@
   margin-left: 10px;
   margin-right: 10px;
 }
-/* line 399, ../sass/partials/_calendar.scss */
+/* line 406, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .button-apply:disabled {
   opacity: 0.7;
 }
-/* line 403, ../sass/partials/_calendar.scss */
+/* line 410, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .button-apply > svg,
 .litepicker .container__footer .button-apply > img {
   pointer-events: none;
 }
-/* line 410, ../sass/partials/_calendar.scss */
+/* line 417, ../sass/partials/_calendar.scss */
 .litepicker .container__tooltip {
   position: absolute;
   margin-top: -4px;
@@ -4287,7 +4259,7 @@
   pointer-events: none;
   visibility: hidden;
 }
-/* line 422, ../sass/partials/_calendar.scss */
+/* line 429, ../sass/partials/_calendar.scss */
 .litepicker .container__tooltip:before {
   position: absolute;
   bottom: -5px;
@@ -4297,7 +4269,7 @@
   border-left: 5px solid transparent;
   content: "";
 }
-/* line 432, ../sass/partials/_calendar.scss */
+/* line 439, ../sass/partials/_calendar.scss */
 .litepicker .container__tooltip:after {
   position: absolute;
   bottom: -4px;
@@ -4307,11 +4279,11 @@
   border-left: 4px solid transparent;
   content: "";
 }
-/* line 444, ../sass/partials/_calendar.scss */
+/* line 451, ../sass/partials/_calendar.scss */
 .litepicker-open {
   overflow: hidden;
 }
-/* line 448, ../sass/partials/_calendar.scss */
+/* line 455, ../sass/partials/_calendar.scss */
 .litepicker-backdrop {
   display: none;
   background-color: #000;
@@ -4323,7 +4295,7 @@
   left: 0;
 }
 
-/* line 462, ../sass/partials/_calendar.scss */
+/* line 469, ../sass/partials/_calendar.scss */
 #booking-form #fullDayInfo {
   clear: left;
 }
@@ -4549,57 +4521,63 @@
 }
 
 /* Booking list styles */
-/* line 1, ../sass/partials/_bookings.scss */
+/**
+* Bookings 
+*
+* @TODO: Move to /forms and /lists 
+*
+*/
+/* line 9, ../sass/partials/_bookings.scss */
 #ui-datepicker-div {
   display: none;
   background-color: white;
   padding: 1.5rem;
   border-radius: 8px;
 }
-/* line 7, ../sass/partials/_bookings.scss */
+/* line 15, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-datepicker-calendar {
   margin-top: 1rem;
   margin-bottom: 1rem;
   min-width: 10rem;
   text-align: center;
 }
-/* line 12, ../sass/partials/_bookings.scss */
+/* line 20, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-datepicker-calendar td a {
   color: #84AE53;
 }
-/* line 17, ../sass/partials/_bookings.scss */
+/* line 25, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-datepicker-next,
 #ui-datepicker-div .ui-datepicker-prev {
   cursor: pointer;
 }
-/* line 22, ../sass/partials/_bookings.scss */
+/* line 30, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-datepicker-next {
   right: 1.5rem;
   position: absolute;
 }
-/* line 27, ../sass/partials/_bookings.scss */
+/* line 35, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-datepicker-title {
   margin-top: 1rem;
   color: black;
   clear: both;
 }
-/* line 33, ../sass/partials/_bookings.scss */
+/* line 41, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-corner-all {
   color: #84AE53;
 }
 
-/* line 39, ../sass/partials/_bookings.scss */
+/* line 47, ../sass/partials/_bookings.scss */
 .booking-list--filters {
   display: flex;
   flex-wrap: wrap;
 }
 @media (max-width: 400px) {
-  /* line 39, ../sass/partials/_bookings.scss */
+  /* line 47, ../sass/partials/_bookings.scss */
   .booking-list--filters {
     width: 100%;
   }
 }
-/* line 47, ../sass/partials/_bookings.scss */
+/* line 55, ../sass/partials/_bookings.scss */
 .booking-list--filters .filter-wrapper {
   font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
   float: left;
@@ -4609,143 +4587,187 @@
   flex-basis: 0;
   margin-right: 20px;
 }
-/* line 57, ../sass/partials/_bookings.scss */
+/* line 65, ../sass/partials/_bookings.scss */
 .booking-list--filters .filter-wrapper .filter-label {
   margin-bottom: 0.3rem;
   margin-left: 0;
 }
-/* line 63, ../sass/partials/_bookings.scss */
+/* line 71, ../sass/partials/_bookings.scss */
 .booking-list--filters .select2 {
   width: 100%;
   padding: 0.25rem 0.5rem;
   border: none;
 }
-/* line 69, ../sass/partials/_bookings.scss */
+/* line 77, ../sass/partials/_bookings.scss */
 .booking-list--filters #endDate-datepicker,
 .booking-list--filters #startDate-datepicker {
   width: 100%;
   padding: 0.25rem 0.5rem;
   border: none;
 }
-/* line 76, ../sass/partials/_bookings.scss */
+/* line 84, ../sass/partials/_bookings.scss */
 .booking-list--filters .reset-filters {
   padding-top: 15px;
 }
-/* line 79, ../sass/partials/_bookings.scss */
+/* line 87, ../sass/partials/_bookings.scss */
 .booking-list--filters .reset-filters > .cb-button, .booking-list--filters .cb-button-container .reset-filters > a, .cb-button-container .booking-list--filters .reset-filters > a, .booking-list--filters .cb-wrapper .cb-action .reset-filters > input, .cb-wrapper .cb-action .booking-list--filters .reset-filters > input, .booking-list--filters .cb-wrapper #booking-form .reset-filters > input, .cb-wrapper #booking-form .booking-list--filters .reset-filters > input, .booking-list--filters .cb-map-filters.cb-wrapper .cb-map-button-wrapper .reset-filters > button, .cb-map-filters.cb-wrapper .cb-map-button-wrapper .booking-list--filters .reset-filters > button {
   float: right;
   line-height: inherit;
 }
-/* line 85, ../sass/partials/_bookings.scss */
+/* line 93, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results {
   font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
   width: 100%;
 }
-/* line 92, ../sass/partials/_bookings.scss */
+/* line 100, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item {
   width: 100%;
   background-color: white;
 }
-/* line 96, ../sass/partials/_bookings.scss */
+/* line 104, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper {
   display: flex;
   margin-bottom: 5px;
   font-size: 0.9em;
 }
-/* line 100, ../sass/partials/_bookings.scss */
+/* line 108, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper .infos {
   display: flex;
 }
-/* line 103, ../sass/partials/_bookings.scss */
+/* line 111, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper p {
   margin: 0;
   border-right: 1px dashed #ccc;
   margin-right: 8px;
   padding-right: 8px;
 }
-/* line 108, ../sass/partials/_bookings.scss */
+/* line 116, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper p span {
   display: flex;
 }
-/* line 112, ../sass/partials/_bookings.scss */
+/* line 120, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper p:last-child {
   border: none;
 }
-/* line 116, ../sass/partials/_bookings.scss */
+/* line 124, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper h4 {
   font-weight: bold;
   font-size: 1.4rem;
   padding: 0;
 }
-/* line 123, ../sass/partials/_bookings.scss */
+/* line 131, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item--action {
   height: 30px;
   padding: 0;
 }
-/* line 126, ../sass/partials/_bookings.scss */
+/* line 134, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item--action a {
   font-size: 0.9rem;
   padding: 4px 20px;
   margin: 0 8px;
 }
-/* line 134, ../sass/partials/_bookings.scss */
+/* line 142, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .my-sizer-element {
   clear: both;
 }
-/* line 139, ../sass/partials/_bookings.scss */
+/* line 147, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination {
   font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
 }
-/* line 141, ../sass/partials/_bookings.scss */
+/* line 149, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul {
   display: flex;
   justify-content: center;
   padding: 0;
 }
-/* line 146, ../sass/partials/_bookings.scss */
+/* line 154, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li {
   list-style-type: none;
   position: relative;
   padding: 0 5px 0 5px;
 }
-/* line 151, ../sass/partials/_bookings.scss */
+/* line 159, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li.active {
   font-weight: bold;
 }
-/* line 154, ../sass/partials/_bookings.scss */
+/* line 162, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li:hover {
   color: #84AE53;
 }
-/* line 160, ../sass/partials/_bookings.scss */
+/* line 168, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li[data-page] {
   cursor: pointer;
 }
 
+/* Booking list styles */
+/**
+ * Notices
+ *
+ * Block-Level 
+ * inline
+ *
+ */
+/* line 10, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice {
+  margin-bottom: 15px;
+  font-size: 18px;
+  vertical-align: middle;
+  font-weight: bold;
+  position: relative;
+  background: #FFF9C5;
+  /* Post status */
+}
+/* line 20, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice.cb-status-unconfirmed {
+  background: #FFF9C5;
+}
+/* line 23, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice.cb-status-confirmed {
+  background: #74ce3c;
+}
+/* line 26, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice.cb-status-cancelled {
+  background: #74ce3c;
+}
+/* line 29, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice.error {
+  background: #d5425c;
+}
+/* line 33, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice-inline {
+  padding: 5px;
+  display: inline-block;
+}
+/* line 38, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice-inline.cb-status-not-available {
+  color: #9D9F9D;
+}
+
 /* Fixes for specific WP Themes */
 /**
- * Tweaks to make CB play nice with popular themes.
+ * Optimisation & Compatibility 
  *
- * @package   CommonsBooking
- * @author    Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since     0.7
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
+ * Tweaks to make CB play nice with popular Wordpress themes.
+ *
  */
-/* line 13, ../sass/partials/_themeoptimization.scss */
+/* line 9, ../sass/partials/_themeoptimization.scss */
 .cb-wrapper {
   /* Twenty Nineteen Theme*/
   /* Twenty Twenty Theme*/
 }
-/* line 15, ../sass/partials/_themeoptimization.scss */
+/* line 11, ../sass/partials/_themeoptimization.scss */
 .cb-wrapper h2::before {
   content: '';
   margin: 0;
   background: transparent;
 }
-/* line 21, ../sass/partials/_themeoptimization.scss */
+/* line 17, ../sass/partials/_themeoptimization.scss */
 .cb-wrapper h1, .cb-wrapper h2, .cb-wrapper h3, .cb-wrapper h4 {
   margin: 0 !important;
+}
+/* line 24, ../sass/partials/_themeoptimization.scss */
+.cb-wrapper .litepicker .container__days .day-item {
+  font-size: 2.2rem;
 }
 
 /*# sourceMappingURL=public.css.map */

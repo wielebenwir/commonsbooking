@@ -3,7 +3,7 @@
  * Shortcode [cb_bookings]
  * Model: Booking
  *
- * List all allowed bookings for current user
+ * List all allowed bookings with filter
  * 
  *
  */
@@ -21,7 +21,7 @@ if ($templateData && $templateData['total'] > 0) {
 
     $response .= '
 <div class="booking-list">
-  <div class="booking-list--filters cb-filters">
+  <div class="booking-list--filters cb-filter">
     <div class="filter-wrapper">
         <p class="filter-label">' . __('Startdate', 'commonsbooking') . '</p>
          <div class="filter-startdate" id="filter-startdate">        
