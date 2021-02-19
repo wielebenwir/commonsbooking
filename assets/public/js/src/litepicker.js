@@ -154,6 +154,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             picker = new Litepicker({
                 "element": document.getElementById('litepicker'),
                 "minDate": moment().format('YYYY-MM-DD'),
+                "startDate": moment().isAfter(globalCalendarData['startDate']) ? moment().format('YYYY-MM-DD') : data['startDate'],
+                "scrollToDate": true,
                 "inlineMode": true,
                 "firstDay": 1,
                 "lang": 'de-DE',
@@ -229,6 +231,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 {
                     "minDate": moment().isAfter(globalCalendarData['startDate']) ? moment().format('YYYY-MM-DD') : data['startDate'],
                     "maxDate": globalCalendarData['endDate'],
+                    "startDate": moment().isAfter(globalCalendarData['startDate']) ? moment().format('YYYY-MM-DD') : data['startDate'],
                     "days": globalCalendarData['days'],
                     "maxDays": globalCalendarData['maxDays'],
                     "lockDays": globalCalendarData['lockDays'],
