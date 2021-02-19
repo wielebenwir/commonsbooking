@@ -63,7 +63,6 @@ abstract class BookablePost extends PostRepository
             );
 
             // workaround: if user has admin-role get all available items
-            // TODO: better solution to check if user has administrator role
             if (in_array('administrator', $current_user->roles)) {
                 unset($args);
                 $args = array(
@@ -73,7 +72,6 @@ abstract class BookablePost extends PostRepository
                     'order'     => 'asc',
                 );
             }
-
 
             if($publishedOnly) {
                 $args['post_status'] = 'publish';

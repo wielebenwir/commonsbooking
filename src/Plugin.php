@@ -35,12 +35,13 @@ class Plugin
      * Deletes cb transients.
      * @param $param
      */
-    public static function clearCache($param = "") {
+    public static function clearCache($param = "")
+    {
         global $wpdb;
         $sql = "
             DELETE 
             FROM {$wpdb->options}
-            WHERE option_name like '_transient_commonsbooking%".$param."%'
+            WHERE option_name like '_transient_commonsbooking%" . $param . "%'
         ";
         $wpdb->query($sql);
     }
@@ -51,12 +52,13 @@ class Plugin
      *
      * @return string
      */
-    public static function getCacheId($custom_id = null) {
+    public static function getCacheId($custom_id = null)
+    {
         $backtrace = debug_backtrace()[2];
-        $namespace = str_replace('\\','_', strtolower($backtrace['class']));
-        $namespace .= '_'. $backtrace['function'];
-        $namespace .= '_'. md5( serialize($backtrace['args']));
-        if($custom_id) {
+        $namespace = str_replace('\\', '_', strtolower($backtrace['class']));
+        $namespace .= '_' . $backtrace['function'];
+        $namespace .= '_' . md5(serialize($backtrace['args']));
+        if ($custom_id) {
             $namespace .= $custom_id;
         }
         return $namespace;
@@ -68,7 +70,8 @@ class Plugin
      *
      * @return mixed
      */
-    public static function getCacheItem($custom_id = null) {
+    public static function getCacheItem($custom_id = null)
+    {
         return get_transient(self::getCacheId($custom_id));
     }
 
@@ -79,7 +82,8 @@ class Plugin
      *
      * @return mixed
      */
-    public static function setCacheItem($value, $custom_id = null) {
+    public static function setCacheItem($value, $custom_id = null)
+    {
         return set_transient(self::getCacheId($custom_id), $value);
     }
 
@@ -111,7 +115,7 @@ class Plugin
         add_action('init', array(self::class, 'registerLocationTaxonomy'), 30);
 
         // check if we have a new version and run tasks
-        add_action( 'admin_init', array( self::class, 'runTasksAfterUpdate' ), 30 );
+        add_action('admin_init', array(self::class, 'runTasksAfterUpdate'), 30);
 
         // Add menu pages
         add_action('admin_menu', array(self::class, 'addMenuPages'));
@@ -120,25 +124,25 @@ class Plugin
         add_filter('parent_file', array($this, "setParentFile"));
 
         // Remove cache items on save.
-        add_action( 'save_post', array( $this, 'savePostActions' ), 10, 2 );
+        add_action('save_post', array($this, 'savePostActions'), 10, 2);
 
         // actions after saving plugin options
-        add_action( 'admin_init', array (self::class, 'saveOptionsActions'), 100 );
+        add_action('admin_init', array(self::class, 'saveOptionsActions'), 100);
 
-        add_action( 'plugins_loaded', array ($this, 'commonsbooking_load_textdomain'), 20 );
+        add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
         $map_admin = new LocationMapAdmin();
-        add_action( 'plugins_loaded', array($map_admin, 'load_location_map_admin'));
+        add_action('plugins_loaded', array($map_admin, 'load_location_map_admin'));
 
         // register User Widget
-        add_action( 'widgets_init', array ($this, 'registerUserWidget' ) );
+        add_action('widgets_init', array($this, 'registerUserWidget'));
 
     }
 
-    public function commonsbooking_load_textdomain() {
-        load_plugin_textdomain( 'commonsbooking', false, COMMONSBOOKING_PLUGIN_DIR . 'languages' );
+    public function commonsbooking_load_textdomain()
+    {
+        load_plugin_textdomain('commonsbooking', false, COMMONSBOOKING_PLUGIN_DIR . 'languages');
     }
-
 
     /**
      * Removes cache item in connection to post_type.
@@ -150,19 +154,28 @@ class Plugin
         if (!in_array($post->post_type, self::getCustomPostTypesLabels())) {
             return;
         }
-//        self::clearCache(str_replace('cb_','', $post->post_type));
-        self::clearCache();
+
+        if (in_array($post->post_type, [
+            Location::$postType,
+            Item::$postType
+        ]) ) {
+            self::clearCache('item');
+            self::clearCache('location');
+        }
 
         // Remove cache for timeframe repos
-        if($post->post_type == Timeframe::$postType) {
+        if ($post->post_type == Timeframe::$postType) {
             self::clearCache('book');
+            self::clearCache('timeframe');
+            self::clearCache('model');
         }
     }
 
     /**
      * Function to register our new routes from the controller.
      */
-    public function initRoutes() {
+    public function initRoutes()
+    {
         add_action(
             'rest_api_init',
             function () {
@@ -174,7 +187,7 @@ class Plugin
                     new \CommonsBooking\API\ProjectsRoute(),
 
                 ];
-                foreach($routes as $route) {
+                foreach ($routes as $route) {
                     $route->register_routes();
                 }
             }
@@ -184,9 +197,10 @@ class Plugin
     /**
      * Adds bookingcode actions.
      */
-    public function initBookingcodes() {
-        add_action( 'before_delete_post', array(BookingCodes::class,'deleteBookingCodes'), 10 );
-        add_action( "admin_action_csvexport", array(\CommonsBooking\View\BookingCodes::class, 'renderCSV'), 10, 0 );
+    public function initBookingcodes()
+    {
+        add_action('before_delete_post', array(BookingCodes::class, 'deleteBookingCodes'), 10);
+        add_action("admin_action_csvexport", array(\CommonsBooking\View\BookingCodes::class, 'renderCSV'), 10, 0);
     }
 
     /**
@@ -335,16 +349,16 @@ class Plugin
             $customPostType . 's_category',
             $customPostType,
             array(
-                'label'        => esc_html__('Item Category', 'commonsbooking'),
-                'rewrite'      => array('slug' => $customPostType . '-cat'),
+                'label' => esc_html__('Item Category', 'commonsbooking'),
+                'rewrite' => array('slug' => $customPostType . '-cat'),
                 'hierarchical' => true,
                 'show_in_rest' => true,
             )
         );
 
         // If error, yell about it.
-        if ( is_wp_error( $result ) ) {
-            wp_die( $result->get_error_message() );
+        if (is_wp_error($result)) {
+            wp_die($result->get_error_message());
         }
     }
 
@@ -360,16 +374,16 @@ class Plugin
             $customPostType . 's_category',
             $customPostType,
             array(
-                'label'        => esc_html__('Location Category', 'commonsbooking'),
-                'rewrite'      => array('slug' => $customPostType . '-cat'),
+                'label' => esc_html__('Location Category', 'commonsbooking'),
+                'rewrite' => array('slug' => $customPostType . '-cat'),
                 'hierarchical' => true,
                 'show_in_rest' => true,
             )
         );
 
         // If error, yell about it.
-        if ( is_wp_error( $result ) ) {
-            wp_die( $result->get_error_message() );
+        if (is_wp_error($result)) {
+            wp_die($result->get_error_message());
         }
     }
 
@@ -384,20 +398,20 @@ class Plugin
         };
 
         $roleCapMapping = [
-            Plugin::$CB_MANAGER_ID     => [
-                'read'                     => true,
+            Plugin::$CB_MANAGER_ID => [
+                'read' => true,
                 'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
             ],
-            'administrator'            => [
-                'read'                     => true,
-                'edit_posts'               => true,
+            'administrator' => [
+                'read' => true,
+                'edit_posts' => true,
                 'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
             ],
         ];
 
         foreach ($roleCapMapping as $roleName => $caps) {
             $role = get_role($roleName);
-            if ( ! $role) {
+            if (!$role) {
                 $role = add_role(
                     $roleName,
                     __('CommonsBooking Manager', 'commonsbooking')
@@ -440,7 +454,7 @@ class Plugin
     public static function maybeEnableCB1UserFields()
     {
         $enabled = Settings::getOption('commonsbooking_options_migration', 'enable-cb1-user-fields');
-        if ( $enabled == 'on') {
+        if ($enabled == 'on') {
             new CB1UserFields;
         }
     }
@@ -451,7 +465,7 @@ class Plugin
      */
     public static function saveOptionsActions()
     {
-        if ( get_transient('commonsbooking_options_saved') == 1) {
+        if (get_transient('commonsbooking_options_saved') == 1) {
             // restore default values if necessary
             AdminOptions::SetOptionsDefaultValues();
 
@@ -463,7 +477,7 @@ class Plugin
     }
 
 
-     /**
+    /**
      * Register Admin-Options
      */
     public static function registerAdminOptions()
@@ -477,13 +491,14 @@ class Plugin
     /**
      * Check if plugin is installed or updated an run tasks
      */
-    public static function runTasksAfterUpdate() {
+    public static function runTasksAfterUpdate()
+    {
 
         $commonsbooking_version_option = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
-        $commonsbooking_installed_version = get_option ( $commonsbooking_version_option );
+        $commonsbooking_installed_version = get_option($commonsbooking_version_option);
 
         // check if installed version differs from plugin version in database
-        if ( COMMONSBOOKING_VERSION != $commonsbooking_installed_version OR !isset( $commonsbooking_installed_version ) ) {
+        if (COMMONSBOOKING_VERSION != $commonsbooking_installed_version or !isset($commonsbooking_installed_version)) {
 
             // set Options default values (e.g. if there are new fields added)
             AdminOptions::SetOptionsDefaultValues();
@@ -499,7 +514,7 @@ class Plugin
             self::removeDeprecatedUserRoles();
 
             // update version number in options
-            update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
+            update_option($commonsbooking_version_option, COMMONSBOOKING_VERSION);
         }
     }
 
@@ -507,68 +522,66 @@ class Plugin
      * Gets location position for locations without coordinates.
      * @throws \Geocoder\Exception\Exception
      */
-    public static function updateLocationCoordinates() {
+    public static function updateLocationCoordinates()
+    {
         $locations = \CommonsBooking\Repository\Location::get();
 
         foreach ($locations as $location) {
-            if(!($location->getMeta('geo_latitude') && $location->getMeta('geo_longitude'))) {
+            if (!($location->getMeta('geo_latitude') && $location->getMeta('geo_longitude'))) {
                 $location->updateGeoLocation();
             }
         }
     }
 
-    public function registerUserWidget() {
-        register_widget( '\CommonsBooking\Wordpress\Widget\UserWidget' );
+    public function registerUserWidget()
+    {
+        register_widget('\CommonsBooking\Wordpress\Widget\UserWidget');
     }
 
 
-    
     /**
      * remove deprecated user roles
      * @TODO: Can be removed after a while (exists since version 2.3.3)
      *
      * @return void
      */
-    public static function removeDeprecatedUserRoles() {
+    public static function removeDeprecatedUserRoles()
+    {
+        $roles_array = array(
+            'location_admin',
+            'item_admin',
+            'location_owner',
+            'cb2_subscriber',
+            'cb2_contributor',
+        );
 
-            $users = false;
-            $roles_array = array(
-                'location_admin',
-                'item_admin',
-                'location_owner',
-                'cb2_subscriber',
-                'cb2_contributor',    
-            );
+        // get users with one of the deprecated roles
+        $users = get_users(array('role__in' => $roles_array));
 
-            // get users with one of the deprecated roles
-            $users =  get_users( array( 'role__in' => $roles_array ) );
-
-            if ($users) {
-                foreach ($users AS $key => $user) {
-                    foreach ($roles_array AS $role_key => $role) {
-                        $user->remove_role($role);
-                        $user->add_role('subscriber');
-                    }
-                    $user_login[] = $user->user_login;
+        if ($users) {
+            foreach ($users as $key => $user) {
+                foreach ($roles_array as $role_key => $role) {
+                    $user->remove_role($role);
+                    $user->add_role('subscriber');
                 }
-
-                $message = commonsbooking_sanitizeHTML('<strong>Notice:</strong> Some deprecated user roles from older CommonsBooking versions have been removed because they are not used anymore. The following users were assigned to one of these deprecated user roles. They are assigned now to the default Subscriber role. Please check if these users should be assigned to another role, e.g. CommonsBooking Manager. Please copy and paste this list in case you need it for detailed checks. This message will not be shown again. <br>');
-                $message .= implode('<br>', $user_login);
-                new \CommonsBooking\Messages\AdminMessage($message);
-
-                }
-
-            foreach ($roles_array AS $role_key => $role ) {
-                remove_role($role);
+                $user_login[] = $user->user_login;
             }
+
+            $message = commonsbooking_sanitizeHTML('<strong>Notice:</strong> Some deprecated user roles from older CommonsBooking versions have been removed because they are not used anymore. The following users were assigned to one of these deprecated user roles. They are assigned now to the default Subscriber role. Please check if these users should be assigned to another role, e.g. CommonsBooking Manager. Please copy and paste this list in case you need it for detailed checks. This message will not be shown again. <br>');
+            $message .= implode('<br>', $user_login);
+            new \CommonsBooking\Messages\AdminMessage($message);
+
+        }
+
+        foreach ($roles_array as $role_key => $role) {
+            remove_role($role);
+        }
 
     }
 
 
-    public static function updateUserRoleName() {
-
-        $cb_manager  = get_role('cb_manager');
-
-
+    public static function updateUserRoleName()
+    {
+        $cb_manager = get_role('cb_manager');
     }
 }
