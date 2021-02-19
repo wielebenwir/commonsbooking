@@ -235,6 +235,17 @@ class Plugin
             }
         }
 
+        // Set 'cb-dashboard' as parent for cb categories
+        if (in_array($current_screen->base, array('edit-tags'))) {
+            if($current_screen->taxonomy && in_array($current_screen->taxonomy, [
+                    Location::$postType . 's_category',
+                    Item::$postType . 's_category'
+                ])
+            ) {
+                return 'cb-dashboard';
+            }
+        }
+
         return $parent_file;
     }
 
@@ -299,6 +310,26 @@ class Plugin
                 $params[6]
             );
         }
+
+        // Add menu item for item categories
+        add_submenu_page(
+            'cb-dashboard',
+            esc_html__('Item Categories', 'commonsbooking'),
+            esc_html__('Item Categories', 'commonsbooking'),
+            'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
+            admin_url( 'edit-tags.php' ).'?taxonomy=' . Item::$postType . 's_category',
+            ''
+        );
+
+        // Add menu item for location categories
+        add_submenu_page(
+            'cb-dashboard',
+            esc_html__('Location Categories', 'commonsbooking'),
+            esc_html__('Location Categories', 'commonsbooking'),
+            'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
+            admin_url( 'edit-tags.php' ).'?taxonomy=' . Location::$postType . 's_category',
+            ''
+        );
     }
 
     /**
