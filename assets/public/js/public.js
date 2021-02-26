@@ -807,7 +807,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return this.options.disallowBookedDaysInRange && this.options.bookedDays.length && 2 === this.datePicked.length;
             }, e.prototype.onClick = function(t) {
                 var e = this, i = t.target;
-                if (i && this.picker) if (this.shouldShown(i)) this.show(i); else if (i.closest("." + p.litepicker), 
+                if (i && this.picker) if (this.shouldShown(i)) this.show(i); else if (i.closest("." + p.litepicker) || this.clearSelection(), 
                 i.classList.contains(p.dayItem)) {
                     if (t.preventDefault(), !this.isSamePicker(i)) return;
                     if (i.classList.contains(p.isLocked)) return;
