@@ -162,10 +162,8 @@ class Calendar
                 $dayArray['lastSlotBooked'] = true;
             }
 
-            // We need only bookable slots...
-            if ($timeFrameType == Timeframe::BOOKABLE_ID) {
-                $dayArray['slots'][] = $slot;
-            }
+            // Add slot to array
+            $dayArray['slots'][] = $slot;
 
             // Remove holiday flag, if there is at least one slot that isn't of type holiday
             if ( ! in_array($timeFrameType, [Timeframe::HOLIDAYS_ID, Timeframe::OFF_HOLIDAYS_ID])) {
@@ -272,7 +270,7 @@ class Calendar
 
             if(count($bookableTimeframes)) {
                 /** @var \CommonsBooking\Model\Timeframe $firstBookableTimeframe */
-                $firstBookableTimeframe = $bookableTimeframes[0];
+                $firstBookableTimeframe = array_pop($bookableTimeframes);
 
                 $startDateTimestamp = $firstBookableTimeframe->getStartDate();
                 $startDate = new Day(date('Y-m-d', $startDateTimestamp));
