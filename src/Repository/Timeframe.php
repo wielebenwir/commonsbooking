@@ -131,7 +131,7 @@ class Timeframe extends PostRepository
                             (in_array($location, $locations) && in_array($item, $items));
                     });
                 }
-//
+
                 // Filter by configured days
                 $posts = array_filter($posts, function ($post) use ($date) {
                     if($weekdays = get_post_meta($post->ID, 'weekdays', true)) {
