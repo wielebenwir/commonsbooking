@@ -167,6 +167,9 @@ class Plugin
         if ($post->post_type == Timeframe::$postType) {
             self::clearCache('book');
             self::clearCache('timeframe');
+            self::clearCache('bookablepost');
+            self::clearCache('day');
+            self::clearCache('week');
             self::clearCache('model');
         }
     }

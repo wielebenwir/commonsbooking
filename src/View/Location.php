@@ -281,6 +281,7 @@ class Location extends View
      */
     public static function getCalendarData()
     {
+        // @TODO: Cache!
         $jsonResponse = self::getCalendarDataArray();
 
         header('Content-Type: application/json');
