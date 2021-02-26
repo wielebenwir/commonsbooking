@@ -47,7 +47,7 @@ class Item extends View
             $args['location'] = new \CommonsBooking\Model\Location(get_post($location));
         }
 
-        $calendarData = Location::getCalendarDataArray(
+        $calendarData = \CommonsBooking\View\Calendar::getCalendarDataArray(
             $item,
             array_key_exists('location', $args) ? $args['location'] : null
         );
