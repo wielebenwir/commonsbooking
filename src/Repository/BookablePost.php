@@ -176,6 +176,13 @@ abstract class BookablePost extends PostRepository
                 'nopaging'    => true,
             );
 
+            // Add custom taxonomy filter
+            if(array_key_exists('category_slug', $args)) {
+                $args['taxonomy'] = static::getPostType() . 's_category';
+                $args['term'] = $args['category_slug'];
+                unset($args['category_slug']);
+            }
+
             $queryArgs = wp_parse_args($args, $defaults);
             $query     = new \WP_Query($queryArgs);
 
