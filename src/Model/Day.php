@@ -183,13 +183,6 @@ class Day
             $startSlot = $this->getSlotByTime($startTime, $grid);
         }
 
-        // If we have a overbooked day, we need to mark all slots as booked
-        if (!Timeframe::isOverBookable($timeframe)) {
-            // Check if timeframe began before the current day
-            if (strtotime($this->getDate()) > $startTime->getTimestamp()) {
-                $startSlot = 0;
-            }
-        }
         return $startSlot;
     }
 

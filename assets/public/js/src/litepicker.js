@@ -30,10 +30,25 @@ document.addEventListener("DOMContentLoaded", function (event) {
             const startSelect = bookingForm.find('select[name=repetition-start]');
             const endSelect = bookingForm.find('select[name=repetition-end]');
             const startValue = startSelect.val();
+            let bookedElementBefore = false;
+            let firstAvailableOptionSelected = false;
+
             endSelect.find('option').each(function () {
-                if (jQuery(this).val() < startValue) {
+                // Disable element if its smaller than startvalue, booked or if there is an disabled element before
+                if (jQuery(this).val() < startValue || bookedElementBefore || this.dataset.booked == "true") {
                     jQuery(this).attr('disabled', 'disabled');
                     jQuery(this).prop("selected", false)
+                } else {
+                    jQuery(this).removeAttr('disabled');
+                    if(!firstAvailableOptionSelected) {
+                        jQuery(this).prop("selected", true);
+                        firstAvailableOptionSelected = true;
+                    }
+                }
+
+                // Check if current item is booked AND bigger than startValue
+                if(jQuery(this).val() > startValue && this.dataset.booked == "true") {
+                    bookedElementBefore = true;
                 }
             });
         };
@@ -46,6 +61,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 if(slot['disabled']) {
                     option.disabled = true;
                 }
+               if(slot['timeframe']['locked']) {
+                   option.disabled = true;
+                   option.dataset.booked = true;
+               }
                 select.append(option);
             });
         };

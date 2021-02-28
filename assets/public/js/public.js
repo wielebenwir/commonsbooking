@@ -807,7 +807,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return this.options.disallowBookedDaysInRange && this.options.bookedDays.length && 2 === this.datePicked.length;
             }, e.prototype.onClick = function(t) {
                 var e = this, i = t.target;
-                if (i && this.picker) if (this.shouldShown(i)) this.show(i); else if (i.closest("." + p.litepicker), 
+                if (i && this.picker) if (this.shouldShown(i)) this.show(i); else if (i.closest("." + p.litepicker) || this.clearSelection(), 
                 i.classList.contains(p.dayItem)) {
                     if (t.preventDefault(), !this.isSamePicker(i)) return;
                     if (i.classList.contains(p.isLocked)) return;
@@ -1647,13 +1647,17 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }, updateEndSelectTimeOptions = () => {
             const bookingForm = jQuery("#booking-form"), startSelect = bookingForm.find("select[name=repetition-start]"), endSelect = bookingForm.find("select[name=repetition-end]"), startValue = startSelect.val();
+            let bookedElementBefore = !1, firstAvailableOptionSelected = !1;
             endSelect.find("option").each(function() {
-                jQuery(this).val() < startValue && (jQuery(this).attr("disabled", "disabled"), jQuery(this).prop("selected", !1));
+                jQuery(this).val() < startValue || bookedElementBefore || "true" == this.dataset.booked ? (jQuery(this).attr("disabled", "disabled"), 
+                jQuery(this).prop("selected", !1)) : (jQuery(this).removeAttr("disabled"), firstAvailableOptionSelected || (jQuery(this).prop("selected", !0), 
+                firstAvailableOptionSelected = !0)), jQuery(this).val() > startValue && "true" == this.dataset.booked && (bookedElementBefore = !0);
             });
         }, updateSelectSlots = (select, slots, type = "start", fullday = !1) => {
             select.empty().attr("required", "required"), jQuery.each(slots, function(index, slot) {
                 let option = new Option(slot.timestart + " - " + slot.timeend, slot["timestamp" + type], fullday, fullday);
-                slot.disabled && (option.disabled = !0), select.append(option);
+                slot.disabled && (option.disabled = !0), slot.timeframe.locked && (option.disabled = !0, 
+                option.dataset.booked = !0), select.append(option);
             });
         }, isMobile = () => {
             const isPortrait = "portrait" === getOrientation();
