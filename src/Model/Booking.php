@@ -21,6 +21,28 @@ class Booking extends CustomPost
         "unconfirmed"
     ];
 
+        
+    /**
+     * returns label of booking states
+     *
+     * @param  mixed $status
+     * @return string
+     */
+    public function getBookingStateLabel () {
+        switch ($this->post_status) {
+            case 'canceled':
+                return commonsbooking_sanitizeHTML( __('canceled', 'commonsbooking') );
+                break;
+            case 'confirmed':
+                return commonsbooking_sanitizeHTML( __('confirmed', 'commonsbooking') );
+                break;
+            case 'unconfirmed':
+                return commonsbooking_sanitizeHTML( __('unconfirmed', 'commonsbooking') );
+                break;
+        }
+    }
+  
+    
     /**
      * @return Location
      * @throws \Exception

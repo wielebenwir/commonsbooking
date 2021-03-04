@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name:         CommonsBooking
- * Version:             2.4
+ * Version:             2.4.2
  * Requires at least:   5.2
  * Requires PHP:        7.0
  * Plugin URI:          https://commonsbooking.org
@@ -24,7 +24,7 @@ use CommonsBooking\Wordpress\Options\AdminOptions;
 
 defined('ABSPATH') or die("Thanks for visting");
 
-define('COMMONSBOOKING_VERSION', '2.4');
+define('COMMONSBOOKING_VERSION', '2.4.2');
 define('COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking');
 define('COMMONSBOOKING_MENU_SLUG', COMMONSBOOKING_PLUGIN_SLUG . '-menu');
 define('COMMONSBOOKING_PLUGIN_DIR', plugin_dir_path(__FILE__));
@@ -60,7 +60,12 @@ add_action('admin_enqueue_scripts', 'commonsbooking_admin');
 
 function commonsbooking_public()
 {
-    wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/public.css', array(), COMMONSBOOKING_VERSION);
+    wp_enqueue_style(
+        'cb-styles-public',
+        plugin_dir_url(__FILE__).'assets/public/css/public.css',
+        array(),
+        WP_DEBUG ? time() : COMMONSBOOKING_VERSION
+    );
 
     // Template specific styles
     $template = wp_get_theme()->template;
@@ -124,7 +129,7 @@ function commonsbooking_public()
             'cb-scripts-public',
             plugin_dir_url(__FILE__).'assets/public/js/public.js',
             array( 'jquery' ),
-            '1.0.0',
+            time(),
             true
         );
     } else {
@@ -132,7 +137,7 @@ function commonsbooking_public()
             'cb-scripts-public',
             plugin_dir_url(__FILE__).'assets/public/js/public.min.js',
             array( 'jquery' ),
-            '1.0.0',
+            COMMONSBOOKING_VERSION,
             true
         );
     }

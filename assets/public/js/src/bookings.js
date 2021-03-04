@@ -1,5 +1,3 @@
-var Shuffle = window.Shuffle;
-
 class BookingList {
     constructor(element) {
         this.currentPage = 1;
@@ -416,26 +414,32 @@ class BookingList {
 
     _initHeadlineElement(item) {
         var headline = document.createElement('p');
-        headline.classList.add('cb-title');
-        //headline.classList.add('cb-item-title');
+        headline.classList.add('js-item--headline')
 
-        //var link = document.createElement('a');
-        //link.href = item.calendarLink;
-        //link.href = item.actions;
-        headline.innerHTML = item.item + ' @ ' + item.location;
-        //link.target = '_blank';
+        var date = document.createElement('span');
+        date.classList.add('cb-date')
+        date.innerText = item.startDateFormatted + ' - ' + item.endDateFormatted;
 
-        //headline.append(link)
+        var title = document.createElement('span');
+        title.classList.add('cb-title')
+        title.innerText = item.item + ' @ ' + item.location;
+
+        headline.append(date);
+        headline.append(title);
+
         return headline;
     }
 
     _initContentElement(item) {
         var contentElement = document.createElement('div');
-        //contentElement.className = 'booking-list-element'
-        contentElement.classList.add('infos')
-        contentElement.innerHTML = '<p class="cb-timeframe-dates"><span class="cb-start-date">' + item.startDateFormatted + ' &ndash; </span><span class="cb-end-date">' + item.endDateFormatted + '</span></p>'
-            + '<p class="cb-user-name">' + 'User: ' + item.user + '</p>'
-            + '<p class="cb-status">' + ' Status: ' + item.status  + '</p>'
+        contentElement.classList.add('js-item--infos');
+
+        let html = '';
+        for(const [key, contentItem] of Object.entries(item.content)) {
+            html += '<span>' + contentItem.label + ': ' + contentItem.value + '</span>';
+        }
+        html += '';
+        contentElement.innerHTML = html;
         return contentElement;
 
     }
@@ -463,8 +467,8 @@ class BookingList {
 
         contentWrapperElement.append(this._initHeadlineElement(i));
         contentWrapperElement.append(this._initContentElement(i));
+        contentWrapperElement.append(this._initActionsElement(i));
         item.append(contentWrapperElement);
-        item.append(this._initActionsElement(i));
 
         return item.outerHTML;
     }
@@ -522,5 +526,8 @@ class BookingList {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    window.demo = new BookingList(document.getElementById('booking-list--results'));
+    var bookingList = document.getElementById('booking-list--results');
+    if(bookingList) {
+        window.demo = new BookingList(bookingList);
+    }
 });

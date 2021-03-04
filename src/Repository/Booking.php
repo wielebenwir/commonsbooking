@@ -80,54 +80,32 @@ class Booking extends PostRepository
      * Returns all bookings, allowed to see/edit for current user.
      *
      * @param bool $asModel
-     *
+     * @param null $startDate
      * @return array
      * @throws \Exception
      */
-    public static function getForCurrentUser($asModel = false)
+    public static function getForCurrentUser($asModel = false, $startDate = null)
     {
-        $args = array(
-            'post_type'   => Timeframe::$postType,
-            'meta_query'  => array(
-                'relation' => "AND",
-                array(
-                    'key'     => 'type',
-                    'value'   => Timeframe::BOOKING_ID,
-                    'compare' => '=',
-                ),
-            ),
-            'post_status' => 'any',
-            'nopaging'    => true,
+        if (!is_user_logged_in()) return [];
+
+        $posts = \CommonsBooking\Repository\Timeframe::get(
+            [],
+            [],
+            [Timeframe::BOOKING_ID],
+            null,
+            $asModel,
+            $startDate,
+            ['canceled', 'confirmed', 'unconfirmed']
         );
 
-        $query = new \WP_Query($args);
-        if ($query->have_posts()) {
-            $posts = $query->get_posts();
-
-            $current_user = wp_get_current_user();
-            $isAdmin      = false;
-            if (in_array('administrator', (array)$current_user->roles)) {
-                $isAdmin = true;
-            }
-
+        if ($posts) {
             // Check if it is the main query and one of our custom post types
-            if ( ! $isAdmin) {
-                foreach ($posts as $key => $post) {
-                    if ( ! commonsbooking_isCurrentUserAllowedToEdit($post)) {
-                        unset($posts[$key]);
-                    }
-                }
-            }
-
-            // Init posts as Booking-Model
-            if ($asModel) {
-                foreach ($posts as $key => &$post) {
-                    $post = new \CommonsBooking\Model\Booking($post);
-                }
-            }
-
-            return $posts;
+            $posts = array_filter($posts, function ($post) {
+                return commonsbooking_isCurrentUserAllowedToEdit($post);
+            });
         }
+
+        return $posts;
     }
 
 }

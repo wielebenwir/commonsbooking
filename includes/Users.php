@@ -75,7 +75,7 @@ function commonsbooking_isCurrentUserAllowedToEdit($post): bool
 
         if (
             (is_string($admins) && $current_user->ID != $admins) ||
-            is_array($admins) && ! in_array($current_user->ID, $admins)
+            (is_array($admins) && ! in_array($current_user->ID.'', $admins, true))
         ) {
             return false;
         }

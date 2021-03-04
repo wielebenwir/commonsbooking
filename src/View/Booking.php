@@ -23,6 +23,10 @@ class Booking extends View
         wp_die(); // All ajax handlers die when finished
     }
 
+    /**
+     * @return array|false|mixed
+     * @throws \Exception
+     */
     public static function getBookingListData()
     {
         $postsPerPage = 6;
@@ -64,7 +68,13 @@ class Booking extends View
             }
         }
 
-        $customId = md5(__CLASS__.__FUNCTION__.serialize($_POST));
+        $customId = md5(
+            __CLASS__.__FUNCTION__ .
+            serialize($_POST) .
+            serialize(is_user_logged_in()).
+            serialize(wp_get_current_user()->ID)
+        );
+
         if (false && Plugin::getCacheItem($customId)) {
             return Plugin::getCacheItem($customId);
         } else {
@@ -77,7 +87,10 @@ class Booking extends View
                 'location' => [],
             ];
 
-            $posts = \CommonsBooking\Repository\Booking::getForCurrentUser(true);
+            $posts = \CommonsBooking\Repository\Booking::getForCurrentUser(
+                true,
+                $filters['startDate'] ?: null
+            );
 
             if (!$posts) {
                 return false;
@@ -96,8 +109,7 @@ class Booking extends View
 //                if (commonsbooking_isCurrentUserAdmin()) {
 //                    $editLink = get_edit_post_link($booking->ID);
 //                }
-                $actions = '<a class="cb-button" href="'.$editLink.'">'.__('Booking',
-                        COMMONSBOOKING_PLUGIN_SLUG).'</a>';
+                $actions = '<a class="cb-button" href="'.$editLink.'">'. commonsbooking_sanitizeHTML( __('Details', 'commonsbooking') ).'</a>';
 
                 // Prepare row data
                 $rowData = [
@@ -110,7 +122,17 @@ class Booking extends View
                     "bookingDate" => date('d.m.Y H:i', strtotime($booking->post_date)),
                     "user"        => $userInfo->user_login,
                     "status"      => $booking->post_status,
-                    "calendarLink" => add_query_arg('item', $booking->getItem()->ID, get_permalink($booking->getLocation()->ID))
+                    "calendarLink" => add_query_arg('item', $booking->getItem()->ID, get_permalink($booking->getLocation()->ID)),
+                    "content" => [
+                        'user' => [
+                            'label' => commonsbooking_sanitizeHTML( __('User', 'commonsbooking') ),
+                            'value' => $userInfo->first_name . ' ' . $userInfo->last_name .' (' . $userInfo->user_login . ')',
+                        ],
+                        'status' => [
+                            'label' => commonsbooking_sanitizeHTML( __('Status', 'commonsbooking') ),
+                            'value' => commonsbooking_sanitizeHTML( __($booking->post_status, 'commonsbooking') ),
+                        ]
+                    ]
                 ];
 
                 $continue = false;
@@ -214,7 +236,6 @@ class Booking extends View
     {
         global $templateData;
         $templateData             = [];
-        $templateData['bookings'] = \CommonsBooking\Repository\Booking::getForCurrentUser();
         $templateData             = self::getBookingListData();
 
         ob_start();
