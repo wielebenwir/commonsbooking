@@ -174,6 +174,15 @@ class Timeframe extends CustomPost
     }
 
     /**
+     * Returns true if timeframe is full-day
+     * @return boolean
+     */
+    public function isFullDay()
+    {
+        return $this->getMeta('full-day') == 'on';
+    }
+
+    /**
      * Checks if Timeframe is valid.
      * @return bool
      * @throws \Exception
@@ -188,7 +197,7 @@ class Timeframe extends CustomPost
         ) {
             $postId = $this->ID;
 
-            if ($this->getStartTime() && ! $this->getEndTime()) {
+            if ($this->getStartTime() && ! $this->getEndTime() && !$this->isFullDay()) {
                 set_transient(self::ERROR_TYPE,
                     commonsbooking_sanitizeHTML(__("A pickup time but no return time has been set. Please set the return time.",
                         'commonsbooking')),
