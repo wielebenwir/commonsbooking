@@ -2,6 +2,8 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Plugin;
+
 class Week
 {
 
@@ -54,17 +56,30 @@ class Week
      * @return array
      * @throws \Exception
      */
-    public function getDays() {
-        $dto = new \DateTime();
-        $dto->setISODate($this->getYear(), $this->getWeek());
+    public function getDays()
+    {
+        $customId = md5(
+            $this->year .
+            $this->week .
+            serialize($this->locations) .
+            serialize($this->items) .
+            serialize($this->types)
+        );
+        if (Plugin::getCacheItem($customId)) {
+            return Plugin::getCacheItem($customId);
+        } else {
+            $dto = new \DateTime();
+            $dto->setISODate($this->getYear(), $this->getWeek());
 
-        $days = [];
-        for($i = 0; $i < 7; $i++) {
-            $days[] = new Day($dto->format('Y-m-d'), $this->locations, $this->items, $this->types);
-            $dto->modify('+1 day');
+            $days = [];
+            for($i = 0; $i < 7; $i++) {
+                $days[] = new Day($dto->format('Y-m-d'), $this->locations, $this->items, $this->types);
+                $dto->modify('+1 day');
+            }
+
+            Plugin::setCacheItem($days, $customId);
+            return $days;
         }
-
-        return $days;
     }
 
     /**

@@ -51,7 +51,6 @@ class Timeframe extends PostRepository
             $table_postmeta = $wpdb->prefix . 'postmeta';
             $table_posts = $wpdb->prefix . 'posts';
 
-
             $posts = [];
 
             // Get Post-IDs considerung types, items and locations

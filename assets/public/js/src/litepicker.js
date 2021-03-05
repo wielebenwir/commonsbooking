@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
             let firstAvailableOptionSelected = false;
 
             endSelect.find('option').each(function () {
-
                 // Disable element if its smaller than startvalue, booked or if there is an disabled element before
                 if (jQuery(this).val() < startValue || bookedElementBefore || this.dataset.booked == "true") {
                     jQuery(this).attr('disabled', 'disabled');

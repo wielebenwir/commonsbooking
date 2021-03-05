@@ -75,7 +75,7 @@ class Booking extends View
             serialize(wp_get_current_user()->ID)
         );
 
-        if (false && Plugin::getCacheItem($customId)) {
+        if (Plugin::getCacheItem($customId)) {
             return Plugin::getCacheItem($customId);
         } else {
             $bookingDataArray             = [];
@@ -105,10 +105,6 @@ class Booking extends View
                 // Decide which edit link to use
                 $editLink = get_permalink($booking->ID);
 
-                // Admin edit link
-//                if (commonsbooking_isCurrentUserAdmin()) {
-//                    $editLink = get_edit_post_link($booking->ID);
-//                }
                 $actions = '<a class="cb-button" href="'.$editLink.'">'. commonsbooking_sanitizeHTML( __('Details', 'commonsbooking') ).'</a>';
 
                 // Prepare row data

@@ -88,21 +88,28 @@ class Booking extends PostRepository
     {
         if (!is_user_logged_in()) return [];
 
-        $posts = \CommonsBooking\Repository\Timeframe::get(
-            [],
-            [],
-            [Timeframe::BOOKING_ID],
-            null,
-            $asModel,
-            $startDate,
-            ['canceled', 'confirmed', 'unconfirmed']
-        );
+        $current_user = wp_get_current_user();
+        $customId = $current_user->ID;
 
-        if ($posts) {
-            // Check if it is the main query and one of our custom post types
-            $posts = array_filter($posts, function ($post) {
-                return commonsbooking_isCurrentUserAllowedToEdit($post);
-            });
+        if (Plugin::getCacheItem($customId)) {
+            return Plugin::getCacheItem($customId);
+        } else {
+            $posts = \CommonsBooking\Repository\Timeframe::get(
+                [],
+                [],
+                [Timeframe::BOOKING_ID],
+                null,
+                $asModel,
+                $startDate,
+                ['canceled', 'confirmed', 'unconfirmed']
+            );
+            if ($posts) {
+                // Check if it is the main query and one of our custom post types
+                $posts = array_filter($posts, function ($post) {
+                    return commonsbooking_isCurrentUserAllowedToEdit($post);
+                });
+            }
+            Plugin::setCacheItem($posts, $customId);
         }
 
         return $posts;
