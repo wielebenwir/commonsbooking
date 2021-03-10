@@ -3,6 +3,7 @@
 namespace CommonsBooking\Wordpress\Options;
 
 use CommonsBooking\Settings\Settings;
+use CommonsBooking\View\TimeframeExport;
 
 class OptionsTab
 {
@@ -22,7 +23,7 @@ class OptionsTab
 
         add_action('cmb2_admin_init', array($this, 'register'));
 
-        add_action( 'cmb2_save_options-page_fields', array (self::class, 'savePostOptions'), 10 ); 
+        add_action('cmb2_save_options-page_fields', array(self::class, 'savePostOptions'), 10);
 
     }
 
@@ -80,7 +81,7 @@ class OptionsTab
             }
         }
     }
-    
+
 
     /**
      * If array contains title or description, create a new row contaning this text
@@ -91,7 +92,7 @@ class OptionsTab
     public static function prependTitle($metabox_group)
     {
 
-        if (isset ($metabox_group['title']) OR isset ($metabox_group['desc'])) {
+        if (isset ($metabox_group['title']) or isset ($metabox_group['desc'])) {
 
             $title = isset($metabox_group['title']) ? $metabox_group['title'] : '';
             $desc = isset($metabox_group['desc']) ? $metabox_group['desc'] : '';
@@ -118,7 +119,16 @@ class OptionsTab
      *
      * @return void
      */
-    public static function savePostOptions() {
+    public static function savePostOptions()
+    {
+        if (
+            array_key_exists('action', $_REQUEST) &&
+            $_REQUEST['action'] == "commonsbooking_options_export" &&
+            array_key_exists('submit-cmb', $_REQUEST) &&
+            $_REQUEST['submit-cmb'] == "download-export"
+        ) {
+            TimeframeExport::exportCsv();
+        }
 
         // we set transient to be able to flush rewrites at an ini hook in Plugin.php to set permalinks properly
         set_transient('commonsbooking_options_saved', 1);

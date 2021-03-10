@@ -32,7 +32,8 @@ class Timeframe extends PostRepository
         $returnAsModel = false,
         $minTimestamp = null,
         $postStatus = ['confirmed', 'unconfirmed', 'publish', 'inherit']
-    ) {
+    ): array
+    {
         if ( ! count($types)) {
             $types = [
                 \CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,

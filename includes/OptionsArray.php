@@ -1,5 +1,20 @@
 <?php
 
+// We need static types, because german month names dont't work for datepicker
+$dateFormat = "d/m/Y";
+if (strpos(get_locale(), 'de_') !== false) {
+    $dateFormat = "d.m.Y";
+}
+
+if (strpos(get_locale(), 'en_') !== false) {
+    $dateFormat = "m/d/Y";
+}
+
+$typeOptions= [
+    'all' => esc_html__('All timeframe types', 'commonsbooking')
+];
+$typeOptions += \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTypes();
+
 /**
  * Plugin Options
  *
@@ -41,7 +56,7 @@ return array(
 
     /* Tab: main end*/
 
-    // /* Tab: general start*/
+    /* Tab: general start*/
      'general' => array(
        'title' => commonsbooking_sanitizeHTML( __( 'General', 'commonsbooking' ) ),
        'id' => 'general',
@@ -105,11 +120,7 @@ return array(
          ),
        )
      ),
-
-
-
     /* Tab: general end*/
-
 
     /* Tab Booking Codes start */
     'bookingcodes' => array(
@@ -219,9 +230,6 @@ Thanks, the Team.
             ),
             /* field group email templates end */
 
-
-
-
             /* field group template and booking message templates start */
             'messagetemplates' => array(
               'title' => commonsbooking_sanitizeHTML( __( 'Template and booking process messages', 'commonsbooking' ) ),
@@ -285,6 +293,88 @@ Thanks, the Team.
                 ]
             )
         )
-    )
+    ),
     /* Tab: migration end */
+
+    /* Tab: export start */
+    'export' => array(
+        'title'        => __('Export', 'commonsbooking'),
+        'id'           => 'export',
+        'field_groups' => array(
+            'download' => array(
+                'title'       => esc_html__('Download timeframes export', 'commonsbooking'),
+                'id'          => 'download',
+                'fields'      => [
+                    array(
+                        'name'    => esc_html__('Type', 'commonsbooking'),
+                        'desc'    => esc_html__('Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information.', 'commonsbooking'),
+                        'id'      => "export-type",
+                        'type'    => 'select',
+                        'options' => $typeOptions,
+                    ),
+                    array(
+                        'name' => commonsbooking_sanitizeHTML( __('Location-Fields', 'commonsbooking') ),
+                        'desc' => commonsbooking_sanitizeHTML( __('For post fields just add its name, for meta fields prepend "meta.". Comma separated list.', 'commonsbooking') ),
+                        'id'   => 'location-fields',
+                        'type' => 'text'
+                    ),
+                    array(
+                        'name' => commonsbooking_sanitizeHTML( __('Item-Fields', 'commonsbooking') ),
+                        'desc' => commonsbooking_sanitizeHTML( __('For post fields just add its name, for meta fields prepend "meta.". Comma separated list.', 'commonsbooking') ),
+                        'id'   => 'item-fields',
+                        'type' => 'text'
+                    ),
+                    array(
+                        'name' => commonsbooking_sanitizeHTML( __('User-Fields', 'commonsbooking') ),
+                        'desc' => commonsbooking_sanitizeHTML( __('For post fields just add its name, for meta fields prepend "meta.". Comma separated list.', 'commonsbooking') ),
+                        'id'   => 'user-fields',
+                        'type' => 'text'
+                    ),
+                    array(
+                        'name'        => esc_html__('Export start date', 'commonsbooking'),
+                        'id'          => "export-timerange-start",
+                        'type'        => 'text_date_timestamp',
+                        'date_format' => $dateFormat,
+                        'default'     => date($dateFormat),
+                        'attributes' => array(
+                            'required' => 'required',
+                        ),
+                    ),
+                    array(
+                        'name'        => esc_html__('Export end date', 'commonsbooking'),
+                        'id'          => "export-timerange-end",
+                        'type'        => 'text_date_timestamp',
+                        'date_format' => $dateFormat,
+                        'attributes' => array(
+                            'required' => 'required',
+                        ),
+                    ),
+                    array(
+                        'name'          => commonsbooking_sanitizeHTML( __('Export', 'commonsbooking') ),
+                        'id'            => 'migration-custom-field',
+                        'type'          => 'text',
+                        'render_row_cb' => array(\CommonsBooking\View\TimeframeExport::class, 'renderExportForm'),
+                    )
+                ]
+            ),
+            'cron' => array(
+                'title'       => esc_html__('Cron settings for timeframes export', 'commonsbooking'),
+                'id'          => 'cron',
+                'fields'      => [
+                    array(
+                        'name'        => esc_html__('Run as cronjob', 'commonsbooking'),
+                        'id'          => "export-cron",
+                        'type'        => 'checkbox'
+                    ),
+                    array(
+                        'name' => commonsbooking_sanitizeHTML( __('Save path', 'commonsbooking') ),
+                        'desc' => commonsbooking_sanitizeHTML( __('Path where export will be saved.', 'commonsbooking') ),
+                        'id'   => 'filepath',
+                        'type' => 'text'
+                    ),
+                ]
+            )
+        )
+    )
+    /* Tab: export end */
 );
