@@ -330,12 +330,6 @@ add_filter('cron_schedules', 'commonsbooking_cron_interval');
 // Removes all uncofirmed bookings older than 10 minutes
 function commonsbooking_cleanupBookings()
 {
-    // Get timezone from wordpress, to build right date query.
-    $wpTimezone = get_option('timezone_string');
-    if($wpTimezone) {
-        date_default_timezone_set ( $wpTimezone ) ;
-    }
-
     $args = array(
         'post_type'   => Timeframe::$postType,
         'post_status' => 'unconfirmed',
