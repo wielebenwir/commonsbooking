@@ -30,15 +30,11 @@ class Map extends CustomPostType
             add_action('wp_enqueue_scripts', array(Map::class, 'replace_map_link_target'), 11);
         }
 
-        // Setting role permissions
-        add_action('admin_init', array($this, 'addRoleCaps'), 999);
-
         // Add shortcodes
         add_shortcode('cb_map', array(MapShortcode::class, 'execute') );
 
         // Add actions
         add_action('save_post_cb_map', array(MapAdmin::class, 'validate_options'), 10, 3);
-        add_action('add_meta_boxes_cb_map', array(MapAdmin::class, 'add_meta_boxes'));
         add_action('add_meta_boxes_cb_map', array(MapAdmin::class, 'add_meta_boxes'));
     }
 

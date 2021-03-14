@@ -32,6 +32,14 @@ class Plugin
     public static $CB_MANAGER_ID = 'cb_manager';
 
     /**
+     * Plugin constructor.
+     */
+    public function __construct()
+    {
+        register_activation_hook(__FILE__, array(self::class, 'activation'));
+    }
+
+    /**
      * Deletes cb transients.
      * @param $param
      */
@@ -95,9 +103,6 @@ class Plugin
 
         do_action('cmb2_init');
 
-        // Register custom user roles (e.g. cb_manager)
-        add_action('admin_init', array(self::class, 'addCustomUserRoles'));
-
         // Enable CB1 User Fields (needed in case of migration from cb 0.9.x)
         add_action('init', array(self::class, 'maybeEnableCB1UserFields'));
 
@@ -114,8 +119,8 @@ class Plugin
         // Register custom post types taxonomy / categories
         add_action('init', array(self::class, 'registerLocationTaxonomy'), 30);
 
-        // check if we have a new version and run tasks
-        add_action('admin_init', array(self::class, 'runTasksAfterUpdate'), 30);
+        // admin init tasks
+        add_action('admin_init', array(self::class, 'admin_init'), 30);
 
         // Add menu pages
         add_action('admin_menu', array(self::class, 'addMenuPages'));
@@ -127,7 +132,7 @@ class Plugin
         add_action('save_post', array($this, 'savePostActions'), 10, 2);
 
         // actions after saving plugin options
-        add_action('admin_init', array(self::class, 'saveOptionsActions'), 100);
+        add_action('updated_option', array(self::class, 'saveOptionsActions'), 100);
 
         add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
@@ -137,6 +142,74 @@ class Plugin
         // register User Widget
         add_action('widgets_init', array($this, 'registerUserWidget'));
 
+    }
+
+    /**
+     * Plugin activation tasks.
+     */
+    public static function activation()
+    {
+        // Register custom user roles (e.g. cb_manager)
+        self::addCustomUserRoles();
+
+        // Add capabilities for user roles
+        foreach (self::getCustomPostTypes() as $customPostType) {
+            self::addRoleCaps($customPostType::$postType);
+        }
+
+        // Init booking codes table
+        \CommonsBooking\Repository\BookingCodes::initBookingCodesTable();
+    }
+
+    public static function admin_init()
+    {
+        // check if we have a new version and run tasks
+        self::runTasksAfterUpdate();
+    }
+
+    /**
+     * Adds permissions for cb users.
+     * @param $postType
+     */
+    public static function addRoleCaps($postType)
+    {
+        // Add the roles you'd like to administer the custom post types
+        $roles = array(
+            Plugin::$CB_MANAGER_ID,
+            'administrator'
+        );
+
+        // Loop through each role and assign capabilities
+        foreach ($roles as $the_role) {
+            $role = get_role($the_role);
+            $role->add_cap('read_' . $postType);
+            $role->add_cap('manage_' . COMMONSBOOKING_PLUGIN_SLUG . '_' . $postType);
+
+            $role->add_cap('edit_' . $postType);
+            $role->add_cap('edit_' . $postType . 's'); // show item list
+            $role->add_cap('edit_private_' . $postType . 's');
+            $role->add_cap('edit_published_' . $postType . 's');
+
+            $role->add_cap('publish_' . $postType . 's');
+
+            $role->add_cap('delete_' . $postType);
+            $role->add_cap('delete_' . $postType . 's');
+
+            $role->add_cap('read_private_' . $postType . 's');
+            $role->add_cap('edit_others_' . $postType . 's');
+            $role->add_cap('delete_private_' . $postType . 's');
+            $role->add_cap('delete_published_' . $postType . 's'); // delete user post
+            $role->add_cap('delete_others_' . $postType . 's');
+
+            $role->add_cap('edit_posts'); // general: create posts -> even wp_post, affects all cpts
+            $role->add_cap('upload_files'); // general: change post image
+
+            if ($the_role == Plugin::$CB_MANAGER_ID) {
+                $role->remove_cap('read_private_' . $postType . 's');
+                $role->remove_cap('delete_private_' . $postType . 's');
+                $role->remove_cap('delete_others_' . $postType . 's');
+            }
+        }
     }
 
     public function commonsbooking_load_textdomain()
@@ -158,7 +231,7 @@ class Plugin
         if (in_array($post->post_type, [
             Location::$postType,
             Item::$postType
-        ]) ) {
+        ])) {
             self::clearCache('item');
             self::clearCache('location');
         }
@@ -254,7 +327,7 @@ class Plugin
 
         // Set 'cb-dashboard' as parent for cb categories
         if (in_array($current_screen->base, array('edit-tags'))) {
-            if($current_screen->taxonomy && in_array($current_screen->taxonomy, [
+            if ($current_screen->taxonomy && in_array($current_screen->taxonomy, [
                     Location::$postType . 's_category',
                     Item::$postType . 's_category'
                 ])
@@ -334,7 +407,7 @@ class Plugin
             esc_html__('Item Categories', 'commonsbooking'),
             esc_html__('Item Categories', 'commonsbooking'),
             'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-            admin_url( 'edit-tags.php' ).'?taxonomy=' . Item::$postType . 's_category',
+            admin_url('edit-tags.php') . '?taxonomy=' . Item::$postType . 's_category',
             ''
         );
 
@@ -344,7 +417,7 @@ class Plugin
             esc_html__('Location Categories', 'commonsbooking'),
             esc_html__('Location Categories', 'commonsbooking'),
             'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-            admin_url( 'edit-tags.php' ).'?taxonomy=' . Location::$postType . 's_category',
+            admin_url('edit-tags.php') . '?taxonomy=' . Location::$postType . 's_category',
             ''
         );
     }
