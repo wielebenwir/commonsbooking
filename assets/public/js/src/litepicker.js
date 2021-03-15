@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         },
                         function(data) {
                             // Add new day-data to global calendar data object
-                            globalCalendarData.days = {...globalCalendarData.days, ...data.days }
+                            jQuery.extend(globalCalendarData.days, data.days);
 
                             updatePicker(data);
                             picker.gotoDate(startDate);
