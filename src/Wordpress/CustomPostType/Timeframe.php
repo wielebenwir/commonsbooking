@@ -196,7 +196,7 @@ class Timeframe extends CustomPostType
                 $booking_metafield->assignBookableTimeframeFields();
 
                 // Trigger Mail, only send mail if status has changed
-                if ( ! empty($booking) and $booking->post_status != $post_status) {
+                if ( ! empty($booking) and $booking->post_status != $post_status and !($booking->post_status === 'unconfirmed' and $post_status === 'canceled')) {
                     $booking_msg = new \CommonsBooking\Messages\Messages($postId, $post_status);
                     $booking_msg->triggerMail();
                 }
