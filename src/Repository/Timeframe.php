@@ -133,15 +133,16 @@ class Timeframe extends PostRepository
                 }
 
                 // Filter by configured days
-                $posts = array_filter($posts, function ($post) use ($date) {
-                    if($weekdays = get_post_meta($post->ID, 'weekdays', true)) {
-                        $weekdays = $weekdays;
-                        $day = date('N', strtotime($date));
-
-                        return in_array($day, $weekdays);
-                    }
-                    return true;
-                });
+                if($date) {
+                    $posts = array_filter($posts, function ($post) use ($date) {
+                        if($weekdays = get_post_meta($post->ID, 'weekdays', true)) {
+                            $weekdays = $weekdays;
+                            $day = date('N', strtotime($date));
+                            return in_array($day, $weekdays);
+                        }
+                        return true;
+                    });
+                }
             }
 
             // if returnAsModel == TRUE the result is a timeframe model instead of a wordpress object

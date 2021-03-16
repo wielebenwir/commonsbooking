@@ -110,9 +110,6 @@ class Timeframe extends CustomPostType
         add_action('restrict_manage_posts', array(self::class, 'addAdminDateFilter'));
         add_action('pre_get_posts', array($this, 'filterAdminList'));
 
-        // Setting role permissions
-        add_action('admin_init', array($this, 'addRoleCaps'), 999);
-
         // Listing of bookings for current user
         add_shortcode('cb_bookings', array(\CommonsBooking\View\Booking::class, 'shortcode'));
     }
@@ -196,7 +193,7 @@ class Timeframe extends CustomPostType
                 $booking_metafield->assignBookableTimeframeFields();
 
                 // Trigger Mail, only send mail if status has changed
-                if ( ! empty($booking) and $booking->post_status != $post_status) {
+                if ( ! empty($booking) and $booking->post_status != $post_status and !($booking->post_status === 'unconfirmed' and $post_status === 'canceled')) {
                     $booking_msg = new \CommonsBooking\Messages\Messages($postId, $post_status);
                     $booking_msg->triggerMail();
                 }

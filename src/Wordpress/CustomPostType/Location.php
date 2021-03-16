@@ -23,9 +23,6 @@ class Location extends CustomPostType
         // Listing of items for location
         add_shortcode('cb_items', array(\CommonsBooking\View\Item::class, 'shortcode'));
 
-        // Setting role permissions
-        add_action('admin_init', array($this, 'addRoleCaps'), 999);
-
         // Filter only for current user allowed posts
         add_action('pre_get_posts', array($this, 'filterAdminList'));
 

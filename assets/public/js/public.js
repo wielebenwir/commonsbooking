@@ -1735,10 +1735,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         sd: calStartDate,
                         ed: calEndDate
                     }, function(data) {
-                        globalCalendarData.days = {
-                            ...globalCalendarData.days,
-                            ...data.days
-                        }, updatePicker(data), picker.gotoDate(startDate);
+                        jQuery.extend(globalCalendarData.days, data.days), updatePicker(data), picker.gotoDate(startDate);
                     });
                 }
             }), jQuery("#litepicker .litepicker").hide(), jQuery(window).on("orientationchange", function(event) {

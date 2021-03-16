@@ -314,7 +314,7 @@ function commonsbooking_sanitizeArrayorString($array_or_string) {
 }
 
 // Initialize booking codes table
-register_activation_hook(__FILE__, array(\CommonsBooking\Repository\BookingCodes::class, 'initBookingCodesTable'));
+register_activation_hook(__FILE__, array(Plugin::class, 'activation'));
 
 // Ad new cron-Interval
 function commonsbooking_cron_interval($schedules)
@@ -336,7 +336,7 @@ function commonsbooking_cleanupBookings()
         'meta_key'    => 'type',
         'meta_value'  => Timeframe::BOOKING_ID,
         'date_query'  => array(
-            'before' => date('Y-m-d H:i:s', strtotime('-10 minutes')),
+            'before' => '-10 minutes',
         ),
         'nopaging'    => true,
     );
