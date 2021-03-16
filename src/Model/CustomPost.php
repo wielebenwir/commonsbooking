@@ -36,6 +36,22 @@ class CustomPost
     }
 
     /**
+     * Returns field value, even if it's a meta field.
+     * @param $fieldName
+     * @return mixed
+     */
+    public function getFieldValue($fieldName) {
+        $fieldName = trim($fieldName);
+        $fieldValue = $this->{$fieldName};
+
+        if(!$fieldValue) {
+            return $this->getMeta($fieldName);
+        }
+
+        return $fieldValue;
+    }
+
+    /**
      * Returns meta-field value.
      *
      * @param $field
@@ -64,6 +80,14 @@ class CustomPost
         if (property_exists($this->post, $name)) {
             return $this->post->$name;
         }
+    }
+
+    /**
+     * @return WP_Post|\WP_Post
+     */
+    public function getPost()
+    {
+        return $this->post;
     }
 
     /**
@@ -123,6 +147,14 @@ class CustomPost
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * Returns user data.
+     * @return mixed
+     */
+    public function getUserData() {
+        return get_userdata($this->post_author);
     }
 
     /**

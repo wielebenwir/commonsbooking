@@ -314,19 +314,19 @@ Thanks, the Team.
                     ),
                     array(
                         'name' => commonsbooking_sanitizeHTML( __('Location-Fields', 'commonsbooking') ),
-                        'desc' => commonsbooking_sanitizeHTML( __('For post fields just add its name, for meta fields prepend "meta.". Comma separated list.', 'commonsbooking') ),
+                        'desc' => commonsbooking_sanitizeHTML( __('Just add field names, no matter if its a post- or a meta-field. Comma separated list.', 'commonsbooking') ),
                         'id'   => 'location-fields',
                         'type' => 'text'
                     ),
                     array(
                         'name' => commonsbooking_sanitizeHTML( __('Item-Fields', 'commonsbooking') ),
-                        'desc' => commonsbooking_sanitizeHTML( __('For post fields just add its name, for meta fields prepend "meta.". Comma separated list.', 'commonsbooking') ),
+                        'desc' => commonsbooking_sanitizeHTML( __('Just add field names, no matter if its a post- or a meta-field. Comma separated list.', 'commonsbooking') ),
                         'id'   => 'item-fields',
                         'type' => 'text'
                     ),
                     array(
                         'name' => commonsbooking_sanitizeHTML( __('User-Fields', 'commonsbooking') ),
-                        'desc' => commonsbooking_sanitizeHTML( __('For post fields just add its name, for meta fields prepend "meta.". Comma separated list.', 'commonsbooking') ),
+                        'desc' => commonsbooking_sanitizeHTML( __('Just add field names, no matter if its a user- or a meta-field. Comma separated list.', 'commonsbooking') ),
                         'id'   => 'user-fields',
                         'type' => 'text'
                     ),

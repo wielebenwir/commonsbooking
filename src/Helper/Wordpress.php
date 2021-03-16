@@ -5,18 +5,19 @@ namespace CommonsBooking\Helper;
 class Wordpress
 {
 
-
-
-    static function getPageListTitle() {
-
+    /**
+     * @return array
+     */
+    public static function getPageListTitle(): array
+    {
         $pages = \get_pages();
+        $pagelist = [];
 
-        foreach ($pages AS $key => $value ) {
+        foreach ($pages as $key => $value) {
             $pagelist[$value->ID] = $value->post_title;
         }
 
         return $pagelist;
-    }    
-}
+    }
 
-?>
+}

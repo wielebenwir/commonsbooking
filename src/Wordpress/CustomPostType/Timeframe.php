@@ -134,6 +134,31 @@ class Timeframe extends CustomPostType
     }
 
     /**
+     * Returns array with repetition options.
+     * @return array
+     */
+    public static function getTimeFrameRepetitions() {
+        return [
+            'norep' => esc_html__("No Repetition", 'commonsbooking'),
+            'd'     => esc_html__("Daily", 'commonsbooking'),
+            'w'     => esc_html__("Weekly", 'commonsbooking'),
+            'm'     => esc_html__("Monthly", 'commonsbooking'),
+            'y'     => esc_html__("Yearly", 'commonsbooking'),
+        ];
+    }
+
+    /**
+     * Retuns grid options.
+     * @return array
+     */
+    public static function getGridOptions() {
+        return [
+            0 => esc_html__("Full slot", 'commonsbooking'),
+            1 => esc_html__("Hourly", 'commonsbooking'),
+        ];
+    }
+
+    /**
      * Handles save-Request for timeframe.
      */
     public function handleFormRequest()
@@ -671,13 +696,7 @@ class Timeframe extends CustomPostType
                     , 'commonsbooking'),
                 'id'      => "timeframe-repetition",
                 'type'    => 'select',
-                'options' => [
-                    'norep' => esc_html__("No Repetition", 'commonsbooking'),
-                    'd'     => esc_html__("Daily", 'commonsbooking'),
-                    'w'     => esc_html__("Weekly", 'commonsbooking'),
-                    'm'     => esc_html__("Monthly", 'commonsbooking'),
-                    'y'     => esc_html__("Yearly", 'commonsbooking'),
-                ],
+                'options' => self::getTimeFrameRepetitions(),
             ),
             array(
                 'name' => esc_html__('Full day', 'commonsbooking'),
@@ -741,10 +760,7 @@ class Timeframe extends CustomPostType
                 'desc'    => esc_html__('Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/?p=437">Manage Booking Timeframes</a>', 'commonsbooking'),
                 'id'      => "grid",
                 'type'    => 'select',
-                'options' => [
-                    0 => esc_html__("Full slot", 'commonsbooking'),
-                    1 => esc_html__("Hourly", 'commonsbooking'),
-                ],
+                'options' => self::getGridOptions(),
             ),
             array(
                 'name' => esc_html__("Configure repetition", 'commonsbooking'),
