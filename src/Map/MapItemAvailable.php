@@ -3,6 +3,7 @@
 namespace CommonsBooking\Map;
 
 use CommonsBooking\Model\Day;
+use CommonsBooking\View\Calendar;
 
 class MapItemAvailable
 {
@@ -57,7 +58,7 @@ class MapItemAvailable
                 }
 
                 // get calendardata based on availability range
-                $calendarData = \CommonsBooking\View\Location::prepareJsonResponse(
+                $calendarData = Calendar::prepareJsonResponse(
                     $startDay,
                     $endDay,
                     [$location_id],
