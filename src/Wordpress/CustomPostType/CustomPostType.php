@@ -33,49 +33,6 @@ abstract class CustomPostType
     }
 
     /**
-     * Adds permissions for cb users.
-     */
-    public function addRoleCaps() {
-        // Add the roles you'd like to administer the custom post types
-        $roles = array(
-            Plugin::$CB_MANAGER_ID,
-            'administrator'
-        );
-
-        // Loop through each role and assign capabilities
-        foreach($roles as $the_role) {
-            $role = get_role($the_role);
-            $role->add_cap( 'read_' . static::$postType);
-            $role->add_cap( 'manage_' . COMMONSBOOKING_PLUGIN_SLUG . '_' . static::$postType);
-
-            $role->add_cap( 'edit_' . static::$postType );
-            $role->add_cap( 'edit_' . static::$postType . 's' ); // show item list
-            $role->add_cap( 'edit_private_' . static::$postType . 's' );
-            $role->add_cap( 'edit_published_' . static::$postType . 's' );
-
-            $role->add_cap( 'publish_' . static::$postType . 's' );
-
-            $role->add_cap( 'delete_' . static::$postType );
-            $role->add_cap( 'delete_' . static::$postType . 's' );
-
-            $role->add_cap( 'read_private_' . static::$postType . 's' );
-            $role->add_cap( 'edit_others_' . static::$postType . 's' );
-            $role->add_cap( 'delete_private_' . static::$postType . 's' );
-            $role->add_cap( 'delete_published_' . static::$postType . 's' ); // delete user post
-            $role->add_cap( 'delete_others_' . static::$postType . 's' );
-
-            $role->add_cap( 'edit_posts' ); // general: create posts -> even wp_post, affects all cpts
-            $role->add_cap( 'upload_files' ); // general: change post image
-
-            if($the_role == Plugin::$CB_MANAGER_ID) {
-                $role->remove_cap( 'read_private_' . static::$postType . 's' );
-                $role->remove_cap( 'delete_private_' . static::$postType . 's' );
-                $role->remove_cap( 'delete_others_' . static::$postType . 's' );
-            }
-        }
-    }
-
-    /**
      * Returns param for backend menu.
      * @return array
      */

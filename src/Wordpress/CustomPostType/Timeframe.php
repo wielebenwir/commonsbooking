@@ -110,9 +110,6 @@ class Timeframe extends CustomPostType
         add_action('restrict_manage_posts', array(self::class, 'addAdminDateFilter'));
         add_action('pre_get_posts', array($this, 'filterAdminList'));
 
-        // Setting role permissions
-        add_action('admin_init', array($this, 'addRoleCaps'), 999);
-
         // Listing of bookings for current user
         add_shortcode('cb_bookings', array(\CommonsBooking\View\Booking::class, 'shortcode'));
     }
