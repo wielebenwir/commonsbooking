@@ -82,4 +82,9 @@
             });
         }
     });
+}(jQuery), function($) {
+    "use strict";
+    $(function() {
+        $(document).tooltip();
+    });
 }(jQuery);
