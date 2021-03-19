@@ -8,6 +8,7 @@ use CommonsBooking\CB\CB;
 use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Week;
+use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 class Calendar
@@ -26,100 +27,105 @@ class Calendar
      */
     public static function prepareJsonResponse(Day $startDate, Day $endDate, $locations, $items)
     {
-        $calendar = new \CommonsBooking\Model\Calendar(
-            $startDate,
-            $endDate,
-            $locations,
-            $items
-        );
-
-        $jsonResponse = [
-            'minDate'             => $startDate->getFormattedDate('Y-m-d'),
-            'startDate'           => $startDate->getFormattedDate('Y-m-d'),
-            'endDate'             => $endDate->getFormattedDate('Y-m-d'),
-            'days'                => [],
-            'bookedDays'          => [],
-            'partiallyBookedDays' => [],
-            'lockDays'            => [],
-            'holidays'            => [],
-            'highlightedDays'     => [],
-            'maxDays'             => null,
-            'disallowLockDaysInRange' => true
-        ];
-
-        if (count($locations) === 1) {
-            $jsonResponse['location']['fullDayInfo'] = CB::get(
-                'location',
-                COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions',
-                $locations[0]
+        if($jsonResponse = Plugin::getCacheItem()) {
+            return $jsonResponse;
+        } else {
+            $calendar = new \CommonsBooking\Model\Calendar(
+                $startDate,
+                $endDate,
+                $locations,
+                $items
             );
-            $allowLockedDaysInRange = get_post_meta(
-                $locations[0],
-                COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
-                true
-            );
-            $jsonResponse['disallowLockDaysInRange'] = $allowLockedDaysInRange !== 'on';
-        }
 
-        /** @var Week $week */
-        foreach ($calendar->getWeeks() as $week) {
-            /** @var Day $day */
-            foreach ($week->getDays() as $day) {
-                $dayArray = [
-                    'date'               => $day->getFormattedDate('d.m.Y'),
-                    'slots'              => [],
-                    'locked'             => false,
-                    'bookedDay'          => true,
-                    'partiallyBookedDay' => false,
-                    'holiday'            => true,
-                    'repair'             => true,
-                    'fullDay'            => false,
-                    'firstSlotBooked'    => null,
-                    'lastSlotBooked'     => null
-                ];
+            $jsonResponse = [
+                'minDate'             => $startDate->getFormattedDate('Y-m-d'),
+                'startDate'           => $startDate->getFormattedDate('Y-m-d'),
+                'endDate'             => $endDate->getFormattedDate('Y-m-d'),
+                'days'                => [],
+                'bookedDays'          => [],
+                'partiallyBookedDays' => [],
+                'lockDays'            => [],
+                'holidays'            => [],
+                'highlightedDays'     => [],
+                'maxDays'             => null,
+                'disallowLockDaysInRange' => true
+            ];
 
-                // If all slots are locked, day cannot be selected
-                $allLocked = true;
+            if (count($locations) === 1) {
+                $jsonResponse['location']['fullDayInfo'] = CB::get(
+                    'location',
+                    COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions',
+                    $locations[0]
+                );
+                $allowLockedDaysInRange = get_post_meta(
+                    $locations[0],
+                    COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
+                    true
+                );
+                $jsonResponse['disallowLockDaysInRange'] = $allowLockedDaysInRange !== 'on';
+            }
 
-                // If no slots are existing, day shall be locked
-                $noSlots = true;
+            /** @var Week $week */
+            foreach ($calendar->getWeeks() as $week) {
+                /** @var Day $day */
+                foreach ($week->getDays() as $day) {
+                    $dayArray = [
+                        'date'               => $day->getFormattedDate('d.m.Y'),
+                        'slots'              => [],
+                        'locked'             => false,
+                        'bookedDay'          => true,
+                        'partiallyBookedDay' => false,
+                        'holiday'            => true,
+                        'repair'             => true,
+                        'fullDay'            => false,
+                        'firstSlotBooked'    => null,
+                        'lastSlotBooked'     => null
+                    ];
 
-                foreach ($day->getGrid() as $slot) {
-                    self::processSlot($slot, $dayArray, $jsonResponse, $allLocked, $noSlots);
-                }
+                    // If all slots are locked, day cannot be selected
+                    $allLocked = true;
 
-                // If there are no slots defined, there's nothing bookable.
-                if ($noSlots) {
-                    $dayArray['locked'] = true;
-                    $dayArray['holiday'] = false;
-                    $dayArray['repair'] = false;
-                    $dayArray['bookedDay'] = false;
-                } else if (count($dayArray['slots']) === 1) {
-                    $timeframe = $dayArray['slots'][0]['timeframe'];
-                    $dayArray['fullDay'] = get_post_meta($timeframe->ID, 'full-day', true) == "on";
-                }
+                    // If no slots are existing, day shall be locked
+                    $noSlots = true;
 
-                // Add day to calendar data.
-                $jsonResponse['days'][$day->getFormattedDate('Y-m-d')] = $dayArray;
+                    foreach ($day->getGrid() as $slot) {
+                        self::processSlot($slot, $dayArray, $jsonResponse, $allLocked, $noSlots);
+                    }
 
-                if ($dayArray['locked'] || $allLocked) {
-                    if ($allLocked) {
-                        if ($dayArray['holiday']) {
-                            $jsonResponse['holidays'][] = $day->getFormattedDate('Y-m-d');
-                        // if all slots are booked or we have a changed timeframe, where a booking was done before change
-                        } elseif ($dayArray['bookedDay'] || $dayArray['partiallyBookedDay']) {
-                            $jsonResponse['bookedDays'][] = $day->getFormattedDate('Y-m-d');
+                    // If there are no slots defined, there's nothing bookable.
+                    if ($noSlots) {
+                        $dayArray['locked'] = true;
+                        $dayArray['holiday'] = false;
+                        $dayArray['repair'] = false;
+                        $dayArray['bookedDay'] = false;
+                    } else if (count($dayArray['slots']) === 1) {
+                        $timeframe = $dayArray['slots'][0]['timeframe'];
+                        $dayArray['fullDay'] = get_post_meta($timeframe->ID, 'full-day', true) == "on";
+                    }
+
+                    // Add day to calendar data.
+                    $jsonResponse['days'][$day->getFormattedDate('Y-m-d')] = $dayArray;
+
+                    if ($dayArray['locked'] || $allLocked) {
+                        if ($allLocked) {
+                            if ($dayArray['holiday']) {
+                                $jsonResponse['holidays'][] = $day->getFormattedDate('Y-m-d');
+                                // if all slots are booked or we have a changed timeframe, where a booking was done before change
+                            } elseif ($dayArray['bookedDay'] || $dayArray['partiallyBookedDay']) {
+                                $jsonResponse['bookedDays'][] = $day->getFormattedDate('Y-m-d');
+                            } else {
+                                $jsonResponse['lockDays'][] = $day->getFormattedDate('Y-m-d');
+                            }
                         } else {
-                            $jsonResponse['lockDays'][] = $day->getFormattedDate('Y-m-d');
+                            $jsonResponse['partiallyBookedDays'][] = $day->getFormattedDate('Y-m-d');
                         }
-                    } else {
-                        $jsonResponse['partiallyBookedDays'][] = $day->getFormattedDate('Y-m-d');
                     }
                 }
             }
-        }
 
-        return $jsonResponse;
+            Plugin::setCacheItem($jsonResponse);
+            return $jsonResponse;
+        }
     }
 
     /**
@@ -206,20 +212,22 @@ class Calendar
      */
     public static function getCalendarDataArray($item = null, $location = null)
     {
-        $startDate = new Day(date('Y-m-d'));
-        $endDate = new Day(date('Y-m-d', strtotime('+3 months')));
+        $startDateString = date('Y-m-d', strtotime('first day of this month', time()));
+        $endDateString = date('Y-m-d', strtotime('+3 months', time()));
 
-        $startDateString = array_key_exists('sd', $_POST) ? sanitize_text_field($_POST['sd']) : date('Y-m-d',
-            strtotime('first day of this month', time()));
-        if ($startDateString) {
-            $startDate = new Day($startDateString);
+        $gotStartDate = false;
+        if(array_key_exists('sd', $_POST)) {
+            $gotStartDate = true;
+            $startDateString = sanitize_text_field($_POST['sd']);
         }
+        $startDate = new Day($startDateString);
 
-        $endDateString = array_key_exists('ed', $_POST) ? sanitize_text_field($_POST['ed']) : date('Y-m-d',
-            strtotime('+62 days', time()));
-        if ($endDateString) {
-            $endDate = new Day($endDateString);
+        $gotEndDate = false;
+        if(array_key_exists('ed', $_POST)) {
+            $gotEndDate = true;
+            $endDateString = sanitize_text_field($_POST['ed']);
         }
+        $endDate = new Day($endDateString);
 
         // item by param
         if ($item === null) {
@@ -272,9 +280,16 @@ class Calendar
                 /** @var \CommonsBooking\Model\Timeframe $firstBookableTimeframe */
                 $firstBookableTimeframe = array_pop($bookableTimeframes);
 
-                $startDateTimestamp = $firstBookableTimeframe->getStartDate();
-                $startDate = new Day(date('Y-m-d', $startDateTimestamp));
-                $endDate = new Day(date('Y-m-d', strtotime('+3 months', $startDateTimestamp)));
+                // Check if start-/enddate was requested, then don't change it
+                // otherwise start with first bookable month
+                if(!($gotStartDate || $gotEndDate)) {
+                    $startDateTimestamp = $firstBookableTimeframe->getStartDate();
+                    if(!$gotStartDate)
+                        $startDate = new Day(date('Y-m-d', $startDateTimestamp));
+
+                    if(!$gotEndDate)
+                        $endDate = new Day(date('Y-m-d', strtotime('+3 months', $startDateTimestamp)));
+                }
             }
         }
 

@@ -245,6 +245,15 @@ class Plugin
             self::clearCache('week');
             self::clearCache('model');
         }
+
+        if (in_array($post->post_type, [
+            Location::$postType,
+            Item::$postType,
+            Timeframe::$postType
+        ])) {
+            // Clear calendar cache
+            self::clearCache('calendar');
+        }
     }
 
     /**
