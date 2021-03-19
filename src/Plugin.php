@@ -540,6 +540,7 @@ class Plugin
         $errorTypes = [
             \CommonsBooking\Model\Timeframe::ERROR_TYPE,
             BookingCode::ERROR_TYPE,
+            Options\OptionsTab::ERROR_TYPE,
         ];
 
         foreach ($errorTypes as $errorType) {

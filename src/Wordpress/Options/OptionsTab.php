@@ -14,6 +14,9 @@ class OptionsTab
     public $content;
     public $groups;
 
+    // Error type for backend error output
+    public const ERROR_TYPE = "commonsbooking-options-error";
+
     public function __construct(string $id, array $content)
     {
         $this->id = $id;
@@ -121,13 +124,30 @@ class OptionsTab
      */
     public static function savePostOptions()
     {
-        if (
-            array_key_exists('action', $_REQUEST) &&
-            $_REQUEST['action'] == "commonsbooking_options_export" &&
-            array_key_exists('submit-cmb', $_REQUEST) &&
-            $_REQUEST['submit-cmb'] == "download-export"
-        ) {
-            TimeframeExport::exportCsv();
+        if (array_key_exists('action', $_REQUEST) && $_REQUEST['action'] == "commonsbooking_options_export") {
+            // Check for export action
+            if (array_key_exists('submit-cmb', $_REQUEST) && $_REQUEST['submit-cmb'] == "download-export") {
+                TimeframeExport::exportCsv();
+            } else {
+                if (array_key_exists('filepath', $_REQUEST) && $_REQUEST['filepath'] !== "") {
+
+                    if(!is_dir($_REQUEST['filepath'])) {
+                        set_transient(
+                            self::ERROR_TYPE,
+                            commonsbooking_sanitizeHTML(__("The export path does not exist or is not readable.", 'commonsbooking')),
+                            45
+                        );
+                    }
+
+                    if(!is_writable($_REQUEST['filepath'])) {
+                        set_transient(
+                            self::ERROR_TYPE,
+                            commonsbooking_sanitizeHTML(__("The export path is not writeable.", 'commonsbooking')),
+                            45)
+                        ;
+                    }
+                }
+            }
         }
 
         // we set transient to be able to flush rewrites at an ini hook in Plugin.php to set permalinks properly
