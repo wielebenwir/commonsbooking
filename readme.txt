@@ -5,7 +5,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar, 
 Requires at least: 5.2
 Tested up to: 5.6
-Stable Tag: 2.4.1
+Stable Tag: 2.4.3
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -81,6 +81,12 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 4. User bookings list
 
 == Changelog ==
+
+= 2.4.3 (xx) = 
+* FIXED: Bookable timeframe without enddate caused some issues in frontend calendar. Now it is possible to leave end date empty to allow infinite booking timeframe
+* FIXED: performance issue on some systems in backend view (issue #546)
+* FIXED: cancelation of an unconfirmed booking triggered a cancelation mail to user and location. Now the cancelation mail will not be send anymore.  (issue #532)
+* FIXED: fixed a timeframe validation error (isse #548)
 
 = 2.4.2 (15.02.2021) = 
 * FIXED: Fixed permission issue on booking lists
