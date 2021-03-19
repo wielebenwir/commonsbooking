@@ -367,9 +367,29 @@ Thanks, the Team.
                         'type'        => 'checkbox'
                     ),
                     array(
+                        'name'    => esc_html__('Export interval', 'commonsbooking'),
+                        'id'      => "export-interval",
+                        'type'    => 'select',
+                        'options' => [
+                            'five_minutes' => "5 " . esc_html__('minutes', 'commonsbooking'),
+                            'thirty_minutes' => "30 " . esc_html__('minutes', 'commonsbooking'),
+                            'daily' => esc_html__('daily', 'commonsbooking'),
+                        ],
+                    ),
+                    array(
+                        'name'    => esc_html__('Export timerange', 'commonsbooking'),
+                        'desc' => commonsbooking_sanitizeHTML( __('Export timerange in days.', 'commonsbooking') ),
+                        'id'      => "export-timerange",
+                        'type'    => 'text',
+                        'attributes' => array(
+                            'type' => 'number',
+                            'pattern' => '\d*',
+                        ),
+                    ),
+                    array(
                         'name' => commonsbooking_sanitizeHTML( __('Save path', 'commonsbooking') ),
-                        'desc' => commonsbooking_sanitizeHTML( __('Path where export will be saved.', 'commonsbooking') ),
-                        'id'   => 'filepath',
+                        'desc' => commonsbooking_sanitizeHTML( __('Path (including trailing slash) where export file will be saved to.', 'commonsbooking') ),
+                        'id'   => 'export-filepath',
                         'type' => 'text'
                     ),
                 ]

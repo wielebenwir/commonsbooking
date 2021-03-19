@@ -129,9 +129,9 @@ class OptionsTab
             if (array_key_exists('submit-cmb', $_REQUEST) && $_REQUEST['submit-cmb'] == "download-export") {
                 TimeframeExport::exportCsv();
             } else {
-                if (array_key_exists('filepath', $_REQUEST) && $_REQUEST['filepath'] !== "") {
+                if (array_key_exists('export-filepath', $_REQUEST) && $_REQUEST['export-filepath'] !== "") {
 
-                    if(!is_dir($_REQUEST['filepath'])) {
+                    if(!is_dir($_REQUEST['export-filepath'])) {
                         set_transient(
                             self::ERROR_TYPE,
                             commonsbooking_sanitizeHTML(__("The export path does not exist or is not readable.", 'commonsbooking')),
@@ -139,7 +139,7 @@ class OptionsTab
                         );
                     }
 
-                    if(!is_writable($_REQUEST['filepath'])) {
+                    if(!is_writable($_REQUEST['export-filepath'])) {
                         set_transient(
                             self::ERROR_TYPE,
                             commonsbooking_sanitizeHTML(__("The export path is not writeable.", 'commonsbooking')),

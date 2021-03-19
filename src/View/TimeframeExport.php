@@ -5,6 +5,7 @@ namespace CommonsBooking\View;
 
 
 use CommonsBooking\Repository\Timeframe;
+use CommonsBooking\Settings\Settings;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -36,35 +37,59 @@ class TimeframeExport
         return new DatePeriod($begin, $interval, $end);
     }
 
+    /**
+     * Returns array with selected timeframe types.
+     * @return array
+     */
     protected static function getTypes() {
         $types = [];
+
+        // Backend download
         if(array_key_exists('export-type', $_REQUEST) && $_REQUEST['export-type'] !== 'all') {
             $types = [intval($_REQUEST['export-type'])];
+        } else {
+            //cron download
+            $type = Settings::getOption('commonsbooking_options_export', 'export-type');
+            if( $type && $type !== 'all' ) {
+                $types = [intval($type)];
+            }
         }
         return $types;
     }
 
+    /**
+     * Return user defined export fields.
+     * @param $inputName
+     * @return false|string[]
+     */
     protected static function getInputFields($inputName) {
-        $inputFieldsString = array_key_exists($inputName, $_REQUEST) ? $_REQUEST[$inputName] : '';
+        $inputFieldsString =
+            array_key_exists($inputName, $_REQUEST) ? $_REQUEST[$inputName] :
+            Settings::getOption('commonsbooking_options_export', '$inputName');
         return array_filter(explode(',', $inputFieldsString));
     }
 
     /**
+     * Returns data for export.
+     * @param false $isCron
+     * @return array
      * @throws \Exception
      */
-    public static function exportCsv()
-    {
+    public static function getExportData($isCron = false) {
+        if($isCron) {
+            $timerange = Settings::getOption('commonsbooking_options_export', 'export-timerange');
+            $start = date('d.m.Y');
+            $end = date('d.m.Y', strtotime('+' . $timerange . ' day'));
+        } else {
+            $start = $_REQUEST['export-timerange-start'];
+            $end = $_REQUEST['export-timerange-end'];
+        }
+
         // Timerange
-        $period = self::getPeriod($_REQUEST['export-timerange-start'], $_REQUEST['export-timerange-end']);
+        $period = self::getPeriod($start, $end);
 
         // Types
         $types = self::getTypes();
-
-        $inputFields = [
-            'location' => self::getInputFields('location-fields'),
-            'item' => self::getInputFields('item-fields'),
-            'user' => self::getInputFields('user-fields')
-        ];
 
         $timeframes = [];
         foreach ($period as $dt) {
@@ -80,12 +105,36 @@ class TimeframeExport
             }
         }
 
-        // output headers so that the file is downloaded rather than displayed
-        header('Content-Type: text/csv; charset=utf-8');
-        header('Content-Disposition: attachment; filename=timeframe-export.csv');
+        return $timeframes;
+    }
+
+    /**
+     * @param string $outputFile
+     * @throws \Exception
+     */
+    public static function exportCsv($outputFile = 'php://output')
+    {
+        $exportFilename = 'timeframe-export.csv';
+
+        $inputFields = [
+            'location' => self::getInputFields('location-fields'),
+            'item' => self::getInputFields('item-fields'),
+            'user' => self::getInputFields('user-fields')
+        ];
+
+        if($outputFile == 'php://output') {
+            $timeframes = self::getExportData();
+
+            // output headers so that the file is downloaded rather than displayed
+            header('Content-Type: text/csv; charset=utf-8');
+            header('Content-Disposition: attachment; filename=' . $exportFilename);
+        } else {
+            $timeframes = self::getExportData(true);
+            $outputFile = $outputFile . $exportFilename;
+        }
 
         // create a file pointer connected to the output stream
-        $output = fopen('php://output', 'w');
+        $output = fopen($outputFile, 'w');
 
         $headline = false;
 
@@ -134,7 +183,6 @@ class TimeframeExport
                 // User fields
                 if($type == 'user') {
                     $user = $timeframePost->getUserData();
-
                     foreach ($fields as $field) {
                         $valueColumns[] = $user->get($field);
                     }
