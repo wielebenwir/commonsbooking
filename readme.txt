@@ -82,6 +82,12 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 
 == Changelog ==
 
+= 2.4.3 (xx) = 
+* FIXED: Bookable timeframe without enddate caused some issues in frontend calendar. Now it is possible to leave end date empty to allow infinite booking timeframe
+* FIXED: performance issue on some systems in backend view (issue #546)
+* FIXED: cancelation of an unconfirmed booking triggered a cancelation mail to user and location. Now the cancelation mail will not be send anymore.  (issue #532)
+* FIXED: fixed a timeframe validation error (isse #548)
+
 = 2.4.2 (15.02.2021) = 
 * FIXED: Fixed permission issue on booking lists
 
