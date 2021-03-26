@@ -45,6 +45,9 @@ $cb_db_version = '1.0';
 
 function commonsbooking_admin()
 {
+    // Tooltip extension
+    wp_enqueue_script('jquery-ui-tooltip', array('jquery'));
+
     wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__).'assets/admin/css/admin.css', array(), COMMONSBOOKING_VERSION);
     wp_enqueue_script('cb-scripts-admin', plugin_dir_url(__FILE__).'assets/admin/js/admin.js', array());
 
