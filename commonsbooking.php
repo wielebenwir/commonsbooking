@@ -17,6 +17,7 @@
 
 use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\Plugin;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
@@ -326,11 +327,19 @@ function commonsbooking_cron_interval($schedules)
         'display'  => 'Every 10 Minutes',
         'interval' => 600,
     );
+    $schedules['five_minutes'] = array(
+        'display'  => 'Every 5 Minutes',
+        'interval' => 300,
+    );
+    $schedules['thirty_minutes'] = array(
+        'display'  => 'Every 30 Minutes',
+        'interval' => 1800,
+    );
     return $schedules;
 }
 add_filter('cron_schedules', 'commonsbooking_cron_interval');
 
-// Removes all uncofirmed bookings older than 10 minutes
+// Removes all unconfirmed bookings older than 10 minutes
 function commonsbooking_cleanupBookings()
 {
     $args = array(
@@ -359,11 +368,34 @@ if ( ! wp_next_scheduled('cb_cron_hook')) {
     wp_schedule_event(time(), 'ten_minutes', 'cb_cron_hook');
 }
 
+// Add cronjob for csv timeframe export
+$cronExport = Settings::getOption('commonsbooking_options_export', 'export-cron');
+if($cronExport == 'on') {
+    $exportPath = Settings::getOption('commonsbooking_options_export', 'export-filepath');
+    $exportInterval = Settings::getOption('commonsbooking_options_export', 'export-interval');
+
+    $cbCronHook = 'cb_cron_export';
+    add_action($cbCronHook, function() use ($exportPath) {
+        \CommonsBooking\View\TimeframeExport::exportCsv($exportPath);
+    });
+
+    if ( ! wp_next_scheduled($cbCronHook)) {
+        wp_schedule_event(time(), $exportInterval, $cbCronHook);
+    }
+}
+
 // Remove schedule on module deactivation
 register_deactivation_hook( __FILE__, 'commonsbooking_cron_deactivate' );
 function commonsbooking_cron_deactivate() {
-    $timestamp = wp_next_scheduled( 'cb_cron_hook' );
-    wp_unschedule_event( $timestamp, 'cb_cron_hook' );
+    $cbCronHooks = [
+        'cb_cron_hook',
+        'cb_cron_export'
+    ];
+
+    foreach ($cbCronHooks as $cbCronHook) {
+        $timestamp = wp_next_scheduled( $cbCronHook );
+        wp_unschedule_event( $timestamp, $cbCronHook );
+    }
 }
 
 /**
