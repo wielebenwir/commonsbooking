@@ -292,6 +292,14 @@ class Booking extends CustomPost
     }
 
     /**
+     * Returns comment text.
+     * @return mixed
+     */
+    public function getComment() {
+        return $this->getMeta('comment');
+    }
+
+    /**
      * bookingActionButton
      *
      * @TODO: This calculation should only happen once (it happens twice, for confirm button and cancel button)
@@ -309,19 +317,19 @@ class Booking extends CustomPost
 
         // return form with action button based on current booking status and defined form-action
 
-        If ($current_status == 'unconfirmed' AND $form_action == "cancel")
+        if ($current_status == 'unconfirmed' AND $form_action == "cancel")
         {
             $form_post_status = 'canceled';
             $button_label = esc_html__('Cancel', 'commonsbooking');
         }
 
-        If ($current_status == 'unconfirmed' AND $form_action == "confirm")
+        if ($current_status == 'unconfirmed' AND $form_action == "confirm")
         {
             $form_post_status = 'confirmed';
             $button_label = esc_html__('Confirm Booking', 'commonsbooking');
         }
 
-        If ($current_status == 'confirmed' AND $form_action == "cancel")
+        if ($current_status == 'confirmed' AND $form_action == "cancel")
         {
             $form_post_status = 'canceled';
             $button_label = esc_html__('Cancel Booking', 'commonsbooking');
