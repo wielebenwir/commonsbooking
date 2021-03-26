@@ -159,6 +159,32 @@ class Timeframe extends CustomPostType
     }
 
     /**
+     * Returns true, if there are no already existing bookings.
+     * @param $itemId
+     * @param $locationId
+     * @param $startDate
+     * @param $endDate
+     * @throws \Exception
+     */
+    protected static function validateBookingParameters($itemId,$locationId,$startDate,$endDate)
+    {
+        // Get exiting bookings for defined parameters
+        $existingBookingsInRange = \CommonsBooking\Repository\Timeframe::getInRange(
+            [$locationId],
+            [$itemId],
+            [Timeframe::BOOKING_ID],
+            false,
+            $startDate,
+            $endDate
+        );
+
+        // If there are already bookings, throw exception
+        if (count($existingBookingsInRange)) {
+            throw new \Exception(__('There are already bookings in selected timerange.', 'commonsbooking'));
+        }
+    }
+
+    /**
      * Handles save-Request for timeframe.
      */
     public function handleFormRequest()
@@ -186,6 +212,9 @@ class Timeframe extends CustomPostType
                 if($startDate == null || $endDate == null) {
                     throw new \Exception('Start- and/or enddate missing.');
                 }
+
+                // Make sure there are not already bookings in selected range.
+                self::validateBookingParameters($itemId, $locationId, $startDate, $endDate);
 
                 /** @var \CommonsBooking\Model\Booking $booking */
                 $booking = Booking::getBookingByDate(
@@ -903,7 +932,7 @@ class Timeframe extends CustomPostType
 
     /**
      * loads template according and returns content
-     * 
+     *
      * @param $content
      *
      * @return string
