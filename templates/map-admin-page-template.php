@@ -275,17 +275,17 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                 </tr>
                 <tr>
                     <th>
-                        <?php echo commonsbooking_sanitizeHTML( __( 'Maximum availability days to show in popup', 'commonsbooking' ) ); ?>:
+                        <?php echo commonsbooking_sanitizeHTML( __( 'Maximum days to choose in map availabilty filter ', 'commonsbooking' ) ); ?>:
                         <span
                                 class="dashicons dashicons-editor-help"
                                 title="<?php
                                 echo commonsbooking_sanitizeHTML(
-                                    __( 'Notice: This setting is not active right now. Just leave it as it is.', 'commonsbooking' )
+                                    __( 'Notice: Defines the maximun days a user can choose in the availabilty filter in frontend map', 'commonsbooking' )
                                 ); ?>">
                         </span>
                     </th>
-                    <td><input readonly type="text" name="cb_map_options[availability_max_day_count]"
-                               value="<?php echo  MapAdmin::get_option($cb_map_id, 'availability_max_day_count'); ?>">
+                    <td><input type="number" min="<?php echo  MapAdmin::AVAILABILITY_MAX_DAY_COUNT_DEFAULT ?>" name="cb_map_options[availability_max_day_count]"
+                               value="<?php echo MapAdmin::get_option($cb_map_id, 'availability_max_day_count'); ?>">
                     </td>
                 </tr>
             </table>
