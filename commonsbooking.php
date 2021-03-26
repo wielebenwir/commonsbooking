@@ -45,6 +45,12 @@ $cb_db_version = '1.0';
 
 function commonsbooking_admin()
 {
+    // jQuery
+    wp_enqueue_script('jquery');
+
+    // Datepicker extension
+    wp_enqueue_script('jquery-ui-datepicker', array('jquery'));
+
     // Tooltip extension
     wp_enqueue_script('jquery-ui-tooltip', array('jquery'));
 
