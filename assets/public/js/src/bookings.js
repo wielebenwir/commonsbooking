@@ -530,4 +530,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if(bookingList) {
         window.demo = new BookingList(bookingList);
     }
+
+    // Write comment text to button forms
+    var commentField = jQuery('#cb-booking-comment');
+    commentField.keyup(function () {
+        jQuery('input[type=hidden][name=comment]').val(this.value);
+    });
 });

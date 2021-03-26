@@ -223,8 +223,10 @@ class BookingList {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    var bookingList = document.getElementById("booking-list--results");
-    bookingList && (window.demo = new BookingList(bookingList));
+    var bookingList = document.getElementById("booking-list--results"), commentField;
+    bookingList && (window.demo = new BookingList(bookingList)), jQuery("#cb-booking-comment").keyup(function() {
+        jQuery("input[type=hidden][name=comment]").val(this.value);
+    });
 }), function(t, e) {
     "object" == typeof exports && "object" == typeof module ? module.exports = e() : "function" == typeof define && define.amd ? define("Litepicker", [], e) : "object" == typeof exports ? exports.Litepicker = e() : t.Litepicker = e();
 }(window, function() {

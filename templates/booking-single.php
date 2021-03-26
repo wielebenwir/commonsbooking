@@ -85,6 +85,32 @@ $item          = $booking->getItem();
     </div>
 </div>
 
+<!-- Booking comment -->
+<?php
+    if($post->post_status == 'unconfirmed') {?>
+        <div class="cb-wrapper cb-booking-comment">
+            <div class="cb-list-header">
+                <h3><?php echo esc_html__('Comment', 'commonsbooking'); ?></h3>
+            </div>
+            <div class="cb-list-content cb-comment cb-col-100">
+                <div>
+                    <textarea id="cb-booking-comment" name="comment"><?php echo $booking->getComment(); ?></textarea>
+                </div>
+            </div>
+        </div>
+<?php
+    } else {?>
+        <div class="cb-wrapper cb-booking-comment">
+            <div class="cb-list-header">
+                <h3><?php echo esc_html__('Comment', 'commonsbooking'); ?></h3>
+            </div>
+            <div class="cb-list-content cb-comment cb-col-100">
+                <div><?php echo $booking->getComment(); ?></div>
+            </div>
+        </div>
+<?php    }
+?>
+
 <!-- Buttons & Form action -->
 <div class="cb-action cb-wrapper">
     <?php $booking->bookingActionButton('confirm'); ?>
