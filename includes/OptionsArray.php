@@ -116,6 +116,17 @@ return array(
                 'type'    => 'select',
                 'options' => \CommonsBooking\Helper\Wordpress::getPageListTitle(),
               ),
+               array(
+                   'name'   => esc_html__('Kommentare auf Buchungsseite aktivieren', 'commonsbooking'),
+                   'id'     => 'booking-comment-active',
+                   'type'   => 'checkbox',
+               ),
+               array(
+                   'name'    => commonsbooking_sanitizeHTML( __( 'Überschrift über Eingabefeld', 'commonsbooking' ) ),
+                   'id'      => 'booking-comment-title',
+                   'type'    => 'text',
+                   'default' => __('Kommentar', 'commonstbooking'),
+               ),
            )
          ),
        )

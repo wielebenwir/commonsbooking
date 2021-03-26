@@ -6,6 +6,7 @@
 
 use CommonsBooking\CB\CB;
 use CommonsBooking\Model\Booking;
+use CommonsBooking\Settings\Settings;
 
 $booking       = new \CommonsBooking\Model\Booking($post->ID);
 /** @var \CommonsBooking\Model\Timeframe $timeframe */
@@ -87,28 +88,38 @@ $item          = $booking->getItem();
 
 <!-- Booking comment -->
 <?php
-    if($post->post_status == 'unconfirmed') {?>
-        <div class="cb-wrapper cb-booking-comment">
-            <div class="cb-list-header">
-                <h3><?php echo esc_html__('Comment', 'commonsbooking'); ?></h3>
-            </div>
-            <div class="cb-list-content cb-comment cb-col-100">
-                <div>
-                    <textarea id="cb-booking-comment" name="comment"><?php echo $booking->getComment(); ?></textarea>
+    $bookingCommentActive = Settings::getOption('commonsbooking_options_general', 'booking-comment-active');
+
+    if($bookingCommentActive) {
+        $bookingCommentTitle = Settings::getOption('commonsbooking_options_general', 'booking-comment-title');
+
+        if($post->post_status == 'unconfirmed') { ?>
+            <div class="cb-wrapper cb-booking-comment">
+                <div class="cb-list-header">
+                    <h3><?php echo $bookingCommentTitle; ?></h3>
+                </div>
+                <div class="cb-list-content cb-comment cb-col-100">
+                    <div>
+                        <textarea id="cb-booking-comment" name="comment"><?php echo $booking->getComment(); ?></textarea>
+                    </div>
                 </div>
             </div>
-        </div>
-<?php
-    } else {?>
-        <div class="cb-wrapper cb-booking-comment">
-            <div class="cb-list-header">
-                <h3><?php echo esc_html__('Comment', 'commonsbooking'); ?></h3>
+    <?php
+        } else {
+            if($booking->getComment()) {
+    ?>
+            <div class="cb-wrapper cb-booking-comment">
+                <div class="cb-list-header">
+                    <h3><?php echo $bookingCommentTitle; ?></h3>
+                </div>
+                <div class="cb-list-content cb-comment cb-col-100">
+                    <div><?php echo $booking->getComment(); ?></div>
+                </div>
             </div>
-            <div class="cb-list-content cb-comment cb-col-100">
-                <div><?php echo $booking->getComment(); ?></div>
-            </div>
-        </div>
-<?php    }
+    <?php
+            }
+        }
+    }
 ?>
 
 <!-- Buttons & Form action -->
