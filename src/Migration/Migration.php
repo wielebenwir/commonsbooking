@@ -575,19 +575,21 @@ class Migration
     /**
      * Migrates CB1 taxonomy to CB2 posts.
      *
-     * @param $cb1Taxonomies
+     * @param $cb1Taxonomy
      *
      * @return bool
      */
-    public static function migrateTaxonomy($cb1Taxonomies)
+    public static function migrateTaxonomy($cb1Taxonomy)
     {
-        $cb2PostId = CB1::getCB2PostIdByCB1Id($cb1Taxonomies->object_id);
-        try {
-            wp_set_object_terms($cb2PostId, $cb1Taxonomies->term, $cb1Taxonomies->taxonomy);
-            return true;
-        } catch (\Exception $e) {
-            return false;
+        $cb2PostId = CB1::getCB2PostIdByCB1Id($cb1Taxonomy->object_id);
+
+        $terms = wp_get_object_terms( $cb1Taxonomy->object_id, $cb1Taxonomy->taxonomy );
+        $term = array();
+        foreach( $terms AS $t ) {
+            $term[] = $t->slug;
         }
+
+        wp_set_object_terms( $cb2PostId, $term, $cb1Taxonomy->taxonomy );
     }
 
 }
