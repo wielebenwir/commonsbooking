@@ -292,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                             jQuery('#fullDayInfo').text('');
                             initSelectHandler();
                         } else {
-                            jQuery('#fullDayInfo').text(globalCalendarData['location']['fullDayInfo']);
+                            jQuery('#fullDayInfo').html(globalCalendarData['location']['fullDayInfo']);
                         }
                     }
                 }

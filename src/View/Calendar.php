@@ -52,11 +52,11 @@ class Calendar
             ];
 
             if (count($locations) === 1) {
-                $jsonResponse['location']['fullDayInfo'] = CB::get(
+                $jsonResponse['location']['fullDayInfo'] = nl2br(CB::get(
                     'location',
                     COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions',
                     $locations[0]
-                );
+                ));
                 $allowLockedDaysInRange = get_post_meta(
                     $locations[0],
                     COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
