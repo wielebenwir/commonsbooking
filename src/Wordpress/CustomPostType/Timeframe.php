@@ -853,6 +853,32 @@ class Timeframe extends CustomPostType
             return;
         }
 
+        // Check if there is already an existing booking. If there is one, the current one will be
+        // saved as draft.
+        if (
+            (array_key_exists('type', $_REQUEST) && $_REQUEST['type'] == Timeframe::BOOKING_ID) ||
+            current_user_can('edit_post', $post_id)
+        ) {
+            try {
+                self::validateBookingParameters(
+                    sanitize_text_field($_REQUEST["item-id"]),
+                    sanitize_text_field($_REQUEST["location-id"]),
+                    strtotime($_REQUEST["repetition-start"] . " " . $_REQUEST["start-time"]),
+                    strtotime($_REQUEST["repetition-end"] . " " . $_REQUEST["end-time"])
+                );
+            } catch (\Exception $e) {
+                if($post->post_status !== 'draft') {
+                    $post->post_status = 'draft';
+                    wp_update_post($post);
+                }
+
+                set_transient(\CommonsBooking\Model\Timeframe::ERROR_TYPE,
+                    commonsbooking_sanitizeHTML(__("There is an overlapping booking.",
+                        'commonsbooking')),
+                    45);
+            }
+        }
+
         $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition', 'weekdays'];
 
         foreach ($this->getCustomFields() as $customField) {
