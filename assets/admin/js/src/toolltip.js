@@ -5,10 +5,10 @@
 * 
 * Usage: <span class="dashicons dashicons-editor-help" title="My text"></span>
 */
-// @TODO: Fix styling
-// (function ($) {
-// 	'use strict';
-// 	$(function () {
-// 		$( document ).tooltip();
-// 	});
-// })(jQuery);
+
+(function ($) {
+	'use strict';
+	$(function () {
+		$( document ).tooltip();
+	});
+})(jQuery);
