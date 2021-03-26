@@ -1766,7 +1766,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     let bookingForm;
                     jQuery("#booking-form").show(), jQuery(".cb-notice.date-select").hide();
                     const day1 = globalCalendarData.days[moment(date1).format("YYYY-MM-DD")], day2 = globalCalendarData.days[moment(date2).format("YYYY-MM-DD")];
-                    initEndSelect(date2), day1.fullDay && day2.fullDay ? jQuery("#fullDayInfo").text(globalCalendarData.location.fullDayInfo) : (jQuery("#fullDayInfo").text(""), 
+                    initEndSelect(date2), day1.fullDay && day2.fullDay ? jQuery("#fullDayInfo").html(globalCalendarData.location.fullDayInfo) : (jQuery("#fullDayInfo").text(""), 
                     initSelectHandler());
                 }
             }), fadeInCalendar();
