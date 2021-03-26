@@ -191,6 +191,18 @@ class Timeframe extends CustomPost
     {
         if (
             $this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID &&
+            !$this->getStartDate()
+        ) {
+            // If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
+            set_transient(self::ERROR_TYPE,
+                commonsbooking_sanitizeHTML(__("Startdate is missing.",
+                    'commonsbooking')),
+                45);
+            return false;
+        }
+
+        if (
+            $this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID &&
             $this->getLocation() &&
             $this->getItem() &&
             $this->getStartDate()
