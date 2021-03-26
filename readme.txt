@@ -87,6 +87,10 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 * FIXED: performance issue on some systems in backend view (issue #546)
 * FIXED: cancelation of an unconfirmed booking triggered a cancelation mail to user and location. Now the cancelation mail will not be send anymore.  (issue #532)
 * FIXED: fixed a timeframe validation error (isse #548)
+* FIXED: calendar not shown in edge / explorer in some versions. Thanks to @danielappelt for fixing it.
+* ENHANCED: included function to edit categories for locations and items (rename, remove etc.)
+* ENHANCED: Added map link to dashboard
+* FIXED: Added tooltips in map configuration
 
 = 2.4.2 (15.02.2021) = 
 * FIXED: Fixed permission issue on booking lists

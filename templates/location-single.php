@@ -1,8 +1,9 @@
 <?php
     /**
-     * Single item calendar with booking functionality
+     * Single location
      *
-     * Used on item single
+     * List timeframes (if multiple) or show the booking calendar
+     *
      */
     global $templateData;
     $templateData = \CommonsBooking\View\Location::getTemplateData();
@@ -26,7 +27,7 @@
     } // $item_is_selected
 
     if(!array_key_exists('item', $templateData) && !array_key_exists('items', $templateData)) { ?>
-        <div class="cb-status cb-availability-status cb-no-residency"><?php echo ( $noResultText );
+        <div class="cb-status cb-availability-status cb-status-not-available"><?php echo ( $noResultText );
     }
     if(!is_user_logged_in()) {
         $current_url = $_SERVER['REQUEST_URI'];

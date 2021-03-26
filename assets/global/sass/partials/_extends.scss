@@ -2,15 +2,11 @@
  * Extends
  *
  * Re-usable styles, intended to be used in scss, not directly in the dom.
+ * Utilizes Breakpoints
  *
  * Boxes
  * Typography
  *
- * @package   CommonsBooking2
- * @author    Annesley Newholm <annesley_newholm@yahoo.it>
- * @copyright 2018 wielebenwir e.V.
- * @license   GPL 2.0+
- * @link      http://commonsbooking.wielebenwir.de
  *
  */
 
@@ -19,7 +15,7 @@
 .cb-box {
 	background: $color-gray-background;
 	
-	padding: $spacer-small;
+	padding: $spacer-small / 2 $spacer-small;
 	@include breakpoint(phablet) {
 		padding: $spacer $spacer-big;
 	}
@@ -39,8 +35,6 @@
 	
 	border-radius: $radius;
 }
-
-
 
 /* -------------------- Typography -------------------- */
 
@@ -79,7 +73,7 @@
 	border: none !important; /* TwentyFifteen theme fix */
 	text-decoration: none !important;
 	word-break: normal !important; /* TwentyTwenty theme fix */
-
+	white-space: nowrap;
 	color: $color-white;
 	padding: $spacer $spacer-big;
 	font-weight: bold;
@@ -118,6 +112,13 @@
 	&[disabled=disabled] {
 		background-color: lighten($color-gray-dark, 50);
 		color: lighten($color-gray-dark, 80);
+	}
+	
+	&.no-right-radius {
+		border-radius: $radius 0 ;
+	}	
+	&.no-left-radius {
+		border-radius: 0  $radius;
 	}
 }
 
