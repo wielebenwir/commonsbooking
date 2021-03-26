@@ -1,15 +1,8 @@
 /**
  * Framework mixins
  *
- * Icons
+ * Breakpoints
  * Animation
- *
- * @package   CommonsBooking2
- * @author Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
 
 /* -------------------- Breakpoints (for lists) -------------------- */
@@ -48,28 +41,4 @@
 	background-image: linear-gradient(45deg, $color 25%, $color2 25%, $color2 50%, $color 50%, $color 75%, $color2 75%, $color2 100%);
 	background-size: 20px 20px;
 	box-shadow: none;
-}
-
-/* -------------------- Round rect (periods) -------------------- */
-
-@mixin round-rect( $corners ) {
-
-	@if $corners=='left' {
-		/* top-left | top-right | bottom-right | bottom-left */
-		border-radius: $radius-pill 0 0 $radius-pill;
-		margin-right: 0;
-	} @else if $corners=='right' {
-		border-radius: 0 $radius-pill $radius-pill 0;
-		margin-left: 0;
-	} @else if $corners=='top' {
-		border-radius: $radius-pill $radius-pill 0 0 ;
-	} @else if $corners=='bottom' {
-		border-radius:  0 0 $radius-pill $radius-pill;
-	} @else if $corners=='all' {
-		border-radius: $radius-pill ;
-	}	@else if $corners =='none' {
-		border-radius: 0;
-		margin-right: 0;
-		margin-left: 0;
-	}
 }

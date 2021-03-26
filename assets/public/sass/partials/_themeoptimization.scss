@@ -1,12 +1,8 @@
 /**
- * Tweaks to make CB play nice with popular themes.
+ * Optimisation & Compatibility 
  *
- * @package   CommonsBooking
- * @author    Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since     0.7
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
+ * Tweaks to make CB play nice with popular Wordpress themes.
+ *
  */
 
 
@@ -21,4 +17,14 @@
     h1, h2, h3, h4 {
       margin: 0 !important;
     }  
+
+  .litepicker {
+    .container {
+        &__days {
+            .day-item {
+                font-size: 1rem;
+            }
+        }
+    }  
+  }
 }

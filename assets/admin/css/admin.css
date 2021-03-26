@@ -1,21 +1,13 @@
 /*
  * Admin styles
- * @package   CommonsBooking2
- * @author    Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
+ *
+ * Loaded only in the WP Backend
  */
 /* Global styles */
 /*
- * Framework styles - shared in front- and backend
- * @package   CommonsBooking2
- * @author    Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
+ * Global styles
+ * 
+ * Shared in Front- and Backend
  */
 /* Lib: reset.css */
 /*
@@ -3295,13 +3287,6 @@
  * Colors: Backgrounds
  * Font sizes
  * Layout variables
- *
- * @package   CommonsBooking2
- * @author Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
 /* Colors: CB Brand */
 /* Colors: Theme */
@@ -3309,101 +3294,88 @@
 /* Colors: text */
 /* Colors: Message statuses */
 /* Font sizes */
-/* Font stack */
 /* Layout Variables */
 /* Mixins */
 /**
  * Framework mixins
  *
- * Icons
+ * Breakpoints
  * Animation
- *
- * @package   CommonsBooking2
- * @author Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
 /* -------------------- Breakpoints (for lists) -------------------- */
 /* -------------------- Animation -------------------- */
-/* -------------------- Round rect (periods) -------------------- */
 /* Extends */
 /**
  * Extends
  *
  * Re-usable styles, intended to be used in scss, not directly in the dom.
+ * Utilizes Breakpoints
  *
  * Boxes
  * Typography
  *
- * @package   CommonsBooking2
- * @author    Annesley Newholm <annesley_newholm@yahoo.it>
- * @copyright 2018 wielebenwir e.V.
- * @license   GPL 2.0+
- * @link      http://commonsbooking.wielebenwir.de
  *
  */
 /* -------------------- Boxes -------------------- */
-/* line 19, ../../global/sass/partials/_extends.scss */
+/* line 15, ../../global/sass/partials/_extends.scss */
 .cb-box, .cb-admin-page .cb-admin-cols div ul li {
   background: #f6f6f6;
-  padding: 5px;
+  padding: 2.5px 5px;
   overflow: hidden;
   border-radius: 8px;
   margin-bottom: 10px;
 }
 @media (min-width: 37.5em) {
-  /* line 19, ../../global/sass/partials/_extends.scss */
+  /* line 15, ../../global/sass/partials/_extends.scss */
   .cb-box, .cb-admin-page .cb-admin-cols div ul li {
     padding: 10px 15px;
   }
 }
 
-/* line 32, ../../global/sass/partials/_extends.scss */
+/* line 28, ../../global/sass/partials/_extends.scss */
 .cb-box-inner {
   background: #FFF;
   padding: 5px;
   border-radius: 8px;
 }
 @media (min-width: 37.5em) {
-  /* line 32, ../../global/sass/partials/_extends.scss */
+  /* line 28, ../../global/sass/partials/_extends.scss */
   .cb-box-inner {
     padding: 10px;
   }
 }
 
 /* -------------------- Typography -------------------- */
-/* line 47, ../../global/sass/partials/_extends.scss */
+/* line 41, ../../global/sass/partials/_extends.scss */
 .cb-big {
   font-size: 18px;
   font-weight: bold;
 }
 
 /* -------------------- Boxes -------------------- */
-/* line 54, ../../global/sass/partials/_extends.scss */
+/* line 48, ../../global/sass/partials/_extends.scss */
 .shadow {
   box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.22);
 }
 
-/* line 58, ../../global/sass/partials/_extends.scss */
+/* line 52, ../../global/sass/partials/_extends.scss */
 .shadow-small, .cb-hover, .cb-button:hover, .cb-button-container a:hover {
   box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* line 62, ../../global/sass/partials/_extends.scss */
+/* line 56, ../../global/sass/partials/_extends.scss */
 .cb-hover {
   border: 1px solid #506CA9;
   border-radius: 8px;
 }
 
-/* line 68, ../../global/sass/partials/_extends.scss */
+/* line 62, ../../global/sass/partials/_extends.scss */
 .cb-thumbnail {
   border-radius: 8px;
 }
 
 /* -------------------- Buttons -------------------- */
-/* line 74, ../../global/sass/partials/_extends.scss */
+/* line 68, ../../global/sass/partials/_extends.scss */
 .cb-button, .cb-button-container a {
   border-radius: 8px;
   font-size: 18px;
@@ -3414,54 +3386,63 @@
   text-decoration: none !important;
   word-break: normal !important;
   /* TwentyTwenty theme fix */
+  white-space: nowrap;
   color: #FFF;
   padding: 10px 15px;
   font-weight: bold;
 }
-/* line 88, ../../global/sass/partials/_extends.scss */
+/* line 82, ../../global/sass/partials/_extends.scss */
 .cb-button:hover, .cb-button-container a:hover {
   background: #506CA9;
   color: #FFF;
   /* Various themes fix */
 }
-/* line 94, ../../global/sass/partials/_extends.scss */
+/* line 88, ../../global/sass/partials/_extends.scss */
 .cb-button:visited, .cb-button-container a:visited {
   color: #FFF;
 }
-/* line 98, ../../global/sass/partials/_extends.scss */
+/* line 92, ../../global/sass/partials/_extends.scss */
 .cb-button.big, .cb-button-container a.big {
   padding: 10px 15px;
 }
-/* line 101, ../../global/sass/partials/_extends.scss */
+/* line 95, ../../global/sass/partials/_extends.scss */
 .cb-button.secondary, .cb-button-container a.secondary {
   background-color: #FFF;
   color: #d5425c;
 }
-/* line 106, ../../global/sass/partials/_extends.scss */
+/* line 100, ../../global/sass/partials/_extends.scss */
 .cb-button.cancel, .cb-button-container a.cancel {
   background-color: #d5425c;
 }
-/* line 110, ../../global/sass/partials/_extends.scss */
+/* line 104, ../../global/sass/partials/_extends.scss */
 .cb-button.confirm, .cb-button-container a.confirm {
   background-color: #74ce3c;
 }
-/* line 114, ../../global/sass/partials/_extends.scss */
+/* line 108, ../../global/sass/partials/_extends.scss */
 .cb-button.delete, .cb-button-container a.delete {
   background-color: #d5425c;
 }
-/* line 118, ../../global/sass/partials/_extends.scss */
+/* line 112, ../../global/sass/partials/_extends.scss */
 .cb-button[disabled=disabled], .cb-button-container a[disabled=disabled] {
   background-color: #c4c4c4;
   color: white;
 }
+/* line 117, ../../global/sass/partials/_extends.scss */
+.cb-button.no-right-radius, .cb-button-container a.no-right-radius {
+  border-radius: 8px 0;
+}
+/* line 120, ../../global/sass/partials/_extends.scss */
+.cb-button.no-left-radius, .cb-button-container a.no-left-radius {
+  border-radius: 0 8px;
+}
 
-/* line 127, ../../global/sass/partials/_extends.scss */
+/* line 128, ../../global/sass/partials/_extends.scss */
 .cb-pill {
   border-radius: 8px;
   padding: 0;
   margin: 0;
 }
-/* line 131, ../../global/sass/partials/_extends.scss */
+/* line 132, ../../global/sass/partials/_extends.scss */
 .cb-pill a {
   text-decoration: none;
   color: #FFF;
@@ -3472,19 +3453,14 @@
 /**
  * Debug
  *
- * @package   CommonsBooking
- * @author 		Florian Egermann <hallo@fleg.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
-/* line 12, ../../global/sass/partials/_utilities.scss */
+/* line 6, ../../global/sass/partials/_utilities.scss */
 .cb-hidden {
   display: none;
 }
 
-/* line 13, ../../global/sass/partials/_utilities.scss */
+/* Template name in content */
+/* line 9, ../../global/sass/partials/_utilities.scss */
 .cb-debug {
   opacity: 0;
   position: absolute;
@@ -3494,41 +3470,44 @@
   background: transparent !important;
 }
 
-/* line 22, ../../global/sass/partials/_utilities.scss */
+/* line 18, ../../global/sass/partials/_utilities.scss */
 .cb-wrapper:hover .cb-debug {
   opacity: 1;
 }
 
-/* Calendar styles */
+/* Dashboard */
 /**
- * Calendar base styles for admin & front-end
+ * Dashboard admin page 
  *
  */
-/* Dashboard */
-/* line 2, ../sass/partials/_dashboard.scss */
+/* line 7, ../sass/partials/_dashboard.scss */
 .cb-admin-page .cb-admin-cols {
   display: flex;
   flex-direction: row;
 }
-/* line 5, ../sass/partials/_dashboard.scss */
+/* line 10, ../sass/partials/_dashboard.scss */
 .cb-admin-page .cb-admin-cols div {
   margin-right: 15px;
 }
-/* line 9, ../sass/partials/_dashboard.scss */
+/* line 14, ../sass/partials/_dashboard.scss */
 .cb-admin-page .cb-admin-cols div h2 {
   padding-top: 0;
 }
-/* line 14, ../sass/partials/_dashboard.scss */
+/* line 19, ../sass/partials/_dashboard.scss */
 .cb-admin-page .cb-admin-cols div ul li {
   margin-top: 15px;
 }
-/* line 17, ../sass/partials/_dashboard.scss */
+/* line 22, ../sass/partials/_dashboard.scss */
 .cb-admin-page .cb-admin-cols div ul li .cb-summmary-item {
   font-weight: bold;
 }
 
 /* Timeframe Form */
-/* line 2, ../sass/partials/_form-timeframe.scss */
+/**
+ * Timeframe form 
+ *
+ */
+/* line 7, ../sass/partials/_form-timeframe.scss */
 .cmb2-id-start-time,
 .cmb2-id-start-date,
 .cmb2-id-end-date,

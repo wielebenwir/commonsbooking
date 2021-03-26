@@ -1,11 +1,5 @@
 /*
  * This stylesheet is used to style the public-facing components of the plugin
- * @package   CommonsBooking2
- * @author    Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
 
 /* Global styles */
@@ -15,7 +9,7 @@
 @import "partials/_layouts";
 
 /* List styles */
-@import "partials/_list";
+@import "partials/_lists";
 
 /* List styles */
 @import "partials/_single";
@@ -31,6 +25,9 @@
 
 /* Booking list styles */
 @import "partials/_bookings";
+
+/* Booking list styles */
+@import "partials/_notice";
 
 /* Fixes for specific WP Themes */
 @import "partials/_themeoptimization";

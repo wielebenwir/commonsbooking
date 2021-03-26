@@ -18,12 +18,11 @@ $noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLU
 ?>
 <div class="cb-list-header">
 	<?php echo $location->thumbnail(); ?>
-	<h2><?php echo $location->titleLink(); ?></h2>
+    <div class="cb-list-info">
+        <h2><?php echo $location->titleLink(); ?></h2>
+        <?php echo $location->excerpt(); ?>
+    </div>
 </div><!-- .cb-list-header -->
-
-<div class="cb-list-content">
-	<?php echo $location->excerpt(); ?>
-</div><!-- .cb-list-content -->
 
 <?php
 if (array_key_exists('data', $templateData) && count($templateData['data'])) {

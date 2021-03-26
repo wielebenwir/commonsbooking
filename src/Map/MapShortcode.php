@@ -84,7 +84,7 @@ class MapShortcode
                     wp_enqueue_script('cb_map_shortcode_js');
 
                     $map_height = MapAdmin::get_option($cb_map_id, 'map_height');
-                    return '<div id="cb-map-'.$cb_map_id.'" style="width: 100%; height: '.$map_height.'px;"></div>';
+                    return '<div id="cb-map-'.$cb_map_id.'" class="cb-wrapper cb-leaflet-map" style="width: 100%; height: '.$map_height.'px;"></div>';
 
                 } else {
                     return '<div>'.esc_html__('map is not published', 'commonsbooking').'</div>';

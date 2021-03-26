@@ -13,22 +13,26 @@
 
 global $templateData;
 $item = new \CommonsBooking\Model\Item($templateData['item']);
+$hasTimeFrames = (array_key_exists('data', $templateData) && count($templateData['data']));
 
 // the item-not-available message (if item ist currently not available) can be defined via plugin options -> message templates
 $noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'item-not-available' );
 
+
 ?>
 <div class="cb-list-header">
     <?php echo $item->thumbnail(); ?>
-    <h2><?php echo $item->titleLink(); ?></h2>
+    <div class="cb-list-info">
+        <h2><?php echo $item->titleLink(); ?></h2>
+        <?php echo $item->excerpt(); ?>
+        <?php if (! $hasTimeFrames) { ?>
+            <div class="cb-status cb-availability-status cb-status-not-available cb-notice-inline"><?php echo ( $noResultText ); ?></div>
+       <?php } ?>
+    </div>
 </div><!-- .cb-list-header -->
 
-<div class="cb-list-content">
-    <?php echo $item->excerpt(); ?>
-</div><!-- .cb-list-content -->
-
 <?php
-if (array_key_exists('data', $templateData) && count($templateData['data'])) {
+if ($hasTimeFrames) {
     foreach ($templateData['data'] as $locationId => $data ) {
         $location = new \CommonsBooking\Model\Location($locationId);
         set_query_var( 'item', $item );
@@ -36,6 +40,4 @@ if (array_key_exists('data', $templateData) && count($templateData['data'])) {
         set_query_var( 'data', $data );
         commonsbooking_get_template_part( 'timeframe', 'withlocation' );
     }
-} else { ?>
-    <div class="cb-status cb-availability-status"><?php echo ( $noResultText ); ?></div>
-<?php } // end if ($timeframes) ?>
+ }; // end if ($timeframes) ?>

@@ -13,6 +13,6 @@
     <input type="hidden" name="post_status" value="<?php echo $form_post_status; ?>" />
     <input type="hidden" name="repetition-start" value="<?php echo $booking->getMeta('repetition-start'); ?>">
     <input type="hidden" name="repetition-end" value="<?php echo $booking->getMeta('repetition-end'); ?>">
-    <input type="submit" value="<?php echo $button_label; ?>" />
+    <input type="submit" value="<?php echo $button_label; ?>" class="<?php echo "cb-action-" . $form_post_status; ?>" />
 </form>
 
