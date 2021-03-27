@@ -165,6 +165,12 @@ class Plugin
     {
         // check if we have a new version and run tasks
         self::runTasksAfterUpdate();
+
+        // Check if we need to flush rewrite rules
+        if (get_transient('commonsbooking_flush_rewrite_rules') == 1) {
+            flush_rewrite_rules();
+            set_transient('commonsbooking_flush_rewrite_rules', 0);
+        }
     }
 
     /**
@@ -582,17 +588,11 @@ class Plugin
      */
     public static function saveOptionsActions()
     {
-        if (get_transient('commonsbooking_options_saved') == 1) {
-            // restore default values if necessary
-            AdminOptions::SetOptionsDefaultValues();
+        AdminOptions::SetOptionsDefaultValues();
 
-            // flush rewrite rules to get permalinks working
-            flush_rewrite_rules();
-
-            set_transient('commonsbooking_options_saved', 0);
-        }
+        // Flush rewrite rules - only possible on admin_init
+        set_transient('commonsbooking_flush_rewrite_rules', 1);
     }
-
 
     /**
      * Register Admin-Options
@@ -610,7 +610,6 @@ class Plugin
      */
     public static function runTasksAfterUpdate()
     {
-
         $commonsbooking_version_option = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
         $commonsbooking_installed_version = get_option($commonsbooking_version_option);
 
