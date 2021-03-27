@@ -195,7 +195,7 @@ class Timeframe extends CustomPost
         ) {
             // If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
             set_transient(self::ERROR_TYPE,
-                commonsbooking_sanitizeHTML(__("Startdate is missing.",
+                commonsbooking_sanitizeHTML(__("Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.",
                     'commonsbooking')),
                 45);
             return false;

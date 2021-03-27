@@ -83,14 +83,19 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 == Changelog ==
 
 = 2.4.3 (xx) = 
+* NEW: Booking comment: Users can add an internal comment to a booking that can be viewed by location administrators and can be used in email template via template tags (see template tags in documentation)
+* NEW: Maximum bookable days are now without limitation. You can choose the maximum in the timeframe editor
+* NEW: included function to edit categories for locations and items (rename, remove etc.)
+* ENHANCED: Added map link to dashboard
+* ENHANCED: Validation of bookings optimized
 * FIXED: Bookable timeframe without enddate caused some issues in frontend calendar. Now it is possible to leave end date empty to allow infinite booking timeframe
 * FIXED: performance issue on some systems in backend view (issue #546)
 * FIXED: cancelation of an unconfirmed booking triggered a cancelation mail to user and location. Now the cancelation mail will not be send anymore.  (issue #532)
 * FIXED: fixed a timeframe validation error (isse #548)
-* FIXED: calendar not shown in edge / explorer in some versions. Thanks to @danielappelt for fixing it.
-* ENHANCED: included function to edit categories for locations and items (rename, remove etc.)
-* ENHANCED: Added map link to dashboard
+* FIXED: calendar not shown in edge / explorer in some versions. Thanks to @danielappelt for fixing it
 * FIXED: Added tooltips in map configuration
+* FIXED: Multiple categories are not imported during migration.
+* TEMPLATES: modification in templates: booking-single-form.php and booking-single.php 
 
 = 2.4.2 (15.02.2021) = 
 * FIXED: Fixed permission issue on booking lists
