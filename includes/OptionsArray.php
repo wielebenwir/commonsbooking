@@ -107,19 +107,20 @@ return array(
                 ),
             ),
             'bookingCommentSettings' => array(
-                'title' => __("Buchungs-Kommentar", 'commonsbooking'),
+                'title' => __("Booking comment", 'commonsbooking'),
                 'id' => 'bookingCommentSettings',
                 'fields' => array(
                     array(
-                        'name' => esc_html__('Kommentare auf Buchungsseite aktivieren', 'commonsbooking'),
+                        'name' => esc_html__('Activate booking comments in booking page', 'commonsbooking'),
                         'id' => 'booking-comment-active',
+                        'desc'    => commonsbooking_sanitizeHTML( __('If enabled, users can enter an internal comment about their booking on the booking confirmation page. This comment can be included in the booking confirmation email.', 'commonsbooking') ),
                         'type' => 'checkbox',
                     ),
                     array(
-                        'name' => commonsbooking_sanitizeHTML(__('Überschrift über Eingabefeld', 'commonsbooking')),
+                        'name' => commonsbooking_sanitizeHTML( __('Headline above input the comment field in frontend', 'commonsbooking')),
                         'id' => 'booking-comment-title',
                         'type' => 'text',
-                        'default' => __('Kommentar', 'commonstbooking'),
+                        'default' => __('Booking comment', 'commonstbooking'),
                     ),
                 )
             )

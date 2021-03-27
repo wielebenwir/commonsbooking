@@ -295,8 +295,8 @@ class Booking extends CustomPost
      * Returns comment text.
      * @return mixed
      */
-    public function getComment() {
-        return $this->getMeta('comment');
+    public function returnComment() {
+        return commonsbooking_sanitizeHTML( $this->getMeta('comment') );
     }
 
     /**

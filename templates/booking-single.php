@@ -100,20 +100,20 @@ $item          = $booking->getItem();
                 </div>
                 <div class="cb-list-content cb-comment cb-col-100">
                     <div>
-                        <textarea id="cb-booking-comment" name="comment"><?php echo $booking->getComment(); ?></textarea>
+                        <textarea id="cb-booking-comment" name="comment"><?php echo $booking->returnComment(); ?></textarea>
                     </div>
                 </div>
             </div>
     <?php
         } else {
-            if($booking->getComment()) {
+            if($booking->returnComment()) {
     ?>
             <div class="cb-wrapper cb-booking-comment">
                 <div class="cb-list-header">
                     <h3><?php echo $bookingCommentTitle; ?></h3>
                 </div>
                 <div class="cb-list-content cb-comment cb-col-100">
-                    <div><?php echo $booking->getComment(); ?></div>
+                    <div><?php echo $booking->returnComment(); ?></div>
                 </div>
             </div>
     <?php
