@@ -166,10 +166,12 @@ class Plugin
         // check if we have a new version and run tasks
         self::runTasksAfterUpdate();
 
-        // Check if we need to flush rewrite rules
-        if (get_transient('commonsbooking_flush_rewrite_rules') == 1) {
+        // Check if we need to run post options updated actions
+        if (get_transient('commonsbooking_options_saved') == 1) {
+            AdminOptions::SetOptionsDefaultValues();
+
             flush_rewrite_rules();
-            set_transient('commonsbooking_flush_rewrite_rules', 0);
+            set_transient('commonsbooking_options_saved', 0);
         }
     }
 
@@ -588,10 +590,8 @@ class Plugin
      */
     public static function saveOptionsActions()
     {
-        AdminOptions::SetOptionsDefaultValues();
-
-        // Flush rewrite rules - only possible on admin_init
-        set_transient('commonsbooking_flush_rewrite_rules', 1);
+        // Run actions after options update
+        set_transient('commonsbooking_options_saved', 1);
     }
 
     /**
