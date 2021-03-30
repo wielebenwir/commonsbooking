@@ -166,8 +166,13 @@ class Plugin
         // check if we have a new version and run tasks
         self::runTasksAfterUpdate();
 
-        self::saveOptionsActions();
+        // Check if we need to run post options updated actions
+        if (get_transient('commonsbooking_options_saved') == 1) {
+            AdminOptions::SetOptionsDefaultValues();
 
+            flush_rewrite_rules();
+            set_transient('commonsbooking_options_saved', 0);
+        }
     }
 
     /**
@@ -585,16 +590,8 @@ class Plugin
      */
     public static function saveOptionsActions()
     {
-       
-        if ( get_transient('commonsbooking_options_saved') == 1) {
-            // restore default values if necessary
-            AdminOptions::SetOptionsDefaultValues();
-
-            // flush rewrite rules to get permalinks working
-            flush_rewrite_rules();
-
-            set_transient('commonsbooking_options_saved', 0);
-        }
+        // Run actions after options update
+        set_transient('commonsbooking_options_saved', 1);
     }
 
     /**
