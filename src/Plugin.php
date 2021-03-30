@@ -587,6 +587,7 @@ class Plugin
 
     /**
      * run actions after plugin options are saved
+     * TODOD: @markus-mw I think this function is deprecated now. Would you please check this? It is only referenced by an inactive hook
      */
     public static function saveOptionsActions()
     {
