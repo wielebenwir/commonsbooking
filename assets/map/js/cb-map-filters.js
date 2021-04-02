@@ -259,7 +259,7 @@ function CB_Map_Filters($, cb_map) {
     var $date_end_input = $('<input type="date" name="date_end" min="' + cb_map.settings.filter_availability.date_min + '" max="' + cb_map.settings.filter_availability.date_max + '"  value="' + cb_map.settings.filter_availability.date_max +'">');
     var $day_count_select = $('<select name="day_count"></select>')
     for(var d = 1; d <= cb_map.settings.filter_availability.day_count_max; d++) {
-      var show_value = d == 0 ? '-' : d;
+      var show_value = d == 1 ? '1' : d;
       $day_count_select.append('<option value="' + d + '">' + show_value + '</option>')
     }
     
