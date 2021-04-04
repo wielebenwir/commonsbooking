@@ -18,9 +18,10 @@ function commonsbooking_isCurrentUserAllowedToEdit($post): bool
     $current_user = wp_get_current_user();
     $isAuthor     = intval($current_user->ID) == intval($post->post_author);
     $isAdmin      = commonsbooking_isCurrentUserAdmin();
+    $isAllowed    = $isAdmin || $isAuthor;
 
     // Check if it is the main query and one of our custom post types
-    if ( ! $isAdmin && ! $isAuthor) {
+    if ( ! $isAllowed ) {
         $admins = [];
 
         // Get allowed admins for timeframe listing
@@ -67,11 +68,11 @@ function commonsbooking_isCurrentUserAllowedToEdit($post): bool
             $admins = get_post_meta($post->ID, '_'.$post->post_type.'_admins', true);
         }
 
-        return (is_string($admins) && $current_user->ID === $admins) ||
+        $isAllowed = (is_string($admins) && $current_user->ID === $admins) ||
             (is_array($admins) && in_array($current_user->ID.'', $admins, true));
     }
 
-    return true;
+    return $isAllowed;
 }
 
 /**
@@ -123,5 +124,5 @@ add_filter(
 // Check if current user has admin role
 function commonsbooking_isCurrentUserAdmin() {
     $user = wp_get_current_user();
-    return in_array('administrator', $user->roles);
+    return apply_filters('commonsbooking_isCurrentUserAdmin', in_array('administrator', $user->roles), $user);
 }

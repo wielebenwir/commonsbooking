@@ -42,34 +42,33 @@ abstract class BookablePost extends PostRepository
                 $items = array_merge($items, $query->get_posts());
             }
 
-            // get all items where current user is assigned as admin
-            $args = array(
-                'post_type'  => static::getPostType(),
-                'meta_query' => array(
-                    'relation' => 'AND',
-                    array(
-                        'key' => '_'.static::getPostType().'_admins',
-                        'compare' => 'EXISTS',
-                    ),
-                    array(
-                        'key'     => '_'.static::getPostType().'_admins',
-                        'value'   => '"'.$current_user->ID.'"',
-                        'compare' => 'like',
-                    )
-                ),
-                'nopaging'   => true,
-                'orderby'    => 'post_title',
-                'order'      => 'asc',
-            );
-
-            // workaround: if user has admin-role get all available items
-            if (in_array('administrator', $current_user->roles)) {
-                unset($args);
+            if (commonsbooking_isCurrentUserAdmin()) {
+                // if user has admin-role get all available items
                 $args = array(
                     'post_type' => static::getPostType(),
                     'nopaging'  => true,
                     'orderby'   => 'post_title',
                     'order'     => 'asc',
+                );
+            } else {
+                // get all items where current user is assigned as admin
+                $args = array(
+                    'post_type'  => static::getPostType(),
+                    'meta_query' => array(
+                        'relation' => 'AND',
+                        array(
+                            'key' => '_'.static::getPostType().'_admins',
+                            'compare' => 'EXISTS',
+                        ),
+                        array(
+                            'key'     => '_'.static::getPostType().'_admins',
+                            'value'   => '"'.$current_user->ID.'"',
+                            'compare' => 'like',
+                        )
+                    ),
+                    'nopaging'   => true,
+                    'orderby'    => 'post_title',
+                    'order'      => 'asc',
                 );
             }
 
