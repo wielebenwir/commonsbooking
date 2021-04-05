@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name:         CommonsBooking
+ * Plugin Name:         Commons Booking
  * Version:             2.4.3
  * Requires at least:   5.2
  * Requires PHP:        7.0

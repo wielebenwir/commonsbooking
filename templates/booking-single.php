@@ -13,6 +13,8 @@ $booking       = new \CommonsBooking\Model\Booking($post->ID);
 $timeframe     = $booking->getBookableTimeFrame();
 $location      = $booking->getLocation();
 $item          = $booking->getItem();
+$show_contactinfo_unconfirmed = Settings::getOption('commonsbooking_options_templates', 'show_contactinfo_unconfirmed');
+$text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates', 'text_hidden-contactinfo');
 ?>
 
 <?php echo $booking->bookingNotice(); ?>
@@ -58,7 +60,11 @@ $item          = $booking->getItem();
     <div class="cb-list-content cb-address cb-col-30-70">
         <div><?php echo esc_html__('Address', 'commonsbooking'); ?></div>
         <div><?php echo $location->formattedAddressOneLine(); ?></div>
+
     </div><!-- .cb-address -->
+    <?php 
+    // show contact details only after booking is confirmed or if options are set to show contactinfo even on unconfirmed booking status
+    if($post->post_status == 'confirmed' OR $show_contactinfo_unconfirmed == 'on') { ?>
     <div class="cb-list-content cb-contact cb-col-30-70">
         <div><?php echo esc_html__('Contact', 'commonsbooking'); ?></div>
         <div><?php echo $location->formattedContactInfoOneLine(); ?></div>
@@ -67,6 +73,18 @@ $item          = $booking->getItem();
         <div><?php echo esc_html__('Pickup instructions', 'commonsbooking'); ?></div>
         <div><?php echo $location->formattedPickupInstructionsOneLine(); ?></div>
     </div><!-- .cb-cb-pickupinstructions -->
+<?php
+// else; show info-text to inform user to confirm booking to see contact details
+} else {
+?>
+    <div class="cb-list-content cb-contact cb-col-30-70">
+        <div><?php echo esc_html__('Contact', 'commonsbooking'); ?></div>
+        <div><strong><?php echo $text_hidden_contactinfo; ?></strong></div>
+    </div><!-- .cb-contact -->
+<?php 
+// end if booking == confirmed
+}
+?>
 </div><!-- cb-booking-location -->
 
 <!-- User TODO User Class so we can query everything the same way. -->
@@ -92,12 +110,14 @@ $item          = $booking->getItem();
 
     if($bookingCommentActive) {
         $bookingCommentTitle = Settings::getOption('commonsbooking_options_general', 'booking-comment-title');
+        $bookingCommentDescription = Settings::getOption('commonsbooking_options_general', 'booking-comment-description');
 
         if($post->post_status == 'unconfirmed') { ?>
             <div class="cb-wrapper cb-booking-comment">
                 <div class="cb-list-header">
                     <h3><?php echo $bookingCommentTitle; ?></h3>
                 </div>
+                <p><?php echo $bookingCommentDescription; ?></p>
                 <div class="cb-list-content cb-comment cb-col-100">
                     <div>
                         <textarea id="cb-booking-comment" name="comment"><?php echo $booking->returnComment(); ?></textarea>

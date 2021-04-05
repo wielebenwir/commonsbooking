@@ -96,6 +96,7 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 * FIXED: Added tooltips in map configuration
 * FIXED: Multiple categories are not imported during migration.
 * TEMPLATES: modification in templates: booking-single-form.php and booking-single.php 
+* ENHANCED: Make CommonsBooking Menu entry fit better in the WP Admin #593
 
 = 2.4.2 (15.02.2021) = 
 * FIXED: Fixed permission issue on booking lists

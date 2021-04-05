@@ -113,14 +113,22 @@ return array(
                     array(
                         'name' => esc_html__('Activate booking comments in booking page', 'commonsbooking'),
                         'id' => 'booking-comment-active',
-                        'desc'    => commonsbooking_sanitizeHTML( __('If enabled, users can enter an internal comment about their booking on the booking confirmation page. This comment can be included in the booking confirmation email.', 'commonsbooking') ),
+                        'description'    => commonsbooking_sanitizeHTML( __('If enabled, users can enter an internal comment about their booking on the booking confirmation page. This comment can be included in the booking confirmation email.', 'commonsbooking') ),
                         'type' => 'checkbox',
                     ),
                     array(
                         'name' => commonsbooking_sanitizeHTML( __('Headline above the comment field in frontend', 'commonsbooking')),
                         'id' => 'booking-comment-title',
+                        'description'    => commonsbooking_sanitizeHTML( __('Text that will be shown above the comment field in the booking confirmation page.', 'commonsbooking') ),
                         'type' => 'text',
                         'default' => __('Booking comment', 'commonstbooking'),
+                    ),
+                    array(
+                        'name' => commonsbooking_sanitizeHTML( __('Description', 'commonsbooking')),
+                        'id' => 'booking-comment-description',
+                        'description'    => commonsbooking_sanitizeHTML( __('Short infotext to inform the user how the comment field will be used (e.g. only internal comment etc.) ', 'commonsbooking') ),
+                        'type' => 'textarea_small',
+                        'default' => __('Here you can leave a comment about your booking. This will be sent to the station.', 'commonsbooking'),
                     ),
                 )
             )
@@ -256,6 +264,19 @@ Thanks, the Team.
                     'desc'    => esc_html__('This text is shown on location listings and location detail page if there are no items available at this location', 'commonsbooking'),
                     'default' => esc_html__( 'No items available at this location right now.', 'commonsbooking' ),
                   ),
+                array(
+                'name'    => esc_html__( 'Show contactdetails on booking without confirmation?', 'commonsbooking' ),
+                'id'      => 'show_contactinfo_unconfirmed',
+                'type'    => 'checkbox',
+                'desc'    => esc_html__('If activated the contactdetails (e.g. phone number, pickupinstructions) will be shown on booking page even if the booking is not confirmed by user. Otherwise these info will be shown only after booking is confirmed', 'commonsbooking'),
+                ),
+                array(
+                'name'    => esc_html__( 'Infotext hidden contactdetails', 'commonsbooking' ),
+                'id'      => 'text_hidden-contactinfo',
+                'type'    => 'textarea_small',
+                'desc'    => esc_html__('This text is displayed when contact details of the station are shown only after booking confirmation.', 'commonsbooking'),
+                'default' => esc_html__( 'Please confirm the booking to see the contact details for pickup and return.', 'commonsbooking' ),
+                ),
               )
             ),
             /* message templates end */

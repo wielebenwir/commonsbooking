@@ -387,8 +387,8 @@ class Plugin
     {
         // Dashboard
         add_menu_page(
-            'CommonsBooking',
-            'CommonsBooking',
+            'Commons Booking',
+            'Commons Booking',
             'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
             'cb-dashboard',
             array(\CommonsBooking\View\Dashboard::class, 'index'),

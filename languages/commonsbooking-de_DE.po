@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2021-04-05T11:58:20+00:00\n"
-"PO-Revision-Date: 2021-04-05 14:12+0200\n"
+"POT-Creation-Date: 2021-04-05T13:17:08+00:00\n"
+"PO-Revision-Date: 2021-04-05 15:20+0200\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -25,9 +25,8 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-2: node_modules\n"
 
 #. Plugin Name of the plugin
-#: src/Wordpress/Options/OptionsTab.php:47
-msgid "CommonsBooking"
-msgstr "CommonsBooking"
+msgid "Commons Booking"
+msgstr "Commons Booking"
 
 #. Plugin URI of the plugin
 msgid "https://commonsbooking.org"
@@ -185,12 +184,40 @@ msgstr ""
 msgid "Headline above the comment field in frontend"
 msgstr "Überschrift über dem Kommentarfeld im Frontend"
 
-#: includes/OptionsArray.php:133 includes/OptionsArray.php:137
-#: includes/OptionsArray.php:144 src/Wordpress/CustomPostType/Timeframe.php:816
+#: includes/OptionsArray.php:122
+msgid ""
+"Text that will be shown above the comment field in the booking confirmation "
+"page."
+msgstr ""
+"Text, der über dem Kommentarfeld auf der Buchungsbestätigungsseite angezeigt "
+"wird."
+
+#: includes/OptionsArray.php:127
+msgid "Description"
+msgstr "Beschreibung"
+
+#: includes/OptionsArray.php:129
+msgid ""
+"Short infotext to inform the user how the comment field will be used (e.g. "
+"only internal comment etc.) "
+msgstr ""
+"Kurzer Infotext zur Information des Benutzenden, wie das Kommentarfeld "
+"verwendet wird (z.B. nur interner Kommentar etc.) "
+
+#: includes/OptionsArray.php:131
+msgid ""
+"Here you can leave a comment about your booking. This will be sent to the "
+"station."
+msgstr ""
+"Hier ein Kommentar zur Buchung eingegeben werden. Dieser wird an die Station "
+"gesendet."
+
+#: includes/OptionsArray.php:141 includes/OptionsArray.php:145
+#: includes/OptionsArray.php:152 src/Wordpress/CustomPostType/Timeframe.php:816
 msgid "Booking Codes"
 msgstr "Buchungs-Codes"
 
-#: includes/OptionsArray.php:140
+#: includes/OptionsArray.php:148
 msgid ""
 "Enter the booking codes to be generated in advance for booking types with "
 "all-day booking time frames.  Enter booking codes as a comma separated list, "
@@ -204,37 +231,37 @@ msgstr ""
 "<br>Weitere Informationen in der Dokumentation: <a href=\"https://"
 "commonsbooking.org/?p=870\" target=\"_blank\">Buchungscodes</a>"
 
-#: includes/OptionsArray.php:155
+#: includes/OptionsArray.php:163
 msgid "Templates"
 msgstr "Vorlagen"
 
-#: includes/OptionsArray.php:160
+#: includes/OptionsArray.php:168
 msgid "Email templates"
 msgstr "E-Mail Vorlagen"
 
-#: includes/OptionsArray.php:164
+#: includes/OptionsArray.php:172
 msgid "Mail-Header from E-Mail"
 msgstr "Absender E-Mail Mail-Adresse"
 
-#: includes/OptionsArray.php:165
+#: includes/OptionsArray.php:173
 msgid "E-Mail that will be shown as sender in generated emails"
 msgstr ""
 "E-Mail, die als Absender in automatisch versendeten E-Mails angezeigt wird"
 
-#: includes/OptionsArray.php:171
+#: includes/OptionsArray.php:179
 msgid "Mail-Header from Name"
 msgstr "Absender E-Mail Name"
 
-#: includes/OptionsArray.php:172
+#: includes/OptionsArray.php:180
 msgid "Name that will be shown as sender in generated emails"
 msgstr ""
 "Name, der als Absender in automatisch versendeten E-Mails angezeigt wird"
 
-#: includes/OptionsArray.php:178
+#: includes/OptionsArray.php:186
 msgid "Booking confirmed email subject"
 msgstr "E-Mail-Betreff für bestätigte Buchungen"
 
-#: includes/OptionsArray.php:182
+#: includes/OptionsArray.php:190
 msgid ""
 "Your booking {{item:post_title}} at {{location:post_title}} {{booking:"
 "formattedBookingDate}} "
@@ -242,11 +269,11 @@ msgstr ""
 "Deine Buchung von {{item:post_title}} am Standort {{location:post_title}} "
 "{{booking:formattedBookingDate}} "
 
-#: includes/OptionsArray.php:186
+#: includes/OptionsArray.php:194
 msgid "Booking confirmed email body"
 msgstr "E-Mail-Text für bestätige Buchungen"
 
-#: includes/OptionsArray.php:190
+#: includes/OptionsArray.php:198
 msgid ""
 "\n"
 "Hi {{user:first_name}},<br>\n"
@@ -307,11 +334,11 @@ msgstr ""
 "Vielen Dank, das Team.\n"
 "                        "
 
-#: includes/OptionsArray.php:218
+#: includes/OptionsArray.php:226
 msgid "Booking canceled email subject"
 msgstr "E-Mail-Betreff für stornierte Buchungen"
 
-#: includes/OptionsArray.php:221
+#: includes/OptionsArray.php:229
 msgid ""
 "Booking canceled: {{item:post_title}} at {{location:post_title}} {{booking:"
 "formattedBookingDate}}"
@@ -319,11 +346,11 @@ msgstr ""
 "Buchung storniert: {{item:post_title}} am Standort {{location:post_title}} "
 "{{booking:formattedBookingDate}}"
 
-#: includes/OptionsArray.php:224
+#: includes/OptionsArray.php:232
 msgid "Booking canceled email body"
 msgstr "E-Mail-Text für stornierte Buchungen"
 
-#: includes/OptionsArray.php:227
+#: includes/OptionsArray.php:235
 msgid ""
 "\n"
 "Hi {{user:first_name}},<br>\n"
@@ -343,15 +370,15 @@ msgstr ""
 "Vielen Dank, das Team.\n"
 "                            "
 
-#: includes/OptionsArray.php:241
+#: includes/OptionsArray.php:249
 msgid "Template and booking process messages"
 msgstr "Template und Buchungsprozess-Meldungen"
 
-#: includes/OptionsArray.php:246
+#: includes/OptionsArray.php:254
 msgid "Item not available"
 msgstr "Artikel nicht verfügbar"
 
-#: includes/OptionsArray.php:249
+#: includes/OptionsArray.php:257
 msgid ""
 "This text is shown on item listings (shortcode cb_items) and item detail "
 "page if there is no valid bookable timeframe set for this item"
@@ -360,15 +387,15 @@ msgstr ""
 "Artikeldetailseite angezeigt, wenn kein gültiger buchbarer Zeitrahmen für "
 "diesen Artikel festgelegt ist"
 
-#: includes/OptionsArray.php:250
+#: includes/OptionsArray.php:258
 msgid "This item is currently not bookable."
 msgstr "Dieser Artikel ist derzeit nicht buchbar."
 
-#: includes/OptionsArray.php:253
+#: includes/OptionsArray.php:261
 msgid "Location without available items"
 msgstr "Standort ohne verfügbare Artikel"
 
-#: includes/OptionsArray.php:256
+#: includes/OptionsArray.php:264
 msgid ""
 "This text is shown on location listings and location detail page if there "
 "are no items available at this location"
@@ -376,19 +403,53 @@ msgstr ""
 "Dieser Text wird auf der Standortliste und auf der Standortdetailseite "
 "angezeigt, wenn an diesem Standort keine Artikel verfügbar sind"
 
-#: includes/OptionsArray.php:257
+#: includes/OptionsArray.php:265
 msgid "No items available at this location right now."
 msgstr "Keine Artikel an diesem Standort verfügbar."
 
 #: includes/OptionsArray.php:268
+msgid "Show contactdetails on booking without confirmation?"
+msgstr "Kontaktdaten bei Buchung ohne Bestätigung anzeigen?"
+
+#: includes/OptionsArray.php:271
+msgid ""
+"If activated the contactdetails (e.g. phone number, pickupinstructions) will "
+"be shown on booking page even if the booking is not confirmed by user. "
+"Otherwise these info will be shown only after booking is confirmed"
+msgstr ""
+"Bei Aktivierung werden die Kontaktdaten (z.B. Telefonnummer, "
+"Abholanweisungen) auf der Buchungsseite angezeigt, auch wenn die Buchung vom "
+"Nutzer nicht bestätigt ist. Andernfalls werden diese Informationen erst "
+"angezeigt, nachdem die Buchung bestätigt wurde."
+
+#: includes/OptionsArray.php:274
+msgid "Infotext hidden contactdetails"
+msgstr "Infotext, wenn Kontaktdetails nicht angezeigt werden."
+
+#: includes/OptionsArray.php:277
+msgid ""
+"This text is displayed when contact details of the station are shown only "
+"after booking confirmation."
+msgstr ""
+"Dieser Text wird angezeigt, wenn die Kontaktdaten des Standorts erst nach "
+"Buchungsbestätigung angezeigt werden."
+
+#: includes/OptionsArray.php:278
+msgid ""
+"Please confirm the booking to see the contact details for pickup and return."
+msgstr ""
+"Bitte bestätige die Buchung, um die Kontaktdaten für die Abholung und "
+"Rückgabe zu sehen."
+
+#: includes/OptionsArray.php:289
 msgid "Migration"
 msgstr "Migration"
 
-#: includes/OptionsArray.php:272
+#: includes/OptionsArray.php:293
 msgid "Migrate from Commons Booking Version 0.X"
 msgstr "Migriere von Commons Booking Version 0.X"
 
-#: includes/OptionsArray.php:274
+#: includes/OptionsArray.php:295
 msgid ""
 "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: "
 "locations, items, timeframes and bookings. <br><span style=\"color:red\">If "
@@ -407,43 +468,43 @@ msgstr ""
 "\"https://commonsbooking.org/?p=434\">Migration von Version 0.9.x auf 2.x.x.,"
 "</a> bevor Du mit der Migration beginnst."
 
-#: includes/OptionsArray.php:277 src/View/Migration.php:66
+#: includes/OptionsArray.php:298 src/View/Migration.php:66
 msgid "Start Migration"
 msgstr "Migration starten"
 
-#: includes/OptionsArray.php:285
+#: includes/OptionsArray.php:306
 msgid "CommonsBooking Version 0.X profile fields"
 msgstr "CommonsBooking Version 0.X Nutzerprofil-Felder"
 
-#: includes/OptionsArray.php:287
+#: includes/OptionsArray.php:308
 msgid ""
 "Enable the following legacy CommonsBooking Version 0.X user profile fields:"
 msgstr ""
 "Aktiviere die folgenden veralteten Nutzer-Profilfelder aus Commons Booking "
 "Version 0.X:"
 
-#: includes/OptionsArray.php:290
+#: includes/OptionsArray.php:311
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: includes/OptionsArray.php:295
+#: includes/OptionsArray.php:316
 msgid "Terms & Services Url"
 msgstr "Nutzungsbedingungen & Services URL"
 
-#: includes/OptionsArray.php:307 includes/OptionsArray.php:359
+#: includes/OptionsArray.php:328 includes/OptionsArray.php:380
 msgid "Export"
 msgstr "Export"
 
-#: includes/OptionsArray.php:311
+#: includes/OptionsArray.php:332
 msgid "Download timeframes export"
 msgstr "Zeitrahmen-Export herunterladen"
 
-#: includes/OptionsArray.php:315 src/Wordpress/CustomPostType/Timeframe.php:79
+#: includes/OptionsArray.php:336 src/Wordpress/CustomPostType/Timeframe.php:79
 #: src/Wordpress/CustomPostType/Timeframe.php:679
 msgid "Type"
 msgstr "Typ"
 
-#: includes/OptionsArray.php:316 src/Wordpress/CustomPostType/Timeframe.php:680
+#: includes/OptionsArray.php:337 src/Wordpress/CustomPostType/Timeframe.php:680
 msgid ""
 "Select Type of this timeframe (e.g. bookable, repair, holidays, booking). "
 "See Documentation for detailed information."
@@ -451,11 +512,11 @@ msgstr ""
 "Wähle den Typ dieses Zeitrahmens (z.B. buchbar, Reparatur, Urlaub, Buchung). "
 "Ausführliche Informationen findest Du in der Dokumentation."
 
-#: includes/OptionsArray.php:322
+#: includes/OptionsArray.php:343
 msgid "Location-Fields"
 msgstr "Standort-Felder"
 
-#: includes/OptionsArray.php:323 includes/OptionsArray.php:329
+#: includes/OptionsArray.php:344 includes/OptionsArray.php:350
 msgid ""
 "Just add field names, no matter if its a post- or a meta-field. Comma "
 "separated list."
@@ -463,15 +524,15 @@ msgstr ""
 "Füge Feldnamen als kommaseparierte hinzu. Dies können Post- oder Meta-Felder "
 "sein."
 
-#: includes/OptionsArray.php:328
+#: includes/OptionsArray.php:349
 msgid "Item-Fields"
 msgstr "Artikel-Felder"
 
-#: includes/OptionsArray.php:334
+#: includes/OptionsArray.php:355
 msgid "User-Fields"
 msgstr "User-Felder"
 
-#: includes/OptionsArray.php:335
+#: includes/OptionsArray.php:356
 msgid ""
 "Just add field names, no matter if its a user- or a meta-field. Comma "
 "separated list."
@@ -479,47 +540,47 @@ msgstr ""
 "Füge Feldnamen als kommaseparierte hinzu. Dies können Post- oder Meta-Felder "
 "sein."
 
-#: includes/OptionsArray.php:340
+#: includes/OptionsArray.php:361
 msgid "Export start date"
 msgstr "Export Startdatum"
 
-#: includes/OptionsArray.php:350
+#: includes/OptionsArray.php:371
 msgid "Export end date"
 msgstr "Eport-Enddatum"
 
-#: includes/OptionsArray.php:367
+#: includes/OptionsArray.php:388
 msgid "Cron settings for timeframes export"
 msgstr "Cron-Einstellungen für den Zeitrahmenexport"
 
-#: includes/OptionsArray.php:371
+#: includes/OptionsArray.php:392
 msgid "Run as cronjob"
 msgstr "Als Cronjob anlegen"
 
-#: includes/OptionsArray.php:376
+#: includes/OptionsArray.php:397
 msgid "Export interval"
 msgstr "Exportintervall"
 
-#: includes/OptionsArray.php:380 includes/OptionsArray.php:381
+#: includes/OptionsArray.php:401 includes/OptionsArray.php:402
 msgid "minutes"
 msgstr "Minuten"
 
-#: includes/OptionsArray.php:382
+#: includes/OptionsArray.php:403
 msgid "daily"
 msgstr "täglich"
 
-#: includes/OptionsArray.php:386
+#: includes/OptionsArray.php:407
 msgid "Export timerange"
 msgstr "Export-Zeitbereich"
 
-#: includes/OptionsArray.php:387
+#: includes/OptionsArray.php:408
 msgid "Export timerange in days."
 msgstr "Exportiere diesen Zeitraum (in Tagen)"
 
-#: includes/OptionsArray.php:396
+#: includes/OptionsArray.php:417
 msgid "Filepath"
 msgstr "Dateipfad"
 
-#: includes/OptionsArray.php:397
+#: includes/OptionsArray.php:418
 msgid ""
 "Absolute path on your webserver (including trailing slash) where export file "
 "will be saved to."
@@ -822,7 +883,7 @@ msgstr "Bitte gib Deine Telefonnummer ein"
 
 #: src/Repository/CB1UserFields.php:68 src/Repository/CB1UserFields.php:273
 #: src/Wordpress/CustomPostType/Location.php:195
-#: templates/booking-single.php:59
+#: templates/booking-single.php:61
 msgid "Address"
 msgstr "Adresse"
 
@@ -879,7 +940,7 @@ msgstr "Status"
 #: src/View/BookingCodes.php:28 src/Wordpress/CustomPostType/Item.php:80
 #: src/Wordpress/CustomPostType/Timeframe.php:80
 #: src/Wordpress/CustomPostType/Timeframe.php:704
-#: templates/booking-single.php:23 templates/shortcode-bookings.php:63
+#: templates/booking-single.php:25 templates/shortcode-bookings.php:63
 msgid "Item"
 msgstr "Artikel"
 
@@ -1204,7 +1265,7 @@ msgstr ""
 "gesendet wird"
 
 #: src/Wordpress/CustomPostType/Location.php:294
-#: templates/booking-single.php:67
+#: templates/booking-single.php:73
 msgid "Pickup instructions"
 msgstr "Abhol-Hinweise"
 
@@ -1575,7 +1636,7 @@ msgstr ""
 "\"Speichern / Aktualisieren\" geklickt hast."
 
 #: src/Wordpress/CustomPostType/Timeframe.php:823
-#: templates/booking-single.php:45
+#: templates/booking-single.php:47
 msgid "Booking Code"
 msgstr "Buchungscode"
 
@@ -1666,6 +1727,10 @@ msgstr ""
 "<strong>Standardwerte für folgende Felder wurden automatisch festgelegt oder "
 "wiederhergestellt, da sie leer waren:</strong><br> "
 
+#: src/Wordpress/Options/OptionsTab.php:47
+msgid "CommonsBooking"
+msgstr "CommonsBooking"
+
 #: src/Wordpress/Options/OptionsTab.php:137
 msgid "The export path does not exist or is not readable."
 msgstr "Der Exportpfad ist nicht vorhanden oder nicht lesbar."
@@ -1733,31 +1798,31 @@ msgstr "Du darfst nicht auf diese Buchung zugreifen."
 msgid "Login to your account"
 msgstr "Login zu deinem Nutzerkonto"
 
-#: templates/booking-single.php:30 templates/timeframe-calendar.php:23
+#: templates/booking-single.php:32 templates/timeframe-calendar.php:23
 msgid "Pickup"
 msgstr "Abholung"
 
-#: templates/booking-single.php:34 templates/timeframe-calendar.php:31
+#: templates/booking-single.php:36 templates/timeframe-calendar.php:31
 msgid "Return"
 msgstr "Rückgabe"
 
-#: templates/booking-single.php:56
+#: templates/booking-single.php:58
 msgid "Location: "
 msgstr "Standort: "
 
-#: templates/booking-single.php:63
+#: templates/booking-single.php:69 templates/booking-single.php:81
 msgid "Contact"
 msgstr "Kontakt"
 
-#: templates/booking-single.php:75
+#: templates/booking-single.php:93
 msgid "Your profile"
 msgstr "Deine Profildaten"
 
-#: templates/booking-single.php:78
+#: templates/booking-single.php:96
 msgid "Your E-Mail"
 msgstr "Deine E-Mail"
 
-#: templates/booking-single.php:82
+#: templates/booking-single.php:100
 msgid "Your User name"
 msgstr "Dein Benutzername"
 
@@ -2610,9 +2675,6 @@ msgstr ""
 #~ msgid "Item Admin(s) field description (optional)"
 #~ msgstr "Feldbeschreibung (optional)"
 
-#~ msgid "Location contact will be shown after booking confirmation"
-#~ msgstr "Kontaktinformationen werden nach Bestätigung der Buchung angezeigt"
-
 #~ msgid "Location Owner"
 #~ msgstr "Standortbesitzer"
 
@@ -2627,9 +2689,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Fügen Sie ein 'type'-Attribut hinzu und legen Sie es auf 'location' oder "
 #~ "'item' fest."
-
-#~ msgid "Shortdescription"
-#~ msgstr "Kurzbeschreibung"
 
 #~ msgid "Pickup and return information"
 #~ msgstr "Abhol- und Rückgabe-Informationen"

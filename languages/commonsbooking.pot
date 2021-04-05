@@ -1,22 +1,21 @@
 # Copyright (C) 2021 wielebenwir e.V.
-# This file is distributed under the same license as the CommonsBooking plugin.
+# This file is distributed under the same license as the Commons Booking plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: CommonsBooking 2.4.3\n"
+"Project-Id-Version: Commons Booking 2.4.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-04-05T11:58:20+00:00\n"
+"POT-Creation-Date: 2021-04-05T13:17:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
 
 #. Plugin Name of the plugin
-#: src/Wordpress/Options/OptionsTab.php:47
-msgid "CommonsBooking"
+msgid "Commons Booking"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -118,56 +117,72 @@ msgstr ""
 msgid "Headline above the comment field in frontend"
 msgstr ""
 
-#: includes/OptionsArray.php:133
-#: includes/OptionsArray.php:137
-#: includes/OptionsArray.php:144
+#: includes/OptionsArray.php:122
+msgid "Text that will be shown above the comment field in the booking confirmation page."
+msgstr ""
+
+#: includes/OptionsArray.php:127
+msgid "Description"
+msgstr ""
+
+#: includes/OptionsArray.php:129
+msgid "Short infotext to inform the user how the comment field will be used (e.g. only internal comment etc.) "
+msgstr ""
+
+#: includes/OptionsArray.php:131
+msgid "Here you can leave a comment about your booking. This will be sent to the station."
+msgstr ""
+
+#: includes/OptionsArray.php:141
+#: includes/OptionsArray.php:145
+#: includes/OptionsArray.php:152
 #: src/Wordpress/CustomPostType/Timeframe.php:816
 msgid "Booking Codes"
 msgstr ""
 
-#: includes/OptionsArray.php:140
+#: includes/OptionsArray.php:148
 msgid ""
 "Enter the booking codes to be generated in advance for booking types with all-day booking time frames.  Enter booking codes as a comma separated list, e.g.: Code1,Code2,Code3,Code4\n"
 "                <br>More information in the documentation: <a href=\"https://commonsbooking.org/?p=870\" target=\"_blank\">Booking Codes</a>"
 msgstr ""
 
-#: includes/OptionsArray.php:155
+#: includes/OptionsArray.php:163
 msgid "Templates"
 msgstr ""
 
-#: includes/OptionsArray.php:160
+#: includes/OptionsArray.php:168
 msgid "Email templates"
 msgstr ""
 
-#: includes/OptionsArray.php:164
+#: includes/OptionsArray.php:172
 msgid "Mail-Header from E-Mail"
 msgstr ""
 
-#: includes/OptionsArray.php:165
+#: includes/OptionsArray.php:173
 msgid "E-Mail that will be shown as sender in generated emails"
 msgstr ""
 
-#: includes/OptionsArray.php:171
+#: includes/OptionsArray.php:179
 msgid "Mail-Header from Name"
 msgstr ""
 
-#: includes/OptionsArray.php:172
+#: includes/OptionsArray.php:180
 msgid "Name that will be shown as sender in generated emails"
 msgstr ""
 
-#: includes/OptionsArray.php:178
+#: includes/OptionsArray.php:186
 msgid "Booking confirmed email subject"
 msgstr ""
 
-#: includes/OptionsArray.php:182
+#: includes/OptionsArray.php:190
 msgid "Your booking {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} "
 msgstr ""
 
-#: includes/OptionsArray.php:186
+#: includes/OptionsArray.php:194
 msgid "Booking confirmed email body"
 msgstr ""
 
-#: includes/OptionsArray.php:190
+#: includes/OptionsArray.php:198
 msgid ""
 "\n"
 "Hi {{user:first_name}},<br>\n"
@@ -197,19 +212,19 @@ msgid ""
 "                        "
 msgstr ""
 
-#: includes/OptionsArray.php:218
+#: includes/OptionsArray.php:226
 msgid "Booking canceled email subject"
 msgstr ""
 
-#: includes/OptionsArray.php:221
+#: includes/OptionsArray.php:229
 msgid "Booking canceled: {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}}"
 msgstr ""
 
-#: includes/OptionsArray.php:224
+#: includes/OptionsArray.php:232
 msgid "Booking canceled email body"
 msgstr ""
 
-#: includes/OptionsArray.php:227
+#: includes/OptionsArray.php:235
 msgid ""
 "\n"
 "Hi {{user:first_name}},<br>\n"
@@ -220,150 +235,170 @@ msgid ""
 "                            "
 msgstr ""
 
-#: includes/OptionsArray.php:241
+#: includes/OptionsArray.php:249
 msgid "Template and booking process messages"
 msgstr ""
 
-#: includes/OptionsArray.php:246
+#: includes/OptionsArray.php:254
 msgid "Item not available"
 msgstr ""
 
-#: includes/OptionsArray.php:249
+#: includes/OptionsArray.php:257
 msgid "This text is shown on item listings (shortcode cb_items) and item detail page if there is no valid bookable timeframe set for this item"
 msgstr ""
 
-#: includes/OptionsArray.php:250
+#: includes/OptionsArray.php:258
 msgid "This item is currently not bookable."
 msgstr ""
 
-#: includes/OptionsArray.php:253
+#: includes/OptionsArray.php:261
 msgid "Location without available items"
 msgstr ""
 
-#: includes/OptionsArray.php:256
+#: includes/OptionsArray.php:264
 msgid "This text is shown on location listings and location detail page if there are no items available at this location"
 msgstr ""
 
-#: includes/OptionsArray.php:257
+#: includes/OptionsArray.php:265
 msgid "No items available at this location right now."
 msgstr ""
 
 #: includes/OptionsArray.php:268
-msgid "Migration"
+msgid "Show contactdetails on booking without confirmation?"
 msgstr ""
 
-#: includes/OptionsArray.php:272
-msgid "Migrate from Commons Booking Version 0.X"
+#: includes/OptionsArray.php:271
+msgid "If activated the contactdetails (e.g. phone number, pickupinstructions) will be shown on booking page even if the booking is not confirmed by user. Otherwise these info will be shown only after booking is confirmed"
 msgstr ""
 
 #: includes/OptionsArray.php:274
-msgid "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br><span style=\"color:red\">If you have clicked \"Migrate\" before, starting the migration again will overwrite any changes you made to  locations, items, timeframes and bookings</span>.<br>Please read the documentation <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/?p=434\">How to migrate from version 0.9.x to 2.x.x </a> before you start migration."
+msgid "Infotext hidden contactdetails"
 msgstr ""
 
 #: includes/OptionsArray.php:277
+msgid "This text is displayed when contact details of the station are shown only after booking confirmation."
+msgstr ""
+
+#: includes/OptionsArray.php:278
+msgid "Please confirm the booking to see the contact details for pickup and return."
+msgstr ""
+
+#: includes/OptionsArray.php:289
+msgid "Migration"
+msgstr ""
+
+#: includes/OptionsArray.php:293
+msgid "Migrate from Commons Booking Version 0.X"
+msgstr ""
+
+#: includes/OptionsArray.php:295
+msgid "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br><span style=\"color:red\">If you have clicked \"Migrate\" before, starting the migration again will overwrite any changes you made to  locations, items, timeframes and bookings</span>.<br>Please read the documentation <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/?p=434\">How to migrate from version 0.9.x to 2.x.x </a> before you start migration."
+msgstr ""
+
+#: includes/OptionsArray.php:298
 #: src/View/Migration.php:66
 msgid "Start Migration"
 msgstr ""
 
-#: includes/OptionsArray.php:285
+#: includes/OptionsArray.php:306
 msgid "CommonsBooking Version 0.X profile fields"
 msgstr ""
 
-#: includes/OptionsArray.php:287
+#: includes/OptionsArray.php:308
 msgid "Enable the following legacy CommonsBooking Version 0.X user profile fields:"
 msgstr ""
 
-#: includes/OptionsArray.php:290
+#: includes/OptionsArray.php:311
 msgid "Enable"
 msgstr ""
 
-#: includes/OptionsArray.php:295
+#: includes/OptionsArray.php:316
 msgid "Terms & Services Url"
 msgstr ""
 
-#: includes/OptionsArray.php:307
-#: includes/OptionsArray.php:359
+#: includes/OptionsArray.php:328
+#: includes/OptionsArray.php:380
 msgid "Export"
 msgstr ""
 
-#: includes/OptionsArray.php:311
+#: includes/OptionsArray.php:332
 msgid "Download timeframes export"
 msgstr ""
 
-#: includes/OptionsArray.php:315
+#: includes/OptionsArray.php:336
 #: src/Wordpress/CustomPostType/Timeframe.php:79
 #: src/Wordpress/CustomPostType/Timeframe.php:679
 msgid "Type"
 msgstr ""
 
-#: includes/OptionsArray.php:316
+#: includes/OptionsArray.php:337
 #: src/Wordpress/CustomPostType/Timeframe.php:680
 msgid "Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information."
 msgstr ""
 
-#: includes/OptionsArray.php:322
+#: includes/OptionsArray.php:343
 msgid "Location-Fields"
 msgstr ""
 
-#: includes/OptionsArray.php:323
-#: includes/OptionsArray.php:329
+#: includes/OptionsArray.php:344
+#: includes/OptionsArray.php:350
 msgid "Just add field names, no matter if its a post- or a meta-field. Comma separated list."
 msgstr ""
 
-#: includes/OptionsArray.php:328
+#: includes/OptionsArray.php:349
 msgid "Item-Fields"
 msgstr ""
 
-#: includes/OptionsArray.php:334
+#: includes/OptionsArray.php:355
 msgid "User-Fields"
 msgstr ""
 
-#: includes/OptionsArray.php:335
+#: includes/OptionsArray.php:356
 msgid "Just add field names, no matter if its a user- or a meta-field. Comma separated list."
 msgstr ""
 
-#: includes/OptionsArray.php:340
+#: includes/OptionsArray.php:361
 msgid "Export start date"
 msgstr ""
 
-#: includes/OptionsArray.php:350
+#: includes/OptionsArray.php:371
 msgid "Export end date"
 msgstr ""
 
-#: includes/OptionsArray.php:367
+#: includes/OptionsArray.php:388
 msgid "Cron settings for timeframes export"
 msgstr ""
 
-#: includes/OptionsArray.php:371
+#: includes/OptionsArray.php:392
 msgid "Run as cronjob"
 msgstr ""
 
-#: includes/OptionsArray.php:376
+#: includes/OptionsArray.php:397
 msgid "Export interval"
 msgstr ""
 
-#: includes/OptionsArray.php:380
-#: includes/OptionsArray.php:381
+#: includes/OptionsArray.php:401
+#: includes/OptionsArray.php:402
 msgid "minutes"
 msgstr ""
 
-#: includes/OptionsArray.php:382
+#: includes/OptionsArray.php:403
 msgid "daily"
 msgstr ""
 
-#: includes/OptionsArray.php:386
+#: includes/OptionsArray.php:407
 msgid "Export timerange"
 msgstr ""
 
-#: includes/OptionsArray.php:387
+#: includes/OptionsArray.php:408
 msgid "Export timerange in days."
 msgstr ""
 
-#: includes/OptionsArray.php:396
+#: includes/OptionsArray.php:417
 msgid "Filepath"
 msgstr ""
 
-#: includes/OptionsArray.php:397
+#: includes/OptionsArray.php:418
 msgid "Absolute path on your webserver (including trailing slash) where export file will be saved to."
 msgstr ""
 
@@ -632,7 +667,7 @@ msgstr ""
 #: src/Repository/CB1UserFields.php:68
 #: src/Repository/CB1UserFields.php:273
 #: src/Wordpress/CustomPostType/Location.php:195
-#: templates/booking-single.php:59
+#: templates/booking-single.php:61
 msgid "Address"
 msgstr ""
 
@@ -691,7 +726,7 @@ msgstr ""
 #: src/Wordpress/CustomPostType/Item.php:80
 #: src/Wordpress/CustomPostType/Timeframe.php:80
 #: src/Wordpress/CustomPostType/Timeframe.php:704
-#: templates/booking-single.php:23
+#: templates/booking-single.php:25
 #: templates/shortcode-bookings.php:63
 msgid "Item"
 msgstr ""
@@ -990,7 +1025,7 @@ msgid "email-address to get copy of booking confirmation and cancellation mails"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Location.php:294
-#: templates/booking-single.php:67
+#: templates/booking-single.php:73
 msgid "Pickup instructions"
 msgstr ""
 
@@ -1289,7 +1324,7 @@ msgid "Select to generate booking codes for each day within the start/end date. 
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Timeframe.php:823
-#: templates/booking-single.php:45
+#: templates/booking-single.php:47
 msgid "Booking Code"
 msgstr ""
 
@@ -1376,6 +1411,10 @@ msgstr ""
 msgid "<strong>Default values for following fields automatically set or restored, because they were empty:</strong><br> "
 msgstr ""
 
+#: src/Wordpress/Options/OptionsTab.php:47
+msgid "CommonsBooking"
+msgstr ""
+
 #: src/Wordpress/Options/OptionsTab.php:137
 msgid "The export path does not exist or is not readable."
 msgstr ""
@@ -1439,33 +1478,34 @@ msgstr ""
 msgid "Login to your account"
 msgstr ""
 
-#: templates/booking-single.php:30
+#: templates/booking-single.php:32
 #: templates/timeframe-calendar.php:23
 msgid "Pickup"
 msgstr ""
 
-#: templates/booking-single.php:34
+#: templates/booking-single.php:36
 #: templates/timeframe-calendar.php:31
 msgid "Return"
 msgstr ""
 
-#: templates/booking-single.php:56
+#: templates/booking-single.php:58
 msgid "Location: "
 msgstr ""
 
-#: templates/booking-single.php:63
+#: templates/booking-single.php:69
+#: templates/booking-single.php:81
 msgid "Contact"
 msgstr ""
 
-#: templates/booking-single.php:75
+#: templates/booking-single.php:93
 msgid "Your profile"
 msgstr ""
 
-#: templates/booking-single.php:78
+#: templates/booking-single.php:96
 msgid "Your E-Mail"
 msgstr ""
 
-#: templates/booking-single.php:82
+#: templates/booking-single.php:100
 msgid "Your User name"
 msgstr ""
 
