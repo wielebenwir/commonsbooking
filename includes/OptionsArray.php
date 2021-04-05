@@ -117,7 +117,7 @@ return array(
                         'type' => 'checkbox',
                     ),
                     array(
-                        'name' => commonsbooking_sanitizeHTML( __('Headline above input the comment field in frontend', 'commonsbooking')),
+                        'name' => commonsbooking_sanitizeHTML( __('Headline above the comment field in frontend', 'commonsbooking')),
                         'id' => 'booking-comment-title',
                         'type' => 'text',
                         'default' => __('Booking comment', 'commonstbooking'),
@@ -393,8 +393,8 @@ Thanks, the Team.
                         ),
                     ),
                     array(
-                        'name' => commonsbooking_sanitizeHTML( __('Save path', 'commonsbooking') ),
-                        'desc' => commonsbooking_sanitizeHTML( __('Path (including trailing slash) where export file will be saved to.', 'commonsbooking') ),
+                        'name' => commonsbooking_sanitizeHTML( __('Filepath', 'commonsbooking') ),
+                        'desc' => commonsbooking_sanitizeHTML( __('Absolute path on your webserver (including trailing slash) where export file will be saved to.', 'commonsbooking') ),
                         'id'   => 'export-filepath',
                         'type' => 'text'
                     ),
