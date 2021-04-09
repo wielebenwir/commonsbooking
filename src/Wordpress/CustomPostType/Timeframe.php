@@ -671,7 +671,7 @@ class Timeframe extends CustomPostType
         return array(
             array(
                 'name' => esc_html__("Comment", 'commonsbooking'),
-                'desc' => esc_html__('Internal comment. Will not be shown to users', 'commonsbooking'),
+                'desc' => esc_html__('This comment is internal for timeframes like bookable, repair, holiday. If timeframe is a booking this comment can be set by users during the booking confirmation process.', 'commonsbooking'),
                 'id'   => "comment",
                 'type' => 'textarea_small',
             ),

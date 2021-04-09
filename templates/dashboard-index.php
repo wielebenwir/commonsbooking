@@ -22,7 +22,7 @@
 					<h3><?php echo __('Support', 'commonsbooking') ;?></h3>
 					<ul>
 						<li><a href="https://commonsbooking.org/dokumentation" target="_blank"><?php echo __('Documentation & Tutorials', 'commonsbooking') ;?></a></li>		
-						<li><a href="https://commonsbooking.org/forums/forum/support/" target="_blank"><?php echo __('Support Forum', 'commonsbooking') ;?></a></li>
+						<li><a href="mailto:mail@commonsbooking.org?body=%0D%0A%0D%0A-----------%0D%0A%0D%0AInstallations-URL: <?php echo home_url(); ?>%0D%0A%0D%0ACB-Version: <?php echo COMMONSBOOKING_VERSION; ?>" target="_blank"><?php echo __('Support E-Mail', 'commonsbooking') ;?></a></li>
 						<li><a href="https://commonsbooking.org/kontakt/" target="_blank"><?php echo __('Contact & Newsletter', 'commonsbooking') ;?></a></li>
 					</ul>
 				</div><!-- .welcome-panel-column -->
