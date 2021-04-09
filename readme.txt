@@ -83,6 +83,7 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 == Changelog ==
 
 = 2.4.3 (09.04.2021) = 
+* NEW: Eport-Tool for exporting timeframes (Bookings etc.) with flexible data fields. Useful for external analytics or to create connections to external systems like automatic lockers etc.
 * NEW: Booking comment: Users can add an internal comment to a booking that can be viewed by location administrators and can be used in email template via template tags (see template tags in documentation)
 * NEW: Maximum bookable days are now without limitation. You can choose the maximum days in the timeframe editor.
 * NEW: We added 2 new menu items in the CommonsBooking section so that you can now the edit Commonsbooking categories for locations and items (rename, remove etc.)
