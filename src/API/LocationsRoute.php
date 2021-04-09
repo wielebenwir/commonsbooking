@@ -139,7 +139,7 @@ class LocationsRoute extends BaseRoute
             ];
         } elseif ($item->formattedAddressOneLine()) {
             $address = GeoHelper::getAddressData($item->formattedAddressOneLine());
-            if ( ! $address) {
+            if ( $address !== null) {
                 $preparedItem->geometry              = new \stdClass();
                 $preparedItem->geometry->type        = "Point";
                 $preparedItem->geometry->coordinates = $address->getCoordinates()->toArray();
