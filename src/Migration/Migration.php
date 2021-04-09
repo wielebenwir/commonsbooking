@@ -374,6 +374,11 @@ class Migration
                 sleep(1);
             }
 
+            // if elementor is active, we clone the elementor meta-keys
+            if ( is_plugin_active( 'elementor/elementor.php' ) ) {
+                self::migrateElementorMetaKeys($existingPost->ID, $postId);
+            }
+
             return true;
         }
 
@@ -590,6 +595,32 @@ class Migration
         }
 
         wp_set_object_terms( $cb2PostId, $term, $cb1Taxonomy->taxonomy );
+    }
+    
+    
+    /**
+     * Copies elementor meta keys and values from existing CB1 to the new CB2 post
+     *
+     * @param  mixed $cb1_id
+     * @param  mixed $cb2_id
+     * @return void
+     */
+    public static function migrateElementorMetaKeys($cb1_id, $cb2_id) {
+        global $wpdb;
+
+        $post_meta = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE meta_key LIKE '%_elementor%' AND post_id = $cb1_id" );
+        if( ! empty( $post_meta ) && is_array( $post_meta ) ) {
+            $duplicate_insert_query = "INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value ) VALUES ";
+            $value_cells = array();
+            foreach( $post_meta as $meta_info ){
+                $meta_key = sanitize_text_field( $meta_info->meta_key );
+                $meta_value = wp_slash( $meta_info->meta_value );
+                $value_cells[] = "($cb2_id, '$meta_key', '$meta_value')";
+            }
+            $duplicate_insert_query .= implode(', ', $value_cells) . ';';
+            $wpdb->query( $duplicate_insert_query  );  
+            exit;       
+        } 
     }
 
 }
