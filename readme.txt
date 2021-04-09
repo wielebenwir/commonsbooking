@@ -84,8 +84,10 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 
 = 2.4.3 (xx) = 
 * NEW: Booking comment: Users can add an internal comment to a booking that can be viewed by location administrators and can be used in email template via template tags (see template tags in documentation)
-* NEW: Maximum bookable days are now without limitation. You can choose the maximum in the timeframe editor
-* NEW: included function to edit categories for locations and items (rename, remove etc.)
+* NEW: Maximum bookable days are now without limitation. You can choose the maximum days in the timeframe editor.
+* NEW: We added 2 new menu items in the CommonsBooking section so that you can now the edit Commonsbooking categories for locations and items (rename, remove etc.)
+* NEW: Hide Contact Details: It is now possible to configure whether contact details of the station are only displayed after the booking has been confirmed by the user. This prevents users from already receiving booking details for an unconfirmed booking and thus possibly already contacting the location without having completed the booking.
+* ENHANCED: Added migration of elementor special fields
 * ENHANCED: Added map link to dashboard
 * ENHANCED: Validation of bookings optimized
 * FIXED: Bookable timeframe without enddate caused some issues in frontend calendar. Now it is possible to leave end date empty to allow infinite booking timeframe
@@ -96,7 +98,7 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 * FIXED: Added tooltips in map configuration
 * FIXED: Multiple categories are not imported during migration.
 * TEMPLATES: modification in templates: booking-single-form.php and booking-single.php 
-* ENHANCED: Make CommonsBooking Menu entry fit better in the WP Admin #593
+* ENHANCED: Make CommonsBooking Menu entry fit better in WP Admin für Wordpress 5.7 #593
 
 = 2.4.2 (15.02.2021) = 
 * FIXED: Fixed permission issue on booking lists
