@@ -17,13 +17,11 @@ function commonsbooking_isCurrentUserAllowedToEdit($post): bool
 {
     $current_user = wp_get_current_user();
     $isAuthor     = intval($current_user->ID) == intval($post->post_author);
-    $isAdmin      = false;
-    if (in_array('administrator', (array)$current_user->roles)) {
-        $isAdmin = true;
-    }
+    $isAdmin      = commonsbooking_isCurrentUserAdmin();
+    $isAllowed    = $isAdmin || $isAuthor;
 
     // Check if it is the main query and one of our custom post types
-    if ( ! $isAdmin && ! $isAuthor) {
+    if ( ! $isAllowed ) {
         $admins = [];
 
         // Get allowed admins for timeframe listing
@@ -58,30 +56,23 @@ function commonsbooking_isCurrentUserAllowedToEdit($post): bool
             ) {
                 $admins = array_merge($locationAdminIds, $itemAdminIds);
             }
-        }
-
-        // Get allowed admins for Location / Item Listing
-        if (in_array(
+        } elseif (in_array(
             $post->post_type,
             [
                 Location::$postType,
                 Item::$postType,
             ]
-        )
-        ) {
+        )) {
+            // Get allowed admins for Location / Item Listing
             // post-related admins (returns string if single result and array if multiple results)
             $admins = get_post_meta($post->ID, '_'.$post->post_type.'_admins', true);
         }
 
-        if (
-            (is_string($admins) && $current_user->ID != $admins) ||
-            (is_array($admins) && ! in_array($current_user->ID.'', $admins, true))
-        ) {
-            return false;
-        }
+        $isAllowed = (is_string($admins) && $current_user->ID === $admins) ||
+            (is_array($admins) && in_array($current_user->ID.'', $admins, true));
     }
 
-    return true;
+    return $isAllowed;
 }
 
 /**
@@ -112,12 +103,7 @@ add_filter(
         if (is_admin() && array_key_exists('post_type', $query->query)) {
             // Post type of current list
             $postType = $query->query['post_type'];
-
-            $current_user = wp_get_current_user();
-            $isAdmin      = false;
-            if (in_array('administrator', (array)$current_user->roles)) {
-                $isAdmin = true;
-            }
+            $isAdmin = commonsbooking_isCurrentUserAdmin();
 
             // Check if it is the main query and one of our custom post types
             if ( ! $isAdmin && $query->is_main_query() && in_array($postType, Plugin::getCustomPostTypesLabels())) {
@@ -138,5 +124,5 @@ add_filter(
 // Check if current user has admin role
 function commonsbooking_isCurrentUserAdmin() {
     $user = wp_get_current_user();
-    return in_array('administrator', $user->roles);
+    return apply_filters('commonsbooking_isCurrentUserAdmin', in_array('administrator', $user->roles), $user);
 }

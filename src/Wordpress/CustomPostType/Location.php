@@ -60,14 +60,8 @@ class Location extends CustomPostType
             isset($_GET['post_type']) && self::$postType == $_GET['post_type'] &&
             $pagenow == 'edit.php'
         ) {
-            $current_user = wp_get_current_user();
-            $isAdmin      = false;
-            if (in_array('administrator', (array)$current_user->roles)) {
-                $isAdmin = true;
-            }
-
             // Check if current user is allowed to see posts
-            if ( ! $isAdmin) {
+            if ( ! commonsbooking_isCurrentUserAdmin()) {
                 $locations = \CommonsBooking\Repository\Location::getByCurrentUser();
                 array_walk(
                     $locations,
