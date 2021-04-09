@@ -441,10 +441,11 @@ class Calendar
                             $gotStartDate = true;
                         }
 
+                        if($gotEndDate) continue;
+
                         if (!$gotEndDate && $day == $last_day) {
                             $gotEndDate = true;
                         }
-                        if($gotEndDate) continue;
 
                         // Check day state
                         if(!count($data['slots'])) {
