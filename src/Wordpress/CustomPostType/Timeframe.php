@@ -112,6 +112,9 @@ class Timeframe extends CustomPostType
 
         // Listing of bookings for current user
         add_shortcode('cb_bookings', array(\CommonsBooking\View\Booking::class, 'shortcode'));
+
+        // Listing of available items/locations
+        add_shortcode('cb_items_table', array(\CommonsBooking\View\Calendar::class, 'renderTable'));
     }
 
     /**

@@ -9,6 +9,8 @@ use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Week;
 use CommonsBooking\Plugin;
+use CommonsBooking\Wordpress\CustomPostType\Item;
+use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 class Calendar
@@ -210,19 +212,26 @@ class Calendar
      * @return array
      * @throws \Exception
      */
-    public static function getCalendarDataArray($item = null, $location = null)
+    public static function getCalendarDataArray($item = null, $location = null, $startDateString = null, $endDateString = null)
     {
-        $startDateString = date('Y-m-d', strtotime('first day of this month', time()));
-        $endDateString = date('Y-m-d', strtotime('+3 months', time()));
+        $gotStartDate = true;
+        if($startDateString == null) {
+            $startDateString = date('Y-m-d', strtotime('first day of this month', time()));
+            $gotStartDate = false;
+        }
 
-        $gotStartDate = false;
+        $gotEndDate = true;
+        if($endDateString == null) {
+            $endDateString = date('Y-m-d', strtotime('+3 months', time()));
+            $gotEndDate = false;
+        }
+
         if(array_key_exists('sd', $_POST)) {
             $gotStartDate = true;
             $startDateString = sanitize_text_field($_POST['sd']);
         }
         $startDate = new Day($startDateString);
 
-        $gotEndDate = false;
         if(array_key_exists('ed', $_POST)) {
             $gotEndDate = true;
             $endDateString = sanitize_text_field($_POST['ed']);
@@ -294,6 +303,173 @@ class Calendar
         }
 
         return self::prepareJsonResponse($startDate, $endDate, $location ? [$location] : [], $item ? [$item] : []);
+    }
+
+
+    /**
+     * Renders item table.
+     * Many thanks to fLotte Berlin!
+     * Forked from https://github.com/flotte-berlin/cb-shortcodes/blob/master/custom-shortcodes-cb-items.php
+     *
+     * @param $atts
+     * @return string
+     * @throws \Exception
+     */
+    public static function renderTable($atts): string
+    {
+        $locationCategory = array_key_exists('locationcat', $atts) ? $atts['locationcat'] : false;
+        $itemCategory = array_key_exists('itemcat', $atts) ? $atts['itemcat'] : false;
+        $days = array_key_exists('days', $atts) ? $atts['days'] : 31;
+
+        $desc = isset ($atts['desc']) ? $atts['desc'] : '';
+        $date = new \DateTime();
+        $today = $date->format("Y-m-d");
+
+        $days_display = array_fill(0, $days, 'n');
+        $days_cols = array_fill(0, $days, '<col>');
+        $month = date("m");
+        $month_cols = 0;
+        $colspan = $days;
+
+        for ($i = 0; $i < $days; $i++) {
+            $month_cols++;
+            $days_display[$i] = $date->format('d');
+            $days_dates[$i] = $date->format('Y-m-d');
+            $days_weekday[$i] = $date->format('N');
+            $daysDM[$i] = $date->format('j.n.');
+            if ($date->format('N') >= 7) {
+                $days_cols[$i] = '<col class="bg_we">';
+            }
+            $date->modify('+1 day');
+            if ($date->format('m') != $month) {
+                $colspan = $month_cols;
+                $month_cols = 0;
+                $month = $date->format('m');
+            }
+        }
+
+        $last_day = $days_dates[$days - 1];
+        $divider = "</th><th class='cal sortless'>";
+        $dayStr = implode($divider, $days_display);
+        $colStr = implode(' ', $days_cols);
+
+        $print = "<table class='cb-items-table tablesorter'><colgroup><col><col>" . $colStr . "</colgroup><thead>";
+        $print .= "<tr><th colspan='2' class='sortless'>" . $desc . "</th><th class='sortless' colspan='" . $colspan . "'>";
+
+        if ($colspan > 1) {
+            $print .= strftime('%B') . "</th>";
+        } else {
+            $print .= strftime('%b') . "</th>";
+        }
+
+        if ($month_cols > 1) {
+            $month2 = strftime('%B', strtotime($days_dates[$days - 1]));
+        } else {
+            $month2 = strftime('%b', strtotime($days_dates[$days - 1]));
+        }
+
+        if ($colspan < $days) {
+            $print .= "<th class='sortless' colspan='" . $month_cols . "'>" . $month2 . "</th>";
+        }
+        $print .= "</tr><tr><th>".__("Item","commonsbooking")."</th><th>".__("Location","commonsbooking")."<th class='cal sortless'>" . $dayStr . "</th></tr></thead><tbody>";
+
+        $divider = "</td><td>";
+
+        $items = get_posts(array(
+            'post_type' => 'cb_item',
+            'post_status' => 'publish',
+            'order' => 'ASC',
+            'posts_per_page' => -1
+        ));
+
+        foreach ($items as $item) {
+            $itemID = $item->ID;
+
+            // Check for category term
+            if($itemCategory) {
+                if(!has_term($itemCategory, Item::$postType . 's_category',$itemID)) {
+                    continue;
+                }
+            }
+
+            $item_name = $item->post_title;
+
+            // Get timeframes for item
+            $timeframes = \CommonsBooking\Repository\Timeframe::get(
+                [],
+                [$itemID],
+                [],
+                null,
+                true
+            );
+
+            if ($timeframes) {
+
+                // Collect unique locations from timeframes
+                $locations = [];
+                foreach ($timeframes as $timeframe) {
+                    $locations[$timeframe->getLocation()->ID] = $timeframe->getLocation()->title();
+                }
+
+                // loop through location
+                foreach ($locations as $locationId => $locationName) {
+
+                    // Check for category term
+                    if($locationCategory) {
+                        if(!has_term($locationCategory, Location::$postType . 's_category',$locationId)) {
+                            continue;
+                        }
+                    }
+
+                    // Get data for current item/location combination
+                    $calendarData = self::getCalendarDataArray(
+                        $itemID,
+                        $locationId,
+                        $today,
+                        $last_day
+                    );
+
+                    $gotStartDate = false;
+                    $gotEndDate = false;
+                    $dayIterator = 0;
+                    foreach ($calendarData['days'] as $day => $data) {
+
+                        // Skip additonal days
+                        if (!$gotStartDate && $day !== $today) {
+                            continue;
+                        } else {
+                            $gotStartDate = true;
+                        }
+
+                        if (!$gotEndDate && $day == $last_day) {
+                            $gotEndDate = true;
+                        }
+                        if($gotEndDate) continue;
+
+                        // Check day state
+                        if(!count($data['slots'])) {
+                            $days_display[$dayIterator++] = "<span class='unavailable'>*</span>";
+                        } elseif ($data['holiday']) {
+                            $days_display[$dayIterator++] = "<span class='holiday'></span>";
+                        } elseif ($data['partiallyBookedDay']) {
+                            $days_display[$dayIterator++] = "<span class='booked'></span>";
+                        } elseif ($data['locked']) {
+                            $days_display[$dayIterator++] = "<span class='blocked'></span>";
+                        } else {
+                            $days_display[$dayIterator++] = "<span class='free'></span>";
+                        }
+
+                    }
+
+                    $dayStr = implode($divider, $days_display);
+                    $itemLink = add_query_arg('location', $locationId, get_permalink($item->ID));
+                    $print .= "<tr><td><b><a href='" . $itemLink . "'>" . $item_name . "</a></b>" . $divider . $locationName . $divider . $dayStr . "</td></tr>";
+                }
+            }
+        }
+
+        $print .= "</tbody></table>";
+        return $print;
     }
 
 }

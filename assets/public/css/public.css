@@ -4778,6 +4778,62 @@
   color: #9D9F9D;
 }
 
+/* Styles for items table */
+/* line 1, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table {
+  font-size: 1.3rem;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+/* line 6, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table th {
+  padding: 0.4rem 0.3rem;
+  text-align: center;
+  vertical-align: middle;
+  border-color: #d1d1d1;
+  border-width: 0 1px 1px 0;
+  font-weight: 600;
+}
+/* line 15, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td {
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+}
+/* line 22, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td > span.booked, .cb-items-table td > span.free, .cb-items-table td > span.unavailable, .cb-items-table td > span.holiday, .cb-items-table td > span.repair, .cb-items-table td > span.blocked {
+  display: block;
+  margin: 0 auto;
+  width: 15px;
+  height: 15px;
+}
+/* line 35, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td > span.unavailable {
+  background: transparent;
+}
+/* line 39, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td > span.holiday {
+  background: var(--litepickerDayIsHolidayColorBg);
+}
+/* line 43, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td > span.repair, .cb-items-table td > span.booked {
+  background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
+}
+/* line 48, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td > span.blocked {
+  background-color: var(--litepickerDayIsBookedColorBg);
+}
+/* line 52, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td > span.free {
+  background-color: var(--litepickerDayColorBg);
+  text-align: center;
+  text-decoration: none;
+}
+/* line 61, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table .bg_we {
+  background-color: #f0f0f0;
+}
+
 /* Fixes for specific WP Themes */
 /**
  * Optimisation & Compatibility 

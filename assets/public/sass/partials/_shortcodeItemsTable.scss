@@ -1,0 +1,65 @@
+.cb-items-table {
+    font-size: 1.3rem;
+    overflow-x: auto;
+    overflow-y: auto;
+
+    th {
+        padding: 0.4rem 0.3rem;
+        text-align: center;
+        vertical-align: middle;
+        border-color: #d1d1d1;
+        border-width: 0 1px 1px 0;
+        font-weight: 600;
+    }
+
+    td {
+        padding: 0;
+        text-align: center;
+        vertical-align: middle;
+
+        > span {
+
+            &.booked,
+            &.free,
+            &.unavailable,
+            &.holiday,
+            &.repair,
+            &.blocked {
+                display: block;
+                margin: 0 auto;
+                width: 15px;
+                height: 15px;
+
+            }
+
+            &.unavailable {
+                background: transparent;
+            }
+
+            &.holiday {
+                background: var(--litepickerDayIsHolidayColorBg);
+            }
+
+            &.repair,
+            &.booked {
+                background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
+            }
+
+            &.blocked {
+                background-color: var(--litepickerDayIsBookedColorBg);
+            }
+
+            &.free {
+                background-color: var(--litepickerDayColorBg);
+                text-align: center;
+                text-decoration: none;
+            }
+
+        }
+    }
+
+    .bg_we {
+        background-color: #f0f0f0;
+    }
+
+}
