@@ -23,7 +23,7 @@ class BookingCodes
                 </div>
                 <div class="cmb-td">
                     <a id="booking-codes-list" href="'. esc_url(admin_url('post.php')) . '?post='.$timeframeId.'&action=csvexport" target="_blank"><strong>Download Booking Codes</strong></a></br>
-                    '. commonsbooking_sanitizeHTML( __('The file will be eported as .txt file. If you want to open it in Excel, first open Excel. in Excel click on open and choose the txt file. Excel will start the import assistent and should recognize the columns. After importing the textfile you can save it as an Excel-File.', 'commonsbooking')) .'
+                    '. commonsbooking_sanitizeHTML( __('The file will be eported as tab delimited .txt file so you can choose wether you want to print it, open it in a separate application (like Word, Excel etc.)', 'commonsbooking')) .'
                 </div>
             </div>
                 <div <div class="cmb-row cmb2-id-booking-codes-list">
