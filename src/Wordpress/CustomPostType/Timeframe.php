@@ -856,7 +856,7 @@ class Timeframe extends CustomPostType
         // Check if there is already an existing booking. If there is one, the current one will be
         // saved as draft.
         if (
-            (array_key_exists('type', $_REQUEST) && $_REQUEST['type'] == Timeframe::BOOKING_ID) ||
+            (array_key_exists('type', $_REQUEST) && $_REQUEST['type'] == Timeframe::BOOKING_ID) &&
             current_user_can('edit_post', $post_id)
         ) {
             try {
@@ -879,7 +879,7 @@ class Timeframe extends CustomPostType
             }
         }
 
-        $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition', 'weekdays'];
+        $noDeleteMetaFields = ['start-time', 'end-time', 'timeframe-repetition', 'weekdays', 'comment'];
 
         foreach ($this->getCustomFields() as $customField) {
 
