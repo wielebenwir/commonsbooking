@@ -8,7 +8,14 @@ $permalink    = add_query_arg ( 'location', $location->ID, get_the_permalink($it
     <h4 class="cb-title cb-item-title"><?php echo esc_html($location->post_title); ?></h4>
     <div class="cb-dates cb-timeframe-dates">
         <?php
-        echo \CommonsBooking\Model\Timeframe::formatBookableDate($data['start_date'], $data['end_date']);
+            if(
+                array_key_exists('ranges', $data) &&
+                count($data['ranges'])
+            ) {
+                foreach ($data['ranges'] as $range) {
+                    echo \CommonsBooking\Model\Timeframe::formatBookableDate($range['start_date'], $range['end_date']) . '<br>';
+                }
+            }
         ?>
     </div>
 </div>
