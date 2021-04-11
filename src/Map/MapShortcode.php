@@ -390,7 +390,7 @@ class MapShortcode
             $locations = Map::get_locations($cb_map_id, $itemTerms);
 
             //create availabilities
-            $show_item_availability = MapAdmin::get_option($cb_map_id, 'show_item_availability');
+            $show_item_availability = MapAdmin::get_option($cb_map_id, 'show_item_availability_filter');
 
             if ($show_item_availability) {
                 $locations = MapItemAvailable::create_items_availabilities(
