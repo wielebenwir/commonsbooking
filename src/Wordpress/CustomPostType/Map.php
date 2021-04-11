@@ -229,8 +229,12 @@ class Map extends CustomPostType
 
     /**
      * get geo data from location metadata
+     * @param $cb_map_id
+     * @param $itemTerms
+     * @return array
+     * @throws \Exception
      */
-    public static function get_locations($cb_map_id)
+    public static function get_locations($cb_map_id, $itemTerms)
     {
         $locations = [];
 
@@ -252,7 +256,6 @@ class Map extends CustomPostType
         $locationObjects = \CommonsBooking\Repository\Location::get(
             $args,
             true
-
         );
 
         /** @var \CommonsBooking\Model\Location $post */
@@ -264,7 +267,10 @@ class Map extends CustomPostType
 
             $items = [];
             foreach (Item::getByLocation($post->ID, true) as $item) {
-                $item_terms = wp_get_post_terms( $item->ID, \CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category');
+                $item_terms = wp_get_post_terms(
+                    $item->ID,
+                    \CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category'
+                );
                 if(is_array($item_terms) && count($item_terms)) {
                     $item_terms = array_map(
                         function($item) {
@@ -272,6 +278,27 @@ class Map extends CustomPostType
                         },
                         $item_terms
                     );
+                }
+
+                if(!count(array_intersect($item_terms, $itemTerms))) continue;
+
+                $timeframesData = [];
+                $timeframes = Timeframe::get(
+                    [$post->ID],
+                    [$item->ID],
+                    [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID],
+                    null,
+                    true
+                );
+
+                /** @var \CommonsBooking\Model\Timeframe $timeframe */
+                foreach ($timeframes as $timeframe) {
+                    $startDate = date('Y-m-d', $timeframe->getStartDate());
+                    $endDate = $timeframe->getEndDate() ?: date('Y-m-d', strtotime('2999-01-01'));
+                    $timeframesData[] = [
+                        'date_start' => $startDate,
+                        'date_end' => $endDate
+                    ];
                 }
 
                 $thumbnail = get_the_post_thumbnail_url($item->ID, 'thumbnail');
@@ -282,25 +309,28 @@ class Map extends CustomPostType
                     'status'     => $item->post_status,
                     'terms'      => $item_terms,
                     'link'       => add_query_arg('location', $post->ID, get_permalink($item->ID)),
-                    'thumbnail' => $thumbnail ? $thumbnail : null,
+                    'thumbnail'  => $thumbnail ? $thumbnail : null,
+                    'timeframes' => $timeframesData
                 ];
             }
 
-            $locations[$post->ID] = [
-                'lat'           => (float)$location_meta['geo_latitude'][0],
-                'lon'           => (float)$location_meta['geo_longitude'][0],
-                'location_name' => $post->post_title,
-                'closed_days'   => unserialize($closed_days),
-                'address'       => [
-                    'street' => $location_meta[COMMONSBOOKING_METABOX_PREFIX.'location_street'][0],
-                    'city'   => $location_meta[COMMONSBOOKING_METABOX_PREFIX.'location_city'][0],
-                    'zip'    => $location_meta[COMMONSBOOKING_METABOX_PREFIX.'location_postcode'][0],
-                ],
-                'items'         => $items,
-            ];
+            if(count($items)) {
+                $locations[$post->ID] = [
+                    'lat'           => (float)$location_meta['geo_latitude'][0],
+                    'lon'           => (float)$location_meta['geo_longitude'][0],
+                    'location_name' => $post->post_title,
+                    'closed_days'   => unserialize($closed_days),
+                    'address'       => [
+                        'street' => $location_meta[COMMONSBOOKING_METABOX_PREFIX.'location_street'][0],
+                        'city'   => $location_meta[COMMONSBOOKING_METABOX_PREFIX.'location_city'][0],
+                        'zip'    => $location_meta[COMMONSBOOKING_METABOX_PREFIX.'location_postcode'][0],
+                    ],
+                    'items'         => $items,
+                ];
 
-            if ($show_location_contact) {
-                $locations[$post->ID]['contact'] = $location_meta[COMMONSBOOKING_METABOX_PREFIX . 'location_contact'][0];
+                if ($show_location_contact) {
+                    $locations[$post->ID]['contact'] = $location_meta[COMMONSBOOKING_METABOX_PREFIX . 'location_contact'][0];
+                }
             }
 
             //@TODO: Check field -> we don't have such a field at the moment.

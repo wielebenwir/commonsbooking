@@ -326,6 +326,37 @@ class MapShortcode
     }
 
     /**
+     * Returns configured item terms or all item terms if nothing is set
+     * @return mixed
+     */
+    public static function getItemCategoryTerms($settings) {
+        $terms = [];
+
+        foreach ($settings['filter_cb_item_categories'] as $categoryGroup) {
+            if(array_key_exists('elements', $categoryGroup)) {
+                foreach ($categoryGroup['elements'] as $category) {
+                    $terms[] = $category['cat_id'];
+                }
+            }
+        }
+
+        if(!count($terms)) {
+            $terms = get_terms([
+                'taxonomy'   => \CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category',
+                'hide_empty' => false,
+            ]);
+            array_walk(
+                $defaultTerms,
+                function (&$item) {
+                    $item = $item->term_id;
+                }
+            );
+        }
+
+        return $terms;
+    }
+
+    /**
      * the ajax request handler for locations
      **/
     public static function get_locations()
@@ -352,18 +383,11 @@ class MapShortcode
         $preset_categories = MapAdmin::get_option($cb_map_id, 'cb_items_preset_categories');
 
         if ($post->post_status == 'publish') {
-            //local - get the locations
-
-            $locations = Map::get_locations($cb_map_id);
-//            $locations = MapFilter::filter_locations_by_timeframes_and_categories(
-//                $locations,
-//                $cb_map_id,
-//                $preset_categories
-//            );
-
             $settings           = self::get_settings($cb_map_id);
             $default_date_start = $settings['filter_availability']['date_min'];
             $default_date_end   = $settings['filter_availability']['date_max'];
+            $itemTerms = self::getItemCategoryTerms($settings);
+            $locations = Map::get_locations($cb_map_id, $itemTerms);
 
             //create availabilities
             $show_item_availability = MapAdmin::get_option($cb_map_id, 'show_item_availability');
