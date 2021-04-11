@@ -174,13 +174,24 @@ class Day
         // Timeframe
         $fullDay = get_post_meta($timeframe->ID, 'full-day', true);
         $startTime = $this->getStartTime($timeframe);
+        $startSlot = $this->getSlotByTime($startTime, $grid);
 
-        // Slots
-        $startSlot = 0;
+        // If we have a overbooked day, we need to mark all slots as booked
+        if(get_post_meta($timeframe->ID, 'type', true) == Timeframe::BOOKING_ID) {
 
-        // If timeframe isn't configured as full day
-        if (!$fullDay) {
-            $startSlot = $this->getSlotByTime($startTime, $grid);
+            $booking = new Booking($timeframe);
+            $startDateBooking = intval($booking->getStartDate());
+            $startDateDay = strtotime($this->getDate());
+
+            // if booking starts on day before, we set startslot to 0
+            if($startDateBooking < $startDateDay) {
+                $startSlot = 0;
+            }
+        }
+
+        // If timeframe is full day, it starts at slot 0
+        if ($fullDay) {
+            $startSlot = 0;
         }
 
         return $startSlot;
