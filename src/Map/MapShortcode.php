@@ -326,7 +326,7 @@ class MapShortcode
     }
 
     /**
-     * Returns configured item terms or all item terms if nothing is set
+     * Returns configured item terms
      * @return mixed
      */
     public static function getItemCategoryTerms($settings) {
@@ -338,19 +338,6 @@ class MapShortcode
                     $terms[] = $category['cat_id'];
                 }
             }
-        }
-
-        if(!count($terms)) {
-            $terms = get_terms([
-                'taxonomy'   => \CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category',
-                'hide_empty' => false,
-            ]);
-            array_walk(
-                $defaultTerms,
-                function (&$item) {
-                    $item = $item->term_id;
-                }
-            );
         }
 
         return $terms;

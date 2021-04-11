@@ -230,11 +230,11 @@ class Map extends CustomPostType
     /**
      * get geo data from location metadata
      * @param $cb_map_id
-     * @param $itemTerms
+     * @param $mapItemTerms
      * @return array
      * @throws \Exception
      */
-    public static function get_locations($cb_map_id, $itemTerms)
+    public static function get_locations($cb_map_id, $mapItemTerms)
     {
         $locations = [];
 
@@ -280,7 +280,12 @@ class Map extends CustomPostType
                     );
                 }
 
-                if(!count(array_intersect($item_terms, $itemTerms))) continue;
+                /**
+                 * If current item has a category, that isn't in map config, we'll skip it.
+                 */
+                if(count($mapItemTerms) && count($item_terms) && !count(array_intersect($item_terms, $mapItemTerms))) {
+                    continue;
+                }
 
                 $timeframesData = [];
                 $timeframes = Timeframe::get(
