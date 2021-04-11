@@ -1,10 +1,13 @@
+$table-font-size: 1.0rem;
 .cb-items-table {
-    font-size: 1.3rem;
+
+    font-size: $table-font-size;
     overflow-x: auto;
     overflow-y: auto;
 
     th {
-        padding: 0.4rem 0.3rem;
+        font-size: $table-font-size;
+        padding: 0;
         text-align: center;
         vertical-align: middle;
         border-color: #d1d1d1;
@@ -13,6 +16,7 @@
     }
 
     td {
+        font-size: $table-font-size;
         padding: 0;
         text-align: center;
         vertical-align: middle;
@@ -62,4 +66,7 @@
         background-color: #f0f0f0;
     }
 
+    tr:first-child th {
+        background-color: #ffffff !important;
+    }
 }
