@@ -11,7 +11,7 @@ abstract class View
      * @var string[]
      */
     protected static $allowedShortCodeArgs= array(
-//        'p'             => '', // post id
+        'p'             => '', // post id
 //        // Author: https://developer.wordpress.org/reference/classes/wp_query/#author-parameters
 //        'author'        => '',
 //        'author_name'   => '',
