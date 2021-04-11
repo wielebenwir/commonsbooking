@@ -4779,65 +4779,66 @@
 }
 
 /* Styles for items table */
-/* line 2, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 3, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table {
-  font-size: 1rem;
+  font-size: 12px;
   overflow-x: auto;
   overflow-y: auto;
 }
-/* line 8, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 9, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table th {
-  font-size: 1rem;
+  font-size: 12px;
   padding: 0;
   text-align: center;
   vertical-align: middle;
-  border-color: #d1d1d1;
-  border-width: 0 1px 1px 0;
   font-weight: 600;
 }
 /* line 18, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:nth-child(1),
+.cb-items-table thead tr:nth-child(2) th:nth-child(2) {
+  padding-left: 4px;
+  text-align: left;
+}
+/* line 25, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td {
-  font-size: 1rem;
+  font-size: 12px;
   padding: 0;
   text-align: center;
   vertical-align: middle;
 }
-/* line 26, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 31, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td:nth-child(1), .cb-items-table td:nth-child(2) {
+  text-align: left;
+  padding-left: 4px;
+}
+/* line 38, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.booked, .cb-items-table td > span.free, .cb-items-table td > span.unavailable, .cb-items-table td > span.holiday, .cb-items-table td > span.repair, .cb-items-table td > span.blocked {
   display: block;
   margin: 0 auto;
   width: 15px;
   height: 15px;
 }
-/* line 39, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 51, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.unavailable {
   background: transparent;
 }
-/* line 43, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 55, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.holiday {
   background: var(--litepickerDayIsHolidayColorBg);
 }
-/* line 47, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 59, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.repair, .cb-items-table td > span.booked {
   background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
-/* line 52, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 64, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.blocked {
   background-color: var(--litepickerDayIsBookedColorBg);
 }
-/* line 56, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 68, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.free {
   background-color: var(--litepickerDayColorBg);
   text-align: center;
   text-decoration: none;
-}
-/* line 65, ../sass/partials/_shortcodeItemsTable.scss */
-.cb-items-table .bg_we {
-  background-color: #f0f0f0;
-}
-/* line 69, ../sass/partials/_shortcodeItemsTable.scss */
-.cb-items-table tr:first-child th {
-  background-color: #ffffff !important;
 }
 
 /* Fixes for specific WP Themes */

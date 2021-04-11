@@ -1,4 +1,5 @@
-$table-font-size: 1.0rem;
+$table-font-size: 12px;
+
 .cb-items-table {
 
     font-size: $table-font-size;
@@ -10,9 +11,15 @@ $table-font-size: 1.0rem;
         padding: 0;
         text-align: center;
         vertical-align: middle;
-        border-color: #d1d1d1;
-        border-width: 0 1px 1px 0;
         font-weight: 600;
+    }
+
+    thead tr:nth-child(2) {
+        th:nth-child(1),
+        th:nth-child(2) {
+            padding-left: 4px;
+            text-align: left;
+        }
     }
 
     td {
@@ -21,8 +28,13 @@ $table-font-size: 1.0rem;
         text-align: center;
         vertical-align: middle;
 
-        > span {
+        &:nth-child(1),
+        &:nth-child(2) {
+            text-align: left;
+            padding-left: 4px;
+        }
 
+        > span {
             &.booked,
             &.free,
             &.unavailable,
@@ -60,13 +72,5 @@ $table-font-size: 1.0rem;
             }
 
         }
-    }
-
-    .bg_we {
-        background-color: #f0f0f0;
-    }
-
-    tr:first-child th {
-        background-color: #ffffff !important;
     }
 }
