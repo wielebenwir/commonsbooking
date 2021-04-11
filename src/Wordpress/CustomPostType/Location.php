@@ -2,8 +2,10 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\Settings\Settings;
+use Geocoder\Provider\Nominatim\Model\NominatimAddress;
 
 class Location extends CustomPostType
 {
@@ -21,8 +23,61 @@ class Location extends CustomPostType
         // Listing of items for location
         add_shortcode('cb_items', array(\CommonsBooking\View\Item::class, 'shortcode'));
 
-        // Setting role permissions
-        add_action('admin_init', array($this, 'addRoleCaps'), 999);
+        // Filter only for current user allowed posts
+        add_action('pre_get_posts', array($this, 'filterAdminList'));
+
+        // Save-handling
+        add_action('save_post', array($this, 'handleFormRequest'));
+    }
+
+    /**
+     * Handles save-Request for location.
+     */
+    public function handleFormRequest()
+    {
+        $postType = isset($_REQUEST['post_type'])  ? sanitize_text_field($_REQUEST['post_type']) : null;
+        $postId  = isset($_REQUEST['post_ID'])  ? sanitize_text_field($_REQUEST['post_ID']) : null;
+
+        if($postType == self::$postType && $postId) {
+            $location = new \CommonsBooking\Model\Location(intval($postId));
+            $location->updateGeoLocation();
+        }
+    }
+
+    /**
+     * Filters admin list by type (e.g. bookable, repair etc. )
+     *
+     * @param  (wp_query object) $query
+     *
+     * @return Void
+     */
+    public static function filterAdminList($query)
+    {
+        global $pagenow;
+
+        if (
+            is_admin() && $query->is_main_query() &&
+            isset($_GET['post_type']) && self::$postType == $_GET['post_type'] &&
+            $pagenow == 'edit.php'
+        ) {
+            // Check if current user is allowed to see posts
+            if ( ! commonsbooking_isCurrentUserAdmin()) {
+                $locations = \CommonsBooking\Repository\Location::getByCurrentUser();
+                array_walk(
+                    $locations,
+                    function (&$item, $key) {
+                        $item = $item->ID;
+                    }
+                );
+
+                $query->query_vars['post__in'] = $locations;
+            }
+        }
+    }
+
+    public static function getView()
+    {
+        return new \CommonsBooking\View\Location();
     }
 
     public function getTemplate($content)
@@ -34,7 +89,7 @@ class Location extends CustomPostType
             $cb_content = ob_get_clean();
         } // if archive...
 
-        return $content . $cb_content;
+        return $content.$cb_content;
     }
 
     public function getArgs()
@@ -90,7 +145,7 @@ class Location extends CustomPostType
 
             // Hier können Berechtigungen in einem Array gesetzt werden
             // oder die standart Werte post und page in form eines Strings gesetzt werden
-            'capability_type'   => array(self::$postType, self::$postType . 's'),
+            'capability_type'   => array(self::$postType, self::$postType.'s'),
 
             'map_meta_cap'        => true,
 
@@ -116,13 +171,8 @@ class Location extends CustomPostType
             // dieser Wert wird später in der URL stehen
             'rewrite'             => array('slug' => $slug),
 
-            'show_in_rest'        => true
+            'show_in_rest' => true,
         );
-    }
-
-    public static function getView()
-    {
-        return new \CommonsBooking\View\Location();
     }
 
     /**
@@ -146,7 +196,6 @@ class Location extends CustomPostType
         // Adress
         $cmb->add_field(array(
             'name'       => esc_html__('Street / No.', 'commonsbooking'),
-            //'desc'       => esc_html__('', 'commonsbooking'),
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_street',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -158,7 +207,6 @@ class Location extends CustomPostType
         // Postcode
         $cmb->add_field(array(
             'name'       => esc_html__('Postcode', 'commonsbooking'),
-            //'desc'       => esc_html__('', 'commonsbooking'),
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_postcode',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -170,11 +218,9 @@ class Location extends CustomPostType
         // City
         $cmb->add_field(array(
             'name'       => esc_html__('City', 'commonsbooking'),
-            //'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_city',
             'type'       => 'text',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-            // 'repeatable'      => true,
             'attributes' => array(
                 'required' => 'required',
             ),
@@ -186,6 +232,33 @@ class Location extends CustomPostType
             //'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_country',
             'type'       => 'text',
+            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+        ));
+
+        // Latitude
+        $cmb->add_field(array(
+            'name'       => esc_html__('Latitude', 'commonsbooking'),
+            //'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
+            'id'         => 'geo_latitude',
+            'type'       => 'text',
+            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+        ));
+
+        // Longitude
+        $cmb->add_field(array(
+            'name'       => esc_html__('Longitude', 'commonsbooking'),
+            //'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
+            'id'         => 'geo_longitude',
+            'type'       => 'text',
+            'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+        ));
+
+        // Map
+        $cmb->add_field(array(
+            'name'       => esc_html__('Position', 'commonsbooking'),
+            //'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
+            'id'         => COMMONSBOOKING_METABOX_PREFIX . '_map_position',
+            'type'       => 'cb_map',
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
         ));
 
@@ -210,7 +283,6 @@ class Location extends CustomPostType
             // 'repeatable'      => true,
         ));
 
-
         // pickup description
         $cmb->add_field(array(
             'name'       => esc_html__('Pickup instructions', 'commonsbooking'),
@@ -232,27 +304,30 @@ class Location extends CustomPostType
             'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
         ));
 
-        // Location admin selection
-        $users = UserRepository::getCBManagers();
-        $userOptions = [];
-        foreach ($users as $user) {
-            $userOptions[$user->ID] = $user->get('user_nicename') . " (" . $user->last_name . " " . $user->last_name . ")";
+        // Show selection only to admins
+        if (commonsbooking_isCurrentUserAdmin()) {
+            // Location admin selection
+            $users       = UserRepository::getCBManagers();
+            $userOptions = [];
+            foreach ($users as $user) {
+                $userOptions[$user->ID] = $user->get('user_nicename')." (".$user->last_name." ".$user->last_name.")";
+            }
+            $cmb->add_field(array(
+                'name'       => esc_html__('Location Admin(s)', 'commonsbooking'),
+                'desc'       => esc_html__('choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role CommonsBooking Manager can be selected here.',
+                    'commonsbooking'),
+                'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_admins',
+                'type'       => 'pw_multiselect',
+                'options'    => $userOptions,
+                'attributes' => array(
+                    'placeholder' => esc_html__('Select location admins.', 'commonsbooking')
+                ),
+            ));
         }
-        $cmb->add_field(array(
-            'name'       => esc_html__('Location Admin(s)', 'commonsbooking'),
-            'desc'       => esc_html__('choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role cb_manager can be selected here.',
-                'commonsbooking'),
-            'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_admins',
-            'type'       => 'pw_multiselect',
-            'options'    => $userOptions,
-            'attributes' => array(
-                'placeholder' => esc_html__('Select location admins.', 'commonsbooking')
-            ),
-        ));
 
         $cmb->add_field(array(
             'name'       => esc_html__('Allow locked day overbooking', 'commonsbooking'),
-            'desc'       => commonsbooking_sanitizeHTML( __('If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation on <a href="https://commonsbooking.org">commonsbooking.org</a> for more information.', 'commonsbooking') ),
+            'desc'       => commonsbooking_sanitizeHTML( __('If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target="_blank" href="https://commonsbooking.org/?p=435">Create Locations</a> for more information.', 'commonsbooking') ),
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
             'type'       => 'checkbox',
         ));

@@ -1,13 +1,8 @@
 /**
  * Layouts for tables/lists
+ *
  * Breakpoints for arranging elements
  *
- * @package   CommonsBooking
- * @author Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 2.0
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
 
 
@@ -50,10 +45,56 @@
 	}
 }
 
+
+.cb-col-50-50-filter {
+	> div {
+		margin-bottom: $spacer;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		flex-wrap: nowrap;
+		
+		label {
+			flex: 0 0 30%;
+		}
+		input {
+			flex: 0 1 50%;
+		}
+	}
+
+	@include breakpoint(phablet) {
+		
+		display: flex;
+		justify-content: space-between;
+		flex-direction: row;
+		align-items: center;
+		
+		flex-wrap: wrap;
+		
+		> div {
+			width: 50%;
+		}	
+	}
+}
+
 .cb-col-auto { /* 2 fixed cols, 1 flexible in the middle */
 	
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
+	flex-wrap: wrap;
+	
+	> div.cb-thumbnail {
+		flex: 0 0 20%;	
+		padding-right: $spacer-big;
+	}
+	> div.cb-list-info {
+		flex: 1 0 50%;
+		border: none;
+	}
+	> div.cb-action { /* optional */
+		flex: 0 0 100%;
+		text-align: right;
+	}
 	
 	@include breakpoint(phablet) {
 		display: flex;
@@ -61,23 +102,33 @@
 	    justify-content: space-between;
 	    flex-wrap: nowrap;
 		align-items: center;
+		
 		> div.cb-thumbnail {
 			flex: 0 0 20%;
-			
+			padding-right: $spacer-big;
+				
 		}
 		> div.cb-list-info {
-			flex: 1 0 50%;
+			flex: 1 1 auto;
 			border: none;
-			padding: 0 $spacer-big;
 		}
 		> div.cb-action {
-			flex: 1 0 30%;
+			flex: 1 0 auto;
 			a {
 				width: auto;
 			}
 		}
 	}
 }
+
+.cb-col-list-with-image { /*first */
+	
+	
+	display: flex;
+	flex-direction: column;
+
+}
+
 .cb-col-20-50-30 {
 	@include breakpoint(phablet) {
 		display: flex;

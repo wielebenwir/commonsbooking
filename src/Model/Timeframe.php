@@ -174,6 +174,15 @@ class Timeframe extends CustomPost
     }
 
     /**
+     * Returns true if timeframe is full-day
+     * @return boolean
+     */
+    public function isFullDay()
+    {
+        return $this->getMeta('full-day') == 'on';
+    }
+
+    /**
      * Checks if Timeframe is valid.
      * @return bool
      * @throws \Exception
@@ -182,13 +191,25 @@ class Timeframe extends CustomPost
     {
         if (
             $this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID &&
+            !$this->getStartDate()
+        ) {
+            // If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
+            set_transient(self::ERROR_TYPE,
+                commonsbooking_sanitizeHTML(__("Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.",
+                    'commonsbooking')),
+                45);
+            return false;
+        }
+
+        if (
+            $this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID &&
             $this->getLocation() &&
             $this->getItem() &&
             $this->getStartDate()
         ) {
             $postId = $this->ID;
 
-            if ($this->getStartTime() && ! $this->getEndTime()) {
+            if ($this->getStartTime() && ! $this->getEndTime() && !$this->isFullDay()) {
                 set_transient(self::ERROR_TYPE,
                     commonsbooking_sanitizeHTML(__("A pickup time but no return time has been set. Please set the return time.",
                         'commonsbooking')),

@@ -3,6 +3,7 @@
 namespace CommonsBooking\Wordpress\Options;
 
 use CommonsBooking\Settings\Settings;
+use CommonsBooking\View\TimeframeExport;
 
 class OptionsTab
 {
@@ -13,6 +14,9 @@ class OptionsTab
     public $content;
     public $groups;
 
+    // Error type for backend error output
+    public const ERROR_TYPE = "commonsbooking-options-error";
+
     public function __construct(string $id, array $content)
     {
         $this->id = $id;
@@ -22,7 +26,7 @@ class OptionsTab
 
         add_action('cmb2_admin_init', array($this, 'register'));
 
-        add_action( 'cmb2_save_options-page_fields', array (self::class, 'savePostOptions'), 10 ); 
+        add_action('cmb2_save_options-page_fields', array(self::class, 'savePostOptions'), 10);
 
     }
 
@@ -80,7 +84,7 @@ class OptionsTab
             }
         }
     }
-    
+
 
     /**
      * If array contains title or description, create a new row contaning this text
@@ -91,7 +95,7 @@ class OptionsTab
     public static function prependTitle($metabox_group)
     {
 
-        if (isset ($metabox_group['title']) OR isset ($metabox_group['desc'])) {
+        if (isset ($metabox_group['title']) or isset ($metabox_group['desc'])) {
 
             $title = isset($metabox_group['title']) ? $metabox_group['title'] : '';
             $desc = isset($metabox_group['desc']) ? $metabox_group['desc'] : '';
@@ -118,7 +122,33 @@ class OptionsTab
      *
      * @return void
      */
-    public static function savePostOptions() {
+    public static function savePostOptions()
+    {
+        if (array_key_exists('action', $_REQUEST) && $_REQUEST['action'] == "commonsbooking_options_export") {
+            // Check for export action
+            if (array_key_exists('submit-cmb', $_REQUEST) && $_REQUEST['submit-cmb'] == "download-export") {
+                TimeframeExport::exportCsv();
+            } else {
+                if (array_key_exists('export-filepath', $_REQUEST) && $_REQUEST['export-filepath'] !== "") {
+
+                    if(!is_dir($_REQUEST['export-filepath'])) {
+                        set_transient(
+                            self::ERROR_TYPE,
+                            commonsbooking_sanitizeHTML(__("The export path does not exist or is not readable.", 'commonsbooking')),
+                            45
+                        );
+                    }
+
+                    if(!is_writable($_REQUEST['export-filepath'])) {
+                        set_transient(
+                            self::ERROR_TYPE,
+                            commonsbooking_sanitizeHTML(__("The export path is not writeable.", 'commonsbooking')),
+                            45)
+                        ;
+                    }
+                }
+            }
+        }
 
         // we set transient to be able to flush rewrites at an ini hook in Plugin.php to set permalinks properly
         set_transient('commonsbooking_options_saved', 1);

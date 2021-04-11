@@ -1,0 +1,74 @@
+/**
+* List styling
+*
+* Shortcodes: [cb_items], [cb_locations], @TODO: [cb_bookings] 
+* 
+* @package   CommonsBooking
+* @author    Florian Egermann <florian@wielebenwir.de>
+* @license   GPL-2.0+
+* @since     2.0
+* @link      http://www.wielebenwir.de
+* @copyright 2020 wielebenwir
+*/
+
+/* main wrapper */
+.cb-wrapper {
+	
+	position: relative;
+	clear: both;
+	display: block;
+	margin-top: $spacer-big;
+
+	@extend .cb-box;
+
+	/* headline */
+	h1, h2, h3, h4 {
+		margin: 0;
+		padding-bottom: $spacer;
+		padding-top: 0;
+	}
+	
+	.cb-title {
+		color: $color-green-dark;
+	}
+
+	.cb-thumbnail {
+
+	}
+
+	/* sub lists wrapper */
+	> .cb-wrapper {
+		overflow: hidden;
+		@extend .cb-box-inner;
+	
+		
+		> div { /* sub list items */
+			// border-bottom: 1px solid $color-gray-border;
+			padding: $spacer-small 0;
+			&:last-of-type {
+				border-bottom: none;
+			}
+		}
+	}
+
+	.template-timeframe-withitem,
+	.template-timeframe-withlocation,
+	.template-item-withlocation
+	 {
+		@extend .cb-col-auto;
+	}
+	.cb-list-header {
+		@extend .cb-col-auto;
+	}
+	.cb-list-header img{
+		
+	}
+	.cb-action {
+		background: transparent;
+		.cb-button {
+			display: inline-block;
+		}
+	}
+
+}
+

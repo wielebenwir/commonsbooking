@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Plugin Name:         CommonsBooking
- * Version:             2.2.16
+ * Plugin Name:         Commons Booking
+ * Version:             2.4.3
  * Requires at least:   5.2
  * Requires PHP:        7.0
  * Plugin URI:          https://commonsbooking.org
@@ -15,7 +15,9 @@
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
  */
 
+use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\Plugin;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
@@ -23,24 +25,37 @@ use CommonsBooking\Wordpress\Options\AdminOptions;
 
 defined('ABSPATH') or die("Thanks for visting");
 
-define('COMMONSBOOKING_VERSION', '2.2.16');
+define('COMMONSBOOKING_VERSION', '2.4.3');
 define('COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking');
 define('COMMONSBOOKING_MENU_SLUG', COMMONSBOOKING_PLUGIN_SLUG . '-menu');
 define('COMMONSBOOKING_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('COMMONSBOOKING_PLUGIN_FILE', __FILE__);
 define('COMMONSBOOKING_METABOX_PREFIX', '_cb_'); //Start with an underscore to hide fields from custom fields list
 
+define( 'COMMONSBOOKING_MAP_PATH', plugin_dir_path( __FILE__ ) );
+define( 'COMMONSBOOKING_MAP_ASSETS_URL', plugins_url( 'assets/map/', __FILE__ ));
+define( 'COMMONSBOOKING_MAP_LANG_PATH', dirname( plugin_basename( __FILE__ )) . '/languages/' );
+define ('COMMONSBOOKING_MAP_PLUGIN_DATA', get_file_data( __FILE__, array('Version' => 'Version'), false));
+
 global $cb_db_version;
 $cb_db_version = '1.0';
 
 // @TODO: move all of this to either /Public.php or /Admin.php
 
+
 function commonsbooking_admin()
 {
-    wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__).'assets/admin/css/admin.css');
+    // jQuery
+    wp_enqueue_script('jquery');
+
+    // Datepicker extension
+    wp_enqueue_script('jquery-ui-datepicker', array('jquery'));
+
+    // Tooltip extension
+    wp_enqueue_script('jquery-ui-tooltip', array('jquery'));
+
+    wp_enqueue_style('admin-styles', plugin_dir_url(__FILE__).'assets/admin/css/admin.css', array(), COMMONSBOOKING_VERSION);
     wp_enqueue_script('cb-scripts-admin', plugin_dir_url(__FILE__).'assets/admin/js/admin.js', array());
-    wp_enqueue_style('jquery-ui', plugin_dir_url(__FILE__) . 'assets/public/css/themes/jquery/jquery-ui.min.css');
-    wp_enqueue_script('jquery-ui-datepicker');
 
     wp_localize_script(
         'cb-scripts-admin',
@@ -51,28 +66,60 @@ function commonsbooking_admin()
         )
     );
 }
-
 add_action('admin_enqueue_scripts', 'commonsbooking_admin');
 
 function commonsbooking_public()
 {
-    wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/public.css');
+    wp_enqueue_style(
+        'cb-styles-public',
+        plugin_dir_url(__FILE__).'assets/public/css/public.css',
+        array(),
+        WP_DEBUG ? time() : COMMONSBOOKING_VERSION
+    );
 
     // Template specific styles
     $template = wp_get_theme()->template;
-    wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/themes/'.$template.'.css');
+    wp_enqueue_style('cb-styles-public', plugin_dir_url(__FILE__).'assets/public/css/themes/'.$template.'.css', array(), COMMONSBOOKING_VERSION);
+
+    wp_enqueue_script('jquery');
+    wp_enqueue_script('jquery-ui-datepicker', array('jquery'));
+
+    wp_enqueue_script(
+        'cb-scripts-vendor',
+        plugin_dir_url(__FILE__) . 'assets/global/js/vendor.js',
+        array( 'jquery' ),
+        '1.0.0'
+    );
 
     wp_enqueue_style(
+        'cb-styles-vendor',
+        plugin_dir_url(__FILE__) . 'assets/global/css/vendor.css', array(), COMMONSBOOKING_VERSION
+    );
+
+    // Daterangepicker
+    wp_enqueue_style(
         'cb-styles-daterangepicker',
-        plugin_dir_url(__FILE__) . 'assets/public/css/themes/daterangepicker/daterangepicker.css'
+        plugin_dir_url(__FILE__) . 'assets/public/css/themes/daterangepicker/daterangepicker.css', array(), COMMONSBOOKING_VERSION
     );
 
     wp_enqueue_script(
-        'cb-scripts-jquery',
-        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/jquery.min.js',
+        'cb-scripts-daterangepicker',
+        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/daterangepicker.min.js',
         array(),
-        '1.0.0',
-        true
+        '1.0.0'
+    );
+
+    // Select 2
+    wp_enqueue_style(
+        'cb-styles-select2',
+        plugin_dir_url(__FILE__) . 'assets/public/css/themes/select2/select2.min.css', array(), COMMONSBOOKING_VERSION
+    );
+
+    wp_enqueue_script(
+        'cb-scripts-select2',
+        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/select2.min.js',
+        array('jquery'),
+        '1.0.0'
     );
 
     // Moment.js
@@ -84,21 +131,30 @@ function commonsbooking_public()
         true
     );
 
-    // Daterangepicker
-    wp_enqueue_script(
-        'cb-scripts-daterangepicker',
-        plugin_dir_url(__FILE__) . 'assets/public/js/vendor/daterangepicker.min.js',
-        array(),
-        '1.0.0',
-        true
-    );
-
+    /**
+     * Public scripts
+     */
     if (WP_DEBUG) {
-        wp_enqueue_script('cb-scripts-public', plugin_dir_url(__FILE__).'assets/public/js/public.js', array());
+        wp_enqueue_script(
+            'cb-scripts-public',
+            plugin_dir_url(__FILE__).'assets/public/js/public.js',
+            array( 'jquery' ),
+            time(),
+            true
+        );
     } else {
-        wp_enqueue_script('cb-scripts-public', plugin_dir_url(__FILE__).'assets/public/js/public.min.js', array());
+        wp_enqueue_script(
+            'cb-scripts-public',
+            plugin_dir_url(__FILE__).'assets/public/js/public.min.js',
+            array( 'jquery' ),
+            COMMONSBOOKING_VERSION,
+            true
+        );
     }
 
+    /**
+     * Ajax - calendar data
+     */
     wp_localize_script(
         'cb-scripts-public',
         'cb_ajax',
@@ -107,18 +163,42 @@ function commonsbooking_public()
             'nonce'    => wp_create_nonce('calendar_data'),
         )
     );
-}
 
+    /**
+     * Ajax - bookings
+     */
+    wp_localize_script(
+        'cb-scripts-public',
+        'cb_ajax_bookings',
+        array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce'    => wp_create_nonce('bookings_data'),
+        )
+    );
+
+}
 add_action('wp_enqueue_scripts', 'commonsbooking_public');
 
+// Calendar data ajax
 add_action('wp_ajax_calendar_data', array(\CommonsBooking\View\Location::class, 'getCalendarData'));
 add_action('wp_ajax_nopriv_calendar_data', array(\CommonsBooking\View\Location::class, 'getCalendarData'));
+
+add_action('wp_ajax_bookings_data', array(\CommonsBooking\View\Booking::class, 'getTemplateData'));
+add_action('wp_ajax_nopriv_bookings_data', array(\CommonsBooking\View\Booking::class, 'getTemplateData'));
+
 if (is_admin()) {
     add_action('wp_ajax_start_migration', array(\CommonsBooking\Migration\Migration::class, 'migrateAll'));
 }
 
+// Map ajax
+add_action('wp_ajax_cb_map_locations', array(MapShortcode::class, 'get_locations'));
+add_action('wp_ajax_nopriv_cb_map_locations', array(MapShortcode::class, 'get_locations'));
+add_action('wp_ajax_cb_map_geo_search', array(MapShortcode::class, 'geo_search'));
+add_action('wp_ajax_nopriv_cb_map_geo_search', array(MapShortcode::class, 'geo_search'));
+
 // should be loaded via add_action, but wasnt working in admin menu
-load_plugin_textdomain('commonsbooking', false, basename(dirname(__FILE__)).'/languages/');
+// moved to Plugin->init
+//load_plugin_textdomain('commonsbooking', false, basename(dirname(__FILE__)).'/languages/');
 
 function commonsbooking_query_vars($qvars)
 {
@@ -134,162 +214,10 @@ add_filter('query_vars', 'commonsbooking_query_vars');
 require __DIR__.'/vendor/autoload.php';
 require __DIR__.'/vendor/cmb2/cmb2/init.php';
 require __DIR__.'/vendor/mustardBees/cmb-field-select2/cmb-field-select2.php';
-
 require __DIR__.'/src/Repository/CB1UserFields.php'; //@TODO: import with Autoload
-
-/**
- * Checks if current user is allowed to edit custom post.
- *
- * @param $post
- *
- * @return bool
- */
-function commonsbooking_isCurrentUserAllowedToEdit($post)
-{
-    $current_user = wp_get_current_user();
-    $isAuthor     = intval($current_user->ID) == intval($post->post_author);
-    $isAdmin      = false;
-    if (in_array('administrator', (array)$current_user->roles)) {
-        $isAdmin = true;
-    }
-
-    // Check if it is the main query and one of our custom post types
-    if ( ! $isAdmin && ! $isAuthor) {
-        $admins = [];
-
-        // Get allowed admins for timeframe listing
-        if ($post->post_type == Timeframe::$postType) {
-            // Get assigned location
-            $locationId       = get_post_meta($post->ID, 'location-id', true);
-            $locationAdminIds = get_post_meta($locationId, '_'.Location::$postType.'_admins', true);
-            if (is_string($locationAdminIds)) {
-                if(strlen($locationAdminIds) > 0) {
-                    $locationAdminIds = [$locationAdminIds];
-                } else {
-                    $locationAdminIds = [];
-                }
-            }
-            $locationAdminIds[] = get_post_field('post_author', $locationId);
-
-            // Get assigned item
-            $itemId       = get_post_meta($post->ID, 'item-id', true);
-            $itemAdminIds = get_post_meta($itemId, '_'.Item::$postType.'_admins', true);
-            if (is_string($itemAdminIds)) {
-                if(strlen($itemAdminIds) > 0) {
-                    $itemAdminIds = [$itemAdminIds];
-                } else {
-                    $itemAdminIds = [];
-                }
-            }
-            $itemAdminIds[] = get_post_field('post_author', $itemId);
-
-            if (
-                is_array($locationAdminIds) && count($locationAdminIds) &&
-                is_array($itemAdminIds) && count($itemAdminIds)
-            ) {
-                $admins = array_merge($locationAdminIds, $itemAdminIds);
-            }
-        }
-
-        // Get allowed admins for Location / Item Listing
-        if (in_array(
-            $post->post_type,
-            [
-                Location::$postType,
-                Item::$postType,
-            ]
-        )
-        ) {
-            // post-related admins (returns string if single result and array if multiple results)
-            $admins = get_post_meta($post->ID, '_'.$post->post_type.'_admins', true);
-        }
-
-        if (
-            (is_string($admins) && $current_user->ID != $admins) ||
-            is_array($admins) && ! in_array($current_user->ID, $admins)
-        ) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-/**
- * Validates if current user is allowed to edit current post in admin.
- *
- * @param $current_screen
- */
-function commonsbooking_validate_user_on_edit($current_screen)
-{
-    if ($current_screen->base == "post" && in_array($current_screen->id, Plugin::getCustomPostTypesLabels())) {
-        if (array_key_exists('action', $_GET) && $_GET['action'] == 'edit') {
-            $post = get_post($_GET['post']);
-            if ( ! commonsbooking_isCurrentUserAllowedToEdit($post)) {
-                die('Access denied');
-            };
-        }
-    }
-}
-
-add_action('current_screen', 'commonsbooking_validate_user_on_edit', 10, 1);
-
-/**
- * Applies listing restriction for item and location admins.
- */
-add_filter(
-    'the_posts',
-    function ($posts, $query) {
-        if (is_admin() && array_key_exists('post_type', $query->query)) {
-            // Post type of current list
-            $postType = $query->query['post_type'];
-
-            $current_user = wp_get_current_user();
-            $isAdmin      = false;
-            if (in_array('administrator', (array)$current_user->roles)) {
-                $isAdmin = true;
-            }
-
-            // Check if it is the main query and one of our custom post types
-            if ( ! $isAdmin && $query->is_main_query() && in_array($postType, Plugin::getCustomPostTypesLabels())) {
-                foreach ($posts as $key => $post) {
-                    if ( ! commonsbooking_isCurrentUserAllowedToEdit($post)) {
-                        unset($posts[$key]);
-                    }
-                }
-            }
-        }
-
-        return $posts;
-    },
-    10,
-    2
-);
-
-// TODO: Check if still necessary. User check is implemented in CustomPostType/Timframe -> getTemplate()
-// Redirect to startpage if user is not allowed to edit timeframe
-function commonsbooking_timeframe_redirect()
-{
-    global $post;
-    if (
-        $post &&
-        $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType &&
-        (
-            ( ! current_user_can('administrator') && get_current_user_id() != $post->post_author) ||
-            ! is_user_logged_in()
-        )
-    ) {
-        wp_redirect(home_url('/'));
-        exit;
-    }
-}
-
-// removed redirect because we link to booking-single-notallowd.php (defined in )
-// add_action('template_redirect', 'commonsbooking_timeframe_redirect');
 
 // Shows Errors in Backend
 add_action('admin_notices', array(Plugin::class, 'renderError') );
-
 
 /**
  * commonsbooking_sanitizeHTML
@@ -371,10 +299,9 @@ function commonsbooking_sanitizeHTML($string)
     return wp_kses( $string, $allowedposttags );
 }
 
-
 /**
  * Recursive sanitation for text or array
- * 
+ *
  * @param $array_or_string (array|string)
  * @since  0.1
  * @return mixed
@@ -397,7 +324,7 @@ function commonsbooking_sanitizeArrayorString($array_or_string) {
 }
 
 // Initialize booking codes table
-register_activation_hook(__FILE__, array(\CommonsBooking\Repository\BookingCodes::class, 'initBookingCodesTable'));
+register_activation_hook(__FILE__, array(Plugin::class, 'activation'));
 
 // Ad new cron-Interval
 function commonsbooking_cron_interval($schedules)
@@ -406,11 +333,19 @@ function commonsbooking_cron_interval($schedules)
         'display'  => 'Every 10 Minutes',
         'interval' => 600,
     );
+    $schedules['five_minutes'] = array(
+        'display'  => 'Every 5 Minutes',
+        'interval' => 300,
+    );
+    $schedules['thirty_minutes'] = array(
+        'display'  => 'Every 30 Minutes',
+        'interval' => 1800,
+    );
     return $schedules;
 }
 add_filter('cron_schedules', 'commonsbooking_cron_interval');
 
-// Removes all uncofirmed bookings older than 10 minutes
+// Removes all unconfirmed bookings older than 10 minutes
 function commonsbooking_cleanupBookings()
 {
     $args = array(
@@ -419,7 +354,7 @@ function commonsbooking_cleanupBookings()
         'meta_key'    => 'type',
         'meta_value'  => Timeframe::BOOKING_ID,
         'date_query'  => array(
-            'before' => date('Y-m-d H:i:s', strtotime('-10 minutes')),
+            'before' => '-10 minutes',
         ),
         'nopaging'    => true,
     );
@@ -439,11 +374,57 @@ if ( ! wp_next_scheduled('cb_cron_hook')) {
     wp_schedule_event(time(), 'ten_minutes', 'cb_cron_hook');
 }
 
+// Add cronjob for csv timeframe export
+$cronExport = Settings::getOption('commonsbooking_options_export', 'export-cron');
+if($cronExport == 'on') {
+    $exportPath = Settings::getOption('commonsbooking_options_export', 'export-filepath');
+    $exportInterval = Settings::getOption('commonsbooking_options_export', 'export-interval');
+
+    $cbCronHook = 'cb_cron_export';
+    add_action($cbCronHook, function() use ($exportPath) {
+        \CommonsBooking\View\TimeframeExport::exportCsv($exportPath);
+    });
+
+    if ( ! wp_next_scheduled($cbCronHook)) {
+        wp_schedule_event(time(), $exportInterval, $cbCronHook);
+    }
+}
+
 // Remove schedule on module deactivation
 register_deactivation_hook( __FILE__, 'commonsbooking_cron_deactivate' );
 function commonsbooking_cron_deactivate() {
-    $timestamp = wp_next_scheduled( 'cb_cron_hook' );
-    wp_unschedule_event( $timestamp, 'cb_cron_hook' );
+    $cbCronHooks = [
+        'cb_cron_hook',
+        'cb_cron_export'
+    ];
+
+    foreach ($cbCronHooks as $cbCronHook) {
+        $timestamp = wp_next_scheduled( $cbCronHook );
+        wp_unschedule_event( $timestamp, $cbCronHook );
+    }
+}
+
+/**
+ * writes messages to error_log file
+ *
+ * @param  mixed $log can be a string, array or object
+ * @param  bool $backtrace if set true the file-path and line of the calling file will be added to the error message
+ * @return void
+ */
+function commmonsbooking_write_log ( $log, $backtrace = true )  {
+
+    if ($backtrace) {
+        $bt =  debug_backtrace();
+        $file = $bt[0]['file'];
+        $line = $bt[0]['line'];
+        $log = $file . ':' . $line . ' ' . $log;
+    }
+
+    if ( is_array( $log ) || is_object( $log ) ) {
+        error_log( print_r( $log, true ) );
+    } else {
+        error_log( $log );
+    }
 }
 
 $cbPlugin = new Plugin();

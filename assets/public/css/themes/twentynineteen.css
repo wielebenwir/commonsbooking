@@ -1,1 +1,12 @@
-.cb-wrapper h2::before{content:'';margin:0;background:transparent}
+/* line 1, ../../sass/themes/twentynineteen.scss */
+.cb-wrapper {
+  /* Twenty Nineteen Theme*/
+}
+/* line 3, ../../sass/themes/twentynineteen.scss */
+.cb-wrapper h2::before {
+  content: '';
+  margin: 0;
+  background: transparent;
+}
+
+/*# sourceMappingURL=twentynineteen.css.map */

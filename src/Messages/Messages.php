@@ -8,27 +8,50 @@ use CommonsBooking\Settings\Settings;
 class Messages
 {
 
-    public $postID;
-    public $action;
+    private $postId;
+
+    private $action;
+
+    private $post;
+
+    /**
+     * @return mixed
+     */
+    public function getPostId()
+    {
+        return $this->postId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPost()
+    {
+        if($this->post == null) {
+            $this->post = get_post($this->getPostId());
+        }
+        return $this->post;
+    }
 
     public function __construct($postId, $action)
     {
         $this->postId = $postId;
         $this->action = $action;
-        $this->cb_object = get_post($this->postId);
     }
 
     public function triggerMail()
-    {   
-
-        if ($this->action == "confirmed") {
+    {
+        if (in_array($this->getAction(), ["confirmed", "canceled"])) {
             return $this->sendMessage();
         }
-
-        if ($this->action == "canceled") {
-            return $this->sendMessage();
-        }
-
     }
 
     public function sendMessage()
@@ -43,9 +66,8 @@ class Messages
      */
     public function prepareMail()
     {
-
         // Setup email: Recipent
-        $booking_user = get_userdata($this->cb_object->post_author);
+        $booking_user = get_userdata($this->getPost()->post_author);
         $this->to = sprintf('%s <%s>', $booking_user->user_nicename, $booking_user->user_email);
 
         // WPML: Switch system language to user´s set lang https://wpml.org/documentation/support/sending-emails-with-wpml/
@@ -62,10 +84,13 @@ class Messages
             return new \WP_Error( 'e-mail ', esc_html( __( "Could not send email because mail-template was not available. Check options -> templates", "commonsbooking" ) ) );
         }
 
+        global $post;
+        $post = $this->getPost();
+
         // parse templates & replaces template tags (e.g. {{item:name}})
         $this->body = commonsbooking_sanitizeHTML (\commonsbooking_parse_template($template_body ) );
         $this->subject = commonsbooking_sanitizeHTML( \commonsbooking_parse_template($template_subject ) );
-       
+
         // Setup mime type
         $this->headers[] = "MIME-Version: 1.0";
         $this->headers[] = "Content-Type: text/html";
@@ -105,9 +130,6 @@ class Messages
     {
             $this->headers[] = sprintf("BCC:%s", sanitize_email($adress));
     }
-
-
-
 
     /**
      * Send the email

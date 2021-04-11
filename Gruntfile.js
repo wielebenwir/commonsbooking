@@ -1,5 +1,7 @@
 module.exports = function (grunt) {
-	grunt.initConfig({
+	grunt.util.linefeed = '\n';
+	grunt.initConfig(
+		{
 		pkg: grunt.file.readJSON('package.json'),
 		compass: {
 			admin: {
@@ -29,7 +31,6 @@ module.exports = function (grunt) {
 			adminDev: {
 				options: {
 					environment: 'development',
-					debugInfo: true,
 					noLineComments: false,
 					sassDir: 'assets/admin/sass',
 					cssDir: 'assets/admin/css',
@@ -41,7 +42,6 @@ module.exports = function (grunt) {
 			publicDev: {
 				options: {
 					environment: 'development',
-					debugInfo: true,
 					noLineComments: false,
 					sassDir: 'assets/public/sass',
 					cssDir: 'assets/public/css',
@@ -56,12 +56,14 @@ module.exports = function (grunt) {
 			dev: {
 				options: {
 					beautify: true,
-					mangle: false
+					mangle: false,
+					compress: {
+						unused: false
+					}
 				},
 				files: {
 					'assets/public/js/public.js': [
 						/* add path to js dependencies (ie in node_modules) here */
-						'node_modules/tippy.js/dist/tippy.all.js',
 						'assets/public/js/src/**/*.js',
 					],
 					'assets/admin/js/admin.js': [
@@ -73,7 +75,10 @@ module.exports = function (grunt) {
 			dist: {
 				options: {
 					beautify: false,
-					mangle: true
+					mangle: true,
+					compress: {
+						unused: false
+					}
 				},
 				files: {
 					'assets/public/js/public.min.js': [
@@ -81,7 +86,21 @@ module.exports = function (grunt) {
 					],
 					'assets/admin/js/admin.min.js': [
 						'assets/admin/js/admin.js'
+					],
+					'assets/global/js/vendor.min.js': [
+						'assets/global/js/vendor.js'
 					]
+				}
+			}
+		},
+		babel: {
+			options: {
+				sourceMap: true,
+				presets: ['@babel/preset-env']
+			},
+			dist: {
+				files: {
+					'assets/global/js/vendor.js': 'node_modules/shufflejs/dist/shuffle.js'
 				}
 			}
 		},
@@ -103,30 +122,41 @@ module.exports = function (grunt) {
 					'assets/admin/js/src/**/*.js'
 				],
 				tasks: [
-					'uglify:dev'
+					'uglify:dev', 'babel'
 				]
 			}
 		}
 	});
+
 	// Load tasks
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-compass');
 	grunt.loadNpmTasks('grunt-contrib-uglify-es');
+	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-babel');
+
 	// Register tasks
 	grunt.registerTask('default', [
-		'compass:adminDev', 'compass:publicDev','uglify:dev','compass:themes'
+		'compass:adminDev',
+		'compass:publicDev',
+		'compass:themes',
+		'uglify:dev',
+		'uglify:dist',
+		'babel',
 	]);
 	grunt.registerTask('dev', [
 		'compass:adminDev',
 		'compass:publicDev',
-		'uglify:dev',
 		'compass:themes',
+		'uglify:dev',
+		'babel',
 		'watch'
 	]);
 	grunt.registerTask('dist', [
 		'compass:admin',
 		'compass:public',
 		'compass:themes',
-		'uglify:dist'
+		'uglify:dist',
+		'babel'
 	]);
 };

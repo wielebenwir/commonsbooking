@@ -9,11 +9,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
         let globalCalendarData = data;
 
         const fadeOutCalendar = () => {
-            $('#litepicker .litepicker .container__days').css('visibility', 'hidden');
+            jQuery('#litepicker .litepicker .container__days').css('visibility', 'hidden');
         }
 
         const fadeInCalendar = () => {
-            $('#litepicker .litepicker .container__days').fadeTo('fast', 1);
+            jQuery('#litepicker .litepicker .container__days').fadeTo('fast', 1);
         }
 
         // Updates Time-selects so that no wrong time ranges can be selected
@@ -26,14 +26,29 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         // Update End-Date Select, so that only relevant selections are possible
         const updateEndSelectTimeOptions = () => {
-            const bookingForm = $('#booking-form');
+            const bookingForm = jQuery('#booking-form');
             const startSelect = bookingForm.find('select[name=repetition-start]');
             const endSelect = bookingForm.find('select[name=repetition-end]');
             const startValue = startSelect.val();
+            let bookedElementBefore = false;
+            let firstAvailableOptionSelected = false;
+
             endSelect.find('option').each(function () {
-                if ($(this).val() < startValue) {
-                    $(this).attr('disabled', 'disabled');
-                    $(this).prop("selected", false)
+                // Disable element if its smaller than startvalue, booked or if there is an disabled element before
+                if (jQuery(this).val() < startValue || bookedElementBefore || this.dataset.booked == "true") {
+                    jQuery(this).attr('disabled', 'disabled');
+                    jQuery(this).prop("selected", false)
+                } else {
+                    jQuery(this).removeAttr('disabled');
+                    if(!firstAvailableOptionSelected) {
+                        jQuery(this).prop("selected", true);
+                        firstAvailableOptionSelected = true;
+                    }
+                }
+
+                // Check if current item is booked AND bigger than startValue
+                if(jQuery(this).val() > startValue && this.dataset.booked == "true") {
+                    bookedElementBefore = true;
                 }
             });
         };
@@ -41,11 +56,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
         // Updates select options by time slots array
         const updateSelectSlots = (select, slots, type = 'start', fullday = false) => {
             select.empty().attr('required', 'required');
-            $.each(slots, function (index, slot) {
+           jQuery.each(slots, function (index, slot) {
                 let option = new Option(slot['timestart'] + ' - ' + slot['timeend'], slot['timestamp' + type], fullday, fullday);
                 if(slot['disabled']) {
                     option.disabled = true;
                 }
+               if(slot['timeframe']['locked']) {
+                   option.disabled = true;
+                   option.dataset.booked = true;
+               }
                 select.append(option);
             });
         };
@@ -68,27 +87,27 @@ document.addEventListener("DOMContentLoaded", function (event) {
             const startDate = moment(date).format('DD.MM.YYYY');
 
             // Hide select hint for start, show for end again
-            $('.time-selection.repetition-start').find('.hint-selection').hide();
-            $('.time-selection.repetition-end').find('.hint-selection').show();
+            jQuery('.time-selection.repetition-start').find('.hint-selection').hide();
+            jQuery('.time-selection.repetition-end').find('.hint-selection').show();
 
             // Hide end date selection if new start date was chosen
-            let endSelectData = $(
+            let endSelectData = jQuery(
                 '#booking-form select[name=repetition-end],' +
                 '#booking-form .time-selection.repetition-end .date'
             );
             endSelectData.hide();
-            $('#booking-form input[type=submit]').attr('disabled','disabled');
+            jQuery('#booking-form input[type=submit]').attr('disabled','disabled');
 
             // update select slots
-            let startSelect = $('#booking-form select[name=repetition-start]');
-            $('.time-selection.repetition-start span.date').text(startDate);
+            let startSelect = jQuery('#booking-form select[name=repetition-start]');
+            jQuery('.time-selection.repetition-start span.date').text(startDate);
             updateSelectSlots(startSelect, day1['slots'], 'start', day1['fullDay']);
 
             // hide time selection if we have a full day slot
             if (day1['fullDay']) {
-                $('.time-selection.repetition-start').find('select').hide();
+                jQuery('.time-selection.repetition-start').find('select').hide();
             } else {
-                $('.time-selection.repetition-start').find('select').show();
+                jQuery('.time-selection.repetition-start').find('select').show();
             }
         }
 
@@ -98,28 +117,28 @@ document.addEventListener("DOMContentLoaded", function (event) {
             const endDate = moment(date).format('DD.MM.YYYY');
 
             // Hide select hint
-            $('.time-selection.repetition-end').find('.hint-selection').hide();
+            jQuery('.time-selection.repetition-end').find('.hint-selection').hide();
 
             // update select slots
-            let endSelect = $('#booking-form select[name=repetition-end]');
-            $('.time-selection.repetition-end span.date').text(endDate);
+            let endSelect = jQuery('#booking-form select[name=repetition-end]');
+            jQuery('.time-selection.repetition-end span.date').text(endDate);
             updateSelectSlots(endSelect, day2['slots'], 'end', day2['fullDay']);
 
             // show end date selection if new start date was chosen
-            let endSelectData = $(
+            let endSelectData = jQuery(
                 '#booking-form select[name=repetition-end],' +
                 '#booking-form .time-selection.repetition-end .date'
             );
             endSelectData.show();
-            $('#booking-form input[type=submit]').removeAttr('disabled');
+            jQuery('#booking-form input[type=submit]').removeAttr('disabled');
 
             updateEndSelectTimeOptions();
 
             // hide time selection if we have a full day slot
             if (day2['fullDay']) {
-                $('.time-selection.repetition-end').find('select').hide();
+                jQuery('.time-selection.repetition-end').find('select').hide();
             } else {
-                $('.time-selection.repetition-end').find('select').show();
+                jQuery('.time-selection.repetition-end').find('select').show();
             }
         }
 
@@ -154,6 +173,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             picker = new Litepicker({
                 "element": document.getElementById('litepicker'),
                 "minDate": moment().format('YYYY-MM-DD'),
+                "startDate": moment().isAfter(globalCalendarData['startDate']) ? moment().format('YYYY-MM-DD') : data['startDate'],
+                "scrollToDate": true,
                 "inlineMode": true,
                 "firstDay": 1,
                 "lang": 'de-DE',
@@ -178,13 +199,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 },
                 onAutoApply: (datePicked) => {
                     if(datePicked) {
-                        $('#booking-form').show();
-                        $('.cb-notice.date-select').hide();
+                        jQuery('#booking-form').show();
+                        jQuery('.cb-notice.date-select').hide();
                     }
                 },
                 resetBtnCallback: () => {
-                    $('#booking-form').hide();
-                    $('.cb-notice.date-select').show();
+                    jQuery('#booking-form').hide();
+                    jQuery('.cb-notice.date-select').show();
                 },
                 onChangeMonth: function(date, idx) {
                     fadeOutCalendar()
@@ -194,19 +215,19 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     // first day of next month selection
                     const calEndDate = moment(date.format('YYYY-MM-DD')).add(numberOfMonths,'months').date(1).format('YYYY-MM-DD');
 
-                    $.post(
+                   jQuery.post(
                         cb_ajax.ajax_url,
                         {
                             _ajax_nonce: cb_ajax.nonce,
                             action: "calendar_data",
-                            item: $('#booking-form input[name=item-id]').val(),
-                            location: $('#booking-form input[name=location-id]').val(),
+                            item: jQuery('#booking-form input[name=item-id]').val(),
+                            location: jQuery('#booking-form input[name=location-id]').val(),
                             sd: calStartDate,
                             ed: calEndDate
                         },
                         function(data) {
                             // Add new day-data to global calendar data object
-                            globalCalendarData.days = {...globalCalendarData.days, ...data.days }
+                            jQuery.extend(globalCalendarData.days, data.days);
 
                             updatePicker(data);
                             picker.gotoDate(startDate);
@@ -214,10 +235,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     );
                 }
             });
-            $('#litepicker .litepicker').hide();
+            jQuery('#litepicker .litepicker').hide();
 
             // If orientation changes, update columns for calendar
-            $( window ).on( "orientationchange", function( event ) {
+            jQuery( window ).on( "orientationchange", function( event ) {
                 updateCalendarColumns(picker);
             });
         };
@@ -229,6 +250,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 {
                     "minDate": moment().isAfter(globalCalendarData['startDate']) ? moment().format('YYYY-MM-DD') : data['startDate'],
                     "maxDate": globalCalendarData['endDate'],
+                    "startDate": moment().isAfter(globalCalendarData['startDate']) ? moment().format('YYYY-MM-DD') : data['startDate'],
                     "days": globalCalendarData['days'],
                     "maxDays": globalCalendarData['maxDays'],
                     "lockDays": globalCalendarData['lockDays'],
@@ -240,14 +262,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         if (
                             datepicked >= 0
                         ) {
-                            let bookingForm = $('#booking-form');
+                            let bookingForm = jQuery('#booking-form');
                             bookingForm.show();
 
                             // Start-Date selected or End-Date == Start-Date selected
                             if (datepicked == 1) {
                                 initStartSelect(date);
                                 // Start-Date !== End-Date
-                                $('.cb-notice.date-select').hide();
+                                jQuery('.cb-notice.date-select').hide();
                             }
 
                             // End-Date Selected
@@ -257,9 +279,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         }
                     },
                     onSelect: function (date1, date2) {
-                        let bookingForm = $('#booking-form');
+                        let bookingForm = jQuery('#booking-form');
                         bookingForm.show();
-                        $('.cb-notice.date-select').hide();
+                        jQuery('.cb-notice.date-select').hide();
 
                         const day1 = globalCalendarData['days'][moment(date1).format('YYYY-MM-DD')];
                         const day2 = globalCalendarData['days'][moment(date2).format('YYYY-MM-DD')];
@@ -267,10 +289,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         initEndSelect(date2);
 
                         if (!day1['fullDay'] || !day2['fullDay']) {
-                            $('#fullDayInfo').text('');
+                            jQuery('#fullDayInfo').text('');
                             initSelectHandler();
                         } else {
-                            $('#fullDayInfo').text(globalCalendarData['location']['fullDayInfo']);
+                            jQuery('#fullDayInfo').html(globalCalendarData['location']['fullDayInfo']);
                         }
                     }
                 }
@@ -278,7 +300,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             fadeInCalendar();
         };
 
-        let bookingForm = $('#booking-form');
+        let bookingForm = jQuery('#booking-form');
         if(bookingForm.length) {
             if(typeof data !== 'undefined') {
                 initPicker();

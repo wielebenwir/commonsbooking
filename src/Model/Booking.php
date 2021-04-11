@@ -21,6 +21,28 @@ class Booking extends CustomPost
         "unconfirmed"
     ];
 
+        
+    /**
+     * returns label of booking states
+     *
+     * @param  mixed $status
+     * @return string
+     */
+    public function getBookingStateLabel () {
+        switch ($this->post_status) {
+            case 'canceled':
+                return commonsbooking_sanitizeHTML( __('canceled', 'commonsbooking') );
+                break;
+            case 'confirmed':
+                return commonsbooking_sanitizeHTML( __('confirmed', 'commonsbooking') );
+                break;
+            case 'unconfirmed':
+                return commonsbooking_sanitizeHTML( __('unconfirmed', 'commonsbooking') );
+                break;
+        }
+    }
+  
+    
     /**
      * @return Location
      * @throws \Exception
@@ -60,15 +82,28 @@ class Booking extends CustomPost
      * @return mixed
      */
     public function formattedBookingCode() {
+        $htmloutput = "";
         if (
-            $this->getBookableTimeFrame() &&
-            $this->getBookableTimeFrame()->showBookingCodes() &&
-            $this->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'bookingcode')
+            $this->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'bookingcode') &&
+            $this->post_status == "confirmed" && (
+                $this->showBookingCodes() ||
+                ( $this->getBookableTimeFrame() && $this->getBookableTimeFrame()->showBookingCodes() )
+            )
         ) {
             // translators: %s = Booking code
             $htmloutput = '<br>' . sprintf( commonsbooking_sanitizeHTML( __( 'Your booking code is: %s' , 'commonsbooking' ) ), $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode') ) . '<br>' ;
-            return $htmloutput;
         }
+
+        return $htmloutput;
+    }
+
+    /**
+     * Returns true if booking codes shall be shown in frontend.
+     * @return bool
+     */
+    public function showBookingCodes()
+    {
+        return $this->getMeta("show-booking-codes") == "on";
     }
 
     /**
@@ -82,7 +117,8 @@ class Booking extends CustomPost
             "full-day",
             "grid",
             "start-time",
-            "end-time"
+            "end-time",
+            "show-booking-codes"
         ];
         foreach($neededMetaFields as $fieldName) {
             $fieldValue = get_post_meta(
@@ -247,6 +283,21 @@ class Booking extends CustomPost
         return $date_end . ' ' . $time_start . ' - ' . $time_end;
     }
 
+    public function getStartDate() {
+        return $this->getMeta('repetition-start');
+    }
+
+    public function getEndDate() {
+        return $this->getMeta('repetition-end');
+    }
+
+    /**
+     * Returns comment text.
+     * @return mixed
+     */
+    public function returnComment() {
+        return commonsbooking_sanitizeHTML( $this->getMeta('comment') );
+    }
 
     /**
      * bookingActionButton
@@ -266,19 +317,19 @@ class Booking extends CustomPost
 
         // return form with action button based on current booking status and defined form-action
 
-        If ($current_status == 'unconfirmed' AND $form_action == "cancel")
+        if ($current_status == 'unconfirmed' AND $form_action == "cancel")
         {
             $form_post_status = 'canceled';
             $button_label = esc_html__('Cancel', 'commonsbooking');
         }
 
-        If ($current_status == 'unconfirmed' AND $form_action == "confirm")
+        if ($current_status == 'unconfirmed' AND $form_action == "confirm")
         {
             $form_post_status = 'confirmed';
             $button_label = esc_html__('Confirm Booking', 'commonsbooking');
         }
 
-        If ($current_status == 'confirmed' AND $form_action == "cancel")
+        if ($current_status == 'confirmed' AND $form_action == "cancel")
         {
             $form_post_status = 'canceled';
             $button_label = esc_html__('Cancel Booking', 'commonsbooking');
@@ -312,7 +363,9 @@ class Booking extends CustomPost
             $noticeText = commonsbooking_sanitizeHTML( __('Your booking has been canceled.', 'commonsbooking' ) );
         }
 
-        return sprintf ('<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $currentStatus, $noticeText);
+        if (isset($noticeText)) {
+            return sprintf ('<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $currentStatus, $noticeText);
+        }
 
     }
 

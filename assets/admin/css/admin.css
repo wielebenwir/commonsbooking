@@ -1,21 +1,13 @@
 /*
  * Admin styles
- * @package   CommonsBooking2
- * @author    Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
+ *
+ * Loaded only in the WP Backend
  */
 /* Global styles */
 /*
- * Framework styles - shared in front- and backend
- * @package   CommonsBooking2
- * @author    Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
+ * Global styles
+ * 
+ * Shared in Front- and Backend
  */
 /* Lib: reset.css */
 /*
@@ -25,7 +17,7 @@
  *
  * @package   CommonsBooking2
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_reset\.scss}line{font-family:\0000311}}
+/* line 11, ../../global/sass/lib/_reset.scss */
 .cb-content ol,
 .cb-content ul,
 .cb-content li,
@@ -39,12 +31,12 @@
   margin: 0;
   padding: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_reset\.scss}line{font-family:\0000326}}
+/* line 26, ../../global/sass/lib/_reset.scss */
 .cb-content blockquote,
 .cb-content q {
   quotes: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_reset\.scss}line{font-family:\0000331}}
+/* line 31, ../../global/sass/lib/_reset.scss */
 .cb-content blockquote:before,
 .cb-content blockquote:after,
 .cb-content q:before,
@@ -52,7 +44,7 @@
   content: '';
   content: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_reset\.scss}line{font-family:\0000339}}
+/* line 39, ../../global/sass/lib/_reset.scss */
 .cb-content table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -124,7 +116,7 @@
     transform: translate3d(0, -4px, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\0000377}}
+/* line 77, ../../global/sass/lib/_animate.scss */
 .bounce {
   -webkit-animation-name: bounce;
   animation-name: bounce;
@@ -154,7 +146,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003110}}
+/* line 110, ../../global/sass/lib/_animate.scss */
 .flash {
   -webkit-animation-name: flash;
   animation-name: flash;
@@ -189,7 +181,7 @@
     transform: scale3d(1, 1, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003151}}
+/* line 151, ../../global/sass/lib/_animate.scss */
 .pulse {
   -webkit-animation-name: pulse;
   animation-name: pulse;
@@ -255,7 +247,7 @@
     transform: scale3d(1, 1, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003230}}
+/* line 230, ../../global/sass/lib/_animate.scss */
 .rubberBand {
   -webkit-animation-name: rubberBand;
   animation-name: rubberBand;
@@ -305,7 +297,7 @@
     transform: translate3d(10px, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003285}}
+/* line 285, ../../global/sass/lib/_animate.scss */
 .shake {
   -webkit-animation-name: shake;
   animation-name: shake;
@@ -363,7 +355,7 @@
     transform: translateX(0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003354}}
+/* line 354, ../../global/sass/lib/_animate.scss */
 .headShake {
   -webkit-animation-timing-function: ease-in-out;
   animation-timing-function: ease-in-out;
@@ -415,7 +407,7 @@
     transform: rotate3d(0, 0, 1, 0deg);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003415}}
+/* line 415, ../../global/sass/lib/_animate.scss */
 .swing {
   -webkit-transform-origin: top center;
   transform-origin: top center;
@@ -479,7 +471,7 @@
     transform: scale3d(1, 1, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003488}}
+/* line 488, ../../global/sass/lib/_animate.scss */
 .tada {
   -webkit-animation-name: tada;
   animation-name: tada;
@@ -546,7 +538,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003569}}
+/* line 569, ../../global/sass/lib/_animate.scss */
 .wobble {
   -webkit-animation-name: wobble;
   animation-name: wobble;
@@ -624,7 +616,7 @@
     transform: skewX(-0.19531deg) skewY(-0.19531deg);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003662}}
+/* line 662, ../../global/sass/lib/_animate.scss */
 .jello {
   -webkit-animation-name: jello;
   animation-name: jello;
@@ -676,7 +668,7 @@
     transform: scale(1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003723}}
+/* line 723, ../../global/sass/lib/_animate.scss */
 .heartBeat {
   -webkit-animation-name: heartBeat;
   animation-name: heartBeat;
@@ -762,7 +754,7 @@
     transform: scale3d(1, 1, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003822}}
+/* line 822, ../../global/sass/lib/_animate.scss */
 .bounceIn {
   -webkit-animation-duration: 0.75s;
   animation-duration: 0.75s;
@@ -834,7 +826,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003905}}
+/* line 905, ../../global/sass/lib/_animate.scss */
 .bounceInDown {
   -webkit-animation-name: bounceInDown;
   animation-name: bounceInDown;
@@ -904,7 +896,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\00003986}}
+/* line 986, ../../global/sass/lib/_animate.scss */
 .bounceInLeft {
   -webkit-animation-name: bounceInLeft;
   animation-name: bounceInLeft;
@@ -974,7 +966,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031067}}
+/* line 1067, ../../global/sass/lib/_animate.scss */
 .bounceInRight {
   -webkit-animation-name: bounceInRight;
   animation-name: bounceInRight;
@@ -1044,7 +1036,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031148}}
+/* line 1148, ../../global/sass/lib/_animate.scss */
 .bounceInUp {
   -webkit-animation-name: bounceInUp;
   animation-name: bounceInUp;
@@ -1084,7 +1076,7 @@
     transform: scale3d(0.3, 0.3, 0.3);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031193}}
+/* line 1193, ../../global/sass/lib/_animate.scss */
 .bounceOut {
   -webkit-animation-duration: 0.75s;
   animation-duration: 0.75s;
@@ -1126,7 +1118,7 @@
     transform: translate3d(0, 2000px, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031240}}
+/* line 1240, ../../global/sass/lib/_animate.scss */
 .bounceOutDown {
   -webkit-animation-name: bounceOutDown;
   animation-name: bounceOutDown;
@@ -1156,7 +1148,7 @@
     transform: translate3d(-2000px, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031273}}
+/* line 1273, ../../global/sass/lib/_animate.scss */
 .bounceOutLeft {
   -webkit-animation-name: bounceOutLeft;
   animation-name: bounceOutLeft;
@@ -1186,7 +1178,7 @@
     transform: translate3d(2000px, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031306}}
+/* line 1306, ../../global/sass/lib/_animate.scss */
 .bounceOutRight {
   -webkit-animation-name: bounceOutRight;
   animation-name: bounceOutRight;
@@ -1226,7 +1218,7 @@
     transform: translate3d(0, -2000px, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031351}}
+/* line 1351, ../../global/sass/lib/_animate.scss */
 .bounceOutUp {
   -webkit-animation-name: bounceOutUp;
   animation-name: bounceOutUp;
@@ -1248,7 +1240,7 @@
     opacity: 1;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031376}}
+/* line 1376, ../../global/sass/lib/_animate.scss */
 .fadeIn {
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
@@ -1278,7 +1270,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031409}}
+/* line 1409, ../../global/sass/lib/_animate.scss */
 .fadeInDown {
   -webkit-animation-name: fadeInDown;
   animation-name: fadeInDown;
@@ -1308,7 +1300,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031442}}
+/* line 1442, ../../global/sass/lib/_animate.scss */
 .fadeInDownBig {
   -webkit-animation-name: fadeInDownBig;
   animation-name: fadeInDownBig;
@@ -1338,7 +1330,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031475}}
+/* line 1475, ../../global/sass/lib/_animate.scss */
 .fadeInLeft {
   -webkit-animation-name: fadeInLeft;
   animation-name: fadeInLeft;
@@ -1368,7 +1360,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031508}}
+/* line 1508, ../../global/sass/lib/_animate.scss */
 .fadeInLeftBig {
   -webkit-animation-name: fadeInLeftBig;
   animation-name: fadeInLeftBig;
@@ -1398,7 +1390,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031541}}
+/* line 1541, ../../global/sass/lib/_animate.scss */
 .fadeInRight {
   -webkit-animation-name: fadeInRight;
   animation-name: fadeInRight;
@@ -1428,7 +1420,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031574}}
+/* line 1574, ../../global/sass/lib/_animate.scss */
 .fadeInRightBig {
   -webkit-animation-name: fadeInRightBig;
   animation-name: fadeInRightBig;
@@ -1458,7 +1450,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031607}}
+/* line 1607, ../../global/sass/lib/_animate.scss */
 .fadeInUp {
   -webkit-animation-name: fadeInUp;
   animation-name: fadeInUp;
@@ -1488,7 +1480,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031640}}
+/* line 1640, ../../global/sass/lib/_animate.scss */
 .fadeInUpBig {
   -webkit-animation-name: fadeInUpBig;
   animation-name: fadeInUpBig;
@@ -1510,7 +1502,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031665}}
+/* line 1665, ../../global/sass/lib/_animate.scss */
 .fadeOut {
   -webkit-animation-name: fadeOut;
   animation-name: fadeOut;
@@ -1536,7 +1528,7 @@
     transform: translate3d(0, 100%, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031694}}
+/* line 1694, ../../global/sass/lib/_animate.scss */
 .fadeOutDown {
   -webkit-animation-name: fadeOutDown;
   animation-name: fadeOutDown;
@@ -1562,7 +1554,7 @@
     transform: translate3d(0, 2000px, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031723}}
+/* line 1723, ../../global/sass/lib/_animate.scss */
 .fadeOutDownBig {
   -webkit-animation-name: fadeOutDownBig;
   animation-name: fadeOutDownBig;
@@ -1588,7 +1580,7 @@
     transform: translate3d(-100%, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031752}}
+/* line 1752, ../../global/sass/lib/_animate.scss */
 .fadeOutLeft {
   -webkit-animation-name: fadeOutLeft;
   animation-name: fadeOutLeft;
@@ -1614,7 +1606,7 @@
     transform: translate3d(-2000px, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031781}}
+/* line 1781, ../../global/sass/lib/_animate.scss */
 .fadeOutLeftBig {
   -webkit-animation-name: fadeOutLeftBig;
   animation-name: fadeOutLeftBig;
@@ -1640,7 +1632,7 @@
     transform: translate3d(100%, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031810}}
+/* line 1810, ../../global/sass/lib/_animate.scss */
 .fadeOutRight {
   -webkit-animation-name: fadeOutRight;
   animation-name: fadeOutRight;
@@ -1666,7 +1658,7 @@
     transform: translate3d(2000px, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031839}}
+/* line 1839, ../../global/sass/lib/_animate.scss */
 .fadeOutRightBig {
   -webkit-animation-name: fadeOutRightBig;
   animation-name: fadeOutRightBig;
@@ -1692,7 +1684,7 @@
     transform: translate3d(0, -100%, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031868}}
+/* line 1868, ../../global/sass/lib/_animate.scss */
 .fadeOutUp {
   -webkit-animation-name: fadeOutUp;
   animation-name: fadeOutUp;
@@ -1718,7 +1710,7 @@
     transform: translate3d(0, -2000px, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031897}}
+/* line 1897, ../../global/sass/lib/_animate.scss */
 .fadeOutUpBig {
   -webkit-animation-name: fadeOutUpBig;
   animation-name: fadeOutUpBig;
@@ -1788,7 +1780,7 @@
     animation-timing-function: ease-in;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000031992}}
+/* line 1992, ../../global/sass/lib/_animate.scss */
 .animated.flip {
   -webkit-backface-visibility: visible;
   backface-visibility: visible;
@@ -1852,7 +1844,7 @@
     transform: perspective(400px);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032065}}
+/* line 2065, ../../global/sass/lib/_animate.scss */
 .flipInX {
   -webkit-backface-visibility: visible !important;
   backface-visibility: visible !important;
@@ -1916,7 +1908,7 @@
     transform: perspective(400px);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032138}}
+/* line 2138, ../../global/sass/lib/_animate.scss */
 .flipInY {
   -webkit-backface-visibility: visible !important;
   backface-visibility: visible !important;
@@ -1956,7 +1948,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032183}}
+/* line 2183, ../../global/sass/lib/_animate.scss */
 .flipOutX {
   -webkit-animation-duration: 0.75s;
   animation-duration: 0.75s;
@@ -1998,7 +1990,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032230}}
+/* line 2230, ../../global/sass/lib/_animate.scss */
 .flipOutY {
   -webkit-animation-duration: 0.75s;
   animation-duration: 0.75s;
@@ -2048,7 +2040,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032287}}
+/* line 2287, ../../global/sass/lib/_animate.scss */
 .lightSpeedIn {
   -webkit-animation-name: lightSpeedIn;
   animation-name: lightSpeedIn;
@@ -2076,7 +2068,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032318}}
+/* line 2318, ../../global/sass/lib/_animate.scss */
 .lightSpeedOut {
   -webkit-animation-name: lightSpeedOut;
   animation-name: lightSpeedOut;
@@ -2116,7 +2108,7 @@
     opacity: 1;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032361}}
+/* line 2361, ../../global/sass/lib/_animate.scss */
 .rotateIn {
   -webkit-animation-name: rotateIn;
   animation-name: rotateIn;
@@ -2154,7 +2146,7 @@
     opacity: 1;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032402}}
+/* line 2402, ../../global/sass/lib/_animate.scss */
 .rotateInDownLeft {
   -webkit-animation-name: rotateInDownLeft;
   animation-name: rotateInDownLeft;
@@ -2192,7 +2184,7 @@
     opacity: 1;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032443}}
+/* line 2443, ../../global/sass/lib/_animate.scss */
 .rotateInDownRight {
   -webkit-animation-name: rotateInDownRight;
   animation-name: rotateInDownRight;
@@ -2230,7 +2222,7 @@
     opacity: 1;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032484}}
+/* line 2484, ../../global/sass/lib/_animate.scss */
 .rotateInUpLeft {
   -webkit-animation-name: rotateInUpLeft;
   animation-name: rotateInUpLeft;
@@ -2268,7 +2260,7 @@
     opacity: 1;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032525}}
+/* line 2525, ../../global/sass/lib/_animate.scss */
 .rotateInUpRight {
   -webkit-animation-name: rotateInUpRight;
   animation-name: rotateInUpRight;
@@ -2302,7 +2294,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032562}}
+/* line 2562, ../../global/sass/lib/_animate.scss */
 .rotateOut {
   -webkit-animation-name: rotateOut;
   animation-name: rotateOut;
@@ -2336,7 +2328,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032599}}
+/* line 2599, ../../global/sass/lib/_animate.scss */
 .rotateOutDownLeft {
   -webkit-animation-name: rotateOutDownLeft;
   animation-name: rotateOutDownLeft;
@@ -2370,7 +2362,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032636}}
+/* line 2636, ../../global/sass/lib/_animate.scss */
 .rotateOutDownRight {
   -webkit-animation-name: rotateOutDownRight;
   animation-name: rotateOutDownRight;
@@ -2404,7 +2396,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032673}}
+/* line 2673, ../../global/sass/lib/_animate.scss */
 .rotateOutUpLeft {
   -webkit-animation-name: rotateOutUpLeft;
   animation-name: rotateOutUpLeft;
@@ -2438,7 +2430,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032710}}
+/* line 2710, ../../global/sass/lib/_animate.scss */
 .rotateOutUpRight {
   -webkit-animation-name: rotateOutUpRight;
   animation-name: rotateOutUpRight;
@@ -2508,7 +2500,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032787}}
+/* line 2787, ../../global/sass/lib/_animate.scss */
 .hinge {
   -webkit-animation-duration: 2s;
   animation-duration: 2s;
@@ -2560,7 +2552,7 @@
     transform: scale(1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032846}}
+/* line 2846, ../../global/sass/lib/_animate.scss */
 .jackInTheBox {
   -webkit-animation-name: jackInTheBox;
   animation-name: jackInTheBox;
@@ -2591,7 +2583,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032881}}
+/* line 2881, ../../global/sass/lib/_animate.scss */
 .rollIn {
   -webkit-animation-name: rollIn;
   animation-name: rollIn;
@@ -2618,7 +2610,7 @@
     transform: translate3d(100%, 0, 0) rotate3d(0, 0, 1, 120deg);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032912}}
+/* line 2912, ../../global/sass/lib/_animate.scss */
 .rollOut {
   -webkit-animation-name: rollOut;
   animation-name: rollOut;
@@ -2644,7 +2636,7 @@
     opacity: 1;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032941}}
+/* line 2941, ../../global/sass/lib/_animate.scss */
 .zoomIn {
   -webkit-animation-name: zoomIn;
   animation-name: zoomIn;
@@ -2682,7 +2674,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000032982}}
+/* line 2982, ../../global/sass/lib/_animate.scss */
 .zoomInDown {
   -webkit-animation-name: zoomInDown;
   animation-name: zoomInDown;
@@ -2720,7 +2712,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033023}}
+/* line 3023, ../../global/sass/lib/_animate.scss */
 .zoomInLeft {
   -webkit-animation-name: zoomInLeft;
   animation-name: zoomInLeft;
@@ -2758,7 +2750,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033064}}
+/* line 3064, ../../global/sass/lib/_animate.scss */
 .zoomInRight {
   -webkit-animation-name: zoomInRight;
   animation-name: zoomInRight;
@@ -2796,7 +2788,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033105}}
+/* line 3105, ../../global/sass/lib/_animate.scss */
 .zoomInUp {
   -webkit-animation-name: zoomInUp;
   animation-name: zoomInUp;
@@ -2828,7 +2820,7 @@
     opacity: 0;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033142}}
+/* line 3142, ../../global/sass/lib/_animate.scss */
 .zoomOut {
   -webkit-animation-name: zoomOut;
   animation-name: zoomOut;
@@ -2870,7 +2862,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033187}}
+/* line 3187, ../../global/sass/lib/_animate.scss */
 .zoomOutDown {
   -webkit-animation-name: zoomOutDown;
   animation-name: zoomOutDown;
@@ -2904,7 +2896,7 @@
     transform-origin: left center;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033224}}
+/* line 3224, ../../global/sass/lib/_animate.scss */
 .zoomOutLeft {
   -webkit-animation-name: zoomOutLeft;
   animation-name: zoomOutLeft;
@@ -2938,7 +2930,7 @@
     transform-origin: right center;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033261}}
+/* line 3261, ../../global/sass/lib/_animate.scss */
 .zoomOutRight {
   -webkit-animation-name: zoomOutRight;
   animation-name: zoomOutRight;
@@ -2980,7 +2972,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033306}}
+/* line 3306, ../../global/sass/lib/_animate.scss */
 .zoomOutUp {
   -webkit-animation-name: zoomOutUp;
   animation-name: zoomOutUp;
@@ -3008,7 +3000,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033337}}
+/* line 3337, ../../global/sass/lib/_animate.scss */
 .slideInDown {
   -webkit-animation-name: slideInDown;
   animation-name: slideInDown;
@@ -3036,7 +3028,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033368}}
+/* line 3368, ../../global/sass/lib/_animate.scss */
 .slideInLeft {
   -webkit-animation-name: slideInLeft;
   animation-name: slideInLeft;
@@ -3064,7 +3056,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033399}}
+/* line 3399, ../../global/sass/lib/_animate.scss */
 .slideInRight {
   -webkit-animation-name: slideInRight;
   animation-name: slideInRight;
@@ -3092,7 +3084,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033430}}
+/* line 3430, ../../global/sass/lib/_animate.scss */
 .slideInUp {
   -webkit-animation-name: slideInUp;
   animation-name: slideInUp;
@@ -3120,7 +3112,7 @@
     transform: translate3d(0, 100%, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033461}}
+/* line 3461, ../../global/sass/lib/_animate.scss */
 .slideOutDown {
   -webkit-animation-name: slideOutDown;
   animation-name: slideOutDown;
@@ -3148,7 +3140,7 @@
     transform: translate3d(-100%, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033492}}
+/* line 3492, ../../global/sass/lib/_animate.scss */
 .slideOutLeft {
   -webkit-animation-name: slideOutLeft;
   animation-name: slideOutLeft;
@@ -3176,7 +3168,7 @@
     transform: translate3d(100%, 0, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033523}}
+/* line 3523, ../../global/sass/lib/_animate.scss */
 .slideOutRight {
   -webkit-animation-name: slideOutRight;
   animation-name: slideOutRight;
@@ -3204,13 +3196,13 @@
     transform: translate3d(0, -100%, 0);
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033554}}
+/* line 3554, ../../global/sass/lib/_animate.scss */
 .slideOutUp {
   -webkit-animation-name: slideOutUp;
   animation-name: slideOutUp;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033559}}
+/* line 3559, ../../global/sass/lib/_animate.scss */
 .animated {
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
@@ -3218,68 +3210,68 @@
   animation-fill-mode: both;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033566}}
+/* line 3566, ../../global/sass/lib/_animate.scss */
 .animated.infinite {
   -webkit-animation-iteration-count: infinite;
   animation-iteration-count: infinite;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033571}}
+/* line 3571, ../../global/sass/lib/_animate.scss */
 .animated.delay-1s {
   -webkit-animation-delay: 1s;
   animation-delay: 1s;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033576}}
+/* line 3576, ../../global/sass/lib/_animate.scss */
 .animated.delay-2s {
   -webkit-animation-delay: 2s;
   animation-delay: 2s;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033581}}
+/* line 3581, ../../global/sass/lib/_animate.scss */
 .animated.delay-3s {
   -webkit-animation-delay: 3s;
   animation-delay: 3s;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033586}}
+/* line 3586, ../../global/sass/lib/_animate.scss */
 .animated.delay-4s {
   -webkit-animation-delay: 4s;
   animation-delay: 4s;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033591}}
+/* line 3591, ../../global/sass/lib/_animate.scss */
 .animated.delay-5s {
   -webkit-animation-delay: 5s;
   animation-delay: 5s;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033596}}
+/* line 3596, ../../global/sass/lib/_animate.scss */
 .animated.fast {
   -webkit-animation-duration: 800ms;
   animation-duration: 800ms;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033601}}
+/* line 3601, ../../global/sass/lib/_animate.scss */
 .animated.faster {
   -webkit-animation-duration: 500ms;
   animation-duration: 500ms;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033606}}
+/* line 3606, ../../global/sass/lib/_animate.scss */
 .animated.slow {
   -webkit-animation-duration: 2s;
   animation-duration: 2s;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033611}}
+/* line 3611, ../../global/sass/lib/_animate.scss */
 .animated.slower {
   -webkit-animation-duration: 3s;
   animation-duration: 3s;
 }
 
 @media (print), (prefers-reduced-motion) {
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/lib\/_animate\.scss}line{font-family:\000033617}}
+  /* line 3617, ../../global/sass/lib/_animate.scss */
   .animated {
     -webkit-animation: unset !important;
     animation: unset !important;
@@ -3295,13 +3287,6 @@
  * Colors: Backgrounds
  * Font sizes
  * Layout variables
- *
- * @package   CommonsBooking2
- * @author Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
 /* Colors: CB Brand */
 /* Colors: Theme */
@@ -3309,102 +3294,88 @@
 /* Colors: text */
 /* Colors: Message statuses */
 /* Font sizes */
-/* Font stack */
 /* Layout Variables */
 /* Mixins */
 /**
  * Framework mixins
  *
- * Icons
+ * Breakpoints
  * Animation
- *
- * @package   CommonsBooking2
- * @author Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
 /* -------------------- Breakpoints (for lists) -------------------- */
 /* -------------------- Animation -------------------- */
-/* -------------------- Round rect (periods) -------------------- */
 /* Extends */
 /**
  * Extends
  *
  * Re-usable styles, intended to be used in scss, not directly in the dom.
+ * Utilizes Breakpoints
  *
  * Boxes
  * Typography
  *
- * @package   CommonsBooking2
- * @author    Annesley Newholm <annesley_newholm@yahoo.it>
- * @copyright 2018 wielebenwir e.V.
- * @license   GPL 2.0+
- * @link      http://commonsbooking.wielebenwir.de
  *
  */
 /* -------------------- Boxes -------------------- */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000319}}
+/* line 15, ../../global/sass/partials/_extends.scss */
 .cb-box, .cb-admin-page .cb-admin-cols div ul li {
   background: #f6f6f6;
-  padding: 5px;
+  padding: 2.5px 5px;
   overflow: hidden;
   border-radius: 8px;
   margin-bottom: 10px;
 }
 @media (min-width: 37.5em) {
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000319}}
+  /* line 15, ../../global/sass/partials/_extends.scss */
   .cb-box, .cb-admin-page .cb-admin-cols div ul li {
     padding: 10px 15px;
   }
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000332}}
+/* line 28, ../../global/sass/partials/_extends.scss */
 .cb-box-inner {
   background: #FFF;
   padding: 5px;
   border-radius: 8px;
 }
 @media (min-width: 37.5em) {
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000332}}
+  /* line 28, ../../global/sass/partials/_extends.scss */
   .cb-box-inner {
     padding: 10px;
   }
 }
 
 /* -------------------- Typography -------------------- */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000347}}
-.cb-big,
+/* line 41, ../../global/sass/partials/_extends.scss */
 .cb-big {
   font-size: 18px;
   font-weight: bold;
 }
 
 /* -------------------- Boxes -------------------- */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000355}}
+/* line 48, ../../global/sass/partials/_extends.scss */
 .shadow {
   box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.22);
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000359}}
+/* line 52, ../../global/sass/partials/_extends.scss */
 .shadow-small, .cb-hover, .cb-button:hover, .cb-button-container a:hover {
   box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000363}}
+/* line 56, ../../global/sass/partials/_extends.scss */
 .cb-hover {
   border: 1px solid #506CA9;
   border-radius: 8px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000369}}
+/* line 62, ../../global/sass/partials/_extends.scss */
 .cb-thumbnail {
   border-radius: 8px;
 }
 
 /* -------------------- Buttons -------------------- */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000375}}
+/* line 68, ../../global/sass/partials/_extends.scss */
 .cb-button, .cb-button-container a {
   border-radius: 8px;
   font-size: 18px;
@@ -3415,54 +3386,63 @@
   text-decoration: none !important;
   word-break: normal !important;
   /* TwentyTwenty theme fix */
+  white-space: nowrap;
   color: #FFF;
   padding: 10px 15px;
   font-weight: bold;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000389}}
+/* line 82, ../../global/sass/partials/_extends.scss */
 .cb-button:hover, .cb-button-container a:hover {
   background: #506CA9;
   color: #FFF;
   /* Various themes fix */
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000395}}
+/* line 88, ../../global/sass/partials/_extends.scss */
 .cb-button:visited, .cb-button-container a:visited {
   color: #FFF;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\0000399}}
+/* line 92, ../../global/sass/partials/_extends.scss */
 .cb-button.big, .cb-button-container a.big {
   padding: 10px 15px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003102}}
+/* line 95, ../../global/sass/partials/_extends.scss */
 .cb-button.secondary, .cb-button-container a.secondary {
   background-color: #FFF;
   color: #d5425c;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003107}}
+/* line 100, ../../global/sass/partials/_extends.scss */
 .cb-button.cancel, .cb-button-container a.cancel {
   background-color: #d5425c;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003111}}
+/* line 104, ../../global/sass/partials/_extends.scss */
 .cb-button.confirm, .cb-button-container a.confirm {
   background-color: #74ce3c;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003115}}
+/* line 108, ../../global/sass/partials/_extends.scss */
 .cb-button.delete, .cb-button-container a.delete {
   background-color: #d5425c;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003119}}
+/* line 112, ../../global/sass/partials/_extends.scss */
 .cb-button[disabled=disabled], .cb-button-container a[disabled=disabled] {
   background-color: #c4c4c4;
   color: white;
 }
+/* line 117, ../../global/sass/partials/_extends.scss */
+.cb-button.no-right-radius, .cb-button-container a.no-right-radius {
+  border-radius: 8px 0;
+}
+/* line 120, ../../global/sass/partials/_extends.scss */
+.cb-button.no-left-radius, .cb-button-container a.no-left-radius {
+  border-radius: 0 8px;
+}
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003128}}
+/* line 128, ../../global/sass/partials/_extends.scss */
 .cb-pill {
   border-radius: 8px;
   padding: 0;
   margin: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_extends\.scss}line{font-family:\00003132}}
+/* line 132, ../../global/sass/partials/_extends.scss */
 .cb-pill a {
   text-decoration: none;
   color: #FFF;
@@ -3473,19 +3453,14 @@
 /**
  * Debug
  *
- * @package   CommonsBooking
- * @author 		Florian Egermann <hallo@fleg.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_utilities\.scss}line{font-family:\0000312}}
+/* line 6, ../../global/sass/partials/_utilities.scss */
 .cb-hidden {
   display: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_utilities\.scss}line{font-family:\0000313}}
+/* Template name in content */
+/* line 9, ../../global/sass/partials/_utilities.scss */
 .cb-debug {
   opacity: 0;
   position: absolute;
@@ -3495,41 +3470,2422 @@
   background: transparent !important;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/global\/sass\/partials\/_utilities\.scss}line{font-family:\0000322}}
+/* line 18, ../../global/sass/partials/_utilities.scss */
 .cb-wrapper:hover .cb-debug {
   opacity: 1;
 }
 
-/* Calendar styles */
+/* Lib: jQuery UI */
+/*! jQuery UI - v1.12.1 - 2016-09-14
+* http://jqueryui.com
+* Includes: core.css, accordion.css, autocomplete.css, menu.css, button.css, controlgroup.css, checkboxradio.css, datepicker.css, dialog.css, draggable.css, resizable.css, progressbar.css, selectable.css, selectmenu.css, slider.css, sortable.css, spinner.css, tabs.css, tooltip.css, theme.css
+* To view and modify this theme, visit http://jqueryui.com/themeroller/?bgShadowXPos=&bgOverlayXPos=&bgErrorXPos=&bgHighlightXPos=&bgContentXPos=&bgHeaderXPos=&bgActiveXPos=&bgHoverXPos=&bgDefaultXPos=&bgShadowYPos=&bgOverlayYPos=&bgErrorYPos=&bgHighlightYPos=&bgContentYPos=&bgHeaderYPos=&bgActiveYPos=&bgHoverYPos=&bgDefaultYPos=&bgShadowRepeat=&bgOverlayRepeat=&bgErrorRepeat=&bgHighlightRepeat=&bgContentRepeat=&bgHeaderRepeat=&bgActiveRepeat=&bgHoverRepeat=&bgDefaultRepeat=&iconsHover=url(%22images%2Fui-icons_555555_256x240.png%22)&iconsHighlight=url(%22images%2Fui-icons_777620_256x240.png%22)&iconsHeader=url(%22images%2Fui-icons_444444_256x240.png%22)&iconsError=url(%22images%2Fui-icons_cc0000_256x240.png%22)&iconsDefault=url(%22images%2Fui-icons_777777_256x240.png%22)&iconsContent=url(%22images%2Fui-icons_444444_256x240.png%22)&iconsActive=url(%22images%2Fui-icons_ffffff_256x240.png%22)&bgImgUrlShadow=&bgImgUrlOverlay=&bgImgUrlHover=&bgImgUrlHighlight=&bgImgUrlHeader=&bgImgUrlError=&bgImgUrlDefault=&bgImgUrlContent=&bgImgUrlActive=&opacityFilterShadow=Alpha(Opacity%3D30)&opacityFilterOverlay=Alpha(Opacity%3D30)&opacityShadowPerc=30&opacityOverlayPerc=30&iconColorHover=%23555555&iconColorHighlight=%23777620&iconColorHeader=%23444444&iconColorError=%23cc0000&iconColorDefault=%23777777&iconColorContent=%23444444&iconColorActive=%23ffffff&bgImgOpacityShadow=0&bgImgOpacityOverlay=0&bgImgOpacityError=95&bgImgOpacityHighlight=55&bgImgOpacityContent=75&bgImgOpacityHeader=75&bgImgOpacityActive=65&bgImgOpacityHover=75&bgImgOpacityDefault=75&bgTextureShadow=flat&bgTextureOverlay=flat&bgTextureError=flat&bgTextureHighlight=flat&bgTextureContent=flat&bgTextureHeader=flat&bgTextureActive=flat&bgTextureHover=flat&bgTextureDefault=flat&cornerRadius=3px&fwDefault=normal&ffDefault=Arial%2CHelvetica%2Csans-serif&fsDefault=1em&cornerRadiusShadow=8px&thicknessShadow=5px&offsetLeftShadow=0px&offsetTopShadow=0px&opacityShadow=.3&bgColorShadow=%23666666&opacityOverlay=.3&bgColorOverlay=%23aaaaaa&fcError=%235f3f3f&borderColorError=%23f1a899&bgColorError=%23fddfdf&fcHighlight=%23777620&borderColorHighlight=%23dad55e&bgColorHighlight=%23fffa90&fcContent=%23333333&borderColorContent=%23dddddd&bgColorContent=%23ffffff&fcHeader=%23333333&borderColorHeader=%23dddddd&bgColorHeader=%23e9e9e9&fcActive=%23ffffff&borderColorActive=%23003eff&bgColorActive=%23007fff&fcHover=%232b2b2b&borderColorHover=%23cccccc&bgColorHover=%23ededed&fcDefault=%23454545&borderColorDefault=%23c5c5c5&bgColorDefault=%23f6f6f6
+* Copyright jQuery Foundation and other contributors; Licensed MIT */
+/* Layout helpers
+----------------------------------*/
+/* line 9, ../sass/lib/_jquery-ui.scss */
+.ui-helper-hidden {
+  display: none;
+}
+
+/* line 12, ../sass/lib/_jquery-ui.scss */
+.ui-helper-hidden-accessible {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+/* line 22, ../sass/lib/_jquery-ui.scss */
+.ui-helper-reset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  line-height: 1.3;
+  text-decoration: none;
+  font-size: 100%;
+  list-style: none;
+}
+
+/* line 32, ../sass/lib/_jquery-ui.scss */
+.ui-helper-clearfix:before,
+.ui-helper-clearfix:after {
+  content: "";
+  display: table;
+  border-collapse: collapse;
+}
+
+/* line 38, ../sass/lib/_jquery-ui.scss */
+.ui-helper-clearfix:after {
+  clear: both;
+}
+
+/* line 41, ../sass/lib/_jquery-ui.scss */
+.ui-helper-zfix {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  opacity: 0;
+  filter: Alpha(Opacity=0);
+  /* support: IE8 */
+}
+
+/* line 51, ../sass/lib/_jquery-ui.scss */
+.ui-front {
+  z-index: 100;
+}
+
+/* Interaction Cues
+----------------------------------*/
+/* line 58, ../sass/lib/_jquery-ui.scss */
+.ui-state-disabled {
+  cursor: default !important;
+  pointer-events: none;
+}
+
+/* Icons
+----------------------------------*/
+/* line 66, ../sass/lib/_jquery-ui.scss */
+.ui-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -.25em;
+  position: relative;
+  text-indent: -99999px;
+  overflow: hidden;
+  background-repeat: no-repeat;
+}
+
+/* line 76, ../sass/lib/_jquery-ui.scss */
+.ui-widget-icon-block {
+  left: 50%;
+  margin-left: -8px;
+  display: block;
+}
+
+/* Misc visuals
+----------------------------------*/
+/* Overlays */
+/* line 86, ../sass/lib/_jquery-ui.scss */
+.ui-widget-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* line 93, ../sass/lib/_jquery-ui.scss */
+.ui-accordion .ui-accordion-header {
+  display: block;
+  cursor: pointer;
+  position: relative;
+  margin: 2px 0 0 0;
+  padding: .5em .5em .5em .7em;
+  font-size: 100%;
+}
+
+/* line 101, ../sass/lib/_jquery-ui.scss */
+.ui-accordion .ui-accordion-content {
+  padding: 1em 2.2em;
+  border-top: 0;
+  overflow: auto;
+}
+
+/* line 106, ../sass/lib/_jquery-ui.scss */
+.ui-autocomplete {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: default;
+}
+
+/* line 112, ../sass/lib/_jquery-ui.scss */
+.ui-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: block;
+  outline: 0;
+}
+
+/* line 119, ../sass/lib/_jquery-ui.scss */
+.ui-menu .ui-menu {
+  position: absolute;
+}
+
+/* line 122, ../sass/lib/_jquery-ui.scss */
+.ui-menu .ui-menu-item {
+  margin: 0;
+  cursor: pointer;
+  /* support: IE10, see #8844 */
+  list-style-image: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+}
+
+/* line 128, ../sass/lib/_jquery-ui.scss */
+.ui-menu .ui-menu-item-wrapper {
+  position: relative;
+  padding: 3px 1em 3px .4em;
+}
+
+/* line 132, ../sass/lib/_jquery-ui.scss */
+.ui-menu .ui-menu-divider {
+  margin: 5px 0;
+  height: 0;
+  font-size: 0;
+  line-height: 0;
+  border-width: 1px 0 0 0;
+}
+
+/* line 139, ../sass/lib/_jquery-ui.scss */
+.ui-menu .ui-state-focus,
+.ui-menu .ui-state-active {
+  margin: -1px;
+}
+
+/* icon support */
+/* line 145, ../sass/lib/_jquery-ui.scss */
+.ui-menu-icons {
+  position: relative;
+}
+
+/* line 148, ../sass/lib/_jquery-ui.scss */
+.ui-menu-icons .ui-menu-item-wrapper {
+  padding-left: 2em;
+}
+
+/* left-aligned */
+/* line 153, ../sass/lib/_jquery-ui.scss */
+.ui-menu .ui-icon {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: .2em;
+  margin: auto 0;
+}
+
+/* right-aligned */
+/* line 162, ../sass/lib/_jquery-ui.scss */
+.ui-menu .ui-menu-icon {
+  left: auto;
+  right: 0;
+}
+
+/* line 166, ../sass/lib/_jquery-ui.scss */
+.ui-button {
+  padding: .4em 1em;
+  display: inline-block;
+  position: relative;
+  line-height: normal;
+  margin-right: .1em;
+  cursor: pointer;
+  vertical-align: middle;
+  text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Support: IE <= 11 */
+  overflow: visible;
+}
+
+/* line 184, ../sass/lib/_jquery-ui.scss */
+.ui-button,
+.ui-button:link,
+.ui-button:visited,
+.ui-button:hover,
+.ui-button:active {
+  text-decoration: none;
+}
+
+/* to make room for the icon, a width needs to be set here */
+/* line 193, ../sass/lib/_jquery-ui.scss */
+.ui-button-icon-only {
+  width: 2em;
+  box-sizing: border-box;
+  text-indent: -9999px;
+  white-space: nowrap;
+}
+
+/* no icon support for input elements */
+/* line 201, ../sass/lib/_jquery-ui.scss */
+input.ui-button.ui-button-icon-only {
+  text-indent: 0;
+}
+
+/* button icon element(s) */
+/* line 206, ../sass/lib/_jquery-ui.scss */
+.ui-button-icon-only .ui-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -8px;
+  margin-left: -8px;
+}
+
+/* line 214, ../sass/lib/_jquery-ui.scss */
+.ui-button.ui-icon-notext .ui-icon {
+  padding: 0;
+  width: 2.1em;
+  height: 2.1em;
+  text-indent: -9999px;
+  white-space: nowrap;
+}
+
+/* line 223, ../sass/lib/_jquery-ui.scss */
+input.ui-button.ui-icon-notext .ui-icon {
+  width: auto;
+  height: auto;
+  text-indent: 0;
+  white-space: normal;
+  padding: .4em 1em;
+}
+
+/* workarounds */
+/* Support: Firefox 5 - 40 */
+/* line 233, ../sass/lib/_jquery-ui.scss */
+input.ui-button::-moz-focus-inner,
+button.ui-button::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+/* line 238, ../sass/lib/_jquery-ui.scss */
+.ui-controlgroup {
+  vertical-align: middle;
+  display: inline-block;
+}
+
+/* line 242, ../sass/lib/_jquery-ui.scss */
+.ui-controlgroup > .ui-controlgroup-item {
+  float: left;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* line 247, ../sass/lib/_jquery-ui.scss */
+.ui-controlgroup > .ui-controlgroup-item:focus,
+.ui-controlgroup > .ui-controlgroup-item.ui-visual-focus {
+  z-index: 9999;
+}
+
+/* line 251, ../sass/lib/_jquery-ui.scss */
+.ui-controlgroup-vertical > .ui-controlgroup-item {
+  display: block;
+  float: none;
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  text-align: left;
+}
+
+/* line 259, ../sass/lib/_jquery-ui.scss */
+.ui-controlgroup-vertical .ui-controlgroup-item {
+  box-sizing: border-box;
+}
+
+/* line 262, ../sass/lib/_jquery-ui.scss */
+.ui-controlgroup .ui-controlgroup-label {
+  padding: .4em 1em;
+}
+
+/* line 265, ../sass/lib/_jquery-ui.scss */
+.ui-controlgroup .ui-controlgroup-label span {
+  font-size: 80%;
+}
+
+/* line 268, ../sass/lib/_jquery-ui.scss */
+.ui-controlgroup-horizontal .ui-controlgroup-label + .ui-controlgroup-item {
+  border-left: none;
+}
+
+/* line 271, ../sass/lib/_jquery-ui.scss */
+.ui-controlgroup-vertical .ui-controlgroup-label + .ui-controlgroup-item {
+  border-top: none;
+}
+
+/* line 274, ../sass/lib/_jquery-ui.scss */
+.ui-controlgroup-horizontal .ui-controlgroup-label.ui-widget-content {
+  border-right: none;
+}
+
+/* line 277, ../sass/lib/_jquery-ui.scss */
+.ui-controlgroup-vertical .ui-controlgroup-label.ui-widget-content {
+  border-bottom: none;
+}
+
+/* Spinner specific style fixes */
+/* line 282, ../sass/lib/_jquery-ui.scss */
+.ui-controlgroup-vertical .ui-spinner-input {
+  /* Support: IE8 only, Android < 4.4 only */
+  width: 75%;
+  width: calc( 100% - 2.4em );
+}
+
+/* line 288, ../sass/lib/_jquery-ui.scss */
+.ui-controlgroup-vertical .ui-spinner .ui-spinner-up {
+  border-top-style: solid;
+}
+
+/* line 292, ../sass/lib/_jquery-ui.scss */
+.ui-checkboxradio-label .ui-icon-background {
+  box-shadow: inset 1px 1px 1px #ccc;
+  border-radius: .12em;
+  border: none;
+}
+
+/* line 297, ../sass/lib/_jquery-ui.scss */
+.ui-checkboxradio-radio-label .ui-icon-background {
+  width: 16px;
+  height: 16px;
+  border-radius: 1em;
+  overflow: visible;
+  border: none;
+}
+
+/* line 304, ../sass/lib/_jquery-ui.scss */
+.ui-checkboxradio-radio-label.ui-checkboxradio-checked .ui-icon,
+.ui-checkboxradio-radio-label.ui-checkboxradio-checked:hover .ui-icon {
+  background-image: none;
+  width: 8px;
+  height: 8px;
+  border-width: 4px;
+  border-style: solid;
+}
+
+/* line 312, ../sass/lib/_jquery-ui.scss */
+.ui-checkboxradio-disabled {
+  pointer-events: none;
+}
+
+/* line 315, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker {
+  width: 17em;
+  padding: .2em .2em 0;
+  display: none;
+}
+
+/* line 320, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker .ui-datepicker-header {
+  position: relative;
+  padding: .2em 0;
+}
+
+/* line 324, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-next {
+  position: absolute;
+  top: 2px;
+  width: 1.8em;
+  height: 1.8em;
+}
+
+/* line 331, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker .ui-datepicker-prev-hover,
+.ui-datepicker .ui-datepicker-next-hover {
+  top: 1px;
+}
+
+/* line 335, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker .ui-datepicker-prev {
+  left: 2px;
+}
+
+/* line 338, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker .ui-datepicker-next {
+  right: 2px;
+}
+
+/* line 341, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker .ui-datepicker-prev-hover {
+  left: 1px;
+}
+
+/* line 344, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker .ui-datepicker-next-hover {
+  right: 1px;
+}
+
+/* line 347, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker .ui-datepicker-prev span,
+.ui-datepicker .ui-datepicker-next span {
+  display: block;
+  position: absolute;
+  left: 50%;
+  margin-left: -8px;
+  top: 50%;
+  margin-top: -8px;
+}
+
+/* line 356, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker .ui-datepicker-title {
+  margin: 0 2.3em;
+  line-height: 1.8em;
+  text-align: center;
+}
+
+/* line 361, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker .ui-datepicker-title select {
+  font-size: 1em;
+  margin: 1px 0;
+}
+
+/* line 365, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker select.ui-datepicker-month,
+.ui-datepicker select.ui-datepicker-year {
+  width: 45%;
+}
+
+/* line 369, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker table {
+  width: 100%;
+  font-size: .9em;
+  border-collapse: collapse;
+  margin: 0 0 .4em;
+}
+
+/* line 375, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker th {
+  padding: .7em .3em;
+  text-align: center;
+  font-weight: bold;
+  border: 0;
+}
+
+/* line 381, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker td {
+  border: 0;
+  padding: 1px;
+}
+
+/* line 385, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker td span,
+.ui-datepicker td a {
+  display: block;
+  padding: .2em;
+  text-align: right;
+  text-decoration: none;
+}
+
+/* line 392, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker .ui-datepicker-buttonpane {
+  background-image: none;
+  margin: .7em 0 0 0;
+  padding: 0 .2em;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+/* line 400, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker .ui-datepicker-buttonpane button {
+  float: right;
+  margin: .5em .2em .4em;
+  cursor: pointer;
+  padding: .2em .6em .3em .6em;
+  width: auto;
+  overflow: visible;
+}
+
+/* line 408, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
+  float: left;
+}
+
+/* with multiple calendars */
+/* line 413, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker.ui-datepicker-multi {
+  width: auto;
+}
+
+/* line 416, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-multi .ui-datepicker-group {
+  float: left;
+}
+
+/* line 419, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-multi .ui-datepicker-group table {
+  width: 95%;
+  margin: 0 auto .4em;
+}
+
+/* line 423, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-multi-2 .ui-datepicker-group {
+  width: 50%;
+}
+
+/* line 426, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-multi-3 .ui-datepicker-group {
+  width: 33.3%;
+}
+
+/* line 429, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-multi-4 .ui-datepicker-group {
+  width: 25%;
+}
+
+/* line 432, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header,
+.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header {
+  border-left-width: 0;
+}
+
+/* line 436, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-multi .ui-datepicker-buttonpane {
+  clear: left;
+}
+
+/* line 439, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-row-break {
+  clear: both;
+  width: 100%;
+  font-size: 0;
+}
+
+/* RTL support */
+/* line 446, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-rtl {
+  direction: rtl;
+}
+
+/* line 449, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-rtl .ui-datepicker-prev {
+  right: 2px;
+  left: auto;
+}
+
+/* line 453, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-rtl .ui-datepicker-next {
+  left: 2px;
+  right: auto;
+}
+
+/* line 457, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-rtl .ui-datepicker-prev:hover {
+  right: 1px;
+  left: auto;
+}
+
+/* line 461, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-rtl .ui-datepicker-next:hover {
+  left: 1px;
+  right: auto;
+}
+
+/* line 465, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-rtl .ui-datepicker-buttonpane {
+  clear: right;
+}
+
+/* line 468, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-rtl .ui-datepicker-buttonpane button {
+  float: left;
+}
+
+/* line 471, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current,
+.ui-datepicker-rtl .ui-datepicker-group {
+  float: right;
+}
+
+/* line 475, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header,
+.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header {
+  border-right-width: 0;
+  border-left-width: 1px;
+}
+
+/* Icons */
+/* line 482, ../sass/lib/_jquery-ui.scss */
+.ui-datepicker .ui-icon {
+  display: block;
+  text-indent: -99999px;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  left: .5em;
+  top: .3em;
+}
+
+/* line 490, ../sass/lib/_jquery-ui.scss */
+.ui-dialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: .2em;
+  outline: 0;
+}
+
+/* line 497, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-dialog-titlebar {
+  padding: .4em 1em;
+  position: relative;
+}
+
+/* line 501, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-dialog-title {
+  float: left;
+  margin: .1em 0;
+  white-space: nowrap;
+  width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* line 509, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-dialog-titlebar-close {
+  position: absolute;
+  right: .3em;
+  top: 50%;
+  width: 20px;
+  margin: -10px 0 0 0;
+  padding: 1px;
+  height: 20px;
+}
+
+/* line 518, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-dialog-content {
+  position: relative;
+  border: 0;
+  padding: .5em 1em;
+  background: none;
+  overflow: auto;
+}
+
+/* line 525, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-dialog-buttonpane {
+  text-align: left;
+  border-width: 1px 0 0 0;
+  background-image: none;
+  margin-top: .5em;
+  padding: .3em 1em .5em .4em;
+}
+
+/* line 532, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+  float: right;
+}
+
+/* line 535, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-dialog-buttonpane button {
+  margin: .5em .4em .5em 0;
+  cursor: pointer;
+}
+
+/* line 539, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-resizable-n {
+  height: 2px;
+  top: 0;
+}
+
+/* line 543, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-resizable-e {
+  width: 2px;
+  right: 0;
+}
+
+/* line 547, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-resizable-s {
+  height: 2px;
+  bottom: 0;
+}
+
+/* line 551, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-resizable-w {
+  width: 2px;
+  left: 0;
+}
+
+/* line 555, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-resizable-se,
+.ui-dialog .ui-resizable-sw,
+.ui-dialog .ui-resizable-ne,
+.ui-dialog .ui-resizable-nw {
+  width: 7px;
+  height: 7px;
+}
+
+/* line 562, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-resizable-se {
+  right: 0;
+  bottom: 0;
+}
+
+/* line 566, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-resizable-sw {
+  left: 0;
+  bottom: 0;
+}
+
+/* line 570, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-resizable-ne {
+  right: 0;
+  top: 0;
+}
+
+/* line 574, ../sass/lib/_jquery-ui.scss */
+.ui-dialog .ui-resizable-nw {
+  left: 0;
+  top: 0;
+}
+
+/* line 578, ../sass/lib/_jquery-ui.scss */
+.ui-draggable .ui-dialog-titlebar {
+  cursor: move;
+}
+
+/* line 581, ../sass/lib/_jquery-ui.scss */
+.ui-draggable-handle {
+  -ms-touch-action: none;
+  touch-action: none;
+}
+
+/* line 585, ../sass/lib/_jquery-ui.scss */
+.ui-resizable {
+  position: relative;
+}
+
+/* line 588, ../sass/lib/_jquery-ui.scss */
+.ui-resizable-handle {
+  position: absolute;
+  font-size: 0.1px;
+  display: block;
+  -ms-touch-action: none;
+  touch-action: none;
+}
+
+/* line 595, ../sass/lib/_jquery-ui.scss */
+.ui-resizable-disabled .ui-resizable-handle,
+.ui-resizable-autohide .ui-resizable-handle {
+  display: none;
+}
+
+/* line 599, ../sass/lib/_jquery-ui.scss */
+.ui-resizable-n {
+  cursor: n-resize;
+  height: 7px;
+  width: 100%;
+  top: -5px;
+  left: 0;
+}
+
+/* line 606, ../sass/lib/_jquery-ui.scss */
+.ui-resizable-s {
+  cursor: s-resize;
+  height: 7px;
+  width: 100%;
+  bottom: -5px;
+  left: 0;
+}
+
+/* line 613, ../sass/lib/_jquery-ui.scss */
+.ui-resizable-e {
+  cursor: e-resize;
+  width: 7px;
+  right: -5px;
+  top: 0;
+  height: 100%;
+}
+
+/* line 620, ../sass/lib/_jquery-ui.scss */
+.ui-resizable-w {
+  cursor: w-resize;
+  width: 7px;
+  left: -5px;
+  top: 0;
+  height: 100%;
+}
+
+/* line 627, ../sass/lib/_jquery-ui.scss */
+.ui-resizable-se {
+  cursor: se-resize;
+  width: 12px;
+  height: 12px;
+  right: 1px;
+  bottom: 1px;
+}
+
+/* line 634, ../sass/lib/_jquery-ui.scss */
+.ui-resizable-sw {
+  cursor: sw-resize;
+  width: 9px;
+  height: 9px;
+  left: -5px;
+  bottom: -5px;
+}
+
+/* line 641, ../sass/lib/_jquery-ui.scss */
+.ui-resizable-nw {
+  cursor: nw-resize;
+  width: 9px;
+  height: 9px;
+  left: -5px;
+  top: -5px;
+}
+
+/* line 648, ../sass/lib/_jquery-ui.scss */
+.ui-resizable-ne {
+  cursor: ne-resize;
+  width: 9px;
+  height: 9px;
+  right: -5px;
+  top: -5px;
+}
+
+/* line 655, ../sass/lib/_jquery-ui.scss */
+.ui-progressbar {
+  height: 2em;
+  text-align: left;
+  overflow: hidden;
+}
+
+/* line 660, ../sass/lib/_jquery-ui.scss */
+.ui-progressbar .ui-progressbar-value {
+  margin: -1px;
+  height: 100%;
+}
+
+/* line 664, ../sass/lib/_jquery-ui.scss */
+.ui-progressbar .ui-progressbar-overlay {
+  background: url("data:image/gif;base64,R0lGODlhKAAoAIABAAAAAP///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQJAQABACwAAAAAKAAoAAACkYwNqXrdC52DS06a7MFZI+4FHBCKoDeWKXqymPqGqxvJrXZbMx7Ttc+w9XgU2FB3lOyQRWET2IFGiU9m1frDVpxZZc6bfHwv4c1YXP6k1Vdy292Fb6UkuvFtXpvWSzA+HycXJHUXiGYIiMg2R6W459gnWGfHNdjIqDWVqemH2ekpObkpOlppWUqZiqr6edqqWQAAIfkECQEAAQAsAAAAACgAKAAAApSMgZnGfaqcg1E2uuzDmmHUBR8Qil95hiPKqWn3aqtLsS18y7G1SzNeowWBENtQd+T1JktP05nzPTdJZlR6vUxNWWjV+vUWhWNkWFwxl9VpZRedYcflIOLafaa28XdsH/ynlcc1uPVDZxQIR0K25+cICCmoqCe5mGhZOfeYSUh5yJcJyrkZWWpaR8doJ2o4NYq62lAAACH5BAkBAAEALAAAAAAoACgAAAKVDI4Yy22ZnINRNqosw0Bv7i1gyHUkFj7oSaWlu3ovC8GxNso5fluz3qLVhBVeT/Lz7ZTHyxL5dDalQWPVOsQWtRnuwXaFTj9jVVh8pma9JjZ4zYSj5ZOyma7uuolffh+IR5aW97cHuBUXKGKXlKjn+DiHWMcYJah4N0lYCMlJOXipGRr5qdgoSTrqWSq6WFl2ypoaUAAAIfkECQEAAQAsAAAAACgAKAAAApaEb6HLgd/iO7FNWtcFWe+ufODGjRfoiJ2akShbueb0wtI50zm02pbvwfWEMWBQ1zKGlLIhskiEPm9R6vRXxV4ZzWT2yHOGpWMyorblKlNp8HmHEb/lCXjcW7bmtXP8Xt229OVWR1fod2eWqNfHuMjXCPkIGNileOiImVmCOEmoSfn3yXlJWmoHGhqp6ilYuWYpmTqKUgAAIfkECQEAAQAsAAAAACgAKAAAApiEH6kb58biQ3FNWtMFWW3eNVcojuFGfqnZqSebuS06w5V80/X02pKe8zFwP6EFWOT1lDFk8rGERh1TTNOocQ61Hm4Xm2VexUHpzjymViHrFbiELsefVrn6XKfnt2Q9G/+Xdie499XHd2g4h7ioOGhXGJboGAnXSBnoBwKYyfioubZJ2Hn0RuRZaflZOil56Zp6iioKSXpUAAAh+QQJAQABACwAAAAAKAAoAAACkoQRqRvnxuI7kU1a1UU5bd5tnSeOZXhmn5lWK3qNTWvRdQxP8qvaC+/yaYQzXO7BMvaUEmJRd3TsiMAgswmNYrSgZdYrTX6tSHGZO73ezuAw2uxuQ+BbeZfMxsexY35+/Qe4J1inV0g4x3WHuMhIl2jXOKT2Q+VU5fgoSUI52VfZyfkJGkha6jmY+aaYdirq+lQAACH5BAkBAAEALAAAAAAoACgAAAKWBIKpYe0L3YNKToqswUlvznigd4wiR4KhZrKt9Upqip61i9E3vMvxRdHlbEFiEXfk9YARYxOZZD6VQ2pUunBmtRXo1Lf8hMVVcNl8JafV38aM2/Fu5V16Bn63r6xt97j09+MXSFi4BniGFae3hzbH9+hYBzkpuUh5aZmHuanZOZgIuvbGiNeomCnaxxap2upaCZsq+1kAACH5BAkBAAEALAAAAAAoACgAAAKXjI8By5zf4kOxTVrXNVlv1X0d8IGZGKLnNpYtm8Lr9cqVeuOSvfOW79D9aDHizNhDJidFZhNydEahOaDH6nomtJjp1tutKoNWkvA6JqfRVLHU/QUfau9l2x7G54d1fl995xcIGAdXqMfBNadoYrhH+Mg2KBlpVpbluCiXmMnZ2Sh4GBqJ+ckIOqqJ6LmKSllZmsoq6wpQAAAh+QQJAQABACwAAAAAKAAoAAAClYx/oLvoxuJDkU1a1YUZbJ59nSd2ZXhWqbRa2/gF8Gu2DY3iqs7yrq+xBYEkYvFSM8aSSObE+ZgRl1BHFZNr7pRCavZ5BW2142hY3AN/zWtsmf12p9XxxFl2lpLn1rseztfXZjdIWIf2s5dItwjYKBgo9yg5pHgzJXTEeGlZuenpyPmpGQoKOWkYmSpaSnqKileI2FAAACH5BAkBAAEALAAAAAAoACgAAAKVjB+gu+jG4kORTVrVhRlsnn2dJ3ZleFaptFrb+CXmO9OozeL5VfP99HvAWhpiUdcwkpBH3825AwYdU8xTqlLGhtCosArKMpvfa1mMRae9VvWZfeB2XfPkeLmm18lUcBj+p5dnN8jXZ3YIGEhYuOUn45aoCDkp16hl5IjYJvjWKcnoGQpqyPlpOhr3aElaqrq56Bq7VAAAOw==");
+  height: 100%;
+  filter: alpha(opacity=25);
+  /* support: IE8 */
+  opacity: 0.25;
+}
+
+/* line 670, ../sass/lib/_jquery-ui.scss */
+.ui-progressbar-indeterminate .ui-progressbar-value {
+  background-image: none;
+}
+
+/* line 673, ../sass/lib/_jquery-ui.scss */
+.ui-selectable {
+  -ms-touch-action: none;
+  touch-action: none;
+}
+
+/* line 677, ../sass/lib/_jquery-ui.scss */
+.ui-selectable-helper {
+  position: absolute;
+  z-index: 100;
+  border: 1px dotted black;
+}
+
+/* line 682, ../sass/lib/_jquery-ui.scss */
+.ui-selectmenu-menu {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+/* line 690, ../sass/lib/_jquery-ui.scss */
+.ui-selectmenu-menu .ui-menu {
+  overflow: auto;
+  overflow-x: hidden;
+  padding-bottom: 1px;
+}
+
+/* line 695, ../sass/lib/_jquery-ui.scss */
+.ui-selectmenu-menu .ui-menu .ui-selectmenu-optgroup {
+  font-size: 1em;
+  font-weight: bold;
+  line-height: 1.5;
+  padding: 2px 0.4em;
+  margin: 0.5em 0 0 0;
+  height: auto;
+  border: 0;
+}
+
+/* line 704, ../sass/lib/_jquery-ui.scss */
+.ui-selectmenu-open {
+  display: block;
+}
+
+/* line 707, ../sass/lib/_jquery-ui.scss */
+.ui-selectmenu-text {
+  display: block;
+  margin-right: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* line 713, ../sass/lib/_jquery-ui.scss */
+.ui-selectmenu-button.ui-button {
+  text-align: left;
+  white-space: nowrap;
+  width: 14em;
+}
+
+/* line 718, ../sass/lib/_jquery-ui.scss */
+.ui-selectmenu-icon.ui-icon {
+  float: right;
+  margin-top: 0;
+}
+
+/* line 722, ../sass/lib/_jquery-ui.scss */
+.ui-slider {
+  position: relative;
+  text-align: left;
+}
+
+/* line 726, ../sass/lib/_jquery-ui.scss */
+.ui-slider .ui-slider-handle {
+  position: absolute;
+  z-index: 2;
+  width: 1.2em;
+  height: 1.2em;
+  cursor: default;
+  -ms-touch-action: none;
+  touch-action: none;
+}
+
+/* line 735, ../sass/lib/_jquery-ui.scss */
+.ui-slider .ui-slider-range {
+  position: absolute;
+  z-index: 1;
+  font-size: .7em;
+  display: block;
+  border: 0;
+  background-position: 0 0;
+}
+
+/* support: IE8 - See #6727 */
+/* line 745, ../sass/lib/_jquery-ui.scss */
+.ui-slider.ui-state-disabled .ui-slider-handle,
+.ui-slider.ui-state-disabled .ui-slider-range {
+  filter: inherit;
+}
+
+/* line 750, ../sass/lib/_jquery-ui.scss */
+.ui-slider-horizontal {
+  height: .8em;
+}
+
+/* line 753, ../sass/lib/_jquery-ui.scss */
+.ui-slider-horizontal .ui-slider-handle {
+  top: -.3em;
+  margin-left: -.6em;
+}
+
+/* line 757, ../sass/lib/_jquery-ui.scss */
+.ui-slider-horizontal .ui-slider-range {
+  top: 0;
+  height: 100%;
+}
+
+/* line 761, ../sass/lib/_jquery-ui.scss */
+.ui-slider-horizontal .ui-slider-range-min {
+  left: 0;
+}
+
+/* line 764, ../sass/lib/_jquery-ui.scss */
+.ui-slider-horizontal .ui-slider-range-max {
+  right: 0;
+}
+
+/* line 768, ../sass/lib/_jquery-ui.scss */
+.ui-slider-vertical {
+  width: .8em;
+  height: 100px;
+}
+
+/* line 772, ../sass/lib/_jquery-ui.scss */
+.ui-slider-vertical .ui-slider-handle {
+  left: -.3em;
+  margin-left: 0;
+  margin-bottom: -.6em;
+}
+
+/* line 777, ../sass/lib/_jquery-ui.scss */
+.ui-slider-vertical .ui-slider-range {
+  left: 0;
+  width: 100%;
+}
+
+/* line 781, ../sass/lib/_jquery-ui.scss */
+.ui-slider-vertical .ui-slider-range-min {
+  bottom: 0;
+}
+
+/* line 784, ../sass/lib/_jquery-ui.scss */
+.ui-slider-vertical .ui-slider-range-max {
+  top: 0;
+}
+
+/* line 787, ../sass/lib/_jquery-ui.scss */
+.ui-sortable-handle {
+  -ms-touch-action: none;
+  touch-action: none;
+}
+
+/* line 791, ../sass/lib/_jquery-ui.scss */
+.ui-spinner {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0;
+  vertical-align: middle;
+}
+
+/* line 798, ../sass/lib/_jquery-ui.scss */
+.ui-spinner-input {
+  border: none;
+  background: none;
+  color: inherit;
+  padding: .222em 0;
+  margin: .2em 0;
+  vertical-align: middle;
+  margin-left: .4em;
+  margin-right: 2em;
+}
+
+/* line 808, ../sass/lib/_jquery-ui.scss */
+.ui-spinner-button {
+  width: 1.6em;
+  height: 50%;
+  font-size: .5em;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  position: absolute;
+  cursor: default;
+  display: block;
+  overflow: hidden;
+  right: 0;
+}
+
+/* more specificity required here to override default borders */
+/* line 822, ../sass/lib/_jquery-ui.scss */
+.ui-spinner a.ui-spinner-button {
+  border-top-style: none;
+  border-bottom-style: none;
+  border-right-style: none;
+}
+
+/* line 827, ../sass/lib/_jquery-ui.scss */
+.ui-spinner-up {
+  top: 0;
+}
+
+/* line 830, ../sass/lib/_jquery-ui.scss */
+.ui-spinner-down {
+  bottom: 0;
+}
+
+/* line 833, ../sass/lib/_jquery-ui.scss */
+.ui-tabs {
+  position: relative;
+  /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
+  padding: .2em;
+}
+
+/* line 837, ../sass/lib/_jquery-ui.scss */
+.ui-tabs .ui-tabs-nav {
+  margin: 0;
+  padding: .2em .2em 0;
+}
+
+/* line 841, ../sass/lib/_jquery-ui.scss */
+.ui-tabs .ui-tabs-nav li {
+  list-style: none;
+  float: left;
+  position: relative;
+  top: 0;
+  margin: 1px .2em 0 0;
+  border-bottom-width: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+/* line 851, ../sass/lib/_jquery-ui.scss */
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+  float: left;
+  padding: .5em 1em;
+  text-decoration: none;
+}
+
+/* line 856, ../sass/lib/_jquery-ui.scss */
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+  margin-bottom: -1px;
+  padding-bottom: 1px;
+}
+
+/* line 860, ../sass/lib/_jquery-ui.scss */
+.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor,
+.ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor,
+.ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
+  cursor: text;
+}
+
+/* line 865, ../sass/lib/_jquery-ui.scss */
+.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
+  cursor: pointer;
+}
+
+/* line 868, ../sass/lib/_jquery-ui.scss */
+.ui-tabs .ui-tabs-panel {
+  display: block;
+  border-width: 0;
+  padding: 1em 1.4em;
+  background: none;
+}
+
+/* line 874, ../sass/lib/_jquery-ui.scss */
+.ui-tooltip {
+  padding: 8px;
+  position: absolute;
+  z-index: 9999;
+  max-width: 300px;
+}
+
+/* line 880, ../sass/lib/_jquery-ui.scss */
+body .ui-tooltip {
+  border-width: 2px;
+}
+
+/* Component containers
+----------------------------------*/
+/* line 886, ../sass/lib/_jquery-ui.scss */
+.ui-widget {
+  font-family: Arial,Helvetica,sans-serif;
+  font-size: 1em;
+}
+
+/* line 890, ../sass/lib/_jquery-ui.scss */
+.ui-widget .ui-widget {
+  font-size: 1em;
+}
+
+/* line 893, ../sass/lib/_jquery-ui.scss */
+.ui-widget input,
+.ui-widget select,
+.ui-widget textarea,
+.ui-widget button {
+  font-family: Arial,Helvetica,sans-serif;
+  font-size: 1em;
+}
+
+/* line 900, ../sass/lib/_jquery-ui.scss */
+.ui-widget.ui-widget-content {
+  border: 1px solid #c5c5c5;
+}
+
+/* line 903, ../sass/lib/_jquery-ui.scss */
+.ui-widget-content {
+  border: 1px solid #dddddd;
+  background: #ffffff;
+  color: #333333;
+}
+
+/* line 908, ../sass/lib/_jquery-ui.scss */
+.ui-widget-content a {
+  color: #333333;
+}
+
+/* line 911, ../sass/lib/_jquery-ui.scss */
+.ui-widget-header {
+  border: 1px solid #dddddd;
+  background: #e9e9e9;
+  color: #333333;
+  font-weight: bold;
+}
+
+/* line 917, ../sass/lib/_jquery-ui.scss */
+.ui-widget-header a {
+  color: #333333;
+}
+
+/* Interaction states
+----------------------------------*/
+/* line 923, ../sass/lib/_jquery-ui.scss */
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default,
+.ui-button,
+html .ui-button.ui-state-disabled:hover,
+html .ui-button.ui-state-disabled:active {
+  border: 1px solid #c5c5c5;
+  background: #f6f6f6;
+  font-weight: normal;
+  color: #454545;
+}
+
+/* line 937, ../sass/lib/_jquery-ui.scss */
+.ui-state-default a,
+.ui-state-default a:link,
+.ui-state-default a:visited,
+a.ui-button,
+a:link.ui-button,
+a:visited.ui-button,
+.ui-button {
+  color: #454545;
+  text-decoration: none;
+}
+
+/* line 947, ../sass/lib/_jquery-ui.scss */
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus,
+.ui-button:hover,
+.ui-button:focus {
+  border: 1px solid #cccccc;
+  background: #ededed;
+  font-weight: normal;
+  color: #2b2b2b;
+}
+
+/* line 960, ../sass/lib/_jquery-ui.scss */
+.ui-state-hover a,
+.ui-state-hover a:hover,
+.ui-state-hover a:link,
+.ui-state-hover a:visited,
+.ui-state-focus a,
+.ui-state-focus a:hover,
+.ui-state-focus a:link,
+.ui-state-focus a:visited,
+a.ui-button:hover,
+a.ui-button:focus {
+  color: #2b2b2b;
+  text-decoration: none;
+}
+
+/* line 974, ../sass/lib/_jquery-ui.scss */
+.ui-visual-focus {
+  box-shadow: 0 0 3px 1px #5e9ed6;
+}
+
+/* line 977, ../sass/lib/_jquery-ui.scss */
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active,
+a.ui-button:active,
+.ui-button:active,
+.ui-button.ui-state-active:hover {
+  border: 1px solid #003eff;
+  background: #007fff;
+  font-weight: normal;
+  color: #ffffff;
+}
+
+/* line 988, ../sass/lib/_jquery-ui.scss */
+.ui-icon-background,
+.ui-state-active .ui-icon-background {
+  border: #003eff;
+  background-color: #ffffff;
+}
+
+/* line 993, ../sass/lib/_jquery-ui.scss */
+.ui-state-active a,
+.ui-state-active a:link,
+.ui-state-active a:visited {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Interaction Cues
+----------------------------------*/
+/* line 1002, ../sass/lib/_jquery-ui.scss */
+.ui-state-highlight,
+.ui-widget-content .ui-state-highlight,
+.ui-widget-header .ui-state-highlight {
+  border: 1px solid #dad55e;
+  background: #fffa90;
+  color: #777620;
+}
+
+/* line 1009, ../sass/lib/_jquery-ui.scss */
+.ui-state-checked {
+  border: 1px solid #dad55e;
+  background: #fffa90;
+}
+
+/* line 1013, ../sass/lib/_jquery-ui.scss */
+.ui-state-highlight a,
+.ui-widget-content .ui-state-highlight a,
+.ui-widget-header .ui-state-highlight a {
+  color: #777620;
+}
+
+/* line 1018, ../sass/lib/_jquery-ui.scss */
+.ui-state-error,
+.ui-widget-content .ui-state-error,
+.ui-widget-header .ui-state-error {
+  border: 1px solid #f1a899;
+  background: #fddfdf;
+  color: #5f3f3f;
+}
+
+/* line 1025, ../sass/lib/_jquery-ui.scss */
+.ui-state-error a,
+.ui-widget-content .ui-state-error a,
+.ui-widget-header .ui-state-error a {
+  color: #5f3f3f;
+}
+
+/* line 1030, ../sass/lib/_jquery-ui.scss */
+.ui-state-error-text,
+.ui-widget-content .ui-state-error-text,
+.ui-widget-header .ui-state-error-text {
+  color: #5f3f3f;
+}
+
+/* line 1035, ../sass/lib/_jquery-ui.scss */
+.ui-priority-primary,
+.ui-widget-content .ui-priority-primary,
+.ui-widget-header .ui-priority-primary {
+  font-weight: bold;
+}
+
+/* line 1040, ../sass/lib/_jquery-ui.scss */
+.ui-priority-secondary,
+.ui-widget-content .ui-priority-secondary,
+.ui-widget-header .ui-priority-secondary {
+  opacity: .7;
+  filter: Alpha(Opacity=70);
+  /* support: IE8 */
+  font-weight: normal;
+}
+
+/* line 1047, ../sass/lib/_jquery-ui.scss */
+.ui-state-disabled,
+.ui-widget-content .ui-state-disabled,
+.ui-widget-header .ui-state-disabled {
+  opacity: .35;
+  filter: Alpha(Opacity=35);
+  /* support: IE8 */
+  background-image: none;
+}
+
+/* line 1054, ../sass/lib/_jquery-ui.scss */
+.ui-state-disabled .ui-icon {
+  filter: Alpha(Opacity=35);
+  /* support: IE8 - See #6059 */
+}
+
+/* Icons
+----------------------------------*/
+/* states and images */
+/* line 1062, ../sass/lib/_jquery-ui.scss */
+.ui-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* line 1066, ../sass/lib/_jquery-ui.scss */
+.ui-icon,
+.ui-widget-content .ui-icon {
+  background-image: url("images/ui-icons_444444_256x240.png");
+}
+
+/* line 1070, ../sass/lib/_jquery-ui.scss */
+.ui-widget-header .ui-icon {
+  background-image: url("images/ui-icons_444444_256x240.png");
+}
+
+/* line 1073, ../sass/lib/_jquery-ui.scss */
+.ui-state-hover .ui-icon,
+.ui-state-focus .ui-icon,
+.ui-button:hover .ui-icon,
+.ui-button:focus .ui-icon {
+  background-image: url("images/ui-icons_555555_256x240.png");
+}
+
+/* line 1079, ../sass/lib/_jquery-ui.scss */
+.ui-state-active .ui-icon,
+.ui-button:active .ui-icon {
+  background-image: url("images/ui-icons_ffffff_256x240.png");
+}
+
+/* line 1083, ../sass/lib/_jquery-ui.scss */
+.ui-state-highlight .ui-icon,
+.ui-button .ui-state-highlight.ui-icon {
+  background-image: url("images/ui-icons_777620_256x240.png");
+}
+
+/* line 1087, ../sass/lib/_jquery-ui.scss */
+.ui-state-error .ui-icon,
+.ui-state-error-text .ui-icon {
+  background-image: url("images/ui-icons_cc0000_256x240.png");
+}
+
+/* line 1091, ../sass/lib/_jquery-ui.scss */
+.ui-button .ui-icon {
+  background-image: url("images/ui-icons_777777_256x240.png");
+}
+
+/* positioning */
+/* line 1096, ../sass/lib/_jquery-ui.scss */
+.ui-icon-blank {
+  background-position: 16px 16px;
+}
+
+/* line 1097, ../sass/lib/_jquery-ui.scss */
+.ui-icon-caret-1-n {
+  background-position: 0 0;
+}
+
+/* line 1098, ../sass/lib/_jquery-ui.scss */
+.ui-icon-caret-1-ne {
+  background-position: -16px 0;
+}
+
+/* line 1099, ../sass/lib/_jquery-ui.scss */
+.ui-icon-caret-1-e {
+  background-position: -32px 0;
+}
+
+/* line 1100, ../sass/lib/_jquery-ui.scss */
+.ui-icon-caret-1-se {
+  background-position: -48px 0;
+}
+
+/* line 1101, ../sass/lib/_jquery-ui.scss */
+.ui-icon-caret-1-s {
+  background-position: -65px 0;
+}
+
+/* line 1102, ../sass/lib/_jquery-ui.scss */
+.ui-icon-caret-1-sw {
+  background-position: -80px 0;
+}
+
+/* line 1103, ../sass/lib/_jquery-ui.scss */
+.ui-icon-caret-1-w {
+  background-position: -96px 0;
+}
+
+/* line 1104, ../sass/lib/_jquery-ui.scss */
+.ui-icon-caret-1-nw {
+  background-position: -112px 0;
+}
+
+/* line 1105, ../sass/lib/_jquery-ui.scss */
+.ui-icon-caret-2-n-s {
+  background-position: -128px 0;
+}
+
+/* line 1106, ../sass/lib/_jquery-ui.scss */
+.ui-icon-caret-2-e-w {
+  background-position: -144px 0;
+}
+
+/* line 1107, ../sass/lib/_jquery-ui.scss */
+.ui-icon-triangle-1-n {
+  background-position: 0 -16px;
+}
+
+/* line 1108, ../sass/lib/_jquery-ui.scss */
+.ui-icon-triangle-1-ne {
+  background-position: -16px -16px;
+}
+
+/* line 1109, ../sass/lib/_jquery-ui.scss */
+.ui-icon-triangle-1-e {
+  background-position: -32px -16px;
+}
+
+/* line 1110, ../sass/lib/_jquery-ui.scss */
+.ui-icon-triangle-1-se {
+  background-position: -48px -16px;
+}
+
+/* line 1111, ../sass/lib/_jquery-ui.scss */
+.ui-icon-triangle-1-s {
+  background-position: -65px -16px;
+}
+
+/* line 1112, ../sass/lib/_jquery-ui.scss */
+.ui-icon-triangle-1-sw {
+  background-position: -80px -16px;
+}
+
+/* line 1113, ../sass/lib/_jquery-ui.scss */
+.ui-icon-triangle-1-w {
+  background-position: -96px -16px;
+}
+
+/* line 1114, ../sass/lib/_jquery-ui.scss */
+.ui-icon-triangle-1-nw {
+  background-position: -112px -16px;
+}
+
+/* line 1115, ../sass/lib/_jquery-ui.scss */
+.ui-icon-triangle-2-n-s {
+  background-position: -128px -16px;
+}
+
+/* line 1116, ../sass/lib/_jquery-ui.scss */
+.ui-icon-triangle-2-e-w {
+  background-position: -144px -16px;
+}
+
+/* line 1117, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrow-1-n {
+  background-position: 0 -32px;
+}
+
+/* line 1118, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrow-1-ne {
+  background-position: -16px -32px;
+}
+
+/* line 1119, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrow-1-e {
+  background-position: -32px -32px;
+}
+
+/* line 1120, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrow-1-se {
+  background-position: -48px -32px;
+}
+
+/* line 1121, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrow-1-s {
+  background-position: -65px -32px;
+}
+
+/* line 1122, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrow-1-sw {
+  background-position: -80px -32px;
+}
+
+/* line 1123, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrow-1-w {
+  background-position: -96px -32px;
+}
+
+/* line 1124, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrow-1-nw {
+  background-position: -112px -32px;
+}
+
+/* line 1125, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrow-2-n-s {
+  background-position: -128px -32px;
+}
+
+/* line 1126, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrow-2-ne-sw {
+  background-position: -144px -32px;
+}
+
+/* line 1127, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrow-2-e-w {
+  background-position: -160px -32px;
+}
+
+/* line 1128, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrow-2-se-nw {
+  background-position: -176px -32px;
+}
+
+/* line 1129, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowstop-1-n {
+  background-position: -192px -32px;
+}
+
+/* line 1130, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowstop-1-e {
+  background-position: -208px -32px;
+}
+
+/* line 1131, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowstop-1-s {
+  background-position: -224px -32px;
+}
+
+/* line 1132, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowstop-1-w {
+  background-position: -240px -32px;
+}
+
+/* line 1133, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthick-1-n {
+  background-position: 1px -48px;
+}
+
+/* line 1134, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthick-1-ne {
+  background-position: -16px -48px;
+}
+
+/* line 1135, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthick-1-e {
+  background-position: -32px -48px;
+}
+
+/* line 1136, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthick-1-se {
+  background-position: -48px -48px;
+}
+
+/* line 1137, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthick-1-s {
+  background-position: -64px -48px;
+}
+
+/* line 1138, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthick-1-sw {
+  background-position: -80px -48px;
+}
+
+/* line 1139, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthick-1-w {
+  background-position: -96px -48px;
+}
+
+/* line 1140, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthick-1-nw {
+  background-position: -112px -48px;
+}
+
+/* line 1141, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthick-2-n-s {
+  background-position: -128px -48px;
+}
+
+/* line 1142, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthick-2-ne-sw {
+  background-position: -144px -48px;
+}
+
+/* line 1143, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthick-2-e-w {
+  background-position: -160px -48px;
+}
+
+/* line 1144, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthick-2-se-nw {
+  background-position: -176px -48px;
+}
+
+/* line 1145, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthickstop-1-n {
+  background-position: -192px -48px;
+}
+
+/* line 1146, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthickstop-1-e {
+  background-position: -208px -48px;
+}
+
+/* line 1147, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthickstop-1-s {
+  background-position: -224px -48px;
+}
+
+/* line 1148, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowthickstop-1-w {
+  background-position: -240px -48px;
+}
+
+/* line 1149, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowreturnthick-1-w {
+  background-position: 0 -64px;
+}
+
+/* line 1150, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowreturnthick-1-n {
+  background-position: -16px -64px;
+}
+
+/* line 1151, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowreturnthick-1-e {
+  background-position: -32px -64px;
+}
+
+/* line 1152, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowreturnthick-1-s {
+  background-position: -48px -64px;
+}
+
+/* line 1153, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowreturn-1-w {
+  background-position: -64px -64px;
+}
+
+/* line 1154, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowreturn-1-n {
+  background-position: -80px -64px;
+}
+
+/* line 1155, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowreturn-1-e {
+  background-position: -96px -64px;
+}
+
+/* line 1156, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowreturn-1-s {
+  background-position: -112px -64px;
+}
+
+/* line 1157, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowrefresh-1-w {
+  background-position: -128px -64px;
+}
+
+/* line 1158, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowrefresh-1-n {
+  background-position: -144px -64px;
+}
+
+/* line 1159, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowrefresh-1-e {
+  background-position: -160px -64px;
+}
+
+/* line 1160, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrowrefresh-1-s {
+  background-position: -176px -64px;
+}
+
+/* line 1161, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrow-4 {
+  background-position: 0 -80px;
+}
+
+/* line 1162, ../sass/lib/_jquery-ui.scss */
+.ui-icon-arrow-4-diag {
+  background-position: -16px -80px;
+}
+
+/* line 1163, ../sass/lib/_jquery-ui.scss */
+.ui-icon-extlink {
+  background-position: -32px -80px;
+}
+
+/* line 1164, ../sass/lib/_jquery-ui.scss */
+.ui-icon-newwin {
+  background-position: -48px -80px;
+}
+
+/* line 1165, ../sass/lib/_jquery-ui.scss */
+.ui-icon-refresh {
+  background-position: -64px -80px;
+}
+
+/* line 1166, ../sass/lib/_jquery-ui.scss */
+.ui-icon-shuffle {
+  background-position: -80px -80px;
+}
+
+/* line 1167, ../sass/lib/_jquery-ui.scss */
+.ui-icon-transfer-e-w {
+  background-position: -96px -80px;
+}
+
+/* line 1168, ../sass/lib/_jquery-ui.scss */
+.ui-icon-transferthick-e-w {
+  background-position: -112px -80px;
+}
+
+/* line 1169, ../sass/lib/_jquery-ui.scss */
+.ui-icon-folder-collapsed {
+  background-position: 0 -96px;
+}
+
+/* line 1170, ../sass/lib/_jquery-ui.scss */
+.ui-icon-folder-open {
+  background-position: -16px -96px;
+}
+
+/* line 1171, ../sass/lib/_jquery-ui.scss */
+.ui-icon-document {
+  background-position: -32px -96px;
+}
+
+/* line 1172, ../sass/lib/_jquery-ui.scss */
+.ui-icon-document-b {
+  background-position: -48px -96px;
+}
+
+/* line 1173, ../sass/lib/_jquery-ui.scss */
+.ui-icon-note {
+  background-position: -64px -96px;
+}
+
+/* line 1174, ../sass/lib/_jquery-ui.scss */
+.ui-icon-mail-closed {
+  background-position: -80px -96px;
+}
+
+/* line 1175, ../sass/lib/_jquery-ui.scss */
+.ui-icon-mail-open {
+  background-position: -96px -96px;
+}
+
+/* line 1176, ../sass/lib/_jquery-ui.scss */
+.ui-icon-suitcase {
+  background-position: -112px -96px;
+}
+
+/* line 1177, ../sass/lib/_jquery-ui.scss */
+.ui-icon-comment {
+  background-position: -128px -96px;
+}
+
+/* line 1178, ../sass/lib/_jquery-ui.scss */
+.ui-icon-person {
+  background-position: -144px -96px;
+}
+
+/* line 1179, ../sass/lib/_jquery-ui.scss */
+.ui-icon-print {
+  background-position: -160px -96px;
+}
+
+/* line 1180, ../sass/lib/_jquery-ui.scss */
+.ui-icon-trash {
+  background-position: -176px -96px;
+}
+
+/* line 1181, ../sass/lib/_jquery-ui.scss */
+.ui-icon-locked {
+  background-position: -192px -96px;
+}
+
+/* line 1182, ../sass/lib/_jquery-ui.scss */
+.ui-icon-unlocked {
+  background-position: -208px -96px;
+}
+
+/* line 1183, ../sass/lib/_jquery-ui.scss */
+.ui-icon-bookmark {
+  background-position: -224px -96px;
+}
+
+/* line 1184, ../sass/lib/_jquery-ui.scss */
+.ui-icon-tag {
+  background-position: -240px -96px;
+}
+
+/* line 1185, ../sass/lib/_jquery-ui.scss */
+.ui-icon-home {
+  background-position: 0 -112px;
+}
+
+/* line 1186, ../sass/lib/_jquery-ui.scss */
+.ui-icon-flag {
+  background-position: -16px -112px;
+}
+
+/* line 1187, ../sass/lib/_jquery-ui.scss */
+.ui-icon-calendar {
+  background-position: -32px -112px;
+}
+
+/* line 1188, ../sass/lib/_jquery-ui.scss */
+.ui-icon-cart {
+  background-position: -48px -112px;
+}
+
+/* line 1189, ../sass/lib/_jquery-ui.scss */
+.ui-icon-pencil {
+  background-position: -64px -112px;
+}
+
+/* line 1190, ../sass/lib/_jquery-ui.scss */
+.ui-icon-clock {
+  background-position: -80px -112px;
+}
+
+/* line 1191, ../sass/lib/_jquery-ui.scss */
+.ui-icon-disk {
+  background-position: -96px -112px;
+}
+
+/* line 1192, ../sass/lib/_jquery-ui.scss */
+.ui-icon-calculator {
+  background-position: -112px -112px;
+}
+
+/* line 1193, ../sass/lib/_jquery-ui.scss */
+.ui-icon-zoomin {
+  background-position: -128px -112px;
+}
+
+/* line 1194, ../sass/lib/_jquery-ui.scss */
+.ui-icon-zoomout {
+  background-position: -144px -112px;
+}
+
+/* line 1195, ../sass/lib/_jquery-ui.scss */
+.ui-icon-search {
+  background-position: -160px -112px;
+}
+
+/* line 1196, ../sass/lib/_jquery-ui.scss */
+.ui-icon-wrench {
+  background-position: -176px -112px;
+}
+
+/* line 1197, ../sass/lib/_jquery-ui.scss */
+.ui-icon-gear {
+  background-position: -192px -112px;
+}
+
+/* line 1198, ../sass/lib/_jquery-ui.scss */
+.ui-icon-heart {
+  background-position: -208px -112px;
+}
+
+/* line 1199, ../sass/lib/_jquery-ui.scss */
+.ui-icon-star {
+  background-position: -224px -112px;
+}
+
+/* line 1200, ../sass/lib/_jquery-ui.scss */
+.ui-icon-link {
+  background-position: -240px -112px;
+}
+
+/* line 1201, ../sass/lib/_jquery-ui.scss */
+.ui-icon-cancel {
+  background-position: 0 -128px;
+}
+
+/* line 1202, ../sass/lib/_jquery-ui.scss */
+.ui-icon-plus {
+  background-position: -16px -128px;
+}
+
+/* line 1203, ../sass/lib/_jquery-ui.scss */
+.ui-icon-plusthick {
+  background-position: -32px -128px;
+}
+
+/* line 1204, ../sass/lib/_jquery-ui.scss */
+.ui-icon-minus {
+  background-position: -48px -128px;
+}
+
+/* line 1205, ../sass/lib/_jquery-ui.scss */
+.ui-icon-minusthick {
+  background-position: -64px -128px;
+}
+
+/* line 1206, ../sass/lib/_jquery-ui.scss */
+.ui-icon-close {
+  background-position: -80px -128px;
+}
+
+/* line 1207, ../sass/lib/_jquery-ui.scss */
+.ui-icon-closethick {
+  background-position: -96px -128px;
+}
+
+/* line 1208, ../sass/lib/_jquery-ui.scss */
+.ui-icon-key {
+  background-position: -112px -128px;
+}
+
+/* line 1209, ../sass/lib/_jquery-ui.scss */
+.ui-icon-lightbulb {
+  background-position: -128px -128px;
+}
+
+/* line 1210, ../sass/lib/_jquery-ui.scss */
+.ui-icon-scissors {
+  background-position: -144px -128px;
+}
+
+/* line 1211, ../sass/lib/_jquery-ui.scss */
+.ui-icon-clipboard {
+  background-position: -160px -128px;
+}
+
+/* line 1212, ../sass/lib/_jquery-ui.scss */
+.ui-icon-copy {
+  background-position: -176px -128px;
+}
+
+/* line 1213, ../sass/lib/_jquery-ui.scss */
+.ui-icon-contact {
+  background-position: -192px -128px;
+}
+
+/* line 1214, ../sass/lib/_jquery-ui.scss */
+.ui-icon-image {
+  background-position: -208px -128px;
+}
+
+/* line 1215, ../sass/lib/_jquery-ui.scss */
+.ui-icon-video {
+  background-position: -224px -128px;
+}
+
+/* line 1216, ../sass/lib/_jquery-ui.scss */
+.ui-icon-script {
+  background-position: -240px -128px;
+}
+
+/* line 1217, ../sass/lib/_jquery-ui.scss */
+.ui-icon-alert {
+  background-position: 0 -144px;
+}
+
+/* line 1218, ../sass/lib/_jquery-ui.scss */
+.ui-icon-info {
+  background-position: -16px -144px;
+}
+
+/* line 1219, ../sass/lib/_jquery-ui.scss */
+.ui-icon-notice {
+  background-position: -32px -144px;
+}
+
+/* line 1220, ../sass/lib/_jquery-ui.scss */
+.ui-icon-help {
+  background-position: -48px -144px;
+}
+
+/* line 1221, ../sass/lib/_jquery-ui.scss */
+.ui-icon-check {
+  background-position: -64px -144px;
+}
+
+/* line 1222, ../sass/lib/_jquery-ui.scss */
+.ui-icon-bullet {
+  background-position: -80px -144px;
+}
+
+/* line 1223, ../sass/lib/_jquery-ui.scss */
+.ui-icon-radio-on {
+  background-position: -96px -144px;
+}
+
+/* line 1224, ../sass/lib/_jquery-ui.scss */
+.ui-icon-radio-off {
+  background-position: -112px -144px;
+}
+
+/* line 1225, ../sass/lib/_jquery-ui.scss */
+.ui-icon-pin-w {
+  background-position: -128px -144px;
+}
+
+/* line 1226, ../sass/lib/_jquery-ui.scss */
+.ui-icon-pin-s {
+  background-position: -144px -144px;
+}
+
+/* line 1227, ../sass/lib/_jquery-ui.scss */
+.ui-icon-play {
+  background-position: 0 -160px;
+}
+
+/* line 1228, ../sass/lib/_jquery-ui.scss */
+.ui-icon-pause {
+  background-position: -16px -160px;
+}
+
+/* line 1229, ../sass/lib/_jquery-ui.scss */
+.ui-icon-seek-next {
+  background-position: -32px -160px;
+}
+
+/* line 1230, ../sass/lib/_jquery-ui.scss */
+.ui-icon-seek-prev {
+  background-position: -48px -160px;
+}
+
+/* line 1231, ../sass/lib/_jquery-ui.scss */
+.ui-icon-seek-end {
+  background-position: -64px -160px;
+}
+
+/* line 1232, ../sass/lib/_jquery-ui.scss */
+.ui-icon-seek-start {
+  background-position: -80px -160px;
+}
+
+/* ui-icon-seek-first is deprecated, use ui-icon-seek-start instead */
+/* line 1234, ../sass/lib/_jquery-ui.scss */
+.ui-icon-seek-first {
+  background-position: -80px -160px;
+}
+
+/* line 1235, ../sass/lib/_jquery-ui.scss */
+.ui-icon-stop {
+  background-position: -96px -160px;
+}
+
+/* line 1236, ../sass/lib/_jquery-ui.scss */
+.ui-icon-eject {
+  background-position: -112px -160px;
+}
+
+/* line 1237, ../sass/lib/_jquery-ui.scss */
+.ui-icon-volume-off {
+  background-position: -128px -160px;
+}
+
+/* line 1238, ../sass/lib/_jquery-ui.scss */
+.ui-icon-volume-on {
+  background-position: -144px -160px;
+}
+
+/* line 1239, ../sass/lib/_jquery-ui.scss */
+.ui-icon-power {
+  background-position: 0 -176px;
+}
+
+/* line 1240, ../sass/lib/_jquery-ui.scss */
+.ui-icon-signal-diag {
+  background-position: -16px -176px;
+}
+
+/* line 1241, ../sass/lib/_jquery-ui.scss */
+.ui-icon-signal {
+  background-position: -32px -176px;
+}
+
+/* line 1242, ../sass/lib/_jquery-ui.scss */
+.ui-icon-battery-0 {
+  background-position: -48px -176px;
+}
+
+/* line 1243, ../sass/lib/_jquery-ui.scss */
+.ui-icon-battery-1 {
+  background-position: -64px -176px;
+}
+
+/* line 1244, ../sass/lib/_jquery-ui.scss */
+.ui-icon-battery-2 {
+  background-position: -80px -176px;
+}
+
+/* line 1245, ../sass/lib/_jquery-ui.scss */
+.ui-icon-battery-3 {
+  background-position: -96px -176px;
+}
+
+/* line 1246, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circle-plus {
+  background-position: 0 -192px;
+}
+
+/* line 1247, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circle-minus {
+  background-position: -16px -192px;
+}
+
+/* line 1248, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circle-close {
+  background-position: -32px -192px;
+}
+
+/* line 1249, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circle-triangle-e {
+  background-position: -48px -192px;
+}
+
+/* line 1250, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circle-triangle-s {
+  background-position: -64px -192px;
+}
+
+/* line 1251, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circle-triangle-w {
+  background-position: -80px -192px;
+}
+
+/* line 1252, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circle-triangle-n {
+  background-position: -96px -192px;
+}
+
+/* line 1253, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circle-arrow-e {
+  background-position: -112px -192px;
+}
+
+/* line 1254, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circle-arrow-s {
+  background-position: -128px -192px;
+}
+
+/* line 1255, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circle-arrow-w {
+  background-position: -144px -192px;
+}
+
+/* line 1256, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circle-arrow-n {
+  background-position: -160px -192px;
+}
+
+/* line 1257, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circle-zoomin {
+  background-position: -176px -192px;
+}
+
+/* line 1258, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circle-zoomout {
+  background-position: -192px -192px;
+}
+
+/* line 1259, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circle-check {
+  background-position: -208px -192px;
+}
+
+/* line 1260, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circlesmall-plus {
+  background-position: 0 -208px;
+}
+
+/* line 1261, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circlesmall-minus {
+  background-position: -16px -208px;
+}
+
+/* line 1262, ../sass/lib/_jquery-ui.scss */
+.ui-icon-circlesmall-close {
+  background-position: -32px -208px;
+}
+
+/* line 1263, ../sass/lib/_jquery-ui.scss */
+.ui-icon-squaresmall-plus {
+  background-position: -48px -208px;
+}
+
+/* line 1264, ../sass/lib/_jquery-ui.scss */
+.ui-icon-squaresmall-minus {
+  background-position: -64px -208px;
+}
+
+/* line 1265, ../sass/lib/_jquery-ui.scss */
+.ui-icon-squaresmall-close {
+  background-position: -80px -208px;
+}
+
+/* line 1266, ../sass/lib/_jquery-ui.scss */
+.ui-icon-grip-dotted-vertical {
+  background-position: 0 -224px;
+}
+
+/* line 1267, ../sass/lib/_jquery-ui.scss */
+.ui-icon-grip-dotted-horizontal {
+  background-position: -16px -224px;
+}
+
+/* line 1268, ../sass/lib/_jquery-ui.scss */
+.ui-icon-grip-solid-vertical {
+  background-position: -32px -224px;
+}
+
+/* line 1269, ../sass/lib/_jquery-ui.scss */
+.ui-icon-grip-solid-horizontal {
+  background-position: -48px -224px;
+}
+
+/* line 1270, ../sass/lib/_jquery-ui.scss */
+.ui-icon-gripsmall-diagonal-se {
+  background-position: -64px -224px;
+}
+
+/* line 1271, ../sass/lib/_jquery-ui.scss */
+.ui-icon-grip-diagonal-se {
+  background-position: -80px -224px;
+}
+
+/* Misc visuals
+----------------------------------*/
+/* Corner radius */
+/* line 1278, ../sass/lib/_jquery-ui.scss */
+.ui-corner-all,
+.ui-corner-top,
+.ui-corner-left,
+.ui-corner-tl {
+  border-top-left-radius: 3px;
+}
+
+/* line 1284, ../sass/lib/_jquery-ui.scss */
+.ui-corner-all,
+.ui-corner-top,
+.ui-corner-right,
+.ui-corner-tr {
+  border-top-right-radius: 3px;
+}
+
+/* line 1290, ../sass/lib/_jquery-ui.scss */
+.ui-corner-all,
+.ui-corner-bottom,
+.ui-corner-left,
+.ui-corner-bl {
+  border-bottom-left-radius: 3px;
+}
+
+/* line 1296, ../sass/lib/_jquery-ui.scss */
+.ui-corner-all,
+.ui-corner-bottom,
+.ui-corner-right,
+.ui-corner-br {
+  border-bottom-right-radius: 3px;
+}
+
+/* Overlays */
+/* line 1304, ../sass/lib/_jquery-ui.scss */
+.ui-widget-overlay {
+  background: #aaaaaa;
+  opacity: .003;
+  filter: Alpha(Opacity=0.3);
+  /* support: IE8 */
+}
+
+/* line 1309, ../sass/lib/_jquery-ui.scss */
+.ui-widget-shadow {
+  -webkit-box-shadow: 0px 0px 5px #666666;
+  box-shadow: 0px 0px 5px #666666;
+}
+
+/* Dashboard */
 /**
- * Calendar base styles for admin & front-end
+ * Dashboard admin page 
  *
  */
-/* Dashboard */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/admin\/sass\/partials\/_dashboard\.scss}line{font-family:\000032}}
+/* line 7, ../sass/partials/_dashboard.scss */
 .cb-admin-page .cb-admin-cols {
   display: flex;
   flex-direction: row;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/admin\/sass\/partials\/_dashboard\.scss}line{font-family:\000035}}
+/* line 10, ../sass/partials/_dashboard.scss */
 .cb-admin-page .cb-admin-cols div {
   margin-right: 15px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/admin\/sass\/partials\/_dashboard\.scss}line{font-family:\000039}}
+/* line 14, ../sass/partials/_dashboard.scss */
 .cb-admin-page .cb-admin-cols div h2 {
   padding-top: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/admin\/sass\/partials\/_dashboard\.scss}line{font-family:\0000314}}
+/* line 19, ../sass/partials/_dashboard.scss */
 .cb-admin-page .cb-admin-cols div ul li {
   margin-top: 15px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/admin\/sass\/partials\/_dashboard\.scss}line{font-family:\0000317}}
+/* line 22, ../sass/partials/_dashboard.scss */
 .cb-admin-page .cb-admin-cols div ul li .cb-summmary-item {
   font-weight: bold;
 }
 
 /* Timeframe Form */
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\/Workspace\/privat\/cb_docker\/commonsbooking\/assets\/admin\/sass\/partials\/_form-timeframe\.scss}line{font-family:\000032}}
+/**
+ * Timeframe form 
+ *
+ */
+/* line 7, ../sass/partials/_form-timeframe.scss */
 .cmb2-id-start-time,
 .cmb2-id-start-date,
 .cmb2-id-end-date,
@@ -3541,6 +5897,15 @@
 .cmb2-id-repetition-start,
 .cmb2-id-repetition-end,
 .cmb2-id-full-day {
+  display: none;
+}
+
+/** Migration Settings */
+/* line 1, ../sass/partials/_migration.scss */
+#migration-in-progress,
+#migration-state,
+#migration-done {
+  margin-top: 1rem;
   display: none;
 }
 

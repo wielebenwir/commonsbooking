@@ -1,4 +1,53 @@
+/**
+ * Layouts for Forms: General Form Styling & Booking Form
+ * Breakpoints for arranging elements
+ *
+ * @package   CommonsBooking
+ * @author Florian Egermann <florian@wielebenwir.de>
+ * @license   GPL-2.0+
+ * @since 2.0
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+
 .cb-wrapper {
+
+  
+    /* General form elements */
+    
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="url"],
+    input[type="date"],
+    input[type="month"],
+    input[type="time"],
+    input[type="datetime"],
+    input[type="datetime-local"],
+    input[type="week"],
+    input[type="number"],
+    input[type="search"],
+    input[type="tel"],
+    input[type="color"],
+    textarea,
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background: $color-white;
+      border-radius: $radius; 
+      border-style: solid;
+      border-width: 0.1rem;
+      border-color: $color-blue-dark;
+      box-shadow: none;
+      display: block;
+      margin: 0;
+      font-size: $font-size-normal;
+      max-width: 100%;
+      padding: $spacer $spacer;
+
+    }
+  
+  
   .cb-action {
     @extend .cb-box;
     

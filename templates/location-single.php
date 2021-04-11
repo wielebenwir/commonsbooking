@@ -1,8 +1,9 @@
 <?php
     /**
-     * Single item calendar with booking functionality
+     * Single location
      *
-     * Used on item single
+     * List timeframes (if multiple) or show the booking calendar
+     *
      */
     global $templateData;
     $templateData = \CommonsBooking\View\Location::getTemplateData();
@@ -26,7 +27,7 @@
     } // $item_is_selected
 
     if(!array_key_exists('item', $templateData) && !array_key_exists('items', $templateData)) { ?>
-        <div class="cb-status cb-availability-status cb-no-residency"><?php echo ( $noResultText );
+        <div class="cb-status cb-availability-status cb-status-not-available"><?php echo ( $noResultText );
     }
     if(!is_user_logged_in()) {
         $current_url = $_SERVER['REQUEST_URI'];
@@ -35,7 +36,7 @@
 <?php
             printf(
                 /* translators: %1$s: wp_login_url, 1$s: wp_registration_url */
-                commonsbooking_sanitizeHTML( __( 'To be able to book, you must first <a href="%1$s">login</a> or <a href="%2$s">register as new user</a>.', 'commonsbooking' ) ),
+                commonsbooking_sanitizeHTML( __( 'To be able to book, you must first <a href="%1$s">login</a> or <a href="%2$s">register</a>.', 'commonsbooking' ) ),
                 esc_url( wp_login_url( $current_url ) ), esc_url( wp_registration_url() )
             );
 ?>

@@ -1,6 +1,8 @@
 <?php
 
 namespace CommonsBooking\Wordpress\Options;
+
+use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Settings\Settings;
 
 /**
@@ -34,7 +36,8 @@ class AdminOptions
                     // set to current value from wp_options
                     $field_value = Settings::getOption( $option_key, $field_id );
                     
-                    if (array_key_exists( 'default', $field ) ) {
+                    // we check if there is a default value set in OptionsArray.php and if the field type is not checkbox (cause checkboxes have empty values if unchecked )
+                    if (array_key_exists( 'default', $field ) && $field['type'] != 'checkbox') {
                         // if field-value is not set already we add the default value to the options array
                         if ( empty ( $field_value ) ) {
                             Settings::updateOption($option_key, $field_id, $field['default']);
@@ -46,25 +49,10 @@ class AdminOptions
         }
 
         // maybe show admin notice if fields are restored to hreir default value
-        self::setDefaultsAdminNotice($restored_fields);
-    }
-    
-    /**
-     * Display admin notice if option fields are set to their default values
-     *
-     * @param  mixed $fields
-     * @return void
-     */
-    public static function setDefaultsAdminNotice($fields = false) {
-
-        if ($fields && is_array($fields)) {   
-
-            ?>
-                    <div class="notice notice-info is-dismissible">
-                        <p><?php echo commonsbooking_sanitizeHTML('<strong>Default values for following fields automatically restored, because they were empty:</strong><br> ', 'commonsbooking'); 
-                        echo implode("<br> ", $fields); ?></p>
-                    </div>
-            <?php 
-        }   
+        if ($restored_fields) {
+            $message = commonsbooking_sanitizeHTML( __('<strong>Default values for following fields automatically set or restored, because they were empty:</strong><br> ', 'commonsbooking' ) ); 
+            $message .= implode("<br> ", $restored_fields);
+            new AdminMessage($message);
+        }
     }
 }

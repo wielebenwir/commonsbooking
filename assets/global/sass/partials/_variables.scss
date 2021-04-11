@@ -5,13 +5,6 @@
  * Colors: Backgrounds
  * Font sizes
  * Layout variables
- *
- * @package   CommonsBooking2
- * @author Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
  */
 
 /* Colors: CB Brand */
@@ -26,7 +19,6 @@ $color-secondary: $color-green-bright;
 $color-bg       : #f6f6f6;
 $color-bg-alt   : #ffffff;
 
-
 /* Colors: Backgrounds */
 $color-gray-background: #f6f6f6;
 $color-white-background: #ffffff;
@@ -34,8 +26,6 @@ $color-gray-border: $color-gray-background;
 $color-blue-background: #E5EFFB;
 $color-blue-border: #E5EFFB;
 $color-yellow-background: #FFF9C5;
-
-
 
 /* Colors: text */
 $color-gray-dark: #444;
@@ -45,6 +35,7 @@ $color-white: #FFF;
 
 /* Colors: Message statuses */
 $color-error: #d5425c;
+$color-warning: $color-error;
 $color-success: #74ce3c;
 $color-notice: $color-yellow-background;
 
@@ -55,9 +46,6 @@ $font-line-height-small: 13px;
 $font-size-normal: 14px;
 $font-size-big: 18px;
 $font-size-huge: 24px;
-
-/* Font stack */
-$font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
 
 /* Layout Variables */
 $spacer-big: 15px;

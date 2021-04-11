@@ -12,7 +12,12 @@
 		"grunt": "*",
 		"grunt-contrib-compass": "*",
 		"grunt-contrib-compress": "^1.6.0",
+		"grunt-contrib-concat": "^1.0.1",
 		"grunt-contrib-watch": "^1.1.0",
+		"grunt-contrib-jshint": "^1.1.0",
+		"grunt-contrib-uglify": "^3.3.0",
+		"grunt-contrib-uglify-es": "github:gruntjs/grunt-contrib-uglify#harmony",
+		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
 		"grunt-wp-readme-to-markdown": "^2.0.1",
 		"matchdep": "^2.0.0"
 	},
@@ -20,10 +25,13 @@
 		"grunt": "node node_modules/grunt/bin/grunt"
 	},
 	"dependencies": {
-		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
-		"grunt-contrib-jshint": "^1.1.0",
-		"grunt-contrib-uglify": "^3.3.0",
-		"grunt-contrib-uglify-es": "github:gruntjs/grunt-contrib-uglify#harmony",
-		"jquery": "^3.4.1"
+		"@babel/core": "^7.12.10",
+		"@babel/preset-env": "^7.12.11",
+		"grunt-babel": "^8.0.0",
+		"leaflet": "^1.7.1",
+		"leaflet-easybutton": "^2.4.0",
+		"leaflet-spin": "^1.1.2",
+		"leaflet.markercluster": "^1.4.1",
+		"shufflejs": "^5.2.3"
 	}
 }

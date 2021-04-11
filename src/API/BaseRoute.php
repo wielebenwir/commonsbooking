@@ -25,6 +25,7 @@ class BaseRoute extends \WP_REST_Controller
                 'methods'  => \WP_REST_Server::READABLE,
                 'callback' => array($this, 'get_items'),
                 'args'     => array(),
+                'permission_callback' => '__return_true'
             ),
         ));
         register_rest_route($namespace, '/'.$this->rest_base.'/(?P<id>[\d]+)', array(
@@ -36,12 +37,14 @@ class BaseRoute extends \WP_REST_Controller
                         'default' => 'view',
                     ),
                 ),
+                'permission_callback' => '__return_true'
             ),
         ));
 
         register_rest_route($namespace, '/'.$this->rest_base.'/schema', array(
             'methods'  => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_public_item_schema'),
+            'permission_callback' => '__return_true'
         ));
     }
 

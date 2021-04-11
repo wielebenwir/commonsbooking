@@ -2,6 +2,8 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Plugin;
+
 class Calendar
 {
 
@@ -59,16 +61,29 @@ class Calendar
      */
     public function getWeeks()
     {
-        $weeks = [];
         $startDate = strtotime($this->startDate->getDate());
         $endDate = strtotime($this->endDate->getDate());
 
-        while($startDate <= $endDate) {
-            $weeks[] = new Week(date('Y', $startDate), date('W', $startDate), $this->locations, $this->items, $this->types);
-            $startDate = strtotime("next monday", $startDate);
-        }
+        $customId = md5(
+            $startDate .
+            $endDate .
+            serialize($this->items) .
+            serialize($this->locations) .
+            serialize($this->types)
+        );
 
-        return $weeks;
+        if (Plugin::getCacheItem($customId)) {
+            return Plugin::getCacheItem($customId);
+        } else {
+            $weeks = [];
+            while($startDate <= $endDate) {
+                $weeks[] = new Week(date('Y', $startDate), date('W', $startDate), $this->locations, $this->items, $this->types);
+                $startDate = strtotime("next monday", $startDate);
+            }
+
+            Plugin::setCacheItem($weeks, $customId);
+            return $weeks;
+        }
     }
 
 

@@ -6,6 +6,7 @@ namespace CommonsBooking\Repository;
 
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Model\Day;
+use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
 use DateInterval;
 use DatePeriod;
@@ -29,34 +30,40 @@ class BookingCodes
      */
     public static function getCodes($timeframeId)
     {
-        global $wpdb;
-        $table_name = $wpdb->prefix . self::$tablename;
+        if (Plugin::getCacheItem()) {
+            return Plugin::getCacheItem();
+        } else {
+            global $wpdb;
+            $table_name = $wpdb->prefix . self::$tablename;
 
-        $bookingCodes = $wpdb->get_results(
-            "
+            $bookingCodes = $wpdb->get_results(
+                "
                 SELECT *
                 FROM $table_name
                 WHERE timeframe = $timeframeId
                 ORDER BY item ASC ,date ASC
             "
-        );
-
-        $codes = [];
-        foreach ($bookingCodes as $bookingCode) {
-            $bookingCodeObject = new BookingCode(
-                $bookingCode->date,
-                $bookingCode->item,
-                $bookingCode->location,
-                $bookingCode->timeframe,
-                $bookingCode->code
             );
-            $codes[] = $bookingCodeObject;
-        }
 
-        return $codes;
+            $codes = [];
+            foreach ($bookingCodes as $bookingCode) {
+                $bookingCodeObject = new BookingCode(
+                    $bookingCode->date,
+                    $bookingCode->item,
+                    $bookingCode->location,
+                    $bookingCode->timeframe,
+                    $bookingCode->code
+                );
+                $codes[] = $bookingCodeObject;
+            }
+
+            Plugin::setCacheItem($codes);
+            return $codes;
+        }
     }
 
     /**
+     * Returns booking code by timeframe, location, item and date.
      * @param $timeframeId
      * @param $itemId
      * @param $locationId
@@ -66,11 +73,14 @@ class BookingCodes
      */
     public static function getCode($timeframeId, $itemId, $locationId, $date)
     {
-        global $wpdb;
-        $table_name = $wpdb->prefix . self::$tablename;
+        if (Plugin::getCacheItem()) {
+            return Plugin::getCacheItem();
+        } else {
+            global $wpdb;
+            $table_name = $wpdb->prefix . self::$tablename;
 
-        $bookingCodes = $wpdb->get_results(
-            "
+            $bookingCodes = $wpdb->get_results(
+                "
                 SELECT *
                 FROM $table_name
                 WHERE 
@@ -80,20 +90,21 @@ class BookingCodes
                     date = '$date'
                 ORDER BY item ASC ,date ASC
             "
-        );
-
-        $bookingCodeObject = null;
-        if (count($bookingCodes)) {
-            $bookingCodeObject = new BookingCode(
-                $bookingCodes[0]->date,
-                $bookingCodes[0]->item,
-                $bookingCodes[0]->location,
-                $bookingCodes[0]->timeframe,
-                $bookingCodes[0]->code
             );
-        }
 
-        return $bookingCodeObject;
+            $bookingCodeObject = null;
+            if (count($bookingCodes)) {
+                $bookingCodeObject = new BookingCode(
+                    $bookingCodes[0]->date,
+                    $bookingCodes[0]->item,
+                    $bookingCodes[0]->location,
+                    $bookingCodes[0]->timeframe,
+                    $bookingCodes[0]->code
+                );
+            }
+            Plugin::setCacheItem($bookingCodeObject);
+            return $bookingCodeObject;
+        }
     }
 
     /**
@@ -143,6 +154,9 @@ class BookingCodes
 
         $bookingCodes = Settings::getOption('commonsbooking_options_bookingcodes', 'bookingcodes');
         $bookingCodesArray = array_filter(explode(',', trim($bookingCodes)));
+        $bookingCodesArray = array_map(function ($item) {
+            return preg_replace("/\r|\n/", "", $item);
+        }, $bookingCodesArray);
 
         // Check if codes are available, show error if not.
         if(!count($bookingCodesArray)) {
@@ -155,6 +169,9 @@ class BookingCodes
             );
             return false;
         }
+
+        // Before we add new codes, we remove old ones, that are not relevant anymore
+        self::deleteOldCodes($timeframeId, $bookablePost->getLocation()->ID, $bookablePost->getItem()->ID);
 
         $bookingCodesRandomizer = intval($timeframeId);
         $bookingCodesRandomizer += $bookablePost->getItem()->ID;
@@ -202,9 +219,9 @@ class BookingCodes
     }
 
     /**
-     * Deletes booking codes for current post.
+     * Deletes booking codes for current post or if posted for post with $postId.
      *
-     * @param null $post
+     * @param null $postId
      */
     public static function deleteBookingCodes($postId = null)
     {
@@ -228,6 +245,24 @@ class BookingCodes
                 $wpdb->query($query2);
             }
         }
+    }
+
+    /**
+     * Removes all codes for the post, that don't have the current location-id or item-id.
+     * @param $postId
+     * @param $locationId
+     * @param $itemId
+     */
+    public static function deleteOldCodes($postId, $locationId, $itemId) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . self::$tablename;
+
+        $query = $wpdb->prepare('DELETE FROM ' . $table_name . ' WHERE timeframe = %d AND (location != %d OR item != %d)',
+            $postId,
+            $locationId,
+            $itemId
+        );
+        $wpdb->query($query);
     }
 
 }

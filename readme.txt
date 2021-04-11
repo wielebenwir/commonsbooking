@@ -1,11 +1,11 @@
 === CommonsBooking ===
 
-Contributors: wielebenwirteam, m0rb, flegfleg
+Contributors: wielebenwirteam, m0rb, flegfleg, chriwen
 Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar, 
 Requires at least: 5.2
-Tested up to: 5.6
-Stable Tag: 2.2.16
+Tested up to: 5.7
+Stable Tag: 2.4.3
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -82,13 +82,61 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 
 == Changelog ==
 
-= 2.2.16 () =
-* Added customizable avilablity messages for location and item pages (can be set in options -> templates)
-* added automatic reset to default values for some options if they are empty but needed for the plugin to work properly
-* reworked save options process so that permalink page refresh is not longer needed after updating url slugs
-* Optimized timframe validation so that not overlapping weekdays on overlapping timeframes doesn't result in an validation error
-* Enhanced API route
-* Removed default limitation of 2 months for maxium advance booking time. Now users can book as long as the timeframe is defined in advance. In a future release we will add the option to set the maximum advance booking time in admin options.
+= 2.4.3 (09.04.2021) = 
+* NEW: Eport-Tool for exporting timeframes (Bookings etc.) with flexible data fields. Useful for external analytics or to create connections to external systems like automatic lockers etc.
+* NEW: Booking comment: Users can add an internal comment to a booking that can be viewed by location administrators and can be used in email template via template tags (see template tags in documentation)
+* NEW: Maximum bookable days are now without limitation. You can choose the maximum days in the timeframe editor.
+* NEW: We added 2 new menu items in the CommonsBooking section so that you can now the edit Commonsbooking categories for locations and items (rename, remove etc.)
+* NEW: Hide Contact Details: It is now possible to configure whether contact details of the station are only displayed after the booking has been confirmed by the user. This prevents users from already receiving booking details for an unconfirmed booking and thus possibly already contacting the location without having completed the booking.
+* ENHANCED: Added migration of elementor special fields
+* ENHANCED: Added map link to dashboard
+* ENHANCED: Validation of bookings optimized
+* FIXED: Bookable timeframe without enddate caused some issues in frontend calendar. Now it is possible to leave end date empty to allow infinite booking timeframe
+* FIXED: performance issue on some systems in backend view (issue #546)
+* FIXED: cancelation of an unconfirmed booking triggered a cancelation mail to user and location. Now the cancelation mail will not be send anymore.  (issue #532)
+* FIXED: fixed a timeframe validation error (isse #548)
+* FIXED: calendar not shown in edge / explorer in some versions. Thanks to @danielappelt for fixing it
+* FIXED: Added tooltips in map configuration
+* FIXED: Multiple categories are not imported during migration.
+* TEMPLATES: modification in templates: booking-single-form.php and booking-single.php 
+* ENHANCED: Make CommonsBooking Menu entry fit better in WP Admin für Wordpress 5.7 #593
+
+= 2.4.2 (15.02.2021) = 
+* FIXED: Fixed permission issue on booking lists
+
+= 2.4.1 (14.02.2021) = 
+* FIXED: Avoid Uncaught Exception during Geo Coding on Update
+
+= 2.4.0 (12.02.2021) = 
+* NEW: Booking list for frontend users now available (my bookings)
+* NEW: Booking Widget now available (Widget display links to my bookings, login, logout) 
+* MODIFIED: Permissions changed so that only administrators can assign CBManagers to locations and items. #478
+* ENHANCED: Implementent message if backend users try to open preview of timeframes other than bookings
+* ENHANCED: Interface and layout map filter optimized
+* FIXED: generated duplicate booking codes if location was changed in existing timeframe. Now booking codes are deleted if location is not assigned to a timeframe #466
+* FIXED: Export booking codes as CSV caused formatting issues when opening in Excel for some users due to incorrect character encoding. UTF-8 encoding added to avoid this error. #467
+* FIXED: Small Commons API compatibility issues #281
+* ENHANCED: Added internal Class for better admin message management
+* FIXED: issue with filtered item list with role CB Manager (pagination based on inital filter)
+* FIXED: minor issue: Headers already sent error on restore default options
+* ADDED: function to remove deprecated user roles from former commonsbooking versions. affected users will get the role 'subscriber'
+* FIXED: migration issues when using elementor are solved. all postmeta fields are imported
+
+= 2.3.2 (18.01.2021) =
+* FIXED: map error due to missing option value
+
+= 2.3.1 (16.01.2021) =
+* FIXED: minor translation issue
+
+= 2.3 (15.01.2021) =
+* NEW: Map Feature now included in CommonsBooking. Map Feature was originally based on the Map Plugin made by fLotte Berlin. Many many thanks to fLotte for their great work and support.
+* NEW: added automatic reset to default values for some options if they are empty but needed for the plugin to work properly
+* NEW: Added customizable avilablity messages for location and item pages (can be set in options -> templates)
+* ENHANCED: reworked save options process so that permalink page refresh is not longer needed after updating url slugs
+* ENHANCED: Optimized timframe validation so that not overlapping weekdays on overlapping timeframes doesn't result in an validation error
+* ENHANCED: API route
+* ENHANCED: Removed default limitation of 2 months for maxium advance booking time. Now users can book as long as the timeframe is defined in advance. In a future release we will add the option to set the maximum advance booking time in admin options.
+* FIXED: booking caelndar not shown on some iphone models in portrait mode
 
 = 2.2.15 (25.12.2020) =
 * optmizized migration process

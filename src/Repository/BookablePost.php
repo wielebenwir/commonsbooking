@@ -42,38 +42,40 @@ abstract class BookablePost extends PostRepository
                 $items = array_merge($items, $query->get_posts());
             }
 
-            // get all items where current user is assigned as admin
-            $args = array(
-                'post_type'  => static::getPostType(),
-                'meta_query' => array(
-                    'relation' => 'AND',
-                    array(
-                        'key'     => '_'.static::getPostType().'_admins',
-                        'value'   => '"'.$current_user->ID.'"',
-                        'compare' => 'like',
-                    ),
-                ),
-                'nopaging'   => true,
-                'orderby'    => 'post_title',
-                'order'      => 'asc',
-            );
-
-            // workaround: if user has admin-role get all available items
-            // TODO: better solution to check if user has administrator role
-            if (in_array('administrator', $current_user->roles)) {
-                unset($args);
+            if (commonsbooking_isCurrentUserAdmin()) {
+                // if user has admin-role get all available items
                 $args = array(
                     'post_type' => static::getPostType(),
                     'nopaging'  => true,
                     'orderby'   => 'post_title',
                     'order'     => 'asc',
                 );
+            } else {
+                // get all items where current user is assigned as admin
+                $args = array(
+                    'post_type'  => static::getPostType(),
+                    'meta_query' => array(
+                        'relation' => 'AND',
+                        array(
+                            'key' => '_'.static::getPostType().'_admins',
+                            'compare' => 'EXISTS',
+                        ),
+                        array(
+                            'key'     => '_'.static::getPostType().'_admins',
+                            'value'   => '"'.$current_user->ID.'"',
+                            'compare' => 'like',
+                        )
+                    ),
+                    'nopaging'   => true,
+                    'orderby'    => 'post_title',
+                    'order'      => 'asc',
+                );
             }
-
 
             if($publishedOnly) {
                 $args['post_status'] = 'publish';
             }
+
             $query = new \WP_Query($args);
             if ($query->have_posts()) {
                 $items = array_merge($items, $query->get_posts());
@@ -172,6 +174,13 @@ abstract class BookablePost extends PostRepository
                 'post_status' => array('publish', 'inherit'),
                 'nopaging'    => true,
             );
+
+            // Add custom taxonomy filter
+            if(array_key_exists('category_slug', $args)) {
+                $args['taxonomy'] = static::getPostType() . 's_category';
+                $args['term'] = $args['category_slug'];
+                unset($args['category_slug']);
+            }
 
             $queryArgs = wp_parse_args($args, $defaults);
             $query     = new \WP_Query($queryArgs);

@@ -24,7 +24,7 @@
     } // $item_is_selected
 
     if(!array_key_exists('location', $templateData) && !array_key_exists('locations', $templateData)) { ?>
-        <div class="cb-status cb-availability-status cb-no-residency"><?php echo ( $noResultText );
+        <div class="cb-status cb-availability-status cb-status-not-available"><?php echo ( $noResultText );
     }
 
     if(!is_user_logged_in()) {
@@ -34,7 +34,7 @@
 <?php
             printf(
                 /* translators: %1$s: wp_login_url, 1$s: wp_registration_url */
-                commonsbooking_sanitizeHTML( __( 'To be able to book, you must first <a href="%1$s">login</a> or <a href="%2$s">register as new user</a>.', 'commonsbooking' ) ),
+                commonsbooking_sanitizeHTML( __( 'To be able to book, you must first <a href="%1$s">login</a> or <a href="%2$s">register</a>.', 'commonsbooking' ) ),
                 esc_url( wp_login_url( $current_url ) ), esc_url( wp_registration_url() )
             );
 ?>

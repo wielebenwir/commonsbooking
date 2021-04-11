@@ -4,6 +4,7 @@
 namespace CommonsBooking\API;
 
 
+use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Timeframe;
 use Geocoder\Geocoder;
@@ -134,13 +135,11 @@ class LocationsRoute extends BaseRoute
             $preparedItem->geometry->type        = "Point";
             $preparedItem->geometry->coordinates = [
                 floatval($longitude),
-                floatval($latitude)
+                floatval($latitude),
             ];
         } elseif ($item->formattedAddressOneLine()) {
-            $addresses = $this->getGeocoder()->geocodeQuery(GeocodeQuery::create($item->formattedAddressOneLine()));
-            if ( ! $addresses->isEmpty()) {
-                /** @var NominatimAddress $address */
-                $address                             = $addresses->first();
+            $address = GeoHelper::getAddressData($item->formattedAddressOneLine());
+            if ( $address !== null) {
                 $preparedItem->geometry              = new \stdClass();
                 $preparedItem->geometry->type        = "Point";
                 $preparedItem->geometry->coordinates = $address->getCoordinates()->toArray();
@@ -148,12 +147,12 @@ class LocationsRoute extends BaseRoute
                 // Save data to items
                 update_post_meta(
                     $item->ID,
-                    "geo_latitude",
+                    'geo_latitude',
                     $preparedItem->geometry->coordinates[1]
                 );
                 update_post_meta(
                     $item->ID,
-                    "geo_longitude",
+                    'geo_longitude',
                     $preparedItem->geometry->coordinates[0]
                 );
             } else {
@@ -162,43 +161,6 @@ class LocationsRoute extends BaseRoute
         }
 
         return $preparedItem;
-    }
-
-    /**
-     * @return Geocoder
-     */
-    public function getGeocoder(): Geocoder
-    {
-        if ($this->geocoder == null) {
-            $this->geocoder = new \Geocoder\StatefulGeocoder($this->getProvider(), 'en');
-        }
-
-        return $this->geocoder;
-    }
-
-    /**
-     * @return Provider
-     */
-    public function getProvider(): Provider
-    {
-        if ($this->provider == null) {
-            $this->provider = \Geocoder\Provider\Nominatim\Nominatim::withOpenStreetMapServer($this->getHttpClient(),
-                $_SERVER['HTTP_USER_AGENT']);;
-        }
-
-        return $this->provider;
-    }
-
-    /**
-     * @return Client
-     */
-    public function getHttpClient(): Client
-    {
-        if ($this->httpClient == null) {
-            $this->httpClient = new Client();
-        }
-
-        return $this->httpClient;
     }
 
 }

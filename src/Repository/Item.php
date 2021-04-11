@@ -23,8 +23,8 @@ class Item extends BookablePost
             $locationId = $locationId->ID;
         }
 
-        if(Plugin::getCacheItem()) {
-            return Plugin::getCacheItem();
+        if(Plugin::getCacheItem($locationId)) {
+            return Plugin::getCacheItem($locationId);
         } else {
             $items = [];
             $itemIds = [];
@@ -70,7 +70,7 @@ class Item extends BookablePost
                     unset($items[$key]);
                 }
             }
-            Plugin::setCacheItem($items);
+            Plugin::setCacheItem($items, $locationId);
             return $items;
         }
     }

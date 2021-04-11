@@ -1,18 +1,20 @@
 /*
  * Admin styles
- * @package   CommonsBooking2
- * @author    Florian Egermann <florian@wielebenwir.de>
- * @license   GPL-2.0+
- * @since 0.2
- * @link      http://www.wielebenwir.de
- * @copyright 2015 wielebenwir
+ *
+ * Loaded only in the WP Backend
  */
 
 /* Global styles */
 @import "../../global/sass/global";
 
+/* Lib: jQuery UI */
+@import "lib/_jquery-ui";
+
 /* Dashboard */
-@import "partials/_dashboard";
+@import "./partials/_dashboard";
 
 /* Timeframe Form */
-@import "partials/_form-timeframe";
+@import "./partials/_form-timeframe";
+
+/** Migration Settings */
+@import "./partials/_migration";

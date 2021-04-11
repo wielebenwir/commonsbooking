@@ -17,7 +17,8 @@ abstract class View
         'author_name'    => '',
         // Category: https://developer.wordpress.org/reference/classes/wp_query/#category-parameters
         'cat'            => '',
-        'cat_name'       => '',
+        'category_name'      => '',
+        'category_slug'       => '',
         // Tag: https://developer.wordpress.org/reference/classes/wp_query/#tag-parameters
         'tag'            => '',
         'tag_id'         => '',
