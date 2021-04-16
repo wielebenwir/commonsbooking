@@ -172,10 +172,9 @@ class Timeframe extends CustomPostType
     protected static function validateBookingParameters($itemId,$locationId,$startDate,$endDate)
     {
         // Get exiting bookings for defined parameters
-        $existingBookingsInRange = \CommonsBooking\Repository\Timeframe::getInRange(
+        $existingBookingsInRange = \CommonsBooking\Repository\Timeframe::getBookingInRange(
             [$locationId],
             [$itemId],
-            [Timeframe::BOOKING_ID],
             false,
             $startDate,
             $endDate

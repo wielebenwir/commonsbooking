@@ -317,9 +317,15 @@ class Calendar
      */
     public static function renderTable($atts): string
     {
-        $locationCategory = array_key_exists('locationcat', $atts) ? $atts['locationcat'] : false;
-        $itemCategory = array_key_exists('itemcat', $atts) ? $atts['itemcat'] : false;
-        $days = array_key_exists('days', $atts) ? $atts['days'] : 31;
+        $locationCategory = false;
+        if(is_array($atts) && array_key_exists('locationcat', $atts)) {
+            $locationCategory = $atts['locationcat'];
+        }
+        $itemCategory = false;
+        if(is_array($atts) && array_key_exists('itemcat', $atts)) {
+            $itemCategory = $atts['itemcat'];
+        }
+        $days = is_array($atts) && array_key_exists('days', $atts) ? $atts['days'] : 31;
 
         $desc = isset ($atts['desc']) ? $atts['desc'] : '';
         $date = new \DateTime();
