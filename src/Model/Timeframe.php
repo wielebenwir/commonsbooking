@@ -13,6 +13,8 @@ class Timeframe extends CustomPost
      */
     public const ERROR_TYPE = "timeframeValidationFailed";
 
+    public const REPETITION_END = "repetition-end";
+
     /**
      * Return residence in a human readable format
      *
@@ -51,7 +53,7 @@ class Timeframe extends CustomPost
      */
     public function getEndDate()
     {
-        $endDate = $this->getMeta('repetition-end');
+        $endDate = $this->getMeta(self::REPETITION_END);
         if ((string)intval($endDate) !== $endDate) {
             $endDate = strtotime($endDate);
         }
@@ -351,6 +353,23 @@ class Timeframe extends CustomPost
     public function getGrid()
     {
         return $this->getMeta('grid');
+    }
+
+    /**
+     * Returns grid size in hours.
+     * @return int|null
+     */
+    public function getGridSize(): ?int
+    {
+        if($this->getGrid() == 0) {
+            $startTime = strtotime($this->getMeta('start-time'));
+            $endTime = strtotime($this->getMeta('end-time'));
+            return  intval(round(abs($endTime - $startTime) / 3600,2));
+        } elseif ($this->isFullDay()) {
+            return 24;
+        } else {
+            return intval($this->getGrid());
+        }
     }
 
     /**
