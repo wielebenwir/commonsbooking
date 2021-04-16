@@ -49,7 +49,7 @@ $table-font-size: 12px;
             }
 
             &.unavailable {
-                background: transparent;
+                background: var(--litepickerDayIsLockedColor);
             }
 
             &.holiday {

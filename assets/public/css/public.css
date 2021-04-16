@@ -4820,7 +4820,7 @@
 }
 /* line 51, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.unavailable {
-  background: transparent;
+  background: var(--litepickerDayIsLockedColor);
 }
 /* line 55, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.holiday {

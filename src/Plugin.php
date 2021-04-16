@@ -100,7 +100,6 @@ class Plugin
      */
     public function init()
     {
-
         do_action('cmb2_init');
 
         // Enable CB1 User Fields (needed in case of migration from cb 0.9.x)

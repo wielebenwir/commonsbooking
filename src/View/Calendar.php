@@ -372,7 +372,6 @@ class Calendar
             $print .= "<th class='sortless' colspan='" . $month_cols . "'>" . $month2 . "</th>";
         }
         $print .= "</tr><tr><th>".__("Item","commonsbooking")."</th><th>".__("Location","commonsbooking")."<th class='cal sortless'>" . $dayStr . "</th></tr></thead><tbody>";
-
         $divider = "</td><td>";
 
         $items = get_posts(array(
@@ -395,12 +394,13 @@ class Calendar
             $item_name = $item->post_title;
 
             // Get timeframes for item
-            $timeframes = \CommonsBooking\Repository\Timeframe::get(
+            $timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
                 [],
                 [$itemID],
-                [],
-                null,
-                true
+                [Timeframe::BOOKABLE_ID],
+                true,
+                strtotime($today),
+                strtotime($last_day)
             );
 
             if ($timeframes) {
@@ -449,7 +449,7 @@ class Calendar
 
                         // Check day state
                         if(!count($data['slots'])) {
-                            $days_display[$dayIterator++] = "<span class='unavailable'>*</span>";
+                            $days_display[$dayIterator++] = "<span class='unavailable'></span>";
                         } elseif ($data['holiday']) {
                             $days_display[$dayIterator++] = "<span class='holiday'></span>";
                         }  elseif ($data['locked']) {

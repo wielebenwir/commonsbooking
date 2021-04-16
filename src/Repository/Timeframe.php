@@ -211,59 +211,27 @@ class Timeframe extends PostRepository
 
             if ($postIds && count($postIds)) {
 
-                $dateQuery = "";
-                // Only max timestamp
-                if($maxTimestamp && !$minTimestamp) {
-                    $dateQuery = "
-                    INNER JOIN $table_postmeta pm4 ON
-                        pm4.post_id = pm1.id AND (
-                            (
-                                pm4.meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "' AND
-                                pm4.meta_value > " . $maxTimestamp . "
-                            ) OR
-                            (
-                                NOT EXISTS ( 
-                                    SELECT * FROM $table_postmeta
-                                    WHERE
-                                        meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "' AND
-                                        post_id = pm4.post_id
-                                )
+                $dateQuery = "
+                INNER JOIN $table_postmeta pm4 ON
+                    pm4.post_id = pm1.id AND (
+                        pm4.meta_key = 'repetition-start' AND
+                        pm4.meta_value <= " . $maxTimestamp . "                            
+                    )
+                INNER JOIN $table_postmeta pm5 ON
+                    pm5.post_id = pm1.id AND (   
+                        (                         
+                            pm5.meta_key = 'repetition-end' AND
+                            pm5.meta_value >= " . $minTimestamp . "          
+                        ) OR (
+                            NOT EXISTS ( 
+                                SELECT * FROM $table_postmeta 
+                                WHERE
+                                    meta_key = 'repetition-end' AND
+                                    post_id = pm5.post_id
                             )
-                        )
-                    ";
-                // Only min timestamp
-                } elseif (!$maxTimestamp && $minTimestamp) {
-                    $dateQuery = "
-                    INNER JOIN $table_postmeta pm4 ON
-                        pm4.post_id = pm1.id AND (                             
-                            pm4.meta_key = 'repetition-start' AND
-                            pm4.meta_value < " . $minTimestamp . "                            
-                        )
-                    ";
-                // timestamp range
-                } else {
-                    $dateQuery = "
-                    INNER JOIN $table_postmeta pm4 ON
-                        pm4.post_id = pm1.id AND (                            
-                            pm4.meta_key = 'repetition-start' AND
-                            pm4.meta_value < " . $minTimestamp . "                            
-                        )
-                    INNER JOIN $table_postmeta pm5 ON
-                        pm5.post_id = pm1.id AND (   
-                            (                         
-                                pm5.meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "' AND
-                                pm5.meta_value > " . $maxTimestamp . "
-                            ) OR (
-                                NOT EXISTS ( 
-                                    SELECT * FROM $table_postmeta 
-                                    WHERE
-                                        meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "' AND
-                                        post_id = pm4.post_id
-                                )
-                            )                          
-                        )
-                    ";
-                }
+                        )                          
+                    )
+                ";
 
                 // Complete query
                 $query = "

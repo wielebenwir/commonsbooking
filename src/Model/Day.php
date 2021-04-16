@@ -317,18 +317,17 @@ class Day
                     if ($dayOfWeek == 0) {
                         $dayOfWeek = 7;
                     }
-                    if (is_array($timeframeWeekdays) && ! in_array($dayOfWeek, $timeframeWeekdays)) {
+                    if (is_array($timeframeWeekdays) && in_array($dayOfWeek, $timeframeWeekdays)) {
                         return true;
                     }
                     break;
-
 
                 // Monthly Rep
                 case "m":
                     $dayOfMonth = intval($this->getDateObject()->format('j'));
                     $timeframeStartDayOfMonth = $this->getStartDate($timeframe)->format('j');
 
-                    if ($dayOfMonth != $timeframeStartDayOfMonth) {
+                    if ($dayOfMonth == $timeframeStartDayOfMonth) {
                         return true;
                     }
                     break;
@@ -337,13 +336,13 @@ class Day
                 case "y":
                     $date = intval($this->getDateObject()->format('dm'));
                     $timeframeDate = $this->getStartDate($timeframe)->format('dm');
-                    if ($date != $timeframeDate) {
+                    if ($date == $timeframeDate) {
                         return true;
                     }
                     break;
             }
         }
-        return false;
+        return true;
     }
 
     /**
@@ -361,7 +360,7 @@ class Day
         // Iterate through timeframes and fill slots
         foreach ($timeframes as $timeframe) {
             // Check for repetition timeframe selected days
-            if ($this->isInTimeframe($timeframe)) continue;
+            if (!$this->isInTimeframe($timeframe)) continue;
 
             // Slots
             $startSlot = $this->getStartSlot($grid, $timeframe);
