@@ -126,8 +126,8 @@ class Location extends BookablePost
     public function formattedPickupInstructions()
     {
         $html_br     = '<br>';
-        $html_output = $html_br.$html_br.CB::get('location',
-                COMMONSBOOKING_METABOX_PREFIX.'location_pickupinstructions').$html_br;
+        $html_output = $html_br.$html_br . CB::get('location',
+                COMMONSBOOKING_METABOX_PREFIX.'location_pickupinstructions', $this->post->ID) . $html_br;
 
         return $html_output;
     }
@@ -139,7 +139,7 @@ class Location extends BookablePost
      */
     public function formattedPickupInstructionsOneLine()
     {
-        $html_output = CB::get('location', COMMONSBOOKING_METABOX_PREFIX.'location_pickupinstructions');
+        $html_output = CB::get('location', COMMONSBOOKING_METABOX_PREFIX.'location_pickupinstructions', $this->post->ID);
 
         return $html_output;
     }
