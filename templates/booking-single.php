@@ -65,6 +65,10 @@ $text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates
         <div><?php echo $location->formattedAddressOneLine(); ?></div>
 
     </div><!-- .cb-address -->
+    <div class="cb-list-content cb-pickupinstructions cb-col-30-70">
+        <div><?php echo esc_html__('Pickup instructions', 'commonsbooking'); ?></div>
+        <div><?php echo $location->formattedPickupInstructionsOneLine(); ?></div>
+    </div><!-- .cb-cb-pickupinstructions -->
     <?php 
     // show contact details only after booking is confirmed or if options are set to show contactinfo even on unconfirmed booking status
     if($post->post_status == 'confirmed' OR $show_contactinfo_unconfirmed == 'on') { ?>
@@ -72,10 +76,6 @@ $text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates
         <div><?php echo esc_html__('Contact', 'commonsbooking'); ?></div>
         <div><?php echo $location->formattedContactInfoOneLine(); ?></div>
     </div><!-- .cb-contact -->
-    <div class="cb-list-content cb-pickupinstructions cb-col-30-70">
-        <div><?php echo esc_html__('Pickup instructions', 'commonsbooking'); ?></div>
-        <div><?php echo $location->formattedPickupInstructionsOneLine(); ?></div>
-    </div><!-- .cb-cb-pickupinstructions -->
 <?php
 // else; show info-text to inform user to confirm booking to see contact details
 } else {
