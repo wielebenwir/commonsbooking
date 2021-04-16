@@ -81,7 +81,7 @@ class Timeframe extends CustomPostType
             'location-id'      => esc_html__('Location', 'commonsbooking'),
             'post_date'        => esc_html__('Bookingdate', 'commonsbooking'),
             'repetition-start' => esc_html__('Start Date', 'commonsbooking'),
-            'repetition-end'   => esc_html__('End Date', 'commonsbooking'),
+            \CommonsBooking\Model\Timeframe::REPETITION_END   => esc_html__('End Date', 'commonsbooking'),
             'post_status'      => esc_html__('Booking Status', 'commonsbooking'),
         ];
 
@@ -204,8 +204,19 @@ class Timeframe extends CustomPostType
                 throw new \Exception('Location does not exist. ('.$locationId.')');
             }
 
-            $startDate = isset($_REQUEST['repetition-start']) && $_REQUEST['repetition-start'] != "" ? sanitize_text_field($_REQUEST['repetition-start']) : null;
-            $endDate   = isset($_REQUEST['repetition-end']) && $_REQUEST['repetition-end'] != "" ? sanitize_text_field($_REQUEST['repetition-end']) : null;
+            $startDate = null;
+            if (isset($_REQUEST['repetition-start']) && $_REQUEST['repetition-start'] != "") {
+                $startDate = sanitize_text_field($_REQUEST['repetition-start']);
+            }
+
+            $endDate = null;
+            if (
+                isset($_REQUEST[\CommonsBooking\Model\Timeframe::REPETITION_END]) &&
+                $_REQUEST[\CommonsBooking\Model\Timeframe::REPETITION_END] != ""
+            ) {
+                $endDate = sanitize_text_field($_REQUEST[\CommonsBooking\Model\Timeframe::REPETITION_END]);
+            }
+
             $isBooking = array_key_exists('type', $_REQUEST) && self::BOOKING_ID == sanitize_text_field($_REQUEST['type']);
 
             if($isBooking) {
@@ -242,6 +253,8 @@ class Timeframe extends CustomPostType
                     $postId            = wp_update_post($postarr);
                 }
 
+                $this->saveGridSizes($postId, $locationId, $itemId, $startDate, $endDate);
+
                 $booking_metafield = new \CommonsBooking\Model\Booking($postId);
                 // we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
                 $booking_metafield->assignBookableTimeframeFields();
@@ -258,6 +271,35 @@ class Timeframe extends CustomPostType
             }
 
             exit;
+        }
+    }
+
+    /**
+     * Multi grid size
+     * We need to save the grid size for timeframes with full slot grid.
+     * @param $postId
+     * @param $locationId
+     * @param $itemId
+     * @param $startDate
+     * @param $endDate
+     */
+    private function saveGridSizes($postId, $locationId, $itemId, $startDate, $endDate): void
+    {
+        $startTimeFrame = \CommonsBooking\Repository\Timeframe::getRelevantTimeFrame($locationId, $itemId, $startDate);
+        if ($startTimeFrame && $startTimeFrame->getGrid() == 0) {
+            update_post_meta(
+                $postId,
+                \CommonsBooking\Model\Booking::START_TIMEFRAME_GRIDSIZE,
+                $startTimeFrame->getGridSize()
+            );
+        }
+        $endTimeFrame = \CommonsBooking\Repository\Timeframe::getRelevantTimeFrame($locationId, $itemId, $endDate);
+        if ($endTimeFrame && $endTimeFrame->getGrid() == 0) {
+            update_post_meta(
+                $postId,
+                \CommonsBooking\Model\Booking::END_TIMEFRAME_GRIDSIZE,
+                $endTimeFrame->getGridSize()
+            );
         }
     }
 
@@ -579,7 +621,7 @@ class Timeframe extends CustomPostType
                 $_GET['admin_filter_enddate'] != ''
             ) {
                 $query->query_vars['meta_query'][] = array(
-                    'key'     => 'repetition-end',
+                    'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
                     'value'   => strtotime(sanitize_text_field($_GET['admin_filter_enddate'])),
                     'compare' => "<=",
                 );
@@ -1106,7 +1148,7 @@ class Timeframe extends CustomPostType
                     echo $output;
                     break;
                 case 'repetition-start':
-                case 'repetition-end':
+                case \CommonsBooking\Model\Timeframe::REPETITION_END:
                     echo date('d.m.Y H:i', $value);
                     break;
                 default:

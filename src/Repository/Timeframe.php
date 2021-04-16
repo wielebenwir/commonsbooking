@@ -70,11 +70,15 @@ class Timeframe extends PostRepository
                     INNER JOIN $table_postmeta pm5 ON
                         pm5.post_id = pm1.id AND (
                             (
-                                pm5.meta_key = 'repetition-end' AND
+                                pm5.meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "' AND
                                 pm5.meta_value BETWEEN " . strtotime($date) . " AND 3000000000
                             ) OR
                             (
-                                pm1.id not in (SELECT post_id FROM $table_postmeta WHERE meta_key = 'repetition-end')
+                                pm1.id not in (
+                                    SELECT post_id FROM $table_postmeta 
+                                    WHERE 
+                                        meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "'
+                                )
                             )
                         )                        
                 ";
@@ -87,11 +91,15 @@ class Timeframe extends PostRepository
                     INNER JOIN $table_postmeta pm4 ON
                         pm4.post_id = pm1.id AND (
                             ( 
-                                pm4.meta_key = 'repetition-end' AND
+                                pm4.meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "' AND
                                 pm4.meta_value > " . $minTimestamp . "
                             ) OR
                             (
-                                pm1.id not in (SELECT post_id FROM $table_postmeta WHERE meta_key = 'repetition-end')
+                                pm1.id not in (
+                                    SELECT post_id FROM $table_postmeta 
+                                    WHERE
+                                        meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "'
+                                )
                             )
                         )
                 ";
@@ -203,19 +211,59 @@ class Timeframe extends PostRepository
 
             if ($postIds && count($postIds)) {
 
-                $dateQuery = "
-                INNER JOIN $table_postmeta pm4 ON
-                    pm4.post_id = pm1.id AND (
-                        ( 
-                            pm4.meta_key = 'repetition-end' AND
-                            pm4.meta_value > " . $minTimestamp . "
-                        ) AND
-                        (
-                            pm4.meta_key = 'repetition-end' AND
-                            pm4.meta_value < " . $maxTimestamp . "
+                $dateQuery = "";
+                // Only max timestamp
+                if($maxTimestamp && !$minTimestamp) {
+                    $dateQuery = "
+                    INNER JOIN $table_postmeta pm4 ON
+                        pm4.post_id = pm1.id AND (
+                            (
+                                pm4.meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "' AND
+                                pm4.meta_value > " . $maxTimestamp . "
+                            ) OR
+                            (
+                                NOT EXISTS ( 
+                                    SELECT * FROM $table_postmeta
+                                    WHERE
+                                        meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "' AND
+                                        post_id = pm4.post_id
+                                )
+                            )
                         )
-                    )
-                ";
+                    ";
+                // Only min timestamp
+                } elseif (!$maxTimestamp && $minTimestamp) {
+                    $dateQuery = "
+                    INNER JOIN $table_postmeta pm4 ON
+                        pm4.post_id = pm1.id AND (                             
+                            pm4.meta_key = 'repetition-start' AND
+                            pm4.meta_value < " . $minTimestamp . "                            
+                        )
+                    ";
+                // timestamp range
+                } else {
+                    $dateQuery = "
+                    INNER JOIN $table_postmeta pm4 ON
+                        pm4.post_id = pm1.id AND (                            
+                            pm4.meta_key = 'repetition-start' AND
+                            pm4.meta_value < " . $minTimestamp . "                            
+                        )
+                    INNER JOIN $table_postmeta pm5 ON
+                        pm5.post_id = pm1.id AND (   
+                            (                         
+                                pm5.meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "' AND
+                                pm5.meta_value > " . $maxTimestamp . "
+                            ) OR (
+                                NOT EXISTS ( 
+                                    SELECT * FROM $table_postmeta 
+                                    WHERE
+                                        meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "' AND
+                                        post_id = pm4.post_id
+                                )
+                            )                          
+                        )
+                    ";
+                }
 
                 // Complete query
                 $query = "
@@ -343,6 +391,44 @@ class Timeframe extends PostRepository
             Plugin::setCacheItem($posts, $customId);
 
             return $posts;
+        }
+    }
+
+    /**
+     * Returns timeframe that matches for timestamp based on date AND its time.
+     * Needed for booking creation based on multiple timeframes with different multi slot grids.
+     * @param $locationId
+     * @param $itemId
+     * @param $timestamp
+     * @return \CommonsBooking\Model\Timeframe
+     */
+    public static function getRelevantTimeFrame($locationId, $itemId, $timestamp)
+    {
+        if (Plugin::getCacheItem()) {
+            return Plugin::getCacheItem();
+        } else {
+            $startTimestampTime = date('H:i', intval($timestamp));
+            $endTimestampTime = date('H:i', intval($timestamp) + 1);
+
+            $relevantTimeframes = self::getInRange(
+                [$locationId],
+                [$itemId],
+                [\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID],
+                true,
+                $timestamp,
+                $timestamp
+            );
+
+            /** @var \CommonsBooking\Model\Timeframe $timeframe */
+            foreach ($relevantTimeframes as $timeframe) {
+                if (
+                    $timeframe->getStartTime() == $startTimestampTime ||
+                    $timeframe->getEndTime() == $endTimestampTime
+                ) {
+                    Plugin::setCacheItem($timeframe);
+                    return $timeframe;
+                }
+            }
         }
     }
 
