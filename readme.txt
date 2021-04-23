@@ -82,6 +82,18 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 
 == Changelog ==
 
+= 2.4.4 (xxxx) = 
+* NEW: Added category filter in items and locations shortcode. You can use [cb_items category_slug=category_slug] to show items by a single category.
+* NEW: Added the p attribute to cb_items shortcode, so you can display a single item by using [cb_items p=POSTID]
+* CHANGED: Item and location list in select dropdown in timeframe editor is not restricted to published elements anymore. 
+* ENHANCED: template improvements: not available notice now in separate line in item/location lists
+* ENHANCED: pickupinstructions now inclueded in the location section on the booking page (changed template: booking-single.php)
+* ENHANCED: inlcuded pickupinstructions in the following templates: location-calendar-header.php / location-single-meta.php
+* ENHANCED: Changed the standard image thumbnail size in listings
+* FIXED: If multiple timeframes are set the calendar only showed the last timeframe in booking calendar. 
+* FIXED: Fixed some issues with map category filter
+
+
 = 2.4.3 (09.04.2021) = 
 * NEW: Eport-Tool for exporting timeframes (Bookings etc.) with flexible data fields. Useful for external analytics or to create connections to external systems like automatic lockers etc.
 * NEW: Booking comment: Users can add an internal comment to a booking that can be viewed by location administrators and can be used in email template via template tags (see template tags in documentation)
