@@ -3675,7 +3675,7 @@
   /* sub lists wrapper */
 }
 /* line 24, ../sass/partials/_lists.scss */
-.cb-wrapper .cb-list-content div {
+.cb-wrapper .cb-list-content.cb-pickupinstructions div {
   white-space: pre-wrap;
 }
 /* line 29, ../sass/partials/_lists.scss */
