@@ -697,7 +697,7 @@ class Timeframe extends CustomPostType
                 'name'    => esc_html__("Item", 'commonsbooking'),
                 'id'      => "item-id",
                 'type'    => 'select',
-                'options' => self::sanitizeOptions(\CommonsBooking\Repository\Item::getByCurrentUser())
+                'options' => self::sanitizeOptions(\CommonsBooking\Repository\Item::getByCurrentUser()),
             ),
             array(
                 'name' => esc_html__("Configure timeframe", 'commonsbooking'),
