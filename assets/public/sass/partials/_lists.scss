@@ -20,6 +20,10 @@
 	margin-top: $spacer-big;
 
 	@extend .cb-box;
+	
+	.cb-list-content.cb-pickupinstructions div {
+		white-space: pre-wrap; // enable line break in content from meta textfields 
+	}
 
 	/* headline */
 	h1, h2, h3, h4 {
