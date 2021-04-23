@@ -3435,13 +3435,13 @@
 }
 
 /* line 128, ../../global/sass/partials/_extends.scss */
-.cb-pill, .cb-wrapper .cb-notice-inline {
+.cb-pill {
   border-radius: 8px;
   padding: 0;
   margin: 0;
 }
 /* line 132, ../../global/sass/partials/_extends.scss */
-.cb-pill a, .cb-wrapper .cb-notice-inline a {
+.cb-pill a {
   text-decoration: none;
   color: #FFF;
   padding: 5px 10px;
@@ -4769,13 +4769,12 @@
   background: #d5425c;
 }
 /* line 33, ../sass/partials/_notice.scss */
-.cb-wrapper .cb-notice-inline {
-  padding: 5px;
-  display: inline-block;
+.cb-wrapper .cb-notice-small {
+  display: block;
 }
-/* line 38, ../sass/partials/_notice.scss */
-.cb-wrapper .cb-notice-inline.cb-status-not-available {
-  color: #9D9F9D;
+/* line 35, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice-small.cb-status-not-available {
+  color: #d5425c;
 }
 
 /* Fixes for specific WP Themes */
