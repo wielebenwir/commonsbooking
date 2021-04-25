@@ -3435,13 +3435,13 @@
 }
 
 /* line 128, ../../global/sass/partials/_extends.scss */
-.cb-pill, .cb-wrapper .cb-notice-inline {
+.cb-pill {
   border-radius: 8px;
   padding: 0;
   margin: 0;
 }
 /* line 132, ../../global/sass/partials/_extends.scss */
-.cb-pill a, .cb-wrapper .cb-notice-inline a {
+.cb-pill a {
   text-decoration: none;
   color: #FFF;
   padding: 5px 10px;
@@ -3674,34 +3674,38 @@
   /* headline */
   /* sub lists wrapper */
 }
-/* line 25, ../sass/partials/_lists.scss */
+/* line 24, ../sass/partials/_lists.scss */
+.cb-wrapper .cb-list-content.cb-pickupinstructions div {
+  white-space: pre-wrap;
+}
+/* line 29, ../sass/partials/_lists.scss */
 .cb-wrapper h1, .cb-wrapper h2, .cb-wrapper h3, .cb-wrapper h4 {
   margin: 0;
   padding-bottom: 10px;
   padding-top: 0;
 }
-/* line 31, ../sass/partials/_lists.scss */
+/* line 35, ../sass/partials/_lists.scss */
 .cb-wrapper .cb-title {
   color: #84AE53;
 }
-/* line 40, ../sass/partials/_lists.scss */
+/* line 44, ../sass/partials/_lists.scss */
 .cb-wrapper > .cb-wrapper {
   overflow: hidden;
 }
-/* line 45, ../sass/partials/_lists.scss */
+/* line 49, ../sass/partials/_lists.scss */
 .cb-wrapper > .cb-wrapper > div {
   /* sub list items */
   padding: 5px 0;
 }
-/* line 48, ../sass/partials/_lists.scss */
+/* line 52, ../sass/partials/_lists.scss */
 .cb-wrapper > .cb-wrapper > div:last-of-type {
   border-bottom: none;
 }
-/* line 66, ../sass/partials/_lists.scss */
+/* line 70, ../sass/partials/_lists.scss */
 .cb-wrapper .cb-action {
   background: transparent;
 }
-/* line 68, ../sass/partials/_lists.scss */
+/* line 72, ../sass/partials/_lists.scss */
 .cb-wrapper .cb-action .cb-button, .cb-wrapper .cb-action .cb-button-container a, .cb-button-container .cb-wrapper .cb-action a, .cb-wrapper .cb-action input, .cb-wrapper .cb-action #booking-form input, .cb-wrapper #booking-form .cb-action input, .cb-map-filters.cb-wrapper .cb-action .cb-map-button-wrapper button, .cb-map-filters.cb-wrapper .cb-map-button-wrapper .cb-action button {
   display: inline-block;
 }
@@ -4380,8 +4384,8 @@
 /* line 80, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-link b a {
   font-size: 18px;
-  color: #506CA9;
-  text-decoration: none;
+  color: #84AE53;
+  text-decoration: underline;
 }
 /* line 86, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability {
@@ -4769,13 +4773,12 @@
   background: #d5425c;
 }
 /* line 33, ../sass/partials/_notice.scss */
-.cb-wrapper .cb-notice-inline {
-  padding: 5px;
-  display: inline-block;
+.cb-wrapper .cb-notice-small {
+  display: block;
 }
-/* line 38, ../sass/partials/_notice.scss */
-.cb-wrapper .cb-notice-inline.cb-status-not-available {
-  color: #9D9F9D;
+/* line 35, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice-small.cb-status-not-available {
+  color: #d5425c;
 }
 
 /* Styles for items table */
