@@ -34,5 +34,5 @@ if (array_key_exists('data', $templateData) && count($templateData['data'])) {
         commonsbooking_get_template_part( 'timeframe', 'withitem' ); // file: timeframe-withlocation.php
     }
 } else { ?>
-    <div class="cb-status cb-availability-status"><?php echo ( $noResultText ); ?></div>
+    <div class="cb-status cb-availability-status cb-status-not-available cb-notice-small"><?php echo ( $noResultText ); ?></div>
 <?php } // end if ($timeframes) ?>
