@@ -18,8 +18,6 @@ This plugin gives associations, groups and individuals the ability to share item
 
 CommonsBooking was developed for the ["Commons Cargobike" movement](http://commons-cargobikes.org/), but it can be used for any kind items.
 
-This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordpress.org/plugins/commons-booking/) will be retired some time in the future.
-
 **Unique features:**
 
 * Items can be assigned to different locations for the duration of a timeframe, each with their own contact information.  
@@ -92,6 +90,7 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 * ENHANCED: Changed the standard image thumbnail size in listings
 * FIXED: If multiple timeframes are set the calendar only showed the last timeframe in booking calendar. 
 * FIXED: Fixed some issues with map category filter
+* FIXED: fixed interaction issues with calender when using timeslots. pickup field resets when selecting pickup time (fixed issues #629 and #619)
 
 
 = 2.4.3 (09.04.2021) = 
