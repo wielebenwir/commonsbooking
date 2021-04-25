@@ -363,15 +363,15 @@ class Calendar
         $print .= "<tr><th colspan='2' class='sortless'>" . $desc . "</th><th class='sortless' colspan='" . $colspan . "'>";
 
         if ($colspan > 1) {
-            $print .= strftime('%B') . "</th>";
+            $print .= date_i18n('F') . "</th>";
         } else {
-            $print .= strftime('%b') . "</th>";
+            $print .= date_i18n('M'). "</th>";
         }
 
         if ($month_cols > 1) {
-            $month2 = strftime('%B', strtotime($days_dates[$days - 1]));
+            $month2 = date_i18n('F', strtotime($days_dates[$days - 1]));
         } else {
-            $month2 = strftime('%b', strtotime($days_dates[$days - 1]));
+            $month2 = date_i18n('M', strtotime($days_dates[$days - 1]));
         }
 
         if ($colspan < $days) {
