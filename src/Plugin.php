@@ -150,9 +150,6 @@ class Plugin
 
         // Init booking codes table
         BookingCodes::initBookingCodesTable();
-
-        // Clear cache
-        self::clearCache();
     }
 
     public static function admin_init()
@@ -626,6 +623,9 @@ class Plugin
 
             // update version number in options
             update_option($commonsbooking_version_option, COMMONSBOOKING_VERSION);
+
+            // Clear cache
+            self::clearCache();
         }
     }
 
