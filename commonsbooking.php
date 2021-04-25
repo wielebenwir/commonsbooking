@@ -229,7 +229,6 @@ add_action('admin_notices', array(Plugin::class, 'renderError') );
  */
 function commonsbooking_sanitizeHTML($string)
 {
-
     global $allowedposttags;
 
     $allowed_atts = array(

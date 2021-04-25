@@ -32,7 +32,7 @@ class Booking extends PostRepository
                     'type'    => 'numeric',
                 ),
                 array(
-                    'key'     => 'repetition-end',
+                    'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
                     'value'   => $endDate,
                     'compare' => '=',
                 ),

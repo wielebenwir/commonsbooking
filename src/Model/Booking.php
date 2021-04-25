@@ -11,6 +11,10 @@ use CommonsBooking\Repository\Timeframe;
 class Booking extends CustomPost
 {
 
+    const START_TIMEFRAME_GRIDSIZE = "start-timeframe-gridsize";
+
+    const END_TIMEFRAME_GRIDSIZE = "end-timeframe-gridsize";
+
     /**
      * Booking states.
      * @var string[]
@@ -165,7 +169,7 @@ class Booking extends CustomPost
         $time = new \DateTime();
         $fieldValue = $this->getMeta('repetition-start');
         if($fieldName == "end-time") {
-            $fieldValue = $this->getMeta('repetition-end');
+            $fieldValue = $this->getMeta(\CommonsBooking\Model\Timeframe::REPETITION_END);
         }
         $time->setTimestamp($fieldValue);
         return $time->format('H:i');
@@ -201,7 +205,7 @@ class Booking extends CustomPost
         $date_format = get_option('date_format');
 
         $startdate = date_i18n($date_format, $this->getMeta('repetition-start'));
-        $enddate = date_i18n($date_format, $this->getMeta('repetition-end'));
+        $enddate = date_i18n($date_format, $this->getMeta(\CommonsBooking\Model\Timeframe::REPETITION_END));
 
         if ($startdate == $enddate) {
             /* translators: %s = date in wordpress defined format */
@@ -237,12 +241,18 @@ class Booking extends CustomPost
             return $date_start;
         }
 
-        if ($grid > 0) { // if grid is set to hourly (grid = 1) or a multiple of an hour
-            $time_end = date_i18n($time_format, $this->getMeta('repetition-start') + (60 * 60 * $grid));
+        if ($grid == 0) { // if grid is set to slot duration
+            $time_end = date_i18n( $time_format, strtotime($this->getMeta('repetition-start')));
+
+            // If we have the grid size, we use it to calculate right time end
+            $timeframeGridSize = $this->getMeta(Booking::START_TIMEFRAME_GRIDSIZE);
+            if($timeframeGridSize) {
+                $grid = $timeframeGridSize;
+            }
         }
 
-        if ($grid == 0) { // if grid is set to slot duration
-            $time_end = date_i18n($time_format, strtotime($this->getMeta('end-time')));
+        if ($grid > 0) { // if grid is set to hourly (grid = 1) or a multiple of an hour
+            $time_end = date_i18n($time_format, $this->getMeta('repetition-start') + (60 * 60 * $grid));
         }
 
         return $date_start . ' ' . $time_start . ' - ' . $time_end;
@@ -262,8 +272,8 @@ class Booking extends CustomPost
         $date_format = get_option('date_format');
         $time_format = get_option('time_format');
 
-        $date_end = date_i18n($date_format, $this->getMeta('repetition-end'));
-        $time_end = date_i18n($time_format, $this->getMeta('repetition-end') + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
+        $date_end = date_i18n($date_format, $this->getMeta(\CommonsBooking\Model\Timeframe::REPETITION_END));
+        $time_end = date_i18n($time_format, $this->getMeta(\CommonsBooking\Model\Timeframe::REPETITION_END) + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
 
         $grid = $this->getMeta('grid');
         $full_day = $this->getMeta('full-day');
@@ -272,12 +282,18 @@ class Booking extends CustomPost
             return $date_end;
         }
 
-        if ($grid > 0) { // if grid is set to hourly (grid = 1) or a multiple of an hour
-            $time_start = date_i18n($time_format, $this->getMeta('repetition-end') +1 -(60 * 60 * $grid) );
-        }
-
         if ($grid == 0) { // if grid is set to slot duration
             $time_start = date_i18n($time_format, strtotime($this->getMeta('start-time')));
+
+            // If we have the grid size, we use it to calculate right time start
+            $timeframeGridSize = $this->getMeta(Booking::END_TIMEFRAME_GRIDSIZE);
+            if($timeframeGridSize) {
+                $grid = $timeframeGridSize;
+            }
+        }
+
+        if ($grid > 0) { // if grid is set to hourly (grid = 1) or a multiple of an hour
+            $time_start = date_i18n($time_format, $this->getMeta(\CommonsBooking\Model\Timeframe::REPETITION_END) +1 -(60 * 60 * $grid) );
         }
 
         return $date_end . ' ' . $time_start . ' - ' . $time_end;
@@ -288,7 +304,7 @@ class Booking extends CustomPost
     }
 
     public function getEndDate() {
-        return $this->getMeta('repetition-end');
+        return $this->getMeta(\CommonsBooking\Model\Timeframe::REPETITION_END);
     }
 
     /**

@@ -450,7 +450,7 @@ class Migration
         // CB2 <-> CB1
         $postMeta[COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID'] = $timeframe['id'];
         $postMeta['repetition-start'] = strtotime($timeframe['date_start']);
-        $postMeta['repetition-end'] = strtotime($timeframe['date_end']);
+        $postMeta[\CommonsBooking\Model\Timeframe::REPETITION_END] = strtotime($timeframe['date_end']);
         $postMeta['item-id'] = $cbItem ? $cbItem->ID : '';
         $postMeta['location-id'] = $cbLocation ? $cbLocation->ID : '';
         $postMeta['type'] = Timeframe::BOOKABLE_ID;
@@ -498,7 +498,7 @@ class Migration
         $postMeta = [
             COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID' => $booking['id'],
             'repetition-start'                     => strtotime($booking['date_start']),
-            'repetition-end'                       => strtotime($booking['date_end']),
+            \CommonsBooking\Model\Timeframe::REPETITION_END => strtotime($booking['date_end']),
             'item-id'                              => $cbItem ? $cbItem->ID : '',
             'location-id'                          => $cbLocation ? $cbLocation->ID : '',
             'type'                                 => Timeframe::BOOKING_ID,

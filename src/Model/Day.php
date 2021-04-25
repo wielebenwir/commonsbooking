@@ -268,7 +268,7 @@ class Day
      */
     protected function getEndDate($timeframe)
     {
-        $startDateString = intval(get_post_meta($timeframe->ID, 'repetition-end', true));
+        $startDateString = intval(get_post_meta($timeframe->ID, \CommonsBooking\Model\Timeframe::REPETITION_END, true));
         $startDate = new \DateTime();
         $startDate->setTimestamp($startDateString);
         return $startDate;
