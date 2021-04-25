@@ -192,7 +192,7 @@ function CB_Map() {
                 popup_items += '<div class="cb-map-popup-item-link">'
 
                 if (item.status == 'publish') {
-                    popup_items += '<b><a target="_blank" href="' + item.link + '">' + item.name + '</a></b>';
+                    popup_items += '<b><a href="' + item.link + '">' + item.name + '</a></b>';
                 } else {
                     popup_items += '<b>' + item.name + '</b> - ' + cb_map.translation['COMING_SOON'];
                 }
