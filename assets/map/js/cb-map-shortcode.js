@@ -192,7 +192,7 @@ function CB_Map() {
                 popup_items += '<div class="cb-map-popup-item-link">'
 
                 if (item.status == 'publish') {
-                    popup_items += '<b><a target="_blank" href="' + item.link + '">' + item.name + '</a></b>';
+                    popup_items += '<b><a href="' + item.link + '">' + item.name + '</a></b>';
                 } else {
                     popup_items += '<b>' + item.name + '</b> - ' + cb_map.translation['COMING_SOON'];
                 }
@@ -252,7 +252,7 @@ function CB_Map() {
             //popup content
             var popup_content = '<div class="cb-map-location-info-name">';
             popup_content += '<b>' + location.location_name + '</b>';
-            popup_content += '<span id="location-zoom-in-' + that.settings.cb_map_id + '-' + index + '" class="dashicons dashicons-search"></span>';
+            //popup_content += '<span id="location-zoom-in-' + that.settings.cb_map_id + '-' + index + '" class="dashicons dashicons-search"></span>';
             popup_content += '</div>';
             popup_content += '<div  class="cb-map-location-info-address">' + location.address.street + ', ' + location.address.zip + ' ' + location.address.city + '</div>';
 

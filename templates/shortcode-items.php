@@ -26,7 +26,7 @@ $noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLU
         <h2><?php echo $item->titleLink(); ?></h2>
         <?php echo $item->excerpt(); ?>
         <?php if (! $hasTimeFrames) { ?>
-            <div class="cb-status cb-availability-status cb-status-not-available cb-notice-inline"><?php echo ( $noResultText ); ?></div>
+            <div class="cb-status cb-availability-status cb-status-not-available cb-notice-small"><?php echo ( $noResultText ); ?></div>
        <?php } ?>
     </div>
 </div><!-- .cb-list-header -->

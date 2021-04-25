@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name:         Commons Booking
- * Version:             2.4.3
+ * Version:             2.4.4
  * Requires at least:   5.2
  * Requires PHP:        7.0
  * Plugin URI:          https://commonsbooking.org
@@ -25,7 +25,7 @@ use CommonsBooking\Wordpress\Options\AdminOptions;
 
 defined('ABSPATH') or die("Thanks for visting");
 
-define('COMMONSBOOKING_VERSION', '2.4.3');
+define('COMMONSBOOKING_VERSION', '2.4.4');
 define('COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking');
 define('COMMONSBOOKING_MENU_SLUG', COMMONSBOOKING_PLUGIN_SLUG . '-menu');
 define('COMMONSBOOKING_PLUGIN_DIR', plugin_dir_path(__FILE__));
@@ -229,7 +229,6 @@ add_action('admin_notices', array(Plugin::class, 'renderError') );
  */
 function commonsbooking_sanitizeHTML($string)
 {
-
     global $allowedposttags;
 
     $allowed_atts = array(

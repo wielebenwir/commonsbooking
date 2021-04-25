@@ -30,13 +30,10 @@
 		  background: $color-error;
 		}
 	  }
-	 .cb-notice-inline {
-		 @extend .cb-pill;
-		 padding: $spacer-small;
-		 display: inline-block;
-		 
+	 .cb-notice-small {
+		 display: block;
 		&.cb-status-not-available {
-			color: $color-gray-silver;
+			color: $color-error;
 		}
 	 }
 }

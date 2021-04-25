@@ -18,8 +18,6 @@ This plugin gives associations, groups and individuals the ability to share item
 
 CommonsBooking was developed for the ["Commons Cargobike" movement](http://commons-cargobikes.org/), but it can be used for any kind items.
 
-This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordpress.org/plugins/commons-booking/) will be retired some time in the future.
-
 **Unique features:**
 
 * Items can be assigned to different locations for the duration of a timeframe, each with their own contact information.  
@@ -81,6 +79,19 @@ This is a new version of CommonsBooking, [Commons Booking V.09](https://de.wordp
 4. User bookings list
 
 == Changelog ==
+
+= 2.4.4 (xxxx) = 
+* NEW: Added category filter in items and locations shortcode. You can use [cb_items category_slug=category_slug] to show items by a single category.
+* NEW: Added the p attribute to cb_items shortcode, so you can display a single item by using [cb_items p=POSTID]
+* CHANGED: Item and location list in select dropdown in timeframe editor is not restricted to published elements anymore. 
+* ENHANCED: template improvements: not available notice now in separate line in item/location lists
+* ENHANCED: pickupinstructions now inclueded in the location section on the booking page (changed template: booking-single.php)
+* ENHANCED: inlcuded pickupinstructions in the following templates: location-calendar-header.php / location-single-meta.php
+* ENHANCED: Changed the standard image thumbnail size in listings
+* FIXED: If multiple timeframes are set the calendar only showed the last timeframe in booking calendar. 
+* FIXED: Fixed some issues with map category filter
+* FIXED: fixed interaction issues with calender when using timeslots. pickup field resets when selecting pickup time (fixed issues #629 and #619)
+
 
 = 2.4.3 (09.04.2021) = 
 * NEW: Eport-Tool for exporting timeframes (Bookings etc.) with flexible data fields. Useful for external analytics or to create connections to external systems like automatic lockers etc.

@@ -32,14 +32,6 @@ class Plugin
     public static $CB_MANAGER_ID = 'cb_manager';
 
     /**
-     * Plugin constructor.
-     */
-    public function __construct()
-    {
-        register_activation_hook(__FILE__, array(self::class, 'activation'));
-    }
-
-    /**
      * Deletes cb transients.
      * @param $param
      */
@@ -157,7 +149,7 @@ class Plugin
         }
 
         // Init booking codes table
-        \CommonsBooking\Repository\BookingCodes::initBookingCodesTable();
+        BookingCodes::initBookingCodesTable();
     }
 
     public static function admin_init()
@@ -631,6 +623,9 @@ class Plugin
 
             // update version number in options
             update_option($commonsbooking_version_option, COMMONSBOOKING_VERSION);
+
+            // Clear cache
+            self::clearCache();
         }
     }
 
