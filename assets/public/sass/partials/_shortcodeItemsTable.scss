@@ -1,0 +1,76 @@
+$table-font-size: 12px;
+
+.cb-items-table {
+
+    font-size: $table-font-size;
+    overflow-x: auto;
+    overflow-y: auto;
+
+    th {
+        font-size: $table-font-size;
+        padding: 0;
+        text-align: center;
+        vertical-align: middle;
+        font-weight: 600;
+    }
+
+    thead tr:nth-child(2) {
+        th:nth-child(1),
+        th:nth-child(2) {
+            padding-left: 4px;
+            text-align: left;
+        }
+    }
+
+    td {
+        font-size: $table-font-size;
+        padding: 0;
+        text-align: center;
+        vertical-align: middle;
+
+        &:nth-child(1),
+        &:nth-child(2) {
+            text-align: left;
+            padding-left: 4px;
+        }
+
+        > span {
+            &.booked,
+            &.free,
+            &.unavailable,
+            &.holiday,
+            &.repair,
+            &.blocked {
+                display: block;
+                margin: 0 auto;
+                width: 15px;
+                height: 15px;
+
+            }
+
+            &.unavailable {
+                background: var(--litepickerDayIsLockedColor);
+            }
+
+            &.holiday {
+                background: var(--litepickerDayIsHolidayColorBg);
+            }
+
+            &.repair,
+            &.booked {
+                background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
+            }
+
+            &.blocked {
+                background-color: var(--litepickerDayIsBookedColorBg);
+            }
+
+            &.free {
+                background-color: var(--litepickerDayColorBg);
+                text-align: center;
+                text-decoration: none;
+            }
+
+        }
+    }
+}
