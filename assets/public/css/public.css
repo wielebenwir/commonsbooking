@@ -4384,8 +4384,8 @@
 /* line 80, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-link b a {
   font-size: 18px;
-  color: #506CA9;
-  text-decoration: none;
+  color: #84AE53;
+  text-decoration: underline;
 }
 /* line 86, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability {
