@@ -117,7 +117,7 @@ class MapAdmin
     const MARKER_ITEM_DRAFT_ICON_ANCHOR_X_DEFAULT = 0;
     const MARKER_ITEM_DRAFT_ICON_ANCHOR_Y_DEFAULT = 0;
     const AVAILABILITY_MAX_DAYS_TO_SHOW_DEFAULT = 11;
-    const AVAILABILITY_MAX_DAY_COUNT_DEFAULT = 20;
+    const AVAILABILITY_MAX_DAY_COUNT_DEFAULT = 14;
 
     //const MARKER_POPUP_CONTENT_DEFAULT = "'<b>' + location.location_name + '</b><br>' + location.address.street + '<br>' + location.address.zip + ' ' + location.address.city + '<p>' + location.opening_hours + '</p>'";
 

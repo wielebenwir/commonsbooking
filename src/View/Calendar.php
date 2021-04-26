@@ -359,7 +359,8 @@ class Calendar
         $dayStr = implode($divider, $days_display);
         $colStr = implode(' ', $days_cols);
 
-        $print = "<table class='cb-items-table tablesorter'><colgroup><col><col>" . $colStr . "</colgroup><thead>";
+        $print = '<div class="tscroll">';
+        $print .= "<table class='cb-items-table tablesorter'><colgroup><col><col>" . $colStr . "</colgroup><thead>";
         $print .= "<tr><th colspan='2' class='sortless'>" . $desc . "</th><th class='sortless' colspan='" . $colspan . "'>";
 
         if ($colspan > 1) {
@@ -414,7 +415,7 @@ class Calendar
                 // Collect unique locations from timeframes
                 $locations = [];
                 foreach ($timeframes as $timeframe) {
-                    $locations[$timeframe->getLocation()->ID] = $timeframe->getLocation()->title();
+                    $locations[$timeframe->getLocation()->ID] = $timeframe->getLocation()->post_title;
                 }
 
                 // loop through location
@@ -469,14 +470,17 @@ class Calendar
                         }
                     }
 
+                    
                     $dayStr = implode($divider, $days_display);
                     $itemLink = add_query_arg('location', $locationId, get_permalink($item->ID));
-                    $print .= "<tr><td><b><a href='" . $itemLink . "'>" . $item_name . "</a></b>" . $divider . $locationName . $divider . $dayStr . "</td></tr>";
+                    $locationString = '<div data-title="' . $locationName . '">' . $locationName . '</div>';
+                    $print .= "<tr><td><b><a href='" . $itemLink . "'>" . $item_name . "</a></b>" . $divider . $locationString . $divider . $dayStr . "</td></tr>";
                 }
             }
         }
 
         $print .= "</tbody></table>";
+        $print .= '</div>';
         return $print;
     }
 

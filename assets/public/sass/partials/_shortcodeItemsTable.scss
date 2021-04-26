@@ -1,10 +1,14 @@
 $table-font-size: 12px;
 
+.tscroll {
+    width:100%;
+    overflow: scroll;
+    border: solid gray 1px;
+}
+
 .cb-items-table {
 
     font-size: $table-font-size;
-    overflow-x: auto;
-    overflow-y: auto;
 
     th {
         font-size: $table-font-size;
@@ -12,6 +16,7 @@ $table-font-size: 12px;
         text-align: center;
         vertical-align: middle;
         font-weight: 600;
+        border: 1px solid rgb(167, 167, 167);
     }
 
     thead tr:nth-child(2) {
@@ -27,6 +32,8 @@ $table-font-size: 12px;
         padding: 0;
         text-align: center;
         vertical-align: middle;
+        border: 1px solid rgb(167, 167, 167);
+        z-index: 11;
 
         &:nth-child(1),
         &:nth-child(2) {
