@@ -5,7 +5,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar, 
 Requires at least: 5.2
 Tested up to: 5.7
-Stable Tag: 2.4.3
+Stable Tag: 2.4.4
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -80,7 +80,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 == Changelog ==
 
-= 2.4.4 (xxxx) = 
+= 2.4.4 (26.04.2021) = 
 * NEW: Added category filter in items and locations shortcode. You can use [cb_items category_slug=category_slug] to show items by a single category.
 * NEW: Added the p attribute to cb_items shortcode, so you can display a single item by using [cb_items p=POSTID]
 * CHANGED: Item and location list in select dropdown in timeframe editor is not restricted to published elements anymore. 
