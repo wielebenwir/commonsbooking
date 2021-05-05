@@ -53,5 +53,20 @@ class UserRepository
         }
         return $owners;
     }
+    
+    /**
+     * returns an array of all User Roles as roleID => role name
+     *
+     * @return array
+     */
+    public static function getUserRolesOptionsField()
+    {
+        global $wp_roles;
+        $rolesArray = $wp_roles->roles;     
+        foreach ($rolesArray AS $roleID => $value) {
+            $roles[$roleID] = $value['name'];
+        }
+        return $roles;
+    }
 
 }

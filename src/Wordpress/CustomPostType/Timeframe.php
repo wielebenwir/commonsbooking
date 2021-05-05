@@ -744,6 +744,13 @@ class Timeframe extends CustomPostType
                 'options' => self::sanitizeOptions(\CommonsBooking\Repository\Item::getByCurrentUser()),
             ),
             array(
+                'name'    => esc_html__("Restrict bookings to user roles", 'commonsbooking'),
+                'id'      => "allowed_user_roles",
+                'desc'       => esc_html__('Select one or more user roles to restrict bookings based on these timeframe configuration to these user roles. Leave empty for no restrictions', 'commonsbooking'),
+                'type'    => 'pw_multiselect',
+                'options' => self::sanitizeOptions(\CommonsBooking\Repository\UserRepository::getUserRolesOptionsField()),
+            ),
+            array(
                 'name' => esc_html__("Configure timeframe", 'commonsbooking'),
                 'id'   => "title-timeframe-config",
                 'type' => 'title',

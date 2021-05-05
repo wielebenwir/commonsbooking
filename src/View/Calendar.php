@@ -29,7 +29,8 @@ class Calendar
      */
     public static function prepareJsonResponse(Day $startDate, Day $endDate, $locations, $items)
     {
-        if($jsonResponse = Plugin::getCacheItem()) {
+        // TODO @markus-mw : if we are user role restrictions for calendar we may need to remove cache or create a user role based cache for booking timeframes
+        if($jsonResponse = Plugin::getCacheItem() AND 1==2) {
             return $jsonResponse;
         } else {
             $calendar = new \CommonsBooking\Model\Calendar(
@@ -148,6 +149,8 @@ class Calendar
 
             $timeFrameType = get_post_meta($slot['timeframe']->ID, 'type', true);
 
+            $isUserAllowedtoBook = commonsbooking_isCurrentUserAllowedToBook($slot['timeframe']->ID);
+
             // save bookable state for first and last slot
             if ($dayArray['firstSlotBooked'] === null) {
                 if ($timeFrameType == Timeframe::BOOKABLE_ID) {
@@ -193,8 +196,8 @@ class Calendar
                 $dayArray['partiallyBookedDay'] = true;
             }
 
-            // If there's a locked timeframe, nothing can be selected
-            if ($slot['timeframe']->locked) {
+            // If there's a locked timeframe or user ist not allowed to book based on this timeframe, nothing can be selected
+            if ($slot['timeframe']->locked OR !$isUserAllowedtoBook) {
                 $dayArray['locked'] = true;
             } else {
                 // if not all slots are locked, the day should be selectable
