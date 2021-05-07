@@ -720,18 +720,6 @@ class Timeframe extends CustomPostType
                 'options' => self::getTypes(),
             ),
             array(
-                'name'       => esc_html__('Maximum booking duration', 'commonsbooking'),
-                'desc'       => esc_html__('Maximum booking duration in days', 'commonsbooking'),
-                'id'         => "timeframe-max-days",
-                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-                'type'       => 'text_small',
-                'attributes' => array(
-                    'type' => 'number',
-                    'min'  => '1',
-                ),
-                'default'    => 3,
-            ),
-            array(
                 'name'    => esc_html__("Location", 'commonsbooking'),
                 'id'      => "location-id",
                 'type'    => 'select',
@@ -742,6 +730,18 @@ class Timeframe extends CustomPostType
                 'id'      => "item-id",
                 'type'    => 'select',
                 'options' => self::sanitizeOptions(\CommonsBooking\Repository\Item::getByCurrentUser()),
+            ),
+            array(
+                'name'       => esc_html__('Maximum booking duration', 'commonsbooking'),
+                'desc'       => esc_html__('Maximum booking duration in days', 'commonsbooking'),
+                'id'         => "timeframe-max-days",
+                'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+                'type'       => 'text_small',
+                'attributes' => array(
+                    'type' => 'number',
+                    'min'  => '1',
+                ),
+                'default'    => 3,
             ),
             array(
                 'name'    => esc_html__("Restrict bookings to user roles", 'commonsbooking'),
