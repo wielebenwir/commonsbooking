@@ -43,6 +43,7 @@ class Calendar
                 'minDate'             => $startDate->getFormattedDate('Y-m-d'),
                 'startDate'           => $startDate->getFormattedDate('Y-m-d'),
                 'endDate'             => $endDate->getFormattedDate('Y-m-d'),
+                'lang'                => str_replace('_','-', get_locale()),
                 'days'                => [],
                 'bookedDays'          => [],
                 'partiallyBookedDays' => [],
