@@ -3316,7 +3316,7 @@
  */
 /* -------------------- Boxes -------------------- */
 /* line 15, ../../global/sass/partials/_extends.scss */
-.cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper {
+.cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper, .cb-items-table {
   background: #f6f6f6;
   padding: 2.5px 5px;
   overflow: hidden;
@@ -3325,7 +3325,7 @@
 }
 @media (min-width: 37.5em) {
   /* line 15, ../../global/sass/partials/_extends.scss */
-  .cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper {
+  .cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper, .cb-items-table {
     padding: 10px 15px;
   }
 }
@@ -4783,69 +4783,135 @@
 
 /* Styles for items table */
 /* line 3, ../sass/partials/_shortcodeItemsTable.scss */
-.tscroll {
+.cb-table-scroll-view {
   width: 100%;
-  overflow: scroll;
-  border: solid gray 1px;
 }
 
-/* line 9, ../sass/partials/_shortcodeItemsTable.scss */
-.cb-items-table {
-  font-size: 12px;
+/* line 7, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-table-scroll-content {
+  position: relative;
+  overflow: auto;
 }
-/* line 13, ../sass/partials/_shortcodeItemsTable.scss */
+
+/* line 12, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table {
+  padding: 0;
+  /* make first 2 table columns sticky */
+  /* place first col */
+  /* place second col */
+  /* set bg color */
+}
+/* line 16, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td,
+.cb-items-table th {
+  line-height: 14px;
+  font-size: 12px;
+  padding: 4px 0;
+  font-weight: normal;
+}
+/* line 24, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table th {
   font-size: 12px;
-  padding: 0;
   text-align: center;
   vertical-align: middle;
-  font-weight: 600;
-  border: 1px solid #a7a7a7;
 }
-/* line 23, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 31, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr {
+  border: 0;
+}
+/* line 34, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:first-child {
+  /* Months row */
+}
+/* line 37, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) {
+  /* legend row */
+  color: #506CA9;
+}
+/* line 41, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table thead tr:nth-child(2) th:nth-child(1),
 .cb-items-table thead tr:nth-child(2) th:nth-child(2) {
-  padding-left: 4px;
   text-align: left;
+  padding-left: 4px;
 }
-/* line 30, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 51, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:first-child,
+.cb-items-table thead tr:nth-child(2) th:nth-child(2),
+.cb-items-table tbody tr td:first-child,
+.cb-items-table tbody tr td:nth-child(2) {
+  text-align: left;
+  padding-left: 4px;
+  position: sticky;
+  position: -webkit-sticky;
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  background: #ffffff;
+}
+/* line 65, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:first-child,
+.cb-items-table tbody tr td:first-child {
+  left: 0;
+}
+/* line 70, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:nth-child(2),
+.cb-items-table tbody tr td:nth-child(2) {
+  left: 100px;
+}
+/* line 76, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:first-child,
+.cb-items-table thead tr:nth-child(2) th:nth-child(2) {
+  background: #f6f6f6;
+}
+/* line 81, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table tbody tr:hover td:first-child,
+.cb-items-table tbody tr:hover td:nth-child(2) {
+  background-color: #FFF9C5;
+}
+/* line 87, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table tbody tr {
+  background: #FFF;
+  border-bottom: 1px solid #f6f6f6;
+}
+/* line 91, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table tbody tr:hover {
+  background: #FFF9C5;
+}
+/* line 95, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table tbody tr td {
+  border-left: 1px solid #f6f6f6;
+}
+/* line 101, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td {
-  font-size: 12px;
-  padding: 0;
   text-align: center;
   vertical-align: middle;
-  border: 1px solid #a7a7a7;
   z-index: 11;
 }
-/* line 38, ../sass/partials/_shortcodeItemsTable.scss */
-.cb-items-table td:nth-child(1), .cb-items-table td:nth-child(2) {
-  text-align: left;
-  padding-left: 4px;
-}
-/* line 45, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 107, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.booked, .cb-items-table td > span.free, .cb-items-table td > span.unavailable, .cb-items-table td > span.holiday, .cb-items-table td > span.repair, .cb-items-table td > span.blocked {
   display: block;
   margin: 0 auto;
   width: 15px;
   height: 15px;
+  border-radius: 8px;
 }
-/* line 58, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 120, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.unavailable {
   background: var(--litepickerDayIsLockedColor);
 }
-/* line 62, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 124, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.holiday {
   background: var(--litepickerDayIsHolidayColorBg);
 }
-/* line 66, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 128, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.repair, .cb-items-table td > span.booked {
   background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
-/* line 71, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 139, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.blocked {
   background-color: var(--litepickerDayIsBookedColorBg);
 }
-/* line 75, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 143, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.free {
   background-color: var(--litepickerDayColorBg);
   text-align: center;

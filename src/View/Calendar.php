@@ -359,7 +359,8 @@ class Calendar
         $dayStr = implode($divider, $days_display);
         $colStr = implode(' ', $days_cols);
 
-        $print = '<div class="tscroll">';
+        $print = '<div class="cb-wrapper cb-table-scroll-view">';
+        $print = '<div class="cb-table-scroll-content">';
         $print .= "<table class='cb-items-table tablesorter'><colgroup><col><col>" . $colStr . "</colgroup><thead>";
         $print .= "<tr><th colspan='2' class='sortless'>" . $desc . "</th><th class='sortless' colspan='" . $colspan . "'>";
 
@@ -480,6 +481,7 @@ class Calendar
         }
 
         $print .= "</tbody></table>";
+        $print .= '</div>';
         $print .= '</div>';
         return $print;
     }

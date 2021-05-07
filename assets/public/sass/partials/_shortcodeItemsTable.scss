@@ -1,45 +1,107 @@
-$table-font-size: 12px;
+$table-font-size: $font-size-small;
 
-.tscroll {
-    width:100%;
-    overflow: scroll;
-    border: solid gray 1px;
+.cb-table-scroll-view {
+    width: 100%;
+}
+
+.cb-table-scroll-content {
+    position: relative;
+    overflow: auto;
 }
 
 .cb-items-table {
+    @extend .cb-box;
+    padding: 0;
 
-    font-size: $table-font-size;
+    td,
+    th {
+        line-height: 14px;
+        font-size: $table-font-size;
+        padding: 4px 0;
+        font-weight: normal;
+    }
 
     th {
         font-size: $table-font-size;
-        padding: 0;
         text-align: center;
         vertical-align: middle;
-        font-weight: 600;
-        border: 1px solid rgb(167, 167, 167);
     }
 
-    thead tr:nth-child(2) {
-        th:nth-child(1),
-        th:nth-child(2) {
-            padding-left: 4px;
-            text-align: left;
+    thead {
+        tr {
+            border: 0;
+
+            &:first-child {
+                /* Months row */
+            }
+            &:nth-child(2) {
+                /* legend row */
+
+                color: $color-blue-dark;
+                th:nth-child(1),
+                th:nth-child(2) {
+                    text-align: left;
+                    padding-left: 4px;
+                }
+            }
+        }
+    }
+
+    /* make first 2 table columns sticky */
+    thead tr:nth-child(2) th:first-child,
+    thead tr:nth-child(2) th:nth-child(2),
+    tbody tr td:first-child,
+    tbody tr td:nth-child(2) {
+        text-align: left;
+        padding-left: 4px;
+        position: sticky;
+        position: -webkit-sticky;
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
+        background: $color-white-background;
+    }
+    /* place first col */
+    thead tr:nth-child(2) th:first-child,
+    tbody tr td:first-child {
+        left: 0;
+    }
+    /* place second col */
+    thead tr:nth-child(2) th:nth-child(2),
+    tbody tr td:nth-child(2) {
+        left: 100px;
+    }
+
+    /* set bg color */
+    thead tr:nth-child(2) th:first-child,
+    thead tr:nth-child(2) th:nth-child(2) {
+        background: $color-gray-background;
+    }
+
+    tbody tr:hover td:first-child,
+    tbody tr:hover td:nth-child(2) {
+        background-color: $color-yellow-background;
+    }
+
+    tbody {
+        tr {
+            background: $color-white;
+            border-bottom: 1px solid $color-gray-background;
+
+            &:hover {
+                background: $color-yellow-background;
+            }
+
+            td {
+                border-left: 1px solid $color-gray-background;
+            }
         }
     }
 
     td {
-        font-size: $table-font-size;
-        padding: 0;
         text-align: center;
         vertical-align: middle;
-        border: 1px solid rgb(167, 167, 167);
         z-index: 11;
-
-        &:nth-child(1),
-        &:nth-child(2) {
-            text-align: left;
-            padding-left: 4px;
-        }
 
         > span {
             &.booked,
@@ -52,7 +114,7 @@ $table-font-size: 12px;
                 margin: 0 auto;
                 width: 15px;
                 height: 15px;
-
+                border-radius: $radius;
             }
 
             &.unavailable {
@@ -65,7 +127,13 @@ $table-font-size: 12px;
 
             &.repair,
             &.booked {
-                background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
+                background: linear-gradient(
+                    to top left,
+                    var(--litepickerDayColorBg) 0%,
+                    var(--litepickerDayColorBg) 50%,
+                    var(--litepickerDayIsBookedColorBg) 50%,
+                    var(--litepickerDayIsBookedColorBg) 100%
+                );
             }
 
             &.blocked {
@@ -77,7 +145,6 @@ $table-font-size: 12px;
                 text-align: center;
                 text-decoration: none;
             }
-
         }
     }
 }
