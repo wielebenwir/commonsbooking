@@ -21,9 +21,14 @@ class TimeframeExport
     {
         ?>
         <div class="cmb-row cmb-type-text ">
-            <button type="submit" id="timeframe-export" class="button button-secondary" name="submit-cmb" value="download-export">
-                <?php echo esc_html__('Download Export', 'commonsbooking'); ?>
-            </button>
+            <div class="cmb-th">
+                <label for="timeframe-export"><?php echo esc_html__('Download CSV', 'commonsbooking'); ?></label>
+            </div>
+            <div class="cmb-td">
+                <button type="submit" id="timeframe-export" class="button button-secondary" name="submit-cmb" value="download-export">
+                    <?php echo esc_html__('Download Export', 'commonsbooking'); ?>
+                </button>
+            </div>
         </div>
         <?php
     }
