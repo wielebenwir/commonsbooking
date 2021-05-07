@@ -5,7 +5,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar, 
 Requires at least: 5.2
 Tested up to: 5.7
-Stable Tag: 2.4.5-DEV
+Stable Tag: 2.4.4
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -79,6 +79,15 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 == Changelog ==
+
+= 2.4.5 (07.05.2021) = 
+* NEW: Restrict bookings to user groups. It is now possible to restrict bookable timeframes to one or more user groups to restrict bookings based on these timeframes.
+* FIXED: In case of consecutive time frames, it could happen that not all time frames were displayed in the calendar. This is now fixed. (#612)
+* FIXED: In a some combination of time frames it could happen that an already existing booking could be overwritten (in case of slotwise booking). (#610)
+* FIXED: Some parts in the calendar were not translated to English when the website language was set to English. (#545)
+* FIXED: API was available by default - this is standard behaviour of the wordpress integrated API too. Now the CommonsBooking API is deactived by default an can be activated in CommonsBooking options. We also removed the author information from items that has been available via the API (first and last name)
+* FIXED: In the email template tags, the tag following the pattern {{xxx:yyy}} could not be used within an a href link as it is not allowed by Wordpress security methods. We have now added the alternative divider #. This now also works in a href links. Example a href="{{xxxx#yyyy}}"
+
 
 = 2.4.4 (26.04.2021) = 
 * NEW: Added category filter in items and locations shortcode. You can use [cb_items category_slug=category_slug] to show items by a single category.
