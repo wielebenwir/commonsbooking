@@ -28,7 +28,6 @@ function commonsbooking_parse_template_callback( $match ) {
     if (isset($match[0])) {
       $match = $match[0];
       $match = preg_replace('/(\{\{)|(\}\})/m', '', $match);
-      echo $match;
       // we accept : and # as separator cause the : delimiter wasn't working when using the template tag in a href links in the template (like <a href="{{xxx#yyyy}}"></a>)
       $path = preg_split('/(\:|\#)/', $match, 2);
       if (isset($path[0]) AND isset($path[1])) {
