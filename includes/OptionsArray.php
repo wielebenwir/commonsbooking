@@ -323,11 +323,23 @@ Thanks, the Team.
     ),
     /* Tab: migration end */
 
-    /* Tab: export start */
+    /* Tab: API and export start */
     'export' => array(
-        'title'        => __('Export', 'commonsbooking'),
+        'title'        => __('Export / API', 'commonsbooking'),
         'id'           => 'export',
         'field_groups' => array(
+            'api' => array(
+                'title'       => esc_html__('Configure API Access', 'commonsbooking'),
+                'id'          => 'api',
+                'fields'      => [
+                    array(
+                        'name'    => esc_html__('Activate API', 'commonsbooking'),
+                        'desc'    => esc_html__('If selected, the API is enabled. Fore more informations see the documentation', 'commonsbooking'),
+                        'id'      => "api-activated",
+                        'type'    => 'checkbox',
+                    ),
+                ]
+            ),
             'download' => array(
                 'title'       => esc_html__('Download timeframes export', 'commonsbooking'),
                 'id'          => 'download',
