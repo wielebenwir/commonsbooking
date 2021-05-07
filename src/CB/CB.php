@@ -30,7 +30,7 @@ class CB
      * @param  mixed $property
      * @param  mixed $theObject
      * @param  mixed $args
-     * @return void
+     * @return mixed
      */
     public static function get($key, $property, $theObject = NULL, $args = NULL)
     {
@@ -44,8 +44,6 @@ class CB
 
         $filterName = sprintf('cb_tag_%s_%s', self::$key, self::$property);
         return apply_filters($filterName, $result);
-
-
     }
 
     /**
