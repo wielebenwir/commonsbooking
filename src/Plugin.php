@@ -273,7 +273,7 @@ class Plugin
                     new \CommonsBooking\API\AvailabilityRoute(),
                     new \CommonsBooking\API\ItemsRoute(),
                     new \CommonsBooking\API\LocationsRoute(),
-                    new \CommonsBooking\API\OwnersRoute(),
+//                    new \CommonsBooking\API\OwnersRoute(),
                     new \CommonsBooking\API\ProjectsRoute(),
 
                 ];
