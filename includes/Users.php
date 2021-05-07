@@ -128,10 +128,10 @@ function commonsbooking_isCurrentUserAdmin() {
 }
 
 /**
- * Check if user is allowed to book based on the timeframe configuration (user role)
+ * Returns true if user is allowed to book based on the timeframe configuration (user role)
  *
  * @param  mixed $timeframeID
- * @return void
+ * @return bool
  */
 function commonsbooking_isCurrentUserAllowedToBook($timeframeID) 
 {

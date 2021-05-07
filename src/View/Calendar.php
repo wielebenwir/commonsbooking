@@ -29,7 +29,8 @@ class Calendar
      */
     public static function prepareJsonResponse(Day $startDate, Day $endDate, $locations, $items)
     {
-        // TODO @markus-mw : if we are user role restrictions for calendar we may need to remove cache or create a user role based cache for booking timeframes
+        // TODO @markus-mw : if we are using user role restrictions for calendar we need to remove method based cache or create a user role based cache for booking timeframes?
+        // TODO: remove temporarily added 1==2 condition
         if($jsonResponse = Plugin::getCacheItem() AND 1==2) {
             return $jsonResponse;
         } else {

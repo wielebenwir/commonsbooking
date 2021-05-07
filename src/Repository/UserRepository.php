@@ -55,16 +55,16 @@ class UserRepository
     }
     
     /**
-     * returns an array of all User Roles as roleID => role name
+     * Returns an array of all User Roles as roleID => translated role name
      *
      * @return array
      */
-    public static function getUserRolesOptionsField()
+    public static function getUserRoles()
     {
         global $wp_roles;
-        $rolesArray = $wp_roles->roles;     
+        $rolesArray = $wp_roles->roles;    
         foreach ($rolesArray AS $roleID => $value) {
-            $roles[$roleID] = $value['name'];
+            $roles[$roleID] = translate_user_role($value['name']);
         }
         return $roles;
     }
