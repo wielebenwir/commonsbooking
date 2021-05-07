@@ -29,7 +29,10 @@ class Calendar
      */
     public static function prepareJsonResponse(Day $startDate, Day $endDate, $locations, $items)
     {
-        if($jsonResponse = Plugin::getCacheItem()) {
+        $current_user = wp_get_current_user();
+        $customCacheKey = serialize($current_user->roles);
+
+        if($jsonResponse = Plugin::getCacheItem($customCacheKey)) {
             return $jsonResponse;
         } else {
             $calendar = new \CommonsBooking\Model\Calendar(
@@ -128,7 +131,7 @@ class Calendar
                 }
             }
 
-            Plugin::setCacheItem($jsonResponse);
+            Plugin::setCacheItem($jsonResponse, $customCacheKey);
             return $jsonResponse;
         }
     }
@@ -150,6 +153,8 @@ class Calendar
             $noSlots = false;
 
             $timeFrameType = get_post_meta($slot['timeframe']->ID, 'type', true);
+
+            $isUserAllowedtoBook = commonsbooking_isCurrentUserAllowedToBook($slot['timeframe']->ID);
 
             // save bookable state for first and last slot
             if ($dayArray['firstSlotBooked'] === null) {
@@ -196,8 +201,8 @@ class Calendar
                 $dayArray['partiallyBookedDay'] = true;
             }
 
-            // If there's a locked timeframe, nothing can be selected
-            if ($slot['timeframe']->locked) {
+            // If there's a locked timeframe or user ist not allowed to book based on this timeframe, nothing can be selected
+            if ($slot['timeframe']->locked || !$isUserAllowedtoBook) {
                 $dayArray['locked'] = true;
             } else {
                 // if not all slots are locked, the day should be selectable
