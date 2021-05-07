@@ -334,7 +334,7 @@ Thanks, the Team.
                 'fields'      => [
                     array(
                         'name'    => esc_html__('Activate API', 'commonsbooking'),
-                        'desc'    => esc_html__('If selected, the API is enabled. Fore more informations see the documentation', 'commonsbooking'),
+                        'desc'    => commonsbooking_sanitizeHTML( __('If selected, the API is enabled. See more information in the documentation: <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking') ),
                         'id'      => "api-activated",
                         'type'    => 'checkbox',
                     ),
