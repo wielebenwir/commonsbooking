@@ -122,7 +122,8 @@ add_filter(
 );
 
 // Check if current user has admin role
-function commonsbooking_isCurrentUserAdmin() {
+function commonsbooking_isCurrentUserAdmin()
+{
     $user = wp_get_current_user();
     return apply_filters('commonsbooking_isCurrentUserAdmin', in_array('administrator', $user->roles), $user);
 }
@@ -130,10 +131,10 @@ function commonsbooking_isCurrentUserAdmin() {
 /**
  * Returns true if user is allowed to book based on the timeframe configuration (user role)
  *
- * @param  mixed $timeframeID
+ * @param mixed $timeframeID
  * @return bool
  */
-function commonsbooking_isCurrentUserAllowedToBook($timeframeID) 
+function commonsbooking_isCurrentUserAllowedToBook($timeframeID)
 {
     $current_user = wp_get_current_user();
     $user_roles = $current_user->roles;
@@ -144,10 +145,6 @@ function commonsbooking_isCurrentUserAllowedToBook($timeframeID)
     }
 
     $match = array_intersect($user_roles, $allowedUserRoles);
-    if (count($match) > 0 ) {
-        return true;
-    } else {
-        return false;
-    }
 
+    return count($match) > 0;
 }

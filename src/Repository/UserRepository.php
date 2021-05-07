@@ -62,8 +62,9 @@ class UserRepository
     public static function getUserRoles()
     {
         global $wp_roles;
-        $rolesArray = $wp_roles->roles;    
-        foreach ($rolesArray AS $roleID => $value) {
+        $rolesArray = $wp_roles->roles;
+        $roles = [];
+        foreach ($rolesArray as $roleID => $value) {
             $roles[$roleID] = translate_user_role($value['name']);
         }
         return $roles;

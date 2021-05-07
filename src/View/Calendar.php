@@ -29,9 +29,10 @@ class Calendar
      */
     public static function prepareJsonResponse(Day $startDate, Day $endDate, $locations, $items)
     {
-        // TODO @markus-mw : if we are using user role restrictions for calendar we need to remove method based cache or create a user role based cache for booking timeframes?
-        // TODO: remove temporarily added 1==2 condition
-        if($jsonResponse = Plugin::getCacheItem() AND 1==2) {
+        $current_user = wp_get_current_user();
+        $customCacheKey = serialize($current_user->roles);
+
+        if($jsonResponse = Plugin::getCacheItem($customCacheKey)) {
             return $jsonResponse;
         } else {
             $calendar = new \CommonsBooking\Model\Calendar(
@@ -130,7 +131,7 @@ class Calendar
                 }
             }
 
-            Plugin::setCacheItem($jsonResponse);
+            Plugin::setCacheItem($jsonResponse, $customCacheKey);
             return $jsonResponse;
         }
     }
@@ -201,7 +202,7 @@ class Calendar
             }
 
             // If there's a locked timeframe or user ist not allowed to book based on this timeframe, nothing can be selected
-            if ($slot['timeframe']->locked OR !$isUserAllowedtoBook) {
+            if ($slot['timeframe']->locked || !$isUserAllowedtoBook) {
                 $dayArray['locked'] = true;
             } else {
                 // if not all slots are locked, the day should be selectable

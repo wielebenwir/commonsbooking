@@ -141,7 +141,7 @@ class Day
         );
 
         // check if user is allowed to book this timeframe and remove unallowed timeframes from array
-        foreach ($timeFrames AS $key => $timeframe) {
+        foreach ($timeFrames as $key => $timeframe) {
             if (!commonsbooking_isCurrentUserAllowedToBook($timeframe->ID)) {
                 unset($timeFrames[$key]);
             }
