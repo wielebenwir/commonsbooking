@@ -54,11 +54,13 @@ class Calendar
             ];
 
             if (count($locations) === 1) {
-                $jsonResponse['location']['fullDayInfo'] = nl2br(CB::get(
-                    'location',
-                    COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions',
-                    $locations[0]
-                ));
+                $jsonResponse['location']['fullDayInfo'] = nl2br(
+                    CB::get(
+                        'location',
+                        COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions',
+                        $locations[0]
+                    )
+                );
                 $allowLockedDaysInRange = get_post_meta(
                     $locations[0],
                     COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
@@ -286,6 +288,11 @@ class Calendar
             );
 
             if(count($bookableTimeframes)) {
+                // Sort timeframes by startdate
+                usort($bookableTimeframes, function ($item1, $item2) {
+                    return $item1->getStartDate() < $item2->getStartDate();
+                });
+
                 /** @var \CommonsBooking\Model\Timeframe $firstBookableTimeframe */
                 $firstBookableTimeframe = array_pop($bookableTimeframes);
 
