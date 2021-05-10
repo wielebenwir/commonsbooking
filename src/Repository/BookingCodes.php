@@ -33,6 +33,10 @@ class BookingCodes
         if (Plugin::getCacheItem()) {
             return Plugin::getCacheItem();
         } else {
+
+            $startDate = date('Y-m-d', intval(get_post_meta($timeframeId, 'repetition-start', true)));
+            $endDate = date('Y-m-d', intval(get_post_meta($timeframeId, 'repetition-end', true)));
+
             global $wpdb;
             $table_name = $wpdb->prefix . self::$tablename;
 
@@ -40,7 +44,8 @@ class BookingCodes
                 "
                 SELECT *
                 FROM $table_name
-                WHERE timeframe = $timeframeId
+                WHERE timeframe = $timeframeId 
+                AND date BETWEEN '$startDate' AND '$endDate' 
                 ORDER BY item ASC ,date ASC
             "
             );
