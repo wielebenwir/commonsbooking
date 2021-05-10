@@ -7,8 +7,8 @@ assignees: ''
 
 ---
 
-** original string **
+**original string**
 
 
 
-** improved string **
+**improved string**
