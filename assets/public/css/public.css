@@ -4907,7 +4907,7 @@
   margin: 0 auto;
   width: 15px;
   height: 15px;
-  border-radius: 10px;
+  border-radius: 0px;
 }
 /* line 131, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.unavailable {
