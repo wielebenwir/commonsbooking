@@ -244,6 +244,8 @@
 				border-color: var(--litePickerDayBorderColor);
 				border-radius: 0px;
 				box-sizing: border-box;
+				-webkit-box-shadow: none;
+				box-shadow: none;
 
 				&:hover {
 					cursor: pointer;
