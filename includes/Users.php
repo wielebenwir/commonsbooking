@@ -128,6 +128,13 @@ function commonsbooking_isCurrentUserAdmin()
     return apply_filters('commonsbooking_isCurrentUserAdmin', in_array('administrator', $user->roles), $user);
 }
 
+// Check if current user has subscriber role
+function commonsbooking_isCurrentUserSubscriber()
+{
+    $user = wp_get_current_user();
+    return apply_filters('commonsbooking_isCurrentUserSubscriber', in_array('subscriber', $user->roles), $user);
+}
+
 /**
  * Returns true if user is allowed to book based on the timeframe configuration (user role)
  *

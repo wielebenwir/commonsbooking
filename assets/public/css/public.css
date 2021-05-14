@@ -3277,6 +3277,27 @@
     transition: none !important;
   }
 }
+/* line 3625, ../../global/sass/lib/_animate.scss */
+*.loading::before {
+  content: "";
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  animation: spin 2s linear infinite;
+  float: left;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 /* Variables: colors, widths, padding */
 /**
  * Variables
@@ -4593,56 +4614,73 @@
   flex-basis: 0;
   margin-right: 20px;
 }
-/* line 66, ../sass/partials/_bookings.scss */
+/* line 65, ../sass/partials/_bookings.scss */
+.booking-list--filters .filter-wrapper:nth-child(3), .booking-list--filters .filter-wrapper:nth-child(6) {
+  margin-right: 0;
+}
+/* line 70, ../sass/partials/_bookings.scss */
 .booking-list--filters .filter-wrapper .filter-label {
   margin-bottom: 0.3rem;
   margin-left: 0;
 }
-/* line 72, ../sass/partials/_bookings.scss */
+/* line 76, ../sass/partials/_bookings.scss */
 .booking-list--filters .select2 {
   width: 100%;
   padding: 0.25rem 0.5rem;
   border: none;
 }
-/* line 78, ../sass/partials/_bookings.scss */
+/* line 82, ../sass/partials/_bookings.scss */
 .booking-list--filters #endDate-datepicker,
 .booking-list--filters #startDate-datepicker {
   width: 100%;
   padding: 0.25rem 0.5rem;
   border: none;
 }
-/* line 85, ../sass/partials/_bookings.scss */
+/* line 89, ../sass/partials/_bookings.scss */
 .booking-list--filters .reset-filters {
   padding-top: 15px;
+  align-items: center;
+  justify-content: flex-end;
+  display: flex;
+  flex-direction: row;
+  margin-right: 0;
 }
-/* line 89, ../sass/partials/_bookings.scss */
+/* line 97, ../sass/partials/_bookings.scss */
 .booking-list--filters .reset-filters > .cb-button, .booking-list--filters .cb-button-container .reset-filters > a, .cb-button-container .booking-list--filters .reset-filters > a, .booking-list--filters .cb-wrapper .cb-action .reset-filters > input, .cb-wrapper .cb-action .booking-list--filters .reset-filters > input, .booking-list--filters .cb-wrapper #booking-form .reset-filters > input, .cb-wrapper #booking-form .booking-list--filters .reset-filters > input, .booking-list--filters .cb-map-filters.cb-wrapper .cb-map-button-wrapper .reset-filters > button, .cb-map-filters.cb-wrapper .cb-map-button-wrapper .booking-list--filters .reset-filters > button {
-  float: right;
-  line-height: inherit;
+  margin-left: 1rem;
+  cursor: pointer;
 }
-/* line 95, ../sass/partials/_bookings.scss */
+/* line 103, ../sass/partials/_bookings.scss */
+.booking-list--filters .cb-button, .booking-list--filters .cb-button-container a, .cb-button-container .booking-list--filters a, .booking-list--filters .cb-wrapper .cb-action input, .cb-wrapper .cb-action .booking-list--filters input, .booking-list--filters .cb-wrapper #booking-form input, .cb-wrapper #booking-form .booking-list--filters input, .booking-list--filters .cb-map-filters.cb-wrapper .cb-map-button-wrapper button, .cb-map-filters.cb-wrapper .cb-map-button-wrapper .booking-list--filters button {
+  font-size: 0.8rem;
+}
+/* line 108, ../sass/partials/_bookings.scss */
+.booking-list--filters.hide {
+  display: none;
+}
+/* line 112, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results {
   font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
   width: 100%;
 }
-/* line 102, ../sass/partials/_bookings.scss */
+/* line 119, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item {
   width: 100%;
   background-color: white;
 }
-/* line 106, ../sass/partials/_bookings.scss */
+/* line 123, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper {
   display: flex;
   margin-bottom: 5px;
   font-size: 0.9em;
 }
 @media only screen and (max-width: 600px) {
-  /* line 106, ../sass/partials/_bookings.scss */
+  /* line 123, ../sass/partials/_bookings.scss */
   .booking-list #booking-list--results .js-item .content-wrapper {
     display: block;
   }
 }
-/* line 114, ../sass/partials/_bookings.scss */
+/* line 131, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper > p, .booking-list #booking-list--results .js-item .content-wrapper > div {
   display: flex;
   margin: 0;
@@ -4651,42 +4689,42 @@
   padding: 0 8px;
 }
 @media only screen and (max-width: 600px) {
-  /* line 114, ../sass/partials/_bookings.scss */
+  /* line 131, ../sass/partials/_bookings.scss */
   .booking-list #booking-list--results .js-item .content-wrapper > p, .booking-list #booking-list--results .js-item .content-wrapper > div {
     border: none;
     margin-bottom: 0;
     padding: 4px 0;
   }
 }
-/* line 129, ../sass/partials/_bookings.scss */
+/* line 146, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper > p:last-child, .booking-list #booking-list--results .js-item .content-wrapper > div:last-child {
   border: none;
 }
-/* line 135, ../sass/partials/_bookings.scss */
+/* line 152, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper p span {
   display: flex;
 }
-/* line 138, ../sass/partials/_bookings.scss */
+/* line 155, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper p span.cb-date {
   font-size: 0.8em;
 }
-/* line 145, ../sass/partials/_bookings.scss */
+/* line 162, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper h4 {
   font-weight: bold;
   font-size: 1.4rem;
   padding: 0;
 }
-/* line 152, ../sass/partials/_bookings.scss */
+/* line 169, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item--headline {
   width: 40%;
   flex-direction: column;
 }
-/* line 157, ../sass/partials/_bookings.scss */
+/* line 174, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item--infos {
   width: 40%;
   flex-direction: column;
 }
-/* line 162, ../sass/partials/_bookings.scss */
+/* line 179, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item--action {
   width: 20%;
   height: 40px;
@@ -4694,48 +4732,52 @@
   display: flex;
   flex-direction: row-reverse;
 }
-/* line 171, ../sass/partials/_bookings.scss */
+/* line 188, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item--action a {
   font-size: 0.9em;
   padding: 4px 20px;
   margin: 0 8px;
   height: 30px;
 }
+/* line 193, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item--action a span {
+  vertical-align: middle;
+}
 @media only screen and (max-width: 600px) {
-  /* line 181, ../sass/partials/_bookings.scss */
+  /* line 201, ../sass/partials/_bookings.scss */
   .booking-list #booking-list--results .js-item--headline, .booking-list #booking-list--results .js-item--infos, .booking-list #booking-list--results .js-item--action {
     width: 100%;
   }
 }
-/* line 189, ../sass/partials/_bookings.scss */
+/* line 209, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .my-sizer-element {
   clear: both;
 }
-/* line 194, ../sass/partials/_bookings.scss */
+/* line 214, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination {
   font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
 }
-/* line 197, ../sass/partials/_bookings.scss */
+/* line 217, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul {
   display: flex;
   justify-content: center;
   padding: 0;
 }
-/* line 202, ../sass/partials/_bookings.scss */
+/* line 222, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li {
   list-style-type: none;
   position: relative;
   padding: 0 5px 0 5px;
 }
-/* line 207, ../sass/partials/_bookings.scss */
+/* line 227, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li.active {
   font-weight: bold;
 }
-/* line 211, ../sass/partials/_bookings.scss */
+/* line 231, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li:hover {
   color: #84AE53;
 }
-/* line 217, ../sass/partials/_bookings.scss */
+/* line 237, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li[data-page] {
   cursor: pointer;
 }

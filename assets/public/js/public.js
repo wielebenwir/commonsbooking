@@ -8,7 +8,8 @@ class BookingList {
             dateFormat: "yy-mm-dd",
             altFormat: "@",
             altField: "#startDate"
-        }), this.endDate = document.querySelector(".filter-enddate input"), jQuery("#endDate-datepicker").datepicker({
+        }), jQuery("#startDate-datepicker").datepicker("setDate", new Date()), this.endDate = document.querySelector(".filter-enddate input"), 
+        jQuery("#endDate-datepicker").datepicker({
             dateFormat: "yy-mm-dd",
             altFormat: "@",
             altField: "#endDate"
@@ -26,15 +27,26 @@ class BookingList {
         this.listParams.append("action", "bookings_data"), this.listParams.append("page", 1);
     }
     _bindEventListeners() {
-        var userSelect, itemSelect, locationSelect;
-        this._onFilterReset = this._handleFilterReset.bind(this), jQuery("#reset-filters").on("click", this._onFilterReset), 
-        this._onUserChange = this._handleUserChange.bind(this), document.querySelectorAll(".filter-users select").item(0).addEventListener("change", this._onUserChange), 
-        this._onItemChange = this._handleItemChange.bind(this), document.querySelectorAll(".filter-items select").item(0).addEventListener("change", this._onItemChange), 
-        this._onLocationChange = this._handleLocationChange.bind(this), document.querySelectorAll(".filter-locations select").item(0).addEventListener("change", this._onLocationChange), 
-        this._onStartDateChange = this._handleStartDateChange.bind(this), jQuery("#startDate-datepicker").datepicker("option", "onSelect", this._onStartDateChange), 
-        jQuery("#startDate-datepicker").change(this._onStartDateChange), this._onEndDateChange = this._handleEndDateChange.bind(this), 
-        jQuery("#endDate-datepicker").datepicker("option", "onSelect", this._onEndDateChange), 
-        jQuery("#endDate-datepicker").change(this._onEndDateChange);
+        this._onFilterReset = this._handleFilterReset.bind(this);
+        const $filterReset = jQuery("#reset-filters");
+        $filterReset && $filterReset.on("click", this._onFilterReset), this._onFilter = this.filter.bind(this);
+        const $filter = jQuery("#filter");
+        $filter && $filter.on("click", this._onFilter), this._onUserChange = this._handleUserChange.bind(this);
+        const userSelect = document.querySelectorAll(".filter-users select");
+        userSelect && userSelect.item(0).addEventListener("change", this._onUserChange), 
+        this._onItemChange = this._handleItemChange.bind(this);
+        const itemSelect = document.querySelectorAll(".filter-items select");
+        itemSelect && itemSelect.item(0).addEventListener("change", this._onItemChange), 
+        this._onLocationChange = this._handleLocationChange.bind(this);
+        const locationSelect = document.querySelectorAll(".filter-locations select");
+        locationSelect && locationSelect.item(0).addEventListener("change", this._onLocationChange), 
+        this._onStartDateChange = this._handleStartDateChange.bind(this);
+        const $startDatePicker = jQuery("#startDate-datepicker");
+        $startDatePicker && ($startDatePicker.datepicker("option", "onSelect", this._onStartDateChange), 
+        $startDatePicker.change(this._onStartDateChange)), this._onEndDateChange = this._handleEndDateChange.bind(this);
+        const $endDatePicker = jQuery("#endDate-datepicker");
+        $endDatePicker && ($endDatePicker.datepicker("option", "onSelect", this._onEndDateChange), 
+        $endDatePicker.change(this._onEndDateChange));
     }
     _handleStartDateChange() {
         if (this.filters.startDate = [], jQuery("#startDate-datepicker").datepicker("getDate")) {
@@ -42,7 +54,6 @@ class BookingList {
             let startDate = parseInt(document.querySelector("#startDate").value.slice(0, -3)) + timezoneOffsetGermany;
             this.filters.startDate = [ startDate + "" ];
         }
-        this.filter();
     }
     _handleEndDateChange() {
         if (this.filters.endDate = [], jQuery("#endDate-datepicker").datepicker("getDate")) {
@@ -50,11 +61,9 @@ class BookingList {
             let endDate = parseInt(document.querySelector("#endDate").value.slice(0, -3)) + timezoneOffsetGermany;
             this.filters.endDate = [ endDate + "" ];
         }
-        this.filter();
     }
     _handleUserChange() {
-        this.filters.users = this._getCurrentUserFilters(), "all" == this.filters.users[0] && (this.filters.users = []), 
-        this.filter();
+        this.filters.users = this._getCurrentUserFilters(), "all" == this.filters.users[0] && (this.filters.users = []);
     }
     _getCurrentUserFilters() {
         return this.users.filter(function(input) {
@@ -64,8 +73,7 @@ class BookingList {
         });
     }
     _handleItemChange() {
-        this.filters.items = this._getCurrentItemFilters(), "all" == this.filters.items[0] && (this.filters.items = []), 
-        this.filter();
+        this.filters.items = this._getCurrentItemFilters(), "all" == this.filters.items[0] && (this.filters.items = []);
     }
     _getCurrentItemFilters() {
         return this.items.filter(function(input) {
@@ -75,8 +83,7 @@ class BookingList {
         });
     }
     _handleLocationChange() {
-        this.filters.locations = this._getCurrentLocationFilters(), "all" == this.filters.locations[0] && (this.filters.locations = []), 
-        this.filter();
+        this.filters.locations = this._getCurrentLocationFilters(), "all" == this.filters.locations[0] && (this.filters.locations = []);
     }
     _getCurrentLocationFilters() {
         return this.locations.filter(function(input) {
@@ -149,13 +156,13 @@ class BookingList {
         this.listParams.set("page", page), this._reloadData();
     }
     filter() {
-        this.hasActiveFilters() ? (this.filters.startDate.length ? this.listParams.set("startDate", this.filters.startDate) : this.listParams.delete("startDate"), 
+        jQuery("#filter").addClass("loading"), this.hasActiveFilters() ? (this.filters.startDate.length ? this.listParams.set("startDate", this.filters.startDate) : this.listParams.delete("startDate"), 
         this.filters.endDate.length ? this.listParams.set("endDate", this.filters.endDate) : this.listParams.delete("endDate"), 
         this.filters.items.length ? this.listParams.set("item", this.filters.items[0]) : this.listParams.delete("item"), 
         this.filters.users.length ? this.listParams.set("user", this.filters.users[0]) : this.listParams.delete("user"), 
         this.filters.locations.length ? this.listParams.set("location", this.filters.locations[0]) : this.listParams.delete("location"), 
         this.shuffle.filter(this.itemPassesFilters.bind(this)), this._reloadData()) : (this._resetListParams(), 
-        this.shuffle.filter(Shuffle.ALL_ITEMS), this._reloadData());
+        this.shuffle.filter(Shuffle.ALL_ITEMS), this._reloadData()), jQuery("#filter").removeClass("loading");
     }
     hasActiveFilters() {
         return Object.keys(this.filters).some(function(key) {

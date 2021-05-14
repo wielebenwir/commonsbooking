@@ -58,7 +58,7 @@ class Booking extends View
             'location'  => false,
             'item'      => false,
             'user'      => false,
-            'startDate' => false,
+            'startDate' => time(),
             'endDate'   => false,
         ];
 
@@ -105,7 +105,9 @@ class Booking extends View
                 // Decide which edit link to use
                 $editLink = get_permalink($booking->ID);
 
-                $actions = '<a class="cb-button" href="'.$editLink.'">'. commonsbooking_sanitizeHTML( __('Details', 'commonsbooking') ).'</a>';
+                $actions = '<a class="cb-button" href="'.$editLink.'"><span>' .
+                    commonsbooking_sanitizeHTML( __('Details', 'commonsbooking') ) .
+                    '</span></a>';
 
                 // Prepare row data
                 $rowData = [

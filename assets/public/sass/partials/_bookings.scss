@@ -54,7 +54,6 @@
         }
 
         .filter-wrapper {
-
             font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
             float: left;
             margin-top: 10px;
@@ -62,6 +61,11 @@
             flex-grow: 1;
             flex-basis: 0;
             margin-right: 20px;
+
+            &:nth-child(3),
+            &:nth-child(6) {
+                margin-right: 0;
+            }
 
             .filter-label {
                 margin-bottom: 0.3rem;
@@ -84,12 +88,25 @@
 
         .reset-filters {
             padding-top: 15px;
+            align-items: center;
+            justify-content: flex-end;
+            display: flex;
+            flex-direction: row;
+            margin-right: 0;
+
+            & > .cb-button {
+                margin-left: 1rem;
+                cursor: pointer;
+            }
         }
 
-        .reset-filters > .cb-button {
-            float: right;
-            line-height: inherit;
+        .cb-button {
+            font-size: 0.8rem;
         }
+    }
+
+    &--filters.hide {
+        display: none;
     }
 
     #booking-list--results {
@@ -173,6 +190,9 @@
                     padding: 4px 20px;
                     margin: 0 8px;
                     height: 30px;
+                    span {
+                        vertical-align: middle;
+                    }
                 }
             }
 
@@ -221,4 +241,3 @@
         }
     }
 }
-
