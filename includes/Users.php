@@ -82,7 +82,9 @@ function commonsbooking_isCurrentUserAllowedToEdit($post): bool
  */
 function commonsbooking_validate_user_on_edit($current_screen)
 {
+
     if ($current_screen->base == "post" && in_array($current_screen->id, Plugin::getCustomPostTypesLabels())) {
+     
         if (array_key_exists('action', $_GET) && $_GET['action'] == 'edit') {
             $post = get_post($_GET['post']);
             if ( ! commonsbooking_isCurrentUserAllowedToEdit($post)) {
@@ -93,6 +95,23 @@ function commonsbooking_validate_user_on_edit($current_screen)
 }
 
 add_action('current_screen', 'commonsbooking_validate_user_on_edit', 10, 1);
+
+
+/**
+ * modifies admin bar due to user restrictions (e.g. remove edit link from admin bar if user not allowed to edit)
+ *
+ * @return void
+ */
+function commonsbooking_modify_admin_bar() {
+    global $wp_admin_bar;
+    global $post;
+    if (! commonsbooking_isCurrentUserAllowedToEdit($post) ) {
+        $wp_admin_bar->remove_menu('edit');
+    }
+    
+}
+
+add_action( 'wp_before_admin_bar_render', 'commonsbooking_modify_admin_bar' );
 
 /**
  * Applies listing restriction for item and location admins.
