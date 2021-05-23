@@ -907,8 +907,8 @@ class Timeframe extends CustomPostType
                 self::validateBookingParameters(
                     sanitize_text_field($_REQUEST["item-id"]),
                     sanitize_text_field($_REQUEST["location-id"]),
-                    $_REQUEST["repetition-start"],
-                    $_REQUEST["repetition-end"]
+                    sanitize_text_field($_REQUEST["repetition-start"]),
+                    sanitize_text_field($_REQUEST["repetition-end"])
                 );
             } catch (\Exception $e) {
                 if($post->post_status !== 'draft') {
