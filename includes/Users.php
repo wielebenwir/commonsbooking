@@ -15,6 +15,7 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
  */
 function commonsbooking_isCurrentUserAllowedToEdit($post): bool
 {
+    if(!$post) return false;
     $current_user = wp_get_current_user();
     $isAuthor     = intval($current_user->ID) == intval($post->post_author);
     $isAdmin      = commonsbooking_isCurrentUserAdmin();
