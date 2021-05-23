@@ -5,7 +5,6 @@
 *
 */
 
-
 #ui-datepicker-div {
     display: none;
     background-color: white;
@@ -54,22 +53,18 @@
         }
 
         .filter-wrapper {
-            font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+            @include font-default;
             float: left;
             margin-top: 10px;
             min-width: 200px;
             flex-grow: 1;
             flex-basis: 0;
-            margin-right: 20px;
-
-            &:nth-child(3),
-            &:nth-child(6) {
-                margin-right: 0;
-            }
+            padding-right: 1rem;
 
             .filter-label {
                 margin-bottom: 0.3rem;
                 margin-left: 0;
+                font-size: 1.375rem;
             }
         }
 
@@ -100,9 +95,6 @@
             }
         }
 
-        .cb-button {
-            font-size: 0.8rem;
-        }
     }
 
     &--filters.hide {
@@ -110,7 +102,7 @@
     }
 
     #booking-list--results {
-        font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+        @include font-default;
         width: 100%;
 
         @media (min-width: 400px) {
@@ -186,7 +178,7 @@
                 flex-direction: row-reverse;
 
                 a {
-                    font-size: 0.9em;
+                    font-size: 0.825em;
                     padding: 4px 20px;
                     margin: 0 8px;
                     height: 30px;
@@ -212,7 +204,7 @@
     }
 
     #booking-list--pagination {
-        font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+        @include font-default;
 
         ul {
             display: flex;

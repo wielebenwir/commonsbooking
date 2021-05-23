@@ -179,8 +179,6 @@ class MapAdmin
 
     public static function populate_option_defaults($options)
     {
-        //var_dump($options);
-
         foreach (self::OPTION_KEYS as $key) {
             if ( ! isset($options[$key])) {
                 $options[$key] = self::get_option_default($key);

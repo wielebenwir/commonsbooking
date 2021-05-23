@@ -156,7 +156,7 @@ class Location extends CustomPostType
             'exclude_from_search' => true,
 
             // Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
-            'supports'            => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions', 'excerpt'),
+            'supports'            => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions', 'excerpt', 'author'),
 
             // Soll der Post Type Kategien haben?
             'taxonomies'         => array(self::$postType.'s_category'),

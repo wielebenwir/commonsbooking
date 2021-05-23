@@ -30,6 +30,7 @@ $color-yellow-background: #FFF9C5;
 /* Colors: text */
 $color-gray-dark: #444;
 $color-gray-silver: #9D9F9D;
+$color-gray-light: #bababa;
 $color-black: #000;
 $color-white: #FFF;
 
@@ -54,3 +55,7 @@ $spacer-small: 5px;
 $radius: 8px;
 $radius-pill: $radius;
 
+/* Fonts */
+@mixin font-default() {
+  font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+}
