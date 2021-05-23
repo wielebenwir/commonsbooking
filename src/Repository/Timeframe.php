@@ -169,20 +169,20 @@ class Timeframe extends PostRepository
      * Returns timefranges in explicit timerange.
      * @param array $locations
      * @param array $items
-     * @param array $types
      * @param false $returnAsModel
      * @param $minTimestamp
      * @param $maxTimestamp
      * @param string[] $postStatus
      * @return array
+     * @throws \Exception
      */
     public static function getBookingInRange(
-        $locations = [],
-        $items = [],
-        $returnAsModel = false,
         $minTimestamp,
         $maxTimestamp,
-        $postStatus = ['confirmed', 'unconfirmed', 'publish', 'inherit']
+        array $locations = [],
+        array $items = [],
+        bool $returnAsModel = false,
+        array $postStatus = ['confirmed', 'unconfirmed', 'publish', 'inherit']
     ): array
     {
         $types = [
@@ -203,7 +203,6 @@ class Timeframe extends PostRepository
             $postIds = self::getPostIdsByType($types, $items, $locations);
 
             if ($postIds && count($postIds)) {
-
                 $dateQuery = "
                 INNER JOIN $table_postmeta pm4 ON
                     pm4.post_id = pm1.id AND (

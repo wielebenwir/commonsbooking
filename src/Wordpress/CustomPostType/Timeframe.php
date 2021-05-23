@@ -173,11 +173,11 @@ class Timeframe extends CustomPostType
     {
         // Get exiting bookings for defined parameters
         $existingBookingsInRange = \CommonsBooking\Repository\Timeframe::getBookingInRange(
+            $startDate,
+            $endDate,
             [$locationId],
             [$itemId],
-            false,
-            $startDate,
-            $endDate
+            false
         );
 
         // If there are already bookings, throw exception
@@ -901,14 +901,14 @@ class Timeframe extends CustomPostType
         // saved as draft.
         if (
             (array_key_exists('type', $_REQUEST) && $_REQUEST['type'] == Timeframe::BOOKING_ID) &&
-            current_user_can('edit_post', $post_id)
+            current_user_can('edit_' . self::$postType, $post_id)
         ) {
             try {
                 self::validateBookingParameters(
                     sanitize_text_field($_REQUEST["item-id"]),
                     sanitize_text_field($_REQUEST["location-id"]),
-                    strtotime($_REQUEST["repetition-start"] . " " . $_REQUEST["start-time"]),
-                    strtotime($_REQUEST["repetition-end"] . " " . $_REQUEST["end-time"])
+                    sanitize_text_field($_REQUEST["repetition-start"]),
+                    sanitize_text_field($_REQUEST["repetition-end"])
                 );
             } catch (\Exception $e) {
                 if($post->post_status !== 'draft') {
@@ -930,7 +930,7 @@ class Timeframe extends CustomPostType
             //@TODO: Find better solution for capability check for bookings
             if (
                 (array_key_exists('type', $_REQUEST) && $_REQUEST['type'] == Timeframe::BOOKING_ID) ||
-                current_user_can('edit_post', $post_id)
+                current_user_can('edit_' . self::$postType, $post_id)
             ) {
                 $fieldNames = [];
                 if ($customField['type'] == "checkboxes") {

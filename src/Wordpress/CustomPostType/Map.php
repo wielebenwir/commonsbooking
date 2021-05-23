@@ -162,8 +162,6 @@ class Map extends CustomPostType
         foreach ($active_plugins as $plugin) {
             $plugin_file_path = COMMONSBOOKING_MAP_PATH.'../'.$plugin;
             if (strpos($plugin, $plugin_name) !== false && file_exists($plugin_file_path)) {
-                var_dump($plugin);
-
                 return dirname($plugin);
             }
         }

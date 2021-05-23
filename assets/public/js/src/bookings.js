@@ -15,6 +15,7 @@ class BookingList {
             altFormat: "@",
             altField: "#startDate"
         });
+        jQuery('#startDate-datepicker').datepicker("setDate", new Date());
 
         this.endDate = document.querySelector('.filter-enddate input');
         jQuery('#endDate-datepicker').datepicker({
@@ -52,27 +53,38 @@ class BookingList {
 
     _bindEventListeners() {
         this._onFilterReset = this._handleFilterReset.bind(this);
-        jQuery('#reset-filters').on('click', this._onFilterReset);
+        const $filterReset = jQuery('#reset-filters');
+        if($filterReset) $filterReset.on('click', this._onFilterReset);
+
+        this._onFilter = this.filter.bind(this);
+        const $filter = jQuery('#filter');
+        if($filter) $filter.on('click', this._onFilter);
 
         this._onUserChange = this._handleUserChange.bind(this);
-        var userSelect = document.querySelectorAll('.filter-users select');
-        userSelect.item(0).addEventListener('change', this._onUserChange);
+        const userSelect = document.querySelectorAll('.filter-users select');
+        if(userSelect) userSelect.item(0).addEventListener('change', this._onUserChange);
 
         this._onItemChange = this._handleItemChange.bind(this);
-        var itemSelect = document.querySelectorAll('.filter-items select');
-        itemSelect.item(0).addEventListener('change', this._onItemChange);
+        const itemSelect = document.querySelectorAll('.filter-items select');
+        if(itemSelect) itemSelect.item(0).addEventListener('change', this._onItemChange);
 
         this._onLocationChange = this._handleLocationChange.bind(this);
-        var locationSelect = document.querySelectorAll('.filter-locations select');
-        locationSelect.item(0).addEventListener('change', this._onLocationChange);
+        const locationSelect = document.querySelectorAll('.filter-locations select');
+        if(locationSelect) locationSelect.item(0).addEventListener('change', this._onLocationChange);
 
         this._onStartDateChange = this._handleStartDateChange.bind(this);
-        jQuery('#startDate-datepicker').datepicker("option", "onSelect", this._onStartDateChange);
-        jQuery('#startDate-datepicker').change(this._onStartDateChange);
+        const $startDatePicker = jQuery('#startDate-datepicker');
+        if($startDatePicker) {
+            $startDatePicker.datepicker("option", "onSelect", this._onStartDateChange);
+            $startDatePicker.change(this._onStartDateChange);
+        }
 
         this._onEndDateChange = this._handleEndDateChange.bind(this);
-        jQuery('#endDate-datepicker').datepicker("option", "onSelect", this._onEndDateChange);
-        jQuery('#endDate-datepicker').change(this._onEndDateChange);
+        const $endDatePicker = jQuery('#endDate-datepicker');
+        if($endDatePicker) {
+            $endDatePicker.datepicker("option", "onSelect", this._onEndDateChange);
+            $endDatePicker.change(this._onEndDateChange);
+        }
     };
 
     _handleStartDateChange() {
@@ -83,8 +95,6 @@ class BookingList {
             let startDate = parseInt(document.querySelector('#startDate').value.slice(0,-3)) + timezoneOffsetGermany;
             this.filters.startDate = [startDate + ''];
         }
-
-        this.filter();
     };
 
     _handleEndDateChange() {
@@ -95,8 +105,6 @@ class BookingList {
             let endDate = parseInt(document.querySelector('#endDate').value.slice(0,-3)) + timezoneOffsetGermany;
             this.filters.endDate = [endDate + ''];
         }
-
-        this.filter();
     };
 
     _handleUserChange() {
@@ -104,7 +112,6 @@ class BookingList {
         if (this.filters.users[0] == 'all') {
             this.filters.users = [];
         }
-        this.filter();
     };
 
     _getCurrentUserFilters() {
@@ -120,8 +127,6 @@ class BookingList {
         if (this.filters.items[0] == 'all') {
             this.filters.items = [];
         }
-
-        this.filter();
     };
 
     _getCurrentItemFilters() {
@@ -138,7 +143,6 @@ class BookingList {
         if (this.filters.locations[0] == 'all') {
             this.filters.locations = [];
         }
-        this.filter();
     };
 
     _getCurrentLocationFilters() {
@@ -320,6 +324,7 @@ class BookingList {
      * Filter shuffle based on the current state of filters.
      */
     filter() {
+        jQuery('#filter').addClass('loading');
         if (this.hasActiveFilters()) {
 
             if (this.filters.startDate.length) {
@@ -359,6 +364,7 @@ class BookingList {
             this.shuffle.filter(Shuffle.ALL_ITEMS);
             this._reloadData();
         }
+        jQuery('#filter').removeClass('loading');
     };
 
     /**

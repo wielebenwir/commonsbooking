@@ -55,3 +55,7 @@ $spacer-small: 5px;
 $radius: 8px;
 $radius-pill: $radius;
 
+/* Fonts */
+@mixin font-default() {
+  font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+}
