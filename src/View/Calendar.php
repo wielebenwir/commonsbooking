@@ -29,7 +29,10 @@ class Calendar
      */
     public static function prepareJsonResponse(Day $startDate, Day $endDate, $locations, $items)
     {
-        if($jsonResponse = Plugin::getCacheItem()) {
+        $current_user = wp_get_current_user();
+        $customCacheKey = serialize($current_user->roles);
+
+        if($jsonResponse = Plugin::getCacheItem($customCacheKey)) {
             return $jsonResponse;
         } else {
             $calendar = new \CommonsBooking\Model\Calendar(
@@ -43,6 +46,7 @@ class Calendar
                 'minDate'             => $startDate->getFormattedDate('Y-m-d'),
                 'startDate'           => $startDate->getFormattedDate('Y-m-d'),
                 'endDate'             => $endDate->getFormattedDate('Y-m-d'),
+                'lang'                => str_replace('_','-', get_locale()),
                 'days'                => [],
                 'bookedDays'          => [],
                 'partiallyBookedDays' => [],
@@ -54,11 +58,13 @@ class Calendar
             ];
 
             if (count($locations) === 1) {
-                $jsonResponse['location']['fullDayInfo'] = nl2br(CB::get(
-                    'location',
-                    COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions',
-                    $locations[0]
-                ));
+                $jsonResponse['location']['fullDayInfo'] = nl2br(
+                    CB::get(
+                        'location',
+                        COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions',
+                        $locations[0]
+                    )
+                );
                 $allowLockedDaysInRange = get_post_meta(
                     $locations[0],
                     COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
@@ -125,7 +131,7 @@ class Calendar
                 }
             }
 
-            Plugin::setCacheItem($jsonResponse);
+            Plugin::setCacheItem($jsonResponse, $customCacheKey);
             return $jsonResponse;
         }
     }
@@ -147,6 +153,8 @@ class Calendar
             $noSlots = false;
 
             $timeFrameType = get_post_meta($slot['timeframe']->ID, 'type', true);
+
+            $isUserAllowedtoBook = commonsbooking_isCurrentUserAllowedToBook($slot['timeframe']->ID);
 
             // save bookable state for first and last slot
             if ($dayArray['firstSlotBooked'] === null) {
@@ -193,8 +201,8 @@ class Calendar
                 $dayArray['partiallyBookedDay'] = true;
             }
 
-            // If there's a locked timeframe, nothing can be selected
-            if ($slot['timeframe']->locked) {
+            // If there's a locked timeframe or user ist not allowed to book based on this timeframe, nothing can be selected
+            if ($slot['timeframe']->locked || !$isUserAllowedtoBook) {
                 $dayArray['locked'] = true;
             } else {
                 // if not all slots are locked, the day should be selectable
@@ -286,6 +294,11 @@ class Calendar
             );
 
             if(count($bookableTimeframes)) {
+                // Sort timeframes by startdate
+                usort($bookableTimeframes, function ($item1, $item2) {
+                    return $item1->getStartDate() < $item2->getStartDate();
+                });
+
                 /** @var \CommonsBooking\Model\Timeframe $firstBookableTimeframe */
                 $firstBookableTimeframe = array_pop($bookableTimeframes);
 

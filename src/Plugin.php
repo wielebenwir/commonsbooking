@@ -260,6 +260,12 @@ class Plugin
      */
     public function initRoutes()
     {
+        // Check if API is activated in settings
+        $api_activated = Settings::getOption('commonsbooking_options_export', 'api-activated');
+        if ($api_activated != "on") {
+            return false;
+        }
+        
         add_action(
             'rest_api_init',
             function () {
@@ -267,7 +273,7 @@ class Plugin
                     new \CommonsBooking\API\AvailabilityRoute(),
                     new \CommonsBooking\API\ItemsRoute(),
                     new \CommonsBooking\API\LocationsRoute(),
-                    new \CommonsBooking\API\OwnersRoute(),
+//                    new \CommonsBooking\API\OwnersRoute(),
                     new \CommonsBooking\API\ProjectsRoute(),
 
                 ];

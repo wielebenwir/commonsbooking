@@ -48,6 +48,7 @@
             const createBookingCodesInput = $('#create-booking-codes');
             const bookingCodesList = $('#booking-codes-list');
             const maxDaysSelect = $('.cmb2-id-timeframe-max-days');
+            const allowUserRoles = $('.cmb2-id-allowed-user-roles');
             const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
             const noRepSet = [fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput];
             const repTimeFieldsSet = [gridInput, startTimeInput, endTimeInput];
@@ -80,15 +81,17 @@
             }
 
             /**
-             * Shows/hides max day selection depending on timeframe type (for bookings).
+             * Shows/hides max day selection and user role restriction depending on timeframe type (for bookings).
              */
             const handleTypeSelection = function () {
                 const selectedType = $("option:selected", typeInput).val();
 
                 if(selectedType == 2) {
                     maxDaysSelect.show();
+                    allowUserRoles.show()
                 } else {
                     maxDaysSelect.hide();
+                    allowUserRoles.hide();
                 }
             }
             handleTypeSelection();

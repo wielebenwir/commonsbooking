@@ -323,11 +323,23 @@ Thanks, the Team.
     ),
     /* Tab: migration end */
 
-    /* Tab: export start */
+    /* Tab: API and export start */
     'export' => array(
-        'title'        => __('Export', 'commonsbooking'),
+        'title'        => __('Export / API', 'commonsbooking'),
         'id'           => 'export',
         'field_groups' => array(
+            'api' => array(
+                'title'       => esc_html__('Configure API Access', 'commonsbooking'),
+                'id'          => 'api',
+                'fields'      => [
+                    array(
+                        'name'    => esc_html__('Activate API', 'commonsbooking'),
+                        'desc'    => commonsbooking_sanitizeHTML( __('If selected, the API is enabled. See more information in the documentation: <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking') ),
+                        'id'      => "api-activated",
+                        'type'    => 'checkbox',
+                    ),
+                ]
+            ),
             'download' => array(
                 'title'       => esc_html__('Download timeframes export', 'commonsbooking'),
                 'id'          => 'download',

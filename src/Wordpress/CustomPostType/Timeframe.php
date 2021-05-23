@@ -720,6 +720,18 @@ class Timeframe extends CustomPostType
                 'options' => self::getTypes(),
             ),
             array(
+                'name'    => esc_html__("Location", 'commonsbooking'),
+                'id'      => "location-id",
+                'type'    => 'select',
+                'options' => self::sanitizeOptions(\CommonsBooking\Repository\Location::getByCurrentUser()),
+            ),
+            array(
+                'name'    => esc_html__("Item", 'commonsbooking'),
+                'id'      => "item-id",
+                'type'    => 'select',
+                'options' => self::sanitizeOptions(\CommonsBooking\Repository\Item::getByCurrentUser()),
+            ),
+            array(
                 'name'       => esc_html__('Maximum booking duration', 'commonsbooking'),
                 'desc'       => esc_html__('Maximum booking duration in days', 'commonsbooking'),
                 'id'         => "timeframe-max-days",
@@ -732,16 +744,11 @@ class Timeframe extends CustomPostType
                 'default'    => 3,
             ),
             array(
-                'name'    => esc_html__("Location", 'commonsbooking'),
-                'id'      => "location-id",
-                'type'    => 'select',
-                'options' => self::sanitizeOptions(\CommonsBooking\Repository\Location::getByCurrentUser()),
-            ),
-            array(
-                'name'    => esc_html__("Item", 'commonsbooking'),
-                'id'      => "item-id",
-                'type'    => 'select',
-                'options' => self::sanitizeOptions(\CommonsBooking\Repository\Item::getByCurrentUser()),
+                'name'    => esc_html__("Restrict bookings to user roles", 'commonsbooking'),
+                'id'      => "allowed_user_roles",
+                'desc'       => esc_html__('Select one or more user roles to restrict bookings based on these timeframe configuration to these user roles. Leave empty for no restrictions', 'commonsbooking'),
+                'type'    => 'pw_multiselect',
+                'options' => self::sanitizeOptions(\CommonsBooking\Repository\UserRepository::getUserRoles()),
             ),
             array(
                 'name' => esc_html__("Configure timeframe", 'commonsbooking'),

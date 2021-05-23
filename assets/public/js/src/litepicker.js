@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 "scrollToDate": true,
                 "inlineMode": true,
                 "firstDay": 1,
-                "lang": 'de-DE',
+                "lang": globalCalendarData['lang'],
                 "numberOfMonths": numberOfMonths,
                 "numberOfColumns": numberOfColumns,
                 "moveByOneMonth": true,

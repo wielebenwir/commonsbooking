@@ -62,10 +62,10 @@ class ItemsRoute extends BaseRoute
         $data = $this->getItemData($request);
 
         // Add owners data
-        if(!array_key_exists('owners', $params) || $params['owners'] != "false") {
-            $ownersRoute = new OwnersRoute();
-            $data->owners = $ownersRoute->getItemData($request);
-        }
+//        if(!array_key_exists('owners', $params) || $params['owners'] != "false") {
+//            $ownersRoute = new OwnersRoute();
+//            $data->owners = $ownersRoute->getItemData($request);
+//        }
 
         // Add projects data
         if(!array_key_exists('projects', $params) || $params['projects'] != "false") {
@@ -89,9 +89,9 @@ class ItemsRoute extends BaseRoute
 
         }
 
-        if(WP_DEBUG) {
-            $this->validateData($data);
-        }
+//        if(WP_DEBUG) {
+//            $this->validateData($data);
+//        }
         return new \WP_REST_Response($data, 200);
     }
 
@@ -105,9 +105,9 @@ class ItemsRoute extends BaseRoute
     public function get_item($request)
     {
         $data = $this->getItemData($request);
-        if(WP_DEBUG) {
-            $this->validateData($data);
-        }
+//        if(WP_DEBUG) {
+//            $this->validateData($data);
+//        }
         return new \WP_REST_Response($data, 200);
     }
 
@@ -124,7 +124,7 @@ class ItemsRoute extends BaseRoute
         $preparedItem->name = $item->post_title;
         $preparedItem->url         = get_permalink($item->ID);
         $preparedItem->description = $this->escapeJsonString($item->post_content);
-        $preparedItem->ownerId     = $item->post_author;
+//        $preparedItem->ownerId     = $item->post_author;
         $preparedItem->projectId   = "1";
 
         if(get_the_post_thumbnail_url($item->ID, 'full')) {

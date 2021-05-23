@@ -82,7 +82,9 @@ function commonsbooking_isCurrentUserAllowedToEdit($post): bool
  */
 function commonsbooking_validate_user_on_edit($current_screen)
 {
+
     if ($current_screen->base == "post" && in_array($current_screen->id, Plugin::getCustomPostTypesLabels())) {
+     
         if (array_key_exists('action', $_GET) && $_GET['action'] == 'edit') {
             $post = get_post($_GET['post']);
             if ( ! commonsbooking_isCurrentUserAllowedToEdit($post)) {
@@ -93,6 +95,23 @@ function commonsbooking_validate_user_on_edit($current_screen)
 }
 
 add_action('current_screen', 'commonsbooking_validate_user_on_edit', 10, 1);
+
+
+/**
+ * modifies admin bar due to user restrictions (e.g. remove edit link from admin bar if user not allowed to edit)
+ *
+ * @return void
+ */
+function commonsbooking_modify_admin_bar() {
+    global $wp_admin_bar;
+    global $post;
+    if (! commonsbooking_isCurrentUserAllowedToEdit($post) ) {
+        $wp_admin_bar->remove_menu('edit');
+    }
+    
+}
+
+add_action( 'wp_before_admin_bar_render', 'commonsbooking_modify_admin_bar' );
 
 /**
  * Applies listing restriction for item and location admins.
@@ -122,7 +141,29 @@ add_filter(
 );
 
 // Check if current user has admin role
-function commonsbooking_isCurrentUserAdmin() {
+function commonsbooking_isCurrentUserAdmin()
+{
     $user = wp_get_current_user();
     return apply_filters('commonsbooking_isCurrentUserAdmin', in_array('administrator', $user->roles), $user);
+}
+
+/**
+ * Returns true if user is allowed to book based on the timeframe configuration (user role)
+ *
+ * @param mixed $timeframeID
+ * @return bool
+ */
+function commonsbooking_isCurrentUserAllowedToBook($timeframeID)
+{
+    $current_user = wp_get_current_user();
+    $user_roles = $current_user->roles;
+    $allowedUserRoles = get_post_meta($timeframeID, 'allowed_user_roles', true);
+
+    if ( empty($allowedUserRoles) ) {
+        return true;
+    }
+
+    $match = array_intersect($user_roles, $allowedUserRoles);
+
+    return count($match) > 0;
 }

@@ -139,6 +139,7 @@ class Item extends CustomPostType
                 'custom-fields',
                 'revisions',
                 'excerpt',
+                'author',
             ),
 
 
