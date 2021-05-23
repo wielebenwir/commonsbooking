@@ -3316,7 +3316,7 @@
  */
 /* -------------------- Boxes -------------------- */
 /* line 15, ../../global/sass/partials/_extends.scss */
-.cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper {
+.cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper, .cb-items-table {
   background: #f6f6f6;
   padding: 2.5px 5px;
   overflow: hidden;
@@ -3325,7 +3325,7 @@
 }
 @media (min-width: 37.5em) {
   /* line 15, ../../global/sass/partials/_extends.scss */
-  .cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper {
+  .cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper, .cb-items-table {
     padding: 10px 15px;
   }
 }
@@ -4784,70 +4784,150 @@
 }
 
 /* Styles for items table */
-/* line 3, ../sass/partials/_shortcodeItemsTable.scss */
-.tscroll {
-  width: 100%;
+/**
+* Table/Calendar showing item availabilities.
+*
+* shortcode [cb_item_table]
+* 
+*
+* @package   CommonsBooking
+* @author    Florian Egermann <florian@wielebenwir.de>
+* @license   GPL-2.0+
+* @since     2.0
+* @link      http://www.wielebenwir.de
+* @copyright 2020 wielebenwir
+*/
+/* line 15, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-table-scroll {
+  position: relative;
   overflow: scroll;
-  border: solid gray 1px;
 }
 
-/* line 9, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 20, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table {
-  font-size: 12px;
+  overflow: auto;
+  /* overwriting cb-box standard behaviour */
+  padding: 0;
+  /* overwriting cb-box standard behaviour */
+  width: 100%;
+  border-collapse: separate;
+  /* make first 2 table columns sticky */
+  /* place first col */
+  /* place second col */
+  /* set bg color */
 }
-/* line 13, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 27, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td,
+.cb-items-table th {
+  line-height: 13px;
+  font-size: 12px;
+  padding: 4px 0;
+  font-weight: normal;
+}
+/* line 35, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table th {
   font-size: 12px;
-  padding: 0;
   text-align: center;
   vertical-align: middle;
-  font-weight: 600;
-  border: 1px solid #a7a7a7;
 }
-/* line 23, ../sass/partials/_shortcodeItemsTable.scss */
-.cb-items-table thead tr:nth-child(2) th:nth-child(1),
-.cb-items-table thead tr:nth-child(2) th:nth-child(2) {
-  padding-left: 4px;
-  text-align: left;
-}
-/* line 30, ../sass/partials/_shortcodeItemsTable.scss */
-.cb-items-table td {
-  font-size: 12px;
-  padding: 0;
-  text-align: center;
-  vertical-align: middle;
-  border: 1px solid #a7a7a7;
-  z-index: 11;
-}
-/* line 38, ../sass/partials/_shortcodeItemsTable.scss */
-.cb-items-table td:nth-child(1), .cb-items-table td:nth-child(2) {
-  text-align: left;
-  padding-left: 4px;
+/* line 42, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr {
+  color: #506CA9;
 }
 /* line 45, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:first-child {
+  /* Months row */
+}
+/* line 48, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) {
+  /* legend row */
+}
+/* line 50, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:nth-child(1),
+.cb-items-table thead tr:nth-child(2) th:nth-child(2) {
+  text-align: left;
+  padding-left: 4px;
+}
+/* line 60, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:first-child,
+.cb-items-table thead tr:nth-child(2) th:nth-child(2),
+.cb-items-table tbody tr td:first-child,
+.cb-items-table tbody tr td:nth-child(2) {
+  text-align: left;
+  padding-left: 5px;
+  position: sticky;
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  background: #FFF;
+}
+/* line 73, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:first-child,
+.cb-items-table tbody tr td:first-child {
+  left: 0;
+}
+/* line 78, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:nth-child(2),
+.cb-items-table tbody tr td:nth-child(2) {
+  left: 100px;
+}
+/* line 84, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:first-child,
+.cb-items-table thead tr:nth-child(2) th:nth-child(2) {
+  background: #f6f6f6;
+}
+/* line 89, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table tbody tr:hover td:first-child,
+.cb-items-table tbody tr:hover td:nth-child(2) {
+  background-color: #f6f6f6;
+}
+/* line 95, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table tbody tr {
+  background: #FFF;
+  height: 50px;
+  overflow: hidden;
+}
+/* line 100, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table tbody tr:hover {
+  background: #f6f6f6;
+}
+/* line 104, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table tbody tr td {
+  border-top: 1px solid #bababa;
+  border-left: 1px solid #f6f6f6;
+  border-bottom: 1px solid #FFF;
+}
+/* line 112, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td {
+  text-align: center;
+  vertical-align: middle;
+  z-index: 11;
+}
+/* line 118, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.booked, .cb-items-table td > span.free, .cb-items-table td > span.unavailable, .cb-items-table td > span.holiday, .cb-items-table td > span.repair, .cb-items-table td > span.blocked {
   display: block;
   margin: 0 auto;
   width: 15px;
   height: 15px;
+  border-radius: 0px;
 }
-/* line 58, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 131, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.unavailable {
-  background: var(--litepickerDayIsLockedColor);
+  background: #f6f6f6;
 }
-/* line 62, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 136, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.holiday {
   background: var(--litepickerDayIsHolidayColorBg);
 }
-/* line 66, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 140, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.repair, .cb-items-table td > span.booked {
   background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
-/* line 71, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 151, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.blocked {
   background-color: var(--litepickerDayIsBookedColorBg);
 }
-/* line 75, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 155, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.free {
   background-color: var(--litepickerDayColorBg);
   text-align: center;

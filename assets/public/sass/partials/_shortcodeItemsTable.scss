@@ -1,83 +1,162 @@
-$table-font-size: 12px;
+/**
+* Table/Calendar showing item availabilities.
+*
+* shortcode [cb_item_table]
+* 
+*
+* @package   CommonsBooking
+* @author    Florian Egermann <florian@wielebenwir.de>
+* @license   GPL-2.0+
+* @since     2.0
+* @link      http://www.wielebenwir.de
+* @copyright 2020 wielebenwir
+*/
 
-.tscroll {
-    width:100%;
-    overflow: scroll;
-    border: solid gray 1px;
+.cb-table-scroll {
+	position: relative;
+	overflow: scroll;
 }
 
 .cb-items-table {
+	@extend .cb-box;
+	overflow: auto; /* overwriting cb-box standard behaviour */
+	padding: 0; /* overwriting cb-box standard behaviour */
+	width: 100%;
+	border-collapse: separate;
 
-    font-size: $table-font-size;
+	td,
+	th {
+		line-height: $font-line-height-small;
+		font-size: $font-size-small;
+		padding: 4px 0;
+		font-weight: normal;
+	}
 
-    th {
-        font-size: $table-font-size;
-        padding: 0;
-        text-align: center;
-        vertical-align: middle;
-        font-weight: 600;
-        border: 1px solid rgb(167, 167, 167);
-    }
+	th {
+		font-size: $font-size-small;
+		text-align: center;
+		vertical-align: middle;
+	}
 
-    thead tr:nth-child(2) {
-        th:nth-child(1),
-        th:nth-child(2) {
-            padding-left: 4px;
-            text-align: left;
-        }
-    }
+	thead {
+		tr {
+			color: $color-blue-dark;
 
-    td {
-        font-size: $table-font-size;
-        padding: 0;
-        text-align: center;
-        vertical-align: middle;
-        border: 1px solid rgb(167, 167, 167);
-        z-index: 11;
+			&:first-child {
+				/* Months row */
+			}
+			&:nth-child(2) {
+				/* legend row */
+				th:nth-child(1),
+				th:nth-child(2) {
+					text-align: left;
+					padding-left: 4px;
+				}
+			}
+		}
+	}
 
-        &:nth-child(1),
-        &:nth-child(2) {
-            text-align: left;
-            padding-left: 4px;
-        }
+	/* make first 2 table columns sticky */
+	thead tr:nth-child(2) th:first-child,
+	thead tr:nth-child(2) th:nth-child(2),
+	tbody tr td:first-child,
+	tbody tr td:nth-child(2) {
+		text-align: left;
+		padding-left: 5px;
+		position: sticky;
+		width: 100px;
+		min-width: 100px;
+		max-width: 100px;
+		background: $color-white;
+	}
+	/* place first col */
+	thead tr:nth-child(2) th:first-child,
+	tbody tr td:first-child {
+		left: 0;
+	}
+	/* place second col */
+	thead tr:nth-child(2) th:nth-child(2),
+	tbody tr td:nth-child(2) {
+		left: 100px;
+	}
 
-        > span {
-            &.booked,
-            &.free,
-            &.unavailable,
-            &.holiday,
-            &.repair,
-            &.blocked {
-                display: block;
-                margin: 0 auto;
-                width: 15px;
-                height: 15px;
+	/* set bg color */
+	thead tr:nth-child(2) th:first-child,
+	thead tr:nth-child(2) th:nth-child(2) {
+		background: $color-gray-background;
+	}
 
-            }
+	tbody tr:hover td:first-child,
+	tbody tr:hover td:nth-child(2) {
+		background-color: $color-gray-background;
+	}
 
-            &.unavailable {
-                background: var(--litepickerDayIsLockedColor);
-            }
+	tbody {
+		tr {
+			background: $color-white;
+			height: 50px;
+			overflow: hidden;
 
-            &.holiday {
-                background: var(--litepickerDayIsHolidayColorBg);
-            }
+			&:hover {
+				background: $color-gray-background;
+			}
 
-            &.repair,
-            &.booked {
-                background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
-            }
+			td {
+				border-top: 1px solid $color-gray-light;
+				border-left: 1px solid $color-gray-background;
+				border-bottom: 1px solid $color-white;
+			}
+		}
+	}
 
-            &.blocked {
-                background-color: var(--litepickerDayIsBookedColorBg);
-            }
+	td {
+		text-align: center;
+		vertical-align: middle;
+		z-index: 11;
 
-            &.free {
-                background-color: var(--litepickerDayColorBg);
-                text-align: center;
-                text-decoration: none;
-            }
+		> span {
+			&.booked,
+			&.free,
+			&.unavailable,
+			&.holiday,
+			&.repair,
+			&.blocked {
+				display: block;
+				margin: 0 auto;
+				width: 15px;
+				height: 15px;
+				border-radius: 0px;
+			}
 
-        }
-    }
+			&.unavailable {
+				// background: var(--litepickerDayIsLockedColor);
+				background: $color-gray-background;
+			}
+
+			&.holiday {
+				background: var(--litepickerDayIsHolidayColorBg);
+			}
+
+			&.repair,
+			&.booked {
+				background: linear-gradient(
+					to top left,
+					var(--litepickerDayColorBg) 0%,
+					var(--litepickerDayColorBg) 50%,
+					var(--litepickerDayIsBookedColorBg) 50%,
+					var(--litepickerDayIsBookedColorBg) 100%
+				);
+			}
+
+			&.blocked {
+				background-color: var(--litepickerDayIsBookedColorBg);
+			}
+
+			&.free {
+				background-color: var(--litepickerDayColorBg);
+				text-align: center;
+				text-decoration: none;
+			}
+		}
+	}
 }
