@@ -4,6 +4,7 @@ namespace CommonsBooking\Helper;
 
 Class Helper
 {
+    
     /**
      * generates a random string as hash
      *

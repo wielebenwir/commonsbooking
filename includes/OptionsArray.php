@@ -437,7 +437,7 @@ Thanks, the Team.
         'field_groups' => array(
             'api' => array(
                 'title'       => esc_html__('Configure API Access', 'commonsbooking'),
-                'id'          => 'api',
+                'id'          => 'api_access',
                 'fields'      => [
                     array(
                         'name'    => esc_html__('Activate API', 'commonsbooking'),
@@ -453,8 +453,9 @@ Thanks, the Team.
                     ),
 
                     array(
+                        // Repeatable group -> API Shares
                         'name'    => esc_html__('API shares', 'commonsbooking'),
-                        'desc'    => commonsbooking_sanitizeHTML( __(' xxxxx <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking') ),
+                        'desc'    => commonsbooking_sanitizeHTML( __('You can define on ore more API shares. Read the documentation for more information about API shares and configuration <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking') ),
                         'id'      => "api_share_group",
                         'type'    => 'group',
                         'repeatable'  => true,
@@ -469,16 +470,19 @@ Thanks, the Team.
                         'fields' => [
                             array(
                                 'name'    => esc_html__('API name', 'commonsbooking'),
+                                'desc'    => commonsbooking_sanitizeHTML( __('Internal name for this API share', 'commonsbooking') ),           
                                 'id'      => 'api_name',
                                 'type'    => 'text',
                             ),
                             array(
                                 'name'    => esc_html__('API enabled', 'commonsbooking'),
+                                'desc'    => commonsbooking_sanitizeHTML( __('If checked this API share is enabled', 'commonsbooking') ),           
                                 'id'      => 'api_enabled',
                                 'type'    => 'checkbox',
                             ),
                             array(
                                 'name'    => esc_html__('Push URL', 'commonsbooking'),
+                                'desc'    => commonsbooking_sanitizeHTML( __('URL that gets push information everytime there was a change on CommonsBooking data', 'commonsbooking') ),           
                                 'id'      => 'push_url',
                                 'type'    => 'text',
                             ),
@@ -486,14 +490,14 @@ Thanks, the Team.
                                 'name'    => esc_html__('API Key', 'commonsbooking'),
                                 'id'      => 'api_key',
                                 'type'    => 'text',
+                                'desc'    => commonsbooking_sanitizeHTML( __(' You must set an API-Key. The API key should consist of alphanumeric characters and be at least 24 characters long.', 'commonsbooking') ),
                                 'attributes' => array(
-                                    'disabled' => 'disabled',
-                                    'readonly' => 'readonly',
+                                    'required' => 'required',
                                 ),
-                                'default' => \CommonsBooking\Helper\Helper::generateRandomString(),
                             ),
                             array(
                                 'name'    => esc_html__('API Owner', 'commonsbooking'),
+                                'desc'    => commonsbooking_sanitizeHTML( __('The owner value is provided by the API. It is set to the blog name by default in this version. In future versions you may be able to change this information', 'commonsbooking') ),
                                 'id'      => 'api_owner',
                                 'type'    => 'text',
                                 'attributes' => array(
@@ -507,7 +511,33 @@ Thanks, the Team.
                     ),
                 ]
             ),
-        )
-    )
+        ),
+    ),
     /* Tab: export end */
+
+    /* Tab: meta data set start */
+        'metadata' => array(
+            'title'        => __('Meta Data-Sets', 'commonsbooking'),
+            'id'           => 'custom_metadata',
+            'field_groups' => array(
+                'custom_metadata' => array(
+                    'title'       => esc_html__('Set Custom metadata to locations and items', 'commonsbooking'),
+                    'id'          => 'meta_data_group',
+                    'fields'      => [
+                        array(
+                            'name'    => esc_html__('Meta Data', 'commonsbooking'),
+                            'desc'    => commonsbooking_sanitizeHTML( __('Use only this format, separated by semicolon and and each entry in a new line: <br>post_type(item/location);field-name;label(english),type(checkbox,number,text),description(in english)<br>
+                                        Example: item;waterproof;Waterproof material;checkbox;"This item is waterproof and can be used in heavy rain" ', 'commonsbooking') ),
+                            'id'      => "metadata",
+                            'type'    => 'textarea',
+                        ),
+                    ]
+                ),
+            ),
+    ),
+        /* Tab: meta data end */
+    
+
+
+
 );
