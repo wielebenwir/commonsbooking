@@ -4,6 +4,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Plugin;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\MetaBox\Field;
 
 abstract class CustomPostType
@@ -213,6 +214,38 @@ abstract class CustomPostType
             }
         }
     }
+    
+    /**
+     * retrieve Custom Meta Data from CommonsBooking Options and convert them to cmb2 fields array
+     *
+     * @param  mixed $type (item or location)
+     * @return array
+     */
+    public static function getCMB2FieldsArrayFromCustomMetadata($type) {
+
+        $metaDataRaw = array();
+        $metaDataRaw = Settings::getOption(COMMONSBOOKING_PLUGIN_SLUG . '_options_metadata', 'metadata');
+
+        $metaDataLines = explode("\r\n", $metaDataRaw);
+
+        $metaDataArray = array();
+        $metaDataFields = array();
+
+        foreach ($metaDataLines as $metaDataLine) {
+            $metaDataArray = explode(';', $metaDataLine);
+
+            // $metaDataArray[0] = Type
+            $metaDataFields[$metaDataArray[0]][] = array(
+                'id'        => $metaDataArray[1],
+                'name'      => $metaDataArray[2],
+                'type'      => $metaDataArray[3],
+                'desc'      => commonsbooking_sanitizeHTML( __($metaDataArray[4], 'commonsbooking') ),
+            );    
+        }
+
+        return $metaDataFields[$type];
+    } 
+    
 
     /**
      * @return mixed
