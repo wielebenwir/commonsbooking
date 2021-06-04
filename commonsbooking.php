@@ -225,7 +225,7 @@ add_action('admin_notices', array(Plugin::class, 'renderError') );
  *
  * @param  mixed $string
  * @param  mixed $textdomain
- * @return void
+ * @return string
  */
 function commonsbooking_sanitizeHTML($string)
 {
