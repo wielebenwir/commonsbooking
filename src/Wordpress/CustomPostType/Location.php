@@ -331,6 +331,29 @@ class Location extends CustomPostType
             'id'         => COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
             'type'       => 'checkbox',
         ));
+
+        // Check if custom meta fields are set in CB Options and generate MetaData-Box and fields
+        if ( is_array( self::getCMB2FieldsArrayFromCustomMetadata('location') ) )
+        {
+            $customMetaData = self::getCMB2FieldsArrayFromCustomMetadata('location');
+        
+            // Initiate the metabox Adress
+            $cmb = new_cmb2_box(array(
+                'id'           => COMMONSBOOKING_METABOX_PREFIX . 'location_custom_meta',
+                'title'        => esc_html__('Location Meta-Data', 'commonsbooking'),
+                'object_types' => array(self::$postType), // Post type
+                'context'      => 'normal',
+                'priority'     => 'high',
+                'show_names'   => true, // Show field names on the left
+            ));
+
+            // Add Custom Meta Fields defined in CommonsBooking Options (Tab MetaData)
+            foreach ($customMetaData as $customMetaDataField) {
+                $cmb->add_field($customMetaDataField);
+            }
+
+        }      
+
     }
 
 }
