@@ -221,7 +221,7 @@ class Booking extends View
     }
 
     /**
-     * cb_items shortcode
+     * Bookings shortcode
      *
      * A list of items with timeframes.
      *
