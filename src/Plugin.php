@@ -275,6 +275,8 @@ class Plugin
                     new \CommonsBooking\API\LocationsRoute(),
 //                    new \CommonsBooking\API\OwnersRoute(),
                     new \CommonsBooking\API\ProjectsRoute(),
+                    new \CommonsBooking\API\GBFS\StationInformation(),
+                    new \CommonsBooking\API\GBFS\StationStatus(),
 
                 ];
                 foreach ($routes as $route) {
