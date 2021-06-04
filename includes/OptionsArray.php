@@ -453,8 +453,8 @@ Thanks, the Team.
                     ),
 
                     array(
-                        'name'    => esc_html__('API Access', 'commonsbooking'),
-                        'desc'    => commonsbooking_sanitizeHTML( __('If selected, the API is accessible without an API-Key. For details see: <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking') ),
+                        'name'    => esc_html__('API shares', 'commonsbooking'),
+                        'desc'    => commonsbooking_sanitizeHTML( __(' xxxxx <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking') ),
                         'id'      => "api_share_group",
                         'type'    => 'group',
                         'repeatable'  => true,
