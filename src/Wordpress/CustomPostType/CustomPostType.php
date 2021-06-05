@@ -243,7 +243,9 @@ abstract class CustomPostType
             );    
         }
 
-        return $metaDataFields[$type];
+        if (array_key_exists( $type, $metaDataFields) ) {
+            return $metaDataFields[$type];
+        }
     } 
     
 
