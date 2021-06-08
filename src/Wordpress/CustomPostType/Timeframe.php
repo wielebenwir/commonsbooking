@@ -2,7 +2,7 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-use CommonsBooking\Helper;
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Repository\BookingCodes;
 
