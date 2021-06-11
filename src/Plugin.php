@@ -135,7 +135,7 @@ class Plugin
         add_action('widgets_init', array($this, 'registerUserWidget'));
 
         // remove Row Actions
-        add_filter('post_row_actions',array(CustomPostType::class, 'removeRowActions'),10,1);
+        add_filter('post_row_actions',array(CustomPostType::class, 'modifyRowActions'),10,2);
 
     }
 

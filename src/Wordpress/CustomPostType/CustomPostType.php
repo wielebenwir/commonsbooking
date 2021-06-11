@@ -233,19 +233,20 @@ abstract class CustomPostType
 
     
     /**
-     * removes Row Actions (like quick edit, trash etc) in CPT listings
+     * Modifies Row Actions (like quick edit, trash etc) in CPT listings
      *
      * @param  mixed $actions
      * @return void
      */
-    public static function removeRowActions($actions) 
+    public static function modifyRowActions($actions, $post) 
     {
-        global $current_screen;
-        var_dump(Timeframe::getPostType());
-        if ( $current_screen->post_type == array(Timeframe::getPostType() ) ) { 
+
+        // remove quick edit for timeframes
+        if ( $post->post_type == Timeframe::getPostType() ) { 
             unset( $actions['inline hide-if-no-js'] );
-        return $actions;
         }
+
+        return $actions;
     }
 
     /**
