@@ -247,7 +247,6 @@ abstract class CustomPostType
             return $metaDataFields[$type];
         }
     } 
-    
 
     /**
      * @return mixed
