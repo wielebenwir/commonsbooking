@@ -4,12 +4,16 @@
 namespace CommonsBooking\API;
 
 
+use CommonsBooking\Repository\ApiShares;
+use CommonsBooking\Settings\Settings;
 use Opis\JsonSchema\Exception\SchemaNotFoundException;
 use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\Validator;
 
 class BaseRoute extends \WP_REST_Controller
 {
+
+    const API_KEY_PARAM = 'apikey';
 
     protected $schemaUrl;
 
@@ -18,33 +22,39 @@ class BaseRoute extends \WP_REST_Controller
      */
     public function register_routes()
     {
-        $version   = '1';
-        $namespace = COMMONSBOOKING_PLUGIN_SLUG.'/v'.$version;
-        register_rest_route($namespace, '/'.$this->rest_base, array(
+        $version = '1';
+        $namespace = COMMONSBOOKING_PLUGIN_SLUG . '/v' . $version;
+        register_rest_route($namespace, '/' . $this->rest_base, array(
             array(
-                'methods'  => \WP_REST_Server::READABLE,
+                'methods' => \WP_REST_Server::READABLE,
                 'callback' => array($this, 'get_items'),
-                'args'     => array(),
-                'permission_callback' => '__return_true'
+                'args' => array(),
+                'permission_callback' => function () {
+                    return self::hasPermission();
+                }
             ),
         ));
-        register_rest_route($namespace, '/'.$this->rest_base.'/(?P<id>[\d]+)', array(
+        register_rest_route($namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)', array(
             array(
-                'methods'  => \WP_REST_Server::READABLE,
+                'methods' => \WP_REST_Server::READABLE,
                 'callback' => array($this, 'get_item'),
-                'args'     => array(
+                'args' => array(
                     'context' => array(
                         'default' => 'view',
                     ),
                 ),
-                'permission_callback' => '__return_true'
+                'permission_callback' => function () {
+                    return self::hasPermission();
+                }
             ),
         ));
 
-        register_rest_route($namespace, '/'.$this->rest_base.'/schema', array(
-            'methods'  => \WP_REST_Server::READABLE,
+        register_rest_route($namespace, '/' . $this->rest_base . '/schema', array(
+            'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_public_item_schema'),
-            'permission_callback' => '__return_true'
+            'permission_callback' => function () {
+                return self::hasPermission();
+            }
         ));
     }
 
@@ -116,6 +126,33 @@ class BaseRoute extends \WP_REST_Controller
     public function escapeJsonString($string)
     {
         return substr(json_encode($string), 1, -1) ?: "";
+    }
+
+    /**
+     * Returns true if current request is allowed.
+     * @return bool
+     */
+    public static function hasPermission()
+    {
+        $isApiActive = Settings::getOption('commonsbooking_options_api', 'api-activated');
+        $anonymousAccessAllowed = Settings::getOption('commonsbooking_options_api', 'apikey_not_required');
+        $apiKey = array_key_exists(self::API_KEY_PARAM, $_REQUEST) ? sanitize_text_field($_REQUEST[self::API_KEY_PARAM]) : false;
+        $apiShare = ApiShares::getByKey($apiKey);
+
+        // Only if api is active we return something
+        if ($isApiActive) {
+            // if anonymous access is allowed, api shares are ignored
+            if ($anonymousAccessAllowed) {
+                return true;
+            } else {
+                // check if there is a valid api key submitted
+                if ($apiKey && $apiShare && $apiShare->isEnabled()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 }

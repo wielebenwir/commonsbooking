@@ -4,13 +4,12 @@
 namespace CommonsBooking;
 
 use CB;
+use CommonsBooking\Helper\API;
 use CommonsBooking\Model\User;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\Options;
-use CommonsBooking\Migration\Migration;
-use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\CB1UserFields;
@@ -44,6 +43,8 @@ class Plugin
             WHERE option_name like '_transient_commonsbooking%" . $param . "%'
         ";
         $wpdb->query($sql);
+
+        API::triggerPushUrls();
     }
 
     /**
