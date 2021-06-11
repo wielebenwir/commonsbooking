@@ -17,6 +17,7 @@ use CommonsBooking\Repository\CB1UserFields;
 use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Controller\TimeframeController;
+use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\Options\AdminOptions;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
 use CommonsBooking\Wordpress\CustomPostType\Location;
@@ -132,6 +133,9 @@ class Plugin
 
         // register User Widget
         add_action('widgets_init', array($this, 'registerUserWidget'));
+
+        // remove Row Actions
+        add_filter('post_row_actions',array(CustomPostType::class, 'removeRowActions'),10,1);
 
     }
 

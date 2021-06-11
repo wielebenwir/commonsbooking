@@ -220,7 +220,8 @@ abstract class CustomPostType
      * @param  mixed $length
      * @return void
      */
-    public static function generateRandomSlug($length='24') {
+    public static function generateRandomSlug($length='24') 
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -228,6 +229,23 @@ abstract class CustomPostType
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
+    }
+
+    
+    /**
+     * removes Row Actions (like quick edit, trash etc) in CPT listings
+     *
+     * @param  mixed $actions
+     * @return void
+     */
+    public static function removeRowActions($actions) 
+    {
+        global $current_screen;
+        var_dump(Timeframe::getPostType());
+        if ( $current_screen->post_type == array(Timeframe::getPostType() ) ) { 
+            unset( $actions['inline hide-if-no-js'] );
+        return $actions;
+        }
     }
 
     /**
