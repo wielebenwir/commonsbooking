@@ -4,6 +4,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Plugin;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\MetaBox\Field;
 
 abstract class CustomPostType
@@ -213,23 +214,39 @@ abstract class CustomPostType
             }
         }
     }
-
+    
     /**
-     * generates a random slug for use as post_name in timeframes/booking to prevent easy access to bookings via get parameters
+     * retrieve Custom Meta Data from CommonsBooking Options and convert them to cmb2 fields array
      *
-     * @param  mixed $length
-     * @return void
+     * @param  mixed $type (item or location)
+     * @return array
      */
-    public static function generateRandomSlug($length='24') 
-    {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
+    public static function getCMB2FieldsArrayFromCustomMetadata($type) {
+
+        $metaDataRaw = array();
+        $metaDataRaw = Settings::getOption(COMMONSBOOKING_PLUGIN_SLUG . '_options_metadata', 'metadata');
+
+        $metaDataLines = explode("\r\n", $metaDataRaw);
+
+        $metaDataArray = array();
+        $metaDataFields = array();
+
+        foreach ($metaDataLines as $metaDataLine) {
+            $metaDataArray = explode(';', $metaDataLine);
+
+            // $metaDataArray[0] = Type
+            $metaDataFields[$metaDataArray[0]][] = array(
+                'id'        => $metaDataArray[1],
+                'name'      => $metaDataArray[2],
+                'type'      => $metaDataArray[3],
+                'desc'      => commonsbooking_sanitizeHTML( __($metaDataArray[4], 'commonsbooking') ),
+            );    
         }
-        return $randomString;
-    }
+
+        if (array_key_exists( $type, $metaDataFields) ) {
+            return $metaDataFields[$type];
+        }
+    } 
 
     
     /**

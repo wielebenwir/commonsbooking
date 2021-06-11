@@ -53,7 +53,7 @@ class Settings
 		if (is_array($cb_options_array) && array_key_exists($field_id, $cb_options_array)) {
 			$result = $flat_array[$field_id];
 		} else {
-        $result = false;
+        	$result = false;
 		}
 
 		return $result;

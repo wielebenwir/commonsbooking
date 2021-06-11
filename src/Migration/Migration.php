@@ -3,7 +3,7 @@
 
 namespace CommonsBooking\Migration;
 
-
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\CB1;
@@ -443,7 +443,7 @@ class Migration
         $postData = [
             'post_title'  => $timeframe['timeframe_title'],
             'post_type'   => Timeframe::$postType,
-            'post_name'   => CustomPostType::generateRandomSlug(),
+            'post_name'   => Helper::generateRandomString(),
             'post_status' => 'publish'
         ];
 
@@ -487,7 +487,7 @@ class Migration
         $postData = [
             'post_title'  => 'Buchung CB1-Import ' . $userName . ' - ' . $booking['date_start'],
             'post_type'   => Timeframe::$postType,
-            'post_name'   => CustomPostType::generateRandomSlug(),
+            'post_name'   => Helper::generateRandomString(),
             'post_status' => $booking['status'],
             'post_date'   => $booking['booking_time'],
             'post_author' => $booking['user_id']
