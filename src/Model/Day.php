@@ -324,8 +324,11 @@ class Day
                     if ($dayOfWeek == 0) {
                         $dayOfWeek = 7;
                     }
+
                     if (is_array($timeframeWeekdays) && in_array($dayOfWeek, $timeframeWeekdays)) {
                         return true;
+                    } else {
+                        return false;
                     }
                     break;
 
@@ -336,7 +339,10 @@ class Day
 
                     if ($dayOfMonth == $timeframeStartDayOfMonth) {
                         return true;
+                    } else {
+                        return false;
                     }
+
                     break;
 
                 // Yearly Rep
@@ -345,6 +351,8 @@ class Day
                     $timeframeDate = $this->getStartDate($timeframe)->format('dm');
                     if ($date == $timeframeDate) {
                         return true;
+                    } else {
+                        return false;
                     }
                     break;
             }

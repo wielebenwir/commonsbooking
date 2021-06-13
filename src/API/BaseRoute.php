@@ -78,6 +78,7 @@ class BaseRoute extends \WP_REST_Controller
     {
         $schemaObject = json_decode($this->getSchemaJson());
         unset($schemaObject->{'$schema'});
+        unset($schemaObject->{'$id'});
         $schemaObject = Schema::fromJsonString(json_encode($schemaObject));
 
         return $schemaObject;
