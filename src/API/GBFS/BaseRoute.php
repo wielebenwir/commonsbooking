@@ -5,52 +5,57 @@ namespace CommonsBooking\API\GBFS;
 
 
 use CommonsBooking\Repository\Location;
+use Exception;
+use stdClass;
+use WP_REST_Request;
+use WP_REST_Response;
 
-class BaseRoute extends \CommonsBooking\API\BaseRoute
-{
+class BaseRoute extends \CommonsBooking\API\BaseRoute {
 
-    /**
-     * Returns Rest Response with items.
-     * @param \WP_REST_Request $request
-     * @return \WP_REST_Response
-     */
-    public function get_items($request)
-    {
-        $data            = new \stdClass();
-        $data->data->stations = $this->getItemData($request);
-        $data->last_updated = time();
-        $data->ttl = 60;
-        $data->version = "2.2";
+	/**
+	 * Returns Rest Response with items.
+	 *
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function get_items( $request ) {
+		$data                 = new stdClass();
+		$data->data->stations = $this->getItemData( $request );
+		$data->last_updated   = time();
+		$data->ttl            = 60;
+		$data->version        = "2.2";
 
-        if (WP_DEBUG) {
-            $this->validateData($data);
-        }
+		if ( WP_DEBUG ) {
+			$this->validateData( $data );
+		}
 
-        return new \WP_REST_Response($data, 200);
-    }
+		return new WP_REST_Response( $data, 200 );
+	}
 
-    /**
-     * Returns item data array.
-     * @param $request
-     * @return array
-     */
-    public function getItemData($request)
-    {
-        $data       = [];
-        $locations = Location::get();
+	/**
+	 * Returns item data array.
+	 *
+	 * @param $request
+	 *
+	 * @return array
+	 */
+	public function getItemData( $request ) {
+		$data      = [];
+		$locations = Location::get();
 
-        foreach ($locations as $location) {
-            try {
-                $itemdata   = $this->prepare_item_for_response($location, $request);
-                $data[] = $itemdata;
-            } catch (\Exception $exception) {
-                if (WP_DEBUG) {
-                    error_log($exception->getMessage());
-                }
-            }
-        }
+		foreach ( $locations as $location ) {
+			try {
+				$itemdata = $this->prepare_item_for_response( $location, $request );
+				$data[]   = $itemdata;
+			} catch ( Exception $exception ) {
+				if ( WP_DEBUG ) {
+					error_log( $exception->getMessage() );
+				}
+			}
+		}
 
-        return $data;
-    }
+		return $data;
+	}
 
 }

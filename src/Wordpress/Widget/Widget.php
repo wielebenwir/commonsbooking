@@ -3,8 +3,7 @@
 namespace CommonsBooking\Widget;
 
 
-class Widget
-{
+class Widget {
 
 }
 

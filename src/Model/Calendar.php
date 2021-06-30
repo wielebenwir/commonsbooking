@@ -4,87 +4,85 @@ namespace CommonsBooking\Model;
 
 use CommonsBooking\Plugin;
 
-class Calendar
-{
+class Calendar {
 
-    /**
-     * @var Day
-     */
-    protected $startDate;
+	/**
+	 * @var Day
+	 */
+	protected $startDate;
 
-    /**
-     * @var Day
-     */
-    protected $endDate;
+	/**
+	 * @var Day
+	 */
+	protected $endDate;
 
-    /**
-     * @var array
-     */
-    protected $items;
+	/**
+	 * @var array
+	 */
+	protected $items;
 
-    /**
-     * @var array
-     */
-    protected $locations;
+	/**
+	 * @var array
+	 */
+	protected $locations;
 
-    /**
-     * @var array
-     */
-    protected $types;
+	/**
+	 * @var array
+	 */
+	protected $types;
 
-    /**
-     * @var
-     */
-    protected $weeks;
+	/**
+	 * @var
+	 */
+	protected $weeks;
 
-    /**
-     * Calendar constructor.
-     *
-     * @param Day $startDate
-     * @param Day $endDate
-     * @param array $locations
-     * @param array $items
-     * @param array $types
-     */
-    public function __construct(Day $startDate, Day $endDate, $locations = [], $items = [], $types = [])
-    {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->items = $items;
-        $this->locations = $locations;
-        $this->types = $types;
-    }
+	/**
+	 * Calendar constructor.
+	 *
+	 * @param Day $startDate
+	 * @param Day $endDate
+	 * @param array $locations
+	 * @param array $items
+	 * @param array $types
+	 */
+	public function __construct( Day $startDate, Day $endDate, $locations = [], $items = [], $types = [] ) {
+		$this->startDate = $startDate;
+		$this->endDate   = $endDate;
+		$this->items     = $items;
+		$this->locations = $locations;
+		$this->types     = $types;
+	}
 
-    /**
-     * Returns weeks for calendar time range.
-     * @return array
-     */
-    public function getWeeks()
-    {
-        $startDate = strtotime($this->startDate->getDate());
-        $endDate = strtotime($this->endDate->getDate());
+	/**
+	 * Returns weeks for calendar time range.
+	 * @return array
+	 */
+	public function getWeeks() {
+		$startDate = strtotime( $this->startDate->getDate() );
+		$endDate   = strtotime( $this->endDate->getDate() );
 
-        $customId = md5(
-            $startDate .
-            $endDate .
-            serialize($this->items) .
-            serialize($this->locations) .
-            serialize($this->types)
-        );
+		$customId = md5(
+			$startDate .
+			$endDate .
+			serialize( $this->items ) .
+			serialize( $this->locations ) .
+			serialize( $this->types )
+		);
 
-        if (Plugin::getCacheItem($customId)) {
-            return Plugin::getCacheItem($customId);
-        } else {
-            $weeks = [];
-            while($startDate <= $endDate) {
-                $weeks[] = new Week(date('Y', $startDate), date('W', $startDate), $this->locations, $this->items, $this->types);
-                $startDate = strtotime("next monday", $startDate);
-            }
+		if ( Plugin::getCacheItem( $customId ) ) {
+			return Plugin::getCacheItem( $customId );
+		} else {
+			$weeks = [];
+			while ( $startDate <= $endDate ) {
+				$weeks[]   = new Week( date( 'Y', $startDate ), date( 'W', $startDate ), $this->locations, $this->items, $this->types );
+				$startDate = strtotime( "next monday", $startDate );
+			}
 
-            Plugin::setCacheItem($weeks, $customId);
-            return $weeks;
-        }
-    }
+			Plugin::setCacheItem( $weeks, $customId );
+
+			return $weeks;
+		}
+	}
 
 
 }
