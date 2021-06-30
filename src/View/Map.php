@@ -4,7 +4,6 @@
 namespace CommonsBooking\View;
 
 
-class Map extends View
-{
+class Map extends View {
 
 }

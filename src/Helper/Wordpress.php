@@ -2,22 +2,22 @@
 
 namespace CommonsBooking\Helper;
 
-class Wordpress
-{
+use function get_pages;
 
-    /**
-     * @return array
-     */
-    public static function getPageListTitle(): array
-    {
-        $pages = \get_pages();
-        $pagelist = [];
+class Wordpress {
 
-        foreach ($pages as $key => $value) {
-            $pagelist[$value->ID] = $value->post_title;
-        }
+	/**
+	 * @return array
+	 */
+	public static function getPageListTitle(): array {
+		$pages    = get_pages();
+		$pagelist = [];
 
-        return $pagelist;
-    }
+		foreach ( $pages as $key => $value ) {
+			$pagelist[ $value->ID ] = $value->post_title;
+		}
+
+		return $pagelist;
+	}
 
 }

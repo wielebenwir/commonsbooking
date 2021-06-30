@@ -4,165 +4,154 @@
 namespace CommonsBooking\Model;
 
 
-class BookingCode
-{
+class BookingCode {
 
-    /**
-     * Error type id.
-     */
-    public const ERROR_TYPE = "bookingCodeCreationError";
+	/**
+	 * Error type id.
+	 */
+	public const ERROR_TYPE = "bookingCodeCreationError";
 
-    /**
-     * Datestring
-     * @var string
-     */
-    protected $date;
+	/**
+	 * Datestring
+	 * @var string
+	 */
+	protected $date;
 
-    /**
-     * Item ID
-     * @var int
-     */
-    protected $item;
+	/**
+	 * Item ID
+	 * @var int
+	 */
+	protected $item;
 
-    /**
-     * Location ID
-     * @var int
-     */
-    protected $location;
+	/**
+	 * Location ID
+	 * @var int
+	 */
+	protected $location;
 
-    /**
-     * Timeframe ID
-     * @var int
-     */
-    protected $timeframe;
+	/**
+	 * Timeframe ID
+	 * @var int
+	 */
+	protected $timeframe;
 
-    /**
-     * Code
-     * @var string
-     */
-    protected $code;
+	/**
+	 * Code
+	 * @var string
+	 */
+	protected $code;
 
-    /**
-     * BookingCode constructor.
-     *
-     * @param $date
-     * @param $item
-     * @param $location
-     * @param $timeframe
-     * @param $code
-     */
-    public function __construct($date, $item, $location, $timeframe, $code)
-    {
-        $this->date = $date;
-        $this->item = $item;
-        $this->location = $location;
-        $this->timeframe = $timeframe;
-        $this->code = $code;
-    }
+	/**
+	 * BookingCode constructor.
+	 *
+	 * @param $date
+	 * @param $item
+	 * @param $location
+	 * @param $timeframe
+	 * @param $code
+	 */
+	public function __construct( $date, $item, $location, $timeframe, $code ) {
+		$this->date      = $date;
+		$this->item      = $item;
+		$this->location  = $location;
+		$this->timeframe = $timeframe;
+		$this->code      = $code;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getDate()
-    {
-        return $this->date;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getDate() {
+		return $this->date;
+	}
 
-    /**
-     * @param mixed $date
-     *
-     * @return BookingCode
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
+	/**
+	 * @param mixed $date
+	 *
+	 * @return BookingCode
+	 */
+	public function setDate( $date ) {
+		$this->date = $date;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getItem()
-    {
-        return $this->item;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getItem() {
+		return $this->item;
+	}
 
-    public function getItemName() {
-        $post = get_post($this->getItem());
-        return $post->post_title;
-    }
+	public function getItemName() {
+		$post = get_post( $this->getItem() );
 
-    /**
-     * @param mixed $item
-     *
-     * @return BookingCode
-     */
-    public function setItem($item)
-    {
-        $this->item = $item;
+		return $post->post_title;
+	}
 
-        return $this;
-    }
+	/**
+	 * @param mixed $item
+	 *
+	 * @return BookingCode
+	 */
+	public function setItem( $item ) {
+		$this->item = $item;
 
-    /**
-     * @return mixed
-     */
-    public function getLocation()
-    {
-        return $this->location;
-    }
+		return $this;
+	}
 
-    /**
-     * @param mixed $location
-     *
-     * @return BookingCode
-     */
-    public function setLocation($location)
-    {
-        $this->location = $location;
+	/**
+	 * @return mixed
+	 */
+	public function getLocation() {
+		return $this->location;
+	}
 
-        return $this;
-    }
+	/**
+	 * @param mixed $location
+	 *
+	 * @return BookingCode
+	 */
+	public function setLocation( $location ) {
+		$this->location = $location;
 
-    /**
-     * @return mixed
-     */
-    public function getTimeframe()
-    {
-        return $this->timeframe;
-    }
+		return $this;
+	}
 
-    /**
-     * @param mixed $timeframe
-     *
-     * @return BookingCode
-     */
-    public function setTimeframe($timeframe)
-    {
-        $this->timeframe = $timeframe;
+	/**
+	 * @return mixed
+	 */
+	public function getTimeframe() {
+		return $this->timeframe;
+	}
 
-        return $this;
-    }
+	/**
+	 * @param mixed $timeframe
+	 *
+	 * @return BookingCode
+	 */
+	public function setTimeframe( $timeframe ) {
+		$this->timeframe = $timeframe;
 
-    /**
-     * @return mixed
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
+		return $this;
+	}
 
-    /**
-     * @param mixed $code
-     *
-     * @return BookingCode
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
+	/**
+	 * @return mixed
+	 */
+	public function getCode() {
+		return $this->code;
+	}
 
-        return $this;
-    }
+	/**
+	 * @param mixed $code
+	 *
+	 * @return BookingCode
+	 */
+	public function setCode( $code ) {
+		$this->code = $code;
+
+		return $this;
+	}
 
 }
