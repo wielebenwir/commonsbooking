@@ -21,6 +21,7 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 	 */
 	public function get_items( $request ) {
 		$data                 = new stdClass();
+		$data->data           = new stdClass();
 		$data->data->stations = $this->getItemData( $request );
 		$data->last_updated   = time();
 		$data->ttl            = 60;

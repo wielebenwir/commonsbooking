@@ -16,7 +16,7 @@ class StationInformation extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $rest_base = 'station_information';
+	protected $rest_base = 'station_information.json';
 
 	/**
 	 * Commons-API schema definition.
