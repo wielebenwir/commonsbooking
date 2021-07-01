@@ -12,6 +12,11 @@
     ],
     "psr-4": {"CommonsBooking\\": "src/"}
   },
+  "autoload-dev": {
+    "psr-0": {
+      "CommonsBooking\\Tests\\": "tests/"
+    }
+  },
   "repositories": [
     {
       "type": "vcs",
@@ -28,5 +33,8 @@
     "nyholm/psr7": "^1.3",
     "opis/json-schema": "^1.0",
     "justinrainbow/json-schema": "^5.2"
+  },
+  "require-dev": {
+    "mockery/mockery": "dev-master"
   }
 }

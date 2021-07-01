@@ -685,4 +685,5 @@ class Plugin {
 	public static function updateUserRoleName() {
 		$cb_manager = get_role( 'cb_manager' );
 	}
+
 }
