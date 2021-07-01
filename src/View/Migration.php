@@ -3,73 +3,74 @@
 namespace CommonsBooking\View;
 
 
-class Migration
-{
-    /**
-     * Render Migration Form.
-     *
-     * @param array $field_args Array of field arguments.
-     * @param CMB2_Field $field The field object
-     */
-    public static function renderMigrationForm($field_args, $field)
-    {
-        $cb1Installed = \CommonsBooking\Repository\CB1::isInstalled();
+use CommonsBooking\Repository\CB1;
 
-        ?>
+class Migration {
+	/**
+	 * Render Migration Form.
+	 *
+	 * @param array $field_args Array of field arguments.
+	 * @param CMB2_Field $field The field object
+	 */
+	public static function renderMigrationForm( $field_args, $field ) {
+		$cb1Installed = CB1::isInstalled();
+
+		?>
         <div class="cmb-row cmb-type-text "><?php
 
-        if ( ! $cb1Installed) {
-            echo '<strong style="color:red">' . esc_html__('We could not detect a version of an older CommonsBooking Installation (Version 0.X).',
-                    'commonsbooking') . '</strong>';
-        } else {
-            echo '<strong style="color: green">' . esc_html__('Found a version of an older CommonsBooking Installation (Version 0.X). You can migrate.',
-                    'commonsbooking') . '</strong>';
-        }
-        echo('
+		if ( ! $cb1Installed ) {
+			echo '<strong style="color:red">' . esc_html__( 'We could not detect a version of an older CommonsBooking Installation (Version 0.X).',
+					'commonsbooking' ) . '</strong>';
+		} else {
+			echo '<strong style="color: green">' . esc_html__( 'Found a version of an older CommonsBooking Installation (Version 0.X). You can migrate.',
+					'commonsbooking' ) . '</strong>';
+		}
+		echo( '
             
             <div id="migration-state">                
-                <span id="locations-index">0</span>/<span id="locations-count">0</span> ' . esc_html__(' Locations updated/saved', 'commonsbooking') . '<br>
-                <span id="items-index">0</span>/<span id="items-count">0</span>' . esc_html__(' Items updated/saved', 'commonsbooking') . '<br>
-                <span id="timeframes-index">0</span>/<span id="timeframes-count">0</span>' . esc_html__(' Timeframes updated/saved', 'commonsbooking') . '<br>
-                <span id="bookings-index">0</span>/<span id="bookings-count">0</span>' . esc_html__(' Bookings updated/saved', 'commonsbooking') . '<br>
-                <span id="bookingCodes-index">0</span>/<span id="bookingCodes-count">0</span>' . esc_html__(' Booking Codes updated/saved', 'commonsbooking') . '<br>
-                <span id="termsUrl-count">0</span>' . esc_html__(' Terms & Urls updated/saved', 'commonsbooking') . '<br>
-                <span id="taxonomies-index">0</span>/<span id="taxonomies-count">0</span>' . esc_html__(' Taxonomies updated/saved', 'commonsbooking') . '<br>
-                <span id="options-count">0</span>' . esc_html__(' Options updated/saved', 'commonsbooking') . '<br>
+                <span id="locations-index">0</span>/<span id="locations-count">0</span> ' . esc_html__( ' Locations updated/saved', 'commonsbooking' ) . '<br>
+                <span id="items-index">0</span>/<span id="items-count">0</span>' . esc_html__( ' Items updated/saved', 'commonsbooking' ) . '<br>
+                <span id="timeframes-index">0</span>/<span id="timeframes-count">0</span>' . esc_html__( ' Timeframes updated/saved', 'commonsbooking' ) . '<br>
+                <span id="bookings-index">0</span>/<span id="bookings-count">0</span>' . esc_html__( ' Bookings updated/saved', 'commonsbooking' ) . '<br>
+                <span id="bookingCodes-index">0</span>/<span id="bookingCodes-count">0</span>' . esc_html__( ' Booking Codes updated/saved', 'commonsbooking' ) . '<br>
+                <span id="termsUrl-count">0</span>' . esc_html__( ' Terms & Urls updated/saved', 'commonsbooking' ) . '<br>
+                <span id="taxonomies-index">0</span>/<span id="taxonomies-count">0</span>' . esc_html__( ' Taxonomies updated/saved', 'commonsbooking' ) . '<br>
+                <span id="options-count">0</span>' . esc_html__( ' Options updated/saved', 'commonsbooking' ) . '<br>
             </div>
             <div id="migration-in-progress">
                 <strong style="color: red">
-                ' . esc_html__('migration in process .. please wait ...', 'commonsbooking') . '
+                ' . esc_html__( 'migration in process .. please wait ...', 'commonsbooking' ) . '
                 </strong>
             </div>            
             <div id="migration-done">
                 <strong style="color: green">
-                ' . esc_html__('Migration finished', 'commonsbooking') . '
+                ' . esc_html__( 'Migration finished', 'commonsbooking' ) . '
                 </strong>
             </div>            
-        ');
+        ' );
 
-        if ($cb1Installed) { 
-        ?>
-        </div>
-        <div class="cmb-row cmb-type-text">
-            <div class="cmb-td">
-                <input type="checkbox" class="cmb2-option cmb2-list" name="get-geo-locations" id="get-geo-locations" checked>
-                <label for="get-geo-locations"><?php echo esc_html__('Retrieve location geo coordinates.', 'commonsbooking'); ?></label>
-                <p class="cmb2-metabox-description">
-                    <?php echo esc_html__('If this option is enabled, CommonsBooking will try to derive the matching geo-coordinates from the address data of the locations during import. We use an interface to a GeoCoder service (Nominatim) for this task. This service allows only one query per second, so the runtime of the migration is increased by 1 second per location. The geo-coordinates are needed to use the location map integrated in CommonsBooking.', 'commonsbooking'); ?>
-                </p>
+		if ( $cb1Installed ) {
+			?>
             </div>
-        </div>
-        <div class="cmb-row cmb-type-text">
+            <div class="cmb-row cmb-type-text">
+                <div class="cmb-td">
+                    <input type="checkbox" class="cmb2-option cmb2-list" name="get-geo-locations" id="get-geo-locations"
+                           checked>
+                    <label for="get-geo-locations"><?php echo esc_html__( 'Retrieve location geo coordinates.', 'commonsbooking' ); ?></label>
+                    <p class="cmb2-metabox-description">
+						<?php echo esc_html__( 'If this option is enabled, CommonsBooking will try to derive the matching geo-coordinates from the address data of the locations during import. We use an interface to a GeoCoder service (Nominatim) for this task. This service allows only one query per second, so the runtime of the migration is increased by 1 second per location. The geo-coordinates are needed to use the location map integrated in CommonsBooking.', 'commonsbooking' ); ?>
+                    </p>
+                </div>
+            </div>
+            <div class="cmb-row cmb-type-text">
             <a id="migration-start" class="button button-primary" href="#">
-                <?php echo esc_html__('Start Migration', 'commonsbooking'); ?>
+				<?php echo esc_html__( 'Start Migration', 'commonsbooking' ); ?>
             </a>
-            <?php
-            } // end if cb1installed
-            ?>
+			<?php
+		} // end if cb1installed
+		?>
         </div>
-        <?php
-    }
+		<?php
+	}
 
 }

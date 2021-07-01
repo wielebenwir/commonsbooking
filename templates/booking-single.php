@@ -8,7 +8,9 @@ use CommonsBooking\CB\CB;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Settings\Settings;
 
+global $post;
 $booking       = new \CommonsBooking\Model\Booking($post->ID);
+
 /** @var \CommonsBooking\Model\Timeframe $timeframe */
 $timeframe     = $booking->getBookableTimeFrame();
 $location      = $booking->getLocation();
@@ -143,10 +145,20 @@ $text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates
             }
         }
     }
+$current_status = $booking->post_status;
+if($current_status && $current_status !== 'draft') {
+
 ?>
 
 <!-- Buttons & Form action -->
 <div class="cb-action cb-wrapper">
-    <?php $booking->bookingActionButton('confirm'); ?>
-    <?php $booking->bookingActionButton('cancel'); ?>
+    <?php
+        $form_action = 'confirm';
+        include COMMONSBOOKING_PLUGIN_DIR . 'templates/booking-single-form.php';
+        $form_action = 'cancel';
+        include COMMONSBOOKING_PLUGIN_DIR . 'templates/booking-single-form.php';
+    ?>
 </div>
+<?php
+}
+?>
