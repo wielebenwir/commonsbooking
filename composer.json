@@ -2,6 +2,7 @@
   "name": "wielebenwir/commonsbooking",
   "description": "~",
   "version": "0.0.1",
+  "bin": ["vendor/bin"],
   "autoload": {
     "files": [
       "includes/OptionsArray.php",

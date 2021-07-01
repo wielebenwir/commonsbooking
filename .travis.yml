@@ -41,10 +41,6 @@ before_script:
     fi
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      wget https://phar.phpunit.de/phpunit-7.5.9.phar
-      chmod +x phpunit-7.5.9.phar
-      sudo mv phpunit-7.5.9.phar /usr/local/bin/phpunit
-      phpunit --version
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
       composer global require "phpunit/phpunit=7.*"
     fi
