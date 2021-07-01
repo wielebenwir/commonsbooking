@@ -1,3 +1,4 @@
+![alt text](https://travis-ci.com/wielebenwir/commonsbooking.svg?branch=master "Travis CI")
 === CommonsBooking ===
 
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen

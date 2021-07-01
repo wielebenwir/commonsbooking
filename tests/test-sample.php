@@ -10,6 +10,14 @@
  */
 class SampleTest extends WP_UnitTestCase {
 
+	/** @var \CommonsBooking\Wordpress\CustomPostType\Timeframe */
+	private $timeframe;
+
+	public function setUp(): void {
+		$this->timeframe = Mockery::mock(\CommonsBooking\Wordpress\CustomPostType\Timeframe::class);
+
+	}
+
 	/**
 	 * A single example test.
 	 */
@@ -20,5 +28,9 @@ class SampleTest extends WP_UnitTestCase {
 
 	public function test_Plugin_function() {
 		$this->assertTrue(\CommonsBooking\Plugin::returnString() == "string");
+	}
+
+	public function test_TimeframeIsBookable() {
+		$this->assertTrue($this->timeframe::$postType == 'cb_timeframe');
 	}
 }
