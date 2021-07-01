@@ -10,7 +10,7 @@ class MapShortcode {
 	/**
 	 * the shortcode handler - load all the needed assets and render the map container
 	 **/
-	public static function execute( $atts ) {
+	public static function execute( $atts ): string {
 
 		$a = shortcode_atts( array(
 			'id' => 0,
@@ -101,7 +101,7 @@ class MapShortcode {
 	/**
 	 * get the settings for the frontend of the map with given id
 	 **/
-	public static function get_settings( $cb_map_id ) {
+	public static function get_settings( $cb_map_id ): array {
 		$date_min           = new DateTime();
 		$date_min           = $date_min->format( 'Y-m-d' );
 		$max_days_in_future = MapAdmin::get_option( $cb_map_id, 'availability_max_days_to_show' );
@@ -195,16 +195,16 @@ class MapShortcode {
 			elseif ( $key == 'cb_items_available_categories' ) {
 				$settings['filter_cb_item_categories'] = [];
 				$current_group_id                      = null;
-				foreach ( $options['cb_items_available_categories'] as $key => $content ) {
-					if ( substr( $key, 0, 1 ) == 'g' ) {
-						$current_group_id                              = $key;
-						$settings['filter_cb_item_categories'][ $key ] = [
+				foreach ( $options['cb_items_available_categories'] as $categoryKey => $content ) {
+					if ( substr( $categoryKey, 0, 1 ) == 'g' ) {
+						$current_group_id                              = $categoryKey;
+						$settings['filter_cb_item_categories'][ $categoryKey ] = [
 							'name'     => $content,
 							'elements' => [],
 						];
 					} else {
 						$settings['filter_cb_item_categories'][ $current_group_id ]['elements'][] = [
-							'cat_id' => $key,
+							'cat_id' => $categoryKey,
 							'markup' => $content,
 						];
 					}
@@ -219,7 +219,7 @@ class MapShortcode {
 	/**
 	 * get the translations for the frontend
 	 **/
-	public static function get_translation( $cb_map_id ) {
+	public static function get_translation( $cb_map_id ): array {
 		$label_location_opening_hours   = MapAdmin::get_option( $cb_map_id, 'label_location_opening_hours' );
 		$label_location_contact         = MapAdmin::get_option( $cb_map_id, 'label_location_contact' );
 		$custom_no_locations_message    = MapAdmin::get_option( $cb_map_id, 'custom_no_locations_message' );
@@ -227,7 +227,7 @@ class MapShortcode {
 		$label_item_category_filter     = MapAdmin::get_option( $cb_map_id, 'label_item_category_filter' );
 		$label_location_distance_filter = MapAdmin::get_option( $cb_map_id, 'label_location_distance_filter' );
 
-		$translation = [
+		return [
 			'OPENING_HOURS'          => strlen( $label_location_opening_hours ) > 0 ? $label_location_opening_hours : esc_html__( 'opening hours', 'commonsbooking' ),
 			'CONTACT'                => strlen( $label_location_contact ) > 0 ? $label_location_contact : esc_html__( 'contact', 'commonsbooking' ),
 			'FROM'                   => esc_html__( 'from', 'commonsbooking' ),
@@ -244,8 +244,6 @@ class MapShortcode {
 			'GEO_SEARCH_UNAVAILABLE' => esc_html__( 'The service is currently not available. Please try again later.', 'commonsbooking' ),
 			'COMING_SOON'            => esc_html__( 'comming soon', 'commonsbooking' ),
 		];
-
-		return $translation;
 	}
 
 	public static function geo_search() {
@@ -260,7 +258,7 @@ class MapShortcode {
 				if ( $attempts > 10 ) {
 					wp_send_json_error( [ 'error' => 5 ], 408 );
 
-					return wp_die();
+					wp_die();
 				}
 
 				$attempts ++;
@@ -317,25 +315,7 @@ class MapShortcode {
 			wp_send_json_error( [ 'error' => 1 ], 400 );
 		}
 
-		return wp_die();
-	}
-
-	/**
-	 * Returns configured item terms
-	 * @return mixed
-	 */
-	public static function getItemCategoryTerms( $settings ) {
-		$terms = [];
-
-		foreach ( $settings['filter_cb_item_categories'] as $categoryGroup ) {
-			if ( array_key_exists( 'elements', $categoryGroup ) ) {
-				foreach ( $categoryGroup['elements'] as $category ) {
-					$terms[] = $category['cat_id'];
-				}
-			}
-		}
-
-		return $terms;
+		wp_die();
 	}
 
 	/**
@@ -353,12 +333,12 @@ class MapShortcode {
 			} else {
 				wp_send_json_error( [ 'error' => 2 ], 400 );
 
-				return wp_die();
+				wp_die();
 			}
 		} else {
 			wp_send_json_error( [ 'error' => 3 ], 400 );
 
-			return wp_die();
+			wp_die();
 		}
 
 		$preset_categories = MapAdmin::get_option( $cb_map_id, 'cb_items_preset_categories' );
@@ -385,15 +365,28 @@ class MapShortcode {
 
 			header( 'Content-Type: application/json' );
 			echo json_encode( $locations, JSON_UNESCAPED_UNICODE );
-
-			return wp_die();
-
 		} else {
 			wp_send_json_error( [ 'error' => 4 ], 403 );
-
-			return wp_die();
 		}
+
+		wp_die();
+	}
+
+	/**
+	 * Returns configured item terms
+	 * @return array
+	 */
+	public static function getItemCategoryTerms( $settings ): array {
+		$terms = [];
+
+		foreach ( $settings['filter_cb_item_categories'] as $categoryGroup ) {
+			if ( array_key_exists( 'elements', $categoryGroup ) ) {
+				foreach ( $categoryGroup['elements'] as $category ) {
+					$terms[] = $category['cat_id'];
+				}
+			}
+		}
+
+		return $terms;
 	}
 }
-
-?>

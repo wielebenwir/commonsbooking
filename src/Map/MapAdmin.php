@@ -185,27 +185,7 @@ class MapAdmin {
 		$default_name = strtoupper( $option_name ) . '_DEFAULT';
 		$const_value  = constant( "self::$default_name" );
 
-		return isset( $const_value ) ? $const_value : null;
-	}
-
-	/**
-	 * @param $input
-	 * @param $key
-	 *
-	 * @return bool
-	 */
-	protected static function validateStringInput( $input, $key ): bool {
-		return isset( $input[ $key ] ) && strlen( $input[ $key ] ) > 0;
-	}
-
-	/**
-	 * @param $input
-	 * @param $key
-	 *
-	 * @return bool
-	 */
-	protected static function validateCheckboxInput( $input, $key ): bool {
-		return isset( $input[ $key ] );
+		return $const_value ?? null;
 	}
 
 	/**
@@ -424,6 +404,26 @@ class MapAdmin {
 		return $validated_input;
 	}
 
+	/**
+	 * @param $input
+	 * @param $key
+	 *
+	 * @return bool
+	 */
+	protected static function validateStringInput( $input, $key ): bool {
+		return isset( $input[ $key ] ) && strlen( $input[ $key ] ) > 0;
+	}
+
+	/**
+	 * @param $input
+	 * @param $key
+	 *
+	 * @return bool
+	 */
+	protected static function validateCheckboxInput( $input, $key ): bool {
+		return isset( $input[ $key ] );
+	}
+
 	public static function strip_script_tags( $input ) {
 		return preg_replace( '/<script\b[^>]*>(.*?)<\/script>/is', '', $input );
 	}
@@ -493,12 +493,12 @@ class MapAdmin {
 	/**
 	 * option getter
 	 *
-	 * @param null $cb_map_id
+	 * @param $cb_map_id
 	 * @param $key
 	 *
 	 * @return mixed
 	 */
-	public static function get_option( $cb_map_id = null, $key ) {
+	public static function get_option( $cb_map_id, $key ) {
 		self::load_options( $cb_map_id );
 
 		if ( array_key_exists( $key, self::$options ) ) {
@@ -509,5 +509,3 @@ class MapAdmin {
 	}
 
 }
-
-?>

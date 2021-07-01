@@ -45,7 +45,7 @@ class Calendar {
 	 * @param array $items
 	 * @param array $types
 	 */
-	public function __construct( Day $startDate, Day $endDate, $locations = [], $items = [], $types = [] ) {
+	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [] ) {
 		$this->startDate = $startDate;
 		$this->endDate   = $endDate;
 		$this->items     = $items;
@@ -57,7 +57,7 @@ class Calendar {
 	 * Returns weeks for calendar time range.
 	 * @return array
 	 */
-	public function getWeeks() {
+	public function getWeeks(): array {
 		$startDate = strtotime( $this->startDate->getDate() );
 		$endDate   = strtotime( $this->endDate->getDate() );
 

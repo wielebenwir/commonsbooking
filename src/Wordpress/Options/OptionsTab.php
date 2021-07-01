@@ -3,6 +3,7 @@
 namespace CommonsBooking\Wordpress\Options;
 
 use CommonsBooking\View\TimeframeExport;
+use Exception;
 
 class OptionsTab {
 
@@ -67,7 +68,7 @@ class OptionsTab {
 	 */
 	public function registerOptionsGroups() {
 
-		foreach ( $this->groups as $group_id => $group ) {
+		foreach ( $this->groups as $group ) {
 
 			$group = $this->prependTitle( $group ); /* prepend title + description html */
 
@@ -87,12 +88,12 @@ class OptionsTab {
 	 *
 	 * @return array $metabox_group with title + description added as row
 	 */
-	public static function prependTitle( $metabox_group ) {
+	public static function prependTitle( array $metabox_group ): array {
 
 		if ( isset ( $metabox_group['title'] ) or isset ( $metabox_group['desc'] ) ) {
 
-			$title = isset( $metabox_group['title'] ) ? $metabox_group['title'] : '';
-			$desc  = isset( $metabox_group['desc'] ) ? $metabox_group['desc'] : '';
+			$title = $metabox_group['title'] ?? '';
+			$desc  = $metabox_group['desc'] ?? '';
 
 			$header_html = sprintf(
 				'<h4>%s</h4>%s', $title, $desc
@@ -115,6 +116,7 @@ class OptionsTab {
 	 * actions to be fired after the options page was saved
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public static function savePostOptions() {
 		if ( array_key_exists( 'action', $_REQUEST ) && $_REQUEST['action'] == "commonsbooking_options_export" ) {

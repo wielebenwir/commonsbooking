@@ -37,7 +37,7 @@ class Day {
 	 * @param array $items
 	 * @param array $types
 	 */
-	public function __construct( string $date, $locations = [], $items = [], $types = [] ) {
+	public function __construct( string $date, array $locations = [], array $items = [], array $types = [] ) {
 		$this->date      = $date;
 		$this->locations = array_map( function ( $location ) {
 			return $location instanceof WP_Post ? $location->ID : $location;
@@ -50,7 +50,7 @@ class Day {
 	}
 
 	/**
-	 * @return mixed
+	 * @return false|string
 	 */
 	public function getDayOfWeek() {
 		return date( 'w', strtotime( $this->getDate() ) );
@@ -60,14 +60,14 @@ class Day {
 	 * @return DateTime
 	 * @throws Exception
 	 */
-	public function getDateObject() {
+	public function getDateObject(): DateTime {
 		return new DateTime( $this->getDate() );
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
-	public function getDate() {
+	public function getDate(): string {
 		return $this->date;
 	}
 
@@ -78,37 +78,8 @@ class Day {
 	 *
 	 * @return false|string
 	 */
-	public function getFormattedDate( $format ) {
+	public function getFormattedDate( string $format ) {
 		return date( $format, strtotime( $this->getDate() ) );
-	}
-
-	/**
-	 * Returns timeslot by nr.
-	 *
-	 * @param $slotNr
-	 *
-	 * @return mixed
-	 * @throws Exception
-	 */
-	public function getSlot( $slotNr ) {
-		$grid = $this->getGrid();
-
-		if ( count( $grid ) && ! empty( $grid[ $slotNr ] ) ) {
-			return $grid[ $slotNr ];
-		} else {
-			throw new Exception( __CLASS__ . "::" . __FUNCTION__ . ": Invalid slot: " . $slotNr );
-		}
-	}
-
-	/**
-	 * @param mixed $date
-	 *
-	 * @return Day
-	 */
-	public function setDate( $date ) {
-		$this->date = $date;
-
-		return $this;
 	}
 
 	/**
@@ -124,7 +95,7 @@ class Day {
 	 * @return array
 	 * @throws Exception
 	 */
-	public function getGrid() {
+	public function getGrid(): array {
 		$timeFrames = \CommonsBooking\Repository\Timeframe::get(
 			$this->locations,
 			$this->items,
@@ -142,9 +113,7 @@ class Day {
 			}
 		}
 
-		$slots = $this->getTimeframeSlots( $timeFrames );
-
-		return $slots;
+		return $this->getTimeframeSlots( $timeFrames );
 	}
 
 	/**
@@ -159,9 +128,7 @@ class Day {
 		$hourSlots   = $date->format( 'H' ) / $grid;
 		$minuteSlots = $date->format( 'i' ) / 60 / $grid;
 
-		$slot = $hourSlots + $minuteSlots;
-
-		return $slot;
+		return $hourSlots + $minuteSlots;
 	}
 
 	/**
@@ -171,6 +138,7 @@ class Day {
 	 * @param $timeframe
 	 *
 	 * @return float|int
+	 * @throws Exception
 	 */
 	protected function getStartSlot( $grid, $timeframe ) {
 		// Timeframe
@@ -240,7 +208,7 @@ class Day {
 	 *
 	 * @return DateTime
 	 */
-	protected function getStartDate( $timeframe ) {
+	protected function getStartDate( $timeframe ): DateTime {
 		$startDateString = get_post_meta( $timeframe->ID, 'repetition-start', true );
 		$startDate       = new DateTime();
 		$startDate->setTimestamp( $startDateString );
@@ -255,7 +223,7 @@ class Day {
 	 *
 	 * @return DateTime
 	 */
-	protected function getStartTime( $timeframe ) {
+	protected function getStartTime( $timeframe ): DateTime {
 		$startDateString = get_post_meta( $timeframe->ID, 'repetition-start', true );
 		$startTimeString = get_post_meta( $timeframe->ID, 'start-time', true );
 		$startDate       = new DateTime();
@@ -276,12 +244,12 @@ class Day {
 	 *
 	 * @return DateTime
 	 */
-	protected function getEndDate( $timeframe ) {
-		$startDateString = intval( get_post_meta( $timeframe->ID, \CommonsBooking\Model\Timeframe::REPETITION_END, true ) );
-		$startDate       = new DateTime();
-		$startDate->setTimestamp( $startDateString );
+	protected function getEndDate( $timeframe ): DateTime {
+		$endDateString = intval( get_post_meta( $timeframe->ID, \CommonsBooking\Model\Timeframe::REPETITION_END, true ) );
+		$endDate       = new DateTime();
+		$endDate->setTimestamp( $endDateString );
 
-		return $startDate;
+		return $endDate;
 	}
 
 	/**
@@ -290,8 +258,9 @@ class Day {
 	 * @param $timeframe
 	 *
 	 * @return DateTime
+	 * @throws Exception
 	 */
-	protected function getEndTime( $timeframe ) {
+	protected function getEndTime( $timeframe ): DateTime {
 		$endDateString = $this->getDateObject()->getTimestamp();
 		$endTimeString = get_post_meta( $timeframe->ID, 'end-time', true );
 		$endDate       = new DateTime();
@@ -313,8 +282,9 @@ class Day {
 	 * @return bool
 	 * @throws Exception
 	 */
-	public function isInTimeframe( $timeframe ) {
+	public function isInTimeframe( $timeframe ): bool {
 		$repetitionType = get_post_meta( $timeframe->ID, 'timeframe-repetition', true );
+
 		if (
 			$repetitionType && $repetitionType !== "norep"
 		) {
@@ -334,7 +304,6 @@ class Day {
 					} else {
 						return false;
 					}
-					break;
 
 				// Monthly Rep
 				case "m":
@@ -347,8 +316,6 @@ class Day {
 						return false;
 					}
 
-					break;
-
 				// Yearly Rep
 				case "y":
 					$date          = intval( $this->getDateObject()->format( 'dm' ) );
@@ -358,7 +325,6 @@ class Day {
 					} else {
 						return false;
 					}
-					break;
 			}
 		}
 
@@ -463,7 +429,7 @@ class Day {
 	 * @return array
 	 * @throws Exception
 	 */
-	protected function getTimeframeSlots( $timeframes ) {
+	protected function getTimeframeSlots( $timeframes ): array {
 		$slots       = [];
 		$slotsPerDay = 24;
 

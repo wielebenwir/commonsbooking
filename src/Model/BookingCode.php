@@ -59,9 +59,9 @@ class BookingCode {
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
-	public function getDate() {
+	public function getDate(): string {
 		return $this->date;
 	}
 
@@ -70,16 +70,16 @@ class BookingCode {
 	 *
 	 * @return BookingCode
 	 */
-	public function setDate( $date ) {
+	public function setDate( $date ): BookingCode {
 		$this->date = $date;
 
 		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
-	public function getItem() {
+	public function getItem(): int {
 		return $this->item;
 	}
 
@@ -94,16 +94,16 @@ class BookingCode {
 	 *
 	 * @return BookingCode
 	 */
-	public function setItem( $item ) {
+	public function setItem( $item ): BookingCode {
 		$this->item = $item;
 
 		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
-	public function getLocation() {
+	public function getLocation(): int {
 		return $this->location;
 	}
 
@@ -112,16 +112,16 @@ class BookingCode {
 	 *
 	 * @return BookingCode
 	 */
-	public function setLocation( $location ) {
+	public function setLocation( $location ): BookingCode {
 		$this->location = $location;
 
 		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
-	public function getTimeframe() {
+	public function getTimeframe(): int {
 		return $this->timeframe;
 	}
 
@@ -130,16 +130,16 @@ class BookingCode {
 	 *
 	 * @return BookingCode
 	 */
-	public function setTimeframe( $timeframe ) {
+	public function setTimeframe( $timeframe ): BookingCode {
 		$this->timeframe = $timeframe;
 
 		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
-	public function getCode() {
+	public function getCode(): string {
 		return $this->code;
 	}
 
@@ -148,7 +148,7 @@ class BookingCode {
 	 *
 	 * @return BookingCode
 	 */
-	public function setCode( $code ) {
+	public function setCode( $code ): BookingCode {
 		$this->code = $code;
 
 		return $this;

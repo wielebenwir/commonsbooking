@@ -25,7 +25,7 @@ class AdminOptions {
 			$groups     = $tab['field_groups'];
 			$option_key = self::$option_key . '_' . $tab_id;
 
-			foreach ( $groups as $group_id => $group ) {
+			foreach ( $groups as $group ) {
 				$fields = $group['fields'];
 
 				foreach ( $fields as $field ) {

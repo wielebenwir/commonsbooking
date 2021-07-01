@@ -73,13 +73,12 @@ class BaseRoute extends WP_REST_Controller {
 	 * Returns schema-object for current route.
 	 * @return Schema
 	 */
-	protected function getSchemaObject() {
+	protected function getSchemaObject(): Schema {
 		$schemaObject = json_decode( $this->getSchemaJson() );
 		unset( $schemaObject->{'$schema'} );
 		unset( $schemaObject->{'$id'} );
-		$schemaObject = Schema::fromJsonString( json_encode( $schemaObject ) );
 
-		return $schemaObject;
+		return Schema::fromJsonString( json_encode( $schemaObject ) );
 	}
 
 	/**
@@ -97,7 +96,7 @@ class BaseRoute extends WP_REST_Controller {
 	 *
 	 * @return array
 	 */
-	public function add_additional_fields_schema( $schema ) {
+	public function add_additional_fields_schema( $schema ): array {
 		$schemaArray = json_decode( $this->getSchemaJson(), true );
 
 		return array_merge( $schema, $schemaArray );

@@ -12,7 +12,7 @@ class Migration {
 	 * @param array $field_args Array of field arguments.
 	 * @param CMB2_Field $field The field object
 	 */
-	public static function renderMigrationForm( $field_args, $field ) {
+	public static function renderMigrationForm( array $field_args, CMB2_Field $field ) {
 		$cb1Installed = CB1::isInstalled();
 
 		?>

@@ -29,9 +29,9 @@ class StationStatus extends BaseRoute {
 	 * @param $request
 	 *
 	 * @return stdClass
-	 * @throws Exception
+	 * @throws \Exception
 	 */
-	public function prepare_item_for_response( $item, $request ) {
+	public function prepare_item_for_response( $item, $request ): stdClass {
 		$preparedItem                      = new stdClass();
 		$preparedItem->station_id          = $item->ID . "";
 		$preparedItem->num_bikes_available = count( Item::getByLocation( $item->ID ) );

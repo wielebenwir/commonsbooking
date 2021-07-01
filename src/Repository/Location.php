@@ -20,7 +20,7 @@ class Location extends BookablePost {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getByItem( $itemId, $bookable = false ) {
+	public static function getByItem( $itemId, bool $bookable = false ): array {
 		if ( $itemId instanceof WP_Post ) {
 			$itemId = $itemId->ID;
 		}
@@ -75,16 +75,16 @@ class Location extends BookablePost {
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
-	protected static function getPostType() {
+	protected static function getPostType(): string {
 		return \CommonsBooking\Wordpress\CustomPostType\Location::getPostType();
 	}
 
 	/**
 	 * @return string
 	 */
-	protected static function getModelClass() {
+	protected static function getModelClass(): string {
 		return \CommonsBooking\Model\Location::class;
 	}
 }

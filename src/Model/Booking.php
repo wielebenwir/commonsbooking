@@ -26,34 +26,11 @@ class Booking extends CustomPost {
 		"unconfirmed"
 	];
 
-
-	/**
-	 * returns label of booking states
-	 *
-	 * @param mixed $status
-	 *
-	 * @return string
-	 */
-	public function getBookingStateLabel() {
-		switch ( $this->post_status ) {
-			case 'canceled':
-				return commonsbooking_sanitizeHTML( __( 'canceled', 'commonsbooking' ) );
-				break;
-			case 'confirmed':
-				return commonsbooking_sanitizeHTML( __( 'confirmed', 'commonsbooking' ) );
-				break;
-			case 'unconfirmed':
-				return commonsbooking_sanitizeHTML( __( 'unconfirmed', 'commonsbooking' ) );
-				break;
-		}
-	}
-
-
 	/**
 	 * @return Location
 	 * @throws Exception
 	 */
-	public function getLocation() {
+	public function getLocation(): Location {
 		$locationId = $this->getMeta( 'location-id' );
 		if ( $post = get_post( $locationId ) ) {
 			return new Location( $post );
@@ -66,7 +43,7 @@ class Booking extends CustomPost {
 	 * @return Item
 	 * @throws Exception
 	 */
-	public function getItem() {
+	public function getItem(): Item {
 		$itemId = $this->getMeta( 'item-id' );
 
 		if ( $post = get_post( $itemId ) ) {
@@ -87,9 +64,10 @@ class Booking extends CustomPost {
 
 	/**
 	 * Returns rendered booking code for using in email-template (booking confirmation mail)
-	 * @return mixed
+	 * @return string
+	 * @throws Exception
 	 */
-	public function formattedBookingCode() {
+	public function formattedBookingCode(): string {
 		$htmloutput = "";
 		if (
 			$this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode' ) &&
@@ -109,7 +87,7 @@ class Booking extends CustomPost {
 	 * Returns true if booking codes shall be shown in frontend.
 	 * @return bool
 	 */
-	public function showBookingCodes() {
+	public function showBookingCodes(): bool {
 		return $this->getMeta( "show-booking-codes" ) == "on";
 	}
 
@@ -167,7 +145,7 @@ class Booking extends CustomPost {
 	 *
 	 * @return string
 	 */
-	private function sanitizeTimeField( $fieldName ) {
+	private function sanitizeTimeField( $fieldName ): string {
 		$time       = new DateTime();
 		$fieldValue = $this->getMeta( 'repetition-start' );
 		if ( $fieldName == "end-time" ) {
@@ -183,7 +161,7 @@ class Booking extends CustomPost {
 	 * @return null|\CommonsBooking\Model\Timeframe
 	 * @throws Exception
 	 */
-	public function getBookableTimeFrame() {
+	public function getBookableTimeFrame(): ?\CommonsBooking\Model\Timeframe {
 		$locationId = $this->getMeta( 'location-id' );
 		$itemId     = $this->getMeta( 'item-id' );
 
@@ -198,12 +176,14 @@ class Booking extends CustomPost {
 		if ( count( $response ) ) {
 			return array_shift( $response );
 		}
+
+		return null;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function formattedBookingDate() {
+	public function formattedBookingDate(): string {
 		$date_format = get_option( 'date_format' );
 
 		$startdate = date_i18n( $date_format, $this->getMeta( 'repetition-start' ) );
@@ -227,7 +207,7 @@ class Booking extends CustomPost {
 	 *
 	 * @return string
 	 */
-	public function pickupDatetime() {
+	public function pickupDatetime(): string {
 
 		$date_format = get_option( 'date_format' );
 		$time_format = get_option( 'time_format' );
@@ -268,7 +248,7 @@ class Booking extends CustomPost {
 	 * @return string
 	 */
 
-	public function returnDatetime() {
+	public function returnDatetime(): string {
 		$date_format = get_option( 'date_format' );
 		$time_format = get_option( 'time_format' );
 
@@ -309,9 +289,9 @@ class Booking extends CustomPost {
 
 	/**
 	 * Returns comment text.
-	 * @return mixed
+	 * @return string
 	 */
-	public function returnComment() {
+	public function returnComment(): string {
 		return commonsbooking_sanitizeHTML( $this->getMeta( 'comment' ) );
 	}
 
@@ -319,9 +299,9 @@ class Booking extends CustomPost {
 	/**
 	 * show booking notice
 	 *
-	 * @return text|html
+	 * @return string
 	 */
-	public function bookingNotice() {
+	public function bookingNotice(): ?string {
 
 		$currentStatus = $this->post->post_status;
 
@@ -339,15 +319,16 @@ class Booking extends CustomPost {
 			return sprintf( '<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $currentStatus, $noticeText );
 		}
 
+		return null;
 	}
 
 	/**
 	 * Return HTML Link to booking
 	 * @TODO: optimize booking link to support different permalink settings or set individual slug (e.g. booking instead of cb_timeframe)
 	 *
-	 * @return HTML
+	 * @return string
 	 */
-	public function bookingLink() {
+	public function bookingLink(): string {
 		return sprintf( '<a href="%1$s">%2$s</a>', add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) ), esc_html__( 'Link to your booking', 'commonsbooking' ) );
 
 	}

@@ -7,7 +7,7 @@ use CommonsBooking\CB\CB;
  *
  * @param mixed $template
  *
- * @return void
+ * @return mixed
  */
 function commonsbooking_parse_template( string $template = '' ) {
 	$template = preg_replace_callback( '/\{{.*?\}}/', 'commonsbooking_parse_template_callback', $template );

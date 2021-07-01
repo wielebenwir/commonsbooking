@@ -9,6 +9,7 @@ use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Model\Week;
 use DateTime;
 use DateTimeZone;
+use Exception;
 use stdClass;
 use WP_Error;
 use WP_REST_Response;
@@ -28,7 +29,10 @@ class AvailabilityRoute extends BaseRoute {
 	 */
 	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "node_modules/commons-api/commons-api.availability.schema.json";
 
-	public function getItemData( $id = false ) {
+	/**
+	 * @throws Exception
+	 */
+	public function getItemData( $id = false ): array {
 		$slots    = [];
 		$calendar = new Calendar(
 			new Day( date( 'Y-m-d', time() ) ),
@@ -93,17 +97,22 @@ class AvailabilityRoute extends BaseRoute {
 		//get parameters from request
 		$params             = $request->get_params();
 		$data               = new stdClass();
-		$data->availability = $this->getItemData( $params['id'] );
+		try {
+			$data->availability = $this->getItemData( $params['id'] );
 
-		//return a response or error based on some conditional
-		if ( count( $data->availability ) ) {
+			//return a response or error based on some conditional
+			if ( count( $data->availability ) ) {
 //            if(WP_DEBUG) {
 //                $this->validateData($data);
 //            }
-			return new WP_REST_Response( $data, 200 );
-		} else {
-			return new WP_Error( 'code', esc_html__( 'message', 'text-domain' ) );
+				return new WP_REST_Response( $data, 200 );
+			} else {
+
+			}
+		} catch (Exception $e) {
+			return new WP_Error( 'code', $e->getMessage() );
 		}
+
 	}
 
 	/**
@@ -111,7 +120,7 @@ class AvailabilityRoute extends BaseRoute {
 	 *
 	 * @param $request Full data about the request.
 	 *
-	 * @return WP_Error|WP_REST_Response
+	 * @return WP_REST_Response
 	 */
 	public function get_items( $request ) {
 		$data               = new stdClass();

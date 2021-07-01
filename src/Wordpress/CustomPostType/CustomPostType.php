@@ -4,7 +4,6 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\Wordpress\MetaBox\Field;
 use WP_Post;
 
 abstract class CustomPostType {
@@ -78,7 +77,7 @@ abstract class CustomPostType {
 	 *
 	 * @return array
 	 */
-	public static function getCMB2FieldsArrayFromCustomMetadata( $type ) {
+	public static function getCMB2FieldsArrayFromCustomMetadata( $type ): ?array {
 
 		$metaDataRaw    = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_metadata', 'metadata' );
 		$metaDataLines  = explode( "\r\n", $metaDataRaw );
@@ -100,6 +99,8 @@ abstract class CustomPostType {
 
 		if ( array_key_exists( $type, $metaDataFields ) ) {
 			return $metaDataFields[ $type ];
+		} else {
+			return null;
 		}
 	}
 
@@ -153,7 +154,7 @@ abstract class CustomPostType {
 	 * @param string $context
 	 * @param WP_Post|object|string $post
 	 */
-	public function removeDefaultCustomFields( $post_type, $context, $post ) {
+	public function removeDefaultCustomFields( string $post_type, string $context, $post ) {
 		foreach ( array( 'normal', 'advanced', 'side' ) as $context ) {
 			remove_meta_box( 'postcustom', static::getPostType(), $context );
 		}

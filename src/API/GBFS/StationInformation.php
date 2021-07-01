@@ -30,8 +30,9 @@ class StationInformation extends BaseRoute {
 	 *
 	 * @return stdClass
 	 * @throws \Geocoder\Exception\Exception
+	 * @throws Exception
 	 */
-	public function prepare_item_for_response( $item, $request ) {
+	public function prepare_item_for_response( $item, $request ): stdClass {
 		$preparedItem                   = new stdClass();
 		$preparedItem->station_id       = $item->ID . "";
 		$preparedItem->name             = $item->post_title;

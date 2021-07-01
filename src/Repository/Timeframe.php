@@ -25,13 +25,13 @@ class Timeframe extends PostRepository {
 	 * @throws Exception
 	 */
 	public static function get(
-		$locations = [],
-		$items = [],
-		$types = [],
+		array $locations = [],
+		array $items = [],
+		array $types = [],
 		?string $date = null,
-		$returnAsModel = false,
+		bool $returnAsModel = false,
 		$minTimestamp = null,
-		$postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
 		if ( ! count( $types ) ) {
 			$types = [
@@ -143,8 +143,7 @@ class Timeframe extends PostRepository {
 				if ( $date ) {
 					$posts = array_filter( $posts, function ( $post ) use ( $date ) {
 						if ( $weekdays = get_post_meta( $post->ID, 'weekdays', true ) ) {
-							$weekdays = $weekdays;
-							$day      = date( 'N', strtotime( $date ) );
+							$day = date( 'N', strtotime( $date ) );
 
 							return in_array( $day, $weekdays );
 						}
@@ -159,6 +158,86 @@ class Timeframe extends PostRepository {
 				foreach ( $posts as &$post ) {
 					$post = new \CommonsBooking\Model\Timeframe( $post );
 				}
+			}
+
+			Plugin::setCacheItem( $posts, $customId );
+
+			return $posts;
+		}
+	}
+
+	/**
+	 * Returns Post-IDs by type(s), item(s), location(s)
+	 *
+	 * @param array $types
+	 * @param array $items
+	 * @param array $locations
+	 *
+	 * @return mixed
+	 */
+	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
+		if ( ! count( $types ) ) {
+			$types = [
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
+			];
+		}
+
+		$customId = md5( serialize( $types ) );
+		if ( Plugin::getCacheItem( $customId ) ) {
+			return Plugin::getCacheItem( $customId );
+		} else {
+			global $wpdb;
+			$table_postmeta = $wpdb->prefix . 'postmeta';
+
+			$itemQuery = "";
+
+			$items     = array_filter( $items );
+			$locations = array_filter( $locations );
+
+			// Query for item(s)
+			if ( count( $items ) > 0 ) {
+				$itemQuery = " 
+                    INNER JOIN $table_postmeta pm2 ON
+                        pm2.post_id = pm1.post_id AND
+                        pm2.meta_key = 'item-id' AND
+                        pm2.meta_value IN (" . implode( ',', $items ) . ")
+                ";
+			}
+
+			// Query for location(s)
+			$locationQuery = "";
+			if ( count( $locations ) > 0 ) {
+				$locationQuery = " 
+                    INNER JOIN $table_postmeta pm3 ON
+                        pm3.post_id = pm1.post_id AND
+                        pm3.meta_key = 'location-id' AND
+                        pm3.meta_value IN (" . implode( ',', $locations ) . ")
+                ";
+			}
+
+			// Complete query, including types
+			$query = "
+                SELECT DISTINCT pm1.post_id from $table_postmeta pm1 
+                " .
+			         $itemQuery .
+			         $locationQuery .
+			         "   
+                 WHERE
+                    pm1.meta_key = 'type' AND
+	                pm1.meta_value IN (" . implode( ',', $types ) . ")
+            ";
+
+			// Run query
+			$posts = $wpdb->get_results(
+				$query, ARRAY_N );
+
+			// Get Post-IDs
+			foreach ( $posts as &$post ) {
+				$post = $post[0];
 			}
 
 			Plugin::setCacheItem( $posts, $customId );
@@ -270,6 +349,49 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
+	 * Returns timeframe that matches for timestamp based on date AND its time.
+	 * Needed for booking creation based on multiple timeframes with different multi slot grids.
+	 *
+	 * @param $locationId
+	 * @param $itemId
+	 * @param $timestamp
+	 *
+	 * @return \CommonsBooking\Model\Timeframe
+	 * @throws Exception
+	 */
+	public static function getRelevantTimeFrame( $locationId, $itemId, $timestamp ): ?\CommonsBooking\Model\Timeframe {
+		if ( Plugin::getCacheItem() ) {
+			return Plugin::getCacheItem();
+		} else {
+			$startTimestampTime = date( 'H:i', intval( $timestamp ) );
+			$endTimestampTime   = date( 'H:i', intval( $timestamp ) + 1 );
+
+			$relevantTimeframes = self::getInRange(
+				$timestamp,
+				$timestamp,
+				[ $locationId ],
+				[ $itemId ],
+				[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
+				true
+			);
+
+			/** @var \CommonsBooking\Model\Timeframe $timeframe */
+			foreach ( $relevantTimeframes as $timeframe ) {
+				if (
+					$timeframe->getStartTime() == $startTimestampTime ||
+					$timeframe->getEndTime() == $endTimestampTime
+				) {
+					Plugin::setCacheItem( $timeframe );
+
+					return $timeframe;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Returns timefranges in explicit timerange.
 	 *
 	 * @param array $locations
@@ -281,15 +403,16 @@ class Timeframe extends PostRepository {
 	 * @param string[] $postStatus
 	 *
 	 * @return array
+	 * @throws Exception
 	 */
 	public static function getInRange(
-		$locations = [],
-		$items = [],
-		$types = [],
-		$returnAsModel = false,
 		$minTimestamp,
 		$maxTimestamp,
-		$postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+		array $locations = [],
+		array $items = [],
+		array $types = [],
+		bool $returnAsModel = false,
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
 		if ( ! count( $types ) ) {
 			$types = [
@@ -384,126 +507,6 @@ class Timeframe extends PostRepository {
 			Plugin::setCacheItem( $posts, $customId );
 
 			return $posts;
-		}
-	}
-
-	/**
-	 * Returns Post-IDs by type(s), item(s), location(s)
-	 *
-	 * @param array $types
-	 * @param array $items
-	 * @param array $locations
-	 *
-	 * @return mixed
-	 */
-	public static function getPostIdsByType( $types = [], $items = [], $locations = [] ) {
-		if ( ! count( $types ) ) {
-			$types = [
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
-			];
-		}
-
-		$customId = md5( serialize( $types ) );
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
-		} else {
-			global $wpdb;
-			$table_postmeta = $wpdb->prefix . 'postmeta';
-
-			$itemQuery = "";
-
-			$items     = array_filter( $items );
-			$locations = array_filter( $locations );
-
-			// Query for item(s)
-			if ( count( $items ) > 0 ) {
-				$itemQuery = " 
-                    INNER JOIN $table_postmeta pm2 ON
-                        pm2.post_id = pm1.post_id AND
-                        pm2.meta_key = 'item-id' AND
-                        pm2.meta_value IN (" . implode( ',', $items ) . ")
-                ";
-			}
-
-			// Query for location(s)
-			$locationQuery = "";
-			if ( count( $locations ) > 0 ) {
-				$locationQuery = " 
-                    INNER JOIN $table_postmeta pm3 ON
-                        pm3.post_id = pm1.post_id AND
-                        pm3.meta_key = 'location-id' AND
-                        pm3.meta_value IN (" . implode( ',', $locations ) . ")
-                ";
-			}
-
-			// Complete query, including types
-			$query = "
-                SELECT DISTINCT pm1.post_id from $table_postmeta pm1 
-                " .
-			         $itemQuery .
-			         $locationQuery .
-			         "   
-                 WHERE
-                    pm1.meta_key = 'type' AND
-	                pm1.meta_value IN (" . implode( ',', $types ) . ")
-            ";
-
-			// Run query
-			$posts = $wpdb->get_results(
-				$query, ARRAY_N );
-
-			// Get Post-IDs
-			foreach ( $posts as &$post ) {
-				$post = $post[0];
-			}
-
-			Plugin::setCacheItem( $posts, $customId );
-
-			return $posts;
-		}
-	}
-
-	/**
-	 * Returns timeframe that matches for timestamp based on date AND its time.
-	 * Needed for booking creation based on multiple timeframes with different multi slot grids.
-	 *
-	 * @param $locationId
-	 * @param $itemId
-	 * @param $timestamp
-	 *
-	 * @return \CommonsBooking\Model\Timeframe
-	 */
-	public static function getRelevantTimeFrame( $locationId, $itemId, $timestamp ) {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
-		} else {
-			$startTimestampTime = date( 'H:i', intval( $timestamp ) );
-			$endTimestampTime   = date( 'H:i', intval( $timestamp ) + 1 );
-
-			$relevantTimeframes = self::getInRange(
-				[ $locationId ],
-				[ $itemId ],
-				[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
-				true,
-				$timestamp,
-				$timestamp
-			);
-
-			/** @var \CommonsBooking\Model\Timeframe $timeframe */
-			foreach ( $relevantTimeframes as $timeframe ) {
-				if (
-					$timeframe->getStartTime() == $startTimestampTime ||
-					$timeframe->getEndTime() == $endTimestampTime
-				) {
-					Plugin::setCacheItem( $timeframe );
-
-					return $timeframe;
-				}
-			}
 		}
 	}
 

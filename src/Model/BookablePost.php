@@ -53,11 +53,11 @@ class BookablePost extends CustomPost {
 	/**
 	 * Returns bookable timeframes for a specific location
 	 *
-	 * @return int
+	 * @return bool
 	 * @throws Exception
 	 */
-	public function isBookable() {
-		return count( $this->getBookableTimeframes() );
+	public function isBookable(): bool {
+		return count( $this->getBookableTimeframes() ) > 0;
 	}
 
 }

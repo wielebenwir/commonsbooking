@@ -13,7 +13,7 @@ use WP_Post;
  */
 class CustomPost {
 	/**
-	 * @var WP_Post|WP_Post
+	 * @var WP_Post
 	 */
 	protected $post;
 
@@ -26,6 +26,8 @@ class CustomPost {
 	 * CustomPost constructor.
 	 *
 	 * @param int|WP_Post $post
+	 *
+	 * @throws Exception
 	 */
 	public function __construct( $post ) {
 		if ( $post instanceof WP_Post ) {
@@ -84,9 +86,9 @@ class CustomPost {
 	}
 
 	/**
-	 * @return WP_Post|WP_Post
+	 * @return WP_Post
 	 */
-	public function getPost() {
+	public function getPost(): WP_Post {
 		return $this->post;
 	}
 
@@ -95,7 +97,7 @@ class CustomPost {
 	 *
 	 * @return string html
 	 */
-	public function excerpt() {
+	public function excerpt(): string {
 		$excerpt = '';
 		if ( has_excerpt( $this->ID ) ) {
 			$excerpt .= wp_strip_all_tags( get_the_excerpt( $this->ID ) );
@@ -109,27 +111,27 @@ class CustomPost {
 	 *
 	 * @return string html
 	 */
-	public function titleLink() {
+	public function titleLink(): string {
 		return sprintf( '<a href="%s" class="cb-title cb-title-link">%s</a>', get_the_permalink( $this->ID ), $this->post_title );
 	}
 
 	/**
 	 * Return Title
 	 *
-	 * @return html
+	 * @return string
 	 */
-	public function title() {
+	public function title(): string {
 		return sprintf( '<span class="cb-title">%s</span>', $this->post_title );
 	}
 
 	/**
 	 * Return Thumbnail
 	 *
-	 * @param string $size
+	 * @param string|int[] $size
 	 *
-	 * @return string html
+	 * @return string
 	 */
-	public function thumbnail( $size = 'post-thumbnail' ) {
+	public function thumbnail( $size = 'post-thumbnail' ): string {
 		if ( has_post_thumbnail( $this->ID ) ) {
 			return '<div class="cb-thumbnail">' . get_the_post_thumbnail( $this->ID, $size,
 					array( 'class' => 'alignleft cb-image' ) ) . '</div>';

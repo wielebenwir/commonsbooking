@@ -14,9 +14,7 @@ class UserRepository {
 	 * @return mixed
 	 */
 	public static function getCBManagers() {
-		$blogusers = get_users( [ 'role__in' => [ Plugin::$CB_MANAGER_ID ] ] );
-
-		return $blogusers;
+		return get_users( [ 'role__in' => [ Plugin::$CB_MANAGER_ID ] ] );
 	}
 
 	/**

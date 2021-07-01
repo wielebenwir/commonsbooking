@@ -18,7 +18,7 @@ if ($current_status == 'confirmed' and $form_action == "cancel") {
     $button_label = esc_html__('Cancel Booking', 'commonsbooking');
 }
 
-if($form_post_status) {
+if(isset($form_post_status)) {
 ?>
     <form method="post" id="cb-booking-form-set-<?php echo $form_post_status; ?>">
         <?php echo \CommonsBooking\Wordpress\CustomPostType\Timeframe::getWPNonceField() ?>
