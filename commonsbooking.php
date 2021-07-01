@@ -15,14 +15,6 @@
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
  */
 
-use CommonsBooking\Map\MapShortcode;
-use CommonsBooking\Plugin;
-use CommonsBooking\Settings\Settings;
-use CommonsBooking\Wordpress\CustomPostType\Item;
-use CommonsBooking\Wordpress\CustomPostType\Location;
-use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use CommonsBooking\Wordpress\Options\AdminOptions;
-
 defined('ABSPATH') or die("Thanks for visting");
 define('COMMONSBOOKING_VERSION', '2.4.5');
 define('COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking');
@@ -40,7 +32,6 @@ define ('COMMONSBOOKING_MAP_PLUGIN_DATA', get_file_data( __FILE__, array('Versio
 
 global $cb_db_version;
 $cb_db_version = '1.0';
-
 
 include __DIR__. '/includes/Admin.php';
 include __DIR__. '/includes/Public.php';
