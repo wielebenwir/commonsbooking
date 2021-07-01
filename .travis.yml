@@ -10,7 +10,7 @@ notifications:
 
 branches:
   only:
-    - unit-testing
+    - master
 
 cache:
   directories:

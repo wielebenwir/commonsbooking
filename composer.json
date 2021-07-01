@@ -12,6 +12,11 @@
     ],
     "psr-4": {"CommonsBooking\\": "src/"}
   },
+  "autoload-dev": {
+    "psr-0": {
+      "CommonsBooking\\Tests\\": "tests/"
+    }
+  },
   "repositories": [
     {
       "type": "vcs",
