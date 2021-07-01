@@ -26,14 +26,6 @@ class DayTest extends TestCase {
 
 	const REPETITION_END = '1661472000';
 
-	function start_transaction() {
-		global $wpdb;
-		$wpdb->query( 'SET autocommit = 0;' );
-		$wpdb->query( 'START TRANSACTION;' );
-		add_filter( 'query', array( $this, '_create_temporary_tables' ) );
-		add_filter( 'query', array( $this, '_drop_temporary_tables' ) );
-	}
-
 	protected function setUpBookingCodesTable() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . BookingCodes::$tablename;
