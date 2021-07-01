@@ -34,14 +34,10 @@ class DayTest extends TestCase {
 		add_filter( 'query', array( $this, '_drop_temporary_tables' ) );
 	}
 
-	protected function setUp() {
+	protected function setUpBookingCodesTable() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . BookingCodes::$tablename;
 		$charset_collate = $wpdb->get_charset_collate();
-
-//		$wpdb->query( 'SET autocommit = 0;' );
-//		$wpdb->query( 'START TRANSACTION;' );
-
 		$sql = "CREATE TABLE $table_name (
             date date DEFAULT '0000-00-00' NOT NULL,
             timeframe bigint(20) unsigned NOT NULL,
@@ -52,6 +48,10 @@ class DayTest extends TestCase {
         ) $charset_collate;";
 
 		$wpdb->query($sql);
+	}
+
+	protected function setUp() {
+		$this->setUpBookingCodesTable();
 
 		// Create location
 		$this->locationId = wp_insert_post( [
