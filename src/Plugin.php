@@ -686,7 +686,4 @@ class Plugin {
 		$cb_manager = get_role( 'cb_manager' );
 	}
 
-	public static function returnString() {
-		return "string";
-	}
 }
