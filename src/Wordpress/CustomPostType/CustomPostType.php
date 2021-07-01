@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\MetaBox\Field;
 use WP_Post;
@@ -23,42 +22,8 @@ abstract class CustomPostType {
 	/**
 	 * @return mixed
 	 */
-	abstract public function getArgs();
-
-	/**
-	 * @return string
-	 */
-	public static function getPostType() {
-		return static::$postType;
-	}
-
-	/**
-	 * Returns param for backend menu.
-	 * @return array
-	 */
-	public function getMenuParams() {
-		return [
-			'cb-dashboard',
-			$this->getArgs()['labels']['name'],
-			$this->getArgs()['labels']['name'],
-			'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-			'edit.php?post_type=' . static::getPostType(),
-			'',
-			$this->menuPosition ?: null
-		];
-	}
-
-	/**
-	 * Remove the default Custom Fields meta box
-	 *
-	 * @param string $post_type
-	 * @param string $context
-	 * @param WP_Post|object|string $post
-	 */
-	public function removeDefaultCustomFields( $post_type, $context, $post ) {
-		foreach ( array( 'normal', 'advanced', 'side' ) as $context ) {
-			remove_meta_box( 'postcustom', static::getPostType(), $context );
-		}
+	public static function getWPNonceField() {
+		return wp_nonce_field( static::getWPAction(), static::getWPNonceId(), false, true );
 	}
 
 	/**
@@ -71,15 +36,15 @@ abstract class CustomPostType {
 	/**
 	 * @return string
 	 */
-	public static function getWPNonceId() {
-		return static::getPostType() . "-custom-fields" . '_wpnonce';
+	public static function getPostType() {
+		return static::$postType;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
-	public static function getWPNonceField() {
-		return wp_nonce_field( static::getWPAction(), static::getWPNonceId(), false, true );
+	public static function getWPNonceId() {
+		return static::getPostType() . "-custom-fields" . '_wpnonce';
 	}
 
 	/**
@@ -104,6 +69,94 @@ abstract class CustomPostType {
 		}
 
 		return $options;
+	}
+
+	/**
+	 * retrieve Custom Meta Data from CommonsBooking Options and convert them to cmb2 fields array
+	 *
+	 * @param mixed $type (item or location)
+	 *
+	 * @return array
+	 */
+	public static function getCMB2FieldsArrayFromCustomMetadata( $type ) {
+
+		$metaDataRaw    = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_metadata', 'metadata' );
+		$metaDataLines  = explode( "\r\n", $metaDataRaw );
+		$metaDataFields = array();
+
+		foreach ( $metaDataLines as $metaDataLine ) {
+			$metaDataArray = explode( ';', $metaDataLine );
+
+			if ( count( $metaDataArray ) == 5 ) // $metaDataArray[0] = Type
+			{
+				$metaDataFields[ $metaDataArray[0] ][] = array(
+					'id'   => $metaDataArray[1],
+					'name' => $metaDataArray[2],
+					'type' => $metaDataArray[3],
+					'desc' => commonsbooking_sanitizeHTML( __( $metaDataArray[4], 'commonsbooking' ) ),
+				);
+			}
+		}
+
+		if ( array_key_exists( $type, $metaDataFields ) ) {
+			return $metaDataFields[ $type ];
+		}
+	}
+
+	/**
+	 * Modifies Row Actions (like quick edit, trash etc) in CPT listings
+	 *
+	 * @param mixed $actions
+	 *
+	 * @return void
+	 */
+	public static function modifyRowActions( $actions, $post ) {
+
+		// remove quick edit for timeframes
+		if ( $post->post_type == Timeframe::getPostType() ) {
+			unset( $actions['inline hide-if-no-js'] );
+		}
+
+		return $actions;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	abstract public static function getView();
+
+	/**
+	 * Returns param for backend menu.
+	 * @return array
+	 */
+	public function getMenuParams() {
+		return [
+			'cb-dashboard',
+			$this->getArgs()['labels']['name'],
+			$this->getArgs()['labels']['name'],
+			'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
+			'edit.php?post_type=' . static::getPostType(),
+			'',
+			$this->menuPosition ?: null
+		];
+	}
+
+	/**
+	 * @return mixed
+	 */
+	abstract public function getArgs();
+
+	/**
+	 * Remove the default Custom Fields meta box
+	 *
+	 * @param string $post_type
+	 * @param string $context
+	 * @param WP_Post|object|string $post
+	 */
+	public function removeDefaultCustomFields( $post_type, $context, $post ) {
+		foreach ( array( 'normal', 'advanced', 'side' ) as $context ) {
+			remove_meta_box( 'postcustom', static::getPostType(), $context );
+		}
 	}
 
 	/**
@@ -202,71 +255,15 @@ abstract class CustomPostType {
 	 */
 	public function setCustomColumnsData( $column, $post_id ) {
 
-        if ($value = get_post_meta($post_id, $column, true)) {
-            echo $value;
-        } else {
-            if ( property_exists($post = get_post($post_id), $column)) {
-                echo $post->{$column};
-            } else {
-                echo '-';
-            }
-        }
-    }
-
-    /**
-     * retrieve Custom Meta Data from CommonsBooking Options and convert them to cmb2 fields array
-     *
-     * @param  mixed $type (item or location)
-     * @return array
-     */
-    public static function getCMB2FieldsArrayFromCustomMetadata($type) {
-
-        $metaDataRaw = array();
-        $metaDataRaw = Settings::getOption(COMMONSBOOKING_PLUGIN_SLUG . '_options_metadata', 'metadata');
-
-        $metaDataLines = explode("\r\n", $metaDataRaw);
-
-        $metaDataArray = array();
-        $metaDataFields = array();
-
-        foreach ($metaDataLines as $metaDataLine) {
-            $metaDataArray = explode(';', $metaDataLine);
-
-            // $metaDataArray[0] = Type
-            $metaDataFields[$metaDataArray[0]][] = array(
-                'id'        => $metaDataArray[1],
-                'name'      => $metaDataArray[2],
-                'type'      => $metaDataArray[3],
-                'desc'      => commonsbooking_sanitizeHTML( __($metaDataArray[4], 'commonsbooking') ),
-            );
-        }
-
-        if (array_key_exists( $type, $metaDataFields) ) {
-            return $metaDataFields[$type];
-        }
-    }
-
-
-    /**
-     * Modifies Row Actions (like quick edit, trash etc) in CPT listings
-     *
-     * @param  mixed $actions
-     * @return void
-     */
-    public static function modifyRowActions($actions, $post)
-    {
-
-        // remove quick edit for timeframes
-        if ( $post->post_type == Timeframe::getPostType() ) {
-            unset( $actions['inline hide-if-no-js'] );
-        }
-
-        return $actions;
-    }
-
-	/**
-	 * @return mixed
-	 */
-	abstract public static function getView();
+		if ( $value = get_post_meta( $post_id, $column, true ) ) {
+			echo $value;
+		} else {
+			if ( property_exists( $post = get_post( $post_id ), $column ) ) {
+				echo $post->{$column};
+			} else {
+				echo '-';
+			}
+		}
+	}
 
 }

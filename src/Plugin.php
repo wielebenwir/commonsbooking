@@ -11,6 +11,7 @@ use CommonsBooking\API\ItemsRoute;
 use CommonsBooking\API\LocationsRoute;
 use CommonsBooking\API\ProjectsRoute;
 use CommonsBooking\CB\CB1UserFields;
+use CommonsBooking\Controller\TimeframeController;
 use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Booking;
@@ -19,15 +20,14 @@ use CommonsBooking\Model\User;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\Dashboard;
-use CommonsBooking\Wordpress\CustomPostType\Item;
-use CommonsBooking\Controller\TimeframeController;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
-use CommonsBooking\Wordpress\Options\AdminOptions;
-use CommonsBooking\Wordpress\PostStatus\PostStatus;
+use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
+use CommonsBooking\Wordpress\Options\AdminOptions;
 use CommonsBooking\Wordpress\Options\OptionsTab;
+use CommonsBooking\Wordpress\PostStatus\PostStatus;
 use Geocoder\Exception\Exception;
 
 class Plugin {
@@ -140,10 +140,10 @@ class Plugin {
 		// register User Widget
 		add_action( 'widgets_init', array( $this, 'registerUserWidget' ) );
 
-        // remove Row Actions
-        add_filter('post_row_actions',array(CustomPostType::class, 'modifyRowActions'),10,2);
+		// remove Row Actions
+		add_filter( 'post_row_actions', array( CustomPostType::class, 'modifyRowActions' ), 10, 2 );
 
-    }
+	}
 
 	/**
 	 * Plugin activation tasks.

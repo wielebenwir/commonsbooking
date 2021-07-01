@@ -6,7 +6,6 @@ use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\Messages;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Repository\BookingCodes;
-
 use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\View\Calendar;
 use Exception;

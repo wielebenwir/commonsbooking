@@ -8,7 +8,6 @@ use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\CB1;
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
