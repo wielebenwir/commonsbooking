@@ -2,9 +2,11 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\Messages;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Repository\BookingCodes;
+
 use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\View\Calendar;
 use Exception;
@@ -250,7 +252,7 @@ class Timeframe extends CustomPostType {
 				$postId = null;
 				// New booking
 				if ( empty( $booking ) ) {
-					$postarr['post_name'] = self::generateRandomSlug();
+					$postarr['post_name'] = Helper::generateRandomString();
 					$postId               = wp_insert_post( $postarr, true );
 					// Existing booking
 				} else {

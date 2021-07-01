@@ -15,7 +15,13 @@
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
  */
 
-@ini_set('display_errors',1);
+use CommonsBooking\Map\MapShortcode;
+use CommonsBooking\Plugin;
+use CommonsBooking\Settings\Settings;
+use CommonsBooking\Wordpress\CustomPostType\Item;
+use CommonsBooking\Wordpress\CustomPostType\Location;
+use CommonsBooking\Wordpress\CustomPostType\Timeframe;
+use CommonsBooking\Wordpress\Options\AdminOptions;
 
 defined('ABSPATH') or die("Thanks for visting");
 define('COMMONSBOOKING_VERSION', '2.4.5');

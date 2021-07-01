@@ -186,24 +186,46 @@ class Item extends CustomPostType {
 			'show_names'   => true, // Show field names on the left
 		) );
 
-		// Show selection only to admins
-		if ( commonsbooking_isCurrentUserAdmin() ) {
-			$users       = UserRepository::getCBManagers();
-			$userOptions = [];
-			foreach ( $users as $user ) {
-				$userOptions[ $user->ID ] = $user->get( 'user_nicename' ) . " (" . $user->last_name . " " . $user->last_name . ")";
-			}
-			$cmb->add_field( array(
-				'name'       => esc_html__( 'Item Admin(s)', 'commonsbooking' ),
-				'desc'       => esc_html__( 'choose one or more users to give them the permisssion to edit and manage this specific item. Only users with the role cb_manager can be selected here', 'commonsbooking' ),
-				'id'         => COMMONSBOOKING_METABOX_PREFIX . 'item_admins',
-				'type'       => 'pw_multiselect',
-				'options'    => $userOptions,
-				'attributes' => array(
-					'placeholder' => esc_html__( 'Select item admins.', 'commonsbooking' )
-				),
-			) );
-		}
 
-	}
+        // Show selection only to admins
+        if (commonsbooking_isCurrentUserAdmin()) {
+            $users       = UserRepository::getCBManagers();
+            $userOptions = [];
+            foreach ($users as $user) {
+                $userOptions[$user->ID] = $user->get('user_nicename')." (".$user->last_name." ".$user->last_name.")";
+            }
+            $cmb->add_field( array(
+                'name'       => esc_html__('Item Admin(s)', 'commonsbooking'),
+                'desc'       => esc_html__('choose one or more users to give them the permisssion to edit and manage this specific item. Only users with the role cb_manager can be selected here', 'commonsbooking'),
+                'id'      => COMMONSBOOKING_METABOX_PREFIX . 'item_admins',
+                'type'    => 'pw_multiselect',
+                'options' => $userOptions,
+                'attributes' => array(
+                    'placeholder' => esc_html__('Select item admins.', 'commonsbooking')
+                ),
+            ),);
+        }
+
+        // Check if custom meta fields are set in CB Options and generate MetaData-Box and fields
+        if ( is_array( self::getCMB2FieldsArrayFromCustomMetadata('item') ) )
+        {
+            $customMetaData = self::getCMB2FieldsArrayFromCustomMetadata('item');
+
+            // Initiate the metabox Adress
+            $cmb = new_cmb2_box(array(
+                'id'           => COMMONSBOOKING_METABOX_PREFIX . 'item_custom_meta',
+                'title'        => esc_html__('Item Meta-Data', 'commonsbooking'),
+                'object_types' => array(self::$postType), // Post type
+                'context'      => 'normal',
+                'priority'     => 'high',
+                'show_names'   => true, // Show field names on the left
+            ));
+
+            // Add Custom Meta Fields defined in CommonsBooking Options (Tab MetaData)
+            foreach ($customMetaData as $customMetaDataField) {
+                $cmb->add_field($customMetaDataField);
+            }
+
+        }
+    }
 }

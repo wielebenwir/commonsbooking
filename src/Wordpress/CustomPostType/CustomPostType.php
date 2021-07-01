@@ -3,6 +3,8 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Plugin;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\MetaBox\Field;
 use WP_Post;
 
@@ -200,34 +202,67 @@ abstract class CustomPostType {
 	 */
 	public function setCustomColumnsData( $column, $post_id ) {
 
-		if ( $value = get_post_meta( $post_id, $column, true ) ) {
-			echo $value;
-		} else {
-			if ( property_exists( $post = get_post( $post_id ), $column ) ) {
-				echo $post->{$column};
-			} else {
-				echo '-';
-			}
-		}
-	}
+        if ($value = get_post_meta($post_id, $column, true)) {
+            echo $value;
+        } else {
+            if ( property_exists($post = get_post($post_id), $column)) {
+                echo $post->{$column};
+            } else {
+                echo '-';
+            }
+        }
+    }
 
-	/**
-	 * generates a random slug for use as post_name in timeframes/booking to prevent easy access to bookings via get parameters
-	 *
-	 * @param mixed $length
-	 *
-	 * @return void
-	 */
-	public static function generateRandomSlug( $length = '24' ) {
-		$characters       = '0123456789abcdefghijklmnopqrstuvwxyz';
-		$charactersLength = strlen( $characters );
-		$randomString     = '';
-		for ( $i = 0; $i < $length; $i ++ ) {
-			$randomString .= $characters[ rand( 0, $charactersLength - 1 ) ];
-		}
+    /**
+     * retrieve Custom Meta Data from CommonsBooking Options and convert them to cmb2 fields array
+     *
+     * @param  mixed $type (item or location)
+     * @return array
+     */
+    public static function getCMB2FieldsArrayFromCustomMetadata($type) {
 
-		return $randomString;
-	}
+        $metaDataRaw = array();
+        $metaDataRaw = Settings::getOption(COMMONSBOOKING_PLUGIN_SLUG . '_options_metadata', 'metadata');
+
+        $metaDataLines = explode("\r\n", $metaDataRaw);
+
+        $metaDataArray = array();
+        $metaDataFields = array();
+
+        foreach ($metaDataLines as $metaDataLine) {
+            $metaDataArray = explode(';', $metaDataLine);
+
+            // $metaDataArray[0] = Type
+            $metaDataFields[$metaDataArray[0]][] = array(
+                'id'        => $metaDataArray[1],
+                'name'      => $metaDataArray[2],
+                'type'      => $metaDataArray[3],
+                'desc'      => commonsbooking_sanitizeHTML( __($metaDataArray[4], 'commonsbooking') ),
+            );
+        }
+
+        if (array_key_exists( $type, $metaDataFields) ) {
+            return $metaDataFields[$type];
+        }
+    }
+
+
+    /**
+     * Modifies Row Actions (like quick edit, trash etc) in CPT listings
+     *
+     * @param  mixed $actions
+     * @return void
+     */
+    public static function modifyRowActions($actions, $post)
+    {
+
+        // remove quick edit for timeframes
+        if ( $post->post_type == Timeframe::getPostType() ) {
+            unset( $actions['inline hide-if-no-js'] );
+        }
+
+        return $actions;
+    }
 
 	/**
 	 * @return mixed
