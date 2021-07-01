@@ -31,11 +31,10 @@ add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
  * Filters text content and strips out disallowed HTML.
  *
  * @param mixed $string
- * @param mixed $textdomain
  *
- * @return void
+ * @return string
  */
-function commonsbooking_sanitizeHTML( $string ) {
+function commonsbooking_sanitizeHTML( $string ): string {
 	global $allowedposttags;
 
 	$allowed_atts = array(

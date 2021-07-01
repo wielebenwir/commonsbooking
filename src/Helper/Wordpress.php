@@ -14,7 +14,7 @@ class Wordpress {
 		$pagelist = [];
 
 		if ( $pages ) {
-			foreach ( $pages as $key => $value ) {
+			foreach ( $pages as $value ) {
 				$pagelist[ $value->ID ] = $value->post_title;
 			}
 		}

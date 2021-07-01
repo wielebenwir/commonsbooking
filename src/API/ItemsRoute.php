@@ -32,7 +32,7 @@ class ItemsRoute extends BaseRoute {
 	 *
 	 * @return stdClass
 	 */
-	public function getItemData( $request ) {
+	public function getItemData( $request ): stdClass {
 		$data        = new stdClass();
 		$data->items = [];
 
@@ -75,7 +75,7 @@ class ItemsRoute extends BaseRoute {
 		// Add projects data
 		if ( ! array_key_exists( 'projects', $params ) || $params['projects'] != "false" ) {
 			$projectsRoute  = new ProjectsRoute();
-			$data->projects = $projectsRoute->getItemData( $request );
+			$data->projects = $projectsRoute->getItemData();
 		}
 
 		// Add locations data
@@ -105,9 +105,9 @@ class ItemsRoute extends BaseRoute {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 *
-	 * @return WP_Error|WP_REST_Response
+	 * @return WP_REST_Response
 	 */
-	public function get_item( $request ) {
+	public function get_item( $request ): WP_REST_Response {
 		$data = $this->getItemData( $request );
 //        if(WP_DEBUG) {
 //            $this->validateData($data);
@@ -119,15 +119,14 @@ class ItemsRoute extends BaseRoute {
 	 * @param mixed $item
 	 * @param WP_REST_Request $request
 	 *
-	 * @return array|WP_Error|WP_REST_Response
+	 * @return stdClass
 	 */
-	public function prepare_item_for_response( $item, $request ) {
+	public function prepare_item_for_response( $item, $request ): stdClass {
 		$preparedItem              = new stdClass();
 		$preparedItem->id          = $item->ID . '';
 		$preparedItem->name        = $item->post_title;
 		$preparedItem->url         = get_permalink( $item->ID );
 		$preparedItem->description = $this->escapeJsonString( $item->post_content );
-//        $preparedItem->ownerId     = $item->post_author;
 		$preparedItem->projectId = "1";
 
 		if ( get_the_post_thumbnail_url( $item->ID, 'full' ) ) {

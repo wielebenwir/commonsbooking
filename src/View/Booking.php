@@ -10,10 +10,10 @@ class Booking extends View {
 	/**
 	 * Returns template data for frontend.
 	 *
-	 * @return array
+	 * @return void
 	 * @throws Exception
 	 */
-	public static function getTemplateData(): array {
+	public static function getTemplateData(): void {
 		header( 'Content-Type: application/json' );
 		echo json_encode( self::getBookingListData(), true );
 		wp_die(); // All ajax handlers die when finished
@@ -203,7 +203,6 @@ class Booking extends View {
 					}
 					if ( $postsPerPage && $postsPerPage <= $pageCounter ++ ) {
 						unset( $bookingDataArray['data'][ $key ] );
-						continue;
 					}
 				}
 			}

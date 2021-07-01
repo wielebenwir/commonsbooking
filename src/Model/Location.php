@@ -20,7 +20,7 @@ class Location extends BookablePost {
 	 * @return array
 	 * @throws \Exception
 	 */
-	public function getBookableTimeframesByItem( $itemId, $asModel = false ) {
+	public function getBookableTimeframesByItem( $itemId, bool $asModel = false ): array {
 		// get bookable timeframes that has min timestamp = now
 		return Timeframe::get(
 			[ $this->ID ],
@@ -106,24 +106,20 @@ class Location extends BookablePost {
 	 * @return string
 	 */
 	public function formattedContactInfoOneLine() {
-		$html_output = CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact' ) . '<br>';
-
-		return $html_output;
+		return CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact' ) . '<br>';
 	}
 
 	/**
 	 * Return Location pickup instructions
 	 *
-	 * @param mixed $html set to true, if html br tags should be added before and after
-	 *
 	 * @return string html
+	 * @throws \Exception
 	 */
-	public function formattedPickupInstructions() {
+	public function formattedPickupInstructions(): string {
 		$html_br     = '<br>';
-		$html_output = $html_br . $html_br . CB::get( 'location',
-				COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions', $this->post->ID ) . $html_br;
 
-		return $html_output;
+		return $html_br . $html_br . CB::get( 'location',
+				COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions', $this->post->ID ) . $html_br;
 	}
 
 	/**
@@ -132,9 +128,7 @@ class Location extends BookablePost {
 	 * @return string html
 	 */
 	public function formattedPickupInstructionsOneLine() {
-		$html_output = CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions', $this->post->ID );
-
-		return $html_output;
+		return CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions', $this->post->ID );
 	}
 
 	/**

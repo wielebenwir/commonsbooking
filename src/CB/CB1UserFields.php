@@ -98,7 +98,7 @@ class CB1UserFields {
 	 * @since    0.6.
 	 *
 	 */
-	public function get_extra_profile_fields() {
+	public function get_extra_profile_fields(): array {
 		return $this->extra_profile_fields;
 	}
 
@@ -160,7 +160,7 @@ class CB1UserFields {
 	 * @since    0.6
 	 *
 	 */
-	public function get_termsservices_string() {
+	public function get_termsservices_string(): string {
 		if ( ! empty ( $this->termsservices_url ) ) {
 			// translators: %s = terms and service url
 			$string = sprintf(
@@ -247,7 +247,7 @@ class CB1UserFields {
 	 */
 	public function show_extra_profile_fields( $user ) { ?>
 
-        <h3><?php commonsbooking_sanitizeHTML( _e( 'Extra Fields', 'commonsbooking' ) ); ?> </h3>
+        <h3><?php _e( 'Extra Fields', 'commonsbooking' ); ?> </h3>
 
         <table class="form-table">
             <tr>
@@ -286,17 +286,13 @@ class CB1UserFields {
 	 *
 	 */
 	public function save_extra_profile_fields( $user_id ) {
+		if ( current_user_can( 'edit_user', $user_id ) ) {
+			$phone   = sanitize_text_field( $_POST['phone'] );
+			$address = sanitize_text_field( $_POST['address'] );
 
-		if ( ! current_user_can( 'edit_user', $user_id ) ) {
-			return false;
+			update_user_meta( $user_id, 'phone', $phone );
+			update_user_meta( $user_id, 'address', $address );
 		}
-
-		$phone   = sanitize_text_field( $_POST['phone'] );
-		$address = sanitize_text_field( $_POST['address'] );
-
-		update_user_meta( $user_id, 'phone', $phone );
-		update_user_meta( $user_id, 'address', $address );
-
 	}
 
 }

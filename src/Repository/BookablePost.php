@@ -15,7 +15,7 @@ abstract class BookablePost extends PostRepository {
 	 *
 	 * @return array
 	 */
-	public static function getByCurrentUser( $publishedOnly = false ) {
+	public static function getByCurrentUser( bool $publishedOnly = false ): array {
 		$current_user = wp_get_current_user();
 		$items        = [];
 
@@ -99,7 +99,7 @@ abstract class BookablePost extends PostRepository {
 	 *
 	 * @return array
 	 */
-	public static function getByUserId( $userId, $asModel = false ) {
+	public static function getByUserId( $userId, bool $asModel = false ): array {
 		$cbPosts = [];
 
 		if ( Plugin::getCacheItem() ) {
@@ -160,7 +160,7 @@ abstract class BookablePost extends PostRepository {
 	 *
 	 * @return array
 	 */
-	public static function get( $args = array(), $bookable = false ) {
+	public static function get( array $args = array(), bool $bookable = false ) {
 		$posts             = [];
 		$args['post_type'] = static::getPostType();
 

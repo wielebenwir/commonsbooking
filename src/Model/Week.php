@@ -43,7 +43,7 @@ class Week {
 	 * @param array $items
 	 * @param array $types
 	 */
-	public function __construct( $year, $week, $locations = [], $items = [], $types = [] ) {
+	public function __construct( $year, $week, array $locations = [], array $items = [], array $types = [] ) {
 		if ( $year === null ) {
 			$year = date( 'Y' );
 		}
@@ -92,9 +92,9 @@ class Week {
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
-	public function getWeek() {
+	public function getWeek(): int {
 		return $this->week;
 	}
 
@@ -103,7 +103,7 @@ class Week {
 	 *
 	 * @return Week
 	 */
-	public function setWeek( $week ) {
+	public function setWeek( $week ): Week {
 		$this->week = $week;
 
 		return $this;

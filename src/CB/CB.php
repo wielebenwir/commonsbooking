@@ -2,48 +2,19 @@
 
 namespace CommonsBooking\CB;
 
-use CommonsBooking\Model\User;
-use CommonsBooking\Repository\PostRepository;
+use Exception;
 use function get_user_by;
-use function PHPUnit\Framework\isEmpty;
 
 class CB {
-
-	protected static $INTERNAL_DATE_FORMAT = 'd.m.Y';
 
 	public static $theObjectID;
 	public static $key;
 	public static $property;
 	public static $args;
+	protected static $INTERNAL_DATE_FORMAT = 'd.m.Y';
 
-	public static function getInternalDateFormat() {
+	public static function getInternalDateFormat(): string {
 		return static::$INTERNAL_DATE_FORMAT;
-	}
-
-	/**
-	 * get
-	 *
-	 * @TODO i feel we should not pass ids or args into CB::get(), but instead use a seperate function. it was primaruly built for parsing email templates where we do not have the possibility.
-	 *
-	 * @param mixed $key
-	 * @param mixed $property
-	 * @param mixed $theObject
-	 * @param mixed $args
-	 *
-	 * @return mixed
-	 */
-	public static function get( $key, $property, $theObject = null, $args = null ) {
-
-		self::$key  = $key;
-		self::$args = $args;
-		self::substitions( $key, $property );         // substitute keys
-		self::setupPost( $theObject );                  // query sub post or initial post?
-		$result = self::lookUp( $args );               // Find matching methods, properties or metadata
-
-
-		$filterName = sprintf( 'cb_tag_%s_%s', self::$key, self::$property );
-
-		return apply_filters( $filterName, $result );
 	}
 
 	/**
@@ -60,52 +31,30 @@ class CB {
 	}
 
 	/**
-	 * setupPost
+	 * get
 	 *
-	 * @param mixed $initialPost
+	 * @TODO i feel we should not pass ids or args into CB::get(), but instead use a seperate function. it was primaruly built for parsing email templates where we do not have the possibility.
 	 *
-	 * @return void
+	 * @param mixed $key
+	 * @param mixed $property
+	 * @param mixed $theObject
+	 * @param mixed $args
+	 *
+	 * @return mixed
+	 * @throws Exception
 	 */
-	private static function setupPost( $initialPostId ) {
-		// Set WP Post
-		global $post;
+	public static function get( $key, $property, $theObject = null, $args = null ) {
+
+		self::$key  = $key;
+		self::$args = $args;
+		self::substitions( $key, $property );         // substitute keys
+		self::setupPost( $theObject );                  // query sub post or initial post?
+		$result = self::lookUp();               // Find matching methods, properties or metadata
 
 
-		// we read the post object from the global post if no postID is set
-		if ( is_null( $initialPostId ) ) {
-			$initialPost = $post;
-		}
+		$filterName = sprintf( 'cb_tag_%s_%s', self::$key, self::$property );
 
-		// we check if we are dealing with a timeframe then get the time timeframe-object as post
-		if ( is_null( $initialPostId ) and isset( $_GET['cb_timeframe'] ) ) {
-			$initialPost = get_page_by_path( sanitize_text_field( $_GET['cb_timeframe'] ), OBJECT, 'cb_timeframe' );
-		}
-
-		// set post object from given postID
-		if ( ! is_null( $initialPostId ) ) {
-			$initialPost = get_post( $initialPostId );
-		}
-
-		if ( is_null( $initialPost ) ) {
-			return false;
-		}
-
-		// Check post type
-		$initialPostType = get_post_type( $initialPost );
-
-		// If we are dealing with a timeframe and key ist not booking, we may need to look up the CHILDs post meta, not the parents'
-		if ( $initialPostType == 'cb_timeframe' and self::$key != "booking" and self::$key != 'user' ) {
-			$subPostID = get_post_meta( $initialPost->ID, self::$key . '-id', true );    // item-id, location-id
-			if ( get_post_status( $subPostID ) ) { // Post with that ID exists
-				$theObjectID = $subPostID; // we will query the sub post
-			} else {
-				return 'ERROR: Post ' . $subPostID . ' not found.';
-			}
-		} else { // Not a timeframe, look at original post meta
-			$theObjectID = $initialPost->ID;
-		}
-
-		self::$theObjectID = $theObjectID; // e.g. item id
+		return apply_filters( $filterName, $result );
 	}
 
 	/**
@@ -133,15 +82,60 @@ class CB {
 	}
 
 	/**
-	 * lookUp
+	 * setupPost
+	 *
+	 * @param $initialPostId
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public static function lookUp() {
+	private static function setupPost( $initialPostId ) {
+		// Set WP Post
+		global $post;
 
-		$result = false;
 
-		/** @var PostRepository $repo */
+		// we read the post object from the global post if no postID is set
+		if ( is_null( $initialPostId ) ) {
+			$initialPost = $post;
+		}
+
+		// we check if we are dealing with a timeframe then get the time timeframe-object as post
+		if ( is_null( $initialPostId ) and isset( $_GET['cb_timeframe'] ) ) {
+			$initialPost = get_page_by_path( sanitize_text_field( $_GET['cb_timeframe'] ), OBJECT, 'cb_timeframe' );
+		}
+
+		// set post object from given postID
+		if ( ! is_null( $initialPostId ) ) {
+			$initialPost = get_post( $initialPostId );
+		}
+
+		if ( ! is_null( $initialPost ) ) {
+			// Check post type
+			$initialPostType = get_post_type( $initialPost );
+
+			// If we are dealing with a timeframe and key ist not booking, we may need to look up the CHILDs post meta, not the parents'
+			if ( $initialPostType == 'cb_timeframe' and self::$key != "booking" and self::$key != 'user' ) {
+				$subPostID = get_post_meta( $initialPost->ID, self::$key . '-id', true );    // item-id, location-id
+				if ( get_post_status( $subPostID ) ) { // Post with that ID exists
+					$theObjectID = $subPostID; // we will query the sub post
+				} else {
+					throw new Exception('ERROR: Post ' . $subPostID . ' not found.');
+				}
+			} else { // Not a timeframe, look at original post meta
+				$theObjectID = $initialPost->ID;
+			}
+
+			self::$theObjectID = $theObjectID; // e.g. item id
+		}
+	}
+
+	/**
+	 * @throws Exception
+	 */
+	public static function lookUp(): ?string {
+
+		$result = '';
+
 		$repo     = 'CommonsBooking\Repository\\' . ucfirst( self::$key ); // we access the Repository not the cpt class here
 		$model    = 'CommonsBooking\Model\\' . ucfirst( self::$key ); // we check method_exists against model as workaround, cause it doesn't work on repo
 		$property = self::$property;
@@ -193,8 +187,9 @@ class CB {
 		if ( $result ) {
 			// sanitize output
 			return commonsbooking_sanitizeHTML( $result );
-
 		}
+
+		return null;
 	}
 
 }

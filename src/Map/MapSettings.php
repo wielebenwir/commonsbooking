@@ -55,7 +55,7 @@ class MapSettings {
 
 		$const_value = constant( "self::$default_name" );
 
-		return isset( $const_value ) ? $const_value : null;
+		return $const_value ?? null;
 	}
 
 	/**
@@ -88,7 +88,7 @@ class MapSettings {
 
 		$validated_input = self::populate_option_defaults( [] );
 
-		$validated_input['booking_page_link_replacement'] = isset( $input['booking_page_link_replacement'] ) ? true : false;
+		$validated_input['booking_page_link_replacement'] = isset( $input['booking_page_link_replacement'] );
 
 		return $validated_input;
 	}
@@ -112,5 +112,3 @@ class MapSettings {
 		include_once( COMMONSBOOKING_MAP_PATH . 'templates/map-settings-page-template.php' );
 	}
 }
-
-?>

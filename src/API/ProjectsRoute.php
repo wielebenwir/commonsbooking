@@ -23,27 +23,6 @@ class ProjectsRoute extends BaseRoute {
 	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "node_modules/commons-api/commons-api.projects.schema.json";
 
 	/**
-	 * Returns raw data collection.
-	 *
-	 * @param $request
-	 *
-	 * @return stdClass
-	 */
-	public function getItemData( $request ) {
-		$data = [
-			(object) [
-				"id"          => "1",
-				"name"        => get_bloginfo( 'name' ),
-				"url"         => get_bloginfo( 'url' ),
-				"description" => get_bloginfo( 'description' ),
-				"language"    => get_bloginfo( 'language' ),
-			]
-		];
-
-		return $data;
-	}
-
-	/**
 	 * Get one item from the collection
 	 */
 	public function get_item( $request ) {
@@ -53,15 +32,31 @@ class ProjectsRoute extends BaseRoute {
 	/**
 	 * Get a collection of projects
 	 */
-	public function get_items( $request ) {
+	public function get_items( $request ): WP_REST_Response {
 		$data           = new stdClass();
-		$data->projects = $this->getItemData( $request );
+		$data->projects = $this->getItemData();
 
 		if ( WP_DEBUG ) {
 			$this->validateData( $data );
 		}
 
 		return new WP_REST_Response( $data, 200 );
+	}
+
+	/**
+	 * Returns raw data collection.
+	 * @return object[]
+	 */
+	public function getItemData(): array {
+		return [
+			(object) [
+				"id"          => "1",
+				"name"        => get_bloginfo( 'name' ),
+				"url"         => get_bloginfo( 'url' ),
+				"description" => get_bloginfo( 'description' ),
+				"language"    => get_bloginfo( 'language' ),
+			]
+		];
 	}
 
 }

@@ -15,11 +15,15 @@ class Messages {
 
 	private $post;
 
-	/**
-	 * @return mixed
-	 */
-	public function getPostId() {
-		return $this->postId;
+	public function __construct( $postId, $action ) {
+		$this->postId = $postId;
+		$this->action = $action;
+	}
+
+	public function triggerMail(): void {
+		if ( in_array( $this->getAction(), [ "confirmed", "canceled" ] ) ) {
+			$this->sendMessage();
+		}
 	}
 
 	/**
@@ -29,38 +33,15 @@ class Messages {
 		return $this->action;
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function getPost() {
-		if ( $this->post == null ) {
-			$this->post = get_post( $this->getPostId() );
-		}
-
-		return $this->post;
-	}
-
-	public function __construct( $postId, $action ) {
-		$this->postId = $postId;
-		$this->action = $action;
-	}
-
-	public function triggerMail() {
-		if ( in_array( $this->getAction(), [ "confirmed", "canceled" ] ) ) {
-			return $this->sendMessage();
-		}
-	}
-
 	public function sendMessage() {
 		$this->prepareMail();
 		$this->SendNotificationMail();
 	}
 
-
 	/**
 	 * Setup the email template, headers (BCC)
 	 */
-	public function prepareMail() {
+	public function prepareMail(): void {
 		// Setup email: Recipent
 		$booking_user = get_userdata( $this->getPost()->post_author );
 		$this->to     = sprintf( '%s <%s>', $booking_user->user_nicename, $booking_user->user_email );
@@ -76,7 +57,7 @@ class Messages {
 
 		// check if templates are available
 		if ( ! $template_body or ! $template_subject ) {
-			return new WP_Error( 'e-mail ', esc_html( __( "Could not send email because mail-template was not available. Check options -> templates", "commonsbooking" ) ) );
+			new WP_Error( 'e-mail ', esc_html( __( "Could not send email because mail-template was not available. Check options -> templates", "commonsbooking" ) ) );
 		}
 
 		global $post;
@@ -119,6 +100,24 @@ class Messages {
 				$this->add_bcc( $adress );
 			}
 		}
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPost() {
+		if ( $this->post == null ) {
+			$this->post = get_post( $this->getPostId() );
+		}
+
+		return $this->post;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPostId() {
+		return $this->postId;
 	}
 
 	public function add_bcc( $adress ) {

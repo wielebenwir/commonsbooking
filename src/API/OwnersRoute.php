@@ -30,9 +30,9 @@ class OwnersRoute extends BaseRoute {
 	 *
 	 * @param $request
 	 *
-	 * @return stdClass
+	 * @return array
 	 */
-	public function getItemData( $request ) {
+	public function getItemData( $request ): array {
 		$data = [];
 
 		foreach ( UserRepository::getOwners() as $owner ) {
@@ -42,7 +42,7 @@ class OwnersRoute extends BaseRoute {
 		return $data;
 	}
 
-	public function prepare_item_for_response( $owner, $request ) {
+	public function prepare_item_for_response( $owner, $request ): stdClass {
 		$ownerObject       = new stdClass();
 		$ownerObject->id   = "" . $owner->ID;
 		$ownerObject->name = get_user_meta( $owner->ID, 'first_name', true ) . ' ' . get_user_meta( $owner->ID, 'last_name', true );
@@ -70,7 +70,7 @@ class OwnersRoute extends BaseRoute {
 	/**
 	 * Get a single item
 	 */
-	public function get_item( $request ) {
+	public function get_item( $request ): WP_REST_Response {
 		//get parameters from request
 		$params         = $request->get_params();
 		$owner          = get_user_by( 'id', $params['id'] );

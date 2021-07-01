@@ -5,7 +5,7 @@ namespace CommonsBooking\Helper;
 
 
 use Geocoder\Exception\Exception;
-use Geocoder\Provider\Nominatim\Model\NominatimAddress;
+use Geocoder\Location;
 use Geocoder\Provider\Nominatim\Nominatim;
 use Geocoder\Query\GeocodeQuery;
 use Geocoder\StatefulGeocoder;
@@ -16,10 +16,10 @@ class GeoHelper {
 	/**
 	 * @param $addressString
 	 *
-	 * @return NominatimAddress
+	 * @return ?Location
 	 * @throws Exception
 	 */
-	public static function getAddressData( $addressString ) {
+	public static function getAddressData( $addressString ): ?Location {
 		$provider = Nominatim::withOpenStreetMapServer(
 			new Client(),
 			$_SERVER['HTTP_USER_AGENT'] );
@@ -29,6 +29,8 @@ class GeoHelper {
 		if ( ! $addresses->isEmpty() ) {
 			return $addresses->first();
 		}
+
+		return null;
 	}
 
 }

@@ -67,7 +67,6 @@ class CB1 {
 			'post_status' => 'any',
 			'nopaging'    => true
 		);
-		/** @var WP_Query $query */
 		$query = new WP_Query( $args );
 		if ( $query->have_posts() ) {
 			$posts = $query->get_posts();
@@ -132,9 +131,9 @@ class CB1 {
 	/**
 	 * @param $id
 	 *
-	 * @return mixed
+	 * @return string
 	 */
-	public static function getBookingCode( $id ) {
+	public static function getBookingCode( $id ): ?string {
 		global $wpdb;
 		$table_bookingcodes = $wpdb->prefix . self::$BOOKINGCODES_TABLE;
 
@@ -160,10 +159,16 @@ class CB1 {
 	 *
 	 * @return int|false
 	 */
-	public static function getCB2LocationId( $locationId ) {
+	public static function getCB2LocationId( CB1 $locationId ) {
 		return self::getCB2PostIdByType( $locationId, \CommonsBooking\Wordpress\CustomPostType\Location::$postType );
 	}
 
+	/**
+	 * @param $id
+	 * @param $type
+	 *
+	 * @return false|int
+	 */
 	protected static function getCB2PostIdByType( $id, $type ) {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
@@ -190,14 +195,19 @@ class CB1 {
 	/**
 	 * Returns CB2 Location-ID.
 	 *
-	 * @param $locationId CB1 Location-ID
+	 * @param $locationId
 	 *
-	 * @return int|false
+	 * @return false|int
 	 */
 	public static function getCB2ItemId( $locationId ) {
 		return self::getCB2PostIdByType( $locationId, \CommonsBooking\Wordpress\CustomPostType\Item::$postType );
 	}
 
+	/**
+	 * @param $locationId
+	 *
+	 * @return false|int
+	 */
 	public static function getCB2TimeframeId( $locationId ) {
 		return self::getCB2PostIdByType( $locationId, \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType );
 	}

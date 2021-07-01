@@ -9,9 +9,9 @@ class Helper {
 	 *
 	 * @param mixed $length
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public static function generateRandomString( $length = '24' ) {
+	public static function generateRandomString( $length = '24' ): string {
 		$characters       = '0123456789abcdefghijklmnopqrstuvwxyz';
 		$charactersLength = strlen( $characters );
 		$randomString     = '';

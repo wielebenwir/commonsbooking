@@ -1124,7 +1124,6 @@ class Timeframe extends CustomPostType {
 					echo '-';
 					break;
 				case 'type':
-					$typeField = null;
 					$output    = "-";
 
 					foreach ( $this->getCustomFields() as $customField ) {

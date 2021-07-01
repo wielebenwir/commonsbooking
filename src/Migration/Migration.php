@@ -189,9 +189,9 @@ class Migration {
 	/**
 	 * @param WP_Post $location CB1 Location
 	 *
-	 * @throws Exception
+	 * @throws Exception|\Geocoder\Exception\Exception
 	 */
-	public static function migrateLocation( WP_Post $location ) {
+	public static function migrateLocation( WP_Post $location ): bool {
 		// Collect post data
 		$postData = array_merge( $location->to_array(), [
 				'post_type' => Location::$postType
@@ -249,6 +249,22 @@ class Migration {
 	}
 
 	/**
+	 * fetchEmails
+	 * extract mails from a given string and return an array with email addresses
+	 *
+	 * @param mixed $text
+	 *
+	 * @return array
+	 */
+	public static function fetchEmails( $text ): array {
+		$words = str_word_count( $text, 1, '.@-_' );
+
+		return array_filter( $words, function ( $word ) {
+			return filter_var( $word, FILTER_VALIDATE_EMAIL );
+		} );
+	}
+
+	/**
 	 * @param $meta
 	 *
 	 * @return array
@@ -270,22 +286,6 @@ class Migration {
 		}
 
 		return $array;
-	}
-
-	/**
-	 * fetchEmails
-	 * extract mails from a given string and return an array with email addresses
-	 *
-	 * @param mixed $text
-	 *
-	 * @return ARRAY
-	 */
-	public static function fetchEmails( $text ) {
-		$words = str_word_count( $text, 1, '.@-_' );
-
-		return array_filter( $words, function ( $word ) {
-			return filter_var( $word, FILTER_VALIDATE_EMAIL );
-		} );
 	}
 
 	/**
@@ -328,7 +328,6 @@ class Migration {
 			);
 		}
 
-		/** @var WP_Query $query */
 		$query = new WP_Query( $args );
 		if ( $query->have_posts() ) {
 			$posts = $query->get_posts();
@@ -339,6 +338,8 @@ class Migration {
 				return $posts[0];
 			}
 		}
+
+		return null;
 	}
 
 	/**
@@ -347,8 +348,9 @@ class Migration {
 	 * @param $postMeta array Post meta
 	 *
 	 * @return bool
+	 * @throws \Geocoder\Exception\Exception
 	 */
-	protected static function savePostData( $existingPost, array $postData, array $postMeta ) {
+	protected static function savePostData( $existingPost, array $postData, array $postMeta ): bool {
 		$includeGeoData = array_key_exists( 'geodata', $_POST ) && $_POST['geodata'] == "true";
 
 		if ( $existingPost instanceof WP_Post ) {
@@ -384,11 +386,39 @@ class Migration {
 	}
 
 	/**
+	 * Copies elementor meta keys and values from existing CB1 to the new CB2 post
+	 *
+	 * @param mixed $cb1_id
+	 * @param mixed $cb2_id
+	 *
+	 * @return void
+	 */
+	public static function migrateElementorMetaKeys( $cb1_id, $cb2_id ) {
+		global $wpdb;
+
+		$post_meta = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE meta_key LIKE '%_elementor%' AND post_id = $cb1_id" );
+		if ( ! empty( $post_meta ) && is_array( $post_meta ) ) {
+			$duplicate_insert_query = "INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value ) VALUES ";
+			$value_cells            = array();
+
+			foreach ( $post_meta as $meta_info ) {
+				$meta_key      = sanitize_text_field( $meta_info->meta_key );
+				$meta_value    = wp_slash( $meta_info->meta_value );
+				$value_cells[] = "($cb2_id, '$meta_key', '$meta_value')";
+			}
+
+			$duplicate_insert_query .= implode( ', ', $value_cells ) . ';';
+			$wpdb->query( $duplicate_insert_query );
+		}
+	}
+
+	/**
 	 * @param WP_Post $item
 	 *
-	 * @throws Exception
+	 * @return bool
+	 * @throws \Geocoder\Exception\Exception
 	 */
-	public static function migrateItem( WP_Post $item ) {
+	public static function migrateItem( WP_Post $item ): bool {
 		// Collect post data
 		$postData = array_merge( $item->to_array(), [
 				'post_type'    => Item::$postType,
@@ -418,9 +448,10 @@ class Migration {
 	/**
 	 * @param $timeframe
 	 *
-	 * @throws Exception
+	 * @return bool
+	 * @throws \Geocoder\Exception\Exception
 	 */
-	public static function migrateTimeframe( $timeframe ) {
+	public static function migrateTimeframe( $timeframe ): bool {
 		$cbItem     = self::getExistingPost( $timeframe['item_id'], Item::$postType );
 		$cbLocation = self::getExistingPost( $timeframe['location_id'], Location::$postType );
 		$weekdays   = '';
@@ -466,9 +497,11 @@ class Migration {
 	/**
 	 * @param $booking
 	 *
+	 * @return bool
+	 * @throws \Geocoder\Exception\Exception
 	 * @throws Exception
 	 */
-	public static function migrateBooking( $booking ) {
+	public static function migrateBooking( $booking ): bool {
 		$user       = get_user_by( 'id', $booking['user_id'] );
 		$cbItem     = self::getExistingPost( $booking['item_id'], Item::$postType );
 		$cbLocation = self::getExistingPost( $booking['location_id'], Location::$postType );
@@ -539,7 +572,7 @@ class Migration {
 	 * Migrates CB1 user agreement url option to CB2.
 	 * Only relevant for legacy user profile.
 	 *
-	 * @return mixed
+	 * @return true
 	 */
 	public static function migrateUserAgreementUrl() {
 		$cb1_url = Settings::getOption( 'commons-booking-settings-pages', 'commons-booking_termsservices_url' );
@@ -550,10 +583,8 @@ class Migration {
 	/**
 	 * Migrates some of the CB1 Options that can be transfered to CB2
 	 *
-	 * @return mixed
 	 */
 	public static function migrateCB1Options() {
-
 		// migrate Booking-Codes
 		$cb1_bookingcodes = Settings::getOption( 'commons-booking-settings-codes', 'commons-booking_codes_pool' );
 		Settings::updateOption( 'commonsbooking_options_bookingcodes', 'bookingcodes', $cb1_bookingcodes );
@@ -565,17 +596,14 @@ class Migration {
 		// sender name
 		$cb1_sender_name = Settings::getOption( 'commons-booking-settings-mail', 'commons-booking_mail_from_name' );
 		Settings::updateOption( 'commonsbooking_options_templates', 'emailheaders_from-name', $cb1_sender_name );
-
-		return;
 	}
-
 
 	/**
 	 * Migrates CB1 taxonomy to CB2 posts.
 	 *
 	 * @param $cb1Taxonomy
 	 *
-	 * @return bool
+	 * @return void
 	 */
 	public static function migrateTaxonomy( $cb1Taxonomy ) {
 		$cb2PostId = CB1::getCB2PostIdByCB1Id( $cb1Taxonomy->object_id );
@@ -587,34 +615,6 @@ class Migration {
 		}
 
 		wp_set_object_terms( $cb2PostId, $term, $cb1Taxonomy->taxonomy );
-	}
-
-
-	/**
-	 * Copies elementor meta keys and values from existing CB1 to the new CB2 post
-	 *
-	 * @param mixed $cb1_id
-	 * @param mixed $cb2_id
-	 *
-	 * @return void
-	 */
-	public static function migrateElementorMetaKeys( $cb1_id, $cb2_id ) {
-		global $wpdb;
-
-		$post_meta = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE meta_key LIKE '%_elementor%' AND post_id = $cb1_id" );
-		if ( ! empty( $post_meta ) && is_array( $post_meta ) ) {
-			$duplicate_insert_query = "INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value ) VALUES ";
-			$value_cells            = array();
-
-			foreach ( $post_meta as $meta_info ) {
-				$meta_key      = sanitize_text_field( $meta_info->meta_key );
-				$meta_value    = wp_slash( $meta_info->meta_value );
-				$value_cells[] = "($cb2_id, '$meta_key', '$meta_value')";
-			}
-
-			$duplicate_insert_query .= implode( ', ', $value_cells ) . ';';
-			$wpdb->query( $duplicate_insert_query );
-		}
 	}
 
 }

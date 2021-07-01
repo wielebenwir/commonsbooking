@@ -61,9 +61,9 @@ class Item extends CustomPostType {
 
 	/**
 	 * Returns CPT args.
-	 * @return array|mixed
+	 * @return array
 	 */
-	public function getArgs() {
+	public function getArgs(): array {
 		$labels = array(
 			'name'                  => esc_html__( 'Items', 'commonsbooking' ),
 			'singular_name'         => esc_html__( 'Item', 'commonsbooking' ),
@@ -203,7 +203,7 @@ class Item extends CustomPostType {
 				'attributes' => array(
 					'placeholder' => esc_html__( 'Select item admins.', 'commonsbooking' )
 				),
-			),);
+			) );
 		}
 
 		// Check if custom meta fields are set in CB Options and generate MetaData-Box and fields

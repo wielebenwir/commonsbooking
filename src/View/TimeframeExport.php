@@ -33,99 +33,12 @@ class TimeframeExport {
 		<?php
 	}
 
-	protected static function getPeriod( $start, $end ) {
-		// Timerange
-		$begin = new DateTime( $start );
-		$end   = new DateTime( $end );
-
-		$interval = DateInterval::createFromDateString( '1 day' );
-
-		return new DatePeriod( $begin, $interval, $end );
-	}
-
-	/**
-	 * Returns array with selected timeframe types.
-	 * @return array
-	 */
-	protected static function getTypes() {
-		$types = [];
-
-		// Backend download
-		if ( array_key_exists( 'export-type', $_REQUEST ) && $_REQUEST['export-type'] !== 'all' ) {
-			$types = [ intval( $_REQUEST['export-type'] ) ];
-		} else {
-			//cron download
-			$type = Settings::getOption( 'commonsbooking_options_export', 'export-type' );
-			if ( $type && $type !== 'all' ) {
-				$types = [ intval( $type ) ];
-			}
-		}
-
-		return $types;
-	}
-
-	/**
-	 * Return user defined export fields.
-	 *
-	 * @param $inputName
-	 *
-	 * @return false|string[]
-	 */
-	protected static function getInputFields( $inputName ) {
-		$inputFieldsString =
-			array_key_exists( $inputName, $_REQUEST ) ? $_REQUEST[ $inputName ] :
-				Settings::getOption( 'commonsbooking_options_export', '$inputName' );
-
-		return array_filter( explode( ',', $inputFieldsString ) );
-	}
-
-	/**
-	 * Returns data for export.
-	 *
-	 * @param false $isCron
-	 *
-	 * @return array
-	 * @throws Exception
-	 */
-	public static function getExportData( $isCron = false ) {
-		if ( $isCron ) {
-			$timerange = Settings::getOption( 'commonsbooking_options_export', 'export-timerange' );
-			$start     = date( 'd.m.Y' );
-			$end       = date( 'd.m.Y', strtotime( '+' . $timerange . ' day' ) );
-		} else {
-			$start = $_REQUEST['export-timerange-start'];
-			$end   = $_REQUEST['export-timerange-end'];
-		}
-
-		// Timerange
-		$period = self::getPeriod( $start, $end );
-
-		// Types
-		$types = self::getTypes();
-
-		$timeframes = [];
-		foreach ( $period as $dt ) {
-			$dayTimeframes = Timeframe::get(
-				[],
-				[],
-				$types,
-				$dt->format( "Y-m-d" ),
-				true
-			);
-			foreach ( $dayTimeframes as $timeframe ) {
-				$timeframes[ $timeframe->ID ] = $timeframe;
-			}
-		}
-
-		return $timeframes;
-	}
-
 	/**
 	 * @param string $outputFile
 	 *
 	 * @throws Exception
 	 */
-	public static function exportCsv( $outputFile = 'php://output' ) {
+	public static function exportCsv( string $outputFile = 'php://output' ) {
 		$exportFilename = 'timeframe-export.csv';
 
 		$inputFields = [
@@ -209,13 +122,100 @@ class TimeframeExport {
 	}
 
 	/**
+	 * Return user defined export fields.
+	 *
+	 * @param $inputName
+	 *
+	 * @return false|string[]
+	 */
+	protected static function getInputFields( $inputName ) {
+		$inputFieldsString =
+			array_key_exists( $inputName, $_REQUEST ) ? $_REQUEST[ $inputName ] :
+				Settings::getOption( 'commonsbooking_options_export', '$inputName' );
+
+		return array_filter( explode( ',', $inputFieldsString ) );
+	}
+
+	/**
+	 * Returns data for export.
+	 *
+	 * @param false $isCron
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public static function getExportData( bool $isCron = false ): array {
+		if ( $isCron ) {
+			$timerange = Settings::getOption( 'commonsbooking_options_export', 'export-timerange' );
+			$start     = date( 'd.m.Y' );
+			$end       = date( 'd.m.Y', strtotime( '+' . $timerange . ' day' ) );
+		} else {
+			$start = $_REQUEST['export-timerange-start'];
+			$end   = $_REQUEST['export-timerange-end'];
+		}
+
+		// Timerange
+		$period = self::getPeriod( $start, $end );
+
+		// Types
+		$types = self::getTypes();
+
+		$timeframes = [];
+		foreach ( $period as $dt ) {
+			$dayTimeframes = Timeframe::get(
+				[],
+				[],
+				$types,
+				$dt->format( "Y-m-d" ),
+				true
+			);
+			foreach ( $dayTimeframes as $timeframe ) {
+				$timeframes[ $timeframe->ID ] = $timeframe;
+			}
+		}
+
+		return $timeframes;
+	}
+
+	protected static function getPeriod( $start, $end ) {
+		// Timerange
+		$begin = new DateTime( $start );
+		$end   = new DateTime( $end );
+
+		$interval = DateInterval::createFromDateString( '1 day' );
+
+		return new DatePeriod( $begin, $interval, $end );
+	}
+
+	/**
+	 * Returns array with selected timeframe types.
+	 * @return array
+	 */
+	protected static function getTypes(): array {
+		$types = [];
+
+		// Backend download
+		if ( array_key_exists( 'export-type', $_REQUEST ) && $_REQUEST['export-type'] !== 'all' ) {
+			$types = [ intval( $_REQUEST['export-type'] ) ];
+		} else {
+			//cron download
+			$type = Settings::getOption( 'commonsbooking_options_export', 'export-type' );
+			if ( $type && $type != 'all' ) {
+				$types = [ intval( $type ) ];
+			}
+		}
+
+		return $types;
+	}
+
+	/**
 	 * Prepares timeframe data array.
 	 *
-	 * @param $timeframePost
+	 * @param \CommonsBooking\Model\Timeframe $timeframePost
 	 *
 	 * @return array
 	 */
-	protected static function getTimeframeData( \CommonsBooking\Model\Timeframe $timeframePost ) {
+	protected static function getTimeframeData( \CommonsBooking\Model\Timeframe $timeframePost ): array {
 		$timeframeData = self::getRelevantTimeframeFields( $timeframePost );
 
 		// Timeframe typ
@@ -267,12 +267,13 @@ class TimeframeExport {
 			"post_name"
 		];
 
-		$postArray = array_filter( $postArray, function ( $key ) use ( $relevantTimeframeFields ) {
-
-			return in_array( $key, $relevantTimeframeFields );
-		}, ARRAY_FILTER_USE_KEY );
-
-		return $postArray;
+		return array_filter(
+			$postArray,
+			function ( $key ) use ( $relevantTimeframeFields ) {
+				return in_array( $key, $relevantTimeframeFields );
+			},
+			ARRAY_FILTER_USE_KEY
+		);
 	}
 
 }

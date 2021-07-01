@@ -19,7 +19,7 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 	 *
 	 * @return WP_REST_Response
 	 */
-	public function get_items( $request ) {
+	public function get_items( $request ): WP_REST_Response {
 		$data                 = new stdClass();
 		$data->data           = new stdClass();
 		$data->data->stations = $this->getItemData( $request );
@@ -41,7 +41,7 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 	 *
 	 * @return array
 	 */
-	public function getItemData( $request ) {
+	public function getItemData( $request ): array {
 		$data      = [];
 		$locations = Location::get();
 
