@@ -21,8 +21,7 @@ class TimeframeTest extends TestCase {
 
 	protected function setUp(): void {
 		$this->testPostId = wp_insert_post( [
-			'post_title'   => 'Sample Post',
-			'post_content' => 'This is just some sample post content.'
+			'post_title'   => 'Booking'
 		] );
 
 		// Timeframe is a booking
