@@ -241,6 +241,8 @@ class TimeframeExport {
 		$timeframeData["full-day"]           = $timeframePost->getFieldValue( "full-day" );
 		$timeframeData["repetition-start"]   = $timeframePost->getStartDate() ? date( get_option( 'date_format' ), $timeframePost->getStartDate() ) : '';
 		$timeframeData["repetition-end"]     = $timeframePost->getEndDate() ? date( get_option( 'date_format' ), $timeframePost->getEndDate() ) : '';
+		$timeframeData["start-time"]         = $timeframePost->getStartTime();
+		$timeframeData["end-time"]           = $timeframePost->getEndTime();
 		$timeframeData["booking-code"]       = $timeframePost->getFieldValue( "_cb_bookingcode" );
 
 		return $timeframeData;
