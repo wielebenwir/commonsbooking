@@ -363,8 +363,9 @@ class Timeframe extends PostRepository {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
-			$startTimestampTime = date( 'H:i', intval( $timestamp ) );
-			$endTimestampTime   = date( 'H:i', intval( $timestamp ) + 1 );
+			$time_format        = get_option( 'time_format' );
+			$startTimestampTime = date( $time_format, intval( $timestamp ) );
+			$endTimestampTime   = date( $time_format, intval( $timestamp ) + 1 );
 
 			$relevantTimeframes = self::getInRange(
 				$timestamp,
@@ -378,8 +379,8 @@ class Timeframe extends PostRepository {
 			/** @var \CommonsBooking\Model\Timeframe $timeframe */
 			foreach ( $relevantTimeframes as $timeframe ) {
 				if (
-					$timeframe->getStartTime() == $startTimestampTime ||
-					$timeframe->getEndTime() == $endTimestampTime
+					date( $time_format, strtotime( $timeframe->getStartTime() ) ) == $startTimestampTime ||
+					date( $time_format, strtotime( $timeframe->getEndTime() ) ) == $endTimestampTime
 				) {
 					Plugin::setCacheItem( $timeframe );
 

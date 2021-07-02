@@ -27,40 +27,12 @@ class Booking extends CustomPost {
 	];
 
 	/**
-	 * @return Location
-	 * @throws Exception
-	 */
-	public function getLocation(): Location {
-		$locationId = $this->getMeta( 'location-id' );
-		if ( $post = get_post( $locationId ) ) {
-			return new Location( $post );
-		}
-
-		return $post;
-	}
-
-	/**
-	 * @return Item
-	 * @throws Exception
-	 */
-	public function getItem(): Item {
-		$itemId = $this->getMeta( 'item-id' );
-
-		if ( $post = get_post( $itemId ) ) {
-			return new Item( $post );
-		}
-
-		return $post;
-	}
-
-	/**
 	 * Returns the booking code.
 	 * @return mixed
 	 */
 	public function getBookingCode() {
 		return $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode' );
 	}
-
 
 	/**
 	 * Returns rendered booking code for using in email-template (booking confirmation mail)
@@ -92,6 +64,30 @@ class Booking extends CustomPost {
 	}
 
 	/**
+	 * Returns suitable bookable Timeframe for booking.
+	 * @return null|\CommonsBooking\Model\Timeframe
+	 * @throws Exception
+	 */
+	public function getBookableTimeFrame(): ?\CommonsBooking\Model\Timeframe {
+		$locationId = $this->getMeta( 'location-id' );
+		$itemId     = $this->getMeta( 'item-id' );
+
+		$response = Timeframe::get(
+			[ $locationId ],
+			[ $itemId ],
+			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
+			date( CB::getInternalDateFormat(), $this->getMeta( 'repetition-start' ) ),
+			true
+		);
+
+		if ( count( $response ) ) {
+			return array_shift( $response );
+		}
+
+		return null;
+	}
+
+	/**
 	 * Assings relevant meta fields from related bookable timeframe to booking.
 	 * @throws Exception
 	 */
@@ -102,7 +98,8 @@ class Booking extends CustomPost {
 			"grid",
 			"start-time",
 			"end-time",
-			"show-booking-codes"
+			"show-booking-codes",
+			"timeframe-max-days"
 		];
 		foreach ( $neededMetaFields as $fieldName ) {
 			$fieldValue = get_post_meta(
@@ -157,27 +154,30 @@ class Booking extends CustomPost {
 	}
 
 	/**
-	 * Returns suitable bookable Timeframe for booking.
-	 * @return null|\CommonsBooking\Model\Timeframe
+	 * @return Item
 	 * @throws Exception
 	 */
-	public function getBookableTimeFrame(): ?\CommonsBooking\Model\Timeframe {
-		$locationId = $this->getMeta( 'location-id' );
-		$itemId     = $this->getMeta( 'item-id' );
+	public function getItem(): Item {
+		$itemId = $this->getMeta( 'item-id' );
 
-		$response = Timeframe::get(
-			[ $locationId ],
-			[ $itemId ],
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
-			date( CB::getInternalDateFormat(), $this->getMeta( 'repetition-start' ) ),
-			true
-		);
-
-		if ( count( $response ) ) {
-			return array_shift( $response );
+		if ( $post = get_post( $itemId ) ) {
+			return new Item( $post );
 		}
 
-		return null;
+		return $post;
+	}
+
+	/**
+	 * @return Location
+	 * @throws Exception
+	 */
+	public function getLocation(): Location {
+		$locationId = $this->getMeta( 'location-id' );
+		if ( $post = get_post( $locationId ) ) {
+			return new Location( $post );
+		}
+
+		return $post;
 	}
 
 	/**
