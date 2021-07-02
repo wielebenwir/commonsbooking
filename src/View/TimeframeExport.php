@@ -224,6 +224,10 @@ class TimeframeExport {
 		$timeframeData['type'] = array_key_exists( $timeframeTypeId, $timeframetypes ) ?
 			$timeframetypes[ $timeframeTypeId ] : __( 'Unknown', 'commonsbooking' );
 
+		if ( $timeframeTypeId == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID ) {
+			$booking = new \CommonsBooking\Model\Booking( $timeframePost->ID );
+		}
+
 		// Repetition option
 		$repetitions                           = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTimeFrameRepetitions();
 		$repetitionId                          = $timeframePost->getFieldValue( "timeframe-repetition" );
@@ -243,6 +247,8 @@ class TimeframeExport {
 		$timeframeData["repetition-end"]     = $timeframePost->getEndDate() ? date( get_option( 'date_format' ), $timeframePost->getEndDate() ) : '';
 		$timeframeData["start-time"]         = $timeframePost->getStartTime();
 		$timeframeData["end-time"]           = $timeframePost->getEndTime();
+		$timeframeData["pickup"]             = isset( $booking ) ? $booking->pickupDatetime() : "";
+		$timeframeData["return"]             = isset( $booking ) ? $booking->returnDatetime() : "";
 		$timeframeData["booking-code"]       = $timeframePost->getFieldValue( "_cb_bookingcode" );
 
 		return $timeframeData;
