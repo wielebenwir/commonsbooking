@@ -104,18 +104,23 @@ class Booking extends View {
 				           commonsbooking_sanitizeHTML( __( 'Details', 'commonsbooking' ) ) .
 				           '</span></a>';
 
+				$item          = $booking->getItem();
+				$itemTitle     = $item ? $item->post_title : commonsbooking_sanitizeHTML( __( 'Not available', 'commonsbooking' ) );
+				$location      = $booking->getLocation();
+				$locationTitle = $location ? $booking->getLocation()->post_title : commonsbooking_sanitizeHTML( __( 'Not available', 'commonsbooking' ) );
+
 				// Prepare row data
 				$rowData = [
 					"startDate"          => $booking->getStartDate(),
 					"endDate"            => $booking->getEndDate(),
 					"startDateFormatted" => date( 'd.m.Y H:i', $booking->getStartDate() ),
 					"endDateFormatted"   => date( 'd.m.Y H:i', $booking->getEndDate() ),
-					"item"               => $booking->getItem()->post_title,
-					"location"           => $booking->getLocation()->post_title,
+					"item"               => $itemTitle,
+					"location"           => $locationTitle,
 					"bookingDate"        => date( 'd.m.Y H:i', strtotime( $booking->post_date ) ),
 					"user"               => $userInfo->user_login,
 					"status"             => $booking->post_status,
-					"calendarLink"       => add_query_arg( 'item', $booking->getItem()->ID, get_permalink( $booking->getLocation()->ID ) ),
+					"calendarLink"       => $item && $location ? add_query_arg( 'item', $item->ID, get_permalink( $location->ID ) ) : '',
 					"content"            => [
 						'user'   => [
 							'label' => commonsbooking_sanitizeHTML( __( 'User', 'commonsbooking' ) ),
@@ -163,33 +168,36 @@ class Booking extends View {
 				}
 			}
 
-			$totalCount                      = count( $bookingDataArray['data'] );
-			$bookingDataArray['total']       = $totalCount;
-			$bookingDataArray['total_pages'] = ceil( $totalCount / $postsPerPage );
+			$bookingDataArray['total']       = 0;
+			$bookingDataArray['total_pages'] = 0;
 
-			foreach ( $bookingDataArray['filters'] as &$filtervalues ) {
-				$filtervalues = array_unique( $filtervalues );
-				sort( $filtervalues );
-			}
+			if ( array_key_exists( 'data', $bookingDataArray ) && count( $bookingDataArray['data'] ) ) {
+				$totalCount                      = count( $bookingDataArray['data'] );
+				$bookingDataArray['total']       = $totalCount;
+				$bookingDataArray['total_pages'] = ceil( $totalCount / $postsPerPage );
 
-			// Init function to pass sort and order param to sorting callback
-			$sorter = function ( $sort, $order ) {
-				return function ( $a, $b ) use ( $sort, $order ) {
-					if ( $order == 'asc' ) {
-						return strcasecmp( $a[ $sort ], $b[ $sort ] );
-					} else {
-						return strcasecmp( $b[ $sort ], $a[ $sort ] );
-					}
+				foreach ( $bookingDataArray['filters'] as &$filtervalues ) {
+					$filtervalues = array_unique( $filtervalues );
+					sort( $filtervalues );
+				}
+
+				// Init function to pass sort and order param to sorting callback
+				$sorter = function ( $sort, $order ) {
+					return function ( $a, $b ) use ( $sort, $order ) {
+						if ( $order == 'asc' ) {
+							return strcasecmp( $a[ $sort ], $b[ $sort ] );
+						} else {
+							return strcasecmp( $b[ $sort ], $a[ $sort ] );
+						}
+					};
 				};
-			};
 
-			// Sorting
-			uasort(
-				$bookingDataArray['data'],
-				$sorter( $sort, $order )
-			);
+				// Sorting
+				uasort(
+					$bookingDataArray['data'],
+					$sorter( $sort, $order )
+				);
 
-			if ( $totalCount ) {
 				// Apply pagination...
 				$index       = 0;
 				$pageCounter = 0;
@@ -205,9 +213,9 @@ class Booking extends View {
 						unset( $bookingDataArray['data'][ $key ] );
 					}
 				}
+				$bookingDataArray['data'] = array_values( $bookingDataArray['data'] );
 			}
 
-			$bookingDataArray['data'] = array_values( $bookingDataArray['data'] );
 			Plugin::setCacheItem( $bookingDataArray, $customId );
 
 			return $bookingDataArray;

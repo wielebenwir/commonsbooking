@@ -503,6 +503,9 @@ class Plugin {
 		// Remove cache items on save.
 		add_action( 'save_post', array( $this, 'savePostActions' ), 10, 2 );
 
+		// Remove cache items on save.
+		add_action( 'delete_post', array( $this, 'deletePostActions' ), 10, 2 );
+
 		// actions after saving plugin options
 		//add_action('admin_init', array(self::class, 'saveOptionsActions'), 100);
 
@@ -560,6 +563,18 @@ class Plugin {
 			// Clear calendar cache
 			self::clearCache( 'calendar' );
 		}
+	}
+
+	/**
+	 * Removes all cache items in connection to post_type.
+	 *
+	 * @param $post_id
+	 * @param $post
+	 */
+	public function deletePostActions( $post_id ) {
+		$post = get_post($post_id);
+		$this->savePostActions($post_id, $post);
+		self::clearCache();
 	}
 
 	/**
