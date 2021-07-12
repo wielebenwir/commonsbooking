@@ -8,6 +8,8 @@ use Exception;
 
 abstract class View {
 
+	abstract public static function content(\WP_Post $post);
+
 	/**
 	 * List of allowed query params for shortcodes.
 	 * @var string[]

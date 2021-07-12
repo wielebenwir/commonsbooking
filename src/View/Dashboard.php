@@ -10,4 +10,7 @@ class Dashboard extends View {
 		echo ob_get_clean();
 	}
 
+	public static function content( \WP_Post $post ) {
+		// TODO: Implement content() method.
+	}
 }

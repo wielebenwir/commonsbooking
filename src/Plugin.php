@@ -21,6 +21,7 @@ use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Map;
+use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\Options\AdminOptions;
 use CommonsBooking\Wordpress\Options\OptionsTab;
@@ -133,6 +134,7 @@ class Plugin {
 			new Location(),
 			new Timeframe(),
 			new Map(),
+			new Restriction()
 		];
 	}
 
@@ -572,8 +574,8 @@ class Plugin {
 	 * @param $post
 	 */
 	public function deletePostActions( $post_id ) {
-		$post = get_post($post_id);
-		$this->savePostActions($post_id, $post);
+		$post = get_post( $post_id );
+		$this->savePostActions( $post_id, $post );
 		self::clearCache();
 	}
 

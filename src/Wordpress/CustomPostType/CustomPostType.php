@@ -28,21 +28,21 @@ abstract class CustomPostType {
 	/**
 	 * @return string
 	 */
-	public static function getWPAction() {
+	public static function getWPAction(): string {
 		return static::getPostType() . "-custom-fields";
 	}
 
 	/**
 	 * @return string
 	 */
-	public static function getPostType() {
+	public static function getPostType(): string {
 		return static::$postType;
 	}
 
 	/**
 	 * @return string
 	 */
-	public static function getWPNonceId() {
+	public static function getWPNonceId(): string {
 		return static::getPostType() . "-custom-fields" . '_wpnonce';
 	}
 
