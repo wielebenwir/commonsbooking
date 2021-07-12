@@ -3793,8 +3793,6 @@
 .cb-wrapper input[type="color"],
 .cb-wrapper textarea,
 .cb-wrapper select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
   background: #FFF;
   border-radius: 8px;
   border-style: solid;
