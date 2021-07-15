@@ -14,6 +14,8 @@ class Timeframe extends CustomPost {
 	 */
 	public const ERROR_TYPE = "timeframeValidationFailed";
 
+	public const REPETITION_START = "repetition-start";
+
 	public const REPETITION_END = "repetition-end";
 
 	/**
@@ -36,7 +38,7 @@ class Timeframe extends CustomPost {
 	 * @return string
 	 */
 	public function getStartDate() {
-		$startDate = $this->getMeta( 'repetition-start' );
+		$startDate = $this->getMeta( self::REPETITION_START );
 
 		if ( (string) intval( $startDate ) !== $startDate ) {
 			$startDate = strtotime( $startDate );
@@ -393,5 +395,78 @@ class Timeframe extends CustomPost {
 	public function showBookingCodes() {
 		return $this->getMeta( "show-booking-codes" ) == "on";
 	}
+
+	/**
+	 * Returns repetition-start \DateTime.
+	 *
+	 * @return \DateTime
+	 */
+	public function getStartDateDateTime(): \DateTime {
+		$startDateString = $this->getMeta( 'repetition-start' );
+		$startDate       = new \DateTime();
+		$startDate->setTimestamp( $startDateString );
+
+		return $startDate;
+	}
+
+	/**
+	 * Returns start-time \DateTime.
+	 *
+	 * @return \DateTime
+	 */
+	public function getStartTimeDateTime(): \DateTime {
+		$startDateString = $this->getMeta( self::REPETITION_START );
+		$startTimeString = $this->getMeta( 'start-time' );
+		$startDate       = new \DateTime();
+		$startDate->setTimestamp( $startDateString );
+		if ( $startTimeString ) {
+			$startTime = new \DateTime();
+			$startTime->setTimestamp( strtotime( $startTimeString ) );
+			$startDate->setTime( $startTime->format( 'H' ), $startTime->format( 'i' ) );
+		}
+
+		return $startDate;
+	}
+
+	/**
+	 * Returns end-date \DateTime.
+	 *
+	 * @return \DateTime
+	 */
+	public function getEndDateDateTime(): \DateTime {
+		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
+		$endDate       = new \DateTime();
+		$endDate->setTimestamp( $endDateString );
+
+		return $endDate;
+	}
+
+	/**
+	 * Returns start-time \DateTime.
+	 *
+	 * @return \DateTime
+	 * @throws Exception
+	 */
+	public function getEndTimeDateTime( $endDateString ): \DateTime {
+		$endTimeString = $this->getMeta( 'end-time' );
+		$endDate       = new \DateTime();
+		$endDate->setTimestamp( $endDateString );
+		if ( $endTimeString ) {
+			$endTime = new \DateTime();
+			$endTime->setTimestamp( strtotime( $endTimeString ) );
+			$endDate->setTime( $endTime->format( 'H' ), $endTime->format( 'i' ) );
+		}
+
+		return $endDate;
+	}
+
+	public function isOverBookable(): bool {
+		return \CommonsBooking\Wordpress\CustomPostType\Timeframe::isOverBookable( self::getPost() );
+	}
+
+	public function isLocked(): bool {
+		return \CommonsBooking\Wordpress\CustomPostType\Timeframe::isLocked( self::getPost() );
+	}
+
 
 }

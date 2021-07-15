@@ -168,12 +168,14 @@ class Restriction extends CustomPostType {
 				'name'    => esc_html__( "Location", 'commonsbooking' ),
 				'id'      => "restriction-location-id",
 				'type'    => 'select',
+				'show_option_none' => esc_html__( 'None', 'commonsbooking' ),
 				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
 			),
 			array(
 				'name'    => esc_html__( "Item", 'commonsbooking' ),
 				'id'      => "restriction-item-id",
 				'type'    => 'select',
+				'show_option_none' => esc_html__( 'None', 'commonsbooking' ),
 				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 			),
 			array(
@@ -181,50 +183,22 @@ class Restriction extends CustomPostType {
 				'id'      => "restriction-hint",
 				'type'    => 'textarea'
 			),
-//			array(
-//				'name'        => esc_html__( "Start time", 'commonsbooking' ),
-//				'id'          => "start-time",
-//				'type'        => 'text_time',
-//				'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
-//				'attributes'  => array(
-//					'data-timepicker' => json_encode(
-//						array(
-//							'stepMinute' => 60,
-//						)
-//					),
-//				),
-//				'time_format' => get_option( 'time_format' ),
-//				'date_format' => $dateFormat,
-//			),
-//			array(
-//				'name'        => esc_html__( "End time", 'commonsbooking' ),
-//				'id'          => "end-time",
-//				'type'        => 'text_time',
-//				'attributes'  => array(
-//					'data-timepicker' => json_encode(
-//						array(
-//							'stepMinute' => 60,
-//						)
-//					),
-//				),
-//				'time_format' => get_option( 'time_format' ),
-//				'date_format' => $dateFormat,
-//			),
+			array(
+				'name' => esc_html__( "Active", 'commonsbooking' ),
+				'id'   => 'restriction-active',
+				'type' => 'checkbox',
+			),
 			array(
 				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
 				'desc'        => esc_html__( 'Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking' ),
 				'id'          => "restriction-start",
-				'type'        => 'text_datetime_timestamp',
-//				'time_format' => get_option( 'time_format' ),
-//				'date_format' => $dateFormat,
+				'type'        => 'text_datetime_timestamp'
 			),
 			array(
 				'name'        => esc_html__( 'End date', 'commonsbooking' ),
 				'desc'        => esc_html__( 'Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.', 'commonsbooking' ),
 				'id'          => "restriction-end",
-				'type'        => 'text_datetime_timestamp',
-//				'time_format' => get_option( 'time_format' ),
-//				'date_format' => $dateFormat,
+				'type'        => 'text_datetime_timestamp'
 			),
 			array(
 				'type'    => 'hidden',

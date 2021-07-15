@@ -436,6 +436,10 @@ class Calendar {
 
 			$timeFrameType = get_post_meta( $slot['timeframe']->ID, 'type', true );
 
+			if(!$timeFrameType) {
+				$timeFrameType = get_post_meta( $slot['timeframe']->ID, \CommonsBooking\Model\Restriction::META_TYPE, true );
+			}
+
 			$isUserAllowedtoBook = commonsbooking_isCurrentUserAllowedToBook( $slot['timeframe']->ID );
 
 			// save bookable state for first and last slot
@@ -479,7 +483,7 @@ class Calendar {
 			}
 
 			// Set partiallyBookedDay flag, if there is at least one slot that is of type bookedDay
-			if ( in_array( $timeFrameType, [ Timeframe::BOOKING_ID ] ) ) {
+			if ( in_array( $timeFrameType, [ Timeframe::BOOKING_ID, \CommonsBooking\Model\Restriction::TYPE_REPAIR ] ) ) {
 				$dayArray['partiallyBookedDay'] = true;
 			}
 
