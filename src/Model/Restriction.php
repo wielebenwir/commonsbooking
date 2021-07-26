@@ -16,6 +16,10 @@ class Restriction extends CustomPost {
 
 	const META_TYPE = 'restriction-type';
 
+	const META_ACTIVE = 'restriction-active';
+
+	protected $active = false;
+
 	/**
 	 * Returns start-time \DateTime.
 	 *
@@ -71,15 +75,25 @@ class Restriction extends CustomPost {
 	}
 
 	public function isOverBookable(): bool {
-		return false;
+		return !$this->isActive();
 	}
 
 	public function isLocked(): bool {
-		return true;
+		return $this->isActive();
 	}
 
 	public function getType() {
 		return $this->getMeta(self::META_TYPE);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isActive(): bool {
+		if($this->active == null) {
+			$this->active = $this->getMeta( self::META_ACTIVE );
+		}
+		return $this->active;
 	}
 
 }

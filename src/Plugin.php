@@ -43,6 +43,7 @@ class Plugin {
 	 * @return mixed
 	 */
 	public static function getCacheItem( $custom_id = null ) {
+		return false;
 		return get_transient( self::getCacheId( $custom_id ) );
 	}
 

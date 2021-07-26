@@ -140,7 +140,10 @@ recreate_db() {
 }
 
 create_db() {
-	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
+#	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
+	$(mysql -h db --user="root" --password="somewordpress" -e "CREATE DATABASE ${DB_NAME} /*\!40100 DEFAULT CHARACTER SET utf8 */;")
+  $(mysql -h db --user="root" --password="somewordpress" -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';")
+  $(mysql -h db --user="root" --password="somewordpress" -e "FLUSH PRIVILEGES;")
 }
 
 install_db() {

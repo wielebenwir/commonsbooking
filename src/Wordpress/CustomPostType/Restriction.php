@@ -27,6 +27,8 @@ class Restriction extends CustomPostType {
 
 		// Remove not needed Meta Boxes
 		add_action( 'do_meta_boxes', array( $this, 'removeDefaultCustomFields' ), 10, 3 );
+
+		add_action( 'save_post', array( $this, 'handleFormRequest' ) );
 	}
 
 	/**
@@ -135,7 +137,6 @@ class Restriction extends CustomPostType {
 			]
 		);
 
-
 		foreach ( $this->getCustomFields() as $customField ) {
 			$cmb->add_field( $customField );
 		}
@@ -206,5 +207,18 @@ class Restriction extends CustomPostType {
 				'default' => wp_create_nonce( plugin_basename( __FILE__ ) )
 			),
 		);
+	}
+
+	/**
+	 * Handles save-Request for location.
+	 */
+	public function handleFormRequest() {
+		$postType = isset( $_REQUEST['post_type'] ) ? sanitize_text_field( $_REQUEST['post_type'] ) : null;
+		$postId   = isset( $_REQUEST['post_ID'] ) ? sanitize_text_field( $_REQUEST['post_ID'] ) : null;
+
+		if ( $postType == self::$postType && $postId ) {
+//			var_dump('save post ...');
+			error_log("test");
+		}
 	}
 }

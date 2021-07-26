@@ -34,6 +34,10 @@ class Booking extends CustomPost {
 		return $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode' );
 	}
 
+	public function cancel() {
+//		$this->post->
+	}
+
 	/**
 	 * Returns rendered booking code for using in email-template (booking confirmation mail)
 	 * @return string

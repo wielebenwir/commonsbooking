@@ -405,7 +405,7 @@ class Day {
 		foreach ( $this->getRestrictions() as $restriction ) {
 
 			// Only if there is a repair we block the timeframe
-			if ( $restriction->getType() == Restriction::TYPE_REPAIR ) {
+			if ( $restriction->isActive() && $restriction->getType() == Restriction::TYPE_REPAIR ) {
 				// Slots
 				$startSlot = $this->getRestrictionStartSlot( $grid, $restriction );
 				$endSlot   = $this->getRestrictionEndSlot( $slots, $grid, $restriction );
