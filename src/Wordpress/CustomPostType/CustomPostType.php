@@ -267,4 +267,18 @@ abstract class CustomPostType {
 		}
 	}
 
+	/**
+	 * Checks if method has been called before in current request.
+	 * @param $methodName
+	 *
+	 * @return bool
+	 */
+	protected function hasRunBefore($methodName): bool {
+		if(array_key_exists($methodName, $_REQUEST)) {
+			return true;
+		}
+		$_REQUEST[$methodName] = true;
+		return false;
+	}
+
 }

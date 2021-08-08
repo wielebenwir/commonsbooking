@@ -10,7 +10,7 @@ use CommonsBooking\Repository\Timeframe;
 use DateTime;
 use Exception;
 
-class Booking extends CustomPost {
+class Booking extends \CommonsBooking\Model\Timeframe {
 
 	const START_TIMEFRAME_GRIDSIZE = "start-timeframe-gridsize";
 
@@ -34,8 +34,14 @@ class Booking extends CustomPost {
 		return $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode' );
 	}
 
+	/**
+	 * Sets post_status to canceled.
+	 */
 	public function cancel() {
-//		$this->post->
+		// workaround, because wp_update_post deletes all meta data.
+		global $wpdb;
+		$query = "UPDATE ".$wpdb->prefix."posts SET post_status='canceled' WHERE ID = '".$this->post->ID."'";
+		$wpdb->query($query);
 	}
 
 	/**
@@ -299,7 +305,6 @@ class Booking extends CustomPost {
 		return commonsbooking_sanitizeHTML( $this->getMeta( 'comment' ) );
 	}
 
-
 	/**
 	 * show booking notice
 	 *
@@ -334,7 +339,6 @@ class Booking extends CustomPost {
 	 */
 	public function bookingLink(): string {
 		return sprintf( '<a href="%1$s">%2$s</a>', add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) ), esc_html__( 'Link to your booking', 'commonsbooking' ) );
-
 	}
 
 }

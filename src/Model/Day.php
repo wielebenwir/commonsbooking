@@ -233,15 +233,15 @@ class Day {
 		return $startSlot;
 	}
 
-
 	/**
 	 * Returns end-slot id.
 	 *
 	 * @param $slots
 	 * @param $grid
-	 * @param $timeframe
+	 * @param \CommonsBooking\Model\Timeframe $timeframe
 	 *
 	 * @return float|int
+	 * @throws Exception
 	 */
 	protected function getEndSlot( $slots, $grid, \CommonsBooking\Model\Timeframe $timeframe ) {
 		// Timeframe

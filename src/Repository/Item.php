@@ -91,4 +91,5 @@ class Item extends BookablePost {
 	protected static function getModelClass(): string {
 		return \CommonsBooking\Model\Item::class;
 	}
+
 }

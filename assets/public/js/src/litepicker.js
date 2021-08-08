@@ -289,10 +289,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         initEndSelect(date2);
 
                         if (!day1['fullDay'] || !day2['fullDay']) {
-                            jQuery('#fullDayInfo').text('');
                             initSelectHandler();
-                        } else {
-                            jQuery('#fullDayInfo').html(globalCalendarData['location']['fullDayInfo']);
                         }
                     }
                 }

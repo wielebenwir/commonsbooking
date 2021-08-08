@@ -442,19 +442,22 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns start-time \DateTime.
+	 * Returns endtime-time \DateTime.
+	 *
+	 * @param null $endDateString
 	 *
 	 * @return \DateTime
-	 * @throws Exception
 	 */
-	public function getEndTimeDateTime( $endDateString ): \DateTime {
+	public function getEndTimeDateTime( $endDateString = null ): \DateTime {
 		$endTimeString = $this->getMeta( 'end-time' );
 		$endDate       = new \DateTime();
-		$endDate->setTimestamp( $endDateString );
+
 		if ( $endTimeString ) {
 			$endTime = new \DateTime();
 			$endTime->setTimestamp( strtotime( $endTimeString ) );
 			$endDate->setTime( $endTime->format( 'H' ), $endTime->format( 'i' ) );
+		} else {
+			$endDate->setTimestamp( $endDateString );
 		}
 
 		return $endDate;
@@ -468,5 +471,23 @@ class Timeframe extends CustomPost {
 		return \CommonsBooking\Wordpress\CustomPostType\Timeframe::isLocked( self::getPost() );
 	}
 
+	/**
+	 * @return array|string[]
+	 * @throws Exception
+	 */
+	public function getAdmins(): array {
+		$admins           = [];
+		$locationAdminIds = $this->getLocation()->getAdmins();
+		$itemAdminIds     = $this->getItem()->getAdmins();
+
+		if (
+			is_array( $locationAdminIds ) && count( $locationAdminIds ) &&
+			is_array( $itemAdminIds ) && count( $itemAdminIds )
+		) {
+			$admins = array_merge( $locationAdminIds, $itemAdminIds );
+		}
+
+		return $admins;
+	}
 
 }

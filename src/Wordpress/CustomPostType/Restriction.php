@@ -13,6 +13,8 @@ class Restriction extends CustomPostType {
 	 */
 	public static $postType = 'cb_restriction';
 
+	private const SEND_BUTTON_ID = 'restriction-send';
+
 	public static $types = [
 		'repair' => 'Totalausfall',
 		'hint'   => 'Hinweis'
@@ -28,7 +30,7 @@ class Restriction extends CustomPostType {
 		// Remove not needed Meta Boxes
 		add_action( 'do_meta_boxes', array( $this, 'removeDefaultCustomFields' ), 10, 3 );
 
-		add_action( 'save_post', array( $this, 'handleFormRequest' ) );
+		add_action( 'save_post_' . self::$postType, array( $this, 'handleFormRequest' ), 10, 3 );
 	}
 
 	/**
@@ -161,64 +163,82 @@ class Restriction extends CustomPostType {
 			array(
 				'name'    => esc_html__( 'Type', 'commonsbooking' ),
 				'desc'    => esc_html__( 'Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information.', 'commonsbooking' ),
-				'id'      => "restriction-type",
+				'id'      => \CommonsBooking\Model\Restriction::META_TYPE,
 				'type'    => 'select',
 				'options' => self::getTypes(),
 			),
 			array(
-				'name'    => esc_html__( "Location", 'commonsbooking' ),
-				'id'      => "restriction-location-id",
-				'type'    => 'select',
+				'name'             => esc_html__( "Location", 'commonsbooking' ),
+				'id'               => \CommonsBooking\Model\Restriction::META_LOCATION_ID,
+				'type'             => 'select',
 				'show_option_none' => esc_html__( 'None', 'commonsbooking' ),
-				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
+				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
 			),
 			array(
-				'name'    => esc_html__( "Item", 'commonsbooking' ),
-				'id'      => "restriction-item-id",
-				'type'    => 'select',
+				'name'             => esc_html__( "Item", 'commonsbooking' ),
+				'id'               => \CommonsBooking\Model\Restriction::META_ITEM_ID,
+				'type'             => 'select',
 				'show_option_none' => esc_html__( 'None', 'commonsbooking' ),
-				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
+				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 			),
 			array(
-				'name'    => esc_html__( "Hint", 'commonsbooking' ),
-				'id'      => "restriction-hint",
-				'type'    => 'textarea'
+				'name' => esc_html__( "Hint", 'commonsbooking' ),
+				'id'   => \CommonsBooking\Model\Restriction::META_HINT,
+				'type' => 'textarea'
 			),
 			array(
 				'name' => esc_html__( "Active", 'commonsbooking' ),
-				'id'   => 'restriction-active',
+				'id'   => \CommonsBooking\Model\Restriction::META_ACTIVE,
 				'type' => 'checkbox',
 			),
 			array(
-				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
-				'desc'        => esc_html__( 'Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking' ),
-				'id'          => "restriction-start",
-				'type'        => 'text_datetime_timestamp'
+				'name' => esc_html__( 'Start date', 'commonsbooking' ),
+				'desc' => esc_html__( 'Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking' ),
+				'id'   => \CommonsBooking\Model\Restriction::META_START,
+				'type' => 'text_datetime_timestamp'
 			),
 			array(
-				'name'        => esc_html__( 'End date', 'commonsbooking' ),
-				'desc'        => esc_html__( 'Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.', 'commonsbooking' ),
-				'id'          => "restriction-end",
-				'type'        => 'text_datetime_timestamp'
+				'name' => esc_html__( 'End date', 'commonsbooking' ),
+				'desc' => esc_html__( 'Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.', 'commonsbooking' ),
+				'id'   => \CommonsBooking\Model\Restriction::META_END,
+				'type' => 'text_datetime_timestamp'
 			),
 			array(
 				'type'    => 'hidden',
 				'id'      => 'restriction-prevent_delete_meta_movetotrash',
 				'default' => wp_create_nonce( plugin_basename( __FILE__ ) )
 			),
+			array(
+				'name'          => esc_html__( 'Send Restriction', 'commonsbooking' ),
+//				'desc' => esc_html__( '....', 'commonsbooking' ),
+				'id'            => self::SEND_BUTTON_ID,
+				'type'          => 'text',
+				'render_row_cb' => array( \CommonsBooking\View\Restriction::class, 'renderSendButton' ),
+			),
+			array(
+				'id'   => \CommonsBooking\Model\Restriction::META_SENT,
+				'type' => 'hidden',
+			)
 		);
 	}
 
 	/**
 	 * Handles save-Request for location.
 	 */
-	public function handleFormRequest() {
-		$postType = isset( $_REQUEST['post_type'] ) ? sanitize_text_field( $_REQUEST['post_type'] ) : null;
-		$postId   = isset( $_REQUEST['post_ID'] ) ? sanitize_text_field( $_REQUEST['post_ID'] ) : null;
+	public function handleFormRequest( $post_id, $post, $update ) {
+		if ( $this->hasRunBefore( __METHOD__ ) ) {
+			return;
+		}
 
-		if ( $postType == self::$postType && $postId ) {
-//			var_dump('save post ...');
-			error_log("test");
+		$postType = isset( $_REQUEST['post_type'] ) ? sanitize_text_field( $_REQUEST['post_type'] ) : null;
+
+		if ( $postType == self::$postType && $post_id ) {
+			if ( array_key_exists( self::SEND_BUTTON_ID, $_REQUEST ) ) {
+				update_post_meta( $post_id, \CommonsBooking\Model\Restriction::META_SENT, time() );
+				$restriction = new \CommonsBooking\Model\Restriction( $post_id );
+				$restriction->apply();
+			}
 		}
 	}
+
 }

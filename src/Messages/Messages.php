@@ -42,7 +42,7 @@ class Messages {
 	 * Setup the email template, headers (BCC)
 	 */
 	public function prepareMail(): void {
-		// Setup email: Recipent
+		// Setup email: Recipient
 		$booking_user = get_userdata( $this->getPost()->post_author );
 		$this->to     = sprintf( '%s <%s>', $booking_user->user_nicename, $booking_user->user_email );
 

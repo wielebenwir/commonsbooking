@@ -87,4 +87,5 @@ class Location extends BookablePost {
 	protected static function getModelClass(): string {
 		return \CommonsBooking\Model\Location::class;
 	}
+
 }

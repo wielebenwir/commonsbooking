@@ -10,6 +10,7 @@ class Restriction extends PostRepository {
 
 	/**
 	 * @throws \Exception
+	 * @return \CommonsBooking\Model\Restriction[]
 	 */
 	public static function get(
 		array $locations = [],
@@ -19,8 +20,6 @@ class Restriction extends PostRepository {
 		$minTimestamp = null,
 		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
-
-
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
@@ -84,6 +83,7 @@ class Restriction extends PostRepository {
             ";
 
 			$posts = $wpdb->get_results( $query, ARRAY_N );
+
 			// Get posts from result
 			foreach ( $posts as &$post ) {
 				$post = get_post( $post[0] );
@@ -92,18 +92,25 @@ class Restriction extends PostRepository {
 			if ( $posts && count( $posts ) ) {
 				// If there are locations or items to be filtered, we iterate through
 				// query result because wp_query is to slow for meta-querying them.
-				if ( count( $locations ) > 1 || count( $items ) > 1 ) {
+				if ( count( $locations ) || count( $items ) ) {
 					$posts = array_filter( $posts, function ( $post ) use ( $locations, $items ) {
-						$location = intval( get_post_meta( $post->ID, 'restriction-location-id', true ) );
-						$item     = intval( get_post_meta( $post->ID, 'restriction-item-id', true ) );
+						$isActive = get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_ACTIVE, true ) == 'on';
+						$location = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID, true ) );
+						$location = $location == 0 ?? false;
+						$item     = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID, true ) );
+						$item = $item == 0 ?? false;
 
 						return
-							( ! $location && ! $item ) ||
-							( ! $location && in_array( $item, $items ) ) ||
-							( in_array( $location, $locations ) && ! $item ) ||
-							( ! count( $locations ) && in_array( $item, $items ) ) ||
-							( in_array( $location, $locations ) && ! count( $items ) ) ||
-							( in_array( $location, $locations ) && in_array( $item, $items ) );
+							$isActive
+							&& (
+								( ! $location && ! $item ) ||
+								( ! $location && in_array( $item, $items ) ) ||
+								( in_array( $location, $locations ) && ! $item ) ||
+								( ! count( $locations ) && in_array( $item, $items ) ) ||
+								( in_array( $location, $locations ) && ! count( $items ) ) ||
+								( in_array( $location, $locations ) && in_array( $item, $items ) )
+							)
+						;
 					} );
 				}
 			}
