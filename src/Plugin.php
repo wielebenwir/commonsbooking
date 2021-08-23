@@ -560,7 +560,8 @@ class Plugin {
 		if ( in_array( $post->post_type, [
 			Location::$postType,
 			Item::$postType,
-			Timeframe::$postType
+			Timeframe::$postType,
+			Restriction::$postType
 		] ) ) {
 			// Clear calendar cache
 			self::clearCache( 'calendar' );
@@ -589,6 +590,7 @@ class Plugin {
 			Location::getPostType(),
 			Timeframe::getPostType(),
 			Map::getPostType(),
+			Restriction::getPostType()
 		];
 	}
 
