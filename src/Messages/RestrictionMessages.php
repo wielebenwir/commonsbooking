@@ -107,7 +107,11 @@ class RestrictionMessages extends Messages {
 			$subject,
 			$fromHeader,
 			null,
-			['restriction' => $this->getRestriction()]
+			[
+				'restriction' => $this->getRestriction(),
+				'item' => get_post($this->getRestriction()->getItemId()),
+				'location' => get_post($this->getRestriction()->getLocationId())
+			]
 		);
 	}
 
@@ -133,7 +137,7 @@ class RestrictionMessages extends Messages {
 	}
 
 	/**
-	 * @return mixed
+	 * @return Restriction
 	 */
 	public function getRestriction() {
 		return $this->restriction;
