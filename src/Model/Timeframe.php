@@ -118,26 +118,29 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return string
 	 */
-	public function getTimeFormat() {
+	public function getTimeFormat(): string {
 		return get_option( 'time_format' );
 	}
 
 	/**
 	 * Validates if there can be booking codes created for this timeframe.
 	 * @return bool
-	 * @throws Exception
 	 */
-	public function bookingCodesApplieable() {
-		return $this->getLocation() && $this->getItem() &&
-		       $this->getStartDate() && $this->getEndDate() &&
-		       $this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID;
+	public function bookingCodesApplieable(): bool {
+		try {
+			return $this->getLocation() && $this->getItem() &&
+			       $this->getStartDate() && $this->getEndDate() &&
+			       $this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID;
+		} catch ( Exception $e ) {
+			return false;
+		}
 	}
 
 	/**
 	 * @return Location
 	 * @throws Exception
 	 */
-	public function getLocation() {
+	public function getLocation(): Location {
 		$locationId = $this->getMeta( 'location-id' );
 		if ( $post = get_post( $locationId ) ) {
 			return new Location( $post );
