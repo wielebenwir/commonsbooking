@@ -42,6 +42,10 @@ abstract class PostRepository {
 				if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Location::getPostType() ) {
 					return new \CommonsBooking\Model\Location( $post );
 				}
+
+				if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Restriction::getPostType() ) {
+					return new \CommonsBooking\Model\Restriction( $post );
+				}
 			}
 			Plugin::setCacheItem( $post );
 

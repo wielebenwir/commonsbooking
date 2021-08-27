@@ -5,6 +5,7 @@ namespace CommonsBooking\Model;
 
 
 use CommonsBooking\CB\CB;
+use CommonsBooking\Messages\BookingMessages;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\Timeframe;
 use DateTime;
@@ -42,6 +43,16 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		global $wpdb;
 		$query = "UPDATE ".$wpdb->prefix."posts SET post_status='canceled' WHERE ID = '".$this->post->ID."'";
 		$wpdb->query($query);
+
+		$this->sendCancellationMail();
+	}
+
+	/**
+	 * Send mail to booking user, that it was canceled.
+	 */
+	protected function sendCancellationMail() {
+		$booking_msg = new BookingMessages( $this->getPost()->ID, 'canceled' );
+		$booking_msg->triggerMail();
 	}
 
 	/**

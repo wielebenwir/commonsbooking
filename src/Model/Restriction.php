@@ -4,7 +4,7 @@
 namespace CommonsBooking\Model;
 
 
-use CommonsBooking\Settings\Settings;
+use CommonsBooking\Messages\RestrictionMessages;
 
 class Restriction extends CustomPost {
 
@@ -32,8 +32,6 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns start-time \DateTime.
-	 *
-	 * @param $timeframe
 	 *
 	 * @return \DateTime
 	 */
@@ -93,20 +91,52 @@ class Restriction extends CustomPost {
 		return intval( $this->getMeta( self::META_END ) );
 	}
 
+	/**
+	 * Returns true if restriction isn't active.
+	 * @return bool
+	 */
 	public function isOverBookable(): bool {
 		return ! $this->isActive();
 	}
 
+	/**
+	 * Returns true if restriction ist active.
+	 * @return bool
+	 */
 	public function isLocked(): bool {
 		return $this->isActive();
 	}
 
+	/**
+	 * Returns restriction type.
+	 * @return mixed
+	 */
 	public function getType() {
 		return $this->getMeta( self::META_TYPE );
 	}
 
+	/**
+	 * Returns restriction hint.
+	 * @return mixed
+	 */
 	public function getHint() {
 		return $this->getMeta( self::META_HINT );
+	}
+
+	/**
+	 * Returns nicely formatted start datetime.
+	 * @return string
+	 */
+	public function getFormattedStartDateTime() {
+		return $this->getStartTimeDateTime()->format( 'd.m.Y h:i' );
+	}
+
+	/**
+	 * Returns nicely formatted end datetime.
+	 * @return string
+	 */
+	public function getFormattedEndDateTime() {
+		return $this->getEndDateDateTime()->format( 'd.m.Y h:i' );
 	}
 
 	/**
@@ -120,16 +150,28 @@ class Restriction extends CustomPost {
 		return $this->active;
 	}
 
+	/**
+	 * Returns location id.
+	 * @return mixed
+	 */
 	public function getLocationId() {
 		return self::getMeta( self::META_LOCATION_ID );
 	}
 
+	/**
+	 * Returns itemId
+	 * @return mixed
+	 */
 	public function getItemId() {
 		return self::getMeta( self::META_ITEM_ID );
 	}
 
-	protected function getItemName(): string {
-		$itemName = "";
+	/**
+	 * Returns item name.
+	 * @return string
+	 */
+	public function getItemName(): string {
+		$itemName = esc_html__( 'Not set', 'commonsbooking' );
 		if ( $this->getItemId() ) {
 			$item     = get_post( $this->getItemId() );
 			$itemName = $item->post_title;
@@ -138,8 +180,12 @@ class Restriction extends CustomPost {
 		return $itemName;
 	}
 
-	protected function getLocationName(): string {
-		$locationName = "";
+	/**
+	 * Returns location name.
+	 * @return string
+	 */
+	public function getLocationName(): string {
+		$locationName = esc_html__( 'Not set', 'commonsbooking' );
 		if ( $this->getLocationId() ) {
 			$location     = get_post( $this->getLocationId() );
 			$locationName = $location->post_title;
@@ -148,53 +194,36 @@ class Restriction extends CustomPost {
 		return $locationName;
 	}
 
-	protected function getRestrictionMailData(): array {
-		return [
-			'headers'     => [
-				'From: ' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-name' ) .
-				' <' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-email' ) . '>'
-			],
-			'restriction' => [
-				'itemName'         => $this->getItemName(),
-				'locationName'     => $this->getLocationName(),
-				'restrictionStart' => $this->getStartTimeDateTime()->format( 'd.m.Y h:i' ),
-				'restrictionEnd'   => $this->getEndDateDateTime()->format( 'd.m.Y h:i' ),
-				'hint'             => $this->getHint()
-			]
-		];
+	/**
+	 * Send mails regarding item/location admins and booked timeslots.
+	 */
+	protected function sendRestrictionMails( $bookings ) {
+		$userIds = [];
+
+		foreach ( $bookings as $booking ) {
+			// User IDs from booking
+			$userIds[] = $booking->getUserData()->ID;
+
+			// Admins IDs
+			$userIds = array_merge( $userIds, $booking->getAdmins() );
+		}
+
+		$userIds = array_unique( $userIds );
+
+		foreach ( $userIds as $userId ) {
+			$hintMail = new RestrictionMessages( $this, get_userdata( $userId ), $this->getType() );
+			$hintMail->triggerMail();
+		}
 	}
 
 	/**
-	 * Mails regarding booked timeslots
+	 * Cancels bookings if restriction is active and of type repair.
 	 *
 	 * @param $bookings
-	 * @param $mailData
 	 */
-	protected function sendBookingRestrictionMails( $bookings, $mailData ) {
+	protected function cancelBookings( $bookings ) {
 		foreach ( $bookings as $booking ) {
-			$mailData['user'] = $booking->getUserData();
-			$this->sendMail( $mailData );
-
-			// Cancel booking
-			if ( $this->isActive() && $this->getType() == self::TYPE_REPAIR ) {
-				$booking->cancel();
-			}
-		}
-	}
-
-	/**
-	 * Mails regarding item/location admins
-	 */
-	protected function sendAdminRestrictionMails( $bookings, $mailData ) {
-		$adminIds = [];
-		foreach ( $bookings as $booking ) {
-			$adminIds = array_merge( $adminIds, $booking->getAdmins() );
-		}
-		$adminIds = array_unique( $adminIds );
-
-		foreach ( $adminIds as $adminId ) {
-			$mailData['user'] = get_userdata( $adminId );
-			$this->sendMail( $mailData );
+			$booking->cancel();
 		}
 	}
 
@@ -204,88 +233,12 @@ class Restriction extends CustomPost {
 	public function apply() {
 		$bookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
 
-		$mailData = $this->getRestrictionMailData();
-
-		$this->sendBookingRestrictionMails( $bookings, $mailData );
-		$this->sendAdminRestrictionMails( $bookings, $mailData );
-	}
-
-	/**
-	 * Sends mail in relation to restriction type.
-	 *
-	 * @param $mailData
-	 */
-	protected function sendMail( $mailData ) {
-		$this->prepareUserData( $mailData );
-
-		if ( $this->isActive() ) {
-			if ( $this->getType() == self::TYPE_HINT ) {
-				// send hint mail
-				$this->sendHintMail( $mailData );
-			} else {
-				// Send repair mail
-				$this->sendRepairMail( $mailData );
+		if ( $bookings ) {
+			if ( $this->isActive() && $this->getType() == self::TYPE_REPAIR ) {
+				$this->cancelBookings();
 			}
-		} else {
-			// send restriction cancellation
-			$this->sendRestrictionCancelationMail( $mailData );
-		}
-	}
 
-	protected function prepareUserData( &$mailData ) {
-		$user             = $mailData['user'];
-		$userData         = [
-			'to'       => $user->get( 'user_email' ),
-			'username' => $user->get( 'user_nicename' )
-		];
-		$mailData['user'] = $userData;
-	}
-
-	protected function sendHintMail( $mailData ) {
-		$body    = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-hint-body' );
-		$this->replaceTemplatePlaceholder($body, $mailData);
-		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-hint-subject' );
-
-		wp_mail(
-			$mailData['user']['to'],
-			$subject,
-			$body,
-			$mailData['headers']
-		);
-	}
-
-	protected function sendRepairMail( $mailData ) {
-		$body    = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-repair-body' );
-		$this->replaceTemplatePlaceholder($body, $mailData);
-		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-repair-subject' );
-
-		wp_mail(
-			$mailData['user']['to'],
-			$subject,
-			$body,
-			$mailData['headers']
-		);
-	}
-
-	protected function sendRestrictionCancelationMail( $mailData ) {
-		$body    = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-restriction-cancelled-body' );
-		$this->replaceTemplatePlaceholder($body, $mailData);
-		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-restriction-cancelled-subject' );
-
-		wp_mail(
-			$mailData['user']['to'],
-			$subject,
-			$body,
-			$mailData['headers']
-		);
-	}
-
-	protected function replaceTemplatePlaceholder( &$template, $mailData ) {
-		$mailDataKeys = ['restriction', 'user'];
-		foreach ($mailDataKeys as $mailDataKey) {
-			foreach ( $mailData[$mailDataKey] as $key => $value ) {
-				$template = str_replace( '{{' . $key . '}}', $value, $template );
-			}
+			$this->sendRestrictionMails( $bookings );
 		}
 	}
 

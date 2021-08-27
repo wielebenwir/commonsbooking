@@ -1703,7 +1703,7 @@ document.addEventListener("DOMContentLoaded", () => {
             picker = new Litepicker({
                 element: document.getElementById("litepicker"),
                 minDate: moment().format("YYYY-MM-DD"),
-                startDate: moment().isAfter(globalCalendarData.startDate) ? moment().format("YYYY-MM-DD") : data.startDate,
+                startDate: moment().isAfter(globalCalendarData.startDate) ? moment().format("YYYY-MM-DD") : globalCalendarData.startDate,
                 scrollToDate: !0,
                 inlineMode: !0,
                 firstDay: 1,
@@ -1752,9 +1752,9 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }, updatePicker = globalCalendarData => {
             fadeOutCalendar(), picker.setOptions({
-                minDate: moment().isAfter(globalCalendarData.startDate) ? moment().format("YYYY-MM-DD") : data.startDate,
+                minDate: moment().isAfter(globalCalendarData.startDate) ? moment().format("YYYY-MM-DD") : globalCalendarData.startDate,
                 maxDate: globalCalendarData.endDate,
-                startDate: moment().isAfter(globalCalendarData.startDate) ? moment().format("YYYY-MM-DD") : data.startDate,
+                startDate: moment().isAfter(globalCalendarData.startDate) ? moment().format("YYYY-MM-DD") : globalCalendarData.startDate,
                 days: globalCalendarData.days,
                 maxDays: globalCalendarData.maxDays,
                 lockDays: globalCalendarData.lockDays,
@@ -1778,6 +1778,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }), fadeInCalendar();
         };
         let bookingForm = jQuery("#booking-form");
-        bookingForm.length && "undefined" != typeof data && (initPicker(), updatePicker(globalCalendarData));
+        bookingForm.length && (initPicker(), console.log(globalCalendarData), updatePicker(globalCalendarData));
     }
 });

@@ -51,7 +51,7 @@ class Settings {
 		// as multiple values can be  stored as an multidimensional array we need to flatten the array into one dimensional array
 		$flat_array = self::flattenArray( $cb_options_array );
 
-		if ( is_array( $cb_options_array ) && array_key_exists( $field_id, $cb_options_array ) ) {
+		if ( is_array( $cb_options_array ) && array_key_exists( $field_id, $flat_array ) ) {
 			$result = $flat_array[ $field_id ];
 		} else {
 			$result = false;

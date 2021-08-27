@@ -30,7 +30,7 @@ class Restriction extends CustomPostType {
 		// Remove not needed Meta Boxes
 		add_action( 'do_meta_boxes', array( $this, 'removeDefaultCustomFields' ), 10, 3 );
 
-		add_action( 'save_post_' . self::$postType, array( $this, 'handleFormRequest' ), 10, 3 );
+		add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 10, 3 );
 	}
 
 	/**
@@ -148,7 +148,7 @@ class Restriction extends CustomPostType {
 	 * Returns custom (meta) fields for Costum Post Type Timeframe.
 	 * @return array
 	 */
-	protected function getCustomFields() {
+	protected function getCustomFields(): array {
 		// We need static types, because german month names dont't work for datepicker
 		$dateFormat = "d/m/Y";
 		if ( strpos( get_locale(), 'de_' ) !== false ) {
@@ -225,7 +225,7 @@ class Restriction extends CustomPostType {
 	/**
 	 * Handles save-Request for location.
 	 */
-	public function handleFormRequest( $post_id, $post, $update ) {
+	public function savePost( $post_id, $post, $update ) {
 		if ( $this->hasRunBefore( __METHOD__ ) ) {
 			return;
 		}
