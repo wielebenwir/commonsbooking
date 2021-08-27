@@ -26,6 +26,7 @@ class Restriction extends PostRepository {
 			global $wpdb;
 			$table_postmeta = $wpdb->prefix . 'postmeta';
 			$table_posts    = $wpdb->prefix . 'posts';
+			$dateQuery = '';
 
 			// Filter by date
 			if ( $date && ! $minTimestamp ) {
@@ -84,12 +85,12 @@ class Restriction extends PostRepository {
 
 			$posts = $wpdb->get_results( $query, ARRAY_N );
 
-			// Get posts from result
-			foreach ( $posts as &$post ) {
-				$post = get_post( $post[0] );
-			}
-
 			if ( $posts && count( $posts ) ) {
+				// Get posts from result
+				foreach ( $posts as &$post ) {
+					$post = get_post( $post[0] );
+				}
+
 				// If there are locations or items to be filtered, we iterate through
 				// query result because wp_query is to slow for meta-querying them.
 				if ( count( $locations ) || count( $items ) ) {
@@ -113,18 +114,17 @@ class Restriction extends PostRepository {
 						;
 					} );
 				}
-			}
 
-			// if returnAsModel == TRUE the result is a timeframe model instead of a wordpress object
-			if ( $returnAsModel ) {
-				foreach ( $posts as &$post ) {
-					$post = new \CommonsBooking\Model\Restriction( $post );
+				// if returnAsModel == TRUE the result is a timeframe model instead of a wordpress object
+				if ( $returnAsModel ) {
+					foreach ( $posts as &$post ) {
+						$post = new \CommonsBooking\Model\Restriction( $post );
+					}
 				}
 			}
 
 			Plugin::setCacheItem( $posts );
-
-			return $posts;
+			return $posts ?: [];
 		}
 	}
 
