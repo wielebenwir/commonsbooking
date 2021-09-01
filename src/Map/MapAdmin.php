@@ -17,6 +17,7 @@ class MapAdmin {
 		'custom_filterbutton_label',
 		'zoom_min',
 		'zoom_max',
+		'scrollWheelZoom',
 		'zoom_start',
 		'lat_start',
 		'lon_start',
@@ -79,6 +80,7 @@ class MapAdmin {
 	const ENABLE_MAP_DATA_EXPORT_DEFAULT = false;
 	const ZOOM_MIN_DEFAULT = 9;
 	const ZOOM_MAX_DEFAULT = 19;
+	const SCROLLWHEELZOOM_DEFAULT = true;
 	const ZOOM_START_DEFAULT = 9;
 	const LAT_START_DEFAULT = 52.49333;
 	const LON_START_DEFAULT = 13.37933;
@@ -264,7 +266,8 @@ class MapAdmin {
 			'show_location_contact',
 			'show_location_opening_hours',
 			'show_item_availability',
-			'show_location_distance_filter'
+			'show_location_distance_filter',
+			'scrollWheelZoom'
 		];
 
 		foreach ( $checkboxInputs as $checkboxInput ) {

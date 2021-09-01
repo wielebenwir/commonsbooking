@@ -26,13 +26,16 @@ function CB_Map() {
             attribution += ' | Address search by <a href="https://nominatim.openstreetmap.org/">Nominatim</a>'
         }
         var map_options = {
+          scrollWheelZoom: this.settings.scrollWheelZoom
+        }
+        var tileLayer_options = {
             minZoom: this.settings.zoom_min,
             maxZoom: this.settings.zoom_max,
             attribution: attribution
         }
 
         // set up the map
-        var map = new L.Map('cb-map-' + this.settings.cb_map_id);
+        var map = new L.Map('cb-map-' + this.settings.cb_map_id,map_options);
 
         //create messagebox
         this.messagebox = L.control.messagebox({timeout: 5000}).addTo(map);
@@ -43,7 +46,7 @@ function CB_Map() {
         }
 
         // create the tile layer with correct attribution
-        var osm = new L.TileLayer(tile_server_url, map_options);
+        var osm = new L.TileLayer(tile_server_url, tileLayer_options);
 
         map.setView(new L.LatLng(this.settings.lat_start, this.settings.lon_start), this.settings.zoom_start);
         map.addLayer(osm);

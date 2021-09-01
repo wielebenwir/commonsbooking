@@ -116,6 +116,16 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                                name="cb_map_options[zoom_start]"
                                value="<?php echo esc_attr(MapAdmin::get_option($cb_map_id, 'zoom_start')); ?>" size="3"></td>
                 </tr>
+                <tr>
+                    <th>
+                        <?php echo commonsbooking_sanitizeHTML( __(     'enable scroll wheel zoom' ,'commonsbooking')); ?>:
+                        <span class="dashicons dashicons-editor-help"
+                              title="<?php echo commonsbooking_sanitizeHTML( __('when activated users can zoom the map using the scroll wheel' ,'commonsbooking')); ?>"></span>
+                    </th>
+                    <td><input type="checkbox"
+                               name="cb_map_options[scrollWheelZoom]" <?php echo  MapAdmin::get_option($cb_map_id,
+                            'scrollWheelZoom') ? 'checked="checked"' : '' ?> value="on"></td>
+                </tr>
             </table>
         </details>
     </div>
