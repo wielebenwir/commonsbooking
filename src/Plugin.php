@@ -132,6 +132,7 @@ class Plugin {
 			new Item(),
 			new Location(),
 			new Timeframe(),
+			new \CommonsBooking\Wordpress\CustomPostType\Booking(),
 			new Map(),
 		];
 	}

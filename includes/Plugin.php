@@ -6,9 +6,6 @@ use CommonsBooking\View\TimeframeExport;
 
 add_action( 'admin_notices', array( Plugin::class, 'renderError' ) );
 
-// Initialize booking codes table
-register_activation_hook( __FILE__, array( Plugin::class, 'activation' ) );
-
 // Ad new cron-Interval
 function commonsbooking_cron_interval( $schedules ) {
 	$schedules['ten_minutes']    = array(

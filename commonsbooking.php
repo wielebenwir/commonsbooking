@@ -15,6 +15,8 @@
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
  */
 
+use CommonsBooking\Plugin;
+
 defined('ABSPATH') or die("Thanks for visting");
 define('COMMONSBOOKING_VERSION', '2.4.5');
 define('COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking');
@@ -33,9 +35,13 @@ define ('COMMONSBOOKING_MAP_PLUGIN_DATA', get_file_data( __FILE__, array('Versio
 global $cb_db_version;
 $cb_db_version = '1.0';
 
-include __DIR__. '/includes/Admin.php';
-include __DIR__. '/includes/Public.php';
+require __DIR__. '/includes/Admin.php';
+require __DIR__. '/includes/Public.php';
 require __DIR__.'/vendor/autoload.php';
 require __DIR__.'/vendor/cmb2/cmb2/init.php';
 require __DIR__.'/vendor/mustardBees/cmb-field-select2/cmb-field-select2.php';
-include __DIR__. '/includes/Plugin.php';
+require __DIR__. '/includes/Plugin.php';
+
+
+// run activation tasks -> doesn't work by require/include
+register_activation_hook( __FILE__, array( Plugin::class, 'activation' ) );

@@ -53,6 +53,7 @@ class Timeframe extends CustomPostType {
 	 * @var string
 	 */
 	public static $postType = 'cb_timeframe';
+
 	/**
 	 * Timeframetypes which cannot be "overbooked".
 	 * @var int[]
@@ -61,11 +62,13 @@ class Timeframe extends CustomPostType {
 		self::REPAIR_ID,
 		self::BOOKING_ID,
 	];
+
 	/**
 	 * Position in backend menu.
 	 * @var int
 	 */
 	protected $menuPosition = 1;
+
 	/**
 	 * @var array
 	 */
