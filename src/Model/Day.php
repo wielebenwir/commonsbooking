@@ -30,6 +30,16 @@ class Day {
 	protected $types;
 
 	/**
+	 * @var array
+	 */
+	protected $timeframes;
+
+	/**
+	 * @var array
+	 */
+	protected $restrictions;
+
+	/**
 	 * Day constructor.
 	 *
 	 * @param string $date
@@ -91,29 +101,61 @@ class Day {
 	}
 
 	/**
+	 * Returns array with timeframes.
+	 * @return array
+	 * @throws Exception
+	 */
+	public function getTimeframes(): array {
+		if ( $this->timeframes === null ) {
+			$timeFrames = \CommonsBooking\Repository\Timeframe::get(
+				$this->locations,
+				$this->items,
+				$this->types,
+				$this->getDate(),
+				true,
+				null,
+				[ 'publish', 'confirmed', 'unconfirmed' ]
+			);
+
+			// check if user is allowed to book this timeframe and remove unallowed timeframes from array
+			foreach ( $timeFrames as $key => $timeframe ) {
+				if ( ! commonsbooking_isCurrentUserAllowedToBook( $timeframe->ID ) ) {
+					unset( $timeFrames[ $key ] );
+				}
+			}
+			$this->timeframes = $timeFrames;
+		}
+
+		return $this->timeframes;
+	}
+
+	/**
+	 * Returns array with restrictions.
+	 * @return array
+	 * @throws Exception
+	 */
+	public function getRestrictions() {
+		if ( $this->restrictions === null ) {
+			$this->restrictions = \CommonsBooking\Repository\Restriction::get(
+				$this->locations,
+				$this->items,
+				$this->getDate(),
+				true,
+				null,
+				[ 'publish', 'confirmed', 'unconfirmed' ]
+			);
+		}
+
+		return $this->restrictions;
+	}
+
+	/**
 	 * Returns grid for the day defined by the timeframes.
 	 * @return array
 	 * @throws Exception
 	 */
 	public function getGrid(): array {
-		$timeFrames = \CommonsBooking\Repository\Timeframe::get(
-			$this->locations,
-			$this->items,
-			$this->types,
-			$this->getDate(),
-			false,
-			null,
-			[ 'publish', 'confirmed', 'unconfirmed' ]
-		);
-
-		// check if user is allowed to book this timeframe and remove unallowed timeframes from array
-		foreach ( $timeFrames as $key => $timeframe ) {
-			if ( ! commonsbooking_isCurrentUserAllowedToBook( $timeframe->ID ) ) {
-				unset( $timeFrames[ $key ] );
-			}
-		}
-
-		return $this->getTimeframeSlots( $timeFrames );
+		return $this->getTimeframeSlots();
 	}
 
 	/**
@@ -135,21 +177,21 @@ class Day {
 	 * Returns start-slot id.
 	 *
 	 * @param $grid
-	 * @param $timeframe
+	 * @param \CommonsBooking\Model\Timeframe $timeframe
 	 *
 	 * @return float|int
 	 * @throws Exception
 	 */
-	protected function getStartSlot( $grid, $timeframe ) {
+	protected function getStartSlot( $grid, \CommonsBooking\Model\Timeframe $timeframe ) {
 		// Timeframe
-		$fullDay   = get_post_meta( $timeframe->ID, 'full-day', true );
-		$startTime = $this->getStartTime( $timeframe );
+		$fullDay   = $timeframe->isFullDay();
+		$startTime = $timeframe->getStartTimeDateTime();
 		$startSlot = $this->getSlotByTime( $startTime, $grid );
 
 		// If we have a overbooked day, we need to mark all slots as booked
-		if ( get_post_meta( $timeframe->ID, 'type', true ) == Timeframe::BOOKING_ID ) {
+		if ( $timeframe->getType() == Timeframe::BOOKING_ID ) {
 
-			$booking          = new Booking( $timeframe );
+			$booking          = new Booking( $timeframe->getPost() );
 			$startDateBooking = intval( $booking->getStartDate() );
 			$startDateDay     = strtotime( $this->getDate() );
 
@@ -168,19 +210,44 @@ class Day {
 	}
 
 	/**
+	 * Returns start slot for restriction.
+	 *
+	 * @param $grid
+	 * @param Restriction $restriction
+	 *
+	 * @return float|int
+	 */
+	protected function getRestrictionStartSlot( $grid, \CommonsBooking\Model\Restriction $restriction ) {
+
+		$startTime = $restriction->getStartTimeDateTime();
+		$startSlot = $this->getSlotByTime( $startTime, $grid );
+
+		$startDateBooking = intval( $restriction->getStartDate() );
+		$startDateDay     = strtotime( $this->getDate() );
+
+		// if restriction starts on day before, we set startslot to 0
+		if ( $startDateBooking < $startDateDay ) {
+			$startSlot = 0;
+		}
+
+		return $startSlot;
+	}
+
+	/**
 	 * Returns end-slot id.
 	 *
 	 * @param $slots
 	 * @param $grid
-	 * @param $timeframe
+	 * @param \CommonsBooking\Model\Timeframe $timeframe
 	 *
 	 * @return float|int
+	 * @throws Exception
 	 */
-	protected function getEndSlot( $slots, $grid, $timeframe ) {
+	protected function getEndSlot( $slots, $grid, \CommonsBooking\Model\Timeframe $timeframe ) {
 		// Timeframe
 		$fullDay = get_post_meta( $timeframe->ID, 'full-day', true );
-		$endTime = $this->getEndTime( $timeframe );
-		$endDate = $this->getEndDate( $timeframe );
+		$endTime = $timeframe->getEndTimeDateTime( $this->getDateObject()->getTimestamp() );
+		$endDate = $timeframe->getEndDateDateTime();
 
 		// Slots
 		$endSlot = count( $slots );
@@ -191,7 +258,7 @@ class Day {
 		}
 
 		// If we have a overbooked day, we need to mark all slots as booked
-		if ( ! Timeframe::isOverBookable( $timeframe ) ) {
+		if ( ! $timeframe->isOverBookable() ) {
 			// Check if timeframe ends after the current day
 			if ( strtotime( $this->getFormattedDate( 'd.m.Y 23:59' ) ) < $endDate->getTimestamp() ) {
 				$endSlot = count( $slots );
@@ -202,76 +269,28 @@ class Day {
 	}
 
 	/**
-	 * Returns repetition-start DateTime.
+	 * Returns end slot for restriction.
 	 *
-	 * @param $timeframe
+	 * @param $slots
+	 * @param $grid
+	 * @param Restriction $restriction
 	 *
-	 * @return DateTime
-	 */
-	protected function getStartDate( $timeframe ): DateTime {
-		$startDateString = get_post_meta( $timeframe->ID, 'repetition-start', true );
-		$startDate       = new DateTime();
-		$startDate->setTimestamp( $startDateString );
-
-		return $startDate;
-	}
-
-	/**
-	 * Returns start-time DateTime.
-	 *
-	 * @param $timeframe
-	 *
-	 * @return DateTime
-	 */
-	protected function getStartTime( $timeframe ): DateTime {
-		$startDateString = get_post_meta( $timeframe->ID, 'repetition-start', true );
-		$startTimeString = get_post_meta( $timeframe->ID, 'start-time', true );
-		$startDate       = new DateTime();
-		$startDate->setTimestamp( $startDateString );
-		if ( $startTimeString ) {
-			$startTime = new DateTime();
-			$startTime->setTimestamp( strtotime( $startTimeString ) );
-			$startDate->setTime( $startTime->format( 'H' ), $startTime->format( 'i' ) );
-		}
-
-		return $startDate;
-	}
-
-	/**
-	 * Returns end-date DateTime.
-	 *
-	 * @param $timeframe
-	 *
-	 * @return DateTime
-	 */
-	protected function getEndDate( $timeframe ): DateTime {
-		$endDateString = intval( get_post_meta( $timeframe->ID, \CommonsBooking\Model\Timeframe::REPETITION_END, true ) );
-		$endDate       = new DateTime();
-		$endDate->setTimestamp( $endDateString );
-
-		return $endDate;
-	}
-
-	/**
-	 * Returns start-time DateTime.
-	 *
-	 * @param $timeframe
-	 *
-	 * @return DateTime
+	 * @return float|int
 	 * @throws Exception
 	 */
-	protected function getEndTime( $timeframe ): DateTime {
-		$endDateString = $this->getDateObject()->getTimestamp();
-		$endTimeString = get_post_meta( $timeframe->ID, 'end-time', true );
-		$endDate       = new DateTime();
-		$endDate->setTimestamp( $endDateString );
-		if ( $endTimeString ) {
-			$endTime = new DateTime();
-			$endTime->setTimestamp( strtotime( $endTimeString ) );
-			$endDate->setTime( $endTime->format( 'H' ), $endTime->format( 'i' ) );
+	protected function getRestrictionEndSlot( $slots, $grid, \CommonsBooking\Model\Restriction $restriction ) {
+		$endTime = $restriction->getEndTimeDateTime( $this->getDateObject()->getTimestamp() );
+		$endDate = $restriction->getEndDateDateTime();
+
+		// Slots
+		$endSlot = $this->getSlotByTime( $endTime, $grid );
+
+		// Check if timeframe ends after the current day
+		if ( strtotime( $this->getFormattedDate( 'd.m.Y 23:59' ) ) < $endDate->getTimestamp() ) {
+			$endSlot = count( $slots );
 		}
 
-		return $endDate;
+		return $endSlot;
 	}
 
 	/**
@@ -339,11 +358,12 @@ class Day {
 	 *
 	 * @throws Exception
 	 */
-	protected function mapTimeFrames( &$slots, $timeframes ) {
+	protected function mapTimeFrames( &$slots ) {
 		$grid = 24 / count( $slots );
 
 		// Iterate through timeframes and fill slots
-		foreach ( $timeframes as $timeframe ) {
+		/** @var \CommonsBooking\Model\Timeframe $timeframe */
+		foreach ( $this->getTimeframes() as $timeframe ) {
 			// Check for repetition timeframe selected days
 			if ( ! $this->isInTimeframe( $timeframe ) ) {
 				continue;
@@ -356,19 +376,50 @@ class Day {
 			// Add timeframe to relevant slots
 			while ( $startSlot < $endSlot ) {
 				// Set locked property
-				$timeframe->locked = Timeframe::isLocked( $timeframe );
+				$timeframePost         = $timeframe->getPost();
+				$timeframePost->locked = $timeframe->isLocked();
 
 				if ( ! array_key_exists( 'timeframe', $slots[ $startSlot ] ) || ! $slots[ $startSlot ]['timeframe'] ) {
-					$slots[ $startSlot ]['timeframe'] = $timeframe;
+					$slots[ $startSlot ]['timeframe'] = $timeframePost;
 				} else {
-					$slots[ $startSlot ]['timeframe'] = Timeframe::getHigherPrioFrame( $timeframe, $slots[ $startSlot ]['timeframe'] );
+					$slots[ $startSlot ]['timeframe'] = Timeframe::getHigherPrioFrame( $timeframePost, $slots[ $startSlot ]['timeframe'] );
 				}
 
 				$startSlot ++;
 			}
 		}
+	}
 
-		$this->sanitizeSlots( $slots );
+	/**
+	 * Overwrites restricted slots
+	 *
+	 * @param $slots
+	 *
+	 * @throws Exception
+	 */
+	protected function mapRestrictions( &$slots ) {
+		$grid = 24 / count( $slots );
+
+		// Iterate through timeframes and fill slots
+		/** @var \CommonsBooking\Model\Restriction $restriction */
+		foreach ( $this->getRestrictions() as $restriction ) {
+
+			// Only if there is a repair we block the timeframe
+			if ( $restriction->isActive() && $restriction->getType() == Restriction::TYPE_REPAIR ) {
+				// Slots
+				$startSlot = $this->getRestrictionStartSlot( $grid, $restriction );
+				$endSlot   = $this->getRestrictionEndSlot( $slots, $grid, $restriction );
+
+				// Add timeframe to relevant slots
+				while ( $startSlot < $endSlot ) {
+					// Set locked property
+					$restrictionPost                  = $restriction->getPost();
+					$restrictionPost->locked          = true;
+					$slots[ $startSlot ]['timeframe'] = $restrictionPost;
+					$startSlot ++;
+				}
+			}
+		}
 	}
 
 	/**
@@ -424,12 +475,10 @@ class Day {
 	/**
 	 * Returns array of timeslots filled with timeframes.
 	 *
-	 * @param $timeframes
-	 *
 	 * @return array
 	 * @throws Exception
 	 */
-	protected function getTimeframeSlots( $timeframes ): array {
+	protected function getTimeframeSlots(): array {
 		$slots       = [];
 		$slotsPerDay = 24;
 
@@ -443,7 +492,9 @@ class Day {
 			];
 		}
 
-		$this->mapTimeFrames( $slots, $timeframes );
+		$this->mapTimeFrames( $slots );
+		$this->mapRestrictions( $slots );
+		$this->sanitizeSlots( $slots );
 
 		return $slots;
 	}

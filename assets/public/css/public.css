@@ -4332,6 +4332,10 @@
 #booking-form #fullDayInfo {
   clear: left;
 }
+/* line 477, ../sass/partials/_calendar.scss */
+#booking-form span.restrictions {
+  width: 66% !important;
+}
 
 /* Calendar styles */
 /**

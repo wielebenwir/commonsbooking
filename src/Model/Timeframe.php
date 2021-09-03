@@ -14,6 +14,8 @@ class Timeframe extends CustomPost {
 	 */
 	public const ERROR_TYPE = "timeframeValidationFailed";
 
+	public const REPETITION_START = "repetition-start";
+
 	public const REPETITION_END = "repetition-end";
 
 	/**
@@ -36,7 +38,7 @@ class Timeframe extends CustomPost {
 	 * @return string
 	 */
 	public function getStartDate() {
-		$startDate = $this->getMeta( 'repetition-start' );
+		$startDate = $this->getMeta( self::REPETITION_START );
 
 		if ( (string) intval( $startDate ) !== $startDate ) {
 			$startDate = strtotime( $startDate );
@@ -116,26 +118,29 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return string
 	 */
-	public function getTimeFormat() {
+	public function getTimeFormat(): string {
 		return get_option( 'time_format' );
 	}
 
 	/**
 	 * Validates if there can be booking codes created for this timeframe.
 	 * @return bool
-	 * @throws Exception
 	 */
-	public function bookingCodesApplieable() {
-		return $this->getLocation() && $this->getItem() &&
-		       $this->getStartDate() && $this->getEndDate() &&
-		       $this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID;
+	public function bookingCodesApplieable(): bool {
+		try {
+			return $this->getLocation() && $this->getItem() &&
+			       $this->getStartDate() && $this->getEndDate() &&
+			       $this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID;
+		} catch ( Exception $e ) {
+			return false;
+		}
 	}
 
 	/**
 	 * @return Location
 	 * @throws Exception
 	 */
-	public function getLocation() {
+	public function getLocation(): Location {
 		$locationId = $this->getMeta( 'location-id' );
 		if ( $post = get_post( $locationId ) ) {
 			return new Location( $post );
@@ -392,6 +397,100 @@ class Timeframe extends CustomPost {
 	 */
 	public function showBookingCodes() {
 		return $this->getMeta( "show-booking-codes" ) == "on";
+	}
+
+	/**
+	 * Returns repetition-start \DateTime.
+	 *
+	 * @return \DateTime
+	 */
+	public function getStartDateDateTime(): \DateTime {
+		$startDateString = $this->getMeta( 'repetition-start' );
+		$startDate       = new \DateTime();
+		$startDate->setTimestamp( $startDateString );
+
+		return $startDate;
+	}
+
+	/**
+	 * Returns start-time \DateTime.
+	 *
+	 * @return \DateTime
+	 */
+	public function getStartTimeDateTime(): \DateTime {
+		$startDateString = $this->getMeta( self::REPETITION_START );
+		$startTimeString = $this->getMeta( 'start-time' );
+		$startDate       = new \DateTime();
+		$startDate->setTimestamp( $startDateString );
+		if ( $startTimeString ) {
+			$startTime = new \DateTime();
+			$startTime->setTimestamp( strtotime( $startTimeString ) );
+			$startDate->setTime( $startTime->format( 'H' ), $startTime->format( 'i' ) );
+		}
+
+		return $startDate;
+	}
+
+	/**
+	 * Returns end-date \DateTime.
+	 *
+	 * @return \DateTime
+	 */
+	public function getEndDateDateTime(): \DateTime {
+		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
+		$endDate       = new \DateTime();
+		$endDate->setTimestamp( $endDateString );
+
+		return $endDate;
+	}
+
+	/**
+	 * Returns endtime-time \DateTime.
+	 *
+	 * @param null $endDateString
+	 *
+	 * @return \DateTime
+	 */
+	public function getEndTimeDateTime( $endDateString = null ): \DateTime {
+		$endTimeString = $this->getMeta( 'end-time' );
+		$endDate       = new \DateTime();
+
+		if ( $endTimeString ) {
+			$endTime = new \DateTime();
+			$endTime->setTimestamp( strtotime( $endTimeString ) );
+			$endDate->setTime( $endTime->format( 'H' ), $endTime->format( 'i' ) );
+		} else {
+			$endDate->setTimestamp( $endDateString );
+		}
+
+		return $endDate;
+	}
+
+	public function isOverBookable(): bool {
+		return \CommonsBooking\Wordpress\CustomPostType\Timeframe::isOverBookable( self::getPost() );
+	}
+
+	public function isLocked(): bool {
+		return \CommonsBooking\Wordpress\CustomPostType\Timeframe::isLocked( self::getPost() );
+	}
+
+	/**
+	 * @return array|string[]
+	 * @throws Exception
+	 */
+	public function getAdmins(): array {
+		$admins           = [];
+		$locationAdminIds = $this->getLocation()->getAdmins();
+		$itemAdminIds     = $this->getItem()->getAdmins();
+
+		if (
+			is_array( $locationAdminIds ) && count( $locationAdminIds ) &&
+			is_array( $itemAdminIds ) && count( $itemAdminIds )
+		) {
+			$admins = array_merge( $locationAdminIds, $itemAdminIds );
+		}
+
+		return $admins;
 	}
 
 }

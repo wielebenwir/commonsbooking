@@ -3,7 +3,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Helper\Helper;
-use CommonsBooking\Messages\Messages;
+use CommonsBooking\Messages\BookingMessages;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\UserRepository;
@@ -105,7 +105,9 @@ class Timeframe extends CustomPostType {
 		// List settings
 		$this->removeListDateColumn();
 
-		add_action( 'save_post', array( $this, 'saveCustomFields' ), 1, 2 );
+		add_action( 'save_post', array( $this, 'savePost' ), 1, 2 );
+
+		add_action( 'post_updated', array( $this, 'postUpdated' ), 10, 3 );
 
 		// Save-handling
 		$this->handleFormRequest();
@@ -267,12 +269,6 @@ class Timeframe extends CustomPostType {
 				$booking_metafield = new \CommonsBooking\Model\Booking( $postId );
 				// we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
 				$booking_metafield->assignBookableTimeframeFields();
-
-				// Trigger Mail, only send mail if status has changed
-				if ( ! empty( $booking ) and $booking->post_status != $post_status and ! ( $booking->post_status === 'unconfirmed' and $post_status === 'canceled' ) ) {
-					$booking_msg = new Messages( $postId, $post_status );
-					$booking_msg->triggerMail();
-				}
 
 				// get slug as parameter
 				$post_slug = get_post( $postId )->post_name;
@@ -873,9 +869,34 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
+     * Is triggered when post gets updated. Currently used to send notifications regarding bookings.
+	 * @param $post_ID
+	 * @param $post_after
+	 * @param $post_before
+	 */
+	public function postUpdated( $post_ID, $post_after, $post_before ) {
+		if ( ! $this->hasRunBefore( __FUNCTION__ ) ) {
+			$isBooking = get_post_meta( $post_ID, 'type', true ) == Timeframe::BOOKING_ID;
+			if ( $isBooking ) {
+				// Trigger Mail, only send mail if status has changed
+				if ( $post_before->post_status != $post_after->post_status and
+				     ! (
+					     $post_before->post_status === 'unconfirmed' and
+					     $post_after->post_status === 'canceled'
+				     )
+				) {
+					$booking_msg = new BookingMessages( $post_ID, $post_after->post_status );
+					$booking_msg->triggerMail();
+				}
+			}
+		}
+	}
+
+	/**
 	 * Save the new Custom Fields values
 	 */
-	public function saveCustomFields( $post_id, $post ) {
+	public function savePost( $post_id, WP_Post $post ) {
+		// This is just for timeframes
 		if ( $post->post_type !== static::getPostType() ) {
 			return;
 		}
@@ -914,6 +935,27 @@ class Timeframe extends CustomPostType {
 			}
 		}
 
+		// Save custom fields
+		$this->saveCustomFields( $post_id );
+
+		// Validate timeframe
+		$isValid = $this->validateTimeFrame( $post_id, $post );
+
+		if ( $isValid ) {
+			$timeframe          = new \CommonsBooking\Model\Timeframe( $post_id );
+			$createBookingCodes = get_post_meta( $post_id, 'create-booking-codes', true );
+
+			if ( $createBookingCodes == "on" && $timeframe->bookingCodesApplieable() ) {
+				BookingCodes::generate( $post_id );
+			}
+		}
+	}
+
+	/**
+     * Saves custom fields from request.
+	 * @param $post_id
+	 */
+	protected function saveCustomFields( $post_id ) {
 		$noDeleteMetaFields = [ 'start-time', 'end-time', 'timeframe-repetition', 'weekdays', 'comment' ];
 
 		foreach ( $this->getCustomFields() as $customField ) {
@@ -948,18 +990,6 @@ class Timeframe extends CustomPostType {
 				}
 			}
 		}
-
-		// Validate timeframe
-		$isValid = $this->validateTimeFrame( $post_id, $post );
-
-		if ( $isValid ) {
-			$timeframe          = new \CommonsBooking\Model\Timeframe( $post_id );
-			$createBookingCodes = get_post_meta( $post_id, 'create-booking-codes', true );
-
-			if ( $createBookingCodes == "on" && $timeframe->bookingCodesApplieable() ) {
-				BookingCodes::generate( $post_id );
-			}
-		}
 	}
 
 	/**
@@ -968,17 +998,20 @@ class Timeframe extends CustomPostType {
 	 * @param $post_id
 	 * @param $post
 	 *
-	 * @throws Exception
 	 */
-	protected function validateTimeFrame( $post_id, $post ) {
-		$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
-		if ( ! $timeframe->isValid() ) {
-			// set post_status to draft if not valid
-			if ( $post->post_status !== 'draft' ) {
-				$post->post_status = 'draft';
-				wp_update_post( $post );
-			}
+	protected function validateTimeFrame( $post_id, $post ): bool {
+		try {
+			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
+			if ( ! $timeframe->isValid() ) {
+				// set post_status to draft if not valid
+				if ( $post->post_status !== 'draft' ) {
+					$post->post_status = 'draft';
+					wp_update_post( $post );
+				}
 
+				return false;
+			}
+		} catch ( Exception $e ) {
 			return false;
 		}
 
@@ -1127,7 +1160,7 @@ class Timeframe extends CustomPostType {
 					echo '-';
 					break;
 				case 'type':
-					$output    = "-";
+					$output = "-";
 
 					foreach ( $this->getCustomFields() as $customField ) {
 						if ( $customField['id'] == 'type' ) {

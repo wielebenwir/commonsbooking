@@ -3,6 +3,7 @@
 namespace CommonsBooking\View;
 
 
+use CMB2_Field;
 use CommonsBooking\Repository\CB1;
 
 class Migration {

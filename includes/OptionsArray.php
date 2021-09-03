@@ -170,8 +170,8 @@ return array(
 	'templates'    => array(
 		'title'        => commonsbooking_sanitizeHTML( __( 'Templates', 'commonsbooking' ) ),
 		'id'           => 'templates',
-		// field group email templates start
 		'field_groups' => array(
+			/* field group email templates start */
 			'emailtemplates'   => array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'Email templates', 'commonsbooking' ) ),
 				'id'     => 'emailtemplates',
@@ -292,6 +292,96 @@ Thanks, the Team.
 	),
 	/* Tab: templates end*/
 
+	/* Tab: restrictions start*/
+	'restrictions' => array(
+		'title'        => commonsbooking_sanitizeHTML( __( 'Restrictions', 'commonsbooking' ) ),
+		'id'           => 'restrictions',
+		'field_groups' => array(
+			/* field group email templates start */
+			'emailtemplates' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Email templates', 'commonsbooking' ) ),
+				'id'     => 'emailtemplates',
+				'fields' => array(
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Mail-Header from E-Mail', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'E-Mail that will be shown as sender in generated emails', 'commonsbooking' ) ),
+						'id'      => 'restrictions-from-email',
+						'type'    => 'text',
+						'default' => get_option( 'admin_email' ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Mail-Header from Name', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'Name that will be shown as sender in generated emails', 'commonsbooking' ) ),
+						'id'      => 'restrictions-from-name',
+						'type'    => 'text',
+						'default' => get_option( 'blogname' ),
+					),
+
+					// E-Mail repair
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Repair email subject', 'commonsbooking' ) ),
+						'id'      => 'restrictions-repair-subject',
+						'type'    => 'text',
+						'default' => commonsbooking_sanitizeHTML( __( 'Reperatur von {{restriction:itemName}}', 'commonsbooking' ) ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Repair email body', 'commonsbooking' ) ),
+						'id'      => 'restrictions-repair-body',
+						'type'    => 'textarea',
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hallo {{user:first_name}},</h2>
+								<p>
+								das Lastenrad {{restriction:itemName}} ist von {{restriction:formattedStartDateTime}} bis {{restriction:formattedEndDateTime}} nicht nutzbar.
+								</p>
+								<p>
+								Der Grund dafür ist folgender:
+								{{restriction:hint}}
+								</p>', 'commonsbooking' ) ),
+					),
+
+					// E-Mail hint
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Hint email subject', 'commonsbooking' ) ),
+						'id'      => 'restrictions-hint-subject',
+						'type'    => 'text',
+						'default' => commonsbooking_sanitizeHTML( __( 'Einschränkung bei {{restriction:itemName}}', 'commonsbooking' ) ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Hint email body', 'commonsbooking' ) ),
+						'id'      => 'restrictions-hint-body',
+						'type'    => 'textarea',
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hallo {{user:first_name}},</h2>
+								<p>
+								das Lastenrad {{restriction:itemName}} ist von {{restriction:formattedStartDateTime}} - {{restriction:formattedEndDateTime}} nicht vollständig nutzbar.
+								</p>
+								<p>
+								Der Grund dafür ist folgender:
+								{{restriction:hint}}
+								</p>', 'commonsbooking' ) ),
+					),
+
+					// E-Mail restriction cancellation
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Restriction cancelled subject', 'commonsbooking' ) ),
+						'id'      => 'restrictions-restriction-cancelled-subject',
+						'type'    => 'text',
+						'default' => commonsbooking_sanitizeHTML( __( 'Restriction cancelled subject', 'commonsbooking' ) ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Restriction cancelled email body', 'commonsbooking' ) ),
+						'id'      => 'restrictions-restriction-cancelled-body',
+						'type'    => 'textarea',
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hallo {{user:first_name}},</h2>
+								<p>
+								das Lastenrad {{restriction:itemName}} ist wieder vollständig nutzbar.
+								</p>', 'commonsbooking' ) ),
+					),
+				)
+			),
+			/* field group email templates end */
+		)
+	),
+	/* Tab: restrictions end*/
+
 	/* Tab: migration start */
 	'migration'    => array(
 		'title'        => __( 'Migration', 'commonsbooking' ),
@@ -332,216 +422,215 @@ Thanks, the Team.
 	/* Tab: migration end */
 
 
-        /* Tab: export start */
-        'export' => array(
-            'title'        => __('Export', 'commonsbooking'),
-            'id'           => 'export',
-            'field_groups' => array(
-                'download' => array(
-                    'title'       => esc_html__('Download timeframes export', 'commonsbooking'),
-                    'id'          => 'download',
-                    'fields'      => [
-                        array(
-                            'name'    => esc_html__('Type', 'commonsbooking'),
-                            'desc'    => esc_html__('Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information.', 'commonsbooking'),
-                            'id'      => "export-type",
-                            'type'    => 'select',
-                            'options' => $typeOptions,
-                        ),
-                        array(
-                            'name' => commonsbooking_sanitizeHTML( __('Location-Fields', 'commonsbooking') ),
-                            'desc' => commonsbooking_sanitizeHTML( __('Just add field names, no matter if its a post- or a meta-field. Comma separated list.', 'commonsbooking') ),
-                            'id'   => 'location-fields',
-                            'type' => 'text'
-                        ),
-                        array(
-                            'name' => commonsbooking_sanitizeHTML( __('Item-Fields', 'commonsbooking') ),
-                            'desc' => commonsbooking_sanitizeHTML( __('Just add field names, no matter if its a post- or a meta-field. Comma separated list.', 'commonsbooking') ),
-                            'id'   => 'item-fields',
-                            'type' => 'text'
-                        ),
-                        array(
-                            'name' => commonsbooking_sanitizeHTML( __('User-Fields', 'commonsbooking') ),
-                            'desc' => commonsbooking_sanitizeHTML( __('Just add field names, no matter if its a user- or a meta-field. Comma separated list.', 'commonsbooking') ),
-                            'id'   => 'user-fields',
-                            'type' => 'text'
-                        ),
-                        array(
-                            'name'        => esc_html__('Export start date', 'commonsbooking'),
-                            'id'          => "export-timerange-start",
-                            'type'        => 'text_date_timestamp',
-                            'date_format' => $dateFormat,
-                            'default'     => date($dateFormat),
-                            'attributes' => array(
-                                'required' => 'required',
-                            ),
-                        ),
-                        array(
-                            'name'        => esc_html__('Export end date', 'commonsbooking'),
-                            'id'          => "export-timerange-end",
-                            'type'        => 'text_date_timestamp',
-                            'date_format' => $dateFormat,
-                            'attributes' => array(
-                                'required' => 'required',
-                            ),
-                        ),
-                        array(
-                            'name'          => commonsbooking_sanitizeHTML( __('Export', 'commonsbooking') ),
-                            'id'            => 'migration-custom-field',
-                            'type'          => 'text',
-                            'render_row_cb' => array(TimeframeExport::class, 'renderExportForm'),
-                        )
-                    ]
-                ),
-                'cron' => array(
-                    'title'       => esc_html__('Cron settings for timeframes export', 'commonsbooking'),
-                    'id'          => 'cron',
-                    'fields'      => [
-                        array(
-                            'name'        => esc_html__('Run as cronjob', 'commonsbooking'),
-                            'id'          => "export-cron",
-                            'type'        => 'checkbox'
-                        ),
-                        array(
-                            'name'    => esc_html__('Export interval', 'commonsbooking'),
-                            'id'      => "export-interval",
-                            'type'    => 'select',
-                            'options' => [
-                                'five_minutes' => "5 " . esc_html__('minutes', 'commonsbooking'),
-                                'thirty_minutes' => "30 " . esc_html__('minutes', 'commonsbooking'),
-                                'daily' => esc_html__('daily', 'commonsbooking'),
-                            ],
-                        ),
-                        array(
-                            'name'    => esc_html__('Export timerange', 'commonsbooking'),
-                            'desc' => commonsbooking_sanitizeHTML( __('Export timerange in days.', 'commonsbooking') ),
-                            'id'      => "export-timerange",
-                            'type'    => 'text',
-                            'attributes' => array(
-                                'type' => 'number',
-                                'pattern' => '\d*',
-                            ),
-                        ),
-                        array(
-                            'name' => commonsbooking_sanitizeHTML( __('Filepath', 'commonsbooking') ),
-                            'desc' => commonsbooking_sanitizeHTML( __('Absolute path on your webserver (including trailing slash) where export file will be saved to.', 'commonsbooking') ),
-                            'id'   => 'export-filepath',
-                            'type' => 'text'
-                        ),
-                    ]
-                )
-            )
-    ),
-        /* Tab: export end */
+	/* Tab: export start */
+	'export'       => array(
+		'title'        => __( 'Export', 'commonsbooking' ),
+		'id'           => 'export',
+		'field_groups' => array(
+			'download' => array(
+				'title'  => esc_html__( 'Download timeframes export', 'commonsbooking' ),
+				'id'     => 'download',
+				'fields' => [
+					array(
+						'name'    => esc_html__( 'Type', 'commonsbooking' ),
+						'desc'    => esc_html__( 'Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information.', 'commonsbooking' ),
+						'id'      => "export-type",
+						'type'    => 'select',
+						'options' => $typeOptions,
+					),
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'Location-Fields', 'commonsbooking' ) ),
+						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list.', 'commonsbooking' ) ),
+						'id'   => 'location-fields',
+						'type' => 'text'
+					),
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'Item-Fields', 'commonsbooking' ) ),
+						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list.', 'commonsbooking' ) ),
+						'id'   => 'item-fields',
+						'type' => 'text'
+					),
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'User-Fields', 'commonsbooking' ) ),
+						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a user- or a meta-field. Comma separated list.', 'commonsbooking' ) ),
+						'id'   => 'user-fields',
+						'type' => 'text'
+					),
+					array(
+						'name'        => esc_html__( 'Export start date', 'commonsbooking' ),
+						'id'          => "export-timerange-start",
+						'type'        => 'text_date_timestamp',
+						'date_format' => $dateFormat,
+						'default'     => date( $dateFormat ),
+						'attributes'  => array(
+							'required' => 'required',
+						),
+					),
+					array(
+						'name'        => esc_html__( 'Export end date', 'commonsbooking' ),
+						'id'          => "export-timerange-end",
+						'type'        => 'text_date_timestamp',
+						'date_format' => $dateFormat,
+						'attributes'  => array(
+							'required' => 'required',
+						),
+					),
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Export', 'commonsbooking' ) ),
+						'id'            => 'migration-custom-field',
+						'type'          => 'text',
+						'render_row_cb' => array( TimeframeExport::class, 'renderExportForm' ),
+					)
+				]
+			),
+			'cron'     => array(
+				'title'  => esc_html__( 'Cron settings for timeframes export', 'commonsbooking' ),
+				'id'     => 'cron',
+				'fields' => [
+					array(
+						'name' => esc_html__( 'Run as cronjob', 'commonsbooking' ),
+						'id'   => "export-cron",
+						'type' => 'checkbox'
+					),
+					array(
+						'name'    => esc_html__( 'Export interval', 'commonsbooking' ),
+						'id'      => "export-interval",
+						'type'    => 'select',
+						'options' => [
+							'five_minutes'   => "5 " . esc_html__( 'minutes', 'commonsbooking' ),
+							'thirty_minutes' => "30 " . esc_html__( 'minutes', 'commonsbooking' ),
+							'daily'          => esc_html__( 'daily', 'commonsbooking' ),
+						],
+					),
+					array(
+						'name'       => esc_html__( 'Export timerange', 'commonsbooking' ),
+						'desc'       => commonsbooking_sanitizeHTML( __( 'Export timerange in days.', 'commonsbooking' ) ),
+						'id'         => "export-timerange",
+						'type'       => 'text',
+						'attributes' => array(
+							'type'    => 'number',
+							'pattern' => '\d*',
+						),
+					),
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'Filepath', 'commonsbooking' ) ),
+						'desc' => commonsbooking_sanitizeHTML( __( 'Absolute path on your webserver (including trailing slash) where export file will be saved to.', 'commonsbooking' ) ),
+						'id'   => 'export-filepath',
+						'type' => 'text'
+					),
+				]
+			)
+		)
+	),
+	/* Tab: export end */
 
 
-    /* Tab: API  start */
-    'api' => array(
-        'title'        => __('API', 'commonsbooking'),
-        'id'           => 'api',
-        'field_groups' => array(
-            'api' => array(
-                'title'       => esc_html__('Configure API Access', 'commonsbooking'),
-                'id'          => 'api_access',
-                'fields'      => [
-                    array(
-                        'name'    => esc_html__('Activate API', 'commonsbooking'),
-                        'desc'    => commonsbooking_sanitizeHTML( __('If selected, the API is enabled. See more information in the documentation: <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking') ),
-                        'id'      => "api-activated",
-                        'type'    => 'checkbox',
-                    ),
-                    array(
-                        'name'    => esc_html__('Enable API Access without API-Key', 'commonsbooking'),
-                        'desc'    => commonsbooking_sanitizeHTML( __('If selected, the API is accessible without an API-Key. For details see: <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking') ),
-                        'id'      => "apikey_not_required",
-                        'type'    => 'checkbox',
-                    ),
+	/* Tab: API  start */
+	'api'          => array(
+		'title'        => __( 'API', 'commonsbooking' ),
+		'id'           => 'api',
+		'field_groups' => array(
+			'api' => array(
+				'title'  => esc_html__( 'Configure API Access', 'commonsbooking' ),
+				'id'     => 'api_access',
+				'fields' => [
+					array(
+						'name' => esc_html__( 'Activate API', 'commonsbooking' ),
+						'desc' => commonsbooking_sanitizeHTML( __( 'If selected, the API is enabled. See more information in the documentation: <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
+						'id'   => "api-activated",
+						'type' => 'checkbox',
+					),
+					array(
+						'name' => esc_html__( 'Enable API Access without API-Key', 'commonsbooking' ),
+						'desc' => commonsbooking_sanitizeHTML( __( 'If selected, the API is accessible without an API-Key. For details see: <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
+						'id'   => "apikey_not_required",
+						'type' => 'checkbox',
+					),
 
-                    array(
-                        // Repeatable group -> API Shares
-                        'name'    => esc_html__('API shares', 'commonsbooking'),
-                        'desc'    => commonsbooking_sanitizeHTML( __('You can define on ore more API shares. Read the documentation for more information about API shares and configuration <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking') ),
-                        'id'      => "api_share_group",
-                        'type'    => 'group',
-                        'repeatable'  => true,
-                        'options'     => array(
-                            'group_title'   => 'API {#}',
-                            'add_button'    => 'Add Another API',
-                            'remove_button' => 'Remove API',
-                            'closed'        => false,  // Repeater fields closed by default - neat & compact.
-                            'sortable'      => false,  // Allow changing the order of repeated groups.
-                        ),
+					array(
+						// Repeatable group -> API Shares
+						'name'       => esc_html__( 'API shares', 'commonsbooking' ),
+						'desc'       => commonsbooking_sanitizeHTML( __( 'You can define on ore more API shares. Read the documentation for more information about API shares and configuration <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
+						'id'         => "api_share_group",
+						'type'       => 'group',
+						'repeatable' => true,
+						'options'    => array(
+							'group_title'   => 'API {#}',
+							'add_button'    => 'Add Another API',
+							'remove_button' => 'Remove API',
+							'closed'        => false,  // Repeater fields closed by default - neat & compact.
+							'sortable'      => false,  // Allow changing the order of repeated groups.
+						),
 
-                        'fields' => [
-                            array(
-                                'name'    => esc_html__('API name', 'commonsbooking'),
-                                'desc'    => commonsbooking_sanitizeHTML( __('Internal name for this API share', 'commonsbooking') ),
-                                'id'      => 'api_name',
-                                'type'    => 'text',
-                            ),
-                            array(
-                                'name'    => esc_html__('API enabled', 'commonsbooking'),
-                                'desc'    => commonsbooking_sanitizeHTML( __('If checked this API share is enabled', 'commonsbooking') ),
-                                'id'      => 'api_enabled',
-                                'type'    => 'checkbox',
-                            ),
-                            array(
-                                'name'    => esc_html__('Push URL', 'commonsbooking'),
-                                'desc'    => commonsbooking_sanitizeHTML( __('URL that gets push information everytime there was a change on CommonsBooking data', 'commonsbooking') ),
-                                'id'      => 'push_url',
-                                'type'    => 'text',
-                            ),
-                            array(
-                                'name'    => esc_html__('API Key', 'commonsbooking'),
-                                'id'      => 'api_key',
-                                'type'    => 'text',
-                                'desc'    => commonsbooking_sanitizeHTML( __(' You must set an API-Key. The API key should consist of alphanumeric characters and be at least 24 characters long.', 'commonsbooking') ),
-                                'attributes' => array(
-                                    'required' => 'required',
-                                ),
-                            ),
-                            array(
-                                'name'    => esc_html__('API Owner', 'commonsbooking'),
-                                'desc'    => commonsbooking_sanitizeHTML( __('The owner value is provided by the API. It is set to the blog name by default in this version. In future versions you may be able to change this information', 'commonsbooking') ),
-                                'id'      => 'api_owner',
-                                'type'    => 'text',
-                                'attributes' => array(
-                                    'disabled' => 'disabled',
-                                    'readonly' => 'readonly',
-                                ),
-                                'default' => get_bloginfo('name'),
-                            ),
+						'fields' => [
+							array(
+								'name' => esc_html__( 'API name', 'commonsbooking' ),
+								'desc' => commonsbooking_sanitizeHTML( __( 'Internal name for this API share', 'commonsbooking' ) ),
+								'id'   => 'api_name',
+								'type' => 'text',
+							),
+							array(
+								'name' => esc_html__( 'API enabled', 'commonsbooking' ),
+								'desc' => commonsbooking_sanitizeHTML( __( 'If checked this API share is enabled', 'commonsbooking' ) ),
+								'id'   => 'api_enabled',
+								'type' => 'checkbox',
+							),
+							array(
+								'name' => esc_html__( 'Push URL', 'commonsbooking' ),
+								'desc' => commonsbooking_sanitizeHTML( __( 'URL that gets push information everytime there was a change on CommonsBooking data', 'commonsbooking' ) ),
+								'id'   => 'push_url',
+								'type' => 'text',
+							),
+							array(
+								'name'       => esc_html__( 'API Key', 'commonsbooking' ),
+								'id'         => 'api_key',
+								'type'       => 'text',
+								'desc'       => commonsbooking_sanitizeHTML( __( ' You must set an API-Key. The API key should consist of alphanumeric characters and be at least 24 characters long.', 'commonsbooking' ) ),
+								'attributes' => array(
+									'required' => 'required',
+								),
+							),
+							array(
+								'name'       => esc_html__( 'API Owner', 'commonsbooking' ),
+								'desc'       => commonsbooking_sanitizeHTML( __( 'The owner value is provided by the API. It is set to the blog name by default in this version. In future versions you may be able to change this information', 'commonsbooking' ) ),
+								'id'         => 'api_owner',
+								'type'       => 'text',
+								'attributes' => array(
+									'disabled' => 'disabled',
+									'readonly' => 'readonly',
+								),
+								'default'    => get_bloginfo( 'name' ),
+							),
 
-                        ]
-                    ),
-                ]
-            ),
-        ),
-    ),
-    /* Tab: export end */
+						]
+					),
+				]
+			),
+		),
+	),
+	/* Tab: export end */
 
-    /* Tab: meta data set start */
-        'metadata' => array(
-            'title'        => __('Meta Data-Sets', 'commonsbooking'),
-            'id'           => 'custom_metadata',
-            'field_groups' => array(
-                'custom_metadata' => array(
-                    'title'       => esc_html__('Set Custom metadata to locations and items', 'commonsbooking'),
-                    'id'          => 'meta_data_group',
-                    'fields'      => [
-                        array(
-                            'name'    => esc_html__('Meta Data', 'commonsbooking'),
-                            'desc'    => commonsbooking_sanitizeHTML( __('Use only this format, separated by semicolon and and each entry in a new line: <br>post_type(item/location);field-name;label(english),type(checkbox,number,text),description(in english)<br>
-                                        Example: item;waterproof;Waterproof material;checkbox;"This item is waterproof and can be used in heavy rain" ', 'commonsbooking') ),
-                            'id'      => "metadata",
-                            'type'    => 'textarea',
-                        ),
-                    ]
-                ),
-            ),
-    ),
-        /* Tab: meta data end */
-
+	/* Tab: meta data set start */
+	'metadata'     => array(
+		'title'        => __( 'Meta Data-Sets', 'commonsbooking' ),
+		'id'           => 'custom_metadata',
+		'field_groups' => array(
+			'custom_metadata' => array(
+				'title'  => esc_html__( 'Set Custom metadata to locations and items', 'commonsbooking' ),
+				'id'     => 'meta_data_group',
+				'fields' => [
+					array(
+						'name' => esc_html__( 'Meta Data', 'commonsbooking' ),
+						'desc' => commonsbooking_sanitizeHTML( __( 'Use only this format, separated by semicolon and and each entry in a new line: <br>post_type(item/location);field-name;label(english),type(checkbox,number,text),description(in english)<br>
+                                        Example: item;waterproof;Waterproof material;checkbox;"This item is waterproof and can be used in heavy rain" ', 'commonsbooking' ) ),
+						'id'   => "metadata",
+						'type' => 'textarea',
+					),
+				]
+			),
+		),
+	),
+	/* Tab: meta data end */
 
 
 );
