@@ -41,7 +41,3 @@ require __DIR__.'/vendor/autoload.php';
 require __DIR__.'/vendor/cmb2/cmb2/init.php';
 require __DIR__.'/vendor/mustardBees/cmb-field-select2/cmb-field-select2.php';
 require __DIR__. '/includes/Plugin.php';
-
-
-// run activation tasks -> doesn't work by require/include
-register_activation_hook( __FILE__, array( Plugin::class, 'activation' ) );
