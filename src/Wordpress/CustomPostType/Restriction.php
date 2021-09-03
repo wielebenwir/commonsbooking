@@ -187,11 +187,6 @@ class Restriction extends CustomPostType {
 				'type' => 'textarea'
 			),
 			array(
-				'name' => esc_html__( "Active", 'commonsbooking' ),
-				'id'   => \CommonsBooking\Model\Restriction::META_ACTIVE,
-				'type' => 'checkbox',
-			),
-			array(
 				'name' => esc_html__( 'Start date', 'commonsbooking' ),
 				'desc' => esc_html__( 'Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking' ),
 				'id'   => \CommonsBooking\Model\Restriction::META_START,
@@ -209,8 +204,18 @@ class Restriction extends CustomPostType {
 				'default' => wp_create_nonce( plugin_basename( __FILE__ ) )
 			),
 			array(
-				'name'          => esc_html__( 'Send Restriction', 'commonsbooking' ),
-//				'desc' => esc_html__( '....', 'commonsbooking' ),
+				'name'             => esc_html__( "State", 'commonsbooking' ),
+				'id'               => \CommonsBooking\Model\Restriction::META_STATE,
+				'type'             => 'select',
+				'show_option_none' => true,
+				'options'          => array(
+					'1' => esc_html__( "Active", 'commonsbooking' ),
+					'0'   => esc_html__( "Problem Solved", 'commonsbooking' ),
+				),
+			),
+			array(
+				'name'          => esc_html__( 'Send notifications', 'commonsbooking' ),
+				'desc'          => esc_html__( 'In connection with the status of the restriction, the appropriate notifications are sent.', 'commonsbooking' ),
 				'id'            => self::SEND_BUTTON_ID,
 				'type'          => 'text',
 				'render_row_cb' => array( \CommonsBooking\View\Restriction::class, 'renderSendButton' ),

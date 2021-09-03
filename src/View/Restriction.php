@@ -18,31 +18,38 @@ class Restriction extends View {
 	 * @param $field
 	 */
 	public static function renderSendButton( $field_args, $field ) {
-		$id          = $field->args( 'id' );
-		$label       = $field->args( 'name' );
+		$id     = $field->args( 'id' );
+		$label  = $field->args( 'name' );
+		$desc   = $field->args( 'desc' );
 		$postId = $field->object_id();
-		$sent = get_post_meta( $postId, \CommonsBooking\Model\Restriction::META_SENT, true );
+		$sent   = get_post_meta( $postId, \CommonsBooking\Model\Restriction::META_SENT, true );
 
-		if($sent) {
+		if ( $sent ) {
 			$dateFormat = get_option( 'date_format' );
 			$timeFormat = get_option( 'time_format' );
 			$sent       = date( $dateFormat . ' | ' . $timeFormat, $sent );
 		}
 
 		?>
-		<div class="cmb-row cmb-type-text">
-			<div class="cmb-th">
-				<label for="<?php echo $id; ?>"><?php echo $label; ?></label>
-			</div>
-			<div class="cmb-td">
-				<input type="submit" name="<?php echo $id; ?>" value="<?php echo esc_html__( 'Send', 'commonsbooking' ); ?>" />
-				<?php if($sent) { ?>
-					<p class="cmb2-metabox-description">
-                        <?php echo esc_html__( "Sent", 'commonsbooking' ) .": " . $sent; ?>
+        <div class="cmb-row cmb-type-text">
+            <div class="cmb-th">
+                <label for="<?php echo $id; ?>"><?php echo $label; ?></label>
+            </div>
+            <div class="cmb-td">
+                <input type="submit" name="<?php echo $id; ?>"
+                       value="<?php echo esc_html__( 'Send', 'commonsbooking' ); ?>"/>
+	            <?php if ( $desc ) { ?>
+                    <p class="cmb2-metabox-description">
+			            <?php echo $desc; ?>
+                    </p>
+	            <?php } ?>
+                <?php if ( $sent ) { ?>
+                    <p class="cmb2-metabox-description">
+						<?php echo esc_html__( "Sent", 'commonsbooking' ) . ": " . $sent; ?>
                     </p>
 				<?php } ?>
-			</div>
-		</div>
+            </div>
+        </div>
 		<?php
 	}
 

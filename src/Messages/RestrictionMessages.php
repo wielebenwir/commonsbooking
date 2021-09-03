@@ -23,10 +23,10 @@ class RestrictionMessages extends Messages {
 	 * @param $user
 	 * @param $action
 	 */
-	public function __construct( $restriction, $user, $action) {
+	public function __construct( $restriction, $user, $action ) {
 		$this->restriction = $restriction;
-		$this->user = $user;
-		$this->action = $action;
+		$this->user        = $user;
+		$this->action      = $action;
 	}
 
 	/**
@@ -41,7 +41,9 @@ class RestrictionMessages extends Messages {
 				// Send repair mail
 				$this->sendRepairMail();
 			}
-		} else {
+		}
+
+		if ( $this->getRestriction()->isCancelled() ) {
 			// send restriction cancellation
 			$this->sendRestrictionCancelationMail();
 		}
@@ -94,13 +96,13 @@ class RestrictionMessages extends Messages {
 
 	/**
 	 * Prepares mail for sending.
+	 *
 	 * @param $body
 	 * @param $subject
 	 */
-	protected function prepareRestrictionMail($body, $subject) {
+	protected function prepareRestrictionMail( $body, $subject ) {
 		$fromHeader = 'From: ' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-name' ) .
-		              ' <' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-email' ) . '>'
-			;
+		              ' <' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-email' ) . '>';
 		$this->prepareMail(
 			$this->getUser(),
 			$body,
@@ -109,8 +111,8 @@ class RestrictionMessages extends Messages {
 			null,
 			[
 				'restriction' => $this->getRestriction(),
-				'item' => get_post($this->getRestriction()->getItemId()),
-				'location' => get_post($this->getRestriction()->getLocationId())
+				'item'        => get_post( $this->getRestriction()->getItemId() ),
+				'location'    => get_post( $this->getRestriction()->getLocationId() )
 			]
 		);
 	}

@@ -6,6 +6,12 @@ use function get_user_by;
 
 class CB {
 
+	protected static $INTERNAL_DATE_FORMAT = 'd.m.Y';
+
+	public static function getInternalDateFormat(): string {
+		return static::$INTERNAL_DATE_FORMAT;
+	}
+
 	/**
 	 * echo
 	 *
@@ -29,12 +35,15 @@ class CB {
 	 *
 	 * @return mixed
 	 */
-	public static function get( $key, $property, $postId = null, $args = null ) {
-		if ( ! $postId ) {
+	public static function get( $key, $property, $post = null, $args = null ) {
+		if ( ! $post ) {
 			$postId = self::getPostId( $key );
+			$post = get_post($postId);
+		} else if(is_int($post)) {
+			$post = get_post($post);
 		}
 
-		$result     = self::lookUp( $key, $property, $postId, $args );  // Find matching methods, properties or metadata
+		$result     = self::lookUp( $key, $property, $post, $args );  // Find matching methods, properties or metadata
 		$filterName = sprintf( 'cb_tag_%s_%s', $key, $property );
 
 		return apply_filters( $filterName, $result );
@@ -82,23 +91,20 @@ class CB {
 	/**
 	 * @param $key
 	 * @param $property
-	 * @param $postID
+	 * @param $post
 	 * @param $args
 	 *
 	 * @return string|null
 	 */
-	public static function lookUp( $key, $property, $postID, $args ): ?string {
+	public static function lookUp( $key, $property, $post, $args ): ?string {
 
 		$result = null;
 
-		$repo  = 'CommonsBooking\Repository\\' . ucfirst( $key ); // we access the Repository not the cpt class here
-		$model = 'CommonsBooking\Model\\' . ucfirst( $key ); // we check method_exists against model as workaround, cause it doesn't work on repo
-
 		if ( $key == 'user' ) {
-			$userID  = intval( get_post( $postID )->post_author );
+			$userID  = intval( $post->post_author );
 			$cb_user = get_user_by( 'ID', $userID );
 
-			if ( method_exists( $model, $property ) ) {
+			if ( method_exists( $cb_user, $property ) ) {
 				$result = $cb_user->$property( $args );
 			}
 
@@ -110,26 +116,21 @@ class CB {
 				$result = get_user_meta( $userID, $property, true );
 			}
 		} else {
-			if ( get_post_meta( $postID, $property, true ) ) { // Post has meta fields
-				$result = get_post_meta( $postID, $property, true );
+			if ( get_post_meta( $post, $property, true ) ) { // Post has meta fields
+				$result = get_post_meta( $post, $property, true );
 			}
 
-			// Look up
-			if ( ! $result && class_exists( $repo ) ) {
-				$post = $repo::getPostById( $postID );
+			if ( method_exists( $post, $property ) ) {
+				$result = $post->$property( $args );
+			}
 
-				if ( method_exists( $model, $property ) ) {
-					$result = $post->$property( $args );
-				}
+			$prefixedProperty = 'get' . ucfirst( $property );
+			if ( ! $result && method_exists( $post, $prefixedProperty ) ) {
+				$result = $post->$prefixedProperty( $args );
+			}
 
-				$prefixedProperty = 'get' . ucfirst( $property );
-				if ( ! $result && method_exists( $model, $prefixedProperty ) ) {
-					$result = $post->$prefixedProperty( $args );
-				}
-
-				if ( ! $result && $post->$property ) {
-					$result = $post->$property;
-				}
+			if ( ! $result && $post->$property ) {
+				$result = $post->$property;
 			}
 		}
 

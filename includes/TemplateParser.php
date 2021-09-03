@@ -41,12 +41,12 @@ function commonsbooking_parse_template_callback( $match, $objects = [] ) {
 		// we accept : and # as separator cause the : delimiter wasn't working when using the template tag in a href links in the template (like <a href="{{xxx#yyyy}}"></a>)
 		$path = preg_split( '/(\:|\#)/', $match, 2 );
 		if ( isset( $path[0] ) and isset( $path[1] ) ) {
-			$postId = null;
+			$post = null;
 			if ( array_key_exists( $path[0], $objects ) ) {
-				$postId = $objects[ $path[0] ]->getPost()->ID;
+				$post = $objects[ $path[0] ];
 			}
 
-			return CB::get( $path[0], $path[1], $postId );
+			return CB::get( $path[0], $path[1], $post );
 		}
 	}
 

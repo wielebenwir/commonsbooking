@@ -322,13 +322,20 @@ Thanks, the Team.
 						'name'    => commonsbooking_sanitizeHTML( __( 'Repair email subject', 'commonsbooking' ) ),
 						'id'      => 'restrictions-repair-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( '', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Reperatur von {{restriction:itemName}}', 'commonsbooking' ) ),
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Repair email body', 'commonsbooking' ) ),
 						'id'      => 'restrictions-repair-body',
 						'type'    => 'textarea',
-						'default' => commonsbooking_sanitizeHTML( __( '', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hallo {{user:first_name}},</h2>
+								<p>
+								das Lastenrad {{restriction:itemName}} ist von {{restriction:formattedStartDateTime}} bis {{restriction:formattedEndDateTime}} nicht nutzbar.
+								</p>
+								<p>
+								Der Grund dafür ist folgender:
+								{{restriction:hint}}
+								</p>', 'commonsbooking' ) ),
 					),
 
 					// E-Mail hint
@@ -336,13 +343,20 @@ Thanks, the Team.
 						'name'    => commonsbooking_sanitizeHTML( __( 'Hint email subject', 'commonsbooking' ) ),
 						'id'      => 'restrictions-hint-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( '', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Einschränkung bei {{restriction:itemName}}', 'commonsbooking' ) ),
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Hint email body', 'commonsbooking' ) ),
 						'id'      => 'restrictions-hint-body',
 						'type'    => 'textarea',
-						'default' => commonsbooking_sanitizeHTML( __( '', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hallo {{user:first_name}},</h2>
+								<p>
+								das Lastenrad {{restriction:itemName}} ist von {{restriction:formattedStartDateTime}} - {{restriction:formattedEndDateTime}} nicht vollständig nutzbar.
+								</p>
+								<p>
+								Der Grund dafür ist folgender:
+								{{restriction:hint}}
+								</p>', 'commonsbooking' ) ),
 					),
 
 					// E-Mail restriction cancellation
@@ -350,13 +364,16 @@ Thanks, the Team.
 						'name'    => commonsbooking_sanitizeHTML( __( 'Restriction cancelled subject', 'commonsbooking' ) ),
 						'id'      => 'restrictions-restriction-cancelled-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( '', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Restriction cancelled subject', 'commonsbooking' ) ),
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Restriction cancelled email body', 'commonsbooking' ) ),
 						'id'      => 'restrictions-restriction-cancelled-body',
 						'type'    => 'textarea',
-						'default' => commonsbooking_sanitizeHTML( __( '', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hallo {{user:first_name}},</h2>
+								<p>
+								das Lastenrad {{restriction:itemName}} ist wieder vollständig nutzbar.
+								</p>', 'commonsbooking' ) ),
 					),
 				)
 			),

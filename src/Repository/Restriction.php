@@ -95,7 +95,7 @@ class Restriction extends PostRepository {
 				// query result because wp_query is to slow for meta-querying them.
 				if ( count( $locations ) || count( $items ) ) {
 					$posts = array_filter( $posts, function ( $post ) use ( $locations, $items ) {
-						$isActive = get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_ACTIVE, true ) == 'on';
+						$isActive = get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_STATE, true ) == 1;
 						$location = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID, true ) );
 						$location = $location == 0 ?? false;
 						$item     = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID, true ) );

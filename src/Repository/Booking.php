@@ -86,10 +86,12 @@ class Booking extends PostRepository {
 	 * @param $endDate
 	 * @param $locationId
 	 * @param $itemId
+	 * @param array $customArgs
 	 *
 	 * @return \CommonsBooking\Model\Booking[]|null
+	 * @throws Exception
 	 */
-	public static function getBookingsByTimerange( $startDate, $endDate, $locationId, $itemId ): ?array {
+	public static function getBookingsByTimerange( $startDate, $endDate, $locationId, $itemId, array $customArgs = []): ?array {
 		// Default query
 		$args = array(
 			'post_type'   => Timeframe::getPostType(),
@@ -132,11 +134,16 @@ class Booking extends PostRepository {
 			);
 		}
 
+		// Overwrite args with passed custom args
+		$args = array_merge($args, $customArgs);
+
 		$query = new WP_Query( $args );
 		if ( $query->have_posts() ) {
 			$posts = $query->get_posts();
-			$posts = array_filter( $posts, function ( $post ) {
-				return in_array( $post->post_status, array( 'confirmed', 'unconfirmed' ) );
+
+			// Filter by post_status, query seems not to work reliable
+			$posts = array_filter( $posts, function ( $post ) use ($args) {
+				return in_array( $post->post_status, $args['post_status'] );
 			} );
 
 			foreach ($posts as &$post) {
@@ -202,6 +209,27 @@ class Booking extends PostRepository {
 			$restriction->getLocationId(),
 			$restriction->getItemId()
 		);
+	}
+
+	/**
+	 * @param \CommonsBooking\Model\Restriction $restriction
+	 *
+	 * @return \WP_Post[]|null
+	 */
+	public static function getCanceledByRestriction( \CommonsBooking\Model\Restriction $restriction ): ?array {
+		try {
+			return self::getBookingsByTimerange(
+				$restriction->getStartDate(),
+				$restriction->getEndDate(),
+				$restriction->getLocationId(),
+				$restriction->getItemId(),
+				[
+					'post_status' => array( 'canceled'),
+				]
+			);
+		} catch (Exception $exception) {
+			return [];
+		}
 	}
 
 }

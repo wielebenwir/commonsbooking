@@ -20,7 +20,7 @@ class Restriction extends CustomPost {
 
 	const META_TYPE = 'restriction-type';
 
-	const META_ACTIVE = 'restriction-active';
+	const META_STATE = 'restriction-state';
 
 	const META_LOCATION_ID = 'restriction-location-id';
 
@@ -28,7 +28,9 @@ class Restriction extends CustomPost {
 
 	const META_SENT = 'restriction-sent';
 
-	protected $active = false;
+	protected $active;
+
+	protected $canceled;
 
 	/**
 	 * Returns start-time \DateTime.
@@ -144,10 +146,21 @@ class Restriction extends CustomPost {
 	 */
 	public function isActive(): bool {
 		if ( $this->active == null ) {
-			$this->active = $this->getMeta( self::META_ACTIVE );
+			$this->active = $this->getMeta( self::META_STATE ) ?: false;
 		}
 
 		return $this->active;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isCancelled(): bool {
+		if($this->canceled == null) {
+			$this->canceled = $this->getMeta( self::META_STATE ) === '0' ?: false;
+		}
+
+		return $this->canceled;
 	}
 
 	/**
@@ -231,14 +244,23 @@ class Restriction extends CustomPost {
 	 * Apply restriction workflow.
 	 */
 	public function apply() {
-		$bookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
-
-		if ( $bookings ) {
-			if ( $this->isActive() && $this->getType() == self::TYPE_REPAIR ) {
-				$this->cancelBookings();
+		// Check if this is an active restriction
+		if($this->isActive()) {
+			$bookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
+			if ( $bookings ) {
+				if ( $this->isActive() && $this->getType() == self::TYPE_REPAIR ) {
+					$this->cancelBookings($bookings);
+				}
+				$this->sendRestrictionMails( $bookings );
 			}
+		}
 
-			$this->sendRestrictionMails( $bookings );
+		// Check if this is a canceled/solved restriction
+		if($this->isCancelled()) {
+			$canceledBookings = \CommonsBooking\Repository\Booking::getCanceledByRestriction( $this );
+			if ( $canceledBookings ) {
+				$this->sendRestrictionMails( $canceledBookings );
+			}
 		}
 	}
 
