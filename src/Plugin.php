@@ -43,6 +43,9 @@ class Plugin {
 	 * @return mixed
 	 */
 	public static function getCacheItem( $custom_id = null ) {
+		if(WP_DEBUG) {
+			return false;
+		}
 		return get_transient( self::getCacheId( $custom_id ) );
 	}
 
@@ -591,7 +594,8 @@ class Plugin {
 			Location::getPostType(),
 			Timeframe::getPostType(),
 			Map::getPostType(),
-			Restriction::getPostType()
+			Restriction::getPostType(),
+			\CommonsBooking\Wordpress\CustomPostType\Booking::getPostType()
 		];
 	}
 

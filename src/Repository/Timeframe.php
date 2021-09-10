@@ -110,7 +110,7 @@ class Timeframe extends PostRepository {
                     " . $dateQuery . "
                     WHERE
                         pm1.id in (" . implode( ",", $postIds ) . ") AND
-                        pm1.post_type = '" . \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() . "' AND
+                        pm1.post_type IN ('" . implode( "','", \CommonsBooking\Wordpress\CustomPostType\Timeframe::getSimilarPostTypes() ) . "') AND
                         pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
                 ";
 
@@ -156,7 +156,15 @@ class Timeframe extends PostRepository {
 			// if returnAsModel == TRUE the result is a timeframe model instead of a wordpress object
 			if ( $returnAsModel ) {
 				foreach ( $posts as &$post ) {
-					$post = new \CommonsBooking\Model\Timeframe( $post );
+					// If we have a standard timeframe
+					if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() ) {
+						$post = new \CommonsBooking\Model\Timeframe( $post );
+					}
+
+					// If it is a booking
+					if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Booking::getPostType() ) {
+						$post = new \CommonsBooking\Model\Booking( $post );
+					}
 				}
 			}
 
@@ -305,7 +313,7 @@ class Timeframe extends PostRepository {
                     " . $dateQuery . "
                     WHERE
                         pm1.id in (" . implode( ",", $postIds ) . ") AND
-                        pm1.post_type = '" . \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() . "' AND
+                        pm1.post_type IN ('" . implode( "','", \CommonsBooking\Wordpress\CustomPostType\Timeframe::getSimilarPostTypes() ) . "') AND
                         pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
                 ";
 
@@ -468,7 +476,7 @@ class Timeframe extends PostRepository {
                     " . $dateQuery . "
                     WHERE
                         pm1.id in (" . implode( ",", $postIds ) . ") AND
-                        pm1.post_type = '" . \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() . "' AND
+                        pm1.post_status IN ('" . implode( "','", \CommonsBooking\Wordpress\CustomPostType\Timeframe::getSimilarPostTypes() ) . "') AND
                         pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
                 ";
 

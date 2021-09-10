@@ -23,7 +23,7 @@ class Booking extends PostRepository {
 	public static function getBookingByDate( $startDate, $endDate, $location, $item ): ?\CommonsBooking\Model\Booking {
 		// Default query
 		$args = array(
-			'post_type'   => Timeframe::getPostType(),
+			'post_type'   => Timeframe::getSimilarPostTypes(),
 			'meta_query'  => array(
 				'relation' => "AND",
 				array(
@@ -94,7 +94,7 @@ class Booking extends PostRepository {
 	public static function getBookingsByTimerange( $startDate, $endDate, $locationId, $itemId, array $customArgs = []): ?array {
 		// Default query
 		$args = array(
-			'post_type'   => Timeframe::getPostType(),
+			'post_type'   => Timeframe::getSimilarPostTypes(),
 			'meta_query'  => array(
 				'relation' => "AND",
 				array(

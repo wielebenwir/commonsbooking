@@ -277,7 +277,8 @@ class Calendar {
 				[ $item ],
 				[ Timeframe::BOOKABLE_ID ],
 				null,
-				true
+				true,
+				time()
 			);
 
 			if ( count( $bookableTimeframes ) ) {
@@ -292,6 +293,8 @@ class Calendar {
 				// Check if start-/enddate was requested, then don't change it
 				// otherwise start with first bookable month
 				$startDateTimestamp = $firstBookableTimeframe->getStartDate();
+				$startDateTimestamp = $startDateTimestamp > time() ? $startDateTimestamp : time();
+
 				if ( ! $gotStartDate ) {
 					$startDate = new Day( date( 'Y-m-d', $startDateTimestamp ) );
 				}

@@ -54,6 +54,13 @@ class Timeframe extends CustomPostType {
 	 */
 	public static $postType = 'cb_timeframe';
 
+	public static function getSimilarPostTypes () {
+		return [
+			Timeframe::$postType,
+			\CommonsBooking\Wordpress\CustomPostType\Booking::$postType
+		];
+    }
+
 	/**
 	 * Timeframetypes which cannot be "overbooked".
 	 * @var int[]
