@@ -491,9 +491,6 @@ Thanks, the Team.
                                 'id'      => 'api_key',
                                 'type'    => 'text',
                                 'desc'    => commonsbooking_sanitizeHTML( __(' You must set an API-Key. The API key should consist of alphanumeric characters and be at least 24 characters long.', 'commonsbooking') ),
-                                'attributes' => array(
-                                    'required' => 'required',
-                                ),
                             ),
                             array(
                                 'name'    => esc_html__('API Owner', 'commonsbooking'),
