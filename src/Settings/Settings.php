@@ -48,7 +48,7 @@ class Settings
      * @param $options_key
      * @param $field_id
      *
-     * @return void
+     * @return array
      */
 	public static function getOption($options_key, $field_id)
 	{
