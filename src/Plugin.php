@@ -262,7 +262,7 @@ class Plugin
     public function initRoutes()
     {
         // Check if API is activated in settings
-        $api_activated = Settings::getOption('commonsbooking_options_export', 'api-activated');
+        $api_activated = Settings::getOption('commonsbooking_options_api', 'api-activated');
         if ($api_activated != "on") {
             return false;
         }
