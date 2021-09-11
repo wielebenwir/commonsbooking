@@ -712,12 +712,14 @@ class Timeframe extends CustomPostType {
 				'name'    => esc_html__( "Location", 'commonsbooking' ),
 				'id'      => "location-id",
 				'type'    => 'select',
+				'show_option_none' => esc_html__( 'Please select' , 'commonsbooking'),
 				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
 			),
 			array(
 				'name'    => esc_html__( "Item", 'commonsbooking' ),
 				'id'      => "item-id",
 				'type'    => 'select',
+				'show_option_none' => esc_html__( 'Please select' , 'commonsbooking'),
 				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 			),
 			array(

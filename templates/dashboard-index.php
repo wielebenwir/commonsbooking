@@ -25,6 +25,7 @@
 						<li><a href="mailto:mail@commonsbooking.org?body=%0D%0A%0D%0A-----------%0D%0A%0D%0AInstallations-URL: <?php echo home_url(); ?>%0D%0A%0D%0ACB-Version: <?php echo COMMONSBOOKING_VERSION; ?>" target="_blank"><?php echo __('Support E-Mail', 'commonsbooking') ;?></a></li>
 						<li><a href="https://commonsbooking.org/kontakt/" target="_blank"><?php echo __('Contact & Newsletter', 'commonsbooking') ;?></a></li>
 					</ul>
+				<p>			<?php echo __('CommonsBooking Version', 'commonsbooking') . ' ' . COMMONSBOOKING_VERSION; ?></p>
 				</div><!-- .welcome-panel-column -->
 			</div><!-- .welcome-panel-column-container -->
 		</div>
