@@ -135,7 +135,9 @@ class BaseRoute extends \WP_REST_Controller
     public static function hasPermission()
     {
         $isApiActive = Settings::getOption('commonsbooking_options_api', 'api-activated');
+        var_dump($isApiActive);
         $anonymousAccessAllowed = Settings::getOption('commonsbooking_options_api', 'apikey_not_required');
+        var_dump($anonymousAccessAllowed);
         $apiKey = array_key_exists(self::API_KEY_PARAM, $_REQUEST) ? sanitize_text_field($_REQUEST[self::API_KEY_PARAM]) : false;
         $apiShare = ApiShares::getByKey($apiKey);
 
