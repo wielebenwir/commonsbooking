@@ -14,7 +14,7 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
             <input type="hidden" name="location-id" value="<?php echo $templateData['location']->ID; ?>"/>
             <input type="hidden" name="item-id" value="<?php echo $templateData['item']->ID; ?>"/>
             <input type="hidden" name="type" value="<?php echo $templateData['type']; ?>"/>
-            <input type="hidden" name="post_type" value="cb_timeframe"/>
+            <input type="hidden" name="post_type" value="cb_booking"/>
             <input type="hidden" name="post_status" value="unconfirmed"/>
 
             <div class="time-selection-container">

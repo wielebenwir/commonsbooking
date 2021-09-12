@@ -401,7 +401,7 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
-	 * Returns timefranges in explicit timerange.
+	 * Returns timeframes in explicit timerange.
 	 *
 	 * @param array $locations
 	 * @param array $items
@@ -476,7 +476,7 @@ class Timeframe extends PostRepository {
                     " . $dateQuery . "
                     WHERE
                         pm1.id in (" . implode( ",", $postIds ) . ") AND
-                        pm1.post_status IN ('" . implode( "','", \CommonsBooking\Wordpress\CustomPostType\Timeframe::getSimilarPostTypes() ) . "') AND
+                        pm1.post_type IN ('" . implode( "','", \CommonsBooking\Wordpress\CustomPostType\Timeframe::getSimilarPostTypes() ) . "') AND
                         pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
                 ";
 
