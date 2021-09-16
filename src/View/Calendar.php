@@ -272,13 +272,13 @@ class Calendar {
 
 				// prepare string to calculate max advance booking days based on user defined max days in first bookable timeframe 
 				$advanceBookingDays = '+' . $firstBookableTimeframe->getMaxAdvanceBookingDays(). ' days';
+				
 
 				$gotStartDate = true;
 				if ( $startDateString == null ) {
 					$startDateString = date( 'Y-m-d', strtotime( 'now', time() ) );
 					$gotStartDate    = false;
 				}
-
 		
 				$gotEndDate = true;
 				if ( $endDateString == null ) {
@@ -286,16 +286,19 @@ class Calendar {
 					$gotEndDate    = false;
 				}
 		
-				if ( array_key_exists( 'sd', $_POST ) ) {
-					$gotStartDate    = true;
-					$startDateString = sanitize_text_field( $_POST['sd'] );
-				}
+				// TODO @markus-mw: wofür benötigen wir diese Abfragen? Und wo werden die definiert?
+				// if ( array_key_exists( 'sd', $_POST ) ) {
+				// 	$gotStartDate    = true;
+				// 	$startDateString = sanitize_text_field( $_POST['sd'] );
+				// }
+				
 				$startDate = new Day( $startDateString );
 		
-				if ( array_key_exists( 'ed', $_POST ) ) {
-					$gotEndDate    = true;
-					$endDateString = sanitize_text_field( $_POST['ed'] );
-				}
+				// TODO @markus-mw: wofür benötigen wir diese Abfragen? Und wo werden die definiert?
+				// if ( array_key_exists( 'ed', $_POST ) ) {
+				// 	$gotEndDate    = true;
+				// 	$endDateString = sanitize_text_field( $_POST['ed'] );
+				// }
 
 				$endDate = new Day( $endDateString );
 
@@ -309,7 +312,6 @@ class Calendar {
 				}
 			}
 		}
-		var_dump($startDate);
 
 		return self::prepareJsonResponse( $startDate, $endDate, $location ? [ $location ] : [], $item ? [ $item ] : [] );
 
@@ -359,7 +361,6 @@ class Calendar {
 				'disallowLockDaysInRange' => true
 			];
 
-
 			// Notice with advanced booking days. Will be parsed in litepicker.js with DOM object #calendarNotice
 			$jsonResponse['calendarNotice']['advanceBookingDays'] = 
 				commonsbooking_sanitizeHTML( __('Maxium booking period in advance: ') ) . $advanceBookingDaysFormatted . esc_html__( ' days' );
@@ -372,6 +373,8 @@ class Calendar {
 						$locations[0]
 					)
 				);
+
+				// are overbooking allowed in location options?
 				$allowLockedDaysInRange                  = get_post_meta(
 					$locations[0],
 					COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
@@ -423,7 +426,7 @@ class Calendar {
 					// if day is out max advance booking days range, day is marked as locked to avoid booking
 					if ($day->getDate() > $endDate->getDate()) {
 						$dayArray['locked']    = true;
-					}
+					}	
 
 					// Add day to calendar data.
 					$jsonResponse['days'][ $day->getFormattedDate( 'Y-m-d' ) ] = $dayArray;
@@ -461,6 +464,8 @@ class Calendar {
 	 * @param $noSlots
 	 */
 	protected static function processSlot( $slot, &$dayArray, &$jsonResponse, &$allLocked, &$noSlots ) {
+
+
 		// Add only bookable slots for time select
 		if ( ! empty( $slot['timeframe'] ) && $slot['timeframe'] instanceof WP_Post ) {
 			// We have at least one slot ;)
