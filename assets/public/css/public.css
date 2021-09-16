@@ -3703,7 +3703,7 @@
 /* line 28, ../sass/partials/_lists.scss */
 .cb-wrapper .cb-address.cb-location-pickupinstructions {
   white-space: pre;
-  margin-top: 1em;
+  margin-top: 0;
 }
 /* line 34, ../sass/partials/_lists.scss */
 .cb-wrapper h1, .cb-wrapper h2, .cb-wrapper h3, .cb-wrapper h4 {
@@ -3793,6 +3793,8 @@
 .cb-wrapper input[type="color"],
 .cb-wrapper textarea,
 .cb-wrapper select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
   background: #FFF;
   border-radius: 8px;
   border-style: solid;
