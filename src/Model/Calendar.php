@@ -58,6 +58,7 @@ class Calendar {
 	 * @return array
 	 */
 	public function getWeeks(): array {
+		
 		$startDate = strtotime( $this->startDate->getDate() );
 		$endDate   = strtotime( $this->endDate->getDate() );
 
@@ -69,7 +70,9 @@ class Calendar {
 			serialize( $this->types )
 		);
 
-		if ( Plugin::getCacheItem( $customId ) ) {
+		
+		// TODO: Cache deactivated. Need solution to realize a day by day Cache refresh
+		if ( 1 != 1 OR Plugin::getCacheItem( $customId ) ) {
 			return Plugin::getCacheItem( $customId );
 		} else {
 			$weeks = [];

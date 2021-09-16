@@ -733,6 +733,18 @@ class Timeframe extends CustomPostType {
 				'default'    => 3,
 			),
 			array(
+				'name'       => esc_html__( 'Maximum booking days in advance', 'commonsbooking' ),
+				'desc'       => esc_html__( 'Select for how many days in advance the calendar should display bookable days. Calculated from the current date.', 'commonsbooking' ),
+				'id'         => "timeframe-advance-booking-days",
+				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+				'type'       => 'text_small',
+				'attributes' => array(
+					'type' => 'number',
+					'min'  => '1',
+				),
+				'default'    => 31,
+			),
+			array(
 				'name'    => esc_html__( "Restrict bookings to user roles", 'commonsbooking' ),
 				'id'      => "allowed_user_roles",
 				'desc'    => esc_html__( 'Select one or more user roles to restrict bookings based on these timeframe configuration to these user roles. Leave empty for no restrictions', 'commonsbooking' ),

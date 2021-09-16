@@ -66,7 +66,8 @@ class Week {
 			serialize( $this->items ) .
 			serialize( $this->types )
 		);
-		if ( Plugin::getCacheItem( $customId ) ) {
+		// TODO: cache rework
+		if ( 1 != 1 OR Plugin::getCacheItem( $customId ) ) {
 			return Plugin::getCacheItem( $customId );
 		} else {
 			$dto = new DateTime();

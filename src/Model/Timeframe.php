@@ -60,6 +60,19 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * Return max advance booking days
+	 *
+	 * @return string
+	 */
+	public function getMaxAdvanceBookingDays() {
+		// if meta-value not set we define 90 days as default value
+		$advanceBookingDays = $this->getMeta( 'timeframe-advance-booking-days' ) ?: '90';
+		
+		// we subtract one day to reflect the current day in calculation
+		return $advanceBookingDays-1;
+	}
+
+	/**
 	 * @param $startDate
 	 * @param $endDate
 	 *
