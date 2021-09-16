@@ -66,7 +66,7 @@ class Week {
 			serialize( $this->items ) .
 			serialize( $this->types )
 		);
-		// TODO: cache rework
+		// TODO: cache temporarily deactivated because this doesnt work with a daily based new calucation of advanced booking day limits
 		if ( 1 != 1 OR Plugin::getCacheItem( $customId ) ) {
 			return Plugin::getCacheItem( $customId );
 		} else {
