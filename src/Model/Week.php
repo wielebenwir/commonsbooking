@@ -67,7 +67,7 @@ class Week {
 			serialize( $this->types )
 		);
 		// TODO: cache temporarily deactivated because this doesnt work with a daily based new calucation of advanced booking day limits
-		if ( 1 != 1 OR Plugin::getCacheItem( $customId ) ) {
+		if (Plugin::getCacheItem( $customId ) ) {
 			return Plugin::getCacheItem( $customId );
 		} else {
 			$dto = new DateTime();
@@ -79,7 +79,8 @@ class Week {
 				$dto->modify( '+1 day' );
 			}
 
-			Plugin::setCacheItem( $days, $customId );
+			// set cache expiration to force daily fresh after midnight
+			Plugin::setCacheItem( $days, $customId, 'midnight');
 
 			return $days;
 		}

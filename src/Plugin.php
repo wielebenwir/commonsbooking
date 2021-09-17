@@ -44,6 +44,12 @@ class Plugin {
 	 * @return mixed
 	 */
 	public static function getCacheItem( $custom_id = null ) {
+		// we check if timeout for transient is set and return false if it is expired to force cache refresh
+		$data_timeout = get_option('_transient_timeout_' . self::getCacheId( $custom_id ));
+		if ($data_timeout && $data_timeout < time()) {
+    		return false;
+		} 
+
 		return get_transient( self::getCacheId( $custom_id ) );
 	}
 
@@ -71,11 +77,18 @@ class Plugin {
 	 *
 	 * @param $value
 	 * @param null $custom_id
+	 * @param null $expiration set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
 	 *
 	 * @return mixed
 	 */
-	public static function setCacheItem( $value, $custom_id = null ) {
-		return set_transient( self::getCacheId( $custom_id ), $value );
+	public static function setCacheItem( $value, $custom_id = null, $expiration = null ) {
+
+		// if expiration is set to 'midnight' we calculate the timestamp
+		if ($expiration == 'midnight') {
+			$expiration = strtotime('next day 0:0')-time();
+		}
+		
+		return set_transient( self::getCacheId( $custom_id ), $value, $expiration );
 	}
 
 	/**

@@ -71,8 +71,7 @@ class Calendar {
 		);
 
 		
-		// TODO: Cache deactivated. Need solution to realize a day by day Cache refresh
-		if ( 1 != 1 OR Plugin::getCacheItem( $customId ) ) {
+		if ( Plugin::getCacheItem( $customId ) ) {
 			return Plugin::getCacheItem( $customId );
 		} else {
 			$weeks = [];
@@ -81,7 +80,8 @@ class Calendar {
 				$startDate = strtotime( "next monday", $startDate );
 			}
 
-			Plugin::setCacheItem( $weeks, $customId );
+			// set cache expiration to force daily fresh after midnight
+			Plugin::setCacheItem( $weeks, $customId, 'midnight' );
 
 			return $weeks;
 		}

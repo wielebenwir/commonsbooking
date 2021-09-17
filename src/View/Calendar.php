@@ -338,7 +338,7 @@ class Calendar {
 		$advanceBookingDaysFormatted = (int) $advanceBookingDays->format( '%a ') + 1;
 
 		// TODO: find solution for day based refresh of cache to make advance max booking days possible
-		if ( 1 == 1 OR ! ( $jsonResponse = Plugin::getCacheItem( $customCacheKey ) ) ) {
+		if (! ( $jsonResponse = Plugin::getCacheItem( $customCacheKey ) ) ) {
 			$calendar = new \CommonsBooking\Model\Calendar(
 				$startDate,
 				$endDate,
@@ -448,7 +448,8 @@ class Calendar {
 				}
 			}
 	
-			Plugin::setCacheItem( $jsonResponse, $customCacheKey );
+			// set transient expiration time to midnight to force cache refresh by daily basis to allow dynamic advanced booking day feature
+			Plugin::setCacheItem( $jsonResponse, $customCacheKey, 'midnight');
 		}
 
 		return $jsonResponse;
