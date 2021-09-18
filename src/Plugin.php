@@ -27,6 +27,7 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\Options\AdminOptions;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
+use DateTime;
 
 class Plugin {
 
@@ -45,8 +46,9 @@ class Plugin {
 	 */
 	public static function getCacheItem( $custom_id = null ) {
 		// we check if timeout for transient is set and return false if it is expired to force cache refresh
-		$data_timeout = get_option('_transient_timeout_' . self::getCacheId( $custom_id ));
-		if ($data_timeout && $data_timeout < time()) {
+		$transient_timeout = get_option('_transient_timeout_' . self::getCacheId( $custom_id ));
+		if ($transient_timeout && $transient_timeout < time()) {
+			delete_option('_transient_timeout_' . self::getCacheId( $custom_id ));
     		return false;
 		} 
 
@@ -83,9 +85,10 @@ class Plugin {
 	 */
 	public static function setCacheItem( $value, $custom_id = null, $expiration = null ) {
 
-		// if expiration is set to 'midnight' we calculate the timestamp
+		// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
 		if ($expiration == 'midnight') {
-			$expiration = strtotime('next day 0:0')-time();
+			$datetime = current_time('timestamp');
+			$expiration = strtotime('tomorrow', $datetime ) - $datetime;
 		}
 		
 		return set_transient( self::getCacheId( $custom_id ), $value, $expiration );
