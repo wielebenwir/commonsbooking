@@ -792,7 +792,7 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'    => esc_html__( "Grid", 'commonsbooking' ),
-				'desc'    => commonsbooking_sanitizeHTML( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/?p=437">Manage Booking Timeframes</a>', 'commonsbooking' ),
+				'desc'    => commonsbooking_sanitizeHTML( __( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/?p=437">Manage Booking Timeframes</a>', 'commonsbooking' )),
 				'id'      => "grid",
 				'type'    => 'select',
 				'options' => self::getGridOptions(),
