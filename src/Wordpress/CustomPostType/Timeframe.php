@@ -7,6 +7,7 @@ use CommonsBooking\Messages\BookingMessages;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\UserRepository;
+use CommonsBooking\View\Admin\Filter;
 use CommonsBooking\View\Calendar;
 use Exception;
 use WP_Post;
@@ -106,9 +107,6 @@ class Timeframe extends CustomPostType {
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
-		// Remove not needed Meta Boxes
-		add_action( 'do_meta_boxes', array( $this, 'removeDefaultCustomFields' ), 10, 3 );
-
 		// List settings
 		$this->removeListDateColumn();
 
@@ -122,7 +120,7 @@ class Timeframe extends CustomPostType {
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminLocationFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminStatusFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminDateFilter' ) );
-		add_action( 'pre_get_posts', array( $this, 'filterAdminList' ) );
+		add_action( 'pre_get_posts', array( self::class, 'filterAdminList' ) );
 
 		// Listing of bookings for current user
 		add_shortcode( 'cb_bookings', array( \CommonsBooking\View\Booking::class, 'shortcode' ) );
@@ -295,41 +293,12 @@ class Timeframe extends CustomPostType {
 	 * @return void
 	 */
 	public static function addAdminTypeFilter() {
-		self::renderFilter(
+		Filter::renderFilter(
+			static::$postType,
 			esc_html__( 'Filter By Type ', 'commonsbooking' ),
 			'filter_type',
-			self::getTypes()
+			static::getTypes()
 		);
-	}
-
-	/**
-	 * Renders backend list filter.
-	 *
-	 * @param $label
-	 * @param $key
-	 * @param $values
-	 */
-	public static function renderFilter( $label, $key, $values ) {
-		//only add filter to post type you want
-		if ( isset( $_GET['post_type'] ) && self::$postType == $_GET['post_type'] ) {
-			?>
-            <select name="<?php echo 'admin_' . $key; ?>">
-                <option value=""><?php echo $label; ?></option>
-				<?php
-				$filterValue = isset( $_GET[ 'admin_' . $key ] ) ? sanitize_text_field( $_GET[ 'admin_' . $key ] ) : '';
-				foreach ( $values as $value => $label ) {
-					printf
-					(
-						'<option value="%s"%s>%s</option>',
-						$value,
-						$value == $filterValue ? ' selected="selected"' : '',
-						$label
-					);
-				}
-				?>
-            </select>
-			<?php
-		}
 	}
 
 	/**
@@ -350,7 +319,8 @@ class Timeframe extends CustomPostType {
 				$values[ $item->ID ] = $item->post_title;
 			}
 
-			self::renderFilter(
+			Filter::renderFilter(
+                static::$postType,
 				esc_html__( 'Filter By Item ', 'commonsbooking' ),
 				'filter_item',
 				$values
@@ -376,7 +346,8 @@ class Timeframe extends CustomPostType {
 				$values[ $location->ID ] = $location->post_title;
 			}
 
-			self::renderFilter(
+			Filter::renderFilter(
+				static::$postType,
 				esc_html__( 'Filter By Location ', 'commonsbooking' ),
 				'filter_location',
 				$values
@@ -392,7 +363,8 @@ class Timeframe extends CustomPostType {
 		foreach ( \CommonsBooking\Model\Booking::$bookingStates as $bookingState ) {
 			$values[ $bookingState ] = $bookingState;
 		}
-		self::renderFilter(
+		Filter::renderFilter(
+			static::$postType,
 			esc_html__( 'Filter By Status ', 'commonsbooking' ),
 			'filter_post_status',
 			$values
@@ -1005,7 +977,7 @@ class Timeframe extends CustomPostType {
 			'exclude_from_search' => true,
 
 			// Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
-			'supports'            => array( 'title', 'author', 'custom-fields', 'revisions' ),
+			'supports'            => array( 'title', 'author', 'revisions' ),
 
 			// Soll der Post Type Archiv-Seiten haben?
 			'has_archive'         => false,

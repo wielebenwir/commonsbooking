@@ -27,9 +27,6 @@ class Restriction extends CustomPostType {
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
-		// Remove not needed Meta Boxes
-		add_action( 'do_meta_boxes', array( $this, 'removeDefaultCustomFields' ), 10, 3 );
-
 		add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 10, 3 );
 	}
 
@@ -111,7 +108,7 @@ class Restriction extends CustomPostType {
 			'exclude_from_search' => true,
 
 			// Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
-			'supports'            => array( 'title', 'author', 'custom-fields', 'revisions' ),
+			'supports'            => array( 'title', 'author', 'revisions' ),
 
 			// Soll der Post Type Archiv-Seiten haben?
 			'has_archive'         => false,
