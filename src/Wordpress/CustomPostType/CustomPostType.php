@@ -148,19 +148,6 @@ abstract class CustomPostType {
 	abstract public function getArgs();
 
 	/**
-	 * Remove the default Custom Fields meta box
-	 *
-	 * @param string $post_type
-	 * @param string $context
-	 * @param WP_Post|object|string $post
-	 */
-	public function removeDefaultCustomFields( string $post_type, string $context, $post ) {
-		foreach ( array( 'normal', 'advanced', 'side' ) as $context ) {
-			remove_meta_box( 'postcustom', static::getPostType(), $context );
-		}
-	}
-
-	/**
 	 * Manages custom columns for list view.
 	 *
 	 * @param $columns

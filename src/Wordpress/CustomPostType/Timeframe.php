@@ -173,32 +173,6 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-	 * Returns true, if there are no already existing bookings.
-	 *
-	 * @param $itemId
-	 * @param $locationId
-	 * @param $startDate
-	 * @param $endDate
-	 *
-	 * @throws Exception
-	 */
-	protected static function validateBookingParameters( $itemId, $locationId, $startDate, $endDate ) {
-		// Get exiting bookings for defined parameters
-		$existingBookingsInRange = \CommonsBooking\Repository\Timeframe::getBookingInRange(
-			$startDate,
-			$endDate,
-			[ $locationId ],
-			[ $itemId ],
-			false
-		);
-
-		// If there are already bookings, throw exception
-		if ( count( $existingBookingsInRange ) ) {
-			throw new Exception( __( 'There are already bookings in selected timerange.', 'commonsbooking' ) );
-		}
-	}
-
-	/**
 	 * Returns true, if timeframe is of type booking.
 	 *
 	 * @param $field
@@ -434,7 +408,7 @@ class Timeframe extends CustomPostType {
 
 		if (
 			is_admin() && $query->is_main_query() &&
-			isset( $_GET['post_type'] ) && self::$postType == $_GET['post_type'] &&
+			isset( $_GET['post_type'] ) && static::$postType == $_GET['post_type'] &&
 			$pagenow == 'edit.php'
 		) {
 			// Meta value filtering
@@ -716,15 +690,6 @@ class Timeframe extends CustomPostType {
 				// function should return a bool value
 			),
 			array(
-				'name'       => esc_html__( 'Booking Code', 'commonsbooking' ),
-				'id'         => COMMONSBOOKING_METABOX_PREFIX . 'bookingcode',
-				'type'       => 'text',
-				'show_on_cb' => array( self::class, 'isOfTypeBooking' ),
-				'attributes' => array(
-					'disabled' => 'disabled',
-				),
-			),
-			array(
 				'type'    => 'hidden',
 				'id'      => 'prevent_delete_meta_movetotrash',
 				'default' => wp_create_nonce( plugin_basename( __FILE__ ) )
@@ -771,32 +736,6 @@ class Timeframe extends CustomPostType {
 			( $_REQUEST['action'] == 'trash' || $_REQUEST['action'] == 'untrash' )
 		) {
 			return;
-		}
-
-		// Check if there is already an existing booking. If there is one, the current one will be
-		// saved as draft.
-		if (
-			( array_key_exists( 'type', $_REQUEST ) && $_REQUEST['type'] == Timeframe::BOOKING_ID ) &&
-			current_user_can( 'edit_' . self::$postType, $post_id )
-		) {
-			try {
-				self::validateBookingParameters(
-					sanitize_text_field( $_REQUEST["item-id"] ),
-					sanitize_text_field( $_REQUEST["location-id"] ),
-					sanitize_text_field( $_REQUEST["repetition-start"] ),
-					sanitize_text_field( $_REQUEST["repetition-end"] )
-				);
-			} catch ( Exception $e ) {
-				if ( $post->post_status !== 'draft' ) {
-					$post->post_status = 'draft';
-					wp_update_post( $post );
-				}
-
-				set_transient( \CommonsBooking\Model\Timeframe::ERROR_TYPE,
-					commonsbooking_sanitizeHTML( __( "There is an overlapping booking.",
-						'commonsbooking' ) ),
-					45 );
-			}
 		}
 
 		// Save custom fields
@@ -862,6 +801,7 @@ class Timeframe extends CustomPostType {
 	 * @param $post_id
 	 * @param $post
 	 *
+	 * @return bool
 	 */
 	protected function validateTimeFrame( $post_id, $post ): bool {
 		try {

@@ -20,7 +20,7 @@ class Booking extends PostRepository {
 	 * @return null|\CommonsBooking\Model\Booking
 	 * @throws Exception
 	 */
-	public static function getBookingByDate( $startDate, $endDate, $location, $item ): ?\CommonsBooking\Model\Booking {
+	public static function getByDate( $startDate, $endDate, $location, $item ): ?\CommonsBooking\Model\Booking {
 		// Default query
 		$args = array(
 			'post_type'   => Timeframe::getSimilarPostTypes(),
@@ -91,7 +91,13 @@ class Booking extends PostRepository {
 	 * @return \CommonsBooking\Model\Booking[]|null
 	 * @throws Exception
 	 */
-	public static function getBookingsByTimerange( $startDate, $endDate, $locationId, $itemId, array $customArgs = []): ?array {
+	public static function getByTimerange(
+		$startDate,
+		$endDate,
+		$locationId,
+		$itemId,
+		array $customArgs = []
+	): ?array {
 		// Default query
 		$args = array(
 			'post_type'   => Timeframe::getSimilarPostTypes(),
@@ -123,7 +129,7 @@ class Booking extends PostRepository {
 				'key'     => 'location-id',
 				'value'   => $locationId,
 				'compare' => '=',
-		);
+			);
 		}
 
 		if ( $itemId ) {
@@ -135,25 +141,25 @@ class Booking extends PostRepository {
 		}
 
 		// Overwrite args with passed custom args
-		$args = array_merge($args, $customArgs);
+		$args = array_merge( $args, $customArgs );
 
 		$query = new WP_Query( $args );
 		if ( $query->have_posts() ) {
 			$posts = $query->get_posts();
 
 			// Filter by post_status, query seems not to work reliable
-			$posts = array_filter( $posts, function ( $post ) use ($args) {
+			$posts = array_filter( $posts, function ( $post ) use ( $args ) {
 				return in_array( $post->post_status, $args['post_status'] );
 			} );
 
-			foreach ($posts as &$post) {
-				$post = new \CommonsBooking\Model\Booking($post);
+			foreach ( $posts as &$post ) {
+				$post = new \CommonsBooking\Model\Booking( $post );
 			}
 
 			return $posts;
 		}
 
-		return null;
+		return [];
 	}
 
 	/**
@@ -201,9 +207,10 @@ class Booking extends PostRepository {
 	 * @param \CommonsBooking\Model\Restriction $restriction
 	 *
 	 * @return \WP_Post[]|null
+	 * @throws Exception
 	 */
 	public static function getByRestriction( \CommonsBooking\Model\Restriction $restriction ): ?array {
-		return self::getBookingsByTimerange(
+		return self::getByTimerange(
 			$restriction->getStartDate(),
 			$restriction->getEndDate(),
 			$restriction->getLocationId(),
@@ -218,16 +225,16 @@ class Booking extends PostRepository {
 	 */
 	public static function getCanceledByRestriction( \CommonsBooking\Model\Restriction $restriction ): ?array {
 		try {
-			return self::getBookingsByTimerange(
+			return self::getByTimerange(
 				$restriction->getStartDate(),
 				$restriction->getEndDate(),
 				$restriction->getLocationId(),
 				$restriction->getItemId(),
 				[
-					'post_status' => array( 'canceled'),
+					'post_status' => array( 'canceled' ),
 				]
 			);
-		} catch (Exception $exception) {
+		} catch ( Exception $exception ) {
 			return [];
 		}
 	}

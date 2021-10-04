@@ -676,14 +676,9 @@ class Plugin {
 	 * @return string
 	 */
 	public function getTheContent( $content ): string {
-		var_dump($content );
-		die;
 		// Check if we're inside the main loop in a single post page.
 		if ( is_single() && in_the_loop() && is_main_query() ) {
 			global $post;
-
-
-
 			foreach ( self::getCustomPostTypes() as $customPostType ) {
 				if ( $customPostType::getPostType() === $post->post_type ) {
 					return $content . $customPostType::getView()::content( $post );
