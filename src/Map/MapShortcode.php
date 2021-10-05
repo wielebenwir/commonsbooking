@@ -133,6 +133,7 @@ class MapShortcode {
 			'show_scale',
 			'zoom_min',
 			'zoom_max',
+			'scrollWheelZoom',
 			'zoom_start',
 			'lat_start',
 			'lon_start',
