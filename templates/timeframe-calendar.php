@@ -36,8 +36,8 @@
                     <span class="date"></span>
                     <select style="display: none" id="repetition-end" name="repetition-end"></select>
                 </div>
-            <p id="fullDayInfo"></p>
-            <p id="calendarNotice"></p>
+                <p id="fullDayInfo"></p>
+                <p id="calendarNotice"></p>
             </div>
             <?php
             if(is_user_logged_in()) { ?>

@@ -150,11 +150,16 @@ class Timeframe extends CustomPost {
 	 */
 	public function getLocation() {
 		$locationId = $this->getMeta( 'location-id' );
-		if ( $post = get_post( $locationId ) ) {
-			return new Location( $post );
+		// TODO @markus-mw: if locationID is empty it returns the current post even if its not a location. Is this correct?
+		// TODO: I added check if $locationId is empty an return NULL if it is.
+		if ( $locationId ) {
+			if ( $post = get_post( $locationId ) ) {
+				return new Location( $post );
+			}
 		}
 
-		return $post;
+		// TODO : Why is this return post as default. What type of post is this?
+		//return $post;
 	}
 
 	/**
@@ -163,12 +168,14 @@ class Timeframe extends CustomPost {
 	 */
 	public function getItem() {
 		$itemId = $this->getMeta( 'item-id' );
-
-		if ( $post = get_post( $itemId ) ) {
-			return new Item( $post );
+		if ( $itemId ) {
+			if ( $post = get_post( $itemId ) ) {
+				return new Item( $post );
+			}
 		}
 
-		return $post;
+		// TODO : Why is this return post as default. What type of post is this?
+		//return $post;
 	}
 
 	/**
@@ -196,6 +203,18 @@ class Timeframe extends CustomPost {
 		if (
 			$this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID
 		) {
+			
+			if ( ! $this->getItem() || ! $this->getLocation() ) {
+				// if location or item is missing
+				set_transient( self::ERROR_TYPE,
+					commonsbooking_sanitizeHTML( __( "Item or location is missing. Please set item and location. Timeframe is saved as draft",
+						'commonsbooking' ) ),
+					45 );
+
+				return false;				
+			}
+			
+			
 			if ( ! $this->getStartDate() ) {
 				// If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
 				set_transient( self::ERROR_TYPE,

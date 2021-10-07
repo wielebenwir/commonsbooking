@@ -14,8 +14,10 @@ class MapAdmin {
 		'show_scale',
 		'map_height',
 		'custom_no_locations_message',
+		'custom_filterbutton_label',
 		'zoom_min',
 		'zoom_max',
+		'scrollWheelZoom',
 		'zoom_start',
 		'lat_start',
 		'lon_start',
@@ -75,8 +77,10 @@ class MapAdmin {
 	const MAP_HEIGHT_DEFAULT = 400;
 	const CUSTOM_NO_LOCATIONS_MESSAGE_DEFAULT = '';
 	const ENABLE_MAP_DATA_EXPORT_DEFAULT = false;
+	const CUSTOM_FILTERBUTTON_LABEL_DEFAULT = '';
 	const ZOOM_MIN_DEFAULT = 9;
 	const ZOOM_MAX_DEFAULT = 19;
+	const SCROLLWHEELZOOM_DEFAULT = true;
 	const ZOOM_START_DEFAULT = 9;
 	const LAT_START_DEFAULT = 52.49333;
 	const LON_START_DEFAULT = 13.37933;
@@ -262,7 +266,8 @@ class MapAdmin {
 			'show_location_contact',
 			'show_location_opening_hours',
 			'show_item_availability',
-			'show_location_distance_filter'
+			'show_location_distance_filter',
+			'scrollWheelZoom'
 		];
 
 		foreach ( $checkboxInputs as $checkboxInput ) {
@@ -360,6 +365,12 @@ class MapAdmin {
 		if ( self::validateStringInput( $input, 'label_item_category_filter' ) ) {
 			$validated_input['label_item_category_filter'] = sanitize_text_field( $input['label_item_category_filter'] );
 		}
+
+
+		//custom_filterbutton_label
+		if ( isset( $input['custom_filterbutton_label'] ) ) {
+				$validated_input['custom_filterbutton_label'] = sanitize_text_field( $input['custom_filterbutton_label'] );
+			}
 
 		//cb_items_available_categories
 		$category_terms = get_terms( [
