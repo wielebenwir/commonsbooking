@@ -8,9 +8,9 @@
 	convertWarningsToExceptions="true"
 	>
 	<testsuites>
-		<testsuite name="default">
-			<directory prefix="" suffix="Test.php">./tests/</directory>
-<!--			<exclude>./tests/test-sample.php</exclude>-->
+		<testsuite>
+			<directory prefix="test-" suffix=".php">./tests/</directory>
+			<exclude>./tests/test-sample.php</exclude>
 		</testsuite>
 	</testsuites>
 </phpunit>

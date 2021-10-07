@@ -3,10 +3,11 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Helper\Helper;
-use CommonsBooking\Messages\Messages;
+use CommonsBooking\Messages\BookingMessages;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\UserRepository;
+use CommonsBooking\View\Admin\Filter;
 use CommonsBooking\View\Calendar;
 use Exception;
 use WP_Post;
@@ -53,6 +54,14 @@ class Timeframe extends CustomPostType {
 	 * @var string
 	 */
 	public static $postType = 'cb_timeframe';
+
+	public static function getSimilarPostTypes () {
+		return [
+			Timeframe::$postType,
+			\CommonsBooking\Wordpress\CustomPostType\Booking::$postType
+		];
+    }
+
 	/**
 	 * Timeframetypes which cannot be "overbooked".
 	 * @var int[]
@@ -61,11 +70,13 @@ class Timeframe extends CustomPostType {
 		self::REPAIR_ID,
 		self::BOOKING_ID,
 	];
+
 	/**
 	 * Position in backend menu.
 	 * @var int
 	 */
 	protected $menuPosition = 1;
+
 	/**
 	 * @var array
 	 */
@@ -96,16 +107,12 @@ class Timeframe extends CustomPostType {
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
-		// Remove not needed Meta Boxes
-		add_action( 'do_meta_boxes', array( $this, 'removeDefaultCustomFields' ), 10, 3 );
-
 		// List settings
 		$this->removeListDateColumn();
 
-		add_action( 'save_post', array( $this, 'saveCustomFields' ), 1, 2 );
+		add_action( 'save_post', array( $this, 'savePost' ), 1, 2 );
 
-		// Save-handling
-		$this->handleFormRequest();
+		add_action( 'post_updated', array( $this, 'postUpdated' ), 10, 3 );
 
 		// Add type filter to backend list view
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
@@ -113,7 +120,7 @@ class Timeframe extends CustomPostType {
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminLocationFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminStatusFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminDateFilter' ) );
-		add_action( 'pre_get_posts', array( $this, 'filterAdminList' ) );
+		add_action( 'pre_get_posts', array( self::class, 'filterAdminList' ) );
 
 		// Listing of bookings for current user
 		add_shortcode( 'cb_bookings', array( \CommonsBooking\View\Booking::class, 'shortcode' ) );
@@ -163,150 +170,6 @@ class Timeframe extends CustomPostType {
 			0 => esc_html__( "Full slot", 'commonsbooking' ),
 			1 => esc_html__( "Hourly", 'commonsbooking' ),
 		];
-	}
-
-	/**
-	 * Returns true, if there are no already existing bookings.
-	 *
-	 * @param $itemId
-	 * @param $locationId
-	 * @param $startDate
-	 * @param $endDate
-	 *
-	 * @throws Exception
-	 */
-	protected static function validateBookingParameters( $itemId, $locationId, $startDate, $endDate ) {
-		// Get exiting bookings for defined parameters
-		$existingBookingsInRange = \CommonsBooking\Repository\Timeframe::getBookingInRange(
-			$startDate,
-			$endDate,
-			[ $locationId ],
-			[ $itemId ],
-			false
-		);
-
-		// If there are already bookings, throw exception
-		if ( count( $existingBookingsInRange ) ) {
-			throw new Exception( __( 'There are already bookings in selected timerange.', 'commonsbooking' ) );
-		}
-	}
-
-	/**
-	 * Handles save-Request for timeframe.
-	 */
-	public function handleFormRequest() {
-		if (
-			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
-			wp_verify_nonce( $_REQUEST[ static::getWPNonceId() ], static::getWPAction() )
-		) {
-			$itemId      = isset( $_REQUEST['item-id'] ) && $_REQUEST['item-id'] != "" ? sanitize_text_field( $_REQUEST['item-id'] ) : null;
-			$locationId  = isset( $_REQUEST['location-id'] ) && $_REQUEST['location-id'] != "" ? sanitize_text_field( $_REQUEST['location-id'] ) : null;
-			$post_status = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] != "" ? sanitize_text_field( $_REQUEST['post_status'] ) : null;
-
-			if ( ! get_post( $itemId ) ) {
-				throw new Exception( 'Item does not exist. (' . $itemId . ')' );
-			}
-			if ( ! get_post( $locationId ) ) {
-				throw new Exception( 'Location does not exist. (' . $locationId . ')' );
-			}
-
-			$startDate = null;
-			if ( isset( $_REQUEST['repetition-start'] ) && $_REQUEST['repetition-start'] != "" ) {
-				$startDate = sanitize_text_field( $_REQUEST['repetition-start'] );
-			}
-
-			$endDate = null;
-			if (
-				isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] ) &&
-				$_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] != ""
-			) {
-				$endDate = sanitize_text_field( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] );
-			}
-
-			$isBooking = array_key_exists( 'type', $_REQUEST ) && self::BOOKING_ID == sanitize_text_field( $_REQUEST['type'] );
-
-			if ( $isBooking ) {
-				if ( $startDate == null || $endDate == null ) {
-					throw new Exception( 'Start- and/or enddate missing.' );
-				}
-
-				// Make sure there are not already bookings in selected range.
-				self::validateBookingParameters( $itemId, $locationId, $startDate, $endDate );
-
-				/** @var \CommonsBooking\Model\Booking $booking */
-				$booking = Booking::getBookingByDate(
-					$startDate,
-					$endDate,
-					$locationId,
-					$itemId
-				);
-
-				$postarr = array(
-					"type"        => sanitize_text_field( $_REQUEST["type"] ),
-					"post_status" => sanitize_text_field( $_REQUEST["post_status"] ),
-					"post_type"   => self::getPostType(),
-					"post_title"  => esc_html__( "Booking", 'commonsbooking' ),
-				);
-
-				$postId = null;
-				// New booking
-				if ( empty( $booking ) ) {
-					$postarr['post_name'] = Helper::generateRandomString();
-					$postId               = wp_insert_post( $postarr, true );
-					// Existing booking
-				} else {
-					$postarr['ID'] = $booking->ID;
-					$postId        = wp_update_post( $postarr );
-				}
-
-				$this->saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate );
-
-				$booking_metafield = new \CommonsBooking\Model\Booking( $postId );
-				// we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
-				$booking_metafield->assignBookableTimeframeFields();
-
-				// Trigger Mail, only send mail if status has changed
-				if ( ! empty( $booking ) and $booking->post_status != $post_status and ! ( $booking->post_status === 'unconfirmed' and $post_status === 'canceled' ) ) {
-					$booking_msg = new Messages( $postId, $post_status );
-					$booking_msg->triggerMail();
-				}
-
-				// get slug as parameter
-				$post_slug = get_post( $postId )->post_name;
-				wp_redirect( add_query_arg( self::getPostType(), $post_slug, home_url() ) );
-			}
-
-			exit;
-		}
-	}
-
-	/**
-	 * Multi grid size
-	 * We need to save the grid size for timeframes with full slot grid.
-	 *
-	 * @param $postId
-	 * @param $locationId
-	 * @param $itemId
-	 * @param $startDate
-	 * @param $endDate
-	 */
-	private function saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate ): void {
-		$startTimeFrame = \CommonsBooking\Repository\Timeframe::getRelevantTimeFrame( $locationId, $itemId, $startDate );
-		if ( $startTimeFrame && $startTimeFrame->getGrid() == 0 ) {
-			update_post_meta(
-				$postId,
-				\CommonsBooking\Model\Booking::START_TIMEFRAME_GRIDSIZE,
-				$startTimeFrame->getGridSize()
-			);
-		}
-		$endTimeFrame = \CommonsBooking\Repository\Timeframe::getRelevantTimeFrame( $locationId, $itemId, $endDate );
-		if ( $endTimeFrame && $endTimeFrame->getGrid() == 0 ) {
-			update_post_meta(
-				$postId,
-				\CommonsBooking\Model\Booking::END_TIMEFRAME_GRIDSIZE,
-				$endTimeFrame->getGridSize()
-			);
-		}
 	}
 
 	/**
@@ -395,7 +258,7 @@ class Timeframe extends CustomPostType {
 	 * @return \CommonsBooking\View\Timeframe
 	 */
 	public static function getView() {
-		return new \CommonsBooking\View\Timeframe();
+		// @TODO implement view.
 	}
 
 	/**
@@ -404,41 +267,12 @@ class Timeframe extends CustomPostType {
 	 * @return void
 	 */
 	public static function addAdminTypeFilter() {
-		self::renderFilter(
+		Filter::renderFilter(
+			static::$postType,
 			esc_html__( 'Filter By Type ', 'commonsbooking' ),
 			'filter_type',
-			self::getTypes()
+			static::getTypes()
 		);
-	}
-
-	/**
-	 * Renders backend list filter.
-	 *
-	 * @param $label
-	 * @param $key
-	 * @param $values
-	 */
-	public static function renderFilter( $label, $key, $values ) {
-		//only add filter to post type you want
-		if ( isset( $_GET['post_type'] ) && self::$postType == $_GET['post_type'] ) {
-			?>
-            <select name="<?php echo 'admin_' . $key; ?>">
-                <option value=""><?php echo $label; ?></option>
-				<?php
-				$filterValue = isset( $_GET[ 'admin_' . $key ] ) ? sanitize_text_field( $_GET[ 'admin_' . $key ] ) : '';
-				foreach ( $values as $value => $label ) {
-					printf
-					(
-						'<option value="%s"%s>%s</option>',
-						$value,
-						$value == $filterValue ? ' selected="selected"' : '',
-						$label
-					);
-				}
-				?>
-            </select>
-			<?php
-		}
 	}
 
 	/**
@@ -459,7 +293,8 @@ class Timeframe extends CustomPostType {
 				$values[ $item->ID ] = $item->post_title;
 			}
 
-			self::renderFilter(
+			Filter::renderFilter(
+                static::$postType,
 				esc_html__( 'Filter By Item ', 'commonsbooking' ),
 				'filter_item',
 				$values
@@ -485,7 +320,8 @@ class Timeframe extends CustomPostType {
 				$values[ $location->ID ] = $location->post_title;
 			}
 
-			self::renderFilter(
+			Filter::renderFilter(
+				static::$postType,
 				esc_html__( 'Filter By Location ', 'commonsbooking' ),
 				'filter_location',
 				$values
@@ -501,7 +337,8 @@ class Timeframe extends CustomPostType {
 		foreach ( \CommonsBooking\Model\Booking::$bookingStates as $bookingState ) {
 			$values[ $bookingState ] = $bookingState;
 		}
-		self::renderFilter(
+		Filter::renderFilter(
+			static::$postType,
 			esc_html__( 'Filter By Status ', 'commonsbooking' ),
 			'filter_post_status',
 			$values
@@ -571,7 +408,7 @@ class Timeframe extends CustomPostType {
 
 		if (
 			is_admin() && $query->is_main_query() &&
-			isset( $_GET['post_type'] ) && self::$postType == $_GET['post_type'] &&
+			isset( $_GET['post_type'] ) && static::$postType == $_GET['post_type'] &&
 			$pagenow == 'edit.php'
 		) {
 			// Meta value filtering
@@ -855,15 +692,6 @@ class Timeframe extends CustomPostType {
 				// function should return a bool value
 			),
 			array(
-				'name'       => esc_html__( 'Booking Code', 'commonsbooking' ),
-				'id'         => COMMONSBOOKING_METABOX_PREFIX . 'bookingcode',
-				'type'       => 'text',
-				'show_on_cb' => array( self::class, 'isOfTypeBooking' ),
-				'attributes' => array(
-					'disabled' => 'disabled',
-				),
-			),
-			array(
 				'type'    => 'hidden',
 				'id'      => 'prevent_delete_meta_movetotrash',
 				'default' => wp_create_nonce( plugin_basename( __FILE__ ) )
@@ -872,9 +700,34 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
+     * Is triggered when post gets updated. Currently used to send notifications regarding bookings.
+	 * @param $post_ID
+	 * @param $post_after
+	 * @param $post_before
+	 */
+	public function postUpdated( $post_ID, $post_after, $post_before ) {
+		if ( ! $this->hasRunBefore( __FUNCTION__ ) ) {
+			$isBooking = get_post_meta( $post_ID, 'type', true ) == Timeframe::BOOKING_ID;
+			if ( $isBooking ) {
+				// Trigger Mail, only send mail if status has changed
+				if ( $post_before->post_status != $post_after->post_status and
+				     ! (
+					     $post_before->post_status === 'unconfirmed' and
+					     $post_after->post_status === 'canceled'
+				     )
+				) {
+					$booking_msg = new BookingMessages( $post_ID, $post_after->post_status );
+					$booking_msg->triggerMail();
+				}
+			}
+		}
+	}
+
+	/**
 	 * Save the new Custom Fields values
 	 */
-	public function saveCustomFields( $post_id, $post ) {
+	public function savePost( $post_id, WP_Post $post ) {
+		// This is just for timeframes
 		if ( $post->post_type !== static::getPostType() ) {
 			return;
 		}
@@ -887,32 +740,27 @@ class Timeframe extends CustomPostType {
 			return;
 		}
 
-		// Check if there is already an existing booking. If there is one, the current one will be
-		// saved as draft.
-		if (
-			( array_key_exists( 'type', $_REQUEST ) && $_REQUEST['type'] == Timeframe::BOOKING_ID ) &&
-			current_user_can( 'edit_' . self::$postType, $post_id )
-		) {
-			try {
-				self::validateBookingParameters(
-					sanitize_text_field( $_REQUEST["item-id"] ),
-					sanitize_text_field( $_REQUEST["location-id"] ),
-					sanitize_text_field( $_REQUEST["repetition-start"] ),
-					sanitize_text_field( $_REQUEST["repetition-end"] )
-				);
-			} catch ( Exception $e ) {
-				if ( $post->post_status !== 'draft' ) {
-					$post->post_status = 'draft';
-					wp_update_post( $post );
-				}
+		// Save custom fields
+		$this->saveCustomFields( $post_id );
 
-				set_transient( \CommonsBooking\Model\Timeframe::ERROR_TYPE,
-					commonsbooking_sanitizeHTML( __( "There is an overlapping booking.",
-						'commonsbooking' ) ),
-					45 );
+		// Validate timeframe
+		$isValid = $this->validateTimeFrame( $post_id, $post );
+
+		if ( $isValid ) {
+			$timeframe          = new \CommonsBooking\Model\Timeframe( $post_id );
+			$createBookingCodes = get_post_meta( $post_id, 'create-booking-codes', true );
+
+			if ( $createBookingCodes == "on" && $timeframe->bookingCodesApplieable() ) {
+				BookingCodes::generate( $post_id );
 			}
 		}
+	}
 
+	/**
+     * Saves custom fields from request.
+	 * @param $post_id
+	 */
+	protected function saveCustomFields( $post_id ) {
 		$noDeleteMetaFields = [ 'start-time', 'end-time', 'timeframe-repetition', 'weekdays', 'comment' ];
 
 		foreach ( $this->getCustomFields() as $customField ) {
@@ -947,18 +795,6 @@ class Timeframe extends CustomPostType {
 				}
 			}
 		}
-
-		// Validate timeframe
-		$isValid = $this->validateTimeFrame( $post_id, $post );
-
-		if ( $isValid ) {
-			$timeframe          = new \CommonsBooking\Model\Timeframe( $post_id );
-			$createBookingCodes = get_post_meta( $post_id, 'create-booking-codes', true );
-
-			if ( $createBookingCodes == "on" && $timeframe->bookingCodesApplieable() ) {
-				BookingCodes::generate( $post_id );
-			}
-		}
 	}
 
 	/**
@@ -967,17 +803,21 @@ class Timeframe extends CustomPostType {
 	 * @param $post_id
 	 * @param $post
 	 *
-	 * @throws Exception
+	 * @return bool
 	 */
-	protected function validateTimeFrame( $post_id, $post ) {
-		$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
-		if ( ! $timeframe->isValid() ) {
-			// set post_status to draft if not valid
-			if ( $post->post_status !== 'draft' ) {
-				$post->post_status = 'draft';
-				wp_update_post( $post );
-			}
+	protected function validateTimeFrame( $post_id, $post ): bool {
+		try {
+			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
+			if ( ! $timeframe->isValid() ) {
+				// set post_status to draft if not valid
+				if ( $post->post_status !== 'draft' ) {
+					$post->post_status = 'draft';
+					wp_update_post( $post );
+				}
 
+				return false;
+			}
+		} catch ( Exception $e ) {
 			return false;
 		}
 
@@ -1079,7 +919,7 @@ class Timeframe extends CustomPostType {
 			'exclude_from_search' => true,
 
 			// Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
-			'supports'            => array( 'title', 'author', 'custom-fields', 'revisions' ),
+			'supports'            => array( 'title', 'author', 'revisions' ),
 
 			// Soll der Post Type Archiv-Seiten haben?
 			'has_archive'         => false,
@@ -1126,7 +966,7 @@ class Timeframe extends CustomPostType {
 					echo '-';
 					break;
 				case 'type':
-					$output    = "-";
+					$output = "-";
 
 					foreach ( $this->getCustomFields() as $customField ) {
 						if ( $customField['id'] == 'type' ) {

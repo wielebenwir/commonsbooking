@@ -45,14 +45,19 @@
             const repetitionStartInput = $('#repetition-start');
             const repetitionEndInput = $('#repetition-end');
             const fullDayInput = $('#full-day');
+
+            // booking codes
+            const showBookingCodes = $('#show-booking-codes');
             const createBookingCodesInput = $('#create-booking-codes');
+            const bookingCodesDownload = $('#booking-codes-download');
             const bookingCodesList = $('#booking-codes-list');
+
             const maxDaysSelect = $('.cmb2-id-timeframe-max-days');
             const allowUserRoles = $('.cmb2-id-allowed-user-roles');
             const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
             const noRepSet = [fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput];
             const repTimeFieldsSet = [gridInput, startTimeInput, endTimeInput];
-            const bookingCodeSet = [createBookingCodesInput, bookingCodesList];
+            const bookingCodeSet = [createBookingCodesInput, bookingCodesList, bookingCodesDownload, showBookingCodes];
 
             /**
              * Show repetition fields.
@@ -71,7 +76,7 @@
             }
 
             /**
-             * Unccheck checkboxes.
+             * Uncheck checkboxes.
              * @param checkboxes
              */
             const uncheck = function (checkboxes) {

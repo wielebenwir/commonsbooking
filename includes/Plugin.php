@@ -7,7 +7,7 @@ use CommonsBooking\View\TimeframeExport;
 add_action( 'admin_notices', array( Plugin::class, 'renderError' ) );
 
 // Initialize booking codes table
-register_activation_hook( __FILE__, array( Plugin::class, 'activation' ) );
+register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( Plugin::class, 'activation' ) );
 
 // Ad new cron-Interval
 function commonsbooking_cron_interval( $schedules ) {
@@ -75,7 +75,7 @@ if ( $cronExport == 'on' ) {
 }
 
 // Remove schedule on module deactivation
-register_deactivation_hook( __FILE__, 'commonsbooking_cron_deactivate' );
+register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, 'commonsbooking_cron_deactivate' );
 function commonsbooking_cron_deactivate() {
 	$cbCronHooks = [
 		'cb_cron_hook',

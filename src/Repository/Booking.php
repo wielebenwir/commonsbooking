@@ -10,6 +10,7 @@ use Exception;
 use WP_Query;
 
 class Booking extends PostRepository {
+
 	/**
 	 * @param $startDate
 	 * @param $endDate
@@ -19,10 +20,10 @@ class Booking extends PostRepository {
 	 * @return null|\CommonsBooking\Model\Booking
 	 * @throws Exception
 	 */
-	public static function getBookingByDate( $startDate, $endDate, $location, $item ): ?\CommonsBooking\Model\Booking {
+	public static function getByDate( $startDate, $endDate, $location, $item ): ?\CommonsBooking\Model\Booking {
 		// Default query
 		$args = array(
-			'post_type'   => Timeframe::getPostType(),
+			'post_type'   => Timeframe::getSimilarPostTypes(),
 			'meta_query'  => array(
 				'relation' => "AND",
 				array(
@@ -81,6 +82,87 @@ class Booking extends PostRepository {
 	}
 
 	/**
+	 * @param $startDate
+	 * @param $endDate
+	 * @param $locationId
+	 * @param $itemId
+	 * @param array $customArgs
+	 *
+	 * @return \CommonsBooking\Model\Booking[]|null
+	 * @throws Exception
+	 */
+	public static function getByTimerange(
+		$startDate,
+		$endDate,
+		$locationId,
+		$itemId,
+		array $customArgs = []
+	): ?array {
+		// Default query
+		$args = array(
+			'post_type'   => Timeframe::getSimilarPostTypes(),
+			'meta_query'  => array(
+				'relation' => "AND",
+				array(
+					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_START,
+					'value'   => intval( $startDate ),
+					'compare' => '>=',
+					'type'    => 'numeric',
+				),
+				array(
+					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
+					'value'   => $endDate,
+					'compare' => '<=',
+				),
+				array(
+					'key'     => 'type',
+					'value'   => Timeframe::BOOKING_ID,
+					'compare' => '=',
+				)
+			),
+			'post_status' => array( 'confirmed', 'unconfirmed' ),
+			'nopaging'    => true,
+		);
+
+		if ( $locationId ) {
+			$args['meta_query'][] = array(
+				'key'     => 'location-id',
+				'value'   => $locationId,
+				'compare' => '=',
+			);
+		}
+
+		if ( $itemId ) {
+			$args['meta_query'][] = array(
+				'key'     => 'item-id',
+				'value'   => $itemId,
+				'compare' => '=',
+			);
+		}
+
+		// Overwrite args with passed custom args
+		$args = array_merge( $args, $customArgs );
+
+		$query = new WP_Query( $args );
+		if ( $query->have_posts() ) {
+			$posts = $query->get_posts();
+
+			// Filter by post_status, query seems not to work reliable
+			$posts = array_filter( $posts, function ( $post ) use ( $args ) {
+				return in_array( $post->post_status, $args['post_status'] );
+			} );
+
+			foreach ( $posts as &$post ) {
+				$post = new \CommonsBooking\Model\Booking( $post );
+			}
+
+			return $posts;
+		}
+
+		return [];
+	}
+
+	/**
 	 * Returns all bookings, allowed to see/edit for current user.
 	 *
 	 * @param bool $asModel
@@ -119,6 +201,42 @@ class Booking extends PostRepository {
 		}
 
 		return $posts;
+	}
+
+	/**
+	 * @param \CommonsBooking\Model\Restriction $restriction
+	 *
+	 * @return \WP_Post[]|null
+	 * @throws Exception
+	 */
+	public static function getByRestriction( \CommonsBooking\Model\Restriction $restriction ): ?array {
+		return self::getByTimerange(
+			$restriction->getStartDate(),
+			$restriction->getEndDate(),
+			$restriction->getLocationId(),
+			$restriction->getItemId()
+		);
+	}
+
+	/**
+	 * @param \CommonsBooking\Model\Restriction $restriction
+	 *
+	 * @return \WP_Post[]|null
+	 */
+	public static function getCanceledByRestriction( \CommonsBooking\Model\Restriction $restriction ): ?array {
+		try {
+			return self::getByTimerange(
+				$restriction->getStartDate(),
+				$restriction->getEndDate(),
+				$restriction->getLocationId(),
+				$restriction->getItemId(),
+				[
+					'post_status' => array( 'canceled' ),
+				]
+			);
+		} catch ( Exception $exception ) {
+			return [];
+		}
 	}
 
 }

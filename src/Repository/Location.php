@@ -31,7 +31,7 @@ class Location extends BookablePost {
 			$locations   = [];
 			$locationIds = [];
 			$args        = array(
-				'post_type'   => Timeframe::getPostType(),
+				'post_type'   => Timeframe::getSimilarPostTypes(),
 				'post_status' => array( 'confirmed', 'unconfirmed', 'publish', 'inherit' ),
 				'meta_query'  => array(
 					'relation' => 'AND',
@@ -87,4 +87,5 @@ class Location extends BookablePost {
 	protected static function getModelClass(): string {
 		return \CommonsBooking\Model\Location::class;
 	}
+
 }

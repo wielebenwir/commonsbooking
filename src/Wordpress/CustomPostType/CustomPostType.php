@@ -28,21 +28,21 @@ abstract class CustomPostType {
 	/**
 	 * @return string
 	 */
-	public static function getWPAction() {
+	public static function getWPAction(): string {
 		return static::getPostType() . "-custom-fields";
 	}
 
 	/**
 	 * @return string
 	 */
-	public static function getPostType() {
+	public static function getPostType(): string {
 		return static::$postType;
 	}
 
 	/**
 	 * @return string
 	 */
-	public static function getWPNonceId() {
+	public static function getWPNonceId(): string {
 		return static::getPostType() . "-custom-fields" . '_wpnonce';
 	}
 
@@ -146,19 +146,6 @@ abstract class CustomPostType {
 	 * @return mixed
 	 */
 	abstract public function getArgs();
-
-	/**
-	 * Remove the default Custom Fields meta box
-	 *
-	 * @param string $post_type
-	 * @param string $context
-	 * @param WP_Post|object|string $post
-	 */
-	public function removeDefaultCustomFields( string $post_type, string $context, $post ) {
-		foreach ( array( 'normal', 'advanced', 'side' ) as $context ) {
-			remove_meta_box( 'postcustom', static::getPostType(), $context );
-		}
-	}
 
 	/**
 	 * Manages custom columns for list view.
@@ -265,6 +252,20 @@ abstract class CustomPostType {
 				echo '-';
 			}
 		}
+	}
+
+	/**
+	 * Checks if method has been called before in current request.
+	 * @param $methodName
+	 *
+	 * @return bool
+	 */
+	protected function hasRunBefore($methodName): bool {
+		if(array_key_exists($methodName, $_REQUEST)) {
+			return true;
+		}
+		$_REQUEST[$methodName] = true;
+		return false;
 	}
 
 }

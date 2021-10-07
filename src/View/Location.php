@@ -36,14 +36,19 @@ class Location extends View {
 		$item     = get_query_var( 'item' ) ?: false;
 		$items    = \CommonsBooking\Repository\Item::getByLocation( $location->ID, true );
 
+		$calendarData = Calendar::getCalendarDataArray(
+			$item ?: null,
+			$location
+		);
+
 		$args = [
 			'post'          => $post,
-			'wp_nonce'      => Timeframe::getWPNonceField(),
+			'wp_nonce'      => \CommonsBooking\Wordpress\CustomPostType\Booking::getWPNonceField(),
 			'actionUrl'     => admin_url( 'admin.php' ),
 			'location'      => new \CommonsBooking\Model\Location( $location ),
 			'postUrl'       => get_permalink( $location ),
 			'type'          => Timeframe::BOOKING_ID,
-			'calendar_data' => json_encode( Calendar::getCalendarDataArray( $item ?: null, $location ) )
+			'calendar_data' => json_encode( $calendarData )
 		];
 
 		// If theres no item selected, we'll show all available.
@@ -108,5 +113,9 @@ class Location extends View {
 		}
 
 		return ob_get_clean();
+	}
+
+	public static function content( \WP_Post $post ) {
+		// TODO: Implement content() method.
 	}
 }

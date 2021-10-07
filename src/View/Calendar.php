@@ -208,7 +208,7 @@ class Calendar {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getCalendarDataArray( $item = null, $location = null, $startDateString = null, $endDateString = null ) {
+	public static function getCalendarDataArray( $item = null, $location = null, $startDateString = null, $endDateString = null ): array {
 		$gotStartDate = true;
 		if ( $startDateString == null ) {
 			$startDateString = date( 'Y-m-d', strtotime( 'first day of this month', time() ) );
@@ -277,7 +277,8 @@ class Calendar {
 				[ $item ],
 				[ Timeframe::BOOKABLE_ID ],
 				null,
-				true
+				true,
+				time()
 			);
 
 			if ( count( $bookableTimeframes ) ) {
@@ -291,10 +292,15 @@ class Calendar {
 
 				// Check if start-/enddate was requested, then don't change it
 				// otherwise start with first bookable month
-				if ( $gotStartDate && $gotEndDate ) {
-					$startDateTimestamp = $firstBookableTimeframe->getStartDate();
-					$startDate          = new Day( date( 'Y-m-d', $startDateTimestamp ) );
-					$endDate            = new Day( date( 'Y-m-d', strtotime( '+3 months', $startDateTimestamp ) ) );
+				$startDateTimestamp = $firstBookableTimeframe->getStartDate();
+				$startDateTimestamp = $startDateTimestamp > time() ? $startDateTimestamp : time();
+
+				if ( ! $gotStartDate ) {
+					$startDate = new Day( date( 'Y-m-d', $startDateTimestamp ) );
+				}
+
+				if ( ! $gotEndDate ) {
+					$endDate = new Day( date( 'Y-m-d', strtotime( '+3 months', $startDateTimestamp ) ) );
 				}
 			}
 		}
@@ -384,7 +390,7 @@ class Calendar {
 					}
 
 					// If there are no slots defined, there's nothing bookable.
-					if ( $noSlots ) {
+					if ( $noSlots || time() > strtotime( $day->getDate() ) ) {
 						$dayArray['locked']    = true;
 						$dayArray['holiday']   = false;
 						$dayArray['repair']    = false;
@@ -436,6 +442,10 @@ class Calendar {
 
 			$timeFrameType = get_post_meta( $slot['timeframe']->ID, 'type', true );
 
+			if ( ! $timeFrameType ) {
+				$timeFrameType = get_post_meta( $slot['timeframe']->ID, \CommonsBooking\Model\Restriction::META_TYPE, true );
+			}
+
 			$isUserAllowedtoBook = commonsbooking_isCurrentUserAllowedToBook( $slot['timeframe']->ID );
 
 			// save bookable state for first and last slot
@@ -479,7 +489,10 @@ class Calendar {
 			}
 
 			// Set partiallyBookedDay flag, if there is at least one slot that is of type bookedDay
-			if ( in_array( $timeFrameType, [ Timeframe::BOOKING_ID ] ) ) {
+			if ( in_array( $timeFrameType, [
+				Timeframe::BOOKING_ID,
+				\CommonsBooking\Model\Restriction::TYPE_REPAIR
+			] ) ) {
 				$dayArray['partiallyBookedDay'] = true;
 			}
 

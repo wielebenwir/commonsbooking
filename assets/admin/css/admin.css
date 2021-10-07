@@ -5908,17 +5908,17 @@ a.ui-button:active,
  *
  */
 /* line 7, ../sass/partials/_form-timeframe.scss */
-.cmb2-id-start-time,
-.cmb2-id-start-date,
-.cmb2-id-end-date,
-.cmb2-id-end-time,
-.cmb2-id-grid,
-.cmb2-id-repetition,
-.cmb2-id-weekdays,
-.cmb2-id-title-timeframe-rep-config,
-.cmb2-id-repetition-start,
-.cmb2-id-repetition-end,
-.cmb2-id-full-day {
+#cb_timeframe-custom-fields .cmb2-id-start-time,
+#cb_timeframe-custom-fields .cmb2-id-start-date,
+#cb_timeframe-custom-fields .cmb2-id-end-date,
+#cb_timeframe-custom-fields .cmb2-id-end-time,
+#cb_timeframe-custom-fields .cmb2-id-grid,
+#cb_timeframe-custom-fields .cmb2-id-repetition,
+#cb_timeframe-custom-fields .cmb2-id-weekdays,
+#cb_timeframe-custom-fields .cmb2-id-title-timeframe-rep-config,
+#cb_timeframe-custom-fields .cmb2-id-repetition-start,
+#cb_timeframe-custom-fields .cmb2-id-repetition-end,
+#cb_timeframe-custom-fields .cmb2-id-full-day {
   display: none;
 }
 

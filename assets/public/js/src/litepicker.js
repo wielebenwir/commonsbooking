@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             picker = new Litepicker({
                 "element": document.getElementById('litepicker'),
                 "minDate": moment().format('YYYY-MM-DD'),
-                "startDate": moment().isAfter(globalCalendarData['startDate']) ? moment().format('YYYY-MM-DD') : data['startDate'],
+                "startDate": moment().isAfter(globalCalendarData['startDate']) ? moment().format('YYYY-MM-DD') : globalCalendarData['startDate'],
                 "scrollToDate": true,
                 "inlineMode": true,
                 "firstDay": 1,
@@ -248,9 +248,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
             fadeOutCalendar()
             picker.setOptions(
                 {
-                    "minDate": moment().isAfter(globalCalendarData['startDate']) ? moment().format('YYYY-MM-DD') : data['startDate'],
+                    "minDate": moment().isAfter(globalCalendarData['startDate']) ? moment().format('YYYY-MM-DD') : globalCalendarData['startDate'],
                     "maxDate": globalCalendarData['endDate'],
-                    "startDate": moment().isAfter(globalCalendarData['startDate']) ? moment().format('YYYY-MM-DD') : data['startDate'],
+                    "startDate": moment().isAfter(globalCalendarData['startDate']) ? moment().format('YYYY-MM-DD') : globalCalendarData['startDate'],
                     "days": globalCalendarData['days'],
                     "maxDays": globalCalendarData['maxDays'],
                     "lockDays": globalCalendarData['lockDays'],
@@ -289,10 +289,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         initEndSelect(date2);
 
                         if (!day1['fullDay'] || !day2['fullDay']) {
-                            jQuery('#fullDayInfo').text('');
                             initSelectHandler();
-                        } else {
-                            jQuery('#fullDayInfo').html(globalCalendarData['location']['fullDayInfo']);
                         }
                     }
                 }
@@ -302,10 +299,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         let bookingForm = jQuery('#booking-form');
         if(bookingForm.length) {
-            if(typeof data !== 'undefined') {
-                initPicker();
-                updatePicker(globalCalendarData);
-            }
+            initPicker();
+            updatePicker(globalCalendarData);
         }
     }
 });

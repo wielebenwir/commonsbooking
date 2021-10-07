@@ -23,13 +23,13 @@ class Location extends CustomPostType {
 		add_action( 'pre_get_posts', array( $this, 'filterAdminList' ) );
 
 		// Save-handling
-		add_action( 'save_post', array( $this, 'handleFormRequest' ) );
+		add_action( 'save_post', array( $this, 'savePost' ) );
 	}
 
 	/**
 	 * Handles save-Request for location.
 	 */
-	public function handleFormRequest() {
+	public function savePost() {
 		$postType = isset( $_REQUEST['post_type'] ) ? sanitize_text_field( $_REQUEST['post_type'] ) : null;
 		$postId   = isset( $_REQUEST['post_ID'] ) ? sanitize_text_field( $_REQUEST['post_ID'] ) : null;
 

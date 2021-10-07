@@ -3,17 +3,18 @@
  *
  */
 
-
-.cmb2-id-start-time,
-.cmb2-id-start-date,
-.cmb2-id-end-date,
-.cmb2-id-end-time,
-.cmb2-id-grid,
-.cmb2-id-repetition,
-.cmb2-id-weekdays,
-.cmb2-id-title-timeframe-rep-config,
-.cmb2-id-repetition-start,
-.cmb2-id-repetition-end,
-.cmb2-id-full-day {
-    display: none;
+#cb_timeframe-custom-fields {
+    .cmb2-id-start-time,
+    .cmb2-id-start-date,
+    .cmb2-id-end-date,
+    .cmb2-id-end-time,
+    .cmb2-id-grid,
+    .cmb2-id-repetition,
+    .cmb2-id-weekdays,
+    .cmb2-id-title-timeframe-rep-config,
+    .cmb2-id-repetition-start,
+    .cmb2-id-repetition-end,
+    .cmb2-id-full-day {
+        display: none;
+    }
 }
