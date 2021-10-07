@@ -58,6 +58,7 @@ class Calendar {
 	 * @return array
 	 */
 	public function getWeeks(): array {
+		
 		$startDate = strtotime( $this->startDate->getDate() );
 		$endDate   = strtotime( $this->endDate->getDate() );
 
@@ -69,6 +70,7 @@ class Calendar {
 			serialize( $this->types )
 		);
 
+		
 		if ( Plugin::getCacheItem( $customId ) ) {
 			return Plugin::getCacheItem( $customId );
 		} else {
@@ -78,7 +80,8 @@ class Calendar {
 				$startDate = strtotime( "next monday", $startDate );
 			}
 
-			Plugin::setCacheItem( $weeks, $customId );
+			// set cache expiration to force daily fresh after midnight
+			Plugin::setCacheItem( $weeks, $customId, 'midnight' );
 
 			return $weeks;
 		}

@@ -1749,7 +1749,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }), jQuery("#litepicker .litepicker").hide(), jQuery(window).on("orientationchange", function(event) {
                 updateCalendarColumns(picker);
-            });
+            }), jQuery("#calendarNotice").html(globalCalendarData.calendarNotice.advanceBookingDays);
         }, updatePicker = globalCalendarData => {
             fadeOutCalendar(), picker.setOptions({
                 minDate: moment().isAfter(globalCalendarData.startDate) ? moment().format("YYYY-MM-DD") : globalCalendarData.startDate,

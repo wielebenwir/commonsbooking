@@ -241,6 +241,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             jQuery( window ).on( "orientationchange", function( event ) {
                 updateCalendarColumns(picker);
             });
+
+            jQuery('#calendarNotice').html(globalCalendarData['calendarNotice']['advanceBookingDays']);
         };
 
         // update datepicker data

@@ -28,6 +28,7 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\Options\AdminOptions;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
+use DateTime;
 
 class Plugin {
 
@@ -45,9 +46,17 @@ class Plugin {
 	 * @return mixed
 	 */
 	public static function getCacheItem( $custom_id = null ) {
-		if(WP_DEBUG) {
+		if (\WP_DEBUG) {
 			return false;
 		}
+		
+		// we check if timeout for transient is set and return false if it is expired to force cache refresh
+		$transient_timeout = get_option('_transient_timeout_' . self::getCacheId( $custom_id ));
+		if ($transient_timeout && $transient_timeout < time()) {
+			delete_option('_transient_timeout_' . self::getCacheId( $custom_id ));
+    		return false;
+		} 
+
 		return get_transient( self::getCacheId( $custom_id ) );
 	}
 
@@ -75,11 +84,19 @@ class Plugin {
 	 *
 	 * @param $value
 	 * @param null $custom_id
+	 * @param null $expiration set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
 	 *
 	 * @return mixed
 	 */
-	public static function setCacheItem( $value, $custom_id = null ) {
-		return set_transient( self::getCacheId( $custom_id ), $value );
+	public static function setCacheItem( $value, $custom_id = null, $expiration = null ) {
+
+		// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
+		if ($expiration == 'midnight') {
+			$datetime = current_time('timestamp');
+			$expiration = strtotime('tomorrow', $datetime ) - $datetime;
+		}
+		
+		return set_transient( self::getCacheId( $custom_id ), $value, $expiration );
 	}
 
 	/**
