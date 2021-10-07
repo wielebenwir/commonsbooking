@@ -224,6 +224,7 @@ class MapShortcode {
 		$label_location_opening_hours   = MapAdmin::get_option( $cb_map_id, 'label_location_opening_hours' );
 		$label_location_contact         = MapAdmin::get_option( $cb_map_id, 'label_location_contact' );
 		$custom_no_locations_message    = MapAdmin::get_option( $cb_map_id, 'custom_no_locations_message' );
+		$custom_filterbutton_label      = MapAdmin::get_option( $cb_map_id, 'custom_filterbutton_label' );
 		$label_item_availability_filter = MapAdmin::get_option( $cb_map_id, 'label_item_availability_filter' );
 		$label_item_category_filter     = MapAdmin::get_option( $cb_map_id, 'label_item_category_filter' );
 		$label_location_distance_filter = MapAdmin::get_option( $cb_map_id, 'label_location_distance_filter' );
@@ -236,7 +237,7 @@ class MapShortcode {
 			'AT_LEAST'               => esc_html__( 'for at least', 'commonsbooking' ),
 			'DAYS'                   => esc_html__( 'day(s)', 'commonsbooking' ),
 			'NO_LOCATIONS_MESSAGE'   => strlen( $custom_no_locations_message ) > 0 ? $custom_no_locations_message : esc_html__( 'Sorry, no locations found.', 'commonsbooking' ),
-			'FILTER'                 => esc_html__( 'filter', 'commonsbooking' ),
+ 			'FILTER'                 => strlen( $custom_filterbutton_label ) > 0 ? $custom_filterbutton_label : esc_html__( 'filter', 'commonsbooking' ),
 			'AVAILABILITY'           => strlen( $label_item_availability_filter ) > 0 ? $label_item_availability_filter : esc_html__( 'availability', 'commonsbooking' ),
 			'CATEGORIES'             => strlen( $label_item_category_filter ) > 0 ? $label_item_category_filter : esc_html__( 'categories', 'commonsbooking' ),
 			'DISTANCE'               => strlen( $label_location_distance_filter ) > 0 ? $label_location_distance_filter : esc_html__( 'distance', 'commonsbooking' ),
