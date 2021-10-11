@@ -514,7 +514,7 @@ class Migration {
 
 		$postData = [
 			'post_title'  => 'Buchung CB1-Import ' . $userName . ' - ' . $booking['date_start'],
-			'post_type'   => Timeframe::$postType,
+			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
 			'post_name'   => Helper::generateRandomString(),
 			'post_status' => $booking['status'],
 			'post_date'   => $booking['booking_time'],
@@ -538,7 +538,7 @@ class Migration {
 			COMMONSBOOKING_METABOX_PREFIX . 'bookingcode'      => CB1::getBookingCode( $booking['code_id'] )
 		];
 
-		$existingPost = self::getExistingPost( $booking['id'], Timeframe::$postType, Timeframe::BOOKING_ID );
+		$existingPost = self::getExistingPost( $booking['id'], \CommonsBooking\Wordpress\CustomPostType\Booking::$postType );
 
 		return self::savePostData( $existingPost, $postData, $postMeta );
 	}

@@ -13,12 +13,23 @@ function commonsbooking_admin() {
 	wp_enqueue_style( 'admin-styles', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/css/admin.css', array(), COMMONSBOOKING_VERSION );
 	wp_enqueue_script( 'cb-scripts-admin', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js', array() );
 
+	// CB 0.X migration
 	wp_localize_script(
 		'cb-scripts-admin',
 		'cb_ajax',
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce'    => wp_create_nonce( 'start_migration' ),
+		)
+	);
+
+	// CB 2 bookings migration - from timeframe to separate cpt
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'start_booking_migration' ),
 		)
 	);
 }

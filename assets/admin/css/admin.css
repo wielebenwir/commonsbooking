@@ -5931,4 +5931,11 @@ a.ui-button:active,
   display: none;
 }
 
+/* line 9, ../sass/partials/_migration.scss */
+#booking-migration-in-progress,
+#booking-migration-done {
+  margin-bottom: 1rem;
+  display: none;
+}
+
 /*# sourceMappingURL=admin.css.map */
