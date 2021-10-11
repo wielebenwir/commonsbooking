@@ -28,21 +28,21 @@ abstract class CustomPostType {
 	/**
 	 * @return string
 	 */
-	public static function getWPAction() {
+	public static function getWPAction(): string {
 		return static::getPostType() . "-custom-fields";
 	}
 
 	/**
 	 * @return string
 	 */
-	public static function getPostType() {
+	public static function getPostType(): string {
 		return static::$postType;
 	}
 
 	/**
 	 * @return string
 	 */
-	public static function getWPNonceId() {
+	public static function getWPNonceId(): string {
 		return static::getPostType() . "-custom-fields" . '_wpnonce';
 	}
 
@@ -265,6 +265,20 @@ abstract class CustomPostType {
 				echo '-';
 			}
 		}
+	}
+
+	/**
+	 * Checks if method has been called before in current request.
+	 * @param $methodName
+	 *
+	 * @return bool
+	 */
+	protected function hasRunBefore($methodName): bool {
+		if(array_key_exists($methodName, $_REQUEST)) {
+			return true;
+		}
+		$_REQUEST[$methodName] = true;
+		return false;
 	}
 
 }

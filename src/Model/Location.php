@@ -164,6 +164,37 @@ class Location extends BookablePost {
 				$coordinates[0]
 			);
 		}
+	}
 
+	/**
+	 * @return array|mixed|string[]
+	 */
+	public function getAdmins() {
+		// Get assigned location
+		$locationId       = $this->ID;
+		$locationAdminIds = get_post_meta( $locationId, '_' . \CommonsBooking\Wordpress\CustomPostType\Location::$postType . '_admins', true );
+		if ( is_string( $locationAdminIds ) ) {
+			if ( strlen( $locationAdminIds ) > 0 ) {
+				$locationAdminIds = [ $locationAdminIds ];
+			} else {
+				$locationAdminIds = [];
+			}
+		}
+		$locationAdminIds[] = get_post_field( 'post_author', $locationId );
+
+		return $locationAdminIds;
+	}
+
+	/**
+	 * @return Restriction[]
+	 * @throws \Exception
+	 */
+	public function getRestrictions(): array {
+		return \CommonsBooking\Repository\Restriction::get(
+			[$this->ID],
+			[],
+			null,
+			true
+		);
 	}
 }
