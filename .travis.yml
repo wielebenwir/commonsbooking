@@ -19,21 +19,10 @@ cache:
 matrix:
   include:
     - php: 7.4
-      env: WP_VERSION=latest
+      env: WP_VERSION=5.7.1
     - php: 7.3
-      env: WP_VERSION=latest
-    - php: 7.2
-      env: WP_VERSION=latest
-    - php: 7.1
-      env: WP_VERSION=latest
-    - php: 7.0
-      env: WP_VERSION=latest
-    - php: 5.6
-      env: WP_VERSION=latest
-    - php: 5.6
-      env: WP_VERSION=trunk
-    - php: 5.6
-      env: WP_TRAVISCI=phpcs
+      env: WP_VERSION=5.7.1
+
 
 before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
@@ -45,8 +34,12 @@ before_script:
     fi
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
+      wget https://phar.phpunit.de/phpunit-7.5.9.phar
+      chmod +x phpunit-7.5.9.phar
+      sudo mv phpunit-7.5.9.phar /usr/local/bin/phpunit
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-      composer global require "phpunit/phpunit=4.8.*|5.7.*"
+      composer install
+      /usr/local/bin/phpunit --version
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
@@ -60,8 +53,8 @@ before_script:
 script:
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      phpunit
-      WP_MULTISITE=1 phpunit
+      /usr/local/bin/phpunit
+      WP_MULTISITE=1 /usr/local/bin/phpunit
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
