@@ -34,6 +34,7 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
                     <span class="date"></span>
                     <select style="display: none" id="repetition-end" name="repetition-end"></select>
                 </div>
+                <p id="fullDayInfo"></p>
 				<?php
 				if (
                     array_key_exists( 'location', $templateData ) &&
