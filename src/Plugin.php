@@ -4,8 +4,10 @@
 namespace CommonsBooking;
 
 use CommonsBooking\API\AvailabilityRoute;
+use CommonsBooking\API\GBFS\Discovery;
 use CommonsBooking\API\GBFS\StationInformation;
 use CommonsBooking\API\GBFS\StationStatus;
+use CommonsBooking\API\GBFS\SystemInformation;
 use CommonsBooking\API\ItemsRoute;
 use CommonsBooking\API\LocationsRoute;
 use CommonsBooking\API\ProjectsRoute;
@@ -610,8 +612,10 @@ class Plugin {
 						new LocationsRoute(),
 //                    new \CommonsBooking\API\OwnersRoute(),
 						new ProjectsRoute(),
+						new Discovery(),
 						new StationInformation(),
 						new StationStatus(),
+						new SystemInformation(),
 
 					];
 					foreach ( $routes as $route ) {

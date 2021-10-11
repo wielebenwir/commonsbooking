@@ -708,12 +708,14 @@ class Timeframe extends CustomPostType {
 				'name'    => esc_html__( "Location", 'commonsbooking' ),
 				'id'      => "location-id",
 				'type'    => 'select',
+				'show_option_none' => esc_html__( 'Please select' , 'commonsbooking'),
 				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
 			),
 			array(
 				'name'    => esc_html__( "Item", 'commonsbooking' ),
 				'id'      => "item-id",
 				'type'    => 'select',
+				'show_option_none' => esc_html__( 'Please select' , 'commonsbooking'),
 				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 			),
 			array(
@@ -788,7 +790,7 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'    => esc_html__( "Grid", 'commonsbooking' ),
-				'desc'    => esc_html__( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/?p=437">Manage Booking Timeframes</a>', 'commonsbooking' ),
+				'desc'    => commonsbooking_sanitizeHTML( __( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/?p=437">Manage Booking Timeframes</a>', 'commonsbooking' ) ),
 				'id'      => "grid",
 				'type'    => 'select',
 				'options' => self::getGridOptions(),
