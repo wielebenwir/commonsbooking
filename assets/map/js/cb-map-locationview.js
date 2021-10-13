@@ -30,23 +30,6 @@ var cb_map_locationview = {
             autoPan: false
         }).addTo(map);
 
-        this.marker.on('dragend', function (e) {
-            jQuery('#geo_latitude').val(that.marker.getLatLng().lat);
-            jQuery('#geo_longitude').val(that.marker.getLatLng().lng);
-        });
-
-    },
-
-    set_marker_position: function (lat, lng) {
-        if (!this.marker) {
-            this.add_marker(lat, lng);
-        } else {
-            var newLatLng = new L.LatLng(lat, lng);
-            this.marker.setLatLng(newLatLng);
-        }
-
-        this.map.panTo(new L.LatLng(lat, lng));
-
     },
 
     search: function () {
