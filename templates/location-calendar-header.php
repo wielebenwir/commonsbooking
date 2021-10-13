@@ -6,6 +6,10 @@
 <div class="cb-list-info">
     <h4 class="cb-title cb-location-title"><?php echo $location->post_title; ?></h4>
     <div class="cb-address cb-location-address"><?php echo $location->formattedAddressOneLine(); ?></div>
+    <?php  $locationMap =  $location->locationMap();
+          if($locationMap){
+            echo $locationMap;
+          } ?>
       <div class="cb-address cb-location-pickupinstructions"><?php
       // if pickup instructions are set in location meta
       if ($location->formattedPickupInstructionsOneLine()) {
