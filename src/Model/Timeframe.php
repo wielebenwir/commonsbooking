@@ -164,7 +164,7 @@ class Timeframe extends CustomPost {
 		}
 
 		// TODO : Why is this return post as default. What type of post is this?
-		//return $post;
+		return $post;
 	}
 
 	/**
@@ -180,7 +180,7 @@ class Timeframe extends CustomPost {
 		}
 
 		// TODO : Why is this return post as default. What type of post is this?
-		//return $post;
+		return $post;
 	}
 
 	/**
