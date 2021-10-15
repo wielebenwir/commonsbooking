@@ -29,7 +29,6 @@ class Calendar {
 	 * @throws Exception
 	 */
 	public static function renderTable( $atts ): string {
-
 		$locationCategory = false;
 		if ( is_array( $atts ) && array_key_exists( 'locationcat', $atts ) ) {
 			$locationCategory = $atts['locationcat'];
@@ -151,7 +150,7 @@ class Calendar {
 						$today,
 						null
 					);
-					
+
 					$gotStartDate = false;
 					$gotEndDate   = false;
 					$dayIterator  = 0;
@@ -273,7 +272,6 @@ class Calendar {
 
 				// prepare string to calculate max advance booking days based on user defined max days in first bookable timeframe 
 				$advanceBookingDays = '+' . $firstBookableTimeframe->getMaxAdvanceBookingDays(). ' days';
-				
 
 				$gotStartDate = true;
 				if ( $startDateString == null ) {
@@ -287,19 +285,19 @@ class Calendar {
 					$gotEndDate    = false;
 				}
 		
-				// TODO @markus-mw: wofür benötigen wir diese Abfragen? Und wo werden die definiert?
-				// if ( array_key_exists( 'sd', $_POST ) ) {
-				// 	$gotStartDate    = true;
-				// 	$startDateString = sanitize_text_field( $_POST['sd'] );
-				// }
+				// Ajax-Request param check
+				 if ( array_key_exists( 'sd', $_POST ) ) {
+				 	$gotStartDate    = true;
+				 	$startDateString = sanitize_text_field( $_POST['sd'] );
+				 }
 				
 				$startDate = new Day( $startDateString );
-		
-				// TODO @markus-mw: wofür benötigen wir diese Abfragen? Und wo werden die definiert?
-				// if ( array_key_exists( 'ed', $_POST ) ) {
-				// 	$gotEndDate    = true;
-				// 	$endDateString = sanitize_text_field( $_POST['ed'] );
-				// }
+
+				// Ajax-Request param check
+				 if ( array_key_exists( 'ed', $_POST ) ) {
+				 	$gotEndDate    = true;
+				 	$endDateString = sanitize_text_field( $_POST['ed'] );
+				 }
 
 				$endDate = new Day( $endDateString );
 
@@ -466,8 +464,6 @@ class Calendar {
 	 * @param $noSlots
 	 */
 	protected static function processSlot( $slot, &$dayArray, &$jsonResponse, &$allLocked, &$noSlots ) {
-
-
 		// Add only bookable slots for time select
 		if ( ! empty( $slot['timeframe'] ) && $slot['timeframe'] instanceof WP_Post ) {
 			// We have at least one slot ;)
