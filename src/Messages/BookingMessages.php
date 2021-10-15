@@ -3,6 +3,7 @@
 namespace CommonsBooking\Messages;
 
 use CommonsBooking\CB\CB;
+use CommonsBooking\Repository\Booking;
 use CommonsBooking\Settings\Settings;
 
 class BookingMessages extends Messages {
@@ -10,6 +11,9 @@ class BookingMessages extends Messages {
 	protected $validActions = [ "confirmed", "canceled" ];
 
 	public function sendMessage() {
+		/** @var \CommonsBooking\Model\Booking $booking */
+		$booking = Booking::getPostById( $this->getPostId() );
+
 		$booking_user = get_userdata( $this->getPost()->post_author );
 		$bcc_adresses = CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_email' ); /*  email adresses, comma-seperated  */
 
@@ -32,7 +36,12 @@ class BookingMessages extends Messages {
 			$template_body,
 			$template_subject,
 			$fromHeaders,
-			$bcc_adresses
+			$bcc_adresses,
+			[
+				'booking'  => $booking,
+				'item'     => $booking->getItem(),
+				'location' => $booking->getLocation()
+			]
 		);
 		$this->SendNotificationMail();
 	}
