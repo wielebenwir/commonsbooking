@@ -247,73 +247,67 @@ class Calendar {
 			}
 		}
 
-		if ( ! $item && ! $location ) {
+		if ( ! $item || ! $location ) {
 			throw new Exception( 'item or location could not be found' );
 		}
 
-		if ( $item && $location ) {
-			$bookableTimeframes = \CommonsBooking\Repository\Timeframe::get(
-				[ $location ],
-				[ $item ],
-				[ Timeframe::BOOKABLE_ID ],
-				null,
-				true,
-				time()
-			);
+		$gotStartDate = true;
+		// Ajax-Request param check
+		if ( array_key_exists( 'sd', $_POST ) ) {
+			$startDateString = sanitize_text_field( $_POST['sd'] );
+		}
+		if ( $startDateString == null ) {
+			$startDateString = date( 'Y-m-d', strtotime( 'first day of this month', time() ) );
+			$gotStartDate    = false;
+		}
 
-			if ( count( $bookableTimeframes ) ) {
-				// Sort timeframes by startdate
-				usort( $bookableTimeframes, function ( $item1, $item2 ) {
-					return $item1->getStartDate() < $item2->getStartDate();
-				} );
+		$gotEndDate = true;
+		if ( array_key_exists( 'ed', $_POST ) ) {
+			$endDateString = sanitize_text_field( $_POST['ed'] );
+		}
+		if ( $endDateString == null ) {
+			$endDateString = date( 'Y-m-d', strtotime( '+3 months', time() ) );
+			$gotEndDate    = false;
+		}
 
-				/** @var \CommonsBooking\Model\Timeframe $firstBookableTimeframe */
-				$firstBookableTimeframe = array_pop( $bookableTimeframes );
+		$startDate = new Day( $startDateString );
+		$endDate = new Day( $endDateString );
 
-				// prepare string to calculate max advance booking days based on user defined max days in first bookable timeframe 
-				$advanceBookingDays = '+' . $firstBookableTimeframe->getMaxAdvanceBookingDays(). ' days';
+		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::get(
+			[ $location ],
+			[ $item ],
+			[ Timeframe::BOOKABLE_ID ],
+			null,
+			true,
+			time()
+		);
 
-				$gotStartDate = true;
-				if ( $startDateString == null ) {
-					$startDateString = date( 'Y-m-d', strtotime( 'now', time() ) );
-					$gotStartDate    = false;
-				}
-		
-				$gotEndDate = true;
-				if ( $endDateString == null ) {
-					$endDateString = date( 'Y-m-d', strtotime( $advanceBookingDays , time() ) );
-					$gotEndDate    = false;
-				}
-		
-				// Ajax-Request param check
-				 if ( array_key_exists( 'sd', $_POST ) ) {
-				 	$gotStartDate    = true;
-				 	$startDateString = sanitize_text_field( $_POST['sd'] );
-				 }
-				
-				$startDate = new Day( $startDateString );
+		if ( count( $bookableTimeframes ) ) {
+			// Sort timeframes by startdate
+			usort( $bookableTimeframes, function ( $item1, $item2 ) {
+				return $item1->getStartDate() < $item2->getStartDate();
+			} );
 
-				// Ajax-Request param check
-				 if ( array_key_exists( 'ed', $_POST ) ) {
-				 	$gotEndDate    = true;
-				 	$endDateString = sanitize_text_field( $_POST['ed'] );
-				 }
+			/** @var \CommonsBooking\Model\Timeframe $firstBookableTimeframe */
+			$firstBookableTimeframe = array_pop( $bookableTimeframes );
 
+			// prepare string to calculate max advance booking days based on user defined max days in first bookable timeframe
+			$advanceBookingDays = '+' . $firstBookableTimeframe->getMaxAdvanceBookingDays(). ' days';
+
+			// Check if start-/enddate was requested, then don't change it
+			// otherwise start with first bookable month
+			if(!$gotStartDate) {
+				$startDateTimestamp = $firstBookableTimeframe->getStartDate();
+				$startDate = new Day( date('Y-m-d', $startDateTimestamp ));
+			}
+
+			if(!$gotEndDate) {
+				$endDateString = date( 'Y-m-d', strtotime( $advanceBookingDays , time() ) );
 				$endDate = new Day( $endDateString );
-
-
-				// Check if start-/enddate was requested, then don't change it
-				// otherwise start with first bookable month
-				if ( $gotStartDate && $gotEndDate ) {
-					$startDateTimestamp = $firstBookableTimeframe->getStartDate();
-					$startDate          = new Day( date( 'Y-m-d', $startDateTimestamp ) );
-					$endDate            = new Day( date( 'Y-m-d', strtotime( $advanceBookingDays, $startDateTimestamp ) ) );
-				}
 			}
 		}
 
 		return self::prepareJsonResponse( $startDate, $endDate, $location ? [ $location ] : [], $item ? [ $item ] : [] );
-
 	}
 
 	/**
