@@ -1,7 +1,7 @@
 <?php
     global $templateData;
 
-    // we check if template is used not used in backend ... 
+    // we check if template is used not used in backend ...
     if(!array_key_exists('backend', $templateData) || $templateData['backend'] != true) {
 ?>
     <script type="text/javascript">
@@ -55,8 +55,8 @@
                         </span>
                     </div>
                 <?php } ?>
-            <p id="fullDayInfo"></p>
-            <p id="calendarNotice"></p>
+                <p id="fullDayInfo"></p>
+                <p id="calendarNotice"></p>
             </div>
 			<?php
 			if ( is_user_logged_in() ) { ?>
@@ -65,9 +65,9 @@
 			<?php } ?>
         </form>
     </div>
-<?php 
+<?php
 
-    // if template is used in backend 
+    // if template is used in backend
     } else {
         foreach ($templateData['calendar']['weeks'] as $week) {
 ?>

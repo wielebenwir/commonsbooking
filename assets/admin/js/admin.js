@@ -18,6 +18,16 @@
                 });
             };
             runMigration(!1);
+        }), $("#cmb2-metabox-migration #booking-update-start").on("click", function(event) {
+            event.preventDefault();
+            const runMigration = data => {
+                $.post(cb_ajax.ajax_url, {
+                    _ajax_nonce: cb_ajax.nonce,
+                    action: "start_booking_migration"
+                });
+            };
+            $("#booking-migration-in-progress").show(), runMigration(!1), $("#booking-migration-in-progress").hide(), 
+            $("#booking-migration-done").show();
         });
     });
 }(jQuery), function($) {

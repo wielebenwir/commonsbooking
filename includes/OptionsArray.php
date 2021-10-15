@@ -400,6 +400,19 @@ Thanks, the Team.
 					)
 				]
 			),
+			'booking-migration'       => array(
+				'title'  => esc_html__( 'Migrate bookings to new version', 'commonsbooking' ),
+				'id'     => 'booking-migration',
+				'desc'   => commonsbooking_sanitizeHTML( __( 'Migrate bookings to new format so that they are listed at bookings menu item.', 'commonsbooking' ) ),
+				'fields' => [
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Migrate bookings', 'commonsbooking' ) ),
+						'id'            => 'booking-migration-custom-field',
+						'type'          => 'text',
+						'render_row_cb' => array( Migration::class, 'renderBookingMigrationForm' ),
+					)
+				]
+			),
 			'cb1-user-fields' => array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'CommonsBooking Version 0.X profile fields', 'commonsbooking' ) ),
 				'id'     => 'cb1-user-fields',

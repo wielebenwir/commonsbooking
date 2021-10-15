@@ -125,6 +125,7 @@ add_action( 'wp_ajax_nopriv_bookings_data', array( Booking::class, 'getTemplateD
 
 if ( is_admin() ) {
 	add_action( 'wp_ajax_start_migration', array( Migration::class, 'migrateAll' ) );
+	add_action( 'wp_ajax_start_booking_migration', array( \CommonsBooking\Migration\Booking::class, 'migrate' ) );
 }
 
 // Map ajax
