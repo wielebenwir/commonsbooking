@@ -203,6 +203,6 @@ class Location extends BookablePost {
 	 * @return mixed
 	 */
 	public function hasMap() {
-		return (bool) $this->getMeta( 'loc_showmap');
+		return $this->getMeta( 'loc_showmap') === "on";
 	}
 }
