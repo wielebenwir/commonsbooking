@@ -132,6 +132,37 @@ class Location extends BookablePost {
 	}
 
 	/**
+	 * locationMap
+	 *
+	 * Returns map for location when checkbox is set
+	 *
+	 * @return string html or false
+	 */
+	public function locationMap() {
+		//renders map for location-calendar-header template, only renders when set as option
+		if ($this->getMeta( 'loc_showmap')){
+			$latitude = $this->getMeta( 'geo_latitude' );
+			$longitude = $this->getMeta( 'geo_longitude' );
+			wp_enqueue_style( 'cb_map_leaflet_css', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet.css' );
+			wp_enqueue_script( 'cb_map_leaflet_js', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet-src.js' );
+
+			echo '<div id="cb_locationview_map" style="width: 100%; height: 300px;"></div>';
+			$script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-locationview.js';
+			echo '<script src="' . $script_path . '"></script>';
+
+			//map defaults
+			$defaults = [
+				'latitude'  => $latitude,
+				'longitude' => $longitude,
+			];
+		  return '<script>cb_map_locationview.defaults = ' . json_encode( $defaults ) . ';</script>';
+		}
+		else {
+			return false;
+		}
+	}
+
+	/**
 	 * @throws Exception
 	 */
 	public function updateGeoLocation() {
