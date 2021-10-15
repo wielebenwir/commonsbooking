@@ -113,8 +113,6 @@ class Day {
 			}
 		}
 
-
-
 		return $this->getTimeframeSlots( $timeFrames );
 	}
 
