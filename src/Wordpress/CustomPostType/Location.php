@@ -260,6 +260,15 @@ class Location extends CustomPostType {
 			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 		) );
 
+		// Show map on item view checkbox
+		$cmb->add_field( array(
+			'name'       => esc_html__( 'Show location map on item view' ),
+			//'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
+			'id'         => 'loc_showmap',
+			'type'       => 'checkbox',
+			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+		) );
+
 		// Initiate the metabox Information
 		$cmb = new_cmb2_box( array(
 			'id'           => COMMONSBOOKING_METABOX_PREFIX . 'location_info',
