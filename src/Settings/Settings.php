@@ -49,7 +49,7 @@ class Settings {
 	 * @param $options_key
 	 * @param $field_id
 	 *
-	 * @return false|mixed
+     * @return array
 	 */
 	public static function getOption( $options_key, $field_id ) {
 		$cb_options_array = get_option( $options_key );

@@ -625,31 +625,33 @@ class Plugin {
 	/**
 	 * Function to register our new routes from the controller.
 	 */
-	public function initRoutes(): void {
+	/**
+	 * Function to register our new routes from the controller.
+	 */
+	public function initRoutes()
+	{
 		// Check if API is activated in settings
-		$api_activated = Settings::getOption( 'commonsbooking_options_export', 'api-activated' );
-		if ( $api_activated == "on" ) {
-			add_action(
-				'rest_api_init',
-				function () {
-					$routes = [
-						new AvailabilityRoute(),
-						new ItemsRoute(),
-						new LocationsRoute(),
-//                    new \CommonsBooking\API\OwnersRoute(),
-						new ProjectsRoute(),
-						new Discovery(),
-						new StationInformation(),
-						new StationStatus(),
-						new SystemInformation(),
-
-					];
-					foreach ( $routes as $route ) {
-						$route->register_routes();
-					}
-				}
-			);
+		$api_activated = Settings::getOption('commonsbooking_options_api', 'api-activated');
+		if ($api_activated != "on") {
+			return false;
 		}
+
+		add_action(
+			'rest_api_init',
+			function () {
+				$routes = [
+					new \CommonsBooking\API\AvailabilityRoute(),
+					new \CommonsBooking\API\ItemsRoute(),
+					new \CommonsBooking\API\LocationsRoute(),
+//                    new \CommonsBooking\API\OwnersRoute(),
+					new \CommonsBooking\API\ProjectsRoute(),
+
+				];
+				foreach ($routes as $route) {
+					$route->register_routes();
+				}
+			}
+		);
 	}
 
 	/**

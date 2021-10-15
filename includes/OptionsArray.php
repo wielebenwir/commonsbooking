@@ -537,13 +537,13 @@ Thanks, the Team.
 					array(
 						'name' => esc_html__( 'Activate API', 'commonsbooking' ),
 						'desc' => commonsbooking_sanitizeHTML( __( 'If selected, the API is enabled. See more information in the documentation: <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
-						'id'   => "api-activated",
+                        'id'      => 'api-activated',
 						'type' => 'checkbox',
 					),
 					array(
 						'name' => esc_html__( 'Enable API Access without API-Key', 'commonsbooking' ),
 						'desc' => commonsbooking_sanitizeHTML( __( 'If selected, the API is accessible without an API-Key. For details see: <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
-						'id'   => "apikey_not_required",
+                        'id'      => 'apikey_not_required',
 						'type' => 'checkbox',
 					),
 
@@ -586,9 +586,6 @@ Thanks, the Team.
 								'id'         => 'api_key',
 								'type'       => 'text',
 								'desc'       => commonsbooking_sanitizeHTML( __( ' You must set an API-Key. The API key should consist of alphanumeric characters and be at least 24 characters long.', 'commonsbooking' ) ),
-								'attributes' => array(
-									'required' => 'required',
-								),
 							),
 							array(
 								'name'       => esc_html__( 'API Owner', 'commonsbooking' ),
