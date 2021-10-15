@@ -12,12 +12,14 @@ use CommonsBooking\API\ItemsRoute;
 use CommonsBooking\API\LocationsRoute;
 use CommonsBooking\API\ProjectsRoute;
 use CommonsBooking\CB\CB1UserFields;
+use CommonsBooking\Helper\API;
 use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
-use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Settings\Settings;
+use CommonsBooking\Wordpress\Options;
+use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
@@ -49,15 +51,17 @@ class Plugin {
 		if (\WP_DEBUG) {
 			return false;
 		}
-		
+
 		// we check if timeout for transient is set and return false if it is expired to force cache refresh
 		$transient_timeout = get_option('_transient_timeout_' . self::getCacheId( $custom_id ));
 		if ($transient_timeout && $transient_timeout < time()) {
 			delete_option('_transient_timeout_' . self::getCacheId( $custom_id ));
     		return false;
-		} 
+		}
 
 		return get_transient( self::getCacheId( $custom_id ) );
+
+        API::triggerPushUrls();
 	}
 
 	/**
@@ -95,7 +99,7 @@ class Plugin {
 			$datetime = current_time('timestamp');
 			$expiration = strtotime('tomorrow', $datetime ) - $datetime;
 		}
-		
+
 		return set_transient( self::getCacheId( $custom_id ), $value, $expiration );
 	}
 

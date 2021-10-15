@@ -16,20 +16,26 @@ class Settings {
 	 * Flattens a multidimensional array to get $key->value into a single dimension.
 	 *
 	 * @param mixed $array
-	 *
-	 * @return array|bool
-	 */
-	static function flattenArray( $array ) {
+     * @param string|bool $parent
+     * @return array|bool
+     */
+	static function flattenArray( $array , $parent = false) {
 		if ( ! is_array( $array ) ) {
 			return false;
 		}
 		$result = array();
+
 		foreach ( $array as $key => $value ) {
+			if($parent === false) {
 			if ( is_array( $value ) ) {
-				$result = array_merge( $result, self::flattenArray( $value ) );
+                    $result = array_merge($result, self::flattenArray($value, $key));
 			} else {
 				$result[ $key ] = $value;
 			}
+            } else {
+                $result[$parent][$key] = $value;
+            }
+
 		}
 
 		return $result;
