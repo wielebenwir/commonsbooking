@@ -25,7 +25,7 @@ class ApiShares
                 $apiShare['api_enabled'],
                 $apiShare['push_url'],
                 $apiShare['api_key'],
-                $apiShare['api_owner']
+	            get_bloginfo('name')
             );
         }
 
