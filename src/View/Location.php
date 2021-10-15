@@ -118,4 +118,32 @@ class Location extends View {
 	public static function content( \WP_Post $post ) {
 		// TODO: Implement content() method.
 	}
+
+	/**
+	 * locationMap
+	 *
+	 * Renders map for location when checkbox is set
+	 *
+	 * @return string html or false
+	 */
+	public static function renderLocationMap(\CommonsBooking\Model\Location $post = null) {
+		//renders map for location-calendar-header template, only renders when set as option
+		if ($post->getMeta( 'loc_showmap')){
+			$latitude = $post->getMeta( 'geo_latitude' );
+			$longitude = $post->getMeta( 'geo_longitude' );
+			wp_enqueue_style( 'cb_map_leaflet_css', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet.css' );
+			wp_enqueue_script( 'cb_map_leaflet_js', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet-src.js' );
+
+			echo '<div id="cb_locationview_map" style="width: 100%; height: 300px;"></div>';
+			$script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-locationview.js';
+			echo '<script src="' . $script_path . '"></script>';
+
+			//map defaults
+			$defaults = [
+				'latitude'  => $latitude,
+				'longitude' => $longitude,
+			];
+			echo '<script>cb_map_locationview.defaults = ' . json_encode( $defaults ) . ';</script>';
+		}
+	}
 }
