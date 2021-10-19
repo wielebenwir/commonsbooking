@@ -9,18 +9,6 @@ use WP_Post;
 class Location extends View {
 
 	/**
-	 * Returns json-formatted calendardata.
-	 * @throws Exception
-	 */
-	public static function getCalendarData() {
-		$jsonResponse = Calendar::getCalendarDataArray();
-
-		header( 'Content-Type: application/json' );
-		echo json_encode( $jsonResponse );
-		wp_die(); // All ajax handlers die when finished
-	}
-
-	/**
 	 * Returns template data for frontend.
 	 *
 	 * @param WP_Post|null $post
@@ -38,7 +26,9 @@ class Location extends View {
 
 		$calendarData = Calendar::getCalendarDataArray(
 			$item ?: null,
-			$location
+			$location,
+			date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE_START, time() ) ),
+			date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE, time() ) )
 		);
 
 		$args = [

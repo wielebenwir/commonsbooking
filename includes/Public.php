@@ -3,7 +3,7 @@
 use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\Migration\Migration;
 use CommonsBooking\View\Booking;
-use CommonsBooking\View\Location;
+use CommonsBooking\View\Calendar;
 
 function commonsbooking_public() {
 	wp_enqueue_style(
@@ -117,8 +117,8 @@ function commonsbooking_public() {
 add_action( 'wp_enqueue_scripts', 'commonsbooking_public' );
 
 // Calendar data ajax
-add_action( 'wp_ajax_calendar_data', array( Location::class, 'getCalendarData' ) );
-add_action( 'wp_ajax_nopriv_calendar_data', array( Location::class, 'getCalendarData' ) );
+add_action( 'wp_ajax_calendar_data', array( Calendar::class, 'getCalendarData' ) );
+add_action( 'wp_ajax_nopriv_calendar_data', array( Calendar::class, 'getCalendarData' ) );
 
 add_action( 'wp_ajax_bookings_data', array( Booking::class, 'getTemplateData' ) );
 add_action( 'wp_ajax_nopriv_bookings_data', array( Booking::class, 'getTemplateData' ) );

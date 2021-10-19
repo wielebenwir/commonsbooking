@@ -42,6 +42,8 @@ class Item extends View {
 				} else {
 					$args['locations'] = $locations;
 				}
+			} else {
+				throw new Exception('no location data found');
 			}
 		} else {
 			$args['location'] = new \CommonsBooking\Model\Location( get_post( $location ) );
@@ -49,7 +51,9 @@ class Item extends View {
 
 		$calendarData          = Calendar::getCalendarDataArray(
 			$item,
-			array_key_exists( 'location', $args ) ? $args['location'] : null
+			$args['location'],
+			date( 'Y-m-d', strtotime( 'first day of this month', time() ) ),
+			date( 'Y-m-d', strtotime( '+3 months', time() ) )
 		);
 		$args['calendar_data'] = json_encode( $calendarData );
 
