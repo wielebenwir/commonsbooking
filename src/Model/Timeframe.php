@@ -153,34 +153,28 @@ class Timeframe extends CustomPost {
 	 * @return Location
 	 * @throws Exception
 	 */
-	public function getLocation(): Location {
+	public function getLocation(): ?Location {
 		$locationId = $this->getMeta( 'location-id' );
-		// TODO @markus-mw: if locationID is empty it returns the current post even if its not a location. Is this correct?
-		// TODO: I added check if $locationId is empty an return NULL if it is.
 		if ( $locationId ) {
 			if ( $post = get_post( $locationId ) ) {
 				return new Location( $post );
 			}
 		}
-
-		// TODO : Why is this return post as default. What type of post is this?
-		return $post;
+		return null;
 	}
 
 	/**
 	 * @return Item
 	 * @throws Exception
 	 */
-	public function getItem() {
+	public function getItem(): ?Item {
 		$itemId = $this->getMeta( 'item-id' );
 		if ( $itemId ) {
 			if ( $post = get_post( $itemId ) ) {
 				return new Item( $post );
 			}
 		}
-
-		// TODO : Why is this return post as default. What type of post is this?
-		return $post;
+		return null;
 	}
 
 	/**
