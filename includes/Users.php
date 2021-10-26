@@ -131,6 +131,10 @@ add_filter(
 					}
 				}
 			}
+
+			// Save posts to global variable for later use -> fix of counts in admin lists
+			global ${'posts' . $query->query['post_type']};
+			${'posts' . $query->query['post_type']} = $posts;
 		}
 
 		return $posts;
@@ -138,6 +142,44 @@ add_filter(
 	10,
 	2
 );
+
+// Add filter to change post counts in admin lists for custom post types.
+foreach ( Plugin::getCustomPostTypes() as $custom_post_type ) {
+	add_filter( 'views_edit-' . $custom_post_type::getPostType(), 'commonsbooking_custom_view_count', 10, 1 );
+}
+
+// Filter function for fix of counts in admin lists for custom post types.
+function commonsbooking_custom_view_count( $views ) {
+	global $current_screen;
+
+	return commonsbooking_fix_view_counts( str_replace( 'edit-', '', $current_screen->id ), $views );
+}
+
+// fixes counts for custom posts countings in admin list
+function commonsbooking_fix_view_counts( $postType, $views ) {
+	global ${'posts' . $postType};
+	$timeFramePosts = ${'posts' . $postType};
+
+	$counts = [
+		'all' => count( $timeFramePosts )
+	];
+
+	// add counts for differentp states
+	foreach ( $timeFramePosts as $post ) {
+		if ( ! array_key_exists( $post->post_status, $counts ) ) {
+			$counts[ $post->post_status ] = 0;
+		}
+		$counts[ $post->post_status ] ++;
+	}
+
+	// replace output
+	foreach ( $counts as $type => $value ) {
+		$views[ $type ] = preg_replace( '/\(.+\)/U', '(' . $value . ')', $views[ $type ] );
+	}
+
+	// return only views, which are contained in $counts array.
+	return array_intersect_key( $views, $counts );
+}
 
 // Check if current user has admin role
 function commonsbooking_isCurrentUserAdmin() {
