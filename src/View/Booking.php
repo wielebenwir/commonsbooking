@@ -50,11 +50,12 @@ class Booking extends View {
 		}
 
 		$filters = [
-			'location'  => false,
-			'item'      => false,
-			'user'      => false,
-			'startDate' => time(),
-			'endDate'   => false,
+			'location'     => false,
+			'item'         => false,
+			'user'         => false,
+			'startDate'    => time(),
+			'endDate'      => false,
+			'bookingState' => false
 		];
 
 		foreach ( $filters as $key => $value ) {
@@ -77,9 +78,10 @@ class Booking extends View {
 			$bookingDataArray['page']     = $page;
 			$bookingDataArray['per_page'] = $postsPerPage;
 			$bookingDataArray['filters']  = [
-				'user'     => [],
-				'item'     => [],
-				'location' => [],
+				'user'         => [],
+				'item'         => [],
+				'location'     => [],
+				'bookingState' => []
 			];
 
 			$posts = \CommonsBooking\Repository\Booking::getForCurrentUser(
@@ -119,7 +121,7 @@ class Booking extends View {
 					"location"           => $locationTitle,
 					"bookingDate"        => date( 'd.m.Y H:i', strtotime( $booking->post_date ) ),
 					"user"               => $userInfo->user_login,
-					"status"             => $booking->post_status,
+					"bookingState"       => $booking->post_status,
 					"calendarLink"       => $item && $location ? add_query_arg( 'item', $item->ID, get_permalink( $location->ID ) ) : '',
 					"content"            => [
 						'user'   => [

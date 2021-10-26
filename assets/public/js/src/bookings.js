@@ -8,6 +8,7 @@ class BookingList {
         this.users = Array.from(document.querySelectorAll('.filter-users option'));
         this.items = Array.from(document.querySelectorAll('.filter-items option'));
         this.locations = Array.from(document.querySelectorAll('.filter-locations option'));
+        this.bookingStates = Array.from(document.querySelectorAll('.filter-bookingStates option'));
 
         this.startDate = document.querySelector('.filter-startdate input');
         jQuery('#startDate-datepicker').datepicker({
@@ -29,7 +30,8 @@ class BookingList {
             items: [],
             locations: [],
             startDate: [],
-            endDate: []
+            endDate: [],
+            bookingStates: []
         }
 
         this.shuffle = new Shuffle(element);
@@ -71,6 +73,10 @@ class BookingList {
         this._onLocationChange = this._handleLocationChange.bind(this);
         const locationSelect = document.querySelectorAll('.filter-locations select');
         if(locationSelect) locationSelect.item(0).addEventListener('change', this._onLocationChange);
+
+        this._onBookingStateChange = this._handleBookingStateChange.bind(this);
+        const bookingStateSelect = document.querySelectorAll('.filter-bookingStates select');
+        if(bookingStateSelect) bookingStateSelect.item(0).addEventListener('change', this._onBookingStateChange);
 
         this._onStartDateChange = this._handleStartDateChange.bind(this);
         const $startDatePicker = jQuery('#startDate-datepicker');
@@ -147,6 +153,21 @@ class BookingList {
 
     _getCurrentLocationFilters() {
         return this.locations.filter(function (input) {
+            return input.selected;
+        }).map(function (input) {
+            return input.value;
+        });
+    };
+
+    _handleBookingStateChange() {
+        this.filters.bookingStates = this._getCurrentBookingStateFilters();
+        if (this.filters.bookingStates[0] == 'all') {
+            this.filters.bookingStates = [];
+        }
+    };
+
+    _getCurrentBookingStateFilters() {
+        return this.bookingStates.filter(function (input) {
             return input.selected;
         }).map(function (input) {
             return input.value;
@@ -357,6 +378,12 @@ class BookingList {
                 this.listParams.delete('location');
             }
 
+            if (this.filters.bookingStates.length) {
+                this.listParams.set('bookingState', this.filters.bookingStates[0]);
+            } else {
+                this.listParams.delete('bookingState');
+            }
+
             this.shuffle.filter(this.itemPassesFilters.bind(this));
             this._reloadData();
         } else {
@@ -388,9 +415,11 @@ class BookingList {
         var users = this.filters.users;
         var items = this.filters.items;
         var locations = this.filters.locations;
+        var bookingStates = this.filters.bookingStates;
         var user = element.getAttribute('data-user');
         var item = element.getAttribute('data-item');
         var location = element.getAttribute('data-location');
+        var bookingState = element.getAttribute('data-bookingState');
 
         if (users.length > 0 && !users.includes(user)) {
             return false;
@@ -401,6 +430,10 @@ class BookingList {
         }
 
         if (locations.length > 0 && !locations.includes(location)) {
+            return false;
+        }
+
+        if (bookingStates.length > 0 && !bookingStates.includes(bookingState)) {
             return false;
         }
 

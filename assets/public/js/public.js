@@ -4,6 +4,7 @@ class BookingList {
         this.pagination = document.getElementById("booking-list--pagination"), this.element = element, 
         this.users = Array.from(document.querySelectorAll(".filter-users option")), this.items = Array.from(document.querySelectorAll(".filter-items option")), 
         this.locations = Array.from(document.querySelectorAll(".filter-locations option")), 
+        this.bookingStates = Array.from(document.querySelectorAll(".filter-bookingStates option")), 
         this.startDate = document.querySelector(".filter-startdate input"), jQuery("#startDate-datepicker").datepicker({
             dateFormat: "yy-mm-dd",
             altFormat: "@",
@@ -18,7 +19,8 @@ class BookingList {
             items: [],
             locations: [],
             startDate: [],
-            endDate: []
+            endDate: [],
+            bookingStates: []
         }, this.shuffle = new Shuffle(element), this._resetListParams(), this._addSorting(), 
         this._reloadData(), this._bindEventListeners();
     }
@@ -40,6 +42,9 @@ class BookingList {
         this._onLocationChange = this._handleLocationChange.bind(this);
         const locationSelect = document.querySelectorAll(".filter-locations select");
         locationSelect && locationSelect.item(0).addEventListener("change", this._onLocationChange), 
+        this._onBookingStateChange = this._handleBookingStateChange.bind(this);
+        const bookingStateSelect = document.querySelectorAll(".filter-bookingStates select");
+        bookingStateSelect && bookingStateSelect.item(0).addEventListener("change", this._onBookingStateChange), 
         this._onStartDateChange = this._handleStartDateChange.bind(this);
         const $startDatePicker = jQuery("#startDate-datepicker");
         $startDatePicker && ($startDatePicker.datepicker("option", "onSelect", this._onStartDateChange), 
@@ -87,6 +92,16 @@ class BookingList {
     }
     _getCurrentLocationFilters() {
         return this.locations.filter(function(input) {
+            return input.selected;
+        }).map(function(input) {
+            return input.value;
+        });
+    }
+    _handleBookingStateChange() {
+        this.filters.bookingStates = this._getCurrentBookingStateFilters(), "all" == this.filters.bookingStates[0] && (this.filters.bookingStates = []);
+    }
+    _getCurrentBookingStateFilters() {
+        return this.bookingStates.filter(function(input) {
             return input.selected;
         }).map(function(input) {
             return input.value;
@@ -161,6 +176,7 @@ class BookingList {
         this.filters.items.length ? this.listParams.set("item", this.filters.items[0]) : this.listParams.delete("item"), 
         this.filters.users.length ? this.listParams.set("user", this.filters.users[0]) : this.listParams.delete("user"), 
         this.filters.locations.length ? this.listParams.set("location", this.filters.locations[0]) : this.listParams.delete("location"), 
+        this.filters.bookingStates.length ? this.listParams.set("bookingState", this.filters.bookingStates[0]) : this.listParams.delete("bookingState"), 
         this.shuffle.filter(this.itemPassesFilters.bind(this)), this._reloadData()) : (this._resetListParams(), 
         this.shuffle.filter(Shuffle.ALL_ITEMS), this._reloadData()), jQuery("#filter").removeClass("loading");
     }
@@ -170,8 +186,8 @@ class BookingList {
         }, this);
     }
     itemPassesFilters(element) {
-        var users = this.filters.users, items = this.filters.items, locations = this.filters.locations, user = element.getAttribute("data-user"), item = element.getAttribute("data-item"), location = element.getAttribute("data-location");
-        return !(users.length > 0 && !users.includes(user)) && (!(items.length > 0 && !items.includes(item)) && !(locations.length > 0 && !locations.includes(location)));
+        var users = this.filters.users, items = this.filters.items, locations = this.filters.locations, bookingStates = this.filters.bookingStates, user = element.getAttribute("data-user"), item = element.getAttribute("data-item"), location = element.getAttribute("data-location"), bookingState = element.getAttribute("data-bookingState");
+        return !(users.length > 0 && !users.includes(user)) && (!(items.length > 0 && !items.includes(item)) && (!(locations.length > 0 && !locations.includes(location)) && !(bookingStates.length > 0 && !bookingStates.includes(bookingState))));
     }
     _initItemElement(item) {
         var itemElement = document.createElement("div");
