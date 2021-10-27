@@ -308,6 +308,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             jQuery('.hint-selection').show();
             jQuery('.time-selection .date').text('');
             jQuery('#resetPicker').hide();
+            jQuery('#booking-form input[type=submit]').attr('disabled','disabled');
         }
 
         // Click handler for reset button
