@@ -24,6 +24,9 @@
                     <label for="repetition-start">
 						<?php echo esc_html__( 'Pickup', 'commonsbooking' ); ?>:
                     </label>
+                    <button class="cb-button" id="resetPicker">
+	                    <?php echo esc_html__( 'Reset date selection', 'commonsbooking' ); ?>
+                    </button>
                     <span class="hint-selection"><?php echo esc_html__( 'Please select the pickup date in the calendar', 'commonsbooking' ); ?></span>
                     <span class="date"></span>
                     <select style="display: none" id="repetition-start" name="repetition-start"></select>

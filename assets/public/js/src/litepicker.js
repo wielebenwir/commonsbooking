@@ -90,6 +90,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
             jQuery('.time-selection.repetition-start').find('.hint-selection').hide();
             jQuery('.time-selection.repetition-end').find('.hint-selection').show();
 
+            // Show reset button as first calender selection is done
+            jQuery('#resetPicker').show();
+
             // Hide end date selection if new start date was chosen
             let endSelectData = jQuery(
                 '#booking-form select[name=repetition-end],' +
@@ -298,6 +301,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
             );
             fadeInCalendar();
         };
+
+        // Resets date selection
+        const resetDatepickerSelection = () => {
+            picker.clearSelection();
+            jQuery('.hint-selection').show();
+            jQuery('.time-selection .date').text('');
+            jQuery('#resetPicker').hide();
+        }
+
+        // Click handler for reset button
+        jQuery('#resetPicker').on('click', function (e) {
+            e.preventDefault();
+            resetDatepickerSelection();
+        })
 
         let bookingForm = jQuery('#booking-form');
         if(bookingForm.length) {

@@ -160,10 +160,16 @@ class Item extends CustomPostType {
 		if ( is_singular( self::getPostType() ) ) {
 			ob_start();
 			global $post;
-			$item = new \CommonsBooking\Model\Item( $post );
-			set_query_var( 'item', $item );
-			commonsbooking_get_template_part( 'item', 'single' );
-			$cb_content = ob_get_clean();
+			global $calledBefore;
+
+			// for any reason this part is called multiple times
+			if ( ! $calledBefore ) {
+				$item = new \CommonsBooking\Model\Item( $post );
+				set_query_var( 'item', $item );
+				commonsbooking_get_template_part( 'item', 'single' );
+				$cb_content   = ob_get_clean();
+				$calledBefore = true;
+			}
 		} // if archive...
 
 		return $content . $cb_content;

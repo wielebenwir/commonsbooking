@@ -4338,6 +4338,12 @@
 #booking-form span.restrictions {
   width: 66% !important;
 }
+/* line 481, ../sass/partials/_calendar.scss */
+#booking-form #resetPicker {
+  font-size: 1.2rem;
+  padding: 0.8125rem;
+  display: none;
+}
 
 /* Calendar styles */
 /**
