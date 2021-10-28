@@ -362,6 +362,7 @@ class Plugin {
 		foreach ( self::getCustomPostTypes() as $customPostType ) {
 			register_post_type( $customPostType::getPostType(), $customPostType->getArgs() );
 			$customPostType->initListView();
+			$customPostType->initHooks();
 		}
 	}
 

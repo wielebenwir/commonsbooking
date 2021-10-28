@@ -151,12 +151,16 @@ foreach ( Plugin::getCustomPostTypes() as $custom_post_type ) {
 // Filter function for fix of counts in admin lists for custom post types.
 function commonsbooking_custom_view_count( $views ) {
 	global $current_screen;
-
 	return commonsbooking_fix_view_counts( str_replace( 'edit-', '', $current_screen->id ), $views );
 }
 
 // fixes counts for custom posts countings in admin list
 function commonsbooking_fix_view_counts( $postType, $views ) {
+	// admin is allowed to see all posts
+	if(current_user_can('administrator')) {
+		return $views;
+	}
+
 	global ${'posts' . $postType};
 	$timeFramePosts = ${'posts' . $postType};
 
@@ -169,6 +173,7 @@ function commonsbooking_fix_view_counts( $postType, $views ) {
 		if ( ! array_key_exists( $post->post_status, $counts ) ) {
 			$counts[ $post->post_status ] = 0;
 		}
+
 		$counts[ $post->post_status ] ++;
 	}
 

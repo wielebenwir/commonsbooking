@@ -101,32 +101,10 @@ class Timeframe extends CustomPostType {
 			'post_status'                                   => esc_html__( 'Booking Status', 'commonsbooking' ),
 		];
 
-		// Set Tepmlates
-		add_filter( 'the_content', array( $this, 'getTemplate' ) );
 
-		// Add Meta Boxes
-		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
 		// List settings
 		$this->removeListDateColumn();
-
-		add_action( 'save_post', array( $this, 'savePost' ), 1, 2 );
-
-		add_action( 'post_updated', array( $this, 'postUpdated' ), 10, 3 );
-
-		// Add type filter to backend list view
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminLocationFilter' ) );
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminStatusFilter' ) );
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminDateFilter' ) );
-		add_action( 'pre_get_posts', array( self::class, 'filterAdminList' ) );
-
-		// Listing of bookings for current user
-		add_shortcode( 'cb_bookings', array( \CommonsBooking\View\Booking::class, 'shortcode' ) );
-
-		// Listing of available items/locations
-		add_shortcode( 'cb_items_table', array( Calendar::class, 'renderTable' ) );
 	}
 
 	/**
@@ -837,36 +815,6 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-	 * loads template according and returns content
-	 *
-	 * @param $content
-	 *
-	 * @return string
-	 */
-	public function getTemplate( $content ) {
-		$cb_content = '';
-		if ( is_singular( self::getPostType() ) ) {
-			ob_start();
-			global $post;
-			// we check if user try to open a timeframe other than a booking
-			if ( ! in_array( get_post_meta( $post->ID, 'type', true ), array(
-				self::BOOKING_ID,
-				self::BOOKING_CANCELED_ID
-			) ) ) {
-				commonsbooking_get_template_part( 'timeframe', 'notallowed' );
-				// we check if user has right to open booking
-			} elseif ( commonsbooking_isCurrentUserAllowedToEdit( $post ) ) {
-				commonsbooking_get_template_part( 'booking', 'single' );
-			} else {
-				commonsbooking_get_template_part( 'booking', 'single-notallowed' );
-			}
-			$cb_content = ob_get_clean();
-		} // if archive...
-
-		return $content . $cb_content;
-	}
-
-	/**
 	 * Returns CPT arguments.
 	 * @return array
 	 */
@@ -1016,4 +964,26 @@ class Timeframe extends CustomPostType {
 		}
 	}
 
+	/**
+	 * Initiates needed hooks.
+	 */
+	public function initHooks() {
+		// Add Meta Boxes
+		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
+
+		add_action( 'save_post', array( $this, 'savePost' ), 1, 2 );
+
+		add_action( 'post_updated', array( $this, 'postUpdated' ), 10, 3 );
+
+		// Add type filter to backend list view
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminLocationFilter' ) );
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminStatusFilter' ) );
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminDateFilter' ) );
+		add_action( 'pre_get_posts', array( self::class, 'filterAdminList' ) );
+
+		// Listing of available items/locations
+		add_shortcode( 'cb_items_table', array( Calendar::class, 'renderTable' ) );
+	}
 }

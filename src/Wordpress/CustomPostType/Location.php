@@ -10,9 +10,9 @@ class Location extends CustomPostType {
 	public static $postType = 'cb_location';
 
 	/**
-	 * Item constructor.
+	 * Initiates needed hooks.
 	 */
-	public function __construct() {
+	public function initHooks() {
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 

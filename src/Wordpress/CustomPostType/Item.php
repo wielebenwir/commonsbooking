@@ -13,9 +13,9 @@ class Item extends CustomPostType {
 	public static $postType = 'cb_item';
 
 	/**
-	 * Item constructor.
+	 * Initiates needed hooks.
 	 */
-	public function __construct() {
+	public function initHooks() {
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
@@ -160,17 +160,12 @@ class Item extends CustomPostType {
 		if ( is_singular( self::getPostType() ) ) {
 			ob_start();
 			global $post;
-			global $calledBefore;
 
-			// for any reason this part is called multiple times
-			if ( ! $calledBefore ) {
-				$item = new \CommonsBooking\Model\Item( $post );
-				set_query_var( 'item', $item );
-				commonsbooking_get_template_part( 'item', 'single' );
-				$cb_content   = ob_get_clean();
-				$calledBefore = true;
-			}
-		} // if archive...
+			$item = new \CommonsBooking\Model\Item( $post );
+			set_query_var( 'item', $item );
+			commonsbooking_get_template_part( 'item', 'single' );
+			$cb_content   = ob_get_clean();
+		}
 
 		return $content . $cb_content;
 	}
