@@ -45,26 +45,28 @@
                     </div>
                 </div>
 				<?php
-				if (
-                    array_key_exists( 'location', $templateData ) &&
-				     $templateData['location']->getRestrictions() &&
-                     count( $templateData['location']->getRestrictions())
-				) { ?>
-                    <div>
-                        <label><?php echo '⚠ ' . esc_html__( 'Restrictions', 'commonsbooking' ); ?>:</label>
+                    $restrictions = $templateData['location']->getRestrictions();
+                    $restrictions = array_merge($restrictions, $templateData['item']->getRestrictions());
+
+                    if(count($restrictions)) {
+                        ?>
                         <div>
-                            <span class="restrictions">
-                            <?php
-                                foreach ( $templateData['location']->getRestrictions() as $restriction ) {
-                                    if($restriction->isActive()) {
-                                        echo $restriction->getHint() . '<br>';
+                            <label><?php echo '⚠ ' . esc_html__( 'Restrictions', 'commonsbooking' ); ?>:</label>
+                            <div>
+                                <span class="restrictions">
+                                <?php
+                                    foreach ( $restrictions as $restriction ) {
+                                        if($restriction->isActive()) {
+                                            echo $restriction->getHint() . '<br>';
+                                        }
                                     }
-                                }
-                            ?>
-                            </span>
+                                ?>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                <?php } ?>
+                    <?php
+                    }
+                    ?>
                 <p id="fullDayInfo"></p>
                 <p id="calendarNotice"></p>
             </div>
