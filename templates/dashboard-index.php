@@ -3,7 +3,11 @@
 <div class="wrap">
 	<div id="welcome-panel" class="welcome-panel">
 		<div class="welcome-panel-content">
-			<h2><?php echo __('Welcome to CommonsBooking', 'commonsbooking') ;?>.</h2>
+			<h2><?php
+
+use CommonsBooking\View\Booking;
+
+echo __('Welcome to CommonsBooking', 'commonsbooking') ;?>.</h2>
 			<div class="welcome-panel-column-container">
 				<div class="welcome-panel-column">
 					<img src="<?php echo plugin_dir_url( __DIR__  ).'assets/global/cb-ci/logo.png'; ?>" style="width:200px">
@@ -31,3 +35,18 @@
 		</div>
 	</div>
 </div>
+
+<?php
+$bookings = new Booking;
+
+$templateData = $bookings->getBookingListData();
+//var_dump($templateData);
+
+foreach ($templateData AS $label => $value) {
+	var_dump($value);
+}
+
+ob_start();
+include(COMMONSBOOKING_PLUGIN_DIR . 'templates/dashboard-bookings.php');
+ob_end_clean();
+?>
