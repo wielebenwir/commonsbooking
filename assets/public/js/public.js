@@ -1794,7 +1794,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }), fadeInCalendar();
         }, resetDatepickerSelection = () => {
             picker.clearSelection(), jQuery(".hint-selection").show(), jQuery(".time-selection .date").text(""), 
-            jQuery("#resetPicker").hide(), jQuery("#booking-form input[type=submit]").attr("disabled", "disabled");
+            jQuery(".time-selection select").hide(), jQuery("#resetPicker").hide(), jQuery("#booking-form input[type=submit]").attr("disabled", "disabled");
         };
         jQuery("#resetPicker").on("click", function(e) {
             e.preventDefault(), resetDatepickerSelection();

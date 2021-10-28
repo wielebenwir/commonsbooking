@@ -22,22 +22,27 @@
             <div class="time-selection-container">
                 <div class="time-selection repetition-start">
                     <label for="repetition-start">
-						<?php echo esc_html__( 'Pickup', 'commonsbooking' ); ?>:
+                        <?php echo esc_html__( 'Pickup', 'commonsbooking' ); ?>:
                     </label>
-                    <button class="cb-button" id="resetPicker">
-	                    <?php echo esc_html__( 'Reset date selection', 'commonsbooking' ); ?>
-                    </button>
-                    <span class="hint-selection"><?php echo esc_html__( 'Please select the pickup date in the calendar', 'commonsbooking' ); ?></span>
-                    <span class="date"></span>
-                    <select style="display: none" id="repetition-start" name="repetition-start"></select>
+                    <div>
+                        <span class="hint-selection"><?php echo esc_html__( 'Please select the pickup date in the calendar', 'commonsbooking' ); ?></span>
+                        <span class="date"></span>
+                        <select style="display: none" id="repetition-start" name="repetition-start"></select>
+
+                        <a id="resetPicker">
+                            <?php echo esc_html__( 'Reset date selection', 'commonsbooking' ); ?>
+                        </a>
+                    </div>
                 </div>
                 <div class="time-selection repetition-end">
                     <label for="repetition-end">
-						<?php echo esc_html__( 'Return', 'commonsbooking' ); ?>:
+                        <?php echo esc_html__( 'Return', 'commonsbooking' ); ?>:
                     </label>
-                    <span class="hint-selection"><?php echo esc_html__( 'Please select the return date in the calendar', 'commonsbooking' ); ?></span>
-                    <span class="date"></span>
-                    <select style="display: none" id="repetition-end" name="repetition-end"></select>
+                    <div>
+                        <span class="hint-selection"><?php echo esc_html__( 'Please select the return date in the calendar', 'commonsbooking' ); ?></span>
+                        <span class="date"></span>
+                        <select style="display: none" id="repetition-end" name="repetition-end"></select>
+                    </div>
                 </div>
 				<?php
 				if (
@@ -47,15 +52,17 @@
 				) { ?>
                     <div>
                         <label><?php echo '⚠ ' . esc_html__( 'Restrictions', 'commonsbooking' ); ?>:</label>
-                        <span class="restrictions">
-						<?php
-                            foreach ( $templateData['location']->getRestrictions() as $restriction ) {
-                                if($restriction->isActive()) {
-	                                echo $restriction->getHint() . '<br>';
+                        <div>
+                            <span class="restrictions">
+                            <?php
+                                foreach ( $templateData['location']->getRestrictions() as $restriction ) {
+                                    if($restriction->isActive()) {
+                                        echo $restriction->getHint() . '<br>';
+                                    }
                                 }
-                            }
-						?>
-                        </span>
+                            ?>
+                            </span>
+                        </div>
                     </div>
                 <?php } ?>
                 <p id="fullDayInfo"></p>

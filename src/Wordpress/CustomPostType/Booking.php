@@ -101,11 +101,7 @@ class Booking extends Timeframe {
 		$this->saveCustomFields( $post_id );
 
 		// Validate timeframe
-		$isValid = $this->validateTimeFrame( $post_id, $post );
-
-		if ( $isValid ) {
-			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
-		}
+		$this->validateTimeFrame( $post_id, $post );
 	}
 
 	/**
