@@ -138,6 +138,7 @@ class Restriction extends PostRepository {
 		$query = "
                 SELECT DISTINCT pm1.* from $table_posts pm1                
                 " . $dateQuery . "
+                " . self::getActiveQuery() . "
                 WHERE
                     pm1.post_type = '" . \CommonsBooking\Wordpress\CustomPostType\Restriction::getPostType() . "' AND
                     pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
@@ -177,6 +178,7 @@ class Restriction extends PostRepository {
 	}
 
 	/**
+	 * Returns active restrictions.
 	 * @return \CommonsBooking\Model\Restriction[]
 	 * @throws \Exception
 	 */
