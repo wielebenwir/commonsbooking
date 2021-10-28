@@ -260,9 +260,12 @@ class Calendar {
 			// prepare string to calculate max advance booking days based on user defined max days in first bookable timeframe
 			$advanceBookingDays = '+' . $firstBookableTimeframe->getMaxAdvanceBookingDays() . ' days';
 
+
 			// Check if start-/enddate was requested, then don't change it
-			// otherwise start with first bookable month
-			$startDateTimestamp = $firstBookableTimeframe->getStartDate();
+			// otherwise start with current day
+			//$startDateTimestamp = $firstBookableTimeframe->getStartDate();
+			// TODO #769 @markus-mw: bitte checken, ob die Änderung von firstbookable timeframe zum aktuellen Datum ein Problem an anderer Stelle darstellt.
+			$startDateTimestamp = time();
 			if ( $startDateTimestamp > strtotime( $startDate->getDate() ) ) {
 				$startDate = new Day( date( 'Y-m-d', $startDateTimestamp ) );
 			}
@@ -328,7 +331,6 @@ class Calendar {
 		$advanceBookingDays          = date_diff( $startDate->getDateObject(), $endDate->getDateObject() );
 		$advanceBookingDaysFormatted = (int) $advanceBookingDays->format( '%a ' ) + 1;
 
-		// TODO: find solution for day based refresh of cache to make advance max booking days possible
 		if ( ! ( $jsonResponse = Plugin::getCacheItem( $customCacheKey ) ) ) {
 			$calendar = new \CommonsBooking\Model\Calendar(
 				$startDate,
