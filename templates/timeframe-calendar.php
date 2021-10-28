@@ -47,6 +47,7 @@
 				<?php
                     $restrictions = $templateData['location']->getRestrictions();
                     $restrictions = array_merge($restrictions, $templateData['item']->getRestrictions());
+                    $restrictions = array_unique($restrictions);
 
                     if(count($restrictions)) {
                         ?>

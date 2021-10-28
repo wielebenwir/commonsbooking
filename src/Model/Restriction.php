@@ -33,6 +33,14 @@ class Restriction extends CustomPost {
 	protected $canceled;
 
 	/**
+	 * Returns post id, for array_unique.
+	 * @return string
+	 */
+	public function __toString(): string {
+		return strval($this->post->ID);
+	}
+
+	/**
 	 * Returns start-time \DateTime.
 	 *
 	 * @return \DateTime
