@@ -556,36 +556,7 @@ class Plugin {
 			return;
 		}
 
-		if ( in_array( $post->post_type, [
-			Location::$postType,
-			Item::$postType
-		] ) ) {
-			self::clearCache( 'item' );
-			self::clearCache( 'location' );
-		}
-
-		// Remove cache for timeframe repos
-		if ( $post->post_type == Timeframe::$postType ||
-		     $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Booking::$postType
-		) {
-			self::clearCache( 'book' );
-			self::clearCache( 'timeframe' );
-			self::clearCache( 'bookablepost' );
-			self::clearCache( 'day' );
-			self::clearCache( 'week' );
-			self::clearCache( 'model' );
-		}
-
-		if ( in_array( $post->post_type, [
-			Location::$postType,
-			Item::$postType,
-			Timeframe::$postType,
-			Restriction::$postType
-		] ) ) {
-			// Clear calendar cache
-			self::clearCache( 'calendar' );
-			self::clearCache( 'restriction' );
-		}
+		self::clearCache();
 	}
 
 	/**
