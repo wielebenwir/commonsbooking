@@ -565,7 +565,9 @@ class Plugin {
 		}
 
 		// Remove cache for timeframe repos
-		if ( $post->post_type == Timeframe::$postType ) {
+		if ( $post->post_type == Timeframe::$postType ||
+		     $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Booking::$postType
+		) {
 			self::clearCache( 'book' );
 			self::clearCache( 'timeframe' );
 			self::clearCache( 'bookablepost' );
