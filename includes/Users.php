@@ -133,8 +133,13 @@ add_filter(
 			}
 
 			// Save posts to global variable for later use -> fix of counts in admin lists
-			global ${'posts' . $query->query['post_type']};
-			${'posts' . $query->query['post_type']} = $posts;
+			if(
+				array_key_exists('post_type', $_GET) &&
+				is_array($query->query) && array_key_exists('post_type', $query->query)
+			) {
+				global ${'posts' . $query->query['post_type']};
+				${'posts' . $query->query['post_type']} = $posts;
+			}
 		}
 
 		return $posts;
