@@ -250,8 +250,6 @@ class Calendar {
 
 		if ( count( $bookableTimeframes ) ) {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday($bookableTimeframes);
-			// prepare string to calculate max advance booking days based on user defined max days in first bookable timeframe
-			$latestPossibleBookingDateTimestamp = $closestBookableTimeframe->getLatestPossibleBookingDateTimestamp();
 
 			// Check if start-/enddate was requested, then don't change it
 			// otherwise start with current day
@@ -264,11 +262,32 @@ class Calendar {
 				$startDate = new Day( date( 'Y-m-d', $startDateTimestamp ) );
 			}
 
-			$endDateString = date( 'Y-m-d', $latestPossibleBookingDateTimestamp );
+			// Last day of month after next as default for calendar view
+			// -> we just need to ensure, that pagination is possible
+			$endDateTimestamp = self::getDefaultCalendarEnddateTimestamp($startDate);
+
+			// get max advance booking days based on user defined max days in closest bookable timeframe
+			$latestPossibleBookingDateTimestamp = $closestBookableTimeframe->getLatestPossibleBookingDateTimestamp();
+			if($latestPossibleBookingDateTimestamp < $endDateTimestamp) {
+				$endDateTimestamp = $latestPossibleBookingDateTimestamp;
+			}
+
+			$endDateString = date( 'Y-m-d', $endDateTimestamp );
 			$endDate       = new Day( $endDateString );
 		}
 
 		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ] );
+	}
+
+	/**
+	 * Returns Last day of month after next as default for calendar view,
+	 * based on $startDate param.
+	 * @param $startDate
+	 *
+	 * @return false|int
+	 */
+	private static function getDefaultCalendarEnddateTimestamp($startDate) {
+		return strtotime("last day of +3 months", $startDate->getDateObject()->getTimestamp());
 	}
 
 	/**

@@ -58,7 +58,17 @@ class Timeframe extends CustomPost {
 			$endDate = strtotime( $endDate );
 		}
 
-		return $endDate;
+		// Latest possible booking date
+		$latestPossibleBookingDate = $this->getLatestPossibleBookingDateTimestamp();
+
+		// If enddate is < than latest possible booking date, we use it as enddate
+		if($endDate < $latestPossibleBookingDate) {
+			return $endDate;
+		}
+
+		// if overall enddate of timeframe is > than latest possible booking date,
+		// we use latest possible booking date as end date
+		return $latestPossibleBookingDate;
 	}
 
 	/**
