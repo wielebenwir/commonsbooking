@@ -623,11 +623,11 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                         <span class="dashicons dashicons-editor-help"
                               title="<?php echo commonsbooking_sanitizeHTML( __('the text for the button used for filtering' ,'commonsbooking')); ?>"></span>
                     </th>
-                    <td><textarea
-                                name="cb_map_options[custom_filterbutton_label]"><?php echo esc_attr(MapAdmin::get_option($cb_map_id,
-                                'custom_filterbutton_label')); ?></textarea></td>
+                    <td><input type="text"
+                                name="cb_map_options[custom_filterbutton_label]" value="<?php echo esc_attr(MapAdmin::get_option($cb_map_id,
+                                'custom_filterbutton_label')); ?>"></td>
                 </tr>
-                
+
                 <tr>
                     <th>
                         <?php echo commonsbooking_sanitizeHTML( __( 'available categories' ,'commonsbooking')); ?>:
