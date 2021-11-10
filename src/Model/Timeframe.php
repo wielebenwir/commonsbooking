@@ -62,16 +62,30 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Return max advance booking days
+	 * Returns latest possible booking date as timestamp.
 	 *
 	 * @return string
 	 */
-	public function getMaxAdvanceBookingDays() {
+	public function getLatestPossibleBookingDateTimestamp() {
 		// if meta-value not set we define 90 days as default value
 		$advanceBookingDays = $this->getMeta( 'timeframe-advance-booking-days' ) ?: '90';
-		
 		// we subtract one day to reflect the current day in calculation
-		return $advanceBookingDays-1;
+		$advanceBookingDays--;
+
+		return strtotime( "+ ". $advanceBookingDays . " days", time() );
+	}
+
+	/**
+	 * Returns true, if the start date is earlier and the end date later than the latest possible booking date.
+	 * @return bool
+	 */
+	public function isBookable() {
+		$startDateTimestamp = $this->getStartDate();
+		$endDateTimestamp = $this->getEndDate();
+		$latestPossibleBookingDateTimestamp = $this->getLatestPossibleBookingDateTimestamp();
+		return
+			($startDateTimestamp <= $latestPossibleBookingDateTimestamp) &&
+			($endDateTimestamp >= $latestPossibleBookingDateTimestamp);
 	}
 
 	/**

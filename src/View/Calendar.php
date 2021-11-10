@@ -249,32 +249,41 @@ class Calendar {
 		);
 
 		if ( count( $bookableTimeframes ) ) {
-			// Sort timeframes by startdate
-			usort( $bookableTimeframes, function ( $item1, $item2 ) {
-				return $item1->getStartDate() < $item2->getStartDate();
-			} );
-
-			/** @var \CommonsBooking\Model\Timeframe $firstBookableTimeframe */
-			$firstBookableTimeframe = array_pop( $bookableTimeframes );
-
+			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday($bookableTimeframes);
 			// prepare string to calculate max advance booking days based on user defined max days in first bookable timeframe
-			$advanceBookingDays = '+' . $firstBookableTimeframe->getMaxAdvanceBookingDays() . ' days';
-
+			$latestPossibleBookingDateTimestamp = $closestBookableTimeframe->getLatestPossibleBookingDateTimestamp();
 
 			// Check if start-/enddate was requested, then don't change it
 			// otherwise start with current day
-			//$startDateTimestamp = $firstBookableTimeframe->getStartDate();
-			// TODO #769 @markus-mw: bitte checken, ob die Änderung von firstbookable timeframe zum aktuellen Datum ein Problem an anderer Stelle darstellt.
 			$startDateTimestamp = time();
+			if($closestBookableTimeframe->getStartDate() > $startDateTimestamp) {
+				$startDateTimestamp = $closestBookableTimeframe->getStartDate();
+			}
+
 			if ( $startDateTimestamp > strtotime( $startDate->getDate() ) ) {
 				$startDate = new Day( date( 'Y-m-d', $startDateTimestamp ) );
 			}
 
-			$endDateString = date( 'Y-m-d', strtotime( $advanceBookingDays, time() ) );
+			$endDateString = date( 'Y-m-d', $latestPossibleBookingDateTimestamp );
 			$endDate       = new Day( $endDateString );
 		}
 
 		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ] );
+	}
+
+	/**
+	 * Returns closest timeframe from date/time perspective.
+	 * @param $bookableTimeframes
+	 *
+	 * @return \CommonsBooking\Model\Timeframe|null
+	 */
+	private static function getClosestBookableTimeFrameForToday($bookableTimeframes): ?\CommonsBooking\Model\Timeframe {
+		// Sort timeframes by startdate
+		usort( $bookableTimeframes, function ( $item1, $item2 ) {
+			return $item1->getStartDate() < $item2->getStartDate();
+		} );
+
+		return array_pop( $bookableTimeframes );
 	}
 
 	/**
