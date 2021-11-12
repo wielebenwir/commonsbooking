@@ -250,8 +250,4 @@ class Booking extends View {
 
 		return ob_get_clean();
 	}
-
-	public static function content( \WP_Post $post ) {
-		// TODO: Implement content() method.
-	}
 }

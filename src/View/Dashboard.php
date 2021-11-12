@@ -9,8 +9,4 @@ class Dashboard extends View {
 		commonsbooking_get_template_part( 'dashboard', 'index' );
 		echo ob_get_clean();
 	}
-
-	public static function content( \WP_Post $post ) {
-		// TODO: Implement content() method.
-	}
 }
