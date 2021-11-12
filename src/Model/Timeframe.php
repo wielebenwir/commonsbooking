@@ -77,12 +77,18 @@ class Timeframe extends CustomPost {
 	 * @return string
 	 */
 	public function getLatestPossibleBookingDateTimestamp() {
+		$startDateTimestamp = $this->getStartDate();
+		$startsInFuture = $startDateTimestamp > time();
+		$calculationBase = $startsInFuture ? $startDateTimestamp : time();
+
 		// if meta-value not set we define 90 days as default value
-		$advanceBookingDays = $this->getMeta( 'timeframe-advance-booking-days' ) ?: '90';
+		$advanceBookingDays = $this->getMeta( 'timeframe-advance-booking-days' ) ?:
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS;
+
 		// we subtract one day to reflect the current day in calculation
 		$advanceBookingDays--;
 
-		return strtotime( "+ ". $advanceBookingDays . " days", time() );
+		return strtotime( "+ ". $advanceBookingDays . " days", $calculationBase );
 	}
 
 	/**
@@ -91,11 +97,8 @@ class Timeframe extends CustomPost {
 	 */
 	public function isBookable() {
 		$startDateTimestamp = $this->getStartDate();
-		$endDateTimestamp = $this->getEndDate();
 		$latestPossibleBookingDateTimestamp = $this->getLatestPossibleBookingDateTimestamp();
-		return
-			($startDateTimestamp <= $latestPossibleBookingDateTimestamp) &&
-			($endDateTimestamp >= $latestPossibleBookingDateTimestamp);
+		return $startDateTimestamp <= $latestPossibleBookingDateTimestamp;
 	}
 
 	/**

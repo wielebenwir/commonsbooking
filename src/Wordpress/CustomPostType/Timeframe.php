@@ -50,6 +50,11 @@ class Timeframe extends CustomPostType {
 	const BOOKING_CANCELED_ID = 7;
 
 	/**
+	 * Default value for possible advance booking days.
+	 */
+	const ADVANCE_BOOKING_DAYS = 31;
+
+	/**
 	 * CPT type.
 	 * @var string
 	 */
@@ -559,7 +564,7 @@ class Timeframe extends CustomPostType {
 					'type' => 'number',
 					'min'  => '1',
 				),
-				'default'    => 31,
+				'default'    => self::ADVANCE_BOOKING_DAYS,
 			),
 			array(
 				'name'    => esc_html__( "Restrict bookings to user roles", 'commonsbooking' ),
