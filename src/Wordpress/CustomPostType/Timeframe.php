@@ -331,52 +331,20 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Adds filter dropdown // filter by location in timeframe List
 	 */
-	public static function addAdmindateFilter() {
-		if ( isset( $_GET['post_type'] ) && self::$postType == $_GET['post_type'] ) {
-			$startDateInputName = 'admin_filter_startdate';
-			$endDateInputName   = 'admin_filter_enddate';
+	public static function addAdminDateFilter() {
+		$startDateInputName = 'admin_filter_startdate';
+		$endDateInputName   = 'admin_filter_enddate';
 
-			$from = ( isset( $_GET[ $startDateInputName ] ) && $_GET[ $startDateInputName ] ) ? sanitize_text_field( $_GET[ $startDateInputName ] ) : '';
-			$to   = ( isset( $_GET[ $endDateInputName ] ) && $_GET[ $endDateInputName ] ) ? sanitize_text_field( $_GET[ $endDateInputName ] ) : '';
+		$from = ( isset( $_GET[ $startDateInputName ] ) && $_GET[ $startDateInputName ] ) ? sanitize_text_field( $_GET[ $startDateInputName ] ) : '';
+		$to   = ( isset( $_GET[ $endDateInputName ] ) && $_GET[ $endDateInputName ] ) ? sanitize_text_field( $_GET[ $endDateInputName ] ) : '';
 
-			echo '<style>
-                input[name=' . $startDateInputName . '], 
-                input[name=' . $endDateInputName . ']{
-                    line-height: 28px;
-                    height: 28px;
-                    margin: 0;
-                    width:150px;
-                }
-            </style>
-     
-            <input type="text" name="' . $startDateInputName . '" placeholder="' . esc_html__(
-					'Start date',
-					'commonsbooking'
-				) . '" value="' . esc_attr( $from ) . '" />
-            <input type="text" name="' . $endDateInputName . '" placeholder="' . esc_html__(
-				     'End date',
-				     'commonsbooking'
-			     ) . '" value="' . esc_attr( $to ) . '" />
-     
-            <script>
-            jQuery( function($) {
-                var from = $(\'input[name=' . $startDateInputName . ']\'),
-                    to = $(\'input[name=' . $endDateInputName . ']\');
-     
-                $(\'input[name=' . $startDateInputName . '], input[name=' . $endDateInputName . ']\' ).datepicker( 
-                    {
-                        dateFormat : "yy-mm-dd"
-                    }
-                );
-                from.on( \'change\', function() {
-                    to.datepicker( \'option\', \'minDate\', from.val() );
-                }); 
-                to.on( \'change\', function() {
-                    from.datepicker( \'option\', \'maxDate\', to.val() );
-                }); 
-            });
-            </script>';
-		}
+		Filter::renderDateFilter(
+			static::$postType,
+			$startDateInputName,
+			$endDateInputName,
+			$from,
+			$to
+		);
 	}
 
 	/**
