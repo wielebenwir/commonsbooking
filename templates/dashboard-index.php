@@ -15,7 +15,9 @@
 						<li><a href="edit.php?post_type=cb_location"><span class="dashicons dashicons-store"></span> <?php echo __('Locations', 'commonsbooking') ;?></a></li>
 						<li><a href="edit.php?post_type=cb_timeframe"><span class="dashicons dashicons-calendar-alt"></span> <?php echo __('Timeframes', 'commonsbooking') ;?></a></li>						
 						<li><a href="edit.php?post_type=cb_map"><span class="dashicons dashicons-location-alt"></span> <?php echo __('Maps', 'commonsbooking') ;?></a></li>
-						<li><a href="options-general.php?page=commonsbooking_options"><span class="dashicons dashicons-admin-settings"></span> <?php echo __('Settings', 'commonsbooking') ;?></a></li>
+						<?php if (commonsbooking_isCurrentUserAdmin()) { ?>
+                            <li><a href="options-general.php?page=commonsbooking_options"><span class="dashicons dashicons-admin-settings"></span> <?php echo __('Settings', 'commonsbooking') ;?></a></li>
+                        <?php } ?>
 					</ul>
 				</div><!-- .welcome-panel-column -->
 				<div class="welcome-panel-column welcome-panel-last">
