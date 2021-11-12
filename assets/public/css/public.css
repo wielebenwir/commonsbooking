@@ -3864,7 +3864,7 @@
   cursor: pointer;
   font-weight: bold;
   text-decoration: none;
-  font-size: 1.5rem;
+  font-size: 1rem;
   padding: 0;
   flex-basis: 100%;
 }
@@ -5013,24 +5013,30 @@
  * Tweaks to make CB play nice with popular Wordpress themes.
  *
  */
-/* line 9, ../sass/partials/_themeoptimization.scss */
+/* line 8, ../sass/partials/_themeoptimization.scss */
 .cb-wrapper {
   /* Twenty Nineteen Theme*/
   /* Twenty Twenty Theme*/
 }
-/* line 11, ../sass/partials/_themeoptimization.scss */
+/* line 10, ../sass/partials/_themeoptimization.scss */
 .cb-wrapper h2::before {
   content: '';
   margin: 0;
   background: transparent;
 }
-/* line 17, ../sass/partials/_themeoptimization.scss */
+/* line 16, ../sass/partials/_themeoptimization.scss */
 .cb-wrapper h1, .cb-wrapper h2, .cb-wrapper h3, .cb-wrapper h4 {
   margin: 0 !important;
 }
-/* line 24, ../sass/partials/_themeoptimization.scss */
+/* line 23, ../sass/partials/_themeoptimization.scss */
 .cb-wrapper .litepicker .container__days .day-item {
   font-size: 1rem;
+}
+
+/* Enable table scrolling in themes (e.g. twentyfifteen) */
+/* line 32, ../sass/partials/_themeoptimization.scss */
+table.cb-items-table {
+  table-layout: auto !important;
 }
 
 /*# sourceMappingURL=public.css.map */
