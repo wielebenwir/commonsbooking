@@ -3,6 +3,7 @@
 use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\TimeframeExport;
+use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 add_action( 'admin_notices', array( Plugin::class, 'renderError' ) );
 
