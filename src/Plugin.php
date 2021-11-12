@@ -109,10 +109,11 @@ class Plugin {
 	}
 
 	/**
-	 * Adds cb user roles to wordpress.
+	 * Returns needed roles and caps.
+	 * @return \bool[][]
 	 */
-	public static function addCustomUserRoles() {
-		$roleCapMapping = [
+	public static function getRoleCapMapping() {
+		return [
 			Plugin::$CB_MANAGER_ID => [
 				'read'                                 => true,
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
@@ -123,8 +124,13 @@ class Plugin {
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
 			],
 		];
+	}
 
-		foreach ( $roleCapMapping as $roleName => $caps ) {
+	/**
+	 * Adds cb user roles to wordpress.
+	 */
+	public static function addCustomUserRoles() {
+		foreach ( self::getRoleCapMapping() as $roleName => $caps ) {
 			$role = get_role( $roleName );
 			if ( ! $role ) {
 				$role = add_role(
@@ -161,40 +167,39 @@ class Plugin {
 	 */
 	public static function addRoleCaps( $postType ) {
 		// Add the roles you'd like to administer the custom post types
-		$roles = array(
-			Plugin::$CB_MANAGER_ID,
-			'administrator'
-		);
+		$roles = array_keys(self::getRoleCapMapping());
 
 		// Loop through each role and assign capabilities
 		foreach ( $roles as $the_role ) {
 			$role = get_role( $the_role );
-			$role->add_cap( 'read_' . $postType );
-			$role->add_cap( 'manage_' . COMMONSBOOKING_PLUGIN_SLUG . '_' . $postType );
+			if($role) {
+				$role->add_cap( 'read_' . $postType );
+				$role->add_cap( 'manage_' . COMMONSBOOKING_PLUGIN_SLUG . '_' . $postType );
 
-			$role->add_cap( 'edit_' . $postType );
-			$role->add_cap( 'edit_' . $postType . 's' ); // show item list
-			$role->add_cap( 'edit_private_' . $postType . 's' );
-			$role->add_cap( 'edit_published_' . $postType . 's' );
+				$role->add_cap( 'edit_' . $postType );
+				$role->add_cap( 'edit_' . $postType . 's' ); // show item list
+				$role->add_cap( 'edit_private_' . $postType . 's' );
+				$role->add_cap( 'edit_published_' . $postType . 's' );
 
-			$role->add_cap( 'publish_' . $postType . 's' );
+				$role->add_cap( 'publish_' . $postType . 's' );
 
-			$role->add_cap( 'delete_' . $postType );
-			$role->add_cap( 'delete_' . $postType . 's' );
+				$role->add_cap( 'delete_' . $postType );
+				$role->add_cap( 'delete_' . $postType . 's' );
 
-			$role->add_cap( 'read_private_' . $postType . 's' );
-			$role->add_cap( 'edit_others_' . $postType . 's' );
-			$role->add_cap( 'delete_private_' . $postType . 's' );
-			$role->add_cap( 'delete_published_' . $postType . 's' ); // delete user post
-			$role->add_cap( 'delete_others_' . $postType . 's' );
+				$role->add_cap( 'read_private_' . $postType . 's' );
+				$role->add_cap( 'edit_others_' . $postType . 's' );
+				$role->add_cap( 'delete_private_' . $postType . 's' );
+				$role->add_cap( 'delete_published_' . $postType . 's' ); // delete user post
+				$role->add_cap( 'delete_others_' . $postType . 's' );
 
-			$role->add_cap( 'edit_posts' ); // general: create posts -> even wp_post, affects all cpts
-			$role->add_cap( 'upload_files' ); // general: change post image
+				$role->add_cap( 'edit_posts' ); // general: create posts -> even wp_post, affects all cpts
+				$role->add_cap( 'upload_files' ); // general: change post image
 
-			if ( $the_role == Plugin::$CB_MANAGER_ID ) {
-				$role->remove_cap( 'read_private_' . $postType . 's' );
-				$role->remove_cap( 'delete_private_' . $postType . 's' );
-				$role->remove_cap( 'delete_others_' . $postType . 's' );
+				if ( $the_role == Plugin::$CB_MANAGER_ID ) {
+					$role->remove_cap( 'read_private_' . $postType . 's' );
+					$role->remove_cap( 'delete_private_' . $postType . 's' );
+					$role->remove_cap( 'delete_others_' . $postType . 's' );
+				}
 			}
 		}
 	}
