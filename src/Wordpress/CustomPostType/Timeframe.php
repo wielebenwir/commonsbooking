@@ -695,30 +695,6 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-     * Is triggered when post gets updated. Currently used to send notifications regarding bookings.
-	 * @param $post_ID
-	 * @param $post_after
-	 * @param $post_before
-	 */
-	public function postUpdated( $post_ID, $post_after, $post_before ) {
-		if ( ! $this->hasRunBefore( __FUNCTION__ ) ) {
-			$isBooking = get_post_meta( $post_ID, 'type', true ) == Timeframe::BOOKING_ID;
-			if ( $isBooking ) {
-				// Trigger Mail, only send mail if status has changed
-				if ( $post_before->post_status != $post_after->post_status and
-				     ! (
-					     $post_before->post_status === 'unconfirmed' and
-					     $post_after->post_status === 'canceled'
-				     )
-				) {
-					$booking_msg = new BookingMessages( $post_ID, $post_after->post_status );
-					$booking_msg->triggerMail();
-				}
-			}
-		}
-	}
-
-	/**
 	 * Save the new Custom Fields values
 	 */
 	public function savePost( $post_id, WP_Post $post ) {
@@ -977,8 +953,6 @@ class Timeframe extends CustomPostType {
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
 		add_action( 'save_post', array( $this, 'savePost' ), 1, 2 );
-
-		add_action( 'post_updated', array( $this, 'postUpdated' ), 10, 3 );
 
 		// Add type filter to backend list view
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );

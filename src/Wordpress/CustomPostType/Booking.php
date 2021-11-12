@@ -3,6 +3,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Helper\Helper;
+use CommonsBooking\Messages\BookingMessages;
 use WP_Post;
 
 class Booking extends Timeframe {
@@ -19,6 +20,9 @@ class Booking extends Timeframe {
 	protected $menuPosition = 4;
 
 	public function __construct() {
+		// does not trigger when initiated in initHooks
+		add_action( 'post_updated', array( $this, 'postUpdated' ), 1, 3 );
+
 		// Frontend request
 		$this->handleFormRequest();
 	}
@@ -139,6 +143,30 @@ class Booking extends Timeframe {
 
 		// Validate timeframe
 		$this->validateTimeFrame( $post_id, $post );
+	}
+
+	/**
+	 * Is triggered when post gets updated. Currently used to send notifications regarding bookings.
+	 * @param $post_ID
+	 * @param $post_after
+	 * @param $post_before
+	 */
+	public function postUpdated( $post_ID, $post_after, $post_before ) {
+		if ( ! $this->hasRunBefore( __FUNCTION__ ) ) {
+			$isBooking = get_post_meta( $post_ID, 'type', true ) == Timeframe::BOOKING_ID;
+			if ( $isBooking ) {
+				// Trigger Mail, only send mail if status has changed
+				if ( $post_before->post_status != $post_after->post_status and
+				     ! (
+					     $post_before->post_status === 'unconfirmed' and
+					     $post_after->post_status === 'canceled'
+				     )
+				) {
+					$booking_msg = new BookingMessages( $post_ID, $post_after->post_status );
+					$booking_msg->triggerMail();
+				}
+			}
+		}
 	}
 
 	/**
