@@ -161,6 +161,20 @@ class Plugin {
 	}
 
 	/**
+	 * Returns only custom post types, which are allowed for cb manager
+	 * @return array
+	 */
+	public static function getManagerMenuCustomPostTypes(): array {
+		return [
+			new Item(),
+			new Location(),
+			new Timeframe(),
+			new \CommonsBooking\Wordpress\CustomPostType\Booking(),
+			new Restriction()
+		];
+	}
+
+	/**
 	 * Adds permissions for cb users.
 	 *
 	 * @param $postType
@@ -326,7 +340,8 @@ class Plugin {
 		);
 
 		// Custom post types
-		foreach ( self::getCustomPostTypes() as $cbCustomPostType ) {
+		$customPostTypes = commonsbooking_isCurrentUserAdmin() ? self::getCustomPostTypes() : self::getManagerMenuCustomPostTypes();
+		foreach ( $customPostTypes as $cbCustomPostType ) {
 			$params = $cbCustomPostType->getMenuParams();
 			add_submenu_page(
 				$params[0],
