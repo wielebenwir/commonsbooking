@@ -4,9 +4,9 @@
 
 document.addEventListener("DOMContentLoaded", function (event) {
 
-    if(typeof data !== 'undefined') {
+    if(typeof calendarData !== 'undefined') {
         // Assign data from outer html to local variable.
-        let globalCalendarData = data;
+        let globalCalendarData = calendarData;
 
         const fadeOutCalendar = () => {
             jQuery('#litepicker .litepicker .container__days').css('visibility', 'hidden');

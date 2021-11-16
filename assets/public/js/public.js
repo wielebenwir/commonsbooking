@@ -1659,8 +1659,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     } ]).Litepicker;
 }), document.addEventListener("DOMContentLoaded", function(event) {
-    if ("undefined" != typeof data) {
-        let globalCalendarData = data;
+    if ("undefined" != typeof calendarData) {
+        let globalCalendarData = calendarData;
         const fadeOutCalendar = () => {
             jQuery("#litepicker .litepicker .container__days").css("visibility", "hidden");
         }, fadeInCalendar = () => {

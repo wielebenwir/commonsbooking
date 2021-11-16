@@ -434,7 +434,7 @@ class Calendar {
 					}
 
 					// If there are no slots defined, there's nothing bookable.
-					if ( $noSlots || time() > strtotime( $day->getDate() ) ) {
+					if ( $noSlots || strtotime('today midnight') > strtotime( $day->getDate() ) ) {
 						$dayArray['locked']    = true;
 						$dayArray['holiday']   = false;
 						$dayArray['repair']    = false;
