@@ -99,8 +99,10 @@ class Plugin {
 		// Register custom user roles (e.g. cb_manager)
 		self::addCustomUserRoles();
 
+		$customPostTypes = commonsbooking_isCurrentUserAdmin() ? self::getCustomPostTypes() : self::getCBManagerCustomPostTypes();
+
 		// Add capabilities for user roles
-		foreach ( self::getCustomPostTypes() as $customPostType ) {
+		foreach ( $customPostTypes as $customPostType ) {
 			self::addRoleCaps( $customPostType::$postType );
 		}
 
@@ -164,7 +166,7 @@ class Plugin {
 	 * Returns only custom post types, which are allowed for cb manager
 	 * @return array
 	 */
-	public static function getManagerMenuCustomPostTypes(): array {
+	public static function getCBManagerCustomPostTypes(): array {
 		return [
 			new Item(),
 			new Location(),
@@ -340,7 +342,7 @@ class Plugin {
 		);
 
 		// Custom post types
-		$customPostTypes = commonsbooking_isCurrentUserAdmin() ? self::getCustomPostTypes() : self::getManagerMenuCustomPostTypes();
+		$customPostTypes = commonsbooking_isCurrentUserAdmin() ? self::getCustomPostTypes() : self::getCBManagerCustomPostTypes();
 		foreach ( $customPostTypes as $cbCustomPostType ) {
 			$params = $cbCustomPostType->getMenuParams();
 			add_submenu_page(
