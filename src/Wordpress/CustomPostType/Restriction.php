@@ -21,9 +21,9 @@ class Restriction extends CustomPostType {
 	];
 
 	/**
-	 * Restriction constructor.
+	 * Initiates needed hooks.
 	 */
-	public function __construct() {
+	public function initHooks() {
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 

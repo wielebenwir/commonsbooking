@@ -4,9 +4,9 @@
 
 document.addEventListener("DOMContentLoaded", function (event) {
 
-    if(typeof data !== 'undefined') {
+    if(typeof calendarData !== 'undefined') {
         // Assign data from outer html to local variable.
-        let globalCalendarData = data;
+        let globalCalendarData = calendarData;
 
         const fadeOutCalendar = () => {
             jQuery('#litepicker .litepicker .container__days').css('visibility', 'hidden');
@@ -307,6 +307,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             picker.clearSelection();
             jQuery('.hint-selection').show();
             jQuery('.time-selection .date').text('');
+            jQuery('.time-selection select').hide();
             jQuery('#resetPicker').hide();
             jQuery('#booking-form input[type=submit]').attr('disabled','disabled');
         }

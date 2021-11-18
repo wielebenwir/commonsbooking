@@ -17,7 +17,7 @@ class Week {
 	 * Week of year.
 	 * @var integer
 	 */
-	protected $week;
+	protected $dayOfYear;
 
 	/**
 	 * @var array
@@ -38,17 +38,17 @@ class Week {
 	 * Week constructor.
 	 *
 	 * @param null $year
-	 * @param $week
+	 * @param $dayOfYear
 	 * @param array $locations
 	 * @param array $items
 	 * @param array $types
 	 */
-	public function __construct( $year, $week, array $locations = [], array $items = [], array $types = [] ) {
+	public function __construct( $year, $dayOfYear, array $locations = [], array $items = [], array $types = [] ) {
 		if ( $year === null ) {
 			$year = date( 'Y' );
 		}
 		$this->year      = $year;
-		$this->week      = $week;
+		$this->dayOfYear = $dayOfYear;
 		$this->locations = $locations;
 		$this->items     = $items;
 		$this->types     = $types;
@@ -61,21 +61,32 @@ class Week {
 	public function getDays() {
 		$customId = md5(
 			$this->year .
-			$this->week .
+			$this->dayOfYear .
 			serialize( $this->locations ) .
 			serialize( $this->items ) .
 			serialize( $this->types )
 		);
-		// TODO: cache temporarily deactivated because this doesnt work with a daily based new calucation of advanced booking day limits
+
 		if (Plugin::getCacheItem( $customId ) ) {
 			return Plugin::getCacheItem( $customId );
 		} else {
 			$dto = new DateTime();
-			$dto->setISODate( $this->getYear(), $this->getWeek() );
+			$yearTimestamp = mktime(0,0,0, 1, 1, $this->year);
+			$dayOfYear = $this->dayOfYear;
+			$timestamp = strtotime("+ $dayOfYear days" , $yearTimestamp);
+			$dto->setTimestamp(
+				$timestamp
+			);
 
 			$days = [];
 			for ( $i = 0; $i < 7; $i ++ ) {
-				$days[] = new Day( $dto->format( 'Y-m-d' ), $this->locations, $this->items, $this->types );
+				$dayDate = $dto->format( 'Y-m-d' );
+				$days[] = new Day( $dayDate, $this->locations, $this->items, $this->types );
+				$dayOfWeek = $dto->format( 'w' );
+				if($dayOfWeek == "0") {
+					break;
+				}
+
 				$dto->modify( '+1 day' );
 			}
 
@@ -84,31 +95,6 @@ class Week {
 
 			return $days;
 		}
-	}
-
-	/**
-	 * @return integer
-	 */
-	public function getYear() {
-		return $this->year;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getWeek(): int {
-		return $this->week;
-	}
-
-	/**
-	 * @param mixed $week
-	 *
-	 * @return Week
-	 */
-	public function setWeek( $week ): Week {
-		$this->week = $week;
-
-		return $this;
 	}
 
 }

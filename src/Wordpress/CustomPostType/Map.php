@@ -20,9 +20,9 @@ class Map extends CustomPostType {
 	public static $postType = 'cb_map';
 
 	/**
-	 * Map constructor.
+	 * Initiates needed hooks.
 	 */
-	public function __construct() {
+	public function initHooks() {
 		$cb_map_settings = new MapSettings();
 		$cb_map_settings->prepare_settings();
 		if ( $cb_map_settings->get_option( 'booking_page_link_replacement' ) ) {

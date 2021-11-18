@@ -99,8 +99,10 @@ class Plugin {
 		// Register custom user roles (e.g. cb_manager)
 		self::addCustomUserRoles();
 
+		$customPostTypes = commonsbooking_isCurrentUserAdmin() ? self::getCustomPostTypes() : self::getCBManagerCustomPostTypes();
+
 		// Add capabilities for user roles
-		foreach ( self::getCustomPostTypes() as $customPostType ) {
+		foreach ( $customPostTypes as $customPostType ) {
 			self::addRoleCaps( $customPostType::$postType );
 		}
 
@@ -109,10 +111,11 @@ class Plugin {
 	}
 
 	/**
-	 * Adds cb user roles to wordpress.
+	 * Returns needed roles and caps.
+	 * @return \bool[][]
 	 */
-	public static function addCustomUserRoles() {
-		$roleCapMapping = [
+	public static function getRoleCapMapping() {
+		return [
 			Plugin::$CB_MANAGER_ID => [
 				'read'                                 => true,
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
@@ -123,8 +126,13 @@ class Plugin {
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
 			],
 		];
+	}
 
-		foreach ( $roleCapMapping as $roleName => $caps ) {
+	/**
+	 * Adds cb user roles to wordpress.
+	 */
+	public static function addCustomUserRoles() {
+		foreach ( self::getRoleCapMapping() as $roleName => $caps ) {
 			$role = get_role( $roleName );
 			if ( ! $role ) {
 				$role = add_role(
@@ -155,46 +163,59 @@ class Plugin {
 	}
 
 	/**
+	 * Returns only custom post types, which are allowed for cb manager
+	 * @return array
+	 */
+	public static function getCBManagerCustomPostTypes(): array {
+		return [
+			new Item(),
+			new Location(),
+			new Timeframe(),
+			new \CommonsBooking\Wordpress\CustomPostType\Booking(),
+			new Restriction()
+		];
+	}
+
+	/**
 	 * Adds permissions for cb users.
 	 *
 	 * @param $postType
 	 */
 	public static function addRoleCaps( $postType ) {
 		// Add the roles you'd like to administer the custom post types
-		$roles = array(
-			Plugin::$CB_MANAGER_ID,
-			'administrator'
-		);
+		$roles = array_keys(self::getRoleCapMapping());
 
 		// Loop through each role and assign capabilities
 		foreach ( $roles as $the_role ) {
 			$role = get_role( $the_role );
-			$role->add_cap( 'read_' . $postType );
-			$role->add_cap( 'manage_' . COMMONSBOOKING_PLUGIN_SLUG . '_' . $postType );
+			if($role) {
+				$role->add_cap( 'read_' . $postType );
+				$role->add_cap( 'manage_' . COMMONSBOOKING_PLUGIN_SLUG . '_' . $postType );
 
-			$role->add_cap( 'edit_' . $postType );
-			$role->add_cap( 'edit_' . $postType . 's' ); // show item list
-			$role->add_cap( 'edit_private_' . $postType . 's' );
-			$role->add_cap( 'edit_published_' . $postType . 's' );
+				$role->add_cap( 'edit_' . $postType );
+				$role->add_cap( 'edit_' . $postType . 's' ); // show item list
+				$role->add_cap( 'edit_private_' . $postType . 's' );
+				$role->add_cap( 'edit_published_' . $postType . 's' );
 
-			$role->add_cap( 'publish_' . $postType . 's' );
+				$role->add_cap( 'publish_' . $postType . 's' );
 
-			$role->add_cap( 'delete_' . $postType );
-			$role->add_cap( 'delete_' . $postType . 's' );
+				$role->add_cap( 'delete_' . $postType );
+				$role->add_cap( 'delete_' . $postType . 's' );
 
-			$role->add_cap( 'read_private_' . $postType . 's' );
-			$role->add_cap( 'edit_others_' . $postType . 's' );
-			$role->add_cap( 'delete_private_' . $postType . 's' );
-			$role->add_cap( 'delete_published_' . $postType . 's' ); // delete user post
-			$role->add_cap( 'delete_others_' . $postType . 's' );
+				$role->add_cap( 'read_private_' . $postType . 's' );
+				$role->add_cap( 'edit_others_' . $postType . 's' );
+				$role->add_cap( 'delete_private_' . $postType . 's' );
+				$role->add_cap( 'delete_published_' . $postType . 's' ); // delete user post
+				$role->add_cap( 'delete_others_' . $postType . 's' );
 
-			$role->add_cap( 'edit_posts' ); // general: create posts -> even wp_post, affects all cpts
-			$role->add_cap( 'upload_files' ); // general: change post image
+				$role->add_cap( 'edit_posts' ); // general: create posts -> even wp_post, affects all cpts
+				$role->add_cap( 'upload_files' ); // general: change post image
 
-			if ( $the_role == Plugin::$CB_MANAGER_ID ) {
-				$role->remove_cap( 'read_private_' . $postType . 's' );
-				$role->remove_cap( 'delete_private_' . $postType . 's' );
-				$role->remove_cap( 'delete_others_' . $postType . 's' );
+				if ( $the_role == Plugin::$CB_MANAGER_ID ) {
+					$role->remove_cap( 'read_private_' . $postType . 's' );
+					$role->remove_cap( 'delete_private_' . $postType . 's' );
+					$role->remove_cap( 'delete_others_' . $postType . 's' );
+				}
 			}
 		}
 	}
@@ -321,7 +342,8 @@ class Plugin {
 		);
 
 		// Custom post types
-		foreach ( self::getCustomPostTypes() as $cbCustomPostType ) {
+		$customPostTypes = commonsbooking_isCurrentUserAdmin() ? self::getCustomPostTypes() : self::getCBManagerCustomPostTypes();
+		foreach ( $customPostTypes as $cbCustomPostType ) {
 			$params = $cbCustomPostType->getMenuParams();
 			add_submenu_page(
 				$params[0],
@@ -362,6 +384,7 @@ class Plugin {
 		foreach ( self::getCustomPostTypes() as $customPostType ) {
 			register_post_type( $customPostType::getPostType(), $customPostType->getArgs() );
 			$customPostType->initListView();
+			$customPostType->initHooks();
 		}
 	}
 
@@ -555,34 +578,7 @@ class Plugin {
 			return;
 		}
 
-		if ( in_array( $post->post_type, [
-			Location::$postType,
-			Item::$postType
-		] ) ) {
-			self::clearCache( 'item' );
-			self::clearCache( 'location' );
-		}
-
-		// Remove cache for timeframe repos
-		if ( $post->post_type == Timeframe::$postType ) {
-			self::clearCache( 'book' );
-			self::clearCache( 'timeframe' );
-			self::clearCache( 'bookablepost' );
-			self::clearCache( 'day' );
-			self::clearCache( 'week' );
-			self::clearCache( 'model' );
-		}
-
-		if ( in_array( $post->post_type, [
-			Location::$postType,
-			Item::$postType,
-			Timeframe::$postType,
-			Restriction::$postType
-		] ) ) {
-			// Clear calendar cache
-			self::clearCache( 'calendar' );
-			self::clearCache( 'restriction' );
-		}
+		self::clearCache();
 	}
 
 	/**

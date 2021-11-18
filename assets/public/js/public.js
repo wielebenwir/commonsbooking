@@ -1659,8 +1659,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     } ]).Litepicker;
 }), document.addEventListener("DOMContentLoaded", function(event) {
-    if ("undefined" != typeof data) {
-        let globalCalendarData = data;
+    if ("undefined" != typeof calendarData) {
+        let globalCalendarData = calendarData;
         const fadeOutCalendar = () => {
             jQuery("#litepicker .litepicker .container__days").css("visibility", "hidden");
         }, fadeInCalendar = () => {
@@ -1794,7 +1794,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }), fadeInCalendar();
         }, resetDatepickerSelection = () => {
             picker.clearSelection(), jQuery(".hint-selection").show(), jQuery(".time-selection .date").text(""), 
-            jQuery("#resetPicker").hide(), jQuery("#booking-form input[type=submit]").attr("disabled", "disabled");
+            jQuery(".time-selection select").hide(), jQuery("#resetPicker").hide(), jQuery("#booking-form input[type=submit]").attr("disabled", "disabled");
         };
         jQuery("#resetPicker").on("click", function(e) {
             e.preventDefault(), resetDatepickerSelection();

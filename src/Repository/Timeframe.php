@@ -151,26 +151,56 @@ class Timeframe extends PostRepository {
 						return true;
 					} );
 				}
+
+				$posts = self::filterTimeframesByMaxBookingDays($posts);
 			}
 
 			// if returnAsModel == TRUE the result is a timeframe model instead of a wordpress object
 			if ( $returnAsModel ) {
-				foreach ( $posts as &$post ) {
-					// If we have a standard timeframe
-					if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() ) {
-						$post = new \CommonsBooking\Model\Timeframe( $post );
-					}
-
-					// If it is a booking
-					if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Booking::getPostType() ) {
-						$post = new \CommonsBooking\Model\Booking( $post );
-					}
-				}
+				self::castPostsToModels($posts);
 			}
 
 			Plugin::setCacheItem( $posts, $customId );
 
 			return $posts;
+		}
+	}
+
+	/**
+	 * Filters timeframes from array, which aren't bookable because of the max booking days in
+	 * advance setting.
+	 * @param $posts
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	private static function filterTimeframesByMaxBookingDays($posts) {
+		return array_filter($posts, function($post) {
+			if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() ) {
+				$timeframe = new \CommonsBooking\Model\Timeframe( $post );
+				return $timeframe->isBookable();
+			}
+			return true;
+		});
+	}
+
+	/**
+	 * Instantiate models for posts.
+	 * @param $posts
+	 *
+	 * @throws Exception
+	 */
+	private static function castPostsToModels(&$posts) {
+		foreach ( $posts as &$post ) {
+			// If we have a standard timeframe
+			if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() ) {
+				$post = new \CommonsBooking\Model\Timeframe( $post );
+			}
+
+			// If it is a booking
+			if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Booking::getPostType() ) {
+				$post = new \CommonsBooking\Model\Booking( $post );
+			}
 		}
 	}
 

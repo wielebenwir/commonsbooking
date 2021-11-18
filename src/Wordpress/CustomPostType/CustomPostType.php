@@ -203,6 +203,11 @@ abstract class CustomPostType {
 	}
 
 	/**
+	 * Initiates needed hooks.
+	 */
+	abstract public function initHooks();
+
+	/**
 	 * Configures list-view
 	 */
 	public function initListView() {

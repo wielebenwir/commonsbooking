@@ -50,6 +50,11 @@ class Timeframe extends CustomPostType {
 	const BOOKING_CANCELED_ID = 7;
 
 	/**
+	 * Default value for possible advance booking days.
+	 */
+	const ADVANCE_BOOKING_DAYS = 31;
+
+	/**
 	 * CPT type.
 	 * @var string
 	 */
@@ -101,32 +106,10 @@ class Timeframe extends CustomPostType {
 			'post_status'                                   => esc_html__( 'Booking Status', 'commonsbooking' ),
 		];
 
-		// Set Tepmlates
-		add_filter( 'the_content', array( $this, 'getTemplate' ) );
 
-		// Add Meta Boxes
-		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
 		// List settings
 		$this->removeListDateColumn();
-
-		add_action( 'save_post', array( $this, 'savePost' ), 1, 2 );
-
-		add_action( 'post_updated', array( $this, 'postUpdated' ), 10, 3 );
-
-		// Add type filter to backend list view
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminLocationFilter' ) );
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminStatusFilter' ) );
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminDateFilter' ) );
-		add_action( 'pre_get_posts', array( self::class, 'filterAdminList' ) );
-
-		// Listing of bookings for current user
-		add_shortcode( 'cb_bookings', array( \CommonsBooking\View\Booking::class, 'shortcode' ) );
-
-		// Listing of available items/locations
-		add_shortcode( 'cb_items_table', array( Calendar::class, 'renderTable' ) );
 	}
 
 	/**
@@ -348,52 +331,20 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Adds filter dropdown // filter by location in timeframe List
 	 */
-	public static function addAdmindateFilter() {
-		if ( isset( $_GET['post_type'] ) && self::$postType == $_GET['post_type'] ) {
-			$startDateInputName = 'admin_filter_startdate';
-			$endDateInputName   = 'admin_filter_enddate';
+	public static function addAdminDateFilter() {
+		$startDateInputName = 'admin_filter_startdate';
+		$endDateInputName   = 'admin_filter_enddate';
 
-			$from = ( isset( $_GET[ $startDateInputName ] ) && $_GET[ $startDateInputName ] ) ? sanitize_text_field( $_GET[ $startDateInputName ] ) : '';
-			$to   = ( isset( $_GET[ $endDateInputName ] ) && $_GET[ $endDateInputName ] ) ? sanitize_text_field( $_GET[ $endDateInputName ] ) : '';
+		$from = ( isset( $_GET[ $startDateInputName ] ) && $_GET[ $startDateInputName ] ) ? sanitize_text_field( $_GET[ $startDateInputName ] ) : '';
+		$to   = ( isset( $_GET[ $endDateInputName ] ) && $_GET[ $endDateInputName ] ) ? sanitize_text_field( $_GET[ $endDateInputName ] ) : '';
 
-			echo '<style>
-                input[name=' . $startDateInputName . '], 
-                input[name=' . $endDateInputName . ']{
-                    line-height: 28px;
-                    height: 28px;
-                    margin: 0;
-                    width:150px;
-                }
-            </style>
-     
-            <input type="text" name="' . $startDateInputName . '" placeholder="' . esc_html__(
-					'Start date',
-					'commonsbooking'
-				) . '" value="' . esc_attr( $from ) . '" />
-            <input type="text" name="' . $endDateInputName . '" placeholder="' . esc_html__(
-				     'End date',
-				     'commonsbooking'
-			     ) . '" value="' . esc_attr( $to ) . '" />
-     
-            <script>
-            jQuery( function($) {
-                var from = $(\'input[name=' . $startDateInputName . ']\'),
-                    to = $(\'input[name=' . $endDateInputName . ']\');
-     
-                $(\'input[name=' . $startDateInputName . '], input[name=' . $endDateInputName . ']\' ).datepicker( 
-                    {
-                        dateFormat : "yy-mm-dd"
-                    }
-                );
-                from.on( \'change\', function() {
-                    to.datepicker( \'option\', \'minDate\', from.val() );
-                }); 
-                to.on( \'change\', function() {
-                    from.datepicker( \'option\', \'maxDate\', to.val() );
-                }); 
-            });
-            </script>';
-		}
+		Filter::renderDateFilter(
+			static::$postType,
+			$startDateInputName,
+			$endDateInputName,
+			$from,
+			$to
+		);
 	}
 
 	/**
@@ -581,7 +532,7 @@ class Timeframe extends CustomPostType {
 					'type' => 'number',
 					'min'  => '1',
 				),
-				'default'    => 31,
+				'default'    => self::ADVANCE_BOOKING_DAYS,
 			),
 			array(
 				'name'    => esc_html__( "Restrict bookings to user roles", 'commonsbooking' ),
@@ -712,30 +663,6 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-     * Is triggered when post gets updated. Currently used to send notifications regarding bookings.
-	 * @param $post_ID
-	 * @param $post_after
-	 * @param $post_before
-	 */
-	public function postUpdated( $post_ID, $post_after, $post_before ) {
-		if ( ! $this->hasRunBefore( __FUNCTION__ ) ) {
-			$isBooking = get_post_meta( $post_ID, 'type', true ) == Timeframe::BOOKING_ID;
-			if ( $isBooking ) {
-				// Trigger Mail, only send mail if status has changed
-				if ( $post_before->post_status != $post_after->post_status and
-				     ! (
-					     $post_before->post_status === 'unconfirmed' and
-					     $post_after->post_status === 'canceled'
-				     )
-				) {
-					$booking_msg = new BookingMessages( $post_ID, $post_after->post_status );
-					$booking_msg->triggerMail();
-				}
-			}
-		}
-	}
-
-	/**
 	 * Save the new Custom Fields values
 	 */
 	public function savePost( $post_id, WP_Post $post ) {
@@ -834,36 +761,6 @@ class Timeframe extends CustomPostType {
 		}
 
 		return true;
-	}
-
-	/**
-	 * loads template according and returns content
-	 *
-	 * @param $content
-	 *
-	 * @return string
-	 */
-	public function getTemplate( $content ) {
-		$cb_content = '';
-		if ( is_singular( self::getPostType() ) ) {
-			ob_start();
-			global $post;
-			// we check if user try to open a timeframe other than a booking
-			if ( ! in_array( get_post_meta( $post->ID, 'type', true ), array(
-				self::BOOKING_ID,
-				self::BOOKING_CANCELED_ID
-			) ) ) {
-				commonsbooking_get_template_part( 'timeframe', 'notallowed' );
-				// we check if user has right to open booking
-			} elseif ( commonsbooking_isCurrentUserAllowedToEdit( $post ) ) {
-				commonsbooking_get_template_part( 'booking', 'single' );
-			} else {
-				commonsbooking_get_template_part( 'booking', 'single-notallowed' );
-			}
-			$cb_content = ob_get_clean();
-		} // if archive...
-
-		return $content . $cb_content;
 	}
 
 	/**
@@ -1016,4 +913,24 @@ class Timeframe extends CustomPostType {
 		}
 	}
 
+	/**
+	 * Initiates needed hooks.
+	 */
+	public function initHooks() {
+		// Add Meta Boxes
+		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
+
+		add_action( 'save_post', array( $this, 'savePost' ), 1, 2 );
+
+		// Add type filter to backend list view
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminLocationFilter' ) );
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminStatusFilter' ) );
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminDateFilter' ) );
+		add_action( 'pre_get_posts', array( self::class, 'filterAdminList' ) );
+
+		// Listing of available items/locations
+		add_shortcode( 'cb_items_table', array( Calendar::class, 'renderTable' ) );
+	}
 }

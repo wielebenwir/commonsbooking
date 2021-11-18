@@ -3822,46 +3822,65 @@
   background: transparent;
   color: #9D9F9D;
 }
-/* line 70, ../sass/partials/_forms.scss */
+/* line 71, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-action form#cb-booking-form-set-confirmed input {
   margin-left: 15px;
 }
-/* line 76, ../sass/partials/_forms.scss */
+/* line 78, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form-container,
 .cb-wrapper #booking-form-container div {
   border-bottom: 0;
 }
-/* line 81, ../sass/partials/_forms.scss */
+/* line 83, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form {
   width: 100%;
   /* do not extend litepicker width */
 }
-/* line 83, ../sass/partials/_forms.scss */
+/* line 85, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form input {
   float: right;
 }
-/* line 87, ../sass/partials/_forms.scss */
+/* line 90, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container {
-  display: block;
   margin-top: 10px;
 }
-/* line 90, ../sass/partials/_forms.scss */
+/* line 93, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div {
+  display: flex;
   margin-bottom: 10px;
   text-align: left;
-  display: block;
   overflow: hidden;
 }
-/* line 96, ../sass/partials/_forms.scss */
+/* line 101, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div span, .cb-wrapper #booking-form .time-selection-container > div label, .cb-wrapper #booking-form .time-selection-container > div select {
-  width: 33%;
   float: left;
 }
-/* line 100, ../sass/partials/_forms.scss */
+/* line 105, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div label {
   font-weight: bold;
 }
-/* line 107, ../sass/partials/_forms.scss */
+/* line 109, ../sass/partials/_forms.scss */
+.cb-wrapper #booking-form .time-selection-container > div #resetPicker {
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0;
+  flex-basis: 100%;
+}
+/* line 118, ../sass/partials/_forms.scss */
+.cb-wrapper #booking-form .time-selection-container > div > label {
+  flex-basis: 30%;
+}
+/* line 122, ../sass/partials/_forms.scss */
+.cb-wrapper #booking-form .time-selection-container > div > div {
+  flex-basis: 70%;
+  display: flex;
+  gap: 1rem;
+  row-gap: 1rem;
+  flex-flow: row wrap;
+}
+/* line 133, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice {
   margin-bottom: 15px;
   font-size: 18px;
@@ -3871,19 +3890,19 @@
   background: #FFF9C5;
   /* Post status */
 }
-/* line 117, ../sass/partials/_forms.scss */
+/* line 143, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-unconfirmed {
   background: #FFF9C5;
 }
-/* line 120, ../sass/partials/_forms.scss */
+/* line 147, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-confirmed {
   background: #74ce3c;
 }
-/* line 123, ../sass/partials/_forms.scss */
+/* line 151, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-cancelled {
   background: #74ce3c;
 }
-/* line 126, ../sass/partials/_forms.scss */
+/* line 155, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.error {
   background: #d5425c;
 }
@@ -4994,24 +5013,30 @@
  * Tweaks to make CB play nice with popular Wordpress themes.
  *
  */
-/* line 9, ../sass/partials/_themeoptimization.scss */
+/* line 8, ../sass/partials/_themeoptimization.scss */
 .cb-wrapper {
   /* Twenty Nineteen Theme*/
   /* Twenty Twenty Theme*/
 }
-/* line 11, ../sass/partials/_themeoptimization.scss */
+/* line 10, ../sass/partials/_themeoptimization.scss */
 .cb-wrapper h2::before {
   content: '';
   margin: 0;
   background: transparent;
 }
-/* line 17, ../sass/partials/_themeoptimization.scss */
+/* line 16, ../sass/partials/_themeoptimization.scss */
 .cb-wrapper h1, .cb-wrapper h2, .cb-wrapper h3, .cb-wrapper h4 {
   margin: 0 !important;
 }
-/* line 24, ../sass/partials/_themeoptimization.scss */
+/* line 23, ../sass/partials/_themeoptimization.scss */
 .cb-wrapper .litepicker .container__days .day-item {
   font-size: 1rem;
+}
+
+/* Enable table scrolling in themes (e.g. twentyfifteen) */
+/* line 32, ../sass/partials/_themeoptimization.scss */
+table.cb-items-table {
+  table-layout: auto !important;
 }
 
 /*# sourceMappingURL=public.css.map */

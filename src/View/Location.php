@@ -24,24 +24,16 @@ class Location extends View {
 		$item     = get_query_var( 'item' ) ?: false;
 		$items    = \CommonsBooking\Repository\Item::getByLocation( $location->ID, true );
 
-		$calendarData = Calendar::getCalendarDataArray(
-			$item ?: null,
-			$location,
-			date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE_START, time() ) ),
-			date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE, time() ) )
-		);
-
 		$args = [
-			'post'          => $post,
-			'wp_nonce'      => \CommonsBooking\Wordpress\CustomPostType\Booking::getWPNonceField(),
-			'actionUrl'     => admin_url( 'admin.php' ),
-			'location'      => new \CommonsBooking\Model\Location( $location ),
-			'postUrl'       => get_permalink( $location ),
-			'type'          => Timeframe::BOOKING_ID,
-			'calendar_data' => json_encode( $calendarData )
+			'post'      => $post,
+			'wp_nonce'  => \CommonsBooking\Wordpress\CustomPostType\Booking::getWPNonceField(),
+			'actionUrl' => admin_url( 'admin.php' ),
+			'location'  => new \CommonsBooking\Model\Location( $location ),
+			'postUrl'   => get_permalink( $location ),
+			'type'      => Timeframe::BOOKING_ID
 		];
 
-		// If theres no item selected, we'll show all available.
+		// If there's no item selected, we'll show all available.
 		if ( ! $item ) {
 			if ( count( $items ) ) {
 				// If there's only one item available, we'll show it directly.
@@ -54,6 +46,14 @@ class Location extends View {
 		} else {
 			$args['item'] = new \CommonsBooking\Model\Item( get_post( $item ) );
 		}
+
+		$calendarData          = Calendar::getCalendarDataArray(
+			$item ?: null,
+			$location,
+			date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE_START, time() ) ),
+			date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE, time() ) )
+		);
+		$args['calendar_data'] = json_encode( $calendarData );
 
 		return $args;
 	}
@@ -105,10 +105,6 @@ class Location extends View {
 		return ob_get_clean();
 	}
 
-	public static function content( \WP_Post $post ) {
-		// TODO: Implement content() method.
-	}
-
 	/**
 	 * locationMap
 	 *
@@ -116,10 +112,10 @@ class Location extends View {
 	 *
 	 * @return string html or false
 	 */
-	public static function renderLocationMap(\CommonsBooking\Model\Location $post = null) {
+	public static function renderLocationMap( \CommonsBooking\Model\Location $post = null ) {
 		//renders map for location-calendar-header template, only renders when set as option
-		if ($post->getMeta( 'loc_showmap')){
-			$latitude = $post->getMeta( 'geo_latitude' );
+		if ( $post->getMeta( 'loc_showmap' ) ) {
+			$latitude  = $post->getMeta( 'geo_latitude' );
 			$longitude = $post->getMeta( 'geo_longitude' );
 			wp_enqueue_style( 'cb_map_leaflet_css', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet.css' );
 			wp_enqueue_script( 'cb_map_leaflet_js', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet-src.js' );

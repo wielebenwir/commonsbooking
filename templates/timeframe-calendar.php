@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * This file displays the booking calendar. The calendar is rendered by javascript and included via <div id="litepicker"></div>
+ * The variable $templateData is set by the files item-single.php or location-single.php
+ * This file is loaded as sub-template in the files files item-single.php and location-single.php
+ * We recommend not to edit this file as it might be modified and enhancend during updates
+ */
+
     global $templateData;
 
     // we check if template is used not used in backend ...
@@ -6,10 +14,13 @@
 ?>
     <script type="text/javascript">
 		<?php
-		echo "let data = " . $templateData['calendar_data'] . ';';
+		echo "let calendarData = " . $templateData['calendar_data'] . ';';
 		?>
     </script>
+    <!-- generate calendar /-->
     <div id="litepicker"></div>
+
+    <!-- show booking form with date / time selection /-->
     <div id="booking-form-container">
         <form method="get" id="booking-form">
 			<?php echo $templateData['wp_nonce']; ?>
@@ -20,44 +31,59 @@
             <input type="hidden" name="post_status" value="unconfirmed"/>
 
             <div class="time-selection-container">
+            <a id="resetPicker">
+                                <?php echo esc_html__( 'Reset date selection', 'commonsbooking' ); ?>
+        </a>
                 <div class="time-selection repetition-start">
                     <label for="repetition-start">
-						<?php echo esc_html__( 'Pickup', 'commonsbooking' ); ?>:
+                        <?php echo esc_html__( 'Pickup', 'commonsbooking' ); ?>:
                     </label>
-                    <button class="cb-button" id="resetPicker">
-	                    <?php echo esc_html__( 'Reset date selection', 'commonsbooking' ); ?>
-                    </button>
-                    <span class="hint-selection"><?php echo esc_html__( 'Please select the pickup date in the calendar', 'commonsbooking' ); ?></span>
-                    <span class="date"></span>
-                    <select style="display: none" id="repetition-start" name="repetition-start"></select>
+                    <div>
+                        <span class="hint-selection"><?php echo esc_html__( 'Please select the pickup date in the calendar', 'commonsbooking' ); ?></span>
+                        <span class="date"></span>
+                        <select style="display: none" id="repetition-start" name="repetition-start"></select>
+
+                    </div>
                 </div>
                 <div class="time-selection repetition-end">
                     <label for="repetition-end">
-						<?php echo esc_html__( 'Return', 'commonsbooking' ); ?>:
+                        <?php echo esc_html__( 'Return', 'commonsbooking' ); ?>:
                     </label>
-                    <span class="hint-selection"><?php echo esc_html__( 'Please select the return date in the calendar', 'commonsbooking' ); ?></span>
-                    <span class="date"></span>
-                    <select style="display: none" id="repetition-end" name="repetition-end"></select>
+                    <div>
+                        <span class="hint-selection"><?php echo esc_html__( 'Please select the return date in the calendar', 'commonsbooking' ); ?></span>
+                        <span class="date"></span>
+                        <select style="display: none" id="repetition-end" name="repetition-end"></select>
+                    </div>
                 </div>
 				<?php
-				if (
-                    array_key_exists( 'location', $templateData ) &&
-				     $templateData['location']->getRestrictions() &&
-                     count( $templateData['location']->getRestrictions())
-				) { ?>
-                    <div>
-                        <label><?php echo '⚠ ' . esc_html__( 'Restrictions', 'commonsbooking' ); ?>:</label>
-                        <span class="restrictions">
-						<?php
-                            foreach ( $templateData['location']->getRestrictions() as $restriction ) {
-                                if($restriction->isActive()) {
-	                                echo $restriction->getHint() . '<br>';
-                                }
-                            }
-						?>
-                        </span>
-                    </div>
-                <?php } ?>
+                    $restrictions = $templateData['location']->getRestrictions();
+                    $restrictions = array_merge($restrictions, $templateData['item']->getRestrictions());
+                    $restrictions = array_unique($restrictions);
+
+                    if(count($restrictions)) {
+                        ?>
+                        <div>
+                            <label><?php echo '⚠ ' . esc_html__( 'Restrictions', 'commonsbooking' ); ?>:</label>
+                            <div>
+                                <span class="restrictions">
+                                <?php
+                                    foreach ( $restrictions as $restriction ) {
+                                        if($restriction->isActive()) {
+                                            echo commonsbooking_sanitizeHTML( sprintf( 
+                                                __( 'Restriction from %1$s until %2$s expected'), 
+                                                $restriction->getFormattedStartDateTime(), 
+                                                $restriction->getFormattedEndDateTime() ) );
+                                            echo "</br>";
+                                            echo $restriction->getHint() . '<br>';
+                                        }
+                                    }
+                                ?>
+                                </span>
+                            </div>
+                        </div>
+                    <?php
+                    }
+                    ?>
                 <p id="fullDayInfo"></p>
                 <p id="calendarNotice"></p>
             </div>

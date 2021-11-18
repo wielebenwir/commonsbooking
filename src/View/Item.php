@@ -33,7 +33,7 @@ class Item extends View {
 			'type'      => Timeframe::BOOKING_ID,
 		];
 
-		// If theres no location selected, we'll show all available.
+		// If there's no location selected, we'll show all available.
 		if ( ! $location ) {
 			if ( count( $locations ) ) {
 				// If there's only one location  available, we'll show it directly.
@@ -43,7 +43,7 @@ class Item extends View {
 					$args['locations'] = $locations;
 				}
 			} else {
-				throw new Exception('no location data found');
+				throw new Exception( 'no location data found' );
 			}
 		} else {
 			$args['location'] = new \CommonsBooking\Model\Location( get_post( $location ) );
@@ -104,9 +104,5 @@ class Item extends View {
 		}
 
 		return ob_get_clean();
-	}
-
-	public static function content( \WP_Post $post ) {
-		// TODO: Implement content() method.
 	}
 }

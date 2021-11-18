@@ -12,9 +12,9 @@
 
 .cb-wrapper {
 
-  
+
     /* General form elements */
-    
+
     input[type="text"],
     input[type="password"],
     input[type="email"],
@@ -31,100 +31,129 @@
     input[type="color"],
     textarea,
     select {
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      background: $color-white;
-      border-radius: $radius; 
-      border-style: solid;
-      border-width: 0.1rem;
-      border-color: $color-blue-dark;
-      box-shadow: none;
-      display: block;
-      margin: 0;
-      font-size: $font-size-normal;
-      max-width: 100%;
-      padding: $spacer $spacer;
-
-    }
-  
-  
-  .cb-action {
-    @extend .cb-box;
-    
-    text-align: right;
-    
-    input {
-      @extend .cb-button;
-      float: right;
-    }
-    
-    form {
-      &#cb-booking-form-set-cancelled { // cancel OR delete button
-        input {
-                background: transparent;
-                color: $color-gray-silver;
-                
-            }      
-        }      
-      &#cb-booking-form-set-confirmed { // confirm button
-        input {        
-          margin-left: $spacer-big;
-        }
-      }   
-    }
-  }
-  #booking-form-container, 
-  #booking-form-container div{
-    border-bottom: 0;
-  }
-
-  #booking-form {
-      width: 100%; /* do not extend litepicker width */
-      input {
-      @extend .cb-button;
-      float: right;
-    }
-    .time-selection-container {
-      display: block;
-      margin-top: $spacer;
-      > div {
-        @extend .cb-box-inner;
-        margin-bottom: $spacer;
-        text-align: left;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background: $color-white;
+        border-radius: $radius;
+        border-style: solid;
+        border-width: 0.1rem;
+        border-color: $color-blue-dark;
+        box-shadow: none;
         display: block;
-        overflow: hidden;
-        span, label, select {     
-          width: 33%;
-          float: left;
-        }
-        label  {
-          font-weight: bold;
-          // @extend .cb-big;
-        }
-      }
+        margin: 0;
+        font-size: $font-size-normal;
+        max-width: 100%;
+        padding: $spacer $spacer;
+
     }
-  }
-  .cb-notice {
-    @extend .cb-box;
-    margin-bottom: $spacer-big;
-    font-size: $font-size-big;
-    vertical-align: middle;
-    font-weight: bold;
-    position: relative;
-    background: $color-notice;
-    
-    /* Post status */
-    &.cb-status-unconfirmed {
-      background: $color-notice;
-    }    
-    &.cb-status-confirmed {
-      background: $color-success;
-    }    
-    &.cb-status-cancelled {
-      background: $color-success;
-    }    
-    &.error {
-      background: $color-error;
+
+
+    .cb-action {
+        @extend .cb-box;
+
+        text-align: right;
+
+        input {
+            @extend .cb-button;
+            float: right;
+        }
+
+        form {
+            &#cb-booking-form-set-cancelled { // cancel OR delete button
+                input {
+                    background: transparent;
+                    color: $color-gray-silver;
+
+                }
+            }
+
+            &#cb-booking-form-set-confirmed { // confirm button
+                input {
+                    margin-left: $spacer-big;
+                }
+            }
+        }
     }
-  }
+
+    #booking-form-container,
+    #booking-form-container div {
+        border-bottom: 0;
+    }
+
+    #booking-form {
+        width: 100%; /* do not extend litepicker width */
+        input {
+            @extend .cb-button;
+            float: right;
+        }
+
+        .time-selection-container {
+            margin-top: $spacer;
+
+            > div {
+                display: flex;
+
+                @extend .cb-box-inner;
+                margin-bottom: $spacer;
+                text-align: left;
+                overflow: hidden;
+
+                span, label, select {
+                  float: left;
+                }
+
+                label {
+                    font-weight: bold;
+                }
+
+                #resetPicker {
+                    cursor: pointer;
+                    font-weight: bold;
+                    text-decoration: none;
+                    font-size: 1rem;
+                    padding: 0;
+                    flex-basis: 100%;
+                }
+
+                > label{
+                    flex-basis: 30%;
+                }
+
+                > div {
+                    flex-basis: 70%;
+                    display: flex;
+                    gap: 1rem;
+                    row-gap: 1rem;
+                    flex-flow: row wrap;
+                }
+            }
+        }
+    }
+
+    .cb-notice {
+        @extend .cb-box;
+        margin-bottom: $spacer-big;
+        font-size: $font-size-big;
+        vertical-align: middle;
+        font-weight: bold;
+        position: relative;
+        background: $color-notice;
+
+        /* Post status */
+        &.cb-status-unconfirmed {
+            background: $color-notice;
+        }
+
+        &.cb-status-confirmed {
+            background: $color-success;
+        }
+
+        &.cb-status-cancelled {
+            background: $color-success;
+        }
+
+        &.error {
+            background: $color-error;
+        }
+    }
 }
