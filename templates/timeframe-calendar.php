@@ -14,7 +14,7 @@
 ?>
     <script type="text/javascript">
 		<?php
-		echo "let data = " . $templateData['calendar_data'] . ';';
+		echo "let calendarData = " . $templateData['calendar_data'] . ';';
 		?>
     </script>
     <!-- generate calendar /-->
