@@ -382,6 +382,206 @@ Thanks, the Team.
 	),
 	/* Tab: restrictions end*/
 
+
+	/* Tab: reminder start*/
+	'reminder' => array(
+		'title'        => commonsbooking_sanitizeHTML( __( 'Reminder', 'commonsbooking' ) ),
+		'id'           => 'reminder',
+		'field_groups' => array(
+
+			/* field group pre booking reminder */
+			'pre-booking-reminder' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Booking reminder', 'commonsbooking' ) ),
+				'id'     => 'pre-booking-reminder',
+				'desc'		   => commonsbooking_sanitizeHTML( __( 
+					'You can set here whether users should receive a reminder email before the start of a booking.'
+					, 'commonsbooking' ) ),
+				'fields' => array(
+					// E-Mail pre booking reminder 
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'E-mail subject', 'commonsbooking' ) ),
+						'id'      => 'pre-booking-reminder-subject',
+						'type'    => 'text',
+						'default' => commonsbooking_sanitizeHTML( __( 'Upcoming booking of {{item:itemName}} {{booking:formattedBookingDate}}', 'commonsbooking' ) ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'email body', 'commonsbooking' ) ),
+						'id'      => 'pre-booking-reminder-body',
+						'type'    => 'textarea',
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
+<p>Your booking period for the item will start soon.<br>
+
+If you no longer need the item you booked, please cancel the booking so other people can possibly use it.
+<br>
+Here is the link to your booking: {{booking:bookingLink}}
+<br>
+Best regards,
+the team</p>', 'commonsbooking' ) ),
+					),
+
+					// settings pre booking reminder -- min days 
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Sent reminder x days before booking start', 'commonsbooking' ) ),
+						'id'      => 'pre-booking-days-before',
+						'desc' => '<p>' . commonsbooking_sanitizeHTML( __( 
+							'This reminder email will be sent to users x days before the start of the booking. If the booking is made less days before the specified days, no reminder email will be sent'
+							, 'commonsbooking' ) ) . '</p>', 
+						'type'    => 'text_small',
+						'attributes' => array(
+							'type' 	 => 'number',
+							'min'  	 => '1',
+						),
+						'default'    => 2,
+
+					),
+
+					// settings pre booking reminder -- set sending time
+					array(
+						'name' 				=> esc_html__( 'Time', 'commonsbooking' ),
+						'id'   				=> 'pre-booking-time',
+						'desc' => '<br>' . commonsbooking_sanitizeHTML( __( 
+							'Define when the reminder should be sent. The actual sending may differ from the defined value by a few hours, depending on how your WordPress is configured.'
+							, 'commonsbooking' ) ),
+						'type' 				=> 'select',
+						'show_option_none' 	=> false,
+						'default'         	=> '1',
+						'options'           => array(
+							'0'		=> '00:00',
+							'1'		=> '01:00',
+							'2'		=> '02:00',
+							'3'		=> '03:00',
+							'4'		=> '04:00',
+							'5'		=> '05:00',
+							'6'		=> '06:00',
+							'7'		=> '07:00',
+							'8'		=> '08:00',
+							'9'		=> '09:00',
+							'10'	=> '10:00',
+							'11'	=> '11:00',
+							'12'	=> '12:00',
+							'13'	=> '13:00',
+							'14'	=> '14:00',
+							'15'	=> '15:00',
+							'16'	=> '16:00',
+							'17'	=> '17:00',
+							'18'	=> '18:00',
+							'19'	=> '19:00',
+							'20'	=> '20:00',
+							'21'	=> '21:00',
+							'22'	=> '22:00',
+							'23'	=> '23:00',
+						),
+
+					),
+
+					// settings pre booking reminder -- acticate reminder
+					array(
+						'name' => esc_html__( 'Activate', 'commonsbooking' ),
+						'id'   => 'pre-booking-reminder-activate',
+						'type' => 'checkbox',
+					),
+				),
+			),
+			/* field group pre booking reminder settings end */
+
+
+			/* field group post booking notice */
+			'post-booking-notice' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Post booking Notice', 'commonsbooking' ) ),
+				'id'     => 'post-booking-notice',
+				'desc'		   => commonsbooking_sanitizeHTML( __( 
+					'Here you can set whether users should receive an additional e-mail after completing a booking. This can be used, for example, to inquire about the users satisfaction or possible problems during the booking.'
+					, 'commonsbooking' ) ),
+				'fields' => array(
+					// E-Mail post booking reminder 
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'E-mail subject', 'commonsbooking' ) ),
+						'id'      => 'post-booking-notice-subject',
+						'type'    => 'text',
+						'default' => commonsbooking_sanitizeHTML( __( 'Upcoming booking of {{item:itemName}} {{booking:formattedBookingDate}}', 'commonsbooking' ) ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'email body', 'commonsbooking' ) ),
+						'id'      => 'post-booking-notice-body',
+						'type'    => 'textarea',
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
+<p>Your booking has ended.<br>
+We hope that everything worked as expected.<br>
+Please let us know if any problems occurred.<br>
+<br>
+Best regards,<br>
+The team</p>', 'commonsbooking' ) ),
+					),
+
+					// settings post booking reminder -- days after booking 
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Sent post booking notice', 'commonsbooking' ) ),
+						'id'      => 'post-booking-notice-days-after',
+						'desc' => '<p>' . commonsbooking_sanitizeHTML( __( 
+							'Define when the email should be sent to user after booking ends'
+							, 'commonsbooking' ) ) . '</p>', 
+						'type'    => 'select',
+						'show_option_none' 	=> false,
+						'default'         	=> 'sameday',
+						'options'           => array(
+							'sameday'		=> __('Same day', 'commonsbooking'),
+							'1dayafter'		=> __('One day after booking ends', 'commonsbooking'),
+						),
+					),
+
+					// settings post booking reminder -- set sending time
+					array(
+						'name' 				=> esc_html__( 'Time', 'commonsbooking' ),
+						'id'   				=> 'post-booking-notice-time',
+						'desc' => '<br>' . commonsbooking_sanitizeHTML( __( 
+							'Define when the email should be sent. The actual sending may differ from the defined value by a few hours, depending on how your WordPress is configured.'
+							, 'commonsbooking' ) ),
+						'type' 				=> 'select',
+						'show_option_none' 	=> false,
+						'default'         	=> '19',
+						'options'           => array(
+							'0'		=> '00:00',
+							'1'		=> '01:00',
+							'2'		=> '02:00',
+							'3'		=> '03:00',
+							'4'		=> '04:00',
+							'5'		=> '05:00',
+							'6'		=> '06:00',
+							'7'		=> '07:00',
+							'8'		=> '08:00',
+							'9'		=> '09:00',
+							'10'	=> '10:00',
+							'11'	=> '11:00',
+							'12'	=> '12:00',
+							'13'	=> '13:00',
+							'14'	=> '14:00',
+							'15'	=> '15:00',
+							'16'	=> '16:00',
+							'17'	=> '17:00',
+							'18'	=> '18:00',
+							'19'	=> '19:00',
+							'20'	=> '20:00',
+							'21'	=> '21:00',
+							'22'	=> '22:00',
+							'23'	=> '23:00',
+						),
+
+					),
+
+					// settings pre booking reminder -- acticate reminder
+					array(
+						'name' => esc_html__( 'Activate', 'commonsbooking' ),
+						'id'   => 'post-booking-notice-activate',
+						'type' => 'checkbox',
+					),
+				),
+			),
+			/* field group post booking reminder settings end */
+		),
+		/* field group container end */
+	),
+	/* Tab: reminder end*/
+
 	/* Tab: migration start */
 	'migration'    => array(
 		'title'        => __( 'Migration', 'commonsbooking' ),
@@ -641,6 +841,4 @@ Thanks, the Team.
 		),
 	),
 	/* Tab: meta data end */
-
-
 );
