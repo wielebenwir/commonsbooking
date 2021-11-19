@@ -4,8 +4,6 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 
-use CommonsBooking\Repository\UserRepository;
-
 class Restriction extends CustomPostType {
 
 	/**
@@ -235,8 +233,12 @@ class Restriction extends CustomPostType {
 
 			if ( array_key_exists( self::SEND_BUTTON_ID, $_REQUEST ) ) {
 				update_post_meta( $post_id, \CommonsBooking\Model\Restriction::META_SENT, time() );
-				$restriction = new \CommonsBooking\Model\Restriction( $post_id );
-				$restriction->apply();
+				try {
+					$restriction = new \CommonsBooking\Model\Restriction( $post_id );
+					$restriction->apply();
+				} catch (\Exception $e) {
+					// nothing to do in this case.
+				}
 			}
 		}
 	}
