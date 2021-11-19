@@ -29,24 +29,30 @@
     input[type="search"],
     input[type="tel"],
     input[type="color"],
-    textarea,
-    select {
+    textarea {
         -webkit-appearance: none;
         -moz-appearance: none;
         background: $color-white;
         border-radius: $radius;
         border-style: solid;
         border-width: 0.1rem;
-        border-color: $color-blue-dark;
+        border-color: $color-black;
         box-shadow: none;
         display: block;
         margin: 0;
         font-size: $font-size-normal;
         max-width: 100%;
         padding: $spacer $spacer;
-
     }
 
+    select {
+        box-shadow: none;
+        display: block;
+        margin: 0;
+        font-size: $font-size-normal;
+        padding: $spacer $spacer;
+        cursor: pointer;
+    }
 
     .cb-action {
         @extend .cb-box;
@@ -75,6 +81,13 @@
         }
     }
 
+    input.cb-action-canceled {
+        background: none !important;
+        color: $color-gray-dark !important;
+        box-shadow: none !important;
+        font-size: 0.875rem;
+    }
+
     #booking-form-container,
     #booking-form-container div {
         border-bottom: 0;
@@ -89,9 +102,11 @@
 
         .time-selection-container {
             margin-top: $spacer;
+            text-align: center;
 
             > div {
                 display: flex;
+                align-items: center;
 
                 @extend .cb-box-inner;
                 margin-bottom: $spacer;
@@ -99,7 +114,8 @@
                 overflow: hidden;
 
                 span, label, select {
-                  float: left;
+                    float: left;
+                    font-size: $font-size-normal;
                 }
 
                 label {
@@ -115,16 +131,15 @@
                     flex-basis: 100%;
                 }
 
-                > label{
+                > label {
                     flex-basis: 30%;
                 }
 
                 > div {
                     flex-basis: 70%;
                     display: flex;
-                    gap: 1rem;
-                    row-gap: 1rem;
-                    flex-flow: row wrap;
+                    gap: 1rem 3rem;
+                    align-items: center;
                 }
             }
         }

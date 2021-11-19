@@ -3400,8 +3400,8 @@
 /* line 68, ../../global/sass/partials/_extends.scss */
 .cb-button, .cb-button-container a {
   border-radius: 8px;
-  font-size: 18px;
-  line-height: 18px;
+  font-size: 14px;
+  line-height: 14px;
   background-color: #74ce3c;
   border: none !important;
   /* TwentyFifteen theme fix */
@@ -3413,58 +3413,65 @@
   padding: 10px 15px;
   font-weight: bold;
 }
-/* line 82, ../../global/sass/partials/_extends.scss */
+/* line 81, ../../global/sass/partials/_extends.scss */
+.cb-button.small, .cb-button-container a.small {
+  padding: 10px;
+  font-size: 12px;
+}
+/* line 86, ../../global/sass/partials/_extends.scss */
 .cb-button:hover, .cb-button-container a:hover {
   background: #506CA9;
   color: #FFF;
   /* Various themes fix */
 }
-/* line 88, ../../global/sass/partials/_extends.scss */
+/* line 92, ../../global/sass/partials/_extends.scss */
 .cb-button:visited, .cb-button-container a:visited {
   color: #FFF;
 }
-/* line 92, ../../global/sass/partials/_extends.scss */
+/* line 96, ../../global/sass/partials/_extends.scss */
 .cb-button.big, .cb-button-container a.big {
   padding: 10px 15px;
+  font-size: 18px;
+  line-height: 18px;
 }
-/* line 95, ../../global/sass/partials/_extends.scss */
+/* line 101, ../../global/sass/partials/_extends.scss */
 .cb-button.secondary, .cb-button-container a.secondary {
   background-color: #FFF;
   color: #d5425c;
 }
-/* line 100, ../../global/sass/partials/_extends.scss */
+/* line 106, ../../global/sass/partials/_extends.scss */
 .cb-button.cancel, .cb-button-container a.cancel {
   background-color: #d5425c;
 }
-/* line 104, ../../global/sass/partials/_extends.scss */
+/* line 110, ../../global/sass/partials/_extends.scss */
 .cb-button.confirm, .cb-button-container a.confirm {
   background-color: #74ce3c;
 }
-/* line 108, ../../global/sass/partials/_extends.scss */
+/* line 114, ../../global/sass/partials/_extends.scss */
 .cb-button.delete, .cb-button-container a.delete {
   background-color: #d5425c;
 }
-/* line 112, ../../global/sass/partials/_extends.scss */
+/* line 118, ../../global/sass/partials/_extends.scss */
 .cb-button[disabled=disabled], .cb-button-container a[disabled=disabled] {
   background-color: #c4c4c4;
   color: white;
 }
-/* line 117, ../../global/sass/partials/_extends.scss */
+/* line 123, ../../global/sass/partials/_extends.scss */
 .cb-button.no-right-radius, .cb-button-container a.no-right-radius {
   border-radius: 8px 0;
 }
-/* line 120, ../../global/sass/partials/_extends.scss */
+/* line 126, ../../global/sass/partials/_extends.scss */
 .cb-button.no-left-radius, .cb-button-container a.no-left-radius {
   border-radius: 0 8px;
 }
 
-/* line 128, ../../global/sass/partials/_extends.scss */
+/* line 134, ../../global/sass/partials/_extends.scss */
 .cb-pill {
   border-radius: 8px;
   padding: 0;
   margin: 0;
 }
-/* line 132, ../../global/sass/partials/_extends.scss */
+/* line 138, ../../global/sass/partials/_extends.scss */
 .cb-pill a {
   text-decoration: none;
   color: #FFF;

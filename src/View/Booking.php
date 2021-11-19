@@ -102,9 +102,9 @@ class Booking extends View {
 				// Decide which edit link to use
 				$editLink = get_permalink( $booking->ID );
 
-				$actions = '<a class="cb-button" href="' . $editLink . '"><span>' .
+				$actions = '<a class="cb-button small" href="' . $editLink . '">' .
 				           commonsbooking_sanitizeHTML( __( 'Details', 'commonsbooking' ) ) .
-				           '</span></a>';
+				           '</a>';
 
 				$item          = $booking->getItem();
 				$itemTitle     = $item ? $item->post_title : commonsbooking_sanitizeHTML( __( 'Not available', 'commonsbooking' ) );

@@ -479,8 +479,9 @@
 	}
 
 	#resetPicker {
-		font-size: 1.2rem;
-		padding: 0.8125rem;
+		font-size: $font-size-normal;
+		padding: $spacer-small;
 		display: none;
+		cursor: pointer;
 	}
 }

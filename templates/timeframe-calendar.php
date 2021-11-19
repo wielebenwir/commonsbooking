@@ -31,9 +31,9 @@
             <input type="hidden" name="post_status" value="unconfirmed"/>
 
             <div class="time-selection-container">
-            <a id="resetPicker">
-                                <?php echo esc_html__( 'Reset date selection', 'commonsbooking' ); ?>
-        </a>
+                <a id="resetPicker">
+                    <?php echo esc_html__( 'Reset date selection', 'commonsbooking' ); ?>
+                </a>
                 <div class="time-selection repetition-start">
                     <label for="repetition-start">
                         <?php echo esc_html__( 'Pickup', 'commonsbooking' ); ?>:

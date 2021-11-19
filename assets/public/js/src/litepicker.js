@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             jQuery('.time-selection.repetition-end').find('.hint-selection').show();
 
             // Show reset button as first calender selection is done
-            jQuery('#resetPicker').show();
+            jQuery('#resetPicker').css( "display", "inline-block" );
 
             // Hide end date selection if new start date was chosen
             let endSelectData = jQuery(
