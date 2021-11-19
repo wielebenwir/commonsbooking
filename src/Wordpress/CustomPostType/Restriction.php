@@ -27,7 +27,7 @@ class Restriction extends CustomPostType {
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
-		add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 10, 3 );
+		add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 10, 2 );
 	}
 
 	/**
@@ -227,14 +227,12 @@ class Restriction extends CustomPostType {
 	/**
 	 * Handles save-Request for location.
 	 */
-	public function savePost( $post_id, $post, $update ) {
-		if ( $this->hasRunBefore( __METHOD__ ) ) {
-			return;
-		}
+	public function savePost( $post_id, $post) {
+		if ( $post->post_type == self::$postType && $post_id ) {
+			if ( $this->hasRunBefore( __METHOD__ ) ) {
+				return;
+			}
 
-		$postType = isset( $_REQUEST['post_type'] ) ? sanitize_text_field( $_REQUEST['post_type'] ) : null;
-
-		if ( $postType == self::$postType && $post_id ) {
 			if ( array_key_exists( self::SEND_BUTTON_ID, $_REQUEST ) ) {
 				update_post_meta( $post_id, \CommonsBooking\Model\Restriction::META_SENT, time() );
 				$restriction = new \CommonsBooking\Model\Restriction( $post_id );

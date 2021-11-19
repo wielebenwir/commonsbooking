@@ -920,7 +920,7 @@ class Timeframe extends CustomPostType {
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
-		add_action( 'save_post', array( $this, 'savePost' ), 1, 2 );
+		add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 1, 2 );
 
 		// Add type filter to backend list view
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );

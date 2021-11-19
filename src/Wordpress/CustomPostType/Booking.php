@@ -52,7 +52,7 @@ class Booking extends Timeframe {
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
-		add_action( 'save_post', array( $this, 'savePost' ), 1, 2 );
+		add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 1, 2 );
 
 		// Set Tepmlates
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );

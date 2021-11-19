@@ -23,18 +23,15 @@ class Location extends CustomPostType {
 		add_action( 'pre_get_posts', array( $this, 'filterAdminList' ) );
 
 		// Save-handling
-		add_action( 'save_post', array( $this, 'savePost' ) );
+		add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 1, 2 );
 	}
 
 	/**
 	 * Handles save-Request for location.
 	 */
-	public function savePost() {
-		$postType = isset( $_REQUEST['post_type'] ) ? sanitize_text_field( $_REQUEST['post_type'] ) : null;
-		$postId   = isset( $_REQUEST['post_ID'] ) ? sanitize_text_field( $_REQUEST['post_ID'] ) : null;
-
-		if ( $postType == self::$postType && $postId ) {
-			$location = new \CommonsBooking\Model\Location( intval( $postId ) );
+	public function savePost($post_id, \WP_Post $post) {
+		if ( $post->post_type == self::$postType && $post_id ) {
+			$location = new \CommonsBooking\Model\Location( intval( $post_id ) );
 			$location->updateGeoLocation();
 		}
 	}
