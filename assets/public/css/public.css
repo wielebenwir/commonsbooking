@@ -4387,8 +4387,9 @@
   margin-top: 1em;
   padding-left: 1em;
   list-style-type: '⚠ ';
+  margin-left: 1.5em;
 }
-/* line 487, ../sass/partials/_calendar.scss */
+/* line 488, ../sass/partials/_calendar.scss */
 #booking-form #resetPicker {
   font-size: 14px;
   padding: 5px;
