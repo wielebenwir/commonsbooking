@@ -299,7 +299,8 @@ Thanks, the Team.
 		'field_groups' => array(
 			/* field group email templates start */
 			'emailtemplates' => array(
-				'title'  => commonsbooking_sanitizeHTML( __( 'Email templates', 'commonsbooking' ) ),
+				'title'   => commonsbooking_sanitizeHTML( __( 'Email templates', 'commonsbooking' ) ),
+				'desc'	  => commonsbooking_sanitizeHTML( __( 'Email templates', 'commonsbooking' ) ), 
 				'id'     => 'emailtemplates',
 				'fields' => array(
 					array(

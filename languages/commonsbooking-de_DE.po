@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2021-11-20T10:54:08+00:00\n"
-"PO-Revision-Date: 2021-11-20 11:55+0100\n"
+"POT-Creation-Date: 2021-11-20T11:17:42+00:00\n"
+"PO-Revision-Date: 2021-11-20 14:08+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -445,101 +445,143 @@ msgstr ""
 #: src/Wordpress/CustomPostType/Restriction.php:50
 #: src/Wordpress/CustomPostType/Restriction.php:71
 #: templates/timeframe-calendar.php:66
-#, fuzzy
-#| msgid "Description"
 msgid "Restrictions"
-msgstr "Beschreibung"
+msgstr "Einschränkungen"
 
 #: includes/OptionsArray.php:322
-#, fuzzy
-#| msgid "Booking pending email subject"
-msgid "Repair email subject"
-msgstr "E-Mail Betreff für ausstehende Buchungen"
+msgid "Breakdown email subject"
+msgstr "Ausfall E-Mail Betreff"
 
 #: includes/OptionsArray.php:325
-msgid "Reperatur von {{restriction:itemName}}"
-msgstr ""
+msgid "Breakdown of {{restriction:itemName}}"
+msgstr "Ausfall von {{restriction:itemName}}"
 
 #: includes/OptionsArray.php:328
-#, fuzzy
-#| msgid "Booking pending email body"
-msgid "Repair email body"
-msgstr "E-Mail-Text für ausstehende Buchungen"
+msgid "Breakdown email body"
+msgstr "E-Mail-Text für Ausfall"
 
 #: includes/OptionsArray.php:331
 msgid ""
-"<h2>Hallo {{user:first_name}},</h2>\n"
-"\t\t\t\t\t\t\t\t<p>\n"
-"\t\t\t\t\t\t\t\tdas Lastenrad {{restriction:itemName}} ist von {{restriction:"
-"formattedStartDateTime}} bis {{restriction:formattedEndDateTime}} nicht "
-"nutzbar.\n"
-"\t\t\t\t\t\t\t\t</p>\n"
-"\t\t\t\t\t\t\t\t<p>\n"
-"\t\t\t\t\t\t\t\tDer Grund dafür ist folgender:\n"
-"\t\t\t\t\t\t\t\t{{restriction:hint}}\n"
-"\t\t\t\t\t\t\t\t</p>"
+"<h2>Hi {{user:first_name}},</h2>\n"
+"\n"
+"<p>Unfortunately, the item {{restriction:itemName}} you booked is damaged "
+"and not usable from {{restriction:formattedStartDateTime}} until "
+"{{restriction:formattedEndDateTime}} expected.\n"
+"</br></br>\n"
+"The reason is:</br>\n"
+"{{restriction:hint}}\n"
+"</br>\n"
+"</br>\n"
+"We had to cancel your booking for this period.  You will receive a "
+"confirmation of the cancellation in a separate email.\n"
+"Please book the item again for another period or check our website to see if "
+"an alternative item is available.\n"
+"</br>\n"
+"We ask for your understanding. \n"
+"</br>\n"
+"Best regards,</br>\n"
+"the team\n"
+"</p>"
 msgstr ""
+"<h2>Hallo { {user:first_name} },</h2>\n"
+"\n"
+"<p>Leider ist der von dir gebuchte Artikel {{restriction:itemName}} "
+"beschädigt und von {{restriction:formattedStartDateTime} } bis "
+"{ {restriction:formattedEndDateTime{} nicht mehr verwendbar. <br>Der Grund "
+"ist:</br>{{restriction:hint}}<br>\n"
+"</br>Wir mussten deine Buchung für diesen Zeitraum stornieren.  Du erhältst "
+"eine Bestätigung der Stornierung in einer separaten E-Mail.\n"
+"Bitte buche den Artikel erneut für einen anderen Zeitraum oder überprüfe auf "
+"unserer Website, ob ein alternativer Artikel verfügbar ist.<br>Wir bitten um "
+"dein Verständnis.</br>Viele Grüße</br>das Team</p>"
 
-#: includes/OptionsArray.php:343
-#, fuzzy
-#| msgid "Booking pending email subject"
-msgid "Hint email subject"
-msgstr "E-Mail Betreff für ausstehende Buchungen"
+#: includes/OptionsArray.php:351
+msgid "Usage restriction email subject"
+msgstr "E-Mail-Betreff der Verwendungseinschränkung"
 
-#: includes/OptionsArray.php:346
-msgid "Einschränkung bei {{restriction:itemName}}"
-msgstr ""
+#: includes/OptionsArray.php:354
+msgid "Restriction of use for {{restriction:itemName}}"
+msgstr "Nutzungsbeschränkung für {{restriction:itemName}}"
 
-#: includes/OptionsArray.php:349
-#, fuzzy
-#| msgid "Booking pending email body"
-msgid "Hint email body"
-msgstr "E-Mail-Text für ausstehende Buchungen"
+#: includes/OptionsArray.php:357
+msgid "Restriction email body"
+msgstr "E-Mail-Text für Einschränkung"
 
-#: includes/OptionsArray.php:352
+#: includes/OptionsArray.php:360
 msgid ""
-"<h2>Hallo {{user:first_name}},</h2>\n"
-"\t\t\t\t\t\t\t\t<p>\n"
-"\t\t\t\t\t\t\t\tdas Lastenrad {{restriction:itemName}} ist von {{restriction:"
-"formattedStartDateTime}} - {{restriction:formattedEndDateTime}} nicht "
-"vollständig nutzbar.\n"
-"\t\t\t\t\t\t\t\t</p>\n"
-"\t\t\t\t\t\t\t\t<p>\n"
-"\t\t\t\t\t\t\t\tDer Grund dafür ist folgender:\n"
-"\t\t\t\t\t\t\t\t{{restriction:hint}}\n"
-"\t\t\t\t\t\t\t\t</p>"
+"<h2>Hi {{user:first_name}},</h2>\n"
+"<p>\n"
+"The item {{restriction:itemName}} you booked is damaged and will have "
+"limited use from {{restriction:formattedStartDateTime} until probably "
+"{{restriction:formattedEndDateTime}}.\n"
+"</br></br>\n"
+"The reason is:</br>\n"
+"{{restriction:hint}}\n"
+"</br>\n"
+"</br>\n"
+"Please check if you want to continue your booking despite this usage "
+"restriction. \n"
+"If not, we ask you to cancel your booking via the following link:\n"
+"{{booking:BookingLink}} \n"
+"</br>\n"
+"</br>\n"
+"We will do our best to fix the restriction as soon as possible.\n"
+"We will sent you an email when the restriction is fixed.\n"
+"</br>\n"
+"Best regards,</br>\n"
+"the team\n"
+"</p>"
 msgstr ""
+"<h2>Hallo {{user:first_name}},</h2>\n"
+"<p>\n"
+"Der von dir gebuchte Gegenstand {{restriction:itemName}} ist beschädigt und "
+"kann von {{restriction:formattedStartDateTime}} bis voraussichtlich "
+"{{restriction:formattedEndDateTime}} nur eingeschränkt genutzt werden.\n"
+"</br></br>\n"
+"Der Grund ist:</br>\n"
+"{{restriction:hint}}\n"
+"</br>\n"
+"</br>\n"
+"Bitte prüfen, ob du deine Buchung trotz der Einschränkungen beibehalten "
+"möchtest. \n"
+"Wenn nicht, storniere bitte deine Buchung über den folgenden Link:\n"
+"{{booking:BookingLink}} \n"
+"</br>\n"
+"</br>\n"
+"Wir bemühen uns, die Einschränkung zu schnell wie möglich zu beheben.\n"
+"Du erhältst eine E-Mail, wenn die Einschränkung behoben ist.\n"
+"</br>\n"
+"Viele Grüße,</br>\n"
+"Das Team\n"
+"</p>"
 
-#: includes/OptionsArray.php:364 includes/OptionsArray.php:367
-#, fuzzy
-#| msgid "Booking canceled email subject"
+#: includes/OptionsArray.php:383 includes/OptionsArray.php:386
 msgid "Restriction cancelled subject"
-msgstr "E-Mail-Betreff für stornierte Buchungen"
+msgstr "E-Mail-Betreff für Aufhebung der Einschränkung"
 
-#: includes/OptionsArray.php:370
-#, fuzzy
-#| msgid "Booking canceled email body"
+#: includes/OptionsArray.php:389
 msgid "Restriction cancelled email body"
-msgstr "E-Mail-Text für stornierte Buchungen"
+msgstr "E-Mail-Text für Aufhebung der Einschränkung"
 
-#: includes/OptionsArray.php:373
+#: includes/OptionsArray.php:392
 msgid ""
-"<h2>Hallo {{user:first_name}},</h2>\n"
-"\t\t\t\t\t\t\t\t<p>\n"
-"\t\t\t\t\t\t\t\tdas Lastenrad {{restriction:itemName}} ist wieder "
-"vollständig nutzbar.\n"
-"\t\t\t\t\t\t\t\t</p>"
+"<h2>Hi {{user:first_name}},</h2>\n"
+"<p>\n"
+"The item {{restriction:itemName}} is now fully usable again. \n"
+"</p>"
 msgstr ""
+"<h2>Hallo { {user:first_name} },</h2>\n"
+"<p>Der Gegenstand { {restriction:itemName} } ist nun wieder voll nutzbar.</p>"
 
-#: includes/OptionsArray.php:387
+#: includes/OptionsArray.php:406
 msgid "Migration"
 msgstr "Migration"
 
-#: includes/OptionsArray.php:391
+#: includes/OptionsArray.php:410
 msgid "Migrate from Commons Booking Version 0.X"
 msgstr "Migriere von Commons Booking Version 0.X"
 
-#: includes/OptionsArray.php:393
+#: includes/OptionsArray.php:412
 msgid ""
 "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: "
 "locations, items, timeframes and bookings. <br><span style=\"color:red\">If "
@@ -558,62 +600,60 @@ msgstr ""
 "\"https://commonsbooking.org/?p=434\">Migration von Version 0.9.x auf 2.x.x.,"
 "</a> bevor Du mit der Migration beginnst."
 
-#: includes/OptionsArray.php:396 src/View/Migration.php:69
+#: includes/OptionsArray.php:415 src/View/Migration.php:69
 msgid "Start Migration"
 msgstr "Migration starten"
 
-#: includes/OptionsArray.php:404
-#, fuzzy
-#| msgid "Migrate from Commons Booking Version 0.X"
+#: includes/OptionsArray.php:423
 msgid "Migrate bookings to new version"
-msgstr "Migriere von Commons Booking Version 0.X"
+msgstr "Buchungen auf neue Version migrieren"
 
-#: includes/OptionsArray.php:406
+#: includes/OptionsArray.php:425
 msgid ""
 "Migrate bookings to new format so that they are listed at bookings menu item."
 msgstr ""
+"Migriere Buchungen in ein neues Format, sodass sie unter dem Menüpunkt "
+"Buchungen aufgelistet werden."
 
-#: includes/OptionsArray.php:409 src/View/Migration.php:98
-#, fuzzy
-#| msgid "No bookings"
+#: includes/OptionsArray.php:428 src/View/Migration.php:98
 msgid "Migrate bookings"
-msgstr "Keine Buchungen"
+msgstr "Buchungen migrieren"
 
-#: includes/OptionsArray.php:417
+#: includes/OptionsArray.php:436
 msgid "CommonsBooking Version 0.X profile fields"
 msgstr "CommonsBooking Version 0.X Nutzerprofil-Felder"
 
-#: includes/OptionsArray.php:419
+#: includes/OptionsArray.php:438
 msgid ""
 "Enable the following legacy CommonsBooking Version 0.X user profile fields:"
 msgstr ""
 "Aktiviere die folgenden veralteten Nutzer-Profilfelder aus Commons Booking "
 "Version 0.X:"
 
-#: includes/OptionsArray.php:422
+#: includes/OptionsArray.php:441
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: includes/OptionsArray.php:427
+#: includes/OptionsArray.php:446
 msgid "Terms & Services Url"
 msgstr "Nutzungsbedingungen & Services URL"
 
-#: includes/OptionsArray.php:440 includes/OptionsArray.php:492
+#: includes/OptionsArray.php:459 includes/OptionsArray.php:511
 msgid "Export"
 msgstr "Export"
 
-#: includes/OptionsArray.php:444
+#: includes/OptionsArray.php:463
 msgid "Download timeframes export"
 msgstr "Zeitrahmen-Export herunterladen"
 
-#: includes/OptionsArray.php:448
+#: includes/OptionsArray.php:467
 #: src/Wordpress/CustomPostType/Restriction.php:159
 #: src/Wordpress/CustomPostType/Timeframe.php:100
 #: src/Wordpress/CustomPostType/Timeframe.php:493
 msgid "Type"
 msgstr "Typ"
 
-#: includes/OptionsArray.php:449
+#: includes/OptionsArray.php:468
 #: src/Wordpress/CustomPostType/Restriction.php:160
 #: src/Wordpress/CustomPostType/Timeframe.php:494
 msgid ""
@@ -623,11 +663,11 @@ msgstr ""
 "Wähle den Typ dieses Zeitrahmens (z.B. buchbar, Reparatur, Urlaub, Buchung). "
 "Ausführliche Informationen findest Du in der Dokumentation."
 
-#: includes/OptionsArray.php:455
+#: includes/OptionsArray.php:474
 msgid "Location-Fields"
 msgstr "Standort-Felder"
 
-#: includes/OptionsArray.php:456 includes/OptionsArray.php:462
+#: includes/OptionsArray.php:475 includes/OptionsArray.php:481
 msgid ""
 "Just add field names, no matter if its a post- or a meta-field. Comma "
 "separated list."
@@ -635,15 +675,15 @@ msgstr ""
 "Füge Feldnamen als kommaseparierte hinzu. Dies können Post- oder Meta-Felder "
 "sein."
 
-#: includes/OptionsArray.php:461
+#: includes/OptionsArray.php:480
 msgid "Item-Fields"
 msgstr "Artikel-Felder"
 
-#: includes/OptionsArray.php:467
+#: includes/OptionsArray.php:486
 msgid "User-Fields"
 msgstr "User-Felder"
 
-#: includes/OptionsArray.php:468
+#: includes/OptionsArray.php:487
 msgid ""
 "Just add field names, no matter if its a user- or a meta-field. Comma "
 "separated list."
@@ -651,47 +691,47 @@ msgstr ""
 "Füge Feldnamen als kommaseparierte hinzu. Dies können Post- oder Meta-Felder "
 "sein."
 
-#: includes/OptionsArray.php:473
+#: includes/OptionsArray.php:492
 msgid "Export start date"
 msgstr "Export Startdatum"
 
-#: includes/OptionsArray.php:483
+#: includes/OptionsArray.php:502
 msgid "Export end date"
 msgstr "Export-Enddatum"
 
-#: includes/OptionsArray.php:500
+#: includes/OptionsArray.php:519
 msgid "Cron settings for timeframes export"
 msgstr "Cron-Einstellungen für den Zeitrahmenexport"
 
-#: includes/OptionsArray.php:504
+#: includes/OptionsArray.php:523
 msgid "Run as cronjob"
 msgstr "Als Cronjob anlegen"
 
-#: includes/OptionsArray.php:509
+#: includes/OptionsArray.php:528
 msgid "Export interval"
 msgstr "Exportintervall"
 
-#: includes/OptionsArray.php:513 includes/OptionsArray.php:514
+#: includes/OptionsArray.php:532 includes/OptionsArray.php:533
 msgid "minutes"
 msgstr "Minuten"
 
-#: includes/OptionsArray.php:515
+#: includes/OptionsArray.php:534
 msgid "daily"
 msgstr "täglich"
 
-#: includes/OptionsArray.php:519
+#: includes/OptionsArray.php:538
 msgid "Export timerange"
 msgstr "Export-Zeitbereich"
 
-#: includes/OptionsArray.php:520
+#: includes/OptionsArray.php:539
 msgid "Export timerange in days."
 msgstr "Exportiere diesen Zeitraum (in Tagen)"
 
-#: includes/OptionsArray.php:529
+#: includes/OptionsArray.php:548
 msgid "Filepath"
 msgstr "Dateipfad"
 
-#: includes/OptionsArray.php:530
+#: includes/OptionsArray.php:549
 msgid ""
 "Absolute path on your webserver (including trailing slash) where export file "
 "will be saved to."
@@ -699,19 +739,19 @@ msgstr ""
 "Absoluter Pfad auf deinem Webserver (einschließlich abshließender "
 "Schrägstrich), in dem die Exportdatei gespeichert wird."
 
-#: includes/OptionsArray.php:543
+#: includes/OptionsArray.php:562
 msgid "API"
-msgstr ""
+msgstr "Schnittstelle"
 
-#: includes/OptionsArray.php:547
+#: includes/OptionsArray.php:566
 msgid "Configure API Access"
 msgstr "Konfigurieren des API-Zugriffs"
 
-#: includes/OptionsArray.php:551
+#: includes/OptionsArray.php:570
 msgid "Activate API"
 msgstr "API aktivieren"
 
-#: includes/OptionsArray.php:552
+#: includes/OptionsArray.php:571
 msgid ""
 "If selected, the API is enabled. See more information in the documentation: "
 "<a target=\"_blank\" href=\"https://commonsbooking.org/docs/schnittstellen-"
@@ -722,109 +762,104 @@ msgstr ""
 "commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/\">API-"
 "Dokumentation</a>"
 
-#: includes/OptionsArray.php:557
+#: includes/OptionsArray.php:576
 msgid "Enable API Access without API-Key"
 msgstr "Aktiviert den API-Zugang ohne API-Schlüssel"
 
-#: includes/OptionsArray.php:558
-#, fuzzy
-#| msgid ""
-#| "If selected, the API is enabled. See more information in the "
-#| "documentation: <a target=\"_blank\" href=\"https://commonsbooking.org/"
-#| "docs/schnittstellen-api/commonsbooking-api/\">API documentation</a>"
+#: includes/OptionsArray.php:577
 msgid ""
 "If selected, the API is accessible without an API-Key. For details see: <a "
 "target=\"_blank\" href=\"https://commonsbooking.org/docs/schnittstellen-api/"
 "commonsbooking-api/\">API documentation</a>"
 msgstr ""
-"Wenn diese Option ausgewählt ist, ist die API aktiviert. Weitere "
-"Informationen in der Dokumentation: <a target=\"_blank\" href=\"https://"
+"Wenn diese Option ausgewählt ist, ist die API ohne API-Schlüssel zugänglich. "
+"Weitere Informationen findest du unter: <a target=\"_blank\" href=\"https://"
 "commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/\">API-"
 "Dokumentation</a>"
 
-#: includes/OptionsArray.php:565
+#: includes/OptionsArray.php:584
 msgid "API shares"
-msgstr ""
+msgstr "API Freigaben"
 
-#: includes/OptionsArray.php:566
-#, fuzzy
-#| msgid ""
-#| "If selected, the API is enabled. See more information in the "
-#| "documentation: <a target=\"_blank\" href=\"https://commonsbooking.org/"
-#| "docs/schnittstellen-api/commonsbooking-api/\">API documentation</a>"
+#: includes/OptionsArray.php:585
 msgid ""
 "You can define on ore more API shares. Read the documentation for more "
 "information about API shares and configuration <a target=\"_blank\" href="
 "\"https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/"
 "\">API documentation</a>"
 msgstr ""
-"Wenn diese Option ausgewählt ist, ist die API aktiviert. Weitere "
-"Informationen in der Dokumentation: <a target=\"_blank\" href=\"https://"
-"commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/\">API-"
-"Dokumentation</a>"
+"Du kannst ein oder mehrere API-Freigaben definieren. Weitere Informationen "
+"zu API-Freigaben und zur Konfiguration findest du in der <a target=\"_blank"
+"\" href=\"https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-"
+"api/\">API-Dokumentation</a>"
 
-#: includes/OptionsArray.php:580
+#: includes/OptionsArray.php:599
 msgid "API name"
-msgstr ""
+msgstr "Schnittstellen Name"
 
-#: includes/OptionsArray.php:581
+#: includes/OptionsArray.php:600
 msgid "Internal name for this API share"
-msgstr ""
+msgstr "Interner Name für diese API-Freigabe"
 
-#: includes/OptionsArray.php:586
+#: includes/OptionsArray.php:605
 msgid "API enabled"
-msgstr ""
+msgstr "Schnitstelle aktiviert"
 
-#: includes/OptionsArray.php:587
+#: includes/OptionsArray.php:606
 msgid "If checked this API share is enabled"
-msgstr ""
+msgstr "Wenn ausgewählt, ist diese API-Freigabe aktiviert"
 
-#: includes/OptionsArray.php:592
+#: includes/OptionsArray.php:611
 msgid "Push URL"
-msgstr ""
+msgstr "Push URL"
 
-#: includes/OptionsArray.php:593
+#: includes/OptionsArray.php:612
 msgid ""
 "URL that gets push information everytime there was a change on "
 "CommonsBooking data"
 msgstr ""
+"URL, welche eine Push-Information bekommt, sobald es Änderungen den "
+"CommonsBooking Daten gibt"
 
-#: includes/OptionsArray.php:598
+#: includes/OptionsArray.php:617
 msgid "API Key"
-msgstr ""
+msgstr "API Schlüssel"
 
-#: includes/OptionsArray.php:601
+#: includes/OptionsArray.php:620
 msgid ""
 " You must set an API-Key. The API key should consist of alphanumeric "
 "characters and be at least 24 characters long."
 msgstr ""
+" Du musst einen API-Key setzen. Der API-Schlüssel sollte aus "
+"alphanumerischen Zeichen bestehen und mindestens 24 Zeichen lang sein."
 
-#: includes/OptionsArray.php:604
+#: includes/OptionsArray.php:623
 msgid "API Owner"
-msgstr ""
+msgstr "API-Besitzer"
 
-#: includes/OptionsArray.php:605
+#: includes/OptionsArray.php:624
 msgid ""
 "The owner value is provided by the API. It is set to the blog name by "
 "default in this version. In future versions you may be able to change this "
 "information"
 msgstr ""
+"Der API-Besitzer wird von der API bereitgestellt. In dieser Version ist "
+"standardmäßig der Blogname festgelegt. In zukünftigen Versionen können diese "
+"Informationen möglicherweise selbst geändert werden"
 
-#: includes/OptionsArray.php:625
+#: includes/OptionsArray.php:644
 msgid "Meta Data-Sets"
-msgstr ""
+msgstr "Metadaten-Sets"
 
-#: includes/OptionsArray.php:629
+#: includes/OptionsArray.php:648
 msgid "Set Custom metadata to locations and items"
-msgstr ""
+msgstr "Festlegen von benutzerdefinierten Metadaten für Standorte und Artikel"
 
-#: includes/OptionsArray.php:633
-#, fuzzy
-#| msgid "Start Date"
+#: includes/OptionsArray.php:652
 msgid "Meta Data"
-msgstr "Startdatum"
+msgstr "Metadaten"
 
-#: includes/OptionsArray.php:634
+#: includes/OptionsArray.php:653
 msgid ""
 "Use only this format, separated by semicolon and and each entry in a new "
 "line: <br>post_type(item/location);field-name;label(english),type(checkbox,"
@@ -832,6 +867,11 @@ msgid ""
 "                                        Example: item;waterproof;Waterproof "
 "material;checkbox;\"This item is waterproof and can be used in heavy rain\" "
 msgstr ""
+"Verwende nur dieses Format, getrennt durch Semikolon und jeden Eintrag in "
+"einer neuen Zeile: <br>post_type(item/location);field-name;label(english),"
+"type(checkbox,number,text),description(in english)<br>Beispiel: item;"
+"wasserdicht; Wasserdichtes Material;Checkbox;\" Dieser Artikel ist "
+"wasserdicht und kann bei starkem Regen verwendet werden\" "
 
 #: src/CB/CB1UserFields.php:45
 msgid "First Name"
@@ -1045,7 +1085,7 @@ msgstr ""
 
 #: src/Model/Restriction.php:195 src/Model/Restriction.php:209
 msgid "Not set"
-msgstr ""
+msgstr "Nicht gesetzt"
 
 #: src/Model/Timeframe.php:117
 msgid "Available here"
@@ -1080,6 +1120,8 @@ msgid ""
 "Item or location is missing. Please set item and location. Timeframe is "
 "saved as draft"
 msgstr ""
+"Artikel oder Standort fehlt. Bitte lege einen Artikel und Standort fest. Der "
+"Zeitrahmen wird als Entwurf gespeichert"
 
 #: src/Model/Timeframe.php:247
 msgid ""
@@ -1172,10 +1214,8 @@ msgid "Details"
 msgstr "Details"
 
 #: src/View/Booking.php:110 src/View/Booking.php:112
-#, fuzzy
-#| msgid "Item not available"
 msgid "Not available"
-msgstr "Artikel nicht verfügbar"
+msgstr "Nicht verfügbar"
 
 #: src/View/Booking.php:128 src/Wordpress/CustomPostType/Booking.php:36
 #: src/Wordpress/CustomPostType/Timeframe.php:99
@@ -1202,10 +1242,8 @@ msgstr ""
 "separaten Anwendung (wie Word, Excel usw.)."
 
 #: src/View/BookingCodes.php:31
-#, fuzzy
-#| msgid "Booking Codes"
 msgid "Booking codes list"
-msgstr "Buchungs-Codes"
+msgstr "Liste der Buchungscodes"
 
 #: src/View/BookingCodes.php:36 src/View/Calendar.php:106
 #: src/Wordpress/CustomPostType/Booking.php:37
@@ -1315,11 +1353,11 @@ msgstr ""
 
 #: src/View/Restriction.php:35
 msgid "Send"
-msgstr ""
+msgstr "Senden"
 
 #: src/View/Restriction.php:43
 msgid "Sent"
-msgstr ""
+msgstr "Gesendet"
 
 #: src/View/TimeframeExport.php:24
 msgid "Download CSV"
@@ -1366,10 +1404,8 @@ msgid "Booking"
 msgstr "Buchung"
 
 #: src/Wordpress/CustomPostType/Booking.php:301
-#, fuzzy
-#| msgid "Booking"
 msgid "Bookings"
-msgstr "Buchung"
+msgstr "Buchungen"
 
 #: src/Wordpress/CustomPostType/Booking.php:303
 #: src/Wordpress/CustomPostType/Item.php:70
@@ -1381,34 +1417,24 @@ msgstr "Neu hinzufügen"
 
 #: src/Wordpress/CustomPostType/Booking.php:304
 #: src/Wordpress/CustomPostType/Booking.php:306
-#, fuzzy
-#| msgid "Add new location"
 msgid "Add new booking"
-msgstr "Neuen Standort hinzufügen"
+msgstr "Neue Buchung hinzufügen"
 
 #: src/Wordpress/CustomPostType/Booking.php:305
-#, fuzzy
-#| msgid "Pending booking"
 msgid "Edit booking"
-msgstr "Ausstehende Buchung"
+msgstr "Buchung bearbeiten"
 
 #: src/Wordpress/CustomPostType/Booking.php:307
-#, fuzzy
-#| msgid "No bookings"
 msgid "Show booking"
-msgstr "Keine Buchungen"
+msgstr "Buchung anzeigen"
 
 #: src/Wordpress/CustomPostType/Booking.php:308
-#, fuzzy
-#| msgid "No bookings"
 msgid "Show bookings"
-msgstr "Keine Buchungen"
+msgstr "Buchungen anzeigen"
 
 #: src/Wordpress/CustomPostType/Booking.php:309
-#, fuzzy
-#| msgid "Search locations"
 msgid "Search bookings"
-msgstr "Standorte suchen"
+msgstr "Buchungen suchen"
 
 #: src/Wordpress/CustomPostType/Booking.php:310
 #: src/Wordpress/CustomPostType/Timeframe.php:781
@@ -1416,22 +1442,16 @@ msgid "Timeframes not found"
 msgstr "Zeitrahmen wurden nicht gefunden"
 
 #: src/Wordpress/CustomPostType/Booking.php:311
-#, fuzzy
-#| msgid "No locations found in trash"
 msgid "No bookings found in trash"
-msgstr "Keine Standorte im Papierkorb gefunden"
+msgstr "Keine Buchungen im Papierkorb gefunden"
 
 #: src/Wordpress/CustomPostType/Booking.php:312
-#, fuzzy
-#| msgid "Pending booking"
 msgid "Parent bookings:"
-msgstr "Ausstehende Buchung"
+msgstr "Übergeordnete Buchungen:"
 
 #: src/Wordpress/CustomPostType/Booking.php:313
-#, fuzzy
-#| msgid "No bookings"
 msgid "All bookings"
-msgstr "Keine Buchungen"
+msgstr "Alle Buchungen"
 
 #: src/Wordpress/CustomPostType/Booking.php:314
 #: src/Wordpress/CustomPostType/Timeframe.php:785
@@ -1444,16 +1464,12 @@ msgid "Timeframe attributes"
 msgstr "Zeitrahmenattribute"
 
 #: src/Wordpress/CustomPostType/Booking.php:316
-#, fuzzy
-#| msgid "No bookings"
 msgid "Add to booking"
-msgstr "Keine Buchungen"
+msgstr "Der Buchung hinzufügen"
 
 #: src/Wordpress/CustomPostType/Booking.php:317
-#, fuzzy
-#| msgid "Added to location"
 msgid "Added to booking"
-msgstr "Zum Standort hinzugefügt"
+msgstr "Zur Buchung hinzugefügt"
 
 #: src/Wordpress/CustomPostType/Booking.php:318
 #: src/Wordpress/CustomPostType/Timeframe.php:789
@@ -1461,22 +1477,16 @@ msgid "Timeframe image"
 msgstr "Zeitrahmenbild"
 
 #: src/Wordpress/CustomPostType/Booking.php:319
-#, fuzzy
-#| msgid "set location image"
 msgid "set booking image"
-msgstr "Standortbild festlegen"
+msgstr "Buchungsbild festlegen"
 
 #: src/Wordpress/CustomPostType/Booking.php:320
-#, fuzzy
-#| msgid "remove location image"
 msgid "remove booking image"
-msgstr "Standortbild entfernen"
+msgstr "Buchungsbild entfernen"
 
 #: src/Wordpress/CustomPostType/Booking.php:321
-#, fuzzy
-#| msgid "use as location image"
 msgid "use as booking image"
-msgstr "Verwendung als Standortbild"
+msgstr "als Buchungsbild verwenden"
 
 #: src/Wordpress/CustomPostType/Booking.php:322
 #: src/Wordpress/CustomPostType/Timeframe.php:772
@@ -1675,7 +1685,7 @@ msgstr "Wähle Artikel-Administrierende aus."
 
 #: src/Wordpress/CustomPostType/Item.php:217
 msgid "Item Meta-Data"
-msgstr ""
+msgstr "Artikel Metadaten"
 
 #: src/Wordpress/CustomPostType/Location.php:86
 #: src/Wordpress/CustomPostType/Location.php:107
@@ -1859,10 +1869,8 @@ msgstr ""
 "commonsbooking.org/?p=435\">Standorte anlegen</a> für mehr Informationen."
 
 #: src/Wordpress/CustomPostType/Location.php:346
-#, fuzzy
-#| msgid "Location contact"
 msgid "Location Meta-Data"
-msgstr "Standort-Kontakt"
+msgstr "Standort-Metadaten"
 
 #: src/Wordpress/CustomPostType/Map.php:337 templates/dashboard-index.php:19
 msgid "Maps"
@@ -1911,150 +1919,110 @@ msgstr "Karten, um CommonsBooking Standorte und deren Artikel anzuzeigen"
 
 #: src/Wordpress/CustomPostType/Restriction.php:51
 #: src/Wordpress/CustomPostType/Restriction.php:132
-#, fuzzy
-#| msgid "Description"
 msgid "Restriction"
-msgstr "Beschreibung"
+msgstr "Einschränkung"
 
 #: src/Wordpress/CustomPostType/Restriction.php:53
 #: src/Wordpress/CustomPostType/Restriction.php:55
-#, fuzzy
-#| msgid "Add new location"
 msgid "Add new Restriction"
-msgstr "Neuen Standort hinzufügen"
+msgstr "Neue Einschränkung hinzufügen"
 
 #: src/Wordpress/CustomPostType/Restriction.php:54
-#, fuzzy
-#| msgid "Edit location"
 msgid "Edit Restriction"
-msgstr "Standort bearbeiten"
+msgstr "Einschränkung bearbeiten"
 
 #: src/Wordpress/CustomPostType/Restriction.php:56
-#, fuzzy
-#| msgid "Show location"
 msgid "Show Restriction"
-msgstr "Standort anzeigen"
+msgstr "Einschränkung anzeigen"
 
 #: src/Wordpress/CustomPostType/Restriction.php:57
-#, fuzzy
-#| msgid "Show locations"
 msgid "Show Restrictions"
-msgstr "Standorte anzeigen"
+msgstr "Einschränkungen anzeigen"
 
 #: src/Wordpress/CustomPostType/Restriction.php:58
-#, fuzzy
-#| msgid "Search locations"
 msgid "Search Restrictions"
-msgstr "Standorte suchen"
+msgstr "Einschränkungen suchen"
 
 #: src/Wordpress/CustomPostType/Restriction.php:59
-#, fuzzy
-#| msgid "location not found"
 msgid "Restrictions not found"
-msgstr "Standort nicht gefunden"
+msgstr "Einschränkungen nicht gefunden"
 
 #: src/Wordpress/CustomPostType/Restriction.php:60
-#, fuzzy
-#| msgid "No locations found in trash"
 msgid "No Restrictions found in trash"
-msgstr "Keine Standorte im Papierkorb gefunden"
+msgstr "Keine Einschränkungen im Papierkorb gefunden"
 
 #: src/Wordpress/CustomPostType/Restriction.php:61
-#, fuzzy
-#| msgid "Parent location:"
 msgid "Parent Restrictions:"
-msgstr "Übergeordneter Standort:"
+msgstr "Übergeordnete Einschränkungen:"
 
 #: src/Wordpress/CustomPostType/Restriction.php:62
-#, fuzzy
-#| msgid "All locations"
 msgid "All Restrictions"
-msgstr "Alle Standorte"
+msgstr "Alle Einschränkungen"
 
 #: src/Wordpress/CustomPostType/Restriction.php:63
-#, fuzzy
-#| msgid "Location archive"
 msgid "Restriction archive"
-msgstr "Standortarchiv"
+msgstr "Einschränkungsarchiv"
 
 #: src/Wordpress/CustomPostType/Restriction.php:64
-#, fuzzy
-#| msgid "Location attributes"
 msgid "Restriction attributes"
-msgstr "Standort-Attribute"
+msgstr "Einschränkungsattribute"
 
 #: src/Wordpress/CustomPostType/Restriction.php:65
-#, fuzzy
-#| msgid "Add to location"
 msgid "Add to Restriction"
-msgstr "Hinzufügen zum Standort"
+msgstr "Zur Einschränkung hinzufügen"
 
 #: src/Wordpress/CustomPostType/Restriction.php:66
-#, fuzzy
-#| msgid "Added to location"
 msgid "Added to Restriction"
-msgstr "Zum Standort hinzugefügt"
+msgstr "Zur Einschränkung hinzugefügt"
 
 #: src/Wordpress/CustomPostType/Restriction.php:67
-#, fuzzy
-#| msgid "set location image"
 msgid "Restriction image"
-msgstr "Standortbild festlegen"
+msgstr "Einschränkungs-Bild"
 
 #: src/Wordpress/CustomPostType/Restriction.php:68
-#, fuzzy
-#| msgid "set location image"
 msgid "set Restriction image"
-msgstr "Standortbild festlegen"
+msgstr "Festlegen des Einschränkungsbilds"
 
 #: src/Wordpress/CustomPostType/Restriction.php:69
-#, fuzzy
-#| msgid "remove location image"
 msgid "remove Restriction image"
-msgstr "Standortbild entfernen"
+msgstr "Einschränkungsbild entfernen"
 
 #: src/Wordpress/CustomPostType/Restriction.php:70
-#, fuzzy
-#| msgid "use as location image"
 msgid "use as Restriction image"
-msgstr "Verwendung als Standortbild"
+msgstr "Verwendung als Einschränkungsbild"
 
 #: src/Wordpress/CustomPostType/Restriction.php:169
 #: src/Wordpress/CustomPostType/Restriction.php:176
 msgid "None"
-msgstr ""
+msgstr "Nichts"
 
 #: src/Wordpress/CustomPostType/Restriction.php:180
 msgid "Hint"
-msgstr ""
+msgstr "Hinweis"
 
 #: src/Wordpress/CustomPostType/Restriction.php:202
-#, fuzzy
-#| msgid "Status"
 msgid "State"
 msgstr "Status"
 
 #: src/Wordpress/CustomPostType/Restriction.php:207
-#, fuzzy
-#| msgid "Activate API"
 msgid "Active"
-msgstr "API aktivieren"
+msgstr "Aktiv"
 
 #: src/Wordpress/CustomPostType/Restriction.php:208
 msgid "Problem Solved"
-msgstr ""
+msgstr "Problem gelöst"
 
 #: src/Wordpress/CustomPostType/Restriction.php:212
-#, fuzzy
-#| msgid "Search locations"
 msgid "Send notifications"
-msgstr "Standorte suchen"
+msgstr "Benachrichtigungen senden"
 
 #: src/Wordpress/CustomPostType/Restriction.php:213
 msgid ""
 "In connection with the status of the restriction, the appropriate "
 "notifications are sent."
 msgstr ""
+"Im Zusammenhang mit dem Status der Einschränkung werden die entsprechenden "
+"Benachrichtigungen gesendet."
 
 #: src/Wordpress/CustomPostType/Timeframe.php:123
 msgid "Bookable"
@@ -2123,8 +2091,6 @@ msgstr "Zeitrahmen"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:503
 #: src/Wordpress/CustomPostType/Timeframe.php:510
-#, fuzzy
-#| msgid "-- Please select --"
 msgid "Please select"
 msgstr "— Bitte auswählen —"
 
@@ -2137,16 +2103,16 @@ msgid "Maximum booking duration in days"
 msgstr "Maximale Buchungsdauer in Tagen"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:526
-#, fuzzy
-#| msgid "Maximum booking duration in days"
 msgid "Maximum booking days in advance"
-msgstr "Maximale Buchungsdauer in Tagen"
+msgstr "Maximale Buchungstage im Voraus"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:527
 msgid ""
 "Select for how many days in advance the calendar should display bookable "
 "days. Calculated from the current date."
 msgstr ""
+"Wähle aus, wie viele Tage im Voraus der Kalender als buchbare Tage anzeigen "
+"soll. Berechnet ab dem aktuellen Datum."
 
 #: src/Wordpress/CustomPostType/Timeframe.php:538
 msgid "Restrict bookings to user roles"
@@ -2446,10 +2412,8 @@ msgid "Contact & Newsletter"
 msgstr "Kontakt & Newsletter"
 
 #: templates/dashboard-index.php:31
-#, fuzzy
-#| msgid "CommonsBooking"
 msgid "CommonsBooking Version"
-msgstr "CommonsBooking"
+msgstr "CommonsBooking Version"
 
 #: templates/item-single.php:13 templates/item-withlocation.php:17
 msgid "Book item at this location"
@@ -2465,10 +2429,8 @@ msgstr ""
 "oder <a href=\"%2$s\">registrieren</a>."
 
 #: templates/location-calendar-header.php:17
-#, fuzzy
-#| msgid "Pickup instructions"
 msgid "Pickup instructions:"
-msgstr "Abhol-Hinweise"
+msgstr "Abhol-Hinweise:"
 
 #: templates/location-single-meta.php:23
 msgid "Adress"
@@ -2607,11 +2569,11 @@ msgstr "die Zoomstufe, die beim Laden der Karte festgelegt wird"
 
 #: templates/map-admin-page-template.php:121
 msgid "enable scroll wheel zoom"
-msgstr ""
+msgstr "Scrollradzoom aktivieren"
 
 #: templates/map-admin-page-template.php:123
 msgid "when activated users can zoom the map using the scroll wheel"
-msgstr ""
+msgstr "Wenn aktiviert, können Benutzende die Karte mit dem Scrollrad zoomen"
 
 #: templates/map-admin-page-template.php:135
 msgid "Map Positioning (center) at Intialization"
@@ -2925,11 +2887,11 @@ msgstr "Alternative Bezeichnung für den Artikelkategoriefilter"
 
 #: templates/map-admin-page-template.php:622
 msgid "custom text for filter button"
-msgstr ""
+msgstr "Benutzerdefinierter Text für Filterschaltfläche"
 
 #: templates/map-admin-page-template.php:624
 msgid "the text for the button used for filtering"
-msgstr ""
+msgstr "Der Text für die zum Filtern verwendete Schaltfläche"
 
 #: templates/map-admin-page-template.php:633
 msgid "available categories"
@@ -3037,14 +2999,12 @@ msgid "Reset filters"
 msgstr "Filter zurücksetzen"
 
 #: templates/shortcode-bookings.php:83
-#, fuzzy
-#| msgid "filter"
 msgid "Filter"
 msgstr "Filter"
 
 #: templates/timeframe-calendar.php:35
 msgid "Reset date selection"
-msgstr ""
+msgstr "Datumsauswahl zurücksetzen"
 
 #: templates/timeframe-calendar.php:42
 msgid "Please select the pickup date in the calendar"
@@ -3068,6 +3028,16 @@ msgstr ""
 "Bitte bearbeite den Zeitrahmen im Backend. Wenn Du das Ergebnis Deiner "
 "Zeitrahmeneinstellungen überprüfen möchtest, gehe auf die Seite des Artikels "
 "oder Standort im Frontend, um den Buchungskalender zu sehen"
+
+#, fuzzy
+#~| msgid "Booking pending email subject"
+#~ msgid "Hint email subject"
+#~ msgstr "E-Mail Betreff für ausstehende Buchungen"
+
+#, fuzzy
+#~| msgid "Booking pending email body"
+#~ msgid "Hint email body"
+#~ msgstr "E-Mail-Text für ausstehende Buchungen"
 
 #~ msgid "Export / API"
 #~ msgstr "Export / API"

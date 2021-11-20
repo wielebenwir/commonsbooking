@@ -572,7 +572,6 @@ class Plugin {
 		
 		$locale = get_locale();
 		$locale_translation_file  = COMMONSBOOKING_PLUGIN_DIR . 'languages/' . COMMONSBOOKING_PLUGIN_SLUG . '-' . $locale . '.mo';
-		var_dump($locale_translation_file);
 		
 		if ( file_exists( $locale_translation_file ) ) {
 			load_textdomain( COMMONSBOOKING_PLUGIN_SLUG, $locale_translation_file );
