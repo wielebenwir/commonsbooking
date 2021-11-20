@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2021-11-20T14:34:27+00:00\n"
-"PO-Revision-Date: 2021-11-20 15:34+0100\n"
+"POT-Creation-Date: 2021-11-20T14:56:55+00:00\n"
+"PO-Revision-Date: 2021-11-20 15:58+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -445,7 +445,7 @@ msgstr ""
 #: includes/OptionsArray.php:297
 #: src/Wordpress/CustomPostType/Restriction.php:50
 #: src/Wordpress/CustomPostType/Restriction.php:71
-#: templates/dashboard-index.php:50 templates/timeframe-calendar.php:66
+#: templates/dashboard-index.php:50
 msgid "Restrictions"
 msgstr "Einschränkungen"
 
@@ -3035,11 +3035,19 @@ msgstr "Bitte wähle das Abholdatum im Kalender"
 msgid "Please select the return date in the calendar"
 msgstr "Bitte wähle das Rückgabedatum im Kalender aus"
 
-#: templates/timeframe-calendar.php:73
-msgid "Usage restriction from %1$s until %2$s expected"
-msgstr "Nutzungeinschränkung von %1$s bis voraussichtlich %2$s"
+#: templates/timeframe-calendar.php:66
+msgid "Usage Restrictions"
+msgstr "Nutzungseinschränkungen"
 
-#: templates/timeframe-calendar.php:93
+#: templates/timeframe-calendar.php:75
+msgid "From %1$s"
+msgstr "Von %s"
+
+#: templates/timeframe-calendar.php:79
+msgid "until probably %1$s:"
+msgstr "bis voraussichtlich %1$s:"
+
+#: templates/timeframe-calendar.php:100
 msgid "Continue to booking confirmation"
 msgstr "Weiter zur Buchungsprüfung"
 
@@ -3053,6 +3061,9 @@ msgstr ""
 "Bitte bearbeite den Zeitrahmen im Backend. Wenn Du das Ergebnis Deiner "
 "Zeitrahmeneinstellungen überprüfen möchtest, gehe auf die Seite des Artikels "
 "oder Standort im Frontend, um den Buchungskalender zu sehen"
+
+#~ msgid "Usage restriction from %1$s until %2$s expected"
+#~ msgstr "Nutzungeinschränkung von %1$s bis voraussichtlich %2$s"
 
 #~ msgid "Jump to..."
 #~ msgstr "Springe zu …"
