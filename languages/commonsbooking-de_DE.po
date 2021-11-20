@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "POT-Creation-Date: 2021-11-20T14:56:55+00:00\n"
-"PO-Revision-Date: 2021-11-20 15:58+0100\n"
+"PO-Revision-Date: 2021-11-20 15:59+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -3037,7 +3037,7 @@ msgstr "Bitte wähle das Rückgabedatum im Kalender aus"
 
 #: templates/timeframe-calendar.php:66
 msgid "Usage Restrictions"
-msgstr "Nutzungseinschränkungen"
+msgstr "Nutzungs-Einschränkungen"
 
 #: templates/timeframe-calendar.php:75
 msgid "From %1$s"
