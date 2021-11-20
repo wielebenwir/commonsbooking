@@ -564,7 +564,21 @@ class Plugin {
 	}
 
 	public function commonsbooking_load_textdomain() {
-		load_plugin_textdomain( 'commonsbooking', false, COMMONSBOOKING_PLUGIN_DIR . 'languages' );
+		/**
+		 * We want to ensure that new translations are available directly after update
+		 * so we load the local translation first if its available, otherwise we use the load_plugin_textdomain
+		 * to load from the global wordpress translation file.
+		 */
+		
+		$locale = get_locale();
+		$locale_translation_file  = COMMONSBOOKING_PLUGIN_DIR . 'languages/' . COMMONSBOOKING_PLUGIN_SLUG . '-' . $locale . '.mo';
+		var_dump($locale_translation_file);
+		
+		if ( file_exists( $locale_translation_file ) ) {
+			load_textdomain( COMMONSBOOKING_PLUGIN_SLUG, $locale_translation_file );
+		} else {
+			load_plugin_textdomain( 'commonsbooking', false, COMMONSBOOKING_PLUGIN_DIR . 'languages' );
+		}
 	}
 
 	/**
