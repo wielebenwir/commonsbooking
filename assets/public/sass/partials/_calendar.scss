@@ -478,6 +478,12 @@
 		width: 66% !important;
 	}
 
+	span.restrictions li {
+		margin-top: 1em;
+		padding-left: 1em;
+		list-style-type: '⚠ ';
+	}
+
 	#resetPicker {
 		font-size: $font-size-normal;
 		padding: $spacer-small;

@@ -63,21 +63,28 @@
                     if(count($restrictions)) {
                         ?>
                         <div>
-                            <label><?php echo '⚠ ' . esc_html__( 'Restrictions', 'commonsbooking' ); ?>:</label>
+                            <label><?php echo '⚠ ' . esc_html__( 'Usage Restrictions', 'commonsbooking' ); ?>:</label>
                             <div>
                                 <span class="restrictions">
+                                    <ul>
                                 <?php
                                     foreach ( $restrictions as $restriction ) {
                                         if($restriction->isActive()) {
+                                            echo "<li>";
                                             echo commonsbooking_sanitizeHTML( sprintf( 
-                                                __( 'Restriction from %1$s until %2$s expected'), 
-                                                $restriction->getFormattedStartDateTime(), 
+                                                __( 'From %1$s', 'commonsbooking'), 
+                                                $restriction->getFormattedStartDateTime() ) );
+                                            echo "<br>";
+                                            echo commonsbooking_sanitizeHTML( sprintf( 
+                                                __( 'until probably %1$s:', 'commonsbooking'), 
                                                 $restriction->getFormattedEndDateTime() ) );
                                             echo "</br>";
-                                            echo $restriction->getHint() . '<br>';
+                                            echo "<strong>" . $restriction->getHint() . "</strong>";
+                                            echo "</li>";
                                         }
                                     }
                                 ?>
+                                    </ul>
                                 </span>
                             </div>
                         </div>

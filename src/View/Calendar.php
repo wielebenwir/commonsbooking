@@ -384,7 +384,8 @@ class Calendar {
 
 			// Notice with advanced booking days. Will be parsed in litepicker.js with DOM object #calendarNotice
 			$jsonResponse['calendarNotice']['advanceBookingDays'] =
-				commonsbooking_sanitizeHTML( __( 'Maximum booking period in advance: ' ) ) . $advanceBookingDaysFormatted . esc_html__( ' days' );
+				//translators: %s = number of days
+				commonsbooking_sanitizeHTML( sprintf( __( 'You can make bookings maximum %s days in advance', 'commonsbooking' ), $advanceBookingDaysFormatted ) );
 
 			if ( count( $locations ) === 1 ) {
 				$jsonResponse['location']['fullDayInfo'] = nl2br(

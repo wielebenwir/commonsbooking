@@ -209,8 +209,8 @@ class Restriction extends CustomPostType {
 				),
 			),
 			array(
-				'name'          => esc_html__( 'Send notifications', 'commonsbooking' ),
-				'desc'          => esc_html__( 'In connection with the status of the restriction, the appropriate notifications are sent.', 'commonsbooking' ),
+				'name'          => esc_html__( 'Send notification emails to users', 'commonsbooking' ),
+				'desc'          => esc_html__( 'Important: Please save this restriction before clicking the send-button. In connection with the status of the restriction, the appropriate notifications are sent.', 'commonsbooking' ),
 				'id'            => self::SEND_BUTTON_ID,
 				'type'          => 'text',
 				'render_row_cb' => array( \CommonsBooking\View\Restriction::class, 'renderSendButton' ),

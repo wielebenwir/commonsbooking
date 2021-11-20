@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
  * This stylesheet is used to style the public-facing components of the plugin
  */
@@ -4382,6 +4383,12 @@
   width: 66% !important;
 }
 /* line 481, ../sass/partials/_calendar.scss */
+#booking-form span.restrictions li {
+  margin-top: 1em;
+  padding-left: 1em;
+  list-style-type: '⚠ ';
+}
+/* line 487, ../sass/partials/_calendar.scss */
 #booking-form #resetPicker {
   font-size: 14px;
   padding: 5px;
