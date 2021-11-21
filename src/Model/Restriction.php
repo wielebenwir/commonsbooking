@@ -265,7 +265,7 @@ class Restriction extends CustomPost {
 
 		// Check if this is a canceled/solved restriction
 		if($this->isCancelled()) {
-			$canceledBookings = \CommonsBooking\Repository\Booking::getCanceledByRestriction( $this );
+			$canceledBookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
 			if ( $canceledBookings ) {
 				$this->sendRestrictionMails( $canceledBookings );
 			}
