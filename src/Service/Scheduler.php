@@ -13,7 +13,7 @@ class Scheduler {
 	 */
 	public static function getIntervals(): array {
 		return array(
-			'ten_seconds' => array(
+			'ten_seconds'    => array(
 				'display'  => 'Every 10 Seconds',
 				'interval' => 10,
 			),
@@ -50,6 +50,8 @@ class Scheduler {
 		// Add custom cron intervals
 		add_filter( 'cron_schedules', array( self::class, 'initIntervals' ) );
 
+		self::unscheduleEvents();
+
 		// Init booking cleanup job
 		add_action( 'cb_cron_hook', array( \CommonsBooking\Service\Booking::class, 'cleanupBookings' ) );
 		if ( ! wp_next_scheduled( 'cb_cron_hook' ) ) {
@@ -59,27 +61,56 @@ class Scheduler {
 		// Init booking reminder job
 		add_action( 'cb_reminder_cron_hook', array( \CommonsBooking\Service\Booking::class, 'sendReminderMessage' ) );
 		if ( ! wp_next_scheduled( 'cb_reminder_cron_hook' ) ) {
-			if (\WP_DEBUG) {
+			if ( \WP_DEBUG ) {
 				wp_schedule_event( time(), 'ten_seconds', 'cb_reminder_cron_hook' );
 			} else {
-				wp_schedule_event( time(), 'daily', 'cb_reminder_cron_hook' );
-			}
+				$startTime = Settings::getOption( 'commonsbooking_options_reminder',
+					'pre-booking-time' );
 
+				wp_schedule_event(
+					self::getReminderStarttimestamp( $startTime ),
+					'daily',
+					'cb_reminder_cron_hook'
+				);
+			}
 		}
 
 		// Init booking feedback job
 		add_action( 'cb_feedback_cron_hook', array( \CommonsBooking\Service\Booking::class, 'sendFeedbackMessage' ) );
 		if ( ! wp_next_scheduled( 'cb_feedback_cron_hook' ) ) {
-			if (\WP_DEBUG) {
+			if ( \WP_DEBUG ) {
 				wp_schedule_event( time(), 'ten_seconds', 'cb_feedback_cron_hook' );
 			} else {
-				wp_schedule_event( time(), 'daily', 'cb_feedback_cron_hook' );
-			}
+				$startTime = Settings::getOption( 'commonsbooking_options_reminder',
+					'post-booking-notice-time' );
 
+				wp_schedule_event(
+					self::getReminderStarttimestamp( $startTime ),
+					'daily',
+					'cb_feedback_cron_hook'
+				);
+			}
 		}
 
 		// Init timeframe export job
 		self::initTimeFrameExport();
+	}
+
+	/**
+	 * Returns timestamp based on starttime. If calculated timestamp is in past, it returns timestamp
+	 * for tomorrow.
+	 *
+	 * @param $startTime
+	 *
+	 * @return false|int
+	 */
+	private static function getReminderStarttimestamp( $startTime ) {
+		$startTimestamp = strtotime( "today +$startTime hours" );
+		if ( $startTimestamp < time() ) {
+			$startTimestamp = strtotime( "tomorrow +$startTime hours" );
+		}
+
+		return $startTimestamp;
 	}
 
 	/**
