@@ -23,7 +23,7 @@ class Location extends CustomPostType {
 		add_action( 'pre_get_posts', array( $this, 'filterAdminList' ) );
 
 		// Save-handling
-		add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 1, 2 );
+		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
 	}
 
 	/**

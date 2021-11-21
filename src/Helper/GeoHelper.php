@@ -9,7 +9,7 @@ use Geocoder\Location;
 use Geocoder\Provider\Nominatim\Nominatim;
 use Geocoder\Query\GeocodeQuery;
 use Geocoder\StatefulGeocoder;
-use Http\Adapter\Guzzle6\Client;
+use Http\Client\Curl\Client;
 
 class GeoHelper {
 

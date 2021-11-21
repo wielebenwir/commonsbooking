@@ -142,13 +142,13 @@ class Location extends BookablePost {
 		$geo_latitude  = $this->getMeta( 'geo_latitude' );
 		$geo_longitude = $this->getMeta( 'geo_longitude' );
 
-		$addressString = $street . ", " . $postCode . " " . $city . ", " . $country;
-		$addressData   = GeoHelper::getAddressData( $addressString );
-
 		// if geo coordinates already exist do not update from geocoder
 		if ( ! empty( $geo_latitude ) && ! empty( $geo_longitude ) ) {
 			return;
 		}
+
+		$addressString = $street . ", " . $postCode . " " . $city . ", " . $country;
+		$addressData   = GeoHelper::getAddressData( $addressString );
 
 		if ( $addressData ) {
 			$coordinates = $addressData->getCoordinates()->toArray();
