@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Messages;
 
+use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\Restriction;
 use CommonsBooking\Settings\Settings;
 
@@ -13,19 +14,23 @@ class RestrictionMessages extends Messages {
 
 	protected $action;
 
+	protected $booking;
+
 	protected $validActions = [
 		Restriction::TYPE_REPAIR,
 		Restriction::TYPE_HINT
 	];
 
 	/**
-	 * @param $restriction
-	 * @param $user
+	 * @param $restriction Restriction
+	 * @param $user \WP_User
+	 * @param $booking Booking
 	 * @param $action
 	 */
-	public function __construct( $restriction, $user, $action ) {
+	public function __construct( $restriction, $user, Booking $booking, $action ) {
 		$this->restriction = $restriction;
 		$this->user        = $user;
+		$this->booking    = $booking;
 		$this->action      = $action;
 	}
 
@@ -103,6 +108,8 @@ class RestrictionMessages extends Messages {
 	protected function prepareRestrictionMail( $body, $subject ) {
 		$fromHeader = 'From: ' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-name' ) .
 		              ' <' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-email' ) . '>';
+		$restriction = $this->getRestriction();
+
 		$this->prepareMail(
 			$this->getUser(),
 			$body,
@@ -110,9 +117,10 @@ class RestrictionMessages extends Messages {
 			$fromHeader,
 			null,
 			[
-				'restriction' => $this->getRestriction(),
-				'item'        => get_post( $this->getRestriction()->getItemId() ),
-				'location'    => get_post( $this->getRestriction()->getLocationId() )
+				'restriction' => $restriction,
+				'item'        => get_post( $restriction->getItemId() ),
+				'location'    => get_post( $restriction->getLocationId() ),
+				'booking'     => $this->getBooking()
 			]
 		);
 	}
@@ -143,6 +151,13 @@ class RestrictionMessages extends Messages {
 	 */
 	public function getRestriction() {
 		return $this->restriction;
+	}
+
+	/**
+	 * @return Booking
+	 */
+	public function getBooking(): Booking {
+		return $this->booking;
 	}
 
 }
