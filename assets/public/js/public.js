@@ -1691,7 +1691,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const day1 = globalCalendarData.days[moment(date).format("YYYY-MM-DD")], startDate = moment(date).format("DD.MM.YYYY");
             let endSelectData;
             jQuery(".time-selection.repetition-start").find(".hint-selection").hide(), jQuery(".time-selection.repetition-end").find(".hint-selection").show(), 
-            jQuery("#resetPicker").show(), jQuery("#booking-form select[name=repetition-end],#booking-form .time-selection.repetition-end .date").hide(), 
+            jQuery("#resetPicker").css("display", "inline-block"), jQuery("#booking-form select[name=repetition-end],#booking-form .time-selection.repetition-end .date").hide(), 
             jQuery("#booking-form input[type=submit]").attr("disabled", "disabled");
             let startSelect = jQuery("#booking-form select[name=repetition-start]");
             jQuery(".time-selection.repetition-start span.date").text(startDate), updateSelectSlots(startSelect, day1.slots, "start", day1.fullDay), 

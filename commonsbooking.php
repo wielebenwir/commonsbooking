@@ -18,7 +18,7 @@
 use CommonsBooking\Plugin;
 
 defined('ABSPATH') or die("Thanks for visting");
-define('COMMONSBOOKING_VERSION', '2.4.5');
+define('COMMONSBOOKING_VERSION', '2.4.6');
 define('COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking');
 define('COMMONSBOOKING_MENU_SLUG', COMMONSBOOKING_PLUGIN_SLUG . '-menu');
 define('COMMONSBOOKING_PLUGIN_DIR', plugin_dir_path(__FILE__));

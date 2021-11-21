@@ -4,8 +4,6 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 
-use CommonsBooking\Repository\UserRepository;
-
 class Restriction extends CustomPostType {
 
 	/**
@@ -27,7 +25,7 @@ class Restriction extends CustomPostType {
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
-		add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 10, 3 );
+		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
 	}
 
 	/**
@@ -211,8 +209,8 @@ class Restriction extends CustomPostType {
 				),
 			),
 			array(
-				'name'          => esc_html__( 'Send notifications', 'commonsbooking' ),
-				'desc'          => esc_html__( 'In connection with the status of the restriction, the appropriate notifications are sent.', 'commonsbooking' ),
+				'name'          => esc_html__( 'Send notification emails to users', 'commonsbooking' ),
+				'desc'          => esc_html__( 'Important: Please save this restriction before clicking the send-button. In connection with the status of the restriction, the appropriate notifications are sent.', 'commonsbooking' ),
 				'id'            => self::SEND_BUTTON_ID,
 				'type'          => 'text',
 				'render_row_cb' => array( \CommonsBooking\View\Restriction::class, 'renderSendButton' ),
@@ -227,18 +225,20 @@ class Restriction extends CustomPostType {
 	/**
 	 * Handles save-Request for location.
 	 */
-	public function savePost( $post_id, $post, $update ) {
-		if ( $this->hasRunBefore( __METHOD__ ) ) {
-			return;
-		}
+	public function savePost( $post_id, $post) {
+		if ( $post->post_type == self::$postType && $post_id ) {
+			if ( $this->hasRunBefore( __METHOD__ ) ) {
+				return;
+			}
 
-		$postType = isset( $_REQUEST['post_type'] ) ? sanitize_text_field( $_REQUEST['post_type'] ) : null;
-
-		if ( $postType == self::$postType && $post_id ) {
 			if ( array_key_exists( self::SEND_BUTTON_ID, $_REQUEST ) ) {
 				update_post_meta( $post_id, \CommonsBooking\Model\Restriction::META_SENT, time() );
-				$restriction = new \CommonsBooking\Model\Restriction( $post_id );
-				$restriction->apply();
+				try {
+					$restriction = new \CommonsBooking\Model\Restriction( $post_id );
+					$restriction->apply();
+				} catch (\Exception $e) {
+					// nothing to do in this case.
+				}
 			}
 		}
 	}

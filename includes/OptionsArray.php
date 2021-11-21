@@ -299,7 +299,8 @@ Thanks, the Team.
 		'field_groups' => array(
 			/* field group email templates start */
 			'emailtemplates' => array(
-				'title'  => commonsbooking_sanitizeHTML( __( 'Email templates', 'commonsbooking' ) ),
+				'title'   => commonsbooking_sanitizeHTML( __( 'Email templates', 'commonsbooking' ) ),
+				'desc'	  => commonsbooking_sanitizeHTML( __( 'Email templates', 'commonsbooking' ) ), 
 				'id'     => 'emailtemplates',
 				'fields' => array(
 					array(
@@ -319,44 +320,63 @@ Thanks, the Team.
 
 					// E-Mail repair
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Repair email subject', 'commonsbooking' ) ),
+						'name'    => commonsbooking_sanitizeHTML( __( 'Breakdown email subject', 'commonsbooking' ) ),
 						'id'      => 'restrictions-repair-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( 'Reperatur von {{restriction:itemName}}', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Breakdown of {{restriction:itemName}}', 'commonsbooking' ) ),
 					),
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Repair email body', 'commonsbooking' ) ),
+						'name'    => commonsbooking_sanitizeHTML( __( 'Breakdown email body', 'commonsbooking' ) ),
 						'id'      => 'restrictions-repair-body',
 						'type'    => 'textarea',
-						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hallo {{user:first_name}},</h2>
-								<p>
-								das Lastenrad {{restriction:itemName}} ist von {{restriction:formattedStartDateTime}} bis {{restriction:formattedEndDateTime}} nicht nutzbar.
-								</p>
-								<p>
-								Der Grund dafür ist folgender:
-								{{restriction:hint}}
-								</p>', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
+
+<p>Unfortunately, the item {{restriction:itemName}} you booked is damaged and not usable from {{restriction:formattedStartDateTime}} until {{restriction:formattedEndDateTime}} expected.
+</br></br>
+The reason is:</br>
+{{restriction:hint}}
+</br>
+</br>
+We had to cancel your booking for this period.  You will receive a confirmation of the cancellation in a separate email.
+Please book the item again for another period or check our website to see if an alternative item is available.
+</br>
+We ask for your understanding. 
+</br>
+Best regards,</br>
+the team
+</p>', 'commonsbooking' ) ),
 					),
 
 					// E-Mail hint
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Hint email subject', 'commonsbooking' ) ),
+						'name'    => commonsbooking_sanitizeHTML( __( 'Usage restriction email subject', 'commonsbooking' ) ),
 						'id'      => 'restrictions-hint-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( 'Einschränkung bei {{restriction:itemName}}', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Restriction of use for {{restriction:itemName}}', 'commonsbooking' ) ),
 					),
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Hint email body', 'commonsbooking' ) ),
+						'name'    => commonsbooking_sanitizeHTML( __( 'Restriction email body', 'commonsbooking' ) ),
 						'id'      => 'restrictions-hint-body',
 						'type'    => 'textarea',
-						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hallo {{user:first_name}},</h2>
-								<p>
-								das Lastenrad {{restriction:itemName}} ist von {{restriction:formattedStartDateTime}} - {{restriction:formattedEndDateTime}} nicht vollständig nutzbar.
-								</p>
-								<p>
-								Der Grund dafür ist folgender:
-								{{restriction:hint}}
-								</p>', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
+<p>
+The item {{restriction:itemName}} you booked is damaged and will have limited use from {{restriction:formattedStartDateTime} until probably {{restriction:formattedEndDateTime}}.
+</br></br>
+The reason is:</br>
+{{restriction:hint}}
+</br>
+</br>
+Please check if you want to continue your booking despite this usage restriction. 
+If not, we ask you to cancel your booking via the following link:
+{{booking:BookingLink}} 
+</br>
+</br>
+We will do our best to fix the restriction as soon as possible.
+We will sent you an email when the restriction is fixed.
+</br>
+Best regards,</br>
+the team
+</p>', 'commonsbooking' ) ),
 					),
 
 					// E-Mail restriction cancellation
@@ -364,16 +384,16 @@ Thanks, the Team.
 						'name'    => commonsbooking_sanitizeHTML( __( 'Restriction cancelled subject', 'commonsbooking' ) ),
 						'id'      => 'restrictions-restriction-cancelled-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( 'Restriction cancelled subject', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Restriction for article {{restriction:itemName}} no longer exists', 'commonsbooking' ) ),
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Restriction cancelled email body', 'commonsbooking' ) ),
 						'id'      => 'restrictions-restriction-cancelled-body',
 						'type'    => 'textarea',
-						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hallo {{user:first_name}},</h2>
-								<p>
-								das Lastenrad {{restriction:itemName}} ist wieder vollständig nutzbar.
-								</p>', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
+<p>
+The item {{restriction:itemName}} is now fully usable again. 
+</p>', 'commonsbooking' ) ),
 					),
 				)
 			),

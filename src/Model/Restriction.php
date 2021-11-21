@@ -217,6 +217,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Send mails regarding item/location admins and booked timeslots.
+	 * @param Booking[]
 	 */
 	protected function sendRestrictionMails( $bookings ) {
 		$userIds = [];
@@ -227,13 +228,12 @@ class Restriction extends CustomPost {
 
 			// Admins IDs
 			$userIds = array_merge( $userIds, $booking->getAdmins() );
-		}
+			$userIds = array_unique( $userIds );
 
-		$userIds = array_unique( $userIds );
-
-		foreach ( $userIds as $userId ) {
-			$hintMail = new RestrictionMessages( $this, get_userdata( $userId ), $this->getType() );
-			$hintMail->triggerMail();
+			foreach ( $userIds as $userId ) {
+				$hintMail = new RestrictionMessages( $this, get_userdata( $userId ), $booking, $this->getType() );
+				$hintMail->triggerMail();
+			}
 		}
 	}
 
@@ -265,7 +265,7 @@ class Restriction extends CustomPost {
 
 		// Check if this is a canceled/solved restriction
 		if($this->isCancelled()) {
-			$canceledBookings = \CommonsBooking\Repository\Booking::getCanceledByRestriction( $this );
+			$canceledBookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
 			if ( $canceledBookings ) {
 				$this->sendRestrictionMails( $canceledBookings );
 			}

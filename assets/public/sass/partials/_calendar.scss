@@ -478,9 +478,17 @@
 		width: 66% !important;
 	}
 
+	span.restrictions li {
+		margin-top: 1em;
+		padding-left: 1em;
+		list-style-type: '⚠ ';
+		margin-left: 1.5em;
+	}
+
 	#resetPicker {
-		font-size: 1.2rem;
-		padding: 0.8125rem;
+		font-size: $font-size-normal;
+		padding: $spacer-small;
 		display: none;
+		cursor: pointer;
 	}
 }
