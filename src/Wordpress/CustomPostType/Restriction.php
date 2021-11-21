@@ -25,7 +25,7 @@ class Restriction extends CustomPostType {
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
-		add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 10, 2 );
+		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
 	}
 
 	/**
