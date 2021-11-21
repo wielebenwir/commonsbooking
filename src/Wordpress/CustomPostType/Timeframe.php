@@ -2,9 +2,6 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-use CommonsBooking\Helper\Helper;
-use CommonsBooking\Messages\BookingMessages;
-use CommonsBooking\Repository\Booking;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\View\Admin\Filter;

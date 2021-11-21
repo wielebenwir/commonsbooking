@@ -10,9 +10,6 @@
  *
  */
 
-//global $templateData;
-var_dump($templateData);
-
 if ( !is_user_logged_in() )  {
     $noResultText = sprintf( commonsbooking_sanitizeHTML(  __('Please <a href="%s"> login in </a> to see your bookings.', 'commonsbooking') ), wp_login_url() );
 } else { 

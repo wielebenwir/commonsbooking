@@ -402,7 +402,6 @@ The item {{restriction:itemName}} is now fully usable again.
 	),
 	/* Tab: restrictions end*/
 
-
 	/* Tab: reminder start*/
 	'reminder' => array(
 		'title'        => commonsbooking_sanitizeHTML( __( 'Reminder', 'commonsbooking' ) ),
@@ -654,7 +653,6 @@ The team</p>', 'commonsbooking' ) ),
 	),
 	/* Tab: migration end */
 
-
 	/* Tab: export start */
 	'export'       => array(
 		'title'        => __( 'Export', 'commonsbooking' ),
@@ -756,7 +754,6 @@ The team</p>', 'commonsbooking' ) ),
 		)
 	),
 	/* Tab: export end */
-
 
 	/* Tab: API  start */
 	'api'          => array(

@@ -3,7 +3,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Helper\Helper;
-use CommonsBooking\Messages\BookingMessages;
+use CommonsBooking\Messages\BookingMessage;
 use WP_Post;
 
 class Booking extends Timeframe {
@@ -162,7 +162,7 @@ class Booking extends Timeframe {
 					     $post_after->post_status === 'canceled'
 				     )
 				) {
-					$booking_msg = new BookingMessages( $post_ID, $post_after->post_status );
+					$booking_msg = new BookingMessage( $post_ID, $post_after->post_status );
 					$booking_msg->triggerMail();
 				}
 			}

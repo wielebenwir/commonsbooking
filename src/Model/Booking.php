@@ -5,7 +5,7 @@ namespace CommonsBooking\Model;
 
 
 use CommonsBooking\CB\CB;
-use CommonsBooking\Messages\BookingMessages;
+use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\Timeframe;
 use DateTime;
@@ -51,7 +51,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * Send mail to booking user, that it was canceled.
 	 */
 	protected function sendCancellationMail() {
-		$booking_msg = new BookingMessages( $this->getPost()->ID, 'canceled' );
+		$booking_msg = new BookingMessage( $this->getPost()->ID, 'canceled' );
 		$booking_msg->triggerMail();
 	}
 

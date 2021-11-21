@@ -82,8 +82,8 @@ class Booking extends PostRepository {
 	}
 
 	/**
-	 * @param $startDate
-	 * @param $endDate
+	 * @param $startDate int
+	 * @param $endDate int
 	 * @param $locationId
 	 * @param $itemId
 	 * @param array $customArgs
@@ -92,8 +92,8 @@ class Booking extends PostRepository {
 	 * @throws Exception
 	 */
 	public static function getByTimerange(
-		$startDate,
-		$endDate,
+		int $startDate,
+		int $endDate,
 		$locationId,
 		$itemId,
 		array $customArgs = []
@@ -113,6 +113,7 @@ class Booking extends PostRepository {
 					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
 					'value'   => intval( $startDate ),
 					'compare' => '>=',
+					'type'    => 'numeric'
 				),
 				array(
 					'key'     => 'type',

@@ -6,9 +6,9 @@ use CommonsBooking\CB\CB;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Settings\Settings;
 
-class BookingMessages extends Messages {
+class BookingMessage extends Message {
 
-	protected $validActions = [ "confirmed", "canceled" ];
+	protected array $validActions = [ "confirmed", "canceled" ];
 
 	public function sendMessage() {
 		/** @var \CommonsBooking\Model\Booking $booking */
