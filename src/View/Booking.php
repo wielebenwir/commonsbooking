@@ -137,8 +137,8 @@ class Booking extends View {
 
 				// Add booking code if there is one
 				if($booking->getBookingCode()) {
-					$rowData['content']['bookingCode'] = [
-						'label' => commonsbooking_sanitizeHTML( __( 'Booking Code', 'commonsbooking' ) ),
+					$rowData['bookingCode'] = [
+						'label' => commonsbooking_sanitizeHTML( __( 'Code', 'commonsbooking' ) ),
 						'value' => $booking->getBookingCode()
 					];
 				}

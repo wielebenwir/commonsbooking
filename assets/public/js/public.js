@@ -196,13 +196,18 @@ class BookingList {
         itemElement;
     }
     _initHeadlineElement(item) {
-        var headline = document.createElement("p");
+        let headline = document.createElement("p");
         headline.classList.add("js-item--headline");
-        var date = document.createElement("span");
+        let date = document.createElement("span");
         date.classList.add("cb-date"), date.innerText = item.startDateFormatted + " - " + item.endDateFormatted;
-        var title = document.createElement("span");
-        return title.classList.add("cb-title"), title.innerText = item.item + " @ " + item.location, 
-        headline.append(date), headline.append(title), headline;
+        let title = document.createElement("span");
+        if (title.classList.add("cb-title"), title.innerText = item.item + " @ " + item.location, 
+        headline.append(date), headline.append(title), item.bookingCode) {
+            let bookingCode = document.createElement("span");
+            bookingCode.classList.add("cb-booking-code"), bookingCode.innerText = item.bookingCode.label + ": " + item.bookingCode.value, 
+            headline.append(bookingCode);
+        }
+        return headline;
     }
     _initContentElement(item) {
         var contentElement = document.createElement("div");
