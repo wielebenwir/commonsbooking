@@ -285,6 +285,13 @@ Thanks, the Team.
 						'desc'    => esc_html__( 'This text is displayed when contact details of the station are shown only after booking confirmation.', 'commonsbooking' ),
 						'default' => esc_html__( 'Please confirm the booking to see the contact details for pickup and return.', 'commonsbooking' ),
 					),
+					array(
+						'name'    => esc_html__( 'Text book this item on booking page', 'commonsbooking' ),
+						'id'      => 'text_book-this-item',
+						'type'    => 'textarea_small',
+						'desc'    => esc_html__( 'This text is displayed on a booking detail page above the booking calendar .', 'commonsbooking' ),
+						'default' => esc_html__( 'Book this item at this location.', 'commonsbooking' ),
+					),
 				)
 			),
 			/* message templates end */
