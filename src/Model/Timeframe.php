@@ -48,7 +48,20 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Return End (repetition) date
+	 * Returns end (repetition) date and does not respect advance booking days setting.
+	 * @return false|int
+	 */
+	public function getRawEndDate() {
+		$endDate = intval( $this->getMeta( self::REPETITION_END ) );
+		if ( (string) $endDate != $endDate ) {
+			$endDate = strtotime( $endDate );
+		}
+
+		return $endDate;
+	}
+
+	/**
+	 * Return End (repetition) date and respects advance booking days setting.
 	 *
 	 * @return string
 	 */
@@ -62,7 +75,7 @@ class Timeframe extends CustomPost {
 		$latestPossibleBookingDate = $this->getLatestPossibleBookingDateTimestamp();
 
 		// If enddate is < than latest possible booking date, we use it as enddate
-		if($endDate < $latestPossibleBookingDate) {
+		if ( $endDate < $latestPossibleBookingDate ) {
 			return $endDate;
 		}
 
@@ -78,17 +91,17 @@ class Timeframe extends CustomPost {
 	 */
 	public function getLatestPossibleBookingDateTimestamp() {
 		$startDateTimestamp = $this->getStartDate();
-		$startsInFuture = $startDateTimestamp > time();
-		$calculationBase = $startsInFuture ? $startDateTimestamp : time();
+		$startsInFuture     = $startDateTimestamp > time();
+		$calculationBase    = $startsInFuture ? $startDateTimestamp : time();
 
 		// if meta-value not set we define 90 days as default value
 		$advanceBookingDays = $this->getMeta( 'timeframe-advance-booking-days' ) ?:
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS;
 
 		// we subtract one day to reflect the current day in calculation
-		$advanceBookingDays--;
+		$advanceBookingDays --;
 
-		return strtotime( "+ ". $advanceBookingDays . " days", $calculationBase );
+		return strtotime( "+ " . $advanceBookingDays . " days", $calculationBase );
 	}
 
 	/**
@@ -96,8 +109,9 @@ class Timeframe extends CustomPost {
 	 * @return bool
 	 */
 	public function isBookable() {
-		$startDateTimestamp = $this->getStartDate();
+		$startDateTimestamp                 = $this->getStartDate();
 		$latestPossibleBookingDateTimestamp = $this->getLatestPossibleBookingDateTimestamp();
+
 		return $startDateTimestamp <= $latestPossibleBookingDateTimestamp;
 	}
 
@@ -187,6 +201,7 @@ class Timeframe extends CustomPost {
 				return new Location( $post );
 			}
 		}
+
 		return null;
 	}
 
@@ -201,6 +216,7 @@ class Timeframe extends CustomPost {
 				return new Item( $post );
 			}
 		}
+
 		return null;
 	}
 
@@ -229,7 +245,7 @@ class Timeframe extends CustomPost {
 		if (
 			$this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID
 		) {
-			
+
 			if ( ! $this->getItem() || ! $this->getLocation() ) {
 				// if location or item is missing
 				set_transient( self::ERROR_TYPE,
@@ -237,10 +253,9 @@ class Timeframe extends CustomPost {
 						'commonsbooking' ) ),
 					45 );
 
-				return false;				
+				return false;
 			}
-			
-			
+
 			if ( ! $this->getStartDate() ) {
 				// If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
 				set_transient( self::ERROR_TYPE,
@@ -286,9 +301,8 @@ class Timeframe extends CustomPost {
 
 					// check if timeframes overlap
 					if (
-					$this->hasTimeframeDateOverlap( $this, $timeframe )
+						$this->hasTimeframeDateOverlap( $this, $timeframe )
 					) {
-
 						// Compare grid types
 						if ( $timeframe->getGrid() != $this->getGrid() ) {
 							set_transient( self::ERROR_TYPE,

@@ -138,9 +138,6 @@ class Booking extends Timeframe {
 			}
 		}
 
-		// Save custom fields
-		$this->saveCustomFields( $post_id );
-
 		// Validate timeframe
 		$this->validateTimeFrame( $post_id, $post );
 	}

@@ -679,9 +679,6 @@ class Timeframe extends CustomPostType {
 			return;
 		}
 
-		// Save custom fields
-		$this->saveCustomFields( $post_id );
-
 		// Validate timeframe
 		$isValid = $this->validateTimeFrame( $post_id, $post );
 
@@ -691,47 +688,6 @@ class Timeframe extends CustomPostType {
 
 			if ( $createBookingCodes == "on" && $timeframe->bookingCodesApplieable() ) {
 				BookingCodes::generate( $post_id );
-			}
-		}
-	}
-
-	/**
-     * Saves custom fields from request.
-	 * @param $post_id
-	 */
-	protected function saveCustomFields( $post_id ) {
-		$noDeleteMetaFields = [ 'start-time', 'end-time', 'timeframe-repetition', 'weekdays', 'comment' ];
-
-		foreach ( $this->getCustomFields() as $customField ) {
-			if ( current_user_can( 'edit_' . self::$postType, $post_id ) ) {
-				$fieldNames = [];
-				if ( $customField['type'] == "checkboxes" ) {
-					foreach ( $customField['options'] as $key => $label ) {
-						$fieldNames[] = $customField['id'] . "-" . $key;
-					}
-				} else {
-					$fieldNames[] = $customField['id'];
-				}
-
-				foreach ( $fieldNames as $fieldName ) {
-					if ( ! array_key_exists( $fieldName, $_REQUEST ) ) {
-						if ( ! in_array( $fieldName, $noDeleteMetaFields ) ) {
-							delete_post_meta( $post_id, $fieldName );
-						}
-						continue;
-					}
-
-					$value = sanitize_text_field( $_REQUEST[ $fieldName ] );
-					if ( is_string( $value ) ) {
-						$value = trim( $value );
-						update_post_meta( $post_id, $fieldName, $value );
-
-						// if we have a booking, there shall be set no repetition
-						if ( $fieldName == "type" && $value == Timeframe::BOOKING_ID ) {
-							update_post_meta( $post_id, 'timeframe-repetition', 'norep' );
-						}
-					}
-				}
 			}
 		}
 	}

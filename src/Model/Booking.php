@@ -41,8 +41,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function cancel() {
 		// workaround, because wp_update_post deletes all meta data.
 		global $wpdb;
-		$query = "UPDATE ".$wpdb->prefix."posts SET post_status='canceled' WHERE ID = '".$this->post->ID."'";
-		$wpdb->query($query);
+		$query = "UPDATE " . $wpdb->prefix . "posts SET post_status='canceled' WHERE ID = '" . $this->post->ID . "'";
+		$wpdb->query( $query );
 
 		$this->sendCancellationMail();
 	}
@@ -113,46 +113,48 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @throws Exception
 	 */
 	public function assignBookableTimeframeFields() {
-		$timeframe        = $this->getBookableTimeFrame();
-		$neededMetaFields = [
-			"full-day",
-			"grid",
-			"start-time",
-			"end-time",
-			"show-booking-codes",
-			"timeframe-max-days"
-		];
-		foreach ( $neededMetaFields as $fieldName ) {
-			$fieldValue = get_post_meta(
-				$timeframe->ID,
-				$fieldName,
-				true
-			);
-			if ( in_array( $fieldName, [ 'start-time', 'end-time' ] ) ) {
-				$fieldValue = $this->sanitizeTimeField( $fieldName );
+		$timeframe = $this->getBookableTimeFrame();
+		if ( $timeframe ) {
+			$neededMetaFields = [
+				"full-day",
+				"grid",
+				"start-time",
+				"end-time",
+				"show-booking-codes",
+				"timeframe-max-days"
+			];
+			foreach ( $neededMetaFields as $fieldName ) {
+				$fieldValue = get_post_meta(
+					$timeframe->ID,
+					$fieldName,
+					true
+				);
+				if ( in_array( $fieldName, [ 'start-time', 'end-time' ] ) ) {
+					$fieldValue = $this->sanitizeTimeField( $fieldName );
+				}
+				update_post_meta(
+					$this->post->ID,
+					$fieldName,
+					$fieldValue
+				);
 			}
-			update_post_meta(
-				$this->post->ID,
-				$fieldName,
-				$fieldValue
-			);
-		}
 
-		// If there exists a booking code, add it.
-		$bookingCode = BookingCodes::getCode(
-			$timeframe->ID,
-			$this->getItem()->ID,
-			$this->getLocation()->ID,
-			date( 'Y-m-d', $this->getMeta( 'repetition-start' ) )
-		);
-
-		// only add booking code if the booking is based on a full day timeframe
-		if ( $bookingCode && $this->getMeta( 'full-day' ) == "on" ) {
-			update_post_meta(
-				$this->post->ID,
-				COMMONSBOOKING_METABOX_PREFIX . 'bookingcode',
-				$bookingCode->getCode()
+			// If there exists a booking code, add it.
+			$bookingCode = BookingCodes::getCode(
+				$timeframe->ID,
+				$this->getItem()->ID,
+				$this->getLocation()->ID,
+				date( 'Y-m-d', $this->getMeta( 'repetition-start' ) )
 			);
+
+			// only add booking code if the booking is based on a full day timeframe
+			if ( $bookingCode && $this->getMeta( 'full-day' ) == "on" ) {
+				update_post_meta(
+					$this->post->ID,
+					COMMONSBOOKING_METABOX_PREFIX . 'bookingcode',
+					$bookingCode->getCode()
+				);
+			}
 		}
 	}
 
