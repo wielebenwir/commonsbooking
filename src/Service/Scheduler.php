@@ -50,8 +50,6 @@ class Scheduler {
 		// Add custom cron intervals
 		add_filter( 'cron_schedules', array( self::class, 'initIntervals' ) );
 
-		self::unscheduleEvents();
-
 		// Init booking cleanup job
 		add_action( 'cb_cron_hook', array( \CommonsBooking\Service\Booking::class, 'cleanupBookings' ) );
 		if ( ! wp_next_scheduled( 'cb_cron_hook' ) ) {

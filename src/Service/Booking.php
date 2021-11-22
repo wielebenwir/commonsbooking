@@ -69,12 +69,21 @@ class Booking {
 			$endDate = strtotime( 'midnight', time() ) - 1;
 		}
 
+		// Add filter to get only bookings ending on day of enddate
+		$customArgs['meta_query'][] = array(
+			'key'     => \CommonsBooking\Model\Booking::REPETITION_END,
+			'value'   => array(strtotime('midnight', $endDate), $endDate),
+			'compare' => 'BETWEEN',
+			'type' => 'numeric'
+		);
+
 		// Get bookings ending on the targeted enddate
 		$bookings = \CommonsBooking\Repository\Booking::getByTimerange(
 			0,
 			$endDate,
 			null,
-			null
+			null,
+			$customArgs
 		);
 
 		if ( count( $bookings ) ) {
