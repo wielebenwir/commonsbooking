@@ -421,7 +421,7 @@ The item {{restriction:itemName}} is now fully usable again.
 						'name'    => commonsbooking_sanitizeHTML( __( 'E-mail subject', 'commonsbooking' ) ),
 						'id'      => 'pre-booking-reminder-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( 'Upcoming booking of {{item:itemName}} {{booking:formattedBookingDate}}', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Upcoming booking of {{item:post_title}} {{booking:formattedBookingDate}}', 'commonsbooking' ) ),
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'email body', 'commonsbooking' ) ),
@@ -506,7 +506,7 @@ the team</p>', 'commonsbooking' ) ),
 
 			/* field group post booking notice */
 			'post-booking-notice' => array(
-				'title'  => commonsbooking_sanitizeHTML( __( 'Post booking Notice', 'commonsbooking' ) ),
+				'title'  => commonsbooking_sanitizeHTML( __( 'email after booking has ended', 'commonsbooking' ) ),
 				'id'     => 'post-booking-notice',
 				'desc'		   => commonsbooking_sanitizeHTML( __( 
 					'Here you can set whether users should receive an additional e-mail after completing a booking. This can be used, for example, to inquire about the users satisfaction or possible problems during the booking.'
@@ -517,7 +517,7 @@ the team</p>', 'commonsbooking' ) ),
 						'name'    => commonsbooking_sanitizeHTML( __( 'E-mail subject', 'commonsbooking' ) ),
 						'id'      => 'post-booking-notice-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( 'Upcoming booking of {{item:itemName}} {{booking:formattedBookingDate}}', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Your booking of {{item:post_title}} {{booking:formattedBookingDate}} has ended', 'commonsbooking' ) ),
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'email body', 'commonsbooking' ) ),
