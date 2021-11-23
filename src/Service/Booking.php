@@ -39,14 +39,26 @@ class Booking {
 	 */
 	public static function sendReminderMessage() {
 		$daysBeforeStart = Settings::getOption( 'commonsbooking_options_reminder', 'pre-booking-days-before' );
-		$startDate       = strtotime( '+' . $daysBeforeStart . ' days midnight', time() );
+		$startDate       = strtotime( '+' . $daysBeforeStart . ' days midnight' );
+
+		// Startday of booking at at 23:59
+		$endDate = strtotime( '+23 Hours +59 Minutes +59 Seconds', $startDate );
+
+		// Add filter to get only bookings ending on day of enddate
+		$customArgs['meta_query'][] = array(
+			'key'     => \CommonsBooking\Model\Booking::REPETITION_START,
+			'value'   => array( $startDate, $endDate ),
+			'compare' => 'BETWEEN',
+			'type'    => 'numeric'
+		);
 
 		// Get bookings starting on targeted startdate
 		$bookings = \CommonsBooking\Repository\Booking::getByTimerange(
 			$startDate,
 			strtotime( '2222-01-01' ),
 			null,
-			null
+			null,
+			$customArgs
 		);
 
 		if ( count( $bookings ) ) {
@@ -68,9 +80,9 @@ class Booking {
 		// Add filter to get only bookings ending on day of enddate
 		$customArgs['meta_query'][] = array(
 			'key'     => \CommonsBooking\Model\Booking::REPETITION_END,
-			'value'   => array(strtotime('midnight', $endDate), $endDate),
+			'value'   => array( strtotime( 'midnight', $endDate ), $endDate ),
 			'compare' => 'BETWEEN',
-			'type' => 'numeric'
+			'type'    => 'numeric'
 		);
 
 		// Get bookings ending on the targeted enddate
