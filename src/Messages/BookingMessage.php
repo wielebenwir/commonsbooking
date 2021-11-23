@@ -8,7 +8,7 @@ use CommonsBooking\Settings\Settings;
 
 class BookingMessage extends Message {
 
-	protected array $validActions = [ "confirmed", "canceled" ];
+	protected $validActions = [ "confirmed", "canceled" ];
 
 	public function sendMessage() {
 		/** @var \CommonsBooking\Model\Booking $booking */

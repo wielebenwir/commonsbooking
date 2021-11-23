@@ -7,7 +7,7 @@ use function commonsbooking_parse_template;
 
 abstract class Message {
 
-	protected array $validActions = [];
+	protected $validActions = [];
 
 	protected $postId;
 
