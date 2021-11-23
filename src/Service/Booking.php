@@ -62,12 +62,8 @@ class Booking {
 	 * @throws \Exception
 	 */
 	public static function sendFeedbackMessage() {
-		$daysAfter = Settings::getOption( 'commonsbooking_options_reminder', 'post-booking-notice-days-after' );
-
-		$endDate = strtotime( 'tomorrow midnight', time() ) - 1;
-		if ( $daysAfter != 'sameday' ) {
-			$endDate = strtotime( 'midnight', time() ) - 1;
-		}
+		// Yesterday at 23:59
+		$endDate = strtotime( 'midnight', time() ) - 1;
 
 		// Add filter to get only bookings ending on day of enddate
 		$customArgs['meta_query'][] = array(

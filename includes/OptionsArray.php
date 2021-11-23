@@ -306,8 +306,8 @@ Thanks, the Team.
 		'field_groups' => array(
 			/* field group email templates start */
 			'emailtemplates' => array(
-				'title'   => commonsbooking_sanitizeHTML( __( 'Email templates', 'commonsbooking' ) ),
-				'desc'	  => commonsbooking_sanitizeHTML( __( 'Email templates', 'commonsbooking' ) ), 
+				'title'  => commonsbooking_sanitizeHTML( __( 'Email templates', 'commonsbooking' ) ),
+				'desc'   => commonsbooking_sanitizeHTML( __( 'Email templates', 'commonsbooking' ) ),
 				'id'     => 'emailtemplates',
 				'fields' => array(
 					array(
@@ -410,7 +410,7 @@ The item {{restriction:itemName}} is now fully usable again.
 	/* Tab: restrictions end*/
 
 	/* Tab: reminder start*/
-	'reminder' => array(
+	'reminder'     => array(
 		'title'        => commonsbooking_sanitizeHTML( __( 'Reminder', 'commonsbooking' ) ),
 		'id'           => 'reminder',
 		'field_groups' => array(
@@ -419,7 +419,7 @@ The item {{restriction:itemName}} is now fully usable again.
 			'pre-booking-reminder' => array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'Booking reminder', 'commonsbooking' ) ),
 				'id'     => 'pre-booking-reminder',
-				'desc'		   => commonsbooking_sanitizeHTML( __( 
+				'desc'   => commonsbooking_sanitizeHTML( __(
 					'You can set here whether users should receive a reminder email before the start of a booking.'
 					, 'commonsbooking' ) ),
 				'fields' => array(
@@ -447,15 +447,15 @@ the team</p>', 'commonsbooking' ) ),
 
 					// settings pre booking reminder -- min days 
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Sent reminder x days before booking start', 'commonsbooking' ) ),
-						'id'      => 'pre-booking-days-before',
-						'desc' => '<p>' . commonsbooking_sanitizeHTML( __( 
-							'This reminder email will be sent to users x days before the start of the booking. If the booking is made less days before the specified days, no reminder email will be sent'
-							, 'commonsbooking' ) ) . '</p>', 
-						'type'    => 'text_small',
+						'name'       => commonsbooking_sanitizeHTML( __( 'Sent reminder x days before booking start', 'commonsbooking' ) ),
+						'id'         => 'pre-booking-days-before',
+						'desc'       => '<p>' . commonsbooking_sanitizeHTML( __(
+								'This reminder email will be sent to users x days before the start of the booking. If the booking is made less days before the specified days, no reminder email will be sent'
+								, 'commonsbooking' ) ) . '</p>',
+						'type'       => 'text_small',
 						'attributes' => array(
-							'type' 	 => 'number',
-							'min'  	 => '1',
+							'type' => 'number',
+							'min'  => '1',
 						),
 						'default'    => 2,
 
@@ -463,39 +463,39 @@ the team</p>', 'commonsbooking' ) ),
 
 					// settings pre booking reminder -- set sending time
 					array(
-						'name' 				=> esc_html__( 'Time', 'commonsbooking' ),
-						'id'   				=> 'pre-booking-time',
-						'desc' => '<br>' . commonsbooking_sanitizeHTML( __( 
-							'Define when the reminder should be sent. The actual sending may differ from the defined value by a few hours, depending on how your WordPress is configured.'
-							, 'commonsbooking' ) ),
-						'type' 				=> 'select',
-						'show_option_none' 	=> false,
-						'default'         	=> '1',
-						'options'           => array(
-							'0'		=> '00:00',
-							'1'		=> '01:00',
-							'2'		=> '02:00',
-							'3'		=> '03:00',
-							'4'		=> '04:00',
-							'5'		=> '05:00',
-							'6'		=> '06:00',
-							'7'		=> '07:00',
-							'8'		=> '08:00',
-							'9'		=> '09:00',
-							'10'	=> '10:00',
-							'11'	=> '11:00',
-							'12'	=> '12:00',
-							'13'	=> '13:00',
-							'14'	=> '14:00',
-							'15'	=> '15:00',
-							'16'	=> '16:00',
-							'17'	=> '17:00',
-							'18'	=> '18:00',
-							'19'	=> '19:00',
-							'20'	=> '20:00',
-							'21'	=> '21:00',
-							'22'	=> '22:00',
-							'23'	=> '23:00',
+						'name'             => esc_html__( 'Time', 'commonsbooking' ),
+						'id'               => 'pre-booking-time',
+						'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
+								'Define when the reminder should be sent. The actual sending may differ from the defined value by a few hours, depending on how your WordPress is configured.'
+								, 'commonsbooking' ) ),
+						'type'             => 'select',
+						'show_option_none' => false,
+						'default'          => '1',
+						'options'          => array(
+							'0'  => '00:00',
+							'1'  => '01:00',
+							'2'  => '02:00',
+							'3'  => '03:00',
+							'4'  => '04:00',
+							'5'  => '05:00',
+							'6'  => '06:00',
+							'7'  => '07:00',
+							'8'  => '08:00',
+							'9'  => '09:00',
+							'10' => '10:00',
+							'11' => '11:00',
+							'12' => '12:00',
+							'13' => '13:00',
+							'14' => '14:00',
+							'15' => '15:00',
+							'16' => '16:00',
+							'17' => '17:00',
+							'18' => '18:00',
+							'19' => '19:00',
+							'20' => '20:00',
+							'21' => '21:00',
+							'22' => '22:00',
+							'23' => '23:00',
 						),
 
 					),
@@ -512,10 +512,10 @@ the team</p>', 'commonsbooking' ) ),
 
 
 			/* field group post booking notice */
-			'post-booking-notice' => array(
+			'post-booking-notice'  => array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'email after booking has ended', 'commonsbooking' ) ),
 				'id'     => 'post-booking-notice',
-				'desc'		   => commonsbooking_sanitizeHTML( __( 
+				'desc'   => commonsbooking_sanitizeHTML( __(
 					'Here you can set whether users should receive an additional e-mail after completing a booking. This can be used, for example, to inquire about the users satisfaction or possible problems during the booking.'
 					, 'commonsbooking' ) ),
 				'fields' => array(
@@ -539,61 +539,6 @@ Best regards,<br>
 The team</p>', 'commonsbooking' ) ),
 					),
 
-					// settings post booking reminder -- days after booking 
-					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Sent post booking notice', 'commonsbooking' ) ),
-						'id'      => 'post-booking-notice-days-after',
-						'desc' => '<p>' . commonsbooking_sanitizeHTML( __( 
-							'Define when the email should be sent to user after booking ends'
-							, 'commonsbooking' ) ) . '</p>', 
-						'type'    => 'select',
-						'show_option_none' 	=> false,
-						'default'         	=> 'sameday',
-						'options'           => array(
-							'sameday'		=> __('Same day', 'commonsbooking'),
-							'1dayafter'		=> __('One day after booking ends', 'commonsbooking'),
-						),
-					),
-
-					// settings post booking reminder -- set sending time
-					array(
-						'name' 				=> esc_html__( 'Time', 'commonsbooking' ),
-						'id'   				=> 'post-booking-notice-time',
-						'desc' => '<br>' . commonsbooking_sanitizeHTML( __( 
-							'Define when the email should be sent. The actual sending may differ from the defined value by a few hours, depending on how your WordPress is configured.'
-							, 'commonsbooking' ) ),
-						'type' 				=> 'select',
-						'show_option_none' 	=> false,
-						'default'         	=> '19',
-						'options'           => array(
-							'0'		=> '00:00',
-							'1'		=> '01:00',
-							'2'		=> '02:00',
-							'3'		=> '03:00',
-							'4'		=> '04:00',
-							'5'		=> '05:00',
-							'6'		=> '06:00',
-							'7'		=> '07:00',
-							'8'		=> '08:00',
-							'9'		=> '09:00',
-							'10'	=> '10:00',
-							'11'	=> '11:00',
-							'12'	=> '12:00',
-							'13'	=> '13:00',
-							'14'	=> '14:00',
-							'15'	=> '15:00',
-							'16'	=> '16:00',
-							'17'	=> '17:00',
-							'18'	=> '18:00',
-							'19'	=> '19:00',
-							'20'	=> '20:00',
-							'21'	=> '21:00',
-							'22'	=> '22:00',
-							'23'	=> '23:00',
-						),
-
-					),
-
 					// settings pre booking reminder -- acticate reminder
 					array(
 						'name' => esc_html__( 'Activate', 'commonsbooking' ),
@@ -613,7 +558,7 @@ The team</p>', 'commonsbooking' ) ),
 		'title'        => __( 'Migration', 'commonsbooking' ),
 		'id'           => 'migration',
 		'field_groups' => array(
-			'migration'       => array(
+			'migration'         => array(
 				'title'  => esc_html__( 'Migrate from Commons Booking Version 0.X', 'commonsbooking' ),
 				'id'     => 'migration',
 				'desc'   => commonsbooking_sanitizeHTML( __( 'Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br><span style="color:red">If you have clicked "Migrate" before, starting the migration again will overwrite any changes you made to  locations, items, timeframes and bookings</span>.<br>Please read the documentation <a target="_blank" href="https://commonsbooking.org/dokumentation/?p=434">How to migrate from version 0.9.x to 2.x.x </a> before you start migration.', 'commonsbooking' ) ),
@@ -626,7 +571,7 @@ The team</p>', 'commonsbooking' ) ),
 					)
 				]
 			),
-			'booking-migration'       => array(
+			'booking-migration' => array(
 				'title'  => esc_html__( 'Migrate bookings to new version', 'commonsbooking' ),
 				'id'     => 'booking-migration',
 				'desc'   => commonsbooking_sanitizeHTML( __( 'Migrate bookings to new format so that they are listed at bookings menu item.', 'commonsbooking' ) ),
@@ -639,7 +584,7 @@ The team</p>', 'commonsbooking' ) ),
 					)
 				]
 			),
-			'cb1-user-fields' => array(
+			'cb1-user-fields'   => array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'CommonsBooking Version 0.X profile fields', 'commonsbooking' ) ),
 				'id'     => 'cb1-user-fields',
 				'desc'   => commonsbooking_sanitizeHTML( __( 'Enable the following legacy CommonsBooking Version 0.X user profile fields:', 'commonsbooking' ) ) . '<br><i> first_name,  last_name,  phone,  address,   terms_accepted </i>',
@@ -774,13 +719,13 @@ The team</p>', 'commonsbooking' ) ),
 					array(
 						'name' => esc_html__( 'Activate API', 'commonsbooking' ),
 						'desc' => commonsbooking_sanitizeHTML( __( 'If selected, the API is enabled. See more information in the documentation: <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
-                        'id'      => 'api-activated',
+						'id'   => 'api-activated',
 						'type' => 'checkbox',
 					),
 					array(
 						'name' => esc_html__( 'Enable API Access without API-Key', 'commonsbooking' ),
 						'desc' => commonsbooking_sanitizeHTML( __( 'If selected, the API is accessible without an API-Key. For details see: <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
-                        'id'      => 'apikey_not_required',
+						'id'   => 'apikey_not_required',
 						'type' => 'checkbox',
 					),
 
@@ -819,10 +764,10 @@ The team</p>', 'commonsbooking' ) ),
 								'type' => 'text',
 							),
 							array(
-								'name'       => esc_html__( 'API Key', 'commonsbooking' ),
-								'id'         => 'api_key',
-								'type'       => 'text',
-								'desc'       => commonsbooking_sanitizeHTML( __( ' You must set an API-Key. The API key should consist of alphanumeric characters and be at least 24 characters long.', 'commonsbooking' ) ),
+								'name' => esc_html__( 'API Key', 'commonsbooking' ),
+								'id'   => 'api_key',
+								'type' => 'text',
+								'desc' => commonsbooking_sanitizeHTML( __( ' You must set an API-Key. The API key should consist of alphanumeric characters and be at least 24 characters long.', 'commonsbooking' ) ),
 							),
 							array(
 								'name'       => esc_html__( 'API Owner', 'commonsbooking' ),

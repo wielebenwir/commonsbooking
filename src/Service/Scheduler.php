@@ -79,11 +79,8 @@ class Scheduler {
 			if ( \WP_DEBUG ) {
 				wp_schedule_event( time(), 'ten_seconds', 'cb_feedback_cron_hook' );
 			} else {
-				$startTime = Settings::getOption( 'commonsbooking_options_reminder',
-					'post-booking-notice-time' );
-
 				wp_schedule_event(
-					self::getReminderStarttimestamp( $startTime ),
+					strtotime( "tomorrow midnight" ) + 1, // tomorrow at 00:00:01
 					'daily',
 					'cb_feedback_cron_hook'
 				);
