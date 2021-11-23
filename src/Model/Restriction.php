@@ -4,7 +4,7 @@
 namespace CommonsBooking\Model;
 
 
-use CommonsBooking\Messages\RestrictionMessages;
+use CommonsBooking\Messages\RestrictionMessage;
 
 class Restriction extends CustomPost {
 
@@ -231,7 +231,7 @@ class Restriction extends CustomPost {
 			$userIds = array_unique( $userIds );
 
 			foreach ( $userIds as $userId ) {
-				$hintMail = new RestrictionMessages( $this, get_userdata( $userId ), $booking, $this->getType() );
+				$hintMail = new RestrictionMessage( $this, get_userdata( $userId ), $booking, $this->getType() );
 				$hintMail->triggerMail();
 			}
 		}

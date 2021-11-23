@@ -6,7 +6,7 @@ use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\Restriction;
 use CommonsBooking\Settings\Settings;
 
-class RestrictionMessages extends Messages {
+class RestrictionMessage extends Message {
 
 	protected $user;
 
@@ -16,7 +16,7 @@ class RestrictionMessages extends Messages {
 
 	protected $booking;
 
-	protected $validActions = [
+	protected array $validActions = [
 		Restriction::TYPE_REPAIR,
 		Restriction::TYPE_HINT
 	];

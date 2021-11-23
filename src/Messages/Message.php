@@ -2,14 +2,12 @@
 
 namespace CommonsBooking\Messages;
 
-use CommonsBooking\CB\CB;
-use CommonsBooking\Settings\Settings;
 use WP_Error;
 use function commonsbooking_parse_template;
 
-abstract class Messages {
+abstract class Message {
 
-	protected $validActions = [];
+	protected array $validActions = [];
 
 	protected $postId;
 

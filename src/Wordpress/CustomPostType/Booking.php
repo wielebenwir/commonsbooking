@@ -3,7 +3,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Helper\Helper;
-use CommonsBooking\Messages\BookingMessages;
+use CommonsBooking\Messages\BookingMessage;
 use WP_Post;
 
 class Booking extends Timeframe {
@@ -159,7 +159,7 @@ class Booking extends Timeframe {
 					     $post_after->post_status === 'canceled'
 				     )
 				) {
-					$booking_msg = new BookingMessages( $post_ID, $post_after->post_status );
+					$booking_msg = new BookingMessage( $post_ID, $post_after->post_status );
 					$booking_msg->triggerMail();
 				}
 			}
@@ -470,7 +470,7 @@ class Booking extends Timeframe {
 				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
 				'desc'        => esc_html__( 'Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking' ),
 				'id'          => "repetition-start",
-				'type'        => 'text_date_timestamp',
+				'type'        => 'text_datetime_timestamp',
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
 			),
@@ -478,7 +478,7 @@ class Booking extends Timeframe {
 				'name'        => esc_html__( 'End date', 'commonsbooking' ),
 				'desc'        => esc_html__( 'Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.', 'commonsbooking' ),
 				'id'          => "repetition-end",
-				'type'        => 'text_date_timestamp',
+				'type'        => 'text_datetime_timestamp',
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
 			),
