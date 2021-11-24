@@ -52,8 +52,8 @@ before_script:
 script:
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      /usr/local/bin/phpunit
-      WP_MULTISITE=1 /usr/local/bin/phpunit
+      phpunit
+      WP_MULTISITE=1 phpunit
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
