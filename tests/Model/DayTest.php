@@ -118,14 +118,14 @@ class DayTest extends TestCase {
 		return $method;
 	}
 
-	public function testGetEndDate() {
-		$method = self::getInstanceMethod('getEndDate');
-		/** @var \DateTime $dateTime */
-		$dateTime = $method->invokeArgs($this->instance, [get_post($this->timeframeId)]);
-		$this->assertTrue(
-			$dateTime->format('d.m.Y') == date('d.m.Y', self::REPETITION_END)
-		);
-	}
+//	public function testGetEndDate() {
+//		$method = self::getInstanceMethod('getEndDate');
+//		/** @var \DateTime $dateTime */
+//		$dateTime = $method->invokeArgs($this->instance, [get_post($this->timeframeId)]);
+//		$this->assertTrue(
+//			$dateTime->format('d.m.Y') == date('d.m.Y', self::REPETITION_END)
+//		);
+//	}
 
 	public function testIsInTimeframe() {
 		$timeframe = get_post($this->timeframeId);
