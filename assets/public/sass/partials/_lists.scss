@@ -22,7 +22,7 @@
 	@extend .cb-box;
 	
 	.cb-list-content.cb-pickupinstructions div {
-		white-space: pre; // enable line break in content from meta textfields 
+		white-space: pre-wrap; // enable line break in content from meta textfields 
 	}
 
 	.cb-address.cb-location-pickupinstructions {
