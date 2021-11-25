@@ -51,7 +51,7 @@ class Item extends View {
 
 		$calendarData          = Calendar::getCalendarDataArray(
 			$item,
-			$args['location'],
+			array_key_exists('location', $args) ? $args['location'] : null,
 			date( 'Y-m-d', strtotime( 'first day of this month', time() ) ),
 			date( 'Y-m-d', strtotime( '+3 months', time() ) )
 		);
