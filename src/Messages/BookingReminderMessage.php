@@ -10,7 +10,7 @@ class BookingReminderMessage extends Message {
 	/**
 	 * @var array|string[]
 	 */
-	protected array $validActions = [ "pre-booking-reminder", "post-booking-notice" ];
+	protected $validActions = [ "pre-booking-reminder", "post-booking-notice" ];
 
 	/**
 	 * Sends reminder message.
