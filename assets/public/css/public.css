@@ -4457,57 +4457,62 @@
   color: #fff;
 }
 /* line 121, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.partially-booked {
+  color: #444;
+  background: linear-gradient(to top left, #7fc600 0%, #7fc600 calc(50% - 1px), #333 50%, #ee7400 calc(50% + 1px), #ee7400 100%);
+}
+/* line 125, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.booked {
   color: #444;
   background: linear-gradient(to top left, #ee7400 0%, #ee7400 calc(50% - 1px), #333 50%, #ee7400 calc(50% + 1px), #ee7400 100%);
 }
-/* line 126, ../sass/partials/_map.scss */
+/* line 130, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-desc {
   display: none;
 }
 
 /* Filters */
-/* line 135, ../sass/partials/_map.scss */
+/* line 139, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper {
   margin-top: 10px;
   /* layout for filter  availability & distance */
   /* styles for specific filters */
   /* layout for filter category */
 }
-/* line 140, ../sass/partials/_map.scss */
+/* line 144, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper input[type="checkbox"] {
   margin: 0 5px 0 0;
 }
-/* line 144, ../sass/partials/_map.scss */
+/* line 148, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper input[type="date"], .cb-map-filters.cb-wrapper input[type="number"] {
   /* is inline */
   margin: 0 5px;
 }
-/* line 148, ../sass/partials/_map.scss */
+/* line 152, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper input[type="number"] {
   max-width: 100px;
 }
-/* line 152, ../sass/partials/_map.scss */
+/* line 156, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper select {
   /* is inline */
   margin: 0 5px;
 }
-/* line 156, ../sass/partials/_map.scss */
+/* line 160, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper button {
   padding: 5px;
 }
-/* line 161, ../sass/partials/_map.scss */
+/* line 165, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-filter-options > div {
   margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #444;
 }
-/* line 168, ../sass/partials/_map.scss */
+/* line 172, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-filter-group-label {
   color: #506CA9;
   margin-bottom: 5px;
 }
-/* line 185, ../sass/partials/_map.scss */
+/* line 189, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group {
   background: #506CA9;
   border-radius: 8px;
@@ -4515,23 +4520,23 @@
   flex-direction: row;
   flex-wrap: nowrap;
 }
-/* line 191, ../sass/partials/_map.scss */
+/* line 195, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group input {
   flex: 1 1 100% !important;
   /* overwrite layout */
 }
-/* line 194, ../sass/partials/_map.scss */
+/* line 198, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.undo-geo-search, .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.geo-search {
   background: transparent;
   color: #FFF;
 }
-/* line 203, ../sass/partials/_map.scss */
+/* line 207, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
-/* line 208, ../sass/partials/_map.scss */
+/* line 212, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset {
   flex: 1 0 50%;
   border: none;
@@ -4539,22 +4544,22 @@
   padding: 0;
   margin-bottom: 10px;
 }
-/* line 215, ../sass/partials/_map.scss */
+/* line 219, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset .cb-fieldgroup-row {
   display: inline-block;
 }
-/* line 219, ../sass/partials/_map.scss */
+/* line 223, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset legend {
   margin: 0;
   padding: 0;
   font-weight: normal;
 }
-/* line 224, ../sass/partials/_map.scss */
+/* line 228, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset label {
   margin-right: 15px;
   color: #506CA9;
 }
-/* line 233, ../sass/partials/_map.scss */
+/* line 237, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-button-wrapper {
   text-align: right;
 }
