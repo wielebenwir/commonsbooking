@@ -27,9 +27,14 @@ class MapItemAvailable {
 	const ITEM_BOOKED = 2;
 
 	/**
+	 * item is blocked
+	 */
+	const ITEM_BLOCKED = 3;
+
+	/**
 	 * no timeframe for item set
 	 */
-	const OUT_OF_TIMEFRAME = 3;
+	const OUT_OF_TIMEFRAME = 4;
 
 	/**
 	 * @param $locations

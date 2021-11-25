@@ -98,7 +98,8 @@ function CB_Map() {
                 0: 'available',
                 1: 'location-closed',
                 2: 'booked',
-                3: 'no-timeframe'
+                3: 'blocked',
+                4: 'no-timeframe'
             }
 
             availability.forEach(function (day) {
