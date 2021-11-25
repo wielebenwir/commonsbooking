@@ -33,6 +33,14 @@
 }(jQuery), function($) {
     "use strict";
     $(function() {
+        const form = $("input[name=post_type][value=cb_restriction]").parent("form");
+        form.find("input, select, textarea").on("keyup change paste", function() {
+            form.find("input[name=restriction-send]").prop("disabled", !0);
+        });
+    });
+}(jQuery), function($) {
+    "use strict";
+    $(function() {
         const arrayDiff = function(array1, array2) {
             var newItems = [];
             return jQuery.grep(array2, function(i) {
