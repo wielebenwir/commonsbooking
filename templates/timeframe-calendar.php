@@ -34,6 +34,7 @@
                 <a id="resetPicker">
                     <?php echo esc_html__( 'Reset date selection', 'commonsbooking' ); ?>
                 </a>
+                <p id="calendarNotice"></p>
                 <div class="time-selection repetition-start">
                     <label for="repetition-start">
                         <?php echo esc_html__( 'Pickup', 'commonsbooking' ); ?>:
@@ -62,9 +63,9 @@
 
                     if(count($restrictions)) {
                         ?>
-                        <div>
-                            <label><?php echo '⚠ ' . esc_html__( 'Usage Restrictions', 'commonsbooking' ); ?>:</label>
-                            <div>
+                        <div class="restriction">
+                            <?php echo '⚠ ' . esc_html__( 'Usage Restrictions', 'commonsbooking' ); ?>:
+                            
                                 <span class="restrictions">
                                     <ul>
                                 <?php
@@ -74,9 +75,8 @@
                                             echo commonsbooking_sanitizeHTML( sprintf( 
                                                 __( 'From %1$s', 'commonsbooking'), 
                                                 $restriction->getFormattedStartDateTime() ) );
-                                            echo "<br>";
                                             echo commonsbooking_sanitizeHTML( sprintf( 
-                                                __( 'until probably %1$s:', 'commonsbooking'), 
+                                                __( ' until probably %1$s:', 'commonsbooking'), 
                                                 $restriction->getFormattedEndDateTime() ) );
                                             echo "</br>";
                                             echo "<strong>" . $restriction->getHint() . "</strong>";
@@ -86,13 +86,13 @@
                                 ?>
                                     </ul>
                                 </span>
-                            </div>
+                           
                         </div>
                     <?php
                     }
                     ?>
-                <p id="fullDayInfo"></p>
-                <p id="calendarNotice"></p>
+                    <p id="fullDayInfo"></p>
+                    <p id="calendarNotice"></p>
             </div>
 			<?php
 			if ( is_user_logged_in() ) { ?>

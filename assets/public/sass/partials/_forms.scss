@@ -104,6 +104,10 @@
             margin-top: $spacer;
             text-align: center;
 
+            .restriction {
+                display: block;
+            }
+
             > div {
                 display: flex;
                 align-items: center;
