@@ -233,7 +233,7 @@ class Calendar {
 		}
 
 		if ( ! $item || ! $location ) {
-			throw new Exception( 'item or location could not be found' );
+			return [];
 		}
 
 		$startDate = new Day( $startDateString );
