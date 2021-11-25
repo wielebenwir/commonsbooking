@@ -3709,7 +3709,7 @@
 }
 /* line 28, ../sass/partials/_lists.scss */
 .cb-wrapper .cb-address.cb-location-pickupinstructions {
-  white-space: pre;
+  white-space: pre-wrap;
   margin-top: 0;
   border-left: green;
   border-width: 1px;
