@@ -93,6 +93,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
             // Show reset button as first calender selection is done
             jQuery('#resetPicker').css( "display", "inline-block" );
 
+            // Show calendarNotice as first calender selection is done
+            jQuery('#calendarNotice').css( "display", "inherit" );
+
             // Hide end date selection if new start date was chosen
             let endSelectData = jQuery(
                 '#booking-form select[name=repetition-end],' +
@@ -309,6 +312,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             jQuery('.time-selection .date').text('');
             jQuery('.time-selection select').hide();
             jQuery('#resetPicker').hide();
+            jQuery('#calendarNotice').hide();
             jQuery('#booking-form input[type=submit]').attr('disabled','disabled');
         }
 
