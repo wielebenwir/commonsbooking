@@ -43,7 +43,7 @@ class Item extends View {
 					$args['locations'] = $locations;
 				}
 			} else {
-				throw new Exception( 'no location data found' );
+				$args['locations'] = [];
 			}
 		} else {
 			$args['location'] = new \CommonsBooking\Model\Location( get_post( $location ) );
