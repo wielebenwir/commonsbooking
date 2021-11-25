@@ -16,7 +16,7 @@ class RestrictionMessage extends Message {
 
 	protected $booking;
 
-	protected array $validActions = [
+	protected $validActions = [
 		Restriction::TYPE_REPAIR,
 		Restriction::TYPE_HINT
 	];

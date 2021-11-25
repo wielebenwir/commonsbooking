@@ -89,7 +89,10 @@ class Location extends View {
 
 			// Sort by start_date
 			uasort( $shortCodeData, function ( $a, $b ) {
-				return $a['start_date'] > $b['start_date'];
+
+				return ( array_key_exists( 'start_date', $a ) &&
+				         array_key_exists( 'start_date', $b )
+				       ) && $a['start_date'] > $b['start_date'];
 			} );
 
 			$locationData[ $location->ID ] = $shortCodeData;
