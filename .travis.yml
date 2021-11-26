@@ -34,7 +34,7 @@ before_script:
     fi
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      curl -LO https://phar.phpunit.de/phpunit-7.phar
+      curl -kLO https://phar.phpunit.de/phpunit-7.phar
       chmod +x phpunit-7.phar
       which phpunit
       phpunit --version
