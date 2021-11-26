@@ -11,6 +11,7 @@ notifications:
 branches:
   only:
     - master
+    - release/2.5-RC
 
 cache:
   directories:
@@ -53,6 +54,7 @@ script:
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
       cd /var/www/html/wp-content/plugins/commonsbooking/
+      ls -la
       /usr/local/bin/phpunit
       WP_MULTISITE=1 /usr/local/bin/phpunit
     fi
