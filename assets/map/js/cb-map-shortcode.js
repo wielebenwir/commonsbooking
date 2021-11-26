@@ -97,8 +97,9 @@ function CB_Map() {
             var status_classes = {
                 0: 'available',
                 1: 'location-closed',
-                2: 'booked',
-                3: 'no-timeframe'
+                2: 'partially-booked',
+                3: 'booked',
+                4: 'no-timeframe'
             }
 
             availability.forEach(function (day) {

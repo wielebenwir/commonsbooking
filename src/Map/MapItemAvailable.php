@@ -22,14 +22,19 @@ class MapItemAvailable {
 	const LOCATION_CLOSED = 1;
 
 	/**
-	 * item is booked
+	 * item is partially booked
 	 */
-	const ITEM_BOOKED = 2;
+	const ITEM_PARTIALLY_BOOKED = 2;
+
+	/**
+	 * item is booked or blocked
+	 */
+	const ITEM_BOOKED = 3;
 
 	/**
 	 * no timeframe for item set
 	 */
-	const OUT_OF_TIMEFRAME = 3;
+	const OUT_OF_TIMEFRAME = 4;
 
 	/**
 	 * @param $locations
@@ -91,6 +96,8 @@ class MapItemAvailable {
 
 				if ( $day['bookedDay'] ) {
 					$availability['status'] = self::ITEM_BOOKED;
+				} elseif( $day['partiallyBookedDay']){
+					$availabilty['status'] = self::ITEM_PARTIALLY_BOOKED;
 				} elseif ( $day['holiday'] || $day['locked'] ) {
 					$availability['status'] = self::LOCATION_CLOSED;
 				} else {

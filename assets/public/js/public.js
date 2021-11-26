@@ -1778,6 +1778,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }), fadeInCalendar();
         };
         let bookingForm = jQuery("#booking-form");
-        bookingForm.length && (initPicker(), console.log(globalCalendarData), updatePicker(globalCalendarData));
+        bookingForm.length && (initPicker(), updatePicker(globalCalendarData));
     }
 });
