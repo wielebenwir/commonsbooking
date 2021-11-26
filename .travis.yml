@@ -28,9 +28,10 @@ before_script:
   - curl -ksSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar
   - curl -ksSfL -o ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit https://phar.phpunit.de/phpunit-7.phar
   - sudo apt-get -y install ca-certificates
-  - curl -ksSfL -o /etc/ssl/certs/cacert-2021-10-26.pem https://curl.se/ca/cacert-2021-10-26.pem
-  - cat /etc/ssl/certs/cacert-2021-10-26.pem
-  - echo "curl.cainfo = /etc/ssl/certs/cacert-2021-10-26.pem" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - curl -ksSfL -o /etc/ssl/certs/cacert-2021-10-26-test.pem https://curl.se/ca/cacert-2021-10-26.pem
+  - cat /etc/ssl/certs/cacert-2021-10-26-test.pem
+  - echo "curl.cainfo = /etc/ssl/certs/cacert-2021-10-26-test.pem" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - ls -la /etc/ssl/certs/
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - |
     if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
