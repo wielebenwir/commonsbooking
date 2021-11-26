@@ -118,6 +118,10 @@
 			  background-color: #ddd;
 			  color: #fff;
 			}
+			.cb-map-popup-item-availability-day.partially-booked{
+				color: #444;
+				background: linear-gradient(to top left, rgb(127, 198, 0) 0%, rgb(127, 198, 0) calc(50% - 1px), #333 50%, rgb(238, 116, 0) calc(50% + 1px), rgb(238, 116, 0) 100%);
+			}
 			.cb-map-popup-item-availability-day.booked {
 			  color: #444;
 			  background: linear-gradient(to top left, rgb(238, 116, 0) 0%, rgb(238, 116, 0) calc(50% - 1px), #333 50%, rgb(238, 116, 0) calc(50% + 1px), rgb(238, 116, 0) 100%);
