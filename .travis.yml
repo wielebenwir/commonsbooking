@@ -25,8 +25,8 @@ matrix:
 #      env: WP_VERSION=latest
 
 before_script:
-  - curl -sSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar
-  - curl -sSfL -o ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit https://phar.phpunit.de/phpunit-7.phar; fi
+  - curl -ksSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar
+  - curl -ksSfL -o ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit https://phar.phpunit.de/phpunit-7.phar; fi
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - |
     if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
@@ -36,12 +36,12 @@ before_script:
     fi
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      curl -kLO https://phar.phpunit.de/phpunit-7.phar
-      chmod +x phpunit-7.phar
-      which phpunit
-      phpunit --version
-      sudo mv phpunit-7.phar /usr/local/bin/phpunit
-      which /usr/local/bin/phpunit
+#      curl -kLO https://phar.phpunit.de/phpunit-7.phar
+#      chmod +x phpunit-7.phar
+#      which phpunit
+#      phpunit --version
+#      sudo mv phpunit-7.phar /usr/local/bin/phpunit
+#      which /usr/local/bin/phpunit
       phpunit --version
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
       composer install
