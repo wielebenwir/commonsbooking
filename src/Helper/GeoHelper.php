@@ -31,7 +31,6 @@ class GeoHelper {
 			]
 		);
 
-
 		$provider = Nominatim::withOpenStreetMapServer(
 			$client,
 			array_key_exists('HTTP_USER_AGENT', $_SERVER) ? $_SERVER['HTTP_USER_AGENT'] : $defaultUserAgent
