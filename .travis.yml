@@ -33,12 +33,12 @@ before_script:
     fi
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      curl -L https://phar.phpunit.de/phpunit-7.phar -o /usr/local/bin/phpunit \
-              && chmod a+x /usr/local/bin/phpunit \
-
-#      bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-#      composer global require "phpunit/phpunit:7.*"
-      phpunit --version
+      wget https://phar.phpunit.de/phpunit-7.5.9.phar
+      chmod +x phpunit-7.5.9.phar
+      sudo mv phpunit-7.5.9.phar /usr/local/bin/phpunit
+      bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+      composer install
+      /usr/local/bin/phpunit --version
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
@@ -52,9 +52,8 @@ before_script:
 script:
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      which phpunit
-      phpunit
-      WP_MULTISITE=1 phpunit
+      /usr/local/bin/phpunit
+      WP_MULTISITE=1 /usr/local/bin/phpunit
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
