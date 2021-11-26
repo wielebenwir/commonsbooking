@@ -30,7 +30,7 @@ before_script:
   - sudo apt-get -y install ca-certificates
 #  - curl -ksSfL -o /etc/ssl/certs/cacert-2021-10-26-test.pem https://curl.se/ca/cacert-2021-10-26.pem
 #  - cat /etc/ssl/certs/cacert-2021-10-26-test.pem
-#  - echo "curl.cainfo = /etc/ssl/certs/cacert-2021-10-26-test.pem" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo "curl.cainfo = /etc/ssl/certs/Secure_Global_CA.pem" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - ls -la /etc/ssl/certs/
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - |
