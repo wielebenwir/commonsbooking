@@ -242,7 +242,7 @@ class Location extends CustomPostType {
 		// Longitude
 		$cmb->add_field( array(
 			'name'       => esc_html__( 'Longitude', 'commonsbooking' ),
-			'desc'       => esc_html__('The latitude is calculated automatically when you click Save/Update after entering the street, postal code and city.', 'commonsbooking'),
+			'desc'       => esc_html__('The longitude is calculated automatically when you click Save/Update after entering the street, postal code and city.', 'commonsbooking'),
 			'id'         => 'geo_longitude',
 			'type'       => 'text',
 			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
