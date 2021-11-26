@@ -64,7 +64,7 @@ class Calendar {
 
 		for ( $i = 0; $i < $days; $i ++ ) {
 			$month_cols ++;
-			$days_display[ $i ] = $date->format( 'd' );
+			$days_display[ $i ] = "<span class='unavailable'></span>";
 			$days_dates[ $i ]   = $date->format( 'Y-m-d' );
 			$days_weekday[ $i ] = $date->format( 'N' );
 			$daysDM[ $i ]       = $date->format( 'j.n.' );
