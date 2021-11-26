@@ -28,8 +28,8 @@ before_script:
   - curl -ksSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar
   - curl -ksSfL -o ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit https://phar.phpunit.de/phpunit-7.phar
   - sudo apt-get -y install ca-certificates
-  - sudo make-ssl-cert generate-default-snakeoil --force-overwrite
-  - echo "curl.cainfo = /etc/ssl/certs/ssl-cert-snakeoil.pem" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - curl -ksSfL -o /etc/ssl/certs/ca-cert.pem https://curl.se/ca/cacert-2021-10-26.pem
+  - echo "curl.cainfo = /etc/ssl/certs/ca-cert.pem" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - |
     if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
