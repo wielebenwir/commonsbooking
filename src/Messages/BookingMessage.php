@@ -15,7 +15,10 @@ class BookingMessage extends Message {
 		$booking = Booking::getPostById( $this->getPostId() );
 
 		$booking_user = get_userdata( $this->getPost()->post_author );
-		$bcc_adresses = CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_email' ); /*  email adresses, comma-seperated  */
+
+		// get location email adresses to send them bcc copies 
+		$location_emails = CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_email' ); /*  email adresses, comma-seperated  */
+		$bcc_adresses = str_replace(' ','',$location_emails); 
 
 		// get templates from Admin Options
 		$template_body    = Settings::getOption( 'commonsbooking_options_templates',
