@@ -1,3 +1,5075 @@
+<<<<<<< HEAD
+/*
+ * This stylesheet is used to style the public-facing components of the plugin
+ */
+/* Global styles */
+/*
+ * Global styles
+ * 
+ * Shared in Front- and Backend
+ */
+/* Lib: reset.css */
+/*
+ * CSS Reset
+ *
+ * Adapted from: http: //meyerweb.com/eric/tools/css/reset/
+ *
+ * @package   CommonsBooking2
+ */
+/* line 11, ../../global/sass/lib/_reset.scss */
+.cb-content ol,
+.cb-content ul,
+.cb-content li,
+.cb-content h2,
+.cb-content h3,
+.cb-content dd,
+.cb-content dl,
+.cb-content dt,
+.cb-content .hentry {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* line 26, ../../global/sass/lib/_reset.scss */
+.cb-content blockquote,
+.cb-content q {
+  quotes: none;
+}
+/* line 31, ../../global/sass/lib/_reset.scss */
+.cb-content blockquote:before,
+.cb-content blockquote:after,
+.cb-content q:before,
+.cb-content q:after {
+  content: '';
+  content: none;
+}
+/* line 39, ../../global/sass/lib/_reset.scss */
+.cb-content table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Lib: animate.css */
+/*!
+ * animate.css -http://daneden.me/animate
+ * Version - 3.7.0
+ * Licensed under the MIT license - http://opensource.org/licenses/MIT
+ *
+ * Copyright (c) 2018 Daniel Eden
+ */
+@-webkit-keyframes bounce {
+  from,
+  20%,
+  53%,
+  80%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  40%,
+  43% {
+    -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    -webkit-transform: translate3d(0, -30px, 0);
+    transform: translate3d(0, -30px, 0);
+  }
+  70% {
+    -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    -webkit-transform: translate3d(0, -15px, 0);
+    transform: translate3d(0, -15px, 0);
+  }
+  90% {
+    -webkit-transform: translate3d(0, -4px, 0);
+    transform: translate3d(0, -4px, 0);
+  }
+}
+@keyframes bounce {
+  from,
+  20%,
+  53%,
+  80%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  40%,
+  43% {
+    -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    -webkit-transform: translate3d(0, -30px, 0);
+    transform: translate3d(0, -30px, 0);
+  }
+  70% {
+    -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    -webkit-transform: translate3d(0, -15px, 0);
+    transform: translate3d(0, -15px, 0);
+  }
+  90% {
+    -webkit-transform: translate3d(0, -4px, 0);
+    transform: translate3d(0, -4px, 0);
+  }
+}
+/* line 77, ../../global/sass/lib/_animate.scss */
+.bounce {
+  -webkit-animation-name: bounce;
+  animation-name: bounce;
+  -webkit-transform-origin: center bottom;
+  transform-origin: center bottom;
+}
+
+@-webkit-keyframes flash {
+  from,
+  50%,
+  to {
+    opacity: 1;
+  }
+  25%,
+  75% {
+    opacity: 0;
+  }
+}
+@keyframes flash {
+  from,
+  50%,
+  to {
+    opacity: 1;
+  }
+  25%,
+  75% {
+    opacity: 0;
+  }
+}
+/* line 110, ../../global/sass/lib/_animate.scss */
+.flash {
+  -webkit-animation-name: flash;
+  animation-name: flash;
+}
+
+/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
+@-webkit-keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+@keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+/* line 151, ../../global/sass/lib/_animate.scss */
+.pulse {
+  -webkit-animation-name: pulse;
+  animation-name: pulse;
+}
+
+@-webkit-keyframes rubberBand {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    -webkit-transform: scale3d(1.25, 0.75, 1);
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  40% {
+    -webkit-transform: scale3d(0.75, 1.25, 1);
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.15, 0.85, 1);
+    transform: scale3d(1.15, 0.85, 1);
+  }
+  65% {
+    -webkit-transform: scale3d(0.95, 1.05, 1);
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  75% {
+    -webkit-transform: scale3d(1.05, 0.95, 1);
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+@keyframes rubberBand {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    -webkit-transform: scale3d(1.25, 0.75, 1);
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  40% {
+    -webkit-transform: scale3d(0.75, 1.25, 1);
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.15, 0.85, 1);
+    transform: scale3d(1.15, 0.85, 1);
+  }
+  65% {
+    -webkit-transform: scale3d(0.95, 1.05, 1);
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  75% {
+    -webkit-transform: scale3d(1.05, 0.95, 1);
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+/* line 230, ../../global/sass/lib/_animate.scss */
+.rubberBand {
+  -webkit-animation-name: rubberBand;
+  animation-name: rubberBand;
+}
+
+@-webkit-keyframes shake {
+  from,
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+}
+@keyframes shake {
+  from,
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+}
+/* line 285, ../../global/sass/lib/_animate.scss */
+.shake {
+  -webkit-animation-name: shake;
+  animation-name: shake;
+}
+
+@-webkit-keyframes headShake {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  6.5% {
+    -webkit-transform: translateX(-6px) rotateY(-9deg);
+    transform: translateX(-6px) rotateY(-9deg);
+  }
+  18.5% {
+    -webkit-transform: translateX(5px) rotateY(7deg);
+    transform: translateX(5px) rotateY(7deg);
+  }
+  31.5% {
+    -webkit-transform: translateX(-3px) rotateY(-5deg);
+    transform: translateX(-3px) rotateY(-5deg);
+  }
+  43.5% {
+    -webkit-transform: translateX(2px) rotateY(3deg);
+    transform: translateX(2px) rotateY(3deg);
+  }
+  50% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+@keyframes headShake {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  6.5% {
+    -webkit-transform: translateX(-6px) rotateY(-9deg);
+    transform: translateX(-6px) rotateY(-9deg);
+  }
+  18.5% {
+    -webkit-transform: translateX(5px) rotateY(7deg);
+    transform: translateX(5px) rotateY(7deg);
+  }
+  31.5% {
+    -webkit-transform: translateX(-3px) rotateY(-5deg);
+    transform: translateX(-3px) rotateY(-5deg);
+  }
+  43.5% {
+    -webkit-transform: translateX(2px) rotateY(3deg);
+    transform: translateX(2px) rotateY(3deg);
+  }
+  50% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+/* line 354, ../../global/sass/lib/_animate.scss */
+.headShake {
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+  -webkit-animation-name: headShake;
+  animation-name: headShake;
+}
+
+@-webkit-keyframes swing {
+  20% {
+    -webkit-transform: rotate3d(0, 0, 1, 15deg);
+    transform: rotate3d(0, 0, 1, 15deg);
+  }
+  40% {
+    -webkit-transform: rotate3d(0, 0, 1, -10deg);
+    transform: rotate3d(0, 0, 1, -10deg);
+  }
+  60% {
+    -webkit-transform: rotate3d(0, 0, 1, 5deg);
+    transform: rotate3d(0, 0, 1, 5deg);
+  }
+  80% {
+    -webkit-transform: rotate3d(0, 0, 1, -5deg);
+    transform: rotate3d(0, 0, 1, -5deg);
+  }
+  to {
+    -webkit-transform: rotate3d(0, 0, 1, 0deg);
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+}
+@keyframes swing {
+  20% {
+    -webkit-transform: rotate3d(0, 0, 1, 15deg);
+    transform: rotate3d(0, 0, 1, 15deg);
+  }
+  40% {
+    -webkit-transform: rotate3d(0, 0, 1, -10deg);
+    transform: rotate3d(0, 0, 1, -10deg);
+  }
+  60% {
+    -webkit-transform: rotate3d(0, 0, 1, 5deg);
+    transform: rotate3d(0, 0, 1, 5deg);
+  }
+  80% {
+    -webkit-transform: rotate3d(0, 0, 1, -5deg);
+    transform: rotate3d(0, 0, 1, -5deg);
+  }
+  to {
+    -webkit-transform: rotate3d(0, 0, 1, 0deg);
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+}
+/* line 415, ../../global/sass/lib/_animate.scss */
+.swing {
+  -webkit-transform-origin: top center;
+  transform-origin: top center;
+  -webkit-animation-name: swing;
+  animation-name: swing;
+}
+
+@-webkit-keyframes tada {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  10%,
+  20% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+    transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+  }
+  30%,
+  50%,
+  70%,
+  90% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+  }
+  40%,
+  60%,
+  80% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+  }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+@keyframes tada {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  10%,
+  20% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+    transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+  }
+  30%,
+  50%,
+  70%,
+  90% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+  }
+  40%,
+  60%,
+  80% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+  }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+/* line 488, ../../global/sass/lib/_animate.scss */
+.tada {
+  -webkit-animation-name: tada;
+  animation-name: tada;
+}
+
+/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
+@-webkit-keyframes wobble {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  15% {
+    -webkit-transform: translate3d(-25%, 0, 0) rotate3d(0, 0, 1, -5deg);
+    transform: translate3d(-25%, 0, 0) rotate3d(0, 0, 1, -5deg);
+  }
+  30% {
+    -webkit-transform: translate3d(20%, 0, 0) rotate3d(0, 0, 1, 3deg);
+    transform: translate3d(20%, 0, 0) rotate3d(0, 0, 1, 3deg);
+  }
+  45% {
+    -webkit-transform: translate3d(-15%, 0, 0) rotate3d(0, 0, 1, -3deg);
+    transform: translate3d(-15%, 0, 0) rotate3d(0, 0, 1, -3deg);
+  }
+  60% {
+    -webkit-transform: translate3d(10%, 0, 0) rotate3d(0, 0, 1, 2deg);
+    transform: translate3d(10%, 0, 0) rotate3d(0, 0, 1, 2deg);
+  }
+  75% {
+    -webkit-transform: translate3d(-5%, 0, 0) rotate3d(0, 0, 1, -1deg);
+    transform: translate3d(-5%, 0, 0) rotate3d(0, 0, 1, -1deg);
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes wobble {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  15% {
+    -webkit-transform: translate3d(-25%, 0, 0) rotate3d(0, 0, 1, -5deg);
+    transform: translate3d(-25%, 0, 0) rotate3d(0, 0, 1, -5deg);
+  }
+  30% {
+    -webkit-transform: translate3d(20%, 0, 0) rotate3d(0, 0, 1, 3deg);
+    transform: translate3d(20%, 0, 0) rotate3d(0, 0, 1, 3deg);
+  }
+  45% {
+    -webkit-transform: translate3d(-15%, 0, 0) rotate3d(0, 0, 1, -3deg);
+    transform: translate3d(-15%, 0, 0) rotate3d(0, 0, 1, -3deg);
+  }
+  60% {
+    -webkit-transform: translate3d(10%, 0, 0) rotate3d(0, 0, 1, 2deg);
+    transform: translate3d(10%, 0, 0) rotate3d(0, 0, 1, 2deg);
+  }
+  75% {
+    -webkit-transform: translate3d(-5%, 0, 0) rotate3d(0, 0, 1, -1deg);
+    transform: translate3d(-5%, 0, 0) rotate3d(0, 0, 1, -1deg);
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 569, ../../global/sass/lib/_animate.scss */
+.wobble {
+  -webkit-animation-name: wobble;
+  animation-name: wobble;
+}
+
+@-webkit-keyframes jello {
+  from,
+  11.1%,
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  22.2% {
+    -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);
+    transform: skewX(-12.5deg) skewY(-12.5deg);
+  }
+  33.3% {
+    -webkit-transform: skewX(6.25deg) skewY(6.25deg);
+    transform: skewX(6.25deg) skewY(6.25deg);
+  }
+  44.4% {
+    -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);
+    transform: skewX(-3.125deg) skewY(-3.125deg);
+  }
+  55.5% {
+    -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);
+    transform: skewX(1.5625deg) skewY(1.5625deg);
+  }
+  66.6% {
+    -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
+    transform: skewX(-0.78125deg) skewY(-0.78125deg);
+  }
+  77.7% {
+    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
+    transform: skewX(0.39063deg) skewY(0.39063deg);
+  }
+  88.8% {
+    -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
+    transform: skewX(-0.19531deg) skewY(-0.19531deg);
+  }
+}
+@keyframes jello {
+  from,
+  11.1%,
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  22.2% {
+    -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);
+    transform: skewX(-12.5deg) skewY(-12.5deg);
+  }
+  33.3% {
+    -webkit-transform: skewX(6.25deg) skewY(6.25deg);
+    transform: skewX(6.25deg) skewY(6.25deg);
+  }
+  44.4% {
+    -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);
+    transform: skewX(-3.125deg) skewY(-3.125deg);
+  }
+  55.5% {
+    -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);
+    transform: skewX(1.5625deg) skewY(1.5625deg);
+  }
+  66.6% {
+    -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
+    transform: skewX(-0.78125deg) skewY(-0.78125deg);
+  }
+  77.7% {
+    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
+    transform: skewX(0.39063deg) skewY(0.39063deg);
+  }
+  88.8% {
+    -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
+    transform: skewX(-0.19531deg) skewY(-0.19531deg);
+  }
+}
+/* line 662, ../../global/sass/lib/_animate.scss */
+.jello {
+  -webkit-animation-name: jello;
+  animation-name: jello;
+  -webkit-transform-origin: center;
+  transform-origin: center;
+}
+
+@-webkit-keyframes heartBeat {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  14% {
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+  }
+  28% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  42% {
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+  }
+  70% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+@keyframes heartBeat {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  14% {
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+  }
+  28% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  42% {
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+  }
+  70% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+/* line 723, ../../global/sass/lib/_animate.scss */
+.heartBeat {
+  -webkit-animation-name: heartBeat;
+  animation-name: heartBeat;
+  -webkit-animation-duration: 1.3s;
+  animation-duration: 1.3s;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes bounceIn {
+  from,
+  20%,
+  40%,
+  60%,
+  80%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  0% {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  20% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1);
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+  40% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9);
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(1.03, 1.03, 1.03);
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+  80% {
+    -webkit-transform: scale3d(0.97, 0.97, 0.97);
+    transform: scale3d(0.97, 0.97, 0.97);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+@keyframes bounceIn {
+  from,
+  20%,
+  40%,
+  60%,
+  80%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  0% {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  20% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1);
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+  40% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9);
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(1.03, 1.03, 1.03);
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+  80% {
+    -webkit-transform: scale3d(0.97, 0.97, 0.97);
+    transform: scale3d(0.97, 0.97, 0.97);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+/* line 822, ../../global/sass/lib/_animate.scss */
+.bounceIn {
+  -webkit-animation-duration: 0.75s;
+  animation-duration: 0.75s;
+  -webkit-animation-name: bounceIn;
+  animation-name: bounceIn;
+}
+
+@-webkit-keyframes bounceInDown {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -3000px, 0);
+    transform: translate3d(0, -3000px, 0);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 25px, 0);
+    transform: translate3d(0, 25px, 0);
+  }
+  75% {
+    -webkit-transform: translate3d(0, -10px, 0);
+    transform: translate3d(0, -10px, 0);
+  }
+  90% {
+    -webkit-transform: translate3d(0, 5px, 0);
+    transform: translate3d(0, 5px, 0);
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes bounceInDown {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -3000px, 0);
+    transform: translate3d(0, -3000px, 0);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 25px, 0);
+    transform: translate3d(0, 25px, 0);
+  }
+  75% {
+    -webkit-transform: translate3d(0, -10px, 0);
+    transform: translate3d(0, -10px, 0);
+  }
+  90% {
+    -webkit-transform: translate3d(0, 5px, 0);
+    transform: translate3d(0, 5px, 0);
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 905, ../../global/sass/lib/_animate.scss */
+.bounceInDown {
+  -webkit-animation-name: bounceInDown;
+  animation-name: bounceInDown;
+}
+
+@-webkit-keyframes bounceInLeft {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(-3000px, 0, 0);
+    transform: translate3d(-3000px, 0, 0);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translate3d(25px, 0, 0);
+    transform: translate3d(25px, 0, 0);
+  }
+  75% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+  90% {
+    -webkit-transform: translate3d(5px, 0, 0);
+    transform: translate3d(5px, 0, 0);
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes bounceInLeft {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(-3000px, 0, 0);
+    transform: translate3d(-3000px, 0, 0);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translate3d(25px, 0, 0);
+    transform: translate3d(25px, 0, 0);
+  }
+  75% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+  90% {
+    -webkit-transform: translate3d(5px, 0, 0);
+    transform: translate3d(5px, 0, 0);
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 986, ../../global/sass/lib/_animate.scss */
+.bounceInLeft {
+  -webkit-animation-name: bounceInLeft;
+  animation-name: bounceInLeft;
+}
+
+@-webkit-keyframes bounceInRight {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(3000px, 0, 0);
+    transform: translate3d(3000px, 0, 0);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translate3d(-25px, 0, 0);
+    transform: translate3d(-25px, 0, 0);
+  }
+  75% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+  90% {
+    -webkit-transform: translate3d(-5px, 0, 0);
+    transform: translate3d(-5px, 0, 0);
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes bounceInRight {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(3000px, 0, 0);
+    transform: translate3d(3000px, 0, 0);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translate3d(-25px, 0, 0);
+    transform: translate3d(-25px, 0, 0);
+  }
+  75% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+  90% {
+    -webkit-transform: translate3d(-5px, 0, 0);
+    transform: translate3d(-5px, 0, 0);
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 1067, ../../global/sass/lib/_animate.scss */
+.bounceInRight {
+  -webkit-animation-name: bounceInRight;
+  animation-name: bounceInRight;
+}
+
+@-webkit-keyframes bounceInUp {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 3000px, 0);
+    transform: translate3d(0, 3000px, 0);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, -20px, 0);
+    transform: translate3d(0, -20px, 0);
+  }
+  75% {
+    -webkit-transform: translate3d(0, 10px, 0);
+    transform: translate3d(0, 10px, 0);
+  }
+  90% {
+    -webkit-transform: translate3d(0, -5px, 0);
+    transform: translate3d(0, -5px, 0);
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes bounceInUp {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 3000px, 0);
+    transform: translate3d(0, 3000px, 0);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, -20px, 0);
+    transform: translate3d(0, -20px, 0);
+  }
+  75% {
+    -webkit-transform: translate3d(0, 10px, 0);
+    transform: translate3d(0, 10px, 0);
+  }
+  90% {
+    -webkit-transform: translate3d(0, -5px, 0);
+    transform: translate3d(0, -5px, 0);
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 1148, ../../global/sass/lib/_animate.scss */
+.bounceInUp {
+  -webkit-animation-name: bounceInUp;
+  animation-name: bounceInUp;
+}
+
+@-webkit-keyframes bounceOut {
+  20% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9);
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
+  50%,
+  55% {
+    opacity: 1;
+    -webkit-transform: scale3d(1.1, 1.1, 1.1);
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+}
+@keyframes bounceOut {
+  20% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9);
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
+  50%,
+  55% {
+    opacity: 1;
+    -webkit-transform: scale3d(1.1, 1.1, 1.1);
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+}
+/* line 1193, ../../global/sass/lib/_animate.scss */
+.bounceOut {
+  -webkit-animation-duration: 0.75s;
+  animation-duration: 0.75s;
+  -webkit-animation-name: bounceOut;
+  animation-name: bounceOut;
+}
+
+@-webkit-keyframes bounceOutDown {
+  20% {
+    -webkit-transform: translate3d(0, 10px, 0);
+    transform: translate3d(0, 10px, 0);
+  }
+  40%,
+  45% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, -20px, 0);
+    transform: translate3d(0, -20px, 0);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 2000px, 0);
+    transform: translate3d(0, 2000px, 0);
+  }
+}
+@keyframes bounceOutDown {
+  20% {
+    -webkit-transform: translate3d(0, 10px, 0);
+    transform: translate3d(0, 10px, 0);
+  }
+  40%,
+  45% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, -20px, 0);
+    transform: translate3d(0, -20px, 0);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 2000px, 0);
+    transform: translate3d(0, 2000px, 0);
+  }
+}
+/* line 1240, ../../global/sass/lib/_animate.scss */
+.bounceOutDown {
+  -webkit-animation-name: bounceOutDown;
+  animation-name: bounceOutDown;
+}
+
+@-webkit-keyframes bounceOutLeft {
+  20% {
+    opacity: 1;
+    -webkit-transform: translate3d(20px, 0, 0);
+    transform: translate3d(20px, 0, 0);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(-2000px, 0, 0);
+    transform: translate3d(-2000px, 0, 0);
+  }
+}
+@keyframes bounceOutLeft {
+  20% {
+    opacity: 1;
+    -webkit-transform: translate3d(20px, 0, 0);
+    transform: translate3d(20px, 0, 0);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(-2000px, 0, 0);
+    transform: translate3d(-2000px, 0, 0);
+  }
+}
+/* line 1273, ../../global/sass/lib/_animate.scss */
+.bounceOutLeft {
+  -webkit-animation-name: bounceOutLeft;
+  animation-name: bounceOutLeft;
+}
+
+@-webkit-keyframes bounceOutRight {
+  20% {
+    opacity: 1;
+    -webkit-transform: translate3d(-20px, 0, 0);
+    transform: translate3d(-20px, 0, 0);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(2000px, 0, 0);
+    transform: translate3d(2000px, 0, 0);
+  }
+}
+@keyframes bounceOutRight {
+  20% {
+    opacity: 1;
+    -webkit-transform: translate3d(-20px, 0, 0);
+    transform: translate3d(-20px, 0, 0);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(2000px, 0, 0);
+    transform: translate3d(2000px, 0, 0);
+  }
+}
+/* line 1306, ../../global/sass/lib/_animate.scss */
+.bounceOutRight {
+  -webkit-animation-name: bounceOutRight;
+  animation-name: bounceOutRight;
+}
+
+@-webkit-keyframes bounceOutUp {
+  20% {
+    -webkit-transform: translate3d(0, -10px, 0);
+    transform: translate3d(0, -10px, 0);
+  }
+  40%,
+  45% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 20px, 0);
+    transform: translate3d(0, 20px, 0);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -2000px, 0);
+    transform: translate3d(0, -2000px, 0);
+  }
+}
+@keyframes bounceOutUp {
+  20% {
+    -webkit-transform: translate3d(0, -10px, 0);
+    transform: translate3d(0, -10px, 0);
+  }
+  40%,
+  45% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 20px, 0);
+    transform: translate3d(0, 20px, 0);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -2000px, 0);
+    transform: translate3d(0, -2000px, 0);
+  }
+}
+/* line 1351, ../../global/sass/lib/_animate.scss */
+.bounceOutUp {
+  -webkit-animation-name: bounceOutUp;
+  animation-name: bounceOutUp;
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* line 1376, ../../global/sass/lib/_animate.scss */
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+
+@-webkit-keyframes fadeInDown {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 1409, ../../global/sass/lib/_animate.scss */
+.fadeInDown {
+  -webkit-animation-name: fadeInDown;
+  animation-name: fadeInDown;
+}
+
+@-webkit-keyframes fadeInDownBig {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -2000px, 0);
+    transform: translate3d(0, -2000px, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes fadeInDownBig {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -2000px, 0);
+    transform: translate3d(0, -2000px, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 1442, ../../global/sass/lib/_animate.scss */
+.fadeInDownBig {
+  -webkit-animation-name: fadeInDownBig;
+  animation-name: fadeInDownBig;
+}
+
+@-webkit-keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 1475, ../../global/sass/lib/_animate.scss */
+.fadeInLeft {
+  -webkit-animation-name: fadeInLeft;
+  animation-name: fadeInLeft;
+}
+
+@-webkit-keyframes fadeInLeftBig {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(-2000px, 0, 0);
+    transform: translate3d(-2000px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes fadeInLeftBig {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(-2000px, 0, 0);
+    transform: translate3d(-2000px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 1508, ../../global/sass/lib/_animate.scss */
+.fadeInLeftBig {
+  -webkit-animation-name: fadeInLeftBig;
+  animation-name: fadeInLeftBig;
+}
+
+@-webkit-keyframes fadeInRight {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 1541, ../../global/sass/lib/_animate.scss */
+.fadeInRight {
+  -webkit-animation-name: fadeInRight;
+  animation-name: fadeInRight;
+}
+
+@-webkit-keyframes fadeInRightBig {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(2000px, 0, 0);
+    transform: translate3d(2000px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes fadeInRightBig {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(2000px, 0, 0);
+    transform: translate3d(2000px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 1574, ../../global/sass/lib/_animate.scss */
+.fadeInRightBig {
+  -webkit-animation-name: fadeInRightBig;
+  animation-name: fadeInRightBig;
+}
+
+@-webkit-keyframes fadeInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 1607, ../../global/sass/lib/_animate.scss */
+.fadeInUp {
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+}
+
+@-webkit-keyframes fadeInUpBig {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 2000px, 0);
+    transform: translate3d(0, 2000px, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes fadeInUpBig {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 2000px, 0);
+    transform: translate3d(0, 2000px, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 1640, ../../global/sass/lib/_animate.scss */
+.fadeInUpBig {
+  -webkit-animation-name: fadeInUpBig;
+  animation-name: fadeInUpBig;
+}
+
+@-webkit-keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+/* line 1665, ../../global/sass/lib/_animate.scss */
+.fadeOut {
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
+}
+
+@-webkit-keyframes fadeOutDown {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+}
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+}
+/* line 1694, ../../global/sass/lib/_animate.scss */
+.fadeOutDown {
+  -webkit-animation-name: fadeOutDown;
+  animation-name: fadeOutDown;
+}
+
+@-webkit-keyframes fadeOutDownBig {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 2000px, 0);
+    transform: translate3d(0, 2000px, 0);
+  }
+}
+@keyframes fadeOutDownBig {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 2000px, 0);
+    transform: translate3d(0, 2000px, 0);
+  }
+}
+/* line 1723, ../../global/sass/lib/_animate.scss */
+.fadeOutDownBig {
+  -webkit-animation-name: fadeOutDownBig;
+  animation-name: fadeOutDownBig;
+}
+
+@-webkit-keyframes fadeOutLeft {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+@keyframes fadeOutLeft {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+/* line 1752, ../../global/sass/lib/_animate.scss */
+.fadeOutLeft {
+  -webkit-animation-name: fadeOutLeft;
+  animation-name: fadeOutLeft;
+}
+
+@-webkit-keyframes fadeOutLeftBig {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(-2000px, 0, 0);
+    transform: translate3d(-2000px, 0, 0);
+  }
+}
+@keyframes fadeOutLeftBig {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(-2000px, 0, 0);
+    transform: translate3d(-2000px, 0, 0);
+  }
+}
+/* line 1781, ../../global/sass/lib/_animate.scss */
+.fadeOutLeftBig {
+  -webkit-animation-name: fadeOutLeftBig;
+  animation-name: fadeOutLeftBig;
+}
+
+@-webkit-keyframes fadeOutRight {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+}
+@keyframes fadeOutRight {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+}
+/* line 1810, ../../global/sass/lib/_animate.scss */
+.fadeOutRight {
+  -webkit-animation-name: fadeOutRight;
+  animation-name: fadeOutRight;
+}
+
+@-webkit-keyframes fadeOutRightBig {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(2000px, 0, 0);
+    transform: translate3d(2000px, 0, 0);
+  }
+}
+@keyframes fadeOutRightBig {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(2000px, 0, 0);
+    transform: translate3d(2000px, 0, 0);
+  }
+}
+/* line 1839, ../../global/sass/lib/_animate.scss */
+.fadeOutRightBig {
+  -webkit-animation-name: fadeOutRightBig;
+  animation-name: fadeOutRightBig;
+}
+
+@-webkit-keyframes fadeOutUp {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+}
+@keyframes fadeOutUp {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+}
+/* line 1868, ../../global/sass/lib/_animate.scss */
+.fadeOutUp {
+  -webkit-animation-name: fadeOutUp;
+  animation-name: fadeOutUp;
+}
+
+@-webkit-keyframes fadeOutUpBig {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -2000px, 0);
+    transform: translate3d(0, -2000px, 0);
+  }
+}
+@keyframes fadeOutUpBig {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -2000px, 0);
+    transform: translate3d(0, -2000px, 0);
+  }
+}
+/* line 1897, ../../global/sass/lib/_animate.scss */
+.fadeOutUpBig {
+  -webkit-animation-name: fadeOutUpBig;
+  animation-name: fadeOutUpBig;
+}
+
+@-webkit-keyframes flip {
+  from {
+    -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, -360deg);
+    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, -360deg);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  40% {
+    -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -190deg);
+    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -190deg);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  50% {
+    -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -170deg);
+    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -170deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  80% {
+    -webkit-transform: perspective(400px) scale3d(0.95, 0.95, 0.95) translate3d(0, 0, 0) rotate3d(0, 1, 0, 0deg);
+    transform: perspective(400px) scale3d(0.95, 0.95, 0.95) translate3d(0, 0, 0) rotate3d(0, 1, 0, 0deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  to {
+    -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, 0deg);
+    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, 0deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+}
+@keyframes flip {
+  from {
+    -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, -360deg);
+    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, -360deg);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  40% {
+    -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -190deg);
+    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -190deg);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  50% {
+    -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -170deg);
+    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -170deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  80% {
+    -webkit-transform: perspective(400px) scale3d(0.95, 0.95, 0.95) translate3d(0, 0, 0) rotate3d(0, 1, 0, 0deg);
+    transform: perspective(400px) scale3d(0.95, 0.95, 0.95) translate3d(0, 0, 0) rotate3d(0, 1, 0, 0deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  to {
+    -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, 0deg);
+    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, 0deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+}
+/* line 1992, ../../global/sass/lib/_animate.scss */
+.animated.flip {
+  -webkit-backface-visibility: visible;
+  backface-visibility: visible;
+  -webkit-animation-name: flip;
+  animation-name: flip;
+}
+
+@-webkit-keyframes flipInX {
+  from {
+    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+    transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  40% {
+    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+    transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  60% {
+    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+    transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+    opacity: 1;
+  }
+  80% {
+    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+    transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+  }
+  to {
+    -webkit-transform: perspective(400px);
+    transform: perspective(400px);
+  }
+}
+@keyframes flipInX {
+  from {
+    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+    transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  40% {
+    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+    transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  60% {
+    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+    transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+    opacity: 1;
+  }
+  80% {
+    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+    transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+  }
+  to {
+    -webkit-transform: perspective(400px);
+    transform: perspective(400px);
+  }
+}
+/* line 2065, ../../global/sass/lib/_animate.scss */
+.flipInX {
+  -webkit-backface-visibility: visible !important;
+  backface-visibility: visible !important;
+  -webkit-animation-name: flipInX;
+  animation-name: flipInX;
+}
+
+@-webkit-keyframes flipInY {
+  from {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  40% {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  60% {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
+    opacity: 1;
+  }
+  80% {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -5deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, -5deg);
+  }
+  to {
+    -webkit-transform: perspective(400px);
+    transform: perspective(400px);
+  }
+}
+@keyframes flipInY {
+  from {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  40% {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  60% {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
+    opacity: 1;
+  }
+  80% {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -5deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, -5deg);
+  }
+  to {
+    -webkit-transform: perspective(400px);
+    transform: perspective(400px);
+  }
+}
+/* line 2138, ../../global/sass/lib/_animate.scss */
+.flipInY {
+  -webkit-backface-visibility: visible !important;
+  backface-visibility: visible !important;
+  -webkit-animation-name: flipInY;
+  animation-name: flipInY;
+}
+
+@-webkit-keyframes flipOutX {
+  from {
+    -webkit-transform: perspective(400px);
+    transform: perspective(400px);
+  }
+  30% {
+    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+    transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+    transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+    opacity: 0;
+  }
+}
+@keyframes flipOutX {
+  from {
+    -webkit-transform: perspective(400px);
+    transform: perspective(400px);
+  }
+  30% {
+    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+    transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+    transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+    opacity: 0;
+  }
+}
+/* line 2183, ../../global/sass/lib/_animate.scss */
+.flipOutX {
+  -webkit-animation-duration: 0.75s;
+  animation-duration: 0.75s;
+  -webkit-animation-name: flipOutX;
+  animation-name: flipOutX;
+  -webkit-backface-visibility: visible !important;
+  backface-visibility: visible !important;
+}
+
+@-webkit-keyframes flipOutY {
+  from {
+    -webkit-transform: perspective(400px);
+    transform: perspective(400px);
+  }
+  30% {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -15deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, -15deg);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+    opacity: 0;
+  }
+}
+@keyframes flipOutY {
+  from {
+    -webkit-transform: perspective(400px);
+    transform: perspective(400px);
+  }
+  30% {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -15deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, -15deg);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+    opacity: 0;
+  }
+}
+/* line 2230, ../../global/sass/lib/_animate.scss */
+.flipOutY {
+  -webkit-animation-duration: 0.75s;
+  animation-duration: 0.75s;
+  -webkit-backface-visibility: visible !important;
+  backface-visibility: visible !important;
+  -webkit-animation-name: flipOutY;
+  animation-name: flipOutY;
+}
+
+@-webkit-keyframes lightSpeedIn {
+  from {
+    -webkit-transform: translate3d(100%, 0, 0) skewX(-30deg);
+    transform: translate3d(100%, 0, 0) skewX(-30deg);
+    opacity: 0;
+  }
+  60% {
+    -webkit-transform: skewX(20deg);
+    transform: skewX(20deg);
+    opacity: 1;
+  }
+  80% {
+    -webkit-transform: skewX(-5deg);
+    transform: skewX(-5deg);
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes lightSpeedIn {
+  from {
+    -webkit-transform: translate3d(100%, 0, 0) skewX(-30deg);
+    transform: translate3d(100%, 0, 0) skewX(-30deg);
+    opacity: 0;
+  }
+  60% {
+    -webkit-transform: skewX(20deg);
+    transform: skewX(20deg);
+    opacity: 1;
+  }
+  80% {
+    -webkit-transform: skewX(-5deg);
+    transform: skewX(-5deg);
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 2287, ../../global/sass/lib/_animate.scss */
+.lightSpeedIn {
+  -webkit-animation-name: lightSpeedIn;
+  animation-name: lightSpeedIn;
+  -webkit-animation-timing-function: ease-out;
+  animation-timing-function: ease-out;
+}
+
+@-webkit-keyframes lightSpeedOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translate3d(100%, 0, 0) skewX(30deg);
+    transform: translate3d(100%, 0, 0) skewX(30deg);
+    opacity: 0;
+  }
+}
+@keyframes lightSpeedOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translate3d(100%, 0, 0) skewX(30deg);
+    transform: translate3d(100%, 0, 0) skewX(30deg);
+    opacity: 0;
+  }
+}
+/* line 2318, ../../global/sass/lib/_animate.scss */
+.lightSpeedOut {
+  -webkit-animation-name: lightSpeedOut;
+  animation-name: lightSpeedOut;
+  -webkit-animation-timing-function: ease-in;
+  animation-timing-function: ease-in;
+}
+
+@-webkit-keyframes rotateIn {
+  from {
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    -webkit-transform: rotate3d(0, 0, 1, -200deg);
+    transform: rotate3d(0, 0, 1, -200deg);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+@keyframes rotateIn {
+  from {
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    -webkit-transform: rotate3d(0, 0, 1, -200deg);
+    transform: rotate3d(0, 0, 1, -200deg);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+/* line 2361, ../../global/sass/lib/_animate.scss */
+.rotateIn {
+  -webkit-animation-name: rotateIn;
+  animation-name: rotateIn;
+}
+
+@-webkit-keyframes rotateInDownLeft {
+  from {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    -webkit-transform: rotate3d(0, 0, 1, -45deg);
+    transform: rotate3d(0, 0, 1, -45deg);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+@keyframes rotateInDownLeft {
+  from {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    -webkit-transform: rotate3d(0, 0, 1, -45deg);
+    transform: rotate3d(0, 0, 1, -45deg);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+/* line 2402, ../../global/sass/lib/_animate.scss */
+.rotateInDownLeft {
+  -webkit-animation-name: rotateInDownLeft;
+  animation-name: rotateInDownLeft;
+}
+
+@-webkit-keyframes rotateInDownRight {
+  from {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    -webkit-transform: rotate3d(0, 0, 1, 45deg);
+    transform: rotate3d(0, 0, 1, 45deg);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+@keyframes rotateInDownRight {
+  from {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    -webkit-transform: rotate3d(0, 0, 1, 45deg);
+    transform: rotate3d(0, 0, 1, 45deg);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+/* line 2443, ../../global/sass/lib/_animate.scss */
+.rotateInDownRight {
+  -webkit-animation-name: rotateInDownRight;
+  animation-name: rotateInDownRight;
+}
+
+@-webkit-keyframes rotateInUpLeft {
+  from {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    -webkit-transform: rotate3d(0, 0, 1, 45deg);
+    transform: rotate3d(0, 0, 1, 45deg);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+@keyframes rotateInUpLeft {
+  from {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    -webkit-transform: rotate3d(0, 0, 1, 45deg);
+    transform: rotate3d(0, 0, 1, 45deg);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+/* line 2484, ../../global/sass/lib/_animate.scss */
+.rotateInUpLeft {
+  -webkit-animation-name: rotateInUpLeft;
+  animation-name: rotateInUpLeft;
+}
+
+@-webkit-keyframes rotateInUpRight {
+  from {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    -webkit-transform: rotate3d(0, 0, 1, -90deg);
+    transform: rotate3d(0, 0, 1, -90deg);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+@keyframes rotateInUpRight {
+  from {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    -webkit-transform: rotate3d(0, 0, 1, -90deg);
+    transform: rotate3d(0, 0, 1, -90deg);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+/* line 2525, ../../global/sass/lib/_animate.scss */
+.rotateInUpRight {
+  -webkit-animation-name: rotateInUpRight;
+  animation-name: rotateInUpRight;
+}
+
+@-webkit-keyframes rotateOut {
+  from {
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    opacity: 1;
+  }
+  to {
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    -webkit-transform: rotate3d(0, 0, 1, 200deg);
+    transform: rotate3d(0, 0, 1, 200deg);
+    opacity: 0;
+  }
+}
+@keyframes rotateOut {
+  from {
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    opacity: 1;
+  }
+  to {
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    -webkit-transform: rotate3d(0, 0, 1, 200deg);
+    transform: rotate3d(0, 0, 1, 200deg);
+    opacity: 0;
+  }
+}
+/* line 2562, ../../global/sass/lib/_animate.scss */
+.rotateOut {
+  -webkit-animation-name: rotateOut;
+  animation-name: rotateOut;
+}
+
+@-webkit-keyframes rotateOutDownLeft {
+  from {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    opacity: 1;
+  }
+  to {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    -webkit-transform: rotate3d(0, 0, 1, 45deg);
+    transform: rotate3d(0, 0, 1, 45deg);
+    opacity: 0;
+  }
+}
+@keyframes rotateOutDownLeft {
+  from {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    opacity: 1;
+  }
+  to {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    -webkit-transform: rotate3d(0, 0, 1, 45deg);
+    transform: rotate3d(0, 0, 1, 45deg);
+    opacity: 0;
+  }
+}
+/* line 2599, ../../global/sass/lib/_animate.scss */
+.rotateOutDownLeft {
+  -webkit-animation-name: rotateOutDownLeft;
+  animation-name: rotateOutDownLeft;
+}
+
+@-webkit-keyframes rotateOutDownRight {
+  from {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    opacity: 1;
+  }
+  to {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    -webkit-transform: rotate3d(0, 0, 1, -45deg);
+    transform: rotate3d(0, 0, 1, -45deg);
+    opacity: 0;
+  }
+}
+@keyframes rotateOutDownRight {
+  from {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    opacity: 1;
+  }
+  to {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    -webkit-transform: rotate3d(0, 0, 1, -45deg);
+    transform: rotate3d(0, 0, 1, -45deg);
+    opacity: 0;
+  }
+}
+/* line 2636, ../../global/sass/lib/_animate.scss */
+.rotateOutDownRight {
+  -webkit-animation-name: rotateOutDownRight;
+  animation-name: rotateOutDownRight;
+}
+
+@-webkit-keyframes rotateOutUpLeft {
+  from {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    opacity: 1;
+  }
+  to {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    -webkit-transform: rotate3d(0, 0, 1, -45deg);
+    transform: rotate3d(0, 0, 1, -45deg);
+    opacity: 0;
+  }
+}
+@keyframes rotateOutUpLeft {
+  from {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    opacity: 1;
+  }
+  to {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    -webkit-transform: rotate3d(0, 0, 1, -45deg);
+    transform: rotate3d(0, 0, 1, -45deg);
+    opacity: 0;
+  }
+}
+/* line 2673, ../../global/sass/lib/_animate.scss */
+.rotateOutUpLeft {
+  -webkit-animation-name: rotateOutUpLeft;
+  animation-name: rotateOutUpLeft;
+}
+
+@-webkit-keyframes rotateOutUpRight {
+  from {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    opacity: 1;
+  }
+  to {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    -webkit-transform: rotate3d(0, 0, 1, 90deg);
+    transform: rotate3d(0, 0, 1, 90deg);
+    opacity: 0;
+  }
+}
+@keyframes rotateOutUpRight {
+  from {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    opacity: 1;
+  }
+  to {
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    -webkit-transform: rotate3d(0, 0, 1, 90deg);
+    transform: rotate3d(0, 0, 1, 90deg);
+    opacity: 0;
+  }
+}
+/* line 2710, ../../global/sass/lib/_animate.scss */
+.rotateOutUpRight {
+  -webkit-animation-name: rotateOutUpRight;
+  animation-name: rotateOutUpRight;
+}
+
+@-webkit-keyframes hinge {
+  0% {
+    -webkit-transform-origin: top left;
+    transform-origin: top left;
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+  }
+  20%,
+  60% {
+    -webkit-transform: rotate3d(0, 0, 1, 80deg);
+    transform: rotate3d(0, 0, 1, 80deg);
+    -webkit-transform-origin: top left;
+    transform-origin: top left;
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+  }
+  40%,
+  80% {
+    -webkit-transform: rotate3d(0, 0, 1, 60deg);
+    transform: rotate3d(0, 0, 1, 60deg);
+    -webkit-transform-origin: top left;
+    transform-origin: top left;
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translate3d(0, 700px, 0);
+    transform: translate3d(0, 700px, 0);
+    opacity: 0;
+  }
+}
+@keyframes hinge {
+  0% {
+    -webkit-transform-origin: top left;
+    transform-origin: top left;
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+  }
+  20%,
+  60% {
+    -webkit-transform: rotate3d(0, 0, 1, 80deg);
+    transform: rotate3d(0, 0, 1, 80deg);
+    -webkit-transform-origin: top left;
+    transform-origin: top left;
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+  }
+  40%,
+  80% {
+    -webkit-transform: rotate3d(0, 0, 1, 60deg);
+    transform: rotate3d(0, 0, 1, 60deg);
+    -webkit-transform-origin: top left;
+    transform-origin: top left;
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translate3d(0, 700px, 0);
+    transform: translate3d(0, 700px, 0);
+    opacity: 0;
+  }
+}
+/* line 2787, ../../global/sass/lib/_animate.scss */
+.hinge {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+  -webkit-animation-name: hinge;
+  animation-name: hinge;
+}
+
+@-webkit-keyframes jackInTheBox {
+  from {
+    opacity: 0;
+    -webkit-transform: scale(0.1) rotate(30deg);
+    transform: scale(0.1) rotate(30deg);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+  }
+  50% {
+    -webkit-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+  }
+  70% {
+    -webkit-transform: rotate(3deg);
+    transform: rotate(3deg);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+@keyframes jackInTheBox {
+  from {
+    opacity: 0;
+    -webkit-transform: scale(0.1) rotate(30deg);
+    transform: scale(0.1) rotate(30deg);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+  }
+  50% {
+    -webkit-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+  }
+  70% {
+    -webkit-transform: rotate(3deg);
+    transform: rotate(3deg);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+/* line 2846, ../../global/sass/lib/_animate.scss */
+.jackInTheBox {
+  -webkit-animation-name: jackInTheBox;
+  animation-name: jackInTheBox;
+}
+
+/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
+@-webkit-keyframes rollIn {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(-100%, 0, 0) rotate3d(0, 0, 1, -120deg);
+    transform: translate3d(-100%, 0, 0) rotate3d(0, 0, 1, -120deg);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes rollIn {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(-100%, 0, 0) rotate3d(0, 0, 1, -120deg);
+    transform: translate3d(-100%, 0, 0) rotate3d(0, 0, 1, -120deg);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 2881, ../../global/sass/lib/_animate.scss */
+.rollIn {
+  -webkit-animation-name: rollIn;
+  animation-name: rollIn;
+}
+
+/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
+@-webkit-keyframes rollOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(100%, 0, 0) rotate3d(0, 0, 1, 120deg);
+    transform: translate3d(100%, 0, 0) rotate3d(0, 0, 1, 120deg);
+  }
+}
+@keyframes rollOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(100%, 0, 0) rotate3d(0, 0, 1, 120deg);
+    transform: translate3d(100%, 0, 0) rotate3d(0, 0, 1, 120deg);
+  }
+}
+/* line 2912, ../../global/sass/lib/_animate.scss */
+.rollOut {
+  -webkit-animation-name: rollOut;
+  animation-name: rollOut;
+}
+
+@-webkit-keyframes zoomIn {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+/* line 2941, ../../global/sass/lib/_animate.scss */
+.zoomIn {
+  -webkit-animation-name: zoomIn;
+  animation-name: zoomIn;
+}
+
+@-webkit-keyframes zoomInDown {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, -1000px, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, -1000px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, 60px, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, 60px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+@keyframes zoomInDown {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, -1000px, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, -1000px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, 60px, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, 60px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+/* line 2982, ../../global/sass/lib/_animate.scss */
+.zoomInDown {
+  -webkit-animation-name: zoomInDown;
+  animation-name: zoomInDown;
+}
+
+@-webkit-keyframes zoomInLeft {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(-1000px, 0, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(-1000px, 0, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(10px, 0, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(10px, 0, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+@keyframes zoomInLeft {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(-1000px, 0, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(-1000px, 0, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(10px, 0, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(10px, 0, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+/* line 3023, ../../global/sass/lib/_animate.scss */
+.zoomInLeft {
+  -webkit-animation-name: zoomInLeft;
+  animation-name: zoomInLeft;
+}
+
+@-webkit-keyframes zoomInRight {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(1000px, 0, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(1000px, 0, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(-10px, 0, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(-10px, 0, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+@keyframes zoomInRight {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(1000px, 0, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(1000px, 0, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(-10px, 0, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(-10px, 0, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+/* line 3064, ../../global/sass/lib/_animate.scss */
+.zoomInRight {
+  -webkit-animation-name: zoomInRight;
+  animation-name: zoomInRight;
+}
+
+@-webkit-keyframes zoomInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+@keyframes zoomInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+/* line 3105, ../../global/sass/lib/_animate.scss */
+.zoomInUp {
+  -webkit-animation-name: zoomInUp;
+  animation-name: zoomInUp;
+}
+
+@-webkit-keyframes zoomOut {
+  from {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes zoomOut {
+  from {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  to {
+    opacity: 0;
+  }
+}
+/* line 3142, ../../global/sass/lib/_animate.scss */
+.zoomOut {
+  -webkit-animation-name: zoomOut;
+  animation-name: zoomOut;
+}
+
+@-webkit-keyframes zoomOutDown {
+  40% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 2000px, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 2000px, 0);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+@keyframes zoomOutDown {
+  40% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 2000px, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 2000px, 0);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+/* line 3187, ../../global/sass/lib/_animate.scss */
+.zoomOutDown {
+  -webkit-animation-name: zoomOutDown;
+  animation-name: zoomOutDown;
+}
+
+@-webkit-keyframes zoomOutLeft {
+  40% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(42px, 0, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(42px, 0, 0);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: scale(0.1) translate3d(-2000px, 0, 0);
+    transform: scale(0.1) translate3d(-2000px, 0, 0);
+    -webkit-transform-origin: left center;
+    transform-origin: left center;
+  }
+}
+@keyframes zoomOutLeft {
+  40% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(42px, 0, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(42px, 0, 0);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: scale(0.1) translate3d(-2000px, 0, 0);
+    transform: scale(0.1) translate3d(-2000px, 0, 0);
+    -webkit-transform-origin: left center;
+    transform-origin: left center;
+  }
+}
+/* line 3224, ../../global/sass/lib/_animate.scss */
+.zoomOutLeft {
+  -webkit-animation-name: zoomOutLeft;
+  animation-name: zoomOutLeft;
+}
+
+@-webkit-keyframes zoomOutRight {
+  40% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(-42px, 0, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(-42px, 0, 0);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: scale(0.1) translate3d(2000px, 0, 0);
+    transform: scale(0.1) translate3d(2000px, 0, 0);
+    -webkit-transform-origin: right center;
+    transform-origin: right center;
+  }
+}
+@keyframes zoomOutRight {
+  40% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(-42px, 0, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(-42px, 0, 0);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: scale(0.1) translate3d(2000px, 0, 0);
+    transform: scale(0.1) translate3d(2000px, 0, 0);
+    -webkit-transform-origin: right center;
+    transform-origin: right center;
+  }
+}
+/* line 3261, ../../global/sass/lib/_animate.scss */
+.zoomOutRight {
+  -webkit-animation-name: zoomOutRight;
+  animation-name: zoomOutRight;
+}
+
+@-webkit-keyframes zoomOutUp {
+  40% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, 60px, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, 60px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, -2000px, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, -2000px, 0);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+@keyframes zoomOutUp {
+  40% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, 60px, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, 60px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, -2000px, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, -2000px, 0);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+/* line 3306, ../../global/sass/lib/_animate.scss */
+.zoomOutUp {
+  -webkit-animation-name: zoomOutUp;
+  animation-name: zoomOutUp;
+}
+
+@-webkit-keyframes slideInDown {
+  from {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+    visibility: visible;
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes slideInDown {
+  from {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+    visibility: visible;
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 3337, ../../global/sass/lib/_animate.scss */
+.slideInDown {
+  -webkit-animation-name: slideInDown;
+  animation-name: slideInDown;
+}
+
+@-webkit-keyframes slideInLeft {
+  from {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+    visibility: visible;
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes slideInLeft {
+  from {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+    visibility: visible;
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 3368, ../../global/sass/lib/_animate.scss */
+.slideInLeft {
+  -webkit-animation-name: slideInLeft;
+  animation-name: slideInLeft;
+}
+
+@-webkit-keyframes slideInRight {
+  from {
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes slideInRight {
+  from {
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 3399, ../../global/sass/lib/_animate.scss */
+.slideInRight {
+  -webkit-animation-name: slideInRight;
+  animation-name: slideInRight;
+}
+
+@-webkit-keyframes slideInUp {
+  from {
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+    visibility: visible;
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes slideInUp {
+  from {
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+    visibility: visible;
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* line 3430, ../../global/sass/lib/_animate.scss */
+.slideInUp {
+  -webkit-animation-name: slideInUp;
+  animation-name: slideInUp;
+}
+
+@-webkit-keyframes slideOutDown {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+}
+@keyframes slideOutDown {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+}
+/* line 3461, ../../global/sass/lib/_animate.scss */
+.slideOutDown {
+  -webkit-animation-name: slideOutDown;
+  animation-name: slideOutDown;
+}
+
+@-webkit-keyframes slideOutLeft {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+@keyframes slideOutLeft {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+/* line 3492, ../../global/sass/lib/_animate.scss */
+.slideOutLeft {
+  -webkit-animation-name: slideOutLeft;
+  animation-name: slideOutLeft;
+}
+
+@-webkit-keyframes slideOutRight {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+}
+@keyframes slideOutRight {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+}
+/* line 3523, ../../global/sass/lib/_animate.scss */
+.slideOutRight {
+  -webkit-animation-name: slideOutRight;
+  animation-name: slideOutRight;
+}
+
+@-webkit-keyframes slideOutUp {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+}
+@keyframes slideOutUp {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+}
+/* line 3554, ../../global/sass/lib/_animate.scss */
+.slideOutUp {
+  -webkit-animation-name: slideOutUp;
+  animation-name: slideOutUp;
+}
+
+/* line 3559, ../../global/sass/lib/_animate.scss */
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+/* line 3566, ../../global/sass/lib/_animate.scss */
+.animated.infinite {
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
+/* line 3571, ../../global/sass/lib/_animate.scss */
+.animated.delay-1s {
+  -webkit-animation-delay: 1s;
+  animation-delay: 1s;
+}
+
+/* line 3576, ../../global/sass/lib/_animate.scss */
+.animated.delay-2s {
+  -webkit-animation-delay: 2s;
+  animation-delay: 2s;
+}
+
+/* line 3581, ../../global/sass/lib/_animate.scss */
+.animated.delay-3s {
+  -webkit-animation-delay: 3s;
+  animation-delay: 3s;
+}
+
+/* line 3586, ../../global/sass/lib/_animate.scss */
+.animated.delay-4s {
+  -webkit-animation-delay: 4s;
+  animation-delay: 4s;
+}
+
+/* line 3591, ../../global/sass/lib/_animate.scss */
+.animated.delay-5s {
+  -webkit-animation-delay: 5s;
+  animation-delay: 5s;
+}
+
+/* line 3596, ../../global/sass/lib/_animate.scss */
+.animated.fast {
+  -webkit-animation-duration: 800ms;
+  animation-duration: 800ms;
+}
+
+/* line 3601, ../../global/sass/lib/_animate.scss */
+.animated.faster {
+  -webkit-animation-duration: 500ms;
+  animation-duration: 500ms;
+}
+
+/* line 3606, ../../global/sass/lib/_animate.scss */
+.animated.slow {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+}
+
+/* line 3611, ../../global/sass/lib/_animate.scss */
+.animated.slower {
+  -webkit-animation-duration: 3s;
+  animation-duration: 3s;
+}
+
+@media (print), (prefers-reduced-motion) {
+  /* line 3617, ../../global/sass/lib/_animate.scss */
+  .animated {
+    -webkit-animation: unset !important;
+    animation: unset !important;
+    -webkit-transition: none !important;
+    transition: none !important;
+  }
+}
+/* line 3625, ../../global/sass/lib/_animate.scss */
+*.loading::before {
+  content: "";
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  animation: spin 2s linear infinite;
+  float: left;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* Variables: colors, widths, padding */
+/**
+ * Variables
+ *
+ * Colors: Brand
+ * Colors: Backgrounds
+ * Font sizes
+ * Layout variables
+ */
+/* Colors: CB Brand */
+/* Colors: Theme */
+/* Colors: Backgrounds */
+/* Colors: text */
+/* Colors: Message statuses */
+/* Font sizes */
+/* Layout Variables */
+/* Fonts */
+/* Mixins */
+/**
+ * Framework mixins
+ *
+ * Breakpoints
+ * Animation
+ */
+/* -------------------- Breakpoints (for lists) -------------------- */
+/* -------------------- Animation -------------------- */
+/* Extends */
+/**
+ * Extends
+ *
+ * Re-usable styles, intended to be used in scss, not directly in the dom.
+ * Utilizes Breakpoints
+ *
+ * Boxes
+ * Typography
+ *
+ *
+ */
+/* -------------------- Boxes -------------------- */
+/* line 15, ../../global/sass/partials/_extends.scss */
+.cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper, .cb-items-table {
+  background: #f6f6f6;
+  padding: 2.5px 5px;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+@media (min-width: 37.5em) {
+  /* line 15, ../../global/sass/partials/_extends.scss */
+  .cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper, .cb-items-table {
+    padding: 10px 15px;
+  }
+}
+
+/* line 28, ../../global/sass/partials/_extends.scss */
+.cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months {
+  background: #FFF;
+  padding: 5px;
+  border-radius: 8px;
+}
+@media (min-width: 37.5em) {
+  /* line 28, ../../global/sass/partials/_extends.scss */
+  .cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months {
+    padding: 10px;
+  }
+}
+
+/* -------------------- Typography -------------------- */
+/* line 41, ../../global/sass/partials/_extends.scss */
+.cb-big, .cb-map-filters.cb-wrapper .cb-map-filter-group-label {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* -------------------- Boxes -------------------- */
+/* line 48, ../../global/sass/partials/_extends.scss */
+.shadow {
+  box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.22);
+}
+
+/* line 52, ../../global/sass/partials/_extends.scss */
+.shadow-small, .cb-hover, .cb-button:hover, .cb-button-container a:hover, .cb-wrapper .cb-action input:hover, .cb-wrapper #booking-form input:hover, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:hover {
+  box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* line 56, ../../global/sass/partials/_extends.scss */
+.cb-hover {
+  border: 1px solid #506CA9;
+  border-radius: 8px;
+}
+
+/* line 62, ../../global/sass/partials/_extends.scss */
+.cb-thumbnail {
+  border-radius: 8px;
+}
+
+/* -------------------- Buttons -------------------- */
+/* line 68, ../../global/sass/partials/_extends.scss */
+.cb-button, .cb-button-container a, .cb-wrapper .cb-action input, .cb-wrapper #booking-form input, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button {
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 14px;
+  background-color: #74ce3c;
+  border: none !important;
+  /* TwentyFifteen theme fix */
+  text-decoration: none !important;
+  word-break: normal !important;
+  /* TwentyTwenty theme fix */
+  white-space: nowrap;
+  color: #FFF;
+  padding: 10px 15px;
+  font-weight: bold;
+}
+/* line 81, ../../global/sass/partials/_extends.scss */
+.cb-button.small, .cb-button-container a.small, .cb-wrapper .cb-action input.small, .cb-wrapper #booking-form input.small, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.small {
+  padding: 10px;
+  font-size: 12px;
+}
+/* line 86, ../../global/sass/partials/_extends.scss */
+.cb-button:hover, .cb-button-container a:hover, .cb-wrapper .cb-action input:hover, .cb-wrapper #booking-form input:hover, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:hover {
+  background: #506CA9;
+  color: #FFF;
+  /* Various themes fix */
+}
+/* line 92, ../../global/sass/partials/_extends.scss */
+.cb-button:visited, .cb-button-container a:visited, .cb-wrapper .cb-action input:visited, .cb-wrapper #booking-form input:visited, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:visited {
+  color: #FFF;
+}
+/* line 96, ../../global/sass/partials/_extends.scss */
+.cb-button.big, .cb-button-container a.big, .cb-wrapper .cb-action input.big, .cb-wrapper #booking-form input.big, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.big {
+  padding: 10px 15px;
+  font-size: 18px;
+  line-height: 18px;
+}
+/* line 101, ../../global/sass/partials/_extends.scss */
+.cb-button.secondary, .cb-button-container a.secondary, .cb-wrapper .cb-action input.secondary, .cb-wrapper #booking-form input.secondary, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.secondary {
+  background-color: #FFF;
+  color: #d5425c;
+}
+/* line 106, ../../global/sass/partials/_extends.scss */
+.cb-button.cancel, .cb-button-container a.cancel, .cb-wrapper .cb-action input.cancel, .cb-wrapper #booking-form input.cancel, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.cancel {
+  background-color: #d5425c;
+}
+/* line 110, ../../global/sass/partials/_extends.scss */
+.cb-button.confirm, .cb-button-container a.confirm, .cb-wrapper .cb-action input.confirm, .cb-wrapper #booking-form input.confirm, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.confirm {
+  background-color: #74ce3c;
+}
+/* line 114, ../../global/sass/partials/_extends.scss */
+.cb-button.delete, .cb-button-container a.delete, .cb-wrapper .cb-action input.delete, .cb-wrapper #booking-form input.delete, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.delete {
+  background-color: #d5425c;
+}
+/* line 118, ../../global/sass/partials/_extends.scss */
+.cb-button[disabled=disabled], .cb-button-container a[disabled=disabled], .cb-wrapper .cb-action input[disabled=disabled], .cb-wrapper #booking-form input[disabled=disabled], .cb-map-filters.cb-wrapper .cb-map-button-wrapper button[disabled=disabled] {
+  background-color: #c4c4c4;
+  color: white;
+}
+/* line 123, ../../global/sass/partials/_extends.scss */
+.cb-button.no-right-radius, .cb-button-container a.no-right-radius, .cb-wrapper .cb-action input.no-right-radius, .cb-wrapper #booking-form input.no-right-radius, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.no-right-radius {
+  border-radius: 8px 0;
+}
+/* line 126, ../../global/sass/partials/_extends.scss */
+.cb-button.no-left-radius, .cb-button-container a.no-left-radius, .cb-wrapper .cb-action input.no-left-radius, .cb-wrapper #booking-form input.no-left-radius, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.no-left-radius {
+  border-radius: 0 8px;
+}
+
+/* line 134, ../../global/sass/partials/_extends.scss */
+.cb-pill {
+  border-radius: 8px;
+  padding: 0;
+  margin: 0;
+}
+/* line 138, ../../global/sass/partials/_extends.scss */
+.cb-pill a {
+  text-decoration: none;
+  color: #FFF;
+  padding: 5px 10px;
+}
+
+/* Utilites */
+/**
+ * Debug
+ *
+ */
+/* line 6, ../../global/sass/partials/_utilities.scss */
+.cb-hidden {
+  display: none;
+}
+
+/* Template name in content */
+/* line 9, ../../global/sass/partials/_utilities.scss */
+.cb-debug {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 10px;
+  background: transparent !important;
+}
+
+/* line 18, ../../global/sass/partials/_utilities.scss */
+.cb-wrapper:hover .cb-debug {
+  opacity: 1;
+}
+
+/* Multi-column layouts */
+/**
+ * Layouts for tables/lists
+ *
+ * Breakpoints for arranging elements
+ *
+ */
+/* -------------------- Tables -------------------- */
+/* 30-70 standard for lists, first item is title */
+/* line 14, ../sass/partials/_layouts.scss */
+.cb-col-30-70 > :nth-child(odd) {
+  /* this is the title column , e.g. "Name" */
+  font-weight: bold;
+}
+@media (min-width: 37.5em) {
+  /* line 12, ../sass/partials/_layouts.scss */
+  .cb-col-30-70 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  /* line 24, ../sass/partials/_layouts.scss */
+  .cb-col-30-70 > :nth-child(odd) {
+    width: 30%;
+  }
+  /* line 27, ../sass/partials/_layouts.scss */
+  .cb-col-30-70 > :nth-child(even) {
+    width: 70%;
+  }
+}
+
+/* 50-50 */
+@media (min-width: 37.5em) {
+  /* line 33, ../sass/partials/_layouts.scss */
+  .cb-col-50-50 {
+    display: flex;
+  }
+  /* line 36, ../sass/partials/_layouts.scss */
+  .cb-col-50-50 > :nth-child(odd) {
+    width: 50%;
+    min-width: 0;
+  }
+  /* line 39, ../sass/partials/_layouts.scss */
+  .cb-col-50-50 > :nth-child(odd) img {
+    width: 100%;
+  }
+  /* line 41, ../sass/partials/_layouts.scss */
+  .cb-col-50-50 > :nth-child(even) {
+    width: 50%;
+    min-width: 0;
+  }
+}
+
+/* line 50, ../sass/partials/_layouts.scss */
+.cb-col-50-50-filter > div, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div,
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div {
+  margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+/* line 57, ../sass/partials/_layouts.scss */
+.cb-col-50-50-filter > div label, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div label,
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div label {
+  flex: 0 0 30%;
+}
+/* line 60, ../sass/partials/_layouts.scss */
+.cb-col-50-50-filter > div input, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div input,
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div input {
+  flex: 0 1 50%;
+}
+@media (min-width: 37.5em) {
+  /* line 49, ../sass/partials/_layouts.scss */
+  .cb-col-50-50-filter, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group,
+  .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  /* line 74, ../sass/partials/_layouts.scss */
+  .cb-col-50-50-filter > div, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div,
+  .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div {
+    width: 50%;
+  }
+}
+
+/* line 80, ../sass/partials/_layouts.scss */
+.cb-col-auto, .cb-wrapper .template-timeframe-withitem,
+.cb-wrapper .template-timeframe-withlocation,
+.cb-wrapper .template-item-withlocation, .cb-wrapper .cb-list-header {
+  /* 2 fixed cols, 1 flexible in the middle */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+/* line 86, ../sass/partials/_layouts.scss */
+.cb-col-auto > div.cb-thumbnail, .cb-wrapper .template-timeframe-withitem > div.cb-thumbnail,
+.cb-wrapper .template-timeframe-withlocation > div.cb-thumbnail,
+.cb-wrapper .template-item-withlocation > div.cb-thumbnail, .cb-wrapper .cb-list-header > div.cb-thumbnail {
+  flex: 0 0 20%;
+  padding-right: 15px;
+}
+/* line 90, ../sass/partials/_layouts.scss */
+.cb-col-auto > div.cb-list-info, .cb-wrapper .template-timeframe-withitem > div.cb-list-info,
+.cb-wrapper .template-timeframe-withlocation > div.cb-list-info,
+.cb-wrapper .template-item-withlocation > div.cb-list-info, .cb-wrapper .cb-list-header > div.cb-list-info {
+  flex: 1 0 50%;
+  border: none;
+}
+/* line 94, ../sass/partials/_layouts.scss */
+.cb-col-auto > div.cb-action, .cb-wrapper .template-timeframe-withitem > div.cb-action,
+.cb-wrapper .template-timeframe-withlocation > div.cb-action,
+.cb-wrapper .template-item-withlocation > div.cb-action, .cb-wrapper .cb-list-header > div.cb-action {
+  /* optional */
+  flex: 0 0 100%;
+  text-align: right;
+}
+@media (min-width: 37.5em) {
+  /* line 80, ../sass/partials/_layouts.scss */
+  .cb-col-auto, .cb-wrapper .template-timeframe-withitem,
+  .cb-wrapper .template-timeframe-withlocation,
+  .cb-wrapper .template-item-withlocation, .cb-wrapper .cb-list-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+  /* line 106, ../sass/partials/_layouts.scss */
+  .cb-col-auto > div.cb-thumbnail, .cb-wrapper .template-timeframe-withitem > div.cb-thumbnail,
+  .cb-wrapper .template-timeframe-withlocation > div.cb-thumbnail,
+  .cb-wrapper .template-item-withlocation > div.cb-thumbnail, .cb-wrapper .cb-list-header > div.cb-thumbnail {
+    flex: 0 0 20%;
+    padding-right: 15px;
+  }
+  /* line 111, ../sass/partials/_layouts.scss */
+  .cb-col-auto > div.cb-list-info, .cb-wrapper .template-timeframe-withitem > div.cb-list-info,
+  .cb-wrapper .template-timeframe-withlocation > div.cb-list-info,
+  .cb-wrapper .template-item-withlocation > div.cb-list-info, .cb-wrapper .cb-list-header > div.cb-list-info {
+    flex: 1 1 auto;
+    border: none;
+  }
+  /* line 115, ../sass/partials/_layouts.scss */
+  .cb-col-auto > div.cb-action, .cb-wrapper .template-timeframe-withitem > div.cb-action,
+  .cb-wrapper .template-timeframe-withlocation > div.cb-action,
+  .cb-wrapper .template-item-withlocation > div.cb-action, .cb-wrapper .cb-list-header > div.cb-action {
+    flex: 1 0 auto;
+  }
+  /* line 117, ../sass/partials/_layouts.scss */
+  .cb-col-auto > div.cb-action a, .cb-wrapper .template-timeframe-withitem > div.cb-action a,
+  .cb-wrapper .template-timeframe-withlocation > div.cb-action a,
+  .cb-wrapper .template-item-withlocation > div.cb-action a, .cb-wrapper .cb-list-header > div.cb-action a {
+    width: auto;
+  }
+}
+
+/* line 124, ../sass/partials/_layouts.scss */
+.cb-col-list-with-image {
+  /*first */
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 37.5em) {
+  /* line 132, ../sass/partials/_layouts.scss */
+  .cb-col-20-50-30 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+}
+
+/* List styles */
+/**
+* List styling
+*
+* Shortcodes: [cb_items], [cb_locations], @TODO: [cb_bookings] 
+* 
+* @package   CommonsBooking
+* @author    Florian Egermann <florian@wielebenwir.de>
+* @license   GPL-2.0+
+* @since     2.0
+* @link      http://www.wielebenwir.de
+* @copyright 2020 wielebenwir
+*/
+/* main wrapper */
+/* line 15, ../sass/partials/_lists.scss */
+.cb-wrapper {
+  position: relative;
+  clear: both;
+  display: block;
+  margin-top: 15px;
+  /* headline */
+  /* sub lists wrapper */
+}
+/* line 24, ../sass/partials/_lists.scss */
+.cb-wrapper .cb-list-content.cb-pickupinstructions div {
+  white-space: pre;
+}
+/* line 28, ../sass/partials/_lists.scss */
+.cb-wrapper .cb-address.cb-location-pickupinstructions {
+  white-space: pre-wrap;
+  margin-top: 0;
+  border-left: green;
+  border-width: 1px;
+}
+/* line 36, ../sass/partials/_lists.scss */
+.cb-wrapper h1, .cb-wrapper h2, .cb-wrapper h3, .cb-wrapper h4 {
+  margin: 0;
+  padding-bottom: 10px;
+  padding-top: 0;
+}
+/* line 42, ../sass/partials/_lists.scss */
+.cb-wrapper .cb-title {
+  color: #84AE53;
+}
+/* line 51, ../sass/partials/_lists.scss */
+.cb-wrapper > .cb-wrapper {
+  overflow: hidden;
+}
+/* line 56, ../sass/partials/_lists.scss */
+.cb-wrapper > .cb-wrapper > div {
+  /* sub list items */
+  padding: 5px 0;
+}
+/* line 59, ../sass/partials/_lists.scss */
+.cb-wrapper > .cb-wrapper > div:last-of-type {
+  border-bottom: none;
+}
+/* line 77, ../sass/partials/_lists.scss */
+.cb-wrapper .cb-action {
+  background: transparent;
+}
+/* line 79, ../sass/partials/_lists.scss */
+.cb-wrapper .cb-action .cb-button, .cb-wrapper .cb-action .cb-button-container a, .cb-button-container .cb-wrapper .cb-action a, .cb-wrapper .cb-action input, .cb-wrapper .cb-action #booking-form input, .cb-wrapper #booking-form .cb-action input, .cb-map-filters.cb-wrapper .cb-action .cb-map-button-wrapper button, .cb-map-filters.cb-wrapper .cb-map-button-wrapper .cb-action button {
+  display: inline-block;
+}
+
+/* List styles */
+/**
+ * Single item, single location, single booking view
+ *
+ */
+/* line 6, ../sass/partials/_single.scss */
+.cb-wrapper {
+  /* invert the color scheme from the lists: wrapper has no bg, sub-wrapper colored */
+}
+/* line 8, ../sass/partials/_single.scss */
+.cb-wrapper.template-location-single, .cb-wrapper.template-item-single, .cb-wrapper.template-booking-single {
+  background: transparent;
+  padding: 0;
+}
+/* line 15, ../sass/partials/_single.scss */
+.cb-wrapper.template-location-single > div:not(.cb-notice) > div, .cb-wrapper.template-item-single > div:not(.cb-notice) > div, .cb-wrapper.template-booking-single > div:not(.cb-notice) > div {
+  /* sub list items */
+}
+/* line 16, ../sass/partials/_single.scss */
+.cb-wrapper.template-location-single > div:not(.cb-notice) > div:last-of-type, .cb-wrapper.template-item-single > div:not(.cb-notice) > div:last-of-type, .cb-wrapper.template-booking-single > div:not(.cb-notice) > div:last-of-type {
+  border-bottom: 0;
+}
+
+/* Form styles */
+/**
+ * Layouts for Forms: General Form Styling & Booking Form
+ * Breakpoints for arranging elements
+ *
+ * @package   CommonsBooking
+ * @author Florian Egermann <florian@wielebenwir.de>
+ * @license   GPL-2.0+
+ * @since 2.0
+ * @link      http://www.wielebenwir.de
+ * @copyright 2015 wielebenwir
+ */
+/* line 13, ../sass/partials/_forms.scss */
+.cb-wrapper {
+  /* General form elements */
+}
+/* line 18, ../sass/partials/_forms.scss */
+.cb-wrapper input[type="text"],
+.cb-wrapper input[type="password"],
+.cb-wrapper input[type="email"],
+.cb-wrapper input[type="url"],
+.cb-wrapper input[type="date"],
+.cb-wrapper input[type="month"],
+.cb-wrapper input[type="time"],
+.cb-wrapper input[type="datetime"],
+.cb-wrapper input[type="datetime-local"],
+.cb-wrapper input[type="week"],
+.cb-wrapper input[type="number"],
+.cb-wrapper input[type="search"],
+.cb-wrapper input[type="tel"],
+.cb-wrapper input[type="color"],
+.cb-wrapper textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: #FFF;
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 0.1rem;
+  border-color: #000;
+  box-shadow: none;
+  display: block;
+  margin: 0;
+  font-size: 14px;
+  max-width: 100%;
+  padding: 10px 10px;
+}
+/* line 48, ../sass/partials/_forms.scss */
+.cb-wrapper select {
+  box-shadow: none;
+  display: block;
+  margin: 0;
+  font-size: 14px;
+  padding: 10px 10px;
+  cursor: pointer;
+}
+/* line 57, ../sass/partials/_forms.scss */
+.cb-wrapper .cb-action {
+  text-align: right;
+}
+/* line 62, ../sass/partials/_forms.scss */
+.cb-wrapper .cb-action input {
+  float: right;
+}
+/* line 69, ../sass/partials/_forms.scss */
+.cb-wrapper .cb-action form#cb-booking-form-set-cancelled input {
+  background: transparent;
+  color: #9D9F9D;
+}
+/* line 77, ../sass/partials/_forms.scss */
+.cb-wrapper .cb-action form#cb-booking-form-set-confirmed input {
+  margin-left: 15px;
+}
+/* line 84, ../sass/partials/_forms.scss */
+.cb-wrapper input.cb-action-canceled {
+  background: none !important;
+  color: #444 !important;
+  box-shadow: none !important;
+  font-size: 0.875rem;
+}
+/* line 91, ../sass/partials/_forms.scss */
+.cb-wrapper #booking-form-container,
+.cb-wrapper #booking-form-container div {
+  border-bottom: 0;
+}
+/* line 96, ../sass/partials/_forms.scss */
+.cb-wrapper #booking-form {
+  width: 100%;
+  /* do not extend litepicker width */
+}
+/* line 98, ../sass/partials/_forms.scss */
+.cb-wrapper #booking-form input {
+  float: right;
+}
+/* line 103, ../sass/partials/_forms.scss */
+.cb-wrapper #booking-form .time-selection-container {
+  margin-top: 10px;
+  text-align: center;
+}
+/* line 107, ../sass/partials/_forms.scss */
+.cb-wrapper #booking-form .time-selection-container .restriction {
+  display: block;
+}
+/* line 111, ../sass/partials/_forms.scss */
+.cb-wrapper #booking-form .time-selection-container > div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  text-align: left;
+  overflow: hidden;
+}
+/* line 120, ../sass/partials/_forms.scss */
+.cb-wrapper #booking-form .time-selection-container > div span, .cb-wrapper #booking-form .time-selection-container > div label, .cb-wrapper #booking-form .time-selection-container > div select {
+  float: left;
+  font-size: 14px;
+}
+/* line 125, ../sass/partials/_forms.scss */
+.cb-wrapper #booking-form .time-selection-container > div label {
+  font-weight: bold;
+}
+/* line 129, ../sass/partials/_forms.scss */
+.cb-wrapper #booking-form .time-selection-container > div #resetPicker {
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0;
+  flex-basis: 100%;
+}
+/* line 138, ../sass/partials/_forms.scss */
+.cb-wrapper #booking-form .time-selection-container > div > label {
+  flex-basis: 30%;
+}
+/* line 142, ../sass/partials/_forms.scss */
+.cb-wrapper #booking-form .time-selection-container > div > div {
+  flex-basis: 70%;
+  display: flex;
+  gap: 1rem 3rem;
+  align-items: center;
+}
+/* line 152, ../sass/partials/_forms.scss */
+.cb-wrapper .cb-notice {
+  margin-bottom: 15px;
+  font-size: 18px;
+  vertical-align: middle;
+  font-weight: bold;
+  position: relative;
+  background: #FFF9C5;
+  /* Post status */
+}
+/* line 162, ../sass/partials/_forms.scss */
+.cb-wrapper .cb-notice.cb-status-unconfirmed {
+  background: #FFF9C5;
+}
+/* line 166, ../sass/partials/_forms.scss */
+.cb-wrapper .cb-notice.cb-status-confirmed {
+  background: #74ce3c;
+}
+/* line 170, ../sass/partials/_forms.scss */
+.cb-wrapper .cb-notice.cb-status-cancelled {
+  background: #74ce3c;
+}
+/* line 174, ../sass/partials/_forms.scss */
+.cb-wrapper .cb-notice.error {
+  background: #d5425c;
+}
+
+/* Calendar styles */
+/**
+ * Booking Calendar
+ * 
+ * Styles for the litepicker javascript
+ *
+ */
+/* line 9, ../sass/partials/_calendar.scss */
+:root {
+  --litepickerBgColor: transparent;
+  --litepickerMonthHeaderTextColor: #333;
+  --litepickerMonthButton: #9e9e9e;
+  --litepickerMonthButtonHover: #2196f3;
+  --litepickerDayWidth: 36px;
+  --litepickerMonthWidth: calc(var(--litepickerDayWidth) * 7);
+  --litepickerMonthWeekdayColor: #9e9e9e;
+  --litepickerDayColor: #000;
+  --litepickerDayColorBg: #74ce3c;
+  --litepickerDayColorHover: #506CA9;
+  --litepickerDayIsTodayColor: #f44336;
+  --litepickerDayIsInRange: #2096f3;
+  --litepickerDayIsLockedColor: #9e9e9e;
+  --litepickerDayIsLockedColorBg: transparent;
+  --litepickerDayIsHolidayColor: #000000;
+  --litepickerDayIsHolidayColorBg: #ff9218;
+  --litepickerDayIsPartiallyLockedColor: #333;
+  --litepickerDayIsPartiallyLockedColorBgOne: #20c527;
+  --litepickerDayIsPartiallyLockedColorBgTwo: #d5425c;
+  --litepickerDayIsBookedColor: #333;
+  --litepickerDayIsBookedColorBg: #d5425c;
+  --litepickerDayIsStartColor: #fff;
+  --litepickerDayIsStartBg: #2196f3;
+  --litepickerDayIsEndColor: #fff;
+  --litepickerDayIsEndBg: #2196f3;
+  --litepickerButtonCancelColor: #fff;
+  --litepickerButtonCancelBg: #9e9e9e;
+  --litepickerButtonApplyColor: #fff;
+  --litepickerButtonApplyBg: #2196f3;
+  --litepickerButtonResetBtn: #909090;
+  --litepickerButtonResetBtnHover: #2196f3;
+  --litepickerHighlightedDayColor: #333;
+  --litepickerHighlightedDayBg: #ffeb3b;
+  --litePickerDayBorderColor: #FFFFFF;
+}
+
+/* line 52, ../sass/partials/_calendar.scss */
+.show-week-numbers {
+  --litepickerMonthWidth: calc(var(--litepickerDayWidth) * 8);
+}
+
+/* line 56, ../sass/partials/_calendar.scss */
+.litepicker {
+  font-size: 1.2em;
+  display: none;
+  width: 100%;
+}
+/* line 63, ../sass/partials/_calendar.scss */
+.litepicker a {
+  text-decoration: none !important;
+}
+/* line 68, ../sass/partials/_calendar.scss */
+.litepicker .container__main {
+  display: flex;
+  justify-content: space-around;
+}
+/* line 73, ../sass/partials/_calendar.scss */
+.litepicker .container__months {
+  background: transparent;
+  box-shadow: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  width: calc(var(--litepickerMonthWidth) + 10px);
+  box-sizing: content-box;
+}
+/* line 85, ../sass/partials/_calendar.scss */
+.litepicker .container__months.columns-2 {
+  width: calc((var(--litepickerMonthWidth) * 2) + 20px);
+}
+/* line 89, ../sass/partials/_calendar.scss */
+.litepicker .container__months.columns-3 {
+  width: calc((var(--litepickerMonthWidth) * 3) + 30px);
+}
+/* line 93, ../sass/partials/_calendar.scss */
+.litepicker .container__months.columns-4 {
+  width: calc((var(--litepickerMonthWidth) * 4) + 40px);
+}
+/* line 100, ../sass/partials/_calendar.scss */
+.litepicker .container__months.split-view .month-item-header .button-previous-month,
+.litepicker .container__months.split-view .month-item-header .button-next-month {
+  visibility: visible;
+}
+/* line 108, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item {
+  padding: 5px;
+  width: var(--litepickerMonthWidth);
+  box-sizing: content-box;
+}
+/* line 113, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+  padding: 5px 0px;
+  text-align: center;
+  align-items: center;
+  color: var(--litepickerMonthHeaderTextColor);
+}
+/* line 122, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header div {
+  flex: 1;
+}
+/* line 125, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header div > .month-item-name {
+  margin-right: 5px;
+}
+/* line 129, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header div > .month-item-year {
+  padding: 0;
+}
+/* line 134, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header .reset-button {
+  display: none;
+  color: var(--litepickerButtonResetBtn);
+}
+/* line 138, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header .reset-button > svg,
+.litepicker .container__months .month-item-header .reset-button > img {
+  fill: var(--litepickerButtonResetBtn);
+  pointer-events: none;
+}
+/* line 144, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header .reset-button:hover {
+  color: var(--litepickerButtonResetBtnHover);
+}
+/* line 147, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header .reset-button:hover > svg {
+  fill: var(--litepickerButtonResetBtnHover);
+}
+/* line 153, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header .button-previous-month,
+.litepicker .container__months .month-item-header .button-next-month {
+  visibility: hidden;
+  text-decoration: none;
+  color: var(--litepickerMonthButton);
+  padding: 3px 5px;
+  border-radius: 3px;
+  transition: color 0.3s, border 0.3s;
+  cursor: default;
+}
+/* line 163, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header .button-previous-month > svg,
+.litepicker .container__months .month-item-header .button-previous-month > img,
+.litepicker .container__months .month-item-header .button-next-month > svg,
+.litepicker .container__months .month-item-header .button-next-month > img {
+  fill: var(--litepickerMonthButton);
+  pointer-events: none;
+}
+/* line 169, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header .button-previous-month:hover,
+.litepicker .container__months .month-item-header .button-next-month:hover {
+  color: var(--litepickerMonthButtonHover);
+}
+/* line 172, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header .button-previous-month:hover > svg,
+.litepicker .container__months .month-item-header .button-next-month:hover > svg {
+  fill: var(--litepickerMonthButtonHover);
+}
+/* line 179, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-weekdays-row {
+  display: flex;
+  justify-self: center;
+  justify-content: flex-start;
+  color: var(--litepickerMonthWeekdayColor);
+}
+/* line 185, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-weekdays-row > div {
+  padding: 5px 0;
+  font-size: 85%;
+  flex: 1;
+  width: var(--litepickerDayWidth);
+  text-align: center;
+}
+/* line 195, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item:first-child .button-previous-month {
+  visibility: visible;
+}
+/* line 201, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item:last-child .button-next-month {
+  visibility: visible;
+}
+/* line 207, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item.no-previous-month .button-previous-month {
+  visibility: hidden;
+}
+/* line 213, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item.no-next-month .button-next-month {
+  visibility: hidden;
+}
+/* line 220, ../sass/partials/_calendar.scss */
+.litepicker .container__days {
+  display: flex;
+  flex-wrap: wrap;
+  justify-self: center;
+  justify-content: flex-start;
+  text-align: center;
+  box-sizing: content-box;
+}
+/* line 228, ../sass/partials/_calendar.scss */
+.litepicker .container__days > div,
+.litepicker .container__days > a {
+  padding: 5px 0;
+  width: var(--litepickerDayWidth);
+  border-color: var(--litePickerDayBorderColor);
+  border-width: 1px;
+  text-decoration: none;
+}
+/* line 237, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item {
+  color: var(--litepickerDayColor);
+  border-style: solid;
+  background-color: var(--litepickerDayColorBg);
+  text-align: center;
+  text-decoration: none;
+  transition: color 0.3s, border 0.3s;
+  border-color: var(--litePickerDayBorderColor);
+  border-radius: 0px;
+  box-sizing: border-box;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+/* line 250, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item:hover {
+  cursor: pointer;
+  color: var(--litepickerDayColorHover);
+  box-shadow: inset 0 0 0 1px var(--litepickerDayColorHover);
+}
+/* line 256, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-today {
+  color: var(--litepickerDayIsTodayColor);
+}
+/* line 260, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-holiday {
+  color: var(--litepickerDayIsHolidayColor);
+  background: var(--litepickerDayIsHolidayColorBg);
+}
+/* line 263, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-holiday:hover {
+  cursor: not-allowed;
+  box-shadow: none;
+}
+/* line 269, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-partially-booked {
+  color: var(--litepickerDayIsPartiallyLockedColor);
+  background: linear-gradient(to bottom right, var(--litepickerDayIsPartiallyLockedColorBgOne) 0%, var(--litepickerDayIsPartiallyLockedColorBgOne) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 100%);
+}
+/* line 277, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-partially-booked:hover {
+  cursor: pointer;
+  color: var(--litepickerDayIsPartiallyLockedColor);
+  background: linear-gradient(to bottom right, lightgreen 0%, lightgreen 50%, lightgray 50%, lightgray 100%);
+  box-shadow: none;
+}
+/* line 289, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-in-range {
+  color: var(--litepickerDayIsStartColor);
+  background-color: var(--litepickerDayIsInRange);
+  border-radius: 0;
+}
+/* line 295, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-start-date {
+  color: var(--litepickerDayIsStartColor);
+  background: var(--litepickerDayIsStartBg) !important;
+  background-color: var(--litepickerDayIsStartBg);
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+/* line 304, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-start-date.is-flipped {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+/* line 312, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-end-date {
+  color: var(--litepickerDayIsEndColor);
+  background: var(--litepickerDayIsEndBg) !important;
+  background-color: var(--litepickerDayIsEndBg);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+/* line 321, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-end-date.is-flipped {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+/* line 329, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-start-date.is-end-date {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+/* line 336, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-highlighted {
+  color: var(--litepickerHighlightedDayColor);
+  background: var(--litepickerHighlightedDayBg) !important;
+  background-color: var(--litepickerHighlightedDayBg);
+}
+/* line 342, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-booked {
+  color: var(--litepickerDayIsBookedColor);
+  background-color: var(--litepickerDayIsBookedColorBg);
+}
+/* line 346, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-booked:hover {
+  color: var(--litepickerDayIsBookedColor);
+  box-shadow: none;
+  cursor: default;
+}
+/* line 353, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-locked {
+  color: var(--litepickerDayIsLockedColor);
+  background: var(--litepickerDayIsLockedColorBg) !important;
+}
+/* line 357, ../sass/partials/_calendar.scss */
+.litepicker .container__days .day-item.is-locked:hover {
+  cursor: not-allowed;
+  color: var(--litepickerDayIsLockedColor);
+  box-shadow: none;
+}
+/* line 365, ../sass/partials/_calendar.scss */
+.litepicker .container__days .week-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9e9e9e;
+  font-size: 85%;
+}
+/* line 374, ../sass/partials/_calendar.scss */
+.litepicker .container__footer {
+  text-align: right;
+  padding: 10px 5px;
+  margin: 0 5px;
+  background-color: #fafafa;
+  box-shadow: inset 0px 3px 3px 0px #ddd;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+/* line 383, ../sass/partials/_calendar.scss */
+.litepicker .container__footer .preview-date-range {
+  margin-right: 10px;
+  font-size: 90%;
+}
+/* line 388, ../sass/partials/_calendar.scss */
+.litepicker .container__footer .button-cancel {
+  background-color: var(--litepickerButtonCancelBg);
+  color: var(--litepickerButtonCancelColor);
+  border: 0;
+  padding: 3px 7px 4px;
+  border-radius: 3px;
+}
+/* line 395, ../sass/partials/_calendar.scss */
+.litepicker .container__footer .button-cancel > svg,
+.litepicker .container__footer .button-cancel > img {
+  pointer-events: none;
+}
+/* line 401, ../sass/partials/_calendar.scss */
+.litepicker .container__footer .button-apply {
+  background-color: var(--litepickerButtonApplyBg);
+  color: var(--litepickerButtonApplyColor);
+  border: 0;
+  padding: 3px 7px 4px;
+  border-radius: 3px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+/* line 410, ../sass/partials/_calendar.scss */
+.litepicker .container__footer .button-apply:disabled {
+  opacity: 0.7;
+}
+/* line 414, ../sass/partials/_calendar.scss */
+.litepicker .container__footer .button-apply > svg,
+.litepicker .container__footer .button-apply > img {
+  pointer-events: none;
+}
+/* line 421, ../sass/partials/_calendar.scss */
+.litepicker .container__tooltip {
+  position: absolute;
+  margin-top: -4px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  font-size: 11px;
+  pointer-events: none;
+  visibility: hidden;
+}
+/* line 433, ../sass/partials/_calendar.scss */
+.litepicker .container__tooltip:before {
+  position: absolute;
+  bottom: -5px;
+  left: calc(50% - 5px);
+  border-top: 5px solid rgba(0, 0, 0, 0.12);
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+  content: "";
+}
+/* line 443, ../sass/partials/_calendar.scss */
+.litepicker .container__tooltip:after {
+  position: absolute;
+  bottom: -4px;
+  left: calc(50% - 4px);
+  border-top: 4px solid #fff;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  content: "";
+}
+/* line 455, ../sass/partials/_calendar.scss */
+.litepicker-open {
+  overflow: hidden;
+}
+/* line 459, ../sass/partials/_calendar.scss */
+.litepicker-backdrop {
+  display: none;
+  background-color: #000;
+  opacity: 0.3;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/* line 473, ../sass/partials/_calendar.scss */
+#booking-form #fullDayInfo {
+  clear: left;
+}
+/* line 477, ../sass/partials/_calendar.scss */
+#booking-form span.restrictions {
+  width: 100% !important;
+}
+/* line 481, ../sass/partials/_calendar.scss */
+#booking-form span.restrictions li {
+  margin-top: 1em;
+}
+/* line 488, ../sass/partials/_calendar.scss */
+#booking-form #resetPicker {
+  font-size: 14px;
+  padding: 5px;
+  display: none;
+  cursor: pointer;
+}
+/* line 495, ../sass/partials/_calendar.scss */
+#booking-form #calendarNotice {
+  display: none;
+  font-size: 14px;
+}
+
+/* Calendar styles */
+/**
+* Map + Leaflet Filter Styling
+*
+* shortcode [cb_map]
+* 
+*
+* @package   CommonsBooking
+* @author    Florian Egermann <florian@wielebenwir.de>
+* @license   GPL-2.0+
+* @since     2.0
+* @link      http://www.wielebenwir.de
+* @copyright 2020 wielebenwir
+*/
+/* line 15, ../sass/partials/_map.scss */
+.cb-wrapper {
+  /* Leaflet Map */
+  /* Popup */
+}
+/* line 22, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-container .cb-map-marker-cluster-icon {
+  width: 100% !important;
+  height: 100% !important;
+  font-weight: bold !important;
+  background-size: cover;
+}
+/* line 29, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-container .cb-map-location-info-name b {
+  line-height: 25px;
+}
+/* line 32, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-container .cb-map-location-info-name span.dashicons-search {
+  cursor: pointer;
+  padding-left: 5px;
+  padding-top: 2.5px;
+}
+/* line 38, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-container .cb-map-location-info-opening-hours {
+  margin-top: 10px;
+}
+/* line 42, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-container .cb-map-location-info-contact {
+  margin-top: 10px;
+}
+/* line 46, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-container .highlight-border {
+  border-color: #ee7400 !important;
+}
+/* line 50, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-container .leaflet-bar button {
+  font-size: 6.5px;
+}
+/* line 57, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content {
+  min-width: 300px;
+  font-size: 14px;
+}
+/* line 61, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item {
+  margin-top: 10px;
+}
+/* line 65, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-thumbnail {
+  display: inline-block;
+  width: 25%;
+  margin-right: 5%;
+}
+/* line 69, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-thumbnail img {
+  border-radius: 8px;
+}
+/* line 74, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-info {
+  display: inline-block;
+  width: 70%;
+  vertical-align: top;
+}
+/* line 80, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-link b a {
+  font-size: 18px;
+  color: #84AE53;
+  text-decoration: underline;
+}
+/* line 86, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 3px 0;
+}
+/* line 95, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day {
+  flex: 0 0 auto;
+  color: #000;
+  font-weight: normal;
+  padding: 3px;
+  width: 30px;
+  text-align: center;
+  border: 1px solid #fff;
+  border-radius: 7px;
+  background-clip: padding-box;
+}
+/* line 110, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.available {
+  background-color: #7fc600;
+}
+/* line 113, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.location-closed {
+  background-color: #ddd;
+  color: #222;
+}
+/* line 117, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.no-timeframe {
+  background-color: #ddd;
+  color: #fff;
+}
+/* line 121, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.booked {
+  color: #444;
+  background: linear-gradient(to top left, #ee7400 0%, #ee7400 calc(50% - 1px), #333 50%, #ee7400 calc(50% + 1px), #ee7400 100%);
+}
+/* line 126, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-desc {
+  display: none;
+}
+
+/* Filters */
+/* line 135, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper {
+  margin-top: 10px;
+  /* layout for filter  availability & distance */
+  /* styles for specific filters */
+  /* layout for filter category */
+}
+/* line 140, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper input[type="checkbox"] {
+  margin: 0 5px 0 0;
+}
+/* line 144, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper input[type="date"], .cb-map-filters.cb-wrapper input[type="number"] {
+  /* is inline */
+  margin: 0 5px;
+}
+/* line 148, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper input[type="number"] {
+  max-width: 100px;
+}
+/* line 152, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper select {
+  /* is inline */
+  margin: 0 5px;
+}
+/* line 156, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper button {
+  padding: 5px;
+}
+/* line 161, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-filter-options > div {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #444;
+}
+/* line 168, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-filter-group-label {
+  color: #506CA9;
+  margin-bottom: 5px;
+}
+/* line 185, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group {
+  background: #506CA9;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+/* line 191, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group input {
+  flex: 1 1 100% !important;
+  /* overwrite layout */
+}
+/* line 194, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.undo-geo-search, .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.geo-search {
+  background: transparent;
+  color: #FFF;
+}
+/* line 203, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+/* line 208, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset {
+  flex: 1 0 50%;
+  border: none;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
+}
+/* line 215, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset .cb-fieldgroup-row {
+  display: inline-block;
+}
+/* line 219, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset legend {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+/* line 224, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset label {
+  margin-right: 15px;
+  color: #506CA9;
+}
+/* line 233, ../sass/partials/_map.scss */
+.cb-map-filters.cb-wrapper .cb-map-button-wrapper {
+  text-align: right;
+}
+
+/* Booking list styles */
+/**
+* Bookings 
+*
+* @TODO: Move to /forms and /lists 
+*
+*/
+/* line 8, ../sass/partials/_bookings.scss */
+#ui-datepicker-div {
+  display: none;
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+/* line 14, ../sass/partials/_bookings.scss */
+#ui-datepicker-div .ui-datepicker-calendar {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  min-width: 10rem;
+  text-align: center;
+}
+/* line 20, ../sass/partials/_bookings.scss */
+#ui-datepicker-div .ui-datepicker-calendar td a {
+  color: #84AE53;
+}
+/* line 25, ../sass/partials/_bookings.scss */
+#ui-datepicker-div .ui-datepicker-next,
+#ui-datepicker-div .ui-datepicker-prev {
+  cursor: pointer;
+}
+/* line 30, ../sass/partials/_bookings.scss */
+#ui-datepicker-div .ui-datepicker-next {
+  right: 1.5rem;
+  position: absolute;
+}
+/* line 35, ../sass/partials/_bookings.scss */
+#ui-datepicker-div .ui-datepicker-title {
+  margin-top: 1rem;
+  color: black;
+  clear: both;
+}
+/* line 41, ../sass/partials/_bookings.scss */
+#ui-datepicker-div .ui-corner-all {
+  color: #84AE53;
+}
+
+/* line 47, ../sass/partials/_bookings.scss */
+.booking-list--filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+@media (max-width: 400px) {
+  /* line 47, ../sass/partials/_bookings.scss */
+  .booking-list--filters {
+    width: 100%;
+  }
+}
+/* line 56, ../sass/partials/_bookings.scss */
+.booking-list--filters .filter-wrapper {
+  font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+  margin-top: 10px;
+  flex-basis: 220px;
+}
+/* line 61, ../sass/partials/_bookings.scss */
+.booking-list--filters .filter-wrapper .filter-label {
+  margin-bottom: 0.3rem;
+  margin-left: 0;
+  font-size: 1rem;
+}
+/* line 68, ../sass/partials/_bookings.scss */
+.booking-list--filters .select2 {
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  border: none;
+}
+/* line 74, ../sass/partials/_bookings.scss */
+.booking-list--filters #endDate-datepicker,
+.booking-list--filters #startDate-datepicker {
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  border: none;
+}
+/* line 81, ../sass/partials/_bookings.scss */
+.booking-list--filters .reset-filters {
+  justify-content: flex-end;
+  display: flex;
+  flex-basis: 100%;
+}
+/* line 86, ../sass/partials/_bookings.scss */
+.booking-list--filters .reset-filters #reset-filters {
+  font-size: 0.95rem;
+  padding-top: 5px;
+  cursor: pointer;
+}
+/* line 92, ../sass/partials/_bookings.scss */
+.booking-list--filters .reset-filters > .cb-button, .booking-list--filters .cb-button-container .reset-filters > a, .cb-button-container .booking-list--filters .reset-filters > a, .booking-list--filters .cb-wrapper .cb-action .reset-filters > input, .cb-wrapper .cb-action .booking-list--filters .reset-filters > input, .booking-list--filters .cb-wrapper #booking-form .reset-filters > input, .cb-wrapper #booking-form .booking-list--filters .reset-filters > input, .booking-list--filters .cb-map-filters.cb-wrapper .cb-map-button-wrapper .reset-filters > button, .cb-map-filters.cb-wrapper .cb-map-button-wrapper .booking-list--filters .reset-filters > button {
+  margin-left: 1rem;
+  cursor: pointer;
+}
+/* line 100, ../sass/partials/_bookings.scss */
+.booking-list--filters.hide {
+  display: none;
+}
+/* line 104, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results {
+  font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+  width: 100%;
+}
+/* line 111, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item {
+  width: 100%;
+  background-color: white;
+}
+/* line 115, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item .content-wrapper {
+  display: flex;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+}
+@media only screen and (max-width: 600px) {
+  /* line 115, ../sass/partials/_bookings.scss */
+  .booking-list #booking-list--results .js-item .content-wrapper {
+    display: block;
+  }
+}
+/* line 123, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item .content-wrapper > p, .booking-list #booking-list--results .js-item .content-wrapper > div {
+  display: flex;
+  margin: 0;
+  border-right: 1px dashed #ccc;
+  margin-right: 8px;
+  padding: 0 8px;
+}
+@media only screen and (max-width: 600px) {
+  /* line 123, ../sass/partials/_bookings.scss */
+  .booking-list #booking-list--results .js-item .content-wrapper > p, .booking-list #booking-list--results .js-item .content-wrapper > div {
+    border: none;
+    margin-bottom: 0;
+    padding: 4px 0;
+  }
+}
+/* line 138, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item .content-wrapper > p:last-child, .booking-list #booking-list--results .js-item .content-wrapper > div:last-child {
+  border: none;
+  align-items: center;
+}
+/* line 145, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item .content-wrapper p span {
+  display: flex;
+}
+/* line 148, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item .content-wrapper p span.cb-date {
+  font-size: 0.8em;
+}
+/* line 155, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item .content-wrapper h4 {
+  font-weight: bold;
+  font-size: 1.4rem;
+  padding: 0;
+}
+/* line 162, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item--headline {
+  width: 40%;
+  flex-direction: column;
+}
+/* line 167, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item--infos {
+  width: 40%;
+  flex-direction: column;
+}
+/* line 172, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .js-item--action {
+  width: 20%;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  flex-direction: row-reverse;
+}
+@media only screen and (max-width: 600px) {
+  /* line 194, ../sass/partials/_bookings.scss */
+  .booking-list #booking-list--results .js-item--headline, .booking-list #booking-list--results .js-item--infos, .booking-list #booking-list--results .js-item--action {
+    width: 100%;
+  }
+}
+/* line 202, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--results .my-sizer-element {
+  clear: both;
+}
+/* line 207, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--pagination {
+  font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+}
+/* line 210, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--pagination ul {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+/* line 215, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--pagination ul li {
+  list-style-type: none;
+  position: relative;
+  padding: 0 5px 0 5px;
+}
+/* line 220, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--pagination ul li.active {
+  font-weight: bold;
+}
+/* line 224, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--pagination ul li:hover {
+  color: #84AE53;
+}
+/* line 230, ../sass/partials/_bookings.scss */
+.booking-list #booking-list--pagination ul li[data-page] {
+  cursor: pointer;
+}
+
+/* Booking list styles */
+/**
+ * Notices
+ *
+ * Block-Level 
+ * inline
+ *
+ */
+/* line 10, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice {
+  margin-bottom: 15px;
+  font-size: 18px;
+  vertical-align: middle;
+  font-weight: bold;
+  position: relative;
+  background: #FFF9C5;
+  /* Post status */
+}
+/* line 20, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice.cb-status-unconfirmed {
+  background: #FFF9C5;
+}
+/* line 23, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice.cb-status-confirmed {
+  background: #74ce3c;
+}
+/* line 26, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice.cb-status-cancelled {
+  background: #74ce3c;
+}
+/* line 29, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice.error {
+  background: #d5425c;
+}
+/* line 33, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice-small {
+  display: block;
+}
+/* line 35, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice-small.cb-status-not-available {
+  color: #d5425c;
+}
+
+/* Styles for items table */
+/**
+* Table/Calendar showing item availabilities.
+*
+* shortcode [cb_item_table]
+* 
+*
+* @package   CommonsBooking
+* @author    Florian Egermann <florian@wielebenwir.de>
+* @license   GPL-2.0+
+* @since     2.0
+* @link      http://www.wielebenwir.de
+* @copyright 2020 wielebenwir
+*/
+/* line 15, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-table-scroll {
+  position: relative;
+  overflow: scroll;
+}
+
+/* line 20, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table {
+  overflow: auto;
+  /* overwriting cb-box standard behaviour */
+  padding: 0;
+  /* overwriting cb-box standard behaviour */
+  width: 100%;
+  border-collapse: separate;
+  /* make first 2 table columns sticky */
+  /* place first col */
+  /* place second col */
+  /* set bg color */
+}
+/* line 27, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td,
+.cb-items-table th {
+  line-height: 13px;
+  font-size: 12px;
+  padding: 4px 0;
+  font-weight: normal;
+}
+/* line 35, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table th {
+  font-size: 12px;
+  text-align: center;
+  vertical-align: middle;
+}
+/* line 42, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr {
+  color: #506CA9;
+}
+/* line 45, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:first-child {
+  /* Months row */
+}
+/* line 48, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) {
+  /* legend row */
+}
+/* line 50, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:nth-child(1),
+.cb-items-table thead tr:nth-child(2) th:nth-child(2) {
+  text-align: left;
+  padding-left: 4px;
+}
+/* line 60, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:first-child,
+.cb-items-table thead tr:nth-child(2) th:nth-child(2),
+.cb-items-table tbody tr td:first-child,
+.cb-items-table tbody tr td:nth-child(2) {
+  text-align: left;
+  padding-left: 5px;
+  position: sticky;
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  background: #FFF;
+}
+/* line 73, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:first-child,
+.cb-items-table tbody tr td:first-child {
+  left: 0;
+}
+/* line 78, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:nth-child(2),
+.cb-items-table tbody tr td:nth-child(2) {
+  left: 100px;
+}
+/* line 84, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:first-child,
+.cb-items-table thead tr:nth-child(2) th:nth-child(2) {
+  background: #f6f6f6;
+}
+/* line 89, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table tbody tr:hover td:first-child,
+.cb-items-table tbody tr:hover td:nth-child(2) {
+  background-color: #f6f6f6;
+}
+/* line 95, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table tbody tr {
+  background: #FFF;
+  height: 50px;
+  overflow: hidden;
+}
+/* line 100, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table tbody tr:hover {
+  background: #f6f6f6;
+}
+/* line 104, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table tbody tr td {
+  border-top: 1px solid #bababa;
+  border-left: 1px solid #f6f6f6;
+  border-bottom: 1px solid #FFF;
+}
+/* line 112, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td {
+  text-align: center;
+  vertical-align: middle;
+  z-index: 11;
+}
+/* line 118, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td > span.booked, .cb-items-table td > span.free, .cb-items-table td > span.unavailable, .cb-items-table td > span.holiday, .cb-items-table td > span.repair, .cb-items-table td > span.blocked {
+  display: block;
+  margin: 0 auto;
+  width: 15px;
+  height: 15px;
+  border-radius: 0px;
+}
+/* line 131, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td > span.unavailable {
+  background: #f6f6f6;
+}
+/* line 136, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td > span.holiday {
+  background: var(--litepickerDayIsHolidayColorBg);
+}
+/* line 140, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td > span.repair, .cb-items-table td > span.booked {
+  background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
+}
+/* line 151, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td > span.blocked {
+  background-color: var(--litepickerDayIsBookedColorBg);
+}
+/* line 155, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td > span.free {
+  background-color: var(--litepickerDayColorBg);
+  text-align: center;
+  text-decoration: none;
+}
+
+/* Fixes for specific WP Themes */
+/**
+ * Optimisation & Compatibility 
+ *
+ * Tweaks to make CB play nice with popular Wordpress themes.
+ *
+ */
+/* line 8, ../sass/partials/_themeoptimization.scss */
+.cb-wrapper {
+  /* Twenty Nineteen Theme*/
+  /* Twenty Twenty Theme*/
+}
+/* line 10, ../sass/partials/_themeoptimization.scss */
+.cb-wrapper h2::before {
+  content: '';
+  margin: 0;
+  background: transparent;
+}
+/* line 16, ../sass/partials/_themeoptimization.scss */
+.cb-wrapper h1, .cb-wrapper h2, .cb-wrapper h3, .cb-wrapper h4 {
+  margin: 0 !important;
+}
+/* line 23, ../sass/partials/_themeoptimization.scss */
+.cb-wrapper .litepicker .container__days .day-item {
+  font-size: 1rem;
+}
+
+/* Enable table scrolling in themes (e.g. twentyfifteen) */
+/* line 32, ../sass/partials/_themeoptimization.scss */
+table.cb-items-table {
+  table-layout: auto !important;
+}
+
+/*# sourceMappingURL=public.css.map */
+=======
 /*
  * This stylesheet is used to style the public-facing components of the plugin
  */
@@ -5068,3 +10140,4 @@ table.cb-items-table {
 }
 
 /*# sourceMappingURL=public.css.map */
+>>>>>>> 483dc62011bf4076dd910438edc927c634d77d33
