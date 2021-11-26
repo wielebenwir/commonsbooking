@@ -7,9 +7,6 @@
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
 	>
-	<php>
-		<env name="WP_TESTS_PHPUNIT_POLYFILLS_PATH" value="./vendor/yoast/phpunit-polyfills/" />
-	</php>
 	<testsuites>
 		<testsuite name="default">
 			<directory prefix="" suffix="Test.php">./tests/</directory>
