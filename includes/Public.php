@@ -15,7 +15,20 @@ function commonsbooking_public() {
 
 	// Template specific styles
 	$template = wp_get_theme()->template;
-	wp_enqueue_style( 'cb-styles-public', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/css/themes/' . $template . '.css', array(), COMMONSBOOKING_VERSION );
+	$customizedTemplates = [
+		'graphene',
+		'kasimir',
+		'twentytwenty',
+		'twentynineteen'
+	];
+	if(in_array($template, $customizedTemplates)) {
+		wp_enqueue_style(
+			'cb-styles-public-theme',
+			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/css/themes/' . $template . '.css',
+			array(),
+			WP_DEBUG ? time() : COMMONSBOOKING_VERSION
+		);
+	}
 
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-datepicker', array( 'jquery' ) );
