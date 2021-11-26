@@ -129,7 +129,8 @@ class DayTest extends TestCase {
 
 	public function testIsInTimeframe() {
 		$timeframe = get_post($this->timeframeId);
-		$this->assertFalse($this->instance->isInTimeframe($timeframe));
+//		$this->assertTrue($this->instance->isInTimeframe($timeframe));
+		$this->assertTrue(false);
 	}
 
 	public function testGetName() {
