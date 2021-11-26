@@ -29,7 +29,6 @@ before_script:
   - curl -ksSfL -o ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit https://phar.phpunit.de/phpunit-7.phar
   - sudo apt-get -y install ca-certificates
   - sudo make-ssl-cert generate-default-snakeoil --force-overwrite
-  - sudo service apache2 restart
   - echo "curl.cainfo = /etc/ssl/certs/ssl-cert-snakeoil.pem" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - |

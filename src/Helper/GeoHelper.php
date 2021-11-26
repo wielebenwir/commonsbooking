@@ -22,6 +22,16 @@ class GeoHelper {
 	public static function getAddressData( $addressString ): ?Location {
 		$defaultUserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0";
 
+		$client = new Client(
+			null,
+			null,
+			[
+				'CURLOPT_SSL_VERIFYHOST' => 0,
+				'CURLOPT_SSL_VERIFYPEER' => 0,
+			]
+		);
+
+
 		$provider = Nominatim::withOpenStreetMapServer(
 			new Client(),
 			array_key_exists('HTTP_USER_AGENT', $_SERVER) ? $_SERVER['HTTP_USER_AGENT'] : $defaultUserAgent
