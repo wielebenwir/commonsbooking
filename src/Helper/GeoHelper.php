@@ -26,14 +26,14 @@ class GeoHelper {
 			null,
 			null,
 			[
-				'CURLOPT_SSL_VERIFYHOST' => 0,
-				'CURLOPT_SSL_VERIFYPEER' => 0,
+				CURLOPT_SSL_VERIFYHOST => 0,
+				CURLOPT_SSL_VERIFYPEER => 0,
 			]
 		);
 
 
 		$provider = Nominatim::withOpenStreetMapServer(
-			new Client(),
+			$client,
 			array_key_exists('HTTP_USER_AGENT', $_SERVER) ? $_SERVER['HTTP_USER_AGENT'] : $defaultUserAgent
 		);
 		$geoCoder = new StatefulGeocoder( $provider, 'en' );
