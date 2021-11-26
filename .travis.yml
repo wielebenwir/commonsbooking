@@ -28,6 +28,7 @@ before_script:
   - curl -ksSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar
   - curl -ksSfL -o ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit https://phar.phpunit.de/phpunit-7.phar
   - sudo apt-get -y install ca-certificates
+  - ls -la /etc/ssl/certs
   - echo "curl.cainfo = /etc/ssl/certs/cacert.pem" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - |
