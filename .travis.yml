@@ -24,6 +24,11 @@ matrix:
 #    - php: 7.3
 #      env: WP_VERSION=latest
 
+addons:
+  apt:
+    packages:
+      - libssl1.0.0
+
 before_script:
   - curl -ksSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar
   - curl -ksSfL -o ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit https://phar.phpunit.de/phpunit-7.phar
