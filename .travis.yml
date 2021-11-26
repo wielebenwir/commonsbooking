@@ -34,11 +34,13 @@ before_script:
     fi
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      wget -O phpunit https://phar.phpunit.de/phpunit-7.phar
-      chmod +x phpunit
+      curl -LO https://phar.phpunit.de/phpunit-7.phar
+      chmod +x phpunit-7.phar
       which phpunit
       phpunit --version
-      sudo mv phpunit /usr/local/bin/phpunit
+      sudo mv phpunit-7.phar /usr/local/bin/phpunit
+      which phpunit
+      phpunit --version
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
       composer install
       /usr/local/bin/phpunit --version
