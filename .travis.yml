@@ -27,8 +27,8 @@ matrix:
 before_script:
   - curl -ksSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar
   - curl -ksSfL -o ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit https://phar.phpunit.de/phpunit-7.phar
+  - sudo apt-get -y install ca-certificates
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - apt -y install ca-certificates
   - |
     if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
       phpenv config-rm xdebug.ini
