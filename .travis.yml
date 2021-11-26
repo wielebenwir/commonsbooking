@@ -36,6 +36,7 @@ before_script:
     if [[ ! -z "$WP_VERSION" ]] ; then
       wget -O phpunit https://phar.phpunit.de/phpunit-7.phar
       chmod +x phpunit
+      phpunit --version
       sudo mv phpunit /usr/local/bin/phpunit
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
       composer install
@@ -54,6 +55,7 @@ script:
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
       ls -la
+      /usr/local/bin/phpunit --version
       /usr/local/bin/phpunit
       WP_MULTISITE=1 /usr/local/bin/phpunit
     fi
