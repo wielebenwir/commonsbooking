@@ -40,7 +40,7 @@ class BookingCodes {
 						foreach ( $bookingCodes as $bookingCode ) {
 							echo "<tr>
 				                    <td>" . $bookingCode->getItemName() . "</td>
-				                    <td>" . $bookingCode->getDate() . "</td>
+				                    <td>" . date_i18n( get_option( 'date_format' ), strtotime ($bookingCode->getDate() ) ) . "</td>
 				                    <td>" . $bookingCode->getCode() . "</td>
 				                </tr>";
 						}
@@ -57,7 +57,6 @@ class BookingCodes {
 			$timeframeId = sanitize_text_field( $_GET['post'] );
 		}
 		$bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId );
-		//header("content-type:application/csv;charset=UTF-8");
 		header( 'Content-Encoding: UTF-8' );
 		header( 'Content-type: text/csv; charset=UTF-8' );
 		header( "Content-Disposition: attachment; filename=buchungscode-$timeframeId.txt" );
