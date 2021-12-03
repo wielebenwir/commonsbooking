@@ -7,9 +7,146 @@ namespace CommonsBooking\Repository;
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use Exception;
+use WP_Post;
 use WP_Query;
 
 class Booking extends PostRepository {
+
+	/**
+	 * Returns 0:00 timestamp for day of $timestamp.
+	 * @param $timestamp
+	 *
+	 * @return false|int
+	 */
+	protected static function getStartTimestamp($timestamp) {
+		return strtotime( "midnight", $timestamp );
+	}
+
+	/**
+	 * Returns 23:59 timestamp for day of $timestamp.
+	 * @param $startTimestamp
+	 *
+	 * @return false|int
+	 */
+	protected static function getEndTimestamp($startTimestamp) {
+		return strtotime( '+23 Hours +59 Minutes +59 Seconds', $startTimestamp );
+	}
+
+	/**
+	 * Returns bookings ending at day of timestamp.
+	 * @param int $timestamp
+	 * @param array $customArgs
+	 *
+	 * @return array|int[]|WP_Post[]
+	 * @throws Exception
+	 */
+	public static function getEndingBookingsByDate( int $timestamp, array $customArgs = [] ) {
+		$startTimestamp = self::getStartTimestamp($timestamp);
+		$endTimestamp   = self::getEndTimestamp($startTimestamp);
+
+		// Default query
+		$args = array(
+			'post_type'   => Timeframe::getSimilarPostTypes(),
+			'meta_query'  => array(
+				'relation' => "AND",
+				array(
+					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
+					'value'   => $endTimestamp,
+					'compare' => '<=',
+					'type'    => 'numeric',
+				),
+				array(
+					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
+					'value'   => $startTimestamp,
+					'compare' => '>=',
+					'type'    => 'numeric'
+				),
+				array(
+					'key'     => 'type',
+					'value'   => Timeframe::BOOKING_ID,
+					'compare' => '=',
+				)
+			),
+			'post_status' => array( 'confirmed', 'unconfirmed' ),
+			'nopaging'    => true,
+		);
+
+		// Overwrite args with passed custom args
+		$args = array_merge( $args, $customArgs );
+
+		$query = new WP_Query( $args );
+		if ( $query->have_posts() ) {
+			$posts = $query->get_posts();
+
+			// Filter by post_status, query seems not to work reliable
+			$posts = array_filter( $posts, function ( $post ) use ( $args ) {
+				return in_array( $post->post_status, $args['post_status'] );
+			} );
+
+			foreach ( $posts as &$post ) {
+				$post = new \CommonsBooking\Model\Booking( $post );
+			}
+
+			return $posts;
+		}
+
+		return [];
+	}
+
+	/**
+	 * Returns bookings beginning at day of timestamp.
+	 * @param int $timestamp
+	 * @param array $customArgs
+	 *
+	 * @return array|int[]|WP_Post[]
+	 * @throws Exception
+	 */
+	public static function getBeginningBookingsByDate( int $timestamp, array $customArgs = [] ) {
+		$startTimestamp = self::getStartTimestamp($timestamp);
+		$endTimestamp   = self::getEndTimestamp($startTimestamp);
+
+		// Default query
+		$args = array(
+			'post_type'   => Timeframe::getSimilarPostTypes(),
+			'meta_query'  => array(
+				'relation' => "AND",
+				array(
+					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_START,
+					'value'   => $endTimestamp,
+					'compare' => '<=',
+					'type'    => 'numeric',
+				),
+				array(
+					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_START,
+					'value'   => $startTimestamp,
+					'compare' => '>=',
+					'type'    => 'numeric'
+				),
+				array(
+					'key'     => 'type',
+					'value'   => Timeframe::BOOKING_ID,
+					'compare' => '=',
+				)
+			),
+			'post_status' => array( 'confirmed', 'unconfirmed' ),
+			'nopaging'    => true,
+		);
+
+		// Overwrite args with passed custom args
+		$args = array_merge( $args, $customArgs );
+
+		$query = new WP_Query( $args );
+		if ( $query->have_posts() ) {
+			$posts = $query->get_posts();
+			foreach ( $posts as &$post ) {
+				$post = new \CommonsBooking\Model\Booking( $post );
+			}
+
+			return $posts;
+		}
+
+		return [];
+	}
 
 	/**
 	 * @param $startDate
@@ -222,7 +359,7 @@ class Booking extends PostRepository {
 	/**
 	 * @param \CommonsBooking\Model\Restriction $restriction
 	 *
-	 * @return \WP_Post[]|null
+	 * @return WP_Post[]|null
 	 */
 	public static function getCanceledByRestriction( \CommonsBooking\Model\Restriction $restriction ): ?array {
 		try {
