@@ -50,12 +50,12 @@ class Booking extends View {
 		}
 
 		$filters = [
-			'location'     => false,
-			'item'         => false,
-			'user'         => false,
-			'startDate'    => time(),
-			'endDate'      => false,
-			'bookingState' => false
+			'location'  => false,
+			'item'      => false,
+			'user'      => false,
+			'startDate' => time(),
+			'endDate'   => false,
+			'status'    => false
 		];
 
 		foreach ( $filters as $key => $value ) {
@@ -78,10 +78,10 @@ class Booking extends View {
 			$bookingDataArray['page']     = $page;
 			$bookingDataArray['per_page'] = $postsPerPage;
 			$bookingDataArray['filters']  = [
-				'user'         => [],
-				'item'         => [],
-				'location'     => [],
-				'bookingState' => []
+				'user'     => [],
+				'item'     => [],
+				'location' => [],
+				'status'   => []
 			];
 
 			$posts = \CommonsBooking\Repository\Booking::getForCurrentUser(
@@ -121,7 +121,7 @@ class Booking extends View {
 					"location"           => $locationTitle,
 					"bookingDate"        => date( 'd.m.Y H:i', strtotime( $booking->post_date ) ),
 					"user"               => $userInfo->user_login,
-					"bookingState"       => $booking->post_status,
+					"status"             => $booking->post_status,
 					"calendarLink"       => $item && $location ? add_query_arg( 'item', $item->ID, get_permalink( $location->ID ) ) : '',
 					"content"            => [
 						'user'   => [
@@ -136,7 +136,7 @@ class Booking extends View {
 				];
 
 				// Add booking code if there is one
-				if($booking->getBookingCode()) {
+				if ( $booking->getBookingCode() ) {
 					$rowData['bookingCode'] = [
 						'label' => commonsbooking_sanitizeHTML( __( 'Code', 'commonsbooking' ) ),
 						'value' => $booking->getBookingCode()
@@ -169,10 +169,7 @@ class Booking extends View {
 				}
 
 				// If search term was submitted, filter for it.
-				if (
-					! $search ||
-					count( preg_grep( '/.*' . $search . '.*/i', $rowData ) ) > 0
-				) {
+				if ( ! $search || count( preg_grep( '/.*' . $search . '.*/i', $rowData ) ) > 0 ) {
 					$rowData['actions']         = $actions;
 					$bookingDataArray['data'][] = $rowData;
 				}
@@ -203,10 +200,7 @@ class Booking extends View {
 				};
 
 				// Sorting
-				uasort(
-					$bookingDataArray['data'],
-					$sorter( $sort, $order )
-				);
+				uasort( $bookingDataArray['data'], $sorter( $sort, $order ) );
 
 				// Apply pagination...
 				$index       = 0;
@@ -248,13 +242,7 @@ class Booking extends View {
 		$templateData = self::getBookingListData();
 
 		ob_start();
-		commonsbooking_get_template_part(
-			'shortcode',
-			'bookings',
-			true,
-			false,
-			false
-		);
+		commonsbooking_get_template_part( 'shortcode', 'bookings', true, false, false );
 
 		return ob_get_clean();
 	}

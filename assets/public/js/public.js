@@ -4,8 +4,8 @@ class BookingList {
         this.pagination = document.getElementById("booking-list--pagination"), this.element = element, 
         this.users = Array.from(document.querySelectorAll(".filter-users option")), this.items = Array.from(document.querySelectorAll(".filter-items option")), 
         this.locations = Array.from(document.querySelectorAll(".filter-locations option")), 
-        this.bookingStates = Array.from(document.querySelectorAll(".filter-bookingStates option")), 
-        this.startDate = document.querySelector(".filter-startdate input"), jQuery("#startDate-datepicker").datepicker({
+        this.states = Array.from(document.querySelectorAll(".filter-statuss option")), this.startDate = document.querySelector(".filter-startdate input"), 
+        jQuery("#startDate-datepicker").datepicker({
             dateFormat: "yy-mm-dd",
             altFormat: "@",
             altField: "#startDate"
@@ -20,7 +20,7 @@ class BookingList {
             locations: [],
             startDate: [],
             endDate: [],
-            bookingStates: []
+            states: []
         }, this.shuffle = new Shuffle(element), this._resetListParams(), this._addSorting(), 
         this._reloadData(), this._bindEventListeners();
     }
@@ -42,9 +42,9 @@ class BookingList {
         this._onLocationChange = this._handleLocationChange.bind(this);
         const locationSelect = document.querySelectorAll(".filter-locations select");
         locationSelect && locationSelect.item(0).addEventListener("change", this._onLocationChange), 
-        this._onBookingStateChange = this._handleBookingStateChange.bind(this);
-        const bookingStateSelect = document.querySelectorAll(".filter-bookingStates select");
-        bookingStateSelect && bookingStateSelect.item(0).addEventListener("change", this._onBookingStateChange), 
+        this._onStatusChange = this._handleStatusChange.bind(this);
+        const statusSelect = document.querySelectorAll(".filter-statuss select");
+        statusSelect && statusSelect.item(0).addEventListener("change", this._onStatusChange), 
         this._onStartDateChange = this._handleStartDateChange.bind(this);
         const $startDatePicker = jQuery("#startDate-datepicker");
         $startDatePicker && ($startDatePicker.datepicker("option", "onSelect", this._onStartDateChange), 
@@ -97,11 +97,11 @@ class BookingList {
             return input.value;
         });
     }
-    _handleBookingStateChange() {
-        this.filters.bookingStates = this._getCurrentBookingStateFilters(), "all" == this.filters.bookingStates[0] && (this.filters.bookingStates = []);
+    _handleStatusChange() {
+        this.filters.states = this._getCurrentStatusFilters(), "all" == this.filters.states[0] && (this.filters.states = []);
     }
-    _getCurrentBookingStateFilters() {
-        return this.bookingStates.filter(function(input) {
+    _getCurrentStatusFilters() {
+        return this.states.filter(function(input) {
             return input.selected;
         }).map(function(input) {
             return input.value;
@@ -114,7 +114,7 @@ class BookingList {
                 if (select && void 0 !== select) for (var length, i = select.options.length - 1; i >= 0; i--) {
                     const optionValue = select.options[i].value;
                     select.options[i].style.display = "inline", select.options[i].selected = !1, "all" == optionValue && (select.options[i].selected = !0);
-                }
+                } else console.log("filter-" + filter.substring(0, filter.length - 1));
                 this.startDate.value = "", this.endDate.value = "", this.filters[filter] = [];
             }
             this.filter();
@@ -176,7 +176,7 @@ class BookingList {
         this.filters.items.length ? this.listParams.set("item", this.filters.items[0]) : this.listParams.delete("item"), 
         this.filters.users.length ? this.listParams.set("user", this.filters.users[0]) : this.listParams.delete("user"), 
         this.filters.locations.length ? this.listParams.set("location", this.filters.locations[0]) : this.listParams.delete("location"), 
-        this.filters.bookingStates.length ? this.listParams.set("bookingState", this.filters.bookingStates[0]) : this.listParams.delete("bookingState"), 
+        this.filters.states.length ? this.listParams.set("status", this.filters.states[0]) : this.listParams.delete("status"), 
         this.shuffle.filter(this.itemPassesFilters.bind(this)), this._reloadData()) : (this._resetListParams(), 
         this.shuffle.filter(Shuffle.ALL_ITEMS), this._reloadData()), jQuery("#filter").removeClass("loading");
     }
@@ -186,8 +186,8 @@ class BookingList {
         }, this);
     }
     itemPassesFilters(element) {
-        var users = this.filters.users, items = this.filters.items, locations = this.filters.locations, bookingStates = this.filters.bookingStates, user = element.getAttribute("data-user"), item = element.getAttribute("data-item"), location = element.getAttribute("data-location"), bookingState = element.getAttribute("data-bookingState");
-        return !(users.length > 0 && !users.includes(user)) && (!(items.length > 0 && !items.includes(item)) && (!(locations.length > 0 && !locations.includes(location)) && !(bookingStates.length > 0 && !bookingStates.includes(bookingState))));
+        var users = this.filters.users, items = this.filters.items, locations = this.filters.locations, states = this.filters.states, user = element.getAttribute("data-user"), item = element.getAttribute("data-item"), location = element.getAttribute("data-location"), status = element.getAttribute("data-status");
+        return !(users.length > 0 && !users.includes(user)) && (!(items.length > 0 && !items.includes(item)) && (!(locations.length > 0 && !locations.includes(location)) && !(states.length > 0 && !states.includes(status))));
     }
     _initItemElement(item) {
         var itemElement = document.createElement("div");

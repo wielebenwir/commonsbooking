@@ -8,7 +8,7 @@ class BookingList {
         this.users = Array.from(document.querySelectorAll('.filter-users option'));
         this.items = Array.from(document.querySelectorAll('.filter-items option'));
         this.locations = Array.from(document.querySelectorAll('.filter-locations option'));
-        this.bookingStates = Array.from(document.querySelectorAll('.filter-bookingStates option'));
+        this.states = Array.from(document.querySelectorAll('.filter-statuss option'));
 
         this.startDate = document.querySelector('.filter-startdate input');
         jQuery('#startDate-datepicker').datepicker({
@@ -31,7 +31,7 @@ class BookingList {
             locations: [],
             startDate: [],
             endDate: [],
-            bookingStates: []
+            states: []
         }
 
         this.shuffle = new Shuffle(element);
@@ -74,9 +74,9 @@ class BookingList {
         const locationSelect = document.querySelectorAll('.filter-locations select');
         if(locationSelect) locationSelect.item(0).addEventListener('change', this._onLocationChange);
 
-        this._onBookingStateChange = this._handleBookingStateChange.bind(this);
-        const bookingStateSelect = document.querySelectorAll('.filter-bookingStates select');
-        if(bookingStateSelect) bookingStateSelect.item(0).addEventListener('change', this._onBookingStateChange);
+        this._onStatusChange = this._handleStatusChange.bind(this);
+        const statusSelect = document.querySelectorAll('.filter-statuss select');
+        if(statusSelect) statusSelect.item(0).addEventListener('change', this._onStatusChange);
 
         this._onStartDateChange = this._handleStartDateChange.bind(this);
         const $startDatePicker = jQuery('#startDate-datepicker');
@@ -159,15 +159,15 @@ class BookingList {
         });
     };
 
-    _handleBookingStateChange() {
-        this.filters.bookingStates = this._getCurrentBookingStateFilters();
-        if (this.filters.bookingStates[0] == 'all') {
-            this.filters.bookingStates = [];
+    _handleStatusChange() {
+        this.filters.states = this._getCurrentStatusFilters();
+        if (this.filters.states[0] == 'all') {
+            this.filters.states = [];
         }
     };
 
-    _getCurrentBookingStateFilters() {
-        return this.bookingStates.filter(function (input) {
+    _getCurrentStatusFilters() {
+        return this.states.filter(function (input) {
             return input.selected;
         }).map(function (input) {
             return input.value;
@@ -195,6 +195,8 @@ class BookingList {
                             select.options[i].selected = true;
                         }
                     }
+                } else {
+                    console.log('filter-' + filter.substring(0,filter.length - 1));
                 }
 
                 this.startDate.value = "";
@@ -378,10 +380,10 @@ class BookingList {
                 this.listParams.delete('location');
             }
 
-            if (this.filters.bookingStates.length) {
-                this.listParams.set('bookingState', this.filters.bookingStates[0]);
+            if (this.filters.states.length) {
+                this.listParams.set('status', this.filters.states[0]);
             } else {
-                this.listParams.delete('bookingState');
+                this.listParams.delete('status');
             }
 
             this.shuffle.filter(this.itemPassesFilters.bind(this));
@@ -415,11 +417,11 @@ class BookingList {
         var users = this.filters.users;
         var items = this.filters.items;
         var locations = this.filters.locations;
-        var bookingStates = this.filters.bookingStates;
+        var states = this.filters.states;
         var user = element.getAttribute('data-user');
         var item = element.getAttribute('data-item');
         var location = element.getAttribute('data-location');
-        var bookingState = element.getAttribute('data-bookingState');
+        var status = element.getAttribute('data-status');
 
         if (users.length > 0 && !users.includes(user)) {
             return false;
@@ -433,7 +435,7 @@ class BookingList {
             return false;
         }
 
-        if (bookingStates.length > 0 && !bookingStates.includes(bookingState)) {
+        if (states.length > 0 && !states.includes(status)) {
             return false;
         }
 
