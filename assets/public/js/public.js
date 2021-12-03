@@ -330,8 +330,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         };
                         n[0].index > 0 && (a.value += ".*?");
                         for (var r = 0, l = Object.entries(n); r < l.length; r++) {
-                            var d = l[r], c = d[0], p = d[1], h = Number(c), u = t.formatPatterns(p[0], o), m = u.group, f = u.pattern;
-                            a[m] = h + 1, a.value += f, a.value += ".*?";
+                            var d = l[r], c = d[0], h = d[1], p = Number(c), u = t.formatPatterns(h[0], o), m = u.group, f = u.pattern;
+                            a[m] = p + 1, a.value += f, a.value += ".*?";
                         }
                         var y = new RegExp("^" + a.value + "$");
                         if (y.test(e)) {
@@ -597,9 +597,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (n.length) {
                     n[0].index > 0 && (o += e.substring(0, n[0].index));
                     for (var a = 0, r = Object.entries(n); a < r.length; a++) {
-                        var l = r[a], d = l[0], c = l[1], p = Number(d);
-                        o += this.formatTokens(c[0], i), n[p + 1] && (o += e.substring(c.index + c[0].length, n[p + 1].index)), 
-                        p === n.length - 1 && (o += e.substring(c.index + c[0].length));
+                        var l = r[a], d = l[0], c = l[1], h = Number(d);
+                        o += this.formatTokens(c[0], i), n[h + 1] && (o += e.substring(c.index + c[0].length, n[h + 1].index)), 
+                        h === n.length - 1 && (o += e.substring(c.index + c[0].length));
                     }
                 }
                 return o.replace(/\\/g, "");
@@ -709,7 +709,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Object.defineProperty(e, "__esModule", {
             value: !0
         }), e.Litepicker = void 0;
-        var d = i(5), c = i(0), p = l(i(1)), h = i(2), u = function(t) {
+        var d = i(5), c = i(0), h = l(i(1)), p = i(2), u = function(t) {
             function e(e) {
                 var i = t.call(this) || this;
                 i.options = s(s({}, i.options), e.element.dataset), Object.keys(i.options).forEach(function(t) {
@@ -734,9 +734,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 !i.options.singleMode || i.options.startDate instanceof c.DateTime || (i.options.startDate = null), 
                 i.options.singleMode || i.options.startDate instanceof c.DateTime && i.options.endDate instanceof c.DateTime || (i.options.startDate = new c.DateTime(i.options.startDate, i.options.format, i.options.lang), 
                 i.options.endDate = null);
-                for (var p = 0; p < i.options.numberOfMonths; p += 1) {
-                    var h = i.options.startDate instanceof c.DateTime ? i.options.startDate.clone() : new c.DateTime();
-                    h.setDate(1), h.setMonth(h.getMonth() + p), i.calendars[p] = h;
+                for (var h = 0; h < i.options.numberOfMonths; h += 1) {
+                    var p = i.options.startDate instanceof c.DateTime ? i.options.startDate.clone() : new c.DateTime();
+                    p.setDate(1), p.setMonth(p.getMonth() + h), i.calendars[h] = p;
                 }
                 if (i.options.showTooltip) if (i.options.tooltipPluralSelector) i.pluralSelector = i.options.tooltipPluralSelector; else try {
                     var u = new Intl.PluralRules(i.options.lang);
@@ -758,7 +758,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 var t = this;
                 if (document.addEventListener("click", function(e) {
                     return t.onClick(e);
-                }, !0), this.picker = document.createElement("div"), this.picker.className = p.litepicker, 
+                }, !0), this.picker = document.createElement("div"), this.picker.className = h.litepicker, 
                 this.picker.style.display = "none", this.picker.addEventListener("mouseenter", function(e) {
                     return t.onMouseEnter(e);
                 }, !0), this.picker.addEventListener("mouseleave", function(e) {
@@ -776,12 +776,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     this.enableModuleNavKeyboard.call(this, this);
                 }
                 this.render(), this.options.parentEl ? this.options.parentEl instanceof HTMLElement ? this.options.parentEl.appendChild(this.picker) : document.querySelector(this.options.parentEl).appendChild(this.picker) : this.options.inlineMode ? this.options.element instanceof HTMLInputElement ? this.options.element.parentNode.appendChild(this.picker) : this.options.element.appendChild(this.picker) : document.body.appendChild(this.picker), 
-                this.options.mobileFriendly && (this.backdrop = document.createElement("div"), this.backdrop.className = p.litepickerBackdrop, 
+                this.options.mobileFriendly && (this.backdrop = document.createElement("div"), this.backdrop.className = h.litepickerBackdrop, 
                 this.backdrop.addEventListener("click", this.hide()), this.options.element && this.options.element.parentNode && this.options.element.parentNode.appendChild(this.backdrop), 
                 window.addEventListener("orientationchange", function(e) {
                     var i = function() {
-                        if (h.isMobile() && t.isShowning()) {
-                            switch (h.getOrientation()) {
+                        if (p.isMobile() && t.isShowning()) {
+                            switch (p.getOrientation()) {
                               case "landscape":
                                 t.options.numberOfMonths = 2, t.options.numberOfColumns = 2;
                                 break;
@@ -797,7 +797,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         window.removeEventListener("resize", i);
                     };
                     window.addEventListener("resize", i);
-                })), this.options.inlineMode && (this.show(), this.options.mobileFriendly && h.isMobile() && (window.dispatchEvent(new Event("orientationchange")), 
+                })), this.options.inlineMode && (this.show(), this.options.mobileFriendly && p.isMobile() && (window.dispatchEvent(new Event("orientationchange")), 
                 window.dispatchEvent(new Event("resize")))), this.updateInput();
             }, e.prototype.parseInput = function() {
                 var t = this.options.delimiter, e = new RegExp("" + t), i = this.options.element instanceof HTMLInputElement ? this.options.element.value.split(t) : [];
@@ -820,7 +820,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     this.options.elementEnd && (this.options.elementEnd.value = ""));
                 }
             }, e.prototype.isSamePicker = function(t) {
-                return t.closest("." + p.litepicker) === this.picker;
+                return t.closest("." + h.litepicker) === this.picker;
             }, e.prototype.shouldShown = function(t) {
                 return t === this.options.element || this.options.elementEnd && t === this.options.elementEnd;
             }, e.prototype.shouldResetDatePicked = function() {
@@ -837,12 +837,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 return this.options.disallowBookedDaysInRange && this.options.bookedDays.length && 2 === this.datePicked.length;
             }, e.prototype.onClick = function(t) {
                 var e = this, i = t.target;
-                if (i && this.picker) if (this.shouldShown(i)) this.show(i); else if (i.closest("." + p.litepicker), 
-                i.classList.contains(p.dayItem)) {
+                if (i && this.picker) if (this.shouldShown(i)) this.show(i); else if (i.closest("." + h.litepicker), 
+                i.classList.contains(h.dayItem)) {
                     if (t.preventDefault(), !this.isSamePicker(i)) return;
-                    if (i.classList.contains(p.isLocked)) return;
-                    if (i.classList.contains(p.isHoliday)) return;
-                    if (i.classList.contains(p.isBooked)) return;
+                    if (i.classList.contains(h.isLocked)) return;
+                    if (i.classList.contains(h.isHoliday)) return;
+                    if (i.classList.contains(h.isBooked)) return;
                     if (this.shouldResetDatePicked() && (this.datePicked.length = 0), this.datePicked[this.datePicked.length] = new c.DateTime(i.dataset.time), 
                     this.shouldSwapDatePicked()) {
                         var o = this.datePicked[1].clone();
@@ -885,35 +885,35 @@ document.addEventListener("DOMContentLoaded", () => {
                         this.hide(), y = !0), "function" == typeof this.options.onAutoApply && this.options.onAutoApply.call(this, y);
                     }
                 } else {
-                    if (i.classList.contains(p.buttonPreviousMonth)) {
+                    if (i.classList.contains(h.buttonPreviousMonth)) {
                         if (t.preventDefault(), !this.isSamePicker(i)) return;
                         var g = 0, k = this.options.moveByOneMonth ? 1 : this.options.numberOfMonths;
                         if (this.options.splitView) {
-                            var D = i.closest("." + p.monthItem);
-                            g = h.findNestedMonthItem(D), k = 1;
+                            var D = i.closest("." + h.monthItem);
+                            g = p.findNestedMonthItem(D), k = 1;
                         }
                         return this.calendars[g].setMonth(this.calendars[g].getMonth() - k), this.gotoDate(this.calendars[g], g), 
                         void ("function" == typeof this.options.onChangeMonth && this.options.onChangeMonth.call(this, this.calendars[g], g));
                     }
-                    if (i.classList.contains(p.buttonNextMonth)) {
+                    if (i.classList.contains(h.buttonNextMonth)) {
                         if (t.preventDefault(), !this.isSamePicker(i)) return;
                         return g = 0, k = this.options.moveByOneMonth ? 1 : this.options.numberOfMonths, 
-                        this.options.splitView && (D = i.closest("." + p.monthItem), g = h.findNestedMonthItem(D), 
+                        this.options.splitView && (D = i.closest("." + h.monthItem), g = p.findNestedMonthItem(D), 
                         k = 1), this.calendars[g].setMonth(this.calendars[g].getMonth() + k), this.gotoDate(this.calendars[g], g), 
                         void ("function" == typeof this.options.onChangeMonth && this.options.onChangeMonth.call(this, this.calendars[g], g));
                     }
-                    if (i.classList.contains(p.buttonCancel)) {
+                    if (i.classList.contains(h.buttonCancel)) {
                         if (t.preventDefault(), !this.isSamePicker(i)) return;
                         this.hide();
                     }
-                    if (i.classList.contains(p.buttonApply)) {
+                    if (i.classList.contains(h.buttonApply)) {
                         if (t.preventDefault(), !this.isSamePicker(i)) return;
                         this.options.singleMode && this.datePicked.length ? this.setDate(this.datePicked[0]) : this.options.singleMode || 2 !== this.datePicked.length || this.setDateRange(this.datePicked[0], this.datePicked[1]), 
                         this.hide();
                     }
                 }
             }, e.prototype.showTooltip = function(t, e) {
-                var i = this.picker.querySelector("." + p.containerTooltip);
+                var i = this.picker.querySelector("." + h.containerTooltip);
                 i.style.visibility = "visible", i.innerHTML = e;
                 var o = this.picker.getBoundingClientRect(), n = i.getBoundingClientRect(), s = t.getBoundingClientRect(), a = s.top, r = s.left;
                 if (this.options.inlineMode && this.options.parentEl) {
@@ -923,38 +923,38 @@ document.addEventListener("DOMContentLoaded", () => {
                 a -= n.height, r -= n.width / 2, r += s.width / 2, i.style.top = a + "px", i.style.left = r + "px", 
                 "function" == typeof this.options.onShowTooltip && this.options.onShowTooltip.call(this, i, t);
             }, e.prototype.hideTooltip = function() {
-                this.picker.querySelector("." + p.containerTooltip).style.visibility = "hidden";
+                this.picker.querySelector("." + h.containerTooltip).style.visibility = "hidden";
             }, e.prototype.shouldAllowMouseEnter = function(t) {
-                return !(this.options.singleMode || t.classList.contains(p.isLocked) || t.classList.contains(p.isHoliday) || t.classList.contains(p.isBooked));
+                return !(this.options.singleMode || t.classList.contains(h.isLocked) || t.classList.contains(h.isHoliday) || t.classList.contains(h.isBooked));
             }, e.prototype.shouldAllowRepick = function() {
                 return this.options.elementEnd && this.options.allowRepick && this.options.startDate && this.options.endDate;
             }, e.prototype.isDayItem = function(t) {
-                return t.classList.contains(p.dayItem);
+                return t.classList.contains(h.dayItem);
             }, e.prototype.onMouseEnter = function(t) {
                 var e = this, i = t.target;
                 if (this.isDayItem(i) && ("function" == typeof this.options.onDayHover && this.options.onDayHover.call(this, c.DateTime.parseDateTime(i.dataset.time), i.classList.toString().split(/\s/), i), 
                 this.shouldAllowMouseEnter(i))) {
                     if (this.shouldAllowRepick() && (this.triggerElement === this.options.element ? this.datePicked[0] = this.options.endDate.clone() : this.triggerElement === this.options.elementEnd && (this.datePicked[0] = this.options.startDate.clone())), 
                     1 !== this.datePicked.length) return;
-                    var o = this.picker.querySelector("." + p.dayItem + '[data-time="' + this.datePicked[0].getTime() + '"]'), n = this.datePicked[0].clone(), s = new c.DateTime(i.dataset.time), a = !1;
+                    var o = this.picker.querySelector("." + h.dayItem + '[data-time="' + this.datePicked[0].getTime() + '"]'), n = this.datePicked[0].clone(), s = new c.DateTime(i.dataset.time), a = !1;
                     if (n.getTime() > s.getTime()) {
                         var r = n.clone();
                         n = s.clone(), s = r.clone(), a = !0;
                     }
-                    if (Array.prototype.slice.call(this.picker.querySelectorAll("." + p.dayItem)).forEach(function(t) {
+                    if (Array.prototype.slice.call(this.picker.querySelectorAll("." + h.dayItem)).forEach(function(t) {
                         var i = new c.DateTime(t.dataset.time), o = e.renderDay(i);
                         if (i.isBetween(n, s)) {
                             var a = e.options.days[i.format(e.options.bookedDaysFormat)];
-                            a.bookedDay ? o.classList.add(p.isBooked) : a.partiallyBookedDay && (a.firstSlotBooked && o.classList.add(p.isPartiallyBookedStart), 
-                            a.lastSlotBooked && o.classList.add(p.isPartiallyBookedEnd)), o.classList.add(p.isInRange);
+                            a.bookedDay ? o.classList.add(h.isBooked) : a.partiallyBookedDay && (a.firstSlotBooked && o.classList.add(h.isPartiallyBookedStart), 
+                            a.lastSlotBooked && o.classList.add(h.isPartiallyBookedEnd)), o.classList.add(h.isInRange);
                         }
                         t.className = o.className;
-                    }), i.classList.add(p.isEndDate), a ? (o && o.classList.add(p.isFlipped), i.classList.add(p.isFlipped)) : (o && o.classList.remove(p.isFlipped), 
-                    i.classList.remove(p.isFlipped)), this.options.showTooltip) {
+                    }), i.classList.add(h.isEndDate), a ? (o && o.classList.add(h.isFlipped), i.classList.add(h.isFlipped)) : (o && o.classList.remove(h.isFlipped), 
+                    i.classList.remove(h.isFlipped)), this.options.showTooltip) {
                         var l = s.diff(n, "day");
                         if (this.options.hotelMode || (l += 1), l > 0) {
-                            var d = this.pluralSelector(l), h = l + " " + (this.options.tooltipText[d] ? this.options.tooltipText[d] : "[" + d + "]");
-                            this.showTooltip(i, h);
+                            var d = this.pluralSelector(l), p = l + " " + (this.options.tooltipText[d] ? this.options.tooltipText[d] : "[" + d + "]");
+                            this.showTooltip(i, p);
                         } else this.hideTooltip();
                     }
                 }
@@ -1158,12 +1158,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (this.options.dropdowns.months) {
                     var c = document.createElement("select");
                     c.className = r.monthItemName;
-                    for (var p = 0; p < 12; p += 1) {
-                        var h = document.createElement("option"), u = new a.DateTime(new Date(t.getFullYear(), p, 1, 0, 0, 0));
-                        h.value = String(p), h.text = u.toLocaleString(this.options.lang, {
+                    for (var h = 0; h < 12; h += 1) {
+                        var p = document.createElement("option"), u = new a.DateTime(new Date(t.getFullYear(), h, 1, 0, 0, 0));
+                        p.value = String(h), p.text = u.toLocaleString(this.options.lang, {
                             month: "long"
-                        }), h.disabled = this.options.minDate && u.isBefore(new a.DateTime(this.options.minDate), "month") || this.options.maxDate && u.isAfter(new a.DateTime(this.options.maxDate), "month"), 
-                        h.selected = u.getMonth() === t.getMonth(), c.appendChild(h);
+                        }), p.disabled = this.options.minDate && u.isBefore(new a.DateTime(this.options.minDate), "month") || this.options.maxDate && u.isAfter(new a.DateTime(this.options.maxDate), "month"), 
+                        p.selected = u.getMonth() === t.getMonth(), c.appendChild(p);
                     }
                     c.addEventListener("change", function(t) {
                         var i = t.target, o = 0;
@@ -1183,15 +1183,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     var f = document.createElement("select");
                     f.className = r.monthItemYear;
                     var y = this.options.dropdowns.minYear, g = this.options.dropdowns.maxYear ? this.options.dropdowns.maxYear : new Date().getFullYear();
-                    for (t.getFullYear() > g && ((h = document.createElement("option")).value = String(t.getFullYear()), 
-                    h.text = String(t.getFullYear()), h.selected = !0, h.disabled = !0, f.appendChild(h)), 
-                    p = g; p >= y; p -= 1) {
-                        var h = document.createElement("option"), k = new a.DateTime(new Date(p, 0, 1, 0, 0, 0));
-                        h.value = p, h.text = p, h.disabled = this.options.minDate && k.isBefore(new a.DateTime(this.options.minDate), "year") || this.options.maxDate && k.isAfter(new a.DateTime(this.options.maxDate), "year"), 
-                        h.selected = t.getFullYear() === p, f.appendChild(h);
+                    for (t.getFullYear() > g && ((p = document.createElement("option")).value = String(t.getFullYear()), 
+                    p.text = String(t.getFullYear()), p.selected = !0, p.disabled = !0, f.appendChild(p)), 
+                    h = g; h >= y; h -= 1) {
+                        var p = document.createElement("option"), k = new a.DateTime(new Date(h, 0, 1, 0, 0, 0));
+                        p.value = h, p.text = h, p.disabled = this.options.minDate && k.isBefore(new a.DateTime(this.options.minDate), "year") || this.options.maxDate && k.isAfter(new a.DateTime(this.options.maxDate), "year"), 
+                        p.selected = t.getFullYear() === h, f.appendChild(p);
                     }
-                    if (t.getFullYear() < y && ((h = document.createElement("option")).value = String(t.getFullYear()), 
-                    h.text = String(t.getFullYear()), h.selected = !0, h.disabled = !0, f.appendChild(h)), 
+                    if (t.getFullYear() < y && ((p = document.createElement("option")).value = String(t.getFullYear()), 
+                    p.text = String(t.getFullYear()), p.selected = !0, p.disabled = !0, f.appendChild(p)), 
                     "asc" === this.options.dropdowns.years) {
                         var D = Array.prototype.slice.call(f.childNodes).reverse();
                         f.innerHTML = "", D.forEach(function(t) {
@@ -1238,7 +1238,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 t.setHours();
                 var i = document.createElement("a");
                 if (i.href = "#", i.className = r.dayItem, i.innerHTML = String(t.getDate()), i.dataset.time = String(t.getTime()), 
-                t.toDateString() === new Date().toDateString() && i.classList.add(r.isToday), this.datePicked.length ? (this.datePicked[0].toDateString() === t.toDateString() && (i.classList.add(r.isStartDate), 
+                t.toDateString() === new Date().toDateString() && i.classList.add(r.isToday), this.datePicked.length ? (2 === this.datePicked.length && (this.bookedDayAfterSelection = null), 
+                this.datePicked[0].toDateString() === t.toDateString() && (i.classList.add(r.isStartDate), 
                 this.options.singleMode && i.classList.add(r.isEndDate)), 2 === this.datePicked.length && this.datePicked[1].toDateString() === t.toDateString() && i.classList.add(r.isEndDate), 
                 2 === this.datePicked.length && t.isBetween(this.datePicked[0], this.datePicked[1]) && i.classList.add(r.isInRange)) : this.options.startDate && (this.options.startDate.toDateString() === t.toDateString() && (i.classList.add(r.isStartDate), 
                 this.options.singleMode && i.classList.add(r.isEndDate)), this.options.endDate && this.options.endDate.toDateString() === t.toDateString() && i.classList.add(r.isEndDate), 
@@ -1253,9 +1254,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     o = Number(this.options.hotelMode), n = this.datePicked[0].clone().subtract(this.options.maxDays + o, "day");
                     var l = 0;
                     if (!this.options.disallowLockDaysInRange) {
-                        for (var d = this.datePicked[0].clone(), c = this.options.maxDays, p = [], h = 0; h < this.options.lockDays.length; h++) this.datePicked[0].getTime() < this.options.lockDays[h].getTime() && p.push(this.options.lockDays[h]);
-                        for (var u = !1; c > 0; ) for (c -= 1, d = d.add(1, "day"), h = 0; h < p.length; h++) p[h].getTime() === d.getTime() && (this.dateIsBooked(d, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(d, this.options.partiallyBookedDaysInclusivity) || this.dateIsHoliday(d, this.options.holidaysInclusivity) || !1 !== u ? u = !1 : (l += 1, 
-                        u = !0));
+                        for (var d = this.datePicked[0].clone(), c = this.options.maxDays, h = [], p = 0, u = this.options.lockDays; p < u.length; p++) {
+                            var m = u[p];
+                            this.datePicked[0].getTime() < m.getTime() && h.push(m);
+                        }
+                        for (var f = !1; c > 0; ) {
+                            c -= 1, d = d.add(1, "day");
+                            for (var y = 0, g = h; y < g.length; y++) (m = g[y]).getTime() === d.getTime() && (this.dateIsBooked(d, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(d, this.options.partiallyBookedDaysInclusivity) || this.dateIsHoliday(d, this.options.holidaysInclusivity) || !1 !== f ? f = !1 : (l += 1, 
+                            f = !0));
+                        }
                     }
                     s = this.datePicked[0].clone().add(this.options.maxDays + l + o, "day"), t.isSameOrBefore(n) && i.classList.add(r.isLocked), 
                     t.isSameOrAfter(s) && i.classList.add(r.isLocked);
@@ -1264,31 +1271,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 this.options.selectBackward && 1 === this.datePicked.length && t.isAfter(this.datePicked[0]) && i.classList.add(r.isLocked), 
                 this.options.selectForward && 1 === this.datePicked.length && t.isBefore(this.datePicked[0]) && i.classList.add(r.isHoliday), 
                 this.options.selectBackward && 1 === this.datePicked.length && t.isAfter(this.datePicked[0]) && i.classList.add(r.isHoliday), 
-                this.options.lockDays.length && this.options.lockDays.filter(function(i) {
+                this.options.lockDays.length && (this.options.lockDays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.lockDaysInclusivity) : i.isSame(t, "day");
-                }).length && i.classList.add(r.isLocked), this.options.bookedDays.length && (y = this.options.bookedDays.filter(function(i) {
+                }).length || Number.isInteger(this.bookedDayAfterSelection) && this.bookedDayAfterSelection < t.getTime() && 1 === this.datePicked.length) && i.classList.add(r.isLocked), 
+                this.options.bookedDays.length && (v = this.options.bookedDays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.bookedDaysInclusivity) : i.isSame(t, "day");
-                }).length) && i.classList.add(r.isBooked), this.options.partiallyBookedDays.length && (w = this.options.partiallyBookedDays.filter(function(i) {
+                }).length) && (i.classList.add(r.isBooked), this.datePicked.length > 0 && !this.bookedDayAfterSelection && this.datePicked[0].getTime() < t.getTime() && (this.bookedDayAfterSelection = t.getTime())), 
+                this.options.partiallyBookedDays.length && (B = this.options.partiallyBookedDays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.partiallyBookedDaysInclusivity) : i.isSame(t, "day");
-                }).length) && (!1 === (b = this.options.days[t.format(this.options.format)]).firstSlotBooked && i.classList.add(r.isPartiallyBookedStart), 
-                !1 === b.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd)), this.options.holidays.length && this.options.holidays.filter(function(i) {
+                }).length) && (!1 === (T = this.options.days[t.format(this.options.format)]).firstSlotBooked && i.classList.add(r.isPartiallyBookedStart), 
+                !1 === T.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd)), this.options.holidays.length && this.options.holidays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.holidaysInclusivity) : i.isSame(t, "day");
                 }).length && i.classList.add(r.isHoliday), this.options.highlightedDays.length && this.options.highlightedDays.filter(function(e) {
                     return e instanceof Array ? t.isBetween(e[0], e[1], "[]") : e.isSame(t, "day");
                 }).length && i.classList.add(r.isHighlighted), this.datePicked.length <= 1) {
-                    var m = t.clone();
-                    if (m.subtract(1, "day"), t.clone().add(1, "day"), this.options.bookedDays.length) {
-                        var f = this.options.bookedDaysInclusivity;
-                        this.options.hotelMode && 1 === this.datePicked.length && (f = "()");
-                        var y = this.dateIsBooked(t, f), g = this.dateIsBooked(m, "[]"), k = this.dateIsBooked(t, "(]"), D = 0 === this.datePicked.length && y || 1 === this.datePicked.length && g && y || 1 === this.datePicked.length && g && k, v = this.options.anyBookedDaysAsCheckout && 1 === this.datePicked.length;
-                        D && !v && i.classList.add(r.isBooked);
+                    var k = t.clone();
+                    if (k.subtract(1, "day"), t.clone().add(1, "day"), this.options.bookedDays.length) {
+                        var D = this.options.bookedDaysInclusivity;
+                        this.options.hotelMode && 1 === this.datePicked.length && (D = "()");
+                        var v = this.dateIsBooked(t, D), b = this.dateIsBooked(k, "[]"), w = this.dateIsBooked(t, "(]"), M = 0 === this.datePicked.length && v || 1 === this.datePicked.length && b && v || 1 === this.datePicked.length && b && w, x = this.options.anyBookedDaysAsCheckout && 1 === this.datePicked.length;
+                        M && !x && i.classList.add(r.isBooked);
                     }
                     if (this.options.partiallyBookedDays.length) {
-                        f = this.options.partiallyBookedDaysInclusivity, this.options.hotelMode && 1 === this.datePicked.length && (f = "()");
-                        var b, w = this.dateIsPartiallyBooked(t, f), M = (g = this.dateIsPartiallyBooked(m, "[]"), 
-                        k = this.dateIsPartiallyBooked(t, "(]"), 0 === this.datePicked.length && w || 1 === this.datePicked.length && g && w || 1 === this.datePicked.length && g && k), x = this.options.anyPartiallyBookedDaysAsCheckout && 1 === this.datePicked.length;
-                        M && !x && (!1 === (b = this.options.days[t.format(this.options.format)]).firstSlotBooked && i.classList.add(r.isPartiallyBookedStart), 
-                        !1 === b.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd));
+                        D = this.options.partiallyBookedDaysInclusivity, this.options.hotelMode && 1 === this.datePicked.length && (D = "()");
+                        var T, B = this.dateIsPartiallyBooked(t, D), _ = (b = this.dateIsPartiallyBooked(k, "[]"), 
+                        w = this.dateIsPartiallyBooked(t, "(]"), 0 === this.datePicked.length && B || 1 === this.datePicked.length && b && B || 1 === this.datePicked.length && b && w), I = this.options.anyPartiallyBookedDaysAsCheckout && 1 === this.datePicked.length;
+                        _ && !I && (!1 === (T = this.options.days[t.format(this.options.format)]).firstSlotBooked && i.classList.add(r.isPartiallyBookedStart), 
+                        !1 === T.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd));
                     }
                 }
                 return !this.options.disableWeekends || 6 !== t.getDay() && 0 !== t.getDay() || i.classList.add(r.isLocked), 
@@ -1369,14 +1378,14 @@ document.addEventListener("DOMContentLoaded", () => {
             for (var i = {}, o = [], n = 0; n < t.length; n++) {
                 var s = t[n], l = e.base ? s[0] + e.base : s[0], d = i[l] || 0, c = "".concat(l, " ").concat(d);
                 i[l] = d + 1;
-                var p = r(c), h = {
+                var h = r(c), p = {
                     css: s[1],
                     media: s[2],
                     sourceMap: s[3]
                 };
-                -1 !== p ? (a[p].references++, a[p].updater(h)) : a.push({
+                -1 !== h ? (a[h].references++, a[h].updater(p)) : a.push({
                     identifier: c,
-                    updater: y(h, e),
+                    updater: y(p, e),
                     references: 1
                 }), o.push(c);
             }
@@ -1397,12 +1406,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             return e;
         }
-        var c, p = (c = [], function(t, e) {
+        var c, h = (c = [], function(t, e) {
             return c[t] = e, c.filter(Boolean).join("\n");
         });
-        function h(t, e, i, o) {
+        function p(t, e, i, o) {
             var n = i ? "" : o.media ? "@media ".concat(o.media, " {").concat(o.css, "}") : o.css;
-            if (t.styleSheet) t.styleSheet.cssText = p(e, n); else {
+            if (t.styleSheet) t.styleSheet.cssText = h(e, n); else {
                 var s = document.createTextNode(n), a = t.childNodes;
                 a[e] && t.removeChild(a[e]), a.length ? t.insertBefore(s, a[e]) : t.appendChild(s);
             }
@@ -1420,7 +1429,7 @@ document.addEventListener("DOMContentLoaded", () => {
             var i, o, n;
             if (e.singleton) {
                 var s = f++;
-                i = m || (m = d(e)), o = h.bind(null, i, s, !1), n = h.bind(null, i, s, !0);
+                i = m || (m = d(e)), o = p.bind(null, i, s, !1), n = p.bind(null, i, s, !0);
             } else i = d(e), o = u.bind(null, i, e), n = function() {
                 !function(t) {
                     if (null === t.parentNode) return !1;
@@ -1580,15 +1589,15 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             this.render(), this.picker.style.position = "absolute", this.picker.style.display = "block", 
             this.picker.style.zIndex = this.options.zIndex;
-            var o = e.getBoundingClientRect(), n = this.picker.getBoundingClientRect(), s = o.bottom, a = o.left, r = 0, l = 0, p = 0, h = 0;
+            var o = e.getBoundingClientRect(), n = this.picker.getBoundingClientRect(), s = o.bottom, a = o.left, r = 0, l = 0, h = 0, p = 0;
             if (this.options.parentEl) {
                 var u = this.picker.parentNode.getBoundingClientRect();
-                s -= u.bottom, (s += o.height) + n.height > window.innerHeight && o.top - u.top - o.height > 0 && (p = o.top - u.top - o.height), 
-                (a -= u.left) + n.width > window.innerWidth && o.right - u.right - n.width > 0 && (h = o.right - u.right - n.width);
+                s -= u.bottom, (s += o.height) + n.height > window.innerHeight && o.top - u.top - o.height > 0 && (h = o.top - u.top - o.height), 
+                (a -= u.left) + n.width > window.innerWidth && o.right - u.right - n.width > 0 && (p = o.right - u.right - n.width);
             } else r = window.scrollX || window.pageXOffset, l = window.scrollY || window.pageYOffset, 
-            s + n.height > window.innerHeight && o.top - n.height > 0 && (p = o.top - n.height), 
-            a + n.width > window.innerWidth && o.right - n.width > 0 && (h = o.right - n.width);
-            this.picker.style.top = (p || s) + l + "px", this.picker.style.left = (h || a) + r + "px", 
+            s + n.height > window.innerHeight && o.top - n.height > 0 && (h = o.top - n.height), 
+            a + n.width > window.innerWidth && o.right - n.width > 0 && (p = o.right - n.width);
+            this.picker.style.top = (h || s) + l + "px", this.picker.style.left = (p || a) + r + "px", 
             this.picker.style.right = null, this.picker.style.bottom = null, "function" == typeof this.options.onShow && this.options.onShow.call(this);
         }, l.Litepicker.prototype.hide = function() {
             this.isShowning() && (this.datePicked.length = 0, this.updateInput(), this.options.inlineMode ? this.render() : (this.picker.style.display = "none", 
