@@ -1,11 +1,13 @@
 <?php
 
-namespace Wordpress\CustomPostType;
+namespace CommonsBooking\Tests\Wordpress\CustomPostType;
 
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use PHPUnit\Framework\TestCase;
+use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
-class TimeframeTest extends TestCase {
+
+class TimeframeTest extends CustomPostTypeTest {
 
 	public $testPostId;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace View;
+namespace CommonsBooking\Tests\View;
 
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Booking;
