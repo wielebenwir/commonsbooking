@@ -3,6 +3,7 @@
 namespace CommonsBooking\Tests\Wordpress;
 
 use CommonsBooking\Repository\BookingCodes;
+use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
@@ -25,6 +26,65 @@ abstract class CustomPostTypeTest extends TestCase {
 	protected $firstTimeframeId;
 
 	protected $secondTimeframeId;
+	
+	protected $bookingIds = [];
+	
+	protected $timeframeIds = [];
+
+	protected function getEndOfDayTimestamp($date) {
+		return strtotime('+1 day midnight',strtotime($date)) - 1;
+	}
+
+	protected function createConfirmedBookingEndingToday() {
+		// Create Timeframe
+		$bookingId = wp_insert_post( [
+			'post_title'   => 'Booking ending today',
+			'post_type'=> Booking::$postType,
+			'post_status' => 'confirmed'
+		] );
+
+		update_post_meta( $bookingId, 'type', Timeframe::BOOKING_ID );
+		update_post_meta( $bookingId, 'timeframe-repetition', 'w');
+		update_post_meta( $bookingId, 'start-time','8:00 AM');
+		update_post_meta( $bookingId, 'end-time', '12:00 PM');
+		update_post_meta( $bookingId, 'timeframe-max-days', '3');
+		update_post_meta( $bookingId, 'location-id', $this->locationId);
+		update_post_meta( $bookingId, 'item-id', $this->itemId);
+		update_post_meta( $bookingId, 'grid','0');
+		update_post_meta( $bookingId, 'repetition-start', strtotime('-1 day', strtotime(self::CURRENT_DATE)));
+		update_post_meta( $bookingId, 'repetition-end', $this->getEndOfDayTimestamp(self::CURRENT_DATE));
+		update_post_meta( $bookingId,
+			'weekdays',
+			[ "1", "2", "3", "4", "5", "6" ]
+		);
+
+		$this->bookingIds[] = $bookingId;
+	}
+
+	protected function createConfirmedBookingStartingToday() {
+		// Create Timeframe
+		$bookingId = wp_insert_post( [
+			'post_title'   => 'Booking ending today',
+			'post_type'=> Booking::$postType,
+			'post_status' => 'confirmed'
+		] );
+
+		update_post_meta( $bookingId, 'type', Timeframe::BOOKING_ID );
+		update_post_meta( $bookingId, 'timeframe-repetition', 'w');
+		update_post_meta( $bookingId, 'start-time','8:00 AM');
+		update_post_meta( $bookingId, 'end-time', '12:00 PM');
+		update_post_meta( $bookingId, 'timeframe-max-days', '3');
+		update_post_meta( $bookingId, 'location-id', $this->locationId);
+		update_post_meta( $bookingId, 'item-id', $this->itemId);
+		update_post_meta( $bookingId, 'grid','0');
+		update_post_meta( $bookingId, 'repetition-start', strtotime('midnight', strtotime(self::CURRENT_DATE)));
+		update_post_meta( $bookingId, 'repetition-end', strtotime('+2 days', strtotime(self::CURRENT_DATE)));
+		update_post_meta( $bookingId,
+			'weekdays',
+			[ "1", "2", "3", "4", "5", "6" ]
+		);
+		$this->bookingIds[] = $bookingId;
+	}
 
 	protected function createBookableTimeFrameIncludingCurrentDay() {
 		// Create Timeframe
@@ -48,6 +108,7 @@ abstract class CustomPostTypeTest extends TestCase {
 			'weekdays',
 			[ "1", "2", "3", "4" ]
 		);
+		$this->timeframeIds[] = $this->timeframeId;
 	}
 
 	/**
@@ -74,6 +135,7 @@ abstract class CustomPostTypeTest extends TestCase {
 			'weekdays',
 			[ "1", "2", "3", "4" ]
 		);
+		$this->timeframeIds[] = $this->firstTimeframeId;
 	}
 
 	/**
@@ -99,6 +161,7 @@ abstract class CustomPostTypeTest extends TestCase {
 			'weekdays',
 			[ "1", "2", "3", "4" ]
 		);
+		$this->timeframeIds[] = $this->secondTimeframeId;
 	}
 
 	protected function setUpBookingCodesTable() {
@@ -137,19 +200,33 @@ abstract class CustomPostTypeTest extends TestCase {
 		] );
 	}
 
-	protected function tearDown() {
-		parent::tearDown();
+	protected function tearDownAllBookings() {
+		foreach ($this->bookingIds as $id) {
+			wp_delete_post( $id, true );
+		}
+	}
 
-		wp_delete_post( $this->itemId, true );
-		wp_delete_post( $this->locationId, true );
-		wp_delete_post( $this->timeframeId, true );
-		wp_delete_post( $this->firstTimeframeId, true );
-		wp_delete_post( $this->secondTimeframeId, true );
+	protected function tearDownAllTimeframes() {
+		foreach ($this->timeframeIds as $id) {
+			wp_delete_post( $id, true );
+		}
+	}
 
+	protected function tearDownBookingCodesTable() {
 		global $wpdb;
 		$table_name = $wpdb->prefix . BookingCodes::$tablename;
 		$sql        = "DROP TABLE $table_name";
 		$wpdb->query( $sql );
+	}
+
+	protected function tearDown() {
+		parent::tearDown();
+		wp_delete_post( $this->itemId, true );
+		wp_delete_post( $this->locationId, true );
+
+		$this->tearDownAllTimeframes();
+		$this->tearDownAllBookings();
+		$this->tearDownBookingCodesTable();
 	}
 
 }

@@ -3,13 +3,27 @@
 namespace CommonsBooking\Tests\Wordpress\CustomPostType;
 
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use PHPUnit\Framework\TestCase;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
 
 class TimeframeTest extends CustomPostTypeTest {
 
 	public $testPostId;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->testPostId = wp_insert_post( [
+			'post_title'   => 'Booking'
+		] );
+
+		// Timeframe is a booking
+		update_post_meta( $this->testPostId, 'type', Timeframe::BOOKING_ID );
+	}
+
+	protected function tearDown() {
+		parent::tearDown();
+	}
 
 	public function testIsLocked() {
 		$timeframe = get_post( $this->testPostId );
@@ -21,16 +35,4 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertFalse( Timeframe::isOverBookable( $timeframe ) );
 	}
 
-	protected function setUp(): void {
-		$this->testPostId = wp_insert_post( [
-			'post_title'   => 'Booking'
-		] );
-
-		// Timeframe is a booking
-		update_post_meta( $this->testPostId, 'type', Timeframe::BOOKING_ID );
-	}
-
-	protected function tearDown(): void {
-		wp_delete_post( $this->testPostId, true );
-	}
 }

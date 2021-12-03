@@ -3,16 +3,27 @@
 namespace CommonsBooking\Tests\View;
 
 use CommonsBooking\Repository\BookingCodes;
+use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\View\Booking;
 use PHPUnit\Framework\TestCase;
 
-final class BookingTest extends TestCase {
+final class BookingTest extends CustomPostTypeTest {
 
 	private $bookingId;
 
 	const USER_ID = 1;
 
 	const BOOKING_ID = 1;
+
+	protected function setUp() {
+		parent::setUp();
+		$this->createBooking();
+
+	}
+
+	protected function tearDown() {
+		parent::tearDown();
+	}
 
 	/**
 	 * Timeframe with enddate.
@@ -42,39 +53,10 @@ final class BookingTest extends TestCase {
 		);
 	}
 
-	protected function setUp() {
-		$this->createBooking();
-		$this->setUpBookingCodesTable();
-	}
-
 	public function testGetBookingListData() {
 		wp_set_current_user( self::USER_ID );
 		$bookings = Booking::getBookingListData();
 		$this->assertTrue( $bookings['total'] == 1 );
 	}
 
-	protected function setUpBookingCodesTable() {
-		global $wpdb;
-		$table_name      = $wpdb->prefix . BookingCodes::$tablename;
-		$charset_collate = $wpdb->get_charset_collate();
-		$sql             = "CREATE TABLE $table_name (
-            date date DEFAULT '0000-00-00' NOT NULL,
-            timeframe bigint(20) unsigned NOT NULL,
-            location bigint(20) unsigned NOT NULL,
-            item bigint(20) unsigned NOT NULL,
-            code varchar(100) NOT NULL,
-            PRIMARY KEY (date, timeframe, location, item, code) 
-        ) $charset_collate;";
-
-		$wpdb->query( $sql );
-	}
-
-	protected function tearDown() {
-		wp_delete_post( $this->bookingId, true );
-
-		global $wpdb;
-		$table_name = $wpdb->prefix . BookingCodes::$tablename;
-		$sql        = "DROP TABLE $table_name";
-		$wpdb->query( $sql );
-	}
 }

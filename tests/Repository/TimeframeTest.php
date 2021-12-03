@@ -11,8 +11,6 @@ use PHPUnit\Framework\TestCase;
 
 class TimeframeTest extends CustomPostTypeTest {
 
-
-
 	protected function setUp() {
 		parent::setUp();
 		$this->createBookableTimeFrameWithEnddate();
@@ -22,7 +20,6 @@ class TimeframeTest extends CustomPostTypeTest {
 	protected function tearDown() {
 		parent::tearDown();
 	}
-
 
 	public function testGetInRange() {
 		$inRangeTimeFrames = Timeframe::getInRange(self::REPETITION_START, self::REPETITION_END);
