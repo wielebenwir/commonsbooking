@@ -51,7 +51,7 @@ if ($templateData && $templateData['total'] > 0) {
                         <option value="all" selected="selected">' . __('All', 'commonsbooking') . '</option>
             ';
         foreach ($values as $value) {
-            $response .= sprintf('<option value="%s">%s</option>', $value, $value);
+            $response .= sprintf( '<option value="%s">%s</option>', $value, __($value, 'commonsbooking') );
         }
 
         $response .= '

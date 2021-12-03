@@ -37,12 +37,8 @@ class Dashboard extends View {
 		/** @var \CommonsBooking\Model\Booking $booking */
 		foreach ( $bookings as $booking ) {
 			echo '<li>';
-			echo '[' . ( $showStarttime ? $booking->getStartTime() : $booking->getEndTime() ) . '] ' .
-			     $booking->getItem()->title() . ' ' . __( 'in', 'commonsbooking' ) . ' ' .
-			     $booking->getLocation()->title() .
-			     ' ' . $booking->formattedBookingDate() .
-			     ' ' . __( 'at', 'commonsbooking' );
-
+			echo $booking->pickupDatetime() . ' => ' . $booking->returnDatetime() . "<br>";
+			echo $booking->getItem()->title() . ' ' . __( 'at', 'commonsbooking' ) . ' ' . $booking->getLocation()->title();
 			echo '</li>';
 		}
 		echo '</ul>';

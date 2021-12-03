@@ -73,10 +73,12 @@
                                         if($restriction->isActive()) {
                                             echo "<li>";
                                             echo commonsbooking_sanitizeHTML( sprintf( 
-                                                __( 'From %1$s', 'commonsbooking'), 
+												//translators: %1$s = Start date and time formatted
+                                                __( 'From %1$s', 'commonsbooking' ), 
                                                 $restriction->getFormattedStartDateTime() ) );
-                                            echo commonsbooking_sanitizeHTML( sprintf( 
-                                                __( ' until probably %1$s:', 'commonsbooking'), 
+                                            echo " " . commonsbooking_sanitizeHTML( sprintf( 
+												//translators: %1$s = End date and time formatted
+                                                __( 'until probably %1$s:', 'commonsbooking' ), 
                                                 $restriction->getFormattedEndDateTime() ) );
                                             echo "</br>";
                                             echo "<strong>" . $restriction->getHint() . "</strong>";

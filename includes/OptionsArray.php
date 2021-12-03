@@ -290,7 +290,7 @@ Thanks, the Team.
 						'id'      => 'text_book-this-item',
 						'type'    => 'textarea_small',
 						'desc'    => esc_html__( 'This text is displayed on a booking detail page above the booking calendar .', 'commonsbooking' ),
-						'default' => esc_html__( 'Book this item at this location.', 'commonsbooking' ),
+						'default' => esc_html__( 'Book this item at this location', 'commonsbooking' ),
 					),
 				)
 			),
@@ -435,11 +435,12 @@ The item {{restriction:itemName}} is now fully usable again.
 						'id'      => 'pre-booking-reminder-body',
 						'type'    => 'textarea',
 						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
-<p>Your booking period for the item will start soon.<br>
+<p>Your booking period for the item {{item:}} will start soon.<br>
+Your booking period: {{booking:formattedBookingDate}}<br><br>
 
 If you no longer need the item you booked, please cancel the booking so other people can possibly use it.
 <br>
-Here is the link to your booking: {{booking:bookingLink}}
+For booking details and cancellation, click on this booking link: {{booking:bookingLink}}
 <br>
 Best regards,
 the team</p>', 'commonsbooking' ) ),
