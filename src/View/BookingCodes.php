@@ -33,14 +33,16 @@ class BookingCodes {
 	            <div class="cmb-td">
 	                <table id="booking-codes-list">
 	                    <tr>
-	                        <td><b>' . esc_html__( 'Item', 'commonsbooking' ) . '</b></td><td><b>' . esc_html__( 'Pickup date', 'commonsbooking' ) . '</b></td><td><b>' . esc_html__( 'Code', 'commonsbooking' ) . '</b></td>
+							<td><b>' . esc_html__( 'Pickup date', 'commonsbooking' ) . '</b></td>
+	                        <td><b>' . esc_html__( 'Item', 'commonsbooking' ) . '</b></td>
+							<td><b>' . esc_html__( 'Code', 'commonsbooking' ) . '</b></td>
 	                    </tr>';
 
 						/** @var BookingCode $bookingCode */
 						foreach ( $bookingCodes as $bookingCode ) {
 							echo "<tr>
+									<td>" . date_i18n( get_option( 'date_format' ), strtotime ($bookingCode->getDate() ) ) . "</td>
 				                    <td>" . $bookingCode->getItemName() . "</td>
-				                    <td>" . date_i18n( get_option( 'date_format' ), strtotime ($bookingCode->getDate() ) ) . "</td>
 				                    <td>" . $bookingCode->getCode() . "</td>
 				                </tr>";
 						}
