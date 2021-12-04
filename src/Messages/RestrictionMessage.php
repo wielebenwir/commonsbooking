@@ -120,7 +120,8 @@ class RestrictionMessage extends Message {
 				'restriction' => $restriction,
 				'item'        => get_post( $restriction->getItemId() ),
 				'location'    => get_post( $restriction->getLocationId() ),
-				'booking'     => $this->getBooking()
+				'booking'     => $this->getBooking(),
+				'user'        => $this->getUser()
 			]
 		);
 	}
