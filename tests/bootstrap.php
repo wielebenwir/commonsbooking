@@ -31,8 +31,6 @@ function _manually_load_plugin() {
 	require dirname( dirname( __FILE__ ) ) . '/commonsbooking.php';
 }
 
-require_once dirname( dirname( __FILE__ ) ) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
-
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 // Start up the WP testing environment.
