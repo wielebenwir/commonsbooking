@@ -2,19 +2,33 @@
 
 namespace CommonsBooking\Tests\Repository;
 
-use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
-use CommonsBooking\Wordpress\CustomPostType\Item;
-use CommonsBooking\Wordpress\CustomPostType\Location;
-use PHPUnit\Framework\TestCase;
 
 class TimeframeTest extends CustomPostTypeTest {
 
+	const REPETITION_START = '1623801600';
+
+	const REPETITION_END = '1661472000';
+
 	protected function setUp() {
 		parent::setUp();
-		$this->createBookableTimeFrameWithEnddate();
-		$this->createBookableTimeFrameWithoutEnddate();
+
+		// Timeframe with enddate
+		$this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			self::REPETITION_START,
+			self::REPETITION_END
+		);
+
+		// Timeframe without enddate
+		$this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			self::REPETITION_START,
+			null
+		);
 	}
 
 	protected function tearDown() {

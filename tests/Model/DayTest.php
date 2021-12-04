@@ -3,21 +3,17 @@
 namespace CommonsBooking\Tests\Model;
 
 use CommonsBooking\Model\Day;
-use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
-use CommonsBooking\Wordpress\CustomPostType\Item;
-use CommonsBooking\Wordpress\CustomPostType\Location;
-use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 
 class DayTest extends CustomPostTypeTest {
 
 	private $instance;
 
+	protected $timeframeId;
+
 	protected function setUp() {
 		parent::setUp();
-		$this->createBookableTimeFrameIncludingCurrentDay();
+		$this->timeframeId = $this->createBookableTimeFrameIncludingCurrentDay();
 
 		$this->instance = new Day(
 			self::CURRENT_DATE,
@@ -56,7 +52,18 @@ class DayTest extends CustomPostTypeTest {
 	}
 
 	public function testGetRestrictions() {
-		$this->assertTrue(count($this->instance->getRestrictions()) == 0);
+		$this->assertTrue( count($this->instance->getRestrictions()) == 0 );
+
+		$this->createRestriction(
+			"hint",
+			$this->locationId,
+			$this->itemId,
+			strtotime(self::CURRENT_DATE),
+			strtotime("tomorrow", strtotime(self::CURRENT_DATE))
+		);
+
+		$this->assertIsArray($this->instance->getRestrictions());
+		$this->assertTrue(count($this->instance->getRestrictions()) == 1);
 	}
 
 }

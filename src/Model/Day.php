@@ -35,11 +35,6 @@ class Day {
 	protected $timeframes;
 
 	/**
-	 * @var array
-	 */
-	protected $restrictions;
-
-	/**
 	 * Day constructor.
 	 *
 	 * @param string $date
@@ -135,18 +130,14 @@ class Day {
 	 * @throws Exception
 	 */
 	public function getRestrictions(): array {
-		if ( $this->restrictions === null ) {
-			$this->restrictions = \CommonsBooking\Repository\Restriction::get(
-				$this->locations,
-				$this->items,
-				$this->getDate(),
-				true,
-				null,
-				[ 'publish', 'confirmed', 'unconfirmed' ]
-			);
-		}
-
-		return $this->restrictions;
+		return \CommonsBooking\Repository\Restriction::get(
+			$this->locations,
+			$this->items,
+			$this->getDate(),
+			true,
+			null,
+			[ 'publish', 'confirmed', 'unconfirmed' ]
+		);
 	}
 
 	/**

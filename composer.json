@@ -36,6 +36,8 @@
   "require-dev": {
     "mockery/mockery": "1.*",
     "phpunit/phpunit": "7.*",
-    "yoast/phpunit-polyfills": "^1.0"
+    "yoast/phpunit-polyfills": "^1.0",
+    "wp-coding-standards/wpcs": "^2.3",
+    "squizlabs/php_codesniffer": "^3.6"
   }
 }
