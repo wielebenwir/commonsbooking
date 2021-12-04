@@ -73,7 +73,7 @@ abstract class BookablePost extends PostRepository {
 			if ( $query->have_posts() ) {
 				$items = array_merge( $items, $query->get_posts() );
 				usort($items, function ($a, $b) {
-					return strcmp($a->post_title, $b->post_title);
+					return strcmp(strtolower($a->post_title), strtolower($b->post_title));
 				});
 
 			}
