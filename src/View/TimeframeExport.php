@@ -39,7 +39,7 @@ class TimeframeExport {
 	 * @throws Exception
 	 */
 	public static function exportCsv( string $outputFile = 'php://output' ) {
-		$exportFilename = 'timeframe-export.csv';
+		$exportFilename = 'timeframe-export-' .  date('Y-m-d-H-i-s') . '.csv';
 
 		$inputFields = [
 			'location' => self::getInputFields( 'location-fields' ),
@@ -255,6 +255,7 @@ class TimeframeExport {
 		$timeframeData["user-firstname"]      = $timeframePost->getUserData()->first_name;
 		$timeframeData["user-lastname"]       = $timeframePost->getUserData()->last_name;
 		$timeframeData["user-login"]          = $timeframePost->getUserData()->user_login;
+		$timeframeData["comment"]             = $timeframePost->getFieldValue('comment');
 
 		return $timeframeData;
 	}
@@ -275,6 +276,7 @@ class TimeframeExport {
 			"post_date",
 			"post_date_gmt",
 			"post_content",
+			"comment",
 			"post_excerpt",
 			"post_status",
 			"post_name"
