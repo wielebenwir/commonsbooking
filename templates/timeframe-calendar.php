@@ -72,16 +72,23 @@
                                     foreach ( $restrictions as $restriction ) {
                                         if($restriction->isActive()) {
                                             echo "<li>";
-                                            echo commonsbooking_sanitizeHTML( sprintf( 
-												//translators: %1$s = Start date and time formatted
-                                                __( 'From %1$s', 'commonsbooking' ), 
-                                                $restriction->getFormattedStartDateTime() ) );
-                                            echo " " . commonsbooking_sanitizeHTML( sprintf( 
-												//translators: %1$s = End date and time formatted
-                                                __( 'until probably %1$s:', 'commonsbooking' ), 
-                                                $restriction->getFormattedEndDateTime() ) );
-                                            echo "</br>";
-                                            echo "<strong>" . $restriction->getHint() . "</strong>";
+	                                            echo commonsbooking_sanitizeHTML( sprintf(
+													//translators: %1$s = Start date and time formatted
+	                                                __( 'From %1$s', 'commonsbooking' ),
+	                                                $restriction->getFormattedStartDateTime() ) );
+
+												// If there's
+												if($restriction->hasEnddate()) {
+													echo " " . commonsbooking_sanitizeHTML( sprintf(
+														//translators: %1$s = End date and time formatted
+															__( 'until probably %1$s:', 'commonsbooking' ),
+															$restriction->getFormattedEndDateTime() ) );
+													echo "</br>";
+												} else {
+													echo ":</br>";
+												}
+
+		                                        echo "<strong>" . $restriction->getHint() . "</strong>";
                                             echo "</li>";
                                         }
                                     }

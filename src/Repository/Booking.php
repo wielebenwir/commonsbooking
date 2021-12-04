@@ -242,13 +242,13 @@ class Booking extends PostRepository {
 				'relation' => "AND",
 				array(
 					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_START,
-					'value'   => intval( $endDate ),
+					'value'   => $endDate,
 					'compare' => '<=',
 					'type'    => 'numeric',
 				),
 				array(
 					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
-					'value'   => intval( $startDate ),
+					'value'   => $startDate,
 					'compare' => '>=',
 					'type'    => 'numeric'
 				),

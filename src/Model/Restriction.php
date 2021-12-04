@@ -95,10 +95,21 @@ class Restriction extends CustomPost {
 	}
 
 	/**
+	 * Returns true if there is set an enddate
+	 * @return bool
+	 */
+	public function hasEnddate() {
+		return $this->getMeta( self::META_END ) !== "";
+	}
+
+	/**
+	 * Returns end timestamp. Of no enddate is set it retunrs a date far in the future.
 	 * @return int Timestamp
 	 */
 	public function getEndDate(): int {
-		return intval( $this->getMeta( self::META_END ) );
+		// Set a far in the future date if enddate isn't set
+		$metaEndDate = $this->getMeta( self::META_END ) !== "" ?: 3000000000;
+		return intval( $metaEndDate );
 	}
 
 	/**
