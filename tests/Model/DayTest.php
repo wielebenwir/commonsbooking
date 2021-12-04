@@ -50,4 +50,13 @@ class DayTest extends CustomPostTypeTest {
 	public function testGetName() {
 		$this->assertTrue( date( 'l', strtotime( self::CURRENT_DATE ) ) == $this->instance->getName() );
 	}
+
+	public function testGetTimeframes() {
+		$this->assertTrue(count($this->instance->getTimeframes()) == 1);
+	}
+
+	public function testGetRestrictions() {
+		$this->assertTrue(count($this->instance->getRestrictions()) == 0);
+	}
+
 }

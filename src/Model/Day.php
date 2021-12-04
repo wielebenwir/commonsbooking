@@ -134,7 +134,7 @@ class Day {
 	 * @return array
 	 * @throws Exception
 	 */
-	public function getRestrictions() {
+	public function getRestrictions(): array {
 		if ( $this->restrictions === null ) {
 			$this->restrictions = \CommonsBooking\Repository\Restriction::get(
 				$this->locations,

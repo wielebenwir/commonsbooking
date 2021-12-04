@@ -226,10 +226,6 @@ class Restriction extends CustomPost {
 			// User IDs from booking
 			$userIds[] = $booking->getUserData()->ID;
 
-			// Admins IDs
-			$userIds = array_merge( $userIds, $booking->getAdmins() );
-			$userIds = array_unique( $userIds );
-
 			foreach ( $userIds as $userId ) {
 				$hintMail = new RestrictionMessage( $this, get_userdata( $userId ), $booking, $this->getType() );
 				$hintMail->triggerMail();

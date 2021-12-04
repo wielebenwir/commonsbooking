@@ -17,6 +17,8 @@ abstract class CustomPostTypeTest extends TestCase {
 
 	const REPETITION_END = '1661472000';
 
+	const USER_ID = 1;
+
 	protected $locationId;
 
 	protected $itemId;
@@ -35,30 +37,96 @@ abstract class CustomPostTypeTest extends TestCase {
 		return strtotime('+1 day midnight',strtotime($date)) - 1;
 	}
 
-	protected function createConfirmedBookingEndingToday() {
+	protected function createTimeframe(
+		$locationId,
+		$itemId,
+		$postTitle = 'TestTimeframe',
+		$postStatus = 'publish',
+		$postAuthor = self::USER_ID,
+		$type = Timeframe::BOOKABLE_ID,
+		$timeframeRepetition = 'w',
+		$startTime = '8:00 AM',
+		$endTime = '12:00 PM',
+		$timeframeMaxDays = 3,
+		$grid = 0,
+		$repetitionStart = null,
+		$repetitionEnd = null,
+		$weekdays = [ "1", "2", "3", "4", "5", "6", "7"]
+	) {
 		// Create Timeframe
-		$bookingId = wp_insert_post( [
-			'post_title'   => 'Booking ending today',
-			'post_type'=> Booking::$postType,
-			'post_status' => 'confirmed'
+		$timeframeId = wp_insert_post( [
+			'post_title'   => $postTitle,
+			'post_type'=> Timeframe::$postType,
+			'post_status' => $postStatus,
+			'post_author' => $postAuthor
 		] );
 
-		update_post_meta( $bookingId, 'type', Timeframe::BOOKING_ID );
-		update_post_meta( $bookingId, 'timeframe-repetition', 'w');
-		update_post_meta( $bookingId, 'start-time','8:00 AM');
-		update_post_meta( $bookingId, 'end-time', '12:00 PM');
-		update_post_meta( $bookingId, 'timeframe-max-days', '3');
-		update_post_meta( $bookingId, 'location-id', $this->locationId);
-		update_post_meta( $bookingId, 'item-id', $this->itemId);
-		update_post_meta( $bookingId, 'grid','0');
-		update_post_meta( $bookingId, 'repetition-start', strtotime('-1 day', strtotime(self::CURRENT_DATE)));
-		update_post_meta( $bookingId, 'repetition-end', $this->getEndOfDayTimestamp(self::CURRENT_DATE));
-		update_post_meta( $bookingId,
-			'weekdays',
-			[ "1", "2", "3", "4", "5", "6" ]
-		);
+		$repetitionStart = $repetitionStart ?: strtotime('-1 day', strtotime(self::CURRENT_DATE));
+		$repetitionEnd = $repetitionEnd ?: strtotime('+1 day', strtotime(self::CURRENT_DATE));
+
+		update_post_meta( $timeframeId, 'type', $type);
+		update_post_meta( $timeframeId, 'timeframe-repetition', $timeframeRepetition);
+		update_post_meta( $timeframeId, 'start-time', $startTime);
+		update_post_meta( $timeframeId, 'end-time', $endTime);
+		update_post_meta( $timeframeId, 'timeframe-max-days', $timeframeMaxDays);
+		update_post_meta( $timeframeId, 'location-id', $locationId);
+		update_post_meta( $timeframeId, 'item-id', $itemId);
+		update_post_meta( $timeframeId, 'grid', $grid);
+		update_post_meta( $timeframeId, 'repetition-start', $repetitionStart);
+		update_post_meta( $timeframeId, 'repetition-end', $repetitionEnd);
+		update_post_meta( $timeframeId,'weekdays', $weekdays);
+
+		$this->timeframeIds[] = $timeframeId;
+		return $timeframeId;
+	}
+
+	protected function createBooking(
+		$locationId,
+		$itemId,
+		$repetitionStart,
+		$repetitionEnd,
+		$postAuthor = self::USER_ID,
+		$startTime = '8:00 AM',
+		$postStatus = 'confirmed',
+		$timeframeRepetition = 'w',
+		$endTime = '12:00 PM',
+		$timeframeMaxDays = 3,
+		$postTitle = 'Booking ending today',
+		$grid = 0,
+		$weekdays = [ "1", "2", "3", "4", "5", "6", "7"]
+	) {
+		// Create Timeframe
+		$bookingId = wp_insert_post( [
+			'post_title'   => $postTitle,
+			'post_type'=> Booking::$postType,
+			'post_status' => $postStatus,
+			'post_author' => $postAuthor
+		] );
+
+		update_post_meta( $bookingId, 'type', Timeframe::BOOKING_ID);
+		update_post_meta( $bookingId, 'timeframe-repetition', $timeframeRepetition);
+		update_post_meta( $bookingId, 'start-time', $startTime);
+		update_post_meta( $bookingId, 'end-time', $endTime);
+		update_post_meta( $bookingId, 'timeframe-max-days', $timeframeMaxDays);
+		update_post_meta( $bookingId, 'location-id', $locationId);
+		update_post_meta( $bookingId, 'item-id', $itemId);
+		update_post_meta( $bookingId, 'grid', $grid);
+		update_post_meta( $bookingId, 'repetition-start', $repetitionStart);
+		update_post_meta( $bookingId, 'repetition-end', $repetitionEnd);
+		update_post_meta( $bookingId,'weekdays', $weekdays);
 
 		$this->bookingIds[] = $bookingId;
+		return $bookingId;
+	}
+
+	protected function createConfirmedBookingEndingToday() {
+		return $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime('-1 day', strtotime(self::CURRENT_DATE)),
+			$this->getEndOfDayTimestamp(self::CURRENT_DATE)
+		);
+
 	}
 
 	protected function createConfirmedBookingStartingToday() {
