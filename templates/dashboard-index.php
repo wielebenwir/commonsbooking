@@ -23,7 +23,6 @@
 				<p>			<?php echo __('CommonsBooking Version', 'commonsbooking') . ' ' . COMMONSBOOKING_VERSION; ?></p>
 				</div><!-- .welcome-panel-column -->
 			</div><!-- .welcome-panel-column-container -->
-			<div 
 			<div style="clear:both;">
 			<hr style="border-top: 8px solid #bbb; border-radius: 5px; border-color:#67b32a;">
 			</div>
