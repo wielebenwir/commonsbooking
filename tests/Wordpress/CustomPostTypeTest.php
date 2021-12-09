@@ -104,13 +104,15 @@ abstract class CustomPostTypeTest extends TestCase {
 			'post_author' => $postAuthor
 		] );
 
-		update_post_meta( $restrictionId, "restriction-type", $restrictionType );
-		update_post_meta( $restrictionId, "restriction-location-id", $locationId );
-		update_post_meta( $restrictionId, "restriction-item-id", $itemId );
-		update_post_meta( $restrictionId, "restriction-hint", $hint );
-		update_post_meta( $restrictionId, "restriction-start", $start );
-		update_post_meta( $restrictionId, "restriction-end", $end );
-		update_post_meta( $restrictionId, "restriction-state", $state );
+		update_post_meta( $restrictionId, \CommonsBooking\Model\Restriction::META_TYPE, $restrictionType );
+		update_post_meta( $restrictionId, \CommonsBooking\Model\Restriction::META_LOCATION_ID, $locationId );
+		update_post_meta( $restrictionId, \CommonsBooking\Model\Restriction::META_ITEM_ID, $itemId );
+		update_post_meta( $restrictionId, \CommonsBooking\Model\Restriction::META_HINT, $hint );
+		update_post_meta( $restrictionId, \CommonsBooking\Model\Restriction::META_START, $start );
+		if ( $end ) {
+			update_post_meta( $restrictionId, \CommonsBooking\Model\Restriction::META_END, $end );
+		}
+		update_post_meta( $restrictionId, \CommonsBooking\Model\Restriction::META_STATE, $state );
 
 		$this->restrictionIds[] = $restrictionId;
 

@@ -28,6 +28,8 @@ class Restriction extends CustomPost {
 
 	const META_SENT = 'restriction-sent';
 
+	const NO_END_TIMESTAMP = 3000000000;
+
 	protected $active;
 
 	protected $canceled;
@@ -108,7 +110,7 @@ class Restriction extends CustomPost {
 	 */
 	public function getEndDate(): int {
 		// Set a far in the future date if enddate isn't set
-		$metaEndDate = $this->getMeta( self::META_END ) !== "" ?: 3000000000;
+		$metaEndDate = $this->getMeta( self::META_END ) !== "" ? $this->getMeta( self::META_END ) : self::NO_END_TIMESTAMP;
 		return intval( $metaEndDate );
 	}
 

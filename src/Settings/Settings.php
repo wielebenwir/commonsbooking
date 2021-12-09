@@ -92,10 +92,12 @@ class Settings {
 
 	public static function returnFormattedMetaboxFields( $postType ) {
 		$metabox_array = Settings::getOption('commonsbooking_settings_metaboxfields', $postType);
-		
+
 		$result = "<br>";
-		foreach ( $metabox_array as $metabox_id => $metabox_name ) {
-			$result .= $metabox_name . ' => [' . $metabox_id . '] <br>';
+		if(is_array($metabox_array)) {
+			foreach ( $metabox_array as $metabox_id => $metabox_name ) {
+				$result .= $metabox_name . ' => [' . $metabox_id . '] <br>';
+			}
 		}
 
 		return $result;
