@@ -24,7 +24,11 @@ class Map extends CustomPostType {
 	 */
 	public function initHooks() {
 		$cb_map_settings = new MapSettings();
-		$cb_map_settings->prepare_settings();
+
+		// deactivated individual map settings because we don't need them righ now
+		// map setting should be integrated in CB settings in the future
+		//$cb_map_settings->prepare_settings();
+		
 		if ( $cb_map_settings->get_option( 'booking_page_link_replacement' ) ) {
 			add_action( 'wp_enqueue_scripts', array( Map::class, 'replace_map_link_target' ), 11 );
 		}
