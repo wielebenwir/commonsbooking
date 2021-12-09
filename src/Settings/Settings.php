@@ -69,7 +69,7 @@ class Settings {
 
 	/**
 	 * Updates a single field in a multidimensional options-array in wp_options
-	 * re
+	 * 
 	 *
 	 * @param mixed $option_name the options name as defined in wp_options table, column option_name
 	 * @param mixed $field_id the field_id in the array
@@ -87,5 +87,17 @@ class Settings {
 		// Save to wp_options
 		return update_option( $option_name, $options );
 
+	}
+
+
+	public static function returnFormattedMetaboxFields( $postType ) {
+		$metabox_array = Settings::getOption('commonsbooking_settings_metaboxfields', $postType);
+		
+		$result = "<br>";
+		foreach ( $metabox_array as $metabox_id => $metabox_name ) {
+			$result .= $metabox_name . ' => [' . $metabox_id . '] <br>';
+		}
+
+		return $result;
 	}
 }

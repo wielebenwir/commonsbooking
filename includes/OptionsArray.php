@@ -1,13 +1,15 @@
 <?php
 
 
-use CommonsBooking\Helper\Wordpress;
+use CommonsBooking\Helper;
 use CommonsBooking\View\Migration;
+use CommonsBooking\Helper\Wordpress;
+use CommonsBooking\Repository\UserRepository;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\TimeframeExport;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use CommonsBooking\Helper;
 
 // We need static types, because german month names dont't work for datepicker
 $dateFormat = "d/m/Y";
@@ -315,12 +317,12 @@ Thanks, the Team.
 			/* field group email templates start */
 			'emailtemplates' => array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'Manage Item Restriction Templates', 'commonsbooking' ) ),
-				'desc'   => commonsbooking_sanitizeHTML( __( 'Templates for Restriction E-Mails', 'commonsbooking' ) ),
+				'desc'   => commonsbooking_sanitizeHTML( __( 'Templates for restriction emails.<br><a href="https://commonsbooking.org/?p=1762" target="_blank">More Information in the documentation</a>', 'commonsbooking' ) ),
 				'id'     => 'restricition-templates',
 				'fields' => array(
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Mail-Header from E-Mail', 'commonsbooking' ) ),
-						'desc'    => commonsbooking_sanitizeHTML( __( 'E-Mail that will be shown as sender in generated emails', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'Email that will be shown as sender in generated emails', 'commonsbooking' ) ),
 						'id'      => 'restrictions-from-email',
 						'type'    => 'text',
 						'default' => get_option( 'admin_email' ),
@@ -428,9 +430,15 @@ The item {{restriction:itemName}} is now fully usable again.
 				'title'  => commonsbooking_sanitizeHTML( __( 'Booking reminder', 'commonsbooking' ) ),
 				'id'     => 'pre-booking-reminder',
 				'desc'   => commonsbooking_sanitizeHTML( __(
-					'You can set here whether users should receive a reminder email before the start of a booking.'
+					'You can set here whether users should receive a reminder email before the start of a booking.<br><a href="https://commonsbooking.org/?p=1763" target="_blank">More Information in the documentation</a>'
 					, 'commonsbooking' ) ),
 				'fields' => array(
+					// settings pre booking reminder -- activate reminder
+					array(
+						'name' => esc_html__( 'Activate', 'commonsbooking' ),
+						'id'   => 'pre-booking-reminder-activate',
+						'type' => 'checkbox',
+					),
 					// E-Mail pre booking reminder 
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'E-mail subject', 'commonsbooking' ) ),
@@ -508,13 +516,6 @@ the team</p>', 'commonsbooking' ) ),
 						),
 
 					),
-
-					// settings pre booking reminder -- acticate reminder
-					array(
-						'name' => esc_html__( 'Activate', 'commonsbooking' ),
-						'id'   => 'pre-booking-reminder-activate',
-						'type' => 'checkbox',
-					),
 				),
 			),
 			/* field group pre booking reminder settings end */
@@ -525,9 +526,16 @@ the team</p>', 'commonsbooking' ) ),
 				'title'  => commonsbooking_sanitizeHTML( __( 'email after booking has ended', 'commonsbooking' ) ),
 				'id'     => 'post-booking-notice',
 				'desc'   => commonsbooking_sanitizeHTML( __(
-					'Here you can set whether users should receive an additional e-mail after completing a booking. This can be used, for example, to inquire about the users satisfaction or possible problems during the booking.'
+					'Here you can set whether users should receive an additional e-mail after completing a booking. This can be used, for example, to inquire about the users satisfaction or possible problems during the booking.
+					<br>The email will be sent around midnight after the booking day has ended.'
 					, 'commonsbooking' ) ),
 				'fields' => array(
+					// settings pre booking reminder -- activate reminder
+					array(
+						'name' => esc_html__( 'Activate', 'commonsbooking' ),
+						'id'   => 'post-booking-notice-activate',
+						'type' => 'checkbox',
+					),
 					// E-Mail post booking reminder 
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'E-mail subject', 'commonsbooking' ) ),
@@ -546,13 +554,6 @@ Please let us know if any problems occurred.<br>
 <br>
 Best regards,<br>
 The team</p>', 'commonsbooking' ) ),
-					),
-
-					// settings pre booking reminder -- acticate reminder
-					array(
-						'name' => esc_html__( 'Activate', 'commonsbooking' ),
-						'id'   => 'post-booking-notice-activate',
-						'type' => 'checkbox',
 					),
 				),
 			),
@@ -632,19 +633,21 @@ The team</p>', 'commonsbooking' ) ),
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Location-Fields', 'commonsbooking' ) ),
-						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list.', 'commonsbooking' ) ),
+						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
+						Settings::returnFormattedMetaboxFields('cb_location') ),
 						'id'   => 'location-fields',
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Item-Fields', 'commonsbooking' ) ),
-						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list.', 'commonsbooking' ) ),
+						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
+						Settings::returnFormattedMetaboxFields('cb_location') ),
 						'id'   => 'item-fields',
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'User-Fields', 'commonsbooking' ) ),
-						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a user- or a meta-field. Comma separated list.', 'commonsbooking' ) ),
+						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a userfield or a meta-field. Comma separated list.', 'commonsbooking' ) ), 
 						'id'   => 'user-fields',
 						'type' => 'text'
 					),
@@ -805,6 +808,9 @@ The team</p>', 'commonsbooking' ) ),
 		'field_groups' => array(
 			'custom_metadata' => array(
 				'title'  => esc_html__( 'Set Custom metadata to locations and items', 'commonsbooking' ),
+				'desc'   => commonsbooking_sanitizeHTML( __(
+					'This is an advanced feature and should only be used if you are experienced or instructed how to set it up properly. In future versions we will add more detailed information and documentation.'
+					, 'commonsbooking' ) ),
 				'id'     => 'meta_data_group',
 				'fields' => [
 					array(
