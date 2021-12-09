@@ -260,6 +260,13 @@ Thanks, the Team.
 				'desc'   => '',
 				'fields' => array(
 					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Booking confirmed message', 'commonsbooking' ) ),
+						'id'      => 'booking-confirmed-notice',
+						'type'    => 'textarea_small',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'This text is shown as a status message on booking page after a user has confirmed the booking', 'commonsbooking' ) ),
+						'default' => esc_html__( 'Your booking is confirmed. A confirmation mail has been sent to you.', 'commonsbooking' ),
+					),
+					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Item not available', 'commonsbooking' ) ),
 						'id'      => 'item-not-available',
 						'type'    => 'textarea_small',

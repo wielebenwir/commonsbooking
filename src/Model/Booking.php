@@ -4,12 +4,13 @@
 namespace CommonsBooking\Model;
 
 
-use CommonsBooking\CB\CB;
-use CommonsBooking\Messages\BookingMessage;
-use CommonsBooking\Repository\BookingCodes;
-use CommonsBooking\Repository\Timeframe;
 use DateTime;
 use Exception;
+use CommonsBooking\CB\CB;
+use CommonsBooking\Settings\Settings;
+use CommonsBooking\Repository\Timeframe;
+use CommonsBooking\Messages\BookingMessage;
+use CommonsBooking\Repository\BookingCodes;
 
 class Booking extends \CommonsBooking\Model\Timeframe {
 
@@ -330,7 +331,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		if ( $currentStatus == "unconfirmed" ) {
 			$noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
 		} else if ( $currentStatus == "confirmed" ) {
-			$noticeText = commonsbooking_sanitizeHTML( __( 'Your booking is confirmed. A confirmation mail has been sent to you.', 'commonsbooking' ) );
+			$noticeText = commonsbooking_sanitizeHTML( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'booking-confirmed-notice' ) );
 		}
 
 		if ( $currentStatus == "canceled" ) {
