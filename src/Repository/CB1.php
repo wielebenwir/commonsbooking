@@ -155,11 +155,11 @@ class CB1 {
 	/**
 	 * Returns CB2 Location-ID.
 	 *
-	 * @param $locationId CB1 Location-ID
+	 * @param $locationId "CB 1 Location-ID"
 	 *
 	 * @return int|false
 	 */
-	public static function getCB2LocationId( CB1 $locationId ) {
+	public static function getCB2LocationId( int $locationId ) {
 		return self::getCB2PostIdByType( $locationId, \CommonsBooking\Wordpress\CustomPostType\Location::$postType );
 	}
 
