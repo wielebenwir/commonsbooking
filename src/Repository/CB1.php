@@ -174,7 +174,6 @@ class CB1 {
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 		$table_posts    = $wpdb->prefix . 'posts';
 
-
 		$result = $wpdb->get_results(
 			"
             SELECT post_id FROM $table_postmeta
@@ -204,12 +203,12 @@ class CB1 {
 	}
 
 	/**
-	 * @param $locationId
+	 * @param $timeframeId
 	 *
 	 * @return false|int
 	 */
-	public static function getCB2TimeframeId( $locationId ) {
-		return self::getCB2PostIdByType( $locationId, \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType );
+	public static function getCB2TimeframeId( $timeframeId ) {
+		return self::getCB2PostIdByType( $timeframeId, \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType );
 	}
 
 	/**

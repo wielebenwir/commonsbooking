@@ -182,7 +182,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
 	protected function createBookableTimeFrameIncludingCurrentDay() {
-		return $this->createBooking(
+		return $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
