@@ -672,7 +672,7 @@ The team</p>', 'commonsbooking' ) ),
 					),
 					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Export', 'commonsbooking' ) ),
-						'id'            => 'migration-custom-field',
+						'id'            => 'export-custom-field',
 						'type'          => 'text',
 						'render_row_cb' => array( TimeframeExport::class, 'renderExportForm' ),
 					)

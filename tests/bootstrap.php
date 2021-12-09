@@ -33,7 +33,5 @@ function _manually_load_plugin() {
 
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
-require_once dirname( __FILE__, 2 ) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
-
 // Start up the WP testing environment.
 require "{$_tests_dir}/includes/bootstrap.php";

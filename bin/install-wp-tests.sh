@@ -11,7 +11,6 @@ DB_PASS=$3
 DB_HOST=${4-localhost}
 WP_VERSION=${5-latest}
 SKIP_DB_CREATE=${6-false}
-DOCKER_ENV=${7-false}
 
 TMPDIR=${TMPDIR-/tmp}
 TMPDIR=$(echo $TMPDIR | sed -e "s/\/$//")
@@ -141,14 +140,10 @@ recreate_db() {
 }
 
 create_db() {
-  if [ ${DOCKER_ENV} = "true" ]; then
-    #	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
-    $(mysql -h db --user="root" --password="somewordpress" -e "CREATE DATABASE ${DB_NAME} /*\!40100 DEFAULT CHARACTER SET utf8 */;")
-    $(mysql -h db --user="root" --password="somewordpress" -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';")
-    $(mysql -h db --user="root" --password="somewordpress" -e "FLUSH PRIVILEGES;")
-  else
-    mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
-  fi
+#	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
+	$(mysql -h db --user="root" --password="somewordpress" -e "CREATE DATABASE ${DB_NAME} /*\!40100 DEFAULT CHARACTER SET utf8 */;")
+  $(mysql -h db --user="root" --password="somewordpress" -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';")
+  $(mysql -h db --user="root" --password="somewordpress" -e "FLUSH PRIVILEGES;")
 }
 
 install_db() {
