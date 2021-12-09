@@ -40,9 +40,9 @@ class Migration {
                 <span id="options-count">0</span>' . esc_html__( ' Options updated/saved', 'commonsbooking' ) . '<br>
             </div>
             <div id="migration-in-progress">
-                <strong style="color: red">
-                ' . esc_html__( 'migration in process .. please wait ...', 'commonsbooking' ) . '
-                </strong>
+                <p class="blinking" style="border:solid; border-color:red; border-width:4px; padding:20px"><strong style="color: red">
+                ' . commonsbooking_sanitizeHTML( __( 'migration in process .. please wait ... <br>This could take several minutes. Do not close this browser tab', 'commonsbooking' ) ). '
+                </strong></p>
             </div>            
             <div id="migration-done">
                 <strong style="color: green">

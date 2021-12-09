@@ -12,3 +12,12 @@
   margin-bottom: 1rem;
   display: none;
 }
+
+.blinking {
+    animation: blinkText 1s infinite alternate;
+}
+
+@keyframes blinkText {
+    from {opacity:0;}
+    to {opacity: 1;}
+}
