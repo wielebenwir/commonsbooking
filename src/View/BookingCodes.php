@@ -52,6 +52,7 @@ class BookingCodes {
 	}
 
 	/**
+	 * Renders CVS file (txt-format) with booking codes for download
 	 * @param $timeframeId
 	 */
 	public static function renderCSV( $timeframeId = null ) {

@@ -1,6 +1,6 @@
 <?php
 
-// We need static types, because german month names dont't work for datepicker
+
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\View\Migration;
 use CommonsBooking\View\TimeframeExport;
@@ -9,6 +9,7 @@ use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Helper;
 
+// We need static types, because german month names dont't work for datepicker
 $dateFormat = "d/m/Y";
 if ( strpos( get_locale(), 'de_' ) !== false ) {
 	$dateFormat = "d.m.Y";
@@ -306,9 +307,9 @@ Thanks, the Team.
 		'field_groups' => array(
 			/* field group email templates start */
 			'emailtemplates' => array(
-				'title'  => commonsbooking_sanitizeHTML( __( 'Email templates', 'commonsbooking' ) ),
-				'desc'   => commonsbooking_sanitizeHTML( __( 'Email templates', 'commonsbooking' ) ),
-				'id'     => 'emailtemplates',
+				'title'  => commonsbooking_sanitizeHTML( __( 'Manage Item Restriction Templates', 'commonsbooking' ) ),
+				'desc'   => commonsbooking_sanitizeHTML( __( 'Templates for Restriction E-Mails', 'commonsbooking' ) ),
+				'id'     => 'restricition-templates',
 				'fields' => array(
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Mail-Header from E-Mail', 'commonsbooking' ) ),
