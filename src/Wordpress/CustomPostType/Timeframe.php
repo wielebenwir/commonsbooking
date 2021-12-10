@@ -633,15 +633,15 @@ class Timeframe extends CustomPostType {
 				'date_format' => $dateFormat,
 			),
 			array(
-				'name' => esc_html__( 'Show Booking Codes', 'commonsbooking' ),
-				'desc' => esc_html__( 'Select whether users should be shown a booking code when booking.', 'commonsbooking' ),
-				'id'   => "show-booking-codes",
-				'type' => 'checkbox',
-			),
-			array(
 				'name' => esc_html__( 'Create Booking Codes', 'commonsbooking' ),
 				'desc' => esc_html__( 'Select to generate booking codes for each day within the start/end date. The booking codes will be generated after clicking "Save / Update".', 'commonsbooking' ),
 				'id'   => "create-booking-codes",
+				'type' => 'checkbox',
+			),
+			array(
+				'name' => esc_html__( 'Show Booking Codes', 'commonsbooking' ),
+				'desc' => esc_html__( 'Select whether users should be shown a booking code when booking.', 'commonsbooking' ),
+				'id'   => "show-booking-codes",
 				'type' => 'checkbox',
 			),
 			array(
