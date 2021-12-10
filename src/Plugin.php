@@ -3,22 +3,12 @@
 
 namespace CommonsBooking;
 
-use CommonsBooking\API\AvailabilityRoute;
-use CommonsBooking\API\GBFS\Discovery;
-use CommonsBooking\API\GBFS\StationInformation;
-use CommonsBooking\API\GBFS\StationStatus;
-use CommonsBooking\API\GBFS\SystemInformation;
-use CommonsBooking\API\ItemsRoute;
-use CommonsBooking\API\LocationsRoute;
-use CommonsBooking\API\ProjectsRoute;
 use CommonsBooking\CB\CB1UserFields;
-use CommonsBooking\Helper\API;
 use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\Wordpress\Options;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
@@ -30,7 +20,6 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\Options\AdminOptions;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
-use DateTime;
 
 class Plugin {
 
@@ -156,8 +145,8 @@ class Plugin {
 			new Item(),
 			new Location(),
 			new Timeframe(),
-			new \CommonsBooking\Wordpress\CustomPostType\Booking(),
 			new Map(),
+			new \CommonsBooking\Wordpress\CustomPostType\Booking(),
 			new Restriction()
 		];
 	}
@@ -250,14 +239,16 @@ class Plugin {
 			flush_rewrite_rules();
 
 			// Update Location Coordinates
-			// TODO: Improve implementation to avoid geo coder exception on update, see #499
-			//self::updateLocationCoordinates();
+			self::updateLocationCoordinates();
 
 			// remove deprecated user roles
 			self::removeDeprecatedUserRoles();
 
 			// update version number in options
 			update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
+
+			// migrate bookings to new cpt
+			\CommonsBooking\Migration\Booking::migrate();
 
 			// Clear cache
 			self::clearCache();
