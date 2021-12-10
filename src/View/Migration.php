@@ -99,7 +99,7 @@ class Migration {
 	                ' . esc_html__( 'Migration failed', 'commonsbooking' ) . '
 	                </strong>
 	            </div>
-                <a id="booking-update-start" class="button button-primary" href="#">
+                <a id="booking-update-start" class="button button-secondary" href="#">
 				    ' . esc_html__( 'Migrate bookings', 'commonsbooking' ) . '
                 </a>            
             </div>
