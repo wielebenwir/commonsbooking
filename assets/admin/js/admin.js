@@ -88,11 +88,13 @@
                 handleRepetitionSelection();
             });
             const handleBookingCodesSelection = function() {
-                let repStart = repetitionStartInput.val(), repEnd = repetitionEndInput.val(), fullday = fullDayInput.prop("checked"), type = typeInput.val();
-                repStart && repEnd && fullday && 2 == type ? showFieldset(bookingCodeSet) : hideFieldset(bookingCodeSet);
+                const fullday = fullDayInput.prop("checked"), type = typeInput.val();
+                hideFieldset(bookingCodeSet), fullday && 2 == type && (showFieldset(bookingCodeSet), 
+                createBookingCodesInput.prop("checked") || (hideFieldset([ showBookingCodes ]), 
+                showBookingCodes.prop("checked", !1)));
             };
             handleBookingCodesSelection();
-            const bookingCodeSelectionInputs = [ repetitionStartInput, repetitionEndInput, fullDayInput, typeInput ];
+            const bookingCodeSelectionInputs = [ repetitionStartInput, repetitionEndInput, fullDayInput, typeInput, createBookingCodesInput ];
             $.each(bookingCodeSelectionInputs, function(key, input) {
                 input.change(function() {
                     handleBookingCodesSelection();
