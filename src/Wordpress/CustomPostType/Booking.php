@@ -353,6 +353,10 @@ class Booking extends Timeframe {
 			// oder die standart Werte post und page in form eines Strings gesetzt werden
 			'capability_type'   => array( self::$postType, self::$postType . 's' ),
 
+			'capabilities' => array(
+				'create_posts' => false,
+			),
+
 			'map_meta_cap'        => true,
 
 			// Soll es im Frontend abrufbar sein?

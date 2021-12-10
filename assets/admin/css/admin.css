@@ -5971,9 +5971,5 @@ select[readonly] {
 .post-type-cb_booking #publish {
   display: none;
 }
-/* line 6, ../sass/partials/_form-booking.scss */
-.post-type-cb_booking .page-title-action {
-  display: none;
-}
 
 /*# sourceMappingURL=admin.css.map */
