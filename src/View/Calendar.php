@@ -64,7 +64,7 @@ class Calendar {
 
 		for ( $i = 0; $i < $days; $i ++ ) {
 			$month_cols ++;
-			$days_display[ $i ] = "<span class='unavailable'></span>";
+			$days_display[ $i ] = $date->format( 'd' );
 			$days_dates[ $i ]   = $date->format( 'Y-m-d' );
 			$days_weekday[ $i ] = $date->format( 'N' );
 			$daysDM[ $i ]       = $date->format( 'j.n.' );
@@ -80,8 +80,6 @@ class Calendar {
 		}
 
 		$last_day = $days_dates[ $days - 1 ];
-		$divider  = "</th><th class='cal sortless'>";
-		$dayStr   = implode( $divider, $days_display );
 		$colStr   = implode( ' ', $days_cols );
 
 		$print = '<div class="cb-table-scroll">';
@@ -94,17 +92,13 @@ class Calendar {
 			$print .= date_i18n( 'M' ) . "</th>";
 		}
 
-		if ( $month_cols > 1 ) {
-			$month2 = date_i18n( 'F', strtotime( $days_dates[ $days - 1 ] ) );
-		} else {
-			$month2 = date_i18n( 'M', strtotime( $days_dates[ $days - 1 ] ) );
+		// Render months
+		if ( $colspan < $days ) {
+			$print .= self::renderHeadlineMonths($month_cols, $days_dates, $days);
 		}
 
-		if ( $colspan < $days ) {
-			$print .= "<th class='sortless' colspan='" . $month_cols . "'>" . $month2 . "</th>";
-		}
-		$print   .= "</tr><tr><th>" . __( "Item", "commonsbooking" ) . "</th><th>" . __( "Location", "commonsbooking" ) . "<th class='cal sortless'>" . $dayStr . "</th></tr></thead><tbody>";
-		$divider = "</td><td>";
+		//Render Headline Days
+		$print .= self::renderHeadlineDays($days_display);
 
 		$items = get_posts( array(
 			'post_type'      => 'cb_item',
@@ -114,23 +108,19 @@ class Calendar {
 		) );
 
 		foreach ( $items as $item ) {
-			$itemID = $item->ID;
-
 			// Check for category term
 			if ( $itemCategory ) {
-				if ( ! has_term( $itemCategory, Item::$postType . 's_category', $itemID ) ) {
+				if ( ! has_term( $itemCategory, Item::$postType . 's_category', $item->ID ) ) {
 					continue;
 				}
 			}
-
-			$item_name = $item->post_title;
 
 			// Get timeframes for item
 			$timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
 				strtotime( $today ),
 				strtotime( $last_day ),
 				[],
-				[ $itemID ],
+				[ $item->ID ],
 				[ Timeframe::BOOKABLE_ID ],
 				true
 			);
@@ -153,57 +143,7 @@ class Calendar {
 						}
 					}
 
-					// Get data for current item/location combination
-					$calendarData = self::getCalendarDataArray(
-						$itemID,
-						$locationId,
-						$today,
-						date( 'Y-m-d', strtotime( '+' . $days . ' days', time() ) )
-					);
-
-					$gotStartDate = false;
-					$gotEndDate   = false;
-					$dayIterator  = 0;
-					foreach ( $calendarData['days'] as $day => $data ) {
-
-						// skip days until we are at today
-						if ( ! $gotStartDate ) {
-							if ( $today <= $day ) {
-								$gotStartDate = true;
-							} else {
-								continue;
-							}
-						}
-
-						if ( $gotEndDate ) {
-							continue;
-						}
-
-						if ( $day == $last_day ) {
-							$gotEndDate = true;
-						}
-
-						// Check day state
-						if ( ! count( $data['slots'] ) ) {
-							$days_display[ $dayIterator ++ ] = "<span class='unavailable'></span>";
-						} elseif ( $data['holiday'] ) {
-							$days_display[ $dayIterator ++ ] = "<span class='holiday'></span>";
-						} elseif ( $data['locked'] ) {
-							if ( $data['firstSlotBooked'] && $data['lastSlotBooked'] ) {
-								$days_display[ $dayIterator ++ ] = "<span class='blocked'></span>";
-							} elseif ( $data['partiallyBookedDay'] ) {
-								$days_display[ $dayIterator ++ ] = "<span class='booked'></span>";
-							}
-						} else {
-							$days_display[ $dayIterator ++ ] = "<span class='free'></span>";
-						}
-					}
-
-
-					$dayStr         = implode( $divider, $days_display );
-					$itemLink       = add_query_arg( 'location', $locationId, get_permalink( $item->ID ) );
-					$locationString = '<div data-title="' . $locationName . '">' . $locationName . '</div>';
-					$print          .= "<tr><td><b><a href='" . $itemLink . "'>" . $item_name . "</a></b>" . $divider . $locationString . $divider . $dayStr . "</td></tr>";
+					$print .= self::renderItemLocationRow($item, $locationId, $locationName, $today, $last_day, $days, $days_display);
 				}
 			}
 		}
@@ -212,6 +152,113 @@ class Calendar {
 		$print .= '</div>';
 
 		return $print;
+	}
+
+	/**
+	 * Renders months in headline.
+	 * @param $month_cols
+	 * @param $days_dates
+	 * @param $days
+	 *
+	 * @return string
+	 */
+	protected static function renderHeadlineMonths($month_cols, $days_dates, $days): string {
+		$month2 = date_i18n( 'M', strtotime( $days_dates[ $days - 1 ] ) );
+		if ( $month_cols > 1 ) {
+			$month2 = date_i18n( 'F', strtotime( $days_dates[ $days - 1 ] ) );
+		}
+
+		return "<th class='sortless' colspan='" . $month_cols . "'>" . $month2 . "</th>";
+	}
+
+	/**
+	 * Renders days in headline.
+	 * @param $days_display
+	 *
+	 * @return string
+	 */
+	protected static function renderHeadlineDays($days_display): string {
+		$divider  = "</th><th class='cal sortless'>";
+		$dayStr   = implode( $divider, $days_display );
+
+		return "</tr><tr>" .
+		            "<th>" . __( "Item", "commonsbooking" ) . "</th>" .
+		            "<th>" . __( "Location", "commonsbooking" ) . "<th class='cal sortless'>" . $dayStr . "</th>" .
+		            "</tr></thead><tbody>";
+	}
+
+	/**
+	 * Renders item/location row.
+	 * @param $item
+	 * @param $locationId
+	 * @param $locationName
+	 * @param $today
+	 * @param $last_day
+	 * @param $days
+	 * @param $days_display
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	protected static function renderItemLocationRow($item, $locationId, $locationName, $today, $last_day, $days, $days_display): string {
+		$divider = "</td><td>";
+		$itemName = $item->post_title;
+
+		// Get data for current item/location combination
+		$calendarData = self::getCalendarDataArray(
+			$item->ID,
+			$locationId,
+			$today,
+			date( 'Y-m-d', strtotime( '+' . $days . ' days', time() ) )
+		);
+
+		$gotStartDate = false;
+		$gotEndDate   = false;
+		$dayIterator  = 0;
+		foreach ( $calendarData['days'] as $day => $data ) {
+
+			// skip days until we are at today
+			if ( ! $gotStartDate ) {
+				if ( $today <= $day ) {
+					$gotStartDate = true;
+				} else {
+					continue;
+				}
+			}
+
+			if ( $gotEndDate ) {
+				continue;
+			}
+
+			if ( $day == $last_day ) {
+				$gotEndDate = true;
+			}
+
+			// Check day state
+			if ( ! count( $data['slots'] ) ) {
+				$days_display[ $dayIterator ++ ] = "<span class='unavailable'></span>";
+			} elseif ( $data['holiday'] ) {
+				$days_display[ $dayIterator ++ ] = "<span class='holiday'></span>";
+			} elseif ( $data['locked'] ) {
+				if ( $data['firstSlotBooked'] && $data['lastSlotBooked'] ) {
+					$days_display[ $dayIterator ++ ] = "<span class='blocked'></span>";
+				} elseif ( $data['partiallyBookedDay'] ) {
+					$days_display[ $dayIterator ++ ] = "<span class='booked'></span>";
+				}
+			} else {
+				$days_display[ $dayIterator ++ ] = "<span class='free'></span>";
+			}
+		}
+
+		// Show item as not available outside of timeframe timerange.
+		for ($dayIterator; $dayIterator < count($days_display); $dayIterator++) {
+			$days_display[ $dayIterator ] = "<span class='unavailable'></span>";
+		}
+
+		$dayStr         = implode( $divider, $days_display );
+		$itemLink       = add_query_arg( 'location', $locationId, get_permalink( $item->ID ) );
+		$locationString = '<div data-title="' . $locationName . '">' . $locationName . '</div>';
+		return "<tr><td><b><a href='" . $itemLink . "'>" . $itemName . "</a></b>" . $divider . $locationString . $divider . $dayStr . "</td></tr>";
 	}
 
 	/**
