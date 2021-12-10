@@ -446,18 +446,6 @@ class Booking extends Timeframe {
 				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 			),
 			array(
-				'name' => esc_html__( 'Full day', 'commonsbooking' ),
-				'desc' => esc_html__(
-					'If this option is selected, users can choose only whole days for pickup and return. No specific time slots for pickup or return are offered. Select this option if the pickup/return should be arranged personally between the location and the user. '
-					, 'commonsbooking' ),
-				'id'   => "full-day",
-				'attributes' => array(
-					'readonly' => 'readonly',
-					'onclick' => "return false;"
-				),
-				'type' => 'checkbox'
-			),
-			array(
 				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
 				'desc'        => esc_html__( 'Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking' ),
 				'id'          => "repetition-start",
