@@ -18,3 +18,9 @@
         display: none;
     }
 }
+
+select[readonly] {
+    background: #eee !important;
+    pointer-events: none !important;
+    touch-action: none !important;
+}

@@ -2,9 +2,9 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Exception\OverlappingException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
-use WP_Post;
 
 class Booking extends Timeframe {
 
@@ -47,13 +47,69 @@ class Booking extends Timeframe {
 	}
 
 	/**
+	 * Check if booking overlaps before its been saved.
+	 * @param $postId
+	 * @param $data
+	 *
+	 * @return void
+	 */
+	public static function preSavePost($postId, $data) {
+		if(static::$postType !== $data['post_type']) return;
+
+		try {
+
+			// Check if its an admin edit
+			$requestKeys = [
+				"item-id",
+				"location-id",
+				"repetition-start",
+				"repetition-end"
+			];
+			$intersectCount = count(array_intersect($requestKeys, array_keys($_REQUEST)));
+			if($intersectCount < count($requestKeys))  return;
+
+			// prepare needed params
+			$itemId = sanitize_text_field( $_REQUEST["item-id"] );
+			$locationId = sanitize_text_field( $_REQUEST["location-id"] );
+			$repetitionStart =  $_REQUEST["repetition-start"] ;
+			if(is_array($repetitionStart)) {
+				$repetitionStart = strtotime($repetitionStart['date'] . " " . $repetitionStart['time']);
+			} else {
+				$repetitionStart = intval($repetitionStart);
+			}
+			$repetitionEnd =  $_REQUEST["repetition-end"];
+			if(is_array($repetitionEnd)) {
+				$repetitionEnd = strtotime($repetitionEnd['date'] . " " . $repetitionEnd['time']);
+			} else {
+				$repetitionEnd = intval($repetitionEnd);
+			}
+
+			self::validateBookingParameters(
+				$itemId,
+				$locationId,
+				$repetitionStart,
+				$repetitionEnd,
+				$postId
+			);
+		} catch ( OverlappingException $e ) {
+			set_transient( \CommonsBooking\Model\Timeframe::ERROR_TYPE,
+				commonsbooking_sanitizeHTML( __( "There is an overlapping booking.",
+					'commonsbooking' ) ),
+				45 );
+			$targetUrl = $_REQUEST['_wp_http_referer'];
+			header('Location: '.$targetUrl);
+			exit();
+		}
+	}
+
+	/**
 	 * Initiates needed hooks.
 	 */
 	public function initHooks() {
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
-		add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 1, 2 );
+		add_action( 'pre_post_update' , array( $this, 'preSavePost' ), 1, 2 );
 
 		// Set Tepmlates
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
@@ -92,55 +148,6 @@ class Booking extends Timeframe {
 		} // if archive...
 
 		return $content . $cb_content;
-	}
-
-	/**
-	 * Save the new Custom Fields values
-	 * @throws \Exception
-	 */
-	public function savePost( $post_id, WP_Post $post ) {
-
-		// This is just for bookings
-		if ( $post->post_type !== static::getPostType() ) {
-			return;
-		}
-
-		// Keep meta attributes after trashing
-		if (
-			array_key_exists( 'action', $_REQUEST ) &&
-			( $_REQUEST['action'] == 'trash' || $_REQUEST['action'] == 'untrash' )
-		) {
-			return;
-		}
-
-		// Check if there is already an existing booking. If there is one, the current one will be
-		// saved as draft.
-		if (
-			( array_key_exists( 'type', $_REQUEST ) && $_REQUEST['type'] == Timeframe::BOOKING_ID ) &&
-			current_user_can( 'edit_' . self::$postType, $post_id )
-		) {
-			try {
-				self::validateBookingParameters(
-					sanitize_text_field( $_REQUEST["item-id"] ),
-					sanitize_text_field( $_REQUEST["location-id"] ),
-					sanitize_text_field( $_REQUEST["repetition-start"] ),
-					sanitize_text_field( $_REQUEST["repetition-end"] )
-				);
-			} catch ( \Exception $e ) {
-				if ( $post->post_status !== 'draft' ) {
-					$post->post_status = 'draft';
-					wp_update_post( $post );
-				}
-
-				set_transient( \CommonsBooking\Model\Timeframe::ERROR_TYPE,
-					commonsbooking_sanitizeHTML( __( "There is an overlapping booking.",
-						'commonsbooking' ) ),
-					45 );
-			}
-		}
-
-		// Validate timeframe
-		$this->validateTimeFrame( $post_id, $post );
 	}
 
 	/**
@@ -406,21 +413,36 @@ class Booking extends Timeframe {
 
 		return array(
 			array(
+				'name' => esc_html__( "Hints", 'commonsbooking' ),
+				'desc' => esc_html__( 'Please mind the following things... ', 'commonsbooking' ),
+				'id'   => "title-booking-hint",
+				'type' => 'title',
+			),
+			array(
 				'name' => esc_html__( "Comment", 'commonsbooking' ),
 				'desc' => esc_html__( 'This comment is internal for timeframes like bookable, repair, holiday. If timeframe is a booking this comment can be set by users during the booking confirmation process.', 'commonsbooking' ),
 				'id'   => "comment",
+				'attributes' => array(
+					'readonly' => 'readonly'
+				),
 				'type' => 'textarea_small',
 			),
 			array(
 				'name'    => esc_html__( "Location", 'commonsbooking' ),
 				'id'      => "location-id",
 				'type'    => 'select',
+				'attributes' => array(
+					'readonly' => 'readonly'
+				),
 				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
 			),
 			array(
 				'name'    => esc_html__( "Item", 'commonsbooking' ),
 				'id'      => "item-id",
 				'type'    => 'select',
+				'attributes' => array(
+					'readonly' => 'readonly'
+				),
 				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 			),
 			array(
@@ -429,43 +451,11 @@ class Booking extends Timeframe {
 					'If this option is selected, users can choose only whole days for pickup and return. No specific time slots for pickup or return are offered. Select this option if the pickup/return should be arranged personally between the location and the user. '
 					, 'commonsbooking' ),
 				'id'   => "full-day",
-				'type' => 'checkbox',
-			),
-			array(
-				'name'        => esc_html__( "Start time", 'commonsbooking' ),
-				'id'          => "start-time",
-				'type'        => 'text_time',
-				'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
-				'attributes'  => array(
-					'data-timepicker' => json_encode(
-						array(
-							'stepMinute' => 60,
-						)
-					),
+				'attributes' => array(
+					'readonly' => 'readonly',
+					'onclick' => "return false;"
 				),
-				'time_format' => get_option( 'time_format' ),
-				'date_format' => $dateFormat,
-			),
-			array(
-				'name'        => esc_html__( "End time", 'commonsbooking' ),
-				'id'          => "end-time",
-				'type'        => 'text_time',
-				'attributes'  => array(
-					'data-timepicker' => json_encode(
-						array(
-							'stepMinute' => 60,
-						)
-					),
-				),
-				'time_format' => get_option( 'time_format' ),
-				'date_format' => $dateFormat,
-			),
-			array(
-				'name'    => esc_html__( "Grid", 'commonsbooking' ),
-				'desc'    => esc_html__( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/?p=437">Manage Booking Timeframes</a>', 'commonsbooking' ),
-				'id'      => "grid",
-				'type'    => 'select',
-				'options' => Timeframe::getGridOptions(),
+				'type' => 'checkbox'
 			),
 			array(
 				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
@@ -474,6 +464,14 @@ class Booking extends Timeframe {
 				'type'        => 'text_datetime_timestamp',
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
+				'attributes'=>array(
+					'data-timepicker'=>json_encode(
+						array(
+							'timeFormat'=>'HH:mm',
+							'stepMinute'=>1,
+						)
+					),
+				)
 			),
 			array(
 				'name'        => esc_html__( 'End date', 'commonsbooking' ),
@@ -482,6 +480,14 @@ class Booking extends Timeframe {
 				'type'        => 'text_datetime_timestamp',
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
+				'attributes'=>array(
+					'data-timepicker'=>json_encode(
+						array(
+							'timeFormat'=>'HH:mm',
+							'stepMinute'=>1,
+						)
+					),
+				)
 			),
 			array(
 				'name'       => esc_html__( 'Booking Code', 'commonsbooking' ),
@@ -489,8 +495,8 @@ class Booking extends Timeframe {
 				'type'       => 'text',
 				'show_on_cb' => array( self::class, 'isOfTypeBooking' ),
 				'attributes' => array(
-					'disabled' => 'disabled',
-				),
+					'readonly' => 'readonly'
+				)
 			),
 			array(
 				'type'    => 'hidden',
@@ -507,11 +513,11 @@ class Booking extends Timeframe {
 	 * @param $locationId
 	 * @param $startDate
 	 * @param $endDate
+	 * @param null $postId
 	 *
-	 * @throws Exception
-	 * @throws \Exception
+	 * @throws OverlappingException
 	 */
-	protected static function validateBookingParameters( $itemId, $locationId, $startDate, $endDate ) {
+	protected static function validateBookingParameters( $itemId, $locationId, $startDate, $endDate, $postId = null ) {
 		// Get exiting bookings for defined parameters
 		$existingBookingsInRange = \CommonsBooking\Repository\Booking::getByTimerange(
 			$startDate,
@@ -520,9 +526,14 @@ class Booking extends Timeframe {
 			$itemId
 		);
 
+		if($postId && count( $existingBookingsInRange ) == 1) {
+			$booking = array_pop($existingBookingsInRange);
+			if($booking->ID == $postId) return;
+		}
+
 		// If there are already bookings, throw exception
 		if ( count( $existingBookingsInRange ) ) {
-			throw new \Exception( __( 'There are already bookings in selected timerange.', 'commonsbooking' ) );
+			throw new OverlappingException( __( 'There are already bookings in selected timerange.', 'commonsbooking' ) );
 		}
 	}
 }

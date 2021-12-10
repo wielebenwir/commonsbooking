@@ -5929,6 +5929,13 @@ a.ui-button:active,
   display: none;
 }
 
+/* line 22, ../sass/partials/_form-timeframe.scss */
+select[readonly] {
+  background: #eee !important;
+  pointer-events: none !important;
+  touch-action: none !important;
+}
+
 /** Migration Settings */
 /* line 1, ../sass/partials/_migration.scss */
 #migration-in-progress,
@@ -5958,6 +5965,11 @@ a.ui-button:active,
   to {
     opacity: 1;
   }
+}
+/* Booking form  */
+/* line 2, ../sass/partials/_form-booking.scss */
+.post-type-cb_booking #publish {
+  display: none;
 }
 
 /*# sourceMappingURL=admin.css.map */

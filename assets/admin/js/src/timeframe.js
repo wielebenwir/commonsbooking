@@ -155,11 +155,13 @@
 
             const handleBookingCodesSelection = function () {
                 const fullday = fullDayInput.prop('checked'),
-                    type = typeInput.val();
+                    type = typeInput.val(),
+                    repStart = repetitionStartInput.val(),
+                    repEnd = repetitionEndInput.val();
 
                 hideFieldset(bookingCodeSet);
 
-                if (fullday && type == 2) {
+                if (repStart && repEnd && fullday && type == 2) {
                     showFieldset(bookingCodeSet);
 
                     // If booking codes shall not be created we disable and hide option to show them

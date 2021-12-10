@@ -88,8 +88,8 @@
                 handleRepetitionSelection();
             });
             const handleBookingCodesSelection = function() {
-                const fullday = fullDayInput.prop("checked"), type = typeInput.val();
-                hideFieldset(bookingCodeSet), fullday && 2 == type && (showFieldset(bookingCodeSet), 
+                const fullday = fullDayInput.prop("checked"), type = typeInput.val(), repStart = repetitionStartInput.val(), repEnd = repetitionEndInput.val();
+                hideFieldset(bookingCodeSet), repStart && repEnd && fullday && 2 == type && (showFieldset(bookingCodeSet), 
                 createBookingCodesInput.prop("checked") || (hideFieldset([ showBookingCodes ]), 
                 showBookingCodes.prop("checked", !1)));
             };
