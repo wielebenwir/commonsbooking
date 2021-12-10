@@ -45,6 +45,8 @@ abstract class View {
 		$timeframes = $cpt->getBookableTimeframes( true );
 		/** @var Timeframe $timeframe */
 		foreach ( $timeframes as $timeframe ) {
+			if(!$timeframe->getStartDate()) continue;
+
 			$item = $timeframe->{'get' . $type}();
 
 			// We need only published items

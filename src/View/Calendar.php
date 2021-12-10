@@ -297,6 +297,7 @@ class Calendar {
 
 		if ( count( $bookableTimeframes ) ) {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday($bookableTimeframes);
+			$advanceBookingDays = $closestBookableTimeframe->getFieldValue('timeframe-advance-booking-days' );
 
 			// Check if start-/enddate was requested, then don't change it
 			// otherwise start with current day
@@ -323,7 +324,7 @@ class Calendar {
 			$endDate       = new Day( $endDateString );
 		}
 
-		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ] );
+		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays);
 	}
 
 	/**
@@ -398,13 +399,21 @@ class Calendar {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function prepareJsonResponse( Day $startDate, Day $endDate, array $locations, array $items ): array {
+	public static function prepareJsonResponse(
+		Day $startDate,
+		Day $endDate,
+		array $locations,
+		array $items,
+		$advanceBookingDaysFormatted = null
+	): array {
 		$current_user   = wp_get_current_user();
 		$customCacheKey = serialize( $current_user->roles );
 
 		// we calculate the max advance booking days here to prepare the notice string in calender json.
-		$advanceBookingDays          = date_diff( $startDate->getDateObject(), $endDate->getDateObject() );
-		$advanceBookingDaysFormatted = (int) $advanceBookingDays->format( '%a ' ) + 1;
+		if($advanceBookingDaysFormatted == null) {
+			$advanceBookingDays          = date_diff( $startDate->getDateObject(), $endDate->getDateObject() );
+			$advanceBookingDaysFormatted = (int) $advanceBookingDays->format( '%a ' ) + 1;
+		}
 
 		if ( ! ( $jsonResponse = Plugin::getCacheItem( $customCacheKey ) ) ) {
 			$calendar = new \CommonsBooking\Model\Calendar(

@@ -89,9 +89,11 @@ class Item extends View {
 			$shortCodeData = self::getShortcodeData( $item, 'Location' );
 
 			// Sort by start_date
-			uasort( $shortCodeData, function ( $a, $b ) {
-				return $a['start_date'] > $b['start_date'];
-			} );
+			foreach ($shortCodeData as $location) {
+				uasort( $location['ranges'], function ( $a, $b ) {
+					return $a['start_date'] > $b['start_date'];
+				} );
+			}
 
 			$itemData[ $item->ID ] = $shortCodeData;
 		}
