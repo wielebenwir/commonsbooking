@@ -48,7 +48,7 @@ class Migration {
                 <strong style="color: green">
                 ' . esc_html__( 'Migration finished', 'commonsbooking' ) . '
                 </strong>
-            </div>            
+            </div>
         ' );
 
 		if ( $cb1Installed ) {
@@ -94,6 +94,11 @@ class Migration {
                     ' . esc_html__( 'Migration finished', 'commonsbooking' ) . '
                     </strong>
                 </div>    
+                <div id="booking-migration-failed">
+	                <strong style="color: red">
+	                ' . esc_html__( 'Migration failed', 'commonsbooking' ) . '
+	                </strong>
+	            </div>
                 <a id="booking-update-start" class="button button-primary" href="#">
 				    ' . esc_html__( 'Migrate bookings', 'commonsbooking' ) . '
                 </a>            

@@ -5940,12 +5940,13 @@ a.ui-button:active,
 
 /* line 9, ../sass/partials/_migration.scss */
 #booking-migration-in-progress,
-#booking-migration-done {
+#booking-migration-done,
+#booking-migration-failed {
   margin-bottom: 1rem;
   display: none;
 }
 
-/* line 16, ../sass/partials/_migration.scss */
+/* line 17, ../sass/partials/_migration.scss */
 .blinking {
   animation: blinkText 1s infinite alternate;
 }
