@@ -351,8 +351,18 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return string
 	 */
-	public function bookingLink(): string {
-		return sprintf( '<a href="%1$s">%2$s</a>', add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) ), esc_html__( 'Link to your booking', 'commonsbooking' ) );
+	public function bookingLink($linktext = NULL): string {
+
+		// if no linktext is set we use standard text
+		if ( $linktext == NULL ) {
+			$linktext = esc_html__( 'Link to your booking' );
+		}
+
+		return sprintf( '<a href="%1$s">%2$s</a>', add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) ), $linktext );
+	}
+
+	public function bookingLinkUrl() {
+		return add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) );
 	}
 
 }
