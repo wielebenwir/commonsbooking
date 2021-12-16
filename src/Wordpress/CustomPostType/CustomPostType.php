@@ -113,8 +113,10 @@ abstract class CustomPostType {
 	 */
 	public static function modifyRowActions( $actions, $post ) {
 
-		// remove quick edit for timeframes and restrictions
-		if ( $post->post_type == Timeframe::getPostType() OR $post->post_type == Restriction::getPostType() ) {
+		// remove quick edit for timeframes, restrictions and bookings
+		if ( $post->post_type == Timeframe::getPostType() 
+			OR $post->post_type == Restriction::getPostType() 
+			OR $post->post_type == Booking::getPostType()) {
 			unset( $actions['inline hide-if-no-js'] );
 		}
 
