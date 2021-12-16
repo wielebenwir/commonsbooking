@@ -646,7 +646,7 @@ The team</p>', 'commonsbooking' ) ),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Item-Fields', 'commonsbooking' ) ),
 						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
-						Settings::returnFormattedMetaboxFields('cb_location') ),
+						Settings::returnFormattedMetaboxFields('cb_item') ),
 						'id'   => 'item-fields',
 						'type' => 'text'
 					),
