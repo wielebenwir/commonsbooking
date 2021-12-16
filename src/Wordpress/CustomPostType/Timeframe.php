@@ -2,12 +2,13 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use WP_Post;
+use Exception;
+use CommonsBooking\View\Calendar;
+use CommonsBooking\View\Admin\Filter;
+use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\UserRepository;
-use CommonsBooking\View\Admin\Filter;
-use CommonsBooking\View\Calendar;
-use Exception;
-use WP_Post;
 
 class Timeframe extends CustomPostType {
 
