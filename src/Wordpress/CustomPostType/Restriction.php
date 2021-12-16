@@ -13,11 +13,6 @@ class Restriction extends CustomPostType {
 
 	private const SEND_BUTTON_ID = 'restriction-send';
 
-	public static $types = [
-		'repair' => 'Totalausfall',
-		'hint'   => 'Hinweis'
-	];
-
 	/**
 	 * Initiates needed hooks.
 	 */
@@ -31,8 +26,12 @@ class Restriction extends CustomPostType {
 	/**
 	 * @return string[]
 	 */
-	public static function getTypes(): array {
-		return self::$types;
+	public static function getTypes() {
+		
+		return [
+			'repair' => esc_html__('Total breakdown', 'commonsbooking'),
+			'hint'   => esc_html__('Notice', 'commonsbooking'),
+		];
 	}
 
 	/**
@@ -157,7 +156,11 @@ class Restriction extends CustomPostType {
 		return array(
 			array(
 				'name'    => esc_html__( 'Type', 'commonsbooking' ),
-				'desc'    => esc_html__( 'Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information.', 'commonsbooking' ),
+				'desc'    => commonsbooking_sanitizeHTML ( __( 'Select the type of restriction.<br>
+				Select <strong>Notice</strong>, the item can still be used and if e.g. only one part is missing or defective.<br>
+				Select <strong>total breakdown</strong> if the defect means that the item can no longer be used.If you selected total breakdown, after activating and sending the information email, 
+				all affected bookings will be automatically canceled. 
+				', 'commonsbooking' ) ),
 				'id'      => \CommonsBooking\Model\Restriction::META_TYPE,
 				'type'    => 'select',
 				'options' => self::getTypes(),
@@ -179,17 +182,18 @@ class Restriction extends CustomPostType {
 			array(
 				'name' => esc_html__( "Hint", 'commonsbooking' ),
 				'id'   => \CommonsBooking\Model\Restriction::META_HINT,
+				'desc' => commonsbooking_sanitizeHTML ( __( 'Please enter here a short information about the reason and possible effects of the usage restriction. <br>The explanation will be displayed on the article page and in the notification e-mail.', 'commonsbooking' ) ),
 				'type' => 'textarea'
 			),
 			array(
 				'name' => esc_html__( 'Start date', 'commonsbooking' ),
-				'desc' => esc_html__( 'Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking' ),
+				'desc' => esc_html__( 'Set the start date and time', 'commonsbooking' ),
 				'id'   => \CommonsBooking\Model\Restriction::META_START,
 				'type' => 'text_datetime_timestamp'
 			),
 			array(
 				'name' => esc_html__( 'End date', 'commonsbooking' ),
-				'desc' => esc_html__( 'Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.', 'commonsbooking' ),
+				'desc' => esc_html__( 'Set the estimated end date and time', 'commonsbooking' ),
 				'id'   => \CommonsBooking\Model\Restriction::META_END,
 				'type' => 'text_datetime_timestamp'
 			),
@@ -201,6 +205,12 @@ class Restriction extends CustomPostType {
 			array(
 				'name'             => esc_html__( "State", 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Restriction::META_STATE,
+				'desc' => commonsbooking_sanitizeHTML ( __( 'Choose status of this restriction. <br>
+				Set to <strong>None</strong> if you want to deactivate the restriction.<br>
+					Set to <strong>Active</strong> if the restriction is active and choose solved if the restriction is not longer exists.<br>
+					Depending on the selected status, affected users will receive corresponding notification emails.
+Select the desired status and then click the "Send" button to send the e-mail.<br>
+Set to <strong>Problem Solved</strong>, if the restriction is no longer in effect. Then click the "Send" button to inform users that the restriction has been solved. ', 'commonsbooking' ) ),
 				'type'             => 'select',
 				'show_option_none' => true,
 				'options'          => array(
@@ -210,7 +220,7 @@ class Restriction extends CustomPostType {
 			),
 			array(
 				'name'          => esc_html__( 'Send notification emails to users', 'commonsbooking' ),
-				'desc'          => esc_html__( 'Important: Please save this restriction before clicking the send-button. In connection with the status of the restriction, the appropriate notifications are sent.', 'commonsbooking' ),
+				'desc'          => esc_html__( 'Important: Please save this restriction before clicking the send-button. Dependent of the status of the restriction, the appropriate notifications are sent to all affected users and location admins. You can configure the e-mail templates via Options -> Commonsbooking -> Tab Restrictions', 'commonsbooking' ),
 				'id'            => self::SEND_BUTTON_ID,
 				'type'          => 'text',
 				'render_row_cb' => array( \CommonsBooking\View\Restriction::class, 'renderSendButton' ),
