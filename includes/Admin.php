@@ -36,7 +36,6 @@ function commonsbooking_admin() {
 
 add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
 
-
 /**
  * commonsbooking_sanitizeHTML
  * Filters text content and strips out disallowed HTML.

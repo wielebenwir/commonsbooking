@@ -820,7 +820,7 @@ The team</p>', 'commonsbooking' ) ),
 				'fields' => [
 					array(
 						'name' => esc_html__( 'Meta Data', 'commonsbooking' ),
-						'desc' => commonsbooking_sanitizeHTML( __( 'Use only this format, separated by semicolon and and each entry in a new line: <br>post_type(item/location);field-name;label(english),type(checkbox,number,text),description(in english)<br>
+						'desc' => commonsbooking_sanitizeHTML( __( 'Use only this format, separated by semicolon and each entry in a new line: <br>post_type(item/location);field-name;label(english),type(checkbox,number,text),description(in english)<br>
                                         Example: item;waterproof;Waterproof material;checkbox;"This item is waterproof and can be used in heavy rain" ', 'commonsbooking' ) ),
 						'id'   => "metadata",
 						'type' => 'textarea',
