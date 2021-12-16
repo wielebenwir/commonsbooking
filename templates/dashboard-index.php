@@ -31,55 +31,68 @@
 					<h3 style="padding-bottom:20px"><?php echo __('Setup and manage Items, Locations and Timeframes', 'commonsbooking') ;?></h3>
 					<ul>
 						<li><a href="edit.php?post_type=cb_item"><span class="dashicons dashicons-carrot"></span> <?php echo __('Items', 'commonsbooking') ;?></a>
-							<ul>
-								<li>dfksdf södklfnskdjfnskldjf sdkfjsn dfklsdfknsndfsldf sdfkjs ndf</li>
-							</ul>
 						</li>
 						<li><a href="edit.php?post_type=cb_location"><span class="dashicons dashicons-store"></span> <?php echo __('Locations', 'commonsbooking') ;?></a>
-							<ul>
-								<li>dfksdf södklfnskdjfnskldjf sdkfjsn dfklsdfknsndfsldf sdfkjs ndf</li>
-							</ul>
 						</li>
-						<li><a href="edit.php?post_type=cb_timeframe"><span class="dashicons dashicons-calendar-alt"></span> <?php echo __('Timeframes', 'commonsbooking') ;?></a></li>
+						<li><a href="edit.php?post_type=cb_timeframe"><span class="dashicons dashicons-calendar-alt"></span> <?php echo __('Timeframes', 'commonsbooking') ;?></a>
+						</li>
 					</ul>
 	
 				</div><!-- .welcome-panel-column -->
 				<div class="welcome-panel-column">
 					<h3 style="padding-bottom:20px"><?php echo __('See Bookings & manage restrictions', 'commonsbooking') ;?></h3>
 					<ul>
-						<li><a href="edit.php?post_type=cb_booking"><span class="dashicons dashicons-list-view"></span> <?php echo __('Bookings', 'commonsbooking') ;?></a></li>
-						<li><a href="edit.php?post_type=cb_restriction"><span class="dashicons dashicons-warning"></span> <?php echo __('Restrictions', 'commonsbooking') ;?></a></li>
-
+						<li><a href="edit.php?post_type=cb_booking"><span class="dashicons dashicons-list-view"></span> <?php echo __('Bookings', 'commonsbooking') ;?></a>
+						</li>
+						<li><a href="edit.php?post_type=cb_restriction"><span class="dashicons dashicons-warning"></span> <?php echo __('Restrictions', 'commonsbooking') ;?></a>
+						</li>
 					</ul>
 				</div><!-- .welcome-panel-column -->
 				<div class="welcome-panel-column welcome-panel-last">
 					<h3 style="padding-bottom:20px"><?php echo __('Configuration', 'commonsbooking') ;?></h3>
 				    <ul>
 					<?php if (commonsbooking_isCurrentUserAdmin()) { ?>
-                            <li><a href="edit.php?post_type=cb_map"><span class="dashicons dashicons-location-alt"></span> <?php echo __('Maps', 'commonsbooking') ;?></a></li>
-                            <li><a href="options-general.php?page=commonsbooking_options"><span class="dashicons dashicons-admin-settings"></span> <?php echo __('Settings', 'commonsbooking') ;?></a></li>
+                            <li><a href="edit.php?post_type=cb_map"><span class="dashicons dashicons-location-alt"></span> <?php echo __('Maps', 'commonsbooking') ;?></a>
+							</li>
+                            <li><a href="options-general.php?page=commonsbooking_options"><span class="dashicons dashicons-admin-settings"></span> <?php echo __('Settings', 'commonsbooking') ;?></a>
+							</li>
                         <?php } ?>
 					</ul>
 				</div><!-- .welcome-panel-column -->
 			</div><!-- .welcome-panel-column-container -->
-
+		</div> <!-- .welcome-panel-content -->
+	</div> <!-- .welcome-panel -->
+	<div id="welcome-panel" class="welcome-panel">
+		<div class="welcome-panel-content">
 			<div class="welcome-panel-column-container">
-				<div class="welcome-panel-column" style="width: 50%">
-					<h3><?php echo __('Beginning Bookings', 'commonsbooking') ;?></h3>
-					<?php \CommonsBooking\View\Dashboard::renderBeginningBookings();?>
+				<div class="welcome-panel-column" style="width: 50%;">
+					<h3><?php echo __("Today's pickups", 'commonsbooking') ;?></h3>
+					<?php 
+					// Display list of bookings with pickup date = today
+					$BeginningBookings = CommonsBooking\View\Dashboard::renderBeginningBookings();
+					if ($BeginningBookings) {
+						echo $BeginningBookings;
+					} else {
+						echo __('No pickups today', 'commonsbooking');					
+					};
+					
+					?>
 				</div>
 				<div class="welcome-panel-column" style="width: 50%">
-					<h3><?php echo __('Ending Bookings', 'commonsbooking') ;?></h3>
-					<?php \CommonsBooking\View\Dashboard::renderEndingBookings();?>
+					<h3><?php echo __("Today's returns", 'commonsbooking') ;?></h3>
+					<?php 
+					// Display list of bookings with return date = today
+					$BeginningBookings = CommonsBooking\View\Dashboard::renderEndingBookings();
+					if ($BeginningBookings) {
+						echo $BeginningBookings;
+					} else {
+						echo __('No returns today', 'commonsbooking');					
+					};
+					
+					?>
 				</div>
 			</div>
 
 		</div>
 	</div>
 </div>
-
-<?php
-ob_start();
-include(COMMONSBOOKING_PLUGIN_DIR . 'templates/dashboard-bookings.php');
-ob_end_clean();
-?>

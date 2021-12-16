@@ -17,33 +17,17 @@ class Dashboard extends View {
 	 */
 	public static function renderBeginningBookings() {
 		$beginningBookings = \CommonsBooking\Repository\Booking::getBeginningBookingsByDate( time() );
-		if ( count( $beginningBookings ) ) {
+		if ( count( $beginningBookings ) > 0 ) {
 			usort( $beginningBookings, function ( $a, $b ) {
 				return strtotime( $a->getStartTime() ) > strtotime( $b->getStartTime() );
 			} );
-			self::renderBookingsTable( $beginningBookings );
+			return self::renderBookingsTable( $beginningBookings );
+		} else {
+			return false;
 		}
 	}
 
-	/**
-	 * Renders list of bookings.
-	 * @param $bookings
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	protected static function renderBookingsTable( $bookings, $showStarttime = true) {
-		echo '<ul>';
-		/** @var \CommonsBooking\Model\Booking $booking */
-		foreach ( $bookings as $booking ) {
-			echo '<li>';
-			echo $booking->pickupDatetime() . ' => ' . $booking->returnDatetime() . "<br>";
-			echo $booking->getItem()->title() . ' ' . __( 'at', 'commonsbooking' ) . ' ' . $booking->getLocation()->title();
-			echo '</li>';
-		}
-		echo '</ul>';
-	}
-
+		
 	/**
 	 * Renders list of ending bookings for today.
 	 * @return void
@@ -55,8 +39,34 @@ class Dashboard extends View {
 			usort( $endingBookings, function ( $a, $b ) {
 				return strtotime( $a->getEndTime() ) > strtotime( $b->getEndTime() );
 			} );
-			self::renderBookingsTable( $endingBookings, false);
+			return self::renderBookingsTable( $endingBookings, false);
+		} else {
+			return false;
 		}
+	}
+
+	/**
+	 * Renders list of bookings.
+	 * @param $bookings
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	protected static function renderBookingsTable( $bookings, $showStarttime = true) {
+		$html = '<div style="padding:5px 20px 5px 20px">';
+		$html .= '<ul>';
+		/** @var \CommonsBooking\Model\Booking $booking */
+		foreach ( $bookings as $booking ) {
+			$html .= '<li>';
+			$html .=  '<strong>' . $booking->pickupDatetime() . ' </strong> => ' . $booking->returnDatetime() . "<br>";
+			$html .=  $booking->getItem()->title() . ' ' . __( 'at', 'commonsbooking' ) . ' ' . $booking->getLocation()->title();
+			$html .=  '</li>';
+			$html .= '<hr style="border-top: 1px solid #bbb; border-radius: 0px; border-color:#67b32a;">';
+		}
+		$html .= '</ul>';
+		$html .= '</div>';
+
+		return $html;
 	}
 
 }

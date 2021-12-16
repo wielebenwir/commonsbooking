@@ -128,7 +128,7 @@ class Booking extends PostRepository {
 					'compare' => '=',
 				)
 			),
-			'post_status' => array( 'confirmed', 'unconfirmed' ),
+			'post_status' => array( 'confirmed' ),
 			'nopaging'    => true,
 		);
 
