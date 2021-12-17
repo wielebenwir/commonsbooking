@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2021-12-17T10:17:36+00:00\n"
-"PO-Revision-Date: 2021-12-17 11:22+0100\n"
+"POT-Creation-Date: 2021-12-17T12:43:29+00:00\n"
+"PO-Revision-Date: 2021-12-17 13:51+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1471,7 +1471,7 @@ msgid "Location"
 msgstr "Standort"
 
 #. translators: %s = number of days
-#: src/View/Calendar.php:444
+#: src/View/Calendar.php:446
 msgid "You can make bookings maximum %s days in advance"
 msgstr "Du kannst Buchungen maximal %s Tage im Voraus vornehmen"
 
@@ -2728,11 +2728,11 @@ msgstr "Du darfst nicht auf diese Buchung zugreifen."
 msgid "Login to your account"
 msgstr "Login zu deinem Nutzerkonto"
 
-#: templates/booking-single.php:37 templates/timeframe-calendar.php:40
+#: templates/booking-single.php:37 templates/timeframe-calendar.php:39
 msgid "Pickup"
 msgstr "Abholung"
 
-#: templates/booking-single.php:41 templates/timeframe-calendar.php:51
+#: templates/booking-single.php:41 templates/timeframe-calendar.php:50
 msgid "Return"
 msgstr "Rückgabe"
 
@@ -3395,31 +3395,55 @@ msgstr "Filter"
 msgid "Reset date selection"
 msgstr "Datumsauswahl zurücksetzen"
 
-#: templates/timeframe-calendar.php:43
+#: templates/timeframe-calendar.php:42
 msgid "Please select the pickup date in the calendar"
 msgstr "Bitte wähle das Abholdatum im Kalender"
 
-#: templates/timeframe-calendar.php:54
+#: templates/timeframe-calendar.php:53
 msgid "Please select the return date in the calendar"
 msgstr "Bitte wähle das Rückgabedatum im Kalender aus"
 
-#: templates/timeframe-calendar.php:67
+#: templates/timeframe-calendar.php:66
 msgid "Usage Restrictions"
 msgstr "Nutzungs-Einschränkungen"
 
 #. translators: %1$s = Start date and time formatted
-#: templates/timeframe-calendar.php:77
+#: templates/timeframe-calendar.php:76
 msgid "From %1$s"
 msgstr "Von %s"
 
 #. translators: %1$s = End date and time formatted
-#: templates/timeframe-calendar.php:84
+#: templates/timeframe-calendar.php:83
 msgid "until probably %1$s:"
 msgstr "bis voraussichtlich %1$s:"
 
-#: templates/timeframe-calendar.php:109
+#: templates/timeframe-calendar.php:106
 msgid "Continue to booking confirmation"
 msgstr "Weiter zur Buchungsprüfung"
+
+#. translators %1$s maximum days, %2$s maximum days
+#: templates/timeframe-calendar.php:116
+msgid ""
+"\n"
+"\t\t\t<strong>Calendar info</strong><br>\n"
+"\t\t\t<span style=\"color:#61CE70\">green</span> = bookable | <span style="
+"\"color:#d5425c\">red</span> = booked/blocked \n"
+"\t\t\t| <span style=\"color:#ff9218\">orange</span> = station closed \n"
+"\t\t\t| gray = not bookable<br>\n"
+"\t\t\tMaximum %1$s days bookable in a row. Depending on the setting, it is "
+"also possible to book over a gray area (e.g. weekend). <br>\n"
+"\t\t\tBookings are limited to a maximum of %2$s days in advance."
+msgstr ""
+"\n"
+"<strong>Hinweise zum Kalender</strong><br>\n"
+"\t\t\t<span style=\"color:#61CE70\">grün</span> = buchbar | <span style="
+"\"color:#d5425c\">rot</span> = gebucht / blockiert \n"
+"\t\t\t| <span style=\"color:#ff9218\">orange</span> = Station geschlossen \n"
+"\t\t\t| grau = nicht buchbar<br>\n"
+"\t\t\tMaximal %1$s Tage hintereinander buchbar. Je nach Einstellung ist es "
+"auch möglich, über einen grauen Bereich hinweg zu buchen (z.B. Wochenende). "
+"<br>\n"
+"\t\t\tBuchungen sind maximal %2$s Tage im Voraus möglich."
 
 #: templates/timeframe-notallowed.php:10
 msgid ""

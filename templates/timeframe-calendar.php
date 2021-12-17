@@ -34,7 +34,6 @@
                 <a id="resetPicker">
                     <?php echo esc_html__( 'Reset date selection', 'commonsbooking' ); ?>
                 </a>
-                <p id="calendarNotice"></p>
                 <div class="time-selection repetition-start">
                     <label for="repetition-start">
                         <?php echo esc_html__( 'Pickup', 'commonsbooking' ); ?>:
@@ -100,8 +99,6 @@
                     <?php
                     }
                     ?>
-                    <p id="fullDayInfo"></p>
-                    <p id="calendarNotice"></p>
             </div>
 			<?php
 			if ( is_user_logged_in() ) { ?>
@@ -110,6 +107,22 @@
 			<?php } ?>
         </form>
     </div>
+	<div id="calendar-footnote">
+		<p>
+			<?php 
+			// get Calendar Data
+			$calendarData = json_decode($templateData['calendar_data']);
+			//translators %1$s maximum days, %2$s maximum days
+			echo sprintf ( commonsbooking_sanitizeHTML( __('
+			<strong>Calendar info</strong><br>
+			<span style="color:#61CE70">green</span> = bookable | <span style="color:#d5425c">red</span> = booked/blocked 
+			| <span style="color:#ff9218">orange</span> = station closed 
+			| gray = not bookable<br>
+			Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend). <br>
+			Bookings are limited to a maximum of %2$s days in advance.', 'commonsbooking') ), $calendarData->maxDays, $calendarData->advanceBookingDays );
+			?> 
+		</p>
+	</div>
 <?php
 
     // if template is used in backend

@@ -3852,26 +3852,37 @@
 .cb-wrapper #booking-form-container,
 .cb-wrapper #booking-form-container div {
   border-bottom: 0;
+  display: flow-root;
 }
-/* line 96, ../sass/partials/_forms.scss */
+/* line 97, ../sass/partials/_forms.scss */
+.cb-wrapper #calendar-footnote {
+  background-color: #FFF;
+  margin-top: 10px;
+}
+/* line 100, ../sass/partials/_forms.scss */
+.cb-wrapper #calendar-footnote p {
+  font-size: small;
+  line-height: 1.5;
+}
+/* line 106, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form {
   width: 100%;
   /* do not extend litepicker width */
 }
-/* line 98, ../sass/partials/_forms.scss */
+/* line 108, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form input {
   float: right;
 }
-/* line 103, ../sass/partials/_forms.scss */
+/* line 113, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container {
   margin-top: 10px;
   text-align: center;
 }
-/* line 107, ../sass/partials/_forms.scss */
+/* line 117, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container .restriction {
   display: block;
 }
-/* line 111, ../sass/partials/_forms.scss */
+/* line 121, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div {
   display: flex;
   align-items: center;
@@ -3879,16 +3890,16 @@
   text-align: left;
   overflow: hidden;
 }
-/* line 120, ../sass/partials/_forms.scss */
+/* line 130, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div span, .cb-wrapper #booking-form .time-selection-container > div label, .cb-wrapper #booking-form .time-selection-container > div select {
   float: left;
   font-size: 14px;
 }
-/* line 125, ../sass/partials/_forms.scss */
+/* line 135, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div label {
   font-weight: bold;
 }
-/* line 129, ../sass/partials/_forms.scss */
+/* line 139, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div #resetPicker {
   cursor: pointer;
   font-weight: bold;
@@ -3897,18 +3908,18 @@
   padding: 0;
   flex-basis: 100%;
 }
-/* line 138, ../sass/partials/_forms.scss */
+/* line 148, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div > label {
   flex-basis: 30%;
 }
-/* line 142, ../sass/partials/_forms.scss */
+/* line 152, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div > div {
   flex-basis: 70%;
   display: flex;
   gap: 1rem 3rem;
   align-items: center;
 }
-/* line 152, ../sass/partials/_forms.scss */
+/* line 162, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice {
   margin-bottom: 15px;
   font-size: 18px;
@@ -3918,19 +3929,19 @@
   background: #FFF9C5;
   /* Post status */
 }
-/* line 162, ../sass/partials/_forms.scss */
+/* line 172, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-unconfirmed {
   background: #FFF9C5;
 }
-/* line 166, ../sass/partials/_forms.scss */
+/* line 176, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-confirmed {
   background: #74ce3c;
 }
-/* line 170, ../sass/partials/_forms.scss */
+/* line 180, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-cancelled {
   background: #74ce3c;
 }
-/* line 174, ../sass/partials/_forms.scss */
+/* line 184, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.error {
   background: #d5425c;
 }

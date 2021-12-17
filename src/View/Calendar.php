@@ -435,10 +435,12 @@ class Calendar {
 				'holidays'                => [],
 				'highlightedDays'         => [],
 				'maxDays'                 => null,
-				'disallowLockDaysInRange' => true
+				'disallowLockDaysInRange' => true,
+				'advanceBookingDays'	  => $advanceBookingDaysFormatted,
 			];
 
 			// Notice with advanced booking days. Will be parsed in litepicker.js with DOM object #calendarNotice
+			// TODO: deprecated 
 			$jsonResponse['calendarNotice']['advanceBookingDays'] =
 				//translators: %s = number of days
 				commonsbooking_sanitizeHTML( sprintf( __( 'You can make bookings maximum %s days in advance', 'commonsbooking' ), $advanceBookingDaysFormatted ) );
