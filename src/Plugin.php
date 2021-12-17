@@ -88,15 +88,20 @@ class Plugin {
 		// Register custom user roles (e.g. cb_manager)
 		self::addCustomUserRoles();
 
+		// add role caps for custom post types
+		self::addCPTRoleCaps();
+
+		// Init booking codes table
+		BookingCodes::initBookingCodesTable();
+	}
+
+	protected static function addCPTRoleCaps() {
 		$customPostTypes = commonsbooking_isCurrentUserAdmin() ? self::getCustomPostTypes() : self::getCBManagerCustomPostTypes();
 
 		// Add capabilities for user roles
 		foreach ( $customPostTypes as $customPostType ) {
 			self::addRoleCaps( $customPostType::$postType );
 		}
-
-		// Init booking codes table
-		BookingCodes::initBookingCodesTable();
 	}
 
 	/**
@@ -243,6 +248,9 @@ class Plugin {
 
 			// remove deprecated user roles
 			self::removeDeprecatedUserRoles();
+
+			// add role caps for custom post types
+			self::addCPTRoleCaps();
 
 			// update version number in options
 			update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
