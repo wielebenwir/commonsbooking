@@ -1239,6 +1239,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 var i = document.createElement("a");
                 if (i.href = "#", i.className = r.dayItem, i.innerHTML = String(t.getDate()), i.dataset.time = String(t.getTime()), 
                 t.toDateString() === new Date().toDateString() && i.classList.add(r.isToday), this.datePicked.length ? (2 === this.datePicked.length && (this.bookedDayAfterSelection = null), 
+                Number.isInteger(this.bookedDayAfterSelection) && this.bookedDayAfterSelection < t.getTime() && 1 === this.datePicked.length && i.classList.add(r.isLocked), 
                 this.datePicked[0].toDateString() === t.toDateString() && (i.classList.add(r.isStartDate), 
                 this.options.singleMode && i.classList.add(r.isEndDate)), 2 === this.datePicked.length && this.datePicked[1].toDateString() === t.toDateString() && i.classList.add(r.isEndDate), 
                 2 === this.datePicked.length && t.isBetween(this.datePicked[0], this.datePicked[1]) && i.classList.add(r.isInRange)) : this.options.startDate && (this.options.startDate.toDateString() === t.toDateString() && (i.classList.add(r.isStartDate), 
@@ -1269,12 +1270,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 if (this.options.selectForward && 1 === this.datePicked.length && t.isBefore(this.datePicked[0]) && i.classList.add(r.isLocked), 
                 this.options.selectBackward && 1 === this.datePicked.length && t.isAfter(this.datePicked[0]) && i.classList.add(r.isLocked), 
-                this.options.selectForward && 1 === this.datePicked.length && t.isBefore(this.datePicked[0]) && i.classList.add(r.isHoliday), 
-                this.options.selectBackward && 1 === this.datePicked.length && t.isAfter(this.datePicked[0]) && i.classList.add(r.isHoliday), 
-                this.options.lockDays.length && (this.options.lockDays.filter(function(i) {
+                this.options.lockDays.length && this.options.lockDays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.lockDaysInclusivity) : i.isSame(t, "day");
-                }).length || Number.isInteger(this.bookedDayAfterSelection) && this.bookedDayAfterSelection < t.getTime() && 1 === this.datePicked.length) && i.classList.add(r.isLocked), 
-                this.options.bookedDays.length && (v = this.options.bookedDays.filter(function(i) {
+                }).length && i.classList.add(r.isLocked), this.options.bookedDays.length && (v = this.options.bookedDays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.bookedDaysInclusivity) : i.isSame(t, "day");
                 }).length) && (i.classList.add(r.isBooked), this.datePicked.length > 0 && !this.bookedDayAfterSelection && this.datePicked[0].getTime() < t.getTime() && (this.bookedDayAfterSelection = t.getTime())), 
                 this.options.partiallyBookedDays.length && (B = this.options.partiallyBookedDays.filter(function(i) {
@@ -1661,7 +1659,7 @@ document.addEventListener("DOMContentLoaded", () => {
             this.render(), this.options.inlineMode && this.show(), this.updateInput();
         }, l.Litepicker.prototype.clearSelection = function() {
             this.options.startDate = null, this.options.endDate = null, this.datePicked.length = 0, 
-            this.updateInput(), this.isShowning() && this.render();
+            this.bookedDayAfterSelection = null, this.updateInput(), this.isShowning() && this.render();
         }, l.Litepicker.prototype.destroy = function() {
             this.picker && this.picker.parentNode && (this.picker.parentNode.removeChild(this.picker), 
             this.picker = null), this.backdrop && this.backdrop.parentNode && this.backdrop.parentNode.removeChild(this.backdrop);
