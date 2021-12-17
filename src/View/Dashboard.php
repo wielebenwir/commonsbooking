@@ -39,28 +39,36 @@ class Dashboard extends View {
 		}
 	}
 
+		
 	/**
-	 * Renders list of bookings.
-	 * @param $bookings
-	 *
+	 * Renders list of ending bookings for today.
 	 * @return void
 	 * @throws \Exception
 	 */
-	protected static function renderBookingsTable( $bookings, $showStarttime = true) {
-		$html = '<div style="padding:5px 20px 5px 20px">';
-		$html .= '<ul>';
-		/** @var \CommonsBooking\Model\Booking $booking */
-		foreach ( $bookings as $booking ) {
-			$html .= '<li>';
-			$html .=  '<strong>' . $booking->pickupDatetime() . ' </strong> => ' . $booking->returnDatetime() . "<br>";
-			$html .=  '<a href="'. $booking->bookingLinkUrl() . '" target="_blank">' . $booking->getItem()->title() . ' ' . __( 'at', 'commonsbooking' ) . ' ' . $booking->getLocation()->title() . '</a>';
-			$html .=  '</li>';
-			$html .= '<hr style="border-top: 1px solid #bbb; border-radius: 0px; border-color:#67b32a;">';
+	public static function renderEndingBookings() {
+		$endingBookings = \CommonsBooking\Repository\Booking::getEndingBookingsByDate( time() );
+		if ( count( $endingBookings ) ) {
+			usort( $endingBookings, function ( $a, $b ) {
+				return strtotime( $a->getEndTime() ) > strtotime( $b->getEndTime() );
+			} );
+			//return self::renderBookingsTable( $endingBookings, false);
+			$html = '<div style="padding:5px 20px 5px 20px">';
+			$html .= '<ul>';
+			/** @var \CommonsBooking\Model\Booking $booking */
+			foreach ( $endingBookings as $booking ) {
+				$html .= '<li>';
+				$html .=  '<strong>' . $booking->returnDatetime() . "</strong><br>";
+				$html .=  '<a href="'. $booking->bookingLinkUrl() . '" target="_blank">' . $booking->getItem()->title() . ' ' . __( 'at', 'commonsbooking' ) . ' ' . $booking->getLocation()->title() . '</a>';
+				$html .=  '</li>';
+				$html .= '<hr style="border-top: 1px solid #bbb; border-radius: 0px; border-color:#67b32a;">';
+			}
+			$html .= '</ul>';
+			$html .= '</div>';
+	
+			return $html;
+		} else {
+			return false;
 		}
-		$html .= '</ul>';
-		$html .= '</div>';
-
-		return $html;
 	}
 
 }
