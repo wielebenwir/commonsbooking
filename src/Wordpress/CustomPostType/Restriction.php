@@ -158,8 +158,8 @@ class Restriction extends CustomPostType {
 				'name'    => esc_html__( 'Type', 'commonsbooking' ),
 				'desc'    => commonsbooking_sanitizeHTML ( __( 'Select the type of restriction.<br>
 				Select <strong>Notice</strong>, the item can still be used and if e.g. only one part is missing or defective.<br>
-				Select <strong>total breakdown</strong> if the defect means that the item can no longer be used.If you selected total breakdown, after activating and sending the information email, 
-				all affected bookings will be automatically canceled. 
+				Select <strong>total breakdown</strong> if the defect means that the item can no longer be used. If you select total breakdown 
+				all affected bookings will be automatically canceled after activating this restriction and after clicking send the information email.
 				', 'commonsbooking' ) ),
 				'id'      => \CommonsBooking\Model\Restriction::META_TYPE,
 				'type'    => 'select',
@@ -207,10 +207,10 @@ class Restriction extends CustomPostType {
 				'id'               => \CommonsBooking\Model\Restriction::META_STATE,
 				'desc' => commonsbooking_sanitizeHTML ( __( 'Choose status of this restriction. <br>
 				Set to <strong>None</strong> if you want to deactivate the restriction.<br>
-					Set to <strong>Active</strong> if the restriction is active and choose solved if the restriction is not longer exists.<br>
-					Depending on the selected status, affected users will receive corresponding notification emails.
-Select the desired status and then click the "Send" button to send the e-mail.<br>
-Set to <strong>Problem Solved</strong>, if the restriction is no longer in effect. Then click the "Send" button to inform users that the restriction has been solved. ', 'commonsbooking' ) ),
+					Set to <strong>Active</strong> if the restriction is active. <br>
+Set to <strong>Problem Solved</strong>, if the restriction is no longer in effect.<br>
+Depending on the selected status, affected users will receive corresponding notification emails.
+Select the desired status and then click the "Send" button to send the e-mail.<br>', 'commonsbooking' ) ),
 				'type'             => 'select',
 				'show_option_none' => true,
 				'options'          => array(
