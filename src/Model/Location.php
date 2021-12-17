@@ -91,7 +91,7 @@ class Location extends BookablePost {
 			$contact[] = "<br>"; // needed for email template
 			$contact[] = esc_html__( 'Please contact the contact persons at the location directly if you have any questions regarding collection or return:',
 				'commonsbooking' );
-			$contact[] = nl2br( CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact' ) );
+			$contact[] = nl2br( CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post->ID ) );
 		}
 
 		return implode( '<br>', $contact );
@@ -106,7 +106,7 @@ class Location extends BookablePost {
 	 * @return string
 	 */
 	public function formattedContactInfoOneLine() {
-		return CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact') . '<br>';
+		return CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post->ID) . '<br>';
 	}
 
 	/**
