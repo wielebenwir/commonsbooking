@@ -72,6 +72,7 @@ abstract class CustomPostType {
 
 	/**
 	 * retrieve Custom Meta Data from CommonsBooking Options and convert them to cmb2 fields array
+	 * The content is managed by user via options -> metadata sets 
 	 *
 	 * @param mixed $type (item or location)
 	 *
@@ -86,8 +87,9 @@ abstract class CustomPostType {
 		foreach ( $metaDataLines as $metaDataLine ) {
 			$metaDataArray = explode( ';', $metaDataLine );
 
-			if ( count( $metaDataArray ) == 5 ) // $metaDataArray[0] = Type
+			if ( count( $metaDataArray ) == 5 ) 
 			{
+				// $metaDataArray[0] = Type
 				$metaDataFields[ $metaDataArray[0] ][] = array(
 					'id'   => $metaDataArray[1],
 					'name' => $metaDataArray[2],
