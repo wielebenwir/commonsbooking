@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Commons Booking plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Commons Booking 2.5-RC-1\n"
+"Project-Id-Version: Commons Booking 2.5-RC-2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-12-17T12:43:29+00:00\n"
+"POT-Creation-Date: 2021-12-19T12:41:07+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -335,7 +335,7 @@ msgid "Breakdown email subject"
 msgstr ""
 
 #: includes/OptionsArray.php:343
-msgid "Breakdown of {{restriction:itemName}}"
+msgid "Breakdown of {{item:post_title}}"
 msgstr ""
 
 #: includes/OptionsArray.php:346
@@ -346,7 +346,7 @@ msgstr ""
 msgid ""
 "<h2>Hi {{user:first_name}},</h2>\n"
 "\n"
-"<p>Unfortunately, the item {{restriction:itemName}} you booked is damaged and not usable from {{restriction:formattedStartDateTime}} until {{restriction:formattedEndDateTime}} expected.\n"
+"<p>Unfortunately, the item {{item:post_title}} you booked is damaged and not usable from {{restriction:formattedStartDateTime}} until {{restriction:formattedEndDateTime}} expected.\n"
 "</br></br>\n"
 "The reason is:</br>\n"
 "{{restriction:hint}}\n"
@@ -367,7 +367,7 @@ msgid "Usage restriction email subject"
 msgstr ""
 
 #: includes/OptionsArray.php:372
-msgid "Restriction of use for {{restriction:itemName}}"
+msgid "Restriction of use for {{item:post_title}}"
 msgstr ""
 
 #: includes/OptionsArray.php:375
@@ -378,7 +378,7 @@ msgstr ""
 msgid ""
 "<h2>Hi {{user:first_name}},</h2>\n"
 "<p>\n"
-"The item {{restriction:itemName}} you booked is damaged and will have limited use from {{restriction:formattedStartDateTime} until probably {{restriction:formattedEndDateTime}}.\n"
+"The item {{item:post_title}} you booked is damaged and will have limited use from {{restriction:formattedStartDateTime} until probably {{restriction:formattedEndDateTime}}.\n"
 "</br></br>\n"
 "The reason is:</br>\n"
 "{{restriction:hint}}\n"
@@ -402,7 +402,7 @@ msgid "Restriction cancelled subject"
 msgstr ""
 
 #: includes/OptionsArray.php:404
-msgid "Restriction for article {{restriction:itemName}} no longer exists"
+msgid "Restriction for article {{item:post_title}} no longer exists"
 msgstr ""
 
 #: includes/OptionsArray.php:407
@@ -413,7 +413,7 @@ msgstr ""
 msgid ""
 "<h2>Hi {{user:first_name}},</h2>\n"
 "<p>\n"
-"The item {{restriction:itemName}} is now fully usable again. \n"
+"The item {{item:post_title}} is now fully usable again. \n"
 "</p>"
 msgstr ""
 
@@ -451,7 +451,7 @@ msgstr ""
 #: includes/OptionsArray.php:453
 msgid ""
 "<h2>Hi {{user:first_name}},</h2>\n"
-"<p>Your booking period for the item {{item:}} will start soon.<br>\n"
+"<p>Your booking period for the item {{item:post_title}} will start soon.<br>\n"
 "Your booking period: {{booking:formattedBookingDate}}<br><br>\n"
 "\n"
 "If you no longer need the item you booked, please cancel the booking so other people can possibly use it.\n"
@@ -495,7 +495,7 @@ msgstr ""
 #: includes/OptionsArray.php:550
 msgid ""
 "<h2>Hi {{user:first_name}},</h2>\n"
-"<p>Your booking has ended.<br>\n"
+"<p>Your booking of {{item:post_title}} at {{location:post_title}} has ended.<br>\n"
 "We hope that everything worked as expected.<br>\n"
 "Please let us know if any problems occurred.<br>\n"
 "<br>\n"
@@ -987,25 +987,25 @@ msgstr ""
 msgid "Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s: %2$s"
 msgstr ""
 
-#: src/Plugin.php:129
+#: src/Plugin.php:134
 msgid "CommonsBooking Manager"
 msgstr ""
 
-#: src/Plugin.php:353
-#: src/Plugin.php:354
+#: src/Plugin.php:361
+#: src/Plugin.php:362
 msgid "Item Categories"
 msgstr ""
 
-#: src/Plugin.php:363
-#: src/Plugin.php:364
+#: src/Plugin.php:371
+#: src/Plugin.php:372
 msgid "Location Categories"
 msgstr ""
 
-#: src/Plugin.php:402
+#: src/Plugin.php:410
 msgid "Item Category"
 msgstr ""
 
-#: src/Plugin.php:426
+#: src/Plugin.php:434
 msgid "Location Category"
 msgstr ""
 
@@ -1096,7 +1096,8 @@ msgstr ""
 msgid "You can make bookings maximum %s days in advance"
 msgstr ""
 
-#: src/View/Dashboard.php:62
+#: src/View/Dashboard.php:30
+#: src/View/Dashboard.php:61
 msgid "at"
 msgstr ""
 
@@ -2227,10 +2228,6 @@ msgstr ""
 #: templates/item-single.php:38
 #: templates/location-single.php:40
 msgid "To be able to book, you must first <a href=\"%1$s\">login</a> or <a href=\"%2$s\">register</a>."
-msgstr ""
-
-#: templates/item-withlocation.php:17
-msgid "Book item at this location"
 msgstr ""
 
 #: templates/location-calendar-header.php:17

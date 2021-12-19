@@ -340,7 +340,7 @@ Thanks, the Team.
 						'name'    => commonsbooking_sanitizeHTML( __( 'Breakdown email subject', 'commonsbooking' ) ),
 						'id'      => 'restrictions-repair-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( 'Breakdown of {{restriction:itemName}}', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Breakdown of {{item:post_title}}', 'commonsbooking' ) ),
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Breakdown email body', 'commonsbooking' ) ),
@@ -348,7 +348,7 @@ Thanks, the Team.
 						'type'    => 'textarea',
 						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
 
-<p>Unfortunately, the item {{restriction:itemName}} you booked is damaged and not usable from {{restriction:formattedStartDateTime}} until {{restriction:formattedEndDateTime}} expected.
+<p>Unfortunately, the item {{item:post_title}} you booked is damaged and not usable from {{restriction:formattedStartDateTime}} until {{restriction:formattedEndDateTime}} expected.
 </br></br>
 The reason is:</br>
 {{restriction:hint}}
@@ -369,7 +369,7 @@ the team
 						'name'    => commonsbooking_sanitizeHTML( __( 'Usage restriction email subject', 'commonsbooking' ) ),
 						'id'      => 'restrictions-hint-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( 'Restriction of use for {{restriction:itemName}}', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Restriction of use for {{item:post_title}}', 'commonsbooking' ) ),
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Restriction email body', 'commonsbooking' ) ),
@@ -377,7 +377,7 @@ the team
 						'type'    => 'textarea',
 						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
 <p>
-The item {{restriction:itemName}} you booked is damaged and will have limited use from {{restriction:formattedStartDateTime} until probably {{restriction:formattedEndDateTime}}.
+The item {{item:post_title}} you booked is damaged and will have limited use from {{restriction:formattedStartDateTime} until probably {{restriction:formattedEndDateTime}}.
 </br></br>
 The reason is:</br>
 {{restriction:hint}}
@@ -401,7 +401,7 @@ the team
 						'name'    => commonsbooking_sanitizeHTML( __( 'Restriction cancelled subject', 'commonsbooking' ) ),
 						'id'      => 'restrictions-restriction-cancelled-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( 'Restriction for article {{restriction:itemName}} no longer exists', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Restriction for article {{item:post_title}} no longer exists', 'commonsbooking' ) ),
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Restriction cancelled email body', 'commonsbooking' ) ),
@@ -409,7 +409,7 @@ the team
 						'type'    => 'textarea',
 						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
 <p>
-The item {{restriction:itemName}} is now fully usable again. 
+The item {{item:post_title}} is now fully usable again. 
 </p>', 'commonsbooking' ) ),
 					),
 				)
@@ -451,7 +451,7 @@ The item {{restriction:itemName}} is now fully usable again.
 						'id'      => 'pre-booking-reminder-body',
 						'type'    => 'textarea',
 						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
-<p>Your booking period for the item {{item:}} will start soon.<br>
+<p>Your booking period for the item {{item:post_title}} will start soon.<br>
 Your booking period: {{booking:formattedBookingDate}}<br><br>
 
 If you no longer need the item you booked, please cancel the booking so other people can possibly use it.
@@ -548,7 +548,7 @@ the team</p>', 'commonsbooking' ) ),
 						'id'      => 'post-booking-notice-body',
 						'type'    => 'textarea',
 						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
-<p>Your booking has ended.<br>
+<p>Your booking of {{item:post_title}} at {{location:post_title}} has ended.<br>
 We hope that everything worked as expected.<br>
 Please let us know if any problems occurred.<br>
 <br>

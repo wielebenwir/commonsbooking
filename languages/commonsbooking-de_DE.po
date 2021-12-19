@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2021-12-17T12:43:29+00:00\n"
-"PO-Revision-Date: 2021-12-17 13:51+0100\n"
+"POT-Creation-Date: 2021-12-19T12:41:07+00:00\n"
+"PO-Revision-Date: 2021-12-19 13:42+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -504,8 +504,8 @@ msgid "Breakdown email subject"
 msgstr "Ausfall E-Mail Betreff"
 
 #: includes/OptionsArray.php:343
-msgid "Breakdown of {{restriction:itemName}}"
-msgstr "Ausfall von {{restriction:itemName}}"
+msgid "Breakdown of {{item:post_title}}"
+msgstr "Ausfall von {{item:post_title}}"
 
 #: includes/OptionsArray.php:346
 msgid "Breakdown email body"
@@ -515,9 +515,9 @@ msgstr "E-Mail-Text für Ausfall"
 msgid ""
 "<h2>Hi {{user:first_name}},</h2>\n"
 "\n"
-"<p>Unfortunately, the item {{restriction:itemName}} you booked is damaged "
-"and not usable from {{restriction:formattedStartDateTime}} until "
-"{{restriction:formattedEndDateTime}} expected.\n"
+"<p>Unfortunately, the item {{item:post_title}} you booked is damaged and not "
+"usable from {{restriction:formattedStartDateTime}} until {{restriction:"
+"formattedEndDateTime}} expected.\n"
 "</br></br>\n"
 "The reason is:</br>\n"
 "{{restriction:hint}}\n"
@@ -536,10 +536,10 @@ msgid ""
 msgstr ""
 "<h2>Hallo {{user:first_name}},</h2>\n"
 "\n"
-"<p>Leider ist der von dir gebuchte Artikel {{restriction:itemName}} "
-"beschädigt und von {{restriction:formattedStartDateTime}} bis "
-"voraussichtlich {{restriction:formattedEndDateTime}} nicht mehr verwendbar. "
-"<br>Der Grund ist:</br>{{restriction:hint}}<br>\n"
+"<p>Leider ist der von dir gebuchte Artikel {{item:post_title}} beschädigt "
+"und von {{restriction:formattedStartDateTime}} bis voraussichtlich "
+"{{restriction:formattedEndDateTime}} nicht mehr verwendbar. <br>Der Grund "
+"ist:</br>{{restriction:hint}}<br>\n"
 "</br>Wir mussten deine Buchung für diesen Zeitraum stornieren.  Du erhältst "
 "eine Bestätigung der Stornierung in einer separaten E-Mail.\n"
 "Bitte buche den Artikel erneut für einen anderen Zeitraum oder überprüfe auf "
@@ -551,8 +551,8 @@ msgid "Usage restriction email subject"
 msgstr "E-Mail-Betreff der Verwendungseinschränkung"
 
 #: includes/OptionsArray.php:372
-msgid "Restriction of use for {{restriction:itemName}}"
-msgstr "Nutzungsbeschränkung für {{restriction:itemName}}"
+msgid "Restriction of use for {{item:post_title}}"
+msgstr "Nutzungsbeschränkung für {{item:post_title}}"
 
 #: includes/OptionsArray.php:375
 msgid "Restriction email body"
@@ -562,9 +562,9 @@ msgstr "E-Mail-Text für Einschränkung"
 msgid ""
 "<h2>Hi {{user:first_name}},</h2>\n"
 "<p>\n"
-"The item {{restriction:itemName}} you booked is damaged and will have "
-"limited use from {{restriction:formattedStartDateTime} until probably "
-"{{restriction:formattedEndDateTime}}.\n"
+"The item {{item:post_title}} you booked is damaged and will have limited use "
+"from {{restriction:formattedStartDateTime} until probably {{restriction:"
+"formattedEndDateTime}}.\n"
 "</br></br>\n"
 "The reason is:</br>\n"
 "{{restriction:hint}}\n"
@@ -585,9 +585,9 @@ msgid ""
 msgstr ""
 "<h2>Hallo {{user:first_name}},</h2>\n"
 "<p>\n"
-"Der von dir gebuchte Gegenstand {{restriction:itemName}} ist beschädigt und "
-"kann von {{restriction:formattedStartDateTime}} bis voraussichtlich "
-"{{restriction:formattedEndDateTime}} nur eingeschränkt genutzt werden.\n"
+"Der von dir gebuchte Gegenstand {{item:post_title}} ist beschädigt und kann "
+"von {{restriction:formattedStartDateTime}} bis voraussichtlich {{restriction:"
+"formattedEndDateTime}} nur eingeschränkt genutzt werden.\n"
 "</br></br>\n"
 "Der Grund ist:</br>\n"
 "{{restriction:hint}}\n"
@@ -611,8 +611,8 @@ msgid "Restriction cancelled subject"
 msgstr "E-Mail-Betreff für Aufhebung der Einschränkung"
 
 #: includes/OptionsArray.php:404
-msgid "Restriction for article {{restriction:itemName}} no longer exists"
-msgstr "Einschränkung für Artikel {{restriction:itemName}} ist aufgehoben"
+msgid "Restriction for article {{item:post_title}} no longer exists"
+msgstr "Einschränkung für Artikel {{item:post_title}}} ist aufgehoben"
 
 #: includes/OptionsArray.php:407
 msgid "Restriction cancelled email body"
@@ -622,11 +622,11 @@ msgstr "E-Mail-Text für Aufhebung der Einschränkung"
 msgid ""
 "<h2>Hi {{user:first_name}},</h2>\n"
 "<p>\n"
-"The item {{restriction:itemName}} is now fully usable again. \n"
+"The item {{item:post_title}} is now fully usable again. \n"
 "</p>"
 msgstr ""
 "<h2>Hallo {{user:first_name}},</h2>\n"
-"<p>Der Gegenstand {{restriction:itemName}} ist nun wieder voll nutzbar.</p>"
+"<p>Der Gegenstand {{item:post_title}} ist nun wieder voll nutzbar.</p>"
 
 #: includes/OptionsArray.php:424
 msgid "Reminder"
@@ -667,7 +667,8 @@ msgstr "E-Mail-Text"
 #: includes/OptionsArray.php:453
 msgid ""
 "<h2>Hi {{user:first_name}},</h2>\n"
-"<p>Your booking period for the item {{item:}} will start soon.<br>\n"
+"<p>Your booking period for the item {{item:post_title}} will start soon."
+"<br>\n"
 "Your booking period: {{booking:formattedBookingDate}}<br><br>\n"
 "\n"
 "If you no longer need the item you booked, please cancel the booking so "
@@ -680,7 +681,8 @@ msgid ""
 "the team</p>"
 msgstr ""
 "<h2>Hallo {{user:first_name}},</h2>\n"
-"<p>Dein Buchungszeitraum für den Artikel  {{item:}} beginnt in Kürze.<br>\n"
+"<p>Dein Buchungszeitraum für den Artikel {{item:post_title}} beginnt in "
+"Kürze.<br>\n"
 "<br>\n"
 "Dein Buchungszeitraum: {{booking:formattedBookingDate}}<br><br>\n"
 "\n"
@@ -747,7 +749,8 @@ msgstr ""
 #: includes/OptionsArray.php:550
 msgid ""
 "<h2>Hi {{user:first_name}},</h2>\n"
-"<p>Your booking has ended.<br>\n"
+"<p>Your booking of {{item:post_title}} at {{location:post_title}} has ended."
+"<br>\n"
 "We hope that everything worked as expected.<br>\n"
 "Please let us know if any problems occurred.<br>\n"
 "<br>\n"
@@ -755,9 +758,9 @@ msgid ""
 "The team</p>"
 msgstr ""
 "<h2>Hallo {{user:first_name}},</h2>\n"
-"<p>Deine Buchung ist beendet.<br>Wir hoffen, dass alles wie erwartet "
-"funktioniert hat.<br>Bitte lass uns uns wissen, wenn Probleme aufgetreten "
-"sind.<br>\n"
+"<p>Deine Buchung von {{item:post_title}} am Standort {{location:post_title}} "
+"ist beendet.<br>Wir hoffen, dass alles wie erwartet funktioniert hat."
+"<br>Bitte lass uns uns wissen, wenn Probleme aufgetreten sind.<br>\n"
 "<br>Alles Gute<br>Das Team</p>"
 
 #: includes/OptionsArray.php:568
@@ -1364,23 +1367,23 @@ msgstr ""
 "überlappende Zeiträume an einem bestimmten Tag zu vermeiden. Siehe "
 "betroffene Zeitrahmen-ID: %1$s: %2$s"
 
-#: src/Plugin.php:129
+#: src/Plugin.php:134
 msgid "CommonsBooking Manager"
 msgstr "CommonsBooking Manager"
 
-#: src/Plugin.php:353 src/Plugin.php:354
+#: src/Plugin.php:361 src/Plugin.php:362
 msgid "Item Categories"
 msgstr "Artikel-Kategorien"
 
-#: src/Plugin.php:363 src/Plugin.php:364
+#: src/Plugin.php:371 src/Plugin.php:372
 msgid "Location Categories"
 msgstr "Standort-Kategorien"
 
-#: src/Plugin.php:402
+#: src/Plugin.php:410
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:426
+#: src/Plugin.php:434
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
@@ -1475,7 +1478,7 @@ msgstr "Standort"
 msgid "You can make bookings maximum %s days in advance"
 msgstr "Du kannst Buchungen maximal %s Tage im Voraus vornehmen"
 
-#: src/View/Dashboard.php:62
+#: src/View/Dashboard.php:30 src/View/Dashboard.php:61
 msgid "at"
 msgstr "bei"
 
@@ -2817,10 +2820,6 @@ msgstr ""
 "Um buchen zu können, musst du dich zuerst <a href=\"%1$s\">einloggen</a> "
 "oder <a href=\"%2$s\">registrieren</a>."
 
-#: templates/item-withlocation.php:17
-msgid "Book item at this location"
-msgstr "Buche den Artikel an dieser Station"
-
 #: templates/location-calendar-header.php:17
 msgid "Pickup instructions:"
 msgstr "Abhol-Hinweise:"
@@ -3455,6 +3454,9 @@ msgstr ""
 "Bitte bearbeite den Zeitrahmen im Backend. Wenn Du das Ergebnis Deiner "
 "Zeitrahmeneinstellungen überprüfen möchtest, gehe auf die Seite des Artikels "
 "oder Standort im Frontend, um den Buchungskalender zu sehen"
+
+#~ msgid "Book item at this location"
+#~ msgstr "Buche den Artikel an dieser Station"
 
 #~ msgid "Link to your booking"
 #~ msgstr "Link zu deiner Buchung"
