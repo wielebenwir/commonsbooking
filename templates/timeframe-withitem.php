@@ -1,5 +1,7 @@
 <?php
-$button_label = esc_html__('Book item', 'commonsbooking');
+
+use CommonsBooking\Settings\Settings;
+$button_label = Settings::getOption('commonsbooking_options_templates', 'label-booking-button');
 $permalink    = add_query_arg ( 'location', $location->ID, get_the_permalink($item->ID) ); // booking link set to item detail page with location ID
 ?>
 

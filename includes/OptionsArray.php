@@ -302,6 +302,13 @@ Thanks, the Team.
 						'desc'    => esc_html__( 'This text is displayed on a booking detail page above the booking calendar .', 'commonsbooking' ),
 						'default' => esc_html__( 'Book this item at this location', 'commonsbooking' ),
 					),
+					array(
+						'name'    => esc_html__( 'Label for booking button', 'commonsbooking' ),
+						'id'      => 'label-booking-button',
+						'type'    => 'text',
+						'desc'    => esc_html__( 'This text is displayed on the booking button on item/location listing pages.', 'commonsbooking' ),
+						'default' => esc_html__( 'Book item', 'commonsbooking' ),
+					),
 				)
 			),
 			/* message templates end */
