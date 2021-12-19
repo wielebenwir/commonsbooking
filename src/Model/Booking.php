@@ -360,7 +360,12 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 		return sprintf( '<a href="%1$s">%2$s</a>', add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) ), $linktext );
 	}
-
+	
+	/**
+	 * return plain booking URL 
+	 *
+	 * @return void
+	 */
 	public function bookingLinkUrl() {
 		return add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) );
 	}
