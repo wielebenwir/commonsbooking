@@ -355,7 +355,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 		// if no linktext is set we use standard text
 		if ( $linktext == NULL ) {
-			$linktext = esc_html__( 'Link to your booking' );
+			$linktext = esc_html__( 'Link to your booking', 'commonsbooking' );
 		}
 
 		return sprintf( '<a href="%1$s">%2$s</a>', add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) ), $linktext );

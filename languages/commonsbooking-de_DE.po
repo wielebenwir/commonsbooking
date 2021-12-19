@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2021-12-19T12:41:07+00:00\n"
-"PO-Revision-Date: 2021-12-19 13:47+0100\n"
+"POT-Creation-Date: 2021-12-19T12:52:37+00:00\n"
+"PO-Revision-Date: 2021-12-19 13:53+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -1274,6 +1274,10 @@ msgstr "Bitte überprüfe die Buchung und klicke auf „Buchung bestätigen“"
 #: src/Model/Booking.php:338
 msgid "Your booking has been canceled."
 msgstr "Deine Buchung wurde storniert."
+
+#: src/Model/Booking.php:358
+msgid "Link to your booking"
+msgstr "Link zu deiner Buchung"
 
 #: src/Model/Location.php:92
 msgid ""
@@ -3458,9 +3462,6 @@ msgstr ""
 
 #~ msgid "Book item at this location"
 #~ msgstr "Buche den Artikel an dieser Station"
-
-#~ msgid "Link to your booking"
-#~ msgstr "Link zu deiner Buchung"
 
 #~ msgid "Hints"
 #~ msgstr "Erläuterungen"
