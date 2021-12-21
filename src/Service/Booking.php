@@ -12,7 +12,7 @@ class Booking {
 	// Removes all unconfirmed bookings older than 10 minutes
 	public static function cleanupBookings() {
 		$args = array(
-			'post_type'   => Timeframe::$postType,
+			'post_type'   => Timeframe::getSimilarPostTypes(),
 			'post_status' => 'unconfirmed',
 			'meta_key'    => 'type',
 			'meta_value'  => Timeframe::BOOKING_ID,
@@ -58,7 +58,8 @@ class Booking {
 			strtotime( '2222-01-01' ),
 			null,
 			null,
-			$customArgs
+			$customArgs,
+			['confirmed']
 		);
 
 		if ( count( $bookings ) ) {

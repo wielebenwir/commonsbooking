@@ -233,7 +233,8 @@ class Booking extends PostRepository {
 		int $endDate,
 		$locationId,
 		$itemId,
-		array $customArgs = []
+		array $customArgs = [],
+		array $postStatus = ['confirmed', 'unconfirmed']
 	): ?array {
 		// Default query
 		$args = array(
@@ -258,7 +259,7 @@ class Booking extends PostRepository {
 					'compare' => '=',
 				)
 			),
-			'post_status' => array( 'confirmed', 'unconfirmed' ),
+			'post_status' => $postStatus,
 			'nopaging'    => true,
 		);
 
