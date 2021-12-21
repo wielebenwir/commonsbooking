@@ -353,7 +353,9 @@ class Booking extends PostRepository {
 			$restriction->getStartDate(),
 			$restriction->getEndDate(),
 			$restriction->getLocationId(),
-			$restriction->getItemId()
+			$restriction->getItemId(),
+			[],
+			['confirmed']
 		);
 	}
 
