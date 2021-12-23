@@ -9,7 +9,7 @@ use WP_Query;
 
 abstract class BookablePost extends PostRepository {
 	/**
-	 * Get all Locations current user is allowed to see/edit
+	 * Get all Locations or Items current user is allowed to see/edit
 	 *
 	 * @param bool $publishedOnly
 	 *

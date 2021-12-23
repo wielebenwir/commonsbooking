@@ -445,6 +445,9 @@ class Calendar {
 				//translators: %s = number of days
 				commonsbooking_sanitizeHTML( sprintf( __( 'You can make bookings maximum %s days in advance', 'commonsbooking' ), $advanceBookingDaysFormatted ) );
 
+			// renders pickup instruction info
+			// deprecated since 2.6 due to template changes. pickup instructions now in location-info section
+			// TODO: can be removed in next update > 2.6	
 			if ( count( $locations ) === 1 ) {
 				$jsonResponse['location']['fullDayInfo'] = nl2br(
 					CB::get(
@@ -507,6 +510,8 @@ class Calendar {
 					if ( $day->getDate() > $endDate->getDate() ) {
 						$dayArray['locked'] = true;
 					}
+
+
 
 					// Add day to calendar data.
 					$jsonResponse['days'][ $day->getFormattedDate( 'Y-m-d' ) ] = $dayArray;
