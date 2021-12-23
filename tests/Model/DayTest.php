@@ -3,6 +3,7 @@
 namespace CommonsBooking\Tests\Model;
 
 use CommonsBooking\Model\Day;
+use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
 class DayTest extends CustomPostTypeTest {
@@ -39,7 +40,7 @@ class DayTest extends CustomPostTypeTest {
 	}
 
 	public function testIsInTimeframe() {
-		$timeframe = get_post( $this->timeframeId );
+		$timeframe = new Timeframe( $this->timeframeId );
 		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
 	}
 
