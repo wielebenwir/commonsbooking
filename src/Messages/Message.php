@@ -86,9 +86,9 @@ abstract class Message {
 		
 		// add bcc adresses 
 		if ( ! empty ( $bcc_adresses ) ) {
-			$this->headers[] = 'BCC:' . $bcc_adresses;
+			$addresses_array = explode( ',', $bcc_adresses );
+			$this->add_bcc( $addresses_array );
 		}
-
 	}
 
 	/**
@@ -133,8 +133,10 @@ abstract class Message {
 		return $this->postId;
 	}
 
-	public function add_bcc( $address ) {
-		$this->headers[] = sprintf( "BCC:%s", sanitize_email( $address ) );
+	public function add_bcc( $address_array ) {
+		// sanitize emails
+		$address_array = array_filter( array_map( 'sanitize_email', $address_array) );
+		$this->headers[] = sprintf( "BCC:%s", implode(',', $address_array ) );
 	}
 
 	/**
