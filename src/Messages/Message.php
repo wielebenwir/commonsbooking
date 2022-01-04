@@ -45,6 +45,13 @@ abstract class Message {
 
 	/**
 	 * Setup the email template, headers (BCC)
+	 * 
+	 * $recipientUser User-Object
+	 * $template_body template string
+	 * $template_subject template string 
+	 * $from_headers From-Header (From:xxx)
+	 * $bcc_adresses comma separated string with e-mail adresses 
+	 * $objects 
 	 */
 	protected function prepareMail(
 		$recipientUser,
@@ -76,12 +83,12 @@ abstract class Message {
 		// Setup email: From
 		$this->headers[] = $from_headers;
 
+		
+		// add bcc adresses 
 		if ( ! empty ( $bcc_adresses ) ) {
-			$addresses_array = explode( ',', $bcc_adresses );
-			foreach ( $addresses_array as $address ) {
-				$this->add_bcc( $address );
-			}
+			$this->headers[] = 'BCC:' . $bcc_adresses;
 		}
+
 	}
 
 	/**
