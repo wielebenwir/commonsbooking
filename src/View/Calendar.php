@@ -511,8 +511,6 @@ class Calendar {
 						$dayArray['locked'] = true;
 					}
 
-
-
 					// Add day to calendar data.
 					$jsonResponse['days'][ $day->getFormattedDate( 'Y-m-d' ) ] = $dayArray;
 

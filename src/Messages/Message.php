@@ -133,7 +133,12 @@ abstract class Message {
 		return $this->postId;
 	}
 
-	public function add_bcc( $address_array ) {
+	/**
+	 * @param array $address_array
+	 *
+	 * @return void
+	 */
+	public function add_bcc( array $address_array ) {
 		// sanitize emails
 		$address_array = array_filter( array_map( 'sanitize_email', $address_array) );
 		$this->headers[] = sprintf( "BCC:%s", implode(',', $address_array ) );
