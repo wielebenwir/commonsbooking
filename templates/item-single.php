@@ -24,7 +24,9 @@
         }  // end foreach $timeframes
     } // $item_is_selected
 
-    if(!array_key_exists('location', $templateData) && !array_key_exists('locations', $templateData)) { ?>
+    
+	// item not available if no valid location reference found
+	if( !array_key_exists('location', $templateData) && empty( $templateData['locations'] ) ) { ?>
         <div class="cb-status cb-availability-status cb-status-not-available"><?php echo ( $noResultText );
     }
 
