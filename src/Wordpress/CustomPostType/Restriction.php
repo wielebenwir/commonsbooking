@@ -189,13 +189,22 @@ class Restriction extends CustomPostType {
 				'name' => esc_html__( 'Start date', 'commonsbooking' ),
 				'desc' => esc_html__( 'Set the start date and time', 'commonsbooking' ),
 				'id'   => \CommonsBooking\Model\Restriction::META_START,
-				'type' => 'text_datetime_timestamp'
+				'type' => 'text_datetime_timestamp',
+				// TODO timeformat should be configurable
+				'time_format' => 'H:i',
+				'date_format' => $dateFormat,
+				'default' => strtotime('today midnight'),
 			),
 			array(
 				'name' => esc_html__( 'End date', 'commonsbooking' ),
 				'desc' => esc_html__( 'Set the estimated end date and time', 'commonsbooking' ),
 				'id'   => \CommonsBooking\Model\Restriction::META_END,
-				'type' => 'text_datetime_timestamp'
+				'type' => 'text_datetime_timestamp',
+				// TODO timeformat should be configurable
+				'time_format' => 'H:i',
+				'date_format' => $dateFormat,
+				'default' => strtotime('tomorrow midnight'),
+
 			),
 			array(
 				'type'    => 'hidden',
