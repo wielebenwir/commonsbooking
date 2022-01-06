@@ -62,8 +62,15 @@ class UserWidget extends WP_Widget {
 				$bookings_page_url = get_home_url();
 			}
 
-			// translators: $s = user first name
-			$content .= sprintf( __( 'Welcome, %s.', 'commonsbooking' ), $current_user->first_name );
+			// user name or email
+			if (!empty($current_user->first_name)) {
+				$loginname = $current_user->first_name;
+			} else {
+				$loginname = $current_user->user_email;
+			}
+
+			// translators: $s = user first name or email
+			$content .= sprintf( __( 'Welcome %s', 'commonsbooking' ), $loginname );
 			$content .= ' <ul>';
 			// translators: $s = bookings page url
 			$content .= sprintf( __( '<li><a href="%s">My Bookings</a></li>', 'commonsbooking' ), $bookings_page_url );

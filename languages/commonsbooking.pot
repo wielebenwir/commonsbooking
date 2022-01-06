@@ -1,15 +1,15 @@
-# Copyright (C) 2021 wielebenwir e.V.
+# Copyright (C) 2022 wielebenwir e.V.
 # This file is distributed under the same license as the Commons Booking plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Commons Booking 2.5-RC-6\n"
+"Project-Id-Version: Commons Booking 2.6-RC-4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-12-19T21:48:56+00:00\n"
+"POT-Creation-Date: 2022-01-06T11:30:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -908,7 +908,7 @@ msgstr ""
 msgid "comming soon"
 msgstr ""
 
-#: src/Messages/Message.php:65
+#: src/Messages/Message.php:72
 msgid "Could not send email because mail-template was not available. Check options -> templates"
 msgstr ""
 
@@ -2094,49 +2094,50 @@ msgstr ""
 msgid "Shows links to My Bookings, Login, Logout. Please set the Bookings Page in CommonsBooking Settings (General-Tab)"
 msgstr ""
 
-#. translators: $s = user first name
-#: src/Wordpress/Widget/UserWidget.php:66
-msgid "Welcome, %s."
+#. translators: $s = user first name or email
+#: src/Wordpress/Widget/UserWidget.php:73
+msgid "Welcome %s"
 msgstr ""
 
 #. translators: $s = bookings page url
-#: src/Wordpress/Widget/UserWidget.php:69
+#: src/Wordpress/Widget/UserWidget.php:76
 msgid "<li><a href=\"%s\">My Bookings</a></li>"
 msgstr ""
 
 #. translators: $s = user profile url
-#: src/Wordpress/Widget/UserWidget.php:71
+#: src/Wordpress/Widget/UserWidget.php:78
 msgid "<li><a href=\"%s\">My Profile</a></li>"
 msgstr ""
 
 #. translators: $s =  wp logout url
-#: src/Wordpress/Widget/UserWidget.php:73
+#: src/Wordpress/Widget/UserWidget.php:80
 msgid "<li><a href=\"%s\">Log out</a></li>"
 msgstr ""
 
-#: src/Wordpress/Widget/UserWidget.php:78
+#: src/Wordpress/Widget/UserWidget.php:85
 msgid "You are not logged in."
 msgstr ""
 
 #. translators: $s = wp login url
-#: src/Wordpress/Widget/UserWidget.php:81
+#: src/Wordpress/Widget/UserWidget.php:88
 msgid "<li><a href=\"%s\">Login</a></li>"
 msgstr ""
 
 #. translators: $s = wp registration url
-#: src/Wordpress/Widget/UserWidget.php:83
+#: src/Wordpress/Widget/UserWidget.php:90
 msgid "<li><a href=\"%s\">Register</a></li>"
 msgstr ""
 
-#: src/Wordpress/Widget/UserWidget.php:97
+#: src/Wordpress/Widget/UserWidget.php:104
 msgid "Title:"
 msgstr ""
 
-#: src/Wordpress/Widget/UserWidget.php:103
+#: src/Wordpress/Widget/UserWidget.php:110
 msgid "Text:"
 msgstr ""
 
 #: templates/booking-single-form.php:8
+#: templates/booking-single.php:161
 msgid "Cancel"
 msgstr ""
 
@@ -2241,7 +2242,7 @@ msgid "No returns today"
 msgstr ""
 
 #. translators: %1$s: wp_login_url, 1$s: wp_registration_url
-#: templates/item-single.php:38
+#: templates/item-single.php:40
 #: templates/location-single.php:40
 msgid "To be able to book, you must first <a href=\"%1$s\">login</a> or <a href=\"%2$s\">register</a>."
 msgstr ""
