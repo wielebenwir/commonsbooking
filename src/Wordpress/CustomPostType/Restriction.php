@@ -193,7 +193,7 @@ class Restriction extends CustomPostType {
 				// TODO timeformat should be configurable
 				'time_format' => 'H:i',
 				'date_format' => $dateFormat,
-				'default' => strtotime('today midnight'),
+				'default' => strtotime('today'),
 			),
 			array(
 				'name' => esc_html__( 'End date', 'commonsbooking' ),
@@ -203,7 +203,7 @@ class Restriction extends CustomPostType {
 				// TODO timeformat should be configurable
 				'time_format' => 'H:i',
 				'date_format' => $dateFormat,
-				'default' => strtotime('tomorrow midnight'),
+				'default' => strtotime('today 23:55'),
 
 			),
 			array(
