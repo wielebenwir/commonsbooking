@@ -1,6 +1,7 @@
 <?php
 
 use CommonsBooking\Plugin;
+use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
@@ -26,8 +27,8 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
 	if ( ! $isAllowed ) {
 		$admins = [];
 
-		// Get allowed admins for timeframe listing
-		if ( $post->post_type == Timeframe::$postType ) {
+		// Get allowed admins for timeframe or booking listing
+		if ( $post->post_type == ( Timeframe::$postType || Booking::$postType ) ) {
 			// Get assigned location
 			$locationId       = get_post_meta( $post->ID, 'location-id', true );
 			$locationAdminIds = get_post_meta( $locationId, '_' . Location::$postType . '_admins', true );

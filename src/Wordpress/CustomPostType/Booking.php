@@ -7,6 +7,7 @@ use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
 
 class Booking extends Timeframe {
+	
 
 	/**
 	 * @var string

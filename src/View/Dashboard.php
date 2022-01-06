@@ -20,10 +20,12 @@ class Dashboard extends View {
 
 		// filter bookings to show only allowed bookings for current user role
 		if ( $beginningBookings ) {
-			// Check if it is the main query and one of our custom post types
-			$beginningBookings = array_filter( $beginningBookings, function ( $beginningBookings ) {
-				return commonsbooking_isCurrentUserAllowedToEdit( $beginningBookings );
-			} );
+
+			foreach ($beginningBookings as $beginningBooking) {
+				$beginningBookings = array_filter( $beginningBookings, function ( $beginningBooking ) {
+					return commonsbooking_isCurrentUserAllowedToEdit( $beginningBooking );
+				} );
+			}
 		}
 
 		if ( count( $beginningBookings ) > 0 ) {
@@ -59,10 +61,12 @@ class Dashboard extends View {
 
 		// filter bookings to show only allowed bookings for current user role
 		if ( $endingBookings ) {
-			// Check if it is the main query and one of our custom post types
-			$endingBookings = array_filter( $endingBookings, function ( $endingBookings ) {
-				return commonsbooking_isCurrentUserAllowedToEdit( $endingBookings );
-			} );
+
+			foreach ($endingBookings as $endingBooking) {
+				$endingBookings = array_filter( $endingBookings, function ( $endingBooking ) {
+					return commonsbooking_isCurrentUserAllowedToEdit( $endingBooking );
+				} );
+			}
 		}
 
 		if ( count( $endingBookings ) ) {
