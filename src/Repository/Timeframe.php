@@ -35,11 +35,10 @@ class Timeframe extends PostRepository {
 	): array {
 		if ( ! count( $types ) ) {
 			$types = [
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::LOCATION_CLOSED_ID,
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
 			];
 		}
 
@@ -216,11 +215,10 @@ class Timeframe extends PostRepository {
 	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
 		if ( ! count( $types ) ) {
 			$types = [
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::LOCATION_CLOSED_ID,
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
 			];
 		}
 
@@ -353,11 +351,10 @@ class Timeframe extends PostRepository {
 	): array {
 		if ( ! count( $types ) ) {
 			$types = [
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::LOCATION_CLOSED_ID,
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
 			];
 		}
 

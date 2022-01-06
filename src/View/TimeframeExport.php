@@ -224,7 +224,7 @@ class TimeframeExport {
 		$timeframeData['type'] = array_key_exists( $timeframeTypeId, $timeframetypes ) ?
 			$timeframetypes[ $timeframeTypeId ] : __( 'Unknown', 'commonsbooking' );
 
-		if ( $timeframeTypeId == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID ) {
+		if ( $timeframeTypeId == (\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID || \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_CANCELED_ID ) ) {
 			$booking = new \CommonsBooking\Model\Booking( $timeframePost->ID );
 		}
 

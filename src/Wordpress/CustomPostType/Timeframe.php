@@ -25,12 +25,7 @@ class Timeframe extends CustomPostType {
 	/**
 	 * "Holidays" timeframe type id.
 	 */
-	const HOLIDAYS_ID = 3;
-
-	/**
-	 * "Official Holidays" timeframe type id.
-	 */
-	const OFF_HOLIDAYS_ID = 4;
+	const LOCATION_CLOSED_ID = 3;
 
 	/**
 	 * "Repair" timeframe type id.
@@ -118,13 +113,11 @@ class Timeframe extends CustomPostType {
 		return [
 			// Opening Hours disabled as its not implemented yet
 			//self::OPENING_HOURS_ID    => esc_html__("Opening Hours", 'commonsbooking'),
-			self::BOOKABLE_ID         => esc_html__( "Bookable", 'commonsbooking' ),
-			self::HOLIDAYS_ID         => esc_html__( "Holidays", 'commonsbooking' ),
-			// Off Holidays disabled as its not implemented yet
-			//self::OFF_HOLIDAYS_ID     => esc_html__("Official Holiday", 'commonsbooking'),
-			self::REPAIR_ID           => esc_html__( "Repair", 'commonsbooking' ),
-			self::BOOKING_ID          => esc_html__( "Booking", 'commonsbooking' ),
-			self::BOOKING_CANCELED_ID => esc_html__( "Booking canceled", 'commonsbooking' ),
+			self::BOOKABLE_ID         	=> esc_html__( "Bookable", 'commonsbooking' ),
+			self::LOCATION_CLOSED_ID    => esc_html__( "Location closed", 'commonsbooking' ),
+			//self::REPAIR_ID           => esc_html__( "Repair", 'commonsbooking' ),
+			self::BOOKING_ID            => esc_html__( "Booking", 'commonsbooking' ),
+			self::BOOKING_CANCELED_ID   => esc_html__( "Booking canceled", 'commonsbooking' ),
 		];
 	}
 
@@ -179,7 +172,6 @@ class Timeframe extends CustomPostType {
 	 * 1 => esc_html__("Opening Hours", 'commonsbooking'),
 	 * 2 => esc_html__("Bookable", 'commonsbooking'),
 	 * 3 => esc_html__("Holidays", 'commonsbooking'),
-	 * 4 => esc_html__("Official Holiday", 'commonsbooking'),
 	 * 5 => esc_html__("Repair", 'commonsbooking'),
 	 * 6 => esc_html__("Booking", 'commonsbooking'),
 	 * 7 => esc_html__("Booking canceled", 'commonsbooking')
@@ -193,8 +185,7 @@ class Timeframe extends CustomPostType {
 		$prioMapping = [
 			self::REPAIR_ID        => 10,
 			self::BOOKING_ID       => 9,
-			self::HOLIDAYS_ID      => 8,
-			self::OFF_HOLIDAYS_ID  => 7,
+			self::LOCATION_CLOSED_ID      => 8,
 			self::BOOKABLE_ID      => 6,
 			self::OPENING_HOURS_ID => 5,
 		];
@@ -215,8 +206,7 @@ class Timeframe extends CustomPostType {
 	public static function isLocked( WP_Post $timeframe ) {
 		$lockedTypes = [
 			self::REPAIR_ID,
-			self::HOLIDAYS_ID,
-			self::OFF_HOLIDAYS_ID,
+			self::LOCATION_CLOSED_ID,
 			self::BOOKING_ID,
 		];
 

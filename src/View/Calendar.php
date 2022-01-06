@@ -587,7 +587,7 @@ class Calendar {
 			$dayArray['slots'][] = $slot;
 
 			// Remove holiday flag, if there is at least one slot that isn't of type holiday
-			if ( ! in_array( $timeFrameType, [ Timeframe::HOLIDAYS_ID, Timeframe::OFF_HOLIDAYS_ID ] ) ) {
+			if ( ! in_array( $timeFrameType, [ Timeframe::LOCATION_CLOSED_ID ] ) ) {
 				$dayArray['holiday'] = false;
 			}
 

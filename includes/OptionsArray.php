@@ -21,10 +21,10 @@ if ( strpos( get_locale(), 'en_' ) !== false ) {
 	$dateFormat = "m/d/Y";
 }
 
-$typeOptions = [
+$typeOptionsExport = [
 	'all' => esc_html__( 'All timeframe types', 'commonsbooking' )
 ];
-$typeOptions += Timeframe::getTypes();
+$typeOptionsExport += Timeframe::getTypes();
 
 /**
  * Plugin Options
@@ -641,7 +641,7 @@ The team</p>', 'commonsbooking' ) ),
 						'desc'    => esc_html__( 'Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information.', 'commonsbooking' ),
 						'id'      => "export-type",
 						'type'    => 'select',
-						'options' => $typeOptions,
+						'options' => $typeOptionsExport,
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Location-Fields', 'commonsbooking' ) ),
