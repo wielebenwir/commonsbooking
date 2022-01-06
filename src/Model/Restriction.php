@@ -151,7 +151,8 @@ class Restriction extends CustomPost {
 	 * @return string
 	 */
 	public function getFormattedStartDateTime() {
-		return $this->getStartTimeDateTime()->format( 'd.m.Y h:i' );
+		// TODO timeformat should be configurable
+		return $this->getStartTimeDateTime()->format( 'd.m.Y H:i' );
 	}
 
 	/**
@@ -159,7 +160,8 @@ class Restriction extends CustomPost {
 	 * @return string
 	 */
 	public function getFormattedEndDateTime() {
-		return $this->getEndDateDateTime()->format( 'd.m.Y h:i' );
+		// TODO timeformat should be configurable
+		return $this->getEndDateDateTime()->format( 'd.m.Y H:i' );
 	}
 
 	/**

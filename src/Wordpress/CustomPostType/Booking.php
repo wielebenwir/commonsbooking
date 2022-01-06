@@ -7,6 +7,7 @@ use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
 
 class Booking extends Timeframe {
+	
 
 	/**
 	 * @var string
@@ -545,7 +546,9 @@ class Booking extends Timeframe {
 	
 		$notice = commonsbooking_sanitizeHTML( __( 'Bookings should not be created, edited or canceled via this admin list. 
 		Click on preview to show booking details in frontend<br>
-		To search and filter bookings please integrate the frontend booking list via shortcode. See here <a target="_blank" href="https://commonsbooking.org/?p=1433">How to display the booking list</a>', 'commonsbooking' ) );
+		To search and filter bookings please integrate the frontend booking list via shortcode. 
+		See here <a target="_blank" href="https://commonsbooking.org/?p=1433">How to display the booking list</a>', 'commonsbooking' ) );
+		
 		if (( $pagenow == 'edit.php' ) && ($_GET['post_type'] == self::getPostType() ) ) {
 			echo '<div class="notice notice-info"><p>' . $notice . '</p></div>';
 	}

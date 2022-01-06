@@ -17,6 +17,17 @@ class Dashboard extends View {
 	 */
 	public static function renderBeginningBookings() {
 		$beginningBookings = \CommonsBooking\Repository\Booking::getBeginningBookingsByDate( time() );
+
+		// filter bookings to show only allowed bookings for current user role
+		if ( $beginningBookings ) {
+
+			foreach ($beginningBookings as $beginningBooking) {
+				$beginningBookings = array_filter( $beginningBookings, function ( $beginningBooking ) {
+					return commonsbooking_isCurrentUserAllowedToEdit( $beginningBooking );
+				} );
+			}
+		}
+
 		if ( count( $beginningBookings ) > 0 ) {
 			usort( $beginningBookings, function ( $a, $b ) {
 				return strtotime( $a->getStartTime() ) > strtotime( $b->getStartTime() );
@@ -47,6 +58,17 @@ class Dashboard extends View {
 	 */
 	public static function renderEndingBookings() {
 		$endingBookings = \CommonsBooking\Repository\Booking::getEndingBookingsByDate( time() );
+
+		// filter bookings to show only allowed bookings for current user role
+		if ( $endingBookings ) {
+
+			foreach ($endingBookings as $endingBooking) {
+				$endingBookings = array_filter( $endingBookings, function ( $endingBooking ) {
+					return commonsbooking_isCurrentUserAllowedToEdit( $endingBooking );
+				} );
+			}
+		}
+
 		if ( count( $endingBookings ) ) {
 			usort( $endingBookings, function ( $a, $b ) {
 				return strtotime( $a->getEndTime() ) > strtotime( $b->getEndTime() );

@@ -58,8 +58,15 @@ abstract class CustomPostType {
 		if ( $data ) {
 			foreach ( $data as $key => $item ) {
 				if ( $item instanceof WP_Post ) {
+
+					// add the status label only if post is in draft status
+					$statusLabel = '';
+					if ( $item->post_status == 'draft' ) {
+						$statusLabel = ' [' . get_post_status_object( get_post_status( $item ) )->label . ']';
+					}
+
 					$key   = $item->ID;
-					$label = $item->post_title;
+					$label = $item->post_title . $statusLabel;
 				} else {
 					$label = $item;
 				}
