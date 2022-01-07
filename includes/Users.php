@@ -206,6 +206,14 @@ function commonsbooking_isCurrentUserSubscriber() {
 	return apply_filters( 'commonsbooking_isCurrentUserSubscriber', in_array( 'subscriber', $user->roles ), $user );
 }
 
+// check if current user has CBManager role
+function commonsbooking_isCurrentUserCBManager() {
+	$user = wp_get_current_user();
+
+	return apply_filters( 'commonsbooking_isCurrentUserCBManager', in_array( Plugin::$CB_MANAGER_ID, $user->roles ), $user );
+
+}
+
 /**
  * Returns true if user is allowed to book based on the timeframe configuration (user role)
  *

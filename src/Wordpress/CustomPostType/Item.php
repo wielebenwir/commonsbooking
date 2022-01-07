@@ -189,7 +189,7 @@ class Item extends CustomPostType {
 
 
 		// Show selection only to admins
-		if ( commonsbooking_isCurrentUserAdmin() ) {
+		if ( commonsbooking_isCurrentUserAdmin() || commonsbooking_isCurrentUserCBManager() ) {
 			$users       = UserRepository::getCBManagers();
 			$userOptions = [];
 			foreach ( $users as $user ) {

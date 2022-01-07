@@ -309,7 +309,7 @@ class Location extends CustomPostType {
 		) );
 
 		// Show selection only to admins
-		if ( commonsbooking_isCurrentUserAdmin() ) {
+		if ( commonsbooking_isCurrentUserAdmin() || commonsbooking_isCurrentUserCBManager() ) {
 			// Location admin selection
 			$users       = UserRepository::getCBManagers();
 			$userOptions = [];
