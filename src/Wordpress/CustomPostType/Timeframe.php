@@ -127,6 +127,21 @@ class Timeframe extends CustomPostType {
 			self::BOOKING_CANCELED_ID => esc_html__( "Booking canceled", 'commonsbooking' ),
 		];
 	}
+	
+	/**
+	 * Get allowed timeframe types for selection box in timeframe editor
+	 * TODO: can be removed if type cleanup has been done (e.g. move BOOKIG_ID to Booking-Class and rename existing types )
+	 *
+	 * @return array
+	 */
+	public static function getTypesforSelectField() {		
+		$types = self::getTypes();
+		unset(
+			$types[self::BOOKING_ID],
+			$types[self::BOOKING_CANCELED_ID],
+		);
+		return $types;
+	}
 
 	/**
 	 * Returns array with repetition options.
@@ -155,6 +170,8 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Returns true, if timeframe is of type booking.
+	 * TODO check if can be removed 
+	 * @deprecated since 2.6
 	 *
 	 * @param $field
 	 *
@@ -492,7 +509,7 @@ class Timeframe extends CustomPostType {
 				'desc'    => esc_html__( 'Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information.', 'commonsbooking' ),
 				'id'      => "type",
 				'type'    => 'select',
-				'options' => self::getTypes(),
+				'options' => self::getTypesforSelectField(),
 			),
 			array(
 				'name'    => esc_html__( "Location", 'commonsbooking' ),
@@ -545,21 +562,19 @@ class Timeframe extends CustomPostType {
 				'type' => 'title',
 			),
 			array(
-				'name'    => esc_html__( 'Timeframe Repetition', 'commonsbooking' ),
-				'desc'    => esc_html__(
-					'Choose whether the time frame should repeat at specific intervals. The repetitions refer to the unit of a day. With the start and end date you define when the repetition interval starts and ends. If you choose "weekly", you can select specific days of the week below. Read the documentation for more information and examples.'
-					, 'commonsbooking' ),
-				'id'      => "timeframe-repetition",
-				'type'    => 'select',
-				'options' => self::getTimeFrameRepetitions(),
-			),
-			array(
 				'name' => esc_html__( 'Full day', 'commonsbooking' ),
 				'desc' => esc_html__(
 					'If this option is selected, users can choose only whole days for pickup and return. No specific time slots for pickup or return are offered. Select this option if the pickup/return should be arranged personally between the location and the user. '
 					, 'commonsbooking' ),
 				'id'   => "full-day",
 				'type' => 'checkbox',
+			),
+			array(
+				'name'    => esc_html__( "Grid", 'commonsbooking' ),
+				'desc'    => commonsbooking_sanitizeHTML( __( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/?p=437">Manage Booking Timeframes</a>', 'commonsbooking' ) ),
+				'id'      => "grid",
+				'type'    => 'select',
+				'options' => self::getGridOptions(),
 			),
 			array(
 				'name'        => esc_html__( "Start time", 'commonsbooking' ),
@@ -570,6 +585,7 @@ class Timeframe extends CustomPostType {
 					'data-timepicker' => json_encode(
 						array(
 							'stepMinute' => 60,
+							'timeFormat' => 'HH:mm',
 						)
 					),
 				),
@@ -580,10 +596,12 @@ class Timeframe extends CustomPostType {
 				'name'        => esc_html__( "End time", 'commonsbooking' ),
 				'id'          => "end-time",
 				'type'        => 'text_time',
+				'time_format' => 'H:i',
 				'attributes'  => array(
 					'data-timepicker' => json_encode(
 						array(
 							'stepMinute' => 60,
+							'timeFormat' => 'HH:mm',
 						)
 					),
 				),
@@ -591,11 +609,13 @@ class Timeframe extends CustomPostType {
 				'date_format' => $dateFormat,
 			),
 			array(
-				'name'    => esc_html__( "Grid", 'commonsbooking' ),
-				'desc'    => commonsbooking_sanitizeHTML( __( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/?p=437">Manage Booking Timeframes</a>', 'commonsbooking' ) ),
-				'id'      => "grid",
+				'name'    => esc_html__( 'Timeframe Repetition', 'commonsbooking' ),
+				'desc'    => esc_html__(
+					'Choose whether the time frame should repeat at specific intervals. The repetitions refer to the unit of a day. With the start and end date you define when the repetition interval starts and ends. If you choose "weekly", you can select specific days of the week below. Read the documentation for more information and examples.'
+					, 'commonsbooking' ),
+				'id'      => "timeframe-repetition",
 				'type'    => 'select',
-				'options' => self::getGridOptions(),
+				'options' => self::getTimeFrameRepetitions(),
 			),
 			array(
 				'name' => esc_html__( "Configure repetition", 'commonsbooking' ),
