@@ -4449,7 +4449,7 @@
 /* line 113, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.location-closed {
   background-color: #ddd;
-  color: #222;
+  color: #222222a1;
 }
 /* line 117, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.no-timeframe {
