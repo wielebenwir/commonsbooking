@@ -4840,7 +4840,7 @@
 * Table/Calendar showing item availabilities.
 *
 * shortcode [cb_item_table]
-* 
+*
 *
 * @package   CommonsBooking
 * @author    Florian Egermann <florian@wielebenwir.de>
@@ -4969,17 +4969,18 @@
 }
 /* line 136, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.holiday {
-  background: var(--litepickerDayIsHolidayColorBg);
+  background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
+  background-size: 5px 5px;
 }
-/* line 140, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 141, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.repair, .cb-items-table td > span.booked {
   background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
-/* line 151, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 152, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.blocked {
   background-color: var(--litepickerDayIsBookedColorBg);
 }
-/* line 155, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 156, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.free {
   background-color: var(--litepickerDayColorBg);
   text-align: center;
