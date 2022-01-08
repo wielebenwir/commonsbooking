@@ -2,7 +2,7 @@
 * Table/Calendar showing item availabilities.
 *
 * shortcode [cb_item_table]
-* 
+*
 *
 * @package   CommonsBooking
 * @author    Florian Egermann <florian@wielebenwir.de>
@@ -134,7 +134,8 @@
 			}
 
 			&.holiday {
-				background: var(--litepickerDayIsHolidayColorBg);
+				background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
+				background-size: 5px 5px;
 			}
 
 			&.repair,
