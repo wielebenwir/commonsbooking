@@ -239,12 +239,10 @@ class Calendar {
 				$days_display[ $dayIterator ++ ] = "<span class='unavailable'></span>";
 			} elseif ( $data['holiday'] ) {
 				$days_display[ $dayIterator ++ ] = "<span class='holiday'></span>";
-			} elseif ( $data['locked'] ) {
-				if ( $data['firstSlotBooked'] && $data['lastSlotBooked'] ) {
-					$days_display[ $dayIterator ++ ] = "<span class='blocked'></span>";
-				} elseif ( $data['partiallyBookedDay'] ) {
-					$days_display[ $dayIterator ++ ] = "<span class='booked'></span>";
-				}
+			} elseif ( $data['locked'] && $data['firstSlotBooked'] && $data['lastSlotBooked']) {
+				$days_display[ $dayIterator ++ ] = "<span class='blocked'></span>";
+			} elseif ( $data['locked'] && $data['partiallyBookedDay']) {
+				$days_display[ $dayIterator ++ ] = "<span class='booked'></span>";
 			} else {
 				$days_display[ $dayIterator ++ ] = "<span class='free'></span>";
 			}
