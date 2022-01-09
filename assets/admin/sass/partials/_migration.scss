@@ -5,3 +5,20 @@
   margin-top: 1rem;
   display: none;
 }
+
+#booking-migration-in-progress,
+#booking-migration-done,
+#booking-migration-failed
+{
+  margin-bottom: 1rem;
+  display: none;
+}
+
+.blinking {
+    animation: blinkText 1s infinite alternate;
+}
+
+@keyframes blinkText {
+    from {opacity:0;}
+    to {opacity: 1;}
+}

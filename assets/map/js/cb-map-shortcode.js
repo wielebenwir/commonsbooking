@@ -261,11 +261,15 @@ function CB_Map() {
             popup_content += '<div  class="cb-map-location-info-address">' + location.address.street + ', ' + location.address.zip + ' ' + location.address.city + '</div>';
 
             if (that.settings.show_location_opening_hours && location.opening_hours) {
-                popup_content += '<div class="cb-map-location-info-opening-hours"><b><i>' + cb_map.translation['OPENING_HOURS'] + ':</i></b><br>' + location.opening_hours + '</div>'
+                // we hide opening hours because this field doesnt exist in cb2 - it was used in cb1
+                // TODO: can be removed in future version of the map
+                //popup_content += '<div class="cb-map-location-info-opening-hours"><b><i>' + cb_map.translation['OPENING_HOURS'] + ':</i></b><br>' + location.opening_hours + '</div>'
             }
 
             if (that.settings.show_location_contact && location.contact) {
-                popup_content += '<div class="cb-map-location-info-contact"><b><i>' + cb_map.translation['CONTACT'] + ':</i></b><br>' + location.contact + '</div>'
+                // we hide contact info because we only want to show it during the booking process
+                // TODO: can be removed in future versions of the map
+                //popup_content += '<div class="cb-map-location-info-contact"><b><i>' + cb_map.translation['CONTACT'] + ':</i></b><br>' + location.contact + '</div>'
             }
 
             popup_content += popup_items;

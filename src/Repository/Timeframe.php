@@ -110,7 +110,7 @@ class Timeframe extends PostRepository {
                     " . $dateQuery . "
                     WHERE
                         pm1.id in (" . implode( ",", $postIds ) . ") AND
-                        pm1.post_type = '" . \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() . "' AND
+                        pm1.post_type IN ('" . implode( "','", \CommonsBooking\Wordpress\CustomPostType\Timeframe::getSimilarPostTypes() ) . "') AND
                         pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
                 ";
 
@@ -151,18 +151,56 @@ class Timeframe extends PostRepository {
 						return true;
 					} );
 				}
+
+				$posts = self::filterTimeframesByMaxBookingDays($posts);
 			}
 
 			// if returnAsModel == TRUE the result is a timeframe model instead of a wordpress object
 			if ( $returnAsModel ) {
-				foreach ( $posts as &$post ) {
-					$post = new \CommonsBooking\Model\Timeframe( $post );
-				}
+				self::castPostsToModels($posts);
 			}
 
 			Plugin::setCacheItem( $posts, $customId );
 
 			return $posts;
+		}
+	}
+
+	/**
+	 * Filters timeframes from array, which aren't bookable because of the max booking days in
+	 * advance setting.
+	 * @param $posts
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	private static function filterTimeframesByMaxBookingDays($posts) {
+		return array_filter($posts, function($post) {
+			if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() ) {
+				$timeframe = new \CommonsBooking\Model\Timeframe( $post );
+				return $timeframe->isBookable();
+			}
+			return true;
+		});
+	}
+
+	/**
+	 * Instantiate models for posts.
+	 * @param $posts
+	 *
+	 * @throws Exception
+	 */
+	private static function castPostsToModels(&$posts) {
+		foreach ( $posts as &$post ) {
+			// If we have a standard timeframe
+			if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() ) {
+				$post = new \CommonsBooking\Model\Timeframe( $post );
+			}
+
+			// If it is a booking
+			if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Booking::getPostType() ) {
+				$post = new \CommonsBooking\Model\Booking( $post );
+			}
 		}
 	}
 
@@ -247,108 +285,6 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
-	 * Returns timefranges in explicit timerange.
-	 *
-	 * @param array $locations
-	 * @param array $items
-	 * @param false $returnAsModel
-	 * @param $minTimestamp
-	 * @param $maxTimestamp
-	 * @param string[] $postStatus
-	 *
-	 * @return array
-	 * @throws Exception
-	 */
-	public static function getBookingInRange(
-		$minTimestamp,
-		$maxTimestamp,
-		array $locations = [],
-		array $items = [],
-		bool $returnAsModel = false,
-		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
-	): array {
-		$types = [
-			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID
-		];
-
-		$customId = md5( serialize( $types ) );
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
-		} else {
-			global $wpdb;
-			$table_postmeta = $wpdb->prefix . 'postmeta';
-			$table_posts    = $wpdb->prefix . 'posts';
-
-			$posts = [];
-
-			// Get Post-IDs considerung types, items and locations
-			$postIds = self::getPostIdsByType( $types, $items, $locations );
-
-			if ( $postIds && count( $postIds ) ) {
-				$dateQuery = "
-                INNER JOIN $table_postmeta pm4 ON
-                    pm4.post_id = pm1.id AND (
-                        ( 
-                            pm4.meta_key = 'repetition-end' AND
-                            pm4.meta_value > " . $minTimestamp . "
-                        ) AND
-                        (
-                            pm4.meta_key = 'repetition-end' AND
-                            pm4.meta_value < " . $maxTimestamp . "
-                        )
-                    )
-                ";
-
-				// Complete query
-				$query = "
-                    SELECT DISTINCT pm1.* from $table_posts pm1
-                    " . $dateQuery . "
-                    WHERE
-                        pm1.id in (" . implode( ",", $postIds ) . ") AND
-                        pm1.post_type = '" . \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() . "' AND
-                        pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
-                ";
-
-				$posts = $wpdb->get_results( $query, ARRAY_N );
-				// Get posts from result
-				foreach ( $posts as &$post ) {
-					$post = get_post( $post[0] );
-				}
-			}
-
-			if ( $posts && count( $posts ) ) {
-				// If there are locations or items to be filtered, we iterate through
-				// query result because wp_query is to slow for meta-querying them.
-				if ( count( $locations ) > 1 || count( $items ) > 1 ) {
-					$posts = array_filter( $posts, function ( $post ) use ( $locations, $items ) {
-						$location = intval( get_post_meta( $post->ID, 'location-id', true ) );
-						$item     = intval( get_post_meta( $post->ID, 'item-id', true ) );
-
-						return
-							( ! $location && ! $item ) ||
-							( ! $location && in_array( $item, $items ) ) ||
-							( in_array( $location, $locations ) && ! $item ) ||
-							( ! count( $locations ) && in_array( $item, $items ) ) ||
-							( in_array( $location, $locations ) && ! count( $items ) ) ||
-							( in_array( $location, $locations ) && in_array( $item, $items ) );
-					} );
-				}
-			}
-
-			// if returnAsModel == TRUE the result is a timeframe model instead of a wordpress object
-			if ( $returnAsModel ) {
-				foreach ( $posts as &$post ) {
-					$post = new \CommonsBooking\Model\Timeframe( $post );
-				}
-			}
-
-			Plugin::setCacheItem( $posts, $customId );
-
-			return $posts;
-		}
-	}
-
-	/**
 	 * Returns timeframe that matches for timestamp based on date AND its time.
 	 * Needed for booking creation based on multiple timeframes with different multi slot grids.
 	 *
@@ -393,7 +329,7 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
-	 * Returns timefranges in explicit timerange.
+	 * Returns timeframes in explicit timerange.
 	 *
 	 * @param array $locations
 	 * @param array $items
@@ -468,7 +404,7 @@ class Timeframe extends PostRepository {
                     " . $dateQuery . "
                     WHERE
                         pm1.id in (" . implode( ",", $postIds ) . ") AND
-                        pm1.post_type = '" . \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() . "' AND
+                        pm1.post_type IN ('" . implode( "','", \CommonsBooking\Wordpress\CustomPostType\Timeframe::getSimilarPostTypes() ) . "') AND
                         pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
                 ";
 

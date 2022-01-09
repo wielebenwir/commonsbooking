@@ -47,6 +47,7 @@
     &--filters {
         display: flex;
         flex-wrap: wrap;
+        gap: 10px;
 
         @media (max-width: 400px) {
             width: 100%;
@@ -54,17 +55,13 @@
 
         .filter-wrapper {
             @include font-default;
-            float: left;
             margin-top: 10px;
-            min-width: 200px;
-            flex-grow: 1;
-            flex-basis: 0;
-            padding-right: 1rem;
+            flex-basis: 220px;
 
             .filter-label {
                 margin-bottom: 0.3rem;
                 margin-left: 0;
-                font-size: 1.375rem;
+                font-size: 1rem;
             }
         }
 
@@ -82,12 +79,15 @@
         }
 
         .reset-filters {
-            padding-top: 15px;
-            align-items: center;
             justify-content: flex-end;
             display: flex;
-            flex-direction: row;
-            margin-right: 0;
+            flex-basis: 100%;
+
+            #reset-filters {
+                font-size: 0.95rem;
+                padding-top: 5px;
+                cursor: pointer;
+            }
 
             & > .cb-button {
                 margin-left: 1rem;
@@ -137,6 +137,7 @@
 
                     &:last-child {
                         border: none;
+                        align-items: center;
                     }
                 }
 
@@ -177,15 +178,15 @@
                 display: flex;
                 flex-direction: row-reverse;
 
-                a {
-                    font-size: 0.825em;
-                    padding: 4px 20px;
-                    margin: 0 8px;
-                    height: 30px;
-                    span {
-                        vertical-align: middle;
-                    }
-                }
+                //a {
+                //    font-size: 0.825em;
+                //    padding: 4px 20px;
+                //    margin: 0 8px;
+                //    height: 30px;
+                //    span {
+                //        vertical-align: middle;
+                //    }
+                //}
             }
 
 

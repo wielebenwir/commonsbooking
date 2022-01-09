@@ -26,14 +26,14 @@ class Item extends View {
 
 		$args = [
 			'post'      => $post,
-			'wp_nonce'  => Timeframe::getWPNonceField(),
+			'wp_nonce'  => \CommonsBooking\Wordpress\CustomPostType\Booking::getWPNonceField(),
 			'actionUrl' => admin_url( 'admin.php' ),
 			'item'      => new \CommonsBooking\Model\Item( $item ),
 			'postUrl'   => get_permalink( $item ),
 			'type'      => Timeframe::BOOKING_ID,
 		];
 
-		// If theres no location selected, we'll show all available.
+		// If there's no location selected, we'll show all available.
 		if ( ! $location ) {
 			if ( count( $locations ) ) {
 				// If there's only one location  available, we'll show it directly.
@@ -42,6 +42,8 @@ class Item extends View {
 				} else {
 					$args['locations'] = $locations;
 				}
+			} else {
+				$args['locations'] = [];
 			}
 		} else {
 			$args['location'] = new \CommonsBooking\Model\Location( get_post( $location ) );
@@ -49,7 +51,9 @@ class Item extends View {
 
 		$calendarData          = Calendar::getCalendarDataArray(
 			$item,
-			array_key_exists( 'location', $args ) ? $args['location'] : null
+			array_key_exists('location', $args) ? $args['location'] : null,
+			date( 'Y-m-d', strtotime( 'first day of this month', time() ) ),
+			date( 'Y-m-d', strtotime( '+3 months', time() ) )
 		);
 		$args['calendar_data'] = json_encode( $calendarData );
 
@@ -85,9 +89,11 @@ class Item extends View {
 			$shortCodeData = self::getShortcodeData( $item, 'Location' );
 
 			// Sort by start_date
-			uasort( $shortCodeData, function ( $a, $b ) {
-				return $a['start_date'] > $b['start_date'];
-			} );
+			foreach ($shortCodeData as $location) {
+				uasort( $location['ranges'], function ( $a, $b ) {
+					return $a['start_date'] > $b['start_date'];
+				} );
+			}
 
 			$itemData[ $item->ID ] = $shortCodeData;
 		}
@@ -100,9 +106,5 @@ class Item extends View {
 		}
 
 		return ob_get_clean();
-	}
-
-	public static function content( \WP_Post $post ) {
-		// TODO: Implement content() method.
 	}
 }

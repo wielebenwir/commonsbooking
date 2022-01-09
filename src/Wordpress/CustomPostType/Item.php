@@ -13,9 +13,9 @@ class Item extends CustomPostType {
 	public static $postType = 'cb_item';
 
 	/**
-	 * Item constructor.
+	 * Initiates needed hooks.
 	 */
-	public function __construct() {
+	public function initHooks() {
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
@@ -160,11 +160,12 @@ class Item extends CustomPostType {
 		if ( is_singular( self::getPostType() ) ) {
 			ob_start();
 			global $post;
+
 			$item = new \CommonsBooking\Model\Item( $post );
 			set_query_var( 'item', $item );
 			commonsbooking_get_template_part( 'item', 'single' );
-			$cb_content = ob_get_clean();
-		} // if archive...
+			$cb_content   = ob_get_clean();
+		}
 
 		return $content . $cb_content;
 	}
@@ -188,7 +189,7 @@ class Item extends CustomPostType {
 
 
 		// Show selection only to admins
-		if ( commonsbooking_isCurrentUserAdmin() ) {
+		if ( commonsbooking_isCurrentUserAdmin() || commonsbooking_isCurrentUserCBManager() ) {
 			$users       = UserRepository::getCBManagers();
 			$userOptions = [];
 			foreach ( $users as $user ) {
@@ -226,5 +227,12 @@ class Item extends CustomPostType {
 			}
 
 		}
+
+		// we store registered metaboxes to options table to be able to retrieve it in export function
+		$metabox_fields = [];
+		foreach ($cmb->meta_box['fields'] as $metabox_field) {
+			$metabox_fields[$metabox_field['id']] = $metabox_field['name'];
+		}
+		Settings::updateOption('commonsbooking_settings_metaboxfields', $this->getPostType(), $metabox_fields);
 	}
 }

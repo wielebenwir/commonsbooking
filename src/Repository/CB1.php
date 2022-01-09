@@ -155,11 +155,11 @@ class CB1 {
 	/**
 	 * Returns CB2 Location-ID.
 	 *
-	 * @param $locationId CB1 Location-ID
+	 * @param $locationId "CB 1 Location-ID"
 	 *
 	 * @return int|false
 	 */
-	public static function getCB2LocationId( CB1 $locationId ) {
+	public static function getCB2LocationId( int $locationId ) {
 		return self::getCB2PostIdByType( $locationId, \CommonsBooking\Wordpress\CustomPostType\Location::$postType );
 	}
 
@@ -173,7 +173,6 @@ class CB1 {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 		$table_posts    = $wpdb->prefix . 'posts';
-
 
 		$result = $wpdb->get_results(
 			"
@@ -204,12 +203,12 @@ class CB1 {
 	}
 
 	/**
-	 * @param $locationId
+	 * @param $timeframeId
 	 *
 	 * @return false|int
 	 */
-	public static function getCB2TimeframeId( $locationId ) {
-		return self::getCB2PostIdByType( $locationId, \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType );
+	public static function getCB2TimeframeId( $timeframeId ) {
+		return self::getCB2PostIdByType( $timeframeId, \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType );
 	}
 
 	/**

@@ -28,6 +28,7 @@
 	"dependencies": {
 		"@babel/core": "^7.14.3",
 		"@babel/preset-env": "^7.14.2",
+		"editorconfig": "^0.15.3",
 		"grunt-babel": "^8.0.0",
 		"leaflet": "^1.7.1",
 		"leaflet-easybutton": "^2.4.0",

@@ -21,12 +21,12 @@ if ($current_status == 'confirmed' and $form_action == "cancel") {
 if(isset($form_post_status)) {
 ?>
     <form method="post" id="cb-booking-form-set-<?php echo $form_post_status; ?>">
-        <?php echo \CommonsBooking\Wordpress\CustomPostType\Timeframe::getWPNonceField() ?>
+        <?php echo \CommonsBooking\Wordpress\CustomPostType\Booking::getWPNonceField() ?>
         <?php if ($booking->ID) { ?><input type="hidden" name="post_ID" value="<?php echo $booking->ID; ?>" /><?php } ?>
         <input type="hidden" name="location-id" value="<?php echo $booking->getLocation()->ID; ?>"/>
         <input type="hidden" name="item-id" value="<?php echo $booking->getItem()->ID; ?>"/>
         <input type="hidden" name="type" value="<?php echo $booking->getMeta('type'); ?>"/>
-        <input type="hidden" name="post_type" value="cb_timeframe"/>
+        <input type="hidden" name="post_type" value="<?php echo $booking->post_type; ?>"/>
         <?php if ($form_post_status !== 'canceled') { ?>
             <input type="hidden" name="comment" value="<?php echo $booking->getMeta('comment'); ?>"/>
         <?php } ?>

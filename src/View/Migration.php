@@ -7,6 +7,7 @@ use CMB2_Field;
 use CommonsBooking\Repository\CB1;
 
 class Migration {
+
 	/**
 	 * Render Migration Form.
 	 *
@@ -39,15 +40,15 @@ class Migration {
                 <span id="options-count">0</span>' . esc_html__( ' Options updated/saved', 'commonsbooking' ) . '<br>
             </div>
             <div id="migration-in-progress">
-                <strong style="color: red">
-                ' . esc_html__( 'migration in process .. please wait ...', 'commonsbooking' ) . '
-                </strong>
+                <p class="blinking" style="border:solid; border-color:red; border-width:4px; padding:20px"><strong style="color: red">
+                ' . commonsbooking_sanitizeHTML( __( 'migration in process .. please wait ... <br>This could take several minutes. Do not close this browser tab', 'commonsbooking' ) ). '
+                </strong></p>
             </div>            
             <div id="migration-done">
                 <strong style="color: green">
                 ' . esc_html__( 'Migration finished', 'commonsbooking' ) . '
                 </strong>
-            </div>            
+            </div>
         ' );
 
 		if ( $cb1Installed ) {
@@ -72,6 +73,38 @@ class Migration {
 		?>
         </div>
 		<?php
+	}
+
+	/**
+     * Renders booking migration (timeframe to booking cpt) form.
+	 * @param array $field_args
+	 * @param CMB2_Field $field
+	 */
+	public static function renderBookingMigrationForm( array $field_args, CMB2_Field $field ) {
+
+		echo( '
+            <div class="cmb-row cmb-type-text">
+                <div id="booking-migration-in-progress">
+                    <strong style="color: red">
+                    ' . esc_html__( 'migration in process .. please wait ...', 'commonsbooking' ) . '
+                    </strong>
+                </div>            
+                <div id="booking-migration-done">
+                    <strong style="color: green">
+                    ' . esc_html__( 'Migration finished', 'commonsbooking' ) . '
+                    </strong>
+                </div>    
+                <div id="booking-migration-failed">
+	                <strong style="color: red">
+	                ' . esc_html__( 'Migration failed', 'commonsbooking' ) . '
+	                </strong>
+	            </div>
+                <a id="booking-update-start" class="button button-secondary" href="#">
+				    ' . esc_html__( 'Migrate bookings', 'commonsbooking' ) . '
+                </a>            
+            </div>
+           '
+        );
 	}
 
 }

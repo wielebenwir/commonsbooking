@@ -150,7 +150,7 @@ class BookingCodes {
 		$begin = new DateTime();
 		$begin->setTimestamp( $bookablePost->getStartDate() );
 		$end = new DateTime();
-		$end->setTimestamp( $bookablePost->getEndDate() );
+		$end->setTimestamp( $bookablePost->getRawEndDate() );
 		$end->setTimestamp( $end->getTimestamp() + 1 );
 
 		$interval = DateInterval::createFromDateString( '1 day' );

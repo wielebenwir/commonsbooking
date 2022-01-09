@@ -475,6 +475,25 @@
 	}
 
 	span.restrictions {
-		width: 66% !important;
+		width: 100% !important;
+	}
+
+	span.restrictions li {
+		margin-top: 1em;
+		//padding-left: 1em;
+		//list-style-type:armenian;
+		//margin-left: 1em;
+	}
+
+	#resetPicker {
+		font-size: $font-size-normal;
+		padding: $spacer-small;
+		display: none;
+		cursor: pointer;
+	}
+
+	#calendarNotice {
+		display: none;
+		font-size: $font-size-normal;
 	}
 }

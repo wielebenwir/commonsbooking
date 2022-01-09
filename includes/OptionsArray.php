@@ -1,14 +1,17 @@
 <?php
 
-// We need static types, because german month names dont't work for datepicker
-use CommonsBooking\Helper\Wordpress;
+
+use CommonsBooking\Helper;
 use CommonsBooking\View\Migration;
+use CommonsBooking\Helper\Wordpress;
+use CommonsBooking\Repository\UserRepository;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\TimeframeExport;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use CommonsBooking\Helper;
 
+// We need static types, because german month names dont't work for datepicker
 $dateFormat = "d/m/Y";
 if ( strpos( get_locale(), 'de_' ) !== false ) {
 	$dateFormat = "d.m.Y";
@@ -259,6 +262,13 @@ Thanks, the Team.
 				'desc'   => '',
 				'fields' => array(
 					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Booking confirmed message', 'commonsbooking' ) ),
+						'id'      => 'booking-confirmed-notice',
+						'type'    => 'textarea_small',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'This text is shown as a status message on booking page after a user has confirmed the booking', 'commonsbooking' ) ),
+						'default' => esc_html__( 'Your booking is confirmed. A confirmation mail has been sent to you.', 'commonsbooking' ),
+					),
+					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Item not available', 'commonsbooking' ) ),
 						'id'      => 'item-not-available',
 						'type'    => 'textarea_small',
@@ -285,6 +295,20 @@ Thanks, the Team.
 						'desc'    => esc_html__( 'This text is displayed when contact details of the station are shown only after booking confirmation.', 'commonsbooking' ),
 						'default' => esc_html__( 'Please confirm the booking to see the contact details for pickup and return.', 'commonsbooking' ),
 					),
+					array(
+						'name'    => esc_html__( 'Text book this item on booking page', 'commonsbooking' ),
+						'id'      => 'text_book-this-item',
+						'type'    => 'textarea_small',
+						'desc'    => esc_html__( 'This text is displayed on a booking detail page above the booking calendar .', 'commonsbooking' ),
+						'default' => esc_html__( 'Book this item at this location', 'commonsbooking' ),
+					),
+					array(
+						'name'    => esc_html__( 'Label for booking button', 'commonsbooking' ),
+						'id'      => 'label-booking-button',
+						'type'    => 'text',
+						'desc'    => esc_html__( 'This text is displayed on the booking button on item/location listing pages.', 'commonsbooking' ),
+						'default' => esc_html__( 'Book item', 'commonsbooking' ),
+					),
 				)
 			),
 			/* message templates end */
@@ -299,12 +323,13 @@ Thanks, the Team.
 		'field_groups' => array(
 			/* field group email templates start */
 			'emailtemplates' => array(
-				'title'  => commonsbooking_sanitizeHTML( __( 'Email templates', 'commonsbooking' ) ),
-				'id'     => 'emailtemplates',
+				'title'  => commonsbooking_sanitizeHTML( __( 'Manage Item Restriction Templates', 'commonsbooking' ) ),
+				'desc'   => commonsbooking_sanitizeHTML( __( 'Templates for restriction emails.<br><a href="https://commonsbooking.org/?p=1762" target="_blank">More Information in the documentation</a>', 'commonsbooking' ) ),
+				'id'     => 'restricition-templates',
 				'fields' => array(
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Mail-Header from E-Mail', 'commonsbooking' ) ),
-						'desc'    => commonsbooking_sanitizeHTML( __( 'E-Mail that will be shown as sender in generated emails', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'Email that will be shown as sender in generated emails', 'commonsbooking' ) ),
 						'id'      => 'restrictions-from-email',
 						'type'    => 'text',
 						'default' => get_option( 'admin_email' ),
@@ -319,44 +344,63 @@ Thanks, the Team.
 
 					// E-Mail repair
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Repair email subject', 'commonsbooking' ) ),
+						'name'    => commonsbooking_sanitizeHTML( __( 'Breakdown email subject', 'commonsbooking' ) ),
 						'id'      => 'restrictions-repair-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( 'Reperatur von {{restriction:itemName}}', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Breakdown of {{item:post_title}}', 'commonsbooking' ) ),
 					),
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Repair email body', 'commonsbooking' ) ),
+						'name'    => commonsbooking_sanitizeHTML( __( 'Breakdown email body', 'commonsbooking' ) ),
 						'id'      => 'restrictions-repair-body',
 						'type'    => 'textarea',
-						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hallo {{user:first_name}},</h2>
-								<p>
-								das Lastenrad {{restriction:itemName}} ist von {{restriction:formattedStartDateTime}} bis {{restriction:formattedEndDateTime}} nicht nutzbar.
-								</p>
-								<p>
-								Der Grund dafür ist folgender:
-								{{restriction:hint}}
-								</p>', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
+
+<p>Unfortunately, the item {{item:post_title}} you booked is damaged and not usable from {{restriction:formattedStartDateTime}} until {{restriction:formattedEndDateTime}} expected.
+</br></br>
+The reason is:</br>
+{{restriction:hint}}
+</br>
+</br>
+We had to cancel your booking for this period.  You will receive a confirmation of the cancellation in a separate email.
+Please book the item again for another period or check our website to see if an alternative item is available.
+</br>
+We ask for your understanding. 
+</br>
+Best regards,</br>
+the team
+</p>', 'commonsbooking' ) ),
 					),
 
 					// E-Mail hint
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Hint email subject', 'commonsbooking' ) ),
+						'name'    => commonsbooking_sanitizeHTML( __( 'Usage restriction email subject', 'commonsbooking' ) ),
 						'id'      => 'restrictions-hint-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( 'Einschränkung bei {{restriction:itemName}}', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Restriction of use for {{item:post_title}}', 'commonsbooking' ) ),
 					),
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Hint email body', 'commonsbooking' ) ),
+						'name'    => commonsbooking_sanitizeHTML( __( 'Restriction email body', 'commonsbooking' ) ),
 						'id'      => 'restrictions-hint-body',
 						'type'    => 'textarea',
-						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hallo {{user:first_name}},</h2>
-								<p>
-								das Lastenrad {{restriction:itemName}} ist von {{restriction:formattedStartDateTime}} - {{restriction:formattedEndDateTime}} nicht vollständig nutzbar.
-								</p>
-								<p>
-								Der Grund dafür ist folgender:
-								{{restriction:hint}}
-								</p>', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
+<p>
+The item {{item:post_title}} you booked is damaged and will have limited use from {{restriction:formattedStartDateTime} until probably {{restriction:formattedEndDateTime}}.
+</br></br>
+The reason is:</br>
+{{restriction:hint}}
+</br>
+</br>
+Please check if you want to continue your booking despite this usage restriction. 
+If not, we ask you to cancel your booking via the following link:
+{{booking:BookingLink}} 
+</br>
+</br>
+We will do our best to fix the restriction as soon as possible.
+We will sent you an email when the restriction is fixed.
+</br>
+Best regards,</br>
+the team
+</p>', 'commonsbooking' ) ),
 					),
 
 					// E-Mail restriction cancellation
@@ -364,16 +408,16 @@ Thanks, the Team.
 						'name'    => commonsbooking_sanitizeHTML( __( 'Restriction cancelled subject', 'commonsbooking' ) ),
 						'id'      => 'restrictions-restriction-cancelled-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( 'Restriction cancelled subject', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Restriction for article {{item:post_title}} no longer exists', 'commonsbooking' ) ),
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Restriction cancelled email body', 'commonsbooking' ) ),
 						'id'      => 'restrictions-restriction-cancelled-body',
 						'type'    => 'textarea',
-						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hallo {{user:first_name}},</h2>
-								<p>
-								das Lastenrad {{restriction:itemName}} ist wieder vollständig nutzbar.
-								</p>', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
+<p>
+The item {{item:post_title}} is now fully usable again. 
+</p>', 'commonsbooking' ) ),
 					),
 				)
 			),
@@ -382,12 +426,156 @@ Thanks, the Team.
 	),
 	/* Tab: restrictions end*/
 
+	/* Tab: reminder start*/
+	'reminder'     => array(
+		'title'        => commonsbooking_sanitizeHTML( __( 'Reminder', 'commonsbooking' ) ),
+		'id'           => 'reminder',
+		'field_groups' => array(
+
+			/* field group pre booking reminder */
+			'pre-booking-reminder' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Booking reminder', 'commonsbooking' ) ),
+				'id'     => 'pre-booking-reminder',
+				'desc'   => commonsbooking_sanitizeHTML( __(
+					'You can set here whether users should receive a reminder email before the start of a booking.<br><a href="https://commonsbooking.org/?p=1763" target="_blank">More Information in the documentation</a>'
+					, 'commonsbooking' ) ),
+				'fields' => array(
+					// settings pre booking reminder -- activate reminder
+					array(
+						'name' => esc_html__( 'Activate', 'commonsbooking' ),
+						'id'   => 'pre-booking-reminder-activate',
+						'type' => 'checkbox',
+					),
+					// E-Mail pre booking reminder 
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'E-mail subject', 'commonsbooking' ) ),
+						'id'      => 'pre-booking-reminder-subject',
+						'type'    => 'text',
+						'default' => commonsbooking_sanitizeHTML( __( 'Upcoming booking of {{item:post_title}} {{booking:formattedBookingDate}}', 'commonsbooking' ) ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'email body', 'commonsbooking' ) ),
+						'id'      => 'pre-booking-reminder-body',
+						'type'    => 'textarea',
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
+<p>Your booking period for the item {{item:post_title}} will start soon.<br>
+Your booking period: {{booking:formattedBookingDate}}<br><br>
+
+If you no longer need the item you booked, please cancel the booking so other people can possibly use it.
+<br>
+For booking details and cancellation, click on this booking link: {{booking:bookingLink}}
+<br>
+Best regards,
+the team</p>', 'commonsbooking' ) ),
+					),
+
+					// settings pre booking reminder -- min days 
+					array(
+						'name'       => commonsbooking_sanitizeHTML( __( 'Sent reminder x days before booking start', 'commonsbooking' ) ),
+						'id'         => 'pre-booking-days-before',
+						'desc'       => '<p>' . commonsbooking_sanitizeHTML( __(
+								'This reminder email will be sent to users x days before the start of the booking. If the booking is made less days before the specified days, no reminder email will be sent'
+								, 'commonsbooking' ) ) . '</p>',
+						'type'       => 'text_small',
+						'attributes' => array(
+							'type' => 'number',
+							'min'  => '1',
+						),
+						'default'    => 2,
+
+					),
+
+					// settings pre booking reminder -- set sending time
+					array(
+						'name'             => esc_html__( 'Time', 'commonsbooking' ),
+						'id'               => 'pre-booking-time',
+						'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
+								'Define when the reminder should be sent. The actual sending may differ from the defined value by a few hours, depending on how your WordPress is configured.'
+								, 'commonsbooking' ) ),
+						'type'             => 'select',
+						'show_option_none' => false,
+						'default'          => '1',
+						'options'          => array(
+							'0'  => '00:00',
+							'1'  => '01:00',
+							'2'  => '02:00',
+							'3'  => '03:00',
+							'4'  => '04:00',
+							'5'  => '05:00',
+							'6'  => '06:00',
+							'7'  => '07:00',
+							'8'  => '08:00',
+							'9'  => '09:00',
+							'10' => '10:00',
+							'11' => '11:00',
+							'12' => '12:00',
+							'13' => '13:00',
+							'14' => '14:00',
+							'15' => '15:00',
+							'16' => '16:00',
+							'17' => '17:00',
+							'18' => '18:00',
+							'19' => '19:00',
+							'20' => '20:00',
+							'21' => '21:00',
+							'22' => '22:00',
+							'23' => '23:00',
+						),
+
+					),
+				),
+			),
+			/* field group pre booking reminder settings end */
+
+
+			/* field group post booking notice */
+			'post-booking-notice'  => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'email after booking has ended', 'commonsbooking' ) ),
+				'id'     => 'post-booking-notice',
+				'desc'   => commonsbooking_sanitizeHTML( __(
+					'Here you can set whether users should receive an additional e-mail after completing a booking. This can be used, for example, to inquire about the users satisfaction or possible problems during the booking.
+					<br>The email will be sent around midnight after the booking day has ended.'
+					, 'commonsbooking' ) ),
+				'fields' => array(
+					// settings pre booking reminder -- activate reminder
+					array(
+						'name' => esc_html__( 'Activate', 'commonsbooking' ),
+						'id'   => 'post-booking-notice-activate',
+						'type' => 'checkbox',
+					),
+					// E-Mail post booking reminder 
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'E-mail subject', 'commonsbooking' ) ),
+						'id'      => 'post-booking-notice-subject',
+						'type'    => 'text',
+						'default' => commonsbooking_sanitizeHTML( __( 'Your booking of {{item:post_title}} {{booking:formattedBookingDate}} has ended', 'commonsbooking' ) ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'email body', 'commonsbooking' ) ),
+						'id'      => 'post-booking-notice-body',
+						'type'    => 'textarea',
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
+<p>Your booking of {{item:post_title}} at {{location:post_title}} has ended.<br>
+We hope that everything worked as expected.<br>
+Please let us know if any problems occurred.<br>
+<br>
+Best regards,<br>
+The team</p>', 'commonsbooking' ) ),
+					),
+				),
+			),
+			/* field group post booking reminder settings end */
+		),
+		/* field group container end */
+	),
+	/* Tab: reminder end*/
+
 	/* Tab: migration start */
 	'migration'    => array(
 		'title'        => __( 'Migration', 'commonsbooking' ),
 		'id'           => 'migration',
 		'field_groups' => array(
-			'migration'       => array(
+			'migration'         => array(
 				'title'  => esc_html__( 'Migrate from Commons Booking Version 0.X', 'commonsbooking' ),
 				'id'     => 'migration',
 				'desc'   => commonsbooking_sanitizeHTML( __( 'Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br><span style="color:red">If you have clicked "Migrate" before, starting the migration again will overwrite any changes you made to  locations, items, timeframes and bookings</span>.<br>Please read the documentation <a target="_blank" href="https://commonsbooking.org/dokumentation/?p=434">How to migrate from version 0.9.x to 2.x.x </a> before you start migration.', 'commonsbooking' ) ),
@@ -400,7 +588,10 @@ Thanks, the Team.
 					)
 				]
 			),
-			'cb1-user-fields' => array(
+
+
+			// cb1 user fields
+			'cb1-user-fields'   => array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'CommonsBooking Version 0.X profile fields', 'commonsbooking' ) ),
 				'id'     => 'cb1-user-fields',
 				'desc'   => commonsbooking_sanitizeHTML( __( 'Enable the following legacy CommonsBooking Version 0.X user profile fields:', 'commonsbooking' ) ) . '<br><i> first_name,  last_name,  phone,  address,   terms_accepted </i>',
@@ -416,11 +607,25 @@ Thanks, the Team.
 						'type' => 'text',
 					)
 				]
-			)
+			),
+
+			// booking migration button
+			'booking-migration' => array(
+				'title'  => esc_html__( 'Migrate bookings to new version', 'commonsbooking' ),
+				'id'     => 'booking-migration',
+				'desc'   => commonsbooking_sanitizeHTML( __( 'Migrate bookings to new format so that they are listed at bookings menu item. <br><strong>This function is only for special cases during migration. Please use it only in case of problems with migration.</strong>', 'commonsbooking' ) ),
+				'fields' => [
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Migrate bookings', 'commonsbooking' ) ),
+						'id'            => 'booking-migration-custom-field',
+						'type'          => 'text',
+						'render_row_cb' => array( Migration::class, 'renderBookingMigrationForm' ),
+					)
+				]
+			),
 		)
 	),
 	/* Tab: migration end */
-
 
 	/* Tab: export start */
 	'export'       => array(
@@ -440,19 +645,21 @@ Thanks, the Team.
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Location-Fields', 'commonsbooking' ) ),
-						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list.', 'commonsbooking' ) ),
+						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
+						Settings::returnFormattedMetaboxFields('cb_location') ),
 						'id'   => 'location-fields',
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Item-Fields', 'commonsbooking' ) ),
-						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list.', 'commonsbooking' ) ),
+						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
+						Settings::returnFormattedMetaboxFields('cb_item') ),
 						'id'   => 'item-fields',
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'User-Fields', 'commonsbooking' ) ),
-						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a user- or a meta-field. Comma separated list.', 'commonsbooking' ) ),
+						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a userfield or a meta-field. Comma separated list.', 'commonsbooking' ) ), 
 						'id'   => 'user-fields',
 						'type' => 'text'
 					),
@@ -477,7 +684,7 @@ Thanks, the Team.
 					),
 					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Export', 'commonsbooking' ) ),
-						'id'            => 'migration-custom-field',
+						'id'            => 'export-custom-field',
 						'type'          => 'text',
 						'render_row_cb' => array( TimeframeExport::class, 'renderExportForm' ),
 					)
@@ -524,7 +731,6 @@ Thanks, the Team.
 	),
 	/* Tab: export end */
 
-
 	/* Tab: API  start */
 	'api'          => array(
 		'title'        => __( 'API', 'commonsbooking' ),
@@ -537,13 +743,13 @@ Thanks, the Team.
 					array(
 						'name' => esc_html__( 'Activate API', 'commonsbooking' ),
 						'desc' => commonsbooking_sanitizeHTML( __( 'If selected, the API is enabled. See more information in the documentation: <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
-						'id'   => "api-activated",
+						'id'   => 'api-activated',
 						'type' => 'checkbox',
 					),
 					array(
 						'name' => esc_html__( 'Enable API Access without API-Key', 'commonsbooking' ),
 						'desc' => commonsbooking_sanitizeHTML( __( 'If selected, the API is accessible without an API-Key. For details see: <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
-						'id'   => "apikey_not_required",
+						'id'   => 'apikey_not_required',
 						'type' => 'checkbox',
 					),
 
@@ -582,13 +788,10 @@ Thanks, the Team.
 								'type' => 'text',
 							),
 							array(
-								'name'       => esc_html__( 'API Key', 'commonsbooking' ),
-								'id'         => 'api_key',
-								'type'       => 'text',
-								'desc'       => commonsbooking_sanitizeHTML( __( ' You must set an API-Key. The API key should consist of alphanumeric characters and be at least 24 characters long.', 'commonsbooking' ) ),
-								'attributes' => array(
-									'required' => 'required',
-								),
+								'name' => esc_html__( 'API Key', 'commonsbooking' ),
+								'id'   => 'api_key',
+								'type' => 'text',
+								'desc' => commonsbooking_sanitizeHTML( __( ' You must set an API-Key. The API key should consist of alphanumeric characters and be at least 24 characters long.', 'commonsbooking' ) ),
 							),
 							array(
 								'name'       => esc_html__( 'API Owner', 'commonsbooking' ),
@@ -617,11 +820,14 @@ Thanks, the Team.
 		'field_groups' => array(
 			'custom_metadata' => array(
 				'title'  => esc_html__( 'Set Custom metadata to locations and items', 'commonsbooking' ),
+				'desc'   => commonsbooking_sanitizeHTML( __(
+					'This is an advanced feature and should only be used if you are experienced or instructed how to set it up properly. In future versions we will add more detailed information and documentation.'
+					, 'commonsbooking' ) ),
 				'id'     => 'meta_data_group',
 				'fields' => [
 					array(
 						'name' => esc_html__( 'Meta Data', 'commonsbooking' ),
-						'desc' => commonsbooking_sanitizeHTML( __( 'Use only this format, separated by semicolon and and each entry in a new line: <br>post_type(item/location);field-name;label(english),type(checkbox,number,text),description(in english)<br>
+						'desc' => commonsbooking_sanitizeHTML( __( 'Use only this format, separated by semicolon and each entry in a new line: <br>post_type(item/location);field-name;label(english),type(checkbox,number,text),description(in english)<br>
                                         Example: item;waterproof;Waterproof material;checkbox;"This item is waterproof and can be used in heavy rain" ', 'commonsbooking' ) ),
 						'id'   => "metadata",
 						'type' => 'textarea',
@@ -631,6 +837,4 @@ Thanks, the Team.
 		),
 	),
 	/* Tab: meta data end */
-
-
 );

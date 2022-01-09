@@ -8,8 +8,8 @@
 	convertWarningsToExceptions="true"
 	>
 	<testsuites>
-		<testsuite>
-			<directory prefix="test-" suffix=".php">./tests/</directory>
+		<testsuite name="default">
+			<directory prefix="" suffix="Test.php">./tests/</directory>
 			<exclude>./tests/test-sample.php</exclude>
 		</testsuite>
 	</testsuites>

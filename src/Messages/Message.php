@@ -2,12 +2,10 @@
 
 namespace CommonsBooking\Messages;
 
-use CommonsBooking\CB\CB;
-use CommonsBooking\Settings\Settings;
 use WP_Error;
 use function commonsbooking_parse_template;
 
-abstract class Messages {
+abstract class Message {
 
 	protected $validActions = [];
 
@@ -47,6 +45,13 @@ abstract class Messages {
 
 	/**
 	 * Setup the email template, headers (BCC)
+	 * 
+	 * $recipientUser User-Object
+	 * $template_body template string
+	 * $template_subject template string 
+	 * $from_headers From-Header (From:xxx)
+	 * $bcc_adresses comma separated string with e-mail adresses 
+	 * $objects 
 	 */
 	protected function prepareMail(
 		$recipientUser,
@@ -78,11 +83,11 @@ abstract class Messages {
 		// Setup email: From
 		$this->headers[] = $from_headers;
 
+		
+		// add bcc adresses 
 		if ( ! empty ( $bcc_adresses ) ) {
 			$addresses_array = explode( ',', $bcc_adresses );
-			foreach ( $addresses_array as $address ) {
-				$this->add_bcc( $address );
-			}
+			$this->add_bcc( $addresses_array );
 		}
 	}
 
@@ -128,8 +133,15 @@ abstract class Messages {
 		return $this->postId;
 	}
 
-	public function add_bcc( $address ) {
-		$this->headers[] = sprintf( "BCC:%s", sanitize_email( $address ) );
+	/**
+	 * @param array $address_array
+	 *
+	 * @return void
+	 */
+	public function add_bcc( array $address_array ) {
+		// sanitize emails
+		$address_array = array_filter( array_map( 'sanitize_email', $address_array) );
+		$this->headers[] = sprintf( "BCC:%s", implode(',', $address_array ) );
 	}
 
 	/**

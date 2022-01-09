@@ -8,6 +8,7 @@ class BookingList {
         this.users = Array.from(document.querySelectorAll('.filter-users option'));
         this.items = Array.from(document.querySelectorAll('.filter-items option'));
         this.locations = Array.from(document.querySelectorAll('.filter-locations option'));
+        this.states = Array.from(document.querySelectorAll('.filter-statuss option'));
 
         this.startDate = document.querySelector('.filter-startdate input');
         jQuery('#startDate-datepicker').datepicker({
@@ -29,7 +30,8 @@ class BookingList {
             items: [],
             locations: [],
             startDate: [],
-            endDate: []
+            endDate: [],
+            states: []
         }
 
         this.shuffle = new Shuffle(element);
@@ -71,6 +73,10 @@ class BookingList {
         this._onLocationChange = this._handleLocationChange.bind(this);
         const locationSelect = document.querySelectorAll('.filter-locations select');
         if(locationSelect) locationSelect.item(0).addEventListener('change', this._onLocationChange);
+
+        this._onStatusChange = this._handleStatusChange.bind(this);
+        const statusSelect = document.querySelectorAll('.filter-statuss select');
+        if(statusSelect) statusSelect.item(0).addEventListener('change', this._onStatusChange);
 
         this._onStartDateChange = this._handleStartDateChange.bind(this);
         const $startDatePicker = jQuery('#startDate-datepicker');
@@ -153,6 +159,21 @@ class BookingList {
         });
     };
 
+    _handleStatusChange() {
+        this.filters.states = this._getCurrentStatusFilters();
+        if (this.filters.states[0] == 'all') {
+            this.filters.states = [];
+        }
+    };
+
+    _getCurrentStatusFilters() {
+        return this.states.filter(function (input) {
+            return input.selected;
+        }).map(function (input) {
+            return input.value;
+        });
+    };
+
     /**
      * Resets all Filters
      * @private
@@ -174,6 +195,8 @@ class BookingList {
                             select.options[i].selected = true;
                         }
                     }
+                } else {
+                    console.log('filter-' + filter.substring(0,filter.length - 1));
                 }
 
                 this.startDate.value = "";
@@ -357,6 +380,12 @@ class BookingList {
                 this.listParams.delete('location');
             }
 
+            if (this.filters.states.length) {
+                this.listParams.set('status', this.filters.states[0]);
+            } else {
+                this.listParams.delete('status');
+            }
+
             this.shuffle.filter(this.itemPassesFilters.bind(this));
             this._reloadData();
         } else {
@@ -388,9 +417,11 @@ class BookingList {
         var users = this.filters.users;
         var items = this.filters.items;
         var locations = this.filters.locations;
+        var states = this.filters.states;
         var user = element.getAttribute('data-user');
         var item = element.getAttribute('data-item');
         var location = element.getAttribute('data-location');
+        var status = element.getAttribute('data-status');
 
         if (users.length > 0 && !users.includes(user)) {
             return false;
@@ -401,6 +432,10 @@ class BookingList {
         }
 
         if (locations.length > 0 && !locations.includes(location)) {
+            return false;
+        }
+
+        if (states.length > 0 && !states.includes(status)) {
             return false;
         }
 
@@ -419,19 +454,26 @@ class BookingList {
     }
 
     _initHeadlineElement(item) {
-        var headline = document.createElement('p');
+        let headline = document.createElement('p');
         headline.classList.add('js-item--headline')
 
-        var date = document.createElement('span');
+        let date = document.createElement('span');
         date.classList.add('cb-date')
         date.innerText = item.startDateFormatted + ' - ' + item.endDateFormatted;
 
-        var title = document.createElement('span');
+        let title = document.createElement('span');
         title.classList.add('cb-title')
         title.innerText = item.item + ' @ ' + item.location;
 
         headline.append(date);
         headline.append(title);
+
+        if(item.bookingCode) {
+            let bookingCode = document.createElement('span');
+            bookingCode.classList.add('cb-booking-code')
+            bookingCode.innerText = item.bookingCode.label + ': ' + item.bookingCode.value;
+            headline.append(bookingCode);
+        }
 
         return headline;
     }
