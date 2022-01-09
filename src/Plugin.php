@@ -355,25 +355,28 @@ class Plugin {
 			);
 		}
 
-		// Add menu item for item categories
-		add_submenu_page(
-			'cb-dashboard',
-			esc_html__( 'Item Categories', 'commonsbooking' ),
-			esc_html__( 'Item Categories', 'commonsbooking' ),
-			'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-			admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::$postType . 's_category',
-			''
-		);
+		// Show categories only for admins
+		if(commonsbooking_isCurrentUserAdmin()) {
+			// Add menu item for item categories
+			add_submenu_page(
+				'cb-dashboard',
+				esc_html__( 'Item Categories', 'commonsbooking' ),
+				esc_html__( 'Item Categories', 'commonsbooking' ),
+				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::$postType . 's_category',
+				''
+			);
 
-		// Add menu item for location categories
-		add_submenu_page(
-			'cb-dashboard',
-			esc_html__( 'Location Categories', 'commonsbooking' ),
-			esc_html__( 'Location Categories', 'commonsbooking' ),
-			'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-			admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::$postType . 's_category',
-			''
-		);
+			// Add menu item for location categories
+			add_submenu_page(
+				'cb-dashboard',
+				esc_html__( 'Location Categories', 'commonsbooking' ),
+				esc_html__( 'Location Categories', 'commonsbooking' ),
+				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::$postType . 's_category',
+				''
+			);
+		}
 	}
 
 	/**
