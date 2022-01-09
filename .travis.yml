@@ -11,7 +11,7 @@ notifications:
 branches:
   only:
     - master
-    - release/2.5-RC
+    - - /^release\/-.*$/
 
 cache:
   directories:
