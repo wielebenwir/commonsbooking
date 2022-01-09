@@ -21,5 +21,49 @@ class Helper {
 
 		return $randomString;
 	}
+	
+	/**
+	 * Returns formatted date default based on WP-settings and localized with datei_i18n
+	 *
+	 * @param  mixed $timestamp
+	 * @return string
+	 */
+	public static function FormattedDate( $timestamp ) {
+
+		$date_format = get_option( 'date_format' );
+		$time_format = get_option( 'time_format' );
+
+		return date_i18n( $date_format, $timestamp );
+
+	}
+	
+	/**
+	 * Returns formatted time default based on WP-settings and localized with datei_i18n
+	 *
+	 * @param  mixed $timestamp
+	 * @return string
+	 */
+	public static function FormattedTime( $timestamp ) {
+
+		$date_format = get_option( 'date_format' );
+		$time_format = get_option( 'time_format' );
+
+		return date_i18n( $time_format, $timestamp );
+
+	}
+	
+	/**
+	 * Returns formatted date and time default based on WP-settings and localized with datei_i18n
+	 *
+	 * @param  mixed $timestamp
+	 * @return string
+	 */
+	public static function FormattedDateTime( $timestamp ) {
+
+		$date_format = get_option( 'date_format' );
+		$time_format = get_option( 'time_format' );
+
+		return date_i18n( $date_format, $timestamp ) . ' ' . date_i18n( $time_format, $timestamp );
+	}
 
 }
