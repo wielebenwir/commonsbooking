@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\CB;
 
+use CommonsBooking\Model\CustomPost;
 use function get_user_by;
 
 class CB {
@@ -39,8 +40,8 @@ class CB {
 		if ( ! $post ) {
 			$postId = self::getPostId( $key );
 			$post = get_post($postId);
-		} else if(is_int($post)) {
-			$post = get_post($post);
+		} else if(!($post instanceof \WP_Post) && !($post instanceof CustomPost)) {
+			$post = get_post(intval($post));
 		}
 
 		$result     = self::lookUp( $key, $property, $post, $args );  // Find matching methods, properties or metadata

@@ -169,19 +169,6 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-	 * Returns true, if timeframe is of type booking.
-	 * TODO check if can be removed 
-	 * @deprecated since 2.6
-	 *
-	 * @param $field
-	 *
-	 * @return bool
-	 */
-	public static function isOfTypeBooking( $field ) {
-		return get_post_meta( $field->object_id, 'type', true ) == self::BOOKING_ID;
-	}
-
-	/**
 	 * Callback function for booking code list.
 	 *
 	 * @param $field_args
@@ -904,8 +891,9 @@ class Timeframe extends CustomPostType {
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
-		add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 1, 2 );
-
+		// must be 'save_post' only because of priority in relation to cmb2
+		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
+		
 		// Add type filter to backend list view
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );
