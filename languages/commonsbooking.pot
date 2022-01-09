@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Commons Booking plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Commons Booking 2.6-RC-4\n"
+"Project-Id-Version: Commons Booking 2.6-RC-5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-01-06T11:30:04+00:00\n"
+"POT-Creation-Date: 2022-01-08T22:20:41+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -136,8 +136,8 @@ msgstr ""
 #: includes/OptionsArray.php:152
 #: includes/OptionsArray.php:156
 #: includes/OptionsArray.php:163
-#: src/Wordpress/CustomPostType/Timeframe.php:637
-#: src/Wordpress/CustomPostType/Timeframe.php:659
+#: src/Wordpress/CustomPostType/Timeframe.php:657
+#: src/Wordpress/CustomPostType/Timeframe.php:679
 msgid "Booking Codes"
 msgstr ""
 
@@ -573,12 +573,11 @@ msgstr ""
 #: includes/OptionsArray.php:640
 #: src/Wordpress/CustomPostType/Restriction.php:158
 #: src/Wordpress/CustomPostType/Timeframe.php:98
-#: src/Wordpress/CustomPostType/Timeframe.php:491
+#: src/Wordpress/CustomPostType/Timeframe.php:508
 msgid "Type"
 msgstr ""
 
 #: includes/OptionsArray.php:641
-#: src/Wordpress/CustomPostType/Timeframe.php:492
 msgid "Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information."
 msgstr ""
 
@@ -943,8 +942,8 @@ msgstr ""
 msgid "Please contact the contact persons at the location directly if you have any questions regarding collection or return:"
 msgstr ""
 
-#: src/Model/Restriction.php:208
-#: src/Model/Restriction.php:222
+#: src/Model/Restriction.php:210
+#: src/Model/Restriction.php:224
 msgid "Not set"
 msgstr ""
 
@@ -1030,16 +1029,16 @@ msgid "No booking codes could be created because there were no booking codes to 
 msgstr ""
 
 #: src/View/Admin/Filter.php:58
-#: src/Wordpress/CustomPostType/Booking.php:459
+#: src/Wordpress/CustomPostType/Booking.php:460
 #: src/Wordpress/CustomPostType/Restriction.php:189
-#: src/Wordpress/CustomPostType/Timeframe.php:607
+#: src/Wordpress/CustomPostType/Timeframe.php:627
 msgid "Start date"
 msgstr ""
 
 #: src/View/Admin/Filter.php:62
-#: src/Wordpress/CustomPostType/Booking.php:475
-#: src/Wordpress/CustomPostType/Restriction.php:195
-#: src/Wordpress/CustomPostType/Timeframe.php:629
+#: src/Wordpress/CustomPostType/Booking.php:476
+#: src/Wordpress/CustomPostType/Restriction.php:199
+#: src/Wordpress/CustomPostType/Timeframe.php:649
 msgid "End date"
 msgstr ""
 
@@ -1053,9 +1052,9 @@ msgid "Not available"
 msgstr ""
 
 #: src/View/Booking.php:128
-#: src/Wordpress/CustomPostType/Booking.php:36
+#: src/Wordpress/CustomPostType/Booking.php:37
 #: src/Wordpress/CustomPostType/Timeframe.php:97
-#: templates/shortcode-bookings.php:70
+#: templates/shortcode-bookings.php:71
 msgid "User"
 msgstr ""
 
@@ -1086,24 +1085,24 @@ msgstr ""
 
 #: src/View/BookingCodes.php:37
 #: src/View/Calendar.php:185
-#: src/Wordpress/CustomPostType/Booking.php:37
-#: src/Wordpress/CustomPostType/Booking.php:450
+#: src/Wordpress/CustomPostType/Booking.php:38
+#: src/Wordpress/CustomPostType/Booking.php:451
 #: src/Wordpress/CustomPostType/Item.php:69
 #: src/Wordpress/CustomPostType/Restriction.php:176
 #: src/Wordpress/CustomPostType/Timeframe.php:99
-#: src/Wordpress/CustomPostType/Timeframe.php:505
-#: templates/shortcode-bookings.php:69
+#: src/Wordpress/CustomPostType/Timeframe.php:522
+#: templates/shortcode-bookings.php:70
 msgid "Item"
 msgstr ""
 
 #: src/View/Calendar.php:186
-#: src/Wordpress/CustomPostType/Booking.php:38
-#: src/Wordpress/CustomPostType/Booking.php:441
+#: src/Wordpress/CustomPostType/Booking.php:39
+#: src/Wordpress/CustomPostType/Booking.php:442
 #: src/Wordpress/CustomPostType/Location.php:87
 #: src/Wordpress/CustomPostType/Restriction.php:169
 #: src/Wordpress/CustomPostType/Timeframe.php:100
-#: src/Wordpress/CustomPostType/Timeframe.php:498
-#: templates/shortcode-bookings.php:71
+#: src/Wordpress/CustomPostType/Timeframe.php:515
+#: templates/shortcode-bookings.php:72
 msgid "Location"
 msgstr ""
 
@@ -1112,8 +1111,8 @@ msgstr ""
 msgid "You can make bookings maximum %s days in advance"
 msgstr ""
 
-#: src/View/Dashboard.php:30
-#: src/View/Dashboard.php:61
+#: src/View/Dashboard.php:41
+#: src/View/Dashboard.php:83
 msgid "at"
 msgstr ""
 
@@ -1204,138 +1203,138 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:39
+#: src/Wordpress/CustomPostType/Booking.php:40
 #: src/Wordpress/CustomPostType/Timeframe.php:101
 msgid "Bookingdate"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:40
+#: src/Wordpress/CustomPostType/Booking.php:41
 #: src/Wordpress/CustomPostType/Timeframe.php:102
 msgid "Start Date"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:41
+#: src/Wordpress/CustomPostType/Booking.php:42
 #: src/Wordpress/CustomPostType/Timeframe.php:103
 msgid "End Date"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:42
+#: src/Wordpress/CustomPostType/Booking.php:43
 #: src/Wordpress/CustomPostType/Timeframe.php:104
 msgid "Booking Status"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:43
-#: src/Wordpress/CustomPostType/Booking.php:432
-#: src/Wordpress/CustomPostType/Timeframe.php:485
+#: src/Wordpress/CustomPostType/Booking.php:44
+#: src/Wordpress/CustomPostType/Booking.php:433
+#: src/Wordpress/CustomPostType/Timeframe.php:502
 msgid "Comment"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:96
+#: src/Wordpress/CustomPostType/Booking.php:97
 msgid "There is an overlapping booking."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:230
-#: src/Wordpress/CustomPostType/Booking.php:310
-#: src/Wordpress/CustomPostType/Booking.php:395
+#: src/Wordpress/CustomPostType/Booking.php:231
+#: src/Wordpress/CustomPostType/Booking.php:311
+#: src/Wordpress/CustomPostType/Booking.php:396
 #: src/Wordpress/CustomPostType/Timeframe.php:126
 msgid "Booking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:309
+#: src/Wordpress/CustomPostType/Booking.php:310
 #: templates/dashboard-index.php:45
 msgid "Bookings"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:311
+#: src/Wordpress/CustomPostType/Booking.php:312
 #: src/Wordpress/CustomPostType/Item.php:70
 #: src/Wordpress/CustomPostType/Location.php:88
 #: src/Wordpress/CustomPostType/Restriction.php:51
-#: src/Wordpress/CustomPostType/Timeframe.php:738
+#: src/Wordpress/CustomPostType/Timeframe.php:758
 msgid "Add new"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:312
-#: src/Wordpress/CustomPostType/Booking.php:314
+#: src/Wordpress/CustomPostType/Booking.php:313
+#: src/Wordpress/CustomPostType/Booking.php:315
 msgid "Add new booking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:313
-#: src/Wordpress/CustomPostType/Booking.php:423
+#: src/Wordpress/CustomPostType/Booking.php:314
+#: src/Wordpress/CustomPostType/Booking.php:424
 msgid "Edit booking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:315
+#: src/Wordpress/CustomPostType/Booking.php:316
 msgid "Show booking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:316
+#: src/Wordpress/CustomPostType/Booking.php:317
 msgid "Show bookings"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:317
+#: src/Wordpress/CustomPostType/Booking.php:318
 msgid "Search bookings"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:318
-#: src/Wordpress/CustomPostType/Timeframe.php:745
+#: src/Wordpress/CustomPostType/Booking.php:319
+#: src/Wordpress/CustomPostType/Timeframe.php:765
 msgid "Timeframes not found"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:319
+#: src/Wordpress/CustomPostType/Booking.php:320
 msgid "No bookings found in trash"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:320
+#: src/Wordpress/CustomPostType/Booking.php:321
 msgid "Parent bookings:"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:321
+#: src/Wordpress/CustomPostType/Booking.php:322
 msgid "All bookings"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:322
-#: src/Wordpress/CustomPostType/Timeframe.php:749
+#: src/Wordpress/CustomPostType/Booking.php:323
+#: src/Wordpress/CustomPostType/Timeframe.php:769
 msgid "Timeframe archive"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:323
-#: src/Wordpress/CustomPostType/Timeframe.php:750
+#: src/Wordpress/CustomPostType/Booking.php:324
+#: src/Wordpress/CustomPostType/Timeframe.php:770
 msgid "Timeframe attributes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:324
+#: src/Wordpress/CustomPostType/Booking.php:325
 msgid "Add to booking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:325
+#: src/Wordpress/CustomPostType/Booking.php:326
 msgid "Added to booking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:326
-#: src/Wordpress/CustomPostType/Timeframe.php:753
+#: src/Wordpress/CustomPostType/Booking.php:327
+#: src/Wordpress/CustomPostType/Timeframe.php:773
 msgid "Timeframe image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:327
+#: src/Wordpress/CustomPostType/Booking.php:328
 msgid "set booking image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:328
+#: src/Wordpress/CustomPostType/Booking.php:329
 msgid "remove booking image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:329
+#: src/Wordpress/CustomPostType/Booking.php:330
 msgid "use as booking image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:330
-#: src/Wordpress/CustomPostType/Timeframe.php:736
-#: src/Wordpress/CustomPostType/Timeframe.php:757
+#: src/Wordpress/CustomPostType/Booking.php:331
+#: src/Wordpress/CustomPostType/Timeframe.php:756
+#: src/Wordpress/CustomPostType/Timeframe.php:777
 #: templates/dashboard-index.php:37
 msgid "Timeframes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:424
+#: src/Wordpress/CustomPostType/Booking.php:425
 msgid ""
 "In this view, only the start and end dates of the booking can be adjusted by administrators.<br>\n"
 "\t\t\t\tClick on the <strong>preview button on the right panel</strong> to view more booking details and to cancel the booking via the cancel button.<br>\n"
@@ -1343,35 +1342,36 @@ msgid ""
 "\t\t\t\tFurther booking data cannot be changed subsequently. <br>We recommend in this case to cancel the booking and make a new booking."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:433
-#: src/Wordpress/CustomPostType/Timeframe.php:486
+#: src/Wordpress/CustomPostType/Booking.php:434
+#: src/Wordpress/CustomPostType/Timeframe.php:503
 msgid "This comment is internal for timeframes like bookable, repair, holiday. If timeframe is a booking this comment can be set by users during the booking confirmation process."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:460
-#: src/Wordpress/CustomPostType/Timeframe.php:608
+#: src/Wordpress/CustomPostType/Booking.php:461
+#: src/Wordpress/CustomPostType/Timeframe.php:628
 msgid "Set the start date. If you have selected repetition, this is the start date of the interval. "
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:476
-#: src/Wordpress/CustomPostType/Timeframe.php:630
+#: src/Wordpress/CustomPostType/Booking.php:477
+#: src/Wordpress/CustomPostType/Timeframe.php:650
 msgid "Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:491
+#: src/Wordpress/CustomPostType/Booking.php:492
 #: templates/booking-single.php:52
 msgid "Booking Code"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:534
+#: src/Wordpress/CustomPostType/Booking.php:535
 msgid "There are already bookings in selected timerange."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:546
+#: src/Wordpress/CustomPostType/Booking.php:547
 msgid ""
 "Bookings should not be created, edited or canceled via this admin list. \n"
 "\t\tClick on preview to show booking details in frontend<br>\n"
-"\t\tTo search and filter bookings please integrate the frontend booking list via shortcode. See here <a target=\"_blank\" href=\"https://commonsbooking.org/?p=1433\">How to display the booking list</a>"
+"\t\tTo search and filter bookings please integrate the frontend booking list via shortcode. \n"
+"\t\tSee here <a target=\"_blank\" href=\"https://commonsbooking.org/?p=1433\">How to display the booking list</a>"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Item.php:68
@@ -1792,15 +1792,15 @@ msgstr ""
 msgid "Set the start date and time"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:196
+#: src/Wordpress/CustomPostType/Restriction.php:200
 msgid "Set the estimated end date and time"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:206
+#: src/Wordpress/CustomPostType/Restriction.php:215
 msgid "State"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:208
+#: src/Wordpress/CustomPostType/Restriction.php:217
 msgid ""
 "Choose status of this restriction. <br>\n"
 "\t\t\t\tSet to <strong>None</strong> if you want to deactivate the restriction.<br>\n"
@@ -1810,19 +1810,19 @@ msgid ""
 "Select the desired status and then click the \"Send\" button to send the e-mail.<br>"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:217
+#: src/Wordpress/CustomPostType/Restriction.php:226
 msgid "Active"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:218
+#: src/Wordpress/CustomPostType/Restriction.php:227
 msgid "Problem Solved"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:222
+#: src/Wordpress/CustomPostType/Restriction.php:231
 msgid "Send notification emails to users"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:223
+#: src/Wordpress/CustomPostType/Restriction.php:232
 msgid "Important: Please save this restriction before clicking the send-button. Dependent of the status of the restriction, the appropriate notifications are sent to all affected users and location admins. You can configure the e-mail templates via Options -> Commonsbooking -> Tab Restrictions"
 msgstr ""
 
@@ -1842,161 +1842,165 @@ msgstr ""
 msgid "Booking canceled"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:137
+#: src/Wordpress/CustomPostType/Timeframe.php:152
 msgid "No Repetition"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:138
+#: src/Wordpress/CustomPostType/Timeframe.php:153
 msgid "Daily"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:139
+#: src/Wordpress/CustomPostType/Timeframe.php:154
 msgid "Weekly"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:140
+#: src/Wordpress/CustomPostType/Timeframe.php:155
 msgid "Monthly"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:141
+#: src/Wordpress/CustomPostType/Timeframe.php:156
 msgid "Yearly"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:151
+#: src/Wordpress/CustomPostType/Timeframe.php:166
 msgid "Full slot"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:152
+#: src/Wordpress/CustomPostType/Timeframe.php:167
 msgid "Hourly"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:253
+#: src/Wordpress/CustomPostType/Timeframe.php:270
 msgid "Filter By Type "
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:279
+#: src/Wordpress/CustomPostType/Timeframe.php:296
 msgid "Filter By Item "
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:306
+#: src/Wordpress/CustomPostType/Timeframe.php:323
 msgid "Filter By Location "
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:323
+#: src/Wordpress/CustomPostType/Timeframe.php:340
 msgid "Filter By Status "
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:457
-#: src/Wordpress/CustomPostType/Timeframe.php:737
+#: src/Wordpress/CustomPostType/Timeframe.php:474
+#: src/Wordpress/CustomPostType/Timeframe.php:757
 msgid "Timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:501
-#: src/Wordpress/CustomPostType/Timeframe.php:508
+#: src/Wordpress/CustomPostType/Timeframe.php:509
+msgid "Select Type of this timeframe (e.g. bookable, repair, holidays). See Documentation for detailed information."
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:518
+#: src/Wordpress/CustomPostType/Timeframe.php:525
 msgid "Please select"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:512
+#: src/Wordpress/CustomPostType/Timeframe.php:529
 msgid "Maximum booking duration"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:513
+#: src/Wordpress/CustomPostType/Timeframe.php:530
 msgid "Maximum booking duration in days"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:524
+#: src/Wordpress/CustomPostType/Timeframe.php:541
 msgid "Maximum booking days in advance"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:525
+#: src/Wordpress/CustomPostType/Timeframe.php:542
 msgid "Select for how many days in advance the calendar should display bookable days. Calculated from the current date."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:536
+#: src/Wordpress/CustomPostType/Timeframe.php:553
 msgid "Restrict bookings to user roles"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:538
+#: src/Wordpress/CustomPostType/Timeframe.php:555
 msgid "Select one or more user roles to restrict bookings based on these timeframe configuration to these user roles. Leave empty for no restrictions"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:543
+#: src/Wordpress/CustomPostType/Timeframe.php:560
 msgid "Configure timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:548
-msgid "Timeframe Repetition"
-msgstr ""
-
-#: src/Wordpress/CustomPostType/Timeframe.php:549
-msgid "Choose whether the time frame should repeat at specific intervals. The repetitions refer to the unit of a day. With the start and end date you define when the repetition interval starts and ends. If you choose \"weekly\", you can select specific days of the week below. Read the documentation for more information and examples."
-msgstr ""
-
-#: src/Wordpress/CustomPostType/Timeframe.php:557
+#: src/Wordpress/CustomPostType/Timeframe.php:565
 msgid "Full day"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:558
+#: src/Wordpress/CustomPostType/Timeframe.php:566
 msgid "If this option is selected, users can choose only whole days for pickup and return. No specific time slots for pickup or return are offered. Select this option if the pickup/return should be arranged personally between the location and the user. "
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:565
-msgid "Start time"
-msgstr ""
-
-#: src/Wordpress/CustomPostType/Timeframe.php:580
-msgid "End time"
-msgstr ""
-
-#: src/Wordpress/CustomPostType/Timeframe.php:594
+#: src/Wordpress/CustomPostType/Timeframe.php:573
 msgid "Grid"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:595
+#: src/Wordpress/CustomPostType/Timeframe.php:574
 msgid "Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target=\"_blank\" href=\"https://commonsbooking.org/?p=437\">Manage Booking Timeframes</a>"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:601
-msgid "Configure repetition"
+#: src/Wordpress/CustomPostType/Timeframe.php:580
+msgid "Start time"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:602
-msgid "Below you can make settings regarding the time frame repetition. "
+#: src/Wordpress/CustomPostType/Timeframe.php:596
+msgid "End time"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:615
-msgid "Weekdays"
+#: src/Wordpress/CustomPostType/Timeframe.php:612
+msgid "Timeframe Repetition"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:619
-msgid "Monday"
-msgstr ""
-
-#: src/Wordpress/CustomPostType/Timeframe.php:620
-msgid "Tuesday"
+#: src/Wordpress/CustomPostType/Timeframe.php:613
+msgid "Choose whether the time frame should repeat at specific intervals. The repetitions refer to the unit of a day. With the start and end date you define when the repetition interval starts and ends. If you choose \"weekly\", you can select specific days of the week below. Read the documentation for more information and examples."
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Timeframe.php:621
-msgid "Wednesday"
+msgid "Configure repetition"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Timeframe.php:622
+msgid "Below you can make settings regarding the time frame repetition. "
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:635
+msgid "Weekdays"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:639
+msgid "Monday"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:640
+msgid "Tuesday"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:641
+msgid "Wednesday"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Timeframe.php:642
 msgid "Thursday"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:623
+#: src/Wordpress/CustomPostType/Timeframe.php:643
 msgid "Friday"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:624
+#: src/Wordpress/CustomPostType/Timeframe.php:644
 msgid "Saturday"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:625
+#: src/Wordpress/CustomPostType/Timeframe.php:645
 msgid "Sunday"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:638
+#: src/Wordpress/CustomPostType/Timeframe.php:658
 msgid ""
 "You can automatically generate booking codes. Codes can be generated only with the following settings:</br>\n"
 "\t\t\t\t- Whole day is enabled</br>\n"
@@ -2005,72 +2009,72 @@ msgid ""
 "\t\t\t\t"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:647
+#: src/Wordpress/CustomPostType/Timeframe.php:667
 msgid "Create Booking Codes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:648
+#: src/Wordpress/CustomPostType/Timeframe.php:668
 msgid "Select to generate booking codes for each day within the start/end date. The booking codes will be generated after clicking \"Save / Update\"."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:653
+#: src/Wordpress/CustomPostType/Timeframe.php:673
 msgid "Show Booking Codes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:654
+#: src/Wordpress/CustomPostType/Timeframe.php:674
 msgid "Select whether users should be shown a booking code when booking."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:739
-#: src/Wordpress/CustomPostType/Timeframe.php:741
+#: src/Wordpress/CustomPostType/Timeframe.php:759
+#: src/Wordpress/CustomPostType/Timeframe.php:761
 msgid "Add new timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:740
+#: src/Wordpress/CustomPostType/Timeframe.php:760
 msgid "Edit timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:742
+#: src/Wordpress/CustomPostType/Timeframe.php:762
 msgid "Show timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:743
+#: src/Wordpress/CustomPostType/Timeframe.php:763
 msgid "Show timeframes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:744
+#: src/Wordpress/CustomPostType/Timeframe.php:764
 msgid "Search timeframes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:746
+#: src/Wordpress/CustomPostType/Timeframe.php:766
 msgid "No timeframes found in trash"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:747
+#: src/Wordpress/CustomPostType/Timeframe.php:767
 msgid "Parent timeframes:"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:748
+#: src/Wordpress/CustomPostType/Timeframe.php:768
 msgid "All timeframes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:751
+#: src/Wordpress/CustomPostType/Timeframe.php:771
 msgid "Add to timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:752
+#: src/Wordpress/CustomPostType/Timeframe.php:772
 msgid "Added to timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:754
+#: src/Wordpress/CustomPostType/Timeframe.php:774
 msgid "set timeframe image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:755
+#: src/Wordpress/CustomPostType/Timeframe.php:775
 msgid "remove timeframe image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:756
+#: src/Wordpress/CustomPostType/Timeframe.php:776
 msgid "use as timeframe image"
 msgstr ""
 
@@ -2704,49 +2708,49 @@ msgstr ""
 msgid "set the target of the map link on booking page to openstreetmap"
 msgstr ""
 
-#: templates/shortcode-bookings.php:15
+#: templates/shortcode-bookings.php:16
 msgid "Please <a href=\"%s\"> login in </a> to see your bookings."
 msgstr ""
 
-#: templates/shortcode-bookings.php:17
+#: templates/shortcode-bookings.php:18
 msgid "No bookings available."
 msgstr ""
 
-#: templates/shortcode-bookings.php:31
-#: templates/shortcode-bookings.php:67
+#: templates/shortcode-bookings.php:32
+#: templates/shortcode-bookings.php:68
 msgid "Startdate"
 msgstr ""
 
-#: templates/shortcode-bookings.php:38
-#: templates/shortcode-bookings.php:68
+#: templates/shortcode-bookings.php:39
+#: templates/shortcode-bookings.php:69
 msgid "Enddate"
 msgstr ""
 
-#: templates/shortcode-bookings.php:51
+#: templates/shortcode-bookings.php:52
 msgid "All"
 msgstr ""
 
-#: templates/shortcode-bookings.php:65
+#: templates/shortcode-bookings.php:66
 msgid "Sorting"
 msgstr ""
 
-#: templates/shortcode-bookings.php:75
+#: templates/shortcode-bookings.php:76
 msgid "Order"
 msgstr ""
 
-#: templates/shortcode-bookings.php:77
+#: templates/shortcode-bookings.php:78
 msgid "Ascending"
 msgstr ""
 
-#: templates/shortcode-bookings.php:78
+#: templates/shortcode-bookings.php:79
 msgid "Descending"
 msgstr ""
 
-#: templates/shortcode-bookings.php:82
+#: templates/shortcode-bookings.php:83
 msgid "Reset filters"
 msgstr ""
 
-#: templates/shortcode-bookings.php:83
+#: templates/shortcode-bookings.php:84
 msgid "Filter"
 msgstr ""
 

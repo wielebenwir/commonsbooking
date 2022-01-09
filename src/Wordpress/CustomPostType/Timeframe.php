@@ -506,7 +506,7 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'    => esc_html__( 'Type', 'commonsbooking' ),
-				'desc'    => esc_html__( 'Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information.', 'commonsbooking' ),
+				'desc'    => esc_html__( 'Select Type of this timeframe (e.g. bookable, repair, holidays). See Documentation for detailed information.', 'commonsbooking' ),
 				'id'      => "type",
 				'type'    => 'select',
 				'options' => self::getTypesforSelectField(),
