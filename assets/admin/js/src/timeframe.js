@@ -52,6 +52,7 @@
             const bookingCodesList = $('#booking-codes-list');
 
             const maxDaysSelect = $('.cmb2-id-timeframe-max-days');
+            const advanceBookingDays = $('.cmb2-id-timeframe-advance-booking-days');
             const allowUserRoles = $('.cmb2-id-allowed-user-roles');
             const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
             const noRepSet = [fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput];
@@ -92,9 +93,11 @@
 
                 if (selectedType == 2) {
                     maxDaysSelect.show();
-                    allowUserRoles.show()
+                    advanceBookingDays.show();
+                    allowUserRoles.show();
                 } else {
                     maxDaysSelect.hide();
+                    advanceBookingDays.hide();
                     allowUserRoles.hide();
                 }
             }

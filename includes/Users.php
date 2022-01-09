@@ -28,7 +28,7 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
 		$admins = [];
 
 		// Get allowed admins for timeframe or booking listing
-		if ( $post->post_type == ( Timeframe::$postType || Booking::$postType ) ) {
+		if ( $post->post_type == Timeframe::$postType || $post->post_type == Booking::$postType ) {
 			// Get assigned location
 			$locationId       = get_post_meta( $post->ID, 'location-id', true );
 			$locationAdminIds = get_post_meta( $locationId, '_' . Location::$postType . '_admins', true );
@@ -204,6 +204,14 @@ function commonsbooking_isCurrentUserSubscriber() {
 	$user = wp_get_current_user();
 
 	return apply_filters( 'commonsbooking_isCurrentUserSubscriber', in_array( 'subscriber', $user->roles ), $user );
+}
+
+// check if current user has CBManager role
+function commonsbooking_isCurrentUserCBManager() {
+	$user = wp_get_current_user();
+
+	return apply_filters( 'commonsbooking_isCurrentUserCBManager', in_array( Plugin::$CB_MANAGER_ID, $user->roles ), $user );
+
 }
 
 /**
