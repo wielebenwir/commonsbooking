@@ -3,21 +3,13 @@
 
 namespace CommonsBooking;
 
-use CommonsBooking\API\AvailabilityRoute;
-use CommonsBooking\API\GBFS\Discovery;
-use CommonsBooking\API\GBFS\StationInformation;
-use CommonsBooking\API\GBFS\StationStatus;
-use CommonsBooking\API\GBFS\SystemInformation;
-use CommonsBooking\API\ItemsRoute;
-use CommonsBooking\API\LocationsRoute;
-use CommonsBooking\API\ProjectsRoute;
 use CommonsBooking\CB\CB1UserFields;
 use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
-use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Settings\Settings;
+use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
@@ -45,6 +37,9 @@ class Plugin {
 	 * @return mixed
 	 */
 	public static function getCacheItem( $custom_id = null ) {
+		if (\WP_DEBUG) {
+			return false;
+		}
 		return get_transient( self::getCacheId( $custom_id ) );
 	}
 
@@ -72,11 +67,18 @@ class Plugin {
 	 *
 	 * @param $value
 	 * @param null $custom_id
+	 * @param null $expiration set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
 	 *
 	 * @return mixed
 	 */
-	public static function setCacheItem( $value, $custom_id = null ) {
-		return set_transient( self::getCacheId( $custom_id ), $value );
+	public static function setCacheItem( $value, $custom_id = null, $expiration = null ) {
+		// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
+		if ( $expiration == 'midnight' ) {
+			$datetime   = current_time( 'timestamp' );
+			$expiration = strtotime( 'tomorrow', $datetime ) - $datetime;
+		}
+
+		return set_transient( self::getCacheId( $custom_id ), $value, $expiration );
 	}
 
 	/**
@@ -86,20 +88,28 @@ class Plugin {
 		// Register custom user roles (e.g. cb_manager)
 		self::addCustomUserRoles();
 
-		// Add capabilities for user roles
-		foreach ( self::getCustomPostTypes() as $customPostType ) {
-			self::addRoleCaps( $customPostType::$postType );
-		}
+		// add role caps for custom post types
+		self::addCPTRoleCaps();
 
 		// Init booking codes table
 		BookingCodes::initBookingCodesTable();
 	}
 
+	protected static function addCPTRoleCaps() {
+		$customPostTypes = commonsbooking_isCurrentUserAdmin() ? self::getCustomPostTypes() : self::getCBManagerCustomPostTypes();
+
+		// Add capabilities for user roles
+		foreach ( $customPostTypes as $customPostType ) {
+			self::addRoleCaps( $customPostType::$postType );
+		}
+	}
+
 	/**
-	 * Adds cb user roles to wordpress.
+	 * Returns needed roles and caps.
+	 * @return \bool[][]
 	 */
-	public static function addCustomUserRoles() {
-		$roleCapMapping = [
+	public static function getRoleCapMapping() {
+		return [
 			Plugin::$CB_MANAGER_ID => [
 				'read'                                 => true,
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
@@ -110,8 +120,13 @@ class Plugin {
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
 			],
 		];
+	}
 
-		foreach ( $roleCapMapping as $roleName => $caps ) {
+	/**
+	 * Adds cb user roles to wordpress.
+	 */
+	public static function addCustomUserRoles() {
+		foreach ( self::getRoleCapMapping() as $roleName => $caps ) {
 			$role = get_role( $roleName );
 			if ( ! $role ) {
 				$role = add_role(
@@ -136,6 +151,21 @@ class Plugin {
 			new Location(),
 			new Timeframe(),
 			new Map(),
+			new \CommonsBooking\Wordpress\CustomPostType\Booking(),
+			new Restriction()
+		];
+	}
+
+	/**
+	 * Returns only custom post types, which are allowed for cb manager
+	 * @return array
+	 */
+	public static function getCBManagerCustomPostTypes(): array {
+		return [
+			new Item(),
+			new Location(),
+			new Timeframe(),
+			new \CommonsBooking\Wordpress\CustomPostType\Booking(),
 			new Restriction()
 		];
 	}
@@ -147,40 +177,39 @@ class Plugin {
 	 */
 	public static function addRoleCaps( $postType ) {
 		// Add the roles you'd like to administer the custom post types
-		$roles = array(
-			Plugin::$CB_MANAGER_ID,
-			'administrator'
-		);
+		$roles = array_keys(self::getRoleCapMapping());
 
 		// Loop through each role and assign capabilities
 		foreach ( $roles as $the_role ) {
 			$role = get_role( $the_role );
-			$role->add_cap( 'read_' . $postType );
-			$role->add_cap( 'manage_' . COMMONSBOOKING_PLUGIN_SLUG . '_' . $postType );
+			if($role) {
+				$role->add_cap( 'read_' . $postType );
+				$role->add_cap( 'manage_' . COMMONSBOOKING_PLUGIN_SLUG . '_' . $postType );
 
-			$role->add_cap( 'edit_' . $postType );
-			$role->add_cap( 'edit_' . $postType . 's' ); // show item list
-			$role->add_cap( 'edit_private_' . $postType . 's' );
-			$role->add_cap( 'edit_published_' . $postType . 's' );
+				$role->add_cap( 'edit_' . $postType );
+				$role->add_cap( 'edit_' . $postType . 's' ); // show item list
+				$role->add_cap( 'edit_private_' . $postType . 's' );
+				$role->add_cap( 'edit_published_' . $postType . 's' );
 
-			$role->add_cap( 'publish_' . $postType . 's' );
+				$role->add_cap( 'publish_' . $postType . 's' );
 
-			$role->add_cap( 'delete_' . $postType );
-			$role->add_cap( 'delete_' . $postType . 's' );
+				$role->add_cap( 'delete_' . $postType );
+				$role->add_cap( 'delete_' . $postType . 's' );
 
-			$role->add_cap( 'read_private_' . $postType . 's' );
-			$role->add_cap( 'edit_others_' . $postType . 's' );
-			$role->add_cap( 'delete_private_' . $postType . 's' );
-			$role->add_cap( 'delete_published_' . $postType . 's' ); // delete user post
-			$role->add_cap( 'delete_others_' . $postType . 's' );
+				$role->add_cap( 'read_private_' . $postType . 's' );
+				$role->add_cap( 'edit_others_' . $postType . 's' );
+				$role->add_cap( 'delete_private_' . $postType . 's' );
+				$role->add_cap( 'delete_published_' . $postType . 's' ); // delete user post
+				$role->add_cap( 'delete_others_' . $postType . 's' );
 
-			$role->add_cap( 'edit_posts' ); // general: create posts -> even wp_post, affects all cpts
-			$role->add_cap( 'upload_files' ); // general: change post image
+				$role->add_cap( 'edit_posts' ); // general: create posts -> even wp_post, affects all cpts
+				$role->add_cap( 'upload_files' ); // general: change post image
 
-			if ( $the_role == Plugin::$CB_MANAGER_ID ) {
-				$role->remove_cap( 'read_private_' . $postType . 's' );
-				$role->remove_cap( 'delete_private_' . $postType . 's' );
-				$role->remove_cap( 'delete_others_' . $postType . 's' );
+				if ( $the_role == Plugin::$CB_MANAGER_ID ) {
+					$role->remove_cap( 'read_private_' . $postType . 's' );
+					$role->remove_cap( 'delete_private_' . $postType . 's' );
+					$role->remove_cap( 'delete_others_' . $postType . 's' );
+				}
 			}
 		}
 	}
@@ -215,14 +244,19 @@ class Plugin {
 			flush_rewrite_rules();
 
 			// Update Location Coordinates
-			// TODO: Improve implementation to avoid geo coder exception on update, see #499
-			//self::updateLocationCoordinates();
+			self::updateLocationCoordinates();
 
 			// remove deprecated user roles
 			self::removeDeprecatedUserRoles();
 
+			// add role caps for custom post types
+			self::addCPTRoleCaps();
+
 			// update version number in options
 			update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
+
+			// migrate bookings to new cpt
+			\CommonsBooking\Migration\Booking::migrate();
 
 			// Clear cache
 			self::clearCache();
@@ -307,7 +341,8 @@ class Plugin {
 		);
 
 		// Custom post types
-		foreach ( self::getCustomPostTypes() as $cbCustomPostType ) {
+		$customPostTypes = commonsbooking_isCurrentUserAdmin() ? self::getCustomPostTypes() : self::getCBManagerCustomPostTypes();
+		foreach ( $customPostTypes as $cbCustomPostType ) {
 			$params = $cbCustomPostType->getMenuParams();
 			add_submenu_page(
 				$params[0],
@@ -320,25 +355,28 @@ class Plugin {
 			);
 		}
 
-		// Add menu item for item categories
-		add_submenu_page(
-			'cb-dashboard',
-			esc_html__( 'Item Categories', 'commonsbooking' ),
-			esc_html__( 'Item Categories', 'commonsbooking' ),
-			'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-			admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::$postType . 's_category',
-			''
-		);
+		// Show categories only for admins
+		if(commonsbooking_isCurrentUserAdmin()) {
+			// Add menu item for item categories
+			add_submenu_page(
+				'cb-dashboard',
+				esc_html__( 'Item Categories', 'commonsbooking' ),
+				esc_html__( 'Item Categories', 'commonsbooking' ),
+				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::$postType . 's_category',
+				''
+			);
 
-		// Add menu item for location categories
-		add_submenu_page(
-			'cb-dashboard',
-			esc_html__( 'Location Categories', 'commonsbooking' ),
-			esc_html__( 'Location Categories', 'commonsbooking' ),
-			'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-			admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::$postType . 's_category',
-			''
-		);
+			// Add menu item for location categories
+			add_submenu_page(
+				'cb-dashboard',
+				esc_html__( 'Location Categories', 'commonsbooking' ),
+				esc_html__( 'Location Categories', 'commonsbooking' ),
+				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::$postType . 's_category',
+				''
+			);
+		}
 	}
 
 	/**
@@ -348,6 +386,7 @@ class Plugin {
 		foreach ( self::getCustomPostTypes() as $customPostType ) {
 			register_post_type( $customPostType::getPostType(), $customPostType->getArgs() );
 			$customPostType->initListView();
+			$customPostType->initHooks();
 		}
 	}
 
@@ -527,7 +566,20 @@ class Plugin {
 	}
 
 	public function commonsbooking_load_textdomain() {
-		load_plugin_textdomain( 'commonsbooking', false, COMMONSBOOKING_PLUGIN_DIR . 'languages' );
+		/**
+		 * We want to ensure that new translations are available directly after update
+		 * so we load the local translation first if its available, otherwise we use the load_plugin_textdomain
+		 * to load from the global wordpress translation file.
+		 */
+		
+		$locale = get_locale();
+		$locale_translation_file  = COMMONSBOOKING_PLUGIN_DIR . 'languages/' . COMMONSBOOKING_PLUGIN_SLUG . '-' . $locale . '.mo';
+		
+		if ( file_exists( $locale_translation_file ) ) {
+			load_textdomain( COMMONSBOOKING_PLUGIN_SLUG, $locale_translation_file );
+		} else {
+			load_plugin_textdomain( 'commonsbooking', false, COMMONSBOOKING_PLUGIN_DIR . 'languages' );
+		}
 	}
 
 	/**
@@ -541,34 +593,7 @@ class Plugin {
 			return;
 		}
 
-		if ( in_array( $post->post_type, [
-			Location::$postType,
-			Item::$postType
-		] ) ) {
-			self::clearCache( 'item' );
-			self::clearCache( 'location' );
-		}
-
-		// Remove cache for timeframe repos
-		if ( $post->post_type == Timeframe::$postType ) {
-			self::clearCache( 'book' );
-			self::clearCache( 'timeframe' );
-			self::clearCache( 'bookablepost' );
-			self::clearCache( 'day' );
-			self::clearCache( 'week' );
-			self::clearCache( 'model' );
-		}
-
-		if ( in_array( $post->post_type, [
-			Location::$postType,
-			Item::$postType,
-			Timeframe::$postType,
-			Restriction::$postType
-		] ) ) {
-			// Clear calendar cache
-			self::clearCache( 'calendar' );
-			self::clearCache( 'restriction' );
-		}
+		self::clearCache();
 	}
 
 	/**
@@ -592,38 +617,41 @@ class Plugin {
 			Location::getPostType(),
 			Timeframe::getPostType(),
 			Map::getPostType(),
-			Restriction::getPostType()
+			Restriction::getPostType(),
+			\CommonsBooking\Wordpress\CustomPostType\Booking::getPostType()
 		];
 	}
 
 	/**
 	 * Function to register our new routes from the controller.
 	 */
-	public function initRoutes(): void {
+	/**
+	 * Function to register our new routes from the controller.
+	 */
+	public function initRoutes()
+	{
 		// Check if API is activated in settings
-		$api_activated = Settings::getOption( 'commonsbooking_options_export', 'api-activated' );
-		if ( $api_activated == "on" ) {
-			add_action(
-				'rest_api_init',
-				function () {
-					$routes = [
-						new AvailabilityRoute(),
-						new ItemsRoute(),
-						new LocationsRoute(),
-//                    new \CommonsBooking\API\OwnersRoute(),
-						new ProjectsRoute(),
-						new Discovery(),
-						new StationInformation(),
-						new StationStatus(),
-						new SystemInformation(),
-
-					];
-					foreach ( $routes as $route ) {
-						$route->register_routes();
-					}
-				}
-			);
+		$api_activated = Settings::getOption('commonsbooking_options_api', 'api-activated');
+		if ($api_activated != "on") {
+			return false;
 		}
+
+		add_action(
+			'rest_api_init',
+			function () {
+				$routes = [
+					new \CommonsBooking\API\AvailabilityRoute(),
+					new \CommonsBooking\API\ItemsRoute(),
+					new \CommonsBooking\API\LocationsRoute(),
+//                    new \CommonsBooking\API\OwnersRoute(),
+					new \CommonsBooking\API\ProjectsRoute(),
+
+				];
+				foreach ($routes as $route) {
+					$route->register_routes();
+				}
+			}
+		);
 	}
 
 	/**
@@ -678,7 +706,6 @@ class Plugin {
 		// Check if we're inside the main loop in a single post page.
 		if ( is_single() && in_the_loop() && is_main_query() ) {
 			global $post;
-
 			foreach ( self::getCustomPostTypes() as $customPostType ) {
 				if ( $customPostType::getPostType() === $post->post_type ) {
 					return $content . $customPostType::getView()::content( $post );

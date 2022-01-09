@@ -9,18 +9,6 @@ use WP_Post;
 class Location extends View {
 
 	/**
-	 * Returns json-formatted calendardata.
-	 * @throws Exception
-	 */
-	public static function getCalendarData() {
-		$jsonResponse = Calendar::getCalendarDataArray();
-
-		header( 'Content-Type: application/json' );
-		echo json_encode( $jsonResponse );
-		wp_die(); // All ajax handlers die when finished
-	}
-
-	/**
 	 * Returns template data for frontend.
 	 *
 	 * @param WP_Post|null $post
@@ -36,22 +24,16 @@ class Location extends View {
 		$item     = get_query_var( 'item' ) ?: false;
 		$items    = \CommonsBooking\Repository\Item::getByLocation( $location->ID, true );
 
-		$calendarData = Calendar::getCalendarDataArray(
-			$item ?: null,
-			$location
-		);
-
 		$args = [
-			'post'          => $post,
-			'wp_nonce'      => Timeframe::getWPNonceField(),
-			'actionUrl'     => admin_url( 'admin.php' ),
-			'location'      => new \CommonsBooking\Model\Location( $location ),
-			'postUrl'       => get_permalink( $location ),
-			'type'          => Timeframe::BOOKING_ID,
-			'calendar_data' => json_encode( $calendarData )
+			'post'      => $post,
+			'wp_nonce'  => \CommonsBooking\Wordpress\CustomPostType\Booking::getWPNonceField(),
+			'actionUrl' => admin_url( 'admin.php' ),
+			'location'  => new \CommonsBooking\Model\Location( $location ),
+			'postUrl'   => get_permalink( $location ),
+			'type'      => Timeframe::BOOKING_ID
 		];
 
-		// If theres no item selected, we'll show all available.
+		// If there's no item selected, we'll show all available.
 		if ( ! $item ) {
 			if ( count( $items ) ) {
 				// If there's only one item available, we'll show it directly.
@@ -64,6 +46,14 @@ class Location extends View {
 		} else {
 			$args['item'] = new \CommonsBooking\Model\Item( get_post( $item ) );
 		}
+
+		$calendarData          = Calendar::getCalendarDataArray(
+			$item ?: null,
+			$location,
+			date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE_START, time() ) ),
+			date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE, time() ) )
+		);
+		$args['calendar_data'] = json_encode( $calendarData );
 
 		return $args;
 	}
@@ -98,9 +88,11 @@ class Location extends View {
 			$shortCodeData = self::getShortcodeData( $location, 'Item' );
 
 			// Sort by start_date
-			uasort( $shortCodeData, function ( $a, $b ) {
-				return $a['start_date'] > $b['start_date'];
-			} );
+			foreach ($shortCodeData as $item) {
+				uasort( $item['ranges'], function ( $a, $b ) {
+					return $a['start_date'] > $b['start_date'];
+				} );
+			}
 
 			$locationData[ $location->ID ] = $shortCodeData;
 		}
@@ -115,7 +107,31 @@ class Location extends View {
 		return ob_get_clean();
 	}
 
-	public static function content( \WP_Post $post ) {
-		// TODO: Implement content() method.
+	/**
+	 * locationMap
+	 *
+	 * Renders map for location when checkbox is set
+	 *
+	 * @return string html or false
+	 */
+	public static function renderLocationMap( \CommonsBooking\Model\Location $post = null ) {
+		//renders map for location-calendar-header template, only renders when set as option
+		if ( $post->getMeta( 'loc_showmap' ) ) {
+			$latitude  = $post->getMeta( 'geo_latitude' );
+			$longitude = $post->getMeta( 'geo_longitude' );
+			wp_enqueue_style( 'cb_map_leaflet_css', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet.css' );
+			wp_enqueue_script( 'cb_map_leaflet_js', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet-src.js' );
+
+			echo '<div id="cb_locationview_map" style="width: 100%; height: 300px;"></div>';
+			$script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-locationview.js';
+			echo '<script src="' . $script_path . '"></script>';
+
+			//map defaults
+			$defaults = [
+				'latitude'  => $latitude,
+				'longitude' => $longitude,
+			];
+			echo '<script>cb_map_locationview.defaults = ' . json_encode( $defaults ) . ';</script>';
+		}
 	}
 }

@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name:         Commons Booking
- * Version:             2.4.5
+ * Version:             2.6-RC-5
  * Requires at least:   5.2
  * Requires PHP:        7.0
  * Plugin URI:          https://commonsbooking.org
@@ -15,8 +15,10 @@
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
  */
 
+use CommonsBooking\Plugin;
+
 defined('ABSPATH') or die("Thanks for visting");
-define('COMMONSBOOKING_VERSION', '2.4.5');
+define('COMMONSBOOKING_VERSION', '2.6-RC-5');
 define('COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking');
 define('COMMONSBOOKING_MENU_SLUG', COMMONSBOOKING_PLUGIN_SLUG . '-menu');
 define('COMMONSBOOKING_PLUGIN_DIR', plugin_dir_path(__FILE__));
@@ -33,9 +35,9 @@ define ('COMMONSBOOKING_MAP_PLUGIN_DATA', get_file_data( __FILE__, array('Versio
 global $cb_db_version;
 $cb_db_version = '1.0';
 
-include __DIR__. '/includes/Admin.php';
-include __DIR__. '/includes/Public.php';
+require __DIR__. '/includes/Admin.php';
+require __DIR__. '/includes/Public.php';
 require __DIR__.'/vendor/autoload.php';
 require __DIR__.'/vendor/cmb2/cmb2/init.php';
 require __DIR__.'/vendor/mustardBees/cmb-field-select2/cmb-field-select2.php';
-include __DIR__. '/includes/Plugin.php';
+require_once __DIR__. '/includes/Plugin.php';

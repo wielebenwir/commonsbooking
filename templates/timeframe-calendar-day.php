@@ -18,8 +18,8 @@
                             {{ wp_nonce|raw }}
                             <input type="hidden" name="location-id" value="{{ slot.timeframe|getMeta_field('location-id') }}" />
                             <input type="hidden" name="item-id" value="{{ slot.timeframe|getMeta_field('item-id') }}" />
-                            <input type="hidden" name="type" value="6" />
-                            <input type="hidden" name="post_type" value="cb_timeframe" />
+                            <input type="hidden" name="type" value="<?php \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID ?>" />
+                            <input type="hidden" name="post_type" value="cb_booking" />
                             <input type="hidden" name="post_status" value="unconfirmed" />
                             <input type="hidden" name="repetition-start" value="{{ slot.timestampstart }}">
                             <input type="hidden" name="repetition-end" value="{{ slot.timestampend }}">

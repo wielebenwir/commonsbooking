@@ -155,8 +155,15 @@ if($current_status && $current_status !== 'draft') {
     <?php
         $form_action = 'confirm';
         include COMMONSBOOKING_PLUGIN_DIR . 'templates/booking-single-form.php';
-        $form_action = 'cancel';
-        include COMMONSBOOKING_PLUGIN_DIR . 'templates/booking-single-form.php';
+
+		// if booking is unconfirmed cancel link throws user back to item detail page
+		if ($booking->post_status() == "unconfirmed") {
+			echo '<a href="' . get_permalink($item->ID) . '">' . esc_html__('Cancel', 'commonsbooking') . '</a>';
+		} else {
+			// if booking is confirmed we display the cancel booking button
+			$form_action = 'cancel';
+			include COMMONSBOOKING_PLUGIN_DIR . 'templates/booking-single-form.php';
+		}
     ?>
 </div>
 <?php

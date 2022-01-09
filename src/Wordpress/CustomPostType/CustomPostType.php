@@ -58,8 +58,15 @@ abstract class CustomPostType {
 		if ( $data ) {
 			foreach ( $data as $key => $item ) {
 				if ( $item instanceof WP_Post ) {
+
+					// add the status label only if post is in draft status
+					$statusLabel = '';
+					if ( $item->post_status == 'draft' ) {
+						$statusLabel = ' [' . get_post_status_object( get_post_status( $item ) )->label . ']';
+					}
+
 					$key   = $item->ID;
-					$label = $item->post_title;
+					$label = $item->post_title . $statusLabel;
 				} else {
 					$label = $item;
 				}
@@ -72,6 +79,7 @@ abstract class CustomPostType {
 
 	/**
 	 * retrieve Custom Meta Data from CommonsBooking Options and convert them to cmb2 fields array
+	 * The content is managed by user via options -> metadata sets 
 	 *
 	 * @param mixed $type (item or location)
 	 *
@@ -86,8 +94,9 @@ abstract class CustomPostType {
 		foreach ( $metaDataLines as $metaDataLine ) {
 			$metaDataArray = explode( ';', $metaDataLine );
 
-			if ( count( $metaDataArray ) == 5 ) // $metaDataArray[0] = Type
+			if ( count( $metaDataArray ) == 5 ) 
 			{
+				// $metaDataArray[0] = Type
 				$metaDataFields[ $metaDataArray[0] ][] = array(
 					'id'   => $metaDataArray[1],
 					'name' => $metaDataArray[2],
@@ -113,9 +122,16 @@ abstract class CustomPostType {
 	 */
 	public static function modifyRowActions( $actions, $post ) {
 
-		// remove quick edit for timeframes
-		if ( $post->post_type == Timeframe::getPostType() ) {
+		// remove quick edit for timeframes, restrictions and bookings
+		if ( $post->post_type == Timeframe::getPostType() 
+			OR $post->post_type == Restriction::getPostType() 
+			OR $post->post_type == Booking::getPostType()) {
 			unset( $actions['inline hide-if-no-js'] );
+		}
+
+		// remove preview for timeframes and restrictions
+		if ( $post->post_type == Timeframe::getPostType() OR $post->post_type == Restriction::getPostType() ) {
+			unset( $actions['view'] );
 		}
 
 		return $actions;
@@ -146,19 +162,6 @@ abstract class CustomPostType {
 	 * @return mixed
 	 */
 	abstract public function getArgs();
-
-	/**
-	 * Remove the default Custom Fields meta box
-	 *
-	 * @param string $post_type
-	 * @param string $context
-	 * @param WP_Post|object|string $post
-	 */
-	public function removeDefaultCustomFields( string $post_type, string $context, $post ) {
-		foreach ( array( 'normal', 'advanced', 'side' ) as $context ) {
-			remove_meta_box( 'postcustom', static::getPostType(), $context );
-		}
-	}
 
 	/**
 	 * Manages custom columns for list view.
@@ -214,6 +217,11 @@ abstract class CustomPostType {
 			return $columns;
 		} );
 	}
+
+	/**
+	 * Initiates needed hooks.
+	 */
+	abstract public function initHooks();
 
 	/**
 	 * Configures list-view

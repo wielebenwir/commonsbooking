@@ -13,6 +13,7 @@ function commonsbooking_admin() {
 	wp_enqueue_style( 'admin-styles', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/css/admin.css', array(), COMMONSBOOKING_VERSION );
 	wp_enqueue_script( 'cb-scripts-admin', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js', array() );
 
+	// CB 0.X migration
 	wp_localize_script(
 		'cb-scripts-admin',
 		'cb_ajax',
@@ -21,10 +22,19 @@ function commonsbooking_admin() {
 			'nonce'    => wp_create_nonce( 'start_migration' ),
 		)
 	);
+
+	// CB 2 bookings migration - from timeframe to separate cpt
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'start_booking_migration' ),
+		)
+	);
 }
 
 add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
-
 
 /**
  * commonsbooking_sanitizeHTML
@@ -108,13 +118,14 @@ function commonsbooking_sanitizeHTML( $string ): string {
  * Recursive sanitation for text or array
  *
  * @param $array_or_string (array|string)
+ * @param $sanitize_function name of the sanitziation function, default = sanitize_text_field
  *
  * @return mixed
  * @since  0.1
  */
-function commonsbooking_sanitizeArrayorString( $array_or_string ) {
+function commonsbooking_sanitizeArrayorString( $array_or_string, $sanitize_function = 'sanitize_text_field' ) {
 	if ( is_string( $array_or_string ) ) {
-		$array_or_string = sanitize_text_field( $array_or_string );
+		$array_or_string = $sanitize_function( $array_or_string );
 	} elseif ( is_array( $array_or_string ) ) {
 		foreach ( $array_or_string as $key => &$value ) {
 			if ( is_array( $value ) ) {

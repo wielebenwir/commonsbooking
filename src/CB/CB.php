@@ -101,8 +101,13 @@ class CB {
 		$result = null;
 
 		if ( $key == 'user' ) {
-			$userID  = intval( $post->post_author );
-			$cb_user = get_user_by( 'ID', $userID );
+			// If user is defined and we don't use the post author
+			if($post instanceof \WP_User) {
+				$cb_user = $post;
+			} else {
+				$userID  = intval( $post->post_author );
+				$cb_user = get_user_by( 'ID', $userID );
+			}
 
 			if ( method_exists( $cb_user, $property ) ) {
 				$result = $cb_user->$property( $args );
@@ -112,8 +117,8 @@ class CB {
 				$result = $cb_user->$property;
 			}
 
-			if ( ! $result && get_user_meta( $userID, $property, true ) ) { // User has meta fields
-				$result = get_user_meta( $userID, $property, true );
+			if ( ! $result && get_user_meta( $cb_user->ID, $property, true ) ) { // User has meta fields
+				$result = get_user_meta( $cb_user->ID, $property, true );
 			}
 		} else {
 			if ( get_post_meta( $post, $property, true ) ) { // Post has meta fields

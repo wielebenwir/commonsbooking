@@ -9,7 +9,7 @@ use WP_Query;
 
 abstract class BookablePost extends PostRepository {
 	/**
-	 * Get all Locations current user is allowed to see/edit
+	 * Get all Locations or Items current user is allowed to see/edit
 	 *
 	 * @param bool $publishedOnly
 	 *
@@ -28,9 +28,7 @@ abstract class BookablePost extends PostRepository {
 			$args = array(
 				'post_type' => static::getPostType(),
 				'author'    => $current_user->ID,
-				'nopaging'  => true,
-				'orderby'   => 'post_title',
-				'order'     => 'asc',
+				'nopaging'  => true
 			);
 			if ( $publishedOnly ) {
 				$args['post_status'] = 'publish';
@@ -45,9 +43,7 @@ abstract class BookablePost extends PostRepository {
 				// if user has admin-role get all available items
 				$args = array(
 					'post_type' => static::getPostType(),
-					'nopaging'  => true,
-					'orderby'   => 'post_title',
-					'order'     => 'asc',
+					'nopaging'  => true
 				);
 			} else {
 				// get all items where current user is assigned as admin
@@ -65,9 +61,7 @@ abstract class BookablePost extends PostRepository {
 							'compare' => 'like',
 						)
 					),
-					'nopaging'   => true,
-					'orderby'    => 'post_title',
-					'order'      => 'asc',
+					'nopaging'   => true
 				);
 			}
 
@@ -78,6 +72,10 @@ abstract class BookablePost extends PostRepository {
 			$query = new WP_Query( $args );
 			if ( $query->have_posts() ) {
 				$items = array_merge( $items, $query->get_posts() );
+				usort($items, function ($a, $b) {
+					return strcmp(strtolower($a->post_title), strtolower($b->post_title));
+				});
+
 			}
 
 			Plugin::setCacheItem( $items, $customId );

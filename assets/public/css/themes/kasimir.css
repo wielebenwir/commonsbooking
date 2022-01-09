@@ -899,4 +899,9 @@ p.message, p.error {
   margin-bottom: 1em !important;
 }
 
+/* line 789, ../../sass/themes/kasimir.scss */
+.booking-list .filter.label {
+  font-size: 1rem;
+}
+
 /*# sourceMappingURL=kasimir.css.map */

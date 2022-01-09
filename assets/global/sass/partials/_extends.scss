@@ -67,8 +67,8 @@
 
 .cb-button {
 	border-radius: $radius;
-	font-size: $font-size-big;
-	line-height: $font-size-big;
+	font-size: $font-size-normal;
+	line-height: $font-size-normal;
 	background-color: $color-success;
 	border: none !important; /* TwentyFifteen theme fix */
 	text-decoration: none !important;
@@ -78,6 +78,10 @@
 	padding: $spacer $spacer-big;
 	font-weight: bold;
 
+	&.small {
+		padding: $spacer;
+		font-size: $font-size-small;
+	}
 
 	&:hover {
 		@extend .shadow-small;
@@ -91,6 +95,8 @@
 
 	&.big {
 		padding: $spacer $spacer-big;
+		font-size: $font-size-big;
+		line-height: $font-size-big;
 	}
 	&.secondary {
 		background-color: $color-white;

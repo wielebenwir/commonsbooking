@@ -10,9 +10,9 @@ class Location extends CustomPostType {
 	public static $postType = 'cb_location';
 
 	/**
-	 * Item constructor.
+	 * Initiates needed hooks.
 	 */
-	public function __construct() {
+	public function initHooks() {
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
@@ -23,18 +23,15 @@ class Location extends CustomPostType {
 		add_action( 'pre_get_posts', array( $this, 'filterAdminList' ) );
 
 		// Save-handling
-		add_action( 'save_post', array( $this, 'handleFormRequest' ) );
+		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
 	}
 
 	/**
 	 * Handles save-Request for location.
 	 */
-	public function handleFormRequest() {
-		$postType = isset( $_REQUEST['post_type'] ) ? sanitize_text_field( $_REQUEST['post_type'] ) : null;
-		$postId   = isset( $_REQUEST['post_ID'] ) ? sanitize_text_field( $_REQUEST['post_ID'] ) : null;
-
-		if ( $postType == self::$postType && $postId ) {
-			$location = new \CommonsBooking\Model\Location( intval( $postId ) );
+	public function savePost($post_id, \WP_Post $post) {
+		if ( $post->post_type == self::$postType && $post_id ) {
+			$location = new \CommonsBooking\Model\Location( intval( $post_id ) );
 			$location->updateGeoLocation();
 		}
 	}
@@ -236,7 +233,7 @@ class Location extends CustomPostType {
 		// Latitude
 		$cmb->add_field( array(
 			'name'       => esc_html__( 'Latitude', 'commonsbooking' ),
-			//'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
+			'desc'       => esc_html__('The latitude is calculated automatically when you click Save/Update after entering the street, postal code and city.', 'commonsbooking'),
 			'id'         => 'geo_latitude',
 			'type'       => 'text',
 			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -245,7 +242,7 @@ class Location extends CustomPostType {
 		// Longitude
 		$cmb->add_field( array(
 			'name'       => esc_html__( 'Longitude', 'commonsbooking' ),
-			//'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
+			'desc'       => esc_html__('The longitude is calculated automatically when you click Save/Update after entering the street, postal code and city.', 'commonsbooking'),
 			'id'         => 'geo_longitude',
 			'type'       => 'text',
 			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -263,7 +260,7 @@ class Location extends CustomPostType {
 		// Show map on item view checkbox
 		$cmb->add_field( array(
 			'name'       => esc_html__( 'Show location map on item view' ),
-			//'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
+			'desc'       => esc_html__('If enabled, a map showing the location will be displayed on the location details page.', 'commonsbooking'),
 			'id'         => 'loc_showmap',
 			'type'       => 'checkbox',
 			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -282,7 +279,7 @@ class Location extends CustomPostType {
 		// short description
 		$cmb->add_field( array(
 			'name'       => esc_html__( 'Location email', 'commonsbooking' ),
-			'desc'       => esc_html__( 'email-address to get copy of booking confirmation and cancellation mails',
+			'desc'       => esc_html__( 'Email addresses to which a copy of the booking confirmation / cancellation should be sent. You can enter multiple addresses separated by commas.',
 				'commonsbooking' ),
 			'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_email',
 			'type'       => 'text',
@@ -312,7 +309,7 @@ class Location extends CustomPostType {
 		) );
 
 		// Show selection only to admins
-		if ( commonsbooking_isCurrentUserAdmin() ) {
+		if ( commonsbooking_isCurrentUserAdmin() || commonsbooking_isCurrentUserCBManager() ) {
 			// Location admin selection
 			$users       = UserRepository::getCBManagers();
 			$userOptions = [];
@@ -360,6 +357,11 @@ class Location extends CustomPostType {
 
 		}
 
+		// we store registered metaboxes to options table to be able to retrieve it in export function
+		foreach ($cmb->meta_box['fields'] as $metabox_field) {
+			$metabox_fields[$metabox_field['id']] = $metabox_field['name'];
+		}
+		Settings::updateOption('commonsbooking_settings_metaboxfields', $this->getPostType(), $metabox_fields);
 	}
 
 }

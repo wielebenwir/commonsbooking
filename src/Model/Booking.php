@@ -4,12 +4,13 @@
 namespace CommonsBooking\Model;
 
 
-use CommonsBooking\CB\CB;
-use CommonsBooking\Messages\BookingMessages;
-use CommonsBooking\Repository\BookingCodes;
-use CommonsBooking\Repository\Timeframe;
 use DateTime;
 use Exception;
+use CommonsBooking\CB\CB;
+use CommonsBooking\Settings\Settings;
+use CommonsBooking\Repository\Timeframe;
+use CommonsBooking\Messages\BookingMessage;
+use CommonsBooking\Repository\BookingCodes;
 
 class Booking extends \CommonsBooking\Model\Timeframe {
 
@@ -41,8 +42,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function cancel() {
 		// workaround, because wp_update_post deletes all meta data.
 		global $wpdb;
-		$query = "UPDATE ".$wpdb->prefix."posts SET post_status='canceled' WHERE ID = '".$this->post->ID."'";
-		$wpdb->query($query);
+		$query = "UPDATE " . $wpdb->prefix . "posts SET post_status='canceled' WHERE ID = '" . $this->post->ID . "'";
+		$wpdb->query( $query );
 
 		$this->sendCancellationMail();
 	}
@@ -51,7 +52,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * Send mail to booking user, that it was canceled.
 	 */
 	protected function sendCancellationMail() {
-		$booking_msg = new BookingMessages( $this->getPost()->ID, 'canceled' );
+		$booking_msg = new BookingMessage( $this->getPost()->ID, 'canceled' );
 		$booking_msg->triggerMail();
 	}
 
@@ -113,46 +114,48 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @throws Exception
 	 */
 	public function assignBookableTimeframeFields() {
-		$timeframe        = $this->getBookableTimeFrame();
-		$neededMetaFields = [
-			"full-day",
-			"grid",
-			"start-time",
-			"end-time",
-			"show-booking-codes",
-			"timeframe-max-days"
-		];
-		foreach ( $neededMetaFields as $fieldName ) {
-			$fieldValue = get_post_meta(
-				$timeframe->ID,
-				$fieldName,
-				true
-			);
-			if ( in_array( $fieldName, [ 'start-time', 'end-time' ] ) ) {
-				$fieldValue = $this->sanitizeTimeField( $fieldName );
+		$timeframe = $this->getBookableTimeFrame();
+		if ( $timeframe ) {
+			$neededMetaFields = [
+				"full-day",
+				"grid",
+				"start-time",
+				"end-time",
+				"show-booking-codes",
+				"timeframe-max-days"
+			];
+			foreach ( $neededMetaFields as $fieldName ) {
+				$fieldValue = get_post_meta(
+					$timeframe->ID,
+					$fieldName,
+					true
+				);
+				if ( in_array( $fieldName, [ 'start-time', 'end-time' ] ) ) {
+					$fieldValue = $this->sanitizeTimeField( $fieldName );
+				}
+				update_post_meta(
+					$this->post->ID,
+					$fieldName,
+					$fieldValue
+				);
 			}
-			update_post_meta(
-				$this->post->ID,
-				$fieldName,
-				$fieldValue
-			);
-		}
 
-		// If there exists a booking code, add it.
-		$bookingCode = BookingCodes::getCode(
-			$timeframe->ID,
-			$this->getItem()->ID,
-			$this->getLocation()->ID,
-			date( 'Y-m-d', $this->getMeta( 'repetition-start' ) )
-		);
-
-		// only add booking code if the booking is based on a full day timeframe
-		if ( $bookingCode && $this->getMeta( 'full-day' ) == "on" ) {
-			update_post_meta(
-				$this->post->ID,
-				COMMONSBOOKING_METABOX_PREFIX . 'bookingcode',
-				$bookingCode->getCode()
+			// If there exists a booking code, add it.
+			$bookingCode = BookingCodes::getCode(
+				$timeframe->ID,
+				$this->getItem()->ID,
+				$this->getLocation()->ID,
+				date( 'Y-m-d', $this->getMeta( 'repetition-start' ) )
 			);
+
+			// only add booking code if the booking is based on a full day timeframe
+			if ( $bookingCode && $this->getMeta( 'full-day' ) == "on" ) {
+				update_post_meta(
+					$this->post->ID,
+					COMMONSBOOKING_METABOX_PREFIX . 'bookingcode',
+					$bookingCode->getCode()
+				);
+			}
 		}
 	}
 
@@ -328,7 +331,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		if ( $currentStatus == "unconfirmed" ) {
 			$noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
 		} else if ( $currentStatus == "confirmed" ) {
-			$noticeText = commonsbooking_sanitizeHTML( __( 'Your booking is confirmed. A confirmation mail has been sent to you.', 'commonsbooking' ) );
+			$noticeText = commonsbooking_sanitizeHTML( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'booking-confirmed-notice' ) );
 		}
 
 		if ( $currentStatus == "canceled" ) {
@@ -348,8 +351,23 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return string
 	 */
-	public function bookingLink(): string {
-		return sprintf( '<a href="%1$s">%2$s</a>', add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) ), esc_html__( 'Link to your booking', 'commonsbooking' ) );
+	public function bookingLink($linktext = NULL): string {
+
+		// if no linktext is set we use standard text
+		if ( $linktext == NULL ) {
+			$linktext = esc_html__( 'Link to your booking', 'commonsbooking' );
+		}
+
+		return sprintf( '<a href="%1$s">%2$s</a>', add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) ), $linktext );
+	}
+	
+	/**
+	 * return plain booking URL 
+	 *
+	 * @return void
+	 */
+	public function bookingLinkUrl() {
+		return add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) );
 	}
 
 }
