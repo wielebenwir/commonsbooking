@@ -8,8 +8,6 @@ use Exception;
 
 abstract class View {
 
-	abstract public static function content(\WP_Post $post);
-
 	/**
 	 * List of allowed query params for shortcodes.
 	 * @var string[]
@@ -47,6 +45,8 @@ abstract class View {
 		$timeframes = $cpt->getBookableTimeframes( true );
 		/** @var Timeframe $timeframe */
 		foreach ( $timeframes as $timeframe ) {
+			if(!$timeframe->getStartDate()) continue;
+
 			$item = $timeframe->{'get' . $type}();
 
 			// We need only published items
@@ -67,7 +67,6 @@ abstract class View {
 				];
 			} else {
 				foreach ( $cptData[ $item->ID ]['ranges'] as &$range ) {
-
 					// Check if Timeframe overlaps or differs max. 1 day with existing one.
 					$overlaps =
 						(
@@ -104,6 +103,8 @@ abstract class View {
 				}
 			}
 
+			//Remove duplicate ranges
+			$cptData[ $item->ID ]['ranges'] = array_unique( $cptData[ $item->ID ]['ranges'], SORT_REGULAR );
 		}
 
 		return $cptData;

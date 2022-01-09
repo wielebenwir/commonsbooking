@@ -58,7 +58,7 @@ class Calendar {
 	 * @return array
 	 */
 	public function getWeeks(): array {
-		$startDate = strtotime( $this->startDate->getDate() );
+		$startDate = strtotime( $this->startDate->getDate() ) + 1;
 		$endDate   = strtotime( $this->endDate->getDate() );
 
 		$customId = md5(
@@ -69,16 +69,26 @@ class Calendar {
 			serialize( $this->types )
 		);
 
+
 		if ( Plugin::getCacheItem( $customId ) ) {
 			return Plugin::getCacheItem( $customId );
 		} else {
 			$weeks = [];
 			while ( $startDate <= $endDate ) {
-				$weeks[]   = new Week( date( 'Y', $startDate ), date( 'W', $startDate ), $this->locations, $this->items, $this->types );
+				$dayOfYear = date( 'z', $startDate );
+				$year = date( 'Y', $startDate );
+				$weeks[]   = new Week(
+					$year,
+					$dayOfYear,
+					$this->locations,
+					$this->items,
+					$this->types
+				);
 				$startDate = strtotime( "next monday", $startDate );
 			}
 
-			Plugin::setCacheItem( $weeks, $customId );
+			// set cache expiration to force daily fresh after midnight
+			Plugin::setCacheItem( $weeks, $customId, 'midnight' );
 
 			return $weeks;
 		}

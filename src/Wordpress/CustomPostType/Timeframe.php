@@ -2,14 +2,13 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-use CommonsBooking\Helper\Helper;
-use CommonsBooking\Messages\BookingMessages;
-use CommonsBooking\Repository\Booking;
+use WP_Post;
+use Exception;
+use CommonsBooking\View\Calendar;
+use CommonsBooking\View\Admin\Filter;
+use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\UserRepository;
-use CommonsBooking\View\Calendar;
-use Exception;
-use WP_Post;
 
 class Timeframe extends CustomPostType {
 
@@ -49,10 +48,23 @@ class Timeframe extends CustomPostType {
 	const BOOKING_CANCELED_ID = 7;
 
 	/**
+	 * Default value for possible advance booking days.
+	 */
+	const ADVANCE_BOOKING_DAYS = 31;
+
+	/**
 	 * CPT type.
 	 * @var string
 	 */
 	public static $postType = 'cb_timeframe';
+
+	public static function getSimilarPostTypes () {
+		return [
+			Timeframe::$postType,
+			\CommonsBooking\Wordpress\CustomPostType\Booking::$postType
+		];
+    }
+
 	/**
 	 * Timeframetypes which cannot be "overbooked".
 	 * @var int[]
@@ -61,11 +73,13 @@ class Timeframe extends CustomPostType {
 		self::REPAIR_ID,
 		self::BOOKING_ID,
 	];
+
 	/**
 	 * Position in backend menu.
 	 * @var int
 	 */
 	protected $menuPosition = 1;
+
 	/**
 	 * @var array
 	 */
@@ -90,38 +104,10 @@ class Timeframe extends CustomPostType {
 			'post_status'                                   => esc_html__( 'Booking Status', 'commonsbooking' ),
 		];
 
-		// Set Tepmlates
-		add_filter( 'the_content', array( $this, 'getTemplate' ) );
 
-		// Add Meta Boxes
-		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
-
-		// Remove not needed Meta Boxes
-		add_action( 'do_meta_boxes', array( $this, 'removeDefaultCustomFields' ), 10, 3 );
 
 		// List settings
 		$this->removeListDateColumn();
-
-		add_action( 'save_post', array( $this, 'savePost' ), 1, 2 );
-
-		add_action( 'post_updated', array( $this, 'postUpdated' ), 10, 3 );
-
-		// Save-handling
-		$this->handleFormRequest();
-
-		// Add type filter to backend list view
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminLocationFilter' ) );
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminStatusFilter' ) );
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminDateFilter' ) );
-		add_action( 'pre_get_posts', array( $this, 'filterAdminList' ) );
-
-		// Listing of bookings for current user
-		add_shortcode( 'cb_bookings', array( \CommonsBooking\View\Booking::class, 'shortcode' ) );
-
-		// Listing of available items/locations
-		add_shortcode( 'cb_items_table', array( Calendar::class, 'renderTable' ) );
 	}
 
 	/**
@@ -140,6 +126,21 @@ class Timeframe extends CustomPostType {
 			self::BOOKING_ID          => esc_html__( "Booking", 'commonsbooking' ),
 			self::BOOKING_CANCELED_ID => esc_html__( "Booking canceled", 'commonsbooking' ),
 		];
+	}
+	
+	/**
+	 * Get allowed timeframe types for selection box in timeframe editor
+	 * TODO: can be removed if type cleanup has been done (e.g. move BOOKIG_ID to Booking-Class and rename existing types )
+	 *
+	 * @return array
+	 */
+	public static function getTypesforSelectField() {		
+		$types = self::getTypes();
+		unset(
+			$types[self::BOOKING_ID],
+			$types[self::BOOKING_CANCELED_ID],
+		);
+		return $types;
 	}
 
 	/**
@@ -168,145 +169,9 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-	 * Returns true, if there are no already existing bookings.
-	 *
-	 * @param $itemId
-	 * @param $locationId
-	 * @param $startDate
-	 * @param $endDate
-	 *
-	 * @throws Exception
-	 */
-	protected static function validateBookingParameters( $itemId, $locationId, $startDate, $endDate ) {
-		// Get exiting bookings for defined parameters
-		$existingBookingsInRange = \CommonsBooking\Repository\Timeframe::getBookingInRange(
-			$startDate,
-			$endDate,
-			[ $locationId ],
-			[ $itemId ],
-			false
-		);
-
-		// If there are already bookings, throw exception
-		if ( count( $existingBookingsInRange ) ) {
-			throw new Exception( __( 'There are already bookings in selected timerange.', 'commonsbooking' ) );
-		}
-	}
-
-	/**
-	 * Handles save-Request for timeframe.
-	 */
-	public function handleFormRequest() {
-		if (
-			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
-			wp_verify_nonce( $_REQUEST[ static::getWPNonceId() ], static::getWPAction() )
-		) {
-			$itemId      = isset( $_REQUEST['item-id'] ) && $_REQUEST['item-id'] != "" ? sanitize_text_field( $_REQUEST['item-id'] ) : null;
-			$locationId  = isset( $_REQUEST['location-id'] ) && $_REQUEST['location-id'] != "" ? sanitize_text_field( $_REQUEST['location-id'] ) : null;
-			$post_status = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] != "" ? sanitize_text_field( $_REQUEST['post_status'] ) : null;
-
-			if ( ! get_post( $itemId ) ) {
-				throw new Exception( 'Item does not exist. (' . $itemId . ')' );
-			}
-			if ( ! get_post( $locationId ) ) {
-				throw new Exception( 'Location does not exist. (' . $locationId . ')' );
-			}
-
-			$startDate = null;
-			if ( isset( $_REQUEST['repetition-start'] ) && $_REQUEST['repetition-start'] != "" ) {
-				$startDate = sanitize_text_field( $_REQUEST['repetition-start'] );
-			}
-
-			$endDate = null;
-			if (
-				isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] ) &&
-				$_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] != ""
-			) {
-				$endDate = sanitize_text_field( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] );
-			}
-
-			$isBooking = array_key_exists( 'type', $_REQUEST ) && self::BOOKING_ID == sanitize_text_field( $_REQUEST['type'] );
-
-			if ( $isBooking ) {
-				if ( $startDate == null || $endDate == null ) {
-					throw new Exception( 'Start- and/or enddate missing.' );
-				}
-
-				// Make sure there are not already bookings in selected range.
-				self::validateBookingParameters( $itemId, $locationId, $startDate, $endDate );
-
-				/** @var \CommonsBooking\Model\Booking $booking */
-				$booking = Booking::getBookingByDate(
-					$startDate,
-					$endDate,
-					$locationId,
-					$itemId
-				);
-
-				$postarr = array(
-					"type"        => sanitize_text_field( $_REQUEST["type"] ),
-					"post_status" => sanitize_text_field( $_REQUEST["post_status"] ),
-					"post_type"   => self::getPostType(),
-					"post_title"  => esc_html__( "Booking", 'commonsbooking' ),
-				);
-
-				$postId = null;
-				// New booking
-				if ( empty( $booking ) ) {
-					$postarr['post_name'] = Helper::generateRandomString();
-					$postId               = wp_insert_post( $postarr, true );
-					// Existing booking
-				} else {
-					$postarr['ID'] = $booking->ID;
-					$postId        = wp_update_post( $postarr );
-				}
-
-				$this->saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate );
-
-				$booking_metafield = new \CommonsBooking\Model\Booking( $postId );
-				// we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
-				$booking_metafield->assignBookableTimeframeFields();
-
-				// get slug as parameter
-				$post_slug = get_post( $postId )->post_name;
-				wp_redirect( add_query_arg( self::getPostType(), $post_slug, home_url() ) );
-			}
-
-			exit;
-		}
-	}
-
-	/**
-	 * Multi grid size
-	 * We need to save the grid size for timeframes with full slot grid.
-	 *
-	 * @param $postId
-	 * @param $locationId
-	 * @param $itemId
-	 * @param $startDate
-	 * @param $endDate
-	 */
-	private function saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate ): void {
-		$startTimeFrame = \CommonsBooking\Repository\Timeframe::getRelevantTimeFrame( $locationId, $itemId, $startDate );
-		if ( $startTimeFrame && $startTimeFrame->getGrid() == 0 ) {
-			update_post_meta(
-				$postId,
-				\CommonsBooking\Model\Booking::START_TIMEFRAME_GRIDSIZE,
-				$startTimeFrame->getGridSize()
-			);
-		}
-		$endTimeFrame = \CommonsBooking\Repository\Timeframe::getRelevantTimeFrame( $locationId, $itemId, $endDate );
-		if ( $endTimeFrame && $endTimeFrame->getGrid() == 0 ) {
-			update_post_meta(
-				$postId,
-				\CommonsBooking\Model\Booking::END_TIMEFRAME_GRIDSIZE,
-				$endTimeFrame->getGridSize()
-			);
-		}
-	}
-
-	/**
 	 * Returns true, if timeframe is of type booking.
+	 * TODO check if can be removed 
+	 * @deprecated since 2.6
 	 *
 	 * @param $field
 	 *
@@ -391,7 +256,7 @@ class Timeframe extends CustomPostType {
 	 * @return \CommonsBooking\View\Timeframe
 	 */
 	public static function getView() {
-		return new \CommonsBooking\View\Timeframe();
+		// @TODO implement view.
 	}
 
 	/**
@@ -400,41 +265,12 @@ class Timeframe extends CustomPostType {
 	 * @return void
 	 */
 	public static function addAdminTypeFilter() {
-		self::renderFilter(
+		Filter::renderFilter(
+			static::$postType,
 			esc_html__( 'Filter By Type ', 'commonsbooking' ),
 			'filter_type',
-			self::getTypes()
+			static::getTypes()
 		);
-	}
-
-	/**
-	 * Renders backend list filter.
-	 *
-	 * @param $label
-	 * @param $key
-	 * @param $values
-	 */
-	public static function renderFilter( $label, $key, $values ) {
-		//only add filter to post type you want
-		if ( isset( $_GET['post_type'] ) && self::$postType == $_GET['post_type'] ) {
-			?>
-            <select name="<?php echo 'admin_' . $key; ?>">
-                <option value=""><?php echo $label; ?></option>
-				<?php
-				$filterValue = isset( $_GET[ 'admin_' . $key ] ) ? sanitize_text_field( $_GET[ 'admin_' . $key ] ) : '';
-				foreach ( $values as $value => $label ) {
-					printf
-					(
-						'<option value="%s"%s>%s</option>',
-						$value,
-						$value == $filterValue ? ' selected="selected"' : '',
-						$label
-					);
-				}
-				?>
-            </select>
-			<?php
-		}
 	}
 
 	/**
@@ -455,7 +291,8 @@ class Timeframe extends CustomPostType {
 				$values[ $item->ID ] = $item->post_title;
 			}
 
-			self::renderFilter(
+			Filter::renderFilter(
+                static::$postType,
 				esc_html__( 'Filter By Item ', 'commonsbooking' ),
 				'filter_item',
 				$values
@@ -481,7 +318,8 @@ class Timeframe extends CustomPostType {
 				$values[ $location->ID ] = $location->post_title;
 			}
 
-			self::renderFilter(
+			Filter::renderFilter(
+				static::$postType,
 				esc_html__( 'Filter By Location ', 'commonsbooking' ),
 				'filter_location',
 				$values
@@ -497,7 +335,8 @@ class Timeframe extends CustomPostType {
 		foreach ( \CommonsBooking\Model\Booking::$bookingStates as $bookingState ) {
 			$values[ $bookingState ] = $bookingState;
 		}
-		self::renderFilter(
+		Filter::renderFilter(
+			static::$postType,
 			esc_html__( 'Filter By Status ', 'commonsbooking' ),
 			'filter_post_status',
 			$values
@@ -507,52 +346,20 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Adds filter dropdown // filter by location in timeframe List
 	 */
-	public static function addAdmindateFilter() {
-		if ( isset( $_GET['post_type'] ) && self::$postType == $_GET['post_type'] ) {
-			$startDateInputName = 'admin_filter_startdate';
-			$endDateInputName   = 'admin_filter_enddate';
+	public static function addAdminDateFilter() {
+		$startDateInputName = 'admin_filter_startdate';
+		$endDateInputName   = 'admin_filter_enddate';
 
-			$from = ( isset( $_GET[ $startDateInputName ] ) && $_GET[ $startDateInputName ] ) ? sanitize_text_field( $_GET[ $startDateInputName ] ) : '';
-			$to   = ( isset( $_GET[ $endDateInputName ] ) && $_GET[ $endDateInputName ] ) ? sanitize_text_field( $_GET[ $endDateInputName ] ) : '';
+		$from = ( isset( $_GET[ $startDateInputName ] ) && $_GET[ $startDateInputName ] ) ? sanitize_text_field( $_GET[ $startDateInputName ] ) : '';
+		$to   = ( isset( $_GET[ $endDateInputName ] ) && $_GET[ $endDateInputName ] ) ? sanitize_text_field( $_GET[ $endDateInputName ] ) : '';
 
-			echo '<style>
-                input[name=' . $startDateInputName . '], 
-                input[name=' . $endDateInputName . ']{
-                    line-height: 28px;
-                    height: 28px;
-                    margin: 0;
-                    width:150px;
-                }
-            </style>
-     
-            <input type="text" name="' . $startDateInputName . '" placeholder="' . esc_html__(
-					'Start date',
-					'commonsbooking'
-				) . '" value="' . esc_attr( $from ) . '" />
-            <input type="text" name="' . $endDateInputName . '" placeholder="' . esc_html__(
-				     'End date',
-				     'commonsbooking'
-			     ) . '" value="' . esc_attr( $to ) . '" />
-     
-            <script>
-            jQuery( function($) {
-                var from = $(\'input[name=' . $startDateInputName . ']\'),
-                    to = $(\'input[name=' . $endDateInputName . ']\');
-     
-                $(\'input[name=' . $startDateInputName . '], input[name=' . $endDateInputName . ']\' ).datepicker( 
-                    {
-                        dateFormat : "yy-mm-dd"
-                    }
-                );
-                from.on( \'change\', function() {
-                    to.datepicker( \'option\', \'minDate\', from.val() );
-                }); 
-                to.on( \'change\', function() {
-                    from.datepicker( \'option\', \'maxDate\', to.val() );
-                }); 
-            });
-            </script>';
-		}
+		Filter::renderDateFilter(
+			static::$postType,
+			$startDateInputName,
+			$endDateInputName,
+			$from,
+			$to
+		);
 	}
 
 	/**
@@ -567,7 +374,7 @@ class Timeframe extends CustomPostType {
 
 		if (
 			is_admin() && $query->is_main_query() &&
-			isset( $_GET['post_type'] ) && self::$postType == $_GET['post_type'] &&
+			isset( $_GET['post_type'] ) && static::$postType == $_GET['post_type'] &&
 			$pagenow == 'edit.php'
 		) {
 			// Meta value filtering
@@ -699,10 +506,10 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'    => esc_html__( 'Type', 'commonsbooking' ),
-				'desc'    => esc_html__( 'Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information.', 'commonsbooking' ),
+				'desc'    => esc_html__( 'Select Type of this timeframe (e.g. bookable, repair, holidays). See Documentation for detailed information.', 'commonsbooking' ),
 				'id'      => "type",
 				'type'    => 'select',
-				'options' => self::getTypes(),
+				'options' => self::getTypesforSelectField(),
 			),
 			array(
 				'name'    => esc_html__( "Location", 'commonsbooking' ),
@@ -731,6 +538,18 @@ class Timeframe extends CustomPostType {
 				'default'    => 3,
 			),
 			array(
+				'name'       => esc_html__( 'Maximum booking days in advance', 'commonsbooking' ),
+				'desc'       => esc_html__( 'Select for how many days in advance the calendar should display bookable days. Calculated from the current date.', 'commonsbooking' ),
+				'id'         => "timeframe-advance-booking-days",
+				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+				'type'       => 'text_small',
+				'attributes' => array(
+					'type' => 'number',
+					'min'  => '1',
+				),
+				'default'    => self::ADVANCE_BOOKING_DAYS,
+			),
+			array(
 				'name'    => esc_html__( "Restrict bookings to user roles", 'commonsbooking' ),
 				'id'      => "allowed_user_roles",
 				'desc'    => esc_html__( 'Select one or more user roles to restrict bookings based on these timeframe configuration to these user roles. Leave empty for no restrictions', 'commonsbooking' ),
@@ -743,21 +562,19 @@ class Timeframe extends CustomPostType {
 				'type' => 'title',
 			),
 			array(
-				'name'    => esc_html__( 'Timeframe Repetition', 'commonsbooking' ),
-				'desc'    => esc_html__(
-					'Choose whether the time frame should repeat at specific intervals. The repetitions refer to the unit of a day. With the start and end date you define when the repetition interval starts and ends. If you choose "weekly", you can select specific days of the week below. Read the documentation for more information and examples.'
-					, 'commonsbooking' ),
-				'id'      => "timeframe-repetition",
-				'type'    => 'select',
-				'options' => self::getTimeFrameRepetitions(),
-			),
-			array(
 				'name' => esc_html__( 'Full day', 'commonsbooking' ),
 				'desc' => esc_html__(
 					'If this option is selected, users can choose only whole days for pickup and return. No specific time slots for pickup or return are offered. Select this option if the pickup/return should be arranged personally between the location and the user. '
 					, 'commonsbooking' ),
 				'id'   => "full-day",
 				'type' => 'checkbox',
+			),
+			array(
+				'name'    => esc_html__( "Grid", 'commonsbooking' ),
+				'desc'    => commonsbooking_sanitizeHTML( __( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/?p=437">Manage Booking Timeframes</a>', 'commonsbooking' ) ),
+				'id'      => "grid",
+				'type'    => 'select',
+				'options' => self::getGridOptions(),
 			),
 			array(
 				'name'        => esc_html__( "Start time", 'commonsbooking' ),
@@ -768,6 +585,7 @@ class Timeframe extends CustomPostType {
 					'data-timepicker' => json_encode(
 						array(
 							'stepMinute' => 60,
+							'timeFormat' => 'HH:mm',
 						)
 					),
 				),
@@ -778,10 +596,12 @@ class Timeframe extends CustomPostType {
 				'name'        => esc_html__( "End time", 'commonsbooking' ),
 				'id'          => "end-time",
 				'type'        => 'text_time',
+				'time_format' => 'H:i',
 				'attributes'  => array(
 					'data-timepicker' => json_encode(
 						array(
 							'stepMinute' => 60,
+							'timeFormat' => 'HH:mm',
 						)
 					),
 				),
@@ -789,11 +609,13 @@ class Timeframe extends CustomPostType {
 				'date_format' => $dateFormat,
 			),
 			array(
-				'name'    => esc_html__( "Grid", 'commonsbooking' ),
-				'desc'    => commonsbooking_sanitizeHTML( __( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/?p=437">Manage Booking Timeframes</a>', 'commonsbooking' ) ),
-				'id'      => "grid",
+				'name'    => esc_html__( 'Timeframe Repetition', 'commonsbooking' ),
+				'desc'    => esc_html__(
+					'Choose whether the time frame should repeat at specific intervals. The repetitions refer to the unit of a day. With the start and end date you define when the repetition interval starts and ends. If you choose "weekly", you can select specific days of the week below. Read the documentation for more information and examples.'
+					, 'commonsbooking' ),
+				'id'      => "timeframe-repetition",
 				'type'    => 'select',
-				'options' => self::getGridOptions(),
+				'options' => self::getTimeFrameRepetitions(),
 			),
 			array(
 				'name' => esc_html__( "Configure repetition", 'commonsbooking' ),
@@ -832,15 +654,25 @@ class Timeframe extends CustomPostType {
 				'date_format' => $dateFormat,
 			),
 			array(
-				'name' => esc_html__( 'Show Booking Codes', 'commonsbooking' ),
-				'desc' => esc_html__( 'Select whether users should be shown a booking code when booking.', 'commonsbooking' ),
-				'id'   => "show-booking-codes",
-				'type' => 'checkbox',
+				'name' => esc_html__( "Booking Codes", 'commonsbooking' ),
+				'desc' => commonsbooking_sanitizeHTML( __( 'You can automatically generate booking codes. Codes can be generated only with the following settings:</br>
+				- Whole day is enabled</br>
+				- Start date and end date are set</br>
+				<a href="https://commonsbooking.org/?p=437" target="_blank">More Information in the documentation</a>
+				', 'commonsbooking' ) ),
+				'id'   => "title-timeframe-booking-codes",
+				'type' => 'title',
 			),
 			array(
 				'name' => esc_html__( 'Create Booking Codes', 'commonsbooking' ),
 				'desc' => esc_html__( 'Select to generate booking codes for each day within the start/end date. The booking codes will be generated after clicking "Save / Update".', 'commonsbooking' ),
 				'id'   => "create-booking-codes",
+				'type' => 'checkbox',
+			),
+			array(
+				'name' => esc_html__( 'Show Booking Codes', 'commonsbooking' ),
+				'desc' => esc_html__( 'Select whether users should be shown a booking code when booking.', 'commonsbooking' ),
+				'id'   => "show-booking-codes",
 				'type' => 'checkbox',
 			),
 			array(
@@ -851,44 +683,11 @@ class Timeframe extends CustomPostType {
 				// function should return a bool value
 			),
 			array(
-				'name'       => esc_html__( 'Booking Code', 'commonsbooking' ),
-				'id'         => COMMONSBOOKING_METABOX_PREFIX . 'bookingcode',
-				'type'       => 'text',
-				'show_on_cb' => array( self::class, 'isOfTypeBooking' ),
-				'attributes' => array(
-					'disabled' => 'disabled',
-				),
-			),
-			array(
 				'type'    => 'hidden',
 				'id'      => 'prevent_delete_meta_movetotrash',
 				'default' => wp_create_nonce( plugin_basename( __FILE__ ) )
 			),
 		);
-	}
-
-	/**
-     * Is triggered when post gets updated. Currently used to send notifications regarding bookings.
-	 * @param $post_ID
-	 * @param $post_after
-	 * @param $post_before
-	 */
-	public function postUpdated( $post_ID, $post_after, $post_before ) {
-		if ( ! $this->hasRunBefore( __FUNCTION__ ) ) {
-			$isBooking = get_post_meta( $post_ID, 'type', true ) == Timeframe::BOOKING_ID;
-			if ( $isBooking ) {
-				// Trigger Mail, only send mail if status has changed
-				if ( $post_before->post_status != $post_after->post_status and
-				     ! (
-					     $post_before->post_status === 'unconfirmed' and
-					     $post_after->post_status === 'canceled'
-				     )
-				) {
-					$booking_msg = new BookingMessages( $post_ID, $post_after->post_status );
-					$booking_msg->triggerMail();
-				}
-			}
-		}
 	}
 
 	/**
@@ -908,35 +707,6 @@ class Timeframe extends CustomPostType {
 			return;
 		}
 
-		// Check if there is already an existing booking. If there is one, the current one will be
-		// saved as draft.
-		if (
-			( array_key_exists( 'type', $_REQUEST ) && $_REQUEST['type'] == Timeframe::BOOKING_ID ) &&
-			current_user_can( 'edit_' . self::$postType, $post_id )
-		) {
-			try {
-				self::validateBookingParameters(
-					sanitize_text_field( $_REQUEST["item-id"] ),
-					sanitize_text_field( $_REQUEST["location-id"] ),
-					sanitize_text_field( $_REQUEST["repetition-start"] ),
-					sanitize_text_field( $_REQUEST["repetition-end"] )
-				);
-			} catch ( Exception $e ) {
-				if ( $post->post_status !== 'draft' ) {
-					$post->post_status = 'draft';
-					wp_update_post( $post );
-				}
-
-				set_transient( \CommonsBooking\Model\Timeframe::ERROR_TYPE,
-					commonsbooking_sanitizeHTML( __( "There is an overlapping booking.",
-						'commonsbooking' ) ),
-					45 );
-			}
-		}
-
-		// Save custom fields
-		$this->saveCustomFields( $post_id );
-
 		// Validate timeframe
 		$isValid = $this->validateTimeFrame( $post_id, $post );
 
@@ -951,52 +721,12 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-     * Saves custom fields from request.
-	 * @param $post_id
-	 */
-	protected function saveCustomFields( $post_id ) {
-		$noDeleteMetaFields = [ 'start-time', 'end-time', 'timeframe-repetition', 'weekdays', 'comment' ];
-
-		foreach ( $this->getCustomFields() as $customField ) {
-			if ( current_user_can( 'edit_' . self::$postType, $post_id ) ) {
-				$fieldNames = [];
-				if ( $customField['type'] == "checkboxes" ) {
-					foreach ( $customField['options'] as $key => $label ) {
-						$fieldNames[] = $customField['id'] . "-" . $key;
-					}
-				} else {
-					$fieldNames[] = $customField['id'];
-				}
-
-				foreach ( $fieldNames as $fieldName ) {
-					if ( ! array_key_exists( $fieldName, $_REQUEST ) ) {
-						if ( ! in_array( $fieldName, $noDeleteMetaFields ) ) {
-							delete_post_meta( $post_id, $fieldName );
-						}
-						continue;
-					}
-
-					$value = sanitize_text_field( $_REQUEST[ $fieldName ] );
-					if ( is_string( $value ) ) {
-						$value = trim( $value );
-						update_post_meta( $post_id, $fieldName, $value );
-
-						// if we have a booking, there shall be set no repetition
-						if ( $fieldName == "type" && $value == Timeframe::BOOKING_ID ) {
-							update_post_meta( $post_id, 'timeframe-repetition', 'norep' );
-						}
-					}
-				}
-			}
-		}
-	}
-
-	/**
 	 * Validates timeframe and sets state to draft if invalid.
 	 *
 	 * @param $post_id
 	 * @param $post
 	 *
+	 * @return bool
 	 */
 	protected function validateTimeFrame( $post_id, $post ): bool {
 		try {
@@ -1015,36 +745,6 @@ class Timeframe extends CustomPostType {
 		}
 
 		return true;
-	}
-
-	/**
-	 * loads template according and returns content
-	 *
-	 * @param $content
-	 *
-	 * @return string
-	 */
-	public function getTemplate( $content ) {
-		$cb_content = '';
-		if ( is_singular( self::getPostType() ) ) {
-			ob_start();
-			global $post;
-			// we check if user try to open a timeframe other than a booking
-			if ( ! in_array( get_post_meta( $post->ID, 'type', true ), array(
-				self::BOOKING_ID,
-				self::BOOKING_CANCELED_ID
-			) ) ) {
-				commonsbooking_get_template_part( 'timeframe', 'notallowed' );
-				// we check if user has right to open booking
-			} elseif ( commonsbooking_isCurrentUserAllowedToEdit( $post ) ) {
-				commonsbooking_get_template_part( 'booking', 'single' );
-			} else {
-				commonsbooking_get_template_part( 'booking', 'single-notallowed' );
-			}
-			$cb_content = ob_get_clean();
-		} // if archive...
-
-		return $content . $cb_content;
 	}
 
 	/**
@@ -1112,7 +812,7 @@ class Timeframe extends CustomPostType {
 			'exclude_from_search' => true,
 
 			// Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
-			'supports'            => array( 'title', 'author', 'custom-fields', 'revisions' ),
+			'supports'            => array( 'title', 'author', 'revisions' ),
 
 			// Soll der Post Type Archiv-Seiten haben?
 			'has_archive'         => false,
@@ -1197,4 +897,24 @@ class Timeframe extends CustomPostType {
 		}
 	}
 
+	/**
+	 * Initiates needed hooks.
+	 */
+	public function initHooks() {
+		// Add Meta Boxes
+		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
+
+		add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 1, 2 );
+
+		// Add type filter to backend list view
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminLocationFilter' ) );
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminStatusFilter' ) );
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminDateFilter' ) );
+		add_action( 'pre_get_posts', array( self::class, 'filterAdminList' ) );
+
+		// Listing of available items/locations
+		add_shortcode( 'cb_items_table', array( Calendar::class, 'renderTable' ) );
+	}
 }

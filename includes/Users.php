@@ -1,6 +1,7 @@
 <?php
 
 use CommonsBooking\Plugin;
+use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
@@ -26,8 +27,8 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
 	if ( ! $isAllowed ) {
 		$admins = [];
 
-		// Get allowed admins for timeframe listing
-		if ( $post->post_type == Timeframe::$postType ) {
+		// Get allowed admins for timeframe or booking listing
+		if ( $post->post_type == Timeframe::$postType || $post->post_type == Booking::$postType ) {
 			// Get assigned location
 			$locationId       = get_post_meta( $post->ID, 'location-id', true );
 			$locationAdminIds = get_post_meta( $locationId, '_' . Location::$postType . '_admins', true );
@@ -131,6 +132,15 @@ add_filter(
 					}
 				}
 			}
+
+			// Save posts to global variable for later use -> fix of counts in admin lists
+			if(
+				array_key_exists('post_type', $_GET) &&
+				is_array($query->query) && array_key_exists('post_type', $query->query)
+			) {
+				global ${'posts' . $query->query['post_type']};
+				${'posts' . $query->query['post_type']} = $posts;
+			}
 		}
 
 		return $posts;
@@ -138,6 +148,49 @@ add_filter(
 	10,
 	2
 );
+
+// Add filter to change post counts in admin lists for custom post types.
+foreach ( Plugin::getCustomPostTypes() as $custom_post_type ) {
+	add_filter( 'views_edit-' . $custom_post_type::getPostType(), 'commonsbooking_custom_view_count', 10, 1 );
+}
+
+// Filter function for fix of counts in admin lists for custom post types.
+function commonsbooking_custom_view_count( $views ) {
+	global $current_screen;
+	return commonsbooking_fix_view_counts( str_replace( 'edit-', '', $current_screen->id ), $views );
+}
+
+// fixes counts for custom posts countings in admin list
+function commonsbooking_fix_view_counts( $postType, $views ) {
+	// admin is allowed to see all posts
+	if(current_user_can('administrator')) {
+		return $views;
+	}
+
+	global ${'posts' . $postType};
+	$timeFramePosts = ${'posts' . $postType};
+
+	$counts = [
+		'all' => count( $timeFramePosts )
+	];
+
+	// add counts for differentp states
+	foreach ( $timeFramePosts as $post ) {
+		if ( ! array_key_exists( $post->post_status, $counts ) ) {
+			$counts[ $post->post_status ] = 0;
+		}
+
+		$counts[ $post->post_status ] ++;
+	}
+
+	// replace output
+	foreach ( $counts as $type => $value ) {
+		$views[ $type ] = preg_replace( '/\(.+\)/U', '(' . $value . ')', $views[ $type ] );
+	}
+
+	// return only views, which are contained in $counts array.
+	return array_intersect_key( $views, $counts );
+}
 
 // Check if current user has admin role
 function commonsbooking_isCurrentUserAdmin() {
@@ -151,6 +204,14 @@ function commonsbooking_isCurrentUserSubscriber() {
 	$user = wp_get_current_user();
 
 	return apply_filters( 'commonsbooking_isCurrentUserSubscriber', in_array( 'subscriber', $user->roles ), $user );
+}
+
+// check if current user has CBManager role
+function commonsbooking_isCurrentUserCBManager() {
+	$user = wp_get_current_user();
+
+	return apply_filters( 'commonsbooking_isCurrentUserCBManager', in_array( Plugin::$CB_MANAGER_ID, $user->roles ), $user );
+
 }
 
 /**

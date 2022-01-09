@@ -111,11 +111,12 @@ class LocationsRoute extends BaseRoute {
 		$preparedItem->type       = 'Feature';
 		$preparedItem->properties = new stdClass();
 
-		$preparedItem->properties->id          = $item->ID . "";
-		$preparedItem->properties->name        = $item->post_title;
-		$preparedItem->properties->description = $this->escapeJsonString( $item->post_content );
-		$preparedItem->properties->url         = get_permalink( $item->ID );
-		$preparedItem->properties->address     = $item->formattedAddressOneLine();
+		$preparedItem->properties->id                 = $item->ID . "";
+		$preparedItem->properties->name               = $item->post_title;
+		$preparedItem->properties->description        = $this->escapeJsonString( $item->post_content );
+		$preparedItem->properties->url                = get_permalink( $item->ID );
+		$preparedItem->properties->address            = $item->formattedAddressOneLine();
+		$preparedItem->properties->pickupInstructions = $item->formattedPickupInstructionsOneLine();
 
 		$latitude  = get_post_meta( $item->ID, 'geo_latitude', true );
 		$longitude = get_post_meta( $item->ID, 'geo_longitude', true );

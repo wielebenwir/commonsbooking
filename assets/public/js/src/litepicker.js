@@ -4,9 +4,9 @@
 
 document.addEventListener("DOMContentLoaded", function (event) {
 
-    if(typeof data !== 'undefined') {
+    if(typeof calendarData !== 'undefined') {
         // Assign data from outer html to local variable.
-        let globalCalendarData = data;
+        let globalCalendarData = calendarData;
 
         const fadeOutCalendar = () => {
             jQuery('#litepicker .litepicker .container__days').css('visibility', 'hidden');
@@ -89,6 +89,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
             // Hide select hint for start, show for end again
             jQuery('.time-selection.repetition-start').find('.hint-selection').hide();
             jQuery('.time-selection.repetition-end').find('.hint-selection').show();
+
+            // Show reset button as first calender selection is done
+            jQuery('#resetPicker').css( "display", "inline-block" );
+
+            // Show calendarNotice as first calender selection is done
+            jQuery('#calendarNotice').css( "display", "inherit" );
 
             // Hide end date selection if new start date was chosen
             let endSelectData = jQuery(
@@ -241,6 +247,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             jQuery( window ).on( "orientationchange", function( event ) {
                 updateCalendarColumns(picker);
             });
+
+            jQuery('#calendarNotice').html(globalCalendarData['calendarNotice']['advanceBookingDays']);
         };
 
         // update datepicker data
@@ -296,6 +304,23 @@ document.addEventListener("DOMContentLoaded", function (event) {
             );
             fadeInCalendar();
         };
+
+        // Resets date selection
+        const resetDatepickerSelection = () => {
+            picker.clearSelection();
+            jQuery('.hint-selection').show();
+            jQuery('.time-selection .date').text('');
+            jQuery('.time-selection select').hide();
+            jQuery('#resetPicker').hide();
+            jQuery('#calendarNotice').hide();
+            jQuery('#booking-form input[type=submit]').attr('disabled','disabled');
+        }
+
+        // Click handler for reset button
+        jQuery('#resetPicker').on('click', function (e) {
+            e.preventDefault();
+            resetDatepickerSelection();
+        })
 
         let bookingForm = jQuery('#booking-form');
         if(bookingForm.length) {

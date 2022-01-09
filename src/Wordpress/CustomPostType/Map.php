@@ -20,11 +20,15 @@ class Map extends CustomPostType {
 	public static $postType = 'cb_map';
 
 	/**
-	 * Map constructor.
+	 * Initiates needed hooks.
 	 */
-	public function __construct() {
+	public function initHooks() {
 		$cb_map_settings = new MapSettings();
-		$cb_map_settings->prepare_settings();
+
+		// deactivated individual map settings because we don't need them righ now
+		// map setting should be integrated in CB settings in the future
+		//$cb_map_settings->prepare_settings();
+		
 		if ( $cb_map_settings->get_option( 'booking_page_link_replacement' ) ) {
 			add_action( 'wp_enqueue_scripts', array( Map::class, 'replace_map_link_target' ), 11 );
 		}
@@ -33,7 +37,7 @@ class Map extends CustomPostType {
 		add_shortcode( 'cb_map', array( MapShortcode::class, 'execute' ) );
 
 		// Add actions
-		add_action( 'save_post_cb_map', array( MapAdmin::class, 'validate_options' ), 10, 3 );
+		add_action( 'save_post_' . self::$postType, array( MapAdmin::class, 'validate_options' ), 10, 3 );
 		add_action( 'add_meta_boxes_cb_map', array( MapAdmin::class, 'add_meta_boxes' ) );
 	}
 

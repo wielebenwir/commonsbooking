@@ -91,7 +91,7 @@ class Location extends BookablePost {
 			$contact[] = "<br>"; // needed for email template
 			$contact[] = esc_html__( 'Please contact the contact persons at the location directly if you have any questions regarding collection or return:',
 				'commonsbooking' );
-			$contact[] = nl2br( CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact' ) );
+			$contact[] = nl2br( CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post->ID ) );
 		}
 
 		return implode( '<br>', $contact );
@@ -106,7 +106,7 @@ class Location extends BookablePost {
 	 * @return string
 	 */
 	public function formattedContactInfoOneLine() {
-		return CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact' ) . '<br>';
+		return CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post->ID) . '<br>';
 	}
 
 	/**
@@ -132,37 +132,6 @@ class Location extends BookablePost {
 	}
 
 	/**
-	 * locationMap
-	 *
-	 * Returns map for location when checkbox is set
-	 *
-	 * @return string html or false
-	 */
-	public function locationMap() {
-		//renders map for location-calendar-header template, only renders when set as option
-		if ($this->getMeta( 'loc_showmap')){
-			$latitude = $this->getMeta( 'geo_latitude' );
-			$longitude = $this->getMeta( 'geo_longitude' );
-			wp_enqueue_style( 'cb_map_leaflet_css', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet.css' );
-			wp_enqueue_script( 'cb_map_leaflet_js', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet-src.js' );
-
-			echo '<div id="cb_locationview_map" style="width: 100%; height: 300px;"></div>';
-			$script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-locationview.js';
-			echo '<script src="' . $script_path . '"></script>';
-
-			//map defaults
-			$defaults = [
-				'latitude'  => $latitude,
-				'longitude' => $longitude,
-			];
-		  return '<script>cb_map_locationview.defaults = ' . json_encode( $defaults ) . ';</script>';
-		}
-		else {
-			return false;
-		}
-	}
-
-	/**
 	 * @throws Exception
 	 */
 	public function updateGeoLocation() {
@@ -173,13 +142,13 @@ class Location extends BookablePost {
 		$geo_latitude  = $this->getMeta( 'geo_latitude' );
 		$geo_longitude = $this->getMeta( 'geo_longitude' );
 
-		$addressString = $street . ", " . $postCode . " " . $city . ", " . $country;
-		$addressData   = GeoHelper::getAddressData( $addressString );
-
 		// if geo coordinates already exist do not update from geocoder
 		if ( ! empty( $geo_latitude ) && ! empty( $geo_longitude ) ) {
 			return;
 		}
+
+		$addressString = $street . ", " . $postCode . " " . $city . ", " . $country;
+		$addressData   = GeoHelper::getAddressData( $addressString );
 
 		if ( $addressData ) {
 			$coordinates = $addressData->getCoordinates()->toArray();
@@ -227,5 +196,13 @@ class Location extends BookablePost {
 			null,
 			true
 		);
+	}
+
+	/**
+	 * Returns true if the map shall be shown.
+	 * @return mixed
+	 */
+	public function hasMap() {
+		return $this->getMeta( 'loc_showmap') === "on";
 	}
 }

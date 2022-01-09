@@ -4,7 +4,7 @@
 namespace CommonsBooking\Model;
 
 
-use CommonsBooking\Messages\RestrictionMessages;
+use CommonsBooking\Messages\RestrictionMessage;
 
 class Restriction extends CustomPost {
 
@@ -28,9 +28,19 @@ class Restriction extends CustomPost {
 
 	const META_SENT = 'restriction-sent';
 
+	const NO_END_TIMESTAMP = 3000000000;
+
 	protected $active;
 
 	protected $canceled;
+
+	/**
+	 * Returns post id, for array_unique.
+	 * @return string
+	 */
+	public function __toString(): string {
+		return strval($this->post->ID);
+	}
 
 	/**
 	 * Returns start-time \DateTime.
@@ -87,10 +97,21 @@ class Restriction extends CustomPost {
 	}
 
 	/**
+	 * Returns true if there is set an enddate
+	 * @return bool
+	 */
+	public function hasEnddate() {
+		return $this->getMeta( self::META_END ) !== "";
+	}
+
+	/**
+	 * Returns end timestamp. Of no enddate is set it retunrs a date far in the future.
 	 * @return int Timestamp
 	 */
 	public function getEndDate(): int {
-		return intval( $this->getMeta( self::META_END ) );
+		// Set a far in the future date if enddate isn't set
+		$metaEndDate = $this->getMeta( self::META_END ) !== "" ? $this->getMeta( self::META_END ) : self::NO_END_TIMESTAMP;
+		return intval( $metaEndDate );
 	}
 
 	/**
@@ -130,7 +151,8 @@ class Restriction extends CustomPost {
 	 * @return string
 	 */
 	public function getFormattedStartDateTime() {
-		return $this->getStartTimeDateTime()->format( 'd.m.Y h:i' );
+		// TODO timeformat should be configurable
+		return $this->getStartTimeDateTime()->format( 'd.m.Y H:i' );
 	}
 
 	/**
@@ -138,7 +160,8 @@ class Restriction extends CustomPost {
 	 * @return string
 	 */
 	public function getFormattedEndDateTime() {
-		return $this->getEndDateDateTime()->format( 'd.m.Y h:i' );
+		// TODO timeformat should be configurable
+		return $this->getEndDateDateTime()->format( 'd.m.Y H:i' );
 	}
 
 	/**
@@ -209,6 +232,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Send mails regarding item/location admins and booked timeslots.
+	 * @param Booking[]
 	 */
 	protected function sendRestrictionMails( $bookings ) {
 		$userIds = [];
@@ -217,15 +241,10 @@ class Restriction extends CustomPost {
 			// User IDs from booking
 			$userIds[] = $booking->getUserData()->ID;
 
-			// Admins IDs
-			$userIds = array_merge( $userIds, $booking->getAdmins() );
-		}
-
-		$userIds = array_unique( $userIds );
-
-		foreach ( $userIds as $userId ) {
-			$hintMail = new RestrictionMessages( $this, get_userdata( $userId ), $this->getType() );
-			$hintMail->triggerMail();
+			foreach ( $userIds as $userId ) {
+				$hintMail = new RestrictionMessage( $this, get_userdata( $userId ), $booking, $this->getType() );
+				$hintMail->triggerMail();
+			}
 		}
 	}
 
@@ -257,7 +276,7 @@ class Restriction extends CustomPost {
 
 		// Check if this is a canceled/solved restriction
 		if($this->isCancelled()) {
-			$canceledBookings = \CommonsBooking\Repository\Booking::getCanceledByRestriction( $this );
+			$canceledBookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
 			if ( $canceledBookings ) {
 				$this->sendRestrictionMails( $canceledBookings );
 			}

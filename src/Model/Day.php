@@ -35,11 +35,6 @@ class Day {
 	protected $timeframes;
 
 	/**
-	 * @var array
-	 */
-	protected $restrictions;
-
-	/**
 	 * Day constructor.
 	 *
 	 * @param string $date
@@ -134,19 +129,15 @@ class Day {
 	 * @return array
 	 * @throws Exception
 	 */
-	public function getRestrictions() {
-		if ( $this->restrictions === null ) {
-			$this->restrictions = \CommonsBooking\Repository\Restriction::get(
-				$this->locations,
-				$this->items,
-				$this->getDate(),
-				true,
-				null,
-				[ 'publish', 'confirmed', 'unconfirmed' ]
-			);
-		}
-
-		return $this->restrictions;
+	public function getRestrictions(): array {
+		return \CommonsBooking\Repository\Restriction::get(
+			$this->locations,
+			$this->items,
+			$this->getDate(),
+			true,
+			null,
+			[ 'publish', 'confirmed', 'unconfirmed' ]
+		);
 	}
 
 	/**
@@ -296,12 +287,12 @@ class Day {
 	/**
 	 * Checks if timeframe is relevant for current day/date.
 	 *
-	 * @param $timeframe
+	 * @param \CommonsBooking\Model\Timeframe $timeframe
 	 *
 	 * @return bool
 	 * @throws Exception
 	 */
-	public function isInTimeframe( $timeframe ): bool {
+	public function isInTimeframe( \CommonsBooking\Model\Timeframe $timeframe ): bool {
 		$repetitionType = get_post_meta( $timeframe->ID, 'timeframe-repetition', true );
 
 		if (
@@ -327,7 +318,7 @@ class Day {
 				// Monthly Rep
 				case "m":
 					$dayOfMonth               = intval( $this->getDateObject()->format( 'j' ) );
-					$timeframeStartDayOfMonth = $this->getStartDate( $timeframe )->format( 'j' );
+					$timeframeStartDayOfMonth = date('j',$timeframe->getStartDate());
 
 					if ( $dayOfMonth == $timeframeStartDayOfMonth ) {
 						return true;
@@ -338,7 +329,7 @@ class Day {
 				// Yearly Rep
 				case "y":
 					$date          = intval( $this->getDateObject()->format( 'dm' ) );
-					$timeframeDate = $this->getStartDate( $timeframe )->format( 'dm' );
+					$timeframeDate = date('dm',$timeframe->getStartDate());
 					if ( $date == $timeframeDate ) {
 						return true;
 					} else {

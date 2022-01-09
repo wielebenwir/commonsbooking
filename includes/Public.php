@@ -3,7 +3,7 @@
 use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\Migration\Migration;
 use CommonsBooking\View\Booking;
-use CommonsBooking\View\Location;
+use CommonsBooking\View\Calendar;
 
 function commonsbooking_public() {
 	wp_enqueue_style(
@@ -15,7 +15,20 @@ function commonsbooking_public() {
 
 	// Template specific styles
 	$template = wp_get_theme()->template;
-	wp_enqueue_style( 'cb-styles-public', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/css/themes/' . $template . '.css', array(), COMMONSBOOKING_VERSION );
+	$customizedTemplates = [
+		'graphene',
+		'kasimir',
+		'twentytwenty',
+		'twentynineteen'
+	];
+	if(in_array($template, $customizedTemplates)) {
+		wp_enqueue_style(
+			'cb-styles-public-theme',
+			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/css/themes/' . $template . '.css',
+			array(),
+			WP_DEBUG ? time() : COMMONSBOOKING_VERSION
+		);
+	}
 
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-datepicker', array( 'jquery' ) );
@@ -117,14 +130,15 @@ function commonsbooking_public() {
 add_action( 'wp_enqueue_scripts', 'commonsbooking_public' );
 
 // Calendar data ajax
-add_action( 'wp_ajax_calendar_data', array( Location::class, 'getCalendarData' ) );
-add_action( 'wp_ajax_nopriv_calendar_data', array( Location::class, 'getCalendarData' ) );
+add_action( 'wp_ajax_calendar_data', array( Calendar::class, 'getCalendarData' ) );
+add_action( 'wp_ajax_nopriv_calendar_data', array( Calendar::class, 'getCalendarData' ) );
 
 add_action( 'wp_ajax_bookings_data', array( Booking::class, 'getTemplateData' ) );
 add_action( 'wp_ajax_nopriv_bookings_data', array( Booking::class, 'getTemplateData' ) );
 
 if ( is_admin() ) {
 	add_action( 'wp_ajax_start_migration', array( Migration::class, 'migrateAll' ) );
+	add_action( 'wp_ajax_start_booking_migration', array( \CommonsBooking\Migration\Booking::class, 'ajaxMigrate' ) );
 }
 
 // Map ajax

@@ -48,7 +48,20 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Return End (repetition) date
+	 * Returns end (repetition) date and does not respect advance booking days setting.
+	 * @return false|int
+	 */
+	public function getRawEndDate() {
+		$endDate = intval( $this->getMeta( self::REPETITION_END ) );
+		if ( (string) $endDate != $endDate ) {
+			$endDate = strtotime( $endDate );
+		}
+
+		return $endDate;
+	}
+
+	/**
+	 * Return End (repetition) date and respects advance booking days setting.
 	 *
 	 * @return string
 	 */
@@ -58,7 +71,48 @@ class Timeframe extends CustomPost {
 			$endDate = strtotime( $endDate );
 		}
 
-		return $endDate;
+		// Latest possible booking date
+		$latestPossibleBookingDate = $this->getLatestPossibleBookingDateTimestamp();
+
+		// If enddate is < than latest possible booking date, we use it as enddate
+		if ( $endDate < $latestPossibleBookingDate ) {
+			return $endDate;
+		}
+
+		// if overall enddate of timeframe is > than latest possible booking date,
+		// we use latest possible booking date as end date
+		return $latestPossibleBookingDate;
+	}
+
+	/**
+	 * Returns latest possible booking date as timestamp.
+	 *
+	 * @return string
+	 */
+	public function getLatestPossibleBookingDateTimestamp() {
+		$startDateTimestamp = $this->getStartDate();
+		$startsInFuture     = $startDateTimestamp > time();
+		$calculationBase    = $startsInFuture ? $startDateTimestamp : time();
+
+		// if meta-value not set we define 90 days as default value
+		$advanceBookingDays = $this->getMeta( 'timeframe-advance-booking-days' ) ?:
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS;
+
+		// we subtract one day to reflect the current day in calculation
+		$advanceBookingDays --;
+
+		return strtotime( "+ " . $advanceBookingDays . " days", $calculationBase );
+	}
+
+	/**
+	 * Returns true, if the start date is earlier and the end date later than the latest possible booking date.
+	 * @return bool
+	 */
+	public function isBookable() {
+		$startDateTimestamp                 = $this->getStartDate();
+		$latestPossibleBookingDateTimestamp = $this->getLatestPossibleBookingDateTimestamp();
+
+		return $startDateTimestamp <= $latestPossibleBookingDateTimestamp;
 	}
 
 	/**
@@ -140,25 +194,22 @@ class Timeframe extends CustomPost {
 	 * @return Location
 	 * @throws Exception
 	 */
-	public function getLocation(): Location {
+	public function getLocation(): ?Location {
 		$locationId = $this->getMeta( 'location-id' );
-		// TODO @markus-mw: if locationID is empty it returns the current post even if its not a location. Is this correct?
-		// TODO: I added check if $locationId is empty an return NULL if it is.
 		if ( $locationId ) {
 			if ( $post = get_post( $locationId ) ) {
 				return new Location( $post );
 			}
 		}
 
-		// TODO : Why is this return post as default. What type of post is this?
-		//return $post;
+		return null;
 	}
 
 	/**
 	 * @return Item
 	 * @throws Exception
 	 */
-	public function getItem() {
+	public function getItem(): ?Item {
 		$itemId = $this->getMeta( 'item-id' );
 		if ( $itemId ) {
 			if ( $post = get_post( $itemId ) ) {
@@ -166,8 +217,7 @@ class Timeframe extends CustomPost {
 			}
 		}
 
-		// TODO : Why is this return post as default. What type of post is this?
-		//return $post;
+		return null;
 	}
 
 	/**
@@ -195,7 +245,7 @@ class Timeframe extends CustomPost {
 		if (
 			$this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID
 		) {
-			
+
 			if ( ! $this->getItem() || ! $this->getLocation() ) {
 				// if location or item is missing
 				set_transient( self::ERROR_TYPE,
@@ -203,10 +253,9 @@ class Timeframe extends CustomPost {
 						'commonsbooking' ) ),
 					45 );
 
-				return false;				
+				return false;
 			}
-			
-			
+
 			if ( ! $this->getStartDate() ) {
 				// If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
 				set_transient( self::ERROR_TYPE,
@@ -252,9 +301,8 @@ class Timeframe extends CustomPost {
 
 					// check if timeframes overlap
 					if (
-					$this->hasTimeframeDateOverlap( $this, $timeframe )
+						$this->hasTimeframeDateOverlap( $this, $timeframe )
 					) {
-
 						// Compare grid types
 						if ( $timeframe->getGrid() != $this->getGrid() ) {
 							set_transient( self::ERROR_TYPE,

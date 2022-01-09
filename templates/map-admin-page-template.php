@@ -207,11 +207,14 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
             </table>
         </details>
     </div>
-
     <div class="option-group" id="option-group-popup">
         <details>
             <summary><?php echo commonsbooking_sanitizeHTML( __( 'Marker Popup' ,'commonsbooking')); ?></summary>
             <table class="text-left">
+			<!-- 
+				deactivated popup information because we dont want to show contact infos before booking and do not want to display long pickup instructions here
+				needs to be optmized in future version
+				
                 <tr>
                     <th>
                         <?php echo commonsbooking_sanitizeHTML( __(     'show location opening hours' ,'commonsbooking')); ?>:
@@ -253,6 +256,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                                placeholder="<?php echo commonsbooking_sanitizeHTML( __( 'opening hours' ,'commonsbooking')); ?>"
                                value="<?php echo  MapAdmin::get_option($cb_map_id, 'label_location_contact'); ?>"></td>
                 </tr>
+						-->
                 <tr>
                     <th>
                         <?php echo commonsbooking_sanitizeHTML( __( 'show item availability' ,'commonsbooking')); ?>:

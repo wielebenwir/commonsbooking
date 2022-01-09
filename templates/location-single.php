@@ -8,12 +8,13 @@
     global $templateData;
     $templateData = \CommonsBooking\View\Location::getTemplateData();
     $noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'location-without-items' );
+    $bookThisItemText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'text_book-this-item');
 
     commonsbooking_get_template_part( 'location', 'single-meta' ); // file: location-single-meta.php
 
     // Single Item View
     if(array_key_exists('item', $templateData) && $templateData['item']) { // item selected, so we display the booking calendar
-        echo '<h2>' . esc_html__( 'Book this item', 'commonsbooking') . '</h2>';
+        echo '<h2>' . esc_html__( $bookThisItemText, 'commonsbooking') . '</h2>';
         commonsbooking_get_template_part( 'item', 'calendar-header' ); // file: item-calendar-header.php
         commonsbooking_get_template_part( 'timeframe', 'calendar' ); // file: timeframe-calendar.php
     }
