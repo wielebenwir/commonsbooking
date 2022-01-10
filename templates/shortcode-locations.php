@@ -17,7 +17,7 @@ $noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLU
 
 ?>
 <div class="cb-list-header">
-	<?php echo $location->thumbnail(); ?>
+	<?php echo $location->thumbnail('cb_listing_medium'); ?>
     <div class="cb-list-info">
         <h2><?php echo $location->titleLink(); ?></h2>
         <?php echo $location->excerpt(); ?>

@@ -21,7 +21,7 @@ $permalink    = add_query_arg ( 'location', $location->ID, get_the_permalink($it
 $timeframes = $location->getBookableTimeframesByItem($item->ID, true);
 ?>
 
-<?php echo $location->thumbnail(); // div.thumbnail is printed by function ?>
+<?php echo $location->thumbnail('cb_listing_small'); // div.thumbnail is printed by function ?>
 <div class="cb-list-info">
     <h4 class="cb-title cb-item-title"><?php echo $location->post_title; ?></h4>
     <?php

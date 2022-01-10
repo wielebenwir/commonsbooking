@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * deprecated
+ * this template is not in use anymore and will be deleted
+ * todo delete unused template after final check
+ */
+
     global $templateData;
 
     foreach ($templateData['locations'] as $location) {
