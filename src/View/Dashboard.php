@@ -30,7 +30,7 @@ class Dashboard extends View {
 
 		if ( count( $beginningBookings ) > 0 ) {
 			usort( $beginningBookings, function ( $a, $b ) {
-				return strtotime( $a->getStartTime() ) > strtotime( $b->getStartTime() );
+				return strtotime( $a->getStartTime() ) <=> strtotime( $b->getStartTime() );
 			} );
 			$html = '<div style="padding:5px 20px 5px 20px">';
 			$html .= '<ul>';
@@ -71,7 +71,7 @@ class Dashboard extends View {
 
 		if ( count( $endingBookings ) ) {
 			usort( $endingBookings, function ( $a, $b ) {
-				return strtotime( $a->getEndTime() ) > strtotime( $b->getEndTime() );
+				return strtotime( $a->getEndTime() ) <=> strtotime( $b->getEndTime() );
 			} );
 			//return self::renderBookingsTable( $endingBookings, false);
 			$html = '<div style="padding:5px 20px 5px 20px">';

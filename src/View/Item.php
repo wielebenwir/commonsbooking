@@ -91,7 +91,7 @@ class Item extends View {
 			// Sort by start_date
 			foreach ($shortCodeData as $location) {
 				uasort( $location['ranges'], function ( $a, $b ) {
-					return $a['start_date'] > $b['start_date'];
+					return $a['start_date'] <=> $b['start_date'];
 				} );
 			}
 

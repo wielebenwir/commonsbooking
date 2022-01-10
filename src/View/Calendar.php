@@ -347,7 +347,7 @@ class Calendar {
 	private static function getClosestBookableTimeFrameForToday($bookableTimeframes): ?\CommonsBooking\Model\Timeframe {
 		// Sort timeframes by startdate
 		usort( $bookableTimeframes, function ( $item1, $item2 ) {
-			return $item1->getStartDate() <=> $item2->getStartDate();
+			return $item2->getStartDate() <=> $item1->getStartDate();
 		} );
 
 		return array_pop( $bookableTimeframes );
