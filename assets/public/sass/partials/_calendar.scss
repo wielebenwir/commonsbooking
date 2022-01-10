@@ -259,7 +259,8 @@
 
 				&.is-holiday {
 					color: var(--litepickerDayIsHolidayColor);
-					background: var(--litepickerDayIsHolidayColorBg);
+          background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 17.5%, #fff 17.5%, #fff 32.5%, var(--litepickerDayIsHolidayColorBg) 32.5%, var(--litepickerDayIsHolidayColorBg) 67.5%, #fff 67.5%, #fff 82.5%, var(--litepickerDayIsHolidayColorBg) 82.5%);
+          background-size: 10px 10px;
 					&:hover {
 						cursor: not-allowed;
 						box-shadow: none;
