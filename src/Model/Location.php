@@ -80,8 +80,6 @@ class Location extends BookablePost {
 	 * Returns formatted location contact info with info text
 	 *
 	 * @TODO: do not add any text in here, any text should be in the backend email text field!
-	 * @TODO: in cb1, we had: location info that could be hidden until a successful booking. no longer important?
-	 * @TODO: "pickup instructions" and "contact information" fulfill the same purpouse? retire one of them?
 	 *
 	 * @return string
 	 */
