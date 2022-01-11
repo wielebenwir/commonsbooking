@@ -242,7 +242,9 @@ class Calendar {
 			} elseif ( $data['locked'] && $data['firstSlotBooked'] && $data['lastSlotBooked']) {
 				$days_display[ $dayIterator ++ ] = "<span class='blocked'></span>";
 			} elseif ( $data['locked'] && $data['partiallyBookedDay']) {
-				$days_display[ $dayIterator ++ ] = "<span class='booked'></span>";
+				$cssClass = "booked";
+				if(!$data['firstSlotBooked'] && $data['lastSlotBooked']) $cssClass .= " last-slot";
+				$days_display[ $dayIterator ++ ] = "<span class='$cssClass'></span>";
 			} else {
 				$days_display[ $dayIterator ++ ] = "<span class='free'></span>";
 			}
