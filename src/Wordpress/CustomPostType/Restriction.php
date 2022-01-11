@@ -4,14 +4,22 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 
+use Exception;
+
 class Restriction extends CustomPostType {
 
+	private const SEND_BUTTON_ID = 'restriction-send';
 	/**
 	 * @var string
 	 */
 	public static $postType = 'cb_restriction';
 
-	private const SEND_BUTTON_ID = 'restriction-send';
+	/**
+	 * @inheritDoc
+	 */
+	public static function getView() {
+		return new \CommonsBooking\View\Restriction();
+	}
 
 	/**
 	 * Initiates needed hooks.
@@ -21,24 +29,6 @@ class Restriction extends CustomPostType {
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
 		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
-	}
-
-	/**
-	 * @return string[]
-	 */
-	public static function getTypes() {
-		
-		return [
-			'repair' => esc_html__('Total breakdown', 'commonsbooking'),
-			'hint'   => esc_html__('Notice', 'commonsbooking'),
-		];
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public static function getView() {
-		return new \CommonsBooking\View\Restriction();
 	}
 
 	/**
@@ -156,7 +146,7 @@ class Restriction extends CustomPostType {
 		return array(
 			array(
 				'name'    => esc_html__( 'Type', 'commonsbooking' ),
-				'desc'    => commonsbooking_sanitizeHTML ( __( 'Select the type of restriction.<br>
+				'desc'    => commonsbooking_sanitizeHTML( __( 'Select the type of restriction.<br>
 				Select <strong>Notice</strong>, the item can still be used and if e.g. only one part is missing or defective.<br>
 				Select <strong>total breakdown</strong> if the defect means that the item can no longer be used. If you select total breakdown 
 				all affected bookings will be automatically canceled after activating this restriction and after clicking send the information email.
@@ -182,28 +172,28 @@ class Restriction extends CustomPostType {
 			array(
 				'name' => esc_html__( "Hint", 'commonsbooking' ),
 				'id'   => \CommonsBooking\Model\Restriction::META_HINT,
-				'desc' => commonsbooking_sanitizeHTML ( __( 'Please enter here a short information about the reason and possible effects of the usage restriction. <br>The explanation will be displayed on the article page and in the notification e-mail.', 'commonsbooking' ) ),
+				'desc' => commonsbooking_sanitizeHTML( __( 'Please enter here a short information about the reason and possible effects of the usage restriction. <br>The explanation will be displayed on the article page and in the notification e-mail.', 'commonsbooking' ) ),
 				'type' => 'textarea'
 			),
 			array(
-				'name' => esc_html__( 'Start date', 'commonsbooking' ),
-				'desc' => esc_html__( 'Set the start date and time', 'commonsbooking' ),
-				'id'   => \CommonsBooking\Model\Restriction::META_START,
-				'type' => 'text_datetime_timestamp',
+				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
+				'desc'        => esc_html__( 'Set the start date and time', 'commonsbooking' ),
+				'id'          => \CommonsBooking\Model\Restriction::META_START,
+				'type'        => 'text_datetime_timestamp',
 				// TODO timeformat should be configurable
 				'time_format' => 'H:i',
 				'date_format' => $dateFormat,
-				'default' => strtotime('today'),
+				'default'     => strtotime( 'today' ),
 			),
 			array(
-				'name' => esc_html__( 'End date', 'commonsbooking' ),
-				'desc' => esc_html__( 'Set the estimated end date and time', 'commonsbooking' ),
-				'id'   => \CommonsBooking\Model\Restriction::META_END,
-				'type' => 'text_datetime_timestamp',
+				'name'        => esc_html__( 'End date', 'commonsbooking' ),
+				'desc'        => esc_html__( 'Set the estimated end date and time', 'commonsbooking' ),
+				'id'          => \CommonsBooking\Model\Restriction::META_END,
+				'type'        => 'text_datetime_timestamp',
 				// TODO timeformat should be configurable
 				'time_format' => 'H:i',
 				'date_format' => $dateFormat,
-				'default' => strtotime('today 23:55'),
+				'default'     => strtotime( 'today 23:55' ),
 
 			),
 			array(
@@ -214,7 +204,7 @@ class Restriction extends CustomPostType {
 			array(
 				'name'             => esc_html__( "State", 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Restriction::META_STATE,
-				'desc' => commonsbooking_sanitizeHTML ( __( 'Choose status of this restriction. <br>
+				'desc'             => commonsbooking_sanitizeHTML( __( 'Choose status of this restriction. <br>
 				Set to <strong>None</strong> if you want to deactivate the restriction.<br>
 					Set to <strong>Active</strong> if the restriction is active. <br>
 Set to <strong>Problem Solved</strong>, if the restriction is no longer in effect.<br>
@@ -224,7 +214,7 @@ Select the desired status and then click the "Send" button to send the e-mail.<b
 				'show_option_none' => true,
 				'options'          => array(
 					'1' => esc_html__( "Active", 'commonsbooking' ),
-					'0'   => esc_html__( "Problem Solved", 'commonsbooking' ),
+					'0' => esc_html__( "Problem Solved", 'commonsbooking' ),
 				),
 			),
 			array(
@@ -242,9 +232,20 @@ Select the desired status and then click the "Send" button to send the e-mail.<b
 	}
 
 	/**
+	 * @return string[]
+	 */
+	public static function getTypes() {
+
+		return [
+			'repair' => esc_html__( 'Total breakdown', 'commonsbooking' ),
+			'hint'   => esc_html__( 'Notice', 'commonsbooking' ),
+		];
+	}
+
+	/**
 	 * Handles save-Request for location.
 	 */
-	public function savePost( $post_id, $post) {
+	public function savePost( $post_id, $post ) {
 		if ( $post->post_type == self::$postType && $post_id ) {
 			if ( $this->hasRunBefore( __METHOD__ ) ) {
 				return;
@@ -255,7 +256,7 @@ Select the desired status and then click the "Send" button to send the e-mail.<b
 				try {
 					$restriction = new \CommonsBooking\Model\Restriction( $post_id );
 					$restriction->apply();
-				} catch (\Exception $e) {
+				} catch ( Exception $e ) {
 					// nothing to do in this case.
 				}
 			}
