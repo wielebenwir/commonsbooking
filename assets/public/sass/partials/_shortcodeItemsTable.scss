@@ -146,6 +146,16 @@
 					var(--litepickerDayIsBookedColorBg) 50%,
 					var(--litepickerDayIsBookedColorBg) 100%
 				);
+
+                &.last-slot {
+                    background: linear-gradient(
+                        to bottom right,
+                        var(--litepickerDayColorBg) 0%,
+                        var(--litepickerDayColorBg) 50%,
+                        var(--litepickerDayIsBookedColorBg) 50%,
+                        var(--litepickerDayIsBookedColorBg) 100%
+                    );
+                }
 			}
 
 			&.blocked {

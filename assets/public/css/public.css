@@ -5039,11 +5039,15 @@
 .cb-items-table td > span.repair, .cb-items-table td > span.booked {
   background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
-/* line 151, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 150, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td > span.repair.last-slot, .cb-items-table td > span.booked.last-slot {
+  background: linear-gradient(to bottom right, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
+}
+/* line 161, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.blocked {
   background-color: var(--litepickerDayIsBookedColorBg);
 }
-/* line 155, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 165, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.free {
   background-color: var(--litepickerDayColorBg);
   text-align: center;
