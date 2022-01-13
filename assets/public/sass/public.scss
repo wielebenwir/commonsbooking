@@ -2,6 +2,9 @@
  * This stylesheet is used to style the public-facing components of the plugin
  */
 
+/* Mixins */
+@import "mixins/_calendar";
+
 /* Global styles */
 @import "../../global/sass/global";
 
