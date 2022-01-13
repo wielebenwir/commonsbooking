@@ -48,7 +48,7 @@ class Location extends View {
 		}
 
 		$calendarData          = Calendar::getCalendarDataArray(
-			$item ?: null,
+			array_key_exists('item', $args) ? $args['item'] : null,
 			$location,
 			date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE_START, time() ) ),
 			date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE, time() ) )
