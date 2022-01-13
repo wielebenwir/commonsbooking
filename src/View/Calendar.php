@@ -29,7 +29,7 @@ class Calendar {
 	public const DEFAULT_RANGE_START = 'first day of this month';
 
 	/**
-	 * Renders item table.
+	 * Renders item table with availability status
 	 * Many thanks to fLotte Berlin!
 	 * Forked from https://github.com/flotte-berlin/cb-shortcodes/blob/master/custom-shortcodes-cb-items.php
 	 *
@@ -245,6 +245,14 @@ class Calendar {
 				$cssClass = "booked";
 				if(!$data['firstSlotBooked'] && $data['lastSlotBooked']) $cssClass .= " last-slot";
 				$days_display[ $dayIterator ++ ] = "<span class='$cssClass'></span>";
+			
+			/**
+			 *  TODO : the following workaround condition was added to display the correct advance booking days. 
+			 *  if this condition is not set there is a strange calendar behaviour maybe because of the week generation process?
+			 *  it would be better if the $calendarData['days'] are set to an enddate that reflects the advance booking days
+			*/
+			} elseif ( $data['locked'] ) {
+				$days_display[ $dayIterator ++ ] = "<span class='unavailable'></span>";
 			} else {
 				$days_display[ $dayIterator ++ ] = "<span class='free'></span>";
 			}
@@ -423,6 +431,8 @@ class Calendar {
 				$items
 			);
 
+			;
+
 			$jsonResponse = [
 				'minDate'                 => $startDate->getFormattedDate( 'Y-m-d' ),
 				'startDate'               => $startDate->getFormattedDate( 'Y-m-d' ),
@@ -438,6 +448,7 @@ class Calendar {
 				'disallowLockDaysInRange' => true,
 				'advanceBookingDays'	  => $advanceBookingDaysFormatted,
 			];
+
 
 			// Notice with advanced booking days. Will be parsed in litepicker.js with DOM object #calendarNotice
 			// TODO: deprecated 
@@ -505,6 +516,8 @@ class Calendar {
 						$timeframe           = $dayArray['slots'][0]['timeframe'];
 						$dayArray['fullDay'] = get_post_meta( $timeframe->ID, 'full-day', true ) == "on";
 					}
+
+				
 
 					// if day is out max advance booking days range, day is marked as locked to avoid booking
 					if ( $day->getDate() > $endDate->getDate() ) {
