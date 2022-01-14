@@ -99,15 +99,44 @@ class Restriction extends PostRepository {
 			// Check if restriction is in relation to item and/or location
 			$location               = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID, true ) );
 			$restrictionHasLocation = $location !== 0;
+			$restrictedLocationInLocations = $restrictionHasLocation && in_array( $location, $locations );
 
 			$item               = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID, true ) );
 			$restrictionHasItem = $item !== 0;
+			$restrictedItemInItems = $restrictionHasItem && in_array( $item, $items );
+
+			// No item or location for restriction set
+			$noLocationNoItem = ( ! $restrictionHasLocation && ! $restrictionHasItem );
+
+			// No location, item matching
+			$noLocationItemMatches = (
+				!$restrictionHasLocation &&
+				$restrictionHasItem &&
+				$restrictedItemInItems
+			);
+
+			// No item, location matching
+			$noItemLocationMatches = (
+				! $restrictionHasItem &&
+				$restrictionHasLocation &&
+				$restrictedLocationInLocations
+			);
+
+			// Item and location matching
+			$itemAndLocationMatches = (
+				$restrictionHasLocation &&
+				$restrictedLocationInLocations &&
+				$restrictionHasItem &&
+				$restrictedItemInItems
+			);
+
+			$test = "asdf";
 
 			return
-				( ! $restrictionHasLocation && ! $restrictionHasItem ) || // No item or location for restriction set
-				in_array( $location, $locations ) ||
-				in_array( $item, $items )//							)
-				;
+				$noLocationNoItem ||
+				$noLocationItemMatches ||
+				$noItemLocationMatches ||
+				$itemAndLocationMatches;
 		} );
 	}
 
