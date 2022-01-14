@@ -130,8 +130,6 @@ class Restriction extends PostRepository {
 				$restrictedItemInItems
 			);
 
-			$test = "asdf";
-
 			return
 				$noLocationNoItem ||
 				$noLocationItemMatches ||
