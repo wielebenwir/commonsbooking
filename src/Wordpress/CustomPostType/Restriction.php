@@ -24,7 +24,11 @@ class Restriction extends CustomPostType {
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminLocationFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminStatusFilter' ) );
+		add_action( 'pre_get_posts', array( self::class, 'filterAdminList' ) );
+
 		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
+
+
 	}
 
 
@@ -36,12 +40,12 @@ class Restriction extends CustomPostType {
 		 * @var string[]
 		 */
 		$this->listColumns = [
-			'type'                                          => esc_html__( 'Type', 'commonsbooking' ),
-			'item-id'                                       => esc_html__( 'Item', 'commonsbooking' ),
-			'location-id'                                   => esc_html__( 'Location', 'commonsbooking' ),
+			'restriction-type'                                          => esc_html__( 'Type', 'commonsbooking' ),
+			'restriction-item-id'                                       => esc_html__( 'Item', 'commonsbooking' ),
+			'restriction-location-id'                                   => esc_html__( 'Location', 'commonsbooking' ),
 			'restriction-start'                              => esc_html__( 'Start Date', 'commonsbooking' ),
 			'restriction-end'								 => esc_html__( 'End Date', 'commonsbooking' ),
-			'post_status'                                   => esc_html__( 'Restriction Status', 'commonsbooking' ),
+			'restriction-state'                                   => esc_html__( 'Restriction Status', 'commonsbooking' ),
 		];
 
 
@@ -164,8 +168,8 @@ class Restriction extends CustomPostType {
 
 		if ( $value = get_post_meta( $post_id, $column, true ) ) {
 			switch ( $column ) {
-				case 'location-id':
-				case 'item-id':
+				case 'restriction-location-id':
+				case 'restriction-item-id':
 					if ( $post = get_post( $value ) ) {
 						if ( get_post_type( $post ) == Location::getPostType() || get_post_type(
 							                                                          $post
@@ -176,11 +180,11 @@ class Restriction extends CustomPostType {
 					}
 					echo '-';
 					break;
-				case 'type':
+				case 'restriction-type':
 					$output = "-";
 
 					foreach ( $this->getCustomFields() as $customField ) {
-						if ( $customField['id'] == 'type' ) {
+						if ( $customField['id'] == 'restriction-type' ) {
 							foreach ( $customField['options'] as $key => $label ) {
 								if ( $value == $key ) {
 									$output = $label;
@@ -190,8 +194,8 @@ class Restriction extends CustomPostType {
 					}
 					echo $output;
 					break;
-				case 'repetition-start':
-				case \CommonsBooking\Model\Timeframe::REPETITION_END:
+				case 'restriction-start':
+				case 'restriction-end':
 					echo date( 'd.m.Y H:i', $value );
 					break;
 				default:
@@ -207,7 +211,7 @@ class Restriction extends CustomPostType {
 			if (
 				property_exists( $post = get_post( $post_id ), $column ) && (
 					! in_array( $column, $bookingColumns ) ||
-					get_post_meta( $post_id, 'type', true ) == Timeframe::BOOKING_ID
+					get_post_meta( $post_id, 'restriction-type', true ) == Timeframe::BOOKING_ID
 				)
 			) {
 				echo $post->{$column};
@@ -235,9 +239,9 @@ class Restriction extends CustomPostType {
 				'relation' => 'AND',
 			);
 			$meta_filters                    = [
-				'type'        => 'admin_filter_type',
-				'item-id'     => 'admin_filter_item',
-				'location-id' => 'admin_filter_location',
+				'restriction-type'        => 'admin_filter_type',
+				'restriction-item-id'     => 'admin_filter_item',
+				'restriction-location-id' => 'admin_filter_location',
 			];
 			foreach ( $meta_filters as $key => $filter ) {
 				if (
@@ -251,30 +255,6 @@ class Restriction extends CustomPostType {
 				}
 			}
 
-			// Timerange filtering
-			// Start date
-			if (
-				isset( $_GET['admin_filter_startdate'] ) &&
-				$_GET['admin_filter_startdate'] != ''
-			) {
-				$query->query_vars['meta_query'][] = array(
-					'key'     => 'repetition-start',
-					'value'   => strtotime( sanitize_text_field( $_GET['admin_filter_startdate'] ) ),
-					'compare' => ">=",
-				);
-			}
-
-			// End date
-			if (
-				isset( $_GET['admin_filter_enddate'] ) &&
-				$_GET['admin_filter_enddate'] != ''
-			) {
-				$query->query_vars['meta_query'][] = array(
-					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
-					'value'   => strtotime( sanitize_text_field( $_GET['admin_filter_enddate'] ) ),
-					'compare' => "<=",
-				);
-			}
 
 			// Post field filtering
 			$post_filters = [
@@ -303,12 +283,12 @@ class Restriction extends CustomPostType {
 				$query->query_vars['meta_query'][] = array(
 					'relation' => 'OR',
 					array(
-						'key'     => 'location-id',
+						'key'     => 'restriction-location-id',
 						'value'   => $locations,
 						'compare' => 'IN'
 					),
 					array(
-						'key'     => 'item-id',
+						'key'     => 'restriction-item-id',
 						'value'   => $items,
 						'compare' => 'IN'
 					),
