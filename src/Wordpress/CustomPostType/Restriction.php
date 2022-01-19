@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\View\Admin\Filter;
 
 class Restriction extends CustomPostType {
 
@@ -19,9 +20,36 @@ class Restriction extends CustomPostType {
 	public function initHooks() {
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
-
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminLocationFilter' ) );
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminStatusFilter' ) );
 		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
 	}
+
+
+	public function __construct() {
+		$this->types = self::getTypes();
+
+		/**
+		 * Backend listing columns.
+		 * @var string[]
+		 */
+		$this->listColumns = [
+			'type'                                          => esc_html__( 'Type', 'commonsbooking' ),
+			'item-id'                                       => esc_html__( 'Item', 'commonsbooking' ),
+			'location-id'                                   => esc_html__( 'Location', 'commonsbooking' ),
+			'restriction-start'                              => esc_html__( 'Start Date', 'commonsbooking' ),
+			'restriction-end'								 => esc_html__( 'End Date', 'commonsbooking' ),
+			'post_status'                                   => esc_html__( 'Restriction Status', 'commonsbooking' ),
+		];
+
+
+
+		// List settings
+		$this->removeListDateColumn();
+	}
+
 
 	/**
 	 * @return string[]
@@ -40,6 +68,255 @@ class Restriction extends CustomPostType {
 	public static function getView() {
 		return new \CommonsBooking\View\Restriction();
 	}
+
+
+	/**
+	 * Adds filter dropdown // filter by type (Total Breakdown, Notice) in restrictions List
+	 *
+	 * @return void
+	 */
+	public static function addAdminTypeFilter() {
+		Filter::renderFilter(
+			static::$postType,
+			esc_html__( 'Filter By Type ', 'commonsbooking' ),
+			'filter_type',
+			static::getTypes()
+		);
+	}
+
+	/**
+	 * Adds filter dropdown // filter by item in restrictions List
+	 */
+	public static function addAdminItemFilter() {
+		$items = \CommonsBooking\Repository\Item::get(
+			[
+				'post_status' => 'any',
+				'orderby'     => 'post_title',
+				'order'       => 'asc',
+				'nopaging'    => true
+			]
+		);
+		if ( $items ) {
+			$values = [];
+			foreach ( $items as $item ) {
+				$values[ $item->ID ] = $item->post_title;
+			}
+
+			Filter::renderFilter(
+                static::$postType,
+				esc_html__( 'Filter By Item ', 'commonsbooking' ),
+				'filter_item',
+				$values
+			);
+		}
+	}
+
+	/**
+	 * Adds filter dropdown // filter by location in restrictions List
+	 */
+	public static function addAdminLocationFilter() {
+		$locations = \CommonsBooking\Repository\Location::get(
+			[
+				'post_status' => 'any',
+				'orderby'     => 'post_title',
+				'order'       => 'asc',
+				'nopaging'    => true
+			]
+		);
+		if ( $locations ) {
+			$values = [];
+			foreach ( $locations as $location ) {
+				$values[ $location->ID ] = $location->post_title;
+			}
+
+			Filter::renderFilter(
+				static::$postType,
+				esc_html__( 'Filter By Location ', 'commonsbooking' ),
+				'filter_location',
+				$values
+			);
+		}
+	}
+
+	/**
+	 * Adds filter dropdown // filter by status in restrictions list 
+	 */
+	public static function addAdminStatusFilter() {
+		$values = [];
+		foreach ( \CommonsBooking\Model\Booking::$bookingStates as $bookingState ) {
+			$values[ $bookingState ] = $bookingState;
+		}
+		Filter::renderFilter(
+			static::$postType,
+			esc_html__( 'Filter By Status ', 'commonsbooking' ),
+			'filter_post_status',
+			$values
+		);
+	}
+
+	/**
+	 * Modifies data in custom columns
+	 *
+	 * @param $column
+	 * @param $post_id
+	 */
+	public function setCustomColumnsData( $column, $post_id ) {
+
+		if ( $value = get_post_meta( $post_id, $column, true ) ) {
+			switch ( $column ) {
+				case 'location-id':
+				case 'item-id':
+					if ( $post = get_post( $value ) ) {
+						if ( get_post_type( $post ) == Location::getPostType() || get_post_type(
+							                                                          $post
+						                                                          ) == Item::getPostType() ) {
+							echo $post->post_title;
+							break;
+						}
+					}
+					echo '-';
+					break;
+				case 'type':
+					$output = "-";
+
+					foreach ( $this->getCustomFields() as $customField ) {
+						if ( $customField['id'] == 'type' ) {
+							foreach ( $customField['options'] as $key => $label ) {
+								if ( $value == $key ) {
+									$output = $label;
+								}
+							}
+						}
+					}
+					echo $output;
+					break;
+				case 'repetition-start':
+				case \CommonsBooking\Model\Timeframe::REPETITION_END:
+					echo date( 'd.m.Y H:i', $value );
+					break;
+				default:
+					echo $value;
+					break;
+			}
+		} else {
+			$bookingColumns = [
+				'post_date',
+				'post_status',
+			];
+
+			if (
+				property_exists( $post = get_post( $post_id ), $column ) && (
+					! in_array( $column, $bookingColumns ) ||
+					get_post_meta( $post_id, 'type', true ) == Timeframe::BOOKING_ID
+				)
+			) {
+				echo $post->{$column};
+			}
+		}
+	}
+
+		/**
+	 * Filters admin list by type, timerange, user 
+	 *
+	 * @param  (wp_query object) $query
+	 *
+	 * @return Void
+	 */
+	public static function filterAdminList( $query ) {
+		global $pagenow;
+
+		if (
+			is_admin() && $query->is_main_query() &&
+			isset( $_GET['post_type'] ) && static::$postType == $_GET['post_type'] &&
+			$pagenow == 'edit.php'
+		) {
+			// Meta value filtering
+			$query->query_vars['meta_query'] = array(
+				'relation' => 'AND',
+			);
+			$meta_filters                    = [
+				'type'        => 'admin_filter_type',
+				'item-id'     => 'admin_filter_item',
+				'location-id' => 'admin_filter_location',
+			];
+			foreach ( $meta_filters as $key => $filter ) {
+				if (
+					isset( $_GET[ $filter ] ) &&
+					$_GET[ $filter ] != ''
+				) {
+					$query->query_vars['meta_query'][] = array(
+						'key'   => $key,
+						'value' => sanitize_text_field( $_GET[ $filter ] ),
+					);
+				}
+			}
+
+			// Timerange filtering
+			// Start date
+			if (
+				isset( $_GET['admin_filter_startdate'] ) &&
+				$_GET['admin_filter_startdate'] != ''
+			) {
+				$query->query_vars['meta_query'][] = array(
+					'key'     => 'repetition-start',
+					'value'   => strtotime( sanitize_text_field( $_GET['admin_filter_startdate'] ) ),
+					'compare' => ">=",
+				);
+			}
+
+			// End date
+			if (
+				isset( $_GET['admin_filter_enddate'] ) &&
+				$_GET['admin_filter_enddate'] != ''
+			) {
+				$query->query_vars['meta_query'][] = array(
+					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
+					'value'   => strtotime( sanitize_text_field( $_GET['admin_filter_enddate'] ) ),
+					'compare' => "<=",
+				);
+			}
+
+			// Post field filtering
+			$post_filters = [
+				'post_status' => 'admin_filter_post_status',
+			];
+			foreach ( $post_filters as $key => $filter ) {
+				if (
+					isset( $_GET[ $filter ] ) &&
+					$_GET[ $filter ] != ''
+				) {
+					$query->query_vars[ $key ] = sanitize_text_field( $_GET[ $filter ] );
+				}
+			}
+
+			// Check if current user is allowed to see posts
+			if ( ! commonsbooking_isCurrentUserAdmin() ) {
+				$locations = \CommonsBooking\Repository\Location::getByCurrentUser();
+				array_walk( $locations, function ( &$item, $key ) {
+					$item = $item->ID;
+				} );
+				$items = \CommonsBooking\Repository\Item::getByCurrentUser();
+				array_walk( $items, function ( &$item, $key ) {
+					$item = $item->ID;
+				} );
+
+				$query->query_vars['meta_query'][] = array(
+					'relation' => 'OR',
+					array(
+						'key'     => 'location-id',
+						'value'   => $locations,
+						'compare' => 'IN'
+					),
+					array(
+						'key'     => 'item-id',
+						'value'   => $items,
+						'compare' => 'IN'
+					),
+				);
+			}
+		}
+	}
+
 
 	/**
 	 * @inheritDoc
