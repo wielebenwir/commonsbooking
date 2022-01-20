@@ -242,8 +242,8 @@ class Calendar {
 			} elseif ( $data['locked'] && $data['firstSlotBooked'] && $data['lastSlotBooked']) {
 				$days_display[ $dayIterator ++ ] = "<span class='is-booked'></span>";
 			} elseif ( $data['locked'] && $data['partiallyBookedDay']) {
-				$cssClass = "is-partially-booked-start";
-				if(!$data['firstSlotBooked'] && $data['lastSlotBooked']) $cssClass = "is-partially-booked-end";
+				$cssClass = "is-partially-booked-end";
+				if(!$data['firstSlotBooked'] && $data['lastSlotBooked']) $cssClass = "is-partially-booked-start";
 				$days_display[ $dayIterator ++ ] = "<span class='$cssClass'></span>";
 			} else {
 				$days_display[ $dayIterator ++ ] = "<span></span>";
