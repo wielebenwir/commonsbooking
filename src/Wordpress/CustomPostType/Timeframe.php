@@ -2,7 +2,6 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-use Opis\JsonSchema\Formats\Time;
 use WP_Post;
 use Exception;
 use CommonsBooking\View\Calendar;
