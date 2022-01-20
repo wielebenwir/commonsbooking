@@ -40,12 +40,12 @@ class Restriction extends CustomPostType {
 		 * @var string[]
 		 */
 		$this->listColumns = [
-			'restriction-type'                                          => esc_html__( 'Type', 'commonsbooking' ),
-			'restriction-item-id'                                       => esc_html__( 'Item', 'commonsbooking' ),
-			'restriction-location-id'                                   => esc_html__( 'Location', 'commonsbooking' ),
-			'restriction-start'                              => esc_html__( 'Start Date', 'commonsbooking' ),
-			'restriction-end'								 => esc_html__( 'End Date', 'commonsbooking' ),
-			'restriction-state'                                   => esc_html__( 'Restriction Status', 'commonsbooking' ),
+			\CommonsBooking\Model\Restriction::META_TYPE                                          => esc_html__( 'Type', 'commonsbooking' ),
+			\CommonsBooking\Model\Restriction::META_ITEM_ID                                       => esc_html__( 'Item', 'commonsbooking' ),
+			\CommonsBooking\Model\Restriction::META_ITEM_ID                                   => esc_html__( 'Location', 'commonsbooking' ),
+			\CommonsBooking\Model\Restriction::META_START                              => esc_html__( 'Start Date', 'commonsbooking' ),
+			\CommonsBooking\Model\Restriction::META_END								 => esc_html__( 'End Date', 'commonsbooking' ),
+			\CommonsBooking\Model\Restriction::META_STATE                                   => esc_html__( 'Restriction Status', 'commonsbooking' ),
 		];
 
 
@@ -168,8 +168,8 @@ class Restriction extends CustomPostType {
 
 		if ( $value = get_post_meta( $post_id, $column, true ) ) {
 			switch ( $column ) {
-				case 'restriction-location-id':
-				case 'restriction-item-id':
+				case \CommonsBooking\Model\Restriction::META_LOCATION_ID:
+				case \CommonsBooking\Model\Restriction::META_ITEM_ID:
 					if ( $post = get_post( $value ) ) {
 						if ( get_post_type( $post ) == Location::getPostType() || get_post_type(
 							                                                          $post
@@ -180,11 +180,11 @@ class Restriction extends CustomPostType {
 					}
 					echo '-';
 					break;
-				case 'restriction-type':
+				case \CommonsBooking\Model\Restriction::META_TYPE:
 					$output = "-";
 
 					foreach ( $this->getCustomFields() as $customField ) {
-						if ( $customField['id'] == 'restriction-type' ) {
+						if ( $customField['id'] == \CommonsBooking\Model\Restriction::META_TYPE ) {
 							foreach ( $customField['options'] as $key => $label ) {
 								if ( $value == $key ) {
 									$output = $label;
@@ -194,8 +194,8 @@ class Restriction extends CustomPostType {
 					}
 					echo $output;
 					break;
-				case 'restriction-start':
-				case 'restriction-end':
+				case \CommonsBooking\Model\Restriction::META_START:
+				case \CommonsBooking\Model\Restriction::META_END:
 					echo date( 'd.m.Y H:i', $value );
 					break;
 				default:
@@ -211,7 +211,7 @@ class Restriction extends CustomPostType {
 			if (
 				property_exists( $post = get_post( $post_id ), $column ) && (
 					! in_array( $column, $bookingColumns ) ||
-					get_post_meta( $post_id, 'restriction-type', true ) == Timeframe::BOOKING_ID
+					get_post_meta( $post_id, \CommonsBooking\Model\Restriction::META_TYPE, true ) == Timeframe::BOOKING_ID
 				)
 			) {
 				echo $post->{$column};
@@ -239,9 +239,9 @@ class Restriction extends CustomPostType {
 				'relation' => 'AND',
 			);
 			$meta_filters                    = [
-				'restriction-type'        => 'admin_filter_type',
-				'restriction-item-id'     => 'admin_filter_item',
-				'restriction-location-id' => 'admin_filter_location',
+				\CommonsBooking\Model\Restriction::META_TYPE        => 'admin_filter_type',
+				\CommonsBooking\Model\Restriction::META_ITEM_ID     => 'admin_filter_item',
+				\CommonsBooking\Model\Restriction::META_LOCATION_ID => 'admin_filter_location',
 			];
 			foreach ( $meta_filters as $key => $filter ) {
 				if (
@@ -283,12 +283,12 @@ class Restriction extends CustomPostType {
 				$query->query_vars['meta_query'][] = array(
 					'relation' => 'OR',
 					array(
-						'key'     => 'restriction-location-id',
+						'key'     => \CommonsBooking\Model\Restriction::META_LOCATION_ID,
 						'value'   => $locations,
 						'compare' => 'IN'
 					),
 					array(
-						'key'     => 'restriction-item-id',
+						'key'     => \CommonsBooking\Model\Restriction::META_ITEM_ID,
 						'value'   => $items,
 						'compare' => 'IN'
 					),
