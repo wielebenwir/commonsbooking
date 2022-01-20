@@ -125,13 +125,15 @@ class CustomPost {
 	}
 
 	/**
-	 * Return Thumbnail
+	 * Return Thumbnail with rendered div class="cb-thumbnail"
+	 * uses custom defined image sizes (defined in AddImageSizes()
+	 * Custom sizes: cb_listing_small or cb_listing_medium
 	 *
 	 * @param string|int[] $size
 	 *
 	 * @return string
 	 */
-	public function thumbnail( $size = 'post-thumbnail' ): string {
+	public function thumbnail( $size = 'thumbnail' ): string {
 		if ( has_post_thumbnail( $this->ID ) ) {
 			return '<div class="cb-thumbnail">' . get_the_post_thumbnail( $this->ID, $size,
 					array( 'class' => 'alignleft cb-image' ) ) . '</div>';
@@ -139,6 +141,10 @@ class CustomPost {
 
 		return '';
 	}
+
+
+		
+
 
 	/**
 	 * @return mixed

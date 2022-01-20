@@ -115,48 +115,36 @@
 		z-index: 11;
 
 		> span {
-			&.booked,
-			&.free,
-			&.unavailable,
-			&.holiday,
-			&.repair,
-			&.blocked {
-				display: block;
-				margin: 0 auto;
-				width: 15px;
-				height: 15px;
-				border-radius: 0px;
-			}
+            display: block;
+            margin: 0 auto;
+            width: 15px;
+            height: 15px;
+            border-radius: 0px;
 
-			&.unavailable {
-				// background: var(--litepickerDayIsLockedColor);
-				background: $color-gray-background;
-			}
+            color: var(--litepickerDayColor);
+            background-color: var(--litepickerDayColorBg);
 
-			&.holiday {
-				background: var(--litepickerDayIsHolidayColorBg);
-			}
+            &.is-holiday {
+                @include day-is-holiday;
+            }
+            &.is-booked {
+                @include day-is-booked;
+            }
 
-			&.repair,
-			&.booked {
-				background: linear-gradient(
-					to top left,
-					var(--litepickerDayColorBg) 0%,
-					var(--litepickerDayColorBg) 50%,
-					var(--litepickerDayIsBookedColorBg) 50%,
-					var(--litepickerDayIsBookedColorBg) 100%
-				);
-			}
+            &.is-partially-booked {
+                @include day-is-partially-booked;
+            }
 
-			&.blocked {
-				background-color: var(--litepickerDayIsBookedColorBg);
-			}
+            &.is-partially-booked-start {
+                @include day-is-partially-booked-start;
+            }
+            &.is-partially-booked-end {
+                @include day-is-partially-booked-end;
+            }
 
-			&.free {
-				background-color: var(--litepickerDayColorBg);
-				text-align: center;
-				text-decoration: none;
-			}
+            &.is-locked {
+                @include day-is-locked;
+            }
 		}
 	}
 }

@@ -23,6 +23,12 @@ class Location extends View {
 		$location = $post;
 		$item     = get_query_var( 'item' ) ?: false;
 		$items    = \CommonsBooking\Repository\Item::getByLocation( $location->ID, true );
+		$itemIds = array_map(
+			function (\CommonsBooking\Model\Item $item) {
+				return $item->getPost()->ID;
+			},
+			$items
+		);
 
 		$args = [
 			'post'      => $post,
@@ -30,7 +36,13 @@ class Location extends View {
 			'actionUrl' => admin_url( 'admin.php' ),
 			'location'  => new \CommonsBooking\Model\Location( $location ),
 			'postUrl'   => get_permalink( $location ),
-			'type'      => Timeframe::BOOKING_ID
+			'type'      => Timeframe::BOOKING_ID,
+			'restrictions' => \CommonsBooking\Repository\Restriction::get(
+				[$location->ID],
+				$itemIds,
+				null,
+				true
+			)
 		];
 
 		// If there's no item selected, we'll show all available.
@@ -48,7 +60,7 @@ class Location extends View {
 		}
 
 		$calendarData          = Calendar::getCalendarDataArray(
-			$item ?: null,
+			array_key_exists('item', $args) ? $args['item'] : null,
 			$location,
 			date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE_START, time() ) ),
 			date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE, time() ) )

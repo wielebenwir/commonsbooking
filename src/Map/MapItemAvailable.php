@@ -97,7 +97,7 @@ class MapItemAvailable {
 				if ( $day['bookedDay'] ) {
 					$availability['status'] = self::ITEM_BOOKED;
 				} elseif( $day['partiallyBookedDay']){
-					$availabilty['status'] = self::ITEM_PARTIALLY_BOOKED;
+					$availability['status'] = self::ITEM_PARTIALLY_BOOKED;
 				} elseif ( $day['holiday'] || $day['locked'] ) {
 					$availability['status'] = self::LOCATION_CLOSED;
 				} else {
