@@ -532,7 +532,6 @@ class Booking extends Timeframe {
 				'name'       => esc_html__( 'Booking Code', 'commonsbooking' ),
 				'id'         => COMMONSBOOKING_METABOX_PREFIX . 'bookingcode',
 				'type'       => 'text',
-				'show_on_cb' => array( self::class, 'isOfTypeBooking' ),
 				'attributes' => array(
 					'readonly' => 'readonly'
 				)

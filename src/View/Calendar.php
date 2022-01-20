@@ -236,23 +236,28 @@ class Calendar {
 
 			// Check day state
 			if ( ! count( $data['slots'] ) ) {
-				$days_display[ $dayIterator ++ ] = "<span class='unavailable'></span>";
+				$days_display[ $dayIterator ++ ] = "<span class='is-locked'></span>";
 			} elseif ( $data['holiday'] ) {
-				$days_display[ $dayIterator ++ ] = "<span class='holiday'></span>";
-			} elseif ( $data['locked'] ) {
-				if ( $data['firstSlotBooked'] && $data['lastSlotBooked'] ) {
-					$days_display[ $dayIterator ++ ] = "<span class='blocked'></span>";
-				} elseif ( $data['partiallyBookedDay'] ) {
-					$days_display[ $dayIterator ++ ] = "<span class='booked'></span>";
-				}
+				$days_display[ $dayIterator ++ ] = "<span class='is-holiday'></span>";
+			} elseif ( $data['locked'] && $data['firstSlotBooked'] && $data['lastSlotBooked']) {
+				$days_display[ $dayIterator ++ ] = "<span class='is-booked'></span>";
+			} elseif ( $data['locked'] && $data['partiallyBookedDay']) {
+				$cssClass = "is-partially-booked-start";
+				if(!$data['firstSlotBooked'] && $data['lastSlotBooked']) $cssClass = "is-partially-booked-end";
+				$days_display[ $dayIterator ++ ] = "<span class='$cssClass'></span>";
 			} else {
-				$days_display[ $dayIterator ++ ] = "<span class='free'></span>";
+				$days_display[ $dayIterator ++ ] = "<span></span>";
+			}
+
+			// Stop when enddate (advanced booking days limit) is reached
+			if($day == $calendarData['endDate']) {
+				break;
 			}
 		}
 
 		// Show item as not available outside of timeframe timerange.
 		for ($dayIterator; $dayIterator < count($days_display); $dayIterator++) {
-			$days_display[ $dayIterator ] = "<span class='unavailable'></span>";
+			$days_display[ $dayIterator ] = "<span'is-locked'></span>";
 		}
 
 		$dayStr         = implode( $divider, $days_display );
@@ -347,7 +352,7 @@ class Calendar {
 	private static function getClosestBookableTimeFrameForToday($bookableTimeframes): ?\CommonsBooking\Model\Timeframe {
 		// Sort timeframes by startdate
 		usort( $bookableTimeframes, function ( $item1, $item2 ) {
-			return $item1->getStartDate() < $item2->getStartDate();
+			return abs(time() - $item1->getStartDate()) < abs(time() - $item2->getStartDate());
 		} );
 
 		return array_pop( $bookableTimeframes );

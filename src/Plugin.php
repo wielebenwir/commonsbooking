@@ -355,25 +355,28 @@ class Plugin {
 			);
 		}
 
-		// Add menu item for item categories
-		add_submenu_page(
-			'cb-dashboard',
-			esc_html__( 'Item Categories', 'commonsbooking' ),
-			esc_html__( 'Item Categories', 'commonsbooking' ),
-			'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-			admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::$postType . 's_category',
-			''
-		);
+		// Show categories only for admins
+		if(commonsbooking_isCurrentUserAdmin()) {
+			// Add menu item for item categories
+			add_submenu_page(
+				'cb-dashboard',
+				esc_html__( 'Item Categories', 'commonsbooking' ),
+				esc_html__( 'Item Categories', 'commonsbooking' ),
+				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::$postType . 's_category',
+				''
+			);
 
-		// Add menu item for location categories
-		add_submenu_page(
-			'cb-dashboard',
-			esc_html__( 'Location Categories', 'commonsbooking' ),
-			esc_html__( 'Location Categories', 'commonsbooking' ),
-			'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-			admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::$postType . 's_category',
-			''
-		);
+			// Add menu item for location categories
+			add_submenu_page(
+				'cb-dashboard',
+				esc_html__( 'Location Categories', 'commonsbooking' ),
+				esc_html__( 'Location Categories', 'commonsbooking' ),
+				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::$postType . 's_category',
+				''
+			);
+		}
 	}
 
 	/**
@@ -559,6 +562,9 @@ class Plugin {
 
 		// remove Row Actions
 		add_filter( 'post_row_actions', array( CustomPostType::class, 'modifyRowActions' ), 10, 2 );
+		  
+		// add custom image sizes
+		add_action( 'after_setup_theme', array( $this, 'AddImageSizes' ) );
 
 	}
 
@@ -716,5 +722,25 @@ class Plugin {
 	public function registerUserWidget() {
 		register_widget( '\CommonsBooking\Wordpress\Widget\UserWidget' );
 	}
+
+
+	function AddImageSizes() {
+
+		$crop = Settings::getOption('commonsbooking_options_templates', 'image_listing_crop') == 'on' ? true: false;
+
+		// image size for small item and location post images in listings
+		add_image_size( 
+			'cb_listing_small', 
+			Settings::getOption('commonsbooking_options_templates', 'image_listing_small_width'), 
+			Settings::getOption('commonsbooking_options_templates', 'image_listing_small_height'), 
+			$crop  );
+		
+		// image size for medium item and location post images in listings	
+		add_image_size( 
+			'cb_listing_medium', 
+			Settings::getOption('commonsbooking_options_templates', 'image_listing_medium_width'), 
+			Settings::getOption('commonsbooking_options_templates', 'image_listing_medium_height'), 
+			$crop  );
+	 }
 
 }

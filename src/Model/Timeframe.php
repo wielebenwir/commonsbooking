@@ -279,6 +279,33 @@ class Timeframe extends CustomPost {
 					return false;
 				}
 
+				// First we check if the item is already connected to another location to avoid overlapping bookable dates
+				$sameItemTimeframes = \CommonsBooking\Repository\Timeframe::get(
+					[],
+					[ $this->getItem()->ID  ],
+					[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
+					null,
+					true,
+					null,
+					['publish']
+				);
+
+				// check if timeframes of other locations overlap in date and return error message if true
+				foreach ($sameItemTimeframes as $sameItemTimeframe ) {
+								
+					if ( 
+						$this->getLocation() != $sameItemTimeframe->getLocation() && $this->hasTimeframeDateOverlap($this, $sameItemTimeframe) 
+					) {
+						set_transient( self::ERROR_TYPE,
+						/* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
+						sprintf( commonsbooking_sanitizeHTML( __( 'Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s',
+							'commonsbooking', 5 ) ), $sameItemTimeframe->ID, $sameItemTimeframe->post_title ) );
+					return false;
+	
+					}
+				}
+
+
 				// Get Timeframes with same location, item and a startdate
 				$existingTimeframes = \CommonsBooking\Repository\Timeframe::get(
 					[ $this->getLocation()->ID ],

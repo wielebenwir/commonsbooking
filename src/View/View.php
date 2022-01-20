@@ -93,12 +93,6 @@ abstract class View {
 						) {
 							$range['end_date'] = $timeframe->getEndDate();
 						}
-						// Otherwise create new range
-					} else {
-						$cptData[ $item->ID ]['ranges'][] = [
-							'start_date' => $timeframe->getStartDate(),
-							'end_date'   => $timeframe->getEndDate(),
-						];
 					}
 				}
 			}

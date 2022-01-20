@@ -2,11 +2,11 @@
 
 use CommonsBooking\Settings\Settings;
 
-$button_label = Settings::getOption('commonsbooking_options_templates', 'label-booking-button');
+$button_label = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'label-booking-button');
 $permalink    = add_query_arg ( 'location', $location->ID, get_the_permalink($item->ID) ); // booking link set to item detail page with location ID
 ?>
 
-<?php echo $location->thumbnail(); // div.thumbnail is printed by function ?>
+<?php echo $location->thumbnail('cb_listing_small'); // div.thumbnail is printed by function ?>
 
 
 
