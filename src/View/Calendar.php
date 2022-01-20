@@ -606,10 +606,12 @@ class Calendar {
 				$dayArray['bookedDay'] = false;
 			}
 
-			// Set partiallyBookedDay flag, if there is at least one slot that is of type bookedDay
+			// Set partiallyBookedDay flag, if there is at least one slot that is not bookable
 			if ( in_array( $timeFrameType, [
 				Timeframe::BOOKING_ID,
-				\CommonsBooking\Model\Restriction::TYPE_REPAIR
+				Timeframe::HOLIDAYS_ID,
+				Timeframe::REPAIR_ID,
+				\CommonsBooking\Model\Restriction::TYPE_REPAIR,
 			] ) ) {
 				$dayArray['partiallyBookedDay'] = true;
 			}
