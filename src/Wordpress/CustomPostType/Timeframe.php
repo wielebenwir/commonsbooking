@@ -98,10 +98,10 @@ class Timeframe extends CustomPostType {
 			'type'                                          => esc_html__( 'Type', 'commonsbooking' ),
 			'item-id'                                       => esc_html__( 'Item', 'commonsbooking' ),
 			'location-id'                                   => esc_html__( 'Location', 'commonsbooking' ),
-			'post_date'                                     => esc_html__( 'Bookingdate', 'commonsbooking' ),
+			//'post_date'                                     => esc_html__( 'Bookingdate', 'commonsbooking' ),
 			'repetition-start'                              => esc_html__( 'Start Date', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::REPETITION_END => esc_html__( 'End Date', 'commonsbooking' ),
-			'post_status'                                   => esc_html__( 'Booking Status', 'commonsbooking' ),
+			//'post_status'                                   => esc_html__( 'Status', 'commonsbooking' ),
 		];
 
 
@@ -246,19 +246,6 @@ class Timeframe extends CustomPostType {
 		// @TODO implement view.
 	}
 
-	/**
-	 * Adds filter dropdown // filter by type (eg. bookable, repair etc.) in timeframe List
-	 *
-	 * @return void
-	 */
-	public static function addAdminTypeFilter() {
-		Filter::renderFilter(
-			static::$postType,
-			esc_html__( 'Filter By Type ', 'commonsbooking' ),
-			'filter_type',
-			static::getTypes()
-		);
-	}
 
 	/**
 	 * Adds filter dropdown // filter by item in timeframe List
@@ -895,7 +882,6 @@ class Timeframe extends CustomPostType {
 		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
 		
 		// Add type filter to backend list view
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminLocationFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminStatusFilter' ) );
