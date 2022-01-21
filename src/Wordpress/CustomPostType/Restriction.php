@@ -48,7 +48,7 @@ class Restriction extends CustomPostType {
 		$this->listColumns = [
 			\CommonsBooking\Model\Restriction::META_TYPE                                          => esc_html__( 'Type', 'commonsbooking' ),
 			\CommonsBooking\Model\Restriction::META_ITEM_ID                                       => esc_html__( 'Item', 'commonsbooking' ),
-			\CommonsBooking\Model\Restriction::META_ITEM_ID                                   => esc_html__( 'Location', 'commonsbooking' ),
+			\CommonsBooking\Model\Restriction::META_LOCATION_ID                                   => esc_html__( 'Location', 'commonsbooking' ),
 			\CommonsBooking\Model\Restriction::META_START                              => esc_html__( 'Start Date', 'commonsbooking' ),
 			\CommonsBooking\Model\Restriction::META_END								 => esc_html__( 'End Date', 'commonsbooking' ),
 			\CommonsBooking\Model\Restriction::META_STATE                                   => esc_html__( 'Restriction Status', 'commonsbooking' ),
