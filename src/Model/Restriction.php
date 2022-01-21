@@ -13,6 +13,12 @@ class Restriction extends CustomPost {
 
 	const TYPE_HINT = 'hint';
 
+	const STATE_NONE = 'none';
+
+	const STATE_ACTIVE = 'active';
+
+	const STATE_SOLVED = 'solved';
+
 	const META_HINT = 'restriction-hint';
 
 	const META_START = 'restriction-start';
@@ -104,7 +110,7 @@ class Restriction extends CustomPost {
 	 */
 	public function isActive(): bool {
 		if ( $this->active == null ) {
-			$this->active = $this->getMeta( self::META_STATE ) ?: false;
+			$this->active = $this->getMeta( self::META_STATE ) === self::STATE_ACTIVE ?: false;
 		}
 
 		return $this->active;
@@ -281,7 +287,7 @@ class Restriction extends CustomPost {
 	 */
 	public function isCancelled(): bool {
 		if ( $this->canceled == null ) {
-			$this->canceled = $this->getMeta( self::META_STATE ) === '0' ?: false;
+			$this->canceled = $this->getMeta( self::META_STATE ) === self::STATE_SOLVED ?: false;
 		}
 
 		return $this->canceled;

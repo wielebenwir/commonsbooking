@@ -464,11 +464,8 @@ Set to <strong>Problem Solved</strong>, if the restriction is no longer in effec
 Depending on the selected status, affected users will receive corresponding notification emails.
 Select the desired status and then click the "Send" button to send the e-mail.<br>', 'commonsbooking' ) ),
 				'type'             => 'select',
-				'show_option_none' => true,
-				'options'          => array(
-					'1' => esc_html__( "Active", 'commonsbooking' ),
-					'0' => esc_html__( "Problem Solved", 'commonsbooking' ),
-				),
+				'show_option_none' => false,
+				'options'          => self::getStates(),
 			),
 			array(
 				'name'          => esc_html__( 'Send notification emails to users', 'commonsbooking' ),
@@ -492,6 +489,18 @@ Select the desired status and then click the "Send" button to send the e-mail.<b
 		return [
 			'repair' => esc_html__( 'Total breakdown', 'commonsbooking' ),
 			'hint'   => esc_html__( 'Notice', 'commonsbooking' ),
+		];
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function getStates() {
+
+		return [
+			'none' => esc_html__( 'None', 'commonsbooking' ),
+			'active'   => esc_html__( 'Active', 'commonsbooking' ),
+			'solved' => esc_html__( 'Problem solved', 'commonsbooking' ),
 		];
 	}
 
