@@ -1,5 +1,6 @@
 <?php
 /**
+ * Template: shortcode-items
  * Shortcode [cb_items]
  * Model: location
  *
@@ -33,6 +34,10 @@ $noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLU
 
 <?php
 if ($hasTimeFrames) {
+	/**
+	 * if this item has bookable timeframes we load the template timeframe-withlocation.php and 
+	 * set the variables used in this template
+	 */
     foreach ($templateData['data'] as $locationId => $data ) {
         $location = new \CommonsBooking\Model\Location($locationId);
         set_query_var( 'item', $item );

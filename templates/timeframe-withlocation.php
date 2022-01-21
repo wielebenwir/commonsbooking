@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Template: timeframe-withlocation
+ * 
+ * This template is included in parent template shortcode-items or shortcode-locations
+ *
+ * $data is set in parent template
+ */
+
+
 use CommonsBooking\Settings\Settings;
 
 $button_label = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'label-booking-button');
