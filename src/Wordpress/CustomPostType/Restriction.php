@@ -132,15 +132,11 @@ class Restriction extends CustomPostType {
 	 * Adds filter dropdown // filter by status in restrictions list 
 	 */
 	public static function addAdminStatusFilter() {
-		$values = [];
-		foreach ( \CommonsBooking\Model\Booking::$bookingStates as $bookingState ) {
-			$values[ $bookingState ] = $bookingState;
-		}
 		Filter::renderFilter(
 			static::$postType,
 			esc_html__( 'Filter By Status ', 'commonsbooking' ),
-			'filter_post_status',
-			$values
+			'filter_state',
+			static::getStates()
 		);
 	}
 
@@ -171,6 +167,20 @@ class Restriction extends CustomPostType {
 
 					foreach ( $this->getCustomFields() as $customField ) {
 						if ( $customField['id'] == \CommonsBooking\Model\Restriction::META_TYPE ) {
+							foreach ( $customField['options'] as $key => $label ) {
+								if ( $value == $key ) {
+									$output = $label;
+								}
+							}
+						}
+					}
+					echo $output;
+					break;
+				case \CommonsBooking\Model\Restriction::META_STATE:
+					$output = "-";
+
+					foreach ( $this->getCustomFields() as $customField ) {
+						if ( $customField['id'] == \CommonsBooking\Model\Restriction::META_STATE ) {
 							foreach ( $customField['options'] as $key => $label ) {
 								if ( $value == $key ) {
 									$output = $label;
@@ -226,9 +236,11 @@ class Restriction extends CustomPostType {
 			);
 			$meta_filters                    = [
 				\CommonsBooking\Model\Restriction::META_TYPE        => 'admin_filter_type',
+				\CommonsBooking\Model\Restriction::META_STATE		=> 'admin_filter_state',
 				\CommonsBooking\Model\Restriction::META_ITEM_ID     => 'admin_filter_item',
 				\CommonsBooking\Model\Restriction::META_LOCATION_ID => 'admin_filter_location',
 			];
+
 			foreach ( $meta_filters as $key => $filter ) {
 				if (
 					isset( $_GET[ $filter ] ) &&
