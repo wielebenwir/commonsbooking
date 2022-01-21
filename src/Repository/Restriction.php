@@ -81,7 +81,7 @@ class Restriction extends PostRepository {
 		return "INNER JOIN $table_postmeta pm2 ON
             pm2.post_id = pm1.id AND (                         
                 pm2.meta_key = '" . \CommonsBooking\Model\Restriction::META_STATE . "' AND
-                pm2.meta_value = 1
+                pm2.meta_value = '" . \CommonsBooking\Model\Restriction::STATE_ACTIVE . "'
             )";
 	}
 
