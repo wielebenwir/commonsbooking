@@ -93,18 +93,17 @@ abstract class View {
 						) {
 							$range['end_date'] = $timeframe->getEndDate();
 						}
-						// Otherwise create new range
-					} else {
-						$cptData[ $item->ID ]['ranges'][] = [
-							'start_date' => $timeframe->getStartDate(),
-							'end_date'   => $timeframe->getEndDate(),
-						];
 					}
 				}
 			}
 
 			//Remove duplicate ranges
 			$cptData[ $item->ID ]['ranges'] = array_unique( $cptData[ $item->ID ]['ranges'], SORT_REGULAR );
+
+			//sort ranges by starting date
+			usort($cptData[ $item->ID ]['ranges'], function($a,$b){
+				return $a['start_date'] <=> $b['start_date'];
+			});
 		}
 
 		return $cptData;

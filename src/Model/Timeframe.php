@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Model;
 
+use DateTime;
 use Exception;
 
 /**
@@ -17,6 +18,10 @@ class Timeframe extends CustomPost {
 	public const REPETITION_START = "repetition-start";
 
 	public const REPETITION_END = "repetition-end";
+
+	public const META_LOCATION_ID = 'location-id';
+
+	public const META_ITEM_ID = 'item-id';
 
 	/**
 	 * Return residence in a human readable format
@@ -45,19 +50,6 @@ class Timeframe extends CustomPost {
 		}
 
 		return $startDate;
-	}
-
-	/**
-	 * Returns end (repetition) date and does not respect advance booking days setting.
-	 * @return false|int
-	 */
-	public function getRawEndDate() {
-		$endDate = intval( $this->getMeta( self::REPETITION_END ) );
-		if ( (string) $endDate != $endDate ) {
-			$endDate = strtotime( $endDate );
-		}
-
-		return $endDate;
 	}
 
 	/**
@@ -102,17 +94,6 @@ class Timeframe extends CustomPost {
 		$advanceBookingDays --;
 
 		return strtotime( "+ " . $advanceBookingDays . " days", $calculationBase );
-	}
-
-	/**
-	 * Returns true, if the start date is earlier and the end date later than the latest possible booking date.
-	 * @return bool
-	 */
-	public function isBookable() {
-		$startDateTimestamp                 = $this->getStartDate();
-		$latestPossibleBookingDateTimestamp = $this->getLatestPossibleBookingDateTimestamp();
-
-		return $startDateTimestamp <= $latestPossibleBookingDateTimestamp;
 	}
 
 	/**
@@ -165,6 +146,30 @@ class Timeframe extends CustomPost {
 	 */
 	public static function getDateFormat() {
 		return get_option( 'date_format' );
+	}
+
+	/**
+	 * Returns end (repetition) date and does not respect advance booking days setting.
+	 * @return false|int
+	 */
+	public function getRawEndDate() {
+		$endDate = intval( $this->getMeta( self::REPETITION_END ) );
+		if ( (string) $endDate != $endDate ) {
+			$endDate = strtotime( $endDate );
+		}
+
+		return $endDate;
+	}
+
+	/**
+	 * Returns true, if the start date is earlier and the end date later than the latest possible booking date.
+	 * @return bool
+	 */
+	public function isBookable() {
+		$startDateTimestamp                 = $this->getStartDate();
+		$latestPossibleBookingDateTimestamp = $this->getLatestPossibleBookingDateTimestamp();
+
+		return $startDateTimestamp <= $latestPossibleBookingDateTimestamp;
 	}
 
 	/**
@@ -226,14 +231,6 @@ class Timeframe extends CustomPost {
 	 */
 	public function getType() {
 		return $this->getMeta( 'type' );
-	}
-
-	/**
-	 * Returns true if timeframe is full-day
-	 * @return boolean
-	 */
-	public function isFullDay() {
-		return $this->getMeta( 'full-day' ) == 'on';
 	}
 
 	/**
@@ -395,6 +392,14 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * Returns true if timeframe is full-day
+	 * @return boolean
+	 */
+	public function isFullDay() {
+		return $this->getMeta( 'full-day' ) == 'on';
+	}
+
+	/**
 	 * Checks if timeframes are overlapping in date range.
 	 *
 	 * @param $timeframe1
@@ -424,36 +429,11 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns weekdays array.
-	 * @return mixed
-	 */
-	public function getWeekDays() {
-		return $this->getMeta( 'weekdays' );
-	}
-
-	/**
 	 * Returns grit type id
 	 * @return mixed
 	 */
 	public function getGrid() {
 		return $this->getMeta( 'grid' );
-	}
-
-	/**
-	 * Returns grid size in hours.
-	 * @return int|null
-	 */
-	public function getGridSize(): ?int {
-		if ( $this->getGrid() == 0 ) {
-			$startTime = strtotime( $this->getMeta( 'start-time' ) );
-			$endTime   = strtotime( $this->getMeta( 'end-time' ) );
-
-			return intval( round( abs( $endTime - $startTime ) / 3600, 2 ) );
-		} elseif ( $this->isFullDay() ) {
-			return 24;
-		} else {
-			return intval( $this->getGrid() );
-		}
 	}
 
 	/**
@@ -486,6 +466,31 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * Returns weekdays array.
+	 * @return mixed
+	 */
+	public function getWeekDays() {
+		return $this->getMeta( 'weekdays' );
+	}
+
+	/**
+	 * Returns grid size in hours.
+	 * @return int|null
+	 */
+	public function getGridSize(): ?int {
+		if ( $this->getGrid() == 0 ) {
+			$startTime = strtotime( $this->getMeta( 'start-time' ) );
+			$endTime   = strtotime( $this->getMeta( 'end-time' ) );
+
+			return intval( round( abs( $endTime - $startTime ) / 3600, 2 ) );
+		} elseif ( $this->isFullDay() ) {
+			return 24;
+		} else {
+			return intval( $this->getGrid() );
+		}
+	}
+
+	/**
 	 * Returns true if booking codes shall be shown in frontend.
 	 * @return bool
 	 */
@@ -496,11 +501,11 @@ class Timeframe extends CustomPost {
 	/**
 	 * Returns repetition-start \DateTime.
 	 *
-	 * @return \DateTime
+	 * @return DateTime
 	 */
-	public function getStartDateDateTime(): \DateTime {
+	public function getStartDateDateTime(): DateTime {
 		$startDateString = $this->getMeta( 'repetition-start' );
-		$startDate       = new \DateTime();
+		$startDate       = new DateTime();
 		$startDate->setTimestamp( $startDateString );
 
 		return $startDate;
@@ -509,15 +514,15 @@ class Timeframe extends CustomPost {
 	/**
 	 * Returns start-time \DateTime.
 	 *
-	 * @return \DateTime
+	 * @return DateTime
 	 */
-	public function getStartTimeDateTime(): \DateTime {
+	public function getStartTimeDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
 		$startTimeString = $this->getMeta( 'start-time' );
-		$startDate       = new \DateTime();
+		$startDate       = new DateTime();
 		$startDate->setTimestamp( $startDateString );
 		if ( $startTimeString ) {
-			$startTime = new \DateTime();
+			$startTime = new DateTime();
 			$startTime->setTimestamp( strtotime( $startTimeString ) );
 			$startDate->setTime( $startTime->format( 'H' ), $startTime->format( 'i' ) );
 		}
@@ -528,11 +533,11 @@ class Timeframe extends CustomPost {
 	/**
 	 * Returns end-date \DateTime.
 	 *
-	 * @return \DateTime
+	 * @return DateTime
 	 */
-	public function getEndDateDateTime(): \DateTime {
+	public function getEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
-		$endDate       = new \DateTime();
+		$endDate       = new DateTime();
 		$endDate->setTimestamp( $endDateString );
 
 		return $endDate;
@@ -543,14 +548,14 @@ class Timeframe extends CustomPost {
 	 *
 	 * @param null $endDateString
 	 *
-	 * @return \DateTime
+	 * @return DateTime
 	 */
-	public function getEndTimeDateTime( $endDateString = null ): \DateTime {
+	public function getEndTimeDateTime( $endDateString = null ): DateTime {
 		$endTimeString = $this->getMeta( 'end-time' );
-		$endDate       = new \DateTime();
+		$endDate       = new DateTime();
 
 		if ( $endTimeString ) {
-			$endTime = new \DateTime();
+			$endTime = new DateTime();
 			$endTime->setTimestamp( strtotime( $endTimeString ) );
 			$endDate->setTime( $endTime->format( 'H' ), $endTime->format( 'i' ) );
 		} else {
