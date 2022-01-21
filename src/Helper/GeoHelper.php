@@ -37,9 +37,13 @@ class GeoHelper {
 		);
 		$geoCoder = new StatefulGeocoder( $provider, 'en' );
 
-		$addresses = $geoCoder->geocodeQuery( GeocodeQuery::create( $addressString ) );
-		if ( ! $addresses->isEmpty() ) {
-			return $addresses->first();
+		try {
+			$addresses = $geoCoder->geocodeQuery( GeocodeQuery::create( $addressString ) );
+			if ( ! $addresses->isEmpty() ) {
+				return $addresses->first();
+			}
+		} catch (\Exception $exception) {
+			// Nothing to do in this case
 		}
 
 		return null;

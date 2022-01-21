@@ -289,4 +289,28 @@ abstract class CustomPostType {
 		return false;
 	}
 
+	/**
+	 * Returns Model for CPT.
+	 *
+	 * @param WP_Post $post
+	 *
+	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|\CommonsBooking\Model\Restriction|\CommonsBooking\Model\Timeframe
+	 * @throws \Exception
+	 */
+	public static function getModel(WP_Post $post) {
+		switch($post->post_type) {
+			case Booking::$postType:
+				return new \CommonsBooking\Model\Booking($post);
+			case Item::$postType:
+				return new \CommonsBooking\Model\Item($post);
+			case Location::$postType:
+				return new \CommonsBooking\Model\Location($post);
+			case Restriction::$postType:
+				return new \CommonsBooking\Model\Restriction($post);
+			case Timeframe::$postType:
+				return new \CommonsBooking\Model\Timeframe($post);
+		}
+		throw new \Exception('No suitable model found.');
+	}
+
 }

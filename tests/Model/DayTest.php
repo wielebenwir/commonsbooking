@@ -10,11 +10,48 @@ class DayTest extends CustomPostTypeTest {
 
 	private $instance;
 
-	protected $timeframeId;
+	protected $bookableTimeframeForCurrentDayId;
+
+	protected $bookableTimeframeNoRepSingleDayTomorrowId;
+
+	protected $bookableTimeframeNoRepSingleDayTodayId;
+
+	protected $bookableTimeframeNoRepStartsYesterdayEndsTomorrowId;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->timeframeId = $this->createBookableTimeFrameIncludingCurrentDay();
+		$this->bookableTimeframeForCurrentDayId = $this->createBookableTimeFrameIncludingCurrentDay();
+
+		$this->bookableTimeframeNoRepSingleDayTomorrowId = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
+			null,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			"norep"
+		);
+
+		$this->bookableTimeframeNoRepSingleDayTodayId = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime(self::CURRENT_DATE),
+			null,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			"norep"
+		);
+
+		$this->bookableTimeframeNoRepStartsYesterdayEndsTomorrowId = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-1 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			"norep"
+		);
+
 
 		$this->instance = new Day(
 			self::CURRENT_DATE,
@@ -40,7 +77,16 @@ class DayTest extends CustomPostTypeTest {
 	}
 
 	public function testIsInTimeframe() {
-		$timeframe = new Timeframe( $this->timeframeId );
+		$timeframe = new Timeframe( $this->bookableTimeframeForCurrentDayId );
+		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
+
+		$timeframe = new Timeframe( $this->bookableTimeframeNoRepSingleDayTomorrowId );
+		$this->assertFalse( $this->instance->isInTimeframe( $timeframe ) );
+
+		$timeframe = new Timeframe( $this->bookableTimeframeNoRepSingleDayTodayId );
+		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
+
+		$timeframe = new Timeframe( $this->bookableTimeframeNoRepStartsYesterdayEndsTomorrowId );
 		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
 	}
 
@@ -49,7 +95,7 @@ class DayTest extends CustomPostTypeTest {
 	}
 
 	public function testGetTimeframes() {
-		$this->assertTrue(count($this->instance->getTimeframes()) == 1);
+		$this->assertTrue(count($this->instance->getTimeframes()) == 3);
 	}
 
 	public function testGetRestrictions() {
