@@ -510,7 +510,7 @@ Select the desired status and then click the "Send" button to send the e-mail.<b
 	public static function getStates() {
 
 		return [
-			'none' => esc_html__( 'None', 'commonsbooking' ),
+			'none' => esc_html__( 'Not active', 'commonsbooking' ),
 			'active'   => esc_html__( 'Active', 'commonsbooking' ),
 			'solved' => esc_html__( 'Problem solved', 'commonsbooking' ),
 		];

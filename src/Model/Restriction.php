@@ -105,7 +105,10 @@ class Restriction extends CustomPost {
 		return ! $this->isActive();
 	}
 
+
 	/**
+	 * returns true if restriction is active
+	 *
 	 * @return bool
 	 */
 	public function isActive(): bool {
@@ -118,6 +121,8 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns true if restriction ist active.
+	 * TODO this function seems unused in restriction context. Check if it can be removed @markus-mw
+	 * 
 	 * @return bool
 	 */
 	public function isLocked(): bool {
@@ -195,7 +200,7 @@ class Restriction extends CustomPost {
 	 * @return mixed
 	 */
 	public function getItemId() {
-		return self::getMeta( self::META_ITEM_ID );
+		return $this->getMeta( self::META_ITEM_ID );
 	}
 
 	/**
@@ -217,7 +222,7 @@ class Restriction extends CustomPost {
 	 * @return mixed
 	 */
 	public function getLocationId() {
-		return self::getMeta( self::META_LOCATION_ID );
+		return $this->getMeta( self::META_LOCATION_ID );
 	}
 
 	/**
