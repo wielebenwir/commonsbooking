@@ -38,7 +38,7 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Return Start (repetition) date
+	 * Return Start (repetition) date timestamp
 	 *
 	 * @return string
 	 */

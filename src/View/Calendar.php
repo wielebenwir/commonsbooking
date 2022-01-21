@@ -209,7 +209,8 @@ class Calendar {
 			$item->ID,
 			$locationId,
 			$today,
-			date( 'Y-m-d', strtotime( '+' . $days . ' days', time() ) )
+			date( 'Y-m-d', strtotime( '+' . $days . ' days', time() ) ),
+			true
 		);
 
 		$gotStartDate = false;
@@ -271,11 +272,14 @@ class Calendar {
 	 *
 	 * @param null $item
 	 * @param null $location
+	 * @param string $startDateString YYYY-MM-DD Format
+	 * @param string $endDateString YYYY-MM-DD Format
+	 * @param bool $keepDaterange
 	 *
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getCalendarDataArray( $item, $location, $startDateString, $endDateString ) {
+	public static function getCalendarDataArray( $item, $location, string $startDateString, string $endDateString, bool $keepDaterange = false ): array {
 		if ( $item instanceof WP_Post || $item instanceof CustomPost ) {
 			$item = $item->ID;
 		}
@@ -290,6 +294,7 @@ class Calendar {
 
 		$startDate = new Day( $startDateString );
 		$endDate   = new Day( $endDateString );
+		$advanceBookingDays = null;
 
 		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::get(
 			[ $location ],
@@ -306,27 +311,29 @@ class Calendar {
 
 			// Check if start-/enddate was requested, then don't change it
 			// otherwise start with current day
-			$startDateTimestamp = time();
-			if($closestBookableTimeframe->getStartDate() > $startDateTimestamp) {
-				$startDateTimestamp = $closestBookableTimeframe->getStartDate();
+			if(!$keepDaterange) {
+				$startDateTimestamp = time();
+				if($closestBookableTimeframe->getStartDate() > $startDateTimestamp) {
+					$startDateTimestamp = $closestBookableTimeframe->getStartDate();
+				}
+
+				if ( $startDateTimestamp > strtotime( $startDate->getDate() ) ) {
+					$startDate = new Day( date( 'Y-m-d', $startDateTimestamp ) );
+				}
+
+				// Last day of month after next as default for calendar view
+				// -> we just need to ensure, that pagination is possible
+				$endDateTimestamp = self::getDefaultCalendarEnddateTimestamp($startDate);
+
+				// get max advance booking days based on user defined max days in closest bookable timeframe
+				$latestPossibleBookingDateTimestamp = $closestBookableTimeframe->getLatestPossibleBookingDateTimestamp();
+				if($latestPossibleBookingDateTimestamp < $endDateTimestamp) {
+					$endDateTimestamp = $latestPossibleBookingDateTimestamp;
+				}
+
+				$endDateString = date( 'Y-m-d', $endDateTimestamp );
+				$endDate       = new Day( $endDateString );
 			}
-
-			if ( $startDateTimestamp > strtotime( $startDate->getDate() ) ) {
-				$startDate = new Day( date( 'Y-m-d', $startDateTimestamp ) );
-			}
-
-			// Last day of month after next as default for calendar view
-			// -> we just need to ensure, that pagination is possible
-			$endDateTimestamp = self::getDefaultCalendarEnddateTimestamp($startDate);
-
-			// get max advance booking days based on user defined max days in closest bookable timeframe
-			$latestPossibleBookingDateTimestamp = $closestBookableTimeframe->getLatestPossibleBookingDateTimestamp();
-			if($latestPossibleBookingDateTimestamp < $endDateTimestamp) {
-				$endDateTimestamp = $latestPossibleBookingDateTimestamp;
-			}
-
-			$endDateString = date( 'Y-m-d', $endDateTimestamp );
-			$endDate       = new Day( $endDateString );
 		}
 
 		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays);
