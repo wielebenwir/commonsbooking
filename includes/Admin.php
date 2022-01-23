@@ -34,7 +34,7 @@ function commonsbooking_admin() {
 	);
 }
 
-add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
+	add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
 
 /**
  * commonsbooking_sanitizeHTML

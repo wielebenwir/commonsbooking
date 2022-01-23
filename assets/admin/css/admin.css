@@ -5972,4 +5972,61 @@ select[readonly] {
   display: none;
 }
 
+/* Booking form  */
+/**
+ * Plugin list update message 
+ *
+ */
+/* line 6, ../sass/partials/_plugin_update.scss */
+.cb-major-update-warning {
+  margin-bottom: 5px;
+  max-width: 1000px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+/* line 12, ../sass/partials/_plugin_update.scss */
+.cb-major-update-warning__separator {
+  margin: 15px -12px;
+}
+
+/* line 14, ../sass/partials/_plugin_update.scss */
+.cb-major-update-warning__icon {
+  font-size: 17px;
+  margin-left: 9px;
+  margin-right: 5px;
+}
+
+/* line 18, ../sass/partials/_plugin_update.scss */
+.cb-major-update-warning__title {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* line 21, ../sass/partials/_plugin_update.scss */
+.cb-major-update-warning + p {
+  display: none;
+}
+
+/* line 24, ../sass/partials/_plugin_update.scss */
+.notice-success .cb-major-update-warning__separator {
+  border: 1px solid #46b450;
+}
+
+/* line 27, ../sass/partials/_plugin_update.scss */
+.notice-success .cb-major-update-warning__icon {
+  color: #79ba49;
+}
+
+/* line 30, ../sass/partials/_plugin_update.scss */
+.notice-warning .cb-major-update-warning__separator {
+  border: 1px solid #ffb900;
+}
+
+/* line 33, ../sass/partials/_plugin_update.scss */
+.notice-warning .cb-major-update-warning__icon {
+  color: #00b963;
+}
+
 /*# sourceMappingURL=admin.css.map */

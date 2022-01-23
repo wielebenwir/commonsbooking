@@ -1,0 +1,35 @@
+/**
+ * Plugin list update message 
+ *
+ */
+
+ .cb-major-update-warning {
+    margin-bottom: 5px;
+    max-width: 1000px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex; }
+    .cb-major-update-warning__separator {
+      margin: 15px -12px; }
+    .cb-major-update-warning__icon {
+      font-size: 17px;
+      margin-left: 9px;
+      margin-right: 5px; }
+    .cb-major-update-warning__title {
+      font-weight: 600;
+      margin-bottom: 10px; }
+    .cb-major-update-warning + p {
+      display: none; }
+
+    .notice-success .cb-major-update-warning__separator {
+    border: 1px solid #46b450; }
+    
+    .notice-success .cb-major-update-warning__icon {
+    color: #79ba49; }
+    
+    .notice-warning .cb-major-update-warning__separator {
+    border: 1px solid #ffb900; }
+    
+    .notice-warning .cb-major-update-warning__icon {
+    color: #00b963; }
+      
