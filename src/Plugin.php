@@ -779,10 +779,11 @@ class Plugin {
 					printf(
 						/* translators: %1$s Link open tag, %2$s: Link close tag. */
 						commonsbooking_sanitizeHTML(__(
-							'
-					The CommonsBooking update to version 2.6 has a lot of new features and changes on some templates.<br>
-					If you haven\'t changed any template files, everything should continue to work as before.  Additionally, you get new features like reminder emails, restriction management, advance booking limits and more.
-					<br><br>We highly recommend you <strong>%1$sread the update to version 2.6 information%2$s </strong> and make a backup of your site before upgrading.',
+                            '
+					This CommonsBooking update has a lot of new features and changes on some templates.<br>
+					If you have modified any template files, please backup and check them after update. <br>
+                    This update contains new new features like reminder emails, restriction management, advance booking limits and more.
+					<br><br>We highly recommend you <strong>%1$sread the update to version information%2$s </strong> and make a backup of your site before upgrading.',
 							'commonsbooking'
 						)),
 						'<a target="_blank" href="https://commonsbooking.org/docs/installation/update-info/">',
