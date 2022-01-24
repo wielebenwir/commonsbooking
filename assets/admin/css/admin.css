@@ -5909,6 +5909,63 @@ a.ui-button:active,
   font-weight: bold;
 }
 
+/* line 32, ../sass/partials/_dashboard.scss */
+.cb_welcome-panel {
+  position: relative;
+  overflow: auto;
+  margin: 16px 0;
+  padding: 23px 10px 0;
+  border: 1px solid #c3c4c7;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  background: #fff;
+  font-size: 13px;
+  line-height: 1.7;
+}
+/* line 44, ../sass/partials/_dashboard.scss */
+.cb_welcome-panel h3 {
+  margin: 1.33em 0 0;
+  font-size: 16px;
+}
+/* line 50, ../sass/partials/_dashboard.scss */
+.cb_welcome-panel .cb_welcome-panel-content {
+  margin-left: 13px;
+  max-width: 1500px;
+}
+/* line 55, ../sass/partials/_dashboard.scss */
+.cb_welcome-panel .cb_welcome-panel-column-container {
+  clear: both;
+  position: relative;
+}
+/* line 60, ../sass/partials/_dashboard.scss */
+.cb_welcome-panel .cb_welcome-panel-column {
+  width: 32%;
+  min-width: 200px;
+  float: left;
+}
+/* line 65, ../sass/partials/_dashboard.scss */
+.cb_welcome-panel .cb_welcome-panel-column p {
+  margin-top: 7px;
+  color: #3c434a;
+}
+/* line 70, ../sass/partials/_dashboard.scss */
+.cb_welcome-panel .cb_welcome-panel-column ul {
+  margin: .8em 1em 1em 0;
+}
+/* line 74, ../sass/partials/_dashboard.scss */
+.cb_welcome-panel .cb_welcome-panel-column li {
+  line-height: 1.14285714;
+  list-style-type: none;
+  padding: 0 0 8px;
+}
+/* line 79, ../sass/partials/_dashboard.scss */
+.cb_welcome-panel .cb_welcome-panel-column li a {
+  text-decoration: none;
+}
+/* line 87, ../sass/partials/_dashboard.scss */
+.cb_welcome-panel .cb_welcome-panel-column:first-child {
+  width: 36%;
+}
+
 /* Timeframe Form */
 /**
  * Timeframe form 
