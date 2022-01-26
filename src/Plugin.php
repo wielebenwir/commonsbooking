@@ -782,8 +782,8 @@ class Plugin {
                             '
 					This CommonsBooking update has a lot of new features and changes on some templates.<br>
 					If you have modified any template files, please backup and check them after update. <br>
-                    This update contains new new features like reminder emails, restriction management, advance booking limits and more.
-					<br><br>We highly recommend you <strong>%1$sread the update to version information%2$s </strong> and make a backup of your site before upgrading.',
+                    This update contains new features like reminder emails, restriction management, advance booking limits and more.
+					<br><br>We highly recommend you to <strong>%1$sread the update information%2$s </strong> and make a backup of your site before upgrading.',
 							'commonsbooking'
 						)),
 						'<a target="_blank" href="https://commonsbooking.org/docs/installation/update-info/">',
