@@ -578,7 +578,8 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'        => esc_html__( 'End date', 'commonsbooking' ),
-				'desc'        => esc_html__( 'Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.', 'commonsbooking' ),
+                'desc'        => commonsbooking_sanitizeHTML( __('Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.
+                <br><strong>Notice:</strong> If the end date is empty and no repetition has been selected, this time frame applies only to the set start date. Only if a repetition is selected and the end date is empty, the repetition will be repeated infinitely.', 'commonsbooking') ),
 				'id'          => "repetition-end",
 				'type'        => 'text_date_timestamp',
 				'time_format' => get_option( 'time_format' ),
