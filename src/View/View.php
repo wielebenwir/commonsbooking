@@ -35,17 +35,20 @@ abstract class View {
 	/**
 	 * Generates data needed for shortcode listing.
 	 *
-	 * @param $cpt
+	 * @param \CommonsBooking\Model\Item|\CommonsBooking\Model\Location $cpt
+	 * @param string $type
 	 *
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getShortcodeData( $cpt, $type ) {
+	public static function getShortcodeData( $cpt, string $type ): array {
 		$cptData    = [];
 		$timeframes = $cpt->getBookableTimeframes( true );
 		/** @var Timeframe $timeframe */
 		foreach ( $timeframes as $timeframe ) {
-			if(!$timeframe->getStartDate()) continue;
+			if ( ! $timeframe->getStartDate() ) {
+				continue;
+			}
 
 			$item = $timeframe->{'get' . $type}();
 
@@ -66,57 +69,54 @@ abstract class View {
 					],
 				];
 			} else {
-				foreach ( $cptData[ $item->ID ]['ranges'] as $key => $range ) {
-					$timeframeStartDate = $timeframe->getStartDate();
-					$timeframeEndDate = $timeframe->getEndDate();
+				$addRange           = true;
+				$timeframeStartDate = $timeframe->getStartDate();
+				$timeframeEndDate   = $timeframe->getEndDate();
 
+				foreach ( $cptData[ $item->ID ]['ranges'] as $key => $range ) {
 					// Check if Timeframe overlaps or differs max. 1 day with existing one.
 					$overlaps =
+						// Startdate is in range
 						(
 							$timeframeStartDate >= ( $range['start_date'] - 86400 ) &&
 							$timeframeStartDate <= ( $range['end_date'] + 86400 )
 						) ||
+						// Enddate is in range
 						(
 							$timeframeEndDate >= ( $range['start_date'] - 86400 ) &&
 							$timeframeEndDate <= ( $range['end_date'] + 86400 )
 						) ||
+						// Range and Timeframe have no enddate -> must overlap
 						(
-							$range['end_date'] == false && $timeframeEndDate == false &&
-							$timeframeStartDate <= $range['start_date']
+							$range['end_date'] == false && $timeframeEndDate == false
 						);
 
 					// If timeframe overlaps, check if we need to extend existing one.
 					if ( $overlaps ) {
+						$addRange = false;
+
 						if (
 							! $range['start_date'] ||
 							$range['start_date'] > $timeframeStartDate
 						) {
-							$cptData[ $item->ID ]['ranges'][$key]['start_date'] = $timeframeStartDate;
+							$cptData[ $item->ID ]['ranges'][ $key ]['start_date'] = $timeframeStartDate;
 						}
 
 						if (
 							! $range['end_date'] ||
 							$range['end_date'] < $timeframeStartDate
 						) {
-							$cptData[ $item->ID ]['ranges'][$key]['end_date'] = $timeframeEndDate;
-						}
-						// Otherwise create new range
-					} else {
-						// Only add new range if it's not starting after a repeating timeframe without an enddate
-						if(
-							!(
-								$range['end_date'] == false &&
-								$timeframeEndDate == false &&
-								$timeframe->getRepetition() !== \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTimeFrameRepetitions()['norep'] &&
-								$timeframeStartDate >= $range['start_date']
-							)
-						) {
-							$cptData[ $item->ID ]['ranges'][] = [
-								'start_date' => $timeframeStartDate,
-								'end_date'   => $timeframeEndDate,
-							];
+							$cptData[ $item->ID ]['ranges'][ $key ]['end_date'] = $timeframeEndDate;
 						}
 					}
+				}
+
+				// Only add new range if it's not starting after a repeating timeframe without an enddate
+				if ( $addRange ) {
+					$cptData[ $item->ID ]['ranges'][] = [
+						'start_date' => $timeframeStartDate,
+						'end_date'   => $timeframeEndDate,
+					];
 				}
 			}
 
@@ -124,9 +124,9 @@ abstract class View {
 			$cptData[ $item->ID ]['ranges'] = array_unique( $cptData[ $item->ID ]['ranges'], SORT_REGULAR );
 
 			//sort ranges by starting date
-			usort($cptData[ $item->ID ]['ranges'], function($a,$b){
+			usort( $cptData[ $item->ID ]['ranges'], function ( $a, $b ) {
 				return $a['start_date'] <=> $b['start_date'];
-			});
+			} );
 		}
 
 		return $cptData;
