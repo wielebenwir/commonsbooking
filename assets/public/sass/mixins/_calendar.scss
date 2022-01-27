@@ -84,7 +84,8 @@
 
 @mixin day-is-holiday {
     color: var(--litepickerDayIsHolidayColor);
-    background: var(--litepickerDayIsHolidayColorBg);
+    background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
+    background-size: 5px 5px;
     &:hover {
         cursor: not-allowed;
         box-shadow: none;
