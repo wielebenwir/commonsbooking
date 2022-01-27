@@ -23,6 +23,8 @@ class Timeframe extends CustomPost {
 
 	public const META_ITEM_ID = 'item-id';
 
+	public const META_REPETITION = 'timeframe-repetition';
+
 	/**
 	 * Return residence in a human readable format
 	 *
@@ -504,7 +506,7 @@ class Timeframe extends CustomPost {
 	 * @return DateTime
 	 */
 	public function getStartDateDateTime(): DateTime {
-		$startDateString = $this->getMeta( 'repetition-start' );
+		$startDateString = $this->getMeta( self::REPETITION_START );
 		$startDate       = new DateTime();
 		$startDate->setTimestamp( $startDateString );
 
@@ -592,4 +594,11 @@ class Timeframe extends CustomPost {
 		return $admins;
 	}
 
+	/**
+	 * Returns type of repetition
+	 * @return mixed
+	 */
+	public function getRepetition() {
+		return $this->getMeta( self::META_REPETITION);
+	}
 }
