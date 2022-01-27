@@ -66,32 +66,55 @@ abstract class View {
 					],
 				];
 			} else {
-				foreach ( $cptData[ $item->ID ]['ranges'] as &$range ) {
+				foreach ( $cptData[ $item->ID ]['ranges'] as $key => $range ) {
+					$timeframeStartDate = $timeframe->getStartDate();
+					$timeframeEndDate = $timeframe->getEndDate();
+
 					// Check if Timeframe overlaps or differs max. 1 day with existing one.
 					$overlaps =
 						(
-							$timeframe->getStartDate() >= ( $range['start_date'] - 86400 ) &&
-							$timeframe->getStartDate() <= ( $range['end_date'] + 86400 )
+							$timeframeStartDate >= ( $range['start_date'] - 86400 ) &&
+							$timeframeStartDate <= ( $range['end_date'] + 86400 )
 						) ||
 						(
-							$timeframe->getEndDate() >= ( $range['start_date'] - 86400 ) &&
-							$timeframe->getEndDate() <= ( $range['end_date'] + 86400 )
+							$timeframeEndDate >= ( $range['start_date'] - 86400 ) &&
+							$timeframeEndDate <= ( $range['end_date'] + 86400 )
+						) ||
+						(
+							$range['end_date'] == false && $timeframeEndDate == false &&
+							$timeframeStartDate <= $range['start_date']
 						);
 
 					// If timeframe overlaps, check if we need to extend existing one.
 					if ( $overlaps ) {
 						if (
 							! $range['start_date'] ||
-							$range['start_date'] > $timeframe->getStartDate()
+							$range['start_date'] > $timeframeStartDate
 						) {
-							$range['start_date'] = $timeframe->getStartDate();
+							$cptData[ $item->ID ]['ranges'][$key]['start_date'] = $timeframeStartDate;
 						}
 
 						if (
 							! $range['end_date'] ||
-							$range['end_date'] < $timeframe->getStartDate()
+							$range['end_date'] < $timeframeStartDate
 						) {
-							$range['end_date'] = $timeframe->getEndDate();
+							$cptData[ $item->ID ]['ranges'][$key]['end_date'] = $timeframeEndDate;
+						}
+						// Otherwise create new range
+					} else {
+						// Only add new range if it's not starting after a repeating timeframe without an enddate
+						if(
+							!(
+								$range['end_date'] == false &&
+								$timeframeEndDate == false &&
+								$timeframe->getRepetition() !== \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTimeFrameRepetitions()['norep'] &&
+								$timeframeStartDate >= $range['start_date']
+							)
+						) {
+							$cptData[ $item->ID ]['ranges'][] = [
+								'start_date' => $timeframeStartDate,
+								'end_date'   => $timeframeEndDate,
+							];
 						}
 					}
 				}
