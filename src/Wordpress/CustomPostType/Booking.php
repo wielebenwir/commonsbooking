@@ -281,11 +281,11 @@ class Booking extends Timeframe {
 		add_shortcode( 'cb_bookings', array( \CommonsBooking\View\Booking::class, 'shortcode' ) );
 
 		// Add type filter to backend list view
-		add_action( 'restrict_manage_posts', array( static::class, 'addAdminTypeFilter' ) );
+		//add_action( 'restrict_manage_posts', array( static::class, 'addAdminTypeFilter' ) );
 		add_action( 'restrict_manage_posts', array( static::class, 'addAdminItemFilter' ) );
 		add_action( 'restrict_manage_posts', array( static::class, 'addAdminLocationFilter' ) );
-		add_action( 'restrict_manage_posts', array( static::class, 'addAdminStatusFilter' ) );
 		add_action( 'restrict_manage_posts', array( static::class, 'addAdminDateFilter' ) );
+        add_action( 'restrict_manage_posts', array( static::class, 'addAdminStatusFilter' ) );
 		add_action( 'pre_get_posts', array( static::class, 'filterAdminList' ) );
 
 		// show permanent admin notice

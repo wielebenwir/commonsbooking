@@ -202,7 +202,11 @@ class Timeframe extends CustomPostType {
 		// @TODO implement view.
 	}
 
-	/**
+	
+    
+    
+    
+    /**
 	 * Adds filter dropdown // filter by type (eg. bookable, repair etc.) in timeframe List
 	 *
 	 * @return void
@@ -212,7 +216,7 @@ class Timeframe extends CustomPostType {
 			static::$postType,
 			esc_html__( 'Filter By Type ', 'commonsbooking' ),
 			'filter_type',
-			static::getTypes()
+            static::getTypesforSelectField(),
 		);
 	}
 
