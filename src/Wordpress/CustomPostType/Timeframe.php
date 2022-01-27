@@ -87,10 +87,11 @@ class Timeframe extends CustomPostType {
 			'type'                                            => esc_html__( 'Type', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::META_ITEM_ID     => esc_html__( 'Item', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::META_LOCATION_ID => esc_html__( 'Location', 'commonsbooking' ),
-			'post_date'                                       => esc_html__( 'Bookingdate', 'commonsbooking' ),
 			'repetition-start'                                => esc_html__( 'Start Date', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::REPETITION_END   => esc_html__( 'End Date', 'commonsbooking' ),
-			'post_status'                                     => esc_html__( 'Booking Status', 'commonsbooking' ),
+			'timeframe-max-days'							  => esc_html__( 'Max. Booking Duration', 'commonsbooking' ),
+			'timeframe-advance-booking-days'				  => esc_html__( 'Days Booking In Advance',  'commonsbooking' ),
+
 		];
 
 
@@ -271,6 +272,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by location in timeframe List
+	 * DEPRECATED! Could not remove without WP throwing an error.
 	 */
 	public static function addAdminStatusFilter() {
 		$values = [];
@@ -363,19 +365,6 @@ class Timeframe extends CustomPostType {
 					'value'   => strtotime( sanitize_text_field( $_GET['admin_filter_enddate'] ) ),
 					'compare' => "<=",
 				);
-			}
-
-			// Post field filtering
-			$post_filters = [
-				'post_status' => 'admin_filter_post_status',
-			];
-			foreach ( $post_filters as $key => $filter ) {
-				if (
-					isset( $_GET[ $filter ] ) &&
-					$_GET[ $filter ] != ''
-				) {
-					$query->query_vars[ $key ] = sanitize_text_field( $_GET[ $filter ] );
-				}
 			}
 
 			// Check if current user is allowed to see posts
@@ -894,7 +883,6 @@ class Timeframe extends CustomPostType {
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminLocationFilter' ) );
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminStatusFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminDateFilter' ) );
 		add_action( 'pre_get_posts', array( self::class, 'filterAdminList' ) );
 
