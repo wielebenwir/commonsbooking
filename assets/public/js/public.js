@@ -1762,10 +1762,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 resetBtnCallback: () => {
                     jQuery("#booking-form").hide(), jQuery(".cb-notice.date-select").show();
                 },
-                onRender: function() {
-                    globalCalendarData.onRender ? globalCalendarData.onRender < 4 && (jQuery(".day-item.is-start-date").removeClass("is-start-date"), 
-                    globalCalendarData.onRender++) : globalCalendarData.onRender = 1;
-                },
                 onChangeMonth: function(date, idx) {
                     fadeOutCalendar();
                     const startDate = moment(date.format("YYYY-MM-DD")).format("YYYY-MM-DD"), calStartDate = moment(date.format("YYYY-MM-DD")).date(0).format("YYYY-MM-DD"), calEndDate = moment(date.format("YYYY-MM-DD")).add(numberOfMonths, "months").date(1).format("YYYY-MM-DD");
