@@ -25,6 +25,8 @@ class Timeframe extends CustomPost {
 
 	public const META_REPETITION = 'timeframe-repetition';
 
+	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
+
 	/**
 	 * Return residence in a human readable format
 	 *

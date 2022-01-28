@@ -10,18 +10,12 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 class ViewTest extends CustomPostTypeTest {
 
-	protected $noRepTimeframeInTwoDaysId;
-
-	protected $noRepTimeframeInFourDaysId;
-
-	protected $noRepTimeframeInEightDaysId;
-
 	protected function setUp() {
 		parent::setUp();
 
 		$now = time();
 
-		$this->noRepTimeframeInTwoDaysId = self::createTimeframe(
+		$this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '+2 days midnight', $now),
@@ -31,7 +25,7 @@ class ViewTest extends CustomPostTypeTest {
 			'norep'
 		);
 
-		$this->noRepTimeframeInFourDaysId = self::createTimeframe(
+		$this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '+5 days midnight', $now),
@@ -41,7 +35,7 @@ class ViewTest extends CustomPostTypeTest {
 			'norep'
 		);
 
-		$this->noRepTimeframeInEightDaysId = self::createTimeframe(
+		$this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '+8 days midnight', $now),
@@ -51,7 +45,7 @@ class ViewTest extends CustomPostTypeTest {
 			'norep'
 		);
 
-		self::createTimeframe(
+		$this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '+12 days midnight', $now),
@@ -61,7 +55,7 @@ class ViewTest extends CustomPostTypeTest {
 			'norep'
 		);
 
-		self::createTimeframe(
+		$this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '+14 days midnight', $now),

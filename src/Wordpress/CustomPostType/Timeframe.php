@@ -83,14 +83,14 @@ class Timeframe extends CustomPostType {
 		 * @var string[]
 		 */
 		$this->listColumns = [
-			'timeframe-author'                                => esc_html__( 'User', 'commonsbooking' ),
-			'type'                                            => esc_html__( 'Type', 'commonsbooking' ),
-			\CommonsBooking\Model\Timeframe::META_ITEM_ID     => esc_html__( 'Item', 'commonsbooking' ),
-			\CommonsBooking\Model\Timeframe::META_LOCATION_ID => esc_html__( 'Location', 'commonsbooking' ),
-			'repetition-start'                                => esc_html__( 'Start Date', 'commonsbooking' ),
-			\CommonsBooking\Model\Timeframe::REPETITION_END   => esc_html__( 'End Date', 'commonsbooking' ),
-			'timeframe-max-days'							  => esc_html__( 'Max. Booking Duration', 'commonsbooking' ),
-			'timeframe-advance-booking-days'				  => esc_html__( 'Days Booking In Advance',  'commonsbooking' ),
+			'timeframe-author'                                                   => esc_html__( 'User', 'commonsbooking' ),
+			'type'                                                               => esc_html__( 'Type', 'commonsbooking' ),
+			\CommonsBooking\Model\Timeframe::META_ITEM_ID                        => esc_html__( 'Item', 'commonsbooking' ),
+			\CommonsBooking\Model\Timeframe::META_LOCATION_ID                    => esc_html__( 'Location', 'commonsbooking' ),
+			'repetition-start'                                                   => esc_html__( 'Start Date', 'commonsbooking' ),
+			\CommonsBooking\Model\Timeframe::REPETITION_END                      => esc_html__( 'End Date', 'commonsbooking' ),
+			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS => esc_html__( 'Max. Booking Duration', 'commonsbooking' ),
+			'timeframe-advance-booking-days'                                     => esc_html__( 'Days Booking In Advance', 'commonsbooking' ),
 
 		];
 
