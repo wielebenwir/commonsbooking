@@ -5,6 +5,7 @@ namespace CommonsBooking\Tests\View;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\View\Calendar;
+use DateTime;
 
 class CalendarTest extends CustomPostTypeTest {
 
@@ -32,8 +33,8 @@ class CalendarTest extends CustomPostTypeTest {
 	}
 
 	public function testAdvancedBookingDays() {
-		$startDate = date( 'Y-m-d', strtotime( 'midnight' ) );
-		$endDate = date( 'Y-m-d', strtotime( '+60 days midnight' ) );
+		$startDate    = date( 'Y-m-d', strtotime( 'midnight' ) );
+		$endDate      = date( 'Y-m-d', strtotime( '+60 days midnight' ) );
 		$jsonresponse = Calendar::getCalendarDataArray(
 			$this->itemId,
 			$this->locationId,
@@ -46,30 +47,27 @@ class CalendarTest extends CustomPostTypeTest {
 		} );
 
 		// Timeframe starting in future, starts in range of calendar, ends out of calendar range
-		$timeframe = new Timeframe($this->timeframeId);
+		$timeframe = new Timeframe( $this->timeframeId );
 
 		// start date of timerange
-		$timeframeStart = new \DateTime();
-		$timeframeStart->setTimestamp($timeframe->getStartDate());
+		$timeframeStart = new DateTime();
+		$timeframeStart->setTimestamp( $timeframe->getStartDate() );
 
 		// latest possible booking date
 		$latestPossibleBookingDateTimestamp = $timeframe->getLatestPossibleBookingDateTimestamp();
-		$latestPossibleBookingDate = new \DateTime();
-		$latestPossibleBookingDate->setTimestamp($latestPossibleBookingDateTimestamp);
+		$latestPossibleBookingDate          = new DateTime();
+		$latestPossibleBookingDate->setTimestamp( $latestPossibleBookingDateTimestamp );
 
 		// days between start date and latest possible booking date
-		$maxBookableDays = date_diff($latestPossibleBookingDate, $timeframeStart)->days;
+		$maxBookableDays = date_diff( $latestPossibleBookingDate, $timeframeStart )->days;
 
-		$this->assertTrue(
-			count( $jsonReponseBookableDaysOnly ) == ( self::bookingDaysInAdvance - 1 )
-		);
-		$this->assertTrue($maxBookableDays == ( self::bookingDaysInAdvance - 1 ));
+		$this->assertTrue( $maxBookableDays == (self::bookingDaysInAdvance - self::timeframeStart - 1) );
 	}
 
 	protected function setUp() {
 		parent::setUp();
 
-		$now         = time();
+		$now               = time();
 		$this->timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
