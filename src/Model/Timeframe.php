@@ -86,9 +86,7 @@ class Timeframe extends CustomPost {
 	 * @return string
 	 */
 	public function getLatestPossibleBookingDateTimestamp() {
-		$startDateTimestamp = $this->getStartDate();
-		$startsInFuture     = $startDateTimestamp > time();
-		$calculationBase    = $startsInFuture ? $startDateTimestamp : time();
+		$calculationBase = time();
 
 		// if meta-value not set we define 90 days as default value
 		$advanceBookingDays = $this->getMeta( 'timeframe-advance-booking-days' ) ?:

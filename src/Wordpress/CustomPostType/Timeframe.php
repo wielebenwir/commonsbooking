@@ -50,13 +50,14 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Default value for possible advance booking days.
 	 */
-	const ADVANCE_BOOKING_DAYS = 31;
+	const ADVANCE_BOOKING_DAYS = 365;
 
 	/**
 	 * CPT type.
 	 * @var string
 	 */
 	public static $postType = 'cb_timeframe';
+
 	/**
 	 * Timeframetypes which cannot be "overbooked".
 	 * @var int[]

@@ -47,7 +47,7 @@ abstract class View {
 
 		// sort by start date, to get latest possbible booking date by first timeframe
 		usort( $timeframes, function ( $a, $b ) {
-			return $a->getStartDate() > $b->getStartDate();
+			return $a->getStartDate() <=> $b->getStartDate();
 		} );
 		$latestPossibleBookingDate = false;
 
