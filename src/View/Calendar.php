@@ -360,7 +360,7 @@ class Calendar {
 	private static function getClosestBookableTimeFrameForToday( $bookableTimeframes ): ?\CommonsBooking\Model\Timeframe {
 		// Sort timeframes by startdate
 		usort( $bookableTimeframes, function ( $item1, $item2 ) {
-			return abs( time() - $item1->getStartDate() ) <=> abs( time() - $item2->getStartDate() );
+			return abs( time() - $item2->getStartDate() ) <=> abs( time() - $item1->getStartDate() );
 		} );
 
 		return array_pop( $bookableTimeframes );
