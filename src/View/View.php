@@ -62,7 +62,8 @@ abstract class View {
 			}
 
 			// If start date is after latest possible booking date, we leave range out
-			if($timeframe->getStartDate() > $latestPossibleBookingDate) continue;
+			$endOfStartDay = strtotime('+1 day midnight', $timeframe->getStartDate()) - 1;
+			if($endOfStartDay > $latestPossibleBookingDate) continue;
 
 			$item = $timeframe->{'get' . $type}();
 
