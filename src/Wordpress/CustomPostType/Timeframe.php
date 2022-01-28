@@ -203,9 +203,6 @@ class Timeframe extends CustomPostType {
 		// @TODO implement view.
 	}
 
-	
-    
-    
     
     /**
 	 * Adds filter dropdown // filter by type (eg. bookable, repair etc.) in timeframe List
@@ -827,9 +824,9 @@ class Timeframe extends CustomPostType {
 				case 'location-id':
 				case 'item-id':
 					if ( $post = get_post( $value ) ) {
-						if ( get_post_type( $post ) == Location::getPostType() || get_post_type(
-							                                                          $post
-						                                                          ) == Item::getPostType() ) {
+						if ( get_post_type( $post ) == Location::getPostType() ||
+						     get_post_type( $post ) == Item::getPostType()
+						) {
 							echo $post->post_title;
 							break;
 						}
@@ -850,9 +847,9 @@ class Timeframe extends CustomPostType {
 					}
 					echo $output;
 					break;
-				case 'repetition-start':
+				case \CommonsBooking\Model\Timeframe::REPETITION_START:
 				case \CommonsBooking\Model\Timeframe::REPETITION_END:
-					echo date( 'd.m.Y H:i', $value );
+					echo date( 'd.m.Y', $value );
 					break;
 				default:
 					echo $value;

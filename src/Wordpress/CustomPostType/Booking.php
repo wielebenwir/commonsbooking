@@ -432,6 +432,75 @@ class Booking extends Timeframe {
 	}
 
 	/**
+	 * Adds data to custom columns
+	 *
+	 * @param $column
+	 * @param $post_id
+	 */
+	public function setCustomColumnsData( $column, $post_id ) {
+
+		// we alter the  author column data and link the username to the user profile
+		if ( $column == "timeframe-author" ) {
+			$post           = get_post( $post_id );
+			$timeframe_user = get_user_by( 'id', $post->post_author );
+			echo '<a href="' . get_edit_user_link( $timeframe_user->ID ) . '">' . $timeframe_user->user_login . '</a>';
+		}
+
+
+		if ( $value = get_post_meta( $post_id, $column, true ) ) {
+			switch ( $column ) {
+				case 'location-id':
+				case 'item-id':
+					if ( $post = get_post( $value ) ) {
+						if ( get_post_type( $post ) == Location::getPostType() ||
+						     get_post_type( $post ) == Item::getPostType()
+						) {
+							echo $post->post_title;
+							break;
+						}
+					}
+					echo '-';
+					break;
+				case 'type':
+					$output = "-";
+
+					foreach ( $this->getCustomFields() as $customField ) {
+						if ( $customField['id'] == 'type' ) {
+							foreach ( $customField['options'] as $key => $label ) {
+								if ( $value == $key ) {
+									$output = $label;
+								}
+							}
+						}
+					}
+					echo $output;
+					break;
+				case \CommonsBooking\Model\Timeframe::REPETITION_START:
+				case \CommonsBooking\Model\Timeframe::REPETITION_END:
+					echo date( 'd.m.Y H:i', $value );
+					break;
+				default:
+					echo $value;
+					break;
+			}
+		} else {
+			$bookingColumns = [
+				'post_date',
+				'post_status',
+			];
+
+			if (
+				property_exists( $post = get_post( $post_id ), $column ) && (
+					! in_array( $column, $bookingColumns ) ||
+					get_post_meta( $post_id, 'type', true ) == Timeframe::BOOKING_ID
+				)
+			) {
+				echo $post->{$column};
+			}
+		}
+	}
+
+	/**
 	 * Registers metaboxes for cpt.
 	 */
 	public function registerMetabox() {
