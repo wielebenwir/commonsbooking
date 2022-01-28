@@ -44,11 +44,25 @@ abstract class View {
 	public static function getShortcodeData( $cpt, string $type ): array {
 		$cptData    = [];
 		$timeframes = $cpt->getBookableTimeframes( true );
+
+		// sort by start date, to get latest possbible booking date by first timeframe
+		usort( $timeframes, function ( $a, $b ) {
+			return $a->getStartDate() > $b->getStartDate();
+		} );
+		$latestPossibleBookingDate = false;
+
 		/** @var Timeframe $timeframe */
 		foreach ( $timeframes as $timeframe ) {
 			if ( ! $timeframe->getStartDate() ) {
 				continue;
 			}
+
+			if(!$latestPossibleBookingDate) {
+				$latestPossibleBookingDate = $timeframe->getLatestPossibleBookingDateTimestamp();
+			}
+
+			// If start date is after latest possible booking date, we leave range out
+			if($timeframe->getStartDate() > $latestPossibleBookingDate) continue;
 
 			$item = $timeframe->{'get' . $type}();
 
