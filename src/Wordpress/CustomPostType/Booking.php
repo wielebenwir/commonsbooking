@@ -334,8 +334,13 @@ class Booking extends Timeframe {
 					     $post_after->post_status === 'canceled'
 				     )
 				) {
-					$booking_msg = new BookingMessage( $post_ID, $post_after->post_status );
-					$booking_msg->triggerMail();
+					if($post_after->post_status == 'canceled') {
+						$booking = new \CommonsBooking\Model\Booking($post_ID);
+						$booking->cancel();
+					} else {
+						$booking_msg = new BookingMessage( $post_ID, $post_after->post_status );
+						$booking_msg->triggerMail();
+					}
 				}
 			}
 		}
