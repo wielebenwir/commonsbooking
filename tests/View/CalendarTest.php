@@ -14,6 +14,8 @@ class CalendarTest extends CustomPostTypeTest {
 
 	protected const timeframeEnd = 100;
 
+	protected $timeframeId;
+
 	public function testKeepDateRangeParam() {
 		$startDate    = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
 		$jsonresponse = Calendar::getCalendarDataArray(
@@ -30,36 +32,52 @@ class CalendarTest extends CustomPostTypeTest {
 	}
 
 	public function testAdvancedBookingDays() {
+		$startDate = date( 'Y-m-d', strtotime( 'midnight' ) );
+		$endDate = date( 'Y-m-d', strtotime( '+60 days midnight' ) );
 		$jsonresponse = Calendar::getCalendarDataArray(
 			$this->itemId,
 			$this->locationId,
-			date( 'Y-m-d', strtotime( 'midnight' ) ),
-			date( 'Y-m-d', strtotime( '+60 days midnight' ) )
+			$startDate,
+			$endDate
 		);
 
 		$jsonReponseBookableDaysOnly = array_filter( $jsonresponse['days'], function ( $day ) {
 			return ! $day['locked'];
 		} );
 
-		// we should be able to book 2 days of the timeframe, because
-		// advanced booking days == 30, timeframe starts in 29 days, today isn't recognized in calculation
+		// Timeframe starting in future, starts in range of calendar, ends out of calendar range
+		$timeframe = new Timeframe($this->timeframeId);
+
+		// start date of timerange
+		$timeframeStart = new \DateTime();
+		$timeframeStart->setTimestamp($timeframe->getStartDate());
+
+		// latest possible booking date
+		$latestPossibleBookingDateTimestamp = $timeframe->getLatestPossibleBookingDateTimestamp();
+		$latestPossibleBookingDate = new \DateTime();
+		$latestPossibleBookingDate->setTimestamp($latestPossibleBookingDateTimestamp);
+
+		// days between start date and latest possible booking date
+		$maxBookableDays = date_diff($latestPossibleBookingDate, $timeframeStart)->days;
+
 		$this->assertTrue(
-			count( $jsonReponseBookableDaysOnly ) == ( self::bookingDaysInAdvance - self::timeframeStart + 1 )
+			count( $jsonReponseBookableDaysOnly ) == ( self::bookingDaysInAdvance - 1 )
 		);
+		$this->assertTrue($maxBookableDays == ( self::bookingDaysInAdvance - 1 ));
 	}
 
 	protected function setUp() {
 		parent::setUp();
 
 		$now         = time();
-		$timeframeId = $this->createTimeframe(
+		$this->timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '+' . self::timeframeStart . ' days midnight', $now ),
 			strtotime( '+' . self::timeframeEnd . ' days midnight', $now )
 		);
 		// set booking days in advance
-		update_post_meta( $timeframeId, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
+		update_post_meta( $this->timeframeId, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
 	}
 
 }

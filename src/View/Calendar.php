@@ -301,6 +301,7 @@ class Calendar {
 		$startDate          = new Day( $startDateString );
 		$endDate            = new Day( $endDateString );
 		$advanceBookingDays = null;
+		$lastBookableDate = null;
 
 		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::get(
 			[ $location ],
@@ -315,9 +316,10 @@ class Calendar {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday( $bookableTimeframes );
 			$advanceBookingDays       = $closestBookableTimeframe->getFieldValue( 'timeframe-advance-booking-days' );
 
-			// Check if start-/enddate was requested, then don't change it
-			// otherwise start with current day
+			// Only if passed daterange must not be kept
 			if ( ! $keepDaterange ) {
+				// Check if start-/enddate was requested, then don't change it
+				// otherwise start with current day
 				$startDateTimestamp = time();
 				if ( $closestBookableTimeframe->getStartDate() > $startDateTimestamp ) {
 					$startDateTimestamp = $closestBookableTimeframe->getStartDate();
@@ -326,23 +328,26 @@ class Calendar {
 				if ( $startDateTimestamp > $startDate->getDateObject()->getTimestamp() ) {
 					$startDate = new Day( date( 'Y-m-d', $startDateTimestamp ) );
 				}
+			}
 
-				// Last day of month after next as default for calendar view
-				// -> we just need to ensure, that pagination is possible
-				$endDateTimestamp = self::getDefaultCalendarEnddateTimestamp( $startDate );
+			// Last day of month after next as default for calendar view
+			// -> we just need to ensure, that pagination is possible
+			$endDateTimestamp = self::getDefaultCalendarEnddateTimestamp( $startDate );
 
-				// get max advance booking days based on user defined max days in closest bookable timeframe
-				$latestPossibleBookingDateTimestamp = $closestBookableTimeframe->getLatestPossibleBookingDateTimestamp();
-				if ( $latestPossibleBookingDateTimestamp < $endDateTimestamp ) {
-					$endDateTimestamp = $latestPossibleBookingDateTimestamp;
-				}
+			// get max advance booking days based on user defined max days in closest bookable timeframe
+			$latestPossibleBookingDateTimestamp = $closestBookableTimeframe->getLatestPossibleBookingDateTimestamp();
+			if ( $latestPossibleBookingDateTimestamp < $endDateTimestamp ) {
+				$lastBookableDate = $endDateTimestamp = $latestPossibleBookingDateTimestamp;
+			}
 
+			// Only if passed daterange must not be kept
+			if ( ! $keepDaterange ) {
 				$endDateString = date( 'Y-m-d', $endDateTimestamp );
 				$endDate       = new Day( $endDateString );
 			}
 		}
 
-		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays );
+		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays, $lastBookableDate );
 	}
 
 	/**
@@ -389,7 +394,8 @@ class Calendar {
 		Day $endDate,
 		array $locations,
 		array $items,
-		$advanceBookingDays = null
+		$advanceBookingDays = null,
+		$lastBookableDate = null
 	): array {
 		$current_user   = wp_get_current_user();
 		$customCacheKey = serialize( $current_user->roles );
@@ -400,7 +406,9 @@ class Calendar {
 			$advanceBookingDays = (int) $advanceBookingDays->format( '%a ' ) + 1;
 		}
 
-		$lastBookableDate = strtotime('+ ' . $advanceBookingDays . ' days');
+		if($lastBookableDate == null) {
+			$lastBookableDate = strtotime('+ ' . $advanceBookingDays . ' days');
+		}
 
 		if ( ! ( $jsonResponse = Plugin::getCacheItem( $customCacheKey ) ) ) {
 			$calendar = new \CommonsBooking\Model\Calendar(
