@@ -36,6 +36,9 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
 				Restriction::$postType
 			])
 		) {
+			if(!($post instanceof WP_Post)) {
+				$post = $post->getPost();
+			}
 			$postModel = \CommonsBooking\Wordpress\CustomPostType\CustomPostType::getModel($post);
 
 			// Get assigned location
