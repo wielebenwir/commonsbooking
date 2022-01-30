@@ -58,24 +58,23 @@ class Calendar {
 
 		$days_display = array_fill( 0, $days, 'n' );
 		$days_cols    = array_fill( 0, $days, '<col>' );
-		$month        = date( "m" );
-		$month_cols   = 0;
-		$colspan      = $days;
+		$month        = date( "Y-m" );
+		$month_cols   = [ $month => 0 ];
+		$days_dates   = [];
+
 
 		for ( $i = 0; $i < $days; $i ++ ) {
-			$month_cols ++;
+			$month_cols[ $month ] ++;
 			$days_display[ $i ] = $date->format( 'd' );
 			$days_dates[ $i ]   = $date->format( 'Y-m-d' );
-			$days_weekday[ $i ] = $date->format( 'N' );
-			$daysDM[ $i ]       = $date->format( 'j.n.' );
+
 			if ( $date->format( 'N' ) >= 7 ) {
 				$days_cols[ $i ] = '<col class="bg_we">';
 			}
 			$date->modify( '+1 day' );
-			if ( $date->format( 'm' ) != $month ) {
-				$colspan    = $month_cols;
-				$month_cols = 0;
-				$month      = $date->format( 'm' );
+			if ( $date->format( 'Y-m' ) != $month ) {
+				$month                = $date->format( 'Y-m' );
+				$month_cols[ $month ] = 0;
 			}
 		}
 
@@ -84,18 +83,11 @@ class Calendar {
 
 		$print = '<div class="cb-table-scroll">';
 		$print .= "<table class='cb-items-table tablesorter'><colgroup><col><col>" . $colStr . "</colgroup><thead>";
-		$print .= "<tr><th colspan='2' class='sortless'>" . $desc . "</th><th class='sortless' colspan='" . $colspan . "'>";
-
-		if ( $colspan > 1 ) {
-			$print .= date_i18n( 'F' ) . "</th>";
-		} else {
-			$print .= date_i18n( 'M' ) . "</th>";
-		}
+		$print .= "<tr><th colspan='2' class='sortless'>" . $desc . "</th>";
 
 		// Render months
-		if ( $colspan < $days ) {
-			$print .= self::renderHeadlineMonths( $month_cols, $days_dates, $days );
-		}
+		$print .= self::renderHeadlineMonths( $month_cols );
+		$print .= "</tr>";
 
 		//Render Headline Days
 		$print .= self::renderHeadlineDays( $days_display );
@@ -158,18 +150,22 @@ class Calendar {
 	 * Renders months in headline.
 	 *
 	 * @param $month_cols
-	 * @param $days_dates
-	 * @param $days
 	 *
 	 * @return string
 	 */
-	protected static function renderHeadlineMonths( $month_cols, $days_dates, $days ): string {
-		$month2 = date_i18n( 'M', strtotime( $days_dates[ $days - 1 ] ) );
-		if ( $month_cols > 1 ) {
-			$month2 = date_i18n( 'F', strtotime( $days_dates[ $days - 1 ] ) );
+	protected static function renderHeadlineMonths( $month_cols ): string {
+		$print = "";
+		foreach ( $month_cols as $month => $colspan ) {
+			$print .= "<th class='sortless' colspan='" . $colspan . "'>";
+
+			if ( $colspan > 3 ) {
+				$print .= date_i18n( 'F', strtotime( $month ) ) . "</th>";
+			} else {
+				$print .= date_i18n( 'M', strtotime( $month ) ) . "</th>";
+			}
 		}
 
-		return "<th class='sortless' colspan='" . $month_cols . "'>" . $month2 . "</th>";
+		return $print;
 	}
 
 	/**
@@ -301,7 +297,7 @@ class Calendar {
 		$startDate          = new Day( $startDateString );
 		$endDate            = new Day( $endDateString );
 		$advanceBookingDays = null;
-		$lastBookableDate = null;
+		$lastBookableDate   = null;
 
 		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::get(
 			[ $location ],
@@ -406,8 +402,8 @@ class Calendar {
 			$advanceBookingDays = (int) $advanceBookingDays->format( '%a ' ) + 1;
 		}
 
-		if($lastBookableDate == null) {
-			$lastBookableDate = strtotime('+ ' . $advanceBookingDays . ' days');
+		if ( $lastBookableDate == null ) {
+			$lastBookableDate = strtotime( '+ ' . $advanceBookingDays . ' days' );
 		}
 
 		if ( ! ( $jsonResponse = Plugin::getCacheItem( $customCacheKey ) ) ) {
@@ -465,7 +461,7 @@ class Calendar {
 			foreach ( $calendar->getWeeks() as $week ) {
 				/** @var Day $day */
 				foreach ( $week->getDays() as $day ) {
-					self::mapDay($day, $lastBookableDate, $endDate, $jsonResponse);
+					self::mapDay( $day, $lastBookableDate, $endDate, $jsonResponse );
 				}
 			}
 
@@ -486,7 +482,7 @@ class Calendar {
 	 *
 	 * @return void
 	 */
-	protected static function mapDay($day, $lastBookableDate, $endDate, &$jsonResponse) {
+	protected static function mapDay( $day, $lastBookableDate, $endDate, &$jsonResponse ) {
 		$dayArray = [
 			'date'               => $day->getFormattedDate( 'd.m.Y' ),
 			'slots'              => [],
@@ -507,7 +503,7 @@ class Calendar {
 		$noSlots = true;
 
 		// Only process slot if it's in bookingdays in advance range
-		if($day->getDateObject()->getTimestamp() < $lastBookableDate) {
+		if ( $day->getDateObject()->getTimestamp() < $lastBookableDate ) {
 			// we process all slots and check status of each slot
 			foreach ( $day->getGrid() as $slot ) {
 				self::processSlot( $slot, $dayArray, $jsonResponse, $allLocked, $noSlots );
@@ -529,7 +525,7 @@ class Calendar {
 				$dayArray['locked'] = true;
 			}
 		} else { // If day is out of booking day in advance range, it's handled like a not bookable day
-			$dayArray = self::getLockedDayArray($day);
+			$dayArray = self::getLockedDayArray( $day );
 		}
 
 		// Add day to calendar data.
@@ -550,26 +546,6 @@ class Calendar {
 				$jsonResponse['partiallyBookedDays'][] = $day->getFormattedDate( 'Y-m-d' );
 			}
 		}
-	}
-
-	/**
-	 * @param Day $day
-	 *
-	 * @return array
-	 */
-	protected static function getLockedDayArray( Day $day): array {
-		return [
-			'date'               => $day->getFormattedDate( 'd.m.Y' ),
-			'slots'              => [],
-			'locked'             => true,
-			'bookedDay'          => false,
-			'partiallyBookedDay' => false,
-			'holiday'            => false,
-			'repair'             => false,
-			'fullDay'            => false,
-			'firstSlotBooked'    => false,
-			'lastSlotBooked'     => false
-		];
 	}
 
 	/**
@@ -653,6 +629,26 @@ class Calendar {
 				$allLocked = false;
 			}
 		}
+	}
+
+	/**
+	 * @param Day $day
+	 *
+	 * @return array
+	 */
+	protected static function getLockedDayArray( Day $day ): array {
+		return [
+			'date'               => $day->getFormattedDate( 'd.m.Y' ),
+			'slots'              => [],
+			'locked'             => true,
+			'bookedDay'          => false,
+			'partiallyBookedDay' => false,
+			'holiday'            => false,
+			'repair'             => false,
+			'fullDay'            => false,
+			'firstSlotBooked'    => false,
+			'lastSlotBooked'     => false
+		];
 	}
 
 	/**
