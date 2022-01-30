@@ -57,6 +57,7 @@
 	}
 
 	/* make first 2 table columns sticky */
+    thead tr:first-child th:first-child,
 	thead tr:nth-child(2) th:first-child,
 	thead tr:nth-child(2) th:nth-child(2),
 	tbody tr td:first-child,
@@ -81,6 +82,7 @@
 	}
 
 	/* set bg color */
+    thead tr:first-child th:first-child,
 	thead tr:nth-child(2) th:first-child,
 	thead tr:nth-child(2) th:nth-child(2) {
 		background: $color-gray-background;
