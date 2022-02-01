@@ -1,7 +1,7 @@
 <?php
     global $templateData;
     $location =  $templateData['location'];
-    echo $location->thumbnail(array ('200')); // div.thumbnail is printed by function
+    echo $location->thumbnail('cb_listing_small'); // div.thumbnail is printed by function
 ?>
 <div class="cb-list-info">
     <h4 class="cb-title cb-location-title"><a href="<?php echo get_the_permalink($location->ID);?>"> <?php echo $location->post_title; ?></a></h4>

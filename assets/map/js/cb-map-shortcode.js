@@ -108,6 +108,7 @@ function CB_Map() {
                 var show_date = date.getDate();
                 show_date = show_date <= 9 ? '0' + show_date : show_date;
                 var show_month = date.getMonth() + 1;
+                show_month = show_month <= 9 ? '0' + show_month : show_month;
                 var date_string = show_date + '.<br>' + show_month + '.';
                 markup += '<div class="cb-map-popup-item-availability-day ' + status_classes[day.status] + '">' + date_string + '</div>'
             });

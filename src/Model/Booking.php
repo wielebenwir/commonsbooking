@@ -7,6 +7,7 @@ namespace CommonsBooking\Model;
 use DateTime;
 use Exception;
 use CommonsBooking\CB\CB;
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Messages\BookingMessage;
@@ -44,6 +45,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		global $wpdb;
 		$query = "UPDATE " . $wpdb->prefix . "posts SET post_status='canceled' WHERE ID = '" . $this->post->ID . "'";
 		$wpdb->query( $query );
+
+		add_post_meta( $this->post->ID, 'cancellation_time', time() );
 
 		$this->sendCancellationMail();
 	}
@@ -327,6 +330,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function bookingNotice(): ?string {
 
 		$currentStatus = $this->post->post_status;
+		$cancellation_time = Helper::FormattedDateTime( get_post_meta($this->post, 'cancellation_time', true) );
 
 		if ( $currentStatus == "unconfirmed" ) {
 			$noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
@@ -338,7 +342,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		if ( $currentStatus == "canceled" ) {
-			$noticeText = commonsbooking_sanitizeHTML( __( 'Your booking has been canceled.', 'commonsbooking' ) );
+			$noticeText = sprintf ( commonsbooking_sanitizeHTML( __( 'Your booking has been canceled at %s.', 'commonsbooking' ) ), $cancellation_time );
 		}
 
 		if ( isset( $noticeText ) ) {
