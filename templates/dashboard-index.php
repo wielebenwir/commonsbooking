@@ -1,19 +1,19 @@
 <h1>Dashboard</h1>
 <!-- based on Wordpress Dashboard --> 
 <div class="wrap">
-	<div id="welcome-panel" class="welcome-panel">
-		<div class="welcome-panel-content">
+	<div id="cb_welcome-panel" class="cb_welcome-panel">
+		<div class="cb_welcome-panel-content">
 			<h2><?php
 
 			echo __('Welcome to CommonsBooking', 'commonsbooking') ;?>.</h2>
-			<div class="welcome-panel-column-container">
-				<div class="welcome-panel-column">
+			<div class="cb_welcome-panel-column-container">
+				<div class="cb_welcome-panel-column">
 					<img src="<?php echo plugin_dir_url( __DIR__  ).'assets/global/cb-ci/logo.png'; ?>" style="width:200px">
-				</div><!-- .welcome-panel-column -->
-				<div class="welcome-panel-column">
+				</div><!-- .cb_welcome-panel-column -->
+				<div class="cb_welcome-panel-column">
 				<p></p>
-				</div><!-- .welcome-panel-column -->
-				<div class="welcome-panel-column welcome-panel-last">
+				</div><!-- .cb_welcome-panel-column -->
+				<div class="cb_welcome-panel-column cb_welcome-panel-last">
 					<h3><?php echo __('Support', 'commonsbooking') ;?></h3>
 					<ul>
 						<li><a href="https://commonsbooking.org/dokumentation" target="_blank"><?php echo __('Documentation & Tutorials', 'commonsbooking') ;?></a></li>		
@@ -21,13 +21,13 @@
 						<li><a href="https://commonsbooking.org/kontakt/" target="_blank"><?php echo __('Contact & Newsletter', 'commonsbooking') ;?></a></li>
 					</ul>
 				<p>			<?php echo __('CommonsBooking Version', 'commonsbooking') . ' ' . COMMONSBOOKING_VERSION; ?></p>
-				</div><!-- .welcome-panel-column -->
-			</div><!-- .welcome-panel-column-container -->
+				</div><!-- .cb_welcome-panel-column -->
+			</div><!-- .cb_welcome-panel-column-container -->
 			<div style="clear:both;">
 			<hr style="border-top: 8px solid #bbb; border-radius: 5px; border-color:#67b32a;">
 			</div>
-			<div class="welcome-panel-column-container" style="margin-top: 10px;">
-				<div class="welcome-panel-column">
+			<div class="cb_welcome-panel-column-container" style="margin-top: 10px;">
+				<div class="cb_welcome-panel-column">
 					<h3 style="padding-bottom:20px"><?php echo __('Setup and manage Items, Locations and Timeframes', 'commonsbooking') ;?></h3>
 					<ul>
 						<li><a href="edit.php?post_type=cb_item"><span class="dashicons dashicons-carrot"></span> <?php echo __('Items', 'commonsbooking') ;?></a>
@@ -38,8 +38,8 @@
 						</li>
 					</ul>
 	
-				</div><!-- .welcome-panel-column -->
-				<div class="welcome-panel-column">
+				</div><!-- .cb_welcome-panel-column -->
+				<div class="cb_welcome-panel-column">
 					<h3 style="padding-bottom:20px"><?php echo __('See Bookings & manage restrictions', 'commonsbooking') ;?></h3>
 					<ul>
 						<li><a href="edit.php?post_type=cb_booking"><span class="dashicons dashicons-list-view"></span> <?php echo __('Bookings', 'commonsbooking') ;?></a>
@@ -47,8 +47,8 @@
 						<li><a href="edit.php?post_type=cb_restriction"><span class="dashicons dashicons-warning"></span> <?php echo __('Restrictions', 'commonsbooking') ;?></a>
 						</li>
 					</ul>
-				</div><!-- .welcome-panel-column -->
-				<div class="welcome-panel-column welcome-panel-last">
+				</div><!-- .cb_welcome-panel-column -->
+				<div class="cb_welcome-panel-column cb_welcome-panel-last">
 					<h3 style="padding-bottom:20px"><?php echo __('Configuration', 'commonsbooking') ;?></h3>
 				    <ul>
 					<?php if (commonsbooking_isCurrentUserAdmin()) { ?>
@@ -58,14 +58,14 @@
 							</li>
                         <?php } ?>
 					</ul>
-				</div><!-- .welcome-panel-column -->
-			</div><!-- .welcome-panel-column-container -->
-		</div> <!-- .welcome-panel-content -->
-	</div> <!-- .welcome-panel -->
-	<div id="welcome-panel" class="welcome-panel">
-		<div class="welcome-panel-content">
-			<div class="welcome-panel-column-container">
-				<div class="welcome-panel-column" style="width: 50%;">
+				</div><!-- .cb_welcome-panel-column -->
+			</div><!-- .cb_welcome-panel-column-container -->
+		</div> <!-- .cb_welcome-panel-content -->
+	</div> <!-- .cb_welcome-panel -->
+	<div id="cb_welcome-panel" class="cb_welcome-panel">
+		<div class="cb_welcome-panel-content">
+			<div class="cb_welcome-panel-column-container">
+				<div class="cb_welcome-panel-column" style="width: 50%;">
 					<h3><?php echo __("Today's pickups", 'commonsbooking') ;?></h3>
 					<?php 
 					// Display list of bookings with pickup date = today
@@ -78,7 +78,7 @@
 					
 					?>
 				</div>
-				<div class="welcome-panel-column" style="width: 50%">
+				<div class="cb_welcome-panel-column" style="width: 50%">
 					<h3><?php echo __("Today's returns", 'commonsbooking') ;?></h3>
 					<?php 
 					// Display list of bookings with return date = today

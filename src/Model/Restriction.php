@@ -5,12 +5,19 @@ namespace CommonsBooking\Model;
 
 
 use CommonsBooking\Messages\RestrictionMessage;
+use DateTime;
 
 class Restriction extends CustomPost {
 
 	const TYPE_REPAIR = 'repair';
 
 	const TYPE_HINT = 'hint';
+
+	const STATE_NONE = 'none';
+
+	const STATE_ACTIVE = 'active';
+
+	const STATE_SOLVED = 'solved';
 
 	const META_HINT = 'restriction-hint';
 
@@ -22,9 +29,9 @@ class Restriction extends CustomPost {
 
 	const META_STATE = 'restriction-state';
 
-	const META_LOCATION_ID = 'restriction-location-id';
+	public const META_LOCATION_ID = 'restriction-location-id';
 
-	const META_ITEM_ID = 'restriction-item-id';
+	public const META_ITEM_ID = 'restriction-item-id';
 
 	const META_SENT = 'restriction-sent';
 
@@ -39,32 +46,7 @@ class Restriction extends CustomPost {
 	 * @return string
 	 */
 	public function __toString(): string {
-		return strval($this->post->ID);
-	}
-
-	/**
-	 * Returns start-time \DateTime.
-	 *
-	 * @return \DateTime
-	 */
-	public function getStartTimeDateTime(): \DateTime {
-		$startDateString = $this->getMeta( self::META_START );
-		$startDate       = new \DateTime();
-		$startDate->setTimestamp( $startDateString );
-		return $startDate;
-	}
-
-	/**
-	 * Returns end-date \DateTime.
-	 *
-	 * @return \DateTime
-	 */
-	public function getEndDateDateTime(): \DateTime {
-		$endDateString = intval( $this->getMeta( self::META_END ) );
-		$endDate       = new \DateTime();
-		$endDate->setTimestamp( $endDateString );
-
-		return $endDate;
+		return strval( $this->post->ID );
 	}
 
 	/**
@@ -72,14 +54,14 @@ class Restriction extends CustomPost {
 	 *
 	 * @param null $endDateString
 	 *
-	 * @return \DateTime
+	 * @return DateTime
 	 */
-	public function getEndTimeDateTime( $endDateString = null ): \DateTime {
+	public function getEndTimeDateTime( $endDateString = null ): DateTime {
 		$endTimeString = $this->getMeta( self::META_END );
-		$endDate       = new \DateTime();
+		$endDate       = new DateTime();
 
 		if ( $endTimeString ) {
-			$endTime = new \DateTime();
+			$endTime = new DateTime();
 			$endTime->setTimestamp( $endTimeString );
 			$endDate->setTime( $endTime->format( 'H' ), $endTime->format( 'i' ) );
 		} else {
@@ -111,6 +93,7 @@ class Restriction extends CustomPost {
 	public function getEndDate(): int {
 		// Set a far in the future date if enddate isn't set
 		$metaEndDate = $this->getMeta( self::META_END ) !== "" ? $this->getMeta( self::META_END ) : self::NO_END_TIMESTAMP;
+
 		return intval( $metaEndDate );
 	}
 
@@ -122,20 +105,28 @@ class Restriction extends CustomPost {
 		return ! $this->isActive();
 	}
 
+
+	/**
+	 * returns true if restriction is active
+	 *
+	 * @return bool
+	 */
+	public function isActive(): bool {
+		if ( $this->active == null ) {
+			$this->active = $this->getMeta( self::META_STATE ) === self::STATE_ACTIVE ?: false;
+		}
+
+		return $this->active;
+	}
+
 	/**
 	 * Returns true if restriction ist active.
+	 * TODO this function seems unused in restriction context. Check if it can be removed @markus-mw
+	 * 
 	 * @return bool
 	 */
 	public function isLocked(): bool {
 		return $this->isActive();
-	}
-
-	/**
-	 * Returns restriction type.
-	 * @return mixed
-	 */
-	public function getType() {
-		return $this->getMeta( self::META_TYPE );
 	}
 
 	/**
@@ -156,6 +147,19 @@ class Restriction extends CustomPost {
 	}
 
 	/**
+	 * Returns start-time \DateTime.
+	 *
+	 * @return DateTime
+	 */
+	public function getStartTimeDateTime(): DateTime {
+		$startDateString = $this->getMeta( self::META_START );
+		$startDate       = new DateTime();
+		$startDate->setTimestamp( $startDateString );
+
+		return $startDate;
+	}
+
+	/**
 	 * Returns nicely formatted end datetime.
 	 * @return string
 	 */
@@ -165,41 +169,16 @@ class Restriction extends CustomPost {
 	}
 
 	/**
-	 * @return bool
+	 * Returns end-date \DateTime.
+	 *
+	 * @return DateTime
 	 */
-	public function isActive(): bool {
-		if ( $this->active == null ) {
-			$this->active = $this->getMeta( self::META_STATE ) ?: false;
-		}
+	public function getEndDateDateTime(): DateTime {
+		$endDateString = intval( $this->getMeta( self::META_END ) );
+		$endDate       = new DateTime();
+		$endDate->setTimestamp( $endDateString );
 
-		return $this->active;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isCancelled(): bool {
-		if($this->canceled == null) {
-			$this->canceled = $this->getMeta( self::META_STATE ) === '0' ?: false;
-		}
-
-		return $this->canceled;
-	}
-
-	/**
-	 * Returns location id.
-	 * @return mixed
-	 */
-	public function getLocationId() {
-		return self::getMeta( self::META_LOCATION_ID );
-	}
-
-	/**
-	 * Returns itemId
-	 * @return mixed
-	 */
-	public function getItemId() {
-		return self::getMeta( self::META_ITEM_ID );
+		return $endDate;
 	}
 
 	/**
@@ -217,6 +196,14 @@ class Restriction extends CustomPost {
 	}
 
 	/**
+	 * Returns itemId
+	 * @return mixed
+	 */
+	public function getItemId() {
+		return $this->getMeta( self::META_ITEM_ID );
+	}
+
+	/**
 	 * Returns location name.
 	 * @return string
 	 */
@@ -231,7 +218,59 @@ class Restriction extends CustomPost {
 	}
 
 	/**
+	 * Returns location id.
+	 * @return mixed
+	 */
+	public function getLocationId() {
+		return $this->getMeta( self::META_LOCATION_ID );
+	}
+
+	/**
+	 * Apply restriction workflow.
+	 */
+	public function apply() {
+		// Check if this is an active restriction
+		if ( $this->isActive() ) {
+			$bookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
+			if ( $bookings ) {
+				if ( $this->isActive() && $this->getType() == self::TYPE_REPAIR ) {
+					$this->cancelBookings( $bookings );
+				}
+				$this->sendRestrictionMails( $bookings );
+			}
+		}
+
+		// Check if this is a canceled/solved restriction
+		if ( $this->isCancelled() ) {
+			$canceledBookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
+			if ( $canceledBookings ) {
+				$this->sendRestrictionMails( $canceledBookings );
+			}
+		}
+	}
+
+	/**
+	 * Returns restriction type.
+	 * @return mixed
+	 */
+	public function getType() {
+		return $this->getMeta( self::META_TYPE );
+	}
+
+	/**
+	 * Cancels bookings if restriction is active and of type repair.
+	 *
+	 * @param $bookings
+	 */
+	protected function cancelBookings( $bookings ) {
+		foreach ( $bookings as $booking ) {
+			$booking->cancel();
+		}
+	}
+
+	/**
 	 * Send mails regarding item/location admins and booked timeslots.
+	 *
 	 * @param Booking[]
 	 */
 	protected function sendRestrictionMails( $bookings ) {
@@ -249,38 +288,14 @@ class Restriction extends CustomPost {
 	}
 
 	/**
-	 * Cancels bookings if restriction is active and of type repair.
-	 *
-	 * @param $bookings
+	 * @return bool
 	 */
-	protected function cancelBookings( $bookings ) {
-		foreach ( $bookings as $booking ) {
-			$booking->cancel();
-		}
-	}
-
-	/**
-	 * Apply restriction workflow.
-	 */
-	public function apply() {
-		// Check if this is an active restriction
-		if($this->isActive()) {
-			$bookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
-			if ( $bookings ) {
-				if ( $this->isActive() && $this->getType() == self::TYPE_REPAIR ) {
-					$this->cancelBookings($bookings);
-				}
-				$this->sendRestrictionMails( $bookings );
-			}
+	public function isCancelled(): bool {
+		if ( $this->canceled == null ) {
+			$this->canceled = $this->getMeta( self::META_STATE ) === self::STATE_SOLVED ?: false;
 		}
 
-		// Check if this is a canceled/solved restriction
-		if($this->isCancelled()) {
-			$canceledBookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
-			if ( $canceledBookings ) {
-				$this->sendRestrictionMails( $canceledBookings );
-			}
-		}
+		return $this->canceled;
 	}
 
 }

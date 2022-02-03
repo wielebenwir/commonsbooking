@@ -295,9 +295,7 @@ class Day {
 	public function isInTimeframe( \CommonsBooking\Model\Timeframe $timeframe ): bool {
 		$repetitionType = get_post_meta( $timeframe->ID, 'timeframe-repetition', true );
 
-		if (
-			$repetitionType && $repetitionType !== "norep"
-		) {
+		if ($repetitionType) {
 			switch ( $repetitionType ) {
 				// Weekly Rep
 				case "w":
@@ -335,6 +333,16 @@ class Day {
 					} else {
 						return false;
 					}
+				case "norep":
+					$timeframeStartTimestamp = $timeframe->getStartDate();
+					$timeframeEndTimestamp   = $timeframe->getEndDate();
+					$currentDayTimestamp     = $this->getDateObject()->getTimestamp();
+
+					return $currentDayTimestamp >= $timeframeStartTimestamp
+					       && (
+						       ( ! $timeframeEndTimestamp && $currentDayTimestamp == $timeframeStartTimestamp ) ||
+						       ( $currentDayTimestamp <= $timeframeEndTimestamp )
+					       );
 			}
 		}
 

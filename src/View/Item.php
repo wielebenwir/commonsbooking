@@ -23,6 +23,12 @@ class Item extends View {
 		$item      = $post;
 		$location  = get_query_var( 'location' ) ?: false;
 		$locations = \CommonsBooking\Repository\Location::getByItem( $item->ID, true );
+		$locationIds = array_map(
+			function (\CommonsBooking\Model\Location $location) {
+				return $location->getPost()->ID;
+			},
+			$locations
+		);
 
 		$args = [
 			'post'      => $post,
@@ -31,6 +37,12 @@ class Item extends View {
 			'item'      => new \CommonsBooking\Model\Item( $item ),
 			'postUrl'   => get_permalink( $item ),
 			'type'      => Timeframe::BOOKING_ID,
+			'restrictions' => \CommonsBooking\Repository\Restriction::get(
+				$locationIds,
+				[$item->ID],
+				null,
+				true
+			)
 		];
 
 		// If there's no location selected, we'll show all available.
@@ -91,7 +103,7 @@ class Item extends View {
 			// Sort by start_date
 			foreach ($shortCodeData as $location) {
 				uasort( $location['ranges'], function ( $a, $b ) {
-					return $a['start_date'] > $b['start_date'];
+					return $a['start_date'] <=> $b['start_date'];
 				} );
 			}
 

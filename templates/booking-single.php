@@ -23,7 +23,7 @@ $text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates
 
 <div class="cb-wrapper cb-booking-item">
     <div class="cb-list-header">
-	<?php echo $item->thumbnail(); ?>
+	<?php echo $item->thumbnail('cb_listing_small'); ?>
     <div class="cb-list-info">
         <h2><?php echo $item->title(); ?></h2>
         <?php echo $location->excerpt(); ?>
