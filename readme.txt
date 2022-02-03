@@ -4,7 +4,7 @@ Contributors: wielebenwirteam, m0rb, flegfleg, chriwen
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, commons, sharing, calendar,  
 Requires at least: 5.2  
-Tested up to: 5.7.1  
+Tested up to: 5.9  
 Stable Tag: 2.4.5  
 Requires PHP: 7.3 or higher  
 License: GPLv2 or later  
@@ -79,6 +79,36 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog 
+
+### 2.6 (03.02.2022)
+Notice: Version 2.5 was only a release candidate is skipped as a stable release to to technial reasons
+
+#### New
+* Bookings as a separate menu item, better overview in the backend. The bookings are no longer listed under menu item "time frame" They moved to  a new menu item "Bookings". 
+* Dashboard: Revision of the dashboard. Now shows today's pickups and returns.
+* Reminder emails: Users will receive reminder and feedback emails before and after a booking.* Manage Usage Restrictions: Restrictions can now be managed. These can be notifications of broken or missing parts or the declaration of a total breakdown (e.g. due to a repair). Bookings that are within the affected time frame are automatically cancelled in case of a total breakdown and an info email is sent to users and CB managers. Notices are displayed in the booking calendar and users can be notified about changes.
+* A map view can now be set for the location page. The setting can be activated via the location editor.
+* Customizable booking confirmation text on booking page ("Your booking has been confirmed"). Can now be customized in Settings -> Templates.
+* Maximum advance booking period is now customizable.The period is set to 365 days by default.  This setting also applies to all existing time frames.  The setting is done via the time frames. The time frame can thus be created for a longer or infinite period. Users can then always only book a maximum of x days in advance, calculated from today.
+* Thumbnail size in article and location lists now adjustable (Settings -> Templates -> Image formatting).
+* GBFS API integrated to enable standardized data exchange with other mobility platforms.
+* Calendar Legend:The booking calendar has now received a legend to explain the colors and settings of the calendar.
+* For experts: metadata sets (individual attributes / fields can be added to items or categories here).API extended (individual API releases possible).
+
+#### Enhanced or changed
+* The map view no longer shows pickup notes and contact details in the small preview popup, as we want to output these only in the booking process. Also, these options have been removed from the map settings.
+* In the export function, the custom fields created by CommonsBooking are displayed to be able to add them to the export.
+* The booking list has been revised. The design has been adjusted accordingly and the booking status has been integrated.
+* Export function extended with more standard fields (name of the borrower etc.).
+* In the booking calendar, the time selection in the calendar can now be reset.
+* Booking codes are now also displayed in the booking list (My bookings).
+* Pickup notes are now displayed differently in the booking calendar and in the booking confirmation. Attention: Template change. If you change the template manually, please check the adjustments and correct them if necessary.
+* For cancellations, the cancellation time is saved and displayed in the booking details view at the top of the status message.
+
+#### Fixed bugs
+* Locations in time frame editing are now sorted alphabetically.
+* On misconfigured servers, there could be an error related to geo-coding that prevented locations from being saved. Switching to a different software library should fix this bug.
+* Minor adjustments to guarantee compatibility with Wordpress 5.9 and PHP 8.
 
 ### 2.4.5 (10.05.2021)
 * NEW: Restrict bookings to user groups. It is now possible to restrict bookable timeframes to one or more user groups to restrict bookings based on these timeframes.
