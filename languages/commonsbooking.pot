@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Commons Booking plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Commons Booking 2.6-RC-11\n"
+"Project-Id-Version: Commons Booking 2.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-02-03T13:20:21+00:00\n"
+"POT-Creation-Date: 2022-02-03T14:29:21+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -996,11 +996,15 @@ msgstr ""
 msgid "Please check your booking and click confirm booking"
 msgstr ""
 
-#: src/Model/Booking.php:342
+#: src/Model/Booking.php:343
 msgid "Your booking has been canceled at %s."
 msgstr ""
 
-#: src/Model/Booking.php:362
+#: src/Model/Booking.php:345
+msgid "Your booking has been canceled"
+msgstr ""
+
+#: src/Model/Booking.php:366
 msgid "Link to your booking"
 msgstr ""
 
