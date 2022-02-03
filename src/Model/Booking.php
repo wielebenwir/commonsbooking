@@ -339,7 +339,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		if ( $currentStatus == "canceled" ) {
-            if ( !empty( $cancellation_time ) ) {
+            if ( $cancellation_time == '') {
 			    $noticeText = sprintf ( commonsbooking_sanitizeHTML( __( 'Your booking has been canceled at %s.', 'commonsbooking' ) ), $cancellation_time );
             } else {
                 $noticeText = commonsbooking_sanitizeHTML( __( 'Your booking has been canceled', 'commonsbooking' ) );
