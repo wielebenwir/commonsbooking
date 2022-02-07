@@ -100,14 +100,15 @@ class MapItemAvailable {
 		foreach ( $availabilities as &$availability ) {
 			if ( array_key_exists( $availability['date'], $calendarData['days'] ) ) {
 				$day = $calendarData['days'][ $availability['date'] ];
-
-				if ( $day['bookedDay'] ) {
+				if (! count( $day['slots'])){
+					$availability['status'] = self::ITEM_LOCKED;
+				}elseif ( $day['holiday']) {
+					$availability['status'] = self::LOCATION_HOLIDAY;
+				} elseif ($day['locked'] && $day['firstSlotBooked'] && $day['lastSlotBooked']){
 					$availability['status'] = self::ITEM_BOOKED;
-				} elseif( $day['partiallyBookedDay']){
+				} elseif ( $day['locked'] && $day['partiallyBookedDay']) {
 					$availability['status'] = self::ITEM_PARTIALLY_BOOKED;
-				} elseif ( $day['holiday'] || $day['locked'] ) {
-					$availability['status'] = self::LOCATION_CLOSED;
-				} else {
+				}  else {
 					$availability['status'] = self::ITEM_AVAILABLE;
 				}
 			}
