@@ -22,6 +22,11 @@ $text_hidden_contactinfo = \CommonsBooking\Settings\Settings::getOption('commons
 <div class="cb-list-content cb-location-address cb-col-30-70">
   <div><?php echo esc_html__('Adress', 'commonsbooking'); ?></div>
   <div><?php echo $location->formattedAddressOneLine(); ?></div>
+  <?php
+	    if ( $location->hasMap() ) {
+            \CommonsBooking\View\Location::renderLocationMap( $location );
+        }
+	?>
 </div>
 
 <?php if ( $location_contact ) { ?>

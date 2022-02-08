@@ -33,7 +33,7 @@ var cb_map_positioning = {
         this.marker.on('dragend', function (e) {
             jQuery('#geo_latitude').val(that.marker.getLatLng().lat);
             jQuery('#geo_longitude').val(that.marker.getLatLng().lng);
-        });
+        });           
 
     },
 
@@ -60,13 +60,15 @@ var cb_map_positioning = {
             limit: 1
         }
 
+
         jQuery.getJSON(url, params, function (data) {
 
             if (data.length > 0) {
-                cb_map_positioning.init_map(data[0].lat, data[0].lon, true);
+                
                 jQuery('#geo_latitude').val(data[0].lat);
                 jQuery('#geo_longitude').val(data[0].lon);
-
+                cb_map_positioning.set_marker_position( data[0].lat, data[0].lon );
+  
             } else {
                 cb_map_positioning.init_map(
                     cb_map_positioning.defaults.latitude || 52.49333,
@@ -94,6 +96,7 @@ jQuery(document).ready(function ($) {
     } else {
         cb_map_positioning.init_map(parseFloat($latitude.val()), parseFloat($longitude.val()), true);
     }
+
 
     //event listeners on lat/lon $input - reposition marker
     $latitude.change(function () {

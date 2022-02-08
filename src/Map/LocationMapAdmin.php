@@ -35,4 +35,24 @@ class LocationMapAdmin {
 		echo '<script>cb_map_positioning.defaults = ' . json_encode( $defaults ) . ';</script>';
 	}
 
+
+    public function renderGeoRefreshButton() {
+
+        ?>
+        <div class="cmb-row cmb-type-text ">
+        <div class="cmb-th">
+            <label for="timeframe-export"><?php echo esc_html__( 'Get Map Coordinates', 'commonsbooking' ); ?></label>
+        </div>
+        <div class="cmb-td">
+            <button type="submit" id="get_gps" class="button button-secondary" onclick="cb_map_positioning.search()">
+                <?php echo esc_html__( 'Get GPS Coordinates', 'commonsbooking' ); ?>
+            </button>
+        </div>
+    </div>
+
+    <?php 
+    ;
+
+    }
+
 }
