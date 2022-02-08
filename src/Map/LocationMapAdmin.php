@@ -41,11 +41,11 @@ class LocationMapAdmin {
         ?>
         <div class="cmb-row cmb-type-text ">
         <div class="cmb-th">
-            <label for="timeframe-export"><?php echo esc_html__( 'Get Map Coordinates', 'commonsbooking' ); ?></label>
+            <label><?php echo esc_html__( 'Get GPS Coordinates', 'commonsbooking' ); ?></label>
         </div>
         <div class="cmb-td">
             <button type="submit" id="get_gps" class="button button-secondary" onclick="cb_map_positioning.search()">
-                <?php echo esc_html__( 'Get GPS Coordinates', 'commonsbooking' ); ?>
+                <?php echo esc_html__( 'Set GPS coordinates from address', 'commonsbooking' ); ?>
             </button>
         </div>
     </div>
