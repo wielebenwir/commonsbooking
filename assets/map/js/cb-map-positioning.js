@@ -81,7 +81,10 @@ var cb_map_positioning = {
             } else {
         
                 // show error message if adress couldnt be found
-                jQuery( "#nogpsresult" ).show();
+                if(document.getElementById("_cb_location_street").value.length != 0)
+                {
+                    jQuery( "#nogpsresult" ).show();
+                }
                 cb_map_positioning.init_map(
                     cb_map_positioning.defaults.latitude || 50.937531,
                     cb_map_positioning.defaults.longitude || 6.960279,
