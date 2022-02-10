@@ -31,7 +31,7 @@ class CB {
 	 *
 	 * @param mixed $key
 	 * @param mixed $property
-	 * @param null $postId (can be a post-id or a user-id)
+	 * @param null $post (can be a post-id or a user-id)
 	 * @param mixed $args
 	 *
 	 * @return mixed
@@ -39,11 +39,13 @@ class CB {
 	public static function get( $key, $property, $post = null, $args = null ) {
 
         // first we need to check if we are dealing with a post and set the post object properly
-		if ( ! $post ) {
-			$postId = self::getPostId( $key );
-			$post = get_post($postId);
-		} else if(!($post instanceof \WP_Post) && !($post instanceof CustomPost) && !($post instanceof \WP_user)  ) {
-			$post = get_post(intval($post));
+		if($key !== 'user') {
+			if ( ! $post ) {
+				$postId = self::getPostId( $key );
+				$post = get_post($postId);
+			} else if(!($post instanceof \WP_Post) && !($post instanceof CustomPost) && !($post instanceof \WP_user)  ) {
+				$post = get_post(intval($post));
+			}
 		}
 
 		$result     = self::lookUp( $key, $property, $post, $args );  // Find matching methods, properties or metadata
@@ -104,6 +106,9 @@ class CB {
 		$result = null;
 
 		if ( $key == 'user' ) {
+			// in any case we need the post object, otherwise we cannot return anything
+			if(!$post) return null;
+
 			// If user is defined and we don't use the post author
 			if($post instanceof \WP_User) {
 				$cb_user = $post;
