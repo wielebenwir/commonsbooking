@@ -35,4 +35,25 @@ class LocationMapAdmin {
 		echo '<script>cb_map_positioning.defaults = ' . json_encode( $defaults ) . ';</script>';
 	}
 
+
+    public function renderGeoRefreshButton() {
+
+        ?>
+        <div class="cmb-row cmb-type-text ">
+        <div class="cmb-th">
+            <label><?php echo esc_html__( 'Set / Update GPS Coordinates', 'commonsbooking' ); ?></label>
+        </div>
+        <div class="cmb-td">
+            <button type="submit" id="get_gps" class="button button-secondary" onclick="cb_map_positioning.search()">
+                <?php echo esc_html__( 'Set / update GPS coordinates from address', 'commonsbooking' ); ?>
+            </button>
+            <p><?php echo commonsbooking_sanitizeHTML( __('Click this button to automatically set the GPS coordinates based on the given address and set the marker on the map.<br> <strong>Save or update this location after setting the gps data.</strong>', 'commonsbooking' ) ); ?></p>
+        </div>
+    </div>
+
+    <?php 
+    ;
+
+    }
+
 }

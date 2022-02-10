@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-02-10T08:18:08+00:00\n"
+"POT-Creation-Date: 2022-02-10T08:20:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -833,7 +833,7 @@ msgstr ""
 
 #: src/CB/CB1UserFields.php:66
 #: src/CB/CB1UserFields.php:262
-#: src/Wordpress/CustomPostType/Location.php:184
+#: src/Wordpress/CustomPostType/Location.php:185
 #: templates/booking-single.php:66
 msgid "Address"
 msgstr ""
@@ -873,6 +873,18 @@ msgstr ""
 
 #: src/CB/CB1UserFields.php:276
 msgid "Accepted Terms & Conditions"
+msgstr ""
+
+#: src/Map/LocationMapAdmin.php:44
+msgid "Set / Update GPS Coordinates"
+msgstr ""
+
+#: src/Map/LocationMapAdmin.php:48
+msgid "Set / update GPS coordinates from address"
+msgstr ""
+
+#: src/Map/LocationMapAdmin.php:50
+msgid "Click this button to automatically set the GPS coordinates based on the given address and set the marker on the map.<br> <strong>Save or update this location after setting the gps data.</strong>"
 msgstr ""
 
 #: src/Map/MapAdmin.php:131
@@ -1188,7 +1200,7 @@ msgstr ""
 #: src/View/Calendar.php:184
 #: src/Wordpress/CustomPostType/Booking.php:257
 #: src/Wordpress/CustomPostType/Booking.php:556
-#: src/Wordpress/CustomPostType/Location.php:87
+#: src/Wordpress/CustomPostType/Location.php:88
 #: src/Wordpress/CustomPostType/Restriction.php:51
 #: src/Wordpress/CustomPostType/Restriction.php:424
 #: src/Wordpress/CustomPostType/Timeframe.php:90
@@ -1342,7 +1354,7 @@ msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:357
 #: src/Wordpress/CustomPostType/Item.php:70
-#: src/Wordpress/CustomPostType/Location.php:88
+#: src/Wordpress/CustomPostType/Location.php:89
 #: src/Wordpress/CustomPostType/Restriction.php:306
 #: src/Wordpress/CustomPostType/Timeframe.php:733
 msgid "Add new"
@@ -1559,172 +1571,180 @@ msgstr ""
 msgid "Item Meta-Data"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:86
-#: src/Wordpress/CustomPostType/Location.php:107
+#: src/Wordpress/CustomPostType/Location.php:87
+#: src/Wordpress/CustomPostType/Location.php:108
 #: templates/dashboard-index.php:35
 msgid "Locations"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:89
-#: src/Wordpress/CustomPostType/Location.php:91
+#: src/Wordpress/CustomPostType/Location.php:90
+#: src/Wordpress/CustomPostType/Location.php:92
 msgid "Add new location"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:90
+#: src/Wordpress/CustomPostType/Location.php:91
 msgid "Edit location"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:92
+#: src/Wordpress/CustomPostType/Location.php:93
 msgid "Show location"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:93
+#: src/Wordpress/CustomPostType/Location.php:94
 msgid "Show locations"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:94
+#: src/Wordpress/CustomPostType/Location.php:95
 msgid "Search locations"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:95
+#: src/Wordpress/CustomPostType/Location.php:96
 msgid "location not found"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:96
+#: src/Wordpress/CustomPostType/Location.php:97
 msgid "No locations found in trash"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:97
+#: src/Wordpress/CustomPostType/Location.php:98
 msgid "Parent location:"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:98
+#: src/Wordpress/CustomPostType/Location.php:99
 msgid "All locations"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:99
+#: src/Wordpress/CustomPostType/Location.php:100
 msgid "Location archive"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:100
+#: src/Wordpress/CustomPostType/Location.php:101
 msgid "Location attributes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:101
+#: src/Wordpress/CustomPostType/Location.php:102
 msgid "Add to location"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:102
+#: src/Wordpress/CustomPostType/Location.php:103
 msgid "Added to location"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:103
+#: src/Wordpress/CustomPostType/Location.php:104
 msgid "Location image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:104
+#: src/Wordpress/CustomPostType/Location.php:105
 msgid "set location image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:105
+#: src/Wordpress/CustomPostType/Location.php:106
 msgid "remove location image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:106
+#: src/Wordpress/CustomPostType/Location.php:107
 msgid "use as location image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:193
+#: src/Wordpress/CustomPostType/Location.php:194
 msgid "Street / No."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:204
+#: src/Wordpress/CustomPostType/Location.php:205
 msgid "Postcode"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:215
+#: src/Wordpress/CustomPostType/Location.php:216
 msgid "City"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:226
+#: src/Wordpress/CustomPostType/Location.php:227
 msgid "Country"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:235
+#: src/Wordpress/CustomPostType/Location.php:236
+msgid "Set / Update GPS and map"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:247
 msgid "Latitude"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:236
-msgid "The latitude is calculated automatically when you click Save/Update after entering the street, postal code and city."
+#: src/Wordpress/CustomPostType/Location.php:248
+msgid "The latitude is calculated automatically when you click the \"set / update GPS\" button after entering the street, postal code and city."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:244
+#: src/Wordpress/CustomPostType/Location.php:256
 msgid "Longitude"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:245
-msgid "The longitude is calculated automatically when you click Save/Update after entering the street, postal code and city."
+#: src/Wordpress/CustomPostType/Location.php:257
+msgid "The longitude is calculated automatically when you click the \"set / update GPS\" button after entering the street, postal code and city."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:253
+#: src/Wordpress/CustomPostType/Location.php:265
 msgid "Position"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:263
+#: src/Wordpress/CustomPostType/Location.php:274
+msgid "Show location map on item view"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:275
 msgid "If enabled, a map showing the location will be displayed on the location details page."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:272
+#: src/Wordpress/CustomPostType/Location.php:284
 msgid "General Location information"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:281
+#: src/Wordpress/CustomPostType/Location.php:293
 msgid "Location email"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:282
+#: src/Wordpress/CustomPostType/Location.php:294
 msgid "Email addresses to which a copy of the booking confirmation / cancellation should be sent. You can enter multiple addresses separated by commas."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:292
+#: src/Wordpress/CustomPostType/Location.php:304
 #: templates/booking-single.php:71
-#: templates/location-single-meta.php:48
+#: templates/location-single-meta.php:53
 msgid "Pickup instructions"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:293
+#: src/Wordpress/CustomPostType/Location.php:305
 msgid "Type in information about the pickup process (e.g. detailed route description, opening hours, etc.). This will be shown to user in booking process and booking confirmation mail"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:303
+#: src/Wordpress/CustomPostType/Location.php:315
 msgid "Location contact information"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:304
+#: src/Wordpress/CustomPostType/Location.php:316
 msgid "information about how to contact the location (e.g. contact person, phone number, e-mail etc.). This will be shown to user in booking process and booking confirmation mail"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:320
+#: src/Wordpress/CustomPostType/Location.php:332
 msgid "Location Admin(s)"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:321
+#: src/Wordpress/CustomPostType/Location.php:333
 msgid "choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role CommonsBooking Manager can be selected here."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:327
+#: src/Wordpress/CustomPostType/Location.php:339
 msgid "Select location admins."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:333
+#: src/Wordpress/CustomPostType/Location.php:345
 msgid "Allow locked day overbooking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:334
+#: src/Wordpress/CustomPostType/Location.php:346
 msgid "If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target=\"_blank\" href=\"https://commonsbooking.org/?p=435\">Create Locations</a> for more information."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:346
+#: src/Wordpress/CustomPostType/Location.php:358
 msgid "Location Meta-Data"
 msgstr ""
 
@@ -2376,7 +2396,7 @@ msgstr ""
 msgid "Adress"
 msgstr ""
 
-#: templates/location-single-meta.php:29
+#: templates/location-single-meta.php:34
 msgid "Location contact"
 msgstr ""
 
