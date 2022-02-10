@@ -1,0 +1,157 @@
+@mixin day-item {
+    color: var(--litepickerDayColor);
+    border-style: solid;
+    background-color: var(--litepickerDayColorBg);
+    text-align: center;
+    text-decoration: none;
+    transition: color 0.3s, border 0.3s;
+    border-color: var(--litePickerDayBorderColor);
+    border-radius: 0px;
+    box-sizing: border-box;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+
+    &:hover {
+        cursor: pointer;
+        color: var(--litepickerDayColorHover);
+        box-shadow: inset 0 0 0 1px var(--litepickerDayColorHover);
+    }
+
+    &.is-today {
+        color: var(--litepickerDayIsTodayColor);
+    }
+
+    &.is-holiday {
+        @include day-is-holiday;
+    }
+    &.is-booked {
+        @include day-is-booked;
+    }
+
+    &.is-partially-booked {
+        @include day-is-partially-booked;
+    }
+
+    &.is-partially-booked-start {
+        @include day-is-partially-booked-start;
+    }
+    &.is-partially-booked-end {
+        @include day-is-partially-booked-end;
+    }
+
+    &.is-locked {
+        @include day-is-locked;
+    }
+
+    &.is-in-range {
+        color: var(--litepickerDayIsStartColor);
+        background-color: var(--litepickerDayIsInRange);
+        border-radius: 0;
+    }
+
+    &.is-start-date {
+        color: var(--litepickerDayIsStartColor);
+        background: var(--litepickerDayIsStartBg) !important;
+        background-color: var(--litepickerDayIsStartBg);
+        border-radius: 0px 0 0 0px;
+
+        &.is-flipped {
+            border-radius: 0 0px 0px 0;
+        }
+    }
+
+    &.is-end-date {
+        color: var(--litepickerDayIsEndColor);
+        background: var(--litepickerDayIsEndBg) !important;
+        background-color: var(--litepickerDayIsEndBg);
+        border-radius: 0 0px 0px 0;
+
+        &.is-flipped {
+            border-radius: 0px 0 0 0px;
+        }
+    }
+
+    &.is-start-date.is-end-date {
+        border-radius: 0px;
+    }
+
+    &.is-highlighted {
+        color: var(--litepickerHighlightedDayColor);
+        background: var(--litepickerHighlightedDayBg) !important;
+        background-color: var(--litepickerHighlightedDayBg);
+    }
+}
+
+@mixin day-is-holiday {
+    color: var(--litepickerDayIsHolidayColor);
+    background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
+    background-size: 5px 5px;
+    &:hover {
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+}
+
+@mixin day-is-partially-booked-start {
+    background: linear-gradient(to bottom right, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%,
+            var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
+}
+
+@mixin day-is-partially-booked-end {
+    background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%,
+            var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
+}
+
+@mixin day-is-partially-booked {
+    color: var(--litepickerDayIsPartiallyLockedColor);
+    background: linear-gradient(to bottom right,
+        var(--litepickerDayIsPartiallyLockedColorBgOne) 0%,
+        var(--litepickerDayIsPartiallyLockedColorBgOne) 50%,
+        var(--litepickerDayIsPartiallyLockedColorBgTwo) 50%,
+        var(--litepickerDayIsPartiallyLockedColorBgTwo) 100%
+    );
+
+    &:hover {
+        cursor: pointer;
+        color: var(--litepickerDayIsPartiallyLockedColor);
+        background: linear-gradient(to bottom right,
+            lightgreen 0%,
+            lightgreen 50%,
+            lightgray 50%,
+            lightgray 100%
+        );
+        box-shadow: none;
+    }
+}
+
+@mixin day-is-booked {
+    color: var(--litepickerDayIsBookedColor);
+    background-color: var(--litepickerDayIsBookedColorBg);
+
+    &:hover {
+        color: var(--litepickerDayIsBookedColor);
+        box-shadow: none;
+        cursor: default;
+    }
+
+    &.last-slot {
+        background: linear-gradient(
+            to bottom right,
+            var(--litepickerDayColorBg) 0%,
+            var(--litepickerDayColorBg) 50%,
+            var(--litepickerDayIsBookedColorBg) 50%,
+            var(--litepickerDayIsBookedColorBg) 100%
+        );
+    }
+}
+
+@mixin day-is-locked {
+    color: var(--litepickerDayIsLockedColor);
+    background: var(--litepickerDayIsLockedColorBg) !important;
+
+    &:hover {
+        cursor: not-allowed;
+        color: var(--litepickerDayIsLockedColor);
+        box-shadow: none;
+    }
+}

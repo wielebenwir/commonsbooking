@@ -50,20 +50,13 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Default value for possible advance booking days.
 	 */
-	const ADVANCE_BOOKING_DAYS = 31;
+	const ADVANCE_BOOKING_DAYS = 365;
 
 	/**
 	 * CPT type.
 	 * @var string
 	 */
 	public static $postType = 'cb_timeframe';
-
-	public static function getSimilarPostTypes () {
-		return [
-			Timeframe::$postType,
-			\CommonsBooking\Wordpress\CustomPostType\Booking::$postType
-		];
-    }
 
 	/**
 	 * Timeframetypes which cannot be "overbooked".
@@ -73,18 +66,15 @@ class Timeframe extends CustomPostType {
 		self::REPAIR_ID,
 		self::BOOKING_ID,
 	];
-
 	/**
 	 * Position in backend menu.
 	 * @var int
 	 */
 	protected $menuPosition = 1;
-
 	/**
 	 * @var array
 	 */
 	protected $types;
-
 
 	public function __construct() {
 		$this->types = self::getTypes();
@@ -94,16 +84,16 @@ class Timeframe extends CustomPostType {
 		 * @var string[]
 		 */
 		$this->listColumns = [
-			'timeframe-author'                              => esc_html__( 'User', 'commonsbooking' ),
-			'type'                                          => esc_html__( 'Type', 'commonsbooking' ),
-			'item-id'                                       => esc_html__( 'Item', 'commonsbooking' ),
-			'location-id'                                   => esc_html__( 'Location', 'commonsbooking' ),
-			'post_date'                                     => esc_html__( 'Bookingdate', 'commonsbooking' ),
-			'repetition-start'                              => esc_html__( 'Start Date', 'commonsbooking' ),
-			\CommonsBooking\Model\Timeframe::REPETITION_END => esc_html__( 'End Date', 'commonsbooking' ),
-			'post_status'                                   => esc_html__( 'Booking Status', 'commonsbooking' ),
-		];
+			'timeframe-author'                                                   => esc_html__( 'User', 'commonsbooking' ),
+			'type'                                                               => esc_html__( 'Type', 'commonsbooking' ),
+			\CommonsBooking\Model\Timeframe::META_ITEM_ID                        => esc_html__( 'Item', 'commonsbooking' ),
+			\CommonsBooking\Model\Timeframe::META_LOCATION_ID                    => esc_html__( 'Location', 'commonsbooking' ),
+			'repetition-start'                                                   => esc_html__( 'Start Date', 'commonsbooking' ),
+			\CommonsBooking\Model\Timeframe::REPETITION_END                      => esc_html__( 'End Date', 'commonsbooking' ),
+			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS => esc_html__( 'Max. Booking Duration', 'commonsbooking' ),
+			'timeframe-advance-booking-days'                                     => esc_html__( 'Days Booking In Advance', 'commonsbooking' ),
 
+		];
 
 
 		// List settings
@@ -127,44 +117,11 @@ class Timeframe extends CustomPostType {
 			self::BOOKING_CANCELED_ID => esc_html__( "Booking canceled", 'commonsbooking' ),
 		];
 	}
-	
-	/**
-	 * Get allowed timeframe types for selection box in timeframe editor
-	 * TODO: can be removed if type cleanup has been done (e.g. move BOOKIG_ID to Booking-Class and rename existing types )
-	 *
-	 * @return array
-	 */
-	public static function getTypesforSelectField() {		
-		$types = self::getTypes();
-		unset(
-			$types[self::BOOKING_ID],
-			$types[self::BOOKING_CANCELED_ID],
-		);
-		return $types;
-	}
 
-	/**
-	 * Returns array with repetition options.
-	 * @return array
-	 */
-	public static function getTimeFrameRepetitions() {
+	public static function getSimilarPostTypes() {
 		return [
-			'norep' => esc_html__( "No Repetition", 'commonsbooking' ),
-			'd'     => esc_html__( "Daily", 'commonsbooking' ),
-			'w'     => esc_html__( "Weekly", 'commonsbooking' ),
-			'm'     => esc_html__( "Monthly", 'commonsbooking' ),
-			'y'     => esc_html__( "Yearly", 'commonsbooking' ),
-		];
-	}
-
-	/**
-	 * Retuns grid options.
-	 * @return array
-	 */
-	public static function getGridOptions() {
-		return [
-			0 => esc_html__( "Full slot", 'commonsbooking' ),
-			1 => esc_html__( "Hourly", 'commonsbooking' ),
+			Timeframe::$postType,
+			Booking::$postType
 		];
 	}
 
@@ -246,7 +203,8 @@ class Timeframe extends CustomPostType {
 		// @TODO implement view.
 	}
 
-	/**
+    
+    /**
 	 * Adds filter dropdown // filter by type (eg. bookable, repair etc.) in timeframe List
 	 *
 	 * @return void
@@ -256,7 +214,7 @@ class Timeframe extends CustomPostType {
 			static::$postType,
 			esc_html__( 'Filter By Type ', 'commonsbooking' ),
 			'filter_type',
-			static::getTypes()
+            static::getTypesforSelectField(),
 		);
 	}
 
@@ -279,7 +237,7 @@ class Timeframe extends CustomPostType {
 			}
 
 			Filter::renderFilter(
-                static::$postType,
+				static::$postType,
 				esc_html__( 'Filter By Item ', 'commonsbooking' ),
 				'filter_item',
 				$values
@@ -316,6 +274,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by location in timeframe List
+	 * DEPRECATED! Could not remove without WP throwing an error.
 	 */
 	public static function addAdminStatusFilter() {
 		$values = [];
@@ -369,9 +328,9 @@ class Timeframe extends CustomPostType {
 				'relation' => 'AND',
 			);
 			$meta_filters                    = [
-				'type'        => 'admin_filter_type',
-				'item-id'     => 'admin_filter_item',
-				'location-id' => 'admin_filter_location',
+				'type'                                            => 'admin_filter_type',
+				\CommonsBooking\Model\Timeframe::META_ITEM_ID     => 'admin_filter_item',
+				\CommonsBooking\Model\Timeframe::META_LOCATION_ID => 'admin_filter_location',
 			];
 			foreach ( $meta_filters as $key => $filter ) {
 				if (
@@ -410,19 +369,6 @@ class Timeframe extends CustomPostType {
 				);
 			}
 
-			// Post field filtering
-			$post_filters = [
-				'post_status' => 'admin_filter_post_status',
-			];
-			foreach ( $post_filters as $key => $filter ) {
-				if (
-					isset( $_GET[ $filter ] ) &&
-					$_GET[ $filter ] != ''
-				) {
-					$query->query_vars[ $key ] = sanitize_text_field( $_GET[ $filter ] );
-				}
-			}
-
 			// Check if current user is allowed to see posts
 			if ( ! commonsbooking_isCurrentUserAdmin() ) {
 				$locations = \CommonsBooking\Repository\Location::getByCurrentUser();
@@ -437,12 +383,12 @@ class Timeframe extends CustomPostType {
 				$query->query_vars['meta_query'][] = array(
 					'relation' => 'OR',
 					array(
-						'key'     => 'location-id',
+						'key'     => \CommonsBooking\Model\Timeframe::META_LOCATION_ID,
 						'value'   => $locations,
 						'compare' => 'IN'
 					),
 					array(
-						'key'     => 'item-id',
+						'key'     => \CommonsBooking\Model\Timeframe::META_ITEM_ID,
 						'value'   => $items,
 						'compare' => 'IN'
 					),
@@ -499,18 +445,18 @@ class Timeframe extends CustomPostType {
 				'options' => self::getTypesforSelectField(),
 			),
 			array(
-				'name'    => esc_html__( "Location", 'commonsbooking' ),
-				'id'      => "location-id",
-				'type'    => 'select',
-				'show_option_none' => esc_html__( 'Please select' , 'commonsbooking'),
-				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
+				'name'             => esc_html__( "Location", 'commonsbooking' ),
+				'id'               => \CommonsBooking\Model\Timeframe::META_LOCATION_ID,
+				'type'             => 'select',
+				'show_option_none' => esc_html__( 'Please select', 'commonsbooking' ),
+				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
 			),
 			array(
-				'name'    => esc_html__( "Item", 'commonsbooking' ),
-				'id'      => "item-id",
-				'type'    => 'select',
-				'show_option_none' => esc_html__( 'Please select' , 'commonsbooking'),
-				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
+				'name'             => esc_html__( "Item", 'commonsbooking' ),
+				'id'               => \CommonsBooking\Model\Timeframe::META_ITEM_ID,
+				'type'             => 'select',
+				'show_option_none' => esc_html__( 'Please select', 'commonsbooking' ),
+				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 			),
 			array(
 				'name'       => esc_html__( 'Maximum booking duration', 'commonsbooking' ),
@@ -634,7 +580,8 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'        => esc_html__( 'End date', 'commonsbooking' ),
-				'desc'        => esc_html__( 'Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.', 'commonsbooking' ),
+                'desc'        => commonsbooking_sanitizeHTML( __('Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.
+                <br><strong>Notice:</strong> If the end date is empty and no repetition has been selected, this time frame applies only to the set start date. Only if a repetition is selected and the end date is empty, the repetition will be repeated infinitely.', 'commonsbooking') ),
 				'id'          => "repetition-end",
 				'type'        => 'text_date_timestamp',
 				'time_format' => get_option( 'time_format' ),
@@ -675,6 +622,47 @@ class Timeframe extends CustomPostType {
 				'default' => wp_create_nonce( plugin_basename( __FILE__ ) )
 			),
 		);
+	}
+
+	/**
+	 * Get allowed timeframe types for selection box in timeframe editor
+	 * TODO: can be removed if type cleanup has been done (e.g. move BOOKIG_ID to Booking-Class and rename existing types )
+	 *
+	 * @return array
+	 */
+	public static function getTypesforSelectField() {
+		$types = self::getTypes();
+		unset(
+			$types[ self::BOOKING_ID ],
+			$types[ self::BOOKING_CANCELED_ID ],
+		);
+
+		return $types;
+	}
+
+	/**
+	 * Retuns grid options.
+	 * @return array
+	 */
+	public static function getGridOptions() {
+		return [
+			0 => esc_html__( "Full slot", 'commonsbooking' ),
+			1 => esc_html__( "Hourly", 'commonsbooking' ),
+		];
+	}
+
+	/**
+	 * Returns array with repetition options.
+	 * @return array
+	 */
+	public static function getTimeFrameRepetitions() {
+		return [
+			'norep' => esc_html__( "No Repetition", 'commonsbooking' ),
+			'd'     => esc_html__( "Daily", 'commonsbooking' ),
+			'w'     => esc_html__( "Weekly", 'commonsbooking' ),
+			'm'     => esc_html__( "Monthly", 'commonsbooking' ),
+			'y'     => esc_html__( "Yearly", 'commonsbooking' ),
+		];
 	}
 
 	/**
@@ -836,9 +824,9 @@ class Timeframe extends CustomPostType {
 				case 'location-id':
 				case 'item-id':
 					if ( $post = get_post( $value ) ) {
-						if ( get_post_type( $post ) == Location::getPostType() || get_post_type(
-							                                                          $post
-						                                                          ) == Item::getPostType() ) {
+						if ( get_post_type( $post ) == Location::getPostType() ||
+						     get_post_type( $post ) == Item::getPostType()
+						) {
 							echo $post->post_title;
 							break;
 						}
@@ -859,9 +847,9 @@ class Timeframe extends CustomPostType {
 					}
 					echo $output;
 					break;
-				case 'repetition-start':
+				case \CommonsBooking\Model\Timeframe::REPETITION_START:
 				case \CommonsBooking\Model\Timeframe::REPETITION_END:
-					echo date( 'd.m.Y H:i', $value );
+					echo date( 'd.m.Y', $value );
 					break;
 				default:
 					echo $value;
@@ -898,7 +886,6 @@ class Timeframe extends CustomPostType {
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminLocationFilter' ) );
-		add_action( 'restrict_manage_posts', array( self::class, 'addAdminStatusFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminDateFilter' ) );
 		add_action( 'pre_get_posts', array( self::class, 'filterAdminList' ) );
 

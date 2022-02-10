@@ -46,12 +46,12 @@ abstract class Message {
 	/**
 	 * Setup the email template, headers (BCC)
 	 * 
-	 * $recipientUser User-Object
-	 * $template_body template string
-	 * $template_subject template string 
-	 * $from_headers From-Header (From:xxx)
-	 * $bcc_adresses comma separated string with e-mail adresses 
-	 * $objects 
+	 * @param object $recipientUser User-Object
+	 * @param string $template_body template string
+	 * @param string $template_subject template string 
+	 * @param string $from_headers From-Header (From:xxx)
+	 * @param string $bcc_adresses comma separated string with e-mail adresses 
+	 * @param object $objects objects used in parse template function 
 	 */
 	protected function prepareMail(
 		$recipientUser,
@@ -91,8 +91,11 @@ abstract class Message {
 		}
 	}
 
+	
 	/**
-	 * Send the email
+	 * Send the email using wp_mail function
+	 *
+	 * @return void
 	 */
 	public function SendNotificationMail() {
 		$to      = apply_filters( 'cb_mail_to', $this->to );

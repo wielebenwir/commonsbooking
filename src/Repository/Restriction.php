@@ -81,7 +81,7 @@ class Restriction extends PostRepository {
 		return "INNER JOIN $table_postmeta pm2 ON
             pm2.post_id = pm1.id AND (                         
                 pm2.meta_key = '" . \CommonsBooking\Model\Restriction::META_STATE . "' AND
-                pm2.meta_value = 1
+                pm2.meta_value = '" . \CommonsBooking\Model\Restriction::STATE_ACTIVE . "'
             )";
 	}
 
@@ -99,15 +99,42 @@ class Restriction extends PostRepository {
 			// Check if restriction is in relation to item and/or location
 			$location               = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID, true ) );
 			$restrictionHasLocation = $location !== 0;
+			$restrictedLocationInLocations = $restrictionHasLocation && in_array( $location, $locations );
 
 			$item               = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID, true ) );
 			$restrictionHasItem = $item !== 0;
+			$restrictedItemInItems = $restrictionHasItem && in_array( $item, $items );
+
+			// No item or location for restriction set
+			$noLocationNoItem = ( ! $restrictionHasLocation && ! $restrictionHasItem );
+
+			// No location, item matching
+			$noLocationItemMatches = (
+				!$restrictionHasLocation &&
+				$restrictionHasItem &&
+				$restrictedItemInItems
+			);
+
+			// No item, location matching
+			$noItemLocationMatches = (
+				! $restrictionHasItem &&
+				$restrictionHasLocation &&
+				$restrictedLocationInLocations
+			);
+
+			// Item and location matching
+			$itemAndLocationMatches = (
+				$restrictionHasLocation &&
+				$restrictedLocationInLocations &&
+				$restrictionHasItem &&
+				$restrictedItemInItems
+			);
 
 			return
-				( ! $restrictionHasLocation && ! $restrictionHasItem ) || // No item or location for restriction set
-				in_array( $location, $locations ) ||
-				in_array( $item, $items )//							)
-				;
+				$noLocationNoItem ||
+				$noLocationItemMatches ||
+				$noItemLocationMatches ||
+				$itemAndLocationMatches;
 		} );
 	}
 

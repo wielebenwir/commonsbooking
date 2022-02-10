@@ -90,7 +90,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		$itemId,
 		$start,
 		$end,
-		$state = "1",
+		$state = "active",
 		$hint = "Hint",
 		$postAuthor = self::USER_ID,
 		$postTitle = "Restriction",

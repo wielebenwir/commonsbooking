@@ -4,6 +4,7 @@ use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
+use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 
@@ -28,9 +29,20 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
 		$admins = [];
 
 		// Get allowed admins for timeframe or booking listing
-		if ( $post->post_type == Timeframe::$postType || $post->post_type == Booking::$postType ) {
+		if (
+			in_array($post->post_type, [
+				Timeframe::$postType,
+				Booking::$postType,
+				Restriction::$postType
+			])
+		) {
+			if(!($post instanceof WP_Post)) {
+				$post = $post->getPost();
+			}
+			$postModel = \CommonsBooking\Wordpress\CustomPostType\CustomPostType::getModel($post);
+
 			// Get assigned location
-			$locationId       = get_post_meta( $post->ID, 'location-id', true );
+			$locationId       = get_post_meta( $post->ID, $postModel::META_LOCATION_ID, true );
 			$locationAdminIds = get_post_meta( $locationId, '_' . Location::$postType . '_admins', true );
 			if ( is_string( $locationAdminIds ) ) {
 				if ( strlen( $locationAdminIds ) > 0 ) {
@@ -42,7 +54,7 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
 			$locationAdminIds[] = get_post_field( 'post_author', $locationId );
 
 			// Get assigned item
-			$itemId       = get_post_meta( $post->ID, 'item-id', true );
+			$itemId       = get_post_meta( $post->ID, $postModel::META_ITEM_ID, true );
 			$itemAdminIds = get_post_meta( $itemId, '_' . Item::$postType . '_admins', true );
 			if ( is_string( $itemAdminIds ) ) {
 				if ( strlen( $itemAdminIds ) > 0 ) {

@@ -34,7 +34,7 @@ function commonsbooking_admin() {
 	);
 }
 
-add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
+	add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
 
 /**
  * commonsbooking_sanitizeHTML
@@ -117,8 +117,8 @@ function commonsbooking_sanitizeHTML( $string ): string {
 /**
  * Recursive sanitation for text or array
  *
- * @param $array_or_string (array|string)
- * @param $sanitize_function name of the sanitziation function, default = sanitize_text_field
+ * @param mixed array_or_string (array|string)
+ * @param string $sanitize_function name of the sanitziation function, default = sanitize_text_field
  *
  * @return mixed
  * @since  0.1

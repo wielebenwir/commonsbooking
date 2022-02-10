@@ -23,7 +23,7 @@ $permalink    = add_query_arg ( 'location', $location->ID, get_the_permalink($it
 $timeframes = $item->getBookableTimeframesByLocation($location->ID, true);
 ?>
 
-<?php echo $item->thumbnail('thumbnail'); // div.thumbnail is printed by function ?>
+<?php echo $item->thumbnail('cb_listing_medium'); // div.thumbnail is printed by function ?>
 
 <div class="cb-list-info">
     <h4 class="cb-title cb-item-title"><?php echo $item->post_title; ?></h4>

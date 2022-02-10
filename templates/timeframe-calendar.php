@@ -56,10 +56,7 @@
                     </div>
                 </div>
 				<?php
-                    $restrictions = $templateData['location']->getRestrictions();
-                    $restrictions = array_merge($restrictions, $templateData['item']->getRestrictions());
-                    $restrictions = array_unique($restrictions);
-
+                    $restrictions = $templateData['restrictions'];
                     if(count($restrictions)) {
                         ?>
                         <div class="restriction">
