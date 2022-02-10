@@ -94,14 +94,6 @@ function CB_Map() {
         cb_map.render_item_availability = function (availability) {
             var markup = '';
 
-            var status_classes = {
-                0: 'available',
-                1: 'location-closed',
-                2: 'partially-booked',
-                3: 'booked',
-                4: 'no-timeframe'
-            }
-
             availability.forEach(function (day) {
                 var timestamp = Date.parse(day.date);
                 var date = new Date(timestamp);
@@ -110,7 +102,7 @@ function CB_Map() {
                 var show_month = date.getMonth() + 1;
                 show_month = show_month <= 9 ? '0' + show_month : show_month;
                 var date_string = show_date + '.<br>' + show_month + '.';
-                markup += '<div class="cb-map-popup-item-availability-day ' + status_classes[day.status] + '">' + date_string + '</div>'
+                markup += '<div class="cb-map-popup-item-availability-day ' + day.status + '">' + date_string + '</div>'
             });
 
             return markup;
