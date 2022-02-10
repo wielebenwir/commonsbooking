@@ -3,6 +3,8 @@
 namespace CommonsBooking\CB;
 
 use CommonsBooking\Model\CustomPost;
+use WP_Post;
+use WP_User;
 use function get_user_by;
 
 class CB {
@@ -38,13 +40,13 @@ class CB {
 	 */
 	public static function get( $key, $property, $post = null, $args = null ) {
 
-        // first we need to check if we are dealing with a post and set the post object properly
-		if($key !== 'user') {
+		// first we need to check if we are dealing with a post and set the post object properly
+		if ( $key !== 'user' ) {
 			if ( ! $post ) {
 				$postId = self::getPostId( $key );
-				$post = get_post($postId);
-			} else if(!($post instanceof \WP_Post) && !($post instanceof CustomPost) && !($post instanceof \WP_user)  ) {
-				$post = get_post(intval($post));
+				$post   = get_post( $postId );
+			} else if ( ! ( $post instanceof WP_Post ) && ! ( $post instanceof CustomPost ) && ! ( $post instanceof WP_user ) ) {
+				$post = get_post( intval( $post ) );
 			}
 		}
 
@@ -57,11 +59,11 @@ class CB {
 	/**
 	 * Returns post id by class name of (custom) post.
 	 *
-	 * @param $key
+	 * @param string $key
 	 *
-	 * @return int|mixed|null
+	 * @return int|null
 	 */
-	private static function getPostId( $key ) {
+	private static function getPostId( string $key ): ?int {
 		$postId = null;
 
 		// Set WP Post
@@ -102,54 +104,84 @@ class CB {
 	 * @return string|null
 	 */
 	public static function lookUp( $key, $property, $post, $args ): ?string {
-
-		$result = null;
+		// in any case we need the post object, otherwise we cannot return anything
+		if ( ! $post ) {
+			return null;
+		}
 
 		if ( $key == 'user' ) {
-			// in any case we need the post object, otherwise we cannot return anything
-			if(!$post) return null;
-
-			// If user is defined and we don't use the post author
-			if($post instanceof \WP_User) {
-				$cb_user = $post;
-			} else {
-				$userID  = intval( $post->post_author );
-				$cb_user = get_user_by( 'ID', $userID );
-			}
-
-			if ( method_exists( $cb_user, $property ) ) {
-				$result = $cb_user->$property( $args );
-			}
-
-			if ( ! $result && $cb_user->$property ) {
-				$result = $cb_user->$property;
-			}
-
-			if ( ! $result && get_user_meta( $cb_user->ID, $property, true ) ) { // User has meta fields
-				$result = get_user_meta( $cb_user->ID, $property, true );
-			}
+			$result = self::getUserProperty( $post, $property, $args );
 		} else {
-			if ( get_post_meta( $post, $property, true ) ) { // Post has meta fields
-				$result = get_post_meta( $post, $property, true );
-			}
-
-			if ( method_exists( $post, $property ) ) {
-				$result = $post->$property( $args );
-			}
-
-			$prefixedProperty = 'get' . ucfirst( $property );
-			if ( ! $result && method_exists( $post, $prefixedProperty ) ) {
-				$result = $post->$prefixedProperty( $args );
-			}
-
-			if ( ! $result && $post->$property ) {
-				$result = $post->$property;
-			}
+			$result = self::getPostProperty( $post, $property, $args );
 		}
 
 		if ( $result ) {
 			// sanitize output
 			return commonsbooking_sanitizeHTML( $result );
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Tries to get a property of a post with different approaches.
+	 * @param $post
+	 * @param $property
+	 * @param $args
+	 *
+	 * @return mixed|null
+	 */
+	private static function getPostProperty( $post, $property, $args ) {
+		$result = null;
+
+		if ( get_post_meta( $post, $property, true ) ) { // Post has meta fields
+			$result = get_post_meta( $post, $property, true );
+		}
+
+		if ( method_exists( $post, $property ) ) {
+			$result = $post->$property( $args );
+		}
+
+		$prefixedProperty = 'get' . ucfirst( $property );
+		if ( ! $result && method_exists( $post, $prefixedProperty ) ) {
+			$result = $post->$prefixedProperty( $args );
+		}
+
+		if ( ! $result && $post->$property ) {
+			$result = $post->$property;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Tries to get a property of a user with different approaches.
+	 * @param $post
+	 * @param $property
+	 * @param $args
+	 *
+	 * @return int|mixed|null
+	 */
+	private static function getUserProperty( $post, $property, $args ) {
+		$result = null;
+		// If user is defined and we don't use the post author
+		if ( $post instanceof WP_User ) {
+			$cb_user = $post;
+		} else {
+			$userID  = intval( $post->post_author );
+			$cb_user = get_user_by( 'ID', $userID );
+		}
+
+		if ( method_exists( $cb_user, $property ) ) {
+			$result = $cb_user->$property( $args );
+		}
+
+		if ( ! $result && $cb_user->$property ) {
+			$result = $cb_user->$property;
+		}
+
+		if ( ! $result && get_user_meta( $cb_user->ID, $property, true ) ) { // User has meta fields
+			$result = get_user_meta( $cb_user->ID, $property, true );
 		}
 
 		return $result;
