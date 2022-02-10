@@ -15,6 +15,8 @@ class CBTest extends CustomPostTypeTest {
 
 	private $userMetaValue = 'meta-value';
 
+	private $postTitle = 'test post title';
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -27,7 +29,7 @@ class CBTest extends CustomPostTypeTest {
 
 		$this->postInstanceId = wp_insert_post(
 			[
-				'post_title '   => 'test post title',
+				'post_title'   => $this->postTitle,
 				'post_content ' => 'test post content',
 				'post_excerpt'  => 'test post excerpt',
 				'post_author'   => $this->userInstanceId
@@ -40,7 +42,7 @@ class CBTest extends CustomPostTypeTest {
 		parent::tearDown();
 
 		wp_delete_user($this->userInstanceId);
-		wp_delete_user($this->postInstanceId);
+		wp_delete_post($this->postInstanceId);
 	}
 
 	public function testLookUp() {
@@ -51,5 +53,17 @@ class CBTest extends CustomPostTypeTest {
 		// Test if user meta value is found when handing over WP_Post object
 		$post = get_post($this->postInstanceId);
 		$this->assertTrue(CB::lookUp('user',$this->userMetaKey, $post, []) == $this->userMetaValue);
+
+		// Test if post title is returned when handing ofer post key and post object
+		$this->assertTrue(CB::lookUp('post','post_title', $post, []) == $this->postTitle);
+
+		// Test if null is returned when trying to get not existing property of post
+		$this->assertTrue(CB::lookUp('user','post_title', $post, []) == null);
+
+		// Trying to get property without post object
+		$this->assertTrue(CB::lookUp('user', 'test', null, []) == null);
+		$this->assertTrue(CB::lookUp('booking', 'test', null, []) == null);
+		$this->assertTrue(CB::lookUp('item', 'test', null, []) == null);
+		$this->assertTrue(CB::lookUp('location', 'test', null, []) == null);
 	}
 }
