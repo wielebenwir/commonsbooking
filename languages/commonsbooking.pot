@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-02-03T14:29:21+00:00\n"
+"POT-Creation-Date: 2022-02-10T08:18:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -996,15 +996,15 @@ msgstr ""
 msgid "Please check your booking and click confirm booking"
 msgstr ""
 
-#: src/Model/Booking.php:343
+#: src/Model/Booking.php:344
 msgid "Your booking has been canceled at %s."
 msgstr ""
 
-#: src/Model/Booking.php:345
+#: src/Model/Booking.php:346
 msgid "Your booking has been canceled"
 msgstr ""
 
-#: src/Model/Booking.php:366
+#: src/Model/Booking.php:367
 msgid "Link to your booking"
 msgstr ""
 
