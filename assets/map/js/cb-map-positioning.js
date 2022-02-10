@@ -7,17 +7,26 @@ var cb_map_positioning = {
         // set up the map
         map = new L.Map('cb_positioning_map');
 
-        // create the tile layer with correct attribution
-        var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-        var osmAttrib = 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-        var osm = new L.TileLayer(osmUrl, {minZoom: 10, maxZoom: 19, attribution: osmAttrib});
+        const self = this;
+        
+        // possible fix to avoid missing tiles, found on: https://stackoverflow.com/questions/38832273/leafletjs-not-loading-all-tiles-until-moving-map
+        map.on("load",function() { setTimeout(() => {
+            map.invalidateSize();
+        }, 1); });
 
-        map.setView(new L.LatLng(latitude, longitude), 18);
+        // create the tile layer with correct attribution
+        var osmUrl = 'https://{s}.tile.osm.org/{z}/{x}/{y}.png';
+        var osmAttrib = 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+        var osm = new L.TileLayer(osmUrl, {minZoom: 10, maxZoom: 17, attribution: osmAttrib});
+
+        map.setView(new L.LatLng(latitude, longitude), 10);
         map.addLayer(osm);
 
         if (add_marker) {
             this.add_marker(latitude, longitude);
         }
+
+        map.setZoom(17);
 
         this.map = map;
     },
@@ -33,7 +42,7 @@ var cb_map_positioning = {
         this.marker.on('dragend', function (e) {
             jQuery('#geo_latitude').val(that.marker.getLatLng().lat);
             jQuery('#geo_longitude').val(that.marker.getLatLng().lng);
-        });
+        });           
 
     },
 
@@ -60,17 +69,25 @@ var cb_map_positioning = {
             limit: 1
         }
 
+
         jQuery.getJSON(url, params, function (data) {
 
             if (data.length > 0) {
-                cb_map_positioning.init_map(data[0].lat, data[0].lon, true);
+                jQuery( "#nogpsresult" ).hide();
                 jQuery('#geo_latitude').val(data[0].lat);
                 jQuery('#geo_longitude').val(data[0].lon);
-
+                cb_map_positioning.set_marker_position( data[0].lat, data[0].lon );
+  
             } else {
+        
+                // show error message if adress couldnt be found
+                if(document.getElementById("_cb_location_street").value.length != 0)
+                {
+                    jQuery( "#nogpsresult" ).show();
+                }
                 cb_map_positioning.init_map(
-                    cb_map_positioning.defaults.latitude || 52.49333,
-                    cb_map_positioning.defaults.longitude || 13.37933,
+                    cb_map_positioning.defaults.latitude || 50.937531,
+                    cb_map_positioning.defaults.longitude || 6.960279,
                     false
                 );
             }
@@ -94,6 +111,7 @@ jQuery(document).ready(function ($) {
     } else {
         cb_map_positioning.init_map(parseFloat($latitude.val()), parseFloat($longitude.val()), true);
     }
+
 
     //event listeners on lat/lon $input - reposition marker
     $latitude.change(function () {
