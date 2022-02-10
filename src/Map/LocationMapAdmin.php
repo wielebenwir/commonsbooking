@@ -48,6 +48,9 @@ class LocationMapAdmin {
                 <?php echo esc_html__( 'Set / update GPS coordinates from address', 'commonsbooking' ); ?>
             </button>
             <p><?php echo commonsbooking_sanitizeHTML( __('Click this button to automatically set the GPS coordinates based on the given address and set the marker on the map.<br> <strong>Save or update this location after setting the gps data.</strong>', 'commonsbooking' ) ); ?></p>
+            <div id="nogpsresult" style="display: none; color: red"><?php 
+                echo commonsbooking_sanitizeHTML( __('<strong>No GPS data could be found for the address entered</strong>. <br>Please check if the address is written correctly. <br>Alternatively, you can enter the GPS data manually into the corresponding fields.', 'commonsbooking' ) );
+                ?></div>
         </div>
     </div>
 

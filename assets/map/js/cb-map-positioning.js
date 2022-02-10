@@ -73,15 +73,18 @@ var cb_map_positioning = {
         jQuery.getJSON(url, params, function (data) {
 
             if (data.length > 0) {
-                
+                jQuery( "#nogpsresult" ).hide();
                 jQuery('#geo_latitude').val(data[0].lat);
                 jQuery('#geo_longitude').val(data[0].lon);
                 cb_map_positioning.set_marker_position( data[0].lat, data[0].lon );
   
             } else {
+        
+                // show error message if adress couldnt be found
+                jQuery( "#nogpsresult" ).show();
                 cb_map_positioning.init_map(
-                    cb_map_positioning.defaults.latitude || 52.49333,
-                    cb_map_positioning.defaults.longitude || 13.37933,
+                    cb_map_positioning.defaults.latitude || 50.937531,
+                    cb_map_positioning.defaults.longitude || 6.960279,
                     false
                 );
             }
