@@ -80,6 +80,9 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
+### 2.6.1 (10.02.2022)
+* FIXED: Map geo-coordinates are not updated after saving without page reload with gutenberg editor. Added button to manually update / set geo coordinates and added some minor map improvements. 
+
 ### 2.6 (03.02.2022)
 Notice: Version 2.5 was only a release candidate is skipped as a stable release to to technial reasons
 
