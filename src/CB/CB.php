@@ -31,16 +31,18 @@ class CB {
 	 *
 	 * @param mixed $key
 	 * @param mixed $property
-	 * @param null $postId
+	 * @param null $postId (can be a post-id or a user-id)
 	 * @param mixed $args
 	 *
 	 * @return mixed
 	 */
 	public static function get( $key, $property, $post = null, $args = null ) {
+
+        // first we need to check if we are dealing with a post and set the post object properly
 		if ( ! $post ) {
 			$postId = self::getPostId( $key );
 			$post = get_post($postId);
-		} else if(!($post instanceof \WP_Post) && !($post instanceof CustomPost)) {
+		} else if(!($post instanceof \WP_Post) && !($post instanceof CustomPost) && !($post instanceof \WP_user)  ) {
 			$post = get_post(intval($post));
 		}
 
