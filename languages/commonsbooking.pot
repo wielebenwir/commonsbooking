@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-02-10T08:20:46+00:00\n"
+"POT-Creation-Date: 2022-02-10T09:41:45+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -885,6 +885,10 @@ msgstr ""
 
 #: src/Map/LocationMapAdmin.php:50
 msgid "Click this button to automatically set the GPS coordinates based on the given address and set the marker on the map.<br> <strong>Save or update this location after setting the gps data.</strong>"
+msgstr ""
+
+#: src/Map/LocationMapAdmin.php:52
+msgid "<strong>No GPS data could be found for the address entered</strong>. <br>Please check if the address is written correctly. <br>Alternatively, you can enter the GPS data manually into the corresponding fields."
 msgstr ""
 
 #: src/Map/MapAdmin.php:131
