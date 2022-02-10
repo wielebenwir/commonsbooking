@@ -233,7 +233,7 @@ class Location extends CustomPostType {
 
 		// Generate Geo-Coordinates
 		$cmb->add_field( array(
-			'name'       => esc_html__( 'getGPS', 'commonsbooking' ),
+			'name'       => esc_html__( 'Set / Update GPS and map', 'commonsbooking' ),
 			//'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
 			'id'         => COMMONSBOOKING_METABOX_PREFIX . 'get_gps',
 			'type'       => 'text',
@@ -245,7 +245,7 @@ class Location extends CustomPostType {
 		// Latitude
 		$cmb->add_field( array(
 			'name'       => esc_html__( 'Latitude', 'commonsbooking' ),
-			'desc'       => esc_html__('The latitude is calculated automatically when you click Save/Update after entering the street, postal code and city.', 'commonsbooking'),
+			'desc'       => commonsbooking_sanitizeHTML( __('The latitude is calculated automatically when you click the "set / update GPS" button after entering the street, postal code and city.', 'commonsbooking') ),
 			'id'         => 'geo_latitude',
 			'type'       => 'text',
 			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -254,7 +254,7 @@ class Location extends CustomPostType {
 		// Longitude
 		$cmb->add_field( array(
 			'name'       => esc_html__( 'Longitude', 'commonsbooking' ),
-			'desc'       => esc_html__('The longitude is calculated automatically when you click Save/Update after entering the street, postal code and city.', 'commonsbooking'),
+			'desc'       => commonsbooking_sanitizeHTML( __('The longitude is calculated automatically when you click the "set / update GPS" button after entering the street, postal code and city.', 'commonsbooking') ),
 			'id'         => 'geo_longitude',
 			'type'       => 'text',
 			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -271,7 +271,7 @@ class Location extends CustomPostType {
 
 		// Show map on item view checkbox
 		$cmb->add_field( array(
-			'name'       => esc_html__( 'Show location map on item view' ),
+			'name'       => esc_html__( 'Show location map on item view', 'commonsbooking' ),
 			'desc'       => esc_html__('If enabled, a map showing the location will be displayed on the location details page.', 'commonsbooking'),
 			'id'         => 'loc_showmap',
 			'type'       => 'checkbox',
