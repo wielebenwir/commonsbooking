@@ -36,7 +36,7 @@ class LocationMapAdmin {
 	}
 
 
-    public function renderGeoRefreshButton() {
+    public static function renderGeoRefreshButton() {
 
         ?>
         <div class="cmb-row cmb-type-text ">
