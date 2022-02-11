@@ -3,6 +3,7 @@
 namespace CommonsBooking\Settings;
 
 use function get_option;
+use ScssPhp\ScssPhp\Compiler;
 
 /**
  * Settings
@@ -101,5 +102,47 @@ class Settings {
 		}
 
 		return $result;
+	}
+
+	public static function updateColors() {
+		$compiler = new Compiler();
+		$source_scss = COMMONSBOOKING_PLUGIN_DIR . 'assets/public/sass/public.scss';
+		$import_path = COMMONSBOOKING_PLUGIN_DIR . 'assets/public/sass/';
+		$compiler->setImportPaths($import_path);
+		$target_css = COMMONSBOOKING_PLUGIN_DIR . 'assets/public/css/public.css';
+		$target_sourcemap = COMMONSBOOKING_PLUGIN_DIR . 'assets/public/css/public.css.map';
+
+		$variables = [
+			'color-primary' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_primarycolor'),
+			'color-secondary' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_secondarycolor'),
+			'color-accept' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_acceptcolor'),
+			'color-cancel' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_cancelcolor'),
+			'color-holiday' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_holidaycolor'),
+			'color-greyedout' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_greyedoutcolor'),
+			'color-bg' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_backgroundcolor'),
+			'color-noticebg' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_noticebackgroundcolor'),
+		];		
+		$compiler->replaceVariables($variables);
+		$compiler->setSourceMap(Compiler::SOURCE_MAP_FILE);
+		$compiler->setSourceMapOptions([
+			// relative or full url to the above .map file
+			'sourceMapURL' => $target_sourcemap,
+
+			// (optional) relative or full url to the .css file
+			'sourceMapFilename' => $source_scss,
+
+			// partial path (server root) removed (normalized) to create a relative url
+			'sourceMapBasepath' => '/var/www/vhost',
+
+			// (optional) prepended to 'source' field entries for relocating source files
+			'sourceRoot' => '/',
+		]);
+		$result = $compiler->compileString('@import "' . $source_scss . '";');
+		$css = $result->getCss();
+		$sourcemap = $result->getSourceMap();
+		if (!empty($css) && is_string($css)) {
+			file_put_contents($target_css, $css);
+			file_put_contents($target_sourcemap,$sourcemap);
+		}
 	}
 }
