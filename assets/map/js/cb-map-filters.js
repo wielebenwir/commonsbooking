@@ -506,22 +506,20 @@ function CB_Map_Filters($, cb_map) {
     var max_free_days_in_row = 0;
     var current_free_days_in_row = 0;
 
-    // @TODO: die Anpassungen an den Status in der src/Map/MapItemAvailable.php hier berücksichtigen
-    // -> Wir haben keine numerischen Status mehr.
     availability_sequences.forEach(function(availability_sequence, seq_id) {
-      if(availability_sequence.status == 0) {
+      if(availability_sequence.status == "available") {
         current_free_days_in_row += availability_sequence.count;
       }
 
-      //closing days (value == 1) count only if days before & after are free (value == 0)
-      if(availability_sequence.status == 1) {
-        if(seq_id > 0 && availability_sequences[seq_id - 1].status == 0 && availability_sequences[seq_id + 1] && availability_sequences[seq_id + 1].status == 0) {
+      //closing days (value == "location-holiday") count only if days before & after are free (value == "available")
+      if(availability_sequence.status == "location-holiday") {
+        if(seq_id > 0 && availability_sequences[seq_id - 1].status == "available" && availability_sequences[seq_id + 1] && availability_sequences[seq_id + 1].status == "available") {
           current_free_days_in_row += availability_sequence.count;
         }
       }
 
-      //a row of free days end with a sequence status > LOCATION_CLOSED or end of $availability_sequences
-      if(availability_sequence.status > 1 || seq_id == availability_sequences.length - 1) {
+      //a row of free days end with a sequence status of booked, partially-booked, no timeframe or end of $availability_sequences
+      if(availability_sequence.status == "booked" || availability_sequence.status == "partially-booked" || availability_sequence.status == "no-timeframe" ||  seq_id == availability_sequences.length - 1) {
         if(max_free_days_in_row < current_free_days_in_row) {
           max_free_days_in_row = current_free_days_in_row
         }
