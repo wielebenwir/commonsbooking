@@ -116,8 +116,8 @@
 	}
 
 	&[disabled=disabled] {
-		background-color: lighten($color-gray-dark, 50);
-		color: lighten($color-gray-dark, 80);
+		background-color: $color-bg;
+		color: $color-greyedout;
 	}
 	
 	&.no-right-radius {

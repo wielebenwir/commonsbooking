@@ -14,11 +14,11 @@
 		vertical-align: middle;
 		font-weight: bold;
 		position: relative;
-		background: $color-notice;
+		background: $color-noticebg;
 		
 		/* Post status */
 		&.cb-status-unconfirmed {
-		  background: $color-notice;
+		  background: $color-noticebg;
 		}    
 		&.cb-status-confirmed {
 		  background: $color-success;

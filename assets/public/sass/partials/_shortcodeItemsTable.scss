@@ -40,7 +40,7 @@
 
 	thead {
 		tr {
-			color: $color-blue-dark;
+			color: $color-secondary;
 
 			&:first-child {
 				/* Months row */
@@ -85,12 +85,12 @@
     thead tr:first-child th:first-child,
 	thead tr:nth-child(2) th:first-child,
 	thead tr:nth-child(2) th:nth-child(2) {
-		background: $color-gray-background;
+		background: $color-bg;
 	}
 
 	tbody tr:hover td:first-child,
 	tbody tr:hover td:nth-child(2) {
-		background-color: $color-gray-background;
+		background-color: $color-bg;
 	}
 
 	tbody {
@@ -100,11 +100,11 @@
 			overflow: hidden;
 
 			&:hover {
-				background: $color-gray-background;
+				background: $color-bg;
 			}
 
 			td {
-				border-top: 1px solid $color-gray-light;
+				border-top: 1px solid $color-greyedout;
 				border-left: 1px solid $color-gray-background;
 				border-bottom: 1px solid $color-white;
 			}

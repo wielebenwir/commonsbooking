@@ -79,7 +79,7 @@
 			
 			.cb-map-popup-item-link b a {
 				font-size: $font-size-big;
-				color: $color-green-dark;
+				color: $color-primary;
 				text-decoration: underline;
 			}
 			
@@ -95,7 +95,7 @@
 			.cb-map-popup-item-availability-day {
 			  flex: 0 0 auto;
 			
-			  color: #000;
+			  color: $color-black;
 			  font-weight: normal;
 			  padding: 3px;
 			
@@ -108,23 +108,23 @@
 			}
 			
 			.cb-map-popup-item-availability-day.available {
-			  background-color: rgb(127, 198, 0);
+			  background-color: $color-accept
 			}
 			.cb-map-popup-item-availability-day.location-closed {
-			  background-color: #ddd;
+			  background-color: $color-greyedout;
 			  color: #222222a1;
 			}
 			.cb-map-popup-item-availability-day.no-timeframe {
-			  background-color: #ddd;
+			  background-color: $color-greyedout;
 			  color: #fff;
 			}
 			.cb-map-popup-item-availability-day.partially-booked{
 				color: #444;
-				background: linear-gradient(to top left, rgb(127, 198, 0) 0%, rgb(127, 198, 0) calc(50% - 1px), #333 50%, rgb(238, 116, 0) calc(50% + 1px), rgb(238, 116, 0) 100%);
+				background: linear-gradient(to top left, $color-accept 0%, $color-accept calc(50% - 1px), #333 50%, $color-cancel calc(50% + 1px), $color-cancel 100%);
 			}
 			.cb-map-popup-item-availability-day.booked {
 			  color: #444;
-			  background: linear-gradient(to top left, rgb(238, 116, 0) 0%, rgb(238, 116, 0) calc(50% - 1px), #333 50%, rgb(238, 116, 0) calc(50% + 1px), rgb(238, 116, 0) 100%);
+			  background: linear-gradient(to top left, $color-cancel 0%, $color-cancel calc(50% - 1px), #333 50%, $color-cancel calc(50% + 1px), $color-cancel 100%);
 			}
 			
 			.cb-map-popup-item-desc {
