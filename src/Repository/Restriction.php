@@ -4,6 +4,7 @@
 namespace CommonsBooking\Repository;
 
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 
 class Restriction extends PostRepository {
@@ -15,7 +16,7 @@ class Restriction extends PostRepository {
 	 *
 	 * @return string
 	 */
-	private static function getDateQuery( $date ) {
+	private static function getDateQuery( $date ): string {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
@@ -42,13 +43,13 @@ class Restriction extends PostRepository {
 	}
 
 	/**
-	 * Returns filter to query be mininum timestamp
+	 * Returns filter to query be minimum timestamp.
 	 *
 	 * @param $minTimestamp
 	 *
 	 * @return string
 	 */
-	private static function getMinTimestampQuery( $minTimestamp ) {
+	private static function getMinTimestampQuery( $minTimestamp ): string {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
@@ -74,7 +75,7 @@ class Restriction extends PostRepository {
 	 * Returns query to filter only active restrictions.
 	 * @return string
 	 */
-	private static function getActiveQuery() {
+	private static function getActiveQuery(): string {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
@@ -88,13 +89,13 @@ class Restriction extends PostRepository {
 	/**
 	 * Filters posts by locations and items.
 	 *
-	 * @param $posts
-	 * @param $locations
-	 * @param $items
+	 * @param array $posts
+	 * @param array $locations
+	 * @param array $items
 	 *
 	 * @return array
 	 */
-	private static function filterPosts( $posts, $locations, $items ) {
+	private static function filterPosts( array $posts, array $locations, array $items ): array {
 		return array_filter( $posts, function ( $post ) use ( $locations, $items ) {
 			// Check if restriction is in relation to item and/or location
 			$location               = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID, true ) );
@@ -157,7 +158,7 @@ class Restriction extends PostRepository {
 		if ( $minTimestamp ) {
 			$dateQuery = self::getMinTimestampQuery( $minTimestamp );
 		} // Filter by date
-		elseif ( $date && ! $minTimestamp ) {
+		elseif ( $date ) {
 			$dateQuery = self::getDateQuery( $date );
 		}
 
@@ -172,21 +173,6 @@ class Restriction extends PostRepository {
             ";
 
 		return $wpdb->get_results( $query, ARRAY_N );
-	}
-
-	/**
-	 * Sanitizes array to be better to handle.
-	 * @param $posts
-	 *
-	 * @return mixed
-	 */
-	private static function sanitizePosts( $posts ) {
-		// Get posts from result
-		foreach ( $posts as &$post ) {
-			$post = get_post( $post[0] );
-		}
-
-		return $posts;
 	}
 
 	/**
@@ -226,7 +212,7 @@ class Restriction extends PostRepository {
 			$posts = self::queryPosts( $date, $minTimestamp, $postStatus );
 
 			if ( $posts && count( $posts ) ) {
-				$posts = self::sanitizePosts( $posts );
+				$posts = Wordpress::flattenWpdbResult($posts);
 
 				// If there are locations or items to be filtered, we iterate through
 				// query result because wp_query is to slow for meta-querying them.

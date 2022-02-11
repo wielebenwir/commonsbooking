@@ -4,6 +4,7 @@
 namespace CommonsBooking\Repository;
 
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use Exception;
 use WP_Post;
@@ -242,7 +243,7 @@ class Timeframe extends PostRepository {
 
 		$posts = $wpdb->get_results( $query, ARRAY_N );
 
-		return self::flattenWpdbResult( $posts );
+		return Wordpress::flattenWpdbResult( $posts );
 	}
 
 	/**
@@ -335,19 +336,6 @@ class Timeframe extends PostRepository {
 	                )                          
 	            )
 	        ";
-	}
-
-	/**
-	 * Flatten array and return it.
-	 *
-	 * @param $posts
-	 *
-	 * @return array|array[]|null[]|WP_Post[]
-	 */
-	private static function flattenWpdbResult( $posts ): array {
-		return array_map( function ( $post ) {
-			return get_post( $post[0] );
-		}, $posts );
 	}
 
 	/**

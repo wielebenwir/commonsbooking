@@ -237,7 +237,7 @@ class Location extends CustomPostType {
 			//'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
 			'id'         => COMMONSBOOKING_METABOX_PREFIX . 'get_gps',
 			'type'       => 'text',
-            'render_row_cb' => array( LocationMapAdmin::class, 'renderGeoRefreshButton' ),
+            'render_row_cb' => array( \CommonsBooking\View\Map::class, 'renderGeoRefreshButton' ),
 			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 		) );
 

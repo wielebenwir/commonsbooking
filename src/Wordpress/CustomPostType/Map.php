@@ -154,7 +154,7 @@ class Map extends CustomPostType {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function get_locations( $cb_map_id, $mapItemTerms ) {
+	public static function get_locations( $cb_map_id, $mapItemTerms ): array {
 		$locations = [];
 
 		$show_location_contact       = MapAdmin::get_option( $cb_map_id, 'show_location_contact' );
