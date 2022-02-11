@@ -3310,9 +3310,9 @@
  * Layout variables
  */
 /* Colors: CB Brand */
-/* Colors: Theme */
-/* Colors: Backgrounds */
 /* Colors: text */
+/* Colors: Theme, can be modified by user */
+/* Colors: Backgrounds */
 /* Colors: Message statuses */
 /* Font sizes */
 /* Layout Variables */
@@ -3453,8 +3453,8 @@
 }
 /* line 118, ../../global/sass/partials/_extends.scss */
 .cb-button[disabled=disabled], .cb-button-container a[disabled=disabled] {
-  background-color: #c4c4c4;
-  color: white;
+  background-color: #f6f6f6;
+  color: #c4c4c4;
 }
 /* line 123, ../../global/sass/partials/_extends.scss */
 .cb-button.no-right-radius, .cb-button-container a.no-right-radius {
@@ -6072,22 +6072,22 @@ select[readonly] {
 
 /* line 24, ../sass/partials/_plugin_update.scss */
 .notice-success .cb-major-update-warning__separator {
-  border: 1px solid #46b450;
+  border: 1px solid #74ce3c;
 }
 
 /* line 27, ../sass/partials/_plugin_update.scss */
 .notice-success .cb-major-update-warning__icon {
-  color: #79ba49;
+  color: #74ce3c;
 }
 
 /* line 30, ../sass/partials/_plugin_update.scss */
 .notice-warning .cb-major-update-warning__separator {
-  border: 1px solid #ffb900;
+  border: 1px solid #ff9218;
 }
 
 /* line 33, ../sass/partials/_plugin_update.scss */
 .notice-warning .cb-major-update-warning__icon {
-  color: #00b963;
+  color: #74ce3c;
 }
 
 /*# sourceMappingURL=admin.css.map */
