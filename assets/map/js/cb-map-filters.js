@@ -506,6 +506,8 @@ function CB_Map_Filters($, cb_map) {
     var max_free_days_in_row = 0;
     var current_free_days_in_row = 0;
 
+    // @TODO: die Anpassungen an den Status in der src/Map/MapItemAvailable.php hier berücksichtigen
+    // -> Wir haben keine numerischen Status mehr.
     availability_sequences.forEach(function(availability_sequence, seq_id) {
       if(availability_sequence.status == 0) {
         current_free_days_in_row += availability_sequence.count;
