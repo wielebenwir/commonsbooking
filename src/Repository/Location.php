@@ -31,7 +31,7 @@ class Location extends BookablePost {
 			$locations   = [];
 			$locationIds = [];
 			$args        = array(
-				'post_type'   => Timeframe::getSimilarPostTypes(),
+				'post_type'   => Timeframe::$postType,
 				'post_status' => array( 'confirmed', 'unconfirmed', 'publish', 'inherit' ),
 				'meta_query'  => array(
 					'relation' => 'AND',

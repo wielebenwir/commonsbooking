@@ -96,10 +96,9 @@ class Map extends CustomPostType {
 	 * load all timeframes from db (that end in the future and it's item's status is 'publish')
 	 **/
 	public static function get_timeframes() {
-		$timeframes = Timeframe::get(
+		$timeframes = Timeframe::getBookable(
 			[],
 			[],
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
 			false,
 			true,
 			time()
@@ -208,10 +207,9 @@ class Map extends CustomPostType {
 				}
 
 				$timeframesData = [];
-				$timeframes     = Timeframe::get(
+				$timeframes     = Timeframe::getBookable(
 					[ $post->ID ],
 					[ $item->ID ],
-					[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
 					null,
 					true
 				);

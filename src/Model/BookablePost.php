@@ -26,10 +26,9 @@ class BookablePost extends CustomPost {
 	): array {
 		$bookableTimeframes = [];
 		if ( get_called_class() == Location::class ) {
-			$bookableTimeframes = Timeframe::get(
+			$bookableTimeframes = Timeframe::getBookable(
 				[ $this->ID ],
 				$items,
-				[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
 				$this->getDate() ?: $date,
 				$asModel,
 				time()
@@ -37,10 +36,9 @@ class BookablePost extends CustomPost {
 
 		}
 		if ( get_called_class() == Item::class ) {
-			$bookableTimeframes = Timeframe::get(
+			$bookableTimeframes = Timeframe::getBookable(
 				$locations,
 				[ $this->ID ],
-				[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
 				$this->getDate() ?: $date,
 				$asModel,
 				time()

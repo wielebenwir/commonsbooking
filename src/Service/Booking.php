@@ -12,7 +12,7 @@ class Booking {
 	// Removes all unconfirmed bookings older than 10 minutes
 	public static function cleanupBookings() {
 		$args = array(
-			'post_type'   => Timeframe::getSimilarPostTypes(),
+			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
 			'post_status' => 'unconfirmed',
 			'meta_key'    => 'type',
 			'meta_value'  => Timeframe::BOOKING_ID,
