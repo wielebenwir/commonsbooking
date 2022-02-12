@@ -6,6 +6,8 @@ use CommonsBooking\Exception\OverlappingException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
 use Exception;
+use Twig\Node\Expression\Binary\AndBinary;
+
 use function wp_verify_nonce;
 
 class Booking extends Timeframe {
@@ -342,6 +344,16 @@ class Booking extends Timeframe {
 						$booking_msg->triggerMail();
 					}
 				}
+
+                // Triger mail if booking start or enddate was changed 
+                if (
+                    get_post_meta( $post_before->ID, 'repetition-start', true)      != get_post_meta( $post_after->ID, 'repetition-start', true) || 
+                    get_post_meta( $post_before->ID, 'repetition-end', true)        != get_post_meta( $post_after->ID, 'repetition-end', true) ||
+                    get_post_meta( $post_before->ID, 'repetition-start_time', true) != get_post_meta( $post_after->ID, 'repetition-start_time', true) ||
+                    get_post_meta( $post_before->ID, 'repetition-end_time', true)   != get_post_meta( $post_after->ID, 'repetition-end_time', true)
+                ) {
+                    commmonsbooking_write_log('booking date time changed');
+                }
 			}
 		}
 	}
@@ -525,11 +537,11 @@ class Booking extends Timeframe {
 	protected function getCustomFields() {
 		// We need static types, because german month names dont't work for datepicker
 		$dateFormat = "d/m/Y";
-		if ( strpos( get_locale(), 'de_' ) !== false ) {
+		if ( strpos( get_locale(), 'de_' , true) !== false ) {
 			$dateFormat = "d.m.Y";
 		}
 
-		if ( strpos( get_locale(), 'en_' ) !== false ) {
+		if ( strpos( get_locale(), 'en_' , true) !== false ) {
 			$dateFormat = "m/d/Y";
 		}
 
