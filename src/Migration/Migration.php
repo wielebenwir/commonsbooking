@@ -606,15 +606,15 @@ class Migration {
 	 * @return void
 	 */
 	public static function migrateTaxonomy( $cb1Taxonomy ) {
-		$cb2PostId = CB1::getCB2PostIdByCB1Id( $cb1Taxonomy->object_id );
+		if ( $cb2PostId = CB1::getCB2PostIdByCB1Id( $cb1Taxonomy->object_id ) ) {
+			$terms = wp_get_object_terms( $cb1Taxonomy->object_id, $cb1Taxonomy->taxonomy );
+			$term  = array();
+			foreach ( $terms as $t ) {
+				$term[] = $t->slug;
+			}
 
-		$terms = wp_get_object_terms( $cb1Taxonomy->object_id, $cb1Taxonomy->taxonomy );
-		$term  = array();
-		foreach ( $terms as $t ) {
-			$term[] = $t->slug;
+			wp_set_object_terms( $cb2PostId, $term, $cb1Taxonomy->taxonomy );
 		}
-
-		wp_set_object_terms( $cb2PostId, $term, $cb1Taxonomy->taxonomy );
 	}
 
 }

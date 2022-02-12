@@ -28,7 +28,7 @@ class BookingCodes {
 	 *
 	 * @return array
 	 */
-	public static function getCodes( $timeframeId ) {
+	public static function getCodes( $timeframeId ): array {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {

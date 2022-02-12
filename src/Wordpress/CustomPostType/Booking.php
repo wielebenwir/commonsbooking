@@ -127,7 +127,7 @@ class Booking extends Timeframe {
 	 * @param $endDate
 	 */
 	private function saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate ): void {
-		$startTimeFrame = \CommonsBooking\Repository\Timeframe::getRelevantTimeFrame( $locationId, $itemId, $startDate );
+		$startTimeFrame = \CommonsBooking\Repository\Timeframe::getByLocationItemTimestamp( $locationId, $itemId, $startDate );
 		if ( $startTimeFrame && $startTimeFrame->getGrid() == 0 ) {
 			update_post_meta(
 				$postId,
@@ -135,7 +135,7 @@ class Booking extends Timeframe {
 				$startTimeFrame->getGridSize()
 			);
 		}
-		$endTimeFrame = \CommonsBooking\Repository\Timeframe::getRelevantTimeFrame( $locationId, $itemId, $endDate );
+		$endTimeFrame = \CommonsBooking\Repository\Timeframe::getByLocationItemTimestamp( $locationId, $itemId, $endDate );
 		if ( $endTimeFrame && $endTimeFrame->getGrid() == 0 ) {
 			update_post_meta(
 				$postId,

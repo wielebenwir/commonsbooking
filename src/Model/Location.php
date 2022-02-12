@@ -22,10 +22,9 @@ class Location extends BookablePost {
 	 */
 	public function getBookableTimeframesByItem( $itemId, bool $asModel = false ): array {
 		// get bookable timeframes that has min timestamp = now
-		return Timeframe::get(
+		return Timeframe::getBookable(
 			[ $this->ID ],
 			[ $itemId ],
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
 			null,
 			$asModel,
 			time()

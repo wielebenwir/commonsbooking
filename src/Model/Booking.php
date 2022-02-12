@@ -97,10 +97,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$locationId = $this->getMeta( 'location-id' );
 		$itemId     = $this->getMeta( 'item-id' );
 
-		$response = Timeframe::get(
+		$response = Timeframe::getBookable(
 			[ $locationId ],
 			[ $itemId ],
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
 			date( CB::getInternalDateFormat(), $this->getMeta( 'repetition-start' ) ),
 			true
 		);
