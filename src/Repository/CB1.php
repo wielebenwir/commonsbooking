@@ -110,7 +110,6 @@ class CB1 {
 		$table_bookingcodes = $wpdb->prefix . self::$BOOKINGCODES_TABLE;
 		$table_timeframes   = $wpdb->prefix . self::$TIMEFRAMES_TABLE;
 
-
 		return $wpdb->get_results(
 			"SELECT
                 c.booking_date,
@@ -216,9 +215,9 @@ class CB1 {
 	 *
 	 * @param $id
 	 *
-	 * @return false
+	 * @return ?int
 	 */
-	public static function getCB2PostIdByCB1Id( $id ) {
+	public static function getCB2PostIdByCB1Id( $id ): ?int {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
@@ -236,8 +235,6 @@ class CB1 {
 		if ( $result && count( $result ) > 0 ) {
 			return $result[0]->cb2_id;
 		}
-
-		return false;
 	}
 
 	/**

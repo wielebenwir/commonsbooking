@@ -22,4 +22,17 @@ class Wordpress {
 		return $pagelist;
 	}
 
+	/**
+	 * Flatten array and return it.
+	 *
+	 * @param $posts
+	 *
+	 * @return array|array[]|null[]|WP_Post[]
+	 */
+	public static function flattenWpdbResult( $posts ): array {
+		return array_map( function ( $post ) {
+			return get_post( $post[0] );
+		}, $posts );
+	}
+
 }

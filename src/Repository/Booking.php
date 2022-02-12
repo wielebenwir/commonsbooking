@@ -40,13 +40,13 @@ class Booking extends PostRepository {
 	 * @return array|int[]|WP_Post[]
 	 * @throws Exception
 	 */
-	public static function getEndingBookingsByDate( int $timestamp, array $customArgs = [] ) {
+	public static function getEndingBookingsByDate( int $timestamp, array $customArgs = [] ): array {
 		$startTimestamp = self::getStartTimestamp($timestamp);
 		$endTimestamp   = self::getEndTimestamp($startTimestamp);
 
 		// Default query
 		$args = array(
-			'post_type'   => Timeframe::getSimilarPostTypes(),
+			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
 			'meta_query'  => array(
 				'relation' => "AND",
 				array(
@@ -101,13 +101,13 @@ class Booking extends PostRepository {
 	 * @return array|int[]|WP_Post[]
 	 * @throws Exception
 	 */
-	public static function getBeginningBookingsByDate( int $timestamp, array $customArgs = [] ) {
+	public static function getBeginningBookingsByDate( int $timestamp, array $customArgs = [] ): array {
 		$startTimestamp = self::getStartTimestamp($timestamp);
 		$endTimestamp   = self::getEndTimestamp($startTimestamp);
 
 		// Default query
 		$args = array(
-			'post_type'   => Timeframe::getSimilarPostTypes(),
+			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
 			'meta_query'  => array(
 				'relation' => "AND",
 				array(
@@ -160,7 +160,7 @@ class Booking extends PostRepository {
 	public static function getByDate( $startDate, $endDate, $location, $item ): ?\CommonsBooking\Model\Booking {
 		// Default query
 		$args = array(
-			'post_type'   => Timeframe::getSimilarPostTypes(),
+			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
 			'meta_query'  => array(
 				'relation' => "AND",
 				array(
@@ -224,6 +224,7 @@ class Booking extends PostRepository {
 	 * @param $locationId
 	 * @param $itemId
 	 * @param array $customArgs
+	 * @param array $postStatus
 	 *
 	 * @return \CommonsBooking\Model\Booking[]|null
 	 * @throws Exception
@@ -238,7 +239,7 @@ class Booking extends PostRepository {
 	): ?array {
 		// Default query
 		$args = array(
-			'post_type'   => Timeframe::getSimilarPostTypes(),
+			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
 			'meta_query'  => array(
 				'relation' => "AND",
 				array(
@@ -321,10 +322,9 @@ class Booking extends PostRepository {
 		if ( Plugin::getCacheItem( $customId ) ) {
 			return Plugin::getCacheItem( $customId );
 		} else {
-			$posts = \CommonsBooking\Repository\Timeframe::get(
+			$posts = self::get(
 				[],
 				[],
-				[ Timeframe::BOOKING_ID ],
 				null,
 				$asModel,
 				$startDate,
@@ -340,6 +340,38 @@ class Booking extends PostRepository {
 		}
 
 		return $posts;
+	}
+
+	/**
+	 * Returns bookings.
+	 *
+	 * @param array $locations
+	 * @param array $items
+	 * @param string|null $date
+	 * @param bool $returnAsModel
+	 * @param $minTimestamp
+	 * @param array $postStatus
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public static function get(
+		array $locations = [],
+		array $items = [],
+		?string $date = null,
+		bool $returnAsModel = false,
+		$minTimestamp = null,
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+	): array {
+		return \CommonsBooking\Repository\Timeframe::get(
+			$locations,
+			$items,
+			[ Timeframe::BOOKING_ID ],
+			$date,
+			$returnAsModel,
+			$minTimestamp,
+			$postStatus
+		);
 	}
 
 	/**

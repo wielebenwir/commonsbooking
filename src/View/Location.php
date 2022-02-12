@@ -16,7 +16,7 @@ class Location extends View {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getTemplateData( WP_Post $post = null ) {
+	public static function getTemplateData( WP_Post $post = null ): array {
 		if ( $post == null ) {
 			global $post;
 		}
@@ -124,7 +124,7 @@ class Location extends View {
 	 *
 	 * Renders map for location when checkbox is set
 	 *
-	 * @return string html or false
+	 * @return void
 	 */
 	public static function renderLocationMap( \CommonsBooking\Model\Location $post = null ) {
 		//renders map for location-calendar-header template, only renders when set as option

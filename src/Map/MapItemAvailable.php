@@ -14,27 +14,34 @@ class MapItemAvailable {
 	/**
 	 * item is available
 	 */
-	const ITEM_AVAILABLE = 0;
+	const ITEM_AVAILABLE = 'available';
+
 
 	/**
-	 * regular closed day / special closing day / holiday -> no pickup return
+	 * location closed because of holiday / official holiday
 	 */
-	const LOCATION_CLOSED = 1;
+	const LOCATION_HOLIDAY = 'location-holiday';
 
 	/**
 	 * item is partially booked
 	 */
-	const ITEM_PARTIALLY_BOOKED = 2;
+	const ITEM_PARTIALLY_BOOKED = 'partially-booked';
+
+	/**
+	 * item is partially locked
+	 */
+	const ITEM_LOCKED = 'locked';
+
 
 	/**
 	 * item is booked or blocked
 	 */
-	const ITEM_BOOKED = 3;
+	const ITEM_BOOKED = 'booked';
 
 	/**
 	 * no timeframe for item set
 	 */
-	const OUT_OF_TIMEFRAME = 4;
+	const OUT_OF_TIMEFRAME = 'no-timeframe';
 
 	/**
 	 * @param $locations
@@ -93,14 +100,15 @@ class MapItemAvailable {
 		foreach ( $availabilities as &$availability ) {
 			if ( array_key_exists( $availability['date'], $calendarData['days'] ) ) {
 				$day = $calendarData['days'][ $availability['date'] ];
-
-				if ( $day['bookedDay'] ) {
+				if (! count( $day['slots'])){
+					$availability['status'] = self::ITEM_LOCKED;
+				}elseif ( $day['holiday']) {
+					$availability['status'] = self::LOCATION_HOLIDAY;
+				} elseif ($day['locked'] && $day['firstSlotBooked'] && $day['lastSlotBooked']){
 					$availability['status'] = self::ITEM_BOOKED;
-				} elseif( $day['partiallyBookedDay']){
+				} elseif ( $day['locked'] && $day['partiallyBookedDay']) {
 					$availability['status'] = self::ITEM_PARTIALLY_BOOKED;
-				} elseif ( $day['holiday'] || $day['locked'] ) {
-					$availability['status'] = self::LOCATION_CLOSED;
-				} else {
+				}  else {
 					$availability['status'] = self::ITEM_AVAILABLE;
 				}
 			}

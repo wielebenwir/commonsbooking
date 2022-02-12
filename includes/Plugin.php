@@ -29,18 +29,21 @@ register_deactivation_hook(
  */
 function commmonsbooking_write_log( $log, $backtrace = true ) {
 
+    if ( is_array( $log ) || is_object( $log ) ) {
+		$logmessage = ( print_r( $log, true ) );
+	} else {
+		$logmessage =  $log ;
+	}
+
 	if ( $backtrace ) {
 		$bt   = debug_backtrace();
 		$file = $bt[0]['file'];
 		$line = $bt[0]['line'];
-		$log  = $file . ':' . $line . ' ' . $log;
+		$logmessage  = $file . ':' . $line . ' ' . $logmessage;
 	}
 
-	if ( is_array( $log ) || is_object( $log ) ) {
-		error_log( print_r( $log, true ) );
-	} else {
-		error_log( $log );
-	}
+    error_log( $logmessage ) ;
+
 }
 
 $cbPlugin = new Plugin();

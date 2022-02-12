@@ -5,9 +5,21 @@ namespace CommonsBooking\Repository;
 
 
 use CommonsBooking\Plugin;
+use CommonsBooking\Wordpress\CustomPostType\Timeframe;
+use Exception;
 use WP_Query;
 
 abstract class BookablePost extends PostRepository {
+
+	/**
+	 * Types which are able to be found each other by a timeframe.
+	 * @var string[]
+	 */
+	private static $relationalTypes = [
+		'item',
+		'location'
+	];
+
 	/**
 	 * Get all Locations or Items current user is allowed to see/edit
 	 *
@@ -72,17 +84,23 @@ abstract class BookablePost extends PostRepository {
 			$query = new WP_Query( $args );
 			if ( $query->have_posts() ) {
 				$items = array_merge( $items, $query->get_posts() );
-				usort($items, function ($a, $b) {
-					$comparison = strcmp(strtolower($a->post_title), strtolower($b->post_title));
+				usort( $items, function ( $a, $b ) {
+					$comparison = strcmp( strtolower( $a->post_title ), strtolower( $b->post_title ) );
 
-					if($comparison < 0) return -1;
-					if($comparison > 0) return 1;
+					if ( $comparison < 0 ) {
+						return - 1;
+					}
+					if ( $comparison > 0 ) {
+						return 1;
+					}
+
 					return $comparison;
-				});
+				} );
 
 			}
 
 			Plugin::setCacheItem( $items, $customId );
+
 			return $items;
 		}
 	}
@@ -199,6 +217,111 @@ abstract class BookablePost extends PostRepository {
 			Plugin::setCacheItem( $posts, static::getPostType() );
 
 			return $posts;
+		}
+	}
+
+	/**
+	 * Returns related object based on bookable post.
+	 * Example: We'd like to have the items bookable at a specific location. With this function we are able to get them.
+	 *
+	 * @param $postId
+	 * @param $originType
+	 * @param $relatedType
+	 * @param bool $bookable
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	protected static function getByRelatedPost( $postId, $originType, $relatedType, bool $bookable = false ): array {
+
+		if ( ! in_array( $originType, self::$relationalTypes ) || ! in_array( $relatedType, self::$relationalTypes ) ) {
+			throw new Exception( 'invalid type submitted' );
+		}
+
+		if ( $postId instanceof WP_Post ) {
+			$postId = $postId->ID;
+		}
+
+		if ( Plugin::getCacheItem() ) {
+			return Plugin::getCacheItem();
+		} else {
+			$posts = self::getRelatedPosts( $postId, $originType, $relatedType );
+			foreach ( $posts as $key => &$location ) {
+				if ( $relatedType == 'item' ) {
+					$item = new \CommonsBooking\Model\Item( $location );
+					if ( $bookable && ! $item->getBookableTimeframesByLocation( $postId ) ) {
+						unset( $posts[ $key ] );
+					}
+				}
+				if ( $relatedType == 'location' ) {
+					$location = new \CommonsBooking\Model\Location( $location );
+					if ( $bookable && ! $location->getBookableTimeframesByItem( $postId ) ) {
+						unset( $posts[ $key ] );
+					}
+				}
+
+
+			}
+			Plugin::setCacheItem( $posts );
+
+			return $posts;
+		}
+	}
+
+	/**
+	 * Returns array with related posts for post with post id and origin type.
+	 * Works only for locations and items!
+	 *
+	 * @param $postId
+	 * @param $originType
+	 * @param $relatedType
+	 *
+	 * @return array
+	 */
+	protected static function getRelatedPosts( $postId, $originType, $relatedType ): array {
+		if ( $postId instanceof WP_Post ) {
+			$postId = $postId->ID;
+		}
+
+		if ( Plugin::getCacheItem() ) {
+			return Plugin::getCacheItem();
+		} else {
+			$locations   = [];
+			$locationIds = [];
+			$args        = array(
+				'post_type'   => Timeframe::$postType,
+				'post_status' => array( 'confirmed', 'unconfirmed', 'publish', 'inherit' ),
+				'meta_query'  => array(
+					'relation' => 'AND',
+					array(
+						'key'   => $originType . '-id',
+						'value' => $postId,
+					),
+				),
+				'nopaging'    => true,
+			);
+
+			$query = new WP_Query( $args );
+			if ( $query->have_posts() ) {
+				$timeframes = $query->get_posts();
+				foreach ( $timeframes as $timeframe ) {
+					$locationId = get_post_meta( $timeframe->ID, $relatedType . '-id', true );
+					if ( $locationId && ! in_array( $locationId, $locationIds ) ) {
+						$locationIds[] = $locationId;
+						$location      = get_post( $locationId );
+
+						if ( $location ) {
+							// add only published items
+							if ( $location->post_status == 'publish' ) {
+								$locations[] = $location;
+							}
+						}
+					}
+				}
+			}
+			Plugin::setCacheItem( $locations );
+
+			return $locations;
 		}
 	}
 

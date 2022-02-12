@@ -21,7 +21,7 @@ class UserRepository {
 	 * Returns all users with items/locations.
 	 * @return array
 	 */
-	public static function getOwners() {
+	public static function getOwners(): array {
 		$owners   = [];
 		$ownerIds = [];
 		$args     = array(
@@ -56,7 +56,7 @@ class UserRepository {
 	 *
 	 * @return array
 	 */
-	public static function getUserRoles() {
+	public static function getUserRoles(): array {
 		global $wp_roles;
 		$rolesArray = $wp_roles->roles;
 		$roles      = [];

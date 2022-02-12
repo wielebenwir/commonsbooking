@@ -16,18 +16,34 @@
  *
  * @package   CommonsBooking2
  */
-.cb-content ol, .cb-content ul, .cb-content li, .cb-content h2, .cb-content h3, .cb-content dd, .cb-content dl, .cb-content dt, .cb-content .hentry {
+/* line 11, ../../global/sass/lib/_reset.scss */
+.cb-content ol,
+.cb-content ul,
+.cb-content li,
+.cb-content h2,
+.cb-content h3,
+.cb-content dd,
+.cb-content dl,
+.cb-content dt,
+.cb-content .hentry {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.cb-content blockquote, .cb-content q {
+/* line 26, ../../global/sass/lib/_reset.scss */
+.cb-content blockquote,
+.cb-content q {
   quotes: none;
 }
-.cb-content blockquote:before, .cb-content blockquote:after, .cb-content q:before, .cb-content q:after {
-  content: "";
+/* line 31, ../../global/sass/lib/_reset.scss */
+.cb-content blockquote:before,
+.cb-content blockquote:after,
+.cb-content q:before,
+.cb-content q:after {
+  content: '';
   content: none;
 }
+/* line 39, ../../global/sass/lib/_reset.scss */
 .cb-content table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -41,13 +57,18 @@
  * Copyright (c) 2018 Daniel Eden
  */
 @-webkit-keyframes bounce {
-  from, 20%, 53%, 80%, to {
+  from,
+  20%,
+  53%,
+  80%,
+  to {
     -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
   }
-  40%, 43% {
+  40%,
+  43% {
     -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     -webkit-transform: translate3d(0, -30px, 0);
@@ -65,13 +86,18 @@
   }
 }
 @keyframes bounce {
-  from, 20%, 53%, 80%, to {
+  from,
+  20%,
+  53%,
+  80%,
+  to {
     -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
   }
-  40%, 43% {
+  40%,
+  43% {
     -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     -webkit-transform: translate3d(0, -30px, 0);
@@ -88,28 +114,37 @@
     transform: translate3d(0, -4px, 0);
   }
 }
+/* line 77, ../../global/sass/lib/_animate.scss */
 .bounce {
   -webkit-animation-name: bounce;
   animation-name: bounce;
   -webkit-transform-origin: center bottom;
   transform-origin: center bottom;
 }
+
 @-webkit-keyframes flash {
-  from, 50%, to {
+  from,
+  50%,
+  to {
     opacity: 1;
   }
-  25%, 75% {
+  25%,
+  75% {
     opacity: 0;
   }
 }
 @keyframes flash {
-  from, 50%, to {
+  from,
+  50%,
+  to {
     opacity: 1;
   }
-  25%, 75% {
+  25%,
+  75% {
     opacity: 0;
   }
 }
+/* line 110, ../../global/sass/lib/_animate.scss */
 .flash {
   -webkit-animation-name: flash;
   animation-name: flash;
@@ -143,6 +178,7 @@
     transform: scale3d(1, 1, 1);
   }
 }
+/* line 151, ../../global/sass/lib/_animate.scss */
 .pulse {
   -webkit-animation-name: pulse;
   animation-name: pulse;
@@ -207,38 +243,57 @@
     transform: scale3d(1, 1, 1);
   }
 }
+/* line 230, ../../global/sass/lib/_animate.scss */
 .rubberBand {
   -webkit-animation-name: rubberBand;
   animation-name: rubberBand;
 }
+
 @-webkit-keyframes shake {
-  from, to {
+  from,
+  to {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
   }
-  10%, 30%, 50%, 70%, 90% {
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
     -webkit-transform: translate3d(-10px, 0, 0);
     transform: translate3d(-10px, 0, 0);
   }
-  20%, 40%, 60%, 80% {
+  20%,
+  40%,
+  60%,
+  80% {
     -webkit-transform: translate3d(10px, 0, 0);
     transform: translate3d(10px, 0, 0);
   }
 }
 @keyframes shake {
-  from, to {
+  from,
+  to {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
   }
-  10%, 30%, 50%, 70%, 90% {
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
     -webkit-transform: translate3d(-10px, 0, 0);
     transform: translate3d(-10px, 0, 0);
   }
-  20%, 40%, 60%, 80% {
+  20%,
+  40%,
+  60%,
+  80% {
     -webkit-transform: translate3d(10px, 0, 0);
     transform: translate3d(10px, 0, 0);
   }
 }
+/* line 285, ../../global/sass/lib/_animate.scss */
 .shake {
   -webkit-animation-name: shake;
   animation-name: shake;
@@ -295,6 +350,7 @@
     transform: translateX(0);
   }
 }
+/* line 354, ../../global/sass/lib/_animate.scss */
 .headShake {
   -webkit-animation-timing-function: ease-in-out;
   animation-timing-function: ease-in-out;
@@ -345,6 +401,7 @@
     transform: rotate3d(0, 0, 1, 0deg);
   }
 }
+/* line 415, ../../global/sass/lib/_animate.scss */
 .swing {
   -webkit-transform-origin: top center;
   transform-origin: top center;
@@ -356,15 +413,21 @@
     -webkit-transform: scale3d(1, 1, 1);
     transform: scale3d(1, 1, 1);
   }
-  10%, 20% {
+  10%,
+  20% {
     -webkit-transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
     transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
   }
-  30%, 50%, 70%, 90% {
+  30%,
+  50%,
+  70%,
+  90% {
     -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
     transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
   }
-  40%, 60%, 80% {
+  40%,
+  60%,
+  80% {
     -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
     transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
   }
@@ -378,15 +441,21 @@
     -webkit-transform: scale3d(1, 1, 1);
     transform: scale3d(1, 1, 1);
   }
-  10%, 20% {
+  10%,
+  20% {
     -webkit-transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
     transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
   }
-  30%, 50%, 70%, 90% {
+  30%,
+  50%,
+  70%,
+  90% {
     -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
     transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
   }
-  40%, 60%, 80% {
+  40%,
+  60%,
+  80% {
     -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
     transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
   }
@@ -395,6 +464,7 @@
     transform: scale3d(1, 1, 1);
   }
 }
+/* line 488, ../../global/sass/lib/_animate.scss */
 .tada {
   -webkit-animation-name: tada;
   animation-name: tada;
@@ -460,12 +530,16 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 569, ../../global/sass/lib/_animate.scss */
 .wobble {
   -webkit-animation-name: wobble;
   animation-name: wobble;
 }
+
 @-webkit-keyframes jello {
-  from, 11.1%, to {
+  from,
+  11.1%,
+  to {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
   }
@@ -490,16 +564,18 @@
     transform: skewX(-0.78125deg) skewY(-0.78125deg);
   }
   77.7% {
-    -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);
-    transform: skewX(0.390625deg) skewY(0.390625deg);
+    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
+    transform: skewX(0.39063deg) skewY(0.39063deg);
   }
   88.8% {
-    -webkit-transform: skewX(-0.1953125deg) skewY(-0.1953125deg);
-    transform: skewX(-0.1953125deg) skewY(-0.1953125deg);
+    -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
+    transform: skewX(-0.19531deg) skewY(-0.19531deg);
   }
 }
 @keyframes jello {
-  from, 11.1%, to {
+  from,
+  11.1%,
+  to {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
   }
@@ -524,14 +600,15 @@
     transform: skewX(-0.78125deg) skewY(-0.78125deg);
   }
   77.7% {
-    -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);
-    transform: skewX(0.390625deg) skewY(0.390625deg);
+    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
+    transform: skewX(0.39063deg) skewY(0.39063deg);
   }
   88.8% {
-    -webkit-transform: skewX(-0.1953125deg) skewY(-0.1953125deg);
-    transform: skewX(-0.1953125deg) skewY(-0.1953125deg);
+    -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
+    transform: skewX(-0.19531deg) skewY(-0.19531deg);
   }
 }
+/* line 662, ../../global/sass/lib/_animate.scss */
 .jello {
   -webkit-animation-name: jello;
   animation-name: jello;
@@ -582,6 +659,7 @@
     transform: scale(1);
   }
 }
+/* line 723, ../../global/sass/lib/_animate.scss */
 .heartBeat {
   -webkit-animation-name: heartBeat;
   animation-name: heartBeat;
@@ -590,8 +668,14 @@
   -webkit-animation-timing-function: ease-in-out;
   animation-timing-function: ease-in-out;
 }
+
 @-webkit-keyframes bounceIn {
-  from, 20%, 40%, 60%, 80%, to {
+  from,
+  20%,
+  40%,
+  60%,
+  80%,
+  to {
     -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
@@ -624,7 +708,12 @@
   }
 }
 @keyframes bounceIn {
-  from, 20%, 40%, 60%, 80%, to {
+  from,
+  20%,
+  40%,
+  60%,
+  80%,
+  to {
     -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
@@ -656,14 +745,20 @@
     transform: scale3d(1, 1, 1);
   }
 }
+/* line 822, ../../global/sass/lib/_animate.scss */
 .bounceIn {
   -webkit-animation-duration: 0.75s;
   animation-duration: 0.75s;
   -webkit-animation-name: bounceIn;
   animation-name: bounceIn;
 }
+
 @-webkit-keyframes bounceInDown {
-  from, 60%, 75%, 90%, to {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
     -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
@@ -691,7 +786,11 @@
   }
 }
 @keyframes bounceInDown {
-  from, 60%, 75%, 90%, to {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
     -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
@@ -718,12 +817,18 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 905, ../../global/sass/lib/_animate.scss */
 .bounceInDown {
   -webkit-animation-name: bounceInDown;
   animation-name: bounceInDown;
 }
+
 @-webkit-keyframes bounceInLeft {
-  from, 60%, 75%, 90%, to {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
     -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
@@ -751,7 +856,11 @@
   }
 }
 @keyframes bounceInLeft {
-  from, 60%, 75%, 90%, to {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
     -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
@@ -778,12 +887,18 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 986, ../../global/sass/lib/_animate.scss */
 .bounceInLeft {
   -webkit-animation-name: bounceInLeft;
   animation-name: bounceInLeft;
 }
+
 @-webkit-keyframes bounceInRight {
-  from, 60%, 75%, 90%, to {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
     -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
@@ -811,7 +926,11 @@
   }
 }
 @keyframes bounceInRight {
-  from, 60%, 75%, 90%, to {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
     -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
@@ -838,12 +957,18 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 1067, ../../global/sass/lib/_animate.scss */
 .bounceInRight {
   -webkit-animation-name: bounceInRight;
   animation-name: bounceInRight;
 }
+
 @-webkit-keyframes bounceInUp {
-  from, 60%, 75%, 90%, to {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
     -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
@@ -871,7 +996,11 @@
   }
 }
 @keyframes bounceInUp {
-  from, 60%, 75%, 90%, to {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
     -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
@@ -898,6 +1027,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 1148, ../../global/sass/lib/_animate.scss */
 .bounceInUp {
   -webkit-animation-name: bounceInUp;
   animation-name: bounceInUp;
@@ -907,7 +1037,8 @@
     -webkit-transform: scale3d(0.9, 0.9, 0.9);
     transform: scale3d(0.9, 0.9, 0.9);
   }
-  50%, 55% {
+  50%,
+  55% {
     opacity: 1;
     -webkit-transform: scale3d(1.1, 1.1, 1.1);
     transform: scale3d(1.1, 1.1, 1.1);
@@ -923,7 +1054,8 @@
     -webkit-transform: scale3d(0.9, 0.9, 0.9);
     transform: scale3d(0.9, 0.9, 0.9);
   }
-  50%, 55% {
+  50%,
+  55% {
     opacity: 1;
     -webkit-transform: scale3d(1.1, 1.1, 1.1);
     transform: scale3d(1.1, 1.1, 1.1);
@@ -934,6 +1066,7 @@
     transform: scale3d(0.3, 0.3, 0.3);
   }
 }
+/* line 1193, ../../global/sass/lib/_animate.scss */
 .bounceOut {
   -webkit-animation-duration: 0.75s;
   animation-duration: 0.75s;
@@ -945,7 +1078,8 @@
     -webkit-transform: translate3d(0, 10px, 0);
     transform: translate3d(0, 10px, 0);
   }
-  40%, 45% {
+  40%,
+  45% {
     opacity: 1;
     -webkit-transform: translate3d(0, -20px, 0);
     transform: translate3d(0, -20px, 0);
@@ -961,7 +1095,8 @@
     -webkit-transform: translate3d(0, 10px, 0);
     transform: translate3d(0, 10px, 0);
   }
-  40%, 45% {
+  40%,
+  45% {
     opacity: 1;
     -webkit-transform: translate3d(0, -20px, 0);
     transform: translate3d(0, -20px, 0);
@@ -972,6 +1107,7 @@
     transform: translate3d(0, 2000px, 0);
   }
 }
+/* line 1240, ../../global/sass/lib/_animate.scss */
 .bounceOutDown {
   -webkit-animation-name: bounceOutDown;
   animation-name: bounceOutDown;
@@ -1000,6 +1136,7 @@
     transform: translate3d(-2000px, 0, 0);
   }
 }
+/* line 1273, ../../global/sass/lib/_animate.scss */
 .bounceOutLeft {
   -webkit-animation-name: bounceOutLeft;
   animation-name: bounceOutLeft;
@@ -1028,6 +1165,7 @@
     transform: translate3d(2000px, 0, 0);
   }
 }
+/* line 1306, ../../global/sass/lib/_animate.scss */
 .bounceOutRight {
   -webkit-animation-name: bounceOutRight;
   animation-name: bounceOutRight;
@@ -1037,7 +1175,8 @@
     -webkit-transform: translate3d(0, -10px, 0);
     transform: translate3d(0, -10px, 0);
   }
-  40%, 45% {
+  40%,
+  45% {
     opacity: 1;
     -webkit-transform: translate3d(0, 20px, 0);
     transform: translate3d(0, 20px, 0);
@@ -1053,7 +1192,8 @@
     -webkit-transform: translate3d(0, -10px, 0);
     transform: translate3d(0, -10px, 0);
   }
-  40%, 45% {
+  40%,
+  45% {
     opacity: 1;
     -webkit-transform: translate3d(0, 20px, 0);
     transform: translate3d(0, 20px, 0);
@@ -1064,6 +1204,7 @@
     transform: translate3d(0, -2000px, 0);
   }
 }
+/* line 1351, ../../global/sass/lib/_animate.scss */
 .bounceOutUp {
   -webkit-animation-name: bounceOutUp;
   animation-name: bounceOutUp;
@@ -1084,6 +1225,7 @@
     opacity: 1;
   }
 }
+/* line 1376, ../../global/sass/lib/_animate.scss */
 .fadeIn {
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
@@ -1112,6 +1254,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 1409, ../../global/sass/lib/_animate.scss */
 .fadeInDown {
   -webkit-animation-name: fadeInDown;
   animation-name: fadeInDown;
@@ -1140,6 +1283,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 1442, ../../global/sass/lib/_animate.scss */
 .fadeInDownBig {
   -webkit-animation-name: fadeInDownBig;
   animation-name: fadeInDownBig;
@@ -1168,6 +1312,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 1475, ../../global/sass/lib/_animate.scss */
 .fadeInLeft {
   -webkit-animation-name: fadeInLeft;
   animation-name: fadeInLeft;
@@ -1196,6 +1341,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 1508, ../../global/sass/lib/_animate.scss */
 .fadeInLeftBig {
   -webkit-animation-name: fadeInLeftBig;
   animation-name: fadeInLeftBig;
@@ -1224,6 +1370,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 1541, ../../global/sass/lib/_animate.scss */
 .fadeInRight {
   -webkit-animation-name: fadeInRight;
   animation-name: fadeInRight;
@@ -1252,6 +1399,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 1574, ../../global/sass/lib/_animate.scss */
 .fadeInRightBig {
   -webkit-animation-name: fadeInRightBig;
   animation-name: fadeInRightBig;
@@ -1280,6 +1428,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 1607, ../../global/sass/lib/_animate.scss */
 .fadeInUp {
   -webkit-animation-name: fadeInUp;
   animation-name: fadeInUp;
@@ -1308,6 +1457,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 1640, ../../global/sass/lib/_animate.scss */
 .fadeInUpBig {
   -webkit-animation-name: fadeInUpBig;
   animation-name: fadeInUpBig;
@@ -1328,6 +1478,7 @@
     opacity: 0;
   }
 }
+/* line 1665, ../../global/sass/lib/_animate.scss */
 .fadeOut {
   -webkit-animation-name: fadeOut;
   animation-name: fadeOut;
@@ -1352,6 +1503,7 @@
     transform: translate3d(0, 100%, 0);
   }
 }
+/* line 1694, ../../global/sass/lib/_animate.scss */
 .fadeOutDown {
   -webkit-animation-name: fadeOutDown;
   animation-name: fadeOutDown;
@@ -1376,6 +1528,7 @@
     transform: translate3d(0, 2000px, 0);
   }
 }
+/* line 1723, ../../global/sass/lib/_animate.scss */
 .fadeOutDownBig {
   -webkit-animation-name: fadeOutDownBig;
   animation-name: fadeOutDownBig;
@@ -1400,6 +1553,7 @@
     transform: translate3d(-100%, 0, 0);
   }
 }
+/* line 1752, ../../global/sass/lib/_animate.scss */
 .fadeOutLeft {
   -webkit-animation-name: fadeOutLeft;
   animation-name: fadeOutLeft;
@@ -1424,6 +1578,7 @@
     transform: translate3d(-2000px, 0, 0);
   }
 }
+/* line 1781, ../../global/sass/lib/_animate.scss */
 .fadeOutLeftBig {
   -webkit-animation-name: fadeOutLeftBig;
   animation-name: fadeOutLeftBig;
@@ -1448,6 +1603,7 @@
     transform: translate3d(100%, 0, 0);
   }
 }
+/* line 1810, ../../global/sass/lib/_animate.scss */
 .fadeOutRight {
   -webkit-animation-name: fadeOutRight;
   animation-name: fadeOutRight;
@@ -1472,6 +1628,7 @@
     transform: translate3d(2000px, 0, 0);
   }
 }
+/* line 1839, ../../global/sass/lib/_animate.scss */
 .fadeOutRightBig {
   -webkit-animation-name: fadeOutRightBig;
   animation-name: fadeOutRightBig;
@@ -1496,6 +1653,7 @@
     transform: translate3d(0, -100%, 0);
   }
 }
+/* line 1868, ../../global/sass/lib/_animate.scss */
 .fadeOutUp {
   -webkit-animation-name: fadeOutUp;
   animation-name: fadeOutUp;
@@ -1520,6 +1678,7 @@
     transform: translate3d(0, -2000px, 0);
   }
 }
+/* line 1897, ../../global/sass/lib/_animate.scss */
 .fadeOutUpBig {
   -webkit-animation-name: fadeOutUpBig;
   animation-name: fadeOutUpBig;
@@ -1588,6 +1747,7 @@
     animation-timing-function: ease-in;
   }
 }
+/* line 1992, ../../global/sass/lib/_animate.scss */
 .animated.flip {
   -webkit-backface-visibility: visible;
   backface-visibility: visible;
@@ -1650,6 +1810,7 @@
     transform: perspective(400px);
   }
 }
+/* line 2065, ../../global/sass/lib/_animate.scss */
 .flipInX {
   -webkit-backface-visibility: visible !important;
   backface-visibility: visible !important;
@@ -1712,6 +1873,7 @@
     transform: perspective(400px);
   }
 }
+/* line 2138, ../../global/sass/lib/_animate.scss */
 .flipInY {
   -webkit-backface-visibility: visible !important;
   backface-visibility: visible !important;
@@ -1750,6 +1912,7 @@
     opacity: 0;
   }
 }
+/* line 2183, ../../global/sass/lib/_animate.scss */
 .flipOutX {
   -webkit-animation-duration: 0.75s;
   animation-duration: 0.75s;
@@ -1790,6 +1953,7 @@
     opacity: 0;
   }
 }
+/* line 2230, ../../global/sass/lib/_animate.scss */
 .flipOutY {
   -webkit-animation-duration: 0.75s;
   animation-duration: 0.75s;
@@ -1838,6 +2002,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 2287, ../../global/sass/lib/_animate.scss */
 .lightSpeedIn {
   -webkit-animation-name: lightSpeedIn;
   animation-name: lightSpeedIn;
@@ -1864,6 +2029,7 @@
     opacity: 0;
   }
 }
+/* line 2318, ../../global/sass/lib/_animate.scss */
 .lightSpeedOut {
   -webkit-animation-name: lightSpeedOut;
   animation-name: lightSpeedOut;
@@ -1902,6 +2068,7 @@
     opacity: 1;
   }
 }
+/* line 2361, ../../global/sass/lib/_animate.scss */
 .rotateIn {
   -webkit-animation-name: rotateIn;
   animation-name: rotateIn;
@@ -1938,6 +2105,7 @@
     opacity: 1;
   }
 }
+/* line 2402, ../../global/sass/lib/_animate.scss */
 .rotateInDownLeft {
   -webkit-animation-name: rotateInDownLeft;
   animation-name: rotateInDownLeft;
@@ -1974,6 +2142,7 @@
     opacity: 1;
   }
 }
+/* line 2443, ../../global/sass/lib/_animate.scss */
 .rotateInDownRight {
   -webkit-animation-name: rotateInDownRight;
   animation-name: rotateInDownRight;
@@ -2010,6 +2179,7 @@
     opacity: 1;
   }
 }
+/* line 2484, ../../global/sass/lib/_animate.scss */
 .rotateInUpLeft {
   -webkit-animation-name: rotateInUpLeft;
   animation-name: rotateInUpLeft;
@@ -2046,6 +2216,7 @@
     opacity: 1;
   }
 }
+/* line 2525, ../../global/sass/lib/_animate.scss */
 .rotateInUpRight {
   -webkit-animation-name: rotateInUpRight;
   animation-name: rotateInUpRight;
@@ -2078,6 +2249,7 @@
     opacity: 0;
   }
 }
+/* line 2562, ../../global/sass/lib/_animate.scss */
 .rotateOut {
   -webkit-animation-name: rotateOut;
   animation-name: rotateOut;
@@ -2110,6 +2282,7 @@
     opacity: 0;
   }
 }
+/* line 2599, ../../global/sass/lib/_animate.scss */
 .rotateOutDownLeft {
   -webkit-animation-name: rotateOutDownLeft;
   animation-name: rotateOutDownLeft;
@@ -2142,6 +2315,7 @@
     opacity: 0;
   }
 }
+/* line 2636, ../../global/sass/lib/_animate.scss */
 .rotateOutDownRight {
   -webkit-animation-name: rotateOutDownRight;
   animation-name: rotateOutDownRight;
@@ -2174,6 +2348,7 @@
     opacity: 0;
   }
 }
+/* line 2673, ../../global/sass/lib/_animate.scss */
 .rotateOutUpLeft {
   -webkit-animation-name: rotateOutUpLeft;
   animation-name: rotateOutUpLeft;
@@ -2206,6 +2381,7 @@
     opacity: 0;
   }
 }
+/* line 2710, ../../global/sass/lib/_animate.scss */
 .rotateOutUpRight {
   -webkit-animation-name: rotateOutUpRight;
   animation-name: rotateOutUpRight;
@@ -2217,7 +2393,8 @@
     -webkit-animation-timing-function: ease-in-out;
     animation-timing-function: ease-in-out;
   }
-  20%, 60% {
+  20%,
+  60% {
     -webkit-transform: rotate3d(0, 0, 1, 80deg);
     transform: rotate3d(0, 0, 1, 80deg);
     -webkit-transform-origin: top left;
@@ -2225,7 +2402,8 @@
     -webkit-animation-timing-function: ease-in-out;
     animation-timing-function: ease-in-out;
   }
-  40%, 80% {
+  40%,
+  80% {
     -webkit-transform: rotate3d(0, 0, 1, 60deg);
     transform: rotate3d(0, 0, 1, 60deg);
     -webkit-transform-origin: top left;
@@ -2247,7 +2425,8 @@
     -webkit-animation-timing-function: ease-in-out;
     animation-timing-function: ease-in-out;
   }
-  20%, 60% {
+  20%,
+  60% {
     -webkit-transform: rotate3d(0, 0, 1, 80deg);
     transform: rotate3d(0, 0, 1, 80deg);
     -webkit-transform-origin: top left;
@@ -2255,7 +2434,8 @@
     -webkit-animation-timing-function: ease-in-out;
     animation-timing-function: ease-in-out;
   }
-  40%, 80% {
+  40%,
+  80% {
     -webkit-transform: rotate3d(0, 0, 1, 60deg);
     transform: rotate3d(0, 0, 1, 60deg);
     -webkit-transform-origin: top left;
@@ -2270,6 +2450,7 @@
     opacity: 0;
   }
 }
+/* line 2787, ../../global/sass/lib/_animate.scss */
 .hinge {
   -webkit-animation-duration: 2s;
   animation-duration: 2s;
@@ -2320,6 +2501,7 @@
     transform: scale(1);
   }
 }
+/* line 2846, ../../global/sass/lib/_animate.scss */
 .jackInTheBox {
   -webkit-animation-name: jackInTheBox;
   animation-name: jackInTheBox;
@@ -2349,6 +2531,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 2881, ../../global/sass/lib/_animate.scss */
 .rollIn {
   -webkit-animation-name: rollIn;
   animation-name: rollIn;
@@ -2374,6 +2557,7 @@
     transform: translate3d(100%, 0, 0) rotate3d(0, 0, 1, 120deg);
   }
 }
+/* line 2912, ../../global/sass/lib/_animate.scss */
 .rollOut {
   -webkit-animation-name: rollOut;
   animation-name: rollOut;
@@ -2398,6 +2582,7 @@
     opacity: 1;
   }
 }
+/* line 2941, ../../global/sass/lib/_animate.scss */
 .zoomIn {
   -webkit-animation-name: zoomIn;
   animation-name: zoomIn;
@@ -2434,6 +2619,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
+/* line 2982, ../../global/sass/lib/_animate.scss */
 .zoomInDown {
   -webkit-animation-name: zoomInDown;
   animation-name: zoomInDown;
@@ -2470,6 +2656,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
+/* line 3023, ../../global/sass/lib/_animate.scss */
 .zoomInLeft {
   -webkit-animation-name: zoomInLeft;
   animation-name: zoomInLeft;
@@ -2506,6 +2693,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
+/* line 3064, ../../global/sass/lib/_animate.scss */
 .zoomInRight {
   -webkit-animation-name: zoomInRight;
   animation-name: zoomInRight;
@@ -2542,6 +2730,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
+/* line 3105, ../../global/sass/lib/_animate.scss */
 .zoomInUp {
   -webkit-animation-name: zoomInUp;
   animation-name: zoomInUp;
@@ -2572,6 +2761,7 @@
     opacity: 0;
   }
 }
+/* line 3142, ../../global/sass/lib/_animate.scss */
 .zoomOut {
   -webkit-animation-name: zoomOut;
   animation-name: zoomOut;
@@ -2612,6 +2802,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
+/* line 3187, ../../global/sass/lib/_animate.scss */
 .zoomOutDown {
   -webkit-animation-name: zoomOutDown;
   animation-name: zoomOutDown;
@@ -2644,6 +2835,7 @@
     transform-origin: left center;
   }
 }
+/* line 3224, ../../global/sass/lib/_animate.scss */
 .zoomOutLeft {
   -webkit-animation-name: zoomOutLeft;
   animation-name: zoomOutLeft;
@@ -2676,6 +2868,7 @@
     transform-origin: right center;
   }
 }
+/* line 3261, ../../global/sass/lib/_animate.scss */
 .zoomOutRight {
   -webkit-animation-name: zoomOutRight;
   animation-name: zoomOutRight;
@@ -2716,6 +2909,7 @@
     animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
   }
 }
+/* line 3306, ../../global/sass/lib/_animate.scss */
 .zoomOutUp {
   -webkit-animation-name: zoomOutUp;
   animation-name: zoomOutUp;
@@ -2742,6 +2936,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 3337, ../../global/sass/lib/_animate.scss */
 .slideInDown {
   -webkit-animation-name: slideInDown;
   animation-name: slideInDown;
@@ -2768,6 +2963,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 3368, ../../global/sass/lib/_animate.scss */
 .slideInLeft {
   -webkit-animation-name: slideInLeft;
   animation-name: slideInLeft;
@@ -2794,6 +2990,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 3399, ../../global/sass/lib/_animate.scss */
 .slideInRight {
   -webkit-animation-name: slideInRight;
   animation-name: slideInRight;
@@ -2820,6 +3017,7 @@
     transform: translate3d(0, 0, 0);
   }
 }
+/* line 3430, ../../global/sass/lib/_animate.scss */
 .slideInUp {
   -webkit-animation-name: slideInUp;
   animation-name: slideInUp;
@@ -2846,6 +3044,7 @@
     transform: translate3d(0, 100%, 0);
   }
 }
+/* line 3461, ../../global/sass/lib/_animate.scss */
 .slideOutDown {
   -webkit-animation-name: slideOutDown;
   animation-name: slideOutDown;
@@ -2872,6 +3071,7 @@
     transform: translate3d(-100%, 0, 0);
   }
 }
+/* line 3492, ../../global/sass/lib/_animate.scss */
 .slideOutLeft {
   -webkit-animation-name: slideOutLeft;
   animation-name: slideOutLeft;
@@ -2898,6 +3098,7 @@
     transform: translate3d(100%, 0, 0);
   }
 }
+/* line 3523, ../../global/sass/lib/_animate.scss */
 .slideOutRight {
   -webkit-animation-name: slideOutRight;
   animation-name: slideOutRight;
@@ -2924,57 +3125,82 @@
     transform: translate3d(0, -100%, 0);
   }
 }
+/* line 3554, ../../global/sass/lib/_animate.scss */
 .slideOutUp {
   -webkit-animation-name: slideOutUp;
   animation-name: slideOutUp;
 }
+
+/* line 3559, ../../global/sass/lib/_animate.scss */
 .animated {
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
+
+/* line 3566, ../../global/sass/lib/_animate.scss */
 .animated.infinite {
   -webkit-animation-iteration-count: infinite;
   animation-iteration-count: infinite;
 }
+
+/* line 3571, ../../global/sass/lib/_animate.scss */
 .animated.delay-1s {
   -webkit-animation-delay: 1s;
   animation-delay: 1s;
 }
+
+/* line 3576, ../../global/sass/lib/_animate.scss */
 .animated.delay-2s {
   -webkit-animation-delay: 2s;
   animation-delay: 2s;
 }
+
+/* line 3581, ../../global/sass/lib/_animate.scss */
 .animated.delay-3s {
   -webkit-animation-delay: 3s;
   animation-delay: 3s;
 }
+
+/* line 3586, ../../global/sass/lib/_animate.scss */
 .animated.delay-4s {
   -webkit-animation-delay: 4s;
   animation-delay: 4s;
 }
+
+/* line 3591, ../../global/sass/lib/_animate.scss */
 .animated.delay-5s {
   -webkit-animation-delay: 5s;
   animation-delay: 5s;
 }
+
+/* line 3596, ../../global/sass/lib/_animate.scss */
 .animated.fast {
   -webkit-animation-duration: 800ms;
   animation-duration: 800ms;
 }
+
+/* line 3601, ../../global/sass/lib/_animate.scss */
 .animated.faster {
   -webkit-animation-duration: 500ms;
   animation-duration: 500ms;
 }
+
+/* line 3606, ../../global/sass/lib/_animate.scss */
 .animated.slow {
   -webkit-animation-duration: 2s;
   animation-duration: 2s;
 }
+
+/* line 3611, ../../global/sass/lib/_animate.scss */
 .animated.slower {
   -webkit-animation-duration: 3s;
   animation-duration: 3s;
 }
+
 @media (print), (prefers-reduced-motion) {
+  /* line 3617, ../../global/sass/lib/_animate.scss */
   .animated {
     -webkit-animation: unset !important;
     animation: unset !important;
@@ -2982,6 +3208,7 @@
     transition: none !important;
   }
 }
+/* line 3625, ../../global/sass/lib/_animate.scss */
 *.loading::before {
   content: "";
   border: 2px solid #f3f3f3;
@@ -3011,9 +3238,9 @@
  * Layout variables
  */
 /* Colors: CB Brand */
-/* Colors: text */
-/* Colors: Theme, can be modified by user */
+/* Colors: Theme */
 /* Colors: Backgrounds */
+/* Colors: text */
 /* Colors: Message statuses */
 /* Font sizes */
 /* Layout Variables */
@@ -3040,6 +3267,7 @@
  *
  */
 /* -------------------- Boxes -------------------- */
+/* line 15, ../../global/sass/partials/_extends.scss */
 .cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper, .cb-items-table {
   background: #f6f6f6;
   padding: 2.5px 5px;
@@ -3048,40 +3276,56 @@
   margin-bottom: 10px;
 }
 @media (min-width: 37.5em) {
+  /* line 15, ../../global/sass/partials/_extends.scss */
   .cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper, .cb-items-table {
     padding: 10px 15px;
   }
 }
+
+/* line 28, ../../global/sass/partials/_extends.scss */
 .cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months {
   background: #FFF;
   padding: 5px;
   border-radius: 8px;
 }
 @media (min-width: 37.5em) {
+  /* line 28, ../../global/sass/partials/_extends.scss */
   .cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months {
     padding: 10px;
   }
 }
+
 /* -------------------- Typography -------------------- */
+/* line 41, ../../global/sass/partials/_extends.scss */
 .cb-big, .cb-map-filters.cb-wrapper .cb-map-filter-group-label {
   font-size: 18px;
   font-weight: bold;
 }
+
 /* -------------------- Boxes -------------------- */
+/* line 48, ../../global/sass/partials/_extends.scss */
 .shadow {
   box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.22);
 }
+
+/* line 52, ../../global/sass/partials/_extends.scss */
 .shadow-small, .cb-hover, .cb-button:hover, .cb-button-container a:hover, .cb-wrapper .cb-action input:hover, .cb-wrapper #booking-form input:hover, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:hover {
   box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
 }
+
+/* line 56, ../../global/sass/partials/_extends.scss */
 .cb-hover {
   border: 1px solid #506CA9;
   border-radius: 8px;
 }
+
+/* line 62, ../../global/sass/partials/_extends.scss */
 .cb-thumbnail {
   border-radius: 8px;
 }
+
 /* -------------------- Buttons -------------------- */
+/* line 68, ../../global/sass/partials/_extends.scss */
 .cb-button, .cb-button-container a, .cb-wrapper .cb-action input, .cb-wrapper #booking-form input, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button {
   border-radius: 8px;
   font-size: 14px;
@@ -3097,51 +3341,65 @@
   padding: 10px 15px;
   font-weight: bold;
 }
+/* line 81, ../../global/sass/partials/_extends.scss */
 .cb-button.small, .cb-button-container a.small, .cb-wrapper .cb-action input.small, .cb-wrapper #booking-form input.small, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.small {
   padding: 10px;
   font-size: 12px;
 }
+/* line 86, ../../global/sass/partials/_extends.scss */
 .cb-button:hover, .cb-button-container a:hover, .cb-wrapper .cb-action input:hover, .cb-wrapper #booking-form input:hover, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:hover {
   background: #506CA9;
   color: #FFF;
   /* Various themes fix */
 }
+/* line 92, ../../global/sass/partials/_extends.scss */
 .cb-button:visited, .cb-button-container a:visited, .cb-wrapper .cb-action input:visited, .cb-wrapper #booking-form input:visited, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:visited {
   color: #FFF;
 }
+/* line 96, ../../global/sass/partials/_extends.scss */
 .cb-button.big, .cb-button-container a.big, .cb-wrapper .cb-action input.big, .cb-wrapper #booking-form input.big, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.big {
   padding: 10px 15px;
   font-size: 18px;
   line-height: 18px;
 }
+/* line 101, ../../global/sass/partials/_extends.scss */
 .cb-button.secondary, .cb-button-container a.secondary, .cb-wrapper .cb-action input.secondary, .cb-wrapper #booking-form input.secondary, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.secondary {
   background-color: #FFF;
   color: #d5425c;
 }
+/* line 106, ../../global/sass/partials/_extends.scss */
 .cb-button.cancel, .cb-button-container a.cancel, .cb-wrapper .cb-action input.cancel, .cb-wrapper #booking-form input.cancel, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.cancel {
   background-color: #d5425c;
 }
+/* line 110, ../../global/sass/partials/_extends.scss */
 .cb-button.confirm, .cb-button-container a.confirm, .cb-wrapper .cb-action input.confirm, .cb-wrapper #booking-form input.confirm, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.confirm {
   background-color: #74ce3c;
 }
+/* line 114, ../../global/sass/partials/_extends.scss */
 .cb-button.delete, .cb-button-container a.delete, .cb-wrapper .cb-action input.delete, .cb-wrapper #booking-form input.delete, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.delete {
   background-color: #d5425c;
 }
+/* line 118, ../../global/sass/partials/_extends.scss */
 .cb-button[disabled=disabled], .cb-button-container a[disabled=disabled], .cb-wrapper .cb-action input[disabled=disabled], .cb-wrapper #booking-form input[disabled=disabled], .cb-map-filters.cb-wrapper .cb-map-button-wrapper button[disabled=disabled] {
-  background-color: #f6f6f6;
-  color: #dddddd;
+  background-color: #c4c4c4;
+  color: white;
 }
+/* line 123, ../../global/sass/partials/_extends.scss */
 .cb-button.no-right-radius, .cb-button-container a.no-right-radius, .cb-wrapper .cb-action input.no-right-radius, .cb-wrapper #booking-form input.no-right-radius, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.no-right-radius {
   border-radius: 8px 0;
 }
+/* line 126, ../../global/sass/partials/_extends.scss */
 .cb-button.no-left-radius, .cb-button-container a.no-left-radius, .cb-wrapper .cb-action input.no-left-radius, .cb-wrapper #booking-form input.no-left-radius, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.no-left-radius {
   border-radius: 0 8px;
 }
+
+/* line 134, ../../global/sass/partials/_extends.scss */
 .cb-pill {
   border-radius: 8px;
   padding: 0;
   margin: 0;
 }
+/* line 138, ../../global/sass/partials/_extends.scss */
 .cb-pill a {
   text-decoration: none;
   color: #FFF;
@@ -3152,10 +3410,13 @@
  * Debug
  *
  */
+/* line 6, ../../global/sass/partials/_utilities.scss */
 .cb-hidden {
   display: none;
 }
+
 /* Template name in content */
+/* line 9, ../../global/sass/partials/_utilities.scss */
 .cb-debug {
   opacity: 0;
   position: absolute;
@@ -3164,9 +3425,12 @@
   font-size: 10px;
   background: transparent !important;
 }
+
+/* line 18, ../../global/sass/partials/_utilities.scss */
 .cb-wrapper:hover .cb-debug {
   opacity: 1;
 }
+
 /* Multi-column layouts */
 /**
  * Layouts for tables/lists
@@ -3176,114 +3440,166 @@
  */
 /* -------------------- Tables -------------------- */
 /* 30-70 standard for lists, first item is title */
+/* line 14, ../sass/partials/_layouts.scss */
 .cb-col-30-70 > :nth-child(odd) {
   /* this is the title column , e.g. "Name" */
   font-weight: bold;
 }
 @media (min-width: 37.5em) {
+  /* line 12, ../sass/partials/_layouts.scss */
   .cb-col-30-70 {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
   }
+  /* line 24, ../sass/partials/_layouts.scss */
   .cb-col-30-70 > :nth-child(odd) {
     width: 30%;
   }
+  /* line 27, ../sass/partials/_layouts.scss */
   .cb-col-30-70 > :nth-child(even) {
     width: 70%;
   }
 }
+
 /* 50-50 */
 @media (min-width: 37.5em) {
+  /* line 33, ../sass/partials/_layouts.scss */
   .cb-col-50-50 {
     display: flex;
   }
+  /* line 36, ../sass/partials/_layouts.scss */
   .cb-col-50-50 > :nth-child(odd) {
     width: 50%;
     min-width: 0;
   }
+  /* line 39, ../sass/partials/_layouts.scss */
   .cb-col-50-50 > :nth-child(odd) img {
     width: 100%;
   }
+  /* line 41, ../sass/partials/_layouts.scss */
   .cb-col-50-50 > :nth-child(even) {
     width: 50%;
     min-width: 0;
   }
 }
-.cb-col-50-50-filter > div, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div, .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div {
+
+/* line 50, ../sass/partials/_layouts.scss */
+.cb-col-50-50-filter > div, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div,
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div {
   margin-bottom: 10px;
   width: 100%;
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
 }
-.cb-col-50-50-filter > div label, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div label, .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div label {
+/* line 57, ../sass/partials/_layouts.scss */
+.cb-col-50-50-filter > div label, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div label,
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div label {
   flex: 0 0 30%;
 }
-.cb-col-50-50-filter > div input, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div input, .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div input {
+/* line 60, ../sass/partials/_layouts.scss */
+.cb-col-50-50-filter > div input, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div input,
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div input {
   flex: 0 1 50%;
 }
 @media (min-width: 37.5em) {
-  .cb-col-50-50-filter, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group, .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group {
+  /* line 49, ../sass/partials/_layouts.scss */
+  .cb-col-50-50-filter, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group,
+  .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
   }
-  .cb-col-50-50-filter > div, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div, .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div {
+  /* line 74, ../sass/partials/_layouts.scss */
+  .cb-col-50-50-filter > div, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div,
+  .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div {
     width: 50%;
   }
 }
-.cb-col-auto, .cb-wrapper .template-timeframe-withitem, .cb-wrapper .template-timeframe-withlocation, .cb-wrapper .template-item-withlocation, .cb-wrapper .cb-list-header {
+
+/* line 80, ../sass/partials/_layouts.scss */
+.cb-col-auto, .cb-wrapper .template-timeframe-withitem,
+.cb-wrapper .template-timeframe-withlocation,
+.cb-wrapper .template-item-withlocation, .cb-wrapper .cb-list-header {
   /* 2 fixed cols, 1 flexible in the middle */
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
-.cb-col-auto > div.cb-thumbnail, .cb-wrapper .template-timeframe-withitem > div.cb-thumbnail, .cb-wrapper .template-timeframe-withlocation > div.cb-thumbnail, .cb-wrapper .template-item-withlocation > div.cb-thumbnail, .cb-wrapper .cb-list-header > div.cb-thumbnail {
+/* line 86, ../sass/partials/_layouts.scss */
+.cb-col-auto > div.cb-thumbnail, .cb-wrapper .template-timeframe-withitem > div.cb-thumbnail,
+.cb-wrapper .template-timeframe-withlocation > div.cb-thumbnail,
+.cb-wrapper .template-item-withlocation > div.cb-thumbnail, .cb-wrapper .cb-list-header > div.cb-thumbnail {
   flex: 0 0 20%;
   padding-right: 15px;
 }
-.cb-col-auto > div.cb-list-info, .cb-wrapper .template-timeframe-withitem > div.cb-list-info, .cb-wrapper .template-timeframe-withlocation > div.cb-list-info, .cb-wrapper .template-item-withlocation > div.cb-list-info, .cb-wrapper .cb-list-header > div.cb-list-info {
+/* line 90, ../sass/partials/_layouts.scss */
+.cb-col-auto > div.cb-list-info, .cb-wrapper .template-timeframe-withitem > div.cb-list-info,
+.cb-wrapper .template-timeframe-withlocation > div.cb-list-info,
+.cb-wrapper .template-item-withlocation > div.cb-list-info, .cb-wrapper .cb-list-header > div.cb-list-info {
   flex: 1 0 50%;
   border: none;
 }
-.cb-col-auto > div.cb-action, .cb-wrapper .template-timeframe-withitem > div.cb-action, .cb-wrapper .template-timeframe-withlocation > div.cb-action, .cb-wrapper .template-item-withlocation > div.cb-action, .cb-wrapper .cb-list-header > div.cb-action {
+/* line 94, ../sass/partials/_layouts.scss */
+.cb-col-auto > div.cb-action, .cb-wrapper .template-timeframe-withitem > div.cb-action,
+.cb-wrapper .template-timeframe-withlocation > div.cb-action,
+.cb-wrapper .template-item-withlocation > div.cb-action, .cb-wrapper .cb-list-header > div.cb-action {
   /* optional */
   flex: 0 0 100%;
   text-align: right;
 }
 @media (min-width: 37.5em) {
-  .cb-col-auto, .cb-wrapper .template-timeframe-withitem, .cb-wrapper .template-timeframe-withlocation, .cb-wrapper .template-item-withlocation, .cb-wrapper .cb-list-header {
+  /* line 80, ../sass/partials/_layouts.scss */
+  .cb-col-auto, .cb-wrapper .template-timeframe-withitem,
+  .cb-wrapper .template-timeframe-withlocation,
+  .cb-wrapper .template-item-withlocation, .cb-wrapper .cb-list-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: nowrap;
     align-items: center;
   }
-  .cb-col-auto > div.cb-thumbnail, .cb-wrapper .template-timeframe-withitem > div.cb-thumbnail, .cb-wrapper .template-timeframe-withlocation > div.cb-thumbnail, .cb-wrapper .template-item-withlocation > div.cb-thumbnail, .cb-wrapper .cb-list-header > div.cb-thumbnail {
+  /* line 106, ../sass/partials/_layouts.scss */
+  .cb-col-auto > div.cb-thumbnail, .cb-wrapper .template-timeframe-withitem > div.cb-thumbnail,
+  .cb-wrapper .template-timeframe-withlocation > div.cb-thumbnail,
+  .cb-wrapper .template-item-withlocation > div.cb-thumbnail, .cb-wrapper .cb-list-header > div.cb-thumbnail {
     flex: 0 0 20%;
     padding-right: 15px;
   }
-  .cb-col-auto > div.cb-list-info, .cb-wrapper .template-timeframe-withitem > div.cb-list-info, .cb-wrapper .template-timeframe-withlocation > div.cb-list-info, .cb-wrapper .template-item-withlocation > div.cb-list-info, .cb-wrapper .cb-list-header > div.cb-list-info {
+  /* line 111, ../sass/partials/_layouts.scss */
+  .cb-col-auto > div.cb-list-info, .cb-wrapper .template-timeframe-withitem > div.cb-list-info,
+  .cb-wrapper .template-timeframe-withlocation > div.cb-list-info,
+  .cb-wrapper .template-item-withlocation > div.cb-list-info, .cb-wrapper .cb-list-header > div.cb-list-info {
     flex: 1 1 auto;
     border: none;
   }
-  .cb-col-auto > div.cb-action, .cb-wrapper .template-timeframe-withitem > div.cb-action, .cb-wrapper .template-timeframe-withlocation > div.cb-action, .cb-wrapper .template-item-withlocation > div.cb-action, .cb-wrapper .cb-list-header > div.cb-action {
+  /* line 115, ../sass/partials/_layouts.scss */
+  .cb-col-auto > div.cb-action, .cb-wrapper .template-timeframe-withitem > div.cb-action,
+  .cb-wrapper .template-timeframe-withlocation > div.cb-action,
+  .cb-wrapper .template-item-withlocation > div.cb-action, .cb-wrapper .cb-list-header > div.cb-action {
     flex: 1 0 auto;
   }
-  .cb-col-auto > div.cb-action a, .cb-wrapper .template-timeframe-withitem > div.cb-action a, .cb-wrapper .template-timeframe-withlocation > div.cb-action a, .cb-wrapper .template-item-withlocation > div.cb-action a, .cb-wrapper .cb-list-header > div.cb-action a {
+  /* line 117, ../sass/partials/_layouts.scss */
+  .cb-col-auto > div.cb-action a, .cb-wrapper .template-timeframe-withitem > div.cb-action a,
+  .cb-wrapper .template-timeframe-withlocation > div.cb-action a,
+  .cb-wrapper .template-item-withlocation > div.cb-action a, .cb-wrapper .cb-list-header > div.cb-action a {
     width: auto;
   }
 }
+
+/* line 124, ../sass/partials/_layouts.scss */
 .cb-col-list-with-image {
   /*first */
   display: flex;
   flex-direction: column;
 }
+
 @media (min-width: 37.5em) {
+  /* line 132, ../sass/partials/_layouts.scss */
   .cb-col-20-50-30 {
     display: flex;
     flex-direction: row;
@@ -3306,6 +3622,7 @@
 * @copyright 2020 wielebenwir
 */
 /* main wrapper */
+/* line 15, ../sass/partials/_lists.scss */
 .cb-wrapper {
   position: relative;
   clear: both;
@@ -3314,57 +3631,72 @@
   /* headline */
   /* sub lists wrapper */
 }
+/* line 24, ../sass/partials/_lists.scss */
 .cb-wrapper .cb-list-content.cb-pickupinstructions div {
   white-space: pre-wrap;
 }
+/* line 28, ../sass/partials/_lists.scss */
 .cb-wrapper .cb-address.cb-location-pickupinstructions {
   white-space: pre-wrap;
   margin-top: 0;
   border-left: green;
   border-width: 1px;
 }
+/* line 36, ../sass/partials/_lists.scss */
 .cb-wrapper h1, .cb-wrapper h2, .cb-wrapper h3, .cb-wrapper h4 {
   margin: 0;
   padding-bottom: 10px;
   padding-top: 0;
 }
+/* line 42, ../sass/partials/_lists.scss */
 .cb-wrapper .cb-title {
-  color: #84ae53;
+  color: #84AE53;
 }
+/* line 51, ../sass/partials/_lists.scss */
 .cb-wrapper > .cb-wrapper {
   overflow: hidden;
 }
+/* line 56, ../sass/partials/_lists.scss */
 .cb-wrapper > .cb-wrapper > div {
   /* sub list items */
   padding: 5px 0;
 }
+/* line 59, ../sass/partials/_lists.scss */
 .cb-wrapper > .cb-wrapper > div:last-of-type {
   border-bottom: none;
 }
+/* line 77, ../sass/partials/_lists.scss */
 .cb-wrapper .cb-action {
   background: transparent;
 }
-.cb-wrapper .cb-action .cb-button, .cb-wrapper .cb-action .cb-button-container a, .cb-button-container .cb-wrapper .cb-action a, .cb-wrapper .cb-action input, .cb-wrapper .cb-action #booking-form input, .cb-wrapper #booking-form .cb-action input, .cb-wrapper .cb-action .cb-map-filters.cb-wrapper .cb-map-button-wrapper button, .cb-map-filters.cb-wrapper .cb-map-button-wrapper .cb-wrapper .cb-action button {
+/* line 79, ../sass/partials/_lists.scss */
+.cb-wrapper .cb-action .cb-button, .cb-wrapper .cb-action .cb-button-container a, .cb-button-container .cb-wrapper .cb-action a, .cb-wrapper .cb-action input, .cb-wrapper .cb-action #booking-form input, .cb-wrapper #booking-form .cb-action input, .cb-map-filters.cb-wrapper .cb-action .cb-map-button-wrapper button, .cb-map-filters.cb-wrapper .cb-map-button-wrapper .cb-action button {
   display: inline-block;
 }
+
 /* List styles */
 /**
  * Single item, single location, single booking view
  *
  */
+/* line 6, ../sass/partials/_single.scss */
 .cb-wrapper {
   /* invert the color scheme from the lists: wrapper has no bg, sub-wrapper colored */
 }
+/* line 8, ../sass/partials/_single.scss */
 .cb-wrapper.template-location-single, .cb-wrapper.template-item-single, .cb-wrapper.template-booking-single {
   background: transparent;
   padding: 0;
 }
+/* line 15, ../sass/partials/_single.scss */
 .cb-wrapper.template-location-single > div:not(.cb-notice) > div, .cb-wrapper.template-item-single > div:not(.cb-notice) > div, .cb-wrapper.template-booking-single > div:not(.cb-notice) > div {
   /* sub list items */
 }
+/* line 16, ../sass/partials/_single.scss */
 .cb-wrapper.template-location-single > div:not(.cb-notice) > div:last-of-type, .cb-wrapper.template-item-single > div:not(.cb-notice) > div:last-of-type, .cb-wrapper.template-booking-single > div:not(.cb-notice) > div:last-of-type {
   border-bottom: 0;
 }
+
 /* Form styles */
 /**
  * Layouts for Forms: General Form Styling & Booking Form
@@ -3377,10 +3709,26 @@
  * @link      http://www.wielebenwir.de
  * @copyright 2015 wielebenwir
  */
+/* line 13, ../sass/partials/_forms.scss */
 .cb-wrapper {
   /* General form elements */
 }
-.cb-wrapper input[type="text"], .cb-wrapper input[type="password"], .cb-wrapper input[type="email"], .cb-wrapper input[type="url"], .cb-wrapper input[type="date"], .cb-wrapper input[type="month"], .cb-wrapper input[type="time"], .cb-wrapper input[type="datetime"], .cb-wrapper input[type="datetime-local"], .cb-wrapper input[type="week"], .cb-wrapper input[type="number"], .cb-wrapper input[type="search"], .cb-wrapper input[type="tel"], .cb-wrapper input[type="color"], .cb-wrapper textarea {
+/* line 18, ../sass/partials/_forms.scss */
+.cb-wrapper input[type="text"],
+.cb-wrapper input[type="password"],
+.cb-wrapper input[type="email"],
+.cb-wrapper input[type="url"],
+.cb-wrapper input[type="date"],
+.cb-wrapper input[type="month"],
+.cb-wrapper input[type="time"],
+.cb-wrapper input[type="datetime"],
+.cb-wrapper input[type="datetime-local"],
+.cb-wrapper input[type="week"],
+.cb-wrapper input[type="number"],
+.cb-wrapper input[type="search"],
+.cb-wrapper input[type="tel"],
+.cb-wrapper input[type="color"],
+.cb-wrapper textarea {
   -webkit-appearance: none;
   -moz-appearance: none;
   background: #FFF;
@@ -3395,6 +3743,7 @@
   max-width: 100%;
   padding: 10px 10px;
 }
+/* line 48, ../sass/partials/_forms.scss */
 .cb-wrapper select {
   box-shadow: none;
   display: block;
@@ -3403,51 +3752,65 @@
   padding: 10px 10px;
   cursor: pointer;
 }
+/* line 57, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-action {
   text-align: right;
 }
+/* line 62, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-action input {
   float: right;
 }
+/* line 69, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-action form#cb-booking-form-set-cancelled input {
   background: transparent;
   color: #9D9F9D;
 }
+/* line 77, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-action form#cb-booking-form-set-confirmed input {
   margin-left: 15px;
 }
+/* line 84, ../sass/partials/_forms.scss */
 .cb-wrapper input.cb-action-canceled {
   background: none !important;
   color: #444 !important;
   box-shadow: none !important;
   font-size: 0.875rem;
 }
-.cb-wrapper #booking-form-container, .cb-wrapper #booking-form-container div {
+/* line 91, ../sass/partials/_forms.scss */
+.cb-wrapper #booking-form-container,
+.cb-wrapper #booking-form-container div {
   border-bottom: 0;
   display: flow-root;
 }
+/* line 97, ../sass/partials/_forms.scss */
 .cb-wrapper #calendar-footnote {
   background-color: #FFF;
   margin-top: 10px;
 }
+/* line 100, ../sass/partials/_forms.scss */
 .cb-wrapper #calendar-footnote p {
   font-size: small;
   line-height: 1.5;
 }
+/* line 106, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form {
   width: 100%;
   /* do not extend litepicker width */
 }
+/* line 108, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form input {
   float: right;
 }
+/* line 113, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container {
   margin-top: 10px;
   text-align: center;
 }
+/* line 117, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container .restriction {
   display: block;
 }
+/* line 121, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div {
   display: flex;
   align-items: center;
@@ -3455,13 +3818,16 @@
   text-align: left;
   overflow: hidden;
 }
+/* line 130, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div span, .cb-wrapper #booking-form .time-selection-container > div label, .cb-wrapper #booking-form .time-selection-container > div select {
   float: left;
   font-size: 14px;
 }
+/* line 135, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div label {
   font-weight: bold;
 }
+/* line 139, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div #resetPicker {
   cursor: pointer;
   font-weight: bold;
@@ -3470,36 +3836,44 @@
   padding: 0;
   flex-basis: 100%;
 }
+/* line 148, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div > label {
   flex-basis: 30%;
 }
+/* line 152, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div > div {
   flex-basis: 70%;
   display: flex;
   gap: 1rem 3rem;
   align-items: center;
 }
+/* line 162, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice {
   margin-bottom: 15px;
   font-size: 18px;
   vertical-align: middle;
   font-weight: bold;
   position: relative;
-  background: #fff9c5;
+  background: #FFF9C5;
   /* Post status */
 }
+/* line 172, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-unconfirmed {
-  background: #fff9c5;
+  background: #FFF9C5;
 }
+/* line 176, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-confirmed {
   background: #74ce3c;
 }
+/* line 180, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-cancelled {
   background: #74ce3c;
 }
+/* line 184, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.error {
   background: #d5425c;
 }
+
 /* Calendar styles */
 /**
  * Booking Calendar
@@ -3507,6 +3881,7 @@
  * Styles for the litepicker javascript
  *
  */
+/* line 9, ../sass/partials/_calendar.scss */
 :root {
   --litepickerBgColor: transparent;
   --litepickerMonthHeaderTextColor: #333;
@@ -3517,15 +3892,15 @@
   --litepickerMonthWeekdayColor: #9e9e9e;
   --litepickerDayColor: #000;
   --litepickerDayColorBg: #74ce3c;
-  --litepickerDayColorHover: #506ca9;
-  --litepickerDayIsTodayColor: #d5425c;
+  --litepickerDayColorHover: #506CA9;
+  --litepickerDayIsTodayColor: #f44336;
   --litepickerDayIsInRange: #2096f3;
-  --litepickerDayIsLockedColor: #dddddd;
-  --litepickerDayIsLockedColorBg: #dddddd;
+  --litepickerDayIsLockedColor: #9e9e9e;
+  --litepickerDayIsLockedColorBg: #f6f6f6;
   --litepickerDayIsHolidayColor: #000000;
   --litepickerDayIsHolidayColorBg: #ff9218;
   --litepickerDayIsPartiallyLockedColor: #333;
-  --litepickerDayIsPartiallyLockedColorBgOne: #74ce3c;
+  --litepickerDayIsPartiallyLockedColorBgOne: #20c527;
   --litepickerDayIsPartiallyLockedColorBgTwo: #d5425c;
   --litepickerDayIsBookedColor: #333;
   --litepickerDayIsBookedColorBg: #d5425c;
@@ -3543,21 +3918,28 @@
   --litepickerHighlightedDayBg: #ffeb3b;
   --litePickerDayBorderColor: #FFFFFF;
 }
+
+/* line 52, ../sass/partials/_calendar.scss */
 .show-week-numbers {
   --litepickerMonthWidth: calc(var(--litepickerDayWidth) * 8);
 }
+
+/* line 56, ../sass/partials/_calendar.scss */
 .litepicker {
   font-size: 1.2em;
   display: none;
   width: 100%;
 }
+/* line 63, ../sass/partials/_calendar.scss */
 .litepicker a {
   text-decoration: none !important;
 }
+/* line 68, ../sass/partials/_calendar.scss */
 .litepicker .container__main {
   display: flex;
   justify-content: space-around;
 }
+/* line 73, ../sass/partials/_calendar.scss */
 .litepicker .container__months {
   background: transparent;
   box-shadow: none;
@@ -3567,23 +3949,30 @@
   width: calc(var(--litepickerMonthWidth) + 10px);
   box-sizing: content-box;
 }
+/* line 85, ../sass/partials/_calendar.scss */
 .litepicker .container__months.columns-2 {
   width: calc((var(--litepickerMonthWidth) * 2) + 20px);
 }
+/* line 89, ../sass/partials/_calendar.scss */
 .litepicker .container__months.columns-3 {
   width: calc((var(--litepickerMonthWidth) * 3) + 30px);
 }
+/* line 93, ../sass/partials/_calendar.scss */
 .litepicker .container__months.columns-4 {
   width: calc((var(--litepickerMonthWidth) * 4) + 40px);
 }
-.litepicker .container__months.split-view .month-item-header .button-previous-month, .litepicker .container__months.split-view .month-item-header .button-next-month {
+/* line 100, ../sass/partials/_calendar.scss */
+.litepicker .container__months.split-view .month-item-header .button-previous-month,
+.litepicker .container__months.split-view .month-item-header .button-next-month {
   visibility: visible;
 }
+/* line 108, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item {
   padding: 5px;
   width: var(--litepickerMonthWidth);
   box-sizing: content-box;
 }
+/* line 113, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header {
   display: flex;
   justify-content: space-between;
@@ -3593,30 +3982,40 @@
   align-items: center;
   color: var(--litepickerMonthHeaderTextColor);
 }
+/* line 122, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header div {
   flex: 1;
 }
+/* line 125, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header div > .month-item-name {
   margin-right: 5px;
 }
+/* line 129, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header div > .month-item-year {
   padding: 0;
 }
+/* line 134, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .reset-button {
   display: none;
   color: var(--litepickerButtonResetBtn);
 }
-.litepicker .container__months .month-item-header .reset-button > svg, .litepicker .container__months .month-item-header .reset-button > img {
+/* line 138, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header .reset-button > svg,
+.litepicker .container__months .month-item-header .reset-button > img {
   fill: var(--litepickerButtonResetBtn);
   pointer-events: none;
 }
+/* line 144, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .reset-button:hover {
   color: var(--litepickerButtonResetBtnHover);
 }
+/* line 147, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .reset-button:hover > svg {
   fill: var(--litepickerButtonResetBtnHover);
 }
-.litepicker .container__months .month-item-header .button-previous-month, .litepicker .container__months .month-item-header .button-next-month {
+/* line 153, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header .button-previous-month,
+.litepicker .container__months .month-item-header .button-next-month {
   visibility: hidden;
   text-decoration: none;
   color: var(--litepickerMonthButton);
@@ -3625,22 +4024,32 @@
   transition: color 0.3s, border 0.3s;
   cursor: default;
 }
-.litepicker .container__months .month-item-header .button-previous-month > svg, .litepicker .container__months .month-item-header .button-previous-month > img, .litepicker .container__months .month-item-header .button-next-month > svg, .litepicker .container__months .month-item-header .button-next-month > img {
+/* line 163, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header .button-previous-month > svg,
+.litepicker .container__months .month-item-header .button-previous-month > img,
+.litepicker .container__months .month-item-header .button-next-month > svg,
+.litepicker .container__months .month-item-header .button-next-month > img {
   fill: var(--litepickerMonthButton);
   pointer-events: none;
 }
-.litepicker .container__months .month-item-header .button-previous-month:hover, .litepicker .container__months .month-item-header .button-next-month:hover {
+/* line 169, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header .button-previous-month:hover,
+.litepicker .container__months .month-item-header .button-next-month:hover {
   color: var(--litepickerMonthButtonHover);
 }
-.litepicker .container__months .month-item-header .button-previous-month:hover > svg, .litepicker .container__months .month-item-header .button-next-month:hover > svg {
+/* line 172, ../sass/partials/_calendar.scss */
+.litepicker .container__months .month-item-header .button-previous-month:hover > svg,
+.litepicker .container__months .month-item-header .button-next-month:hover > svg {
   fill: var(--litepickerMonthButtonHover);
 }
+/* line 179, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-weekdays-row {
   display: flex;
   justify-self: center;
   justify-content: flex-start;
   color: var(--litepickerMonthWeekdayColor);
 }
+/* line 185, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-weekdays-row > div {
   padding: 5px 0;
   font-size: 85%;
@@ -3648,18 +4057,23 @@
   width: var(--litepickerDayWidth);
   text-align: center;
 }
+/* line 195, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item:first-child .button-previous-month {
   visibility: visible;
 }
+/* line 201, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item:last-child .button-next-month {
   visibility: visible;
 }
+/* line 207, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item.no-previous-month .button-previous-month {
   visibility: hidden;
 }
+/* line 213, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item.no-next-month .button-next-month {
   visibility: hidden;
 }
+/* line 220, ../sass/partials/_calendar.scss */
 .litepicker .container__days {
   display: flex;
   flex-wrap: wrap;
@@ -3668,13 +4082,16 @@
   text-align: center;
   box-sizing: content-box;
 }
-.litepicker .container__days > div, .litepicker .container__days > a {
+/* line 228, ../sass/partials/_calendar.scss */
+.litepicker .container__days > div,
+.litepicker .container__days > a {
   padding: 5px 0;
   width: var(--litepickerDayWidth);
   border-color: var(--litePickerDayBorderColor);
   border-width: 1px;
   text-decoration: none;
 }
+/* line 237, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item {
   color: var(--litepickerDayColor);
   border-style: solid;
@@ -3688,91 +4105,112 @@
   -webkit-box-shadow: none;
   box-shadow: none;
 }
+/* line 14, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item:hover {
   cursor: pointer;
   color: var(--litepickerDayColorHover);
   box-shadow: inset 0 0 0 1px var(--litepickerDayColorHover);
 }
+/* line 20, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-today {
   color: var(--litepickerDayIsTodayColor);
 }
+/* line 24, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-holiday {
   color: var(--litepickerDayIsHolidayColor);
   background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
   background-size: 5px 5px;
 }
+/* line 89, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-holiday:hover {
   cursor: not-allowed;
   box-shadow: none;
 }
+/* line 27, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-booked {
   color: var(--litepickerDayIsBookedColor);
   background-color: var(--litepickerDayIsBookedColorBg);
 }
+/* line 131, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-booked:hover {
   color: var(--litepickerDayIsBookedColor);
   box-shadow: none;
   cursor: default;
 }
+/* line 137, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-booked.last-slot {
   background: linear-gradient(to bottom right, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
+/* line 31, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-partially-booked {
   color: var(--litepickerDayIsPartiallyLockedColor);
   background: linear-gradient(to bottom right, var(--litepickerDayIsPartiallyLockedColorBgOne) 0%, var(--litepickerDayIsPartiallyLockedColorBgOne) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 100%);
 }
+/* line 114, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-partially-booked:hover {
   cursor: pointer;
   color: var(--litepickerDayIsPartiallyLockedColor);
   background: linear-gradient(to bottom right, lightgreen 0%, lightgreen 50%, lightgray 50%, lightgray 100%);
   box-shadow: none;
 }
+/* line 35, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-partially-booked-start {
   background: linear-gradient(to bottom right, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
+/* line 38, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-partially-booked-end {
   background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
+/* line 42, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-locked {
   color: var(--litepickerDayIsLockedColor);
   background: var(--litepickerDayIsLockedColorBg) !important;
 }
+/* line 152, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-locked:hover {
   cursor: not-allowed;
   color: var(--litepickerDayIsLockedColor);
   box-shadow: none;
 }
+/* line 46, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-in-range {
   color: var(--litepickerDayIsStartColor);
   background-color: var(--litepickerDayIsInRange);
   border-radius: 0;
 }
+/* line 52, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-start-date {
   color: var(--litepickerDayIsStartColor);
   background: var(--litepickerDayIsStartBg) !important;
   background-color: var(--litepickerDayIsStartBg);
   border-radius: 0px 0 0 0px;
 }
+/* line 58, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-start-date.is-flipped {
   border-radius: 0 0px 0px 0;
 }
+/* line 63, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-end-date {
   color: var(--litepickerDayIsEndColor);
   background: var(--litepickerDayIsEndBg) !important;
   background-color: var(--litepickerDayIsEndBg);
   border-radius: 0 0px 0px 0;
 }
+/* line 69, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-end-date.is-flipped {
   border-radius: 0px 0 0 0px;
 }
+/* line 74, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-start-date.is-end-date {
   border-radius: 0px;
 }
+/* line 78, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-highlighted {
   color: var(--litepickerHighlightedDayColor);
   background: var(--litepickerHighlightedDayBg) !important;
   background-color: var(--litepickerHighlightedDayBg);
 }
+/* line 241, ../sass/partials/_calendar.scss */
 .litepicker .container__days .week-number {
   display: flex;
   align-items: center;
@@ -3780,6 +4218,7 @@
   color: #9e9e9e;
   font-size: 85%;
 }
+/* line 250, ../sass/partials/_calendar.scss */
 .litepicker .container__footer {
   text-align: right;
   padding: 10px 5px;
@@ -3789,10 +4228,12 @@
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
+/* line 259, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .preview-date-range {
   margin-right: 10px;
   font-size: 90%;
 }
+/* line 264, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .button-cancel {
   background-color: var(--litepickerButtonCancelBg);
   color: var(--litepickerButtonCancelColor);
@@ -3800,9 +4241,12 @@
   padding: 3px 7px 4px;
   border-radius: 3px;
 }
-.litepicker .container__footer .button-cancel > svg, .litepicker .container__footer .button-cancel > img {
+/* line 271, ../sass/partials/_calendar.scss */
+.litepicker .container__footer .button-cancel > svg,
+.litepicker .container__footer .button-cancel > img {
   pointer-events: none;
 }
+/* line 277, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .button-apply {
   background-color: var(--litepickerButtonApplyBg);
   color: var(--litepickerButtonApplyColor);
@@ -3812,12 +4256,16 @@
   margin-left: 10px;
   margin-right: 10px;
 }
+/* line 286, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .button-apply:disabled {
   opacity: 0.7;
 }
-.litepicker .container__footer .button-apply > svg, .litepicker .container__footer .button-apply > img {
+/* line 290, ../sass/partials/_calendar.scss */
+.litepicker .container__footer .button-apply > svg,
+.litepicker .container__footer .button-apply > img {
   pointer-events: none;
 }
+/* line 297, ../sass/partials/_calendar.scss */
 .litepicker .container__tooltip {
   position: absolute;
   margin-top: -4px;
@@ -3830,6 +4278,7 @@
   pointer-events: none;
   visibility: hidden;
 }
+/* line 309, ../sass/partials/_calendar.scss */
 .litepicker .container__tooltip:before {
   position: absolute;
   bottom: -5px;
@@ -3839,6 +4288,7 @@
   border-left: 5px solid transparent;
   content: "";
 }
+/* line 319, ../sass/partials/_calendar.scss */
 .litepicker .container__tooltip:after {
   position: absolute;
   bottom: -4px;
@@ -3848,9 +4298,11 @@
   border-left: 4px solid transparent;
   content: "";
 }
+/* line 331, ../sass/partials/_calendar.scss */
 .litepicker-open {
   overflow: hidden;
 }
+/* line 335, ../sass/partials/_calendar.scss */
 .litepicker-backdrop {
   display: none;
   background-color: #000;
@@ -3861,21 +4313,27 @@
   bottom: 0;
   left: 0;
 }
+
+/* line 349, ../sass/partials/_calendar.scss */
 #booking-form #fullDayInfo {
   clear: left;
 }
+/* line 353, ../sass/partials/_calendar.scss */
 #booking-form span.restrictions {
   width: 100% !important;
 }
+/* line 357, ../sass/partials/_calendar.scss */
 #booking-form span.restrictions li {
   margin-top: 1em;
 }
+/* line 364, ../sass/partials/_calendar.scss */
 #booking-form #resetPicker {
   font-size: 14px;
   padding: 5px;
   display: none;
   cursor: pointer;
 }
+/* line 371, ../sass/partials/_calendar.scss */
 #booking-form #calendarNotice {
   display: none;
   font-size: 14px;
@@ -3894,61 +4352,76 @@
 * @link      http://www.wielebenwir.de
 * @copyright 2020 wielebenwir
 */
+/* line 15, ../sass/partials/_map.scss */
 .cb-wrapper {
   /* Leaflet Map */
   /* Popup */
 }
+/* line 22, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-container .cb-map-marker-cluster-icon {
   width: 100% !important;
   height: 100% !important;
   font-weight: bold !important;
   background-size: cover;
 }
+/* line 29, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-container .cb-map-location-info-name b {
   line-height: 25px;
 }
+/* line 32, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-container .cb-map-location-info-name span.dashicons-search {
   cursor: pointer;
   padding-left: 5px;
   padding-top: 2.5px;
 }
+/* line 38, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-container .cb-map-location-info-opening-hours {
   margin-top: 10px;
 }
+/* line 42, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-container .cb-map-location-info-contact {
   margin-top: 10px;
 }
+/* line 46, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-container .highlight-border {
   border-color: #ee7400 !important;
 }
+/* line 50, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-container .leaflet-bar button {
   font-size: 6.5px;
 }
+/* line 57, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content {
   min-width: 300px;
   font-size: 14px;
 }
+/* line 61, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item {
   margin-top: 10px;
 }
+/* line 65, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-thumbnail {
   display: inline-block;
   width: 25%;
   margin-right: 5%;
 }
+/* line 69, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-thumbnail img {
   border-radius: 8px;
 }
+/* line 74, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-info {
   display: inline-block;
   width: 70%;
   vertical-align: top;
 }
+/* line 80, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-link b a {
   font-size: 18px;
-  color: #84ae53;
+  color: #84AE53;
   text-decoration: underline;
 }
+/* line 86, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability {
   display: flex;
   flex-wrap: nowrap;
@@ -3956,6 +4429,7 @@
   -webkit-overflow-scrolling: touch;
   margin: 3px 0;
 }
+/* line 95, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day {
   flex: 0 0 auto;
   color: #000;
@@ -3967,61 +4441,85 @@
   border-radius: 7px;
   background-clip: padding-box;
 }
+/* line 110, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.available {
-  background-color: #74ce3c;
+  background-color: #7fc600;
 }
-.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.location-closed {
-  background-color: #dddddd;
+/* line 113, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.location-holiday {
+  background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
+  background-size: 8px 8px;
   color: #222222a1;
 }
-.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.no-timeframe {
-  background-color: #dddddd;
+/* line 118, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.locked {
+  background-color: #ddd;
   color: #fff;
 }
+/* line 122, ../sass/partials/_map.scss */
+.cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.no-timeframe {
+  background-color: #ddd;
+  color: #fff;
+  cursor: not-allowed;
+}
+/* line 127, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.partially-booked {
   color: #444;
-  background: linear-gradient(to top left, #74ce3c 0%, #74ce3c calc(50% - 1px), #333 50%, #d5425c calc(50% + 1px), #d5425c 100%);
+  background: linear-gradient(to top left, #7fc600 0%, #7fc600 calc(50% - 1px), #333 50%, #ee7400 calc(50% + 1px), #ee7400 100%);
+  background-repeat: no-repeat;
 }
+/* line 132, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.booked {
   color: #444;
-  background: linear-gradient(to top left, #d5425c 0%, #d5425c calc(50% - 1px), #333 50%, #d5425c calc(50% + 1px), #d5425c 100%);
+  background: linear-gradient(to top left, #ee7400 0%, #ee7400 calc(50% - 1px), #333 50%, #ee7400 calc(50% + 1px), #ee7400 100%);
 }
+/* line 137, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-desc {
   display: none;
 }
+
 /* Filters */
+/* line 146, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper {
   margin-top: 10px;
   /* layout for filter  availability & distance */
   /* styles for specific filters */
   /* layout for filter category */
 }
+/* line 151, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper input[type="checkbox"] {
   margin: 0 5px 0 0;
 }
+/* line 155, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper input[type="date"], .cb-map-filters.cb-wrapper input[type="number"] {
   /* is inline */
   margin: 0 5px;
 }
+/* line 159, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper input[type="number"] {
   max-width: 100px;
 }
+/* line 163, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper select {
   /* is inline */
   margin: 0 5px;
 }
+/* line 167, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper button {
   padding: 5px;
 }
+/* line 172, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-filter-options > div {
   margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #444;
 }
+/* line 179, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-filter-group-label {
-  color: #84ae53;
+  color: #506CA9;
   margin-bottom: 5px;
 }
+/* line 196, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group {
   background: #506CA9;
   border-radius: 8px;
@@ -4029,19 +4527,23 @@
   flex-direction: row;
   flex-wrap: nowrap;
 }
+/* line 202, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group input {
   flex: 1 1 100% !important;
   /* overwrite layout */
 }
+/* line 205, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.undo-geo-search, .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.geo-search {
   background: transparent;
   color: #FFF;
 }
+/* line 214, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
+/* line 219, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset {
   flex: 1 0 50%;
   border: none;
@@ -4049,21 +4551,26 @@
   padding: 0;
   margin-bottom: 10px;
 }
+/* line 226, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset .cb-fieldgroup-row {
   display: inline-block;
 }
+/* line 230, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset legend {
   margin: 0;
   padding: 0;
   font-weight: normal;
 }
+/* line 235, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset label {
   margin-right: 15px;
-  color: #84ae53;
+  color: #506CA9;
 }
+/* line 244, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-button-wrapper {
   text-align: right;
 }
+
 /* Booking list styles */
 /**
 * Bookings 
@@ -4071,101 +4578,126 @@
 * @TODO: Move to /forms and /lists 
 *
 */
+/* line 8, ../sass/partials/_bookings.scss */
 #ui-datepicker-div {
   display: none;
   background-color: white;
   padding: 1.5rem;
   border-radius: 8px;
 }
+/* line 14, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-datepicker-calendar {
   margin-top: 1rem;
   margin-bottom: 1rem;
   min-width: 10rem;
   text-align: center;
 }
+/* line 20, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-datepicker-calendar td a {
   color: #84AE53;
 }
-#ui-datepicker-div .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-prev {
+/* line 25, ../sass/partials/_bookings.scss */
+#ui-datepicker-div .ui-datepicker-next,
+#ui-datepicker-div .ui-datepicker-prev {
   cursor: pointer;
 }
+/* line 30, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-datepicker-next {
   right: 1.5rem;
   position: absolute;
 }
+/* line 35, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-datepicker-title {
   margin-top: 1rem;
   color: black;
   clear: both;
 }
+/* line 41, ../sass/partials/_bookings.scss */
 #ui-datepicker-div .ui-corner-all {
   color: #84AE53;
 }
+
+/* line 47, ../sass/partials/_bookings.scss */
 .booking-list--filters {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 @media (max-width: 400px) {
+  /* line 47, ../sass/partials/_bookings.scss */
   .booking-list--filters {
     width: 100%;
   }
 }
+/* line 56, ../sass/partials/_bookings.scss */
 .booking-list--filters .filter-wrapper {
   font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
   margin-top: 10px;
   flex-basis: 220px;
 }
+/* line 61, ../sass/partials/_bookings.scss */
 .booking-list--filters .filter-wrapper .filter-label {
   margin-bottom: 0.3rem;
   margin-left: 0;
   font-size: 1rem;
 }
+/* line 68, ../sass/partials/_bookings.scss */
 .booking-list--filters .select2 {
   width: 100%;
   padding: 0.25rem 0.5rem;
   border: none;
 }
-.booking-list--filters #endDate-datepicker, .booking-list--filters #startDate-datepicker {
+/* line 74, ../sass/partials/_bookings.scss */
+.booking-list--filters #endDate-datepicker,
+.booking-list--filters #startDate-datepicker {
   width: 100%;
   padding: 0.25rem 0.5rem;
   border: none;
 }
+/* line 81, ../sass/partials/_bookings.scss */
 .booking-list--filters .reset-filters {
   justify-content: flex-end;
   display: flex;
   flex-basis: 100%;
 }
+/* line 86, ../sass/partials/_bookings.scss */
 .booking-list--filters .reset-filters #reset-filters {
   font-size: 0.95rem;
   padding-top: 5px;
   cursor: pointer;
 }
+/* line 92, ../sass/partials/_bookings.scss */
 .booking-list--filters .reset-filters > .cb-button, .booking-list--filters .cb-button-container .reset-filters > a, .cb-button-container .booking-list--filters .reset-filters > a, .booking-list--filters .cb-wrapper .cb-action .reset-filters > input, .cb-wrapper .cb-action .booking-list--filters .reset-filters > input, .booking-list--filters .cb-wrapper #booking-form .reset-filters > input, .cb-wrapper #booking-form .booking-list--filters .reset-filters > input, .booking-list--filters .cb-map-filters.cb-wrapper .cb-map-button-wrapper .reset-filters > button, .cb-map-filters.cb-wrapper .cb-map-button-wrapper .booking-list--filters .reset-filters > button {
   margin-left: 1rem;
   cursor: pointer;
 }
+/* line 100, ../sass/partials/_bookings.scss */
 .booking-list--filters.hide {
   display: none;
 }
+/* line 104, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results {
   font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
   width: 100%;
 }
+/* line 111, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item {
   width: 100%;
   background-color: white;
 }
+/* line 115, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper {
   display: flex;
   margin-bottom: 5px;
   font-size: 0.9em;
 }
 @media only screen and (max-width: 600px) {
+  /* line 115, ../sass/partials/_bookings.scss */
   .booking-list #booking-list--results .js-item .content-wrapper {
     display: block;
   }
 }
+/* line 123, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper > p, .booking-list #booking-list--results .js-item .content-wrapper > div {
   display: flex;
   margin: 0;
@@ -4174,35 +4706,43 @@
   padding: 0 8px;
 }
 @media only screen and (max-width: 600px) {
+  /* line 123, ../sass/partials/_bookings.scss */
   .booking-list #booking-list--results .js-item .content-wrapper > p, .booking-list #booking-list--results .js-item .content-wrapper > div {
     border: none;
     margin-bottom: 0;
     padding: 4px 0;
   }
 }
+/* line 138, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper > p:last-child, .booking-list #booking-list--results .js-item .content-wrapper > div:last-child {
   border: none;
   align-items: center;
 }
+/* line 145, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper p span {
   display: flex;
 }
+/* line 148, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper p span.cb-date {
   font-size: 0.8em;
 }
+/* line 155, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item .content-wrapper h4 {
   font-weight: bold;
   font-size: 1.4rem;
   padding: 0;
 }
+/* line 162, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item--headline {
   width: 40%;
   flex-direction: column;
 }
+/* line 167, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item--infos {
   width: 40%;
   flex-direction: column;
 }
+/* line 172, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .js-item--action {
   width: 20%;
   height: 40px;
@@ -4211,35 +4751,44 @@
   flex-direction: row-reverse;
 }
 @media only screen and (max-width: 600px) {
+  /* line 194, ../sass/partials/_bookings.scss */
   .booking-list #booking-list--results .js-item--headline, .booking-list #booking-list--results .js-item--infos, .booking-list #booking-list--results .js-item--action {
     width: 100%;
   }
 }
+/* line 202, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--results .my-sizer-element {
   clear: both;
 }
+/* line 207, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination {
   font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
 }
+/* line 210, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul {
   display: flex;
   justify-content: center;
   padding: 0;
 }
+/* line 215, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li {
   list-style-type: none;
   position: relative;
   padding: 0 5px 0 5px;
 }
+/* line 220, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li.active {
   font-weight: bold;
 }
+/* line 224, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li:hover {
   color: #84AE53;
 }
+/* line 230, ../sass/partials/_bookings.scss */
 .booking-list #booking-list--pagination ul li[data-page] {
   cursor: pointer;
 }
+
 /* Notices and restrictions styles */
 /**
  * Notices
@@ -4248,33 +4797,41 @@
  * inline
  *
  */
+/* line 10, ../sass/partials/_notice.scss */
 .cb-wrapper .cb-notice {
   margin-bottom: 15px;
   font-size: 18px;
   vertical-align: middle;
   font-weight: bold;
   position: relative;
-  background: #fff9c5;
+  background: #FFF9C5;
   /* Post status */
 }
+/* line 20, ../sass/partials/_notice.scss */
 .cb-wrapper .cb-notice.cb-status-unconfirmed {
-  background: #fff9c5;
+  background: #FFF9C5;
 }
+/* line 23, ../sass/partials/_notice.scss */
 .cb-wrapper .cb-notice.cb-status-confirmed {
   background: #74ce3c;
 }
+/* line 26, ../sass/partials/_notice.scss */
 .cb-wrapper .cb-notice.cb-status-cancelled {
   background: #74ce3c;
 }
+/* line 29, ../sass/partials/_notice.scss */
 .cb-wrapper .cb-notice.error {
   background: #d5425c;
 }
+/* line 33, ../sass/partials/_notice.scss */
 .cb-wrapper .cb-notice-small {
   display: block;
 }
+/* line 35, ../sass/partials/_notice.scss */
 .cb-wrapper .cb-notice-small.cb-status-not-available {
   color: #d5425c;
 }
+
 /* Styles for items table */
 /**
 * Table/Calendar showing item availabilities.
@@ -4289,10 +4846,13 @@
 * @link      http://www.wielebenwir.de
 * @copyright 2020 wielebenwir
 */
+/* line 15, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-table-scroll {
   position: relative;
   overflow: scroll;
 }
+
+/* line 20, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table {
   overflow: auto;
   /* overwriting cb-box standard behaviour */
@@ -4305,31 +4865,44 @@
   /* place second col */
   /* set bg color */
 }
-.cb-items-table td, .cb-items-table th {
+/* line 27, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table td,
+.cb-items-table th {
   line-height: 13px;
   font-size: 12px;
   padding: 4px 0;
   font-weight: normal;
 }
+/* line 35, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table th {
   font-size: 12px;
   text-align: center;
   vertical-align: middle;
 }
+/* line 42, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table thead tr {
-  color: #506ca9;
+  color: #506CA9;
 }
+/* line 45, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table thead tr:first-child {
   /* Months row */
 }
+/* line 48, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table thead tr:nth-child(2) {
   /* legend row */
 }
-.cb-items-table thead tr:nth-child(2) th:nth-child(1), .cb-items-table thead tr:nth-child(2) th:nth-child(2) {
+/* line 50, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:nth-child(1),
+.cb-items-table thead tr:nth-child(2) th:nth-child(2) {
   text-align: left;
   padding-left: 4px;
 }
-.cb-items-table thead tr:first-child th:first-child, .cb-items-table thead tr:nth-child(2) th:first-child, .cb-items-table thead tr:nth-child(2) th:nth-child(2), .cb-items-table tbody tr td:first-child, .cb-items-table tbody tr td:nth-child(2) {
+/* line 60, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:first-child th:first-child,
+.cb-items-table thead tr:nth-child(2) th:first-child,
+.cb-items-table thead tr:nth-child(2) th:nth-child(2),
+.cb-items-table tbody tr td:first-child,
+.cb-items-table tbody tr td:nth-child(2) {
   text-align: left;
   padding-left: 5px;
   position: sticky;
@@ -4338,36 +4911,50 @@
   max-width: 100px;
   background: #FFF;
 }
-.cb-items-table thead tr:nth-child(2) th:first-child, .cb-items-table tbody tr td:first-child {
+/* line 74, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:first-child,
+.cb-items-table tbody tr td:first-child {
   left: 0;
 }
-.cb-items-table thead tr:nth-child(2) th:nth-child(2), .cb-items-table tbody tr td:nth-child(2) {
+/* line 79, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:nth-child(2) th:nth-child(2),
+.cb-items-table tbody tr td:nth-child(2) {
   left: 100px;
 }
-.cb-items-table thead tr:first-child th:first-child, .cb-items-table thead tr:nth-child(2) th:first-child, .cb-items-table thead tr:nth-child(2) th:nth-child(2) {
+/* line 85, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table thead tr:first-child th:first-child,
+.cb-items-table thead tr:nth-child(2) th:first-child,
+.cb-items-table thead tr:nth-child(2) th:nth-child(2) {
   background: #f6f6f6;
 }
-.cb-items-table tbody tr:hover td:first-child, .cb-items-table tbody tr:hover td:nth-child(2) {
+/* line 91, ../sass/partials/_shortcodeItemsTable.scss */
+.cb-items-table tbody tr:hover td:first-child,
+.cb-items-table tbody tr:hover td:nth-child(2) {
   background-color: #f6f6f6;
 }
+/* line 97, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table tbody tr {
   background: #FFF;
   height: 50px;
   overflow: hidden;
 }
+/* line 102, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table tbody tr:hover {
   background: #f6f6f6;
 }
+/* line 106, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table tbody tr td {
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid #bababa;
   border-left: 1px solid #f6f6f6;
   border-bottom: 1px solid #FFF;
 }
+/* line 114, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td {
   text-align: center;
   vertical-align: middle;
   z-index: 11;
 }
+/* line 119, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span {
   display: block;
   margin: 0 auto;
@@ -4377,47 +4964,58 @@
   color: var(--litepickerDayColor);
   background-color: var(--litepickerDayColorBg);
 }
+/* line 129, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.is-holiday {
   color: var(--litepickerDayIsHolidayColor);
   background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
   background-size: 5px 5px;
 }
+/* line 89, ../sass/mixins/_calendar.scss */
 .cb-items-table td > span.is-holiday:hover {
   cursor: not-allowed;
   box-shadow: none;
 }
+/* line 132, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.is-booked {
   color: var(--litepickerDayIsBookedColor);
   background-color: var(--litepickerDayIsBookedColorBg);
 }
+/* line 131, ../sass/mixins/_calendar.scss */
 .cb-items-table td > span.is-booked:hover {
   color: var(--litepickerDayIsBookedColor);
   box-shadow: none;
   cursor: default;
 }
+/* line 137, ../sass/mixins/_calendar.scss */
 .cb-items-table td > span.is-booked.last-slot {
   background: linear-gradient(to bottom right, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
+/* line 136, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.is-partially-booked {
   color: var(--litepickerDayIsPartiallyLockedColor);
   background: linear-gradient(to bottom right, var(--litepickerDayIsPartiallyLockedColorBgOne) 0%, var(--litepickerDayIsPartiallyLockedColorBgOne) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 100%);
 }
+/* line 114, ../sass/mixins/_calendar.scss */
 .cb-items-table td > span.is-partially-booked:hover {
   cursor: pointer;
   color: var(--litepickerDayIsPartiallyLockedColor);
   background: linear-gradient(to bottom right, lightgreen 0%, lightgreen 50%, lightgray 50%, lightgray 100%);
   box-shadow: none;
 }
+/* line 140, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.is-partially-booked-start {
   background: linear-gradient(to bottom right, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
+/* line 143, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.is-partially-booked-end {
   background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
+/* line 147, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.is-locked {
   color: var(--litepickerDayIsLockedColor);
   background: var(--litepickerDayIsLockedColorBg) !important;
 }
+/* line 152, ../sass/mixins/_calendar.scss */
 .cb-items-table td > span.is-locked:hover {
   cursor: not-allowed;
   color: var(--litepickerDayIsLockedColor);
@@ -4430,23 +5028,30 @@
  * Tweaks to make CB play nice with popular Wordpress themes.
  *
  */
+/* line 8, ../sass/partials/_themeoptimization.scss */
 .cb-wrapper {
   /* Twenty Nineteen Theme*/
   /* Twenty Twenty Theme*/
 }
+/* line 10, ../sass/partials/_themeoptimization.scss */
 .cb-wrapper h2::before {
-  content: "";
+  content: '';
   margin: 0;
   background: transparent;
 }
+/* line 16, ../sass/partials/_themeoptimization.scss */
 .cb-wrapper h1, .cb-wrapper h2, .cb-wrapper h3, .cb-wrapper h4 {
   margin: 0 !important;
 }
+/* line 23, ../sass/partials/_themeoptimization.scss */
 .cb-wrapper .litepicker .container__days .day-item {
   font-size: 1rem;
 }
+
 /* Enable table scrolling in themes (e.g. twentyfifteen) */
+/* line 32, ../sass/partials/_themeoptimization.scss */
 table.cb-items-table {
   table-layout: auto !important;
 }
-/*# sourceMappingURL=/srv/http/wordpress/wp-content/plugins/commonsbooking/assets/public/css/public.css.map */
+
+/*# sourceMappingURL=public.css.map */

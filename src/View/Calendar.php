@@ -299,10 +299,9 @@ class Calendar {
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
 
-		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::get(
+		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookable(
 			[ $location ],
 			[ $item ],
-			[ Timeframe::BOOKABLE_ID ],
 			null,
 			true,
 			time()
@@ -473,7 +472,7 @@ class Calendar {
 	}
 
 	/**
-	 * Processes day for calendar view ot json.
+	 * Processes day for calendar view of json.
 	 *
 	 * @param $day
 	 * @param $lastBookableDate

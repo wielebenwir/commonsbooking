@@ -19,10 +19,9 @@ class Item extends BookablePost {
 	 * @throws Exception
 	 */
 	public function getBookableTimeframesByLocation( $locationId, bool $asModel = false ): array {
-		return Timeframe::get(
+		return Timeframe::getBookable(
 			[ $locationId ],
 			[ $this->ID ],
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
 			null,
 			$asModel,
 			time()

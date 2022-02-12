@@ -96,10 +96,9 @@ class Map extends CustomPostType {
 	 * load all timeframes from db (that end in the future and it's item's status is 'publish')
 	 **/
 	public static function get_timeframes() {
-		$timeframes = Timeframe::get(
+		$timeframes = Timeframe::getBookable(
 			[],
 			[],
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
 			false,
 			true,
 			time()
@@ -155,7 +154,7 @@ class Map extends CustomPostType {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function get_locations( $cb_map_id, $mapItemTerms ) {
+	public static function get_locations( $cb_map_id, $mapItemTerms ): array {
 		$locations = [];
 
 		$show_location_contact       = MapAdmin::get_option( $cb_map_id, 'show_location_contact' );
@@ -208,10 +207,9 @@ class Map extends CustomPostType {
 				}
 
 				$timeframesData = [];
-				$timeframes     = Timeframe::get(
+				$timeframes     = Timeframe::getBookable(
 					[ $post->ID ],
 					[ $item->ID ],
-					[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
 					null,
 					true
 				);

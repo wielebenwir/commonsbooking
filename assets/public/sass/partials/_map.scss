@@ -110,17 +110,25 @@
 			.cb-map-popup-item-availability-day.available {
 			  background-color: $color-accept
 			}
-			.cb-map-popup-item-availability-day.location-closed {
-			  background-color: $color-greyedout;
+			.cb-map-popup-item-availability-day.location-holiday {
+			  background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
+			  background-size: 8px 8px;
 			  color: #222222a1;
 			}
+			.cb-map-popup-item-availability-day.locked {
+				background-color: #ddd;
+				color: #fff;
+			  }
 			.cb-map-popup-item-availability-day.no-timeframe {
 			  background-color: $color-greyedout;
 			  color: #fff;
+			  cursor: not-allowed;
 			}
 			.cb-map-popup-item-availability-day.partially-booked{
 				color: #444;
 				background: linear-gradient(to top left, $color-accept 0%, $color-accept calc(50% - 1px), #333 50%, $color-cancel calc(50% + 1px), $color-cancel 100%);
+				background-repeat: no-repeat;
+
 			}
 			.cb-map-popup-item-availability-day.booked {
 			  color: #444;
