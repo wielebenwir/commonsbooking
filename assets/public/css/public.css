@@ -48,6 +48,7 @@
   border-collapse: collapse;
   border-spacing: 0;
 }
+
 /* Lib: animate.css */
 /*!
  * animate.css -http://daneden.me/animate
@@ -149,6 +150,7 @@
   -webkit-animation-name: flash;
   animation-name: flash;
 }
+
 /* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
 @-webkit-keyframes pulse {
   from {
@@ -183,6 +185,7 @@
   -webkit-animation-name: pulse;
   animation-name: pulse;
 }
+
 @-webkit-keyframes rubberBand {
   from {
     -webkit-transform: scale3d(1, 1, 1);
@@ -298,6 +301,7 @@
   -webkit-animation-name: shake;
   animation-name: shake;
 }
+
 @-webkit-keyframes headShake {
   0% {
     -webkit-transform: translateX(0);
@@ -357,6 +361,7 @@
   -webkit-animation-name: headShake;
   animation-name: headShake;
 }
+
 @-webkit-keyframes swing {
   20% {
     -webkit-transform: rotate3d(0, 0, 1, 15deg);
@@ -408,6 +413,7 @@
   -webkit-animation-name: swing;
   animation-name: swing;
 }
+
 @-webkit-keyframes tada {
   from {
     -webkit-transform: scale3d(1, 1, 1);
@@ -469,6 +475,7 @@
   -webkit-animation-name: tada;
   animation-name: tada;
 }
+
 /* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
 @-webkit-keyframes wobble {
   from {
@@ -615,6 +622,7 @@
   -webkit-transform-origin: center;
   transform-origin: center;
 }
+
 @-webkit-keyframes heartBeat {
   0% {
     -webkit-transform: scale(1);
@@ -1032,6 +1040,7 @@
   -webkit-animation-name: bounceInUp;
   animation-name: bounceInUp;
 }
+
 @-webkit-keyframes bounceOut {
   20% {
     -webkit-transform: scale3d(0.9, 0.9, 0.9);
@@ -1073,6 +1082,7 @@
   -webkit-animation-name: bounceOut;
   animation-name: bounceOut;
 }
+
 @-webkit-keyframes bounceOutDown {
   20% {
     -webkit-transform: translate3d(0, 10px, 0);
@@ -1112,6 +1122,7 @@
   -webkit-animation-name: bounceOutDown;
   animation-name: bounceOutDown;
 }
+
 @-webkit-keyframes bounceOutLeft {
   20% {
     opacity: 1;
@@ -1141,6 +1152,7 @@
   -webkit-animation-name: bounceOutLeft;
   animation-name: bounceOutLeft;
 }
+
 @-webkit-keyframes bounceOutRight {
   20% {
     opacity: 1;
@@ -1170,6 +1182,7 @@
   -webkit-animation-name: bounceOutRight;
   animation-name: bounceOutRight;
 }
+
 @-webkit-keyframes bounceOutUp {
   20% {
     -webkit-transform: translate3d(0, -10px, 0);
@@ -1209,6 +1222,7 @@
   -webkit-animation-name: bounceOutUp;
   animation-name: bounceOutUp;
 }
+
 @-webkit-keyframes fadeIn {
   from {
     opacity: 0;
@@ -1230,6 +1244,7 @@
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
 }
+
 @-webkit-keyframes fadeInDown {
   from {
     opacity: 0;
@@ -1259,6 +1274,7 @@
   -webkit-animation-name: fadeInDown;
   animation-name: fadeInDown;
 }
+
 @-webkit-keyframes fadeInDownBig {
   from {
     opacity: 0;
@@ -1288,6 +1304,7 @@
   -webkit-animation-name: fadeInDownBig;
   animation-name: fadeInDownBig;
 }
+
 @-webkit-keyframes fadeInLeft {
   from {
     opacity: 0;
@@ -1317,6 +1334,7 @@
   -webkit-animation-name: fadeInLeft;
   animation-name: fadeInLeft;
 }
+
 @-webkit-keyframes fadeInLeftBig {
   from {
     opacity: 0;
@@ -1346,6 +1364,7 @@
   -webkit-animation-name: fadeInLeftBig;
   animation-name: fadeInLeftBig;
 }
+
 @-webkit-keyframes fadeInRight {
   from {
     opacity: 0;
@@ -1375,6 +1394,7 @@
   -webkit-animation-name: fadeInRight;
   animation-name: fadeInRight;
 }
+
 @-webkit-keyframes fadeInRightBig {
   from {
     opacity: 0;
@@ -1404,6 +1424,7 @@
   -webkit-animation-name: fadeInRightBig;
   animation-name: fadeInRightBig;
 }
+
 @-webkit-keyframes fadeInUp {
   from {
     opacity: 0;
@@ -1433,6 +1454,7 @@
   -webkit-animation-name: fadeInUp;
   animation-name: fadeInUp;
 }
+
 @-webkit-keyframes fadeInUpBig {
   from {
     opacity: 0;
@@ -1462,6 +1484,7 @@
   -webkit-animation-name: fadeInUpBig;
   animation-name: fadeInUpBig;
 }
+
 @-webkit-keyframes fadeOut {
   from {
     opacity: 1;
@@ -1483,6 +1506,7 @@
   -webkit-animation-name: fadeOut;
   animation-name: fadeOut;
 }
+
 @-webkit-keyframes fadeOutDown {
   from {
     opacity: 1;
@@ -1508,6 +1532,7 @@
   -webkit-animation-name: fadeOutDown;
   animation-name: fadeOutDown;
 }
+
 @-webkit-keyframes fadeOutDownBig {
   from {
     opacity: 1;
@@ -1533,6 +1558,7 @@
   -webkit-animation-name: fadeOutDownBig;
   animation-name: fadeOutDownBig;
 }
+
 @-webkit-keyframes fadeOutLeft {
   from {
     opacity: 1;
@@ -1558,6 +1584,7 @@
   -webkit-animation-name: fadeOutLeft;
   animation-name: fadeOutLeft;
 }
+
 @-webkit-keyframes fadeOutLeftBig {
   from {
     opacity: 1;
@@ -1583,6 +1610,7 @@
   -webkit-animation-name: fadeOutLeftBig;
   animation-name: fadeOutLeftBig;
 }
+
 @-webkit-keyframes fadeOutRight {
   from {
     opacity: 1;
@@ -1608,6 +1636,7 @@
   -webkit-animation-name: fadeOutRight;
   animation-name: fadeOutRight;
 }
+
 @-webkit-keyframes fadeOutRightBig {
   from {
     opacity: 1;
@@ -1633,6 +1662,7 @@
   -webkit-animation-name: fadeOutRightBig;
   animation-name: fadeOutRightBig;
 }
+
 @-webkit-keyframes fadeOutUp {
   from {
     opacity: 1;
@@ -1658,6 +1688,7 @@
   -webkit-animation-name: fadeOutUp;
   animation-name: fadeOutUp;
 }
+
 @-webkit-keyframes fadeOutUpBig {
   from {
     opacity: 1;
@@ -1683,6 +1714,7 @@
   -webkit-animation-name: fadeOutUpBig;
   animation-name: fadeOutUpBig;
 }
+
 @-webkit-keyframes flip {
   from {
     -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, -360deg);
@@ -1754,6 +1786,7 @@
   -webkit-animation-name: flip;
   animation-name: flip;
 }
+
 @-webkit-keyframes flipInX {
   from {
     -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
@@ -1817,6 +1850,7 @@
   -webkit-animation-name: flipInX;
   animation-name: flipInX;
 }
+
 @-webkit-keyframes flipInY {
   from {
     -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
@@ -1880,6 +1914,7 @@
   -webkit-animation-name: flipInY;
   animation-name: flipInY;
 }
+
 @-webkit-keyframes flipOutX {
   from {
     -webkit-transform: perspective(400px);
@@ -1921,6 +1956,7 @@
   -webkit-backface-visibility: visible !important;
   backface-visibility: visible !important;
 }
+
 @-webkit-keyframes flipOutY {
   from {
     -webkit-transform: perspective(400px);
@@ -1962,6 +1998,7 @@
   -webkit-animation-name: flipOutY;
   animation-name: flipOutY;
 }
+
 @-webkit-keyframes lightSpeedIn {
   from {
     -webkit-transform: translate3d(100%, 0, 0) skewX(-30deg);
@@ -2009,6 +2046,7 @@
   -webkit-animation-timing-function: ease-out;
   animation-timing-function: ease-out;
 }
+
 @-webkit-keyframes lightSpeedOut {
   from {
     opacity: 1;
@@ -2036,6 +2074,7 @@
   -webkit-animation-timing-function: ease-in;
   animation-timing-function: ease-in;
 }
+
 @-webkit-keyframes rotateIn {
   from {
     -webkit-transform-origin: center;
@@ -2073,6 +2112,7 @@
   -webkit-animation-name: rotateIn;
   animation-name: rotateIn;
 }
+
 @-webkit-keyframes rotateInDownLeft {
   from {
     -webkit-transform-origin: left bottom;
@@ -2110,6 +2150,7 @@
   -webkit-animation-name: rotateInDownLeft;
   animation-name: rotateInDownLeft;
 }
+
 @-webkit-keyframes rotateInDownRight {
   from {
     -webkit-transform-origin: right bottom;
@@ -2147,6 +2188,7 @@
   -webkit-animation-name: rotateInDownRight;
   animation-name: rotateInDownRight;
 }
+
 @-webkit-keyframes rotateInUpLeft {
   from {
     -webkit-transform-origin: left bottom;
@@ -2184,6 +2226,7 @@
   -webkit-animation-name: rotateInUpLeft;
   animation-name: rotateInUpLeft;
 }
+
 @-webkit-keyframes rotateInUpRight {
   from {
     -webkit-transform-origin: right bottom;
@@ -2221,6 +2264,7 @@
   -webkit-animation-name: rotateInUpRight;
   animation-name: rotateInUpRight;
 }
+
 @-webkit-keyframes rotateOut {
   from {
     -webkit-transform-origin: center;
@@ -2254,6 +2298,7 @@
   -webkit-animation-name: rotateOut;
   animation-name: rotateOut;
 }
+
 @-webkit-keyframes rotateOutDownLeft {
   from {
     -webkit-transform-origin: left bottom;
@@ -2287,6 +2332,7 @@
   -webkit-animation-name: rotateOutDownLeft;
   animation-name: rotateOutDownLeft;
 }
+
 @-webkit-keyframes rotateOutDownRight {
   from {
     -webkit-transform-origin: right bottom;
@@ -2320,6 +2366,7 @@
   -webkit-animation-name: rotateOutDownRight;
   animation-name: rotateOutDownRight;
 }
+
 @-webkit-keyframes rotateOutUpLeft {
   from {
     -webkit-transform-origin: left bottom;
@@ -2353,6 +2400,7 @@
   -webkit-animation-name: rotateOutUpLeft;
   animation-name: rotateOutUpLeft;
 }
+
 @-webkit-keyframes rotateOutUpRight {
   from {
     -webkit-transform-origin: right bottom;
@@ -2386,6 +2434,7 @@
   -webkit-animation-name: rotateOutUpRight;
   animation-name: rotateOutUpRight;
 }
+
 @-webkit-keyframes hinge {
   0% {
     -webkit-transform-origin: top left;
@@ -2457,6 +2506,7 @@
   -webkit-animation-name: hinge;
   animation-name: hinge;
 }
+
 @-webkit-keyframes jackInTheBox {
   from {
     opacity: 0;
@@ -2506,6 +2556,7 @@
   -webkit-animation-name: jackInTheBox;
   animation-name: jackInTheBox;
 }
+
 /* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
 @-webkit-keyframes rollIn {
   from {
@@ -2536,6 +2587,7 @@
   -webkit-animation-name: rollIn;
   animation-name: rollIn;
 }
+
 /* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
 @-webkit-keyframes rollOut {
   from {
@@ -2562,6 +2614,7 @@
   -webkit-animation-name: rollOut;
   animation-name: rollOut;
 }
+
 @-webkit-keyframes zoomIn {
   from {
     opacity: 0;
@@ -2587,6 +2640,7 @@
   -webkit-animation-name: zoomIn;
   animation-name: zoomIn;
 }
+
 @-webkit-keyframes zoomInDown {
   from {
     opacity: 0;
@@ -2624,6 +2678,7 @@
   -webkit-animation-name: zoomInDown;
   animation-name: zoomInDown;
 }
+
 @-webkit-keyframes zoomInLeft {
   from {
     opacity: 0;
@@ -2661,6 +2716,7 @@
   -webkit-animation-name: zoomInLeft;
   animation-name: zoomInLeft;
 }
+
 @-webkit-keyframes zoomInRight {
   from {
     opacity: 0;
@@ -2698,6 +2754,7 @@
   -webkit-animation-name: zoomInRight;
   animation-name: zoomInRight;
 }
+
 @-webkit-keyframes zoomInUp {
   from {
     opacity: 0;
@@ -2735,6 +2792,7 @@
   -webkit-animation-name: zoomInUp;
   animation-name: zoomInUp;
 }
+
 @-webkit-keyframes zoomOut {
   from {
     opacity: 1;
@@ -2766,6 +2824,7 @@
   -webkit-animation-name: zoomOut;
   animation-name: zoomOut;
 }
+
 @-webkit-keyframes zoomOutDown {
   40% {
     opacity: 1;
@@ -2807,6 +2866,7 @@
   -webkit-animation-name: zoomOutDown;
   animation-name: zoomOutDown;
 }
+
 @-webkit-keyframes zoomOutLeft {
   40% {
     opacity: 1;
@@ -2840,6 +2900,7 @@
   -webkit-animation-name: zoomOutLeft;
   animation-name: zoomOutLeft;
 }
+
 @-webkit-keyframes zoomOutRight {
   40% {
     opacity: 1;
@@ -2873,6 +2934,7 @@
   -webkit-animation-name: zoomOutRight;
   animation-name: zoomOutRight;
 }
+
 @-webkit-keyframes zoomOutUp {
   40% {
     opacity: 1;
@@ -2914,6 +2976,7 @@
   -webkit-animation-name: zoomOutUp;
   animation-name: zoomOutUp;
 }
+
 @-webkit-keyframes slideInDown {
   from {
     -webkit-transform: translate3d(0, -100%, 0);
@@ -2941,6 +3004,7 @@
   -webkit-animation-name: slideInDown;
   animation-name: slideInDown;
 }
+
 @-webkit-keyframes slideInLeft {
   from {
     -webkit-transform: translate3d(-100%, 0, 0);
@@ -2968,6 +3032,7 @@
   -webkit-animation-name: slideInLeft;
   animation-name: slideInLeft;
 }
+
 @-webkit-keyframes slideInRight {
   from {
     -webkit-transform: translate3d(100%, 0, 0);
@@ -2995,6 +3060,7 @@
   -webkit-animation-name: slideInRight;
   animation-name: slideInRight;
 }
+
 @-webkit-keyframes slideInUp {
   from {
     -webkit-transform: translate3d(0, 100%, 0);
@@ -3022,6 +3088,7 @@
   -webkit-animation-name: slideInUp;
   animation-name: slideInUp;
 }
+
 @-webkit-keyframes slideOutDown {
   from {
     -webkit-transform: translate3d(0, 0, 0);
@@ -3049,6 +3116,7 @@
   -webkit-animation-name: slideOutDown;
   animation-name: slideOutDown;
 }
+
 @-webkit-keyframes slideOutLeft {
   from {
     -webkit-transform: translate3d(0, 0, 0);
@@ -3076,6 +3144,7 @@
   -webkit-animation-name: slideOutLeft;
   animation-name: slideOutLeft;
 }
+
 @-webkit-keyframes slideOutRight {
   from {
     -webkit-transform: translate3d(0, 0, 0);
@@ -3103,6 +3172,7 @@
   -webkit-animation-name: slideOutRight;
   animation-name: slideOutRight;
 }
+
 @-webkit-keyframes slideOutUp {
   from {
     -webkit-transform: translate3d(0, 0, 0);
@@ -3220,6 +3290,7 @@
   float: left;
   margin-right: 0.5rem;
 }
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -3238,9 +3309,9 @@
  * Layout variables
  */
 /* Colors: CB Brand */
-/* Colors: Theme */
-/* Colors: Backgrounds */
 /* Colors: text */
+/* Colors: Theme, can be modified by user */
+/* Colors: Backgrounds */
 /* Colors: Message statuses */
 /* Font sizes */
 /* Layout Variables */
@@ -3381,8 +3452,8 @@
 }
 /* line 118, ../../global/sass/partials/_extends.scss */
 .cb-button[disabled=disabled], .cb-button-container a[disabled=disabled], .cb-wrapper .cb-action input[disabled=disabled], .cb-wrapper #booking-form input[disabled=disabled], .cb-map-filters.cb-wrapper .cb-map-button-wrapper button[disabled=disabled] {
-  background-color: #c4c4c4;
-  color: white;
+  background-color: #f6f6f6;
+  color: #c4c4c4;
 }
 /* line 123, ../../global/sass/partials/_extends.scss */
 .cb-button.no-right-radius, .cb-button-container a.no-right-radius, .cb-wrapper .cb-action input.no-right-radius, .cb-wrapper #booking-form input.no-right-radius, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.no-right-radius {
@@ -3405,6 +3476,7 @@
   color: #FFF;
   padding: 5px 10px;
 }
+
 /* Utilites */
 /**
  * Debug
@@ -3608,6 +3680,7 @@
     align-items: center;
   }
 }
+
 /* List styles */
 /**
 * List styling
@@ -3650,7 +3723,7 @@
 }
 /* line 42, ../sass/partials/_lists.scss */
 .cb-wrapper .cb-title {
-  color: #84AE53;
+  color: #A3BC55;
 }
 /* line 51, ../sass/partials/_lists.scss */
 .cb-wrapper > .cb-wrapper {
@@ -3893,14 +3966,14 @@
   --litepickerDayColor: #000;
   --litepickerDayColorBg: #74ce3c;
   --litepickerDayColorHover: #506CA9;
-  --litepickerDayIsTodayColor: #f44336;
+  --litepickerDayIsTodayColor: #d5425c;
   --litepickerDayIsInRange: #2096f3;
-  --litepickerDayIsLockedColor: #9e9e9e;
-  --litepickerDayIsLockedColorBg: #f6f6f6;
+  --litepickerDayIsLockedColor: #c4c4c4;
+  --litepickerDayIsLockedColorBg: #c4c4c4;
   --litepickerDayIsHolidayColor: #000000;
   --litepickerDayIsHolidayColorBg: #ff9218;
   --litepickerDayIsPartiallyLockedColor: #333;
-  --litepickerDayIsPartiallyLockedColorBgOne: #20c527;
+  --litepickerDayIsPartiallyLockedColorBgOne: #74ce3c;
   --litepickerDayIsPartiallyLockedColorBgTwo: #d5425c;
   --litepickerDayIsBookedColor: #333;
   --litepickerDayIsBookedColorBg: #d5425c;
@@ -4338,6 +4411,7 @@
   display: none;
   font-size: 14px;
 }
+
 /* Map styles */
 /**
 * Map + Leaflet Filter Styling
@@ -4418,7 +4492,7 @@
 /* line 80, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-link b a {
   font-size: 18px;
-  color: #84AE53;
+  color: #A3BC55;
   text-decoration: underline;
 }
 /* line 86, ../sass/partials/_map.scss */
@@ -4443,7 +4517,7 @@
 }
 /* line 110, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.available {
-  background-color: #7fc600;
+  background-color: #74ce3c;
 }
 /* line 113, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.location-holiday {
@@ -4458,68 +4532,68 @@
 }
 /* line 122, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.no-timeframe {
-  background-color: #ddd;
+  background-color: #c4c4c4;
   color: #fff;
   cursor: not-allowed;
 }
 /* line 127, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.partially-booked {
   color: #444;
-  background: linear-gradient(to top left, #7fc600 0%, #7fc600 calc(50% - 1px), #333 50%, #ee7400 calc(50% + 1px), #ee7400 100%);
+  background: linear-gradient(to top left, #74ce3c 0%, #74ce3c calc(50% - 1px), #333 50%, #d5425c calc(50% + 1px), #d5425c 100%);
   background-repeat: no-repeat;
 }
-/* line 132, ../sass/partials/_map.scss */
+/* line 133, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.booked {
   color: #444;
-  background: linear-gradient(to top left, #ee7400 0%, #ee7400 calc(50% - 1px), #333 50%, #ee7400 calc(50% + 1px), #ee7400 100%);
+  background: linear-gradient(to top left, #d5425c 0%, #d5425c calc(50% - 1px), #333 50%, #d5425c calc(50% + 1px), #d5425c 100%);
 }
-/* line 137, ../sass/partials/_map.scss */
+/* line 138, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-desc {
   display: none;
 }
 
 /* Filters */
-/* line 146, ../sass/partials/_map.scss */
+/* line 147, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper {
   margin-top: 10px;
   /* layout for filter  availability & distance */
   /* styles for specific filters */
   /* layout for filter category */
 }
-/* line 151, ../sass/partials/_map.scss */
+/* line 152, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper input[type="checkbox"] {
   margin: 0 5px 0 0;
 }
-/* line 155, ../sass/partials/_map.scss */
+/* line 156, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper input[type="date"], .cb-map-filters.cb-wrapper input[type="number"] {
   /* is inline */
   margin: 0 5px;
 }
-/* line 159, ../sass/partials/_map.scss */
+/* line 160, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper input[type="number"] {
   max-width: 100px;
 }
-/* line 163, ../sass/partials/_map.scss */
+/* line 164, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper select {
   /* is inline */
   margin: 0 5px;
 }
-/* line 167, ../sass/partials/_map.scss */
+/* line 168, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper button {
   padding: 5px;
 }
-/* line 172, ../sass/partials/_map.scss */
+/* line 173, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-filter-options > div {
   margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #444;
 }
-/* line 179, ../sass/partials/_map.scss */
+/* line 180, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-filter-group-label {
-  color: #506CA9;
+  color: #A3BC55;
   margin-bottom: 5px;
 }
-/* line 196, ../sass/partials/_map.scss */
+/* line 197, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group {
   background: #506CA9;
   border-radius: 8px;
@@ -4527,23 +4601,23 @@
   flex-direction: row;
   flex-wrap: nowrap;
 }
-/* line 202, ../sass/partials/_map.scss */
+/* line 203, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group input {
   flex: 1 1 100% !important;
   /* overwrite layout */
 }
-/* line 205, ../sass/partials/_map.scss */
+/* line 206, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.undo-geo-search, .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.geo-search {
   background: transparent;
   color: #FFF;
 }
-/* line 214, ../sass/partials/_map.scss */
+/* line 215, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
-/* line 219, ../sass/partials/_map.scss */
+/* line 220, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset {
   flex: 1 0 50%;
   border: none;
@@ -4551,22 +4625,22 @@
   padding: 0;
   margin-bottom: 10px;
 }
-/* line 226, ../sass/partials/_map.scss */
+/* line 227, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset .cb-fieldgroup-row {
   display: inline-block;
 }
-/* line 230, ../sass/partials/_map.scss */
+/* line 231, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset legend {
   margin: 0;
   padding: 0;
   font-weight: normal;
 }
-/* line 235, ../sass/partials/_map.scss */
+/* line 236, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset label {
   margin-right: 15px;
-  color: #506CA9;
+  color: #A3BC55;
 }
-/* line 244, ../sass/partials/_map.scss */
+/* line 245, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-button-wrapper {
   text-align: right;
 }
@@ -4944,7 +5018,7 @@
 }
 /* line 106, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table tbody tr td {
-  border-top: 1px solid #bababa;
+  border-top: 1px solid #c4c4c4;
   border-left: 1px solid #f6f6f6;
   border-bottom: 1px solid #FFF;
 }
@@ -5021,6 +5095,7 @@
   color: var(--litepickerDayIsLockedColor);
   box-shadow: none;
 }
+
 /* Fixes for specific WP Themes */
 /**
  * Optimisation & Compatibility 
