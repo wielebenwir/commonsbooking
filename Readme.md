@@ -1,12 +1,5 @@
 ![alt text](https://travis-ci.com/wielebenwir/commonsbooking.svg?branch=master "Travis CI")
 
-
-Fork für freie LASTEN: Folgende Anpassungen:
-
-* Kleine Animation in der Buchungsbestätigung, Info aus ACF Feld
-* Klickbare Stationen im Item-Template
-* Action Hook im Item Single Template um eigene Templates reinzuladen
-* 
 # CommonsBooking
 
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen  

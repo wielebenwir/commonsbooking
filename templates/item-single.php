@@ -10,7 +10,6 @@
     $bookThisItemText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'text_book-this-item');
 
     // Single Item View
-    do_action('cb_item_single_hook');
     if(array_key_exists('location', $templateData) && $templateData['location']) { // item selected, so we display the booking calendar
         echo '<h2>' . esc_html__( $bookThisItemText, 'commonsbooking') . '</h2>';
         commonsbooking_get_template_part( 'location', 'calendar-header' ); // file: item-calendar-header.php

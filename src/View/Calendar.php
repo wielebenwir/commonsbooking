@@ -264,8 +264,8 @@ class Calendar {
 
 		$dayStr         = implode( $divider, $days_display );
 		$itemLink       = add_query_arg( 'location', $locationId, get_permalink( $item->ID ) );
+		$locationString = '<div data-title="' . $locationName . '">' . $locationName . '</div>';
 
-		$locationString = '<a href="' . get_the_permalink($locationId) . '"><div data-title="' . $locationName . '">' . $locationName . '</div></a>';
 		return "<tr><td><b><a href='" . $itemLink . "'>" . $itemName . "</a></b>" . $divider . $locationString . $divider . $dayStr . "</td></tr>";
 	}
 

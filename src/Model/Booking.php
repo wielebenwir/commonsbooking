@@ -335,9 +335,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			$noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
 		} else if ( $currentStatus == "confirmed" ) {
 			$noticeText = commonsbooking_sanitizeHTML( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'booking-confirmed-notice' ) );
-			if (get_field('booking_confirm','option')){
-				$noticeText = '<img src="'.get_field('booking_confirm','option').'" width="50">' . $noticeText; //Adds icon in front of notice
-			}
 		}
 
 		if ( $currentStatus == "canceled" ) {

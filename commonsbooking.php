@@ -1,10 +1,11 @@
 <?php
-/*
- * Plugin Name:         Commons Booking - Freie Lasten
+
+/**
+ * Plugin Name:         Commons Booking
  * Version:             2.6.7
  * Requires at least:   5.2
  * Requires PHP:        7.3
- * Plugin URI:          https://github.com/hansmorb/commonsbooking/tree/freielasten
+ * Plugin URI:          https://commonsbooking.org
  * Description:         A wordpress plugin for management and booking of common goods.
  * Author:              wielebenwir e.V.
  * Author URI:          https://wielebenwir.de/
