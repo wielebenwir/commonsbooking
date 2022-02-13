@@ -26,7 +26,7 @@ $timeframes = $item->getBookableTimeframesByLocation($location->ID, true);
 <?php echo $item->thumbnail('cb_listing_medium'); // div.thumbnail is printed by function ?>
 
 <div class="cb-list-info">
-    <h4 class="cb-title cb-item-title"><?php echo $item->post_title; ?></h4>
+    <a href="<?php echo get_the_permalink($item->ID); ?>"><h4 class="cb-title cb-item-title"><?php echo $item->post_title; ?></h4></a>
     <?php
     /** @var \CommonsBooking\Model\Timeframe $timeframe */
     foreach($timeframes as $timeframe) {
