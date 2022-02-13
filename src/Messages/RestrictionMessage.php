@@ -118,8 +118,8 @@ class RestrictionMessage extends Message {
 			null,
 			[
 				'restriction' => $restriction,
-				'item'        => get_post( $restriction->getItemId() ),
-				'location'    => get_post( $restriction->getLocationId() ),
+				'item'        => $this->booking->getItem(),
+				'location'    => $this->booking->getLocation(),
 				'booking'     => $this->getBooking(),
 				'user'        => $this->getUser()
 			]
