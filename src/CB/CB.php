@@ -41,14 +41,12 @@ class CB {
 	public static function get( $key, $property, $post = null, $args = null ) {
 
 		// first we need to check if we are dealing with a post and set the post object properly
-		if ( $key !== 'user' ) {
 			if ( ! $post ) {
 				$postId = self::getPostId( $key );
 				$post   = get_post( $postId );
 			} else if ( ! ( $post instanceof WP_Post ) && ! ( $post instanceof CustomPost ) && ! ( $post instanceof WP_user ) ) {
 				$post = get_post( intval( $post ) );
 			}
-		}
 
 		$result     = self::lookUp( $key, $property, $post, $args );  // Find matching methods, properties or metadata
 		$filterName = sprintf( 'cb_tag_%s_%s', $key, $property );
