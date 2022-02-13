@@ -127,7 +127,7 @@ class Timeframe extends PostRepository {
 	 *
 	 * @return mixed
 	 */
-	private static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
+	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
 		if ( ! count( $types ) ) {
 			$types = [
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
