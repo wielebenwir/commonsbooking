@@ -2,9 +2,11 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\View\Map;
+use CommonsBooking\View\View;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Repository\UserRepository;
-use CommonsBooking\Settings\Settings;
 
 class Location extends CustomPostType {
 
@@ -237,7 +239,7 @@ class Location extends CustomPostType {
 			//'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
 			'id'         => COMMONSBOOKING_METABOX_PREFIX . 'get_gps',
 			'type'       => 'text',
-            'render_row_cb' => array( \CommonsBooking\View\Map::class, 'renderGeoRefreshButton' ),
+            'render_row_cb' => array( Map::class, 'renderGeoRefreshButton' ),
 			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 		) );
 
