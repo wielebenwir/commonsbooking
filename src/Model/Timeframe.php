@@ -399,6 +399,24 @@ class Timeframe extends CustomPost {
 		return $this->getMeta( 'full-day' ) == 'on';
 	}
 
+
+	function isWithRoleRestriction() {
+		$current_user     = wp_get_current_user();
+		$user_roles       = $current_user->roles;
+		$allowedUserRoles = get_post_meta( $this->ID, 'allowed_user_roles', true );
+		if ( empty( $allowedUserRoles ) ) {
+			return false;
+		}
+	
+		$match = array_intersect( $user_roles, $allowedUserRoles );
+
+		if (!$match) { //when no match with allowed user role is found then the timeframe is blocked for the user
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	/**
 	 * Checks if timeframes are overlapping in date range.
 	 *
