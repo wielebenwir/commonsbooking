@@ -238,7 +238,7 @@ abstract class BookablePost extends PostRepository {
 			throw new Exception( 'invalid type submitted' );
 		}
 
-		if ( $postId instanceof WP_Post ) {
+		if ( $postId instanceof \WP_Post ) {
 			$postId = $postId->ID;
 		}
 
@@ -279,7 +279,7 @@ abstract class BookablePost extends PostRepository {
 	 * @return array
 	 */
 	protected static function getRelatedPosts( $postId, $originType, $relatedType ): array {
-		if ( $postId instanceof WP_Post ) {
+		if ( $postId instanceof \WP_Post ) {
 			$postId = $postId->ID;
 		}
 

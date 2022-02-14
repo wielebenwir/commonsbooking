@@ -24,8 +24,9 @@ class Location extends View {
 		$item     = get_query_var( 'item' ) ?: false;
 		$items    = \CommonsBooking\Repository\Item::getByLocation( $location->ID, true );
 		$itemIds = array_map(
-			function (\CommonsBooking\Model\Item $item) {
-				return $item->getPost()->ID;
+			function ( $item ) {
+                $item = new \CommonsBooking\Model\Item( get_post( $item ) );
+				return $item->ID;
 			},
 			$items
 		);
@@ -50,9 +51,15 @@ class Location extends View {
 			if ( count( $items ) ) {
 				// If there's only one item available, we'll show it directly.
 				if ( count( $items ) == 1 ) {
-					$args['item'] = array_values( $items )[0];
+					$args['item'] = new \CommonsBooking\Model\Item( get_post( array_values( $items )[0] ) );
 				} else {
-					$args['items'] = $items;
+					$args['items'] = array_map (
+                        function ($item) {
+                            $itemAsModel = new \CommonsBooking\Model\Item( get_post( $item ) );
+                            return $itemAsModel; 
+                        },
+                        $items
+                    );
 				}
 			}
 		} else {
