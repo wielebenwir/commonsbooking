@@ -291,6 +291,10 @@ class Calendar {
 			$location = $location->ID;
 		}
 
+		if(!Wordpress::isValidDateString($startDateString) || !Wordpress::isValidDateString($endDateString)) {
+			throw new \Exception('invalid date format');
+		}
+
 		if ( ! $item || ! $location ) {
 			return [];
 		}
