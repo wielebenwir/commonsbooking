@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2022-02-10T09:41:45+00:00\n"
-"PO-Revision-Date: 2022-02-10 10:42+0100\n"
+"POT-Creation-Date: 2022-02-14T14:21:15+00:00\n"
+"PO-Revision-Date: 2022-02-14 15:24+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.0\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: commonsbooking.php\n"
@@ -122,7 +122,6 @@ msgstr ""
 msgid "Items slug"
 msgstr "Artikel slug"
 
-#. translators: %s = example url (like website.com/cb-items/)
 #: includes/OptionsArray.php:90
 msgid ""
 "The slug for article detail page. Type in the slug without slashes. Example: "
@@ -137,7 +136,6 @@ msgstr ""
 msgid "Locations slug"
 msgstr "Standorte Slug"
 
-#. translators: %s = example url (like website.com/cb-locations/)
 #: includes/OptionsArray.php:101
 msgid ""
 "The slug for location detail page. Type in the slug without slashes. "
@@ -152,7 +150,6 @@ msgstr ""
 msgid "Bookings Page"
 msgstr "Buchungsseite"
 
-#. translators: %s = example url (like website.com/cb-locations/)
 #: includes/OptionsArray.php:112
 msgid ""
 "The page where you included the [cb_bookings] shortcode. This is used in the "
@@ -1174,7 +1171,7 @@ msgid "Please enter your phone number"
 msgstr "Bitte gib Deine Telefonnummer ein"
 
 #: src/CB/CB1UserFields.php:66 src/CB/CB1UserFields.php:262
-#: src/Wordpress/CustomPostType/Location.php:185
+#: src/Wordpress/CustomPostType/Location.php:187
 #: templates/booking-single.php:66
 msgid "Address"
 msgstr "Adresse"
@@ -1195,7 +1192,6 @@ msgstr "Ich akzeptiere die Nutzungsbedindungen"
 msgid "Please accept the terms & conditions"
 msgstr "Bitte akzeptiere die Nutzungsbedindungen"
 
-#. translators: %s = terms and service url
 #: src/CB/CB1UserFields.php:167
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
 msgstr "<a href=\"%s\" target=\"_blank\">Lies die Nutzungsbedingungen</a>"
@@ -1215,36 +1211,6 @@ msgstr "Nutzungsbedingungen"
 #: src/CB/CB1UserFields.php:276
 msgid "Accepted Terms & Conditions"
 msgstr "Nutzungbedingungen akzeptiert"
-
-#: src/Map/LocationMapAdmin.php:44
-msgid "Set / Update GPS Coordinates"
-msgstr "GPS-Koordinaten abrufen / aktualisieren"
-
-#: src/Map/LocationMapAdmin.php:48
-msgid "Set / update GPS coordinates from address"
-msgstr "GPS-Koordinaten von Adresse abrufen / aktualisieren"
-
-#: src/Map/LocationMapAdmin.php:50
-msgid ""
-"Click this button to automatically set the GPS coordinates based on the "
-"given address and set the marker on the map.<br> <strong>Save or update this "
-"location after setting the gps data.</strong>"
-msgstr ""
-"Klicke auf diese Schaltfläche, um die GPS-Koordinaten basierend auf der "
-"angegebenen Adresse automatisch abzurufen und die Markierung auf der Karte "
-"festzulegen.<br><strong>Speichere oder aktualisiere diesen Standort-Eintrag, "
-"nachdem die GPS-Daten aktualisiert wurden.</strong>"
-
-#: src/Map/LocationMapAdmin.php:52
-msgid ""
-"<strong>No GPS data could be found for the address entered</strong>. "
-"<br>Please check if the address is written correctly. <br>Alternatively, you "
-"can enter the GPS data manually into the corresponding fields."
-msgstr ""
-"<strong>Für die eingegebene Adresse konnten keine GPS-Daten gefunden werden</"
-"strong>. <br>Bitte überprüfe, ob die Adresse korrekt geschrieben ist. "
-"<br>Alternativ kannst du die GPS-Daten auch manuell in die entsprechenden "
-"Felder eingeben."
 
 #: src/Map/MapAdmin.php:131
 msgid "Map Configuration"
@@ -1355,32 +1321,32 @@ msgid "Your booking code is: %s"
 msgstr "Dein Buchungscode lautet: %s"
 
 #. translators: %s = date in wordpress defined format
-#: src/Model/Booking.php:221
+#: src/Model/Booking.php:220
 msgid " on %s "
 msgstr " am %s "
 
 #. translators: %1 = startdate, %2 = enddate in wordpress defined format
-#: src/Model/Booking.php:224
+#: src/Model/Booking.php:223
 msgid " from %1$s until %2$s "
 msgstr " von %1$s bis %2$s "
 
-#: src/Model/Booking.php:336
+#: src/Model/Booking.php:335
 msgid "Please check your booking and click confirm booking"
 msgstr "Bitte überprüfe die Buchung und klicke auf „Buchung bestätigen“"
 
-#: src/Model/Booking.php:344
+#: src/Model/Booking.php:343
 msgid "Your booking has been canceled at %s."
 msgstr "Die Buchung wurde storniert am %s."
 
-#: src/Model/Booking.php:346
+#: src/Model/Booking.php:345
 msgid "Your booking has been canceled"
 msgstr "Die Buchung wurde storniert"
 
-#: src/Model/Booking.php:367
+#: src/Model/Booking.php:366
 msgid "Link to your booking"
 msgstr "Link zu deiner Buchung"
 
-#: src/Model/Location.php:90
+#: src/Model/Location.php:89
 msgid ""
 "Please contact the contact persons at the location directly if you have any "
 "questions regarding collection or return:"
@@ -1444,7 +1410,7 @@ msgstr ""
 "Rückgabezeit fest."
 
 #. translators: %1$s = timeframe-ID, %2$s is timeframe post_title
-#: src/Model/Timeframe.php:303
+#: src/Model/Timeframe.php:302
 msgid ""
 "Item is already bookable at another location within the same date range. See "
 "other timeframe ID: %1$s: %2$s"
@@ -1453,7 +1419,7 @@ msgstr ""
 "buchbar. Siehe andere Zeitrahmen ID: %1$s: %2$s"
 
 #. translators: %1$s = timeframe-ID, %2$s is timeframe post_title
-#: src/Model/Timeframe.php:336
+#: src/Model/Timeframe.php:334
 msgid ""
 "Overlapping bookable timeframes are only allowed to have the same grid. See "
 "overlapping timeframe ID: %1$s: %2$s"
@@ -1462,7 +1428,7 @@ msgstr ""
 "Siehe überlappende Zeitrahmen-ID: %1$s: %2$s"
 
 #. translators: first %s = timeframe-ID, second %s is timeframe post_title
-#: src/Model/Timeframe.php:357
+#: src/Model/Timeframe.php:355
 msgid ""
 "time periods are not allowed to overlap. Please check the other timeframe to "
 "avoid overlapping time periods during one specific day. See affected "
@@ -1473,7 +1439,7 @@ msgstr ""
 "betroffene Zeitrahmen-ID: %1$s: %2$s"
 
 #. translators: first %s = timeframe-ID, second %s is timeframe post_title
-#: src/Model/Timeframe.php:367
+#: src/Model/Timeframe.php:365
 msgid ""
 "Date periods are not allowed to overlap. Please check the other timeframe to "
 "avoid overlapping Date periods. See affected timeframe ID: %1$s: %2$s"
@@ -1608,7 +1574,7 @@ msgstr "Artikel"
 
 #: src/View/Calendar.php:184 src/Wordpress/CustomPostType/Booking.php:257
 #: src/Wordpress/CustomPostType/Booking.php:556
-#: src/Wordpress/CustomPostType/Location.php:88
+#: src/Wordpress/CustomPostType/Location.php:90
 #: src/Wordpress/CustomPostType/Restriction.php:51
 #: src/Wordpress/CustomPostType/Restriction.php:424
 #: src/Wordpress/CustomPostType/Timeframe.php:90
@@ -1618,13 +1584,43 @@ msgid "Location"
 msgstr "Standort"
 
 #. translators: %s = number of days
-#: src/View/Calendar.php:437
+#: src/View/Calendar.php:436
 msgid "You can make bookings maximum %s days in advance"
 msgstr "Du kannst Buchungen maximal %s Tage im Voraus vornehmen"
 
 #: src/View/Dashboard.php:41 src/View/Dashboard.php:83
 msgid "at"
 msgstr "bei"
+
+#: src/View/Map.php:33
+msgid "Set / Update GPS Coordinates"
+msgstr "GPS-Koordinaten abrufen / aktualisieren"
+
+#: src/View/Map.php:37
+msgid "Set / update GPS coordinates from address"
+msgstr "GPS-Koordinaten von Adresse abrufen / aktualisieren"
+
+#: src/View/Map.php:40
+msgid ""
+"Click this button to automatically set the GPS coordinates based on the "
+"given address and set the marker on the map.<br> <strong>Save or update this "
+"location after setting the gps data.</strong>"
+msgstr ""
+"Klicke auf diese Schaltfläche, um die GPS-Koordinaten basierend auf der "
+"angegebenen Adresse automatisch abzurufen und die Markierung auf der Karte "
+"festzulegen.<br><strong>Speichere oder aktualisiere diesen Standort-Eintrag, "
+"nachdem die GPS-Daten aktualisiert wurden.</strong>"
+
+#: src/View/Map.php:43
+msgid ""
+"<strong>No GPS data could be found for the address entered</strong>. "
+"<br>Please check if the address is written correctly. <br>Alternatively, you "
+"can enter the GPS data manually into the corresponding fields."
+msgstr ""
+"<strong>Für die eingegebene Adresse konnten keine GPS-Daten gefunden werden</"
+"strong>. <br>Bitte überprüfe, ob die Adresse korrekt geschrieben ist. "
+"<br>Alternativ kannst du die GPS-Daten auch manuell in die entsprechenden "
+"Felder eingeben."
 
 #: src/View/Migration.php:24
 msgid ""
@@ -1784,7 +1780,7 @@ msgstr "Buchungen"
 
 #: src/Wordpress/CustomPostType/Booking.php:357
 #: src/Wordpress/CustomPostType/Item.php:70
-#: src/Wordpress/CustomPostType/Location.php:89
+#: src/Wordpress/CustomPostType/Location.php:91
 #: src/Wordpress/CustomPostType/Restriction.php:306
 #: src/Wordpress/CustomPostType/Timeframe.php:733
 msgid "Add new"
@@ -2045,106 +2041,106 @@ msgstr "Wähle Artikel-Administrierende aus."
 msgid "Item Meta-Data"
 msgstr "Artikel Metadaten"
 
-#: src/Wordpress/CustomPostType/Location.php:87
-#: src/Wordpress/CustomPostType/Location.php:108
+#: src/Wordpress/CustomPostType/Location.php:89
+#: src/Wordpress/CustomPostType/Location.php:110
 #: templates/dashboard-index.php:35
 msgid "Locations"
 msgstr "Standorte"
 
-#: src/Wordpress/CustomPostType/Location.php:90
 #: src/Wordpress/CustomPostType/Location.php:92
+#: src/Wordpress/CustomPostType/Location.php:94
 msgid "Add new location"
 msgstr "Neuen Standort hinzufügen"
 
-#: src/Wordpress/CustomPostType/Location.php:91
+#: src/Wordpress/CustomPostType/Location.php:93
 msgid "Edit location"
 msgstr "Standort bearbeiten"
 
-#: src/Wordpress/CustomPostType/Location.php:93
+#: src/Wordpress/CustomPostType/Location.php:95
 msgid "Show location"
 msgstr "Standort anzeigen"
 
-#: src/Wordpress/CustomPostType/Location.php:94
+#: src/Wordpress/CustomPostType/Location.php:96
 msgid "Show locations"
 msgstr "Standorte anzeigen"
 
-#: src/Wordpress/CustomPostType/Location.php:95
+#: src/Wordpress/CustomPostType/Location.php:97
 msgid "Search locations"
 msgstr "Standorte suchen"
 
-#: src/Wordpress/CustomPostType/Location.php:96
+#: src/Wordpress/CustomPostType/Location.php:98
 msgid "location not found"
 msgstr "Standort nicht gefunden"
 
-#: src/Wordpress/CustomPostType/Location.php:97
+#: src/Wordpress/CustomPostType/Location.php:99
 msgid "No locations found in trash"
 msgstr "Keine Standorte im Papierkorb gefunden"
 
-#: src/Wordpress/CustomPostType/Location.php:98
+#: src/Wordpress/CustomPostType/Location.php:100
 msgid "Parent location:"
 msgstr "Übergeordneter Standort:"
 
-#: src/Wordpress/CustomPostType/Location.php:99
+#: src/Wordpress/CustomPostType/Location.php:101
 msgid "All locations"
 msgstr "Alle Standorte"
 
-#: src/Wordpress/CustomPostType/Location.php:100
+#: src/Wordpress/CustomPostType/Location.php:102
 msgid "Location archive"
 msgstr "Standortarchiv"
 
-#: src/Wordpress/CustomPostType/Location.php:101
+#: src/Wordpress/CustomPostType/Location.php:103
 msgid "Location attributes"
 msgstr "Standort-Attribute"
 
-#: src/Wordpress/CustomPostType/Location.php:102
+#: src/Wordpress/CustomPostType/Location.php:104
 msgid "Add to location"
 msgstr "Hinzufügen zum Standort"
 
-#: src/Wordpress/CustomPostType/Location.php:103
+#: src/Wordpress/CustomPostType/Location.php:105
 msgid "Added to location"
 msgstr "Zum Standort hinzugefügt"
 
-#: src/Wordpress/CustomPostType/Location.php:104
+#: src/Wordpress/CustomPostType/Location.php:106
 msgid "Location image"
 msgstr "Standort Bild"
 
-#: src/Wordpress/CustomPostType/Location.php:105
+#: src/Wordpress/CustomPostType/Location.php:107
 msgid "set location image"
 msgstr "Standortbild festlegen"
 
-#: src/Wordpress/CustomPostType/Location.php:106
+#: src/Wordpress/CustomPostType/Location.php:108
 msgid "remove location image"
 msgstr "Standortbild entfernen"
 
-#: src/Wordpress/CustomPostType/Location.php:107
+#: src/Wordpress/CustomPostType/Location.php:109
 msgid "use as location image"
 msgstr "Verwendung als Standortbild"
 
-#: src/Wordpress/CustomPostType/Location.php:194
+#: src/Wordpress/CustomPostType/Location.php:196
 msgid "Street / No."
 msgstr "Straße / Nr."
 
-#: src/Wordpress/CustomPostType/Location.php:205
+#: src/Wordpress/CustomPostType/Location.php:207
 msgid "Postcode"
 msgstr "Postleitzahl"
 
-#: src/Wordpress/CustomPostType/Location.php:216
+#: src/Wordpress/CustomPostType/Location.php:218
 msgid "City"
 msgstr "Stadt"
 
-#: src/Wordpress/CustomPostType/Location.php:227
+#: src/Wordpress/CustomPostType/Location.php:229
 msgid "Country"
 msgstr "Land"
 
-#: src/Wordpress/CustomPostType/Location.php:236
+#: src/Wordpress/CustomPostType/Location.php:238
 msgid "Set / Update GPS and map"
 msgstr "GPS und Karte einstellen / aktualisieren"
 
-#: src/Wordpress/CustomPostType/Location.php:247
+#: src/Wordpress/CustomPostType/Location.php:249
 msgid "Latitude"
 msgstr "Breitengrad"
 
-#: src/Wordpress/CustomPostType/Location.php:248
+#: src/Wordpress/CustomPostType/Location.php:250
 msgid ""
 "The latitude is calculated automatically when you click the \"set / update "
 "GPS\" button after entering the street, postal code and city."
@@ -2153,11 +2149,11 @@ msgstr ""
 "Postleitzahl und Ort auf <strong>GPS-Koordinaten abrufen / aktualisieren</"
 "strong> klickst."
 
-#: src/Wordpress/CustomPostType/Location.php:256
+#: src/Wordpress/CustomPostType/Location.php:258
 msgid "Longitude"
 msgstr "Längengrad"
 
-#: src/Wordpress/CustomPostType/Location.php:257
+#: src/Wordpress/CustomPostType/Location.php:259
 msgid ""
 "The longitude is calculated automatically when you click the \"set / update "
 "GPS\" button after entering the street, postal code and city."
@@ -2166,15 +2162,15 @@ msgstr ""
 "Postleitzahl und Ort auf <strong>GPS-Koordinaten abrufen / aktualisieren</"
 "strong> klickst."
 
-#: src/Wordpress/CustomPostType/Location.php:265
+#: src/Wordpress/CustomPostType/Location.php:267
 msgid "Position"
 msgstr "Position"
 
-#: src/Wordpress/CustomPostType/Location.php:274
+#: src/Wordpress/CustomPostType/Location.php:276
 msgid "Show location map on item view"
 msgstr "Positionskarte in der Artikelansicht anzeigen"
 
-#: src/Wordpress/CustomPostType/Location.php:275
+#: src/Wordpress/CustomPostType/Location.php:277
 msgid ""
 "If enabled, a map showing the location will be displayed on the location "
 "details page."
@@ -2182,15 +2178,15 @@ msgstr ""
 "Wenn diese Option aktiviert ist, wird auf der Seite mit den Standortdetails "
 "eine Karte mit dem Standort angezeigt."
 
-#: src/Wordpress/CustomPostType/Location.php:284
+#: src/Wordpress/CustomPostType/Location.php:286
 msgid "General Location information"
 msgstr "Allgemeine Standortinformationen"
 
-#: src/Wordpress/CustomPostType/Location.php:293
+#: src/Wordpress/CustomPostType/Location.php:295
 msgid "Location email"
 msgstr "Standort E-Mail"
 
-#: src/Wordpress/CustomPostType/Location.php:294
+#: src/Wordpress/CustomPostType/Location.php:296
 msgid ""
 "Email addresses to which a copy of the booking confirmation / cancellation "
 "should be sent. You can enter multiple addresses separated by commas."
@@ -2199,12 +2195,12 @@ msgstr ""
 "gesendet werden soll. Es können mehrere Adressen durch Komma getrennt "
 "eingeben werden."
 
-#: src/Wordpress/CustomPostType/Location.php:304
+#: src/Wordpress/CustomPostType/Location.php:306
 #: templates/booking-single.php:71 templates/location-single-meta.php:53
 msgid "Pickup instructions"
 msgstr "Abhol-Hinweise"
 
-#: src/Wordpress/CustomPostType/Location.php:305
+#: src/Wordpress/CustomPostType/Location.php:307
 msgid ""
 "Type in information about the pickup process (e.g. detailed route "
 "description, opening hours, etc.). This will be shown to user in booking "
@@ -2214,11 +2210,11 @@ msgstr ""
 "Routenbeschreibung, Öffnungszeiten usw.). Dies wird dem Benutzenden im "
 "Buchungsprozess und in der Buchungsbestätigungs-Email angezeigt"
 
-#: src/Wordpress/CustomPostType/Location.php:315
+#: src/Wordpress/CustomPostType/Location.php:317
 msgid "Location contact information"
 msgstr "Standortkontaktinformationen"
 
-#: src/Wordpress/CustomPostType/Location.php:316
+#: src/Wordpress/CustomPostType/Location.php:318
 msgid ""
 "information about how to contact the location (e.g. contact person, phone "
 "number, e-mail etc.). This will be shown to user in booking process and "
@@ -2228,11 +2224,11 @@ msgstr ""
 "Telefonnummer, E-Mail usw.). Dies wird dem Nutzenden im Buchungsprozess und "
 "bei der Buchungsbestätigungs-Email angezeigt"
 
-#: src/Wordpress/CustomPostType/Location.php:332
+#: src/Wordpress/CustomPostType/Location.php:334
 msgid "Location Admin(s)"
 msgstr "Standort-Administrator(en)"
 
-#: src/Wordpress/CustomPostType/Location.php:333
+#: src/Wordpress/CustomPostType/Location.php:335
 msgid ""
 "choose one or more users to give them the permisssion to edit and manage "
 "this specific location. Only users with the role CommonsBooking Manager can "
@@ -2242,15 +2238,15 @@ msgstr ""
 "diesen bestimmten Standort zu bearbeiten und zu verwalten. Hier können nur "
 "Benutzer mit der Rolle CommonsBooking Manager ausgewählt werden."
 
-#: src/Wordpress/CustomPostType/Location.php:339
+#: src/Wordpress/CustomPostType/Location.php:341
 msgid "Select location admins."
 msgstr "Wähle Standort-Admins."
 
-#: src/Wordpress/CustomPostType/Location.php:345
+#: src/Wordpress/CustomPostType/Location.php:347
 msgid "Allow locked day overbooking"
 msgstr "Überbuchen von geblockten Tagen erlauben"
 
-#: src/Wordpress/CustomPostType/Location.php:346
+#: src/Wordpress/CustomPostType/Location.php:348
 msgid ""
 "If selected, all not selected days in any bookable timeframe that is "
 "connected to this location can be overbooked. Read the documentation <a "
@@ -2262,52 +2258,52 @@ msgstr ""
 "Standort verknüpft sind. Lies die Dokumentation unter <a href=\"https://"
 "commonsbooking.org/?p=435\">Standorte anlegen</a> für mehr Informationen."
 
-#: src/Wordpress/CustomPostType/Location.php:358
+#: src/Wordpress/CustomPostType/Location.php:360
 msgid "Location Meta-Data"
 msgstr "Standort-Metadaten"
 
-#: src/Wordpress/CustomPostType/Map.php:341 templates/dashboard-index.php:55
+#: src/Wordpress/CustomPostType/Map.php:339 templates/dashboard-index.php:55
 msgid "Maps"
 msgstr "Karten"
 
-#: src/Wordpress/CustomPostType/Map.php:342
+#: src/Wordpress/CustomPostType/Map.php:340
 msgid "Map"
 msgstr "Karte"
 
-#: src/Wordpress/CustomPostType/Map.php:343
-#: src/Wordpress/CustomPostType/Map.php:346
+#: src/Wordpress/CustomPostType/Map.php:341
+#: src/Wordpress/CustomPostType/Map.php:344
 msgid "create CB map"
 msgstr "CB-Karte erstellen"
 
-#: src/Wordpress/CustomPostType/Map.php:344
+#: src/Wordpress/CustomPostType/Map.php:342
 msgid "create Commons Booking map"
 msgstr "Commons Booking Karte erstellen"
 
-#: src/Wordpress/CustomPostType/Map.php:345
+#: src/Wordpress/CustomPostType/Map.php:343
 msgid "edit Commons Booking map"
 msgstr "CommonsBooking Karte bearbeiten"
 
-#: src/Wordpress/CustomPostType/Map.php:347
+#: src/Wordpress/CustomPostType/Map.php:345
 msgid "view CB map"
 msgstr "CB-Karte anzeigen"
 
-#: src/Wordpress/CustomPostType/Map.php:348
+#: src/Wordpress/CustomPostType/Map.php:346
 msgid "search CB maps"
 msgstr "CB-Karten suchen"
 
-#: src/Wordpress/CustomPostType/Map.php:349
+#: src/Wordpress/CustomPostType/Map.php:347
 msgid "no Commons Booking map found"
 msgstr "Keine Commons Booking Karte gefunden"
 
-#: src/Wordpress/CustomPostType/Map.php:350
+#: src/Wordpress/CustomPostType/Map.php:348
 msgid "no Commons Booking map found in the trash"
 msgstr "Keine Commons Booking Karte im Papierkorb gefunden"
 
-#: src/Wordpress/CustomPostType/Map.php:351
+#: src/Wordpress/CustomPostType/Map.php:349
 msgid "parent CB maps"
 msgstr "Übergeordnete CB-Karten"
 
-#: src/Wordpress/CustomPostType/Map.php:380
+#: src/Wordpress/CustomPostType/Map.php:378
 msgid "Maps to show Commons Booking Locations and their Items"
 msgstr "Karten, um CommonsBooking Standorte und deren Artikel anzuzeigen"
 
@@ -3607,12 +3603,23 @@ msgstr "Von %s"
 msgid "until probably %1$s:"
 msgstr "bis voraussichtlich %1$s:"
 
-#: templates/timeframe-calendar.php:103
+#: templates/timeframe-calendar.php:107
+msgid ""
+"This item has one or more slots which can only be booked by users of a "
+"certain group. Please contact the administrator if you believe you should be "
+"able to book anyway."
+msgstr ""
+"Dieser Artikel enthält eine oder mehrere Buchungszeiträume, die nur von "
+"Nutzenden einer bestimmten Gruppe gebucht werden können. Bitte kontaktiere "
+"den/die Administrator*in, wenn du für die Buchung dieser Zeiträume "
+"freigeschaltet werden möchtest."
+
+#: templates/timeframe-calendar.php:116
 msgid "Continue to booking confirmation"
 msgstr "Weiter zur Buchungsprüfung"
 
 #. translators %1$s maximum days, %2$s maximum days
-#: templates/timeframe-calendar.php:113
+#: templates/timeframe-calendar.php:126
 msgid ""
 "\n"
 "\t\t\t<strong>Calendar info</strong><br>\n"
