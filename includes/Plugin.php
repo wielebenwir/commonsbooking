@@ -27,7 +27,7 @@ register_deactivation_hook(
  *
  * @return void
  */
-function commmonsbooking_write_log( $log, $backtrace = true ) {
+function commonsbooking_write_log( $log, $backtrace = true ) {
 
     if ( is_array( $log ) || is_object( $log ) ) {
 		$logmessage = ( print_r( $log, true ) );

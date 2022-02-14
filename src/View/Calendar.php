@@ -656,27 +656,37 @@ class Calendar {
 	 */
 	public static function getCalendarData() {
 		// item by post-param
-		$item = isset( $_POST['item'] ) && $_POST['item'] != "" ? sanitize_text_field( $_POST['item'] ) : false;
+		$item = isset( $_POST['item'] ) && $_POST['item'] != "" ? intval (sanitize_text_field( $_POST['item'] ) ) : false;
 		if ( $item === false ) {
 			throw new Exception( 'missing item id.' );
 		}
-		$location = isset( $_POST['location'] ) && $_POST['location'] != "" ? sanitize_text_field( $_POST['location'] ) : false;
+		$location = isset( $_POST['location'] ) && $_POST['location'] != "" ? intval ( sanitize_text_field( $_POST['location'] ) ): false;
 		if ( $location === false ) {
 			throw new Exception( 'missing location id.' );
 		}
 
 		// Ajax-Request param check
 		if ( array_key_exists( 'sd', $_POST ) ) {
-			$startDateString = sanitize_text_field( $_POST['sd'] );
+            if ($startDateString = strtotime (sanitize_text_field( $_POST['sd'] ) ) ) {
+                $startDateString = date('Y-m-d', $startDateString);
+            } else {
+                throw new Exception( 'wrong start date format.' );
+            }
 		} else {
 			throw new Exception( 'missing start date.' );
 		}
 
 		if ( array_key_exists( 'ed', $_POST ) ) {
-			$endDateString = sanitize_text_field( $_POST['ed'] );
+            if ($endDateString = strtotime (sanitize_text_field( $_POST['ed'] ) ) ) {
+                $endDateString = date('Y-m-d', $endDateString);
+            } else {
+                throw new Exception( 'wrong end date format.' );
+            }
 		} else {
 			throw new Exception( 'missing end date.' );
 		}
+
+        commonsbooking_write_log(array($item, $location, $startDateString, $endDateString));
 
 		$jsonResponse = Calendar::getCalendarDataArray( $item, $location, $startDateString, $endDateString );
 
