@@ -685,8 +685,6 @@ class Calendar {
 			throw new Exception( 'wrong or missing end date.' );
 		}
 
-        commonsbooking_write_log(array($item, $location, $startDateString, $endDateString));
-
 		$jsonResponse = Calendar::getCalendarDataArray( $item, $location, $startDateString, $endDateString );
 
 		header( 'Content-Type: application/json' );
