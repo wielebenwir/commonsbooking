@@ -97,7 +97,20 @@
                     }
                     ?>
             </div>
-			<?php
+            <?php
+            $timeframes = $templateData['location'] -> getBookableTimeframesByItem(get_the_ID(),true);
+             foreach ($timeframes as $timeframe){
+                if ($timeframe->isWithRoleRestriction()) {
+                    ?>
+                    <div class="cb-notice">
+                        <?php
+                            echo commonsbooking_sanitizeHTML( __( 'This item has one or more slots which can only be booked by users of a certain group. Please contact the administrator if you believe you should be able to book anyway.', 'commonsbooking' ));
+                        ?>
+                    </div>
+                <?php
+                break; //does not iterate through rest of timeframes when one RoleRestriction has been found
+                }
+            }
 			if ( is_user_logged_in() ) { ?>
                 <input type="submit" disabled="disabled"
                        value="<?php echo esc_html__( 'Continue to booking confirmation', 'commonsbooking' ); ?>"/>
