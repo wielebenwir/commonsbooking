@@ -656,11 +656,11 @@ class Calendar {
 	 */
 	public static function getCalendarData() {
 		// item by post-param
-		$item = isset( $_POST['item'] ) && $_POST['item'] != "" ? intval (sanitize_text_field( $_POST['item'] ) ) : false;
+		$item = isset( $_POST['item'] ) && $_POST['item'] != "" ?  intval( sanitize_text_field( $_POST['item'] ) )  : false;
 		if ( $item === false ) {
 			throw new Exception( 'missing item id.' );
 		}
-		$location = isset( $_POST['location'] ) && $_POST['location'] != "" ? intval ( sanitize_text_field( $_POST['location'] ) ): false;
+		$location = isset( $_POST['location'] ) && $_POST['location'] != "" ? intval (sanitize_text_field( $_POST['location'] ) ): false;
 		if ( $location === false ) {
 			throw new Exception( 'missing location id.' );
 		}

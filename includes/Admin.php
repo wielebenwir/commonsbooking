@@ -126,12 +126,13 @@ function commonsbooking_sanitizeHTML( $string ): string {
 function commonsbooking_sanitizeArrayorString( $array_or_string, $sanitize_function = 'sanitize_text_field' ) {
 	if ( is_string( $array_or_string ) ) {
 		$array_or_string = $sanitize_function( $array_or_string );
+        commonsbooking_write_log(array($array_or_string, $sanitize_function));
 	} elseif ( is_array( $array_or_string ) ) {
 		foreach ( $array_or_string as $key => &$value ) {
 			if ( is_array( $value ) ) {
-				$value = commonsbooking_sanitizeArrayorString( $value );
+				$value = commonsbooking_sanitizeArrayorString( $value, $sanitize_function );
 			} else {
-				$value = commonsbooking_sanitizeArrayorString( $value );
+				$value = commonsbooking_sanitizeArrayorString( $value, $sanitize_function );
 			}
 		}
 	}
