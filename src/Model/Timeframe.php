@@ -399,7 +399,10 @@ class Timeframe extends CustomPost {
 		return $this->getMeta( 'full-day' ) == 'on';
 	}
 
-
+	/**
+	 * Returns true if timeframe has booking restriction for user role
+	 * @return boolean
+	 */
 	function isWithRoleRestriction() {
 		$current_user     = wp_get_current_user();
 		$user_roles       = $current_user->roles;
