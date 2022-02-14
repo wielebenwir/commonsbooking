@@ -246,21 +246,19 @@ abstract class BookablePost extends PostRepository {
 			return Plugin::getCacheItem();
 		} else {
 			$posts = self::getRelatedPosts( $postId, $originType, $relatedType );
-			foreach ( $posts as $key => &$location ) {
+			foreach ( $posts as $key => &$relatedPost ) {
 				if ( $relatedType == 'item' ) {
-					$item = new \CommonsBooking\Model\Item( $location );
-					if ( $bookable && ! $item->getBookableTimeframesByLocation( $postId ) ) {
+					$relatedPost = new \CommonsBooking\Model\Item( $relatedPost );
+					if ( $bookable && ! $relatedPost->getBookableTimeframesByLocation( $postId ) ) {
 						unset( $posts[ $key ] );
 					}
 				}
 				if ( $relatedType == 'location' ) {
-					$location = new \CommonsBooking\Model\Location( $location );
-					if ( $bookable && ! $location->getBookableTimeframesByItem( $postId ) ) {
+					$relatedPost = new \CommonsBooking\Model\Location( $relatedPost );
+					if ( $bookable && ! $relatedPost->getBookableTimeframesByItem( $postId ) ) {
 						unset( $posts[ $key ] );
 					}
 				}
-
-
 			}
 			Plugin::setCacheItem( $posts );
 
@@ -286,8 +284,8 @@ abstract class BookablePost extends PostRepository {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
-			$locations   = [];
-			$locationIds = [];
+			$relatedPosts   = [];
+			$relatedPostIds = [];
 			$args        = array(
 				'post_type'   => Timeframe::$postType,
 				'post_status' => array( 'confirmed', 'unconfirmed', 'publish', 'inherit' ),
@@ -305,23 +303,23 @@ abstract class BookablePost extends PostRepository {
 			if ( $query->have_posts() ) {
 				$timeframes = $query->get_posts();
 				foreach ( $timeframes as $timeframe ) {
-					$locationId = get_post_meta( $timeframe->ID, $relatedType . '-id', true );
-					if ( $locationId && ! in_array( $locationId, $locationIds ) ) {
-						$locationIds[] = $locationId;
-						$location      = get_post( $locationId );
+					$relatedPostId = get_post_meta( $timeframe->ID, $relatedType . '-id', true );
+					if ( $relatedPostId && ! in_array( $relatedPostId, $relatedPostIds ) ) {
+						$relatedPostIds[] = $relatedPostId;
+						$relatedPost      = get_post( $relatedPostId );
 
-						if ( $location ) {
+						if ( $relatedPost ) {
 							// add only published items
-							if ( $location->post_status == 'publish' ) {
-								$locations[] = $location;
+							if ( $relatedPost->post_status == 'publish' ) {
+								$relatedPosts[] = $relatedPost;
 							}
 						}
 					}
 				}
 			}
-			Plugin::setCacheItem( $locations );
+			Plugin::setCacheItem( $relatedPosts );
 
-			return $locations;
+			return $relatedPosts;
 		}
 	}
 
