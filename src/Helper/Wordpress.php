@@ -35,4 +35,13 @@ class Wordpress {
 		}, $posts );
 	}
 
+	/**
+	 * @param $dateString
+	 *
+	 * @return bool|false
+	 */
+	public static function isValidDateString($dateString): bool {
+		return preg_match('/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/i',$dateString) === 1;
+	}
+
 }

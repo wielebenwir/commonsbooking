@@ -5,6 +5,7 @@ namespace CommonsBooking\View;
 
 
 use CommonsBooking\CB\CB;
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Week;
@@ -656,34 +657,28 @@ class Calendar {
 	 */
 	public static function getCalendarData() {
 		// item by post-param
-		$item = isset( $_POST['item'] ) && $_POST['item'] != "" ? intval (sanitize_text_field( $_POST['item'] ) ) : false;
+		$item = isset( $_POST['item'] ) && $_POST['item'] != "" ? intval ( $_POST['item'] ) : false;
 		if ( $item === false ) {
 			throw new Exception( 'missing item id.' );
 		}
-		$location = isset( $_POST['location'] ) && $_POST['location'] != "" ? intval ( sanitize_text_field( $_POST['location'] ) ): false;
+
+		// location by post-param
+		$location = isset( $_POST['location'] ) && $_POST['location'] != "" ? intval ( $_POST['location'] ): false;
 		if ( $location === false ) {
 			throw new Exception( 'missing location id.' );
 		}
 
 		// Ajax-Request param check
-		if ( array_key_exists( 'sd', $_POST ) ) {
-            if ($startDateString = strtotime (sanitize_text_field( $_POST['sd'] ) ) ) {
-                $startDateString = date('Y-m-d', $startDateString);
-            } else {
-                throw new Exception( 'wrong start date format.' );
-            }
+		if ( array_key_exists( 'sd', $_POST ) && Wordpress::isValidDateString($_POST['sd'])) {
+            $startDateString = $_POST['sd'];
 		} else {
-			throw new Exception( 'missing start date.' );
+			throw new Exception( 'wrong or missing start date.' );
 		}
 
-		if ( array_key_exists( 'ed', $_POST ) ) {
-            if ($endDateString = strtotime (sanitize_text_field( $_POST['ed'] ) ) ) {
-                $endDateString = date('Y-m-d', $endDateString);
-            } else {
-                throw new Exception( 'wrong end date format.' );
-            }
+		if ( array_key_exists( 'ed', $_POST ) && Wordpress::isValidDateString($_POST['ed'])) {
+			$endDateString = $_POST['ed'];
 		} else {
-			throw new Exception( 'missing end date.' );
+			throw new Exception( 'wrong or missing end date.' );
 		}
 
         commonsbooking_write_log(array($item, $location, $startDateString, $endDateString));
