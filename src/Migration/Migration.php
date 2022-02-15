@@ -351,7 +351,8 @@ class Migration {
 	 * @throws \Geocoder\Exception\Exception
 	 */
 	protected static function savePostData( $existingPost, array $postData, array $postMeta ): bool {
-		$includeGeoData = array_key_exists( 'geodata', $_POST ) && $_POST['geodata'] == "true";
+
+		$includeGeoData = array_key_exists( 'geodata', $_POST ) && sanitize_text_field( $_POST['geodata'] ) == "true";
 
 		if ( $existingPost instanceof WP_Post ) {
 			$updatedPost = array_merge( $existingPost->to_array(), $postData );

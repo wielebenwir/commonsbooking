@@ -103,7 +103,7 @@ class Location extends BookablePost {
 	 * @return string
 	 */
 	public function formattedContactInfoOneLine() {
-		return CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post->ID) . '<br>';
+		return commonsbooking_sanitizeHTML(CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post->ID)) . '<br>';
 	}
 
 	/**

@@ -71,7 +71,7 @@
 					// Display list of bookings with pickup date = today
 					$BeginningBookings = CommonsBooking\View\Dashboard::renderBeginningBookings();
 					if ($BeginningBookings) {
-						echo $BeginningBookings;
+						echo commonsbooking_sanitizeHTML($BeginningBookings);
 					} else {
 						echo __('No pickups today', 'commonsbooking');					
 					};
@@ -84,7 +84,7 @@
 					// Display list of bookings with return date = today
 					$BeginningBookings = CommonsBooking\View\Dashboard::renderEndingBookings();
 					if ($BeginningBookings) {
-						echo $BeginningBookings;
+						echo commonsbooking_sanitizeHTML($BeginningBookings);
 					} else {
 						echo __('No returns today', 'commonsbooking');					
 					};
