@@ -1,62 +1,100 @@
 class BookingList {
     constructor(element) {
-        this.currentPage = 1, this.totalPages = 0, this.loadMoreButton = document.getElementById("load-more-button"), 
-        this.pagination = document.getElementById("booking-list--pagination"), this.element = element, 
-        this.users = Array.from(document.querySelectorAll(".filter-users option")), 
-        this.items = Array.from(document.querySelectorAll(".filter-items option")), 
-        this.locations = Array.from(document.querySelectorAll(".filter-locations option")), 
-        this.states = Array.from(document.querySelectorAll(".filter-statuss option")), 
-        this.startDate = document.querySelector(".filter-startdate input"), jQuery("#startDate-datepicker").datepicker({
+        this.currentPage = 1;
+        this.totalPages = 0;
+        this.loadMoreButton = document.getElementById("load-more-button");
+        this.pagination = document.getElementById("booking-list--pagination");
+        this.element = element;
+        this.users = Array.from(document.querySelectorAll(".filter-users option"));
+        this.items = Array.from(document.querySelectorAll(".filter-items option"));
+        this.locations = Array.from(document.querySelectorAll(".filter-locations option"));
+        this.states = Array.from(document.querySelectorAll(".filter-statuss option"));
+        this.startDate = document.querySelector(".filter-startdate input");
+        jQuery("#startDate-datepicker").datepicker({
             dateFormat: "yy-mm-dd",
             altFormat: "@",
             altField: "#startDate"
-        }), jQuery("#startDate-datepicker").datepicker("setDate", new Date()), this.endDate = document.querySelector(".filter-enddate input"), 
+        });
+        jQuery("#startDate-datepicker").datepicker("setDate", new Date());
+        this.endDate = document.querySelector(".filter-enddate input");
         jQuery("#endDate-datepicker").datepicker({
             dateFormat: "yy-mm-dd",
             altFormat: "@",
             altField: "#endDate"
-        }), this.filters = {
+        });
+        this.filters = {
             users: [],
             items: [],
             locations: [],
             startDate: [],
             endDate: [],
             states: []
-        }, this.shuffle = new Shuffle(element), this._resetListParams(), this._addSorting(), 
-        this._reloadData(), this._bindEventListeners();
+        };
+        this.shuffle = new Shuffle(element);
+        this._resetListParams();
+        this._addSorting();
+        this._reloadData();
+        this._bindEventListeners();
     }
     _resetListParams() {
-        this.listParams = new FormData(), this.listParams.append("_ajax_nonce", cb_ajax_bookings.nonce), 
-        this.listParams.append("action", "bookings_data"), this.listParams.append("page", 1);
+        this.listParams = new FormData();
+        this.listParams.append("_ajax_nonce", cb_ajax_bookings.nonce);
+        this.listParams.append("action", "bookings_data");
+        this.listParams.append("page", 1);
     }
     _bindEventListeners() {
         this._onFilterReset = this._handleFilterReset.bind(this);
-        const $filterReset = jQuery("#reset-filters"), $filter = ($filterReset && $filterReset.on("click", this._onFilterReset), 
-        this._onFilter = this.filter.bind(this), jQuery("#filter")), userSelect = ($filter && $filter.on("click", this._onFilter), 
-        this._onUserChange = this._handleUserChange.bind(this), document.querySelectorAll(".filter-users select")), itemSelect = (userSelect && userSelect.item(0).addEventListener("change", this._onUserChange), 
-        this._onItemChange = this._handleItemChange.bind(this), document.querySelectorAll(".filter-items select")), locationSelect = (itemSelect && itemSelect.item(0).addEventListener("change", this._onItemChange), 
-        this._onLocationChange = this._handleLocationChange.bind(this), document.querySelectorAll(".filter-locations select")), statusSelect = (locationSelect && locationSelect.item(0).addEventListener("change", this._onLocationChange), 
-        this._onStatusChange = this._handleStatusChange.bind(this), document.querySelectorAll(".filter-statuss select")), $startDatePicker = (statusSelect && statusSelect.item(0).addEventListener("change", this._onStatusChange), 
-        this._onStartDateChange = this._handleStartDateChange.bind(this), jQuery("#startDate-datepicker")), $endDatePicker = ($startDatePicker && ($startDatePicker.datepicker("option", "onSelect", this._onStartDateChange), 
-        $startDatePicker.change(this._onStartDateChange)), this._onEndDateChange = this._handleEndDateChange.bind(this), 
-        jQuery("#endDate-datepicker"));
-        $endDatePicker && ($endDatePicker.datepicker("option", "onSelect", this._onEndDateChange), 
-        $endDatePicker.change(this._onEndDateChange));
+        const $filterReset = jQuery("#reset-filters");
+        if ($filterReset) $filterReset.on("click", this._onFilterReset);
+        this._onFilter = this.filter.bind(this);
+        const $filter = jQuery("#filter");
+        if ($filter) $filter.on("click", this._onFilter);
+        this._onUserChange = this._handleUserChange.bind(this);
+        const userSelect = document.querySelectorAll(".filter-users select");
+        if (userSelect) userSelect.item(0).addEventListener("change", this._onUserChange);
+        this._onItemChange = this._handleItemChange.bind(this);
+        const itemSelect = document.querySelectorAll(".filter-items select");
+        if (itemSelect) itemSelect.item(0).addEventListener("change", this._onItemChange);
+        this._onLocationChange = this._handleLocationChange.bind(this);
+        const locationSelect = document.querySelectorAll(".filter-locations select");
+        if (locationSelect) locationSelect.item(0).addEventListener("change", this._onLocationChange);
+        this._onStatusChange = this._handleStatusChange.bind(this);
+        const statusSelect = document.querySelectorAll(".filter-statuss select");
+        if (statusSelect) statusSelect.item(0).addEventListener("change", this._onStatusChange);
+        this._onStartDateChange = this._handleStartDateChange.bind(this);
+        const $startDatePicker = jQuery("#startDate-datepicker");
+        if ($startDatePicker) {
+            $startDatePicker.datepicker("option", "onSelect", this._onStartDateChange);
+            $startDatePicker.change(this._onStartDateChange);
+        }
+        this._onEndDateChange = this._handleEndDateChange.bind(this);
+        const $endDatePicker = jQuery("#endDate-datepicker");
+        if ($endDatePicker) {
+            $endDatePicker.datepicker("option", "onSelect", this._onEndDateChange);
+            $endDatePicker.change(this._onEndDateChange);
+        }
     }
     _handleStartDateChange() {
-        var timezoneOffsetGermany, startDate;
-        this.filters.startDate = [], jQuery("#startDate-datepicker").datepicker("getDate") && (timezoneOffsetGermany = 3600, 
-        startDate = parseInt(document.querySelector("#startDate").value.slice(0, -3)) + 3600, 
-        this.filters.startDate = [ startDate + "" ]);
+        this.filters.startDate = [];
+        if (jQuery("#startDate-datepicker").datepicker("getDate")) {
+            const timezoneOffsetGermany = 3600;
+            let startDate = parseInt(document.querySelector("#startDate").value.slice(0, -3)) + timezoneOffsetGermany;
+            this.filters.startDate = [ startDate + "" ];
+        }
     }
     _handleEndDateChange() {
-        var timezoneOffsetGermany, endDate;
-        this.filters.endDate = [], jQuery("#endDate-datepicker").datepicker("getDate") && (timezoneOffsetGermany = 3600, 
-        endDate = parseInt(document.querySelector("#endDate").value.slice(0, -3)) + 3600, 
-        this.filters.endDate = [ endDate + "" ]);
+        this.filters.endDate = [];
+        if (jQuery("#endDate-datepicker").datepicker("getDate")) {
+            const timezoneOffsetGermany = 3600;
+            let endDate = parseInt(document.querySelector("#endDate").value.slice(0, -3)) + timezoneOffsetGermany;
+            this.filters.endDate = [ endDate + "" ];
+        }
     }
     _handleUserChange() {
-        this.filters.users = this._getCurrentUserFilters(), "all" == this.filters.users[0] && (this.filters.users = []);
+        this.filters.users = this._getCurrentUserFilters();
+        if (this.filters.users[0] == "all") {
+            this.filters.users = [];
+        }
     }
     _getCurrentUserFilters() {
         return this.users.filter(function(input) {
@@ -66,7 +104,10 @@ class BookingList {
         });
     }
     _handleItemChange() {
-        this.filters.items = this._getCurrentItemFilters(), "all" == this.filters.items[0] && (this.filters.items = []);
+        this.filters.items = this._getCurrentItemFilters();
+        if (this.filters.items[0] == "all") {
+            this.filters.items = [];
+        }
     }
     _getCurrentItemFilters() {
         return this.items.filter(function(input) {
@@ -76,7 +117,10 @@ class BookingList {
         });
     }
     _handleLocationChange() {
-        this.filters.locations = this._getCurrentLocationFilters(), "all" == this.filters.locations[0] && (this.filters.locations = []);
+        this.filters.locations = this._getCurrentLocationFilters();
+        if (this.filters.locations[0] == "all") {
+            this.filters.locations = [];
+        }
     }
     _getCurrentLocationFilters() {
         return this.locations.filter(function(input) {
@@ -86,7 +130,10 @@ class BookingList {
         });
     }
     _handleStatusChange() {
-        this.filters.states = this._getCurrentStatusFilters(), "all" == this.filters.states[0] && (this.filters.states = []);
+        this.filters.states = this._getCurrentStatusFilters();
+        if (this.filters.states[0] == "all") {
+            this.filters.states = [];
+        }
     }
     _getCurrentStatusFilters() {
         return this.states.filter(function(input) {
@@ -96,30 +143,48 @@ class BookingList {
         });
     }
     _handleFilterReset() {
-        if (void 0 !== this.filters) {
-            for (var [ filter ] of Object.entries(this.filters)) {
+        if (typeof this.filters !== "undefined") {
+            for (const [ filter ] of Object.entries(this.filters)) {
                 let select = document.getElementById("filter-" + filter.substring(0, filter.length - 1));
-                if (select && void 0 !== select) for (var length, i = select.options.length - 1; 0 <= i; i--) {
-                    var optionValue = select.options[i].value;
-                    select.options[i].style.display = "inline", select.options[i].selected = !1, 
-                    "all" == optionValue && (select.options[i].selected = !0);
-                } else console.log("filter-" + filter.substring(0, filter.length - 1));
-                this.startDate.value = "", this.endDate.value = "", this.filters[filter] = [];
+                if (select && typeof select != "undefined") {
+                    var length = select.options.length;
+                    for (var i = length - 1; i >= 0; i--) {
+                        const optionValue = select.options[i].value;
+                        select.options[i].style.display = "inline";
+                        select.options[i].selected = false;
+                        if (optionValue == "all") {
+                            select.options[i].selected = true;
+                        }
+                    }
+                } else {
+                    console.log("filter-" + filter.substring(0, filter.length - 1));
+                }
+                this.startDate.value = "";
+                this.endDate.value = "";
+                this.filters[filter] = [];
             }
             this.filter();
         }
     }
     _handleFilterUpdate(response) {
-        if (void 0 !== response.filters) for (var [ filter, values ] of Object.entries(response.filters)) {
-            let select = document.getElementById("filter-" + filter);
-            for (var length, i = select.options.length - 1; 0 <= i; i--) {
-                var optionValue = select.options[i].value;
-                "all" === optionValue || values.includes(optionValue) ? select.options[i].style.display = "inline" : select.options[i].style.display = "none";
+        if (typeof response.filters !== "undefined") {
+            for (const [ filter, values ] of Object.entries(response.filters)) {
+                let select = document.getElementById("filter-" + filter);
+                var length = select.options.length;
+                for (var i = length - 1; i >= 0; i--) {
+                    const optionValue = select.options[i].value;
+                    if (optionValue !== "all" && !values.includes(optionValue)) {
+                        select.options[i].style.display = "none";
+                    } else {
+                        select.options[i].style.display = "inline";
+                    }
+                }
             }
         }
     }
     _reloadData() {
-        this._renderPagination = this._handleRenderPagination.bind(this), this._filterUpdate = this._handleFilterUpdate.bind(this);
+        this._renderPagination = this._handleRenderPagination.bind(this);
+        this._filterUpdate = this._handleFilterUpdate.bind(this);
         var self = this;
         fetch(cb_ajax_bookings.ajax_url, {
             method: "POST",
@@ -127,135 +192,288 @@ class BookingList {
         }).then(function(response) {
             return response.json();
         }).then(function(response) {
-            self.totalPages = response.total_pages, self._renderPagination(self.totalPages, response.page), 
-            self._filterUpdate(response), self.totalPages < 2 && void 0 !== self.pagination && (self.pagination.style.display = "none");
-            var response = self._getItemMarkup(response.data);
-            self._appendMarkupToGrid(response), self.shuffle = new Shuffle(self.element, {
+            self.totalPages = response.total_pages;
+            self._renderPagination(self.totalPages, response.page);
+            self._filterUpdate(response);
+            if (self.totalPages < 2 && typeof self.pagination !== "undefined") {
+                self.pagination.style.display = "none";
+            }
+            var markup = self._getItemMarkup(response.data);
+            self._appendMarkupToGrid(markup);
+            self.shuffle = new Shuffle(self.element, {
                 itemSelector: ".js-item",
                 sizer: ".my-sizer-element"
             });
         });
     }
     _handleRenderPagination(pages, currentPage) {
-        if (this.pagination.innerHTML = "", 1 < this.totalPages) {
+        this.pagination.innerHTML = "";
+        if (this.totalPages > 1) {
             let markup = "<ul>";
             for (let i = 1; i <= pages; i++) {
                 let active = "";
-                i == currentPage && (active = ' class="active" '), (1 == i || i == pages || i < parseInt(currentPage) + 3 && i > parseInt(currentPage) - 3) && (markup += '<li data-page="' + i + '"' + active + ">" + i + "</li>"), 
-                i != parseInt(currentPage) + 3 && i != parseInt(currentPage) - 3 || (markup += "<li >...</li>");
+                if (i == currentPage) {
+                    active = ' class="active" ';
+                }
+                if (i == 1 || i == pages || i < parseInt(currentPage) + 3 && i > parseInt(currentPage) - 3) {
+                    markup += '<li data-page="' + i + '"' + active + ">" + i + "</li>";
+                }
+                if (i == parseInt(currentPage) + 3 || i == parseInt(currentPage) - 3) {
+                    markup += "<li >...</li>";
+                }
             }
-            markup += "</ul", this.pagination.insertAdjacentHTML("beforeend", markup), 
-            this.pagination.style.display = "block", this._bindPaginationHandler();
-        } else this.pagination.style.display = "none";
+            markup += "</ul";
+            this.pagination.insertAdjacentHTML("beforeend", markup);
+            this.pagination.style.display = "block";
+            this._bindPaginationHandler();
+        } else {
+            this.pagination.style.display = "none";
+        }
     }
     _bindPaginationHandler() {
         this._onPageChange = this._handlePageChange.bind(this);
-        var self = this, pages;
-        document.querySelectorAll("#booking-list--pagination ul li").forEach(function(page) {
-            page.dataset.page && page.addEventListener("click", self._onPageChange);
+        var self = this;
+        var pages = document.querySelectorAll("#booking-list--pagination ul li");
+        pages.forEach(function(page) {
+            if (page.dataset.page) {
+                page.addEventListener("click", self._onPageChange);
+            }
         });
     }
     _handlePageChange(evt) {
-        var evt = evt.currentTarget.dataset.page;
-        this.listParams.set("page", evt), this._reloadData();
+        var page = evt.currentTarget.dataset.page;
+        this.listParams.set("page", page);
+        this._reloadData();
     }
     filter() {
-        jQuery("#filter").addClass("loading"), this.hasActiveFilters() ? (this.filters.startDate.length ? this.listParams.set("startDate", this.filters.startDate) : this.listParams.delete("startDate"), 
-        this.filters.endDate.length ? this.listParams.set("endDate", this.filters.endDate) : this.listParams.delete("endDate"), 
-        this.filters.items.length ? this.listParams.set("item", this.filters.items[0]) : this.listParams.delete("item"), 
-        this.filters.users.length ? this.listParams.set("user", this.filters.users[0]) : this.listParams.delete("user"), 
-        this.filters.locations.length ? this.listParams.set("location", this.filters.locations[0]) : this.listParams.delete("location"), 
-        this.filters.states.length ? this.listParams.set("status", this.filters.states[0]) : this.listParams.delete("status"), 
-        this.shuffle.filter(this.itemPassesFilters.bind(this))) : (this._resetListParams(), 
-        this.shuffle.filter(Shuffle.ALL_ITEMS)), this._reloadData(), jQuery("#filter").removeClass("loading");
+        jQuery("#filter").addClass("loading");
+        if (this.hasActiveFilters()) {
+            if (this.filters.startDate.length) {
+                this.listParams.set("startDate", this.filters.startDate);
+            } else {
+                this.listParams.delete("startDate");
+            }
+            if (this.filters.endDate.length) {
+                this.listParams.set("endDate", this.filters.endDate);
+            } else {
+                this.listParams.delete("endDate");
+            }
+            if (this.filters.items.length) {
+                this.listParams.set("item", this.filters.items[0]);
+            } else {
+                this.listParams.delete("item");
+            }
+            if (this.filters.users.length) {
+                this.listParams.set("user", this.filters.users[0]);
+            } else {
+                this.listParams.delete("user");
+            }
+            if (this.filters.locations.length) {
+                this.listParams.set("location", this.filters.locations[0]);
+            } else {
+                this.listParams.delete("location");
+            }
+            if (this.filters.states.length) {
+                this.listParams.set("status", this.filters.states[0]);
+            } else {
+                this.listParams.delete("status");
+            }
+            this.shuffle.filter(this.itemPassesFilters.bind(this));
+            this._reloadData();
+        } else {
+            this._resetListParams();
+            this.shuffle.filter(Shuffle.ALL_ITEMS);
+            this._reloadData();
+        }
+        jQuery("#filter").removeClass("loading");
     }
     hasActiveFilters() {
         return Object.keys(this.filters).some(function(key) {
-            return 0 < this.filters[key].length;
+            return this.filters[key].length > 0;
         }, this);
     }
     itemPassesFilters(element) {
-        var users = this.filters.users, items = this.filters.items, locations = this.filters.locations, states = this.filters.states, user = element.getAttribute("data-user"), item = element.getAttribute("data-item"), location = element.getAttribute("data-location"), element = element.getAttribute("data-status");
-        return !(0 < users.length && !users.includes(user)) && (!(0 < items.length && !items.includes(item)) && (!(0 < locations.length && !locations.includes(location)) && !(0 < states.length && !states.includes(element))));
+        var users = this.filters.users;
+        var items = this.filters.items;
+        var locations = this.filters.locations;
+        var states = this.filters.states;
+        var user = element.getAttribute("data-user");
+        var item = element.getAttribute("data-item");
+        var location = element.getAttribute("data-location");
+        var status = element.getAttribute("data-status");
+        if (users.length > 0 && !users.includes(user)) {
+            return false;
+        }
+        if (items.length > 0 && !items.includes(item)) {
+            return false;
+        }
+        if (locations.length > 0 && !locations.includes(location)) {
+            return false;
+        }
+        if (states.length > 0 && !states.includes(status)) {
+            return false;
+        }
+        return true;
     }
     _initItemElement(item) {
         var itemElement = document.createElement("div");
-        return itemElement.classList.add("js-item"), itemElement.classList.add("cb-wrapper"), 
-        itemElement.dataset.user = item.user, itemElement.dataset.item = item.item, 
-        itemElement.dataset.location = item.location, itemElement;
+        itemElement.classList.add("js-item");
+        itemElement.classList.add("cb-wrapper");
+        itemElement.dataset.user = item.user;
+        itemElement.dataset.item = item.item;
+        itemElement.dataset.location = item.location;
+        return itemElement;
     }
     _initHeadlineElement(item) {
-        let headline = document.createElement("p"), date = (headline.classList.add("js-item--headline"), 
-        document.createElement("span")), title = (date.classList.add("cb-date"), 
-        date.innerText = item.startDateFormatted + " - " + item.endDateFormatted, 
-        document.createElement("span"));
-        if (title.classList.add("cb-title"), title.innerText = item.item + " @ " + item.location, 
-        headline.append(date), headline.append(title), item.bookingCode) {
+        let headline = document.createElement("p");
+        headline.classList.add("js-item--headline");
+        let date = document.createElement("span");
+        date.classList.add("cb-date");
+        date.innerText = item.startDateFormatted + " - " + item.endDateFormatted;
+        let title = document.createElement("span");
+        title.classList.add("cb-title");
+        title.innerText = item.item + " @ " + item.location;
+        headline.append(date);
+        headline.append(title);
+        if (item.bookingCode) {
             let bookingCode = document.createElement("span");
-            bookingCode.classList.add("cb-booking-code"), bookingCode.innerText = item.bookingCode.label + ": " + item.bookingCode.value, 
+            bookingCode.classList.add("cb-booking-code");
+            bookingCode.innerText = item.bookingCode.label + ": " + item.bookingCode.value;
             headline.append(bookingCode);
         }
         return headline;
     }
     _initContentElement(item) {
-        var contentElement = document.createElement("div"), key, contentItem;
+        var contentElement = document.createElement("div");
         contentElement.classList.add("js-item--infos");
         let html = "";
-        for ([ key, contentItem ] of Object.entries(item.content)) html += "<span>" + contentItem.label + ": " + contentItem.value + "</span>";
-        return html += "", contentElement.innerHTML = html, contentElement;
+        for (const [ key, contentItem ] of Object.entries(item.content)) {
+            html += "<span>" + contentItem.label + ": " + contentItem.value + "</span>";
+        }
+        html += "";
+        contentElement.innerHTML = html;
+        return contentElement;
     }
     _initActionsElement(item) {
         var actionsElement = document.createElement("div");
-        return actionsElement.classList.add("js-item--action"), actionsElement.classList.add("cb-action"), 
-        actionsElement.insertAdjacentHTML("beforeend", item.actions), actionsElement;
+        actionsElement.classList.add("js-item--action");
+        actionsElement.classList.add("cb-action");
+        actionsElement.insertAdjacentHTML("beforeend", item.actions);
+        return actionsElement;
     }
     _getMarkupFromData(dataForSingleItem) {
-        var dataForSingleItem = dataForSingleItem, item = this._initItemElement(dataForSingleItem), contentWrapperElement = document.createElement("div");
-        return contentWrapperElement.classList.add("content-wrapper"), contentWrapperElement.append(this._initHeadlineElement(dataForSingleItem)), 
-        contentWrapperElement.append(this._initContentElement(dataForSingleItem)), 
-        contentWrapperElement.append(this._initActionsElement(dataForSingleItem)), 
-        item.append(contentWrapperElement), item.outerHTML;
+        var i = dataForSingleItem;
+        var item = this._initItemElement(i);
+        var contentWrapperElement = document.createElement("div");
+        contentWrapperElement.classList.add("content-wrapper");
+        contentWrapperElement.append(this._initHeadlineElement(i));
+        contentWrapperElement.append(this._initContentElement(i));
+        contentWrapperElement.append(this._initActionsElement(i));
+        item.append(contentWrapperElement);
+        return item.outerHTML;
     }
     _getItemMarkup(items) {
         let self = this;
-        return items ? items.reduce(function(str, item) {
-            return str + self._getMarkupFromData(item);
-        }, "") : "";
+        if (items) {
+            return items.reduce(function(str, item) {
+                return str + self._getMarkupFromData(item);
+            }, "");
+        }
+        return "";
     }
     _appendMarkupToGrid(markup) {
-        this.element.innerHTML = "", this.element.insertAdjacentHTML("beforeend", markup);
+        this.element.innerHTML = "";
+        this.element.insertAdjacentHTML("beforeend", markup);
     }
     _addSorting() {
         const sortSelect = document.getElementById("sorting");
-        if (sortSelect) {
-            sortSelect.addEventListener("change", this._handleSortChange.bind(this));
-            const orderSelect = document.getElementById("order");
-            orderSelect && orderSelect.addEventListener("change", this._handleSortChange.bind(this));
+        if (!sortSelect) {
+            return;
         }
+        sortSelect.addEventListener("change", this._handleSortChange.bind(this));
+        const orderSelect = document.getElementById("order");
+        if (!orderSelect) {
+            return;
+        }
+        orderSelect.addEventListener("change", this._handleSortChange.bind(this));
     }
     _handleSortChange() {
-        var sortSelect = document.getElementById("sorting"), sortSelect = sortSelect.options[sortSelect.selectedIndex].value, orderSelect = document.getElementById("order"), orderSelect = orderSelect.options[orderSelect.selectedIndex].value;
-        this.listParams.set("sort", sortSelect), this.listParams.set("order", orderSelect), 
+        const sortSelect = document.getElementById("sorting");
+        const sortSelectedOption = sortSelect.options[sortSelect.selectedIndex].value;
+        const orderSelect = document.getElementById("order");
+        const orderSelectedOption = orderSelect.options[orderSelect.selectedIndex].value;
+        this.listParams.set("sort", sortSelectedOption);
+        this.listParams.set("order", orderSelectedOption);
         this._reloadData();
     }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    var bookingList = document.getElementById("booking-list--results"), commentField;
-    bookingList && (window.demo = new BookingList(bookingList)), jQuery("#cb-booking-comment").keyup(function() {
+    var bookingList = document.getElementById("booking-list--results");
+    if (bookingList) {
+        window.demo = new BookingList(bookingList);
+    }
+    var commentField = jQuery("#cb-booking-comment");
+    commentField.keyup(function() {
         jQuery("input[type=hidden][name=comment]").val(this.value);
     });
-}), function(t, e) {
+});
+
+!function(t, e) {
     "object" == typeof exports && "object" == typeof module ? module.exports = e() : "function" == typeof define && define.amd ? define("Litepicker", [], e) : "object" == typeof exports ? exports.Litepicker = e() : t.Litepicker = e();
 }(window, function() {
-    return t = [ function(t, e, i) {
+    return function(t) {
+        var e = {};
+        function i(o) {
+            if (e[o]) return e[o].exports;
+            var n = e[o] = {
+                i: o,
+                l: !1,
+                exports: {}
+            };
+            return t[o].call(n.exports, n, n.exports, i), n.l = !0, n.exports;
+        }
+        return i.m = t, i.c = e, i.d = function(t, e, o) {
+            i.o(t, e) || Object.defineProperty(t, e, {
+                enumerable: !0,
+                get: o
+            });
+        }, i.r = function(t) {
+            "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(t, Symbol.toStringTag, {
+                value: "Module"
+            }), Object.defineProperty(t, "__esModule", {
+                value: !0
+            });
+        }, i.t = function(t, e) {
+            if (1 & e && (t = i(t)), 8 & e) return t;
+            if (4 & e && "object" == typeof t && t && t.__esModule) return t;
+            var o = Object.create(null);
+            if (i.r(o), Object.defineProperty(o, "default", {
+                enumerable: !0,
+                value: t
+            }), 2 & e && "string" != typeof t) for (var n in t) i.d(o, n, function(e) {
+                return t[e];
+            }.bind(null, n));
+            return o;
+        }, i.n = function(t) {
+            var e = t && t.__esModule ? function() {
+                return t.default;
+            } : function() {
+                return t;
+            };
+            return i.d(e, "a", e), e;
+        }, i.o = function(t, e) {
+            return Object.prototype.hasOwnProperty.call(t, e);
+        }, i.p = "", i(i.s = 4);
+    }([ function(t, e, i) {
         "use strict";
         Object.defineProperty(e, "__esModule", {
             value: !0
         }), e.DateTime = void 0;
         var o = function() {
             function t(e, i, o) {
-                void 0 === e && (e = null), void 0 === o && (o = "en-US"), this.dateInstance = (i = void 0 === i ? null : i) ? t.parseDateTime(e, i, o) : e ? t.parseDateTime(e) : t.parseDateTime(new Date()), 
+                void 0 === e && (e = null), void 0 === i && (i = null), void 0 === o && (o = "en-US"), 
+                this.dateInstance = i ? t.parseDateTime(e, i, o) : e ? t.parseDateTime(e) : t.parseDateTime(new Date()), 
                 this.lang = o;
             }
             return t.parseDateTime = function(e, i, o) {
@@ -275,15 +493,18 @@ document.addEventListener("DOMContentLoaded", () => {
                             day: null,
                             value: ""
                         };
-                        0 < n[0].index && (a.value += ".*?");
+                        n[0].index > 0 && (a.value += ".*?");
                         for (var r = 0, l = Object.entries(n); r < l.length; r++) {
-                            var d = l[r], c = d[0], d = d[1], c = Number(c), d = t.formatPatterns(d[0], o), m = d.group, d = d.pattern;
-                            a[m] = c + 1, a.value += d, a.value += ".*?";
+                            var d = l[r], c = d[0], h = d[1], p = Number(c), u = t.formatPatterns(h[0], o), m = u.group, f = u.pattern;
+                            a[m] = p + 1, a.value += f, a.value += ".*?";
                         }
-                        var y = new RegExp("^" + a.value + "$"), y, k, D, y;
-                        if (y.test(e)) return y = y.exec(e), k = Number(y[a.year]), 
-                        D = null, a.month ? D = Number(y[a.month]) - 1 : a.shortMonth ? D = t.shortMonths(o).indexOf(y[a.shortMonth]) : a.longMonth && (D = t.longMonths(o).indexOf(y[a.longMonth])), 
-                        y = Number(y[a.day]) || 1, new Date(k, D, y, 0, 0, 0, 0);
+                        var y = new RegExp("^" + a.value + "$");
+                        if (y.test(e)) {
+                            var g = y.exec(e), k = Number(g[a.year]), D = null;
+                            a.month ? D = Number(g[a.month]) - 1 : a.shortMonth ? D = t.shortMonths(o).indexOf(g[a.shortMonth]) : a.longMonth && (D = t.longMonths(o).indexOf(g[a.longMonth]));
+                            var v = Number(g[a.day]) || 1;
+                            return new Date(k, D, v, 0, 0, 0, 0);
+                        }
                     }
                 }
                 return t.getDateZeroTime(new Date(e));
@@ -373,7 +594,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }, t.prototype.setMonth = function(t) {
                 return this.dateInstance.setMonth(t);
             }, t.prototype.setHours = function(t, e, i, o) {
-                this.dateInstance.setHours(t = void 0 === t ? 0 : t, e = void 0 === e ? 0 : e, i = void 0 === i ? 0 : i, o = void 0 === o ? 0 : o);
+                void 0 === t && (t = 0), void 0 === e && (e = 0), void 0 === i && (i = 0), 
+                void 0 === o && (o = 0), this.dateInstance.setHours(t, e, i, o);
             }, t.prototype.setSeconds = function(t) {
                 return this.dateInstance.setSeconds(t);
             }, t.prototype.setDate = function(t) {
@@ -381,14 +603,15 @@ document.addEventListener("DOMContentLoaded", () => {
             }, t.prototype.setFullYear = function(t) {
                 return this.dateInstance.setFullYear(t);
             }, t.prototype.getWeek = function(t) {
-                var e = new Date(this.timestamp()), i = (this.getDay() + (7 - t)) % 7, i = (e.setDate(e.getDate() - i), 
-                e.getTime());
+                var e = new Date(this.timestamp()), i = (this.getDay() + (7 - t)) % 7;
+                e.setDate(e.getDate() - i);
+                var o = e.getTime();
                 return e.setMonth(0, 1), e.getDay() !== t && e.setMonth(0, 1 + (4 - e.getDay() + 7) % 7), 
-                1 + Math.ceil((i - e.getTime()) / 6048e5);
+                1 + Math.ceil((o - e.getTime()) / 6048e5);
             }, t.prototype.clone = function() {
                 return new t(this.getDateInstance());
             }, t.prototype.isBetween = function(t, e, i) {
-                switch (i = void 0 === i ? "()" : i) {
+                switch (void 0 === i && (i = "()"), i) {
                   default:
                   case "()":
                     return this.timestamp() > t.getTime() && this.timestamp() < e.getTime();
@@ -403,7 +626,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     return this.timestamp() >= t.getTime() && this.timestamp() <= e.getTime();
                 }
             }, t.prototype.isBefore = function(t, e) {
-                switch (e = void 0 === e ? "seconds" : e) {
+                switch (void 0 === e && (e = "seconds"), e) {
                   case "second":
                   case "seconds":
                     return t.getTime() > this.getTime();
@@ -422,7 +645,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 throw new Error("isBefore: Invalid unit!");
             }, t.prototype.isSameOrBefore = function(t, e) {
-                switch (e = void 0 === e ? "seconds" : e) {
+                switch (void 0 === e && (e = "seconds"), e) {
                   case "second":
                   case "seconds":
                     return t.getTime() >= this.getTime();
@@ -437,7 +660,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 throw new Error("isSameOrBefore: Invalid unit!");
             }, t.prototype.isAfter = function(t, e) {
-                switch (e = void 0 === e ? "seconds" : e) {
+                switch (void 0 === e && (e = "seconds"), e) {
                   case "second":
                   case "seconds":
                     return this.getTime() > t.getTime();
@@ -456,7 +679,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 throw new Error("isAfter: Invalid unit!");
             }, t.prototype.isSameOrAfter = function(t, e) {
-                switch (e = void 0 === e ? "seconds" : e) {
+                switch (void 0 === e && (e = "seconds"), e) {
                   case "second":
                   case "seconds":
                     return this.getTime() >= t.getTime();
@@ -471,7 +694,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 throw new Error("isSameOrAfter: Invalid unit!");
             }, t.prototype.isSame = function(t, e) {
-                switch (e = void 0 === e ? "seconds" : e) {
+                switch (void 0 === e && (e = "seconds"), e) {
                   case "second":
                   case "seconds":
                     return this.getTime() === t.getTime();
@@ -486,7 +709,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 throw new Error("isSame: Invalid unit!");
             }, t.prototype.add = function(t, e) {
-                switch (e = void 0 === e ? "seconds" : e) {
+                switch (void 0 === e && (e = "seconds"), e) {
                   case "second":
                   case "seconds":
                     this.setSeconds(this.getSeconds() + t);
@@ -503,7 +726,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 return this;
             }, t.prototype.subtract = function(t, e) {
-                switch (e = void 0 === e ? "seconds" : e) {
+                switch (void 0 === e && (e = "seconds"), e) {
                   case "second":
                   case "seconds":
                     this.setSeconds(this.getSeconds() - t);
@@ -520,7 +743,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 return this;
             }, t.prototype.diff = function(t, e) {
-                switch (e = void 0 === e ? "seconds" : e) {
+                void 0 === e && (e = "seconds");
+                switch (e) {
                   default:
                   case "second":
                   case "seconds":
@@ -537,11 +761,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 void 0 === i && (i = "en-US");
                 for (var o = "", n = [], s = null; null != (s = t.regex.exec(e)); ) "\\" !== s[1] && n.push(s);
                 if (n.length) {
-                    0 < n[0].index && (o += e.substring(0, n[0].index));
+                    n[0].index > 0 && (o += e.substring(0, n[0].index));
                     for (var a = 0, r = Object.entries(n); a < r.length; a++) {
-                        var l = r[a], d = l[0], l = l[1], d = Number(d);
-                        o += this.formatTokens(l[0], i), n[d + 1] && (o += e.substring(l.index + l[0].length, n[d + 1].index)), 
-                        d === n.length - 1 && (o += e.substring(l.index + l[0].length));
+                        var l = r[a], d = l[0], c = l[1], h = Number(d);
+                        o += this.formatTokens(c[0], i), n[h + 1] && (o += e.substring(c.index + c[0].length, n[h + 1].index)), 
+                        h === n.length - 1 && (o += e.substring(c.index + c[0].length));
                     }
                 }
                 return o.replace(/\\/g, "");
@@ -581,15 +805,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }();
         e.DateTime = o;
     }, function(t, e, i) {
-        var o = i(6), i = i(7), s;
-        o(i = "string" == typeof (i = i.__esModule ? i.default : i) ? [ [ t.i, i, "" ] ] : i, {
+        var o = i(6), n = i(7);
+        "string" == typeof (n = n.__esModule ? n.default : n) && (n = [ [ t.i, n, "" ] ]);
+        var s = {
             insert: function(t) {
                 var e = document.querySelector("head"), i = window._lastElementInsertedByStyleLoader;
                 window.disableLitepickerStyles || (i ? i.nextSibling ? e.insertBefore(t, i.nextSibling) : e.appendChild(t) : e.insertBefore(t, e.firstChild), 
                 window._lastElementInsertedByStyleLoader = t);
             },
             singleton: !1
-        }), t.exports = i.locals || {};
+        };
+        o(n, s);
+        t.exports = n.locals || {};
     }, function(t, e, i) {
         "use strict";
         function o() {
@@ -601,7 +828,9 @@ document.addEventListener("DOMContentLoaded", () => {
             var t = "portrait" === o();
             return window.matchMedia("(max-device-" + (t ? "width" : "height") + ": 480px)").matches;
         }, e.getOrientation = o, e.findNestedMonthItem = function(t) {
-            for (var e = t.parentNode.childNodes, i = 0; i < e.length; i += 1) if (e.item(i) === t) return i;
+            for (var e = t.parentNode.childNodes, i = 0; i < e.length; i += 1) {
+                if (e.item(i) === t) return i;
+            }
             return 0;
         };
     }, function(t, e, i) {
@@ -633,7 +862,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         } : function(t, e, i, o) {
-            t[o = void 0 === o ? i : o] = e[i];
+            void 0 === o && (o = i), t[o] = e[i];
         }), r = this && this.__setModuleDefault || (Object.create ? function(t, e) {
             Object.defineProperty(t, "default", {
                 enumerable: !0,
@@ -646,29 +875,33 @@ document.addEventListener("DOMContentLoaded", () => {
             var e = {};
             if (null != t) for (var i in t) "default" !== i && Object.hasOwnProperty.call(t, i) && a(e, t, i);
             return r(e, t), e;
-        }, d = (Object.defineProperty(e, "__esModule", {
+        };
+        Object.defineProperty(e, "__esModule", {
             value: !0
-        }), e.Litepicker = void 0, i(5)), c = i(0), h = l(i(1)), p = i(2), l = function(t) {
+        }), e.Litepicker = void 0;
+        var d = i(5), c = i(0), h = l(i(1)), p = i(2), u = function(t) {
             function e(e) {
-                var i = t.call(this) || this, o = (i.options = s(s({}, i.options), e.element.dataset), 
-                Object.keys(i.options).forEach(function(t) {
+                var i = t.call(this) || this;
+                i.options = s(s({}, i.options), e.element.dataset), Object.keys(i.options).forEach(function(t) {
                     "true" !== i.options[t] && "false" !== i.options[t] || (i.options[t] = "true" === i.options[t]);
-                }), s(s({}, i.options.dropdowns), e.dropdowns)), n = s(s({}, i.options.buttonText), e.buttonText), a = s(s({}, i.options.tooltipText), e.tooltipText), o = (i.options = s(s({}, i.options), e), 
-                i.options.dropdowns = s({}, o), i.options.buttonText = s({}, n), 
-                i.options.tooltipText = s({}, a), i.options.elementEnd || (i.options.allowRepick = !1), 
-                i.options.lockDays.length && (i.options.lockDays = c.DateTime.convertArray(i.options.lockDays, i.options.lockDaysFormat)), 
+                });
+                var o = s(s({}, i.options.dropdowns), e.dropdowns), n = s(s({}, i.options.buttonText), e.buttonText), a = s(s({}, i.options.tooltipText), e.tooltipText);
+                i.options = s(s({}, i.options), e), i.options.dropdowns = s({}, o), 
+                i.options.buttonText = s({}, n), i.options.tooltipText = s({}, a), 
+                i.options.elementEnd || (i.options.allowRepick = !1), i.options.lockDays.length && (i.options.lockDays = c.DateTime.convertArray(i.options.lockDays, i.options.lockDaysFormat)), 
                 i.options.holidays.length && (i.options.holidays = c.DateTime.convertArray(i.options.holidays, i.options.holidaysFormat)), 
                 i.options.bookedDays.length && (i.options.bookedDays = c.DateTime.convertArray(i.options.bookedDays, i.options.bookedDaysFormat)), 
                 i.options.partiallyBookedDays.length && (i.options.partiallyBookedDays = c.DateTime.convertArray(i.options.partiallyBookedDays, i.options.partiallyBookedDaysFormat)), 
                 i.options.highlightedDays.length && (i.options.highlightedDays = c.DateTime.convertArray(i.options.highlightedDays, i.options.highlightedDaysFormat)), 
-                !i.options.hotelMode || "bookedDaysInclusivity" in e || (i.options.bookedDaysInclusivity = "[)"), 
-                !i.options.hotelMode || "partiallyBookedDaysInclusivity" in e || (i.options.partiallyBookedDaysInclusivity = "[)"), 
-                !i.options.hotelMode || "disallowBookedDaysInRange" in e || (i.options.disallowBookedDaysInRange = !0), 
-                !i.options.hotelMode || "selectForward" in e || (i.options.selectForward = !0), 
-                i.parseInput()), n = o[0], a = o[1];
-                (n = i.options.startDate && (i.options.singleMode || i.options.endDate) ? new c.DateTime(i.options.startDate, i.options.format, i.options.lang) : n) && i.options.endDate && (a = new c.DateTime(i.options.endDate, i.options.format, i.options.lang)), 
-                n instanceof c.DateTime && !isNaN(n.getTime()) && (i.options.startDate = n), 
-                i.options.startDate && a instanceof c.DateTime && !isNaN(a.getTime()) && (i.options.endDate = a), 
+                i.options.hotelMode && !("bookedDaysInclusivity" in e) && (i.options.bookedDaysInclusivity = "[)"), 
+                i.options.hotelMode && !("partiallyBookedDaysInclusivity" in e) && (i.options.partiallyBookedDaysInclusivity = "[)"), 
+                i.options.hotelMode && !("disallowBookedDaysInRange" in e) && (i.options.disallowBookedDaysInRange = !0), 
+                i.options.hotelMode && !("selectForward" in e) && (i.options.selectForward = !0);
+                var r = i.parseInput(), l = r[0], d = r[1];
+                i.options.startDate && (i.options.singleMode || i.options.endDate) && (l = new c.DateTime(i.options.startDate, i.options.format, i.options.lang)), 
+                l && i.options.endDate && (d = new c.DateTime(i.options.endDate, i.options.format, i.options.lang)), 
+                l instanceof c.DateTime && !isNaN(l.getTime()) && (i.options.startDate = l), 
+                i.options.startDate && d instanceof c.DateTime && !isNaN(d.getTime()) && (i.options.endDate = d), 
                 !i.options.singleMode || i.options.startDate instanceof c.DateTime || (i.options.startDate = null), 
                 i.options.singleMode || i.options.startDate instanceof c.DateTime && i.options.endDate instanceof c.DateTime || (i.options.startDate = new c.DateTime(i.options.startDate, i.options.format, i.options.lang), 
                 i.options.endDate = null);
@@ -687,10 +920,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 return i.loadPolyfillsForIE11(), i.onInit(), i;
             }
             return n(e, t), e.prototype.scrollToDate = function(t) {
-                var e;
-                this.options.scrollToDate && (e = this.options.startDate instanceof c.DateTime ? this.options.startDate.clone() : null, 
-                !this.options.startDate || t && t !== this.options.element || (e.setDate(1), 
-                this.calendars[0] = e.clone(), this.options.scrollToDate = !1, this.options.onChangeMonth.call(this, this.calendars[0], 0)));
+                if (this.options.scrollToDate) {
+                    var e = this.options.startDate instanceof c.DateTime ? this.options.startDate.clone() : null;
+                    !this.options.startDate || t && t !== this.options.element || (e.setDate(1), 
+                    this.calendars[0] = e.clone(), this.options.scrollToDate = !1, 
+                    this.options.onChangeMonth.call(this, this.calendars[0], 0));
+                }
             }, e.prototype.onInit = function() {
                 var t = this;
                 if (document.addEventListener("click", function(e) {
@@ -712,41 +947,53 @@ document.addEventListener("DOMContentLoaded", () => {
                     if ("function" != typeof this.enableModuleNavKeyboard) throw new Error("moduleNavKeyboard is on but library does not included. See https://github.com/wakirin/litepicker-module-navkeyboard.");
                     this.enableModuleNavKeyboard.call(this, this);
                 }
-                this.render(), (this.options.parentEl ? this.options.parentEl instanceof HTMLElement ? this.options.parentEl : document.querySelector(this.options.parentEl) : this.options.inlineMode ? this.options.element instanceof HTMLInputElement ? this.options.element.parentNode : this.options.element : document.body).appendChild(this.picker), 
+                this.render(), this.options.parentEl ? this.options.parentEl instanceof HTMLElement ? this.options.parentEl.appendChild(this.picker) : document.querySelector(this.options.parentEl).appendChild(this.picker) : this.options.inlineMode ? this.options.element instanceof HTMLInputElement ? this.options.element.parentNode.appendChild(this.picker) : this.options.element.appendChild(this.picker) : document.body.appendChild(this.picker), 
                 this.options.mobileFriendly && (this.backdrop = document.createElement("div"), 
                 this.backdrop.className = h.litepickerBackdrop, this.backdrop.addEventListener("click", this.hide()), 
                 this.options.element && this.options.element.parentNode && this.options.element.parentNode.appendChild(this.backdrop), 
                 window.addEventListener("orientationchange", function(e) {
                     var i = function() {
-                        var e;
-                        p.isMobile() && t.isShowning() && ("landscape" === p.getOrientation() ? (t.options.numberOfMonths = 2, 
-                        t.options.numberOfColumns = 2) : (t.options.numberOfMonths = 1, 
-                        t.options.numberOfColumns = 1), t.render(), t.options.inlineMode || (e = t.picker.getBoundingClientRect(), 
-                        t.picker.style.top = "calc(50% - " + e.height / 2 + "px)", 
-                        t.picker.style.left = "calc(50% - " + e.width / 2 + "px)")), 
+                        if (p.isMobile() && t.isShowning()) {
+                            switch (p.getOrientation()) {
+                              case "landscape":
+                                t.options.numberOfMonths = 2, t.options.numberOfColumns = 2;
+                                break;
+
+                              default:
+                                t.options.numberOfMonths = 1, t.options.numberOfColumns = 1;
+                            }
+                            if (t.render(), !t.options.inlineMode) {
+                                var e = t.picker.getBoundingClientRect();
+                                t.picker.style.top = "calc(50% - " + e.height / 2 + "px)", 
+                                t.picker.style.left = "calc(50% - " + e.width / 2 + "px)";
+                            }
+                        }
                         window.removeEventListener("resize", i);
                     };
                     window.addEventListener("resize", i);
                 })), this.options.inlineMode && (this.show(), this.options.mobileFriendly && p.isMobile() && (window.dispatchEvent(new Event("orientationchange")), 
                 window.dispatchEvent(new Event("resize")))), this.updateInput();
             }, e.prototype.parseInput = function() {
-                var t = this.options.delimiter, e = new RegExp("" + t), i = this.options.element instanceof HTMLInputElement ? this.options.element.value.split(t) : [], e, i;
+                var t = this.options.delimiter, e = new RegExp("" + t), i = this.options.element instanceof HTMLInputElement ? this.options.element.value.split(t) : [];
                 if (this.options.elementEnd) {
                     if (this.options.element instanceof HTMLInputElement && this.options.element.value.length && this.options.elementEnd instanceof HTMLInputElement && this.options.elementEnd.value.length) return [ new c.DateTime(this.options.element.value, this.options.format), new c.DateTime(this.options.elementEnd.value, this.options.format) ];
                 } else if (this.options.singleMode) {
                     if (this.options.element instanceof HTMLInputElement && this.options.element.value.length) return [ new c.DateTime(this.options.element.value, this.options.format) ];
-                } else {
-                    if (this.options.element instanceof HTMLInputElement && e.test(this.options.element.value) && i.length && i.length % 2 == 0) return e = i.slice(0, i.length / 2).join(t), 
-                    i = i.slice(i.length / 2).join(t), [ new c.DateTime(e, this.options.format), new c.DateTime(i, this.options.format) ];
+                } else if (this.options.element instanceof HTMLInputElement && e.test(this.options.element.value) && i.length && i.length % 2 == 0) {
+                    var o = i.slice(0, i.length / 2).join(t), n = i.slice(i.length / 2).join(t);
+                    return [ new c.DateTime(o, this.options.format), new c.DateTime(n, this.options.format) ];
                 }
                 return [];
             }, e.prototype.updateInput = function() {
-                var t, e;
-                this.options.element instanceof HTMLInputElement && (this.options.singleMode && this.options.startDate ? this.options.element.value = this.options.startDate.format(this.options.format, this.options.lang) : !this.options.singleMode && this.options.startDate && this.options.endDate && (t = this.options.startDate.format(this.options.format, this.options.lang), 
-                e = this.options.endDate.format(this.options.format, this.options.lang), 
-                this.options.elementEnd ? (this.options.element.value = t, this.options.elementEnd.value = e) : this.options.element.value = "" + t + this.options.delimiter + e), 
-                this.options.startDate || this.options.endDate || (this.options.element.value = "", 
-                this.options.elementEnd && (this.options.elementEnd.value = "")));
+                if (this.options.element instanceof HTMLInputElement) {
+                    if (this.options.singleMode && this.options.startDate) this.options.element.value = this.options.startDate.format(this.options.format, this.options.lang); else if (!this.options.singleMode && this.options.startDate && this.options.endDate) {
+                        var t = this.options.startDate.format(this.options.format, this.options.lang), e = this.options.endDate.format(this.options.format, this.options.lang);
+                        this.options.elementEnd ? (this.options.element.value = t, 
+                        this.options.elementEnd.value = e) : this.options.element.value = "" + t + this.options.delimiter + e;
+                    }
+                    this.options.startDate || this.options.endDate || (this.options.element.value = "", 
+                    this.options.elementEnd && (this.options.elementEnd.value = ""));
+                }
             }, e.prototype.isSamePicker = function(t) {
                 return t.closest("." + h.litepicker) === this.picker;
             }, e.prototype.shouldShown = function(t) {
@@ -764,64 +1011,96 @@ document.addEventListener("DOMContentLoaded", () => {
             }, e.prototype.shouldCheckBookedDays = function() {
                 return this.options.disallowBookedDaysInRange && this.options.bookedDays.length && 2 === this.datePicked.length;
             }, e.prototype.onClick = function(t) {
-                var e = this, i = t.target, o, n, s, a, o, l, o, m, l, m, f, o;
+                var e = this, i = t.target;
                 if (i && this.picker) if (this.shouldShown(i)) this.show(i); else if (i.closest("." + h.litepicker), 
                 i.classList.contains(h.dayItem)) {
-                    t.preventDefault(), this.isSamePicker(i) && (i.classList.contains(h.isLocked) || i.classList.contains(h.isHoliday) || i.classList.contains(h.isBooked) || (this.shouldResetDatePicked() && (this.datePicked.length = 0), 
+                    if (t.preventDefault(), !this.isSamePicker(i)) return;
+                    if (i.classList.contains(h.isLocked)) return;
+                    if (i.classList.contains(h.isHoliday)) return;
+                    if (i.classList.contains(h.isBooked)) return;
+                    if (this.shouldResetDatePicked() && (this.datePicked.length = 0), 
                     this.datePicked[this.datePicked.length] = new c.DateTime(i.dataset.time), 
-                    this.shouldSwapDatePicked() && (o = this.datePicked[1].clone(), 
-                    this.datePicked[1] = this.datePicked[0].clone(), this.datePicked[0] = o.clone()), 
-                    this.shouldCheckLockDays() && (n = this.options.lockDaysInclusivity, 
-                    this.options.lockDays.filter(function(t) {
-                        return t instanceof Array ? t[0].isBetween(e.datePicked[0], e.datePicked[1], n) || t[1].isBetween(e.datePicked[0], e.datePicked[1], n) : t.isBetween(e.datePicked[0], e.datePicked[1], n);
-                    }).length && (this.datePicked.length = 0, "function" == typeof this.options.onError && this.options.onError.call(this, "INVALID_RANGE"))), 
-                    this.shouldCheckHolidays() && (s = this.options.holidaysInclusivity, 
-                    this.options.holidays.filter(function(t) {
-                        return t instanceof Array ? t[0].isBetween(e.datePicked[0], e.datePicked[1], s) || t[1].isBetween(e.datePicked[0], e.datePicked[1], s) : t.isBetween(e.datePicked[0], e.datePicked[1], s);
-                    }).length && (this.datePicked.length = 0, "function" == typeof this.options.onError && this.options.onError.call(this, "INVALID_RANGE"))), 
-                    this.shouldCheckPartiallyBookedDays() && (a = this.options.partiallyBookedDaysInclusivity, 
-                    (m = this.options.partiallyBookedDays.filter(function(t) {
-                        return t instanceof Array ? t[0].isBetween(e.datePicked[0], e.datePicked[1], a) || t[1].isBetween(e.datePicked[0], e.datePicked[1], a) : t.isBetween(e.datePicked[0], e.datePicked[1]);
-                    }).length) || this.datePicked[0].getDate() === this.datePicked[1].getDate() || (o = this.datePicked[0].format(this.options.bookedDaysFormat), 
-                    l = this.datePicked[1].format(this.options.bookedDaysFormat), 
-                    o = this.options.days[o], m = this.options.days[l].firstSlotBooked || o.lastSlotBooked), 
-                    l = this.options.anyBookedDaysAsCheckout && 1 === this.datePicked.length, 
-                    m && !l && (this.datePicked.length = 0, "function" == typeof this.options.onError && this.options.onError.call(this, "INVALID_RANGE"))), 
-                    this.shouldCheckBookedDays() && (f = this.options.bookedDaysInclusivity, 
-                    (m = this.options.bookedDays.filter(function(t) {
-                        return t instanceof Array ? t[0].isBetween(e.datePicked[0], e.datePicked[1], f) || t[1].isBetween(e.datePicked[0], e.datePicked[1], f) : t.isBetween(e.datePicked[0], e.datePicked[1], f);
-                    }).length) && (this.datePicked.length = 0, "function" == typeof this.options.onError && this.options.onError.call(this, "INVALID_RANGE"))), 
-                    "function" == typeof this.options.onDaySelect && this.options.onDaySelect.call(this, c.DateTime.parseDateTime(i.dataset.time), this.datePicked.length), 
-                    this.render(), this.options.autoApply && (o = !1, this.options.singleMode && this.datePicked.length ? (this.setDate(this.datePicked[0]), 
-                    this.hide(), o = !0) : this.options.singleMode || 2 !== this.datePicked.length || (this.setDateRange(this.datePicked[0], this.datePicked[1]), 
-                    this.hide(), o = !0), "function" == typeof this.options.onAutoApply && this.options.onAutoApply.call(this, o))));
+                    this.shouldSwapDatePicked()) {
+                        var o = this.datePicked[1].clone();
+                        this.datePicked[1] = this.datePicked[0].clone(), this.datePicked[0] = o.clone();
+                    }
+                    if (this.shouldCheckLockDays()) {
+                        var n = this.options.lockDaysInclusivity;
+                        this.options.lockDays.filter(function(t) {
+                            return t instanceof Array ? t[0].isBetween(e.datePicked[0], e.datePicked[1], n) || t[1].isBetween(e.datePicked[0], e.datePicked[1], n) : t.isBetween(e.datePicked[0], e.datePicked[1], n);
+                        }).length && (this.datePicked.length = 0, "function" == typeof this.options.onError && this.options.onError.call(this, "INVALID_RANGE"));
+                    }
+                    if (this.shouldCheckHolidays()) {
+                        var s = this.options.holidaysInclusivity;
+                        this.options.holidays.filter(function(t) {
+                            return t instanceof Array ? t[0].isBetween(e.datePicked[0], e.datePicked[1], s) || t[1].isBetween(e.datePicked[0], e.datePicked[1], s) : t.isBetween(e.datePicked[0], e.datePicked[1], s);
+                        }).length && (this.datePicked.length = 0, "function" == typeof this.options.onError && this.options.onError.call(this, "INVALID_RANGE"));
+                    }
+                    if (this.shouldCheckPartiallyBookedDays()) {
+                        var a = this.options.partiallyBookedDaysInclusivity;
+                        if (!(m = this.options.partiallyBookedDays.filter(function(t) {
+                            return t instanceof Array ? t[0].isBetween(e.datePicked[0], e.datePicked[1], a) || t[1].isBetween(e.datePicked[0], e.datePicked[1], a) : t.isBetween(e.datePicked[0], e.datePicked[1]);
+                        }).length) && this.datePicked[0].getDate() !== this.datePicked[1].getDate()) {
+                            var r = this.datePicked[0].format(this.options.bookedDaysFormat), l = this.datePicked[1].format(this.options.bookedDaysFormat), d = this.options.days[r];
+                            m = this.options.days[l].firstSlotBooked || d.lastSlotBooked;
+                        }
+                        var u = this.options.anyBookedDaysAsCheckout && 1 === this.datePicked.length;
+                        m && !u && (this.datePicked.length = 0, "function" == typeof this.options.onError && this.options.onError.call(this, "INVALID_RANGE"));
+                    }
+                    if (this.shouldCheckBookedDays()) {
+                        var m, f = this.options.bookedDaysInclusivity;
+                        (m = this.options.bookedDays.filter(function(t) {
+                            return t instanceof Array ? t[0].isBetween(e.datePicked[0], e.datePicked[1], f) || t[1].isBetween(e.datePicked[0], e.datePicked[1], f) : t.isBetween(e.datePicked[0], e.datePicked[1], f);
+                        }).length) && (this.datePicked.length = 0, "function" == typeof this.options.onError && this.options.onError.call(this, "INVALID_RANGE"));
+                    }
+                    if ("function" == typeof this.options.onDaySelect && this.options.onDaySelect.call(this, c.DateTime.parseDateTime(i.dataset.time), this.datePicked.length), 
+                    this.render(), this.options.autoApply) {
+                        var y = !1;
+                        this.options.singleMode && this.datePicked.length ? (this.setDate(this.datePicked[0]), 
+                        this.hide(), y = !0) : this.options.singleMode || 2 !== this.datePicked.length || (this.setDateRange(this.datePicked[0], this.datePicked[1]), 
+                        this.hide(), y = !0), "function" == typeof this.options.onAutoApply && this.options.onAutoApply.call(this, y);
+                    }
                 } else {
                     if (i.classList.contains(h.buttonPreviousMonth)) {
                         if (t.preventDefault(), !this.isSamePicker(i)) return;
-                        var g = 0, k = this.options.moveByOneMonth ? 1 : this.options.numberOfMonths, D, g, k;
-                        return this.options.splitView && (D = i.closest("." + h.monthItem), 
-                        g = p.findNestedMonthItem(D), k = 1), this.calendars[g].setMonth(this.calendars[g].getMonth() - k), 
+                        var g = 0, k = this.options.moveByOneMonth ? 1 : this.options.numberOfMonths;
+                        if (this.options.splitView) {
+                            var D = i.closest("." + h.monthItem);
+                            g = p.findNestedMonthItem(D), k = 1;
+                        }
+                        return this.calendars[g].setMonth(this.calendars[g].getMonth() - k), 
                         this.gotoDate(this.calendars[g], g), void ("function" == typeof this.options.onChangeMonth && this.options.onChangeMonth.call(this, this.calendars[g], g));
                     }
-                    if (i.classList.contains(h.buttonNextMonth)) return t.preventDefault(), 
-                    this.isSamePicker(i) ? (g = 0, k = this.options.moveByOneMonth ? 1 : this.options.numberOfMonths, 
-                    this.options.splitView && (D = i.closest("." + h.monthItem), 
-                    g = p.findNestedMonthItem(D), k = 1), this.calendars[g].setMonth(this.calendars[g].getMonth() + k), 
-                    this.gotoDate(this.calendars[g], g), void ("function" == typeof this.options.onChangeMonth && this.options.onChangeMonth.call(this, this.calendars[g], g))) : void 0;
+                    if (i.classList.contains(h.buttonNextMonth)) {
+                        if (t.preventDefault(), !this.isSamePicker(i)) return;
+                        g = 0, k = this.options.moveByOneMonth ? 1 : this.options.numberOfMonths;
+                        if (this.options.splitView) {
+                            D = i.closest("." + h.monthItem);
+                            g = p.findNestedMonthItem(D), k = 1;
+                        }
+                        return this.calendars[g].setMonth(this.calendars[g].getMonth() + k), 
+                        this.gotoDate(this.calendars[g], g), void ("function" == typeof this.options.onChangeMonth && this.options.onChangeMonth.call(this, this.calendars[g], g));
+                    }
                     if (i.classList.contains(h.buttonCancel)) {
                         if (t.preventDefault(), !this.isSamePicker(i)) return;
                         this.hide();
                     }
-                    i.classList.contains(h.buttonApply) && (t.preventDefault(), 
-                    this.isSamePicker(i) && (this.options.singleMode && this.datePicked.length ? this.setDate(this.datePicked[0]) : this.options.singleMode || 2 !== this.datePicked.length || this.setDateRange(this.datePicked[0], this.datePicked[1]), 
-                    this.hide()));
+                    if (i.classList.contains(h.buttonApply)) {
+                        if (t.preventDefault(), !this.isSamePicker(i)) return;
+                        this.options.singleMode && this.datePicked.length ? this.setDate(this.datePicked[0]) : this.options.singleMode || 2 !== this.datePicked.length || this.setDateRange(this.datePicked[0], this.datePicked[1]), 
+                        this.hide();
+                    }
                 }
             }, e.prototype.showTooltip = function(t, e) {
-                var i = this.picker.querySelector("." + h.containerTooltip), e = (i.style.visibility = "visible", 
-                i.innerHTML = e, this.picker.getBoundingClientRect()), n = i.getBoundingClientRect(), s = t.getBoundingClientRect(), a = s.top, r = s.left, l;
-                this.options.inlineMode && this.options.parentEl ? (a -= (l = this.picker.parentNode.getBoundingClientRect()).top, 
-                r -= l.left) : (a -= e.top, r -= e.left), a -= n.height, r = (r -= n.width / 2) + s.width / 2, 
-                i.style.top = a + "px", i.style.left = r + "px", "function" == typeof this.options.onShowTooltip && this.options.onShowTooltip.call(this, i, t);
+                var i = this.picker.querySelector("." + h.containerTooltip);
+                i.style.visibility = "visible", i.innerHTML = e;
+                var o = this.picker.getBoundingClientRect(), n = i.getBoundingClientRect(), s = t.getBoundingClientRect(), a = s.top, r = s.left;
+                if (this.options.inlineMode && this.options.parentEl) {
+                    var l = this.picker.parentNode.getBoundingClientRect();
+                    a -= l.top, r -= l.left;
+                } else a -= o.top, r -= o.left;
+                a -= n.height, r -= n.width / 2, r += s.width / 2, i.style.top = a + "px", 
+                i.style.left = r + "px", "function" == typeof this.options.onShowTooltip && this.options.onShowTooltip.call(this, i, t);
             }, e.prototype.hideTooltip = function() {
                 this.picker.querySelector("." + h.containerTooltip).style.visibility = "hidden";
             }, e.prototype.shouldAllowMouseEnter = function(t) {
@@ -831,50 +1110,72 @@ document.addEventListener("DOMContentLoaded", () => {
             }, e.prototype.isDayItem = function(t) {
                 return t.classList.contains(h.dayItem);
             }, e.prototype.onMouseEnter = function(t) {
-                var e = this, t = t.target, o, n, s, a, r, n, s, a, r, a, o;
-                this.isDayItem(t) && ("function" == typeof this.options.onDayHover && this.options.onDayHover.call(this, c.DateTime.parseDateTime(t.dataset.time), t.classList.toString().split(/\s/), t), 
-                this.shouldAllowMouseEnter(t)) && (this.shouldAllowRepick() && (this.triggerElement === this.options.element ? this.datePicked[0] = this.options.endDate.clone() : this.triggerElement === this.options.elementEnd && (this.datePicked[0] = this.options.startDate.clone())), 
-                1 === this.datePicked.length && (o = this.picker.querySelector("." + h.dayItem + '[data-time="' + this.datePicked[0].getTime() + '"]'), 
-                n = this.datePicked[0].clone(), s = new c.DateTime(t.dataset.time), 
-                a = !1, n.getTime() > s.getTime() && (r = n.clone(), n = s.clone(), 
-                s = r.clone(), a = !0), Array.prototype.slice.call(this.picker.querySelectorAll("." + h.dayItem)).forEach(function(t) {
-                    var i = new c.DateTime(t.dataset.time), o = e.renderDay(i), i;
-                    i.isBetween(n, s) && ((i = e.options.days[i.format(e.options.bookedDaysFormat)]).bookedDay ? o.classList.add(h.isBooked) : i.partiallyBookedDay && (i.firstSlotBooked && o.classList.add(h.isPartiallyBookedStart), 
-                    i.lastSlotBooked && o.classList.add(h.isPartiallyBookedEnd)), 
-                    o.classList.add(h.isInRange)), t.className = o.className;
-                }), t.classList.add(h.isEndDate), a ? (o && o.classList.add(h.isFlipped), 
-                t.classList.add(h.isFlipped)) : (o && o.classList.remove(h.isFlipped), 
-                t.classList.remove(h.isFlipped)), this.options.showTooltip && (r = s.diff(n, "day"), 
-                this.options.hotelMode || (r += 1), 0 < r ? (a = this.pluralSelector(r), 
-                o = r + " " + (this.options.tooltipText[a] || "[" + a + "]"), this.showTooltip(t, o)) : this.hideTooltip())));
+                var e = this, i = t.target;
+                if (this.isDayItem(i) && ("function" == typeof this.options.onDayHover && this.options.onDayHover.call(this, c.DateTime.parseDateTime(i.dataset.time), i.classList.toString().split(/\s/), i), 
+                this.shouldAllowMouseEnter(i))) {
+                    if (this.shouldAllowRepick() && (this.triggerElement === this.options.element ? this.datePicked[0] = this.options.endDate.clone() : this.triggerElement === this.options.elementEnd && (this.datePicked[0] = this.options.startDate.clone())), 
+                    1 !== this.datePicked.length) return;
+                    var o = this.picker.querySelector("." + h.dayItem + '[data-time="' + this.datePicked[0].getTime() + '"]'), n = this.datePicked[0].clone(), s = new c.DateTime(i.dataset.time), a = !1;
+                    if (n.getTime() > s.getTime()) {
+                        var r = n.clone();
+                        n = s.clone(), s = r.clone(), a = !0;
+                    }
+                    if (Array.prototype.slice.call(this.picker.querySelectorAll("." + h.dayItem)).forEach(function(t) {
+                        var i = new c.DateTime(t.dataset.time), o = e.renderDay(i);
+                        if (i.isBetween(n, s)) {
+                            var a = e.options.days[i.format(e.options.bookedDaysFormat)];
+                            a.bookedDay ? o.classList.add(h.isBooked) : a.partiallyBookedDay && (a.firstSlotBooked && o.classList.add(h.isPartiallyBookedStart), 
+                            a.lastSlotBooked && o.classList.add(h.isPartiallyBookedEnd)), 
+                            o.classList.add(h.isInRange);
+                        }
+                        t.className = o.className;
+                    }), i.classList.add(h.isEndDate), a ? (o && o.classList.add(h.isFlipped), 
+                    i.classList.add(h.isFlipped)) : (o && o.classList.remove(h.isFlipped), 
+                    i.classList.remove(h.isFlipped)), this.options.showTooltip) {
+                        var l = s.diff(n, "day");
+                        if (this.options.hotelMode || (l += 1), l > 0) {
+                            var d = this.pluralSelector(l), p = l + " " + (this.options.tooltipText[d] ? this.options.tooltipText[d] : "[" + d + "]");
+                            this.showTooltip(i, p);
+                        } else this.hideTooltip();
+                    }
+                }
             }, e.prototype.onMouseLeave = function(t) {
-                t.target, this.options.allowRepick && (!this.options.allowRepick || this.options.startDate || this.options.endDate) && (this.datePicked.length = 0, 
+                t.target;
+                this.options.allowRepick && (!this.options.allowRepick || this.options.startDate || this.options.endDate) && (this.datePicked.length = 0, 
                 this.render());
             }, e.prototype.onInput = function(t) {
-                var e = this.parseInput(), i = e[0], e = e[1], n = this.options.format, s, i, e, s, r;
-                (this.options.elementEnd ? i instanceof c.DateTime && e instanceof c.DateTime && i.format(n) === this.options.element.value && e.format(n) === this.options.elementEnd.value : this.options.singleMode ? i instanceof c.DateTime && i.format(n) === this.options.element.value : i instanceof c.DateTime && e instanceof c.DateTime && "" + i.format(n) + this.options.delimiter + e.format(n) === this.options.element.value) && (e && i.getTime() > e.getTime() && (s = i.clone(), 
-                i = e.clone(), e = s.clone()), this.options.startDate = new c.DateTime(i, this.options.format, this.options.lang), 
-                e && (this.options.endDate = new c.DateTime(e, this.options.format, this.options.lang)), 
-                this.updateInput(), this.render(), s = i.clone(), r = 0, (this.options.elementEnd ? i.format(n) === t.target.value : t.target.value.startsWith(i.format(n))) || (s = e.clone(), 
-                r = this.options.numberOfMonths - 1), "function" == typeof this.options.onSelect && this.options.onSelect.call(this, this.getStartDate(), this.getEndDate()), 
-                this.gotoDate(s, r));
+                var e = this.parseInput(), i = e[0], o = e[1], n = this.options.format;
+                if (this.options.elementEnd ? i instanceof c.DateTime && o instanceof c.DateTime && i.format(n) === this.options.element.value && o.format(n) === this.options.elementEnd.value : this.options.singleMode ? i instanceof c.DateTime && i.format(n) === this.options.element.value : i instanceof c.DateTime && o instanceof c.DateTime && "" + i.format(n) + this.options.delimiter + o.format(n) === this.options.element.value) {
+                    if (o && i.getTime() > o.getTime()) {
+                        var s = i.clone();
+                        i = o.clone(), o = s.clone();
+                    }
+                    this.options.startDate = new c.DateTime(i, this.options.format, this.options.lang), 
+                    o && (this.options.endDate = new c.DateTime(o, this.options.format, this.options.lang)), 
+                    this.updateInput(), this.render();
+                    var a = i.clone(), r = 0;
+                    (this.options.elementEnd ? i.format(n) === t.target.value : t.target.value.startsWith(i.format(n))) || (a = o.clone(), 
+                    r = this.options.numberOfMonths - 1), "function" == typeof this.options.onSelect && this.options.onSelect.call(this, this.getStartDate(), this.getEndDate()), 
+                    this.gotoDate(a, r);
+                }
             }, e.prototype.isShowning = function() {
                 return this.picker && "none" !== this.picker.style.display;
             }, e.prototype.loadPolyfillsForIE11 = function() {
                 Object.entries || (Object.entries = function(t) {
-                    for (var e = Object.keys(t), i = e.length, o = new Array(i); i; ) o[--i] = [ e[i], t[e[i]] ];
+                    for (var e = Object.keys(t), i = e.length, o = new Array(i); i; ) o[i -= 1] = [ e[i], t[e[i]] ];
                     return o;
                 }), Element.prototype.matches || (Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector), 
                 Element.prototype.closest || (Element.prototype.closest = function(t) {
                     var e = this;
                     do {
                         if (e.matches(t)) return e;
-                    } while (null !== (e = e.parentElement || e.parentNode) && 1 === e.nodeType);
+                        e = e.parentElement || e.parentNode;
+                    } while (null !== e && 1 === e.nodeType);
                     return null;
                 });
             }, e;
         }(d.Calendar);
-        e.Litepicker = l;
+        e.Litepicker = u;
     }, function(t, e, i) {
         "use strict";
         Object.defineProperty(e, "__esModule", {
@@ -897,7 +1198,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         } : function(t, e, i, o) {
-            t[o = void 0 === o ? i : o] = e[i];
+            void 0 === o && (o = i), t[o] = e[i];
         }), n = this && this.__setModuleDefault || (Object.create ? function(t, e) {
             Object.defineProperty(t, "default", {
                 enumerable: !0,
@@ -910,9 +1211,11 @@ document.addEventListener("DOMContentLoaded", () => {
             var e = {};
             if (null != t) for (var i in t) "default" !== i && Object.hasOwnProperty.call(t, i) && o(e, t, i);
             return n(e, t), e;
-        }, a = (Object.defineProperty(e, "__esModule", {
+        };
+        Object.defineProperty(e, "__esModule", {
             value: !0
-        }), e.Calendar = void 0, i(0)), r = s(i(1)), l = i(2), s = function() {
+        }), e.Calendar = void 0;
+        var a = i(0), r = s(i(1)), l = i(2), d = function() {
             function t() {
                 this.options = {
                     element: null,
@@ -1004,22 +1307,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 }, this.calendars = [], this.datePicked = [];
             }
             return t.prototype.render = function() {
-                var t = this, e = document.createElement("div"), i = (e.className = r.containerMain, 
-                document.createElement("div"));
+                var t = this, e = document.createElement("div");
+                e.className = r.containerMain;
+                var i = document.createElement("div");
                 i.className = r.containerMonths, r["columns" + this.options.numberOfColumns] && (i.classList.remove(r.columns2, r.columns3, r.columns4), 
                 i.classList.add(r["columns" + this.options.numberOfColumns])), this.options.splitView && i.classList.add(r.splitView), 
                 this.options.showWeekNumbers && i.classList.add(r.showWeekNumbers);
-                for (var o = this.calendars[0].clone(), n = o.getMonth(), s = o.getMonth() + this.options.numberOfMonths, a = 0, l = n, n; l < s; l += 1) {
+                for (var o = this.calendars[0].clone(), n = o.getMonth(), s = o.getMonth() + this.options.numberOfMonths, a = 0, l = n; l < s; l += 1) {
                     var d = o.clone();
                     d.setDate(1), this.options.splitView ? d = this.calendars[a].clone() : d.setMonth(l), 
                     i.appendChild(this.renderMonth(d)), a += 1;
                 }
-                if (this.picker.innerHTML = "", e.appendChild(i), this.options.useResetBtn && ((n = document.createElement("a")).href = "#", 
-                n.className = r.resetButton, n.innerHTML = this.options.buttonText.reset, 
-                n.addEventListener("click", function(e) {
-                    e.preventDefault(), t.clearSelection(), "function" == typeof t.options.resetBtnCallback && t.options.resetBtnCallback.call(t);
-                }), e.querySelector("." + r.monthItem + ":last-child").querySelector("." + r.monthItemHeader).appendChild(n)), 
-                this.picker.appendChild(e), this.options.autoApply && !this.options.footerHTML || this.picker.appendChild(this.renderFooter()), 
+                if (this.picker.innerHTML = "", e.appendChild(i), this.options.useResetBtn) {
+                    var c = document.createElement("a");
+                    c.href = "#", c.className = r.resetButton, c.innerHTML = this.options.buttonText.reset, 
+                    c.addEventListener("click", function(e) {
+                        e.preventDefault(), t.clearSelection(), "function" == typeof t.options.resetBtnCallback && t.options.resetBtnCallback.call(t);
+                    }), e.querySelector("." + r.monthItem + ":last-child").querySelector("." + r.monthItemHeader).appendChild(c);
+                }
+                if (this.picker.appendChild(e), this.options.autoApply && !this.options.footerHTML || this.picker.appendChild(this.renderFooter()), 
                 this.options.showTooltip && this.picker.appendChild(this.renderTooltip()), 
                 this.options.moduleRanges) {
                     if ("function" != typeof this.enableModuleRanges) throw new Error("moduleRanges is on but library does not included. See https://github.com/wakirin/litepicker-module-ranges.");
@@ -1027,9 +1333,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 "function" == typeof this.options.onRender && this.options.onRender.call(this, this.picker);
             }, t.prototype.renderMonth = function(t) {
-                var e = this, i = t.clone(), o = 32 - new Date(i.getFullYear(), i.getMonth(), 32).getDate(), n = document.createElement("div"), s = (n.className = r.monthItem, 
-                document.createElement("div")), d = (s.className = r.monthItemHeader, 
-                document.createElement("div"));
+                var e = this, i = t.clone(), o = 32 - new Date(i.getFullYear(), i.getMonth(), 32).getDate(), n = document.createElement("div");
+                n.className = r.monthItem;
+                var s = document.createElement("div");
+                s.className = r.monthItemHeader;
+                var d = document.createElement("div");
                 if (this.options.dropdowns.months) {
                     var c = document.createElement("select");
                     c.className = r.monthItemName;
@@ -1041,10 +1349,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         p.selected = u.getMonth() === t.getMonth(), c.appendChild(p);
                     }
                     c.addEventListener("change", function(t) {
-                        var t = t.target, o = 0, n, o;
-                        e.options.splitView && (n = t.closest("." + r.monthItem), 
-                        o = l.findNestedMonthItem(n)), e.calendars[o].setMonth(Number(t.value)), 
-                        e.render(), "function" == typeof e.options.onChangeMonth && e.options.onChangeMonth.call(e, e.calendars[o], o);
+                        var i = t.target, o = 0;
+                        if (e.options.splitView) {
+                            var n = i.closest("." + r.monthItem);
+                            o = l.findNestedMonthItem(n);
+                        }
+                        e.calendars[o].setMonth(Number(i.value)), e.render(), "function" == typeof e.options.onChangeMonth && e.options.onChangeMonth.call(e, e.calendars[o], o);
                     }), d.appendChild(c);
                 } else {
                     var m = document.createElement("strong");
@@ -1053,45 +1363,56 @@ document.addEventListener("DOMContentLoaded", () => {
                     }), d.appendChild(m);
                 }
                 if (this.options.dropdowns.years) {
-                    var f = document.createElement("select"), y = (f.className = r.monthItemYear, 
-                    this.options.dropdowns.minYear), m = this.options.dropdowns.maxYear || new Date().getFullYear(), m;
-                    for (t.getFullYear() > m && ((p = document.createElement("option")).value = String(t.getFullYear()), 
+                    var f = document.createElement("select");
+                    f.className = r.monthItemYear;
+                    var y = this.options.dropdowns.minYear, g = this.options.dropdowns.maxYear ? this.options.dropdowns.maxYear : new Date().getFullYear();
+                    if (t.getFullYear() > g) (p = document.createElement("option")).value = String(t.getFullYear()), 
                     p.text = String(t.getFullYear()), p.selected = !0, p.disabled = !0, 
-                    f.appendChild(p)), h = m; y <= h; --h) {
+                    f.appendChild(p);
+                    for (h = g; h >= y; h -= 1) {
                         var p = document.createElement("option"), k = new a.DateTime(new Date(h, 0, 1, 0, 0, 0));
                         p.value = h, p.text = h, p.disabled = this.options.minDate && k.isBefore(new a.DateTime(this.options.minDate), "year") || this.options.maxDate && k.isAfter(new a.DateTime(this.options.maxDate), "year"), 
                         p.selected = t.getFullYear() === h, f.appendChild(p);
                     }
-                    t.getFullYear() < y && ((p = document.createElement("option")).value = String(t.getFullYear()), 
+                    if (t.getFullYear() < y) (p = document.createElement("option")).value = String(t.getFullYear()), 
                     p.text = String(t.getFullYear()), p.selected = !0, p.disabled = !0, 
-                    f.appendChild(p)), "asc" === this.options.dropdowns.years && (m = Array.prototype.slice.call(f.childNodes).reverse(), 
-                    f.innerHTML = "", m.forEach(function(t) {
-                        t.innerHTML = t.value, f.appendChild(t);
-                    })), f.addEventListener("change", function(t) {
-                        var t = t.target, o = 0, n, o;
-                        e.options.splitView && (n = t.closest("." + r.monthItem), 
-                        o = l.findNestedMonthItem(n)), e.calendars[o].setFullYear(Number(t.value)), 
-                        e.render(), "function" == typeof e.options.onChangeYear && e.options.onChangeYear.call(e, e.calendars[o], o);
+                    f.appendChild(p);
+                    if ("asc" === this.options.dropdowns.years) {
+                        var D = Array.prototype.slice.call(f.childNodes).reverse();
+                        f.innerHTML = "", D.forEach(function(t) {
+                            t.innerHTML = t.value, f.appendChild(t);
+                        });
+                    }
+                    f.addEventListener("change", function(t) {
+                        var i = t.target, o = 0;
+                        if (e.options.splitView) {
+                            var n = i.closest("." + r.monthItem);
+                            o = l.findNestedMonthItem(n);
+                        }
+                        e.calendars[o].setFullYear(Number(i.value)), e.render(), 
+                        "function" == typeof e.options.onChangeYear && e.options.onChangeYear.call(e, e.calendars[o], o);
                     }), d.appendChild(f);
                 } else {
-                    var m = document.createElement("span");
-                    m.className = r.monthItemYear, m.innerHTML = String(t.getFullYear()), 
-                    d.appendChild(m);
+                    var v = document.createElement("span");
+                    v.className = r.monthItemYear, v.innerHTML = String(t.getFullYear()), 
+                    d.appendChild(v);
                 }
-                var m = document.createElement("a"), w = (m.href = "#", m.className = r.buttonPreviousMonth, 
-                m.innerHTML = this.options.buttonText.previousMonth, document.createElement("a")), M = (w.href = "#", 
-                w.className = r.buttonNextMonth, w.innerHTML = this.options.buttonText.nextMonth, 
-                s.appendChild(m), s.appendChild(d), s.appendChild(w), this.options.minDate && i.isSameOrBefore(new a.DateTime(this.options.minDate), "month") && n.classList.add(r.noPreviousMonth), 
-                this.options.maxDate && i.isSameOrAfter(new a.DateTime(this.options.maxDate), "month") && n.classList.add(r.noNextMonth), 
-                document.createElement("div"));
+                var b = document.createElement("a");
+                b.href = "#", b.className = r.buttonPreviousMonth, b.innerHTML = this.options.buttonText.previousMonth;
+                var w = document.createElement("a");
+                w.href = "#", w.className = r.buttonNextMonth, w.innerHTML = this.options.buttonText.nextMonth, 
+                s.appendChild(b), s.appendChild(d), s.appendChild(w), this.options.minDate && i.isSameOrBefore(new a.DateTime(this.options.minDate), "month") && n.classList.add(r.noPreviousMonth), 
+                this.options.maxDate && i.isSameOrAfter(new a.DateTime(this.options.maxDate), "month") && n.classList.add(r.noNextMonth);
+                var M = document.createElement("div");
                 M.className = r.monthItemWeekdaysRow, this.options.showWeekNumbers && (M.innerHTML = "<div>W</div>");
                 for (var x = 1; x <= 7; x += 1) {
                     var T = 3 + this.options.firstDay + x, B = document.createElement("div");
                     B.innerHTML = this.weekdayName(T), B.title = this.weekdayName(T, "long"), 
                     M.appendChild(B);
                 }
-                var _ = document.createElement("div"), I = (_.className = r.containerDays, 
-                this.calcSkipDays(i));
+                var _ = document.createElement("div");
+                _.className = r.containerDays;
+                var I = this.calcSkipDays(i);
                 this.options.showWeekNumbers && I && _.appendChild(this.renderWeekNumber(i));
                 for (var L = 0; L < I; L += 1) {
                     var P = document.createElement("div");
@@ -1101,7 +1422,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 _.appendChild(this.renderDay(i));
                 return n.appendChild(s), n.appendChild(M), n.appendChild(_), n;
             }, t.prototype.renderDay = function(t) {
-                var e = this, i = (t.setHours(), document.createElement("a")), o, n, s, o, D, v, b, w, n, s, T, B, v, n;
+                var e = this;
+                t.setHours();
+                var i = document.createElement("a");
                 if (i.href = "#", i.className = r.dayItem, i.innerHTML = String(t.getDate()), 
                 i.dataset.time = String(t.getTime()), t.toDateString() === new Date().toDateString() && i.classList.add(r.isToday), 
                 this.datePicked.length ? (2 === this.datePicked.length && (this.bookedDayAfterSelection = null), 
@@ -1113,67 +1436,83 @@ document.addEventListener("DOMContentLoaded", () => {
                 this.options.startDate && this.options.endDate && t.isBetween(this.options.startDate, this.options.endDate) && i.classList.add(r.isInRange)), 
                 this.options.minDate && t.isBefore(new a.DateTime(this.options.minDate)) && i.classList.add(r.isLocked), 
                 this.options.maxDate && t.isAfter(new a.DateTime(this.options.maxDate)) && i.classList.add(r.isLocked), 
-                this.options.minDays && 1 === this.datePicked.length && (o = Number(!this.options.hotelMode), 
-                n = this.datePicked[0].clone().subtract(this.options.minDays - o, "day"), 
-                s = this.datePicked[0].clone().add(this.options.minDays - o, "day"), 
-                t.isBetween(n, this.datePicked[0], "(]") && i.classList.add(r.isLocked), 
-                t.isBetween(this.datePicked[0], s, "[)") && i.classList.add(r.isLocked)), 
-                this.options.maxDays && 1 === this.datePicked.length) {
-                    var o = Number(this.options.hotelMode), n = this.datePicked[0].clone().subtract(this.options.maxDays + o, "day"), l = 0;
+                this.options.minDays && 1 === this.datePicked.length) {
+                    var o = Number(!this.options.hotelMode), n = this.datePicked[0].clone().subtract(this.options.minDays - o, "day"), s = this.datePicked[0].clone().add(this.options.minDays - o, "day");
+                    t.isBetween(n, this.datePicked[0], "(]") && i.classList.add(r.isLocked), 
+                    t.isBetween(this.datePicked[0], s, "[)") && i.classList.add(r.isLocked);
+                }
+                if (this.options.maxDays && 1 === this.datePicked.length) {
+                    o = Number(this.options.hotelMode), n = this.datePicked[0].clone().subtract(this.options.maxDays + o, "day");
+                    var l = 0;
                     if (!this.options.disallowLockDaysInRange) {
                         for (var d = this.datePicked[0].clone(), c = this.options.maxDays, h = [], p = 0, u = this.options.lockDays; p < u.length; p++) {
                             var m = u[p];
                             this.datePicked[0].getTime() < m.getTime() && h.push(m);
                         }
-                        for (var f = !1; 0 < c; ) {
-                            --c;
-                            for (var d = d.add(1, "day"), y = 0, g = h; y < g.length; y++) (m = g[y]).getTime() === d.getTime() && (f = !(this.dateIsBooked(d, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(d, this.options.partiallyBookedDaysInclusivity) || this.dateIsHoliday(d, this.options.holidaysInclusivity) || !1 !== f) && (l += 1, 
-                            !0));
+                        for (var f = !1; c > 0; ) {
+                            c -= 1, d = d.add(1, "day");
+                            for (var y = 0, g = h; y < g.length; y++) {
+                                (m = g[y]).getTime() === d.getTime() && (this.dateIsBooked(d, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(d, this.options.partiallyBookedDaysInclusivity) || this.dateIsHoliday(d, this.options.holidaysInclusivity) || !1 !== f ? f = !1 : (l += 1, 
+                                f = !0));
+                            }
                         }
                     }
-                    s = this.datePicked[0].clone().add(this.options.maxDays + l + o, "day"), 
+                    s = this.datePicked[0].clone().add(this.options.maxDays + l + o, "day");
                     t.isSameOrBefore(n) && i.classList.add(r.isLocked), t.isSameOrAfter(s) && i.classList.add(r.isLocked);
                 }
-                return this.options.selectForward && 1 === this.datePicked.length && t.isBefore(this.datePicked[0]) && i.classList.add(r.isLocked), 
+                (this.options.selectForward && 1 === this.datePicked.length && t.isBefore(this.datePicked[0]) && i.classList.add(r.isLocked), 
                 this.options.selectBackward && 1 === this.datePicked.length && t.isAfter(this.datePicked[0]) && i.classList.add(r.isLocked), 
-                this.options.lockDays.length && this.options.lockDays.filter(function(i) {
+                this.options.lockDays.length) && (this.options.lockDays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.lockDaysInclusivity) : i.isSame(t, "day");
-                }).length && i.classList.add(r.isLocked), this.options.bookedDays.length && (v = this.options.bookedDays.filter(function(i) {
+                }).length && i.classList.add(r.isLocked));
+                this.options.bookedDays.length && ((v = this.options.bookedDays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.bookedDaysInclusivity) : i.isSame(t, "day");
-                }).length) && (i.classList.add(r.isBooked), 0 < this.datePicked.length && !this.bookedDayAfterSelection && this.datePicked[0].getTime() < t.getTime() && (this.bookedDayAfterSelection = t.getTime())), 
-                this.options.partiallyBookedDays.length && (B = this.options.partiallyBookedDays.filter(function(i) {
+                }).length) && (i.classList.add(r.isBooked), this.datePicked.length > 0 && !this.bookedDayAfterSelection && this.datePicked[0].getTime() < t.getTime() && (this.bookedDayAfterSelection = t.getTime())));
+                this.options.partiallyBookedDays.length && ((B = this.options.partiallyBookedDays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.partiallyBookedDaysInclusivity) : i.isSame(t, "day");
                 }).length) && (!1 === (T = this.options.days[t.format(this.options.format)]).firstSlotBooked && i.classList.add(r.isPartiallyBookedStart), 
-                !1 === T.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd)), 
-                this.options.holidays.length && this.options.holidays.filter(function(i) {
+                !1 === T.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd)));
+                this.options.holidays.length && (this.options.holidays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.holidaysInclusivity) : i.isSame(t, "day");
-                }).length && i.classList.add(r.isHoliday), this.options.highlightedDays.length && this.options.highlightedDays.filter(function(e) {
+                }).length && i.classList.add(r.isHoliday));
+                this.options.highlightedDays.length && (this.options.highlightedDays.filter(function(e) {
                     return e instanceof Array ? t.isBetween(e[0], e[1], "[]") : e.isSame(t, "day");
-                }).length && i.classList.add(r.isHighlighted), this.datePicked.length <= 1 && ((o = t.clone()).subtract(1, "day"), 
-                t.clone().add(1, "day"), this.options.bookedDays.length && (D = this.options.bookedDaysInclusivity, 
-                this.options.hotelMode && 1 === this.datePicked.length && (D = "()"), 
-                v = this.dateIsBooked(t, D), b = this.dateIsBooked(o, "[]"), w = this.dateIsBooked(t, "(]"), 
-                n = 0 === this.datePicked.length && v || 1 === this.datePicked.length && b && v || 1 === this.datePicked.length && b && w, 
-                s = this.options.anyBookedDaysAsCheckout && 1 === this.datePicked.length, 
-                n && !s && i.classList.add(r.isBooked)), this.options.partiallyBookedDays.length && (D = this.options.partiallyBookedDaysInclusivity, 
-                this.options.hotelMode && 1 === this.datePicked.length && (D = "()"), 
-                B = this.dateIsPartiallyBooked(t, D), b = this.dateIsPartiallyBooked(o, "[]"), 
-                w = this.dateIsPartiallyBooked(t, "(]"), v = 0 === this.datePicked.length && B || 1 === this.datePicked.length && b && B || 1 === this.datePicked.length && b && w, 
-                n = this.options.anyPartiallyBookedDaysAsCheckout && 1 === this.datePicked.length, 
-                v && !n && (!1 === (T = this.options.days[t.format(this.options.format)]).firstSlotBooked && i.classList.add(r.isPartiallyBookedStart), 
-                !1 === T.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd)))), 
-                !this.options.disableWeekends || 6 !== t.getDay() && 0 !== t.getDay() || i.classList.add(r.isLocked), 
+                }).length && i.classList.add(r.isHighlighted));
+                if (this.datePicked.length <= 1) {
+                    var k = t.clone();
+                    if (k.subtract(1, "day"), t.clone().add(1, "day"), this.options.bookedDays.length) {
+                        var D = this.options.bookedDaysInclusivity;
+                        this.options.hotelMode && 1 === this.datePicked.length && (D = "()");
+                        var v = this.dateIsBooked(t, D), b = this.dateIsBooked(k, "[]"), w = this.dateIsBooked(t, "(]"), M = 0 === this.datePicked.length && v || 1 === this.datePicked.length && b && v || 1 === this.datePicked.length && b && w, x = this.options.anyBookedDaysAsCheckout && 1 === this.datePicked.length;
+                        M && !x && i.classList.add(r.isBooked);
+                    }
+                    if (this.options.partiallyBookedDays.length) {
+                        D = this.options.partiallyBookedDaysInclusivity;
+                        this.options.hotelMode && 1 === this.datePicked.length && (D = "()");
+                        var T, B = this.dateIsPartiallyBooked(t, D), _ = (b = this.dateIsPartiallyBooked(k, "[]"), 
+                        w = this.dateIsPartiallyBooked(t, "(]"), 0 === this.datePicked.length && B || 1 === this.datePicked.length && b && B || 1 === this.datePicked.length && b && w), I = this.options.anyPartiallyBookedDaysAsCheckout && 1 === this.datePicked.length;
+                        if (_ && !I) !1 === (T = this.options.days[t.format(this.options.format)]).firstSlotBooked && i.classList.add(r.isPartiallyBookedStart), 
+                        !1 === T.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd);
+                    }
+                }
+                return !this.options.disableWeekends || 6 !== t.getDay() && 0 !== t.getDay() || i.classList.add(r.isLocked), 
                 "function" == typeof this.options.onRenderDay && this.options.onRenderDay.call(this, i), 
                 i;
             }, t.prototype.renderFooter = function() {
-                var t = document.createElement("div"), e, e, i;
-                return t.className = r.containerFooter, this.options.footerHTML ? t.innerHTML = this.options.footerHTML : t.innerHTML = '\n      <span class="' + r.previewDateRange + '"></span>\n      <button type="button" class="' + r.buttonCancel + '">' + this.options.buttonText.cancel + '</button>\n      <button type="button" class="' + r.buttonApply + '">' + this.options.buttonText.apply + "</button>\n      ", 
-                this.options.singleMode ? 1 === this.datePicked.length && (e = this.datePicked[0].format(this.options.format, this.options.lang), 
-                t.querySelector("." + r.previewDateRange).innerHTML = e) : (1 === this.datePicked.length && t.querySelector("." + r.buttonApply).setAttribute("disabled", ""), 
-                2 === this.datePicked.length && (e = this.datePicked[0].format(this.options.format, this.options.lang), 
-                i = this.datePicked[1].format(this.options.format, this.options.lang), 
-                t.querySelector("." + r.previewDateRange).innerHTML = "" + e + this.options.delimiter + i)), 
-                t;
+                var t = document.createElement("div");
+                if (t.className = r.containerFooter, this.options.footerHTML ? t.innerHTML = this.options.footerHTML : t.innerHTML = '\n      <span class="' + r.previewDateRange + '"></span>\n      <button type="button" class="' + r.buttonCancel + '">' + this.options.buttonText.cancel + '</button>\n      <button type="button" class="' + r.buttonApply + '">' + this.options.buttonText.apply + "</button>\n      ", 
+                this.options.singleMode) {
+                    if (1 === this.datePicked.length) {
+                        var e = this.datePicked[0].format(this.options.format, this.options.lang);
+                        t.querySelector("." + r.previewDateRange).innerHTML = e;
+                    }
+                } else if (1 === this.datePicked.length && t.querySelector("." + r.buttonApply).setAttribute("disabled", ""), 
+                2 === this.datePicked.length) {
+                    e = this.datePicked[0].format(this.options.format, this.options.lang);
+                    var i = this.datePicked[1].format(this.options.format, this.options.lang);
+                    t.querySelector("." + r.previewDateRange).innerHTML = "" + e + this.options.delimiter + i;
+                }
+                return t;
             }, t.prototype.renderWeekNumber = function(t) {
                 var e = document.createElement("div"), i = t.getWeek(this.options.firstDay);
                 return e.className = r.weekNumber, e.innerHTML = 53 === i && 0 === t.getMonth() ? "53 / 1" : i, 
@@ -1198,15 +1537,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     weekday: e
                 });
             }, t.prototype.calcSkipDays = function(t) {
-                var t = t.getDay() - this.options.firstDay;
-                return t < 0 && (t += 7), t;
+                var e = t.getDay() - this.options.firstDay;
+                return e < 0 && (e += 7), e;
             }, t;
         }();
-        e.Calendar = s;
+        e.Calendar = d;
     }, function(t, e, i) {
         "use strict";
         var o, n = function() {
-            return o = void 0 === o ? Boolean(window && document && document.all && !window.atob) : o;
+            return void 0 === o && (o = Boolean(window && document && document.all && !window.atob)), 
+            o;
         }, s = function() {
             var t = {};
             return function(e) {
@@ -1231,28 +1571,33 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         function l(t, e) {
             for (var i = {}, o = [], n = 0; n < t.length; n++) {
-                var s = t[n], l = e.base ? s[0] + e.base : s[0], d = i[l] || 0, c = "".concat(l, " ").concat(d), l = (i[l] = d + 1, 
-                r(c)), d = {
+                var s = t[n], l = e.base ? s[0] + e.base : s[0], d = i[l] || 0, c = "".concat(l, " ").concat(d);
+                i[l] = d + 1;
+                var h = r(c), p = {
                     css: s[1],
                     media: s[2],
                     sourceMap: s[3]
                 };
-                -1 !== l ? (a[l].references++, a[l].updater(d)) : a.push({
+                -1 !== h ? (a[h].references++, a[h].updater(p)) : a.push({
                     identifier: c,
-                    updater: y(d, e),
+                    updater: y(p, e),
                     references: 1
                 }), o.push(c);
             }
             return o;
         }
         function d(t) {
-            var e = document.createElement("style"), o = t.attributes || {}, n;
-            if (void 0 !== o.nonce || (n = i.nc) && (o.nonce = n), Object.keys(o).forEach(function(t) {
+            var e = document.createElement("style"), o = t.attributes || {};
+            if (void 0 === o.nonce) {
+                var n = i.nc;
+                n && (o.nonce = n);
+            }
+            if (Object.keys(o).forEach(function(t) {
                 e.setAttribute(t, o[t]);
             }), "function" == typeof t.insert) t.insert(e); else {
-                var n = s(t.insert || "head");
-                if (!n) throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");
-                n.appendChild(e);
+                var a = s(t.insert || "head");
+                if (!a) throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");
+                a.appendChild(e);
             }
             return e;
         }
@@ -1260,13 +1605,15 @@ document.addEventListener("DOMContentLoaded", () => {
             return c[t] = e, c.filter(Boolean).join("\n");
         });
         function p(t, e, i, o) {
-            var i = i ? "" : o.media ? "@media ".concat(o.media, " {").concat(o.css, "}") : o.css, o, i;
-            t.styleSheet ? t.styleSheet.cssText = h(e, i) : (o = document.createTextNode(i), 
-            (i = t.childNodes)[e] && t.removeChild(i[e]), i.length ? t.insertBefore(o, i[e]) : t.appendChild(o));
+            var n = i ? "" : o.media ? "@media ".concat(o.media, " {").concat(o.css, "}") : o.css;
+            if (t.styleSheet) t.styleSheet.cssText = h(e, n); else {
+                var s = document.createTextNode(n), a = t.childNodes;
+                a[e] && t.removeChild(a[e]), a.length ? t.insertBefore(s, a[e]) : t.appendChild(s);
+            }
         }
         function u(t, e, i) {
-            var o = i.css, n = i.media, i = i.sourceMap;
-            if (n ? t.setAttribute("media", n) : t.removeAttribute("media"), i && "undefined" != typeof btoa && (o += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(i)))), " */")), 
+            var o = i.css, n = i.media, s = i.sourceMap;
+            if (n ? t.setAttribute("media", n) : t.removeAttribute("media"), s && "undefined" != typeof btoa && (o += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(s)))), " */")), 
             t.styleSheet) t.styleSheet.cssText = o; else {
                 for (;t.firstChild; ) t.removeChild(t.firstChild);
                 t.appendChild(document.createTextNode(o));
@@ -1274,13 +1621,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         var m = null, f = 0;
         function y(t, e) {
-            var i, o, n, s, i, o, n;
-            return n = e.singleton ? (s = f++, i = m = m || d(e), o = p.bind(null, i, s, !1), 
-            p.bind(null, i, s, !0)) : (i = d(e), o = u.bind(null, i, e), function() {
-                var t;
-                null !== (t = i).parentNode && t.parentNode.removeChild(t);
-            }), o(t), function(e) {
-                e ? e.css === t.css && e.media === t.media && e.sourceMap === t.sourceMap || o(t = e) : n();
+            var i, o, n;
+            if (e.singleton) {
+                var s = f++;
+                i = m || (m = d(e)), o = p.bind(null, i, s, !1), n = p.bind(null, i, s, !0);
+            } else i = d(e), o = u.bind(null, i, e), n = function() {
+                !function(t) {
+                    if (null === t.parentNode) return !1;
+                    t.parentNode.removeChild(t);
+                }(i);
+            };
+            return o(t), function(e) {
+                if (e) {
+                    if (e.css === t.css && e.media === t.media && e.sourceMap === t.sourceMap) return;
+                    o(t = e);
+                } else n();
             };
         }
         t.exports = function(t, e) {
@@ -1292,11 +1647,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         var n = r(i[o]);
                         a[n].references--;
                     }
-                    for (var t = l(t, e), d = 0; d < i.length; d++) {
+                    for (var s = l(t, e), d = 0; d < i.length; d++) {
                         var c = r(i[d]);
                         0 === a[c].references && (a[c].updater(), a.splice(c, 1));
                     }
-                    i = t;
+                    i = s;
                 }
             };
         };
@@ -1350,12 +1705,18 @@ document.addEventListener("DOMContentLoaded", () => {
             return e.toString = function() {
                 return this.map(function(e) {
                     var i = function(t, e) {
-                        var i = t[1] || "", o = t[3], t, e, a, t, e;
-                        return o ? e && "function" == typeof btoa ? (t = btoa(unescape(encodeURIComponent(JSON.stringify(o)))), 
-                        e = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(t), 
-                        t = "/*# ".concat(e, " */"), e = o.sources.map(function(t) {
-                            return "/*# sourceURL=".concat(o.sourceRoot || "").concat(t, " */");
-                        }), [ i ].concat(e).concat([ t ]).join("\n")) : [ i ].join("\n") : i;
+                        var i = t[1] || "", o = t[3];
+                        if (!o) return i;
+                        if (e && "function" == typeof btoa) {
+                            var n = (a = o, r = btoa(unescape(encodeURIComponent(JSON.stringify(a)))), 
+                            l = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(r), 
+                            "/*# ".concat(l, " */")), s = o.sources.map(function(t) {
+                                return "/*# sourceURL=".concat(o.sourceRoot || "").concat(t, " */");
+                            });
+                            return [ i ].concat(s).concat([ n ]).join("\n");
+                        }
+                        var a, r, l;
+                        return [ i ].join("\n");
                     }(e, t);
                     return e[2] ? "@media ".concat(e[2], " {").concat(i, "}") : i;
                 }).join("");
@@ -1388,7 +1749,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         } : function(t, e, i, o) {
-            t[o = void 0 === o ? i : o] = e[i];
+            void 0 === o && (o = i), t[o] = e[i];
         }), s = this && this.__setModuleDefault || (Object.create ? function(t, e) {
             Object.defineProperty(t, "default", {
                 enumerable: !0,
@@ -1401,77 +1762,87 @@ document.addEventListener("DOMContentLoaded", () => {
             var e = {};
             if (null != t) for (var i in t) "default" !== i && Object.hasOwnProperty.call(t, i) && n(e, t, i);
             return s(e, t), e;
-        }, r = (Object.defineProperty(e, "__esModule", {
+        };
+        Object.defineProperty(e, "__esModule", {
             value: !0
-        }), i(0)), e = i(3), d = a(i(1)), c = i(2);
-        e.Litepicker.prototype.show = function(t) {
-            var e = (t = void 0 === t ? null : t) || this.options.element, i;
+        });
+        var r = i(0), l = i(3), d = a(i(1)), c = i(2);
+        l.Litepicker.prototype.show = function(t) {
+            void 0 === t && (t = null);
+            var e = t || this.options.element;
             if (this.triggerElement = e, this.scrollToDate(t), this.options.inlineMode) return this.picker.style.position = "static", 
             this.picker.style.display = "inline-block", this.picker.style.top = null, 
             this.picker.style.left = null, this.picker.style.bottom = null, void (this.picker.style.right = null);
-            if (this.options.mobileFriendly && c.isMobile()) return this.picker.style.position = "fixed", 
-            this.picker.style.display = "block", "portrait" === c.getOrientation() ? (this.options.numberOfMonths = 1, 
-            this.options.numberOfColumns = 1) : (this.options.numberOfMonths = 2, 
-            this.options.numberOfColumns = 2), this.render(), i = this.picker.getBoundingClientRect(), 
-            this.picker.style.top = "calc(50% - " + i.height / 2 + "px)", this.picker.style.left = "calc(50% - " + i.width / 2 + "px)", 
-            this.picker.style.right = null, this.picker.style.bottom = null, this.picker.style.zIndex = this.options.zIndex, 
-            this.backdrop.style.display = "block", this.backdrop.style.zIndex = this.options.zIndex - 1, 
-            document.body.classList.add(d.litepickerOpen), "function" == typeof this.options.onShow && this.options.onShow.call(this), 
-            void (t || this.options.element).blur();
+            if (this.options.mobileFriendly && c.isMobile()) {
+                this.picker.style.position = "fixed", this.picker.style.display = "block", 
+                "portrait" === c.getOrientation() ? (this.options.numberOfMonths = 1, 
+                this.options.numberOfColumns = 1) : (this.options.numberOfMonths = 2, 
+                this.options.numberOfColumns = 2), this.render();
+                var i = this.picker.getBoundingClientRect();
+                return this.picker.style.top = "calc(50% - " + i.height / 2 + "px)", 
+                this.picker.style.left = "calc(50% - " + i.width / 2 + "px)", this.picker.style.right = null, 
+                this.picker.style.bottom = null, this.picker.style.zIndex = this.options.zIndex, 
+                this.backdrop.style.display = "block", this.backdrop.style.zIndex = this.options.zIndex - 1, 
+                document.body.classList.add(d.litepickerOpen), "function" == typeof this.options.onShow && this.options.onShow.call(this), 
+                void (t ? t.blur() : this.options.element.blur());
+            }
             this.render(), this.picker.style.position = "absolute", this.picker.style.display = "block", 
             this.picker.style.zIndex = this.options.zIndex;
-            var i = e.getBoundingClientRect(), t = this.picker.getBoundingClientRect(), e = i.bottom, a = i.left, r = 0, l = 0, h = 0, p = 0, u;
-            this.options.parentEl ? ((e = (e -= (u = this.picker.parentNode.getBoundingClientRect()).bottom) + i.height) + t.height > window.innerHeight && 0 < i.top - u.top - i.height && (h = i.top - u.top - i.height), 
-            (a -= u.left) + t.width > window.innerWidth && 0 < i.right - u.right - t.width && (p = i.right - u.right - t.width)) : (r = window.scrollX || window.pageXOffset, 
-            l = window.scrollY || window.pageYOffset, e + t.height > window.innerHeight && 0 < i.top - t.height && (h = i.top - t.height), 
-            a + t.width > window.innerWidth && 0 < i.right - t.width && (p = i.right - t.width)), 
-            this.picker.style.top = (h || e) + l + "px", this.picker.style.left = (p || a) + r + "px", 
+            var o = e.getBoundingClientRect(), n = this.picker.getBoundingClientRect(), s = o.bottom, a = o.left, r = 0, l = 0, h = 0, p = 0;
+            if (this.options.parentEl) {
+                var u = this.picker.parentNode.getBoundingClientRect();
+                s -= u.bottom, (s += o.height) + n.height > window.innerHeight && o.top - u.top - o.height > 0 && (h = o.top - u.top - o.height), 
+                (a -= u.left) + n.width > window.innerWidth && o.right - u.right - n.width > 0 && (p = o.right - u.right - n.width);
+            } else r = window.scrollX || window.pageXOffset, l = window.scrollY || window.pageYOffset, 
+            s + n.height > window.innerHeight && o.top - n.height > 0 && (h = o.top - n.height), 
+            a + n.width > window.innerWidth && o.right - n.width > 0 && (p = o.right - n.width);
+            this.picker.style.top = (h || s) + l + "px", this.picker.style.left = (p || a) + r + "px", 
             this.picker.style.right = null, this.picker.style.bottom = null, "function" == typeof this.options.onShow && this.options.onShow.call(this);
-        }, e.Litepicker.prototype.hide = function() {
+        }, l.Litepicker.prototype.hide = function() {
             this.isShowning() && (this.datePicked.length = 0, this.updateInput(), 
             this.options.inlineMode ? this.render() : (this.picker.style.display = "none", 
             "function" == typeof this.options.onHide && this.options.onHide.call(this), 
             this.options.mobileFriendly && (document.body.classList.remove(d.litepickerOpen), 
             this.backdrop.style.display = "none")));
-        }, e.Litepicker.prototype.getDate = function() {
+        }, l.Litepicker.prototype.getDate = function() {
             return this.getStartDate();
-        }, e.Litepicker.prototype.getStartDate = function() {
+        }, l.Litepicker.prototype.getStartDate = function() {
             return this.options.startDate ? this.options.startDate.clone().getDateInstance() : null;
-        }, e.Litepicker.prototype.getEndDate = function() {
+        }, l.Litepicker.prototype.getEndDate = function() {
             return this.options.endDate ? this.options.endDate.clone().getDateInstance() : null;
-        }, e.Litepicker.prototype.setDate = function(t) {
+        }, l.Litepicker.prototype.setDate = function(t) {
             this.setStartDate(t), "function" == typeof this.options.onSelect && this.options.onSelect.call(this, this.getDate());
-        }, e.Litepicker.prototype.setStartDate = function(t) {
+        }, l.Litepicker.prototype.setStartDate = function(t) {
             t && (this.options.startDate = new r.DateTime(t, this.options.format, this.options.lang), 
             this.updateInput());
-        }, e.Litepicker.prototype.setEndDate = function(t) {
+        }, l.Litepicker.prototype.setEndDate = function(t) {
             t && (this.options.endDate = new r.DateTime(t, this.options.format, this.options.lang), 
             this.options.startDate.getTime() > this.options.endDate.getTime() && (this.options.endDate = this.options.startDate.clone(), 
             this.options.startDate = new r.DateTime(t, this.options.format, this.options.lang)), 
             this.updateInput());
-        }, e.Litepicker.prototype.setDateRange = function(t, e) {
+        }, l.Litepicker.prototype.setDateRange = function(t, e) {
             this.triggerElement = void 0, this.setStartDate(t), this.setEndDate(e), 
             this.updateInput(), "function" == typeof this.options.onSelect && this.options.onSelect.call(this, this.getStartDate(), this.getEndDate());
-        }, e.Litepicker.prototype.gotoDate = function(t, e) {
+        }, l.Litepicker.prototype.gotoDate = function(t, e) {
             void 0 === e && (e = 0);
-            var t = new r.DateTime(t);
-            t.setDate(1), this.calendars[e] = t.clone(), this.render();
-        }, e.Litepicker.prototype.setLockDays = function(t) {
+            var i = new r.DateTime(t);
+            i.setDate(1), this.calendars[e] = i.clone(), this.render();
+        }, l.Litepicker.prototype.setLockDays = function(t) {
             this.options.lockDays = r.DateTime.convertArray(t, this.options.lockDaysFormat), 
             this.render();
-        }, e.Litepicker.prototype.setHolidays = function(t) {
+        }, l.Litepicker.prototype.setHolidays = function(t) {
             this.options.holidays = r.DateTime.convertArray(t, this.options.holidaysFormat), 
             this.render();
-        }, e.Litepicker.prototype.setPartiallyBookedDays = function(t) {
+        }, l.Litepicker.prototype.setPartiallyBookedDays = function(t) {
             this.options.partiallyBookedDays = r.DateTime.convertArray(t, this.options.partiallyBookedDaysFormat), 
             this.render();
-        }, e.Litepicker.prototype.setBookedDays = function(t) {
+        }, l.Litepicker.prototype.setBookedDays = function(t) {
             this.options.bookedDays = r.DateTime.convertArray(t, this.options.bookedDaysFormat), 
             this.render();
-        }, e.Litepicker.prototype.setHighlightedDays = function(t) {
+        }, l.Litepicker.prototype.setHighlightedDays = function(t) {
             this.options.highlightedDays = r.DateTime.convertArray(t, this.options.highlightedDaysFormat), 
             this.render();
-        }, e.Litepicker.prototype.setOptions = function(t) {
+        }, l.Litepicker.prototype.setOptions = function(t) {
             delete t.element, delete t.elementEnd, delete t.parentEl, t.startDate && (t.startDate = new r.DateTime(t.startDate, this.options.format, this.options.lang)), 
             t.endDate && (t.endDate = new r.DateTime(t.endDate, this.options.format, this.options.lang));
             var e = o(o({}, this.options.dropdowns), t.dropdowns), i = o(o({}, this.options.buttonText), t.buttonText), n = o(o({}, this.options.tooltipText), t.tooltipText);
@@ -1490,10 +1861,10 @@ document.addEventListener("DOMContentLoaded", () => {
             this.options.bookedDays.length && (this.options.bookedDays = r.DateTime.convertArray(this.options.bookedDays, this.options.bookedDaysFormat)), 
             this.options.highlightedDays.length && (this.options.highlightedDays = r.DateTime.convertArray(this.options.highlightedDays, this.options.highlightedDaysFormat)), 
             this.render(), this.options.inlineMode && this.show(), this.updateInput();
-        }, e.Litepicker.prototype.clearSelection = function() {
+        }, l.Litepicker.prototype.clearSelection = function() {
             this.options.startDate = null, this.options.endDate = null, this.datePicked.length = 0, 
             this.bookedDayAfterSelection = null, this.updateInput(), this.isShowning() && this.render();
-        }, e.Litepicker.prototype.destroy = function() {
+        }, l.Litepicker.prototype.destroy = function() {
             this.picker && this.picker.parentNode && (this.picker.parentNode.removeChild(this.picker), 
             this.picker = null), this.backdrop && this.backdrop.parentNode && this.backdrop.parentNode.removeChild(this.backdrop);
         };
@@ -1502,195 +1873,246 @@ document.addEventListener("DOMContentLoaded", () => {
         Object.defineProperty(e, "__esModule", {
             value: !0
         });
-    } ], e = {}, i.m = t, i.c = e, i.d = function(t, e, o) {
-        i.o(t, e) || Object.defineProperty(t, e, {
-            enumerable: !0,
-            get: o
-        });
-    }, i.r = function(t) {
-        "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(t, Symbol.toStringTag, {
-            value: "Module"
-        }), Object.defineProperty(t, "__esModule", {
-            value: !0
-        });
-    }, i.t = function(t, e) {
-        if (1 & e && (t = i(t)), 8 & e) return t;
-        if (4 & e && "object" == typeof t && t && t.__esModule) return t;
-        var o = Object.create(null);
-        if (i.r(o), Object.defineProperty(o, "default", {
-            enumerable: !0,
-            value: t
-        }), 2 & e && "string" != typeof t) for (var n in t) i.d(o, n, function(e) {
-            return t[e];
-        }.bind(null, n));
-        return o;
-    }, i.n = function(t) {
-        var e = t && t.__esModule ? function() {
-            return t.default;
-        } : function() {
-            return t;
-        };
-        return i.d(e, "a", e), e;
-    }, i.o = function(t, e) {
-        return Object.prototype.hasOwnProperty.call(t, e);
-    }, i.p = "", i(i.s = 4).Litepicker;
-    function i(o) {
-        if (e[o]) return e[o].exports;
-        var n = e[o] = {
-            i: o,
-            l: !1,
-            exports: {}
-        };
-        return t[o].call(n.exports, n, n.exports, i), n.l = !0, n.exports;
-    }
-    var t, e;
-}), document.addEventListener("DOMContentLoaded", function(event) {
-    if ("undefined" != typeof calendarData) {
+    } ]).Litepicker;
+});
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    if (typeof calendarData !== "undefined") {
         let globalCalendarData = calendarData;
         const fadeOutCalendar = () => {
             jQuery("#litepicker .litepicker .container__days").css("visibility", "hidden");
-        }, fadeInCalendar = () => {
+        };
+        const fadeInCalendar = () => {
             jQuery("#litepicker .litepicker .container__days").fadeTo("fast", 1);
-        }, initSelectHandler = () => {
+        };
+        const initSelectHandler = () => {
             const startSelect = bookingForm.find("select[name=repetition-start]");
             startSelect.change(function() {
                 updateEndSelectTimeOptions();
             });
-        }, updateEndSelectTimeOptions = () => {
-            const bookingForm = jQuery("#booking-form"), startSelect = bookingForm.find("select[name=repetition-start]"), endSelect = bookingForm.find("select[name=repetition-end]"), startValue = startSelect.val();
-            let bookedElementBefore = !1, firstAvailableOptionSelected = !1;
+        };
+        const updateEndSelectTimeOptions = () => {
+            const bookingForm = jQuery("#booking-form");
+            const startSelect = bookingForm.find("select[name=repetition-start]");
+            const endSelect = bookingForm.find("select[name=repetition-end]");
+            const startValue = startSelect.val();
+            let bookedElementBefore = false;
+            let firstAvailableOptionSelected = false;
             endSelect.find("option").each(function() {
-                jQuery(this).val() < startValue || bookedElementBefore || "true" == this.dataset.booked ? (jQuery(this).attr("disabled", "disabled"), 
-                jQuery(this).prop("selected", !1)) : (jQuery(this).removeAttr("disabled"), 
-                firstAvailableOptionSelected || (jQuery(this).prop("selected", !0), 
-                firstAvailableOptionSelected = !0)), jQuery(this).val() > startValue && "true" == this.dataset.booked && (bookedElementBefore = !0);
+                if (jQuery(this).val() < startValue || bookedElementBefore || this.dataset.booked == "true") {
+                    jQuery(this).attr("disabled", "disabled");
+                    jQuery(this).prop("selected", false);
+                } else {
+                    jQuery(this).removeAttr("disabled");
+                    if (!firstAvailableOptionSelected) {
+                        jQuery(this).prop("selected", true);
+                        firstAvailableOptionSelected = true;
+                    }
+                }
+                if (jQuery(this).val() > startValue && this.dataset.booked == "true") {
+                    bookedElementBefore = true;
+                }
             });
-        }, updateSelectSlots = (select, slots, type = "start", fullday = !1) => {
-            select.empty().attr("required", "required"), jQuery.each(slots, function(index, slot) {
-                let option = new Option(slot.timestart + " - " + slot.timeend, slot["timestamp" + type], fullday, fullday);
-                slot.disabled && (option.disabled = !0), slot.timeframe.locked && (option.disabled = !0, 
-                option.dataset.booked = !0), select.append(option);
+        };
+        const updateSelectSlots = (select, slots, type = "start", fullday = false) => {
+            select.empty().attr("required", "required");
+            jQuery.each(slots, function(index, slot) {
+                let option = new Option(slot["timestart"] + " - " + slot["timeend"], slot["timestamp" + type], fullday, fullday);
+                if (slot["disabled"]) {
+                    option.disabled = true;
+                }
+                if (slot["timeframe"]["locked"]) {
+                    option.disabled = true;
+                    option.dataset.booked = true;
+                }
+                select.append(option);
             });
-        }, isMobile = () => {
-            var isPortrait = "portrait" === getOrientation();
-            return window.matchMedia(`(max-device-${isPortrait ? "width" : "height"}: 480px)`).matches;
-        }, getOrientation = () => window.matchMedia("(orientation: portrait)").matches ? "portrait" : "landscape", initStartSelect = date => {
-            var day1 = globalCalendarData.days[moment(date).format("YYYY-MM-DD")], date = moment(date).format("DD.MM.YYYY");
-            jQuery(".time-selection.repetition-start").find(".hint-selection").hide(), 
-            jQuery(".time-selection.repetition-end").find(".hint-selection").show(), 
-            jQuery("#resetPicker").css("display", "inline-block"), jQuery("#calendarNotice").css("display", "inherit");
-            let endSelectData = jQuery("#booking-form select[name=repetition-end],#booking-form .time-selection.repetition-end .date");
-            endSelectData.hide(), jQuery("#booking-form input[type=submit]").attr("disabled", "disabled");
-            var startSelect = jQuery("#booking-form select[name=repetition-start]");
-            jQuery(".time-selection.repetition-start span.date").text(date), updateSelectSlots(startSelect, day1.slots, "start", day1.fullDay), 
-            day1.fullDay ? jQuery(".time-selection.repetition-start").find("select").hide() : jQuery(".time-selection.repetition-start").find("select").show();
-        }, initEndSelect = date => {
-            var day2 = globalCalendarData.days[moment(date).format("YYYY-MM-DD")], date = moment(date).format("DD.MM.YYYY"), endSelect = (jQuery(".time-selection.repetition-end").find(".hint-selection").hide(), 
-            jQuery("#booking-form select[name=repetition-end]"));
-            jQuery(".time-selection.repetition-end span.date").text(date), updateSelectSlots(endSelect, day2.slots, "end", day2.fullDay);
-            let endSelectData = jQuery("#booking-form select[name=repetition-end],#booking-form .time-selection.repetition-end .date");
-            endSelectData.show(), jQuery("#booking-form input[type=submit]").removeAttr("disabled"), 
-            updateEndSelectTimeOptions(), day2.fullDay ? jQuery(".time-selection.repetition-end").find("select").hide() : jQuery(".time-selection.repetition-end").find("select").show();
-        }, getCalendarColumns = () => {
+        };
+        const isMobile = () => {
+            const isPortrait = getOrientation() === "portrait";
+            return window.matchMedia(`(max-device-${isPortrait ? "width" : "height"}: ${480}px)`).matches;
+        };
+        const getOrientation = () => {
+            if (window.matchMedia("(orientation: portrait)").matches) {
+                return "portrait";
+            }
+            return "landscape";
+        };
+        const initStartSelect = date => {
+            const day1 = globalCalendarData["days"][moment(date).format("YYYY-MM-DD")];
+            const startDate = moment(date).format("DD.MM.YYYY");
+            jQuery(".time-selection.repetition-start").find(".hint-selection").hide();
+            jQuery(".time-selection.repetition-end").find(".hint-selection").show();
+            jQuery("#resetPicker").css("display", "inline-block");
+            jQuery("#calendarNotice").css("display", "inherit");
+            let endSelectData = jQuery("#booking-form select[name=repetition-end]," + "#booking-form .time-selection.repetition-end .date");
+            endSelectData.hide();
+            jQuery("#booking-form input[type=submit]").attr("disabled", "disabled");
+            let startSelect = jQuery("#booking-form select[name=repetition-start]");
+            jQuery(".time-selection.repetition-start span.date").text(startDate);
+            updateSelectSlots(startSelect, day1["slots"], "start", day1["fullDay"]);
+            if (day1["fullDay"]) {
+                jQuery(".time-selection.repetition-start").find("select").hide();
+            } else {
+                jQuery(".time-selection.repetition-start").find("select").show();
+            }
+        };
+        const initEndSelect = date => {
+            const day2 = globalCalendarData["days"][moment(date).format("YYYY-MM-DD")];
+            const endDate = moment(date).format("DD.MM.YYYY");
+            jQuery(".time-selection.repetition-end").find(".hint-selection").hide();
+            let endSelect = jQuery("#booking-form select[name=repetition-end]");
+            jQuery(".time-selection.repetition-end span.date").text(endDate);
+            updateSelectSlots(endSelect, day2["slots"], "end", day2["fullDay"]);
+            let endSelectData = jQuery("#booking-form select[name=repetition-end]," + "#booking-form .time-selection.repetition-end .date");
+            endSelectData.show();
+            jQuery("#booking-form input[type=submit]").removeAttr("disabled");
+            updateEndSelectTimeOptions();
+            if (day2["fullDay"]) {
+                jQuery(".time-selection.repetition-end").find("select").hide();
+            } else {
+                jQuery(".time-selection.repetition-end").find("select").show();
+            }
+        };
+        const getCalendarColumns = () => {
             let columns = 2;
-            return isMobile() && (columns = 1, window.innerHeight < window.innerWidth && (columns = 2)), 
-            columns;
-        }, updateCalendarColumns = picker => {
+            if (isMobile()) {
+                columns = 1;
+                if (window.innerHeight < window.innerWidth) {
+                    columns = 2;
+                }
+            }
+            return columns;
+        };
+        const updateCalendarColumns = picker => {
             picker.setOptions({
                 numberOfMonths: getCalendarColumns(),
                 numberOfColumns: getCalendarColumns()
             });
         };
-        let numberOfMonths = getCalendarColumns(), numberOfColumns = numberOfMonths, picker = !1;
-        var initPicker = () => {
+        let numberOfMonths = getCalendarColumns();
+        let numberOfColumns = numberOfMonths;
+        let picker = false;
+        const initPicker = () => {
             picker = new Litepicker({
                 element: document.getElementById("litepicker"),
                 minDate: moment().format("YYYY-MM-DD"),
-                startDate: moment().isAfter(globalCalendarData.startDate) ? moment().format("YYYY-MM-DD") : globalCalendarData.startDate,
-                scrollToDate: !0,
-                inlineMode: !0,
+                startDate: moment().isAfter(globalCalendarData["startDate"]) ? moment().format("YYYY-MM-DD") : globalCalendarData["startDate"],
+                scrollToDate: true,
+                inlineMode: true,
                 firstDay: 1,
-                lang: globalCalendarData.lang,
+                lang: globalCalendarData["lang"],
                 numberOfMonths: numberOfMonths,
                 numberOfColumns: numberOfColumns,
-                moveByOneMonth: !0,
-                singleMode: !1,
-                showWeekNumbers: !1,
-                autoApply: !0,
+                moveByOneMonth: true,
+                singleMode: false,
+                showWeekNumbers: false,
+                autoApply: true,
                 bookedDaysInclusivity: "[]",
-                anyBookedDaysAsCheckout: !1,
-                disallowBookedDaysInRange: !0,
-                disallowPartiallyBookedDaysInRange: !0,
-                disallowLockDaysInRange: globalCalendarData.disallowLockDaysInRange,
-                mobileFriendly: !0,
-                selectForward: !0,
-                useResetBtn: !0,
-                maxDays: globalCalendarData.maxDays,
+                anyBookedDaysAsCheckout: false,
+                disallowBookedDaysInRange: true,
+                disallowPartiallyBookedDaysInRange: true,
+                disallowLockDaysInRange: globalCalendarData["disallowLockDaysInRange"],
+                mobileFriendly: true,
+                selectForward: true,
+                useResetBtn: true,
+                maxDays: globalCalendarData["maxDays"],
                 buttonText: {
                     apply: "Buchen",
                     cancel: "Abbrechen"
                 },
                 onAutoApply: datePicked => {
-                    datePicked && (jQuery("#booking-form").show(), jQuery(".cb-notice.date-select").hide());
+                    if (datePicked) {
+                        jQuery("#booking-form").show();
+                        jQuery(".cb-notice.date-select").hide();
+                    }
                 },
                 resetBtnCallback: () => {
-                    jQuery("#booking-form").hide(), jQuery(".cb-notice.date-select").show();
+                    jQuery("#booking-form").hide();
+                    jQuery(".cb-notice.date-select").show();
                 },
                 onChangeMonth: function(date, idx) {
                     fadeOutCalendar();
                     const startDate = moment(date.format("YYYY-MM-DD")).format("YYYY-MM-DD");
-                    var calStartDate = moment(date.format("YYYY-MM-DD")).date(0).format("YYYY-MM-DD"), date = moment(date.format("YYYY-MM-DD")).add(numberOfMonths, "months").date(1).format("YYYY-MM-DD");
+                    const calStartDate = moment(date.format("YYYY-MM-DD")).date(0).format("YYYY-MM-DD");
+                    const calEndDate = moment(date.format("YYYY-MM-DD")).add(numberOfMonths, "months").date(1).format("YYYY-MM-DD");
                     jQuery.post(cb_ajax.ajax_url, {
                         _ajax_nonce: cb_ajax.nonce,
                         action: "calendar_data",
                         item: jQuery("#booking-form input[name=item-id]").val(),
                         location: jQuery("#booking-form input[name=location-id]").val(),
                         sd: calStartDate,
-                        ed: date
+                        ed: calEndDate
                     }, function(data) {
-                        jQuery.extend(globalCalendarData.days, data.days), updatePicker(data), 
+                        jQuery.extend(globalCalendarData.days, data.days);
+                        updatePicker(data);
                         picker.gotoDate(startDate);
                     });
                 }
-            }), jQuery("#litepicker .litepicker").hide(), jQuery(window).on("orientationchange", function(event) {
+            });
+            jQuery("#litepicker .litepicker").hide();
+            jQuery(window).on("orientationchange", function(event) {
                 updateCalendarColumns(picker);
-            }), jQuery("#calendarNotice").html(globalCalendarData.calendarNotice.advanceBookingDays);
+            });
+            jQuery("#calendarNotice").html(globalCalendarData["calendarNotice"]["advanceBookingDays"]);
         };
         const updatePicker = globalCalendarData => {
-            fadeOutCalendar(), picker.setOptions({
-                minDate: moment().isAfter(globalCalendarData.startDate) ? moment().format("YYYY-MM-DD") : globalCalendarData.startDate,
-                maxDate: globalCalendarData.endDate,
-                startDate: moment().isAfter(globalCalendarData.startDate) ? moment().format("YYYY-MM-DD") : globalCalendarData.startDate,
-                days: globalCalendarData.days,
-                maxDays: globalCalendarData.maxDays,
-                lockDays: globalCalendarData.lockDays,
-                bookedDays: globalCalendarData.bookedDays,
-                partiallyBookedDays: globalCalendarData.partiallyBookedDays,
-                highlightedDays: globalCalendarData.highlightedDays,
-                holidays: globalCalendarData.holidays,
+            fadeOutCalendar();
+            picker.setOptions({
+                minDate: moment().isAfter(globalCalendarData["startDate"]) ? moment().format("YYYY-MM-DD") : globalCalendarData["startDate"],
+                maxDate: globalCalendarData["endDate"],
+                startDate: moment().isAfter(globalCalendarData["startDate"]) ? moment().format("YYYY-MM-DD") : globalCalendarData["startDate"],
+                days: globalCalendarData["days"],
+                maxDays: globalCalendarData["maxDays"],
+                lockDays: globalCalendarData["lockDays"],
+                bookedDays: globalCalendarData["bookedDays"],
+                partiallyBookedDays: globalCalendarData["partiallyBookedDays"],
+                highlightedDays: globalCalendarData["highlightedDays"],
+                holidays: globalCalendarData["holidays"],
                 onDaySelect: function(date, datepicked) {
-                    if (0 <= datepicked) {
+                    if (datepicked >= 0) {
                         let bookingForm = jQuery("#booking-form");
-                        bookingForm.show(), 1 == datepicked && (initStartSelect(date), 
-                        jQuery(".cb-notice.date-select").hide()), 2 == datepicked && initEndSelect(date);
+                        bookingForm.show();
+                        if (datepicked == 1) {
+                            initStartSelect(date);
+                            jQuery(".cb-notice.date-select").hide();
+                        }
+                        if (datepicked == 2) {
+                            initEndSelect(date);
+                        }
                     }
                 },
                 onSelect: function(date1, date2) {
                     let bookingForm = jQuery("#booking-form");
-                    bookingForm.show(), jQuery(".cb-notice.date-select").hide();
-                    var date1 = globalCalendarData.days[moment(date1).format("YYYY-MM-DD")], day2 = globalCalendarData.days[moment(date2).format("YYYY-MM-DD")];
-                    initEndSelect(date2), date1.fullDay && day2.fullDay || initSelectHandler();
+                    bookingForm.show();
+                    jQuery(".cb-notice.date-select").hide();
+                    const day1 = globalCalendarData["days"][moment(date1).format("YYYY-MM-DD")];
+                    const day2 = globalCalendarData["days"][moment(date2).format("YYYY-MM-DD")];
+                    initEndSelect(date2);
+                    if (!day1["fullDay"] || !day2["fullDay"]) {
+                        initSelectHandler();
+                    }
                 }
-            }), fadeInCalendar();
-        }, resetDatepickerSelection = () => {
-            picker.clearSelection(), jQuery(".hint-selection").show(), jQuery(".time-selection .date").text(""), 
-            jQuery(".time-selection select").hide(), jQuery("#resetPicker").hide(), 
-            jQuery("#calendarNotice").hide(), jQuery("#booking-form input[type=submit]").attr("disabled", "disabled");
+            });
+            fadeInCalendar();
+        };
+        const resetDatepickerSelection = () => {
+            picker.clearSelection();
+            jQuery(".hint-selection").show();
+            jQuery(".time-selection .date").text("");
+            jQuery(".time-selection select").hide();
+            jQuery("#resetPicker").hide();
+            jQuery("#calendarNotice").hide();
+            jQuery("#booking-form input[type=submit]").attr("disabled", "disabled");
         };
         jQuery("#resetPicker").on("click", function(e) {
-            e.preventDefault(), resetDatepickerSelection();
+            e.preventDefault();
+            resetDatepickerSelection();
         });
         let bookingForm = jQuery("#booking-form");
-        bookingForm.length && (initPicker(), updatePicker(globalCalendarData));
+        if (bookingForm.length) {
+            initPicker();
+            updatePicker(globalCalendarData);
+        }
     }
 });
