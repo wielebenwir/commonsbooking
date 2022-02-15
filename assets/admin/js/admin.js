@@ -19,7 +19,8 @@
             };
             runMigration(!1);
         }), $("#cmb2-metabox-migration #booking-update-start").on("click", function(event) {
-            event.preventDefault(), $("#booking-migration-in-progress").show(), $.post(cb_ajax.ajax_url, {
+            event.preventDefault(), $("#booking-migration-in-progress").show(), 
+            $.post(cb_ajax.ajax_url, {
                 _ajax_nonce: cb_ajax.nonce,
                 action: "start_booking_migration"
             }).done(function() {
@@ -53,9 +54,14 @@
             $.each(set, function() {
                 $(this).parents(".cmb-row").show();
             });
-        }, timeframeForm = $("#cmb2-metabox-cb_timeframe-custom-fields");
-        if (timeframeForm.length) {
-            const timeframeRepetitionInput = $("#timeframe-repetition"), typeInput = $("#type"), gridInput = $("#grid"), weekdaysInput = $("#weekdays1"), startTimeInput = $("#start-time"), endTimeInput = $("#end-time"), repConfigTitle = $("#title-timeframe-rep-config"), repetitionStartInput = $("#repetition-start"), repetitionEndInput = $("#repetition-end"), fullDayInput = $("#full-day"), showBookingCodes = $("#show-booking-codes"), createBookingCodesInput = $("#create-booking-codes"), bookingCodesDownload = $("#booking-codes-download"), bookingCodesList = $("#booking-codes-list"), maxDaysSelect = $(".cmb2-id-timeframe-max-days"), advanceBookingDays = $(".cmb2-id-timeframe-advance-booking-days"), allowUserRoles = $(".cmb2-id-allowed-user-roles"), repSet = [ repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput ], noRepSet = [ fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput ], repTimeFieldsSet = [ gridInput, startTimeInput, endTimeInput ], bookingCodeSet = [ createBookingCodesInput, bookingCodesList, bookingCodesDownload, showBookingCodes ], showRepFields = function() {
+        };
+        var timeframeForm;
+        if ($("#cmb2-metabox-cb_timeframe-custom-fields").length) {
+            const timeframeRepetitionInput = $("#timeframe-repetition"), typeInput = $("#type"), gridInput = $("#grid"), weekdaysInput = $("#weekdays1");
+            var startTimeInput = $("#start-time"), endTimeInput = $("#end-time"), repConfigTitle = $("#title-timeframe-rep-config");
+            const repetitionStartInput = $("#repetition-start"), repetitionEndInput = $("#repetition-end"), fullDayInput = $("#full-day"), showBookingCodes = $("#show-booking-codes"), createBookingCodesInput = $("#create-booking-codes");
+            var bookingCodesDownload = $("#booking-codes-download"), bookingCodesList = $("#booking-codes-list");
+            const maxDaysSelect = $(".cmb2-id-timeframe-max-days"), advanceBookingDays = $(".cmb2-id-timeframe-advance-booking-days"), allowUserRoles = $(".cmb2-id-allowed-user-roles"), repSet = [ repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput ], noRepSet = [ fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput ], repTimeFieldsSet = [ gridInput, startTimeInput, endTimeInput ], bookingCodeSet = [ createBookingCodesInput, bookingCodesList, bookingCodesDownload, showBookingCodes ], showRepFields = function() {
                 showFieldset(repSet), hideFieldset(arrayDiff(repSet, noRepSet));
             }, showNoRepFields = function() {
                 showFieldset(noRepSet), hideFieldset(arrayDiff(noRepSet, repSet));
@@ -64,38 +70,35 @@
                     $(this).prop("checked", !1);
                 });
             }, handleTypeSelection = function() {
-                const selectedType = $("option:selected", typeInput).val();
-                2 == selectedType ? (maxDaysSelect.show(), advanceBookingDays.show(), allowUserRoles.show()) : (maxDaysSelect.hide(), 
+                var selectedType;
+                2 == $("option:selected", typeInput).val() ? (maxDaysSelect.show(), 
+                advanceBookingDays.show(), allowUserRoles.show()) : (maxDaysSelect.hide(), 
                 advanceBookingDays.hide(), allowUserRoles.hide());
-            };
-            handleTypeSelection(), typeInput.change(function() {
+            }, handleFullDaySelection = (handleTypeSelection(), typeInput.change(function() {
                 handleTypeSelection();
-            });
-            const handleFullDaySelection = function() {
-                const selectedRep = $("option:selected", timeframeRepetitionInput).val();
-                fullDayInput.prop("checked") ? (gridInput.prop("selected", !1), hideFieldset(repTimeFieldsSet)) : showFieldset(repTimeFieldsSet);
-            };
-            handleFullDaySelection(), fullDayInput.change(function() {
+            }), function() {
+                var selectedRep = $("option:selected", timeframeRepetitionInput).val();
+                fullDayInput.prop("checked") ? (gridInput.prop("selected", !1), 
+                hideFieldset(repTimeFieldsSet)) : showFieldset(repTimeFieldsSet);
+            }), handleRepetitionSelection = (handleFullDaySelection(), fullDayInput.change(function() {
                 handleFullDaySelection();
-            });
-            const handleRepetitionSelection = function() {
-                const selectedType = $("option:selected", timeframeRepetitionInput).val();
-                selectedType ? ("norep" == selectedType ? showNoRepFields() : showRepFields(), "w" == selectedType ? weekdaysInput.parents(".cmb-row").show() : (weekdaysInput.parents(".cmb-row").hide(), 
+            }), function() {
+                var selectedType = $("option:selected", timeframeRepetitionInput).val();
+                selectedType ? (("norep" == selectedType ? showNoRepFields : showRepFields)(), 
+                "w" == selectedType ? weekdaysInput.parents(".cmb-row").show() : (weekdaysInput.parents(".cmb-row").hide(), 
                 uncheck($("input[name*=weekdays]"))), handleFullDaySelection()) : (hideFieldset(noRepSet), 
                 hideFieldset(repSet));
-            };
-            handleRepetitionSelection(), timeframeRepetitionInput.change(function() {
+            }), handleBookingCodesSelection = (handleRepetitionSelection(), timeframeRepetitionInput.change(function() {
                 handleRepetitionSelection();
-            });
-            const handleBookingCodesSelection = function() {
-                const fullday = fullDayInput.prop("checked"), type = typeInput.val(), repStart = repetitionStartInput.val(), repEnd = repetitionEndInput.val();
+            }), function() {
+                var fullday = fullDayInput.prop("checked"), type = typeInput.val(), repStart = repetitionStartInput.val(), repEnd = repetitionEndInput.val();
                 hideFieldset(bookingCodeSet), repStart && repEnd && fullday && 2 == type && (showFieldset(bookingCodeSet), 
                 createBookingCodesInput.prop("checked") || (hideFieldset([ showBookingCodes ]), 
                 showBookingCodes.prop("checked", !1)));
-            };
+            });
             handleBookingCodesSelection();
-            const bookingCodeSelectionInputs = [ repetitionStartInput, repetitionEndInput, fullDayInput, typeInput, createBookingCodesInput ];
-            $.each(bookingCodeSelectionInputs, function(key, input) {
+            var repConfigTitle = [ repetitionStartInput, repetitionEndInput, fullDayInput, typeInput, createBookingCodesInput ];
+            $.each(repConfigTitle, function(key, input) {
                 input.change(function() {
                     handleBookingCodesSelection();
                 });
