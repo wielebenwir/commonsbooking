@@ -202,7 +202,7 @@ class MapAdmin {
 
 		$input = [];
 		if ( isset( $_POST['cb_map_options'] ) ) {
-			$input = $_POST['cb_map_options'];
+			$input = sanitize_text_field( $_POST['cb_map_options'] );
 		}
 
 		//base_map

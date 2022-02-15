@@ -175,13 +175,13 @@ class Booking extends Timeframe {
 			// prepare needed params
 			$itemId          = sanitize_text_field( $_REQUEST["item-id"] );
 			$locationId      = sanitize_text_field( $_REQUEST["location-id"] );
-			$repetitionStart = $_REQUEST["repetition-start"];
+			$repetitionStart = sanitize_text_field( $_REQUEST["repetition-start"] );
 			if ( is_array( $repetitionStart ) ) {
 				$repetitionStart = strtotime( $repetitionStart['date'] . " " . $repetitionStart['time'] );
 			} else {
 				$repetitionStart = intval( $repetitionStart );
 			}
-			$repetitionEnd = $_REQUEST["repetition-end"];
+			$repetitionEnd = sanitize_text_field( $_REQUEST["repetition-end"] );
 			if ( is_array( $repetitionEnd ) ) {
 				$repetitionEnd = strtotime( $repetitionEnd['date'] . " " . $repetitionEnd['time'] );
 			} else {
@@ -200,7 +200,7 @@ class Booking extends Timeframe {
 				commonsbooking_sanitizeHTML( __( "There is an overlapping booking.",
 					'commonsbooking' ) ),
 				45 );
-			$targetUrl = $_REQUEST['_wp_http_referer'];
+			$targetUrl = sanitize_url( $_REQUEST['_wp_http_referer'] );
 			header( 'Location: ' . $targetUrl );
 			exit();
 		}
@@ -631,7 +631,7 @@ class Booking extends Timeframe {
 		To search and filter bookings please integrate the frontend booking list via shortcode. 
 		See here <a target="_blank" href="https://commonsbooking.org/?p=1433">How to display the booking list</a>', 'commonsbooking' ) );
 
-		if ( ( $pagenow == 'edit.php' ) && ( $_GET['post_type'] == self::getPostType() ) ) {
+		if ( ( $pagenow == 'edit.php' ) && ( sanitize_text_field( $_GET['post_type'] ) == self::getPostType() ) ) {
 			echo '<div class="notice notice-info"><p>' . $notice . '</p></div>';
 		}
 	}

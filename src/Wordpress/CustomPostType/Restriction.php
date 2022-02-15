@@ -227,7 +227,7 @@ class Restriction extends CustomPostType {
 
 		if (
 			is_admin() && $query->is_main_query() &&
-			isset( $_GET['post_type'] ) && static::$postType == $_GET['post_type'] &&
+			isset( $_GET['post_type'] ) && static::$postType == sanitize_text_field(  $_GET['post_type'] ) &&
 			$pagenow == 'edit.php'
 		) {
 			// Meta value filtering
@@ -243,7 +243,7 @@ class Restriction extends CustomPostType {
 
 			foreach ( $meta_filters as $key => $filter ) {
 				if (
-					isset( $_GET[ $filter ] ) &&
+					isset( sanitize_text_field( $_GET[ $filter ] ) ) &&
 					$_GET[ $filter ] != ''
 				) {
 					$query->query_vars['meta_query'][] = array(

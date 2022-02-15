@@ -5,7 +5,7 @@ function commonsbooking_tag( $atts ) {
 		'tag' => '',
 	), $atts, 'cb' );
 
-	echo commonsbooking_parse_shortcode( $atts['tag'] );
+	echo esc_html( commonsbooking_parse_shortcode( $atts['tag'] ) );
 }
 
 add_shortcode( 'cb', 'commonsbooking_tag' );

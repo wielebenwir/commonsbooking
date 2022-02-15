@@ -44,7 +44,7 @@ class Filter {
 	 * @param $to
 	 */
 	public static function renderDateFilter( $postType, $startDateInputName, $endDateInputName, $from, $to ) {
-		if ( isset( $_GET['post_type'] ) && $postType == $_GET['post_type'] ) {
+		if ( isset( $_GET['post_type'] ) && $postType == sanitize_text_field( $_GET['post_type'] ) ) {
 			echo '<style>
                 input[name=' . $startDateInputName . '], 
                 input[name=' . $endDateInputName . ']{

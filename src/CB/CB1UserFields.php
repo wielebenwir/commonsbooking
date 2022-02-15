@@ -114,7 +114,7 @@ class CB1UserFields {
 
 		foreach ( $this->user_fields as $field ) {
 
-			$row = ( ! empty( $_POST[ $field['field_name'] ] ) ) ? trim( $_POST[ $field['field_name'] ] ) : '';
+			$row = ( ! empty( $_POST[ $field['field_name'] ] ) ) ? sanitize_text_field( trim( $_POST[ $field['field_name'] ] ) ): '';
 			?>
             <p>
 				<?php if ( $field['type'] == 'checkbox' ) { ?>
@@ -186,7 +186,7 @@ class CB1UserFields {
 				if (
 					empty( $_POST[ $field['field_name'] ] ) ||
 					! empty( $_POST[ $field['field_name'] ] ) &&
-					trim( $_POST[ $field['field_name'] ] ) == '' ) {
+					sanitize_text_field( trim( $_POST[ $field['field_name'] ] ) == '' ) ){
 					$errors->add( $field['field_name'] . '_error', $field['errormessage'] );
 				}
 			}

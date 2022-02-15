@@ -278,12 +278,12 @@ class MapShortcode {
 			update_option( 'cb_map_last_nominatim_call', $current_timestamp );
 
 			$params = [
-				'q'      => $_POST['query'],
+				'q'      => sanitize_text_field( $_POST['query'] ),
 				'format' => 'json',
 				'limit'  => 1,
 			];
 
-			$options = MapAdmin::get_options( $_POST['cb_map_id'], true );
+			$options = MapAdmin::get_options( sanitize_text_field( $_POST['cb_map_id'] ), true );
 
 			if ( $options['address_search_bounds_left_bottom_lat'] && $options['address_search_bounds_left_bottom_lon'] && $options['address_search_bounds_right_top_lat'] && $options['address_search_bounds_right_top_lon'] ) {
 				$params['bounded'] = 1;
@@ -328,7 +328,7 @@ class MapShortcode {
 		if ( isset( $_POST['cb_map_id'] ) ) {
 			check_ajax_referer( 'cb_map_locations', 'nonce' );
 
-			$post = get_post( (int) $_POST['cb_map_id'] );
+			$post = get_post( intval( $_POST['cb_map_id'] ));
 
 			if ( $post && $post->post_type == 'cb_map' ) {
 				$cb_map_id = $post->ID;

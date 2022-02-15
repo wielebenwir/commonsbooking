@@ -320,7 +320,7 @@ class Timeframe extends CustomPostType {
 
 		if (
 			is_admin() && $query->is_main_query() &&
-			isset( $_GET['post_type'] ) && static::$postType == $_GET['post_type'] &&
+			isset( $_GET['post_type'] ) && static::$postType == sanitize_text_field( $_GET['post_type'] ) &&
 			$pagenow == 'edit.php'
 		) {
 			// Meta value filtering
