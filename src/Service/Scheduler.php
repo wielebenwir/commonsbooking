@@ -57,27 +57,31 @@ class Scheduler {
 		}
 
 		// Init booking reminder job
-		add_action( 'cb_reminder_cron_hook', array( \CommonsBooking\Service\Booking::class, 'sendReminderMessage' ) );
-		if ( ! wp_next_scheduled( 'cb_reminder_cron_hook' ) ) {
-			$startTime = Settings::getOption( 'commonsbooking_options_reminder',
-				'pre-booking-time' );
+        if (Settings::getOption('commonsbooking_options_reminder', 'pre-booking-reminder-activate') == 'on') {
+            add_action( 'cb_reminder_cron_hook', array( \CommonsBooking\Service\Booking::class, 'sendReminderMessage' ) );
+            if ( ! wp_next_scheduled( 'cb_reminder_cron_hook' ) ) {
+                $startTime = Settings::getOption( 'commonsbooking_options_reminder',
+                    'pre-booking-time' );
 
-			wp_schedule_event(
-				self::getReminderStarttimestamp( $startTime ),
-				'daily',
-				'cb_reminder_cron_hook'
-			);
+                wp_schedule_event(
+                    self::getReminderStarttimestamp( $startTime ),
+                    'daily',
+                    'cb_reminder_cron_hook'
+                );
+            }
 		}
 
 		// Init booking feedback job
-		add_action( 'cb_feedback_cron_hook', array( \CommonsBooking\Service\Booking::class, 'sendFeedbackMessage' ) );
-		if ( ! wp_next_scheduled( 'cb_feedback_cron_hook' ) ) {
-			wp_schedule_event(
-				strtotime( "tomorrow midnight" ) + 1, // tomorrow at 00:00:01
-				'daily',
-				'cb_feedback_cron_hook'
-			);
-		}
+        if (Settings::getOption('commonsbooking_options_reminder', 'post-booking-notice-activate') == 'on') {
+            add_action( 'cb_feedback_cron_hook', array( \CommonsBooking\Service\Booking::class, 'sendFeedbackMessage' ) );
+            if ( ! wp_next_scheduled( 'cb_feedback_cron_hook' ) ) {
+                wp_schedule_event(
+                    strtotime( "tomorrow midnight" ) + 1, // tomorrow at 00:00:01
+                    'daily',
+                    'cb_feedback_cron_hook'
+                );
+            }
+        }
 
 		// Init timeframe export job
 		self::initTimeFrameExport();

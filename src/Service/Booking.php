@@ -35,9 +35,15 @@ class Booking {
 
 	/**
 	 * Send reminder mail, x days before start of booking.
+     * is triggered in  Service\Scheduler initHooks()
 	 * @throws \Exception
 	 */
 	public static function sendReminderMessage() {
+
+        if (Settings::getOption('commonsbooking_options_reminder', 'pre-booking-reminder-activate') != 'on') {
+            return;
+        }
+
 		$daysBeforeStart = Settings::getOption( 'commonsbooking_options_reminder', 'pre-booking-days-before' );
 		$startDate       = strtotime( '+' . $daysBeforeStart . ' days midnight' );
 
@@ -72,9 +78,15 @@ class Booking {
 
 	/**
 	 * Send feedback mal on same day or the day after end of booking.
+     * is triggered in  Service\Scheduler initHooks()
 	 * @throws \Exception
 	 */
 	public static function sendFeedbackMessage() {
+
+        if (Settings::getOption('commonsbooking_options_reminder', 'post-booking-notice-activate') != 'on') {
+            return;
+        }
+
 		// Yesterday at 23:59
 		$endDate = strtotime( 'midnight', time() ) - 1;
 
