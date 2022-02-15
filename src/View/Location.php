@@ -41,7 +41,8 @@ class Location extends View {
 				[$location->ID],
 				$itemIds,
 				null,
-				true
+				true,
+				time()
 			)
 		];
 
