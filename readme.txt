@@ -81,7 +81,9 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 ## Changelog 
 
 ### 2.6.8 (14.02.2022)
-FIXED: fixed a security issue
+FIXED: fixed sanitzing issues
+FIXED: reminder mails have been sent to users even if not activated in options
+FIXED: error on location detail pages in some cases
 
 ### 2.6.7 (13.02.2022)
 FIXED: fixed minor technical issue that leads to hidden gps refresh button in some environments
