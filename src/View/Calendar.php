@@ -674,13 +674,13 @@ class Calendar {
 
 		// Ajax-Request param check
 		if ( array_key_exists( 'sd', $_POST ) && Wordpress::isValidDateString($_POST['sd'])) {
-            $startDateString = $_POST['sd'];
+            $startDateString = sanitize_text_field( $_POST['sd'] );
 		} else {
 			throw new Exception( 'wrong or missing start date.' );
 		}
 
 		if ( array_key_exists( 'ed', $_POST ) && Wordpress::isValidDateString($_POST['ed'])) {
-			$endDateString = $_POST['ed'];
+			$endDateString = sanitize_text_field( $_POST['ed'] );
 		} else {
 			throw new Exception( 'wrong or missing end date.' );
 		}
