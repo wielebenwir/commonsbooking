@@ -69,9 +69,9 @@ class BookingCodes {
 		echo "\xEF\xBB\xBF"; // UTF-8 BOM
 
 		foreach ( $bookingCodes as $bookingCode ) {
-			echo $bookingCode->getDate() .
-			     "\t" . $bookingCode->getItemName() .
-			     "\t" . $bookingCode->getCode() . "\n";
+			echo commonsbooking_sanitizeHTML( $bookingCode->getDate() ) .
+			     "\t" . commonsbooking_sanitizeHTML( $bookingCode->getItemName() ) .
+			     "\t" . commonsbooking_sanitizeHTML( $bookingCode->getCode() ) . "\n";
 		}
 		die;
 	}
