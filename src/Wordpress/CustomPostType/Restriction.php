@@ -243,7 +243,7 @@ class Restriction extends CustomPostType {
 
 			foreach ( $meta_filters as $key => $filter ) {
 				if (
-					isset( sanitize_text_field( $_GET[ $filter ] ) ) &&
+					isset( $_GET[ $filter ] )  &&
 					$_GET[ $filter ] != ''
 				) {
 					$query->query_vars['meta_query'][] = array(
