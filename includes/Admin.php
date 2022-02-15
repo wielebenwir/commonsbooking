@@ -63,7 +63,6 @@ function commonsbooking_sanitizeHTML( $string ): string {
 		'rev'        => array(),
 		'target'     => array(),
 		'novalidate' => array(),
-		'type'       => array(),
 		'value'      => array(),
 		'name'       => array(),
 		'tabindex'   => array(),
@@ -110,6 +109,8 @@ function commonsbooking_sanitizeHTML( $string ): string {
 	$allowedposttags['a']        = $allowed_atts;
 	$allowedposttags['b']        = $allowed_atts;
 	$allowedposttags['i']        = $allowed_atts;
+	$allowedposttags['select']        = $allowed_atts;
+	$allowedposttags['option']        = $allowed_atts;
 
 	return wp_kses( $string, $allowedposttags );
 }
