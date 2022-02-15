@@ -461,7 +461,7 @@ class Plugin {
 				printf(
 					'<div class="%1$s"><p>%2$s</p></div>',
 					esc_attr($class),
-					esc_html($error)
+					commonsbooking_sanitizeHTML($error)
 				);
 				delete_transient($errorType);
 			}

@@ -15,12 +15,12 @@ $button_label = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLU
 $permalink    = add_query_arg ( 'location', $location->ID, get_the_permalink($item->ID) ); // booking link set to item detail page with location ID
 ?>
 
-<?php echo $location->thumbnail('cb_listing_small'); // div.thumbnail is printed by function ?>
+<?php echo commonsbooking_sanitizeHTML($location->thumbnail('cb_listing_small')); // div.thumbnail is printed by function ?>
 
 
 
 <div class="cb-list-info">
-    <h4 class="cb-title cb-item-title"><?php echo esc_html($location->post_title); ?></h4>
+    <h4 class="cb-title cb-item-title"><?php echo commonsbooking_sanitizeHTML($location->post_title); ?></h4>
     <div class="cb-dates cb-timeframe-dates">
         <?php
             if(
@@ -36,5 +36,5 @@ $permalink    = add_query_arg ( 'location', $location->ID, get_the_permalink($it
     </div>
 </div>
 <div class="cb-action">
-    <a href="<?php echo $permalink; ?>" class="cb-button"><?php echo esc_html($button_label); ?></a>
+    <a href="<?php echo esc_url($permalink); ?>" class="cb-button"><?php echo commonsbooking_sanitizeHTML($button_label); ?></a>
 </div>

@@ -96,8 +96,8 @@ if ($templateData && $templateData['total'] > 0) {
     // Remove line breaks and whitespaces between tags
     $response = preg_replace( "/\r|\n/", "", $response);
     $response = preg_replace('/\>\s+\</m', '><', $response);
-    echo $response;
+    echo commonsbooking_sanitizeHTML($response);
 
 } else {
-    echo $noResultText;
+    echo commonsbooking_sanitizeHTML($noResultText);
 }

@@ -69,7 +69,7 @@ abstract class Message {
 
 		// check if templates are available
 		if ( ! $template_body or ! $template_subject ) {
-			new WP_Error( 'e-mail ', esc_html( __( "Could not send email because mail-template was not available. Check options -> templates", "commonsbooking" ) ) );
+			new WP_Error( 'e-mail ', commonsbooking_sanitizeHTML( __( "Could not send email because mail-template was not available. Check options -> templates", "commonsbooking" ) ) );
 		}
 
 		// parse templates & replaces template tags (e.g. {{item:name}})

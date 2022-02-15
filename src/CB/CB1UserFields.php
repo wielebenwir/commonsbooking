@@ -127,7 +127,7 @@ class CB1UserFields {
 							echo "checked";
 						} ?> /><?php esc_attr_e( $field['description'], 'commonsbooking' ) ?><br/>
                     </label>
-					<?php echo $this->get_termsservices_string(); ?>
+					<?php echo commonsbooking_sanitizeHTML($this->get_termsservices_string()); ?>
 				<?php } else { ?>
                     <label for="<?php esc_attr_e( $field['field_name'] ) ?>"><?php esc_attr_e(
 							$field['title'],

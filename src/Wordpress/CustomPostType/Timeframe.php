@@ -827,7 +827,7 @@ class Timeframe extends CustomPostType {
 						if ( get_post_type( $post ) == Location::getPostType() ||
 						     get_post_type( $post ) == Item::getPostType()
 						) {
-							echo $post->post_title;
+							echo commonsbooking_sanitizeHTML($post->post_title);
 							break;
 						}
 					}
@@ -845,14 +845,14 @@ class Timeframe extends CustomPostType {
 							}
 						}
 					}
-					echo $output;
+					echo commonsbooking_sanitizeHTML($output);
 					break;
 				case \CommonsBooking\Model\Timeframe::REPETITION_START:
 				case \CommonsBooking\Model\Timeframe::REPETITION_END:
 					echo date( 'd.m.Y', $value );
 					break;
 				default:
-					echo $value;
+					echo commonsbooking_sanitizeHTML($value);
 					break;
 			}
 		} else {
@@ -867,7 +867,7 @@ class Timeframe extends CustomPostType {
 					get_post_meta( $post_id, 'type', true ) == Timeframe::BOOKING_ID
 				)
 			) {
-				echo $post->{$column};
+				echo commonsbooking_sanitizeHTML($post->{$column});
 			}
 		}
 	}
