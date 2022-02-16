@@ -191,8 +191,7 @@ class Timeframe extends PostRepository {
             ";
 
 			// Run query
-			$posts = $wpdb->get_results(
-				$query, ARRAY_N );
+			$posts = $wpdb->get_results( $query, ARRAY_N );
 
 			// Get Post-IDs
 			foreach ( $posts as &$post ) {
@@ -265,16 +264,17 @@ class Timeframe extends PostRepository {
 	 * @return string
 	 */
 	private static function getFilterByDateQuery( string $table_postmeta, string $date ): string {
-		return "
-            INNER JOIN $table_postmeta pm4 ON
+		global $wpdb;
+		return $wpdb->prepare(
+			"INNER JOIN $table_postmeta pm4 ON
                 pm4.post_id = pm1.id AND
                 pm4.meta_key = 'repetition-start' AND
-                pm4.meta_value BETWEEN 0 AND " . strtotime( $date . 'T23:59' ) . " 
+                pm4.meta_value BETWEEN 0 AND %d 
             INNER JOIN $table_postmeta pm5 ON
                 pm5.post_id = pm1.id AND (
                     (
                         pm5.meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "' AND
-                        pm5.meta_value BETWEEN " . strtotime( $date ) . " AND 3000000000
+                        pm5.meta_value BETWEEN %d AND 3000000000
                     ) OR
                     (
                         pm1.id not in (
@@ -284,7 +284,10 @@ class Timeframe extends PostRepository {
                         )
                     )
                 )                        
-        ";
+            ",
+			strtotime( $date . 'T23:59' ),
+			strtotime( $date )
+		);
 	}
 
 	/**
@@ -296,12 +299,13 @@ class Timeframe extends PostRepository {
 	 * @return string
 	 */
 	private static function getFilterFromDateQuery( string $table_postmeta, int $minTimestamp ): string {
-		return "
-	        INNER JOIN $table_postmeta pm4 ON
+		global $wpdb;
+		return $wpdb->prepare(
+			"INNER JOIN $table_postmeta pm4 ON
 	            pm4.post_id = pm1.id AND (
 	                ( 
 	                    pm4.meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "' AND
-	                    pm4.meta_value > " . $minTimestamp . "
+	                    pm4.meta_value > %d
 	                ) OR
 	                (
 	                    pm1.id not in (
@@ -311,7 +315,9 @@ class Timeframe extends PostRepository {
 	                    )
 	                )
 	            )
-	    ";
+	        ",
+			$minTimestamp
+		);
 	}
 
 	/**
@@ -322,17 +328,18 @@ class Timeframe extends PostRepository {
 	 * @return string
 	 */
 	private static function getTimerangeQuery( string $table_postmeta, int $minTimestamp, int $maxTimestamp ): string {
-		return "
-	        INNER JOIN $table_postmeta pm4 ON
+		global $wpdb;
+		return $wpdb->prepare(
+			"INNER JOIN $table_postmeta pm4 ON
 	            pm4.post_id = pm1.id AND (
 	                pm4.meta_key = 'repetition-start' AND
-	                pm4.meta_value <= " . $maxTimestamp . "                            
+	                pm4.meta_value <= %d                  
 	            )
 	        INNER JOIN $table_postmeta pm5 ON
 	            pm5.post_id = pm1.id AND (   
 	                (                         
 	                    pm5.meta_key = 'repetition-end' AND
-	                    pm5.meta_value >= " . $minTimestamp . "          
+	                    pm5.meta_value >= %d
 	                ) OR (
 	                    NOT EXISTS ( 
 	                        SELECT * FROM $table_postmeta 
@@ -342,7 +349,10 @@ class Timeframe extends PostRepository {
 	                    )
 	                )                          
 	            )
-	        ";
+	        ",
+			$maxTimestamp,
+			$minTimestamp
+		);
 	}
 
 	/**
