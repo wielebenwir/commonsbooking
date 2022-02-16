@@ -22,7 +22,7 @@ class StationStatus extends BaseRoute {
 	 * Commons-API schema definition.
 	 * @var string
 	 */
-	protected $schemaUrl = "https://raw.githubusercontent.com/MobilityData/gbfs-json-schema/master/station_status.json";
+    protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/station_status.json';
 
 	/**
 	 * @param $item Location
