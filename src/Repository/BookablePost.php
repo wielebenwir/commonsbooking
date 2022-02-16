@@ -249,13 +249,13 @@ abstract class BookablePost extends PostRepository {
 			foreach ( $posts as $key => &$location ) {
 				if ( $relatedType == 'item' ) {
 					$item = new \CommonsBooking\Model\Item( $location );
-					if ( $bookable && ! $item->getBookableTimeframesByLocation( $postId ) ) {
+					if ( $bookable && ! $item->getBookableTimeframesByLocation( $postId,false,true ) ) { //Check for role restrictions
 						unset( $posts[ $key ] );
 					}
 				}
 				if ( $relatedType == 'location' ) {
 					$location = new \CommonsBooking\Model\Location( $location );
-					if ( $bookable && ! $location->getBookableTimeframesByItem( $postId ) ) {
+					if ( $bookable && ! $location->getBookableTimeframesByItem( $postId,false,true ) ) { //Check for role restrictions
 						unset( $posts[ $key ] );
 					}
 				}

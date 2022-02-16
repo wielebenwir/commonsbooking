@@ -30,9 +30,10 @@ class Timeframe extends PostRepository {
 		?string $date = null,
 		bool $returnAsModel = false,
 		$minTimestamp = null,
+		$checkRoleRestriction = true,
 		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
-		return self::get(
+		$bookableTimeframes = self::get(
 			$locations,
 			$items,
 			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
@@ -41,6 +42,19 @@ class Timeframe extends PostRepository {
 			$minTimestamp,
 			$postStatus
 		);
+
+		if ($checkRoleRestriction ) {
+			$timeframesModels = $bookableTimeframes;
+			if (!$returnAsModel){
+				self::castPostsToModels($timeframesModels); //cast to model to do calculations
+			} 
+			foreach ($timeframesModels as $key => $timeframe){
+				if ($timeframe->isWithRoleRestriction()) {
+					unset($bookableTimeframes[$key]); //removes timeframes with role restrictions from timeframe array
+				}
+			}
+		}
+		return $bookableTimeframes;
 	}
 
 	/**

@@ -20,14 +20,15 @@ class Location extends BookablePost {
 	 * @return array
 	 * @throws \Exception
 	 */
-	public function getBookableTimeframesByItem( $itemId, bool $asModel = false ): array {
+	public function getBookableTimeframesByItem( $itemId, bool $asModel = false, bool $checkRoleRestriction = false ): array {
 		// get bookable timeframes that has min timestamp = now
 		return Timeframe::getBookable(
 			[ $this->ID ],
 			[ $itemId ],
 			null,
 			$asModel,
-			time()
+			time(),
+			$checkRoleRestriction
 		);
 	}
 

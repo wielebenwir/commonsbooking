@@ -18,13 +18,14 @@ class Item extends BookablePost {
 	 * @return array
 	 * @throws Exception
 	 */
-	public function getBookableTimeframesByLocation( $locationId, bool $asModel = false ): array {
+	public function getBookableTimeframesByLocation( $locationId, bool $asModel = false, bool $checkRoleRestriction = false ): array {
 		return Timeframe::getBookable(
 			[ $locationId ],
 			[ $this->ID ],
 			null,
 			$asModel,
-			time()
+			time(),
+			$checkRoleRestriction
 		);
 	}
 

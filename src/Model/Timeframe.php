@@ -288,6 +288,7 @@ class Timeframe extends CustomPost {
 					null,
 					true,
 					null,
+					false,
 					['publish']
 				);
 
