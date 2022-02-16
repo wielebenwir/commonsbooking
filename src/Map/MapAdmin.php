@@ -447,9 +447,7 @@ class MapAdmin {
 
 		wp_enqueue_media();
 
-		//load image upload script
-		$script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-marker-upload.js';
-		echo '<script src="' . $script_path . '"></script>';
+		// info: upload script is enqueued in includes/Admin.php
 
 		//map translation
 		$translation = [
