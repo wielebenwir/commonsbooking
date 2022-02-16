@@ -20,16 +20,16 @@ class Restriction extends PostRepository {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
-		return "
+		return $wpdb->prepare("
 	                INNER JOIN $table_postmeta pm4 ON
 	                    pm4.post_id = pm1.id AND
 	                    pm4.meta_key = '" . \CommonsBooking\Model\Restriction::META_START . "' AND
-	                    pm4.meta_value BETWEEN 0 AND " . strtotime( $date . 'T23:59' ) . " 
+	                    pm4.meta_value BETWEEN 0 AND %d
 	                INNER JOIN $table_postmeta pm5 ON
 	                    pm5.post_id = pm1.id AND (
 	                        (
 	                            pm5.meta_key = '" . \CommonsBooking\Model\Restriction::META_END . "' AND
-	                            pm5.meta_value BETWEEN " . strtotime( $date ) . " AND 3000000000
+	                            pm5.meta_value BETWEEN %d AND 3000000000
 	                        ) OR
 	                        (
 	                            pm1.id not in (
@@ -39,7 +39,10 @@ class Restriction extends PostRepository {
 	                            )
 	                        )
 	                    )                        
-	            ";
+	            ",
+			strtotime( $date . 'T23:59' ),
+			strtotime( $date )
+		);
 	}
 
 	/**
@@ -53,12 +56,12 @@ class Restriction extends PostRepository {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
-		return "
+		return $wpdb->prepare("
                 INNER JOIN $table_postmeta pm4 ON
                     pm4.post_id = pm1.id AND (
                         ( 
                             pm4.meta_key = '" . \CommonsBooking\Model\Restriction::META_END . "' AND
-                            pm4.meta_value > " . $minTimestamp . "
+                            pm4.meta_value > %d
                         ) OR
                         (
                             pm1.id not in (
@@ -68,7 +71,9 @@ class Restriction extends PostRepository {
                             )
                         )
                     )
-            ";
+            ",
+			$minTimestamp
+		);
 	}
 
 	/**
