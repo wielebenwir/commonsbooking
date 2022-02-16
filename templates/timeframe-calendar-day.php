@@ -1,15 +1,15 @@
 <li class="type-cb_day">
 
     <div class="cb-day-title">
-        <span><?php echo $day->getFormattedDate('d'); ?></span>
-        <span><?php echo $day->getFormattedDate('M'); ?>></span>
+        <span><?php echo commonsbooking_sanitizeHTML($day->getFormattedDate('d')); ?></span>
+        <span><?php echo commonsbooking_sanitizeHTML($day->getFormattedDate('M')); ?>></span>
     </div>
 
     <?php
         foreach ($day.getGrid() as $slotNr => $slot) {
             if(array_key_exists('timeframe', $slot) && $slot['timeframe']) {
                 if($slot['timeframe']['type'] == '2') { ?>
-                <div class="cb-timeframe cb-timeframe--type-<?php echo $slot['timeframe']->type; ?>" data-type-label="{{ slot.timeframe|get_type_label }}" style="border-bottom: 1px solid gray;">
+                <div class="cb-timeframe cb-timeframe--type-<?php echo esc_attr($slot['timeframe']->type); ?>" data-type-label="{{ slot.timeframe|get_type_label }}" style="border-bottom: 1px solid gray;">
                     <span>
                         {{ slot.timestart }} - {{ slot.timeend }}
                     </span>

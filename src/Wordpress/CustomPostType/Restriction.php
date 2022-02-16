@@ -156,7 +156,7 @@ class Restriction extends CustomPostType {
 						if ( get_post_type( $post ) == Location::getPostType() || get_post_type(
 							                                                          $post
 						                                                          ) == Item::getPostType() ) {
-							echo $post->post_title;
+							echo commonsbooking_sanitizeHTML($post->post_title);
 							break;
 						}
 					}
@@ -174,7 +174,7 @@ class Restriction extends CustomPostType {
 							}
 						}
 					}
-					echo $output;
+					echo commonsbooking_sanitizeHTML($output);
 					break;
 				case \CommonsBooking\Model\Restriction::META_STATE:
 					$output = "-";
@@ -188,14 +188,14 @@ class Restriction extends CustomPostType {
 							}
 						}
 					}
-					echo $output;
+					echo commonsbooking_sanitizeHTML($output);
 					break;
 				case \CommonsBooking\Model\Restriction::META_START:
 				case \CommonsBooking\Model\Restriction::META_END:
 					echo date( 'd.m.Y H:i', $value );
 					break;
 				default:
-					echo $value;
+					echo commonsbooking_sanitizeHTML($value);
 					break;
 			}
 		} else {
@@ -210,7 +210,7 @@ class Restriction extends CustomPostType {
 					get_post_meta( $post_id, \CommonsBooking\Model\Restriction::META_TYPE, true ) == Timeframe::BOOKING_ID
 				)
 			) {
-				echo $post->{$column};
+				echo commonsbooking_sanitizeHTML($post->{$column});
 			}
 		}
 	}
@@ -227,7 +227,7 @@ class Restriction extends CustomPostType {
 
 		if (
 			is_admin() && $query->is_main_query() &&
-			isset( $_GET['post_type'] ) && static::$postType == $_GET['post_type'] &&
+			isset( $_GET['post_type'] ) && static::$postType == sanitize_text_field(  $_GET['post_type'] ) &&
 			$pagenow == 'edit.php'
 		) {
 			// Meta value filtering
@@ -243,7 +243,7 @@ class Restriction extends CustomPostType {
 
 			foreach ( $meta_filters as $key => $filter ) {
 				if (
-					isset( $_GET[ $filter ] ) &&
+					isset( $_GET[ $filter ] )  &&
 					$_GET[ $filter ] != ''
 				) {
 					$query->query_vars['meta_query'][] = array(

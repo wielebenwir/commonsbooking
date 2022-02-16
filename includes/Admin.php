@@ -13,6 +13,13 @@ function commonsbooking_admin() {
 	wp_enqueue_style( 'admin-styles', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/css/admin.css', array(), COMMONSBOOKING_VERSION );
 	wp_enqueue_script( 'cb-scripts-admin', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js', array() );
 
+    // Map marker upload scripts
+    // TODO needs to be evaluated. Maybe not working on all systems
+    if (get_current_screen()->id == 'cb_map') {
+        $script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-marker-upload.js';
+        wp_enqueue_script('cb_map_admin', $script_path);
+    }
+
 	// CB 0.X migration
 	wp_localize_script(
 		'cb-scripts-admin',
@@ -63,7 +70,6 @@ function commonsbooking_sanitizeHTML( $string ): string {
 		'rev'        => array(),
 		'target'     => array(),
 		'novalidate' => array(),
-		'type'       => array(),
 		'value'      => array(),
 		'name'       => array(),
 		'tabindex'   => array(),
@@ -110,6 +116,8 @@ function commonsbooking_sanitizeHTML( $string ): string {
 	$allowedposttags['a']        = $allowed_atts;
 	$allowedposttags['b']        = $allowed_atts;
 	$allowedposttags['i']        = $allowed_atts;
+	$allowedposttags['select']        = $allowed_atts;
+	$allowedposttags['option']        = $allowed_atts;
 
 	return wp_kses( $string, $allowedposttags );
 }
@@ -126,12 +134,13 @@ function commonsbooking_sanitizeHTML( $string ): string {
 function commonsbooking_sanitizeArrayorString( $array_or_string, $sanitize_function = 'sanitize_text_field' ) {
 	if ( is_string( $array_or_string ) ) {
 		$array_or_string = $sanitize_function( $array_or_string );
+        commonsbooking_write_log(array($array_or_string, $sanitize_function));
 	} elseif ( is_array( $array_or_string ) ) {
 		foreach ( $array_or_string as $key => &$value ) {
 			if ( is_array( $value ) ) {
-				$value = commonsbooking_sanitizeArrayorString( $value );
+				$value = commonsbooking_sanitizeArrayorString( $value, $sanitize_function );
 			} else {
-				$value = commonsbooking_sanitizeArrayorString( $value );
+				$value = commonsbooking_sanitizeArrayorString( $value, $sanitize_function );
 			}
 		}
 	}

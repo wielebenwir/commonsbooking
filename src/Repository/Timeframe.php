@@ -142,14 +142,15 @@ class Timeframe extends PostRepository {
 	 * @return mixed
 	 */
 	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
+
 		if ( ! count( $types ) ) {
 			$types = [
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
-			];
+                \CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
+                \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+                \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
+                \CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
+                \CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
+            ];
 		}
 
 		$customId = md5( serialize( $types ) );
@@ -163,6 +164,12 @@ class Timeframe extends PostRepository {
 
 			$items     = array_filter( $items );
 			$locations = array_filter( $locations );
+
+            // additional sanitizing. Allow only integer 
+            $items      = commonsbooking_sanitizeArrayorString( $items, 'intval' );
+            $locations  = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
+            $types      = commonsbooking_sanitizeArrayorString( $types, 'intval' );
+
 
 			// Query for item(s)
 			if ( count( $items ) > 0 ) {

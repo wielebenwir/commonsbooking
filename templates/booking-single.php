@@ -23,10 +23,10 @@ $text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates
 
 <div class="cb-wrapper cb-booking-item">
     <div class="cb-list-header">
-	<?php echo $item->thumbnail('cb_listing_small'); ?>
+	<?php echo commonsbooking_sanitizeHTML($item->thumbnail('cb_listing_small')); ?>
     <div class="cb-list-info">
         <h2><?php echo $item->title(); ?></h2>
-        <?php echo $location->excerpt(); ?>
+        <?php echo commonsbooking_sanitizeHTML($location->excerpt()); ?>
     </div>
 </div><!-- .cb-list-header -->
 
@@ -35,11 +35,11 @@ $text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates
 <div class="cb-wrapper cb-booking-datetime">
     <div class="cb-list-header cb-col-30-70 cb-datetime">
         <div><?php echo esc_html__('Pickup', 'commonsbooking'); ?></div>
-        <div><?php echo $booking->pickupDatetime(); ?></div>
+        <div><?php echo commonsbooking_sanitizeHTML($booking->pickupDatetime()); ?></div>
     </div><!-- .cb-datetime -->
     <div class="cb-list-content cb-datetime cb-col-30-70">
         <div><?php echo esc_html__('Return', 'commonsbooking'); ?></div>
-        <div><?php echo $booking->returnDatetime(); ?></div>
+        <div><?php echo commonsbooking_sanitizeHTML($booking->returnDatetime()); ?></div>
     </div><!-- .cb-bookigcode -->
     <?php
     if (
@@ -50,7 +50,7 @@ $text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates
     ?>
         <div class="cb-list-content cb-datetime cb-col-30-70">
             <div><?php echo esc_html__('Booking Code', 'commonsbooking'); ?></div>
-            <div><strong><?php echo $booking->getBookingCode(); ?></strong></div>
+            <div><strong><?php echo commonsbooking_sanitizeHTML($booking->getBookingCode()); ?></strong></div>
         </div>
     <?php
     } // end if bookingcode
@@ -64,12 +64,12 @@ $text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates
     </div>
     <div class="cb-list-content cb-address cb-col-30-70">
         <div><?php echo esc_html__('Address', 'commonsbooking'); ?></div>
-        <div><?php echo $location->formattedAddressOneLine(); ?></div>
+        <div><?php echo commonsbooking_sanitizeHTML($location->formattedAddressOneLine()); ?></div>
 
     </div><!-- .cb-address -->
     <div class="cb-list-content cb-pickupinstructions cb-col-30-70">
         <div><?php echo esc_html__('Pickup instructions', 'commonsbooking'); ?></div>
-        <div><?php echo $location->formattedPickupInstructionsOneLine(); ?></div>
+        <div><?php echo commonsbooking_sanitizeHTML($location->formattedPickupInstructionsOneLine()); ?></div>
     </div><!-- .cb-cb-pickupinstructions -->
     <?php 
     // show contact details only after booking is confirmed or if options are set to show contactinfo even on unconfirmed booking status
@@ -84,7 +84,7 @@ $text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates
 ?>
     <div class="cb-list-content cb-contact cb-col-30-70">
         <div><?php echo esc_html__('Contact', 'commonsbooking'); ?></div>
-        <div><strong><?php echo $text_hidden_contactinfo; ?></strong></div>
+        <div><strong><?php echo commonsbooking_sanitizeHTML($text_hidden_contactinfo); ?></strong></div>
     </div><!-- .cb-contact -->
 <?php 
 // end if booking == confirmed
@@ -120,12 +120,12 @@ $text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates
         if($post->post_status == 'unconfirmed') { ?>
             <div class="cb-wrapper cb-booking-comment">
                 <div class="cb-list-header">
-                    <h3><?php echo $bookingCommentTitle; ?></h3>
+                    <h3><?php echo commonsbooking_sanitizeHTML($bookingCommentTitle); ?></h3>
                 </div>
-                <p><?php echo $bookingCommentDescription; ?></p>
+                <p><?php echo commonsbooking_sanitizeHTML($bookingCommentDescription); ?></p>
                 <div class="cb-list-content cb-comment cb-col-100">
                     <div>
-                        <textarea id="cb-booking-comment" name="comment"><?php echo $booking->returnComment(); ?></textarea>
+                        <textarea id="cb-booking-comment" name="comment"><?php echo commonsbooking_sanitizeHTML($booking->returnComment()); ?></textarea>
                     </div>
                 </div>
             </div>
@@ -135,10 +135,10 @@ $text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates
     ?>
             <div class="cb-wrapper cb-booking-comment">
                 <div class="cb-list-header">
-                    <h3><?php echo $bookingCommentTitle; ?></h3>
+                    <h3><?php echo commonsbooking_sanitizeHTML($bookingCommentTitle); ?></h3>
                 </div>
                 <div class="cb-list-content cb-comment cb-col-100">
-                    <div><?php echo $booking->returnComment(); ?></div>
+                    <div><?php echo commonsbooking_sanitizeHTML($booking->returnComment()); ?></div>
                 </div>
             </div>
     <?php

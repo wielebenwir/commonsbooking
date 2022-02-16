@@ -34,10 +34,7 @@ class API
             'API_KEY' => $share->getKey(),
             'OWNER' => $share->getOwner()
         ];
-        $ch = curl_init($share->getPushUrl());
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $requestData);
-        curl_exec($ch);
-        curl_close($ch);
+		wp_remote_post($share->getPushUrl(), $requestData);
     }
 
 }

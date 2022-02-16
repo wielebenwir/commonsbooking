@@ -202,7 +202,7 @@ class MapAdmin {
 
 		$input = [];
 		if ( isset( $_POST['cb_map_options'] ) ) {
-			$input = $_POST['cb_map_options'];
+			$input = sanitize_text_field( $_POST['cb_map_options'] );
 		}
 
 		//base_map
@@ -447,9 +447,7 @@ class MapAdmin {
 
 		wp_enqueue_media();
 
-		//load image upload script
-		$script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-marker-upload.js';
-		echo '<script src="' . $script_path . '"></script>';
+		// info: upload script is enqueued in includes/Admin.php
 
 		//map translation
 		$translation = [

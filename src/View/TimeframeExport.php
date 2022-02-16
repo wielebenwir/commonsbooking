@@ -4,12 +4,13 @@
 namespace CommonsBooking\View;
 
 
-use CommonsBooking\Repository\Timeframe;
-use CommonsBooking\Settings\Settings;
-use DateInterval;
-use DatePeriod;
 use DateTime;
 use Exception;
+use DatePeriod;
+use DateInterval;
+use CommonsBooking\Helper\Wordpress;
+use CommonsBooking\Settings\Settings;
+use CommonsBooking\Repository\Timeframe;
 
 class TimeframeExport {
 
@@ -130,7 +131,7 @@ class TimeframeExport {
 	 */
 	protected static function getInputFields( $inputName ) {
 		$inputFieldsString =
-			array_key_exists( $inputName, $_REQUEST ) ? $_REQUEST[ $inputName ] :
+			array_key_exists( $inputName, $_REQUEST ) ? sanitize_text_field( $_REQUEST[ $inputName ] ) :
 				Settings::getOption( 'commonsbooking_options_export', '$inputName' );
 
 		return array_filter( explode( ',', $inputFieldsString ) );
@@ -150,8 +151,8 @@ class TimeframeExport {
 			$start     = date( 'd.m.Y' );
 			$end       = date( 'd.m.Y', strtotime( '+' . $timerange . ' day' ) );
 		} else {
-			$start = $_REQUEST['export-timerange-start'];
-			$end   = $_REQUEST['export-timerange-end'];
+			$start = Wordpress::isValidDateString( $_REQUEST['export-timerange-start'] );
+			$end   = Wordpress::isValidDateString( $_REQUEST['export-timerange-end'] );
 		}
 
 		// Timerange

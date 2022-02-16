@@ -57,7 +57,7 @@ class BookingCodes {
 	 */
 	public static function renderCSV( $timeframeId = null ) {
 		if ( $timeframeId == null ) {
-			$timeframeId = sanitize_text_field( $_GET['post'] );
+			$timeframeId = intval( $_GET['post'] );
 		}
 		$bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId );
 		header( 'Content-Encoding: UTF-8' );
@@ -69,9 +69,9 @@ class BookingCodes {
 		echo "\xEF\xBB\xBF"; // UTF-8 BOM
 
 		foreach ( $bookingCodes as $bookingCode ) {
-			echo $bookingCode->getDate() .
-			     "\t" . $bookingCode->getItemName() .
-			     "\t" . $bookingCode->getCode() . "\n";
+			echo commonsbooking_sanitizeHTML( $bookingCode->getDate() ) .
+			     "\t" . commonsbooking_sanitizeHTML( $bookingCode->getItemName() ) .
+			     "\t" . commonsbooking_sanitizeHTML( $bookingCode->getCode() ) . "\n";
 		}
 		die;
 	}

@@ -20,7 +20,7 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 	 * Commons-API schema definition.
 	 * @var string
 	 */
-	protected $schemaUrl = "https://raw.githubusercontent.com/MobilityData/gbfs-json-schema/master/gbfs.json";
+    protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/gbfs.json';
 
 	public function get_items( $request ): WP_REST_Response {
 		$feeds = [];

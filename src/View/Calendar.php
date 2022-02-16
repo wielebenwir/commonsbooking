@@ -5,6 +5,7 @@ namespace CommonsBooking\View;
 
 
 use CommonsBooking\CB\CB;
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Week;
@@ -288,6 +289,10 @@ class Calendar {
 
 		if ( $location instanceof WP_Post || $location instanceof CustomPost ) {
 			$location = $location->ID;
+		}
+
+		if(!Wordpress::isValidDateString($startDateString) || !Wordpress::isValidDateString($endDateString)) {
+			throw new \Exception('invalid date format');
 		}
 
 		if ( ! $item || ! $location ) {
@@ -656,26 +661,28 @@ class Calendar {
 	 */
 	public static function getCalendarData() {
 		// item by post-param
-		$item = isset( $_POST['item'] ) && $_POST['item'] != "" ? sanitize_text_field( $_POST['item'] ) : false;
+		$item = isset( $_POST['item'] ) && $_POST['item'] != "" ? intval ( $_POST['item'] ) : false;
 		if ( $item === false ) {
 			throw new Exception( 'missing item id.' );
 		}
-		$location = isset( $_POST['location'] ) && $_POST['location'] != "" ? sanitize_text_field( $_POST['location'] ) : false;
+
+		// location by post-param
+		$location = isset( $_POST['location'] ) && $_POST['location'] != "" ? intval ( $_POST['location'] ): false;
 		if ( $location === false ) {
 			throw new Exception( 'missing location id.' );
 		}
 
 		// Ajax-Request param check
-		if ( array_key_exists( 'sd', $_POST ) ) {
-			$startDateString = sanitize_text_field( $_POST['sd'] );
+		if ( array_key_exists( 'sd', $_POST ) && Wordpress::isValidDateString($_POST['sd'])) {
+            $startDateString = sanitize_text_field( $_POST['sd'] );
 		} else {
-			throw new Exception( 'missing start date.' );
+			throw new Exception( 'wrong or missing start date.' );
 		}
 
-		if ( array_key_exists( 'ed', $_POST ) ) {
+		if ( array_key_exists( 'ed', $_POST ) && Wordpress::isValidDateString($_POST['ed'])) {
 			$endDateString = sanitize_text_field( $_POST['ed'] );
 		} else {
-			throw new Exception( 'missing end date.' );
+			throw new Exception( 'wrong or missing end date.' );
 		}
 
 		$jsonResponse = Calendar::getCalendarDataArray( $item, $location, $startDateString, $endDateString );
