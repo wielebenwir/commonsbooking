@@ -40,12 +40,11 @@ class BookingCodes {
 			$table_name = $wpdb->prefix . self::$tablename;
 
 			$sql = $wpdb->prepare(
-				"SELECT * FROM %s
+				"SELECT * FROM $table_name
                 WHERE timeframe = %d
                 AND date BETWEEN %s AND %s
                 ORDER BY item ASC ,date ASC
             	",
-				$table_name,
 				$timeframeId,
 				$startDate,
 				$endDate
@@ -88,14 +87,13 @@ class BookingCodes {
 			$table_name = $wpdb->prefix . self::$tablename;
 
 			$sql = $wpdb->prepare(
-				"SELECT * FROM %s
+				"SELECT * FROM $table_name
                 WHERE 
                     timeframe = %s AND 
                     item = %s AND 
                     location = %s AND 
                     date = %s
                 ORDER BY item ASC ,date ASC",
-				$table_name,
 				$timeframeId,
 				$itemId,
 				$locationId,
