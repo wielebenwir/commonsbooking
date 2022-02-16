@@ -404,13 +404,14 @@ class Timeframe extends CustomPost {
 	 * @return boolean
 	 */
 	function isWithRoleRestriction() {
-		$current_user     = wp_get_current_user();
-		$user_roles       = $current_user->roles;
 		$allowedUserRoles = get_post_meta( $this->ID, 'allowed_user_roles', true );
 		if ( empty( $allowedUserRoles ) ) {
 			return false;
 		}
-	
+		
+		$current_user     = wp_get_current_user();
+		$user_roles       = $current_user->roles;
+
 		$match = array_intersect( $user_roles, $allowedUserRoles );
 
 		if (!$match) { //when no match with allowed user role is found then the timeframe is blocked for the user
