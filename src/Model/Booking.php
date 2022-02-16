@@ -43,8 +43,11 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function cancel() {
 		// workaround, because wp_update_post deletes all meta data.
 		global $wpdb;
-		$query = "UPDATE " . $wpdb->prefix . "posts SET post_status='canceled' WHERE ID = '" . $this->post->ID . "'";
-		$wpdb->query( $query );
+		$sql = $wpdb->prepare(
+			"UPDATE " . $wpdb->prefix . "posts SET post_status='canceled' WHERE ID = %d",
+			$this->post->ID
+		);
+		$wpdb->query( $sql );
 
 		add_post_meta( $this->post->ID, 'cancellation_time', time() );
 

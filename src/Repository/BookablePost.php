@@ -124,6 +124,7 @@ abstract class BookablePost extends PostRepository {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
+			$userId = intval($userId);
 			// Get all Locations where current user is author
 			$args  = array(
 				'post_type' => static::getPostType(),

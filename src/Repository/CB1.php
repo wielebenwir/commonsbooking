@@ -130,25 +130,19 @@ class CB1 {
 	/**
 	 * @param $id
 	 *
-	 * @return string
+	 * @return ?string
 	 */
 	public static function getBookingCode( $id ): ?string {
 		global $wpdb;
 		$table_bookingcodes = $wpdb->prefix . self::$BOOKINGCODES_TABLE;
 
-		$result = $wpdb->get_results(
-			"SELECT
-                bookingcode
-            FROM $table_bookingcodes
-            WHERE
-                id = $id
-            ",
-			ARRAY_A
-		);
+		$sql = $wpdb->prepare( "SELECT bookingcode FROM $table_bookingcodes WHERE id = %d", $id);
+		$result = $wpdb->get_results( $sql, ARRAY_A );
 
 		if ( $result && count( $result ) > 0 ) {
 			return $result[0]['bookingcode'];
 		}
+		return null;
 	}
 
 	/**
@@ -163,25 +157,27 @@ class CB1 {
 	}
 
 	/**
-	 * @param $id
-	 * @param $type
+	 * @param int $id
+	 * @param string $type
 	 *
 	 * @return false|int
 	 */
-	protected static function getCB2PostIdByType( $id, $type ) {
+	protected static function getCB2PostIdByType( int $id, string $type ) {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 		$table_posts    = $wpdb->prefix . 'posts';
 
-		$result = $wpdb->get_results(
-			"
-            SELECT post_id FROM $table_postmeta
+		$sql = $wpdb->prepare(
+			"SELECT post_id FROM $table_postmeta
             WHERE
                 meta_key = '_cb_cb1_post_post_ID' AND
-                meta_value = $id AND
-                post_id in (SELECT id from $table_posts where post_type = '" . $type . "');
-        "
+                meta_value = %d AND
+                post_id in (SELECT id from $table_posts where post_type = %s);
+            ",
+			$id,
+			$type
 		);
+		$result = $wpdb->get_results($sql);
 
 		if ( $result && count( $result ) > 0 ) {
 			return $result[0]->post_id;
@@ -221,16 +217,16 @@ class CB1 {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
-
-		$result = $wpdb->get_results(
-			"
-            SELECT meta_value as cb1_id, post_id as cb2_id 
+		$sql = $wpdb->prepare(
+			"SELECT meta_value as cb1_id, post_id as cb2_id 
             FROM $table_postmeta
             WHERE
                 meta_key = '_cb_cb1_post_post_ID' AND 
-                meta_value = '$id';
-        "
+                meta_value = %s;
+        	",
+			$id
 		);
+		$result = $wpdb->get_results( $sql );
 
 		if ( $result && count( $result ) > 0 ) {
 			return $result[0]->cb2_id;
