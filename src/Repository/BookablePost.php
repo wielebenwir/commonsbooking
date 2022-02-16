@@ -7,6 +7,7 @@ namespace CommonsBooking\Repository;
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use Exception;
+use WP_Post;
 use WP_Query;
 
 abstract class BookablePost extends PostRepository {
@@ -124,7 +125,7 @@ abstract class BookablePost extends PostRepository {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
-			$userId = intval($userId);
+			$userId = intval( $userId );
 			// Get all Locations where current user is author
 			$args  = array(
 				'post_type' => static::getPostType(),
@@ -239,7 +240,7 @@ abstract class BookablePost extends PostRepository {
 			throw new Exception( 'invalid type submitted' );
 		}
 
-		if ( $postId instanceof \WP_Post ) {
+		if ( $postId instanceof WP_Post ) {
 			$postId = $postId->ID;
 		}
 
@@ -278,7 +279,7 @@ abstract class BookablePost extends PostRepository {
 	 * @return array
 	 */
 	protected static function getRelatedPosts( $postId, $originType, $relatedType ): array {
-		if ( $postId instanceof \WP_Post ) {
+		if ( $postId instanceof WP_Post ) {
 			$postId = $postId->ID;
 		}
 
@@ -287,7 +288,7 @@ abstract class BookablePost extends PostRepository {
 		} else {
 			$relatedPosts   = [];
 			$relatedPostIds = [];
-			$args        = array(
+			$args           = array(
 				'post_type'   => Timeframe::$postType,
 				'post_status' => array( 'confirmed', 'unconfirmed', 'publish', 'inherit' ),
 				'meta_query'  => array(
