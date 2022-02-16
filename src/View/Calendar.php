@@ -662,13 +662,13 @@ class Calendar {
 	public static function getCalendarData() {
 		// item by post-param
 		$item = isset( $_POST['item'] ) && $_POST['item'] != "" ? intval ( $_POST['item'] ) : false;
-		if ( $item === false ) {
+		if ( $item === false || $item == 0) { // 0 = failed intval check
 			throw new Exception( 'missing item id.' );
 		}
 
 		// location by post-param
 		$location = isset( $_POST['location'] ) && $_POST['location'] != "" ? intval ( $_POST['location'] ): false;
-		if ( $location === false ) {
+		if ( $location === false || $location == 0) { // 0 = failed intval check
 			throw new Exception( 'missing location id.' );
 		}
 
