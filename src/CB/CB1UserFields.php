@@ -159,7 +159,7 @@ class CB1UserFields {
 			// translators: %s = terms and service url
 			$string = sprintf(
 				commonsbooking_sanitizeHTML( __( '<a href="%s" target=_blank">Read the terms and services</a>', 'commonsbooking' ) ),
-				$this->termsservices_url
+				commonsbooking_sanitizeHTML( $this->termsservices_url )
 			);
 		} else {
 			$string = "";

@@ -59,7 +59,7 @@ return array(
 
                             <h2>Contribute</h2>
                             The future of this plugin depends on your support. You can support us by make a donation on our website: <a target="_blank" href="https://www.wielebenwir.de/verein/unterstutzen">wielebenwir</a>'
-						, 'commonsbooking' ) ), COMMONSBOOKING_VERSION ),
+						, 'commonsbooking' ) ), commonsbooking_sanitizeHTML( COMMONSBOOKING_VERSION ) ),
 				'fields' => array()
 			)
 		)
@@ -91,7 +91,7 @@ return array(
 								'The slug for article detail page. Type in the slug without slashes. Example: <strong>cb_item</strong> or <strong>article</strong>.  The url for the items detail will be like %s',
 								'commonsbooking' ) ), network_site_url( '/cb_item/' ) ),
 						'type'        => 'text',
-						'default'     => Item::$postType,
+						'default'     => commonsbooking_sanitizeHTML( Item::$postType ),
 					),
 					array(
 						'name'        => esc_html__( 'Locations slug', 'commonsbooking' ),
@@ -102,7 +102,7 @@ return array(
 								'The slug for location detail page. Type in the slug without slashes. Example: <strong>cb_location</strong> or <strong>location</strong>.  The url for the items detail will be like %s',
 								'commonsbooking' ) ), network_site_url( '/cb_location/' ) ),
 						'type'        => 'text',
-						'default'     => Location::$postType,
+						'default'     => commonsbooking_sanitizeHTML( Location::$postType ),
 					),
 					array(
 						'name'        => esc_html__( 'Bookings Page', 'commonsbooking' ),
@@ -113,7 +113,7 @@ return array(
 								'The page where you included the [cb_bookings] shortcode. This is used in the Users Widget',
 								'commonsbooking' ) ), network_site_url( '/bookings/' ) ),
 						'type'        => 'select',
-						'options'     => Wordpress::getPageListTitle(),
+						'options'     => commonsbooking_sanitizeHTML( Wordpress::getPageListTitle() ),
 					),
 				),
 			),
@@ -757,19 +757,19 @@ The team</p>', 'commonsbooking' ) ),
 						'desc'    => esc_html__( 'Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information.', 'commonsbooking' ),
 						'id'      => "export-type",
 						'type'    => 'select',
-						'options' => $typeOptions,
+						'options' => commonsbooking_sanitizeHTML( $typeOptions ),
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Location-Fields', 'commonsbooking' ) ),
 						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
-						Settings::returnFormattedMetaboxFields('cb_location') ),
+						commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields('cb_location') ) ),
 						'id'   => 'location-fields',
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Item-Fields', 'commonsbooking' ) ),
 						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
-						Settings::returnFormattedMetaboxFields('cb_item') ),
+						commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields('cb_item') ) ),
 						'id'   => 'item-fields',
 						'type' => 'text'
 					),
