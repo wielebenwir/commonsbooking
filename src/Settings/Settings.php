@@ -58,7 +58,7 @@ class Settings {
 		$flat_array = self::flattenArray( $cb_options_array );
 
 		if ( is_array( $cb_options_array ) && array_key_exists( $field_id, $flat_array ) ) {
-			$result = commonsbooking_sanitizeHTML($flat_array[ $field_id ]);
+			$result = $flat_array[ $field_id ];
 		} else {
 			$result = false;
 		}
