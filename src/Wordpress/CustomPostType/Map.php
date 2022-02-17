@@ -4,6 +4,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Map\MapAdmin;
 use CommonsBooking\Map\MapSettings;
 use CommonsBooking\Map\MapShortcode;
@@ -101,7 +102,7 @@ class Map extends CustomPostType {
 			[],
 			false,
 			true,
-			time()
+			Helper::getLastFullHourTimestamp()
 		);
 
 		/** @var \CommonsBooking\Model\Timeframe $timeframe */

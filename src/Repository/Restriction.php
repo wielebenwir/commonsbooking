@@ -153,22 +153,25 @@ class Restriction extends PostRepository {
 	 * @return array|object|null
 	 */
 	private static function queryPosts( $date, $minTimestamp, $postStatus ) {
-		global $wpdb;
-		$table_posts = $wpdb->prefix . 'posts';
+		if ( Plugin::getCacheItem() ) {
+			return Plugin::getCacheItem();
+		} else {
+			global $wpdb;
+			$table_posts = $wpdb->prefix . 'posts';
 
-		$dateQuery = '';
+			$dateQuery = '';
 
-		// Filter only from a specific start date.
-		// Rep-End must be > Min Date (0:00)
-		if ( $minTimestamp ) {
-			$dateQuery = self::getMinTimestampQuery( $minTimestamp );
-		} // Filter by date
-		elseif ( $date ) {
-			$dateQuery = self::getDateQuery( $date );
-		}
+			// Filter only from a specific start date.
+			// Rep-End must be > Min Date (0:00)
+			if ( $minTimestamp ) {
+				$dateQuery = self::getMinTimestampQuery( $minTimestamp );
+			} // Filter by date
+			elseif ( $date ) {
+				$dateQuery = self::getDateQuery( $date );
+			}
 
-		// Complete query
-		$query = "
+			// Complete query
+			$query = "
                 SELECT DISTINCT pm1.* from $table_posts pm1                
                 " . $dateQuery . "
                 " . self::getActiveQuery() . "
@@ -177,7 +180,11 @@ class Restriction extends PostRepository {
                     pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
             ";
 
-		return $wpdb->get_results( $query, ARRAY_N );
+			$posts = $wpdb->get_results( $query, ARRAY_N );
+			Plugin::setCacheItem($posts);
+
+			return $posts;
+		}
 	}
 
 	/**
@@ -231,8 +238,9 @@ class Restriction extends PostRepository {
 				}
 			}
 
+			$posts = $posts ?: [];
 			Plugin::setCacheItem( $posts, $customCacheKey );
-			return $posts ?: [];
+			return $posts;
 		}
 	}
 

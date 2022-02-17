@@ -62,4 +62,13 @@ class Helper {
 		return date_i18n( $date_format, $timestamp ) . ' ' . date_i18n( $time_format, $timestamp );
 	}
 
+	/**
+	 * Returns timestamp of last full hour, needed to get more cache hits.
+	 * @return int
+	 */
+	public static function getLastFullHourTimestamp() {
+		$now = time();
+		return $now - ($now % 3600);
+	}
+
 }
