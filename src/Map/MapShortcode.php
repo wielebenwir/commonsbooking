@@ -83,7 +83,7 @@ class MapShortcode {
 
 					$map_height = MapAdmin::get_option( $cb_map_id, 'map_height' );
 
-					return '<div id="cb-map-' . $cb_map_id . '" class="cb-wrapper cb-leaflet-map" style="width: 100%; height: ' . $map_height . 'px;"></div>';
+					return '<div id="cb-map-' . esc_attr($cb_map_id) . '" class="cb-wrapper cb-leaflet-map" style="width: 100%; height: ' . esc_attr($map_height) . 'px;"></div>';
 
 				} else {
 					return '<div>' . esc_html__( 'map is not published', 'commonsbooking' ) . '</div>';
@@ -265,7 +265,7 @@ class MapShortcode {
 
 				$attempts ++;
 
-				$last_call_timestamp = get_option( 'cb_map_last_nominatim_call', 0 );
+				$last_call_timestamp = commonsbooking_sanitizeHTML(get_option( 'cb_map_last_nominatim_call', 0 ));
 				$current_timestamp   = time();
 
 				if ( $current_timestamp > $last_call_timestamp + 1 ) {

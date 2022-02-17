@@ -496,7 +496,7 @@ class Timeframe extends PostRepository {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
-			$time_format        = get_option( 'time_format' );
+			$time_format        = esc_html(get_option( 'time_format' ));
 			$startTimestampTime = date( $time_format, intval( $timestamp ) );
 			$endTimestampTime   = date( $time_format, intval( $timestamp ) + 1 );
 

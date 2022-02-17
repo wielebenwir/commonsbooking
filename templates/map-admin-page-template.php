@@ -27,7 +27,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                               title="<?php echo commonsbooking_sanitizeHTML( __('the base map defines the rendering style of the map tiles' ,'commonsbooking')); ?>"></span>
                     </th>
                     <td>
-                        <?php $selected_base_map = MapAdmin::get_option($cb_map_id, 'base_map'); ?>
+                        <?php $selected_base_map = commonsbooking_sanitizeArrayorString(MapAdmin::get_option($cb_map_id, 'base_map'), 'intval'); ?>
                         <select name="cb_map_options[base_map]">
                             <option value="1" <?php echo  $selected_base_map == 1 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( 'OSM - mapnik' ,'commonsbooking')); ?></option>
                             <option value="2" <?php echo  $selected_base_map == 2 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( 'OSM - german style' ,'commonsbooking')); ?></option>
@@ -43,7 +43,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                               title="<?php echo commonsbooking_sanitizeHTML( __('show the current scale in the left bottom corner of the map' ,'commonsbooking')); ?>"></span>
                     </th>
                     <td>
-                        <input type="checkbox" name="cb_map_options[show_scale]" <?php echo  MapAdmin::get_option($cb_map_id, 'show_scale') ? 'checked="checked"' : '' ?> value="on">
+                        <input type="checkbox" name="cb_map_options[show_scale]" <?php echo  commonsbooking_sanitizeHTML(MapAdmin::get_option($cb_map_id, 'show_scale')) ? 'checked="checked"' : '' ?> value="on">
                     </td>
                 </tr>
                 <tr>
@@ -74,7 +74,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                               title="<?php echo commonsbooking_sanitizeHTML( __('activate to enable a button that allows the export of map data (geojson format)' ,'commonsbooking')); ?>"></span>
                     </th>
                     <td><input type="checkbox"
-                               name="cb_map_options[enable_map_data_export]" <?php echo  MapAdmin::get_option($cb_map_id,'enable_map_data_export') ? 'checked="checked"' : '' ?> value="on"></td>
+                               name="cb_map_options[enable_map_data_export]" <?php echo  commonsbooking_sanitizeHTML(MapAdmin::get_option($cb_map_id,'enable_map_data_export')) ? 'checked="checked"' : '' ?> value="on"></td>
                 </tr>
             </table>
         </details>
@@ -121,7 +121,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                               title="<?php echo commonsbooking_sanitizeHTML( __('when activated users can zoom the map using the scroll wheel' ,'commonsbooking')); ?>"></span>
                     </th>
                     <td><input type="checkbox"
-                              name="cb_map_options[scrollWheelZoom]" <?php echo  MapAdmin::get_option($cb_map_id, 'scrollWheelZoom') ? 'checked="checked"' : '' ?> value="on"></td>
+                              name="cb_map_options[scrollWheelZoom]" <?php echo  commonsbooking_sanitizeHTML(MapAdmin::get_option($cb_map_id, 'scrollWheelZoom')) ? 'checked="checked"' : '' ?> value="on"></td>
                 </tr>
             </table>
         </details>
@@ -479,8 +479,8 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                     <td>
                         <div>
                             <img id="marker-item-draft-image-preview"
-                                 src="<?php echo  wp_get_attachment_url(MapAdmin::get_option($cb_map_id,
-                                     'marker_item_draft_media_id')); ?>">
+                                 src="<?php echo  esc_url(wp_get_attachment_url(MapAdmin::get_option($cb_map_id,
+                                     'marker_item_draft_media_id'))); ?>">
                         </div>
                         <input type="hidden" name="cb_map_options[marker_item_draft_media_id]"
                                value="<?php echo  commonsbooking_sanitizeHTML( MapAdmin::get_option($cb_map_id, 'marker_item_draft_media_id') ); ?>">

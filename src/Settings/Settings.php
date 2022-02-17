@@ -27,11 +27,11 @@ class Settings {
 
 		foreach ( $array as $key => $value ) {
 			if($parent === false) {
-			if ( is_array( $value ) ) {
-                    $result = array_merge($result, self::flattenArray($value, $key));
-			} else {
-				$result[ $key ] = $value;
-			}
+				if ( is_array( $value ) ) {
+	                    $result = array_merge($result, self::flattenArray($value, $key));
+				} else {
+					$result[ $key ] = commonsbooking_sanitizeHTML($value);
+				}
             } else {
                 $result[$parent][$key] = $value;
             }
@@ -58,7 +58,7 @@ class Settings {
 		$flat_array = self::flattenArray( $cb_options_array );
 
 		if ( is_array( $cb_options_array ) && array_key_exists( $field_id, $flat_array ) ) {
-			$result = $flat_array[ $field_id ];
+			$result = commonsbooking_sanitizeHTML($flat_array[ $field_id ]);
 		} else {
 			$result = false;
 		}

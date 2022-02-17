@@ -515,9 +515,9 @@ class MapAdmin {
 		self::load_options( $cb_map_id );
 
 		if ( array_key_exists( $key, self::$options ) ) {
-			return self::$options[ $key ];
+			return commonsbooking_sanitizeHTML(self::$options[ $key ]);
 		} else {
-			return self::get_option_default( $key );
+			return commonsbooking_sanitizeHTML(self::get_option_default( $key ));
 		}
 	}
 

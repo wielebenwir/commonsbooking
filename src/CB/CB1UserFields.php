@@ -25,7 +25,6 @@ class CB1UserFields {
 		add_action( 'edit_user_profile', array( $this, 'show_extra_profile_fields' ) );
 		add_action( 'show_user_profile', array( $this, 'show_extra_profile_fields' ) );
 
-		// = get_option('commonsbooking_options_migration', 'cb1-terms-url');
 		$this->termsservices_url = Settings::getOption( 'commonsbooking_options_migration', 'cb1-terms-url' );
 
 		$this->registration_fields = array(

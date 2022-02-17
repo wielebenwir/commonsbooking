@@ -83,7 +83,7 @@ class Map extends CustomPostType {
 	public static function get_active_plugin_directory( $plugin_name ) {
 		$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
 		foreach ( $active_plugins as $plugin ) {
-			$plugin_file_path = COMMONSBOOKING_MAP_PATH . '../' . $plugin;
+			$plugin_file_path = COMMONSBOOKING_MAP_PATH . '../' . esc_html($plugin);
 			if ( strpos( $plugin, $plugin_name ) !== false && file_exists( $plugin_file_path ) ) {
 				return dirname( $plugin );
 			}
