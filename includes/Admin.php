@@ -126,15 +126,16 @@ function commonsbooking_sanitizeHTML( $string ): string {
  * Recursive sanitation for text or array
  *
  * @param mixed array_or_string (array|string)
- * @param string $sanitize_function name of the sanitziation function, default = sanitize_text_field
+ * @param string $sanitize_function name of the sanitziation function, default = sanitize_text_field. You can use any method that accepts a string as parameter
+ * 
+ * See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
+ * 
  *
- * @return mixed
- * @since  0.1
+ * @return array|string 
  */
 function commonsbooking_sanitizeArrayorString( $array_or_string, $sanitize_function = 'sanitize_text_field' ) {
 	if ( is_string( $array_or_string ) ) {
 		$array_or_string = $sanitize_function( $array_or_string );
-        commonsbooking_write_log(array($array_or_string, $sanitize_function));
 	} elseif ( is_array( $array_or_string ) ) {
 		foreach ( $array_or_string as $key => &$value ) {
 			if ( is_array( $value ) ) {
