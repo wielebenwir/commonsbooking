@@ -202,7 +202,7 @@ class MapAdmin {
 
 		$input = [];
 		if ( isset( $_POST['cb_map_options'] ) ) {
-			$input = sanitize_text_field( $_POST['cb_map_options'] );
+			$input = commonsbooking_sanitizeArrayorString( $_POST['cb_map_options'] );
 		}
 
 		//base_map
@@ -411,6 +411,10 @@ class MapAdmin {
 		}
 
 		update_post_meta( $cb_map_id, 'cb_map_options', $validated_input );
+
+        commonsbooking_write_log($_POST);
+
+        commonsbooking_write_log($validated_input);
 
 		return $validated_input;
 	}
