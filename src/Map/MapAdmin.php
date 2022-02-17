@@ -455,7 +455,7 @@ class MapAdmin {
 			'SAVE'                      => esc_html__( 'save', 'commonsbooking' ),
 			'MARKER_IMAGE_MEASUREMENTS' => esc_html__( 'measurements', 'commonsbooking' ),
 		];
-		echo '<script>cb_map_marker_upload.translation = ' . commonsbooking_sanitizeHTML( wp_json_encode( $translation ) ) . ';</script>';
+		echo '<script>cb_map_marker_upload.translation = ' . wp_json_encode( $translation ) . ';</script>';
 
 		//available categories
 		$available_categories_args             = [
