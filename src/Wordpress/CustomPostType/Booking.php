@@ -443,7 +443,7 @@ class Booking extends Timeframe {
 		if ( $column == "timeframe-author" ) {
 			$post           = get_post( $post_id );
 			$timeframe_user = get_user_by( 'id', $post->post_author );
-			echo '<a href="' . get_edit_user_link( $timeframe_user->ID ) . '">' . $timeframe_user->user_login . '</a>';
+			echo '<a href="' . get_edit_user_link( $timeframe_user->ID ) . '">' . commonsbooking_sanitizeHTML( $timeframe_user->user_login ) . '</a>';
 		}
 
 
@@ -632,7 +632,7 @@ class Booking extends Timeframe {
 		See here <a target="_blank" href="https://commonsbooking.org/?p=1433">How to display the booking list</a>', 'commonsbooking' ) );
 
 		if ( ( $pagenow == 'edit.php' ) && ( sanitize_text_field( $_GET['post_type'] ) == self::getPostType() ) ) {
-			echo '<div class="notice notice-info"><p>' . $notice . '</p></div>';
+			echo '<div class="notice notice-info"><p>' . commonsbooking_sanitizeHTML(  $notice ) . '</p></div>';
 		}
 	}
 }

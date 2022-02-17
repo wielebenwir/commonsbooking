@@ -25,7 +25,7 @@ $text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates
     <div class="cb-list-header">
 	<?php echo commonsbooking_sanitizeHTML($item->thumbnail('cb_listing_small')); ?>
     <div class="cb-list-info">
-        <h2><?php echo $item->title(); ?></h2>
+        <h2><?php echo commonsbooking_sanitizeHTML( $item->title() ); ?></h2>
         <?php echo commonsbooking_sanitizeHTML($location->excerpt()); ?>
     </div>
 </div><!-- .cb-list-header -->
@@ -76,7 +76,7 @@ $text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates
     if($post->post_status == 'confirmed' OR $show_contactinfo_unconfirmed == 'on') { ?>
     <div class="cb-list-content cb-contact cb-col-30-70">
         <div><?php echo esc_html__('Contact', 'commonsbooking'); ?></div>
-        <div><?php echo $location->formattedContactInfoOneLine(); ?></div>
+        <div><?php echo commonsbooking_sanitizeHTML( $location->formattedContactInfoOneLine() ); ?></div>
     </div><!-- .cb-contact -->
 <?php
 // else; show info-text to inform user to confirm booking to see contact details
@@ -99,12 +99,12 @@ $text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates
     </div>
     <div class="cb-list-content cb-user cb-col-30-70">
         <div><?php echo esc_html__('Your E-Mail', 'commonsbooking') ?></div>
-        <div><?php echo CB::get('user', 'user_email'); ?></div>
+        <div><?php echo commonsbooking_sanitizeHTML( CB::get('user', 'user_email') ); ?></div>
     </div>
     <div class="cb-list-content cb-user cb-col-30-70">
         <div><?php echo esc_html__('Your User name', 'commonsbooking') ?></div>
-        <div><?php echo CB::get('user', 'first_name'); ?> <?php echo CB::get('user', 'last_name'); ?><br>
-        <?php echo CB::get('user', 'address'); ?>
+        <div><?php echo commonsbooking_sanitizeHTML( CB::get('user', 'first_name') ); ?> <?php echo commonsbooking_sanitizeHTML( CB::get('user', 'last_name') ); ?><br>
+        <?php echo commonsbooking_sanitizeHTML( CB::get('user', 'address') ); ?>
         </div>
     </div>
 </div>

@@ -815,7 +815,7 @@ class Timeframe extends CustomPostType {
 		if ( $column == "timeframe-author" ) {
 			$post           = get_post( $post_id );
 			$timeframe_user = get_user_by( 'id', $post->post_author );
-			echo '<a href="' . get_edit_user_link( $timeframe_user->ID ) . '">' . $timeframe_user->user_login . '</a>';
+			echo '<a href="' . get_edit_user_link( $timeframe_user->ID ) . '">' . commonsbooking_sanitizeHTML( $timeframe_user->user_login ) . '</a>';
 		}
 
 

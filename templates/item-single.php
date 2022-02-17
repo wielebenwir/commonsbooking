@@ -27,7 +27,7 @@
     
 	// item not available if no valid location reference found
 	if( !array_key_exists('location', $templateData) && empty( $templateData['locations'] ) ) { ?>
-        <div class="cb-status cb-availability-status cb-status-not-available"><?php echo ( $noResultText );
+        <div class="cb-status cb-availability-status cb-status-not-available"><?php echo commonsbooking_sanitizeHTML( $noResultText ) ;
     }
 
     if(!is_user_logged_in()) {
