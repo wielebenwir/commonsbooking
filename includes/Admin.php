@@ -17,7 +17,7 @@ function commonsbooking_admin() {
     // TODO needs to be evaluated. Maybe not working on all systems
     if (get_current_screen()->id == 'cb_map') {
         $script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-marker-upload.js';
-        wp_enqueue_script('cb_map_admin', $script_path);
+        wp_enqueue_script('cb-map-marker-upload_js', $script_path);
     }
 
 	// CB 0.X migration
@@ -126,15 +126,16 @@ function commonsbooking_sanitizeHTML( $string ): string {
  * Recursive sanitation for text or array
  *
  * @param mixed array_or_string (array|string)
- * @param string $sanitize_function name of the sanitziation function, default = sanitize_text_field
+ * @param string $sanitize_function name of the sanitziation function, default = sanitize_text_field. You can use any method that accepts a string as parameter
+ * 
+ * See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
+ * 
  *
- * @return mixed
- * @since  0.1
+ * @return array|string 
  */
 function commonsbooking_sanitizeArrayorString( $array_or_string, $sanitize_function = 'sanitize_text_field' ) {
 	if ( is_string( $array_or_string ) ) {
 		$array_or_string = $sanitize_function( $array_or_string );
-        commonsbooking_write_log(array($array_or_string, $sanitize_function));
 	} elseif ( is_array( $array_or_string ) ) {
 		foreach ( $array_or_string as $key => &$value ) {
 			if ( is_array( $value ) ) {

@@ -20,8 +20,8 @@ class Restriction extends View {
 		$sent   = get_post_meta( $postId, \CommonsBooking\Model\Restriction::META_SENT, true );
 
 		if ( $sent ) {
-			$dateFormat = get_option( 'date_format' );
-			$timeFormat = get_option( 'time_format' );
+			$dateFormat = esc_html(get_option( 'date_format' ));
+			$timeFormat = esc_html(get_option( 'time_format' ));
 			$sent       = date( $dateFormat . ' | ' . $timeFormat, $sent );
 		}
 

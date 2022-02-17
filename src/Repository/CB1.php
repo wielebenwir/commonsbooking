@@ -37,9 +37,8 @@ class CB1 {
 	 * @return bool
 	 */
 	public static function isInstalled() {
-		$option_set_by_cb1 = get_option(
-			'commons-booking-settings-pages'
-		); // we check for pages, since they have to be set up for the plugin to function.
+		// we check for pages, since they have to be set up for the plugin to function.
+		$option_set_by_cb1 = esc_html(get_option('commons-booking-settings-pages'));
 
 		if ( $option_set_by_cb1 ) {
 			return true;

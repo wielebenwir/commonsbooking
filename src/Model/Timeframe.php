@@ -147,7 +147,7 @@ class Timeframe extends CustomPost {
 	 * @return string
 	 */
 	public static function getDateFormat() {
-		return get_option( 'date_format' );
+		return esc_html(get_option( 'date_format' ));
 	}
 
 	/**
@@ -180,7 +180,7 @@ class Timeframe extends CustomPost {
 	 * @return string
 	 */
 	public function getTimeFormat(): string {
-		return get_option( 'time_format' );
+		return esc_html(get_option( 'time_format' ));
 	}
 
 	/**

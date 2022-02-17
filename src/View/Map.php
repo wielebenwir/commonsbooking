@@ -15,8 +15,7 @@ class Map extends View {
 		wp_enqueue_script( 'cb_map_leaflet_js', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet-src.js' );
 
 		echo '<div id="cb_positioning_map" style="width: 100%; height: 400px;"></div>';
-		$script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-positioning.js';
-		echo '<script src="' . $script_path . '"></script>';
+        wp_enqueue_script( 'cb-map-positioning_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-positioning.js' );
 
 		//map defaults
 		$options  = MapAdmin::get_options();
@@ -24,7 +23,7 @@ class Map extends View {
 			'latitude'  => $options['lat_start'],
 			'longitude' => $options['lon_start'],
 		];
-		echo '<script>cb_map_positioning.defaults = ' . json_encode( $defaults ) . ';</script>';
+		echo '<script>cb_map_positioning.defaults = ' . wp_json_encode( $defaults ) . ';</script>';
 	}
 
 	public static function renderGeoRefreshButton() {

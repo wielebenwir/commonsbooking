@@ -217,29 +217,32 @@ class Timeframe extends PostRepository {
 	 * @return array
 	 */
 	private static function getPostsByBaseParams( ?string $date, ?int $minTimestamp, ?int $maxTimestamp, array $postIds, array $postStatus ): array {
-		global $wpdb;
-		$table_postmeta = $wpdb->prefix . 'postmeta';
-		$table_posts    = $wpdb->prefix . 'posts';
-		$dateQuery      = "";
+		if ( Plugin::getCacheItem() ) {
+			return Plugin::getCacheItem();
+		} else {
+			global $wpdb;
+			$table_postmeta = $wpdb->prefix . 'postmeta';
+			$table_posts    = $wpdb->prefix . 'posts';
+			$dateQuery      = "";
 
-		// Filter by date
-		if ( $date && ! $minTimestamp ) {
-			$dateQuery = self::getFilterByDateQuery( $table_postmeta, $date );
-		}
+			// Filter by date
+			if ( $date && ! $minTimestamp ) {
+				$dateQuery = self::getFilterByDateQuery( $table_postmeta, $date );
+			}
 
-		// Filter only from a specific start date.
-		// Rep-End must be > Min Date (0:00)
-		if ( $minTimestamp && ! $maxTimestamp ) {
-			$dateQuery = self::getFilterFromDateQuery( $table_postmeta, $minTimestamp );
-		}
+			// Filter only from a specific start date.
+			// Rep-End must be > Min Date (0:00)
+			if ( $minTimestamp && ! $maxTimestamp ) {
+				$dateQuery = self::getFilterFromDateQuery( $table_postmeta, $minTimestamp );
+			}
 
-		// Filter for specific timerange
-		if ( $minTimestamp && $maxTimestamp ) {
-			$dateQuery = self::getTimerangeQuery( $table_postmeta, $minTimestamp, $maxTimestamp );
-		}
+			// Filter for specific timerange
+			if ( $minTimestamp && $maxTimestamp ) {
+				$dateQuery = self::getTimerangeQuery( $table_postmeta, $minTimestamp, $maxTimestamp );
+			}
 
-		// Complete query
-		$query = "SELECT DISTINCT pm1.* from $table_posts pm1
+			// Complete query
+			$query = "SELECT DISTINCT pm1.* from $table_posts pm1
                     " . $dateQuery . "
                     WHERE
                         pm1.id in (" . implode( ",", $postIds ) . ") AND
@@ -247,9 +250,13 @@ class Timeframe extends PostRepository {
                         pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
                 ";
 
-		$posts = $wpdb->get_results( $query, ARRAY_N );
+			$posts = $wpdb->get_results( $query, ARRAY_N );
+			$posts = Wordpress::flattenWpdbResult( $posts );
 
-		return Wordpress::flattenWpdbResult( $posts );
+			Plugin::setCacheItem( $posts );
+
+			return $posts;
+		}
 	}
 
 	/**
@@ -388,22 +395,27 @@ class Timeframe extends PostRepository {
 	 * @return array
 	 */
 	private static function filterTimeframesByItemsLocations( $posts, $locations, $items ): array {
-		if ( count( $locations ) > 1 || count( $items ) > 1 ) {
-			return array_filter( $posts, function ( $post ) use ( $locations, $items ) {
-				$location = intval( get_post_meta( $post->ID, 'location-id', true ) );
-				$item     = intval( get_post_meta( $post->ID, 'item-id', true ) );
+		if ( Plugin::getCacheItem() ) {
+			return Plugin::getCacheItem();
+		} else {
+			if ( count( $locations ) > 1 || count( $items ) > 1 ) {
+				return array_filter( $posts, function ( $post ) use ( $locations, $items ) {
+					$location = intval( get_post_meta( $post->ID, 'location-id', true ) );
+					$item     = intval( get_post_meta( $post->ID, 'item-id', true ) );
 
-				return
-					( ! $location && ! $item ) ||
-					( ! $location && in_array( $item, $items ) ) ||
-					( in_array( $location, $locations ) && ! $item ) ||
-					( ! count( $locations ) && in_array( $item, $items ) ) ||
-					( in_array( $location, $locations ) && ! count( $items ) ) ||
-					( in_array( $location, $locations ) && in_array( $item, $items ) );
-			} );
+					return
+						( ! $location && ! $item ) ||
+						( ! $location && in_array( $item, $items ) ) ||
+						( in_array( $location, $locations ) && ! $item ) ||
+						( ! count( $locations ) && in_array( $item, $items ) ) ||
+						( in_array( $location, $locations ) && ! count( $items ) ) ||
+						( in_array( $location, $locations ) && in_array( $item, $items ) );
+				} );
+			}
+
+			Plugin::setCacheItem($posts);
+			return $posts;
 		}
-
-		return $posts;
 	}
 
 	/**
@@ -417,19 +429,24 @@ class Timeframe extends PostRepository {
 	 * @return array
 	 */
 	private static function filterTimeframesByConfiguredDays( array $posts, ?string $date ): array {
-		if ( $date ) {
-			return array_filter( $posts, function ( $post ) use ( $date ) {
-				if ( $weekdays = get_post_meta( $post->ID, 'weekdays', true ) ) {
-					$day = date( 'N', strtotime( $date ) );
+		if ( Plugin::getCacheItem() ) {
+			return Plugin::getCacheItem();
+		} else {
+			if ( $date ) {
+				return array_filter( $posts, function ( $post ) use ( $date ) {
+					if ( $weekdays = get_post_meta( $post->ID, 'weekdays', true ) ) {
+						$day = date( 'N', strtotime( $date ) );
 
-					return in_array( $day, $weekdays );
-				}
+						return in_array( $day, $weekdays );
+					}
 
-				return true;
-			} );
+					return true;
+				} );
+			}
+
+			Plugin::setCacheItem($posts);
+			return $posts;
 		}
-
-		return $posts;
 	}
 
 	/**
@@ -496,7 +513,7 @@ class Timeframe extends PostRepository {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
-			$time_format        = get_option( 'time_format' );
+			$time_format        = esc_html(get_option( 'time_format' ));
 			$startTimestampTime = date( $time_format, intval( $timestamp ) );
 			$endTimestampTime   = date( $time_format, intval( $timestamp ) + 1 );
 

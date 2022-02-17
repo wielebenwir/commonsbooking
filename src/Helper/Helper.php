@@ -30,9 +30,7 @@ class Helper {
 	 */
 	public static function FormattedDate( $timestamp ) {
 
-		$date_format = get_option( 'date_format' );
-		$time_format = get_option( 'time_format' );
-
+		$date_format = commonsbooking_sanitizeHTML(get_option( 'date_format' ));
 		return date_i18n( $date_format, $timestamp );
 
 	}
@@ -45,9 +43,7 @@ class Helper {
 	 */
 	public static function FormattedTime( $timestamp ) {
 
-		$date_format = get_option( 'date_format' );
-		$time_format = get_option( 'time_format' );
-
+		$time_format = commonsbooking_sanitizeHTML(get_option( 'time_format' ));
 		return date_i18n( $time_format, $timestamp );
 
 	}
@@ -60,10 +56,19 @@ class Helper {
 	 */
 	public static function FormattedDateTime( $timestamp ) {
 
-		$date_format = get_option( 'date_format' );
-		$time_format = get_option( 'time_format' );
+		$date_format = commonsbooking_sanitizeHTML(get_option( 'date_format' ));
+		$time_format = commonsbooking_sanitizeHTML(get_option( 'time_format' ));
 
 		return date_i18n( $date_format, $timestamp ) . ' ' . date_i18n( $time_format, $timestamp );
+	}
+
+	/**
+	 * Returns timestamp of last full hour, needed to get more cache hits.
+	 * @return int
+	 */
+	public static function getLastFullHourTimestamp() {
+		$now = time();
+		return $now - ($now % 3600);
 	}
 
 }
