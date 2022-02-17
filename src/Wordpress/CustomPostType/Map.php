@@ -70,7 +70,7 @@ class Map extends CustomPostType {
 			wp_register_script( 'cb_map_replace_map_link_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-replace-link.js' );
 
 			wp_add_inline_script( 'cb_map_replace_map_link_js',
-				"cb_map_timeframes_geo = " . json_encode( $geo_coordinates ) . ";" );
+				"cb_map_timeframes_geo = " . wp_json_encode( $geo_coordinates ) . ";" );
 
 			wp_enqueue_script( 'cb_map_replace_map_link_js' );
 		}

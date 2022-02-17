@@ -25,7 +25,7 @@ class CB {
 	 * @return void
 	 */
 	public static function echo( $key, $property, $theObject = null ) {
-		echo self::get( $key, $property, $theObject );
+		echo commonsbooking_sanitizeHTML( self::get( $key, $property, $theObject ) );
 	}
 
 	/**

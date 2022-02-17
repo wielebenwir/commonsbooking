@@ -66,7 +66,7 @@ class Location extends View {
 			date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE_START, time() ) ),
 			date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE, time() ) )
 		);
-		$args['calendar_data'] = json_encode( $calendarData );
+		$args['calendar_data'] = wp_json_encode( $calendarData );
 
 		return $args;
 	}
@@ -144,7 +144,7 @@ class Location extends View {
 				'latitude'  => $latitude,
 				'longitude' => $longitude,
 			];
-			echo '<script>cb_map_locationview.defaults = ' . json_encode( $defaults ) . ';</script>';
+			echo '<script>cb_map_locationview.defaults = ' . wp_json_encode( $defaults ) . ';</script>';
 		}
 	}
 }

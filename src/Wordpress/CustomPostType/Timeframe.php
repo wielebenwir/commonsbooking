@@ -515,7 +515,7 @@ class Timeframe extends CustomPostType {
 				'type'        => 'text_time',
 				'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'attributes'  => array(
-					'data-timepicker' => json_encode(
+					'data-timepicker' => wp_json_encode(
 						array(
 							'stepMinute' => 60,
 							'timeFormat' => 'HH:mm',
@@ -531,7 +531,7 @@ class Timeframe extends CustomPostType {
 				'type'        => 'text_time',
 				'time_format' => 'H:i',
 				'attributes'  => array(
-					'data-timepicker' => json_encode(
+					'data-timepicker' => wp_json_encode(
 						array(
 							'stepMinute' => 60,
 							'timeFormat' => 'HH:mm',

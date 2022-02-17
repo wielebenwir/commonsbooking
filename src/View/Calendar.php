@@ -688,7 +688,7 @@ class Calendar {
 		$jsonResponse = Calendar::getCalendarDataArray( $item, $location, $startDateString, $endDateString );
 
 		header( 'Content-Type: application/json' );
-		echo json_encode( $jsonResponse );
+		echo wp_json_encode( $jsonResponse );
 		wp_die(); // All ajax handlers die when finished
 	}
 

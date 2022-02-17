@@ -578,7 +578,7 @@ class Booking extends Timeframe {
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
 				'attributes'  => array(
-					'data-timepicker' => json_encode(
+					'data-timepicker' => wp_json_encode(
 						array(
 							'timeFormat' => 'HH:mm',
 							'stepMinute' => 1,
@@ -594,7 +594,7 @@ class Booking extends Timeframe {
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
 				'attributes'  => array(
-					'data-timepicker' => json_encode(
+					'data-timepicker' => wp_json_encode(
 						array(
 							'timeFormat' => 'HH:mm',
 							'stepMinute' => 1,

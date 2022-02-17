@@ -73,8 +73,8 @@ class MapShortcode {
 					wp_add_inline_script( 'cb_map_shortcode_js',
 						"jQuery(document).ready(function ($) {
                         var cb_map = new CB_Map();
-                        cb_map.settings = " . json_encode( self::get_settings( $cb_map_id ) ) . ";
-                        cb_map.translation = " . json_encode( self::get_translation( $cb_map_id ) ) . ";
+                        cb_map.settings = " . wp_json_encode( self::get_settings( $cb_map_id ) ) . ";
+                        cb_map.translation = " . wp_json_encode( self::get_translation( $cb_map_id ) ) . ";
                         cb_map.init_filters($);
                         cb_map.init_map();
                     });" );
@@ -367,7 +367,7 @@ class MapShortcode {
 			$locations = Map::cleanup_location_data( $locations, '<br>' );
 
 			header( 'Content-Type: application/json' );
-			echo json_encode( $locations, JSON_UNESCAPED_UNICODE );
+			echo commonsbooking_sanitizeHTML( wp_json_encode( $locations, JSON_UNESCAPED_UNICODE ) );
 		} else {
 			wp_send_json_error( [ 'error' => 4 ], 403 );
 		}

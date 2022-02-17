@@ -749,7 +749,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
         }
 
         function add_custom_markup_options() {
-            var custom_markup_options_data = <?php echo  json_encode($available_categories); ?>;
+            var custom_markup_options_data = <?php echo  wp_json_encode($available_categories); ?>;
 
             if (custom_markup_options_data.length > 0) {
                 $.each(custom_markup_options_data, function (index, item) {

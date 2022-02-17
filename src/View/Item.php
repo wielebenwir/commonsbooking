@@ -68,7 +68,7 @@ class Item extends View {
 			date( 'Y-m-d', strtotime( 'first day of this month', time() ) ),
 			date( 'Y-m-d', strtotime( '+3 months', time() ) )
 		);
-		$args['calendar_data'] = json_encode( $calendarData );
+		$args['calendar_data'] = wp_json_encode( $calendarData );
 
 		return $args;
 	}
