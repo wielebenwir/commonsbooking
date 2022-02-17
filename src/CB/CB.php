@@ -16,19 +16,6 @@ class CB {
 	}
 
 	/**
-	 * echo
-	 *
-	 * @param mixed $key
-	 * @param mixed $property
-	 * @param mixed $theObject
-	 *
-	 * @return void
-	 */
-	public static function echo( $key, $property, $theObject = null ) {
-		echo commonsbooking_sanitizeHTML( self::get( $key, $property, $theObject ) );
-	}
-
-	/**
 	 * Returns property of (custom) post by class key and property.
 	 *
 	 * @param mixed $key
