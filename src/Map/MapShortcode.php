@@ -367,7 +367,7 @@ class MapShortcode {
 			$locations = Map::cleanup_location_data( $locations, '<br>' );
 
 			header( 'Content-Type: application/json' );
-			echo commonsbooking_sanitizeHTML( wp_json_encode( $locations, JSON_UNESCAPED_UNICODE ) );
+			echo wp_json_encode( $locations, JSON_UNESCAPED_UNICODE );
 		} else {
 			wp_send_json_error( [ 'error' => 4 ], 403 );
 		}
