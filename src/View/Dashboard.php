@@ -6,8 +6,8 @@ class Dashboard extends View {
 
 	public static function index() {
 		ob_start();
-		commonsbooking_get_template_part( 'dashboard', 'index' );
-		echo commonsbooking_sanitizeHTML( ob_get_clean( ));
+		commonsbooking_sanitizeHTML( commonsbooking_get_template_part( 'dashboard', 'index' ) );
+		echo ob_get_clean();
 	}
 
 	/**

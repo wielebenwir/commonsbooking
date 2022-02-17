@@ -16,7 +16,7 @@ class Filter {
 		//only add filter to post type you want
 		if ( isset( $_GET['post_type'] ) && $postType == $_GET['post_type'] ) {
 			?>
-            <select name="<?php echo 'admin_' . $key; ?>">
+            <select name="<?php echo 'admin_' . commonsbooking_sanitizeHTML( $key ); ?>">
                 <option value=""><?php echo commonsbooking_sanitizeHTML($label); ?></option>
 				<?php
 				$filterValue = isset( $_GET[ 'admin_' . $key ] ) ? sanitize_text_field( $_GET[ 'admin_' . $key ] ) : '';

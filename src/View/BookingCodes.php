@@ -62,7 +62,7 @@ class BookingCodes {
 		$bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId );
 		header( 'Content-Encoding: UTF-8' );
 		header( 'Content-type: text/csv; charset=UTF-8' );
-		header( "Content-Disposition: attachment; filename=buchungscode-$timeframeId.txt" );
+		header( "Content-Disposition: attachment; filename=buchungscode-" . commonsbooking_sanitizeHTML( $timeframeId ) . ".txt" );
 		header( 'Content-Transfer-Encoding: binary' );
 		header( "Pragma: no-cache" );
 		header( "Expires: 0" );

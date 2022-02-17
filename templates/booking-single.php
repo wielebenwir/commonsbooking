@@ -19,7 +19,7 @@ $show_contactinfo_unconfirmed = Settings::getOption('commonsbooking_options_temp
 $text_hidden_contactinfo = Settings::getOption('commonsbooking_options_templates', 'text_hidden-contactinfo');
 ?>
 
-<?php echo $booking->bookingNotice(); ?>
+<?php echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 
 <div class="cb-wrapper cb-booking-item">
     <div class="cb-list-header">

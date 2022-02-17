@@ -129,16 +129,10 @@ class CB1UserFields {
                     </label>
 					<?php echo commonsbooking_sanitizeHTML($this->get_termsservices_string()); ?>
 				<?php } else { ?>
-                    <label for="<?php esc_attr_e( $field['field_name'] ) ?>"><?php esc_attr_e(
-							$field['title'],
-							'commonsbooking'
-						) ?><br/>
+                    <label for="<?php esc_attr_e( $field['field_name'] ) ?>"><?php esc_attr_e($field['title'],'commonsbooking') ?><br/>
                         <input type="text" name="<?php esc_attr_e( $field['field_name'] ) ?>"
                                id="<?php esc_attr_e( $field['field_name'] ) ?>" class="input"
-                               value="<?php echo esc_attr( wp_unslash( $row ) ); ?>" size="25"/><?php esc_attr_e(
-							$field['description'],
-							'commonsbooking'
-						) ?>
+                               value="<?php echo esc_attr( wp_unslash( $row ) ); ?>" size="25"/><?php esc_attr_e($field['description'],'commonsbooking') ?>
                     </label>
 				<?php } ?>
             </p>
