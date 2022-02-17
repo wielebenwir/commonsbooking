@@ -6,146 +6,56 @@ namespace CommonsBooking\Repository;
 
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
+use Exception;
 
 class Restriction extends PostRepository {
 
 	/**
-	 * Returns query to filter by date.
-	 *
-	 * @param $date
-	 *
-	 * @return string
+	 * Returns active restrictions.
+	 * @return \CommonsBooking\Model\Restriction[]
+	 * @throws Exception
 	 */
-	private static function getDateQuery( $date ): string {
-		global $wpdb;
-		$table_postmeta = $wpdb->prefix . 'postmeta';
+	public static function get(
+		array $locations = [],
+		array $items = [],
+		?string $date = null,
+		bool $returnAsModel = false,
+		$minTimestamp = null,
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+	): array {
+		$customCacheKey = serialize( $postStatus );
 
-		return $wpdb->prepare("
-	                INNER JOIN $table_postmeta pm4 ON
-	                    pm4.post_id = pm1.id AND
-	                    pm4.meta_key = '" . \CommonsBooking\Model\Restriction::META_START . "' AND
-	                    pm4.meta_value BETWEEN 0 AND %d
-	                INNER JOIN $table_postmeta pm5 ON
-	                    pm5.post_id = pm1.id AND (
-	                        (
-	                            pm5.meta_key = '" . \CommonsBooking\Model\Restriction::META_END . "' AND
-	                            pm5.meta_value BETWEEN %d AND 3000000000
-	                        ) OR
-	                        (
-	                            pm1.id not in (
-	                                SELECT post_id FROM $table_postmeta 
-	                                WHERE 
-	                                    meta_key = '" . \CommonsBooking\Model\Restriction::META_END . "'
-	                            )
-	                        )
-	                    )                        
-	            ",
-			strtotime( $date . 'T23:59' ),
-			strtotime( $date )
-		);
-	}
+		if ( Plugin::getCacheItem( $customCacheKey ) ) {
+			return Plugin::getCacheItem( $customCacheKey );
+		} else {
 
-	/**
-	 * Returns filter to query be minimum timestamp.
-	 *
-	 * @param $minTimestamp
-	 *
-	 * @return string
-	 */
-	private static function getMinTimestampQuery( $minTimestamp ): string {
-		global $wpdb;
-		$table_postmeta = $wpdb->prefix . 'postmeta';
+			$posts = self::queryPosts( $date, $minTimestamp, $postStatus );
 
-		return $wpdb->prepare("
-                INNER JOIN $table_postmeta pm4 ON
-                    pm4.post_id = pm1.id AND (
-                        ( 
-                            pm4.meta_key = '" . \CommonsBooking\Model\Restriction::META_END . "' AND
-                            pm4.meta_value > %d
-                        ) OR
-                        (
-                            pm1.id not in (
-                                SELECT post_id FROM $table_postmeta 
-                                WHERE
-                                    meta_key = '" . \CommonsBooking\Model\Restriction::META_END . "'
-                            )
-                        )
-                    )
-            ",
-			$minTimestamp
-		);
-	}
+			if ( $posts && count( $posts ) ) {
+				$posts = Wordpress::flattenWpdbResult( $posts );
 
-	/**
-	 * Returns query to filter only active restrictions.
-	 * @return string
-	 */
-	private static function getActiveQuery(): string {
-		global $wpdb;
-		$table_postmeta = $wpdb->prefix . 'postmeta';
+				// If there are locations or items to be filtered, we iterate through
+				// query result because wp_query is to slow for meta-querying them.
+				if ( count( $locations ) || count( $items ) ) {
+					$posts = self::filterPosts( $posts, $locations, $items );
+				}
 
-		return "INNER JOIN $table_postmeta pm2 ON
-            pm2.post_id = pm1.id AND (                         
-                pm2.meta_key = '" . \CommonsBooking\Model\Restriction::META_STATE . "' AND
-                pm2.meta_value = '" . \CommonsBooking\Model\Restriction::STATE_ACTIVE . "'
-            )";
-	}
+				// if returnAsModel == TRUE the result is a timeframe model instead of a wordpress object
+				if ( $returnAsModel ) {
+					$posts = self::castPostsToRestrictions( $posts );
+				}
+			}
 
-	/**
-	 * Filters posts by locations and items.
-	 *
-	 * @param array $posts
-	 * @param array $locations
-	 * @param array $items
-	 *
-	 * @return array
-	 */
-	private static function filterPosts( array $posts, array $locations, array $items ): array {
-		return array_filter( $posts, function ( $post ) use ( $locations, $items ) {
-			// Check if restriction is in relation to item and/or location
-			$location               = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID, true ) );
-			$restrictionHasLocation = $location !== 0;
-			$restrictedLocationInLocations = $restrictionHasLocation && in_array( $location, $locations );
+			$posts = $posts ?: [];
+			Plugin::setCacheItem( $posts, $customCacheKey );
 
-			$item               = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID, true ) );
-			$restrictionHasItem = $item !== 0;
-			$restrictedItemInItems = $restrictionHasItem && in_array( $item, $items );
-
-			// No item or location for restriction set
-			$noLocationNoItem = ( ! $restrictionHasLocation && ! $restrictionHasItem );
-
-			// No location, item matching
-			$noLocationItemMatches = (
-				!$restrictionHasLocation &&
-				$restrictionHasItem &&
-				$restrictedItemInItems
-			);
-
-			// No item, location matching
-			$noItemLocationMatches = (
-				! $restrictionHasItem &&
-				$restrictionHasLocation &&
-				$restrictedLocationInLocations
-			);
-
-			// Item and location matching
-			$itemAndLocationMatches = (
-				$restrictionHasLocation &&
-				$restrictedLocationInLocations &&
-				$restrictionHasItem &&
-				$restrictedItemInItems
-			);
-
-			return
-				$noLocationNoItem ||
-				$noLocationItemMatches ||
-				$noItemLocationMatches ||
-				$itemAndLocationMatches;
-		} );
+			return $posts;
+		}
 	}
 
 	/**
 	 * Queries posts from db.
+	 *
 	 * @param $date
 	 * @param $minTimestamp
 	 * @param $postStatus
@@ -181,18 +91,154 @@ class Restriction extends PostRepository {
             ";
 
 			$posts = $wpdb->get_results( $query, ARRAY_N );
-			Plugin::setCacheItem($posts);
+			Plugin::setCacheItem( $posts );
 
 			return $posts;
 		}
 	}
 
 	/**
+	 * Returns filter to query be minimum timestamp.
+	 *
+	 * @param $minTimestamp
+	 *
+	 * @return string
+	 */
+	private static function getMinTimestampQuery( $minTimestamp ): string {
+		global $wpdb;
+		$table_postmeta = $wpdb->prefix . 'postmeta';
+
+		return $wpdb->prepare( "
+                INNER JOIN $table_postmeta pm4 ON
+                    pm4.post_id = pm1.id AND (
+                        ( 
+                            pm4.meta_key = '" . \CommonsBooking\Model\Restriction::META_END . "' AND
+                            pm4.meta_value > %d
+                        ) OR
+                        (
+                            pm1.id not in (
+                                SELECT post_id FROM $table_postmeta 
+                                WHERE
+                                    meta_key = '" . \CommonsBooking\Model\Restriction::META_END . "'
+                            )
+                        )
+                    )
+            ",
+			$minTimestamp
+		);
+	}
+
+	/**
+	 * Returns query to filter by date.
+	 *
+	 * @param $date
+	 *
+	 * @return string
+	 */
+	private static function getDateQuery( $date ): string {
+		global $wpdb;
+		$table_postmeta = $wpdb->prefix . 'postmeta';
+
+		return $wpdb->prepare(
+		"INNER JOIN $table_postmeta pm4 ON
+                    pm4.post_id = pm1.id AND
+                    pm4.meta_key = '" . \CommonsBooking\Model\Restriction::META_START . "' AND
+                    pm4.meta_value BETWEEN 0 AND %d
+                INNER JOIN $table_postmeta pm5 ON
+                    pm5.post_id = pm1.id AND (
+                        (
+                            pm5.meta_key = '" . \CommonsBooking\Model\Restriction::META_END . "' AND
+                            pm5.meta_value BETWEEN %d AND 3000000000
+                        ) OR
+                        (
+                            pm1.id not in (
+                                SELECT post_id FROM $table_postmeta 
+                                WHERE 
+                                    meta_key = '" . \CommonsBooking\Model\Restriction::META_END . "'
+                            )
+                        )
+                    )                        
+            ",
+			strtotime( $date . 'T23:59' ),
+			strtotime( $date )
+		);
+	}
+
+	/**
+	 * Returns query to filter only active restrictions.
+	 * @return string
+	 */
+	private static function getActiveQuery(): string {
+		global $wpdb;
+		$table_postmeta = $wpdb->prefix . 'postmeta';
+
+		return "INNER JOIN $table_postmeta pm2 ON
+            pm2.post_id = pm1.id AND (                         
+                pm2.meta_key = '" . \CommonsBooking\Model\Restriction::META_STATE . "' AND
+                pm2.meta_value = '" . \CommonsBooking\Model\Restriction::STATE_ACTIVE . "'
+            )";
+	}
+
+	/**
+	 * Filters posts by locations and items.
+	 *
+	 * @param array $posts
+	 * @param array $locations
+	 * @param array $items
+	 *
+	 * @return array
+	 */
+	private static function filterPosts( array $posts, array $locations, array $items ): array {
+		return array_filter( $posts, function ( $post ) use ( $locations, $items ) {
+			// Check if restriction is in relation to item and/or location
+			$location                      = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID, true ) );
+			$restrictionHasLocation        = $location !== 0;
+			$restrictedLocationInLocations = $restrictionHasLocation && in_array( $location, $locations );
+
+			$item                  = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID, true ) );
+			$restrictionHasItem    = $item !== 0;
+			$restrictedItemInItems = $restrictionHasItem && in_array( $item, $items );
+
+			// No item or location for restriction set
+			$noLocationNoItem = ( ! $restrictionHasLocation && ! $restrictionHasItem );
+
+			// No location, item matching
+			$noLocationItemMatches = (
+				! $restrictionHasLocation &&
+				$restrictionHasItem &&
+				$restrictedItemInItems
+			);
+
+			// No item, location matching
+			$noItemLocationMatches = (
+				! $restrictionHasItem &&
+				$restrictionHasLocation &&
+				$restrictedLocationInLocations
+			);
+
+			// Item and location matching
+			$itemAndLocationMatches = (
+				$restrictionHasLocation &&
+				$restrictedLocationInLocations &&
+				$restrictionHasItem &&
+				$restrictedItemInItems
+			);
+
+			return
+				$noLocationNoItem ||
+				$noLocationItemMatches ||
+				$noItemLocationMatches ||
+				$itemAndLocationMatches;
+		} );
+	}
+
+	/**
 	 * Casts all posts in the array to Restriction objects.
+	 *
 	 * @param $posts
 	 *
 	 * @return mixed
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	private static function castPostsToRestrictions( $posts ) {
 		foreach ( $posts as &$post ) {
@@ -200,48 +246,6 @@ class Restriction extends PostRepository {
 		}
 
 		return $posts;
-	}
-
-	/**
-	 * Returns active restrictions.
-	 * @return \CommonsBooking\Model\Restriction[]
-	 * @throws \Exception
-	 */
-	public static function get(
-		array $locations = [],
-		array $items = [],
-		?string $date = null,
-		bool $returnAsModel = false,
-		$minTimestamp = null,
-		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
-	): array {
-		$customCacheKey = serialize( $postStatus );
-
-		if ( Plugin::getCacheItem( $customCacheKey ) ) {
-			return Plugin::getCacheItem( $customCacheKey );
-		} else {
-
-			$posts = self::queryPosts( $date, $minTimestamp, $postStatus );
-
-			if ( $posts && count( $posts ) ) {
-				$posts = Wordpress::flattenWpdbResult($posts);
-
-				// If there are locations or items to be filtered, we iterate through
-				// query result because wp_query is to slow for meta-querying them.
-				if ( count( $locations ) || count( $items ) ) {
-					$posts = self::filterPosts( $posts, $locations, $items );
-				}
-
-				// if returnAsModel == TRUE the result is a timeframe model instead of a wordpress object
-				if ( $returnAsModel ) {
-					$posts = self::castPostsToRestrictions( $posts );
-				}
-			}
-
-			$posts = $posts ?: [];
-			Plugin::setCacheItem( $posts, $customCacheKey );
-			return $posts;
-		}
 	}
 
 }
