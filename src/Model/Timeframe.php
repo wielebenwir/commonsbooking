@@ -406,7 +406,7 @@ class Timeframe extends CustomPost {
 	 */
 	function isWithRoleRestriction() {
 		$allowedUserRoles = get_post_meta( $this->ID, 'allowed_user_roles', true );
-		if ( empty( $allowedUserRoles ) ) {
+		if ( empty( $allowedUserRoles ) || ( current_user_can( 'administrator' ) ) ) {
 			return false;
 		}
 		
