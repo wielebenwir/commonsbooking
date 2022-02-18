@@ -458,12 +458,12 @@ class Calendar {
 			// deprecated since 2.6 due to template changes. pickup instructions now in location-info section
 			// TODO: can be removed in next update > 2.6
 			if ( count( $locations ) === 1 ) {
-				$jsonResponse['location']['fullDayInfo'] = nl2br(
+				$jsonResponse['location']['fullDayInfo'] = json_encode(nl2br(
 					CB::get(
 						'location',
 						COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions',
 						$locations[0]
-					)
+					))
 				);
 
 				// are overbooking allowed in location options?
