@@ -448,24 +448,7 @@ class Calendar {
 				'advanceBookingDays'      => $advanceBookingDays,
 			];
 
-			// Notice with advanced booking days. Will be parsed in litepicker.js with DOM object #calendarNotice
-			// TODO: deprecated
-			$jsonResponse['calendarNotice']['advanceBookingDays'] =
-				//translators: %s = number of days
-				commonsbooking_sanitizeHTML( sprintf( __( 'You can make bookings maximum %s days in advance', 'commonsbooking' ), $advanceBookingDays ) );
-
-			// renders pickup instruction info
-			// deprecated since 2.6 due to template changes. pickup instructions now in location-info section
-			// TODO: can be removed in next update > 2.6
 			if ( count( $locations ) === 1 ) {
-				$jsonResponse['location']['fullDayInfo'] = json_encode(nl2br(
-					CB::get(
-						'location',
-						COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions',
-						$locations[0]
-					))
-				);
-
 				// are overbooking allowed in location options?
 				$allowLockedDaysInRange                  = get_post_meta(
 					$locations[0],
