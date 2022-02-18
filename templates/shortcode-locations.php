@@ -17,10 +17,10 @@ $noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLU
 
 ?>
 <div class="cb-list-header">
-	<?php echo $location->thumbnail('cb_listing_medium'); ?>
+	<?php echo commonsbooking_sanitizeHTML($location->thumbnail('cb_listing_medium')); ?>
     <div class="cb-list-info">
-        <h2><?php echo $location->titleLink(); ?></h2>
-        <?php echo $location->excerpt(); ?>
+        <h2><?php echo commonsbooking_sanitizeHTML( $location->titleLink() ); ?></h2>
+        <?php echo commonsbooking_sanitizeHTML($location->excerpt()); ?>
     </div>
 </div><!-- .cb-list-header -->
 
@@ -34,5 +34,5 @@ if (array_key_exists('data', $templateData) && count($templateData['data'])) {
         commonsbooking_get_template_part( 'timeframe', 'withitem' ); // file: timeframe-withlocation.php
     }
 } else { ?>
-    <div class="cb-status cb-availability-status cb-status-not-available cb-notice-small"><?php echo ( $noResultText ); ?></div>
+    <div class="cb-status cb-availability-status cb-status-not-available cb-notice-small"><?php echo commonsbooking_sanitizeHTML($noResultText); ?></div>
 <?php } // end if ($timeframes) ?>

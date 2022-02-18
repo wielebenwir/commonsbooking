@@ -43,7 +43,8 @@ class BookingReminderMessage extends Message {
 			[
 				'booking'  => $booking,
 				'item'     => $booking->getItem(),
-				'location' => $booking->getLocation()
+				'location' => $booking->getLocation(),
+                'user'     => $booking_user,
 			]
 		);
 		$this->SendNotificationMail();

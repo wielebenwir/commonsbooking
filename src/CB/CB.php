@@ -16,19 +16,6 @@ class CB {
 	}
 
 	/**
-	 * echo
-	 *
-	 * @param mixed $key
-	 * @param mixed $property
-	 * @param mixed $theObject
-	 *
-	 * @return void
-	 */
-	public static function echo( $key, $property, $theObject = null ) {
-		echo self::get( $key, $property, $theObject );
-	}
-
-	/**
 	 * Returns property of (custom) post by class key and property.
 	 *
 	 * @param mixed $key
@@ -41,14 +28,12 @@ class CB {
 	public static function get( $key, $property, $post = null, $args = null ) {
 
 		// first we need to check if we are dealing with a post and set the post object properly
-		if ( $key !== 'user' ) {
 			if ( ! $post ) {
 				$postId = self::getPostId( $key );
 				$post   = get_post( $postId );
 			} else if ( ! ( $post instanceof WP_Post ) && ! ( $post instanceof CustomPost ) && ! ( $post instanceof WP_user ) ) {
 				$post = get_post( intval( $post ) );
 			}
-		}
 
 		$result     = self::lookUp( $key, $property, $post, $args );  // Find matching methods, properties or metadata
 		$filterName = sprintf( 'cb_tag_%s_%s', $key, $property );

@@ -232,7 +232,7 @@ class Plugin {
 	 */
 	public static function runTasksAfterUpdate() {
 		$commonsbooking_version_option    = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
-		$commonsbooking_installed_version = get_option($commonsbooking_version_option);
+		$commonsbooking_installed_version = esc_html(get_option($commonsbooking_version_option));
 
 		// check if installed version differs from plugin version in database
 		if (COMMONSBOOKING_VERSION != $commonsbooking_installed_version or !isset($commonsbooking_installed_version)) {
@@ -466,7 +466,7 @@ class Plugin {
 				printf(
 					'<div class="%1$s"><p>%2$s</p></div>',
 					esc_attr($class),
-					esc_html($error)
+					commonsbooking_sanitizeHTML($error)
 				);
 				delete_transient($errorType);
 			}

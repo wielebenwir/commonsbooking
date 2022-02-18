@@ -5,6 +5,7 @@ namespace CommonsBooking\Model;
 
 use CommonsBooking\CB\CB;
 use CommonsBooking\Helper\GeoHelper;
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Timeframe;
 use Geocoder\Exception\Exception;
 
@@ -27,7 +28,7 @@ class Location extends BookablePost {
 			[ $itemId ],
 			null,
 			$asModel,
-			time()
+			Helper::getLastFullHourTimestamp()
 		);
 	}
 
@@ -103,7 +104,7 @@ class Location extends BookablePost {
 	 * @return string
 	 */
 	public function formattedContactInfoOneLine() {
-		return CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post->ID) . '<br>';
+		return commonsbooking_sanitizeHTML(CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post->ID)) . '<br>';
 	}
 
 	/**

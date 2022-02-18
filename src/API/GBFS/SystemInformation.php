@@ -20,7 +20,7 @@ class SystemInformation extends \CommonsBooking\API\BaseRoute {
 	 * Commons-API schema definition.
 	 * @var string
 	 */
-	protected $schemaUrl = "https://raw.githubusercontent.com/MobilityData/gbfs-json-schema/master/system_information.json";
+    protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/system_information.json';
 
         public function get_items( $request ): WP_REST_Response {
 		$data                 = new stdClass();

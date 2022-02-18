@@ -59,7 +59,7 @@ return array(
 
                             <h2>Contribute</h2>
                             The future of this plugin depends on your support. You can support us by make a donation on our website: <a target="_blank" href="https://www.wielebenwir.de/verein/unterstutzen">wielebenwir</a>'
-						, 'commonsbooking' ) ), COMMONSBOOKING_VERSION ),
+						, 'commonsbooking' ) ), commonsbooking_sanitizeHTML( COMMONSBOOKING_VERSION ) ),
 				'fields' => array()
 			)
 		)
@@ -836,14 +836,14 @@ The team</p>', 'commonsbooking' ) ),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Location-Fields', 'commonsbooking' ) ),
 						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
-						Settings::returnFormattedMetaboxFields('cb_location') ),
+						commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields('cb_location') ) ),
 						'id'   => 'location-fields',
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Item-Fields', 'commonsbooking' ) ),
 						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
-						Settings::returnFormattedMetaboxFields('cb_item') ),
+						commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields('cb_item') ) ),
 						'id'   => 'item-fields',
 						'type' => 'text'
 					),

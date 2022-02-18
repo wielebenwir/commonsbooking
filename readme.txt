@@ -5,7 +5,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar,  
 Requires at least: 5.2  
 Tested up to: 5.9  
-Stable Tag: 2.6.4  
+Stable Tag: 2.6.8 
 Requires PHP: 7.3 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -79,6 +79,18 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog 
+
+### 2.6.8 (14.02.2022)
+FIXED: fixed sanitzing issues
+FIXED: reminder mails have been sent to users even if not activated in options
+FIXED: error on location detail pages in some cases
+
+### 2.6.7 (13.02.2022)
+FIXED: fixed minor technical issue that leads to hidden gps refresh button in some environments
+
+### 2.6.5 (13.02.2022)
+FIXED: fixed issue of missing user data in booking and restriction related emails
+MODIFIED: Internal refactoring of codebase
 
 ### 2.6.4 (10.02.2022)
 FIXED: fixed issue that produces an error when sending restriction mails in some environments and cases 

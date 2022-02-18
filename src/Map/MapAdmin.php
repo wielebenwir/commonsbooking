@@ -202,7 +202,7 @@ class MapAdmin {
 
 		$input = [];
 		if ( isset( $_POST['cb_map_options'] ) ) {
-			$input = $_POST['cb_map_options'];
+			$input = commonsbooking_sanitizeArrayorString( $_POST['cb_map_options'] );
 		}
 
 		//base_map
@@ -412,6 +412,10 @@ class MapAdmin {
 
 		update_post_meta( $cb_map_id, 'cb_map_options', $validated_input );
 
+        commonsbooking_write_log($_POST);
+
+        commonsbooking_write_log($validated_input);
+
 		return $validated_input;
 	}
 
@@ -447,9 +451,7 @@ class MapAdmin {
 
 		wp_enqueue_media();
 
-		//load image upload script
-		$script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-marker-upload.js';
-		echo '<script src="' . $script_path . '"></script>';
+		// info: upload script is enqueued in includes/Admin.php
 
 		//map translation
 		$translation = [
@@ -457,7 +459,7 @@ class MapAdmin {
 			'SAVE'                      => esc_html__( 'save', 'commonsbooking' ),
 			'MARKER_IMAGE_MEASUREMENTS' => esc_html__( 'measurements', 'commonsbooking' ),
 		];
-		echo '<script>cb_map_marker_upload.translation = ' . json_encode( $translation ) . ';</script>';
+		echo '<script>cb_map_marker_upload.translation = ' . wp_json_encode( $translation ) . ';</script>';
 
 		//available categories
 		$available_categories_args             = [
@@ -513,9 +515,9 @@ class MapAdmin {
 		self::load_options( $cb_map_id );
 
 		if ( array_key_exists( $key, self::$options ) ) {
-			return self::$options[ $key ];
+			return is_array((self::$options[ $key ])) ? self::$options[ $key ] : commonsbooking_sanitizeHTML(self::$options[ $key ]);
 		} else {
-			return self::get_option_default( $key );
+			return is_array(self::get_option_default( $key )) ? self::get_option_default( $key ) : commonsbooking_sanitizeHTML(self::get_option_default( $key ));
 		}
 	}
 

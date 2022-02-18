@@ -43,8 +43,11 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function cancel() {
 		// workaround, because wp_update_post deletes all meta data.
 		global $wpdb;
-		$query = "UPDATE " . $wpdb->prefix . "posts SET post_status='canceled' WHERE ID = '" . $this->post->ID . "'";
-		$wpdb->query( $query );
+		$sql = $wpdb->prepare(
+			"UPDATE " . $wpdb->prefix . "posts SET post_status='canceled' WHERE ID = %d",
+			$this->post->ID
+		);
+		$wpdb->query( $sql );
 
 		add_post_meta( $this->post->ID, 'cancellation_time', time() );
 
@@ -210,7 +213,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return string
 	 */
 	public function formattedBookingDate(): string {
-		$date_format = get_option( 'date_format' );
+		$date_format = commonsbooking_sanitizeHTML(get_option( 'date_format' ));
 
 		$startdate = date_i18n( $date_format, $this->getMeta( 'repetition-start' ) );
 		$enddate   = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
@@ -235,8 +238,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 */
 	public function pickupDatetime(): string {
 
-		$date_format = get_option( 'date_format' );
-		$time_format = get_option( 'time_format' );
+		$date_format = commonsbooking_sanitizeHTML(get_option( 'date_format' ));
+		$time_format = commonsbooking_sanitizeHTML(get_option( 'time_format' ));
 
 		$date_start = date_i18n( $date_format, $this->getMeta( 'repetition-start' ) );
 		$time_start = date_i18n( $time_format, $this->getMeta( 'repetition-start' ) );
@@ -275,8 +278,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 */
 
 	public function returnDatetime(): string {
-		$date_format = get_option( 'date_format' );
-		$time_format = get_option( 'time_format' );
+		$date_format = commonsbooking_sanitizeHTML(get_option( 'date_format' ));
+		$time_format = commonsbooking_sanitizeHTML(get_option( 'time_format' ));
 
 		$date_end = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
 		$time_end = date_i18n( $time_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) + 60 ); // we add 60 seconds because internal timestamp is set to hh:59

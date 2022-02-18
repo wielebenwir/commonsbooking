@@ -38,7 +38,7 @@ class Item extends CustomPostType {
 
 		if (
 			is_admin() && $query->is_main_query() &&
-			isset( $_GET['post_type'] ) && self::$postType == $_GET['post_type'] &&
+			isset( $_GET['post_type'] ) && self::$postType == sanitize_text_field( $_GET['post_type'] ) &&
 			$pagenow == 'edit.php'
 		) {
 			// Check if current user is allowed to see posts

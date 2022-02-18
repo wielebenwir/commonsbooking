@@ -4,6 +4,7 @@
 namespace CommonsBooking\Model;
 
 
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Timeframe;
 use Exception;
 
@@ -31,7 +32,7 @@ class BookablePost extends CustomPost {
 				$items,
 				$this->getDate() ?: $date,
 				$asModel,
-				time()
+				Helper::getLastFullHourTimestamp()
 			);
 
 		}
@@ -41,7 +42,7 @@ class BookablePost extends CustomPost {
 				[ $this->ID ],
 				$this->getDate() ?: $date,
 				$asModel,
-				time()
+				Helper::getLastFullHourTimestamp()
 			);
 		}
 

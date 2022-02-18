@@ -112,7 +112,7 @@ class CustomPost {
 	 * @return string html
 	 */
 	public function titleLink(): string {
-		return sprintf( '<a href="%s" class="cb-title cb-title-link">%s</a>', get_the_permalink( $this->ID ), $this->post_title );
+		return sprintf( '<a href="%s" class="cb-title cb-title-link">%s</a>', esc_url(get_the_permalink( $this->ID )), commonsbooking_sanitizeHTML($this->post_title) );
 	}
 
 	/**
@@ -121,7 +121,7 @@ class CustomPost {
 	 * @return string
 	 */
 	public function title(): string {
-		return sprintf( '<span class="cb-title">%s</span>', $this->post_title );
+		return sprintf( '<span class="cb-title">%s</span>', commonsbooking_sanitizeHTML($this->post_title) );
 	}
 
 	/**

@@ -4,6 +4,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Map\MapAdmin;
 use CommonsBooking\Map\MapSettings;
 use CommonsBooking\Map\MapShortcode;
@@ -70,7 +71,7 @@ class Map extends CustomPostType {
 			wp_register_script( 'cb_map_replace_map_link_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-replace-link.js' );
 
 			wp_add_inline_script( 'cb_map_replace_map_link_js',
-				"cb_map_timeframes_geo = " . json_encode( $geo_coordinates ) . ";" );
+				"cb_map_timeframes_geo = " . wp_json_encode( $geo_coordinates ) . ";" );
 
 			wp_enqueue_script( 'cb_map_replace_map_link_js' );
 		}
@@ -83,7 +84,7 @@ class Map extends CustomPostType {
 	public static function get_active_plugin_directory( $plugin_name ) {
 		$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
 		foreach ( $active_plugins as $plugin ) {
-			$plugin_file_path = COMMONSBOOKING_MAP_PATH . '../' . $plugin;
+			$plugin_file_path = COMMONSBOOKING_MAP_PATH . '../' . esc_html($plugin);
 			if ( strpos( $plugin, $plugin_name ) !== false && file_exists( $plugin_file_path ) ) {
 				return dirname( $plugin );
 			}
@@ -101,7 +102,7 @@ class Map extends CustomPostType {
 			[],
 			false,
 			true,
-			time()
+			Helper::getLastFullHourTimestamp()
 		);
 
 		/** @var \CommonsBooking\Model\Timeframe $timeframe */

@@ -14,7 +14,7 @@
 ?>
     <script type="text/javascript">
 		<?php
-		echo "let calendarData = " . $templateData['calendar_data'] . ';';
+			echo 'let calendarData = ' . commonsbooking_sanitizeHTML($templateData['calendar_data']) . ';';
 		?>
     </script>
     <!-- generate calendar /-->
@@ -23,10 +23,10 @@
     <!-- show booking form with date / time selection /-->
     <div id="booking-form-container">
         <form method="get" id="booking-form">
-			<?php echo $templateData['wp_nonce']; ?>
-            <input type="hidden" name="location-id" value="<?php echo $templateData['location']->ID; ?>"/>
-            <input type="hidden" name="item-id" value="<?php echo $templateData['item']->ID; ?>"/>
-            <input type="hidden" name="type" value="<?php echo $templateData['type']; ?>"/>
+			<?php echo commonsbooking_sanitizeHTML($templateData['wp_nonce']); ?>
+            <input type="hidden" name="location-id" value="<?php echo esc_attr($templateData['location']->ID); ?>"/>
+            <input type="hidden" name="item-id" value="<?php echo esc_attr($templateData['item']->ID); ?>"/>
+            <input type="hidden" name="type" value="<?php echo esc_attr($templateData['type']); ?>"/>
             <input type="hidden" name="post_type" value="cb_booking"/>
             <input type="hidden" name="post_status" value="unconfirmed"/>
 
@@ -84,7 +84,7 @@
 													echo ":</br>";
 												}
 
-		                                        echo "<strong>" . $restriction->getHint() . "</strong>";
+		                                        echo "<strong>" . commonsbooking_sanitizeHTML( $restriction->getHint() ) . "</strong>";
                                             echo "</li>";
                                         }
                                     }
@@ -109,6 +109,7 @@
 			<?php 
 			// get Calendar Data
 			$calendarData = json_decode($templateData['calendar_data']);
+
 			//translators %1$s maximum days, %2$s maximum days
 			echo sprintf ( commonsbooking_sanitizeHTML( __('
 			<strong>Calendar info</strong><br>
@@ -116,7 +117,10 @@
 			| <span style="color:#ff9218">orange</span> = station closed 
 			| gray = not bookable<br>
 			Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend). <br>
-			Bookings are limited to a maximum of %2$s days in advance.', 'commonsbooking') ), $calendarData->maxDays, $calendarData->advanceBookingDays );
+			Bookings are limited to a maximum of %2$s days in advance.', 'commonsbooking') ),
+				commonsbooking_sanitizeHTML($calendarData->maxDays),
+				commonsbooking_sanitizeHTML($calendarData->advanceBookingDays)
+			);
 			?> 
 		</p>
 	</div>

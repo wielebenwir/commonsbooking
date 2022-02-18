@@ -2,9 +2,11 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\View\Map;
+use CommonsBooking\View\View;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Repository\UserRepository;
-use CommonsBooking\Settings\Settings;
 
 class Location extends CustomPostType {
 
@@ -49,7 +51,7 @@ class Location extends CustomPostType {
 
 		if (
 			is_admin() && $query->is_main_query() &&
-			isset( $_GET['post_type'] ) && self::$postType == $_GET['post_type'] &&
+			isset( $_GET['post_type'] ) && self::$postType == sanitize_text_field( $_GET['post_type'] ) &&
 			$pagenow == 'edit.php'
 		) {
 			// Check if current user is allowed to see posts
@@ -237,7 +239,7 @@ class Location extends CustomPostType {
 			//'desc'       => esc_html__('field description (optional)', 'commonsbooking'),
 			'id'         => COMMONSBOOKING_METABOX_PREFIX . 'get_gps',
 			'type'       => 'text',
-            'render_row_cb' => array( \CommonsBooking\View\Map::class, 'renderGeoRefreshButton' ),
+            'render_row_cb' => array( Map::class, 'renderGeoRefreshButton' ),
 			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 		) );
 

@@ -16,8 +16,8 @@ class Filter {
 		//only add filter to post type you want
 		if ( isset( $_GET['post_type'] ) && $postType == $_GET['post_type'] ) {
 			?>
-            <select name="<?php echo 'admin_' . $key; ?>">
-                <option value=""><?php echo $label; ?></option>
+            <select name="<?php echo 'admin_' . commonsbooking_sanitizeHTML( $key ); ?>">
+                <option value=""><?php echo commonsbooking_sanitizeHTML($label); ?></option>
 				<?php
 				$filterValue = isset( $_GET[ 'admin_' . $key ] ) ? sanitize_text_field( $_GET[ 'admin_' . $key ] ) : '';
 				foreach ( $values as $value => $label ) {
@@ -44,10 +44,10 @@ class Filter {
 	 * @param $to
 	 */
 	public static function renderDateFilter( $postType, $startDateInputName, $endDateInputName, $from, $to ) {
-		if ( isset( $_GET['post_type'] ) && $postType == $_GET['post_type'] ) {
+		if ( isset( $_GET['post_type'] ) && $postType == sanitize_text_field( $_GET['post_type'] ) ) {
 			echo '<style>
-                input[name=' . $startDateInputName . '], 
-                input[name=' . $endDateInputName . ']{
+                input[name=' . commonsbooking_sanitizeHTML( $startDateInputName ) . '], 
+                input[name=' . commonsbooking_sanitizeHTML( $endDateInputName ) . ']{
                     line-height: 28px;
                     height: 28px;
                     margin: 0;
@@ -55,21 +55,21 @@ class Filter {
                 }
             </style>
      
-            <input type="text" name="' . $startDateInputName . '" placeholder="' . esc_html__(
+            <input type="text" name="' . commonsbooking_sanitizeHTML( $startDateInputName ) . '" placeholder="' . esc_html__(
 					'Start date',
 					'commonsbooking'
 				) . '" value="' . esc_attr( $from ) . '" />
-            <input type="text" name="' . $endDateInputName . '" placeholder="' . esc_html__(
+            <input type="text" name="' . commonsbooking_sanitizeHTML( $endDateInputName ) . '" placeholder="' . esc_html__(
 				     'End date',
 				     'commonsbooking'
 			     ) . '" value="' . esc_attr( $to ) . '" />
      
             <script>
             jQuery( function($) {
-                var from = $(\'input[name=' . $startDateInputName . ']\'),
-                    to = $(\'input[name=' . $endDateInputName . ']\');
+                var from = $(\'input[name=' . commonsbooking_sanitizeHTML( $startDateInputName ) . ']\'),
+                    to = $(\'input[name=' . commonsbooking_sanitizeHTML( $endDateInputName ) . ']\');
      
-                $(\'input[name=' . $startDateInputName . '], input[name=' . $endDateInputName . ']\' ).datepicker( 
+                $(\'input[name=' . commonsbooking_sanitizeHTML( $startDateInputName ) . '], input[name=' . commonsbooking_sanitizeHTML( $endDateInputName ) . ']\' ).datepicker( 
                     {
                         dateFormat : "yy-mm-dd"
                     }
