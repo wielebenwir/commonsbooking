@@ -21,7 +21,7 @@ if ($current_status == 'confirmed' and $form_action == "cancel") {
 if(isset($form_post_status)) {
 ?>
     <form method="post" id="cb-booking-form-set-<?php echo esc_attr($form_post_status); ?>">
-        <?php echo \CommonsBooking\Wordpress\CustomPostType\Booking::getWPNonceField() ?>
+        <?php echo commonsbooking_sanitizeHTML( \CommonsBooking\Wordpress\CustomPostType\Booking::getWPNonceField() ) ?>
         <?php if ($booking->ID) { ?><input type="hidden" name="post_ID" value="<?php echo esc_attr($booking->ID); ?>" /><?php } ?>
         <input type="hidden" name="location-id" value="<?php echo esc_attr($booking->getLocation()->ID); ?>"/>
         <input type="hidden" name="item-id" value="<?php echo esc_attr($booking->getItem()->ID); ?>"/>
@@ -33,7 +33,7 @@ if(isset($form_post_status)) {
         <input type="hidden" name="post_status" value="<?php echo esc_attr($form_post_status); ?>"/>
         <input type="hidden" name="repetition-start" value="<?php echo esc_attr($booking->getMeta('repetition-start')); ?>">
         <input type="hidden" name="repetition-end" value="<?php echo esc_attr($booking->getMeta('repetition-end')); ?>">
-        <input type="submit" value="<?php echo esc_attr($button_label); ?>" class="<?php echo "cb-action-" . $form_post_status; ?>"/>
+        <input type="submit" value="<?php echo esc_attr($button_label); ?>" class="<?php echo "cb-action-" . commonsbooking_sanitizeHTML( $form_post_status ); ?>"/>
     </form>
 <?php
 }

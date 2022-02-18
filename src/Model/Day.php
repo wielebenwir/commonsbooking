@@ -484,8 +484,8 @@ class Day {
 		// Init Slots
 		for ( $i = 0; $i < $slotsPerDay; $i ++ ) {
 			$slots[ $i ] = [
-				'timestart'      => date( get_option( 'time_format' ), $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
-				'timeend'        => date( get_option( 'time_format' ), ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+				'timestart'      => date( esc_html(get_option( 'time_format' )), $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+				'timeend'        => date( esc_html(get_option( 'time_format' )), ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
 				'timestampstart' => $this->getSlotTimestampStart( $slotsPerDay, $i ),
 				'timestampend'   => $this->getSlotTimestampEnd( $slotsPerDay, $i )
 			];

@@ -515,14 +515,14 @@ class Timeframe extends CustomPostType {
 				'type'        => 'text_time',
 				'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'attributes'  => array(
-					'data-timepicker' => json_encode(
+					'data-timepicker' => wp_json_encode(
 						array(
 							'stepMinute' => 60,
 							'timeFormat' => 'HH:mm',
 						)
 					),
 				),
-				'time_format' => get_option( 'time_format' ),
+				'time_format' => esc_html(get_option( 'time_format' )),
 				'date_format' => $dateFormat,
 			),
 			array(
@@ -531,14 +531,14 @@ class Timeframe extends CustomPostType {
 				'type'        => 'text_time',
 				'time_format' => 'H:i',
 				'attributes'  => array(
-					'data-timepicker' => json_encode(
+					'data-timepicker' => wp_json_encode(
 						array(
 							'stepMinute' => 60,
 							'timeFormat' => 'HH:mm',
 						)
 					),
 				),
-				'time_format' => get_option( 'time_format' ),
+				'time_format' => esc_html(get_option( 'time_format' )),
 				'date_format' => $dateFormat,
 			),
 			array(
@@ -561,7 +561,7 @@ class Timeframe extends CustomPostType {
 				'desc'        => esc_html__( 'Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking' ),
 				'id'          => "repetition-start",
 				'type'        => 'text_date_timestamp',
-				'time_format' => get_option( 'time_format' ),
+				'time_format' => esc_html(get_option( 'time_format' )),
 				'date_format' => $dateFormat,
 			),
 			array(
@@ -584,7 +584,7 @@ class Timeframe extends CustomPostType {
                 <br><strong>Notice:</strong> If the end date is empty and no repetition has been selected, this time frame applies only to the set start date. Only if a repetition is selected and the end date is empty, the repetition will be repeated infinitely.', 'commonsbooking') ),
 				'id'          => "repetition-end",
 				'type'        => 'text_date_timestamp',
-				'time_format' => get_option( 'time_format' ),
+				'time_format' => esc_html(get_option( 'time_format' )),
 				'date_format' => $dateFormat,
 			),
 			array(
@@ -815,7 +815,7 @@ class Timeframe extends CustomPostType {
 		if ( $column == "timeframe-author" ) {
 			$post           = get_post( $post_id );
 			$timeframe_user = get_user_by( 'id', $post->post_author );
-			echo '<a href="' . get_edit_user_link( $timeframe_user->ID ) . '">' . $timeframe_user->user_login . '</a>';
+			echo '<a href="' . get_edit_user_link( $timeframe_user->ID ) . '">' . commonsbooking_sanitizeHTML( $timeframe_user->user_login ) . '</a>';
 		}
 
 

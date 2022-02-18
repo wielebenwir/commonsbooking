@@ -22,7 +22,7 @@ class BookingCodes {
                     <label for="booking-codes-download">' . commonsbooking_sanitizeHTML( __( 'Download Booking Codes', 'commonsbooking' ) ) . '</label>
                 </div>
                 <div class="cmb-td">
-                    <a id="booking-codes-download" href="' . esc_url( admin_url( 'post.php' ) ) . '?post=' . $timeframeId . '&action=csvexport" target="_blank"><strong>Download Booking Codes</strong></a></br>
+                    <a id="booking-codes-download" href="' . esc_url( admin_url( 'post.php' ) ) . '?post=' . commonsbooking_sanitizeHTML( $timeframeId ) . '&action=csvexport" target="_blank"><strong>Download Booking Codes</strong></a></br>
                     ' . commonsbooking_sanitizeHTML( __( 'The file will be exported as tab delimited .txt file so you can choose wether you want to print it, open it in a separate application (like Word, Excel etc.)', 'commonsbooking' ) ) . '
                 </div>
             </div>
@@ -41,9 +41,9 @@ class BookingCodes {
 						/** @var BookingCode $bookingCode */
 						foreach ( $bookingCodes as $bookingCode ) {
 							echo "<tr>
-									<td>" . date_i18n( get_option( 'date_format' ), strtotime ($bookingCode->getDate() ) ) . "</td>
-				                    <td>" . $bookingCode->getItemName() . "</td>
-				                    <td>" . $bookingCode->getCode() . "</td>
+									<td>" . commonsbooking_sanitizeHTML( date_i18n( get_option( 'date_format' ), strtotime ($bookingCode->getDate() ) ) ) . "</td>
+				                    <td>" . commonsbooking_sanitizeHTML( $bookingCode->getItemName() ) . "</td>
+				                    <td>" . commonsbooking_sanitizeHTML( $bookingCode->getCode() ) . "</td>
 				                </tr>";
 						}
 		echo '    </table>
@@ -62,7 +62,7 @@ class BookingCodes {
 		$bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId );
 		header( 'Content-Encoding: UTF-8' );
 		header( 'Content-type: text/csv; charset=UTF-8' );
-		header( "Content-Disposition: attachment; filename=buchungscode-$timeframeId.txt" );
+		header( "Content-Disposition: attachment; filename=buchungscode-" . commonsbooking_sanitizeHTML( $timeframeId ) . ".txt" );
 		header( 'Content-Transfer-Encoding: binary' );
 		header( "Pragma: no-cache" );
 		header( "Expires: 0" );

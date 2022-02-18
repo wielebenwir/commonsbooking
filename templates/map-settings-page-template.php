@@ -23,7 +23,9 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
             <span class="dashicons dashicons-editor-help" title="<?php echo  commonsbooking_sanitizeHTML( __('set the target of the map link on booking page to openstreetmap', 'commonsbooking')); ?>"></span>
           </th>
           <td>
-            <input type="checkbox" name="cb_map_options[booking_page_link_replacement]" <?php echo  MapSettings::get_option('booking_page_link_replacement') ? 'checked="checked"' : '' ?> value="on">
+            <input type="checkbox" name="cb_map_options[booking_page_link_replacement]" <?php
+                echo  commonsbooking_sanitizeHTML(MapSettings::get_option('booking_page_link_replacement')) ? 'checked="checked"' : ''
+            ?> value="on">
           </td>
       </tr>
     </table>

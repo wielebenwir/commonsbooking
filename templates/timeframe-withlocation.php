@@ -29,7 +29,7 @@ $permalink    = add_query_arg ( 'location', $location->ID, get_the_permalink($it
             ) {
 
                 foreach ($data['ranges'] as $range) {
-                    echo \CommonsBooking\Model\Timeframe::formatBookableDate($range['start_date'], $range['end_date']) . '<br>';
+                    echo commonsbooking_sanitizeHTML( \CommonsBooking\Model\Timeframe::formatBookableDate($range['start_date'], $range['end_date']) ) . '<br>';
                 }
             }
         ?>

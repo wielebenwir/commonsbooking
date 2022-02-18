@@ -15,7 +15,7 @@ class Booking extends View {
 	 */
 	public static function getTemplateData(): void {
 		header( 'Content-Type: application/json' );
-		echo json_encode( self::getBookingListData(), true );
+		echo wp_json_encode( self::getBookingListData(), true );
 		wp_die(); // All ajax handlers die when finished
 	}
 

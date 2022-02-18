@@ -28,7 +28,7 @@
     } // $item_is_selected
 
     if(!array_key_exists('item', $templateData) && !array_key_exists('items', $templateData)) { ?>
-        <div class="cb-status cb-availability-status cb-status-not-available"><?php echo ( $noResultText );
+        <div class="cb-status cb-availability-status cb-status-not-available"><?php echo commonsbooking_sanitizeHTML( $noResultText );
     }
     if(!is_user_logged_in()) {
         $current_url = $_SERVER['REQUEST_URI'];

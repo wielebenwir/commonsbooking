@@ -71,8 +71,8 @@ class PostStatus {
 
 			echo "<script>
             jQuery(document).ready( function() {
-                jQuery( 'select[name=\"post_status\"]' ).append( '<option value=\"" . $this->name . "\">" . $this->label . "</option>' );
-                " . $active . "
+                jQuery( 'select[name=\"post_status\"]' ).append( '<option value=\"" . commonsbooking_sanitizeHTML( $this->name ) . "\">" . commonsbooking_sanitizeHTML( $this->label ) . "</option>' );
+                " . commonsbooking_sanitizeHTML( $active ) . "
             });
         </script>";
 		}
@@ -84,7 +84,7 @@ class PostStatus {
 	public function addQuickedit() {
 		echo "<script>
                 jQuery(document).ready( function() {
-                    jQuery( 'select[name=\"_status\"]' ).append( '<option value=\"" . $this->name . "\">" . $this->label . "</option>' );
+                    jQuery( 'select[name=\"_status\"]' ).append( '<option value=\"" . commonsbooking_sanitizeHTML( $this->name ) . "\">" . commonsbooking_sanitizeHTML(  $this->label ) . "</option>' );
                 });
             </script>";
 	}

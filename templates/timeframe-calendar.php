@@ -84,7 +84,7 @@
 													echo ":</br>";
 												}
 
-		                                        echo "<strong>" . $restriction->getHint() . "</strong>";
+		                                        echo "<strong>" . commonsbooking_sanitizeHTML( $restriction->getHint() ) . "</strong>";
                                             echo "</li>";
                                         }
                                     }
