@@ -18,12 +18,11 @@ class Location extends BookablePost {
 	 *
 	 * @param mixed $itemId
 	 * @param bool $asModel
-	 * @param bool $checkRoleRestriction
 	 *
 	 * @return array
 	 * @throws \Exception
 	 */
-	public function getBookableTimeframesByItem( $itemId, bool $asModel = false, bool $checkRoleRestriction = false ): array {
+	public function getBookableTimeframesByItem( $itemId, bool $asModel = false): array {
 		// get bookable timeframes that has min timestamp = now
 		return Timeframe::getBookable(
 			[ $this->ID ],
@@ -31,7 +30,6 @@ class Location extends BookablePost {
 			null,
 			$asModel,
 			Helper::getLastFullHourTimestamp(),
-			$checkRoleRestriction
 		);
 	}
 

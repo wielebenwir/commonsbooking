@@ -12,7 +12,7 @@ use WP_Post;
 class Timeframe extends PostRepository {
 
 	/**
-	 * Returns only bookable timeframes.
+	 * Returns only user bookable timeframes.
 	 *
 	 * @param array $locations
 	 * @param array $items
@@ -30,7 +30,6 @@ class Timeframe extends PostRepository {
 		?string $date = null,
 		bool $returnAsModel = false,
 		$minTimestamp = null,
-		$checkRoleRestriction = true,
 		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
 		$bookableTimeframes = self::get(
@@ -43,15 +42,13 @@ class Timeframe extends PostRepository {
 			$postStatus
 		);
 
-		if ($checkRoleRestriction ) {
-			$timeframesModels = $bookableTimeframes;
-			if (!$returnAsModel){
-				self::castPostsToModels($timeframesModels); //cast to model to do calculations
-			} 
-			foreach ($timeframesModels as $key => $timeframe){
-				if ($timeframe->isWithRoleRestriction()) {
-					unset($bookableTimeframes[$key]); //removes timeframes with role restrictions from timeframe array
-				}
+		$timeframesModels = $bookableTimeframes;
+		if (!$returnAsModel){
+			self::castPostsToModels($timeframesModels); //cast to model to do calculations
+		} 
+		foreach ($timeframesModels as $key => $timeframe){
+			if ($timeframe->isWithRoleRestriction()) {
+				unset($bookableTimeframes[$key]); //removes timeframes with role restrictions from timeframe array
 			}
 		}
 		return $bookableTimeframes;

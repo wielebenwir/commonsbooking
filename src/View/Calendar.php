@@ -121,6 +121,12 @@ class Calendar {
 					[ Timeframe::BOOKABLE_ID ],
 					true
 				);
+				
+				foreach ($timeframes as $key => $timeframe){ //removes timeframes that are not bookable by current user
+					if ($timeframe->isWithRoleRestriction()){
+						unset($timeframes[$key]);
+					}
+				}
 
 				if ( $timeframes ) {
 

@@ -282,13 +282,13 @@ class Timeframe extends CustomPost {
 				}
 
 				// First we check if the item is already connected to another location to avoid overlapping bookable dates
-				$sameItemTimeframes = \CommonsBooking\Repository\Timeframe::getBookable(
+				$sameItemTimeframes = \CommonsBooking\Repository\Timeframe::get(
 					[],
 					[ $this->getItem()->ID  ],
+					[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID],
 					null,
 					true,
 					null,
-					false,
 					['publish']
 				);
 
@@ -309,9 +309,10 @@ class Timeframe extends CustomPost {
 
 
 				// Get Timeframes with same location, item and a startdate
-				$existingTimeframes = \CommonsBooking\Repository\Timeframe::getBookable(
+				$existingTimeframes = \CommonsBooking\Repository\Timeframe::get(
 					[ $this->getLocation()->ID ],
 					[ $this->getItem()->ID ],
+					[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID],
 					null,
 					true
 				);
@@ -401,13 +402,14 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns true if timeframe has booking restriction for user role
+	 * Returns true if timeframe has booking restriction for curennt users role
 	 * @return boolean
 	 */
 	function isWithRoleRestriction() {
+		/*
 		$allowedUserRoles = get_post_meta( $this->ID, 'allowed_user_roles', true );
 		if ( empty( $allowedUserRoles ) || ( current_user_can( 'administrator' ) ) ) {
-			return false;
+			return false;·
 		}
 		
 		$current_user     = wp_get_current_user();
@@ -418,6 +420,13 @@ class Timeframe extends CustomPost {
 		if (!$match) { //when no match with allowed user role is found then the timeframe is blocked for the user
 			return true;
 		} else {
+			return false;
+		}
+		*/
+		if ( ! commonsbooking_isCurrentUserAllowedToBook($this->ID) ) {
+			return true;
+		}
+		else {
 			return false;
 		}
 	}
