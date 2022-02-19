@@ -445,7 +445,7 @@ class Calendar {
 				'highlightedDays'         => [],
 				'maxDays'                 => null,
 				'disallowLockDaysInRange' => true,
-				'advanceBookingDays'      => $advanceBookingDays,
+				'advanceBookingDays'      => $advanceBookingDays
 			];
 
 			if ( count( $locations ) === 1 ) {
