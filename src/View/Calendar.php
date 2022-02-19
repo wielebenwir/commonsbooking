@@ -317,7 +317,6 @@ class Calendar {
 		$endDate            = new Day( $endDateString );
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
-
 		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookable(
 			[ $location ],
 			[ $item ],
@@ -373,8 +372,16 @@ class Calendar {
 	 */
 	private static function getClosestBookableTimeFrameForToday( $bookableTimeframes ): ?\CommonsBooking\Model\Timeframe {
 		// Sort timeframes by startdate
-		usort( $bookableTimeframes, function ( $item1, $item2 ) {
-			return abs( time() - $item2->getStartDate() ) <=> abs( time() - $item1->getStartDate() );
+		usort( $bookableTimeframes, function ( \CommonsBooking\Model\Timeframe $item1, \CommonsBooking\Model\Timeframe $item2 ) {
+			$item1StartDateDistance = abs( time() - $item1->getStartDate() );
+			$item1EndDateDistance = abs( time() - $item1->getEndDate() );
+			$item1SmallestDistance = min( $item1StartDateDistance, $item1EndDateDistance );
+
+			$item2StartDateDistance = abs( time() - $item2->getStartDate() );
+			$item2EndDateDistance = abs( time() - $item2->getEndDate() );
+			$item2SmallestDistance = min( $item2StartDateDistance, $item2EndDateDistance );
+
+			return $item2SmallestDistance <=> $item1SmallestDistance;
 		} );
 
 		return array_pop( $bookableTimeframes );
