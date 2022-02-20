@@ -258,11 +258,6 @@ class Plugin {
 			// migrate bookings to new cpt
 			\CommonsBooking\Migration\Booking::migrate();
 
-
-			// Recompile scss to keep color scheme after update 
-
-			Settings::updateColors();
-
 			// Clear cache
 			self::clearCache();
 		}

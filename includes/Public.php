@@ -4,14 +4,23 @@ use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\Migration\Migration;
 use CommonsBooking\View\Booking;
 use CommonsBooking\View\Calendar;
+use CommonsBooking\Settings\Settings;
+
 
 function commonsbooking_public() {
+
+
 	wp_enqueue_style(
 		'cb-styles-public',
 		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/css/public.css',
 		array(),
 		WP_DEBUG ? time() : COMMONSBOOKING_VERSION
 	);
+
+	$colorScheme_css = Settings::returnColorCSS();
+	if ($colorScheme_css) { //if custom color variables exist, import them after importing the rest of the CSS, overwriting existing defaults
+		wp_add_inline_style('cb-styles-public',$colorScheme_css);
+	}
 
 	// Template specific styles
 	$template = wp_get_theme()->template;
