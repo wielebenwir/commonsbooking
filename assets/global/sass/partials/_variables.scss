@@ -68,3 +68,34 @@ $radius-pill: $radius;
 @mixin font-default() {
   font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
 }
+
+:root {
+  --commonsbooking-color-primary : #{$color-primary};
+  --commonsbooking-color-secondary : #{$color-secondary};
+  --commonsbooking-color-accept : #{$color-accept};
+  --commonsbooking-color-cancel : #{$color-cancel};
+  --commonsbooking-color-holiday : #{$color-holiday};
+  --commonsbooking-color-greyedout : #{$color-greyedout};
+  --commonsbooking-color-bg : #{$color-bg};
+  --commonsbooking-color-noticebg : #{$color-noticebg};
+
+  --commonsbooking-color-gray-background : #{$color-gray-background};
+  --commonsbooking-color-gray-border : #{$color-gray-border};
+
+  --commonsbooking-color-error : #{$color-error};
+  --commonsbooking-color-success : #{$color-success};
+  --commonsbooking-color-warning : #{$color-warning};
+
+  --commonsbooking-font-size-small : #{$font-size-small};
+  --commonsbooking-font-line-height-small : #{$font-line-height-small};
+  --commonsbooking-font-size-normal : #{$font-size-normal};
+  --commonsbooking-font-size-big : #{$font-size-big};
+  --commonsbooking-font-size-huge : #{$font-size-huge};
+
+  --commonsbooking-spacer-big : #{$spacer-big};
+  --commonsbooking-spacer : #{$spacer};
+  --commonsbooking-spacer-small : #{$spacer-small};
+
+  --commonsbooking-radius : #{$radius};
+  --commonsbooking-radius-pill : #{$radius-pill};
+}

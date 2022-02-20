@@ -26,21 +26,21 @@
 
 	td,
 	th {
-		line-height: $font-line-height-small;
-		font-size: $font-size-small;
+		line-height: var(--commonsbooking-font-line-height-small);
+		font-size: var(--commonsbooking-font-size-small);
 		padding: 4px 0;
 		font-weight: normal;
 	}
 
 	th {
-		font-size: $font-size-small;
+		font-size: var(--commonsbooking-font-size-small);
 		text-align: center;
 		vertical-align: middle;
 	}
 
 	thead {
 		tr {
-			color: $color-secondary;
+			color: var(--commonsbooking-color-secondary);
 
 			&:first-child {
 				/* Months row */
@@ -85,12 +85,12 @@
     thead tr:first-child th:first-child,
 	thead tr:nth-child(2) th:first-child,
 	thead tr:nth-child(2) th:nth-child(2) {
-		background: $color-bg;
+		background: var(--commonsbooking-color-bg);;
 	}
 
 	tbody tr:hover td:first-child,
 	tbody tr:hover td:nth-child(2) {
-		background-color: $color-bg;
+		background-color: var(--commonsbooking-color-bg);;
 	}
 
 	tbody {
@@ -100,12 +100,12 @@
 			overflow: hidden;
 
 			&:hover {
-				background: $color-bg;
+				background: var(--commonsbooking-color-bg);;
 			}
 
 			td {
-				border-top: 1px solid $color-greyedout;
-				border-left: 1px solid $color-gray-background;
+				border-top: 1px solid var(--commonsbooking-color-greyedout);
+				border-left: 1px solid var(--commonsbooking-color-gray-background);
 				border-bottom: 1px solid $color-white;
 			}
 		}

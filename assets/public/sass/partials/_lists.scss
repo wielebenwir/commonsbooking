@@ -17,7 +17,7 @@
 	position: relative;
 	clear: both;
 	display: block;
-	margin-top: $spacer-big;
+	margin-top: var(--commonsbooking-spacer-big);
 
 	@extend .cb-box;
 	
@@ -35,12 +35,12 @@
 	/* headline */
 	h1, h2, h3, h4 {
 		margin: 0;
-		padding-bottom: $spacer;
+		padding-bottom: var(--commonsbooking-spacer);
 		padding-top: 0;
 	}
 	
 	.cb-title {
-		color: $color-primary;
+		color: var(--commonsbooking-color-primary);
 	}
 
 	.cb-thumbnail {
@@ -54,8 +54,7 @@
 	
 		
 		> div { /* sub list items */
-			// border-bottom: 1px solid $color-gray-border;
-			padding: $spacer-small 0;
+			padding: var(--commonsbooking-spacer-small) 0;
 			&:last-of-type {
 				border-bottom: none;
 			}
