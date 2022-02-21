@@ -153,7 +153,7 @@ class Location extends View {
 				'latitude'  => $latitude,
 				'longitude' => $longitude,
 			];
-			echo '<script>cb_map_locationview.defaults = ' . wp_json_encode( $defaults ) . ';</script>';
+			wp_add_inline_script('cb-map-locationview_js','cb_map_locationview.defaults =' . wp_json_encode($defaults) );
 		}
 	}
 }
