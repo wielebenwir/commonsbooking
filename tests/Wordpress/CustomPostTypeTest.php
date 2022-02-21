@@ -132,6 +132,18 @@ abstract class CustomPostTypeTest extends TestCase {
 		);
 	}
 
+	protected function createUnconfirmedBookingEndingTomorrow() {
+		return $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days midnight', strtotime( self::CURRENT_DATE  ) ) - 1,
+			null,
+			null,
+			'unconfirmed'
+		);
+	}
+
 	protected function createBooking(
 		$locationId,
 		$itemId,

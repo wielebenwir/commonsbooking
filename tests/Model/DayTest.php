@@ -52,6 +52,7 @@ class DayTest extends CustomPostTypeTest {
 			"norep"
 		);
 
+		$this->createUnconfirmedBookingEndingTomorrow();
 
 		$this->instance = new Day(
 			self::CURRENT_DATE,
@@ -95,6 +96,7 @@ class DayTest extends CustomPostTypeTest {
 	}
 
 	public function testGetTimeframes() {
+		// Should only find confirmed timeframes
 		$this->assertTrue(count($this->instance->getTimeframes()) == 3);
 	}
 
