@@ -38,7 +38,6 @@ class Item extends View {
 
 			$args = [
 				'post'      => $post,
-				'wp_nonce'  => \CommonsBooking\Wordpress\CustomPostType\Booking::getWPNonceField(),
 				'actionUrl' => admin_url( 'admin.php' ),
 				'item'      => new \CommonsBooking\Model\Item( $item ),
 				'postUrl'   => get_permalink( $item ),
