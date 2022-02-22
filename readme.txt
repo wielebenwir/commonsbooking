@@ -80,6 +80,9 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
+### 2.6.11 (23.02.2022)
+FIXED: Some users reported that bookings were no longer possible. After clicking on "continue to booking check" the expected booking page was not loaded. Since this only occurred on some systems and sporadically, it was not possible to determine the cause in the individual cases. However, our analysis showed that it was likely related to a Wordpress function for validating user input. We have adjusted this in the current version. 
+
 ### 2.6.10 (20.02.2022)
 FIXED: With certain time frame settings it could happen that the calendar was only displayed starting with the next month. This is now fixed. 
 FIXED: The map on the location page always showed a default location. It now shows the correct location.
