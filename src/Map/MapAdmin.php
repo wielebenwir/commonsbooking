@@ -445,8 +445,6 @@ class MapAdmin {
 
 
 	public static function render_options_page( $post ) {
-		//wp_nonce_field( basename( __FILE__ ), 'cb_map_post_type_meta_box_nonce' );
-
 		$cb_map_id = $post->ID;
 
 		wp_enqueue_media();
