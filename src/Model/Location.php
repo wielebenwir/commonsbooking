@@ -47,11 +47,11 @@ class Location extends BookablePost {
 	 */
 	public function formattedAddress() {
 		$html_after    = '<br>';
-		$html_output[] = CB::get( 'location', 'post_title', $this->post->ID ) . $html_after;
-		$html_output[] = CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_street',
+		$html_output[] = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, 'post_title', $this->post->ID ) . $html_after;
+		$html_output[] = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_street',
 				$this->post->ID ) . $html_after;
-		$html_output[] = CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post->ID ) . ' ';
-		$html_output[] = CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_city',
+		$html_output[] = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post->ID ) . ' ';
+		$html_output[] = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_city',
 				$this->post->ID ) . $html_after;
 
 		return implode( ' ', $html_output );
@@ -69,9 +69,9 @@ class Location extends BookablePost {
 	public function formattedAddressOneLine() {
 		return sprintf(
 			'%s, %s %s',
-			CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_street', $this->post->ID ),
-			CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post->ID ),
-			CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_city', $this->post->ID )
+			CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_street', $this->post->ID ),
+			CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post->ID ),
+			CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_city', $this->post->ID )
 		);
 	}
 
@@ -86,11 +86,11 @@ class Location extends BookablePost {
 	 */
 	public function formattedContactInfo() {
 		$contact = array();
-		if ( ! empty( CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact' ) ) ) {
+		if ( ! empty( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact' ) ) ) {
 			$contact[] = "<br>"; // needed for email template
 			$contact[] = esc_html__( 'Please contact the contact persons at the location directly if you have any questions regarding collection or return:',
 				'commonsbooking' );
-			$contact[] = nl2br( CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post->ID ) );
+			$contact[] = nl2br( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post->ID ) );
 		}
 
 		return implode( '<br>', $contact );
@@ -105,7 +105,7 @@ class Location extends BookablePost {
 	 * @return string
 	 */
 	public function formattedContactInfoOneLine() {
-		return commonsbooking_sanitizeHTML( CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post->ID ) ) . '<br>';
+		return commonsbooking_sanitizeHTML(CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post->ID)) . '<br>';
 	}
 
 	/**
@@ -117,7 +117,7 @@ class Location extends BookablePost {
 	public function formattedPickupInstructions(): string {
 		$html_br = '<br>';
 
-		return $html_br . $html_br . CB::get( 'location',
+		return $html_br . $html_br . CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType,
 				COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions', $this->post->ID ) . $html_br;
 	}
 
@@ -127,7 +127,7 @@ class Location extends BookablePost {
 	 * @return string html
 	 */
 	public function formattedPickupInstructionsOneLine() {
-		return CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions', $this->post->ID );
+		return CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions', $this->post->ID );
 	}
 
 	/**

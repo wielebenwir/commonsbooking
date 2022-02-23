@@ -109,7 +109,7 @@ class Day {
 				$this->getDate(),
 				true,
 				null,
-				[ 'publish', 'confirmed', 'unconfirmed' ]
+				[ 'publish', 'confirmed' ]
 			);
 
 			// check if user is allowed to book this timeframe and remove unallowed timeframes from array

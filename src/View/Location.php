@@ -23,7 +23,7 @@ class Location extends View {
 		}
 		$location = $post;
 		$item     = get_query_var( 'item' ) ?: false;
-		$customId = md5($item->ID . $location->ID);
+		$customId = md5($item . $location->ID);
 
 		if ( Plugin::getCacheItem($customId) ) {
 			return Plugin::getCacheItem($customId);
@@ -38,7 +38,6 @@ class Location extends View {
 
 			$args = [
 				'post'      => $post,
-				'wp_nonce'  => \CommonsBooking\Wordpress\CustomPostType\Booking::getWPNonceField(),
 				'actionUrl' => admin_url( 'admin.php' ),
 				'location'  => new \CommonsBooking\Model\Location( $location ),
 				'postUrl'   => get_permalink( $location ),
@@ -153,7 +152,7 @@ class Location extends View {
 				'latitude'  => $latitude,
 				'longitude' => $longitude,
 			];
-			echo '<script>cb_map_locationview.defaults = ' . wp_json_encode( $defaults ) . ';</script>';
+			wp_add_inline_script('cb-map-locationview_js','cb_map_locationview.defaults =' . wp_json_encode($defaults) );
 		}
 	}
 }

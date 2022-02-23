@@ -323,7 +323,6 @@ class Calendar {
 		$endDate            = new Day( $endDateString );
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
-
 		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookable(
 			[ $location ],
 			[ $item ],
@@ -379,8 +378,16 @@ class Calendar {
 	 */
 	private static function getClosestBookableTimeFrameForToday( $bookableTimeframes ): ?\CommonsBooking\Model\Timeframe {
 		// Sort timeframes by startdate
-		usort( $bookableTimeframes, function ( $item1, $item2 ) {
-			return abs( time() - $item2->getStartDate() ) <=> abs( time() - $item1->getStartDate() );
+		usort( $bookableTimeframes, function ( \CommonsBooking\Model\Timeframe $item1, \CommonsBooking\Model\Timeframe $item2 ) {
+			$item1StartDateDistance = abs( time() - $item1->getStartDate() );
+			$item1EndDateDistance = abs( time() - $item1->getEndDate() );
+			$item1SmallestDistance = min( $item1StartDateDistance, $item1EndDateDistance );
+
+			$item2StartDateDistance = abs( time() - $item2->getStartDate() );
+			$item2EndDateDistance = abs( time() - $item2->getEndDate() );
+			$item2SmallestDistance = min( $item2StartDateDistance, $item2EndDateDistance );
+
+			return $item2SmallestDistance <=> $item1SmallestDistance;
 		} );
 
 		return array_pop( $bookableTimeframes );
@@ -451,27 +458,10 @@ class Calendar {
 				'highlightedDays'         => [],
 				'maxDays'                 => null,
 				'disallowLockDaysInRange' => true,
-				'advanceBookingDays'      => $advanceBookingDays,
+				'advanceBookingDays'      => $advanceBookingDays
 			];
 
-			// Notice with advanced booking days. Will be parsed in litepicker.js with DOM object #calendarNotice
-			// TODO: deprecated
-			$jsonResponse['calendarNotice']['advanceBookingDays'] =
-				//translators: %s = number of days
-				commonsbooking_sanitizeHTML( sprintf( __( 'You can make bookings maximum %s days in advance', 'commonsbooking' ), $advanceBookingDays ) );
-
-			// renders pickup instruction info
-			// deprecated since 2.6 due to template changes. pickup instructions now in location-info section
-			// TODO: can be removed in next update > 2.6
 			if ( count( $locations ) === 1 ) {
-				$jsonResponse['location']['fullDayInfo'] = nl2br(
-					CB::get(
-						'location',
-						COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions',
-						$locations[0]
-					)
-				);
-
 				// are overbooking allowed in location options?
 				$allowLockedDaysInRange                  = get_post_meta(
 					$locations[0],
