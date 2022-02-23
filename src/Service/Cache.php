@@ -40,7 +40,25 @@ trait Cache {
 	 * @return string
 	 */
 	public static function getCacheId( $custom_id = null ): string {
-		$backtrace = debug_backtrace()[2];
+		$backtrace     = debug_backtrace()[2];
+		$backtrace     = self::sanitizeArgsArray( $backtrace );
+		$namespace     = str_replace( '\\', '_', strtolower( $backtrace['class'] ) );
+		$namespace     .= '_' . $backtrace['function'];
+		$backtraceArgs = $backtrace['args'];
+		$namespace     .= '_' . serialize( $backtraceArgs );
+		if ( $custom_id ) {
+			$namespace .= $custom_id;
+		}
+
+		return md5( $namespace );
+	}
+
+	/**
+	 * @param $backtrace
+	 *
+	 * @return mixed
+	 */
+	private static function sanitizeArgsArray( $backtrace ) {
 		if ( array_key_exists( 'args', $backtrace ) &&
 		     count( $backtrace['args'] ) &&
 		     is_array( $backtrace['args'][0] )
@@ -56,15 +74,7 @@ trait Cache {
 			}
 		}
 
-		$namespace     = str_replace( '\\', '_', strtolower( $backtrace['class'] ) );
-		$namespace     .= '_' . $backtrace['function'];
-		$backtraceArgs = $backtrace['args'];
-		$namespace     .= '_' . md5( serialize( $backtraceArgs ) );
-		if ( $custom_id ) {
-			$namespace .= $custom_id;
-		}
-
-		return md5( $namespace );
+		return $backtrace;
 	}
 
 	/**
@@ -86,6 +96,7 @@ trait Cache {
 	 * @param $expiration - set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
 	 *
 	 * @return mixed
+	 * @throws InvalidArgumentException
 	 */
 	public static function setCacheItem( $value, $custom_id = null, $expiration = 0 ) {
 		// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
@@ -104,18 +115,11 @@ trait Cache {
 	}
 
 	/**
-	 * Deletes cb transients.
+	 * Deletes cache entries.
 	 *
 	 * @param string $param
 	 */
 	public static function clearCache( string $param = "" ) {
-//		global $wpdb;
-//		$sql = "
-//            DELETE
-//            FROM $wpdb->options
-//            WHERE option_name like '_transient_commonsbooking%" . $param . "%'
-//        ";
-//		$wpdb->query($sql);
 		self::getCache()->clear();
 	}
 
