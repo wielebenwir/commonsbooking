@@ -5,7 +5,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar,  
 Requires at least: 5.2  
 Tested up to: 5.9  
-Stable Tag: 2.6.8 
+Stable Tag: 2.6.11
 Requires PHP: 7.3 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -79,6 +79,17 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog 
+
+### 2.6.11 (23.02.2022)
+FIXED: Some users reported that bookings were no longer possible. After clicking on "continue to booking check" the expected booking page was not loaded. Since this only occurred on some systems and sporadically, it was not possible to determine the cause in the individual cases. However, our analysis showed that it was likely related to a Wordpress function for validating user input. We have adjusted this in the current version. 
+
+### 2.6.10 (20.02.2022)
+FIXED: With certain time frame settings it could happen that the calendar was only displayed starting with the next month. This is now fixed. 
+FIXED: The map on the location page always showed a default location. It now shows the correct location.
+FIXED: In some systems, bookings could not be executed because the booking confirmation page did not load.   
+
+### 2.6.9 (18.02.2022)
+FIXED: When an a href link was included in the site pickup instructions, it caused the booking calendar to not load correctly. 
 
 ### 2.6.8 (14.02.2022)
 FIXED: fixed sanitzing issues

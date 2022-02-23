@@ -19,13 +19,6 @@ abstract class CustomPostType {
 	protected $menuPosition;
 
 	/**
-	 * @return mixed
-	 */
-	public static function getWPNonceField() {
-		return wp_nonce_field( static::getWPAction(), static::getWPNonceId(), false, true );
-	}
-
-	/**
 	 * @return string
 	 */
 	public static function getWPAction(): string {

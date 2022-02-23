@@ -23,7 +23,13 @@
     <!-- show booking form with date / time selection /-->
     <div id="booking-form-container">
         <form method="get" id="booking-form">
-			<?php echo commonsbooking_sanitizeHTML($templateData['wp_nonce']); ?>
+			<?php wp_nonce_field(
+				\CommonsBooking\Wordpress\CustomPostType\Booking::getWPAction(),
+				\CommonsBooking\Wordpress\CustomPostType\Booking::getWPNonceId(),
+				false,
+				true
+			); ?>
+
             <input type="hidden" name="location-id" value="<?php echo esc_attr($templateData['location']->ID); ?>"/>
             <input type="hidden" name="item-id" value="<?php echo esc_attr($templateData['item']->ID); ?>"/>
             <input type="hidden" name="type" value="<?php echo esc_attr($templateData['type']); ?>"/>

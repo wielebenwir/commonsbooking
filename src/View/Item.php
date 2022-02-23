@@ -23,7 +23,7 @@ class Item extends View {
 		}
 		$item      = $post;
 		$location  = get_query_var( 'location' ) ?: false;
-		$customId = md5($item->ID . $location->ID);
+		$customId = md5($item->ID . $location);
 
 		if ( Plugin::getCacheItem($customId) ) {
 			return Plugin::getCacheItem($customId);
@@ -38,7 +38,6 @@ class Item extends View {
 
 			$args = [
 				'post'      => $post,
-				'wp_nonce'  => \CommonsBooking\Wordpress\CustomPostType\Booking::getWPNonceField(),
 				'actionUrl' => admin_url( 'admin.php' ),
 				'item'      => new \CommonsBooking\Model\Item( $item ),
 				'postUrl'   => get_permalink( $item ),

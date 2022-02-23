@@ -5,6 +5,7 @@ namespace CommonsBooking\Messages;
 use CommonsBooking\CB\CB;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Settings\Settings;
+use CommonsBooking\Wordpress\CustomPostType\Location;
 
 class BookingMessage extends Message {
 
@@ -17,7 +18,7 @@ class BookingMessage extends Message {
 		$booking_user = get_userdata( $this->getPost()->post_author );
 
 		// get location email adresses to send them bcc copies 
-		$location_emails = CB::get( 'location', COMMONSBOOKING_METABOX_PREFIX . 'location_email', $booking->getMeta('location-id') ) ; /*  email adresses, comma-seperated  */
+		$location_emails = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $booking->getMeta('location-id') ) ; /*  email adresses, comma-seperated  */
 		$bcc_adresses = str_replace(' ','',$location_emails); 
 
 		// get templates from Admin Options

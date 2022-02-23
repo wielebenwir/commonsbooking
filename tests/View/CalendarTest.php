@@ -64,6 +64,20 @@ class CalendarTest extends CustomPostTypeTest {
 		$this->assertTrue( $maxBookableDays == (self::bookingDaysInAdvance - self::timeframeStart - 1) );
 	}
 
+	public function testClosestBookableTimeFrameFuntion() {
+		$startDate    = date( 'Y-m-d', strtotime( 'midnight', strtotime(self::CURRENT_DATE) ) );
+		$endDate      = date( 'Y-m-d', strtotime( '+60 days midnight', strtotime(self::CURRENT_DATE) ) );
+
+		$jsonresponse = Calendar::getCalendarDataArray(
+			$this->itemId,
+			$this->locationId,
+			$startDate,
+			$endDate
+		);
+
+		$this->assertTrue($jsonresponse['minDate'] == date('Y-m-d'));
+	}
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -76,6 +90,20 @@ class CalendarTest extends CustomPostTypeTest {
 		);
 		// set booking days in advance
 		update_post_meta( $this->timeframeId, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
+
+		$this->closestTimeframe = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-100 days midnight' ),
+			strtotime( '+13 days midnight' )
+		);
+
+		$this->secondClosestTimeframe = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+14 days midnight' ),
+			strtotime( '+300 days midnight' )
+		);
 	}
 
 }
