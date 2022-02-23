@@ -30,10 +30,11 @@ function commonsbooking_parse_shortcode( $tag ) {
  * extracts the template tag parts divided by : or # and replaces the tag with values using the CB::get method
  *
  * @param mixed $match
+ * @param array $objects
  *
- * @return void
+ * @return false|mixed
  */
-function commonsbooking_parse_template_callback( $match, $objects = [] ) {
+function commonsbooking_parse_template_callback( $match, array $objects = [] ) {
 
 	if ( isset( $match[0] ) ) {
 		$match = $match[0];
@@ -46,9 +47,23 @@ function commonsbooking_parse_template_callback( $match, $objects = [] ) {
 				$post = $objects[ $path[0] ];
 			}
 
-			return CB::get( $path[0], $path[1], $post );
+			return CB::get( commonsbooking_getCBType($path[0]), $path[1], $post->ID );
 		}
 	}
 
 	return false;
+}
+
+// Return Custom Post Type postType for template type string
+function commonsbooking_getCBType($type) {
+	if($type == 'location') {
+		return \CommonsBooking\Wordpress\CustomPostType\Location::$postType;
+	}
+	if($type == 'booking') {
+		return \CommonsBooking\Wordpress\CustomPostType\Booking::$postType;
+	}
+	if($type == 'item') {
+		return \CommonsBooking\Wordpress\CustomPostType\Item::$postType;
+	}
+	return $type;
 }
