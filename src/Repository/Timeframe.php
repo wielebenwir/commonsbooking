@@ -7,7 +7,6 @@ namespace CommonsBooking\Repository;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use Exception;
-use WP_Post;
 
 class Timeframe extends PostRepository {
 
@@ -62,6 +61,7 @@ class Timeframe extends PostRepository {
 	 *
 	 * @return array
 	 * @throws Exception
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function get(
 		array $locations = [],
@@ -103,7 +103,7 @@ class Timeframe extends PostRepository {
 			}
 
 			if ( $posts && count( $posts ) ) {
-				$posts = self::filterTimeframes( $posts, $locations, $items, $date );
+				$posts = self::filterTimeframes( $posts, $date );
 			}
 
 			// if returnAsModel == TRUE the result is a timeframe model instead of a wordpress object
@@ -112,7 +112,6 @@ class Timeframe extends PostRepository {
 			}
 
 			Plugin::setCacheItem( $posts, $customId );
-
 			return $posts;
 		}
 	}
@@ -126,6 +125,7 @@ class Timeframe extends PostRepository {
 	 * @param array $locations
 	 *
 	 * @return mixed
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
 
@@ -151,7 +151,7 @@ class Timeframe extends PostRepository {
 			$items     = array_filter( $items );
 			$locations = array_filter( $locations );
 
-            // additional sanitizing. Allow only integer 
+            // additional sanitizing. Allow only integer
             $items      = commonsbooking_sanitizeArrayorString( $items, 'intval' );
             $locations  = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
             $types      = commonsbooking_sanitizeArrayorString( $types, 'intval' );
@@ -366,56 +366,16 @@ class Timeframe extends PostRepository {
 	 * Wrapper function for all filters.
 	 *
 	 * @param array $posts
-	 * @param array $locations
-	 * @param array $items
 	 * @param string|null $date
 	 *
 	 * @return array
 	 */
-	private static function filterTimeframes( array $posts, array $locations, array $items, ?string $date ): array {
-		// If there are locations or items to be filtered, we iterate through
-		// query result because wp_query is too slow for meta-querying them.
-		$posts = self::filterTimeframesByItemsLocations( $posts, $locations, $items );
-
+	private static function filterTimeframes( array $posts, ?string $date ): array {
 		// Filter by configured days
 		$posts = self::filterTimeframesByConfiguredDays( $posts, $date );
 
 		// Filter by configured max booking days
 		return self::filterTimeframesByMaxBookingDays( $posts );
-	}
-
-	/**
-	 * Filters timeframes by item(s) and location(s).
-	 * Why? For calendar view we often just need timeframes for explicit item(s) and/or location(s).
-	 *
-	 * @param $posts
-	 * @param $locations
-	 * @param $items
-	 *
-	 * @return array
-	 */
-	private static function filterTimeframesByItemsLocations( $posts, $locations, $items ): array {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
-		} else {
-			if ( count( $locations ) > 1 || count( $items ) > 1 ) {
-				return array_filter( $posts, function ( $post ) use ( $locations, $items ) {
-					$location = intval( get_post_meta( $post->ID, 'location-id', true ) );
-					$item     = intval( get_post_meta( $post->ID, 'item-id', true ) );
-
-					return
-						( ! $location && ! $item ) ||
-						( ! $location && in_array( $item, $items ) ) ||
-						( in_array( $location, $locations ) && ! $item ) ||
-						( ! count( $locations ) && in_array( $item, $items ) ) ||
-						( in_array( $location, $locations ) && ! count( $items ) ) ||
-						( in_array( $location, $locations ) && in_array( $item, $items ) );
-				} );
-			}
-
-			Plugin::setCacheItem($posts);
-			return $posts;
-		}
 	}
 
 	/**
@@ -427,13 +387,14 @@ class Timeframe extends PostRepository {
 	 * @param string|null $date string format: YYYY-mm-dd
 	 *
 	 * @return array
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	private static function filterTimeframesByConfiguredDays( array $posts, ?string $date ): array {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
 			if ( $date ) {
-				return array_filter( $posts, function ( $post ) use ( $date ) {
+				$posts = array_filter( $posts, function ( $post ) use ( $date ) {
 					if ( $weekdays = get_post_meta( $post->ID, 'weekdays', true ) ) {
 						$day = date( 'N', strtotime( $date ) );
 
@@ -594,12 +555,6 @@ class Timeframe extends PostRepository {
 					$postIds,
 					$postStatus
 				);
-			}
-
-			if ( $posts && count( $posts ) ) {
-				// If there are locations or items to be filtered, we iterate through
-				// query result because wp_query is too slow for meta-querying them.
-				$posts = self::filterTimeframesByItemsLocations( $posts, $locations, $items );
 			}
 
 			// if returnAsModel == TRUE the result is a timeframe model instead of a WordPress object
