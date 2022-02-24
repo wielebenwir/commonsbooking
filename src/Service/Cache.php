@@ -180,6 +180,12 @@ trait Cache {
 				}
 			}
 
+			// Filter duplicate calls
+			$shortCodeCalls = array_intersect_key(
+				$shortCodeCalls,
+				array_unique(array_map('serialize', $shortCodeCalls))
+			);
+			
 			self::runShortcodeCalls($shortCodeCalls);
 
 			wp_send_json("cache successfully warmed up");
