@@ -49,6 +49,10 @@
         border-radius: 0;
     }
 
+    &.is-today {
+        box-shadow:0px 0px 0px 3px var(--litepickerDayIsInRange) inset;
+    }
+
     &.is-start-date {
         color: var(--litepickerDayIsStartColor);
         background: var(--litepickerDayIsStartBg) !important;

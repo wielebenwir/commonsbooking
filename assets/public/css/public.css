@@ -4194,7 +4194,7 @@
   background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
   background-size: 5px 5px;
 }
-/* line 89, ../sass/mixins/_calendar.scss */
+/* line 93, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-holiday:hover {
   cursor: not-allowed;
   box-shadow: none;
@@ -4204,13 +4204,13 @@
   color: var(--litepickerDayIsBookedColor);
   background-color: var(--litepickerDayIsBookedColorBg);
 }
-/* line 131, ../sass/mixins/_calendar.scss */
+/* line 135, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-booked:hover {
   color: var(--litepickerDayIsBookedColor);
   box-shadow: none;
   cursor: default;
 }
-/* line 137, ../sass/mixins/_calendar.scss */
+/* line 141, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-booked.last-slot {
   background: linear-gradient(to bottom right, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
@@ -4219,7 +4219,7 @@
   color: var(--litepickerDayIsPartiallyLockedColor);
   background: linear-gradient(to bottom right, var(--litepickerDayIsPartiallyLockedColorBgOne) 0%, var(--litepickerDayIsPartiallyLockedColorBgOne) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 100%);
 }
-/* line 114, ../sass/mixins/_calendar.scss */
+/* line 118, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-partially-booked:hover {
   cursor: pointer;
   color: var(--litepickerDayIsPartiallyLockedColor);
@@ -4239,7 +4239,7 @@
   color: var(--litepickerDayIsLockedColor);
   background: var(--litepickerDayIsLockedColorBg) !important;
 }
-/* line 152, ../sass/mixins/_calendar.scss */
+/* line 156, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-locked:hover {
   cursor: not-allowed;
   color: var(--litepickerDayIsLockedColor);
@@ -4252,32 +4252,36 @@
   border-radius: 0;
 }
 /* line 52, ../sass/mixins/_calendar.scss */
+.litepicker .container__days .day-item.is-today {
+  box-shadow: 0px 0px 0px 3px var(--litepickerDayIsInRange) inset;
+}
+/* line 56, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-start-date {
   color: var(--litepickerDayIsStartColor);
   background: var(--litepickerDayIsStartBg) !important;
   background-color: var(--litepickerDayIsStartBg);
   border-radius: 0px 0 0 0px;
 }
-/* line 58, ../sass/mixins/_calendar.scss */
+/* line 62, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-start-date.is-flipped {
   border-radius: 0 0px 0px 0;
 }
-/* line 63, ../sass/mixins/_calendar.scss */
+/* line 67, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-end-date {
   color: var(--litepickerDayIsEndColor);
   background: var(--litepickerDayIsEndBg) !important;
   background-color: var(--litepickerDayIsEndBg);
   border-radius: 0 0px 0px 0;
 }
-/* line 69, ../sass/mixins/_calendar.scss */
+/* line 73, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-end-date.is-flipped {
   border-radius: 0px 0 0 0px;
 }
-/* line 74, ../sass/mixins/_calendar.scss */
+/* line 78, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-start-date.is-end-date {
   border-radius: 0px;
 }
-/* line 78, ../sass/mixins/_calendar.scss */
+/* line 82, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-highlighted {
   color: var(--litepickerHighlightedDayColor);
   background: var(--litepickerHighlightedDayBg) !important;
@@ -5044,7 +5048,7 @@
   background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
   background-size: 5px 5px;
 }
-/* line 89, ../sass/mixins/_calendar.scss */
+/* line 93, ../sass/mixins/_calendar.scss */
 .cb-items-table td > span.is-holiday:hover {
   cursor: not-allowed;
   box-shadow: none;
@@ -5054,13 +5058,13 @@
   color: var(--litepickerDayIsBookedColor);
   background-color: var(--litepickerDayIsBookedColorBg);
 }
-/* line 131, ../sass/mixins/_calendar.scss */
+/* line 135, ../sass/mixins/_calendar.scss */
 .cb-items-table td > span.is-booked:hover {
   color: var(--litepickerDayIsBookedColor);
   box-shadow: none;
   cursor: default;
 }
-/* line 137, ../sass/mixins/_calendar.scss */
+/* line 141, ../sass/mixins/_calendar.scss */
 .cb-items-table td > span.is-booked.last-slot {
   background: linear-gradient(to bottom right, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
@@ -5069,7 +5073,7 @@
   color: var(--litepickerDayIsPartiallyLockedColor);
   background: linear-gradient(to bottom right, var(--litepickerDayIsPartiallyLockedColorBgOne) 0%, var(--litepickerDayIsPartiallyLockedColorBgOne) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 100%);
 }
-/* line 114, ../sass/mixins/_calendar.scss */
+/* line 118, ../sass/mixins/_calendar.scss */
 .cb-items-table td > span.is-partially-booked:hover {
   cursor: pointer;
   color: var(--litepickerDayIsPartiallyLockedColor);
@@ -5089,7 +5093,7 @@
   color: var(--litepickerDayIsLockedColor);
   background: var(--litepickerDayIsLockedColorBg) !important;
 }
-/* line 152, ../sass/mixins/_calendar.scss */
+/* line 156, ../sass/mixins/_calendar.scss */
 .cb-items-table td > span.is-locked:hover {
   cursor: not-allowed;
   color: var(--litepickerDayIsLockedColor);
