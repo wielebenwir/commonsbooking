@@ -480,12 +480,6 @@ class Plugin {
 		// Remove cache items on save.
 		add_action('save_post', array($this, 'savePostActions'), 10, 2);
 
-		// Remove cache items on save.
-		add_action('delete_post', array($this, 'deletePostActions'), 10, 2);
-
-		// actions after saving plugin options
-		//add_action('admin_init', array(self::class, 'saveOptionsActions'), 100);
-
 		add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
 		$map_admin = new LocationMapAdmin();
@@ -504,6 +498,8 @@ class Plugin {
 		add_action('in_plugin_update_message-' . COMMONSBOOKING_PLUGIN_BASE, function ($plugin_data) {
 			$this->UpdateNotice(COMMONSBOOKING_VERSION, $plugin_data['new_version']);
 		});
+
+		self::warmupCache();
 	}
 
 	public function commonsbooking_load_textdomain() {
@@ -534,19 +530,10 @@ class Plugin {
 			return;
 		}
 
-		self::clearCache();
-	}
-
-	/**
-	 * Removes all cache items in connection to post_type.
-	 *
-	 * @param $post_id
-	 * @param $post
-	 */
-	public function deletePostActions($post_id) {
-		$post = get_post($post_id);
-		$this->savePostActions($post_id, $post);
-		self::clearCache();
+		$ignoredStates = [ 'unconfirmed', 'auto-draft', 'draft' ];
+		if(!in_array($post->post_status, $ignoredStates)) {
+			self::clearCache();
+		}
 	}
 
 	/**

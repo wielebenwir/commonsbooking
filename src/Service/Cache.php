@@ -123,4 +123,23 @@ trait Cache {
 		self::getCache()->clear();
 	}
 
+	public static function warmupCache() {
+		$shortcodes = [
+			'cb_items_table',
+			'cb_map'
+		];
+
+		global $wpdb;
+		$table_posts = $wpdb->prefix . 'posts';
+
+		$sql = "SELECT ID FROM $table_posts 
+			WHERE 
+		      post_content REGEXP '.*cb_items_table.*'";
+		$pageIds = $wpdb->get_results( $sql );
+
+		var_dump($pageIds);
+
+		die("test");
+	}
+
 }
