@@ -46,7 +46,10 @@
     }
 
     &.is-today {
-        color: var(--litepickerDayIsTodayColor);
+        border-color: var(--litePickerDayTodayBorderColor);
+        border-style: solid;
+        border-width: 1px;
+        box-sizing: border-box;
     }
 
     &.is-start-date {
