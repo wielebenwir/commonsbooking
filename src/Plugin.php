@@ -479,6 +479,8 @@ class Plugin {
 
 		// Remove cache items on save.
 		add_action('save_post', array($this, 'savePostActions'), 10, 2);
+		add_action('wp_enqueue_scripts', array(Cache::class, 'addWarmupAjaxToOutput'));
+		add_action('admin_enqueue_scripts', array(Cache::class, 'addWarmupAjaxToOutput'));
 
 		add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
@@ -499,7 +501,6 @@ class Plugin {
 			$this->UpdateNotice(COMMONSBOOKING_VERSION, $plugin_data['new_version']);
 		});
 
-		self::warmupCache();
 	}
 
 	public function commonsbooking_load_textdomain() {

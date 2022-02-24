@@ -2,6 +2,8 @@
 
 namespace CommonsBooking\Service;
 
+use CommonsBooking\Map\MapShortcode;
+use CommonsBooking\View\Calendar;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\CacheItem;
@@ -121,25 +123,130 @@ trait Cache {
 	 */
 	public static function clearCache( string $param = "" ) {
 		self::getCache()->clear();
+		set_transient("clearCacheHasBeenDone", true, 45);
+	}
+
+	/**
+	 * Add js to frontend on cache clear.
+	 * @return void
+	 */
+	public static function addWarmupAjaxToOutput() {
+		if(get_transient("clearCacheHasBeenDone")) {
+			delete_transient("clearCacheHasBeenDone");
+			wp_register_script( 'cache_warmup', '', array("jquery"), '', true );
+			wp_enqueue_script( 'cache_warmup'  );
+			wp_add_inline_script(
+				'cache_warmup',
+				'
+				jQuery.ajax({
+		            url: cb_ajax_cache_warmup.ajax_url,
+		            method: "POST",
+		            data: {
+		                _ajax_nonce: cb_ajax_cache_warmup.nonce,
+		                action: "cache_warmup"
+		            }
+				});'
+			);
+		}
 	}
 
 	public static function warmupCache() {
-		$shortcodes = [
-			'cb_items_table',
-			'cb_map'
-		];
+		try {
+			global $wpdb;
+			$table_posts = $wpdb->prefix . 'posts';
 
-		global $wpdb;
-		$table_posts = $wpdb->prefix . 'posts';
+			// First get all pages with cb shortcodes
+			$sql = "SELECT post_content FROM $table_posts WHERE 
+		      post_content LIKE '%cb_items%' OR
+			  post_content LIKE '%cb_location%' OR
+		      post_content LIKE '%cb_map%'";
+			$pages = $wpdb->get_results( $sql );
 
-		$sql = "SELECT ID FROM $table_posts 
-			WHERE 
-		      post_content REGEXP '.*cb_items_table.*'";
-		$pageIds = $wpdb->get_results( $sql );
+			// Now extract shortcode calles incl. attributes
+			$shortCodeCalls = [];
+			foreach($pages as $page) {
+				// Get cb_ shortcodes
+				preg_match_all('/\[.*(cb\_.*)\]/i', $page->post_content, $cbShortCodes);
 
-		var_dump($pageIds);
+				// If there was found something between the brackets we continue
+				if(count($cbShortCodes) > 1) {
+					$cbShortCodes = $cbShortCodes[1];
 
-		die("test");
+					// each result will be prepared and added as shortcode call
+					foreach ($cbShortCodes as $shortCode) {
+						list($shortCode, $args) = self::getShortcodeAndAttributes($shortCode);
+						$shortCodeCalls[][$shortCode] = $args;
+					}
+				}
+			}
+
+			self::runShortcodeCalls($shortCodeCalls);
+
+			wp_send_json("cache successfully warmed up");
+		} catch (\Exception $exception) {
+			wp_send_json("something went wrong with cache warm up");
+		}
 	}
+
+	/**
+	 * Iterates throudh array and executes shortcodecalls.
+	 * @param $shortCodeCalls
+	 *
+	 * @return void
+	 */
+	private static function runShortcodeCalls($shortCodeCalls) {
+		foreach($shortCodeCalls as $shortcode) {
+			$shortcodeFunction = array_keys($shortcode)[0];
+			$attributes = $shortcode[$shortcodeFunction];
+
+			if(array_key_exists($shortcodeFunction, self::$cbShortCodeFunctions)) {
+				list($class, $function) = self::$cbShortCodeFunctions[$shortcodeFunction];
+				$class::$function($attributes);
+			}
+		}
+	}
+
+	/**
+	 * Extracts shortcode and attributes from shortcode string.
+	 * @param $shortCode
+	 *
+	 * @return array
+	 */
+	private static function getShortcodeAndAttributes($shortCode) {
+		$shortCodeParts = explode(' ', $shortCode);
+		$shortCodeParts = array_map(
+			function($part) {
+				$trimmed = trim($part);
+				$trimmed = str_replace("\xc2\xa0", '', $trimmed);
+				return $trimmed;
+			}, $shortCodeParts);
+
+		$shortCode = array_shift($shortCodeParts);
+
+		$args = [];
+		foreach ($shortCodeParts as $part) {
+			$parts = explode('=', $part);
+			$key = $parts[0];
+			$value = "";
+			if(count($parts) > 1) {
+				$value = $parts[1];
+				if(preg_match('/^".*"$/', $value)) {
+					$value = substr($value,1,-1);
+				}
+			}
+
+			$args[$key] = $value;
+		}
+
+		return [$shortCode, $args];
+	}
+
+	private static $cbShortCodeFunctions = [
+		"cb_items" => array( \CommonsBooking\View\Item::class, 'shortcode' ),
+		'cb_bookings' => array( \CommonsBooking\View\Booking::class, 'shortcode' ),
+		"cb_locations" => array( \CommonsBooking\View\Location::class, 'shortcode' ),
+		"cb_map" => array( MapShortcode::class, 'execute' ),
+		'cb_items_table' => array( Calendar::class, 'renderTable' )
+	];
 
 }
