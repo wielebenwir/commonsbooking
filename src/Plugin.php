@@ -209,6 +209,9 @@ class Plugin {
 			// migrate bookings to new cpt
 			\CommonsBooking\Migration\Booking::migrate();
 
+            // Set default values to existing timframes for advance booking days
+            self::SetAdvanceBookingDaysDefault();
+
 			// Clear cache
 			self::clearCache();
 		}
@@ -729,6 +732,23 @@ class Plugin {
 				</div>
 			</div>
 		</div>
-<?php
+    <?php
 	}
+    
+    /**
+     * sets advance booking days to default value for existing timeframes.
+     * Advances booking timeframes are available since 2.6 - all timeframes created prior to this version need to have this value set to a default value (365 days)
+     *
+     * @return void
+     */
+    function SetAdvanceBookingDaysDefault() {
+        $timeframes = \CommonsBooking\Repository\Timeframe::getBookable( [],[],null,true );
+
+        foreach ($timeframes as $timeframe) {
+            if ( $timeframe->getMeta('timeframe-advance-booking-days') < 1 ) {
+                update_post_meta($timeframe->ID, 'timeframe-advance-booking-days', '365');
+            }
+        }
+    }
+
 }
