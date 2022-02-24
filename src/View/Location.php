@@ -38,7 +38,6 @@ class Location extends View {
 
 			$args = [
 				'post'      => $post,
-				'wp_nonce'  => \CommonsBooking\Wordpress\CustomPostType\Booking::getWPNonceField(),
 				'actionUrl' => admin_url( 'admin.php' ),
 				'location'  => new \CommonsBooking\Model\Location( $location ),
 				'postUrl'   => get_permalink( $location ),

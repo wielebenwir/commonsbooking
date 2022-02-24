@@ -8,6 +8,7 @@ use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Service\Cache;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
@@ -23,63 +24,13 @@ use CommonsBooking\Wordpress\PostStatus\PostStatus;
 
 class Plugin {
 
+	use Cache;
+
 	/**
 	 * CB-Manager id.
 	 * @var string
 	 */
 	public static $CB_MANAGER_ID = 'cb_manager';
-
-	/**
-	 * Returns cache item based on calling class, function and args.
-	 *
-	 * @param null $custom_id
-	 *
-	 * @return mixed
-	 */
-	public static function getCacheItem($custom_id = null) {
-		if (\WP_DEBUG) {
-			return false;
-		}
-		return get_transient(self::getCacheId($custom_id));
-	}
-
-	/**
-	 * Returns cache id, based on calling class, function and args.
-	 *
-	 * @param null $custom_id
-	 *
-	 * @return string
-	 */
-	public static function getCacheId($custom_id = null): string {
-		$backtrace = debug_backtrace()[2];
-		$namespace = str_replace('\\', '_', strtolower($backtrace['class']));
-		$namespace .= '_' . $backtrace['function'];
-		$namespace .= '_' . md5(serialize($backtrace['args']));
-		if ($custom_id) {
-			$namespace .= $custom_id;
-		}
-
-		return $namespace;
-	}
-
-	/**
-	 * Saves cache item based on calling class, function and args.
-	 *
-	 * @param $value
-	 * @param null $custom_id
-	 * @param null $expiration set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
-	 *
-	 * @return mixed
-	 */
-	public static function setCacheItem($value, $custom_id = null, $expiration = null) {
-		// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
-		if ($expiration == 'midnight') {
-			$datetime   = current_time('timestamp');
-			$expiration = strtotime('tomorrow', $datetime) - $datetime;
-		}
-
-		return set_transient(self::getCacheId($custom_id), $value, $expiration);
-	}
 
 	/**
 	 * Plugin activation tasks.
@@ -298,21 +249,6 @@ class Plugin {
 		foreach ($roles_array as $role) {
 			remove_role($role);
 		}
-	}
-
-	/**
-	 * Deletes cb transients.
-	 *
-	 * @param string $param
-	 */
-	public static function clearCache(string $param = "") {
-		global $wpdb;
-		$sql = "
-            DELETE 
-            FROM $wpdb->options
-            WHERE option_name like '_transient_commonsbooking%" . $param . "%'
-        ";
-		$wpdb->query($sql);
 	}
 
 	/**

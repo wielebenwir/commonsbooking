@@ -2,9 +2,9 @@
 
 namespace CommonsBooking\CB;
 
-use CommonsBooking\Model\CustomPost;
+use CommonsBooking\Helper\Helper;
+use CommonsBooking\Wordpress\CustomPostType\Booking;
 use WP_Post;
-use WP_User;
 use function get_user_by;
 
 class CB {
@@ -20,20 +20,23 @@ class CB {
 	 *
 	 * @param mixed $key
 	 * @param mixed $property
-	 * @param null $post (can be a post-id or a user-id)
+	 * @param int|null $post
 	 * @param mixed $args
 	 *
 	 * @return mixed
 	 */
-	public static function get( $key, $property, $post = null, $args = null ) {
+	public static function get( $key, $property, ?int $postId = null, $args = null ) {
 
 		// first we need to check if we are dealing with a post and set the post object properly
-			if ( ! $post ) {
-				$postId = self::getPostId( $key );
-				$post   = get_post( $postId );
-			} else if ( ! ( $post instanceof WP_Post ) && ! ( $post instanceof CustomPost ) && ! ( $post instanceof WP_user ) ) {
-				$post = get_post( intval( $post ) );
-			}
+		if ( ! $postId ) {
+			$postId = self::getPostId( $key );
+			$post   = get_post( $postId );
+		} else {
+			$post = get_post( $postId );
+		}
+
+		// If possible cast to CB Custom Post Type Model to get additional functions
+		$post = Helper::castToCBCustomType($post, $key);
 
 		$result     = self::lookUp( $key, $property, $post, $args );  // Find matching methods, properties or metadata
 		$filterName = sprintf( 'cb_tag_%s_%s', $key, $property );
@@ -67,7 +70,10 @@ class CB {
 			$initialPostType = get_post_type( $initialPost );
 
 			// If we are dealing with a timeframe and key ist not booking, we may need to look up the CHILDs post meta, not the parents'
-			if ( $initialPostType == 'cb_timeframe' and $key != "booking" and $key != 'user' ) {
+			if ( $initialPostType == 'cb_timeframe' &&
+			     $key != Booking::$postType &&
+			     $key != 'user'
+			) {
 				$subPostID = get_post_meta( $initialPost->ID, $key . '-id', true );    // item-id, location-id
 				if ( get_post_status( $subPostID ) ) { // Post with that ID exists
 					$postId = $subPostID; // we will query the sub post
@@ -81,14 +87,14 @@ class CB {
 	}
 
 	/**
-	 * @param $key
-	 * @param $property
+	 * @param string $key
+	 * @param string $property
 	 * @param $post
 	 * @param $args
 	 *
 	 * @return string|null
 	 */
-	public static function lookUp( $key, $property, $post, $args ): ?string {
+	public static function lookUp( string $key, string $property, $post, $args ): ?string {
 		// in any case we need the post object, otherwise we cannot return anything
 		if ( ! $post ) {
 			return null;
@@ -119,8 +125,10 @@ class CB {
 	private static function getPostProperty( $post, $property, $args ) {
 		$result = null;
 
-		if ( get_post_meta( $post, $property, true ) ) { // Post has meta fields
-			$result = get_post_meta( $post, $property, true );
+		$postId = is_int($post) ? $post : $post->ID;
+
+		if ( get_post_meta( $postId, $property, true ) ) { // Post has meta fields
+			$result = get_post_meta( $postId, $property, true );
 		}
 
 		if ( method_exists( $post, $property ) ) {
@@ -141,21 +149,18 @@ class CB {
 
 	/**
 	 * Tries to get a property of a user with different approaches.
-	 * @param $post
-	 * @param $property
+	 *
+	 * @param WP_Post $post
+	 * @param string $property
 	 * @param $args
 	 *
 	 * @return int|mixed|null
 	 */
-	private static function getUserProperty( $post, $property, $args ) {
+	private static function getUserProperty( WP_Post $post, string $property, $args ) {
 		$result = null;
-		// If user is defined and we don't use the post author
-		if ( $post instanceof WP_User ) {
-			$cb_user = $post;
-		} else {
-			$userID  = intval( $post->post_author );
-			$cb_user = get_user_by( 'ID', $userID );
-		}
+
+		$userID  = intval( $post->post_author );
+		$cb_user = get_user_by( 'ID', $userID );
 
 		if ( method_exists( $cb_user, $property ) ) {
 			$result = $cb_user->$property( $args );

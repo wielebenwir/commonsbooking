@@ -7,6 +7,7 @@ use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
 use Exception;
 use function wp_verify_nonce;
+use function commonsbooking_write_log;
 
 class Booking extends Timeframe {
 
@@ -34,6 +35,7 @@ class Booking extends Timeframe {
 	 * @throws Exception
 	 */
 	public function handleFormRequest() {
+
 		if (
 			function_exists( 'wp_verify_nonce' ) &&
 			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
