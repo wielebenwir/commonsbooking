@@ -91,6 +91,9 @@ class Wordpress {
 				break;
 		}
 
+		// Remove empty tags
+		$postIds = array_filter($postIds);
+
 		return array_map( function ( $postId ) {
 			return strval($postId);
 		}, $postIds);
@@ -139,12 +142,16 @@ class Wordpress {
 	 */
 	public static function getRelatedPostsIdsForTimeframe($postId): array {
 		$timeframe = new Timeframe($postId);
+		$ids = [$postId];
 
-		return [
-			$timeframe->getItem()->ID,
-			$timeframe->getLocation()-ID,
-			$postId
-		];
+		if($timeframe->getItem()) {
+			$ids[] = $timeframe->getItem()->ID;
+		}
+		if($timeframe->getLocation()) {
+			$ids[] = $timeframe->getLocation()->ID;
+		}
+
+		return $ids;
 	}
 
 	/**
@@ -156,12 +163,19 @@ class Wordpress {
 	 */
 	public static function getRelatedPostsIdsForBooking($postId): array {
 		$booking = new \CommonsBooking\Model\Booking($postId);
-		return [
-			$booking->getItem()->ID,
-			$booking->getLocation()->ID,
-			$booking->getBookableTimeFrame()->ID,
-			$postId
-		];
+		$ids = [$postId];
+
+		if($booking->getItem()) {
+			$ids[] = $booking->getItem()->ID;
+		}
+		if($booking->getLocation()) {
+			$ids[] = $booking->getLocation()->ID;
+		}
+		if($booking->getBookableTimeFrame()) {
+			$ids[] = $booking->getBookableTimeFrame()->ID;
+		}
+
+		return $ids;
 	}
 
 	/**

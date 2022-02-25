@@ -111,6 +111,11 @@ trait Cache {
 		$expiration = 0;
 
 		$tags = array_map('strval', $tags);
+		$tags = array_filter($tags);
+
+		if(!count($tags)) {
+			$tags = ['misc'];
+		}
 
 		// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
 		if ( $expirationString == 'midnight' ) {

@@ -103,7 +103,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$response = Timeframe::getBookable(
 			[ $locationId ],
 			[ $itemId ],
-			date( CB::getInternalDateFormat(), $this->getMeta( 'repetition-start' ) ),
+			date( CB::getInternalDateFormat(), intval($this->getMeta( 'repetition-start' )) ),
 			true
 		);
 
@@ -183,30 +183,30 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * @return Item
+	 * @return ?Item
 	 * @throws Exception
 	 */
-	public function getItem(): Item {
+	public function getItem(): ?Item {
 		$itemId = $this->getMeta( 'item-id' );
 
 		if ( $post = get_post( $itemId ) ) {
 			return new Item( $post );
 		}
 
-		return $post;
+		return null;
 	}
 
 	/**
-	 * @return Location
+	 * @return ?Location
 	 * @throws Exception
 	 */
-	public function getLocation(): Location {
+	public function getLocation(): ?Location {
 		$locationId = $this->getMeta( 'location-id' );
 		if ( $post = get_post( $locationId ) ) {
 			return new Location( $post );
 		}
 
-		return $post;
+		return null;
 	}
 
 	/**
