@@ -159,6 +159,7 @@ class Wordpress {
 		return [
 			$booking->getItem()->ID,
 			$booking->getLocation()->ID,
+			$booking->getBookableTimeFrame()->ID,
 			$postId
 		];
 	}
