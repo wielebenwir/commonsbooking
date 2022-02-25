@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\View;
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use Exception;
 
@@ -220,7 +221,7 @@ class Booking extends View {
 				$bookingDataArray['data'] = array_values( $bookingDataArray['data'] );
 			}
 
-			Plugin::setCacheItem( $bookingDataArray, $customId );
+			Plugin::setCacheItem( $bookingDataArray, Wordpress::getPostIdArray($posts), $customId );
 
 			return $bookingDataArray;
 		}

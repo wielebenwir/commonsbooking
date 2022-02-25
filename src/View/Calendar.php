@@ -148,7 +148,7 @@ class Calendar {
 			$print .= "</tbody></table>";
 			$print .= '</div>';
 
-			Plugin::setCacheItem($print);
+			Plugin::setCacheItem($print, Wordpress::getPostIdArray($items));
 
 			return $print;
 		}
@@ -278,7 +278,7 @@ class Calendar {
 			$locationString = '<div data-title="' . $locationName . '">' . $locationName . '</div>';
 
 			$rowHtml = "<tr><td><b><a href='" . $itemLink . "'>" . $itemName . "</a></b>" . $divider . $locationString . $divider . $dayStr . "</td></tr>";
-			Plugin::setCacheItem($rowHtml);
+			Plugin::setCacheItem($rowHtml, ['misc']);
 
 			return $rowHtml;
 		}
@@ -474,7 +474,7 @@ class Calendar {
 			}
 
 			// set transient expiration time to midnight to force cache refresh by daily basis to allow dynamic advanced booking day feature
-			Plugin::setCacheItem( $jsonResponse, $customCacheKey, 'midnight' );
+			Plugin::setCacheItem( $jsonResponse, ['misc'], $customCacheKey, 'midnight' );
 		}
 
 		return $jsonResponse;

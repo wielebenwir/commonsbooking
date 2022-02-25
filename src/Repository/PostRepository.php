@@ -16,7 +16,8 @@ abstract class PostRepository {
 	 * @param $postId
 	 *
 	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|mixed|WP_Post
-	 * @throws Exception
+	 * @throws \Psr\Cache\CacheException
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function getPostById( $postId ) {
 		if ( Plugin::getCacheItem() ) {
@@ -51,7 +52,7 @@ abstract class PostRepository {
 					return new \CommonsBooking\Model\Booking( $post );
 				}
 			}
-			Plugin::setCacheItem( $post );
+			Plugin::setCacheItem( $post, [$postId] );
 
 			return $post;
 		}

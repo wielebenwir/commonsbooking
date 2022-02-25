@@ -4,6 +4,7 @@
 namespace CommonsBooking;
 
 use CommonsBooking\CB\CB1UserFields;
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Booking;
@@ -213,7 +214,7 @@ class Plugin {
             self::SetAdvanceBookingDaysDefault();
 
 			// Clear cache
-			self::clearCache();
+			self::clearCache([]);
 		}
 	}
 
@@ -536,7 +537,9 @@ class Plugin {
 
 		$ignoredStates = [ 'unconfirmed', 'auto-draft', 'draft' ];
 		if(!in_array($post->post_status, $ignoredStates)) {
-			self::clearCache();
+			$tags = Wordpress::getRelatedPostIds($post_id);
+			$tags[] = 'misc';
+			self::clearCache($tags);
 		}
 	}
 

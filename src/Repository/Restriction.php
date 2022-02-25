@@ -47,7 +47,7 @@ class Restriction extends PostRepository {
 			}
 
 			$posts = $posts ?: [];
-			Plugin::setCacheItem( $posts, $customCacheKey );
+			Plugin::setCacheItem( $posts, Wordpress::getPostIdArray($posts), $customCacheKey );
 
 			return $posts;
 		}
@@ -90,8 +90,8 @@ class Restriction extends PostRepository {
                     pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
             ";
 
-			$posts = $wpdb->get_results( $query, ARRAY_N );
-			Plugin::setCacheItem( $posts );
+			$posts = $wpdb->get_results( $query );
+			Plugin::setCacheItem( $posts, Wordpress::getPostIdArray($posts) );
 
 			return $posts;
 		}

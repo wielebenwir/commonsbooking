@@ -6,6 +6,7 @@ use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\View\Calendar;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Component\Cache\CacheItem;
 use const WP_DEBUG;
 
@@ -24,14 +25,16 @@ trait Cache {
 			return false;
 		}
 
-		/** @var CacheItem $cacheItem */
-		$cacheKey  = self::getCacheId( $custom_id );
-		$cacheItem = self::getCache()->getItem( $cacheKey );
-		if ( $cacheItem->isHit() ) {
-			return $cacheItem->get();
-		} else {
-			return false;
-		}
+		try {
+			/** @var CacheItem $cacheItem */
+			$cacheKey  = self::getCacheId( $custom_id );
+			$cacheItem = self::getCache()->getItem( $cacheKey );
+			if ( $cacheItem->isHit() ) {
+				return $cacheItem->get();
+			}
+		} catch (\Exception $exception) {}
+
+		return false;
 	}
 
 	/**
@@ -84,25 +87,33 @@ trait Cache {
 	 * @param int $defaultLifetime
 	 * @param string|null $directory
 	 *
-	 * @return FilesystemAdapter
+	 * @return TagAwareAdapter
 	 */
-	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ) {
-		return new FilesystemAdapter( $namespace, $defaultLifetime, $directory );
+	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ): TagAwareAdapter {
+		return new TagAwareAdapter(
+			new FilesystemAdapter( $namespace, $defaultLifetime, $directory )
+		);
 	}
 
 	/**
 	 * Saves cache item based on calling class, function and args.
 	 *
 	 * @param $value
+	 * @param array $tags
 	 * @param null $custom_id
-	 * @param $expiration - set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
+	 * @param string|null $expirationString set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
 	 *
-	 * @return mixed
+	 * @return bool
 	 * @throws InvalidArgumentException
+	 * @throws \Psr\Cache\CacheException
 	 */
-	public static function setCacheItem( $value, $custom_id = null, $expiration = 0 ) {
+	public static function setCacheItem( $value, array $tags, $custom_id = null, ?string $expirationString = null ): bool {
+		$expiration = 0;
+
+		$tags = array_map('strval', $tags);
+
 		// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
-		if ( $expiration == 'midnight' ) {
+		if ( $expirationString == 'midnight' ) {
 			$datetime   = current_time( 'timestamp' );
 			$expiration = strtotime( 'tomorrow', $datetime ) - $datetime;
 		}
@@ -111,6 +122,7 @@ trait Cache {
 		/** @var CacheItem $cacheItem */
 		$cacheKey  = self::getCacheId( $custom_id );
 		$cacheItem = $cache->getItem( $cacheKey );
+		$cacheItem->tag($tags);
 		$cacheItem->set( $value );
 
 		return $cache->save( $cacheItem );
@@ -119,10 +131,12 @@ trait Cache {
 	/**
 	 * Deletes cache entries.
 	 *
-	 * @param string $param
+	 * @param $tags
+	 *
+	 * @throws InvalidArgumentException
 	 */
-	public static function clearCache( string $param = "" ) {
-		self::getCache()->clear();
+	public static function clearCache( $tags ) {
+		self::getCache()->invalidateTags($tags);
 		set_transient("clearCacheHasBeenDone", true, 45);
 	}
 
@@ -185,7 +199,7 @@ trait Cache {
 				$shortCodeCalls,
 				array_unique(array_map('serialize', $shortCodeCalls))
 			);
-			
+
 			self::runShortcodeCalls($shortCodeCalls);
 
 			wp_send_json("cache successfully warmed up");
