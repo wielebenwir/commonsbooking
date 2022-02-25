@@ -43,6 +43,44 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
+	 * Returns only bookable timeframes for current user.
+	 *
+	 * @param array $locations
+	 * @param array $items
+	 * @param string|null $date
+	 * @param bool $returnAsModel
+	 * @param $minTimestamp
+	 * @param array $postStatus
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public static function getBookableForCurrentUser(
+		array $locations = [],
+		array $items = [],
+		?string $date = null,
+		bool $returnAsModel = false,
+		$minTimestamp = null,
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+	): array {
+
+		$bookableTimeframes = self::getBookable(
+			$locations,
+			$items,
+			$date,
+			$returnAsModel,
+			$minTimestamp,
+			$postStatus
+		);
+		
+		$bookableTimeframes = array_filter($bookableTimeframes, function ($timeframe){ //filters array for timeframes not bookable for current user
+			return commonsbooking_isCurrentUserAllowedToBook($timeframe->ID);
+		});
+
+		return $bookableTimeframes;
+	}
+
+	/**
 	 * Function to get timeframes with all possible options/params.
 	 * Why? We have different types of timeframes and in some cases we need multiple of them.
 	 *      In this case we need this function.

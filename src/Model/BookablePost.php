@@ -27,7 +27,7 @@ class BookablePost extends CustomPost {
 	): array {
 		$bookableTimeframes = [];
 		if ( get_called_class() == Location::class ) {
-			$bookableTimeframes = Timeframe::getBookable(
+			$bookableTimeframes = Timeframe::getBookableForCurrentUser(
 				[ $this->ID ],
 				$items,
 				$this->getDate() ?: $date,
@@ -37,7 +37,7 @@ class BookablePost extends CustomPost {
 
 		}
 		if ( get_called_class() == Item::class ) {
-			$bookableTimeframes = Timeframe::getBookable(
+			$bookableTimeframes = Timeframe::getBookableForCurrentUser(
 				$locations,
 				[ $this->ID ],
 				$this->getDate() ?: $date,
