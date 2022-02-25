@@ -122,6 +122,9 @@ class Calendar {
 					true
 				);
 
+				$timeframes = array_filter($timeframes, function ($timeframe){
+					return commonsbooking_isCurrentUserAllowedToBook($timeframe->ID);
+				});
 				if ( $timeframes ) {
 
 					// Collect unique locations from timeframes
@@ -317,7 +320,7 @@ class Calendar {
 		$endDate            = new Day( $endDateString );
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
-		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookable(
+		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
 			[ $location ],
 			[ $item ],
 			null,
