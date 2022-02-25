@@ -41,9 +41,6 @@ class Calendar {
 	 * @throws Exception
 	 */
 	public static function renderTable( $atts ): string {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
-		} else {
 			$locationCategory = false;
 			if ( is_array( $atts ) && array_key_exists( 'locationcat', $atts ) ) {
 				$locationCategory = $atts['locationcat'];
@@ -112,46 +109,52 @@ class Calendar {
 					}
 				}
 
-				// Get timeframes for item
-				$timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
-					strtotime( $today ),
-					strtotime( $last_day ),
-					[],
-					[ $item->ID ],
-					[ Timeframe::BOOKABLE_ID ],
-					true
-				);
+				$customCacheKey = strval($item->ID);
+				if ( Plugin::getCacheItem($customCacheKey) ) {
+					$print .= Plugin::getCacheItem($customCacheKey);
+				} else {
+					$rowHtml = " ";
+					// Get timeframes for item
+					$timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
+						strtotime( $today ),
+						strtotime( $last_day ),
+						[],
+						[ $item->ID ],
+						[ Timeframe::BOOKABLE_ID ],
+						true
+					);
 
-				if ( $timeframes ) {
-
-					// Collect unique locations from timeframes
-					$locations = [];
-					foreach ( $timeframes as $timeframe ) {
-						$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
-					}
-
-					// loop through location
-					foreach ( $locations as $locationId => $locationName ) {
-
-						// Check for category term
-						if ( $locationCategory ) {
-							if ( ! has_term( $locationCategory, Location::$postType . 's_category', $locationId ) ) {
-								continue;
-							}
+					if ( $timeframes ) {
+						// Collect unique locations from timeframes
+						$locations = [];
+						foreach ( $timeframes as $timeframe ) {
+							$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
 						}
 
-						$print .= self::renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display );
+						// loop through location
+						foreach ( $locations as $locationId => $locationName ) {
+
+							// Check for category term
+							if ( $locationCategory ) {
+								if ( ! has_term( $locationCategory, Location::$postType . 's_category', $locationId ) ) {
+									continue;
+								}
+							}
+
+							$rowHtml = self::renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display );
+						}
 					}
+
+					Plugin::setCacheItem( $rowHtml, [strval($item->ID)], $customCacheKey);
+					$print .= $rowHtml;
 				}
 			}
 
 			$print .= "</tbody></table>";
 			$print .= '</div>';
 
-			Plugin::setCacheItem($print, Wordpress::getPostIdArray($items));
 
 			return $print;
-		}
 	}
 
 	/**
@@ -278,7 +281,7 @@ class Calendar {
 			$locationString = '<div data-title="' . $locationName . '">' . $locationName . '</div>';
 
 			$rowHtml = "<tr><td><b><a href='" . $itemLink . "'>" . $itemName . "</a></b>" . $divider . $locationString . $divider . $dayStr . "</td></tr>";
-			Plugin::setCacheItem($rowHtml, ['misc']);
+			Plugin::setCacheItem($rowHtml, [ $locationId, $item->ID]);
 
 			return $rowHtml;
 		}
@@ -428,7 +431,7 @@ class Calendar {
 		}
 
 		if ( $lastBookableDate == null ) {
-			$lastBookableDate = strtotime( '+ ' . $advanceBookingDays . ' days' );
+			$lastBookableDate = strtotime( '+ ' . $advanceBookingDays . ' days midnight' );
 		}
 
 		if ( ! ( $jsonResponse = Plugin::getCacheItem( $customCacheKey ) ) ) {
