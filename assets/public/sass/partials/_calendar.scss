@@ -48,6 +48,7 @@
 	--litepickerHighlightedDayBg: #ffeb3b;
 
 	--litePickerDayBorderColor: #FFFFFF;
+    --litePickerDayTodayBorderColor: #9e9e9e;
 }
 .show-week-numbers {
 	--litepickerMonthWidth: calc(var(--litepickerDayWidth) * 8);
