@@ -109,31 +109,30 @@ class Calendar {
 					}
 				}
 
-				$customCacheKey = strval($item->ID);
-				if ( Plugin::getCacheItem($customCacheKey) ) {
-					$print .= Plugin::getCacheItem($customCacheKey);
-				} else {
-					$rowHtml = " ";
-					// Get timeframes for item
-					$timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
-						strtotime( $today ),
-						strtotime( $last_day ),
-						[],
-						[ $item->ID ],
-						[ Timeframe::BOOKABLE_ID ],
-						true
-					);
+				$rowHtml = " ";
+				// Get timeframes for item
+				$timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
+					strtotime( $today ),
+					strtotime( $last_day ),
+					[],
+					[ $item->ID ],
+					[ Timeframe::BOOKABLE_ID ],
+					true
+				);
 
-					if ( $timeframes ) {
-						// Collect unique locations from timeframes
-						$locations = [];
-						foreach ( $timeframes as $timeframe ) {
-							$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
-						}
+				if ( $timeframes ) {
+					// Collect unique locations from timeframes
+					$locations = [];
+					foreach ( $timeframes as $timeframe ) {
+						$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
+					}
 
-						// loop through location
-						foreach ( $locations as $locationId => $locationName ) {
-
+					// loop through location
+					foreach ( $locations as $locationId => $locationName ) {
+						$customCacheKey = strval($item->ID);
+						if ( Plugin::getCacheItem($customCacheKey) ) {
+							$rowHtml .= Plugin::getCacheItem($customCacheKey);
+						} else {
 							// Check for category term
 							if ( $locationCategory ) {
 								if ( ! has_term( $locationCategory, Location::$postType . 's_category', $locationId ) ) {
@@ -141,13 +140,13 @@ class Calendar {
 								}
 							}
 
-							$rowHtml = self::renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display );
+							$locationHtml = self::renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display );
+							Plugin::setCacheItem( $locationHtml, [strval($item->ID), strval($locationId)], $customCacheKey);
+							$rowHtml .= $locationHtml;
 						}
 					}
-
-					Plugin::setCacheItem( $rowHtml, [strval($item->ID)], $customCacheKey);
-					$print .= $rowHtml;
 				}
+				$print .= $rowHtml;
 			}
 
 			$print .= "</tbody></table>";
