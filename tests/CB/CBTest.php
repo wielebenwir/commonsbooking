@@ -5,6 +5,8 @@ namespace CommonsBooking\Tests\CB;
 use CommonsBooking\CB\CB;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use CommonsBooking\Wordpress\CustomPostType\Item;
+use CommonsBooking\Wordpress\CustomPostType\Location;
 
 class CBTest extends CustomPostTypeTest {
 
@@ -32,6 +34,42 @@ class CBTest extends CustomPostTypeTest {
 
 	private $bookingId;
 
+	public function testLookUp() {
+		// Test if user meta value is found when handing over WP_Post object
+		$post = get_post( $this->postInstanceId );
+		$this->assertEquals( CB::lookUp( 'user', $this->userMetaKey, $post, [] ), $this->userMetaValue );
+
+		// Test if post title is returned when handing over post key and post object
+		$this->assertEquals( CB::lookUp( 'post', 'post_title', $post, [] ), $this->postTitle );
+
+		// Test if null is returned when trying to get not existing property of post
+		$this->assertEquals( null, CB::lookUp( 'user', 'post_title', $post, [] ) );
+
+		// Trying to get property without post object
+		$this->assertEquals( CB::lookUp( 'user', 'test', null, [] ), null );
+		$this->assertEquals( CB::lookUp( 'booking', 'test', null, [] ), null );
+		$this->assertEquals( CB::lookUp( 'item', 'test', null, [] ), null );
+		$this->assertEquals( CB::lookUp( 'location', 'test', null, [] ), null );
+	}
+
+	public function testGet() {
+		// Test if item meta info is returned
+		$this->assertEquals( $this->itemMetaValue, CB::get( Item::$postType, $this->itemMetaKey, $this->itemId, [] ) );
+
+		// Test if location meta info is returned
+		$this->assertEquals( $this->locationMetaValue, CB::get( Location::$postType, $this->locationMetaKey, $this->locationId, [] ) );
+
+		// Test if booking meta info is returned
+		$this->assertEquals( $this->bookingMetaValue, CB::get( \CommonsBooking\Wordpress\CustomPostType\Booking::$postType, $this->bookingMetaKey, $this->bookingId, [] ) );
+
+		// Test if property based on user id are returned
+		$this->assertEquals( $this->userMetaValue, CB::get( 'user', $this->userMetaKey, $this->userInstanceId, [] ) );
+
+		// Try to get property by model function
+		$booking = new Booking( $this->bookingId );
+		$this->assertEquals( $booking->formattedBookingDate(), CB::get( \CommonsBooking\Wordpress\CustomPostType\Booking::$postType, 'formattedBookingDate', $this->bookingId, [] ) );
+	}
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -40,11 +78,11 @@ class CBTest extends CustomPostTypeTest {
 			'cb-test-user-password',
 			'cb-test-user@commonbsbooking.org'
 		);
-		add_user_meta($this->userInstanceId, $this->userMetaKey, $this->userMetaValue);
+		add_user_meta( $this->userInstanceId, $this->userMetaKey, $this->userMetaValue );
 
 		$this->postInstanceId = wp_insert_post(
 			[
-				'post_title'   => $this->postTitle,
+				'post_title'    => $this->postTitle,
 				'post_content ' => 'test post content',
 				'post_excerpt'  => 'test post excerpt',
 				'post_author'   => $this->userInstanceId
@@ -52,47 +90,17 @@ class CBTest extends CustomPostTypeTest {
 			true
 		);
 
-		add_post_meta($this->locationId, $this->locationMetaKey, $this->locationMetaValue);
-		add_post_meta($this->itemId, $this->itemMetaKey, $this->itemMetaValue);
+		add_post_meta( $this->locationId, $this->locationMetaKey, $this->locationMetaValue );
+		add_post_meta( $this->itemId, $this->itemMetaKey, $this->itemMetaValue );
 
 		$this->bookingId = $this->createConfirmedBookingEndingToday();
-		add_post_meta($this->bookingId, $this->bookingMetaKey, $this->bookingMetaValue);
+		add_post_meta( $this->bookingId, $this->bookingMetaKey, $this->bookingMetaValue );
 	}
 
 	protected function tearDown() {
 		parent::tearDown();
 
-		wp_delete_user($this->userInstanceId);
-		wp_delete_post($this->postInstanceId);
-	}
-
-	public function testLookUp() {
-		// Test if user meta value is found when handing over WP_Post object
-		$post = get_post($this->postInstanceId);
-		$this->assertEquals(CB::lookUp('user',$this->userMetaKey, $post, []), $this->userMetaValue);
-
-		// Test if post title is returned when handing over post key and post object
-		$this->assertEquals(CB::lookUp('post','post_title', $post, []), $this->postTitle);
-
-		// Test if null is returned when trying to get not existing property of post
-		$this->assertEquals(null, CB::lookUp('user','post_title', $post, []));
-
-		// Test if item meta info is returned
-		$this->assertEquals($this->itemMetaValue, CB::get(\CommonsBooking\Wordpress\CustomPostType\Item::$postType, $this->itemMetaKey, $this->itemId, []));
-
-		// Test if location meta info is returned
-		$this->assertEquals($this->locationMetaValue, CB::get(\CommonsBooking\Wordpress\CustomPostType\Location::$postType,$this->locationMetaKey, $this->locationId, []));
-
-		$this->assertEquals($this->bookingMetaValue, CB::get(\CommonsBooking\Wordpress\CustomPostType\Booking::$postType,$this->bookingMetaKey, $this->bookingId, []));
-
-		// Try to get property by model function
-		$booking = new Booking($this->bookingId);
-		$this->assertEquals($booking->formattedBookingDate(), CB::get(\CommonsBooking\Wordpress\CustomPostType\Booking::$postType,'formattedBookingDate', $this->bookingId, []));
-
-		// Trying to get property without post object
-		$this->assertEquals(CB::lookUp('user', 'test', null, []), null);
-		$this->assertEquals(CB::lookUp('booking', 'test', null, []), null);
-		$this->assertEquals(CB::lookUp('item', 'test', null, []), null);
-		$this->assertEquals(CB::lookUp('location', 'test', null, []), null);
+		wp_delete_user( $this->userInstanceId );
+		wp_delete_post( $this->postInstanceId );
 	}
 }

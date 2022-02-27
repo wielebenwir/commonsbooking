@@ -633,8 +633,10 @@ class Booking extends Timeframe {
 		To search and filter bookings please integrate the frontend booking list via shortcode. 
 		See here <a target="_blank" href="https://commonsbooking.org/?p=1433">How to display the booking list</a>', 'commonsbooking' ) );
 
-		if ( ( $pagenow == 'edit.php' ) && ( sanitize_text_field( $_GET['post_type'] ) == self::getPostType() ) ) {
+		if ( ( $pagenow == 'edit.php' ) && isset( $_GET['post_type'] ) ) {
+            if ( sanitize_text_field( $_GET['post_type'] ) == self::getPostType() ) {
 			echo '<div class="notice notice-info"><p>' . commonsbooking_sanitizeHTML(  $notice ) . '</p></div>';
-		}
+		    }
+        }
 	}
 }
