@@ -3,6 +3,7 @@
 namespace CommonsBooking\CB;
 
 use CommonsBooking\Helper\Helper;
+use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use Exception;
 use WP_Post;
@@ -30,8 +31,12 @@ class CB {
 	 */
 	public static function get( $key, $property, $wpObject = null, $args = null ) {
 
-		// Only WP_User or WP_Post ist allowed.
-		if ( $wpObject && ! ( ( $wpObject instanceof WP_Post ) || ( $wpObject instanceof WP_User ) ) ) {
+		// Only CustomPost, WP_User or WP_Post ist allowed.
+		if ( $wpObject && ! (
+			( $wpObject instanceof WP_Post ) ||
+			( $wpObject instanceof WP_User ) ||
+			($wpObject instanceof CustomPost)
+		) ) {
 			throw new Exception( 'invalid object type.' );
 		}
 
