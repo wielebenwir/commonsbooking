@@ -20,19 +20,27 @@ class CB {
 	 *
 	 * @param mixed $key
 	 * @param mixed $property
-	 * @param int|null $post
+	 * @param int|null $postId
 	 * @param mixed $args
 	 *
 	 * @return mixed
+	 * @throws \Exception
 	 */
 	public static function get( $key, $property, ?int $postId = null, $args = null ) {
 
 		// first we need to check if we are dealing with a post and set the post object properly
 		if ( ! $postId ) {
 			$postId = self::getPostId( $key );
-			$post   = get_post( $postId );
+		}
+
+		if($key == 'user') {
+			// Check if $postId is WP_User-ID
+			if(!($post = get_userdata($postId))) {
+				// If not we're searching by WP_Post
+				$post = get_post($postId);
+			}
 		} else {
-			$post = get_post( $postId );
+			$post   = get_post( $postId );
 		}
 
 		// If possible cast to CB Custom Post Type Model to get additional functions
@@ -93,6 +101,7 @@ class CB {
 	 * @param $args
 	 *
 	 * @return string|null
+	 * @throws \Exception
 	 */
 	public static function lookUp( string $key, string $property, $post, $args ): ?string {
 		// in any case we need the post object, otherwise we cannot return anything
@@ -150,17 +159,17 @@ class CB {
 	/**
 	 * Tries to get a property of a user with different approaches.
 	 *
-	 * @param WP_Post $post
+	 * @param WP_Post|\WP_User $post
 	 * @param string $property
 	 * @param $args
 	 *
 	 * @return int|mixed|null
+	 * @throws \Exception
 	 */
-	private static function getUserProperty( WP_Post $post, string $property, $args ) {
+	private static function getUserProperty( $post, string $property, $args ) {
 		$result = null;
 
-		$userID  = intval( $post->post_author );
-		$cb_user = get_user_by( 'ID', $userID );
+		$cb_user = self::getUserFromObject($post);
 
 		if ( method_exists( $cb_user, $property ) ) {
 			$result = $cb_user->$property( $args );
@@ -175,6 +184,28 @@ class CB {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * @param $object
+	 *
+	 * @return false|\WP_User
+	 * @throws \Exception
+	 */
+	private static function getUserFromObject($object) {
+		// Check if $post is of type WP_Post, then we're using Author as User
+		if( $object instanceof WP_Post) {
+			$userID  = intval( $object->post_author );
+			return get_userdata( $userID );
+
+		// Check if $post is of Type WP_User, than we can use it directly.
+		} else if ( $object instanceof \WP_User) {
+			return $object;
+
+		// Other types than WP_Post or WP_User are not allowed
+		} else {
+			throw new \Exception('invalid $post type.');
+		}
 	}
 
 }
