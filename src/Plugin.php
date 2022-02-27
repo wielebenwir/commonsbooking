@@ -45,6 +45,8 @@ class Plugin {
 
 		// Init booking codes table
 		BookingCodes::initBookingCodesTable();
+
+		self::clearCache();
 	}
 
 	protected static function addCPTRoleCaps() {
@@ -211,10 +213,10 @@ class Plugin {
 			\CommonsBooking\Migration\Booking::migrate();
 
             // Set default values to existing timframes for advance booking days
-            self::SetAdvanceBookingDaysDefault();
+            self::setAdvanceBookingDaysDefault();
 
 			// Clear cache
-			self::clearCache([]);
+			self::clearCache();
 		}
 	}
 
@@ -732,7 +734,7 @@ class Plugin {
      *
      * @return void
      */
-    function SetAdvanceBookingDaysDefault() {
+    public static function setAdvanceBookingDaysDefault() {
         $timeframes = \CommonsBooking\Repository\Timeframe::getBookable( [],[],null,true );
 
         foreach ($timeframes as $timeframe) {

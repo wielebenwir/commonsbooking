@@ -136,12 +136,17 @@ trait Cache {
 	/**
 	 * Deletes cache entries.
 	 *
-	 * @param $tags
+	 * @param array $tags
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public static function clearCache( $tags ) {
-		self::getCache()->invalidateTags($tags);
+	public static function clearCache( array $tags = [] ) {
+		if(!count($tags)) {
+			self::getCache()->clear();
+		} else {
+			self::getCache()->invalidateTags($tags);
+		}
+
 		set_transient("clearCacheHasBeenDone", true, 45);
 	}
 
