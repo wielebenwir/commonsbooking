@@ -63,7 +63,7 @@ class BookingCodes {
 				$codes[]           = $bookingCodeObject;
 			}
 
-			Plugin::setCacheItem( $codes );
+			Plugin::setCacheItem( $codes, [$timeframeId] );
 
 			return $codes;
 		}
@@ -111,7 +111,7 @@ class BookingCodes {
 					$bookingCodes[0]->code
 				);
 			}
-			Plugin::setCacheItem( $bookingCodeObject );
+			Plugin::setCacheItem( $bookingCodeObject, [$timeframeId] );
 
 			return $bookingCodeObject;
 		}

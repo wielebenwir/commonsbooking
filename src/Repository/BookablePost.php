@@ -4,6 +4,7 @@
 namespace CommonsBooking\Repository;
 
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use Exception;
@@ -26,6 +27,8 @@ abstract class BookablePost extends PostRepository {
 	 * @param bool $publishedOnly
 	 *
 	 * @return array
+	 * @throws \Psr\Cache\CacheException
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function getByCurrentUser( bool $publishedOnly = false ): array {
 		$current_user = wp_get_current_user();
@@ -99,7 +102,7 @@ abstract class BookablePost extends PostRepository {
 
 			}
 
-			Plugin::setCacheItem( $items, $customId );
+			Plugin::setCacheItem( $items, Wordpress::getPostIdArray($items),  $customId );
 
 			return $items;
 		}
@@ -160,7 +163,7 @@ abstract class BookablePost extends PostRepository {
 				}
 			}
 
-			Plugin::setCacheItem( $cbPosts );
+			Plugin::setCacheItem( $cbPosts,  Wordpress::getPostIdArray($cbPosts) );
 
 			return $cbPosts;
 		}
@@ -215,7 +218,7 @@ abstract class BookablePost extends PostRepository {
 				}
 			}
 
-			Plugin::setCacheItem( $posts, static::getPostType() );
+			Plugin::setCacheItem( $posts, Wordpress::getPostIdArray($posts), static::getPostType() );
 
 			return $posts;
 		}
@@ -261,7 +264,7 @@ abstract class BookablePost extends PostRepository {
 					}
 				}
 			}
-			Plugin::setCacheItem( $posts );
+			Plugin::setCacheItem( $posts, array_merge(Wordpress::getPostIdArray($posts), [$postId]) );
 
 			return $posts;
 		}
@@ -318,7 +321,7 @@ abstract class BookablePost extends PostRepository {
 					}
 				}
 			}
-			Plugin::setCacheItem( $relatedPosts );
+			Plugin::setCacheItem( $relatedPosts, array_merge(Wordpress::getPostIdArray($relatedPosts), [$postId]) );
 
 			return $relatedPosts;
 		}

@@ -3,8 +3,11 @@
 namespace CommonsBooking\CB;
 
 use CommonsBooking\Helper\Helper;
+use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
+use Exception;
 use WP_Post;
+use WP_User;
 use function get_user_by;
 
 class CB {
@@ -20,33 +23,33 @@ class CB {
 	 *
 	 * @param mixed $key
 	 * @param mixed $property
-	 * @param int|null $postId
+	 * @param \WP_Post|WP_User $wpObject
 	 * @param mixed $args
 	 *
 	 * @return mixed
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public static function get( $key, $property, ?int $postId = null, $args = null ) {
+	public static function get( $key, $property, $wpObject = null, $args = null ) {
 
-		// first we need to check if we are dealing with a post and set the post object properly
-		if ( ! $postId ) {
-			$postId = self::getPostId( $key );
+		// Only CustomPost, WP_User or WP_Post ist allowed.
+		if ( $wpObject && ! (
+			( $wpObject instanceof WP_Post ) ||
+			( $wpObject instanceof WP_User ) ||
+			($wpObject instanceof CustomPost)
+		) ) {
+			throw new Exception( 'invalid object type.' );
 		}
 
-		if($key == 'user') {
-			// Check if $postId is WP_User-ID
-			if(!($post = get_userdata($postId))) {
-				// If not we're searching by WP_Post
-				$post = get_post($postId);
-			}
-		} else {
-			$post   = get_post( $postId );
+		// first we need to check if we are dealing with a post and set the post object properly
+		if ( ! $wpObject ) {
+			$postId   = self::getPostId( $key );
+			$wpObject = get_post($postId);
 		}
 
 		// If possible cast to CB Custom Post Type Model to get additional functions
-		$post = Helper::castToCBCustomType($post, $key);
+		$wpObject = Helper::castToCBCustomType($wpObject, $key);
 
-		$result     = self::lookUp( $key, $property, $post, $args );  // Find matching methods, properties or metadata
+		$result     = self::lookUp( $key, $property, $wpObject, $args );  // Find matching methods, properties or metadata
 		$filterName = sprintf( 'cb_tag_%s_%s', $key, $property );
 
 		return apply_filters( $filterName, $result );
@@ -101,7 +104,7 @@ class CB {
 	 * @param $args
 	 *
 	 * @return string|null
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public static function lookUp( string $key, string $property, $post, $args ): ?string {
 		// in any case we need the post object, otherwise we cannot return anything
@@ -159,12 +162,12 @@ class CB {
 	/**
 	 * Tries to get a property of a user with different approaches.
 	 *
-	 * @param WP_Post|\WP_User $post
+	 * @param WP_Post|WP_User $post
 	 * @param string $property
 	 * @param $args
 	 *
 	 * @return int|mixed|null
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	private static function getUserProperty( $post, string $property, $args ) {
 		$result = null;
@@ -189,8 +192,8 @@ class CB {
 	/**
 	 * @param $object
 	 *
-	 * @return false|\WP_User
-	 * @throws \Exception
+	 * @return false|WP_User
+	 * @throws Exception
 	 */
 	private static function getUserFromObject($object) {
 		// Check if $post is of type WP_Post, then we're using Author as User
@@ -199,12 +202,12 @@ class CB {
 			return get_userdata( $userID );
 
 		// Check if $post is of Type WP_User, than we can use it directly.
-		} else if ( $object instanceof \WP_User) {
+		} else if ( $object instanceof WP_User) {
 			return $object;
 
 		// Other types than WP_Post or WP_User are not allowed
 		} else {
-			throw new \Exception('invalid $post type.');
+			throw new Exception('invalid $post type.');
 		}
 	}
 

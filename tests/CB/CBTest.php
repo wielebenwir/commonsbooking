@@ -54,20 +54,55 @@ class CBTest extends CustomPostTypeTest {
 
 	public function testGet() {
 		// Test if item meta info is returned
-		$this->assertEquals( $this->itemMetaValue, CB::get( Item::$postType, $this->itemMetaKey, $this->itemId, [] ) );
+		$this->assertEquals( $this->itemMetaValue, CB::get(
+				Item::$postType,
+				$this->itemMetaKey,
+				get_post($this->itemId)
+		) );
 
 		// Test if location meta info is returned
-		$this->assertEquals( $this->locationMetaValue, CB::get( Location::$postType, $this->locationMetaKey, $this->locationId, [] ) );
+		$this->assertEquals( $this->locationMetaValue, CB::get(
+			Location::$postType,
+			$this->locationMetaKey,
+			get_post($this->locationId)
+		));
 
 		// Test if booking meta info is returned
-		$this->assertEquals( $this->bookingMetaValue, CB::get( \CommonsBooking\Wordpress\CustomPostType\Booking::$postType, $this->bookingMetaKey, $this->bookingId, [] ) );
+		$this->assertEquals( $this->bookingMetaValue, CB::get(
+			\CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
+			$this->bookingMetaKey,
+			get_post($this->bookingId)
+		));
 
-		// Test if property based on user id are returned
-		$this->assertEquals( $this->userMetaValue, CB::get( 'user', $this->userMetaKey, $this->userInstanceId, [] ) );
+		// Test if property based on user id is returned
+		$this->assertEquals( $this->userMetaValue, CB::get(
+			'user',
+			$this->userMetaKey,
+			get_userdata($this->userInstanceId)
+		) );
+
+		// Test if property based on post author is returned
+		$this->assertEquals( $this->userMetaValue, CB::get(
+			'user',
+			$this->userMetaKey,
+			get_post($this->postInstanceId)
+		) );
+
+		// Test if property based on post author is returned, without handover of post id
+		global $post;
+		$post = get_post($this->postInstanceId);
+		$this->assertEquals( $this->userMetaValue, CB::get(
+			'user',
+			$this->userMetaKey
+		) );
 
 		// Try to get property by model function
 		$booking = new Booking( $this->bookingId );
-		$this->assertEquals( $booking->formattedBookingDate(), CB::get( \CommonsBooking\Wordpress\CustomPostType\Booking::$postType, 'formattedBookingDate', $this->bookingId, [] ) );
+		$this->assertEquals( $booking->formattedBookingDate(), CB::get(
+			\CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
+			'formattedBookingDate',
+			get_post($this->bookingId)
+		) );
 	}
 
 	protected function setUp() {

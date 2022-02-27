@@ -75,7 +75,7 @@ class Item extends View {
 			);
 			$args['calendar_data'] = wp_json_encode( $calendarData );
 
-			Plugin::setCacheItem($args, $customId);
+			Plugin::setCacheItem($args, ['misc'], $customId);
 
 			return $args;
 		}
