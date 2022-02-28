@@ -345,13 +345,13 @@ class Day {
 					$currentDayStartTimestamp = strtotime('midnight', $this->getDateObject()->getTimestamp());
 					$currentDayEndTimestamp = strtotime('+1 day midnight', $this->getDateObject()->getTimestamp()) - 1;
 
-					$timeframeStartsBeforeEndOfDay = $timeframeStartTimestamp <= $currentDayEndTimestamp;
+					$timeframeStartsBeforeEndOfToday = $timeframeStartTimestamp <= $currentDayEndTimestamp;
 					$timeframeEndsAfterStartOfToday = $timeframeEndTimestamp >= $currentDayStartTimestamp;
 
 					if(!$timeframeEndTimestamp) {
-						return $timeframeStartsBeforeEndOfDay;
+						return $timeframeStartsBeforeEndOfToday;
 					} else {
-						return $timeframeStartsBeforeEndOfDay && $timeframeEndsAfterStartOfToday;
+						return $timeframeStartsBeforeEndOfToday && $timeframeEndsAfterStartOfToday;
 					}
 			}
 		}
