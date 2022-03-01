@@ -7,9 +7,9 @@ on:
     branches: [ add-test-action ]
 
 env:
-  DB_DATABASE: test_db
+  DB_DATABASE: wordpress_test
   DB_USER: root
-  DB_PASSWORD: root
+  DB_PASSWORD: ''
 
 jobs:
   build:
@@ -49,4 +49,5 @@ jobs:
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
     - name: Run test suite
-      run: composer run-script test
+      run: |
+        phpunit --version
