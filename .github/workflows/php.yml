@@ -42,7 +42,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        bash bin/install-wp-tests.sh ${{ env.DB_DATABASE }} ${{ env.DB_USER }} {{ env.DB_PASSWORD }} localhost latest
+        bash bin/install-wp-tests.sh ${{ env.DB_DATABASE }} ${{ env.DB_USER }} ${{ env.DB_PASSWORD }} localhost latest
         composer install --prefer-dist --no-progress
 
 
