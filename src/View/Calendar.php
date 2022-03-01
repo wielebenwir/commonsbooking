@@ -113,7 +113,7 @@ class Calendar {
 				}
 
 				// Get timeframes for item
-				$timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
+				$timeframes = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
 					strtotime( $today ),
 					strtotime( $last_day ),
 					[],
@@ -122,9 +122,6 @@ class Calendar {
 					true
 				);
 
-				$timeframes = array_filter($timeframes, function ($timeframe){
-					return commonsbooking_isCurrentUserAllowedToBook($timeframe->ID);
-				});
 				if ( $timeframes ) {
 
 					// Collect unique locations from timeframes

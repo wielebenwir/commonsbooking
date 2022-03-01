@@ -73,9 +73,7 @@ class Timeframe extends PostRepository {
 			$postStatus
 		);
 		
-		$bookableTimeframes = array_filter($bookableTimeframes, function ($timeframe){ //filters array for timeframes not bookable for current user
-			return commonsbooking_isCurrentUserAllowedToBook($timeframe->ID);
-		});
+		$bookableTimeframes = self::filterTimeframesForCurrentUser($bookableTimeframes);
 
 		return $bookableTimeframes;
 	}
@@ -475,6 +473,26 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
+	 * Filters timeframes from array, 
+	 * removes timeframes which are not bookable by current user
+	 *
+	 * @param $posts
+	 *
+	 * @return array
+	 */
+	private static function filterTimeframesForCurrentUser( $posts ): array {
+		return array_filter( $posts, function ( $post ) {
+			try {
+				return commonsbooking_isCurrentUserAllowedToBook( $post->ID );
+			} catch ( Exception $e ) {
+				error_log( $e->getMessage() );
+
+				return false;
+			}
+		} );
+	}
+
+	/**
 	 * Instantiate models for posts.
 	 * Why? In some cases we need more than WP_Post methods and for this case we have Models, that enrich WP_Post
 	 *      objects with useful additional functions.
@@ -608,4 +626,33 @@ class Timeframe extends PostRepository {
 		}
 	}
 
+	/**
+	 * Returns timeframes in explicit timerange that are bookable by the current user.
+	 *
+	 * @param $minTimestamp
+	 * @param $maxTimestamp
+	 * @param array $locations
+	 * @param array $items
+	 * @param array $types
+	 * @param false $returnAsModel
+	 * @param string[] $postStatus
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+
+	 public static function getInRangeForCurrentUser(
+		$minTimestamp,
+		$maxTimestamp,
+		array $locations = [],
+		array $items = [],
+		array $types = [],
+		bool $returnAsModel = false,
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+	): array {
+		$bookableTimeframes = self::getInRange($minTimestamp,$maxTimestamp,$locations,$items,$types,$returnAsModel,$postStatus);
+		
+		$bookableTimeframes = self::filterTimeframesForCurrentUser($bookableTimeframes);
+		return $bookableTimeframes;
+	}
 }
