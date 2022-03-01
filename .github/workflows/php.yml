@@ -2,9 +2,9 @@ name: PHP Composer
 
 on:
   push:
-    branches: [ add-test-action ]
+    branches: [ master ]
   pull_request:
-    branches: [ add-test-action ]
+    branches: [ master ]
 
 env:
   DB_DATABASE: wordpress_test
