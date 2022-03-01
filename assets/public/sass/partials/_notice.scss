@@ -9,31 +9,31 @@
 .cb-wrapper {	
 	.cb-notice {
 		@extend .cb-box;
-		margin-bottom: $spacer-big;
-		font-size: $font-size-big;
+		margin-bottom: var(--commonsbooking-spacer-big);
+		font-size: var(--commonsbooking-font-size-big);
 		vertical-align: middle;
 		font-weight: bold;
 		position: relative;
-		background: $color-notice;
+		background: var(--commonsbooking-color-noticebg);
 		
 		/* Post status */
 		&.cb-status-unconfirmed {
-		  background: $color-notice;
+		  background: var(--commonsbooking-color-noticebg);
 		}    
 		&.cb-status-confirmed {
-		  background: $color-success;
+		  background: var(--commonsbooking-color-success);
 		}    
 		&.cb-status-cancelled {
-		  background: $color-success;
+		  background: var(--commonsbooking-color-success);
 		}    
 		&.error {
-		  background: $color-error;
+		  background: var(--commonsbooking-color-error);
 		}
 	  }
 	 .cb-notice-small {
 		 display: block;
 		&.cb-status-not-available {
-			color: $color-error;
+			color: var(--commonsbooking-color-error);
 		}
 	 }
 }

@@ -428,6 +428,80 @@ Thanks, the Team.
 				)
 			),
 			/* image options end */
+			
+			/* field group color setting */
+
+			'colorscheme' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Color schemes', 'commonsbooking' ) ),
+				'id'     => 'colorscheme',
+				'desc'   => '',
+				'fields' => array(
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Base color (used in headings)', 'commonsbooking' ) ),
+						'id'      => 'colorscheme_primarycolor',
+						'type'    => 'colorpicker',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'Defines the image width of small images in location and item listings', 'commonsbooking' ) ),
+						'default' => '#84AE53',
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Secondary color', 'commonsbooking' ) ),
+						'id'      => 'colorscheme_secondarycolor',
+						'type'    => 'colorpicker',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'The color shown when hovering a button or a link', 'commonsbooking' ) ),
+						'default' => '#506CA9',
+					),
+
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Confirmation / Available Color', 'commonsbooking' ) ),
+						'id'      => 'colorscheme_acceptcolor',
+						'type'    => 'colorpicker',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'The color that is used to signify if an item is available or that an action has been completed successfully', 'commonsbooking' ) ),
+						'default' => '#74ce3c',
+					),
+
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Cancel / Not Available Color', 'commonsbooking' ) ),
+						'id'      => 'colorscheme_cancelcolor',
+						'type'    => 'colorpicker',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'The color that is used to signify if an item is unavailable or for buttons to abort actions', 'commonsbooking' ) ),
+						'default' => '#d5425c',
+					),
+
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Temporarily Unavailable Color', 'commonsbooking' ) ),
+						'id'      => 'colorscheme_holidaycolor',
+						'type'    => 'colorpicker',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'The color that is used to signify if an item is temporarily unbookable (i.e. holiday)', 'commonsbooking' ) ),
+						'default' => '#ff9218',
+					),
+
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Greyed out Color', 'commonsbooking' ) ),
+						'id'      => 'colorscheme_greyedoutcolor',
+						'type'    => 'colorpicker',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used to signify that no timeframe has been created for an item or a button that is not yet clickable', 'commonsbooking' ) ),
+						'default' => '#c4c4c4',
+					),
+
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Background Color', 'commonsbooking' ) ),
+						'id'      => 'colorscheme_backgroundcolor',
+						'type'    => 'colorpicker',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used for the background of tables and similar elements', 'commonsbooking' ) ),
+						'default' => '#f6f6f6',
+					),
+					
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Notice Background Color', 'commonsbooking' ) ),
+						'id'      => 'colorscheme_noticebackgroundcolor',
+						'type'    => 'colorpicker',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used for the background of notices', 'commonsbooking' ) ),
+						'default' => '#FFF9C5',
+					),
+				)
+			),
+			/* color settings end*/
+
 		)
 	),
 	/* Tab: templates end*/

@@ -13,33 +13,33 @@
 /* -------------------- Boxes -------------------- */
 
 .cb-box {
-	background: $color-gray-background;
+	background: var(--commonsbooking-color-gray-background);
 	
-	padding: $spacer-small / 2 $spacer-small;
+	padding: var(--commonsbooking-spacer-small) / 2 var(--commonsbooking-spacer-small);
 	@include breakpoint(phablet) {
-		padding: $spacer $spacer-big;
+		padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
 	}
 	
 	overflow: hidden;
-	border-radius: $radius;
-	margin-bottom: $spacer;
+	border-radius: var(--commonsbooking-radius);
+	margin-bottom: var(--commonsbooking-spacer);
 }
 
 .cb-box-inner {
 	background: $color-white;
 
-	padding: $spacer-small;
+	padding: var(--commonsbooking-spacer-small);
 	@include breakpoint(phablet) {
-		padding: $spacer;
+		padding: var(--commonsbooking-spacer);
 	}
 	
-	border-radius: $radius;
+	border-radius: var(--commonsbooking-radius);
 }
 
 /* -------------------- Typography -------------------- */
 
 .cb-big {
-	font-size: $font-size-big;
+	font-size: var(--commonsbooking-font-size-big);
 	font-weight: bold;
 }
 
@@ -56,31 +56,31 @@
 .cb-hover {
 	@extend .shadow-small;
 	border: 1px solid $color-blue-dark;
-	border-radius: $radius;
+	border-radius: var(--commonsbooking-radius);
 }
 
 .cb-thumbnail {
-	border-radius: $radius;
+	border-radius: var(--commonsbooking-radius);
 }
 
 /* -------------------- Buttons -------------------- */
 
 .cb-button {
-	border-radius: $radius;
-	font-size: $font-size-normal;
-	line-height: $font-size-normal;
-	background-color: $color-success;
+	border-radius: var(--commonsbooking-radius);
+	font-size: var(--commonsbooking-font-size-normal);
+	line-height: var(--commonsbooking-font-size-normal);
+	background-color: var(--commonsbooking-color-success);
 	border: none !important; /* TwentyFifteen theme fix */
 	text-decoration: none !important;
 	word-break: normal !important; /* TwentyTwenty theme fix */
 	white-space: nowrap;
 	color: $color-white;
-	padding: $spacer $spacer-big;
+	padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
 	font-weight: bold;
 
 	&.small {
-		padding: $spacer;
-		font-size: $font-size-small;
+		padding: var(--commonsbooking-spacer);
+		font-size: var(--commonsbooking-font-size-small);
 	}
 
 	&:hover {
@@ -94,37 +94,37 @@
 	}
 
 	&.big {
-		padding: $spacer $spacer-big;
-		font-size: $font-size-big;
-		line-height: $font-size-big;
+		padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
+		font-size: var(--commonsbooking-font-size-big);
+		line-height: var(--commonsbooking-font-size-big);
 	}
 	&.secondary {
 		background-color: $color-white;
-		color: $color-error;
+		color: var(--commonsbooking-color-error);
 	}
 
 	&.cancel {
-		background-color: $color-error;
+		background-color: var(--commonsbooking-color-error);
 	}
 
 	&.confirm {
-		background-color: $color-success;
+		background-color: var(--commonsbooking-color-success);
 	}
 
 	&.delete {
-		background-color: $color-error;
+		background-color: var(--commonsbooking-color-error);
 	}
 
 	&[disabled=disabled] {
-		background-color: lighten($color-gray-dark, 50);
-		color: lighten($color-gray-dark, 80);
+		background-color: var(--commonsbooking-color-bg);
+		color: var(--commonsbooking-color-greyedout);
 	}
 	
 	&.no-right-radius {
-		border-radius: $radius 0 ;
+		border-radius: var(--commonsbooking-radius) 0 ;
 	}	
 	&.no-left-radius {
-		border-radius: 0  $radius;
+		border-radius: 0  var(--commonsbooking-radius);
 	}
 }
 
@@ -132,12 +132,12 @@
 	@extend .cb-button;
 }
 .cb-pill {
-	border-radius: $radius-pill;
+	border-radius: var(--commonsbooking-radius-pill);
 	padding: 0;
 	margin: 0;
 	a {
 		text-decoration: none;
 		color: $color-white;
-		padding: $spacer-small $spacer;
+		padding: var(--commonsbooking-spacer-small) var(--commonsbooking-spacer);
 	}
 }

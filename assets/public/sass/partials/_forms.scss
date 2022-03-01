@@ -33,24 +33,24 @@
         -webkit-appearance: none;
         -moz-appearance: none;
         background: $color-white;
-        border-radius: $radius;
+        border-radius: var(--commonsbooking-radius);
         border-style: solid;
         border-width: 0.1rem;
         border-color: $color-black;
         box-shadow: none;
         display: block;
         margin: 0;
-        font-size: $font-size-normal;
+        font-size: var(--commonsbooking-font-size-normal);
         max-width: 100%;
-        padding: $spacer $spacer;
+        padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer);
     }
 
     select {
         box-shadow: none;
         display: block;
         margin: 0;
-        font-size: $font-size-normal;
-        padding: $spacer $spacer;
+        font-size: var(--commonsbooking-font-size-normal);
+        padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer);
         cursor: pointer;
     }
 
@@ -75,7 +75,7 @@
 
             &#cb-booking-form-set-confirmed { // confirm button
                 input {
-                    margin-left: $spacer-big;
+                    margin-left: var(--commonsbooking-spacer-big);
                 }
             }
         }
@@ -111,7 +111,7 @@
         }
 
         .time-selection-container {
-            margin-top: $spacer;
+            margin-top: var(--commonsbooking-spacer);
             text-align: center;
 
             .restriction {
@@ -123,13 +123,13 @@
                 align-items: center;
 
                 @extend .cb-box-inner;
-                margin-bottom: $spacer;
+                margin-bottom: var(--commonsbooking-spacer);
                 text-align: left;
                 overflow: hidden;
 
                 span, label, select {
                     float: left;
-                    font-size: $font-size-normal;
+                    font-size: var(--commonsbooking-font-size-normal);
                 }
 
                 label {
@@ -161,28 +161,28 @@
 
     .cb-notice {
         @extend .cb-box;
-        margin-bottom: $spacer-big;
-        font-size: $font-size-big;
+        margin-bottom: var(--commonsbooking-spacer-big);
+        font-size: var(--commonsbooking-font-size-big);
         vertical-align: middle;
         font-weight: bold;
         position: relative;
-        background: $color-notice;
+        background: var(--commonsbooking-color-noticebg);
 
         /* Post status */
         &.cb-status-unconfirmed {
-            background: $color-notice;
+            background: var(--commonsbooking-color-noticebg);
         }
 
         &.cb-status-confirmed {
-            background: $color-success;
+            background: var(--commonsbooking-color-success);
         }
 
         &.cb-status-cancelled {
-            background: $color-success;
+            background: var(--commonsbooking-color-success);
         }
 
         &.error {
-            background: $color-error;
+            background: var(--commonsbooking-color-error);
         }
     }
 }
