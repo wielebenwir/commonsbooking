@@ -4,7 +4,7 @@ use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\Migration\Migration;
 use CommonsBooking\View\Booking;
 use CommonsBooking\View\Calendar;
-use CommonsBooking\Settings\Settings;
+use CommonsBooking\View\View;
 
 
 function commonsbooking_public() {
@@ -17,7 +17,7 @@ function commonsbooking_public() {
 		WP_DEBUG ? time() : COMMONSBOOKING_VERSION
 	);
 
-	$colorScheme_css = Settings::returnColorCSS();
+	$colorScheme_css = View::getColorCSS();
 	if ($colorScheme_css) { //if custom color variables exist, import them after importing the rest of the CSS, overwriting existing defaults
 		wp_add_inline_style('cb-styles-public',$colorScheme_css);
 	}

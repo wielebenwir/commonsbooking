@@ -3,8 +3,6 @@
 namespace CommonsBooking\Settings;
 
 use function get_option;
-use ScssPhp\ScssPhp\Compiler;
-use ScssPhp\ScssPhp\ValueConverter;
 
 /**
  * Settings
@@ -104,32 +102,5 @@ class Settings {
 
 		return $result;
 	}
-	public static function returnColorCSS(){
-		$compiler = new Compiler();
-		$var_import = COMMONSBOOKING_PLUGIN_DIR . 'assets/global/sass/partials/_variables.scss';
-		$import_path = COMMONSBOOKING_PLUGIN_DIR . 'assets/public/sass/partials/';
-		$compiler ->setImportPaths($import_path);
-		$variables = [
-			'color-primary' => ValueConverter::parseValue(Settings::getOption('commonsbooking_options_templates', 'colorscheme_primarycolor')),
-			'color-secondary' => ValueConverter::parseValue(Settings::getOption('commonsbooking_options_templates', 'colorscheme_secondarycolor')),
-			'color-accept' => ValueConverter::parseValue(Settings::getOption('commonsbooking_options_templates', 'colorscheme_acceptcolor')),
-			'color-cancel' => ValueConverter::parseValue(Settings::getOption('commonsbooking_options_templates', 'colorscheme_cancelcolor')),
-			'color-holiday' => ValueConverter::parseValue(Settings::getOption('commonsbooking_options_templates', 'colorscheme_holidaycolor')),
-			'color-greyedout' => ValueConverter::parseValue(Settings::getOption('commonsbooking_options_templates', 'colorscheme_greyedoutcolor')),
-			'color-bg' => ValueConverter::parseValue(Settings::getOption('commonsbooking_options_templates', 'colorscheme_backgroundcolor')),
-			'color-noticebg' => ValueConverter::parseValue(Settings::getOption('commonsbooking_options_templates', 'colorscheme_noticebackgroundcolor')),
-		];	
-		$compiler->replaceVariables($variables);
-		$content = '@import "' . $var_import . '";';
-		$result = $compiler->compileString($content);
-		$css = $result->getCss();
 
-		if (!empty($css) && is_string($css)) {
-			return $css;
-		}
-		else {
-			return false;
-		}
-
-	}
 }
