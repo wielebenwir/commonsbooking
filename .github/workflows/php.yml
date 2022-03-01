@@ -52,3 +52,4 @@ jobs:
       run: |
         curl -ksSfL -o ~/phpunit-7.phar https://phar.phpunit.de/phpunit-7.phar
         php ~/phpunit-7.phar --version
+        php ~/phpunit-7.phar
