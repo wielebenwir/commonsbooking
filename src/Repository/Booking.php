@@ -4,6 +4,7 @@
 namespace CommonsBooking\Repository;
 
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use Exception;
@@ -337,7 +338,7 @@ class Booking extends PostRepository {
 					return commonsbooking_isCurrentUserAllowedToEdit( $post );
 				} );
 			}
-			Plugin::setCacheItem( $posts, $customId );
+			Plugin::setCacheItem( $posts, Wordpress::getPostIdArray($posts), $customId );
 		}
 
 		return $posts;

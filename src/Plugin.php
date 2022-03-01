@@ -4,6 +4,7 @@
 namespace CommonsBooking;
 
 use CommonsBooking\CB\CB1UserFields;
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Booking;
@@ -44,6 +45,8 @@ class Plugin {
 
 		// Init booking codes table
 		BookingCodes::initBookingCodesTable();
+
+		self::clearCache();
 	}
 
 	protected static function addCPTRoleCaps() {
@@ -208,6 +211,9 @@ class Plugin {
 
 			// migrate bookings to new cpt
 			\CommonsBooking\Migration\Booking::migrate();
+
+            // Set default values to existing timframes for advance booking days
+            self::setAdvanceBookingDaysDefault();
 
 			// Clear cache
 			self::clearCache();
@@ -479,12 +485,8 @@ class Plugin {
 
 		// Remove cache items on save.
 		add_action('save_post', array($this, 'savePostActions'), 10, 2);
-
-		// Remove cache items on save.
-		add_action('delete_post', array($this, 'deletePostActions'), 10, 2);
-
-		// actions after saving plugin options
-		//add_action('admin_init', array(self::class, 'saveOptionsActions'), 100);
+		add_action('wp_enqueue_scripts', array(Cache::class, 'addWarmupAjaxToOutput'));
+		add_action('admin_enqueue_scripts', array(Cache::class, 'addWarmupAjaxToOutput'));
 
 		add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
@@ -504,6 +506,7 @@ class Plugin {
 		add_action('in_plugin_update_message-' . COMMONSBOOKING_PLUGIN_BASE, function ($plugin_data) {
 			$this->UpdateNotice(COMMONSBOOKING_VERSION, $plugin_data['new_version']);
 		});
+
 	}
 
 	public function commonsbooking_load_textdomain() {
@@ -534,19 +537,12 @@ class Plugin {
 			return;
 		}
 
-		self::clearCache();
-	}
-
-	/**
-	 * Removes all cache items in connection to post_type.
-	 *
-	 * @param $post_id
-	 * @param $post
-	 */
-	public function deletePostActions($post_id) {
-		$post = get_post($post_id);
-		$this->savePostActions($post_id, $post);
-		self::clearCache();
+		$ignoredStates = [ 'unconfirmed', 'auto-draft', 'draft' ];
+		if(!in_array($post->post_status, $ignoredStates)) {
+			$tags = Wordpress::getRelatedPostIds($post_id);
+			$tags[] = 'misc';
+			self::clearCache($tags);
+		}
 	}
 
 	/**
@@ -729,6 +725,23 @@ class Plugin {
 				</div>
 			</div>
 		</div>
-<?php
+    <?php
 	}
+    
+    /**
+     * sets advance booking days to default value for existing timeframes.
+     * Advances booking timeframes are available since 2.6 - all timeframes created prior to this version need to have this value set to a default value (365 days)
+     *
+     * @return void
+     */
+    public static function setAdvanceBookingDaysDefault() {
+        $timeframes = \CommonsBooking\Repository\Timeframe::getBookable( [],[],null,true );
+
+        foreach ($timeframes as $timeframe) {
+            if ( $timeframe->getMeta('timeframe-advance-booking-days') < 1 ) {
+                update_post_meta($timeframe->ID, 'timeframe-advance-booking-days', '365');
+            }
+        }
+    }
+
 }

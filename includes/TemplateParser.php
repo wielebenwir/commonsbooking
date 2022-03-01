@@ -47,7 +47,7 @@ function commonsbooking_parse_template_callback( $match, array $objects = [] ) {
 				$post = $objects[ $path[0] ];
 			}
 
-			return CB::get( commonsbooking_getCBType($path[0]), $path[1], $post->ID );
+			return CB::get( commonsbooking_getCBType($path[0]), $path[1], $post );
 		}
 	}
 

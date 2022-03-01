@@ -111,7 +111,11 @@ class Timeframe extends PostRepository {
 				self::castPostsToModels( $posts );
 			}
 
-			Plugin::setCacheItem( $posts, $customId );
+			Plugin::setCacheItem(
+				$posts,
+				array_unique(array_merge(Wordpress::getPostIdArray($posts), $items, $locations)),
+				$customId
+			);
 			return $posts;
 		}
 	}
@@ -191,16 +195,20 @@ class Timeframe extends PostRepository {
             ";
 
 			// Run query
-			$posts = $wpdb->get_results( $query, ARRAY_N );
+			$postIds = $wpdb->get_results( $query, ARRAY_N );
 
 			// Get Post-IDs
-			foreach ( $posts as &$post ) {
+			foreach ( $postIds as &$post ) {
 				$post = $post[0];
 			}
 
-			Plugin::setCacheItem( $posts, $customId );
+			Plugin::setCacheItem(
+				$postIds,
+				array_unique(array_merge($postIds, $items, $locations)),
+				$customId
+			);
 
-			return $posts;
+			return $postIds;
 		}
 	}
 
@@ -250,10 +258,15 @@ class Timeframe extends PostRepository {
                         pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
                 ";
 
-			$posts = $wpdb->get_results( $query, ARRAY_N );
+			$posts = $wpdb->get_results( $query );
 			$posts = Wordpress::flattenWpdbResult( $posts );
 
-			Plugin::setCacheItem( $posts );
+			Plugin::setCacheItem( $posts, array_unique(
+				array_merge(
+					Wordpress::getPostIdArray($posts),
+					$postIds
+				)
+			));
 
 			return $posts;
 		}
@@ -405,7 +418,7 @@ class Timeframe extends PostRepository {
 				} );
 			}
 
-			Plugin::setCacheItem($posts);
+			Plugin::setCacheItem($posts, Wordpress::getPostIdArray($posts));
 			return $posts;
 		}
 	}
@@ -475,8 +488,8 @@ class Timeframe extends PostRepository {
 			return Plugin::getCacheItem();
 		} else {
 			$time_format        = esc_html(get_option( 'time_format' ));
-			$startTimestampTime = date( $time_format, intval( $timestamp ) );
-			$endTimestampTime   = date( $time_format, intval( $timestamp ) + 1 );
+			$startTimestampTime = date( $time_format, $timestamp );
+			$endTimestampTime   = date( $time_format, $timestamp + 1 );
 
 			$relevantTimeframes = self::getInRange(
 				$timestamp,
@@ -493,7 +506,7 @@ class Timeframe extends PostRepository {
 					date( $time_format, strtotime( $timeframe->getStartTime() ) ) == $startTimestampTime ||
 					date( $time_format, strtotime( $timeframe->getEndTime() ) ) == $endTimestampTime
 				) {
-					Plugin::setCacheItem( $timeframe );
+					Plugin::setCacheItem( $timeframe, [$timeframe->ID, $itemId, $locationId] );
 
 					return $timeframe;
 				}
@@ -564,7 +577,11 @@ class Timeframe extends PostRepository {
 				}
 			}
 
-			Plugin::setCacheItem( $posts, $customId );
+			Plugin::setCacheItem(
+				$posts,
+				array_unique( array_merge( Wordpress::getPostIdArray( $posts ), $locations, $items ) ),
+				$customId
+			);
 
 			return $posts;
 		}

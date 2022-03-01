@@ -5,7 +5,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar,  
 Requires at least: 5.2  
 Tested up to: 5.9  
-Stable Tag: 2.6.11
+Stable Tag: 2.6.12
 Requires PHP: 7.3 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -79,6 +79,9 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog 
+
+### 2.6.12 (27.02.2022)
+FIXED: Fixes issue that prevents user meta data (.e.g phone number etc.) to be shown in booking emails 
 
 ### 2.6.11 (23.02.2022)
 FIXED: Some users reported that bookings were no longer possible. After clicking on "continue to booking check" the expected booking page was not loaded. Since this only occurred on some systems and sporadically, it was not possible to determine the cause in the individual cases. However, our analysis showed that it was likely related to a Wordpress function for validating user input. We have adjusted this in the current version. 
