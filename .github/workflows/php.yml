@@ -41,7 +41,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        bash bin/install-wp-tests.sh ${{ env.DB_DATABASE }} ${{ env.DB_USER }} ${{ env.DB_PASSWORD }} localhost latest
+        bash bin/install-wp-tests.sh wordpress_test root '' localhost latest
         composer install --prefer-dist --no-progress
 
 
@@ -50,4 +50,5 @@ jobs:
 
     - name: Run test suite
       run: |
-        phpunit --version
+        curl -ksSfL -o https://phar.phpunit.de/phpunit-7.phar
+        phpunit-7.phar --version
