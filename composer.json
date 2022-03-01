@@ -31,7 +31,7 @@
     "php-http/curl-client": "^2.1",
     "nyholm/psr7": "^1.3",
     "opis/json-schema": "^1.0",
-    "scssphp/scssphp": "^1.10.0"
+    "scssphp/scssphp": "^1.10.0",
     "ext-json": "*",
     "symfony/cache": "^5.4"
   },

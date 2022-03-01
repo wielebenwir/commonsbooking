@@ -42,5 +42,4 @@ require __DIR__. '/includes/Public.php';
 require __DIR__.'/vendor/autoload.php';
 require __DIR__.'/vendor/cmb2/cmb2/init.php';
 require __DIR__.'/vendor/mustardBees/cmb-field-select2/cmb-field-select2.php';
-require __DIR__.'/vendor/scssphp/scssphp/scss.inc.php';
 require_once __DIR__. '/includes/Plugin.php';
