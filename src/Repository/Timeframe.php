@@ -43,6 +43,42 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
+	 * Returns only bookable timeframes for current user.
+	 *
+	 * @param array $locations
+	 * @param array $items
+	 * @param string|null $date
+	 * @param bool $returnAsModel
+	 * @param $minTimestamp
+	 * @param array $postStatus
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public static function getBookableForCurrentUser(
+		array $locations = [],
+		array $items = [],
+		?string $date = null,
+		bool $returnAsModel = false,
+		$minTimestamp = null,
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+	): array {
+
+		$bookableTimeframes = self::getBookable(
+			$locations,
+			$items,
+			$date,
+			$returnAsModel,
+			$minTimestamp,
+			$postStatus
+		);
+		
+		$bookableTimeframes = self::filterTimeframesForCurrentUser($bookableTimeframes);
+
+		return $bookableTimeframes;
+	}
+
+	/**
 	 * Function to get timeframes with all possible options/params.
 	 * Why? We have different types of timeframes and in some cases we need multiple of them.
 	 *      In this case we need this function.
@@ -450,6 +486,26 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
+	 * Filters timeframes from array, 
+	 * removes timeframes which are not bookable by current user
+	 *
+	 * @param $posts
+	 *
+	 * @return array
+	 */
+	private static function filterTimeframesForCurrentUser( $posts ): array {
+		return array_filter( $posts, function ( $post ) {
+			try {
+				return commonsbooking_isCurrentUserAllowedToBook( $post->ID );
+			} catch ( Exception $e ) {
+				error_log( $e->getMessage() );
+
+				return false;
+			}
+		} );
+	}
+
+	/**
 	 * Instantiate models for posts.
 	 * Why? In some cases we need more than WP_Post methods and for this case we have Models, that enrich WP_Post
 	 *      objects with useful additional functions.
@@ -521,12 +577,12 @@ class Timeframe extends PostRepository {
 	 * Why? We often need timeframes for a specific timerange. For example in the calendar the default range is
 	 *      three months. Another example is the table view.
 	 *
+	 * @param $minTimestamp
+	 * @param $maxTimestamp
 	 * @param array $locations
 	 * @param array $items
 	 * @param array $types
 	 * @param false $returnAsModel
-	 * @param $minTimestamp
-	 * @param $maxTimestamp
 	 * @param string[] $postStatus
 	 *
 	 * @return array
@@ -587,4 +643,33 @@ class Timeframe extends PostRepository {
 		}
 	}
 
+	/**
+	 * Returns timeframes in explicit timerange that are bookable by the current user.
+	 *
+	 * @param $minTimestamp
+	 * @param $maxTimestamp
+	 * @param array $locations
+	 * @param array $items
+	 * @param array $types
+	 * @param false $returnAsModel
+	 * @param string[] $postStatus
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+
+	 public static function getInRangeForCurrentUser(
+		$minTimestamp,
+		$maxTimestamp,
+		array $locations = [],
+		array $items = [],
+		array $types = [],
+		bool $returnAsModel = false,
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+	): array {
+		$bookableTimeframes = self::getInRange($minTimestamp,$maxTimestamp,$locations,$items,$types,$returnAsModel,$postStatus);
+		
+		$bookableTimeframes = self::filterTimeframesForCurrentUser($bookableTimeframes);
+		return $bookableTimeframes;
+	}
 }

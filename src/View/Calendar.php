@@ -111,7 +111,7 @@ class Calendar {
 
 				$rowHtml = " ";
 				// Get timeframes for item
-				$timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
+				$timeframes = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
 					strtotime( $today ),
 					strtotime( $last_day ),
 					[],
@@ -319,7 +319,7 @@ class Calendar {
 		$endDate            = new Day( $endDateString );
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
-		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookable(
+		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
 			[ $location ],
 			[ $item ],
 			null,
