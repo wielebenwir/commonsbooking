@@ -144,8 +144,8 @@ create_db() {
   if [ ${DOCKER_ENV} = "true" ]; then
     #	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
     $(mysql -h ${DB_HOST} --user="${DB_USER}" --password="${DB_PASS}" -e "CREATE DATABASE ${DB_NAME} /*\!40100 DEFAULT CHARACTER SET utf8 */;")
-    $(mysql -h ${DB_HOST} --user="${DB_USER}" --password="${DB_PASS}" -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';")
-    $(mysql -h ${DB_HOST} --user="${DB_USER}" --password="${DB_PASS}" -e "FLUSH PRIVILEGES;")
+#    $(mysql -h ${DB_HOST} --user="${DB_USER}" --password="${DB_PASS}" -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';")
+#    $(mysql -h ${DB_HOST} --user="${DB_USER}" --password="${DB_PASS}" -e "FLUSH PRIVILEGES;")
   else
     mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
   fi
