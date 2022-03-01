@@ -3309,13 +3309,40 @@
  * Layout variables
  */
 /* Colors: CB Brand */
-/* Colors: Theme */
-/* Colors: Backgrounds */
 /* Colors: text */
+/* Colors: Theme, can be modified by user */
+/* Colors: Backgrounds */
 /* Colors: Message statuses */
 /* Font sizes */
 /* Layout Variables */
 /* Fonts */
+/* line 72, ../../global/sass/partials/_variables.scss */
+:root {
+  --commonsbooking-color-primary: #A3BC55;
+  --commonsbooking-color-secondary: #506CA9;
+  --commonsbooking-color-accept: #74ce3c;
+  --commonsbooking-color-cancel: #d5425c;
+  --commonsbooking-color-holiday: #ff9218;
+  --commonsbooking-color-greyedout: #c4c4c4;
+  --commonsbooking-color-bg: #f6f6f6;
+  --commonsbooking-color-noticebg: #FFF9C5;
+  --commonsbooking-color-gray-background: #f6f6f6;
+  --commonsbooking-color-gray-border: #f6f6f6;
+  --commonsbooking-color-error: #d5425c;
+  --commonsbooking-color-success: #74ce3c;
+  --commonsbooking-color-warning: #ff9218;
+  --commonsbooking-font-size-small: 12px;
+  --commonsbooking-font-line-height-small: 13px;
+  --commonsbooking-font-size-normal: 14px;
+  --commonsbooking-font-size-big: 18px;
+  --commonsbooking-font-size-huge: 24px;
+  --commonsbooking-spacer-big: 15px;
+  --commonsbooking-spacer: 10px;
+  --commonsbooking-spacer-small: 5px;
+  --commonsbooking-radius: 8px;
+  --commonsbooking-radius-pill: 8px;
+}
+
 /* Mixins */
 /**
  * Framework mixins
@@ -3340,36 +3367,36 @@
 /* -------------------- Boxes -------------------- */
 /* line 15, ../../global/sass/partials/_extends.scss */
 .cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper, .cb-items-table {
-  background: #f6f6f6;
-  padding: 2.5px 5px;
+  background: var(--commonsbooking-color-gray-background);
+  padding: var(--commonsbooking-spacer-small)/2 var(--commonsbooking-spacer-small);
   overflow: hidden;
-  border-radius: 8px;
-  margin-bottom: 10px;
+  border-radius: var(--commonsbooking-radius);
+  margin-bottom: var(--commonsbooking-spacer);
 }
 @media (min-width: 37.5em) {
   /* line 15, ../../global/sass/partials/_extends.scss */
   .cb-box, .cb-wrapper, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper .cb-action, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper, .cb-items-table {
-    padding: 10px 15px;
+    padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
   }
 }
 
 /* line 28, ../../global/sass/partials/_extends.scss */
 .cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months {
   background: #FFF;
-  padding: 5px;
-  border-radius: 8px;
+  padding: var(--commonsbooking-spacer-small);
+  border-radius: var(--commonsbooking-radius);
 }
 @media (min-width: 37.5em) {
   /* line 28, ../../global/sass/partials/_extends.scss */
   .cb-box-inner, .cb-wrapper > .cb-wrapper, .cb-wrapper #booking-form .time-selection-container > div, .litepicker .container__months {
-    padding: 10px;
+    padding: var(--commonsbooking-spacer);
   }
 }
 
 /* -------------------- Typography -------------------- */
 /* line 41, ../../global/sass/partials/_extends.scss */
 .cb-big, .cb-map-filters.cb-wrapper .cb-map-filter-group-label {
-  font-size: 18px;
+  font-size: var(--commonsbooking-font-size-big);
   font-weight: bold;
 }
 
@@ -3387,21 +3414,21 @@
 /* line 56, ../../global/sass/partials/_extends.scss */
 .cb-hover {
   border: 1px solid #506CA9;
-  border-radius: 8px;
+  border-radius: var(--commonsbooking-radius);
 }
 
 /* line 62, ../../global/sass/partials/_extends.scss */
 .cb-thumbnail {
-  border-radius: 8px;
+  border-radius: var(--commonsbooking-radius);
 }
 
 /* -------------------- Buttons -------------------- */
 /* line 68, ../../global/sass/partials/_extends.scss */
 .cb-button, .cb-button-container a, .cb-wrapper .cb-action input, .cb-wrapper #booking-form input, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button {
-  border-radius: 8px;
-  font-size: 14px;
-  line-height: 14px;
-  background-color: #74ce3c;
+  border-radius: var(--commonsbooking-radius);
+  font-size: var(--commonsbooking-font-size-normal);
+  line-height: var(--commonsbooking-font-size-normal);
+  background-color: var(--commonsbooking-color-success);
   border: none !important;
   /* TwentyFifteen theme fix */
   text-decoration: none !important;
@@ -3409,13 +3436,13 @@
   /* TwentyTwenty theme fix */
   white-space: nowrap;
   color: #FFF;
-  padding: 10px 15px;
+  padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
   font-weight: bold;
 }
 /* line 81, ../../global/sass/partials/_extends.scss */
 .cb-button.small, .cb-button-container a.small, .cb-wrapper .cb-action input.small, .cb-wrapper #booking-form input.small, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.small {
-  padding: 10px;
-  font-size: 12px;
+  padding: var(--commonsbooking-spacer);
+  font-size: var(--commonsbooking-font-size-small);
 }
 /* line 86, ../../global/sass/partials/_extends.scss */
 .cb-button:hover, .cb-button-container a:hover, .cb-wrapper .cb-action input:hover, .cb-wrapper #booking-form input:hover, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:hover {
@@ -3429,44 +3456,44 @@
 }
 /* line 96, ../../global/sass/partials/_extends.scss */
 .cb-button.big, .cb-button-container a.big, .cb-wrapper .cb-action input.big, .cb-wrapper #booking-form input.big, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.big {
-  padding: 10px 15px;
-  font-size: 18px;
-  line-height: 18px;
+  padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
+  font-size: var(--commonsbooking-font-size-big);
+  line-height: var(--commonsbooking-font-size-big);
 }
 /* line 101, ../../global/sass/partials/_extends.scss */
 .cb-button.secondary, .cb-button-container a.secondary, .cb-wrapper .cb-action input.secondary, .cb-wrapper #booking-form input.secondary, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.secondary {
   background-color: #FFF;
-  color: #d5425c;
+  color: var(--commonsbooking-color-error);
 }
 /* line 106, ../../global/sass/partials/_extends.scss */
 .cb-button.cancel, .cb-button-container a.cancel, .cb-wrapper .cb-action input.cancel, .cb-wrapper #booking-form input.cancel, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.cancel {
-  background-color: #d5425c;
+  background-color: var(--commonsbooking-color-error);
 }
 /* line 110, ../../global/sass/partials/_extends.scss */
 .cb-button.confirm, .cb-button-container a.confirm, .cb-wrapper .cb-action input.confirm, .cb-wrapper #booking-form input.confirm, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.confirm {
-  background-color: #74ce3c;
+  background-color: var(--commonsbooking-color-success);
 }
 /* line 114, ../../global/sass/partials/_extends.scss */
 .cb-button.delete, .cb-button-container a.delete, .cb-wrapper .cb-action input.delete, .cb-wrapper #booking-form input.delete, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.delete {
-  background-color: #d5425c;
+  background-color: var(--commonsbooking-color-error);
 }
 /* line 118, ../../global/sass/partials/_extends.scss */
 .cb-button[disabled=disabled], .cb-button-container a[disabled=disabled], .cb-wrapper .cb-action input[disabled=disabled], .cb-wrapper #booking-form input[disabled=disabled], .cb-map-filters.cb-wrapper .cb-map-button-wrapper button[disabled=disabled] {
-  background-color: #c4c4c4;
-  color: white;
+  background-color: var(--commonsbooking-color-bg);
+  color: var(--commonsbooking-color-greyedout);
 }
 /* line 123, ../../global/sass/partials/_extends.scss */
 .cb-button.no-right-radius, .cb-button-container a.no-right-radius, .cb-wrapper .cb-action input.no-right-radius, .cb-wrapper #booking-form input.no-right-radius, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.no-right-radius {
-  border-radius: 8px 0;
+  border-radius: var(--commonsbooking-radius) 0;
 }
 /* line 126, ../../global/sass/partials/_extends.scss */
 .cb-button.no-left-radius, .cb-button-container a.no-left-radius, .cb-wrapper .cb-action input.no-left-radius, .cb-wrapper #booking-form input.no-left-radius, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.no-left-radius {
-  border-radius: 0 8px;
+  border-radius: 0 var(--commonsbooking-radius);
 }
 
 /* line 134, ../../global/sass/partials/_extends.scss */
 .cb-pill {
-  border-radius: 8px;
+  border-radius: var(--commonsbooking-radius-pill);
   padding: 0;
   margin: 0;
 }
@@ -3474,7 +3501,7 @@
 .cb-pill a {
   text-decoration: none;
   color: #FFF;
-  padding: 5px 10px;
+  padding: var(--commonsbooking-spacer-small) var(--commonsbooking-spacer);
 }
 
 /* Utilites */
@@ -3560,7 +3587,7 @@
 /* line 50, ../sass/partials/_layouts.scss */
 .cb-col-50-50-filter > div, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div,
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div {
-  margin-bottom: 10px;
+  margin-bottom: var(--commonsbooking-spacer);
   width: 100%;
   display: flex;
   align-items: center;
@@ -3607,7 +3634,7 @@
 .cb-wrapper .template-timeframe-withlocation > div.cb-thumbnail,
 .cb-wrapper .template-item-withlocation > div.cb-thumbnail, .cb-wrapper .cb-list-header > div.cb-thumbnail {
   flex: 0 0 20%;
-  padding-right: 15px;
+  padding-right: var(--commonsbooking-spacer-big);
 }
 /* line 90, ../sass/partials/_layouts.scss */
 .cb-col-auto > div.cb-list-info, .cb-wrapper .template-timeframe-withitem > div.cb-list-info,
@@ -3640,7 +3667,7 @@
   .cb-wrapper .template-timeframe-withlocation > div.cb-thumbnail,
   .cb-wrapper .template-item-withlocation > div.cb-thumbnail, .cb-wrapper .cb-list-header > div.cb-thumbnail {
     flex: 0 0 20%;
-    padding-right: 15px;
+    padding-right: var(--commonsbooking-spacer-big);
   }
   /* line 111, ../sass/partials/_layouts.scss */
   .cb-col-auto > div.cb-list-info, .cb-wrapper .template-timeframe-withitem > div.cb-list-info,
@@ -3700,7 +3727,7 @@
   position: relative;
   clear: both;
   display: block;
-  margin-top: 15px;
+  margin-top: var(--commonsbooking-spacer-big);
   /* headline */
   /* sub lists wrapper */
 }
@@ -3718,12 +3745,12 @@
 /* line 36, ../sass/partials/_lists.scss */
 .cb-wrapper h1, .cb-wrapper h2, .cb-wrapper h3, .cb-wrapper h4 {
   margin: 0;
-  padding-bottom: 10px;
+  padding-bottom: var(--commonsbooking-spacer);
   padding-top: 0;
 }
 /* line 42, ../sass/partials/_lists.scss */
 .cb-wrapper .cb-title {
-  color: #84AE53;
+  color: var(--commonsbooking-color-primary);
 }
 /* line 51, ../sass/partials/_lists.scss */
 .cb-wrapper > .cb-wrapper {
@@ -3732,17 +3759,17 @@
 /* line 56, ../sass/partials/_lists.scss */
 .cb-wrapper > .cb-wrapper > div {
   /* sub list items */
-  padding: 5px 0;
+  padding: var(--commonsbooking-spacer-small) 0;
 }
-/* line 59, ../sass/partials/_lists.scss */
+/* line 58, ../sass/partials/_lists.scss */
 .cb-wrapper > .cb-wrapper > div:last-of-type {
   border-bottom: none;
 }
-/* line 77, ../sass/partials/_lists.scss */
+/* line 76, ../sass/partials/_lists.scss */
 .cb-wrapper .cb-action {
   background: transparent;
 }
-/* line 79, ../sass/partials/_lists.scss */
+/* line 78, ../sass/partials/_lists.scss */
 .cb-wrapper .cb-action .cb-button, .cb-wrapper .cb-action .cb-button-container a, .cb-button-container .cb-wrapper .cb-action a, .cb-wrapper .cb-action input, .cb-wrapper .cb-action #booking-form input, .cb-wrapper #booking-form .cb-action input, .cb-map-filters.cb-wrapper .cb-action .cb-map-button-wrapper button, .cb-map-filters.cb-wrapper .cb-map-button-wrapper .cb-action button {
   display: inline-block;
 }
@@ -3805,24 +3832,24 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   background: #FFF;
-  border-radius: 8px;
+  border-radius: var(--commonsbooking-radius);
   border-style: solid;
   border-width: 0.1rem;
   border-color: #000;
   box-shadow: none;
   display: block;
   margin: 0;
-  font-size: 14px;
+  font-size: var(--commonsbooking-font-size-normal);
   max-width: 100%;
-  padding: 10px 10px;
+  padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer);
 }
 /* line 48, ../sass/partials/_forms.scss */
 .cb-wrapper select {
   box-shadow: none;
   display: block;
   margin: 0;
-  font-size: 14px;
-  padding: 10px 10px;
+  font-size: var(--commonsbooking-font-size-normal);
+  padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer);
   cursor: pointer;
 }
 /* line 57, ../sass/partials/_forms.scss */
@@ -3840,7 +3867,7 @@
 }
 /* line 77, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-action form#cb-booking-form-set-confirmed input {
-  margin-left: 15px;
+  margin-left: var(--commonsbooking-spacer-big);
 }
 /* line 84, ../sass/partials/_forms.scss */
 .cb-wrapper input.cb-action-canceled {
@@ -3876,7 +3903,7 @@
 }
 /* line 113, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container {
-  margin-top: 10px;
+  margin-top: var(--commonsbooking-spacer);
   text-align: center;
 }
 /* line 117, ../sass/partials/_forms.scss */
@@ -3887,14 +3914,14 @@
 .cb-wrapper #booking-form .time-selection-container > div {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: var(--commonsbooking-spacer);
   text-align: left;
   overflow: hidden;
 }
 /* line 130, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div span, .cb-wrapper #booking-form .time-selection-container > div label, .cb-wrapper #booking-form .time-selection-container > div select {
   float: left;
-  font-size: 14px;
+  font-size: var(--commonsbooking-font-size-normal);
 }
 /* line 135, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div label {
@@ -3922,29 +3949,29 @@
 }
 /* line 162, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice {
-  margin-bottom: 15px;
-  font-size: 18px;
+  margin-bottom: var(--commonsbooking-spacer-big);
+  font-size: var(--commonsbooking-font-size-big);
   vertical-align: middle;
   font-weight: bold;
   position: relative;
-  background: #FFF9C5;
+  background: var(--commonsbooking-color-noticebg);
   /* Post status */
 }
 /* line 172, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-unconfirmed {
-  background: #FFF9C5;
+  background: var(--commonsbooking-color-noticebg);
 }
 /* line 176, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-confirmed {
-  background: #74ce3c;
+  background: var(--commonsbooking-color-success);
 }
 /* line 180, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-cancelled {
-  background: #74ce3c;
+  background: var(--commonsbooking-color-success);
 }
 /* line 184, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.error {
-  background: #d5425c;
+  background: var(--commonsbooking-color-error);
 }
 
 /* Calendar styles */
@@ -3964,19 +3991,19 @@
   --litepickerMonthWidth: calc(var(--litepickerDayWidth) * 7);
   --litepickerMonthWeekdayColor: #9e9e9e;
   --litepickerDayColor: #000;
-  --litepickerDayColorBg: #74ce3c;
-  --litepickerDayColorHover: #506CA9;
-  --litepickerDayIsTodayColor: #f44336;
+  --litepickerDayColorBg: var(--commonsbooking-color-success);
+  --litepickerDayColorHover: var(--commonsbooking-color-secondary);
+  --litepickerDayIsTodayColor: var(--commonsbooking-color-cancel);
   --litepickerDayIsInRange: #2096f3;
-  --litepickerDayIsLockedColor: #9e9e9e;
-  --litepickerDayIsLockedColorBg: #f6f6f6;
+  --litepickerDayIsLockedColor: var(--commonsbooking-color-greyedout);
+  --litepickerDayIsLockedColorBg: var(--commonsbooking-color-greyedout);
   --litepickerDayIsHolidayColor: #000000;
-  --litepickerDayIsHolidayColorBg: #ff9218;
+  --litepickerDayIsHolidayColorBg: var(--commonsbooking-color-holiday);
   --litepickerDayIsPartiallyLockedColor: #333;
-  --litepickerDayIsPartiallyLockedColorBgOne: #20c527;
-  --litepickerDayIsPartiallyLockedColorBgTwo: #d5425c;
+  --litepickerDayIsPartiallyLockedColorBgOne: var(--commonsbooking-color-accept);
+  --litepickerDayIsPartiallyLockedColorBgTwo: var(--commonsbooking-color-error);
   --litepickerDayIsBookedColor: #333;
-  --litepickerDayIsBookedColorBg: #d5425c;
+  --litepickerDayIsBookedColorBg: var(--commonsbooking-color-error);
   --litepickerDayIsStartColor: #fff;
   --litepickerDayIsStartBg: #2196f3;
   --litepickerDayIsEndColor: #fff;
@@ -4404,15 +4431,15 @@
 }
 /* line 364, ../sass/partials/_calendar.scss */
 #booking-form #resetPicker {
-  font-size: 14px;
-  padding: 5px;
+  font-size: var(--commonsbooking-font-size-normal);
+  padding: var(--commonsbooking-spacer-small);
   display: none;
   cursor: pointer;
 }
 /* line 371, ../sass/partials/_calendar.scss */
 #booking-form #calendarNotice {
   display: none;
-  font-size: 14px;
+  font-size: var(--commonsbooking-font-size-normal);
 }
 
 /* Map styles */
@@ -4470,7 +4497,7 @@
 /* line 57, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content {
   min-width: 300px;
-  font-size: 14px;
+  font-size: var(--commonsbooking-font-size-normal);
 }
 /* line 61, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item {
@@ -4484,7 +4511,7 @@
 }
 /* line 69, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-thumbnail img {
-  border-radius: 8px;
+  border-radius: var(--commonsbooking-radius);
 }
 /* line 74, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-info {
@@ -4494,8 +4521,8 @@
 }
 /* line 80, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-link b a {
-  font-size: 18px;
-  color: #84AE53;
+  font-size: var(--commonsbooking-font-size-big);
+  color: var(--commonsbooking-color-primary);
   text-decoration: underline;
 }
 /* line 86, ../sass/partials/_map.scss */
@@ -4520,7 +4547,7 @@
 }
 /* line 110, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.available {
-  background-color: #7fc600;
+  background-color: var(--commonsbooking-color-accept);
 }
 /* line 113, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.location-holiday {
@@ -4535,115 +4562,115 @@
 }
 /* line 122, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.no-timeframe {
-  background-color: #ddd;
+  background-color: var(--commonsbooking-color-greyedout);
   color: #fff;
   cursor: not-allowed;
 }
 /* line 127, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.partially-booked {
   color: #444;
-  background: linear-gradient(to top left, #7fc600 0%, #7fc600 calc(50% - 1px), #333 50%, #ee7400 calc(50% + 1px), #ee7400 100%);
+  background: linear-gradient(to top left, var(--commonsbooking-color-accept) 0%, var(--commonsbooking-color-accept) calc(50% - 1px), #333 50%, var(--commonsbooking-color-cancel) calc(50% + 1px), var(--commonsbooking-color-cancel) 100%);
   background-repeat: no-repeat;
 }
-/* line 132, ../sass/partials/_map.scss */
+/* line 133, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.booked {
   color: #444;
-  background: linear-gradient(to top left, #ee7400 0%, #ee7400 calc(50% - 1px), #333 50%, #ee7400 calc(50% + 1px), #ee7400 100%);
+  background: linear-gradient(to top left, var(--commonsbooking-color-cancel) 0%, var(--commonsbooking-color-cancel) calc(50% - 1px), #333 50%, var(--commonsbooking-color-cancel) calc(50% + 1px), var(--commonsbooking-color-cancel) 100%);
 }
-/* line 137, ../sass/partials/_map.scss */
+/* line 138, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-desc {
   display: none;
 }
 
 /* Filters */
-/* line 146, ../sass/partials/_map.scss */
+/* line 147, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper {
-  margin-top: 10px;
+  margin-top: var(--commonsbooking-spacer);
   /* layout for filter  availability & distance */
   /* styles for specific filters */
   /* layout for filter category */
 }
-/* line 151, ../sass/partials/_map.scss */
+/* line 152, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper input[type="checkbox"] {
-  margin: 0 5px 0 0;
+  margin: 0 var(--commonsbooking-spacer-small) 0 0;
 }
-/* line 155, ../sass/partials/_map.scss */
+/* line 156, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper input[type="date"], .cb-map-filters.cb-wrapper input[type="number"] {
   /* is inline */
-  margin: 0 5px;
+  margin: 0 var(--commonsbooking-spacer-small);
 }
-/* line 159, ../sass/partials/_map.scss */
+/* line 160, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper input[type="number"] {
   max-width: 100px;
 }
-/* line 163, ../sass/partials/_map.scss */
+/* line 164, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper select {
   /* is inline */
-  margin: 0 5px;
+  margin: 0 var(--commonsbooking-spacer-small);
 }
-/* line 167, ../sass/partials/_map.scss */
+/* line 168, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper button {
-  padding: 5px;
+  padding: var(--commonsbooking-spacer-small);
 }
-/* line 172, ../sass/partials/_map.scss */
+/* line 173, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-filter-options > div {
-  margin-bottom: 10px;
-  padding-bottom: 10px;
+  margin-bottom: var(--commonsbooking-spacer);
+  padding-bottom: var(--commonsbooking-spacer);
   border-bottom: 1px solid #444;
 }
-/* line 179, ../sass/partials/_map.scss */
+/* line 180, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-filter-group-label {
-  color: #506CA9;
-  margin-bottom: 5px;
+  color: var(--commonsbooking-color-primary);
+  margin-bottom: var(--commonsbooking-spacer-small);
 }
-/* line 196, ../sass/partials/_map.scss */
+/* line 197, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group {
   background: #506CA9;
-  border-radius: 8px;
+  border-radius: var(--commonsbooking-radius);
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
 }
-/* line 202, ../sass/partials/_map.scss */
+/* line 203, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group input {
   flex: 1 1 100% !important;
   /* overwrite layout */
 }
-/* line 205, ../sass/partials/_map.scss */
+/* line 206, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.undo-geo-search, .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.geo-search {
   background: transparent;
   color: #FFF;
 }
-/* line 214, ../sass/partials/_map.scss */
+/* line 215, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
-/* line 219, ../sass/partials/_map.scss */
+/* line 220, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset {
   flex: 1 0 50%;
   border: none;
   margin: 0;
   padding: 0;
-  margin-bottom: 10px;
+  margin-bottom: var(--commonsbooking-spacer);
 }
-/* line 226, ../sass/partials/_map.scss */
+/* line 227, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset .cb-fieldgroup-row {
   display: inline-block;
 }
-/* line 230, ../sass/partials/_map.scss */
+/* line 231, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset legend {
   margin: 0;
   padding: 0;
   font-weight: normal;
 }
-/* line 235, ../sass/partials/_map.scss */
+/* line 236, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset label {
-  margin-right: 15px;
-  color: #506CA9;
+  margin-right: var(--commonsbooking-spacer-big);
+  color: var(--commonsbooking-color-primary);
 }
-/* line 244, ../sass/partials/_map.scss */
+/* line 245, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-button-wrapper {
   text-align: right;
 }
@@ -4876,29 +4903,29 @@
  */
 /* line 10, ../sass/partials/_notice.scss */
 .cb-wrapper .cb-notice {
-  margin-bottom: 15px;
-  font-size: 18px;
+  margin-bottom: var(--commonsbooking-spacer-big);
+  font-size: var(--commonsbooking-font-size-big);
   vertical-align: middle;
   font-weight: bold;
   position: relative;
-  background: #FFF9C5;
+  background: var(--commonsbooking-color-noticebg);
   /* Post status */
 }
 /* line 20, ../sass/partials/_notice.scss */
 .cb-wrapper .cb-notice.cb-status-unconfirmed {
-  background: #FFF9C5;
+  background: var(--commonsbooking-color-noticebg);
 }
 /* line 23, ../sass/partials/_notice.scss */
 .cb-wrapper .cb-notice.cb-status-confirmed {
-  background: #74ce3c;
+  background: var(--commonsbooking-color-success);
 }
 /* line 26, ../sass/partials/_notice.scss */
 .cb-wrapper .cb-notice.cb-status-cancelled {
-  background: #74ce3c;
+  background: var(--commonsbooking-color-success);
 }
 /* line 29, ../sass/partials/_notice.scss */
 .cb-wrapper .cb-notice.error {
-  background: #d5425c;
+  background: var(--commonsbooking-color-error);
 }
 /* line 33, ../sass/partials/_notice.scss */
 .cb-wrapper .cb-notice-small {
@@ -4906,7 +4933,7 @@
 }
 /* line 35, ../sass/partials/_notice.scss */
 .cb-wrapper .cb-notice-small.cb-status-not-available {
-  color: #d5425c;
+  color: var(--commonsbooking-color-error);
 }
 
 /* Styles for items table */
@@ -4945,20 +4972,20 @@
 /* line 27, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td,
 .cb-items-table th {
-  line-height: 13px;
-  font-size: 12px;
+  line-height: var(--commonsbooking-font-line-height-small);
+  font-size: var(--commonsbooking-font-size-small);
   padding: 4px 0;
   font-weight: normal;
 }
 /* line 35, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table th {
-  font-size: 12px;
+  font-size: var(--commonsbooking-font-size-small);
   text-align: center;
   vertical-align: middle;
 }
 /* line 42, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table thead tr {
-  color: #506CA9;
+  color: var(--commonsbooking-color-secondary);
 }
 /* line 45, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table thead tr:first-child {
@@ -5002,12 +5029,12 @@
 .cb-items-table thead tr:first-child th:first-child,
 .cb-items-table thead tr:nth-child(2) th:first-child,
 .cb-items-table thead tr:nth-child(2) th:nth-child(2) {
-  background: #f6f6f6;
+  background: var(--commonsbooking-color-bg);
 }
 /* line 91, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table tbody tr:hover td:first-child,
 .cb-items-table tbody tr:hover td:nth-child(2) {
-  background-color: #f6f6f6;
+  background-color: var(--commonsbooking-color-bg);
 }
 /* line 97, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table tbody tr {
@@ -5017,12 +5044,12 @@
 }
 /* line 102, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table tbody tr:hover {
-  background: #f6f6f6;
+  background: var(--commonsbooking-color-bg);
 }
 /* line 106, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table tbody tr td {
-  border-top: 1px solid #bababa;
-  border-left: 1px solid #f6f6f6;
+  border-top: 1px solid var(--commonsbooking-color-greyedout);
+  border-left: 1px solid var(--commonsbooking-color-gray-background);
   border-bottom: 1px solid #FFF;
 }
 /* line 114, ../sass/partials/_shortcodeItemsTable.scss */
