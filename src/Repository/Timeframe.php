@@ -546,12 +546,12 @@ class Timeframe extends PostRepository {
 	 * Why? We often need timeframes for a specific timerange. For example in the calendar the default range is
 	 *      three months. Another example is the table view.
 	 *
+	 * @param $minTimestamp
+	 * @param $maxTimestamp
 	 * @param array $locations
 	 * @param array $items
 	 * @param array $types
 	 * @param false $returnAsModel
-	 * @param $minTimestamp
-	 * @param $maxTimestamp
 	 * @param string[] $postStatus
 	 *
 	 * @return array
