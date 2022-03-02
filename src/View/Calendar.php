@@ -161,6 +161,16 @@ class Calendar {
 		$print .= "</tbody></table>";
 		$print .= '</div>';
 
+		$print .= '<div id="cb-table-footnote">';
+		$print .= commonsbooking_sanitizeHTML( __('<div id="cb-table-footnote-colorkey">
+			<strong>Table info</strong><br>
+				<div class="colorkey-square colorkey-accept"></div> bookable | 
+				<div class="colorkey-square colorkey-cancel"></div> booked/blocked  | 
+				<div class="colorkey-square colorkey-holiday"></div> station closed  | 
+				<div class="colorkey-square colorkey-greyedout"></div> not bookable <br>
+				<i>Transparent days are not yet bookable.</i>
+			</div>', 'commonsbooking') );
+		$print .= '</div>';
 
 		return $print;
 	}

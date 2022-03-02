@@ -5167,6 +5167,36 @@
   box-shadow: none;
 }
 
+/* line 154, ../sass/partials/_shortcodeItemsTable.scss */
+#cb-table-footnote {
+  background-color: #FFF;
+  margin-top: 10px;
+  padding: 10px;
+  font-size: var(--commonsbooking-font-size-normal);
+}
+/* line 162, ../sass/partials/_shortcodeItemsTable.scss */
+#cb-table-footnote #cb-table-footnote-colorkey .colorkey-square {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+}
+/* line 168, ../sass/partials/_shortcodeItemsTable.scss */
+#cb-table-footnote #cb-table-footnote-colorkey .colorkey-accept {
+  background-color: var(--commonsbooking-color-accept);
+}
+/* line 172, ../sass/partials/_shortcodeItemsTable.scss */
+#cb-table-footnote #cb-table-footnote-colorkey .colorkey-cancel {
+  background-color: var(--commonsbooking-color-cancel);
+}
+/* line 176, ../sass/partials/_shortcodeItemsTable.scss */
+#cb-table-footnote #cb-table-footnote-colorkey .colorkey-holiday {
+  background-color: var(--commonsbooking-color-holiday);
+}
+/* line 180, ../sass/partials/_shortcodeItemsTable.scss */
+#cb-table-footnote #cb-table-footnote-colorkey .colorkey-greyedout {
+  background-color: var(--commonsbooking-color-greyedout);
+}
+
 /* Fixes for specific WP Themes */
 /**
  * Optimisation & Compatibility 
