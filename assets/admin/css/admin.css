@@ -3447,7 +3447,7 @@
 }
 /* line 86, ../../global/sass/partials/_extends.scss */
 .cb-button:hover, .cb-button-container a:hover {
-  background: #506CA9;
+  background: var(--commonsbooking-color-secondary);
   color: #FFF;
   /* Various themes fix */
 }
