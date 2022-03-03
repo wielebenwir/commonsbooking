@@ -4015,7 +4015,7 @@
   --litepickerDayColor: #000;
   --litepickerDayColorBg: var(--commonsbooking-color-success);
   --litepickerDayColorHover: var(--commonsbooking-color-secondary);
-  --litepickerDayIsTodayColor: var(--commonsbooking-color-cancel);
+  --litepickerDayIsTodayColor: #000;
   --litepickerDayIsInRange: #2096f3;
   --litepickerDayIsLockedColor: var(--commonsbooking-color-greyedout);
   --litepickerDayIsLockedColorBg: var(--commonsbooking-color-bg);
@@ -4039,29 +4039,30 @@
   --litepickerHighlightedDayColor: #333;
   --litepickerHighlightedDayBg: #ffeb3b;
   --litePickerDayBorderColor: #FFFFFF;
+  --litePickerDayTodayBorderColor: #9e9e9e;
 }
 
-/* line 52, ../sass/partials/_calendar.scss */
+/* line 53, ../sass/partials/_calendar.scss */
 .show-week-numbers {
   --litepickerMonthWidth: calc(var(--litepickerDayWidth) * 8);
 }
 
-/* line 56, ../sass/partials/_calendar.scss */
+/* line 57, ../sass/partials/_calendar.scss */
 .litepicker {
   font-size: 1.2em;
   display: none;
   width: 100%;
 }
-/* line 63, ../sass/partials/_calendar.scss */
+/* line 64, ../sass/partials/_calendar.scss */
 .litepicker a {
   text-decoration: none !important;
 }
-/* line 68, ../sass/partials/_calendar.scss */
+/* line 69, ../sass/partials/_calendar.scss */
 .litepicker .container__main {
   display: flex;
   justify-content: space-around;
 }
-/* line 73, ../sass/partials/_calendar.scss */
+/* line 74, ../sass/partials/_calendar.scss */
 .litepicker .container__months {
   background: transparent;
   box-shadow: none;
@@ -4071,30 +4072,30 @@
   width: calc(var(--litepickerMonthWidth) + 10px);
   box-sizing: content-box;
 }
-/* line 85, ../sass/partials/_calendar.scss */
+/* line 86, ../sass/partials/_calendar.scss */
 .litepicker .container__months.columns-2 {
   width: calc((var(--litepickerMonthWidth) * 2) + 20px);
 }
-/* line 89, ../sass/partials/_calendar.scss */
+/* line 90, ../sass/partials/_calendar.scss */
 .litepicker .container__months.columns-3 {
   width: calc((var(--litepickerMonthWidth) * 3) + 30px);
 }
-/* line 93, ../sass/partials/_calendar.scss */
+/* line 94, ../sass/partials/_calendar.scss */
 .litepicker .container__months.columns-4 {
   width: calc((var(--litepickerMonthWidth) * 4) + 40px);
 }
-/* line 100, ../sass/partials/_calendar.scss */
+/* line 101, ../sass/partials/_calendar.scss */
 .litepicker .container__months.split-view .month-item-header .button-previous-month,
 .litepicker .container__months.split-view .month-item-header .button-next-month {
   visibility: visible;
 }
-/* line 108, ../sass/partials/_calendar.scss */
+/* line 109, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item {
   padding: 5px;
   width: var(--litepickerMonthWidth);
   box-sizing: content-box;
 }
-/* line 113, ../sass/partials/_calendar.scss */
+/* line 114, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header {
   display: flex;
   justify-content: space-between;
@@ -4104,38 +4105,38 @@
   align-items: center;
   color: var(--litepickerMonthHeaderTextColor);
 }
-/* line 122, ../sass/partials/_calendar.scss */
+/* line 123, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header div {
   flex: 1;
 }
-/* line 125, ../sass/partials/_calendar.scss */
+/* line 126, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header div > .month-item-name {
   margin-right: 5px;
 }
-/* line 129, ../sass/partials/_calendar.scss */
+/* line 130, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header div > .month-item-year {
   padding: 0;
 }
-/* line 134, ../sass/partials/_calendar.scss */
+/* line 135, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .reset-button {
   display: none;
   color: var(--litepickerButtonResetBtn);
 }
-/* line 138, ../sass/partials/_calendar.scss */
+/* line 139, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .reset-button > svg,
 .litepicker .container__months .month-item-header .reset-button > img {
   fill: var(--litepickerButtonResetBtn);
   pointer-events: none;
 }
-/* line 144, ../sass/partials/_calendar.scss */
+/* line 145, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .reset-button:hover {
   color: var(--litepickerButtonResetBtnHover);
 }
-/* line 147, ../sass/partials/_calendar.scss */
+/* line 148, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .reset-button:hover > svg {
   fill: var(--litepickerButtonResetBtnHover);
 }
-/* line 153, ../sass/partials/_calendar.scss */
+/* line 154, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .button-previous-month,
 .litepicker .container__months .month-item-header .button-next-month {
   visibility: hidden;
@@ -4146,7 +4147,7 @@
   transition: color 0.3s, border 0.3s;
   cursor: default;
 }
-/* line 163, ../sass/partials/_calendar.scss */
+/* line 164, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .button-previous-month > svg,
 .litepicker .container__months .month-item-header .button-previous-month > img,
 .litepicker .container__months .month-item-header .button-next-month > svg,
@@ -4154,24 +4155,24 @@
   fill: var(--litepickerMonthButton);
   pointer-events: none;
 }
-/* line 169, ../sass/partials/_calendar.scss */
+/* line 170, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .button-previous-month:hover,
 .litepicker .container__months .month-item-header .button-next-month:hover {
   color: var(--litepickerMonthButtonHover);
 }
-/* line 172, ../sass/partials/_calendar.scss */
+/* line 173, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-header .button-previous-month:hover > svg,
 .litepicker .container__months .month-item-header .button-next-month:hover > svg {
   fill: var(--litepickerMonthButtonHover);
 }
-/* line 179, ../sass/partials/_calendar.scss */
+/* line 180, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-weekdays-row {
   display: flex;
   justify-self: center;
   justify-content: flex-start;
   color: var(--litepickerMonthWeekdayColor);
 }
-/* line 185, ../sass/partials/_calendar.scss */
+/* line 186, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item-weekdays-row > div {
   padding: 5px 0;
   font-size: 85%;
@@ -4179,23 +4180,23 @@
   width: var(--litepickerDayWidth);
   text-align: center;
 }
-/* line 195, ../sass/partials/_calendar.scss */
+/* line 196, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item:first-child .button-previous-month {
   visibility: visible;
 }
-/* line 201, ../sass/partials/_calendar.scss */
+/* line 202, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item:last-child .button-next-month {
   visibility: visible;
 }
-/* line 207, ../sass/partials/_calendar.scss */
+/* line 208, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item.no-previous-month .button-previous-month {
   visibility: hidden;
 }
-/* line 213, ../sass/partials/_calendar.scss */
+/* line 214, ../sass/partials/_calendar.scss */
 .litepicker .container__months .month-item.no-next-month .button-next-month {
   visibility: hidden;
 }
-/* line 220, ../sass/partials/_calendar.scss */
+/* line 221, ../sass/partials/_calendar.scss */
 .litepicker .container__days {
   display: flex;
   flex-wrap: wrap;
@@ -4204,7 +4205,7 @@
   text-align: center;
   box-sizing: content-box;
 }
-/* line 228, ../sass/partials/_calendar.scss */
+/* line 229, ../sass/partials/_calendar.scss */
 .litepicker .container__days > div,
 .litepicker .container__days > a {
   padding: 5px 0;
@@ -4213,7 +4214,7 @@
   border-width: 1px;
   text-decoration: none;
 }
-/* line 237, ../sass/partials/_calendar.scss */
+/* line 238, ../sass/partials/_calendar.scss */
 .litepicker .container__days .day-item {
   color: var(--litepickerDayColor);
   border-style: solid;
@@ -4239,7 +4240,7 @@
   background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
   background-size: 5px 5px;
 }
-/* line 92, ../sass/mixins/_calendar.scss */
+/* line 93, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-holiday:hover {
   cursor: not-allowed;
   box-shadow: none;
@@ -4249,13 +4250,13 @@
   color: var(--litepickerDayIsBookedColor);
   background-color: var(--litepickerDayIsBookedColorBg);
 }
-/* line 134, ../sass/mixins/_calendar.scss */
+/* line 135, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-booked:hover {
   color: var(--litepickerDayIsBookedColor);
   box-shadow: none;
   cursor: default;
 }
-/* line 140, ../sass/mixins/_calendar.scss */
+/* line 141, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-booked.last-slot {
   background: linear-gradient(to bottom right, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
@@ -4264,7 +4265,7 @@
   color: var(--litepickerDayIsPartiallyLockedColor);
   background: linear-gradient(to bottom right, var(--litepickerDayIsPartiallyLockedColorBgOne) 0%, var(--litepickerDayIsPartiallyLockedColorBgOne) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 100%);
 }
-/* line 117, ../sass/mixins/_calendar.scss */
+/* line 118, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-partially-booked:hover {
   cursor: pointer;
   color: var(--litepickerDayIsPartiallyLockedColor);
@@ -4284,7 +4285,7 @@
   color: var(--litepickerDayIsLockedColor);
   background: var(--litepickerDayIsLockedColorBg) !important;
 }
-/* line 155, ../sass/mixins/_calendar.scss */
+/* line 156, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-locked:hover {
   cursor: not-allowed;
   color: var(--litepickerDayIsLockedColor);
@@ -4298,44 +4299,45 @@
 }
 /* line 48, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-today {
-  border-color: var(--litePickerDayTodayBorderColor);
-  border-style: solid;
-  border-width: 1px;
-  box-sizing: border-box;
+  box-shadow: 0px 0px 0px 1px var(--litePickerDayTodayBorderColor) inset;
 }
-/* line 55, ../sass/mixins/_calendar.scss */
+/* line 51, ../sass/mixins/_calendar.scss */
+.litepicker .container__days .day-item.is-today:hover {
+  box-shadow: inset 0 0 0 1px var(--litepickerDayColorHover);
+}
+/* line 56, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-start-date {
   color: var(--litepickerDayIsStartColor);
   background: var(--litepickerDayIsStartBg) !important;
   background-color: var(--litepickerDayIsStartBg);
   border-radius: 0px 0 0 0px;
 }
-/* line 61, ../sass/mixins/_calendar.scss */
+/* line 62, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-start-date.is-flipped {
   border-radius: 0 0px 0px 0;
 }
-/* line 66, ../sass/mixins/_calendar.scss */
+/* line 67, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-end-date {
   color: var(--litepickerDayIsEndColor);
   background: var(--litepickerDayIsEndBg) !important;
   background-color: var(--litepickerDayIsEndBg);
   border-radius: 0 0px 0px 0;
 }
-/* line 72, ../sass/mixins/_calendar.scss */
+/* line 73, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-end-date.is-flipped {
   border-radius: 0px 0 0 0px;
 }
-/* line 77, ../sass/mixins/_calendar.scss */
+/* line 78, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-start-date.is-end-date {
   border-radius: 0px;
 }
-/* line 81, ../sass/mixins/_calendar.scss */
+/* line 82, ../sass/mixins/_calendar.scss */
 .litepicker .container__days .day-item.is-highlighted {
   color: var(--litepickerHighlightedDayColor);
   background: var(--litepickerHighlightedDayBg) !important;
   background-color: var(--litepickerHighlightedDayBg);
 }
-/* line 241, ../sass/partials/_calendar.scss */
+/* line 242, ../sass/partials/_calendar.scss */
 .litepicker .container__days .week-number {
   display: flex;
   align-items: center;
@@ -4343,7 +4345,7 @@
   color: #9e9e9e;
   font-size: 85%;
 }
-/* line 250, ../sass/partials/_calendar.scss */
+/* line 251, ../sass/partials/_calendar.scss */
 .litepicker .container__footer {
   text-align: right;
   padding: 10px 5px;
@@ -4353,12 +4355,12 @@
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-/* line 259, ../sass/partials/_calendar.scss */
+/* line 260, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .preview-date-range {
   margin-right: 10px;
   font-size: 90%;
 }
-/* line 264, ../sass/partials/_calendar.scss */
+/* line 265, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .button-cancel {
   background-color: var(--litepickerButtonCancelBg);
   color: var(--litepickerButtonCancelColor);
@@ -4366,12 +4368,12 @@
   padding: 3px 7px 4px;
   border-radius: 3px;
 }
-/* line 271, ../sass/partials/_calendar.scss */
+/* line 272, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .button-cancel > svg,
 .litepicker .container__footer .button-cancel > img {
   pointer-events: none;
 }
-/* line 277, ../sass/partials/_calendar.scss */
+/* line 278, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .button-apply {
   background-color: var(--litepickerButtonApplyBg);
   color: var(--litepickerButtonApplyColor);
@@ -4381,16 +4383,16 @@
   margin-left: 10px;
   margin-right: 10px;
 }
-/* line 286, ../sass/partials/_calendar.scss */
+/* line 287, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .button-apply:disabled {
   opacity: 0.7;
 }
-/* line 290, ../sass/partials/_calendar.scss */
+/* line 291, ../sass/partials/_calendar.scss */
 .litepicker .container__footer .button-apply > svg,
 .litepicker .container__footer .button-apply > img {
   pointer-events: none;
 }
-/* line 297, ../sass/partials/_calendar.scss */
+/* line 298, ../sass/partials/_calendar.scss */
 .litepicker .container__tooltip {
   position: absolute;
   margin-top: -4px;
@@ -4403,7 +4405,7 @@
   pointer-events: none;
   visibility: hidden;
 }
-/* line 309, ../sass/partials/_calendar.scss */
+/* line 310, ../sass/partials/_calendar.scss */
 .litepicker .container__tooltip:before {
   position: absolute;
   bottom: -5px;
@@ -4413,7 +4415,7 @@
   border-left: 5px solid transparent;
   content: "";
 }
-/* line 319, ../sass/partials/_calendar.scss */
+/* line 320, ../sass/partials/_calendar.scss */
 .litepicker .container__tooltip:after {
   position: absolute;
   bottom: -4px;
@@ -4423,11 +4425,11 @@
   border-left: 4px solid transparent;
   content: "";
 }
-/* line 331, ../sass/partials/_calendar.scss */
+/* line 332, ../sass/partials/_calendar.scss */
 .litepicker-open {
   overflow: hidden;
 }
-/* line 335, ../sass/partials/_calendar.scss */
+/* line 336, ../sass/partials/_calendar.scss */
 .litepicker-backdrop {
   display: none;
   background-color: #000;
@@ -4439,26 +4441,26 @@
   left: 0;
 }
 
-/* line 349, ../sass/partials/_calendar.scss */
+/* line 350, ../sass/partials/_calendar.scss */
 #booking-form #fullDayInfo {
   clear: left;
 }
-/* line 353, ../sass/partials/_calendar.scss */
+/* line 354, ../sass/partials/_calendar.scss */
 #booking-form span.restrictions {
   width: 100% !important;
 }
-/* line 357, ../sass/partials/_calendar.scss */
+/* line 358, ../sass/partials/_calendar.scss */
 #booking-form span.restrictions li {
   margin-top: 1em;
 }
-/* line 364, ../sass/partials/_calendar.scss */
+/* line 365, ../sass/partials/_calendar.scss */
 #booking-form #resetPicker {
   font-size: var(--commonsbooking-font-size-normal);
   padding: var(--commonsbooking-spacer-small);
   display: none;
   cursor: pointer;
 }
-/* line 371, ../sass/partials/_calendar.scss */
+/* line 372, ../sass/partials/_calendar.scss */
 #booking-form #calendarNotice {
   display: none;
   font-size: var(--commonsbooking-font-size-normal);
@@ -5096,7 +5098,7 @@
   background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
   background-size: 5px 5px;
 }
-/* line 92, ../sass/mixins/_calendar.scss */
+/* line 93, ../sass/mixins/_calendar.scss */
 .cb-items-table td > span.is-holiday:hover {
   cursor: not-allowed;
   box-shadow: none;
@@ -5106,13 +5108,13 @@
   color: var(--litepickerDayIsBookedColor);
   background-color: var(--litepickerDayIsBookedColorBg);
 }
-/* line 134, ../sass/mixins/_calendar.scss */
+/* line 135, ../sass/mixins/_calendar.scss */
 .cb-items-table td > span.is-booked:hover {
   color: var(--litepickerDayIsBookedColor);
   box-shadow: none;
   cursor: default;
 }
-/* line 140, ../sass/mixins/_calendar.scss */
+/* line 141, ../sass/mixins/_calendar.scss */
 .cb-items-table td > span.is-booked.last-slot {
   background: linear-gradient(to bottom right, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
@@ -5121,7 +5123,7 @@
   color: var(--litepickerDayIsPartiallyLockedColor);
   background: linear-gradient(to bottom right, var(--litepickerDayIsPartiallyLockedColorBgOne) 0%, var(--litepickerDayIsPartiallyLockedColorBgOne) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 100%);
 }
-/* line 117, ../sass/mixins/_calendar.scss */
+/* line 118, ../sass/mixins/_calendar.scss */
 .cb-items-table td > span.is-partially-booked:hover {
   cursor: pointer;
   color: var(--litepickerDayIsPartiallyLockedColor);
@@ -5141,7 +5143,7 @@
   color: var(--litepickerDayIsLockedColor);
   background: var(--litepickerDayIsLockedColorBg) !important;
 }
-/* line 155, ../sass/mixins/_calendar.scss */
+/* line 156, ../sass/mixins/_calendar.scss */
 .cb-items-table td > span.is-locked:hover {
   cursor: not-allowed;
   color: var(--litepickerDayIsLockedColor);

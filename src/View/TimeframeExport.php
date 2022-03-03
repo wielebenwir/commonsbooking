@@ -151,8 +151,8 @@ class TimeframeExport {
 			$start     = date( 'd.m.Y' );
 			$end       = date( 'd.m.Y', strtotime( '+' . $timerange . ' day' ) );
 		} else {
-			$start = Wordpress::isValidDateString( $_REQUEST['export-timerange-start'] );
-			$end   = Wordpress::isValidDateString( $_REQUEST['export-timerange-end'] );
+			$start = commonsbooking_sanitizeHTML( $_REQUEST['export-timerange-start'] );
+			$end   = commonsbooking_sanitizeHTML( $_REQUEST['export-timerange-end'] );
 		}
 
 		// Timerange
