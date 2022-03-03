@@ -101,6 +101,31 @@
             font-size: small;
             line-height: 1.5;
         }
+
+        #calendar-footnote-colorkey {
+
+            .colorkey-square {
+                width:25px;
+                height:25px;
+                display:inline-block;
+            }
+
+            .colorkey-accept {
+                background-color: var(--commonsbooking-color-accept);
+            }
+            
+            .colorkey-cancel {
+                background-color: var(--commonsbooking-color-cancel);
+            }
+
+            .colorkey-holiday {
+                background-color: var(--commonsbooking-color-holiday)
+            }
+
+            .colorkey-greyedout {
+                background-color: var(--commonsbooking-color-greyedout);
+            }
+        }
     }
 
     #booking-form {
