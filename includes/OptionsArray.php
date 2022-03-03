@@ -437,10 +437,10 @@ Thanks, the Team.
 				'desc'   => '',
 				'fields' => array(
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Base color (used in headings)', 'commonsbooking' ) ),
+						'name'    => commonsbooking_sanitizeHTML( __( 'Base color', 'commonsbooking' ) ),
 						'id'      => 'colorscheme_primarycolor',
 						'type'    => 'colorpicker',
-						'desc'    => commonsbooking_sanitizeHTML( __( 'Defines the image width of small images in location and item listings', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'Defines the color that is used in headings and buttons', 'commonsbooking' ) ),
 						'default' => '#84AE53',
 					),
 					array(
