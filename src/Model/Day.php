@@ -2,6 +2,8 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Helper\Wordpress;
+use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use DateTime;
 use Exception;
@@ -113,11 +115,14 @@ class Day {
 			);
 
 			// check if user is allowed to book this timeframe and remove unallowed timeframes from array
+			// OR: Check for repetition timeframe selected days
 			foreach ( $timeFrames as $key => $timeframe ) {
-				if ( ! commonsbooking_isCurrentUserAllowedToBook( $timeframe->ID ) ) {
+				if ( ! commonsbooking_isCurrentUserAllowedToBook( $timeframe->ID ) ||
+				     ! $this->isInTimeframe( $timeframe )) {
 					unset( $timeFrames[ $key ] );
 				}
 			}
+
 			$this->timeframes = $timeFrames;
 		}
 
@@ -334,15 +339,20 @@ class Day {
 						return false;
 					}
 				case "norep":
-					$timeframeStartTimestamp = $timeframe->getStartDate();
-					$timeframeEndTimestamp   = $timeframe->getEndDate();
-					$currentDayTimestamp     = $this->getDateObject()->getTimestamp();
+					$timeframeStartTimestamp = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ));
+					$timeframeEndTimestamp   = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ));
 
-					return $currentDayTimestamp >= $timeframeStartTimestamp
-					       && (
-						       ( ! $timeframeEndTimestamp && $currentDayTimestamp == $timeframeStartTimestamp ) ||
-						       ( $currentDayTimestamp <= $timeframeEndTimestamp )
-					       );
+					$currentDayStartTimestamp = strtotime('midnight', $this->getDateObject()->getTimestamp());
+					$currentDayEndTimestamp = strtotime('+1 day midnight', $this->getDateObject()->getTimestamp()) - 1;
+
+					$timeframeStartsBeforeEndOfToday = $timeframeStartTimestamp <= $currentDayEndTimestamp;
+					$timeframeEndsAfterStartOfToday = $timeframeEndTimestamp >= $currentDayStartTimestamp;
+
+					if(!$timeframeEndTimestamp) {
+						return $timeframeStartsBeforeEndOfToday;
+					} else {
+						return $timeframeStartsBeforeEndOfToday && $timeframeEndsAfterStartOfToday;
+					}
 			}
 		}
 
@@ -363,11 +373,6 @@ class Day {
 		// Iterate through timeframes and fill slots
 		/** @var \CommonsBooking\Model\Timeframe $timeframe */
 		foreach ( $this->getTimeframes() as $timeframe ) {
-			// Check for repetition timeframe selected days
-			if ( ! $this->isInTimeframe( $timeframe ) ) {
-				continue;
-			}
-
 			// Slots
 			$startSlot = $this->getStartSlot( $grid, $timeframe );
 			$endSlot   = $this->getEndSlot( $slots, $grid, $timeframe );
@@ -478,24 +483,36 @@ class Day {
 	 * @throws Exception
 	 */
 	protected function getTimeframeSlots(): array {
-		$slots       = [];
-		$slotsPerDay = 24;
+		$customCacheKey = $this->getDate() . serialize( $this->items ) . serialize( $this->locations );
+		$customCacheKey = md5( $customCacheKey );
+		if ( Plugin::getCacheItem( $customCacheKey ) ) {
+			return Plugin::getCacheItem( $customCacheKey );
+		} else {
+			$slots       = [];
+			$slotsPerDay = 24;
 
-		// Init Slots
-		for ( $i = 0; $i < $slotsPerDay; $i ++ ) {
-			$slots[ $i ] = [
-				'timestart'      => date( esc_html(get_option( 'time_format' )), $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
-				'timeend'        => date( esc_html(get_option( 'time_format' )), ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
-				'timestampstart' => $this->getSlotTimestampStart( $slotsPerDay, $i ),
-				'timestampend'   => $this->getSlotTimestampEnd( $slotsPerDay, $i )
-			];
+			// Init Slots
+			for ( $i = 0; $i < $slotsPerDay; $i ++ ) {
+				$slots[ $i ] = [
+					'timestart'      => date( esc_html(get_option( 'time_format' )), $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+					'timeend'        => date( esc_html(get_option( 'time_format' )), ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+					'timestampstart' => $this->getSlotTimestampStart( $slotsPerDay, $i ),
+					'timestampend'   => $this->getSlotTimestampEnd( $slotsPerDay, $i )
+				];
+			}
+
+			$this->mapTimeFrames( $slots );
+			$this->mapRestrictions( $slots );
+			$this->sanitizeSlots( $slots );
+
+			Plugin::setCacheItem(
+				$slots,
+				Wordpress::getPostIdArray($this->getTimeframes()),
+				$customCacheKey
+			);
+
+			return $slots;
 		}
-
-		$this->mapTimeFrames( $slots );
-		$this->mapRestrictions( $slots );
-		$this->sanitizeSlots( $slots );
-
-		return $slots;
 	}
 
 	/**

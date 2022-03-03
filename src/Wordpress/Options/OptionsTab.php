@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Wordpress\Options;
 
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\TimeframeExport;
 use Exception;
 
@@ -143,6 +144,7 @@ class OptionsTab {
 				}
 			}
 		}
+
 
 		// we set transient to be able to flush rewrites at an ini hook in Plugin.php to set permalinks properly
 		set_transient( 'commonsbooking_options_saved', 1 );

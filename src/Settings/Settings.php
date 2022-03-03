@@ -102,4 +102,5 @@ class Settings {
 
 		return $result;
 	}
+
 }

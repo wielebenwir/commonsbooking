@@ -4,14 +4,23 @@ use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\Migration\Migration;
 use CommonsBooking\View\Booking;
 use CommonsBooking\View\Calendar;
+use CommonsBooking\View\View;
+
 
 function commonsbooking_public() {
+
+
 	wp_enqueue_style(
 		'cb-styles-public',
 		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/css/public.css',
 		array(),
 		WP_DEBUG ? time() : COMMONSBOOKING_VERSION
 	);
+
+	$colorScheme_css = View::getColorCSS();
+	if ($colorScheme_css) { //if custom color variables exist, import them after importing the rest of the CSS, overwriting existing defaults
+		wp_add_inline_style('cb-styles-public',$colorScheme_css);
+	}
 
 	// Template specific styles
 	$template = wp_get_theme()->template;
@@ -125,6 +134,17 @@ function commonsbooking_public() {
 		)
 	);
 
+	/**
+	 * Ajax - cache warmup
+	 */
+	wp_localize_script(
+		'cb-scripts-public',
+		'cb_ajax_cache_warmup',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cache_warmup' ),
+		)
+	);
 }
 
 add_action( 'wp_enqueue_scripts', 'commonsbooking_public' );
@@ -135,6 +155,9 @@ add_action( 'wp_ajax_nopriv_calendar_data', array( Calendar::class, 'getCalendar
 
 add_action( 'wp_ajax_bookings_data', array( Booking::class, 'getTemplateData' ) );
 add_action( 'wp_ajax_nopriv_bookings_data', array( Booking::class, 'getTemplateData' ) );
+
+add_action( 'wp_ajax_cache_warmup', array( \CommonsBooking\Plugin::class, 'warmupCache' ) );
+add_action( 'wp_ajax_nopriv_cache_warmup', array( \CommonsBooking\Plugin::class, 'warmupCache' ) );
 
 if ( is_admin() ) {
 	add_action( 'wp_ajax_start_migration', array( Migration::class, 'migrateAll' ) );

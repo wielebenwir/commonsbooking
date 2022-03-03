@@ -3310,13 +3310,40 @@
  * Layout variables
  */
 /* Colors: CB Brand */
-/* Colors: Theme */
-/* Colors: Backgrounds */
 /* Colors: text */
+/* Colors: Theme, can be modified by user */
+/* Colors: Backgrounds */
 /* Colors: Message statuses */
 /* Font sizes */
 /* Layout Variables */
 /* Fonts */
+/* line 72, ../../global/sass/partials/_variables.scss */
+:root {
+  --commonsbooking-color-primary: #A3BC55;
+  --commonsbooking-color-secondary: #506CA9;
+  --commonsbooking-color-accept: #74ce3c;
+  --commonsbooking-color-cancel: #d5425c;
+  --commonsbooking-color-holiday: #ff9218;
+  --commonsbooking-color-greyedout: #c4c4c4;
+  --commonsbooking-color-bg: #f6f6f6;
+  --commonsbooking-color-noticebg: #FFF9C5;
+  --commonsbooking-color-gray-background: #f6f6f6;
+  --commonsbooking-color-gray-border: #f6f6f6;
+  --commonsbooking-color-error: #d5425c;
+  --commonsbooking-color-success: #74ce3c;
+  --commonsbooking-color-warning: #ff9218;
+  --commonsbooking-font-size-small: 12px;
+  --commonsbooking-font-line-height-small: 13px;
+  --commonsbooking-font-size-normal: 14px;
+  --commonsbooking-font-size-big: 18px;
+  --commonsbooking-font-size-huge: 24px;
+  --commonsbooking-spacer-big: 15px;
+  --commonsbooking-spacer: 10px;
+  --commonsbooking-spacer-small: 5px;
+  --commonsbooking-radius: 8px;
+  --commonsbooking-radius-pill: 8px;
+}
+
 /* Mixins */
 /**
  * Framework mixins
@@ -3341,36 +3368,36 @@
 /* -------------------- Boxes -------------------- */
 /* line 15, ../../global/sass/partials/_extends.scss */
 .cb-box, .cb-admin-page .cb-admin-cols div ul li {
-  background: #f6f6f6;
-  padding: 2.5px 5px;
+  background: var(--commonsbooking-color-gray-background);
+  padding: var(--commonsbooking-spacer-small)/2 var(--commonsbooking-spacer-small);
   overflow: hidden;
-  border-radius: 8px;
-  margin-bottom: 10px;
+  border-radius: var(--commonsbooking-radius);
+  margin-bottom: var(--commonsbooking-spacer);
 }
 @media (min-width: 37.5em) {
   /* line 15, ../../global/sass/partials/_extends.scss */
   .cb-box, .cb-admin-page .cb-admin-cols div ul li {
-    padding: 10px 15px;
+    padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
   }
 }
 
 /* line 28, ../../global/sass/partials/_extends.scss */
 .cb-box-inner {
   background: #FFF;
-  padding: 5px;
-  border-radius: 8px;
+  padding: var(--commonsbooking-spacer-small);
+  border-radius: var(--commonsbooking-radius);
 }
 @media (min-width: 37.5em) {
   /* line 28, ../../global/sass/partials/_extends.scss */
   .cb-box-inner {
-    padding: 10px;
+    padding: var(--commonsbooking-spacer);
   }
 }
 
 /* -------------------- Typography -------------------- */
 /* line 41, ../../global/sass/partials/_extends.scss */
 .cb-big {
-  font-size: 18px;
+  font-size: var(--commonsbooking-font-size-big);
   font-weight: bold;
 }
 
@@ -3388,21 +3415,21 @@
 /* line 56, ../../global/sass/partials/_extends.scss */
 .cb-hover {
   border: 1px solid #506CA9;
-  border-radius: 8px;
+  border-radius: var(--commonsbooking-radius);
 }
 
 /* line 62, ../../global/sass/partials/_extends.scss */
 .cb-thumbnail {
-  border-radius: 8px;
+  border-radius: var(--commonsbooking-radius);
 }
 
 /* -------------------- Buttons -------------------- */
 /* line 68, ../../global/sass/partials/_extends.scss */
 .cb-button, .cb-button-container a {
-  border-radius: 8px;
-  font-size: 14px;
-  line-height: 14px;
-  background-color: #74ce3c;
+  border-radius: var(--commonsbooking-radius);
+  font-size: var(--commonsbooking-font-size-normal);
+  line-height: var(--commonsbooking-font-size-normal);
+  background-color: var(--commonsbooking-color-success);
   border: none !important;
   /* TwentyFifteen theme fix */
   text-decoration: none !important;
@@ -3410,13 +3437,13 @@
   /* TwentyTwenty theme fix */
   white-space: nowrap;
   color: #FFF;
-  padding: 10px 15px;
+  padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
   font-weight: bold;
 }
 /* line 81, ../../global/sass/partials/_extends.scss */
 .cb-button.small, .cb-button-container a.small {
-  padding: 10px;
-  font-size: 12px;
+  padding: var(--commonsbooking-spacer);
+  font-size: var(--commonsbooking-font-size-small);
 }
 /* line 86, ../../global/sass/partials/_extends.scss */
 .cb-button:hover, .cb-button-container a:hover {
@@ -3430,44 +3457,44 @@
 }
 /* line 96, ../../global/sass/partials/_extends.scss */
 .cb-button.big, .cb-button-container a.big {
-  padding: 10px 15px;
-  font-size: 18px;
-  line-height: 18px;
+  padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
+  font-size: var(--commonsbooking-font-size-big);
+  line-height: var(--commonsbooking-font-size-big);
 }
 /* line 101, ../../global/sass/partials/_extends.scss */
 .cb-button.secondary, .cb-button-container a.secondary {
   background-color: #FFF;
-  color: #d5425c;
+  color: var(--commonsbooking-color-error);
 }
 /* line 106, ../../global/sass/partials/_extends.scss */
 .cb-button.cancel, .cb-button-container a.cancel {
-  background-color: #d5425c;
+  background-color: var(--commonsbooking-color-error);
 }
 /* line 110, ../../global/sass/partials/_extends.scss */
 .cb-button.confirm, .cb-button-container a.confirm {
-  background-color: #74ce3c;
+  background-color: var(--commonsbooking-color-success);
 }
 /* line 114, ../../global/sass/partials/_extends.scss */
 .cb-button.delete, .cb-button-container a.delete {
-  background-color: #d5425c;
+  background-color: var(--commonsbooking-color-error);
 }
 /* line 118, ../../global/sass/partials/_extends.scss */
 .cb-button[disabled=disabled], .cb-button-container a[disabled=disabled] {
-  background-color: #c4c4c4;
-  color: white;
+  background-color: var(--commonsbooking-color-bg);
+  color: var(--commonsbooking-color-greyedout);
 }
 /* line 123, ../../global/sass/partials/_extends.scss */
 .cb-button.no-right-radius, .cb-button-container a.no-right-radius {
-  border-radius: 8px 0;
+  border-radius: var(--commonsbooking-radius) 0;
 }
 /* line 126, ../../global/sass/partials/_extends.scss */
 .cb-button.no-left-radius, .cb-button-container a.no-left-radius {
-  border-radius: 0 8px;
+  border-radius: 0 var(--commonsbooking-radius);
 }
 
 /* line 134, ../../global/sass/partials/_extends.scss */
 .cb-pill {
-  border-radius: 8px;
+  border-radius: var(--commonsbooking-radius-pill);
   padding: 0;
   margin: 0;
 }
@@ -3475,7 +3502,7 @@
 .cb-pill a {
   text-decoration: none;
   color: #FFF;
-  padding: 5px 10px;
+  padding: var(--commonsbooking-spacer-small) var(--commonsbooking-spacer);
 }
 
 /* Utilites */
@@ -6072,22 +6099,22 @@ select[readonly] {
 
 /* line 24, ../sass/partials/_plugin_update.scss */
 .notice-success .cb-major-update-warning__separator {
-  border: 1px solid #46b450;
+  border: 1px solid var(--commonsbooking-color-success);
 }
 
 /* line 27, ../sass/partials/_plugin_update.scss */
 .notice-success .cb-major-update-warning__icon {
-  color: #79ba49;
+  color: var(--commonsbooking-color-success);
 }
 
 /* line 30, ../sass/partials/_plugin_update.scss */
 .notice-warning .cb-major-update-warning__separator {
-  border: 1px solid #ffb900;
+  border: 1px solid var(--commonsbooking-color-warning);
 }
 
 /* line 33, ../sass/partials/_plugin_update.scss */
 .notice-warning .cb-major-update-warning__icon {
-  color: #00b963;
+  color: var(--commonsbooking-color-success);
 }
 
 /*# sourceMappingURL=admin.css.map */

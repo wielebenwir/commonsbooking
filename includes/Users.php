@@ -234,13 +234,14 @@ function commonsbooking_isCurrentUserCBManager() {
  * @return bool
  */
 function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ) {
-	$current_user     = wp_get_current_user();
-	$user_roles       = $current_user->roles;
 	$allowedUserRoles = get_post_meta( $timeframeID, 'allowed_user_roles', true );
 
-	if ( empty( $allowedUserRoles ) ) {
+	if ( empty( $allowedUserRoles ) || ( current_user_can('administrator') ) ) {
 		return true;
 	}
+
+	$current_user     = wp_get_current_user();
+	$user_roles       = $current_user->roles;
 
 	$match = array_intersect( $user_roles, $allowedUserRoles );
 

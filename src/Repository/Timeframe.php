@@ -43,6 +43,42 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
+	 * Returns only bookable timeframes for current user.
+	 *
+	 * @param array $locations
+	 * @param array $items
+	 * @param string|null $date
+	 * @param bool $returnAsModel
+	 * @param $minTimestamp
+	 * @param array $postStatus
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public static function getBookableForCurrentUser(
+		array $locations = [],
+		array $items = [],
+		?string $date = null,
+		bool $returnAsModel = false,
+		$minTimestamp = null,
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+	): array {
+
+		$bookableTimeframes = self::getBookable(
+			$locations,
+			$items,
+			$date,
+			$returnAsModel,
+			$minTimestamp,
+			$postStatus
+		);
+		
+		$bookableTimeframes = self::filterTimeframesForCurrentUser($bookableTimeframes);
+
+		return $bookableTimeframes;
+	}
+
+	/**
 	 * Function to get timeframes with all possible options/params.
 	 * Why? We have different types of timeframes and in some cases we need multiple of them.
 	 *      In this case we need this function.
@@ -111,7 +147,11 @@ class Timeframe extends PostRepository {
 				self::castPostsToModels( $posts );
 			}
 
-			Plugin::setCacheItem( $posts, $customId );
+			Plugin::setCacheItem(
+				$posts,
+				array_unique(array_merge(Wordpress::getPostIdArray($posts), $items, $locations)),
+				$customId
+			);
 			return $posts;
 		}
 	}
@@ -191,16 +231,20 @@ class Timeframe extends PostRepository {
             ";
 
 			// Run query
-			$posts = $wpdb->get_results( $query, ARRAY_N );
+			$postIds = $wpdb->get_results( $query, ARRAY_N );
 
 			// Get Post-IDs
-			foreach ( $posts as &$post ) {
+			foreach ( $postIds as &$post ) {
 				$post = $post[0];
 			}
 
-			Plugin::setCacheItem( $posts, $customId );
+			Plugin::setCacheItem(
+				$postIds,
+				array_unique(array_merge($postIds, $items, $locations)),
+				$customId
+			);
 
-			return $posts;
+			return $postIds;
 		}
 	}
 
@@ -250,10 +294,15 @@ class Timeframe extends PostRepository {
                         pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
                 ";
 
-			$posts = $wpdb->get_results( $query, ARRAY_N );
+			$posts = $wpdb->get_results( $query );
 			$posts = Wordpress::flattenWpdbResult( $posts );
 
-			Plugin::setCacheItem( $posts );
+			Plugin::setCacheItem( $posts, array_unique(
+				array_merge(
+					Wordpress::getPostIdArray($posts),
+					$postIds
+				)
+			));
 
 			return $posts;
 		}
@@ -405,7 +454,7 @@ class Timeframe extends PostRepository {
 				} );
 			}
 
-			Plugin::setCacheItem($posts);
+			Plugin::setCacheItem($posts, Wordpress::getPostIdArray($posts));
 			return $posts;
 		}
 	}
@@ -433,6 +482,26 @@ class Timeframe extends PostRepository {
 			}
 
 			return true;
+		} );
+	}
+
+	/**
+	 * Filters timeframes from array, 
+	 * removes timeframes which are not bookable by current user
+	 *
+	 * @param $posts
+	 *
+	 * @return array
+	 */
+	private static function filterTimeframesForCurrentUser( $posts ): array {
+		return array_filter( $posts, function ( $post ) {
+			try {
+				return commonsbooking_isCurrentUserAllowedToBook( $post->ID );
+			} catch ( Exception $e ) {
+				error_log( $e->getMessage() );
+
+				return false;
+			}
 		} );
 	}
 
@@ -475,8 +544,8 @@ class Timeframe extends PostRepository {
 			return Plugin::getCacheItem();
 		} else {
 			$time_format        = esc_html(get_option( 'time_format' ));
-			$startTimestampTime = date( $time_format, intval( $timestamp ) );
-			$endTimestampTime   = date( $time_format, intval( $timestamp ) + 1 );
+			$startTimestampTime = date( $time_format, $timestamp );
+			$endTimestampTime   = date( $time_format, $timestamp + 1 );
 
 			$relevantTimeframes = self::getInRange(
 				$timestamp,
@@ -493,7 +562,7 @@ class Timeframe extends PostRepository {
 					date( $time_format, strtotime( $timeframe->getStartTime() ) ) == $startTimestampTime ||
 					date( $time_format, strtotime( $timeframe->getEndTime() ) ) == $endTimestampTime
 				) {
-					Plugin::setCacheItem( $timeframe );
+					Plugin::setCacheItem( $timeframe, [$timeframe->ID, $itemId, $locationId] );
 
 					return $timeframe;
 				}
@@ -508,12 +577,12 @@ class Timeframe extends PostRepository {
 	 * Why? We often need timeframes for a specific timerange. For example in the calendar the default range is
 	 *      three months. Another example is the table view.
 	 *
+	 * @param $minTimestamp
+	 * @param $maxTimestamp
 	 * @param array $locations
 	 * @param array $items
 	 * @param array $types
 	 * @param false $returnAsModel
-	 * @param $minTimestamp
-	 * @param $maxTimestamp
 	 * @param string[] $postStatus
 	 *
 	 * @return array
@@ -564,10 +633,43 @@ class Timeframe extends PostRepository {
 				}
 			}
 
-			Plugin::setCacheItem( $posts, $customId );
+			Plugin::setCacheItem(
+				$posts,
+				array_unique( array_merge( Wordpress::getPostIdArray( $posts ), $locations, $items ) ),
+				$customId
+			);
 
 			return $posts;
 		}
 	}
 
+	/**
+	 * Returns timeframes in explicit timerange that are bookable by the current user.
+	 *
+	 * @param $minTimestamp
+	 * @param $maxTimestamp
+	 * @param array $locations
+	 * @param array $items
+	 * @param array $types
+	 * @param false $returnAsModel
+	 * @param string[] $postStatus
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+
+	 public static function getInRangeForCurrentUser(
+		$minTimestamp,
+		$maxTimestamp,
+		array $locations = [],
+		array $items = [],
+		array $types = [],
+		bool $returnAsModel = false,
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+	): array {
+		$bookableTimeframes = self::getInRange($minTimestamp,$maxTimestamp,$locations,$items,$types,$returnAsModel,$postStatus);
+		
+		$bookableTimeframes = self::filterTimeframesForCurrentUser($bookableTimeframes);
+		return $bookableTimeframes;
+	}
 }

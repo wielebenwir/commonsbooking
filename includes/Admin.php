@@ -23,7 +23,7 @@ function commonsbooking_admin() {
 	// CB 0.X migration
 	wp_localize_script(
 		'cb-scripts-admin',
-		'cb_ajax',
+		'cb_ajax_start_migration',
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce'    => wp_create_nonce( 'start_migration' ),
@@ -33,15 +33,26 @@ function commonsbooking_admin() {
 	// CB 2 bookings migration - from timeframe to separate cpt
 	wp_localize_script(
 		'cb-scripts-admin',
-		'cb_ajax',
+		'cb_ajax_start_booking_migration',
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce'    => wp_create_nonce( 'start_booking_migration' ),
 		)
 	);
+	/**
+	 * Ajax - cache warmup
+	 */
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_cache_warmup',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cache_warmup' ),
+		)
+	);
 }
 
-	add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
+add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
 
 /**
  * commonsbooking_sanitizeHTML
