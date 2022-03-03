@@ -18,7 +18,7 @@
         text-align: center;
 
         td a {
-            color: #84AE53;
+            color: var(--commonsbooking-color-accept);
         }
     }
 
@@ -39,7 +39,7 @@
     }
 
     .ui-corner-all {
-        color: #84AE53;
+        color: var(--commonsbooking-color-accept);
     }
 }
 

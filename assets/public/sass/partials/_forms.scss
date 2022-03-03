@@ -68,7 +68,7 @@
             &#cb-booking-form-set-cancelled { // cancel OR delete button
                 input {
                     background: transparent;
-                    color: $color-gray-silver;
+                    color: var(--commonsbooking-color-greyedout);
 
                 }
             }
