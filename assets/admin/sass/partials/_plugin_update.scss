@@ -22,14 +22,14 @@
       display: none; }
 
     .notice-success .cb-major-update-warning__separator {
-    border: 1px solid #46b450; }
+    border: 1px solid var(--commonsbooking-color-success); }
     
     .notice-success .cb-major-update-warning__icon {
-    color: #79ba49; }
+    color: var(--commonsbooking-color-success); }
     
     .notice-warning .cb-major-update-warning__separator {
-    border: 1px solid #ffb900; }
+    border: 1px solid var(--commonsbooking-color-warning); }
     
     .notice-warning .cb-major-update-warning__icon {
-    color: #00b963; }
+    color: var(--commonsbooking-color-success); }
       

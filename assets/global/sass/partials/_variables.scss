@@ -10,35 +10,44 @@
 /* Colors: CB Brand */
 $color-green-bright: #A3BC55;
 $color-green-dark: #84AE53;
+$color-green-neon: #74ce3c;
 $color-blue-dark: #506CA9;
+$color-yellow: #FFF9C5;
+$color-gray: #f6f6f6;
 
-/* Colors: Theme */
-$color-primary:   $color-blue-dark;
-$color-secondary: $color-green-bright;
-
-$color-bg       : #f6f6f6;
-$color-bg-alt   : #ffffff;
-
-/* Colors: Backgrounds */
-$color-gray-background: #f6f6f6;
-$color-white-background: #ffffff;
-$color-gray-border: $color-gray-background; 
-$color-blue-background: #E5EFFB;
-$color-blue-border: #E5EFFB;
-$color-yellow-background: #FFF9C5;
 
 /* Colors: text */
+$color-orange: #ff9218;
+$color-warningred: #d5425c;
 $color-gray-dark: #444;
 $color-gray-silver: #9D9F9D;
-$color-gray-light: #bababa;
+$color-gray-light: #c4c4c4;
 $color-black: #000;
 $color-white: #FFF;
 
+/* Colors: Theme, can be modified by user */
+$color-primary:   $color-green-bright !default;
+$color-secondary: $color-blue-dark !default;
+$color-accept: $color-green-neon !default;
+$color-cancel: $color-warningred !default;
+$color-holiday: $color-orange !default;
+$color-greyedout: $color-gray-light !default;
+$color-bg       : $color-gray !default;
+$color-noticebg: $color-yellow !default;
+
+
+
+
+/* Colors: Backgrounds */
+$color-gray-background: $color-bg;
+$color-gray-border: $color-gray; 
+
+
 /* Colors: Message statuses */
-$color-error: #d5425c;
-$color-warning: $color-error;
-$color-success: #74ce3c;
-$color-notice: $color-yellow-background;
+
+$color-error: $color-cancel;
+$color-success: $color-accept;
+$color-warning: $color-orange;
 
 
 /* Font sizes */
@@ -58,4 +67,35 @@ $radius-pill: $radius;
 /* Fonts */
 @mixin font-default() {
   font-family: "Inter var", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+:root {
+  --commonsbooking-color-primary : #{$color-primary};
+  --commonsbooking-color-secondary : #{$color-secondary};
+  --commonsbooking-color-accept : #{$color-accept};
+  --commonsbooking-color-cancel : #{$color-cancel};
+  --commonsbooking-color-holiday : #{$color-holiday};
+  --commonsbooking-color-greyedout : #{$color-greyedout};
+  --commonsbooking-color-bg : #{$color-bg};
+  --commonsbooking-color-noticebg : #{$color-noticebg};
+
+  --commonsbooking-color-gray-background : #{$color-gray-background};
+  --commonsbooking-color-gray-border : #{$color-gray-border};
+
+  --commonsbooking-color-error : #{$color-error};
+  --commonsbooking-color-success : #{$color-success};
+  --commonsbooking-color-warning : #{$color-warning};
+
+  --commonsbooking-font-size-small : #{$font-size-small};
+  --commonsbooking-font-line-height-small : #{$font-line-height-small};
+  --commonsbooking-font-size-normal : #{$font-size-normal};
+  --commonsbooking-font-size-big : #{$font-size-big};
+  --commonsbooking-font-size-huge : #{$font-size-huge};
+
+  --commonsbooking-spacer-big : #{$spacer-big};
+  --commonsbooking-spacer : #{$spacer};
+  --commonsbooking-spacer-small : #{$spacer-small};
+
+  --commonsbooking-radius : #{$radius};
+  --commonsbooking-radius-pill : #{$radius-pill};
 }

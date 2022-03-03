@@ -56,7 +56,7 @@
 	/* Popup */
 	.leaflet-popup-content {
 		  min-width: 300px;
-		  font-size: $font-size-normal;
+		  font-size: var(--commonsbooking-font-size-normal);
 		  
 		.cb-map-popup-item {
 			  margin-top: 10px;
@@ -67,7 +67,7 @@
 			  width: 25%;
 			  margin-right: 5%;
 			  img {
-			  	border-radius: $radius;
+			  	border-radius: var(--commonsbooking-radius);
 			  }
 			}
 			
@@ -78,8 +78,8 @@
 			}
 			
 			.cb-map-popup-item-link b a {
-				font-size: $font-size-big;
-				color: $color-green-dark;
+				font-size: var(--commonsbooking-font-size-big);
+				color: var(--commonsbooking-color-primary);
 				text-decoration: underline;
 			}
 			
@@ -95,7 +95,7 @@
 			.cb-map-popup-item-availability-day {
 			  flex: 0 0 auto;
 			
-			  color: #000;
+			  color: $color-black;
 			  font-weight: normal;
 			  padding: 3px;
 			
@@ -108,7 +108,7 @@
 			}
 			
 			.cb-map-popup-item-availability-day.available {
-			  background-color: rgb(127, 198, 0);
+			  background-color: var(--commonsbooking-color-accept)
 			}
 			.cb-map-popup-item-availability-day.location-holiday {
 			  background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
@@ -120,18 +120,19 @@
 				color: #fff;
 			  }
 			.cb-map-popup-item-availability-day.no-timeframe {
-			  background-color: #ddd;
+			  background-color: var(--commonsbooking-color-greyedout);
 			  color: #fff;
 			  cursor: not-allowed;
 			}
 			.cb-map-popup-item-availability-day.partially-booked{
 				color: #444;
-				background: linear-gradient(to top left, rgb(127, 198, 0) 0%, rgb(127, 198, 0) calc(50% - 1px), #333 50%, rgb(238, 116, 0) calc(50% + 1px), rgb(238, 116, 0) 100%);
+				background: linear-gradient(to top left, var(--commonsbooking-color-accept) 0%, var(--commonsbooking-color-accept) calc(50% - 1px), #333 50%, var(--commonsbooking-color-cancel) calc(50% + 1px), var(--commonsbooking-color-cancel) 100%);
 				background-repeat: no-repeat;
+
 			}
 			.cb-map-popup-item-availability-day.booked {
 			  color: #444;
-			  background: linear-gradient(to top left, rgb(238, 116, 0) 0%, rgb(238, 116, 0) calc(50% - 1px), #333 50%, rgb(238, 116, 0) calc(50% + 1px), rgb(238, 116, 0) 100%);
+			  background: linear-gradient(to top left, var(--commonsbooking-color-cancel) 0%, var(--commonsbooking-color-cancel) calc(50% - 1px), #333 50%, var(--commonsbooking-color-cancel) calc(50% + 1px), var(--commonsbooking-color-cancel) 100%);
 			}
 			
 			.cb-map-popup-item-desc {
@@ -145,15 +146,15 @@
 /* Filters */
 .cb-map-filters.cb-wrapper {
 	
-	margin-top: $spacer;
+	margin-top: var(--commonsbooking-spacer);
 	@extend .cb-box;
 	
 	input[type="checkbox"] {
-		margin: 0 $spacer-small 0 0;
+		margin: 0 var(--commonsbooking-spacer-small) 0 0;
 	}
 	
 	input[type="date"], input[type="number"] { /* is inline */ 
-		margin: 0 $spacer-small;
+		margin: 0 var(--commonsbooking-spacer-small);
 	}
 	
 	 input[type="number"] { 
@@ -161,25 +162,25 @@
 	}
 	
 	 select { /* is inline */ 
-		margin: 0 $spacer-small;
+		margin: 0 var(--commonsbooking-spacer-small);
 	}
 	
 	button {
-		padding: $spacer-small;
+		padding: var(--commonsbooking-spacer-small);
 	}
 	
 	.cb-filter-options {
 		> div {
-			margin-bottom: $spacer;
-			padding-bottom: $spacer;
+			margin-bottom: var(--commonsbooking-spacer);
+			padding-bottom: var(--commonsbooking-spacer);
 			border-bottom: 1px solid $color-gray-dark;
 		}
 	}
 
 	.cb-map-filter-group-label {
 		@extend .cb-big;
-		color: $color-primary;
-		margin-bottom: $spacer-small;
+		color: var(--commonsbooking-color-primary);
+		margin-bottom: var(--commonsbooking-spacer-small);
 	}
 	
 		
@@ -195,7 +196,7 @@
 	.cb-map-distance-filter {
 		.cb-map-filter-input-group {
 			background: $color-blue-dark;
-			border-radius: $radius;
+			border-radius: var(--commonsbooking-radius);
 			display: flex;
 			flex-direction: row;
 			flex-wrap: nowrap;
@@ -221,7 +222,7 @@
 				border: none;
 				margin: 0;
 				padding: 0;
-				margin-bottom: $spacer;
+				margin-bottom: var(--commonsbooking-spacer);
 				
 				.cb-fieldgroup-row {
 					display: inline-block;
@@ -233,8 +234,8 @@
 					font-weight: normal;
 				}
 				label {
-					margin-right: $spacer-big;
-					color: $color-primary;
+					margin-right: var(--commonsbooking-spacer-big);
+					color: var(--commonsbooking-color-primary);
 				}
 	
 			}

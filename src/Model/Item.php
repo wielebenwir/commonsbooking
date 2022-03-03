@@ -20,7 +20,7 @@ class Item extends BookablePost {
 	 * @throws Exception
 	 */
 	public function getBookableTimeframesByLocation( $locationId, bool $asModel = false ): array {
-		return Timeframe::getBookable(
+		return Timeframe::getBookableForCurrentUser(
 			[ $locationId ],
 			[ $this->ID ],
 			null,
