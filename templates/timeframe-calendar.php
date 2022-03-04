@@ -119,9 +119,13 @@
 			//translators %1$s maximum days, %2$s maximum days
 			echo sprintf ( commonsbooking_sanitizeHTML( __('
 			<strong>Calendar info</strong><br>
-			<span style="color:#61CE70">green</span> = bookable | <span style="color:#d5425c">red</span> = booked/blocked 
-			| <span style="color:#ff9218">orange</span> = station closed 
-			| gray = not bookable<br>
+            <div id="calendar-footnote-colorkey">
+                <div class="colorkey-block"> <div class="colorkey-square colorkey-accept"></div> = bookable </div>
+                <div class="colorkey-block"> <div class="colorkey-square colorkey-cancel"></div> = booked/blocked </div>
+                <div class="colorkey-block"> <div class="colorkey-square colorkey-holiday"></div> = station closed </div>
+                <div class="colorkey-block"> <div class="colorkey-square colorkey-greyedout"></div> = not bookable </div>
+            </div>
+            <br>
 			Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend). <br>
 			Bookings are limited to a maximum of %2$s days in advance.', 'commonsbooking') ),
 				commonsbooking_sanitizeHTML($calendarData->maxDays),

@@ -85,7 +85,7 @@
 
 	&:hover {
 		@extend .shadow-small;
-		background: $color-blue-dark;
+		background: var(--commonsbooking-color-secondary);
 		color: $color-white; /* Various themes fix */
 	}
 

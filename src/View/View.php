@@ -177,7 +177,6 @@ abstract class View {
 		foreach ($variables as &$variable){ //iterate over array, convert valid values.
 			if ($variable){  //values are only converted when set so ValueParser does not throw an error
 				$variable = ValueConverter::parseValue($variable);
-				do_action( 'qm/debug', $variable );
 			}
 			else {
 				return false; //do not return CSS when no values are set

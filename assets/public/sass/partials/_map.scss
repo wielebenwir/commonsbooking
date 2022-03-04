@@ -195,7 +195,7 @@
 	/* styles for specific filters */
 	.cb-map-distance-filter {
 		.cb-map-filter-input-group {
-			background: $color-blue-dark;
+			background: var(--commonsbooking-color-secondary);
 			border-radius: var(--commonsbooking-radius);
 			display: flex;
 			flex-direction: row;
