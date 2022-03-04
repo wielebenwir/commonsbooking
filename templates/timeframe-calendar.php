@@ -121,7 +121,7 @@
                 <div class="colorkey-square colorkey-accept"></div> bookable | 
                 <div class="colorkey-square colorkey-cancel"></div> booked/blocked  | 
                 <div class="colorkey-square colorkey-holiday"></div> station closed  | 
-                <div class="colorkey-square colorkey-greyedout"></div> not bookable </div>
+                <div class="colorkey-square colorkey-greyedout"></div> not bookable 
 			Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend).
 			Bookings are limited to a maximum of %2$s days in advance.
             </div>', 'commonsbooking') ),
