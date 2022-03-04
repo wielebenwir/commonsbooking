@@ -97,16 +97,14 @@
     #calendar-footnote {
         background-color: #FFF;
         margin-top: 10px;
-        p {
-            font-size: small;
-            line-height: 1.5;
-        }
+        padding: 10px;
+        font-size: var(--commonsbooking-font-size-normal);
 
         #calendar-footnote-colorkey {
 
             .colorkey-square {
-                width:25px;
-                height:25px;
+                width:10px;
+                height:10px;
                 display:inline-block;
             }
 

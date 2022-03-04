@@ -1,17 +1,17 @@
 # Copyright (C) 2022 wielebenwir e.V.
-# This file is distributed under the GPL v2 or later.
+# This file is distributed under the same license as the Commons Booking plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Commons Booking 2.6.12\n"
+"Project-Id-Version: Commons Booking 2.6.13\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-03-03T12:34:24+00:00\n"
+"POT-Creation-Date: 2022-03-04T14:16:35+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.5.0\n"
+"X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
 
 #. Plugin Name of the plugin
@@ -2981,19 +2981,17 @@ msgid "Continue to booking confirmation"
 msgstr ""
 
 #. translators %1$s maximum days, %2$s maximum days
-#: templates/timeframe-calendar.php:120
+#: templates/timeframe-calendar.php:119
 msgid ""
-"\n"
+"<div id=\"calendar-footnote-colorkey\">\n"
 "\t\t\t<strong>Calendar info</strong><br>\n"
-"            <div id=\"calendar-footnote-colorkey\">\n"
-"                <div class=\"colorkey-block\"> <div class=\"colorkey-square colorkey-accept\"></div> = bookable </div>\n"
-"                <div class=\"colorkey-block\"> <div class=\"colorkey-square colorkey-cancel\"></div> = booked/blocked </div>\n"
-"                <div class=\"colorkey-block\"> <div class=\"colorkey-square colorkey-holiday\"></div> = station closed </div>\n"
-"                <div class=\"colorkey-block\"> <div class=\"colorkey-square colorkey-greyedout\"></div> = not bookable </div>\n"
-"            </div>\n"
-"            <br>\n"
-"\t\t\tMaximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend). <br>\n"
-"\t\t\tBookings are limited to a maximum of %2$s days in advance."
+"                <div class=\"colorkey-square colorkey-accept\"></div> bookable | \n"
+"                <div class=\"colorkey-square colorkey-cancel\"></div> booked/blocked  | \n"
+"                <div class=\"colorkey-square colorkey-holiday\"></div> station closed  | \n"
+"                <div class=\"colorkey-square colorkey-greyedout\"></div> not bookable </div>\n"
+"\t\t\tMaximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend).\n"
+"\t\t\tBookings are limited to a maximum of %2$s days in advance.\n"
+"            </div>"
 msgstr ""
 
 #: templates/timeframe-notallowed.php:10

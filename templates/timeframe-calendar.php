@@ -111,28 +111,24 @@
         </form>
     </div>
 	<div id="calendar-footnote">
-		<p>
 			<?php 
 			// get Calendar Data
 			$calendarData = json_decode($templateData['calendar_data']);
 
 			//translators %1$s maximum days, %2$s maximum days
-			echo sprintf ( commonsbooking_sanitizeHTML( __('
+			echo sprintf ( commonsbooking_sanitizeHTML( __('<div id="calendar-footnote-colorkey">
 			<strong>Calendar info</strong><br>
-            <div id="calendar-footnote-colorkey">
-                <div class="colorkey-block"> <div class="colorkey-square colorkey-accept"></div> = bookable </div>
-                <div class="colorkey-block"> <div class="colorkey-square colorkey-cancel"></div> = booked/blocked </div>
-                <div class="colorkey-block"> <div class="colorkey-square colorkey-holiday"></div> = station closed </div>
-                <div class="colorkey-block"> <div class="colorkey-square colorkey-greyedout"></div> = not bookable </div>
-            </div>
-            <br>
-			Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend). <br>
-			Bookings are limited to a maximum of %2$s days in advance.', 'commonsbooking') ),
+                <div class="colorkey-square colorkey-accept"></div> bookable | 
+                <div class="colorkey-square colorkey-cancel"></div> booked/blocked  | 
+                <div class="colorkey-square colorkey-holiday"></div> station closed  | 
+                <div class="colorkey-square colorkey-greyedout"></div> not bookable </div>
+			Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend).
+			Bookings are limited to a maximum of %2$s days in advance.
+            </div>', 'commonsbooking') ),
 				commonsbooking_sanitizeHTML($calendarData->maxDays),
 				commonsbooking_sanitizeHTML($calendarData->advanceBookingDays)
 			);
 			?> 
-		</p>
 	</div>
 <?php
 
