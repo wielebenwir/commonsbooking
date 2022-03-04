@@ -80,12 +80,12 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.6.12 (02.03.2022)
-ENHANCED: Optimized the commonsbooking internal caching so booking lists and maps should be rendered faster
+### 2.7 (04.03.2022)
+NEW: You can now choose your individual colors to customize commonsbooking to your style. Try it via Options -> CommonsBooking -> Templates (scroll down to color section)
+ENHANCED: Optimized the commonsbooking internal caching so booking lists and maps rendered faster
 FIXED: Some rendering issues with calendar 
 ENHANCED: Modified CSS styles for calendar 
 FIXED: Set default advance booking days for existing timeframes to 365 days
-
 
 ### 2.6.12 (27.02.2022)
 FIXED: Fixes issue that prevents user meta data (.e.g phone number etc.) to be shown in booking emails 
