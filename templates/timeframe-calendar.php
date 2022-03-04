@@ -11,6 +11,7 @@
 
     // we check if template is used not used in backend ...
     if(!array_key_exists('backend', $templateData) || $templateData['backend'] != true) {
+        do_action( 'commonsbooking_before_timeframe-calendar' );
 ?>
     <script type="text/javascript">
 		<?php
@@ -152,3 +153,5 @@
 		<?php
 	}
 }
+
+do_action( 'commonsbooking_after_timeframe-calendar' );

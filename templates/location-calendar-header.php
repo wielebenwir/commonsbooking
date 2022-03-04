@@ -1,6 +1,9 @@
 <?php
     global $templateData;
     $location =  $templateData['location'];
+
+    do_action( 'commonsbooking_before_location-calendar-header' );
+
     echo commonsbooking_sanitizeHTML($location->thumbnail('cb_listing_small')); // div.thumbnail is printed by function
 ?>
 <div class="cb-list-info">
@@ -21,4 +24,10 @@
     ?>
     </div>
 </div>
+
+<?php
+
+do_action( 'commonsbooking_after_location-calendar-header' );
+
+?>
 
