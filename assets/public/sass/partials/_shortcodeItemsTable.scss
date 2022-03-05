@@ -144,9 +144,45 @@
                 @include day-is-partially-booked-end;
             }
 
+			&.is-out-of-range {
+				@include day-is-out-of-range;
+			}
+
             &.is-locked {
                 @include day-is-locked;
             }
+		}
+	}
+}
+
+#cb-table-footnote {
+	background-color: #FFF;
+	margin-top: 10px;
+	padding: 10px;
+	font-size: var(--commonsbooking-font-size-normal);
+
+	#cb-table-footnote-colorkey {
+
+		.colorkey-square {
+			width:10px;
+			height:10px;
+			display:inline-block;
+		}
+
+		.colorkey-accept {
+			background-color: var(--commonsbooking-color-accept);
+		}
+		
+		.colorkey-cancel {
+			background-color: var(--commonsbooking-color-cancel);
+		}
+
+		.colorkey-holiday {
+			background-color: var(--commonsbooking-color-holiday)
+		}
+
+		.colorkey-greyedout {
+			background-color: var(--commonsbooking-color-greyedout);
 		}
 	}
 }

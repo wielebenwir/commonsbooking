@@ -53,6 +53,10 @@
         }
     }
 
+    &.is-out-of-range {
+        @include day-is-out-of-range;
+    }
+
     &.is-start-date {
         color: var(--litepickerDayIsStartColor);
         background: var(--litepickerDayIsStartBg) !important;
@@ -158,4 +162,8 @@
         color: var(--litepickerDayIsLockedColor);
         box-shadow: none;
     }
+}
+
+@mixin day-is-out-of-range {
+    opacity: 0.3;
 }

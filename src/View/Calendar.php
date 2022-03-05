@@ -153,6 +153,17 @@ class Calendar {
 			$print .= '</div>';
 
 
+
+			$print .= '<div id="cb-table-footnote">';
+				$print .= commonsbooking_sanitizeHTML( __('<div id="cb-table-footnote-colorkey">
+				<strong>Table info</strong><br>
+					<div class="colorkey-square colorkey-accept"></div> bookable | 
+					<div class="colorkey-square colorkey-cancel"></div> booked/blocked  | 
+					<div class="colorkey-square colorkey-holiday"></div> station closed  | 
+					<div class="colorkey-square colorkey-greyedout"></div> not bookable <br>
+					<i>Transparent days are not yet bookable.</i>
+				</div>', 'commonsbooking') );
+			$print .= '</div>';
 			return $print;
 	}
 
@@ -248,21 +259,36 @@ class Calendar {
 				}
 
 				// Check day state
+
+				$cssClass = '';
+				$title = 'Available';
+
 				if ( ! count( $data['slots'] ) ) {
-					$days_display[ $dayIterator ++ ] = "<span class='is-locked'></span>";
+					$cssClass = 'is-locked';
+					$title = 'Not bookable';
 				} elseif ( $data['holiday'] ) {
-					$days_display[ $dayIterator ++ ] = "<span class='is-holiday'></span>";
+					$cssClass = 'is-holiday';
+					$title = 'Station closed';
 				} elseif ( $data['locked'] && $data['firstSlotBooked'] && $data['lastSlotBooked'] ) {
-					$days_display[ $dayIterator ++ ] = "<span class='is-booked'></span>";
+					$cssClass = 'is-booked';
+					$title = 'Already booked';
 				} elseif ( $data['locked'] && $data['partiallyBookedDay'] ) {
-					$cssClass = "is-partially-booked-end";
+					$cssClass = 'is-partially-booked-end';
+					$title = 'Partially booked';
 					if ( ! $data['firstSlotBooked'] && $data['lastSlotBooked'] ) {
-						$cssClass = "is-partially-booked-start";
+						$cssClass = 'is-partially-booked-start';
 					}
-					$days_display[ $dayIterator ++ ] = "<span class='$cssClass'></span>";
-				} else {
-					$days_display[ $dayIterator ++ ] = "<span></span>";
 				}
+
+				if ( $data['isOutOfRange'] ) {
+					
+					$cssClass .= ' is-out-of-range';
+					$title = sprintf('Items can only be booked %1$s days in advance.',commonsbooking_sanitizeHTML($calendarData['advanceBookingDays']));
+
+				}
+
+				$days_display[ $dayIterator ++ ] = '<span class="'.$cssClass.'" title="'.$title.'"></span>';
+
 
 				// Stop when enddate (advanced booking days limit) is reached
 				if ( $day == $calendarData['endDate'] ) {
@@ -503,7 +529,8 @@ class Calendar {
 			'repair'             => true,
 			'fullDay'            => false,
 			'firstSlotBooked'    => null,
-			'lastSlotBooked'     => null
+			'lastSlotBooked'     => null,
+			'isOutOfRange'		 => false
 		];
 
 		// If all slots are locked, day cannot be selected
@@ -511,32 +538,31 @@ class Calendar {
 
 		// If no slots are existing, day shall be locked
 		$noSlots = true;
-
-		// Only process slot if it's in bookingdays in advance range
-		if ( $day->getDateObject()->getTimestamp() < $lastBookableDate ) {
-			// we process all slots and check status of each slot
-			foreach ( $day->getGrid() as $slot ) {
-				self::processSlot( $slot, $dayArray, $jsonResponse, $allLocked, $noSlots );
-			}
-
-			// If there are no slots defined, there's nothing bookable.
-			if ( $noSlots || strtotime( 'today midnight' ) > strtotime( $day->getDate() ) ) {
-				$dayArray['locked']    = true;
-				$dayArray['holiday']   = false;
-				$dayArray['repair']    = false;
-				$dayArray['bookedDay'] = false;
-			} else if ( count( $dayArray['slots'] ) === 1 ) {
-				$timeframe           = $dayArray['slots'][0]['timeframe'];
-				$dayArray['fullDay'] = get_post_meta( $timeframe->ID, 'full-day', true ) == "on";
-			}
-
-			// if day is out max advance booking days range, day is marked as locked to avoid booking
-			if ( $day->getDate() > $endDate->getDate() ) {
-				$dayArray['locked'] = true;
-			}
-		} else { // If day is out of booking day in advance range, it's handled like a not bookable day
-			$dayArray = self::getLockedDayArray( $day );
+		
+		// we process all slots and check status of each slot
+		foreach ( $day->getGrid() as $slot ) {
+			self::processSlot( $slot, $dayArray, $jsonResponse, $allLocked, $noSlots );
 		}
+
+		// If there are no slots defined, there's nothing bookable.
+		if ( $noSlots || strtotime( 'today midnight' ) > strtotime( $day->getDate() ) ) {
+			$dayArray['locked']    = true;
+			$dayArray['holiday']   = false;
+			$dayArray['repair']    = false;
+			$dayArray['bookedDay'] = false;
+		} else if ( count( $dayArray['slots'] ) === 1 ) {
+			$timeframe           = $dayArray['slots'][0]['timeframe'];
+			$dayArray['fullDay'] = get_post_meta( $timeframe->ID, 'full-day', true ) == "on";
+		}
+
+		// if day is out max advance booking days range, day is marked as locked to avoid booking
+		if ( $day->getDate() > $endDate->getDate() ) {
+			$dayArray['locked'] = true;
+		}
+
+		if ( $day->getDateObject()->getTimestamp() > $lastBookableDate ) { //check if slot is out of bookable range
+			$dayArray['isOutOfRange'] = true;
+		} 
 
 		// Add day to calendar data.
 		$jsonResponse['days'][ $day->getFormattedDate( 'Y-m-d' ) ] = $dayArray;
