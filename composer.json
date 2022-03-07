@@ -33,7 +33,8 @@
     "opis/json-schema": "^1.0",
     "scssphp/scssphp": "^1.10.0",
     "ext-json": "*",
-    "symfony/cache": "^5.4"
+    "symfony/cache": "^5.4",
+    "symfony/service-contracts": "v1.1.11"
   },
   "require-dev": {
     "mockery/mockery": "1.*",
