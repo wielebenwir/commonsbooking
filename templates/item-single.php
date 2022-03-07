@@ -9,6 +9,8 @@
     $noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'item-not-available' );
     $bookThisItemText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'text_book-this-item');
 
+    do_action( 'commonsbooking_before_item-single' );
+
     // Single Item View
     if(array_key_exists('location', $templateData) && $templateData['location']) { // item selected, so we display the booking calendar
         echo '<h2>' . esc_html__( $bookThisItemText, 'commonsbooking') . '</h2>';
@@ -45,3 +47,4 @@
 <?php
     }
 
+do_action( 'commonsbooking_after_item-single' );

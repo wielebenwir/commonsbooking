@@ -18,7 +18,12 @@ $location                     = $booking->getLocation();
 $item                         = $booking->getItem();
 $show_contactinfo_unconfirmed = Settings::getOption( 'commonsbooking_options_templates', 'show_contactinfo_unconfirmed' );
 $text_hidden_contactinfo      = Settings::getOption( 'commonsbooking_options_templates', 'text_hidden-contactinfo' );
+
+do_action( 'commonsbooking_before_booking-single' );
+
 ?>
+
+
 
 <?php echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 
@@ -170,4 +175,7 @@ if ( $current_status && $current_status !== 'draft' ) {
 	</div>
 	<?php
 }
+
+do_action( 'commonsbooking_after_booking-single' );
+
 ?>
