@@ -114,7 +114,6 @@ class Timeframe extends CustomPostType {
 			//self::OFF_HOLIDAYS_ID     => esc_html__("Official Holiday", 'commonsbooking'),
 			self::REPAIR_ID           => esc_html__( "Repair", 'commonsbooking' ),
 			self::BOOKING_ID          => esc_html__( "Booking", 'commonsbooking' ),
-			self::BOOKING_CANCELED_ID => esc_html__( "Booking canceled", 'commonsbooking' ),
 		];
 	}
 
