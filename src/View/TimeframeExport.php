@@ -168,7 +168,9 @@ class TimeframeExport {
 				[],
 				$types,
 				$dt->format( "Y-m-d" ),
-				true
+				true,
+				null,
+				[ 'canceled', 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 			);
 			foreach ( $dayTimeframes as $timeframe ) {
 				$timeframes[ $timeframe->ID ] = $timeframe;
