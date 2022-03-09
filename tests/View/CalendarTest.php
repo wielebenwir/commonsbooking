@@ -7,6 +7,10 @@ use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\View\Calendar;
 use DateTime;
 
+/**
+ * @TODO: Write test for restriction cache invalidation.
+ */
+
 class CalendarTest extends CustomPostTypeTest {
 
 	protected const bookingDaysInAdvance = 35;
