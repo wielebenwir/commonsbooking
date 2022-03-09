@@ -180,18 +180,33 @@ class Wordpress {
 
 	/**
 	 * Returns all post ids in relation to $postId.
+	 *
 	 * @param $postId
 	 *
 	 * @return array
-	 * @throws \Exception
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function getRelatedPostsIdsForRestriction($postId): array {
 		$restriction = new \CommonsBooking\Model\Restriction($postId);
-		return [
-			$restriction->getLocationId(),
-			$restriction->getItemId(),
-			$postId
-		];
+
+		// Restriction itself
+		$relatedPostIds = [ $postId ];
+
+		// Item and related timeframes
+		if($itemId = $restriction->getItemId()) {
+			$timeframes = \CommonsBooking\Repository\Timeframe::get([], [$itemId]);
+			$relatedPostIds[] = $itemId;
+			$relatedPostIds = array_merge($relatedPostIds, Wordpress::getPostIdArray($timeframes));
+		}
+
+		// Location and related timeframes
+		if($locationId = $restriction->getLocationId()) {
+			$timeframes = \CommonsBooking\Repository\Timeframe::get([$locationId]);
+			$relatedPostIds[] = $locationId;
+			$relatedPostIds = array_merge($relatedPostIds, Wordpress::getPostIdArray($timeframes));
+		}
+
+		return $relatedPostIds;
 	}
 
 }
