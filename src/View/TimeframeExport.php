@@ -165,7 +165,7 @@ class TimeframeExport {
 			$dayTimeframes = Timeframe::get(
 				[],
 				[],
-				[$type],
+				$type ? [$type] : [],
 				$dt->format( "Y-m-d" ),
 				true,
 				null,
