@@ -484,7 +484,7 @@ class Plugin {
 		add_filter('parent_file', array($this, "setParentFile"));
 
 		// Remove cache items on save.
-		add_action('save_post', array($this, 'savePostActions'), 10, 2);
+		add_action('wp_insert_post', array($this, 'savePostActions'), 10, 2);
 		add_action('wp_enqueue_scripts', array(Cache::class, 'addWarmupAjaxToOutput'));
 		add_action('admin_enqueue_scripts', array(Cache::class, 'addWarmupAjaxToOutput'));
 
