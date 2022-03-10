@@ -108,7 +108,9 @@ trait Cache {
 	 * @throws \Psr\Cache\CacheException
 	 */
 	public static function setCacheItem( $value, array $tags, $custom_id = null, ?string $expirationString = null ): bool {
-		$expiration = 0;
+		// Set a default expiration to make sure, that we get rid of stale items, if there are some
+		// too much space
+		$expiration = 604800;
 
 		$tags = array_map('strval', $tags);
 		$tags = array_filter($tags);
@@ -129,6 +131,7 @@ trait Cache {
 		$cacheItem = $cache->getItem( $cacheKey );
 		$cacheItem->tag($tags);
 		$cacheItem->set( $value );
+		$cacheItem->expiresAfter(intval( $expiration ));
 
 		return $cache->save( $cacheItem );
 	}
@@ -146,6 +149,9 @@ trait Cache {
 		} else {
 			self::getCache()->invalidateTags($tags);
 		}
+
+		// Delete expired cache items
+		self::getCache()->prune();
 
 		set_transient("clearCacheHasBeenDone", true, 45);
 	}
