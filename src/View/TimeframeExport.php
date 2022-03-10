@@ -8,7 +8,6 @@ use DateTime;
 use Exception;
 use DatePeriod;
 use DateInterval;
-use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\Timeframe;
 
@@ -159,16 +158,18 @@ class TimeframeExport {
 		$period = self::getPeriod( $start, $end );
 
 		// Types
-		$types = self::getTypes();
+		$type = self::getType();
 
 		$timeframes = [];
 		foreach ( $period as $dt ) {
 			$dayTimeframes = Timeframe::get(
 				[],
 				[],
-				$types,
+				$type ? [$type] : [],
 				$dt->format( "Y-m-d" ),
-				true
+				true,
+				null,
+				[ 'canceled', 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 			);
 			foreach ( $dayTimeframes as $timeframe ) {
 				$timeframes[ $timeframe->ID ] = $timeframe;
@@ -189,24 +190,24 @@ class TimeframeExport {
 	}
 
 	/**
-	 * Returns array with selected timeframe types.
-	 * @return array
+	 * Returns selected timeframe type id.
+	 * @return int
 	 */
-	protected static function getTypes(): array {
-		$types = [];
+	protected static function getType(): int {
+		$type = 0;
 
 		// Backend download
 		if ( array_key_exists( 'export-type', $_REQUEST ) && $_REQUEST['export-type'] !== 'all' ) {
-			$types = [ intval( $_REQUEST['export-type'] ) ];
+			$type = intval( $_REQUEST['export-type'] );
 		} else {
 			//cron download
-			$type = Settings::getOption( 'commonsbooking_options_export', 'export-type' );
-			if ( $type && $type != 'all' ) {
-				$types = [ intval( $type ) ];
+			$configuredType = Settings::getOption( 'commonsbooking_options_export', 'export-type' );
+			if ( $configuredType && $configuredType != 'all' ) {
+				$type = intval( $configuredType );
 			}
 		}
 
-		return $types;
+		return $type;
 	}
 
 	/**
