@@ -484,7 +484,7 @@ class Plugin {
 		add_filter('parent_file', array($this, "setParentFile"));
 
 		// Remove cache items on save.
-		add_action('save_post', array($this, 'savePostActions'), 10, 2);
+		add_action('wp_insert_post', array($this, 'savePostActions'), 10, 3);
 		add_action('wp_enqueue_scripts', array(Cache::class, 'addWarmupAjaxToOutput'));
 		add_action('admin_enqueue_scripts', array(Cache::class, 'addWarmupAjaxToOutput'));
 
@@ -528,17 +528,21 @@ class Plugin {
 
 	/**
 	 * Removes cache item in connection to post_type.
+	 * @TODO: Add test if cache is cleared correctly.
 	 *
 	 * @param $post_id
 	 * @param $post
+	 * @param $update
+	 *
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
-	public function savePostActions($post_id, $post) {
+	public function savePostActions($post_id, $post, $update) {
 		if (!in_array($post->post_type, self::getCustomPostTypesLabels())) {
 			return;
 		}
 
 		$ignoredStates = [ 'unconfirmed', 'auto-draft', 'draft' ];
-		if(!in_array($post->post_status, $ignoredStates)) {
+		if(!in_array($post->post_status, $ignoredStates) || $update) {
 			$tags = Wordpress::getRelatedPostIds($post_id);
 			$tags[] = 'misc';
 			self::clearCache($tags);
