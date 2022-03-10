@@ -129,7 +129,7 @@ class Calendar {
 
 					// loop through location
 					foreach ( $locations as $locationId => $locationName ) {
-						$customCacheKey = strval($item->ID);
+						$customCacheKey = $item->ID . $locationId . $today;
 						if ( Plugin::getCacheItem($customCacheKey) ) {
 							$rowHtml .= Plugin::getCacheItem($customCacheKey);
 						} else {
