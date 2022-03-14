@@ -320,6 +320,40 @@ class Plugin {
 	}
 
 	/**
+	 * Filters the CSS classes for the body tag in the admin.
+	 *
+	 * @param string $classes
+	 * @return string
+	 */
+	public static function filterAdminBodyClass($classes) {
+		global $current_screen, $plugin_page;
+
+		$cssClass = 'cb-admin';
+
+		if($plugin_page === 'cb-dashboard') {
+			return $classes . ' ' . $cssClass;
+		}
+
+		switch($current_screen->post_type) {
+			case \CommonsBooking\Wordpress\CustomPostType\Booking::$postType:
+			case Item::$postType:
+			case Location::$postType:
+			case Map::$postType:
+			case Restriction::$postType:
+			case Timeframe::$postType:
+				return $classes . ' ' . $cssClass;
+		}
+
+		switch($current_screen->taxonomy) {
+			case 'cb_items_category':
+			case 'cb_locations_category':
+				return $classes . ' ' . $cssClass;
+		}
+
+		return $classes;
+	}
+
+	/**
 	 * Registers custom post types.
 	 */
 	public static function registerCustomPostTypes() {
@@ -479,6 +513,9 @@ class Plugin {
 
 		// Add menu pages
 		add_action('admin_menu', array(self::class, 'addMenuPages'));
+
+		// Filter body classes of admin pages
+		add_filter('admin_body_class', array(self::class, 'filterAdminBodyClass'), 10, 1);
 
 		// Parent Menu Fix
 		add_filter('parent_file', array($this, "setParentFile"));
