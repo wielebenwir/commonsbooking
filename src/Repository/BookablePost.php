@@ -101,8 +101,9 @@ abstract class BookablePost extends PostRepository {
 				} );
 
 			}
-
-			Plugin::setCacheItem( $items, Wordpress::getPostIdArray($items),  $customId );
+			$tags = Wordpress::getPostIdArray($items);
+			$tags[] = 'misc';
+			Plugin::setCacheItem( $items, $tags,  $customId );
 
 			return $items;
 		}
