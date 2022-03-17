@@ -7,6 +7,7 @@ use CommonsBooking\Model\Calendar;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Model\Week;
+use CommonsBooking\Repository\Item;
 use DateTime;
 use DateTimeZone;
 use Exception;
@@ -121,7 +122,18 @@ class AvailabilityRoute extends BaseRoute {
 	 */
 	public function get_items( $request ) {
 		$data               = new stdClass();
-		$data->availability = $this->getItemData();
+		$data->availability = [];
+
+		// Get all items
+		$items = Item::get([], true);
+
+		// Collect availabilies for each item
+		foreach ($items as $item) {
+			$data->availability = array_merge(
+				$data->availability,
+				$this->getItemData($item->ID)
+			);
+		}
 		return new WP_REST_Response( $data, 200 );
 	}
 
