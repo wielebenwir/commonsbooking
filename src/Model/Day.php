@@ -507,7 +507,7 @@ class Day {
 
 			Plugin::setCacheItem(
 				$slots,
-				Wordpress::getPostIdArray($this->getTimeframes()),
+				Wordpress::getTags($this->getTimeframes(), $this->items, $this->locations),
 				$customCacheKey
 			);
 

@@ -457,7 +457,7 @@ class Timeframe extends PostRepository {
 				} );
 			}
 
-			Plugin::setCacheItem($posts, Wordpress::getPostIdArray($posts));
+			Plugin::setCacheItem($posts, Wordpress::getTags($posts));
 			return $posts;
 		}
 	}
