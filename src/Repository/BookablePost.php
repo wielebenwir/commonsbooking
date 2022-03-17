@@ -219,8 +219,7 @@ abstract class BookablePost extends PostRepository {
 				}
 			}
 
-			Plugin::setCacheItem( $posts, Wordpress::getPostIdArray($posts), static::getPostType() );
-
+			Plugin::setCacheItem( $posts, Wordpress::getTags($posts), static::getPostType() );
 			return $posts;
 		}
 	}
@@ -265,8 +264,8 @@ abstract class BookablePost extends PostRepository {
 					}
 				}
 			}
-			Plugin::setCacheItem( $posts, array_merge(Wordpress::getPostIdArray($posts), [$postId]) );
 
+			Plugin::setCacheItem( $posts, Wordpress::getTags($posts, [$postId]) );
 			return $posts;
 		}
 	}
@@ -322,8 +321,8 @@ abstract class BookablePost extends PostRepository {
 					}
 				}
 			}
-			Plugin::setCacheItem( $relatedPosts, array_merge(Wordpress::getPostIdArray($relatedPosts), [$postId]) );
 
+			Plugin::setCacheItem( $relatedPosts,Wordpress::getTags($relatedPosts, [$postId]) );
 			return $relatedPosts;
 		}
 	}
