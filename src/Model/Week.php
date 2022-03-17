@@ -37,7 +37,7 @@ class Week {
 	/**
 	 * Week constructor.
 	 *
-	 * @param null $year
+	 * @param $year
 	 * @param $dayOfYear
 	 * @param array $locations
 	 * @param array $items

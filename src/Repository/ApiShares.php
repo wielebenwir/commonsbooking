@@ -19,15 +19,17 @@ class ApiShares
         $apiSharesConfig = Settings::getOption('commonsbooking_options_api', 'api_share_group');
         $apiShares = [];
 
-        foreach ($apiSharesConfig as $apiShare) {
-            $apiShares[] = new Share(
-                $apiShare['api_name'],
-                $apiShare['api_enabled'],
-                $apiShare['push_url'],
-                $apiShare['api_key'],
-	            get_bloginfo('name')
-            );
-        }
+		if(is_array($apiSharesConfig)) {
+			foreach ($apiSharesConfig as $apiShare) {
+				$apiShares[] = new Share(
+					$apiShare['api_name'],
+					$apiShare['api_enabled'],
+					$apiShare['push_url'],
+					$apiShare['api_key'],
+					get_bloginfo('name')
+				);
+			}
+		}
 
         return $apiShares;
     }
