@@ -338,7 +338,12 @@ class Booking extends PostRepository {
 					return commonsbooking_isCurrentUserAllowedToEdit( $post );
 				} );
 			}
-			Plugin::setCacheItem( $posts, Wordpress::getPostIdArray($posts), $customId );
+
+			Plugin::setCacheItem(
+				$posts,
+				Wordpress::getTags($posts),
+				$customId
+			);
 		}
 
 		return $posts;

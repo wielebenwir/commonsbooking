@@ -578,7 +578,7 @@ class Plugin {
 			return;
 		}
 
-		$ignoredStates = [ 'unconfirmed', 'auto-draft', 'draft' ];
+		$ignoredStates = [ 'auto-draft', 'draft' ];
 		if(!in_array($post->post_status, $ignoredStates) || $update) {
 			$tags = Wordpress::getRelatedPostIds($post_id);
 			$tags[] = 'misc';

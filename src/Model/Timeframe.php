@@ -202,7 +202,7 @@ class Timeframe extends CustomPost {
 	 * @throws Exception
 	 */
 	public function getLocation(): ?Location {
-		$locationId = $this->getMeta( 'location-id' );
+		$locationId = $this->getMeta( self::META_LOCATION_ID );
 		if ( $locationId ) {
 			if ( $post = get_post( $locationId ) ) {
 				return new Location( $post );
@@ -217,7 +217,7 @@ class Timeframe extends CustomPost {
 	 * @throws Exception
 	 */
 	public function getItem(): ?Item {
-		$itemId = $this->getMeta( 'item-id' );
+		$itemId = $this->getMeta( self::META_ITEM_ID );
 		if ( $itemId ) {
 			if ( $post = get_post( $itemId ) ) {
 				return new Item( $post );

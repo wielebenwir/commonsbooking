@@ -221,7 +221,11 @@ class Booking extends View {
 				$bookingDataArray['data'] = array_values( $bookingDataArray['data'] );
 			}
 
-			Plugin::setCacheItem( $bookingDataArray, Wordpress::getPostIdArray($posts), $customId );
+			Plugin::setCacheItem(
+				$bookingDataArray,
+				Wordpress::getTags($posts),
+				$customId
+			);
 
 			return $bookingDataArray;
 		}

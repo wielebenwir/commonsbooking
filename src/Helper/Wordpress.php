@@ -209,4 +209,52 @@ class Wordpress {
 		return $relatedPostIds;
 	}
 
+	/**
+	 * Returns a list of cache tags related to $posts, $items and $locations.
+	 *
+	 * @param $posts
+	 * @param array $items
+	 * @param array $locations
+	 *
+	 * @return array
+	 */
+	public static function getTags($posts, array $items = [], array $locations = []) {
+		$itemsAndLocations = Wordpress::getLocationAndItemIdsFromPosts($posts);
+
+		if(!count($items) && !count($locations)) {
+			$items[] = 'misc';
+		}
+
+		return array_values(array_unique(
+				array_merge(
+					Wordpress::getPostIdArray($posts),
+					$itemsAndLocations,
+					$items,
+					$locations
+				))
+		);
+	}
+
+	/**
+	 * Returns an array of post ids of locations and items from posts.
+	 * @param $posts
+	 *
+	 * @return array
+	 */
+	public static function getLocationAndItemIdsFromPosts($posts) {
+		$itemsAndLocations = [];
+		array_walk($posts, function ($timeframe) use (&$itemsAndLocations) {
+			$itemsAndLocations[] = get_post_meta(
+				$timeframe->ID,
+				Timeframe::META_ITEM_ID,
+				true
+			);
+			$itemsAndLocations[] = get_post_meta(
+				$timeframe->ID,
+				Timeframe::META_LOCATION_ID,
+				true
+			);
+		});
+		return $itemsAndLocations;
+	}
 }

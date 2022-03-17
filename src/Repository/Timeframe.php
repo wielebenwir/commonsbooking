@@ -149,7 +149,7 @@ class Timeframe extends PostRepository {
 
 			Plugin::setCacheItem(
 				$posts,
-				array_unique(array_merge(Wordpress::getPostIdArray($posts), $items, $locations)),
+				Wordpress::getTags($posts, $items, $locations),
 				$customId
 			);
 			return $posts;
@@ -238,9 +238,14 @@ class Timeframe extends PostRepository {
 				$post = $post[0];
 			}
 
+			// Get Posts
+			$posts = array_map(function($post) {
+				return get_post($post);
+			}, $postIds);
+
 			Plugin::setCacheItem(
 				$postIds,
-				array_unique(array_merge($postIds, $items, $locations)),
+				Wordpress::getTags($posts, $items, $locations),
 				$customId
 			);
 
@@ -297,12 +302,10 @@ class Timeframe extends PostRepository {
 			$posts = $wpdb->get_results( $query );
 			$posts = Wordpress::flattenWpdbResult( $posts );
 
-			Plugin::setCacheItem( $posts, array_unique(
-				array_merge(
-					Wordpress::getPostIdArray($posts),
-					$postIds
-				)
-			));
+			Plugin::setCacheItem(
+				$posts,
+				Wordpress::getTags($posts, $postIds)
+			);
 
 			return $posts;
 		}
@@ -635,7 +638,7 @@ class Timeframe extends PostRepository {
 
 			Plugin::setCacheItem(
 				$posts,
-				array_unique( array_merge( Wordpress::getPostIdArray( $posts ), $locations, $items ) ),
+				Wordpress::getTags($posts, $locations, $items),
 				$customId
 			);
 

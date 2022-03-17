@@ -21,11 +21,7 @@ $text_hidden_contactinfo      = Settings::getOption( 'commonsbooking_options_tem
 
 do_action( 'commonsbooking_before_booking-single' );
 
-?>
-
-
-
-<?php echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
+echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 
 	<div class="cb-wrapper cb-booking-item">
 		<div class="cb-list-header">
