@@ -136,7 +136,7 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
                 <div class="colorkey-square colorkey-cancel"></div> booked/blocked  | 
                 <div class="colorkey-square colorkey-holiday"></div> station closed  | 
                 <div class="colorkey-square colorkey-greyedout"></div> not bookable <br>
-			Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend).<br>
+			Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend). 
 			Bookings are limited to a maximum of %2$s days in advance.
             </div>',
                         'commonsbooking'
