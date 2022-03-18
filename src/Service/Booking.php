@@ -47,7 +47,7 @@ class Booking {
 		$daysBeforeStart = Settings::getOption( 'commonsbooking_options_reminder', 'pre-booking-days-before' );
 		$startDate       = strtotime( '+' . $daysBeforeStart . ' days midnight' );
 
-		// Startday of booking at at 23:59
+		// Startday of booking at 23:59
 		$endDate = strtotime( '+23 Hours +59 Minutes +59 Seconds', $startDate );
 
 		// Add filter to get only bookings ending on day of enddate
