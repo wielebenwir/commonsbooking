@@ -39,7 +39,7 @@ class BookingReminderMessage extends Message {
 			$template_body,
 			$template_subject,
 			$fromHeaders,
-			[],
+			null,
 			[
 				'booking'  => $booking,
 				'item'     => $booking->getItem(),
