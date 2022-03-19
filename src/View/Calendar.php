@@ -101,6 +101,8 @@ class Calendar {
 				'posts_per_page' => - 1
 			) );
 
+			$itemRowsHTML = '';
+
 			foreach ( $items as $item ) {
 				// Check for category term
 				if ( $itemCategory ) {
@@ -146,7 +148,14 @@ class Calendar {
 						}
 					}
 				}
-				$print .= $rowHtml;
+				$itemRowsHTML .= $rowHtml;
+			}
+
+			if ($itemRowsHTML) { //if there are item rows, append them to the table
+				$print .= $itemRowsHTML;
+			}
+			else { //print message of unavailable itmes
+				$print .= '<tr style="color: var(--commonsbooking-color-error);"><td colspan="2">' . __('No items found.','commonsbooking') .'</td></tr>';
 			}
 
 			$print .= "</tbody></table>";
