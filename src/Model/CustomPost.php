@@ -69,10 +69,8 @@ class CustomPost {
 	}
 
 	public function __get( $name ) {
-		if ($name){ //only get property if object exists
-			if ( property_exists( $this->post, $name ) ) {
-				return $this->post->$name;
-			}
+		if ( property_exists( $this->post, $name ) ) {
+			return $this->post->$name;
 		}
 	}
 
