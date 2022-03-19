@@ -3,9 +3,10 @@
 use CommonsBooking\CB\CB;
 
 /**
- * parses templates and extracts the template these tags used in e-mail templates: {{xxx:yyyy}}
+ * Parses templates and extracts the template tags used in e-mail templates: {{xxx:yyyy}}
  *
- * @param mixed $template
+ * @param string $template
+ * @param array $objects
  *
  * @return mixed
  */
