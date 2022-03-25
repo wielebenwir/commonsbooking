@@ -1,5 +1,3 @@
-# CommonsBooking
-
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen  
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, commons, sharing, calendar,  
@@ -79,6 +77,12 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog 
+
+### 2.7.1 (02.03.2022)
+ENHANCED: Optimized the commonsbooking internal caching so booking lists and maps should be rendered faster
+FIXED: Some rendering issues with calendar 
+ENHANCED: Modified CSS styles for calendar 
+FIXED: Set default advance booking days for existing timeframes to 365 days
 
 ### 2.6.12 (02.03.2022)
 ENHANCED: Optimized the commonsbooking internal caching so booking lists and maps should be rendered faster
