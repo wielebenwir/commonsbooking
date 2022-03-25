@@ -124,29 +124,23 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
 			<?php
 			// get Calendar Data
 			$calendarData = json_decode( $templateData['calendar_data'] );
-
-			
-			echo sprintf(
-                commonsbooking_sanitizeHTML(
-                    // translators %1$s maximum days, %2$s maximum days
-                    __(
-                        '<div id="calendar-footnote-colorkey">
-			<strong>Calendar info</strong><br>
-                <div class="colorkey-square colorkey-accept"></div> bookable | 
-                <div class="colorkey-square colorkey-cancel"></div> booked/blocked  | 
-                <div class="colorkey-square colorkey-holiday"></div> station closed  | 
-                <div class="colorkey-square colorkey-greyedout"></div> not bookable <br>
-			Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend). 
-			Bookings are limited to a maximum of %2$s days in advance.
-            </div>',
-                        'commonsbooking'
-                    )
-                ),
-                commonsbooking_sanitizeHTML( $calendarData->maxDays ),
-                commonsbooking_sanitizeHTML( $calendarData->advanceBookingDays )
-            );
             ?>
-             
+            <div id="calendar-footnote-colorkey">
+			    <strong><?php echo commonsbooking_sanitizeHTML( __( 'Calendar info', 'commonsbooking' ) ); ?> </strong><br>
+                <div class="colorkey-square colorkey-accept"></div> <?php echo commonsbooking_sanitizeHTML( __( 'bookable', 'commonsbooking' ) ); ?> | 
+                <div class="colorkey-square colorkey-cancel"></div> <?php echo commonsbooking_sanitizeHTML( __( 'booked / blocked', 'commonsbooking' ) ); ?>   | 
+                <div class="colorkey-square colorkey-holiday"></div> <?php echo commonsbooking_sanitizeHTML( __( 'location closed', 'commonsbooking' ) ); ?>  | 
+                <div class="colorkey-square colorkey-greyedout"></div> <?php echo commonsbooking_sanitizeHTML( __( 'not bookable', 'commonsbooking' ) ); ?>  
+                <br>
+                <?php
+                // translators %1$s is a number of days
+                echo sprintf( commonsbooking_sanitizeHTML( __( 'Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend).', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->maxDays ) );
+                ?> 
+                <?php
+                // translators %1$s is a number of days
+                echo sprintf( commonsbooking_sanitizeHTML( __( 'Bookings are limited to a maximum of %1$s days in advance.', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->advanceBookingDays ) );
+                ?>
+            </div>
 	</div>
     <?php
 
