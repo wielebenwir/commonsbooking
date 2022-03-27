@@ -147,15 +147,15 @@ class Calendar {
 							$rowHtml .= $locationHtml;
 						}
 					}
+					$itemRowsHTML .= $rowHtml;
 				}
-				$itemRowsHTML .= $rowHtml;
 			}
 
-			if ($itemRowsHTML) { //if there are item rows, append them to the table
-				$print .= $itemRowsHTML;
-			}
-			else { //print message of unavailable itmes
+			if (empty($itemRowsHTML)) { //print message of unavailable items
 				$print .= '<tr style="color: var(--commonsbooking-color-error);"><td colspan="2">' . __('No items found.','commonsbooking') .'</td></tr>';
+			} 
+			else { //if there are item rows, append them to the table
+				$print .= $itemRowsHTML;
 			}
 
 			$print .= "</tbody></table>";
