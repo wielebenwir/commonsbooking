@@ -99,7 +99,7 @@ class Item extends CustomPostType {
 			// Sichtbarkeit des Post Types
 			'public'            => true,
 
-			// Standart Ansicht im Backend aktivieren (Wie Artikel / Seiten)
+			// Standard Ansicht im Backend aktivieren (Wie Artikel / Seiten)
 			'show_ui'           => true,
 
 			// Soll es im Backend Menu sichtbar sein?
@@ -115,7 +115,7 @@ class Item extends CustomPostType {
 			'show_in_nav_menus' => true,
 
 			// Hier können Berechtigungen in einem Array gesetzt werden
-			// oder die standart Werte post und page in form eines Strings gesetzt werden
+			// oder die Standard Werte post und page in Form eines Strings gesetzt werden
 			'capability_type'   => array( self::$postType, self::$postType . 's' ),
 
 			'map_meta_cap'        => true,
@@ -138,7 +138,7 @@ class Item extends CustomPostType {
 			),
 
 
-			// Soll der Post Type Kategien haben?
+			// Soll der Post Type Kategorien haben?
 			'taxonomies'          => array( self::$postType . 's_category' ),
 
 			// Soll der Post Type Archiv-Seiten haben?
