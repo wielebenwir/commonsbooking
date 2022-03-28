@@ -118,14 +118,26 @@ class Location extends View {
 			$locationData[ $location->ID ] = $shortCodeData;
 		}
 
-		ob_start();
-		foreach ( $locationData as $id => $data ) {
-			$templateData['location'] = $id;
-			$templateData['data']     = $data;
-			commonsbooking_get_template_part( 'shortcode', 'locations', true, false, false );
+		if ($locationData){
+			ob_start();
+			foreach ( $locationData as $id => $data ) {
+				$templateData['location'] = $id;
+				$templateData['data']     = $data;
+				commonsbooking_get_template_part( 'shortcode', 'locations', true, false, false );
+			}
+			return ob_get_clean();
+
+		}
+		else { //Message to show when no item matches query
+			return '
+			<div class="cb-wrapper cb-shortcode-locations template-shortcode-locations post-post no-post-thumbnail">
+			<div class="cb-list-error">' 
+			. __('No locations found.','commonsbooking') .
+			'</div>
+			</div>
+			';
 		}
 
-		return ob_get_clean();
 	}
 
 	/**

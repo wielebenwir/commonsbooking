@@ -119,13 +119,21 @@ class Item extends View {
 			$itemData[ $item->ID ] = $shortCodeData;
 		}
 
-		ob_start();
-		foreach ( $itemData as $id => $data ) {
-			$templateData['item'] = $id;
-			$templateData['data'] = $data;
-			commonsbooking_get_template_part( 'shortcode', 'items', true, false, false ) ;
+		if ($itemData) {
+			ob_start();
+			foreach ( $itemData as $id => $data ) {
+				$templateData['item'] = $id;
+				$templateData['data'] = $data;
+				commonsbooking_get_template_part( 'shortcode', 'items', true, false, false ) ;
+			}
+			return ob_get_clean();
 		}
-
-		return ob_get_clean();
+		else { //Message to show when no item matches query
+			return '<div class="cb-wrapper cb-shortcode-items template-shortcode-items post-post no-post-thumbnail">
+			<div class="cb-list-error">' 
+			. __('No bookable items found.','commonsbooking') .
+			'</div>
+			</div>';
+		}
 	}
 }

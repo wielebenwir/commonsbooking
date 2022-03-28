@@ -3708,6 +3708,12 @@
   }
 }
 
+/* line 142, ../sass/partials/_layouts.scss */
+.cb-list-error {
+  color: var(--commonsbooking-color-error);
+  font-size: var(--commonsbooking-font-size-big);
+}
+
 /* List styles */
 /**
 * List styling
