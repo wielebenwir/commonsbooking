@@ -193,7 +193,7 @@ class Item extends CustomPostType {
 			$users       = UserRepository::getCBManagers();
 			$userOptions = [];
 			foreach ( $users as $user ) {
-				$userOptions[ $user->ID ] = $user->get( 'user_nicename' ) . " (" . $user->last_name . " " . $user->last_name . ")";
+				$userOptions[ $user->ID ] = $user->get( 'user_nicename' ) . " (" . $user->first_name . " " . $user->last_name . ")";
 			}
 			$cmb->add_field( array(
 				'name'       => esc_html__( 'Item Admin(s)', 'commonsbooking' ),
