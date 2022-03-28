@@ -18,7 +18,7 @@ function commonsbooking_parse_template( string $template = '', $objects = [] ) {
 		$template
 	);
 
-	return apply_filters( 'cb_template_tag', $template );
+	return apply_filters( 'commonsbooking_template_tag', $template );
 }
 
 function commonsbooking_parse_shortcode( $tag ) {

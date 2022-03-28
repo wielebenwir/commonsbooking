@@ -97,9 +97,9 @@ abstract class Message {
 	 * @return void
 	 */
 	public function SendNotificationMail() {
-		$to      = apply_filters( 'cb_mail_to', $this->to );
-		$subject = apply_filters( 'cb_mail_subject', $this->subject );
-		$body    = apply_filters( 'cb_mail_body', $this->body );
+		$to      = apply_filters( 'commonsbooking_mail_to', $this->to );
+		$subject = apply_filters( 'commonsbooking_mail_subject', $this->subject );
+		$body    = apply_filters( 'commonsbooking_mail_body', $this->body );
 		$headers = implode( "\r\n", $this->headers );
 
 		$result = wp_mail( $to, $subject, $body, $headers );
