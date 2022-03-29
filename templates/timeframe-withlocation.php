@@ -20,7 +20,11 @@ $permalink    = add_query_arg ( 'location', $location->ID, get_the_permalink($it
 
 
 <div class="cb-list-info">
-    <h4 class="cb-title cb-item-title"><?php echo commonsbooking_sanitizeHTML($location->post_title); ?></h4>
+    <h4 class="cb-title cb-location-title">
+        <a href=" <?php echo commonsbooking_sanitizeHTML( get_permalink( $location->ID ) ); ?> ">
+            <?php echo commonsbooking_sanitizeHTML($location->post_title); ?>
+        </a>
+    </h4>
     <div class="cb-dates cb-timeframe-dates">
         <?php
             if(
