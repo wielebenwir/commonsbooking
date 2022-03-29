@@ -6,7 +6,7 @@ use CommonsBooking\CB\CB;
  * Parses templates and extracts the template tags used in e-mail templates: {{xxx:yyyy}}
  *
  * @param string $template
- * @param array $objects
+ * @param array  $objects
  *
  * @return mixed
  */
@@ -45,7 +45,7 @@ function commonsbooking_parse_template_callback( $match, array $objects = [] ) {
 
         // extract the html before part, looking for {{[*] pattern
         $html_before = null;
-        if ( preg_match( '/(\{\{\[.*\])/m', $match, $html_before ) === 1 ) {
+        if ( preg_match( '/(\{\{\[[^\]]*\])/m', $match, $html_before ) === 1 ) {
             $html_before = commonsbooking_sanitizeHTML( preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_before[0] ) );
         } else {
             $html_before = '';
@@ -53,18 +53,21 @@ function commonsbooking_parse_template_callback( $match, array $objects = [] ) {
 
         // extract the html after part looking for [*]}} pattern
         $html_after = null;
-        if ( preg_match( '/(\[.*\]\}\})/m', $match, $html_after ) === 1 ) {
+        if ( preg_match( '/(\[[^\]]*\]\}\})/m', $match, $html_after ) === 1 ) {
             $html_after = commonsbooking_sanitizeHTML( preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_after[0] ) );
         } else {
             $html_after = '';
         }
 
-        // remove the [  ] control delimiters
-        $match = preg_replace( '/\[.*\]/m', '', $match );
+        // remove string between the  [  ] control delimiters
+        $match = preg_replace( '/\[[^\]]*\]/m', '', $match );
 
         // remove the {{  }} control delimiters
         $match = preg_replace( '/(\{\{)|(\}\})/m', '', $match );
         // we accept : and # as separator cause the : delimiter wasn't working when using the template tag in a href links in the template (like <a href="{{xxx#yyyy}}"></a>)
+
+        // remove whitspace
+        $match = trim( $match );
 
         $path = preg_split( '/(\:|\#)/', $match, 2 );
         if ( isset( $path[0] ) and isset( $path[1] ) ) {
