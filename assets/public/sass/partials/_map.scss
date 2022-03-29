@@ -15,9 +15,7 @@
 .cb-wrapper {	
 	
 	/* Leaflet Map */
-	.leaflet-container {
-		
-		
+	&.leaflet-container {
 		
 		.cb-map-marker-cluster-icon {
 			  width: 100% !important;
@@ -26,30 +24,30 @@
 			  background-size: cover;
 			}
 			
-			.cb-map-location-info-name b {
-			  line-height: 25px;
-			}
-			.cb-map-location-info-name span.dashicons-search {
-			  cursor: pointer;
-			  padding-left: 5px;
-			  padding-top: 2.5px;
-			}
-			
-			.cb-map-location-info-opening-hours {
-			  margin-top: 10px;
-			}
-			
-			.cb-map-location-info-contact {
-			  margin-top: 10px;
-			}
-			
-			.highlight-border {
-			  border-color: rgb(238, 116, 0) !important;
-			}
-			
-			.leaflet-bar button {
-			  font-size: 6.5px;
-			}
+		.cb-map-location-info-name b {
+			line-height: 25px;
+		}
+		.cb-map-location-info-name span.dashicons-search {
+			cursor: pointer;
+			padding-left: 5px;
+			padding-top: 2.5px;
+		}
+		
+		.cb-map-location-info-opening-hours {
+			margin-top: 10px;
+		}
+		
+		.cb-map-location-info-contact {
+			margin-top: 10px;
+		}
+		
+		.highlight-border {
+			border-color: rgb(238, 116, 0) !important;
+		}
+		
+		.leaflet-bar button {
+			font-size: 6.5px;
+		}
 			
 	}
 
