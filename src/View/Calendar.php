@@ -278,8 +278,9 @@ class Calendar {
 			$dayStr         = implode( $divider, $days_display );
 			$itemLink       = add_query_arg( 'location', $locationId, get_permalink( $item->ID ) );
 			$locationString = '<div data-title="' . $locationName . '">' . $locationName . '</div>';
+			$locationLink = get_permalink($locationId);
 
-			$rowHtml = "<tr><td><b><a href='" . $itemLink . "'>" . $itemName . "</a></b>" . $divider . $locationString . $divider . $dayStr . "</td></tr>";
+			$rowHtml = "<tr><td><b><a href='" . $itemLink . "'>" . $itemName . "</a></b>" . $divider . "<a href='" . $locationLink . "'>" . $locationString . "</a>" . $divider . $dayStr . "</td></tr>";
 			Plugin::setCacheItem($rowHtml, [ $locationId, $item->ID]);
 
 			return $rowHtml;
