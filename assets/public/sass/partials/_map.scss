@@ -27,6 +27,9 @@
 		.cb-map-location-info-name b {
 			line-height: 25px;
 		}
+		.cb-map-location-info-name a {
+			color: var(--commonsbooking-color-primary);
+		}
 		.cb-map-location-info-name span.dashicons-search {
 			cursor: pointer;
 			padding-left: 5px;

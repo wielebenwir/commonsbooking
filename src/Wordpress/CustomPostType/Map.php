@@ -243,6 +243,7 @@ class Map extends CustomPostType {
 					'lat'           => (float) $location_meta['geo_latitude'][0],
 					'lon'           => (float) $location_meta['geo_longitude'][0],
 					'location_name' => $post->post_title,
+					'location_link' => get_permalink($post->ID),
 					'closed_days'   => unserialize( $closed_days ),
 					'address'       => [
 						'street' => $location_meta[ COMMONSBOOKING_METABOX_PREFIX . 'location_street' ][0],
