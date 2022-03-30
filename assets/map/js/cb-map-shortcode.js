@@ -38,7 +38,7 @@ function CB_Map() {
          var map = new L.Map('cb-map-' + this.settings.cb_map_id,map_options);
 
         //create messagebox
-        this.messagebox = L.control.messagebox({timeout: 5000}).addTo(map);
+        this.messagebox = L.control.messagebox({timeout: 60000}).addTo(map);
 
         //create scale
         if (this.settings.show_scale) {
