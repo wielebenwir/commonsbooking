@@ -82,8 +82,7 @@
     }
 
     input.cb-action-canceled {
-        background: none !important;
-        color: $color-gray-dark !important;
+        background-color: var(--commonsbooking-color-cancel);
         box-shadow: none !important;
         font-size: 0.875rem;
     }

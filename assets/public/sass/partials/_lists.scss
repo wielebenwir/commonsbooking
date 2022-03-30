@@ -43,8 +43,14 @@
 		color: var(--commonsbooking-color-primary);
 	}
 
-	.cb-thumbnail {
+	.cb-location-title a{
+		color: var(--commonsbooking-color-primary);
+		text-decoration: none;
+	}
 
+	.cb-item-title a{
+		color: var(--commonsbooking-color-primary);
+		text-decoration: none;
 	}
 
 	/* sub lists wrapper */
