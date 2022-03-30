@@ -118,6 +118,7 @@
         var(--litepickerDayIsPartiallyLockedColorBgTwo) 50%,
         var(--litepickerDayIsPartiallyLockedColorBgTwo) 100%
     );
+    background-repeat:no-repeat;
 
     &:hover {
         cursor: pointer;
