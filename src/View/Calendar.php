@@ -101,6 +101,8 @@ class Calendar {
 				'posts_per_page' => - 1
 			) );
 
+			$itemRowsHTML = '';
+
 			foreach ( $items as $item ) {
 				// Check for category term
 				if ( $itemCategory ) {
@@ -145,8 +147,15 @@ class Calendar {
 							$rowHtml .= $locationHtml;
 						}
 					}
+					$itemRowsHTML .= $rowHtml;
 				}
-				$print .= $rowHtml;
+			}
+
+			if (empty($itemRowsHTML)) { //print message of unavailable items
+				$print .= '<tr style="color: var(--commonsbooking-color-error);"><td colspan="2">' . __('No items found.','commonsbooking') .'</td></tr>';
+			} 
+			else { //if there are item rows, append them to the table
+				$print .= $itemRowsHTML;
 			}
 
 			$print .= "</tbody></table>";
@@ -278,8 +287,9 @@ class Calendar {
 			$dayStr         = implode( $divider, $days_display );
 			$itemLink       = add_query_arg( 'location', $locationId, get_permalink( $item->ID ) );
 			$locationString = '<div data-title="' . $locationName . '">' . $locationName . '</div>';
+			$locationLink = get_permalink($locationId);
 
-			$rowHtml = "<tr><td><b><a href='" . $itemLink . "'>" . $itemName . "</a></b>" . $divider . $locationString . $divider . $dayStr . "</td></tr>";
+			$rowHtml = "<tr><td><b><a href='" . $itemLink . "'>" . $itemName . "</a></b>" . $divider . "<a href='" . $locationLink . "'>" . $locationString . "</a>" . $divider . $dayStr . "</td></tr>";
 			Plugin::setCacheItem($rowHtml, [ $locationId, $item->ID]);
 
 			return $rowHtml;

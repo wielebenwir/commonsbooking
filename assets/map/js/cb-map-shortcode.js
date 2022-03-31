@@ -38,7 +38,7 @@ function CB_Map() {
          var map = new L.Map('cb-map-' + this.settings.cb_map_id,map_options);
 
         //create messagebox
-        this.messagebox = L.control.messagebox({timeout: 5000}).addTo(map);
+        this.messagebox = L.control.messagebox({timeout: 60000}).addTo(map);
 
         //create scale
         if (this.settings.show_scale) {
@@ -248,7 +248,7 @@ function CB_Map() {
 
             //popup content
             var popup_content = '<div class="cb-map-location-info-name">';
-            popup_content += '<b>' + location.location_name + '</b>';
+            popup_content += '<b><a href="' + location.location_link + '">' + location.location_name + '</a></b>';
             //popup_content += '<span id="location-zoom-in-' + that.settings.cb_map_id + '-' + index + '" class="dashicons dashicons-search"></span>';
             popup_content += '</div>';
             popup_content += '<div  class="cb-map-location-info-address">' + location.address.street + ', ' + location.address.zip + ' ' + location.address.city + '</div>';
