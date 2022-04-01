@@ -241,8 +241,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$date_format = commonsbooking_sanitizeHTML(get_option( 'date_format' ));
 		$time_format = commonsbooking_sanitizeHTML(get_option( 'time_format' ));
 
-		$date_start = date_i18n( $date_format, $this->getMeta( 'repetition-start' ) );
-		$time_start = date_i18n( $time_format, $this->getMeta( 'repetition-start' ) );
+		$repetitionStart = $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START );
+
+		$date_start = date_i18n( $date_format, $repetitionStart );
+		$time_start = date_i18n( $time_format, $repetitionStart );
 
 		$grid     = $this->getMeta( 'grid' );
 		$full_day = $this->getMeta( 'full-day' );
@@ -252,7 +254,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		if ( $grid == 0 ) { // if grid is set to slot duration
-			$time_end = date_i18n( $time_format, strtotime( $this->getMeta( 'repetition-start' ) ) );
+			$time_end = date_i18n( $time_format, $repetitionStart );
 
 			// If we have the grid size, we use it to calculate right time end
 			$timeframeGridSize = $this->getMeta( Booking::START_TIMEFRAME_GRIDSIZE );
@@ -262,7 +264,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		if ( $grid > 0 ) { // if grid is set to hourly (grid = 1) or a multiple of an hour
-			$time_end = date_i18n( $time_format, $this->getMeta( 'repetition-start' ) + ( 60 * 60 * $grid ) );
+			$time_end = date_i18n( $time_format, $repetitionStart + ( 60 * 60 * $grid ) );
 		}
 
 		return $date_start . ' ' . $time_start . ' - ' . $time_end;

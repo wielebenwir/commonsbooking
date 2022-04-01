@@ -550,12 +550,11 @@ class Timeframe extends PostRepository {
 			$startTimestampTime = date( $time_format, $timestamp );
 			$endTimestampTime   = date( $time_format, $timestamp + 1 );
 
-			$relevantTimeframes = self::getInRange(
-				$timestamp,
-				$timestamp,
+			$relevantTimeframes = self::get(
 				[ $locationId ],
 				[ $itemId ],
 				[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
+				date('Y-m-d', $timestamp),
 				true
 			);
 
@@ -576,7 +575,7 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
-	 * Returns timeframes in explicit timerange.
+	 * Returns timeframes in explicit timerange. Does not consider weekday configurations!!
 	 * Why? We often need timeframes for a specific timerange. For example in the calendar the default range is
 	 *      three months. Another example is the table view.
 	 *
