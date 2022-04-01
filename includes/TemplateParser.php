@@ -44,33 +44,29 @@ function commonsbooking_parse_template_callback( $match, array $objects = [] ) {
         $match = $match[0];
 
         // extract the html before part, looking for {{[*] pattern
-        $html_before = null;
-        if ( preg_match( '/(\{\{\[[^\]]*\])/m', $match, $html_before ) === 1 ) {
-            $html_before = commonsbooking_sanitizeHTML( preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_before[0] ) );
-        } else {
-            $html_before = '';
+        $html_before = '';
+        if ( preg_match( '/\{\{\[([^\]]*)\]/m', $match, $html_before ) === 1 ) {
+            $html_before = commonsbooking_sanitizeHTML( preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_before[1] ) );
         }
 
         // extract the html after part looking for [*]}} pattern
-        $html_after = null;
-        if ( preg_match( '/(\[[^\]]*\]\}\})/m', $match, $html_after ) === 1 ) {
-            $html_after = commonsbooking_sanitizeHTML( preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_after[0] ) );
-        } else {
-            $html_after = '';
+        $html_after = '';
+        if ( preg_match( '/\[([^\]]*)\]\}\}/m', $match, $html_after ) === 1 ) {
+            $html_after = commonsbooking_sanitizeHTML( preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_after[1] ) );
         }
 
-        // remove string between the  [  ] control delimiters
+        // remove string between the [  ] control delimiters
         $match = preg_replace( '/\[[^\]]*\]/m', '', $match );
 
         // remove the {{  }} control delimiters
         $match = preg_replace( '/(\{\{)|(\}\})/m', '', $match );
-        // we accept : and # as separator cause the : delimiter wasn't working when using the template tag in a href links in the template (like <a href="{{xxx#yyyy}}"></a>)
-
+        
         // remove whitspace
         $match = trim( $match );
 
+        // we accept : and # as separator cause the : delimiter wasn't working when using the template tag in a href links in the template (like <a href="{{xxx#yyyy}}"></a>)
         $path = preg_split( '/(\:|\#)/', $match, 2 );
-        if ( isset( $path[0] ) and isset( $path[1] ) ) {
+        if ( isset( $path[0] ) && isset( $path[1] ) ) {
 
             $post = null;
             if ( array_key_exists( $path[0], $objects ) ) {
@@ -89,7 +85,13 @@ function commonsbooking_parse_template_callback( $match, array $objects = [] ) {
     }
 }
 
-// Return Custom Post Type postType for template type string
+/**
+ *  Return Custom Post Type postType for template type string
+ *
+ * @param [type] $type type could be location, booking, item
+ *
+ * @return void
+ */ 
 function commonsbooking_getCBType( $type ) {
 	if ( $type == 'location' ) {
 		return \CommonsBooking\Wordpress\CustomPostType\Location::$postType;
