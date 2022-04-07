@@ -127,7 +127,7 @@ class Booking extends View {
 					"content"            => [
 						'user'   => [
 							'label' => commonsbooking_sanitizeHTML( __( 'User', 'commonsbooking' ) ),
-							'value' => $userInfo->first_name . ' ' . $userInfo->last_name . ' (' . $userInfo->user_login . ')',
+							'value' => '<a href="' . get_author_posts_url($booking->post_author) . '">' .  $userInfo->first_name . ' ' . $userInfo->last_name . ' (' . $userInfo->user_login . ') </a>',
 						],
 						'status' => [
 							'label' => commonsbooking_sanitizeHTML( __( 'Status', 'commonsbooking' ) ),
