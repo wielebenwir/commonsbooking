@@ -42,7 +42,14 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * Sets post_status to canceled.
 	 */
 	public function cancel() {
-		// workaround, because wp_update_post deletes all meta data.
+
+		// check if booking has ended
+		if ( $this->isPast() ) {
+			return false;
+		}
+
+		// workaround, because wp_update_post deletes all meta data
+
 		global $wpdb;
 		$sql = $wpdb->prepare(
 			"UPDATE " . $wpdb->prefix . "posts SET post_status='canceled' WHERE ID = %d",
