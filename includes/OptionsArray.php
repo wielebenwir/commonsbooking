@@ -450,7 +450,13 @@ Thanks, the Team.
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color shown when hovering a button or a link', 'commonsbooking' ) ),
 						'default' => '#506CA9',
 					),
-
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Button color', 'commonsbooking' ) ),
+						'id'      => 'colorscheme_buttoncolor',
+						'type'    => 'colorpicker',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'The default color for buttons', 'commonsbooking' ) ),
+						'default' => '#74ce3c',
+					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Confirmation / Available Color', 'commonsbooking' ) ),
 						'id'      => 'colorscheme_acceptcolor',

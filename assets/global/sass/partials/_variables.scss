@@ -28,6 +28,7 @@ $color-white: #FFF;
 /* Colors: Theme, can be modified by user */
 $color-primary:   $color-green-bright !default;
 $color-secondary: $color-blue-dark !default;
+$color-buttons: $color-green-neon !default;
 $color-accept: $color-green-neon !default;
 $color-cancel: $color-warningred !default;
 $color-holiday: $color-orange !default;
@@ -72,6 +73,7 @@ $radius-pill: $radius;
 :root {
   --commonsbooking-color-primary : #{$color-primary};
   --commonsbooking-color-secondary : #{$color-secondary};
+  --commonsbooking-color-buttons : #{$color-buttons};
   --commonsbooking-color-accept : #{$color-accept};
   --commonsbooking-color-cancel : #{$color-cancel};
   --commonsbooking-color-holiday : #{$color-holiday};
