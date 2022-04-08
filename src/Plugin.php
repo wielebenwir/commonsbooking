@@ -4,12 +4,10 @@
 namespace CommonsBooking;
 
 use CommonsBooking\CB\CB1UserFields;
-use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
-use CommonsBooking\Service\Cache;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
@@ -25,13 +23,63 @@ use CommonsBooking\Wordpress\PostStatus\PostStatus;
 
 class Plugin {
 
-	use Cache;
-
 	/**
 	 * CB-Manager id.
 	 * @var string
 	 */
 	public static $CB_MANAGER_ID = 'cb_manager';
+
+	/**
+	 * Returns cache item based on calling class, function and args.
+	 *
+	 * @param null $custom_id
+	 *
+	 * @return mixed
+	 */
+	public static function getCacheItem($custom_id = null) {
+		if (\WP_DEBUG) {
+			return false;
+		}
+		return get_transient(self::getCacheId($custom_id));
+	}
+
+	/**
+	 * Returns cache id, based on calling class, function and args.
+	 *
+	 * @param null $custom_id
+	 *
+	 * @return string
+	 */
+	public static function getCacheId($custom_id = null): string {
+		$backtrace = debug_backtrace()[2];
+		$namespace = str_replace('\\', '_', strtolower($backtrace['class']));
+		$namespace .= '_' . $backtrace['function'];
+		$namespace .= '_' . md5(serialize($backtrace['args']));
+		if ($custom_id) {
+			$namespace .= $custom_id;
+		}
+
+		return $namespace;
+	}
+
+	/**
+	 * Saves cache item based on calling class, function and args.
+	 *
+	 * @param $value
+	 * @param null $custom_id
+	 * @param null $expiration set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
+	 *
+	 * @return mixed
+	 */
+	public static function setCacheItem($value, $custom_id = null, $expiration = null) {
+		// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
+		if ($expiration == 'midnight') {
+			$datetime   = current_time('timestamp');
+			$expiration = strtotime('tomorrow', $datetime) - $datetime;
+		}
+
+		return set_transient(self::getCacheId($custom_id), $value, $expiration);
+	}
 
 	/**
 	 * Plugin activation tasks.
@@ -45,8 +93,6 @@ class Plugin {
 
 		// Init booking codes table
 		BookingCodes::initBookingCodesTable();
-
-		self::clearCache();
 	}
 
 	protected static function addCPTRoleCaps() {
@@ -212,9 +258,6 @@ class Plugin {
 			// migrate bookings to new cpt
 			\CommonsBooking\Migration\Booking::migrate();
 
-            // Set default values to existing timframes for advance booking days
-            self::setAdvanceBookingDaysDefault();
-
 			// Clear cache
 			self::clearCache();
 		}
@@ -255,6 +298,21 @@ class Plugin {
 		foreach ($roles_array as $role) {
 			remove_role($role);
 		}
+	}
+
+	/**
+	 * Deletes cb transients.
+	 *
+	 * @param string $param
+	 */
+	public static function clearCache(string $param = "") {
+		global $wpdb;
+		$sql = "
+            DELETE
+            FROM $wpdb->options
+            WHERE option_name like '_transient_commonsbooking%" . $param . "%'
+        ";
+		$wpdb->query($sql);
 	}
 
 	/**
@@ -317,40 +375,6 @@ class Plugin {
 				''
 			);
 		}
-	}
-
-	/**
-	 * Filters the CSS classes for the body tag in the admin.
-	 *
-	 * @param string $classes
-	 * @return string
-	 */
-	public static function filterAdminBodyClass($classes) {
-		global $current_screen, $plugin_page;
-
-		$cssClass = 'cb-admin';
-
-		if($plugin_page === 'cb-dashboard') {
-			return $classes . ' ' . $cssClass;
-		}
-
-		switch($current_screen->post_type) {
-			case \CommonsBooking\Wordpress\CustomPostType\Booking::$postType:
-			case Item::$postType:
-			case Location::$postType:
-			case Map::$postType:
-			case Restriction::$postType:
-			case Timeframe::$postType:
-				return $classes . ' ' . $cssClass;
-		}
-
-		switch($current_screen->taxonomy) {
-			case 'cb_items_category':
-			case 'cb_locations_category':
-				return $classes . ' ' . $cssClass;
-		}
-
-		return $classes;
 	}
 
 	/**
@@ -514,16 +538,17 @@ class Plugin {
 		// Add menu pages
 		add_action('admin_menu', array(self::class, 'addMenuPages'));
 
-		// Filter body classes of admin pages
-		add_filter('admin_body_class', array(self::class, 'filterAdminBodyClass'), 10, 1);
-
 		// Parent Menu Fix
 		add_filter('parent_file', array($this, "setParentFile"));
 
 		// Remove cache items on save.
-		add_action('wp_insert_post', array($this, 'savePostActions'), 10, 3);
-		add_action('wp_enqueue_scripts', array(Cache::class, 'addWarmupAjaxToOutput'));
-		add_action('admin_enqueue_scripts', array(Cache::class, 'addWarmupAjaxToOutput'));
+		add_action('save_post', array($this, 'savePostActions'), 10, 2);
+
+		// Remove cache items on save.
+		add_action('delete_post', array($this, 'deletePostActions'), 10, 2);
+
+		// actions after saving plugin options
+		//add_action('admin_init', array(self::class, 'saveOptionsActions'), 100);
 
 		add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
@@ -539,11 +564,10 @@ class Plugin {
 		// add custom image sizes
 		add_action('after_setup_theme', array($this, 'AddImageSizes'));
 
-		// renders custom update notice on plugin listing 
+		// renders custom update notice on plugin listing
 		add_action('in_plugin_update_message-' . COMMONSBOOKING_PLUGIN_BASE, function ($plugin_data) {
 			$this->UpdateNotice(COMMONSBOOKING_VERSION, $plugin_data['new_version']);
 		});
-
 	}
 
 	public function commonsbooking_load_textdomain() {
@@ -565,25 +589,28 @@ class Plugin {
 
 	/**
 	 * Removes cache item in connection to post_type.
-	 * @TODO: Add test if cache is cleared correctly.
 	 *
 	 * @param $post_id
 	 * @param $post
-	 * @param $update
-	 *
-	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
-	public function savePostActions($post_id, $post, $update) {
+	public function savePostActions($post_id, $post) {
 		if (!in_array($post->post_type, self::getCustomPostTypesLabels())) {
 			return;
 		}
 
-		$ignoredStates = [ 'auto-draft', 'draft' ];
-		if(!in_array($post->post_status, $ignoredStates) || $update) {
-			$tags = Wordpress::getRelatedPostIds($post_id);
-			$tags[] = 'misc';
-			self::clearCache($tags);
-		}
+		self::clearCache();
+	}
+
+	/**
+	 * Removes all cache items in connection to post_type.
+	 *
+	 * @param $post_id
+	 * @param $post
+	 */
+	public function deletePostActions($post_id) {
+		$post = get_post($post_id);
+		$this->savePostActions($post_id, $post);
+		self::clearCache();
 	}
 
 	/**
@@ -637,6 +664,8 @@ class Plugin {
 	public function initBookingcodes() {
 		add_action('before_delete_post', array(BookingCodes::class, 'deleteBookingCodes'), 10);
 		add_action("admin_action_csvexport", array(View\BookingCodes::class, 'renderCSV'), 10, 0);
+        add_action("admin_action_emailcodes", array(View\BookingCodes::class, 'emailCodes'), 10, 0); /* Genevieve Cory Freie Lastenradl München customization for bookingcodes  20220128 */
+
 	}
 
 	/**
@@ -711,7 +740,7 @@ class Plugin {
 			$crop
 		);
 
-		// image size for medium item and location post images in listings	
+		// image size for medium item and location post images in listings
 		add_image_size(
 			'cb_listing_medium',
 			Settings::getOption('commonsbooking_options_templates', 'image_listing_medium_width'),
@@ -722,7 +751,7 @@ class Plugin {
 
 	/**
 	 * renders a custom update notice in plugin list if the version number increases
-	 * in a major release e.g. 2.5 -> 2.6 
+	 * in a major release e.g. 2.5 -> 2.6
 	 *
 	 * @param  mixed $current_version
 	 * @param  mixed $new_version
@@ -766,23 +795,6 @@ class Plugin {
 				</div>
 			</div>
 		</div>
-    <?php
+<?php
 	}
-    
-    /**
-     * sets advance booking days to default value for existing timeframes.
-     * Advances booking timeframes are available since 2.6 - all timeframes created prior to this version need to have this value set to a default value (365 days)
-     *
-     * @return void
-     */
-    public static function setAdvanceBookingDaysDefault() {
-        $timeframes = \CommonsBooking\Repository\Timeframe::getBookable( [],[],null,true );
-
-        foreach ($timeframes as $timeframe) {
-            if ( $timeframe->getMeta('timeframe-advance-booking-days') < 1 ) {
-                update_post_meta($timeframe->ID, 'timeframe-advance-booking-days', '365');
-            }
-        }
-    }
-
 }

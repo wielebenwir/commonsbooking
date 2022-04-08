@@ -88,8 +88,12 @@ class BookingCode {
 
 		return $post->post_title;
 	}
+    public function getItemAdmins() { /* Genevieve Cory Freie Lastenradl München customization 20220128 to automatically email the bookingcodes */
+        $post = get_post($this->getItem());
+        return $post->_cb_item_admins;
+    }
 
-	/**
+    /**
 	 * @param mixed $item
 	 *
 	 * @return BookingCode
