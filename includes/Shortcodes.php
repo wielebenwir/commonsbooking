@@ -11,3 +11,5 @@ function commonsbooking_tag( $atts ) {
 add_shortcode( 'cb', 'commonsbooking_tag' );
 
 
+//adds shortcode for user statistics
+add_shortcode( 'cb_statistics-user' , array( \CommonsBooking\View\Statistics::class, 'shortcodeUser' ) );
