@@ -47,7 +47,7 @@ class Dashboard extends View {
 		}
 	}
 
-		
+
 	/**
 	 * Renders list of ending bookings for today.
 	 * @return void
@@ -80,7 +80,7 @@ class Dashboard extends View {
 			}
 			$html .= '</ul>';
 			$html .= '</div>';
-	
+
 			return $html;
 		} else {
 			return false;

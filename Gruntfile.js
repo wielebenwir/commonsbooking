@@ -137,21 +137,24 @@ module.exports = function (grunt) {
 		'compass:themes',
 		'uglify:dev',
 		'uglify:dist',
-		'babel',
+        'babel',
+        'uglify:dev',
+		'uglify:dist'
 	]);
 	grunt.registerTask('dev', [
 		'compass:adminDev',
 		'compass:publicDev',
 		'compass:themes',
 		'uglify:dev',
-		'babel',
+        'babel',
+        'uglify:dev',
 		'watch'
 	]);
 	grunt.registerTask('dist', [
-		'compass:admin',
+        'babel',
+        'compass:admin',
 		'compass:public',
 		'compass:themes',
-		'uglify:dist',
-		'babel'
+		'uglify:dist'
 	]);
 };

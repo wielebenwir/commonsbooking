@@ -42,6 +42,13 @@ function commonsbooking_public() {
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-datepicker', array( 'jquery' ) );
 
+	// Sortable extension
+	wp_enqueue_script( 'jquery-ui-sortable', array( 'jquery' ) );
+
+	// Pivottable
+	wp_enqueue_script( 'public-scripts-pivottable', COMMONSBOOKING_PLUGIN_URL . 'node_modules/pivottable/dist/pivot.js', array(), COMMONSBOOKING_VERSION );
+	wp_enqueue_style( 'public-styles-pivottable', COMMONSBOOKING_PLUGIN_URL . 'node_modules/pivottable/dist/pivot.css', array(), COMMONSBOOKING_VERSION );
+
 	wp_enqueue_script(
 		'cb-scripts-vendor',
 		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'global/js/vendor.js',
