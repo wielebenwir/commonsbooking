@@ -60,6 +60,23 @@
 			<h2><?php
 
 			echo esc_html__('Welcome to CommonsBooking', 'commonsbooking') ;?>.</h2>
+			<? 
+			$stats = new \CommonsBooking\View\Statistics(time());
+			$data = $stats->getTotalBookingsCountforUser();
+
+			$startDate = strtotime('-30 days', current_time('timestamp')) ;
+			$endDate = strtotime('+30 days', current_time('timestamp')) ;
+
+			foreach ($data as $dat) {
+	
+
+				//var_dump($dat);
+				var_dump( $dat->getBookingsCountforTimerange($startDate, $endDate) );
+			}
+
+			//var_dump( $stats->getTotalBookingsCountforUser() );
+			
+			?>
 			<div class="cb_welcome-panel-column-container">
 				<div class="cb_welcome-panel-column">
 					<img src="<?php echo plugin_dir_url( __DIR__  ).'assets/global/cb-ci/logo.png'; ?>" style="width:200px">
