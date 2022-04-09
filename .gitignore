@@ -17,3 +17,4 @@ views/.DS_Store
 /composer.phar
 copy-svn.sh
 package-lock.json
+.idea
