@@ -5745,4 +5745,21 @@ select[readonly] {
   color: var(--commonsbooking-color-success);
 }
 
+/* line 939, src/Wordpress/CustomPostType/Timeframe.php */
+.cb_admin_holiday_table_wrapper{
+
+}
+.cb_admin_holiday_table{
+    float: left;
+    padding-top:10px;
+    padding-bottom:10px;
+}
+.cb_admin_holiday_table:not(.cb_admin_holiday_table:first-of-type){
+    margin-left: 10px;
+}
+#holiday_load_btn{
+
+    padding: 5px;
+}
+
 /*# sourceMappingURL=admin.css.map */

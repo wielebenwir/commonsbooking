@@ -25,6 +25,7 @@
 	},
 	"scripts": {},
 	"dependencies": {
+		"Compass": "npm:compass@^0.1.1",
 		"leaflet": "^1.7.1",
 		"leaflet-easybutton": "^2.4.0",
 		"leaflet-spin": "^1.1.2",

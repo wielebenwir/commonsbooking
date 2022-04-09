@@ -51,6 +51,9 @@
             const bookingCodesDownload = $('#booking-codes-download');
             const bookingCodesList = $('#booking-codes-list');
 
+            const holidayField = $('.cmb2-id--cmb2-holiday');
+            const holidayInput = $('#timeframe_manual_date');
+            const manualDateField = $('.cmb2-id-timeframe-manual-date');
             const maxDaysSelect = $('.cmb2-id-timeframe-max-days');
             const advanceBookingDays = $('.cmb2-id-timeframe-advance-booking-days');
             const allowUserRoles = $('.cmb2-id-allowed-user-roles');
@@ -90,7 +93,7 @@
              */
             const handleTypeSelection = function () {
                 const selectedType = $("option:selected", typeInput).val();
-
+                const selectedRepetition = $("option:selected", timeframeRepetitionInput).val();
                 if (selectedType == 2) {
                     maxDaysSelect.show();
                     advanceBookingDays.show();
@@ -99,13 +102,46 @@
                     maxDaysSelect.hide();
                     advanceBookingDays.hide();
                     allowUserRoles.hide();
+                    if (selectedType == 3 && selectedRepetition == 'manual') {
+
+                        holidayField.show();
+                    } else {
+                        holidayField.hide();
+                        holidayInput.val('');
+
+                    }
+
                 }
             }
+
             handleTypeSelection();
             typeInput.change(function () {
                 handleTypeSelection();
             });
-
+            /**
+             * Shows/hides max day selection and user role restriction depending on timeframe Repitition tyoe (for bookings).
+             */
+            const handleRepititionSelection = function () {
+                const selectedRepetition = $("option:selected", timeframeRepetitionInput).val();
+                const selectedType = $("option:selected", typeInput).val();
+                if (selectedRepetition !== 'manual') {
+                    manualDateField.hide()
+                    holidayField.hide();
+                    holidayInput.val('');
+                } else {
+                    manualDateField.show();
+                    if (selectedType == 3) {
+                        holidayField.show();
+                    } else {
+                        holidayField.hide();
+                        holidayInput.val('');
+                    }
+                }
+            }
+            handleRepititionSelection();
+            timeframeRepetitionInput.change(function () {
+                handleRepititionSelection();
+            });
             /**
              * Shows/hides grid selection depending on checked-state.
              */

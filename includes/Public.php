@@ -145,6 +145,8 @@ function commonsbooking_public() {
 			'nonce'    => wp_create_nonce( 'cache_warmup' ),
 		)
 	);
+
+
 }
 
 add_action( 'wp_enqueue_scripts', 'commonsbooking_public' );
@@ -162,9 +164,11 @@ add_action( 'wp_ajax_nopriv_cache_warmup', array( \CommonsBooking\Plugin::class,
 if ( is_admin() ) {
 	add_action( 'wp_ajax_start_migration', array( Migration::class, 'migrateAll' ) );
 	add_action( 'wp_ajax_start_booking_migration', array( \CommonsBooking\Migration\Booking::class, 'ajaxMigrate' ) );
+	//Holiday ajax
+	add_action('wp_ajax_holiday_get', array(\CommonsBooking\Service\Holiday::class, 'getHolidayFromState'));
 }
 
-// Map ajax
+// Map ajaxx
 add_action( 'wp_ajax_cb_map_locations', array( MapShortcode::class, 'get_locations' ) );
 add_action( 'wp_ajax_nopriv_cb_map_locations', array( MapShortcode::class, 'get_locations' ) );
 add_action( 'wp_ajax_cb_map_geo_search', array( MapShortcode::class, 'geo_search' ) );

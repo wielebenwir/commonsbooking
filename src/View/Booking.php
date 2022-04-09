@@ -248,7 +248,6 @@ class Booking extends View {
 
 		ob_start();
 		commonsbooking_get_template_part( 'shortcode', 'bookings', true, false, false );
-
 		return ob_get_clean();
 	}
 }
