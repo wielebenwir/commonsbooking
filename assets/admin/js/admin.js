@@ -1,14 +1,42 @@
 (function($) {
     "use strict";
+    let ajax = (year, state) => {
+        $.post(cb_ajax_holiday_get.ajax_url, {
+            _ajax_nonce: cb_ajax_holiday_get.nonce,
+            action: "holiday_get",
+            year: year,
+            state: state
+        }, function(data) {
+            var array = $.parseJSON(data);
+            array = Object.entries(array).map(item => item[1]);
+            if ($("#timeframe_manual_date").val().length > 0) {
+                if ($("#timeframe_manual_date").val().slice(-1) !== ",") {
+                    $("#timeframe_manual_date").val($("#timeframe_manual_date").val() + "," + array.join(","));
+                }
+                $("#timeframe_manual_date").val($("#timeframe_manual_date").val() + array.join(","));
+            } else {
+                $("#timeframe_manual_date").val(array.join(",") + ",");
+            }
+        });
+    };
+    $(document).ready(function() {
+        $("#holiday_load_btn").click(function() {
+            ajax($("#_cmb2_holidayholiday_year").val(), $("#_cmb2_holidayholiday_state").val());
+        });
+    });
+})(jQuery);
+
+(function($) {
+    "use strict";
     $(function() {
         $("#cmb2-metabox-migration #migration-start").on("click", function(event) {
             event.preventDefault();
             $("#migration-state").show();
             $("#migration-in-progress").show();
             const runMigration = data => {
-                $.post(cb_ajax_start_migration.ajax_url, {
-                    _ajax_nonce: cb_ajax_start_migration.nonce,
-                    action: "cb_start_migration",
+                $.post(cb_ajax.ajax_url, {
+                    _ajax_nonce: cb_ajax.nonce,
+                    action: "start_migration",
                     data: data,
                     geodata: $("#get-geo-locations").is(":checked")
                 }, function(data) {
@@ -33,9 +61,9 @@
         $("#cmb2-metabox-migration #booking-update-start").on("click", function(event) {
             event.preventDefault();
             $("#booking-migration-in-progress").show();
-            $.post(cb_ajax_start_migration.ajax_url, {
-                _ajax_nonce: cb_ajax_start_migration.nonce,
-                action: "cb_start_booking_migration"
+            $.post(cb_ajax.ajax_url, {
+                _ajax_nonce: cb_ajax.nonce,
+                action: "start_booking_migration"
             }).done(function() {
                 $("#booking-migration-in-progress").hide();
                 $("#booking-migration-done").show();
@@ -54,40 +82,6 @@
         form.find("input, select, textarea").on("keyup change paste", function() {
             form.find("input[name=restriction-send]").prop("disabled", true);
         });
-    });
-})(jQuery);
-
-(function($) {
-    "use strict";
-    $(function() {
-        const hideFieldset = function(set) {
-            $.each(set, function() {
-                $(this).parents(".cmb-row").hide();
-            });
-        };
-        const showFieldset = function(set) {
-            $.each(set, function() {
-                $(this).parents(".cmb-row").show();
-            });
-        };
-        const emailform = $("#templates");
-        if (emailform.length) {
-            const eventCreateCheckbox = $("#emailtemplates_mail-booking_ics_attach");
-            const eventTitleInput = $("#emailtemplates_mail-booking_ics_event-title");
-            const eventDescInput = $("#emailtemplates_mail-booking_ics_event-description");
-            const eventFieldSet = [ eventTitleInput, eventDescInput ];
-            const handleiCalAttachmentSelection = function() {
-                showFieldset(eventFieldSet);
-                if (!eventCreateCheckbox.prop("checked")) {
-                    hideFieldset(eventFieldSet);
-                    eventCreateCheckbox.prop("checked", false);
-                }
-            };
-            handleiCalAttachmentSelection();
-            eventCreateCheckbox.click(function() {
-                handleiCalAttachmentSelection();
-            });
-        }
     });
 })(jQuery);
 
@@ -125,7 +119,6 @@
             const repetitionStartInput = $("#repetition-start");
             const repetitionEndInput = $("#repetition-end");
             const fullDayInput = $("#full-day");
-            const bookingCodeTitle = $("#title-timeframe-booking-codes");
             const showBookingCodes = $("#show-booking-codes");
             const createBookingCodesInput = $("#create-booking-codes");
             const bookingCodesDownload = $("#booking-codes-download");
@@ -160,13 +153,16 @@
                     maxDaysSelect.show();
                     advanceBookingDays.show();
                     allowUserRoles.show();
-                    showFieldset(bookingCodeTitle);
                 } else {
                     maxDaysSelect.hide();
                     advanceBookingDays.hide();
                     allowUserRoles.hide();
-                    hideFieldset(bookingCodeTitle);
-                    if (selectedType == 3 && selectedRepetition == "manual") {} else {}
+                    if (selectedType == 3 && selectedRepetition == "manual") {
+                        holidayField.show();
+                    } else {
+                        holidayField.hide();
+                        holidayInput.val("");
+                    }
                 }
             };
             handleTypeSelection();
@@ -209,21 +205,11 @@
             });
             const handleRepetitionSelection = function() {
                 const selectedType = $("option:selected", timeframeRepetitionInput).val();
-                const selectedTimeframeType = $("option:selected", typeInput).val();
                 if (selectedType) {
                     if (selectedType == "norep") {
                         showNoRepFields();
                     } else {
                         showRepFields();
-                    }
-                    if (selectedType == "manual") {
-                        manualDateField.show();
-                        hideFieldset(repetitionStartInput);
-                        hideFieldset(repetitionEndInput);
-                    } else {
-                        manualDateField.hide();
-                        showFieldset(repetitionStartInput);
-                        showFieldset(repetitionEndInput);
                     }
                     if (selectedType == "w") {
                         weekdaysInput.parents(".cmb-row").show();

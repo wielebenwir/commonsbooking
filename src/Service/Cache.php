@@ -44,7 +44,7 @@ trait Cache {
 
 	/**
 	 * Returns cache id, based on calling class, function and args.
-     * 
+     *
      * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
 	 *
 	 * @param null $custom_id
@@ -339,10 +339,10 @@ trait Cache {
 	}
 
 	private static $cbShortCodeFunctions = [
-		"cb_items" => array( \CommonsBooking\View\Item::class, 'shortcode' ),
-		'cb_bookings' => array( \CommonsBooking\View\Booking::class, 'shortcode' ),
-		"cb_locations" => array( \CommonsBooking\View\Location::class, 'shortcode' ),
-		"cb_map" => array( MapShortcode::class, 'execute' ),
+		"cb_items"       => array( \CommonsBooking\View\Item::class, 'shortcode' ),
+		'cb_bookings'    => array( \CommonsBooking\View\Booking::class, 'shortcode' ),
+		"cb_locations"   => array( \CommonsBooking\View\Location::class, 'shortcode' ),
+		"cb_map"         => array( MapShortcode::class, 'execute' ),
 		'cb_items_table' => array( Calendar::class, 'renderTable' )
 	];
 
