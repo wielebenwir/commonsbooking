@@ -31,7 +31,7 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 		$data                 = new stdClass();
 		$data->data           = new stdClass();
 		$data->data->feeds    = $feeds;
-		$data->last_updated   = time();
+		$data->last_updated   = current_time('timestamp');
 		$data->ttl            = 86400;
 		$data->version        = "2.2";
 

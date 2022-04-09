@@ -97,7 +97,7 @@ class Scheduler {
 	 */
 	private static function getReminderStarttimestamp( $startTime ) {
 		$startTimestamp = strtotime( "today +$startTime hours" );
-		if ( $startTimestamp < time() ) {
+		if ( $startTimestamp < current_time('timestamp') ) {
 			$startTimestamp = strtotime( "tomorrow +$startTime hours" );
 		}
 
