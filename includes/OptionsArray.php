@@ -11,7 +11,7 @@ use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
-// We need static types, because german month names dont't work for datepicker
+// We need static types, because German month names don't work for the datepicker
 $dateFormat = "d/m/Y";
 if ( strpos( get_locale(), 'de_' ) !== false ) {
 	$dateFormat = "d.m.Y";
@@ -32,7 +32,7 @@ $typeOptions += Timeframe::getTypes();
  * This file is used and included in functions that register or set admin options (search for includes/OptionsArray.php to get references)
  *
  * Tabs -> field "groups" -> fields
- * Notice: options are stored in database wp_options with prefix 'commonsboking_options_' followed by the tab id (e.g. commonsbooking_options_main)
+ * Notice: options are stored in database wp_options with prefix 'commonsbooking_options_' followed by the tab id (e.g. commonsbooking_options_main)
  *
  */
 return array(
@@ -52,7 +52,7 @@ return array(
 					sprintf( commonsbooking_sanitizeHTML( __( 'You are using CommonsBooking Version %s
 
                             <h2>How to start</h2>
-                            <p>To get startet visit our tutorials and documentation on <a target="_blank" href="https://commonsbooking.org/dokumentation">https://commonsbooking.org/dokumentation</a></p>
+                            <p>To get started visit our tutorials and documentation on <a target="_blank" href="https://commonsbooking.org/dokumentation">https://commonsbooking.org/dokumentation</a></p>
 
                             <h2>Questions or bug reports?</h2>
                             <p>Ask your questions or send us your bug reports here <a target="_blank" href="https://commonsbooking.org/kontakt/">https://commonsbooking.org/kontakt/</a></p>
@@ -76,7 +76,7 @@ return array(
 			'posttypes'              => array(
 				'title'  => __( 'Naming and permalinks', 'commonsbooking' ),
 				'id'     => 'posttypes',
-				// tranlsators: %s = admin url options page
+				// translators: %s = admin url options page
 				'desc'   =>
 					commonsbooking_sanitizeHTML( __(
 						'Customize names & slugs. You can set an individual slug for items and locations to create individual permalinks. <br><b>Notice</b>: If the new settings do not work directly (you will get a 404 page error on frontend pages), you must click on the Settings -> Permalinks page after saving these settings to refresh the Wordpress permalink settings.'
@@ -156,8 +156,11 @@ return array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
 				'id'     => 'bookingcodes',
 				'desc'   =>
-					commonsbooking_sanitizeHTML( __( 'Enter the booking codes to be generated in advance for booking types with all-day booking time frames.  Enter booking codes as a comma separated list, e.g.: Code1,Code2,Code3,Code4
-                <br>More information in the documentation: <a href="https://commonsbooking.org/?p=870" target="_blank">Booking Codes</a>', 'commonsbooking' ) ),
+					commonsbooking_sanitizeHTML( __( 'Enter the booking codes to be generated in advance for
+					booking types with all-day booking time frames.  Enter booking codes as a comma separated list,
+					e.g.: Code1,Code2,Code3,Code4
+                    <br>More information in the documentation:
+                    <a href="https://commonsbooking.org/?p=870" target="_blank">Booking Codes</a>', 'commonsbooking' ) ),
 				'fields' => array(
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
