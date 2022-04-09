@@ -2,59 +2,6 @@
 <!-- based on Wordpress Dashboard -->
 <div class="wrap">
 
-	<?php
-
-		echo '<pre>';
-		$header = [];
-		$dataRows = [];
-		$start = date('Y-m-d', strtotime('-30 days'));
-		$end = date('Y-m-d', strtotime('+30 days'));
-
-		$entries = \CommonsBooking\View\TimeframeExport::getExportDataStats($start, $end);
-
-
-		foreach ($entries as  $entry) {
-
-			if(!count($header)) {
-				$header = array_keys($entry);
-			}
-			$dataRows[] = array_values($entry);
-		}
-
-
-		#var_dump($dataRows);
-	echo '</pre>';
-	?>
-	<div id="pivottable" />
-	<script type="text/javascript">
-		(function ($) {
-			'use strict';
-			$(function () {
-				var renderers = $.extend(
-					$.pivotUtilities.renderers,
-					/*$.pivotUtilities.plotly_renderers,
-					$.pivotUtilities.d3_renderers,
-					$.pivotUtilities.export_renderers*/
-				);
-				const tipsData = [
-
-					<?php
-
-					echo '["' . implode("\",\"",$header) . '"],';
-					foreach ($dataRows as $dataRow) {
-						echo '["' . implode("\",\"",$dataRow) . '"],';
-					}
-
-					?>
-
-					];
-				$("#pivottable").pivotUI(
-					tipsData
-				);
-			});
-		})(jQuery);
-	</script>
-
 	<div id="cb_welcome-panel" class="cb_welcome-panel">
 		<div class="cb_welcome-panel-content">
 			<h2><?php
