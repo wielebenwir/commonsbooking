@@ -10,10 +10,18 @@ function commonsbooking_admin() {
 	// Tooltip extension
 	wp_enqueue_script( 'jquery-ui-tooltip', array( 'jquery' ) );
 
+	// Sortable extension
+	wp_enqueue_script( 'jquery-ui-sortable', array( 'jquery' ) );
+
+	// Pivottable
+	wp_enqueue_script( 'admin-scripts-pivottable', COMMONSBOOKING_PLUGIN_URL . 'node_modules/pivottable/dist/pivot.js', array(), COMMONSBOOKING_VERSION );
+	wp_enqueue_style( 'admin-styles-pivottable', COMMONSBOOKING_PLUGIN_URL . 'node_modules/pivottable/dist/pivot.css', array(), COMMONSBOOKING_VERSION );
+
+	// Admin styles/scripts
 	wp_enqueue_style( 'admin-styles', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/css/admin.css', array(), COMMONSBOOKING_VERSION );
 	wp_enqueue_script( 'cb-scripts-admin', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js', array() );
 
-    // Map marker upload scripts
+	// Map marker upload scripts
     // TODO needs to be evaluated. Maybe not working on all systems
     if (get_current_screen()->id == 'cb_map') {
         $script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-marker-upload.js';
@@ -138,11 +146,11 @@ function commonsbooking_sanitizeHTML( $string ): string {
  *
  * @param mixed array_or_string (array|string)
  * @param string $sanitize_function name of the sanitziation function, default = sanitize_text_field. You can use any method that accepts a string as parameter
- * 
- * See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
- * 
  *
- * @return array|string 
+ * See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
+ *
+ *
+ * @return array|string
  */
 function commonsbooking_sanitizeArrayorString( $array_or_string, $sanitize_function = 'sanitize_text_field' ) {
 	if ( is_string( $array_or_string ) ) {

@@ -29,6 +29,7 @@
 		"leaflet-easybutton": "^2.4.0",
 		"leaflet-spin": "^1.1.2",
 		"leaflet.markercluster": "^1.5.0",
+		"pivottable": "^2.23.0",
 		"shufflejs": "^5.3.0"
 	}
 }
