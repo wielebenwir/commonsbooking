@@ -179,6 +179,36 @@ class TimeframeExport {
 		return $timeframes;
 	}
 
+	public static function getExportDataStats( $start, $end ): array {
+
+		$start = commonsbooking_sanitizeHTML( $start );
+		$end   = commonsbooking_sanitizeHTML( $end );
+
+		// Timerange
+		$period = self::getPeriod( $start, $end );
+
+		// Types
+		$type = self::getType();
+
+		$timeframes = [];
+		foreach ( $period as $dt ) {
+			$dayTimeframes = Timeframe::get(
+				[],
+				[],
+				[\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID],
+				$dt->format( "Y-m-d" ),
+				false,
+				null,
+				[ 'canceled', 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+			);
+			foreach ( $dayTimeframes as $timeframe ) {
+				$timeframes[  ] = (array)$timeframe;
+			}
+		}
+
+		return $timeframes;
+	}
+
 	protected static function getPeriod( $start, $end ) {
 		// Timerange
 		$begin = new DateTime( $start );
