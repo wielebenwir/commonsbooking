@@ -1,9 +1,9 @@
 <?php
 /**
- * Shortcode [cb_statistics-user]
+ * Shortcode [cb_statistics-item]
  * 
  *
- * Show statistics for current user or users managed by current admin
+ * Show statistics for items managed by current admin
  *
  * Statistics are rendered in View/Statistics
  * 
@@ -12,9 +12,9 @@
 global $templateData;
 if ( !is_user_logged_in() )  {
 	$current_url = $_SERVER['REQUEST_URI'];
-    $noResultText = sprintf( commonsbooking_sanitizeHTML(  __('Please <a href="%s">login</a> to see the booking statistics.', 'commonsbooking') ), wp_login_url( $current_url ) );
+    $noResultText = sprintf( commonsbooking_sanitizeHTML(  __('Please <a href="%s"> login </a> to see the booking statistics.', 'commonsbooking') ), wp_login_url( $current_url ) );
 } else { 
-    $noResultText = commonsbooking_sanitizeHTML(  __("No bookings available.", "commonsbooking") );
+    $noResultText = commonsbooking_sanitizeHTML(  __("No statistics available yet.", "commonsbooking") );
 }
 
 $response = '';

@@ -61,4 +61,29 @@ class Statistics extends View {
 
 	}
 
+	
+	public static function shortcodeLocations( $atts ) {
+		global $templateData;
+		$templateData = [];
+		$templateData = Booking::getBookingListData();
+
+		ob_start();
+
+		commonsbooking_get_template_part( 'shortcode', 'statistics-location', true, false, false );
+
+		return ob_get_clean();
+	}
+
+	public static function shortcodeItems( $atts ) {
+		global $templateData;
+		$templateData = [];
+		$templateData = Booking::getBookingListData();
+
+		ob_start();
+
+		commonsbooking_get_template_part( 'shortcode', 'statistics-item', true, false, false );
+
+		return ob_get_clean();
+	}
+
 }
