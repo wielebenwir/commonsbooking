@@ -47,7 +47,7 @@ class Location extends View {
 					$itemIds,
 					null,
 					true,
-					time()
+					current_time('timestamp')
 				)
 			];
 
@@ -131,7 +131,7 @@ class Location extends View {
 		else { //Message to show when no item matches query
 			return '
 			<div class="cb-wrapper cb-shortcode-locations template-shortcode-locations post-post no-post-thumbnail">
-			<div class="cb-list-error">' 
+			<div class="cb-list-error">'
 			. __('No locations found.','commonsbooking') .
 			'</div>
 			</div>
@@ -154,7 +154,7 @@ class Location extends View {
 			$longitude = $post->getMeta( 'geo_longitude' );
 			wp_enqueue_style( 'cb_map_leaflet_css', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet.css' );
 			wp_enqueue_script( 'cb_map_leaflet_js', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet-src.js' );
-            
+
 
 			echo '<div id="cb_locationview_map" style="width: 100%; height: 300px;"></div>';
             wp_enqueue_script( 'cb-map-locationview_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-locationview.js' );

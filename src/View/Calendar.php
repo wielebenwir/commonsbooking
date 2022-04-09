@@ -41,128 +41,128 @@ class Calendar {
 	 * @throws Exception
 	 */
 	public static function renderTable( $atts ): string {
-			$locationCategory = false;
-			if ( is_array( $atts ) && array_key_exists( 'locationcat', $atts ) ) {
-				$locationCategory = $atts['locationcat'];
+		$locationCategory = false;
+		if ( is_array( $atts ) && array_key_exists( 'locationcat', $atts ) ) {
+			$locationCategory = $atts['locationcat'];
+		}
+		$itemCategory = false;
+		if ( is_array( $atts ) && array_key_exists( 'itemcat', $atts ) ) {
+			$itemCategory = $atts['itemcat'];
+		}
+
+		// defines the number of days shown in the calendar table view. If not set, default is 31 days
+		// TODO: max days should be made configurable in options
+		$days = is_array( $atts ) && array_key_exists( 'days', $atts ) ? $atts['days'] : 31;
+
+		$desc  = $atts['desc'] ?? '';
+		$date  = new DateTime();
+		$date->setTimestamp(current_time('timestamp'));
+		$today = $date->format( "Y-m-d" );
+
+		$days_display = array_fill( 0, $days, 'n' );
+		$days_cols    = array_fill( 0, $days, '<col>' );
+		$month        = date( "Y-m" );
+		$month_cols   = [ $month => 0 ];
+		$days_dates   = [];
+
+		for ( $i = 0; $i < $days; $i ++ ) {
+			$month_cols[ $month ] ++;
+			$days_display[ $i ] = $date->format( 'd' );
+			$days_dates[ $i ]   = $date->format( 'Y-m-d' );
+
+			if ( $date->format( 'N' ) >= 7 ) {
+				$days_cols[ $i ] = '<col class="bg_we">';
 			}
-			$itemCategory = false;
-			if ( is_array( $atts ) && array_key_exists( 'itemcat', $atts ) ) {
-				$itemCategory = $atts['itemcat'];
+			$date->modify( '+1 day' );
+			if ( $date->format( 'Y-m' ) != $month ) {
+				$month                = $date->format( 'Y-m' );
+				$month_cols[ $month ] = 0;
+			}
+		}
+
+		$last_day = $days_dates[ $days - 1 ];
+		$colStr   = implode( ' ', $days_cols );
+
+		$print = '<div class="cb-table-scroll">';
+		$print .= "<table class='cb-items-table tablesorter'><colgroup><col><col>" . $colStr . "</colgroup><thead>";
+		$print .= "<tr><th colspan='2' class='sortless'>" . $desc . "</th>";
+
+		// Render months
+		$print .= self::renderHeadlineMonths( $month_cols );
+		$print .= "</tr>";
+
+		//Render Headline Days
+		$print .= self::renderHeadlineDays( $days_display );
+
+		$items = get_posts( array(
+			'post_type'      => 'cb_item',
+			'post_status'    => 'publish',
+			'order'          => 'ASC',
+			'posts_per_page' => - 1
+		) );
+
+		$itemRowsHTML = '';
+
+		foreach ( $items as $item ) {
+			// Check for category term
+			if ( $itemCategory ) {
+				if ( ! has_term( $itemCategory, Item::$postType . 's_category', $item->ID ) ) {
+					continue;
+				}
 			}
 
-			// defines the number of days shown in the calendar table view. If not set, default is 31 days
-			// TODO: max days should be made configurable in options
-			$days = is_array( $atts ) && array_key_exists( 'days', $atts ) ? $atts['days'] : 31;
+			$rowHtml = " ";
+			// Get timeframes for item
+			$timeframes = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
+				strtotime( $today ),
+				strtotime( $last_day ),
+				[],
+				[ $item->ID ],
+				[ Timeframe::BOOKABLE_ID ],
+				true
+			);
 
-			$desc  = $atts['desc'] ?? '';
-			$date  = new DateTime();
-			$today = $date->format( "Y-m-d" );
-
-			$days_display = array_fill( 0, $days, 'n' );
-			$days_cols    = array_fill( 0, $days, '<col>' );
-			$month        = date( "Y-m" );
-			$month_cols   = [ $month => 0 ];
-			$days_dates   = [];
-
-
-			for ( $i = 0; $i < $days; $i ++ ) {
-				$month_cols[ $month ] ++;
-				$days_display[ $i ] = $date->format( 'd' );
-				$days_dates[ $i ]   = $date->format( 'Y-m-d' );
-
-				if ( $date->format( 'N' ) >= 7 ) {
-					$days_cols[ $i ] = '<col class="bg_we">';
-				}
-				$date->modify( '+1 day' );
-				if ( $date->format( 'Y-m' ) != $month ) {
-					$month                = $date->format( 'Y-m' );
-					$month_cols[ $month ] = 0;
-				}
-			}
-
-			$last_day = $days_dates[ $days - 1 ];
-			$colStr   = implode( ' ', $days_cols );
-
-			$print = '<div class="cb-table-scroll">';
-			$print .= "<table class='cb-items-table tablesorter'><colgroup><col><col>" . $colStr . "</colgroup><thead>";
-			$print .= "<tr><th colspan='2' class='sortless'>" . $desc . "</th>";
-
-			// Render months
-			$print .= self::renderHeadlineMonths( $month_cols );
-			$print .= "</tr>";
-
-			//Render Headline Days
-			$print .= self::renderHeadlineDays( $days_display );
-
-			$items = get_posts( array(
-				'post_type'      => 'cb_item',
-				'post_status'    => 'publish',
-				'order'          => 'ASC',
-				'posts_per_page' => - 1
-			) );
-
-			$itemRowsHTML = '';
-
-			foreach ( $items as $item ) {
-				// Check for category term
-				if ( $itemCategory ) {
-					if ( ! has_term( $itemCategory, Item::$postType . 's_category', $item->ID ) ) {
-						continue;
-					}
+			if ( $timeframes ) {
+				// Collect unique locations from timeframes
+				$locations = [];
+				foreach ( $timeframes as $timeframe ) {
+					$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
 				}
 
-				$rowHtml = " ";
-				// Get timeframes for item
-				$timeframes = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
-					strtotime( $today ),
-					strtotime( $last_day ),
-					[],
-					[ $item->ID ],
-					[ Timeframe::BOOKABLE_ID ],
-					true
-				);
-
-				if ( $timeframes ) {
-					// Collect unique locations from timeframes
-					$locations = [];
-					foreach ( $timeframes as $timeframe ) {
-						$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
-					}
-
-					// loop through location
-					foreach ( $locations as $locationId => $locationName ) {
-						$customCacheKey = $item->ID . $locationId . $today;
-						if ( Plugin::getCacheItem($customCacheKey) ) {
-							$rowHtml .= Plugin::getCacheItem($customCacheKey);
-						} else {
-							// Check for category term
-							if ( $locationCategory ) {
-								if ( ! has_term( $locationCategory, Location::$postType . 's_category', $locationId ) ) {
-									continue;
-								}
+				// loop through location
+				foreach ( $locations as $locationId => $locationName ) {
+					$customCacheKey = $item->ID . $locationId . $today;
+					if ( Plugin::getCacheItem($customCacheKey) ) {
+						$rowHtml .= Plugin::getCacheItem($customCacheKey);
+					} else {
+						// Check for category term
+						if ( $locationCategory ) {
+							if ( ! has_term( $locationCategory, Location::$postType . 's_category', $locationId ) ) {
+								continue;
 							}
-
-							$locationHtml = self::renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display );
-							Plugin::setCacheItem( $locationHtml, [strval($item->ID), strval($locationId)], $customCacheKey);
-							$rowHtml .= $locationHtml;
 						}
+
+						$locationHtml = self::renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display );
+						Plugin::setCacheItem( $locationHtml, [strval($item->ID), strval($locationId)], $customCacheKey);
+						$rowHtml .= $locationHtml;
 					}
-					$itemRowsHTML .= $rowHtml;
 				}
+				$itemRowsHTML .= $rowHtml;
 			}
+		}
 
-			if (empty($itemRowsHTML)) { //print message of unavailable items
-				$print .= '<tr style="color: var(--commonsbooking-color-error);"><td colspan="2">' . __('No items found.','commonsbooking') .'</td></tr>';
-			} 
-			else { //if there are item rows, append them to the table
-				$print .= $itemRowsHTML;
-			}
+		if (empty($itemRowsHTML)) { //print message of unavailable items
+			$print .= '<tr style="color: var(--commonsbooking-color-error);"><td colspan="2">' . __('No items found.','commonsbooking') .'</td></tr>';
+		}
+		else { //if there are item rows, append them to the table
+			$print .= $itemRowsHTML;
+		}
 
-			$print .= "</tbody></table>";
-			$print .= '</div>';
+		$print .= "</tbody></table>";
+		$print .= '</div>';
 
 
-			return $print;
+		return $print;
 	}
 
 	/**

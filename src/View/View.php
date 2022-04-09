@@ -152,7 +152,6 @@ abstract class View {
 
 	/**
 	 * Compiles the user defined color scheme from settings (templates) using SCSSPHP and returns it
-	 * 
 	 *
 	 * @return string
 	 */
@@ -162,7 +161,6 @@ abstract class View {
 		$import_path = COMMONSBOOKING_PLUGIN_DIR . 'assets/public/sass/partials/';
 		$compiler ->setImportPaths($import_path);
 
-		
 		$variables = [
 			'color-primary' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_primarycolor'),
 			'color-secondary' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_secondarycolor'),
@@ -172,7 +170,7 @@ abstract class View {
 			'color-greyedout' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_greyedoutcolor'),
 			'color-bg' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_backgroundcolor'),
 			'color-noticebg' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_noticebackgroundcolor'),
-		];	
+		];
 
 		foreach ($variables as &$variable){ //iterate over array, convert valid values.
 			if ($variable){  //values are only converted when set so ValueParser does not throw an error
@@ -183,7 +181,6 @@ abstract class View {
 			}
 		}
 
-		
 		$compiler->replaceVariables($variables);
 		$content = '@import "' . $var_import . '";';
 		$result = $compiler->compileString($content);
