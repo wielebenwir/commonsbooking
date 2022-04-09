@@ -106,11 +106,11 @@ class Timeframe extends CustomPostType {
 	 */
 	public static function getTypes() {
 		return [
-			// Opening Hours disabled as its not implemented yet
+			// Opening Hours disabled as it's not implemented yet
 			//self::OPENING_HOURS_ID    => esc_html__("Opening Hours", 'commonsbooking'),
 			self::BOOKABLE_ID         => esc_html__( "Bookable", 'commonsbooking' ),
 			self::HOLIDAYS_ID         => esc_html__( "Holidays", 'commonsbooking' ),
-			// Off Holidays disabled as its not implemented yet
+			// Official Holidays disabled as it's not implemented yet
 			//self::OFF_HOLIDAYS_ID     => esc_html__("Official Holiday", 'commonsbooking'),
 			self::REPAIR_ID           => esc_html__( "Repair", 'commonsbooking' ),
 			self::BOOKING_ID          => esc_html__( "Booking", 'commonsbooking' ),
@@ -415,11 +415,11 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-	 * Returns custom (meta) fields for Costum Post Type Timeframe.
+	 * Returns custom (meta) fields for Custom Post Type Timeframe.
 	 * @return array
 	 */
 	protected function getCustomFields() {
-		// We need static types, because german month names dont't work for datepicker
+		// We need static types, because German month names don't work for the datepicker
 		$dateFormat = "d/m/Y";
 		if ( strpos( get_locale(), 'de_' ) !== false ) {
 			$dateFormat = "d.m.Y";
@@ -432,7 +432,7 @@ class Timeframe extends CustomPostType {
 		return array(
 			array(
 				'name' => esc_html__( "Comment", 'commonsbooking' ),
-				'desc' => esc_html__( 'This comment is internal for timeframes like bookable, repair, holiday. If timeframe is a booking this comment can be set by users during the booking confirmation process.', 'commonsbooking' ),
+				'desc' => esc_html__( 'This comment is internal for timeframes like bookable, repair, holiday. If this timeframe is a booking, this comment can be set by users during the booking confirmation process.', 'commonsbooking' ),
 				'id'   => "comment",
 				'type' => 'textarea_small',
 			),
@@ -484,7 +484,7 @@ class Timeframe extends CustomPostType {
 			array(
 				'name'    => esc_html__( "Restrict bookings to user roles", 'commonsbooking' ),
 				'id'      => "allowed_user_roles",
-				'desc'    => esc_html__( 'Select one or more user roles to restrict bookings based on these timeframe configuration to these user roles. Leave empty for no restrictions', 'commonsbooking' ),
+				'desc'    => esc_html__( 'Select one or more user roles to restrict bookings based on this timeframe configuration to these user roles. Leave empty for no restrictions', 'commonsbooking' ),
 				'type'    => 'pw_multiselect',
 				'options' => self::sanitizeOptions( UserRepository::getUserRoles() ),
 			),
@@ -580,7 +580,7 @@ class Timeframe extends CustomPostType {
 			array(
 				'name'        => esc_html__( 'End date', 'commonsbooking' ),
                 'desc'        => commonsbooking_sanitizeHTML( __('Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.
-                <br><strong>Notice:</strong> If the end date is empty and no repetition has been selected, this time frame applies only to the set start date. Only if a repetition is selected and the end date is empty, the repetition will be repeated infinitely.', 'commonsbooking') ),
+                <br><strong>Notice:</strong> If the end date is empty and no repetition has been selected, this time frame applies only to the set start date. Only if a repetition is selected AND the end date is empty will the repetition be repeated infinitely.', 'commonsbooking') ),
 				'id'          => \CommonsBooking\Model\Timeframe::REPETITION_END,
 				'type'        => 'text_date_timestamp',
 				'time_format' => esc_html(get_option( 'time_format' )),
@@ -625,7 +625,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Get allowed timeframe types for selection box in timeframe editor
-	 * TODO: can be removed if type cleanup has been done (e.g. move BOOKIG_ID to Booking-Class and rename existing types )
+	 * TODO: can be removed if type cleanup has been done (e.g. move BOOKING_ID to Booking-Class and rename existing types )
 	 *
 	 * @return array
 	 */
@@ -775,7 +775,7 @@ class Timeframe extends CustomPostType {
 			// Sichtbarkeit des Post Types
 			'public'            => false,
 
-			// Standart Ansicht im Backend aktivieren (Wie Artikel / Seiten)
+			// Standard Ansicht im Backend aktivieren (Wie Artikel / Seiten)
 			'show_ui'           => true,
 
 			// Soll es im Backend Menu sichtbar sein?
@@ -791,7 +791,7 @@ class Timeframe extends CustomPostType {
 			'show_in_nav_menus' => true,
 
 			// Hier können Berechtigungen in einem Array gesetzt werden
-			// oder die standart Werte post und page in form eines Strings gesetzt werden
+			// oder die standard Werte post und page in form eines Strings gesetzt werden
 			'capability_type'   => array( self::$postType, self::$postType . 's' ),
 
 			'map_meta_cap'        => true,
