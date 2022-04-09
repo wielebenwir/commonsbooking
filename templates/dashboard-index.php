@@ -25,18 +25,27 @@
 			echo esc_html__('Welcome to CommonsBooking', 'commonsbooking') ;?>.</h2>
 			<? 
 			$stats = new \CommonsBooking\View\Statistics(time());
-			$data = $stats->getTotalBookingsCountforUser();
+			//$UserStats = $stats->getUsersWithBookingCount();
+
+			//var_dump($data);
 
 			$startDate = strtotime('-30 days', current_time('timestamp')) ;
 			$endDate = strtotime('+30 days', current_time('timestamp')) ;
 
-			foreach ($data as $dat) {
+			$UserStats = $stats->getUsersWithBookingCount($startDate, $endDate);
+
+			var_dump($UserStats);	
+
+			// foreach ($UserStats as $key => $UserStatsObject) {
 	
+			// 	var_dump($key);
+			// 	var_dump($UserStatsObject);
+			// 	//var_dump( $UserStatsObject->getBookingsCountforTimerange($startDate, $endDate) );
+			// }
 
-				//var_dump($dat);
-				var_dump( $dat->getBookingsCountforTimerange($startDate, $endDate) );
-			}
-
+			
+			
+			
 			//var_dump( $stats->getTotalBookingsCountforUser() );
 			
 			?>
@@ -108,6 +117,42 @@
 						echo commonsbooking_sanitizeHTML($BeginningBookings);
 					} else {
 						echo esc_html__('No pickups today', 'commonsbooking');
+					};
+
+					?>
+				</div>
+				<div class="cb_welcome-panel-column" style="width: 50%">
+					<h3><?php echo esc_html__("Today's returns", 'commonsbooking') ;?></h3>
+					<?php
+					// Display list of bookings with return date = today
+					$BeginningBookings = CommonsBooking\View\Dashboard::renderEndingBookings();
+					if ($BeginningBookings) {
+						echo commonsbooking_sanitizeHTML($BeginningBookings);
+					} else {
+						echo esc_html__('No returns today', 'commonsbooking');
+					};
+
+					?>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div id="cb_welcome-panel" class="cb_welcome-panel">
+		<div class="cb_welcome-panel-content">
+			<div class="cb_welcome-panel-column-container">
+				<div class="cb_welcome-panel-column" style="width: 50%;">
+					<h3><?php echo esc_html__("Users with most bookings during last 30 days", 'commonsbooking') ;?></h3>
+					<?php
+					// Display lists of users with bookings 
+					$startDate = strtotime('-30 days', current_time('timestamp')) ;
+					$endDate = strtotime('+30 days', current_time('timestamp')) ;
+					$BookingsperUser = CommonsBooking\View\Dashboard::renderBookingsPerUser($startDate, $endDate);
+					if ($BookingsperUser) {
+						echo commonsbooking_sanitizeHTML($BookingsperUser);
+					} else {
+						echo esc_html__('xxx', 'commonsbooking');
 					};
 
 					?>

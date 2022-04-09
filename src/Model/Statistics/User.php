@@ -12,7 +12,6 @@ class User {
     private $booking;
     private $totalBookings = 0;
     private $bookingDays;
-    private $daysCounter;
 
     function __construct()
     {
@@ -39,8 +38,6 @@ class User {
 
         foreach ($period as $key => $value) {
             
-            var_dump($value->format('Y-m-d'));
-
             if (array_key_exists($value->format('Y-m-d'), $this->bookingDays)) {
                 $daysCounter++;
             }     

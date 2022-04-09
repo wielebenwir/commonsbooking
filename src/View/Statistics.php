@@ -40,28 +40,45 @@ class Statistics extends View {
 
 
 	/**
-	 * Returns array with user based statistics
+	 * Returns array with user object based statistics
 	 *
 	 * @param  mixed $startDate
 	 * @param  mixed $endDate
 	 */
 	public function getTotalBookingsCountforUser() {
-		$data = array();
+	$UserBookingData = array();
 
 		foreach ($this->bookings as $booking) {
 
-			if (!array_key_exists( $booking->post_author, $data )) {
-				$data[$booking->post_author] = new User();	
+			if (!array_key_exists( $booking->post_author, $UserBookingData )) {
+			$UserBookingData[$booking->post_author] = new User();	
 			} 
 			
-			$data[$booking->post_author]->addBooking($booking);		
+		$UserBookingData[$booking->post_author]->addBooking($booking);		
 		}
 
-		return $data;
+		return $UserBookingData;
 
 	}
 
-	
+	public function getUsersWithBookingCount($startDate, $endDate, $limit = null) {
+
+		$data = array();
+		
+		$UserBookingDataObjects = $this->getTotalBookingsCountforUser();
+
+		foreach ($UserBookingDataObjects as $key => $UserBookingData) {
+
+			$data[$key] = array (
+				'user_name' => get_userdata($key)->user_email,
+				'bookings' => $UserBookingData->getBookingsCountforTimerange($startDate, $endDate),
+			);
+		}
+
+		return $data;
+	}
+
+
 	public static function shortcodeLocations( $atts ) {
 		global $templateData;
 		$templateData = [];

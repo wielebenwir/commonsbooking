@@ -87,4 +87,38 @@ class Dashboard extends View {
 		}
 	}
 
+
+	public static function renderBookingsPerUser($startDate, $endDate) {
+		$stats = new \CommonsBooking\View\Statistics(time());
+		$UserStats = $stats->getUsersWithBookingCount($startDate, $endDate);
+
+		if ( count( $UserStats ) > 0 ) {
+			usort( $UserStats, 
+				function ( $a, $b ) {
+					return ($a['bookings'] <=> $b['bookings']);
+				}
+			);
+			
+			$html = '<div style="padding:5px 20px 5px 20px">';
+			//$html .= '<ul>';
+			$html  .= '<table>';
+			foreach ( $UserStats as $UserStatsData ) {
+				//$html .= '<li>';
+				$html .= '<tr><td>';
+				$html .=  '<strong>' . $UserStatsData['user_name'] . ' </strong> </td><td> ' . $UserStatsData['bookings'] . "</td>";
+				$html .=  '</tr>';
+				//$html . = '</li>';
+				$html .= '<hr style="border-top: 1px solid #bbb; border-radius: 0px; border-color:#67b32a;">';
+			}
+			//$html .= '</ul>';
+			$html .=  '</table>';
+			$html .= '</div>';
+			
+			return $html;
+		} else {
+			return false;
+		}
+		
+	}
+
 }
