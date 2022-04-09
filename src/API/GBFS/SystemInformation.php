@@ -29,7 +29,7 @@ class SystemInformation extends \CommonsBooking\API\BaseRoute {
 		$data->data->system_id = sha1(site_url());
 		$data->data->language = get_bloginfo('language');
 		$data->data->timezone = get_option('timezone_string');
-		$data->last_updated   = time();
+		$data->last_updated   = current_time('timestamp');
 		$data->ttl            = 86400;
 		$data->version        = "2.2";
 

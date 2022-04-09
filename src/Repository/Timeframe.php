@@ -4,6 +4,7 @@
 namespace CommonsBooking\Repository;
 
 
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use Exception;
@@ -72,7 +73,7 @@ class Timeframe extends PostRepository {
 			$minTimestamp,
 			$postStatus
 		);
-		
+
 		$bookableTimeframes = self::filterTimeframesForCurrentUser($bookableTimeframes);
 
 		return $bookableTimeframes;
@@ -359,12 +360,14 @@ class Timeframe extends PostRepository {
 	 */
 	private static function getFilterFromDateQuery( string $table_postmeta, int $minTimestamp ): string {
 		global $wpdb;
+		$minTimestamp = Helper::getLastFullDayTimestamp($minTimestamp);
+
 		return $wpdb->prepare(
 			"INNER JOIN $table_postmeta pm4 ON
 	            pm4.post_id = pm1.id AND (
 	                ( 
 	                    pm4.meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "' AND
-	                    pm4.meta_value > %d
+	                    pm4.meta_value >= %d
 	                ) OR
 	                (
 	                    pm1.id not in (
@@ -489,7 +492,7 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
-	 * Filters timeframes from array, 
+	 * Filters timeframes from array,
 	 * removes timeframes which are not bookable by current user
 	 *
 	 * @param $posts
@@ -671,7 +674,7 @@ class Timeframe extends PostRepository {
 		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
 		$bookableTimeframes = self::getInRange($minTimestamp,$maxTimestamp,$locations,$items,$types,$returnAsModel,$postStatus);
-		
+
 		$bookableTimeframes = self::filterTimeframesForCurrentUser($bookableTimeframes);
 		return $bookableTimeframes;
 	}
