@@ -279,7 +279,7 @@ class Booking extends Timeframe {
 		// Set Tepmlates
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
 
-		// Listing of bookings for current user
+		// Listing of bookings for current user / mananged users by admin
 		add_shortcode( 'cb_bookings', array( \CommonsBooking\View\Booking::class, 'shortcode' ) );
 
 		// Add type filter to backend list view
