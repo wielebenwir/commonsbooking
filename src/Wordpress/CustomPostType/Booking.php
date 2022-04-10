@@ -542,7 +542,7 @@ class Booking extends Timeframe {
 				'name' => esc_html__( 'Edit booking', 'commonsbooking' ),
 				'desc' => commonsbooking_sanitizeHTML( __( 'In this view, you can modify existing bookings. Please use it with caution. <br>
 				Click on the <strong>preview button on the right panel</strong> to view more booking details and to cancel the booking via the cancel button.<br>
-				Please note that when changing the booking data, there is no check for possible vacations or non-bookable periods. There is only a check if the booking overlaps with an already existing other booking. In this case, saving is not possible. 
+				Please note: if a change in this booking creates a conflict with an existing booking, the change will not be saved. There is no check for conflicts with existing vacations or non-bookable periods. 
 				', 'commonsbooking' ) ),
 				'id'   => "title-booking-hint",
 				'type' => 'title',
