@@ -2,6 +2,10 @@
 
 namespace CommonsBooking\Helper;
 
+use CommonsBooking\Model\Booking;
+use CommonsBooking\Model\Item;
+use CommonsBooking\Model\Location;
+
 class Helper {
 
 	/**
@@ -21,49 +25,94 @@ class Helper {
 
 		return $randomString;
 	}
-	
+
 	/**
 	 * Returns formatted date default based on WP-settings and localized with datei_i18n
 	 *
-	 * @param  mixed $timestamp
+	 * @param mixed $timestamp
+	 *
 	 * @return string
 	 */
 	public static function FormattedDate( $timestamp ) {
 
-		$date_format = get_option( 'date_format' );
-		$time_format = get_option( 'time_format' );
+		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 
 		return date_i18n( $date_format, $timestamp );
 
 	}
-	
+
 	/**
 	 * Returns formatted time default based on WP-settings and localized with datei_i18n
 	 *
-	 * @param  mixed $timestamp
+	 * @param mixed $timestamp
+	 *
 	 * @return string
 	 */
 	public static function FormattedTime( $timestamp ) {
 
-		$date_format = get_option( 'date_format' );
-		$time_format = get_option( 'time_format' );
+		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
 
 		return date_i18n( $time_format, $timestamp );
 
 	}
-	
+
 	/**
 	 * Returns formatted date and time default based on WP-settings and localized with datei_i18n
 	 *
-	 * @param  mixed $timestamp
+	 * @param mixed $timestamp
+	 *
 	 * @return string
 	 */
 	public static function FormattedDateTime( $timestamp ) {
 
-		$date_format = get_option( 'date_format' );
-		$time_format = get_option( 'time_format' );
+		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
+		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
 
 		return date_i18n( $date_format, $timestamp ) . ' ' . date_i18n( $time_format, $timestamp );
+	}
+
+	/**
+	 * Returns timestamp of last full hour, needed to get more cache hits.
+	 * @return int
+	 */
+	public static function getLastFullHourTimestamp() {
+		$now = current_time('timestamp');
+		return $now - ( $now % 3600 );
+	}
+
+	/**
+	 * Returns timestamp of last full day, needed to get more cache hits.
+	 * @param $timestamp
+	 *
+	 * @return int|mixed|null
+	 */
+	public static function getLastFullDayTimestamp($timestamp = null) {
+		if($timestamp === null) $timestamp = current_time('timestamp');
+
+		return $timestamp - ( $timestamp % (3600 * 24) );
+	}
+
+	/**
+	 * Returns CB custom post type if possible.
+	 * @param $post
+	 * @param $type
+	 *
+	 * @return Booking|Item|Location|mixed
+	 * @throws \Exception
+	 */
+	public static function castToCBCustomType( $post, $type ) {
+		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Booking::$postType ) {
+			$post = new Booking( $post->ID );
+		}
+		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Item::$postType) {
+
+			$post = new Item( $post->ID );
+		}
+		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Location::$postType) {
+			$post = new Location( $post->ID );
+		}
+
+		return $post;
 	}
 
 }

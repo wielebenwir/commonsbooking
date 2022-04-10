@@ -25,7 +25,6 @@ class CB1UserFields {
 		add_action( 'edit_user_profile', array( $this, 'show_extra_profile_fields' ) );
 		add_action( 'show_user_profile', array( $this, 'show_extra_profile_fields' ) );
 
-		// = get_option('commonsbooking_options_migration', 'cb1-terms-url');
 		$this->termsservices_url = Settings::getOption( 'commonsbooking_options_migration', 'cb1-terms-url' );
 
 		$this->registration_fields = array(
@@ -114,7 +113,7 @@ class CB1UserFields {
 
 		foreach ( $this->user_fields as $field ) {
 
-			$row = ( ! empty( $_POST[ $field['field_name'] ] ) ) ? trim( $_POST[ $field['field_name'] ] ) : '';
+			$row = ( ! empty( $_POST[ $field['field_name'] ] ) ) ? sanitize_text_field( trim( $_POST[ $field['field_name'] ] ) ): '';
 			?>
             <p>
 				<?php if ( $field['type'] == 'checkbox' ) { ?>
@@ -127,18 +126,12 @@ class CB1UserFields {
 							echo "checked";
 						} ?> /><?php esc_attr_e( $field['description'], 'commonsbooking' ) ?><br/>
                     </label>
-					<?php echo $this->get_termsservices_string(); ?>
+					<?php echo commonsbooking_sanitizeHTML($this->get_termsservices_string()); ?>
 				<?php } else { ?>
-                    <label for="<?php esc_attr_e( $field['field_name'] ) ?>"><?php esc_attr_e(
-							$field['title'],
-							'commonsbooking'
-						) ?><br/>
+                    <label for="<?php esc_attr_e( $field['field_name'] ) ?>"><?php esc_attr_e($field['title'],'commonsbooking') ?><br/>
                         <input type="text" name="<?php esc_attr_e( $field['field_name'] ) ?>"
                                id="<?php esc_attr_e( $field['field_name'] ) ?>" class="input"
-                               value="<?php echo esc_attr( wp_unslash( $row ) ); ?>" size="25"/><?php esc_attr_e(
-							$field['description'],
-							'commonsbooking'
-						) ?>
+                               value="<?php echo esc_attr( wp_unslash( $row ) ); ?>" size="25"/><?php esc_attr_e($field['description'],'commonsbooking') ?>
                     </label>
 				<?php } ?>
             </p>
@@ -165,7 +158,7 @@ class CB1UserFields {
 			// translators: %s = terms and service url
 			$string = sprintf(
 				commonsbooking_sanitizeHTML( __( '<a href="%s" target=_blank">Read the terms and services</a>', 'commonsbooking' ) ),
-				$this->termsservices_url
+				commonsbooking_sanitizeHTML( $this->termsservices_url )
 			);
 		} else {
 			$string = "";
@@ -186,7 +179,7 @@ class CB1UserFields {
 				if (
 					empty( $_POST[ $field['field_name'] ] ) ||
 					! empty( $_POST[ $field['field_name'] ] ) &&
-					trim( $_POST[ $field['field_name'] ] ) == '' ) {
+					sanitize_text_field( trim( $_POST[ $field['field_name'] ] ) == '' ) ){
 					$errors->add( $field['field_name'] . '_error', $field['errormessage'] );
 				}
 			}

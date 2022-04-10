@@ -10,6 +10,8 @@
     $noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'location-without-items' );
     $bookThisItemText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'text_book-this-item');
 
+    do_action( 'commonsbooking_before_location-single' );
+
     commonsbooking_get_template_part( 'location', 'single-meta' ); // file: location-single-meta.php
 
     // Single Item View
@@ -28,7 +30,7 @@
     } // $item_is_selected
 
     if(!array_key_exists('item', $templateData) && !array_key_exists('items', $templateData)) { ?>
-        <div class="cb-status cb-availability-status cb-status-not-available"><?php echo ( $noResultText );
+        <div class="cb-status cb-availability-status cb-status-not-available"><?php echo commonsbooking_sanitizeHTML( $noResultText );
     }
     if(!is_user_logged_in()) {
         $current_url = $_SERVER['REQUEST_URI'];
@@ -44,3 +46,4 @@
         </div>
 <?php
     }
+do_action( 'commonsbooking_after_location-single' );

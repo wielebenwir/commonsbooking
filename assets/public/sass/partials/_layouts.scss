@@ -48,7 +48,7 @@
 
 .cb-col-50-50-filter {
 	> div {
-		margin-bottom: $spacer;
+		margin-bottom: var(--commonsbooking-spacer);
 		width: 100%;
 		display: flex;
 		align-items: center;
@@ -85,7 +85,7 @@
 	
 	> div.cb-thumbnail {
 		flex: 0 0 20%;	
-		padding-right: $spacer-big;
+		padding-right: var(--commonsbooking-spacer-big);
 	}
 	> div.cb-list-info {
 		flex: 1 0 50%;
@@ -105,7 +105,7 @@
 		
 		> div.cb-thumbnail {
 			flex: 0 0 20%;
-			padding-right: $spacer-big;
+			padding-right: var(--commonsbooking-spacer-big);
 				
 		}
 		> div.cb-list-info {
@@ -137,4 +137,9 @@
 	    flex-wrap: nowrap;
 		align-items: center;
 	}
+}
+
+.cb-list-error {
+	color: var(--commonsbooking-color-error);
+	font-size: var(--commonsbooking-font-size-big);
 }

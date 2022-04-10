@@ -37,7 +37,7 @@ class Week {
 	/**
 	 * Week constructor.
 	 *
-	 * @param null $year
+	 * @param $year
 	 * @param $dayOfYear
 	 * @param array $locations
 	 * @param array $items
@@ -91,7 +91,7 @@ class Week {
 			}
 
 			// set cache expiration to force daily fresh after midnight
-			Plugin::setCacheItem( $days, $customId, 'midnight');
+			Plugin::setCacheItem( $days, ['misc'], $customId, 'midnight');
 
 			return $days;
 		}

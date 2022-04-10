@@ -4,12 +4,12 @@
 namespace CommonsBooking\View;
 
 
-use CommonsBooking\Repository\Timeframe;
-use CommonsBooking\Settings\Settings;
-use DateInterval;
-use DatePeriod;
 use DateTime;
 use Exception;
+use DatePeriod;
+use DateInterval;
+use CommonsBooking\Settings\Settings;
+use CommonsBooking\Repository\Timeframe;
 
 class TimeframeExport {
 
@@ -130,7 +130,7 @@ class TimeframeExport {
 	 */
 	protected static function getInputFields( $inputName ) {
 		$inputFieldsString =
-			array_key_exists( $inputName, $_REQUEST ) ? $_REQUEST[ $inputName ] :
+			array_key_exists( $inputName, $_REQUEST ) ? sanitize_text_field( $_REQUEST[ $inputName ] ) :
 				Settings::getOption( 'commonsbooking_options_export', '$inputName' );
 
 		return array_filter( explode( ',', $inputFieldsString ) );
@@ -150,24 +150,26 @@ class TimeframeExport {
 			$start     = date( 'd.m.Y' );
 			$end       = date( 'd.m.Y', strtotime( '+' . $timerange . ' day' ) );
 		} else {
-			$start = $_REQUEST['export-timerange-start'];
-			$end   = $_REQUEST['export-timerange-end'];
+			$start = commonsbooking_sanitizeHTML( $_REQUEST['export-timerange-start'] );
+			$end   = commonsbooking_sanitizeHTML( $_REQUEST['export-timerange-end'] );
 		}
 
 		// Timerange
 		$period = self::getPeriod( $start, $end );
 
 		// Types
-		$types = self::getTypes();
+		$type = self::getType();
 
 		$timeframes = [];
 		foreach ( $period as $dt ) {
 			$dayTimeframes = Timeframe::get(
 				[],
 				[],
-				$types,
+				$type ? [$type] : [],
 				$dt->format( "Y-m-d" ),
-				true
+				true,
+				null,
+				[ 'canceled', 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 			);
 			foreach ( $dayTimeframes as $timeframe ) {
 				$timeframes[ $timeframe->ID ] = $timeframe;
@@ -188,24 +190,24 @@ class TimeframeExport {
 	}
 
 	/**
-	 * Returns array with selected timeframe types.
-	 * @return array
+	 * Returns selected timeframe type id.
+	 * @return int
 	 */
-	protected static function getTypes(): array {
-		$types = [];
+	protected static function getType(): int {
+		$type = 0;
 
 		// Backend download
 		if ( array_key_exists( 'export-type', $_REQUEST ) && $_REQUEST['export-type'] !== 'all' ) {
-			$types = [ intval( $_REQUEST['export-type'] ) ];
+			$type = intval( $_REQUEST['export-type'] );
 		} else {
 			//cron download
-			$type = Settings::getOption( 'commonsbooking_options_export', 'export-type' );
-			if ( $type && $type != 'all' ) {
-				$types = [ intval( $type ) ];
+			$configuredType = Settings::getOption( 'commonsbooking_options_export', 'export-type' );
+			if ( $configuredType && $configuredType != 'all' ) {
+				$type = intval( $configuredType );
 			}
 		}
 
-		return $types;
+		return $type;
 	}
 
 	/**
@@ -243,8 +245,8 @@ class TimeframeExport {
 		// simple meta fields
 		$timeframeData["timeframe-max-days"]  = $timeframePost->getFieldValue( "timeframe-max-days" );
 		$timeframeData["full-day"]            = $timeframePost->getFieldValue( "full-day" );
-		$timeframeData["repetition-start"]    = $timeframePost->getStartDate() ? date( get_option( 'date_format' ), $timeframePost->getStartDate() ) : '';
-		$timeframeData["repetition-end"]      = $timeframePost->getEndDate() ? date( get_option( 'date_format' ), $timeframePost->getEndDate() ) : '';
+		$timeframeData["repetition-start"]    = $timeframePost->getStartDate() ? date( esc_html(get_option( 'date_format' )), $timeframePost->getStartDate() ) : '';
+		$timeframeData["repetition-end"]      = $timeframePost->getEndDate() ? date( esc_html(get_option( 'date_format' )), $timeframePost->getEndDate() ) : '';
 		$timeframeData["start-time"]          = $timeframePost->getStartTime();
 		$timeframeData["end-time"]            = $timeframePost->getEndTime();
 		$timeframeData["pickup"]              = isset( $booking ) ? $booking->pickupDatetime() : "";

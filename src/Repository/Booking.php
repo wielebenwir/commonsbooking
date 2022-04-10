@@ -4,6 +4,7 @@
 namespace CommonsBooking\Repository;
 
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use Exception;
@@ -126,6 +127,7 @@ class Booking extends PostRepository {
 					'key'     => 'type',
 					'value'   => Timeframe::BOOKING_ID,
 					'compare' => '=',
+					'type'    => 'numeric'
 				)
 			),
 			'post_status' => array( 'confirmed' ),
@@ -149,15 +151,15 @@ class Booking extends PostRepository {
 	}
 
 	/**
-	 * @param $startDate
-	 * @param $endDate
-	 * @param $location
-	 * @param $item
+	 * @param int $startDateTimestamp
+	 * @param int $endDateTimestamp
+	 * @param int $locationId
+	 * @param int $itemId
 	 *
 	 * @return null|\CommonsBooking\Model\Booking
 	 * @throws Exception
 	 */
-	public static function getByDate( $startDate, $endDate, $location, $item ): ?\CommonsBooking\Model\Booking {
+	public static function getByDate( int $startDateTimestamp, int $endDateTimestamp, int $locationId, int $itemId ): ?\CommonsBooking\Model\Booking {
 		// Default query
 		$args = array(
 			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
@@ -165,13 +167,13 @@ class Booking extends PostRepository {
 				'relation' => "AND",
 				array(
 					'key'     => 'repetition-start',
-					'value'   => intval( $startDate ),
+					'value'   => $startDateTimestamp,
 					'compare' => '=',
 					'type'    => 'numeric',
 				),
 				array(
 					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
-					'value'   => $endDate,
+					'value'   => $endDateTimestamp,
 					'compare' => '=',
 				),
 				array(
@@ -181,12 +183,12 @@ class Booking extends PostRepository {
 				),
 				array(
 					'key'     => 'location-id',
-					'value'   => $location,
+					'value'   => $locationId,
 					'compare' => '=',
 				),
 				array(
 					'key'     => 'item-id',
-					'value'   => $item,
+					'value'   => $itemId,
 					'compare' => '=',
 				),
 			),
@@ -336,7 +338,12 @@ class Booking extends PostRepository {
 					return commonsbooking_isCurrentUserAllowedToEdit( $post );
 				} );
 			}
-			Plugin::setCacheItem( $posts, $customId );
+
+			Plugin::setCacheItem(
+				$posts,
+				Wordpress::getTags($posts),
+				$customId
+			);
 		}
 
 		return $posts;
@@ -389,27 +396,6 @@ class Booking extends PostRepository {
 			[],
 			['confirmed']
 		);
-	}
-
-	/**
-	 * @param \CommonsBooking\Model\Restriction $restriction
-	 *
-	 * @return WP_Post[]|null
-	 */
-	public static function getCanceledByRestriction( \CommonsBooking\Model\Restriction $restriction ): ?array {
-		try {
-			return self::getByTimerange(
-				$restriction->getStartDate(),
-				$restriction->getEndDate(),
-				$restriction->getLocationId(),
-				$restriction->getItemId(),
-				[
-					'post_status' => array( 'canceled' ),
-				]
-			);
-		} catch ( Exception $exception ) {
-			return [];
-		}
 	}
 
 }

@@ -4,6 +4,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Map\MapAdmin;
 use CommonsBooking\Map\MapSettings;
 use CommonsBooking\Map\MapShortcode;
@@ -70,7 +71,7 @@ class Map extends CustomPostType {
 			wp_register_script( 'cb_map_replace_map_link_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-replace-link.js' );
 
 			wp_add_inline_script( 'cb_map_replace_map_link_js',
-				"cb_map_timeframes_geo = " . json_encode( $geo_coordinates ) . ";" );
+				"cb_map_timeframes_geo = " . wp_json_encode( $geo_coordinates ) . ";" );
 
 			wp_enqueue_script( 'cb_map_replace_map_link_js' );
 		}
@@ -83,7 +84,7 @@ class Map extends CustomPostType {
 	public static function get_active_plugin_directory( $plugin_name ) {
 		$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
 		foreach ( $active_plugins as $plugin ) {
-			$plugin_file_path = COMMONSBOOKING_MAP_PATH . '../' . $plugin;
+			$plugin_file_path = COMMONSBOOKING_MAP_PATH . '../' . esc_html($plugin);
 			if ( strpos( $plugin, $plugin_name ) !== false && file_exists( $plugin_file_path ) ) {
 				return dirname( $plugin );
 			}
@@ -96,12 +97,12 @@ class Map extends CustomPostType {
 	 * load all timeframes from db (that end in the future and it's item's status is 'publish')
 	 **/
 	public static function get_timeframes() {
-		$timeframes = Timeframe::getBookable(
+		$timeframes = Timeframe::getBookableForCurrentUser(
 			[],
 			[],
 			false,
 			true,
-			time()
+			Helper::getLastFullHourTimestamp()
 		);
 
 		/** @var \CommonsBooking\Model\Timeframe $timeframe */
@@ -207,7 +208,7 @@ class Map extends CustomPostType {
 				}
 
 				$timeframesData = [];
-				$timeframes     = Timeframe::getBookable(
+				$timeframes     = Timeframe::getBookableForCurrentUser(
 					[ $post->ID ],
 					[ $item->ID ],
 					null,
@@ -242,6 +243,7 @@ class Map extends CustomPostType {
 					'lat'           => (float) $location_meta['geo_latitude'][0],
 					'lon'           => (float) $location_meta['geo_longitude'][0],
 					'location_name' => $post->post_title,
+					'location_link' => get_permalink($post->ID),
 					'closed_days'   => unserialize( $closed_days ),
 					'address'       => [
 						'street' => $location_meta[ COMMONSBOOKING_METABOX_PREFIX . 'location_street' ][0],

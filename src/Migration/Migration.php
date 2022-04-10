@@ -351,7 +351,8 @@ class Migration {
 	 * @throws \Geocoder\Exception\Exception
 	 */
 	protected static function savePostData( $existingPost, array $postData, array $postMeta ): bool {
-		$includeGeoData = array_key_exists( 'geodata', $_POST ) && $_POST['geodata'] == "true";
+
+		$includeGeoData = array_key_exists( 'geodata', $_POST ) && sanitize_text_field( $_POST['geodata'] ) == "true";
 
 		if ( $existingPost instanceof WP_Post ) {
 			$updatedPost = array_merge( $existingPost->to_array(), $postData );
@@ -395,8 +396,13 @@ class Migration {
 	 */
 	public static function migrateElementorMetaKeys( $cb1_id, $cb2_id ) {
 		global $wpdb;
+		$table_postmeta = $wpdb->prefix . 'postmeta';
 
-		$post_meta = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE meta_key LIKE '%_elementor%' AND post_id = $cb1_id" );
+		$sql = $wpdb->prepare(
+			"SELECT meta_key, meta_value FROM $table_postmeta WHERE meta_key LIKE '%%_elementor%%' AND post_id = %d",
+			$cb1_id
+		);
+		$post_meta = $wpdb->get_results( $sql );
 		if ( ! empty( $post_meta ) && is_array( $post_meta ) ) {
 			$duplicate_insert_query = "INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value ) VALUES ";
 			$value_cells            = array();

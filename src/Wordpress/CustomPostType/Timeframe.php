@@ -114,7 +114,6 @@ class Timeframe extends CustomPostType {
 			//self::OFF_HOLIDAYS_ID     => esc_html__("Official Holiday", 'commonsbooking'),
 			self::REPAIR_ID           => esc_html__( "Repair", 'commonsbooking' ),
 			self::BOOKING_ID          => esc_html__( "Booking", 'commonsbooking' ),
-			self::BOOKING_CANCELED_ID => esc_html__( "Booking canceled", 'commonsbooking' ),
 		];
 	}
 
@@ -320,7 +319,7 @@ class Timeframe extends CustomPostType {
 
 		if (
 			is_admin() && $query->is_main_query() &&
-			isset( $_GET['post_type'] ) && static::$postType == $_GET['post_type'] &&
+			isset( $_GET['post_type'] ) && static::$postType == sanitize_text_field( $_GET['post_type'] ) &&
 			$pagenow == 'edit.php'
 		) {
 			// Meta value filtering
@@ -515,14 +514,14 @@ class Timeframe extends CustomPostType {
 				'type'        => 'text_time',
 				'show_on_cb'  => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'attributes'  => array(
-					'data-timepicker' => json_encode(
+					'data-timepicker' => wp_json_encode(
 						array(
 							'stepMinute' => 60,
 							'timeFormat' => 'HH:mm',
 						)
 					),
 				),
-				'time_format' => get_option( 'time_format' ),
+				'time_format' => esc_html(get_option( 'time_format' )),
 				'date_format' => $dateFormat,
 			),
 			array(
@@ -531,14 +530,14 @@ class Timeframe extends CustomPostType {
 				'type'        => 'text_time',
 				'time_format' => 'H:i',
 				'attributes'  => array(
-					'data-timepicker' => json_encode(
+					'data-timepicker' => wp_json_encode(
 						array(
 							'stepMinute' => 60,
 							'timeFormat' => 'HH:mm',
 						)
 					),
 				),
-				'time_format' => get_option( 'time_format' ),
+				'time_format' => esc_html(get_option( 'time_format' )),
 				'date_format' => $dateFormat,
 			),
 			array(
@@ -559,9 +558,9 @@ class Timeframe extends CustomPostType {
 			array(
 				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
 				'desc'        => esc_html__( 'Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking' ),
-				'id'          => "repetition-start",
+				'id'          => \CommonsBooking\Model\Timeframe::REPETITION_START,
 				'type'        => 'text_date_timestamp',
-				'time_format' => get_option( 'time_format' ),
+				'time_format' => esc_html(get_option( 'time_format' )),
 				'date_format' => $dateFormat,
 			),
 			array(
@@ -582,9 +581,9 @@ class Timeframe extends CustomPostType {
 				'name'        => esc_html__( 'End date', 'commonsbooking' ),
                 'desc'        => commonsbooking_sanitizeHTML( __('Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.
                 <br><strong>Notice:</strong> If the end date is empty and no repetition has been selected, this time frame applies only to the set start date. Only if a repetition is selected and the end date is empty, the repetition will be repeated infinitely.', 'commonsbooking') ),
-				'id'          => "repetition-end",
+				'id'          => \CommonsBooking\Model\Timeframe::REPETITION_END,
 				'type'        => 'text_date_timestamp',
-				'time_format' => get_option( 'time_format' ),
+				'time_format' => esc_html(get_option( 'time_format' )),
 				'date_format' => $dateFormat,
 			),
 			array(
@@ -688,10 +687,27 @@ class Timeframe extends CustomPostType {
 		if ( $isValid ) {
 			$timeframe          = new \CommonsBooking\Model\Timeframe( $post_id );
 			$createBookingCodes = get_post_meta( $post_id, 'create-booking-codes', true );
+			$this->sanitizeRepetitionEndDate($post_id);
 
 			if ( $createBookingCodes == "on" && $timeframe->bookingCodesApplieable() ) {
 				BookingCodes::generate( $post_id );
 			}
+		}
+	}
+
+	/**
+	 * Adds 23h 59m 59s to repetition end, to set the timestamp at the end of the day and not
+	 * the very start.
+	 *
+	 * @param $postId
+	 *
+	 * @return void
+	 */
+	private function sanitizeRepetitionEndDate($postId) {
+		$repetitionEnd = get_post_meta($postId, \CommonsBooking\Model\Timeframe::REPETITION_END, true);
+		if($repetitionEnd) {
+			$repetitionEnd = strtotime( '+23 Hours +59 Minutes +59 Seconds', $repetitionEnd );
+			update_post_meta($postId, \CommonsBooking\Model\Timeframe::REPETITION_END, $repetitionEnd);
 		}
 	}
 
@@ -815,7 +831,7 @@ class Timeframe extends CustomPostType {
 		if ( $column == "timeframe-author" ) {
 			$post           = get_post( $post_id );
 			$timeframe_user = get_user_by( 'id', $post->post_author );
-			echo '<a href="' . get_edit_user_link( $timeframe_user->ID ) . '">' . $timeframe_user->user_login . '</a>';
+			echo '<a href="' . get_edit_user_link( $timeframe_user->ID ) . '">' . commonsbooking_sanitizeHTML( $timeframe_user->user_login ) . '</a>';
 		}
 
 
@@ -827,7 +843,7 @@ class Timeframe extends CustomPostType {
 						if ( get_post_type( $post ) == Location::getPostType() ||
 						     get_post_type( $post ) == Item::getPostType()
 						) {
-							echo $post->post_title;
+							echo commonsbooking_sanitizeHTML($post->post_title);
 							break;
 						}
 					}
@@ -845,14 +861,14 @@ class Timeframe extends CustomPostType {
 							}
 						}
 					}
-					echo $output;
+					echo commonsbooking_sanitizeHTML($output);
 					break;
 				case \CommonsBooking\Model\Timeframe::REPETITION_START:
 				case \CommonsBooking\Model\Timeframe::REPETITION_END:
 					echo date( 'd.m.Y', $value );
 					break;
 				default:
-					echo $value;
+					echo commonsbooking_sanitizeHTML($value);
 					break;
 			}
 		} else {
@@ -867,7 +883,7 @@ class Timeframe extends CustomPostType {
 					get_post_meta( $post_id, 'type', true ) == Timeframe::BOOKING_ID
 				)
 			) {
-				echo $post->{$column};
+				echo commonsbooking_sanitizeHTML($post->{$column});
 			}
 		}
 	}

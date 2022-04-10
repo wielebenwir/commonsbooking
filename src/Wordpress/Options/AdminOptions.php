@@ -47,7 +47,7 @@ class AdminOptions {
 			}
 		}
 
-		// maybe show admin notice if fields are restored to hreir default value
+		// maybe show admin notice if fields are restored to their default value
 		if ( $restored_fields ) {
 			$message = commonsbooking_sanitizeHTML( __( '<strong>Default values for following fields automatically set or restored, because they were empty:</strong><br> ', 'commonsbooking' ) );
 			$message .= implode( "<br> ", $restored_fields );

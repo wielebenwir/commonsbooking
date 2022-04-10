@@ -8,6 +8,7 @@ use CommonsBooking\Messages\BookingMessage;
 use Exception;
 
 use function wp_verify_nonce;
+use function commonsbooking_write_log;
 
 class Booking extends Timeframe {
 
@@ -35,6 +36,7 @@ class Booking extends Timeframe {
 	 * @throws Exception
 	 */
 	public function handleFormRequest() {
+
 		if (
 			function_exists( 'wp_verify_nonce' ) &&
 			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
@@ -176,13 +178,13 @@ class Booking extends Timeframe {
 			// prepare needed params
 			$itemId          = sanitize_text_field( $_REQUEST["item-id"] );
 			$locationId      = sanitize_text_field( $_REQUEST["location-id"] );
-			$repetitionStart = $_REQUEST["repetition-start"];
+			$repetitionStart = sanitize_text_field( $_REQUEST["repetition-start"] );
 			if ( is_array( $repetitionStart ) ) {
 				$repetitionStart = strtotime( $repetitionStart['date'] . " " . $repetitionStart['time'] );
 			} else {
 				$repetitionStart = intval( $repetitionStart );
 			}
-			$repetitionEnd = $_REQUEST["repetition-end"];
+			$repetitionEnd = sanitize_text_field( $_REQUEST["repetition-end"] );
 			if ( is_array( $repetitionEnd ) ) {
 				$repetitionEnd = strtotime( $repetitionEnd['date'] . " " . $repetitionEnd['time'] );
 			} else {
@@ -201,7 +203,7 @@ class Booking extends Timeframe {
 				commonsbooking_sanitizeHTML( __( "There are one ore more bookings within the choosen timerange. THis booking is set to draft. Please adjust the startdate or enddate. ",
 					'commonsbooking' ) ),
 				45 );
-			$targetUrl = $_REQUEST['_wp_http_referer'];
+			$targetUrl = sanitize_url( $_REQUEST['_wp_http_referer'] );
 			header( 'Location: ' . $targetUrl );
 			exit();
 		}
@@ -445,7 +447,7 @@ class Booking extends Timeframe {
 		if ( $column == "timeframe-author" ) {
 			$post           = get_post( $post_id );
 			$timeframe_user = get_user_by( 'id', $post->post_author );
-			echo '<a href="' . get_edit_user_link( $timeframe_user->ID ) . '">' . $timeframe_user->user_login . '</a>';
+			echo '<a href="' . get_edit_user_link( $timeframe_user->ID ) . '">' . commonsbooking_sanitizeHTML( $timeframe_user->user_login ) . '</a>';
 		}
 
 
@@ -457,7 +459,7 @@ class Booking extends Timeframe {
 						if ( get_post_type( $post ) == Location::getPostType() ||
 						     get_post_type( $post ) == Item::getPostType()
 						) {
-							echo $post->post_title;
+							echo commonsbooking_sanitizeHTML($post->post_title);
 							break;
 						}
 					}
@@ -475,14 +477,14 @@ class Booking extends Timeframe {
 							}
 						}
 					}
-					echo $output;
+					echo commonsbooking_sanitizeHTML($output);
 					break;
 				case \CommonsBooking\Model\Timeframe::REPETITION_START:
 				case \CommonsBooking\Model\Timeframe::REPETITION_END:
 					echo date( 'd.m.Y H:i', $value );
 					break;
 				default:
-					echo $value;
+					echo commonsbooking_sanitizeHTML($value);
 					break;
 			}
 		} else {
@@ -497,7 +499,7 @@ class Booking extends Timeframe {
 					get_post_meta( $post_id, 'type', true ) == Timeframe::BOOKING_ID
 				)
 			) {
-				echo $post->{$column};
+				echo commonsbooking_sanitizeHTML($post->{$column});
 			}
 		}
 	}
@@ -571,7 +573,7 @@ class Booking extends Timeframe {
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
 				'attributes'  => array(
-					'data-timepicker' => json_encode(
+					'data-timepicker' => wp_json_encode(
 						array(
 							'timeFormat' => 'HH:mm',
 							'stepMinute' => 1,
@@ -587,7 +589,7 @@ class Booking extends Timeframe {
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
 				'attributes'  => array(
-					'data-timepicker' => json_encode(
+					'data-timepicker' => wp_json_encode(
 						array(
 							'timeFormat' => 'HH:mm',
 							'stepMinute' => 1,
@@ -621,8 +623,10 @@ class Booking extends Timeframe {
 		To search and filter bookings please integrate the frontend booking list via shortcode. 
 		See here <a target="_blank" href="https://commonsbooking.org/?p=1433">How to display the booking list</a>', 'commonsbooking' ) );
 
-		if ( ( $pagenow == 'edit.php' ) && ( $_GET['post_type'] == self::getPostType() ) ) {
-			echo '<div class="notice notice-info"><p>' . $notice . '</p></div>';
-		}
+		if ( ( $pagenow == 'edit.php' ) && isset( $_GET['post_type'] ) ) {
+            if ( sanitize_text_field( $_GET['post_type'] ) == self::getPostType() ) {
+			echo '<div class="notice notice-info"><p>' . commonsbooking_sanitizeHTML(  $notice ) . '</p></div>';
+		    }
+        }
 	}
 }

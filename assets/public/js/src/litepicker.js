@@ -213,17 +213,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     jQuery('#booking-form').hide();
                     jQuery('.cb-notice.date-select').show();
                 },
-                // onRender: function () {
-                //     /**
-                //      * I know it's creepy, but for now I've no better idea.
-                //      */
-                //     if(!globalCalendarData['onRender']) {
-                //         globalCalendarData['onRender'] = 1
-                //     } else if(globalCalendarData['onRender'] < 4) {
-                //         jQuery('.day-item.is-start-date').removeClass('is-start-date');
-                //         globalCalendarData['onRender']++
-                //     }
-                // },
                 onChangeMonth: function(date, idx) {
                     fadeOutCalendar()
                     const startDate = moment(date.format('YYYY-MM-DD')).format('YYYY-MM-DD');
@@ -258,8 +247,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
             jQuery( window ).on( "orientationchange", function( event ) {
                 updateCalendarColumns(picker);
             });
-
-            jQuery('#calendarNotice').html(globalCalendarData['calendarNotice']['advanceBookingDays']);
         };
 
         // update datepicker data

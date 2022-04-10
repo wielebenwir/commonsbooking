@@ -22,12 +22,12 @@ $noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLU
 
 ?>
 <div class="cb-list-header">
-    <?php echo $item->thumbnail('cb_listing_medium'); ?>
+    <?php echo commonsbooking_sanitizeHTML($item->thumbnail('cb_listing_medium')); ?>
     <div class="cb-list-info">
-        <h2><?php echo $item->titleLink(); ?></h2>
-        <?php echo $item->excerpt(); ?>
+        <h2><?php echo commonsbooking_sanitizeHTML( $item->titleLink() ); ?></h2>
+        <?php echo commonsbooking_sanitizeHTML($item->excerpt()); ?>
         <?php if (! $hasTimeFrames) { ?>
-            <div class="cb-status cb-availability-status cb-status-not-available cb-notice-small"><?php echo ( $noResultText ); ?></div>
+            <div class="cb-status cb-availability-status cb-status-not-available cb-notice-small"><?php echo commonsbooking_sanitizeHTML( $noResultText ); ?></div>
        <?php } ?>
     </div>
 </div><!-- .cb-list-header -->

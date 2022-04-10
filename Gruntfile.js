@@ -57,9 +57,7 @@ module.exports = function (grunt) {
 				options: {
 					beautify: true,
 					mangle: false,
-					compress: {
-						unused: false
-					}
+					compress: false
 				},
 				files: {
 					'assets/public/js/public.js': [
@@ -74,11 +72,8 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				options: {
-					beautify: false,
 					mangle: true,
-					compress: {
-						unused: false
-					}
+					compress: true
 				},
 				files: {
 					'assets/public/js/public.min.js': [
@@ -131,7 +126,7 @@ module.exports = function (grunt) {
 	// Load tasks
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-compass');
-	grunt.loadNpmTasks('grunt-contrib-uglify-es');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-babel');
 

@@ -1,4 +1,4 @@
-![alt text](https://travis-ci.com/wielebenwir/commonsbooking.svg?branch=master "Travis CI")
+[![PHP Composer](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml)
 
 # CommonsBooking
 

@@ -75,9 +75,9 @@ if ( ! function_exists( 'commonsbooking_get_template_part' ) ) {
 		}
 
 		if ( $template && $include === true ) {
-			echo( $before_html );
+			echo( commonsbooking_sanitizeHTML( $before_html ) );
 			load_template( $template, false );
-			echo( $after_html );
+			echo( commonsbooking_sanitizeHTML( $after_html ) );
 		} else if ( $template && $include === false ) {
 			return $before_html . $template . $after_html;
 		}

@@ -4,6 +4,7 @@
 namespace CommonsBooking\Model;
 
 
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Timeframe;
 use Exception;
 
@@ -19,12 +20,12 @@ class Item extends BookablePost {
 	 * @throws Exception
 	 */
 	public function getBookableTimeframesByLocation( $locationId, bool $asModel = false ): array {
-		return Timeframe::getBookable(
+		return Timeframe::getBookableForCurrentUser(
 			[ $locationId ],
 			[ $this->ID ],
 			null,
 			$asModel,
-			time()
+			Helper::getLastFullHourTimestamp()
 		);
 	}
 

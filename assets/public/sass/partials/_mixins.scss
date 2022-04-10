@@ -11,15 +11,15 @@
 }
 
 @mixin rounded($radius) {
-  -webkit-border-radius: $radius;
-  -moz-border-radius: $radius;
-  border-radius: $radius;
+  -webkit-border-radius: var(--commonsbooking-radius);
+  -moz-border-radius: var(--commonsbooking-radius);
+  border-radius: var(--commonsbooking-radius);
 }
 
 @mixin border-radius ($radius) {
-  -webkit-border-radius: $radius;
-  -moz-border-radius:    $radius;
-  border-radius:         $radius;
+  -webkit-border-radius: var(--commonsbooking-radius);
+  -moz-border-radius:    var(--commonsbooking-radius);
+  border-radius:         var(--commonsbooking-radius);
 
   -moz-background-clip:    padding;
   -webkit-background-clip: padding-box;
@@ -47,25 +47,25 @@
 }
 
 @mixin selection-end-round( $radius ) {
-  -webkit-border-top-right-radius:    $radius;
-  -webkit-border-bottom-right-radius: $radius;
+  -webkit-border-top-right-radius:    var(--commonsbooking-radius);
+  -webkit-border-bottom-right-radius: var(--commonsbooking-radius);
 
-  -moz-border-radius-topright:        $radius;
-  -moz-border-radius-bottomright:     $radius;
+  -moz-border-radius-topright:        var(--commonsbooking-radius);
+  -moz-border-radius-bottomright:     var(--commonsbooking-radius);
 
-  border-top-right-radius:            $radius;
-  border-bottom-right-radius:         $radius;
+  border-top-right-radius:            var(--commonsbooking-radius);
+  border-bottom-right-radius:         var(--commonsbooking-radius);
 }
 
 @mixin selection-start-round( $radius ) {
-  -webkit-border-top-left-radius:    $radius;
-  -webkit-border-bottom-left-radius: $radius;
+  -webkit-border-top-left-radius:    var(--commonsbooking-radius);
+  -webkit-border-bottom-left-radius: var(--commonsbooking-radius);
 
-  -moz-border-radius-topleft:        $radius;
-  -moz-border-radius-bottomleft:     $radius;
+  -moz-border-radius-topleft:        var(--commonsbooking-radius);
+  -moz-border-radius-bottomleft:     var(--commonsbooking-radius);
 
-  border-top-left-radius:            $radius;
-  border-bottom-left-radius:         $radius;
+  border-top-left-radius:            var(--commonsbooking-radius);
+  border-bottom-left-radius:         var(--commonsbooking-radius);
 }
 
 @mixin box-shadow( $horiz : .5em , $vert : .5em , $blur : 0px , $spread : 0px , $color : #000000 ){

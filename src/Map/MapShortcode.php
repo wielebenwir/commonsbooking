@@ -73,8 +73,8 @@ class MapShortcode {
 					wp_add_inline_script( 'cb_map_shortcode_js',
 						"jQuery(document).ready(function ($) {
                         var cb_map = new CB_Map();
-                        cb_map.settings = " . json_encode( self::get_settings( $cb_map_id ) ) . ";
-                        cb_map.translation = " . json_encode( self::get_translation( $cb_map_id ) ) . ";
+                        cb_map.settings = " . wp_json_encode( self::get_settings( $cb_map_id ) ) . ";
+                        cb_map.translation = " . wp_json_encode( self::get_translation( $cb_map_id ) ) . ";
                         cb_map.init_filters($);
                         cb_map.init_map();
                     });" );
@@ -83,7 +83,7 @@ class MapShortcode {
 
 					$map_height = MapAdmin::get_option( $cb_map_id, 'map_height' );
 
-					return '<div id="cb-map-' . $cb_map_id . '" class="cb-wrapper cb-leaflet-map" style="width: 100%; height: ' . $map_height . 'px;"></div>';
+					return '<div id="cb-map-' . esc_attr($cb_map_id) . '" class="cb-wrapper cb-leaflet-map" style="width: 100%; height: ' . esc_attr($map_height) . 'px;"></div>';
 
 				} else {
 					return '<div>' . esc_html__( 'map is not published', 'commonsbooking' ) . '</div>';
@@ -265,7 +265,7 @@ class MapShortcode {
 
 				$attempts ++;
 
-				$last_call_timestamp = get_option( 'cb_map_last_nominatim_call', 0 );
+				$last_call_timestamp = commonsbooking_sanitizeHTML(get_option( 'cb_map_last_nominatim_call', 0 ));
 				$current_timestamp   = time();
 
 				if ( $current_timestamp > $last_call_timestamp + 1 ) {
@@ -278,12 +278,12 @@ class MapShortcode {
 			update_option( 'cb_map_last_nominatim_call', $current_timestamp );
 
 			$params = [
-				'q'      => $_POST['query'],
+				'q'      => sanitize_text_field( $_POST['query'] ),
 				'format' => 'json',
 				'limit'  => 1,
 			];
 
-			$options = MapAdmin::get_options( $_POST['cb_map_id'], true );
+			$options = MapAdmin::get_options( sanitize_text_field( $_POST['cb_map_id'] ), true );
 
 			if ( $options['address_search_bounds_left_bottom_lat'] && $options['address_search_bounds_left_bottom_lon'] && $options['address_search_bounds_right_top_lat'] && $options['address_search_bounds_right_top_lon'] ) {
 				$params['bounded'] = 1;
@@ -328,7 +328,7 @@ class MapShortcode {
 		if ( isset( $_POST['cb_map_id'] ) ) {
 			check_ajax_referer( 'cb_map_locations', 'nonce' );
 
-			$post = get_post( (int) $_POST['cb_map_id'] );
+			$post = get_post( intval( $_POST['cb_map_id'] ));
 
 			if ( $post && $post->post_type == 'cb_map' ) {
 				$cb_map_id = $post->ID;
@@ -367,7 +367,7 @@ class MapShortcode {
 			$locations = Map::cleanup_location_data( $locations, '<br>' );
 
 			header( 'Content-Type: application/json' );
-			echo json_encode( $locations, JSON_UNESCAPED_UNICODE );
+			echo wp_json_encode( $locations, JSON_UNESCAPED_UNICODE );
 		} else {
 			wp_send_json_error( [ 'error' => 4 ], 403 );
 		}

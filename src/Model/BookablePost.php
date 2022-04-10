@@ -4,6 +4,7 @@
 namespace CommonsBooking\Model;
 
 
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Timeframe;
 use Exception;
 
@@ -26,22 +27,22 @@ class BookablePost extends CustomPost {
 	): array {
 		$bookableTimeframes = [];
 		if ( get_called_class() == Location::class ) {
-			$bookableTimeframes = Timeframe::getBookable(
+			$bookableTimeframes = Timeframe::getBookableForCurrentUser(
 				[ $this->ID ],
 				$items,
 				$this->getDate() ?: $date,
 				$asModel,
-				time()
+				Helper::getLastFullHourTimestamp()
 			);
 
 		}
 		if ( get_called_class() == Item::class ) {
-			$bookableTimeframes = Timeframe::getBookable(
+			$bookableTimeframes = Timeframe::getBookableForCurrentUser(
 				$locations,
 				[ $this->ID ],
 				$this->getDate() ?: $date,
 				$asModel,
-				time()
+				Helper::getLastFullHourTimestamp()
 			);
 		}
 

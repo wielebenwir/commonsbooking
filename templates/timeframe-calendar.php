@@ -10,12 +10,13 @@
     global $templateData;
 
     // we check if template is used not used in backend ...
-    if(!array_key_exists('backend', $templateData) || $templateData['backend'] != true) {
-?>
+if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] != true ) {
+    do_action( 'commonsbooking_before_timeframe-calendar' );
+    ?>
     <script type="text/javascript">
-		<?php
-		echo "let calendarData = " . $templateData['calendar_data'] . ';';
-		?>
+    <?php
+        echo 'let calendarData = ' . commonsbooking_sanitizeHTML( $templateData['calendar_data'] ) . ';';
+    ?>
     </script>
     <!-- generate calendar /-->
     <div id="litepicker"></div>
@@ -23,20 +24,28 @@
     <!-- show booking form with date / time selection /-->
     <div id="booking-form-container">
         <form method="get" id="booking-form">
-			<?php echo $templateData['wp_nonce']; ?>
-            <input type="hidden" name="location-id" value="<?php echo $templateData['location']->ID; ?>"/>
-            <input type="hidden" name="item-id" value="<?php echo $templateData['item']->ID; ?>"/>
-            <input type="hidden" name="type" value="<?php echo $templateData['type']; ?>"/>
+        <?php
+            wp_nonce_field(
+                \CommonsBooking\Wordpress\CustomPostType\Booking::getWPAction(),
+                \CommonsBooking\Wordpress\CustomPostType\Booking::getWPNonceId(),
+                false,
+                true
+            );
+        ?>
+
+            <input type="hidden" name="location-id" value="<?php echo esc_attr( $templateData['location']->ID ); ?>"/>
+            <input type="hidden" name="item-id" value="<?php echo esc_attr( $templateData['item']->ID ); ?>"/>
+            <input type="hidden" name="type" value="<?php echo esc_attr( $templateData['type'] ); ?>"/>
             <input type="hidden" name="post_type" value="cb_booking"/>
             <input type="hidden" name="post_status" value="unconfirmed"/>
 
             <div class="time-selection-container">
                 <a id="resetPicker">
-                    <?php echo esc_html__( 'Reset date selection', 'commonsbooking' ); ?>
+                <?php echo esc_html__( 'Reset date selection', 'commonsbooking' ); ?>
                 </a>
                 <div class="time-selection repetition-start">
                     <label for="repetition-start">
-                        <?php echo esc_html__( 'Pickup', 'commonsbooking' ); ?>:
+                    <?php echo esc_html__( 'Pickup', 'commonsbooking' ); ?>:
                     </label>
                     <div>
                         <span class="hint-selection"><?php echo esc_html__( 'Please select the pickup date in the calendar', 'commonsbooking' ); ?></span>
@@ -47,7 +56,7 @@
                 </div>
                 <div class="time-selection repetition-end">
                     <label for="repetition-end">
-                        <?php echo esc_html__( 'Return', 'commonsbooking' ); ?>:
+                    <?php echo esc_html__( 'Return', 'commonsbooking' ); ?>:
                     </label>
                     <div>
                         <span class="hint-selection"><?php echo esc_html__( 'Please select the return date in the calendar', 'commonsbooking' ); ?></span>
@@ -56,89 +65,104 @@
                     </div>
                 </div>
 				<?php
-                    $restrictions = $templateData['restrictions'];
-                    if(count($restrictions)) {
-                        ?>
+                $restrictions = $templateData['restrictions'];
+                if ( count( $restrictions ) ) {
+                    ?>
                         <div class="restriction">
-                            <?php echo '⚠ ' . esc_html__( 'Usage Restrictions', 'commonsbooking' ); ?>:
+                        <?php echo '⚠ ' . esc_html__( 'Usage Restrictions', 'commonsbooking' ); ?>:
                             
                                 <span class="restrictions">
                                     <ul>
-                                <?php
-                                    foreach ( $restrictions as $restriction ) {
-                                        if($restriction->isActive()) {
-                                            echo "<li>";
-	                                            echo commonsbooking_sanitizeHTML( sprintf(
-													//translators: %1$s = Start date and time formatted
-	                                                __( 'From %1$s', 'commonsbooking' ),
-	                                                $restriction->getFormattedStartDateTime() ) );
+                            <?php
+                            foreach ( $restrictions as $restriction ) {
+                                if ( $restriction->isActive() ) {
+                                    echo '<li>';
+                                        echo commonsbooking_sanitizeHTML(
+                                            sprintf(
+                                            // translators: %1$s = Start date and time formatted
+                                                __( 'From %1$s', 'commonsbooking' ),
+                                                $restriction->getFormattedStartDateTime()
+                                            )
+                                        );
 
-												// If there's
-												if($restriction->hasEnddate()) {
-													echo " " . commonsbooking_sanitizeHTML( sprintf(
-														//translators: %1$s = End date and time formatted
-															__( 'until probably %1$s:', 'commonsbooking' ),
-															$restriction->getFormattedEndDateTime() ) );
-													echo "</br>";
-												} else {
-													echo ":</br>";
-												}
-
-		                                        echo "<strong>" . $restriction->getHint() . "</strong>";
-                                            echo "</li>";
-                                        }
+                                        // If there's
+                                    if ( $restriction->hasEnddate() ) {
+                                        echo ' ' . commonsbooking_sanitizeHTML(
+                                            sprintf(
+                                            // translators: %1$s = End date and time formatted
+                                                __( 'until probably %1$s:', 'commonsbooking' ),
+                                                $restriction->getFormattedEndDateTime()
+                                            )
+                                        );
+                                        echo '</br>';
+                                    } else {
+                                        echo ':</br>';
                                     }
-                                ?>
+
+                                            echo '<strong>' . commonsbooking_sanitizeHTML( $restriction->getHint() ) . '</strong>';
+                                        echo '</li>';
+                                }
+                            }
+                            ?>
                                     </ul>
                                 </span>
                            
                         </div>
                     <?php
-                    }
-                    ?>
+                }
+                ?>
             </div>
 			<?php
-			if ( is_user_logged_in() ) { ?>
+			if ( is_user_logged_in() ) {
+                ?>
                 <input type="submit" disabled="disabled"
                        value="<?php echo esc_html__( 'Continue to booking confirmation', 'commonsbooking' ); ?>"/>
 			<?php } ?>
         </form>
     </div>
 	<div id="calendar-footnote">
-		<p>
-			<?php 
+			<?php
 			// get Calendar Data
-			$calendarData = json_decode($templateData['calendar_data']);
-			//translators %1$s maximum days, %2$s maximum days
-			echo sprintf ( commonsbooking_sanitizeHTML( __('
-			<strong>Calendar info</strong><br>
-			<span style="color:#61CE70">green</span> = bookable | <span style="color:#d5425c">red</span> = booked/blocked 
-			| <span style="color:#ff9218">orange</span> = station closed 
-			| gray = not bookable<br>
-			Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend). <br>
-			Bookings are limited to a maximum of %2$s days in advance.', 'commonsbooking') ), $calendarData->maxDays, $calendarData->advanceBookingDays );
-			?> 
-		</p>
+			$calendarData = json_decode( $templateData['calendar_data'] );
+            ?>
+            <div id="calendar-footnote-colorkey">
+			    <strong><?php echo commonsbooking_sanitizeHTML( __( 'Calendar info', 'commonsbooking' ) ); ?> </strong><br>
+                <div class="colorkey-square colorkey-accept"></div> <?php echo commonsbooking_sanitizeHTML( __( 'bookable', 'commonsbooking' ) ); ?> | 
+                <div class="colorkey-square colorkey-cancel"></div> <?php echo commonsbooking_sanitizeHTML( __( 'booked / blocked', 'commonsbooking' ) ); ?>   | 
+                <div class="colorkey-square colorkey-holiday"></div> <?php echo commonsbooking_sanitizeHTML( __( 'location closed', 'commonsbooking' ) ); ?>  | 
+                <div class="colorkey-square colorkey-greyedout"></div> <?php echo commonsbooking_sanitizeHTML( __( 'not bookable', 'commonsbooking' ) ); ?>  
+                <br>
+                <?php
+                // translators %1$s is a number of days
+                echo sprintf( commonsbooking_sanitizeHTML( __( 'Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend).', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->maxDays ) );
+                ?> 
+                <?php
+                // translators %1$s is a number of days
+                echo sprintf( commonsbooking_sanitizeHTML( __( 'Bookings are limited to a maximum of %1$s days in advance.', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->advanceBookingDays ) );
+                ?>
+            </div>
 	</div>
-<?php
+    <?php
 
     // if template is used in backend
-    } else {
-        foreach ($templateData['calendar']['weeks'] as $week) {
-?>
+} else {
+    foreach ( $templateData['calendar']['weeks'] as $week ) {
+        ?>
         <ul class="cb-calendar">
-			<?php
-			$dayNrs = [ 1, 2, 3, 4, 5, 6, 0 ];
-			foreach ( $dayNrs as $dayNr ) {
-				/** @var \CommonsBooking\Model\Day $day */
-				foreach ( $templateData['week']->getDays() as $day ) {
-					if ( $day->getDayOfWeek() == $dayNr ) {
-						include __DIR__ . 'timeframe-calendar-day.php';
-					}
-				}
-			}
-			?>
+        <?php
+        $dayNrs = [ 1, 2, 3, 4, 5, 6, 0 ];
+        foreach ( $dayNrs as $dayNr ) {
+            /** @var \CommonsBooking\Model\Day $day */
+            foreach ( $templateData['week']->getDays() as $day ) {
+                if ( $day->getDayOfWeek() == $dayNr ) {
+                    include __DIR__ . 'timeframe-calendar-day.php';
+                }
+            }
+        }
+        ?>
         </ul>
 		<?php
 	}
 }
+
+do_action( 'commonsbooking_after_timeframe-calendar' );

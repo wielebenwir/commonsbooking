@@ -7,17 +7,18 @@ use Exception;
 
 /**
  * Class Timeframe
+ *
  * @package CommonsBooking\Model
  */
 class Timeframe extends CustomPost {
 	/**
 	 * Error type id.
 	 */
-	public const ERROR_TYPE = "timeframeValidationFailed";
+	public const ERROR_TYPE = 'timeframeValidationFailed';
 
-	public const REPETITION_START = "repetition-start";
+	public const REPETITION_START = 'repetition-start';
 
-	public const REPETITION_END = "repetition-end";
+	public const REPETITION_END = 'repetition-end';
 
 	public const META_LOCATION_ID = 'location-id';
 
@@ -95,7 +96,7 @@ class Timeframe extends CustomPost {
 		// we subtract one day to reflect the current day in calculation
 		$advanceBookingDays --;
 
-		return strtotime( "+ " . $advanceBookingDays . " days", $calculationBase );
+		return strtotime( '+ ' . $advanceBookingDays . ' days', $calculationBase );
 	}
 
 	/**
@@ -115,26 +116,32 @@ class Timeframe extends CustomPost {
 		$availableString = '';
 
 		if ( $startDate !== 0 && $endDate !== 0 && $startDate == $endDate ) { // available only one day
-			/* translators: %s = date in wordpress defined format */
+			/* translators: %s = date in WordPress defined format */
 			$availableString = sprintf( commonsbooking_sanitizeHTML( __( 'on %s', 'commonsbooking' ) ), $startDateFormatted );
 		} elseif ( $startDate > 0 && ( $endDate == 0 ) ) { // start but no end date
 			if ( $startDate > $today ) { // start is in the future
-				/* translators: %s = date in wordpress defined format */
-				$availableString = sprintf( commonsbooking_sanitizeHTML( __( 'from %s', 'commonsbooking' ) ),
-					$startDateFormatted );
+				/* translators: %s = date in WordPress defined format */
+				$availableString = sprintf(
+                    commonsbooking_sanitizeHTML( __( 'from %s', 'commonsbooking' ) ),
+                    $startDateFormatted
+                );
 			} else { // start has passed, no end date, probably a fixed location
 				$availableString = commonsbooking_sanitizeHTML( __( 'permanently', 'commonsbooking' ) );
 			}
 		} elseif ( $startDate > 0 && $endDate > 0 ) { // start AND end date
 			if ( $startDate > $today ) { // start is in the future, with an end date
-				/* translators: %1$s = startdate, second %2$s = enddate in wordpress defined format */
-				$availableString = sprintf( commonsbooking_sanitizeHTML( __( ' from %1$s until %2$s', 'commonsbooking' ) ),
+				/* translators: %1$s = startdate, second %2$s = enddate in WordPress defined format */
+				$availableString = sprintf(
+                    commonsbooking_sanitizeHTML( __( ' from %1$s until %2$s', 'commonsbooking' ) ),
 					$startDateFormatted,
-					$endDateFormatted );
+                    $endDateFormatted
+                );
 			} else { // start has passed, with an end date
-				/* translators: %s = enddate in wordpress defined format */
-				$availableString = sprintf( commonsbooking_sanitizeHTML( __( ' until %s', 'commonsbooking' ) ),
-					$endDateFormatted );
+				/* translators: %s = enddate in WordPress defined format */
+				$availableString = sprintf(
+                    commonsbooking_sanitizeHTML( __( ' until %s', 'commonsbooking' ) ),
+                    $endDateFormatted
+                );
 			}
 		}
 
@@ -147,11 +154,12 @@ class Timeframe extends CustomPost {
 	 * @return string
 	 */
 	public static function getDateFormat() {
-		return get_option( 'date_format' );
+		return esc_html( get_option( 'date_format' ) );
 	}
 
 	/**
 	 * Returns end (repetition) date and does not respect advance booking days setting.
+     *
 	 * @return false|int
 	 */
 	public function getRawEndDate() {
@@ -165,6 +173,7 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns true, if the start date is earlier and the end date later than the latest possible booking date.
+     *
 	 * @return bool
 	 */
 	public function isBookable() {
@@ -180,11 +189,12 @@ class Timeframe extends CustomPost {
 	 * @return string
 	 */
 	public function getTimeFormat(): string {
-		return get_option( 'time_format' );
+		return esc_html( get_option( 'time_format' ) );
 	}
 
 	/**
 	 * Validates if there can be booking codes created for this timeframe.
+     *
 	 * @return bool
 	 */
 	public function bookingCodesApplieable(): bool {
@@ -202,7 +212,7 @@ class Timeframe extends CustomPost {
 	 * @throws Exception
 	 */
 	public function getLocation(): ?Location {
-		$locationId = $this->getMeta( 'location-id' );
+		$locationId = $this->getMeta( self::META_LOCATION_ID );
 		if ( $locationId ) {
 			if ( $post = get_post( $locationId ) ) {
 				return new Location( $post );
@@ -217,7 +227,7 @@ class Timeframe extends CustomPost {
 	 * @throws Exception
 	 */
 	public function getItem(): ?Item {
-		$itemId = $this->getMeta( 'item-id' );
+		$itemId = $this->getMeta( self::META_ITEM_ID );
 		if ( $itemId ) {
 			if ( $post = get_post( $itemId ) ) {
 				return new Item( $post );
@@ -229,6 +239,7 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns type id
+     *
 	 * @return mixed
 	 */
 	public function getType() {
@@ -237,6 +248,7 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Checks if Timeframe is valid.
+     *
 	 * @return bool
 	 * @throws Exception
 	 */
@@ -247,20 +259,32 @@ class Timeframe extends CustomPost {
 
 			if ( ! $this->getItem() || ! $this->getLocation() ) {
 				// if location or item is missing
-				set_transient( self::ERROR_TYPE,
-					commonsbooking_sanitizeHTML( __( "Item or location is missing. Please set item and location. Timeframe is saved as draft",
-						'commonsbooking' ) ),
-					45 );
+				set_transient(
+                    self::ERROR_TYPE,
+					commonsbooking_sanitizeHTML(
+                        __(
+                            'Item or location is missing. Please set item and location. Timeframe is saved as draft',
+                            'commonsbooking'
+                        )
+                    ),
+                    45
+                );
 
 				return false;
 			}
 
 			if ( ! $this->getStartDate() ) {
 				// If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
-				set_transient( self::ERROR_TYPE,
-					commonsbooking_sanitizeHTML( __( "Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.",
-						'commonsbooking' ) ),
-					45 );
+				set_transient(
+                    self::ERROR_TYPE,
+					commonsbooking_sanitizeHTML(
+                        __(
+                            'Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.',
+                            'commonsbooking'
+                        )
+                    ),
+                    45
+                );
 
 				return false;
 			}
@@ -273,10 +297,16 @@ class Timeframe extends CustomPost {
 				$postId = $this->ID;
 
 				if ( $this->getStartTime() && ! $this->getEndTime() && ! $this->isFullDay() ) {
-					set_transient( self::ERROR_TYPE,
-						commonsbooking_sanitizeHTML( __( "A pickup time but no return time has been set. Please set the return time.",
-							'commonsbooking' ) ),
-						45 );
+					set_transient(
+                        self::ERROR_TYPE,
+						commonsbooking_sanitizeHTML(
+                            __(
+                                'A pickup time but no return time has been set. Please set the return time.',
+                                'commonsbooking'
+                            )
+                        ),
+                        45
+                    );
 
 					return false;
 				}
@@ -284,28 +314,37 @@ class Timeframe extends CustomPost {
 				// First we check if the item is already connected to another location to avoid overlapping bookable dates
 				$sameItemTimeframes = \CommonsBooking\Repository\Timeframe::getBookable(
 					[],
-					[ $this->getItem()->ID  ],
+					[ $this->getItem()->ID ],
 					null,
 					true,
 					null,
-					['publish']
+					[ 'publish' ]
 				);
 
 				// check if timeframes of other locations overlap in date and return error message if true
-				foreach ($sameItemTimeframes as $sameItemTimeframe ) {
-								
-					if ( 
-						$this->getLocation() != $sameItemTimeframe->getLocation() && $this->hasTimeframeDateOverlap($this, $sameItemTimeframe) 
+				foreach ( $sameItemTimeframes as $sameItemTimeframe ) {
+
+					if ( $this->getLocation() != $sameItemTimeframe->getLocation() && $this->hasTimeframeDateOverlap( $this, $sameItemTimeframe )
 					) {
-						set_transient( self::ERROR_TYPE,
-						/* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
-						sprintf( commonsbooking_sanitizeHTML( __( 'Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s',
-							'commonsbooking', 5 ) ), $sameItemTimeframe->ID, $sameItemTimeframe->post_title ) );
-					return false;
-	
+						set_transient(
+                            self::ERROR_TYPE,
+                            /* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
+                            sprintf(
+                                commonsbooking_sanitizeHTML(
+                                    __(
+                                        'Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s',
+                                        'commonsbooking',
+                                        5
+                                    )
+                                ),
+                                '<a href=" ' . get_edit_post_link( $sameItemTimeframe->ID ) . '">' . $sameItemTimeframe->ID . '</a>',
+                                '<a href=" ' . get_edit_post_link( $sameItemTimeframe->ID ) . '">' . $sameItemTimeframe->post_title . '</a>',
+                            )
+                        );
+                        return false;
+
 					}
 				}
-
 
 				// Get Timeframes with same location, item and a startdate
 				$existingTimeframes = \CommonsBooking\Repository\Timeframe::getBookable(
@@ -316,9 +355,12 @@ class Timeframe extends CustomPost {
 				);
 
 				// filter current timeframe
-				$existingTimeframes = array_filter( $existingTimeframes, function ( $timeframe ) use ( $postId ) {
-					return $timeframe->ID !== $postId && $timeframe->getStartDate();
-				} );
+				$existingTimeframes = array_filter(
+                    $existingTimeframes,
+                    function ( $timeframe ) use ( $postId ) {
+                        return $timeframe->ID !== $postId && $timeframe->getStartDate();
+                    }
+                );
 
 				// Validate against existing other timeframes
 				foreach ( $existingTimeframes as $timeframe ) {
@@ -329,10 +371,21 @@ class Timeframe extends CustomPost {
 					) {
 						// Compare grid types
 						if ( $timeframe->getGrid() != $this->getGrid() ) {
-							set_transient( self::ERROR_TYPE,
+							set_transient(
+                                self::ERROR_TYPE,
 								/* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
-								sprintf( commonsbooking_sanitizeHTML( __( 'Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s: %2$s',
-									'commonsbooking', 5 ) ), $timeframe->ID, $timeframe->post_title ) );
+								sprintf(
+                                    commonsbooking_sanitizeHTML(
+                                        __(
+                                            'Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s %2$s',
+                                            'commonsbooking',
+                                            5
+                                        )
+                                    ),
+                                    '<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->ID . '</a>',
+                                    '<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->post_title . '</a>',
+                                )
+                            );
 
 							return false;
 						}
@@ -350,20 +403,42 @@ class Timeframe extends CustomPost {
 
 						// Check if in day slots overlap
 						if ( ! $this->getMeta( 'full-day' ) && $this->hasTimeframeTimeOverlap( $this, $timeframe ) ) {
-							set_transient( self::ERROR_TYPE,
+							set_transient(
+                                self::ERROR_TYPE,
 								/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
-								sprintf( commonsbooking_sanitizeHTML( __( 'time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s: %2$s',
-									'commonsbooking', 5 ) ), $timeframe->ID, $timeframe->post_title ) );
+								sprintf(
+                                    commonsbooking_sanitizeHTML(
+                                        __(
+                                            'time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s %2$s',
+                                            'commonsbooking',
+                                            5
+                                        )
+                                    ),
+                                    '<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->ID . '</a>',
+                                    '<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->post_title . '</a>',
+                                )
+                            );
 
 							return false;
 						}
 
 						// Check if full-day slots overlap
 						if ( $this->getMeta( 'full-day' ) ) {
-							set_transient( self::ERROR_TYPE,
+							set_transient(
+                                self::ERROR_TYPE,
 								/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
-								sprintf( commonsbooking_sanitizeHTML( __( 'Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s: %2$s',
-									'commonsbooking', 5 ) ), $timeframe->ID, $timeframe->post_title ) );
+								sprintf(
+                                    commonsbooking_sanitizeHTML(
+                                        __(
+                                            'Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s %2$s',
+                                            'commonsbooking',
+                                            5
+                                        )
+                                    ),
+                                    '<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->ID . '</a>',
+                                    '<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->post_title . '</a>',
+                                )
+                            );
 
 							return false;
 						}
@@ -377,6 +452,7 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns start time for day-slots.
+     *
 	 * @return mixed
 	 */
 	public function getStartTime() {
@@ -385,6 +461,7 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns end time for day-slots.
+     *
 	 * @return mixed
 	 */
 	public function getEndTime() {
@@ -393,6 +470,7 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns true if timeframe is full-day
+     *
 	 * @return boolean
 	 */
 	public function isFullDay() {
@@ -408,8 +486,7 @@ class Timeframe extends CustomPost {
 	 * @return bool
 	 */
 	protected function hasTimeframeDateOverlap( $timeframe1, $timeframe2 ) {
-		return
-			! $timeframe1->getEndDate() && ! $timeframe2->getEndDate() ||
+		return ! $timeframe1->getEndDate() && ! $timeframe2->getEndDate() ||
 			(
 				$timeframe1->getEndDate() && ! $timeframe2->getEndDate() &&
 				$timeframe2->getStartDate() <= $timeframe1->getEndDate() &&
@@ -430,6 +507,7 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns grit type id
+     *
 	 * @return mixed
 	 */
 	public function getGrid() {
@@ -445,8 +523,7 @@ class Timeframe extends CustomPost {
 	 * @return bool
 	 */
 	protected function hasTimeframeTimeOverlap( $timeframe1, $timeframe2 ) {
-		return
-			! strtotime( $timeframe1->getEndTime() ) && ! strtotime( $timeframe2->getEndTime() ) ||
+		return ! strtotime( $timeframe1->getEndTime() ) && ! strtotime( $timeframe2->getEndTime() ) ||
 			(
 				strtotime( $timeframe1->getEndTime() ) && ! strtotime( $timeframe2->getEndTime() ) &&
 				strtotime( $timeframe2->getStartTime() ) <= strtotime( $timeframe1->getEndTime() ) &&
@@ -467,6 +544,7 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns weekdays array.
+     *
 	 * @return mixed
 	 */
 	public function getWeekDays() {
@@ -475,6 +553,7 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns grid size in hours.
+     *
 	 * @return int|null
 	 */
 	public function getGridSize(): ?int {
@@ -492,10 +571,11 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns true if booking codes shall be shown in frontend.
+     *
 	 * @return bool
 	 */
 	public function showBookingCodes() {
-		return $this->getMeta( "show-booking-codes" ) == "on";
+		return $this->getMeta( 'show-booking-codes' ) == 'on';
 	}
 
 	/**
@@ -594,9 +674,10 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns type of repetition
+     *
 	 * @return mixed
 	 */
 	public function getRepetition() {
-		return $this->getMeta( self::META_REPETITION);
+		return $this->getMeta( self::META_REPETITION );
 	}
 }

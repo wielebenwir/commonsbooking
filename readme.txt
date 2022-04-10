@@ -5,7 +5,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar,  
 Requires at least: 5.2  
 Tested up to: 5.9  
-Stable Tag: 2.6.4  
+Stable Tag: 2.6.12
 Requires PHP: 7.3 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -79,6 +79,39 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog 
+
+### 2.6.12 (02.03.2022)
+ENHANCED: Optimized the commonsbooking internal caching so booking lists and maps should be rendered faster
+FIXED: Some rendering issues with calendar 
+ENHANCED: Modified CSS styles for calendar 
+FIXED: Set default advance booking days for existing timeframes to 365 days
+
+
+### 2.6.12 (27.02.2022)
+FIXED: Fixes issue that prevents user meta data (.e.g phone number etc.) to be shown in booking emails 
+
+### 2.6.11 (23.02.2022)
+FIXED: Some users reported that bookings were no longer possible. After clicking on "continue to booking check" the expected booking page was not loaded. Since this only occurred on some systems and sporadically, it was not possible to determine the cause in the individual cases. However, our analysis showed that it was likely related to a Wordpress function for validating user input. We have adjusted this in the current version. 
+
+### 2.6.10 (20.02.2022)
+FIXED: With certain time frame settings it could happen that the calendar was only displayed starting with the next month. This is now fixed. 
+FIXED: The map on the location page always showed a default location. It now shows the correct location.
+FIXED: In some systems, bookings could not be executed because the booking confirmation page did not load.   
+
+### 2.6.9 (18.02.2022)
+FIXED: When an a href link was included in the site pickup instructions, it caused the booking calendar to not load correctly. 
+
+### 2.6.8 (14.02.2022)
+FIXED: fixed sanitzing issues
+FIXED: reminder mails have been sent to users even if not activated in options
+FIXED: error on location detail pages in some cases
+
+### 2.6.7 (13.02.2022)
+FIXED: fixed minor technical issue that leads to hidden gps refresh button in some environments
+
+### 2.6.5 (13.02.2022)
+FIXED: fixed issue of missing user data in booking and restriction related emails
+MODIFIED: Internal refactoring of codebase
 
 ### 2.6.4 (10.02.2022)
 FIXED: fixed issue that produces an error when sending restriction mails in some environments and cases 

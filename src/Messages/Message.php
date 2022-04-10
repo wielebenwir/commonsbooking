@@ -45,21 +45,21 @@ abstract class Message {
 
 	/**
 	 * Setup the email template, headers (BCC)
-	 * 
-	 * @param object $recipientUser User-Object
+	 *
+	 * @param \WP_User $recipientUser User-Object
 	 * @param string $template_body template string
-	 * @param string $template_subject template string 
+	 * @param string $template_subject template string
 	 * @param string $from_headers From-Header (From:xxx)
-	 * @param string $bcc_adresses comma separated string with e-mail adresses 
-	 * @param object $objects objects used in parse template function 
+	 * @param string|null $bcc_adresses comma separated string with e-mail adresses
+	 * @param object[] $objects objects used in parse template function
 	 */
 	protected function prepareMail(
-		$recipientUser,
-		$template_body,
-		$template_subject,
-		$from_headers,
-		$bcc_adresses = null,
-		$objects = []
+		\WP_User $recipientUser,
+		string $template_body,
+		string $template_subject,
+		string $from_headers,
+		string $bcc_adresses = null,
+		array $objects = []
 	): void {
 		// Setup email: Recipient
 		$this->to = sprintf( '%s <%s>', $recipientUser->user_nicename, $recipientUser->user_email );
@@ -69,7 +69,7 @@ abstract class Message {
 
 		// check if templates are available
 		if ( ! $template_body or ! $template_subject ) {
-			new WP_Error( 'e-mail ', esc_html( __( "Could not send email because mail-template was not available. Check options -> templates", "commonsbooking" ) ) );
+			new WP_Error( 'e-mail ', commonsbooking_sanitizeHTML( __( "Could not send email because mail-template was not available. Check options -> templates", "commonsbooking" ) ) );
 		}
 
 		// parse templates & replaces template tags (e.g. {{item:name}})
@@ -83,7 +83,6 @@ abstract class Message {
 		// Setup email: From
 		$this->headers[] = $from_headers;
 
-		
 		// add bcc adresses 
 		if ( ! empty ( $bcc_adresses ) ) {
 			$addresses_array = explode( ',', $bcc_adresses );

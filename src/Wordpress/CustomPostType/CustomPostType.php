@@ -19,13 +19,6 @@ abstract class CustomPostType {
 	protected $menuPosition;
 
 	/**
-	 * @return mixed
-	 */
-	public static function getWPNonceField() {
-		return wp_nonce_field( static::getWPAction(), static::getWPNonceId(), false, true );
-	}
-
-	/**
 	 * @return string
 	 */
 	public static function getWPAction(): string {
@@ -265,10 +258,10 @@ abstract class CustomPostType {
 	public function setCustomColumnsData( $column, $post_id ) {
 
 		if ( $value = get_post_meta( $post_id, $column, true ) ) {
-			echo $value;
+			echo commonsbooking_sanitizeHTML($value);
 		} else {
 			if ( property_exists( $post = get_post( $post_id ), $column ) ) {
-				echo $post->{$column};
+				echo commonsbooking_sanitizeHTML($post->{$column});
 			} else {
 				echo '-';
 			}

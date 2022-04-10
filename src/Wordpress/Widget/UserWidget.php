@@ -33,19 +33,19 @@ class UserWidget extends WP_Widget {
 
 	public function widget( $args, $instance ) {
 
-		echo $args['before_widget'];
+		echo commonsbooking_sanitizeHTML($args['before_widget']);
 
 		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
+			echo commonsbooking_sanitizeHTML($args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title']);
 		}
 
 		echo '<div class="textwidget">';
 
-		echo $this->renderWidgetContent();
+		echo commonsbooking_sanitizeHTML($this->renderWidgetContent());
 
 		echo '</div>';
 
-		echo $args['after_widget'];
+		echo commonsbooking_sanitizeHTML($args['after_widget']);
 
 	}
 

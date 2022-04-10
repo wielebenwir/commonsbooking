@@ -33,24 +33,24 @@
         -webkit-appearance: none;
         -moz-appearance: none;
         background: $color-white;
-        border-radius: $radius;
+        border-radius: var(--commonsbooking-radius);
         border-style: solid;
         border-width: 0.1rem;
         border-color: $color-black;
         box-shadow: none;
         display: block;
         margin: 0;
-        font-size: $font-size-normal;
+        font-size: var(--commonsbooking-font-size-normal);
         max-width: 100%;
-        padding: $spacer $spacer;
+        padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer);
     }
 
     select {
         box-shadow: none;
         display: block;
         margin: 0;
-        font-size: $font-size-normal;
-        padding: $spacer $spacer;
+        font-size: var(--commonsbooking-font-size-normal);
+        padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer);
         cursor: pointer;
     }
 
@@ -68,22 +68,21 @@
             &#cb-booking-form-set-cancelled { // cancel OR delete button
                 input {
                     background: transparent;
-                    color: $color-gray-silver;
+                    color: var(--commonsbooking-color-greyedout);
 
                 }
             }
 
             &#cb-booking-form-set-confirmed { // confirm button
                 input {
-                    margin-left: $spacer-big;
+                    margin-left: var(--commonsbooking-spacer-big);
                 }
             }
         }
     }
 
     input.cb-action-canceled {
-        background: none !important;
-        color: $color-gray-dark !important;
+        background-color: var(--commonsbooking-color-cancel);
         box-shadow: none !important;
         font-size: 0.875rem;
     }
@@ -97,9 +96,32 @@
     #calendar-footnote {
         background-color: #FFF;
         margin-top: 10px;
-        p {
-            font-size: small;
-            line-height: 1.5;
+        padding: 10px;
+        font-size: var(--commonsbooking-font-size-normal);
+
+        #calendar-footnote-colorkey {
+
+            .colorkey-square {
+                width:10px;
+                height:10px;
+                display:inline-block;
+            }
+
+            .colorkey-accept {
+                background-color: var(--commonsbooking-color-accept);
+            }
+            
+            .colorkey-cancel {
+                background-color: var(--commonsbooking-color-cancel);
+            }
+
+            .colorkey-holiday {
+                background-color: var(--commonsbooking-color-holiday)
+            }
+
+            .colorkey-greyedout {
+                background-color: var(--commonsbooking-color-greyedout);
+            }
         }
     }
 
@@ -111,7 +133,7 @@
         }
 
         .time-selection-container {
-            margin-top: $spacer;
+            margin-top: var(--commonsbooking-spacer);
             text-align: center;
 
             .restriction {
@@ -123,13 +145,13 @@
                 align-items: center;
 
                 @extend .cb-box-inner;
-                margin-bottom: $spacer;
+                margin-bottom: var(--commonsbooking-spacer);
                 text-align: left;
                 overflow: hidden;
 
                 span, label, select {
                     float: left;
-                    font-size: $font-size-normal;
+                    font-size: var(--commonsbooking-font-size-normal);
                 }
 
                 label {
@@ -161,28 +183,28 @@
 
     .cb-notice {
         @extend .cb-box;
-        margin-bottom: $spacer-big;
-        font-size: $font-size-big;
+        margin-bottom: var(--commonsbooking-spacer-big);
+        font-size: var(--commonsbooking-font-size-big);
         vertical-align: middle;
         font-weight: bold;
         position: relative;
-        background: $color-notice;
+        background: var(--commonsbooking-color-noticebg);
 
         /* Post status */
         &.cb-status-unconfirmed {
-            background: $color-notice;
+            background: var(--commonsbooking-color-noticebg);
         }
 
         &.cb-status-confirmed {
-            background: $color-success;
+            background: var(--commonsbooking-color-success);
         }
 
         &.cb-status-cancelled {
-            background: $color-success;
+            background: var(--commonsbooking-color-success);
         }
 
         &.error {
-            background: $color-error;
+            background: var(--commonsbooking-color-error);
         }
     }
 }

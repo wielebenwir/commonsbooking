@@ -88,7 +88,7 @@ class BaseRoute extends WP_REST_Controller {
 		unset( $schemaObject->{'$schema'} );
 		unset( $schemaObject->{'$id'} );
 
-		return Schema::fromJsonString( json_encode( $schemaObject ) );
+		return Schema::fromJsonString( wp_json_encode( $schemaObject ) );
 	}
 
 	/**

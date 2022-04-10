@@ -4,9 +4,13 @@
 namespace CommonsBooking\Repository;
 
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use Exception;
+use Psr\Cache\CacheException;
+use Psr\Cache\InvalidArgumentException;
+use WP_Post;
 use WP_Query;
 
 abstract class BookablePost extends PostRepository {
@@ -26,6 +30,8 @@ abstract class BookablePost extends PostRepository {
 	 * @param bool $publishedOnly
 	 *
 	 * @return array
+	 * @throws CacheException
+	 * @throws InvalidArgumentException
 	 */
 	public static function getByCurrentUser( bool $publishedOnly = false ): array {
 		$current_user = wp_get_current_user();
@@ -98,8 +104,9 @@ abstract class BookablePost extends PostRepository {
 				} );
 
 			}
-
-			Plugin::setCacheItem( $items, $customId );
+			$tags   = Wordpress::getPostIdArray( $items );
+			$tags[] = 'misc';
+			Plugin::setCacheItem( $items, $tags, $customId );
 
 			return $items;
 		}
@@ -124,6 +131,7 @@ abstract class BookablePost extends PostRepository {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
+			$userId = intval( $userId );
 			// Get all Locations where current user is author
 			$args  = array(
 				'post_type' => static::getPostType(),
@@ -159,7 +167,7 @@ abstract class BookablePost extends PostRepository {
 				}
 			}
 
-			Plugin::setCacheItem( $cbPosts );
+			Plugin::setCacheItem( $cbPosts, Wordpress::getPostIdArray( $cbPosts ) );
 
 			return $cbPosts;
 		}
@@ -183,20 +191,22 @@ abstract class BookablePost extends PostRepository {
 		$posts             = [];
 		$args['post_type'] = static::getPostType();
 
-		if ( Plugin::getCacheItem( static::getPostType() ) ) {
-			return Plugin::getCacheItem( static::getPostType() );
+		// Add custom taxonomy filter
+		if ( array_key_exists( 'category_slug', $args ) ) {
+			$args['taxonomy'] = static::getPostType() . 's_category';
+			$args['term']     = $args['category_slug'];
+			unset( $args['category_slug'] );
+		}
+
+		$customCacheKey = md5( serialize( $args ) );
+
+		if ( Plugin::getCacheItem( $customCacheKey ) ) {
+			return Plugin::getCacheItem( $customCacheKey );
 		} else {
 			$defaults = array(
 				'post_status' => array( 'publish', 'inherit' ),
 				'nopaging'    => true,
 			);
-
-			// Add custom taxonomy filter
-			if ( array_key_exists( 'category_slug', $args ) ) {
-				$args['taxonomy'] = static::getPostType() . 's_category';
-				$args['term']     = $args['category_slug'];
-				unset( $args['category_slug'] );
-			}
 
 			$queryArgs = wp_parse_args( $args, $defaults );
 			$query     = new WP_Query( $queryArgs );
@@ -214,7 +224,7 @@ abstract class BookablePost extends PostRepository {
 				}
 			}
 
-			Plugin::setCacheItem( $posts, static::getPostType() );
+			Plugin::setCacheItem( $posts, Wordpress::getTags( $posts ), $customCacheKey );
 
 			return $posts;
 		}
@@ -246,23 +256,22 @@ abstract class BookablePost extends PostRepository {
 			return Plugin::getCacheItem();
 		} else {
 			$posts = self::getRelatedPosts( $postId, $originType, $relatedType );
-			foreach ( $posts as $key => &$location ) {
+			foreach ( $posts as $key => &$relatedPost ) {
 				if ( $relatedType == 'item' ) {
-					$item = new \CommonsBooking\Model\Item( $location );
-					if ( $bookable && ! $item->getBookableTimeframesByLocation( $postId ) ) {
+					$relatedPost = new \CommonsBooking\Model\Item( $relatedPost );
+					if ( $bookable && ! $relatedPost->getBookableTimeframesByLocation( $postId ) ) {
 						unset( $posts[ $key ] );
 					}
 				}
 				if ( $relatedType == 'location' ) {
-					$location = new \CommonsBooking\Model\Location( $location );
-					if ( $bookable && ! $location->getBookableTimeframesByItem( $postId ) ) {
+					$relatedPost = new \CommonsBooking\Model\Location( $relatedPost );
+					if ( $bookable && ! $relatedPost->getBookableTimeframesByItem( $postId ) ) {
 						unset( $posts[ $key ] );
 					}
 				}
-
-
 			}
-			Plugin::setCacheItem( $posts );
+
+			Plugin::setCacheItem( $posts, Wordpress::getTags( $posts, [ $postId ] ) );
 
 			return $posts;
 		}
@@ -286,9 +295,9 @@ abstract class BookablePost extends PostRepository {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
-			$locations   = [];
-			$locationIds = [];
-			$args        = array(
+			$relatedPosts   = [];
+			$relatedPostIds = [];
+			$args           = array(
 				'post_type'   => Timeframe::$postType,
 				'post_status' => array( 'confirmed', 'unconfirmed', 'publish', 'inherit' ),
 				'meta_query'  => array(
@@ -305,23 +314,24 @@ abstract class BookablePost extends PostRepository {
 			if ( $query->have_posts() ) {
 				$timeframes = $query->get_posts();
 				foreach ( $timeframes as $timeframe ) {
-					$locationId = get_post_meta( $timeframe->ID, $relatedType . '-id', true );
-					if ( $locationId && ! in_array( $locationId, $locationIds ) ) {
-						$locationIds[] = $locationId;
-						$location      = get_post( $locationId );
+					$relatedPostId = get_post_meta( $timeframe->ID, $relatedType . '-id', true );
+					if ( $relatedPostId && ! in_array( $relatedPostId, $relatedPostIds ) ) {
+						$relatedPostIds[] = $relatedPostId;
+						$relatedPost      = get_post( $relatedPostId );
 
-						if ( $location ) {
+						if ( $relatedPost ) {
 							// add only published items
-							if ( $location->post_status == 'publish' ) {
-								$locations[] = $location;
+							if ( $relatedPost->post_status == 'publish' ) {
+								$relatedPosts[] = $relatedPost;
 							}
 						}
 					}
 				}
 			}
-			Plugin::setCacheItem( $locations );
 
-			return $locations;
+			Plugin::setCacheItem( $relatedPosts, Wordpress::getTags( $relatedPosts, [ $postId ] ) );
+
+			return $relatedPosts;
 		}
 	}
 

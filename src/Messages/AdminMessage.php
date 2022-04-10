@@ -27,9 +27,9 @@ class AdminMessage {
 	 */
 	public function render() {
 
-		echo '<div class="notice notice-' . $this->notice_type . ' is-dismissible">';
+		echo '<div class="notice notice-' . commonsbooking_sanitizeHTML( $this->notice_type ) . ' is-dismissible">';
 		echo '<p>';
-		echo $this->message;
+		echo commonsbooking_sanitizeHTML( $this->message );
 		echo '</p>';
 		echo '</div>';
 	}

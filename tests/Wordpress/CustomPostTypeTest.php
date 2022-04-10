@@ -30,6 +30,10 @@ abstract class CustomPostTypeTest extends TestCase {
 
 	protected $restrictionIds = [];
 
+	protected $locationIds = [];
+
+	protected $itemIds = [];
+
 	protected function createTimeframe(
 		$locationId,
 		$itemId,
@@ -128,6 +132,18 @@ abstract class CustomPostTypeTest extends TestCase {
 		);
 	}
 
+	protected function createUnconfirmedBookingEndingTomorrow() {
+		return $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days midnight', strtotime( self::CURRENT_DATE  ) ) - 1,
+			null,
+			null,
+			'unconfirmed'
+		);
+	}
+
 	protected function createBooking(
 		$locationId,
 		$itemId,
@@ -190,24 +206,50 @@ abstract class CustomPostTypeTest extends TestCase {
 		);
 	}
 
+	protected function createBookableTimeFrameStartingInAWeek() {
+		return $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+7 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+30 day', strtotime( self::CURRENT_DATE ) )
+		);
+	}
+
+	// Create Item
+	public function createItem($title, $postStatus) {
+		$itemId = wp_insert_post( [
+			'post_title'  => $title,
+			'post_type'   => Item::$postType,
+			'post_status' => $postStatus
+		] );
+
+		$this->itemIds[] = $itemId;
+
+		return $itemId;
+	}
+
+	// Create Location
+	public function createLocation($title, $postStatus) {
+		$locationId = wp_insert_post( [
+			'post_title'  => $title,
+			'post_type'   => Location::$postType,
+			'post_status' => $postStatus
+		] );
+
+		$this->locationIds[] = $locationId;
+		return $locationId;
+	}
+
 	protected function setUp() {
 		parent::setUp();
 
 		$this->setUpBookingCodesTable();
 
 		// Create location
-		$this->locationId = wp_insert_post( [
-			'post_title'  => 'TestLocation',
-			'post_type'   => Location::$postType,
-			'post_status' => 'publish'
-		] );
+		$this->locationId = self::createLocation('Testlocation', 'publish');
 
 		// Create Item
-		$this->itemId = wp_insert_post( [
-			'post_title'  => 'TestItem',
-			'post_type'   => Item::$postType,
-			'post_status' => 'publish'
-		] );
+		$this->itemId = self::createItem('TestItem', 'publish');
 	}
 
 	protected function setUpBookingCodesTable() {
@@ -228,13 +270,25 @@ abstract class CustomPostTypeTest extends TestCase {
 
 	protected function tearDown() {
 		parent::tearDown();
-		wp_delete_post( $this->itemId, true );
-		wp_delete_post( $this->locationId, true );
 
+		$this->tearDownAllItems();
+		$this->tearDownAllLocation();
 		$this->tearDownAllTimeframes();
 		$this->tearDownAllBookings();
 		$this->tearDownAllRestrictions();
 		$this->tearDownBookingCodesTable();
+	}
+
+	protected function tearDownAllLocation() {
+		foreach ( $this->locationIds as $id ) {
+			wp_delete_post( $id, true );
+		}
+	}
+
+	protected function tearDownAllItems() {
+		foreach ( $this->itemIds as $id ) {
+			wp_delete_post( $id, true );
+		}
 	}
 
 	protected function tearDownAllTimeframes() {

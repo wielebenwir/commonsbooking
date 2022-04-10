@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\View;
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use Exception;
 
@@ -15,7 +16,7 @@ class Booking extends View {
 	 */
 	public static function getTemplateData(): void {
 		header( 'Content-Type: application/json' );
-		echo json_encode( self::getBookingListData(), true );
+		echo wp_json_encode( self::getBookingListData(), true );
 		wp_die(); // All ajax handlers die when finished
 	}
 
@@ -171,7 +172,7 @@ class Booking extends View {
 				// If search term was submitted, filter for it.
 				if ( ! $search || count( preg_grep( '/.*' . $search . '.*/i', $rowData ) ) > 0 ) {
 					$rowData['actions']         = $actions;
-					$bookingDataArray['data'][] = $rowData;
+					$bookingDataArray['data'][] = apply_filters('cb_booking_filter', $rowData, $booking);
 				}
 			}
 
@@ -220,7 +221,11 @@ class Booking extends View {
 				$bookingDataArray['data'] = array_values( $bookingDataArray['data'] );
 			}
 
-			Plugin::setCacheItem( $bookingDataArray, $customId );
+			Plugin::setCacheItem(
+				$bookingDataArray,
+				Wordpress::getTags($posts),
+				$customId
+			);
 
 			return $bookingDataArray;
 		}

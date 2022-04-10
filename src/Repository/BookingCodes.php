@@ -39,15 +39,17 @@ class BookingCodes {
 			global $wpdb;
 			$table_name = $wpdb->prefix . self::$tablename;
 
-			$bookingCodes = $wpdb->get_results(
-				"
-                SELECT *
-                FROM $table_name
-                WHERE timeframe = $timeframeId 
-                AND date BETWEEN '$startDate' AND '$endDate' 
+			$sql = $wpdb->prepare(
+				"SELECT * FROM $table_name
+                WHERE timeframe = %d
+                AND date BETWEEN %s AND %s
                 ORDER BY item ASC ,date ASC
-            "
+            	",
+				$timeframeId,
+				$startDate,
+				$endDate
 			);
+			$bookingCodes = $wpdb->get_results($sql);
 
 			$codes = [];
 			foreach ( $bookingCodes as $bookingCode ) {
@@ -61,7 +63,7 @@ class BookingCodes {
 				$codes[]           = $bookingCodeObject;
 			}
 
-			Plugin::setCacheItem( $codes );
+			Plugin::setCacheItem( $codes, [$timeframeId] );
 
 			return $codes;
 		}
@@ -84,18 +86,20 @@ class BookingCodes {
 			global $wpdb;
 			$table_name = $wpdb->prefix . self::$tablename;
 
-			$bookingCodes = $wpdb->get_results(
-				"
-                SELECT *
-                FROM $table_name
+			$sql = $wpdb->prepare(
+				"SELECT * FROM $table_name
                 WHERE 
-                    timeframe = '$timeframeId' AND 
-                    item = '$itemId' AND 
-                    location = '$locationId' AND 
-                    date = '$date'
-                ORDER BY item ASC ,date ASC
-            "
+                    timeframe = %s AND 
+                    item = %s AND 
+                    location = %s AND 
+                    date = %s
+                ORDER BY item ASC ,date ASC",
+				$timeframeId,
+				$itemId,
+				$locationId,
+				$date
 			);
+			$bookingCodes = $wpdb->get_results($sql);
 
 			$bookingCodeObject = null;
 			if ( count( $bookingCodes ) ) {
@@ -107,7 +111,7 @@ class BookingCodes {
 					$bookingCodes[0]->code
 				);
 			}
-			Plugin::setCacheItem( $bookingCodeObject );
+			Plugin::setCacheItem( $bookingCodeObject, [$timeframeId] );
 
 			return $bookingCodeObject;
 		}
