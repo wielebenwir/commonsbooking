@@ -198,7 +198,7 @@ class Booking extends Timeframe {
 			);
 		} catch ( OverlappingException $e ) {
 			set_transient( \CommonsBooking\Model\Timeframe::ERROR_TYPE,
-				commonsbooking_sanitizeHTML( __( "There is an overlapping booking.",
+				commonsbooking_sanitizeHTML( __( "There are one ore more bookings within the choosen timerange. THis booking is set to draft. Please adjust the startdate or enddate. ",
 					'commonsbooking' ) ),
 				45 );
 			$targetUrl = $_REQUEST['_wp_http_referer'];
@@ -538,10 +538,10 @@ class Booking extends Timeframe {
 		return array(
 			array(
 				'name' => esc_html__( 'Edit booking', 'commonsbooking' ),
-				'desc' => commonsbooking_sanitizeHTML( __( 'In this view, only the start and end dates of the booking can be adjusted by administrators.<br>
+				'desc' => commonsbooking_sanitizeHTML( __( 'In this view, you can modify existing bookings. Please use it with caution. <br>
 				Click on the <strong>preview button on the right panel</strong> to view more booking details and to cancel the booking via the cancel button.<br>
-				Please note that when changing the booking period, there is no check for possible vacations or non-bookable periods. There is only a check if the booking overlaps with an already existing other booking. In this case, saving is not possible. 
-				Further booking data cannot be changed subsequently. <br>We recommend in this case to cancel the booking and make a new booking.', 'commonsbooking' ) ),
+				Please note that when changing the booking data, there is no check for possible vacations or non-bookable periods. There is only a check if the booking overlaps with an already existing other booking. In this case, saving is not possible. 
+				', 'commonsbooking' ) ),
 				'id'   => "title-booking-hint",
 				'type' => 'title',
 			),
@@ -549,27 +549,18 @@ class Booking extends Timeframe {
 				'name'       => esc_html__( "Comment", 'commonsbooking' ),
 				'desc'       => esc_html__( 'This comment is internal for timeframes like bookable, repair, holiday. If timeframe is a booking this comment can be set by users during the booking confirmation process.', 'commonsbooking' ),
 				'id'         => "comment",
-				'attributes' => array(
-					'readonly' => 'readonly'
-				),
 				'type'       => 'textarea_small',
 			),
 			array(
 				'name'       => esc_html__( "Location", 'commonsbooking' ),
 				'id'         => "location-id",
 				'type'       => 'select',
-				'attributes' => array(
-					'readonly' => 'readonly'
-				),
 				'options'    => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
 			),
 			array(
 				'name'       => esc_html__( "Item", 'commonsbooking' ),
 				'id'         => "item-id",
 				'type'       => 'select',
-				'attributes' => array(
-					'readonly' => 'readonly'
-				),
 				'options'    => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 			),
 			array(
@@ -608,9 +599,6 @@ class Booking extends Timeframe {
 				'name'       => esc_html__( 'Booking Code', 'commonsbooking' ),
 				'id'         => COMMONSBOOKING_METABOX_PREFIX . 'bookingcode',
 				'type'       => 'text',
-				'attributes' => array(
-					'readonly' => 'readonly'
-				)
 			),
 			array(
 				'type'    => 'hidden',
