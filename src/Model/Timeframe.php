@@ -22,7 +22,15 @@ class Timeframe extends CustomPost {
 
 	public const META_LOCATION_ID = 'location-id';
 
+	public const META_LOCATION_MULTI_ID = 'location-multi-id';
+
+	public const META_LOCATION_ALL_ID = 'location-all-id';
+
 	public const META_ITEM_ID = 'item-id';
+
+	public const META_ITEM_MULTI_ID = 'item-multi-id';
+
+	public const META_ITEM_ALL_ID = 'item-all-id';
 
 	public const META_REPETITION = 'timeframe-repetition';
 

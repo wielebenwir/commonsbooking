@@ -452,10 +452,36 @@ class Timeframe extends CustomPostType {
 				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
 			),
 			array(
+				'name'             => esc_html__( "Location", 'commonsbooking' ),
+				'id'               => \CommonsBooking\Model\Timeframe::META_LOCATION_ALL_ID,
+				'type'             => 'checkbox',
+				'default'           => true,
+				'desc'             => esc_html__( "All", 'commonsbooking' )
+			),
+			array(
+				'name'             => esc_html__( "Location", 'commonsbooking' ),
+				'id'               => \CommonsBooking\Model\Timeframe::META_LOCATION_MULTI_ID,
+				'type'             => 'multicheck',
+				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
+			),
+			array(
 				'name'             => esc_html__( "Item", 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Timeframe::META_ITEM_ID,
 				'type'             => 'select',
 				'show_option_none' => esc_html__( 'Please select', 'commonsbooking' ),
+				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
+			),
+			array(
+				'name'             => esc_html__( "Item", 'commonsbooking' ),
+				'id'               => \CommonsBooking\Model\Timeframe::META_ITEM_ALL_ID,
+				'type'             => 'checkbox',
+				'default'           => true,
+				'desc'             => esc_html__( "All", 'commonsbooking' )
+			),
+			array(
+				'name'             => esc_html__( "Item", 'commonsbooking' ),
+				'id'               => \CommonsBooking\Model\Timeframe::META_ITEM_MULTI_ID,
+				'type'             => 'multicheck',
 				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 			),
 			array(

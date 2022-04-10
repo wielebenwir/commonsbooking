@@ -121,10 +121,18 @@
             const repetitionStartInput = $("#repetition-start");
             const repetitionEndInput = $("#repetition-end");
             const fullDayInput = $("#full-day");
+            const itemField = $(".cmb2-id-item-id");
+            const itemAllField = $(".cmb2-id-item-all-id");
+            const itemMultiField = $(".cmb2-id-item-multi-id");
+            const locationField = $(".cmb2-id-location-id");
+            const locationAllField = $(".cmb2-id-location-all-id");
+            const locationMultiField = $(".cmb2-id-location-multi-id");
             const showBookingCodes = $("#show-booking-codes");
             const createBookingCodesInput = $("#create-booking-codes");
             const bookingCodesDownload = $("#booking-codes-download");
             const bookingCodesList = $("#booking-codes-list");
+            const itemAllCheckbox = $("#item-all-id");
+            const locationAllCheckbox = $("#location-all-id");
             const holidayField = $(".cmb2-id--cmb2-holiday");
             const holidayInput = $("#timeframe_manual_date");
             const manualDateField = $(".cmb2-id-timeframe-manual-date");
@@ -155,21 +163,64 @@
                     maxDaysSelect.show();
                     advanceBookingDays.show();
                     allowUserRoles.show();
-                } else {
+                    itemField.hide();
+                    itemAllField.show();
+                    itemMultiField.hide();
+                    locationField.show();
+                    locationAllField.hide();
+                    locationMultiField.hide();
+                    console.log("here");
+                } else if (selectedType == 3) {
                     maxDaysSelect.hide();
                     advanceBookingDays.hide();
                     allowUserRoles.hide();
-                    if (selectedType == 3 && selectedRepetition == "manual") {
+                    itemField.hide();
+                    itemAllField.hide();
+                    itemMultiField.hide();
+                    locationField.hide();
+                    locationAllField.show();
+                    locationMultiField.hide();
+                    if (selectedRepetition == "manual") {
                         holidayField.show();
                     } else {
                         holidayField.hide();
                         holidayInput.val("");
                     }
+                } else {
+                    maxDaysSelect.hide();
+                    advanceBookingDays.hide();
+                    allowUserRoles.hide();
+                    itemField.show();
+                    itemAllField.hide();
+                    itemMultiField.hide();
+                    locationField.show();
+                    locationAllField.hide();
+                    locationMultiField.hide();
                 }
             };
             handleTypeSelection();
             typeInput.change(function() {
                 handleTypeSelection();
+            });
+            const handleItemAllSelection = function() {
+                if (itemAllCheckbox.is(":checked")) {
+                    itemMultiField.hide();
+                } else {
+                    itemMultiField.show();
+                }
+            };
+            itemAllCheckbox.change(function() {
+                handleItemAllSelection();
+            });
+            const handleLocationAllSelection = function() {
+                if (locationAllCheckbox.is(":checked")) {
+                    locationMultiField.hide();
+                } else {
+                    locationMultiField.show();
+                }
+            };
+            locationAllCheckbox.change(function() {
+                handleLocationAllSelection();
             });
             const handleFullDaySelection = function() {
                 const selectedRep = $("option:selected", timeframeRepetitionInput).val();
