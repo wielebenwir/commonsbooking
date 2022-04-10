@@ -200,7 +200,7 @@ class Booking extends Timeframe {
 			);
 		} catch ( OverlappingException $e ) {
 			set_transient( \CommonsBooking\Model\Timeframe::ERROR_TYPE,
-				commonsbooking_sanitizeHTML( __( "There are one ore more bookings within the choosen timerange. THis booking is set to draft. Please adjust the startdate or enddate. ",
+				commonsbooking_sanitizeHTML( __( "There are one ore more bookings within the choosen timerange. This booking is set to draft. Please adjust the startdate or enddate. ",
 					'commonsbooking' ) ),
 				45 );
 			$targetUrl = sanitize_url( $_REQUEST['_wp_http_referer'] );
