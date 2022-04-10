@@ -109,7 +109,7 @@ class Timeframe extends CustomPostType {
 			// Opening Hours disabled as its not implemented yet
 			//self::OPENING_HOURS_ID    => esc_html__("Opening Hours", 'commonsbooking'),
 			self::BOOKABLE_ID         => esc_html__( "Bookable", 'commonsbooking' ),
-			self::HOLIDAYS_ID         => esc_html__( "Holidays", 'commonsbooking' ),
+			self::HOLIDAYS_ID         => esc_html__( "Holidays or Location Closed", 'commonsbooking' ),
 			// Off Holidays disabled as its not implemented yet
 			//self::OFF_HOLIDAYS_ID     => esc_html__("Official Holiday", 'commonsbooking'),
 			self::REPAIR_ID           => esc_html__( "Repair", 'commonsbooking' ),
@@ -438,7 +438,7 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'    => esc_html__( 'Type', 'commonsbooking' ),
-				'desc'    => esc_html__( 'Select Type of this timeframe (e.g. bookable, repair, holidays). See Documentation for detailed information.', 'commonsbooking' ),
+				'desc'    => esc_html__( 'Select Type of this timeframe: Bookable or Location Closed. See Documentation for detailed information.', 'commonsbooking' ),
 				'id'      => "type",
 				'type'    => 'select',
 				'options' => self::getTypesforSelectField(),
@@ -631,9 +631,12 @@ class Timeframe extends CustomPostType {
 	 */
 	public static function getTypesforSelectField() {
 		$types = self::getTypes();
+
+        // remove unused types
 		unset(
 			$types[ self::BOOKING_ID ],
 			$types[ self::BOOKING_CANCELED_ID ],
+            $types[ self::REPAIR_ID ],
 		);
 
 		return $types;
