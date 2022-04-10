@@ -1,6 +1,6 @@
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 (function (global, factory) {
   (typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object' && typeof module !== 'undefined' ? module.exports = factory() : typeof define === 'function' && define.amd ? define(factory) : (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Shuffle = factory());
@@ -108,10 +108,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     };
   }
 
-  var tinyEmitter = {
-    exports: {}
-  };
-
   function E() {// Keep this empty so it's easier to inherit from
     // (via https://github.com/lipsmack from https://github.com/scottcorgan/tiny-emitter/issues/3)
   }
@@ -166,9 +162,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       return this;
     }
   };
-  tinyEmitter.exports = E;
-  tinyEmitter.exports.TinyEmitter = E;
-  var TinyEmitter = tinyEmitter.exports;
+  var tinyEmitter = E;
+  var TinyEmitter = E;
+  tinyEmitter.TinyEmitter = TinyEmitter;
   var proto = typeof Element !== 'undefined' ? Element.prototype : {};
   var vendor = proto.matches || proto.matchesSelector || proto.webkitMatchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector || proto.oMatchesSelector;
   var matchesSelector = match;
@@ -495,12 +491,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     var e = document.createElement('div');
     e.style.cssText = 'width:10px;padding:2px;box-sizing:border-box;';
     element.appendChild(e);
-
-    var _window$getComputedSt = window.getComputedStyle(e, null),
-        width = _window$getComputedSt.width; // Fix for issue #314
-
-
-    value = Math.round(getNumber(width)) === 10;
+    value = window.getComputedStyle(e, null).width === '10px';
     element.removeChild(e);
     return value;
   };
@@ -971,7 +962,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       key: "_init",
       value: function _init() {
         this.items = this._getItems();
-        this.sortedItems = this.items;
         this.options.sizer = this._getElementOption(this.options.sizer); // Add class and invalidate styles
 
         this.element.classList.add(Shuffle.Classes.BASE); // Set initial css for each item
@@ -1814,7 +1804,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         this._resetCols();
 
         var items = sorter(this._getFilteredItems(), sortOptions);
-        this.sortedItems = items;
 
         this._layout(items); // `_layout` always happens after `_shrink`, so it's safe to process the style
         // queue here with styles from the shrink method.
@@ -2151,7 +2140,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     }]);
 
     return Shuffle;
-  }(TinyEmitter);
+  }(tinyEmitter);
 
   Shuffle.ShuffleItem = ShuffleItem;
   Shuffle.ALL_ITEMS = 'all';
