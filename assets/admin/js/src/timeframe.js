@@ -116,7 +116,11 @@
                     locationField.show();
                     locationAllField.hide();
                     locationMultiField.hide();
-                    console.log("here");
+                    if(itemAllCheckbox.is(':checked')){
+                        itemMultiField.hide();
+                    }else{
+                        itemMultiField.show();
+                    }
                 } else if (selectedType == 3) { //HOLIDAY
                     maxDaysSelect.hide();
                     advanceBookingDays.hide();
@@ -126,12 +130,17 @@
                     itemMultiField.hide();
                     locationField.hide();
                     locationAllField.show();
-                    locationMultiField.hide();
                     if(selectedRepetition == 'manual') {
                         holidayField.show();}else{
                         holidayField.hide();
                         holidayInput.val('');
                     }
+                    if(locationAllCheckbox.is(':checked')){
+                        locationMultiField.hide();
+                    }else{
+                        locationMultiField.show();
+                    }
+
                 }else{
                     maxDaysSelect.hide();
                     advanceBookingDays.hide();
