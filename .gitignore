@@ -16,3 +16,6 @@ assets/.DS_Store
 views/.DS_Store
 /composer.phar
 copy-svn.sh
+wp-core
+.vscode/settings.json
+commonsbookingdocker.code-workspace
