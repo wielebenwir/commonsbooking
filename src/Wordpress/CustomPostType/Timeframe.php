@@ -89,9 +89,7 @@ class Timeframe extends CustomPostType {
 			\CommonsBooking\Model\Timeframe::META_LOCATION_ID                    => esc_html__( 'Location', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::REPETITION_START                    => esc_html__( 'Start Date', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::REPETITION_END                      => esc_html__( 'End Date', 'commonsbooking' ),
-			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS => esc_html__( 'Max. Booking Duration', 'commonsbooking' ),
-			'timeframe-advance-booking-days'                                     => esc_html__( 'Days Booking In Advance', 'commonsbooking' ),
-
+			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS => esc_html__( 'Days Booking in Advance', 'commonsbooking' ),
 		];
 
 
@@ -552,7 +550,6 @@ class Timeframe extends CustomPostType {
 				'name'        => esc_html__( "End time", 'commonsbooking' ),
 				'id'          => "end-time",
 				'type'        => 'text_time',
-				'time_format' => 'H:i',
 				'attributes'  => array(
 					'data-timepicker' => wp_json_encode(
 						array(
@@ -582,11 +579,17 @@ class Timeframe extends CustomPostType {
 				'type' => 'title',
 			),
 			array(
+				'name' => esc_html__( "Manual date input", 'commonsbooking' ),
+				'desc' => esc_html__( 'Here comma separated date input ', 'commonsbooking' ),//TODO: Change Description
+				'id' => \CommonsBooking\Model\Timeframe::META_MANUAL_SELECTION,
+				'type' => 'textarea_small'
+			),
+			array(
 				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
 				'desc'        => esc_html__( 'Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking' ),
 				'id'          => \CommonsBooking\Model\Timeframe::REPETITION_START,
 				'type'        => 'text_date_timestamp',
-				'time_format' => esc_html(get_option( 'time_format' )),
+				'time_format' => esc_html( get_option( 'time_format' ) ),
 				'date_format' => $dateFormat,
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
@@ -674,7 +677,7 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-	 * Retuns grid options.
+	 * Returns grid options.
 	 * @return array
 	 */
 	public static function getGridOptions() {
@@ -690,7 +693,7 @@ class Timeframe extends CustomPostType {
 	 */
 	public static function getTimeFrameRepetitions() {
 		return [
-			'norep' => esc_html__( "No Repetition", 'commonsbooking' ),
+			'manual' => esc_html__( "Manual repetition", 'commonsbooking' ),
 			'd'     => esc_html__( "Daily", 'commonsbooking' ),
 			'w'     => esc_html__( "Weekly", 'commonsbooking' ),
 			'm'     => esc_html__( "Monthly", 'commonsbooking' ),

@@ -29,6 +29,8 @@ class Timeframe extends CustomPost {
 
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
+	public const META_MANUAL_SELECTION = 'timeframe_manual_date';
+
 	/**
 	 * Return residence in a human readable format
 	 *
