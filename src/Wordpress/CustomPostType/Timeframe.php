@@ -559,9 +559,9 @@ class Timeframe extends CustomPostType {
 				'type' => 'holiday_get_fields'
 			),
 			array(
-				'name' => esc_html__( "Manuel date", 'commonsbooking' ), //TODO: Set name
+				'name' => esc_html__( "Manual date", 'commonsbooking' ), //TODO: Set name
 				'desc' => esc_html__( 'TEXT TO DESCRIBE FUNCTION ', 'commonsbooking' ),//TODO: Change Description
-				'id' => 'timeframe_manual_date',
+				'id' => \CommonsBooking\Model\Timeframe::META_MANUAL_SELECTION,
 				'type' => 'textarea_small'
 			),
 			array(

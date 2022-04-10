@@ -103,14 +103,11 @@
                     advanceBookingDays.hide();
                     allowUserRoles.hide();
                     if (selectedType == 3 && selectedRepetition == 'manual') {
-
                         holidayField.show();
                     } else {
                         holidayField.hide();
                         holidayInput.val('');
-
                     }
-
                 }
             }
 
@@ -118,30 +115,7 @@
             typeInput.change(function () {
                 handleTypeSelection();
             });
-            /**
-             * Shows/hides max day selection and user role restriction depending on timeframe Repitition tyoe (for bookings).
-             */
-            const handleRepititionSelection = function () {
-                const selectedRepetition = $("option:selected", timeframeRepetitionInput).val();
-                const selectedType = $("option:selected", typeInput).val();
-                if (selectedRepetition !== 'manual') {
-                    manualDateField.hide()
-                    holidayField.hide();
-                    holidayInput.val('');
-                } else {
-                    manualDateField.show();
-                    if (selectedType == 3) {
-                        holidayField.show();
-                    } else {
-                        holidayField.hide();
-                        holidayInput.val('');
-                    }
-                }
-            }
-            handleRepititionSelection();
-            timeframeRepetitionInput.change(function () {
-                handleRepititionSelection();
-            });
+
             /**
              * Shows/hides grid selection depending on checked-state.
              */
@@ -165,12 +139,26 @@
              */
             const handleRepetitionSelection = function () {
                 const selectedType = $('option:selected', timeframeRepetitionInput).val();
+                const selectedTimeframeType = $("option:selected", typeInput).val();
 
                 if (selectedType) {
                     if (selectedType == 'norep') {
                         showNoRepFields();
                     } else {
                         showRepFields();
+                    }
+
+                    if (selectedType !== 'manual') {
+                        manualDateField.hide()
+                        holidayField.hide();
+                        holidayInput.val('');
+                    } else {
+                        manualDateField.show();
+                        if (selectedTimeframeType == 3) {
+                            holidayField.show();
+                        } else {
+                            holidayField.hide();
+                        }
                     }
 
                     if (selectedType == 'w') {

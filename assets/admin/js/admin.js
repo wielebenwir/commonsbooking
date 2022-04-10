@@ -171,27 +171,6 @@
             typeInput.change(function() {
                 handleTypeSelection();
             });
-            const handleRepititionSelection = function() {
-                const selectedRepetition = $("option:selected", timeframeRepetitionInput).val();
-                const selectedType = $("option:selected", typeInput).val();
-                if (selectedRepetition !== "manual") {
-                    manualDateField.hide();
-                    holidayField.hide();
-                    holidayInput.val("");
-                } else {
-                    manualDateField.show();
-                    if (selectedType == 3) {
-                        holidayField.show();
-                    } else {
-                        holidayField.hide();
-                        holidayInput.val("");
-                    }
-                }
-            };
-            handleRepititionSelection();
-            timeframeRepetitionInput.change(function() {
-                handleRepititionSelection();
-            });
             const handleFullDaySelection = function() {
                 const selectedRep = $("option:selected", timeframeRepetitionInput).val();
                 if (fullDayInput.prop("checked")) {
@@ -207,11 +186,24 @@
             });
             const handleRepetitionSelection = function() {
                 const selectedType = $("option:selected", timeframeRepetitionInput).val();
+                const selectedTimeframeType = $("option:selected", typeInput).val();
                 if (selectedType) {
                     if (selectedType == "norep") {
                         showNoRepFields();
                     } else {
                         showRepFields();
+                    }
+                    if (selectedType !== "manual") {
+                        manualDateField.hide();
+                        holidayField.hide();
+                        holidayInput.val("");
+                    } else {
+                        manualDateField.show();
+                        if (selectedTimeframeType == 3) {
+                            holidayField.show();
+                        } else {
+                            holidayField.hide();
+                        }
                     }
                     if (selectedType == "w") {
                         weekdaysInput.parents(".cmb-row").show();
