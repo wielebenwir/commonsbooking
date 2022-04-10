@@ -923,12 +923,14 @@ class Timeframe extends CustomPostType {
 
 		// Listing of available items/locations
 		add_shortcode( 'cb_items_table', array( Calendar::class, 'renderTable' ) );
+
+		add_filter( 'cmb2_render_holiday_get_fields', array( Timeframe::class, 'cmb2_render_holiday_get_fields' ), 10, 5 );
 	}
 
 	/**
 	 * Render Holiday Field
 	 */
-	function cmb2_render_holiday_get_fields( $field, $value, $object_id, $object_type, $field_type ) {
+	public static function cmb2_render_holiday_get_fields( $field, $value, $object_id, $object_type, $field_type ) {
 
 		// make sure we specify each part of the value we need.
 		$value = wp_parse_args( $value, array(
@@ -978,7 +980,7 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Create State Options for Holiday
 	 */
-	static function cmb2_get_state_options( $value = false ) {
+	public static function cmb2_get_state_options( $value = false ) {
 		$state_list = Holiday::returnStates();
 		$state_options = '';
 		foreach ( $state_list as $abrev => $state ) {
@@ -991,8 +993,9 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Create Year Options for Holiday
 	 */
-	static function cmb2_get_year_options( $value = false ) {
+	public static function cmb2_get_year_options( $value = false ) {
 		$year = intval(date('Y'));
+		$year_options = '';
 
 		for ( $i = 0 ; $i < 3; $i++ ) {
 			$year_options .= '<option value="'. $year .'" ';
@@ -1005,6 +1008,3 @@ class Timeframe extends CustomPostType {
 		return $year_options;
 	}
 }
-
-add_filter( 'cmb2_render_holiday_get_fields', array( Timeframe::class, 'cmb2_render_holiday_get_fields' ), 10, 5 );
-
