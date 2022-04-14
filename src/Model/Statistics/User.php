@@ -27,6 +27,10 @@ class User {
 
     }
 
+    public function getTotalBookings() {
+        return $this->totalBookings;
+    }
+
     public function getBookingsCountforTimerange($startDate, $endDate) {
 
         $daysCounter = 0;
@@ -35,6 +39,8 @@ class User {
         $end = new DateTime(date('Y-m-d', $endDate));
         $interval = new DateInterval('P1D');
         $period = new DatePeriod($begin, $interval ,$end);
+
+        var_dump($period);
 
         foreach ($period as $key => $value) {
             

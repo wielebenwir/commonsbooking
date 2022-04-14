@@ -89,13 +89,13 @@ class Dashboard extends View {
 
 
 	public static function renderBookingsPerUser($startDate, $endDate) {
-		$stats = new \CommonsBooking\View\Statistics(time());
+		$stats = new \CommonsBooking\View\Statistics($startDate);
 		$UserStats = $stats->getUsersWithBookingCount($startDate, $endDate);
 
 		if ( count( $UserStats ) > 0 ) {
 			usort( $UserStats, 
 				function ( $a, $b ) {
-					return ($a['bookings'] <=> $b['bookings']);
+					return ($b['bookings'] <=> $a['bookings']);
 				}
 			);
 			

@@ -54,8 +54,14 @@ class Statistics extends View {
 			$UserBookingData[$booking->post_author] = new User();	
 			} 
 			
-		$UserBookingData[$booking->post_author]->addBooking($booking);		
+		$UserBookingData[$booking->post_author]->addBooking($booking);
+        	
 		}
+
+        $UserBookingData[$booking->post_author]->getTotalBookings();
+
+        var_dump($UserBookingData);
+        do_action( 'qm/debug', $UserBookingData);
 
 		return $UserBookingData;
 
