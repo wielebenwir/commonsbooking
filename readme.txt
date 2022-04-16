@@ -88,6 +88,8 @@ ENHANCED: Added links to location pages in maps, booking lists, availability tab
 ENHANCED: Items, which are restricted to a certain user group are now hidden for non-eligible users.
 FIXED: Set default advance booking days for existing timeframes to 365 days.
 FIXED: Some rendering issues with the calendar have been fixed.
+FIXED: Issues with already past bookings where cancellation was still possible
+FIXED: Wrong time displayed in cancellation messages
 
 
 ### 2.6.12 (27.02.2022)
