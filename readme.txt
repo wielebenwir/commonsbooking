@@ -1,5 +1,3 @@
-# CommonsBooking
-
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen  
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, commons, sharing, calendar,  
@@ -80,11 +78,18 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.6.12 (02.03.2022)
-ENHANCED: Optimized the commonsbooking internal caching so booking lists and maps should be rendered faster
-FIXED: Some rendering issues with calendar 
-ENHANCED: Modified CSS styles for calendar 
-FIXED: Set default advance booking days for existing timeframes to 365 days
+### 2.7 (xx.03.2022)
+NEW: You can now choose your individual colors to customize Commonsbooking to your liking. Try it via Options -> CommonsBooking -> Templates (scroll down to color section)
+NEW: Added action hooks to templates
+ENHANCED: Optimized the commonsbooking internal caching so booking lists and maps are rendered faster.
+ENHANCED: Modified CSS styles for calendar.
+ENHANCED: Item lists and availability tables will now output a warning when no items have been found.
+ENHANCED: Added links to location pages in maps, booking lists, availability tables and item overview page.
+ENHANCED: Items, which are restricted to a certain user group are now hidden for non-eligible users.
+FIXED: Set default advance booking days for existing timeframes to 365 days.
+FIXED: Some rendering issues with the calendar have been fixed.
+FIXED: Issues with already past bookings where cancellation was still possible
+FIXED: Wrong time displayed in cancellation messages
 
 
 ### 2.6.12 (27.02.2022)

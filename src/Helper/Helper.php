@@ -76,9 +76,20 @@ class Helper {
 	 * @return int
 	 */
 	public static function getLastFullHourTimestamp() {
-		$now = time();
-
+		$now = current_time('timestamp');
 		return $now - ( $now % 3600 );
+	}
+
+	/**
+	 * Returns timestamp of last full day, needed to get more cache hits.
+	 * @param $timestamp
+	 *
+	 * @return int|mixed|null
+	 */
+	public static function getLastFullDayTimestamp($timestamp = null) {
+		if($timestamp === null) $timestamp = current_time('timestamp');
+
+		return $timestamp - ( $timestamp % (3600 * 24) );
 	}
 
 	/**
