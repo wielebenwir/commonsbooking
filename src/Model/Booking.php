@@ -253,7 +253,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
 
-		$repetitionStart = $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START );
+		$repetitionStart = $this->getStartDate();
 
 		$date_start = date_i18n( $date_format, $repetitionStart );
 		$time_start = date_i18n( $time_format, $repetitionStart );
@@ -283,7 +283,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * pickupDatetime
+	 * returnDatetime
 	 *
 	 * renders the return date and time information and returns a formatted string
 	 * this is used in templates/booking-single.php and in email-templates (configuration via admin options)
@@ -323,7 +323,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	public function getStartDate() {
-		return $this->getMeta( 'repetition-start' );
+		return $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START );
 	}
 
 	public function getEndDate() {
@@ -412,7 +412,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return bool
 	 */
 	public function isPast(): bool {
-		if ( $this->getMeta( 'repetition-end' ) < current_time( 'timestamp' ) ) {
+		if ( $this->getEndDate() < current_time( 'timestamp' ) ) {
 			return true;
 		} else {
 			return false;
