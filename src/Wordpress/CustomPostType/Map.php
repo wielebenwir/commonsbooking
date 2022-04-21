@@ -161,6 +161,10 @@ class Map extends CustomPostType {
 		$show_location_contact       = MapAdmin::get_option( $cb_map_id, 'show_location_contact' );
 		$show_location_opening_hours = MapAdmin::get_option( $cb_map_id, 'show_location_opening_hours' );
 
+		$preset_categories = MapAdmin::get_option( $cb_map_id, 'cb_items_preset_categories' );
+		$preset_location_categories = MapAdmin::get_option( $cb_map_id, 'cb_locations_preset_categories' );
+
+
 		$args = [
 			'post_type'      => Location::$postType,
 			'posts_per_page' => - 1,
@@ -186,7 +190,19 @@ class Map extends CustomPostType {
 			$closed_days = isset( $location_meta['commons-booking_location_closeddays'] ) ? $location_meta['commons-booking_location_closeddays'][0] : 'a:0:{}';
 
 			$items = [];
+
+			/**
+			 * filters out not preset location categories, if location categories are set
+			 */
+
+			 if ($preset_location_categories) {
+				if ( !has_term( $preset_categories , 'cb_locations_category' , $post->ID) ) {
+					continue; //skip to next location in loop
+				}
+			 }
+
 			foreach ( Item::getByLocation( $post->ID, true ) as $item ) {
+
 				$item_terms = wp_get_post_terms(
 					$item->ID,
 					\CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category'
@@ -206,6 +222,18 @@ class Map extends CustomPostType {
 				if ( count( $mapItemTerms ) && count( $item_terms ) && ! count( array_intersect( $item_terms, $mapItemTerms ) ) ) {
 					continue;
 				}
+
+				/**
+				 * Filter items by preset item categories
+				 */
+
+				 if ($preset_categories) {
+						 //check if preset category is in items
+						if ( !has_term( $preset_categories , 'cb_items_category' , $item->ID) ) {
+							continue; //skip to next item in loop
+						}
+				 }
+
 
 				$timeframesData = [];
 				$timeframes     = Timeframe::getBookableForCurrentUser(

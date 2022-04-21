@@ -1,5 +1,5 @@
 # Copyright (C) 2022 wielebenwir e.V.
-# This file is distributed under the same license as the Commons Booking plugin.
+# This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
 "Project-Id-Version: Commons Booking 2.6.13\n"
@@ -9,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-03-25T09:39:18+00:00\n"
+"POT-Creation-Date: 2022-04-10T09:16:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.4.0\n"
+"X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: commonsbooking\n"
 
 #. Plugin Name of the plugin
@@ -78,7 +78,6 @@ msgstr ""
 msgid "Items slug"
 msgstr ""
 
-#. translators: %s = example url (like website.com/cb-items/)
 #: includes/OptionsArray.php:90
 msgid "The slug for article detail page. Type in the slug without slashes. Example: <strong>cb_item</strong> or <strong>article</strong>.  The url for the items detail will be like %s"
 msgstr ""
@@ -87,7 +86,6 @@ msgstr ""
 msgid "Locations slug"
 msgstr ""
 
-#. translators: %s = example url (like website.com/cb-locations/)
 #: includes/OptionsArray.php:101
 msgid "The slug for location detail page. Type in the slug without slashes. Example: <strong>cb_location</strong> or <strong>location</strong>.  The url for the items detail will be like %s"
 msgstr ""
@@ -96,7 +94,6 @@ msgstr ""
 msgid "Bookings Page"
 msgstr ""
 
-#. translators: %s = example url (like website.com/cb-locations/)
 #: includes/OptionsArray.php:112
 msgid "The page where you included the [cb_bookings] shortcode. This is used in the Users Widget"
 msgstr ""
@@ -922,7 +919,6 @@ msgstr ""
 msgid "Please accept the terms & conditions"
 msgstr ""
 
-#. translators: %s = terms and service url
 #: src/CB/CB1UserFields.php:160
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
 msgstr ""
@@ -943,19 +939,19 @@ msgstr ""
 msgid "Accepted Terms & Conditions"
 msgstr ""
 
-#: src/Map/MapAdmin.php:131
+#: src/Map/MapAdmin.php:135
 msgid "Map Configuration"
 msgstr ""
 
-#: src/Map/MapAdmin.php:456
+#: src/Map/MapAdmin.php:479
 msgid "Select an image"
 msgstr ""
 
-#: src/Map/MapAdmin.php:457
+#: src/Map/MapAdmin.php:480
 msgid "save"
 msgstr ""
 
-#: src/Map/MapAdmin.php:458
+#: src/Map/MapAdmin.php:481
 msgid "measurements"
 msgstr ""
 
@@ -1046,33 +1042,33 @@ msgid "Could not send email because mail-template was not available. Check optio
 msgstr ""
 
 #. translators: %s = Booking code
-#: src/Model/Booking.php:80
+#: src/Model/Booking.php:89
 msgid "Your booking code is: %s"
 msgstr ""
 
-#. translators: %s = date in wordpress defined format
-#: src/Model/Booking.php:223
+#. translators: %s = date in WordPress defined format
+#: src/Model/Booking.php:235
 msgid " on %s "
 msgstr ""
 
-#. translators: %1 = startdate, %2 = enddate in wordpress defined format
-#: src/Model/Booking.php:226
+#. translators: %1 = startdate, %2 = enddate in WordPress defined format
+#: src/Model/Booking.php:238
 msgid " from %1$s until %2$s "
 msgstr ""
 
-#: src/Model/Booking.php:338
+#: src/Model/Booking.php:353
 msgid "Please check your booking and click confirm booking"
 msgstr ""
 
-#: src/Model/Booking.php:346
+#: src/Model/Booking.php:361
 msgid "Your booking has been canceled at %s."
 msgstr ""
 
-#: src/Model/Booking.php:348
+#: src/Model/Booking.php:363
 msgid "Your booking has been canceled"
 msgstr ""
 
-#: src/Model/Booking.php:369
+#: src/Model/Booking.php:385
 msgid "Link to your booking"
 msgstr ""
 
@@ -1085,64 +1081,57 @@ msgstr ""
 msgid "Not set"
 msgstr ""
 
-#: src/Model/Timeframe.php:114
+#: src/Model/Timeframe.php:115
 msgid "Available here"
 msgstr ""
 
-#. translators: %s = date in wordpress defined format
-#: src/Model/Timeframe.php:119
+#. translators: %s = date in WordPress defined format
+#: src/Model/Timeframe.php:120
 msgid "on %s"
 msgstr ""
 
-#. translators: %s = date in wordpress defined format
-#: src/Model/Timeframe.php:123
+#: src/Model/Timeframe.php:125
 msgid "from %s"
 msgstr ""
 
-#: src/Model/Timeframe.php:126
+#: src/Model/Timeframe.php:129
 msgid "permanently"
 msgstr ""
 
-#. translators: %1$s = startdate, second %2$s = enddate in wordpress defined format
-#: src/Model/Timeframe.php:131
+#: src/Model/Timeframe.php:135
 msgid " from %1$s until %2$s"
 msgstr ""
 
-#. translators: %s = enddate in wordpress defined format
-#: src/Model/Timeframe.php:136
+#: src/Model/Timeframe.php:142
 msgid " until %s"
 msgstr ""
 
-#: src/Model/Timeframe.php:251
+#: src/Model/Timeframe.php:265
 msgid "Item or location is missing. Please set item and location. Timeframe is saved as draft"
 msgstr ""
 
-#: src/Model/Timeframe.php:261
+#: src/Model/Timeframe.php:281
 msgid "Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe."
 msgstr ""
 
-#: src/Model/Timeframe.php:277
+#: src/Model/Timeframe.php:303
 msgid "A pickup time but no return time has been set. Please set the return time."
 msgstr ""
 
-#. translators: %1$s = timeframe-ID, %2$s is timeframe post_title
-#: src/Model/Timeframe.php:302
+#: src/Model/Timeframe.php:334
 msgid "Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s"
 msgstr ""
 
-#. translators: %1$s = timeframe-ID, %2$s is timeframe post_title
-#: src/Model/Timeframe.php:334
-msgid "Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s: %2$s"
+#: src/Model/Timeframe.php:379
+msgid "Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s %2$s"
 msgstr ""
 
-#. translators: first %s = timeframe-ID, second %s is timeframe post_title
-#: src/Model/Timeframe.php:355
-msgid "time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s: %2$s"
+#: src/Model/Timeframe.php:411
+msgid "time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s %2$s"
 msgstr ""
 
-#. translators: first %s = timeframe-ID, second %s is timeframe post_title
-#: src/Model/Timeframe.php:365
-msgid "Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s: %2$s"
+#: src/Model/Timeframe.php:432
+msgid "Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s %2$s"
 msgstr ""
 
 #: src/Plugin.php:88
@@ -1241,7 +1230,7 @@ msgid "Pickup date"
 msgstr ""
 
 #: src/View/BookingCodes.php:37
-#: src/View/Calendar.php:193
+#: src/View/Calendar.php:202
 #: src/Wordpress/CustomPostType/Booking.php:258
 #: src/Wordpress/CustomPostType/Booking.php:567
 #: src/Wordpress/CustomPostType/Item.php:69
@@ -1253,7 +1242,11 @@ msgstr ""
 msgid "Item"
 msgstr ""
 
-#: src/View/Calendar.php:194
+#: src/View/Calendar.php:155
+msgid "No items found."
+msgstr ""
+
+#: src/View/Calendar.php:203
 #: src/Wordpress/CustomPostType/Booking.php:259
 #: src/Wordpress/CustomPostType/Booking.php:558
 #: src/Wordpress/CustomPostType/Location.php:90
@@ -1268,6 +1261,14 @@ msgstr ""
 #: src/View/Dashboard.php:38
 #: src/View/Dashboard.php:77
 msgid "at"
+msgstr ""
+
+#: src/View/Item.php:134
+msgid "No bookable items found."
+msgstr ""
+
+#: src/View/Location.php:135
+msgid "No locations found."
 msgstr ""
 
 #: src/View/Map.php:32
@@ -1815,49 +1816,49 @@ msgstr ""
 msgid "Location Meta-Data"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:340
+#: src/Wordpress/CustomPostType/Map.php:369
 #: templates/dashboard-index.php:55
 msgid "Maps"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:341
+#: src/Wordpress/CustomPostType/Map.php:370
 msgid "Map"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:342
-#: src/Wordpress/CustomPostType/Map.php:345
+#: src/Wordpress/CustomPostType/Map.php:371
+#: src/Wordpress/CustomPostType/Map.php:374
 msgid "create CB map"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:343
+#: src/Wordpress/CustomPostType/Map.php:372
 msgid "create Commons Booking map"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:344
+#: src/Wordpress/CustomPostType/Map.php:373
 msgid "edit Commons Booking map"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:346
+#: src/Wordpress/CustomPostType/Map.php:375
 msgid "view CB map"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:347
+#: src/Wordpress/CustomPostType/Map.php:376
 msgid "search CB maps"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:348
+#: src/Wordpress/CustomPostType/Map.php:377
 msgid "no Commons Booking map found"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:349
+#: src/Wordpress/CustomPostType/Map.php:378
 msgid "no Commons Booking map found in the trash"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:350
+#: src/Wordpress/CustomPostType/Map.php:379
 msgid "parent CB maps"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:379
+#: src/Wordpress/CustomPostType/Map.php:408
 msgid "Maps to show Commons Booking Locations and their Items"
 msgstr ""
 
@@ -2451,7 +2452,7 @@ msgstr ""
 msgid "To be able to book, you must first <a href=\"%1$s\">login</a> or <a href=\"%2$s\">register</a>."
 msgstr ""
 
-#: templates/location-calendar-header.php:20
+#: templates/location-calendar-header.php:24
 msgid "Pickup instructions:"
 msgstr ""
 
@@ -2869,10 +2870,11 @@ msgid "add filter group"
 msgstr ""
 
 #: templates/map-admin-page-template.php:653
-msgid "Filter Presets"
+msgid "Filter Item Presets"
 msgstr ""
 
 #: templates/map-admin-page-template.php:657
+#: templates/map-admin-page-template.php:679
 msgid "preset categories"
 msgstr ""
 
@@ -2880,15 +2882,23 @@ msgstr ""
 msgid "select the categories that are used to prefilter the items that are shown on the map - none for all items"
 msgstr ""
 
-#: templates/map-admin-page-template.php:718
+#: templates/map-admin-page-template.php:675
+msgid "Filter Location Presets"
+msgstr ""
+
+#: templates/map-admin-page-template.php:681
+msgid "select the categories that are used to prefilter the location categories that are shown on the map - none for all locations"
+msgstr ""
+
+#: templates/map-admin-page-template.php:740
 msgid "filter group"
 msgstr ""
 
-#: templates/map-admin-page-template.php:718
+#: templates/map-admin-page-template.php:740
 msgid "group name"
 msgstr ""
 
-#: templates/map-admin-page-template.php:721
+#: templates/map-admin-page-template.php:743
 msgid "remove filter group"
 msgstr ""
 
@@ -3006,7 +3016,7 @@ msgid "Maximum %1$s days bookable in a row. Depending on the setting, it is also
 msgstr ""
 
 #. translators %1$s is a number of days
-#: templates/timeframe-calendar.php:142
+#: templates/timeframe-calendar.php:141
 msgid "Bookings are limited to a maximum of %1$s days in advance."
 msgstr ""
 

@@ -67,6 +67,7 @@ function commonsbooking_sanitizeHTML( $string ): string {
 
 	$allowed_atts = array(
 		'align'      => array(),
+		'checked'	 => array(),
 		'class'      => array(),
 		'type'       => array(),
 		'id'         => array(),
