@@ -57,7 +57,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		);
 		$wpdb->query( $sql );
 
-		add_post_meta( $this->post->ID, 'cancellation_time', time() );
+		add_post_meta( $this->post->ID, 'cancellation_time', current_time('timestamp') );
 
 		$this->sendCancellationMail();
 	}
