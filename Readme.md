@@ -97,6 +97,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 * ENHANCED: Item lists and availability tables will now output a warning when no items have been found.
 * ENHANCED: Added links to location pages in maps, booking lists, availability tables and item overview page.
 * ENHANCED: Items, which are restricted to a certain user group are now hidden for non-eligible users.
+* ENHANCED: Map: Pre-Filtering of items by item-categorys and location categorys is now possible
 * FIXED: Set default advance booking days for existing timeframes to 365 days.
 * FIXED: Some rendering issues with the calendar have been fixed.
 * FIXED: Issues with already past bookings where cancellation was still possible
