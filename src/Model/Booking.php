@@ -11,6 +11,8 @@ use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Repository\BookingCodes;
+use DateTimeImmutable;
+use DateInterval;
 
 class Booking extends \CommonsBooking\Model\Timeframe {
 
@@ -403,7 +405,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return bool
 	 */
 	public function isCancelled(): bool {
-		return ( $this->post_status === 'canceled' ? : false );
+		return ( $this->post_status == 'canceled' ? : false );
 	}
 
 	/**
@@ -419,4 +421,75 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 	}
 
+	/**
+	 * Returns true when booking has ended
+	 *
+	 * Current issue: Timestamp not localized with timezone, see issue: https://github.com/wielebenwir/commonsbooking/issues/1023
+	 * If this issue is ever fixed, code has already been pre-written to correctly handle the timezones. It is marked with #1023
+	 * @return bool
+	 */
+	public function getiCal( 
+		$eventTitle, $eventDescription
+	 ){
+		 $bookingLocation = $this->getLocation();
+		 $bookingLocation_latitude = $bookingLocation->getMeta( 'geo_latitude' );
+		 $bookingLocation_longitude = $bookingLocation->getMeta( 'geo_longitude' );
+
+		 //create immutable DateTime objects from Mutable (recommended by iCal library developer)
+
+		 $booking_startDateDateTime = DateTimeImmutable::createFromMutable($this->getStartTimeDateTime());
+		 $booking_endDateDateTime = DateTimeImmutable::createFromMutable($this->getEndTimeDateTime());
+
+		//add one minute to EndDate (this minute was removed to prevent overlapping but would confuse users)
+		$booking_endDateDateTime = $booking_endDateDateTime->add(new DateInterval('PT1M'));
+
+		// Create timezone entity 
+		/* #1023
+		$timezone = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone(
+			wp_timezone(),
+			$booking_startDateDateTime,
+			$booking_endDateDateTime
+		);
+		*/
+		// Create Event domain entity.
+		$event = new \Eluceo\iCal\Domain\Entity\Event();
+		$event
+			->setSummary($eventTitle)
+			->setDescription($eventDescription)
+			->setLocation(
+				(
+					new \Eluceo\iCal\Domain\ValueObject\Location($bookingLocation->formattedAddressOneLine(), $bookingLocation->post_title))
+					->withGeographicPosition(
+						new \Eluceo\iCal\Domain\ValueObject\GeographicPosition(
+							$bookingLocation_latitude,
+							$bookingLocation_longitude
+							)
+						)
+				)
+			->setOccurrence(
+				new \Eluceo\iCal\Domain\ValueObject\TimeSpan(
+					//new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_startDateDateTime, true), #1023
+					//new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_endDateDateTime, true) #1023
+					new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_startDateDateTime, false), //remove when #1023 fixed
+					new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_endDateDateTime, false) //remove when #1023 fixed
+				)
+			)
+		;
+
+		// Create Calendar domain entity 
+		$calendar = new \Eluceo\iCal\Domain\Entity\Calendar();
+
+		//Add timezone to calendar
+		// $calendar->addTimeZone($timezone); #1023
+
+		// Add events to calendar
+		$calendar->addEvent($event);
+
+		// Transform domain entity into an iCalendar component
+		$componentFactory = new \Eluceo\iCal\Presentation\Factory\CalendarFactory();
+		$calendarComponent = $componentFactory->createCalendar($calendar);
+
+		// 5. Output.
+		return $calendarComponent->__toString();
+	}
 }

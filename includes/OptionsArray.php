@@ -253,7 +253,7 @@ Thanks, the Team.
 						'type'	  => 'textarea',
 						'desc' => esc_html__( 'The description for the attached event.', 'commonsbooking' ),
 						'default'       => commonsbooking_sanitizeHTML( __( ' Abholung: {{booking:pickupDatetime}}
-Rückgabe: <strong>{{booking:returnDatetime}}
+Rückgabe: {{booking:returnDatetime}}
 {{location:formattedPickupInstructions}}
 {{booking:formattedBookingCode}} ',
 						'commonsbooking' ) ),
