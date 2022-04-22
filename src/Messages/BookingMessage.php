@@ -54,7 +54,7 @@ class BookingMessage extends Message {
 			$attachment = [
 				'string' => $booking->getiCal($eventTitle,$eventDescription), // String attachment data (required)
 				'filename' => $booking->post_name . '.ics', // Name of the attachment (required)
-				'encoding' => 'utf-8', // File encoding (defaults to 'base64')
+				'encoding' => 'base64', // File encoding (defaults to 'base64')
 				'type' => 'text/calendar', // File MIME type (if left unspecified, PHPMailer will try to work it out from the file name)
 				'disposition' => 'attachment' // Disposition to use (defaults to 'attachment')
 			];
