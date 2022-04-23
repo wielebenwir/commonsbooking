@@ -4,9 +4,13 @@ namespace CommonsBooking\Service;
 
 use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\View\Calendar;
+use CommonsBooking\Settings\Settings;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
+use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Symfony\Component\Cache\CacheItem;
 use const WP_DEBUG;
 
@@ -87,12 +91,22 @@ trait Cache {
 	 * @param int $defaultLifetime
 	 * @param string|null $directory
 	 *
-	 * @return TagAwareAdapter
+	 * @return TagAwareAdapterInterface
 	 */
-	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ): TagAwareAdapter {
-		return new TagAwareAdapter(
-			new FilesystemAdapter( $namespace, $defaultLifetime, $directory )
-		);
+	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ): TagAwareAdapterInterface {
+		if (Settings::getOption( 'commonsbooking_options_experimental', 'redis_enabled') =='on'){
+			$adapter = new RedisTagAwareAdapter(
+					RedisAdapter::createConnection(Settings::getOption( 'commonsbooking_options_experimental', 'redis_dsn')),
+					$namespace,
+					$defaultLifetime
+			);
+		}
+		else {
+			$adapter = new TagAwareAdapter(
+				new FilesystemAdapter( $namespace, $defaultLifetime, $directory )
+			);
+		}
+		return $adapter;
 	}
 
 	/**

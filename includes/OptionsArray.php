@@ -1033,4 +1033,32 @@ The team</p>', 'commonsbooking' ) ),
 		),
 	),
 	/* Tab: meta data end */
+
+	/* Tab: experimental setting start */
+	'experimental' => array(
+		'title'        => commonsbooking_sanitizeHTML( __( 'Experimental settings', 'commonsbooking' ) ),
+		'id'           => 'experimental',
+		'field_groups' => array(
+			'experimental' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Connect to REDIS database', 'commonsbooking' ) ),
+				'id'     => 'redis',
+				'desc'   =>
+					commonsbooking_sanitizeHTML( __( 'use redis caching?', 'commonsbooking' ) ),
+				'fields' => array(
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'use redis?', 'commonsbooking' ) ),
+						'id'   => 'redis_enabled',
+						'type' => 'checkbox',
+					),
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'redis dsn', 'commonsbooking' ) ),
+						'id'   => 'redis_dsn',
+						'type' => 'text',
+						'default' => 'redis://localhost:6379'
+					),
+				)
+			)
+		)
+	),
+	/* Tab: experimental setting end */
 );
