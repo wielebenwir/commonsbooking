@@ -44,15 +44,17 @@ function commonsbooking_parse_template_callback( $match, array $objects = [] ) {
         $match = $match[0];
 
         // extract the html before part, looking for {{[*] pattern
-        $html_before = '';
         if ( preg_match( '/\{\{\[([^\]]*)\]/m', $match, $html_before ) === 1 ) {
             $html_before = commonsbooking_sanitizeHTML( preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_before[1] ) );
+        } else {
+            $html_before = '';
         }
 
         // extract the html after part looking for [*]}} pattern
-        $html_after = '';
         if ( preg_match( '/\[([^\]]*)\]\}\}/m', $match, $html_after ) === 1 ) {
             $html_after = commonsbooking_sanitizeHTML( preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_after[1] ) );
+        } else {
+            $html_after = '';
         }
 
         // remove string between the [  ] control delimiters
@@ -60,7 +62,7 @@ function commonsbooking_parse_template_callback( $match, array $objects = [] ) {
 
         // remove the {{  }} control delimiters
         $match = preg_replace( '/(\{\{)|(\}\})/m', '', $match );
-        
+
         // remove whitspace
         $match = trim( $match );
 
@@ -91,7 +93,7 @@ function commonsbooking_parse_template_callback( $match, array $objects = [] ) {
  * @param [type] $type type could be location, booking, item
  *
  * @return void
- */ 
+ */
 function commonsbooking_getCBType( $type ) {
 	if ( $type == 'location' ) {
 		return \CommonsBooking\Wordpress\CustomPostType\Location::$postType;
