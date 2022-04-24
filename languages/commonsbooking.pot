@@ -1,5 +1,5 @@
 # Copyright (C) 2022 wielebenwir e.V.
-# This file is distributed under the GPL v2 or later.
+# This file is distributed under the same license as the Commons Booking plugin.
 msgid ""
 msgstr ""
 "Project-Id-Version: Commons Booking 2.7\n"
@@ -9,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-04-23T09:40:55+00:00\n"
+"POT-Creation-Date: 2022-04-24T20:57:37+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.5.0\n"
+"X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
 
 #. Plugin Name of the plugin
@@ -1088,8 +1088,8 @@ msgstr ""
 msgid "Please contact the contact persons at the location directly if you have any questions regarding collection or return:"
 msgstr ""
 
-#: src/Model/Restriction.php:189
-#: src/Model/Restriction.php:211
+#: src/Model/Restriction.php:196
+#: src/Model/Restriction.php:220
 msgid "Not set"
 msgstr ""
 
