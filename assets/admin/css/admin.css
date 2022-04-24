@@ -3317,10 +3317,11 @@
 /* Font sizes */
 /* Layout Variables */
 /* Fonts */
-/* line 72, ../../global/sass/partials/_variables.scss */
+/* line 73, ../../global/sass/partials/_variables.scss */
 :root {
   --commonsbooking-color-primary: #A3BC55;
   --commonsbooking-color-secondary: #506CA9;
+  --commonsbooking-color-buttons: #74ce3c;
   --commonsbooking-color-accept: #74ce3c;
   --commonsbooking-color-cancel: #d5425c;
   --commonsbooking-color-holiday: #ff9218;
@@ -3429,7 +3430,7 @@
   border-radius: var(--commonsbooking-radius);
   font-size: var(--commonsbooking-font-size-normal);
   line-height: var(--commonsbooking-font-size-normal);
-  background-color: var(--commonsbooking-color-success);
+  background-color: var(--commonsbooking-color-buttons);
   border: none !important;
   /* TwentyFifteen theme fix */
   text-decoration: none !important;
