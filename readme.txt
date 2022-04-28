@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar,  
 Requires at least: 5.2  
 Tested up to: 5.9  
-Stable Tag: 2.7
+Stable Tag: 2.7.1
 Requires PHP: 7.3 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -79,7 +79,10 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.7 (xx.03.2022)
+### 2.7.1 (28.04.2022)
+FIXED: Fixed Fatal error when PHP Version is < 7.4 / we recommend updating you PHP version to 7.4. because 7.3 is no longer maintained. Please ask you hosting provider for support.
+
+### 2.7 (26.04.2022)
 NEW: You can now choose your individual colors to customize Commonsbooking to your liking. Try it via Options -> CommonsBooking -> Templates (scroll down to color section)
 NEW: Added action hooks to templates
 ENHANCED: Optimized the commonsbooking internal caching so booking lists and maps are rendered faster.
