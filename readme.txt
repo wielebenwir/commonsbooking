@@ -5,7 +5,7 @@ Tags: booking, commons, sharing, calendar,
 Requires at least: 5.2  
 Tested up to: 5.9  
 Stable Tag: 2.7.1
-Requires PHP: 7.3 or higher  
+Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
