@@ -650,7 +650,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
 
     <div class="option-group" id="option-group-filter-presets">
         <details>
-            <summary><?php echo commonsbooking_sanitizeHTML( __( 'Filter Presets' ,'commonsbooking')); ?></summary>
+            <summary><?php echo commonsbooking_sanitizeHTML( __( 'Filter Item Presets' ,'commonsbooking')); ?></summary>
             <table class="text-left">
                 <tr>
                     <th>
@@ -662,6 +662,28 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                         <ul class="cb-map-settings-cat-filter-list">
                             <div class="category-wrapper">
                                 <?php echo  commonsbooking_sanitizeHTML( $preset_categories_checklist_markup ) ?>
+                            </div>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </details>
+    </div>
+
+    <div class="option-group" id="option-group-filter-location-presets">
+        <details>
+            <summary><?php echo commonsbooking_sanitizeHTML( __( 'Filter Location Presets' ,'commonsbooking')); ?></summary>
+            <table class="text-left">
+                <tr>
+                    <th>
+                        <?php echo commonsbooking_sanitizeHTML( __( 'preset categories' ,'commonsbooking')); ?>:
+                        <span class="dashicons dashicons-editor-help"
+                              title="<?php echo commonsbooking_sanitizeHTML( __('select the categories that are used to prefilter the location categories that are shown on the map - none for all locations' ,'commonsbooking')); ?>"></span>
+                    </th>
+                    <td>
+                        <ul class="cb-map-settings-cat-filter-list">
+                            <div class="category-wrapper">
+                                <?php echo  commonsbooking_sanitizeHTML( $preset_location_categories_checklist_markup ) ?>
                             </div>
                         </ul>
                     </td>

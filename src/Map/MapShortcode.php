@@ -343,7 +343,6 @@ class MapShortcode {
 			wp_die();
 		}
 
-		$preset_categories = MapAdmin::get_option( $cb_map_id, 'cb_items_preset_categories' );
 
 		if ( $post->post_status == 'publish' ) {
 			$settings           = self::get_settings( $cb_map_id );

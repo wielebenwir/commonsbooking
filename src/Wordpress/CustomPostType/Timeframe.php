@@ -272,8 +272,8 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-	 * Adds filter dropdown // filter by location in timeframe List
-	 * DEPRECATED! Could not remove without WP throwing an error.
+	 * Adds filter dropdown // filter by location in booking list
+	 * 
 	 */
 	public static function addAdminStatusFilter() {
 		$values = [];
@@ -343,6 +343,20 @@ class Timeframe extends CustomPostType {
 				}
 			}
 
+			//post status filtering
+
+			$post_filters = [
+				'post_status' => 'admin_filter_post_status',
+			];
+			foreach ( $post_filters as $key => $filter ) {
+				if (
+					isset( $_GET[ $filter ] ) &&
+					$_GET[ $filter ] != ''
+				) {
+					$query->query_vars[ $key ] = sanitize_text_field( $_GET[ $filter ] );
+				}
+			}
+			
 			// Timerange filtering
 			// Start date
 			if (
