@@ -407,7 +407,7 @@ class Booking extends Timeframe {
 			'capability_type'   => array( self::$postType, self::$postType . 's' ),
 
 			'capabilities' => array(
-				'create_posts' => false,
+				'create_posts' => true,
 			),
 
 			'map_meta_cap'        => true,
@@ -489,8 +489,8 @@ class Booking extends Timeframe {
 			}
 		} else {
 			$bookingColumns = [
-				'post_date',
-				'post_status',
+				//'post_date',
+				//'post_status',
 			];
 
 			if (
@@ -618,7 +618,9 @@ class Booking extends Timeframe {
 	public function BookingsAdminListNotice() {
 		global $pagenow;
 
-		$notice = commonsbooking_sanitizeHTML( __( 'Bookings should not be created, edited or canceled via this admin list. 
+		$notice = commonsbooking_sanitizeHTML( __( 'Bookings should be created via frontend booking calendar. <br>
+		As an admin you can create bookings via this admin interface. Please be aware that admin bookings are not validated
+		and checked. Use this function with care.<br>
 		Click on preview to show booking details in frontend<br>
 		To search and filter bookings please integrate the frontend booking list via shortcode. 
 		See here <a target="_blank" href="https://commonsbooking.org/?p=1433">How to display the booking list</a>', 'commonsbooking' ) );
