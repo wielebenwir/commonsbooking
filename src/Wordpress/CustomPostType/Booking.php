@@ -489,6 +489,8 @@ class Booking extends Timeframe {
 			}
 		} else {
 			$bookingColumns = [
+				// removed the following colums to fix an issue where booking status was not
+				// shown in booking list when added via backend editor.
 				//'post_date',
 				//'post_status',
 			];
