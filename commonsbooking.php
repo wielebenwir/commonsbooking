@@ -4,7 +4,7 @@
  * Plugin Name:         Commons Booking
  * Version:             2.7
  * Requires at least:   5.2
- * Requires PHP:        7.3
+ * Requires PHP:        7.4
  * Plugin URI:          https://commonsbooking.org
  * Description:         A wordpress plugin for management and booking of common goods.
  * Author:              wielebenwir e.V.
