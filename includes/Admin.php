@@ -11,7 +11,7 @@ function commonsbooking_admin() {
 	wp_enqueue_script( 'jquery-ui-tooltip', array( 'jquery' ) );
 
 	wp_enqueue_style( 'admin-styles', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/css/admin.css', array(), COMMONSBOOKING_VERSION );
-	wp_enqueue_script( 'cb-scripts-admin', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js', array() );
+	wp_enqueue_script( 'cb-scripts-admin', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js', array(), false, true );
 
     // Map marker upload scripts
     // TODO needs to be evaluated. Maybe not working on all systems
