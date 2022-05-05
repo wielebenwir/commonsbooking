@@ -79,11 +79,10 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.7.1 (28.04.2022)
+### 2.7.1 (05.05.2022)
 FIXED: Fixed Fatal error when PHP Version is < 7.4 / we recommend updating you PHP version to 7.4. because 7.3 is no longer maintained. Please ask you hosting provider for support.
-FIXED: Fixed not working migration script
-ADDED: You can add html text-snippets before and after an email template tag. This allows to add e.g. a label that is only shown when the template variable has content. Syntax: {{[optional text before ]item:post_title[optional text after]}} 
-ADDED: Added new color: button color
+FIXED: Migration did not work properly
+ADDED: You can now add html text-snippets before and after an email template tag. This allows to add e.g. a label that is only shown when the template variable has content. Syntax: Add optional text in square brackets [xxx] directly before and after the template tag. Example: {{[optional text before ]item:post_title[optional text after]}} 
 ENHANCED: Unified action hooks. Now we are using commonsbooking-prefix instead of cb-prefix. Please check if you use hooks
 
 
