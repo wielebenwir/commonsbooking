@@ -78,6 +78,22 @@ class Map extends CustomPostType {
 	}
 
 	/**
+	 * returns the directory path of the given plugin main file relative to the plugin directory,
+	 * i.e. commons-booking/commons-booking.php for $plugin_name = commons-booking.php
+	 **/
+	public static function get_active_plugin_directory( $plugin_name ) {
+		$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
+		foreach ( $active_plugins as $plugin ) {
+			$plugin_file_path = COMMONSBOOKING_MAP_PATH . '../' . esc_html($plugin);
+			if ( strpos( $plugin, $plugin_name ) !== false && file_exists( $plugin_file_path ) ) {
+				return dirname( $plugin );
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * load all timeframes from db (that end in the future and it's item's status is 'publish')
 	 **/
 	public static function get_timeframes() {

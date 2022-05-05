@@ -89,7 +89,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.7 (26.04.2022)
+### 2.7 (xx.03.2022)
 * NEW: You can now choose your individual colors to customize Commonsbooking to your liking. Try it via Options -> CommonsBooking -> Templates (scroll down to color section).
 * NEW: Added action hooks to templates.
 * ENHANCED: Optimized the commonsbooking internal caching so booking lists and maps are rendered faster.

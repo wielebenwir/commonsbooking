@@ -3,10 +3,9 @@
 use CommonsBooking\CB\CB;
 
 /**
- * Parses templates and extracts the template tags used in e-mail templates: {{xxx:yyyy}}
+ * parses templates and extracts the template these tags used in e-mail templates: {{xxx:yyyy}}
  *
- * @param string $template
- * @param array  $objects
+ * @param mixed $template
  *
  * @return mixed
  */
@@ -19,7 +18,7 @@ function commonsbooking_parse_template( string $template = '', $objects = [] ) {
 		$template
 	);
 
-	return apply_filters( 'commonsbooking_template_tag', $template );
+	return apply_filters( 'cb_template_tag', $template );
 }
 
 function commonsbooking_parse_shortcode( $tag ) {
@@ -28,10 +27,7 @@ function commonsbooking_parse_shortcode( $tag ) {
 }
 
 /**
- * Extracts the template tag parts divided by : or # and replaces the tag with values using the CB::get method
- *
- * Renders html before and after the template tag if it is given by using [html text] before or after the template tag
- * Example: {{[this comes before: ]item:post_title[this comes after]}}
+ * extracts the template tag parts divided by : or # and replaces the tag with values using the CB::get method
  *
  * @param mixed $match
  * @param array $objects
@@ -40,68 +36,33 @@ function commonsbooking_parse_shortcode( $tag ) {
  */
 function commonsbooking_parse_template_callback( $match, array $objects = [] ) {
 
-    if ( isset( $match[0] ) ) {
-        $match = $match[0];
+	if ( isset( $match[0] ) ) {
+		$match = $match[0];
+		$match = preg_replace( '/(\{\{)|(\}\})/m', '', $match );
+		// we accept : and # as separator cause the : delimiter wasn't working when using the template tag in a href links in the template (like <a href="{{xxx#yyyy}}"></a>)
+		$path = preg_split( '/(\:|\#)/', $match, 2 );
+		if ( isset( $path[0] ) and isset( $path[1] ) ) {
+			$post = null;
+			if ( array_key_exists( $path[0], $objects ) ) {
+				$post = $objects[ $path[0] ];
+			}
 
-        // extract the html before part, looking for {{[*] pattern
-        if ( preg_match( '/\{\{\[([^\]]*)\]/m', $match, $html_before ) === 1 ) {
-            $html_before = commonsbooking_sanitizeHTML( preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_before[1] ) );
-        } else {
-            $html_before = '';
-        }
+			return CB::get( commonsbooking_getCBType($path[0]), $path[1], $post );
+		}
+	}
 
-        // extract the html after part looking for [*]}} pattern
-        if ( preg_match( '/\[([^\]]*)\]\}\}/m', $match, $html_after ) === 1 ) {
-            $html_after = commonsbooking_sanitizeHTML( preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_after[1] ) );
-        } else {
-            $html_after = '';
-        }
-
-        // remove string between the [  ] control delimiters
-        $match = preg_replace( '/\[[^\]]*\]/m', '', $match );
-
-        // remove the {{  }} control delimiters
-        $match = preg_replace( '/(\{\{)|(\}\})/m', '', $match );
-
-        // remove whitspace
-        $match = trim( $match );
-
-        // we accept : and # as separator cause the : delimiter wasn't working when using the template tag in a href links in the template (like <a href="{{xxx#yyyy}}"></a>)
-        $path = preg_split( '/(\:|\#)/', $match, 2 );
-        if ( isset( $path[0] ) && isset( $path[1] ) ) {
-
-            $post = null;
-            if ( array_key_exists( $path[0], $objects ) ) {
-                $post = $objects[ $path[0] ];
-            }
-
-            $rendered_template_tag = CB::get( commonsbooking_getCBType( $path[0] ), $path[1], $post );
-            if ( strlen( $rendered_template_tag ) > 0 ) {
-                return $html_before . $rendered_template_tag . $html_after;
-            } else {
-                return $rendered_template_tag;
-            }
-        }
-
-        return false;
-    }
+	return false;
 }
 
-/**
- *  Return Custom Post Type postType for template type string
- *
- * @param [type] $type type could be location, booking, item
- *
- * @return void
- */
-function commonsbooking_getCBType( $type ) {
-	if ( $type == 'location' ) {
+// Return Custom Post Type postType for template type string
+function commonsbooking_getCBType($type) {
+	if($type == 'location') {
 		return \CommonsBooking\Wordpress\CustomPostType\Location::$postType;
 	}
-	if ( $type == 'booking' ) {
+	if($type == 'booking') {
 		return \CommonsBooking\Wordpress\CustomPostType\Booking::$postType;
 	}
-	if ( $type == 'item' ) {
+	if($type == 'item') {
 		return \CommonsBooking\Wordpress\CustomPostType\Item::$postType;
 	}
 	return $type;
