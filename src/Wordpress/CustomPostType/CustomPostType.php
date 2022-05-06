@@ -220,6 +220,10 @@ abstract class CustomPostType {
 	 * Configures list-view
 	 */
 	public function initListView() {
+		if ( static::$postType !== $_GET['post_type'] ) {
+			return;
+		}
+
 		// List-View
 		add_filter( 'manage_' . static::getPostType() . '_posts_columns', array( $this, 'setCustomColumns' ) );
 		add_action( 'manage_' . static::getPostType() . '_posts_custom_column', array(
