@@ -249,7 +249,7 @@ class Booking extends Timeframe {
 	}
 
 	public function initListView() {
-		if ( static::$postType !== $_GET['post_type'] ) {
+		if ( array_key_exists('post_type', $_GET) && static::$postType !== $_GET['post_type'] ) {
 			return;
 		}
 

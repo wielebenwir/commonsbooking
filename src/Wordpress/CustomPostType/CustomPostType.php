@@ -220,7 +220,7 @@ abstract class CustomPostType {
 	 * Configures list-view
 	 */
 	public function initListView() {
-		if ( static::$postType !== $_GET['post_type'] ) {
+		if ( array_key_exists('post_type', $_GET) && static::$postType !== $_GET['post_type'] ) {
 			return;
 		}
 
