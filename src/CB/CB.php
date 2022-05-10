@@ -50,7 +50,7 @@ class CB {
 		$wpObject = Helper::castToCBCustomType($wpObject, $key);
 
 		$result     = self::lookUp( $key, $property, $wpObject, $args );  // Find matching methods, properties or metadata
-		$filterName = sprintf( 'cb_tag_%s_%s', $key, $property );
+		$filterName = sprintf( 'commonsbooking_tag_%s_%s', $key, $property );
 
 		return apply_filters( $filterName, $result );
 	}
