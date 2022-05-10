@@ -437,7 +437,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		 $bookingLocation_longitude = $bookingLocation->getMeta( 'geo_longitude' );
 
 		 //create immutable DateTime objects from Mutable (recommended by iCal library developer)
-
 		 $booking_startDateDateTime = DateTimeImmutable::createFromMutable( $this->getStartDateDateTime() );
 		 $booking_endDateDateTime = DateTimeImmutable::createFromMutable( $this->getEndDateDateTime() );
 
@@ -451,7 +450,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		*/
 		
 		//Create event occurence
-
 		if ($this->isFullDay()){
 			if ($booking_startDateDateTime->format('Y-m-d') == $booking_endDateDateTime->format('Y-m-d') ) { //is single day event
 				$occurence = new \Eluceo\iCal\Domain\ValueObject\SingleDay(
