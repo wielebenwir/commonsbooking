@@ -113,7 +113,7 @@ abstract class Message {
 		
 		if ($this->attachment) { //When attachment exists, modify wp_mail function to support attachment strings
 			add_filter('wp_mail', array($this,'addStringAttachments'), 25); //add arbitrary priority to identify filter for removal
-			wp_mail($to, $subject, $body, $headers, $attachment);
+			$result = wp_mail($to, $subject, $body, $headers, $attachment);
 			remove_filter('wp_mail', array($this,'addStringAttachments'), 25); //remove filter directly after attachment is sent
 		} else { //Sends regular mail, when no attachment present
 			$result = wp_mail($to, $subject, $body, $headers);
@@ -166,9 +166,6 @@ abstract class Message {
 	public function getValidActions(): array {
 		return $this->validActions;
 	}
-
-
-
 
 	/**
 	 * Adds support for defining attachments as data arrays in wp_mail().
