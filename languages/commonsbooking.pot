@@ -1,17 +1,17 @@
 # Copyright (C) 2022 wielebenwir e.V.
-# This file is distributed under the same license as the Commons Booking plugin.
+# This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Commons Booking 2.7\n"
+"Project-Id-Version: Commons Booking 2.7.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-04-24T20:57:37+00:00\n"
+"POT-Creation-Date: 2022-05-05T13:47:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.4.0\n"
+"X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: commonsbooking\n"
 
 #. Plugin Name of the plugin
@@ -1436,7 +1436,7 @@ msgstr ""
 #: src/Wordpress/CustomPostType/Item.php:70
 #: src/Wordpress/CustomPostType/Location.php:91
 #: src/Wordpress/CustomPostType/Restriction.php:306
-#: src/Wordpress/CustomPostType/Timeframe.php:763
+#: src/Wordpress/CustomPostType/Timeframe.php:766
 msgid "Add new"
 msgstr ""
 
@@ -1463,7 +1463,7 @@ msgid "Search bookings"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:366
-#: src/Wordpress/CustomPostType/Timeframe.php:770
+#: src/Wordpress/CustomPostType/Timeframe.php:773
 msgid "Timeframes not found"
 msgstr ""
 
@@ -1480,12 +1480,12 @@ msgid "All bookings"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:370
-#: src/Wordpress/CustomPostType/Timeframe.php:774
+#: src/Wordpress/CustomPostType/Timeframe.php:777
 msgid "Timeframe archive"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:371
-#: src/Wordpress/CustomPostType/Timeframe.php:775
+#: src/Wordpress/CustomPostType/Timeframe.php:778
 msgid "Timeframe attributes"
 msgstr ""
 
@@ -1498,7 +1498,7 @@ msgid "Added to booking"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:374
-#: src/Wordpress/CustomPostType/Timeframe.php:778
+#: src/Wordpress/CustomPostType/Timeframe.php:781
 msgid "Timeframe image"
 msgstr ""
 
@@ -1515,8 +1515,8 @@ msgid "use as booking image"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:378
-#: src/Wordpress/CustomPostType/Timeframe.php:761
-#: src/Wordpress/CustomPostType/Timeframe.php:782
+#: src/Wordpress/CustomPostType/Timeframe.php:764
+#: src/Wordpress/CustomPostType/Timeframe.php:785
 #: templates/dashboard-index.php:37
 msgid "Timeframes"
 msgstr ""
@@ -1828,49 +1828,49 @@ msgstr ""
 msgid "Location Meta-Data"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:369
+#: src/Wordpress/CustomPostType/Map.php:353
 #: templates/dashboard-index.php:55
 msgid "Maps"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:370
+#: src/Wordpress/CustomPostType/Map.php:354
 msgid "Map"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:371
-#: src/Wordpress/CustomPostType/Map.php:374
+#: src/Wordpress/CustomPostType/Map.php:355
+#: src/Wordpress/CustomPostType/Map.php:358
 msgid "create CB map"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:372
+#: src/Wordpress/CustomPostType/Map.php:356
 msgid "create Commons Booking map"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:373
+#: src/Wordpress/CustomPostType/Map.php:357
 msgid "edit Commons Booking map"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:375
+#: src/Wordpress/CustomPostType/Map.php:359
 msgid "view CB map"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:376
+#: src/Wordpress/CustomPostType/Map.php:360
 msgid "search CB maps"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:377
+#: src/Wordpress/CustomPostType/Map.php:361
 msgid "no Commons Booking map found"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:378
+#: src/Wordpress/CustomPostType/Map.php:362
 msgid "no Commons Booking map found in the trash"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:379
+#: src/Wordpress/CustomPostType/Map.php:363
 msgid "parent CB maps"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Map.php:408
+#: src/Wordpress/CustomPostType/Map.php:392
 msgid "Maps to show Commons Booking Locations and their Items"
 msgstr ""
 
@@ -2066,12 +2066,12 @@ msgid "Repair"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Timeframe.php:420
-#: src/Wordpress/CustomPostType/Timeframe.php:762
+#: src/Wordpress/CustomPostType/Timeframe.php:765
 msgid "Timeframe"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Timeframe.php:455
-msgid "Select Type of this timeframe (e.g. bookable, repair, holidays). See Documentation for detailed information."
+msgid "Select Type of this timeframe: Bookable or Location Closed. See Documentation for detailed information."
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Timeframe.php:464
@@ -2210,84 +2210,84 @@ msgstr ""
 msgid "Select whether users should be shown a booking code when booking."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:662
+#: src/Wordpress/CustomPostType/Timeframe.php:665
 msgid "Full slot"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:663
+#: src/Wordpress/CustomPostType/Timeframe.php:666
 msgid "Hourly"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:673
+#: src/Wordpress/CustomPostType/Timeframe.php:676
 msgid "No Repetition"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:674
+#: src/Wordpress/CustomPostType/Timeframe.php:677
 msgid "Daily"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:675
+#: src/Wordpress/CustomPostType/Timeframe.php:678
 msgid "Weekly"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:676
+#: src/Wordpress/CustomPostType/Timeframe.php:679
 msgid "Monthly"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:677
+#: src/Wordpress/CustomPostType/Timeframe.php:680
 msgid "Yearly"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:764
-#: src/Wordpress/CustomPostType/Timeframe.php:766
+#: src/Wordpress/CustomPostType/Timeframe.php:767
+#: src/Wordpress/CustomPostType/Timeframe.php:769
 msgid "Add new timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:765
+#: src/Wordpress/CustomPostType/Timeframe.php:768
 msgid "Edit timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:767
+#: src/Wordpress/CustomPostType/Timeframe.php:770
 msgid "Show timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:768
+#: src/Wordpress/CustomPostType/Timeframe.php:771
 msgid "Show timeframes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:769
+#: src/Wordpress/CustomPostType/Timeframe.php:772
 msgid "Search timeframes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:771
+#: src/Wordpress/CustomPostType/Timeframe.php:774
 msgid "No timeframes found in trash"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:772
+#: src/Wordpress/CustomPostType/Timeframe.php:775
 msgid "Parent timeframes:"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:773
+#: src/Wordpress/CustomPostType/Timeframe.php:776
 msgid "All timeframes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:776
+#: src/Wordpress/CustomPostType/Timeframe.php:779
 msgid "Add to timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:777
+#: src/Wordpress/CustomPostType/Timeframe.php:780
 msgid "Added to timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:779
+#: src/Wordpress/CustomPostType/Timeframe.php:782
 msgid "set timeframe image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:780
+#: src/Wordpress/CustomPostType/Timeframe.php:783
 msgid "remove timeframe image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:781
+#: src/Wordpress/CustomPostType/Timeframe.php:784
 msgid "use as timeframe image"
 msgstr ""
 
@@ -3022,13 +3022,13 @@ msgstr ""
 msgid "not bookable"
 msgstr ""
 
-#. translators %1$s is a number of days
+#. translators: %1$s is a number of days
 #: templates/timeframe-calendar.php:137
 msgid "Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend)."
 msgstr ""
 
-#. translators %1$s is a number of days
-#: templates/timeframe-calendar.php:141
+#. translators: %1$s is a number of days
+#: templates/timeframe-calendar.php:142
 msgid "Bookings are limited to a maximum of %1$s days in advance."
 msgstr ""
 
