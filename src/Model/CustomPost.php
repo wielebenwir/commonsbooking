@@ -69,6 +69,10 @@ class CustomPost {
 	}
 
 	public function __get( $name ) {
+		if ( $this->post == null ) {
+			return;
+		}
+
 		if ( property_exists( $this->post, $name ) ) {
 			return $this->post->$name;
 		}
