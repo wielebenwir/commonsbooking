@@ -605,6 +605,7 @@ class Timeframe extends CustomPost {
 			$startTime = new DateTime();
 			$startTime->setTimestamp( strtotime( $startTimeString ) );
 			$startDate->setTime( $startTime->format( 'H' ), $startTime->format( 'i' ) );
+			#$startDate->setTimezone(wp_timezone()); #1023
 		}
 
 		return $startDate;
@@ -638,6 +639,7 @@ class Timeframe extends CustomPost {
 			$endTime = new DateTime();
 			$endTime->setTimestamp( strtotime( $endTimeString ) );
 			$endDate->setTime( $endTime->format( 'H' ), $endTime->format( 'i' ) );
+			#$endDate->setTimezone(wp_timezone()); #1023
 		} else {
 			$endDate->setTimestamp( $endDateString );
 		}

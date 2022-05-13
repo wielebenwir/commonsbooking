@@ -234,6 +234,31 @@ Thanks, the Team.
                         ', 'commonsbooking' ) ),
 					),
 					array(
+						'name'    => commonsbooking_sanitizeHTML( __('Attach iCalendar file to booking email', 'commonsbooking') ),
+						'id'	  => 'emailtemplates_mail-booking_ics_attach',
+						'type'	  => 'checkbox',
+						'desc' => esc_html__( 'Will attach an iCalendar compatible file for users to import in their respective calendar application.', 'commonsbooking' ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __('iCalendar event title', 'commonsbooking') ),
+						'id'	  => 'emailtemplates_mail-booking_ics_event-title',
+						'type'	  => 'text',
+						'desc' => esc_html__( 'The title of the attached event', 'commonsbooking' ),
+						'default'       => commonsbooking_sanitizeHTML( __( '{{item:post_title}} at {{location:post_title}}',
+						'commonsbooking' ) ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __('iCalendar event description', 'commonsbooking') ),
+						'id'	  => 'emailtemplates_mail-booking_ics_event-description',
+						'type'	  => 'textarea',
+						'desc' => esc_html__( 'The description for the attached event.', 'commonsbooking' ),
+						'default'       => commonsbooking_sanitizeHTML( __( ' Abholung: {{booking:pickupDatetime}}
+Rückgabe: {{booking:returnDatetime}}
+{{location:formattedPickupInstructions}}
+{{booking:formattedBookingCode}} ',
+						'commonsbooking' ) ),
+					),
+					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Booking canceled email subject', 'commonsbooking' ) ),
 						'id'      => 'emailtemplates_mail-booking-canceled-subject',
 						'type'    => 'text',
