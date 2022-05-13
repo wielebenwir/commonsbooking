@@ -147,7 +147,7 @@ create_db() {
     $(mysql -h db --user="root" --password="somewordpress" -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';")
     $(mysql -h db --user="root" --password="somewordpress" -e "FLUSH PRIVILEGES;")
   else
-    $(mysql -h ${DB_HOST} --user="${DB_USER}" --password="${DB_PASS}" -e "CREATE DATABASE ${DB_NAME} /*\!40100 DEFAULT CHARACTER SET utf8 */;")
+    mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
   fi
 }
 
