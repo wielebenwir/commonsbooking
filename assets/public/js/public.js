@@ -1961,6 +1961,33 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 jQuery(".time-selection.repetition-start").find("select").show();
             }
         };
+        const updateStartSelect = () => {
+            const sameDay = jQuery("div.repetition-start span.date").text() === jQuery("div.repetition-end span.date").text();
+            if (!sameDay) {
+                jQuery.fn.reverse = [].reverse;
+                const startSelect = jQuery("#booking-form select[name=repetition-start]");
+                var startHasDisabled = false;
+                jQuery("option", startSelect).each(function() {
+                    if (jQuery(this).attr("disabled") === "disabled") {
+                        startHasDisabled = true;
+                    }
+                });
+                if (startHasDisabled) {
+                    var lastOption = false;
+                    jQuery("option", startSelect).reverse().each(function() {
+                        let self = jQuery(this);
+                        if (lastOption && lastOption.attr("disabled") === "disabled") {
+                            self.attr("disabled", "disabled");
+                        } else {
+                            if (self.attr("disabled") !== "disabled") {
+                                self.attr("selected", "selected");
+                            }
+                            lastOption = self;
+                        }
+                    });
+                }
+            }
+        };
         const initEndSelect = date => {
             const day2 = globalCalendarData["days"][moment(date).format("YYYY-MM-DD")];
             const endDate = moment(date).format("DD.MM.YYYY");
@@ -2082,6 +2109,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         }
                         if (datepicked == 2) {
                             initEndSelect(date);
+                            updateStartSelect();
                         }
                     }
                 },
