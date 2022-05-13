@@ -3,7 +3,7 @@
  * Shortcode [cb_bookings]
  * Model: Booking
  * View: Booking::shortcode
- * $templateDatais set in Model/View/getBookingListData()
+ * $templateData is set in Model/View/getBookingListData()
  *
  * List all allowed bookings with filter
  * 

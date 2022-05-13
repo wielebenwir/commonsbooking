@@ -2,6 +2,9 @@
   "name": "wielebenwir/commonsbooking",
   "description": "~",
   "version": "0.0.1",
+  "config": {
+    "platform-check": false
+    },
   "autoload": {
     "files": [
       "includes/OptionsArray.php",
