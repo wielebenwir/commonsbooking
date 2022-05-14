@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-05-14T18:18:58+00:00\n"
+"POT-Creation-Date: 2022-05-14T18:27:03+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: commonsbooking\n"
@@ -1278,7 +1278,7 @@ msgid "Pickup date"
 msgstr ""
 
 #: src/View/BookingCodes.php:37
-#: src/View/Calendar.php:212
+#: src/View/Calendar.php:211
 #: src/Wordpress/CustomPostType/Booking.php:258
 #: src/Wordpress/CustomPostType/Booking.php:567
 #: src/Wordpress/CustomPostType/Item.php:69
@@ -1302,11 +1302,10 @@ msgid ""
 "\t\t\t\t<div class=\"colorkey-square colorkey-cancel\"></div> booked/blocked  | \n"
 "\t\t\t\t<div class=\"colorkey-square colorkey-holiday\"></div> station closed  | \n"
 "\t\t\t\t<div class=\"colorkey-square colorkey-greyedout\"></div> not bookable <br>\n"
-"\t\t\t\t<i>Transparent days are not yet bookable.</i>\n"
 "\t\t\t</div>"
 msgstr ""
 
-#: src/View/Calendar.php:213
+#: src/View/Calendar.php:212
 #: src/Wordpress/CustomPostType/Booking.php:259
 #: src/Wordpress/CustomPostType/Booking.php:558
 #: src/Wordpress/CustomPostType/Location.php:90

@@ -168,8 +168,7 @@ class Calendar {
 				<div class="colorkey-square colorkey-cancel"></div> booked/blocked  | 
 				<div class="colorkey-square colorkey-holiday"></div> station closed  | 
 				<div class="colorkey-square colorkey-greyedout"></div> not bookable <br>
-				<i>Transparent days are not yet bookable.</i>
-			</div>', 'commonsbooking') );
+			</div>', 'commonsbooking'), 'commonsbooking' );
 		$print .= '</div>';
 
 		return $print;

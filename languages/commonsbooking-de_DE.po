@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2022-05-14T18:18:58+00:00\n"
-"PO-Revision-Date: 2022-05-14 20:22+0200\n"
+"POT-Creation-Date: 2022-05-14T18:27:03+00:00\n"
+"PO-Revision-Date: 2022-05-14 20:28+0200\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -368,7 +368,7 @@ msgstr "iCalendar Termin Beschreibung"
 
 #: includes/OptionsArray.php:254
 msgid "The description for the attached event."
-msgstr "Die Beschreibung des angehängten Termins"
+msgstr "Die Beschreibung des angehängten Termins."
 
 #: includes/OptionsArray.php:255
 msgid ""
@@ -1698,7 +1698,7 @@ msgstr "Liste der Buchungscodes"
 msgid "Pickup date"
 msgstr "Abholdatum"
 
-#: src/View/BookingCodes.php:37 src/View/Calendar.php:212
+#: src/View/BookingCodes.php:37 src/View/Calendar.php:211
 #: src/Wordpress/CustomPostType/Booking.php:258
 #: src/Wordpress/CustomPostType/Booking.php:567
 #: src/Wordpress/CustomPostType/Item.php:69
@@ -1715,22 +1715,6 @@ msgid "No items found."
 msgstr "Keine Artikel gefunden."
 
 #: src/View/Calendar.php:165
-#, fuzzy
-#| msgid ""
-#| "<div id=\"calendar-footnote-colorkey\">\n"
-#| "\t\t\t<strong>Calendar info</strong><br>\n"
-#| "                <div class=\"colorkey-square colorkey-accept\"></div> "
-#| "bookable | \n"
-#| "                <div class=\"colorkey-square colorkey-cancel\"></div> "
-#| "booked/blocked  | \n"
-#| "                <div class=\"colorkey-square colorkey-holiday\"></div> "
-#| "station closed  | \n"
-#| "                <div class=\"colorkey-square colorkey-greyedout\"></div> "
-#| "not bookable </div>\n"
-#| "\t\t\tMaximum %1$s days bookable in a row. Depending on the setting, it "
-#| "is also possible to book over a gray area (e.g. weekend).\n"
-#| "\t\t\tBookings are limited to a maximum of %2$s days in advance.\n"
-#| "            </div>"
 msgid ""
 "<div id=\"cb-table-footnote-colorkey\">\n"
 "\t\t\t<strong>Table info</strong><br>\n"
@@ -1741,7 +1725,6 @@ msgid ""
 "closed  | \n"
 "\t\t\t\t<div class=\"colorkey-square colorkey-greyedout\"></div> not "
 "bookable <br>\n"
-"\t\t\t\t<i>Transparent days are not yet bookable.</i>\n"
 "\t\t\t</div>"
 msgstr ""
 "<div id=\"calendar-footnote-colorkey\">\n"
@@ -1754,12 +1737,9 @@ msgstr ""
 "Standort geschlossen  | \n"
 "                <div class=\"colorkey-square colorkey-greyedout\"></div> "
 "nicht buchbar </div>\n"
-"\t\tMaximal %1$s Tage hintereinander buchbar. Je nach Einstellung ist es "
-"auch möglich über einen grauen Bereich (z.B. Wochenende) hinweg zu buchen.\n"
-"\t\t\tBuchungen sind maximal %2$s Tage im Voraus möglich.\n"
 "            </div>"
 
-#: src/View/Calendar.php:213 src/Wordpress/CustomPostType/Booking.php:259
+#: src/View/Calendar.php:212 src/Wordpress/CustomPostType/Booking.php:259
 #: src/Wordpress/CustomPostType/Booking.php:558
 #: src/Wordpress/CustomPostType/Location.php:90
 #: src/Wordpress/CustomPostType/Restriction.php:51
