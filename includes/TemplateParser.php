@@ -20,7 +20,7 @@ function commonsbooking_parse_template( string $template = '', $objects = [] ) {
 	);
 
     // template is checked recursively to support templates tags within custom fields that are for example added to items or locations
-    // why? users can add e.g. add inidvidual booking-mail texts per location by adding a custom field like 'custom_booking_message' and use all avaiable template tags within this custom field
+    // why? users can add e.g. inidvidual booking-mail texts per location by adding a custom field like 'custom_booking_message' and use all avaiable template tags within this custom field
     if ( preg_match_all( '/{{.*?}}/', $template ) === 0 ) {
         return apply_filters( 'commonsbooking_template_tag', $template );
     } else {
