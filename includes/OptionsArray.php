@@ -1034,10 +1034,10 @@ The team</p>', 'commonsbooking' ) ),
 	),
 	/* Tab: export end */
 
-	/* Tab: meta data set start */
-	'metadata'     => array(
-		'title'        => __( 'Meta Data-Sets', 'commonsbooking' ),
-		'id'           => 'custom_metadata',
+	/* Tab: advanced options start */
+	'advanced-options'     => array(
+		'title'        => __( 'Advanced Options', 'commonsbooking' ),
+		'id'           => 'advanced-options',
 		'field_groups' => array(
 			'custom_metadata' => array(
 				'title'  => esc_html__( 'Set Custom metadata to locations and items', 'commonsbooking' ),
