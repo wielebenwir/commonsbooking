@@ -2,6 +2,16 @@
 
 namespace CommonsBooking\View;
 
+
+use DateTime;
+use DateInterval;
+use Eluceo\iCal\Domain\Entity\Event;
+use Eluceo\iCal\Domain\ValueObject\Date;
+use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
+use Eluceo\iCal\Domain\ValueObject\MultiDay;
+use Eluceo\iCal\Domain\ValueObject\SingleDay;
+use Eluceo\iCal\Domain\ValueObject\TimeSpan;
+use Eluceo\iCal\Presentation\Factory\CalendarFactory;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use Exception;
@@ -126,9 +136,13 @@ class Booking extends View {
 					"endDateFormatted"   => date( 'd.m.Y H:i', $booking->getEndDate() ),
 					"item"               => $itemTitle,
 					"location"           => $locationTitle,
+					"locationAddr"		 => $location->formattedAddressOneLine(),
+					"locationLat"		 => $location->getMeta( 'geo_latitude' ),
+					"locationLong"		 => $location->getMeta( 'geo_longitude' ),
 					"bookingDate"        => date( 'd.m.Y H:i', strtotime( $booking->post_date ) ),
 					"user"               => $userInfo->user_login,
 					"status"             => $booking->post_status,
+					"fullDay"			 => $booking->getMeta( 'full-day' ),
 					"calendarLink"       => $item && $location ? add_query_arg( 'item', $item->ID, get_permalink( $location->ID ) ) : '',
 					"content"            => [
 						'user'   => [
@@ -257,4 +271,96 @@ class Booking extends View {
 
 		return ob_get_clean();
 	}
+
+	public static function getBookingListiCal($user = null){
+
+		$user = get_user_by('id', $user);
+
+		$bookingList = self::getBookingListData(999,$user);
+
+		// Create Calendar domain entity 
+		$calendar = new \Eluceo\iCal\Domain\Entity\Calendar();
+
+		//Add timezone to calendar
+		// $calendar->addTimeZone($timezone); #1023
+		
+		foreach ($bookingList["data"] as $booking)
+		{
+			$bookingLocation_latitude = $booking["locationLat"];
+			$bookingLocation_longitude = $booking["locationLong"];
+
+			$eventTitle = $booking["item"] . "@" . $booking["location"]; //TODO
+			$eventDescription = "Platzhalterbeschreibung"; //TODO
+
+			//create datetime object from timestamps
+			$booking_startDateDateTime = (new \DateTimeImmutable())->setTimestamp($booking["startDate"]);
+			$booking_endDateDateTime = (new \DateTimeImmutable())->setTimestamp($booking["endDate"]);
+
+			// Create timezone entity 
+			/* #1023
+			$timezone = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone(
+				wp_timezone(),
+				$booking_startDateDateTime,
+				$booking_endDateDateTime
+			);
+			*/
+
+			//Create event occurence
+			if ($booking["fullDay"] == "on"){
+				if ($booking_startDateDateTime->format('Y-m-d') == $booking_endDateDateTime->format('Y-m-d') ) { //is single day event
+					$occurence = new SingleDay(
+						new Date( $booking_startDateDateTime )
+					);
+				}
+				else { //is multi day event
+					$occurence = new MultiDay(
+						new Date( $booking_startDateDateTime ),
+						new Date( $booking_endDateDateTime )
+					);
+				}
+			}
+			else { //is timespan
+
+				//add one minute to EndDate (this minute was removed to prevent overlapping but would confuse users)
+				$booking_endDateDateTime = $booking_endDateDateTime->add(new DateInterval('PT1M'));
+
+				$occurence = new TimeSpan(
+						//new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_startDateDateTime, true), #1023
+						//new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_endDateDateTime, true) #1023
+						new \Eluceo\iCal\Domain\ValueObject\DateTime( $booking_startDateDateTime, false ), //remove when #1023 fixed
+						new \Eluceo\iCal\Domain\ValueObject\DateTime( $booking_endDateDateTime, false ) //remove when #1023 fixed
+				);
+			}
+
+			// Create Event domain entity.
+			$event = new Event();
+			$event
+				->setSummary($eventTitle)
+				->setDescription($eventDescription)
+				->setLocation(
+					(
+						new \Eluceo\iCal\Domain\ValueObject\Location($booking["locationAddr"], $booking["location"]))
+						->withGeographicPosition(
+							new GeographicPosition(
+								floatval( $bookingLocation_latitude ),
+								floatval( $bookingLocation_longitude )
+								)
+							)
+					)
+				->setOccurrence($occurence)
+				;
+			// Add events to calendar
+			$calendar->addEvent($event);
+		}
+
+	   // Transform domain entity into an iCalendar component
+	   $componentFactory = new CalendarFactory();
+	   $calendarComponent = $componentFactory->createCalendar($calendar);
+
+	   // 5. Output.
+	   //return wp_hash(wp_get_current_user()->ID);
+
+	   return $calendarComponent->__toString();
+	}
+
 }
