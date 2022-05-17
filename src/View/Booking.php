@@ -24,8 +24,13 @@ class Booking extends View {
 	 * @return array|false|mixed
 	 * @throws Exception
 	 */
-	public static function getBookingListData() {
-		$postsPerPage = 6;
+	public static function getBookingListData($postsPerPage = 6, $user = null) {
+
+		//sets selected user to current user when no specific user is passed
+		if ($user == null) {
+			$user = wp_get_current_user();
+		}
+
 		if ( array_key_exists( 'posts_per_page', $_POST ) ) {
 			$postsPerPage = sanitize_text_field( $_POST['posts_per_page'] );
 		}
@@ -69,7 +74,7 @@ class Booking extends View {
 			__CLASS__ . __FUNCTION__ .
 			serialize( $_POST ) .
 			serialize( is_user_logged_in() ) .
-			serialize( wp_get_current_user()->ID )
+			serialize( $user->ID )
 		);
 
 		if ( Plugin::getCacheItem( $customId ) ) {
@@ -85,7 +90,8 @@ class Booking extends View {
 				'status'   => []
 			];
 
-			$posts = \CommonsBooking\Repository\Booking::getForCurrentUser(
+			$posts = \CommonsBooking\Repository\Booking::getForUser(
+				$user,
 				true,
 				$filters['startDate'] ?: null
 			);
