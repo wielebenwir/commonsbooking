@@ -1055,7 +1055,31 @@ The team</p>', 'commonsbooking' ) ),
 					),
 				]
 			),
+			'icalfeed' => array(
+				'title' => esc_html__( 'iCalendar Feed', 'commonsbooking' ),
+				'desc'	=> commonsbooking_sanitizeHTML( __('Enables users to copy a url for a dynamic iCalendar feed into their own digital calendars. This feature is experimental.',
+				 'commonsbooking')),
+				'id'	=> 'icalendar_group',
+				'fields'=> [
+					array(
+						'name' => esc_html__( 'Enable iCalendar feed', 'commonsbooking' ),
+						'id'   => 'feed_enabled',
+						'type' => 'checkbox',
+					),
+					array(
+						'name'	=> esc_html__( 'Event title', 'commonsbooking'),
+						'id'	=> 'event_title',
+						'type'	=> 'text',
+					),
+					array(
+						'name'	=> esc_html__( 'Event description', 'commonsbooking'),
+						'desc'	=> esc_html__( 'You can use template tags here as well', 'commonsbooking'),
+						'id'	=> 'event_desc',
+						'type'	=> 'textarea',
+					)
+				]
+			),
 		),
 	),
-	/* Tab: meta data end */
+	/* Tab: advanced options end */
 );
