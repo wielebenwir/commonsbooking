@@ -1068,12 +1068,21 @@ The team</p>', 'commonsbooking' ) ),
 					),
 					array(
 						'name'	=> esc_html__( 'Event title', 'commonsbooking'),
+						'desc'	=> esc_html__( 'You can use template tags here as well', 'commonsbooking'),
+						'default'       => commonsbooking_sanitizeHTML( __( '{{item:post_title}} at {{location:post_title}}',
+						'commonsbooking' ) ),
 						'id'	=> 'event_title',
 						'type'	=> 'text',
 					),
 					array(
 						'name'	=> esc_html__( 'Event description', 'commonsbooking'),
 						'desc'	=> esc_html__( 'You can use template tags here as well', 'commonsbooking'),
+						'default'       => commonsbooking_sanitizeHTML( __( '
+Pick up: {{booking:pickupDatetime}}
+Return date: {{booking:returnDatetime}}
+{{location:formattedPickupInstructions}}
+{{booking:formattedBookingCode}} ',
+						'commonsbooking' ) ),
 						'id'	=> 'event_desc',
 						'type'	=> 'textarea',
 					)
