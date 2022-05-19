@@ -270,6 +270,14 @@ function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ) {
 	return count( $match ) > 0;
 }
 
+function commonsbooking_getCurrentUserCalendarLink() {
+	$user_id = wp_get_current_user()->ID;
+	$user_hash = wp_hash($user_id);
+
+	return plugin_dir_url(__DIR__) . 'src/iCalendar.php' . '?user_id=' . $user_id . '&user_hash=' . $user_hash;
+}
+
+
 function commonsbooking_isUIDHashComboCorrect( $user_id, $user_hash){
 	if (wp_hash($user_id) == $user_hash) {
 		return true;
