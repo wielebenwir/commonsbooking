@@ -284,6 +284,12 @@ class Booking extends View {
 		//Add timezone to calendar
 		// $calendar->addTimeZone($timezone); #1023
 		
+		//returns false when booking list is empty
+		if (!$bookingList){
+
+			return false;
+		}
+
 		foreach ($bookingList["data"] as $booking)
 		{
 			$bookingLocation_latitude = $booking["locationLat"];

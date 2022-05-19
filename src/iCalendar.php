@@ -9,13 +9,27 @@ $user_hash = $_GET["user_hash"];
 
 if (commonsbooking_isUIDHashComboCorrect($user_id,$user_hash)){
 
-    header('Content-Type: text/calendar; charset=utf-8');
-    header('Content-Disposition: attachment; filename="ical.ics"');
-    echo Booking::getBookingListiCal($user_id);
+    $bookingiCal = Booking::getBookingListiCal($user_id);
+    if ($bookingiCal) {
+        header('Content-Type: text/calendar; charset=utf-8');
+        header('Content-Disposition: attachment; filename="ical.ics"');
+        echo $bookingiCal;
+    }
+    else {
+        die("Error in retrieving booking list.");
+    }
 
 }
 else {
-    echo wp_hash($user_id); //TODO - replace with error message
+    if (!$user_id){
+        die("user id missing");
+    }
+    elseif (!$user_hash){
+        die("user hash missing");
+    }
+    else {
+        die("user_id and user_hash mismatch. Authentication failed.");
+    }
 }
 
 
