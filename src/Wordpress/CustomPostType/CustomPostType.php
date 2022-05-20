@@ -72,7 +72,7 @@ abstract class CustomPostType {
 
 	/**
 	 * retrieve Custom Meta Data from CommonsBooking Options and convert them to cmb2 fields array
-	 * The content is managed by user via options -> metadata sets 
+	 * The content is managed by user via options -> metadata sets
 	 *
 	 * @param mixed $type (item or location)
 	 *
@@ -87,8 +87,7 @@ abstract class CustomPostType {
 		foreach ( $metaDataLines as $metaDataLine ) {
 			$metaDataArray = explode( ';', $metaDataLine );
 
-			if ( count( $metaDataArray ) == 5 ) 
-			{
+			if ( count( $metaDataArray ) == 5 ) {
 				// $metaDataArray[0] = Type
 				$metaDataFields[ $metaDataArray[0] ][] = array(
 					'id'   => $metaDataArray[1],
@@ -116,14 +115,14 @@ abstract class CustomPostType {
 	public static function modifyRowActions( $actions, $post ) {
 
 		// remove quick edit for timeframes, restrictions and bookings
-		if ( $post->post_type == Timeframe::getPostType() 
-			OR $post->post_type == Restriction::getPostType() 
-			OR $post->post_type == Booking::getPostType()) {
+		if ( $post->post_type == Timeframe::getPostType()
+		     or $post->post_type == Restriction::getPostType()
+		     or $post->post_type == Booking::getPostType() ) {
 			unset( $actions['inline hide-if-no-js'] );
 		}
 
 		// remove preview for timeframes and restrictions
-		if ( $post->post_type == Timeframe::getPostType() OR $post->post_type == Restriction::getPostType() ) {
+		if ( $post->post_type == Timeframe::getPostType() || $post->post_type == Restriction::getPostType() ) {
 			unset( $actions['view'] );
 		}
 
@@ -220,7 +219,10 @@ abstract class CustomPostType {
 	 * Configures list-view
 	 */
 	public function initListView() {
-		if ( array_key_exists('post_type', $_GET) && static::$postType !== $_GET['post_type'] ) {
+		if (
+			! array_key_exists( 'post_type', $_GET ) ||
+			( array_key_exists( 'post_type', $_GET ) && static::$postType !== $_GET['post_type'] )
+		) {
 			return;
 		}
 
@@ -242,6 +244,9 @@ abstract class CustomPostType {
 				}
 
 				$orderby = $query->get( 'orderby' );
+				// we ignore multi orderby, because we don't need it.
+				$orderby = is_string( $orderby ) ? $orderby : '';
+
 				if (
 					strpos( $orderby, 'post_' ) === false &&
 					in_array( $orderby, array_keys( $this->listColumns ) )
@@ -262,10 +267,10 @@ abstract class CustomPostType {
 	public function setCustomColumnsData( $column, $post_id ) {
 
 		if ( $value = get_post_meta( $post_id, $column, true ) ) {
-			echo commonsbooking_sanitizeHTML($value);
+			echo commonsbooking_sanitizeHTML( $value );
 		} else {
 			if ( property_exists( $post = get_post( $post_id ), $column ) ) {
-				echo commonsbooking_sanitizeHTML($post->{$column});
+				echo commonsbooking_sanitizeHTML( $post->{$column} );
 			} else {
 				echo '-';
 			}
@@ -274,15 +279,17 @@ abstract class CustomPostType {
 
 	/**
 	 * Checks if method has been called before in current request.
+	 *
 	 * @param $methodName
 	 *
 	 * @return bool
 	 */
-	protected function hasRunBefore($methodName): bool {
-		if(array_key_exists($methodName, $_REQUEST)) {
+	protected function hasRunBefore( $methodName ): bool {
+		if ( array_key_exists( $methodName, $_REQUEST ) ) {
 			return true;
 		}
-		$_REQUEST[$methodName] = true;
+		$_REQUEST[ $methodName ] = true;
+
 		return false;
 	}
 
@@ -294,20 +301,20 @@ abstract class CustomPostType {
 	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|\CommonsBooking\Model\Restriction|\CommonsBooking\Model\Timeframe
 	 * @throws \Exception
 	 */
-	public static function getModel(WP_Post $post) {
-		switch($post->post_type) {
+	public static function getModel( WP_Post $post ) {
+		switch ( $post->post_type ) {
 			case Booking::$postType:
-				return new \CommonsBooking\Model\Booking($post);
+				return new \CommonsBooking\Model\Booking( $post );
 			case Item::$postType:
-				return new \CommonsBooking\Model\Item($post);
+				return new \CommonsBooking\Model\Item( $post );
 			case Location::$postType:
-				return new \CommonsBooking\Model\Location($post);
+				return new \CommonsBooking\Model\Location( $post );
 			case Restriction::$postType:
-				return new \CommonsBooking\Model\Restriction($post);
+				return new \CommonsBooking\Model\Restriction( $post );
 			case Timeframe::$postType:
-				return new \CommonsBooking\Model\Timeframe($post);
+				return new \CommonsBooking\Model\Timeframe( $post );
 		}
-		throw new \Exception('No suitable model found.');
+		throw new \Exception( 'No suitable model found.' );
 	}
 
 }
