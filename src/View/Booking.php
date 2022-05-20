@@ -123,7 +123,7 @@ class Booking extends View {
 					"bookingDate"        => date( 'd.m.Y H:i', strtotime( $booking->post_date ) ),
 					"user"               => $userInfo->user_login,
 					"status"             => $booking->post_status,
-					"calendarLink"       => $item && $location ? add_query_arg( 'item', $item->ID, get_permalink( $location->ID ) ) : '',
+					"calendarLink"       => $item && $location ? add_query_arg( 'cb-item', $item->ID, get_permalink( $location->ID ) ) : '',
 					"content"            => [
 						'user'   => [
 							'label' => commonsbooking_sanitizeHTML( __( 'User', 'commonsbooking' ) ),

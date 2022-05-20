@@ -79,6 +79,10 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
+### 2.7.2 (xx.05.2022)
+FIXED: Fixed plugin incompatibility with WPBakery
+FIXED: Fixed plugin incompatibility with Events Manager
+
 ### 2.7.1 (05.05.2022)
 FIXED: Fixed Fatal error when PHP Version is < 7.4 / we recommend updating you PHP version to 7.4. because 7.3 is no longer maintained. Please ask you hosting provider for support.
 FIXED: Migration did not work properly
