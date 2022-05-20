@@ -350,6 +350,13 @@ class Location extends CustomPostType {
 			'type' => 'checkbox',
 		) );
 
+		$cmb->add_field( array(
+			'name' => esc_html__( 'Count locked days when overbooking', 'commonsbooking' ),
+			'desc' => commonsbooking_sanitizeHTML( __( 'If selected, overbooked not bookable days are counted down from max selectable days.', 'commonsbooking' ) ),
+			'id'   => COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range',
+			'type' => 'checkbox',
+		) );
+
 		// Check if custom meta fields are set in CB Options and generate MetaData-Box and fields
 		if ( is_array( self::getCMB2FieldsArrayFromCustomMetadata( 'location' ) ) ) {
 			$customMetaData = self::getCMB2FieldsArrayFromCustomMetadata( 'location' );

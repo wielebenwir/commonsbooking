@@ -1,34 +1,35 @@
 {
-	"name": "commonsbooking",
-	"version": "2.6.8",
-	"description": "Wordpress plugin for managing and booking of common goods.",
-	"author": "The CommonsBooking Team <info@commonsbooking.org>",
-	"license": "SEE LICENSE IN LICENSE.txt",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/wielebenwir/cb"
-	},
-	"devDependencies": {
-		"@babel/preset-env": "^7.16.11",
-		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
-		"compass": "^0.1.1",
-		"editorconfig": "^0.15.3",
-		"grunt": "^1.4.1",
-		"grunt-babel": "^8.0.0",
-		"grunt-contrib-compass": "^0.8.0",
-		"grunt-contrib-concat": "^2.0.0",
-		"grunt-contrib-jshint": "^3.1.1",
-		"grunt-contrib-nodeunit": "^4.0.0",
-		"grunt-contrib-uglify": "^5.0.1",
-		"grunt-contrib-watch": "^1.1.0",
-		"matchdep": "^2.0.0"
-	},
-	"scripts": {},
-	"dependencies": {
-		"leaflet": "^1.7.1",
-		"leaflet-easybutton": "^2.4.0",
-		"leaflet-spin": "^1.1.2",
-		"leaflet.markercluster": "^1.5.0",
-		"shufflejs": "^5.3.0"
-	}
+  "name": "commonsbooking",
+  "version": "2.6.8",
+  "description": "Wordpress plugin for managing and booking of common goods.",
+  "author": "The CommonsBooking Team <info@commonsbooking.org>",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wielebenwir/cb"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "commons-api": "git+https://github.com/wielebenwir/commons-api.git",
+    "compass": "^0.1.1",
+    "editorconfig": "^0.15.3",
+    "grunt": "^1.5.3",
+    "grunt-babel": "^8.0.0",
+    "grunt-cli": "^1.4.3",
+    "grunt-contrib-compass": "^1.1.1",
+    "grunt-contrib-concat": "^2.1.0",
+    "grunt-contrib-jshint": "^3.2.0",
+    "grunt-contrib-nodeunit": "^4.0.0",
+    "grunt-contrib-uglify": "^5.2.1",
+    "grunt-contrib-watch": "^1.1.0",
+    "matchdep": "^2.0.0"
+  },
+  "scripts": {},
+  "dependencies": {
+    "leaflet": "^1.7.1",
+    "leaflet-easybutton": "^2.4.0",
+    "leaflet-spin": "^1.1.2",
+    "leaflet.markercluster": "^1.5.0",
+    "shufflejs": "^5.3.0"
+  }
 }

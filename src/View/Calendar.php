@@ -464,6 +464,7 @@ class Calendar {
 				'highlightedDays'         => [],
 				'maxDays'                 => null,
 				'disallowLockDaysInRange' => true,
+				'countLockDaysInRange' => true,
 				'advanceBookingDays'      => $advanceBookingDays
 			];
 
@@ -475,6 +476,14 @@ class Calendar {
 					true
 				);
 				$jsonResponse['disallowLockDaysInRange'] = $allowLockedDaysInRange !== 'on';
+
+				// should overbooked non bookable days be counted into maxdays selection?
+				$countLockedDaysInRange                  = get_post_meta(
+					$locations[0],
+					COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range',
+					true
+				);
+				$jsonResponse['countLockDaysInRange'] = $countLockedDaysInRange === 'on';
 			}
 
 			/** @var Week $week */
