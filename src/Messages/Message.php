@@ -111,7 +111,7 @@ abstract class Message {
 		$attachment = apply_filters( 'commonsbooking_mail_attachment', $this->attachment, $this->action);
 		$headers = implode( "\r\n", $this->headers );
 		
-		if ($this->attachment) { //When attachment exists, modify wp_mail function to support attachment strings
+		if (!empty($attachment)) { //When attachment exists, modify wp_mail function to support attachment strings
 			add_filter('wp_mail', array($this,'addStringAttachments'), 25); //add arbitrary priority to identify filter for removal
 			$result = wp_mail($to, $subject, $body, $headers, $attachment);
 			remove_filter('wp_mail', array($this,'addStringAttachments'), 25); //remove filter directly after attachment is sent
