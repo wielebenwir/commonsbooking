@@ -204,6 +204,23 @@
         }
     }
 
+    &--menu::after {
+        content: '\2807';
+        font-size: 25px;
+        float: right;
+        color: var(--commonsbooking-color-buttons);
+        border: none;
+        cursor: pointer;
+    }
+
+    #cb-dropdown {
+        display:none;
+        position:relative;
+        background-color: var(--commonsbooking-color-bg);
+        overflow: auto;
+        z-index: 1;
+    }
+
     #booking-list--pagination {
         @include font-default;
 

@@ -14,6 +14,7 @@ use Eluceo\iCal\Domain\ValueObject\TimeSpan;
 use Eluceo\iCal\Presentation\Factory\CalendarFactory;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
+use CommonsBooking\Settings\Settings;
 use Exception;
 
 class Booking extends View {
@@ -123,6 +124,12 @@ class Booking extends View {
 				           commonsbooking_sanitizeHTML( __( 'Details', 'commonsbooking' ) ) .
 				           '</a>';
 
+				$menuitems = '';
+
+				if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'feed_enabled' ) == 'on'){
+					$menuitems .= commonsbooking_sanitizeHTML( __('iCalendar file:', 'commonsbooking')) . '<input type="text" id="icallink" value="' . commonsbooking_getCurrentUserCalendarLink() . '" readonly>';
+				}
+
 				$item          = $booking->getItem();
 				$itemTitle     = $item ? $item->post_title : commonsbooking_sanitizeHTML( __( 'Not available', 'commonsbooking' ) );
 				$location      = $booking->getLocation();
@@ -198,6 +205,10 @@ class Booking extends View {
 
 			$bookingDataArray['total']       = 0;
 			$bookingDataArray['total_pages'] = 0;
+
+			if (!empty($menuitems)) {
+				$bookingDataArray['menu'] = '<div class="booking-list--menu" onclick="cb_showDropDown()"></div> <div id="cb-dropdown" class="dropdown-content>' . $menuitems . '</div>';
+			}
 
 			if ( array_key_exists( 'data', $bookingDataArray ) && count( $bookingDataArray['data'] ) ) {
 				$totalCount                      = count( $bookingDataArray['data'] );
