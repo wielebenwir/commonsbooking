@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-05-14T18:34:25+00:00\n"
+"POT-Creation-Date: 2022-05-24T16:18:11+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: commonsbooking\n"
@@ -1278,7 +1278,7 @@ msgid "Pickup date"
 msgstr ""
 
 #: src/View/BookingCodes.php:37
-#: src/View/Calendar.php:211
+#: src/View/Calendar.php:215
 #: src/Wordpress/CustomPostType/Booking.php:258
 #: src/Wordpress/CustomPostType/Booking.php:567
 #: src/Wordpress/CustomPostType/Item.php:69
@@ -1294,18 +1294,7 @@ msgstr ""
 msgid "No items found."
 msgstr ""
 
-#: src/View/Calendar.php:165
-msgid ""
-"<div id=\"cb-table-footnote-colorkey\">\n"
-"\t\t\t<strong>Table info</strong><br>\n"
-"\t\t\t\t<div class=\"colorkey-square colorkey-accept\"></div> bookable | \n"
-"\t\t\t\t<div class=\"colorkey-square colorkey-cancel\"></div> booked/blocked  | \n"
-"\t\t\t\t<div class=\"colorkey-square colorkey-holiday\"></div> station closed  | \n"
-"\t\t\t\t<div class=\"colorkey-square colorkey-greyedout\"></div> not bookable <br>\n"
-"\t\t\t</div>"
-msgstr ""
-
-#: src/View/Calendar.php:212
+#: src/View/Calendar.php:216
 #: src/Wordpress/CustomPostType/Booking.php:259
 #: src/Wordpress/CustomPostType/Booking.php:558
 #: src/Wordpress/CustomPostType/Location.php:90
@@ -2453,6 +2442,26 @@ msgstr ""
 msgid "Your User name"
 msgstr ""
 
+#: templates/calendar-key.php:12
+msgid "Color legend"
+msgstr ""
+
+#: templates/calendar-key.php:13
+msgid "bookable"
+msgstr ""
+
+#: templates/calendar-key.php:14
+msgid "booked/blocked"
+msgstr ""
+
+#: templates/calendar-key.php:15
+msgid "station closed"
+msgstr ""
+
+#: templates/calendar-key.php:16
+msgid "not bookable"
+msgstr ""
+
 #: templates/dashboard-index.php:17
 msgid "Support"
 msgstr ""
@@ -3049,33 +3058,13 @@ msgstr ""
 msgid "Continue to booking confirmation"
 msgstr ""
 
-#: templates/timeframe-calendar.php:129
-msgid "Calendar info"
-msgstr ""
-
-#: templates/timeframe-calendar.php:130
-msgid "bookable"
-msgstr ""
-
-#: templates/timeframe-calendar.php:131
-msgid "booked / blocked"
-msgstr ""
-
-#: templates/timeframe-calendar.php:132
-msgid "location closed"
-msgstr ""
-
-#: templates/timeframe-calendar.php:133
-msgid "not bookable"
-msgstr ""
-
 #. translators: %1$s is a number of days
-#: templates/timeframe-calendar.php:137
+#: templates/timeframe-calendar.php:129
 msgid "Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend)."
 msgstr ""
 
 #. translators: %1$s is a number of days
-#: templates/timeframe-calendar.php:142
+#: templates/timeframe-calendar.php:134
 msgid "Bookings are limited to a maximum of %1$s days in advance."
 msgstr ""
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2022-05-14T18:34:25+00:00\n"
-"PO-Revision-Date: 2022-05-14 20:36+0200\n"
+"POT-Creation-Date: 2022-05-24T16:18:11+00:00\n"
+"PO-Revision-Date: 2022-05-24 18:20+0200\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -356,8 +356,6 @@ msgid "The title of the attached event"
 msgstr "Der Titel des angehängten Termins"
 
 #: includes/OptionsArray.php:247
-#, fuzzy
-#| msgid "Your booking {{item:post_name}} at {{location:post_name}}"
 msgid "{{item:post_title}} at {{location:post_title}}"
 msgstr ""
 "Deine Buchung von {{item:post_name}} am Standort {{location:post_name}}."
@@ -1698,7 +1696,7 @@ msgstr "Liste der Buchungscodes"
 msgid "Pickup date"
 msgstr "Abholdatum"
 
-#: src/View/BookingCodes.php:37 src/View/Calendar.php:211
+#: src/View/BookingCodes.php:37 src/View/Calendar.php:215
 #: src/Wordpress/CustomPostType/Booking.php:258
 #: src/Wordpress/CustomPostType/Booking.php:567
 #: src/Wordpress/CustomPostType/Item.php:69
@@ -1714,31 +1712,7 @@ msgstr "Artikel"
 msgid "No items found."
 msgstr "Keine Artikel gefunden."
 
-#: src/View/Calendar.php:165
-msgid ""
-"<div id=\"cb-table-footnote-colorkey\">\n"
-"\t\t\t<strong>Table info</strong><br>\n"
-"\t\t\t\t<div class=\"colorkey-square colorkey-accept\"></div> bookable | \n"
-"\t\t\t\t<div class=\"colorkey-square colorkey-cancel\"></div> booked/"
-"blocked  | \n"
-"\t\t\t\t<div class=\"colorkey-square colorkey-holiday\"></div> station "
-"closed  | \n"
-"\t\t\t\t<div class=\"colorkey-square colorkey-greyedout\"></div> not "
-"bookable <br>\n"
-"\t\t\t</div>"
-msgstr ""
-"<div id=\"cb-table-footnote-colorkey\">\n"
-"\t\t\t<strong>Legende:</strong><br>\n"
-"\t\t\t\t<div class=\"colorkey-square colorkey-accept\"></div> buchbar | \n"
-"\t\t\t\t<div class=\"colorkey-square colorkey-cancel\"></div> gebucht/"
-"blockiert  | \n"
-"\t\t\t\t<div class=\"colorkey-square colorkey-holiday\"></div> Station "
-"geschlossen  | \n"
-"\t\t\t\t<div class=\"colorkey-square colorkey-greyedout\"></div> nicht "
-"buchbar <br>\n"
-"\t\t\t</div>"
-
-#: src/View/Calendar.php:212 src/Wordpress/CustomPostType/Booking.php:259
+#: src/View/Calendar.php:216 src/Wordpress/CustomPostType/Booking.php:259
 #: src/Wordpress/CustomPostType/Booking.php:558
 #: src/Wordpress/CustomPostType/Location.php:90
 #: src/Wordpress/CustomPostType/Restriction.php:51
@@ -3120,6 +3094,26 @@ msgstr "Deine E-Mail"
 msgid "Your User name"
 msgstr "Dein Benutzername"
 
+#: templates/calendar-key.php:12
+msgid "Color legend"
+msgstr "Farblegende"
+
+#: templates/calendar-key.php:13
+msgid "bookable"
+msgstr "buchbar"
+
+#: templates/calendar-key.php:14
+msgid "booked/blocked"
+msgstr "gebucht / gesperrt"
+
+#: templates/calendar-key.php:15
+msgid "station closed"
+msgstr "Standort geschlossen"
+
+#: templates/calendar-key.php:16
+msgid "not bookable"
+msgstr "nicht buchbar"
+
 #: templates/dashboard-index.php:17
 msgid "Support"
 msgstr "Unterstützung"
@@ -3786,28 +3780,8 @@ msgstr "bis voraussichtlich %1$s:"
 msgid "Continue to booking confirmation"
 msgstr "Weiter zur Buchungsprüfung"
 
-#: templates/timeframe-calendar.php:129
-msgid "Calendar info"
-msgstr "Kalender-Info"
-
-#: templates/timeframe-calendar.php:130
-msgid "bookable"
-msgstr "buchbar"
-
-#: templates/timeframe-calendar.php:131
-msgid "booked / blocked"
-msgstr "gebucht / gesperrt"
-
-#: templates/timeframe-calendar.php:132
-msgid "location closed"
-msgstr "Standort geschlossen"
-
-#: templates/timeframe-calendar.php:133
-msgid "not bookable"
-msgstr "nicht buchbar"
-
 #. translators: %1$s is a number of days
-#: templates/timeframe-calendar.php:137
+#: templates/timeframe-calendar.php:129
 msgid ""
 "Maximum %1$s days bookable in a row. Depending on the setting, it is also "
 "possible to book over a gray area (e.g. weekend)."
@@ -3816,7 +3790,7 @@ msgstr ""
 "möglich, über einen grauen Bereich (z.B. Wochenende) zu buchen."
 
 #. translators: %1$s is a number of days
-#: templates/timeframe-calendar.php:142
+#: templates/timeframe-calendar.php:134
 msgid "Bookings are limited to a maximum of %1$s days in advance."
 msgstr "Buchungen sind auf maximal %1$s Tage im Voraus beschränkt."
 
@@ -3830,6 +3804,33 @@ msgstr ""
 "Bitte bearbeite den Zeitrahmen im Backend. Wenn Du das Ergebnis Deiner "
 "Zeitrahmeneinstellungen überprüfen möchtest, gehe auf die Seite des Artikels "
 "oder Standort im Frontend, um den Buchungskalender zu sehen"
+
+#~ msgid ""
+#~ "<div id=\"cb-table-footnote-colorkey\">\n"
+#~ "\t\t\t<strong>Table info</strong><br>\n"
+#~ "\t\t\t\t<div class=\"colorkey-square colorkey-accept\"></div> bookable "
+#~ "| \n"
+#~ "\t\t\t\t<div class=\"colorkey-square colorkey-cancel\"></div> booked/"
+#~ "blocked  | \n"
+#~ "\t\t\t\t<div class=\"colorkey-square colorkey-holiday\"></div> station "
+#~ "closed  | \n"
+#~ "\t\t\t\t<div class=\"colorkey-square colorkey-greyedout\"></div> not "
+#~ "bookable <br>\n"
+#~ "\t\t\t</div>"
+#~ msgstr ""
+#~ "<div id=\"cb-table-footnote-colorkey\">\n"
+#~ "\t\t\t<strong>Legende:</strong><br>\n"
+#~ "\t\t\t\t<div class=\"colorkey-square colorkey-accept\"></div> buchbar | \n"
+#~ "\t\t\t\t<div class=\"colorkey-square colorkey-cancel\"></div> gebucht/"
+#~ "blockiert  | \n"
+#~ "\t\t\t\t<div class=\"colorkey-square colorkey-holiday\"></div> Station "
+#~ "geschlossen  | \n"
+#~ "\t\t\t\t<div class=\"colorkey-square colorkey-greyedout\"></div> nicht "
+#~ "buchbar <br>\n"
+#~ "\t\t\t</div>"
+
+#~ msgid "Calendar info"
+#~ msgstr "Kalender-Info"
 
 #~ msgid "Holidays"
 #~ msgstr "Urlaub"

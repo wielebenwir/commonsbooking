@@ -923,6 +923,6 @@ class Timeframe extends CustomPostType {
 		add_action( 'pre_get_posts', array( self::class, 'filterAdminList' ) );
 
 		// Listing of available items/locations
-		add_shortcode( 'cb_items_table', array( Calendar::class, 'renderTable' ) );
+		add_shortcode( 'cb_items_table', array( Calendar::class, 'shortcode' ) );
 	}
 }

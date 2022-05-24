@@ -162,16 +162,20 @@ class Calendar {
 		$print .= '</div>';
 
 		$print .= '<div id="cb-table-footnote">';
-		$print .= commonsbooking_sanitizeHTML( __('<div id="cb-table-footnote-colorkey">
-			<strong>Table info</strong><br>
-				<div class="colorkey-square colorkey-accept"></div> bookable | 
-				<div class="colorkey-square colorkey-cancel"></div> booked/blocked  | 
-				<div class="colorkey-square colorkey-holiday"></div> station closed  | 
-				<div class="colorkey-square colorkey-greyedout"></div> not bookable <br>
-			</div>', 'commonsbooking'), 'commonsbooking' );
-		$print .= '</div>';
 
 		return $print;
+	}
+
+	public static function shortcode( $atts) {
+		global $templateData;
+		$templateData = [];
+		$templateData['data'] = self::renderTable($atts);
+
+		if (!empty($templateData['data'])) {
+			ob_start();
+			commonsbooking_get_template_part( 'shortcode', 'items_table', true, false, false ) ;
+			return ob_get_clean();
+		}
 	}
 
 	/**
