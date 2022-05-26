@@ -712,6 +712,31 @@ class Timeframe extends CustomPostType {
 		}
 	}
 
+
+	public function updatedPostMeta($meta_id,$object_id,$meta_key,$meta_value)
+	{
+		if ($meta_key == \CommonsBooking\Model\Timeframe::META_LOCATION_ID){ //Location ID was changed, the only evidence we still have is the item ID
+			$item_id = reset(get_post_meta($object_id,\CommonsBooking\Model\Timeframe::META_ITEM_ID)); //value has to be reset in order to retrieve first value
+			$orphanedBookings = \CommonsBooking\Repository\Booking::getOrphaned(null,[$item_id]);
+			if ($orphanedBookings) {
+				set_transient(
+					\CommonsBooking\Model\Timeframe::ORPHANED_TYPE,
+					/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
+					sprintf(
+						commonsbooking_sanitizeHTML(
+							__(
+								'Orphaned bookings found, can migrate. Click here to migrate: %1$s',
+								'commonsbooking',
+								5
+							)
+						),
+						'<a href=" ' . 'URL' . '?item_id=' . $item_id . '&location_id_new=' .  '</a>', //TODO
+					)
+				);
+			}
+		}
+	}
+
 	/**
 	 * Adds 23h 59m 59s to repetition end, to set the timestamp at the end of the day and not
 	 * the very start.
@@ -914,6 +939,8 @@ class Timeframe extends CustomPostType {
 
 		// must be 'save_post' only because of priority in relation to cmb2
 		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
+
+		add_action('updated_post_meta',array($this, 'updatedPostMeta'),11,4);
 		
 		// Add type filter to backend list view
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );

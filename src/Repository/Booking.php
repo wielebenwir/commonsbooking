@@ -354,7 +354,7 @@ class Booking extends PostRepository {
 	 *
 	 * @param array $locations
 	 * @param array $items
-	 * @param string|null $date
+	 * @param string|null $date Date-String in format YYYY-mm-dd
 	 * @param bool $returnAsModel
 	 * @param $minTimestamp
 	 * @param array $postStatus
@@ -396,6 +396,41 @@ class Booking extends PostRepository {
 			[],
 			['confirmed']
 		);
+	}
+
+	/**
+	 * Returns bookings for location and / or item that don't have a corresponding timeframe
+	 * Will only consider bookings in the future
+	 * @param null $startdate
+	 * @param array $item
+	 * @param array $location
+	 *
+	 * @return array of \CommonsBooking\Repository\Bookings
+	 * @throws Exception
+	 */
+	public static function getOrphaned (
+		$startdate = null,
+		$item = [],
+		$location = [],
+	): ? array
+	{
+		$startdate = $startdate ? $startdate : time(); //set startdate to now when no startdate is defined
+
+		$bookings = self::get($location,$item,null,true,$startdate,['confirmed']);
+
+		//check for bookings where location does not exist anymore
+
+		$bookings = array_filter($bookings,function($booking) {
+			if ($booking->getBookableTimeFrame()){
+				return false;
+			}
+			else {
+				return true;
+			}
+			
+		});
+
+		return $bookings;
 	}
 
 }
