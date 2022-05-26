@@ -135,6 +135,30 @@ function commonsbooking_sanitizeHTML( $string ): string {
 }
 
 /**
+ * Create filter hooks for cmb2 fields
+ *
+ * @param array $field_args  Array of field args.
+ * 
+ * 
+ * : https://cmb2.io/docs/field-parameters#-default_cb
+ * 
+ *
+ * @return mixed
+ */
+function commonsbooking_filter_from_cmb2($field_args) {
+	//Only return default value if we don't have a post ID (in the 'post' query variable)
+	if (isset( $_GET['post'])){
+		// No default value.
+		return '';
+	}
+	else {
+		$filterName = sprintf( 'commonsbooking_defaults_%s', $field_args['id']);
+		$default_value = array_key_exists('default_value',$field_args) ? $field_args['default_value'] : '';
+		return apply_filters($filterName,$default_value);
+	}
+}
+
+/**
  * Recursive sanitation for text or array
  *
  * @param mixed array_or_string (array|string)
