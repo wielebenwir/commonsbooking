@@ -137,6 +137,7 @@ class Booking extends View {
 
 				// Prepare row data
 				$rowData = [
+					"postID"			 => $booking->ID,
 					"startDate"          => $booking->getStartDate(),
 					"endDate"            => $booking->getEndDate(),
 					"startDateFormatted" => date( 'd.m.Y H:i', $booking->getStartDate() ),
@@ -284,6 +285,8 @@ class Booking extends View {
 	}
 
 	public static function getBookingListiCal($user = null){
+		$eventTitle_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
+		$eventDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );
 
 		$user = get_user_by('id', $user);
 
@@ -303,11 +306,19 @@ class Booking extends View {
 
 		foreach ($bookingList["data"] as $booking)
 		{
+			$booking_model = New \CommonsBooking\Model\Booking($booking["postID"]);
+			$template_objects = [
+				'booking'  => $booking_model,
+				'item'     => $booking_model->getItem(),
+				'location' => $booking_model->getLocation(),
+				'user'     => $booking_model->getUserData(),
+			];
+
 			$bookingLocation_latitude = $booking["locationLat"];
 			$bookingLocation_longitude = $booking["locationLong"];
 
-			$eventTitle = $booking["item"] . "@" . $booking["location"]; //TODO
-			$eventDescription = "Platzhalterbeschreibung"; //TODO
+			$eventTitle = commonsbooking_sanitizeHTML ( commonsbooking_parse_template ( $eventTitle_unparsed, $template_objects ) );
+			$eventDescription = commonsbooking_sanitizeHTML ( strip_tags ( commonsbooking_parse_template ( $eventDescription_unparsed, $template_objects ) ) );
 
 			//create datetime object from timestamps
 			$booking_startDateDateTime = (new \DateTimeImmutable())->setTimestamp($booking["startDate"]);
@@ -375,8 +386,6 @@ class Booking extends View {
 	   $calendarComponent = $componentFactory->createCalendar($calendar);
 
 	   // 5. Output.
-	   //return wp_hash(wp_get_current_user()->ID);
-
 	   return $calendarComponent->__toString();
 	}
 
