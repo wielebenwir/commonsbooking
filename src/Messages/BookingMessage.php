@@ -15,7 +15,7 @@ class BookingMessage extends Message {
 		/** @var \CommonsBooking\Model\Booking $booking */
 		$booking = Booking::getPostById( $this->getPostId() );
 
-		$booking_user = get_userdata( $this->getPost()->post_author );
+		$booking_user = $booking->getUserData();
 
 		$template_objects = [
 			'booking'  => $booking,
