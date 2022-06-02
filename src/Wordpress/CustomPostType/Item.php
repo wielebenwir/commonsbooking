@@ -157,7 +157,7 @@ class Item extends CustomPostType {
 
 	public function getTemplate( $content ) {
 		$cb_content = '';
-		if ( is_singular( self::getPostType() ) && get_post_type() == self::getPostType() ) {
+		if ( is_singular( self::getPostType() ) && is_main_query() && get_post_type() == self::getPostType() ) {
 			ob_start();
 			global $post;
 
