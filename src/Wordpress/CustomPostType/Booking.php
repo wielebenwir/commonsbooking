@@ -69,6 +69,30 @@ class Booking extends Timeframe {
 				throw new Exception( 'Start- and/or enddate missing.' );
 			}
 
+			// Validate booking -> check if there are no existing bookings in timerange.
+			if (
+				$existingBookings =
+					\CommonsBooking\Repository\Booking::getByTimerange(
+						$startDate,
+						$endDate,
+						$locationId,
+						$itemId
+					)
+			) {
+				if(count($existingBookings) > 0 ) {
+					$requestedPostname = array_key_exists('cb_booking', $_REQUEST) ? $_REQUEST['cb_booking'] : '';
+
+					// checks if it's an edit, but ignores exact start/end time
+					$isEdit = count($existingBookings) === 1 &&
+						$existingBookings[0]->getPost()->post_name === $requestedPostname &&
+						$existingBookings[0]->getPost()->post_author == get_current_user_id();
+
+					if(!$isEdit || count($existingBookings) > 1) {
+						throw new Exception( 'There is already a booking in this timerange.' );
+					}
+				}
+			}
+
 			/** @var \CommonsBooking\Model\Booking $booking */
 			$booking = \CommonsBooking\Repository\Booking::getByDate(
 				$startDate,
@@ -249,7 +273,7 @@ class Booking extends Timeframe {
 	}
 
 	public function initListView() {
-		if ( array_key_exists('post_type', $_GET) && static::$postType !== $_GET['post_type'] ) {
+		if ( array_key_exists( 'post_type', $_GET ) && static::$postType !== $_GET['post_type'] ) {
 			return;
 		}
 
@@ -291,7 +315,7 @@ class Booking extends Timeframe {
 		add_action( 'restrict_manage_posts', array( static::class, 'addAdminItemFilter' ) );
 		add_action( 'restrict_manage_posts', array( static::class, 'addAdminLocationFilter' ) );
 		add_action( 'restrict_manage_posts', array( static::class, 'addAdminDateFilter' ) );
-        add_action( 'restrict_manage_posts', array( static::class, 'addAdminStatusFilter' ) );
+		add_action( 'restrict_manage_posts', array( static::class, 'addAdminStatusFilter' ) );
 		add_action( 'pre_get_posts', array( static::class, 'filterAdminList' ) );
 
 		// show permanent admin notice
@@ -307,7 +331,7 @@ class Booking extends Timeframe {
 	 */
 	public function getTemplate( $content ) {
 		$cb_content = '';
-		if ( is_singular( self::getPostType() ) ) {
+		if ( is_singular( self::getPostType() ) && is_main_query() ){
 			ob_start();
 			global $post;
 
@@ -340,8 +364,8 @@ class Booking extends Timeframe {
 					     $post_after->post_status === 'canceled'
 				     )
 				) {
-					if($post_after->post_status == 'canceled') {
-						$booking = new \CommonsBooking\Model\Booking($post_ID);
+					if ( $post_after->post_status == 'canceled' ) {
+						$booking = new \CommonsBooking\Model\Booking( $post_ID );
 						$booking->cancel();
 					} else {
 						$booking_msg = new BookingMessage( $post_ID, $post_after->post_status );
@@ -461,7 +485,7 @@ class Booking extends Timeframe {
 						if ( get_post_type( $post ) == Location::getPostType() ||
 						     get_post_type( $post ) == Item::getPostType()
 						) {
-							echo commonsbooking_sanitizeHTML($post->post_title);
+							echo commonsbooking_sanitizeHTML( $post->post_title );
 							break;
 						}
 					}
@@ -479,14 +503,14 @@ class Booking extends Timeframe {
 							}
 						}
 					}
-					echo commonsbooking_sanitizeHTML($output);
+					echo commonsbooking_sanitizeHTML( $output );
 					break;
 				case \CommonsBooking\Model\Timeframe::REPETITION_START:
 				case \CommonsBooking\Model\Timeframe::REPETITION_END:
 					echo date( 'd.m.Y H:i', $value );
 					break;
 				default:
-					echo commonsbooking_sanitizeHTML($value);
+					echo commonsbooking_sanitizeHTML( $value );
 					break;
 			}
 		} else {
@@ -501,7 +525,7 @@ class Booking extends Timeframe {
 					get_post_meta( $post_id, 'type', true ) == Timeframe::BOOKING_ID
 				)
 			) {
-				echo commonsbooking_sanitizeHTML($post->{$column});
+				echo commonsbooking_sanitizeHTML( $post->{$column} );
 			}
 		}
 	}
@@ -638,9 +662,9 @@ class Booking extends Timeframe {
 		See here <a target="_blank" href="https://commonsbooking.org/?p=1433">How to display the booking list</a>', 'commonsbooking' ) );
 
 		if ( ( $pagenow == 'edit.php' ) && isset( $_GET['post_type'] ) ) {
-            if ( sanitize_text_field( $_GET['post_type'] ) == self::getPostType() ) {
-			echo '<div class="notice notice-info"><p>' . commonsbooking_sanitizeHTML(  $notice ) . '</p></div>';
-		    }
-        }
+			if ( sanitize_text_field( $_GET['post_type'] ) == self::getPostType() ) {
+				echo '<div class="notice notice-info"><p>' . commonsbooking_sanitizeHTML( $notice ) . '</p></div>';
+			}
+		}
 	}
 }
