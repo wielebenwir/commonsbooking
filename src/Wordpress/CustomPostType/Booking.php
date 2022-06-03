@@ -307,7 +307,7 @@ class Booking extends Timeframe {
 	 */
 	public function getTemplate( $content ) {
 		$cb_content = '';
-		if ( is_singular( self::getPostType() ) ) {
+		if ( is_singular( self::getPostType() ) && is_main_query() ){
 			ob_start();
 			global $post;
 
