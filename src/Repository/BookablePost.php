@@ -190,7 +190,8 @@ abstract class BookablePost extends PostRepository {
 	public static function get( array $args = array(), bool $bookable = false ) {
 		$posts             = [];
 		$args['post_type'] = static::getPostType();
-
+		$args['nopaging'] = true;
+		
 		// Add custom taxonomy filter
 		if ( array_key_exists( 'category_slug', $args ) ) {
 			$args['taxonomy'] = static::getPostType() . 's_category';
