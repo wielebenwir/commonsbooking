@@ -166,7 +166,7 @@ class Booking extends PostRepository {
 			'meta_query'  => array(
 				'relation' => "AND",
 				array(
-					'key'     => 'repetition-start',
+					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_START,
 					'value'   => $startDateTimestamp,
 					'compare' => '=',
 					'type'    => 'numeric',
@@ -182,12 +182,12 @@ class Booking extends PostRepository {
 					'compare' => '=',
 				),
 				array(
-					'key'     => 'location-id',
+					'key'     => \CommonsBooking\Model\Timeframe::META_LOCATION_ID,
 					'value'   => $locationId,
 					'compare' => '=',
 				),
 				array(
-					'key'     => 'item-id',
+					'key'     => \CommonsBooking\Model\Timeframe::META_ITEM_ID,
 					'value'   => $itemId,
 					'compare' => '=',
 				),
