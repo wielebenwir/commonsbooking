@@ -94,7 +94,6 @@ class BookingList {
 
         this._onMenuButton = this._handleMenuButton.bind(this);
         const $menuButton = jQuery('#cb-bookingdropbtn');
-        console.log($menuButton);
         if($menuButton) $menuButton.on('click', this._onMenuButton);
     };
 
