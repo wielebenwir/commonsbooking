@@ -91,6 +91,11 @@ class BookingList {
             $endDatePicker.datepicker("option", "onSelect", this._onEndDateChange);
             $endDatePicker.change(this._onEndDateChange);
         }
+
+        this._onMenuButton = this._handleMenuButton.bind(this);
+        const $menuButton = jQuery('#cb-bookingdropbtn');
+        console.log($menuButton);
+        if($menuButton) $menuButton.on('click', this._onMenuButton);
     };
 
     _handleStartDateChange() {
@@ -341,6 +346,10 @@ class BookingList {
         var page = evt.currentTarget.dataset.page;
         this.listParams.set('page', page);
         this._reloadData();
+    }
+
+    _handleMenuButton(){
+        jQuery('.cb-dropdown-content').toggle();
     }
 
     /**

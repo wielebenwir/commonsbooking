@@ -127,7 +127,11 @@ class Booking extends View {
 				$menuitems = '';
 
 				if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'feed_enabled' ) == 'on'){
-					$menuitems .= commonsbooking_sanitizeHTML( __('iCalendar file:', 'commonsbooking')) . '<input type="text" id="icallink" value="' . commonsbooking_getCurrentUserCalendarLink() . '" readonly>';
+					$menuitems .= 	'<div id="icallink_text" title="'. commonsbooking_sanitizeHTML( __('Use this link to import the data into your own calendar.')) .'">' . 
+										commonsbooking_sanitizeHTML( __('iCalendar Link:', 'commonsbooking')) . 
+									'</div>' .
+									'<input type="text" id="icallink" value="' . commonsbooking_getCurrentUserCalendarLink() . '" readonly>'
+									;
 				}
 
 				$item          = $booking->getItem();
@@ -208,7 +212,7 @@ class Booking extends View {
 			$bookingDataArray['total_pages'] = 0;
 
 			if (!empty($menuitems)) {
-				$bookingDataArray['menu'] = '<div class="booking-list--menu" onclick="cb_showDropDown()"></div> <div id="cb-dropdown" class="dropdown-content>' . $menuitems . '</div>';
+				$bookingDataArray['menu'] = ' <div class="cb-dropdown" style="float:right;"> <div id="cb-bookingdropbtn" class="cb-dropbtn"></div> <div class="cb-dropdown-content">' . $menuitems . '</div> </div>';
 			}
 
 			if ( array_key_exists( 'data', $bookingDataArray ) && count( $bookingDataArray['data'] ) ) {
