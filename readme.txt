@@ -3,8 +3,8 @@ Contributors: wielebenwirteam, m0rb, flegfleg, chriwen
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, commons, sharing, calendar,  
 Requires at least: 5.2  
-Tested up to: 5.9  
-Stable Tag: 2.7.1
+Tested up to: 6.0  
+Stable Tag: 2.7.2
 Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -79,9 +79,12 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.7.2 (xx.05.2022)
-FIXED: Fixed plugin incompatibility with WPBakery
-FIXED: Fixed plugin incompatibility with Events Manager
+### 2.7.2 (xx.06.2022)
+FIXED: Plugin incompatibility with WPBakery
+FIXED: Plugin incompatibility with Events Manager
+FIXED: Plugin incompatibility with All-in One Events Calendar
+FIXED: Shortcodes sometimes not showing all items
+FIXED: Overbooking was possible when combining hourly and daily slots
 
 ### 2.7.1 (05.05.2022)
 FIXED: Fixed Fatal error when PHP Version is < 7.4 / we recommend updating you PHP version to 7.4. because 7.3 is no longer maintained. Please ask you hosting provider for support.
