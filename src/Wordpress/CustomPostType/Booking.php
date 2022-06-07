@@ -69,30 +69,6 @@ class Booking extends Timeframe {
 				throw new Exception( 'Start- and/or enddate missing.' );
 			}
 
-			// Validate booking -> check if there are no existing bookings in timerange.
-			if (
-				$existingBookings =
-					\CommonsBooking\Repository\Booking::getByTimerange(
-						$startDate,
-						$endDate,
-						$locationId,
-						$itemId
-					)
-			) {
-				if(count($existingBookings) > 0 ) {
-					$requestedPostname = array_key_exists('cb_booking', $_REQUEST) ? $_REQUEST['cb_booking'] : '';
-
-					// checks if it's an edit, but ignores exact start/end time
-					$isEdit = count($existingBookings) === 1 &&
-						$existingBookings[0]->getPost()->post_name === $requestedPostname &&
-						$existingBookings[0]->getPost()->post_author == get_current_user_id();
-
-					if(!$isEdit || count($existingBookings) > 1) {
-						throw new Exception( 'There is already a booking in this timerange.' );
-					}
-				}
-			}
-
 			/** @var \CommonsBooking\Model\Booking $booking */
 			$booking = \CommonsBooking\Repository\Booking::getByDate(
 				$startDate,
@@ -113,6 +89,31 @@ class Booking extends Timeframe {
 
 			// New booking
 			if ( empty( $booking ) ) {
+
+				// Validate booking -> check if there are no existing bookings in timerange.
+				if (
+					$existingBookings =
+						\CommonsBooking\Repository\Booking::getByTimerange(
+							$startDate,
+							$endDate,
+							$locationId,
+							$itemId
+						)
+				) {
+					if(count($existingBookings) > 0 ) {
+						$requestedPostname = array_key_exists('cb_booking', $_REQUEST) ? $_REQUEST['cb_booking'] : '';
+
+						// checks if it's an edit, but ignores exact start/end time
+						$isEdit = count($existingBookings) === 1 &&
+							$existingBookings[0]->getPost()->post_name === $requestedPostname &&
+							$existingBookings[0]->getPost()->post_author == get_current_user_id();
+
+						if(!$isEdit || count($existingBookings) > 1) {
+							throw new Exception( 'There is already a booking in this timerange.' );
+						}
+					}
+				}
+
 				$postarr['post_name']  = Helper::generateRandomString();
 				$postarr['meta_input'] = [
 					'location-id'      => $locationId,
