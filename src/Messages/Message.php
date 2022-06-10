@@ -105,13 +105,13 @@ abstract class Message {
 	 * @return void
 	 */
 	public function SendNotificationMail() {
-		$to      = apply_filters( 'commonsbooking_mail_to', $this->to );
-		$subject = apply_filters( 'commonsbooking_mail_subject', $this->subject );
-		$body    = apply_filters( 'commonsbooking_mail_body', $this->body );
+		$to      = apply_filters( 'commonsbooking_mail_to', $this->to, $this->action );
+		$subject = apply_filters( 'commonsbooking_mail_subject', $this->subject, $this->action );
+		$body    = apply_filters( 'commonsbooking_mail_body', $this->body, $this->action );
+		$attachment = apply_filters( 'commonsbooking_mail_attachment', $this->attachment, $this->action);
 		$headers = implode( "\r\n", $this->headers );
-		$attachment = $this->attachment;
 		
-		if ($this->attachment) { //When attachment exists, modify wp_mail function to support attachment strings
+		if (!empty($attachment)) { //When attachment exists, modify wp_mail function to support attachment strings
 			add_filter('wp_mail', array($this,'addStringAttachments'), 25); //add arbitrary priority to identify filter for removal
 			$result = wp_mail($to, $subject, $body, $headers, $attachment);
 			remove_filter('wp_mail', array($this,'addStringAttachments'), 25); //remove filter directly after attachment is sent
