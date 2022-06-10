@@ -127,8 +127,8 @@ class Booking extends View {
 				$menuitems = '';
 
 				if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'feed_enabled' ) == 'on'){
-					$menuitems .= 	'<div id="icallink_text" title="'. commonsbooking_sanitizeHTML( __('Use this link to import the data into your own calendar.')) .'">' . 
-										commonsbooking_sanitizeHTML( __('iCalendar Link:', 'commonsbooking')) . 
+					$menuitems .= 	'<div id="icallink_text" title="'. commonsbooking_sanitizeHTML( __('Use this link to import the data into your own calendar.')) .'">' .
+										commonsbooking_sanitizeHTML( __('iCalendar Link:', 'commonsbooking')) .
 									'</div>' .
 									'<input type="text" id="icallink" value="' . commonsbooking_getCurrentUserCalendarLink() . '" readonly>'
 									;
@@ -155,7 +155,7 @@ class Booking extends View {
 					"user"               => $userInfo->user_login,
 					"status"             => $booking->post_status,
 					"fullDay"			 => $booking->getMeta( 'full-day' ),
-					"calendarLink"       => $item && $location ? add_query_arg( 'item', $item->ID, get_permalink( $location->ID ) ) : '',
+					"calendarLink"       => $item && $location ? add_query_arg( 'cb-item', $item->ID, get_permalink( $location->ID ) ) : '',
 					"content"            => [
 						'user'   => [
 							'label' => commonsbooking_sanitizeHTML( __( 'User', 'commonsbooking' ) ),
@@ -296,12 +296,12 @@ class Booking extends View {
 
 		$bookingList = self::getBookingListData(999,$user);
 
-		// Create Calendar domain entity 
+		// Create Calendar domain entity
 		$calendar = new \Eluceo\iCal\Domain\Entity\Calendar();
 
 		//Add timezone to calendar
 		// $calendar->addTimeZone($timezone); #1023
-		
+
 		//returns false when booking list is empty
 		if (!$bookingList){
 
@@ -328,7 +328,7 @@ class Booking extends View {
 			$booking_startDateDateTime = (new \DateTimeImmutable())->setTimestamp($booking["startDate"]);
 			$booking_endDateDateTime = (new \DateTimeImmutable())->setTimestamp($booking["endDate"]);
 
-			// Create timezone entity 
+			// Create timezone entity
 			/* #1023
 			$timezone = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone(
 				wp_timezone(),
