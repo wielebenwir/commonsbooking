@@ -252,8 +252,8 @@ Thanks, the Team.
 						'id'	  => 'emailtemplates_mail-booking_ics_event-description',
 						'type'	  => 'textarea',
 						'desc' => esc_html__( 'The description for the attached event.', 'commonsbooking' ),
-						'default'       => commonsbooking_sanitizeHTML( __( ' Abholung: {{booking:pickupDatetime}}
-Rückgabe: {{booking:returnDatetime}}
+						'default'       => commonsbooking_sanitizeHTML( __( ' Pick up: {{booking:pickupDatetime}}
+Return date: {{booking:returnDatetime}}
 {{location:formattedPickupInstructions}}
 {{booking:formattedBookingCode}} ',
 						'commonsbooking' ) ),

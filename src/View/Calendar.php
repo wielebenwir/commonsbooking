@@ -161,8 +161,21 @@ class Calendar {
 		$print .= "</tbody></table>";
 		$print .= '</div>';
 
+		$print .= '<div id="cb-table-footnote">';
 
 		return $print;
+	}
+
+	public static function shortcode( $atts) {
+		global $templateData;
+		$templateData = [];
+		$templateData['data'] = self::renderTable($atts);
+
+		if (!empty($templateData['data'])) {
+			ob_start();
+			commonsbooking_get_template_part( 'shortcode', 'items_table', true, false, false ) ;
+			return ob_get_clean();
+		}
 	}
 
 	/**

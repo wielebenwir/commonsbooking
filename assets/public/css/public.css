@@ -3906,46 +3906,24 @@
   font-size: var(--commonsbooking-font-size-normal);
 }
 /* line 104, ../sass/partials/_forms.scss */
-.cb-wrapper #calendar-footnote #calendar-footnote-colorkey .colorkey-square {
-  width: 10px;
-  height: 10px;
-  display: inline-block;
-}
-/* line 110, ../sass/partials/_forms.scss */
-.cb-wrapper #calendar-footnote #calendar-footnote-colorkey .colorkey-accept {
-  background-color: var(--commonsbooking-color-accept);
-}
-/* line 114, ../sass/partials/_forms.scss */
-.cb-wrapper #calendar-footnote #calendar-footnote-colorkey .colorkey-cancel {
-  background-color: var(--commonsbooking-color-cancel);
-}
-/* line 118, ../sass/partials/_forms.scss */
-.cb-wrapper #calendar-footnote #calendar-footnote-colorkey .colorkey-holiday {
-  background-color: var(--commonsbooking-color-holiday);
-}
-/* line 122, ../sass/partials/_forms.scss */
-.cb-wrapper #calendar-footnote #calendar-footnote-colorkey .colorkey-greyedout {
-  background-color: var(--commonsbooking-color-greyedout);
-}
-/* line 128, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form {
   width: 100%;
   /* do not extend litepicker width */
 }
-/* line 130, ../sass/partials/_forms.scss */
+/* line 106, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form input {
   float: right;
 }
-/* line 135, ../sass/partials/_forms.scss */
+/* line 111, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container {
   margin-top: var(--commonsbooking-spacer);
   text-align: center;
 }
-/* line 139, ../sass/partials/_forms.scss */
+/* line 115, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container .restriction {
   display: block;
 }
-/* line 143, ../sass/partials/_forms.scss */
+/* line 119, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div {
   display: flex;
   align-items: center;
@@ -3953,16 +3931,16 @@
   text-align: left;
   overflow: hidden;
 }
-/* line 152, ../sass/partials/_forms.scss */
+/* line 128, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div span, .cb-wrapper #booking-form .time-selection-container > div label, .cb-wrapper #booking-form .time-selection-container > div select {
   float: left;
   font-size: var(--commonsbooking-font-size-normal);
 }
-/* line 157, ../sass/partials/_forms.scss */
+/* line 133, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div label {
   font-weight: bold;
 }
-/* line 161, ../sass/partials/_forms.scss */
+/* line 137, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div #resetPicker {
   cursor: pointer;
   font-weight: bold;
@@ -3971,18 +3949,18 @@
   padding: 0;
   flex-basis: 100%;
 }
-/* line 170, ../sass/partials/_forms.scss */
+/* line 146, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div > label {
   flex-basis: 30%;
 }
-/* line 174, ../sass/partials/_forms.scss */
+/* line 150, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div > div {
   flex-basis: 70%;
   display: flex;
   gap: 1rem 3rem;
   align-items: center;
 }
-/* line 184, ../sass/partials/_forms.scss */
+/* line 160, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice {
   margin-bottom: var(--commonsbooking-spacer-big);
   font-size: var(--commonsbooking-font-size-big);
@@ -3992,21 +3970,45 @@
   background: var(--commonsbooking-color-noticebg);
   /* Post status */
 }
-/* line 194, ../sass/partials/_forms.scss */
+/* line 170, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-unconfirmed {
   background: var(--commonsbooking-color-noticebg);
 }
-/* line 198, ../sass/partials/_forms.scss */
+/* line 174, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-confirmed {
   background: var(--commonsbooking-color-success);
 }
-/* line 202, ../sass/partials/_forms.scss */
+/* line 178, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-cancelled {
   background: var(--commonsbooking-color-success);
 }
-/* line 206, ../sass/partials/_forms.scss */
+/* line 182, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.error {
   background: var(--commonsbooking-color-error);
+}
+/* line 187, ../sass/partials/_forms.scss */
+.cb-wrapper #cb-colorkey-legend .colorkey-square {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+}
+/* line 193, ../sass/partials/_forms.scss */
+.cb-wrapper #cb-colorkey-legend .colorkey-accept {
+  background-color: var(--commonsbooking-color-accept);
+}
+/* line 197, ../sass/partials/_forms.scss */
+.cb-wrapper #cb-colorkey-legend .colorkey-cancel {
+  background-color: var(--commonsbooking-color-cancel);
+}
+/* line 201, ../sass/partials/_forms.scss */
+.cb-wrapper #cb-colorkey-legend .colorkey-holiday {
+  background-color: var(--commonsbooking-color-holiday);
+  background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
+  background-size: 5px 5px;
+}
+/* line 207, ../sass/partials/_forms.scss */
+.cb-wrapper #cb-colorkey-legend .colorkey-greyedout {
+  background-color: var(--commonsbooking-color-greyedout);
 }
 
 /* Calendar styles */
@@ -5165,6 +5167,14 @@
   cursor: not-allowed;
   color: var(--litepickerDayIsLockedColor);
   box-shadow: none;
+}
+
+/* line 154, ../sass/partials/_shortcodeItemsTable.scss */
+#cb-table-footnote {
+  background-color: #FFF;
+  margin-top: 10px;
+  padding: 10px;
+  font-size: var(--commonsbooking-font-size-normal);
 }
 
 /* Fixes for specific WP Themes */
