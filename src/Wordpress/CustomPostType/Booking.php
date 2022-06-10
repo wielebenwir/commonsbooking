@@ -76,7 +76,9 @@ class Booking extends Timeframe {
 						$startDate,
 						$endDate,
 						$locationId,
-						$itemId
+						$itemId,
+						[],
+						['confirmed']
 					)
 			) {
 				if(count($existingBookings) > 0 ) {
