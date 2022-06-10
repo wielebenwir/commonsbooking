@@ -4,6 +4,13 @@
 namespace CommonsBooking\Model;
 
 use DateTime;
+use Eluceo\iCal\Domain\Entity\Event;
+use Eluceo\iCal\Domain\ValueObject\Date;
+use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
+use Eluceo\iCal\Domain\ValueObject\MultiDay;
+use Eluceo\iCal\Domain\ValueObject\SingleDay;
+use Eluceo\iCal\Domain\ValueObject\TimeSpan;
+use Eluceo\iCal\Presentation\Factory\CalendarFactory;
 use Exception;
 use CommonsBooking\CB\CB;
 use CommonsBooking\Helper\Helper;
@@ -426,10 +433,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * Current issue: Timestamp not localized with timezone, see issue: https://github.com/wielebenwir/commonsbooking/issues/1023
 	 * If this issue is ever fixed, code has already been pre-written to correctly handle the timezones. It is marked with #1023
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getiCal( 
+	public function getiCal(
 		$eventTitle, $eventDescription
 	 ){
 		 $bookingLocation = $this->getLocation();
@@ -448,18 +455,18 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			$booking_endDateDateTime
 		);
 		*/
-		
+
 		//Create event occurence
 		if ($this->isFullDay()){
 			if ($booking_startDateDateTime->format('Y-m-d') == $booking_endDateDateTime->format('Y-m-d') ) { //is single day event
-				$occurence = new \Eluceo\iCal\Domain\ValueObject\SingleDay(
-					new \Eluceo\iCal\Domain\ValueObject\Date( $booking_startDateDateTime )
+				$occurence = new SingleDay(
+					new Date( $booking_startDateDateTime )
 				);
 			}
 			else { //is multi day event
-				$occurence = new \Eluceo\iCal\Domain\ValueObject\MultiDay(
-					new \Eluceo\iCal\Domain\ValueObject\Date( $booking_startDateDateTime ),
-					new \Eluceo\iCal\Domain\ValueObject\Date( $booking_endDateDateTime )
+				$occurence = new MultiDay(
+					new Date( $booking_startDateDateTime ),
+					new Date( $booking_endDateDateTime )
 				);
 			}
 		}
@@ -468,7 +475,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			//add one minute to EndDate (this minute was removed to prevent overlapping but would confuse users)
 			$booking_endDateDateTime = $booking_endDateDateTime->add(new DateInterval('PT1M'));
 
-			$occurence = new \Eluceo\iCal\Domain\ValueObject\TimeSpan(
+			$occurence = new TimeSpan(
 					//new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_startDateDateTime, true), #1023
 					//new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_endDateDateTime, true) #1023
 					new \Eluceo\iCal\Domain\ValueObject\DateTime( $booking_startDateDateTime, false ), //remove when #1023 fixed
@@ -477,7 +484,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		// Create Event domain entity.
-		$event = new \Eluceo\iCal\Domain\Entity\Event();
+		$event = new Event();
 		$event
 			->setSummary($eventTitle)
 			->setDescription($eventDescription)
@@ -485,9 +492,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 				(
 					new \Eluceo\iCal\Domain\ValueObject\Location($bookingLocation->formattedAddressOneLine(), $bookingLocation->post_title))
 					->withGeographicPosition(
-						new \Eluceo\iCal\Domain\ValueObject\GeographicPosition(
-							$bookingLocation_latitude,
-							$bookingLocation_longitude
+						new GeographicPosition(
+							floatval( $bookingLocation_latitude ),
+							floatval( $bookingLocation_longitude )
 							)
 						)
 				)
@@ -504,7 +511,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$calendar->addEvent($event);
 
 		// Transform domain entity into an iCalendar component
-		$componentFactory = new \Eluceo\iCal\Presentation\Factory\CalendarFactory();
+		$componentFactory = new CalendarFactory();
 		$calendarComponent = $componentFactory->createCalendar($calendar);
 
 		// 5. Output.
