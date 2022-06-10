@@ -22,7 +22,7 @@ class Location extends View {
 			global $post;
 		}
 		$location = $post;
-		$item     = get_query_var( 'item' ) ?: false;
+		$item     = get_query_var( 'cb-item' ) ?: false;
 		$customId = md5($item . $location->ID);
 
 		if ( Plugin::getCacheItem($customId) ) {

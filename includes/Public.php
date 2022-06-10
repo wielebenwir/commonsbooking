@@ -172,9 +172,9 @@ add_action( 'wp_ajax_nopriv_cb_map_geo_search', array( MapShortcode::class, 'geo
 
 // Query vars
 function commonsbooking_query_vars( $qvars ) {
-	$qvars[] = 'location';
-	$qvars[] = 'item';
-	$qvars[] = 'type';
+	$qvars[] = 'cb-location';
+	$qvars[] = 'cb-item';
+	$qvars[] = 'cb-type';
 
 	return $qvars;
 }

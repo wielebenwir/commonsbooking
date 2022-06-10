@@ -67,7 +67,7 @@ class BookingMessage extends Message {
 			$fromHeaders,
 			$bcc_adresses,
 			$template_objects,
-			$attachment
+			$attachment ?: null
 		);
 		$this->SendNotificationMail();
 	}
