@@ -47,7 +47,8 @@ trait Cache {
 	public static function getCacheId( $custom_id = null ): string {
 		$backtrace     = debug_backtrace()[2];
 		$backtrace     = self::sanitizeArgsArray( $backtrace );
-		$namespace     = str_replace( '\\', '_', strtolower( $backtrace['class'] ) );
+        $namespace     = COMMONSBOOKING_PLUGIN_DIR;
+		$namespace     .= '_' . str_replace( '\\', '_', strtolower( $backtrace['class'] ) );
 		$namespace     .= '_' . $backtrace['function'];
 		$backtraceArgs = $backtrace['args'];
 		$namespace     .= '_' . serialize( $backtraceArgs );
