@@ -39,6 +39,8 @@ trait Cache {
 
 	/**
 	 * Returns cache id, based on calling class, function and args.
+     * 
+     * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
 	 *
 	 * @param null $custom_id
 	 *
