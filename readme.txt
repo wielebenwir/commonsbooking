@@ -85,6 +85,7 @@ FIXED: Plugin incompatibility with Events Manager
 FIXED: Plugin incompatibility with All-in One Events Calendar
 FIXED: Shortcodes sometimes not showing all items
 FIXED: Overbooking was possible when combining hourly and daily slots
+ENHANCED: Optimized caching to avoid caching conflicts on multiple instances on same server
 
 ### 2.7.1 (05.05.2022)
 FIXED: Fixed Fatal error when PHP Version is < 7.4 / we recommend updating you PHP version to 7.4. because 7.3 is no longer maintained. Please ask you hosting provider for support.
