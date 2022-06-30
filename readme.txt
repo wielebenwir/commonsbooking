@@ -79,7 +79,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.7.2 (xx.06.2022)
+### 2.7.2 (30.06.2022)
 FIXED: Plugin incompatibility with WPBakery
 FIXED: Plugin incompatibility with Events Manager
 FIXED: Plugin incompatibility with All-in One Events Calendar
