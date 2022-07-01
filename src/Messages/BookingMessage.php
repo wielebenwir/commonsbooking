@@ -44,6 +44,7 @@ class BookingMessage extends Message {
 		);
 
 		//generate attachment when set in settings and booking is not cancelled
+		$attachment = null;
 		if ((Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_attach' ) == 'on') && (!$booking->isCancelled() )){
 			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
 			$eventTitle = commonsbooking_sanitizeHTML ( commonsbooking_parse_template ( $eventTitle, $template_objects ) );
@@ -67,7 +68,7 @@ class BookingMessage extends Message {
 			$fromHeaders,
 			$bcc_adresses,
 			$template_objects,
-			$attachment ?: null
+			$attachment
 		);
 		$this->SendNotificationMail();
 	}
