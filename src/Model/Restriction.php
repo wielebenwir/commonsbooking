@@ -243,10 +243,14 @@ class Restriction extends CustomPost {
 		if ( $this->isActive() ) {
 			$bookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
 			if ( $bookings ) {
+                // send restriction mails to all affected bookings
+                $this->sendRestrictionMails( $bookings );
+
+                // cancel all affected booking
 				if ( $this->isActive() && $this->getType() == self::TYPE_REPAIR ) {
 					$this->cancelBookings( $bookings );
 				}
-				$this->sendRestrictionMails( $bookings );
+				
 			}
 		}
 
@@ -285,17 +289,12 @@ class Restriction extends CustomPost {
 	 * @param Booking[] $bookings booking post objects.
 	 */
 	protected function sendRestrictionMails( $bookings ) {
-		$userIds = [];
 
 		foreach ( $bookings as $booking ) {
-			// User IDs from booking
-			$userIds[] = $booking->getUserData()->ID;
-        }
+			// get User ID from booking
+			$userId = $booking->getUserData()->ID;
 
-        // Delete duplicate user-ids so that restriction mail will only be send once to each user
-        $userIds = array_unique( $userIds );
-
-        foreach ( $userIds as $userId ) {
+            // send restriction message for each booking 
             $hintMail = new RestrictionMessage( $this, get_userdata( $userId ), $booking, $this->getType() );
             $hintMail->triggerMail();
         }
