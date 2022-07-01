@@ -1,17 +1,17 @@
 # Copyright (C) 2022 wielebenwir e.V.
-# This file is distributed under the GPL v2 or later.
+# This file is distributed under the same license as the Commons Booking plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Commons Booking 2.7.1\n"
+"Project-Id-Version: Commons Booking 2.7.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-05-24T16:18:11+00:00\n"
+"POT-Creation-Date: 2022-06-28T21:28:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.5.0\n"
+"X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
 
 #. Plugin Name of the plugin
@@ -1223,14 +1223,14 @@ msgid "No booking codes could be created because there were no booking codes to 
 msgstr ""
 
 #: src/View/Admin/Filter.php:58
-#: src/Wordpress/CustomPostType/Booking.php:576
+#: src/Wordpress/CustomPostType/Booking.php:606
 #: src/Wordpress/CustomPostType/Restriction.php:444
 #: src/Wordpress/CustomPostType/Timeframe.php:573
 msgid "Start date"
 msgstr ""
 
 #: src/View/Admin/Filter.php:62
-#: src/Wordpress/CustomPostType/Booking.php:592
+#: src/Wordpress/CustomPostType/Booking.php:622
 #: src/Wordpress/CustomPostType/Restriction.php:454
 #: src/Wordpress/CustomPostType/Timeframe.php:595
 msgid "End date"
@@ -1246,7 +1246,7 @@ msgid "Not available"
 msgstr ""
 
 #: src/View/Booking.php:129
-#: src/Wordpress/CustomPostType/Booking.php:257
+#: src/Wordpress/CustomPostType/Booking.php:287
 #: src/Wordpress/CustomPostType/Timeframe.php:87
 #: templates/shortcode-bookings.php:71
 msgid "User"
@@ -1278,9 +1278,9 @@ msgid "Pickup date"
 msgstr ""
 
 #: src/View/BookingCodes.php:37
-#: src/View/Calendar.php:215
-#: src/Wordpress/CustomPostType/Booking.php:258
-#: src/Wordpress/CustomPostType/Booking.php:567
+#: src/View/Calendar.php:202
+#: src/Wordpress/CustomPostType/Booking.php:288
+#: src/Wordpress/CustomPostType/Booking.php:597
 #: src/Wordpress/CustomPostType/Item.php:69
 #: src/Wordpress/CustomPostType/Restriction.php:50
 #: src/Wordpress/CustomPostType/Restriction.php:431
@@ -1294,9 +1294,9 @@ msgstr ""
 msgid "No items found."
 msgstr ""
 
-#: src/View/Calendar.php:216
-#: src/Wordpress/CustomPostType/Booking.php:259
-#: src/Wordpress/CustomPostType/Booking.php:558
+#: src/View/Calendar.php:203
+#: src/Wordpress/CustomPostType/Booking.php:289
+#: src/Wordpress/CustomPostType/Booking.php:588
 #: src/Wordpress/CustomPostType/Location.php:90
 #: src/Wordpress/CustomPostType/Restriction.php:51
 #: src/Wordpress/CustomPostType/Restriction.php:424
@@ -1422,53 +1422,53 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:84
-#: src/Wordpress/CustomPostType/Booking.php:358
-#: src/Wordpress/CustomPostType/Booking.php:512
+#: src/Wordpress/CustomPostType/Booking.php:110
+#: src/Wordpress/CustomPostType/Booking.php:388
+#: src/Wordpress/CustomPostType/Booking.php:542
 #: src/Wordpress/CustomPostType/Timeframe.php:116
 msgid "Booking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:202
+#: src/Wordpress/CustomPostType/Booking.php:228
 msgid "There is an overlapping booking."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:240
+#: src/Wordpress/CustomPostType/Booking.php:266
 msgid "There are already bookings in selected timerange."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:260
+#: src/Wordpress/CustomPostType/Booking.php:290
 msgid "Bookingdate"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:261
+#: src/Wordpress/CustomPostType/Booking.php:291
 #: src/Wordpress/CustomPostType/Restriction.php:52
 #: src/Wordpress/CustomPostType/Timeframe.php:91
 msgid "Start Date"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:262
+#: src/Wordpress/CustomPostType/Booking.php:292
 #: src/Wordpress/CustomPostType/Restriction.php:53
 #: src/Wordpress/CustomPostType/Timeframe.php:92
 msgid "End Date"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:263
+#: src/Wordpress/CustomPostType/Booking.php:293
 msgid "Booking Status"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:264
-#: src/Wordpress/CustomPostType/Booking.php:549
+#: src/Wordpress/CustomPostType/Booking.php:294
+#: src/Wordpress/CustomPostType/Booking.php:579
 #: src/Wordpress/CustomPostType/Timeframe.php:448
 msgid "Comment"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:357
+#: src/Wordpress/CustomPostType/Booking.php:387
 #: templates/dashboard-index.php:45
 msgid "Bookings"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:359
+#: src/Wordpress/CustomPostType/Booking.php:389
 #: src/Wordpress/CustomPostType/Item.php:70
 #: src/Wordpress/CustomPostType/Location.php:91
 #: src/Wordpress/CustomPostType/Restriction.php:306
@@ -1476,88 +1476,88 @@ msgstr ""
 msgid "Add new"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:360
-#: src/Wordpress/CustomPostType/Booking.php:362
+#: src/Wordpress/CustomPostType/Booking.php:390
+#: src/Wordpress/CustomPostType/Booking.php:392
 msgid "Add new booking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:361
-#: src/Wordpress/CustomPostType/Booking.php:540
+#: src/Wordpress/CustomPostType/Booking.php:391
+#: src/Wordpress/CustomPostType/Booking.php:570
 msgid "Edit booking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:363
+#: src/Wordpress/CustomPostType/Booking.php:393
 msgid "Show booking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:364
+#: src/Wordpress/CustomPostType/Booking.php:394
 msgid "Show bookings"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:365
+#: src/Wordpress/CustomPostType/Booking.php:395
 msgid "Search bookings"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:366
+#: src/Wordpress/CustomPostType/Booking.php:396
 #: src/Wordpress/CustomPostType/Timeframe.php:773
 msgid "Timeframes not found"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:367
+#: src/Wordpress/CustomPostType/Booking.php:397
 msgid "No bookings found in trash"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:368
+#: src/Wordpress/CustomPostType/Booking.php:398
 msgid "Parent bookings:"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:369
+#: src/Wordpress/CustomPostType/Booking.php:399
 msgid "All bookings"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:370
+#: src/Wordpress/CustomPostType/Booking.php:400
 #: src/Wordpress/CustomPostType/Timeframe.php:777
 msgid "Timeframe archive"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:371
+#: src/Wordpress/CustomPostType/Booking.php:401
 #: src/Wordpress/CustomPostType/Timeframe.php:778
 msgid "Timeframe attributes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:372
+#: src/Wordpress/CustomPostType/Booking.php:402
 msgid "Add to booking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:373
+#: src/Wordpress/CustomPostType/Booking.php:403
 msgid "Added to booking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:374
+#: src/Wordpress/CustomPostType/Booking.php:404
 #: src/Wordpress/CustomPostType/Timeframe.php:781
 msgid "Timeframe image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:375
+#: src/Wordpress/CustomPostType/Booking.php:405
 msgid "set booking image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:376
+#: src/Wordpress/CustomPostType/Booking.php:406
 msgid "remove booking image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:377
+#: src/Wordpress/CustomPostType/Booking.php:407
 msgid "use as booking image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:378
+#: src/Wordpress/CustomPostType/Booking.php:408
 #: src/Wordpress/CustomPostType/Timeframe.php:764
 #: src/Wordpress/CustomPostType/Timeframe.php:785
 #: templates/dashboard-index.php:37
 msgid "Timeframes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:541
+#: src/Wordpress/CustomPostType/Booking.php:571
 msgid ""
 "In this view, only the start and end dates of the booking can be adjusted by administrators.<br>\n"
 "\t\t\t\tClick on the <strong>preview button on the right panel</strong> to view more booking details and to cancel the booking via the cancel button.<br>\n"
@@ -1565,26 +1565,26 @@ msgid ""
 "\t\t\t\tFurther booking data cannot be changed subsequently. <br>We recommend in this case to cancel the booking and make a new booking."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:550
+#: src/Wordpress/CustomPostType/Booking.php:580
 #: src/Wordpress/CustomPostType/Timeframe.php:449
 msgid "This comment is internal for timeframes like bookable, repair, holiday. If timeframe is a booking this comment can be set by users during the booking confirmation process."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:577
+#: src/Wordpress/CustomPostType/Booking.php:607
 #: src/Wordpress/CustomPostType/Timeframe.php:574
 msgid "Set the start date. If you have selected repetition, this is the start date of the interval. "
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:593
+#: src/Wordpress/CustomPostType/Booking.php:623
 msgid "Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:608
-#: templates/booking-single.php:54
+#: src/Wordpress/CustomPostType/Booking.php:638
+#: templates/booking-single.php:53
 msgid "Booking Code"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:631
+#: src/Wordpress/CustomPostType/Booking.php:661
 msgid ""
 "Bookings should not be created, edited or canceled via this admin list. \n"
 "\t\tClick on preview to show booking details in frontend<br>\n"
@@ -2094,11 +2094,11 @@ msgid "Bookable"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Timeframe.php:112
-msgid "Holidays or Location Closed"
+msgid "Holidays or location closed"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Timeframe.php:115
-msgid "Repair"
+msgid "Blocked (not overbookable)"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Timeframe.php:420

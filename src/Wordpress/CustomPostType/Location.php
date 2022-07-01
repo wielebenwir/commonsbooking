@@ -75,7 +75,7 @@ class Location extends CustomPostType {
 
 	public function getTemplate( $content ) {
 		$cb_content = '';
-		if ( is_singular( self::getPostType() ) ) {
+		if ( is_singular( self::getPostType() ) && is_main_query() ) {
 			ob_start();
 			commonsbooking_get_template_part( 'location', 'single' );
 			$cb_content = ob_get_clean();
