@@ -23,14 +23,39 @@ use DateTimeImmutable;
  * 	Current issue: Timestamp not localized with timezone, see issue: https://github.com/wielebenwir/commonsbooking/issues/1023
  *  If this issue is ever fixed, code has already been pre-written to correctly handle the timezones. It is marked with #1023
  */
-class iCalendar{
+class iCalendar {
 
     private ?Calendar $calendar;
+
+	public const URL_SLUG = COMMONSBOOKING_PLUGIN_SLUG . '_ical_download';
 
     public function __construct()
     {
         $this->calendar = New Calendar();
     }
+
+	/**
+	 * Registers url to download ics file.
+	 * @return void
+	 */
+	public static function initRewrite() {
+		add_action( 'wp_loaded', function (){
+			add_rewrite_rule( self::URL_SLUG, 'index.php?' . self::URL_SLUG. '=1', 'top' );
+		} );
+
+		add_filter( 'query_vars', function ( $query_vars ){
+			$query_vars[] =  self::URL_SLUG;
+			return $query_vars;
+		} );
+
+		add_action( 'parse_request', function( &$wp ){
+
+			if (!array_key_exists(  self::URL_SLUG, $wp->query_vars ) ) {
+				return;
+			}
+			self::getICSDownload();
+		});
+	}
 
     /**
      * Adds Model\Booking to Calendar
@@ -114,4 +139,38 @@ class iCalendar{
 
 		return $calendarComponent->__toString();
     }
+
+	/**
+	 * Returns ics download file for current user.
+	 * @return void
+	 */
+	public static function getICSDownload() {
+		$user_id = $_GET["user_id"];
+		$user_hash = $_GET["user_hash"];
+
+		if (commonsbooking_isUIDHashComboCorrect($user_id,$user_hash)){
+
+			$bookingiCal = \CommonsBooking\View\Booking::getBookingListiCal($user_id);
+			if ($bookingiCal) {
+				header('Content-Type: text/calendar; charset=utf-8');
+				header('Content-Disposition: attachment; filename="ical.ics"');
+				echo $bookingiCal;
+			}
+			else {
+				die("Error in retrieving booking list.");
+			}
+
+		}
+		else {
+			if (!$user_id){
+				die("user id missing");
+			}
+			elseif (!$user_hash){
+				die("user hash missing");
+			}
+			else {
+				die("user_id and user_hash mismatch. Authentication failed.");
+			}
+		}
+	}
 }

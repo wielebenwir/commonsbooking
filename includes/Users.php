@@ -283,12 +283,13 @@ function commonsbooking_getCurrentUserCalendarLink() {
 
 	$user_id = wp_get_current_user()->ID;
 	$user_hash = wp_hash($user_id);
-	$script_location = plugin_dir_url(__DIR__) . 'src/iCalendar.php';
+	$script_location = get_site_url() . '/';
 
 	return add_query_arg(
 		array(
 			'user_id' => $user_id,
 			'user_hash' => $user_hash,
+			\CommonsBooking\Service\iCalendar::URL_SLUG => true
 		),
 		$script_location
 	);
