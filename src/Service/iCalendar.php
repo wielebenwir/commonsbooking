@@ -177,8 +177,8 @@ class iCalendar {
 	 */
 	public static function getICSDownload() {
 
-		$user_id = $_GET[self::QUERY_USER];
-		$user_hash = $_GET[self::QUERY_USERHASH];
+		$user_id = intval($_GET[self::QUERY_USER]);
+		$user_hash = strval($_GET[self::QUERY_USERHASH]);
 
 		if (commonsbooking_isUIDHashComboCorrect($user_id,$user_hash)){
 
