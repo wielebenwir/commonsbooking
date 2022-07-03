@@ -15,9 +15,9 @@ use Eluceo\iCal\Domain\ValueObject\Location;
 use Eluceo\iCal\Domain\Entity\Event;
 use Eluceo\iCal\Domain\ValueObject\Date;
 use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
-use Eluceo\iCal\Domain\ValueObject\DateInterval;
 
 use DateTimeImmutable;
+use DateInterval;
 
 /**
  * 
@@ -159,6 +159,7 @@ class iCalendar {
 				header('Content-Type: text/calendar; charset=utf-8');
 				header('Content-Disposition: attachment; filename="ical.ics"');
 				echo $bookingiCal;
+                die();
 			}
 			else {
 				die("Error in retrieving booking list.");

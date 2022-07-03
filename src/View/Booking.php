@@ -3,8 +3,6 @@
 namespace CommonsBooking\View;
 
 
-use DateTime;
-use DateInterval;
 use Exception;
 
 use CommonsBooking\Helper\Wordpress;
