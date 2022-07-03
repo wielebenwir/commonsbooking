@@ -271,35 +271,10 @@ function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ) {
 }
 
 /**
- * Returns a valid link to retrieve iCalendar data for the current user,
- * for this it takes the user id and hashes it using the wp_hash algorithm.
- * This should be relatively secure, since the hash is salted.
- * Returns false when user is not logged in
- *
- * @return string | bool
- */
-function commonsbooking_getCurrentUserCalendarLink() {
-	if (!is_user_logged_in()) { return false;}
-
-	$user_id = wp_get_current_user()->ID;
-	$user_hash = wp_hash($user_id);
-	$script_location = get_site_url() . '/';
-
-	return add_query_arg(
-		array(
-			'user_id' => $user_id,
-			'user_hash' => $user_hash,
-			\CommonsBooking\Service\iCalendar::URL_SLUG => true
-		),
-		$script_location
-	);
-}
-
-/**
  * Checks if the given user_id and user_hash match, generates
  * a new hash from the given user id and checks it against the given hash.
  * 
- * Used by src/Icalendar.php for authentication.
+ * Used by Service\iCalendar for authentication.
  *
  * @return bool
  */

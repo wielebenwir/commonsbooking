@@ -123,7 +123,7 @@ class Booking extends View {
 					$menuitems .= 	'<div id="icallink_text" title="'. commonsbooking_sanitizeHTML( __('Use this link to import the data into your own calendar.')) .'">' .
 										commonsbooking_sanitizeHTML( __('iCalendar Link:', 'commonsbooking')) .
 									'</div>' .
-									'<input type="text" id="icallink" value="' . commonsbooking_getCurrentUserCalendarLink() . '" readonly>'
+									'<input type="text" id="icallink" value="' . iCalendar::getCurrentUserCalendarLink() . '" readonly>'
 									;
 				}
 

@@ -29,6 +29,8 @@ class iCalendar {
     private ?Calendar $calendar;
 
 	public const URL_SLUG = COMMONSBOOKING_PLUGIN_SLUG . '_ical_download';
+    public const QUERY_USER = COMMONSBOOKING_PLUGIN_SLUG . '_user';
+    public const QUERY_USERHASH = COMMONSBOOKING_PLUGIN_SLUG . '_userhash';
 
     public function __construct()
     {
@@ -60,6 +62,31 @@ class iCalendar {
             });
         }
 	}
+
+    /**
+     * Returns a valid link to retrieve iCalendar data for the current user,
+     * for this it takes the user id and hashes it using the wp_hash algorithm.
+     * This should be relatively secure, since the hash is salted.
+     * Returns false when user is not logged in
+     *
+     * @return string | bool
+     */
+    public static function getCurrentUserCalendarLink() {
+        if (!is_user_logged_in()) { return false;}
+
+        $user_id = wp_get_current_user()->ID;
+        $user_hash = wp_hash($user_id);
+        $script_location = get_site_url() . '/';
+
+        return add_query_arg(
+            array(
+                self::QUERY_USER => $user_id,
+                self::QUERY_USERHASH => $user_hash,
+                self::URL_SLUG => true
+            ),
+            $script_location
+        );
+    }
 
     /**
      * Adds Model\Booking to Calendar
@@ -149,8 +176,9 @@ class iCalendar {
 	 * @return void
 	 */
 	public static function getICSDownload() {
-		$user_id = $_GET["user_id"];
-		$user_hash = $_GET["user_hash"];
+
+		$user_id = $_GET[self::QUERY_USER];
+		$user_hash = $_GET[self::QUERY_USERHASH];
 
 		if (commonsbooking_isUIDHashComboCorrect($user_id,$user_hash)){
 
