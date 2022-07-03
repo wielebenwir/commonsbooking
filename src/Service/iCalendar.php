@@ -3,6 +3,7 @@
 namespace CommonsBooking\Service;
 
 use CommonsBooking\Model\Booking;
+use CommonsBooking\Settings\Settings;
 
 use Eluceo\iCal\Domain\Entity\Calendar;
 use Eluceo\iCal\Domain\ValueObject\MultiDay;
@@ -36,25 +37,28 @@ class iCalendar {
 
 	/**
 	 * Registers url to download ics file.
+     * Only enabled, when the Setting is set in the advanced options
 	 * @return void
 	 */
 	public static function initRewrite() {
-		add_action( 'wp_loaded', function (){
-			add_rewrite_rule( self::URL_SLUG, 'index.php?' . self::URL_SLUG. '=1', 'top' );
-		} );
+        if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'feed_enabled' ) == 'on'){
+            add_action( 'wp_loaded', function (){
+                add_rewrite_rule( self::URL_SLUG, 'index.php?' . self::URL_SLUG. '=1', 'top' );
+            } );
 
-		add_filter( 'query_vars', function ( $query_vars ){
-			$query_vars[] =  self::URL_SLUG;
-			return $query_vars;
-		} );
+            add_filter( 'query_vars', function ( $query_vars ){
+                $query_vars[] =  self::URL_SLUG;
+                return $query_vars;
+            } );
 
-		add_action( 'parse_request', function( &$wp ){
+            add_action( 'parse_request', function( &$wp ){
 
-			if (!array_key_exists(  self::URL_SLUG, $wp->query_vars ) ) {
-				return;
-			}
-			self::getICSDownload();
-		});
+                if (!array_key_exists(  self::URL_SLUG, $wp->query_vars ) ) {
+                    return;
+                }
+                self::getICSDownload();
+            });
+        }
 	}
 
     /**
