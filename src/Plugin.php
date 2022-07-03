@@ -22,6 +22,7 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\Options\AdminOptions;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
+use CommonsBooking\Wordpress\User\CBUserFields;
 
 class Plugin {
 
@@ -47,6 +48,7 @@ class Plugin {
 		BookingCodes::initBookingCodesTable();
 
 		self::clearCache();
+
 	}
 
 	protected static function addCPTRoleCaps() {
@@ -451,8 +453,16 @@ class Plugin {
 		$enabled = Settings::getOption('commonsbooking_options_migration', 'enable-cb1-user-fields');
 		if ($enabled == 'on') {
 			new CB1UserFields;
-		}
+   		}
 	}
+
+    /**
+     * Add custom user profile fields
+     */
+    public static function RegisterCustomUserFields() {
+      new CBUserFields;
+    }
+   
 
 	/**
 	 * run actions after plugin options are saved
@@ -495,7 +505,7 @@ class Plugin {
 		// Enable CB1 User Fields (needed in case of migration from cb 0.9.x)
 		add_action('init', array(self::class, 'maybeEnableCB1UserFields'));
 
-		// Register custom post types
+    	// Register custom post types
 		add_action('init', array(self::class, 'registerCustomPostTypes'), 0);
 		add_action('init', array(self::class, 'registerPostStates'), 0);
 
@@ -543,6 +553,9 @@ class Plugin {
 		add_action('in_plugin_update_message-' . COMMONSBOOKING_PLUGIN_BASE, function ($plugin_data) {
 			$this->UpdateNotice(COMMONSBOOKING_VERSION, $plugin_data['new_version']);
 		});
+
+        // Register custom user fields
+        add_action('init', array(self::class, 'RegisterCustomUserFields'));
 
 	}
 

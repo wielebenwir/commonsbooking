@@ -242,6 +242,7 @@ abstract class CustomPostType {
 				}
 
 				$orderby = $query->get( 'orderby' );
+
 				if (
 					strpos( $orderby, 'post_' ) === false &&
 					in_array( $orderby, array_keys( $this->listColumns ) )

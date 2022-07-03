@@ -93,7 +93,14 @@ class Timeframe extends CustomPost {
 		$advanceBookingDays = $this->getMeta( 'timeframe-advance-booking-days' ) ?:
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS;
 
-		// we subtract one day to reflect the current day in calculation
+        // if user has set individual max booking days in advance, we use this value
+        if ( is_user_logged_in() && 
+            get_user_meta( $this->getUserData()->ID, 'user_max_booking_days_advance', true ) >= 0 ) 
+        {
+            $advanceBookingDays = get_user_meta( $this->getUserData()->ID, 'user_max_booking_days_advance', true );
+        }
+
+      	// we subtract one day to reflect the current day in calculation
 		$advanceBookingDays --;
 
 		return strtotime( '+ ' . $advanceBookingDays . ' days', $calculationBase );
