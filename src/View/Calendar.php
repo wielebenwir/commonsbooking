@@ -444,7 +444,7 @@ class Calendar {
 		$lastBookableDate = null
 	): array {
 		$current_user   = wp_get_current_user();
-		$customCacheKey = serialize( $current_user->ID );
+		$customCacheKey = serialize( 'userID_' . $current_user->ID );
 
     		// we calculate the max advance booking days here to prepare the notice string in calender json.
 		if ( $advanceBookingDays == null ) {

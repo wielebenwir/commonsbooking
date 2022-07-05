@@ -31,7 +31,7 @@ register_deactivation_hook(
 function commonsbooking_write_log( $log, $backtrace = true ) {
 
     if (WP_DEBUG_LOG != true ) {
-        return;
+        //return;
     }
 
     if ( is_array( $log ) || is_object( $log ) ) {

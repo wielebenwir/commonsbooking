@@ -25,6 +25,7 @@ trait Cache {
 			return false;
 		}
 
+        
 		try {
 			/** @var CacheItem $cacheItem */
 			$cacheKey  = self::getCacheId( $custom_id );
