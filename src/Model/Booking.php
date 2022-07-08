@@ -257,6 +257,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 		$date_start = date_i18n( $date_format, $repetitionStart );
 		$time_start = date_i18n( $time_format, $repetitionStart );
+		$time_end = date_i18n( $time_format, $repetitionStart );
 
 		$grid     = $this->getMeta( 'grid' );
 		$full_day = $this->getMeta( 'full-day' );
@@ -266,8 +267,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		if ( $grid == 0 ) { // if grid is set to slot duration
-			$time_end = date_i18n( $time_format, $repetitionStart );
-
 			// If we have the grid size, we use it to calculate right time end
 			$timeframeGridSize = $this->getMeta( self::START_TIMEFRAME_GRIDSIZE );
 			if ( $timeframeGridSize ) {
@@ -297,6 +296,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 		$date_end = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
 		$time_end = date_i18n( $time_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
+		$time_start = date_i18n( $time_format, strtotime( $this->getMeta( 'start-time' ) ) );
 
 		$grid     = $this->getMeta( 'grid' );
 		$full_day = $this->getMeta( 'full-day' );
@@ -306,8 +306,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		if ( $grid == 0 ) { // if grid is set to slot duration
-			$time_start = date_i18n( $time_format, strtotime( $this->getMeta( 'start-time' ) ) );
-
 			// If we have the grid size, we use it to calculate right time start
 			$timeframeGridSize = $this->getMeta( self::END_TIMEFRAME_GRIDSIZE );
 			if ( $timeframeGridSize ) {
