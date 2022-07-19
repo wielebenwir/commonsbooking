@@ -10,6 +10,7 @@ use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Service\Cache;
+use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
@@ -47,6 +48,13 @@ class Plugin {
 		BookingCodes::initBookingCodesTable();
 
 		self::clearCache();
+	}
+
+	/**
+	 * Plugin deactivation tasks.
+	 */
+	public static function deactivation() {
+		do_action(Scheduler::UNSCHEDULER_HOOK);
 	}
 
 	protected static function addCPTRoleCaps() {
