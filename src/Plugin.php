@@ -225,6 +225,10 @@ class Plugin {
 
 			// Clear cache
 			self::clearCache();
+
+			//unschedules deprecated cronjobs
+			Scheduler::unscheduleOldEvents();
+			
 		}
 	}
 
@@ -515,6 +519,9 @@ class Plugin {
 
 		// Register custom post types taxonomy / categories
 		add_action('init', array(self::class, 'registerLocationTaxonomy'), 30);
+
+		//loads the Scheduler
+		add_action('init', array(Scheduler::class, 'initHooks') );
 
 		// admin init tasks
 		add_action('admin_init', array(self::class, 'admin_init'), 30);
