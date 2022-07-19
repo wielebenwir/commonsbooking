@@ -1034,10 +1034,10 @@ The team</p>', 'commonsbooking' ) ),
 	),
 	/* Tab: export end */
 
-	/* Tab: meta data set start */
-	'metadata'     => array(
-		'title'        => __( 'Meta Data-Sets', 'commonsbooking' ),
-		'id'           => 'custom_metadata',
+	/* Tab: advanced options start */
+	'advanced-options'     => array(
+		'title'        => __( 'Advanced Options', 'commonsbooking' ),
+		'id'           => 'advanced-options',
 		'field_groups' => array(
 			'custom_metadata' => array(
 				'title'  => esc_html__( 'Set Custom metadata to locations and items', 'commonsbooking' ),
@@ -1055,7 +1055,40 @@ The team</p>', 'commonsbooking' ) ),
 					),
 				]
 			),
+			'icalfeed' => array(
+				'title' => esc_html__( 'iCalendar Feed', 'commonsbooking' ),
+				'desc'	=> commonsbooking_sanitizeHTML( __('Enables users to copy a url for a dynamic iCalendar feed into their own digital calendars. This feature is experimental.',
+				 'commonsbooking')),
+				'id'	=> 'icalendar_group',
+				'fields'=> [
+					array(
+						'name' => esc_html__( 'Enable iCalendar feed', 'commonsbooking' ),
+						'id'   => 'feed_enabled',
+						'type' => 'checkbox',
+					),
+					array(
+						'name'	=> esc_html__( 'Event title', 'commonsbooking'),
+						'desc'	=> esc_html__( 'You can use template tags here as well', 'commonsbooking'),
+						'default'       => commonsbooking_sanitizeHTML( __( '{{item:post_title}} at {{location:post_title}}',
+						'commonsbooking' ) ),
+						'id'	=> 'event_title',
+						'type'	=> 'text',
+					),
+					array(
+						'name'	=> esc_html__( 'Event description', 'commonsbooking'),
+						'desc'	=> esc_html__( 'You can use template tags here as well', 'commonsbooking'),
+						'default'       => commonsbooking_sanitizeHTML( __( '
+Pick up: {{booking:pickupDatetime}}
+Return date: {{booking:returnDatetime}}
+{{location:formattedPickupInstructions}}
+{{booking:formattedBookingCode}} ',
+						'commonsbooking' ) ),
+						'id'	=> 'event_desc',
+						'type'	=> 'textarea',
+					)
+				]
+			),
 		),
 	),
-	/* Tab: meta data end */
+	/* Tab: advanced options end */
 );

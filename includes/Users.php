@@ -20,8 +20,25 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
 		return false;
 	}
 	$current_user = wp_get_current_user();
-	$isAuthor     = intval( $current_user->ID ) == intval( $post->post_author );
-	$isAdmin      = commonsbooking_isCurrentUserAdmin();
+
+	return commonsbooking_isUserAllowedToEdit($post,$current_user);
+}
+
+/**
+ * Checks if user is allowed to edit custom post.
+ *
+ * @param $post
+ * @param $user
+ *
+ * @return bool
+ */
+function commonsbooking_isUserAllowedToEdit( $post, $user): bool {
+	if ( ! $post ) {
+		return false;
+	}
+
+	$isAuthor     = intval( $user->ID ) == intval( $post->post_author );
+	$isAdmin      = commonsbooking_isUserAdmin($user);
 	$isAllowed    = $isAdmin || $isAuthor;
 
 	// Check if it is the main query and one of our custom post types
@@ -83,8 +100,8 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
 			$admins = get_post_meta( $post->ID, '_' . $post->post_type . '_admins', true );
 		}
 
-		$isAllowed = ( is_string( $admins ) && $current_user->ID === $admins ) ||
-		             ( is_array( $admins ) && in_array( $current_user->ID . '', $admins, true ) );
+		$isAllowed = ( is_string( $admins ) && $user->ID === $admins ) ||
+		             ( is_array( $admins ) && in_array( $user->ID . '', $admins, true ) );
 	}
 
 	return $isAllowed;
@@ -211,6 +228,11 @@ function commonsbooking_isCurrentUserAdmin() {
 	return apply_filters( 'commonsbooking_isCurrentUserAdmin', in_array( 'administrator', $user->roles ), $user );
 }
 
+// Check if user has admin role
+function commonsbooking_isUserAdmin($user) {
+	return apply_filters( 'commonsbooking_isUserAdmin', in_array( 'administrator', $user->roles ), $user );
+}
+
 // Check if current user has subscriber role
 function commonsbooking_isCurrentUserSubscriber() {
 	$user = wp_get_current_user();
@@ -246,4 +268,21 @@ function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ) {
 	$match = array_intersect( $user_roles, $allowedUserRoles );
 
 	return count( $match ) > 0;
+}
+
+/**
+ * Checks if the given user_id and user_hash match, generates
+ * a new hash from the given user id and checks it against the given hash.
+ * 
+ * Used by Service\iCalendar for authentication.
+ *
+ * @return bool
+ */
+function commonsbooking_isUIDHashComboCorrect( $user_id, $user_hash){
+	if (wp_hash($user_id) == $user_hash) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }

@@ -87,8 +87,8 @@ class Booking extends Timeframe {
 
 					// checks if it's an edit, but ignores exact start/end time
 					$isEdit = count($existingBookings) === 1 &&
-						$existingBookings[0]->getPost()->post_name === $requestedPostname &&
-						$existingBookings[0]->getPost()->post_author == get_current_user_id();
+						array_values($existingBookings)[0]->getPost()->post_name === $requestedPostname &&
+			            array_values($existingBookings)[0]->getPost()->post_author == get_current_user_id();
 
 					if( (!$isEdit || count($existingBookings) > 1) && $post_status != 'canceled' ) {
 						throw new Exception( 'There is already a booking in this timerange.' );

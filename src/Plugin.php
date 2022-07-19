@@ -11,6 +11,7 @@ use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Service\Cache;
 use CommonsBooking\Service\Scheduler;
+use CommonsBooking\Service\iCalendar;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
@@ -558,6 +559,9 @@ class Plugin {
 		add_action('in_plugin_update_message-' . COMMONSBOOKING_PLUGIN_BASE, function ($plugin_data) {
 			$this->UpdateNotice(COMMONSBOOKING_VERSION, $plugin_data['new_version']);
 		});
+
+		// iCal rewrite
+		iCalendar::initRewrite();
 
 	}
 
