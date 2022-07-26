@@ -49,7 +49,14 @@ abstract class View {
 	 */
 	public static function getShortcodeData( $cpt, string $type ): array {
 		$cptData    = [];
-		$timeframes = $cpt->getBookableTimeframes( true );
+		
+		//do not show timeframes when the user has no permission and option is set
+		if ( Settings::getOption( 'commonsbooking_options_templates', 'hide_items_restricted' ) == 'on' ){
+			$timeframes = $cpt->getBookableTimeframesForCurrentUser( true );		
+		}
+		else {
+			$timeframes = $cpt->getBookableTimeframes( true );
+		}
 
 		// sort by start date, to get latest possbible booking date by first timeframe
 		usort( $timeframes, function ( $a, $b ) {
