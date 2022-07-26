@@ -81,7 +81,7 @@ class Map extends CustomPostType {
 	 * load all timeframes from db (that end in the future and it's item's status is 'publish')
 	 **/
 	public static function get_timeframes() {
-		$timeframes = Timeframe::getBookableForCurrentUser(
+		$timeframes = Timeframe::getBookable(
 			[],
 			[],
 			false,
@@ -220,7 +220,7 @@ class Map extends CustomPostType {
 
 
 				$timeframesData = [];
-				$timeframes     = Timeframe::getBookableForCurrentUser(
+				$timeframes     = Timeframe::getBookable(
 					[ $post->ID ],
 					[ $item->ID ],
 					null,

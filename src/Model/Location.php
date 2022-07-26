@@ -23,7 +23,7 @@ class Location extends BookablePost {
 	 */
 	public function getBookableTimeframesByItem( $itemId, bool $asModel = false ): array {
 		// get bookable timeframes that has min timestamp = now
-		return Timeframe::getBookableForCurrentUser(
+		return Timeframe::getBookable(
 			[ $this->ID ],
 			[ $itemId ],
 			null,
