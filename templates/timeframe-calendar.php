@@ -9,6 +9,9 @@
 
     global $templateData;
 
+$restrictedBookingText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'item-booking-restricted' );
+
+
     // we check if template is used not used in backend ...
 if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] != true ) {
     do_action( 'commonsbooking_before_timeframe-calendar' );
@@ -125,6 +128,13 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
 			// get Calendar Data
 			$calendarData = json_decode( $templateData['calendar_data'] );
             commonsbooking_get_template_part( 'calendar', 'key' ); // file: calendar-key.php
+            if ($calendarData->hasRoleRestriction){
+                ?>
+                <div class="cb-notice">
+                    <?php echo commonsbooking_sanitizeHTML( $restrictedBookingText );?>
+                </div>
+            <?php
+            }
             // translators: %1$s is a number of days
             echo sprintf( commonsbooking_sanitizeHTML( __( 'Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend).', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->maxDays ) );
             ?>

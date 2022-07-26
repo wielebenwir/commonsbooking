@@ -5037,6 +5037,10 @@
 .cb-wrapper .cb-notice-small.cb-status-not-available {
   color: var(--commonsbooking-color-error);
 }
+/* line 38, ../sass/partials/_notice.scss */
+.cb-wrapper .cb-notice-small.cb-status-restricted-booking {
+  color: var(--commonsbooking-color-warning);
+}
 
 /* Styles for items table */
 /**

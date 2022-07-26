@@ -13,6 +13,9 @@ use CommonsBooking\Settings\Settings;
 
 $button_label = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'label-booking-button');
 $permalink    = add_query_arg ( 'cb-location', $location->ID, get_the_permalink($item->ID) ); // booking link set to item detail page with location ID
+
+$hasRoleRestriction = $data['rolerestriction'] == 'true';
+$restrictedBookingText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'item-booking-restricted' );
 ?>
 
 <?php echo commonsbooking_sanitizeHTML($location->thumbnail('cb_listing_small')); // div.thumbnail is printed by function ?>
@@ -25,6 +28,12 @@ $permalink    = add_query_arg ( 'cb-location', $location->ID, get_the_permalink(
             <?php echo commonsbooking_sanitizeHTML($location->post_title); ?>
         </a>
     </h4>
+    <?php if ($hasRoleRestriction) {?>
+        <div class="cb-status cb-availability-status cb-status-restricted-booking cb-notice-small">
+            <?php echo commonsbooking_sanitizeHTML( $restrictedBookingText );?>
+        </div>
+    <?php }
+    ?>
     <div class="cb-dates cb-timeframe-dates">
         <?php
             if(

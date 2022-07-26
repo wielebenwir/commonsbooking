@@ -35,5 +35,8 @@
 		&.cb-status-not-available {
 			color: var(--commonsbooking-color-error);
 		}
+		&.cb-status-restricted-booking {
+			color: var(--commonsbooking-color-warning);
+		}
 	 }
 }
