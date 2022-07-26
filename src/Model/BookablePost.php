@@ -27,6 +27,45 @@ class BookablePost extends CustomPost {
 	): array {
 		$bookableTimeframes = [];
 		if ( get_called_class() == Location::class ) {
+			$bookableTimeframes = Timeframe::getBookable(
+				[ $this->ID ],
+				$items,
+				$this->getDate() ?: $date,
+				$asModel,
+				Helper::getLastFullHourTimestamp()
+			);
+
+		}
+		if ( get_called_class() == Item::class ) {
+			$bookableTimeframes = Timeframe::getBookable(
+				$locations,
+				[ $this->ID ],
+				$this->getDate() ?: $date,
+				$asModel,
+				Helper::getLastFullHourTimestamp()
+			);
+		}
+
+		return $bookableTimeframes;
+	}
+
+	/**
+	 * @param false $asModel
+	 * @param array $locations
+	 * @param array $items
+	 * @param string|null $date
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public function getBookableTimeframesForCurrentUser(
+		bool $asModel = true,
+		array $locations = [],
+		array $items = [],
+		?string $date = null
+	): array {
+		$bookableTimeframes = [];
+		if ( get_called_class() == Location::class ) {
 			$bookableTimeframes = Timeframe::getBookableForCurrentUser(
 				[ $this->ID ],
 				$items,

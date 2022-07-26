@@ -342,13 +342,14 @@ class Calendar {
 		$endDate            = new Day( $endDateString );
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
-		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
+		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookable(
 			[ $location ],
 			[ $item ],
 			null,
 			true,
 			Helper::getLastFullHourTimestamp()
 		);
+		$hasRoleRestriction = false;
 
 		if ( count( $bookableTimeframes ) ) {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday( $bookableTimeframes );
@@ -383,9 +384,16 @@ class Calendar {
 				$endDateString = date( 'Y-m-d', $endDateTimestamp );
 				$endDate       = new Day( $endDateString );
 			}
+
+			//checks timeframe for role restrictions
+			foreach ($bookableTimeframes as $bookableTimeframe){
+				if ($bookableTimeframe->isRoleRestrictedForCurrentUser()){
+					$hasRoleRestriction = true;
+				}
+			}
 		}
 
-		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays, $lastBookableDate );
+		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays, $lastBookableDate, $hasRoleRestriction );
 	}
 
 	/**
@@ -441,7 +449,8 @@ class Calendar {
 		array $locations,
 		array $items,
 		$advanceBookingDays = null,
-		$lastBookableDate = null
+		$lastBookableDate = null,
+		$hasRoleRestriction = false
 	): array {
 		$current_user   = wp_get_current_user();
 		$customCacheKey = serialize( $current_user->roles );
@@ -477,7 +486,8 @@ class Calendar {
 				'highlightedDays'         => [],
 				'maxDays'                 => null,
 				'disallowLockDaysInRange' => true,
-				'advanceBookingDays'      => $advanceBookingDays
+				'advanceBookingDays'      => $advanceBookingDays,
+				'hasRoleRestriction'	  => $hasRoleRestriction
 			];
 
 			if ( count( $locations ) === 1 ) {

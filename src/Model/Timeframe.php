@@ -655,6 +655,10 @@ class Timeframe extends CustomPost {
 		return \CommonsBooking\Wordpress\CustomPostType\Timeframe::isLocked( self::getPost() );
 	}
 
+	public function isRoleRestrictedForCurrentUser(): bool {
+		return \CommonsBooking\Wordpress\CustomPostType\Timeframe::isRoleRestrictedForCurrentUser( self::getPost() );
+	}
+
 	/**
 	 * @return array|string[]
 	 * @throws Exception

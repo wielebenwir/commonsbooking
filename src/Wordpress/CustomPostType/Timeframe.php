@@ -184,7 +184,7 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-	 * Returns true if frame is overbookable.
+	 * Returns true if timeframe is overbookable.
 	 *
 	 * @param WP_Post $timeframe
 	 *
@@ -200,6 +200,17 @@ class Timeframe extends CustomPostType {
 	 */
 	public static function getView() {
 		// @TODO implement view.
+	}
+
+	/**
+	 * Returns true if timeframe can not be booked by current user with their privileges 
+	 *
+	 * @param WP_Post $timeframe
+	 *
+	 * @return bool
+	 */
+	public static function isRoleRestrictedForCurrentUser( WP_Post $timeframe ) {
+		return ! commonsbooking_isCurrentUserAllowedToBook($timeframe->ID); //when the item can be booked by the current user, no restriction is active for them
 	}
 
     

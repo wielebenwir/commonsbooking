@@ -78,9 +78,21 @@ abstract class View {
 				continue;
 			}
 
+			if ( $timeframe->isRoleRestrictedForCurrentUser() ){
+				$roleRestriction = 'true';
+			}
+			else {
+				if ( array_key_exists( $item->ID, $cptData) && ( $cptData[ $item->ID ]['rolerestriction']== 'true' ) ){ //do not overwrite value if it is alreadyset to true
+					$roleRestriction = 'true';
+				} 
+				else {
+					$roleRestriction = 'false';
+				}
+			}
 			// Init Ranges array for new item in array
 			if ( ! array_key_exists( $item->ID, $cptData ) ) {
 				$cptData[ $item->ID ] = [
+					'rolerestriction' => $roleRestriction,
 					'ranges' => [
 						[
 							'start_date' => $timeframe->getStartDate(),
@@ -94,6 +106,7 @@ abstract class View {
 				$timeframeStartDate = $timeframe->getStartDate();
 				$timeframeEndDate   = $timeframe->getEndDate();
 
+				$cptData[ $item->ID]['rolerestriction'] = $roleRestriction;
 				foreach ( $cptData[ $item->ID ]['ranges'] as $key => $range ) {
 					// Check if Timeframe overlaps or differs max. 1 day with existing one.
 					$overlaps =
