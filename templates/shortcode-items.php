@@ -15,12 +15,9 @@
 global $templateData;
 $item = new \CommonsBooking\Model\Item($templateData['item']);
 $hasTimeFrames = (array_key_exists('data', $templateData) && count($templateData['data']));
-$isRoleRestricted = (array_key_exists('data', $templateData));
 
 // the item-not-available message (if item ist currently not available) can be defined via plugin options -> message templates
 $noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'item-not-available' );
-$restrictedItemText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'item-booking-restricted' );
-
 
 ?>
 <div class="cb-list-header">
