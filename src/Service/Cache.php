@@ -39,6 +39,8 @@ trait Cache {
 
 	/**
 	 * Returns cache id, based on calling class, function and args.
+     * 
+     * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
 	 *
 	 * @param null $custom_id
 	 *
@@ -47,7 +49,8 @@ trait Cache {
 	public static function getCacheId( $custom_id = null ): string {
 		$backtrace     = debug_backtrace()[2];
 		$backtrace     = self::sanitizeArgsArray( $backtrace );
-		$namespace     = str_replace( '\\', '_', strtolower( $backtrace['class'] ) );
+        $namespace     = COMMONSBOOKING_PLUGIN_DIR;
+		$namespace     .= '_' . str_replace( '\\', '_', strtolower( $backtrace['class'] ) );
 		$namespace     .= '_' . $backtrace['function'];
 		$backtraceArgs = $backtrace['args'];
 		$namespace     .= '_' . serialize( $backtraceArgs );

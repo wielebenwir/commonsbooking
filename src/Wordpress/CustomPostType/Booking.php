@@ -44,8 +44,9 @@ class Booking extends Timeframe {
 			$itemId     = isset( $_REQUEST['item-id'] ) && $_REQUEST['item-id'] != "" ? sanitize_text_field( $_REQUEST['item-id'] ) : null;
 			$locationId = isset( $_REQUEST['location-id'] ) && $_REQUEST['location-id'] != "" ? sanitize_text_field( $_REQUEST['location-id'] ) : null;
 			$comment    = isset( $_REQUEST['comment'] ) && $_REQUEST['comment'] != "" ? sanitize_text_field( $_REQUEST['comment'] ) : null;
+            $post_status = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] != "" ? sanitize_text_field( $_REQUEST['post_status'] ) : null;
 
-			if ( ! get_post( $itemId ) ) {
+ 			if ( ! get_post( $itemId ) ) {
 				throw new Exception( 'Item does not exist. (' . $itemId . ')' );
 			}
 			if ( ! get_post( $locationId ) ) {
@@ -78,7 +79,9 @@ class Booking extends Timeframe {
 						$startDate,
 						$endDate,
 						$locationId,
-						$itemId
+						$itemId,
+						[],
+						['confirmed']
 					)
 			) {
 				if(count($existingBookings) > 0 ) {
@@ -86,10 +89,10 @@ class Booking extends Timeframe {
 
 					// checks if it's an edit, but ignores exact start/end time
 					$isEdit = count($existingBookings) === 1 &&
-						$existingBookings[0]->getPost()->post_name === $requestedPostname &&
-						$existingBookings[0]->getPost()->post_author == get_current_user_id();
+						array_values($existingBookings)[0]->getPost()->post_name === $requestedPostname &&
+						array_values($existingBookings)[0]->getPost()->post_author == get_current_user_id();
 
-					if(!$isEdit || count($existingBookings) > 1) {
+					if( (!$isEdit || count($existingBookings) > 1) && $post_status != 'canceled' ) {
 						throw new Exception( 'There is already a booking in this timerange.' );
 					}
 				}
