@@ -74,7 +74,7 @@ abstract class View {
 			$item = $timeframe->{'get' . $type}();
 
 			// We need only published items
-			if ( $item->post_status !== 'publish' ) {
+			if ( !$item || $item->post_status !== 'publish' ) {
 				continue;
 			}
 
