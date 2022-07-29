@@ -625,11 +625,13 @@ class Timeframe extends CustomPost {
 	 */
 	public function getEndTimeDateTime( $endDateString = null ): DateTime {
 		$endTimeString = $this->getMeta( 'end-time' );
-		$endDate       = Wordpress::getUTCDateTimeByTimestamp( $endDateString );
+		$endDate = Wordpress::getUTCDateTime();
 
 		if ( $endTimeString ) {
 			$endTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $endTimeString ) );
 			$endDate->setTime( $endTime->format( 'H' ), $endTime->format( 'i' ) );
+		} else {
+			$endDate = Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 		}
 
 		return $endDate;
