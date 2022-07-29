@@ -26,8 +26,7 @@ class Scheduler {
 		// Add custom cron intervals
 		add_filter( 'cron_schedules', array( self::class, 'initIntervals' ) );
 
-		$jobhook = COMMONSBOOKING_PLUGIN_SLUG . '_' .$jobhook; //Prepends plugin slug so that hooks can be found easily afterwards 
-		$this->jobhook = $jobhook;
+		$this->jobhook = COMMONSBOOKING_PLUGIN_SLUG . '_' .$jobhook; //Prepends plugin slug so that hooks can be found easily afterwards 
 
 		if ($option && Settings::getOption($option[0],$option[1]) != 'on' ) { //removes job if option unset
 			$this->unscheduleJob();
@@ -35,12 +34,12 @@ class Scheduler {
 		}
 
 		if (empty($executionTime)){
-			$timestamp = time();
+			$this->timestamp = time();
 		} 
 		elseif ($reccurence == 'daily'){
-			$timestamp = strtotime($executionTime);
-			if($timestamp < time()) { //if timestamp is in the past, add one day
-				$timestamp = strtotime("+1 day",$timestamp);
+			$this->timestamp = strtotime($executionTime);
+			if($this->timestamp < time()) { //if timestamp is in the past, add one day
+				$this->timestamp = strtotime("+1 day",$this->timestamp);
 			}
 		}
 		else {
@@ -51,10 +50,10 @@ class Scheduler {
 		$this->timestamp = $timestamp;
 		$this->reccurence = $reccurence;
 
-		add_action($jobhook,$callback); //attaches the jobhook to the callback function
+		add_action($this->jobhook,$callback); //attaches the jobhook to the callback function
 
-		if (! wp_next_scheduled( $jobhook )){ //add job if it does not exist yet
-			wp_schedule_event($timestamp,$reccurence,$jobhook);
+		if (! wp_next_scheduled( $this->jobhook )){ //add job if it does not exist yet
+			wp_schedule_event($this->timestamp,$this->reccurence,$this->jobhook);
 		}
 
 		if ($updateHook) { //attach updateHook to updater function
