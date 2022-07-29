@@ -28,7 +28,7 @@ class Scheduler {
 
 		$this->jobhook = COMMONSBOOKING_PLUGIN_SLUG . '_' .$jobhook; //Prepends plugin slug so that hooks can be found easily afterwards 
 
-		if ($option && Settings::getOption($option[0],$option[1]) != 'on' ) { //removes job if option unset
+		if ((count($option) == 2)  && Settings::getOption($option[0],$option[1]) != 'on' ) { //removes job if option unset
 			$this->unscheduleJob();
 			return false;
 		}
