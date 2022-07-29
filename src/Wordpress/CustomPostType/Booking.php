@@ -54,8 +54,10 @@ class Booking extends Timeframe {
 			}
 
 			$startDate = null;
-			if ( isset( $_REQUEST['repetition-start'] ) && $_REQUEST['repetition-start'] != "" ) {
-				$startDate = sanitize_text_field( $_REQUEST['repetition-start'] );
+			if ( isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] ) &&
+			     $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] != ""
+			) {
+				$startDate = sanitize_text_field( $_REQUEST[\CommonsBooking\Model\Timeframe::REPETITION_START] );
 			}
 
 			$endDate = null;
@@ -118,11 +120,11 @@ class Booking extends Timeframe {
 			if ( empty( $booking ) ) {
 				$postarr['post_name']  = Helper::generateRandomString();
 				$postarr['meta_input'] = [
-					'location-id'      => $locationId,
-					'item-id'          => $itemId,
-					'repetition-start' => $startDate,
-					'repetition-end'   => $endDate,
-					'type'             => Timeframe::BOOKING_ID
+					\CommonsBooking\Model\Timeframe::META_LOCATION_ID => $locationId,
+					\CommonsBooking\Model\Timeframe::META_ITEM_ID     => $itemId,
+					\CommonsBooking\Model\Timeframe::REPETITION_START => $startDate,
+					\CommonsBooking\Model\Timeframe::REPETITION_END   => $endDate,
+					'type'                                            => Timeframe::BOOKING_ID
 				];
 				$postId                = wp_insert_post( $postarr, true );
 				// Existing booking
@@ -191,10 +193,10 @@ class Booking extends Timeframe {
 
 			// Check if its an admin edit
 			$requestKeys    = [
-				"item-id",
-				"location-id",
-				"repetition-start",
-				"repetition-end"
+				\CommonsBooking\Model\Timeframe::META_ITEM_ID,
+				\CommonsBooking\Model\Timeframe::META_LOCATION_ID,
+				\CommonsBooking\Model\Timeframe::REPETITION_START,
+				\CommonsBooking\Model\Timeframe::REPETITION_END
 			];
 			$intersectCount = count( array_intersect( $requestKeys, array_keys( $_REQUEST ) ) );
 			if ( $intersectCount < count( $requestKeys ) ) {
@@ -202,15 +204,15 @@ class Booking extends Timeframe {
 			}
 
 			// prepare needed params
-			$itemId          = sanitize_text_field( $_REQUEST["item-id"] );
-			$locationId      = sanitize_text_field( $_REQUEST["location-id"] );
-			$repetitionStart = sanitize_text_field( $_REQUEST["repetition-start"] );
+			$itemId          = sanitize_text_field( $_REQUEST[\CommonsBooking\Model\Timeframe::META_ITEM_ID] );
+			$locationId      = sanitize_text_field( $_REQUEST[\CommonsBooking\Model\Timeframe::META_LOCATION_ID] );
+			$repetitionStart = sanitize_text_field( $_REQUEST[\CommonsBooking\Model\Timeframe::REPETITION_START] );
 			if ( is_array( $repetitionStart ) ) {
 				$repetitionStart = strtotime( $repetitionStart['date'] . " " . $repetitionStart['time'] );
 			} else {
 				$repetitionStart = intval( $repetitionStart );
 			}
-			$repetitionEnd = sanitize_text_field( $_REQUEST["repetition-end"] );
+			$repetitionEnd = sanitize_text_field( $_REQUEST[\CommonsBooking\Model\Timeframe::REPETITION_END] );
 			if ( is_array( $repetitionEnd ) ) {
 				$repetitionEnd = strtotime( $repetitionEnd['date'] . " " . $repetitionEnd['time'] );
 			} else {
@@ -606,7 +608,7 @@ class Booking extends Timeframe {
 			array(
 				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
 				'desc'        => esc_html__( 'Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking' ),
-				'id'          => "repetition-start",
+				'id'          => \CommonsBooking\Model\Timeframe::REPETITION_START,
 				'type'        => 'text_datetime_timestamp',
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,

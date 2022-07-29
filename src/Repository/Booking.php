@@ -182,12 +182,12 @@ class Booking extends PostRepository {
 					'compare' => '=',
 				),
 				array(
-					'key'     => 'location-id',
+					'key'     => \CommonsBooking\Model\Timeframe::META_LOCATION_ID,
 					'value'   => $locationId,
 					'compare' => '=',
 				),
 				array(
-					'key'     => 'item-id',
+					'key'     => \CommonsBooking\Model\Timeframe::META_ITEM_ID,
 					'value'   => $itemId,
 					'compare' => '=',
 				),
