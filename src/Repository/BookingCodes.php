@@ -34,8 +34,8 @@ class BookingCodes {
 			return Plugin::getCacheItem();
 		} else {
 
-			$startDate = date( 'Y-m-d', intval( get_post_meta( $timeframeId, 'repetition-start', true ) ) );
-			$endDate   = date( 'Y-m-d', intval( get_post_meta( $timeframeId, 'repetition-end', true ) ) );
+			$startDate = date( 'Y-m-d', intval( get_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::REPETITION_START, true ) ) );
+			$endDate   = date( 'Y-m-d', intval( get_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::REPETITION_END, true ) ) );
 
 			global $wpdb;
 			$table_name = $wpdb->prefix . self::$tablename;

@@ -113,13 +113,13 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @throws Exception
 	 */
 	public function getBookableTimeFrame(): ?\CommonsBooking\Model\Timeframe {
-		$locationId = $this->getMeta( 'location-id' );
-		$itemId     = $this->getMeta( 'item-id' );
+		$locationId = $this->getMeta( \CommonsBooking\Model\Timeframe::META_LOCATION_ID );
+		$itemId     = $this->getMeta( \CommonsBooking\Model\Timeframe::META_ITEM_ID );
 
 		$response = Timeframe::getBookable(
 			[ $locationId ],
 			[ $itemId ],
-			date( CB::getInternalDateFormat(), intval( $this->getMeta( 'repetition-start' ) ) ),
+			date( CB::getInternalDateFormat(), intval( $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) ) ),
 			true
 		);
 
@@ -167,7 +167,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 				$timeframe->ID,
 				$this->getItem()->ID,
 				$this->getLocation()->ID,
-				date( 'Y-m-d', $this->getMeta( 'repetition-start' ) )
+				date( 'Y-m-d', $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) )
 			);
 
 			// only add booking code if the booking is based on a full day timeframe
@@ -190,7 +190,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 */
 	private function sanitizeTimeField( $fieldName ): string {
 		$time       = Wordpress::getUTCDateTime();
-		$fieldValue = $this->getMeta( 'repetition-start' );
+		$fieldValue = $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START );
 		if ( $fieldName == 'end-time' ) {
 			$fieldValue = $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END );
 		}
@@ -232,7 +232,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function formattedBookingDate(): string {
 		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 
-		$startdate = date_i18n( $date_format, $this->getMeta( 'repetition-start' ) );
+		$startdate = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) );
 		$enddate   = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
 
 		if ( $startdate == $enddate ) {
