@@ -68,7 +68,7 @@ class Day {
 	 * @throws Exception
 	 */
 	public function getDateObject(): DateTime {
-		return new DateTime( $this->getDate() );
+		return Wordpress::getUTCDateTime( $this->getDate() );
 	}
 
 	/**

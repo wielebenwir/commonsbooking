@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Helper\Wordpress;
 use DateTime;
 use Exception;
 
@@ -585,10 +586,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function getStartDateDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
-		$startDate       = new DateTime();
-		$startDate->setTimestamp( $startDateString );
-
-		return $startDate;
+		return Wordpress::getUTCDateTimeByTimestamp($startDateString);
 	}
 
 	/**
@@ -599,13 +597,10 @@ class Timeframe extends CustomPost {
 	public function getStartTimeDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
 		$startTimeString = $this->getMeta( 'start-time' );
-		$startDate       = new DateTime();
-		$startDate->setTimestamp( $startDateString );
+		$startDate       = Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		if ( $startTimeString ) {
-			$startTime = new DateTime();
-			$startTime->setTimestamp( strtotime( $startTimeString ) );
+			$startTime = Wordpress::getUTCDateTimeByTimestamp(strtotime( $startTimeString ));
 			$startDate->setTime( $startTime->format( 'H' ), $startTime->format( 'i' ) );
-			#$startDate->setTimezone(wp_timezone()); #1023
 		}
 
 		return $startDate;
@@ -618,10 +613,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function getEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
-		$endDate       = new DateTime();
-		$endDate->setTimestamp( $endDateString );
-
-		return $endDate;
+		return Wordpress::getUTCDateTimeByTimestamp($endDateString);
 	}
 
 	/**
@@ -633,15 +625,11 @@ class Timeframe extends CustomPost {
 	 */
 	public function getEndTimeDateTime( $endDateString = null ): DateTime {
 		$endTimeString = $this->getMeta( 'end-time' );
-		$endDate       = new DateTime();
+		$endDate       = Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 
 		if ( $endTimeString ) {
-			$endTime = new DateTime();
-			$endTime->setTimestamp( strtotime( $endTimeString ) );
+			$endTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $endTimeString ) );
 			$endDate->setTime( $endTime->format( 'H' ), $endTime->format( 'i' ) );
-			#$endDate->setTimezone(wp_timezone()); #1023
-		} else {
-			$endDate->setTimestamp( $endDateString );
 		}
 
 		return $endDate;

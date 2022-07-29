@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Map;
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Wordpress\CustomPostType\Map;
 use DateTime;
 
@@ -83,7 +84,7 @@ class MapShortcode {
 
 					$map_height = MapAdmin::get_option( $cb_map_id, 'map_height' );
 
-					return '<div id="cb-map-' . esc_attr($cb_map_id) . '" class="cb-wrapper cb-leaflet-map" style="width: 100%; height: ' . esc_attr($map_height) . 'px;"></div>';
+					return '<div id="cb-map-' . esc_attr( $cb_map_id ) . '" class="cb-wrapper cb-leaflet-map" style="width: 100%; height: ' . esc_attr( $map_height ) . 'px;"></div>';
 
 				} else {
 					return '<div>' . esc_html__( 'map is not published', 'commonsbooking' ) . '</div>';
@@ -102,10 +103,10 @@ class MapShortcode {
 	 * get the settings for the frontend of the map with given id
 	 **/
 	public static function get_settings( $cb_map_id ): array {
-		$date_min           = new DateTime();
+		$date_min           = Wordpress::getUTCDateTime();
 		$date_min           = $date_min->format( 'Y-m-d' );
 		$max_days_in_future = MapAdmin::get_option( $cb_map_id, 'availability_max_days_to_show' );
-		$date_max           = new DateTime( $date_min . ' + ' . $max_days_in_future . ' days' );
+		$date_max           = Wordpress::getUTCDateTime( $date_min . ' + ' . $max_days_in_future . ' days' );
 		$date_max           = $date_max->format( 'Y-m-d' );
 		$maxdays            = MapAdmin::get_option( $cb_map_id, 'availability_max_day_count' );
 
@@ -198,7 +199,7 @@ class MapShortcode {
 				$current_group_id                      = null;
 				foreach ( $options['cb_items_available_categories'] as $categoryKey => $content ) {
 					if ( substr( $categoryKey, 0, 1 ) == 'g' ) {
-						$current_group_id                              = $categoryKey;
+						$current_group_id                                      = $categoryKey;
 						$settings['filter_cb_item_categories'][ $categoryKey ] = [
 							'name'     => $content,
 							'elements' => [],
@@ -237,7 +238,7 @@ class MapShortcode {
 			'AT_LEAST'               => esc_html__( 'for at least', 'commonsbooking' ),
 			'DAYS'                   => esc_html__( 'day(s)', 'commonsbooking' ),
 			'NO_LOCATIONS_MESSAGE'   => strlen( $custom_no_locations_message ) > 0 ? $custom_no_locations_message : esc_html__( 'Sorry, no locations found.', 'commonsbooking' ),
- 			'FILTER'                 => strlen( $custom_filterbutton_label ) > 0 ? $custom_filterbutton_label : esc_html__( 'filter', 'commonsbooking' ),
+			'FILTER'                 => strlen( $custom_filterbutton_label ) > 0 ? $custom_filterbutton_label : esc_html__( 'filter', 'commonsbooking' ),
 			'AVAILABILITY'           => strlen( $label_item_availability_filter ) > 0 ? $label_item_availability_filter : esc_html__( 'availability', 'commonsbooking' ),
 			'CATEGORIES'             => strlen( $label_item_category_filter ) > 0 ? $label_item_category_filter : esc_html__( 'categories', 'commonsbooking' ),
 			'DISTANCE'               => strlen( $label_location_distance_filter ) > 0 ? $label_location_distance_filter : esc_html__( 'distance', 'commonsbooking' ),
@@ -265,7 +266,7 @@ class MapShortcode {
 
 				$attempts ++;
 
-				$last_call_timestamp = commonsbooking_sanitizeHTML(get_option( 'cb_map_last_nominatim_call', 0 ));
+				$last_call_timestamp = commonsbooking_sanitizeHTML( get_option( 'cb_map_last_nominatim_call', 0 ) );
 				$current_timestamp   = time();
 
 				if ( $current_timestamp > $last_call_timestamp + 1 ) {
@@ -328,7 +329,7 @@ class MapShortcode {
 		if ( isset( $_POST['cb_map_id'] ) ) {
 			check_ajax_referer( 'cb_map_locations', 'nonce' );
 
-			$post = get_post( intval( $_POST['cb_map_id'] ));
+			$post = get_post( intval( $_POST['cb_map_id'] ) );
 
 			if ( $post && $post->post_type == 'cb_map' ) {
 				$cb_map_id = $post->ID;
@@ -352,8 +353,8 @@ class MapShortcode {
 			$locations          = Map::get_locations( $cb_map_id, $itemTerms );
 
 			//create availabilities
-			$show_item_availability = MapAdmin::get_option( $cb_map_id, 'show_item_availability' );
-			$show_item_availability_filter = MapAdmin::get_option($cb_map_id, 'show_item_availability_filter');
+			$show_item_availability        = MapAdmin::get_option( $cb_map_id, 'show_item_availability' );
+			$show_item_availability_filter = MapAdmin::get_option( $cb_map_id, 'show_item_availability_filter' );
 
 			if ( $show_item_availability || $show_item_availability_filter ) {
 				$locations = MapItemAvailable::create_items_availabilities(

@@ -7,6 +7,7 @@ use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
+use DateTime;
 use function get_pages;
 
 class Wordpress {
@@ -256,5 +257,32 @@ class Wordpress {
 			);
 		});
 		return $itemsAndLocations;
+	}
+
+	public static function getUTCDateTimeByTimestamp($timestamp) {
+		$dto = new DateTime();
+		$dto->setTimestamp(
+			$timestamp
+		);
+		$dto->setTimezone(new \DateTimeZone('UTC'));
+
+		return $dto;
+	}
+
+	public static function getUTCDateTime($datetime = 'now') {
+		$dto = new DateTime($datetime);
+		$dto->setTimezone(new \DateTimeZone('UTC'));
+
+		return $dto;
+	}
+
+	public static function getLocalDateTime($timestamp) {
+		$dto = new DateTime();
+		$dto->setTimestamp(
+			$timestamp
+		);
+		$dto->setTimezone(new \DateTimeZone(wp_timezone_string()));
+
+		return $dto;
 	}
 }

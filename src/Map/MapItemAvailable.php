@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Map;
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\Day;
 use CommonsBooking\View\Calendar;
 use DateInterval;
@@ -56,8 +57,11 @@ class MapItemAvailable {
 		$startDay = new Day( $date_start );
 		$endDay   = new Day( $date_end );
 
-		$filter_period = new DatePeriod( new DateTime( $date_start ), new DateInterval( 'P1D' ),
-			new DateTime( $date_end . ' +1 day' ) );
+		$filter_period = new DatePeriod(
+			Wordpress::getUTCDateTime( $date_start ),
+			new DateInterval( 'P1D' ),
+			Wordpress::getUTCDateTime( $date_end . ' +1 day' )
+		);
 
 		foreach ( $locations as $location_id => &$location ) {
 			foreach ( $location['items'] as &$item ) {

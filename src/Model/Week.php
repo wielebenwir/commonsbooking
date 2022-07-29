@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use DateTime;
 use Exception;
@@ -70,13 +71,11 @@ class Week {
 		if (Plugin::getCacheItem( $customId ) ) {
 			return Plugin::getCacheItem( $customId );
 		} else {
-			$dto = new DateTime();
+
 			$yearTimestamp = mktime(0,0,0, 1, 1, $this->year);
 			$dayOfYear = $this->dayOfYear;
 			$timestamp = strtotime("+ $dayOfYear days" , $yearTimestamp);
-			$dto->setTimestamp(
-				$timestamp
-			);
+			$dto = Wordpress::getUTCDateTimeByTimestamp($timestamp);
 
 			$days = [];
 			for ( $i = 0; $i < 7; $i ++ ) {

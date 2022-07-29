@@ -4,6 +4,7 @@
 namespace CommonsBooking\Repository;
 
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Plugin;
@@ -151,9 +152,9 @@ class BookingCodes {
 	public static function generate( $timeframeId ): bool {
 		$bookablePost = new \CommonsBooking\Model\Timeframe( $timeframeId );
 
-		$begin = new DateTime();
+		$begin = Wordpress::getUTCDateTime();
 		$begin->setTimestamp( $bookablePost->getStartDate() );
-		$end = new DateTime();
+		$end = Wordpress::getUTCDateTime();
 		$end->setTimestamp( $bookablePost->getRawEndDate() );
 		$end->setTimestamp( $end->getTimestamp() + 1 );
 
