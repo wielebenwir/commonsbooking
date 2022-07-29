@@ -47,7 +47,6 @@ class Scheduler {
 		}
 
 
-		$this->timestamp = $timestamp;
 		$this->reccurence = $reccurence;
 
 		add_action($this->jobhook,$callback); //attaches the jobhook to the callback function
