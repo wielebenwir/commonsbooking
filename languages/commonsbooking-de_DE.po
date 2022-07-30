@@ -2,27 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CommonsBooking\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2022-07-03T08:07:47+00:00\n"
-"PO-Revision-Date: 2022-07-03 10:11+0200\n"
-"Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
+"POT-Creation-Date: 2022-07-30T13:30:13+00:00\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: commonsbooking.php\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2;commonsbooking_sanitizeHTML\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.min.js\n"
-"X-Poedit-SearchPathExcluded-1: vendor\n"
-"X-Poedit-SearchPathExcluded-2: node_modules\n"
+"X-Generator: Poedit 3.1\n"
 
 #. Plugin Name of the plugin
 msgid "Commons Booking"
@@ -337,7 +325,7 @@ msgstr ""
 
 #: includes/OptionsArray.php:237
 msgid "Attach iCalendar file to booking email"
-msgstr "iCalendar Datei anhängen."
+msgstr "iCalendar Datei anhängen"
 
 #: includes/OptionsArray.php:240
 msgid ""
@@ -355,7 +343,7 @@ msgstr "iCalendar Termin Titel"
 msgid "The title of the attached event"
 msgstr "Der Titel des angehängten Termins"
 
-#: includes/OptionsArray.php:247 includes/OptionsArray.php:1072
+#: includes/OptionsArray.php:247 includes/OptionsArray.php:1074
 msgid "{{item:post_title}} at {{location:post_title}}"
 msgstr ""
 "Deine Buchung von {{item:post_name}} am Standort {{location:post_name}}."
@@ -709,8 +697,12 @@ msgid "Breakdown email subject"
 msgstr "Ausfall E-Mail Betreff"
 
 #: includes/OptionsArray.php:571
-msgid "Breakdown of {{item:post_title}}"
-msgstr "Ausfall von {{item:post_title}}"
+msgid ""
+"Breakdown of {{item:post_title}} for your booking {{booking:"
+"formattedBookingDate}}"
+msgstr ""
+"Ausfall von {{item:post_title}} für deine Buchung {{booking:"
+"formattedBookingDate}}"
 
 #: includes/OptionsArray.php:574
 msgid "Breakdown email body"
@@ -718,92 +710,113 @@ msgstr "E-Mail-Text für Ausfall"
 
 #: includes/OptionsArray.php:577
 msgid ""
-"<h2>Hi {{user:first_name}},</h2>\n"
+"<h2>Hello {{user:first_name}},</h2>\n"
 "\n"
-"<p>Unfortunately, the item {{item:post_title}} you booked is damaged and not "
-"usable from {{restriction:formattedStartDateTime}} until {{restriction:"
-"formattedEndDateTime}} expected.\n"
-"</br></br>\n"
-"The reason is:</br>\n"
-"{{restriction:hint}}\n"
-"</br>\n"
-"</br>\n"
-"We had to cancel your booking for this period.  You will receive a "
-"confirmation of the cancellation in a separate email.\n"
-"Please book the item again for another period or check our website to see if "
-"an alternative item is available.\n"
-"</br>\n"
-"We ask for your understanding. \n"
-"</br>\n"
-"Best regards,</br>\n"
-"the team\n"
-"</p>"
+"                        <p>Unfortunately, the article {{item:post_title}} "
+"you booked is no longer usable from {{restriction:formattedStartDateTime}} "
+"to probably {{restriction:formattedEndDateTime}}. <br>The reason is:</"
+"br>{{restriction:hint}}\n"
+"                        </br></br>\n"
+"                        <strong>This affects your booking {{booking:"
+"formattedBookingDate}}</strong></br>\n"
+"                        </br>\n"
+"                        We had to cancel your booking for this period. You "
+"will receive confirmation of the cancellation in a separate email.<br>\n"
+"                        If you have several bookings in the affected period, "
+"you will receive this information e-mail for each booking as well as "
+"separate cancellation information.<br>\n"
+"                        Please book the item again for a different period or "
+"check our website to see if an alternative item is available.<br>We "
+"apologize for any inconvenience.\n"
+"                        </br>Best regards</br>the team</p>"
 msgstr ""
 "<h2>Hallo {{user:first_name}},</h2>\n"
 "\n"
-"<p>Leider ist der von dir gebuchte Artikel {{item:post_title}} beschädigt "
-"und von {{restriction:formattedStartDateTime}} bis voraussichtlich "
-"{{restriction:formattedEndDateTime}} nicht mehr verwendbar. <br>Der Grund "
-"ist:</br>{{restriction:hint}}<br>\n"
-"</br>Wir mussten deine Buchung für diesen Zeitraum stornieren.  Du erhältst "
-"eine Bestätigung der Stornierung in einer separaten E-Mail.\n"
+"<p>Leider ist der von dir gebuchte Artikel {{item:post_title}} von "
+"{{restriction:formattedStartDateTime}} bis voraussichtlich {{restriction:"
+"formattedEndDateTime}} nicht mehr verwendbar. <br>Der Grund ist:\n"
+"</br>{{restriction:hint}}\n"
+"</br></br>\n"
+"<strong>Dies betrifft deine Buchung {{booking:formattedBookingDate}}</"
+"strong></br>\n"
+"</br>\n"
+"Wir mussten deine Buchung für diesen Zeitraum stornieren. Du erhältst eine "
+"Bestätigung der Stornierung in einer separaten E-Mail.<br>\n"
+"Solltest du mehrere Buchungen im betroffenen Zeitraum haben, erhältst du für "
+"jede Buchung diese Informations-E-Mail sowie eine separate Stornierungs-Info."
+"<br>\n"
 "Bitte buche den Artikel erneut für einen anderen Zeitraum oder überprüfe auf "
 "unserer Website, ob ein alternativer Artikel verfügbar ist.<br>Wir bitten um "
 "dein Verständnis.</br>Viele Grüße</br>das Team</p>"
 
-#: includes/OptionsArray.php:597
+#: includes/OptionsArray.php:591
 msgid "Usage restriction email subject"
 msgstr "E-Mail-Betreff der Verwendungseinschränkung"
 
-#: includes/OptionsArray.php:600
-msgid "Restriction of use for {{item:post_title}}"
-msgstr "Nutzungsbeschränkung für {{item:post_title}}"
+#: includes/OptionsArray.php:594
+msgid ""
+"Restriction of use for {{item:post_title}} for your booking {{booking:"
+"formattedBookingDate}}"
+msgstr ""
+"Nutzungsbeschränkung für {{item:post_title}} für deine Buchung {{booking:"
+"formattedBookingDate}}"
 
-#: includes/OptionsArray.php:603
+#: includes/OptionsArray.php:597
 msgid "Restriction email body"
 msgstr "E-Mail-Text für Einschränkung"
 
-#: includes/OptionsArray.php:606
+#: includes/OptionsArray.php:600
 msgid ""
-"<h2>Hi {{user:first_name}},</h2>\n"
-"<p>\n"
-"The item {{item:post_title}} you booked is damaged and will have limited use "
-"from {{restriction:formattedStartDateTime} until probably {{restriction:"
-"formattedEndDateTime}}.\n"
-"</br></br>\n"
-"The reason is:</br>\n"
-"{{restriction:hint}}\n"
-"</br>\n"
-"</br>\n"
-"Please check if you want to continue your booking despite this usage "
-"restriction. \n"
-"If not, we ask you to cancel your booking via the following link:\n"
-"{{booking:BookingLink}} \n"
-"</br>\n"
-"</br>\n"
-"We will do our best to fix the restriction as soon as possible.\n"
-"We will sent you an email when the restriction is fixed.\n"
-"</br>\n"
-"Best regards,</br>\n"
-"the team\n"
-"</p>"
+"<h2>Hello {{user:first_name}},</h2>\n"
+"                        <p>\n"
+"                        The article {{item:post_title}} you booked can only "
+"be used to a limited extent from {{restriction:formattedStartDateTime}} to "
+"probably {{restriction:formattedEndDateTime}}.\n"
+"                        </br></br>\n"
+"                        The reason is:</br>\n"
+"                        {{restriction:hint}}\n"
+"                        </br></br>\n"
+"                        <strong>This affects your booking {{booking:"
+"formattedBookingDate}}</strong><br>\n"
+"                        </br>\n"
+"                        Please check if you want to keep your booking "
+"despite the restrictions. </br>\n"
+"                        If not, please cancel your booking using the "
+"following link:\n"
+"                        {{booking:BookingLink}}\n"
+"                        </br>\n"
+"                        </br>\n"
+"                        If you have several bookings in the affected period, "
+"you will receive this information email for each booking.<br>\n"
+"                        We strive to fix the restriction as soon as "
+"possible.\n"
+"                        You will receive an email when the restriction is "
+"resolved.\n"
+"                        </br>\n"
+"                        Best regards,</br>\n"
+"                        The team\n"
+"                        </p>"
 msgstr ""
 "<h2>Hallo {{user:first_name}},</h2>\n"
 "<p>\n"
-"Der von dir gebuchte Gegenstand {{item:post_title}} ist beschädigt und kann "
-"von {{restriction:formattedStartDateTime}} bis voraussichtlich {{restriction:"
+"Der von dir gebuchte Artikel {{item:post_title}} kann von {{restriction:"
+"formattedStartDateTime}} bis voraussichtlich {{restriction:"
 "formattedEndDateTime}} nur eingeschränkt genutzt werden.\n"
 "</br></br>\n"
 "Der Grund ist:</br>\n"
 "{{restriction:hint}}\n"
-"</br>\n"
+"</br><br>\n"
+"<strong>Dies betrifft deine Buchung {{booking:formattedBookingDate}}</"
+"strong><br>\n"
 "</br>\n"
 "Bitte prüfe, ob du deine Buchung trotz der Einschränkungen beibehalten "
-"möchtest. \n"
+"möchtest. <br>\n"
 "Wenn nicht, storniere bitte deine Buchung über den folgenden Link:\n"
 "{{booking:BookingLink}} \n"
 "</br>\n"
-"</br>\n"
+"<br>\n"
+"Solltest du mehrere Buchungen im betroffenen Zeitraum haben, erhältst du für "
+"jede Buchung diese Informations-E-Mail.<br>\n"
 "Wir bemühen uns, die Einschränkung zu schnell wie möglich zu beheben.\n"
 "Du erhältst eine E-Mail, wenn die Einschränkung behoben ist.\n"
 "</br>\n"
@@ -811,37 +824,55 @@ msgstr ""
 "Das Team\n"
 "</p>"
 
-#: includes/OptionsArray.php:629
+#: includes/OptionsArray.php:625
 msgid "Restriction cancelled subject"
 msgstr "E-Mail-Betreff für Aufhebung der Einschränkung"
 
-#: includes/OptionsArray.php:632
+#: includes/OptionsArray.php:628
 msgid "Restriction for article {{item:post_title}} no longer exists"
 msgstr "Einschränkung für Artikel {{item:post_title}}} ist aufgehoben"
 
-#: includes/OptionsArray.php:635
+#: includes/OptionsArray.php:631
 msgid "Restriction cancelled email body"
 msgstr "E-Mail-Text für Aufhebung der Einschränkung"
 
-#: includes/OptionsArray.php:638
+#: includes/OptionsArray.php:634
 msgid ""
-"<h2>Hi {{user:first_name}},</h2>\n"
-"<p>\n"
-"The item {{item:post_title}} is now fully usable again. \n"
-"</p>"
+"<h2>Hello {{user:first_name}},</h2>\n"
+"                        <p>The article {{item:post_title}} is now fully "
+"usable again.</p>\n"
+"                        <p>This also affects your booking {{booking:"
+"formattedBookingDate}}\n"
+"                        </br>\n"
+"                        </br>Here is the link to your booking: {{booking:"
+"BookingLink}}\n"
+"                        </br>\n"
+"                        </br>\n"
+"                        Best regards,</br>\n"
+"                        The team\n"
+"                        </p>"
 msgstr ""
 "<h2>Hallo {{user:first_name}},</h2>\n"
-"<p>Der Gegenstand {{item:post_title}} ist nun wieder voll nutzbar.</p>"
+"<p>Der Artikel {{item:post_title}} ist nun wieder voll nutzbar.</p>\n"
+"<p>Dies betrifft unter anderem deine Buchung {{booking:"
+"formattedBookingDate}}\n"
+"<br>\n"
+"<br>Hier der Link zu deiner Buchung: {{booking:BookingLink}} \n"
+"</br>\n"
+"<br>\n"
+"Viele Grüße,</br>\n"
+"Das Team\n"
+"</p>"
 
-#: includes/OptionsArray.php:652
+#: includes/OptionsArray.php:654
 msgid "Reminder"
 msgstr "Erinnerung"
 
-#: includes/OptionsArray.php:658
+#: includes/OptionsArray.php:660
 msgid "Booking reminder"
 msgstr "Buchungserinnerung"
 
-#: includes/OptionsArray.php:660
+#: includes/OptionsArray.php:662
 msgid ""
 "You can set here whether users should receive a reminder email before the "
 "start of a booking.<br><a href=\"https://commonsbooking.org/?p=1763\" "
@@ -851,26 +882,26 @@ msgstr ""
 "Erinnerungs-E-Mail erhalten sollen.<br><a href=\"https://commonsbooking.org/?"
 "p=1763\" target=\"_blank\">Weitere Informationen in der Dokumentation</a>"
 
-#: includes/OptionsArray.php:666 includes/OptionsArray.php:763
+#: includes/OptionsArray.php:668 includes/OptionsArray.php:765
 msgid "Activate"
 msgstr "Aktivieren"
 
-#: includes/OptionsArray.php:672 includes/OptionsArray.php:769
+#: includes/OptionsArray.php:674 includes/OptionsArray.php:771
 msgid "E-mail subject"
 msgstr "E-Mail Betreff"
 
-#: includes/OptionsArray.php:675
+#: includes/OptionsArray.php:677
 msgid ""
 "Upcoming booking of {{item:post_title}} {{booking:formattedBookingDate}}"
 msgstr ""
 "Bevorstehende Buchung von {{item:post_title}} {{booking:"
 "formattedBookingDate}}"
 
-#: includes/OptionsArray.php:678 includes/OptionsArray.php:775
+#: includes/OptionsArray.php:680 includes/OptionsArray.php:777
 msgid "email body"
 msgstr "E-Mail-Text"
 
-#: includes/OptionsArray.php:681
+#: includes/OptionsArray.php:683
 msgid ""
 "<h2>Hi {{user:first_name}},</h2>\n"
 "<p>Your booking period for the item {{item:post_title}} will start soon."
@@ -898,11 +929,11 @@ msgstr ""
 "deiner Buchung: {{booking:bookingLink}}<br>Alles Gute\n"
 "das Team</p>"
 
-#: includes/OptionsArray.php:695
+#: includes/OptionsArray.php:697
 msgid "Sent reminder x days before booking start"
 msgstr "Sende eine Erinnerung x Tage vor Buchungsbeginn"
 
-#: includes/OptionsArray.php:697
+#: includes/OptionsArray.php:699
 msgid ""
 "This reminder email will be sent to users x days before the start of the "
 "booking. If the booking is made less days before the specified days, no "
@@ -912,11 +943,11 @@ msgstr ""
 "gesendet. Wenn die Buchung in weniger als den angegebenen Tagen erfolgt, "
 "wird keine Erinnerungs-E-Mail gesendet"
 
-#: includes/OptionsArray.php:711
+#: includes/OptionsArray.php:713
 msgid "Time"
 msgstr "Uhrzeit"
 
-#: includes/OptionsArray.php:713
+#: includes/OptionsArray.php:715
 msgid ""
 "Define when the reminder should be sent. The actual sending may differ from "
 "the defined value by a few hours, depending on how your WordPress is "
@@ -926,11 +957,11 @@ msgstr ""
 "Versand kann um einige Stunden vom definierten Wert abweichen, je nachdem, "
 "wie dein WordPress konfiguriert ist."
 
-#: includes/OptionsArray.php:754
+#: includes/OptionsArray.php:756
 msgid "email after booking has ended"
 msgstr "E-Mail nach Ende der Buchung"
 
-#: includes/OptionsArray.php:756
+#: includes/OptionsArray.php:758
 msgid ""
 "Here you can set whether users should receive an additional e-mail after "
 "completing a booking. This can be used, for example, to inquire about the "
@@ -944,7 +975,7 @@ msgstr ""
 "erkundigen.\n"
 "Die E-Mail wird um Mitternacht nach Buchungsende gesendet."
 
-#: includes/OptionsArray.php:772
+#: includes/OptionsArray.php:774
 msgid ""
 "Your booking of {{item:post_title}} {{booking:formattedBookingDate}} has "
 "ended"
@@ -952,7 +983,7 @@ msgstr ""
 "Deine Buchung von {{item:post_title}} {{booking:formattedBookingDate}} ist "
 "beendet"
 
-#: includes/OptionsArray.php:778
+#: includes/OptionsArray.php:780
 msgid ""
 "<h2>Hi {{user:first_name}},</h2>\n"
 "<p>Your booking of {{item:post_title}} at {{location:post_title}} has ended."
@@ -969,15 +1000,15 @@ msgstr ""
 "<br>Bitte lass uns uns wissen, wenn Probleme aufgetreten sind.<br>\n"
 "<br>Alles Gute<br>Das Team</p>"
 
-#: includes/OptionsArray.php:796
+#: includes/OptionsArray.php:798
 msgid "Migration"
 msgstr "Migration"
 
-#: includes/OptionsArray.php:800
+#: includes/OptionsArray.php:802
 msgid "Migrate from Commons Booking Version 0.X"
 msgstr "Migriere von Commons Booking Version 0.X"
 
-#: includes/OptionsArray.php:802
+#: includes/OptionsArray.php:804
 msgid ""
 "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: "
 "locations, items, timeframes and bookings. <br><span style=\"color:red\">If "
@@ -996,34 +1027,34 @@ msgstr ""
 "target=\"_blank\" href=\"https://commonsbooking.org/?p=434\">Migration von "
 "Version 0.9.x auf 2.x.x.,</a> bevor Du mit der Migration beginnst."
 
-#: includes/OptionsArray.php:805 src/View/Migration.php:69
+#: includes/OptionsArray.php:807 src/View/Migration.php:69
 msgid "Start Migration"
 msgstr "Migration starten"
 
-#: includes/OptionsArray.php:816
+#: includes/OptionsArray.php:818
 msgid "CommonsBooking Version 0.X profile fields"
 msgstr "CommonsBooking Version 0.X Nutzerprofil-Felder"
 
-#: includes/OptionsArray.php:818
+#: includes/OptionsArray.php:820
 msgid ""
 "Enable the following legacy CommonsBooking Version 0.X user profile fields:"
 msgstr ""
 "Aktiviere die folgenden veralteten Nutzer-Profilfelder aus Commons Booking "
 "Version 0.X:"
 
-#: includes/OptionsArray.php:821
+#: includes/OptionsArray.php:823
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: includes/OptionsArray.php:826
+#: includes/OptionsArray.php:828
 msgid "Terms & Services Url"
 msgstr "Nutzungsbedingungen & Services URL"
 
-#: includes/OptionsArray.php:835
+#: includes/OptionsArray.php:837
 msgid "Migrate bookings to new version"
 msgstr "Buchungen auf neue Version migrieren"
 
-#: includes/OptionsArray.php:837
+#: includes/OptionsArray.php:839
 msgid ""
 "Migrate bookings to new format so that they are listed at bookings menu "
 "item. <br><strong>This function is only for special cases during migration. "
@@ -1034,19 +1065,19 @@ msgstr ""
 "Sonderfälle während der Migration. Bitte nur bei Problemen währen der "
 "Migration verwenden. </strong>"
 
-#: includes/OptionsArray.php:840 src/View/Migration.php:103
+#: includes/OptionsArray.php:842 src/View/Migration.php:103
 msgid "Migrate bookings"
 msgstr "Buchungen migrieren"
 
-#: includes/OptionsArray.php:853 includes/OptionsArray.php:907
+#: includes/OptionsArray.php:855 includes/OptionsArray.php:909
 msgid "Export"
 msgstr "Export"
 
-#: includes/OptionsArray.php:857
+#: includes/OptionsArray.php:859
 msgid "Download timeframes export"
 msgstr "Zeitrahmen-Export herunterladen"
 
-#: includes/OptionsArray.php:861
+#: includes/OptionsArray.php:863
 #: src/Wordpress/CustomPostType/Restriction.php:49
 #: src/Wordpress/CustomPostType/Restriction.php:413
 #: src/Wordpress/CustomPostType/Timeframe.php:88
@@ -1054,7 +1085,7 @@ msgstr "Zeitrahmen-Export herunterladen"
 msgid "Type"
 msgstr "Typ"
 
-#: includes/OptionsArray.php:862
+#: includes/OptionsArray.php:864
 msgid ""
 "Select Type of this timeframe (e.g. bookable, repair, holidays, booking). "
 "See Documentation for detailed information."
@@ -1062,11 +1093,11 @@ msgstr ""
 "Wähle den Typ dieses Zeitrahmens (z.B. buchbar, Reparatur, Urlaub, Buchung). "
 "Ausführliche Informationen findest Du in der Dokumentation."
 
-#: includes/OptionsArray.php:868
+#: includes/OptionsArray.php:870
 msgid "Location-Fields"
 msgstr "Standort-Felder"
 
-#: includes/OptionsArray.php:869 includes/OptionsArray.php:876
+#: includes/OptionsArray.php:871 includes/OptionsArray.php:878
 msgid ""
 "Just add field names, no matter if its a post- or a meta-field. Comma "
 "separated list. Beside the standard post fields and standard postmeta-"
@@ -1079,15 +1110,15 @@ msgstr ""
 "Metafelder zur Verfügung. Kopieren nur die Werte in [] in das Feld ohne die "
 "Klammern. %s"
 
-#: includes/OptionsArray.php:875
+#: includes/OptionsArray.php:877
 msgid "Item-Fields"
 msgstr "Artikel-Felder"
 
-#: includes/OptionsArray.php:882
+#: includes/OptionsArray.php:884
 msgid "User-Fields"
 msgstr "User-Felder"
 
-#: includes/OptionsArray.php:883
+#: includes/OptionsArray.php:885
 msgid ""
 "Just add field names, no matter if its a userfield or a meta-field. Comma "
 "separated list."
@@ -1095,47 +1126,47 @@ msgstr ""
 "Fügen Sie einfach Feldnamen hinzu, egal ob es sich um ein Benutzerfeld oder "
 "ein Metafeld handelt. Kommagetrennte Liste."
 
-#: includes/OptionsArray.php:888
+#: includes/OptionsArray.php:890
 msgid "Export start date"
 msgstr "Export Startdatum"
 
-#: includes/OptionsArray.php:898
+#: includes/OptionsArray.php:900
 msgid "Export end date"
 msgstr "Export-Enddatum"
 
-#: includes/OptionsArray.php:915
+#: includes/OptionsArray.php:917
 msgid "Cron settings for timeframes export"
 msgstr "Cron-Einstellungen für den Zeitrahmenexport"
 
-#: includes/OptionsArray.php:919
+#: includes/OptionsArray.php:921
 msgid "Run as cronjob"
 msgstr "Als Cronjob anlegen"
 
-#: includes/OptionsArray.php:924
+#: includes/OptionsArray.php:926
 msgid "Export interval"
 msgstr "Exportintervall"
 
-#: includes/OptionsArray.php:928 includes/OptionsArray.php:929
+#: includes/OptionsArray.php:930 includes/OptionsArray.php:931
 msgid "minutes"
 msgstr "Minuten"
 
-#: includes/OptionsArray.php:930
+#: includes/OptionsArray.php:932
 msgid "daily"
 msgstr "täglich"
 
-#: includes/OptionsArray.php:934
+#: includes/OptionsArray.php:936
 msgid "Export timerange"
 msgstr "Export-Zeitbereich"
 
-#: includes/OptionsArray.php:935
+#: includes/OptionsArray.php:937
 msgid "Export timerange in days."
 msgstr "Exportiere diesen Zeitraum (in Tagen)"
 
-#: includes/OptionsArray.php:944
+#: includes/OptionsArray.php:946
 msgid "Filepath"
 msgstr "Dateipfad"
 
-#: includes/OptionsArray.php:945
+#: includes/OptionsArray.php:947
 msgid ""
 "Absolute path on your webserver (including trailing slash) where export file "
 "will be saved to."
@@ -1143,19 +1174,19 @@ msgstr ""
 "Absoluter Pfad auf deinem Webserver (einschließlich abshließender "
 "Schrägstrich), in dem die Exportdatei gespeichert wird."
 
-#: includes/OptionsArray.php:957
+#: includes/OptionsArray.php:959
 msgid "API"
 msgstr "Schnittstelle"
 
-#: includes/OptionsArray.php:961
+#: includes/OptionsArray.php:963
 msgid "Configure API Access"
 msgstr "Konfigurieren des API-Zugriffs"
 
-#: includes/OptionsArray.php:965
+#: includes/OptionsArray.php:967
 msgid "Activate API"
 msgstr "API aktivieren"
 
-#: includes/OptionsArray.php:966
+#: includes/OptionsArray.php:968
 msgid ""
 "If selected, the API is enabled. See more information in the documentation: "
 "<a target=\"_blank\" href=\"https://commonsbooking.org/docs/schnittstellen-"
@@ -1166,11 +1197,11 @@ msgstr ""
 "commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/\">API-"
 "Dokumentation</a>"
 
-#: includes/OptionsArray.php:971
+#: includes/OptionsArray.php:973
 msgid "Enable API Access without API-Key"
 msgstr "Aktiviert den API-Zugang ohne API-Schlüssel"
 
-#: includes/OptionsArray.php:972
+#: includes/OptionsArray.php:974
 msgid ""
 "If selected, the API is accessible without an API-Key. For details see: <a "
 "target=\"_blank\" href=\"https://commonsbooking.org/docs/schnittstellen-api/"
@@ -1181,11 +1212,11 @@ msgstr ""
 "commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/\">API-"
 "Dokumentation</a>"
 
-#: includes/OptionsArray.php:979
+#: includes/OptionsArray.php:981
 msgid "API shares"
 msgstr "API Freigaben"
 
-#: includes/OptionsArray.php:980
+#: includes/OptionsArray.php:982
 msgid ""
 "You can define on ore more API shares. Read the documentation for more "
 "information about API shares and configuration <a target=\"_blank\" "
@@ -1197,27 +1228,27 @@ msgstr ""
 "target=\"_blank\" href=\"https://commonsbooking.org/docs/schnittstellen-api/"
 "commonsbooking-api/\">API-Dokumentation</a>"
 
-#: includes/OptionsArray.php:994
+#: includes/OptionsArray.php:996
 msgid "API name"
 msgstr "Schnittstellen Name"
 
-#: includes/OptionsArray.php:995
+#: includes/OptionsArray.php:997
 msgid "Internal name for this API share"
 msgstr "Interner Name für diese API-Freigabe"
 
-#: includes/OptionsArray.php:1000
+#: includes/OptionsArray.php:1002
 msgid "API enabled"
 msgstr "Schnitstelle aktiviert"
 
-#: includes/OptionsArray.php:1001
+#: includes/OptionsArray.php:1003
 msgid "If checked this API share is enabled"
 msgstr "Wenn ausgewählt, ist diese API-Freigabe aktiviert"
 
-#: includes/OptionsArray.php:1006
+#: includes/OptionsArray.php:1008
 msgid "Push URL"
 msgstr "Push URL"
 
-#: includes/OptionsArray.php:1007
+#: includes/OptionsArray.php:1009
 msgid ""
 "URL that gets push information everytime there was a change on "
 "CommonsBooking data"
@@ -1225,11 +1256,11 @@ msgstr ""
 "URL, welche eine Push-Information bekommt, sobald es Änderungen den "
 "CommonsBooking Daten gibt"
 
-#: includes/OptionsArray.php:1012
+#: includes/OptionsArray.php:1014
 msgid "API Key"
 msgstr "API Schlüssel"
 
-#: includes/OptionsArray.php:1015
+#: includes/OptionsArray.php:1017
 msgid ""
 " You must set an API-Key. The API key should consist of alphanumeric "
 "characters and be at least 24 characters long."
@@ -1237,11 +1268,11 @@ msgstr ""
 " Du musst einen API-Key setzen. Der API-Schlüssel sollte aus "
 "alphanumerischen Zeichen bestehen und mindestens 24 Zeichen lang sein."
 
-#: includes/OptionsArray.php:1018
+#: includes/OptionsArray.php:1020
 msgid "API Owner"
 msgstr "API-Besitzer"
 
-#: includes/OptionsArray.php:1019
+#: includes/OptionsArray.php:1021
 msgid ""
 "The owner value is provided by the API. It is set to the blog name by "
 "default in this version. In future versions you may be able to change this "
@@ -1251,15 +1282,15 @@ msgstr ""
 "standardmäßig der Blogname festgelegt. In zukünftigen Versionen können diese "
 "Informationen möglicherweise selbst geändert werden"
 
-#: includes/OptionsArray.php:1039
+#: includes/OptionsArray.php:1041
 msgid "Advanced Options"
 msgstr "Erweiterte Optionen"
 
-#: includes/OptionsArray.php:1043
+#: includes/OptionsArray.php:1045
 msgid "Set Custom metadata to locations and items"
 msgstr "Festlegen von benutzerdefinierten Metadaten für Standorte und Artikel"
 
-#: includes/OptionsArray.php:1044
+#: includes/OptionsArray.php:1046
 msgid ""
 "This is an advanced feature and should only be used if you are experienced "
 "or instructed how to set it up properly. In future versions we will add more "
@@ -1270,11 +1301,11 @@ msgstr ""
 "Versionen werden wir detailliertere Informationen und Dokumentationen "
 "hinzufügen."
 
-#: includes/OptionsArray.php:1050
+#: includes/OptionsArray.php:1052
 msgid "Meta Data"
 msgstr "Metadaten"
 
-#: includes/OptionsArray.php:1051
+#: includes/OptionsArray.php:1053
 msgid ""
 "Use only this format, separated by semicolon and each entry in a new line: "
 "<br>post_type(item/location);field-name;label(english),type(checkbox,number,"
@@ -1288,11 +1319,11 @@ msgstr ""
 "wasserdicht; Wasserdichtes Material;Checkbox;\" Dieser Artikel ist "
 "wasserdicht und kann bei starkem Regen verwendet werden\" "
 
-#: includes/OptionsArray.php:1059
+#: includes/OptionsArray.php:1061
 msgid "iCalendar Feed"
 msgstr "iCalendar Feed"
 
-#: includes/OptionsArray.php:1060
+#: includes/OptionsArray.php:1062
 msgid ""
 "Enables users to copy a url for a dynamic iCalendar feed into their own "
 "digital calendars. This feature is experimental."
@@ -1300,23 +1331,23 @@ msgstr ""
 "Erlaubt Nutzenden eine URL für einen dynamischen iCalendar in ihre eigenen "
 "digitalen Kalender zu kopieren. Dieses Feature ist experimentell."
 
-#: includes/OptionsArray.php:1065
+#: includes/OptionsArray.php:1067
 msgid "Enable iCalendar feed"
-msgstr "iCalendar Feed aktivieren."
+msgstr "iCalendar Feed aktivieren"
 
-#: includes/OptionsArray.php:1070
+#: includes/OptionsArray.php:1072
 msgid "Event title"
 msgstr "Termin Titel"
 
-#: includes/OptionsArray.php:1071 includes/OptionsArray.php:1079
+#: includes/OptionsArray.php:1073 includes/OptionsArray.php:1081
 msgid "You can use template tags here as well"
 msgstr "Hier können auch Template Tags verwendet werden"
 
-#: includes/OptionsArray.php:1078
+#: includes/OptionsArray.php:1080
 msgid "Event description"
 msgstr "Terminbeschreibung"
 
-#: includes/OptionsArray.php:1080
+#: includes/OptionsArray.php:1082
 msgid ""
 "\n"
 "Pick up: {{booking:pickupDatetime}}\n"
@@ -3851,8 +3882,67 @@ msgstr ""
 "Zeitrahmeneinstellungen überprüfen möchtest, gehe auf die Seite des Artikels "
 "oder Standort im Frontend, um den Buchungskalender zu sehen"
 
-#~ msgid "Meta Data-Sets"
-#~ msgstr "Metadaten-Sets"
+#~ msgid "Breakdown of {{item:post_title}}"
+#~ msgstr "Ausfall von {{item:post_title}}"
+
+#~ msgid "Restriction of use for {{item:post_title}}"
+#~ msgstr "Nutzungsbeschränkung für {{item:post_title}}"
+
+#~ msgid ""
+#~ "<h2>Hi {{user:first_name}},</h2>\n"
+#~ "<p>\n"
+#~ "The item {{item:post_title}} you booked is damaged and will have limited "
+#~ "use from {{restriction:formattedStartDateTime} until probably "
+#~ "{{restriction:formattedEndDateTime}}.\n"
+#~ "</br></br>\n"
+#~ "The reason is:</br>\n"
+#~ "{{restriction:hint}}\n"
+#~ "</br>\n"
+#~ "</br>\n"
+#~ "Please check if you want to continue your booking despite this usage "
+#~ "restriction. \n"
+#~ "If not, we ask you to cancel your booking via the following link:\n"
+#~ "{{booking:BookingLink}} \n"
+#~ "</br>\n"
+#~ "</br>\n"
+#~ "We will do our best to fix the restriction as soon as possible.\n"
+#~ "We will sent you an email when the restriction is fixed.\n"
+#~ "</br>\n"
+#~ "Best regards,</br>\n"
+#~ "the team\n"
+#~ "</p>"
+#~ msgstr ""
+#~ "<h2>Hallo {{user:first_name}},</h2>\n"
+#~ "<p>\n"
+#~ "Der von dir gebuchte Gegenstand {{item:post_title}} ist beschädigt und "
+#~ "kann von {{restriction:formattedStartDateTime}} bis voraussichtlich "
+#~ "{{restriction:formattedEndDateTime}} nur eingeschränkt genutzt werden.\n"
+#~ "</br></br>\n"
+#~ "Der Grund ist:</br>\n"
+#~ "{{restriction:hint}}\n"
+#~ "</br>\n"
+#~ "</br>\n"
+#~ "Bitte prüfe, ob du deine Buchung trotz der Einschränkungen beibehalten "
+#~ "möchtest. \n"
+#~ "Wenn nicht, storniere bitte deine Buchung über den folgenden Link:\n"
+#~ "{{booking:BookingLink}} \n"
+#~ "</br>\n"
+#~ "</br>\n"
+#~ "Wir bemühen uns, die Einschränkung zu schnell wie möglich zu beheben.\n"
+#~ "Du erhältst eine E-Mail, wenn die Einschränkung behoben ist.\n"
+#~ "</br>\n"
+#~ "Viele Grüße,</br>\n"
+#~ "Das Team\n"
+#~ "</p>"
+
+#~ msgid ""
+#~ "<h2>Hi {{user:first_name}},</h2>\n"
+#~ "<p>\n"
+#~ "The item {{item:post_title}} is now fully usable again. \n"
+#~ "</p>"
+#~ msgstr ""
+#~ "<h2>Hallo {{user:first_name}},</h2>\n"
+#~ "<p>Der Gegenstand {{item:post_title}} ist nun wieder voll nutzbar.</p>"
 
 #~ msgid "Repair"
 #~ msgstr "Reparatur"
