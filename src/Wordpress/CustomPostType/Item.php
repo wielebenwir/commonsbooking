@@ -4,6 +4,7 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\Settings\Settings;
+use CommonsBooking\View\Admin\Filter;
 
 class Item extends CustomPostType {
 
@@ -22,8 +23,31 @@ class Item extends CustomPostType {
 		// Listing of locations for item
 		add_shortcode( 'cb_locations', array( \CommonsBooking\View\Location::class, 'shortcode' ) );
 
+		//Add filter to backend list view
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminCategoryFilter' ) );
+
 		// Filter only for current user allowed posts
 		add_action( 'pre_get_posts', array( $this, 'filterAdminList' ) );
+	}
+
+	/**
+	 * Adds Category filter to backend list view
+	 * 
+	 */
+	public static function addAdminCategoryFilter() {
+		$values = [];
+		$terms = get_terms(array(
+			'taxonomy'	=> self::$postType . 's_category'
+		));
+		foreach ( $terms as $term ) {
+			$values[ $term->term_id ] = $term->name;
+		}
+		Filter::renderFilter(
+			static::$postType,
+			esc_html__( 'Filter By Category ', 'commonsbooking' ),
+			'filter_post_category',
+			$values
+		);
 	}
 
 	/**
@@ -51,6 +75,19 @@ class Item extends CustomPostType {
 					}
 				);
 				$query->query_vars['post__in'] = $items;
+			}
+
+			if (
+				isset( $_GET['admin_filter_post_category'] ) &&
+				$_GET['admin_filter_post_category'] != ''
+			) {
+				$query->query_vars['tax_query'] = array(
+						array(
+						'taxonomy'	=>	self::$postType . 's_category',
+						'field'		=>	'term_id',
+						'terms'		=>	$_GET['admin_filter_post_category']
+						)
+				);
 			}
 		}
 	}

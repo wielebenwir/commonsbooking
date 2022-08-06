@@ -7,6 +7,7 @@ use CommonsBooking\View\View;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Repository\UserRepository;
+use CommonsBooking\View\Admin\Filter;
 
 class Location extends CustomPostType {
 
@@ -21,6 +22,9 @@ class Location extends CustomPostType {
 
 		// Listing of items for location
 		add_shortcode( 'cb_items', array( \CommonsBooking\View\Item::class, 'shortcode' ) );
+
+		//Add filter to backend list view
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminCategoryFilter' ) );
 
 		// Filter only for current user allowed posts
 		add_action( 'pre_get_posts', array( $this, 'filterAdminList' ) );
@@ -37,6 +41,26 @@ class Location extends CustomPostType {
 			$location = new \CommonsBooking\Model\Location( intval( $post_id ) );
 			$location->updateGeoLocation();
 		}
+	}
+
+	/**
+	 * Adds Category filter to backend list view
+	 * 
+	 */
+	public static function addAdminCategoryFilter() {
+		$values = [];
+		$terms = get_terms(array(
+			'taxonomy'	=> self::$postType . 's_category'
+		));
+		foreach ( $terms as $term ) {
+			$values[ $term->term_id ] = $term->name;
+		}
+		Filter::renderFilter(
+			static::$postType,
+			esc_html__( 'Filter By Category ', 'commonsbooking' ),
+			'filter_post_category',
+			$values
+		);
 	}
 
 	/**
@@ -65,6 +89,19 @@ class Location extends CustomPostType {
 				);
 
 				$query->query_vars['post__in'] = $locations;
+			}
+
+			if (
+				isset( $_GET['admin_filter_post_category'] ) &&
+				$_GET['admin_filter_post_category'] != ''
+			) {
+				$query->query_vars['tax_query'] = array(
+						array(
+						'taxonomy'	=>	self::$postType . 's_category',
+						'field'		=>	'term_id',
+						'terms'		=>	$_GET['admin_filter_post_category']
+						)
+				);
 			}
 		}
 	}
