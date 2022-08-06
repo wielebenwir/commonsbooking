@@ -6,7 +6,6 @@ use WP_Post;
 use Exception;
 use CommonsBooking\View\Calendar;
 use CommonsBooking\View\Admin\Filter;
-use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\UserRepository;
 

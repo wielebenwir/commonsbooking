@@ -3,9 +3,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\View\Map;
-use CommonsBooking\View\View;
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\View\Admin\Filter;
 
