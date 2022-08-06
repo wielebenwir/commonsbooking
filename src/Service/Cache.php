@@ -5,6 +5,7 @@ namespace CommonsBooking\Service;
 use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\View\Calendar;
 use CommonsBooking\Settings\Settings;
+use Exception;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
@@ -98,17 +99,21 @@ trait Cache {
 	 */
 	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ): TagAwareAdapterInterface {
 		if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled') =='on'){
-			$adapter = new RedisTagAwareAdapter(
+			try {
+				$adapter = new RedisTagAwareAdapter(
 					RedisAdapter::createConnection(Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn')),
 					$namespace,
 					$defaultLifetime
-			);
+				);
+				return $adapter;
+			}
+			catch (Exception $e) {
+				commonsbooking_write_log($e . 'Falling back to Filesystem adapter');
+			}
 		}
-		else {
-			$adapter = new TagAwareAdapter(
-				new FilesystemAdapter( $namespace, $defaultLifetime, $directory )
-			);
-		}
+		$adapter = new TagAwareAdapter(
+			new FilesystemAdapter( $namespace, $defaultLifetime, $directory )
+		);
 		return $adapter;
 	}
 
