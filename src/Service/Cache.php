@@ -6,6 +6,7 @@ use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\View\Calendar;
 use CommonsBooking\Settings\Settings;
 use Exception;
+use CMB2_Field;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
@@ -109,6 +110,7 @@ trait Cache {
 			}
 			catch (Exception $e) {
 				commonsbooking_write_log($e . 'Falling back to Filesystem adapter');
+				set_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error',$e->getMessage());
 			}
 		}
 		$adapter = new TagAwareAdapter(
@@ -247,7 +249,43 @@ trait Cache {
 	}
 
 	/**
-	 * Iterates throudh array and executes shortcodecalls.
+     * Renders little connections status information for REDIS database
+	 * @param array $field_args
+	 * @param CMB2_Field $field
+	 */
+	public static function renderREDISConnectionStatus( array $field_args, CMB2_Field $field ){
+		?>
+		<div class="cmb-row cmb-type-text table-layout">
+			<div class="cmb-th">
+				Connection status:
+			</div>
+			<div class="cmb-th">
+				<?php
+				if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled') =='on'){
+					if (is_a(self::getCache(),'Symfony\Component\Cache\Adapter\RedisTagAwareAdapter')){
+						echo '<div style="color:green">';
+							echo __('Successfully connected to REDIS database!', 'commonsbooking');
+						echo '</div>';
+					}
+					else {
+						echo '<div style="color:red">';
+							echo get_transient(COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error');
+						echo '</div>';
+					}
+				}
+				else {
+					echo '<div style="color:orange">';
+						echo __('REDIS database not enabled','commonsbooking');
+					echo '</div>';
+				}
+				?>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Iterates through array and executes shortcodecalls.
 	 * @param $shortCodeCalls
 	 *
 	 * @return void

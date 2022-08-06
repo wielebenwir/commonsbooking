@@ -10,6 +10,7 @@ use CommonsBooking\View\TimeframeExport;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
+use CommonsBooking\Service\Cache;
 
 // We need static types, because german month names dont't work for datepicker
 $dateFormat = "d/m/Y";
@@ -1107,6 +1108,12 @@ Return date: {{booking:returnDatetime}}
 						'type' => 'text',
 						'default' => 'redis://localhost:6379'
 					),
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Current connections status', 'commonsbooking' ) ),
+						'id'            => 'redis_connection-status',
+						'type'          => 'text',
+						'render_row_cb' => array( Cache::class, 'renderREDISConnectionStatus' ),
+					)
 				)
 			),
 		),
