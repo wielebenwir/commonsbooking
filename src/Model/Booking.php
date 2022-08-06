@@ -5,12 +5,16 @@ namespace CommonsBooking\Model;
 
 use DateTime;
 use Exception;
+
 use CommonsBooking\CB\CB;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Repository\BookingCodes;
+use CommonsBooking\Service\iCalendar;
+use DateTimeImmutable;
+use DateInterval;
 
 class Booking extends \CommonsBooking\Model\Timeframe {
 
@@ -108,13 +112,13 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @throws Exception
 	 */
 	public function getBookableTimeFrame(): ?\CommonsBooking\Model\Timeframe {
-		$locationId = $this->getMeta( 'location-id' );
-		$itemId     = $this->getMeta( 'item-id' );
+		$locationId = $this->getMeta( \CommonsBooking\Model\Timeframe::META_LOCATION_ID );
+		$itemId     = $this->getMeta( \CommonsBooking\Model\Timeframe::META_ITEM_ID );
 
 		$response = Timeframe::getBookable(
 			[ $locationId ],
 			[ $itemId ],
-			date( CB::getInternalDateFormat(), intval( $this->getMeta( 'repetition-start' ) ) ),
+			date( CB::getInternalDateFormat(), intval( $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) ) ),
 			true
 		);
 
@@ -162,7 +166,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 				$timeframe->ID,
 				$this->getItem()->ID,
 				$this->getLocation()->ID,
-				date( 'Y-m-d', $this->getMeta( 'repetition-start' ) )
+				date( 'Y-m-d', $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) )
 			);
 
 			// only add booking code if the booking is based on a full day timeframe
@@ -185,7 +189,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 */
 	private function sanitizeTimeField( $fieldName ): string {
 		$time       = new DateTime();
-		$fieldValue = $this->getMeta( 'repetition-start' );
+		$fieldValue = $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START );
 		if ( $fieldName == 'end-time' ) {
 			$fieldValue = $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END );
 		}
@@ -227,7 +231,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function formattedBookingDate(): string {
 		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 
-		$startdate = date_i18n( $date_format, $this->getMeta( 'repetition-start' ) );
+		$startdate = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) );
 		$enddate   = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
 
 		if ( $startdate == $enddate ) {
@@ -253,10 +257,11 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
 
-		$repetitionStart = $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START );
+		$repetitionStart = $this->getStartDate();
 
 		$date_start = date_i18n( $date_format, $repetitionStart );
 		$time_start = date_i18n( $time_format, $repetitionStart );
+		$time_end = date_i18n( $time_format, $repetitionStart );
 
 		$grid     = $this->getMeta( 'grid' );
 		$full_day = $this->getMeta( 'full-day' );
@@ -266,8 +271,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		if ( $grid == 0 ) { // if grid is set to slot duration
-			$time_end = date_i18n( $time_format, $repetitionStart );
-
 			// If we have the grid size, we use it to calculate right time end
 			$timeframeGridSize = $this->getMeta( self::START_TIMEFRAME_GRIDSIZE );
 			if ( $timeframeGridSize ) {
@@ -283,7 +286,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * pickupDatetime
+	 * returnDatetime
 	 *
 	 * renders the return date and time information and returns a formatted string
 	 * this is used in templates/booking-single.php and in email-templates (configuration via admin options)
@@ -297,6 +300,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 		$date_end = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
 		$time_end = date_i18n( $time_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
+		$time_start = date_i18n( $time_format, strtotime( $this->getMeta( 'start-time' ) ) );
 
 		$grid     = $this->getMeta( 'grid' );
 		$full_day = $this->getMeta( 'full-day' );
@@ -306,8 +310,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		if ( $grid == 0 ) { // if grid is set to slot duration
-			$time_start = date_i18n( $time_format, strtotime( $this->getMeta( 'start-time' ) ) );
-
 			// If we have the grid size, we use it to calculate right time start
 			$timeframeGridSize = $this->getMeta( self::END_TIMEFRAME_GRIDSIZE );
 			if ( $timeframeGridSize ) {
@@ -323,7 +325,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	public function getStartDate() {
-		return $this->getMeta( 'repetition-start' );
+		return $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START );
 	}
 
 	public function getEndDate() {
@@ -403,7 +405,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return bool
 	 */
 	public function isCancelled(): bool {
-		return ( $this->post_status === 'canceled' ? : false );
+		return ( $this->post_status == 'canceled' ? : false );
 	}
 
 	/**
@@ -412,11 +414,19 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return bool
 	 */
 	public function isPast(): bool {
-		if ( $this->getMeta( 'repetition-end' ) < current_time( 'timestamp' ) ) {
+		if ( $this->getEndDate() < current_time( 'timestamp' ) ) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
+	public function getiCal(
+		String $eventTitle,
+		String $eventDescription
+	): String {
+		$calendar = new iCalendar();
+		$calendar->addBookingEvent($this,$eventTitle,$eventDescription);
+		return $calendar->getCalendarData();
+	}
 }

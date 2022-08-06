@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\Model;
 
-
 use CommonsBooking\Messages\RestrictionMessage;
 use DateTime;
 
@@ -43,6 +42,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns post id, for array_unique.
+     *
 	 * @return string
 	 */
 	public function __toString(): string {
@@ -80,25 +80,28 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns true if there is set an enddate
+     *
 	 * @return bool
 	 */
 	public function hasEnddate() {
-		return $this->getMeta( self::META_END ) !== "";
+		return $this->getMeta( self::META_END ) !== '';
 	}
 
 	/**
 	 * Returns end timestamp. Of no enddate is set it retunrs a date far in the future.
+     *
 	 * @return int Timestamp
 	 */
 	public function getEndDate(): int {
 		// Set a far in the future date if enddate isn't set
-		$metaEndDate = $this->getMeta( self::META_END ) !== "" ? $this->getMeta( self::META_END ) : self::NO_END_TIMESTAMP;
+		$metaEndDate = $this->getMeta( self::META_END ) !== '' ? $this->getMeta( self::META_END ) : self::NO_END_TIMESTAMP;
 
 		return intval( $metaEndDate );
 	}
 
 	/**
 	 * Returns true if restriction isn't active.
+     *
 	 * @return bool
 	 */
 	public function isOverBookable(): bool {
@@ -107,12 +110,12 @@ class Restriction extends CustomPost {
 
 
 	/**
-	 * returns true if restriction is active
+	 * Returns true if restriction is active
 	 *
 	 * @return bool
 	 */
 	public function isActive(): bool {
-		if ( $this->active == null ) {
+		if ( $this->active === null ) {
 			$this->active = $this->getMeta( self::META_STATE ) === self::STATE_ACTIVE ?: false;
 		}
 
@@ -122,7 +125,7 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns true if restriction ist active.
 	 * TODO this function seems unused in restriction context. Check if it can be removed @markus-mw
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function isLocked(): bool {
@@ -131,6 +134,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns restriction hint.
+     *
 	 * @return mixed
 	 */
 	public function getHint() {
@@ -139,6 +143,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns nicely formatted start datetime.
+     *
 	 * @return string
 	 */
 	public function getFormattedStartDateTime() {
@@ -161,6 +166,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns nicely formatted end datetime.
+     *
 	 * @return string
 	 */
 	public function getFormattedEndDateTime() {
@@ -183,6 +189,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns item name.
+     *
 	 * @return string
 	 */
 	public function getItemName(): string {
@@ -197,6 +204,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns itemId
+     *
 	 * @return mixed
 	 */
 	public function getItemId() {
@@ -205,6 +213,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns location name.
+     *
 	 * @return string
 	 */
 	public function getLocationName(): string {
@@ -219,6 +228,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns location id.
+     *
 	 * @return mixed
 	 */
 	public function getLocationId() {
@@ -233,10 +243,14 @@ class Restriction extends CustomPost {
 		if ( $this->isActive() ) {
 			$bookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
 			if ( $bookings ) {
+                // send restriction mails to all affected bookings
+                $this->sendRestrictionMails( $bookings );
+
+                // cancel all affected booking
 				if ( $this->isActive() && $this->getType() == self::TYPE_REPAIR ) {
 					$this->cancelBookings( $bookings );
 				}
-				$this->sendRestrictionMails( $bookings );
+				
 			}
 		}
 
@@ -251,6 +265,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns restriction type.
+     *
 	 * @return mixed
 	 */
 	public function getType() {
@@ -260,7 +275,7 @@ class Restriction extends CustomPost {
 	/**
 	 * Cancels bookings if restriction is active and of type repair.
 	 *
-	 * @param $bookings
+	 * @param Booking[] $bookings booking post objects.
 	 */
 	protected function cancelBookings( $bookings ) {
 		foreach ( $bookings as $booking ) {
@@ -269,29 +284,29 @@ class Restriction extends CustomPost {
 	}
 
 	/**
-	 * Send mails regarding item/location admins and booked timeslots.
+	 * Send restriction mails regarding item/location admins and booked timeslots.
 	 *
-	 * @param Booking[]
+	 * @param Booking[] $bookings booking post objects.
 	 */
 	protected function sendRestrictionMails( $bookings ) {
-		$userIds = [];
 
 		foreach ( $bookings as $booking ) {
-			// User IDs from booking
-			$userIds[] = $booking->getUserData()->ID;
+			// get User ID from booking
+			$userId = $booking->getUserData()->ID;
 
-			foreach ( $userIds as $userId ) {
-				$hintMail = new RestrictionMessage( $this, get_userdata( $userId ), $booking, $this->getType() );
-				$hintMail->triggerMail();
-			}
-		}
-	}
+            // send restriction message for each booking 
+            $hintMail = new RestrictionMessage( $this, get_userdata( $userId ), $booking, $this->getType() );
+            $hintMail->triggerMail();
+        }
+    }
 
 	/**
+     * Returns true if a restriction status in cancelled
+     *
 	 * @return bool
 	 */
 	public function isCancelled(): bool {
-		if ( $this->canceled == null ) {
+		if ( $this->canceled === null ) {
 			$this->canceled = $this->getMeta( self::META_STATE ) === self::STATE_SOLVED ?: false;
 		}
 

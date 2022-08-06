@@ -166,7 +166,7 @@ class Booking extends PostRepository {
 			'meta_query'  => array(
 				'relation' => "AND",
 				array(
-					'key'     => 'repetition-start',
+					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_START,
 					'value'   => $startDateTimestamp,
 					'compare' => '=',
 					'type'    => 'numeric',
@@ -182,12 +182,12 @@ class Booking extends PostRepository {
 					'compare' => '=',
 				),
 				array(
-					'key'     => 'location-id',
+					'key'     => \CommonsBooking\Model\Timeframe::META_LOCATION_ID,
 					'value'   => $locationId,
 					'compare' => '=',
 				),
 				array(
-					'key'     => 'item-id',
+					'key'     => \CommonsBooking\Model\Timeframe::META_ITEM_ID,
 					'value'   => $itemId,
 					'compare' => '=',
 				),
@@ -305,7 +305,7 @@ class Booking extends PostRepository {
 	}
 
 	/**
-	 * Returns all bookings, allowed to see/edit for current user.
+	 * Returns all bookings, allowed to see/edit for user.
 	 *
 	 * @param bool $asModel
 	 * @param null $startDate
@@ -313,13 +313,8 @@ class Booking extends PostRepository {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getForCurrentUser( bool $asModel = false, $startDate = null ): array {
-		if ( ! is_user_logged_in() ) {
-			return [];
-		}
-
-		$current_user = wp_get_current_user();
-		$customId     = $current_user->ID;
+	public static function getForUser( $user, bool $asModel = false, $startDate = null): array{
+		$customId     = $user->ID;
 
 		if ( Plugin::getCacheItem( $customId ) ) {
 			return Plugin::getCacheItem( $customId );
@@ -334,8 +329,8 @@ class Booking extends PostRepository {
 			);
 			if ( $posts ) {
 				// Check if it is the main query and one of our custom post types
-				$posts = array_filter( $posts, function ( $post ) {
-					return commonsbooking_isCurrentUserAllowedToEdit( $post );
+				$posts = array_filter( $posts, function ( $post ) use ($user) {
+					return commonsbooking_isUserAllowedToEdit( $post, $user);
 				} );
 			}
 
@@ -347,6 +342,25 @@ class Booking extends PostRepository {
 		}
 
 		return $posts;
+	}
+
+	/**
+	 * Returns all bookings, allowed to see/edit for current user.
+	 *
+	 * @param bool $asModel
+	 * @param null $startDate
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public static function getForCurrentUser( bool $asModel = false, $startDate = null ): array {
+		if ( ! is_user_logged_in() ) {
+			return [];
+		}
+
+		$current_user = wp_get_current_user();
+		
+		return self::getForUser($current_user, $asModel, $startDate);
 	}
 
 	/**

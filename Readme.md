@@ -1,4 +1,4 @@
-[![PHP Composer](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml)
+[![PHP Composer](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml) [![WP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/wp-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest) [![PHP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/php-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest)
 
 # CommonsBooking
 
@@ -6,9 +6,9 @@ Contributors: wielebenwirteam, m0rb, flegfleg, chriwen
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, commons, sharing, calendar,  
 Requires at least: 5.2  
-Tested up to: 5.9
-Stable Tag: 2.6.4 
-Requires PHP: 7.3 or higher  
+Tested up to: 6.0
+Stable Tag: 2.7.2 
+Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -89,7 +89,22 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.7 (xx.03.2022)
+### 2.7.2 (30.06.2022)
+* FIXED: Plugin incompatibility with WPBakery
+* FIXED: Plugin incompatibility with Events Manager
+* FIXED: Plugin incompatibility with All-in One Events Calendar
+* FIXED: Shortcodes sometimes not showing all items
+* FIXED: Overbooking was possible when combining hourly and daily slots
+* ENHANCED: Optimized caching to avoid caching conflicts on multiple instances on same server
+
+### 2.7.1 (05.05.2022)
+* FIXED: Fixed Fatal error when PHP Version is < 7.4 / we recommend updating you PHP version to 7.4. because 7.3 is no longer maintained. Please ask you hosting provider for support.
+* FIXED: Migration did not work properly
+* ADDED: You can now add html text-snippets before and after an email template tag. This allows to add e.g. a label that is only shown when the template variable has content. Syntax: Add optional text in square brackets [xxx] directly before and after the template tag. Example: {{[optional text before ]item:post_title[optional text after]}} 
+* ENHANCED: Unified filter hooks. New hook prefix is commonsbooking_xxx . Please check your custom filters.
+
+
+### 2.7 (26.04.2022)
 * NEW: You can now choose your individual colors to customize Commonsbooking to your liking. Try it via Options -> CommonsBooking -> Templates (scroll down to color section).
 * NEW: Added action hooks to templates.
 * ENHANCED: Optimized the commonsbooking internal caching so booking lists and maps are rendered faster.
