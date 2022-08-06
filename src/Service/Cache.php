@@ -97,12 +97,13 @@ trait Cache {
 	 * @return TagAwareAdapterInterface
 	 */
 	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ): TagAwareAdapterInterface {
-		if (Settings::getOption( 'commonsbooking_options_experimental', 'redis_enabled') =='on'){
+		if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled') =='on'){
 			$adapter = new RedisTagAwareAdapter(
-					RedisAdapter::createConnection(Settings::getOption( 'commonsbooking_options_experimental', 'redis_dsn')),
+					RedisAdapter::createConnection(Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn')),
 					$namespace,
 					$defaultLifetime
 			);
+			do_action( 'qm/debug', 'Created REDIS TAA' );
 		}
 		else {
 			$adapter = new TagAwareAdapter(

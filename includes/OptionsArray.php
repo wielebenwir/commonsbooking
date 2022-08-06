@@ -1090,6 +1090,25 @@ Return date: {{booking:returnDatetime}}
 					)
 				]
 			),
+			'experimental' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Connect to REDIS database.', 'commonsbooking' ) ),
+				'id'     => 'redis_group',
+				'desc'   =>
+					commonsbooking_sanitizeHTML( __( 'Allows you to connect the cache to a REDIS database. This feature is experimental.', 'commonsbooking' ) ),
+				'fields' => array(
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'Enable REDIS Caching', 'commonsbooking' ) ),
+						'id'   => 'redis_enabled',
+						'type' => 'checkbox',
+					),
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'REDIS DSN (REDIS Server URL)', 'commonsbooking' ) ),
+						'id'   => 'redis_dsn',
+						'type' => 'text',
+						'default' => 'redis://localhost:6379'
+					),
+				)
+			),
 		),
 	),
 	/* Tab: advanced options end */
