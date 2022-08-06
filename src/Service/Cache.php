@@ -103,7 +103,6 @@ trait Cache {
 					$namespace,
 					$defaultLifetime
 			);
-			do_action( 'qm/debug', 'Created REDIS TAA' );
 		}
 		else {
 			$adapter = new TagAwareAdapter(
