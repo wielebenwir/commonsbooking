@@ -88,7 +88,7 @@ class Timeframe extends CustomPostType {
 			'type'                                                               => esc_html__( 'Type', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::META_ITEM_ID                        => esc_html__( 'Item', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::META_LOCATION_ID                    => esc_html__( 'Location', 'commonsbooking' ),
-			'repetition-start'                                                   => esc_html__( 'Start Date', 'commonsbooking' ),
+			\CommonsBooking\Model\Timeframe::REPETITION_START                    => esc_html__( 'Start Date', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::REPETITION_END                      => esc_html__( 'End Date', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS => esc_html__( 'Max. Booking Duration', 'commonsbooking' ),
 			'timeframe-advance-booking-days'                                     => esc_html__( 'Days Booking In Advance', 'commonsbooking' ),
@@ -364,7 +364,7 @@ class Timeframe extends CustomPostType {
 				$_GET['admin_filter_startdate'] != ''
 			) {
 				$query->query_vars['meta_query'][] = array(
-					'key'     => 'repetition-start',
+					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_START,
 					'value'   => strtotime( sanitize_text_field( $_GET['admin_filter_startdate'] ) ),
 					'compare' => ">=",
 				);

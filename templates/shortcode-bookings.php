@@ -26,8 +26,10 @@ if ($templateData && $templateData['total'] > 0) {
     $response .= '
 	<div class="booking-list">';
 
+	$response .= $templateData['menu'];
+
     $response .= '
-        <div class="booking-list--filters cb-filter' . ($showFilters ?: ' hide') . '">        
+        <div class="booking-list--filters cb-filter' . ($showFilters ?: ' hide') . '">
         	<div class="filter-wrapper">
 	            <label class="filter-label">' . __('Startdate', 'commonsbooking') . '</label>
 	             <div class="filter-startdate" id="filter-startdate">        

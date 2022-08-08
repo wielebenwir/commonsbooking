@@ -3,11 +3,11 @@ name: PHP Unit Tests
 on:
   push:
     branches:
-      - master
+      - 'master'
       - 'release/**'
   pull_request:
     branches:
-      - master
+      - 'master'
       - 'release/**'
 
 env:

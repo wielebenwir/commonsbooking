@@ -4,20 +4,15 @@
 namespace CommonsBooking\Model;
 
 use DateTime;
-use Eluceo\iCal\Domain\Entity\Event;
-use Eluceo\iCal\Domain\ValueObject\Date;
-use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
-use Eluceo\iCal\Domain\ValueObject\MultiDay;
-use Eluceo\iCal\Domain\ValueObject\SingleDay;
-use Eluceo\iCal\Domain\ValueObject\TimeSpan;
-use Eluceo\iCal\Presentation\Factory\CalendarFactory;
 use Exception;
+
 use CommonsBooking\CB\CB;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Repository\BookingCodes;
+use CommonsBooking\Service\iCalendar;
 use DateTimeImmutable;
 use DateInterval;
 
@@ -117,13 +112,13 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @throws Exception
 	 */
 	public function getBookableTimeFrame(): ?\CommonsBooking\Model\Timeframe {
-		$locationId = $this->getMeta( 'location-id' );
-		$itemId     = $this->getMeta( 'item-id' );
+		$locationId = $this->getMeta( \CommonsBooking\Model\Timeframe::META_LOCATION_ID );
+		$itemId     = $this->getMeta( \CommonsBooking\Model\Timeframe::META_ITEM_ID );
 
 		$response = Timeframe::getBookable(
 			[ $locationId ],
 			[ $itemId ],
-			date( CB::getInternalDateFormat(), intval( $this->getMeta( 'repetition-start' ) ) ),
+			date( CB::getInternalDateFormat(), intval( $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) ) ),
 			true
 		);
 
@@ -171,7 +166,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 				$timeframe->ID,
 				$this->getItem()->ID,
 				$this->getLocation()->ID,
-				date( 'Y-m-d', $this->getMeta( 'repetition-start' ) )
+				date( 'Y-m-d', $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) )
 			);
 
 			// only add booking code if the booking is based on a full day timeframe
@@ -194,7 +189,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 */
 	private function sanitizeTimeField( $fieldName ): string {
 		$time       = new DateTime();
-		$fieldValue = $this->getMeta( 'repetition-start' );
+		$fieldValue = $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START );
 		if ( $fieldName == 'end-time' ) {
 			$fieldValue = $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END );
 		}
@@ -236,7 +231,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function formattedBookingDate(): string {
 		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 
-		$startdate = date_i18n( $date_format, $this->getMeta( 'repetition-start' ) );
+		$startdate = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) );
 		$enddate   = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
 
 		if ( $startdate == $enddate ) {
@@ -266,6 +261,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 		$date_start = date_i18n( $date_format, $repetitionStart );
 		$time_start = date_i18n( $time_format, $repetitionStart );
+		$time_end = date_i18n( $time_format, $repetitionStart );
 
 		$grid     = $this->getMeta( 'grid' );
 		$full_day = $this->getMeta( 'full-day' );
@@ -275,8 +271,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		if ( $grid == 0 ) { // if grid is set to slot duration
-			$time_end = date_i18n( $time_format, $repetitionStart );
-
 			// If we have the grid size, we use it to calculate right time end
 			$timeframeGridSize = $this->getMeta( self::START_TIMEFRAME_GRIDSIZE );
 			if ( $timeframeGridSize ) {
@@ -306,6 +300,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 		$date_end = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
 		$time_end = date_i18n( $time_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
+		$time_start = date_i18n( $time_format, strtotime( $this->getMeta( 'start-time' ) ) );
 
 		$grid     = $this->getMeta( 'grid' );
 		$full_day = $this->getMeta( 'full-day' );
@@ -315,8 +310,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		if ( $grid == 0 ) { // if grid is set to slot duration
-			$time_start = date_i18n( $time_format, strtotime( $this->getMeta( 'start-time' ) ) );
-
 			// If we have the grid size, we use it to calculate right time start
 			$timeframeGridSize = $this->getMeta( self::END_TIMEFRAME_GRIDSIZE );
 			if ( $timeframeGridSize ) {
@@ -428,93 +421,12 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 	}
 
-	/**
-	 * Gets iCalendar data for current booking
-	 *
-	 * Current issue: Timestamp not localized with timezone, see issue: https://github.com/wielebenwir/commonsbooking/issues/1023
-	 * If this issue is ever fixed, code has already been pre-written to correctly handle the timezones. It is marked with #1023
-	 *
-	 * @return string
-	 */
 	public function getiCal(
-		$eventTitle, $eventDescription
-	 ){
-		 $bookingLocation = $this->getLocation();
-		 $bookingLocation_latitude = $bookingLocation->getMeta( 'geo_latitude' );
-		 $bookingLocation_longitude = $bookingLocation->getMeta( 'geo_longitude' );
-
-		 //create immutable DateTime objects from Mutable (recommended by iCal library developer)
-		 $booking_startDateDateTime = DateTimeImmutable::createFromMutable( $this->getStartDateDateTime() );
-		 $booking_endDateDateTime = DateTimeImmutable::createFromMutable( $this->getEndDateDateTime() );
-
-		// Create timezone entity 
-		/* #1023
-		$timezone = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone(
-			wp_timezone(),
-			$booking_startDateDateTime,
-			$booking_endDateDateTime
-		);
-		*/
-
-		//Create event occurence
-		if ($this->isFullDay()){
-			if ($booking_startDateDateTime->format('Y-m-d') == $booking_endDateDateTime->format('Y-m-d') ) { //is single day event
-				$occurence = new SingleDay(
-					new Date( $booking_startDateDateTime )
-				);
-			}
-			else { //is multi day event
-				$occurence = new MultiDay(
-					new Date( $booking_startDateDateTime ),
-					new Date( $booking_endDateDateTime )
-				);
-			}
-		}
-		else { //is timespan
-
-			//add one minute to EndDate (this minute was removed to prevent overlapping but would confuse users)
-			$booking_endDateDateTime = $booking_endDateDateTime->add(new DateInterval('PT1M'));
-
-			$occurence = new TimeSpan(
-					//new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_startDateDateTime, true), #1023
-					//new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_endDateDateTime, true) #1023
-					new \Eluceo\iCal\Domain\ValueObject\DateTime( $booking_startDateDateTime, false ), //remove when #1023 fixed
-					new \Eluceo\iCal\Domain\ValueObject\DateTime( $booking_endDateDateTime, false ) //remove when #1023 fixed
-			);
-		}
-
-		// Create Event domain entity.
-		$event = new Event();
-		$event
-			->setSummary($eventTitle)
-			->setDescription($eventDescription)
-			->setLocation(
-				(
-					new \Eluceo\iCal\Domain\ValueObject\Location($bookingLocation->formattedAddressOneLine(), $bookingLocation->post_title))
-					->withGeographicPosition(
-						new GeographicPosition(
-							floatval( $bookingLocation_latitude ),
-							floatval( $bookingLocation_longitude )
-							)
-						)
-				)
-			->setOccurrence($occurence)
-			;
-
-		// Create Calendar domain entity 
-		$calendar = new \Eluceo\iCal\Domain\Entity\Calendar();
-
-		//Add timezone to calendar
-		// $calendar->addTimeZone($timezone); #1023
-
-		// Add events to calendar
-		$calendar->addEvent($event);
-
-		// Transform domain entity into an iCalendar component
-		$componentFactory = new CalendarFactory();
-		$calendarComponent = $componentFactory->createCalendar($calendar);
-
-		// 5. Output.
-		return $calendarComponent->__toString();
+		String $eventTitle,
+		String $eventDescription
+	): String {
+		$calendar = new iCalendar();
+		$calendar->addBookingEvent($this,$eventTitle,$eventDescription);
+		return $calendar->getCalendarData();
 	}
 }
