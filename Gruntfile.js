@@ -120,7 +120,26 @@ module.exports = function (grunt) {
 					'uglify:dev', 'babel'
 				]
 			}
-		}
+		},
+		run: {
+			options: {
+			  // ...
+			},
+			npm_run_start: {
+			  cmd: 'npm',
+			  args: [
+				'run',
+				'start'
+			  ]
+			},
+			npm_run_build: {
+			  cmd: 'npm',
+			  args: [
+				'run',
+				'build'
+			  ]
+			}
+		  }
 	});
 
 	// Load tasks
@@ -129,6 +148,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-babel');
+	grunt.loadNpmTasks('grunt-run');
 
 	// Register tasks
 	grunt.registerTask('default', [
@@ -138,6 +158,7 @@ module.exports = function (grunt) {
 		'uglify:dev',
 		'uglify:dist',
 		'babel',
+		'run:npm_run_build'
 	]);
 	grunt.registerTask('dev', [
 		'compass:adminDev',
@@ -145,13 +166,15 @@ module.exports = function (grunt) {
 		'compass:themes',
 		'uglify:dev',
 		'babel',
-		'watch'
+		'watch',
+		'run:npm_run_start',
 	]);
 	grunt.registerTask('dist', [
 		'compass:admin',
 		'compass:public',
 		'compass:themes',
 		'uglify:dist',
-		'babel'
+		'babel',
+		'run:npm_run_build'
 	]);
 };

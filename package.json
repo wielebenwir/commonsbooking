@@ -10,6 +10,7 @@
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.16.11",
+		"@wordpress/scripts": "^23.4.0",
 		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
 		"compass": "^0.1.1",
 		"editorconfig": "^0.15.3",
@@ -21,9 +22,13 @@
 		"grunt-contrib-nodeunit": "^4.0.0",
 		"grunt-contrib-uglify": "^5.0.1",
 		"grunt-contrib-watch": "^1.1.0",
+		"grunt-run": "^0.8.1",
 		"matchdep": "^2.0.0"
 	},
-	"scripts": {},
+	"scripts": {
+		"build": "wp-scripts build --webpack-src-dir=assets/blocks/src --output-path=assets/blocks/build",
+		"start": "wp-scripts start --webpack-src-dir=assets/blocks/src --output-path=assets/blocks/build"
+	},
 	"dependencies": {
 		"leaflet": "^1.7.1",
 		"leaflet-easybutton": "^2.4.0",

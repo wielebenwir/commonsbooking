@@ -22,6 +22,7 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\Options\AdminOptions;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
+use CommonsBooking\Wordpress\Blocks\Block;
 
 class Plugin {
 
@@ -507,6 +508,9 @@ class Plugin {
 
 		// Register custom post types taxonomy / categories
 		add_action('init', array(self::class, 'registerLocationTaxonomy'), 30);
+
+		//register custom blocks
+		add_action('init', array(Block::class, 'init'), 30);
 
 		// admin init tasks
 		add_action('admin_init', array(self::class, 'admin_init'), 30);

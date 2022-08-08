@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "commonsbooking/cb-items",
+	"version": "0.1.0",
+	"title": "CB items",
+	"category": "text",
+	"icon": "universal-access-alt",
+	"attributes": {
+		"message": {
+			"type": "string",
+			"default": "This is the default string."
+		}
+	},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "commonsbooking",
+	"editorScript": "file:./js/index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}
