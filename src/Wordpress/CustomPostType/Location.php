@@ -5,7 +5,6 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 use CommonsBooking\View\Map;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\UserRepository;
-use CommonsBooking\View\Admin\Filter;
 
 class Location extends CustomPostType {
 
@@ -39,26 +38,6 @@ class Location extends CustomPostType {
 			$location = new \CommonsBooking\Model\Location( intval( $post_id ) );
 			$location->updateGeoLocation();
 		}
-	}
-
-	/**
-	 * Adds Category filter to backend list view
-	 * 
-	 */
-	public static function addAdminCategoryFilter() {
-		$values = [];
-		$terms = get_terms(array(
-			'taxonomy'	=> self::$postType . 's_category'
-		));
-		foreach ( $terms as $term ) {
-			$values[ $term->term_id ] = $term->name;
-		}
-		Filter::renderFilter(
-			static::$postType,
-			esc_html__( 'Filter By Category ', 'commonsbooking' ),
-			'filter_post_category',
-			$values
-		);
 	}
 
 	/**
