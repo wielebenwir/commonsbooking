@@ -2,9 +2,13 @@ name: PHP Unit Tests
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - 'master'
+      - 'release/**'
   pull_request:
-    branches: [ master ]
+    branches:
+      - 'master'
+      - 'release/**'
 
 env:
   DB_DATABASE: wordpress_test
