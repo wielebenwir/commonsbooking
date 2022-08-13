@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar,  
 Requires at least: 5.2  
 Tested up to: 6.0  
-Stable Tag: 2.7.2
+Stable Tag: 2.7.3
 Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -78,6 +78,11 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog 
+
+### 2.7.3 (xx.08.2022)
+FIXED: Fatal error when trying to export timeframes with deleted items
+FIXED: Fatal error when trying to access invalid data
+FIXED: Restriction e-mails now contain correct booking links again
 
 ### 2.7.2 (30.06.2022)
 FIXED: Plugin incompatibility with WPBakery
