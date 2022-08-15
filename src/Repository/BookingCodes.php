@@ -160,11 +160,7 @@ class BookingCodes {
 		$interval = DateInterval::createFromDateString( '1 day' );
 		$period   = new DatePeriod( $begin, $interval, $end );
 
-		$bookingCodes      = Settings::getOption( 'commonsbooking_options_bookingcodes', 'bookingcodes' );
-		$bookingCodesArray = array_filter( explode( ',', trim( $bookingCodes ) ) );
-		$bookingCodesArray = array_map( function ( $item ) {
-			return preg_replace( "/\r|\n/", "", $item );
-		}, $bookingCodesArray );
+		$bookingCodesArray = self::fetchBookingCodes( iterator_count( $period ) );
 
 		// Check if codes are available, show error if not.
 		if ( ! count( $bookingCodesArray ) ) {
@@ -273,6 +269,41 @@ class BookingCodes {
 				$wpdb->query( $query2 );
 			}
 		}
+	}
+
+	/**
+	 * Fetches given amount of booking codes, randomizes them and puts them in an array, tries to omit doubling
+	 *
+	 * @param int $amount
+	 *
+	 * @return array|null $chosenBookingCodes
+	 */
+	private static function fetchBookingCodes( int $amount ): ?array {
+		$bookingCodes      = Settings::getOption( 'commonsbooking_options_bookingcodes', 'bookingcodes' );
+		$bookingCodesArray = array_filter( explode( ',', trim( $bookingCodes ) ) );
+		$bookingCodesArray = $bookingCodesArray_history = array_map( function ( $item ) {
+			return preg_replace( "/\r|\n/", "", $item );
+		}, $bookingCodesArray );
+
+		// Check if codes are available, return false if not
+		if ( ! count( $bookingCodesArray ) ) {
+			return null;
+		}
+
+		$chosenBookingCodes = array();
+
+		for ($i = 0; $i < $amount; $i++){
+
+			if ( empty( $bookingCodesArray) ){
+				$bookingCodesArray = $bookingCodesArray_history;
+			}
+
+			$key = array_rand($bookingCodesArray, 1);
+			$chosenBookingCodes[] = $bookingCodesArray[$key];
+			unset($bookingCodesArray[$key]);
+		}
+
+		return $chosenBookingCodes;
 	}
 
 }
