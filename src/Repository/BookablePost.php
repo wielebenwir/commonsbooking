@@ -194,8 +194,14 @@ abstract class BookablePost extends PostRepository {
 		
 		// Add custom taxonomy filter
 		if ( array_key_exists( 'category_slug', $args ) ) {
-			$args['taxonomy'] = static::getPostType() . 's_category';
-			$args['term']     = $args['category_slug'];
+			$args['tax_query'] = array(
+				'relation'  => 'AND',
+				array(
+					'taxonomy'  => static::getPostType() . 's_category',
+					'field'     => 'slug',
+					'terms'     => $args['category_slug']
+				)
+			);
 			unset( $args['category_slug'] );
 		}
 
