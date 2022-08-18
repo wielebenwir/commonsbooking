@@ -10,6 +10,7 @@ use CommonsBooking\View\TimeframeExport;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
+use CommonsBooking\Service\Cache;
 
 // We need static types, because german month names dont't work for datepicker
 $dateFormat = "d/m/Y";
@@ -1089,6 +1090,31 @@ Return date: {{booking:returnDatetime}}
 						'type'	=> 'textarea',
 					)
 				]
+			),
+			'experimental' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Connect to REDIS database.', 'commonsbooking' ) ),
+				'id'     => 'redis_group',
+				'desc'   =>
+					commonsbooking_sanitizeHTML( __( 'Allows you to connect the cache to a REDIS database. This feature is experimental.', 'commonsbooking' ) ),
+				'fields' => array(
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'Enable REDIS Caching', 'commonsbooking' ) ),
+						'id'   => 'redis_enabled',
+						'type' => 'checkbox',
+					),
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'REDIS DSN (REDIS Server URL)', 'commonsbooking' ) ),
+						'id'   => 'redis_dsn',
+						'type' => 'text',
+						'default' => 'redis://localhost:6379'
+					),
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Current connections status', 'commonsbooking' ) ),
+						'id'            => 'redis_connection-status',
+						'type'          => 'text',
+						'render_row_cb' => array( Cache::class, 'renderREDISConnectionStatus' ),
+					)
+				)
 			),
 		),
 	),

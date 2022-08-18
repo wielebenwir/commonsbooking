@@ -247,10 +247,10 @@ class TimeframeExport {
 		$timeframeData["full-day"]            = $timeframePost->getFieldValue( "full-day" );
 		$timeframeData[\CommonsBooking\Model\Timeframe::REPETITION_START] =
 			$timeframePost->getStartDate() ?
-				date( esc_html(get_option( 'date_format' )), $timeframePost->getStartDate() ) : '';
+				date( 'c', $timeframePost->getStartDate() ) : '';
 		$timeframeData[\CommonsBooking\Model\Timeframe::REPETITION_END] =
 			$timeframePost->getEndDate() ?
-				date( esc_html(get_option( 'date_format' )), $timeframePost->getEndDate() ) : '';
+				date( 'c', $timeframePost->getEndDate() ) : '';
 		$timeframeData["start-time"]          = $timeframePost->getStartTime();
 		$timeframeData["end-time"]            = $timeframePost->getEndTime();
 		$timeframeData["pickup"]              = isset( $booking ) ? $booking->pickupDatetime() : "";
