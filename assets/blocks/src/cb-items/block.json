@@ -2,20 +2,42 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 2,
 	"name": "commonsbooking/cb-items",
-	"version": "0.1.0",
-	"title": "CB items",
+	"title": "CommonsBooking items",
 	"category": "text",
-	"icon": "universal-access-alt",
-	"attributes": {
-		"message": {
-			"type": "string",
-			"default": "This is the default string."
-		}
-	},
-	"supports": {
-		"html": false
-	},
-	"textdomain": "commonsbooking",
+	"icon": "list-view",
+    "attributes": {
+      "categories": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "selectedAuthor": {
+        "type": "number"
+      },
+      "postsToShow": {
+        "type": "number",
+        "default": 25
+      },
+      "displayAvailText": {
+        "type": "boolean",
+        "default": true
+      },
+      "order": {
+        "type": "string",
+        "default": "desc"
+      },
+      "orderBy": {
+        "type": "string",
+        "default": "date"
+      }
+    },
+    "supports": {
+      "align": true,
+      "html": false
+    },
+
+  "textdomain": "commonsbooking",
 	"editorScript": "file:./js/index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css"

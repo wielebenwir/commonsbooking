@@ -193,7 +193,7 @@ abstract class BookablePost extends PostRepository {
 		$args['nopaging'] = true;
 		
 		// Add custom taxonomy filter
-		if ( array_key_exists( 'category_slug', $args ) ) {
+		if ( array_key_exists( 'category_slug', $args ) && ( ! empty ($args['category_slug'] ) ) ) {
 			$args['tax_query'] = array(
 				'relation'  => 'AND',
 				array(
