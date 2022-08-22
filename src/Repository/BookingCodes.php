@@ -163,7 +163,7 @@ class BookingCodes {
 		$bookingCodesArray = self::fetchBookingCodes( iterator_count( $period ) );
 
 		// Check if codes are available, show error if not.
-		if ( ! count( $bookingCodesArray ) ) {
+		if ( ! $bookingCodesArray ) {
 			set_transient(
 				BookingCode::ERROR_TYPE,
 				commonsbooking_sanitizeHTML(
