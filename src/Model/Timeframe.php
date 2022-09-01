@@ -89,23 +89,35 @@ class Timeframe extends CustomPost {
 	public function getLatestPossibleBookingDateTimestamp() {
 		$calculationBase = time();
 
-		// if meta-value not set we define 90 days as default value
-		$advanceBookingDays = $this->getMeta( 'timeframe-advance-booking-days' ) ?:
-			\CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS;
+        $advanceBookingDays = $this->getAdvanceBookingDays();
 
-        // if user has set individual max booking days in advance, we use this value
-        if ( is_user_logged_in() && 
-            get_user_meta( get_current_user_id(), 'user_max_booking_days_advance', true ) >= 0 ) 
-        {
-            $advanceBookingDays = get_user_meta( get_current_user_id(), 'user_max_booking_days_advance', true );
-        }
-
-   
       	// we subtract one day to reflect the current day in calculation
 		$advanceBookingDays --;
 
 		return strtotime( '+ ' . $advanceBookingDays . ' days', $calculationBase );
 	}
+
+    
+    /**
+     * getAdvanceBookingDays
+     *
+     * @return void
+     */
+    public function getAdvanceBookingDays() {
+        
+        // if meta-value not set we define 90 days as default value
+		$advanceBookingDays = $this->getMeta( 'timeframe-advance-booking-days' ) ?:
+        \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS;
+
+        // if user has set individual max booking days in advance, we use this value
+        if ( is_user_logged_in() && 
+        get_user_meta( get_current_user_id(), 'user_max_booking_days_advance', true ) >= 0 ) 
+        {
+            $advanceBookingDays = get_user_meta( get_current_user_id(), 'user_max_booking_days_advance', true );
+        }  
+
+        return $advanceBookingDays;
+    }
 
 	/**
 	 * @param $startDate
