@@ -454,7 +454,7 @@ class Calendar {
 
         // if user has set individual max booking days in advance, we use this value
         if ( is_user_logged_in() && 
-        get_user_meta( get_current_user_id(), 'user_max_booking_days_advance', true ) >= 0 ) 
+        get_user_meta( get_current_user_id(), 'user_max_booking_days_advance', true ) > 0 ) 
         {
             $advanceBookingDays = get_user_meta( get_current_user_id(), 'user_max_booking_days_advance', true );
         }
