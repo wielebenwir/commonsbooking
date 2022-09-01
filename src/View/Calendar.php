@@ -129,9 +129,16 @@ class Calendar {
 					$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
 				}
 
+                $UsercustomCacheKey = '';
+                if (is_user_logged_in()) {
+                    $current_user   = wp_get_current_user();
+                    $UsercustomCacheKey = serialize( 'userID_' . $current_user->ID );
+                };
+
 				// loop through location
 				foreach ( $locations as $locationId => $locationName ) {
-					$customCacheKey = $item->ID . $locationId . $today;
+  
+					$customCacheKey = $UsercustomCacheKey . $item->ID . $locationId . $today;
 					if ( Plugin::getCacheItem($customCacheKey) ) {
 						$rowHtml .= Plugin::getCacheItem($customCacheKey);
 					} else {
