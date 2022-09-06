@@ -99,7 +99,9 @@ class Timeframe extends CustomPost {
 
     
     /**
-     * getAdvanceBookingDays
+     * Returns advanced booking days
+     * 
+     * returns advanced booking days based on timeframe setting or user profile setting
      *
      * @return void
      */
