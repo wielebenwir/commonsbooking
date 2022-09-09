@@ -24,7 +24,6 @@ trait Cache {
 		if ( WP_DEBUG ) {
 			return false;
 		}
-
         
 		try {
 			/** @var CacheItem $cacheItem */
@@ -34,6 +33,8 @@ trait Cache {
 				return $cacheItem->get();
 			}
 		} catch (\Exception $exception) {}
+
+        
 
 		return false;
 	}

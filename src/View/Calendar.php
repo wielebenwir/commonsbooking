@@ -132,14 +132,15 @@ class Calendar {
                 $UsercustomCacheKey = '';
                 if (is_user_logged_in()) {
                     $current_user   = wp_get_current_user();
-                    $UsercustomCacheKey = serialize( 'userID_' . $current_user->ID );
+                    $UsercustomCacheKey = $current_user->ID;
                 };
 
 				// loop through location
 				foreach ( $locations as $locationId => $locationName ) {
   
-					$customCacheKey = $UsercustomCacheKey . $item->ID . $locationId . $today;
-					if ( Plugin::getCacheItem($customCacheKey) ) {
+					$customCacheKey = $UsercustomCacheKey . '_'. $item->ID . $locationId . $today;
+    
+                    if ( Plugin::getCacheItem($customCacheKey) ) {
 						$rowHtml .= Plugin::getCacheItem($customCacheKey);
 					} else {
 						// Check for category term
@@ -359,7 +360,9 @@ class Calendar {
 
 		if ( count( $bookableTimeframes ) ) {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday( $bookableTimeframes );
-			$advanceBookingDays       = $closestBookableTimeframe->getAdvanceBookingDays();
+			
+            // get max advance booking days based on user defined max days in closest bookable timeframe or global settings
+            $advanceBookingDays       = $closestBookableTimeframe->getAdvanceBookingDays();
 
 			// Only if passed daterange must not be kept
 			if ( ! $keepDaterange ) {
@@ -379,7 +382,6 @@ class Calendar {
 			// -> we just need to ensure, that pagination is possible
 			$endDateTimestamp = self::getDefaultCalendarEnddateTimestamp( $startDate );
 
-			// get max advance booking days based on user defined max days in closest bookable timeframe
 			$latestPossibleBookingDateTimestamp = $closestBookableTimeframe->getLatestPossibleBookingDateTimestamp();
 			if ( $latestPossibleBookingDateTimestamp < $endDateTimestamp ) {
 				$lastBookableDate = $endDateTimestamp = $latestPossibleBookingDateTimestamp;
@@ -451,20 +453,13 @@ class Calendar {
 		$lastBookableDate = null
 	): array {
 		$current_user   = wp_get_current_user();
-		$customCacheKey = serialize( 'userID_' . $current_user->ID );
+		$customCacheKey = md5('user_id' . $current_user->ID);
 
     		// we calculate the max advance booking days here to prepare the notice string in calender json.
 		if ( $advanceBookingDays == null ) {
 			$advanceBookingDays = date_diff( $startDate->getDateObject(), $endDate->getDateObject() );
 			$advanceBookingDays = (int) $advanceBookingDays->format( '%a ' ) + 1;
 		}
-
-        // if user has set individual max booking days in advance, we use this value
-        if ( is_user_logged_in() && 
-        get_user_meta( get_current_user_id(), 'user_max_booking_days_advance', true ) > 0 ) 
-        {
-            $advanceBookingDays = get_user_meta( get_current_user_id(), 'user_max_booking_days_advance', true );
-        }
 
 		if ( $lastBookableDate == null ) {
 			$lastBookableDate = strtotime( '+ ' . $advanceBookingDays . ' days midnight' );
