@@ -73,28 +73,26 @@ class Booking extends Timeframe {
 			}
 
 			// Validate booking -> check if there are no existing bookings in timerange.
-			if (
-				$existingBookings =
-					\CommonsBooking\Repository\Booking::getByTimerange(
-						$startDate,
-						$endDate,
-						$locationId,
-						$itemId,
-						[],
-						['confirmed']
-					)
-			) {
-				if(count($existingBookings) > 0 ) {
-					$requestedPostname = array_key_exists('cb_booking', $_REQUEST) ? $_REQUEST['cb_booking'] : '';
+			$existingBookings =
+				\CommonsBooking\Repository\Booking::getByTimerange(
+					$startDate,
+					$endDate,
+					$locationId,
+					$itemId,
+					[],
+					['confirmed']
+				)
 
-					// checks if it's an edit, but ignores exact start/end time
-					$isEdit = count($existingBookings) === 1 &&
-						array_values($existingBookings)[0]->getPost()->post_name === $requestedPostname &&
-						array_values($existingBookings)[0]->getPost()->post_author == get_current_user_id();
+			if(count($existingBookings) > 0 ) {
+				$requestedPostname = array_key_exists('cb_booking', $_REQUEST) ? $_REQUEST['cb_booking'] : '';
 
-					if( (!$isEdit || count($existingBookings) > 1) && $post_status != 'canceled' ) {
-						throw new Exception( 'There is already a booking in this timerange.' );
-					}
+				// checks if it's an edit, but ignores exact start/end time
+				$isEdit = count($existingBookings) === 1 &&
+					array_values($existingBookings)[0]->getPost()->post_name === $requestedPostname &&
+					array_values($existingBookings)[0]->getPost()->post_author == get_current_user_id();
+
+				if( (!$isEdit || count($existingBookings) > 1) && $post_status != 'canceled' ) {
+					throw new Exception( 'There is already a booking in this timerange.' );
 				}
 			}
 
@@ -159,7 +157,7 @@ class Booking extends Timeframe {
 	 */
 	private function saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate ): void {
 		$startTimeFrame = \CommonsBooking\Repository\Timeframe::getByLocationItemTimestamp( $locationId, $itemId, $startDate );
-		if ( $startTimeFrame && $startTimeFrame->getGrid() == 0 ) {
+		if ( $startTimeFrame && !$startTimeFrame->isFullDay() && $startTimeFrame->getGrid() == 0 ) {
 			update_post_meta(
 				$postId,
 				\CommonsBooking\Model\Booking::START_TIMEFRAME_GRIDSIZE,
@@ -167,7 +165,7 @@ class Booking extends Timeframe {
 			);
 		}
 		$endTimeFrame = \CommonsBooking\Repository\Timeframe::getByLocationItemTimestamp( $locationId, $itemId, $endDate );
-		if ( $endTimeFrame && $endTimeFrame->getGrid() == 0 ) {
+		if ( $endTimeFrame && !$endTimeFrame->isFullDay() && $endTimeFrame->getGrid() == 0 ) {
 			update_post_meta(
 				$postId,
 				\CommonsBooking\Model\Booking::END_TIMEFRAME_GRIDSIZE,
