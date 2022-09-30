@@ -81,7 +81,7 @@ class Booking extends Timeframe {
 					$itemId,
 					[],
 					['confirmed']
-				)
+				);
 
 			if(count($existingBookings) > 0 ) {
 				$requestedPostname = array_key_exists('cb_booking', $_REQUEST) ? $_REQUEST['cb_booking'] : '';
