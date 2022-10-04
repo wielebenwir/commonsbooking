@@ -83,6 +83,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 FIXED: Fatal error when trying to export timeframes with deleted items
 FIXED: Fatal error when trying to access invalid data
 FIXED: Restriction e-mails now contain correct booking links again
+FIXED: Issue with map category presets
 
 ### 2.7.2 (30.06.2022)
 FIXED: Plugin incompatibility with WPBakery
@@ -91,7 +92,7 @@ FIXED: Plugin incompatibility with All-in One Events Calendar
 FIXED: Shortcodes sometimes not showing all items
 FIXED: Overbooking was possible when combining hourly and daily slots
 ENHANCED: Optimized caching to avoid caching conflicts on multiple instances on same server
-FIXED: Location map sometimes rendered not properly on location edit screen
+FIXED: Location map sometimes not properly rendered on location edit screen
 
 ### 2.7.1 (05.05.2022)
 FIXED: Fixed Fatal error when PHP Version is < 7.4 / we recommend updating you PHP version to 7.4. because 7.3 is no longer maintained. Please ask you hosting provider for support.
