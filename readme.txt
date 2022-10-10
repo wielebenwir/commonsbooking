@@ -79,7 +79,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.7.3 (xx.08.2022)
+### 2.7.3 (xx.10.2022)
 FIXED: Fatal error when trying to export timeframes with deleted items
 FIXED: Fatal error when trying to access invalid data
 FIXED: Restriction e-mails now contain correct booking links again
