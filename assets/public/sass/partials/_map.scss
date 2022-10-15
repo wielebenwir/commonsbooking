@@ -43,6 +43,10 @@
 		.cb-map-location-info-contact {
 			margin-top: 10px;
 		}
+
+        .cb-map-location-info-address {
+            color: var(--commonsbooking-textcolor-dark);
+        }
 		
 		.highlight-border {
 			border-color: rgb(238, 116, 0) !important;
@@ -96,7 +100,7 @@
 			.cb-map-popup-item-availability-day {
 			  flex: 0 0 auto;
 			
-			  color: $color-black;
+			  color: var(--commonsbooking-textcolor-dark);
 			  font-weight: normal;
 			  padding: 3px;
 			
@@ -118,11 +122,11 @@
 			}
 			.cb-map-popup-item-availability-day.locked {
 				background-color: #ddd;
-				color: #fff;
+                color: var(--commonsbooking-textcolor-light);
 			  }
 			.cb-map-popup-item-availability-day.no-timeframe {
 			  background-color: var(--commonsbooking-color-greyedout);
-			  color: #fff;
+              color: var(--commonsbooking-textcolor-light);
 			  cursor: not-allowed;
 			}
 			.cb-map-popup-item-availability-day.partially-booked{

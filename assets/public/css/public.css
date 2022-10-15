@@ -3311,12 +3311,13 @@
 /* Colors: CB Brand */
 /* Colors: text */
 /* Colors: Theme, can be modified by user */
+/* Colors: Text colors, can be modified by user */
 /* Colors: Backgrounds */
 /* Colors: Message statuses */
 /* Font sizes */
 /* Layout Variables */
 /* Fonts */
-/* line 73, ../../global/sass/partials/_variables.scss */
+/* line 77, ../../global/sass/partials/_variables.scss */
 :root {
   --commonsbooking-color-primary: #A3BC55;
   --commonsbooking-color-secondary: #506CA9;
@@ -3324,9 +3325,11 @@
   --commonsbooking-color-accept: #74ce3c;
   --commonsbooking-color-cancel: #d5425c;
   --commonsbooking-color-holiday: #ff9218;
-  --commonsbooking-color-greyedout: #c4c4c4;
+  --commonsbooking-color-greyedout: #f6f6f6;
   --commonsbooking-color-bg: #f6f6f6;
   --commonsbooking-color-noticebg: #FFF9C5;
+  --commonsbooking-textcolor-light: #c4c4c4;
+  --commonsbooking-textcolor-dark: #000;
   --commonsbooking-color-gray-background: #f6f6f6;
   --commonsbooking-color-gray-border: #f6f6f6;
   --commonsbooking-color-error: #d5425c;
@@ -3735,6 +3738,7 @@
   clear: both;
   display: block;
   margin-top: var(--commonsbooking-spacer-big);
+  color: var(--commonsbooking-textcolor-dark);
   /* headline */
   /* sub lists wrapper */
 }
@@ -3900,52 +3904,54 @@
 }
 /* line 96, ../sass/partials/_forms.scss */
 .cb-wrapper #calendar-footnote {
+  color: var(--commonsbooking-textcolor-dark);
   background-color: #FFF;
   margin-top: 10px;
   padding: 10px;
   font-size: var(--commonsbooking-font-size-normal);
 }
-/* line 104, ../sass/partials/_forms.scss */
+/* line 105, ../sass/partials/_forms.scss */
 .cb-wrapper #calendar-footnote #calendar-footnote-colorkey .colorkey-square {
   width: 10px;
   height: 10px;
   display: inline-block;
 }
-/* line 110, ../sass/partials/_forms.scss */
+/* line 111, ../sass/partials/_forms.scss */
 .cb-wrapper #calendar-footnote #calendar-footnote-colorkey .colorkey-accept {
   background-color: var(--commonsbooking-color-accept);
 }
-/* line 114, ../sass/partials/_forms.scss */
+/* line 115, ../sass/partials/_forms.scss */
 .cb-wrapper #calendar-footnote #calendar-footnote-colorkey .colorkey-cancel {
   background-color: var(--commonsbooking-color-cancel);
 }
-/* line 118, ../sass/partials/_forms.scss */
+/* line 119, ../sass/partials/_forms.scss */
 .cb-wrapper #calendar-footnote #calendar-footnote-colorkey .colorkey-holiday {
   background-color: var(--commonsbooking-color-holiday);
 }
-/* line 122, ../sass/partials/_forms.scss */
+/* line 123, ../sass/partials/_forms.scss */
 .cb-wrapper #calendar-footnote #calendar-footnote-colorkey .colorkey-greyedout {
   background-color: var(--commonsbooking-color-greyedout);
 }
-/* line 128, ../sass/partials/_forms.scss */
+/* line 129, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form {
   width: 100%;
   /* do not extend litepicker width */
+  color: var(--commonsbooking-textcolor-dark);
 }
-/* line 130, ../sass/partials/_forms.scss */
+/* line 132, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form input {
   float: right;
 }
-/* line 135, ../sass/partials/_forms.scss */
+/* line 137, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container {
   margin-top: var(--commonsbooking-spacer);
   text-align: center;
 }
-/* line 139, ../sass/partials/_forms.scss */
+/* line 141, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container .restriction {
   display: block;
 }
-/* line 143, ../sass/partials/_forms.scss */
+/* line 145, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div {
   display: flex;
   align-items: center;
@@ -3953,16 +3959,16 @@
   text-align: left;
   overflow: hidden;
 }
-/* line 152, ../sass/partials/_forms.scss */
+/* line 154, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div span, .cb-wrapper #booking-form .time-selection-container > div label, .cb-wrapper #booking-form .time-selection-container > div select {
   float: left;
   font-size: var(--commonsbooking-font-size-normal);
 }
-/* line 157, ../sass/partials/_forms.scss */
+/* line 159, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div label {
   font-weight: bold;
 }
-/* line 161, ../sass/partials/_forms.scss */
+/* line 163, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div #resetPicker {
   cursor: pointer;
   font-weight: bold;
@@ -3971,18 +3977,18 @@
   padding: 0;
   flex-basis: 100%;
 }
-/* line 170, ../sass/partials/_forms.scss */
+/* line 172, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div > label {
   flex-basis: 30%;
 }
-/* line 174, ../sass/partials/_forms.scss */
+/* line 176, ../sass/partials/_forms.scss */
 .cb-wrapper #booking-form .time-selection-container > div > div {
   flex-basis: 70%;
   display: flex;
   gap: 1rem 3rem;
   align-items: center;
 }
-/* line 184, ../sass/partials/_forms.scss */
+/* line 186, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice {
   margin-bottom: var(--commonsbooking-spacer-big);
   font-size: var(--commonsbooking-font-size-big);
@@ -3992,19 +3998,19 @@
   background: var(--commonsbooking-color-noticebg);
   /* Post status */
 }
-/* line 194, ../sass/partials/_forms.scss */
+/* line 196, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-unconfirmed {
   background: var(--commonsbooking-color-noticebg);
 }
-/* line 198, ../sass/partials/_forms.scss */
+/* line 200, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-confirmed {
   background: var(--commonsbooking-color-success);
 }
-/* line 202, ../sass/partials/_forms.scss */
+/* line 204, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.cb-status-cancelled {
   background: var(--commonsbooking-color-success);
 }
-/* line 206, ../sass/partials/_forms.scss */
+/* line 208, ../sass/partials/_forms.scss */
 .cb-wrapper .cb-notice.error {
   background: var(--commonsbooking-color-error);
 }
@@ -4019,19 +4025,19 @@
 /* line 9, ../sass/partials/_calendar.scss */
 :root {
   --litepickerBgColor: transparent;
-  --litepickerMonthHeaderTextColor: #333;
+  --litepickerMonthHeaderTextColor: var(--commonsbooking-textcolor-dark);
   --litepickerMonthButton: #9e9e9e;
   --litepickerMonthButtonHover: #2196f3;
   --litepickerDayWidth: 36px;
   --litepickerMonthWidth: calc(var(--litepickerDayWidth) * 7);
-  --litepickerMonthWeekdayColor: #9e9e9e;
-  --litepickerDayColor: #000;
+  --litepickerMonthWeekdayColor: var(--commonsbooking-textcolor-light);
+  --litepickerDayColor: var(--commonsbooking-textcolor-dark);
   --litepickerDayColorBg: var(--commonsbooking-color-success);
   --litepickerDayColorHover: var(--commonsbooking-color-secondary);
-  --litepickerDayIsTodayColor: #000;
+  --litepickerDayIsTodayColor: var(--commonsbooking-textcolor-dark);
   --litepickerDayIsInRange: #2096f3;
-  --litepickerDayIsLockedColor: var(--commonsbooking-color-greyedout);
-  --litepickerDayIsLockedColorBg: var(--commonsbooking-color-bg);
+  --litepickerDayIsLockedColor: var(--commonsbooking-textcolor-light);
+  --litepickerDayIsLockedColorBg: var(--commonsbooking-color-greyedout);
   --litepickerDayIsHolidayColor: #000000;
   --litepickerDayIsHolidayColorBg: var(--commonsbooking-color-holiday);
   --litepickerDayIsPartiallyLockedColor: #333;
@@ -4528,45 +4534,49 @@
   margin-top: 10px;
 }
 /* line 47, ../sass/partials/_map.scss */
+.cb-wrapper.leaflet-container .cb-map-location-info-address {
+  color: var(--commonsbooking-textcolor-dark);
+}
+/* line 51, ../sass/partials/_map.scss */
 .cb-wrapper.leaflet-container .highlight-border {
   border-color: #ee7400 !important;
 }
-/* line 51, ../sass/partials/_map.scss */
+/* line 55, ../sass/partials/_map.scss */
 .cb-wrapper.leaflet-container .leaflet-bar button {
   font-size: 6.5px;
 }
-/* line 58, ../sass/partials/_map.scss */
+/* line 62, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content {
   min-width: 300px;
   font-size: var(--commonsbooking-font-size-normal);
 }
-/* line 62, ../sass/partials/_map.scss */
+/* line 66, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item {
   margin-top: 10px;
 }
-/* line 66, ../sass/partials/_map.scss */
+/* line 70, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-thumbnail {
   display: inline-block;
   width: 25%;
   margin-right: 5%;
 }
-/* line 70, ../sass/partials/_map.scss */
+/* line 74, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-thumbnail img {
   border-radius: var(--commonsbooking-radius);
 }
-/* line 75, ../sass/partials/_map.scss */
+/* line 79, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-info {
   display: inline-block;
   width: 70%;
   vertical-align: top;
 }
-/* line 81, ../sass/partials/_map.scss */
+/* line 85, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-link b a {
   font-size: var(--commonsbooking-font-size-big);
   color: var(--commonsbooking-color-primary);
   text-decoration: underline;
 }
-/* line 87, ../sass/partials/_map.scss */
+/* line 91, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability {
   display: flex;
   flex-wrap: nowrap;
@@ -4574,10 +4584,10 @@
   -webkit-overflow-scrolling: touch;
   margin: 3px 0;
 }
-/* line 96, ../sass/partials/_map.scss */
+/* line 100, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day {
   flex: 0 0 auto;
-  color: #000;
+  color: var(--commonsbooking-textcolor-dark);
   font-weight: normal;
   padding: 3px;
   width: 30px;
@@ -4586,85 +4596,85 @@
   border-radius: 7px;
   background-clip: padding-box;
 }
-/* line 111, ../sass/partials/_map.scss */
+/* line 115, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.available {
   background-color: var(--commonsbooking-color-accept);
 }
-/* line 114, ../sass/partials/_map.scss */
+/* line 118, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.location-holiday {
   background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
   background-size: 8px 8px;
   color: #222222a1;
 }
-/* line 119, ../sass/partials/_map.scss */
+/* line 123, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.locked {
   background-color: #ddd;
-  color: #fff;
+  color: var(--commonsbooking-textcolor-light);
 }
-/* line 123, ../sass/partials/_map.scss */
+/* line 127, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.no-timeframe {
   background-color: var(--commonsbooking-color-greyedout);
-  color: #fff;
+  color: var(--commonsbooking-textcolor-light);
   cursor: not-allowed;
 }
-/* line 128, ../sass/partials/_map.scss */
+/* line 132, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.partially-booked {
   color: #444;
   background: linear-gradient(to top left, var(--commonsbooking-color-accept) 0%, var(--commonsbooking-color-accept) calc(50% - 1px), #333 50%, var(--commonsbooking-color-cancel) calc(50% + 1px), var(--commonsbooking-color-cancel) 100%);
   background-repeat: no-repeat;
 }
-/* line 134, ../sass/partials/_map.scss */
+/* line 138, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-availability-day.booked {
   color: #444;
   background: linear-gradient(to top left, var(--commonsbooking-color-cancel) 0%, var(--commonsbooking-color-cancel) calc(50% - 1px), #333 50%, var(--commonsbooking-color-cancel) calc(50% + 1px), var(--commonsbooking-color-cancel) 100%);
 }
-/* line 139, ../sass/partials/_map.scss */
+/* line 143, ../sass/partials/_map.scss */
 .cb-wrapper .leaflet-popup-content .cb-map-popup-item-desc {
   display: none;
 }
 
 /* Filters */
-/* line 148, ../sass/partials/_map.scss */
+/* line 152, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper {
   margin-top: var(--commonsbooking-spacer);
   /* layout for filter  availability & distance */
   /* styles for specific filters */
   /* layout for filter category */
 }
-/* line 153, ../sass/partials/_map.scss */
+/* line 157, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper input[type="checkbox"] {
   margin: 0 var(--commonsbooking-spacer-small) 0 0;
 }
-/* line 157, ../sass/partials/_map.scss */
+/* line 161, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper input[type="date"], .cb-map-filters.cb-wrapper input[type="number"] {
   /* is inline */
   margin: 0 var(--commonsbooking-spacer-small);
 }
-/* line 161, ../sass/partials/_map.scss */
+/* line 165, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper input[type="number"] {
   max-width: 100px;
 }
-/* line 165, ../sass/partials/_map.scss */
+/* line 169, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper select {
   /* is inline */
   margin: 0 var(--commonsbooking-spacer-small);
 }
-/* line 169, ../sass/partials/_map.scss */
+/* line 173, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper button {
   padding: var(--commonsbooking-spacer-small);
 }
-/* line 174, ../sass/partials/_map.scss */
+/* line 178, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-filter-options > div {
   margin-bottom: var(--commonsbooking-spacer);
   padding-bottom: var(--commonsbooking-spacer);
   border-bottom: 1px solid #444;
 }
-/* line 181, ../sass/partials/_map.scss */
+/* line 185, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-filter-group-label {
   color: var(--commonsbooking-color-primary);
   margin-bottom: var(--commonsbooking-spacer-small);
 }
-/* line 198, ../sass/partials/_map.scss */
+/* line 202, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group {
   background: var(--commonsbooking-color-secondary);
   border-radius: var(--commonsbooking-radius);
@@ -4672,23 +4682,23 @@
   flex-direction: row;
   flex-wrap: nowrap;
 }
-/* line 204, ../sass/partials/_map.scss */
+/* line 208, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group input {
   flex: 1 1 100% !important;
   /* overwrite layout */
 }
-/* line 207, ../sass/partials/_map.scss */
+/* line 211, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.undo-geo-search, .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.geo-search {
   background: transparent;
   color: #FFF;
 }
-/* line 216, ../sass/partials/_map.scss */
+/* line 220, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
-/* line 221, ../sass/partials/_map.scss */
+/* line 225, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset {
   flex: 1 0 50%;
   border: none;
@@ -4696,22 +4706,22 @@
   padding: 0;
   margin-bottom: var(--commonsbooking-spacer);
 }
-/* line 228, ../sass/partials/_map.scss */
+/* line 232, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset .cb-fieldgroup-row {
   display: inline-block;
 }
-/* line 232, ../sass/partials/_map.scss */
+/* line 236, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset legend {
   margin: 0;
   padding: 0;
   font-weight: normal;
 }
-/* line 237, ../sass/partials/_map.scss */
+/* line 241, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group fieldset label {
   margin-right: var(--commonsbooking-spacer-big);
   color: var(--commonsbooking-color-primary);
 }
-/* line 246, ../sass/partials/_map.scss */
+/* line 250, ../sass/partials/_map.scss */
 .cb-map-filters.cb-wrapper .cb-map-button-wrapper {
   text-align: right;
 }
@@ -5079,7 +5089,7 @@
 }
 /* line 97, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table tbody tr {
-  background: #FFF;
+  background: var(--commonsbooking-color-bg);
   height: 50px;
   overflow: hidden;
 }
@@ -5089,17 +5099,18 @@
 }
 /* line 106, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table tbody tr td {
+  color: var(--commonsbooking-textcolor-dark);
   border-top: 1px solid var(--commonsbooking-color-greyedout);
   border-left: 1px solid var(--commonsbooking-color-gray-background);
-  border-bottom: 1px solid #FFF;
+  border-bottom: 1px solid var(--commonsbooking-color-bg);
 }
-/* line 114, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 115, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td {
   text-align: center;
   vertical-align: middle;
   z-index: 11;
 }
-/* line 119, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 120, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span {
   display: block;
   margin: 0 auto;
@@ -5109,7 +5120,7 @@
   color: var(--litepickerDayColor);
   background-color: var(--litepickerDayColorBg);
 }
-/* line 129, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 130, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.is-holiday {
   color: var(--litepickerDayIsHolidayColor);
   background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
@@ -5120,7 +5131,7 @@
   cursor: not-allowed;
   box-shadow: none;
 }
-/* line 132, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 133, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.is-booked {
   color: var(--litepickerDayIsBookedColor);
   background-color: var(--litepickerDayIsBookedColorBg);
@@ -5135,7 +5146,7 @@
 .cb-items-table td > span.is-booked.last-slot {
   background: linear-gradient(to bottom right, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
-/* line 136, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 137, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.is-partially-booked {
   color: var(--litepickerDayIsPartiallyLockedColor);
   background: linear-gradient(to bottom right, var(--litepickerDayIsPartiallyLockedColorBgOne) 0%, var(--litepickerDayIsPartiallyLockedColorBgOne) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 50%, var(--litepickerDayIsPartiallyLockedColorBgTwo) 100%);
@@ -5147,15 +5158,15 @@
   background: linear-gradient(to bottom right, lightgreen 0%, lightgreen 50%, lightgray 50%, lightgray 100%);
   box-shadow: none;
 }
-/* line 140, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 141, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.is-partially-booked-start {
   background: linear-gradient(to bottom right, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
-/* line 143, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 144, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.is-partially-booked-end {
   background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
 }
-/* line 147, ../sass/partials/_shortcodeItemsTable.scss */
+/* line 148, ../sass/partials/_shortcodeItemsTable.scss */
 .cb-items-table td > span.is-locked {
   color: var(--litepickerDayIsLockedColor);
   background: var(--litepickerDayIsLockedColorBg) !important;

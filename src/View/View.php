@@ -171,6 +171,8 @@ abstract class View {
 			'color-greyedout' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_greyedoutcolor'),
 			'color-bg' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_backgroundcolor'),
 			'color-noticebg' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_noticebackgroundcolor'),
+			'color-lighttext' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_lighttext'),
+			'color-darktext' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_darktext'),
 		];
 
 		foreach ($variables as &$variable){ //iterate over array, convert valid values.

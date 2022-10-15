@@ -94,6 +94,7 @@
     }
 
     #calendar-footnote {
+        color: var(--commonsbooking-textcolor-dark);
         background-color: #FFF;
         margin-top: 10px;
         padding: 10px;
@@ -127,6 +128,7 @@
 
     #booking-form {
         width: 100%; /* do not extend litepicker width */
+        color: var(--commonsbooking-textcolor-dark);
         input {
             @extend .cb-button;
             float: right;
