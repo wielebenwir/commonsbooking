@@ -26,7 +26,7 @@ function commonsbooking_admin() {
 		'cb_ajax_start_migration',
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'start_migration' ),
+			'nonce'    => wp_create_nonce( 'cb_start_migration' ),
 		)
 	);
 
@@ -36,7 +36,7 @@ function commonsbooking_admin() {
 		'cb_ajax_start_booking_migration',
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'start_booking_migration' ),
+			'nonce'    => wp_create_nonce( 'cb_start_booking_migration' ),
 		)
 	);
 	/**
@@ -47,7 +47,7 @@ function commonsbooking_admin() {
 		'cb_ajax_cache_warmup',
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'cache_warmup' ),
+			'nonce'    => wp_create_nonce( 'cb_cache_warmup' ),
 		)
 	);
 }

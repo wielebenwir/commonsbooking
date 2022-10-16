@@ -49,7 +49,7 @@ class BookingList {
     _resetListParams() {
         this.listParams = new FormData();
         this.listParams.append("_ajax_nonce", cb_ajax_bookings.nonce);
-        this.listParams.append("action", "bookings_data");
+        this.listParams.append("action", "cb_bookings_data");
         this.listParams.append("page", 1);
     };
 

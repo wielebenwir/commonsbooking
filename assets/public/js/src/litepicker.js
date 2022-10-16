@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         cb_ajax.ajax_url,
                         {
                             _ajax_nonce: cb_ajax.nonce,
-                            action: "calendar_data",
+                            action: "cb_calendar_data",
                             item: jQuery('#booking-form input[name=item-id]').val(),
                             location: jQuery('#booking-form input[name=location-id]').val(),
                             sd: calStartDate,
