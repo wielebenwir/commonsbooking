@@ -498,20 +498,20 @@ class Migration {
 		// convert cb1 metadata in cb2 postmeta fields
         // CB2 <-> CB1
 		$postMeta[ COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID' ] = $timeframe['id'];
-		$postMeta[ \CommonsBooking\Model\Timeframe::REPETITION_START ]  = strtotime( $timeframe['date_start'] );
+		$postMeta['repetition-start']                                   = strtotime( $timeframe['date_start'] );
 		$postMeta[ \CommonsBooking\Model\Timeframe::REPETITION_END ]    = strtotime( $timeframe['date_end'] );
-		$postMeta[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ]      = $cbItem ? $cbItem->ID : '';
-		$postMeta[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ]  = $cbLocation ? $cbLocation->ID : '';
-		$postMeta['type']                                               = Timeframe::BOOKABLE_ID;
-		$postMeta[ \CommonsBooking\Model\Timeframe::META_REPETITION ]   = $timeframe_repetition;
-		$postMeta['start-time']                                         = '00:00';
-		$postMeta['end-time']                                           = '23:59';
-		$postMeta['full-day']                                           = 'on';
-		$postMeta['grid']                                               = '0';
-		$postMeta['weekdays']                                           = $weekdays;
-		$postMeta['show-booking-codes']                                 = 'on';
-		$postMeta['timeframe-advance-booking-days']                     = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_daystoshow' );
-		$postMeta['timeframe-max-days']                                 = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_maxdays' );
+		$postMeta['item-id']                        = $cbItem ? $cbItem->ID : '';
+		$postMeta['location-id']                    = $cbLocation ? $cbLocation->ID : '';
+		$postMeta['type']                           = Timeframe::BOOKABLE_ID;
+		$postMeta['timeframe-repetition']           = $timeframe_repetition;
+		$postMeta['start-time']                     = '00:00';
+		$postMeta['end-time']                       = '23:59';
+		$postMeta['full-day']                       = 'on';
+		$postMeta['grid']                           = '0';
+		$postMeta['weekdays']                       = $weekdays;
+		$postMeta['show-booking-codes']             = 'on';
+        $postMeta['timeframe-advance-booking-days'] = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_daystoshow' );
+        $postMeta['timeframe-max-days']             = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_maxdays' );
 
 		$existingPost = self::getExistingPost( $timeframe['id'], Timeframe::$postType, Timeframe::BOOKABLE_ID );
 
@@ -549,17 +549,17 @@ class Migration {
 		// CB2 <-> CB1
 		$postMeta = [
 			COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID' => $booking['id'],
-			\CommonsBooking\Model\Timeframe::REPETITION_START  => strtotime( $booking['date_start'] ),
-			\CommonsBooking\Model\Timeframe::REPETITION_END    => strtotime( $booking['date_end'] ),
-			\CommonsBooking\Model\Timeframe::META_ITEM_ID      => $cbItem ? $cbItem->ID : '',
-			\CommonsBooking\Model\Timeframe::META_LOCATION_ID  => $cbLocation ? $cbLocation->ID : '',
-			'type'                                             => Timeframe::BOOKING_ID,
-			\CommonsBooking\Model\Timeframe::META_REPETITION   => 'norep',
-			'start-time'                                       => '00:00',
-			'end-time'                                         => '23:59',
-			'full-day'                                         => 'on',
-			'grid'                                             => '0',
-			COMMONSBOOKING_METABOX_PREFIX . 'bookingcode'      => CB1::getBookingCode( $booking['code_id'] ),
+			'repetition-start'                            => strtotime( $booking['date_start'] ),
+			\CommonsBooking\Model\Timeframe::REPETITION_END => strtotime( $booking['date_end'] ),
+			'item-id'                                     => $cbItem ? $cbItem->ID : '',
+			'location-id'                                 => $cbLocation ? $cbLocation->ID : '',
+			'type'                                        => Timeframe::BOOKING_ID,
+			'timeframe-repetition'                        => 'norep',
+			'start-time'                                  => '00:00',
+			'end-time'                                    => '23:59',
+			'full-day'                                    => 'on',
+			'grid'                                        => '0',
+			COMMONSBOOKING_METABOX_PREFIX . 'bookingcode' => CB1::getBookingCode( $booking['code_id'] ),
 		];
 
 		$existingPost = self::getExistingPost( $booking['id'], \CommonsBooking\Wordpress\CustomPostType\Booking::$postType );

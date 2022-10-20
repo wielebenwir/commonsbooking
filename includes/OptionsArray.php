@@ -10,7 +10,6 @@ use CommonsBooking\View\TimeframeExport;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use CommonsBooking\Service\Cache;
 
 // We need static types, because german month names dont't work for datepicker
 $dateFormat = "d/m/Y";
@@ -233,31 +232,6 @@ Name: {{user:first_name}} {{user:last_name}}<br>
 <br>
 Thanks, the Team.
                         ', 'commonsbooking' ) ),
-					),
-					array(
-						'name'    => commonsbooking_sanitizeHTML( __('Attach iCalendar file to booking email', 'commonsbooking') ),
-						'id'	  => 'emailtemplates_mail-booking_ics_attach',
-						'type'	  => 'checkbox',
-						'desc' => esc_html__( 'Will attach an iCalendar compatible file for users to import in their respective calendar application.', 'commonsbooking' ),
-					),
-					array(
-						'name'    => commonsbooking_sanitizeHTML( __('iCalendar event title', 'commonsbooking') ),
-						'id'	  => 'emailtemplates_mail-booking_ics_event-title',
-						'type'	  => 'text',
-						'desc' => esc_html__( 'The title of the attached event', 'commonsbooking' ),
-						'default'       => commonsbooking_sanitizeHTML( __( '{{item:post_title}} at {{location:post_title}}',
-						'commonsbooking' ) ),
-					),
-					array(
-						'name'    => commonsbooking_sanitizeHTML( __('iCalendar event description', 'commonsbooking') ),
-						'id'	  => 'emailtemplates_mail-booking_ics_event-description',
-						'type'	  => 'textarea',
-						'desc' => esc_html__( 'The description for the attached event.', 'commonsbooking' ),
-						'default'       => commonsbooking_sanitizeHTML( __( ' Pick up: {{booking:pickupDatetime}}
-Return date: {{booking:returnDatetime}}
-{{location:formattedPickupInstructions}}
-{{booking:formattedBookingCode}} ',
-						'commonsbooking' ) ),
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Booking canceled email subject', 'commonsbooking' ) ),
@@ -1037,10 +1011,10 @@ The team</p>', 'commonsbooking' ) ),
 	),
 	/* Tab: export end */
 
-	/* Tab: advanced options start */
-	'advanced-options'     => array(
-		'title'        => __( 'Advanced Options', 'commonsbooking' ),
-		'id'           => 'advanced-options',
+	/* Tab: meta data set start */
+	'metadata'     => array(
+		'title'        => __( 'Meta Data-Sets', 'commonsbooking' ),
+		'id'           => 'custom_metadata',
 		'field_groups' => array(
 			'custom_metadata' => array(
 				'title'  => esc_html__( 'Set Custom metadata to locations and items', 'commonsbooking' ),
@@ -1058,65 +1032,7 @@ The team</p>', 'commonsbooking' ) ),
 					),
 				]
 			),
-			'icalfeed' => array(
-				'title' => esc_html__( 'iCalendar Feed', 'commonsbooking' ),
-				'desc'	=> commonsbooking_sanitizeHTML( __('Enables users to copy a url for a dynamic iCalendar feed into their own digital calendars. This feature is experimental.',
-				 'commonsbooking')),
-				'id'	=> 'icalendar_group',
-				'fields'=> [
-					array(
-						'name' => esc_html__( 'Enable iCalendar feed', 'commonsbooking' ),
-						'id'   => 'feed_enabled',
-						'type' => 'checkbox',
-					),
-					array(
-						'name'	=> esc_html__( 'Event title', 'commonsbooking'),
-						'desc'	=> esc_html__( 'You can use template tags here as well', 'commonsbooking'),
-						'default'       => commonsbooking_sanitizeHTML( __( '{{item:post_title}} at {{location:post_title}}',
-						'commonsbooking' ) ),
-						'id'	=> 'event_title',
-						'type'	=> 'text',
-					),
-					array(
-						'name'	=> esc_html__( 'Event description', 'commonsbooking'),
-						'desc'	=> esc_html__( 'You can use template tags here as well', 'commonsbooking'),
-						'default'       => commonsbooking_sanitizeHTML( __( '
-Pick up: {{booking:pickupDatetime}}
-Return date: {{booking:returnDatetime}}
-{{location:formattedPickupInstructions}}
-{{booking:formattedBookingCode}} ',
-						'commonsbooking' ) ),
-						'id'	=> 'event_desc',
-						'type'	=> 'textarea',
-					)
-				]
-			),
-			'experimental' => array(
-				'title'  => commonsbooking_sanitizeHTML( __( 'Connect to REDIS database.', 'commonsbooking' ) ),
-				'id'     => 'redis_group',
-				'desc'   =>
-					commonsbooking_sanitizeHTML( __( 'Allows you to connect the cache to a REDIS database. This feature is experimental.', 'commonsbooking' ) ),
-				'fields' => array(
-					array(
-						'name' => commonsbooking_sanitizeHTML( __( 'Enable REDIS Caching', 'commonsbooking' ) ),
-						'id'   => 'redis_enabled',
-						'type' => 'checkbox',
-					),
-					array(
-						'name' => commonsbooking_sanitizeHTML( __( 'REDIS DSN (REDIS Server URL)', 'commonsbooking' ) ),
-						'id'   => 'redis_dsn',
-						'type' => 'text',
-						'default' => 'redis://localhost:6379'
-					),
-					array(
-						'name'          => commonsbooking_sanitizeHTML( __( 'Current connections status', 'commonsbooking' ) ),
-						'id'            => 'redis_connection-status',
-						'type'          => 'text',
-						'render_row_cb' => array( Cache::class, 'renderREDISConnectionStatus' ),
-					)
-				)
-			),
 		),
 	),
-	/* Tab: advanced options end */
+	/* Tab: meta data end */
 );

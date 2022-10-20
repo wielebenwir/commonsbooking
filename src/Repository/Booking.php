@@ -166,7 +166,7 @@ class Booking extends PostRepository {
 			'meta_query'  => array(
 				'relation' => "AND",
 				array(
-					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_START,
+					'key'     => 'repetition-start',
 					'value'   => $startDateTimestamp,
 					'compare' => '=',
 					'type'    => 'numeric',
@@ -182,12 +182,12 @@ class Booking extends PostRepository {
 					'compare' => '=',
 				),
 				array(
-					'key'     => \CommonsBooking\Model\Timeframe::META_LOCATION_ID,
+					'key'     => 'location-id',
 					'value'   => $locationId,
 					'compare' => '=',
 				),
 				array(
-					'key'     => \CommonsBooking\Model\Timeframe::META_ITEM_ID,
+					'key'     => 'item-id',
 					'value'   => $itemId,
 					'compare' => '=',
 				),
@@ -305,46 +305,6 @@ class Booking extends PostRepository {
 	}
 
 	/**
-	 * Returns all bookings, allowed to see/edit for user.
-	 *
-	 * @param bool $asModel
-	 * @param null $startDate
-	 *
-	 * @return array
-	 * @throws Exception
-	 */
-	public static function getForUser( $user, bool $asModel = false, $startDate = null): array{
-		$customId     = $user->ID;
-
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
-		} else {
-			$posts = self::get(
-				[],
-				[],
-				null,
-				$asModel,
-				$startDate,
-				[ 'canceled', 'confirmed', 'unconfirmed' ]
-			);
-			if ( $posts ) {
-				// Check if it is the main query and one of our custom post types
-				$posts = array_filter( $posts, function ( $post ) use ($user) {
-					return commonsbooking_isUserAllowedToEdit( $post, $user);
-				} );
-			}
-
-			Plugin::setCacheItem(
-				$posts,
-				Wordpress::getTags($posts),
-				$customId
-			);
-		}
-
-		return $posts;
-	}
-
-	/**
 	 * Returns all bookings, allowed to see/edit for current user.
 	 *
 	 * @param bool $asModel
@@ -359,8 +319,34 @@ class Booking extends PostRepository {
 		}
 
 		$current_user = wp_get_current_user();
-		
-		return self::getForUser($current_user, $asModel, $startDate);
+		$customId     = $current_user->ID;
+
+		if ( Plugin::getCacheItem( $customId ) ) {
+			return Plugin::getCacheItem( $customId );
+		} else {
+			$posts = self::get(
+				[],
+				[],
+				null,
+				$asModel,
+				$startDate,
+				[ 'canceled', 'confirmed', 'unconfirmed' ]
+			);
+			if ( $posts ) {
+				// Check if it is the main query and one of our custom post types
+				$posts = array_filter( $posts, function ( $post ) {
+					return commonsbooking_isCurrentUserAllowedToEdit( $post );
+				} );
+			}
+
+			Plugin::setCacheItem(
+				$posts,
+				Wordpress::getTags($posts),
+				$customId
+			);
+		}
+
+		return $posts;
 	}
 
 	/**

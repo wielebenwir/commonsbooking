@@ -37,9 +37,7 @@
     "scssphp/scssphp": "^1.10.0",
     "ext-json": "*",
     "symfony/cache": "^5.4",
-    "symfony/service-contracts": "v1.1.11",
-    "eluceo/ical": "^2.5",
-    "phpmailer/phpmailer": "^6.6"
+    "symfony/service-contracts": "v1.1.11"
   },
   "require-dev": {
     "mockery/mockery": "1.*",

@@ -108,13 +108,11 @@ class Location extends View {
 		foreach ( $locations as $location ) {
 			$shortCodeData = self::getShortcodeData( $location, 'Item' );
 
-			// Sort by start_date when no other order is defined
-			if (empty($queryArgs['orderby'])){
-				foreach ($shortCodeData as $item) {
-					uasort( $item['ranges'], function ( $a, $b ) {
-						return $a['start_date'] <=> $b['start_date'];
-					} );
-				}
+			// Sort by start_date
+			foreach ($shortCodeData as $item) {
+				uasort( $item['ranges'], function ( $a, $b ) {
+					return $a['start_date'] <=> $b['start_date'];
+				} );
 			}
 
 			$locationData[ $location->ID ] = $shortCodeData;

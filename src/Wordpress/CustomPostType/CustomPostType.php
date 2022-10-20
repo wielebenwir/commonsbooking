@@ -80,7 +80,7 @@ abstract class CustomPostType {
 	 */
 	public static function getCMB2FieldsArrayFromCustomMetadata( $type ): ?array {
 
-		$metaDataRaw    = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'metadata' );
+		$metaDataRaw    = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_metadata', 'metadata' );
 		$metaDataLines  = explode( "\r\n", $metaDataRaw );
 		$metaDataFields = array();
 

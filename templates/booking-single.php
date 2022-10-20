@@ -16,7 +16,6 @@ $booking = new Booking( $post->ID );
 $timeframe                    = $booking->getBookableTimeFrame();
 $location                     = $booking->getLocation();
 $item                         = $booking->getItem();
-$user                         = $booking->getUserData();
 $show_contactinfo_unconfirmed = Settings::getOption( 'commonsbooking_options_templates', 'show_contactinfo_unconfirmed' );
 $text_hidden_contactinfo      = Settings::getOption( 'commonsbooking_options_templates', 'text_hidden-contactinfo' );
 
@@ -46,7 +45,7 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 		</div><!-- .cb-bookigcode -->
 		<?php
 		if (
-			$booking->getBookingCode() && $booking->post_status == 'confirmed' &&
+			$booking->getBookingCode() && $booking->post_status == "confirmed" &&
 			( $booking->showBookingCodes() || ( $timeframe && $timeframe->showBookingCodes() ) )
 		) { // start if bookingcode
 			?>
@@ -75,14 +74,13 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 		</div><!-- .cb-cb-pickupinstructions -->
 		<?php
 		// show contact details only after booking is confirmed or if options are set to show contactinfo even on unconfirmed booking status
-		if ( $post->post_status == 'confirmed' or $show_contactinfo_unconfirmed == 'on' ) {
-            ?>
+		if ( $post->post_status == 'confirmed' or $show_contactinfo_unconfirmed == 'on' ) { ?>
 			<div class="cb-list-content cb-contact cb-col-30-70">
 				<div><?php echo esc_html__( 'Contact', 'commonsbooking' ); ?></div>
 				<div><?php echo commonsbooking_sanitizeHTML( $location->formattedContactInfoOneLine() ); ?></div>
 			</div><!-- .cb-contact -->
 			<?php
-            // else; show info-text to inform user to confirm booking to see contact details
+// else; show info-text to inform user to confirm booking to see contact details
 		} else {
 			?>
 			<div class="cb-list-content cb-contact cb-col-30-70">
@@ -90,7 +88,7 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 				<div><strong><?php echo commonsbooking_sanitizeHTML( $text_hidden_contactinfo ); ?></strong></div>
 			</div><!-- .cb-contact -->
 			<?php
-            // end if booking == confirmed
+// end if booking == confirmed
 		}
 		?>
 	</div><!-- cb-booking-location -->
@@ -101,12 +99,12 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 			<h3><?php echo esc_html__( 'Your profile', 'commonsbooking' ); ?></h3>
 		</div>
 		<div class="cb-list-content cb-user cb-col-30-70">
-       			<div><?php echo esc_html__( 'Your E-Mail', 'commonsbooking' ); ?></div>
+			<div><?php echo esc_html__( 'Your E-Mail', 'commonsbooking' ) ?></div>
 			<div><?php echo commonsbooking_sanitizeHTML( CB::get( 'user', 'user_email' ) ); ?></div>
 		</div>
 		<div class="cb-list-content cb-user cb-col-30-70">
-			<div><?php echo esc_html__( 'Your User name', 'commonsbooking' ); ?></div>
-			<div><a href="<?php echo get_edit_profile_url( $user->ID ); ?>"><?php echo esc_html( $user->first_name ) . ' ' . esc_html( $user->last_name ) . ' (' . esc_html( $user->user_login ) . ')'; ?> </a>
+			<div><?php echo esc_html__( 'Your User name', 'commonsbooking' ) ?></div>
+			<div><?php echo commonsbooking_sanitizeHTML( CB::get( 'user', 'first_name' ) ); ?> <?php echo commonsbooking_sanitizeHTML( CB::get( 'user', 'last_name' ) ); ?>
 				<br>
 				<?php echo commonsbooking_sanitizeHTML( CB::get( 'user', 'address' ) ); ?>
 			</div>
@@ -121,8 +119,7 @@ if ( $bookingCommentActive ) {
 	$bookingCommentTitle       = Settings::getOption( 'commonsbooking_options_general', 'booking-comment-title' );
 	$bookingCommentDescription = Settings::getOption( 'commonsbooking_options_general', 'booking-comment-description' );
 
-	if ( $post->post_status == 'unconfirmed' ) {
-        ?>
+	if ( $post->post_status == 'unconfirmed' ) { ?>
 		<div class="cb-wrapper cb-booking-comment">
 			<div class="cb-list-header">
 				<h3><?php echo commonsbooking_sanitizeHTML( $bookingCommentTitle ); ?></h3>
@@ -163,7 +160,7 @@ if ( $current_status && $current_status !== 'draft' ) {
 		include COMMONSBOOKING_PLUGIN_DIR . 'templates/booking-single-form.php';
 
 		// if booking is unconfirmed cancel link throws user back to item detail page
-		if ( $booking->post_status() == 'unconfirmed' ) {
+		if ( $booking->post_status() == "unconfirmed" ) {
 			echo '<a href="' . esc_url( get_permalink( $item->ID ) ) . '">' . esc_html__( 'Cancel', 'commonsbooking' ) . '</a>';
 		} else {
 			// if booking is confirmed we display the cancel booking button

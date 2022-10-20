@@ -263,12 +263,8 @@ class TimeframeExport {
 		// populate simple meta fields
 		$timeframeData["timeframe-max-days"]  = $timeframePost->getFieldValue( "timeframe-max-days" );
 		$timeframeData["full-day"]            = $timeframePost->getFieldValue( "full-day" );
-		$timeframeData[\CommonsBooking\Model\Timeframe::REPETITION_START] =
-			$timeframePost->getStartDate() ?
-				date( 'c', $timeframePost->getStartDate() ) : '';
-		$timeframeData[\CommonsBooking\Model\Timeframe::REPETITION_END] =
-			$timeframePost->getEndDate() ?
-				date( 'c', $timeframePost->getEndDate() ) : '';
+		$timeframeData["repetition-start"]    = $timeframePost->getStartDate() ? date( esc_html(get_option( 'date_format' )), $timeframePost->getStartDate() ) : '';
+		$timeframeData["repetition-end"]      = $timeframePost->getEndDate() ? date( esc_html(get_option( 'date_format' )), $timeframePost->getEndDate() ) : '';
 		$timeframeData["start-time"]          = $timeframePost->getStartTime();
 		$timeframeData["end-time"]            = $timeframePost->getEndTime();
 		$timeframeData["pickup"]              = isset( $booking ) ? $booking->pickupDatetime() : "";

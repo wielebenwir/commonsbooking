@@ -99,6 +99,30 @@
         padding: 10px;
         font-size: var(--commonsbooking-font-size-normal);
 
+        #calendar-footnote-colorkey {
+
+            .colorkey-square {
+                width:10px;
+                height:10px;
+                display:inline-block;
+            }
+
+            .colorkey-accept {
+                background-color: var(--commonsbooking-color-accept);
+            }
+            
+            .colorkey-cancel {
+                background-color: var(--commonsbooking-color-cancel);
+            }
+
+            .colorkey-holiday {
+                background-color: var(--commonsbooking-color-holiday)
+            }
+
+            .colorkey-greyedout {
+                background-color: var(--commonsbooking-color-greyedout);
+            }
+        }
     }
 
     #booking-form {
@@ -183,31 +207,4 @@
             background: var(--commonsbooking-color-error);
         }
     }
-    #cb-colorkey-legend {
-        .colorkey-square {
-            width:10px;
-            height:10px;
-            display:inline-block;
-        }
-    
-        .colorkey-accept {
-            background-color: var(--commonsbooking-color-accept);
-        }
-        
-        .colorkey-cancel {
-            background-color: var(--commonsbooking-color-cancel);
-        }
-    
-        .colorkey-holiday {
-            background-color: var(--commonsbooking-color-holiday);
-            background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
-            background-size: 5px 5px;
-        }
-    
-        .colorkey-greyedout {
-            background-color: var(--commonsbooking-color-greyedout);
-        }
-    }
 }
-
-
