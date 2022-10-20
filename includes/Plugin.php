@@ -1,15 +1,23 @@
 <?php
 // Shows Errors in Backend
 use CommonsBooking\Plugin;
+use CommonsBooking\Settings\Settings;
+use CommonsBooking\View\TimeframeExport;
+use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 add_action( 'admin_notices', array( Plugin::class, 'renderError' ) );
 
 // Initialize booking codes table
 register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( Plugin::class, 'activation' ) );
 
-// Do action upon module deactivation
-register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( Plugin::class, 'deactivation' ) );
+// Remove schedule on module deactivation
+register_deactivation_hook(
+	COMMONSBOOKING_PLUGIN_FILE,
+	array(\CommonsBooking\Service\Scheduler::class, 'unscheduleEvents')
+);
 
+// Init scheduled tasks
+\CommonsBooking\Service\Scheduler::initHooks();
 
 /**
  * writes messages to error_log file

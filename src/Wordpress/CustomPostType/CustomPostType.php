@@ -4,7 +4,6 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\View\Admin\Filter;
 use WP_Post;
 
 abstract class CustomPostType {
@@ -271,26 +270,6 @@ abstract class CustomPostType {
 				echo '-';
 			}
 		}
-	}
-
-	/**
-	 * Adds Category filter to backend list view
-	 * 
-	 */
-	public static function addAdminCategoryFilter() {
-		$values = [];
-		$terms = get_terms(array(
-			'taxonomy'	=> static::$postType . 's_category'
-		));
-		foreach ( $terms as $term ) {
-			$values[ $term->term_id ] = $term->name;
-		}
-		Filter::renderFilter(
-			static::$postType,
-			esc_html__( 'Filter By Category ', 'commonsbooking' ),
-			'filter_post_category',
-			$values
-		);
 	}
 
 	/**
