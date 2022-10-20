@@ -1,6 +1,6 @@
 <?php
 /**
- * Timeframe types other thank bookings are not allowed for preview in frontend
+ * Timeframe types other than bookings are not allowed for preview in frontend
  */
 
 ?>
