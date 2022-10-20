@@ -180,7 +180,7 @@ class Map extends CustomPostType {
 			 */
 
 			 if ($preset_location_categories) {
-				if ( !has_term( $preset_categories , 'cb_locations_category' , $post->ID) ) {
+				if ( !has_term( $preset_location_categories , 'cb_locations_category' , $post->ID) ) {
 					continue; //skip to next location in loop
 				}
 			 }
