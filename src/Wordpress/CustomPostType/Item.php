@@ -22,9 +22,14 @@ class Item extends CustomPostType {
 		// Listing of locations for item
 		add_shortcode( 'cb_locations', array( \CommonsBooking\View\Location::class, 'shortcode' ) );
 
+		//Add filter to backend list view
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminCategoryFilter' ) );
+
 		// Filter only for current user allowed posts
 		add_action( 'pre_get_posts', array( $this, 'filterAdminList' ) );
 	}
+
+
 
 	/**
 	 * Filters admin list by type (e.g. bookable, repair etc. )
@@ -51,6 +56,19 @@ class Item extends CustomPostType {
 					}
 				);
 				$query->query_vars['post__in'] = $items;
+			}
+
+			if (
+				isset( $_GET['admin_filter_post_category'] ) &&
+				$_GET['admin_filter_post_category'] != ''
+			) {
+				$query->query_vars['tax_query'] = array(
+						array(
+						'taxonomy'	=>	self::$postType . 's_category',
+						'field'		=>	'term_id',
+						'terms'		=>	$_GET['admin_filter_post_category']
+						)
+				);
 			}
 		}
 	}

@@ -3,9 +3,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\View\Map;
-use CommonsBooking\View\View;
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Repository\UserRepository;
 
 class Location extends CustomPostType {
@@ -21,6 +19,9 @@ class Location extends CustomPostType {
 
 		// Listing of items for location
 		add_shortcode( 'cb_items', array( \CommonsBooking\View\Item::class, 'shortcode' ) );
+
+		//Add filter to backend list view
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminCategoryFilter' ) );
 
 		// Filter only for current user allowed posts
 		add_action( 'pre_get_posts', array( $this, 'filterAdminList' ) );
@@ -65,6 +66,19 @@ class Location extends CustomPostType {
 				);
 
 				$query->query_vars['post__in'] = $locations;
+			}
+
+			if (
+				isset( $_GET['admin_filter_post_category'] ) &&
+				$_GET['admin_filter_post_category'] != ''
+			) {
+				$query->query_vars['tax_query'] = array(
+						array(
+						'taxonomy'	=>	self::$postType . 's_category',
+						'field'		=>	'term_id',
+						'terms'		=>	$_GET['admin_filter_post_category']
+						)
+				);
 			}
 		}
 	}
