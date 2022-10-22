@@ -197,7 +197,7 @@ trait Cache {
 		            method: "POST",
 		            data: {
 		                _ajax_nonce: cb_ajax_cache_warmup.nonce,
-		                action: "cache_warmup"
+		                action: "cb_cache_warmup"
 		            }
 				});'
 			);

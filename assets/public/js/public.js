@@ -39,7 +39,7 @@ class BookingList {
     _resetListParams() {
         this.listParams = new FormData();
         this.listParams.append("_ajax_nonce", cb_ajax_bookings.nonce);
-        this.listParams.append("action", "bookings_data");
+        this.listParams.append("action", "cb_bookings_data");
         this.listParams.append("page", 1);
     }
     _bindEventListeners() {
@@ -2076,7 +2076,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     const calEndDate = moment(date.format("YYYY-MM-DD")).add(numberOfMonths, "months").date(1).format("YYYY-MM-DD");
                     jQuery.post(cb_ajax.ajax_url, {
                         _ajax_nonce: cb_ajax.nonce,
-                        action: "calendar_data",
+                        action: "cb_calendar_data",
                         item: jQuery("#booking-form input[name=item-id]").val(),
                         location: jQuery("#booking-form input[name=location-id]").val(),
                         sd: calStartDate,

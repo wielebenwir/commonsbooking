@@ -8,7 +8,7 @@
             const runMigration = data => {
                 $.post(cb_ajax_start_migration.ajax_url, {
                     _ajax_nonce: cb_ajax_start_migration.nonce,
-                    action: "start_migration",
+                    action: "cb_start_migration",
                     data: data,
                     geodata: $("#get-geo-locations").is(":checked")
                 }, function(data) {
@@ -35,7 +35,7 @@
             $("#booking-migration-in-progress").show();
             $.post(cb_ajax_start_migration.ajax_url, {
                 _ajax_nonce: cb_ajax_start_migration.nonce,
-                action: "start_booking_migration"
+                action: "cb_start_booking_migration"
             }).done(function() {
                 $("#booking-migration-in-progress").hide();
                 $("#booking-migration-done").show();
