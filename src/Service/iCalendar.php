@@ -20,9 +20,7 @@ use DateTimeImmutable;
 use DateInterval;
 
 /**
- * 
- * 	Current issue: Timestamp not localized with timezone, see issue: https://github.com/wielebenwir/commonsbooking/issues/1023
- *  If this issue is ever fixed, code has already been pre-written to correctly handle the timezones. It is marked with #1023
+ *
  */
 class iCalendar {
 
@@ -105,14 +103,12 @@ class iCalendar {
             $booking_startDateDateTime = DateTimeImmutable::createFromMutable( $booking->getStartDateDateTime() );
             $booking_endDateDateTime = DateTimeImmutable::createFromMutable( $booking->getEndDateDateTime() );
 
-            // Create timezone entity 
-            /* #1023
+            // Create timezone entity
             $timezone = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone(
                 wp_timezone(),
                 $booking_startDateDateTime,
                 $booking_endDateDateTime
             );
-            */
 
             //Create event occurence
             if ($booking->isFullDay()){
@@ -134,10 +130,8 @@ class iCalendar {
                 $booking_endDateDateTime = $booking_endDateDateTime->add(new DateInterval('PT1M'));
 
                 $occurence = new TimeSpan(
-                        //new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_startDateDateTime, true), #1023
-                        //new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_endDateDateTime, true) #1023
-                        new DateTime( $booking_startDateDateTime, false ), //remove when #1023 fixed
-                        new DateTime( $booking_endDateDateTime, false ) //remove when #1023 fixed
+                        new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_startDateDateTime, true),
+                        new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_endDateDateTime, true)
                 );
             }
 
