@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Helper\Wordpress;
 use DateTime;
 use Exception;
 
@@ -188,7 +189,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return string
 	 */
 	private function sanitizeTimeField( $fieldName ): string {
-		$time       = new DateTime();
+		$time       = Wordpress::getUTCDateTime();
 		$fieldValue = $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START );
 		if ( $fieldName == 'end-time' ) {
 			$fieldValue = $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END );

@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Messages\RestrictionMessage;
 use DateTime;
 
@@ -58,10 +59,10 @@ class Restriction extends CustomPost {
 	 */
 	public function getEndTimeDateTime( $endDateString = null ): DateTime {
 		$endTimeString = $this->getMeta( self::META_END );
-		$endDate       = new DateTime();
+		$endDate       = Wordpress::getUTCDateTime();
 
 		if ( $endTimeString ) {
-			$endTime = new DateTime();
+			$endTime = Wordpress::getUTCDateTime();
 			$endTime->setTimestamp( $endTimeString );
 			$endDate->setTime( $endTime->format( 'H' ), $endTime->format( 'i' ) );
 		} else {
@@ -158,7 +159,7 @@ class Restriction extends CustomPost {
 	 */
 	public function getStartTimeDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::META_START );
-		$startDate       = new DateTime();
+		$startDate       = Wordpress::getUTCDateTime();
 		$startDate->setTimestamp( $startDateString );
 
 		return $startDate;
@@ -181,7 +182,7 @@ class Restriction extends CustomPost {
 	 */
 	public function getEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::META_END ) );
-		$endDate       = new DateTime();
+		$endDate       = Wordpress::getUTCDateTime();
 		$endDate->setTimestamp( $endDateString );
 
 		return $endDate;

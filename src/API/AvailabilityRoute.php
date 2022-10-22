@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\API;
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\Calendar;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Timeframe;
@@ -56,16 +57,13 @@ class AvailabilityRoute extends BaseRoute {
 					}
 					$availabilitySlot = new stdClass();
 
-					// Init default timezone
-					$timezone = new DateTimeZone( 'Europe/Berlin' );
-
 					// Init DateTime object for start
-					$dateTimeStart = new DateTime( 'now', $timezone );
+					$dateTimeStart = Wordpress::getUTCDateTime('now');
 					$dateTimeStart->setTimestamp( $slot['timestampstart'] );
 					$availabilitySlot->start = $dateTimeStart->format( 'Y-m-d\TH:i:sP' );
 
 					// Init DateTime object for end
-					$dateTimeend = new DateTime( 'now', $timezone );
+					$dateTimeend = Wordpress::getUTCDateTime('now');
 					$dateTimeend->setTimestamp( $slot['timestampend'] );
 					$availabilitySlot->end = $dateTimeend->format( 'Y-m-d\TH:i:sP' );
 

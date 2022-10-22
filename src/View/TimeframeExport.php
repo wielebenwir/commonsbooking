@@ -4,6 +4,7 @@
 namespace CommonsBooking\View;
 
 
+use CommonsBooking\Helper\Wordpress;
 use DateTime;
 use Exception;
 use DatePeriod;
@@ -181,8 +182,8 @@ class TimeframeExport {
 
 	protected static function getPeriod( $start, $end ) {
 		// Timerange
-		$begin = new DateTime( $start );
-		$end   = new DateTime( $end );
+		$begin = Wordpress::getUTCDateTime( $start );
+		$end   = Wordpress::getUTCDateTime( $end );
 
 		$interval = DateInterval::createFromDateString( '1 day' );
 
