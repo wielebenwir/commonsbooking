@@ -2,9 +2,11 @@
 
 namespace CommonsBooking\Messages;
 
+use CommonsBooking\CB\CB;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\Restriction;
 use CommonsBooking\Settings\Settings;
+use CommonsBooking\Wordpress\CustomPostType\Item;
 
 class RestrictionMessage extends Message {
 
@@ -104,18 +106,23 @@ class RestrictionMessage extends Message {
 	 *
 	 * @param $body
 	 * @param $subject
+	 *
+	 * @throws \Exception
 	 */
 	protected function prepareRestrictionMail( $body, $subject ) {
 		$fromHeader = 'From: ' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-name' ) .
 		              ' <' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-email' ) . '>';
 		$restriction = $this->getRestriction();
 
+		$item_maintainer_email = CB::get( Item::$postType, COMMONSBOOKING_METABOX_PREFIX . 'item_maintainer_email', $this->booking->getItem() ) ; /*  email addresses, comma-seperated  */
+		$bcc_addresses = str_replace(' ','',$item_maintainer_email);
+
 		$this->prepareMail(
 			$this->getUser(),
 			$body,
 			$subject,
 			$fromHeader,
-			null,
+			$bcc_addresses,
 			[
 				'restriction' => $restriction,
 				'item'        => $this->booking->getItem(),

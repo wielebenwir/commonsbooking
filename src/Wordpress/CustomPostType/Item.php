@@ -225,6 +225,16 @@ class Item extends CustomPostType {
 					'placeholder' => esc_html__( 'Select item admins.', 'commonsbooking' )
 				),
 			) );
+
+			// item maintainer(s) emails
+			$cmb->add_field( array(
+				'name'       => esc_html__( 'Item maintainer email', 'commonsbooking' ),
+				'desc'       => esc_html__( 'Email addresses to which notifications about a change of item status (restriction, breakdown) shall be sent. You can enter multiple addresses separated by commas.',
+					'commonsbooking' ),
+				'id'         => COMMONSBOOKING_METABOX_PREFIX . 'item_maintainer_email',
+				'type'       => 'text',
+				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+			) );
 		}
 
 		// Check if custom meta fields are set in CB Options and generate MetaData-Box and fields
