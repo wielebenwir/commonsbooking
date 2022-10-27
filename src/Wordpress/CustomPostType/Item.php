@@ -213,6 +213,8 @@ class Item extends CustomPostType {
 			foreach ( $users as $user ) {
 				$userOptions[ $user->ID ] = $user->get( 'user_nicename' ) . " (" . $user->first_name . " " . $user->last_name . ")";
 			}
+
+			//Item Administrators
 			$cmb->add_field( array(
 				'name'       => esc_html__( 'Item Admin(s)', 'commonsbooking' ),
 				'desc'       => esc_html__( 'choose one or more users to give them the permisssion to edit and manage this specific item. Only users with the role cb_manager can be selected here', 'commonsbooking' ),
