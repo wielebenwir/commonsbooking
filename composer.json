@@ -28,13 +28,13 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/mustardbees/cmb-field-select2"
+      "url": "https://github.com/hansmorb/cmb-field-select2"
     }
   ],
   "require": {
     "php": ">=7.3",
     "cmb2/cmb2": "^2.7",
-    "mustardbees/cmb-field-select2": "^3.0",
+    "mustardbees/cmb-field-select2": "3.0.4",
     "geocoder-php/nominatim-provider": "^5.2",
     "php-http/curl-client": "^2.1",
     "nyholm/psr7": "^1.3",
