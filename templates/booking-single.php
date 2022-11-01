@@ -19,6 +19,7 @@ $item                         = $booking->getItem();
 $user                         = $booking->getUserData();
 $show_contactinfo_unconfirmed = Settings::getOption( 'commonsbooking_options_templates', 'show_contactinfo_unconfirmed' );
 $text_hidden_contactinfo      = Settings::getOption( 'commonsbooking_options_templates', 'text_hidden-contactinfo' );
+$formatted_user_info          = $booking::getFormattedUserInfo();
 
 do_action( 'commonsbooking_before_booking-single' );
 
@@ -105,10 +106,10 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 			<div><?php echo commonsbooking_sanitizeHTML( CB::get( 'user', 'user_email' ) ); ?></div>
 		</div>
 		<div class="cb-list-content cb-user cb-col-30-70">
-			<div><?php echo esc_html__( 'Your User name', 'commonsbooking' ); ?></div>
+			<div><?php echo esc_html__( 'User data', 'commonsbooking' ); ?></div>
 			<div><a href="<?php echo get_edit_profile_url( $user->ID ); ?>"><?php echo esc_html( $user->first_name ) . ' ' . esc_html( $user->last_name ) . ' (' . esc_html( $user->user_login ) . ')'; ?> </a>
 				<br>
-				<?php echo commonsbooking_sanitizeHTML( CB::get( 'user', 'address' ) ); ?>
+                <?php echo commonsbooking_sanitizeHTML( $formatted_user_info ); ?>
 			</div>
 		</div>
 	</div>
