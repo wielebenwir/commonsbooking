@@ -79,11 +79,12 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.7.3 (xx.10.2022)
+### 2.7.3 (20.10.2022)
 FIXED: Fatal error when trying to export timeframes with deleted items
 FIXED: Fatal error when trying to access invalid data
 FIXED: Restriction e-mails now contain correct booking links again
 FIXED: Issue with map category presets
+FIXED: fixed booking not shown when events manager plugin is used
 
 ### 2.7.2 (30.06.2022)
 FIXED: Plugin incompatibility with WPBakery
