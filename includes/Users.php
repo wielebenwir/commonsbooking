@@ -14,11 +14,9 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
  * @param $post
  *
  * @return bool
+ * @throws Exception
  */
 function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
-	if ( ! $post ) {
-		return false;
-	}
 	$current_user = wp_get_current_user();
 
 	return commonsbooking_isUserAllowedToEdit($post,$current_user);
@@ -33,9 +31,11 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
  * @return bool
  */
 function commonsbooking_isUserAllowedToEdit( $post, $user): bool {
-	if ( ! $post ) {
+	if (! Plugin::isPostCustomPostType($post) ) {
 		return false;
 	}
+
+	if (! is_user_logged_in()){ return false; }
 
 	$isAuthor     = intval( $user->ID ) == intval( $post->post_author );
 	$isAdmin      = commonsbooking_isUserAdmin($user);
@@ -134,7 +134,8 @@ add_action( 'current_screen', 'commonsbooking_validate_user_on_edit', 10, 1 );
 function commonsbooking_modify_admin_bar() {
 	global $wp_admin_bar;
 	global $post;
-	if ( ! commonsbooking_isCurrentUserAllowedToEdit( $post ) ) {
+	//check for CPT before evaluation of permission, use short-circuit to prevent invalid data access
+	if ( Plugin::isPostCustomPostType($post) && ! commonsbooking_isCurrentUserAllowedToEdit( $post ) ) {
 		$wp_admin_bar->remove_menu( 'edit' );
 	}
 

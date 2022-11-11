@@ -120,6 +120,25 @@ class Plugin {
 	}
 
 	/**
+	 * Tests if a given post belongs to our CPTs
+	 * @param $post
+	 *
+	 * @return bool
+	 */
+	public static function isPostCustomPostType($post): bool {
+		if (! $post ) {
+			return false;
+		}
+		$validPostTypes = self::getCustomPostTypes();
+		foreach ($validPostTypes as $validPostType){
+			if ($post->post_type == $validPostType::$postType) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Returns only custom post types, which are allowed for cb manager
 	 * @return array
 	 */
