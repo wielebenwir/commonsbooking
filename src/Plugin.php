@@ -209,9 +209,6 @@ class Plugin {
 			// Update Location Coordinates
 			self::updateLocationCoordinates();
 
-			// remove deprecated user roles
-			self::removeDeprecatedUserRoles();
-
 			// add role caps for custom post types
 			self::addCPTRoleCaps();
 
@@ -230,43 +227,6 @@ class Plugin {
 			//unschedules deprecated cronjobs
 			Scheduler::unscheduleOldEvents();
 			
-		}
-	}
-
-	/**
-	 * remove deprecated user roles
-	 * @TODO: Can be removed after a while (exists since version 2.3.3)
-	 *
-	 * @return void
-	 */
-	public static function removeDeprecatedUserRoles() {
-		$roles_array = array(
-			'location_admin',
-			'item_admin',
-			'location_owner',
-			'cb2_subscriber',
-			'cb2_contributor',
-		);
-
-		// get users with one of the deprecated roles
-		$users = get_users(array('role__in' => $roles_array));
-
-		if ($users) {
-			foreach ($users as $user) {
-				foreach ($roles_array as $role) {
-					$user->remove_role($role);
-					$user->add_role('subscriber');
-				}
-				$user_login[] = $user->user_login;
-			}
-
-			$message = commonsbooking_sanitizeHTML('<strong>Notice:</strong> Some deprecated user roles from older CommonsBooking versions have been removed because they are not used anymore. The following users were assigned to one of these deprecated user roles. They are assigned now to the default Subscriber role. Please check if these users should be assigned to another role, e.g. CommonsBooking Manager. Please copy and paste this list in case you need it for detailed checks. This message will not be shown again. <br>');
-			$message .= implode('<br>', $user_login);
-			new AdminMessage($message);
-		}
-
-		foreach ($roles_array as $role) {
-			remove_role($role);
 		}
 	}
 
