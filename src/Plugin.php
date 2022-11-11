@@ -200,10 +200,9 @@ class Plugin {
 		// check if installed version differs from plugin version in database
 		if (COMMONSBOOKING_VERSION != $commonsbooking_installed_version or !isset($commonsbooking_installed_version)) {
 
-			//reset greyed out color when upgrading to version 2.7.3. from any other version, see issue #1121
-			if (COMMONSBOOKING_VERSION == '2.7.3'){
-				Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor', '#f6f6f6' );
-			}
+			//reset greyed out color when upgrading, see issue #1121
+			Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor', '#f6f6f6' );
+
 			// set Options default values (e.g. if there are new fields added)
 			AdminOptions::SetOptionsDefaultValues();
 
