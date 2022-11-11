@@ -519,7 +519,7 @@ Thanks, the Team.
 						'id'      => 'colorscheme_greyedoutcolor',
 						'type'    => 'colorpicker',
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used to signify that no timeframe has been created for an item or a button that is not yet clickable', 'commonsbooking' ) ),
-						'default' => '#c4c4c4',
+						'default' => '#f6f6f6',
 					),
 
 					array(
@@ -536,6 +536,20 @@ Thanks, the Team.
 						'type'    => 'colorpicker',
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used for the background of notices', 'commonsbooking' ) ),
 						'default' => '#FFF9C5',
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Light text color', 'commonsbooking' ) ),
+						'id'      => 'colorscheme_lighttext',
+						'type'    => 'colorpicker',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used for light text on dark backgrounds', 'commonsbooking' ) ),
+						'default' => '#c4c4c4',
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Dark text color', 'commonsbooking' ) ),
+						'id'      => 'colorscheme_darktext',
+						'type'    => 'colorpicker',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used for dark text on light backgrounds', 'commonsbooking' ) ),
+						'default' => '#000',
 					),
 				)
 			),

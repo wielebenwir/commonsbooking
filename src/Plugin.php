@@ -200,6 +200,9 @@ class Plugin {
 		// check if installed version differs from plugin version in database
 		if (COMMONSBOOKING_VERSION != $commonsbooking_installed_version or !isset($commonsbooking_installed_version)) {
 
+			//reset greyed out color when upgrading, see issue #1121
+			Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor', '#f6f6f6' );
+
 			// set Options default values (e.g. if there are new fields added)
 			AdminOptions::SetOptionsDefaultValues();
 
@@ -218,7 +221,7 @@ class Plugin {
 			// migrate bookings to new cpt
 			\CommonsBooking\Migration\Booking::migrate();
 
-            // Set default values to existing timframes for advance booking days
+            // Set default values to existing timeframes for advance booking days
             self::setAdvanceBookingDaysDefault();
 
 			// Clear cache
