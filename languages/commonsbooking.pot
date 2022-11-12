@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-04-10T10:15:49+00:00\n"
+"POT-Creation-Date: 2022-05-03T16:45:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: commonsbooking\n"
@@ -50,15 +50,15 @@ msgstr ""
 #. translators: %s = version number
 #: includes/OptionsArray.php:52
 msgid ""
-"You are using CommonsBooking Version %s\n"
-"\n"
-"                            <h2>How to start</h2>\n"
-"                            <p>To get startet visit our tutorials and documentation on <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation\">https://commonsbooking.org/dokumentation</a></p>\n"
-"\n"
-"                            <h2>Questions or bug reports?</h2>\n"
-"                            <p>Ask your questions or send us your bug reports here <a target=\"_blank\" href=\"https://commonsbooking.org/kontakt/\">https://commonsbooking.org/kontakt/</a></p>\n"
-"\n"
-"                            <h2>Contribute</h2>\n"
+"You are using CommonsBooking Version %s\r\n"
+"\r\n"
+"                            <h2>How to start</h2>\r\n"
+"                            <p>To get startet visit our tutorials and documentation on <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation\">https://commonsbooking.org/dokumentation</a></p>\r\n"
+"\r\n"
+"                            <h2>Questions or bug reports?</h2>\r\n"
+"                            <p>Ask your questions or send us your bug reports here <a target=\"_blank\" href=\"https://commonsbooking.org/kontakt/\">https://commonsbooking.org/kontakt/</a></p>\r\n"
+"\r\n"
+"                            <h2>Contribute</h2>\r\n"
 "                            The future of this plugin depends on your support. You can support us by make a donation on our website: <a target=\"_blank\" href=\"https://www.wielebenwir.de/verein/unterstutzen\">wielebenwir</a>"
 msgstr ""
 
@@ -143,7 +143,7 @@ msgstr ""
 
 #: includes/OptionsArray.php:159
 msgid ""
-"Enter the booking codes to be generated in advance for booking types with all-day booking time frames.  Enter booking codes as a comma separated list, e.g.: Code1,Code2,Code3,Code4\n"
+"Enter the booking codes to be generated in advance for booking types with all-day booking time frames.  Enter booking codes as a comma separated list, e.g.: Code1,Code2,Code3,Code4\r\n"
 "                <br>More information in the documentation: <a href=\"https://commonsbooking.org/?p=870\" target=\"_blank\">Booking Codes</a>"
 msgstr ""
 
@@ -188,31 +188,31 @@ msgstr ""
 
 #: includes/OptionsArray.php:209
 msgid ""
-"\n"
-"Hi {{user:first_name}},<br>\n"
-"<br>\n"
-"thank you for booking {{item:post_title}} {{booking:formattedBookingDate}}.<br>\n"
-"<br>\n"
-"Pick up: <strong>{{booking:pickupDatetime}}</strong><br>\n"
-"Return date: <strong>{{booking:returnDatetime}}</strong>\n"
-"{{location:formattedPickupInstructions}}\n"
-"{{booking:formattedBookingCode}}\n"
-"<br>\n"
-"<strong>Location</strong><br>\n"
-"{{location:formattedAddress}}\n"
-"{{location:formattedContactInfoOneLine}}\n"
-"<br>\n"
-"<strong>Click here to see or cancel your booking: {{booking:bookingLink}}</strong><br>\n"
-"<br>\n"
-"<strong>Notice:</strong> You need to be logged in to see your booking.<br>\n"
-"If the link leads you to the homepage of the webseite,\n"
-"please login first and then click the link again.<br>\n"
-"<br>\n"
-"<strong>Your information:</strong><br>\n"
-"Login: {{user:user_login}}<br>\n"
-"Name: {{user:first_name}} {{user:last_name}}<br>\n"
-"<br>\n"
-"Thanks, the Team.\n"
+"\r\n"
+"Hi {{user:first_name}},<br>\r\n"
+"<br>\r\n"
+"thank you for booking {{item:post_title}} {{booking:formattedBookingDate}}.<br>\r\n"
+"<br>\r\n"
+"Pick up: <strong>{{booking:pickupDatetime}}</strong><br>\r\n"
+"Return date: <strong>{{booking:returnDatetime}}</strong>\r\n"
+"{{location:formattedPickupInstructions}}\r\n"
+"{{booking:formattedBookingCode}}\r\n"
+"<br>\r\n"
+"<strong>Location</strong><br>\r\n"
+"{{location:formattedAddress}}\r\n"
+"{{location:formattedContactInfoOneLine}}\r\n"
+"<br>\r\n"
+"<strong>Click here to see or cancel your booking: {{booking:bookingLink}}</strong><br>\r\n"
+"<br>\r\n"
+"<strong>Notice:</strong> You need to be logged in to see your booking.<br>\r\n"
+"If the link leads you to the homepage of the webseite,\r\n"
+"please login first and then click the link again.<br>\r\n"
+"<br>\r\n"
+"<strong>Your information:</strong><br>\r\n"
+"Login: {{user:user_login}}<br>\r\n"
+"Name: {{user:first_name}} {{user:last_name}}<br>\r\n"
+"<br>\r\n"
+"Thanks, the Team.\r\n"
 "                        "
 msgstr ""
 
@@ -230,12 +230,12 @@ msgstr ""
 
 #: includes/OptionsArray.php:246
 msgid ""
-"\n"
-"Hi {{user:first_name}},<br>\n"
-"<br>\n"
-"your booking of {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} has been canceled.<br>\n"
-"<br>          \n"
-"Thanks, the Team.\n"
+"\r\n"
+"Hi {{user:first_name}},<br>\r\n"
+"<br>\r\n"
+"your booking of {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} has been canceled.<br>\r\n"
+"<br>          \r\n"
+"Thanks, the Team.\r\n"
 "                            "
 msgstr ""
 
@@ -489,21 +489,21 @@ msgstr ""
 
 #: includes/OptionsArray.php:546
 msgid ""
-"<h2>Hi {{user:first_name}},</h2>\n"
-"\n"
-"<p>Unfortunately, the item {{item:post_title}} you booked is damaged and not usable from {{restriction:formattedStartDateTime}} until {{restriction:formattedEndDateTime}} expected.\n"
-"</br></br>\n"
-"The reason is:</br>\n"
-"{{restriction:hint}}\n"
-"</br>\n"
-"</br>\n"
-"We had to cancel your booking for this period.  You will receive a confirmation of the cancellation in a separate email.\n"
-"Please book the item again for another period or check our website to see if an alternative item is available.\n"
-"</br>\n"
-"We ask for your understanding. \n"
-"</br>\n"
-"Best regards,</br>\n"
-"the team\n"
+"<h2>Hi {{user:first_name}},</h2>\r\n"
+"\r\n"
+"<p>Unfortunately, the item {{item:post_title}} you booked is damaged and not usable from {{restriction:formattedStartDateTime}} until {{restriction:formattedEndDateTime}} expected.\r\n"
+"</br></br>\r\n"
+"The reason is:</br>\r\n"
+"{{restriction:hint}}\r\n"
+"</br>\r\n"
+"</br>\r\n"
+"We had to cancel your booking for this period.  You will receive a confirmation of the cancellation in a separate email.\r\n"
+"Please book the item again for another period or check our website to see if an alternative item is available.\r\n"
+"</br>\r\n"
+"We ask for your understanding. \r\n"
+"</br>\r\n"
+"Best regards,</br>\r\n"
+"the team\r\n"
 "</p>"
 msgstr ""
 
@@ -521,24 +521,24 @@ msgstr ""
 
 #: includes/OptionsArray.php:575
 msgid ""
-"<h2>Hi {{user:first_name}},</h2>\n"
-"<p>\n"
-"The item {{item:post_title}} you booked is damaged and will have limited use from {{restriction:formattedStartDateTime} until probably {{restriction:formattedEndDateTime}}.\n"
-"</br></br>\n"
-"The reason is:</br>\n"
-"{{restriction:hint}}\n"
-"</br>\n"
-"</br>\n"
-"Please check if you want to continue your booking despite this usage restriction. \n"
-"If not, we ask you to cancel your booking via the following link:\n"
-"{{booking:BookingLink}} \n"
-"</br>\n"
-"</br>\n"
-"We will do our best to fix the restriction as soon as possible.\n"
-"We will sent you an email when the restriction is fixed.\n"
-"</br>\n"
-"Best regards,</br>\n"
-"the team\n"
+"<h2>Hi {{user:first_name}},</h2>\r\n"
+"<p>\r\n"
+"The item {{item:post_title}} you booked is damaged and will have limited use from {{restriction:formattedStartDateTime} until probably {{restriction:formattedEndDateTime}}.\r\n"
+"</br></br>\r\n"
+"The reason is:</br>\r\n"
+"{{restriction:hint}}\r\n"
+"</br>\r\n"
+"</br>\r\n"
+"Please check if you want to continue your booking despite this usage restriction. \r\n"
+"If not, we ask you to cancel your booking via the following link:\r\n"
+"{{booking:BookingLink}} \r\n"
+"</br>\r\n"
+"</br>\r\n"
+"We will do our best to fix the restriction as soon as possible.\r\n"
+"We will sent you an email when the restriction is fixed.\r\n"
+"</br>\r\n"
+"Best regards,</br>\r\n"
+"the team\r\n"
 "</p>"
 msgstr ""
 
@@ -556,9 +556,9 @@ msgstr ""
 
 #: includes/OptionsArray.php:607
 msgid ""
-"<h2>Hi {{user:first_name}},</h2>\n"
-"<p>\n"
-"The item {{item:post_title}} is now fully usable again. \n"
+"<h2>Hi {{user:first_name}},</h2>\r\n"
+"<p>\r\n"
+"The item {{item:post_title}} is now fully usable again. \r\n"
 "</p>"
 msgstr ""
 
@@ -595,15 +595,15 @@ msgstr ""
 
 #: includes/OptionsArray.php:650
 msgid ""
-"<h2>Hi {{user:first_name}},</h2>\n"
-"<p>Your booking period for the item {{item:post_title}} will start soon.<br>\n"
-"Your booking period: {{booking:formattedBookingDate}}<br><br>\n"
-"\n"
-"If you no longer need the item you booked, please cancel the booking so other people can possibly use it.\n"
-"<br>\n"
-"For booking details and cancellation, click on this booking link: {{booking:bookingLink}}\n"
-"<br>\n"
-"Best regards,\n"
+"<h2>Hi {{user:first_name}},</h2>\r\n"
+"<p>Your booking period for the item {{item:post_title}} will start soon.<br>\r\n"
+"Your booking period: {{booking:formattedBookingDate}}<br><br>\r\n"
+"\r\n"
+"If you no longer need the item you booked, please cancel the booking so other people can possibly use it.\r\n"
+"<br>\r\n"
+"For booking details and cancellation, click on this booking link: {{booking:bookingLink}}\r\n"
+"<br>\r\n"
+"Best regards,\r\n"
 "the team</p>"
 msgstr ""
 
@@ -629,7 +629,7 @@ msgstr ""
 
 #: includes/OptionsArray.php:725
 msgid ""
-"Here you can set whether users should receive an additional e-mail after completing a booking. This can be used, for example, to inquire about the users satisfaction or possible problems during the booking.\n"
+"Here you can set whether users should receive an additional e-mail after completing a booking. This can be used, for example, to inquire about the users satisfaction or possible problems during the booking.\r\n"
 "\t\t\t\t\t<br>The email will be sent around midnight after the booking day has ended."
 msgstr ""
 
@@ -639,12 +639,12 @@ msgstr ""
 
 #: includes/OptionsArray.php:747
 msgid ""
-"<h2>Hi {{user:first_name}},</h2>\n"
-"<p>Your booking of {{item:post_title}} at {{location:post_title}} has ended.<br>\n"
-"We hope that everything worked as expected.<br>\n"
-"Please let us know if any problems occurred.<br>\n"
-"<br>\n"
-"Best regards,<br>\n"
+"<h2>Hi {{user:first_name}},</h2>\r\n"
+"<p>Your booking of {{item:post_title}} at {{location:post_title}} has ended.<br>\r\n"
+"We hope that everything worked as expected.<br>\r\n"
+"Please let us know if any problems occurred.<br>\r\n"
+"<br>\r\n"
+"Best regards,<br>\r\n"
 "The team</p>"
 msgstr ""
 
@@ -871,7 +871,7 @@ msgstr ""
 
 #: includes/OptionsArray.php:1020
 msgid ""
-"Use only this format, separated by semicolon and each entry in a new line: <br>post_type(item/location);field-name;label(english),type(checkbox,number,text),description(in english)<br>\n"
+"Use only this format, separated by semicolon and each entry in a new line: <br>post_type(item/location);field-name;label(english),type(checkbox,number,text),description(in english)<br>\r\n"
 "                                        Example: item;waterproof;Waterproof material;checkbox;\"This item is waterproof and can be used in heavy rain\" "
 msgstr ""
 
@@ -1179,14 +1179,14 @@ msgid "No booking codes could be created because there were no booking codes to 
 msgstr ""
 
 #: src/View/Admin/Filter.php:58
-#: src/Wordpress/CustomPostType/Booking.php:569
+#: src/Wordpress/CustomPostType/Booking.php:571
 #: src/Wordpress/CustomPostType/Restriction.php:444
 #: src/Wordpress/CustomPostType/Timeframe.php:559
 msgid "Start date"
 msgstr ""
 
 #: src/View/Admin/Filter.php:62
-#: src/Wordpress/CustomPostType/Booking.php:585
+#: src/Wordpress/CustomPostType/Booking.php:587
 #: src/Wordpress/CustomPostType/Restriction.php:454
 #: src/Wordpress/CustomPostType/Timeframe.php:581
 msgid "End date"
@@ -1236,7 +1236,7 @@ msgstr ""
 #: src/View/BookingCodes.php:37
 #: src/View/Calendar.php:202
 #: src/Wordpress/CustomPostType/Booking.php:259
-#: src/Wordpress/CustomPostType/Booking.php:563
+#: src/Wordpress/CustomPostType/Booking.php:565
 #: src/Wordpress/CustomPostType/Item.php:69
 #: src/Wordpress/CustomPostType/Restriction.php:50
 #: src/Wordpress/CustomPostType/Restriction.php:431
@@ -1252,7 +1252,7 @@ msgstr ""
 
 #: src/View/Calendar.php:203
 #: src/Wordpress/CustomPostType/Booking.php:260
-#: src/Wordpress/CustomPostType/Booking.php:557
+#: src/Wordpress/CustomPostType/Booking.php:559
 #: src/Wordpress/CustomPostType/Location.php:90
 #: src/Wordpress/CustomPostType/Restriction.php:51
 #: src/Wordpress/CustomPostType/Restriction.php:424
@@ -1380,7 +1380,7 @@ msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:85
 #: src/Wordpress/CustomPostType/Booking.php:360
-#: src/Wordpress/CustomPostType/Booking.php:514
+#: src/Wordpress/CustomPostType/Booking.php:516
 #: src/Wordpress/CustomPostType/Timeframe.php:116
 msgid "Booking"
 msgstr ""
@@ -1414,7 +1414,7 @@ msgid "Booking Status"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:265
-#: src/Wordpress/CustomPostType/Booking.php:551
+#: src/Wordpress/CustomPostType/Booking.php:553
 #: src/Wordpress/CustomPostType/Timeframe.php:434
 msgid "Comment"
 msgstr ""
@@ -1438,7 +1438,7 @@ msgid "Add new booking"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:363
-#: src/Wordpress/CustomPostType/Booking.php:542
+#: src/Wordpress/CustomPostType/Booking.php:544
 msgid "Edit booking"
 msgstr ""
 
@@ -1513,7 +1513,7 @@ msgstr ""
 msgid "Timeframes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:543
+#: src/Wordpress/CustomPostType/Booking.php:545
 msgid ""
 "In this view, you can modify existing bookings. Please use it with caution. <br>\r\n"
 "\t\t\t\tClick on the <strong>preview button on the right panel</strong> to view more booking details and to cancel the booking via the cancel button.<br>\r\n"
@@ -1521,28 +1521,30 @@ msgid ""
 "\t\t\t\t"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:552
+#: src/Wordpress/CustomPostType/Booking.php:554
 #: src/Wordpress/CustomPostType/Timeframe.php:435
 msgid "This comment is internal for timeframes like bookable, repair, holiday. If timeframe is a booking this comment can be set by users during the booking confirmation process."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:570
+#: src/Wordpress/CustomPostType/Booking.php:572
 #: src/Wordpress/CustomPostType/Timeframe.php:560
 msgid "Set the start date. If you have selected repetition, this is the start date of the interval. "
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:586
+#: src/Wordpress/CustomPostType/Booking.php:588
 msgid "Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:601
+#: src/Wordpress/CustomPostType/Booking.php:603
 #: templates/booking-single.php:53
 msgid "Booking Code"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:621
+#: src/Wordpress/CustomPostType/Booking.php:623
 msgid ""
-"Bookings should not be created, edited or canceled via this admin list. \r\n"
+"Bookings should be created via frontend booking calendar. <br>\r\n"
+"\t\tAs an admin you can create bookings via this admin interface. Please be aware that admin bookings are not validated\r\n"
+"\t\tand checked. Use this function with care.<br>\r\n"
 "\t\tClick on preview to show booking details in frontend<br>\r\n"
 "\t\tTo search and filter bookings please integrate the frontend booking list via shortcode. \r\n"
 "\t\tSee here <a target=\"_blank\" href=\"https://commonsbooking.org/?p=1433\">How to display the booking list</a>"
