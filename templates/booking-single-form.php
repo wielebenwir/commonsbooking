@@ -44,6 +44,9 @@ if ( isset( $form_post_status ) ) {
         <input type="hidden" name="repetition-start" value="<?php echo esc_attr( $booking->getMeta( 'repetition-start' ) ); ?>">
         <input type="hidden" name="repetition-end" value="<?php echo esc_attr( $booking->getMeta( 'repetition-end' ) ); ?>">
         <input type="submit" value="<?php echo esc_attr( $button_label ); ?>" class="<?php echo 'cb-action-' . commonsbooking_sanitizeHTML( $form_post_status ); ?>"/>
+		<?php wp_dropdown_users( array( 'name' => 'author' ) ); ?>
+	</form>
+</li>
     </form>
     <?php
 }
