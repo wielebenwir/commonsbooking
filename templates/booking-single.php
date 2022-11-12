@@ -19,6 +19,9 @@ $item                         = $booking->getItem();
 $user                         = $booking->getUserData();
 $show_contactinfo_unconfirmed = Settings::getOption( 'commonsbooking_options_templates', 'show_contactinfo_unconfirmed' );
 $text_hidden_contactinfo      = Settings::getOption( 'commonsbooking_options_templates', 'text_hidden-contactinfo' );
+$admin_booking_id             = CB::get( 'booking', 'admin_booking_id', $booking );
+$current_status               = $booking->post_status;
+
 
 do_action( 'commonsbooking_before_booking-single' );
 
@@ -100,6 +103,29 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 		<div class="cb-list-header">
 			<h3><?php echo esc_html__( 'Your profile', 'commonsbooking' ); ?></h3>
 		</div>
+        <?php 
+        if (commonsbooking_isCurrentUserAdmin() && $current_status == 'unconfirmed') {
+        ?>
+        <div class="cb-list-content cb-user cb-col-30-70"> 
+       	<div><?php echo esc_html__( 'Admin-Booking', 'commonsbooking' ); ?></div>
+			<div><?php wp_dropdown_users( array( 'name' => 'author' ) ); ?>
+            <?php echo esc_html__( 'Select a username to create a booking for this user.', 'commonsbooking' ); ?>
+        </div>
+		</div>
+        <?php
+        } elseif (commonsbooking_isCurrentUserAdmin() && $current_status == 'confirmed') { // 
+        ?>
+                <div class="cb-list-content cb-user cb-col-30-70"> 
+       	<div><?php echo esc_html__( 'Admin Booking by', 'commonsbooking' ); ?></div>
+			<div><?php 
+                $booking_admin = get_user_by('ID', $admin_booking_id); 
+                echo esc_html( $booking_admin->user_login . " (" . $booking_admin->first_name . " " . $booking_admin->last_name . ")" );
+                ?>
+        </div>
+		</div>
+        <?php 
+        } // end if 
+        ?>
 		<div class="cb-list-content cb-user cb-col-30-70">
        			<div><?php echo esc_html__( 'Your E-Mail', 'commonsbooking' ); ?></div>
 			<div><?php echo commonsbooking_sanitizeHTML( CB::get( 'user', 'user_email' ) ); ?></div>
@@ -151,13 +177,37 @@ if ( $bookingCommentActive ) {
 		}
 	}
 }
-$current_status = $booking->post_status;
 if ( $current_status && $current_status !== 'draft' ) {
 
 	?>
 
 	<!-- Buttons & Form action -->
+    <form method="post" id="cb-booking-form-set-<?php echo esc_attr( $form_post_status ); ?>">
+
+    <?php
+    if (commonsbooking_isCurrentUserAdmin() && $current_status == 'unconfirmed') {
+            ?>
+            <div class="cb-wrapper cb-booking-adminbooking">
+                <div class="cb-list-header">
+                    <h3><?php echo esc_html__( 'Admin Booking', 'commonsbooking' ); ?></h3>
+                </div>
+    
+                <div class="cb-list-content cb-user cb-col-30-70"> 
+                    <div>
+                        <?php echo esc_html__( 'Admin-Booking', 'commonsbooking' ); ?>
+                    </div>
+                <div><?php wp_dropdown_users( array( 'name' => 'author' ) ); ?>
+                    <?php echo esc_html__( 'Select a username to create a booking for this user.', 'commonsbooking' ); ?>
+                </div>
+            </div>
+            </div>
+            <?php
+            }
+            ?>
+
+
 	<div class="cb-action cb-wrapper">
+
 		<?php
 		$form_action = 'confirm';
 		include COMMONSBOOKING_PLUGIN_DIR . 'templates/booking-single-form.php';

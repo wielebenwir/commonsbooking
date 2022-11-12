@@ -46,6 +46,7 @@ class Booking extends Timeframe {
 			$locationId = isset( $_REQUEST['location-id'] ) && $_REQUEST['location-id'] != "" ? sanitize_text_field( $_REQUEST['location-id'] ) : null;
 			$comment    = isset( $_REQUEST['comment'] ) && $_REQUEST['comment'] != "" ? sanitize_text_field( $_REQUEST['comment'] ) : null;
             $post_status = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] != "" ? sanitize_text_field( $_REQUEST['post_status'] ) : null;
+            $booking_author = isset( $_REQUEST['author'] ) && $_REQUEST['author'] != "" ? sanitize_text_field( $_REQUEST['author'] ) : get_current_user_id();
 
  			if ( ! get_post( $itemId ) ) {
 				throw new Exception( 'Item does not exist. (' . $itemId . ')' );
@@ -112,10 +113,17 @@ class Booking extends Timeframe {
 				"post_status" => sanitize_text_field( $_REQUEST["post_status"] ),
 				"post_type"   => self::getPostType(),
 				"post_title"  => esc_html__( "Booking", 'commonsbooking' ),
+                "post_author" => $booking_author,
 				"meta_input"  => [
 					'comment' => $comment
 				]
 			);
+
+                       
+            // if we have an admin booking we store the admin user id
+            if ($booking_author != get_current_user_id()) {
+                $postarr['meta_input']['admin_booking_id'] = get_current_user_id();
+            }
 
 			// New booking
 			if ( empty( $booking ) ) {
@@ -126,7 +134,8 @@ class Booking extends Timeframe {
 					\CommonsBooking\Model\Timeframe::REPETITION_START => $startDate,
 					\CommonsBooking\Model\Timeframe::REPETITION_END   => $endDate,
 					'type'                                            => Timeframe::BOOKING_ID
-				];
+				];     
+
 				$postId                = wp_insert_post( $postarr, true );
 				// Existing booking
 			} else {
@@ -143,7 +152,7 @@ class Booking extends Timeframe {
 			// get slug as parameter
 			$post_slug = get_post( $postId )->post_name;
 
-			wp_redirect( add_query_arg( self::getPostType(), $post_slug, home_url() ) );
+		    wp_redirect( add_query_arg( self::getPostType(), $post_slug, home_url() ) );
 			exit;
 		}
 	}
