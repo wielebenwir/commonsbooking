@@ -45,8 +45,9 @@ class Booking extends Timeframe {
 			$itemId     = isset( $_REQUEST['item-id'] ) && $_REQUEST['item-id'] != "" ? sanitize_text_field( $_REQUEST['item-id'] ) : null;
 			$locationId = isset( $_REQUEST['location-id'] ) && $_REQUEST['location-id'] != "" ? sanitize_text_field( $_REQUEST['location-id'] ) : null;
 			$comment    = isset( $_REQUEST['comment'] ) && $_REQUEST['comment'] != "" ? sanitize_text_field( $_REQUEST['comment'] ) : null;
+            $post_status = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] != "" ? sanitize_text_field( $_REQUEST['post_status'] ) : null;
 
-			if ( ! get_post( $itemId ) ) {
+ 			if ( ! get_post( $itemId ) ) {
 				throw new Exception( 'Item does not exist. (' . $itemId . ')' );
 			}
 			if ( ! get_post( $locationId ) ) {
@@ -54,8 +55,10 @@ class Booking extends Timeframe {
 			}
 
 			$startDate = null;
-			if ( isset( $_REQUEST['repetition-start'] ) && $_REQUEST['repetition-start'] != "" ) {
-				$startDate = sanitize_text_field( $_REQUEST['repetition-start'] );
+			if ( isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] ) &&
+			     $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] != ""
+			) {
+				$startDate = sanitize_text_field( $_REQUEST[\CommonsBooking\Model\Timeframe::REPETITION_START] );
 			}
 
 			$endDate = null;
@@ -68,6 +71,32 @@ class Booking extends Timeframe {
 
 			if ( $startDate == null || $endDate == null ) {
 				throw new Exception( 'Start- and/or enddate missing.' );
+			}
+
+			// Validate booking -> check if there are no existing bookings in timerange.
+			if (
+				$existingBookings =
+					\CommonsBooking\Repository\Booking::getByTimerange(
+						$startDate,
+						$endDate,
+						$locationId,
+						$itemId,
+						[],
+						['confirmed']
+					)
+			) {
+				if(count($existingBookings) > 0 ) {
+					$requestedPostname = array_key_exists('cb_booking', $_REQUEST) ? $_REQUEST['cb_booking'] : '';
+
+					// checks if it's an edit, but ignores exact start/end time
+					$isEdit = count($existingBookings) === 1 &&
+						array_values($existingBookings)[0]->getPost()->post_name === $requestedPostname &&
+						array_values($existingBookings)[0]->getPost()->post_author == get_current_user_id();
+
+					if( (!$isEdit || count($existingBookings) > 1) && $post_status != 'canceled' ) {
+						throw new Exception( 'There is already a booking in this timerange.' );
+					}
+				}
 			}
 
 			/** @var \CommonsBooking\Model\Booking $booking */
@@ -92,11 +121,11 @@ class Booking extends Timeframe {
 			if ( empty( $booking ) ) {
 				$postarr['post_name']  = Helper::generateRandomString();
 				$postarr['meta_input'] = [
-					'location-id'      => $locationId,
-					'item-id'          => $itemId,
-					'repetition-start' => $startDate,
-					'repetition-end'   => $endDate,
-					'type'             => Timeframe::BOOKING_ID
+					\CommonsBooking\Model\Timeframe::META_LOCATION_ID => $locationId,
+					\CommonsBooking\Model\Timeframe::META_ITEM_ID     => $itemId,
+					\CommonsBooking\Model\Timeframe::REPETITION_START => $startDate,
+					\CommonsBooking\Model\Timeframe::REPETITION_END   => $endDate,
+					'type'                                            => Timeframe::BOOKING_ID
 				];
 				$postId                = wp_insert_post( $postarr, true );
 				// Existing booking
@@ -165,10 +194,10 @@ class Booking extends Timeframe {
 
 			// Check if its an admin edit
 			$requestKeys    = [
-				"item-id",
-				"location-id",
-				"repetition-start",
-				"repetition-end"
+				\CommonsBooking\Model\Timeframe::META_ITEM_ID,
+				\CommonsBooking\Model\Timeframe::META_LOCATION_ID,
+				\CommonsBooking\Model\Timeframe::REPETITION_START,
+				\CommonsBooking\Model\Timeframe::REPETITION_END
 			];
 			$intersectCount = count( array_intersect( $requestKeys, array_keys( $_REQUEST ) ) );
 			if ( $intersectCount < count( $requestKeys ) ) {
@@ -176,15 +205,15 @@ class Booking extends Timeframe {
 			}
 
 			// prepare needed params
-			$itemId          = sanitize_text_field( $_REQUEST["item-id"] );
-			$locationId      = sanitize_text_field( $_REQUEST["location-id"] );
-			$repetitionStart = sanitize_text_field( $_REQUEST["repetition-start"] );
+			$itemId          = sanitize_text_field( $_REQUEST[\CommonsBooking\Model\Timeframe::META_ITEM_ID] );
+			$locationId      = sanitize_text_field( $_REQUEST[\CommonsBooking\Model\Timeframe::META_LOCATION_ID] );
+			$repetitionStart = sanitize_text_field( $_REQUEST[\CommonsBooking\Model\Timeframe::REPETITION_START] );
 			if ( is_array( $repetitionStart ) ) {
 				$repetitionStart = strtotime( $repetitionStart['date'] . " " . $repetitionStart['time'] );
 			} else {
 				$repetitionStart = intval( $repetitionStart );
 			}
-			$repetitionEnd = sanitize_text_field( $_REQUEST["repetition-end"] );
+			$repetitionEnd = sanitize_text_field( $_REQUEST[\CommonsBooking\Model\Timeframe::REPETITION_END] );
 			if ( is_array( $repetitionEnd ) ) {
 				$repetitionEnd = strtotime( $repetitionEnd['date'] . " " . $repetitionEnd['time'] );
 			} else {
@@ -250,6 +279,10 @@ class Booking extends Timeframe {
 	}
 
 	public function initListView() {
+		if ( array_key_exists( 'post_type', $_GET ) && static::$postType !== $_GET['post_type'] ) {
+			return;
+		}
+
 		// List settings
 		$this->removeListDateColumn();
 
@@ -265,7 +298,7 @@ class Booking extends Timeframe {
 			'comment'                                         => esc_html__( 'Comment', 'commonsbooking' ),
 		];
 
-		return parent::initListView(); // TODO: Change the autogenerated stub
+		parent::initListView(); // TODO: Change the autogenerated stub
 	}
 
 	/**
@@ -288,7 +321,7 @@ class Booking extends Timeframe {
 		add_action( 'restrict_manage_posts', array( static::class, 'addAdminItemFilter' ) );
 		add_action( 'restrict_manage_posts', array( static::class, 'addAdminLocationFilter' ) );
 		add_action( 'restrict_manage_posts', array( static::class, 'addAdminDateFilter' ) );
-        add_action( 'restrict_manage_posts', array( static::class, 'addAdminStatusFilter' ) );
+		add_action( 'restrict_manage_posts', array( static::class, 'addAdminStatusFilter' ) );
 		add_action( 'pre_get_posts', array( static::class, 'filterAdminList' ) );
 
 		// show permanent admin notice
@@ -304,7 +337,7 @@ class Booking extends Timeframe {
 	 */
 	public function getTemplate( $content ) {
 		$cb_content = '';
-		if ( is_singular( self::getPostType() ) ) {
+		if ( is_singular( self::getPostType() ) && is_main_query() ){
 			ob_start();
 			global $post;
 
@@ -337,8 +370,8 @@ class Booking extends Timeframe {
 					     $post_after->post_status === 'canceled'
 				     )
 				) {
-					if($post_after->post_status == 'canceled') {
-						$booking = new \CommonsBooking\Model\Booking($post_ID);
+					if ( $post_after->post_status == 'canceled' ) {
+						$booking = new \CommonsBooking\Model\Booking( $post_ID );
 						$booking->cancel();
 					} else {
 						$booking_msg = new BookingMessage( $post_ID, $post_after->post_status );
@@ -459,7 +492,7 @@ class Booking extends Timeframe {
 						if ( get_post_type( $post ) == Location::getPostType() ||
 						     get_post_type( $post ) == Item::getPostType()
 						) {
-							echo commonsbooking_sanitizeHTML($post->post_title);
+							echo commonsbooking_sanitizeHTML( $post->post_title );
 							break;
 						}
 					}
@@ -477,14 +510,14 @@ class Booking extends Timeframe {
 							}
 						}
 					}
-					echo commonsbooking_sanitizeHTML($output);
+					echo commonsbooking_sanitizeHTML( $output );
 					break;
 				case \CommonsBooking\Model\Timeframe::REPETITION_START:
 				case \CommonsBooking\Model\Timeframe::REPETITION_END:
 					echo date( 'd.m.Y H:i', $value );
 					break;
 				default:
-					echo commonsbooking_sanitizeHTML($value);
+					echo commonsbooking_sanitizeHTML( $value );
 					break;
 			}
 		} else {
@@ -501,7 +534,7 @@ class Booking extends Timeframe {
 					get_post_meta( $post_id, 'type', true ) == Timeframe::BOOKING_ID
 				)
 			) {
-				echo commonsbooking_sanitizeHTML($post->{$column});
+				echo commonsbooking_sanitizeHTML( $post->{$column} );
 			}
 		}
 	}
@@ -570,7 +603,7 @@ class Booking extends Timeframe {
 			array(
 				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
 				'desc'        => esc_html__( 'Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking' ),
-				'id'          => "repetition-start",
+				'id'          => \CommonsBooking\Model\Timeframe::REPETITION_START,
 				'type'        => 'text_datetime_timestamp',
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
@@ -628,9 +661,9 @@ class Booking extends Timeframe {
 		See here <a target="_blank" href="https://commonsbooking.org/?p=1433">How to display the booking list</a>', 'commonsbooking' ) );
 
 		if ( ( $pagenow == 'edit.php' ) && isset( $_GET['post_type'] ) ) {
-            if ( sanitize_text_field( $_GET['post_type'] ) == self::getPostType() ) {
-			echo '<div class="notice notice-info"><p>' . commonsbooking_sanitizeHTML(  $notice ) . '</p></div>';
-		    }
-        }
+			if ( sanitize_text_field( $_GET['post_type'] ) == self::getPostType() ) {
+				echo '<div class="notice notice-info"><p>' . commonsbooking_sanitizeHTML( $notice ) . '</p></div>';
+			}
+		}
 	}
 }

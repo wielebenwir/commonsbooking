@@ -4,6 +4,7 @@
 namespace CommonsBooking\Repository;
 
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Plugin;
@@ -33,8 +34,8 @@ class BookingCodes {
 			return Plugin::getCacheItem();
 		} else {
 
-			$startDate = date( 'Y-m-d', intval( get_post_meta( $timeframeId, 'repetition-start', true ) ) );
-			$endDate   = date( 'Y-m-d', intval( get_post_meta( $timeframeId, 'repetition-end', true ) ) );
+			$startDate = date( 'Y-m-d', intval( get_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::REPETITION_START, true ) ) );
+			$endDate   = date( 'Y-m-d', intval( get_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::REPETITION_END, true ) ) );
 
 			global $wpdb;
 			$table_name = $wpdb->prefix . self::$tablename;
@@ -151,9 +152,9 @@ class BookingCodes {
 	public static function generate( $timeframeId ): bool {
 		$bookablePost = new \CommonsBooking\Model\Timeframe( $timeframeId );
 
-		$begin = new DateTime();
+		$begin = Wordpress::getUTCDateTime();
 		$begin->setTimestamp( $bookablePost->getStartDate() );
-		$end = new DateTime();
+		$end = Wordpress::getUTCDateTime();
 		$end->setTimestamp( $bookablePost->getRawEndDate() );
 		$end->setTimestamp( $end->getTimestamp() + 1 );
 

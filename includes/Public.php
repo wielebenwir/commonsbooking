@@ -118,7 +118,7 @@ function commonsbooking_public() {
 		'cb_ajax',
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'calendar_data' ),
+			'nonce'    => wp_create_nonce( 'cb_calendar_data' ),
 		)
 	);
 
@@ -130,7 +130,7 @@ function commonsbooking_public() {
 		'cb_ajax_bookings',
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'bookings_data' ),
+			'nonce'    => wp_create_nonce( 'cb_bookings_data' ),
 		)
 	);
 
@@ -142,7 +142,7 @@ function commonsbooking_public() {
 		'cb_ajax_cache_warmup',
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'cache_warmup' ),
+			'nonce'    => wp_create_nonce( 'cb_cache_warmup' ),
 		)
 	);
 }
@@ -150,18 +150,18 @@ function commonsbooking_public() {
 add_action( 'wp_enqueue_scripts', 'commonsbooking_public' );
 
 // Calendar data ajax
-add_action( 'wp_ajax_calendar_data', array( Calendar::class, 'getCalendarData' ) );
-add_action( 'wp_ajax_nopriv_calendar_data', array( Calendar::class, 'getCalendarData' ) );
+add_action( 'wp_ajax_cb_calendar_data', array( Calendar::class, 'getCalendarData' ) );
+add_action( 'wp_ajax_nopriv_cb_calendar_data', array( Calendar::class, 'getCalendarData' ) );
 
-add_action( 'wp_ajax_bookings_data', array( Booking::class, 'getTemplateData' ) );
-add_action( 'wp_ajax_nopriv_bookings_data', array( Booking::class, 'getTemplateData' ) );
+add_action( 'wp_ajax_cb_bookings_data', array( Booking::class, 'getTemplateData' ) );
+add_action( 'wp_ajax_nopriv_cb_bookings_data', array( Booking::class, 'getTemplateData' ) );
 
-add_action( 'wp_ajax_cache_warmup', array( \CommonsBooking\Plugin::class, 'warmupCache' ) );
-add_action( 'wp_ajax_nopriv_cache_warmup', array( \CommonsBooking\Plugin::class, 'warmupCache' ) );
+add_action( 'wp_ajax_cb_cache_warmup', array( \CommonsBooking\Plugin::class, 'warmupCache' ) );
+add_action( 'wp_ajax_nopriv_cb_cache_warmup', array( \CommonsBooking\Plugin::class, 'warmupCache' ) );
 
 if ( is_admin() ) {
-	add_action( 'wp_ajax_start_migration', array( Migration::class, 'migrateAll' ) );
-	add_action( 'wp_ajax_start_booking_migration', array( \CommonsBooking\Migration\Booking::class, 'ajaxMigrate' ) );
+	add_action( 'wp_ajax_cb_start_migration', array( Migration::class, 'migrateAll' ) );
+	add_action( 'wp_ajax_cb_start_booking_migration', array( \CommonsBooking\Migration\Booking::class, 'ajaxMigrate' ) );
 }
 
 // Map ajax
@@ -172,9 +172,9 @@ add_action( 'wp_ajax_nopriv_cb_map_geo_search', array( MapShortcode::class, 'geo
 
 // Query vars
 function commonsbooking_query_vars( $qvars ) {
-	$qvars[] = 'location';
-	$qvars[] = 'item';
-	$qvars[] = 'type';
+	$qvars[] = 'cb-location';
+	$qvars[] = 'cb-item';
+	$qvars[] = 'cb-type';
 
 	return $qvars;
 }

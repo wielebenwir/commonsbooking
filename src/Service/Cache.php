@@ -4,11 +4,16 @@ namespace CommonsBooking\Service;
 
 use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\View\Calendar;
+use CommonsBooking\Settings\Settings;
+use Exception;
+use CMB2_Field;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
+use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Symfony\Component\Cache\CacheItem;
-use const WP_DEBUG;
 
 trait Cache {
 
@@ -39,6 +44,8 @@ trait Cache {
 
 	/**
 	 * Returns cache id, based on calling class, function and args.
+     * 
+     * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
 	 *
 	 * @param null $custom_id
 	 *
@@ -47,7 +54,8 @@ trait Cache {
 	public static function getCacheId( $custom_id = null ): string {
 		$backtrace     = debug_backtrace()[2];
 		$backtrace     = self::sanitizeArgsArray( $backtrace );
-		$namespace     = str_replace( '\\', '_', strtolower( $backtrace['class'] ) );
+        $namespace     = COMMONSBOOKING_PLUGIN_DIR;
+		$namespace     .= '_' . str_replace( '\\', '_', strtolower( $backtrace['class'] ) );
 		$namespace     .= '_' . $backtrace['function'];
 		$backtraceArgs = $backtrace['args'];
 		$namespace     .= '_' . serialize( $backtraceArgs );
@@ -87,12 +95,27 @@ trait Cache {
 	 * @param int $defaultLifetime
 	 * @param string|null $directory
 	 *
-	 * @return TagAwareAdapter
+	 * @return TagAwareAdapterInterface
 	 */
-	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ): TagAwareAdapter {
-		return new TagAwareAdapter(
+	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ): TagAwareAdapterInterface {
+		if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled') =='on'){
+			try {
+				$adapter = new RedisTagAwareAdapter(
+					RedisAdapter::createConnection(Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn')),
+					$namespace,
+					$defaultLifetime
+				);
+				return $adapter;
+			}
+			catch (Exception $e) {
+				commonsbooking_write_log($e . 'Falling back to Filesystem adapter');
+				set_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error',$e->getMessage());
+			}
+		}
+		$adapter = new TagAwareAdapter(
 			new FilesystemAdapter( $namespace, $defaultLifetime, $directory )
 		);
+		return $adapter;
 	}
 
 	/**
@@ -173,7 +196,7 @@ trait Cache {
 		            method: "POST",
 		            data: {
 		                _ajax_nonce: cb_ajax_cache_warmup.nonce,
-		                action: "cache_warmup"
+		                action: "cb_cache_warmup"
 		            }
 				});'
 			);
@@ -225,7 +248,43 @@ trait Cache {
 	}
 
 	/**
-	 * Iterates throudh array and executes shortcodecalls.
+     * Renders little connections status information for REDIS database
+	 * @param array $field_args
+	 * @param CMB2_Field $field
+	 */
+	public static function renderREDISConnectionStatus( array $field_args, CMB2_Field $field ){
+		?>
+		<div class="cmb-row cmb-type-text table-layout">
+			<div class="cmb-th">
+				Connection status:
+			</div>
+			<div class="cmb-th">
+				<?php
+				if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled') =='on'){
+					if (is_a(self::getCache(),'Symfony\Component\Cache\Adapter\RedisTagAwareAdapter')){
+						echo '<div style="color:green">';
+							echo __('Successfully connected to REDIS database!', 'commonsbooking');
+						echo '</div>';
+					}
+					else {
+						echo '<div style="color:red">';
+							echo get_transient(COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error');
+						echo '</div>';
+					}
+				}
+				else {
+					echo '<div style="color:orange">';
+						echo __('REDIS database not enabled','commonsbooking');
+					echo '</div>';
+				}
+				?>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Iterates through array and executes shortcodecalls.
 	 * @param $shortCodeCalls
 	 *
 	 * @return void

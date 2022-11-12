@@ -22,7 +22,7 @@ class Item extends View {
 			global $post;
 		}
 		$item      = $post;
-		$location  = get_query_var( 'location' ) ?: false;
+		$location  = get_query_var( 'cb-location' ) ?: false;
 		$customId = md5($item->ID . $location);
 
 		if ( Plugin::getCacheItem($customId) ) {
@@ -109,11 +109,13 @@ class Item extends View {
 		foreach ( $items as $item ) {
 			$shortCodeData = self::getShortcodeData( $item, 'Location' );
 
-			// Sort by start_date
-			foreach ($shortCodeData as $location) {
-				uasort( $location['ranges'], function ( $a, $b ) {
-					return $a['start_date'] <=> $b['start_date'];
-				} );
+			//Sort by start_date when no other order is defined
+			if (empty($queryArgs['orderby'])){
+				foreach ($shortCodeData as $location) {
+					uasort( $location['ranges'], function ( $a, $b ) {
+						return $a['start_date'] <=> $b['start_date'];
+					} );
+				}
 			}
 
 			$itemData[ $item->ID ] = $shortCodeData;

@@ -4,6 +4,7 @@
 namespace CommonsBooking\View;
 
 
+use CommonsBooking\Helper\Wordpress;
 use DateTime;
 use Exception;
 use DatePeriod;
@@ -181,8 +182,8 @@ class TimeframeExport {
 
 	protected static function getPeriod( $start, $end ) {
 		// Timerange
-		$begin = new DateTime( $start );
-		$end   = new DateTime( $end );
+		$begin = Wordpress::getUTCDateTime( $start );
+		$end   = Wordpress::getUTCDateTime( $end );
 
 		$interval = DateInterval::createFromDateString( '1 day' );
 
@@ -242,18 +243,40 @@ class TimeframeExport {
 		$timeframeData["grid"] = array_key_exists( $gridOptionId, $gridOptions ) ?
 			$gridOptions[ $gridOptionId ] : __( 'Unknown', 'commonsbooking' );
 
-		// simple meta fields
+		// get corresponding item title
+		$item = $timeframePost->getItem();
+		if ($item != null){
+			$item_title = $item->post_title;
+		}
+		else {
+			$item_title = __( 'Unknown', 'commonsbooking' );
+		}
+
+		// get corresponding location title
+		$location = $timeframePost->getLocation();
+		if ($location != null){
+			$location_title = $location->post_title;
+		}
+		else {
+			$location_title = __( 'Unknown', 'commonsbooking' );
+		}
+
+		// populate simple meta fields
 		$timeframeData["timeframe-max-days"]  = $timeframePost->getFieldValue( "timeframe-max-days" );
 		$timeframeData["full-day"]            = $timeframePost->getFieldValue( "full-day" );
-		$timeframeData["repetition-start"]    = $timeframePost->getStartDate() ? date( esc_html(get_option( 'date_format' )), $timeframePost->getStartDate() ) : '';
-		$timeframeData["repetition-end"]      = $timeframePost->getEndDate() ? date( esc_html(get_option( 'date_format' )), $timeframePost->getEndDate() ) : '';
+		$timeframeData[\CommonsBooking\Model\Timeframe::REPETITION_START] =
+			$timeframePost->getStartDate() ?
+				date( 'c', $timeframePost->getStartDate() ) : '';
+		$timeframeData[\CommonsBooking\Model\Timeframe::REPETITION_END] =
+			$timeframePost->getEndDate() ?
+				date( 'c', $timeframePost->getEndDate() ) : '';
 		$timeframeData["start-time"]          = $timeframePost->getStartTime();
 		$timeframeData["end-time"]            = $timeframePost->getEndTime();
 		$timeframeData["pickup"]              = isset( $booking ) ? $booking->pickupDatetime() : "";
 		$timeframeData["return"]              = isset( $booking ) ? $booking->returnDatetime() : "";
 		$timeframeData["booking-code"]        = $timeframePost->getFieldValue( "_cb_bookingcode" );
-		$timeframeData["location-post_title"] = $timeframePost->getLocation()->getPost()->post_title;
-		$timeframeData["item-post_title"]     = $timeframePost->getItem()->getPost()->post_title;
+		$timeframeData["location-post_title"] = $location_title;
+		$timeframeData["item-post_title"]     = $item_title;
 		$timeframeData["user-firstname"]      = $timeframePost->getUserData()->first_name;
 		$timeframeData["user-lastname"]       = $timeframePost->getUserData()->last_name;
 		$timeframeData["user-login"]          = $timeframePost->getUserData()->user_login;

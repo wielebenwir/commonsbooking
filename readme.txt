@@ -1,12 +1,11 @@
-# CommonsBooking
-
+=== CommonsBooking ===
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen  
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, commons, sharing, calendar,  
 Requires at least: 5.2  
-Tested up to: 5.9  
-Stable Tag: 2.6.12
-Requires PHP: 7.3 or higher  
+Tested up to: 6.0  
+Stable Tag: 2.7.3
+Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -80,11 +79,41 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.6.12 (02.03.2022)
-ENHANCED: Optimized the commonsbooking internal caching so booking lists and maps should be rendered faster
-FIXED: Some rendering issues with calendar 
-ENHANCED: Modified CSS styles for calendar 
-FIXED: Set default advance booking days for existing timeframes to 365 days
+### 2.7.3 (xx.10.2022)
+FIXED: Fatal error when trying to export timeframes with deleted items
+FIXED: Fatal error when trying to access invalid data
+FIXED: Restriction e-mails now contain correct booking links again
+FIXED: Issue with map category presets
+
+### 2.7.2 (30.06.2022)
+FIXED: Plugin incompatibility with WPBakery
+FIXED: Plugin incompatibility with Events Manager
+FIXED: Plugin incompatibility with All-in One Events Calendar
+FIXED: Shortcodes sometimes not showing all items
+FIXED: Overbooking was possible when combining hourly and daily slots
+ENHANCED: Optimized caching to avoid caching conflicts on multiple instances on same server
+FIXED: Location map sometimes not properly rendered on location edit screen
+
+### 2.7.1 (05.05.2022)
+FIXED: Fixed Fatal error when PHP Version is < 7.4 / we recommend updating you PHP version to 7.4. because 7.3 is no longer maintained. Please ask you hosting provider for support.
+FIXED: Migration did not work properly
+ADDED: You can now add html text-snippets before and after an email template tag. This allows to add e.g. a label that is only shown when the template variable has content. Syntax: Add optional text in square brackets [xxx] directly before and after the template tag. Example: {{[optional text before ]item:post_title[optional text after]}} 
+ENHANCED: Unified filter hooks. New hook prefix is commonsbooking_xxx . Please check your custom filters.
+
+
+### 2.7 (26.04.2022)
+NEW: You can now choose your individual colors to customize Commonsbooking to your liking. Try it via Options -> CommonsBooking -> Templates (scroll down to color section)
+NEW: Added action hooks to templates
+ENHANCED: Optimized the commonsbooking internal caching so booking lists and maps are rendered faster.
+ENHANCED: Modified CSS styles for calendar.
+ENHANCED: Item lists and availability tables will now output a warning when no items have been found.
+ENHANCED: Added links to location pages in maps, booking lists, availability tables and item overview page.
+ENHANCED: Items, which are restricted to a certain user group are now hidden for non-eligible users.
+ENHANCED: Map: Pre-Filtering of items by item-categorys and location categorys is now possible
+FIXED: Set default advance booking days for existing timeframes to 365 days.
+FIXED: Some rendering issues with the calendar have been fixed.
+FIXED: Issues with already past bookings where cancellation was still possible
+FIXED: Wrong time displayed in cancellation messages
 
 
 ### 2.6.12 (27.02.2022)

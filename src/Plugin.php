@@ -10,6 +10,8 @@ use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Service\Cache;
+use CommonsBooking\Service\Scheduler;
+use CommonsBooking\Service\iCalendar;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
@@ -47,6 +49,13 @@ class Plugin {
 		BookingCodes::initBookingCodesTable();
 
 		self::clearCache();
+	}
+
+	/**
+	 * Plugin deactivation tasks.
+	 */
+	public static function deactivation() {
+		do_action(Scheduler::UNSCHEDULER_HOOK);
 	}
 
 	protected static function addCPTRoleCaps() {
@@ -217,6 +226,10 @@ class Plugin {
 
 			// Clear cache
 			self::clearCache();
+
+			//unschedules deprecated cronjobs
+			Scheduler::unscheduleOldEvents();
+			
 		}
 	}
 
@@ -508,6 +521,9 @@ class Plugin {
 		// Register custom post types taxonomy / categories
 		add_action('init', array(self::class, 'registerLocationTaxonomy'), 30);
 
+		//loads the Scheduler
+		add_action('init', array(Scheduler::class, 'initHooks') );
+
 		// admin init tasks
 		add_action('admin_init', array(self::class, 'admin_init'), 30);
 
@@ -543,6 +559,9 @@ class Plugin {
 		add_action('in_plugin_update_message-' . COMMONSBOOKING_PLUGIN_BASE, function ($plugin_data) {
 			$this->UpdateNotice(COMMONSBOOKING_VERSION, $plugin_data['new_version']);
 		});
+
+		// iCal rewrite
+		iCalendar::initRewrite();
 
 	}
 

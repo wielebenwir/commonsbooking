@@ -26,7 +26,7 @@ function commonsbooking_admin() {
 		'cb_ajax_start_migration',
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'start_migration' ),
+			'nonce'    => wp_create_nonce( 'cb_start_migration' ),
 		)
 	);
 
@@ -36,7 +36,7 @@ function commonsbooking_admin() {
 		'cb_ajax_start_booking_migration',
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'start_booking_migration' ),
+			'nonce'    => wp_create_nonce( 'cb_start_booking_migration' ),
 		)
 	);
 	/**
@@ -47,7 +47,7 @@ function commonsbooking_admin() {
 		'cb_ajax_cache_warmup',
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'cache_warmup' ),
+			'nonce'    => wp_create_nonce( 'cb_cache_warmup' ),
 		)
 	);
 }
@@ -67,6 +67,7 @@ function commonsbooking_sanitizeHTML( $string ): string {
 
 	$allowed_atts = array(
 		'align'      => array(),
+		'checked'	 => array(),
 		'class'      => array(),
 		'type'       => array(),
 		'id'         => array(),
@@ -131,6 +132,30 @@ function commonsbooking_sanitizeHTML( $string ): string {
 	$allowedposttags['option']        = $allowed_atts;
 
 	return wp_kses( $string, $allowedposttags );
+}
+
+/**
+ * Create filter hooks for cmb2 fields
+ *
+ * @param array $field_args  Array of field args.
+ * 
+ * 
+ * : https://cmb2.io/docs/field-parameters#-default_cb
+ * 
+ *
+ * @return mixed
+ */
+function commonsbooking_filter_from_cmb2($field_args) {
+	//Only return default value if we don't have a post ID (in the 'post' query variable)
+	if (isset( $_GET['post'])){
+		// No default value.
+		return '';
+	}
+	else {
+		$filterName = sprintf( 'commonsbooking_defaults_%s', $field_args['id']);
+		$default_value = array_key_exists('default_value',$field_args) ? $field_args['default_value'] : '';
+		return apply_filters($filterName,$default_value);
+	}
 }
 
 /**

@@ -3,6 +3,8 @@
 namespace CommonsBooking\Map;
 
 use CommonsBooking\Wordpress\CustomPostType\Item;
+use CommonsBooking\Wordpress\CustomPostType\Location;
+
 
 /**
  *
@@ -55,6 +57,7 @@ class MapAdmin {
 		'marker_item_draft_icon_anchor_y',
 		'cb_items_available_categories',
 		'cb_items_preset_categories',
+		'cb_locations_preset_categories'
 	];
 
 	const EXPORT_CODE_VALUE_MIN_LENGTH = 10;
@@ -84,7 +87,7 @@ class MapAdmin {
 	const ZOOM_START_DEFAULT = 9;
 	const LAT_START_DEFAULT = 50.937531;
 	const LON_START_DEFAULT = 6.960279;
-	const MARKER_MAP_BOUNDS_INITIAL_DEFAULT = false;
+	const MARKER_MAP_BOUNDS_INITIAL_DEFAULT = true;
 	const MARKER_MAP_BOUNDS_FILTER_DEFAULT = true;
 	const MAX_CLUSTER_RADIUS_DEFAULT = 80;
 	const MARKER_TOOLTIP_PERMANENT_DEFAULT = false;
@@ -112,6 +115,7 @@ class MapAdmin {
 	const LABEL_ITEM_CATEGORY_FILTER_DEFAULT = "";
 	const CB_ITEMS_AVAILABLE_CATEGORIES_DEFAULT = [];
 	const CB_ITEMS_PRESET_CATEGORIES_DEFAULT = [];
+	const CB_LOCATIONS_PRESET_CATEGORIES_DEFAULT = [];
 	const ITEM_DRAFT_APPEARANCE_DEFAULT = 1;
 	const MARKER_ITEM_DRAFT_MEDIA_ID_DEFAULT = null;
 	const MARKER_ITEM_DRAFT_ICON_WIDTH_DEFAULT = 0;
@@ -382,6 +386,16 @@ class MapAdmin {
 			$valid_term_ids[] = $category_term->term_id;
 		}
 
+		$loc_category_terms = get_terms( [
+			'taxonomy'   => Location::$postType . 's_category',
+			'hide_empty' => false,
+		] );
+
+		$valid_loc_term_ids = [];
+		foreach ( $loc_category_terms as $loc_category_term ) {
+			$valid_loc_term_ids[] = $loc_category_term->term_id;
+		}
+
 		if ( isset( $input['cb_items_available_categories'] ) ) {
 			//first element has to be a filter group and has to contain at least one category
 			$array_keys = array_keys( $input['cb_items_available_categories'] );
@@ -409,6 +423,15 @@ class MapAdmin {
 				}
 			}
 		}
+
+		if ( isset( $input['cb_locations_preset_categories'] ) ) {
+			foreach ( $input['cb_locations_preset_categories'] as $cb_locations_category_id ) {
+				if ( in_array( (int) $cb_locations_category_id, $valid_loc_term_ids ) ) {
+					$validated_input['cb_locations_preset_categories'][] = $cb_locations_category_id;
+				}
+			}
+		}
+
 
 		update_post_meta( $cb_map_id, 'cb_map_options', $validated_input );
 
@@ -482,7 +505,7 @@ class MapAdmin {
 			];
 		}
 
-		//preset categories
+		//preset item categories
 		$preset_categories_args             = [
 			'taxonomy'      => 'cb_items_category',
 			'echo'          => false,
@@ -495,6 +518,18 @@ class MapAdmin {
 		$preset_categories_checklist_markup = str_replace( 'id="in-cb_items_category-', 'id="cb_items_preset_category-',
 			$preset_categories_checklist_markup );
 
+		//preset location categories
+		$preset_location_categories_args             = [
+			'taxonomy'      => 'cb_locations_category',
+			'echo'          => false,
+			'checked_ontop' => false,
+			'selected_cats' => self::get_option( $cb_map_id, 'cb_locations_preset_categories' ),
+		];
+		$preset_location_categories_checklist_markup = wp_terms_checklist( 0, $preset_location_categories_args );
+		$preset_location_categories_checklist_markup = str_replace( 'name="tax_input[cb_locations_category]',
+			'name="cb_map_options[cb_locations_preset_categories]', $preset_location_categories_checklist_markup );
+		$preset_location_categories_checklist_markup = str_replace( 'id="in-cb_locations_category-', 'id="cb_locations_preset_category-',
+			$preset_location_categories_checklist_markup );
 
 		wp_enqueue_style( 'cb_map_admin_css', COMMONSBOOKING_MAP_ASSETS_URL . 'css/cb-map-admin.css' );
 

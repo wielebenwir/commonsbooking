@@ -6,9 +6,9 @@
             $("#migration-state").show();
             $("#migration-in-progress").show();
             const runMigration = data => {
-                $.post(cb_ajax.ajax_url, {
-                    _ajax_nonce: cb_ajax.nonce,
-                    action: "start_migration",
+                $.post(cb_ajax_start_migration.ajax_url, {
+                    _ajax_nonce: cb_ajax_start_migration.nonce,
+                    action: "cb_start_migration",
                     data: data,
                     geodata: $("#get-geo-locations").is(":checked")
                 }, function(data) {
@@ -33,9 +33,9 @@
         $("#cmb2-metabox-migration #booking-update-start").on("click", function(event) {
             event.preventDefault();
             $("#booking-migration-in-progress").show();
-            $.post(cb_ajax.ajax_url, {
-                _ajax_nonce: cb_ajax.nonce,
-                action: "start_booking_migration"
+            $.post(cb_ajax_start_migration.ajax_url, {
+                _ajax_nonce: cb_ajax_start_migration.nonce,
+                action: "cb_start_booking_migration"
             }).done(function() {
                 $("#booking-migration-in-progress").hide();
                 $("#booking-migration-done").show();
@@ -54,6 +54,40 @@
         form.find("input, select, textarea").on("keyup change paste", function() {
             form.find("input[name=restriction-send]").prop("disabled", true);
         });
+    });
+})(jQuery);
+
+(function($) {
+    "use strict";
+    $(function() {
+        const hideFieldset = function(set) {
+            $.each(set, function() {
+                $(this).parents(".cmb-row").hide();
+            });
+        };
+        const showFieldset = function(set) {
+            $.each(set, function() {
+                $(this).parents(".cmb-row").show();
+            });
+        };
+        const emailform = $("#templates");
+        if (emailform.length) {
+            const eventCreateCheckbox = $("#emailtemplates_mail-booking_ics_attach");
+            const eventTitleInput = $("#emailtemplates_mail-booking_ics_event-title");
+            const eventDescInput = $("#emailtemplates_mail-booking_ics_event-description");
+            const eventFieldSet = [ eventTitleInput, eventDescInput ];
+            const handleiCalAttachmentSelection = function() {
+                showFieldset(eventFieldSet);
+                if (!eventCreateCheckbox.prop("checked")) {
+                    hideFieldset(eventFieldSet);
+                    eventCreateCheckbox.prop("checked", false);
+                }
+            };
+            handleiCalAttachmentSelection();
+            eventCreateCheckbox.click(function() {
+                handleiCalAttachmentSelection();
+            });
+        }
     });
 })(jQuery);
 

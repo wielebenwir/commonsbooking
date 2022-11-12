@@ -1,4 +1,4 @@
-[![PHP Composer](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml)
+[![PHP Composer](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml) [![WP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/wp-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest) [![PHP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/php-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest)
 
 # CommonsBooking
 
@@ -6,9 +6,9 @@ Contributors: wielebenwirteam, m0rb, flegfleg, chriwen
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, commons, sharing, calendar,  
 Requires at least: 5.2  
-Tested up to: 5.9
-Stable Tag: 2.6.4 
-Requires PHP: 7.3 or higher  
+Tested up to: 6.0
+Stable Tag: 2.7.3 
+Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -64,6 +64,13 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 3. Upload the `commonsbooking` directory to the `/wp-content/plugins/` directory
 4. Activate the plugin in the Plugin dashboard
 
+### Using Github (developers only)
+
+1. Make sure that composer is installed on your system
+2. Navigate into your wp-content/plugins directory
+3. Open a terminal and run `git clone https://github.com/wielebenwir/commonsbooking`
+4. cd into the directory commonsbooking and run `composer install`
+5. Activate the plugin in the Plugin dashboard
 
 ## Frequently Asked Questions
 
@@ -81,6 +88,70 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog 
+
+### 2.7.3 (20.10.2022)
+* FIXED: Fatal error when trying to export timeframes with deleted items
+* FIXED: Fatal error when trying to access invalid data
+* FIXED: Restriction e-mails now contain correct booking links again
+* FIXED: Issue with map category presets
+* FIXED: Booking overview not shown when events manager plugin in use
+
+### 2.7.2 (30.06.2022)
+* FIXED: Plugin incompatibility with WPBakery
+* FIXED: Plugin incompatibility with Events Manager
+* FIXED: Plugin incompatibility with All-in One Events Calendar
+* FIXED: Shortcodes sometimes not showing all items
+* FIXED: Overbooking was possible when combining hourly and daily slots
+* ENHANCED: Optimized caching to avoid caching conflicts on multiple instances on same server
+* FIXED: Location map sometimes rendered not properly on location edit screen
+
+### 2.7.1 (05.05.2022)
+* FIXED: Fixed Fatal error when PHP Version is < 7.4 / we recommend updating you PHP version to 7.4. because 7.3 is no longer maintained. Please ask you hosting provider for support.
+* FIXED: Migration did not work properly
+* ADDED: You can now add html text-snippets before and after an email template tag. This allows to add e.g. a label that is only shown when the template variable has content. Syntax: Add optional text in square brackets [xxx] directly before and after the template tag. Example: {{[optional text before ]item:post_title[optional text after]}} 
+* ENHANCED: Unified filter hooks. New hook prefix is commonsbooking_xxx . Please check your custom filters.
+
+
+### 2.7 (26.04.2022)
+* NEW: You can now choose your individual colors to customize Commonsbooking to your liking. Try it via Options -> CommonsBooking -> Templates (scroll down to color section).
+* NEW: Added action hooks to templates.
+* ENHANCED: Optimized the commonsbooking internal caching so booking lists and maps are rendered faster.
+* ENHANCED: Modified CSS styles for calendar.
+* ENHANCED: Item lists and availability tables will now output a warning when no items have been found.
+* ENHANCED: Added links to location pages in maps, booking lists, availability tables and item overview page.
+* ENHANCED: Items, which are restricted to a certain user group are now hidden for non-eligible users.
+* ENHANCED: Map: Pre-Filtering of items by item-categorys and location categorys is now possible
+* FIXED: Set default advance booking days for existing timeframes to 365 days.
+* FIXED: Some rendering issues with the calendar have been fixed.
+* FIXED: Issues with already past bookings where cancellation was still possible
+* FIXED: Wrong time displayed in cancellation messages
+
+
+### 2.6.12 (27.02.2022)
+FIXED: Fixes issue that prevents user meta data (.e.g phone number etc.) to be shown in booking emails 
+
+### 2.6.11 (23.02.2022)
+FIXED: Some users reported that bookings were no longer possible. After clicking on "continue to booking check" the expected booking page was not loaded. Since this only occurred on some systems and sporadically, it was not possible to determine the cause in the individual cases. However, our analysis showed that it was likely related to a Wordpress function for validating user input. We have adjusted this in the current version. 
+
+### 2.6.10 (20.02.2022)
+* FIXED: With certain time frame settings it could happen that the calendar was only displayed starting with the next month. This is now fixed. 
+* FIXED: The map on the location page always showed a default location. It now shows the correct location.
+* FIXED: In some systems, bookings could not be executed because the booking confirmation page did not load.   
+
+### 2.6.9 (18.02.2022)
+FIXED: When an a href link was included in the site pickup instructions, it caused the booking calendar to not load correctly. 
+
+### 2.6.8 (14.02.2022)
+* FIXED: fixed sanitizing issues
+* FIXED: reminder mails have been sent to users even if not activated in options
+* FIXED: error on location detail pages in some cases
+
+### 2.6.7 (13.02.2022)
+FIXED: fixed minor technical issue that leads to hidden gps refresh button in some environments
+
+### 2.6.5 (13.02.2022)
+* FIXED: fixed issue of missing user data in booking and restriction related emails
+* MODIFIED: Internal refactoring of codebase
 
 ## 2.6.4 (10.02.2022)
 FIXED: fixed issue that produces an error when sending restriction mails in some environments and cases 

@@ -78,22 +78,6 @@ class Map extends CustomPostType {
 	}
 
 	/**
-	 * returns the directory path of the given plugin main file relative to the plugin directory,
-	 * i.e. commons-booking/commons-booking.php for $plugin_name = commons-booking.php
-	 **/
-	public static function get_active_plugin_directory( $plugin_name ) {
-		$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
-		foreach ( $active_plugins as $plugin ) {
-			$plugin_file_path = COMMONSBOOKING_MAP_PATH . '../' . esc_html($plugin);
-			if ( strpos( $plugin, $plugin_name ) !== false && file_exists( $plugin_file_path ) ) {
-				return dirname( $plugin );
-			}
-		}
-
-		return null;
-	}
-
-	/**
 	 * load all timeframes from db (that end in the future and it's item's status is 'publish')
 	 **/
 	public static function get_timeframes() {
@@ -161,6 +145,10 @@ class Map extends CustomPostType {
 		$show_location_contact       = MapAdmin::get_option( $cb_map_id, 'show_location_contact' );
 		$show_location_opening_hours = MapAdmin::get_option( $cb_map_id, 'show_location_opening_hours' );
 
+		$preset_categories = MapAdmin::get_option( $cb_map_id, 'cb_items_preset_categories' );
+		$preset_location_categories = MapAdmin::get_option( $cb_map_id, 'cb_locations_preset_categories' );
+
+
 		$args = [
 			'post_type'      => Location::$postType,
 			'posts_per_page' => - 1,
@@ -186,7 +174,19 @@ class Map extends CustomPostType {
 			$closed_days = isset( $location_meta['commons-booking_location_closeddays'] ) ? $location_meta['commons-booking_location_closeddays'][0] : 'a:0:{}';
 
 			$items = [];
+
+			/**
+			 * filters out not preset location categories, if location categories are set
+			 */
+
+			 if ($preset_location_categories) {
+				if ( !has_term( $preset_location_categories , 'cb_locations_category' , $post->ID) ) {
+					continue; //skip to next location in loop
+				}
+			 }
+
 			foreach ( Item::getByLocation( $post->ID, true ) as $item ) {
+
 				$item_terms = wp_get_post_terms(
 					$item->ID,
 					\CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category'
@@ -206,6 +206,18 @@ class Map extends CustomPostType {
 				if ( count( $mapItemTerms ) && count( $item_terms ) && ! count( array_intersect( $item_terms, $mapItemTerms ) ) ) {
 					continue;
 				}
+
+				/**
+				 * Filter items by preset item categories
+				 */
+
+				 if ($preset_categories) {
+						 //check if preset category is in items
+						if ( !has_term( $preset_categories , 'cb_items_category' , $item->ID) ) {
+							continue; //skip to next item in loop
+						}
+				 }
+
 
 				$timeframesData = [];
 				$timeframes     = Timeframe::getBookableForCurrentUser(
@@ -232,7 +244,7 @@ class Map extends CustomPostType {
 					'short_desc' => has_excerpt( $item->ID ) ? wp_strip_all_tags( get_the_excerpt( $item->ID ) ) : "",
 					'status'     => $item->post_status,
 					'terms'      => $item_terms,
-					'link'       => add_query_arg( 'location', $post->ID, get_permalink( $item->ID ) ),
+					'link'       => add_query_arg( 'cb-location', $post->ID, get_permalink( $item->ID ) ),
 					'thumbnail'  => $thumbnail ?: null,
 					'timeframes' => $timeframesData
 				];

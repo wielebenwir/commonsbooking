@@ -10,6 +10,7 @@ use CommonsBooking\View\TimeframeExport;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
+use CommonsBooking\Service\Cache;
 
 // We need static types, because german month names dont't work for datepicker
 $dateFormat = "d/m/Y";
@@ -234,6 +235,31 @@ Thanks, the Team.
                         ', 'commonsbooking' ) ),
 					),
 					array(
+						'name'    => commonsbooking_sanitizeHTML( __('Attach iCalendar file to booking email', 'commonsbooking') ),
+						'id'	  => 'emailtemplates_mail-booking_ics_attach',
+						'type'	  => 'checkbox',
+						'desc' => esc_html__( 'Will attach an iCalendar compatible file for users to import in their respective calendar application.', 'commonsbooking' ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __('iCalendar event title', 'commonsbooking') ),
+						'id'	  => 'emailtemplates_mail-booking_ics_event-title',
+						'type'	  => 'text',
+						'desc' => esc_html__( 'The title of the attached event', 'commonsbooking' ),
+						'default'       => commonsbooking_sanitizeHTML( __( '{{item:post_title}} at {{location:post_title}}',
+						'commonsbooking' ) ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __('iCalendar event description', 'commonsbooking') ),
+						'id'	  => 'emailtemplates_mail-booking_ics_event-description',
+						'type'	  => 'textarea',
+						'desc' => esc_html__( 'The description for the attached event.', 'commonsbooking' ),
+						'default'       => commonsbooking_sanitizeHTML( __( ' Pick up: {{booking:pickupDatetime}}
+Return date: {{booking:returnDatetime}}
+{{location:formattedPickupInstructions}}
+{{booking:formattedBookingCode}} ',
+						'commonsbooking' ) ),
+					),
+					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Booking canceled email subject', 'commonsbooking' ) ),
 						'id'      => 'emailtemplates_mail-booking-canceled-subject',
 						'type'    => 'text',
@@ -450,7 +476,13 @@ Thanks, the Team.
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color shown when hovering a button or a link', 'commonsbooking' ) ),
 						'default' => '#506CA9',
 					),
-
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Button color', 'commonsbooking' ) ),
+						'id'      => 'colorscheme_buttoncolor',
+						'type'    => 'colorpicker',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'The default color for buttons', 'commonsbooking' ) ),
+						'default' => '#74ce3c',
+					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Confirmation / Available Color', 'commonsbooking' ) ),
 						'id'      => 'colorscheme_acceptcolor',
@@ -537,28 +569,22 @@ Thanks, the Team.
 						'name'    => commonsbooking_sanitizeHTML( __( 'Breakdown email subject', 'commonsbooking' ) ),
 						'id'      => 'restrictions-repair-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( 'Breakdown of {{item:post_title}}', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Breakdown of {{item:post_title}} for your booking {{booking:formattedBookingDate}}', 'commonsbooking' ) ),
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Breakdown email body', 'commonsbooking' ) ),
 						'id'      => 'restrictions-repair-body',
 						'type'    => 'textarea',
-						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hello {{user:first_name}},</h2>
 
-<p>Unfortunately, the item {{item:post_title}} you booked is damaged and not usable from {{restriction:formattedStartDateTime}} until {{restriction:formattedEndDateTime}} expected.
-</br></br>
-The reason is:</br>
-{{restriction:hint}}
-</br>
-</br>
-We had to cancel your booking for this period.  You will receive a confirmation of the cancellation in a separate email.
-Please book the item again for another period or check our website to see if an alternative item is available.
-</br>
-We ask for your understanding. 
-</br>
-Best regards,</br>
-the team
-</p>', 'commonsbooking' ) ),
+                        <p>Unfortunately, the article {{item:post_title}} you booked is no longer usable from {{restriction:formattedStartDateTime}} to probably {{restriction:formattedEndDateTime}}. <br>The reason is:</br>{{restriction:hint}}
+                        </br></br>
+                        <strong>This affects your booking {{booking:formattedBookingDate}}</strong></br>
+                        </br>
+                        We had to cancel your booking for this period. You will receive confirmation of the cancellation in a separate email.<br>
+                        If you have several bookings in the affected period, you will receive this information e-mail for each booking as well as separate cancellation information.<br>
+                        Please book the item again for a different period or check our website to see if an alternative item is available.<br>We apologize for any inconvenience.
+                        </br>Best regards</br>the team</p>', 'commonsbooking' ) ),
 					),
 
 					// E-Mail hint
@@ -566,31 +592,33 @@ the team
 						'name'    => commonsbooking_sanitizeHTML( __( 'Usage restriction email subject', 'commonsbooking' ) ),
 						'id'      => 'restrictions-hint-subject',
 						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( 'Restriction of use for {{item:post_title}}', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( 'Restriction of use for {{item:post_title}} for your booking {{booking:formattedBookingDate}}', 'commonsbooking' ) ),
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Restriction email body', 'commonsbooking' ) ),
 						'id'      => 'restrictions-hint-body',
 						'type'    => 'textarea',
-						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
-<p>
-The item {{item:post_title}} you booked is damaged and will have limited use from {{restriction:formattedStartDateTime} until probably {{restriction:formattedEndDateTime}}.
-</br></br>
-The reason is:</br>
-{{restriction:hint}}
-</br>
-</br>
-Please check if you want to continue your booking despite this usage restriction. 
-If not, we ask you to cancel your booking via the following link:
-{{booking:BookingLink}} 
-</br>
-</br>
-We will do our best to fix the restriction as soon as possible.
-We will sent you an email when the restriction is fixed.
-</br>
-Best regards,</br>
-the team
-</p>', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hello {{user:first_name}},</h2>
+                        <p>
+                        The article {{item:post_title}} you booked can only be used to a limited extent from {{restriction:formattedStartDateTime}} to probably {{restriction:formattedEndDateTime}}.
+                        </br></br>
+                        The reason is:</br>
+                        {{restriction:hint}}
+                        </br></br>
+                        <strong>This affects your booking {{booking:formattedBookingDate}}</strong><br>
+                        </br>
+                        Please check if you want to keep your booking despite the restrictions. </br>
+                        If not, please cancel your booking using the following link:
+                        {{booking:BookingLink}}
+                        </br>
+                        </br>
+                        If you have several bookings in the affected period, you will receive this information email for each booking.<br>
+                        We strive to fix the restriction as soon as possible.
+                        You will receive an email when the restriction is resolved.
+                        </br>
+                        Best regards,</br>
+                        The team
+                        </p>', 'commonsbooking' ) ),
 					),
 
 					// E-Mail restriction cancellation
@@ -604,10 +632,16 @@ the team
 						'name'    => commonsbooking_sanitizeHTML( __( 'Restriction cancelled email body', 'commonsbooking' ) ),
 						'id'      => 'restrictions-restriction-cancelled-body',
 						'type'    => 'textarea',
-						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi {{user:first_name}},</h2>
-<p>
-The item {{item:post_title}} is now fully usable again. 
-</p>', 'commonsbooking' ) ),
+						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hello {{user:first_name}},</h2>
+                        <p>The article {{item:post_title}} is now fully usable again.</p>
+                        <p>This also affects your booking {{booking:formattedBookingDate}}
+                        </br>
+                        </br>Here is the link to your booking: {{booking:BookingLink}}
+                        </br>
+                        </br>
+                        Best regards,</br>
+                        The team
+                        </p>', 'commonsbooking' ) ),
 					),
 				)
 			),
@@ -1003,10 +1037,10 @@ The team</p>', 'commonsbooking' ) ),
 	),
 	/* Tab: export end */
 
-	/* Tab: meta data set start */
-	'metadata'     => array(
-		'title'        => __( 'Meta Data-Sets', 'commonsbooking' ),
-		'id'           => 'custom_metadata',
+	/* Tab: advanced options start */
+	'advanced-options'     => array(
+		'title'        => __( 'Advanced Options', 'commonsbooking' ),
+		'id'           => 'advanced-options',
 		'field_groups' => array(
 			'custom_metadata' => array(
 				'title'  => esc_html__( 'Set Custom metadata to locations and items', 'commonsbooking' ),
@@ -1024,7 +1058,65 @@ The team</p>', 'commonsbooking' ) ),
 					),
 				]
 			),
+			'icalfeed' => array(
+				'title' => esc_html__( 'iCalendar Feed', 'commonsbooking' ),
+				'desc'	=> commonsbooking_sanitizeHTML( __('Enables users to copy a url for a dynamic iCalendar feed into their own digital calendars. This feature is experimental.',
+				 'commonsbooking')),
+				'id'	=> 'icalendar_group',
+				'fields'=> [
+					array(
+						'name' => esc_html__( 'Enable iCalendar feed', 'commonsbooking' ),
+						'id'   => 'feed_enabled',
+						'type' => 'checkbox',
+					),
+					array(
+						'name'	=> esc_html__( 'Event title', 'commonsbooking'),
+						'desc'	=> esc_html__( 'You can use template tags here as well', 'commonsbooking'),
+						'default'       => commonsbooking_sanitizeHTML( __( '{{item:post_title}} at {{location:post_title}}',
+						'commonsbooking' ) ),
+						'id'	=> 'event_title',
+						'type'	=> 'text',
+					),
+					array(
+						'name'	=> esc_html__( 'Event description', 'commonsbooking'),
+						'desc'	=> esc_html__( 'You can use template tags here as well', 'commonsbooking'),
+						'default'       => commonsbooking_sanitizeHTML( __( '
+Pick up: {{booking:pickupDatetime}}
+Return date: {{booking:returnDatetime}}
+{{location:formattedPickupInstructions}}
+{{booking:formattedBookingCode}} ',
+						'commonsbooking' ) ),
+						'id'	=> 'event_desc',
+						'type'	=> 'textarea',
+					)
+				]
+			),
+			'experimental' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Connect to REDIS database.', 'commonsbooking' ) ),
+				'id'     => 'redis_group',
+				'desc'   =>
+					commonsbooking_sanitizeHTML( __( 'Allows you to connect the cache to a REDIS database. This feature is experimental.', 'commonsbooking' ) ),
+				'fields' => array(
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'Enable REDIS Caching', 'commonsbooking' ) ),
+						'id'   => 'redis_enabled',
+						'type' => 'checkbox',
+					),
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'REDIS DSN (REDIS Server URL)', 'commonsbooking' ) ),
+						'id'   => 'redis_dsn',
+						'type' => 'text',
+						'default' => 'redis://localhost:6379'
+					),
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Current connections status', 'commonsbooking' ) ),
+						'id'            => 'redis_connection-status',
+						'type'          => 'text',
+						'render_row_cb' => array( Cache::class, 'renderREDISConnectionStatus' ),
+					)
+				)
+			),
 		),
 	),
-	/* Tab: meta data end */
+	/* Tab: advanced options end */
 );

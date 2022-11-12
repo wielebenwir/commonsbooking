@@ -32,7 +32,10 @@ abstract class View {
 		// Pagination: https://developer.wordpress.org/reference/classes/wp_query/#pagination-parameters
 		'posts_per_page' => '',
 		'nopaging'       => '',
-		'offset'         => ''
+		'offset'         => '',
+		// Order: https://developer.wordpress.org/reference/classes/wp_query/#order-orderby-parameters
+		'order'          => '',
+		'orderby'		 => '',
 	);
 
 	/**
@@ -71,7 +74,7 @@ abstract class View {
 			$item = $timeframe->{'get' . $type}();
 
 			// We need only published items
-			if ( $item->post_status !== 'publish' ) {
+			if ( !$item || $item->post_status !== 'publish' ) {
 				continue;
 			}
 
@@ -164,6 +167,7 @@ abstract class View {
 		$variables = [
 			'color-primary' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_primarycolor'),
 			'color-secondary' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_secondarycolor'),
+			'color-buttons'	  => Settings::getOption('commonsbooking_options_templates', 'colorscheme_buttoncolor'),
 			'color-accept' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_acceptcolor'),
 			'color-cancel' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_cancelcolor'),
 			'color-holiday' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_holidaycolor'),

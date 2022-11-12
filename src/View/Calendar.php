@@ -55,8 +55,7 @@ class Calendar {
 		$days = is_array( $atts ) && array_key_exists( 'days', $atts ) ? $atts['days'] : 31;
 
 		$desc  = $atts['desc'] ?? '';
-		$date  = new DateTime();
-		$date->setTimestamp(current_time('timestamp'));
+		$date  = Wordpress::getUTCDateTimeByTimestamp(current_time('timestamp'));
 		$today = $date->format( "Y-m-d" );
 
 		$days_display = array_fill( 0, $days, 'n' );
@@ -161,8 +160,21 @@ class Calendar {
 		$print .= "</tbody></table>";
 		$print .= '</div>';
 
+		$print .= '<div id="cb-table-footnote">';
 
 		return $print;
+	}
+
+	public static function shortcode( $atts) {
+		global $templateData;
+		$templateData = [];
+		$templateData['data'] = self::renderTable($atts);
+
+		if (!empty($templateData['data'])) {
+			ob_start();
+			commonsbooking_get_template_part( 'shortcode', 'items_table', true, false, false ) ;
+			return ob_get_clean();
+		}
 	}
 
 	/**
@@ -285,11 +297,11 @@ class Calendar {
 			}
 
 			$dayStr         = implode( $divider, $days_display );
-			$itemLink       = add_query_arg( 'location', $locationId, get_permalink( $item->ID ) );
+			$itemLink       = add_query_arg( 'cb-location', $locationId, get_permalink( $item->ID ) );
 			$locationString = '<div data-title="' . $locationName . '">' . $locationName . '</div>';
 			$locationLink = get_permalink($locationId);
 
-			$rowHtml = "<tr><td><b><a href='" . $itemLink . "'>" . $itemName . "</a></b>" . $divider . "<a href='" . $locationLink . "'>" . $locationString . "</a>" . $divider . $dayStr . "</td></tr>";
+			$rowHtml = "<tr><td><b><a href='" . $itemLink . "'>" . $itemName . "</a></b>" . $divider . $locationString . $divider . $dayStr . "</td></tr>";
 			Plugin::setCacheItem($rowHtml, [ $locationId, $item->ID]);
 
 			return $rowHtml;
