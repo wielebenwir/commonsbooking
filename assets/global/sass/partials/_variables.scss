@@ -32,9 +32,13 @@ $color-buttons: $color-green-neon !default;
 $color-accept: $color-green-neon !default;
 $color-cancel: $color-warningred !default;
 $color-holiday: $color-orange !default;
-$color-greyedout: $color-gray-light !default;
+$color-greyedout: $color-gray !default;
 $color-bg       : $color-gray !default;
 $color-noticebg: $color-yellow !default;
+
+/* Colors: Text colors, can be modified by user */
+$color-lighttext: $color-gray-light !default;
+$color-darktext: $color-black !default;
 
 
 
@@ -80,6 +84,9 @@ $radius-pill: $radius;
   --commonsbooking-color-greyedout : #{$color-greyedout};
   --commonsbooking-color-bg : #{$color-bg};
   --commonsbooking-color-noticebg : #{$color-noticebg};
+
+  --commonsbooking-textcolor-light : #{$color-lighttext};
+  --commonsbooking-textcolor-dark : #{$color-darktext};
 
   --commonsbooking-color-gray-background : #{$color-gray-background};
   --commonsbooking-color-gray-border : #{$color-gray-border};

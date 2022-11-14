@@ -18,7 +18,7 @@
 	clear: both;
 	display: block;
 	margin-top: var(--commonsbooking-spacer-big);
-
+    color: var(--commonsbooking-textcolor-dark);
 	@extend .cb-box;
 	
 	.cb-list-content.cb-pickupinstructions div {
