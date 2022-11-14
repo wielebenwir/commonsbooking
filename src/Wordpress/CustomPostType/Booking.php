@@ -24,12 +24,33 @@ class Booking extends Timeframe {
 	protected $menuPosition = 4;
 
 	public function __construct() {
-		// does not trigger when initiated in initHooks
+		
+        // does not trigger when initiated in initHooks
 		add_action( 'post_updated', array( $this, 'postUpdated' ), 1, 3 );
 
-		// Frontend request
+    	// Frontend request
 		$this->handleFormRequest();
 	}
+
+    public function saveAdminBookingFields($post_ID) {
+
+        if (is_admin()) {
+
+            $postarr = array(
+                   'author' =>  esc_html($_REQUEST['booking_user']),
+                'meta_input' => [
+                    'admin_booking_id' => get_current_user_id(),
+                    'start-time' => esc_html($_REQUEST['repetition-start']['time']),
+                    'end-time' => esc_html($_REQUEST['repetition-end']['time']),
+                    'type' => Timeframe::BOOKING_ID,
+                    'grid' => '',
+                ]
+            );
+               $postarr['ID'] = $post_ID;
+               //wp_update_post($postarr, true, false);
+        }
+        
+    }
 
 	/**
 	 * Handles frontend save-Request for timeframe.
@@ -369,10 +390,17 @@ class Booking extends Timeframe {
 	 * @param $post_before
 	 */
 	public function postUpdated( $post_ID, $post_after, $post_before ) {
-		if ( ! $this->hasRunBefore( __FUNCTION__ ) ) {
+
+        // if admin is in backend and saving an admin booking we add aditional fields
+        if (is_admin()) {
+            $this->saveAdminBookingFields($post_ID);
+        }
+
+        if (! $this->hasRunBefore( __FUNCTION__ ) ) {
 			$isBooking = get_post_meta( $post_ID, 'type', true ) == Timeframe::BOOKING_ID;
-			if ( $isBooking ) {
-				// Trigger Mail, only send mail if status has changed
+    		if ( $isBooking ) {
+
+    				// Trigger Mail, only send mail if status has changed
 				if ( $post_before->post_status != $post_after->post_status and
 				     ! (
 					     $post_before->post_status === 'unconfirmed' and
@@ -581,6 +609,15 @@ class Booking extends Timeframe {
 			$dateFormat = "m/d/Y";
 		}
 
+        // Generate user list for admin bookings
+		if ( commonsbooking_isCurrentUserAdmin() || commonsbooking_isCurrentUserCBManager() ) {
+			$users       = get_users();
+			$userOptions = [];
+			foreach ( $users as $user ) {
+				$userOptions[ $user->ID ] = $user->get( 'user_nicename' ) . " (" . $user->first_name . " " . $user->last_name . ")";
+			}
+		}
+
 		return array(
 			array(
 				'name' => esc_html__( 'Edit booking', 'commonsbooking' ),
@@ -645,6 +682,12 @@ class Booking extends Timeframe {
 				'name'       => esc_html__( 'Booking Code', 'commonsbooking' ),
 				'id'         => COMMONSBOOKING_METABOX_PREFIX . 'bookingcode',
 				'type'       => 'text',
+			),
+            array(
+				'name'       => esc_html__( 'Booking User', 'commonsbooking' ),
+				'id'         => 'booking_user',
+				'type'       => 'pw_select',
+                'options'    => $userOptions,
 			),
 			array(
 				'type'    => 'hidden',
