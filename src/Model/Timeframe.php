@@ -83,9 +83,9 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns latest possible booking date as timestamp.
+	 * Returns the latest possible booking date as timestamp.
 	 *
-	 * @return string
+	 * @return false|int
 	 */
 	public function getLatestPossibleBookingDateTimestamp() {
 		$calculationBase = time();
@@ -198,7 +198,7 @@ class Timeframe extends CustomPost {
      *
 	 * @return bool
 	 */
-	public function bookingCodesApplieable(): bool {
+	public function bookingCodesApplicable(): bool {
 		try {
 			return $this->getLocation() && $this->getItem() &&
 			       $this->getStartDate() && $this->getEndDate() &&

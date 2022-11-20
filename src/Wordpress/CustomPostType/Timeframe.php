@@ -656,7 +656,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Get allowed timeframe types for selection box in timeframe editor
-	 * TODO: can be removed if type cleanup has been done (e.g. move BOOKIG_ID to Booking-Class and rename existing types )
+	 * TODO: can be removed if type cleanup has been done (e.g. move BOOKING_ID to Booking-Class and rename existing types )
 	 *
 	 * @return array
 	 */
@@ -723,7 +723,7 @@ class Timeframe extends CustomPostType {
 			$createBookingCodes = get_post_meta( $post_id, 'create-booking-codes', true );
 			$this->sanitizeRepetitionEndDate($post_id);
 
-			if ( $createBookingCodes == "on" && $timeframe->bookingCodesApplieable() ) {
+			if ( $createBookingCodes == "on" && $timeframe->bookingCodesApplicable() ) {
 				BookingCodes::generate( $post_id );
 			}
 		}
@@ -825,7 +825,7 @@ class Timeframe extends CustomPostType {
 			'show_in_nav_menus' => true,
 
 			// Hier können Berechtigungen in einem Array gesetzt werden
-			// oder die standart Werte post und page in form eines Strings gesetzt werden
+			// oder die standard Werte post und page in Form eines Strings gesetzt werden
 			'capability_type'   => array( self::$postType, self::$postType . 's' ),
 
 			'map_meta_cap'        => true,

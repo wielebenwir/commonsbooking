@@ -29,6 +29,7 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
  * @param $user
  *
  * @return bool
+ * @throws Exception
  */
 function commonsbooking_isUserAllowedToEdit( $post, $user): bool {
 	if (! Plugin::isPostCustomPostType($post) ) {
