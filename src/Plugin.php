@@ -129,13 +129,8 @@ class Plugin {
 		if (! $post ) {
 			return false;
 		}
-		$validPostTypes = self::getCustomPostTypes();
-		foreach ($validPostTypes as $validPostType){
-			if ($post->post_type == $validPostType::$postType) {
-				return true;
-			}
-		}
-		return false;
+		$validPostTypes = self::getCustomPostTypesLabels();
+		return in_array($post->post_type,$validPostTypes);
 	}
 
 	/**
