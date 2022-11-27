@@ -246,8 +246,6 @@ class Booking extends Timeframe {
 			return;
 		}
 
-        commonsbooking_write_log($_REQUEST);
-
 		try {
 
 			// Check if its an admin edit
@@ -656,14 +654,16 @@ class Booking extends Timeframe {
 		return array(
 			array(
 				'name' => esc_html__( 'Edit booking', 'commonsbooking' ),
-				'desc' => commonsbooking_sanitizeHTML(
+				'desc' => '<div class="notice notice-error" style="background-color:#e6aeae"><p>' . commonsbooking_sanitizeHTML(
                     __(
-                        'In this view, you can modify existing bookings. Please use it with caution. <br>
+                        '<h1>Notice</h1><p>In this view, you as an admin can create or modify existing bookings. Please use it with caution. <br>
 				Click on the <strong>preview button on the right panel</strong> to view more booking details and to cancel the booking via the cancel button.<br>
-				Please note: if a change in this booking creates a conflict with an existing booking, the change will not be saved. There is no check for conflicts with existing vacations or non-bookable periods. 
+                Please set the booking status (confirmed, unconfirmed, canceled) using the status dropdown in publish panel.</br>
+				<strong>Please note</strong>: There is no check for conflicts with existing bookings,  vacations or non-bookable periods.
+                </p> 
 				',
                         'commonsbooking'
-                    )
+                    ) . '</p></div>'
                 ),
 				'id'   => 'title-booking-hint',
 				'type' => 'title',

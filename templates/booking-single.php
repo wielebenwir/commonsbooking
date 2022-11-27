@@ -19,7 +19,7 @@ $item                         = $booking->getItem();
 $user                         = $booking->getUserData();
 $show_contactinfo_unconfirmed = Settings::getOption( 'commonsbooking_options_templates', 'show_contactinfo_unconfirmed' );
 $text_hidden_contactinfo      = Settings::getOption( 'commonsbooking_options_templates', 'text_hidden-contactinfo' );
-$admin_booking_id             = CB::get( 'booking', 'admin_booking_id', $booking );
+$admin_booking_id             = $booking->getMeta( 'admin_booking_id' );
 $current_status               = $booking->post_status;
 
 
@@ -103,17 +103,8 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 		<div class="cb-list-header">
 			<h3><?php echo esc_html__( 'Your profile', 'commonsbooking' ); ?></h3>
 		</div>
-        <?php 
-        if (commonsbooking_isCurrentUserAdmin() && $current_status == 'unconfirmed') {
-        ?>
-        <div class="cb-list-content cb-user cb-col-30-70"> 
-       	<div><?php echo esc_html__( 'Admin-Booking', 'commonsbooking' ); ?></div>
-			<div><?php wp_dropdown_users( array( 'name' => 'author' ) ); ?>
-            <?php echo esc_html__( 'Select a username to create a booking for this user.', 'commonsbooking' ); ?>
-        </div>
-		</div>
         <?php
-        } elseif (commonsbooking_isCurrentUserAdmin() && $current_status == 'confirmed') { // 
+       if (commonsbooking_isCurrentUserAdmin() && $current_status == 'confirmed' && $admin_booking_id ) { // 
         ?>
                 <div class="cb-list-content cb-user cb-col-30-70"> 
        	<div><?php echo esc_html__( 'Admin Booking by', 'commonsbooking' ); ?></div>
@@ -182,30 +173,6 @@ if ( $current_status && $current_status !== 'draft' ) {
 	?>
 
 	<!-- Buttons & Form action -->
-    <form method="post" id="cb-booking-form-set-<?php echo esc_attr( $form_post_status ); ?>">
-
-    <?php
-    if (commonsbooking_isCurrentUserAdmin() && $current_status == 'unconfirmed') {
-            ?>
-            <div class="cb-wrapper cb-booking-adminbooking">
-                <div class="cb-list-header">
-                    <h3><?php echo esc_html__( 'Admin Booking', 'commonsbooking' ); ?></h3>
-                </div>
-    
-                <div class="cb-list-content cb-user cb-col-30-70"> 
-                    <div>
-                        <?php echo esc_html__( 'Admin-Booking', 'commonsbooking' ); ?>
-                    </div>
-                <div><?php wp_dropdown_users( array( 'name' => 'author' ) ); ?>
-                    <?php echo esc_html__( 'Select a username to create a booking for this user.', 'commonsbooking' ); ?>
-                </div>
-            </div>
-            </div>
-            <?php
-            }
-            ?>
-
-
 	<div class="cb-action cb-wrapper">
 
 		<?php
