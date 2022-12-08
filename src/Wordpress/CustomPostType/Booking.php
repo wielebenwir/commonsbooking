@@ -688,11 +688,12 @@ class Booking extends Timeframe {
 			),
 			array(
 				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
-				'desc'        => esc_html__( 'Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking' ),
+				'desc'        => '<br>' . esc_html__( 'Set the start date. You must set the time to 00:00 if you want to book the full day ', 'commonsbooking' ),
 				'id'          => \CommonsBooking\Model\Timeframe::REPETITION_START,
 				'type'        => 'text_datetime_timestamp',
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
+                'default'     => '00:00',
 				'attributes'  => array(
 					'data-timepicker' => wp_json_encode(
 						array(
@@ -704,11 +705,12 @@ class Booking extends Timeframe {
 			),
 			array(
 				'name'        => esc_html__( 'End date', 'commonsbooking' ),
-				'desc'        => esc_html__( 'Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.', 'commonsbooking' ),
+				'desc'        => '<br>' . esc_html__( 'Set the end date. You must set time to 23:59 if you want to book the full day', 'commonsbooking' ),
 				'id'          => 'repetition-end',
 				'type'        => 'text_datetime_timestamp',
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
+                'default'     => '23:59',
 				'attributes'  => array(
 					'data-timepicker' => wp_json_encode(
 						array(
@@ -733,8 +735,8 @@ class Booking extends Timeframe {
                 'desc' => commonsbooking_sanitizeHTML(
                     __(
                         'Here you must select the user for whom the booking is made.<br>
-                        If the booking as was made by a user via frontend booking process, the user will be shown in this field.
-                        <strong>Notice:</strong>The user will receive a booking confirmation as soon as the booking has been saved with the status confirmed.',
+                        If the booking was was made by a user via frontend booking process, the user will be shown in this field.
+                        <br><strong>Notice:</strong>The user will receive a booking confirmation as soon as the booking has been saved with the status confirmed.',
                         'commonsbooking'
                     )
                 ),
