@@ -7,7 +7,6 @@ use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
 use Exception;
 use function wp_verify_nonce;
-use function commonsbooking_write_log;
 
 class Booking extends Timeframe {
 
@@ -558,7 +557,7 @@ class Booking extends Timeframe {
 	 * @return array
 	 */
 	protected function getCustomFields() {
-		// We need static types, because german month names dont't work for datepicker
+		// We need static types, because german month names don't work for datepicker
 		$dateFormat = "d/m/Y";
 		if ( strpos( get_locale(), 'de_' ) !== false ) {
 			$dateFormat = "d.m.Y";

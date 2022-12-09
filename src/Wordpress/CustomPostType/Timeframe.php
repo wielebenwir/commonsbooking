@@ -459,7 +459,23 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'             => esc_html__( "Location", 'commonsbooking' ),
+				'name'    => esc_html__( 'Location', 'commonsbooking' ),
+				'id'      => \CommonsBooking\Model\Timeframe::META_LOCATION_SELECT,
+				'type'    => 'select',
+				'options' => self::getSelectionOptions(),
+				'default' => \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID,
+				'default_cb' => 'commonsbooking_filter_from_cmb2',
+			),
+			array(
+				'name'             => esc_html__( "Location Category Selection", 'commonsbooking' ),
+				'id'               => \CommonsBooking\Model\Timeframe::META_LOCATION_CATEGORY_ID,
+				'type'             => 'select',
+				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Location::getTerms() ),
+				'select_all_button' => false,
+				'default_cb' => 'commonsbooking_filter_from_cmb2',
+			),
+			array(
+				'name'             => esc_html__( "Location Selection", 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Timeframe::META_LOCATION_ID,
 				'type'             => 'select',
 				'show_option_none' => esc_html__( 'Please select', 'commonsbooking' ),
@@ -467,7 +483,23 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'             => esc_html__( "Item", 'commonsbooking' ),
+				'name'    => esc_html__( 'Item', 'commonsbooking' ),
+				'id'      => \CommonsBooking\Model\Timeframe::META_ITEM_SELECT,
+				'type'    => 'select',
+				'options' => self::getSelectionOptions(),
+				'default' => \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID,
+				'default_cb' => 'commonsbooking_filter_from_cmb2',
+			),
+			array(
+				'name'             => esc_html__( "Item Category Selection", 'commonsbooking' ),
+				'id'               => \CommonsBooking\Model\Timeframe::META_ITEM_CATEGORY_ID,
+				'type'             => 'select',
+				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Item::getTerms() ),
+				'select_all_button' => false,
+				'default_cb' => 'commonsbooking_filter_from_cmb2',
+			),
+			array(
+				'name'             => esc_html__( "Item selection", 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Timeframe::META_ITEM_ID,
 				'type'             => 'select',
 				'show_option_none' => esc_html__( 'Please select', 'commonsbooking' ),
@@ -671,6 +703,18 @@ class Timeframe extends CustomPostType {
 		);
 
 		return $types;
+	}
+
+	/**
+	 * Returns style of item / location selection
+	 * @return array
+	 */
+	public static function getSelectionOptions() {
+		return [
+			\CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID => esc_html__( "Manual selection", 'commonsbooking' ),
+			\CommonsBooking\Model\Timeframe::SELECTION_CATEGORY_ID  => esc_html__( "Select by category", 'commonsbooking' ),
+			\CommonsBooking\Model\Timeframe::SELECTION_ALL_ID  => esc_html__( "All", 'commonsbooking' ),
+		];
 	}
 
 	/**
@@ -941,5 +985,13 @@ class Timeframe extends CustomPostType {
 
 		// Listing of available items/locations
 		add_shortcode( 'cb_items_table', array( Calendar::class, 'shortcode' ) );
+	}
+
+	/**
+	 * Gets the corresponding repository for the Timeframe CPT
+	 * @return string
+	 */
+	protected function getRepository(): string {
+		return \CommonsBooking\Repository\Timeframe::class;
 	}
 }

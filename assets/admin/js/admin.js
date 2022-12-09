@@ -117,6 +117,8 @@
         if (timeframeForm.length) {
             const timeframeRepetitionInput = $("#timeframe-repetition");
             const typeInput = $("#type");
+            const locationSelectionInput = $("#location-select");
+            const itemSelectionInput = $("#item-select");
             const gridInput = $("#grid");
             const weekdaysInput = $("#weekdays1");
             const startTimeInput = $("#start-time");
@@ -129,6 +131,10 @@
             const createBookingCodesInput = $("#create-booking-codes");
             const bookingCodesDownload = $("#booking-codes-download");
             const bookingCodesList = $("#booking-codes-list");
+            const manualLocationSelection = $(".cmb2-id-location-id");
+            const manualItemSelection = $(".cmb2-id-item-id");
+            const categoryLocationSelection = $(".cmb2-id-location-category-id");
+            const categoryItemSelection = $(".cmb2-id-item-category-id");
             const maxDaysSelect = $(".cmb2-id-timeframe-max-days");
             const advanceBookingDays = $(".cmb2-id-timeframe-advance-booking-days");
             const allowUserRoles = $(".cmb2-id-allowed-user-roles");
@@ -164,6 +170,54 @@
             handleTypeSelection();
             typeInput.change(function() {
                 handleTypeSelection();
+                handleItemSelection();
+                handleLocationSelection();
+            });
+            const handleLocationSelection = function() {
+                const selectedType = $("option:selected", typeInput).val();
+                if (selectedType == 2) {
+                    manualLocationSelection.show();
+                    categoryLocationSelection.hide();
+                    locationSelectionInput.hide();
+                }
+                const selectedOption = $("option:selected", locationSelectionInput).val();
+                if (selectedOption == 0) {
+                    categoryLocationSelection.hide();
+                    manualLocationSelection.show();
+                } else if (selectedOption == 1) {
+                    categoryLocationSelection.show();
+                    manualLocationSelection.hide();
+                } else {
+                    manualLocationSelection.hide();
+                    categoryLocationSelection.hide();
+                }
+            };
+            handleLocationSelection();
+            locationSelectionInput.change(function() {
+                handleLocationSelection();
+            });
+            const handleItemSelection = function() {
+                const selectedType = $("option:selected", typeInput).val();
+                if (selectedType == 2) {
+                    manualItemSelection.show();
+                    categoryItemSelection.hide();
+                    itemSelectionInput.hide();
+                }
+                const selectedOption = $("option:selected", itemSelectionInput).val();
+                if (selectedOption == 0) {
+                    manualItemSelection.show();
+                    categoryItemSelection.hide();
+                } else if (selectedOption == 1) {
+                    categoryItemSelection.show();
+                    manualItemSelection.hide();
+                } else {
+                    manualItemSelection.hide();
+                    categoryItemSelection.hide();
+                }
+            };
+            handleItemSelection();
+            itemSelectionInput.change(function() {
+                handleItemSelection();
             });
             const handleFullDaySelection = function() {
                 const selectedRep = $("option:selected", timeframeRepetitionInput).val();
