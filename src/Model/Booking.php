@@ -62,7 +62,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		);
 		$wpdb->query( $sql );
 
-		add_post_meta( $this->post->ID, 'cancellation_time', current_time('timestamp') );
+		add_post_meta( $this->post->ID, 'cancellation_time', current_time( 'timestamp' ) );
 
 		$this->sendCancellationMail();
 	}
@@ -262,7 +262,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 		$date_start = date_i18n( $date_format, $repetitionStart );
 		$time_start = date_i18n( $time_format, $repetitionStart );
-		$time_end = date_i18n( $time_format, $repetitionStart );
+		$time_end   = date_i18n( $time_format, $repetitionStart );
 
 		$grid     = $this->getMeta( 'grid' );
 		$full_day = $this->getMeta( 'full-day' );
@@ -299,8 +299,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
 
-		$date_end = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
-		$time_end = date_i18n( $time_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
+		$date_end   = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
+		$time_end   = date_i18n( $time_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
 		$time_start = date_i18n( $time_format, strtotime( $this->getMeta( 'start-time' ) ) );
 
 		$grid     = $this->getMeta( 'grid' );
@@ -423,11 +423,22 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	public function getiCal(
-		String $eventTitle,
-		String $eventDescription
-	): String {
+		string $eventTitle,
+		string $eventDescription
+	): string {
 		$calendar = new iCalendar();
-		$calendar->addBookingEvent($this,$eventTitle,$eventDescription);
+		$calendar->addBookingEvent( $this, $eventTitle, $eventDescription );
 		return $calendar->getCalendarData();
 	}
+
+    /**
+     * Returns formatted user info based on the template field in settings -> templates
+     *
+     * @return void
+     */
+    public static function getFormattedUserInfo() {
+        return commonsbooking_parse_template(
+            Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'user_details_template' )
+        );
+    }
 }

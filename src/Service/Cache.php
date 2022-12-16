@@ -173,8 +173,10 @@ trait Cache {
 			self::getCache()->invalidateTags($tags);
 		}
 
-		// Delete expired cache items
-		self::getCache()->prune();
+		// Delete expired cache items (only for Pruneable Interfaces)
+		if (is_a(self::getCache(),'Symfony\Component\Cache\Adapter\TagAwareAdapter')) {
+			self::getCache()->prune();
+		}
 
 		set_transient("clearCacheHasBeenDone", true, 45);
 	}

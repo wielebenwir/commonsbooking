@@ -19,6 +19,7 @@ $item                         = $booking->getItem();
 $user                         = $booking->getUserData();
 $show_contactinfo_unconfirmed = Settings::getOption( 'commonsbooking_options_templates', 'show_contactinfo_unconfirmed' );
 $text_hidden_contactinfo      = Settings::getOption( 'commonsbooking_options_templates', 'text_hidden-contactinfo' );
+$formatted_user_info          = $booking::getFormattedUserInfo();
 $admin_booking_id             = $booking->getMeta( 'admin_booking_id' );
 $current_status               = $booking->post_status;
 
@@ -104,28 +105,28 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 			<h3><?php echo esc_html__( 'Your profile', 'commonsbooking' ); ?></h3>
 		</div>
         <?php
-       if (commonsbooking_isCurrentUserAdmin() && $current_status == 'confirmed' && $admin_booking_id ) { // 
+       if (commonsbooking_isCurrentUserAdmin() && $current_status == 'confirmed' && $admin_booking_id ) { //
         ?>
-                <div class="cb-list-content cb-user cb-col-30-70"> 
+                <div class="cb-list-content cb-user cb-col-30-70">
        	<div><?php echo esc_html__( 'Admin Booking by', 'commonsbooking' ); ?></div>
-			<div><?php 
-                $booking_admin = get_user_by('ID', $admin_booking_id); 
+			<div><?php
+                $booking_admin = get_user_by('ID', $admin_booking_id);
                 echo esc_html( $booking_admin->user_login . " (" . $booking_admin->first_name . " " . $booking_admin->last_name . ")" );
                 ?>
         </div>
 		</div>
-        <?php 
-        } // end if 
+        <?php
+        } // end if
         ?>
 		<div class="cb-list-content cb-user cb-col-30-70">
        			<div><?php echo esc_html__( 'Your E-Mail', 'commonsbooking' ); ?></div>
 			<div><?php echo commonsbooking_sanitizeHTML( CB::get( 'user', 'user_email' ) ); ?></div>
 		</div>
 		<div class="cb-list-content cb-user cb-col-30-70">
-			<div><?php echo esc_html__( 'Your User name', 'commonsbooking' ); ?></div>
+			<div><?php echo esc_html__( 'User data', 'commonsbooking' ); ?></div>
 			<div><a href="<?php echo get_edit_profile_url( $user->ID ); ?>"><?php echo esc_html( $user->first_name ) . ' ' . esc_html( $user->last_name ) . ' (' . esc_html( $user->user_login ) . ')'; ?> </a>
-				<br>
-				<?php echo commonsbooking_sanitizeHTML( CB::get( 'user', 'address' ) ); ?>
+
+                <?php echo commonsbooking_sanitizeHTML( $formatted_user_info ); ?>
 			</div>
 		</div>
 	</div>

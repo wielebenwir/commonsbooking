@@ -78,7 +78,7 @@ class Settings {
 	 * @return true
 	 */
 	public static function updateOption( $option_name, $field_id, $field_value ) {
-		// Load all of the option values from wp_options
+		// Load all the option values from wp_options
 		$options = get_option( $option_name );
 
 		// Update just the specific field

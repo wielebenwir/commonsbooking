@@ -393,7 +393,14 @@ Thanks, the Team.
 						'desc'    => esc_html__( 'This text is displayed on the booking button on item/location listing pages.', 'commonsbooking' ),
 						'default' => esc_html__( 'Book item', 'commonsbooking' ),
 					),
-				)
+                    array(
+						'name'    => esc_html__( 'User details on booking page', 'commonsbooking' ),
+						'id'      => 'user_details_template',
+						'type'    => 'textarea',
+						'desc'    => esc_html__( 'This textblock is displayed on the booking details page. Please use template-tags to fill in user details', 'commonsbooking' ),
+						'default' => commonsbooking_sanitizeHTML( __( '{{[Phone: ]user:phone}}<br>{{[Address: ]user:address}}', 'commonsbooking' ) ),
+					),
+				),
 			),
 			/* message templates end */
 
@@ -512,7 +519,7 @@ Thanks, the Team.
 						'id'      => 'colorscheme_greyedoutcolor',
 						'type'    => 'colorpicker',
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used to signify that no timeframe has been created for an item or a button that is not yet clickable', 'commonsbooking' ) ),
-						'default' => '#c4c4c4',
+						'default' => '#f6f6f6',
 					),
 
 					array(
@@ -529,6 +536,20 @@ Thanks, the Team.
 						'type'    => 'colorpicker',
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used for the background of notices', 'commonsbooking' ) ),
 						'default' => '#FFF9C5',
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Light text color', 'commonsbooking' ) ),
+						'id'      => 'colorscheme_lighttext',
+						'type'    => 'colorpicker',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used for light text on dark backgrounds', 'commonsbooking' ) ),
+						'default' => '#c4c4c4',
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Dark text color', 'commonsbooking' ) ),
+						'id'      => 'colorscheme_darktext',
+						'type'    => 'colorpicker',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used for dark text on light backgrounds', 'commonsbooking' ) ),
+						'default' => '#000',
 					),
 				)
 			),
