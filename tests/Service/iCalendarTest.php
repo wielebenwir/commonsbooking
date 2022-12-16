@@ -20,12 +20,15 @@ class iCalendarTest extends CBTest {
 		$this->assertEquals("BEGIN:VCALENDAR",$iCalendarArray[0]);
 		$this->assertEquals("END:VCALENDAR",$iCalendarArray[0]);
 
-		foreach ($iCalendarArray as $calendar_line){
-			if (str_contains($calendar_line,"SUMMARY:")){
-				$this->assertEquals(static::$eventTitle,substr(strpos($calendar_line, "SUMMARY:") + 1));
-			}
-			elseif (str_contains($calendar_line,"DESCRIPTION:")){
-				$this->assertEquals(static::$eventDescription,substr($calendar_line, strpos($calendar_line, "DESCRIPTION:") + 1));
+		if (is_array($iCalendarArray) || is_object($iCalendarArray))
+		{
+			foreach ($iCalendarArray as $calendar_line){
+				if (str_contains($calendar_line,"SUMMARY:")){
+					$this->assertEquals(static::$eventTitle,substr(strpos($calendar_line, "SUMMARY:") + 1));
+				}
+				elseif (str_contains($calendar_line,"DESCRIPTION:")){
+					$this->assertEquals(static::$eventDescription,substr($calendar_line, strpos($calendar_line, "DESCRIPTION:") + 1));
+				}
 			}
 		}
 	}
