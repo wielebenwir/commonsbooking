@@ -190,9 +190,9 @@ class Calendar {
 			$print .= "<th class='sortless' colspan='" . $colspan . "'>";
 
      		if ( $colspan > 3 ) {
-				$print .= date_i18n( 'F', strtotime( get_date_from_gmt( $month ), true ) . "</th>";
+				$print .= date_i18n( 'F', strtotime( get_date_from_gmt( $month ) ) ). "</th>";
 			} else {
-				$print .= date_i18n( 'M', strtotime( get_date_from_gmt( $month ), true  ) . "</th>";
+				$print .= date_i18n( 'M', strtotime( get_date_from_gmt( $month ) ) ). "</th>";
 			}
 		}
 
