@@ -85,7 +85,7 @@ function commonsbooking_public() {
 		'cb-scripts-moment',
 		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/js/vendor/moment.min.js',
 		array(),
-		'1.0.0',
+		'1.0.1',
 		true
 	);
 
