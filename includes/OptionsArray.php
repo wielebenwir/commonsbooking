@@ -1001,19 +1001,19 @@ The team</p>', 'commonsbooking' ) ),
 					array(
 						// Repeatable group -> API Shares
 						'name'       => esc_html__( 'API shares', 'commonsbooking' ),
-						'desc'       => commonsbooking_sanitizeHTML( __( 'You can define on ore more API shares. Read the documentation for more information about API shares and configuration <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
+						'desc'       => commonsbooking_sanitizeHTML( __( 'You can define on or more API shares. Read the documentation for more information about API shares and configuration <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
 						'id'         => "api_share_group",
 						'type'       => 'group',
 						'repeatable' => true,
 						'options'    => array(
-							'group_title'   => 'API {#}',
-							'add_button'    => 'Add Another API',
-							'remove_button' => 'Remove API',
+							'group_title'   => commonsbooking_sanitizeHTML(__('API','commonsbooking') ).  '{#}',
+							'add_button'    => commonsbooking_sanitizeHTML(__( 'Add Another API', 'commonsbooking') ),
+							'remove_button' => commonsbooking_sanitizeHTML(__ ( 'Remove API', 'commonsbooking') ),
 							'closed'        => false,  // Repeater fields closed by default - neat & compact.
 							'sortable'      => false,  // Allow changing the order of repeated groups.
 						),
 
-						'fields' => [
+						'fields' => array(
 							array(
 								'name' => esc_html__( 'API name', 'commonsbooking' ),
 								'desc' => commonsbooking_sanitizeHTML( __( 'Internal name for this API share', 'commonsbooking' ) ),
