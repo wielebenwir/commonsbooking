@@ -12,7 +12,7 @@ use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Service\Cache;
 
-// We need static types, because german month names dont't work for datepicker
+// We need static types, because german month names don't work for datepicker
 $dateFormat = "d/m/Y";
 if ( strpos( get_locale(), 'de_' ) !== false ) {
 	$dateFormat = "d.m.Y";
@@ -282,64 +282,6 @@ Thanks, the Team.
 			/* field group email templates end */
 
 			/* field group template and booking message templates start */
-			'messagetemplates' => array(
-				'title'  => commonsbooking_sanitizeHTML( __( 'Template and booking process messages', 'commonsbooking' ) ),
-				'id'     => 'messagetemplates',
-				'desc'   => '',
-				'fields' => array(
-					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Booking confirmed message', 'commonsbooking' ) ),
-						'id'      => 'booking-confirmed-notice',
-						'type'    => 'textarea_small',
-						'desc'    => commonsbooking_sanitizeHTML( __( 'This text is shown as a status message on booking page after a user has confirmed the booking', 'commonsbooking' ) ),
-						'default' => esc_html__( 'Your booking is confirmed. A confirmation mail has been sent to you.', 'commonsbooking' ),
-					),
-					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Item not available', 'commonsbooking' ) ),
-						'id'      => 'item-not-available',
-						'type'    => 'textarea_small',
-						'desc'    => commonsbooking_sanitizeHTML( __( 'This text is shown on item listings (shortcode cb_items) and item detail page if there is no valid bookable timeframe set for this item', 'commonsbooking' ) ),
-						'default' => esc_html__( 'This item is currently not bookable.', 'commonsbooking' ),
-					),
-					array(
-						'name'    => esc_html__( 'Location without available items', 'commonsbooking' ),
-						'id'      => 'location-without-items',
-						'type'    => 'textarea_small',
-						'desc'    => esc_html__( 'This text is shown on location listings and location detail page if there are no items available at this location', 'commonsbooking' ),
-						'default' => esc_html__( 'No items available at this location right now.', 'commonsbooking' ),
-					),
-					array(
-						'name' => esc_html__( 'Show contactdetails on booking without confirmation?', 'commonsbooking' ),
-						'id'   => 'show_contactinfo_unconfirmed',
-						'type' => 'checkbox',
-						'desc' => esc_html__( 'If activated the contactdetails (e.g. phone number, pickupinstructions) will be shown on booking page even if the booking is not confirmed by user. Otherwise these info will be shown only after booking is confirmed', 'commonsbooking' ),
-					),
-					array(
-						'name'    => esc_html__( 'Infotext hidden contactdetails', 'commonsbooking' ),
-						'id'      => 'text_hidden-contactinfo',
-						'type'    => 'textarea_small',
-						'desc'    => esc_html__( 'This text is displayed when contact details of the station are shown only after booking confirmation.', 'commonsbooking' ),
-						'default' => esc_html__( 'Please confirm the booking to see the contact details for pickup and return.', 'commonsbooking' ),
-					),
-					array(
-						'name'    => esc_html__( 'Text book this item on booking page', 'commonsbooking' ),
-						'id'      => 'text_book-this-item',
-						'type'    => 'textarea_small',
-						'desc'    => esc_html__( 'This text is displayed on a booking detail page above the booking calendar .', 'commonsbooking' ),
-						'default' => esc_html__( 'Book this item at this location', 'commonsbooking' ),
-					),
-					array(
-						'name'    => esc_html__( 'Label for booking button', 'commonsbooking' ),
-						'id'      => 'label-booking-button',
-						'type'    => 'text',
-						'desc'    => esc_html__( 'This text is displayed on the booking button on item/location listing pages.', 'commonsbooking' ),
-						'default' => esc_html__( 'Book item', 'commonsbooking' ),
-					),
-				)
-			),
-			/* message templates end */
-
-						/* field group template and booking message templates start */
 			'messagetemplates' => array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'Template and booking process messages', 'commonsbooking' ) ),
 				'id'     => 'messagetemplates',
@@ -1050,7 +992,7 @@ The team</p>', 'commonsbooking' ) ),
 								'default'    => get_bloginfo( 'name' ),
 							),
 
-						]
+						)
 					),
 				]
 			),
