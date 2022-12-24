@@ -117,10 +117,12 @@ function CB_Map() {
 
         var markers;
 
-        // @TODO: Check real problem with markers.getBounds() error.
-        if(!this.settings.max_cluster_radius || this.settings.max_cluster_radius <= 0) {
+        console.log('max_cluster_radius - Was ' + this.settings.max_cluster_radius)
+        if(this.settings.max_cluster_radius == undefined || (this.settings.max_cluster_radius < 10 && this.settings.max_cluster_radius != 0)) {
             this.settings.max_cluster_radius = 10;
+            
         }
+        console.log('max_cluster_radius - Set to ' + this.settings.max_cluster_radius)
 
         if (this.settings.max_cluster_radius > 0) {
             var marker_cluster_options = {
@@ -150,9 +152,10 @@ function CB_Map() {
             }
 
             markers = L.markerClusterGroup(marker_cluster_options);
-
+            console.log('Markers is cluster group')
         } else {
             markers = L.layerGroup();
+            console.log('Markers is layer group')
         }
 
         var custom_marker_icon;
@@ -289,6 +292,18 @@ function CB_Map() {
         //adjust map section to marker bounds based on settings
         if ((!init && this.settings.marker_map_bounds_filter) || (init && this.settings.marker_map_bounds_initial)) {
             if (Object.keys(data).length > 0) {
+
+                // TODO If max_cluster_radius == 0, markers is a layerGroup and doesn't define getBounds
+                //  Addionally center_position can be undefined (don't know why)
+                //  So this is rather a hack and should be placed elsewhere
+                if (markers.getBounds === undefined && center_position === undefined) {
+                    console.log('No clustering, getbounds === undefined')
+                    console.log(data)
+                    center_position = {
+                        lat: data.map( location => location.lat ).reduce( (a, b) => a+b) / data.length,
+                        lon: data.map( location => location.lon ).reduce( (a, b) => a+b) / data.length
+                    }
+                }
 
                 //keep center position & set bounds based on markers to show around
                 if (center_position) {
