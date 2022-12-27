@@ -11,6 +11,7 @@ use function commonsbooking_write_log;
 
 class Booking extends Timeframe {
 
+	public const ERROR_TYPE = COMMONSBOOKING_PLUGIN_SLUG . '-bookingValidationError';
 	/**
 	 * @var string
 	 */
@@ -27,7 +28,11 @@ class Booking extends Timeframe {
 		add_action( 'post_updated', array( $this, 'postUpdated' ), 1, 3 );
 
 		// Frontend request
-		$this->handleFormRequest();
+		try {
+			$this->handleFormRequest();
+		} catch ( Exception $e ) {
+			set_transient(self::ERROR_TYPE,__($e->getMessage(),'commonsbooking'));
+		}
 	}
 
 	/**
