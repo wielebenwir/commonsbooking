@@ -6,6 +6,7 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\Admin\Filter;
 use WP_Post;
+use WP_Term;
 
 abstract class CustomPostType {
 
@@ -61,7 +62,12 @@ abstract class CustomPostType {
 
 					$key   = $item->ID;
 					$label = $item->post_title . $statusLabel;
-				} else {
+				}
+				elseif ( $item instanceof WP_Term){
+					$key = $item->term_id;
+					$label = $item->name . ' (' . $item->slug . ')';
+				}
+				else {
 					$label = $item;
 				}
 				$options[ $key ] = $label;

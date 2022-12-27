@@ -475,14 +475,14 @@ class Plugin {
 		add_action('init', array(self::class, 'registerCustomPostTypes'), 0);
 		add_action('init', array(self::class, 'registerPostStates'), 0);
 
-		// register admin options page
-		add_action('init', array(self::class, 'registerAdminOptions'), 0);
-
 		// Register custom post types taxonomy / categories
 		add_action('init', array(self::class, 'registerItemTaxonomy'), 30);
 
 		// Register custom post types taxonomy / categories
 		add_action('init', array(self::class, 'registerLocationTaxonomy'), 30);
+
+		// register admin options page
+		add_action('init', array(self::class, 'registerAdminOptions'), 40);
 
 		//loads the Scheduler
 		add_action('init', array(Scheduler::class, 'initHooks') );
