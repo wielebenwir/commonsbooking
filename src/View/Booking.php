@@ -281,6 +281,13 @@ class Booking extends View {
 		return ob_get_clean();
 	}
 
+	/**
+	 * Gets all bookings that the user is authorized to see and converts them to the iCal format
+	 * @param $user
+	 *
+	 * @return String in valid iCal format
+	 * @throws Exception when BookingListData can not be fetched
+	 */
 	public static function getBookingListiCal($user = null):String{
 		$eventTitle_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
 		$eventDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );
