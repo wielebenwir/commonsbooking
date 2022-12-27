@@ -5,6 +5,7 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 use CommonsBooking\Exception\OverlappingException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
+use CommonsBooking\Service\BookingRuleApplied;
 use Exception;
 use function wp_verify_nonce;
 use function commonsbooking_write_log;
@@ -40,7 +41,6 @@ class Booking extends Timeframe {
 	 * @throws Exception
 	 */
 	public function handleFormRequest() {
-
 		if (
 			function_exists( 'wp_verify_nonce' ) &&
 			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
@@ -143,6 +143,11 @@ class Booking extends Timeframe {
 			$bookingModel = new \CommonsBooking\Model\Booking( $postId );
 			// we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
 			$bookingModel->assignBookableTimeframeFields();
+
+			//check if the Booking we want to create conforms to the set booking rules
+			if( ! BookingRuleApplied::bookingConformsToRules($bookingModel)){
+				return;
+			}
 
 			// get slug as parameter
 			$post_slug = get_post( $postId )->post_name;

@@ -39,6 +39,13 @@ function commonsbooking_admin() {
 			'nonce'    => wp_create_nonce( 'cb_start_booking_migration' ),
 		)
 	);
+
+	// Additional info for CMB2 to handle booking rules
+	wp_add_inline_script(
+		'cb-scripts-admin',
+'cb_booking_rules=' . \CommonsBooking\Service\BookingRule::getRulesJSON()
+	);
+
 	/**
 	 * Ajax - cache warmup
 	 */

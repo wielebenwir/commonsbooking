@@ -2,6 +2,7 @@
 
 
 use CommonsBooking\Helper;
+use CommonsBooking\Service\BookingRule;
 use CommonsBooking\View\Migration;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Repository\UserRepository;
@@ -667,6 +668,74 @@ Thanks, the Team.
 					),
 				)
 			),
+			'bookingRules' => array(
+				'title' => commonsbooking_sanitizeHTML( __( 'Restrict bookings by booking rules', 'commonsbooking') ),
+				'desc'  => commonsbooking_sanitizeHTML( __( 'You can apply rules to items or item / location categories that will restrict how users can book and abort the booking if one of the rules are violated')),
+				'id'    => 'bookingrules',
+				'fields'=> array(
+					array(
+						'id'        => 'rules_group',
+						'type'      => 'group',
+						'repeatable'=> true,
+						'options'   => array(
+							'group_title'   => commonsbooking_sanitizeHTML( __( 'Rule ', 'commonsbooking') ) .  '{#}',
+							'add_button'    => commonsbooking_sanitizeHTML( __( 'Add another rule', 'commonsbooking') ),
+							'remove_button' => commonsbooking_sanitizeHTML( __( 'Remove rule', 'commonsbooking') ),
+						),
+						'fields' => array(
+							array(
+								'name'      => 'Rule type',
+								'desc'      => 'Select the kind of rule',
+								'id'        => 'rule-type',
+								'type'      => 'select',
+								'options'   => BookingRule::getRulesForSelect(),
+
+							),
+							array(
+								'name' => 'Rule description',
+								'desc' => 'You shall be replaced',
+								'id'   => 'rule-description',
+								'type' => 'title',
+							),
+							array(
+								'name'  => 'Parameter 1',
+								'desc'  => 'Parameter description',
+								'id'    => 'rule-param1',
+								'type'  => 'text_small'
+							),
+							array(
+								'name'  => 'Parameter 2',
+								'desc'  => 'Parameter description',
+								'id'    => 'rule-param2',
+								'type'  => 'text_small'
+							),
+							array(
+								'name'  => 'Parameter 3',
+								'desc'  => 'Parameter description',
+								'id'    => 'rule-param3',
+								'type'  => 'text_small'
+							),
+							array(
+								'name'  => 'Applies to all',
+								'desc'  => 'Check if this rule applies to all items',
+								'id'    => 'rule-applies-all',
+								'type'  => 'checkbox'
+							),
+							array(
+								'name'      => 'Applies to categories',
+								'desc'      => 'Check the categories that these rules apply to',
+								'id'        => 'rule-applies-categories',
+								'type'      => 'multicheck',
+								'options'   =>  CustomPostType::sanitizeOptions(
+									array_merge(
+										\CommonsBooking\Repository\Item::getTerms(),
+										\CommonsBooking\Repository\Location::getTerms())
+									)
+							)
+						)
+					),
+				)
+			)
 			/* field group email templates end */
 		)
 	),
