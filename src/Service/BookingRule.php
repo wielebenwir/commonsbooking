@@ -42,27 +42,27 @@ class BookingRule {
 	}
 
 	/**
-	 * Gets the localized & sanitized version of the BookingRule name
+	 * Gets the sanitized version of the BookingRule title
 	 * @return string
 	 */
 	public function getTitle(): string {
-		return commonsbooking_sanitizeArrayorString(__($this->title,'commonsbooking'));
+		return commonsbooking_sanitizeHTML($this->title);
 	}
 
 	/**
-	 * Gets the localized & sanitized version of the BookingRule description
+	 * Gets the sanitized version of the BookingRule description
 	 * @return string
 	 */
 	public function getDescription(): string {
-		return commonsbooking_sanitizeHTML(__($this->description,'commonsbooking'));
+		return commonsbooking_sanitizeHTML($this->description);
 	}
 
 	/**
-	 * Gets the localized & sanitized version of the BookingRule error message
+	 * Gets the sanitized version of the BookingRule error message
 	 * @return string
 	 */
 	public function getErrorMessage(): string {
-		return commonsbooking_sanitizeHTML(__($this->errorMessage));
+		return commonsbooking_sanitizeHTML($this->errorMessage);
 	}
 
 	/**
@@ -80,7 +80,6 @@ class BookingRule {
 
 	/**
 	 * Gets a string of all rule properties, so they can be displayed using CMB2
-	 * TODO: Fix localization problems
 	 * @return string
 	 */
 	public static function getRulesJSON(): string {
@@ -101,9 +100,9 @@ class BookingRule {
 		$defaultRuleSet = [
 			new BookingRule(
 				"noSimultaneousBooking",
-				"Forbid simultaneous Bookings",
-				"Users can no longer book two items on the same day.",
-				"You can not book more than one item at a time.",
+				__("Forbid simultaneous Bookings",'commonsbooking'),
+				__("Users can no longer book two items on the same day.",'commonsbooking'),
+				__("You can not book more than one item at a time.",'commonsbooking'),
 				function(\CommonsBooking\Model\Booking $booking):bool{
 					$user = $booking->getPost()->post_author;
 					$userBookings = \CommonsBooking\Repository\Booking::getForUser($user);
@@ -117,23 +116,23 @@ class BookingRule {
 
 			new BookingRule(
 				"TestRule",
-				"Testing these rulesets with 2 params, this rule will always fail",
-				"This is our description",
-				"This is our error message, it will always appear",
+				__("Testing these rulesets with 2 params, this rule will always fail",'commonsbooking'),
+				__("This is our description",'commonsbooking'),
+				__("This is our error message, it will always appear",'commonsbooking'),
 				function (\CommonsBooking\Model\Booking $booking,array $args):bool{
 					//$args[]
 					return false;
 				},
 				array(
-					"This is the description for the first parameter",
-					"This is the description for the second parameter"
+					__("This is the description for the first parameter",'commonsbooking'),
+					__("This is the description for the second parameter",'commonsbooking')
 				)
 			),
 			new BookingRule(
-				"FailRule",
-				"Alwaysfailnoparam",
-				"This is a rule without params that will always fail",
-				"It has always failed alwaysfailnoparam",
+				__("FailRule",'commonsbooking'),
+				__("Alwaysfailnoparam",'commonsbooking'),
+				__("This is a rule without params that will always fail",'commonsbooking'),
+				__("It has always failed alwaysfailnoparam",'commonsbooking'),
 				function(\CommonsBooking\Model\Booking $booking,array $args = []):bool{
 					return false;
 				}
