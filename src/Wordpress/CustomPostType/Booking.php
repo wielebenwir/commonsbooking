@@ -28,19 +28,13 @@ class Booking extends Timeframe {
 		// does not trigger when initiated in initHooks
 		add_action( 'post_updated', array( $this, 'postUpdated' ), 1, 3 );
 
-		// Frontend request
-		try {
-			$this->handleFormRequest();
-		} catch ( Exception $e ) {
-			set_transient(self::ERROR_TYPE,__($e->getMessage(),'commonsbooking'));
-		}
 	}
 
 	/**
-	 * Handles frontend save-Request for timeframe.
+	 * Handles frontend save-Request for booking.
 	 * @throws Exception
 	 */
-	public function handleFormRequest() {
+	public static function handleFormRequest() {
 		if (
 			function_exists( 'wp_verify_nonce' ) &&
 			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
@@ -138,7 +132,7 @@ class Booking extends Timeframe {
 				$postId        = wp_update_post( $postarr );
 			}
 
-			$this->saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate );
+			self::saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate );
 
 			$bookingModel = new \CommonsBooking\Model\Booking( $postId );
 			// we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
@@ -167,7 +161,7 @@ class Booking extends Timeframe {
 	 * @param $startDate
 	 * @param $endDate
 	 */
-	private function saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate ): void {
+	private static function saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate ): void {
 		$startTimeFrame = \CommonsBooking\Repository\Timeframe::getByLocationItemTimestamp( $locationId, $itemId, $startDate );
 		if ( $startTimeFrame && $startTimeFrame->getGrid() == 0 ) {
 			update_post_meta(

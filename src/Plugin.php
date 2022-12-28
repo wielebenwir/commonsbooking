@@ -191,7 +191,7 @@ class Plugin {
 	}
 
 	/**
-	 * Check if plugin is installed or updated an run tasks
+	 * Check if plugin is installed or updated and run tasks
 	 */
 	public static function runTasksAfterUpdate() {
 		$commonsbooking_version_option    = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
@@ -291,6 +291,22 @@ class Plugin {
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
 				admin_url('edit-tags.php') . '?taxonomy=' . Location::$postType . 's_category',
 				''
+			);
+		}
+	}
+
+	/**
+	 * Handles the validation of booking forms
+	 * @return void
+	 */
+	public static function handleBookingForms(): void {
+		try {
+			\CommonsBooking\Wordpress\CustomPostType\Booking::handleFormRequest();
+		}
+		catch ( \Exception $e ) {
+			set_transient(
+				\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE,
+				commonsbooking_sanitizeHTML(__($e->getMessage(),'commonsbooking'))
 			);
 		}
 	}
@@ -486,7 +502,10 @@ class Plugin {
 		add_action('init', array(self::class, 'registerAdminOptions'), 40);
 
 		//loads the Scheduler
-		add_action('init', array(Scheduler::class, 'initHooks') );
+		add_action('init', array(Scheduler::class, 'initHooks'), 40 );
+
+		//handle the booking forms, needs to happen after taxonomy registration so that we can access the taxonomy
+		add_action('init', array(self::class, 'handleBookingForms'), 50);
 
 		// admin init tasks
 		add_action('admin_init', array(self::class, 'admin_init'), 30);
