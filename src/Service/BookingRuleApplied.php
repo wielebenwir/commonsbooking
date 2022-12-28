@@ -73,12 +73,10 @@ class BookingRuleApplied extends BookingRule {
 			//booking always conforms to rules if ruleset is not available / invalid
 			return true;
 		}
-		$bookingPost = $booking->getPost();
-		$bookingUserID = $bookingPost->post_author;
 		$bookingItem = $booking->getItem()->getPost();
 		$bookingLocation = $booking->getLocation()->getPost();
 
-		if(commonsbooking_isUserAllowedToEdit($bookingItem,$bookingUserID) || commonsbooking_isUserAllowedToEdit($bookingLocation,$bookingUserID)){
+		if(commonsbooking_isCurrentUserAllowedToEdit($bookingItem) || commonsbooking_isCurrentUserAllowedToEdit($bookingLocation)){
 			return true;
 		}
 

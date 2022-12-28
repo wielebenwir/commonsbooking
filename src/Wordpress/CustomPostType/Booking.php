@@ -126,10 +126,19 @@ class Booking extends Timeframe {
 					'type'                                            => Timeframe::BOOKING_ID
 				];
 				$postId                = wp_insert_post( $postarr, true );
+				$needsValidation = true;
 				// Existing booking
 			} else {
 				$postarr['ID'] = $booking->ID;
 				$postId        = wp_update_post( $postarr );
+
+				//we check if this is an already denied booking and demand validation again
+				if ($postarr["post_status"] == "unconfirmed"){
+					$needsValidation = true;
+				}
+				else {
+					$needsValidation = false;
+				}
 			}
 
 			self::saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate );
@@ -139,7 +148,7 @@ class Booking extends Timeframe {
 			$bookingModel->assignBookableTimeframeFields();
 
 			//check if the Booking we want to create conforms to the set booking rules
-			if( ! BookingRuleApplied::bookingConformsToRules($bookingModel)){
+			if( $needsValidation && ! BookingRuleApplied::bookingConformsToRules($bookingModel)){
 				return;
 			}
 
