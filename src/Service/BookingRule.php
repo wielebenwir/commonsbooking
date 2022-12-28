@@ -104,8 +104,10 @@ class BookingRule {
 				__("Users can no longer book two items on the same day.",'commonsbooking'),
 				__("You can not book more than one item at a time.",'commonsbooking'),
 				function(\CommonsBooking\Model\Booking $booking):bool{
-					$user = $booking->getPost()->post_author;
-					$userBookings = \CommonsBooking\Repository\Booking::getForUser($user);
+					$userBookings = \CommonsBooking\Repository\Booking::getForCurrentUser(true,time(),['confirmed']);
+					if (empty($userBookings)){
+						return true;
+					}
 					foreach ($userBookings as $userBooking){
 						if ($booking->hasTimeframeDateOverlap($booking,$userBooking)){
 							return false;
