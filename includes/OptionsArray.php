@@ -684,46 +684,46 @@ Thanks, the Team.
 						),
 						'fields' => array(
 							array(
-								'name'      => 'Rule type',
-								'desc'      => 'Select the kind of rule',
+								'name'      => commonsbooking_sanitizeHTML( __('Rule type', 'commonsbooking') ),
+								'desc'      => commonsbooking_sanitizeHTML( __('Select the kind of rule', 'commonsbooking') ),
 								'id'        => 'rule-type',
 								'type'      => 'select',
 								'options'   => BookingRule::getRulesForSelect(),
 
 							),
 							array(
-								'name' => 'Rule description',
-								'desc' => 'You shall be replaced',
+								'name' => commonsbooking_sanitizeHTML( __('Rule description', 'commonsbooking') ),
+								'desc' => commonsbooking_sanitizeHTML( __('You shall be replaced', 'commonsbooking') ),
 								'id'   => 'rule-description',
 								'type' => 'title',
 							),
 							array(
-								'name'  => 'Parameter 1',
+								'name'  => commonsbooking_sanitizeHTML( __('Parameter 1', 'commonsbooking') ),
 								'desc'  => 'Parameter description',
 								'id'    => 'rule-param1',
 								'type'  => 'text_small'
 							),
 							array(
-								'name'  => 'Parameter 2',
+								'name'  => commonsbooking_sanitizeHTML( __('Parameter 2', 'commonsbooking') ),
 								'desc'  => 'Parameter description',
 								'id'    => 'rule-param2',
 								'type'  => 'text_small'
 							),
 							array(
-								'name'  => 'Parameter 3',
+								'name'  => commonsbooking_sanitizeHTML( __('Parameter 3', 'commonsbooking') ),
 								'desc'  => 'Parameter description',
 								'id'    => 'rule-param3',
 								'type'  => 'text_small'
 							),
 							array(
-								'name'  => 'Applies to all',
-								'desc'  => 'Check if this rule applies to all items',
+								'name'  => commonsbooking_sanitizeHTML( __('Applies to all', 'commonsbooking') ),
+								'desc'  => commonsbooking_sanitizeHTML( __('Check if this rule applies to all items', 'commonsbooking') ),
 								'id'    => 'rule-applies-all',
 								'type'  => 'checkbox'
 							),
 							array(
-								'name'      => 'Applies to categories',
-								'desc'      => 'Check the categories that these rules apply to',
+								'name'      => commonsbooking_sanitizeHTML( __('Applies to categories', 'commonsbooking') ),
+								'desc'      => commonsbooking_sanitizeHTML( __('Check the categories that these rules apply to', 'commonsbooking') ),
 								'id'        => 'rule-applies-categories',
 								'type'      => 'multicheck',
 								'options'   =>  CustomPostType::sanitizeOptions(

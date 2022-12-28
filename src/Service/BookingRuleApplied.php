@@ -28,7 +28,7 @@ class BookingRuleApplied extends BookingRule {
 		else {
 			$this->appliesToAll = false;
 			if (empty($appliedTerms)){
-				throw new \InvalidArgumentException(__("You need to specify a category, if the rule does not apply to all items"));
+				throw new \InvalidArgumentException(__("You need to specify a category, if the rule does not apply to all items", 'commonsbooking'));
 			}
 			$this->appliedTerms = $appliedTerms;
 		}
@@ -38,7 +38,7 @@ class BookingRuleApplied extends BookingRule {
 				$this->setParams = $paramList;
 			}
 			else {
-				throw new \InvalidArgumentException(__("Booking rules: Not enough parameters specified."));
+				throw new \InvalidArgumentException(__("Booking rules: Not enough parameters specified.", 'commonsbooking'));
 			}
 		}
 	}
