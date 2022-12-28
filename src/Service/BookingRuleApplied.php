@@ -24,11 +24,6 @@ class BookingRuleApplied extends BookingRule {
 			if (empty($appliedTerms)){
 				throw new \Exception("You need to specify a category, if the rule does not apply to all");
 			}
-			foreach ($appliedTerms as $appliedTerm){
-				if (! $appliedTerm instanceof WP_Term){
-					throw new \Exception("Value must be a WP_TERM");
-				}
-			}
 			$this->appliedTerms = $appliedTerms;
 		}
 
@@ -61,6 +56,9 @@ class BookingRuleApplied extends BookingRule {
 				$rule->setParams ?? []
 			);
 		} catch ( \Exception $e ) {
+			set_transient(
+				OptionsTab::ERROR_TYPE,
+				$e->getMessage());
 		}
 	}
 
@@ -109,7 +107,7 @@ class BookingRuleApplied extends BookingRule {
 				if (isset($ruleConfig['rule-param3'])) { $ruleParams[] = $ruleConfig['rule-param3']; };
 				$appliedRules[] = self::fromBookingRule(
 					$validRule,
-					$ruleConfig['rule-applies-all'] === 'on',
+					isset ( $ruleConfig['rule-applies-all'] ) && $ruleConfig['rule-applies-all'] === 'on',
 					$ruleConfig['rule-applies-categories'] ?? [],
 					$ruleParams ?? []
 				);
