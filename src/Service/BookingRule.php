@@ -3,6 +3,7 @@
 namespace CommonsBooking\Service;
 
 use Closure;
+use Exception;
 
 class BookingRule {
 	protected string $name;
@@ -21,12 +22,14 @@ class BookingRule {
 	 * @param String $errorMessage
 	 * @param \Closure $validationFunction
 	 * @param array $params
+	 *
+	 * @throws Exception
 	 */
 	public function __construct(String $name,String $title, String $description,String $errorMessage, Closure $validationFunction,array $params = []) {
 		if (! empty($params) ){
 
 			if (count($params) > 3 ){
-				throw new \InvalidArgumentException("No more than 3 parameters are currently supported");
+				throw new Exception("No more than 3 parameters are currently supported");
 			}
 
 			$this->params = $params;
@@ -69,7 +72,7 @@ class BookingRule {
 	public static function getRulesForSelect(): array {
 		$assoc_array = [];
 		foreach ( self::init() as $bookingRule) {
-			$assoc_array[$bookingRule->name] = $bookingRule->title;
+			$assoc_array[$bookingRule->name] = $bookingRule->getTitle();
 		}
 
 		return $assoc_array;
@@ -92,6 +95,7 @@ class BookingRule {
 	/**
 	 * Returns an array with the default ruleset applied, can be filtered using a filter hook
 	 * @return array
+	 * @throws Exception
 	 */
 	public static function init(): array {
 		$defaultRuleSet = [

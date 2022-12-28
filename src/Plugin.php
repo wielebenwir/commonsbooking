@@ -9,6 +9,7 @@ use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Service\BookingRuleApplied;
 use CommonsBooking\Service\Cache;
 use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Service\iCalendar;
@@ -186,6 +187,9 @@ class Plugin {
 			AdminOptions::SetOptionsDefaultValues();
 
 			flush_rewrite_rules();
+
+			//checks if all the booking rules are in the correct format, complain if not
+			BookingRuleApplied::validateRules();
 			set_transient('commonsbooking_options_saved', 0);
 		}
 	}
