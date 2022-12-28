@@ -486,7 +486,7 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return bool
 	 */
-	public function hasTimeframeDateOverlap( $timeframe1, $timeframe2 ):bool {
+	public function hasTimeframeDateOverlap( Timeframe $timeframe1, Timeframe $timeframe2 ):bool {
 		return ! $timeframe1->getEndDate() && ! $timeframe2->getEndDate() ||
 			(
 				$timeframe1->getEndDate() && ! $timeframe2->getEndDate() &&

@@ -539,7 +539,7 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
-	 * Returns timeframe that matches for timestamp based on date AND its time.
+	 * Returns timeframe that matches for timestamp based on date AND it's time.
 	 * Why? Needed for booking creation based on multiple timeframes with different multi slot grids.
 	 *
 	 * @param int $locationId
