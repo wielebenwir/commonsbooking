@@ -25,7 +25,7 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
 }
 
 /**
- * Checks if user is allowed to edit custom post.
+ * Checks if user is allowed to edit custom post. Take either WP_USER object or user_id
  *
  * @param $post
  * @param $user
@@ -37,7 +37,14 @@ function commonsbooking_isUserAllowedToEdit( $post, $user): bool {
 		return false;
 	}
 
-	$isAuthor     = intval( $user->ID ) == intval( $post->post_author );
+	if ( isset( $user->ID ) ) {
+		$userID = $user->ID;
+	} else {
+		$userID = $user;
+		$user = get_user_by('id',$userID);
+	}
+
+	$isAuthor     = intval( $userID ) == intval( $post->post_author );
 	$isAdmin      = commonsbooking_isUserAdmin($user);
 	$isAllowed    = $isAdmin || $isAuthor;
 
@@ -100,8 +107,8 @@ function commonsbooking_isUserAllowedToEdit( $post, $user): bool {
 			$admins = get_post_meta( $post->ID, '_' . $post->post_type . '_admins', true );
 		}
 
-		$isAllowed = ( is_string( $admins ) && $user->ID === $admins ) ||
-		             ( is_array( $admins ) && in_array( $user->ID . '', $admins, true ) );
+		$isAllowed = ( is_string( $admins ) && $userID === $admins ) ||
+		             ( is_array( $admins ) && in_array( $userID . '', $admins, true ) );
 	}
 
 	return $isAllowed;
