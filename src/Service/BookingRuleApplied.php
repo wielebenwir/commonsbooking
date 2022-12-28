@@ -3,10 +3,16 @@
 namespace CommonsBooking\Service;
 
 use CommonsBooking\Settings\Settings;
+use CommonsBooking\Wordpress\CustomPostType\Location;
+use CommonsBooking\Wordpress\CustomPostType\Item;
+use CommonsBooking\Wordpress\Options\OptionsTab;
 use WP_Term;
 
+/**
+ *
+ */
 class BookingRuleApplied extends BookingRule {
-	private bool $appliesToAll; ///
+	private bool $appliesToAll;
 	private array $appliedTerms;
 	private array $setParams;
 
@@ -62,6 +68,12 @@ class BookingRuleApplied extends BookingRule {
 		}
 	}
 
+	/**
+	 * Checks if a booking conforms to the rule sets, will always allow bookings from item/location admins & administrators
+	 *
+	 * @param \CommonsBooking\Model\Booking $booking
+	 * @throws \Exception
+	 */
 	public static function bookingConformsToRules(\CommonsBooking\Model\Booking $booking):bool {
 		try {
 			$ruleset = self::getAll();
@@ -69,7 +81,27 @@ class BookingRuleApplied extends BookingRule {
 			//booking always conforms to rules if ruleset is not available
 			return true;
 		}
+		$bookingPost = $booking->getPost();
+		$bookingUserID = $bookingPost->post_author;
+		$bookingItem = $booking->getItem()->getPost();
+		$bookingLocation = $booking->getLocation()->getPost();
+
+		if(commonsbooking_isUserAllowedToEdit($bookingItem,$bookingUserID) || commonsbooking_isUserAllowedToEdit($bookingLocation,$bookingUserID)){
+			return true;
+		}
+
+		/** @var BookingRuleApplied $rule */
 		foreach ( $ruleset as $rule ) {
+
+			//check if rule applies to my current booking
+			if (! $rule->appliesToAll){
+				$isInItemCat = has_term( $rule->appliedTerms, Item::$postType . 's_category', $bookingItem );
+				$isInLocationCat = has_term( $rule->appliedTerms, Location::$postType . 's_category', $bookingLocation );
+				if ( ! ($isInItemCat || $isInLocationCat)){
+					continue;
+				}
+			}
+
 			if ( ! ($rule instanceof BookingRuleApplied )) {
 				throw new \InvalidArgumentException( "Value must be a BookingRuleApplied" );
 			}
