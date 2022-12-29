@@ -16,6 +16,7 @@ use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Service\iCalendar;
 use DateTimeImmutable;
 use DateInterval;
+use WP_User;
 
 class Booking extends \CommonsBooking\Model\Timeframe {
 
@@ -204,9 +205,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @throws Exception
 	 */
 	public function getItem(): ?Item {
-		$itemId = $this->getMeta( 'item-id' );
-
-		if ( $post = get_post( $itemId ) ) {
+		if ( $post = get_post( $this->getItemID() ) ) {
 			return new Item( $post );
 		}
 
@@ -218,14 +217,20 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @throws Exception
 	 */
 	public function getLocation(): ?Location {
-		$locationId = $this->getMeta( 'location-id' );
-		if ( $post = get_post( $locationId ) ) {
+		if ( $post = get_post( $this->getLocationID() ) ) {
 			return new Location( $post );
 		}
 
 		return null;
 	}
 
+	public function getItemID() {
+		return $this->getMeta('item-id');
+	}
+
+	public function getLocationID(){
+		return $this->getMeta('location-id');
+	}
 	/**
 	 * @return string
 	 */
@@ -394,7 +399,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * return plain booking URL
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function bookingLinkUrl() {
 		return add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) );
@@ -407,6 +412,21 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 */
 	public function isCancelled(): bool {
 		return ( $this->post_status == 'canceled' ? : false );
+	}
+
+	/**
+	 * Checks if the given user / current user is administrator of item / location or the website and therefore enjoys special booking rights
+	 *
+	 * @param WP_User $user
+	 *
+	 * @return bool
+	 */
+	public function isUserPrivileged(WP_User $user = null): bool {
+		$user ??= wp_get_current_user();
+
+		$itemAdmin = commonsbooking_isUserAllowedToEdit($this->getItemID(),$user);
+		$locationAdmin = commonsbooking_isUserAllowedToEdit($this->getLocationID(),$user);
+		return ($itemAdmin || $locationAdmin);
 	}
 
 	/**
