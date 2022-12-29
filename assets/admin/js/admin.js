@@ -2,7 +2,7 @@
     "use strict";
     $(function() {
         const groupName = "rules_group";
-        const groupID = "cmb2-id-rules-group";
+        const groupID = "cmb-group-rules_group-";
         const ruleSelectorID = "rule-type";
         const ruleDescriptionID = "rule-description";
         const ruleAppliesAllID = "rule-applies-all";
@@ -11,16 +11,19 @@
         const ruleParam2ID = "rule-param2";
         const ruleParam3ID = "rule-param3";
         const handleRuleSelection = function() {
-            let groupFields = document.querySelector("#" + groupName + "_repeat");
-            for (let i = 0; i < groupFields.childElementCount - 1; i++) {
-                let currentGroup = groupID + "-" + i + "-";
-                let ruleSelector = $("." + currentGroup + ruleSelectorID).find(".cmb2_select");
-                let ruleDescription = $("." + currentGroup + ruleDescriptionID).find(".cmb2-metabox-description");
-                let ruleParam1 = $("." + currentGroup + ruleParam1ID);
+            let groupFields = $("#" + groupName + "_repeat");
+            groupFields.on("cmb2_add_row cmb2_remove_row cmb2_shift_rows_complete", function() {
+                handleRuleSelection();
+            });
+            for (let i = 0; i < groupFields.children().length - 1; i++) {
+                let currentGroup = $("#" + groupID + i);
+                let ruleSelector = currentGroup.find("#" + groupName + "_" + i + "_" + ruleSelectorID);
+                let ruleDescription = currentGroup.find('[class*="' + ruleDescriptionID + '"]').find(".cmb2-metabox-description");
+                let ruleParam1 = currentGroup.find('[class*="' + ruleParam1ID + '"]');
                 let ruleParam1Desc = ruleParam1.find(".cmb2-metabox-description");
-                let ruleParam2 = $("." + currentGroup + ruleParam2ID);
+                let ruleParam2 = currentGroup.find('[class*="' + ruleParam2ID + '"]');
                 let ruleParam2Desc = ruleParam2.find(".cmb2-metabox-description");
-                let ruleParam3 = $("." + currentGroup + ruleParam3ID);
+                let ruleParam3 = currentGroup.find('[class*="' + ruleParam3ID + '"]');
                 let ruleParam3Desc = ruleParam3.find(".cmb2-metabox-description");
                 ruleSelector.change(function() {
                     handleRuleSelection();
@@ -64,17 +67,18 @@
             }
         };
         const handleAppliesToAll = function() {
-            let groupFields = document.querySelector("#" + groupName + "_repeat");
-            for (let i = 0; i < groupFields.childElementCount - 1; i++) {
-                let currentGroup = groupID + "-" + i + "-";
-                let ruleAppliesAll = $("." + currentGroup + ruleAppliesAllID).find(".cmb2-option");
-                let ruleAppliesCategories = $("." + currentGroup + ruleAppliesCategoriesID);
+            let groupFields = $("#" + groupName + "_repeat");
+            groupFields.on("cmb2_add_row cmb2_remove_row cmb2_shift_rows_complete", function() {
+                handleAppliesToAll();
+            });
+            for (let i = 0; i < groupFields.children().length - 1; i++) {
+                let currentGroup = $("#" + groupID + i);
+                let ruleAppliesAll = currentGroup.find('[class*="' + ruleAppliesAllID + '"]').find(".cmb2-option");
+                let ruleAppliesCategories = currentGroup.find('[class*="' + ruleAppliesCategoriesID + '"]');
                 ruleAppliesAll.change(function() {
                     handleAppliesToAll();
                 });
-                console.log(ruleAppliesAll);
                 if (ruleAppliesAll.prop("checked")) {
-                    console.log("checked");
                     ruleAppliesCategories.hide();
                 } else {
                     ruleAppliesCategories.show();

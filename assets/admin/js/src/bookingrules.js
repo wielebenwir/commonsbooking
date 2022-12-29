@@ -2,7 +2,7 @@
     'use strict';
     $(function () {
         const groupName = 'rules_group';
-        const groupID = 'cmb2-id-rules-group';
+        const groupID = 'cmb-group-rules_group-';
         const ruleSelectorID = 'rule-type';
         const ruleDescriptionID = 'rule-description';
         const ruleAppliesAllID = 'rule-applies-all';
@@ -11,28 +11,32 @@
         const ruleParam2ID = 'rule-param2';
         const ruleParam3ID = 'rule-param3';
         const handleRuleSelection = function() {
-            let groupFields = document.querySelector('#' + groupName +'_repeat');
-            //iterate over all children, remove the last child because it is the new row
-            //apply descriptions to the corresponding rule
-            for (let i = 0; i < groupFields.childElementCount - 1; i++){
-                //find all of our fields
-                let currentGroup = groupID + '-' + i + '-';
-                let ruleSelector = $('.' + currentGroup + ruleSelectorID).find('.cmb2_select');
-                let ruleDescription = $('.' + currentGroup + ruleDescriptionID).find('.cmb2-metabox-description');
-                let ruleParam1 = $('.' + currentGroup + ruleParam1ID);
-                let ruleParam1Desc = ruleParam1.find('.cmb2-metabox-description');
-                let ruleParam2 = $('.' + currentGroup + ruleParam2ID);
-                let ruleParam2Desc = ruleParam2.find('.cmb2-metabox-description');
-                let ruleParam3 = $('.' + currentGroup + ruleParam3ID);
-                let ruleParam3Desc = ruleParam3.find('.cmb2-metabox-description');
+            let groupFields = $('#' + groupName + '_repeat');
 
+            //bind to row adding/ removing
+            groupFields.on( 'cmb2_add_row cmb2_remove_row cmb2_shift_rows_complete', function() {handleRuleSelection();} );
+
+            //iterate over all children, remove the last child because it is the new row
+            for (let i = 0; i < groupFields.children().length - 1; i++){
+                // https://github.com/CMB2/CMB2/issues/1149 this is why we have to do this weird selection style
+
+                //find all of our fields
+                let currentGroup = $('#' + groupID + i);
+                let ruleSelector = currentGroup.find('#' + groupName + '_' + i + '_'  + ruleSelectorID);
+                let ruleDescription = currentGroup.find('[class*="' + ruleDescriptionID + '"]').find('.cmb2-metabox-description');
+                let ruleParam1 = currentGroup.find('[class*="' + ruleParam1ID + '"]');
+                let ruleParam1Desc = ruleParam1.find('.cmb2-metabox-description');
+                let ruleParam2 = currentGroup.find('[class*="' + ruleParam2ID + '"]');
+                let ruleParam2Desc = ruleParam2.find('.cmb2-metabox-description');
+                let ruleParam3 = currentGroup.find('[class*="' + ruleParam3ID + '"]');
+                let ruleParam3Desc = ruleParam3.find('.cmb2-metabox-description');
                 //bind events
                 ruleSelector.change(function() {handleRuleSelection();});
 
                 //get the needed values
                 const selectedRule = $("option:selected", ruleSelector).val();
 
-                //apply to description & parameter count for the found rule
+                //apply to description & parameter count for the found rule, are passed using wp_inline_script as cb_booking_rules
                 cb_booking_rules.forEach(rule => {
                     if (rule.name == selectedRule) {
                         ruleDescription.text(rule.description);
@@ -75,20 +79,22 @@
         }
 
         const handleAppliesToAll = function() {
-            let groupFields = document.querySelector('#' + groupName +'_repeat');
+            let groupFields = $('#' + groupName + '_repeat');
+
+            //bind to row adding / removing
+            groupFields.on( 'cmb2_add_row cmb2_remove_row cmb2_shift_rows_complete', function() {handleAppliesToAll();} );
             //iterate over all children, remove the last child because it is the new row
-            for (let i = 0; i < groupFields.childElementCount - 1; i++){
-                let currentGroup = groupID + '-' + i + '-';
+            for (let i = 0; i < groupFields.children().length - 1; i++){
+                let currentGroup = $('#' + groupID + i);
 
                 //find all of our fields
-                let ruleAppliesAll = $('.' + currentGroup + ruleAppliesAllID).find('.cmb2-option');
-                let ruleAppliesCategories = $('.' + currentGroup + ruleAppliesCategoriesID);
+                let ruleAppliesAll = currentGroup.find('[class*="' + ruleAppliesAllID + '"]').find('.cmb2-option');
+                let ruleAppliesCategories = currentGroup.find('[class*="' + ruleAppliesCategoriesID + '"]');
+
 
                 //bind events
                 ruleAppliesAll.change(function () {handleAppliesToAll();});
-                console.log(ruleAppliesAll);
                 if (ruleAppliesAll.prop('checked')){
-                    console.log("checked");
                     ruleAppliesCategories.hide();
                 }
                 else {
