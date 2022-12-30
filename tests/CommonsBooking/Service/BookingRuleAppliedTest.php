@@ -3,6 +3,7 @@
 namespace CommonsBooking\Service;
 
 use PHPUnit\Framework\TestCase;
+use CommonsBooking\Service\BookingRuleTest;
 
 class BookingRuleAppliedTest extends BookingRuleTest
 {
