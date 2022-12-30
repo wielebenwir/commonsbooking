@@ -20,7 +20,7 @@ class BookingTest extends CustomPostTypeTest {
 
 	private $restriction2;
 
-	private $testBooking;
+	protected $testBooking;
 
 	/**
 	 * Test that we only get the booking, endig today.

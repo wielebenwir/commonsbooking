@@ -66,6 +66,27 @@ class BookingRule {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getName(): string {
+		return $this->name;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getParams(): array {
+		return $this->params;
+	}
+
+	/**
+	 * @return Closure
+	 */
+	public function getValidationFunction(): Closure {
+		return $this->validationFunction;
+	}
+
+	/**
 	 * Create associative array for CMB2 select
 	 * @return array
 	 */
