@@ -431,6 +431,17 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		return $calendar->getCalendarData();
 	}
 
+	/**
+	 * Helper to return the email signature configured in the options array
+	 * 
+	 * @return string
+	 */
+	public function getEmailSignature() {
+		return commonsbooking_sanitizeHTML(
+			Settings::getOption( 'commonsbooking_options_templates', 'emailbody_signature' )
+		);
+	}
+
     /**
      * Returns formatted user info based on the template field in settings -> templates
      *

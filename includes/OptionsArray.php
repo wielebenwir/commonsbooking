@@ -195,6 +195,17 @@ return array(
 						'default' => get_option( 'blogname' ),
 					),
 					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Mail-Signature', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'E-Mail signature that will appear where ever you put booking:getEmailSignature in double brackets', 'commonsbooking' ) ),
+						'id'      => 'emailbody_signature',
+						'type'    => 'textarea',
+						'default' => commonsbooking_sanitizeHTML( __( '
+<br/>
+Thanks and best, 
+the Team
+						', 'commonsbooking' ) ),
+					),
+					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Booking confirmed email subject', 'commonsbooking' ) ),
 						'id'            => 'emailtemplates_mail-booking-confirmed-subject',
 						'cb1_legacy_id' => 'commons-booking-settings-mail:commons-booking_mail_confirmation_subject',
