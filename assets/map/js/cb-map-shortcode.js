@@ -117,12 +117,13 @@ function CB_Map() {
 
         var markers;
 
-        console.log('max_cluster_radius - Was ' + this.settings.max_cluster_radius)
-        if(this.settings.max_cluster_radius == undefined || (this.settings.max_cluster_radius < 10 && this.settings.max_cluster_radius != 0)) {
+        // As the documentation states, a valid cluster radius is:
+        //   => 10px to enable  clustering
+        //   == 0px  to disable clustering 
+        //   1px-9px are ignored and 10px is assumed
+        if(this.settings.max_cluster_radius == undefined || (0 < this.settings.max_cluster_radius < 10)) {
             this.settings.max_cluster_radius = 10;
-            
         }
-        console.log('max_cluster_radius - Set to ' + this.settings.max_cluster_radius)
 
         if (this.settings.max_cluster_radius > 0) {
             var marker_cluster_options = {
@@ -152,10 +153,10 @@ function CB_Map() {
             }
 
             markers = L.markerClusterGroup(marker_cluster_options);
-            console.log('Markers is cluster group')
         } else {
+            // No clustering
+            // NOTE layergroup uses another api
             markers = L.layerGroup();
-            console.log('Markers is layer group')
         }
 
         var custom_marker_icon;
@@ -294,11 +295,9 @@ function CB_Map() {
             if (Object.keys(data).length > 0) {
 
                 // TODO If max_cluster_radius == 0, markers is a layerGroup and doesn't define getBounds
-                //  Addionally center_position can be undefined (don't know why)
+                //  Addionally center_position happens to be undefined (but I don't know why at the moment)
                 //  So this is rather a hack and should be placed elsewhere
                 if (markers.getBounds === undefined && center_position === undefined) {
-                    console.log('No clustering, getbounds === undefined')
-                    console.log(data)
                     center_position = {
                         lat: data.map( location => location.lat ).reduce( (a, b) => a+b) / data.length,
                         lon: data.map( location => location.lon ).reduce( (a, b) => a+b) / data.length
