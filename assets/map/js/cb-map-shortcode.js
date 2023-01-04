@@ -294,9 +294,8 @@ function CB_Map() {
         if ((!init && this.settings.marker_map_bounds_filter) || (init && this.settings.marker_map_bounds_initial)) {
             if (Object.keys(data).length > 0) {
 
-                // TODO If max_cluster_radius == 0, markers is a layerGroup and doesn't define getBounds
-                //  Addionally center_position happens to be undefined (but I don't know why at the moment)
-                //  So this is rather a hack and should be placed elsewhere
+                // If max_cluster_radius == 0, markers is a layerGroup and doesn't define getBounds, 
+                //  so the next if statement will fail, when center_position happens to be undefined
                 if (markers.getBounds === undefined && center_position === undefined) {
                     center_position = {
                         lat: data.map( location => location.lat ).reduce( (a, b) => a+b) / data.length,
