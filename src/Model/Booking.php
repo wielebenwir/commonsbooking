@@ -394,7 +394,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * return plain booking URL
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function bookingLinkUrl() {
 		return add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) );
@@ -436,7 +436,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * 
 	 * @return string
 	 */
-	public function getEmailSignature() {
+	public function getEmailSignature(): string {
 		return commonsbooking_sanitizeHTML(
 			Settings::getOption( 'commonsbooking_options_templates', 'emailbody_signature' )
 		);
