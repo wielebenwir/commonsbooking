@@ -403,7 +403,7 @@ class Timeframe extends CustomPost {
 						}
 
 						// Check if in day slots overlap
-						if ( ! $this->getMeta( 'full-day' ) && $this->hasTimeframeTimeOverlap( $this, $timeframe ) ) {
+						if ( ! $this->isFullDay() && $this->hasTimeframeTimeOverlap( $this, $timeframe ) ) {
 							set_transient(
                                 self::ERROR_TYPE,
 								/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
@@ -424,7 +424,7 @@ class Timeframe extends CustomPost {
 						}
 
 						// Check if full-day slots overlap
-						if ( $this->getMeta( 'full-day' ) ) {
+						if ( $this->isFullDay() ) {
 							set_transient(
                                 self::ERROR_TYPE,
 								/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
