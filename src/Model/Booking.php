@@ -4,7 +4,6 @@
 namespace CommonsBooking\Model;
 
 use CommonsBooking\Helper\Wordpress;
-use DateTime;
 use Exception;
 
 use CommonsBooking\CB\CB;
@@ -14,8 +13,6 @@ use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Service\iCalendar;
-use DateTimeImmutable;
-use DateInterval;
 
 class Booking extends \CommonsBooking\Model\Timeframe {
 
@@ -406,7 +403,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return bool
 	 */
 	public function isCancelled(): bool {
-		return ( $this->post_status == 'canceled' ? : false );
+		return ( $this->post_status == 'canceled');
 	}
 
 	/**
