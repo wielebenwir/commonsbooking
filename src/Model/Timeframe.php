@@ -29,6 +29,8 @@ class Timeframe extends CustomPost {
 
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
+	public const META_TIMEFRAME_MAX_DAYS = 'timeframe-max-days';
+
 	/**
 	 * Return residence in a human readable format
 	 *
@@ -671,5 +673,9 @@ class Timeframe extends CustomPost {
 	 */
 	public function getRepetition() {
 		return $this->getMeta( self::META_REPETITION );
+	}
+
+	public function getMaxDays():int{
+		return $this->getMeta(self::META_TIMEFRAME_MAX_DAYS);
 	}
 }
