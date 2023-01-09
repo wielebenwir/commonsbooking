@@ -136,7 +136,47 @@ class BookingRule {
 					}
 					return true;
 				} ),
-
+			new BookingRule(
+				"prohibitChainBooking",
+				__("Prohibit chain-bookings",'commonsbooking'),
+				__("Users can no longer work around the maximum booking limit by chaining two bookings directly after another.",'commonsbooking'),
+				__("You have reached your booking limit. Please leave some time in between bookings.",'commonsbooking'),
+				function(\CommonsBooking\Model\Booking $booking):bool{
+					//only applies if full day booking is enabled (for now)
+					$timeframe = $booking->getBookableTimeFrame();
+					if (! $timeframe->isFullDay() ){
+						return true;
+					}
+					$adjacentBookings = $booking->getAdjacentBookings();
+					if ( empty($adjacentBookings))
+					{
+						return true;
+					}
+					$adjacentBookings = array_filter( $adjacentBookings,
+						fn( \CommonsBooking\Model\Booking $adjacentBooking ) => $booking->getUserData()->ID == $adjacentBooking->getUserData()->ID
+					);
+					if ( empty($adjacentBookings) ){
+						return true;
+					}
+					$bookingCollection = $booking->getBookingChain($booking->getUserData());
+					//add our current booking to the collection
+					$bookingCollection[] = $booking;
+					uasort( $bookingCollection, function ( \CommonsBooking\Model\Booking $a, \CommonsBooking\Model\Booking $b ) {
+						return $a->getStartDate() <=> $b->getStartDate();
+					} );
+					$collectionStartDate = reset( $bookingCollection)->getStartDateDateTime();
+					$collectionEndDate   = end($bookingCollection)->getEndDateDateTime()->modify("+1 second");
+					$collectionInterval  = $collectionStartDate->diff($collectionEndDate);
+					//checks if the collection of chained bookings ist still in the allowed limit
+					$max_days = $timeframe->getMaxDays();
+					$d        = $collectionInterval->d;
+					if ( $d <= $max_days ){
+						return true;
+					}
+					else {
+						return false;
+					}
+				} ),
 			new BookingRule(
 				"TestRule",
 				__("Testing these rulesets with 2 params, this rule will always fail",'commonsbooking'),
