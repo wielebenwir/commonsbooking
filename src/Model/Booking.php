@@ -14,8 +14,6 @@ use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Service\iCalendar;
-use DateTimeImmutable;
-use DateInterval;
 use WP_User;
 
 class Booking extends \CommonsBooking\Model\Timeframe {
@@ -180,6 +178,101 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Gets the booking that is directly previous to this booking at the same place / location.
+	 *
+	 * @return Booking|null
+	 */
+	public function getPreviousAdjacent(): ?Booking {
+		$adjacentBookings = \CommonsBooking\Repository\Booking::getByTimerange(
+			$this->getStartDateDateTime()->modify( "-2 minute" )->getTimestamp(),
+			$this->getStartDateDateTime()->modify( "-1 minute" )->getTimestamp(),
+			$this->getLocationID(),
+			$this->getItemID(),
+			[],
+			[ 'confirmed' ]
+		);
+		if (count($adjacentBookings) == 1){
+			return reset($adjacentBookings);
+		}
+		elseif (count($adjacentBookings) > 1){
+			throw new Exception("Overlapping booking detected.");
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Gets the booking that is directly following this booking at the same place / location.
+	 *
+	 * @return Booking|null
+	 */
+	public function getFollowingAdjacent(): ?Booking {
+		$adjacentBookings = \CommonsBooking\Repository\Booking::getByTimerange(
+			$this->getEndDateDateTime()->modify( "+1 minute" )->getTimestamp(),
+			$this->getEndDateDateTime()->modify( "+2 minute" )->getTimestamp(),
+			$this->getLocationID(),
+			$this->getItemID(),
+			[],
+			[ 'confirmed' ]
+		);
+		if (count($adjacentBookings) == 1){
+			return reset($adjacentBookings);
+		}
+		elseif (count($adjacentBookings) > 1){
+			throw new Exception("Overlapping booking detected.");
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Gets the bookings directly adjacent to the current booking (with same item / location of course)
+	 *
+	 * @return array
+	 */
+	public function getAdjacentBookings(): ?array {
+		$previousAdjacent = $this->getPreviousAdjacent();
+		$followingAdjacent = $this->getFollowingAdjacent();
+		return array_filter([$previousAdjacent, $followingAdjacent]);
+	}
+
+	/**
+	 * Recursively get the bookings directly adjacent to the current users booking. Limited to a specific user to reduce load.
+	 *
+	 * @param WP_User $user
+	 *
+	 * @return array
+	 */
+	public function getBookingChain(WP_User $user){
+		$bookingChain = [];
+		$previousBooking = $this->getPreviousAdjacent();
+		if ($previousBooking && $previousBooking->getUserData()->ID != $user->ID){
+			$previousBooking = null;
+		}
+		$followingBooking = $this->getFollowingAdjacent();
+		if ($followingBooking && $followingBooking->getUserData()->ID != $user->ID){
+			$followingBooking = null;
+		}
+		while ($previousBooking != null){
+			$bookingChain[] = $previousBooking;
+			$previousBooking = $previousBooking->getPreviousAdjacent();
+			if ($previousBooking && $previousBooking->getUserData()->ID != $user->ID){
+				$previousBooking = null;
+			}
+		}
+		while ($followingBooking != null){
+			$bookingChain[] = $followingBooking;
+			$followingBooking = $followingBooking->getFollowingAdjacent();
+			if ($followingBooking && $followingBooking->getUserData()->ID != $user->ID){
+				$followingBooking = null;
+			}
+		}
+		return $bookingChain;
 	}
 
 	/**
@@ -417,15 +510,15 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * Checks if the given user / current user is administrator of item / location or the website and therefore enjoys special booking rights
 	 *
-	 * @param WP_User $user
+	 * @param WP_User|null $user
 	 *
 	 * @return bool
 	 */
 	public function isUserPrivileged(WP_User $user = null): bool {
 		$user ??= wp_get_current_user();
 
-		$itemAdmin = commonsbooking_isUserAllowedToEdit($this->getItemID(),$user);
-		$locationAdmin = commonsbooking_isUserAllowedToEdit($this->getLocationID(),$user);
+		$itemAdmin = commonsbooking_isUserAllowedToEdit($this->getItem(),$user);
+		$locationAdmin = commonsbooking_isUserAllowedToEdit($this->getLocation(),$user);
 		return ($itemAdmin || $locationAdmin);
 	}
 
@@ -440,6 +533,15 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Gets the length of a booking in hours
+	 * @return int
+	 */
+	public function getLength(): int{
+		$interval = $this->getStartDateDateTime()->diff($this->getEndDateDateTime());
+		return $interval->h;
 	}
 
 	public function getiCal(
