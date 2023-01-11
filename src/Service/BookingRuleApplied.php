@@ -36,9 +36,9 @@ class BookingRuleApplied extends BookingRule {
 			$this->appliedTerms = $appliedTerms;
 		}
 
-		if (isset($this->params)){
-			if (count($paramList) == $this->params){
-				$this->setParams = $paramList;
+		if ($paramList){
+			if (count($paramList) == count($setParams) ){
+				$this->setParams = $setParams;
 			}
 			else {
 				throw new InvalidArgumentException(__("Booking rules: Not enough parameters specified.", 'commonsbooking'));
@@ -82,7 +82,7 @@ class BookingRuleApplied extends BookingRule {
 			$appliesToAll,
 			$appliedTerms ?? [],
 			$rule->params ?? [],
-			$rule->setParams ?? []
+			$setParams ?? []
 		);
 	}
 
