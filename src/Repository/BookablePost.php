@@ -341,7 +341,6 @@ abstract class BookablePost extends PostRepository {
 	 * @return int[]|string|string[]|\WP_Error|\WP_Term[]
 	 */
 	public static function getTerms():array {
-		//return [];
 		$post_type = static::getPostType() . 's_category';
 
 		$terms = get_terms( array(
