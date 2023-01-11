@@ -17,6 +17,8 @@ class BookingRuleTest extends CustomPostTypeTest
 	protected BookingRule $alwaysdeny;
 	protected BookingRule $alwaysallow;
 
+	protected int $normalUserID;
+
 
     public function test__construct()
     {
@@ -38,6 +40,7 @@ class BookingRuleTest extends CustomPostTypeTest
 
 	protected function setUp() {
 		parent::setUp();
+		$this->normalUserID = wp_create_user("Normal","Password");
 		$this->timeframeOne = parent::createConfirmedBookingEndingToday();
 		$this->timeframeTwo = parent::createConfirmedBookingStartingToday();
 		$this->testItem     = parent::createItem( 'testitem', 'publish' );
@@ -47,7 +50,11 @@ class BookingRuleTest extends CustomPostTypeTest
 			$this->testLocation,
 			$this->testItem,
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
-			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+			'8:00 AM',
+			'12:00 PM',
+			'unconfirmed',
+			$this->normalUserID
 		);
 		$this->alwaysallow = new BookingRule(
 			"alwaysAllow",
