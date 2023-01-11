@@ -1,9 +1,8 @@
 <?php
 
-namespace CommonsBooking\Service;
+namespace CommonsBooking\Tests\Service;
 
-use PHPUnit\Framework\TestCase;
-use CommonsBooking\Service\BookingRuleTest;
+use CommonsBooking\Service\BookingRuleApplied;
 
 class BookingRuleAppliedTest extends BookingRuleTest
 {

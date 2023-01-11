@@ -1,12 +1,19 @@
 <?php
 
-namespace CommonsBooking\Service;
+namespace CommonsBooking\Tests\Service;
 
-use CommonsBooking\Tests\Repository\BookingTest;
+use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use CommonsBooking\Service\BookingRule;
 
-class BookingRuleTest extends BookingTest
+class BookingRuleTest extends CustomPostTypeTest
 {
+	private $timeframeOne;
 
+	private $testItem;
+
+	private $testLocation;
+
+	protected $testBooking;
 	protected BookingRule $alwaysdeny;
 	protected BookingRule $alwaysallow;
 
@@ -31,6 +38,17 @@ class BookingRuleTest extends BookingTest
 
 	protected function setUp() {
 		parent::setUp();
+		$this->timeframeOne = parent::createConfirmedBookingEndingToday();
+		$this->timeframeTwo = parent::createConfirmedBookingStartingToday();
+		$this->testItem     = parent::createItem( 'testitem', 'publish' );
+		$this->testLocation = parent::createLocation( 'testlocation', 'publish' );
+
+		$this->testBooking = $this->createBooking(
+			$this->testLocation,
+			$this->testItem,
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
+		);
 		$this->alwaysallow = new BookingRule(
 			"alwaysAllow",
 			"Always allow",
