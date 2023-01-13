@@ -99,6 +99,13 @@ trait Cache {
 	 * @return TagAwareAdapterInterface
 	 */
 	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ): TagAwareAdapterInterface {
+		if ($directory == null){
+			$customCachePath = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' );
+			if ($customCachePath ){
+				$directory = $customCachePath;
+			}
+		}
+
 		if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled') =='on'){
 			try {
 				$adapter = new RedisTagAwareAdapter(
