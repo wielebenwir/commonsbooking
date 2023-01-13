@@ -195,6 +195,17 @@ return array(
 						'default' => get_option( 'blogname' ),
 					),
 					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Mail-Signature', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'E-Mail signature that will appear wherever you put {{booking:getEmailSignature}}', 'commonsbooking' ) ),
+						'id'      => 'emailbody_signature',
+						'type'    => 'textarea',
+						'default' => commonsbooking_sanitizeHTML( __( '
+<p>
+Thanks and all the best, 
+the Team.
+</p>					', 'commonsbooking' ) ),
+					),
+					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Booking confirmed email subject', 'commonsbooking' ) ),
 						'id'            => 'emailtemplates_mail-booking-confirmed-subject',
 						'cb1_legacy_id' => 'commons-booking-settings-mail:commons-booking_mail_confirmation_subject',
@@ -231,7 +242,7 @@ please login first and then click the link again.<br>
 Login: {{user:user_login}}<br>
 Name: {{user:first_name}} {{user:last_name}}<br>
 <br>
-Thanks, the Team.
+{{booking:getEmailSignature}}
                         ', 'commonsbooking' ) ),
 					),
 					array(
@@ -274,7 +285,7 @@ Hi {{user:first_name}},<br>
 <br>
 your booking of {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} has been canceled.<br>
 <br>          
-Thanks, the Team.
+{{booking:getEmailSignature}}
                             ', 'commonsbooking' ) ),
 					),
 				)
@@ -602,10 +613,13 @@ Thanks, the Team.
                         </br></br>
                         <strong>This affects your booking {{booking:formattedBookingDate}}</strong></br>
                         </br>
+                        <p>
                         We had to cancel your booking for this period. You will receive confirmation of the cancellation in a separate email.<br>
                         If you have several bookings in the affected period, you will receive this information e-mail for each booking as well as separate cancellation information.<br>
                         Please book the item again for a different period or check our website to see if an alternative item is available.<br>We apologize for any inconvenience.
-                        </br>Best regards</br>the team</p>', 'commonsbooking' ) ),
+                        </p>
+                        {{booking:getEmailSignature}}
+                        ', 'commonsbooking' ) ),
 					),
 
 					// E-Mail hint
@@ -622,24 +636,22 @@ Thanks, the Team.
 						'default' => commonsbooking_sanitizeHTML( __( '<h2>Hello {{user:first_name}},</h2>
                         <p>
                         The article {{item:post_title}} you booked can only be used to a limited extent from {{restriction:formattedStartDateTime}} to probably {{restriction:formattedEndDateTime}}.
+                        </p>
                         </br></br>
                         The reason is:</br>
                         {{restriction:hint}}
                         </br></br>
                         <strong>This affects your booking {{booking:formattedBookingDate}}</strong><br>
-                        </br>
                         Please check if you want to keep your booking despite the restrictions. </br>
                         If not, please cancel your booking using the following link:
                         {{booking:BookingLink}}
                         </br>
-                        </br>
+                        <p>
                         If you have several bookings in the affected period, you will receive this information email for each booking.<br>
                         We strive to fix the restriction as soon as possible.
                         You will receive an email when the restriction is resolved.
-                        </br>
-                        Best regards,</br>
-                        The team
-                        </p>', 'commonsbooking' ) ),
+                        </p>
+                        {{booking:getEmailSignature}}', 'commonsbooking' ) ),
 					),
 
 					// E-Mail restriction cancellation
@@ -659,10 +671,8 @@ Thanks, the Team.
                         </br>
                         </br>Here is the link to your booking: {{booking:BookingLink}}
                         </br>
-                        </br>
-                        Best regards,</br>
-                        The team
-                        </p>', 'commonsbooking' ) ),
+                        </p>
+                        {{booking:getEmailSignature}}', 'commonsbooking' ) ),
 					),
 				)
 			),
@@ -710,8 +720,8 @@ If you no longer need the item you booked, please cancel the booking so other pe
 <br>
 For booking details and cancellation, click on this booking link: {{booking:bookingLink}}
 <br>
-Best regards,
-the team</p>', 'commonsbooking' ) ),
+
+{{booking:getEmailSignature}}', 'commonsbooking' ) ),
 					),
 
 					// settings pre booking reminder -- min days 
@@ -803,9 +813,8 @@ the team</p>', 'commonsbooking' ) ),
 <p>Your booking of {{item:post_title}} at {{location:post_title}} has ended.<br>
 We hope that everything worked as expected.<br>
 Please let us know if any problems occurred.<br>
-<br>
-Best regards,<br>
-The team</p>', 'commonsbooking' ) ),
+</p>
+{{booking:getEmailSignature}}', 'commonsbooking' ) ),
 					),
 				),
 			),
