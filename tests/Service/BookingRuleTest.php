@@ -35,7 +35,7 @@ class BookingRuleTest extends CustomPostTypeTest
 		);
     }
 
-	protected function setUp():void {
+	protected function setUp() {
 		parent::setUp();
 		$wp_user = wp_create_user("normaluser","normal","a@a.de");
 		$this->timeframeOne = parent::createConfirmedBookingEndingToday();
@@ -74,7 +74,7 @@ class BookingRuleTest extends CustomPostTypeTest
 
 	}
 
-	protected function tearDown():void {
+	protected function tearDown() {
 		parent::tearDown();
 	}
 }
