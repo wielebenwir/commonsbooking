@@ -125,6 +125,9 @@ class BookingRule {
 				__("Users can no longer book two items on the same day.",'commonsbooking'),
 				__("You can not book more than one item at a time.",'commonsbooking'),
 				function(\CommonsBooking\Model\Booking $booking):bool{
+					/*
+					 * TODO: Sollte bei Kategorieeinstellung nur auf Artikel derselben Kategorie angewendet werden
+					 */
 					$userBookings = \CommonsBooking\Repository\Booking::getForCurrentUser(true,time(),['confirmed']);
 					if (empty($userBookings)){
 						return true;
@@ -142,7 +145,7 @@ class BookingRule {
 				__("Users can no longer work around the maximum booking limit by chaining two bookings directly after another.",'commonsbooking'),
 				__("You have reached your booking limit. Please leave some time in between bookings.",'commonsbooking'),
 				function(\CommonsBooking\Model\Booking $booking):bool{
-					//only applies if full day booking is enabled (for now)
+					//only applies if full day booking is enabled (for now) - can probably be removed
 					$timeframe = $booking->getBookableTimeFrame();
 					if (! $timeframe->isFullDay() ){
 						return true;
@@ -178,28 +181,67 @@ class BookingRule {
 					}
 				} ),
 			new BookingRule(
-				"TestRule",
-				__("Testing these rulesets with 2 params, this rule will always fail",'commonsbooking'),
-				__("This is our description",'commonsbooking'),
-				__("This is our error message, it will always appear",'commonsbooking'),
+				"maxBookingDays",
+				__("Maximum of bookable days",'commonsbooking'),
+				__("Allow x booked days over the period of y days for user.",'commonsbooking'),
+				__("Too many booked days over the period of y days",'commonsbooking'),
 				function (\CommonsBooking\Model\Booking $booking,array $args):bool{
-					//$args[]
-					return false;
+					/*
+					 * TODO:
+					 * Diese Funktion ist vielleicht noch nicht so super durchdacht, sie
+					 * holt sich immer nur die Tage, die genau in der Mitte des Zeitraums y liegen.
+					 *  - sprintf aus dem Fehlernamen machen
+					 *  - Sollte bei Kategorieeinstellung nur auf Artikel derselben Kategorie angewendet werden
+					 */
+					$allowedBookedDays = $args[0];
+					$periodDays = $args[1];
+					//when the zeitraum is uneven
+					if ($periodDays % 2){
+						$daysHalf = $periodDays / 2;
+						$daysLeft = $daysHalf + 1;
+						$daysRight = $daysHalf - 1;
+					}
+					else {
+						$daysHalf = $periodDays / 2;
+						$daysLeft = $daysHalf;
+						$daysRight = $daysHalf;
+					}
+					$rangeBookingsArray = array_merge(
+						\CommonsBooking\Repository\Booking::getByTimerange(
+							$booking->getStartDateDateTime()->modify("-" . $daysLeft . " days")->getTimestamp(),
+							$booking->getStartDateDateTime()->getTimestamp(),
+							null,
+							null,
+							[],
+							['confirmed']
+						),
+						\CommonsBooking\Repository\Booking::getByTimerange(
+							$booking->getEndDateDateTime()->getTimestamp(),
+							$booking->getEndDateDateTime()->modify("+" . $daysRight . " days")->getTimestamp(),
+							null,
+							null,
+							[],
+							['confirmed']
+						)
+					);
+					$rangeBookingsArray = array_filter( $rangeBookingsArray,
+						fn( \CommonsBooking\Model\Booking $rangeBooking ) => $booking->getUserData()->ID == $rangeBooking->getUserData()->ID
+					);
+					$totalLengthDays = 0;
+					foreach ($rangeBookingsArray as $rangeBooking){
+						$totalLengthDays += $rangeBooking->getLength();
+					}
+
+					if ($totalLengthDays > $allowedBookedDays ){
+						return false;
+					}
+					return true;
 				},
 				array(
-					__("This is the description for the first parameter",'commonsbooking'),
-					__("This is the description for the second parameter",'commonsbooking')
+					__("Allow x booked days",'commonsbooking'),
+					__("In the period of y days",'commonsbooking')
 				)
 			),
-			new BookingRule(
-				__("FailRule",'commonsbooking'),
-				__("Alwaysfailnoparam",'commonsbooking'),
-				__("This is a rule without params that will always fail",'commonsbooking'),
-				__("It has always failed alwaysfailnoparam",'commonsbooking'),
-				function(\CommonsBooking\Model\Booking $booking,array $args = []):bool{
-					return false;
-				}
-			)
 		];
 
 		return apply_filters( COMMONSBOOKING_PLUGIN_SLUG . '_booking-rules',$defaultRuleSet);

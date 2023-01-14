@@ -536,12 +536,12 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Gets the length of a booking in hours
+	 * Gets the length of a booking in days
 	 * @return int
 	 */
 	public function getLength(): int{
-		$interval = $this->getStartDateDateTime()->diff($this->getEndDateDateTime());
-		return $interval->h;
+		$interval = $this->getStartDateDateTime()->diff($this->getEndDateDateTime()->modify("+5 min"));
+		return $interval->d;
 	}
 
 	public function getiCal(
