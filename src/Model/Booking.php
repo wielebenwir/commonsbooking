@@ -515,7 +515,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return bool
 	 */
 	public function isUserPrivileged(WP_User $user = null): bool {
-		$user ??= wp_get_current_user();
+		$user ??= $this->getUserData();
 
 		$itemAdmin = commonsbooking_isUserAllowedToEdit($this->getItem(),$user);
 		$locationAdmin = commonsbooking_isUserAllowedToEdit($this->getLocation(),$user);
