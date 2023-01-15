@@ -36,12 +36,14 @@
     "opis/json-schema": "^1.0",
     "scssphp/scssphp": "^1.10.0",
     "ext-json": "*",
-    "symfony/deprecation-contracts" : "v3.0.*",
-    "symfony/options-resolver" : "6.0.*",
     "symfony/cache": "^5.4",
-    "symfony/service-contracts": "v3.0.*",
     "eluceo/ical": "^2.5",
-    "phpmailer/phpmailer": "^6.6"
+    "phpmailer/phpmailer": "^6.6",
+    "symfony/var-exporter" : "6.0.*",
+    "doctrine/instantiator" : "1.5.*",
+    "symfony/service-contracts": "v3.0.*",
+    "symfony/options-resolver" : "6.0.*",
+    "symfony/deprecation-contracts" : "v3.0.*"
   },
   "require-dev": {
     "mockery/mockery": "1.*",
