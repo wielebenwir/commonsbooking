@@ -37,6 +37,7 @@
     "scssphp/scssphp": "^1.10.0",
     "ext-json": "*",
     "symfony/deprecation-contracts" : "v3.0.*",
+    "symfony/options-resolver" : "6.0.*",
     "symfony/cache": "^5.4",
     "symfony/service-contracts": "v3.0.*",
     "eluceo/ical": "^2.5",
