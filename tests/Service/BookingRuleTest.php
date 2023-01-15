@@ -7,19 +7,13 @@ use CommonsBooking\Service\BookingRule;
 
 class BookingRuleTest extends CustomPostTypeTest
 {
-	private $timeframeOne;
-
-	private $testItem;
-
-	private $testLocation;
-
 	protected $testBooking;
 	protected BookingRule $alwaysdeny;
 	protected BookingRule $alwaysallow;
 
     public function test__construct()
     {
-		self::assertNotNull(new BookingRule(
+		$this->assertNotNull(new BookingRule(
 				"testRule",
 				"test",
 				"Testing rule creation",
@@ -37,22 +31,6 @@ class BookingRuleTest extends CustomPostTypeTest
 
 	protected function setUp() {
 		parent::setUp();
-		$wp_user = wp_create_user("normaluser","normal","a@a.de");
-		$this->timeframeOne = parent::createConfirmedBookingEndingToday();
-		$this->timeframeTwo = parent::createConfirmedBookingStartingToday();
-		$this->testItem     = parent::createItem( 'testitem', 'publish' );
-		$this->testLocation = parent::createLocation( 'testlocation', 'publish' );
-
-		$this->testBooking = $this->createBooking(
-			$this->testLocation,
-			$this->testItem,
-			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
-			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
-			'8:00 AM',
-			'12:00 PM',
-			'unconfirmed',
-			$wp_user,
-		);
 		$this->alwaysallow = new BookingRule(
 			"alwaysAllow",
 			"Always allow",

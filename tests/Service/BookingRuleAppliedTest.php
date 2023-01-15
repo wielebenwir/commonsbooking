@@ -2,29 +2,61 @@
 
 namespace CommonsBooking\Tests\Service;
 
+use CommonsBooking\Model\Booking;
 use CommonsBooking\Service\BookingRuleApplied;
 
-class BookingRuleAppliedTest extends BookingRuleTest
-{
-	private BookingRuleApplied $appliedTrue;
-	private BookingRuleApplied $appliedFalse;
-	private \CommonsBooking\Model\Booking $bookingModel;
+class BookingRuleAppliedTest extends BookingRuleTest {
 
-    public function testFromBookingRule()
-    {
+	private Booking $testBookingTomorrow;
+	private int $testBookingId;
+	/**
+	 * @var int|\WP_Error
+	 */
+	private int $testBookingPastId;
+
+	public function testFromBookingRule()
+	{
 		$appliedRule = BookingRuleApplied::fromBookingRule($this->alwaysallow,true);
-		self::assertNotNull($appliedRule);
-    }
+		$this->assertNotNull($appliedRule);
+	}
 
-    public function testCheckBooking()
-    {
-		self::assertTrue($this->appliedTrue->checkBooking( $this->bookingModel));
-		self::assertFalse($this->appliedFalse->checkBooking($this->bookingModel));
+	protected function setUpTestBooking(): void {
+		$wp_user = get_user_by('email',"a@a.de");
+		if (! $wp_user){
+			$wp_user = wp_create_user("normaluser","normal","a@a.de");
+		}
+		else {
+			$wp_user = $wp_user->ID;
+		}
+		$this->testBookingId       = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day', time() ),
+			strtotime( '+2 days', time() ),
+			'8:00 AM',
+			'12:00 PM',
+			'unconfirmed',
+			$wp_user
+		);
+		$this->testBookingTomorrow = new Booking( get_post( $this->testBookingId ) );
+	}
+	public function testCheckBooking()
+	{
+		$this->assertTrue($this->appliedTrue->checkBooking( $this->testBookingTomorrow));
+		$this->assertFalse($this->appliedFalse->checkBooking( $this->testBookingTomorrow));
 
 	}
 
 	protected function setUp() {
 		parent::setUp();
+
+		$this->firstTimeframeId = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-5 days', time() ),
+			strtotime( '+90 days', time() )
+		);
+		$this->setUpTestBooking();
 		$this->appliedTrue = new BookingRuleApplied(
 			$this->alwaysallow->getName(),
 			$this->alwaysallow->getTitle(),
@@ -41,7 +73,6 @@ class BookingRuleAppliedTest extends BookingRuleTest
 			$this->alwaysdeny->getValidationFunction(),
 			true
 		);
-		$this->bookingModel = new \CommonsBooking\Model\Booking($this->testBooking);
 	}
 
 	protected function tearDown() {
