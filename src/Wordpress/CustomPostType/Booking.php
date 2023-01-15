@@ -149,6 +149,7 @@ class Booking extends Timeframe {
 
 			//check if the Booking we want to create conforms to the set booking rules
 			if( $needsValidation && ! BookingRuleApplied::bookingConformsToRules($bookingModel)){
+				wp_delete_post($bookingModel->ID);
 				return;
 			}
 
