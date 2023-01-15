@@ -14,7 +14,8 @@ class iCalendarTest extends CBTest {
 		$this->assertNotNull($this->calendar->getCalendarData());
 		$calendarData = $this->calendar->getCalendarData();
 
-		$iCalendarArray = explode('\r\n',$calendarData);
+		$iCalendarArray = explode("\r\n",$calendarData);
+		$iCalendarArray = array_filter($iCalendarArray);
 		$this->assertIsArray($iCalendarArray);
 
 		$this->assertEquals("BEGIN:VCALENDAR",$iCalendarArray[0]);
