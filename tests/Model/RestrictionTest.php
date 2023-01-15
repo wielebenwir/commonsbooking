@@ -17,7 +17,7 @@ class RestrictionTest extends CustomPostTypeTest {
 	 */
 	private $restrictionWithoutEndDateId;
 
-	protected function setUp() {
+	protected function setUp():void {
 		parent::setUp();
 
 		$this->restrictionWithoutEndDateId = parent::createRestriction(
@@ -38,7 +38,7 @@ class RestrictionTest extends CustomPostTypeTest {
 
 	}
 
-	protected function tearDown() {
+	protected function tearDown():void {
 		parent::tearDown();
 	}
 

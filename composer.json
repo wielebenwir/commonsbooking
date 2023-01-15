@@ -27,7 +27,7 @@
     }
   ],
   "require": {
-    "php": ">=7.3",
+    "php": ">=8.0",
     "cmb2/cmb2": "^2.7",
     "mustardbees/cmb-field-select2": "^3.0",
     "geocoder-php/nominatim-provider": "^5.2",
@@ -43,7 +43,7 @@
   },
   "require-dev": {
     "mockery/mockery": "1.*",
-    "phpunit/phpunit": "7.*",
+    "phpunit/phpunit": "9.*",
     "yoast/phpunit-polyfills": "^1.0",
     "wp-coding-standards/wpcs": "^2.3"
   }

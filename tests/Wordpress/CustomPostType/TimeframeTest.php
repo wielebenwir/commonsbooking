@@ -21,7 +21,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		update_post_meta( $this->testPostId, 'type', Timeframe::BOOKING_ID );
 	}
 
-	protected function tearDown() {
+	protected function tearDown():void {
 		parent::tearDown();
 	}
 

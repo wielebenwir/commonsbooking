@@ -18,7 +18,7 @@ class DayTest extends CustomPostTypeTest {
 
 	protected $bookableTimeframeNoRepStartsYesterdayEndsTomorrowId;
 
-	protected function setUp() {
+	protected function setUp():void {
 		parent::setUp();
 		$this->bookableTimeframeForCurrentDayId = $this->createBookableTimeFrameIncludingCurrentDay();
 
@@ -61,7 +61,7 @@ class DayTest extends CustomPostTypeTest {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown():void {
 		parent::tearDown();
 	}
 

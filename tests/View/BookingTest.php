@@ -7,7 +7,7 @@ use CommonsBooking\View\Booking;
 
 final class BookingTest extends CustomPostTypeTest {
 
-	protected function setUp() {
+	protected function setUp():void {
 		parent::setUp();
 		$this->createBooking(
 			$this->locationId,
@@ -17,7 +17,7 @@ final class BookingTest extends CustomPostTypeTest {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown():void {
 		parent::tearDown();
 	}
 

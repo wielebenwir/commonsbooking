@@ -24,7 +24,7 @@ class ViewTest extends CustomPostTypeTest {
 		$this->assertTrue( count( $shortCodeData[ $this->locationId ]['ranges'] ) == 4 );
 	}
 
-	protected function setUp() {
+	protected function setUp():void {
 		parent::setUp();
 
 		$now = time();
@@ -103,7 +103,7 @@ class ViewTest extends CustomPostTypeTest {
 
 	}
 
-	protected function tearDown() {
+	protected function tearDown():void {
 		parent::tearDown();
 	}
 

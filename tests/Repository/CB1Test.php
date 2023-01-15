@@ -10,7 +10,7 @@ class CB1Test extends CustomPostTypeTest {
 	private $timeframeInstanceId;
 
 
-	protected function setUp() {
+	protected function setUp():void {
 		parent::setUp();
 
 		$this->timeframeInstanceId = parent::createBookableTimeFrameIncludingCurrentDay();
@@ -25,7 +25,7 @@ class CB1Test extends CustomPostTypeTest {
 		update_post_meta($this->itemId, '_cb_cb1_post_post_ID', 3 );
 	}
 
-	protected function tearDown() {
+	protected function tearDown():void {
 		parent::tearDown();
 	}
 
