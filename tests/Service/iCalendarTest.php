@@ -1,9 +1,10 @@
 <?php
 
-namespace CommonsBooking\Service;
+namespace CommonsBooking\Tests\Service;
 
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Tests\CB\CBTest;
+use CommonsBooking\Service\iCalendar;
 
 class iCalendarTest extends CBTest {
 
