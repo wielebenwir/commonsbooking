@@ -426,18 +426,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		return ( $this->post_status == 'canceled' ? : false );
 	}
 
-	/**
-	 * Returns true when booking has ended
-	 *
-	 * @return bool
-	 */
-	public function isPast(): bool {
-		if ( $this->getEndDate() < current_time( 'timestamp' ) ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 
 	public function getiCal(
 		string $eventTitle,

@@ -587,6 +587,19 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * Returns true when timeframe has ended
+	 *
+	 * @return bool
+	 */
+	public function isPast(): bool {
+		if ( $this->getEndDate() < current_time( 'timestamp' ) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Returns grid size in hours.
      *
 	 * @return int|null
