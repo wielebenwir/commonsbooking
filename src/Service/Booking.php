@@ -10,7 +10,7 @@ use WP_Query;
 class Booking {
 
 	// Removes all unconfirmed bookings older than 10 minutes
-	public static function cleanupBookings() {
+	private static function cleanupBookings() {
 		$args = array(
 			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
 			'post_status' => 'unconfirmed',
@@ -31,6 +31,39 @@ class Booking {
 				wp_delete_post( $post->ID );
 			}
 		}
+	}
+
+	/**
+	 * Will delete all the expired timeframes where the user has set the checkbox to delete them
+	 * @return void
+	 */
+	private static function cleanupTimeframes() {
+		$args = array(
+			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType,
+			'post_status' => 'publish',
+			'meta_key'    => 'delete-expired-timeframe',
+			'meta_value'  => 'on',
+			'fields'      => 'ids',
+			'nopaging'    => true,
+		);
+		$posts = get_posts($args);
+		if ( $posts) {
+			foreach ($posts as $post){
+				$timeframe = new \CommonsBooking\Model\Timeframe($post);
+				if ($timeframe->getMeta('delete-expired-timeframe') == "on" &&  $timeframe->isPast()){
+					wp_delete_post($post);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Runs the cleanup jobs for bookings and timeframes. Triggered through cronjob.
+	 * @return void
+	 */
+	public static function cleanupJobs(){
+		static::cleanupBookings();
+		static::cleanupTimeframes();
 	}
 
 	/**

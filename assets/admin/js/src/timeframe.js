@@ -44,6 +44,7 @@
             const repetitionStartInput = $('#repetition-start');
             const repetitionEndInput = $('#repetition-end');
             const fullDayInput = $('#full-day');
+            const deleteExpiredTimeframes = $('#delete-expired-timeframe');
 
             // booking codes
             const showBookingCodes = $('#show-booking-codes');
@@ -168,10 +169,11 @@
                     repEnd = repetitionEndInput.val();
 
                 hideFieldset(bookingCodeSet);
+                hideFieldset([deleteExpiredTimeframes]);
 
                 if (repStart && repEnd && fullday && type == 2) {
                     showFieldset(bookingCodeSet);
-
+                    showFieldset([deleteExpiredTimeframes]);
                     // If booking codes shall not be created we disable and hide option to show them
                     if (!createBookingCodesInput.prop('checked')) {
                         hideFieldset([showBookingCodes]);
