@@ -38,7 +38,7 @@ class Booking extends Timeframe {
      *
      * @return void
      */
-    public function RemoveAuthorField() {
+    public function removeAuthorField() {
         remove_post_type_support( self::$postType, 'author'); 
     }
     
@@ -706,7 +706,7 @@ class Booking extends Timeframe {
 			array(
 				'name'        => esc_html__( 'End date', 'commonsbooking' ),
 				'desc'        => '<br>' . esc_html__( 'Set the end date. You must set time to 23:59 if you want to book the full day', 'commonsbooking' ),
-				'id'          => 'repetition-end',
+				'id'          => \CommonsBooking\Model\Timeframe::REPETITION_END,
 				'type'        => 'text_datetime_timestamp',
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
