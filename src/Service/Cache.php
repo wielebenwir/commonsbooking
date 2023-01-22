@@ -100,7 +100,7 @@ trait Cache {
 	 */
 	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ): TagAwareAdapterInterface {
 		if ($directory == null){
-			$customCachePath = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' );
+			$customCachePath = commonsbooking_sanitizeArrayorString(Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' ));
 			if ($customCachePath ){
 				$directory = $customCachePath;
 			}
@@ -283,6 +283,37 @@ trait Cache {
 				else {
 					echo '<div style="color:orange">';
 						echo __('REDIS database not enabled','commonsbooking');
+					echo '</div>';
+				}
+				?>
+			</div>
+		</div>
+		<?php
+	}
+
+	public static function renderFilesystemStatus( array $field_ars, CMB2_Field $field){
+		?>
+		<div class="cmb-row cmb-type-text table-layout">
+			<div class="cmb-th">
+				Directory status:
+			</div>
+			<div class="cmb-th">
+				<?php
+				$cachePath = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' );
+				if (empty($cachePath)){
+					$cachePath = sys_get_temp_dir().\DIRECTORY_SEPARATOR.'symfony-cache';
+				}
+				else {
+					$cachePath = realpath($cachePath) ?: $cachePath;
+				}
+				if (is_writable($cachePath)){
+					echo '<div style="color:green">';
+					echo sprintf( commonsbooking_sanitizeHTML(__('Directory %s is writeable.', 'commonsbooking'), 'commonsbooking' ), $cachePath);
+					echo '</div>';
+				}
+				else {
+					echo '<div style="color:red">';
+					echo sprintf( commonsbooking_sanitizeHTML(__('Directory %s could not be written to.', 'commonsbooking'), 'commonsbooking' ), $cachePath);
 					echo '</div>';
 				}
 				?>
