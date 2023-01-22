@@ -308,12 +308,12 @@ trait Cache {
 				}
 				if (is_writable($cachePath)){
 					echo '<div style="color:green">';
-					echo sprintf( commonsbooking_sanitizeHTML(__('Directory %s is writeable.', 'commonsbooking'), 'commonsbooking' ), $cachePath);
+					echo sprintf( commonsbooking_sanitizeHTML(__('Directory %s is writeable.', 'commonsbooking') ), $cachePath);
 					echo '</div>';
 				}
 				else {
 					echo '<div style="color:red">';
-					echo sprintf( commonsbooking_sanitizeHTML(__('Directory %s could not be written to.', 'commonsbooking'), 'commonsbooking' ), $cachePath);
+					echo sprintf( commonsbooking_sanitizeHTML(__('Directory %s could not be written to.', 'commonsbooking') ), $cachePath);
 					echo '</div>';
 				}
 				?>
