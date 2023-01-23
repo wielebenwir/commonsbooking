@@ -196,15 +196,13 @@ class BookingRule {
 					$allowedBookedDays = $args[0];
 					$periodDays = $args[1];
 					//when the zeitraum is uneven
-					if ($periodDays % 2){
-						$daysHalf = $periodDays / 2;
+					$daysHalf = $periodDays / 2;
+					if ( $periodDays % 2){
 						$daysLeft = $daysHalf + 1;
 						$daysRight = $daysHalf - 1;
 					}
 					else {
-						$daysHalf = $periodDays / 2;
-						$daysLeft = $daysHalf;
-						$daysRight = $daysHalf;
+						$daysLeft = $daysRight = $daysHalf;
 					}
 					$rangeBookingsArray = array_merge(
 						\CommonsBooking\Repository\Booking::getByTimerange(
@@ -242,6 +240,15 @@ class BookingRule {
 					__("In the period of y days",'commonsbooking')
 				)
 			),
+			new BookingRule(
+				__("FailRule",'commonsbooking'),
+				__("Alwaysfailnoparam",'commonsbooking'),
+				__("This is a rule without params that will always fail",'commonsbooking'),
+				__("It has always failed alwaysfailnoparam",'commonsbooking'),
+				function(\CommonsBooking\Model\Booking $booking,array $args = []):bool{
+					return false;
+				}
+			)
 		];
 
 		return apply_filters( COMMONSBOOKING_PLUGIN_SLUG . '_booking-rules',$defaultRuleSet);

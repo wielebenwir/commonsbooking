@@ -148,9 +148,14 @@ class Booking extends Timeframe {
 			$bookingModel->assignBookableTimeframeFields();
 
 			//check if the Booking we want to create conforms to the set booking rules
-			if( $needsValidation && ! BookingRuleApplied::bookingConformsToRules($bookingModel)){
-				wp_delete_post($bookingModel->ID);
-				return;
+			if( $needsValidation){
+				try {
+					BookingRuleApplied::bookingConformsToRules( $bookingModel );
+				}
+				catch (Exception $e) {
+					wp_delete_post($bookingModel->ID);
+					throw new Exception($e->getMessage());
+				}
 			}
 
 			// get slug as parameter
