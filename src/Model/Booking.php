@@ -542,7 +542,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return bool
 	 * @throws Exception
 	 */
-	public function termsApply( array|int|string $term ): bool {
+	public function termsApply( $term ): bool {
 		$isInItemCat = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category', $this->getItem()->getPost() );
 		$isInLocationCat = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Location::$postType . 's_category', $this->getLocation()->getPost() );
 		return ( $isInItemCat || $isInLocationCat);

@@ -170,7 +170,7 @@ class BookingRule {
 	 * @return bool
 	 * @throws Exception
 	 */
-	public static function checkSimultaneousBookings( Booking $booking, array $args = [], bool|array $appliedTerms = false):bool {
+	public static function checkSimultaneousBookings( Booking $booking, array $args = [], $appliedTerms = false):bool {
 		$userBookings = \CommonsBooking\Repository\Booking::getForUser($booking->getUserData(),true,time(),['confirmed']);
 		if (empty($userBookings)){
 			return false;
@@ -199,7 +199,7 @@ class BookingRule {
 	 * @return bool
 	 * @throws Exception
 	 */
-	public static function checkChainBooking( Booking $booking, array $args = [], bool|array $appliedTerms = false):bool{
+	public static function checkChainBooking( Booking $booking, array $args = [], $appliedTerms = false):bool{
 		$timeframe = $booking->getBookableTimeFrame();
 		$adjacentBookings = $booking->getAdjacentBookings();
 		if ( empty($adjacentBookings))
@@ -242,7 +242,7 @@ class BookingRule {
 	 * @return bool
 	 * @throws Exception
 	 */
-	public static function checkMaxBookingDays(Booking $booking, array $args, bool|array $appliedTerms = false): bool {
+	public static function checkMaxBookingDays(Booking $booking, array $args, $appliedTerms = false): bool {
 		/*
 		 * TODO:
 		 * Diese Funktion ist vielleicht noch nicht so super durchdacht, sie
