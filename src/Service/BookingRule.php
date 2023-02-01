@@ -3,6 +3,7 @@
 namespace CommonsBooking\Service;
 
 use Closure;
+use CommonsBooking\Model\Booking;
 use Exception;
 
 class BookingRule {
@@ -114,6 +115,8 @@ class BookingRule {
 
 	/**
 	 * Returns an array with the default ruleset applied, can be filtered using a filter hook
+	 *
+	 * Closure::fromCallable can be replaced with First Class Callable Syntax in PHP8.1
 	 * @return array
 	 * @throws Exception
 	 */
@@ -124,117 +127,21 @@ class BookingRule {
 				__("Forbid simultaneous Bookings",'commonsbooking'),
 				__("Users can no longer book two items on the same day.",'commonsbooking'),
 				__("You can not book more than one item at a time.",'commonsbooking'),
-				function(\CommonsBooking\Model\Booking $booking):bool{
-					/*
-					 * TODO: Sollte bei Kategorieeinstellung nur auf Artikel derselben Kategorie angewendet werden
-					 */
-					$userBookings = \CommonsBooking\Repository\Booking::getForCurrentUser(true,time(),['confirmed']);
-					if (empty($userBookings)){
-						return true;
-					}
-					foreach ($userBookings as $userBooking){
-						if ($booking->hasTimeframeDateOverlap($booking,$userBooking)){
-							return false;
-						}
-					}
-					return true;
-				} ),
+				Closure::fromCallable(array(self::class,'checkSimultaneousBookings'))
+			),
 			new BookingRule(
 				"prohibitChainBooking",
 				__("Prohibit chain-bookings",'commonsbooking'),
 				__("Users can no longer work around the maximum booking limit by chaining two bookings directly after another.",'commonsbooking'),
 				__("You have reached your booking limit. Please leave some time in between bookings.",'commonsbooking'),
-				function(\CommonsBooking\Model\Booking $booking):bool{
-					//only applies if full day booking is enabled (for now) - can probably be removed
-					$timeframe = $booking->getBookableTimeFrame();
-					if (! $timeframe->isFullDay() ){
-						return true;
-					}
-					$adjacentBookings = $booking->getAdjacentBookings();
-					if ( empty($adjacentBookings))
-					{
-						return true;
-					}
-					$adjacentBookings = array_filter( $adjacentBookings,
-						fn( \CommonsBooking\Model\Booking $adjacentBooking ) => $booking->getUserData()->ID == $adjacentBooking->getUserData()->ID
-					);
-					if ( empty($adjacentBookings) ){
-						return true;
-					}
-					$bookingCollection = $booking->getBookingChain($booking->getUserData());
-					//add our current booking to the collection
-					$bookingCollection[] = $booking;
-					uasort( $bookingCollection, function ( \CommonsBooking\Model\Booking $a, \CommonsBooking\Model\Booking $b ) {
-						return $a->getStartDate() <=> $b->getStartDate();
-					} );
-					$collectionStartDate = reset( $bookingCollection)->getStartDateDateTime();
-					$collectionEndDate   = end($bookingCollection)->getEndDateDateTime()->modify("+1 second");
-					$collectionInterval  = $collectionStartDate->diff($collectionEndDate);
-					//checks if the collection of chained bookings ist still in the allowed limit
-					$max_days = $timeframe->getMaxDays();
-					$d        = $collectionInterval->d;
-					if ( $d <= $max_days ){
-						return true;
-					}
-					else {
-						return false;
-					}
-				} ),
+				Closure::fromCallable(array(self::class,'checkChainBooking'))
+			),
 			new BookingRule(
 				"maxBookingDays",
 				__("Maximum of bookable days",'commonsbooking'),
 				__("Allow x booked days over the period of y days for user.",'commonsbooking'),
 				__("Too many booked days over the period of y days",'commonsbooking'),
-				function (\CommonsBooking\Model\Booking $booking,array $args):bool{
-					/*
-					 * TODO:
-					 * Diese Funktion ist vielleicht noch nicht so super durchdacht, sie
-					 * holt sich immer nur die Tage, die genau in der Mitte des Zeitraums y liegen.
-					 *  - sprintf aus dem Fehlernamen machen
-					 *  - Sollte bei Kategorieeinstellung nur auf Artikel derselben Kategorie angewendet werden
-					 */
-					$allowedBookedDays = $args[0];
-					$periodDays = $args[1];
-					//when the zeitraum is uneven
-					$daysHalf = $periodDays / 2;
-					if ( $periodDays % 2){
-						$daysLeft = $daysHalf + 1;
-						$daysRight = $daysHalf - 1;
-					}
-					else {
-						$daysLeft = $daysRight = $daysHalf;
-					}
-					$rangeBookingsArray = array_merge(
-						\CommonsBooking\Repository\Booking::getByTimerange(
-							$booking->getStartDateDateTime()->modify("-" . $daysLeft . " days")->getTimestamp(),
-							$booking->getStartDateDateTime()->getTimestamp(),
-							null,
-							null,
-							[],
-							['confirmed']
-						),
-						\CommonsBooking\Repository\Booking::getByTimerange(
-							$booking->getEndDateDateTime()->getTimestamp(),
-							$booking->getEndDateDateTime()->modify("+" . $daysRight . " days")->getTimestamp(),
-							null,
-							null,
-							[],
-							['confirmed']
-						)
-					);
-					$rangeBookingsArray = array_filter( $rangeBookingsArray,
-						fn( \CommonsBooking\Model\Booking $rangeBooking ) => $booking->getUserData()->ID == $rangeBooking->getUserData()->ID
-					);
-					$totalLengthDays = 0;
-					foreach ($rangeBookingsArray as $rangeBooking){
-						$totalLengthDays += $rangeBooking->getLength();
-					}
-
-					if ($totalLengthDays > $allowedBookedDays ){
-						return false;
-					}
-					return true;
-				},
+				Closure::fromCallable(array(self::class,'checkMaxBookingDays')),
 				array(
 					__("Allow x booked days",'commonsbooking'),
 					__("In the period of y days",'commonsbooking')
@@ -245,7 +152,7 @@ class BookingRule {
 				__("Alwaysfailnoparam",'commonsbooking'),
 				__("This is a rule without params that will always fail",'commonsbooking'),
 				__("It has always failed alwaysfailnoparam",'commonsbooking'),
-				function(\CommonsBooking\Model\Booking $booking,array $args = []):bool{
+				function( Booking $booking,array $args = []):bool{
 					return false;
 				}
 			)
@@ -254,4 +161,142 @@ class BookingRule {
 		return apply_filters( COMMONSBOOKING_PLUGIN_SLUG . '_booking-rules',$defaultRuleSet);
 	}
 
+	/**
+	 * Will check if there are booking at the same time as the defined booking. Will return true if the condition is met, false if not.
+	 * @param Booking $booking
+	 * @param array $args
+	 * @param bool|array $appliedTerms
+	 *
+	 * @return bool
+	 * @throws Exception
+	 */
+	public static function checkSimultaneousBookings( Booking $booking, array $args = [], bool|array $appliedTerms = false):bool {
+		$userBookings = \CommonsBooking\Repository\Booking::getForUser($booking->getUserData(),true,time(),['confirmed']);
+		if (empty($userBookings)){
+			return false;
+		}
+
+		if ($appliedTerms){
+			$userBookings = array_filter($userBookings,fn(Booking $b) => $b->termsApply($appliedTerms));
+		}
+
+		foreach ($userBookings as $userBooking){
+			if ($booking->hasTimeframeDateOverlap($booking,$userBooking)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Will check if there are chained bookings for the current item that go over the total booking limit .
+	 * Will return true if the condition is met, false if not.
+	 *
+	 * @param Booking $booking
+	 * @param array $args
+	 * @param bool|array $appliedTerms
+	 *
+	 * @return bool
+	 * @throws Exception
+	 */
+	public static function checkChainBooking( Booking $booking, array $args = [], bool|array $appliedTerms = false):bool{
+		$timeframe = $booking->getBookableTimeFrame();
+		$adjacentBookings = $booking->getAdjacentBookings();
+		if ( empty($adjacentBookings))
+		{
+			return false;
+		}
+		$adjacentBookings = array_filter( $adjacentBookings,
+			fn( Booking $adjacentBooking ) => $booking->getUserData()->ID == $adjacentBooking->getUserData()->ID
+		);
+		if ( empty($adjacentBookings) ){
+			return false;
+		}
+		$bookingCollection = $booking->getBookingChain($booking->getUserData());
+		//add our current booking to the collection
+		$bookingCollection[] = $booking;
+		uasort( $bookingCollection, function ( Booking $a, Booking $b ) {
+			return $a->getStartDate() <=> $b->getStartDate();
+		} );
+		$collectionStartDate = reset( $bookingCollection)->getStartDateDateTime();
+		$collectionEndDate   = end($bookingCollection)->getEndDateDateTime()->modify("+1 second");
+		$collectionInterval  = $collectionStartDate->diff($collectionEndDate);
+		//checks if the collection of chained bookings ist still in the allowed limit
+		$max_days = $timeframe->getMaxDays();
+		$d        = $collectionInterval->d;
+		if ( $d <= $max_days ){
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+
+	/**
+	 * Will check for a pre-defined maximum of x days in y timespan, if the user has booked too many days in that timespan will return true, if not will return false
+	 * @param Booking $booking
+	 * @param array $args
+	 * @param bool|array $appliedTerms
+	 *
+	 * @return bool
+	 * @throws Exception
+	 */
+	public static function checkMaxBookingDays(Booking $booking, array $args, bool|array $appliedTerms = false): bool {
+		/*
+		 * TODO:
+		 * Diese Funktion ist vielleicht noch nicht so super durchdacht, sie
+		 * holt sich immer nur die Tage, die genau in der Mitte des Zeitraums y liegen.
+		 *  - Verlagern von y Tagen auf Mitte des Arrays
+		 *  - sprintf aus dem Fehlernamen machen
+		 */
+		$allowedBookedDays = $args[0];
+		$periodDays        = $args[1];
+		//when the zeitraum is uneven
+		$daysHalf = $periodDays / 2;
+		if ( $periodDays % 2 ) {
+			$daysLeft  = $daysHalf + 1;
+			$daysRight = $daysHalf - 1;
+		} else {
+			$daysLeft = $daysRight = $daysHalf;
+		}
+		$rangeBookingsArray = array_merge(
+			\CommonsBooking\Repository\Booking::getByTimerange(
+				$booking->getStartDateDateTime()->modify( "-" . $daysLeft . " days" )->getTimestamp(),
+				$booking->getStartDateDateTime()->getTimestamp(),
+				null,
+				null,
+				[],
+				[ 'confirmed' ]
+			),
+			\CommonsBooking\Repository\Booking::getByTimerange(
+				$booking->getEndDateDateTime()->getTimestamp(),
+				$booking->getEndDateDateTime()->modify( "+" . $daysRight . " days" )->getTimestamp(),
+				null,
+				null,
+				[],
+				[ 'confirmed' ]
+			)
+		);
+
+		//filter out bookings that do not belong to the current user
+		$rangeBookingsArray = array_filter( $rangeBookingsArray,
+			fn( Booking $rangeBooking ) => $booking->getUserData()->ID == $rangeBooking->getUserData()->ID
+		);
+
+		//filter out bookings that are not in the current term
+		if ($appliedTerms){
+			$rangeBookingsArray = array_filter($rangeBookingsArray,
+				fn( Booking $rangeBooking ) => $rangeBooking->termsApply($appliedTerms)
+			);
+		}
+
+		$totalLengthDays    = 0;
+		foreach ( $rangeBookingsArray as $rangeBooking ) {
+			$totalLengthDays += $rangeBooking->getLength();
+		}
+		$totalLengthDays += $booking->getLength();
+
+		return $totalLengthDays > $allowedBookedDays;
+	}
 }
