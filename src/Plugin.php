@@ -4,6 +4,7 @@
 namespace CommonsBooking;
 
 use CommonsBooking\CB\CB1UserFields;
+use CommonsBooking\Exception\BookingDeniedException;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Messages\AdminMessage;
@@ -300,17 +301,18 @@ class Plugin {
 	}
 
 	/**
-	 * Handles the validation of booking forms
+	 * Handles the validation of booking forms. We customize the transient so that only the user that is supposed to see the transient will
+	 * actually see it.
 	 * @return void
 	 */
 	public static function handleBookingForms(): void {
 		try {
 			\CommonsBooking\Wordpress\CustomPostType\Booking::handleFormRequest();
 		}
-		catch ( \Exception $e ) {
+		catch ( BookingDeniedException $e ) {
 			set_transient(
-				\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE,
-				commonsbooking_sanitizeHTML(__($e->getMessage(),'commonsbooking'))
+				\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id(),
+				$e->getMessage()
 			);
 		}
 	}
@@ -425,7 +427,6 @@ class Plugin {
 			Model\Timeframe::ERROR_TYPE,
 			BookingCode::ERROR_TYPE,
 			OptionsTab::ERROR_TYPE,
-			\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE
 		];
 
 		foreach ($errorTypes as $errorType) {

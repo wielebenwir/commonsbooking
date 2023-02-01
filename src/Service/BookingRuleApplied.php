@@ -3,6 +3,7 @@
 namespace CommonsBooking\Service;
 
 use Closure;
+use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Location;
@@ -113,7 +114,7 @@ class BookingRuleApplied extends BookingRule {
 				throw new Exception( "Value must be a BookingRuleApplied" );
 			}
 			if (! $rule->checkBooking( $booking )){
-				throw new Exception( $rule->getErrorMessage() );
+				throw new BookingRuleException( $rule->getErrorMessage() );
 			}
 		}
 		return true;

@@ -280,6 +280,26 @@ class Booking extends View {
 
 		return ob_get_clean();
 	}
+	/**
+	 * Renders error for frontend notice
+	 */
+	public static function renderError() {
+		$errorTypes = [
+			\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id()
+		];
+
+		foreach ($errorTypes as $errorType) {
+			if ($error = get_transient($errorType)) {
+				$class = 'cb-notice error';
+				printf(
+					'<div class="%1$s"><p>%2$s</p></div>',
+					esc_attr($class),
+					commonsbooking_sanitizeHTML($error)
+				);
+				delete_transient($errorType);
+			}
+		}
+	}
 
 	/**
 	 * Gets all bookings that the user is authorized to see and converts them to the iCal format

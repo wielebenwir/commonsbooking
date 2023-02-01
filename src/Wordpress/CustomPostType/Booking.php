@@ -2,13 +2,12 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-use CommonsBooking\Exception\OverlappingException;
+use CommonsBooking\Exception\BookingDeniedException;
+use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Service\BookingRuleApplied;
-use Exception;
 use function wp_verify_nonce;
-use function commonsbooking_write_log;
 
 class Booking extends Timeframe {
 
@@ -32,7 +31,7 @@ class Booking extends Timeframe {
 
 	/**
 	 * Handles frontend save-Request for booking.
-	 * @throws Exception
+	 * @throws BookingDeniedException
 	 */
 	public static function handleFormRequest() {
 		if (
@@ -46,10 +45,10 @@ class Booking extends Timeframe {
             $post_status = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] != "" ? sanitize_text_field( $_REQUEST['post_status'] ) : null;
 
  			if ( ! get_post( $itemId ) ) {
-				throw new Exception( 'Item does not exist. (' . $itemId . ')' );
+				throw new BookingDeniedException(__(sprintf( 'Item does not exist. (%s)',$itemId),'commonsbooking' ) );
 			}
 			if ( ! get_post( $locationId ) ) {
-				throw new Exception( 'Location does not exist. (' . $locationId . ')' );
+				throw new BookingDeniedException(__(sprintf( 'Location does not exist. (%s)',$locationId),'commonsbooking' ) );
 			}
 
 			$startDate = null;
@@ -68,7 +67,7 @@ class Booking extends Timeframe {
 			}
 
 			if ( $startDate == null || $endDate == null ) {
-				throw new Exception( 'Start- and/or enddate missing.' );
+				throw new BookingDeniedException(__( 'Start- and/or end-date is missing.', 'commonsbooking'));
 			}
 
 			// Validate booking -> check if there are no existing bookings in timerange.
@@ -92,7 +91,7 @@ class Booking extends Timeframe {
 						array_values($existingBookings)[0]->getPost()->post_author == get_current_user_id();
 
 					if( (!$isEdit || count($existingBookings) > 1) && $post_status != 'canceled' ) {
-						throw new Exception( 'There is already a booking in this timerange.' );
+						throw new BookingDeniedException(__( 'There is already a booking in this timerange.', 'commonsbooking'));
 					}
 				}
 			}
@@ -152,9 +151,9 @@ class Booking extends Timeframe {
 				try {
 					BookingRuleApplied::bookingConformsToRules( $bookingModel );
 				}
-				catch (Exception $e) {
+				catch (BookingRuleException $e) {
 					wp_delete_post($bookingModel->ID);
-					throw new Exception($e->getMessage());
+					throw new BookingDeniedException($e->getMessage());
 				}
 			}
 
@@ -196,7 +195,7 @@ class Booking extends Timeframe {
 	}
 
 	/**
-	 * Check if booking overlaps before its been saved.
+	 * Check if the booking has been denied for some reason
 	 *
 	 * @param $postId
 	 * @param $data
@@ -210,7 +209,7 @@ class Booking extends Timeframe {
 
 		try {
 
-			// Check if its an admin edit
+			// Check if it's an admin edit
 			$requestKeys    = [
 				\CommonsBooking\Model\Timeframe::META_ITEM_ID,
 				\CommonsBooking\Model\Timeframe::META_LOCATION_ID,
@@ -245,10 +244,9 @@ class Booking extends Timeframe {
 				$repetitionEnd,
 				$postId
 			);
-		} catch ( OverlappingException $e ) {
+		} catch ( BookingDeniedException $e ) {
 			set_transient( \CommonsBooking\Model\Timeframe::ERROR_TYPE,
-				commonsbooking_sanitizeHTML( __( "There is an overlapping booking.",
-					'commonsbooking' ) ),
+				commonsbooking_sanitizeHTML(( $e->getMessage()) ),
 				45 );
 			$targetUrl = sanitize_url( $_REQUEST['_wp_http_referer'] );
 			header( 'Location: ' . $targetUrl );
@@ -265,7 +263,7 @@ class Booking extends Timeframe {
 	 * @param $endDate
 	 * @param null $postId
 	 *
-	 * @throws OverlappingException
+	 * @throws BookingDeniedException
 	 */
 	protected static function validateBookingParameters( $itemId, $locationId, $startDate, $endDate, $postId = null ) {
 		// Get exiting bookings for defined parameters
@@ -285,7 +283,7 @@ class Booking extends Timeframe {
 
 		// If there are already bookings, throw exception
 		if ( count( $existingBookingsInRange ) ) {
-			throw new OverlappingException( __( 'There are already bookings in selected timerange.', 'commonsbooking' ) );
+			throw new BookingDeniedException( __( 'There are already bookings in the selected timerange.', 'commonsbooking' ) );
 		}
 	}
 
