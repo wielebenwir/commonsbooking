@@ -48,26 +48,24 @@ class BookingRuleApplied extends BookingRule {
 	}
 
 	/**
-	 * Checks if the booking violates any of our rules, return true if it doesn't, false if it does
+	 * Checks if the booking violates any of our rules, return false if it doesn't, true if it does
 	 * @param Booking $booking
 	 *
 	 * @return bool
 	 */
 	public function checkBooking( Booking $booking ): bool {
 		if ($booking->isUserPrivileged()){
-			return true;
+			return false;
 		}
 
 		if (! $this->appliesToAll){
-			$isInItemCat = has_term( $this->appliedTerms, Item::$postType . 's_category', $booking->getItem()->getPost() );
-			$isInLocationCat = has_term( $this->appliedTerms, Location::$postType . 's_category', $booking->getLocation()->getPost() );
-			if ( ! ($isInItemCat || $isInLocationCat)){
-				return true;
+			if (! $booking->termsApply($this->appliedTerms) ){
+				return false;
 			}
 		}
 
 		$validationFunction = $this->validationFunction;
-		return $validationFunction( $booking, $this->setParams ?? [] );
+		return $validationFunction( $booking, $this->setParams ?? [], $this->appliesToAll ? false : $this->appliedTerms );
 	}
 
 	/**
@@ -113,7 +111,7 @@ class BookingRuleApplied extends BookingRule {
 			if ( ! ($rule instanceof BookingRuleApplied )) {
 				throw new Exception( "Value must be a BookingRuleApplied" );
 			}
-			if (! $rule->checkBooking( $booking )){
+			if ($rule->checkBooking( $booking )){
 				throw new BookingRuleException( $rule->getErrorMessage() );
 			}
 		}

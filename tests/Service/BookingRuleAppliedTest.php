@@ -9,6 +9,7 @@ class BookingRuleAppliedTest extends BookingRuleTest {
 
 	private Booking $testBookingTomorrow;
 	private int $testBookingId;
+	protected BookingRuleApplied $appliedAlwaysAllow,$appliedAlwaysDeny;
 	/**
 	 * @var int|\WP_Error
 	 */
@@ -42,8 +43,8 @@ class BookingRuleAppliedTest extends BookingRuleTest {
 	}
 	public function testCheckBooking()
 	{
-		$this->assertTrue($this->appliedTrue->checkBooking( $this->testBookingTomorrow));
-		$this->assertFalse($this->appliedFalse->checkBooking( $this->testBookingTomorrow));
+		$this->assertFalse($this->appliedAlwaysAllow->checkBooking( $this->testBookingTomorrow));
+		$this->assertTrue($this->appliedAlwaysDeny->checkBooking( $this->testBookingTomorrow));
 
 	}
 
@@ -57,7 +58,7 @@ class BookingRuleAppliedTest extends BookingRuleTest {
 			strtotime( '+90 days', time() )
 		);
 		$this->setUpTestBooking();
-		$this->appliedTrue = new BookingRuleApplied(
+		$this->appliedAlwaysAllow = new BookingRuleApplied(
 			$this->alwaysallow->getName(),
 			$this->alwaysallow->getTitle(),
 			$this->alwaysallow->getDescription(),
@@ -65,7 +66,7 @@ class BookingRuleAppliedTest extends BookingRuleTest {
 			$this->alwaysallow->getValidationFunction(),
 			true
 		);
-		$this->appliedFalse = new BookingRuleApplied(
+		$this->appliedAlwaysDeny = new BookingRuleApplied(
 			$this->alwaysdeny->getName(),
 			$this->alwaysdeny->getTitle(),
 			$this->alwaysdeny->getDescription(),
