@@ -2,17 +2,17 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-use CommonsBooking\Exception\OverlappingException;
+use CommonsBooking\Exception\BookingDeniedException;
 use CommonsBooking\Helper\Helper;
-use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Messages\BookingMessage;
-use Exception;
 use function wp_verify_nonce;
 
 /**
  * Booking
  */
 class Booking extends Timeframe {
+
+	public const ERROR_TYPE = COMMONSBOOKING_PLUGIN_SLUG . '-bookingValidationError';
 
 	/**
 	 * @var string
@@ -28,11 +28,23 @@ class Booking extends Timeframe {
 
 	public function __construct() {
 
-        // does not trigger when initiated in initHooks
+		// does not trigger when initiated in initHooks
 		add_action( 'post_updated', array( $this, 'postUpdated' ), 1, 3 );
 
-    	// Frontend request
-		$this->handleFormRequest();
+		// Frontend request
+		try {
+			$this->handleFormRequest();
+		} catch ( BookingDeniedException $e ) {
+			set_transient(
+				\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id(),
+				$e->getMessage()
+			);
+			$targetUrl = sanitize_url( wp_get_referer() );
+			if ( $targetUrl ) {
+				header( 'Location: ' . $targetUrl );
+				exit();
+			}
+		}
 	}
 
 
@@ -153,7 +165,7 @@ class Booking extends Timeframe {
 	/**
 	 * Handles frontend save-Request for timeframe.
      *
-	 * @throws Exception
+	 * @throws BookingDeniedException
 	 */
 	public function handleFormRequest() {
 
@@ -169,10 +181,10 @@ class Booking extends Timeframe {
             $booking_author = isset( $_REQUEST['author'] ) && $_REQUEST['author'] != '' ? sanitize_text_field( $_REQUEST['author'] ) : get_current_user_id();
 
  			if ( ! get_post( $itemId ) ) {
-				throw new Exception( 'Item does not exist. (' . $itemId . ')' );
+			    throw new BookingDeniedException(__ ( sprintf ( 'Item does not exist. (%s)', $itemId ),'commonsbooking' ) );
 			}
 			if ( ! get_post( $locationId ) ) {
-				throw new Exception( 'Location does not exist. (' . $locationId . ')' );
+				throw new BookingDeniedException(__ ( sprintf ( 'Location does not exist. (%s)', $locationId ),'commonsbooking' ) );
 			}
 
 			$startDate = null;
@@ -191,7 +203,7 @@ class Booking extends Timeframe {
 			}
 
 			if ( $startDate == null || $endDate == null ) {
-				throw new Exception( 'Start- and/or enddate missing.' );
+				throw new BookingDeniedException( __( 'Start- and/or end-date is missing.', 'commonsbooking' ) );
 			}
 
             /** @var \CommonsBooking\Model\Booking $booking */
@@ -222,7 +234,7 @@ class Booking extends Timeframe {
                         $post_status = 'unconfirmed';
                         set_transient( 'commonsbooking_overlappingBooking_' . $booking->ID, $booking->ID );
                     } else {
-                        throw new Exception( 'There is already a booking in this timerange.' );
+                        throw new BookingDeniedException( __('There is already a booking in this timerange.', 'commonsbooking') );
                     }
 				}
 			}
