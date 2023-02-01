@@ -507,7 +507,7 @@ class Plugin {
 		add_action('init', array(self::class, 'registerAdminOptions'), 40);
 
 		//loads the Scheduler
-		add_action('init', array(Scheduler::class, 'initHooks'), 40 );
+		add_action('init', array(Scheduler::class, 'initHooks'), 40);
 
 		//handle the booking forms, needs to happen after taxonomy registration so that we can access the taxonomy
 		add_action('init', array(self::class, 'handleBookingForms'), 50);
