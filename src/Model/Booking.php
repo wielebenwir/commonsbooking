@@ -536,6 +536,19 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
+	 * Will check if a single term / multiple terms are applicable for the current bookings location or item
+	 * @param int|array|string $term
+	 *
+	 * @return bool
+	 * @throws Exception
+	 */
+	public function termsApply( array|int|string $term ): bool {
+		$isInItemCat = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category', $this->getItem()->getPost() );
+		$isInLocationCat = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Location::$postType . 's_category', $this->getLocation()->getPost() );
+		return ( $isInItemCat || $isInLocationCat);
+	}
+
+	/**
 	 * Gets the length of a booking in days
 	 * @return int
 	 */
