@@ -3,7 +3,9 @@
 namespace CommonsBooking\Service;
 
 use Closure;
+use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Model\Booking;
+use CommonsBooking\Wordpress\Options\OptionsTab;
 use Exception;
 
 class BookingRule {
@@ -21,16 +23,16 @@ class BookingRule {
 	 * @param String $title
 	 * @param String $description
 	 * @param String $errorMessage
-	 * @param \Closure $validationFunction
+	 * @param Closure $validationFunction
 	 * @param array $params
 	 *
-	 * @throws Exception
+	 * @throws BookingRuleException
 	 */
 	public function __construct(String $name,String $title, String $description,String $errorMessage, Closure $validationFunction,array $params = []) {
 		if (! empty($params) ){
 
 			if (count($params) > 3 ){
-				throw new Exception("No more than 3 parameters are currently supported");
+				throw new BookingRuleException("No more than 3 parameters are currently supported");
 			}
 
 			$this->params = $params;
@@ -93,10 +95,16 @@ class BookingRule {
 	 */
 	public static function getRulesForSelect(): array {
 		$assoc_array = [];
-		foreach ( self::init() as $bookingRule) {
-			$assoc_array[$bookingRule->name] = $bookingRule->getTitle();
+		try {
+			foreach ( self::init() as $bookingRule ) {
+				$assoc_array[ $bookingRule->name ] = $bookingRule->getTitle();
+			}
+		} catch ( BookingRuleException $e ) {
+			set_transient(
+				OptionsTab::ERROR_TYPE,
+				$e->getMessage()
+			);
 		}
-
 		return $assoc_array;
 	}
 
@@ -105,12 +113,26 @@ class BookingRule {
 	 * @return string
 	 */
 	public static function getRulesJSON(): string {
-		return wp_json_encode(
-			array_map(
-				function( BookingRule $rule){
-					return get_object_vars($rule);
-				}, self::init() )
-		);
+		try {
+			$ruleObjects = self::init();
+		} catch ( BookingRuleException $e ) {
+			set_transient(
+				OptionsTab::ERROR_TYPE,
+				$e->getMessage()
+			);
+		}
+
+		if ( isset( $ruleObjects ) ) {
+			return wp_json_encode(
+				array_map(
+					function( BookingRule $rule){
+						return get_object_vars($rule);
+					}, $ruleObjects )
+			);
+		}
+		else {
+			return "";
+		}
 	}
 
 	/**
@@ -118,7 +140,7 @@ class BookingRule {
 	 *
 	 * Closure::fromCallable can be replaced with First Class Callable Syntax in PHP8.1
 	 * @return array
-	 * @throws Exception
+	 * @throws BookingRuleException
 	 */
 	public static function init(): array {
 		$defaultRuleSet = [

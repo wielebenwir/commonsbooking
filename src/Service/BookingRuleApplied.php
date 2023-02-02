@@ -3,14 +3,11 @@
 namespace CommonsBooking\Service;
 
 use Closure;
+use CommonsBooking\Exception\BookingDeniedException;
 use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\Wordpress\CustomPostType\Location;
-use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\Options\OptionsTab;
-use Exception;
-use InvalidArgumentException;
 
 /**
  *
@@ -22,7 +19,7 @@ class BookingRuleApplied extends BookingRule {
 
 	/**
 	 * The constructor for BookingRules after they can be applied to actual bookings
-	 * @throws Exception
+	 * @throws BookingRuleException
 	 */
 	public function __construct( string $name,string $title, string $description, string $errorMessage, Closure $validationFunction, bool $appliesToAll,array $appliedTerms = [],array $paramList = [],array $setParams = []) {
 		parent::__construct( $name,$title, $description, $errorMessage, $validationFunction,$paramList );
@@ -32,7 +29,7 @@ class BookingRuleApplied extends BookingRule {
 		else {
 			$this->appliesToAll = false;
 			if (empty($appliedTerms)){
-				throw new InvalidArgumentException(__("You need to specify a category, if the rule does not apply to all items", 'commonsbooking'));
+				throw new BookingRuleException(__("You need to specify a category, if the rule does not apply to all items", 'commonsbooking'));
 			}
 			$this->appliedTerms = $appliedTerms;
 		}
@@ -42,7 +39,7 @@ class BookingRuleApplied extends BookingRule {
 				$this->setParams = $setParams;
 			}
 			else {
-				throw new InvalidArgumentException(__("Booking rules: Not enough parameters specified.", 'commonsbooking'));
+				throw new BookingRuleException(__("Booking rules: Not enough parameters specified.", 'commonsbooking'));
 			}
 		}
 	}
@@ -69,7 +66,7 @@ class BookingRuleApplied extends BookingRule {
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws BookingRuleException
 	 */
 	public static function fromBookingRule(BookingRule $rule, bool $appliesToAll, array $appliedTerms = [], array $setParams = []): BookingRuleApplied {
 		return new self(
@@ -90,26 +87,26 @@ class BookingRuleApplied extends BookingRule {
 	 *
 	 * @param Booking $booking
 	 *
-	 * @return true
-	 * @throws Exception
+	 * @return void
+	 * @throws BookingDeniedException|BookingRuleException
 	 */
-	public static function bookingConformsToRules( Booking $booking):bool {
+	public static function bookingConformsToRules( Booking $booking):void {
 		try {
 			$ruleset = self::getAll();
-		} catch ( Exception $e ) {
+		} catch ( BookingRuleException $e ) {
 			//booking always conforms to rules if ruleset is not available / invalid
-			return true;
+			return;
 		}
 
 		if($booking->isUserPrivileged()){
-			return true;
+			return;
 		}
 
 		/** @var BookingRuleApplied $rule */
 		foreach ( $ruleset as $rule ) {
 
 			if ( ! ($rule instanceof BookingRuleApplied )) {
-				throw new Exception( "Value must be a BookingRuleApplied" );
+				throw new BookingRuleException( "Value must be a BookingRuleApplied" );
 			}
 			if ($rule->checkBooking( $booking )){
 				throw new BookingRuleException( $rule->getErrorMessage() );
@@ -120,7 +117,7 @@ class BookingRuleApplied extends BookingRule {
 
 	/**
 	 * Tries to create objects for all applied Booking rules from the settings
-	 * @throws Exception
+	 * @throws BookingRuleException
 	 */
 	public static function getAll():array{
 		$validRules = parent::init();
@@ -128,7 +125,7 @@ class BookingRuleApplied extends BookingRule {
 		$appliedRules = [];
 
 		if (!is_array($rulesConfig)) {
-			throw new Exception('No valid booking rules found');
+			throw new BookingRuleException('No valid booking rules found');
 		}
 
 		foreach ($rulesConfig as $ruleConfig) {
@@ -157,12 +154,11 @@ class BookingRuleApplied extends BookingRule {
 	/**
 	 * Checks if it can create all the rules, sets an error transient if it can't
 	 * @return void
-	 * @throws Exception
 	 */
 	public static function validateRules():void{
 		try {
 			self::getAll();
-		} catch ( InvalidArgumentException $e ) {
+		} catch ( BookingRuleException $e ) {
 			set_transient(
 				OptionsTab::ERROR_TYPE,
 				$e->getMessage()

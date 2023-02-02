@@ -151,7 +151,7 @@ class Booking extends Timeframe {
 				try {
 					BookingRuleApplied::bookingConformsToRules( $bookingModel );
 				}
-				catch (BookingRuleException $e) {
+				catch (BookingDeniedException $e) {
 					wp_delete_post($bookingModel->ID);
 					throw new BookingDeniedException($e->getMessage());
 				}
