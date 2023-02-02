@@ -7,7 +7,6 @@ use CommonsBooking\CB\CB1UserFields;
 use CommonsBooking\Exception\BookingDeniedException;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Map\LocationMapAdmin;
-use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Service\BookingRuleApplied;
@@ -314,6 +313,11 @@ class Plugin {
 				\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id(),
 				$e->getMessage()
 			);
+			$targetUrl = sanitize_url( wp_get_referer());
+			if ( $targetUrl) {
+				header( 'Location: ' . $targetUrl );
+				exit();
+			}
 		}
 	}
 

@@ -294,7 +294,7 @@ class Booking extends View {
 				printf(
 					'<div class="%1$s"><p>%2$s</p></div>',
 					esc_attr($class),
-					commonsbooking_sanitizeHTML($error)
+					nl2br(commonsbooking_sanitizeHTML($error))
 				);
 				delete_transient($errorType);
 			}

@@ -43,8 +43,8 @@ class BookingRuleAppliedTest extends BookingRuleTest {
 	}
 	public function testCheckBooking()
 	{
-		$this->assertFalse($this->appliedAlwaysAllow->checkBooking( $this->testBookingTomorrow));
-		$this->assertTrue($this->appliedAlwaysDeny->checkBooking( $this->testBookingTomorrow));
+		$this->assertNull($this->appliedAlwaysAllow->checkBookingCompliance( $this->testBookingTomorrow));
+		$this->assertNotNull($this->appliedAlwaysDeny->checkBookingCompliance( $this->testBookingTomorrow));
 
 	}
 

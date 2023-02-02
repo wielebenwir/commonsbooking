@@ -21,7 +21,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				"Testing rule creation",
 				"Error message",
 				function (\CommonsBooking\Model\Booking $booking, array $params){
-					return true;
+					return null;
 				},
 				array(
 					"First param description",
@@ -62,7 +62,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				$this->normalUser
 			)
 		));
-		$this->assertTrue(BookingRule::checkSimultaneousBookings($testBookingTwo));
+		$this->assertEquals(array($testBookingOne),BookingRule::checkSimultaneousBookings($testBookingTwo));
 		$this->tearDownAllBookings();
 	}
 
@@ -89,7 +89,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				$this->normalUser
 			)
 		));
-		$this->assertTrue(BookingRule::checkChainBooking($testBookingTwo));
+		$this->assertEquals(array($testBookingOne),BookingRule::checkChainBooking($testBookingTwo));
 	}
 
 	public function testCheckMaxBookingDays(){
@@ -128,7 +128,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				$this->normalUser
 			)
 		));
-		$this->assertTrue(BookingRule::checkMaxBookingDays($testBookingThree,array(2,30)));
+		$this->assertEquals(array($testBookingOne,$testBookingTwo),BookingRule::checkMaxBookingDays($testBookingThree,array(2,30)));
 	}
 
 	protected function setUp() {
@@ -136,19 +136,19 @@ class BookingRuleTest extends CustomPostTypeTest
 		$this->alwaysallow = new BookingRule(
 			"alwaysAllow",
 			"Always allow",
-			"Rule will always evaluate to true",
-			"Rule did not evaluate to true",
+			"Rule will always evaluate to null",
+			"Rule did not evaluate to null",
 			function(\CommonsBooking\Model\Booking $booking){
-				return false;
+				return null;
 			}
 		);
 		$this->alwaysdeny = new BookingRule(
 			"alwaysDeny",
 			"Always deny",
-			"Rule will always evaluate to false",
+			"Rule will always deny and return the current booking as conflict",
 			"Rule evaluated correctly",
 			function(\CommonsBooking\Model\Booking $booking){
-				return true;
+				return array($booking);
 			}
 		);
 		$this->firstTimeframeId   = $this->createTimeframe(

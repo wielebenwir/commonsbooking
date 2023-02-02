@@ -174,8 +174,8 @@ class BookingRule {
 				__("Alwaysfailnoparam",'commonsbooking'),
 				__("This is a rule without params that will always fail",'commonsbooking'),
 				__("It has always failed alwaysfailnoparam",'commonsbooking'),
-				function( Booking $booking,array $args = []):bool{
-					return false;
+				function( Booking $booking,array $args = []):?array{
+					return array($booking);
 				}
 			)
 		];
@@ -184,18 +184,22 @@ class BookingRule {
 	}
 
 	/**
-	 * Will check if there are booking at the same time as the defined booking. Will return true if the condition is met, false if not.
+	 * Will check if there are booking at the same time as the defined booking.
+	 * If the user has booking at the same day it will return an array with ust one conflicting booking
+	 * If there is no booking at the same day, will return null
+	 *
+	 *
 	 * @param Booking $booking
 	 * @param array $args
 	 * @param bool|array $appliedTerms
 	 *
-	 * @return bool
+	 * @return array|null
 	 * @throws Exception
 	 */
-	public static function checkSimultaneousBookings( Booking $booking, array $args = [], $appliedTerms = false):bool {
+	public static function checkSimultaneousBookings( Booking $booking, array $args = [], $appliedTerms = false):?array {
 		$userBookings = \CommonsBooking\Repository\Booking::getForUser($booking->getUserData(),true,time(),['confirmed']);
 		if (empty($userBookings)){
-			return false;
+			return null;
 		}
 
 		if ($appliedTerms){
@@ -204,35 +208,37 @@ class BookingRule {
 
 		foreach ($userBookings as $userBooking){
 			if ($booking->hasTimeframeDateOverlap($booking,$userBooking)){
-				return true;
+				return array($userBooking);
 			}
 		}
-		return false;
+		return null;
 	}
 
 	/**
 	 * Will check if there are chained bookings for the current item that go over the total booking limit .
-	 * Will return true if the condition is met, false if not.
+	 *
+	 * If the user has chained too many days in that timespan will return the conflicting bookings
+	 * If the user bookings are NOT above the limit, will return null
 	 *
 	 * @param Booking $booking
 	 * @param array $args
 	 * @param bool|array $appliedTerms
 	 *
-	 * @return bool
+	 * @return array|null
 	 * @throws Exception
 	 */
-	public static function checkChainBooking( Booking $booking, array $args = [], $appliedTerms = false):bool{
+	public static function checkChainBooking( Booking $booking, array $args = [], $appliedTerms = false):?array{
 		$timeframe = $booking->getBookableTimeFrame();
 		$adjacentBookings = $booking->getAdjacentBookings();
 		if ( empty($adjacentBookings))
 		{
-			return false;
+			return null;
 		}
 		$adjacentBookings = array_filter( $adjacentBookings,
 			fn( Booking $adjacentBooking ) => $booking->getUserData()->ID == $adjacentBooking->getUserData()->ID
 		);
 		if ( empty($adjacentBookings) ){
-			return false;
+			return null;
 		}
 		$bookingCollection = $booking->getBookingChain($booking->getUserData());
 		//add our current booking to the collection
@@ -242,29 +248,33 @@ class BookingRule {
 		} );
 		$collectionStartDate = reset( $bookingCollection)->getStartDateDateTime();
 		$collectionEndDate   = end($bookingCollection)->getEndDateDateTime()->modify("+1 second");
-		$collectionInterval  = $collectionStartDate->diff($collectionEndDate);
+		$collectionTotalDays  = $collectionStartDate->diff($collectionEndDate)->d;
 		//checks if the collection of chained bookings ist still in the allowed limit
 		$max_days = $timeframe->getMaxDays();
-		$d        = $collectionInterval->d;
-		if ( $d <= $max_days ){
-			return false;
+		if ( $collectionTotalDays <= $max_days ){
+			return null;
 		}
 		else {
-			return true;
+			//remove last element from collection again as it is the booking we are currently processing
+			array_pop($bookingCollection);
+			return $bookingCollection;
 		}
 	}
 
 
 	/**
-	 * Will check for a pre-defined maximum of x days in y timespan, if the user has booked too many days in that timespan will return true, if not will return false
+	 * Will check for a pre-defined maximum of x days in y timespan,
+	 * If the user has booked too many days in that timespan will return the conflicting bookings
+	 * If the user bookings are NOT above the limit, will return null
+	 *
 	 * @param Booking $booking
 	 * @param array $args
 	 * @param bool|array $appliedTerms
 	 *
-	 * @return bool
+	 * @return array
 	 * @throws Exception
 	 */
-	public static function checkMaxBookingDays(Booking $booking, array $args, $appliedTerms = false): bool {
+	public static function checkMaxBookingDays(Booking $booking, array $args, $appliedTerms = false): ?array {
 		/*
 		 * TODO:
 		 * Diese Funktion ist vielleicht noch nicht so super durchdacht, sie
@@ -319,6 +329,11 @@ class BookingRule {
 		}
 		$totalLengthDays += $booking->getLength();
 
-		return $totalLengthDays > $allowedBookedDays;
+		if ($totalLengthDays > $allowedBookedDays){
+			return $rangeBookingsArray;
+		}
+		else {
+			return null;
+		}
 	}
 }

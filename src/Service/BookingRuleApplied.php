@@ -45,19 +45,22 @@ class BookingRuleApplied extends BookingRule {
 	}
 
 	/**
-	 * Checks if the booking violates any of our rules, return false if it doesn't, true if it does
-	 * @param Booking $booking
+	 * checkBookingRulesCompliance takes in a booking object and checks if it complies with the rules.
+	 * If the booking complies with all the rules, an empty array will be returned.
+	 * If the booking violates any of the rules, an array of conflicting bookings will be returned.
 	 *
-	 * @return bool
+	 * @param Booking $booking - The booking object to check for rule compliance
+	 *
+	 * @return array|null - An array of conflicting bookings or an empty array if the booking complies with all rules
 	 */
-	public function checkBooking( Booking $booking ): bool {
+	public function checkBookingCompliance( Booking $booking ): ?array {
 		if ($booking->isUserPrivileged()){
-			return false;
+			return null;
 		}
 
 		if (! $this->appliesToAll){
 			if (! $booking->termsApply($this->appliedTerms) ){
-				return false;
+				return null;
 			}
 		}
 
@@ -108,11 +111,27 @@ class BookingRuleApplied extends BookingRule {
 			if ( ! ($rule instanceof BookingRuleApplied )) {
 				throw new BookingRuleException( "Value must be a BookingRuleApplied" );
 			}
-			if ($rule->checkBooking( $booking )){
-				throw new BookingRuleException( $rule->getErrorMessage() );
+			$conflictingBookings = $rule->checkBookingCompliance( $booking );
+			if ( $conflictingBookings ){
+				$errorMessage =
+					$rule->getErrorMessage() .
+					PHP_EOL .
+					__( "This affects the following bookings:", 'commonsbooking' ) .
+					PHP_EOL
+				;
+				/** @var Booking $conflictingBooking */
+				foreach ($conflictingBookings as $conflictingBooking){
+					$errorMessage .= sprintf(
+						'%1s - %2s | %3s @ %4s',
+						$conflictingBooking->pickupDatetime(),
+						$conflictingBooking->returnDatetime(),
+						$conflictingBooking->getItem()->post_title,
+						$conflictingBooking->getLocation()->post_title
+					) . PHP_EOL;
+				}
+				throw new BookingDeniedException( $errorMessage );
 			}
 		}
-		return true;
 	}
 
 	/**
