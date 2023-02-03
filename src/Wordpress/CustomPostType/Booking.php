@@ -340,7 +340,7 @@ class Booking extends Timeframe {
 			ob_start();
 			global $post;
 
-			if ( commonsbooking_isCurrentUserAllowedToEdit( $post ) ) {
+			if ( commonsbooking_isCurrentUserAllowedToSee( $post ) ) {
 				commonsbooking_get_template_part( 'booking', 'single' );
 			} else {
 				commonsbooking_get_template_part( 'booking', 'single-notallowed' );

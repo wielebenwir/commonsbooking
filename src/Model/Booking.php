@@ -43,6 +43,31 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		return $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode' );
 	}
 
+
+    /**
+     * Determines if a current booking can be cancelled or not by the current user
+     * bookings which do not belong to the current user or the user is not admin of cannot be edited
+     * Returns true if booking can be cancelled
+     * False if booking may not be cancelled
+     * @return bool
+     */
+    public function canCancel():bool {
+        if ($this->isPast() ){
+            return false;
+        }
+
+        if ($this->post_author === get_current_user_id() ){
+            return true;
+        }
+        elseif (commonsbooking_isCurrentUserAllowedToEdit($this->post)){
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
 	/**
 	 * Sets post_status to canceled.
 	 */

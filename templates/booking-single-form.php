@@ -13,7 +13,7 @@ if ( $current_status === 'unconfirmed' && $form_action === 'confirm' ) {
     $button_label     = esc_html__( 'Confirm Booking', 'commonsbooking' );
 }
 
-if ( $current_status === 'confirmed' && $form_action === 'cancel' && ! $booking->isPast() ) {
+if ( $current_status === 'confirmed' && $form_action === 'cancel' && $booking->canCancel() ) {
     $form_post_status = 'canceled';
     $button_label     = esc_html__( 'Cancel Booking', 'commonsbooking' );
 }

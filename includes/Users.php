@@ -10,7 +10,6 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 /**
  * Checks if current user is allowed to edit custom post.
- *
  * @param $post
  *
  * @return bool
@@ -27,6 +26,8 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
 /**
  * Checks if user is allowed to edit custom post.
  *
+ * TODO: Can be integrated into isCurrentUserAllowedToEdit and severely shortened after PR#1141
+ *
  * @param $post
  * @param $user
  *
@@ -39,10 +40,10 @@ function commonsbooking_isUserAllowedToEdit( $post, $user): bool {
 
 	$isAuthor     = intval( $user->ID ) == intval( $post->post_author );
 	$isAdmin      = commonsbooking_isUserAdmin($user);
-	$isAllowed    = $isAdmin || $isAuthor;
+	$isPostAdmin    = $isAdmin || $isAuthor;
 
 	// Check if it is the main query and one of our custom post types
-	if ( ! $isAllowed ) {
+	if ( ! $isPostAdmin ) {
 		$admins = [];
 
 		// Get allowed admins for timeframe or booking listing
@@ -256,7 +257,7 @@ function commonsbooking_isCurrentUserCBManager() {
  *
  * @return bool
  */
-function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ) {
+function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ):bool {
 	$allowedUserRoles = get_post_meta( $timeframeID, 'allowed_user_roles', true );
 
 	if ( empty( $allowedUserRoles ) || ( current_user_can('administrator') ) ) {
@@ -269,6 +270,65 @@ function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ) {
 	$match = array_intersect( $user_roles, $allowedUserRoles );
 
 	return count( $match ) > 0;
+}
+
+/**
+ * Determines weather a user may read the current post.
+ * It only makes sense to check this with booking posts as all CPTs are / should be public
+ * TODO After PR #1141 refactor doubled code
+ *
+ * @param $booking - A boooking of the cb_booking type
+ *
+ * @return void
+ */
+function commonsbooking_isCurrentUserAllowedToSee( $booking ):bool{
+    if ( ! $booking ) {
+        return false;
+    }
+
+    $user = wp_get_current_user();
+
+    if ($user){
+        return commonsbooking_isUserAllowedToSee( $booking, $user );
+    }
+    else {
+        return false;
+    }
+
+}
+
+/**
+ * Determines weather a user may read the current post.
+ * It only makes sense to check this with booking posts as all CPTs are / should be public
+ * TODO Refactor after PR #1141
+ * @param $booking
+ * @param WP_User $user
+ *
+ * @return bool
+ */
+function commonsbooking_isUserAllowedToSee($booking, WP_User $user): bool
+{
+    if ($booking instanceof \CommonsBooking\Model\Booking){
+        $bookingModel = $booking;
+    }
+    elseif ($booking instanceof WP_Post){
+        $bookingModel = \CommonsBooking\Wordpress\CustomPostType\CustomPostType::getModel( $booking );
+    }
+    else {
+        return false;
+    }
+
+    $isAuthor  = $user->ID === intval( $booking->post_author );
+    $isAdmin   = commonsbooking_isUserAdmin( $user );
+    $isAllowed = $isAdmin || $isAuthor;
+
+    if ( ! $isAllowed) {
+        $admins    = $bookingModel->getAdmins();
+        $isAllowed = (is_string( $admins ) && $user->ID == $admins) ||
+                     (is_array( $admins ) && in_array( $user->ID . '', $admins, true ));
+    }
+
+    return $isAllowed;
 }
 
 /**
