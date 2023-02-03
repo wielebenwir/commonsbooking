@@ -100,11 +100,12 @@ function commonsbooking_isUserAllowedToEdit( $post, $user): bool {
 			$admins = get_post_meta( $post->ID, '_' . $post->post_type . '_admins', true );
 		}
 
-		$isAllowed = ( is_string( $admins ) && $user->ID === $admins ) ||
+		$isPostAdmin = ( is_string( $admins ) && $user->ID === $admins ) ||
 		             ( is_array( $admins ) && in_array( $user->ID . '', $admins, true ) );
 	}
+    $isPostEditor = current_user_can('edit_post', $post->ID);
 
-	return $isAllowed;
+    return $isPostAdmin && $isPostEditor;
 }
 
 /**
