@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Exception\TimeframeInvalidException;
 use WP_Post;
 use Exception;
 use CommonsBooking\View\Calendar;
@@ -756,13 +757,19 @@ class Timeframe extends CustomPostType {
 	protected function validateTimeFrame( $post_id, $post ): bool {
 		try {
 			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
-			if ( ! $timeframe->isValid() ) {
+			try {
+				$timeframe->isValid();
+			}
+			catch (TimeframeInvalidException $e){
+				set_transient(
+					\CommonsBooking\Model\Timeframe::ERROR_TYPE,
+					commonsbooking_sanitizeHTML($e->getMessage()),
+					45 );
 				// set post_status to draft if not valid
 				if ( $post->post_status !== 'draft' ) {
 					$post->post_status = 'draft';
 					wp_update_post( $post );
 				}
-
 				return false;
 			}
 		} catch ( Exception $e ) {
