@@ -4,7 +4,6 @@
 namespace CommonsBooking\Model;
 
 use CommonsBooking\Helper\Wordpress;
-use DateTime;
 use Exception;
 
 use CommonsBooking\CB\CB;
@@ -14,8 +13,6 @@ use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Service\iCalendar;
-use DateTimeImmutable;
-use DateInterval;
 
 class Booking extends \CommonsBooking\Model\Timeframe {
 
@@ -46,11 +43,11 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * Sets post_status to canceled.
 	 */
-	public function cancel() {
+	public function cancel() : void {
 
 		// check if booking has ended
 		if ( $this->isPast() ) {
-			return false;
+			return;
 		}
 
 		// workaround, because wp_update_post deletes all meta data
@@ -325,8 +322,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		return $date_end . ' ' . $time_start . ' - ' . $time_end;
 	}
 
-	public function getStartDate() {
-		return $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START );
+	public function getStartDate() : int {
+		return intval( $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) );
 	}
 
 	public function getEndDate() {
@@ -394,9 +391,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * return plain booking URL
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function bookingLinkUrl() {
+	public function bookingLinkUrl(): string {
 		return add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) );
 	}
 

@@ -30,29 +30,30 @@ class Timeframe extends CustomPost {
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
 	/**
-	 * Return residence in a human readable format
+	 * Return residence in a human-readable format
+	 * Will return an empty value for startDate or
 	 *
 	 * "From xx.xx.",  "Until xx.xx.", "From xx.xx. until xx.xx.", "no longer available"
 	 *
 	 * @return string
 	 */
-	public function formattedBookableDate() {
-		$startDate = $this->getStartDate() ? $this->getStartDate() : 0;
-		$endDate   = $this->getEndDate() ? $this->getEndDate() : 0;
-
-		return self::formatBookableDate( $startDate, $endDate );
+	public function formattedBookableDate(): string {
+		return self::formatBookableDate( $this->getStartDate() , $this->getEndDate() );
 	}
 
 	/**
 	 * Return Start (repetition) date timestamp
 	 *
-	 * @return string
+	 * @return int|false
 	 */
-	public function getStartDate() {
+	public function getStartDate(): int {
 		$startDate = $this->getMeta( self::REPETITION_START );
 
 		if ( (string) intval( $startDate ) !== $startDate ) {
 			$startDate = strtotime( $startDate );
+		}
+		else {
+			$startDate = intval ($startDate);
 		}
 
 		return $startDate;
@@ -61,7 +62,7 @@ class Timeframe extends CustomPost {
 	/**
 	 * Return End (repetition) date and respects advance booking days setting.
 	 *
-	 * @return string
+	 * @return false|int
 	 */
 	public function getEndDate() {
 		$endDate = $this->getMeta( self::REPETITION_END );
@@ -72,7 +73,7 @@ class Timeframe extends CustomPost {
 		// Latest possible booking date
 		$latestPossibleBookingDate = $this->getLatestPossibleBookingDateTimestamp();
 
-		// If enddate is < than latest possible booking date, we use it as enddate
+		// If enddate is < than the latest possible booking date, we use it as end-date
 		if ( $endDate < $latestPossibleBookingDate ) {
 			return $endDate;
 		}
@@ -101,12 +102,12 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * @param $startDate
-	 * @param $endDate
+	 * @param   int|false  $startDate
+	 * @param   int|false  $endDate
 	 *
 	 * @return string
 	 */
-	public static function formatBookableDate( $startDate, $endDate ) {
+	public static function formatBookableDate( int $startDate, int $endDate ): string {
 		$format = self::getDateFormat();
 		$today  = strtotime( 'now' );
 
@@ -116,10 +117,10 @@ class Timeframe extends CustomPost {
 		$label           = commonsbooking_sanitizeHTML( __( 'Available here', 'commonsbooking' ) );
 		$availableString = '';
 
-		if ( $startDate !== 0 && $endDate !== 0 && $startDate == $endDate ) { // available only one day
+		if ( $startDate && $endDate && $startDate == $endDate ) { // available only one day
 			/* translators: %s = date in WordPress defined format */
 			$availableString = sprintf( commonsbooking_sanitizeHTML( __( 'on %s', 'commonsbooking' ) ), $startDateFormatted );
-		} elseif ( $startDate > 0 && ( $endDate == 0 ) ) { // start but no end date
+		} elseif ( $startDate && ! $endDate ) { // start but no end date
 			if ( $startDate > $today ) { // start is in the future
 				/* translators: %s = date in WordPress defined format */
 				$availableString = sprintf(
@@ -129,7 +130,7 @@ class Timeframe extends CustomPost {
 			} else { // start has passed, no end date, probably a fixed location
 				$availableString = commonsbooking_sanitizeHTML( __( 'permanently', 'commonsbooking' ) );
 			}
-		} elseif ( $startDate > 0 && $endDate > 0 ) { // start AND end date
+		} elseif ( $startDate && $endDate ) { // start AND end date
 			if ( $startDate > $today ) { // start is in the future, with an end date
 				/* translators: %1$s = startdate, second %2$s = enddate in WordPress defined format */
 				$availableString = sprintf(
@@ -154,7 +155,7 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return string
 	 */
-	public static function getDateFormat() {
+	public static function getDateFormat(): string {
 		return esc_html( get_option( 'date_format' ) );
 	}
 
@@ -177,7 +178,7 @@ class Timeframe extends CustomPost {
      *
 	 * @return bool
 	 */
-	public function isBookable() {
+	public function isBookable() :bool {
 		$startDateTimestamp                 = $this->getStartDate();
 		$latestPossibleBookingDateTimestamp = $this->getLatestPossibleBookingDateTimestamp();
 
@@ -253,7 +254,7 @@ class Timeframe extends CustomPost {
 	 * @return bool
 	 * @throws Exception
 	 */
-	public function isValid() {
+	public function isValid(): bool {
 		if (
 			$this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID
 		) {
@@ -325,7 +326,7 @@ class Timeframe extends CustomPost {
 				// check if timeframes of other locations overlap in date and return error message if true
 				foreach ( $sameItemTimeframes as $sameItemTimeframe ) {
 
-					if ( $this->getLocation() != $sameItemTimeframe->getLocation() && $this->hasTimeframeDateOverlap( $this, $sameItemTimeframe )
+					if ( $this->getLocation() != $sameItemTimeframe->getLocation() && $this->hasTimeframeDateOverlap( $sameItemTimeframe )
 					) {
 						set_transient(
                             self::ERROR_TYPE,
@@ -334,8 +335,7 @@ class Timeframe extends CustomPost {
                                 commonsbooking_sanitizeHTML(
                                     __(
                                         'Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s',
-                                        'commonsbooking',
-                                        5
+                                        'commonsbooking'
                                     )
                                 ),
                                 '<a href=" ' . get_edit_post_link( $sameItemTimeframe->ID ) . '">' . $sameItemTimeframe->ID . '</a>',
@@ -352,7 +352,6 @@ class Timeframe extends CustomPost {
 					[ $this->getLocation()->ID ],
 					[ $this->getItem()->ID ],
 					null,
-					true
 				);
 
 				// filter current timeframe
@@ -368,7 +367,7 @@ class Timeframe extends CustomPost {
 
 					// check if timeframes overlap
 					if (
-						$this->hasTimeframeDateOverlap( $this, $timeframe )
+						$this->hasTimeframeDateOverlap(  $timeframe )
 					) {
 						// Compare grid types
 						if ( $timeframe->getGrid() != $this->getGrid() ) {
@@ -380,7 +379,6 @@ class Timeframe extends CustomPost {
                                         __(
                                             'Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s %2$s',
                                             'commonsbooking',
-                                            5
                                         )
                                     ),
                                     '<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->ID . '</a>',
@@ -403,7 +401,7 @@ class Timeframe extends CustomPost {
 						}
 
 						// Check if in day slots overlap
-						if ( ! $this->isFullDay() && $this->hasTimeframeTimeOverlap( $this, $timeframe ) ) {
+						if ( ! $this->isFullDay() && $this->hasTimeframeTimeOverlap( $timeframe ) ) {
 							set_transient(
                                 self::ERROR_TYPE,
 								/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
@@ -411,8 +409,7 @@ class Timeframe extends CustomPost {
                                     commonsbooking_sanitizeHTML(
                                         __(
                                             'time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s %2$s',
-                                            'commonsbooking',
-                                            5
+                                            'commonsbooking'
                                         )
                                     ),
                                     '<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->ID . '</a>',
@@ -432,8 +429,7 @@ class Timeframe extends CustomPost {
                                     commonsbooking_sanitizeHTML(
                                         __(
                                             'Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s %2$s',
-                                            'commonsbooking',
-                                            5
+                                            'commonsbooking'
                                         )
                                     ),
                                     '<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->ID . '</a>',
@@ -472,36 +468,35 @@ class Timeframe extends CustomPost {
 	/**
 	 * Returns true if timeframe is full-day
      *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isFullDay() {
+	public function isFullDay(): bool {
 		return $this->getMeta( 'full-day' ) == 'on';
 	}
 
-	/**
-	 * Checks if timeframes are overlapping in date range.
-	 *
-	 * @param $timeframe1
-	 * @param $timeframe2
-	 *
-	 * @return bool
-	 */
-	protected function hasTimeframeDateOverlap( $timeframe1, $timeframe2 ) {
-		return ! $timeframe1->getEndDate() && ! $timeframe2->getEndDate() ||
-			(
-				$timeframe1->getEndDate() && ! $timeframe2->getEndDate() &&
-				$timeframe2->getStartDate() <= $timeframe1->getEndDate() &&
-				$timeframe2->getStartDate() >= $timeframe1->getStartDate()
+    /**
+     * Checks if the current timeframe overlaps with another timeframe
+     *
+     * @param Timeframe $otherTimeframe - The timeframe to check current object against
+     *
+     * @return bool
+     */
+	protected function hasTimeframeDateOverlap( Timeframe $otherTimeframe ): bool {
+		return ! $this->getEndDate() && ! $otherTimeframe->getEndDate() ||
+               (
+                   $this->getEndDate() && ! $otherTimeframe->getEndDate() &&
+                   $otherTimeframe->getStartDate() <= $this->getEndDate() &&
+                   $otherTimeframe->getStartDate() >= $this->getStartDate()
 			) ||
 			(
-				! $timeframe1->getEndDate() && $timeframe2->getEndDate() &&
-				$timeframe2->getEndDate() > $timeframe1->getStartDate()
+                   ! $this->getEndDate() && $otherTimeframe->getEndDate() &&
+                   $otherTimeframe->getEndDate() > $this->getStartDate()
 			) ||
 			(
-				$timeframe1->getEndDate() && $timeframe2->getEndDate() &&
-				(
-					( $timeframe1->getEndDate() >= $timeframe2->getStartDate() && $timeframe1->getEndDate() <= $timeframe2->getEndDate() ) ||
-					( $timeframe2->getEndDate() >= $timeframe1->getStartDate() && $timeframe2->getEndDate() <= $timeframe1->getEndDate() )
+                   $this->getEndDate() && $otherTimeframe->getEndDate() &&
+                   (
+                       ($this->getEndDate() >= $otherTimeframe->getStartDate() && $this->getEndDate() <= $otherTimeframe->getEndDate() ) ||
+                       ($otherTimeframe->getEndDate() >= $this->getStartDate() && $otherTimeframe->getEndDate() <= $this->getEndDate() )
 				)
 			);
 	}
@@ -515,30 +510,30 @@ class Timeframe extends CustomPost {
 		return $this->getMeta( 'grid' );
 	}
 
-	/**
-	 * Checks if timeframes are overlapping in daily slots.
-	 *
-	 * @param $timeframe1
-	 * @param $timeframe2
-	 *
-	 * @return bool
-	 */
-	protected function hasTimeframeTimeOverlap( $timeframe1, $timeframe2 ) {
-		return ! strtotime( $timeframe1->getEndTime() ) && ! strtotime( $timeframe2->getEndTime() ) ||
-			(
-				strtotime( $timeframe1->getEndTime() ) && ! strtotime( $timeframe2->getEndTime() ) &&
-				strtotime( $timeframe2->getStartTime() ) <= strtotime( $timeframe1->getEndTime() ) &&
-				strtotime( $timeframe2->getStartTime() ) >= strtotime( $timeframe1->getStartTime() )
+    /**
+     * Checks if the current timeframe overlaps with another in daily slots.
+     *
+     * @param Timeframe $otherTimeframe - The timeframe to check current object against
+     *
+     * @return bool
+     */
+	protected function hasTimeframeTimeOverlap( Timeframe $otherTimeframe ): bool
+    {
+		return ! strtotime( $this->getEndTime() ) && ! strtotime( $otherTimeframe->getEndTime() ) ||
+               (
+                   strtotime( $this->getEndTime() ) && ! strtotime( $otherTimeframe->getEndTime() ) &&
+                   strtotime( $otherTimeframe->getStartTime() ) <= strtotime( $this->getEndTime() ) &&
+                   strtotime( $otherTimeframe->getStartTime() ) >= strtotime( $this->getStartTime() )
 			) ||
 			(
-				! strtotime( $timeframe1->getEndTime() ) && strtotime( $timeframe2->getEndTime() ) &&
-				strtotime( $timeframe2->getEndTime() ) > strtotime( $timeframe1->getStartTime() )
+                   ! strtotime( $this->getEndTime() ) && strtotime( $otherTimeframe->getEndTime() ) &&
+                   strtotime( $otherTimeframe->getEndTime() ) > strtotime( $this->getStartTime() )
 			) ||
 			(
-				strtotime( $timeframe1->getEndTime() ) && strtotime( $timeframe2->getEndTime() ) &&
-				(
-					( strtotime( $timeframe1->getEndTime() ) > strtotime( $timeframe2->getStartTime() ) && strtotime( $timeframe1->getEndTime() ) < strtotime( $timeframe2->getEndTime() ) ) ||
-					( strtotime( $timeframe2->getEndTime() ) > strtotime( $timeframe1->getStartTime() ) && strtotime( $timeframe2->getEndTime() ) < strtotime( $timeframe1->getEndTime() ) )
+                   strtotime( $this->getEndTime() ) && strtotime( $otherTimeframe->getEndTime() ) &&
+                   (
+                       (strtotime( $this->getEndTime() ) > strtotime( $otherTimeframe->getStartTime() ) && strtotime( $this->getEndTime() ) < strtotime( $otherTimeframe->getEndTime() ) ) ||
+                       (strtotime( $otherTimeframe->getEndTime() ) > strtotime( $this->getStartTime() ) && strtotime( $otherTimeframe->getEndTime() ) < strtotime( $this->getEndTime() ) )
 				)
 			);
 	}
@@ -575,7 +570,8 @@ class Timeframe extends CustomPost {
      *
 	 * @return bool
 	 */
-	public function showBookingCodes() {
+	public function showBookingCodes(): bool
+    {
 		return $this->getMeta( 'show-booking-codes' ) == 'on';
 	}
 
@@ -646,7 +642,8 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * @return array|string[]
+     * Gets the admins for the current timeframe, will combine location and item admins.
+	 * @return array|string[] - An array with User IDs
 	 * @throws Exception
 	 */
 	public function getAdmins(): array {

@@ -184,11 +184,11 @@ class Day {
 		$startTime = $timeframe->getStartTimeDateTime();
 		$startSlot = $this->getSlotByTime( $startTime, $grid );
 
-		// If we have a overbooked day, we need to mark all slots as booked
+		// If we have an overbooked day, we need to mark all slots as booked
 		if ( $timeframe->getType() == Timeframe::BOOKING_ID ) {
 
 			$booking          = new Booking( $timeframe->getPost() );
-			$startDateBooking = intval( $booking->getStartDate() );
+			$startDateBooking = $booking->getStartDate();
 			$startDateDay     = strtotime( $this->getDate() );
 
 			// if booking starts on day before, we set startslot to 0
