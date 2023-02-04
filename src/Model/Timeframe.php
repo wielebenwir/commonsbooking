@@ -332,6 +332,7 @@ class Timeframe extends CustomPost {
 					[ $this->getLocation()->ID ],
 					[ $this->getItem()->ID ],
 					null,
+					true
 				);
 
 				// filter current timeframe
