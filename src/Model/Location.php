@@ -83,7 +83,7 @@ class Location extends BookablePost {
 		}
 		elseif (empty($location_street) || empty($location_postcode)){
 			return sprintf('%s %s %s',
-				$location_city,
+				$location_street,
 				$location_postcode,
 				$location_city
 			);
