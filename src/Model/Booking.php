@@ -403,7 +403,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return bool
 	 */
 	public function isCancelled(): bool {
-		return ( $this->post_status == 'canceled' ? : false );
+		return ( $this->post_status == 'canceled');
 	}
 
 	/**
