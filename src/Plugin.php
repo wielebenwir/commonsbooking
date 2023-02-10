@@ -619,6 +619,7 @@ class Plugin {
 	public function initBookingcodes() {
 		add_action('before_delete_post', array(BookingCodes::class, 'deleteBookingCodes'), 10);
 		add_action("admin_action_csvexport", array(View\BookingCodes::class, 'renderCSV'), 10, 0);
+        add_action("admin_action_emailcodes", array(View\BookingCodes::class, 'emailCodes'), 10, 0);
 	}
 
 	/**
