@@ -485,7 +485,7 @@ class Plugin {
 		add_action('init', array(self::class, 'registerLocationTaxonomy'), 30);
 
 		//loads the Scheduler
-		add_action('init', array(Scheduler::class, 'initHooks') );
+		add_action('init', array(Scheduler::class, 'initHooks'));
 
 		// admin init tasks
 		add_action('admin_init', array(self::class, 'admin_init'), 30);

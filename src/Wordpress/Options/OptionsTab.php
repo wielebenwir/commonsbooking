@@ -83,7 +83,7 @@ class OptionsTab {
 
 
 	/**
-	 * If array contains title or description, create a new row contaning this text
+	 * If array contains title or description, create a new row containing this text
 	 *
 	 * @param array $metabox_group
 	 *

@@ -189,10 +189,10 @@ class Calendar {
 		foreach ( $month_cols as $month => $colspan ) {
 			$print .= "<th class='sortless' colspan='" . $colspan . "'>";
 
-			if ( $colspan > 3 ) {
-				$print .= date_i18n( 'F', strtotime( $month ) ) . "</th>";
+     		if ( $colspan > 3 ) {
+				$print .= date_i18n( 'F', strtotime( get_date_from_gmt( $month ) ) ). "</th>";
 			} else {
-				$print .= date_i18n( 'M', strtotime( $month ) ) . "</th>";
+				$print .= date_i18n( 'M', strtotime( get_date_from_gmt( $month ) ) ). "</th>";
 			}
 		}
 
