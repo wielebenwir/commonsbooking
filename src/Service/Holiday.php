@@ -7,26 +7,8 @@ use CommonsBooking\Plugin;
 
 class Holiday {
 	use Cache;
+
 	const BASE_URL = 'https://feiertage-api.de/api/';
-
-	const STATE_BADEN_WUERTEMBERG = 'BW';
-	const STATE_BAYERN = 'BY';
-	const STATE_BERLIN = 'BE';
-	const STATE_BRANDENBURG = 'BB';
-	const STATE_BREMEN = 'HB';
-	const STATE_HAMBURG = 'HH';
-	const STATE_HESSEN = 'HE';
-	const STATE_MECKLENBURG_VORPOMMERN = 'MV';
-	const STATE_NIEDERSACHSEN = 'NI';
-	const STATE_NORDRHEIN_WESTPHALEN = 'NW';
-	const STATE_RHEINLAND_PFALZ = 'RP';
-	const STATE_SAARLAND = 'SL';
-	const STATE_SACHSEN = 'SN';
-	const STATE_SACHSEN_ANHALT = 'ST';
-	const STATE_SCHLESWIG_HOLSTEIN = 'SH';
-	const STATE_THUERINGEN = 'TH';
-	const STATE_NATIONAL = 'NATIONAL';
-
 
 	public static function getHolidayFromState() {
 		$year   = $_POST['year'];
@@ -53,7 +35,6 @@ class Holiday {
 	}
 
 	private static function _file_get_contents_t_curl( $url ) {
-
 		$ctx  = stream_context_create( [ 'http' => [ 'timeout' => 5 ] ] );
 		$file = @file_get_contents( $url, false, $ctx );
 		if ( ! empty( $file ) ) {
@@ -77,23 +58,31 @@ class Holiday {
 				return $data;
 			}
 		}
-
-		throw new HolidayAPINotWorkingExceptionException(  );
 	}
 
-
-	private static function getConstants() {
-		$oClass = new \ReflectionClass(self::Class);
-		return $oClass->getConstants();
-	}
-
-	static function returnStates(){
-		$consts = self::getConstants();
-		$returnStates = array();
-		foreach ($consts as $constname => $constvalue) {
-			if($constname !== "BASE_URL")
-				$returnStates[$constvalue] = str_replace('_',' ',str_replace('STATE_','',$constname));
-		}
-		return $returnStates;
+	/**
+	 * Returns state mapping.
+	 * @return string[]
+	 */
+	static function returnStates(): array {
+		return [
+			'BW' => 'BADEN WUERTEMBERG',
+			'BY' => 'BAYERN',
+			'BE' => 'BERLIN',
+			'BB' => 'BRANDENBURG',
+			'HB' => 'BREMEN',
+			'HH' => 'HAMBURG',
+			'HE' => 'HESSEN',
+			'MV' => 'MECKLENBURG VORPOMMERN',
+			'NI' => 'NIEDERSACHSEN',
+			'NW' => 'NORDRHEIN WESTPHALEN',
+			'RP' => 'RHEINLAND PFALZ',
+			'SL' => 'SAARLAND',
+			'SN' => 'SACHSEN',
+			'ST' => 'SACHSEN ANHALT',
+			'SH' => 'SCHLESWIG HOLSTEIN',
+			'TH' => 'THUERINGEN',
+			'NATIONAL' => 'NATIONAL'
+		];
 	}
 }
