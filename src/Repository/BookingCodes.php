@@ -25,17 +25,30 @@ class BookingCodes {
 	/**
 	 * Returns booking codes for timeframe.
 	 *
-	 * @param $timeframeId
+	 * @param   int       $timeframeId - ID of timeframe to get codes for
+	 * @param   int|null  $startDate - Where to get booking codes from (timestamp)
+	 * @param   int|null  $endDate - Where to get booking codes to (timestamp)
 	 *
 	 * @return array
 	 */
-	public static function getCodes( $timeframeId ): array {
+	public static function getCodes( int $timeframeId, int $startDate = null, int $endDate = null ): array {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
+			$timeframe = New \CommonsBooking\Model\Timeframe($timeframeId);
+			$timeframeStartDate      = $timeframe->getStartDate();
+			$timeframeEndDate   = $timeframe->getEndDate();
 
-			$startDate = date( 'Y-m-d', intval( get_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::REPETITION_START, true ) ) );
-			$endDate   = date( 'Y-m-d', intval( get_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::REPETITION_END, true ) ) );
+			if ( ! $startDate || $startDate < $timeframeStartDate ) {
+				$startDate = $timeframeStartDate;
+			}
+
+			if (! $endDate || $endDate > $timeframeEndDate ) {
+				$endDate = $timeframeEndDate;
+			}
+
+			$startDate = date( 'Y-m-d', $startDate );
+			$endDate   = date( 'Y-m-d', $endDate );
 
 			global $wpdb;
 			$table_name = $wpdb->prefix . self::$tablename;
