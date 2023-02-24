@@ -36,8 +36,8 @@
         if (timeframeForm.length) {
             const timeframeRepetitionInput = $('#timeframe-repetition');
             const typeInput = $('#type');
-            const locationSelectionInput = $('#location-select');
-            const itemSelectionInput = $('#item-select');
+            // const locationSelectionInput = $('#location-select');
+            // const itemSelectionInput = $('#item-('.cmb2-id-item-category-id').hide();
             const gridInput = $('#grid');
             const weekdaysInput = $('#weekdays1'); // TODO: find better solution.
             const startTimeInput = $('#start-time');
@@ -53,10 +53,13 @@
             const bookingCodesDownload = $('#booking-codes-download');
             const bookingCodesList = $('#booking-codes-list');
 
-            const manualLocationSelection = $('.cmb2-id-location-id');
-            const manualItemSelection = $('.cmb2-id-item-id');
-            const categoryLocationSelection = $('.cmb2-id-location-category-id');
-            const categoryItemSelection = $('.cmb2-id-item-category-id');
+            const singleLocationSelection = $('.cmb2-id-location-id');
+            const multiLocationSelection = $('.cmb2-id-location-ids');
+            const singleItemSelection = $('.cmb2-id-item-id');
+            const multiItemSelection = $('.cmb2-id-item-ids');
+
+            // const categoryLocationSelection = $('.cmb2-id-location-category-id');
+            // const categoryItemSelection = $('.cmb2-id-item-category-id');
             const maxDaysSelect = $('.cmb2-id-timeframe-max-days');
             const advanceBookingDays = $('.cmb2-id-timeframe-advance-booking-days');
             const allowUserRoles = $('.cmb2-id-allowed-user-roles');
@@ -100,75 +103,83 @@
                     maxDaysSelect.show();
                     advanceBookingDays.show();
                     allowUserRoles.show();
+                    singleItemSelection.show();
+                    singleLocationSelection.show();
+                    multiItemSelection.hide();
+                    multiLocationSelection.hide();
                 } else {
                     maxDaysSelect.hide();
                     advanceBookingDays.hide();
                     allowUserRoles.hide();
+                    singleItemSelection.hide();
+                    singleLocationSelection.hide();
+                    multiItemSelection.show();
+                    multiLocationSelection.show();
                 }
             }
             handleTypeSelection();
             typeInput.change(function () {
                 handleTypeSelection();
-                handleItemSelection();
-                handleLocationSelection();
+                // handleItemSelection();
+                // handleLocationSelection();
             });
 
-            /**
-             * Shows/hides selection options for locations
-             */
-            const handleLocationSelection = function () {
-                const selectedType = $("option:selected", typeInput).val();
-                //disable the mass selection for bookable timeframes (for now)
-                if (selectedType == 2) {
-                    manualLocationSelection.show();
-                    categoryLocationSelection.hide();
-                    locationSelectionInput.hide();
-                }
-                const selectedOption = $("option:selected", locationSelectionInput).val();
-                if (selectedOption == 0) {
-                    categoryLocationSelection.hide();
-                    manualLocationSelection.show();
-                } else if (selectedOption == 1){
-                    categoryLocationSelection.show();
-                    manualLocationSelection.hide();
-                } else {
-                    manualLocationSelection.hide();
-                    categoryLocationSelection.hide();
-                }
-            };
-            handleLocationSelection();
-            locationSelectionInput.change(function () {
-                handleLocationSelection();
-            });
+            // /**
+            //  * Shows/hides selection options for locations
+            //  */
+            // const handleLocationSelection = function () {
+            //     const selectedType = $("option:selected", typeInput).val();
+            //     //disable the mass selection for bookable timeframes (for now)
+            //     if (selectedType == 2) {
+            //         manualLocationSelection.show();
+            //         categoryLocationSelection.hide();
+            //         locationSelectionInput.hide();
+            //     }
+            //     const selectedOption = $("option:selected", locationSelectionInput).val();
+            //     if (selectedOption == 0) {
+            //         categoryLocationSelection.hide();
+            //         manualLocationSelection.show();
+            //     } else if (selectedOption == 1){
+            //         categoryLocationSelection.show();
+            //         manualLocationSelection.hide();
+            //     } else {
+            //         manualLocationSelection.hide();
+            //         categoryLocationSelection.hide();
+            //     }
+            // };
+            // handleLocationSelection();
+            // locationSelectionInput.change(function () {
+            //     handleLocationSelection();
+            // });
 
-            /**
-             * Shows/hides selection options for items
-             */
-            const handleItemSelection = function () {
-                const selectedType = $("option:selected", typeInput).val();
-                //disable the mass selection for bookable timeframes (for now)
-                if (selectedType == 2) {
-                    manualItemSelection.show();
-                    categoryItemSelection.hide();
-                    itemSelectionInput.hide();
-                }
-                const selectedOption = $("option:selected", itemSelectionInput).val();
-                if (selectedOption == 0) {
-                    manualItemSelection.show();
-                    categoryItemSelection.hide();
-                } else if (selectedOption == 1){
-                    categoryItemSelection.show();
-                    manualItemSelection.hide();
-                }
-                else {
-                    manualItemSelection.hide();
-                    categoryItemSelection.hide();
-                }
-            };
-            handleItemSelection();
-            itemSelectionInput.change(function () {
-                handleItemSelection();
-            });
+            // /**
+            //  * Shows/hides selection options for items
+            //  */
+            // const handleItemSelection = function () {
+            //     const selectedType = $("option:selected", typeInput).val();
+            //     //disable the mass selection for bookable timeframes (for now)
+            //     if (selectedType == 2) {
+            //         manualItemSelection.show();
+            //         categoryItemSelection.hide();
+            //         itemSelectionInput.hide();
+            //     }
+            //     const selectedOption = $("option:selected", itemSelectionInput).val();
+            //     if (selectedOption == 0) {
+            //         manualItemSelection.show();
+            //         categoryItemSelection.hide();
+            //     } else if (selectedOption == 1){
+            //         categoryItemSelection.show();
+            //         manualItemSelection.hide();
+            //     }
+            //     else {
+            //         manualItemSelection.hide();
+            //         categoryItemSelection.hide();
+            //     }
+            // };
+            // handleItemSelection();
+            // itemSelectionInput.change(function () {
+            //     handleItemSelection();
+            // });
 
             /**
              * Shows/hides grid selection depending on checked-state.
