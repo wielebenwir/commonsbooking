@@ -300,7 +300,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
 
 		$date_end   = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
-		$time_end   = date_i18n( $time_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
+		$time_end   = date_i18n( $time_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END )  + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
 		$time_start = date_i18n( $time_format, strtotime( $this->getMeta( 'start-time' ) ) );
 
 		$grid     = $this->getMeta( 'grid' );

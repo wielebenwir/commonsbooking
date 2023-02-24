@@ -51,11 +51,22 @@ class Booking extends Timeframe {
      * @param  mixed $update
      * @return void
      */
-    public function saveAdminBookingFields( $post_id, $post = null, $update = null ) {
+    public function saveAdminBookingFields( $post_id, $post = null, $update = null) {
 
-        if ( is_admin() ) {
+        if ( empty( $_REQUEST ) ) {
+            return;
+        }
+
+        $post_status = esc_html( $_REQUEST['post_status']);
+        if ( $post_status == 'draft' || empty($post_status) ) {
+            $post_status = 'unconfirmed';
+        } 
+
+        if ( commonsbooking_isCurrentUserAdmin() ) {
             $postarr          = array(
-				'post_author'     => esc_html( $_REQUEST['booking_user'] ),
+				'post_title'     => esc_html__( 'Admin-Booking', 'commonsbooking' ),
+                'post_author'     => esc_html( $_REQUEST['booking_user'] ),
+                'post_status'     => $post_status,
                 'meta_input' => [
                     'admin_booking_id' => get_current_user_id(),
                     'start-time'       => esc_html( $_REQUEST['repetition-start']['time'] ),
@@ -246,52 +257,45 @@ class Booking extends Timeframe {
 			return;
 		}
 
+        commonsbooking_write_log($_REQUEST);
+
 		try {
 
-			// Check if its an admin edit
-			$requestKeys    = [
-				\CommonsBooking\Model\Timeframe::META_ITEM_ID,
-				\CommonsBooking\Model\Timeframe::META_LOCATION_ID,
-				\CommonsBooking\Model\Timeframe::REPETITION_START,
-				\CommonsBooking\Model\Timeframe::REPETITION_END,
-			];
-			$intersectCount = count( array_intersect( $requestKeys, array_keys( $_REQUEST ) ) );
-			if ( $intersectCount < count( $requestKeys ) ) {
-				//return;
-			}
-
 			// prepare needed params
-			$itemId          = sanitize_text_field( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] );
-			$locationId      = sanitize_text_field( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ] );
-			$repetitionStart = sanitize_text_field( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] );
+			$itemId          = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] );
+			$locationId      = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ] );
+			$repetitionStart = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ]);
+   
 			if ( is_array( $repetitionStart ) ) {
 				$repetitionStart = strtotime( $repetitionStart['date'] . ' ' . $repetitionStart['time'] );
+
 			} else {
 				$repetitionStart = intval( $repetitionStart );
 			}
-			$repetitionEnd = sanitize_text_field( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] );
+			$repetitionEnd = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] );
 			if ( is_array( $repetitionEnd ) ) {
 				$repetitionEnd = strtotime( $repetitionEnd['date'] . ' ' . $repetitionEnd['time'] );
 			} else {
 				$repetitionEnd = intval( $repetitionEnd );
 			}
 
-			self::validateBookingParameters(
-				$itemId,
-				$locationId,
-				$repetitionStart,
-				$repetitionEnd,
-				$postId
-			);
+
+                self::validateBookingParameters(
+                    $itemId,
+                    $locationId,
+                    $repetitionStart,
+                    $repetitionEnd,
+                    $postId
+                );
 
 		} catch ( OverlappingException $e ) {
 			set_transient(
                 \CommonsBooking\Model\Timeframe::ERROR_TYPE,
-				commonsbooking_sanitizeHTML(
+				'<h2>' . commonsbooking_sanitizeHTML(
                     __(
-                        'There are one ore more bookings within the choosen timerange. This booking is set to draft. Please adjust the startdate or enddate. ',
+                        'There are one ore more bookings within the choosen timerange. Please adjust the startdate or enddate. ',
                         'commonsbooking'
-                    )
+                    ) . '</h2>'
                 ),
                 45
             );
@@ -658,7 +662,7 @@ class Booking extends Timeframe {
                     __(
                         '<h1>Notice</h1><p>In this view, you as an admin can create or modify existing bookings. Please use it with caution. <br>
 				Click on the <strong>preview button on the right panel</strong> to view more booking details and to cancel the booking via the cancel button.<br>
-                Please set the booking status (confirmed, unconfirmed, canceled) using the status dropdown in publish panel.</br>
+                The booking is initially saved as <i>unconfirmed</i>. Please change the booking status (confirmed, unconfirmed, canceled) using the status dropdown in publish panel.</br>
 				<strong>Please note</strong>: There is no check for conflicts with existing bookings,  vacations or non-bookable periods.
                 </p> 
 				',

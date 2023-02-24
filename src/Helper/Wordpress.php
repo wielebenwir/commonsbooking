@@ -262,7 +262,7 @@ class Wordpress {
 	public static function getUTCDateTimeByTimestamp($timestamp) {
 		$dto = new DateTime();
 		$dto->setTimestamp(
-			$timestamp
+			intval( $timestamp )
 		);
 		$dto->setTimezone(new \DateTimeZone('UTC'));
 
