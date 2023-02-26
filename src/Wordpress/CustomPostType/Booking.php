@@ -52,25 +52,41 @@ class Booking extends Timeframe {
      * @return void
      */
     public function saveAdminBookingFields( $post_id, $post = null, $update = null) {
+        global $pagenow;
 
-        if ( empty( $_REQUEST ) ) {
+        // we check if its a new created post
+        if ( empty($_REQUEST) || $pagenow === 'post-new.php' ) {
             return;
         }
 
-        $post_status = esc_html( $_REQUEST['post_status']);
-        if ( $post_status == 'draft' || empty($post_status) ) {
+        // set request variables
+        if ( isset( $_REQUEST['post_status'] ) ) {
+            $post_status = esc_html( $_REQUEST['post_status']) ?? false;
+        }
+        if ( isset( $_REQUEST['repetition-start']['time'] ) ) {
+            $start_time = esc_html( $_REQUEST['repetition-start']['time']) ?? false;
+        }
+        if ( isset( $_REQUEST['repetition-end']['time'] ) ) {
+            $end_time = esc_html( $_REQUEST['repetition-end']['time']) ?? false;
+        }
+        if ( isset( $_REQUEST['booking_user'] ) ) {
+            $booking_user = esc_html( $_REQUEST['booking_user']) ?? false;
+        }
+
+
+        if ( $post_status == 'draft' || !($post_status) ) {
             $post_status = 'unconfirmed';
         } 
 
         if ( commonsbooking_isCurrentUserAdmin() ) {
             $postarr          = array(
 				'post_title'     => esc_html__( 'Admin-Booking', 'commonsbooking' ),
-                'post_author'     => esc_html( $_REQUEST['booking_user'] ),
+                'post_author'     => $booking_user,
                 'post_status'     => $post_status,
                 'meta_input' => [
                     'admin_booking_id' => get_current_user_id(),
-                    'start-time'       => esc_html( $_REQUEST['repetition-start']['time'] ),
-                    'end-time'         => esc_html( $_REQUEST['repetition-end']['time'] ),
+                    'start-time'       => $start_time,
+                    'end-time'         => $end_time,
                     'type'             => Timeframe::BOOKING_ID,
                     'grid'             => '',
 				],
@@ -253,11 +269,12 @@ class Booking extends Timeframe {
 	 * @return void
 	 */
 	public static function preSavePost( $postId, $data ) {
-		if ( static::$postType !== $data['post_type'] ) {
+        global $pagenow;
+
+		if ( static::$postType !== $data['post_type'] && $pagenow === 'post-new.php') {
 			return;
 		}
 
-        commonsbooking_write_log($_REQUEST);
 
 		try {
 
@@ -550,6 +567,11 @@ class Booking extends Timeframe {
 	 * @param $post_id
 	 */
 	public function setCustomColumnsData( $column, $post_id ) {
+        global $pagenow;
+
+       if ($pagenow !== 'edit.php' || empty( esc_html( $_GET['post_type'] ) ) || esc_html( $_GET['post_type'] ) !== $this::$postType ) {
+        return;
+       }
 
 		// we alter the  author column data and link the username to the user profile
 		if ( $column == 'timeframe-author' ) {
