@@ -10,16 +10,6 @@ class BookingRuleAppliedTest extends BookingRuleTest {
 	private Booking $testBookingTomorrow;
 	private int $testBookingId;
 	protected BookingRuleApplied $appliedAlwaysAllow,$appliedAlwaysDeny;
-	/**
-	 * @var int|\WP_Error
-	 */
-	private int $testBookingPastId;
-
-	public function testFromBookingRule()
-	{
-		$appliedRule = BookingRuleApplied::fromBookingRule($this->alwaysallow,true);
-		$this->assertNotNull($appliedRule);
-	}
 
 	protected function setUpTestBooking(): void {
 		$wp_user = get_user_by('email',"a@a.de");
@@ -58,22 +48,10 @@ class BookingRuleAppliedTest extends BookingRuleTest {
 			strtotime( '+90 days', time() )
 		);
 		$this->setUpTestBooking();
-		$this->appliedAlwaysAllow = new BookingRuleApplied(
-			$this->alwaysallow->getName(),
-			$this->alwaysallow->getTitle(),
-			$this->alwaysallow->getDescription(),
-			$this->alwaysallow->getErrorMessage(),
-			$this->alwaysallow->getValidationFunction(),
-			true
-		);
-		$this->appliedAlwaysDeny = new BookingRuleApplied(
-			$this->alwaysdeny->getName(),
-			$this->alwaysdeny->getTitle(),
-			$this->alwaysdeny->getDescription(),
-			$this->alwaysdeny->getErrorMessage(),
-			$this->alwaysdeny->getValidationFunction(),
-			true
-		);
+		$this->appliedAlwaysAllow = new BookingRuleApplied( $this->alwaysallow );
+		$this->appliedAlwaysAllow->setAppliesToWho(true);
+		$this->appliedAlwaysDeny = new BookingRuleApplied( $this->alwaysdeny );
+		$this->appliedAlwaysDeny->setAppliesToWho(true);
 	}
 
 	protected function tearDown() {

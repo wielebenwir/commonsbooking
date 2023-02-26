@@ -2,7 +2,6 @@
 
 namespace CommonsBooking\Service;
 
-use Closure;
 use CommonsBooking\Exception\BookingDeniedException;
 use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Model\Booking;
@@ -13,30 +12,61 @@ use CommonsBooking\Wordpress\Options\OptionsTab;
  *
  */
 class BookingRuleApplied extends BookingRule {
+
 	private bool $appliesToAll;
 	private array $appliedTerms;
-	private array $setParams;
+	private array $appliedParams;
+	private array $appliesToRoles;
 
 	/**
-	 * The constructor for BookingRules after they can be applied to actual bookings
-	 * @throws BookingRuleException
+	 * @param   \CommonsBooking\Service\BookingRule  $rule
+	 *
+	 * @throws \CommonsBooking\Exception\BookingRuleException
 	 */
-	public function __construct( string $name,string $title, string $description, string $errorMessage, Closure $validationFunction, bool $appliesToAll,array $appliedTerms = [],array $paramList = [],array $setParams = []) {
-		parent::__construct( $name,$title, $description, $errorMessage, $validationFunction,$paramList );
-		if ($appliesToAll){
-			$this->appliesToAll = true;
-		}
-		else {
+	public function __construct( BookingRule $rule) {
+		parent::__construct(
+			$rule->name,
+			$rule->title,
+			$rule->description,
+			$rule->errorMessage,
+			$rule->validationFunction,
+			$rule->params ?? [],
+		);
+	}
+
+	/**
+	 * Will set who this Booking Rule applies to, either needs to be all or at least one category
+	 *
+	 *
+	 * @param   bool   $appliesToAll
+	 * @param   array  $appliedTerms
+	 *
+	 * @throws \CommonsBooking\Exception\BookingRuleException
+	 */
+	public function setAppliesToWho(bool $appliesToAll, array $appliedTerms = []): void {
+		if (! $appliesToAll){
 			$this->appliesToAll = false;
 			if (empty($appliedTerms)){
 				throw new BookingRuleException(__("You need to specify a category, if the rule does not apply to all items", 'commonsbooking'));
 			}
 			$this->appliedTerms = $appliedTerms;
 		}
+		else {
+			$this->appliesToAll = true;
+		}
+	}
 
-		if ($paramList){
-			if (count($paramList) == count($setParams) ){
-				$this->setParams = $setParams;
+	/**
+	 * Will set the necessary params for the BookingRule to work
+	 *
+	 * @param   array  $paramsToSet
+	 *
+	 * @throws \CommonsBooking\Exception\BookingRuleException - if not enough params were specified for the BookingRule
+	 */
+	public function setAppliedParams( array $paramsToSet ): void {
+		if ($this->params){
+			if (count($this->params) == count($paramsToSet) ){
+				$this->appliedParams = $paramsToSet;
 			}
 			else {
 				throw new BookingRuleException(__("Booking rules: Not enough parameters specified.", 'commonsbooking'));
@@ -65,24 +95,7 @@ class BookingRuleApplied extends BookingRule {
 		}
 
 		$validationFunction = $this->validationFunction;
-		return $validationFunction( $booking, $this->setParams ?? [], $this->appliesToAll ? false : $this->appliedTerms );
-	}
-
-	/**
-	 * @throws BookingRuleException
-	 */
-	public static function fromBookingRule(BookingRule $rule, bool $appliesToAll, array $appliedTerms = [], array $setParams = []): BookingRuleApplied {
-		return new self(
-			$rule->name,
-			$rule->title,
-			$rule->description,
-			$rule->errorMessage,
-			$rule->validationFunction,
-			$appliesToAll,
-			$appliedTerms ?? [],
-			$rule->params ?? [],
-			$setParams ?? []
-		);
+		return $validationFunction( $booking, $this->appliedParams ?? [], $this->appliesToAll ? false : $this->appliedTerms );
 	}
 
 	/**
@@ -158,10 +171,21 @@ class BookingRuleApplied extends BookingRule {
 				if (isset($ruleConfig['rule-param1'])) { $ruleParams[] = $ruleConfig['rule-param1']; }
 				if (isset($ruleConfig['rule-param2'])) { $ruleParams[] = $ruleConfig['rule-param2']; }
 				if (isset($ruleConfig['rule-param3'])) { $ruleParams[] = $ruleConfig['rule-param3']; }
-				$appliedRules[] = self::fromBookingRule(
-					$validRule,
-					isset ( $ruleConfig['rule-applies-all'] ) && $ruleConfig['rule-applies-all'] === 'on',
-					(isset($ruleConfig['rule-applies-categories']) && $ruleConfig['rule-applies-categories'] !== false) ? $ruleConfig['rule-applies-categories'] : [],
+
+				if (isset ( $ruleConfig['rule-applies-all'] ) && $ruleConfig['rule-applies-all'] === 'on'){
+					$appliesToAll = true;
+				}
+
+				if ( isset( $ruleConfig['rule-applies-categories']) && $ruleConfig['rule-applies-categories'] !== FALSE ){
+					$appliedTerms = $ruleConfig['rule-applies-categories'];
+				}
+
+				$bookingRule = new self($validRule);
+				$bookingRule->setAppliesToWho(
+					$appliesToAll ?? false,
+					$appliedTerms ?? []
+				);
+				$bookingRule->setAppliedParams(
 					$ruleParams ?? []
 				);
 				}
