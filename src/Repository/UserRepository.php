@@ -52,7 +52,9 @@ class UserRepository {
 	}
 
 	/**
-	 * Returns an array of all User Roles as roleID => translated role name
+	 * Returns an associative array of all User Roles as
+	 * roleID => translated role name
+	 * so that it can be used in the CMB2 select field.
 	 *
 	 * @return array
 	 */
@@ -61,10 +63,38 @@ class UserRepository {
 		$rolesArray = $wp_roles->roles;
 		$roles      = [];
 		foreach ( $rolesArray as $roleID => $value ) {
+			if ($value['name'] == 'Administrator') {
+				continue;
+			}
 			$roles[ $roleID ] = translate_user_role( $value['name'] );
 		}
 
 		return $roles;
+	}
+
+	/**
+	 * Checks if user has one of the given roles.
+	 * Can either take an array of roles or a single role as string.
+	 *
+	 * @param $userID
+	 * @param $roles
+	 *
+	 * @return bool
+	 */
+	public static function userHasRoles($userID, $roles): bool {
+		$user = get_userdata($userID);
+		if (is_array($roles)) {
+			foreach ($roles as $role) {
+				if (in_array($role, $user->roles)) {
+					return true;
+				}
+			}
+		} else {
+			if (in_array($roles, $user->roles)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

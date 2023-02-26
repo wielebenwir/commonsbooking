@@ -5,6 +5,7 @@ namespace CommonsBooking\Service;
 use CommonsBooking\Exception\BookingDeniedException;
 use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Model\Booking;
+use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 
@@ -75,6 +76,17 @@ class BookingRuleApplied extends BookingRule {
 	}
 
 	/**
+	 * Sets the roles that the BookingRule should be checked on. Will apply to
+	 * all roles if left empty.
+	 *
+	 * @param   array  $appliesToRoles
+	 *
+	 */
+	public function setAppliesToRoles( array $appliesToRoles ): void {
+		$this->appliesToRoles = $appliesToRoles;
+	}
+
+	/**
 	 * checkBookingRulesCompliance takes in a booking object and checks if it complies with the rules.
 	 * If the booking complies with all the rules, an empty array will be returned.
 	 * If the booking violates any of the rules, an array of conflicting bookings will be returned.
@@ -120,6 +132,17 @@ class BookingRuleApplied extends BookingRule {
 
 		/** @var BookingRuleApplied $rule */
 		foreach ( $ruleset as $rule ) {
+
+			// Check if rule is to be applied to specific roles only and if user has one of those roles
+			if ($rule->appliesToRoles){
+				if (
+					 ! UserRepository::userHasRoles(
+						$booking->getUserData()->ID,
+						$rule->appliesToRoles
+					)){
+						continue;
+					}
+			}
 
 			if ( ! ($rule instanceof BookingRuleApplied )) {
 				throw new BookingRuleException( "Value must be a BookingRuleApplied" );
@@ -188,6 +211,10 @@ class BookingRuleApplied extends BookingRule {
 				$bookingRule->setAppliedParams(
 					$ruleParams ?? []
 				);
+				$bookingRule->setAppliesToRoles(
+					$ruleConfig['rule-applies-roles'] ?? []);
+				$appliedRules[] = $bookingRule;
+
 				}
 			}
 
