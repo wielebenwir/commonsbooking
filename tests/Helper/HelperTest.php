@@ -75,20 +75,20 @@ class HelperTest extends CustomPostTypeTest {
 		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
 			array(
 				array(
-					"start_date" => to_ts('2020-01-01T12:00:00+00:00'),
-					"end_date"   => to_ts('2020-01-02T12:00:00+00:00'),
+					"start_date" => dt_to_ts('2020-01-01T12:00:00+00:00'),
+					"end_date"   => dt_to_ts('2020-01-02T12:00:00+00:00'),
 				),
 				array(
-					"start_date" => to_ts('2020-01-03T12:00:00+00:00'),
-					"end_date"   => to_ts('2020-01-04T12:00:00+00:00'),
+					"start_date" => dt_to_ts('2020-01-03T12:00:00+00:00'),
+					"end_date"   => dt_to_ts('2020-01-04T12:00:00+00:00'),
 				)
 			)
 		);
 
 		$this->assertTrue(count($arrayOfBookableDates) == 2);
 
-		$this->assertTrue($arrayOfBookableDates[0]['start_date'] == to_ts('2020-01-01T12:00:00+00:00'));
-		$this->assertTrue($arrayOfBookableDates[1]['end_date']   == to_ts('2020-01-04T12:00:00+00:00'));
+		$this->assertTrue($arrayOfBookableDates[0]['start_date'] == dt_to_ts('2020-01-01T12:00:00+00:00'));
+		$this->assertTrue($arrayOfBookableDates[1]['end_date']   == dt_to_ts('2020-01-04T12:00:00+00:00'));
 	}
 
 	public function test_whenThreeTimeFramesOverlap_returnOneTimeframe() {
