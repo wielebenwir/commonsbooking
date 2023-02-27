@@ -96,16 +96,16 @@ class HelperTest extends CustomPostTypeTest {
 		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
 			array(
 				array(
-					"start_date" => dt_to_ts("2020-01-01"),
-					"end_date"   => dt_to_ts("2020-01-05")
+					"start_date" => to_ts("2020-01-01"),
+					"end_date"   => to_ts("2020-01-05")
 				),
 				array(
-					"start_date" => dt_to_ts("2020-01-02"),
-					"end_date"   => dt_to_ts("2020-01-04")
+					"start_date" => to_ts("2020-01-02"),
+					"end_date"   => to_ts("2020-01-04")
 				),
 				array(
-					"start_date" => dt_to_ts("2020-01-05"),
-					"end_date"   => dt_to_ts("2020-01-06")
+					"start_date" => to_ts("2020-01-05"),
+					"end_date"   => to_ts("2020-01-06")
 				)
 			)
 		);
@@ -113,7 +113,7 @@ class HelperTest extends CustomPostTypeTest {
 		$this->assertTrue(count($arrayOfBookableDates) == 1);
 		$merged = $arrayOfBookableDates[0];
 
-		$this->assertTrue($merged['start_date'] == dt_to_ts("2020-01-01"));
-		$this->assertTrue($merged['end_date']   == dt_to_ts("2020-01-06"));
+		$this->assertTrue($merged['start_date'] == to_ts("2020-01-01"));
+		$this->assertTrue($merged['end_date']   == to_ts("2020-01-06"));
 	}
 }
