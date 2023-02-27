@@ -12,13 +12,13 @@ use CommonsBooking\Model\Timeframe;
  * If not, use func which is a binary operator to compute a result
  *
  * @param string $key
- * @param callable $func
  * @param object $arr1
  * @param object $arr2
+ * @param callable $func
  *
  * @return object|null
  */
-function null_if_either_key_null_else_func( string $key, callable $func, object $arr1, object $arr2 ): ?object {
+function null_if_either_key_null_else_func( string $key, array $arr1, array $arr2, callable $func ): ?object {
 	if ( !array_key_exists($key, $arr1) || !array_key_exists($key, $arr2)) {
 		return null;
 	}
