@@ -39,7 +39,7 @@ class HelperTest extends CustomPostTypeTest {
 			)
 		);
 
-		$this->assertTrue(count($arrayOfBookableDates) == 1);
+		$this->assertCount(1, $arrayOfBookableDates);
 		$merged = $arrayOfBookableDates[0];
 
 		$this->assertEquals($merged['start_date'], to_ts("2020-01-01"));
@@ -62,7 +62,7 @@ class HelperTest extends CustomPostTypeTest {
 			)
 		);
 
-		$this->assertTrue(count($arrayOfBookableDates) == 1);
+		$this->assertCount(1 , $arrayOfBookableDates);
 		$merged = $arrayOfBookableDates[0];
 
 		$this->assertEquals($merged['start_date'], to_ts("2020-01-01"));
@@ -85,7 +85,7 @@ class HelperTest extends CustomPostTypeTest {
 			)
 		);
 
-		$this->assertTrue(count($arrayOfBookableDates) == 2);
+		$this->assertCount(2, $arrayOfBookableDates);
 
 		$this->assertTrue($arrayOfBookableDates[0]['start_date'] == dt_to_ts('2020-01-01T12:00:00+00:00'));
 		$this->assertTrue($arrayOfBookableDates[1]['end_date']   == dt_to_ts('2020-01-04T12:00:00+00:00'));
@@ -110,11 +110,11 @@ class HelperTest extends CustomPostTypeTest {
 			)
 		);
 
-		$this->assertTrue(count($arrayOfBookableDates) == 1);
+		$this->assertCount(1, $arrayOfBookableDates);
 		$merged = $arrayOfBookableDates[0];
 
-		$this->assertTrue($merged['start_date'] == to_ts("2020-01-01"));
-		$this->assertTrue($merged['end_date']   == to_ts("2020-01-06"));
+		$this->assertEquals($merged['start_date'], to_ts("2020-01-01"));
+		$this->assertEquals($merged['end_date'],   to_ts("2020-01-06"));
 	}
 
 	public function test_whenTimeFrameHasOpenInterval_returnOneTimeFrame() {
@@ -130,10 +130,10 @@ class HelperTest extends CustomPostTypeTest {
 			)
 		);
 
-		$this->assertTrue(count($arrayOfBookableDates) == 1);
+		$this->assertCount(1, $arrayOfBookableDates);
 		$merged = $arrayOfBookableDates[0];
 
-		$this->assertTrue($merged['start_date'] == to_ts("2020-01-01"));
+		$this->assertEquals($merged['start_date'], to_ts("2020-01-01"));
 		$this->assertArrayNotHasKey( 'end_date', $merged );
 	}
 }
