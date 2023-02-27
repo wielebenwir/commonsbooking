@@ -249,11 +249,6 @@ function commonsbooking_isUserAdmin(WP_User $user) {
 	return false;
 }
 
-add_filter('commonsbooking_admin_roles', function($adminRoles) {
-	$adminRoles[] = 'editor';
-	return $adminRoles;
-});
-
 // Check if current user has subscriber role
 function commonsbooking_isCurrentUserSubscriber() {
 	$user = wp_get_current_user();
