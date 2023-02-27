@@ -7,12 +7,23 @@ use CommonsBooking\Model\Item;
 use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Timeframe;
 
-function if_either_null_else_func( callable $func, object $end_date, object $end_date1 ): ?object {
-	if ($end_date == null || $end_date1 == null) {
+/**
+ * If key of arr1 and arr2 is null, return null
+ * If not, use func which is a binary operator to compute a result
+ *
+ * @param string $key
+ * @param callable $func
+ * @param object $arr1
+ * @param object $arr2
+ *
+ * @return object|null
+ */
+function null_if_either_key_null_else_func( string $key, callable $func, object $arr1, object $arr2 ): ?object {
+	if ( !array_key_exists($key, $arr1) || !array_key_exists($key, $arr2)) {
 		return null;
 	}
 
-	return $func($end_date1, $end_date1);
+	return $func($arr2[$key], $arr2[$key]);
 }
 
 class Helper {
@@ -155,8 +166,10 @@ class Helper {
 
 			if ($result[$last]['end_date'] >= $arrayOfRanges[$i]['start_date']) {
 				// Overlap => do the merge
-				$result[$last]["start_date"] = if_either_null_else_func(min, $result[ $last ]['start_date'], $arrayOfRanges[ $i ]['start_date'] );
-				$result[$last]["end_date"]   = if_either_null_else_func(max, $result[ $last ]['end_date'],   $arrayOfRanges[ $i ]['end_date'] );
+				$result[$last]["start_date"] = null_if_either_key_null_else_func( 'start_date', $result[ $last ],
+					$arrayOfRanges[ $i ], function($a,$b) {return min($a, $b);} );
+				$result[$last]["end_date"]   = null_if_either_key_null_else_func( 'end_date',   $result[ $last ],
+					$arrayOfRanges[ $i ], function($a,$b) {return max($a, $b);} );
 			} else {
 				// No overlap => Add new interval to result
 				// And use this as new last interval
