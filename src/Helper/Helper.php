@@ -5,6 +5,7 @@ namespace CommonsBooking\Helper;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\Item;
 use CommonsBooking\Model\Location;
+use CommonsBooking\Model\Timeframe;
 
 class Helper {
 
@@ -113,6 +114,57 @@ class Helper {
 		}
 
 		return $post;
+	}
+
+	/**
+	 * Returns one or more overlapping timeframes, given an array of timeframes
+	 *
+	 * NOTE: When performance issues arise, this operation can be implemented
+	 * faster with an interval tree data structure
+	 *
+	 * @param $arrayOfRanges
+	 *
+	 * @return array():TimeFrame
+	 */
+	public static function mergeRangesToBookableDate( $arrayOfRanges ): array {
+
+		if ( count($arrayOfRanges) == 1) {
+			return $arrayOfRanges;
+		}
+
+		$result = array();
+
+		// Sort by start date
+		usort($arrayOfRanges, function( $a, $b ) {
+			if ($a['start_date'] > $b['start_date']) {
+				return 1;
+			} if ($a['start_date'] < $b['start_date']) {
+				return -1;
+			} if ($a['start_date'] == $b['start_date']) {
+				return 0;
+			}
+		});
+
+		$result[] = $arrayOfRanges[0];
+		$last = 0;
+
+		// For each element
+		for ($i = 1; $i < count($arrayOfRanges); $i++) {
+
+			if ($result[$last]['end_date'] >= $arrayOfRanges[$i]['start_date']) {
+				// Overlap => do the merge
+				$result[$last]["start_date"] = min($result[$last]['start_date'], $arrayOfRanges[$i]['start_date']);
+				$result[$last]["end_date"]   = max($result[$last]['end_date'],   $arrayOfRanges[$i]['end_date']);
+			} else {
+				// No overlap => Add new interval to result
+				// And use this as new last interval
+				$result[] = $arrayOfRanges[ $i ];
+				$last ++;
+			}
+		}
+
+		return $result;
+
 	}
 
 }
