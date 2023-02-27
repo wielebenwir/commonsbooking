@@ -7,6 +7,14 @@ use CommonsBooking\Model\Item;
 use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Timeframe;
 
+function if_either_null_else_func( callable $func, object $end_date, object $end_date1 ): ?object {
+	if ($end_date == null || $end_date1 == null) {
+		return null;
+	}
+
+	return $func($end_date1, $end_date1);
+}
+
 class Helper {
 
 	/**
@@ -128,14 +136,6 @@ class Helper {
 	 */
 	public static function mergeRangesToBookableDate( $arrayOfRanges ): array {
 
-		function if_either_null_else_func( callable $func, object $end_date, object $end_date1 ): ?object {
-			if ($end_date == null || $end_date1 == null) {
-				return null;
-			}
-
-			return $func($end_date1, $end_date1);
-		}
-
 		if ( count($arrayOfRanges) == 1) {
 			return $arrayOfRanges;
 		}
@@ -168,5 +168,4 @@ class Helper {
 		return $result;
 
 	}
-
 }
