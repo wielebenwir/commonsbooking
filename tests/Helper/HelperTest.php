@@ -142,10 +142,10 @@ class HelperTest extends TestCase {
 			array(
 				array(
 					"start_date" => to_ts("2020-01-01"),
-					"end_date"   => to_ts("2020-03-01")
+					"end_date"   => to_ts("2020-04-01")
 				),
 				array(
-					"start_date" => to_ts("2020-04-01")
+					"start_date" => to_ts("2020-03-01")
 				)
 			)
 		);
