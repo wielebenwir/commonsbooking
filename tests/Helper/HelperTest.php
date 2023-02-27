@@ -134,6 +134,6 @@ class HelperTest extends CustomPostTypeTest {
 		$merged = $arrayOfBookableDates[0];
 
 		$this->assertTrue($merged['start_date'] == to_ts("2020-01-01"));
-		$this->assertTrue($merged['end_date']   == null);
+		$this->assertFalse(array_key_exists('end_date', $merged));
 	}
 }
