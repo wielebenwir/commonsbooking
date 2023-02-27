@@ -2,10 +2,10 @@
 
 namespace CommonsBooking\Tests\Helper;
 
-use CommonsBooking\Helper\Helper;
-use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use DateTime;
 use DateTimeInterface;
+use PHPUnit\Framework\TestCase;
+use CommonsBooking\Helper\Helper;
 
 function dt_to_ts( $time_str ): DateTime {
 	return DateTime::createFromFormat(DateTimeInterface::ATOM, $time_str);
@@ -22,7 +22,7 @@ function to_ts( string $time_str ): DateTime {
 	return DateTime::createFromFormat('Y-m-d', $time_str);
 }
 
-class HelperTest extends CustomPostTypeTest {
+class HelperTest extends TestCase {
 
 	public function test_whenAllTimeFramesOverlap_returnOneTimeframe() {
 
