@@ -23,7 +23,7 @@ function null_if_either_key_null_else_func( string $key, array $arr1, array $arr
 		return null;
 	}
 
-	return $func($arr2[$key], $arr2[$key]);
+	return $func($arr1[$key], $arr2[$key]);
 }
 
 class Helper {

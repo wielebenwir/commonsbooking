@@ -87,8 +87,8 @@ class HelperTest extends CustomPostTypeTest {
 
 		$this->assertCount(2, $arrayOfBookableDates);
 
-		$this->assertTrue($arrayOfBookableDates[0]['start_date'] == dt_to_ts('2020-01-01T12:00:00+00:00'));
-		$this->assertTrue($arrayOfBookableDates[1]['end_date']   == dt_to_ts('2020-01-04T12:00:00+00:00'));
+		$this->assertEquals($arrayOfBookableDates[0]['start_date'], dt_to_ts('2020-01-01T12:00:00+00:00'));
+		$this->assertEquals($arrayOfBookableDates[1]['end_date'],   dt_to_ts('2020-01-04T12:00:00+00:00'));
 	}
 
 	public function test_whenThreeTimeFramesOverlap_returnOneTimeframe() {
