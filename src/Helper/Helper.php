@@ -164,12 +164,14 @@ class Helper {
 		// For each element
 		for ($i = 1; $i < count($arrayOfRanges); $i++) {
 
-			if ($result[$last]['end_date'] >= $arrayOfRanges[$i]['start_date']) {
-				// Overlap => do the merge
-				$result[$last]["start_date"] = null_if_either_key_null_else_func( 'start_date', $result[ $last ],
-					$arrayOfRanges[ $i ], function($a,$b) {return min($a, $b);} );
-				$result[$last]["end_date"]   = null_if_either_key_null_else_func( 'end_date',   $result[ $last ],
-					$arrayOfRanges[ $i ], function($a,$b) {return max($a, $b);} );
+			// Either interval_0 is open
+			//  or interval_0 is not open and intersects interval_1
+			// => Overlap, merge both
+			if (!array_key_exists('end_date', $result[$last])
+			    || $result[$last]['end_date'] >= $arrayOfRanges[$i]['start_date'])
+			{
+				$result[$last]["start_date"] = null_if_either_key_null_else_func( 'start_date', $result[ $last ], $arrayOfRanges[ $i ], function($a,$b) {return min($a, $b);} );
+				$result[$last]["end_date"]   = null_if_either_key_null_else_func( 'end_date',   $result[ $last ], $arrayOfRanges[ $i ], function($a,$b) {return max($a, $b);} );
 			} else {
 				// No overlap => Add new interval to result
 				// And use this as new last interval
