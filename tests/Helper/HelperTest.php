@@ -136,4 +136,24 @@ class HelperTest extends TestCase {
 		$this->assertEquals($merged['start_date'], to_ts("2020-01-01"));
 		$this->assertArrayNotHasKey( 'end_date', $merged );
 	}
+
+	public function test_whenTimeFrameHasOpenInterval2_returnOneTimeFrame() {
+		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
+			array(
+				array(
+					"start_date" => to_ts("2020-01-01"),
+					"end_date"   => to_ts("2020-03-01")
+				),
+				array(
+					"start_date" => to_ts("2020-04-01")
+				)
+			)
+		);
+
+		$this->assertCount(1, $arrayOfBookableDates);
+		$merged = $arrayOfBookableDates[0];
+
+		$this->assertEquals($merged['start_date'], to_ts("2020-01-01"));
+		$this->assertArrayNotHasKey( 'end_date', $merged );
+	}
 }
