@@ -42,8 +42,8 @@ class HelperTest extends CustomPostTypeTest {
 		$this->assertTrue(count($arrayOfBookableDates) == 1);
 		$merged = $arrayOfBookableDates[0];
 
-		$this->assertThat($merged['start_date'], is(equalTo(to_ts("2020-01-01"))));
-		$this->assertThat($merged['end_date'],   is(equalTo(to_ts("2020-01-04"))));
+		$this->assertEquals($merged['start_date'], to_ts("2020-01-01"));
+		$this->assertEquals($merged['end_date'],   to_ts("2020-01-04"));
 	}
 
 
@@ -65,8 +65,8 @@ class HelperTest extends CustomPostTypeTest {
 		$this->assertTrue(count($arrayOfBookableDates) == 1);
 		$merged = $arrayOfBookableDates[0];
 
-		$this->assertThat($merged['start_date'], is(equalTo(to_ts("2020-01-01"))));
-		$this->assertThat($merged['end_date'],   is(equalTo(to_ts("2020-01-04"))));
+		$this->assertEquals($merged['start_date'], to_ts("2020-01-01"));
+		$this->assertEquals($merged['end_date'],   to_ts("2020-01-04"));
 	}
 
 
