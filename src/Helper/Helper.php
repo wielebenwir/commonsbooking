@@ -18,7 +18,7 @@ use CommonsBooking\Model\Timeframe;
  *
  * @return object|null
  */
-function unset_if_either_key_null_else_set_func( string $key, array $arr1, array $arr2, callable $func ) : void {
+function unset_if_either_key_null_else_set_func( string $key, array &$arr1, array &$arr2, callable $func ) : void {
 	if ( !array_key_exists($key, $arr1)) {
 		// Do nothing, interval1 is open
 	} else if ( !array_key_exists($key, $arr2)) {
