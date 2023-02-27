@@ -7,7 +7,7 @@ use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use DateTime;
 use DateTimeInterface;
 
-function dt_to_ts( $time_str ): int {
+function dt_to_ts( $time_str ): DateTime {
 	return DateTime::createFromFormat(DateTimeInterface::ATOM, $time_str);
 }
 
@@ -18,7 +18,7 @@ function dt_to_ts( $time_str ): int {
  *
  * @return int
  */
-function to_ts( $time_str ): int {
+function to_ts( string $time_str ): DateTime {
 	return DateTime::createFromFormat('Y-m-d', $time_str);
 }
 
