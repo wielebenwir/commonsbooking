@@ -116,4 +116,24 @@ class HelperTest extends CustomPostTypeTest {
 		$this->assertTrue($merged['start_date'] == to_ts("2020-01-01"));
 		$this->assertTrue($merged['end_date']   == to_ts("2020-01-06"));
 	}
+
+	public function test_whenTimeFrameHasOpenInterval_returnOneTimeFrame() {
+		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
+			array(
+				array(
+					"start_date" => to_ts("2020-01-01")
+				),
+				array(
+					"start_date" => to_ts("2020-01-01"),
+					"end_date"   => to_ts("2020-01-04")
+				)
+			)
+		);
+
+		$this->assertTrue(count($arrayOfBookableDates) == 1);
+		$merged = $arrayOfBookableDates[0];
+
+		$this->assertTrue($merged['start_date'] == to_ts("2020-01-01"));
+		$this->assertTrue($merged['end_date']   == null);
+	}
 }

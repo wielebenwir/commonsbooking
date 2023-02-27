@@ -128,6 +128,14 @@ class Helper {
 	 */
 	public static function mergeRangesToBookableDate( $arrayOfRanges ): array {
 
+		function if_either_null_else_func( callable $func, object $end_date, object $end_date1 ): ?object {
+			if ($end_date == null || $end_date1 == null) {
+				return null;
+			}
+
+			return $func($end_date1, $end_date1);
+		}
+
 		if ( count($arrayOfRanges) == 1) {
 			return $arrayOfRanges;
 		}
@@ -136,13 +144,7 @@ class Helper {
 
 		// Sort by start date
 		usort($arrayOfRanges, function( $a, $b ) {
-			if ($a['start_date'] > $b['start_date']) {
-				return 1;
-			} if ($a['start_date'] < $b['start_date']) {
-				return -1;
-			} if ($a['start_date'] == $b['start_date']) {
-				return 0;
-			}
+			return $a['start_date'] <=> $b['start_date'];
 		});
 
 		$result[] = $arrayOfRanges[0];
@@ -153,8 +155,8 @@ class Helper {
 
 			if ($result[$last]['end_date'] >= $arrayOfRanges[$i]['start_date']) {
 				// Overlap => do the merge
-				$result[$last]["start_date"] = min($result[$last]['start_date'], $arrayOfRanges[$i]['start_date']);
-				$result[$last]["end_date"]   = max($result[$last]['end_date'],   $arrayOfRanges[$i]['end_date']);
+				$result[$last]["start_date"] = if_either_null_else_func(min, $result[ $last ]['start_date'], $arrayOfRanges[ $i ]['start_date'] );
+				$result[$last]["end_date"]   = if_either_null_else_func(max, $result[ $last ]['end_date'],   $arrayOfRanges[ $i ]['end_date'] );
 			} else {
 				// No overlap => Add new interval to result
 				// And use this as new last interval
