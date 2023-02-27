@@ -230,10 +230,29 @@ function commonsbooking_isCurrentUserAdmin() {
 	return apply_filters( 'commonsbooking_isCurrentUserAdmin', in_array( 'administrator', $user->roles ), $user );
 }
 
-// Check if user has admin role
-function commonsbooking_isUserAdmin($user) {
-	return apply_filters( 'commonsbooking_isUserAdmin', in_array( 'administrator', $user->roles ), $user );
+/**
+ * Will check if user has one of the admin roles and is therefore considered an admin for CB.
+ * Admin roles can be extended with the filter commonsbooking_admin_roles.
+ *
+ * @param   \WP_User  $user
+ *
+ * @return bool
+ */
+function commonsbooking_isUserAdmin(WP_User $user) {
+	$adminRoles = ['administrator'];
+	$adminRoles = apply_filters('commonsbooking_admin_roles', $adminRoles);
+	foreach ($adminRoles as $adminRole) {
+		if (in_array($adminRole, $user->roles)) {
+			return true;
+		}
+	}
+	return false;
 }
+
+add_filter('commonsbooking_admin_roles', function($adminRoles) {
+	$adminRoles[] = 'editor';
+	return $adminRoles;
+});
 
 // Check if current user has subscriber role
 function commonsbooking_isCurrentUserSubscriber() {
@@ -334,12 +353,15 @@ function commonsbooking_isUserAllowedToSee($booking, WP_User $user): bool
 /**
  * Checks if the given user_id and user_hash match, generates
  * a new hash from the given user id and checks it against the given hash.
- * 
+ *
  * Used by Service\iCalendar for authentication.
+ *
+ * @param $user_id
+ * @param $user_hash
  *
  * @return bool
  */
-function commonsbooking_isUIDHashComboCorrect( $user_id, $user_hash){
+function commonsbooking_isUIDHashComboCorrect( $user_id, $user_hash): bool {
 	if (wp_hash($user_id) == $user_hash) {
 		return true;
 	}
