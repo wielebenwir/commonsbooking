@@ -29,12 +29,12 @@ class HelperTest extends CustomPostTypeTest {
 		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
 			array(
 				array(
-					"start-date" => to_ts("2020-01-01"),
-					"end-date"   => to_ts("2020-01-03")
+					"start_date" => to_ts("2020-01-01"),
+					"end_date"   => to_ts("2020-01-03")
 				),
 				array(
-					"start-date" => to_ts("2020-01-02"),
-					"end-date"   => to_ts("2020-01-04")
+					"start_date" => to_ts("2020-01-02"),
+					"end_date"   => to_ts("2020-01-04")
 				)
 			)
 		);
@@ -42,8 +42,8 @@ class HelperTest extends CustomPostTypeTest {
 		$this->assertTrue(count($arrayOfBookableDates) == 1);
 		$merged = $arrayOfBookableDates[0];
 
-		$this->assertTrue($merged['start-date'] == to_ts("2020-01-01"));
-		$this->assertTrue($merged['end-date']   == to_ts("2020-01-04"));
+		$this->assertTrue($merged['start_date'] == to_ts("2020-01-01"));
+		$this->assertTrue($merged['end_date']   == to_ts("2020-01-04"));
 	}
 
 
@@ -52,12 +52,12 @@ class HelperTest extends CustomPostTypeTest {
 		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
 			array(
 				array(
-					"start-date" => to_ts("2020-01-01"),
-					"end-date"   => to_ts("2020-01-02")
+					"start_date" => to_ts("2020-01-01"),
+					"end_date"   => to_ts("2020-01-02")
 				),
 				array(
-					"start-date" => to_ts("2020-01-02"),
-					"end-date"   => to_ts("2020-01-04")
+					"start_date" => to_ts("2020-01-02"),
+					"end_date"   => to_ts("2020-01-04")
 				)
 			)
 		);
@@ -65,8 +65,8 @@ class HelperTest extends CustomPostTypeTest {
 		$this->assertTrue(count($arrayOfBookableDates) == 1);
 		$merged = $arrayOfBookableDates[0];
 
-		$this->assertTrue($merged['start-date'] == to_ts("2020-01-01"));
-		$this->assertTrue($merged['end-date']   == to_ts("2020-01-04"));
+		$this->assertTrue($merged['start_date'] == to_ts("2020-01-01"));
+		$this->assertTrue($merged['end_date']   == to_ts("2020-01-04"));
 	}
 
 	/*
@@ -75,20 +75,20 @@ class HelperTest extends CustomPostTypeTest {
 		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
 			array(
 				array(
-					"start-date" => to_ts('2020-01-01T12:00:00+00:00'),
-					"end-date"   => to_ts('2020-01-02T12:00:00+00:00'),
+					"start_date" => to_ts('2020-01-01T12:00:00+00:00'),
+					"end_date"   => to_ts('2020-01-02T12:00:00+00:00'),
 				),
 				array(
-					"start-date" => to_ts('2020-01-03T12:00:00+00:00'),
-					"end-date"   => to_ts('2020-01-04T12:00:00+00:00'),
+					"start_date" => to_ts('2020-01-03T12:00:00+00:00'),
+					"end_date"   => to_ts('2020-01-04T12:00:00+00:00'),
 				)
 			)
 		);
 
 		$this->assertTrue(count($arrayOfBookableDates) == 2);
 
-		$this->assertTrue($arrayOfBookableDates[0]['start-date'] == "2020-01-01");
-		$this->assertTrue($arrayOfBookableDates[1]['end-date']   == "2020-01-04");
+		$this->assertTrue($arrayOfBookableDates[0]['start_date'] == "2020-01-01");
+		$this->assertTrue($arrayOfBookableDates[1]['end_date']   == "2020-01-04");
 	}
 
 	public function test_whenThreeTimeFramesOverlap_returnOneTimeframe() {
@@ -96,16 +96,16 @@ class HelperTest extends CustomPostTypeTest {
 		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
 			array(
 				array(
-					"start-date" => to_ts("2020-01-01"),
-					"end-date"   => to_ts("2020-01-05")
+					"start_date" => to_ts("2020-01-01"),
+					"end_date"   => to_ts("2020-01-05")
 				),
 				array(
-					"start-date" => to_ts("2020-01-02"),
-					"end-date"   => to_ts("2020-01-04")
+					"start_date" => to_ts("2020-01-02"),
+					"end_date"   => to_ts("2020-01-04")
 				),
 				array(
-					"start-date" => to_ts("2020-01-05"),
-					"end-date"   => to_ts("2020-01-06")
+					"start_date" => to_ts("2020-01-05"),
+					"end_date"   => to_ts("2020-01-06")
 				)
 			)
 		);
@@ -113,7 +113,7 @@ class HelperTest extends CustomPostTypeTest {
 		$this->assertTrue(count($arrayOfBookableDates) == 1);
 		$merged = $arrayOfBookableDates[0];
 
-		$this->assertTrue($merged['start-date'] == "2020-01-01");
-		$this->assertTrue($merged['end-date']   == "2020-01-06");
+		$this->assertTrue($merged['start_date'] == "2020-01-01");
+		$this->assertTrue($merged['end_date']   == "2020-01-06");
 	}*/
 }
