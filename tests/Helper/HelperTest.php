@@ -2,19 +2,22 @@
 
 namespace CommonsBooking\Tests\Helper;
 
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use DateTime;
+use DateTimeInterface;
+
+function dt_to_ts( $time_str ): int {
+	return DateTime::createFromFormat(DateTimeInterface::ATOM, $time_str);
+}
 
 /**
  * Returns date time int
  *
- * @param $time_str like '2020-01-01T12:00:00+00:00'
+ * @param $time_str string like '2020-01-01T12:00:00+00:00'
  *
  * @return int
  */
-function dt_to_ts( $time_str ): int {
-	return DateTime::createFromFormat(DateTimeInterface::ISO8601, $time_str);
-}
-
 function to_ts( $time_str ): int {
 	return DateTime::createFromFormat('Y-m-d', $time_str);
 }
