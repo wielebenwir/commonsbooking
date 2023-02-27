@@ -18,12 +18,16 @@ use CommonsBooking\Model\Timeframe;
  *
  * @return object|null
  */
-function null_if_either_key_null_else_func( string $key, array $arr1, array $arr2, callable $func ): ?object {
-	if ( !array_key_exists($key, $arr1) || !array_key_exists($key, $arr2)) {
-		return null;
+function unset_if_either_key_null_else_set_func( string $key, array $arr1, array $arr2, callable $func ) : void {
+	if ( !array_key_exists($key, $arr1)) {
+		// Do nothing, interval1 is open
+	} else if ( !array_key_exists($key, $arr2)) {
+		// Unset interval_1 because interval 2 is open
+		unset($arr1[$key]);
+	} else {
+		// Both intervals are closed
+		$arr1[$key] = $func($arr1[$key], $arr2[$key]);
 	}
-
-	return $func($arr1[$key], $arr2[$key]);
 }
 
 class Helper {
@@ -170,8 +174,8 @@ class Helper {
 			if (!array_key_exists('end_date', $result[$last])
 			    || $result[$last]['end_date'] >= $arrayOfRanges[$i]['start_date'])
 			{
-				$result[$last]["start_date"] = null_if_either_key_null_else_func( 'start_date', $result[ $last ], $arrayOfRanges[ $i ], function($a,$b) {return min($a, $b);} );
-				$result[$last]["end_date"]   = null_if_either_key_null_else_func( 'end_date',   $result[ $last ], $arrayOfRanges[ $i ], function($a,$b) {return max($a, $b);} );
+				unset_if_either_key_null_else_set_func( 'start_date', $result[ $last ], $arrayOfRanges[ $i ], function($a,$b) {return min($a, $b);} );
+				unset_if_either_key_null_else_set_func( 'end_date',   $result[ $last ], $arrayOfRanges[ $i ], function($a,$b) {return max($a, $b);} );
 			} else {
 				// No overlap => Add new interval to result
 				// And use this as new last interval
