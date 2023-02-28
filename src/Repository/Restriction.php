@@ -181,6 +181,8 @@ class Restriction extends PostRepository {
 
 	/**
 	 * Filters posts by locations and items.
+	 * Leaving both empty will return all posts.
+	 * Leaving one empty will return all posts with the other filter.
 	 *
 	 * @param array $posts
 	 * @param array $locations
@@ -189,47 +191,53 @@ class Restriction extends PostRepository {
 	 * @return array
 	 */
 	private static function filterPosts( array $posts, array $locations, array $items ): array {
-		return array_filter( $posts, function ( $post ) use ( $locations, $items ) {
-			// Check if restriction is in relation to item and/or location
-			$location                      = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID, true ) );
-			$restrictionHasLocation        = $location !== 0;
-			$restrictedLocationInLocations = $restrictionHasLocation && in_array( $location, $locations );
+		return array_filter( $posts,
+			function ( $post ) use ( $locations, $items ) {
+				// Check if restriction is in relation to item and/or location
+				$location                      = intval( get_post_meta( $post->ID,
+					\CommonsBooking\Model\Restriction::META_LOCATION_ID,
+					TRUE ) );
+				$restrictionHasLocation        = $location !== 0;
+				$restrictedLocationInLocations = $restrictionHasLocation
+				                                 && in_array( $location,
+						$locations );
 
-			$item                  = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID, true ) );
-			$restrictionHasItem    = $item !== 0;
-			$restrictedItemInItems = $restrictionHasItem && in_array( $item, $items );
+				$item                  = intval( get_post_meta( $post->ID,
+					\CommonsBooking\Model\Restriction::META_ITEM_ID,
+					TRUE ) );
+				$restrictionHasItem    = $item !== 0;
+				$restrictedItemInItems = $restrictionHasItem
+				                         && in_array( $item,
+						$items );
 
-			// No item or location for restriction set
-			$noLocationNoItem = ( ! $restrictionHasLocation && ! $restrictionHasItem );
+				// No item or location for restriction set
+				$noLocationNoItem = ( ! $restrictionHasLocation
+				                      && ! $restrictionHasItem );
 
-			// No location, item matching
-			$noLocationItemMatches = (
-				! $restrictionHasLocation &&
-				$restrictionHasItem &&
-				$restrictedItemInItems
-			);
+				// No location, item matching
+				$noLocationItemMatches = (
+					( ! $restrictionHasLocation || empty($locations)) && $restrictionHasItem
+					&& $restrictedItemInItems
+				);
 
-			// No item, location matching
-			$noItemLocationMatches = (
-				! $restrictionHasItem &&
-				$restrictionHasLocation &&
-				$restrictedLocationInLocations
-			);
+				// No item, location matching
+				$noItemLocationMatches = (
+					(! $restrictionHasItem  || empty( $items )) && $restrictionHasLocation
+					&& $restrictedLocationInLocations
+				);
 
-			// Item and location matching
-			$itemAndLocationMatches = (
-				$restrictionHasLocation &&
-				$restrictedLocationInLocations &&
-				$restrictionHasItem &&
-				$restrictedItemInItems
-			);
+				// Item and location matching
+				$itemAndLocationMatches = (
+					$restrictionHasLocation && $restrictedLocationInLocations
+					&& $restrictionHasItem
+					&& $restrictedItemInItems
+				);
 
-			return
-				$noLocationNoItem ||
-				$noLocationItemMatches ||
-				$noItemLocationMatches ||
-				$itemAndLocationMatches;
-		} );
+				return
+					$noLocationNoItem || $noLocationItemMatches
+					|| $noItemLocationMatches
+					|| $itemAndLocationMatches;
+			} );
 	}
 
 	/**
