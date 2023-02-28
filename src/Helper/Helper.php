@@ -7,6 +7,10 @@ use CommonsBooking\Model\Item;
 use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Timeframe;
 
+function interval_open( $interval_value ) {
+	return $interval_value === false;
+}
+
 /**
  * Set <code>arr1[key]</code> to false, if either key of arr1 or key of arr2 is false.
  * <p>If not false, use func (which takes two args) to compute a result
@@ -20,9 +24,9 @@ use CommonsBooking\Model\Timeframe;
  * @return object|null
  */
 function set_false_if_either_key_null_else_set_func( string $key, array &$arr1, array &$arr2, callable $func ) : void {
-	if ( $arr1[ $key ] === false) {
+	if ( interval_open($arr1[ $key ]) ) {
 		// Do nothing, interval1 is open
-	} else if ( $arr2[ $key ] === false) {
+	} else if ( interval_open($arr2[ $key ]) ) {
 		// Set interval_1 false because interval 2 is open
 		$arr1[$key] = false;
 	} else {
@@ -173,7 +177,7 @@ class Helper {
 			//  If first/last interval is open => overlaps next
 			//  Or first/last interval end is greater than next interval begin
 			if (
-				$result[ $last ]['end_date'] === false
+				interval_open($result[ $last ]['end_date'])
 			    || $result[ $last ]['end_date'] >= $arrayOfRanges[$i]['start_date'])
 			{
 				// => Overlap, merge both
