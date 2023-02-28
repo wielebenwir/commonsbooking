@@ -121,7 +121,8 @@ class HelperTest extends TestCase {
 		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
 			array(
 				array(
-					"start_date" => to_ts("2020-01-01")
+					"start_date" => to_ts("2020-01-01"),
+					false
 				),
 				array(
 					"start_date" => to_ts("2020-01-01"),
@@ -133,8 +134,8 @@ class HelperTest extends TestCase {
 		$this->assertCount(1, $arrayOfBookableDates);
 		$merged = $arrayOfBookableDates[0];
 
-		$this->assertEquals($merged['start_date'], to_ts("2020-01-01"));
-		$this->assertArrayNotHasKey( 'end_date', $merged );
+		$this->assertEquals(to_ts("2020-01-01"), $merged['start_date']);
+		$this->assertEquals(false, $merged['end_date']);
 	}
 
 	public function test_whenTimeFrameHasOpenInterval2_returnOneTimeFrame() {
@@ -145,7 +146,8 @@ class HelperTest extends TestCase {
 					"end_date"   => to_ts("2020-04-01")
 				),
 				array(
-					"start_date" => to_ts("2020-03-01")
+					"start_date" => to_ts("2020-03-01"),
+					false
 				)
 			)
 		);
@@ -153,7 +155,28 @@ class HelperTest extends TestCase {
 		$this->assertCount(1, $arrayOfBookableDates);
 		$merged = $arrayOfBookableDates[0];
 
-		$this->assertEquals($merged['start_date'], to_ts("2020-01-01"));
-		$this->assertArrayNotHasKey( 'end_date', $merged );
+		$this->assertEquals(to_ts("2020-01-01"), $merged['start_date']);
+		$this->assertEquals(false, $merged['end_date']);
+	}
+
+	public function test_whenTimeFrameHasOpenInterval3_HasSameStart_butOneOpen_returnOneOpenInterval() {
+		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
+			array(
+				array(
+					"start_date" => 1673136000,
+					"end_date"   => false
+				),
+				array(
+					"start_date" => 1673136000,
+					"end_date"  => 1681430399
+				)
+			)
+		);
+
+		$this->assertCount(1, $arrayOfBookableDates);
+		$merged = $arrayOfBookableDates[0];
+
+		$this->assertEquals(1673136000, $merged['start_date']);
+		$this->assertEquals(false,      $merged['end_date']);
 	}
 }

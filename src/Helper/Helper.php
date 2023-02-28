@@ -8,8 +8,9 @@ use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Timeframe;
 
 /**
- * If key of arr1 and arr2 is null, return null
- * If not, use func which is a binary operator to compute a result
+ * Set <code>arr1[key]</code> to false, if either key of arr1 or key of arr2 is false.
+ * <p>If not false, use func (which takes two args) to compute a result
+ * from both <code>func(arr1[key], arr2[key])</code></p>
  *
  * @param string $key
  * @param object $arr1
@@ -18,12 +19,12 @@ use CommonsBooking\Model\Timeframe;
  *
  * @return object|null
  */
-function unset_if_either_key_null_else_set_func( string $key, array &$arr1, array &$arr2, callable $func ) : void {
-	if ( !array_key_exists($key, $arr1)) {
+function set_false_if_either_key_null_else_set_func( string $key, array &$arr1, array &$arr2, callable $func ) : void {
+	if ( $arr1[ $key ] === false) {
 		// Do nothing, interval1 is open
-	} else if ( !array_key_exists($key, $arr2)) {
-		// Unset interval_1 because interval 2 is open
-		unset($arr1[$key]);
+	} else if ( $arr2[ $key ] === false) {
+		// Set interval_1 false because interval 2 is open
+		$arr1[$key] = false;
 	} else {
 		// Both intervals are closed
 		$arr1[$key] = $func($arr1[$key], $arr2[$key]);
@@ -165,20 +166,21 @@ class Helper {
 		$result[] = $arrayOfRanges[0];
 		$last = 0;
 
-		// For each element
+		// For each range, compare with last (or first) merged range
 		for ($i = 1; $i < count($arrayOfRanges); $i++) {
 
-			// Either interval_0 is open
-			//  or interval_0 is not open and intersects interval_1
-			// => Overlap, merge both
-			if (!array_key_exists('end_date', $result[$last])
-			    || $result[$last]['end_date'] >= $arrayOfRanges[$i]['start_date'])
+			// Either
+			//  If first/last interval is open => overlaps next
+			//  Or first/last interval end is greater than next interval begin
+			if (
+				$result[ $last ]['end_date'] === false
+			    || $result[ $last ]['end_date'] >= $arrayOfRanges[$i]['start_date'])
 			{
-				unset_if_either_key_null_else_set_func( 'start_date', $result[ $last ], $arrayOfRanges[ $i ], function($a,$b) {return min($a, $b);} );
-				unset_if_either_key_null_else_set_func( 'end_date',   $result[ $last ], $arrayOfRanges[ $i ], function($a,$b) {return max($a, $b);} );
+				// => Overlap, merge both
+				set_false_if_either_key_null_else_set_func( 'start_date', $result[ $last ], $arrayOfRanges[ $i ], function($a,$b) {return min($a, $b);} );
+				set_false_if_either_key_null_else_set_func( 'end_date',   $result[ $last ], $arrayOfRanges[ $i ], function($a,$b) {return max($a, $b);} );
 			} else {
-				// No overlap => Add new interval to result
-				// And use this as new last interval
+				// => No overlap, add new interval to result. Use as new last interval
 				$result[] = $arrayOfRanges[ $i ];
 				$last ++;
 			}
