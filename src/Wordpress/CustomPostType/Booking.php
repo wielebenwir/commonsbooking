@@ -31,7 +31,7 @@ class Booking extends Timeframe {
     	// Frontend request
 		$this->handleFormRequest();
 	}
-    
+
     /**
      * Removes author field in CPT booking
      * Why: we set the autor dynamically based on admin bookins so we don't want the ability to override this setting by user
@@ -39,9 +39,9 @@ class Booking extends Timeframe {
      * @return void
      */
     public function removeAuthorField() {
-        remove_post_type_support( self::$postType, 'author'); 
+        remove_post_type_support( self::$postType, 'author' );
     }
-    
+
     /**
      * Adds and modifies some booking CPT fields in order to make admin boookings
      * compatible to user made bookings via frontend.
@@ -51,39 +51,35 @@ class Booking extends Timeframe {
      * @param  mixed $update
      * @return void
      */
-    public function saveAdminBookingFields( $post_id, $post = null, $update = null) {
+    public function saveAdminBookingFields( $post_id, $post = null, $update = null ) {
         global $pagenow;
 
         // we check if its a new created post
-        if ( empty($_REQUEST) || $pagenow === 'post-new.php' ) {
-            return;
-        }
+        if ( ! empty( $_REQUEST ) && $pagenow === 'post.php' && commonsbooking_isCurrentUserAdmin() ) {
 
-        // set request variables
-        if ( isset( $_REQUEST['post_status'] ) ) {
-            $post_status = esc_html( $_REQUEST['post_status']) ?? false;
-        }
-        if ( isset( $_REQUEST['repetition-start']['time'] ) ) {
-            $start_time = esc_html( $_REQUEST['repetition-start']['time']) ?? false;
-        }
-        if ( isset( $_REQUEST['repetition-end']['time'] ) ) {
-            $end_time = esc_html( $_REQUEST['repetition-end']['time']) ?? false;
-        }
-        if ( isset( $_REQUEST['booking_user'] ) ) {
-            $booking_user = esc_html( $_REQUEST['booking_user']) ?? false;
-        }
+            // set request variables
+            if ( isset( $_REQUEST['post_status'] ) ) {
+                $post_status = esc_html( $_REQUEST['post_status'] ) ?? false;
+            }
+            if ( isset( $_REQUEST['repetition-start']['time'] ) ) {
+                $start_time = esc_html( $_REQUEST['repetition-start']['time'] ) ?? false;
+            }
+            if ( isset( $_REQUEST['repetition-end']['time'] ) ) {
+                $end_time = esc_html( $_REQUEST['repetition-end']['time'] ) ?? false;
+            }
+            if ( isset( $_REQUEST['booking_user'] ) ) {
+                $booking_user = esc_html( $_REQUEST['booking_user'] ) ?? false;
+            }
 
+            if ( $post_status == 'draft' || ! ( $post_status ) ) {
+                $post_status = 'unconfirmed';
+            }
 
-        if ( $post_status == 'draft' || !($post_status) ) {
-            $post_status = 'unconfirmed';
-        } 
-
-        if ( commonsbooking_isCurrentUserAdmin() ) {
             $postarr          = array(
-				'post_title'     => esc_html__( 'Admin-Booking', 'commonsbooking' ),
-                'post_author'     => $booking_user,
-                'post_status'     => $post_status,
-                'meta_input' => [
+				'post_title'  => esc_html__( 'Admin-Booking', 'commonsbooking' ),
+                'post_author' => $booking_user,
+                'post_status' => $post_status,
+                'meta_input'  => [
                     'admin_booking_id' => get_current_user_id(),
                     'start-time'       => $start_time,
                     'end-time'         => $end_time,
@@ -194,11 +190,6 @@ class Booking extends Timeframe {
 				],
 			);
 
-            // if we have an admin booking we store the admin user id
-            if ( $booking_author != get_current_user_id() ) {
-                $postarr['meta_input']['admin_booking_id'] = get_current_user_id();
-            }
-
 			// New booking
 			if ( empty( $booking ) ) {
 				$postarr['post_name']  = Helper::generateRandomString();
@@ -271,18 +262,17 @@ class Booking extends Timeframe {
 	public static function preSavePost( $postId, $data ) {
         global $pagenow;
 
-		if ( static::$postType !== $data['post_type'] && $pagenow === 'post-new.php') {
+		if ( static::$postType !== $data['post_type'] && $pagenow === 'post-new.php' ) {
 			return;
 		}
-
 
 		try {
 
 			// prepare needed params
 			$itemId          = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] );
 			$locationId      = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ] );
-			$repetitionStart = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ]);
-   
+			$repetitionStart = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] );
+
 			if ( is_array( $repetitionStart ) ) {
 				$repetitionStart = strtotime( $repetitionStart['date'] . ' ' . $repetitionStart['time'] );
 
@@ -295,7 +285,6 @@ class Booking extends Timeframe {
 			} else {
 				$repetitionEnd = intval( $repetitionEnd );
 			}
-
 
                 self::validateBookingParameters(
                     $itemId,
@@ -400,8 +389,8 @@ class Booking extends Timeframe {
 		// Set Tepmlates
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
 
-       // remove author metabox because we set author in the booking user field
-       add_action( 'init', array ( $this, 'RemoveAuthorField' ), 99 );
+        // remove author metabox because we set author in the booking user field
+        add_action( 'init', array( $this, 'RemoveAuthorField' ), 99 );
 
 		// Listing of bookings for current user
 		add_shortcode( 'cb_bookings', array( \CommonsBooking\View\Booking::class, 'shortcode' ) );
@@ -569,9 +558,9 @@ class Booking extends Timeframe {
 	public function setCustomColumnsData( $column, $post_id ) {
         global $pagenow;
 
-       if ($pagenow !== 'edit.php' || empty( esc_html( $_GET['post_type'] ) ) || esc_html( $_GET['post_type'] ) !== $this::$postType ) {
-        return;
-       }
+        if ( $pagenow !== 'edit.php' || empty( esc_html( $_GET['post_type'] ) ) || esc_html( $_GET['post_type'] ) !== $this::$postType ) {
+            return;
+        }
 
 		// we alter the  author column data and link the username to the user profile
 		if ( $column == 'timeframe-author' ) {
@@ -752,13 +741,13 @@ class Booking extends Timeframe {
 				'type' => 'text',
 			),
             array(
-				'name'    => esc_html__( 'Booking User', 'commonsbooking' ),
-				'id'      => 'booking_user',
-				'type'    => 'pw_select',
+				'name'             => esc_html__( 'Booking User', 'commonsbooking' ),
+				'id'               => 'booking_user',
+				'type'             => 'pw_select',
                 'show_option_none' => true,
-                'options' => $userOptions,
-                'default' => array (self::class, 'getFrontendBookingAuthor'),
-                'desc' => commonsbooking_sanitizeHTML(
+                'options'          => $userOptions,
+                'default'          => array( self::class, 'getFrontendBookingAuthor' ),
+                'desc'             => commonsbooking_sanitizeHTML(
                     __(
                         'Here you must select the user for whom the booking is made.<br>
                         If the booking was was made by a user via frontend booking process, the user will be shown in this field.
@@ -768,16 +757,16 @@ class Booking extends Timeframe {
                 ),
 			),
             array(
-				'name'    => esc_html__( 'Admin Booking User', 'commonsbooking' ),
-				'id'      => 'admin_booking_id',
-				'type'    => 'select',
-                'default' => get_current_user_id(),
+				'name'             => esc_html__( 'Admin Booking User', 'commonsbooking' ),
+				'id'               => 'admin_booking_id',
+				'type'             => 'select',
+                'default'          => get_current_user_id(),
                 'show_option_none' => true,
-                'options' => $userOptions,
-                'attributes' => array (
+                'options'          => $userOptions,
+                'attributes'       => array(
                     'readonly' => true,
                 ),
-                'desc' => commonsbooking_sanitizeHTML(
+                'desc'             => commonsbooking_sanitizeHTML(
                     __(
                         'This is the admin user who created or modified this booking.',
                         'commonsbooking'
@@ -818,7 +807,7 @@ class Booking extends Timeframe {
 			}
 		}
 	}
-    
+
     /**
      * Returns the booking author if booking exists, otherwise returns current user
      * This is helper function
@@ -827,7 +816,7 @@ class Booking extends Timeframe {
      */
     public static function getFrontendBookingAuthor() {
         global $post;
-        if ($post) {
+        if ( $post ) {
             $authorID = $post->post_author;
         } else {
             $authorID = get_current_user_id();
