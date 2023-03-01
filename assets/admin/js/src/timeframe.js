@@ -46,6 +46,7 @@
             const fullDayInput = $('#full-day');
 
             // booking codes
+            const bookingCodeTitle = $('#title-timeframe-booking-codes');
             const showBookingCodes = $('#show-booking-codes');
             const createBookingCodesInput = $('#create-booking-codes');
             const bookingCodesDownload = $('#booking-codes-download');
@@ -98,15 +99,17 @@
                     maxDaysSelect.show();
                     advanceBookingDays.show();
                     allowUserRoles.show();
+                    showFieldset(bookingCodeTitle);
                 } else {
                     maxDaysSelect.hide();
                     advanceBookingDays.hide();
                     allowUserRoles.hide();
+                    hideFieldset(bookingCodeTitle);
                     if (selectedType == 3 && selectedRepetition == 'manual') {
-                        holidayField.show();
+                        //holidayField.show();
                     } else {
-                        holidayField.hide();
-                        holidayInput.val('');
+                        //holidayField.hide();
+                        //holidayInput.val('');
                     }
                 }
             }
@@ -170,12 +173,15 @@
                     } else {
                         showRepFields();
                     }
-                    console.log(selectedType);
 
                     if (selectedType == 'manual') {
                         manualDateField.show();
+                        hideFieldset(repetitionStartInput);
+                        hideFieldset(repetitionEndInput);
                     } else {
                         manualDateField.hide();
+                        showFieldset(repetitionStartInput);
+                        showFieldset(repetitionEndInput);
                     }
 
                     if (selectedType == 'w') {

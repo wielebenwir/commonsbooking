@@ -338,6 +338,8 @@ class Day {
 					} else {
 						return false;
 					}
+
+				// Manual Rep
 				case "manual":
 					$manualDatesString = trim($timeframe->getMeta(
 						\CommonsBooking\Model\Timeframe::META_MANUAL_SELECTION
