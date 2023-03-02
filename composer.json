@@ -45,6 +45,13 @@
     "mockery/mockery": "1.*",
     "phpunit/phpunit": "7.*",
     "yoast/phpunit-polyfills": "^1.0",
-    "wp-coding-standards/wpcs": "^2.3"
+    "wp-coding-standards/wpcs": "^2.3",
+    "squizlabs/php_codesniffer" : "3.7.2",
+    "wp-cli/wp-cli": "v2.7.1",
+    "phpunit/php-code-coverage": "^6.1",
+    "pcov/clobber": "^2.0"
+  },
+  "scripts": {
+	  "test": "phpunit -c phpunit.xml.dist --bootstrap tests/bootstrap.php --coverage-html coverage.html"
   }
 }
