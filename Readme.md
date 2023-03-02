@@ -72,6 +72,33 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. cd into the directory commonsbooking and run `composer install`
 5. Activate the plugin in the Plugin dashboard
 
+## Development
+
+### Run plugin
+
+The most easy way to start hacking wordpress plugins (if you have no development environment set up) is using [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/). Install it and fire up in your favorite bash:
+```
+wp-env start
+```
+The provided `.wp-env.json` should be sufficient for normal development, for details see the [documentation of wp-env config](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/#wp-env-json).
+
+### Test plugin
+
+To test the code you first run the [preparation scripts](https://github.com/wp-cli/scaffold-command#wp-scaffold-plugin-tests) to load the wordpress core and configure database connection via `wp-config.php`. The following line can vary on your system, use the appropriate credentials, port and version of wordpress:
+```
+bash bin/install-wp-tests.sh wordpress root password 127.0.0.1:49153 latest
+```
+
+Testing the plugin code via `phpunit`. At the moment it works only with a manually downloaded phar.
+```
+php ~/phpunit.phar --bootstrap tests/bootstrap.php
+```
+
+For example you can activate the [kasimir theme](github.com/flegfleg/kasimir-theme) via [wp cli](https://make.wordpress.org/cli/handbook/) inside of the wp-env docker container:
+```
+wp-env run cli wp theme activate kasimir-theme
+```
+
 ## Frequently Asked Questions
 
 ### Where can i find help/report bugs?

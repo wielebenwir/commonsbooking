@@ -3,7 +3,10 @@
   "description": "~",
   "version": "0.0.1",
   "config": {
-    "platform-check": false
+    "platform-check": false,
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
     },
   "autoload": {
     "files": [
