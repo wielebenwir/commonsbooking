@@ -30,7 +30,6 @@ class Item extends CustomPostType {
 	}
 
 
-
 	/**
 	 * Filters admin list by type (e.g. bookable, repair etc. )
 	 *
@@ -63,11 +62,11 @@ class Item extends CustomPostType {
 				$_GET['admin_filter_post_category'] != ''
 			) {
 				$query->query_vars['tax_query'] = array(
-						array(
-						'taxonomy'	=>	self::$postType . 's_category',
-						'field'		=>	'term_id',
-						'terms'		=>	$_GET['admin_filter_post_category']
-						)
+					array(
+						'taxonomy' => self::$postType . 's_category',
+						'field'    => 'term_id',
+						'terms'    => $_GET['admin_filter_post_category']
+					)
 				);
 			}
 		}
@@ -182,7 +181,7 @@ class Item extends CustomPostType {
 			$item = new \CommonsBooking\Model\Item( $post );
 			set_query_var( 'item', $item );
 			commonsbooking_get_template_part( 'item', 'single' );
-			$cb_content   = ob_get_clean();
+			$cb_content = ob_get_clean();
 		}
 
 		return $content . $cb_content;
@@ -248,9 +247,9 @@ class Item extends CustomPostType {
 
 		// we store registered metaboxes to options table to be able to retrieve it in export function
 		$metabox_fields = [];
-		foreach ($cmb->meta_box['fields'] as $metabox_field) {
-			$metabox_fields[$metabox_field['id']] = $metabox_field['name'];
+		foreach ( $cmb->meta_box['fields'] as $metabox_field ) {
+			$metabox_fields[ $metabox_field['id'] ] = $metabox_field['name'];
 		}
-		Settings::updateOption('commonsbooking_settings_metaboxfields', $this->getPostType(), $metabox_fields);
+		Settings::updateOption( 'commonsbooking_settings_metaboxfields', $this->getPostType(), $metabox_fields );
 	}
 }

@@ -18,7 +18,7 @@ class Migration {
 		$cb1Installed = CB1::isInstalled();
 
 		?>
-        <div class="cmb-row cmb-type-text "><?php
+		<div class="cmb-row cmb-type-text "><?php
 
 		if ( ! $cb1Installed ) {
 			echo '<strong style="color:red">' . esc_html__( 'We could not detect a version of an older CommonsBooking Installation (Version 0.X).',
@@ -41,7 +41,7 @@ class Migration {
             </div>
             <div id="migration-in-progress">
                 <p class="blinking" style="border:solid; border-color:red; border-width:4px; padding:20px"><strong style="color: red">
-                ' . commonsbooking_sanitizeHTML( __( 'migration in process .. please wait ... <br>This could take several minutes. Do not close this browser tab', 'commonsbooking' ) ). '
+                ' . commonsbooking_sanitizeHTML( __( 'migration in process .. please wait ... <br>This could take several minutes. Do not close this browser tab', 'commonsbooking' ) ) . '
                 </strong></p>
             </div>            
             <div id="migration-done">
@@ -53,30 +53,32 @@ class Migration {
 
 		if ( $cb1Installed ) {
 			?>
-            </div>
-            <div class="cmb-row cmb-type-text">
-                <div class="cmb-td">
-                    <input type="checkbox" class="cmb2-option cmb2-list" name="get-geo-locations" id="get-geo-locations"
-                           checked>
-                    <label for="get-geo-locations"><?php echo esc_html__( 'Retrieve location geo coordinates.', 'commonsbooking' ); ?></label>
-                    <p class="cmb2-metabox-description">
+			</div>
+			<div class="cmb-row cmb-type-text">
+				<div class="cmb-td">
+					<input type="checkbox" class="cmb2-option cmb2-list" name="get-geo-locations" id="get-geo-locations"
+					       checked>
+					<label
+						for="get-geo-locations"><?php echo esc_html__( 'Retrieve location geo coordinates.', 'commonsbooking' ); ?></label>
+					<p class="cmb2-metabox-description">
 						<?php echo esc_html__( 'If this option is enabled, CommonsBooking will try to derive the matching geo-coordinates from the address data of the locations during import. We use an interface to a GeoCoder service (Nominatim) for this task. This service allows only one query per second, so the runtime of the migration is increased by 1 second per location. The geo-coordinates are needed to use the location map integrated in CommonsBooking.', 'commonsbooking' ); ?>
-                    </p>
-                </div>
-            </div>
-            <div class="cmb-row cmb-type-text">
-            <a id="migration-start" class="button button-primary" href="#">
+					</p>
+				</div>
+			</div>
+			<div class="cmb-row cmb-type-text">
+			<a id="migration-start" class="button button-primary" href="#">
 				<?php echo esc_html__( 'Start Migration', 'commonsbooking' ); ?>
-            </a>
+			</a>
 			<?php
 		} // end if cb1installed
 		?>
-        </div>
+		</div>
 		<?php
 	}
 
 	/**
-     * Renders booking migration (timeframe to booking cpt) form.
+	 * Renders booking migration (timeframe to booking cpt) form.
+	 *
 	 * @param array $field_args
 	 * @param CMB2_Field $field
 	 */
@@ -104,7 +106,7 @@ class Migration {
                 </a>            
             </div>
            '
-        );
+		);
 	}
 
 }

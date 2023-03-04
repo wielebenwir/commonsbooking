@@ -55,7 +55,7 @@ class Calendar {
 		$days = is_array( $atts ) && array_key_exists( 'days', $atts ) ? $atts['days'] : 31;
 
 		$desc  = $atts['desc'] ?? '';
-		$date  = Wordpress::getUTCDateTimeByTimestamp(current_time('timestamp'));
+		$date  = Wordpress::getUTCDateTimeByTimestamp( current_time( 'timestamp' ) );
 		$today = $date->format( "Y-m-d" );
 
 		$days_display = array_fill( 0, $days, 'n' );
@@ -131,8 +131,8 @@ class Calendar {
 				// loop through location
 				foreach ( $locations as $locationId => $locationName ) {
 					$customCacheKey = $item->ID . $locationId . $today;
-					if ( Plugin::getCacheItem($customCacheKey) ) {
-						$rowHtml .= Plugin::getCacheItem($customCacheKey);
+					if ( Plugin::getCacheItem( $customCacheKey ) ) {
+						$rowHtml .= Plugin::getCacheItem( $customCacheKey );
 					} else {
 						// Check for category term
 						if ( $locationCategory ) {
@@ -142,7 +142,10 @@ class Calendar {
 						}
 
 						$locationHtml = self::renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display );
-						Plugin::setCacheItem( $locationHtml, [strval($item->ID), strval($locationId)], $customCacheKey);
+						Plugin::setCacheItem( $locationHtml, [
+							strval( $item->ID ),
+							strval( $locationId )
+						], $customCacheKey );
 						$rowHtml .= $locationHtml;
 					}
 				}
@@ -150,10 +153,9 @@ class Calendar {
 			}
 		}
 
-		if (empty($itemRowsHTML)) { //print message of unavailable items
-			$print .= '<tr style="color: var(--commonsbooking-color-error);"><td colspan="2">' . __('No items found.','commonsbooking') .'</td></tr>';
-		}
-		else { //if there are item rows, append them to the table
+		if ( empty( $itemRowsHTML ) ) { //print message of unavailable items
+			$print .= '<tr style="color: var(--commonsbooking-color-error);"><td colspan="2">' . __( 'No items found.', 'commonsbooking' ) . '</td></tr>';
+		} else { //if there are item rows, append them to the table
 			$print .= $itemRowsHTML;
 		}
 
@@ -165,14 +167,15 @@ class Calendar {
 		return $print;
 	}
 
-	public static function shortcode( $atts) {
+	public static function shortcode( $atts ) {
 		global $templateData;
-		$templateData = [];
-		$templateData['data'] = self::renderTable($atts);
+		$templateData         = [];
+		$templateData['data'] = self::renderTable( $atts );
 
-		if (!empty($templateData['data'])) {
+		if ( ! empty( $templateData['data'] ) ) {
 			ob_start();
-			commonsbooking_get_template_part( 'shortcode', 'items_table', true, false, false ) ;
+			commonsbooking_get_template_part( 'shortcode', 'items_table', true, false, false );
+
 			return ob_get_clean();
 		}
 	}
@@ -299,10 +302,10 @@ class Calendar {
 			$dayStr         = implode( $divider, $days_display );
 			$itemLink       = add_query_arg( 'cb-location', $locationId, get_permalink( $item->ID ) );
 			$locationString = '<div data-title="' . $locationName . '">' . $locationName . '</div>';
-			$locationLink = get_permalink($locationId);
+			$locationLink   = get_permalink( $locationId );
 
 			$rowHtml = "<tr><td><b><a href='" . $itemLink . "'>" . $itemName . "</a></b>" . $divider . $locationString . $divider . $dayStr . "</td></tr>";
-			Plugin::setCacheItem($rowHtml, [ $locationId, $item->ID]);
+			Plugin::setCacheItem( $rowHtml, [ $locationId, $item->ID ] );
 
 			return $rowHtml;
 		}
@@ -329,8 +332,8 @@ class Calendar {
 			$location = $location->ID;
 		}
 
-		if(!Wordpress::isValidDateString($startDateString) || !Wordpress::isValidDateString($endDateString)) {
-			throw new \Exception('invalid date format');
+		if ( ! Wordpress::isValidDateString( $startDateString ) || ! Wordpress::isValidDateString( $endDateString ) ) {
+			throw new \Exception( 'invalid date format' );
 		}
 
 		if ( ! $item || ! $location ) {
@@ -398,12 +401,12 @@ class Calendar {
 		// Sort timeframes by startdate
 		usort( $bookableTimeframes, function ( \CommonsBooking\Model\Timeframe $item1, \CommonsBooking\Model\Timeframe $item2 ) {
 			$item1StartDateDistance = abs( time() - $item1->getStartDate() );
-			$item1EndDateDistance = abs( time() - $item1->getEndDate() );
-			$item1SmallestDistance = min( $item1StartDateDistance, $item1EndDateDistance );
+			$item1EndDateDistance   = abs( time() - $item1->getEndDate() );
+			$item1SmallestDistance  = min( $item1StartDateDistance, $item1EndDateDistance );
 
 			$item2StartDateDistance = abs( time() - $item2->getStartDate() );
-			$item2EndDateDistance = abs( time() - $item2->getEndDate() );
-			$item2SmallestDistance = min( $item2StartDateDistance, $item2EndDateDistance );
+			$item2EndDateDistance   = abs( time() - $item2->getEndDate() );
+			$item2SmallestDistance  = min( $item2StartDateDistance, $item2EndDateDistance );
 
 			return $item2SmallestDistance <=> $item1SmallestDistance;
 		} );
@@ -498,7 +501,7 @@ class Calendar {
 			}
 
 			// set transient expiration time to midnight to force cache refresh by daily basis to allow dynamic advanced booking day feature
-			Plugin::setCacheItem( $jsonResponse, ['misc'], $customCacheKey, 'midnight' );
+			Plugin::setCacheItem( $jsonResponse, [ 'misc' ], $customCacheKey, 'midnight' );
 		}
 
 		return $jsonResponse;
@@ -689,25 +692,25 @@ class Calendar {
 	 */
 	public static function getCalendarData() {
 		// item by post-param
-		$item = isset( $_POST['item'] ) && $_POST['item'] != "" ? intval ( $_POST['item'] ) : false;
-		if ( $item === false || $item == 0) { // 0 = failed intval check
+		$item = isset( $_POST['item'] ) && $_POST['item'] != "" ? intval( $_POST['item'] ) : false;
+		if ( $item === false || $item == 0 ) { // 0 = failed intval check
 			throw new Exception( 'missing item id.' );
 		}
 
 		// location by post-param
-		$location = isset( $_POST['location'] ) && $_POST['location'] != "" ? intval ( $_POST['location'] ): false;
-		if ( $location === false || $location == 0) { // 0 = failed intval check
+		$location = isset( $_POST['location'] ) && $_POST['location'] != "" ? intval( $_POST['location'] ) : false;
+		if ( $location === false || $location == 0 ) { // 0 = failed intval check
 			throw new Exception( 'missing location id.' );
 		}
 
 		// Ajax-Request param check
-		if ( array_key_exists( 'sd', $_POST ) && Wordpress::isValidDateString($_POST['sd'])) {
-            $startDateString = sanitize_text_field( $_POST['sd'] );
+		if ( array_key_exists( 'sd', $_POST ) && Wordpress::isValidDateString( $_POST['sd'] ) ) {
+			$startDateString = sanitize_text_field( $_POST['sd'] );
 		} else {
 			throw new Exception( 'wrong or missing start date.' );
 		}
 
-		if ( array_key_exists( 'ed', $_POST ) && Wordpress::isValidDateString($_POST['ed'])) {
+		if ( array_key_exists( 'ed', $_POST ) && Wordpress::isValidDateString( $_POST['ed'] ) ) {
 			$endDateString = sanitize_text_field( $_POST['ed'] );
 		} else {
 			throw new Exception( 'wrong or missing end date.' );

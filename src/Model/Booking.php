@@ -25,7 +25,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Booking states.
-     *
+	 *
 	 * @var string[]
 	 */
 	public static $bookingStates = [
@@ -36,7 +36,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Returns the booking code.
-     *
+	 *
 	 * @return mixed
 	 */
 	public function getBookingCode() {
@@ -77,7 +77,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Returns rendered booking code for using in email-template (booking confirmation mail)
-     *
+	 *
 	 * @return string
 	 * @throws Exception
 	 */
@@ -99,7 +99,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Returns true if booking codes shall be shown in frontend.
-     *
+	 *
 	 * @return bool
 	 */
 	public function showBookingCodes(): bool {
@@ -108,7 +108,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Returns suitable bookable Timeframe for booking.
-     *
+	 *
 	 * @return null|\CommonsBooking\Model\Timeframe
 	 * @throws Exception
 	 */
@@ -132,7 +132,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Assings relevant meta fields from related bookable timeframe to booking.
-     *
+	 *
 	 * @throws Exception
 	 */
 	public function assignBookableTimeframeFields() {
@@ -335,7 +335,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Returns comment text.
-     *
+	 *
 	 * @return string
 	 */
 	public function returnComment(): string {
@@ -359,12 +359,12 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		if ( $currentStatus == 'canceled' ) {
-            if ( $cancellationTime ) {
-                $cancellationTimeFormatted = Helper::FormattedDateTime( $cancellationTime );
-			    $noticeText                = sprintf( commonsbooking_sanitizeHTML( __( 'Your booking has been canceled at %s.', 'commonsbooking' ) ), $cancellationTimeFormatted );
-            } else {
-                $noticeText = commonsbooking_sanitizeHTML( __( 'Your booking has been canceled', 'commonsbooking' ) );
-            }
+			if ( $cancellationTime ) {
+				$cancellationTimeFormatted = Helper::FormattedDateTime( $cancellationTime );
+				$noticeText                = sprintf( commonsbooking_sanitizeHTML( __( 'Your booking has been canceled at %s.', 'commonsbooking' ) ), $cancellationTimeFormatted );
+			} else {
+				$noticeText = commonsbooking_sanitizeHTML( __( 'Your booking has been canceled', 'commonsbooking' ) );
+			}
 		}
 
 		if ( isset( $noticeText ) ) {
@@ -376,7 +376,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Return HTML Link to booking
-     *
+	 *
 	 * @TODO: optimize booking link to support different permalink settings or set individual slug (e.g. booking instead of cb_timeframe)
 	 *
 	 * @return string
@@ -406,7 +406,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return bool
 	 */
 	public function isCancelled(): bool {
-		return ( $this->post_status == 'canceled' ? : false );
+		return ( $this->post_status == 'canceled' ?: false );
 	}
 
 	/**
@@ -428,17 +428,18 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	): string {
 		$calendar = new iCalendar();
 		$calendar->addBookingEvent( $this, $eventTitle, $eventDescription );
+
 		return $calendar->getCalendarData();
 	}
 
-    /**
-     * Returns formatted user info based on the template field in settings -> templates
-     *
-     * @return void
-     */
-    public static function getFormattedUserInfo() {
-        return commonsbooking_parse_template(
-            Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'user_details_template' )
-        );
-    }
+	/**
+	 * Returns formatted user info based on the template field in settings -> templates
+	 *
+	 * @return void
+	 */
+	public static function getFormattedUserInfo() {
+		return commonsbooking_parse_template(
+			Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'user_details_template' )
+		);
+	}
 }

@@ -14,7 +14,7 @@ use WP_REST_Server;
 
 class BaseRoute extends WP_REST_Controller {
 
-    const API_KEY_PARAM = 'apikey';
+	const API_KEY_PARAM = 'apikey';
 
 	protected $schemaUrl;
 
@@ -29,9 +29,9 @@ class BaseRoute extends WP_REST_Controller {
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_items' ),
 				'args'                => array(),
-                'permission_callback' => function () {
-                    return self::hasPermission();
-                }
+				'permission_callback' => function () {
+					return self::hasPermission();
+				}
 			),
 		) );
 		register_rest_route( $namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)', array(
@@ -43,18 +43,18 @@ class BaseRoute extends WP_REST_Controller {
 						'default' => 'view',
 					),
 				),
-                'permission_callback' => function () {
-                    return self::hasPermission();
-                }
+				'permission_callback' => function () {
+					return self::hasPermission();
+				}
 			),
 		) );
 
 		register_rest_route( $namespace, '/' . $this->rest_base . '/schema', array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => array( $this, 'get_public_item_schema' ),
-            'permission_callback' => function () {
-                return self::hasPermission();
-            }
+			'permission_callback' => function () {
+				return self::hasPermission();
+			}
 		) );
 	}
 
@@ -123,31 +123,30 @@ class BaseRoute extends WP_REST_Controller {
 		return substr( json_encode( $string ), 1, - 1 ) ?: "";
 	}
 
-    /**
-     * Returns true if current request is allowed.
-     * @return bool
-     */
-    public static function hasPermission()
-    {
-        $isApiActive = Settings::getOption('commonsbooking_options_api', 'api-activated');
-        $anonymousAccessAllowed = Settings::getOption('commonsbooking_options_api', 'apikey_not_required');
-        $apiKey = array_key_exists(self::API_KEY_PARAM, $_REQUEST) ? sanitize_text_field($_REQUEST[self::API_KEY_PARAM]) : false;
-        $apiShare = ApiShares::getByKey($apiKey);
+	/**
+	 * Returns true if current request is allowed.
+	 * @return bool
+	 */
+	public static function hasPermission() {
+		$isApiActive            = Settings::getOption( 'commonsbooking_options_api', 'api-activated' );
+		$anonymousAccessAllowed = Settings::getOption( 'commonsbooking_options_api', 'apikey_not_required' );
+		$apiKey                 = array_key_exists( self::API_KEY_PARAM, $_REQUEST ) ? sanitize_text_field( $_REQUEST[ self::API_KEY_PARAM ] ) : false;
+		$apiShare               = ApiShares::getByKey( $apiKey );
 
-        // Only if api is active we return something
-        if ($isApiActive) {
-            // if anonymous access is allowed, api shares are ignored
-            if ($anonymousAccessAllowed) {
-                return true;
-            } else {
-                // check if there is a valid api key submitted
-                if ($apiKey && $apiShare && $apiShare->isEnabled()) {
-                    return true;
-                }
-            }
-        }
+		// Only if api is active we return something
+		if ( $isApiActive ) {
+			// if anonymous access is allowed, api shares are ignored
+			if ( $anonymousAccessAllowed ) {
+				return true;
+			} else {
+				// check if there is a valid api key submitted
+				if ( $apiKey && $apiShare && $apiShare->isEnabled() ) {
+					return true;
+				}
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
 }

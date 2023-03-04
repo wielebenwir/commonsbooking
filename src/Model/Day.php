@@ -118,7 +118,7 @@ class Day {
 			// OR: Check for repetition timeframe selected days
 			foreach ( $timeFrames as $key => $timeframe ) {
 				if ( ! commonsbooking_isCurrentUserAllowedToBook( $timeframe->ID ) ||
-				     ! $this->isInTimeframe( $timeframe )) {
+				     ! $this->isInTimeframe( $timeframe ) ) {
 					unset( $timeFrames[ $key ] );
 				}
 			}
@@ -300,7 +300,7 @@ class Day {
 	public function isInTimeframe( \CommonsBooking\Model\Timeframe $timeframe ): bool {
 		$repetitionType = get_post_meta( $timeframe->ID, 'timeframe-repetition', true );
 
-		if ($repetitionType) {
+		if ( $repetitionType ) {
 			switch ( $repetitionType ) {
 				// Weekly Rep
 				case "w":
@@ -321,7 +321,7 @@ class Day {
 				// Monthly Rep
 				case "m":
 					$dayOfMonth               = intval( $this->getDateObject()->format( 'j' ) );
-					$timeframeStartDayOfMonth = date('j',$timeframe->getStartDate());
+					$timeframeStartDayOfMonth = date( 'j', $timeframe->getStartDate() );
 
 					if ( $dayOfMonth == $timeframeStartDayOfMonth ) {
 						return true;
@@ -332,23 +332,23 @@ class Day {
 				// Yearly Rep
 				case "y":
 					$date          = intval( $this->getDateObject()->format( 'dm' ) );
-					$timeframeDate = date('dm',$timeframe->getStartDate());
+					$timeframeDate = date( 'dm', $timeframe->getStartDate() );
 					if ( $date == $timeframeDate ) {
 						return true;
 					} else {
 						return false;
 					}
 				case "norep":
-					$timeframeStartTimestamp = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ));
-					$timeframeEndTimestamp   = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ));
+					$timeframeStartTimestamp = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) );
+					$timeframeEndTimestamp   = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
 
-					$currentDayStartTimestamp = strtotime('midnight', $this->getDateObject()->getTimestamp());
-					$currentDayEndTimestamp = strtotime('+1 day midnight', $this->getDateObject()->getTimestamp()) - 1;
+					$currentDayStartTimestamp = strtotime( 'midnight', $this->getDateObject()->getTimestamp() );
+					$currentDayEndTimestamp   = strtotime( '+1 day midnight', $this->getDateObject()->getTimestamp() ) - 1;
 
 					$timeframeStartsBeforeEndOfToday = $timeframeStartTimestamp <= $currentDayEndTimestamp;
-					$timeframeEndsAfterStartOfToday = $timeframeEndTimestamp >= $currentDayStartTimestamp;
+					$timeframeEndsAfterStartOfToday  = $timeframeEndTimestamp >= $currentDayStartTimestamp;
 
-					if(!$timeframeEndTimestamp) {
+					if ( ! $timeframeEndTimestamp ) {
 						return $timeframeStartsBeforeEndOfToday;
 					} else {
 						return $timeframeStartsBeforeEndOfToday && $timeframeEndsAfterStartOfToday;
@@ -494,8 +494,8 @@ class Day {
 			// Init Slots
 			for ( $i = 0; $i < $slotsPerDay; $i ++ ) {
 				$slots[ $i ] = [
-					'timestart'      => date( esc_html(get_option( 'time_format' )), $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
-					'timeend'        => date( esc_html(get_option( 'time_format' )), ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+					'timestart'      => date( esc_html( get_option( 'time_format' ) ), $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+					'timeend'        => date( esc_html( get_option( 'time_format' ) ), ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
 					'timestampstart' => $this->getSlotTimestampStart( $slotsPerDay, $i ),
 					'timestampend'   => $this->getSlotTimestampEnd( $slotsPerDay, $i )
 				];
@@ -507,7 +507,7 @@ class Day {
 
 			Plugin::setCacheItem(
 				$slots,
-				Wordpress::getTags($this->getTimeframes(), $this->items, $this->locations),
+				Wordpress::getTags( $this->getTimeframes(), $this->items, $this->locations ),
 				$customCacheKey
 			);
 

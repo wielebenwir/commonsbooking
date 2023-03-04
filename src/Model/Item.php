@@ -54,7 +54,7 @@ class Item extends BookablePost {
 	public function getRestrictions(): array {
 		return \CommonsBooking\Repository\Restriction::get(
 			[],
-			[$this->ID],
+			[ $this->ID ],
 			null,
 			true
 		);

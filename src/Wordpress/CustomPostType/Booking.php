@@ -40,12 +40,12 @@ class Booking extends Timeframe {
 			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
 			wp_verify_nonce( $_REQUEST[ static::getWPNonceId() ], static::getWPAction() )
 		) {
-			$itemId     = isset( $_REQUEST['item-id'] ) && $_REQUEST['item-id'] != "" ? sanitize_text_field( $_REQUEST['item-id'] ) : null;
-			$locationId = isset( $_REQUEST['location-id'] ) && $_REQUEST['location-id'] != "" ? sanitize_text_field( $_REQUEST['location-id'] ) : null;
-			$comment    = isset( $_REQUEST['comment'] ) && $_REQUEST['comment'] != "" ? sanitize_text_field( $_REQUEST['comment'] ) : null;
-            $post_status = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] != "" ? sanitize_text_field( $_REQUEST['post_status'] ) : null;
+			$itemId      = isset( $_REQUEST['item-id'] ) && $_REQUEST['item-id'] != "" ? sanitize_text_field( $_REQUEST['item-id'] ) : null;
+			$locationId  = isset( $_REQUEST['location-id'] ) && $_REQUEST['location-id'] != "" ? sanitize_text_field( $_REQUEST['location-id'] ) : null;
+			$comment     = isset( $_REQUEST['comment'] ) && $_REQUEST['comment'] != "" ? sanitize_text_field( $_REQUEST['comment'] ) : null;
+			$post_status = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] != "" ? sanitize_text_field( $_REQUEST['post_status'] ) : null;
 
- 			if ( ! get_post( $itemId ) ) {
+			if ( ! get_post( $itemId ) ) {
 				throw new Exception( 'Item does not exist. (' . $itemId . ')' );
 			}
 			if ( ! get_post( $locationId ) ) {
@@ -56,7 +56,7 @@ class Booking extends Timeframe {
 			if ( isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] ) &&
 			     $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] != ""
 			) {
-				$startDate = sanitize_text_field( $_REQUEST[\CommonsBooking\Model\Timeframe::REPETITION_START] );
+				$startDate = sanitize_text_field( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] );
 			}
 
 			$endDate = null;
@@ -80,18 +80,18 @@ class Booking extends Timeframe {
 						$locationId,
 						$itemId,
 						[],
-						['confirmed']
+						[ 'confirmed' ]
 					)
 			) {
-				if(count($existingBookings) > 0 ) {
-					$requestedPostname = array_key_exists('cb_booking', $_REQUEST) ? $_REQUEST['cb_booking'] : '';
+				if ( count( $existingBookings ) > 0 ) {
+					$requestedPostname = array_key_exists( 'cb_booking', $_REQUEST ) ? $_REQUEST['cb_booking'] : '';
 
 					// checks if it's an edit, but ignores exact start/end time
-					$isEdit = count($existingBookings) === 1 &&
-						array_values($existingBookings)[0]->getPost()->post_name === $requestedPostname &&
-						array_values($existingBookings)[0]->getPost()->post_author == get_current_user_id();
+					$isEdit = count( $existingBookings ) === 1 &&
+					          array_values( $existingBookings )[0]->getPost()->post_name === $requestedPostname &&
+					          array_values( $existingBookings )[0]->getPost()->post_author == get_current_user_id();
 
-					if( (!$isEdit || count($existingBookings) > 1) && $post_status != 'canceled' ) {
+					if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status != 'canceled' ) {
 						throw new Exception( 'There is already a booking in this timerange.' );
 					}
 				}
@@ -203,15 +203,15 @@ class Booking extends Timeframe {
 			}
 
 			// prepare needed params
-			$itemId          = sanitize_text_field( $_REQUEST[\CommonsBooking\Model\Timeframe::META_ITEM_ID] );
-			$locationId      = sanitize_text_field( $_REQUEST[\CommonsBooking\Model\Timeframe::META_LOCATION_ID] );
-			$repetitionStart = sanitize_text_field( $_REQUEST[\CommonsBooking\Model\Timeframe::REPETITION_START] );
+			$itemId          = sanitize_text_field( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] );
+			$locationId      = sanitize_text_field( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ] );
+			$repetitionStart = sanitize_text_field( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] );
 			if ( is_array( $repetitionStart ) ) {
 				$repetitionStart = strtotime( $repetitionStart['date'] . " " . $repetitionStart['time'] );
 			} else {
 				$repetitionStart = intval( $repetitionStart );
 			}
-			$repetitionEnd = sanitize_text_field( $_REQUEST[\CommonsBooking\Model\Timeframe::REPETITION_END] );
+			$repetitionEnd = sanitize_text_field( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] );
 			if ( is_array( $repetitionEnd ) ) {
 				$repetitionEnd = strtotime( $repetitionEnd['date'] . " " . $repetitionEnd['time'] );
 			} else {
@@ -335,7 +335,7 @@ class Booking extends Timeframe {
 	 */
 	public function getTemplate( $content ) {
 		$cb_content = '';
-		if ( is_singular( self::getPostType() ) && is_main_query() ){
+		if ( is_singular( self::getPostType() ) && is_main_query() ) {
 			ob_start();
 			global $post;
 

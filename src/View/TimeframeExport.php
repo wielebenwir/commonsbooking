@@ -20,17 +20,17 @@ class TimeframeExport {
 	 */
 	public static function renderExportForm( $field_args, $field ) {
 		?>
-        <div class="cmb-row cmb-type-text ">
-            <div class="cmb-th">
-                <label for="timeframe-export"><?php echo esc_html__( 'Download CSV', 'commonsbooking' ); ?></label>
-            </div>
-            <div class="cmb-td">
-                <button type="submit" id="timeframe-export" class="button button-secondary" name="submit-cmb"
-                        value="download-export">
+		<div class="cmb-row cmb-type-text ">
+			<div class="cmb-th">
+				<label for="timeframe-export"><?php echo esc_html__( 'Download CSV', 'commonsbooking' ); ?></label>
+			</div>
+			<div class="cmb-td">
+				<button type="submit" id="timeframe-export" class="button button-secondary" name="submit-cmb"
+				        value="download-export">
 					<?php echo esc_html__( 'Download Export', 'commonsbooking' ); ?>
-                </button>
-            </div>
-        </div>
+				</button>
+			</div>
+		</div>
 		<?php
 	}
 
@@ -40,7 +40,7 @@ class TimeframeExport {
 	 * @throws Exception
 	 */
 	public static function exportCsv( string $outputFile = 'php://output' ) {
-		$exportFilename = 'timeframe-export-' .  date('Y-m-d-H-i-s') . '.csv';
+		$exportFilename = 'timeframe-export-' . date( 'Y-m-d-H-i-s' ) . '.csv';
 
 		$inputFields = [
 			'location' => self::getInputFields( 'location-fields' ),
@@ -166,7 +166,7 @@ class TimeframeExport {
 			$dayTimeframes = Timeframe::get(
 				[],
 				[],
-				$type ? [$type] : [],
+				$type ? [ $type ] : [],
 				$dt->format( "Y-m-d" ),
 				true,
 				null,
@@ -245,42 +245,40 @@ class TimeframeExport {
 
 		// get corresponding item title
 		$item = $timeframePost->getItem();
-		if ($item != null){
+		if ( $item != null ) {
 			$item_title = $item->post_title;
-		}
-		else {
+		} else {
 			$item_title = __( 'Unknown', 'commonsbooking' );
 		}
 
 		// get corresponding location title
 		$location = $timeframePost->getLocation();
-		if ($location != null){
+		if ( $location != null ) {
 			$location_title = $location->post_title;
-		}
-		else {
+		} else {
 			$location_title = __( 'Unknown', 'commonsbooking' );
 		}
 
 		// populate simple meta fields
-		$timeframeData["timeframe-max-days"]  = $timeframePost->getFieldValue( "timeframe-max-days" );
-		$timeframeData["full-day"]            = $timeframePost->getFieldValue( "full-day" );
-		$timeframeData[\CommonsBooking\Model\Timeframe::REPETITION_START] =
+		$timeframeData["timeframe-max-days"]                                = $timeframePost->getFieldValue( "timeframe-max-days" );
+		$timeframeData["full-day"]                                          = $timeframePost->getFieldValue( "full-day" );
+		$timeframeData[ \CommonsBooking\Model\Timeframe::REPETITION_START ] =
 			$timeframePost->getStartDate() ?
 				date( 'c', $timeframePost->getStartDate() ) : '';
-		$timeframeData[\CommonsBooking\Model\Timeframe::REPETITION_END] =
+		$timeframeData[ \CommonsBooking\Model\Timeframe::REPETITION_END ]   =
 			$timeframePost->getEndDate() ?
 				date( 'c', $timeframePost->getEndDate() ) : '';
-		$timeframeData["start-time"]          = $timeframePost->getStartTime();
-		$timeframeData["end-time"]            = $timeframePost->getEndTime();
-		$timeframeData["pickup"]              = isset( $booking ) ? $booking->pickupDatetime() : "";
-		$timeframeData["return"]              = isset( $booking ) ? $booking->returnDatetime() : "";
-		$timeframeData["booking-code"]        = $timeframePost->getFieldValue( "_cb_bookingcode" );
-		$timeframeData["location-post_title"] = $location_title;
-		$timeframeData["item-post_title"]     = $item_title;
-		$timeframeData["user-firstname"]      = $timeframePost->getUserData()->first_name;
-		$timeframeData["user-lastname"]       = $timeframePost->getUserData()->last_name;
-		$timeframeData["user-login"]          = $timeframePost->getUserData()->user_login;
-		$timeframeData["comment"]             = $timeframePost->getFieldValue('comment');
+		$timeframeData["start-time"]                                        = $timeframePost->getStartTime();
+		$timeframeData["end-time"]                                          = $timeframePost->getEndTime();
+		$timeframeData["pickup"]                                            = isset( $booking ) ? $booking->pickupDatetime() : "";
+		$timeframeData["return"]                                            = isset( $booking ) ? $booking->returnDatetime() : "";
+		$timeframeData["booking-code"]                                      = $timeframePost->getFieldValue( "_cb_bookingcode" );
+		$timeframeData["location-post_title"]                               = $location_title;
+		$timeframeData["item-post_title"]                                   = $item_title;
+		$timeframeData["user-firstname"]                                    = $timeframePost->getUserData()->first_name;
+		$timeframeData["user-lastname"]                                     = $timeframePost->getUserData()->last_name;
+		$timeframeData["user-login"]                                        = $timeframePost->getUserData()->user_login;
+		$timeframeData["comment"]                                           = $timeframePost->getFieldValue( 'comment' );
 
 		return $timeframeData;
 	}

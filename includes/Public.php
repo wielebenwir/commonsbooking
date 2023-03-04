@@ -18,8 +18,8 @@ function commonsbooking_public() {
 	);
 
 	$colorScheme_css = View::getColorCSS();
-	if ($colorScheme_css) { //if custom color variables exist, import them after importing the rest of the CSS, overwriting existing defaults
-		wp_add_inline_style('cb-styles-public',$colorScheme_css);
+	if ( $colorScheme_css ) { //if custom color variables exist, import them after importing the rest of the CSS, overwriting existing defaults
+		wp_add_inline_style( 'cb-styles-public', $colorScheme_css );
 	}
 
 	// Template specific styles
@@ -30,7 +30,7 @@ function commonsbooking_public() {
 		'twentytwenty',
 		'twentynineteen'
 	];
-	if(in_array($template, $customizedTemplates)) {
+	if ( in_array( $template, $customizedTemplates ) ) {
 		wp_enqueue_style(
 			'cb-styles-public-theme',
 			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/css/themes/' . $template . '.css',
@@ -161,7 +161,10 @@ add_action( 'wp_ajax_nopriv_cb_cache_warmup', array( \CommonsBooking\Plugin::cla
 
 if ( is_admin() ) {
 	add_action( 'wp_ajax_cb_start_migration', array( Migration::class, 'migrateAll' ) );
-	add_action( 'wp_ajax_cb_start_booking_migration', array( \CommonsBooking\Migration\Booking::class, 'ajaxMigrate' ) );
+	add_action( 'wp_ajax_cb_start_booking_migration', array(
+		\CommonsBooking\Migration\Booking::class,
+		'ajaxMigrate'
+	) );
 }
 
 // Map ajax

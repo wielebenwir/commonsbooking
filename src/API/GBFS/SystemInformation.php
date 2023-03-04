@@ -20,18 +20,18 @@ class SystemInformation extends \CommonsBooking\API\BaseRoute {
 	 * Commons-API schema definition.
 	 * @var string
 	 */
-    protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/system_information.json';
+	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/system_information.json';
 
-        public function get_items( $request ): WP_REST_Response {
-		$data                 = new stdClass();
-		$data->data           = new stdClass();
-		$data->data->name     = get_bloginfo('name');
-		$data->data->system_id = sha1(site_url());
-		$data->data->language = get_bloginfo('language');
-		$data->data->timezone = get_option('timezone_string');
-		$data->last_updated   = current_time('timestamp');
-		$data->ttl            = 86400;
-		$data->version        = "2.2";
+	public function get_items( $request ): WP_REST_Response {
+		$data                  = new stdClass();
+		$data->data            = new stdClass();
+		$data->data->name      = get_bloginfo( 'name' );
+		$data->data->system_id = sha1( site_url() );
+		$data->data->language  = get_bloginfo( 'language' );
+		$data->data->timezone  = get_option( 'timezone_string' );
+		$data->last_updated    = current_time( 'timestamp' );
+		$data->ttl             = 86400;
+		$data->version         = "2.2";
 
 		if ( WP_DEBUG ) {
 			$this->validateData( $data );

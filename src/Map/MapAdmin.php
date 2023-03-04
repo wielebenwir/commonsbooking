@@ -373,8 +373,8 @@ class MapAdmin {
 
 		//custom_filterbutton_label
 		if ( isset( $input['custom_filterbutton_label'] ) ) {
-				$validated_input['custom_filterbutton_label'] = sanitize_text_field( $input['custom_filterbutton_label'] );
-			}
+			$validated_input['custom_filterbutton_label'] = sanitize_text_field( $input['custom_filterbutton_label'] );
+		}
 
 		//cb_items_available_categories
 		$category_terms = \CommonsBooking\Repository\Item::getTerms();
@@ -429,9 +429,9 @@ class MapAdmin {
 
 		update_post_meta( $cb_map_id, 'cb_map_options', $validated_input );
 
-        commonsbooking_write_log($_POST);
+		commonsbooking_write_log( $_POST );
 
-        commonsbooking_write_log($validated_input);
+		commonsbooking_write_log( $validated_input );
 
 		return $validated_input;
 	}
@@ -542,9 +542,9 @@ class MapAdmin {
 		self::load_options( $cb_map_id );
 
 		if ( array_key_exists( $key, self::$options ) ) {
-			return is_array((self::$options[ $key ])) ? self::$options[ $key ] : commonsbooking_sanitizeHTML(self::$options[ $key ]);
+			return is_array( ( self::$options[ $key ] ) ) ? self::$options[ $key ] : commonsbooking_sanitizeHTML( self::$options[ $key ] );
 		} else {
-			return is_array(self::get_option_default( $key )) ? self::get_option_default( $key ) : commonsbooking_sanitizeHTML(self::get_option_default( $key ));
+			return is_array( self::get_option_default( $key ) ) ? self::get_option_default( $key ) : commonsbooking_sanitizeHTML( self::get_option_default( $key ) );
 		}
 	}
 

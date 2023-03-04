@@ -15,26 +15,29 @@ class Booking extends PostRepository {
 
 	/**
 	 * Returns 0:00 timestamp for day of $timestamp.
+	 *
 	 * @param $timestamp
 	 *
 	 * @return false|int
 	 */
-	protected static function getStartTimestamp($timestamp) {
+	protected static function getStartTimestamp( $timestamp ) {
 		return strtotime( "midnight", $timestamp );
 	}
 
 	/**
 	 * Returns 23:59 timestamp for day of $timestamp.
+	 *
 	 * @param $startTimestamp
 	 *
 	 * @return false|int
 	 */
-	protected static function getEndTimestamp($startTimestamp) {
+	protected static function getEndTimestamp( $startTimestamp ) {
 		return strtotime( '+23 Hours +59 Minutes +59 Seconds', $startTimestamp );
 	}
 
 	/**
 	 * Returns bookings ending at day of timestamp.
+	 *
 	 * @param int $timestamp
 	 * @param array $customArgs
 	 *
@@ -42,8 +45,8 @@ class Booking extends PostRepository {
 	 * @throws Exception
 	 */
 	public static function getEndingBookingsByDate( int $timestamp, array $customArgs = [] ): array {
-		$startTimestamp = self::getStartTimestamp($timestamp);
-		$endTimestamp   = self::getEndTimestamp($startTimestamp);
+		$startTimestamp = self::getStartTimestamp( $timestamp );
+		$endTimestamp   = self::getEndTimestamp( $startTimestamp );
 
 		// Default query
 		$args = array(
@@ -96,6 +99,7 @@ class Booking extends PostRepository {
 
 	/**
 	 * Returns bookings beginning at day of timestamp.
+	 *
 	 * @param int $timestamp
 	 * @param array $customArgs
 	 *
@@ -103,8 +107,8 @@ class Booking extends PostRepository {
 	 * @throws Exception
 	 */
 	public static function getBeginningBookingsByDate( int $timestamp, array $customArgs = [] ): array {
-		$startTimestamp = self::getStartTimestamp($timestamp);
-		$endTimestamp   = self::getEndTimestamp($startTimestamp);
+		$startTimestamp = self::getStartTimestamp( $timestamp );
+		$endTimestamp   = self::getEndTimestamp( $startTimestamp );
 
 		// Default query
 		$args = array(
@@ -237,7 +241,7 @@ class Booking extends PostRepository {
 		$locationId,
 		$itemId,
 		array $customArgs = [],
-		array $postStatus = ['confirmed', 'unconfirmed']
+		array $postStatus = [ 'confirmed', 'unconfirmed' ]
 	): ?array {
 		// Default query
 		$args = array(
@@ -313,8 +317,8 @@ class Booking extends PostRepository {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getForUser( $user, bool $asModel = false, $startDate = null): array{
-		$customId     = $user->ID;
+	public static function getForUser( $user, bool $asModel = false, $startDate = null ): array {
+		$customId = $user->ID;
 
 		if ( Plugin::getCacheItem( $customId ) ) {
 			return Plugin::getCacheItem( $customId );
@@ -329,14 +333,14 @@ class Booking extends PostRepository {
 			);
 			if ( $posts ) {
 				// Check if it is the main query and one of our custom post types
-				$posts = array_filter( $posts, function ( $post ) use ($user) {
-					return commonsbooking_isUserAllowedToEdit( $post, $user);
+				$posts = array_filter( $posts, function ( $post ) use ( $user ) {
+					return commonsbooking_isUserAllowedToEdit( $post, $user );
 				} );
 			}
 
 			Plugin::setCacheItem(
 				$posts,
-				Wordpress::getTags($posts),
+				Wordpress::getTags( $posts ),
 				$customId
 			);
 		}
@@ -359,8 +363,8 @@ class Booking extends PostRepository {
 		}
 
 		$current_user = wp_get_current_user();
-		
-		return self::getForUser($current_user, $asModel, $startDate);
+
+		return self::getForUser( $current_user, $asModel, $startDate );
 	}
 
 	/**
@@ -408,7 +412,7 @@ class Booking extends PostRepository {
 			$restriction->getLocationId(),
 			$restriction->getItemId(),
 			[],
-			['confirmed']
+			[ 'confirmed' ]
 		);
 	}
 

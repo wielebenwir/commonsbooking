@@ -35,7 +35,7 @@ abstract class View {
 		'offset'         => '',
 		// Order: https://developer.wordpress.org/reference/classes/wp_query/#order-orderby-parameters
 		'order'          => '',
-		'orderby'		 => '',
+		'orderby'        => '',
 	);
 
 	/**
@@ -63,18 +63,20 @@ abstract class View {
 				continue;
 			}
 
-			if(!$latestPossibleBookingDate) {
+			if ( ! $latestPossibleBookingDate ) {
 				$latestPossibleBookingDate = $timeframe->getLatestPossibleBookingDateTimestamp();
 			}
 
 			// If start date is after latest possible booking date, we leave range out
-			$endOfStartDay = strtotime('+1 day midnight', $timeframe->getStartDate()) - 1;
-			if($endOfStartDay > $latestPossibleBookingDate) continue;
+			$endOfStartDay = strtotime( '+1 day midnight', $timeframe->getStartDate() ) - 1;
+			if ( $endOfStartDay > $latestPossibleBookingDate ) {
+				continue;
+			}
 
 			$item = $timeframe->{'get' . $type}();
 
 			// We need only published items
-			if ( !$item || $item->post_status !== 'publish' ) {
+			if ( ! $item || $item->post_status !== 'publish' ) {
 				continue;
 			}
 
@@ -158,42 +160,40 @@ abstract class View {
 	 *
 	 * @return string
 	 */
-	public static function getColorCSS():string{
-		$compiler = new Compiler();
-		$var_import = COMMONSBOOKING_PLUGIN_DIR . 'assets/global/sass/partials/_variables.scss';
+	public static function getColorCSS(): string {
+		$compiler    = new Compiler();
+		$var_import  = COMMONSBOOKING_PLUGIN_DIR . 'assets/global/sass/partials/_variables.scss';
 		$import_path = COMMONSBOOKING_PLUGIN_DIR . 'assets/public/sass/partials/';
-		$compiler ->setImportPaths($import_path);
+		$compiler->setImportPaths( $import_path );
 
 		$variables = [
-			'color-primary' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_primarycolor'),
-			'color-secondary' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_secondarycolor'),
-			'color-buttons'	  => Settings::getOption('commonsbooking_options_templates', 'colorscheme_buttoncolor'),
-			'color-accept' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_acceptcolor'),
-			'color-cancel' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_cancelcolor'),
-			'color-holiday' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_holidaycolor'),
-			'color-greyedout' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_greyedoutcolor'),
-			'color-bg' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_backgroundcolor'),
-			'color-noticebg' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_noticebackgroundcolor'),
+			'color-primary'   => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_primarycolor' ),
+			'color-secondary' => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_secondarycolor' ),
+			'color-buttons'   => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_buttoncolor' ),
+			'color-accept'    => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_acceptcolor' ),
+			'color-cancel'    => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_cancelcolor' ),
+			'color-holiday'   => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_holidaycolor' ),
+			'color-greyedout' => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor' ),
+			'color-bg'        => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_backgroundcolor' ),
+			'color-noticebg'  => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_noticebackgroundcolor' ),
 		];
 
-		foreach ($variables as &$variable){ //iterate over array, convert valid values.
-			if ($variable){  //values are only converted when set so ValueParser does not throw an error
-				$variable = ValueConverter::parseValue($variable);
-			}
-			else {
+		foreach ( $variables as &$variable ) { //iterate over array, convert valid values.
+			if ( $variable ) {  //values are only converted when set so ValueParser does not throw an error
+				$variable = ValueConverter::parseValue( $variable );
+			} else {
 				return false; //do not return CSS when no values are set
 			}
 		}
 
-		$compiler->replaceVariables($variables);
+		$compiler->replaceVariables( $variables );
 		$content = '@import "' . $var_import . '";';
-		$result = $compiler->compileString($content);
-		$css = $result->getCss();
+		$result  = $compiler->compileString( $content );
+		$css     = $result->getCss();
 
-		if (!empty($css) && is_string($css)) {
+		if ( ! empty( $css ) && is_string( $css ) ) {
 			return $css;
-		}
-		else {
+		} else {
 			return false;
 		}
 

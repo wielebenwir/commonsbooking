@@ -153,23 +153,32 @@
                     $(this).prop("checked", false);
                 });
             };
+            const migrateSingleSelection = () => {
+                const singleSelectionOption = singleItemSelection.find("option:selected");
+                if (singleSelectionOption.prop("value")) {
+                    const multiItemSelectionOption = multiItemSelection.find(`input[value=${singleSelectionOption.prop("value")}]`);
+                    if (multiItemSelectionOption) {
+                        multiItemSelectionOption.prop("checked", true);
+                    }
+                    singleSelectionOption.prop("selected", false);
+                }
+            };
+            migrateSingleSelection();
             const handleTypeSelection = function() {
                 const selectedType = $("option:selected", typeInput).val();
+                singleItemSelection.hide();
+                multiItemSelection.show();
                 if (selectedType == 2) {
                     maxDaysSelect.show();
                     advanceBookingDays.show();
                     allowUserRoles.show();
-                    singleItemSelection.show();
                     singleLocationSelection.show();
-                    multiItemSelection.hide();
                     multiLocationSelection.hide();
                 } else {
                     maxDaysSelect.hide();
                     advanceBookingDays.hide();
                     allowUserRoles.hide();
-                    singleItemSelection.hide();
                     singleLocationSelection.hide();
-                    multiItemSelection.show();
                     multiLocationSelection.show();
                 }
             };

@@ -106,6 +106,7 @@ class ItemsRoute extends BaseRoute {
 	 */
 	public function get_item( $request ): WP_REST_Response {
 		$data = $this->getItemData( $request );
+
 		return new WP_REST_Response( $data, 200 );
 	}
 
@@ -121,7 +122,7 @@ class ItemsRoute extends BaseRoute {
 		$preparedItem->name        = $item->post_title;
 		$preparedItem->url         = get_permalink( $item->ID );
 		$preparedItem->description = $this->escapeJsonString( $item->post_content );
-		$preparedItem->projectId = "1";
+		$preparedItem->projectId   = "1";
 
 		if ( get_the_post_thumbnail_url( $item->ID, 'full' ) ) {
 			$preparedItem->image = get_the_post_thumbnail_url( $item->ID, 'full' );

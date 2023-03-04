@@ -58,12 +58,12 @@ class AvailabilityRoute extends BaseRoute {
 					$availabilitySlot = new stdClass();
 
 					// Init DateTime object for start
-					$dateTimeStart = Wordpress::getUTCDateTime('now');
+					$dateTimeStart = Wordpress::getUTCDateTime( 'now' );
 					$dateTimeStart->setTimestamp( $slot['timestampstart'] );
 					$availabilitySlot->start = $dateTimeStart->format( 'Y-m-d\TH:i:sP' );
 
 					// Init DateTime object for end
-					$dateTimeend = Wordpress::getUTCDateTime('now');
+					$dateTimeend = Wordpress::getUTCDateTime( 'now' );
 					$dateTimeend->setTimestamp( $slot['timestampend'] );
 					$availabilitySlot->end = $dateTimeend->format( 'Y-m-d\TH:i:sP' );
 
@@ -94,8 +94,8 @@ class AvailabilityRoute extends BaseRoute {
 	 */
 	public function get_item( $request ) {
 		//get parameters from request
-		$params             = $request->get_params();
-		$data               = new stdClass();
+		$params = $request->get_params();
+		$data   = new stdClass();
 		try {
 			$data->availability = $this->getItemData( $params['id'] );
 
@@ -105,7 +105,7 @@ class AvailabilityRoute extends BaseRoute {
 			} else {
 
 			}
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			return new WP_Error( 'code', $e->getMessage() );
 		}
 
@@ -123,15 +123,16 @@ class AvailabilityRoute extends BaseRoute {
 		$data->availability = [];
 
 		// Get all items
-		$items = Item::get([], true);
+		$items = Item::get( [], true );
 
 		// Collect availabilies for each item
-		foreach ($items as $item) {
+		foreach ( $items as $item ) {
 			$data->availability = array_merge(
 				$data->availability,
-				$this->getItemData($item->ID)
+				$this->getItemData( $item->ID )
 			);
 		}
+
 		return new WP_REST_Response( $data, 200 );
 	}
 

@@ -36,8 +36,6 @@
         if (timeframeForm.length) {
             const timeframeRepetitionInput = $('#timeframe-repetition');
             const typeInput = $('#type');
-            // const locationSelectionInput = $('#location-select');
-            // const itemSelectionInput = $('#item-('.cmb2-id-item-category-id').hide();
             const gridInput = $('#grid');
             const weekdaysInput = $('#weekdays1'); // TODO: find better solution.
             const startTimeInput = $('#start-time');
@@ -58,8 +56,6 @@
             const singleItemSelection = $('.cmb2-id-item-id');
             const multiItemSelection = $('.cmb2-id-item-ids');
 
-            // const categoryLocationSelection = $('.cmb2-id-location-category-id');
-            // const categoryItemSelection = $('.cmb2-id-item-category-id');
             const maxDaysSelect = $('.cmb2-id-timeframe-max-days');
             const advanceBookingDays = $('.cmb2-id-timeframe-advance-booking-days');
             const allowUserRoles = $('.cmb2-id-allowed-user-roles');
@@ -95,25 +91,42 @@
             }
 
             /**
+             * "Moves" selection from single item selection to multiselect.
+             */
+            const migrateSingleSelection = () => {
+                // get single selection
+                const singleSelectionOption = singleItemSelection.find('option:selected');
+
+                // if it has a value, remove selection from single select and activate checkbox in multiselect
+                if(singleSelectionOption.prop('value')) {
+                    const multiItemSelectionOption = multiItemSelection.find(`input[value=${singleSelectionOption.prop('value')}]`);
+                    if(multiItemSelectionOption) {
+                        multiItemSelectionOption.prop('checked', true);
+                    }
+                    singleSelectionOption.prop('selected', false);
+                }
+            }
+            migrateSingleSelection();
+
+            /**
              * Shows/hides max day selection and user role restriction depending on timeframe type (for bookings).
              */
             const handleTypeSelection = function () {
                 const selectedType = $("option:selected", typeInput).val();
+                singleItemSelection.hide();
+                multiItemSelection.show();
+
                 if (selectedType == 2) {
                     maxDaysSelect.show();
                     advanceBookingDays.show();
                     allowUserRoles.show();
-                    singleItemSelection.show();
                     singleLocationSelection.show();
-                    multiItemSelection.hide();
                     multiLocationSelection.hide();
                 } else {
                     maxDaysSelect.hide();
                     advanceBookingDays.hide();
                     allowUserRoles.hide();
-                    singleItemSelection.hide();
                     singleLocationSelection.hide();
-                    multiItemSelection.show();
                     multiLocationSelection.show();
                 }
             }

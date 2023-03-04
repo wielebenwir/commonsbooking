@@ -25,9 +25,9 @@ class BookingMessage extends Message {
 		];
 
 		// get location email adresses to send them bcc copies
-		$location = get_post($booking->getMeta('location-id'));
-		$location_emails = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $location ) ; /*  email adresses, comma-seperated  */
-		$bcc_adresses = str_replace(' ','',$location_emails); 
+		$location        = get_post( $booking->getMeta( 'location-id' ) );
+		$location_emails = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $location ); /*  email adresses, comma-seperated  */
+		$bcc_adresses    = str_replace( ' ', '', $location_emails );
 
 		// get templates from Admin Options
 		$template_body    = Settings::getOption( 'commonsbooking_options_templates',
@@ -45,19 +45,24 @@ class BookingMessage extends Message {
 
 		//generate attachment when set in settings and booking is not cancelled
 		$attachment = null;
-		if ((Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_attach' ) == 'on') && (!$booking->isCancelled() )){
+		if ( ( Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_attach' ) == 'on' ) && ( ! $booking->isCancelled() ) ) {
 			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
-			$eventTitle = commonsbooking_sanitizeHTML ( commonsbooking_parse_template ( $eventTitle, $template_objects ) );
+			$eventTitle = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $eventTitle, $template_objects ) );
 
 			$eventDescription = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-description' );
-			$eventDescription = commonsbooking_sanitizeHTML ( strip_tags ( commonsbooking_parse_template ( $eventDescription, $template_objects ) ) );
+			$eventDescription = commonsbooking_sanitizeHTML( strip_tags( commonsbooking_parse_template( $eventDescription, $template_objects ) ) );
 
 			$attachment = [
-				'string' => $booking->getiCal($eventTitle,$eventDescription), // String attachment data (required)
-				'filename' => $booking->post_name . '.ics', // Name of the attachment (required)
-				'encoding' => 'base64', // File encoding (defaults to 'base64')
-				'type' => 'text/calendar', // File MIME type (if left unspecified, PHPMailer will try to work it out from the file name)
-				'disposition' => 'attachment' // Disposition to use (defaults to 'attachment')
+				'string'      => $booking->getiCal( $eventTitle, $eventDescription ),
+				// String attachment data (required)
+				'filename'    => $booking->post_name . '.ics',
+				// Name of the attachment (required)
+				'encoding'    => 'base64',
+				// File encoding (defaults to 'base64')
+				'type'        => 'text/calendar',
+				// File MIME type (if left unspecified, PHPMailer will try to work it out from the file name)
+				'disposition' => 'attachment'
+				// Disposition to use (defaults to 'attachment')
 			];
 		}
 

@@ -17,7 +17,7 @@ class Item extends BookablePost {
 	 * @throws Exception
 	 */
 	public static function getByLocation( $locationId, bool $bookable = false ): array {
-		return self::getByRelatedPost($locationId, 'location', 'item', $bookable);
+		return self::getByRelatedPost( $locationId, 'location', 'item', $bookable );
 	}
 
 	/**

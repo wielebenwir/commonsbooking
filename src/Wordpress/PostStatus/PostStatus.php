@@ -84,7 +84,7 @@ class PostStatus {
 	public function addQuickedit() {
 		echo "<script>
                 jQuery(document).ready( function() {
-                    jQuery( 'select[name=\"_status\"]' ).append( '<option value=\"" . commonsbooking_sanitizeHTML( $this->name ) . "\">" . commonsbooking_sanitizeHTML(  $this->label ) . "</option>' );
+                    jQuery( 'select[name=\"_status\"]' ).append( '<option value=\"" . commonsbooking_sanitizeHTML( $this->name ) . "\">" . commonsbooking_sanitizeHTML( $this->label ) . "</option>' );
                 });
             </script>";
 	}

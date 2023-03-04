@@ -39,7 +39,7 @@ $typeOptions += Timeframe::getTypes();
 return array(
 
 	/* Tab: main start*/
-	'main'         => array(
+	'main'             => array(
 		'title'        => commonsbooking_sanitizeHTML( __( 'Welcome', 'commonsbooking' ) ),
 		'id'           => 'main',
 		'is_top_level' => true, /* indicate first tab */
@@ -69,7 +69,7 @@ return array(
 	/* Tab: main end*/
 
 	/* Tab: general start*/
-	'general'      => array(
+	'general'          => array(
 		'title'        => commonsbooking_sanitizeHTML( __( 'General', 'commonsbooking' ) ),
 		'id'           => 'general',
 		'field_groups' => array(
@@ -149,7 +149,7 @@ return array(
 	/* Tab: general end*/
 
 	/* Tab Booking Codes start */
-	'bookingcodes' => array(
+	'bookingcodes'     => array(
 		'title'        => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
 		'id'           => 'bookingcodes',
 		'field_groups' => array(
@@ -171,7 +171,7 @@ return array(
 	),
 
 	/* Tab: templates start*/
-	'templates'    => array(
+	'templates'        => array(
 		'title'        => commonsbooking_sanitizeHTML( __( 'Templates', 'commonsbooking' ) ),
 		'id'           => 'templates',
 		'field_groups' => array(
@@ -235,29 +235,29 @@ Thanks, the Team.
                         ', 'commonsbooking' ) ),
 					),
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __('Attach iCalendar file to booking email', 'commonsbooking') ),
-						'id'	  => 'emailtemplates_mail-booking_ics_attach',
-						'type'	  => 'checkbox',
+						'name' => commonsbooking_sanitizeHTML( __( 'Attach iCalendar file to booking email', 'commonsbooking' ) ),
+						'id'   => 'emailtemplates_mail-booking_ics_attach',
+						'type' => 'checkbox',
 						'desc' => esc_html__( 'Will attach an iCalendar compatible file for users to import in their respective calendar application.', 'commonsbooking' ),
 					),
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __('iCalendar event title', 'commonsbooking') ),
-						'id'	  => 'emailtemplates_mail-booking_ics_event-title',
-						'type'	  => 'text',
-						'desc' => esc_html__( 'The title of the attached event', 'commonsbooking' ),
-						'default'       => commonsbooking_sanitizeHTML( __( '{{item:post_title}} at {{location:post_title}}',
-						'commonsbooking' ) ),
+						'name'    => commonsbooking_sanitizeHTML( __( 'iCalendar event title', 'commonsbooking' ) ),
+						'id'      => 'emailtemplates_mail-booking_ics_event-title',
+						'type'    => 'text',
+						'desc'    => esc_html__( 'The title of the attached event', 'commonsbooking' ),
+						'default' => commonsbooking_sanitizeHTML( __( '{{item:post_title}} at {{location:post_title}}',
+							'commonsbooking' ) ),
 					),
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __('iCalendar event description', 'commonsbooking') ),
-						'id'	  => 'emailtemplates_mail-booking_ics_event-description',
-						'type'	  => 'textarea',
-						'desc' => esc_html__( 'The description for the attached event.', 'commonsbooking' ),
-						'default'       => commonsbooking_sanitizeHTML( __( ' Pick up: {{booking:pickupDatetime}}
+						'name'    => commonsbooking_sanitizeHTML( __( 'iCalendar event description', 'commonsbooking' ) ),
+						'id'      => 'emailtemplates_mail-booking_ics_event-description',
+						'type'    => 'textarea',
+						'desc'    => esc_html__( 'The description for the attached event.', 'commonsbooking' ),
+						'default' => commonsbooking_sanitizeHTML( __( ' Pick up: {{booking:pickupDatetime}}
 Return date: {{booking:returnDatetime}}
 {{location:formattedPickupInstructions}}
 {{booking:formattedBookingCode}} ',
-						'commonsbooking' ) ),
+							'commonsbooking' ) ),
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Booking canceled email subject', 'commonsbooking' ) ),
@@ -339,7 +339,7 @@ Thanks, the Team.
 			),
 			/* message templates end */
 
-						/* field group template and booking message templates start */
+			/* field group template and booking message templates start */
 			'messagetemplates' => array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'Template and booking process messages', 'commonsbooking' ) ),
 				'id'     => 'messagetemplates',
@@ -393,7 +393,7 @@ Thanks, the Team.
 						'desc'    => esc_html__( 'This text is displayed on the booking button on item/location listing pages.', 'commonsbooking' ),
 						'default' => esc_html__( 'Book item', 'commonsbooking' ),
 					),
-                    array(
+					array(
 						'name'    => esc_html__( 'User details on booking page', 'commonsbooking' ),
 						'id'      => 'user_details_template',
 						'type'    => 'textarea',
@@ -405,63 +405,62 @@ Thanks, the Team.
 			/* message templates end */
 
 
-
 			/* field group image options */
-			'imageoptions' => array(
+			'imageoptions'     => array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'Image formatting', 'commonsbooking' ) ),
 				'id'     => 'imageoptions',
 				'desc'   => '',
 				'fields' => array(
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Listing image small width (in px)', 'commonsbooking' ) ),
-						'id'      => 'image_listing_small_width',
-						'type'    => 'text',
-						'desc'    => commonsbooking_sanitizeHTML( __( 'Defines the image width of small images in location and item listings', 'commonsbooking' ) ),
-						'default' => '60',
+						'name'       => commonsbooking_sanitizeHTML( __( 'Listing image small width (in px)', 'commonsbooking' ) ),
+						'id'         => 'image_listing_small_width',
+						'type'       => 'text',
+						'desc'       => commonsbooking_sanitizeHTML( __( 'Defines the image width of small images in location and item listings', 'commonsbooking' ) ),
+						'default'    => '60',
 						'attributes' => array(
 							'type' => 'number',
 						),
 					),
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Listing image small height (in px)', 'commonsbooking' ) ),
-						'id'      => 'image_listing_small_height',
-						'type'    => 'text',
-						'desc'    => commonsbooking_sanitizeHTML( __( 'Defines the image height of small images in location and item listings', 'commonsbooking' ) ),
-						'default' => '60',
+						'name'       => commonsbooking_sanitizeHTML( __( 'Listing image small height (in px)', 'commonsbooking' ) ),
+						'id'         => 'image_listing_small_height',
+						'type'       => 'text',
+						'desc'       => commonsbooking_sanitizeHTML( __( 'Defines the image height of small images in location and item listings', 'commonsbooking' ) ),
+						'default'    => '60',
 						'attributes' => array(
 							'type' => 'number',
 						),
 					),
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Listing image medium width (in px)', 'commonsbooking' ) ),
-						'id'      => 'image_listing_medium_width',
-						'type'    => 'text',
-						'desc'    => commonsbooking_sanitizeHTML( __( 'Defines the image width of medium images in location and item listings', 'commonsbooking' ) ),
-						'default' => '100',
+						'name'       => commonsbooking_sanitizeHTML( __( 'Listing image medium width (in px)', 'commonsbooking' ) ),
+						'id'         => 'image_listing_medium_width',
+						'type'       => 'text',
+						'desc'       => commonsbooking_sanitizeHTML( __( 'Defines the image width of medium images in location and item listings', 'commonsbooking' ) ),
+						'default'    => '100',
 						'attributes' => array(
 							'type' => 'number',
 						),
 					),
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Listing image medium height (in px)', 'commonsbooking' ) ),
-						'id'      => 'image_listing_medium_height',
-						'type'    => 'text',
-						'desc'    => commonsbooking_sanitizeHTML( __( 'Defines the image height of medium images in location and item listings', 'commonsbooking' ) ),
-						'default' => '100',
+						'name'       => commonsbooking_sanitizeHTML( __( 'Listing image medium height (in px)', 'commonsbooking' ) ),
+						'id'         => 'image_listing_medium_height',
+						'type'       => 'text',
+						'desc'       => commonsbooking_sanitizeHTML( __( 'Defines the image height of medium images in location and item listings', 'commonsbooking' ) ),
+						'default'    => '100',
 						'attributes' => array(
 							'type' => 'number',
 						),
 					),
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Crop images', 'commonsbooking' ) ),
-						'id'      => 'image_listing_crop',
-						'type'    => 'checkbox',
-						'desc'    => commonsbooking_sanitizeHTML( __( 'If checked the image will be cropped to specified dimensions using center crop positions', 'commonsbooking' ) ),
+						'name' => commonsbooking_sanitizeHTML( __( 'Crop images', 'commonsbooking' ) ),
+						'id'   => 'image_listing_crop',
+						'type' => 'checkbox',
+						'desc' => commonsbooking_sanitizeHTML( __( 'If checked the image will be cropped to specified dimensions using center crop positions', 'commonsbooking' ) ),
 					),
 				)
 			),
 			/* image options end */
-			
+
 			/* field group color setting */
 
 			'colorscheme' => array(
@@ -529,7 +528,7 @@ Thanks, the Team.
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used for the background of tables and similar elements', 'commonsbooking' ) ),
 						'default' => '#f6f6f6',
 					),
-					
+
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Notice Background Color', 'commonsbooking' ) ),
 						'id'      => 'colorscheme_noticebackgroundcolor',
@@ -546,7 +545,7 @@ Thanks, the Team.
 	/* Tab: templates end*/
 
 	/* Tab: restrictions start*/
-	'restrictions' => array(
+	'restrictions'     => array(
 		'title'        => commonsbooking_sanitizeHTML( __( 'Restrictions', 'commonsbooking' ) ),
 		'id'           => 'restrictions',
 		'field_groups' => array(
@@ -658,7 +657,7 @@ Thanks, the Team.
 	/* Tab: restrictions end*/
 
 	/* Tab: reminder start*/
-	'reminder'     => array(
+	'reminder'         => array(
 		'title'        => commonsbooking_sanitizeHTML( __( 'Reminder', 'commonsbooking' ) ),
 		'id'           => 'reminder',
 		'field_groups' => array(
@@ -802,7 +801,7 @@ The team</p>', 'commonsbooking' ) ),
 	/* Tab: reminder end*/
 
 	/* Tab: migration start */
-	'migration'    => array(
+	'migration'        => array(
 		'title'        => __( 'Migration', 'commonsbooking' ),
 		'id'           => 'migration',
 		'field_groups' => array(
@@ -859,7 +858,7 @@ The team</p>', 'commonsbooking' ) ),
 	/* Tab: migration end */
 
 	/* Tab: export start */
-	'export'       => array(
+	'export'           => array(
 		'title'        => __( 'Export', 'commonsbooking' ),
 		'id'           => 'export',
 		'field_groups' => array(
@@ -876,21 +875,21 @@ The team</p>', 'commonsbooking' ) ),
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Location-Fields', 'commonsbooking' ) ),
-						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
-						commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields('cb_location') ) ),
+						'desc' => sprintf( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ),
+							commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields( 'cb_location' ) ) ),
 						'id'   => 'location-fields',
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Item-Fields', 'commonsbooking' ) ),
-						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
-						commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields('cb_item') ) ),
+						'desc' => sprintf( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ),
+							commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields( 'cb_item' ) ) ),
 						'id'   => 'item-fields',
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'User-Fields', 'commonsbooking' ) ),
-						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a userfield or a meta-field. Comma separated list.', 'commonsbooking' ) ), 
+						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a userfield or a meta-field. Comma separated list.', 'commonsbooking' ) ),
 						'id'   => 'user-fields',
 						'type' => 'text'
 					),
@@ -963,7 +962,7 @@ The team</p>', 'commonsbooking' ) ),
 	/* Tab: export end */
 
 	/* Tab: API  start */
-	'api'          => array(
+	'api'              => array(
 		'title'        => __( 'API', 'commonsbooking' ),
 		'id'           => 'api',
 		'field_groups' => array(
@@ -1045,7 +1044,7 @@ The team</p>', 'commonsbooking' ) ),
 	/* Tab: export end */
 
 	/* Tab: advanced options start */
-	'advanced-options'     => array(
+	'advanced-options' => array(
 		'title'        => __( 'Advanced Options', 'commonsbooking' ),
 		'id'           => 'advanced-options',
 		'field_groups' => array(
@@ -1065,40 +1064,40 @@ The team</p>', 'commonsbooking' ) ),
 					),
 				]
 			),
-			'icalfeed' => array(
-				'title' => esc_html__( 'iCalendar Feed', 'commonsbooking' ),
-				'desc'	=> commonsbooking_sanitizeHTML( __('Enables users to copy a url for a dynamic iCalendar feed into their own digital calendars. This feature is experimental.',
-				 'commonsbooking')),
-				'id'	=> 'icalendar_group',
-				'fields'=> [
+			'icalfeed'        => array(
+				'title'  => esc_html__( 'iCalendar Feed', 'commonsbooking' ),
+				'desc'   => commonsbooking_sanitizeHTML( __( 'Enables users to copy a url for a dynamic iCalendar feed into their own digital calendars. This feature is experimental.',
+					'commonsbooking' ) ),
+				'id'     => 'icalendar_group',
+				'fields' => [
 					array(
 						'name' => esc_html__( 'Enable iCalendar feed', 'commonsbooking' ),
 						'id'   => 'feed_enabled',
 						'type' => 'checkbox',
 					),
 					array(
-						'name'	=> esc_html__( 'Event title', 'commonsbooking'),
-						'desc'	=> esc_html__( 'You can use template tags here as well', 'commonsbooking'),
-						'default'       => commonsbooking_sanitizeHTML( __( '{{item:post_title}} at {{location:post_title}}',
-						'commonsbooking' ) ),
-						'id'	=> 'event_title',
-						'type'	=> 'text',
+						'name'    => esc_html__( 'Event title', 'commonsbooking' ),
+						'desc'    => esc_html__( 'You can use template tags here as well', 'commonsbooking' ),
+						'default' => commonsbooking_sanitizeHTML( __( '{{item:post_title}} at {{location:post_title}}',
+							'commonsbooking' ) ),
+						'id'      => 'event_title',
+						'type'    => 'text',
 					),
 					array(
-						'name'	=> esc_html__( 'Event description', 'commonsbooking'),
-						'desc'	=> esc_html__( 'You can use template tags here as well', 'commonsbooking'),
-						'default'       => commonsbooking_sanitizeHTML( __( '
+						'name'    => esc_html__( 'Event description', 'commonsbooking' ),
+						'desc'    => esc_html__( 'You can use template tags here as well', 'commonsbooking' ),
+						'default' => commonsbooking_sanitizeHTML( __( '
 Pick up: {{booking:pickupDatetime}}
 Return date: {{booking:returnDatetime}}
 {{location:formattedPickupInstructions}}
 {{booking:formattedBookingCode}} ',
-						'commonsbooking' ) ),
-						'id'	=> 'event_desc',
-						'type'	=> 'textarea',
+							'commonsbooking' ) ),
+						'id'      => 'event_desc',
+						'type'    => 'textarea',
 					)
 				]
 			),
-			'experimental' => array(
+			'experimental'    => array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'Connect to REDIS database.', 'commonsbooking' ) ),
 				'id'     => 'redis_group',
 				'desc'   =>
@@ -1110,9 +1109,9 @@ Return date: {{booking:returnDatetime}}
 						'type' => 'checkbox',
 					),
 					array(
-						'name' => commonsbooking_sanitizeHTML( __( 'REDIS DSN (REDIS Server URL)', 'commonsbooking' ) ),
-						'id'   => 'redis_dsn',
-						'type' => 'text',
+						'name'    => commonsbooking_sanitizeHTML( __( 'REDIS DSN (REDIS Server URL)', 'commonsbooking' ) ),
+						'id'      => 'redis_dsn',
+						'type'    => 'text',
 						'default' => 'redis://localhost:6379'
 					),
 					array(

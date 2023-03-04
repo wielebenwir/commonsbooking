@@ -1,192 +1,191 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
-    "$id":
-      "https://github.com/NABSA/gbfs/blob/v2.2/gbfs.md#station_informationjson",
-    "description":
-      "Details including system operator, system location, year implemented, URL, contact info, time zone.",
-    "type": "object",
-    "properties": {
-      "last_updated": {
-        "description":
-          "Last time the data in the feed was updated in POSIX time.",
-        "type": "integer",
-        "minimum": 1450155600
-      },
-      "ttl": {
-        "description":
-          "Number of seconds before the data in the feed will be updated again (0 if the data should always be refreshed).",
-        "type": "integer",
-        "minimum": 0
-      },
-      "version": {
-        "description":
-          "GBFS version number to which the feed conforms, according to the versioning framework (added in v1.1).",
-        "type": "string",
-        "const": "2.2"
-      },
-      "data": {
-        "description":
-          "Array that contains one object per station as defined below.",
-        "type": "object",
-        "properties": {
-          "stations": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "station_id": {
-                  "description": "Identifier of a station.",
-                  "type": "string"
+  "$schema" : "http://json-schema.org/draft-07/schema",
+  "$id" : "https://github.com/NABSA/gbfs/blob/v2.2/gbfs.md#station_informationjson",
+  "description" : "Details including system operator, system location, year implemented, URL, contact info, time zone.",
+  "type" : "object",
+  "properties" : {
+    "last_updated" : {
+      "description" : "Last time the data in the feed was updated in POSIX time.",
+      "type" : "integer",
+      "minimum" : 1450155600
+    },
+    "ttl" : {
+      "description" : "Number of seconds before the data in the feed will be updated again (0 if the data should always be refreshed).",
+      "type" : "integer",
+      "minimum" : 0
+    },
+    "version" : {
+      "description" : "GBFS version number to which the feed conforms, according to the versioning framework (added in v1.1).",
+      "type" : "string",
+      "const" : "2.2"
+    },
+    "data" : {
+      "description" : "Array that contains one object per station as defined below.",
+      "type" : "object",
+      "properties" : {
+        "stations" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "station_id" : {
+                "description" : "Identifier of a station.",
+                "type" : "string"
+              },
+              "name" : {
+                "description" : "Public name of the station.",
+                "type" : "string"
+              },
+              "short_name" : {
+                "description" : "Short name or other type of identifier.",
+                "type" : "string"
+              },
+              "lat" : {
+                "description" : "The latitude of the station.",
+                "type" : "number",
+                "minimum" : -90,
+                "maximum" : 90
+              },
+              "lon" : {
+                "description" : "The longitude fo the station.",
+                "type" : "number",
+                "minimum" : -180,
+                "maximum" : 180
+              },
+              "address" : {
+                "description" : "Address where station is located.",
+                "type" : "string"
+              },
+              "cross_street" : {
+                "description" : "Cross street or landmark where the station is located.",
+                "type" : "string"
+              },
+              "region_id" : {
+                "description" : "Identifier of the region where the station is located.",
+                "type" : "string"
+              },
+              "post_code" : {
+                "description" : "Postal code where station is located.",
+                "type" : "string"
+              },
+              "rental_methods" : {
+                "description" : "Payment methods accepted at this station.",
+                "type" : "array",
+                "items" : {
+                  "type" : "string",
+                  "enum" : [
+                    "key",
+                    "creditcard",
+                    "paypass",
+                    "applepay",
+                    "androidpay",
+                    "transitcard",
+                    "accountnumber",
+                    "phone"
+                  ]
                 },
-                "name": {
-                  "description": "Public name of the station.",
-                  "type": "string"
-                },
-                "short_name": {
-                  "description": "Short name or other type of identifier.",
-                  "type": "string"
-                },
-                "lat": {
-                  "description": "The latitude of the station.",
-                  "type": "number",
-                  "minimum": -90,
-                  "maximum": 90
-                },
-                "lon": {
-                  "description": "The longitude fo the station.",
-                  "type": "number",
-                  "minimum": -180,
-                  "maximum": 180
-                },
-                "address": {
-                  "description": "Address where station is located.",
-                  "type": "string"
-                },
-                "cross_street": {
-                  "description":
-                    "Cross street or landmark where the station is located.",
-                  "type": "string"
-                },
-                "region_id": {
-                  "description":
-                    "Identifier of the region where the station is located.",
-                  "type": "string"
-                },
-                "post_code": {
-                  "description": "Postal code where station is located.",
-                  "type": "string"
-                },
-                "rental_methods": {
-                  "description": "Payment methods accepted at this station.",
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "enum": [
-                      "key",
-                      "creditcard",
-                      "paypass",
-                      "applepay",
-                      "androidpay",
-                      "transitcard",
-                      "accountnumber",
-                      "phone"
+                "minItems" : 1
+              },
+              "is_virtual_station" : {
+                "description" : "Is this station a location with or without physical infrastructure? (added in v2.1-RC)",
+                "type" : "boolean"
+              },
+              "station_area" : {
+                "description" : "A multipolygon that describes the area of a virtual station (added in v2.1-RC).",
+                "type" : "object",
+                "required" : [
+                  "type",
+                  "coordinates"
+                ],
+                "properties" : {
+                  "type" : {
+                    "type" : "string",
+                    "enum" : [
+                      "MultiPolygon"
                     ]
                   },
-                  "minItems": 1
-                },
-                "is_virtual_station": {
-                  "description":
-                    "Is this station a location with or without physical infrastructure? (added in v2.1-RC)",
-                  "type": "boolean"
-                },
-                "station_area": {
-                  "description":
-                    "A multipolygon that describes the area of a virtual station (added in v2.1-RC).",
-                  "type": "object",
-                  "required": ["type", "coordinates"],
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "enum": ["MultiPolygon"]
-                    },
-                    "coordinates": {
-                      "type": "array",
-                      "items": {
-                        "type": "array",
-                        "items": {
-                          "type": "array",
-                          "minItems": 4,
-                          "items": {
-                            "type": "array",
-                            "minItems": 2,
-                            "items": {
-                              "type": "number"
-                            }
+                  "coordinates" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "array",
+                        "minItems" : 4,
+                        "items" : {
+                          "type" : "array",
+                          "minItems" : 2,
+                          "items" : {
+                            "type" : "number"
                           }
                         }
                       }
                     }
                   }
-                },
-                "capacity": {
-                  "description":
-                    "Number of total docking points installed at this station, both available and unavailable.",
-                  "type": "integer",
-                  "minimum": 0
-                },
-                "vehicle_capacity": {
-                  "description":
-                    "An object where each key is a vehicle_type_id and the value is a number presenting the total number of vehicles of this type that can park within the station_area (added in v2.1-RC).",
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "number"
-                  }
-                },
-                "is_valet_station": {
-                  "description":
-                    "Are valet services provided at this station? (added in v2.1-RC)",
-                  "type": "boolean"
-                },
-                "rental_uris": {
-                  "description":
-                    "Contains rental uris for Android, iOS, and web in the android, ios, and web fields (added in v1.1).",
-                  "type": "object",
-                  "properties": {
-                    "android": {
-                      "description":
-                        "URI that can be passed to an Android app with an intent (added in v1.1).",
-                      "type": "string",
-                      "format": "uri"
-                    },
-                    "ios": {
-                      "description":
-                        "URI that can be used on iOS to launch the rental app for this station (added in v1.1).",
-                      "type": "string",
-                      "format": "uri"
-                    },
-                    "web": {
-                      "description":
-                        "URL that can be used by a web browser to show more information about renting a vehicle at this station (added in v1.1).",
-                      "type": "string",
-                      "format": "uri"
-                    }
-                  }
-                },
-                "vehicle_type_capacity": {
-                  "description":
-                    "An object where each key is a vehicle_type_id and the value is a number representing the total docking points installed at this station for each vehicle type (added in v2.1-RC).",
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "number"
+                }
+              },
+              "capacity" : {
+                "description" : "Number of total docking points installed at this station, both available and unavailable.",
+                "type" : "integer",
+                "minimum" : 0
+              },
+              "vehicle_capacity" : {
+                "description" : "An object where each key is a vehicle_type_id and the value is a number presenting the total number of vehicles of this type that can park within the station_area (added in v2.1-RC).",
+                "type" : "object",
+                "additionalProperties" : {
+                  "type" : "number"
+                }
+              },
+              "is_valet_station" : {
+                "description" : "Are valet services provided at this station? (added in v2.1-RC)",
+                "type" : "boolean"
+              },
+              "rental_uris" : {
+                "description" : "Contains rental uris for Android, iOS, and web in the android, ios, and web fields (added in v1.1).",
+                "type" : "object",
+                "properties" : {
+                  "android" : {
+                    "description" : "URI that can be passed to an Android app with an intent (added in v1.1).",
+                    "type" : "string",
+                    "format" : "uri"
+                  },
+                  "ios" : {
+                    "description" : "URI that can be used on iOS to launch the rental app for this station (added in v1.1).",
+                    "type" : "string",
+                    "format" : "uri"
+                  },
+                  "web" : {
+                    "description" : "URL that can be used by a web browser to show more information about renting a vehicle at this station (added in v1.1).",
+                    "type" : "string",
+                    "format" : "uri"
                   }
                 }
               },
-              "required": ["station_id", "name", "lat", "lon"]
-            }
+              "vehicle_type_capacity" : {
+                "description" : "An object where each key is a vehicle_type_id and the value is a number representing the total docking points installed at this station for each vehicle type (added in v2.1-RC).",
+                "type" : "object",
+                "additionalProperties" : {
+                  "type" : "number"
+                }
+              }
+            },
+            "required" : [
+              "station_id",
+              "name",
+              "lat",
+              "lon"
+            ]
           }
-        },
-        "required": ["stations"]
-      }
-    },
-    "required": ["last_updated", "ttl", "version", "data"]
-  }
+        }
+      },
+      "required" : [
+        "stations"
+      ]
+    }
+  },
+  "required" : [
+    "last_updated",
+    "ttl",
+    "version",
+    "data"
+  ]
+}

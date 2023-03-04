@@ -107,12 +107,12 @@ class Timeframe extends CustomPostType {
 		return [
 			// Opening Hours disabled as its not implemented yet
 			//self::OPENING_HOURS_ID    => esc_html__("Opening Hours", 'commonsbooking'),
-			self::BOOKABLE_ID         => esc_html__( "Bookable", 'commonsbooking' ),
-			self::HOLIDAYS_ID         => esc_html__( "Holidays or location closed", 'commonsbooking' ),
+			self::BOOKABLE_ID => esc_html__( "Bookable", 'commonsbooking' ),
+			self::HOLIDAYS_ID => esc_html__( "Holidays or location closed", 'commonsbooking' ),
 			// Off Holidays disabled as its not implemented yet
 			//self::OFF_HOLIDAYS_ID     => esc_html__("Official Holiday", 'commonsbooking'),
-			self::REPAIR_ID           => esc_html__( "Blocked (not overbookable)", 'commonsbooking' ),
-			self::BOOKING_ID          => esc_html__( "Booking", 'commonsbooking' ),
+			self::REPAIR_ID   => esc_html__( "Blocked (not overbookable)", 'commonsbooking' ),
+			self::BOOKING_ID  => esc_html__( "Booking", 'commonsbooking' ),
 		];
 	}
 
@@ -201,8 +201,8 @@ class Timeframe extends CustomPostType {
 		// @TODO implement view.
 	}
 
-    
-    /**
+
+	/**
 	 * Adds filter dropdown // filter by type (eg. bookable, repair etc.) in timeframe List
 	 *
 	 * @return void
@@ -212,7 +212,7 @@ class Timeframe extends CustomPostType {
 			static::$postType,
 			esc_html__( 'Filter By Type ', 'commonsbooking' ),
 			'filter_type',
-            static::getTypesforSelectField(),
+			static::getTypesforSelectField(),
 		);
 	}
 
@@ -272,7 +272,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by location in booking list
-	 * 
+	 *
 	 */
 	public static function addAdminStatusFilter() {
 		$values = [];
@@ -355,7 +355,7 @@ class Timeframe extends CustomPostType {
 					$query->query_vars[ $key ] = sanitize_text_field( $_GET[ $filter ] );
 				}
 			}
-			
+
 			// Timerange filtering
 			// Start date
 			if (
@@ -444,18 +444,18 @@ class Timeframe extends CustomPostType {
 
 		return array(
 			array(
-				'name' => esc_html__( "Comment", 'commonsbooking' ),
-				'desc' => esc_html__( 'This comment is internal for timeframes like bookable, repair, holiday. If timeframe is a booking this comment can be set by users during the booking confirmation process.', 'commonsbooking' ),
-				'id'   => "comment",
-				'type' => 'textarea_small',
+				'name'       => esc_html__( "Comment", 'commonsbooking' ),
+				'desc'       => esc_html__( 'This comment is internal for timeframes like bookable, repair, holiday. If timeframe is a booking this comment can be set by users during the booking confirmation process.', 'commonsbooking' ),
+				'id'         => "comment",
+				'type'       => 'textarea_small',
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'    => esc_html__( 'Type', 'commonsbooking' ),
-				'desc'    => esc_html__( 'Select Type of this timeframe: Bookable or Location Closed. See Documentation for detailed information.', 'commonsbooking' ),
-				'id'      => "type",
-				'type'    => 'select',
-				'options' => self::getTypesforSelectField(),
+				'name'       => esc_html__( 'Type', 'commonsbooking' ),
+				'desc'       => esc_html__( 'Select Type of this timeframe: Bookable or Location Closed. See Documentation for detailed information.', 'commonsbooking' ),
+				'id'         => "type",
+				'type'       => 'select',
+				'options'    => self::getTypesforSelectField(),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 //			array(
@@ -480,13 +480,13 @@ class Timeframe extends CustomPostType {
 				'type'             => 'select',
 				'show_option_none' => esc_html__( 'Please select', 'commonsbooking' ),
 				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
-				'default_cb' => 'commonsbooking_filter_from_cmb2',
+				'default_cb'       => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'             => esc_html__( "Location Selection", 'commonsbooking' ),
-				'id'               => \CommonsBooking\Model\Timeframe::META_LOCATION_IDS,
-				'type'             => 'multicheck',
-				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
+				'name'       => esc_html__( "Location Selection", 'commonsbooking' ),
+				'id'         => \CommonsBooking\Model\Timeframe::META_LOCATION_IDS,
+				'type'       => 'multicheck',
+				'options'    => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 //			array(
@@ -511,47 +511,47 @@ class Timeframe extends CustomPostType {
 				'type'             => 'select',
 				'show_option_none' => esc_html__( 'Please select', 'commonsbooking' ),
 				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
+				'default_cb'       => 'commonsbooking_filter_from_cmb2',
+			),
+			array(
+				'name'       => esc_html__( "Item selection", 'commonsbooking' ),
+				'id'         => \CommonsBooking\Model\Timeframe::META_ITEM_IDS,
+				'type'       => 'multicheck',
+				'options'    => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'             => esc_html__( "Item selection", 'commonsbooking' ),
-				'id'               => \CommonsBooking\Model\Timeframe::META_ITEM_IDS,
-				'type'             => 'multicheck',
-				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
-				'default_cb' => 'commonsbooking_filter_from_cmb2',
-			),
-			array(
-				'name'       => esc_html__( 'Maximum booking duration', 'commonsbooking' ),
-				'desc'       => esc_html__( 'Maximum booking duration in days', 'commonsbooking' ),
-				'id'         => "timeframe-max-days",
-				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-				'type'       => 'text_small',
-				'attributes' => array(
+				'name'          => esc_html__( 'Maximum booking duration', 'commonsbooking' ),
+				'desc'          => esc_html__( 'Maximum booking duration in days', 'commonsbooking' ),
+				'id'            => "timeframe-max-days",
+				'show_on_cb'    => 'cmb2_hide_if_no_cats', // function should return a bool value
+				'type'          => 'text_small',
+				'attributes'    => array(
 					'type' => 'number',
 					'min'  => '1',
 				),
-				'default_value'    => 3,
-				'default_cb' => 'commonsbooking_filter_from_cmb2',
+				'default_value' => 3,
+				'default_cb'    => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'       => esc_html__( 'Maximum booking days in advance', 'commonsbooking' ),
-				'desc'       => esc_html__( 'Select for how many days in advance the calendar should display bookable days. Calculated from the current date.', 'commonsbooking' ),
-				'id'         => "timeframe-advance-booking-days",
-				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-				'type'       => 'text_small',
-				'attributes' => array(
+				'name'          => esc_html__( 'Maximum booking days in advance', 'commonsbooking' ),
+				'desc'          => esc_html__( 'Select for how many days in advance the calendar should display bookable days. Calculated from the current date.', 'commonsbooking' ),
+				'id'            => "timeframe-advance-booking-days",
+				'show_on_cb'    => 'cmb2_hide_if_no_cats', // function should return a bool value
+				'type'          => 'text_small',
+				'attributes'    => array(
 					'type' => 'number',
 					'min'  => '1',
 				),
-				'default_value'    => self::ADVANCE_BOOKING_DAYS,
-				'default_cb' => 'commonsbooking_filter_from_cmb2',
+				'default_value' => self::ADVANCE_BOOKING_DAYS,
+				'default_cb'    => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'    => esc_html__( "Restrict bookings to user roles", 'commonsbooking' ),
-				'id'      => "allowed_user_roles",
-				'desc'    => esc_html__( 'Select one or more user roles to restrict bookings based on these timeframe configuration to these user roles. Leave empty for no restrictions', 'commonsbooking' ),
-				'type'    => 'pw_multiselect',
-				'options' => self::sanitizeOptions( UserRepository::getUserRoles() ),
+				'name'       => esc_html__( "Restrict bookings to user roles", 'commonsbooking' ),
+				'id'         => "allowed_user_roles",
+				'desc'       => esc_html__( 'Select one or more user roles to restrict bookings based on these timeframe configuration to these user roles. Leave empty for no restrictions', 'commonsbooking' ),
+				'type'       => 'pw_multiselect',
+				'options'    => self::sanitizeOptions( UserRepository::getUserRoles() ),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
@@ -560,21 +560,21 @@ class Timeframe extends CustomPostType {
 				'type' => 'title',
 			),
 			array(
-				'name' => esc_html__( 'Full day', 'commonsbooking' ),
-				'desc' => esc_html__(
+				'name'          => esc_html__( 'Full day', 'commonsbooking' ),
+				'desc'          => esc_html__(
 					'If this option is selected, users can choose only whole days for pickup and return. No specific time slots for pickup or return are offered. Select this option if the pickup/return should be arranged personally between the location and the user. '
 					, 'commonsbooking' ),
-				'id'   => "full-day",
-				'type' => 'checkbox',
+				'id'            => "full-day",
+				'type'          => 'checkbox',
 				'default_value' => '',
-				'default_cb' => 'commonsbooking_filter_from_cmb2',
+				'default_cb'    => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'    => esc_html__( "Grid", 'commonsbooking' ),
-				'desc'    => commonsbooking_sanitizeHTML( __( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/?p=437">Manage Booking Timeframes</a>', 'commonsbooking' ) ),
-				'id'      => "grid",
-				'type'    => 'select',
-				'options' => self::getGridOptions(),
+				'name'       => esc_html__( "Grid", 'commonsbooking' ),
+				'desc'       => commonsbooking_sanitizeHTML( __( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/?p=437">Manage Booking Timeframes</a>', 'commonsbooking' ) ),
+				'id'         => "grid",
+				'type'       => 'select',
+				'options'    => self::getGridOptions(),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
@@ -590,9 +590,9 @@ class Timeframe extends CustomPostType {
 						)
 					),
 				),
-				'time_format' => esc_html(get_option( 'time_format' )),
+				'time_format' => esc_html( get_option( 'time_format' ) ),
 				'date_format' => $dateFormat,
-				'default_cb' => 'commonsbooking_filter_from_cmb2',
+				'default_cb'  => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
 				'name'        => esc_html__( "End time", 'commonsbooking' ),
@@ -607,18 +607,18 @@ class Timeframe extends CustomPostType {
 						)
 					),
 				),
-				'time_format' => esc_html(get_option( 'time_format' )),
+				'time_format' => esc_html( get_option( 'time_format' ) ),
 				'date_format' => $dateFormat,
-				'default_cb' => 'commonsbooking_filter_from_cmb2',
+				'default_cb'  => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'    => esc_html__( 'Timeframe Repetition', 'commonsbooking' ),
-				'desc'    => esc_html__(
+				'name'       => esc_html__( 'Timeframe Repetition', 'commonsbooking' ),
+				'desc'       => esc_html__(
 					'Choose whether the time frame should repeat at specific intervals. The repetitions refer to the unit of a day. With the start and end date you define when the repetition interval starts and ends. If you choose "weekly", you can select specific days of the week below. Read the documentation for more information and examples.'
 					, 'commonsbooking' ),
-				'id'      => "timeframe-repetition",
-				'type'    => 'select',
-				'options' => self::getTimeFrameRepetitions(),
+				'id'         => "timeframe-repetition",
+				'type'       => 'select',
+				'options'    => self::getTimeFrameRepetitions(),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
@@ -632,15 +632,15 @@ class Timeframe extends CustomPostType {
 				'desc'        => esc_html__( 'Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking' ),
 				'id'          => \CommonsBooking\Model\Timeframe::REPETITION_START,
 				'type'        => 'text_date_timestamp',
-				'time_format' => esc_html(get_option( 'time_format' )),
+				'time_format' => esc_html( get_option( 'time_format' ) ),
 				'date_format' => $dateFormat,
-				'default_cb' => 'commonsbooking_filter_from_cmb2',
+				'default_cb'  => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'    => esc_html__( 'Weekdays', 'commonsbooking' ),
-				'id'      => "weekdays",
-				'type'    => 'multicheck',
-				'options' => [
+				'name'       => esc_html__( 'Weekdays', 'commonsbooking' ),
+				'id'         => "weekdays",
+				'type'       => 'multicheck',
+				'options'    => [
 					1 => esc_html__( "Monday", 'commonsbooking' ),
 					2 => esc_html__( "Tuesday", 'commonsbooking' ),
 					3 => esc_html__( "Wednesday", 'commonsbooking' ),
@@ -653,13 +653,13 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'        => esc_html__( 'End date', 'commonsbooking' ),
-                'desc'        => commonsbooking_sanitizeHTML( __('Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.
-                <br><strong>Notice:</strong> If the end date is empty and no repetition has been selected, this time frame applies only to the set start date. Only if a repetition is selected and the end date is empty, the repetition will be repeated infinitely.', 'commonsbooking') ),
+				'desc'        => commonsbooking_sanitizeHTML( __( 'Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.
+                <br><strong>Notice:</strong> If the end date is empty and no repetition has been selected, this time frame applies only to the set start date. Only if a repetition is selected and the end date is empty, the repetition will be repeated infinitely.', 'commonsbooking' ) ),
 				'id'          => \CommonsBooking\Model\Timeframe::REPETITION_END,
 				'type'        => 'text_date_timestamp',
-				'time_format' => esc_html(get_option( 'time_format' )),
+				'time_format' => esc_html( get_option( 'time_format' ) ),
 				'date_format' => $dateFormat,
-				'default_cb' => 'commonsbooking_filter_from_cmb2',
+				'default_cb'  => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
 				'name' => esc_html__( "Booking Codes", 'commonsbooking' ),
@@ -672,17 +672,17 @@ class Timeframe extends CustomPostType {
 				'type' => 'title',
 			),
 			array(
-				'name' => esc_html__( 'Create Booking Codes', 'commonsbooking' ),
-				'desc' => esc_html__( 'Select to generate booking codes for each day within the start/end date. The booking codes will be generated after clicking "Save / Update".', 'commonsbooking' ),
-				'id'   => "create-booking-codes",
-				'type' => 'checkbox',
+				'name'       => esc_html__( 'Create Booking Codes', 'commonsbooking' ),
+				'desc'       => esc_html__( 'Select to generate booking codes for each day within the start/end date. The booking codes will be generated after clicking "Save / Update".', 'commonsbooking' ),
+				'id'         => "create-booking-codes",
+				'type'       => 'checkbox',
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name' => esc_html__( 'Show Booking Codes', 'commonsbooking' ),
-				'desc' => esc_html__( 'Select whether users should be shown a booking code when booking.', 'commonsbooking' ),
-				'id'   => "show-booking-codes",
-				'type' => 'checkbox',
+				'name'       => esc_html__( 'Show Booking Codes', 'commonsbooking' ),
+				'desc'       => esc_html__( 'Select whether users should be shown a booking code when booking.', 'commonsbooking' ),
+				'id'         => "show-booking-codes",
+				'type'       => 'checkbox',
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
@@ -709,11 +709,11 @@ class Timeframe extends CustomPostType {
 	public static function getTypesforSelectField() {
 		$types = self::getTypes();
 
-        // remove unused types
+		// remove unused types
 		unset(
 			$types[ self::BOOKING_ID ],
 			$types[ self::BOOKING_CANCELED_ID ],
-            //$types[ self::REPAIR_ID ],
+			//$types[ self::REPAIR_ID ],
 		);
 
 		return $types;
@@ -779,7 +779,7 @@ class Timeframe extends CustomPostType {
 		if ( $isValid ) {
 			$timeframe          = new \CommonsBooking\Model\Timeframe( $post_id );
 			$createBookingCodes = get_post_meta( $post_id, 'create-booking-codes', true );
-			$this->sanitizeRepetitionEndDate($post_id);
+			$this->sanitizeRepetitionEndDate( $post_id );
 
 			if ( $createBookingCodes == "on" && $timeframe->bookingCodesApplicable() ) {
 				BookingCodes::generate( $post_id );
@@ -795,11 +795,11 @@ class Timeframe extends CustomPostType {
 	 *
 	 * @return void
 	 */
-	private function sanitizeRepetitionEndDate($postId) {
-		$repetitionEnd = get_post_meta($postId, \CommonsBooking\Model\Timeframe::REPETITION_END, true);
-		if($repetitionEnd) {
+	private function sanitizeRepetitionEndDate( $postId ) {
+		$repetitionEnd = get_post_meta( $postId, \CommonsBooking\Model\Timeframe::REPETITION_END, true );
+		if ( $repetitionEnd ) {
 			$repetitionEnd = strtotime( '+23 Hours +59 Minutes +59 Seconds', $repetitionEnd );
-			update_post_meta($postId, \CommonsBooking\Model\Timeframe::REPETITION_END, $repetitionEnd);
+			update_post_meta( $postId, \CommonsBooking\Model\Timeframe::REPETITION_END, $repetitionEnd );
 		}
 	}
 
@@ -935,7 +935,7 @@ class Timeframe extends CustomPostType {
 						if ( get_post_type( $post ) == Location::getPostType() ||
 						     get_post_type( $post ) == Item::getPostType()
 						) {
-							echo commonsbooking_sanitizeHTML($post->post_title);
+							echo commonsbooking_sanitizeHTML( $post->post_title );
 							break;
 						}
 					}
@@ -953,14 +953,14 @@ class Timeframe extends CustomPostType {
 							}
 						}
 					}
-					echo commonsbooking_sanitizeHTML($output);
+					echo commonsbooking_sanitizeHTML( $output );
 					break;
 				case \CommonsBooking\Model\Timeframe::REPETITION_START:
 				case \CommonsBooking\Model\Timeframe::REPETITION_END:
 					echo date( 'd.m.Y', $value );
 					break;
 				default:
-					echo commonsbooking_sanitizeHTML($value);
+					echo commonsbooking_sanitizeHTML( $value );
 					break;
 			}
 		} else {
@@ -975,7 +975,7 @@ class Timeframe extends CustomPostType {
 					get_post_meta( $post_id, 'type', true ) == Timeframe::BOOKING_ID
 				)
 			) {
-				echo commonsbooking_sanitizeHTML($post->{$column});
+				echo commonsbooking_sanitizeHTML( $post->{$column} );
 			}
 		}
 	}
@@ -989,7 +989,7 @@ class Timeframe extends CustomPostType {
 
 		// must be 'save_post' only because of priority in relation to cmb2
 		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
-		
+
 		// Add type filter to backend list view
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );

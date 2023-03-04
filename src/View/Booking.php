@@ -28,10 +28,10 @@ class Booking extends View {
 	 * @return array|false|mixed
 	 * @throws Exception
 	 */
-	public static function getBookingListData($postsPerPage = 6, $user = null) {
+	public static function getBookingListData( $postsPerPage = 6, $user = null ) {
 
 		//sets selected user to current user when no specific user is passed
-		if ($user == null) {
+		if ( $user == null ) {
 			$user = wp_get_current_user();
 		}
 
@@ -119,12 +119,11 @@ class Booking extends View {
 
 				$menuitems = '';
 
-				if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'feed_enabled' ) == 'on'){
-					$menuitems .= 	'<div id="icallink_text" title="'. commonsbooking_sanitizeHTML( __('Use this link to import the data into your own calendar.')) .'">' .
-										commonsbooking_sanitizeHTML( __('iCalendar Link:', 'commonsbooking')) .
-									'</div>' .
-									'<input type="text" id="icallink" value="' . iCalendar::getCurrentUserCalendarLink() . '" readonly>'
-									;
+				if ( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'feed_enabled' ) == 'on' ) {
+					$menuitems .= '<div id="icallink_text" title="' . commonsbooking_sanitizeHTML( __( 'Use this link to import the data into your own calendar.' ) ) . '">' .
+					              commonsbooking_sanitizeHTML( __( 'iCalendar Link:', 'commonsbooking' ) ) .
+					              '</div>' .
+					              '<input type="text" id="icallink" value="' . iCalendar::getCurrentUserCalendarLink() . '" readonly>';
 				}
 
 				$item          = $booking->getItem();
@@ -134,25 +133,25 @@ class Booking extends View {
 
 				// Prepare row data
 				$rowData = [
-					"postID"			 => $booking->ID,
+					"postID"             => $booking->ID,
 					"startDate"          => $booking->getStartDate(),
 					"endDate"            => $booking->getEndDate(),
 					"startDateFormatted" => date( 'd.m.Y H:i', $booking->getStartDate() ),
 					"endDateFormatted"   => date( 'd.m.Y H:i', $booking->getEndDate() ),
 					"item"               => $itemTitle,
 					"location"           => $locationTitle,
-					"locationAddr"		 => $location->formattedAddressOneLine(),
-					"locationLat"		 => $location->getMeta( 'geo_latitude' ),
-					"locationLong"		 => $location->getMeta( 'geo_longitude' ),
+					"locationAddr"       => $location->formattedAddressOneLine(),
+					"locationLat"        => $location->getMeta( 'geo_latitude' ),
+					"locationLong"       => $location->getMeta( 'geo_longitude' ),
 					"bookingDate"        => date( 'd.m.Y H:i', strtotime( $booking->post_date ) ),
 					"user"               => $userInfo->user_login,
 					"status"             => $booking->post_status,
-					"fullDay"			 => $booking->getMeta( 'full-day' ),
+					"fullDay"            => $booking->getMeta( 'full-day' ),
 					"calendarLink"       => $item && $location ? add_query_arg( 'cb-item', $item->ID, get_permalink( $location->ID ) ) : '',
 					"content"            => [
 						'user'   => [
 							'label' => commonsbooking_sanitizeHTML( __( 'User', 'commonsbooking' ) ),
-							'value' => '<a href="' . get_author_posts_url($booking->post_author) . '">' .  $userInfo->first_name . ' ' . $userInfo->last_name . ' (' . $userInfo->user_login . ') </a>',
+							'value' => '<a href="' . get_author_posts_url( $booking->post_author ) . '">' . $userInfo->first_name . ' ' . $userInfo->last_name . ' (' . $userInfo->user_login . ') </a>',
 						],
 						'status' => [
 							'label' => commonsbooking_sanitizeHTML( __( 'Status', 'commonsbooking' ) ),
@@ -197,14 +196,14 @@ class Booking extends View {
 				// If search term was submitted, filter for it.
 				if ( ! $search || count( preg_grep( '/.*' . $search . '.*/i', $rowData ) ) > 0 ) {
 					$rowData['actions']         = $actions;
-					$bookingDataArray['data'][] = apply_filters('commonsbooking_booking_filter', $rowData, $booking);
+					$bookingDataArray['data'][] = apply_filters( 'commonsbooking_booking_filter', $rowData, $booking );
 				}
 			}
 
 			$bookingDataArray['total']       = 0;
 			$bookingDataArray['total_pages'] = 0;
 
-			if (!empty($menuitems)) {
+			if ( ! empty( $menuitems ) ) {
 				$bookingDataArray['menu'] = ' <div class="cb-dropdown" style="float:right;"> <div id="cb-bookingdropbtn" class="cb-dropbtn"></div> <div class="cb-dropdown-content">' . $menuitems . '</div> </div>';
 			}
 
@@ -252,7 +251,7 @@ class Booking extends View {
 
 			Plugin::setCacheItem(
 				$bookingDataArray,
-				Wordpress::getTags($posts),
+				Wordpress::getTags( $posts ),
 				$customId
 			);
 
@@ -281,25 +280,24 @@ class Booking extends View {
 		return ob_get_clean();
 	}
 
-	public static function getBookingListiCal($user = null):String{
-		$eventTitle_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
+	public static function getBookingListiCal( $user = null ): string {
+		$eventTitle_unparsed       = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
 		$eventDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );
 
-		$user = get_user_by('id', $user);
+		$user = get_user_by( 'id', $user );
 
-		$bookingList = self::getBookingListData(999,$user);
+		$bookingList = self::getBookingListData( 999, $user );
 
 		//returns false when booking list is empty
-		if (!$bookingList){
+		if ( ! $bookingList ) {
 
 			return false;
 		}
 
-		$calendar = New iCalendar();
+		$calendar = new iCalendar();
 
-		foreach ($bookingList["data"] as $booking)
-		{
-			$booking_model = New \CommonsBooking\Model\Booking($booking["postID"]);
+		foreach ( $bookingList["data"] as $booking ) {
+			$booking_model    = new \CommonsBooking\Model\Booking( $booking["postID"] );
 			$template_objects = [
 				'booking'  => $booking_model,
 				'item'     => $booking_model->getItem(),
@@ -307,10 +305,10 @@ class Booking extends View {
 				'user'     => $booking_model->getUserData(),
 			];
 
-			$eventTitle = commonsbooking_sanitizeHTML ( commonsbooking_parse_template ( $eventTitle_unparsed, $template_objects ) );
-			$eventDescription = commonsbooking_sanitizeHTML ( strip_tags ( commonsbooking_parse_template ( $eventDescription_unparsed, $template_objects ) ) );
+			$eventTitle       = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $eventTitle_unparsed, $template_objects ) );
+			$eventDescription = commonsbooking_sanitizeHTML( strip_tags( commonsbooking_parse_template( $eventDescription_unparsed, $template_objects ) ) );
 
-			$calendar->addBookingEvent($booking_model,$eventTitle,$eventDescription);
+			$calendar->addBookingEvent( $booking_model, $eventTitle, $eventDescription );
 		}
 
 		return $calendar->getCalendarData();

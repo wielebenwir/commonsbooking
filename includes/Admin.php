@@ -13,12 +13,12 @@ function commonsbooking_admin() {
 	wp_enqueue_style( 'admin-styles', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/css/admin.css', array(), COMMONSBOOKING_VERSION );
 	wp_enqueue_script( 'cb-scripts-admin', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js', array() );
 
-    // Map marker upload scripts
-    // TODO needs to be evaluated. Maybe not working on all systems
-    if (get_current_screen()->id == 'cb_map') {
-        $script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-marker-upload.js';
-        wp_enqueue_script('cb-map-marker-upload_js', $script_path);
-    }
+	// Map marker upload scripts
+	// TODO needs to be evaluated. Maybe not working on all systems
+	if ( get_current_screen()->id == 'cb_map' ) {
+		$script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-marker-upload.js';
+		wp_enqueue_script( 'cb-map-marker-upload_js', $script_path );
+	}
 
 	// CB 0.X migration
 	wp_localize_script(
@@ -67,7 +67,7 @@ function commonsbooking_sanitizeHTML( $string ): string {
 
 	$allowed_atts = array(
 		'align'      => array(),
-		'checked'	 => array(),
+		'checked'    => array(),
 		'class'      => array(),
 		'type'       => array(),
 		'id'         => array(),
@@ -128,8 +128,8 @@ function commonsbooking_sanitizeHTML( $string ): string {
 	$allowedposttags['a']        = $allowed_atts;
 	$allowedposttags['b']        = $allowed_atts;
 	$allowedposttags['i']        = $allowed_atts;
-	$allowedposttags['select']        = $allowed_atts;
-	$allowedposttags['option']        = $allowed_atts;
+	$allowedposttags['select']   = $allowed_atts;
+	$allowedposttags['option']   = $allowed_atts;
 
 	return wp_kses( $string, $allowedposttags );
 }
@@ -137,24 +137,24 @@ function commonsbooking_sanitizeHTML( $string ): string {
 /**
  * Create filter hooks for cmb2 fields
  *
- * @param array $field_args  Array of field args.
- * 
- * 
+ * @param array $field_args Array of field args.
+ *
+ *
  * : https://cmb2.io/docs/field-parameters#-default_cb
- * 
+ *
  *
  * @return mixed
  */
-function commonsbooking_filter_from_cmb2($field_args) {
+function commonsbooking_filter_from_cmb2( $field_args ) {
 	//Only return default value if we don't have a post ID (in the 'post' query variable)
-	if (isset( $_GET['post'])){
+	if ( isset( $_GET['post'] ) ) {
 		// No default value.
 		return '';
-	}
-	else {
-		$filterName = sprintf( 'commonsbooking_defaults_%s', $field_args['id']);
-		$default_value = array_key_exists('default_value',$field_args) ? $field_args['default_value'] : '';
-		return apply_filters($filterName,$default_value);
+	} else {
+		$filterName    = sprintf( 'commonsbooking_defaults_%s', $field_args['id'] );
+		$default_value = array_key_exists( 'default_value', $field_args ) ? $field_args['default_value'] : '';
+
+		return apply_filters( $filterName, $default_value );
 	}
 }
 
@@ -163,11 +163,11 @@ function commonsbooking_filter_from_cmb2($field_args) {
  *
  * @param mixed array_or_string (array|string)
  * @param string $sanitize_function name of the sanitziation function, default = sanitize_text_field. You can use any method that accepts a string as parameter
- * 
- * See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
- * 
  *
- * @return array|string 
+ * See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
+ *
+ *
+ * @return array|string
  */
 function commonsbooking_sanitizeArrayorString( $array_or_string, $sanitize_function = 'sanitize_text_field' ) {
 	if ( is_string( $array_or_string ) ) {

@@ -38,14 +38,14 @@ class BookingCodes {
 							<td><b>' . esc_html__( 'Code', 'commonsbooking' ) . '</b></td>
 	                    </tr>';
 
-						/** @var BookingCode $bookingCode */
-						foreach ( $bookingCodes as $bookingCode ) {
-							echo "<tr>
-									<td>" . commonsbooking_sanitizeHTML( date_i18n( get_option( 'date_format' ), strtotime ($bookingCode->getDate() ) ) ) . "</td>
+		/** @var BookingCode $bookingCode */
+		foreach ( $bookingCodes as $bookingCode ) {
+			echo "<tr>
+									<td>" . commonsbooking_sanitizeHTML( date_i18n( get_option( 'date_format' ), strtotime( $bookingCode->getDate() ) ) ) . "</td>
 				                    <td>" . commonsbooking_sanitizeHTML( $bookingCode->getItemName() ) . "</td>
 				                    <td>" . commonsbooking_sanitizeHTML( $bookingCode->getCode() ) . "</td>
 				                </tr>";
-						}
+		}
 		echo '    </table>
 	            </div>
             </div>';
@@ -53,6 +53,7 @@ class BookingCodes {
 
 	/**
 	 * Renders CVS file (txt-format) with booking codes for download
+	 *
 	 * @param $timeframeId
 	 */
 	public static function renderCSV( $timeframeId = null ) {

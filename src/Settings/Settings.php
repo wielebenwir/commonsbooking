@@ -16,25 +16,26 @@ class Settings {
 	 * Flattens a multidimensional array to get $key->value into a single dimension.
 	 *
 	 * @param mixed $array
-     * @param string|bool $parent
-     * @return array|bool
-     */
-	static function flattenArray( $array , $parent = false) {
+	 * @param string|bool $parent
+	 *
+	 * @return array|bool
+	 */
+	static function flattenArray( $array, $parent = false ) {
 		if ( ! is_array( $array ) ) {
 			return false;
 		}
 		$result = array();
 
 		foreach ( $array as $key => $value ) {
-			if($parent === false) {
+			if ( $parent === false ) {
 				if ( is_array( $value ) ) {
-	                    $result = array_merge($result, self::flattenArray($value, $key));
+					$result = array_merge( $result, self::flattenArray( $value, $key ) );
 				} else {
-					$result[ $key ] = commonsbooking_sanitizeHTML($value);
+					$result[ $key ] = commonsbooking_sanitizeHTML( $value );
 				}
-            } else {
-                $result[$parent][$key] = $value;
-            }
+			} else {
+				$result[ $parent ][ $key ] = $value;
+			}
 
 		}
 
@@ -49,7 +50,7 @@ class Settings {
 	 * @param $options_key
 	 * @param $field_id
 	 *
-     * @return mixed
+	 * @return mixed
 	 */
 	public static function getOption( $options_key, $field_id ) {
 		$cb_options_array = get_option( $options_key );
@@ -69,7 +70,7 @@ class Settings {
 
 	/**
 	 * Updates a single field in a multidimensional options-array in wp_options
-	 * 
+	 *
 	 *
 	 * @param mixed $option_name the options name as defined in wp_options table, column option_name
 	 * @param mixed $field_id the field_id in the array
@@ -91,10 +92,10 @@ class Settings {
 
 
 	public static function returnFormattedMetaboxFields( $postType ) {
-		$metabox_array = Settings::getOption('commonsbooking_settings_metaboxfields', $postType);
+		$metabox_array = Settings::getOption( 'commonsbooking_settings_metaboxfields', $postType );
 
 		$result = "<br>";
-		if(is_array($metabox_array)) {
+		if ( is_array( $metabox_array ) ) {
 			foreach ( $metabox_array as $metabox_id => $metabox_name ) {
 				$result .= $metabox_name . ' => [' . $metabox_id . '] <br>';
 			}

@@ -20,7 +20,7 @@ class MapSettings {
 	public static function get_option( $key ) {
 		self::load_options();
 
-		return commonsbooking_sanitizeHTML(self::$options[ $key ]);
+		return commonsbooking_sanitizeHTML( self::$options[ $key ] );
 	}
 
 	/**

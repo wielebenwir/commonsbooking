@@ -91,32 +91,38 @@ abstract class Message {
 			$addresses_array = explode( ',', $bcc_adresses );
 			$this->add_bcc( $addresses_array );
 		}
-		
+
 		//add attachment when it exists
-		if (!empty($attachment)) {
+		if ( ! empty( $attachment ) ) {
 			$this->attachment = $attachment;
 		}
 	}
 
-	
+
 	/**
 	 * Send the email using wp_mail function
 	 *
 	 * @return void
 	 */
 	public function SendNotificationMail() {
-		$to      = apply_filters( 'commonsbooking_mail_to', $this->to, $this->action );
-		$subject = apply_filters( 'commonsbooking_mail_subject', $this->subject, $this->action );
-		$body    = apply_filters( 'commonsbooking_mail_body', $this->body, $this->action );
-		$attachment = apply_filters( 'commonsbooking_mail_attachment', $this->attachment, $this->action);
-		$headers = implode( "\r\n", $this->headers );
-		
-		if (!empty($attachment)) { //When attachment exists, modify wp_mail function to support attachment strings
-			add_filter('wp_mail', array($this,'addStringAttachments'), 25); //add arbitrary priority to identify filter for removal
-			$result = wp_mail($to, $subject, $body, $headers, $attachment);
-			remove_filter('wp_mail', array($this,'addStringAttachments'), 25); //remove filter directly after attachment is sent
+		$to         = apply_filters( 'commonsbooking_mail_to', $this->to, $this->action );
+		$subject    = apply_filters( 'commonsbooking_mail_subject', $this->subject, $this->action );
+		$body       = apply_filters( 'commonsbooking_mail_body', $this->body, $this->action );
+		$attachment = apply_filters( 'commonsbooking_mail_attachment', $this->attachment, $this->action );
+		$headers    = implode( "\r\n", $this->headers );
+
+		if ( ! empty( $attachment ) ) { //When attachment exists, modify wp_mail function to support attachment strings
+			add_filter( 'wp_mail', array(
+				$this,
+				'addStringAttachments'
+			), 25 ); //add arbitrary priority to identify filter for removal
+			$result = wp_mail( $to, $subject, $body, $headers, $attachment );
+			remove_filter( 'wp_mail', array(
+				$this,
+				'addStringAttachments'
+			), 25 ); //remove filter directly after attachment is sent
 		} else { //Sends regular mail, when no attachment present
-			$result = wp_mail($to, $subject, $body, $headers);
+			$result = wp_mail( $to, $subject, $body, $headers );
 		}
 		// WPML: Reset system lang
 		do_action( 'wpml_reset_language_after_mailing' );
@@ -156,8 +162,8 @@ abstract class Message {
 	 */
 	public function add_bcc( array $address_array ) {
 		// sanitize emails
-		$address_array = array_filter( array_map( 'sanitize_email', $address_array) );
-		$this->headers[] = sprintf( "BCC:%s", implode(',', $address_array ) );
+		$address_array   = array_filter( array_map( 'sanitize_email', $address_array ) );
+		$this->headers[] = sprintf( "BCC:%s", implode( ',', $address_array ) );
 	}
 
 	/**
@@ -171,8 +177,8 @@ abstract class Message {
 	 * Adds support for defining attachments as data arrays in wp_mail().
 	 * Allows us to send string-based or binary attachments (non-filesystem)
 	 * and gives us more control over the attachment data.
-	 * 
-	 * @param array  $atts  Array of the `wp_mail()` arguments.
+	 *
+	 * @param array $atts Array of the `wp_mail()` arguments.
 	 *     - string|string[] $to          Array or comma-separated list of email addresses to send message.
 	 *     - string          $subject     Email subject.
 	 *     - string          $message     Message contents.
@@ -181,24 +187,25 @@ abstract class Message {
 	 *
 	 * @see https://gist.github.com/thomasfw/5df1a041fd8f9c939ef9d88d887ce023/
 	 */
-	public function addStringAttachments($atts)
-	{
+	public function addStringAttachments( $atts ) {
 		$attachment_arrays = [];
-		if (array_key_exists('attachments', $atts) && isset($atts['attachments']) && $atts['attachments']) {
+		if ( array_key_exists( 'attachments', $atts ) && isset( $atts['attachments'] ) && $atts['attachments'] ) {
 			$attachments = $atts['attachments'];
-			if (is_array($attachments) && !empty($attachments)) {
+			if ( is_array( $attachments ) && ! empty( $attachments ) ) {
 				// Is the $attachments array a single array of attachment data, or an array containing multiple arrays of 
 				// attachment data? (note that the array may also be a one-dimensional array of file paths, as-per default usage).
-				$is_multidimensional_array = count($attachments) == count($attachments, COUNT_RECURSIVE) ? false : true;
-				if (!$is_multidimensional_array) $attachments = [$attachments];
+				$is_multidimensional_array = count( $attachments ) == count( $attachments, COUNT_RECURSIVE ) ? false : true;
+				if ( ! $is_multidimensional_array ) {
+					$attachments = [ $attachments ];
+				}
 				// Work out which attachments we want to process here. If the value is an array with either 
 				// a 'path' or 'path' key, then we'll process it separately and remove it from the 
 				// $atts['attachments'] so that WP doesn't try to process it in wp_mail().
-				foreach ($attachments as $index => $attachment) {
-					if (is_array($attachment) && (array_key_exists('path', $attachment) || array_key_exists('string', $attachment))) {
+				foreach ( $attachments as $index => $attachment ) {
+					if ( is_array( $attachment ) && ( array_key_exists( 'path', $attachment ) || array_key_exists( 'string', $attachment ) ) ) {
 						$attachment_arrays[] = $attachment;
-						if ($is_multidimensional_array) {
-							unset($atts['attachments'][$index]);
+						if ( $is_multidimensional_array ) {
+							unset( $atts['attachments'][ $index ] );
 						} else {
 							$atts['attachments'] = [];
 						}
@@ -216,33 +223,34 @@ abstract class Message {
 			// We can't use the global $phpmailer to add our attachments directly in the 'wp_mail' filter callback because WP calls $phpmailer->clearAttachments() 
 			// after this filter runs. Instead, we now hook into the 'phpmailer_init' action (triggered right before the email is sent), and read 
 			// the $wp_mail_attachments global to check for any additional attachments to add. 
-			add_action('phpmailer_init', function ( $phpmailer) {
+			add_action( 'phpmailer_init', function ( $phpmailer ) {
 				// Check the $wp_mail_attachments global for any attachment data, and reset it for good measure.
 				$attachment_arrays = [];
-				if (array_key_exists('wp_mail_attachments', $GLOBALS)) {
+				if ( array_key_exists( 'wp_mail_attachments', $GLOBALS ) ) {
 					global $wp_mail_attachments;
-					$attachment_arrays = $wp_mail_attachments;
+					$attachment_arrays   = $wp_mail_attachments;
 					$wp_mail_attachments = [];
 				}
 
 				// Loop through our attachment arrays and attempt to add them using PHPMailer::addAttachment() or PHPMailer::addStringAttachment():
-				foreach ($attachment_arrays as $attachment) {
-					$is_filesystem_attachment = array_key_exists('path', $attachment) ? true : false;
+				foreach ( $attachment_arrays as $attachment ) {
+					$is_filesystem_attachment = array_key_exists( 'path', $attachment ) ? true : false;
 					try {
-						$encoding = $attachment['encoding'] ?? $phpmailer::ENCODING_BASE64;
-						$type = $attachment['type'] ?? '';
+						$encoding    = $attachment['encoding'] ?? $phpmailer::ENCODING_BASE64;
+						$type        = $attachment['type'] ?? '';
 						$disposition = $attachment['disposition'] ?? 'attachment';
-						if ($is_filesystem_attachment) {
-							$phpmailer->addAttachment(($attachment['path'] ?? null), ($attachment['name'] ?? ''), $encoding, $type, $disposition);
+						if ( $is_filesystem_attachment ) {
+							$phpmailer->addAttachment( ( $attachment['path'] ?? null ), ( $attachment['name'] ?? '' ), $encoding, $type, $disposition );
 						} else {
-							$phpmailer->addStringAttachment(($attachment['string'] ?? null), ($attachment['filename'] ?? ''), $encoding, $type, $disposition);
+							$phpmailer->addStringAttachment( ( $attachment['string'] ?? null ), ( $attachment['filename'] ?? '' ), $encoding, $type, $disposition );
 						}
-					} catch (\Exception $e) {
+					} catch ( \Exception $e ) {
 						continue;
 					}
 				}
-			});
+			} );
 		}
+
 		return $atts;
 	}
 }

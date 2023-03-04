@@ -22,24 +22,24 @@ register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( Plugin::class, 'd
  */
 function commonsbooking_write_log( $log, $backtrace = true ) {
 
-    if (WP_DEBUG_LOG != true ) {
-        return;
-    }
+	if ( WP_DEBUG_LOG != true ) {
+		return;
+	}
 
-    if ( is_array( $log ) || is_object( $log ) ) {
+	if ( is_array( $log ) || is_object( $log ) ) {
 		$logmessage = ( print_r( $log, true ) );
 	} else {
-		$logmessage =  $log ;
+		$logmessage = $log;
 	}
 
 	if ( $backtrace ) {
-		$bt   = debug_backtrace();
-		$file = $bt[0]['file'];
-		$line = $bt[0]['line'];
-		$logmessage  = $file . ':' . $line . ' ' . $logmessage;
+		$bt         = debug_backtrace();
+		$file       = $bt[0]['file'];
+		$line       = $bt[0]['line'];
+		$logmessage = $file . ':' . $line . ' ' . $logmessage;
 	}
 
-    error_log( $logmessage ) ;
+	error_log( $logmessage );
 
 }
 

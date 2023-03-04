@@ -76,24 +76,29 @@ class Helper {
 	 * @return int
 	 */
 	public static function getLastFullHourTimestamp() {
-		$now = current_time('timestamp');
+		$now = current_time( 'timestamp' );
+
 		return $now - ( $now % 3600 );
 	}
 
 	/**
 	 * Returns timestamp of last full day, needed to get more cache hits.
+	 *
 	 * @param $timestamp
 	 *
 	 * @return int|mixed|null
 	 */
-	public static function getLastFullDayTimestamp($timestamp = null) {
-		if($timestamp === null) $timestamp = current_time('timestamp');
+	public static function getLastFullDayTimestamp( $timestamp = null ) {
+		if ( $timestamp === null ) {
+			$timestamp = current_time( 'timestamp' );
+		}
 
-		return $timestamp - ( $timestamp % (3600 * 24) );
+		return $timestamp - ( $timestamp % ( 3600 * 24 ) );
 	}
 
 	/**
 	 * Returns CB custom post type if possible.
+	 *
 	 * @param $post
 	 * @param $type
 	 *
@@ -104,11 +109,11 @@ class Helper {
 		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Booking::$postType ) {
 			$post = new Booking( $post->ID );
 		}
-		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Item::$postType) {
+		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Item::$postType ) {
 
 			$post = new Item( $post->ID );
 		}
-		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Location::$postType) {
+		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Location::$postType ) {
 			$post = new Location( $post->ID );
 		}
 

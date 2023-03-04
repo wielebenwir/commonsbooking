@@ -43,7 +43,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns post id, for array_unique.
-     *
+	 *
 	 * @return string
 	 */
 	public function __toString(): string {
@@ -81,7 +81,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns true if there is set an enddate
-     *
+	 *
 	 * @return bool
 	 */
 	public function hasEnddate() {
@@ -90,7 +90,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns end timestamp. Of no enddate is set it retunrs a date far in the future.
-     *
+	 *
 	 * @return int Timestamp
 	 */
 	public function getEndDate(): int {
@@ -102,7 +102,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns true if restriction isn't active.
-     *
+	 *
 	 * @return bool
 	 */
 	public function isOverBookable(): bool {
@@ -135,7 +135,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns restriction hint.
-     *
+	 *
 	 * @return mixed
 	 */
 	public function getHint() {
@@ -144,7 +144,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns nicely formatted start datetime.
-     *
+	 *
 	 * @return string
 	 */
 	public function getFormattedStartDateTime() {
@@ -167,7 +167,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns nicely formatted end datetime.
-     *
+	 *
 	 * @return string
 	 */
 	public function getFormattedEndDateTime() {
@@ -190,7 +190,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns item name.
-     *
+	 *
 	 * @return string
 	 */
 	public function getItemName(): string {
@@ -205,7 +205,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns itemId
-     *
+	 *
 	 * @return mixed
 	 */
 	public function getItemId() {
@@ -214,7 +214,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns location name.
-     *
+	 *
 	 * @return string
 	 */
 	public function getLocationName(): string {
@@ -229,7 +229,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns location id.
-     *
+	 *
 	 * @return mixed
 	 */
 	public function getLocationId() {
@@ -244,14 +244,14 @@ class Restriction extends CustomPost {
 		if ( $this->isActive() ) {
 			$bookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
 			if ( $bookings ) {
-                // send restriction mails to all affected bookings
-                $this->sendRestrictionMails( $bookings );
+				// send restriction mails to all affected bookings
+				$this->sendRestrictionMails( $bookings );
 
-                // cancel all affected booking
+				// cancel all affected booking
 				if ( $this->isActive() && $this->getType() == self::TYPE_REPAIR ) {
 					$this->cancelBookings( $bookings );
 				}
-				
+
 			}
 		}
 
@@ -266,7 +266,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns restriction type.
-     *
+	 *
 	 * @return mixed
 	 */
 	public function getType() {
@@ -295,15 +295,15 @@ class Restriction extends CustomPost {
 			// get User ID from booking
 			$userId = $booking->getUserData()->ID;
 
-            // send restriction message for each booking 
-            $hintMail = new RestrictionMessage( $this, get_userdata( $userId ), $booking, $this->getType() );
-            $hintMail->triggerMail();
-        }
-    }
+			// send restriction message for each booking
+			$hintMail = new RestrictionMessage( $this, get_userdata( $userId ), $booking, $this->getType() );
+			$hintMail->triggerMail();
+		}
+	}
 
 	/**
-     * Returns true if a restriction status in cancelled
-     *
+	 * Returns true if a restriction status in cancelled
+	 *
 	 * @return bool
 	 */
 	public function isCancelled(): bool {

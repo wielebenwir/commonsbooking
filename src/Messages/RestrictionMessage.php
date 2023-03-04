@@ -30,7 +30,7 @@ class RestrictionMessage extends Message {
 	public function __construct( $restriction, $user, Booking $booking, $action ) {
 		$this->restriction = $restriction;
 		$this->user        = $user;
-		$this->booking    = $booking;
+		$this->booking     = $booking;
 		$this->action      = $action;
 	}
 
@@ -106,8 +106,8 @@ class RestrictionMessage extends Message {
 	 * @param $subject
 	 */
 	protected function prepareRestrictionMail( $body, $subject ) {
-		$fromHeader = 'From: ' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-name' ) .
-		              ' <' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-email' ) . '>';
+		$fromHeader  = 'From: ' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-name' ) .
+		               ' <' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-email' ) . '>';
 		$restriction = $this->getRestriction();
 
 		$this->prepareMail(

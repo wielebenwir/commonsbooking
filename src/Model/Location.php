@@ -104,7 +104,7 @@ class Location extends BookablePost {
 	 * @return string
 	 */
 	public function formattedContactInfoOneLine() {
-		return commonsbooking_sanitizeHTML(CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post)) . '<br>';
+		return commonsbooking_sanitizeHTML( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post ) ) . '<br>';
 	}
 
 	/**
@@ -114,7 +114,7 @@ class Location extends BookablePost {
 	 * @throws \Exception
 	 */
 	public function formattedPickupInstructions(): string {
-		$html_br     = '<br>';
+		$html_br = '<br>';
 
 		return $html_br . $html_br . CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType,
 				COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions', $this->post ) . $html_br;
@@ -189,7 +189,7 @@ class Location extends BookablePost {
 	 */
 	public function getRestrictions(): array {
 		return \CommonsBooking\Repository\Restriction::get(
-			[$this->ID],
+			[ $this->ID ],
 			[],
 			null,
 			true
@@ -201,6 +201,6 @@ class Location extends BookablePost {
 	 * @return mixed
 	 */
 	public function hasMap() {
-		return $this->getMeta( 'loc_showmap') === "on";
+		return $this->getMeta( 'loc_showmap' ) === "on";
 	}
 }

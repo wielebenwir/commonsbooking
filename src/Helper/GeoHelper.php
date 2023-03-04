@@ -33,7 +33,7 @@ class GeoHelper {
 
 		$provider = Nominatim::withOpenStreetMapServer(
 			$client,
-			array_key_exists('HTTP_USER_AGENT', $_SERVER) ? $_SERVER['HTTP_USER_AGENT'] : $defaultUserAgent
+			array_key_exists( 'HTTP_USER_AGENT', $_SERVER ) ? $_SERVER['HTTP_USER_AGENT'] : $defaultUserAgent
 		);
 		$geoCoder = new StatefulGeocoder( $provider, 'en' );
 
@@ -42,7 +42,7 @@ class GeoHelper {
 			if ( ! $addresses->isEmpty() ) {
 				return $addresses->first();
 			}
-		} catch (\Exception $exception) {
+		} catch ( \Exception $exception ) {
 			// Nothing to do in this case
 		}
 

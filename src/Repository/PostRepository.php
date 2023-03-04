@@ -52,7 +52,7 @@ abstract class PostRepository {
 					return new \CommonsBooking\Model\Booking( $post );
 				}
 			}
-			Plugin::setCacheItem( $post, [$postId] );
+			Plugin::setCacheItem( $post, [ $postId ] );
 
 			return $post;
 		}

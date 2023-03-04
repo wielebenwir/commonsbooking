@@ -19,7 +19,7 @@ class Migration {
 
 	/**
 	 * Fields we don't want/need to migrate.
-     *
+	 *
 	 * @var string[]
 	 */
 	private static $ignoredMetaFields = [
@@ -178,7 +178,7 @@ class Migration {
 					if ( ! self::{$taskFunctions[ $key ]['migrationFunction']}() ) {
 						$task['failed'] += 1;
 					}
-					$task['index']   += 1;
+					$task['index']    += 1;
 					$task['complete'] = 1;
 				}
 			}
@@ -195,8 +195,8 @@ class Migration {
 	public static function migrateLocation( WP_Post $location ): bool {
 		// Collect post data
 		$postData = array_merge(
-            $location->to_array(),
-            [
+			$location->to_array(),
+			[
 				'post_type' => Location::$postType,
 			]
 		);
@@ -206,12 +206,12 @@ class Migration {
 
 		// Exctract e-mails from CB1 contactinfo field so we can migrate it into new cb2 field _cb_location_email
 		$cb1_location_emails = self::fetchEmails(
-            get_post_meta(
-                $location->ID,
-                'commons-booking_location_contactinfo_text',
-                true
-            )
-        );
+			get_post_meta(
+				$location->ID,
+				'commons-booking_location_contactinfo_text',
+				true
+			)
+		);
 
 		if ( $cb1_location_emails ) {
 			$cb1_location_email_string = implode( ',', $cb1_location_emails );
@@ -226,13 +226,13 @@ class Migration {
 		) == 'on' ? 'on' : 'off';
 
 		$cbMetaMappings = [
-			COMMONSBOOKING_METABOX_PREFIX . 'location_street' => 'commons-booking_location_adress_street',
-			COMMONSBOOKING_METABOX_PREFIX . 'location_city' => 'commons-booking_location_adress_city',
-			COMMONSBOOKING_METABOX_PREFIX . 'location_postcode' => 'commons-booking_location_adress_zip',
-			COMMONSBOOKING_METABOX_PREFIX . 'location_country' => 'commons-booking_location_adress_country',
-			COMMONSBOOKING_METABOX_PREFIX . 'location_contact' => 'commons-booking_location_contactinfo_text',
+			COMMONSBOOKING_METABOX_PREFIX . 'location_street'             => 'commons-booking_location_adress_street',
+			COMMONSBOOKING_METABOX_PREFIX . 'location_city'               => 'commons-booking_location_adress_city',
+			COMMONSBOOKING_METABOX_PREFIX . 'location_postcode'           => 'commons-booking_location_adress_zip',
+			COMMONSBOOKING_METABOX_PREFIX . 'location_country'            => 'commons-booking_location_adress_country',
+			COMMONSBOOKING_METABOX_PREFIX . 'location_contact'            => 'commons-booking_location_contactinfo_text',
 			COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions' => 'commons-booking_location_openinghours',
-			'_thumbnail_id' => '_thumbnail_id',
+			'_thumbnail_id'                                               => '_thumbnail_id',
 		];
 
 		// Get all post meta;
@@ -267,11 +267,11 @@ class Migration {
 		$words = str_word_count( $text, 1, '.@-_' );
 
 		return array_filter(
-            $words,
-            function ( $word ) {
-                return filter_var( $word, FILTER_VALIDATE_EMAIL );
-            }
-        );
+			$words,
+			function ( $word ) {
+				return filter_var( $word, FILTER_VALIDATE_EMAIL );
+			}
+		);
 	}
 
 	/**
@@ -437,14 +437,14 @@ class Migration {
 	public static function migrateItem( WP_Post $item ): bool {
 		// Collect post data
 		$postData = array_merge(
-            $item->to_array(),
-            [
+			$item->to_array(),
+			[
 				'post_type'    => Item::$postType,
 				'post_excerpt' => get_post_meta(
-                    $item->ID,
+					$item->ID,
 					'commons-booking_item_descr',
-                    true
-                ),
+					true
+				),
 			]
 		);
 
@@ -496,7 +496,7 @@ class Migration {
 		];
 
 		// convert cb1 metadata in cb2 postmeta fields
-        // CB2 <-> CB1
+		// CB2 <-> CB1
 		$postMeta[ COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID' ] = $timeframe['id'];
 		$postMeta[ \CommonsBooking\Model\Timeframe::REPETITION_START ]  = strtotime( $timeframe['date_start'] );
 		$postMeta[ \CommonsBooking\Model\Timeframe::REPETITION_END ]    = strtotime( $timeframe['date_end'] );

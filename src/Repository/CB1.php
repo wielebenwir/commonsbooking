@@ -38,7 +38,7 @@ class CB1 {
 	 */
 	public static function isInstalled() {
 		// we check for pages, since they have to be set up for the plugin to function.
-		$option_set_by_cb1 = esc_html(get_option('commons-booking-settings-pages'));
+		$option_set_by_cb1 = esc_html( get_option( 'commons-booking-settings-pages' ) );
 
 		if ( $option_set_by_cb1 ) {
 			return true;
@@ -135,12 +135,13 @@ class CB1 {
 		global $wpdb;
 		$table_bookingcodes = $wpdb->prefix . self::$BOOKINGCODES_TABLE;
 
-		$sql = $wpdb->prepare( "SELECT bookingcode FROM $table_bookingcodes WHERE id = %d", $id);
+		$sql    = $wpdb->prepare( "SELECT bookingcode FROM $table_bookingcodes WHERE id = %d", $id );
 		$result = $wpdb->get_results( $sql, ARRAY_A );
 
 		if ( $result && count( $result ) > 0 ) {
 			return $result[0]['bookingcode'];
 		}
+
 		return null;
 	}
 
@@ -166,7 +167,7 @@ class CB1 {
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 		$table_posts    = $wpdb->prefix . 'posts';
 
-		$sql = $wpdb->prepare(
+		$sql    = $wpdb->prepare(
 			"SELECT post_id FROM $table_postmeta
             WHERE
                 meta_key = '_cb_cb1_post_post_ID' AND
@@ -176,7 +177,7 @@ class CB1 {
 			$id,
 			$type
 		);
-		$result = $wpdb->get_results($sql);
+		$result = $wpdb->get_results( $sql );
 
 		if ( $result && count( $result ) > 0 ) {
 			return $result[0]->post_id;
@@ -216,7 +217,7 @@ class CB1 {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
-		$sql = $wpdb->prepare(
+		$sql    = $wpdb->prepare(
 			"SELECT meta_value as cb1_id, post_id as cb2_id 
             FROM $table_postmeta
             WHERE

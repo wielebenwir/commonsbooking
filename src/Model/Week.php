@@ -68,21 +68,21 @@ class Week {
 			serialize( $this->types )
 		);
 
-		if (Plugin::getCacheItem( $customId ) ) {
+		if ( Plugin::getCacheItem( $customId ) ) {
 			return Plugin::getCacheItem( $customId );
 		} else {
 
-			$yearTimestamp = mktime(0,0,0, 1, 1, $this->year);
-			$dayOfYear = $this->dayOfYear;
-			$timestamp = strtotime("+ $dayOfYear days" , $yearTimestamp);
-			$dto = Wordpress::getUTCDateTimeByTimestamp($timestamp);
+			$yearTimestamp = mktime( 0, 0, 0, 1, 1, $this->year );
+			$dayOfYear     = $this->dayOfYear;
+			$timestamp     = strtotime( "+ $dayOfYear days", $yearTimestamp );
+			$dto           = Wordpress::getUTCDateTimeByTimestamp( $timestamp );
 
 			$days = [];
 			for ( $i = 0; $i < 7; $i ++ ) {
-				$dayDate = $dto->format( 'Y-m-d' );
-				$days[] = new Day( $dayDate, $this->locations, $this->items, $this->types );
+				$dayDate   = $dto->format( 'Y-m-d' );
+				$days[]    = new Day( $dayDate, $this->locations, $this->items, $this->types );
 				$dayOfWeek = $dto->format( 'w' );
-				if($dayOfWeek == "0") {
+				if ( $dayOfWeek == "0" ) {
 					break;
 				}
 
@@ -90,7 +90,7 @@ class Week {
 			}
 
 			// set cache expiration to force daily fresh after midnight
-			Plugin::setCacheItem( $days, ['misc'], $customId, 'midnight');
+			Plugin::setCacheItem( $days, [ 'misc' ], $customId, 'midnight' );
 
 			return $days;
 		}

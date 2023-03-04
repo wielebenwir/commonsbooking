@@ -47,7 +47,7 @@ class Restriction extends PostRepository {
 			}
 
 			$posts = $posts ?: [];
-			Plugin::setCacheItem( $posts, Wordpress::getTags($posts, $items, $locations), $customCacheKey );
+			Plugin::setCacheItem( $posts, Wordpress::getTags( $posts, $items, $locations ), $customCacheKey );
 
 			return $posts;
 		}
@@ -91,7 +91,7 @@ class Restriction extends PostRepository {
             ";
 
 			$posts = $wpdb->get_results( $query );
-			Plugin::setCacheItem( $posts, Wordpress::getTags($posts) );
+			Plugin::setCacheItem( $posts, Wordpress::getTags( $posts ) );
 
 			return $posts;
 		}
@@ -140,7 +140,7 @@ class Restriction extends PostRepository {
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
 		return $wpdb->prepare(
-		"INNER JOIN $table_postmeta pm4 ON
+			"INNER JOIN $table_postmeta pm4 ON
                     pm4.post_id = pm1.id AND
                     pm4.meta_key = '" . \CommonsBooking\Model\Restriction::META_START . "' AND
                     pm4.meta_value BETWEEN 0 AND %d

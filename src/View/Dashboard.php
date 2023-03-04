@@ -34,20 +34,21 @@ class Dashboard extends View {
 			/** @var \CommonsBooking\Model\Booking $booking */
 			foreach ( $beginningBookings as $booking ) {
 				$html .= '<li>';
-				$html .=  '<strong>' . $booking->pickupDatetime() . ' </strong> => ' . $booking->returnDatetime() . "<br>";
-				$html .=  '<a href="'. $booking->bookingLinkUrl() . '" target="_blank">' . $booking->getItem()->title() . ' ' . __( 'at', 'commonsbooking' ) . ' ' . $booking->getLocation()->title() . '</a>';
-				$html .=  '</li>';
+				$html .= '<strong>' . $booking->pickupDatetime() . ' </strong> => ' . $booking->returnDatetime() . "<br>";
+				$html .= '<a href="' . $booking->bookingLinkUrl() . '" target="_blank">' . $booking->getItem()->title() . ' ' . __( 'at', 'commonsbooking' ) . ' ' . $booking->getLocation()->title() . '</a>';
+				$html .= '</li>';
 				$html .= '<hr style="border-top: 1px solid #bbb; border-radius: 0px; border-color:#67b32a;">';
 			}
 			$html .= '</ul>';
 			$html .= '</div>';
+
 			return $html;
 		} else {
 			return false;
 		}
 	}
 
-		
+
 	/**
 	 * Renders list of ending bookings for today.
 	 * @return void
@@ -73,14 +74,14 @@ class Dashboard extends View {
 			/** @var \CommonsBooking\Model\Booking $booking */
 			foreach ( $endingBookings as $booking ) {
 				$html .= '<li>';
-				$html .=  '<strong>' . $booking->returnDatetime() . "</strong><br>";
-				$html .=  '<a href="'. $booking->bookingLinkUrl() . '" target="_blank">' . $booking->getItem()->title() . ' ' . __( 'at', 'commonsbooking' ) . ' ' . $booking->getLocation()->title() . '</a>';
-				$html .=  '</li>';
+				$html .= '<strong>' . $booking->returnDatetime() . "</strong><br>";
+				$html .= '<a href="' . $booking->bookingLinkUrl() . '" target="_blank">' . $booking->getItem()->title() . ' ' . __( 'at', 'commonsbooking' ) . ' ' . $booking->getLocation()->title() . '</a>';
+				$html .= '</li>';
 				$html .= '<hr style="border-top: 1px solid #bbb; border-radius: 0px; border-color:#67b32a;">';
 			}
 			$html .= '</ul>';
 			$html .= '</div>';
-	
+
 			return $html;
 		} else {
 			return false;

@@ -33,21 +33,21 @@ class CB {
 
 		// Only CustomPost, WP_User or WP_Post ist allowed.
 		if ( $wpObject && ! (
-			( $wpObject instanceof WP_Post ) ||
-			( $wpObject instanceof WP_User ) ||
-			($wpObject instanceof CustomPost)
-		) ) {
+				( $wpObject instanceof WP_Post ) ||
+				( $wpObject instanceof WP_User ) ||
+				( $wpObject instanceof CustomPost )
+			) ) {
 			throw new Exception( 'invalid object type.' );
 		}
 
 		// first we need to check if we are dealing with a post and set the post object properly
 		if ( ! $wpObject ) {
 			$postId   = self::getPostId( $key );
-			$wpObject = get_post($postId);
+			$wpObject = get_post( $postId );
 		}
 
 		// If possible cast to CB Custom Post Type Model to get additional functions
-		$wpObject = Helper::castToCBCustomType($wpObject, $key);
+		$wpObject = Helper::castToCBCustomType( $wpObject, $key );
 
 		$result     = self::lookUp( $key, $property, $wpObject, $args );  // Find matching methods, properties or metadata
 		$filterName = sprintf( 'commonsbooking_tag_%s_%s', $key, $property );
@@ -128,6 +128,7 @@ class CB {
 
 	/**
 	 * Tries to get a property of a post with different approaches.
+	 *
 	 * @param $post
 	 * @param $property
 	 * @param $args
@@ -137,7 +138,7 @@ class CB {
 	private static function getPostProperty( $post, $property, $args ) {
 		$result = null;
 
-		$postId = is_int($post) ? $post : $post->ID;
+		$postId = is_int( $post ) ? $post : $post->ID;
 
 		if ( get_post_meta( $postId, $property, true ) ) { // Post has meta fields
 			$result = get_post_meta( $postId, $property, true );
@@ -172,7 +173,7 @@ class CB {
 	private static function getUserProperty( $post, string $property, $args ) {
 		$result = null;
 
-		$cb_user = self::getUserFromObject($post);
+		$cb_user = self::getUserFromObject( $post );
 
 		if ( method_exists( $cb_user, $property ) ) {
 			$result = $cb_user->$property( $args );
@@ -195,19 +196,20 @@ class CB {
 	 * @return false|WP_User
 	 * @throws Exception
 	 */
-	private static function getUserFromObject($object) {
+	private static function getUserFromObject( $object ) {
 		// Check if $post is of type WP_Post, then we're using Author as User
-		if( $object instanceof WP_Post) {
-			$userID  = intval( $object->post_author );
+		if ( $object instanceof WP_Post ) {
+			$userID = intval( $object->post_author );
+
 			return get_userdata( $userID );
 
-		// Check if $post is of Type WP_User, than we can use it directly.
-		} else if ( $object instanceof WP_User) {
+			// Check if $post is of Type WP_User, than we can use it directly.
+		} else if ( $object instanceof WP_User ) {
 			return $object;
 
-		// Other types than WP_Post or WP_User are not allowed
+			// Other types than WP_Post or WP_User are not allowed
 		} else {
-			throw new Exception('invalid $post type.');
+			throw new Exception( 'invalid $post type.' );
 		}
 	}
 

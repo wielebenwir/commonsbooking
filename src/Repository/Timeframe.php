@@ -74,7 +74,7 @@ class Timeframe extends PostRepository {
 			$postStatus
 		);
 
-		$bookableTimeframes = self::filterTimeframesForCurrentUser($bookableTimeframes);
+		$bookableTimeframes = self::filterTimeframesForCurrentUser( $bookableTimeframes );
 
 		return $bookableTimeframes;
 	}
@@ -150,9 +150,10 @@ class Timeframe extends PostRepository {
 
 			Plugin::setCacheItem(
 				$posts,
-				Wordpress::getTags($posts, $items, $locations),
+				Wordpress::getTags( $posts, $items, $locations ),
 				$customId
 			);
+
 			return $posts;
 		}
 	}
@@ -173,12 +174,12 @@ class Timeframe extends PostRepository {
 
 		if ( ! count( $types ) ) {
 			$types = [
-                \CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
-                \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-                \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
-                \CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
-                \CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
-            ];
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
+			];
 		}
 
 		$customId = md5( serialize( $types ) );
@@ -191,10 +192,10 @@ class Timeframe extends PostRepository {
 			$items     = array_filter( $items );
 			$locations = array_filter( $locations );
 
-            // additional sanitizing. Allow only integer
-            $items      = commonsbooking_sanitizeArrayorString( $items, 'intval' );
-            $locations  = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
-            $types      = commonsbooking_sanitizeArrayorString( $types, 'intval' );
+			// additional sanitizing. Allow only integer
+			$items     = commonsbooking_sanitizeArrayorString( $items, 'intval' );
+			$locations = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
+			$types     = commonsbooking_sanitizeArrayorString( $types, 'intval' );
 
 			$itemQuery = "";
 			if ( count( $items ) > 0 ) {
@@ -239,13 +240,13 @@ class Timeframe extends PostRepository {
 			}
 
 			// Get Posts
-			$posts = array_map(function($post) {
-				return get_post($post);
-			}, $postIds);
+			$posts = array_map( function ( $post ) {
+				return get_post( $post );
+			}, $postIds );
 
 			Plugin::setCacheItem(
 				$postIds,
-				Wordpress::getTags($posts, $items, $locations),
+				Wordpress::getTags( $posts, $items, $locations ),
 				$customId
 			);
 
@@ -254,32 +255,32 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
-	* Returns entity query which considers single and multi selection.
-	*/
-	private static function getEntityQuery($joinAlias, $table_postmeta, $entities, $singleEntityKey, $multiEntityKey) {
+	 * Returns entity query which considers single and multi selection.
+	 */
+	private static function getEntityQuery( $joinAlias, $table_postmeta, $entities, $singleEntityKey, $multiEntityKey ) {
 		$locationQueryParts = [];
 
 		// Single select
-		$singleLocationQuery = "(
-		                        $joinAlias.meta_key = '". $singleEntityKey ."' AND
+		$singleLocationQuery  = "(
+		                        $joinAlias.meta_key = '" . $singleEntityKey . "' AND
 		                        $joinAlias.meta_value IN (" . implode( ',', $entities ) . ")
 	                        )";
 		$locationQueryParts[] = $singleLocationQuery;
 
 		// Multi select
 		$multiLocationQueries = [];
-		foreach($entities as $entityId) {
+		foreach ( $entities as $entityId ) {
 			$multiLocationQueries[] = "$joinAlias.meta_value LIKE '%:\"$entityId\";%'";
 		}
-		$multiLocationQuery = "(
-					$joinAlias.meta_key = '". $multiEntityKey ."' AND
-					(" . implode(' OR ', $multiLocationQueries) . ") 
+		$multiLocationQuery   = "(
+					$joinAlias.meta_key = '" . $multiEntityKey . "' AND
+					(" . implode( ' OR ', $multiLocationQueries ) . ") 
 				)";
 		$locationQueryParts[] = $multiLocationQuery;
 
 		return "INNER JOIN $table_postmeta $joinAlias ON
                     $joinAlias.post_id = pm1.post_id AND
-                    (".implode(' OR ', $locationQueryParts).")";
+                    (" . implode( ' OR ', $locationQueryParts ) . ")";
 	}
 
 	/**
@@ -333,7 +334,7 @@ class Timeframe extends PostRepository {
 
 			Plugin::setCacheItem(
 				$posts,
-				Wordpress::getTags($posts, $postIds)
+				Wordpress::getTags( $posts, $postIds )
 			);
 
 			return $posts;
@@ -353,6 +354,7 @@ class Timeframe extends PostRepository {
 	 */
 	private static function getFilterByDateQuery( string $table_postmeta, string $date ): string {
 		global $wpdb;
+
 		return $wpdb->prepare(
 			"INNER JOIN $table_postmeta pm4 ON
                 pm4.post_id = pm1.id AND
@@ -389,7 +391,7 @@ class Timeframe extends PostRepository {
 	 */
 	private static function getFilterFromDateQuery( string $table_postmeta, int $minTimestamp ): string {
 		global $wpdb;
-		$minTimestamp = Helper::getLastFullDayTimestamp($minTimestamp);
+		$minTimestamp = Helper::getLastFullDayTimestamp( $minTimestamp );
 
 		return $wpdb->prepare(
 			"INNER JOIN $table_postmeta pm4 ON
@@ -420,6 +422,7 @@ class Timeframe extends PostRepository {
 	 */
 	private static function getTimerangeQuery( string $table_postmeta, int $minTimestamp, int $maxTimestamp ): string {
 		global $wpdb;
+
 		return $wpdb->prepare(
 			"INNER JOIN $table_postmeta pm4 ON
 	            pm4.post_id = pm1.id AND (
@@ -492,7 +495,8 @@ class Timeframe extends PostRepository {
 				} );
 			}
 
-			Plugin::setCacheItem($posts, Wordpress::getTags($posts));
+			Plugin::setCacheItem( $posts, Wordpress::getTags( $posts ) );
+
 			return $posts;
 		}
 	}
@@ -581,7 +585,7 @@ class Timeframe extends PostRepository {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
-			$time_format        = esc_html(get_option( 'time_format' ));
+			$time_format        = esc_html( get_option( 'time_format' ) );
 			$startTimestampTime = date( $time_format, $timestamp );
 			$endTimestampTime   = date( $time_format, $timestamp + 1 );
 
@@ -589,7 +593,7 @@ class Timeframe extends PostRepository {
 				[ $locationId ],
 				[ $itemId ],
 				[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
-				date('Y-m-d', $timestamp),
+				date( 'Y-m-d', $timestamp ),
 				true
 			);
 
@@ -599,7 +603,7 @@ class Timeframe extends PostRepository {
 					date( $time_format, strtotime( $timeframe->getStartTime() ) ) == $startTimestampTime ||
 					date( $time_format, strtotime( $timeframe->getEndTime() ) ) == $endTimestampTime
 				) {
-					Plugin::setCacheItem( $timeframe, [$timeframe->ID, $itemId, $locationId] );
+					Plugin::setCacheItem( $timeframe, [ $timeframe->ID, $itemId, $locationId ] );
 
 					return $timeframe;
 				}
@@ -672,7 +676,7 @@ class Timeframe extends PostRepository {
 
 			Plugin::setCacheItem(
 				$posts,
-				Wordpress::getTags($posts, $locations, $items),
+				Wordpress::getTags( $posts, $locations, $items ),
 				$customId
 			);
 
@@ -695,7 +699,7 @@ class Timeframe extends PostRepository {
 	 * @throws Exception
 	 */
 
-	 public static function getInRangeForCurrentUser(
+	public static function getInRangeForCurrentUser(
 		$minTimestamp,
 		$maxTimestamp,
 		array $locations = [],
@@ -704,9 +708,10 @@ class Timeframe extends PostRepository {
 		bool $returnAsModel = false,
 		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
-		$bookableTimeframes = self::getInRange($minTimestamp,$maxTimestamp,$locations,$items,$types,$returnAsModel,$postStatus);
+		$bookableTimeframes = self::getInRange( $minTimestamp, $maxTimestamp, $locations, $items, $types, $returnAsModel, $postStatus );
 
-		$bookableTimeframes = self::filterTimeframesForCurrentUser($bookableTimeframes);
+		$bookableTimeframes = self::filterTimeframesForCurrentUser( $bookableTimeframes );
+
 		return $bookableTimeframes;
 	}
 }

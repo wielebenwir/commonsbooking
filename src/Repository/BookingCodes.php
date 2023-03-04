@@ -40,7 +40,7 @@ class BookingCodes {
 			global $wpdb;
 			$table_name = $wpdb->prefix . self::$tablename;
 
-			$sql = $wpdb->prepare(
+			$sql          = $wpdb->prepare(
 				"SELECT * FROM $table_name
                 WHERE timeframe = %d
                 AND date BETWEEN %s AND %s
@@ -50,7 +50,7 @@ class BookingCodes {
 				$startDate,
 				$endDate
 			);
-			$bookingCodes = $wpdb->get_results($sql);
+			$bookingCodes = $wpdb->get_results( $sql );
 
 			$codes = [];
 			foreach ( $bookingCodes as $bookingCode ) {
@@ -64,7 +64,7 @@ class BookingCodes {
 				$codes[]           = $bookingCodeObject;
 			}
 
-			Plugin::setCacheItem( $codes, [$timeframeId] );
+			Plugin::setCacheItem( $codes, [ $timeframeId ] );
 
 			return $codes;
 		}
@@ -87,7 +87,7 @@ class BookingCodes {
 			global $wpdb;
 			$table_name = $wpdb->prefix . self::$tablename;
 
-			$sql = $wpdb->prepare(
+			$sql          = $wpdb->prepare(
 				"SELECT * FROM $table_name
                 WHERE 
                     timeframe = %s AND 
@@ -100,7 +100,7 @@ class BookingCodes {
 				$locationId,
 				$date
 			);
-			$bookingCodes = $wpdb->get_results($sql);
+			$bookingCodes = $wpdb->get_results( $sql );
 
 			$bookingCodeObject = null;
 			if ( count( $bookingCodes ) ) {
@@ -112,7 +112,7 @@ class BookingCodes {
 					$bookingCodes[0]->code
 				);
 			}
-			Plugin::setCacheItem( $bookingCodeObject, [$timeframeId] );
+			Plugin::setCacheItem( $bookingCodeObject, [ $timeframeId ] );
 
 			return $bookingCodeObject;
 		}

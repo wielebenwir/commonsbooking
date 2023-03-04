@@ -37,24 +37,25 @@ trait Cache {
 			if ( $cacheItem->isHit() ) {
 				return $cacheItem->get();
 			}
-		} catch (\Exception $exception) {}
+		} catch ( \Exception $exception ) {
+		}
 
 		return false;
 	}
 
 	/**
 	 * Returns cache id, based on calling class, function and args.
-     * 
-     * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
 	 *
 	 * @param null $custom_id
 	 *
 	 * @return string
+	 * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
+	 *
 	 */
 	public static function getCacheId( $custom_id = null ): string {
 		$backtrace     = debug_backtrace()[2];
 		$backtrace     = self::sanitizeArgsArray( $backtrace );
-        $namespace     = COMMONSBOOKING_PLUGIN_DIR;
+		$namespace     = COMMONSBOOKING_PLUGIN_DIR;
 		$namespace     .= '_' . str_replace( '\\', '_', strtolower( $backtrace['class'] ) );
 		$namespace     .= '_' . $backtrace['function'];
 		$backtraceArgs = $backtrace['args'];
@@ -98,23 +99,24 @@ trait Cache {
 	 * @return TagAwareAdapterInterface
 	 */
 	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ): TagAwareAdapterInterface {
-		if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled') =='on'){
+		if ( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) == 'on' ) {
 			try {
 				$adapter = new RedisTagAwareAdapter(
-					RedisAdapter::createConnection(Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn')),
+					RedisAdapter::createConnection( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn' ) ),
 					$namespace,
 					$defaultLifetime
 				);
+
 				return $adapter;
-			}
-			catch (Exception $e) {
-				commonsbooking_write_log($e . 'Falling back to Filesystem adapter');
-				set_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error',$e->getMessage());
+			} catch ( Exception $e ) {
+				commonsbooking_write_log( $e . 'Falling back to Filesystem adapter' );
+				set_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error', $e->getMessage() );
 			}
 		}
 		$adapter = new TagAwareAdapter(
 			new FilesystemAdapter( $namespace, $defaultLifetime, $directory )
 		);
+
 		return $adapter;
 	}
 
@@ -135,11 +137,11 @@ trait Cache {
 		// too much space
 		$expiration = 604800;
 
-		$tags = array_map('strval', $tags);
-		$tags = array_filter($tags);
+		$tags = array_map( 'strval', $tags );
+		$tags = array_filter( $tags );
 
-		if(!count($tags)) {
-			$tags = ['misc'];
+		if ( ! count( $tags ) ) {
+			$tags = [ 'misc' ];
 		}
 
 		// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
@@ -152,9 +154,9 @@ trait Cache {
 		/** @var CacheItem $cacheItem */
 		$cacheKey  = self::getCacheId( $custom_id );
 		$cacheItem = $cache->getItem( $cacheKey );
-		$cacheItem->tag($tags);
+		$cacheItem->tag( $tags );
 		$cacheItem->set( $value );
-		$cacheItem->expiresAfter(intval( $expiration ));
+		$cacheItem->expiresAfter( intval( $expiration ) );
 
 		return $cache->save( $cacheItem );
 	}
@@ -167,18 +169,18 @@ trait Cache {
 	 * @throws InvalidArgumentException
 	 */
 	public static function clearCache( array $tags = [] ) {
-		if(!count($tags)) {
+		if ( ! count( $tags ) ) {
 			self::getCache()->clear();
 		} else {
-			self::getCache()->invalidateTags($tags);
+			self::getCache()->invalidateTags( $tags );
 		}
 
 		// Delete expired cache items (only for Pruneable Interfaces)
-		if (is_a(self::getCache(),'Symfony\Component\Cache\Adapter\TagAwareAdapter')) {
+		if ( is_a( self::getCache(), 'Symfony\Component\Cache\Adapter\TagAwareAdapter' ) ) {
 			self::getCache()->prune();
 		}
 
-		set_transient("clearCacheHasBeenDone", true, 45);
+		set_transient( "clearCacheHasBeenDone", true, 45 );
 	}
 
 	/**
@@ -186,10 +188,10 @@ trait Cache {
 	 * @return void
 	 */
 	public static function addWarmupAjaxToOutput() {
-		if(get_transient("clearCacheHasBeenDone")) {
-			delete_transient("clearCacheHasBeenDone");
-			wp_register_script( 'cache_warmup', '', array("jquery"), '', true );
-			wp_enqueue_script( 'cache_warmup'  );
+		if ( get_transient( "clearCacheHasBeenDone" ) ) {
+			delete_transient( "clearCacheHasBeenDone" );
+			wp_register_script( 'cache_warmup', '', array( "jquery" ), '', true );
+			wp_enqueue_script( 'cache_warmup' );
 			wp_add_inline_script(
 				'cache_warmup',
 				'
@@ -211,7 +213,7 @@ trait Cache {
 			$table_posts = $wpdb->prefix . 'posts';
 
 			// First get all pages with cb shortcodes
-			$sql = "SELECT post_content FROM $table_posts WHERE 
+			$sql   = "SELECT post_content FROM $table_posts WHERE 
 		      post_content LIKE '%cb_items%' OR
 			  post_content LIKE '%cb_location%' OR
 		      post_content LIKE '%cb_map%'";
@@ -219,18 +221,18 @@ trait Cache {
 
 			// Now extract shortcode calles incl. attributes
 			$shortCodeCalls = [];
-			foreach($pages as $page) {
+			foreach ( $pages as $page ) {
 				// Get cb_ shortcodes
-				preg_match_all('/\[.*(cb\_.*)\]/i', $page->post_content, $cbShortCodes);
+				preg_match_all( '/\[.*(cb\_.*)\]/i', $page->post_content, $cbShortCodes );
 
 				// If there was found something between the brackets we continue
-				if(count($cbShortCodes) > 1) {
+				if ( count( $cbShortCodes ) > 1 ) {
 					$cbShortCodes = $cbShortCodes[1];
 
 					// each result will be prepared and added as shortcode call
-					foreach ($cbShortCodes as $shortCode) {
-						list($shortCode, $args) = self::getShortcodeAndAttributes($shortCode);
-						$shortCodeCalls[][$shortCode] = $args;
+					foreach ( $cbShortCodes as $shortCode ) {
+						list( $shortCode, $args ) = self::getShortcodeAndAttributes( $shortCode );
+						$shortCodeCalls[][ $shortCode ] = $args;
 					}
 				}
 			}
@@ -238,23 +240,24 @@ trait Cache {
 			// Filter duplicate calls
 			$shortCodeCalls = array_intersect_key(
 				$shortCodeCalls,
-				array_unique(array_map('serialize', $shortCodeCalls))
+				array_unique( array_map( 'serialize', $shortCodeCalls ) )
 			);
 
-			self::runShortcodeCalls($shortCodeCalls);
+			self::runShortcodeCalls( $shortCodeCalls );
 
-			wp_send_json("cache successfully warmed up");
-		} catch (\Exception $exception) {
-			wp_send_json("something went wrong with cache warm up");
+			wp_send_json( "cache successfully warmed up" );
+		} catch ( \Exception $exception ) {
+			wp_send_json( "something went wrong with cache warm up" );
 		}
 	}
 
 	/**
-     * Renders little connections status information for REDIS database
+	 * Renders little connections status information for REDIS database
+	 *
 	 * @param array $field_args
 	 * @param CMB2_Field $field
 	 */
-	public static function renderREDISConnectionStatus( array $field_args, CMB2_Field $field ){
+	public static function renderREDISConnectionStatus( array $field_args, CMB2_Field $field ) {
 		?>
 		<div class="cmb-row cmb-type-text table-layout">
 			<div class="cmb-th">
@@ -262,21 +265,19 @@ trait Cache {
 			</div>
 			<div class="cmb-th">
 				<?php
-				if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled') =='on'){
-					if (is_a(self::getCache(),'Symfony\Component\Cache\Adapter\RedisTagAwareAdapter')){
+				if ( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) == 'on' ) {
+					if ( is_a( self::getCache(), 'Symfony\Component\Cache\Adapter\RedisTagAwareAdapter' ) ) {
 						echo '<div style="color:green">';
-							echo __('Successfully connected to REDIS database!', 'commonsbooking');
+						echo __( 'Successfully connected to REDIS database!', 'commonsbooking' );
 						echo '</div>';
-					}
-					else {
+					} else {
 						echo '<div style="color:red">';
-							echo get_transient(COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error');
+						echo get_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error' );
 						echo '</div>';
 					}
-				}
-				else {
+				} else {
 					echo '<div style="color:orange">';
-						echo __('REDIS database not enabled','commonsbooking');
+					echo __( 'REDIS database not enabled', 'commonsbooking' );
 					echo '</div>';
 				}
 				?>
@@ -287,62 +288,65 @@ trait Cache {
 
 	/**
 	 * Iterates through array and executes shortcodecalls.
+	 *
 	 * @param $shortCodeCalls
 	 *
 	 * @return void
 	 */
-	private static function runShortcodeCalls($shortCodeCalls) {
-		foreach($shortCodeCalls as $shortcode) {
-			$shortcodeFunction = array_keys($shortcode)[0];
-			$attributes = $shortcode[$shortcodeFunction];
+	private static function runShortcodeCalls( $shortCodeCalls ) {
+		foreach ( $shortCodeCalls as $shortcode ) {
+			$shortcodeFunction = array_keys( $shortcode )[0];
+			$attributes        = $shortcode[ $shortcodeFunction ];
 
-			if(array_key_exists($shortcodeFunction, self::$cbShortCodeFunctions)) {
-				list($class, $function) = self::$cbShortCodeFunctions[$shortcodeFunction];
-				$class::$function($attributes);
+			if ( array_key_exists( $shortcodeFunction, self::$cbShortCodeFunctions ) ) {
+				list( $class, $function ) = self::$cbShortCodeFunctions[ $shortcodeFunction ];
+				$class::$function( $attributes );
 			}
 		}
 	}
 
 	/**
 	 * Extracts shortcode and attributes from shortcode string.
+	 *
 	 * @param $shortCode
 	 *
 	 * @return array
 	 */
-	private static function getShortcodeAndAttributes($shortCode) {
-		$shortCodeParts = explode(' ', $shortCode);
+	private static function getShortcodeAndAttributes( $shortCode ) {
+		$shortCodeParts = explode( ' ', $shortCode );
 		$shortCodeParts = array_map(
-			function($part) {
-				$trimmed = trim($part);
-				$trimmed = str_replace("\xc2\xa0", '', $trimmed);
-				return $trimmed;
-			}, $shortCodeParts);
+			function ( $part ) {
+				$trimmed = trim( $part );
+				$trimmed = str_replace( "\xc2\xa0", '', $trimmed );
 
-		$shortCode = array_shift($shortCodeParts);
+				return $trimmed;
+			}, $shortCodeParts );
+
+		$shortCode = array_shift( $shortCodeParts );
 
 		$args = [];
-		foreach ($shortCodeParts as $part) {
-			$parts = explode('=', $part);
-			$key = $parts[0];
+		foreach ( $shortCodeParts as $part ) {
+			$parts = explode( '=', $part );
+			$key   = $parts[0];
 			$value = "";
-			if(count($parts) > 1) {
+			if ( count( $parts ) > 1 ) {
 				$value = $parts[1];
-				if(preg_match('/^".*"$/', $value)) {
-					$value = substr($value,1,-1);
+				if ( preg_match( '/^".*"$/', $value ) ) {
+					$value = substr( $value, 1, - 1 );
 				}
 			}
 
-			$args[$key] = $value;
+			$args[ $key ] = $value;
 		}
 
-		return [$shortCode, $args];
+		return [ $shortCode, $args ];
 	}
 
 	private static $cbShortCodeFunctions = [
-		"cb_items" => array( \CommonsBooking\View\Item::class, 'shortcode' ),
-		'cb_bookings' => array( \CommonsBooking\View\Booking::class, 'shortcode' ),
-		"cb_locations" => array( \CommonsBooking\View\Location::class, 'shortcode' ),
-		"cb_map" => array( MapShortcode::class, 'execute' ),
+		"cb_items"       => array( \CommonsBooking\View\Item::class, 'shortcode' ),
+		'cb_bookings'    => array( \CommonsBooking\View\Booking::class, 'shortcode' ),
+		"cb_locations"   => array( \CommonsBooking\View\Location::class, 'shortcode' ),
+		"cb_map"         => array( MapShortcode::class, 'execute' ),
 		'cb_items_table' => array( Calendar::class, 'renderTable' )
 	];
 

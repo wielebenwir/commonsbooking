@@ -33,19 +33,19 @@ class UserWidget extends WP_Widget {
 
 	public function widget( $args, $instance ) {
 
-		echo commonsbooking_sanitizeHTML($args['before_widget']);
+		echo commonsbooking_sanitizeHTML( $args['before_widget'] );
 
 		if ( ! empty( $instance['title'] ) ) {
-			echo commonsbooking_sanitizeHTML($args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title']);
+			echo commonsbooking_sanitizeHTML( $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'] );
 		}
 
 		echo '<div class="textwidget">';
 
-		echo commonsbooking_sanitizeHTML($this->renderWidgetContent());
+		echo commonsbooking_sanitizeHTML( $this->renderWidgetContent() );
 
 		echo '</div>';
 
-		echo commonsbooking_sanitizeHTML($args['after_widget']);
+		echo commonsbooking_sanitizeHTML( $args['after_widget'] );
 
 	}
 
@@ -63,7 +63,7 @@ class UserWidget extends WP_Widget {
 			}
 
 			// user name or email
-			if (!empty($current_user->first_name)) {
+			if ( ! empty( $current_user->first_name ) ) {
 				$loginname = $current_user->first_name;
 			} else {
 				$loginname = $current_user->user_email;
@@ -100,18 +100,20 @@ class UserWidget extends WP_Widget {
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : esc_html__( '', 'commonsbooking' );
 		$text  = ! empty( $instance['text'] ) ? $instance['text'] : esc_html__( '', 'commonsbooking' );
 		?>
-        <p>
-            <label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php echo esc_html__( 'Title:', 'commonsbooking' ); ?></label>
-            <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
-                   name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text"
-                   value="<?php echo esc_attr( $title ); ?>">
-        </p>
-        <p>
-            <label for="<?php echo esc_attr( $this->get_field_id( 'Text' ) ); ?>"><?php echo esc_html__( 'Text:', 'commonsbooking' ); ?></label>
-            <textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'text' ) ); ?>"
-                      name="<?php echo esc_attr( $this->get_field_name( 'text' ) ); ?>" type="text" cols="30"
-                      rows="10"><?php echo esc_attr( $text ); ?></textarea>
-        </p>
+		<p>
+			<label
+				for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php echo esc_html__( 'Title:', 'commonsbooking' ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
+			       name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text"
+			       value="<?php echo esc_attr( $title ); ?>">
+		</p>
+		<p>
+			<label
+				for="<?php echo esc_attr( $this->get_field_id( 'Text' ) ); ?>"><?php echo esc_html__( 'Text:', 'commonsbooking' ); ?></label>
+			<textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'text' ) ); ?>"
+			          name="<?php echo esc_attr( $this->get_field_name( 'text' ) ); ?>" type="text" cols="30"
+			          rows="10"><?php echo esc_attr( $text ); ?></textarea>
+		</p>
 		<?php
 
 	}

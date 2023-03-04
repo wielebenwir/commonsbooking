@@ -29,7 +29,7 @@ class Map extends CustomPostType {
 		// deactivated individual map settings because we don't need them righ now
 		// map setting should be integrated in CB settings in the future
 		//$cb_map_settings->prepare_settings();
-		
+
 		if ( $cb_map_settings->get_option( 'booking_page_link_replacement' ) ) {
 			add_action( 'wp_enqueue_scripts', array( Map::class, 'replace_map_link_target' ), 11 );
 		}
@@ -128,6 +128,7 @@ class Map extends CustomPostType {
 		if ( $item_draft_appearance == 3 ) {
 			return true;
 		}
+
 		return false;
 	}
 
@@ -146,7 +147,7 @@ class Map extends CustomPostType {
 		$show_location_contact       = MapAdmin::get_option( $cb_map_id, 'show_location_contact' );
 		$show_location_opening_hours = MapAdmin::get_option( $cb_map_id, 'show_location_opening_hours' );
 
-		$preset_categories = MapAdmin::get_option( $cb_map_id, 'cb_items_preset_categories' );
+		$preset_categories          = MapAdmin::get_option( $cb_map_id, 'cb_items_preset_categories' );
 		$preset_location_categories = MapAdmin::get_option( $cb_map_id, 'cb_locations_preset_categories' );
 
 
@@ -180,11 +181,11 @@ class Map extends CustomPostType {
 			 * filters out not preset location categories, if location categories are set
 			 */
 
-			 if ($preset_location_categories) {
-				if ( !has_term( $preset_location_categories , 'cb_locations_category' , $post->ID) ) {
+			if ( $preset_location_categories ) {
+				if ( ! has_term( $preset_location_categories, 'cb_locations_category', $post->ID ) ) {
 					continue; //skip to next location in loop
 				}
-			 }
+			}
 
 			foreach ( Item::getByLocation( $post->ID, true ) as $item ) {
 
@@ -212,12 +213,12 @@ class Map extends CustomPostType {
 				 * Filter items by preset item categories
 				 */
 
-				 if ($preset_categories) {
-						 //check if preset category is in items
-						if ( !has_term( $preset_categories , 'cb_items_category' , $item->ID) ) {
-							continue; //skip to next item in loop
-						}
-				 }
+				if ( $preset_categories ) {
+					//check if preset category is in items
+					if ( ! has_term( $preset_categories, 'cb_items_category', $item->ID ) ) {
+						continue; //skip to next item in loop
+					}
+				}
 
 
 				$timeframesData = [];
@@ -256,7 +257,7 @@ class Map extends CustomPostType {
 					'lat'           => (float) $location_meta['geo_latitude'][0],
 					'lon'           => (float) $location_meta['geo_longitude'][0],
 					'location_name' => $post->post_title,
-					'location_link' => get_permalink($post->ID),
+					'location_link' => get_permalink( $post->ID ),
 					'closed_days'   => unserialize( $closed_days ),
 					'address'       => [
 						'street' => $location_meta[ COMMONSBOOKING_METABOX_PREFIX . 'location_street' ][0],

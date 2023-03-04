@@ -117,11 +117,12 @@ abstract class BookablePost extends PostRepository {
 	 * @return int[]|string|string[]|\WP_Error|\WP_Term[]
 	 */
 	public static function getTerms() {
-		return get_terms(array(
-			'taxonomy'	=> static::getPostType() . 's_category',
+		return get_terms( array(
+			'taxonomy'   => static::getPostType() . 's_category',
 			'hide_empty' => false,
-		));
+		) );
 	}
+
 	/**
 	 * @return string
 	 */
@@ -200,8 +201,8 @@ abstract class BookablePost extends PostRepository {
 	public static function get( array $args = array(), bool $bookable = false ) {
 		$posts             = [];
 		$args['post_type'] = static::getPostType();
-		$args['nopaging'] = true;
-		
+		$args['nopaging']  = true;
+
 		// Add custom taxonomy filter
 		if ( array_key_exists( 'category_slug', $args ) ) {
 			$args['taxonomy'] = static::getPostType() . 's_category';

@@ -76,7 +76,7 @@ class Calendar {
 			$weeks = [];
 			while ( $startDate <= $endDate ) {
 				$dayOfYear = date( 'z', $startDate );
-				$year = date( 'Y', $startDate );
+				$year      = date( 'Y', $startDate );
 				$weeks[]   = new Week(
 					$year,
 					$dayOfYear,
@@ -88,7 +88,7 @@ class Calendar {
 			}
 
 			// set cache expiration to force daily fresh after midnight
-			Plugin::setCacheItem( $weeks, ['misc'], $customId, 'midnight' );
+			Plugin::setCacheItem( $weeks, [ 'misc' ], $customId, 'midnight' );
 
 			return $weeks;
 		}

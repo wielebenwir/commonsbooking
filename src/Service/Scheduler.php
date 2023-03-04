@@ -7,8 +7,8 @@ use CommonsBooking\View\TimeframeExport;
 
 class Scheduler {
 
-	protected string $jobhook; 
-	protected string $reccurence; 
+	protected string $jobhook;
+	protected string $reccurence;
 	protected int $timestamp;
 
 	const UNSCHEDULER_HOOK = COMMONSBOOKING_PLUGIN_SLUG . '_unschedule';
@@ -20,45 +20,43 @@ class Scheduler {
 		string $reccurence, //how often the event should subsequently recur
 		string $executionTime = '', //takes time of day the job should be executed, only for daily reccurence
 		array $option = array(), //first element is the options_key, second is the field_id. If set, the field is checked and determines wether the hook should be ran
-		string $updateHook= ''  //The wordpress hook that should update the option
-	)
-	{
+		string $updateHook = ''  //The wordpress hook that should update the option
+	) {
 		// Add custom cron intervals
 		add_filter( 'cron_schedules', array( self::class, 'initIntervals' ) );
 
-		$this->jobhook = COMMONSBOOKING_PLUGIN_SLUG . '_' .$jobhook; //Prepends plugin slug so that hooks can be found easily afterwards 
+		$this->jobhook = COMMONSBOOKING_PLUGIN_SLUG . '_' . $jobhook; //Prepends plugin slug so that hooks can be found easily afterwards
 
-		if ((count($option) == 2)  && Settings::getOption($option[0],$option[1]) != 'on' ) { //removes job if option unset
+		if ( ( count( $option ) == 2 ) && Settings::getOption( $option[0], $option[1] ) != 'on' ) { //removes job if option unset
 			$this->unscheduleJob();
+
 			return false;
 		}
 
-		if (empty($executionTime)){
+		if ( empty( $executionTime ) ) {
 			$this->timestamp = time();
-		} 
-		elseif ($reccurence == 'daily'){
-			$this->timestamp = strtotime($executionTime);
-			if($this->timestamp < time()) { //if timestamp is in the past, add one day
-				$this->timestamp = strtotime("+1 day",$this->timestamp);
+		} elseif ( $reccurence == 'daily' ) {
+			$this->timestamp = strtotime( $executionTime );
+			if ( $this->timestamp < time() ) { //if timestamp is in the past, add one day
+				$this->timestamp = strtotime( "+1 day", $this->timestamp );
 			}
-		}
-		else {
+		} else {
 			return false;
 		}
 
 
 		$this->reccurence = $reccurence;
 
-		add_action($this->jobhook,$callback); //attaches the jobhook to the callback function
+		add_action( $this->jobhook, $callback ); //attaches the jobhook to the callback function
 
-		if (! wp_next_scheduled( $this->jobhook )){ //add job if it does not exist yet
-			wp_schedule_event($this->timestamp,$this->reccurence,$this->jobhook);
+		if ( ! wp_next_scheduled( $this->jobhook ) ) { //add job if it does not exist yet
+			wp_schedule_event( $this->timestamp, $this->reccurence, $this->jobhook );
 		}
 
-		if ($updateHook) { //attach updateHook to updater function
+		if ( $updateHook ) { //attach updateHook to updater function
 			add_action(
 				$updateHook,
-				function(){
+				function () {
 					$this->unscheduleJob(); //hooks is unscheduled upon change, needs to be rescheduled
 				}
 			);
@@ -66,11 +64,12 @@ class Scheduler {
 
 		add_action(
 			self::UNSCHEDULER_HOOK,
-			function(){
+			function () {
 				$this->unscheduleJob();
 			}
 		); //registers unschedule action
 	}
+
 	/**
 	 * Returns array with custom time intervals.
 	 * @return array[]
@@ -112,58 +111,60 @@ class Scheduler {
 	 */
 	public static function initHooks() {
 		// Init booking cleanup job
-		New Scheduler(
+		new Scheduler(
 			'cleanup',
 			array( \CommonsBooking\Service\Booking::class, 'cleanupBookings' ),
 			'ten_minutes'
 		);
 
 		// Init booking reminder job
-		New Scheduler(
+		new Scheduler(
 			'reminder',
 			array( \CommonsBooking\Service\Booking::class, 'sendReminderMessage' ),
 			'daily',
 			'today ' . Settings::getOption( 'commonsbooking_options_reminder', 'pre-booking-time' ) . ':00',
-			array( 'commonsbooking_options_reminder', 'pre-booking-reminder-activate'),
+			array( 'commonsbooking_options_reminder', 'pre-booking-reminder-activate' ),
 			'update_option_commonsbooking_options_reminder'
 		);
 
 		// Init booking feedback job
-		New Scheduler(
+		new Scheduler(
 			'feedback',
 			array( \CommonsBooking\Service\Booking::class, 'sendFeedbackMessage' ),
 			'daily',
 			'tomorrow midnight',
-			array( 'commonsbooking_options_reminder', 'post-booking-notice-activate'),
+			array( 'commonsbooking_options_reminder', 'post-booking-notice-activate' ),
 			'update_option_commonsbooking_options_reminder'
 		);
 
 		// Init timeframe export job
-		$exportPath = Settings::getOption( 'commonsbooking_options_export', 'export-filepath' );
+		$exportPath     = Settings::getOption( 'commonsbooking_options_export', 'export-filepath' );
 		$exportInterval = Settings::getOption( 'commonsbooking_options_export', 'export-interval' );
-		New Scheduler(
+		new Scheduler(
 			'export',
-			function() use ( $exportPath ) {
+			function () use ( $exportPath ) {
 				TimeframeExport::exportCsv( $exportPath );
 			},
 			$exportInterval,
 			'',
-			array( 'commonsbooking_options_export', 'export-cron'  ),
+			array( 'commonsbooking_options_export', 'export-cron' ),
 			'update_option_commonsbooking_options_export'
 		);
 	}
 
 	/**
 	 * Unschedules the current job
-	 * 
+	 *
 	 * @return boolean
 	 */
 	private function unscheduleJob() {
-		$timestamp = wp_next_scheduled($this->jobhook);
-		if ($timestamp){
-			wp_unschedule_event($timestamp,$this->jobhook);
+		$timestamp = wp_next_scheduled( $this->jobhook );
+		if ( $timestamp ) {
+			wp_unschedule_event( $timestamp, $this->jobhook );
+
 			return true;
 		}
+
 		return false;
 	}
 

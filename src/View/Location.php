@@ -23,31 +23,31 @@ class Location extends View {
 		}
 		$location = $post;
 		$item     = get_query_var( 'cb-item' ) ?: false;
-		$customId = md5($item . $location->ID);
+		$customId = md5( $item . $location->ID );
 
-		if ( Plugin::getCacheItem($customId) ) {
-			return Plugin::getCacheItem($customId);
+		if ( Plugin::getCacheItem( $customId ) ) {
+			return Plugin::getCacheItem( $customId );
 		} else {
-			$items    = \CommonsBooking\Repository\Item::getByLocation( $location->ID, true );
+			$items   = \CommonsBooking\Repository\Item::getByLocation( $location->ID, true );
 			$itemIds = array_map(
-				function (\CommonsBooking\Model\Item $item) {
+				function ( \CommonsBooking\Model\Item $item ) {
 					return $item->getPost()->ID;
 				},
 				$items
 			);
 
 			$args = [
-				'post'      => $post,
-				'actionUrl' => admin_url( 'admin.php' ),
-				'location'  => new \CommonsBooking\Model\Location( $location ),
-				'postUrl'   => get_permalink( $location ),
-				'type'      => Timeframe::BOOKING_ID,
+				'post'         => $post,
+				'actionUrl'    => admin_url( 'admin.php' ),
+				'location'     => new \CommonsBooking\Model\Location( $location ),
+				'postUrl'      => get_permalink( $location ),
+				'type'         => Timeframe::BOOKING_ID,
 				'restrictions' => \CommonsBooking\Repository\Restriction::get(
-					[$location->ID],
+					[ $location->ID ],
 					$itemIds,
 					null,
 					true,
-					current_time('timestamp')
+					current_time( 'timestamp' )
 				)
 			];
 
@@ -66,7 +66,7 @@ class Location extends View {
 			}
 
 			$calendarData          = Calendar::getCalendarDataArray(
-				array_key_exists('item', $args) ? $args['item'] : null,
+				array_key_exists( 'item', $args ) ? $args['item'] : null,
 				$location,
 				date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE_START, time() ) ),
 				date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE, time() ) )
@@ -109,8 +109,8 @@ class Location extends View {
 			$shortCodeData = self::getShortcodeData( $location, 'Item' );
 
 			// Sort by start_date when no other order is defined
-			if (empty($queryArgs['orderby'])){
-				foreach ($shortCodeData as $item) {
+			if ( empty( $queryArgs['orderby'] ) ) {
+				foreach ( $shortCodeData as $item ) {
 					uasort( $item['ranges'], function ( $a, $b ) {
 						return $a['start_date'] <=> $b['start_date'];
 					} );
@@ -120,22 +120,22 @@ class Location extends View {
 			$locationData[ $location->ID ] = $shortCodeData;
 		}
 
-		if ($locationData){
+		if ( $locationData ) {
 			ob_start();
 			foreach ( $locationData as $id => $data ) {
 				$templateData['location'] = $id;
 				$templateData['data']     = $data;
 				commonsbooking_get_template_part( 'shortcode', 'locations', true, false, false );
 			}
+
 			return ob_get_clean();
 
-		}
-		else { //Message to show when no item matches query
+		} else { //Message to show when no item matches query
 			return '
 			<div class="cb-wrapper cb-shortcode-locations template-shortcode-locations post-post no-post-thumbnail">
 			<div class="cb-list-error">'
-			. __('No locations found.','commonsbooking') .
-			'</div>
+			       . __( 'No locations found.', 'commonsbooking' ) .
+			       '</div>
 			</div>
 			';
 		}
@@ -159,14 +159,14 @@ class Location extends View {
 
 
 			echo '<div id="cb_locationview_map" style="width: 100%; height: 300px;"></div>';
-            wp_enqueue_script( 'cb-map-locationview_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-locationview.js' );
+			wp_enqueue_script( 'cb-map-locationview_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-locationview.js' );
 
 			//map defaults
 			$defaults = [
 				'latitude'  => $latitude,
 				'longitude' => $longitude,
 			];
-			wp_add_inline_script('cb-map-locationview_js','cb_map_locationview.defaults =' . wp_json_encode($defaults) );
+			wp_add_inline_script( 'cb-map-locationview_js', 'cb_map_locationview.defaults =' . wp_json_encode( $defaults ) );
 		}
 	}
 }
