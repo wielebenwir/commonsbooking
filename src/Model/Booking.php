@@ -326,8 +326,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		return intval( $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) );
 	}
 
-	public function getEndDate() {
-		return $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END );
+	public function getEndDate() : int{
+		return intval($this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ));
 	}
 
 	/**

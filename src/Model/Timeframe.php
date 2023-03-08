@@ -45,7 +45,7 @@ class Timeframe extends CustomPost {
 	/**
 	 * Return Start (repetition) date timestamp
 	 *
-	 * @return int|false
+	 * @return int
 	 */
 	public function getStartDate(): int {
 		$startDate = $this->getMeta( self::REPETITION_START );
@@ -103,8 +103,8 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * @param   int|false  $startDate
-	 * @param   int|false  $endDate
+	 * @param   int  $startDate
+	 * @param   int  $endDate
 	 *
 	 * @return string
 	 */
