@@ -211,7 +211,7 @@ class BookingRuleApplied extends BookingRule {
 					$ruleParams ?? []
 				);
 				$bookingRule->setExcludedRoles(
-					$ruleConfig['rule-applies-roles'] ?? []);
+					$ruleConfig['rule-exempt-roles'] ?? []);
 				$appliedRules[] = $bookingRule;
 
 				}

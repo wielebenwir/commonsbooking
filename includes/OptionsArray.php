@@ -685,9 +685,9 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 									)
 							),
 							array(
-								'name'      => commonsbooking_sanitizeHTML( __('Applies only to users of group', 'commonsbooking') ),
-								'desc'      => commonsbooking_sanitizeHTML( __('Here you can define if the rule should only be applied to users of a specific group. Will apply to all groups if left empty (Administrators and item / location admins are always excluded).', 'commonsbooking') ),
-								'id'        => 'rule-applies-roles',
+								'name'      => commonsbooking_sanitizeHTML( __('Groups exempt from rule', 'commonsbooking') ),
+								'desc'      => commonsbooking_sanitizeHTML( __('Here you can define if the rule should not apply to a specific user group. Will apply to all groups if left empty (Administrators and item / location admins are always excluded).', 'commonsbooking') ),
+								'id'        => 'rule-exempt-roles',
 								'type'      => 'pw_multiselect',
 								'options'   =>  CustomPostType::sanitizeOptions(
 									UserRepository::getUserRoles()
