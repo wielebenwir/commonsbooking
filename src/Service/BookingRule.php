@@ -159,6 +159,17 @@ class BookingRule {
 				Closure::fromCallable(array(self::class,'checkChainBooking'))
 			),
 			new BookingRule(
+				"maxBookingPerWeek",
+				__( "Maximum booked days per week", 'commonsbooking'),
+				__("Users are only allowed to book a limited amount of days per week.",'commonsbooking'),
+				__("You have reached your booking limit. Please leave some time in between bookings.",'commonsbooking'),
+				Closure::fromCallable(array(self::class,'checkMaxBookingsPerWeek')),
+				array(
+					__("Number of days each user is allowed to book per week",'commonsbooking'),
+					__("When to reset the counter, 0 = Monday 1 = Tuesday, ... , 6 = Sunday",'commonsbooking')
+				)
+			),
+			new BookingRule(
 				"maxBookingDays",
 				__("Maximum of bookable days",'commonsbooking'),
 				__("Allow x booked days over the period of y days for user.",'commonsbooking'),
