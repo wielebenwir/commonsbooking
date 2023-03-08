@@ -242,7 +242,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Recursively get the bookings directly adjacent to the current users booking. Limited to a specific user to reduce load.
+	 * Get the bookings directly adjacent to the current users booking. Limited to a specific user to reduce load.
 	 *
 	 * @param WP_User $user
 	 *
@@ -540,11 +540,18 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @param int|array|string $term
 	 *
 	 * @return bool
-	 * @throws Exception
 	 */
 	public function termsApply( $term ): bool {
-		$isInItemCat = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category', $this->getItem()->getPost() );
-		$isInLocationCat = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Location::$postType . 's_category', $this->getLocation()->getPost() );
+		try {
+			$item = $this->getItem();
+			$location = $this->getLocation();
+		}
+		catch ( Exception $e ) {
+			//terms are not applicable if either location or item is not found
+			return false;
+		}
+		$isInItemCat = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category', $item->getPost() );
+		$isInLocationCat = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Location::$postType . 's_category', $location->getPost() );
 		return ( $isInItemCat || $isInLocationCat);
 	}
 
@@ -587,4 +594,62 @@ class Booking extends \CommonsBooking\Model\Timeframe {
             Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'user_details_template' )
         );
     }
+
+	/**
+	 * Gets the total length (days) of an array of bookings
+	 *
+	 * @param   \CommonsBooking\Model\Booking[]  $bookings
+	 *
+	 * @return void
+	 */
+	public static function getTotalLength ( array $bookings ): int {
+		$lengthDays = 0;
+		foreach ($bookings as $booking){
+			$lengthDays += $booking->getLength();
+		}
+		return $lengthDays;
+	}
+
+	/**
+	 * Filters an array of Bookings on the condition weather they apply to term(s) or not
+	 * Will return null if no booking in the array matches the terms
+	 *
+	 * Checks if it has actually received $terms and not an empty variable so that it can just return all bookings if not checking against any terms
+	 *
+	 * @param   \CommonsBooking\Model\Booking[]  $bookings
+	 * @param                                    $terms
+	 *
+	 * @return array|null
+	 */
+	public static function filterTermsApply ( array $bookings,  $terms): ?array {
+		if ( ! empty($terms) ){
+			$filteredBookingsArray = array_filter($bookings,
+				fn( Booking $booking ) => $booking->termsApply($terms)
+			);
+			if ( ! empty ($filteredBookingsArray) ){
+				return $filteredBookingsArray;
+			}
+			else {
+				return null;
+			}
+		}
+		else {
+			return $bookings;
+		}
+	}
+
+	/**
+	 * Filters an array of bookings on the condition if they belong to a specific user
+	 * Will return null if none of the bookings apply to the specified user
+	 * @param   array     $bookings
+	 * @param   \WP_User  $user
+	 *
+	 * @return array|null
+	 */
+	public static function filterForUser ( array $bookings, WP_User $user): ?array {
+		 return array_filter( $bookings,
+			fn( Booking $booking ) => $booking->getUserData()->ID == $user->ID
+		);
+	}
+
 }

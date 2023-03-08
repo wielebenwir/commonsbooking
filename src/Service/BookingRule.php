@@ -162,7 +162,7 @@ class BookingRule {
 				"maxBookingDays",
 				__("Maximum of bookable days",'commonsbooking'),
 				__("Allow x booked days over the period of y days for user.",'commonsbooking'),
-				__("Too many booked days over the period of y days",'commonsbooking'),
+				__("Too many booked days over the period of y days TODO",'commonsbooking'),
 				Closure::fromCallable(array(self::class,'checkMaxBookingDays')),
 				array(
 					__("Allow x booked days",'commonsbooking'),
@@ -174,7 +174,7 @@ class BookingRule {
 				__("Alwaysfailnoparam",'commonsbooking'),
 				__("This is a rule without params that will always fail",'commonsbooking'),
 				__("It has always failed alwaysfailnoparam",'commonsbooking'),
-				function( Booking $booking,array $args = []):?array{
+				function( Booking $booking,array $args = [], $appliedTerms = false):?array{
 					return array($booking);
 				}
 			)
@@ -198,12 +198,9 @@ class BookingRule {
 	 */
 	public static function checkSimultaneousBookings( Booking $booking, array $args = [], $appliedTerms = false):?array {
 		$userBookings = \CommonsBooking\Repository\Booking::getForUser($booking->getUserData(),true,time(),['confirmed']);
+		$userBookings = Booking::filterTermsApply($userBookings,$appliedTerms);
 		if (empty($userBookings)){
 			return null;
-		}
-
-		if ($appliedTerms){
-			$userBookings = array_filter($userBookings,fn(Booking $b) => $b->termsApply($appliedTerms));
 		}
 
 		foreach ($userBookings as $userBooking){
@@ -230,19 +227,18 @@ class BookingRule {
 	public static function checkChainBooking( Booking $booking, array $args = [], $appliedTerms = false):?array{
 		$timeframe = $booking->getBookableTimeFrame();
 		$adjacentBookings = $booking->getAdjacentBookings();
+		$bookingUser = $booking->getUserData();
 		if ( empty($adjacentBookings))
 		{
 			return null;
 		}
-		$adjacentBookings = array_filter( $adjacentBookings,
-			fn( Booking $adjacentBooking ) => $booking->getUserData()->ID == $adjacentBooking->getUserData()->ID
-		);
+		$adjacentBookings = self::filterBookingsForTermsAndUser($adjacentBookings, $bookingUser, $appliedTerms);
 		if ( empty($adjacentBookings) ){
 			return null;
 		}
-		$bookingCollection = $booking->getBookingChain($booking->getUserData());
+		$bookingCollection = $booking->getBookingChain($bookingUser);
 		//add our current booking to the collection
-		$bookingCollection[] = $booking;
+		 $bookingCollection[] = $booking;
 		uasort( $bookingCollection, function ( Booking $a, Booking $b ) {
 			return $a->getStartDate() <=> $b->getStartDate();
 		} );
@@ -266,6 +262,9 @@ class BookingRule {
 	 * Will check for a pre-defined maximum of x days in y timespan,
 	 * If the user has booked too many days in that timespan will return the conflicting bookings
 	 * If the user bookings are NOT above the limit, will return null
+	 *
+	 * Params: $args[0} = The amount of days the user is allowed to book
+	 *         $args[1] = The period over which the user is allowed to book
 	 *
 	 * @param Booking $booking
 	 * @param array $args
@@ -308,26 +307,15 @@ class BookingRule {
 				null,
 				[],
 				[ 'confirmed' ]
-			)
+			),
 		);
 
-		//filter out bookings that do not belong to the current user
-		$rangeBookingsArray = array_filter( $rangeBookingsArray,
-			fn( Booking $rangeBooking ) => $booking->getUserData()->ID == $rangeBooking->getUserData()->ID
-		);
-
-		//filter out bookings that are not in the current term
-		if ($appliedTerms){
-			$rangeBookingsArray = array_filter($rangeBookingsArray,
-				fn( Booking $rangeBooking ) => $rangeBooking->termsApply($appliedTerms)
-			);
+		$rangeBookingsArray = self::filterBookingsForTermsAndUser($rangeBookingsArray, $booking->getUserData(), $appliedTerms);
+		if (empty ($rangeBookingsArray)) {
+			return null;
 		}
 
-		$totalLengthDays    = 0;
-		foreach ( $rangeBookingsArray as $rangeBooking ) {
-			$totalLengthDays += $rangeBooking->getLength();
-		}
-		$totalLengthDays += $booking->getLength();
+		$totalLengthDays = Booking::getTotalLength($rangeBookingsArray) + $booking->getLength();
 
 		if ($totalLengthDays > $allowedBookedDays){
 			return $rangeBookingsArray;

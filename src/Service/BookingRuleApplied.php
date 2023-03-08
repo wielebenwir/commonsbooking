@@ -65,7 +65,7 @@ class BookingRuleApplied extends BookingRule {
 	 * @throws \CommonsBooking\Exception\BookingRuleException - if not enough params were specified for the BookingRule
 	 */
 	public function setAppliedParams( array $paramsToSet ): void {
-		if ($this->params){
+		if (! empty($this->params)){
 			if (count($this->params) == count($paramsToSet) ){
 				$this->appliedParams = $paramsToSet;
 			}
