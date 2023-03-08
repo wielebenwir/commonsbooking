@@ -324,4 +324,119 @@ class BookingRule {
 			return null;
 		}
 	}
+
+	/**
+	 * This rule will check if the user has exceeded their maximum booking allowance per week
+	 * Will return the conflicting bookings if a user has too many in the week
+	 *
+	 * Params: $args[0] : The amount of days the user is allowed to book per week
+	 *         $args[1]:  The day on which the counter is reset, default: 0 = monday
+	 *                     1 = Tuesday, 2 = Wednesday, ..., 6 = sunday
+	 *
+	 *
+	 * @param   \CommonsBooking\Model\Booking  $booking
+	 * @param   array                          $args
+	 * @param   bool|array                     $appliedTerms
+	 *
+	 * @return array|null
+	 */
+	public static function checkMaxBookingsPerWeek(Booking $booking, array $args, $appliedTerms = false): ?array {
+		$allowedBookableDays = $args[0];
+		$resetDay = $args[1];
+		$resetDayString = 'monday';
+		switch ($resetDay):
+			case 0:
+				$resetDayString = 'monday';
+				break;
+			case 1:
+				$resetDayString = 'tuesday';
+				break;
+			case 2:
+				$resetDayString = 'wednesday';
+				break;
+			case 3:
+				$resetDayString = 'thursday';
+				break;
+			case 4:
+				$resetDayString = 'friday';
+				break;
+			case 5:
+				$resetDayString = 'saturday';
+				break;
+			case 6:
+				$resetDayString = 'sunday';
+				break;
+		endswitch;
+		$bookingDate = $booking->getStartDateDateTime();
+		$startOfWeek = clone $bookingDate;
+		$startOfWeek->modify('last ' . $resetDayString);
+		$endOfWeek = clone $bookingDate;
+		$endOfWeek->modify('next ' . $resetDayString);
+		$startOfWeekString = $startOfWeek->format('d-m-Y');
+		$endOfWeekString = $endOfWeek->format('d-m-Y');
+		$rangeBookingsArray = \CommonsBooking\Repository\Booking::getByTimerange(
+			$startOfWeek->getTimestamp(),
+			$endOfWeek->getTimestamp(),
+			null,
+			null,
+			[],
+			[ 'confirmed' ]
+		);
+		$rangeBookingsArray = self::filterBookingsForTermsAndUser($rangeBookingsArray, $booking->getUserData(), $appliedTerms);
+		if (empty ($rangeBookingsArray)) {
+			return null;
+		}
+		$totalLength     = Booking::getTotalLength( $rangeBookingsArray );
+		$length          = $booking->getLength();
+		$totalLengthDays = $totalLength + $length;
+		if ($totalLengthDays > $allowedBookableDays){
+			return $rangeBookingsArray;
+		}
+		else {
+			return null;
+		}
+
+	}
+
+	/**
+	 * This rule will check if the user has exceeded their maximum booking allowance per month
+	 * Will return the conflicting bookings if a user has too many in the month
+	 *
+	 * Params: $args[0] : The amount of days the user is allowed to book per week
+	 *         $args[1]:  The day on which the counter is reset, from 0 to max 31.
+	 *
+	 *
+	 * @param   \CommonsBooking\Model\Booking  $booking
+	 * @param   array                          $args
+	 * @param   bool|array                     $appliedTerms
+	 *
+	 * @return array|null
+	public static function checkMaxBookingsPerMonth(Booking $booking, array $args, $appliedTerms = false): ?array {
+		$allowedBookableDays = $args[0];
+		$resetDay = $args[1];
+
+
+	}
+	*/
+
+	/**
+	 * Will filter an array of bookings on the condition that they are from a specific user AND that the terms apply
+	 * to the given booking.
+	 *
+	 * Is often used by BookingRule to determine if a booking should be taken into consideration
+	 * @param   Booking[]     $bookings
+	 * @param   \WP_User  $user
+	 * @param             $terms
+	 *
+	 * @return array|null
+	 */
+	public static function filterBookingsForTermsAndUser(array $bookings, \WP_User $user, $terms ): ?array {
+		$filteredTerms = Booking::filterTermsApply($bookings, $terms);
+		if (! empty ($filteredTerms)) {
+			return Booking::filterForUser($bookings, $user);
+		}
+		else {
+			return null;
+		}
+	}
 }
