@@ -131,6 +131,71 @@ class BookingRuleTest extends CustomPostTypeTest
 		$this->assertEquals(array($testBookingOne,$testBookingTwo),BookingRule::checkMaxBookingDays($testBookingThree,array(2,30)));
 	}
 
+	public function testMaxBookingPerWeek() {
+		$nextWeekDate = new \DateTime(self::CURRENT_DATE);
+		// we add one week here so that it does not interfere with the bookings of the other tests
+		$nextWeekDate->modify('+1 week');
+		$testBookingOne       = new Booking( get_post( $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( 'monday this week', $nextWeekDate->getTimestamp()),
+			strtotime( 'tuesday this week', $nextWeekDate->getTimestamp()),
+			'8:00 AM',
+			'12:00 PM',
+			'confirmed',
+			$this->normalUser
+		) ) );
+		$testBookingTwo = new Booking(get_post(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime('wednesday this week', $nextWeekDate->getTimestamp()),
+				strtotime('thursday this week', $nextWeekDate->getTimestamp()),
+				'8:00 AM',
+				'12:00 PM',
+				'confirmed',
+				$this->normalUser
+			)
+		));
+
+		$testBookingThree = new Booking(get_post(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime('friday this week', $nextWeekDate->getTimestamp()),
+				strtotime('saturday this week', $nextWeekDate->getTimestamp()),
+				'8:00 AM',
+				'12:00 PM',
+				'unconfirmed',
+				$this->normalUser
+			)
+		));
+		$mondayFollowingWeek = $nextWeekDate;
+		$mondayFollowingWeek->modify('monday this week');
+		$mondayFollowingWeek->modify('+1 week');
+
+		$tuesdayFollowingWeek = $nextWeekDate;
+		$tuesdayFollowingWeek->modify('tuesday this week');
+		$tuesdayFollowingWeek->modify('+1 week');
+
+		$testBookingFour = new Booking(get_post(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				$mondayFollowingWeek->getTimestamp(),
+				$tuesdayFollowingWeek->getTimestamp(),
+				'8:00 AM',
+				'12:00 PM',
+				'unconfirmed',
+				$this->normalUser
+			)
+		));
+
+		$this->assertEquals(array($testBookingOne,$testBookingTwo),BookingRule::checkMaxBookingsPerWeek(
+			$testBookingThree, array(2,0)
+		));
+		$this->assertNull(BookingRule::checkMaxBookingsPerWeek($testBookingFour, array(2,0)));
+	}
 	protected function setUp() {
 		parent::setUp();
 		$this->alwaysallow = new BookingRule(
