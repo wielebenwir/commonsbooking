@@ -66,6 +66,7 @@ module.exports = function (grunt) {
 					],
 					'assets/admin/js/admin.js': [
 						/* add path to js dependencies (ie in node_modules) here */
+						'assets/global/js/feiertage.js',
 						'assets/admin/js/src/*.js'
 					]
 				}
@@ -95,7 +96,8 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				files: {
-					'assets/global/js/vendor.js': 'node_modules/shufflejs/dist/shuffle.js'
+					'assets/global/js/vendor.js': 'node_modules/shufflejs/dist/shuffle.js',
+					'assets/global/js/feiertage.js': 'node_modules/feiertagejs/build/feiertage.js',
 				}
 			}
 		},
@@ -108,7 +110,10 @@ module.exports = function (grunt) {
 				],
 				tasks: [
 					'compass:adminDev', 'compass:publicDev'
-				]
+				],
+				options: {
+					livereload: true,
+				},
 			},
 			js: {
 				files: [
@@ -118,7 +123,10 @@ module.exports = function (grunt) {
 				],
 				tasks: [
 					'uglify:dev', 'babel'
-				]
+				],
+				options: {
+					livereload: true,
+				},
 			}
 		}
 	});

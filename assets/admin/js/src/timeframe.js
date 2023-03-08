@@ -54,6 +54,7 @@
 
             const holidayField = $('.cmb2-id--cmb2-holiday');
             const holidayInput = $('#timeframe_manual_date');
+            const holidayButton = $('#holiday_load_btn');
             const manualDateField = $('.cmb2-id-timeframe-manual-date');
             const maxDaysSelect = $('.cmb2-id-timeframe-max-days');
             const advanceBookingDays = $('.cmb2-id-timeframe-advance-booking-days');
@@ -222,7 +223,6 @@
                 }
             };
             handleBookingCodesSelection();
-
             // Add handler to relevant fields
             const bookingCodeSelectionInputs = [
                 repetitionStartInput,
@@ -237,6 +237,15 @@
                         handleBookingCodesSelection();
                     }
                 );
+            })
+
+            const handleHolidayLoading = function () {
+                const today = new Date();
+                console.log(isHoliday(today, 'BW'));
+
+            }
+            holidayButton.click(function () {
+                handleHolidayLoading();
             })
         }
     });
