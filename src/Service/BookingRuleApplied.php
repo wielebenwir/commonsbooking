@@ -17,7 +17,7 @@ class BookingRuleApplied extends BookingRule {
 	private bool $appliesToAll;
 	private array $appliedTerms;
 	private array $appliedParams;
-	private array $appliesToRoles;
+	private array $excludedRoles;
 
 	/**
 	 * @param   \CommonsBooking\Service\BookingRule  $rule
@@ -76,14 +76,13 @@ class BookingRuleApplied extends BookingRule {
 	}
 
 	/**
-	 * Sets the roles that the BookingRule should be checked on. Will apply to
-	 * all roles if left empty.
+	 * Sets the roles that the rule will not apply to
 	 *
-	 * @param   array  $appliesToRoles
+	 * @param   array  $excludedRoles
 	 *
 	 */
-	public function setAppliesToRoles( array $appliesToRoles ): void {
-		$this->appliesToRoles = $appliesToRoles;
+	public function setExcludedRoles( array $excludedRoles ): void {
+		$this->excludedRoles = $excludedRoles;
 	}
 
 	/**
@@ -133,12 +132,12 @@ class BookingRuleApplied extends BookingRule {
 		/** @var BookingRuleApplied $rule */
 		foreach ( $ruleset as $rule ) {
 
-			// Check if rule is to be applied to specific roles only and if user has one of those roles
-			if ($rule->appliesToRoles){
+			// Check if a rule is excluded for the user because of their role
+			if ($rule->excludedRoles){
 				if (
-					 ! UserRepository::userHasRoles(
+					 UserRepository::userHasRoles(
 						$booking->getUserData()->ID,
-						$rule->appliesToRoles
+						$rule->excludedRoles
 					)){
 						continue;
 					}
@@ -211,7 +210,7 @@ class BookingRuleApplied extends BookingRule {
 				$bookingRule->setAppliedParams(
 					$ruleParams ?? []
 				);
-				$bookingRule->setAppliesToRoles(
+				$bookingRule->setExcludedRoles(
 					$ruleConfig['rule-applies-roles'] ?? []);
 				$appliedRules[] = $bookingRule;
 

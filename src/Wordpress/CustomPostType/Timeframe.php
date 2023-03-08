@@ -501,9 +501,9 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'    => esc_html__( "Restrict bookings to user roles", 'commonsbooking' ),
+				'name'    => esc_html__( "Exempt role from booking rule", 'commonsbooking' ),
 				'id'      => "allowed_user_roles",
-				'desc'    => esc_html__( 'Select one or more user roles to restrict bookings based on these timeframe configuration to these user roles. Leave empty for no restrictions', 'commonsbooking' ),
+				'desc'    => esc_html__( "Select one or more roles that the rule will not apply to. By default, the administrators of items / locations and the role Administrator will be exempt from all rules.", 'commonsbooking' ),
 				'type'    => 'pw_multiselect',
 				'options' => self::sanitizeOptions( UserRepository::getUserRoles() ),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
