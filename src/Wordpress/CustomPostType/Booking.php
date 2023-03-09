@@ -270,9 +270,17 @@ class Booking extends Timeframe {
 		}
 
         // prepare needed params
-        $itemId          = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] );
-        $locationId      = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ] );
-        $repetitionStart = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] );
+        if ( isset($_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] ) ) {
+         
+            $itemId          = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] );
+        }
+        if ( isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ] ) ) {
+            $locationId      = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ] );
+        }
+
+        if ( isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] ) ) {
+            $repetitionStart = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] );
+        }
 
         if ( is_array( $repetitionStart ) ) {
             $repetitionStart = strtotime( $repetitionStart['date'] . ' ' . $repetitionStart['time'] );
