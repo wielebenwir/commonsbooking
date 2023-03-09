@@ -265,30 +265,29 @@ class Booking extends Timeframe {
 	public static function preSavePost( $postId, $data ) {
         global $pagenow;
 
-		if ( static::$postType !== $data['post_type'] && $pagenow === 'post-new.php' ) {
+		if ( 
+                static::$postType !== $data['post_type'] ||
+                $pagenow === 'post-new.php' ||
+                ! isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] ) ||
+                ! isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ] ) ||
+                ! isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] ) ||
+                ! isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] ) 
+            ) {
 			return;
 		}
 
         // prepare needed params
-        if ( isset($_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] ) ) {
-         
             $itemId          = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] );
-        }
-        if ( isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ] ) ) {
             $locationId      = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ] );
-        }
-
-        if ( isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] ) ) {
             $repetitionStart = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] );
-        }
+            $repetitionEnd   = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] );
 
         if ( is_array( $repetitionStart ) ) {
             $repetitionStart = strtotime( $repetitionStart['date'] . ' ' . $repetitionStart['time'] );
-
         } else {
             $repetitionStart = intval( $repetitionStart );
         }
-			$repetitionEnd = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] );
+
         if ( is_array( $repetitionEnd ) ) {
             $repetitionEnd = strtotime( $repetitionEnd['date'] . ' ' . $repetitionEnd['time'] );
         } else {
