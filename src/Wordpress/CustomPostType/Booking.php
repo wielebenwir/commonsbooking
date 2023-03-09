@@ -4,6 +4,7 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Exception\OverlappingException;
 use CommonsBooking\Helper\Helper;
+use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Messages\BookingMessage;
 use Exception;
 use function wp_verify_nonce;
@@ -40,7 +41,7 @@ class Booking extends Timeframe {
      *
      * @return void
      */
-    public function removeAuthorField() {
+    public function removeAuthorField() : void {
         remove_post_type_support( self::$postType, 'author' );
     }
 
@@ -311,7 +312,7 @@ class Booking extends Timeframe {
             $formattedOverlappingLinks = implode( '<br>', $overlappingBookingLinks );
 
 			set_transient(
-                \CommonsBooking\Model\Timeframe::ERROR_TYPE,
+                 'commonsbooking_booking_validation_failed_' . $postId,
                 sprintf(
                     '<div style="background-color:#e6aeae; padding:20px; border:5px solid red"><h2>' . commonsbooking_sanitizeHTML(
                         __(
@@ -322,7 +323,7 @@ class Booking extends Timeframe {
 
                     commonsbooking_sanitizeHTML(
                         __(
-                            'Please adjust the startdate or enddate.<br>
+                            'Please adjust the startdate or enddate.<br>Changes on this booking have not been saved.<br>
                                 <strong>Affected Bookings:</strong><br>
                                 %1$s',
                             'commonsbooking'
@@ -330,12 +331,14 @@ class Booking extends Timeframe {
                     ),
                     commonsbooking_sanitizeHTML( $formattedOverlappingLinks )
                 ),
-                0
+                120
             );
-             $targetUrl = sanitize_url( $_REQUEST['_wp_http_referer'] );
+             $targetUrl = esc_url_raw( $_REQUEST['_wp_http_referer'] );
              header( 'Location: ' . $targetUrl );
              exit();
-		}
+		} else {
+            delete_transient( 'commonsbooking_booking_validation_failed_' . $postId );
+        }
 	}
 
 
@@ -348,7 +351,7 @@ class Booking extends Timeframe {
 	 * @param $endDate
 	 * @param null       $postId
 	 *
-	 * @return \CommonsBooking\Model\Booking
+	 * @return \CommonsBooking\Model\Booking[]|null
 	 */
 	protected static function returnExistingBookings( $itemId, $locationId, $startDate, $endDate, $postId = null ) {
 
@@ -433,6 +436,7 @@ class Booking extends Timeframe {
 
 		// show permanent admin notice
 		add_action( 'admin_notices', array( $this, 'BookingsAdminListNotice' ) );
+        add_action( 'edit_form_top', array( $this, 'displayOverlappingBookingNotice' ), 99 );
 	}
 
 	/**
@@ -700,9 +704,13 @@ class Booking extends Timeframe {
 				'desc' => '<div class="notice notice-error" style="background-color:#efe05c"><p>' . commonsbooking_sanitizeHTML(
                     __(
                         '<h1>Notice</h1><p>In this view, you as an admin can create or modify existing bookings. Please use it with caution. <br>
-				Click on the <strong>preview button on the right panel</strong> to view more booking details and to cancel the booking via the cancel button.<br>
-                The booking is initially saved as <i>unconfirmed</i>. Please change the booking status (confirmed, unconfirmed, canceled) using the status dropdown in publish panel.</br>
-				<strong>Please note</strong>: There are only basic checks agains existing bookings. Please check if there are no conflicting timeframe settings
+				<ul>
+                    <li>Click on the <strong>preview button on the right panel</strong> to view more booking details and to cancel the booking via the cancel button.</li>
+                    <li>The booking is initially <strong>saved as <i>unconfirmed</i></strong>. Please change the booking status (confirmed, unconfirmed, canceled) using the status dropdown in publish panel.</li>
+                    <li>When the booking is saved with status <i>confirmed</i>, the booking user will receive a booking confirmation mail</li>
+                    <li>Unconfirmed bookings will be <strong>deleted automatically after a few minutes</strong></li>
+                </ul>
+				<strong>Please note</strong>: There are only basic checks agains existing bookings. Please check if there are no conflicting bookings.
                 </p> 
 				',
                         'commonsbooking'
@@ -835,6 +843,19 @@ class Booking extends Timeframe {
 			}
 		}
 	}
+
+    
+    /**
+     * Displays a permanent admin-notice if booking overlaps
+     *
+     * @return void
+     */
+    public function displayOverlappingBookingNotice($post) {
+      
+        if (get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID )) {
+           echo get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID, 'warning');
+        }
+    }
 
     /**
      * Returns the booking author if booking exists, otherwise returns current user

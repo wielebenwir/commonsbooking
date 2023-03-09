@@ -5,19 +5,9 @@ namespace CommonsBooking\Messages;
 class AdminMessage {
 
     
-    /**
-     * Message
-     *
-     * @var string
-     */
-    private $message;
+    private string $message;
     
-    /**
-     * Notice_type
-     *
-     * @var string
-     */
-    private $notice_type;
+    private string $notice_type;
 
 
 	/**

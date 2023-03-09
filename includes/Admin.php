@@ -192,7 +192,7 @@ function commonsbooking_sanitizeArrayorString( $data, $sanitizeFunction = 'sanit
  */
 function commonsbooking_write_log( $log, $backtrace = true ) {
 
-    if (WP_DEBUG_LOG != true ) {
+    if ( ! WP_DEBUG_LOG ) {
         return;
     }
 
