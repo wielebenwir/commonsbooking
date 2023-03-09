@@ -452,4 +452,13 @@ class Booking extends \CommonsBooking\Model\Timeframe {
             Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'user_details_template' )
         );
     }
+    
+    /**
+     * Returns formatted backend edit link of current booking
+     *
+     * @return string
+     */
+    public function getFormattedEditLink() {
+        return '<a href=" ' . get_edit_post_link( $this->ID ) . '"> Booking #' . $this->ID . ' : ' . $this->formattedBookingDate() . ' | User: ' . $this->getUserData()->user_nicename . '</a>';
+    }
 }

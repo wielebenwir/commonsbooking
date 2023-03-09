@@ -7,8 +7,10 @@ use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
 use Exception;
 use function wp_verify_nonce;
-use function commonsbooking_write_log;
 
+/**
+ * Booking
+ */
 class Booking extends Timeframe {
 
 	/**
@@ -98,7 +100,6 @@ class Booking extends Timeframe {
             // readd the hook
             add_action( 'save_post_' . self::$postType, array( $this, 'saveAdminBookingFields' ) );
         }
-
     }
 
 	/**
@@ -108,7 +109,7 @@ class Booking extends Timeframe {
 	 */
 	public function handleFormRequest() {
 
-		if (
+        if (
 			function_exists( 'wp_verify_nonce' ) &&
 			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
 			wp_verify_nonce( $_REQUEST[ static::getWPNonceId() ], static::getWPAction() )
@@ -128,15 +129,15 @@ class Booking extends Timeframe {
 
 			$startDate = null;
 			if ( isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] ) &&
-			     $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] != ''
+             $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] != ''
 			) {
 				$startDate = sanitize_text_field( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] );
 			}
 
 			$endDate = null;
 			if (
-				isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] ) &&
-				$_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] != ''
+            isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] ) &&
+            $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] != ''
 			) {
 				$endDate = sanitize_text_field( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] );
 			}
@@ -147,15 +148,15 @@ class Booking extends Timeframe {
 
 			// Validate booking -> check if there are no existing bookings in timerange.
 			if (
-				$existingBookings =
-					\CommonsBooking\Repository\Booking::getByTimerange(
-						$startDate,
-						$endDate,
-						$locationId,
-						$itemId,
-						[],
-						[ 'confirmed' ]
-					)
+            $existingBookings =
+                \CommonsBooking\Repository\Booking::getByTimerange(
+                    $startDate,
+                    $endDate,
+                    $locationId,
+                    $itemId,
+                    [],
+                    [ 'confirmed' ]
+                )
 			) {
 				if ( count( $existingBookings ) > 0 ) {
 					$requestedPostname = array_key_exists( 'cb_booking', $_REQUEST ) ? $_REQUEST['cb_booking'] : '';
@@ -173,52 +174,54 @@ class Booking extends Timeframe {
 
 			/** @var \CommonsBooking\Model\Booking $booking */
 			$booking = \CommonsBooking\Repository\Booking::getByDate(
-				$startDate,
-				$endDate,
-				$locationId,
-				$itemId
-			);
+                $startDate,
+                $endDate,
+                $locationId,
+                $itemId
+            );
 
-			$postarr = array(
+            $postarr = array(
 				'type'        => sanitize_text_field( $_REQUEST['type'] ),
 				'post_status' => sanitize_text_field( $_REQUEST['post_status'] ),
 				'post_type'   => self::getPostType(),
 				'post_title'  => esc_html__( 'Booking', 'commonsbooking' ),
-                'post_author' => $booking_author,
+				'post_author' => $booking_author,
 				'meta_input'  => [
 					'comment' => $comment,
 				],
-			);
+            );
 
-			// New booking
-			if ( empty( $booking ) ) {
-				$postarr['post_name']  = Helper::generateRandomString();
-				$postarr['meta_input'] = [
+            // New booking
+            if ( empty( $booking ) ) {
+                $postarr['post_name']  = Helper::generateRandomString();
+                $postarr['meta_input'] = [
 					\CommonsBooking\Model\Timeframe::META_LOCATION_ID => $locationId,
 					\CommonsBooking\Model\Timeframe::META_ITEM_ID => $itemId,
 					\CommonsBooking\Model\Timeframe::REPETITION_START => $startDate,
 					\CommonsBooking\Model\Timeframe::REPETITION_END => $endDate,
 					'type' => Timeframe::BOOKING_ID,
-				];
+                ];
 
-				$postId = wp_insert_post( $postarr, true );
-				// Existing booking
-			} else {
-				$postarr['ID'] = $booking->ID;
-				$postId        = wp_update_post( $postarr );
-			}
+                $postId = wp_insert_post( $postarr, true );
 
-			$this->saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate );
+                // Existing booking
+            } else {
+                $postarr['ID'] = $booking->ID;
+                $postId        = wp_update_post( $postarr );
 
-			$bookingModel = new \CommonsBooking\Model\Booking( $postId );
-			// we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
-			$bookingModel->assignBookableTimeframeFields();
+            }
 
-			// get slug as parameter
-			$post_slug = get_post( $postId )->post_name;
+            $this->saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate );
 
-		    wp_redirect( add_query_arg( self::getPostType(), $post_slug, home_url() ) );
-			exit;
+            $bookingModel = new \CommonsBooking\Model\Booking( $postId );
+            // we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
+            $bookingModel->assignBookableTimeframeFields();
+
+            // get slug as parameter
+            $post_slug = get_post( $postId )->post_name;
+
+            wp_redirect( add_query_arg( self::getPostType(), $post_slug, home_url() ) );
+            exit;
 		}
 	}
 
@@ -266,53 +269,71 @@ class Booking extends Timeframe {
 			return;
 		}
 
-		try {
+        // prepare needed params
+        $itemId          = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] );
+        $locationId      = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ] );
+        $repetitionStart = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] );
 
-			// prepare needed params
-			$itemId          = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] );
-			$locationId      = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ] );
-			$repetitionStart = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] );
+        if ( is_array( $repetitionStart ) ) {
+            $repetitionStart = strtotime( $repetitionStart['date'] . ' ' . $repetitionStart['time'] );
 
-			if ( is_array( $repetitionStart ) ) {
-				$repetitionStart = strtotime( $repetitionStart['date'] . ' ' . $repetitionStart['time'] );
-
-			} else {
-				$repetitionStart = intval( $repetitionStart );
-			}
+        } else {
+            $repetitionStart = intval( $repetitionStart );
+        }
 			$repetitionEnd = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] );
-			if ( is_array( $repetitionEnd ) ) {
-				$repetitionEnd = strtotime( $repetitionEnd['date'] . ' ' . $repetitionEnd['time'] );
-			} else {
-				$repetitionEnd = intval( $repetitionEnd );
-			}
+        if ( is_array( $repetitionEnd ) ) {
+            $repetitionEnd = strtotime( $repetitionEnd['date'] . ' ' . $repetitionEnd['time'] );
+        } else {
+            $repetitionEnd = intval( $repetitionEnd );
+        }
 
-                self::validateBookingParameters(
-                    $itemId,
-                    $locationId,
-                    $repetitionStart,
-                    $repetitionEnd,
-                    $postId
-                );
+        $overlappingBookings = self::returnExistingBookings(
+            $itemId,
+            $locationId,
+            $repetitionStart,
+            $repetitionEnd,
+            $postId
+        );
 
-		} catch ( OverlappingException $e ) {
+        if ( $overlappingBookings && count( $overlappingBookings ) >= 1 ) {
+
+            foreach ( $overlappingBookings as $overlappingBooking ) {
+                    $overlappingBookingLinks[] = $overlappingBooking->getFormattedEditLink();
+            }
+
+            $formattedOverlappingLinks = implode( '<br>', $overlappingBookingLinks );
+
 			set_transient(
                 \CommonsBooking\Model\Timeframe::ERROR_TYPE,
-				'<h2>' . commonsbooking_sanitizeHTML(
-                    __(
-                        'There are one ore more bookings within the choosen timerange. Please adjust the startdate or enddate. ',
-                        'commonsbooking'
-                    ) . '</h2>'
+                sprintf(
+                    '<div style="background-color:#e6aeae; padding:20px; border:5px solid red"><h2>' . commonsbooking_sanitizeHTML(
+                        __(
+                            'Warning: There are one ore more overlapping bookings within the choosen timerange',
+                            'commonsbooking'
+                        )
+                    ) . '</h2><p>' .
+
+                    commonsbooking_sanitizeHTML(
+                        __(
+                            'Please adjust the startdate or enddate.<br>
+                                <strong>Affected Bookings:</strong><br>
+                                %1$s',
+                            'commonsbooking'
+                        ) . '</p></div>'
+                    ),
+                    commonsbooking_sanitizeHTML( $formattedOverlappingLinks )
                 ),
-                45
+                0
             );
-			$targetUrl = sanitize_url( $_REQUEST['_wp_http_referer'] );
-			header( 'Location: ' . $targetUrl );
-			exit();
+             $targetUrl = sanitize_url( $_REQUEST['_wp_http_referer'] );
+             header( 'Location: ' . $targetUrl );
+             exit();
 		}
 	}
 
-	/**
-	 * Returns true, if there are no already existing bookings.
+
+    /**
+	 * Returns Array of overlapping Bookings as Booking-Model in relation to given $postID or given booking paramters
 	 *
 	 * @param $itemId
 	 * @param $locationId
@@ -320,10 +341,12 @@ class Booking extends Timeframe {
 	 * @param $endDate
 	 * @param null       $postId
 	 *
-	 * @throws OverlappingException
+	 * @return \CommonsBooking\Model\Booking
 	 */
-	protected static function validateBookingParameters( $itemId, $locationId, $startDate, $endDate, $postId = null ) {
+	protected static function returnExistingBookings( $itemId, $locationId, $startDate, $endDate, $postId = null ) {
+
 		// Get exiting bookings for defined parameters
+        /** @var \CommonsBooking\Model\Booking $existingBookingsinRage */
 		$existingBookingsInRange = \CommonsBooking\Repository\Booking::getByTimerange(
 			$startDate,
 			$endDate,
@@ -331,18 +354,16 @@ class Booking extends Timeframe {
 			$itemId
 		);
 
-		if ( $postId && count( $existingBookingsInRange ) == 1 ) {
-			$booking = array_pop( $existingBookingsInRange );
-			if ( $booking->ID == $postId ) {
-				return;
-			}
-		}
+        // remove the given $postID from result
+        foreach ( $existingBookingsInRange as $key => $val ) {
+            if ( $val->ID == $postId ) {
+                unset( $existingBookingsInRange[ $key ] );
+            }
+        }
 
-		// If there are already bookings, throw exception
-		if ( count( $existingBookingsInRange ) ) {
-			throw new OverlappingException( __( 'There are already bookings in selected timerange.', 'commonsbooking' ) );
-		}
-	}
+        return $existingBookingsInRange;
+
+    }
 
 	/**
 	 * @inheritDoc
@@ -390,7 +411,7 @@ class Booking extends Timeframe {
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
 
         // remove author metabox because we set author in the booking user field
-        add_action( 'init', array( $this, 'RemoveAuthorField' ), 99 );
+        add_action( 'init', array( $this, 'removeAuthorField' ), 99 );
 
 		// Listing of bookings for current user
 		add_shortcode( 'cb_bookings', array( \CommonsBooking\View\Booking::class, 'shortcode' ) );
@@ -669,12 +690,12 @@ class Booking extends Timeframe {
 		return array(
 			array(
 				'name' => esc_html__( 'Edit booking', 'commonsbooking' ),
-				'desc' => '<div class="notice notice-error" style="background-color:#e6aeae"><p>' . commonsbooking_sanitizeHTML(
+				'desc' => '<div class="notice notice-error" style="background-color:#efe05c"><p>' . commonsbooking_sanitizeHTML(
                     __(
                         '<h1>Notice</h1><p>In this view, you as an admin can create or modify existing bookings. Please use it with caution. <br>
 				Click on the <strong>preview button on the right panel</strong> to view more booking details and to cancel the booking via the cancel button.<br>
                 The booking is initially saved as <i>unconfirmed</i>. Please change the booking status (confirmed, unconfirmed, canceled) using the status dropdown in publish panel.</br>
-				<strong>Please note</strong>: There is no check for conflicts with existing bookings,  vacations or non-bookable periods.
+				<strong>Please note</strong>: There are only basic checks agains existing bookings. Please check if there are no conflicting timeframe settings
                 </p> 
 				',
                         'commonsbooking'
