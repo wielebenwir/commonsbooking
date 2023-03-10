@@ -334,7 +334,7 @@ class Booking extends Timeframe {
 
             set_transient(
                 \CommonsBooking\Model\Booking::ERROR_TYPE,
-                '<div style="background-color:#e6aeae; padding:20px; border:5px solid red"><h2>' . commonsbooking_sanitizeHTML(
+                '<h2>' . commonsbooking_sanitizeHTML(
                     __(
                         'End date is before start date',
                         'commonsbooking'
@@ -345,7 +345,7 @@ class Booking extends Timeframe {
                     __(
                         'Please adjust the start date or end date.<br>Changes on this booking have not been saved.<br>',
                         'commonsbooking'
-                    ) . '</p></div>'
+                    ) . '</p>'
                 ),
                 120
             );
