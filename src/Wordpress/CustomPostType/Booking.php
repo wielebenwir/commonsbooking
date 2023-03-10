@@ -35,6 +35,41 @@ class Booking extends Timeframe {
 		$this->handleFormRequest();
 	}
 
+
+    /**
+	 * Initiates needed hooks.
+	 */
+	public function initHooks() {
+		// Add Meta Boxes
+		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
+
+		add_action( 'pre_post_update', array( $this, 'preSavePost' ), 1, 2 );
+
+        // we need to add some additional fields and modify the autor if admin booking is made
+        add_action( 'save_post_' . self::$postType, array( $this, 'saveAdminBookingFields' ), 10 );
+
+		// Set Tepmlates
+		add_filter( 'the_content', array( $this, 'getTemplate' ) );
+
+        // remove author metabox because we set author in the booking user field
+        add_action( 'init', array( $this, 'removeAuthorField' ), 99 );
+
+		// Listing of bookings for current user
+		add_shortcode( 'cb_bookings', array( \CommonsBooking\View\Booking::class, 'shortcode' ) );
+
+		// Add type filter to backend list view
+		// add_action( 'restrict_manage_posts', array( static::class, 'addAdminTypeFilter' ) );
+		add_action( 'restrict_manage_posts', array( static::class, 'addAdminItemFilter' ) );
+		add_action( 'restrict_manage_posts', array( static::class, 'addAdminLocationFilter' ) );
+		add_action( 'restrict_manage_posts', array( static::class, 'addAdminDateFilter' ) );
+		add_action( 'restrict_manage_posts', array( static::class, 'addAdminStatusFilter' ) );
+		add_action( 'pre_get_posts', array( static::class, 'filterAdminList' ) );
+
+		// show admin notice
+		add_action( 'admin_notices', array( $this, 'displayBookingsAdminListNotice' ) );
+        add_action( 'edit_form_top', array( $this, 'displayOverlappingBookingNotice' ), 99 );
+	}
+
     /**
      * Removes author field in CPT booking
      * Why: we set the autor dynamically based on admin bookins so we don't want the ability to override this setting by user
@@ -266,13 +301,12 @@ class Booking extends Timeframe {
 	public static function preSavePost( $postId, $data ) {
         global $pagenow;
 
-		if ( 
-                static::$postType !== $data['post_type'] ||
+		if ( static::$postType !== $data['post_type'] ||
                 $pagenow === 'post-new.php' ||
                 ! isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] ) ||
                 ! isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ] ) ||
                 ! isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] ) ||
-                ! isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] ) 
+                ! isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] )
             ) {
 			return;
 		}
@@ -300,30 +334,28 @@ class Booking extends Timeframe {
 
             set_transient(
                 \CommonsBooking\Model\Booking::ERROR_TYPE,
-                      '<div style="background-color:#e6aeae; padding:20px; border:5px solid red"><h2>' . commonsbooking_sanitizeHTML(
-                       __(
-                           'End date is before start date',
-                           'commonsbooking'
-                       )
-                   ) . '</h2><p>' .
+                '<div style="background-color:#e6aeae; padding:20px; border:5px solid red"><h2>' . commonsbooking_sanitizeHTML(
+                    __(
+                        'End date is before start date',
+                        'commonsbooking'
+                    )
+                ) . '</h2><p>' .
 
-                   commonsbooking_sanitizeHTML(
-                       __(
-                           'Please adjust the start date or end date.<br>Changes on this booking have not been saved.<br>',
-                                   'commonsbooking'
-                       ) . '</p></div>'
-                   ),
-                  120
-           );
-            $targetUrl = esc_url_raw( $_REQUEST['_wp_http_referer'] );
-            header( 'Location: ' . $targetUrl );
+                commonsbooking_sanitizeHTML(
+                    __(
+                        'Please adjust the start date or end date.<br>Changes on this booking have not been saved.<br>',
+                        'commonsbooking'
+                    ) . '</p></div>'
+                ),
+                120
+            );
+            wp_safe_redirect( wp_get_raw_referer() ) ;
             exit();
 
         }
 
         // validate if overlapping bookings exist
-        $overlappingBookings = self::returnExistingBookings(
-        $overlappingBookings = \CommonsBooking\Repository\Booking::getExistingBookings (
+        $overlappingBookings = \CommonsBooking\Repository\Booking::getExistingBookings(
             $itemId,
             $locationId,
             $repetitionStart,
@@ -340,7 +372,7 @@ class Booking extends Timeframe {
             $formattedOverlappingLinks = implode( '<br>', $overlappingBookingLinks );
 
 			set_transient(
-                 'commonsbooking_booking_validation_failed_' . $postId,
+                'commonsbooking_booking_validation_failed_' . $postId,
                 sprintf(
                     '<div style="background-color:#e6aeae; padding:20px; border:5px solid red"><h2>' . commonsbooking_sanitizeHTML(
                         __(
@@ -361,8 +393,8 @@ class Booking extends Timeframe {
                 ),
                 120
             );
-             $targetUrl = esc_url_raw( $_REQUEST['_wp_http_referer'] );
-             header( 'Location: ' . $targetUrl );
+
+             wp_safe_redirect( wp_get_raw_referer() ) ;
              exit();
 		} else {
             delete_transient( 'commonsbooking_booking_validation_failed_' . $postId );
@@ -402,41 +434,7 @@ class Booking extends Timeframe {
 		parent::initListView(); // TODO: Change the autogenerated stub
 	}
 
-	/**
-	 * Initiates needed hooks.
-	 */
-	public function initHooks() {
-		// Add Meta Boxes
-		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
-
-		add_action( 'pre_post_update', array( $this, 'preSavePost' ), 1, 2 );
-
-        // we need to add some additional fields and modify the autor if admin booking is made
-        add_action( 'save_post_' . self::$postType, array( $this, 'saveAdminBookingFields' ), 10 );
-
-		// Set Tepmlates
-		add_filter( 'the_content', array( $this, 'getTemplate' ) );
-
-        // remove author metabox because we set author in the booking user field
-        add_action( 'init', array( $this, 'removeAuthorField' ), 99 );
-
-		// Listing of bookings for current user
-		add_shortcode( 'cb_bookings', array( \CommonsBooking\View\Booking::class, 'shortcode' ) );
-
-		// Add type filter to backend list view
-		// add_action( 'restrict_manage_posts', array( static::class, 'addAdminTypeFilter' ) );
-		add_action( 'restrict_manage_posts', array( static::class, 'addAdminItemFilter' ) );
-		add_action( 'restrict_manage_posts', array( static::class, 'addAdminLocationFilter' ) );
-		add_action( 'restrict_manage_posts', array( static::class, 'addAdminDateFilter' ) );
-		add_action( 'restrict_manage_posts', array( static::class, 'addAdminStatusFilter' ) );
-		add_action( 'pre_get_posts', array( static::class, 'filterAdminList' ) );
-
-		// show permanent admin notice
-		add_action( 'admin_notices', array( $this, 'displayBookingsAdminListNotice' ) );
-        add_action( 'edit_form_top', array( $this, 'displayOverlappingBookingNotice' ), 99 );
-	}
-
-	/**
+		/**
 	 * loads template according and returns content
 	 *
 	 * @param $content
@@ -695,10 +693,12 @@ class Booking extends Timeframe {
 			}
 		}
 
+
+        // define form fields based on CMB2
 		return array(
 			array(
 				'name' => esc_html__( 'Edit booking', 'commonsbooking' ),
-				'desc' => '<div class="notice notice-error" style="background-color:#efe05c"><p>' . commonsbooking_sanitizeHTML(
+				'desc' => '<div style="padding:20px; background-color:#efe05c"><p>' . commonsbooking_sanitizeHTML(
                     __(
                         '<h1>Notice</h1><p>In this view, you as an admin can create or modify existing bookings. Please use it with caution. <br>
 				<ul>
@@ -841,16 +841,16 @@ class Booking extends Timeframe {
 		}
 	}
 
-    
+
     /**
      * Displays a permanent admin-notice if booking overlaps
      *
      * @return void
      */
-    public function displayOverlappingBookingNotice($post) {
-      
-        if (get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID )) {
-           echo get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID, 'warning');
+    public function displayOverlappingBookingNotice( $post ) {
+
+        if ( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) ) {
+            echo get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID, 'warning' );
         }
     }
 
