@@ -323,6 +323,7 @@ class Booking extends Timeframe {
 
         // validate if overlapping bookings exist
         $overlappingBookings = self::returnExistingBookings(
+        $overlappingBookings = \CommonsBooking\Repository\Booking::getExistingBookings (
             $itemId,
             $locationId,
             $repetitionStart,
@@ -369,38 +370,7 @@ class Booking extends Timeframe {
 	}
 
 
-    /**
-	 * Returns Array of overlapping Bookings as Booking-Model in relation to given $postID or given booking paramters
-	 *
-	 * @param $itemId
-	 * @param $locationId
-	 * @param $startDate
-	 * @param $endDate
-	 * @param null       $postId
-	 *
-	 * @return \CommonsBooking\Model\Booking[]|null
-	 */
-	protected static function returnExistingBookings( $itemId, $locationId, $startDate, $endDate, $postId = null ) {
 
-		// Get exiting bookings for defined parameters
-        /** @var \CommonsBooking\Model\Booking $existingBookingsinRage */
-		$existingBookingsInRange = \CommonsBooking\Repository\Booking::getByTimerange(
-			$startDate,
-			$endDate,
-			$locationId,
-			$itemId
-		);
-
-        // remove the given $postID from result
-        foreach ( $existingBookingsInRange as $key => $val ) {
-            if ( $val->ID == $postId ) {
-                unset( $existingBookingsInRange[ $key ] );
-            }
-        }
-
-        return $existingBookingsInRange;
-
-    }
 
 	/**
 	 * @inheritDoc
@@ -462,7 +432,7 @@ class Booking extends Timeframe {
 		add_action( 'pre_get_posts', array( static::class, 'filterAdminList' ) );
 
 		// show permanent admin notice
-		add_action( 'admin_notices', array( $this, 'BookingsAdminListNotice' ) );
+		add_action( 'admin_notices', array( $this, 'displayBookingsAdminListNotice' ) );
         add_action( 'edit_form_top', array( $this, 'displayOverlappingBookingNotice' ), 99 );
 	}
 
@@ -849,7 +819,7 @@ class Booking extends Timeframe {
 	 *
 	 * @return void
 	 */
-	public function BookingsAdminListNotice() {
+	public function displayBookingsAdminListNotice() {
 		global $pagenow;
 
 		$notice = commonsbooking_sanitizeHTML(
@@ -888,7 +858,7 @@ class Booking extends Timeframe {
      * Returns the booking author if booking exists, otherwise returns current user
      * This is helper function
      *
-     * @return void
+     * @return int|string
      */
     public static function getFrontendBookingAuthor() {
         global $post;
