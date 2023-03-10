@@ -306,8 +306,6 @@ class Booking extends Timeframe {
 	public static function preSavePost( $postId, $data ) {
         global $pagenow;
 
-        commonsbooking_write_log($data);
-
 		if ( static::$postType !== $data['post_type'] ||
                 $pagenow === 'post-new.php' ||
                 ! isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] ) ||
