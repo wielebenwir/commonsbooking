@@ -1,6 +1,8 @@
 (function ($) {
     'use strict';
     $(function () {
+        // var feiertagejs = require('feiertagejs');
+        console.log(feiertagejs.getHolidays(2024, 'NW'))
         const arrayDiff = function (array1, array2) {
             var newItems = [];
             jQuery.grep(array2, function (i) {
