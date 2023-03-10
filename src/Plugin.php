@@ -405,6 +405,7 @@ class Plugin {
 			Model\Timeframe::ERROR_TYPE,
 			BookingCode::ERROR_TYPE,
 			OptionsTab::ERROR_TYPE,
+            Model\Booking::ERROR_TYPE,
 		];
 
 		foreach ($errorTypes as $errorType) {

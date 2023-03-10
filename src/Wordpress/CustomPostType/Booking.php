@@ -295,6 +295,33 @@ class Booking extends Timeframe {
             $repetitionEnd = intval( $repetitionEnd );
         }
 
+        // validate start / enddate
+        if ( $repetitionEnd < $repetitionStart ) {
+
+            set_transient(
+                \CommonsBooking\Model\Booking::ERROR_TYPE,
+                      '<div style="background-color:#e6aeae; padding:20px; border:5px solid red"><h2>' . commonsbooking_sanitizeHTML(
+                       __(
+                           'End date is before start date',
+                           'commonsbooking'
+                       )
+                   ) . '</h2><p>' .
+
+                   commonsbooking_sanitizeHTML(
+                       __(
+                           'Please adjust the start date or end date.<br>Changes on this booking have not been saved.<br>',
+                                   'commonsbooking'
+                       ) . '</p></div>'
+                   ),
+                  120
+           );
+            $targetUrl = esc_url_raw( $_REQUEST['_wp_http_referer'] );
+            header( 'Location: ' . $targetUrl );
+            exit();
+
+        }
+
+        // validate if overlapping bookings exist
         $overlappingBookings = self::returnExistingBookings(
             $itemId,
             $locationId,

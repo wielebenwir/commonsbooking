@@ -23,6 +23,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	const END_TIMEFRAME_GRIDSIZE = 'end-timeframe-gridsize';
 
+    public const ERROR_TYPE = 'BookingValidationFailed';
+
 	/**
 	 * Booking states.
      *
