@@ -652,10 +652,16 @@ class Booking extends Timeframe {
 					get_post_meta( $post_id, 'type', true ) == Timeframe::BOOKING_ID
 				)
 			) {
-				echo commonsbooking_sanitizeHTML( $post->{$column} );
-			}
+
+                // get translated label for post status
+                if ($column === 'post_status') {
+                    echo __( commonsbooking_sanitizeHTML( get_post_status_object( get_post_status( $post_id ) )->label ) );
+                } else {
+                echo __( commonsbooking_sanitizeHTML( $post->{$column} ) );
+                }
+            }
 		}
-	}
+    }
 
 	/**
 	 * Registers metaboxes for cpt.
