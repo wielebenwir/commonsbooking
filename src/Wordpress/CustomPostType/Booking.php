@@ -404,7 +404,7 @@ class Booking extends Timeframe {
 		add_action( 'pre_get_posts', array( static::class, 'filterAdminList' ) );
 
 		// show permanent admin notice
-		add_action( 'admin_notices', array( $this, 'BookingsAdminListNotice' ) );
+		add_action( 'admin_notices', array( $this, 'displayBookingsAdminListNotice' ) );
         add_action( 'edit_form_top', array( $this, 'displayOverlappingBookingNotice' ), 99 );
 	}
 
@@ -791,7 +791,7 @@ class Booking extends Timeframe {
 	 *
 	 * @return void
 	 */
-	public function BookingsAdminListNotice() {
+	public function displayBookingsAdminListNotice() {
 		global $pagenow;
 
 		$notice = commonsbooking_sanitizeHTML(
@@ -830,7 +830,7 @@ class Booking extends Timeframe {
      * Returns the booking author if booking exists, otherwise returns current user
      * This is helper function
      *
-     * @return void
+     * @return int|string
      */
     public static function getFrontendBookingAuthor() {
         global $post;
