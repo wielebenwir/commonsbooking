@@ -192,9 +192,9 @@ class BookingRuleTest extends CustomPostTypeTest
 		));
 
 		$this->assertEquals(array($testBookingOne,$testBookingTwo),BookingRule::checkMaxBookingsPerWeek(
-			$testBookingThree, array(2,0)
+			$testBookingThree, array(2,null,0)
 		));
-		$this->assertNull(BookingRule::checkMaxBookingsPerWeek($testBookingFour, array(2,0)));
+		$this->assertNull(BookingRule::checkMaxBookingsPerWeek($testBookingFour, array(2,null,0)));
 	}
 	protected function setUp() {
 		parent::setUp();

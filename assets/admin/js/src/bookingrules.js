@@ -9,7 +9,8 @@
         const ruleAppliesCategoriesID = 'rule-applies-categories';
         const ruleParam1ID = 'rule-param1';
         const ruleParam2ID = 'rule-param2';
-        const ruleParam3ID = 'rule-param3';
+        const ruleSelectParamID = 'rule-select-param';
+        console.log(cb_booking_rules);
         const handleRuleSelection = function() {
             let groupFields = $('#' + groupName + '_repeat');
 
@@ -28,8 +29,9 @@
                 let ruleParam1Desc = ruleParam1.find('.cmb2-metabox-description');
                 let ruleParam2 = currentGroup.find('[class*="' + ruleParam2ID + '"]');
                 let ruleParam2Desc = ruleParam2.find('.cmb2-metabox-description');
-                let ruleParam3 = currentGroup.find('[class*="' + ruleParam3ID + '"]');
-                let ruleParam3Desc = ruleParam3.find('.cmb2-metabox-description');
+                let ruleSelectParam = currentGroup.find('[class*="' + ruleSelectParamID + '"]');
+                let ruleSelectParamDesc = ruleSelectParam.find('.cmb2-metabox-description');
+                let ruleSelectParamOptions = ruleSelectParam.find('.cmb2_select');
                 //bind events
                 ruleSelector.change(function() {handleRuleSelection();});
 
@@ -46,31 +48,38 @@
                                 case 1:
                                     ruleParam1.show();
                                     ruleParam2.hide();
-                                    ruleParam3.hide();
                                     ruleParam1Desc.text(rule.params[0]);
+                                    ruleParam2.val('');
                                     break;
 
                                 case 2:
                                     ruleParam1.show();
                                     ruleParam2.show();
-                                    ruleParam3.hide();
                                     ruleParam1Desc.text(rule.params[0]);
                                     ruleParam2Desc.text(rule.params[1]);
                                     break;
-
-                                case 3:
-                                    ruleParam1.show();
-                                    ruleParam2.show();
-                                    ruleParam3.show();
-                                    ruleParam1Desc.text(rule.params[0]);
-                                    ruleParam2Desc.text(rule.params[1]);
-                                    ruleParam3Desc.text(rule.params[2]);
                             }
                         }
                         else {
                             ruleParam1.hide();
+                            ruleParam1.val('');
                             ruleParam2.hide();
-                            ruleParam3.hide();
+                            ruleParam2.val('');
+                        }
+                        if (rule.hasOwnProperty("selectParam") && rule.selectParam.length > 0){
+                            ruleSelectParam.show();
+                            ruleSelectParamDesc.text(rule.selectParam[0]);
+                            let ruleOptions = rule.selectParam[1];
+                            for (var key in ruleOptions) {
+                                ruleSelectParamOptions.append($('<option>', {
+                                    value: key,
+                                    text: ruleOptions[key]
+                                }));
+                            }
+                            //TODO: set select field to saved value
+                        }
+                        else {
+                            ruleSelectParam.hide();
                         }
                     }
 

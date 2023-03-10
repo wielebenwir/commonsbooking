@@ -17,6 +17,10 @@ class BookingRuleApplied extends BookingRule {
 	private bool $appliesToAll;
 	private array $appliedTerms;
 	private array $appliedParams;
+	/**
+	 * @var int|string
+	 */
+	private $appliedSelectParam;
 	private array $excludedRoles;
 
 	/**
@@ -32,6 +36,7 @@ class BookingRuleApplied extends BookingRule {
 			$rule->errorMessage,
 			$rule->validationFunction,
 			$rule->params ?? [],
+			$rule->selectParam ?? [],
 		);
 	}
 
@@ -60,11 +65,12 @@ class BookingRuleApplied extends BookingRule {
 	/**
 	 * Will set the necessary params for the BookingRule to work
 	 *
-	 * @param   array  $paramsToSet
+	 * @param   array       $paramsToSet
+	 * @param   int|string  $selectParamSet
 	 *
 	 * @throws \CommonsBooking\Exception\BookingRuleException - if not enough params were specified for the BookingRule
 	 */
-	public function setAppliedParams( array $paramsToSet ): void {
+	public function setAppliedParams( array $paramsToSet, $selectParamSet ): void {
 		if (! empty($this->params)){
 			if (count($this->params) == count($paramsToSet) ){
 				$this->appliedParams = $paramsToSet;
@@ -72,6 +78,9 @@ class BookingRuleApplied extends BookingRule {
 			else {
 				throw new BookingRuleException(__("Booking rules: Not enough parameters specified.", 'commonsbooking'));
 			}
+		}
+		if (! empty($this->selectParam)){
+			$this->appliedSelectParam = $selectParamSet;
 		}
 	}
 
@@ -106,7 +115,20 @@ class BookingRuleApplied extends BookingRule {
 		}
 
 		$validationFunction = $this->validationFunction;
-		return $validationFunction( $booking, $this->appliedParams ?? [], $this->appliesToAll ? false : $this->appliedTerms );
+
+		//construct the args array
+		$args = $this->appliedSelectParam ?? [null,null];
+		//add null value to array to keep the params in the right order
+		if (count($args) == 1) {
+			$args[] = null;
+		}
+		if (! empty ($this->appliedSelectParam)){
+			$args[] = $this->appliedSelectParam;
+		}
+		else {
+			$args[] = null;
+		}
+		return $validationFunction( $booking, $args, $this->appliesToAll ? false : $this->appliedTerms );
 	}
 
 	/**
@@ -190,9 +212,21 @@ class BookingRuleApplied extends BookingRule {
 				}
 
 				$ruleParams = [];
-				if (isset($ruleConfig['rule-param1'])) { $ruleParams[] = $ruleConfig['rule-param1']; }
-				if (isset($ruleConfig['rule-param2'])) { $ruleParams[] = $ruleConfig['rule-param2']; }
-				if (isset($ruleConfig['rule-param3'])) { $ruleParams[] = $ruleConfig['rule-param3']; }
+ 				if (
+					 isset($ruleConfig['rule-param1']) &&
+					 count($validRule->params) >= 1)
+				 {
+					 $ruleParams[] = $ruleConfig['rule-param1'];
+				 }
+				if (
+					isset($ruleConfig['rule-param2']) &&
+					count($validRule->params) >= 2
+					)
+				{
+					$ruleParams[] = $ruleConfig['rule-param2'];
+				}
+
+				if (isset($ruleConfig['rule-select-param'])) { $selectParam = $ruleConfig['rule-select-param']; }
 
 				if (isset ( $ruleConfig['rule-applies-all'] ) && $ruleConfig['rule-applies-all'] === 'on'){
 					$appliesToAll = true;
@@ -208,7 +242,8 @@ class BookingRuleApplied extends BookingRule {
 					$appliedTerms ?? []
 				);
 				$bookingRule->setAppliedParams(
-					$ruleParams ?? []
+					$ruleParams ?? [],
+					$selectParam ?? null
 				);
 				$bookingRule->setExcludedRoles(
 					$ruleConfig['rule-exempt-roles'] ?? []);

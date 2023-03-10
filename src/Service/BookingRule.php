@@ -14,25 +14,28 @@ class BookingRule {
 	protected string $description;
 	protected string $errorMessage;
 	protected array $params;
+	// Array where first element is the description of the parameter and second element is an associative array with the options
+	protected array $selectParam;
 	protected Closure $validationFunction;
 
 	/**
 	 * The constructor for BookingRules before they are applied
 	 *
-	 * @param String $name
-	 * @param String $title
-	 * @param String $description
-	 * @param String $errorMessage
-	 * @param Closure $validationFunction
-	 * @param array $params
+	 * @param   String   $name
+	 * @param   String   $title
+	 * @param   String   $description
+	 * @param   String   $errorMessage
+	 * @param   Closure  $validationFunction
+	 * @param   array    $params
+	 * @param   array    $selectParam
 	 *
-	 * @throws BookingRuleException
+	 * @throws \CommonsBooking\Exception\BookingRuleException
 	 */
-	public function __construct(String $name,String $title, String $description,String $errorMessage, Closure $validationFunction,array $params = []) {
+	public function __construct(String $name,String $title, String $description,String $errorMessage, Closure $validationFunction,array $params = [], array $selectParam = []) {
 		if (! empty($params) ){
 
-			if (count($params) > 3 ){
-				throw new BookingRuleException("No more than 3 parameters are currently supported");
+			if (count($params) > 2 ){
+				throw new BookingRuleException("No more than 2 parameters are currently supported");
 			}
 
 			$this->params = $params;
@@ -42,6 +45,7 @@ class BookingRule {
 		$this->description = $description;
 		$this->errorMessage = $errorMessage;
 		$this->validationFunction = $validationFunction;
+		$this->selectParam = $selectParam;
 	}
 
 	/**
@@ -166,7 +170,18 @@ class BookingRule {
 				Closure::fromCallable(array(self::class,'checkMaxBookingsPerWeek')),
 				array(
 					__("Number of days each user is allowed to book per week",'commonsbooking'),
-					__("When to reset the counter, 0 = Monday 1 = Tuesday, ... , 6 = Sunday",'commonsbooking')
+				),
+				array(
+					__("At what day of the week should the counter be reset?",'commonsbooking'),
+					array(
+						0 => __("Monday",'commonsbooking'),
+						1 => __("Tuesday",'commonsbooking'),
+						2 => __("Wednesday",'commonsbooking'),
+						3 => __("Thursday",'commonsbooking'),
+						4 => __("Friday",'commonsbooking'),
+						5 => __("Saturday",'commonsbooking'),
+						6 => __("Sunday",'commonsbooking')
+					)
 				)
 			),
 			new BookingRule(
@@ -353,7 +368,7 @@ class BookingRule {
 	 */
 	public static function checkMaxBookingsPerWeek(Booking $booking, array $args, $appliedTerms = false): ?array {
 		$allowedBookableDays = $args[0];
-		$resetDay = $args[1];
+		$resetDay = $args[2];
 		$resetDayString = 'monday';
 		switch ($resetDay):
 			case 0:
@@ -383,8 +398,6 @@ class BookingRule {
 		$startOfWeek->modify('last ' . $resetDayString);
 		$endOfWeek = clone $bookingDate;
 		$endOfWeek->modify('next ' . $resetDayString);
-		$startOfWeekString = $startOfWeek->format('d-m-Y');
-		$endOfWeekString = $endOfWeek->format('d-m-Y');
 		$rangeBookingsArray = \CommonsBooking\Repository\Booking::getByTimerange(
 			$startOfWeek->getTimestamp(),
 			$endOfWeek->getTimestamp(),
