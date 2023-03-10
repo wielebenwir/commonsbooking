@@ -113,6 +113,11 @@ class Booking extends Timeframe {
                 $post_status = 'unconfirmed';
             }
 
+            // if there are overlapping bookings we set status to unconfirmed
+            if ( get_transient( 'commonsbooking_booking_validation_failed_' . $post_id ) ) {
+                $post_status = 'unconfirmed';
+            }
+
             $postarr          = array(
 				'post_title'  => esc_html__( 'Admin-Booking', 'commonsbooking' ),
                 'post_author' => $booking_user,
@@ -301,6 +306,8 @@ class Booking extends Timeframe {
 	public static function preSavePost( $postId, $data ) {
         global $pagenow;
 
+        commonsbooking_write_log($data);
+
 		if ( static::$postType !== $data['post_type'] ||
                 $pagenow === 'post-new.php' ||
                 ! isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] ) ||
@@ -383,7 +390,7 @@ class Booking extends Timeframe {
 
                     commonsbooking_sanitizeHTML(
                         __(
-                            'Please adjust the startdate or enddate.<br>Changes on this booking have not been saved.<br>
+                            'Please adjust the startdate or enddate.<br>The booking status has been set to <strong>unconfirmed</strong>.<br>
                                 <strong>Affected Bookings:</strong><br>
                                 %1$s',
                             'commonsbooking'
@@ -394,8 +401,9 @@ class Booking extends Timeframe {
                 120
             );
 
-             wp_safe_redirect( wp_get_raw_referer() ) ;
-             exit();
+            $data['post_status'] = 'unconfirmed';
+            return $data;
+
 		} else {
             delete_transient( 'commonsbooking_booking_validation_failed_' . $postId );
         }
@@ -850,7 +858,7 @@ class Booking extends Timeframe {
     public function displayOverlappingBookingNotice( $post ) {
 
         if ( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) ) {
-            echo get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID, 'warning' );
+            echo commonsbooking_sanitizeHTML( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID, 'warning' ) );
         }
     }
 

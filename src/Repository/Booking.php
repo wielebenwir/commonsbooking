@@ -452,12 +452,15 @@ class Booking extends PostRepository {
 		);
 
 		// remove the given $postID from result
+		      // remove the given $postID from result
         foreach ( $existingBookingsInRange as $key => $val ) {
-            if ( $val->ID == $postId ) {
-                    unset( $existingBookingsInRange[ $key ] );
+            if ( $val->ID === $postId ) {
+                unset( $existingBookingsInRange[ $key ] );
             }
         }
 
-        return $existingBookingsInRange;
+		return $existingBookingsInRange;
+
 	}
+
 }
