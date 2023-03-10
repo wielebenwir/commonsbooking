@@ -412,4 +412,35 @@ class Booking extends PostRepository {
 		);
 	}
 
+	/**
+	 * Returns Array of overlapping Bookings as Booking-Model in relation to given $postID or given booking parameters
+	 * This is used to check if the given parameters are overlapping with existing bookings.
+	 * The given $postID will be excluded from the result so that the given booking will not be counted as overlapping.
+	 *
+	 * @param $itemId
+	 * @param $locationId
+	 * @param $startDate
+	 * @param $endDate
+	 * @param null  $postId
+	 *
+	 * @return \CommonsBooking\Model\Booking[]|null
+	 */
+	public static function getExistingBookings( $itemId, $locationId, $startDate, $endDate, $postId = null ): ?array {
+
+		// Get existing bookings for defined parameters
+		/** @var \CommonsBooking\Model\Booking $existingBookingsinRange */
+		$existingBookingsInRange = \CommonsBooking\Repository\Booking::getByTimerange(
+			$startDate,
+			$endDate,
+			$locationId,
+			$itemId
+		);
+
+		// remove the given $postID from result
+		array_filter( $existingBookingsInRange, fn( $booking ) => $booking->ID !== $postId);
+
+		return $existingBookingsInRange;
+
+	}
+
 }
