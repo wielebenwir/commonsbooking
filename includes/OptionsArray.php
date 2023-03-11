@@ -662,10 +662,10 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 								'type'  => 'text_small'
 							),
 							array(
-								'name'  => commonsbooking_sanitizeHTML( __('Parameter 3', 'commonsbooking') ),
-								'desc'  => 'Parameter description',
-								'id'    => 'rule-param3',
-								'type'  => 'text_small'
+								'name'  => commonsbooking_sanitizeHTML( __('Select an option', 'commonsbooking') ),
+								'desc'  => 'Select parameter description',
+								'id'    => 'rule-select-param',
+								'type'  => 'select',
 							),
 							array(
 								'name'  => commonsbooking_sanitizeHTML( __('Applies to all', 'commonsbooking') ),
