@@ -1,8 +1,6 @@
 (function ($) {
     'use strict';
     $(function () {
-        // var feiertagejs = require('feiertagejs');
-        console.log(feiertagejs.getHolidays(2024, 'NW'))
         const arrayDiff = function (array1, array2) {
             var newItems = [];
             jQuery.grep(array2, function (i) {
@@ -56,7 +54,6 @@
 
             const holidayField = $('.cmb2-id--cmb2-holiday');
             const holidayInput = $('#timeframe_manual_date');
-            const holidayButton = $('#holiday_load_btn');
             const manualDateField = $('.cmb2-id-timeframe-manual-date');
             const maxDaysSelect = $('.cmb2-id-timeframe-max-days');
             const advanceBookingDays = $('.cmb2-id-timeframe-advance-booking-days');
@@ -109,10 +106,10 @@
                     allowUserRoles.hide();
                     hideFieldset(bookingCodeTitle);
                     if (selectedType == 3 && selectedRepetition == 'manual') {
-                        //holidayField.show();
+                        holidayField.show();
                     } else {
-                        //holidayField.hide();
-                        //holidayInput.val('');
+                        holidayField.hide();
+                        holidayInput.val('');
                     }
                 }
             }
@@ -239,15 +236,6 @@
                         handleBookingCodesSelection();
                     }
                 );
-            })
-
-            const handleHolidayLoading = function () {
-                const today = new Date();
-                console.log(isHoliday(today, 'BW'));
-
-            }
-            holidayButton.click(function () {
-                handleHolidayLoading();
             })
         }
     });
