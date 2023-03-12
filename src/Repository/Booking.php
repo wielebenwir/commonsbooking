@@ -294,6 +294,8 @@ class Booking extends PostRepository {
 		// Overwrite args with passed custom args
 		$args = array_merge( $args, $customArgs );
 
+        
+
 		$query = new WP_Query( $args );
 		if ( $query->have_posts() ) {
 			$posts = $query->get_posts();

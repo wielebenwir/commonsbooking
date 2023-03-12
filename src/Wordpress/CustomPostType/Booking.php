@@ -118,6 +118,12 @@ class Booking extends Timeframe {
                 $post_status = 'unconfirmed';
             }
 
+
+            $full_day = '';
+            if ( $start_time == '00:00' && $end_time == '23:59' ) {
+                $full_day = 'on';
+            }
+
             $postarr          = array(
 				'post_title'  => esc_html__( 'Admin-Booking', 'commonsbooking' ),
                 'post_author' => $booking_user,
@@ -128,6 +134,7 @@ class Booking extends Timeframe {
                     'end-time'         => $end_time,
                     'type'             => Timeframe::BOOKING_ID,
                     'grid'             => '',
+                    'full-day'         => $full_day,
 				],
             );
                $postarr['ID'] = $post_id;
@@ -187,18 +194,25 @@ class Booking extends Timeframe {
 				throw new Exception( 'Start- and/or enddate missing.' );
 			}
 
+            /** @var \CommonsBooking\Model\Booking $booking */
+			$booking = \CommonsBooking\Repository\Booking::getByDate(
+                $startDate,
+                $endDate,
+                $locationId,
+                $itemId
+            );
+
 			// Validate booking -> check if there are no existing bookings in timerange.
 			if (
             $existingBookings =
-                \CommonsBooking\Repository\Booking::getByTimerange(
+                \CommonsBooking\Repository\Booking::getExistingBookings(
+                    $itemId,
+                    $locationId,
                     $startDate,
                     $endDate,
-                    $locationId,
-                    $itemId,
-                    [],
-                    [ 'confirmed' ]
                 )
 			) {
+
 				if ( count( $existingBookings ) > 0 ) {
 					$requestedPostname = array_key_exists( 'cb_booking', $_REQUEST ) ? $_REQUEST['cb_booking'] : '';
 
@@ -208,22 +222,21 @@ class Booking extends Timeframe {
 						array_values( $existingBookings )[0]->getPost()->post_author == get_current_user_id();
 
 					if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status != 'canceled' ) {
-						throw new Exception( 'There is already a booking in this timerange.' );
+                        if ($booking) {
+                            $post_status = 'unconfirmed';
+                            set_transient( 'commonsbooking_overlappingBooking_' . $booking->ID, $booking->ID );
+                        } else {
+                            throw new Exception( 'There is already a booking in this timerange.' );
+                        }
 					}
 				}
 			}
 
-			/** @var \CommonsBooking\Model\Booking $booking */
-			$booking = \CommonsBooking\Repository\Booking::getByDate(
-                $startDate,
-                $endDate,
-                $locationId,
-                $itemId
-            );
+
 
             $postarr = array(
 				'type'        => sanitize_text_field( $_REQUEST['type'] ),
-				'post_status' => sanitize_text_field( $_REQUEST['post_status'] ),
+				'post_status' => $post_status,
 				'post_type'   => self::getPostType(),
 				'post_title'  => esc_html__( 'Booking', 'commonsbooking' ),
 				'post_author' => $booking_author,
@@ -249,7 +262,7 @@ class Booking extends Timeframe {
             } else {
                 $postarr['ID'] = $booking->ID;
                 $postId        = wp_update_post( $postarr );
-
+      
             }
 
             $this->saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate );
