@@ -672,4 +672,21 @@ class Timeframe extends CustomPost {
 	public function getRepetition() {
 		return $this->getMeta( self::META_REPETITION );
 	}
+    
+    /**
+     * Returns first bookable day based on the defined booking stadtday offset in timeframe
+     *
+     * @return date string Y-m-d
+     */
+    public function getFirstBookableDay() {
+
+        $offset = $this->getFieldValue( 'booking-startday-offset' );
+        if ( empty( $offset ) ) {
+            $offset = 0;
+        }
+        $date             = Wordpress::getLocalDateTime( current_time( 'timestamp' ) );
+        $today            = $date->format( 'Y-m-d' );
+        return date( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
+
+    }
 }
