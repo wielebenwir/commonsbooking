@@ -487,6 +487,19 @@ class Timeframe extends CustomPostType {
 				'default_value'    => 3,
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
+            array(
+				'name'       => esc_html__( 'Minimum booking period', 'commonsbooking' ),
+				'desc'       => esc_html__( 'Enter the number of days that should be blocked for bookings as a booking lead time (calculated from the current day).', 'commonsbooking' ),
+				'id'         => 'booking-startday-offset',
+				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+				'type'       => 'text_small',
+				'attributes' => array(
+					'type' => 'number',
+					'min'  => '0',
+				),
+				'default_value'    => 0,
+				'default_cb' => 'commonsbooking_filter_from_cmb2',
+			),
 			array(
 				'name'       => esc_html__( 'Maximum booking days in advance', 'commonsbooking' ),
 				'desc'       => esc_html__( 'Select for how many days in advance the calendar should display bookable days. Calculated from the current date.', 'commonsbooking' ),
@@ -574,6 +587,7 @@ class Timeframe extends CustomPostType {
 				'type'    => 'select',
 				'options' => self::getTimeFrameRepetitions(),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
+                'default' => 'w',
 			),
 			array(
 				'name' => esc_html__( "Configure repetition", 'commonsbooking' ),

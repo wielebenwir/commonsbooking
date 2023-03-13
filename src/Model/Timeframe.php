@@ -90,7 +90,7 @@ class Timeframe extends CustomPost {
 	public function getLatestPossibleBookingDateTimestamp() {
 		$calculationBase = time();
 
-		// if meta-value not set we define 90 days as default value
+		// if meta-value not set we define 365 days as default value
 		$advanceBookingDays = $this->getMeta( 'timeframe-advance-booking-days' ) ?:
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS;
 
