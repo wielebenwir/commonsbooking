@@ -126,8 +126,8 @@ class Helper {
 	 *
 	 * @return array():TimeFrame
 	 */
-	public static function merge_ranges_to_bookable_dates( $array_of_ranges ): array {
-		function interval_open( $interval_value ): bool {
+	public static function merge_ranges_to_bookable_dates( array $array_of_ranges ): array {
+		$interval_open = function ( $interval_value ): bool {
 			return false === $interval_value;
 		};
 
@@ -151,20 +151,22 @@ class Helper {
 		// For each range, compare with last (or first) merged range.
 		$n = count( $array_of_ranges );
 		for ( $i = 1; $i < $n; $i++ ) {
-			$last_interval = $result[ $last ];
-			$next_interval = $array_of_ranges[ $i ];
+			$last_interval = &$result[ $last ];
+			$next_interval = &$array_of_ranges[ $i ];
 
 			// Either
 			// If first/last interval is open => overlaps next
 			// Or first/last interval end is greater than next interval begin.
 			if (
-				interval_open( $last_interval['end_date'] )
+				$interval_open( $last_interval['end_date'] )
 				|| $last_interval['end_date'] >= $next_interval['start_date'] ) {
 				// TimeFrame overlap?
 				// => Overlap, merge interval start and end.
-				$last_interval = min( $last_interval['start_date'], $next_interval['start_date'] );
+				$last_interval['start_date'] = min( $last_interval['start_date'], $next_interval['start_date'] );
 
-				if ( interval_open( $next_interval['end_date'] ) ) {
+				if ( $interval_open( $last_interval['end_date'] ) ) {
+					// Do nothing.
+				} elseif ( $interval_open( $next_interval['end_date'] ) ) {
 					$last_interval['end_date'] = false;
 				} else {
 					// Both intervals are closed.
@@ -179,4 +181,6 @@ class Helper {
 
 		return $result;
 	}
+
+
 }
