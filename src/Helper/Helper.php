@@ -7,34 +7,6 @@ use CommonsBooking\Model\Item;
 use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Timeframe;
 
-function interval_open( $interval_value ) {
-	return $interval_value === false;
-}
-
-/**
- * Set <code>arr1[key]</code> to false, if either key of arr1 or key of arr2 is false.
- * <p>If not false, use func (which takes two args) to compute a result
- * from both <code>func(arr1[key], arr2[key])</code></p>
- *
- * @param string $key
- * @param object $arr1
- * @param object $arr2
- * @param callable $func
- *
- * @return object|null
- */
-function set_false_if_either_key_null_else_set_func( string $key, array &$arr1, array &$arr2, callable $func ) : void {
-	if ( interval_open($arr1[ $key ]) ) {
-		// Do nothing, interval1 is open
-	} else if ( interval_open($arr2[ $key ]) ) {
-		// Set interval_1 false because interval 2 is open
-		$arr1[$key] = false;
-	} else {
-		// Both intervals are closed
-		$arr1[$key] = $func($arr1[$key], $arr2[$key]);
-	}
-}
-
 class Helper {
 
 	/**
@@ -150,47 +122,61 @@ class Helper {
 	 * NOTE: When performance issues arise, this operation can be implemented
 	 * faster with an interval tree data structure
 	 *
-	 * @param $arrayOfRanges
+	 * @param array $array_of_ranges Array of one or more ranges.
 	 *
 	 * @return array():TimeFrame
 	 */
-	public static function mergeRangesToBookableDate( $arrayOfRanges ): array {
+	public static function merge_ranges_to_bookable_dates( $array_of_ranges ): array {
+		function interval_open( $interval_value ): bool {
+			return false === $interval_value;
+		};
 
-		if ( count($arrayOfRanges) == 1) {
-			return $arrayOfRanges;
+		if ( count( $array_of_ranges ) === 1 ) {
+			return $array_of_ranges;
 		}
 
 		$result = array();
 
-		// Sort by start date
-		usort($arrayOfRanges, function( $a, $b ) {
-			return $a['start_date'] <=> $b['start_date'];
-		});
+		// Sort by start date.
+		usort(
+			$array_of_ranges,
+			function( $a, $b ) {
+				return $a['start_date'] <=> $b['start_date'];
+			}
+		);
 
-		$result[] = $arrayOfRanges[0];
-		$last = 0;
+		$result[] = $array_of_ranges[0];
+		$last     = 0;
 
-		// For each range, compare with last (or first) merged range
-		for ($i = 1; $i < count($arrayOfRanges); $i++) {
+		// For each range, compare with last (or first) merged range.
+		$n = count( $array_of_ranges );
+		for ( $i = 1; $i < $n; $i++ ) {
+			$last_interval = $result[ $last ];
+			$next_interval = $array_of_ranges[ $i ];
 
 			// Either
-			//  If first/last interval is open => overlaps next
-			//  Or first/last interval end is greater than next interval begin
+			// If first/last interval is open => overlaps next
+			// Or first/last interval end is greater than next interval begin.
 			if (
-				interval_open($result[ $last ]['end_date'])
-			    || $result[ $last ]['end_date'] >= $arrayOfRanges[$i]['start_date'])
-			{
-				// => Overlap, merge both
-				set_false_if_either_key_null_else_set_func( 'start_date', $result[ $last ], $arrayOfRanges[ $i ], function($a,$b) {return min($a, $b);} );
-				set_false_if_either_key_null_else_set_func( 'end_date',   $result[ $last ], $arrayOfRanges[ $i ], function($a,$b) {return max($a, $b);} );
+				interval_open( $last_interval['end_date'] )
+				|| $last_interval['end_date'] >= $next_interval['start_date'] ) {
+				// TimeFrame overlap?
+				// => Overlap, merge interval start and end.
+				$last_interval = min( $last_interval['start_date'], $next_interval['start_date'] );
+
+				if ( interval_open( $next_interval['end_date'] ) ) {
+					$last_interval['end_date'] = false;
+				} else {
+					// Both intervals are closed.
+					$last_interval['end_date'] = max( $last_interval['end_date'], $next_interval['end_date'] );
+				}
 			} else {
 				// => No overlap, add new interval to result. Use as new last interval
-				$result[] = $arrayOfRanges[ $i ];
+				$result[] = $next_interval;
 				$last ++;
 			}
 		}
 
 		return $result;
-
 	}
 }

@@ -26,7 +26,7 @@ class HelperTest extends TestCase {
 
 	public function test_whenAllTimeFramesOverlap_returnOneTimeframe() {
 
-		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
+		$arrayOfBookableDates = Helper::merge_ranges_to_bookable_dates(
 			array(
 				array(
 					"start_date" => to_ts("2020-01-01"),
@@ -49,7 +49,7 @@ class HelperTest extends TestCase {
 
 	public function test_whenTimeframesOverlapOnDay_returnOneTimeframe() {
 
-		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
+		$arrayOfBookableDates = Helper::merge_ranges_to_bookable_dates(
 			array(
 				array(
 					"start_date" => to_ts("2020-01-01"),
@@ -72,7 +72,7 @@ class HelperTest extends TestCase {
 
 	public function test_whenTwoTimeframesDontOverlap_returnTwoTimeframes() {
 
-		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
+		$arrayOfBookableDates = Helper::merge_ranges_to_bookable_dates(
 			array(
 				array(
 					"start_date" => dt_to_ts('2020-01-01T12:00:00+00:00'),
@@ -93,7 +93,7 @@ class HelperTest extends TestCase {
 
 	public function test_whenThreeTimeFramesOverlap_returnOneTimeframe() {
 
-		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
+		$arrayOfBookableDates = Helper::merge_ranges_to_bookable_dates(
 			array(
 				array(
 					"start_date" => to_ts("2020-01-01"),
@@ -118,7 +118,7 @@ class HelperTest extends TestCase {
 	}
 
 	public function test_whenTimeFrameHasOpenInterval_returnOneTimeFrame() {
-		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
+		$arrayOfBookableDates = Helper::merge_ranges_to_bookable_dates(
 			array(
 				array(
 					"start_date" => to_ts("2020-01-01"),
@@ -139,7 +139,7 @@ class HelperTest extends TestCase {
 	}
 
 	public function test_whenTimeFrameHasOpenInterval2_returnOneTimeFrame() {
-		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
+		$arrayOfBookableDates = Helper::merge_ranges_to_bookable_dates(
 			array(
 				array(
 					"start_date" => to_ts("2020-01-01"),
@@ -160,7 +160,7 @@ class HelperTest extends TestCase {
 	}
 
 	public function test_whenTimeFrameHasOpenInterval3_HasSameStart_butOneOpen_returnOneOpenInterval() {
-		$arrayOfBookableDates = Helper::mergeRangesToBookableDate(
+		$arrayOfBookableDates = Helper::merge_ranges_to_bookable_dates(
 			array(
 				array(
 					"start_date" => 1673136000,
