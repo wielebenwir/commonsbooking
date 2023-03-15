@@ -679,12 +679,8 @@ class Timeframe extends CustomPost {
      * @return date string Y-m-d
      */
     public function getFirstBookableDay() {
-        $offset = $this->getFieldValue( 'booking-startday-offset' );
-        if ( empty( $offset ) ) {
-            $offset = 0;
-        }
-        $date  = Wordpress::getLocalDateTime( current_time( 'timestamp' ) );
-        $today = $date->format( 'Y-m-d' );
+        $offset = $this->getFieldValue( 'booking-startday-offset' ) ?: 0;
+        $today = current_datetime()->format('Y-m-d');
         return date( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
 
     }
