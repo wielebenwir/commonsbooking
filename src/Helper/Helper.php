@@ -5,7 +5,6 @@ namespace CommonsBooking\Helper;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\Item;
 use CommonsBooking\Model\Location;
-use CommonsBooking\Model\Timeframe;
 
 class Helper {
 
@@ -124,7 +123,7 @@ class Helper {
 	 *
 	 * @param array $array_of_ranges Array of one or more ranges.
 	 *
-	 * @return array():TimeFrame
+	 * @return array - Array of overlapping ranges.
 	 */
 	public static function merge_ranges_to_bookable_dates( array $array_of_ranges ): array {
 		$interval_open = function ( $interval_value ): bool {
