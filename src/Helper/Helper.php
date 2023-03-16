@@ -149,8 +149,7 @@ class Helper {
 		$last     = 0;
 
 		// For each range, compare with last (or first) merged range.
-		$n = count( $array_of_ranges );
-		for ( $i = 1; $i < $n; $i++ ) {
+		for ( $i = 1; $i < count( $array_of_ranges ); $i++ ) {
 			$last_interval = &$result[ $last ];
 			$next_interval = &$array_of_ranges[ $i ];
 
