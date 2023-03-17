@@ -529,37 +529,11 @@ class Plugin {
             'in_plugin_update_message-' . COMMONSBOOKING_PLUGIN_BASE,
             function ( $plugin_data ) {
                 $this->UpdateNotice( COMMONSBOOKING_VERSION, $plugin_data['new_version'] );
-        
-        // adds translatble array strings (e.g. for booking status)
-        add_filter( 'gettext', 'commonsbooking_translate_words_array' );
-        add_filter( 'ngettext', 'commonsbooking__translate_words_array' );
-            }
-        );
 
 		// iCal rewrite
 		iCalendar::initRewrite();
 
 	}
-
-    
-    /**
-     * Helper function to allow strings in arrays to translatable (e.g. post status etc.)
-     *
-     * @param  mixed $translated
-     * @return void
-     */
-    function commonsbooking_translate_words_array( $translated ) {
-
-         $words = array(
-			 // 'word to translate' = > 'translation'
-			 'Unconfirmed' => __( 'Unconfirmed', 'commonsbooking' ),
-             'Confirmed'   => __( 'Confirmed', 'commonsbooking' ),
-             'Canceled'    => __( 'Canceled', 'commonsbooking' ),
-         );
-
-         $translated = str_ireplace( array_keys( $words ), $words, $translated );
-         return $translated;
-    }
 
 	public function commonsbooking_load_textdomain() {
 		/**
