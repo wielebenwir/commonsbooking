@@ -37,7 +37,7 @@ class BookingCodes {
 		} else {
 			$timeframe = New \CommonsBooking\Model\Timeframe($timeframeId);
 			$timeframeStartDate      = $timeframe->getStartDate();
-			$timeframeEndDate   = $timeframe->getEndDate();
+			$timeframeEndDate   =  $timeframe->getRawEndDate();
 
 			if ( ! $startDate || $startDate < $timeframeStartDate ) {
 				$startDate = $timeframeStartDate;

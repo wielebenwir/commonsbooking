@@ -644,10 +644,9 @@ class Timeframe extends CustomPostType {
 				'id'            => 'direct-email-booking-codes-list',
 				'type'          => 'title',
 				'render_row_cb' => ['\CommonsBooking\View\BookingCodes','renderDirectEmailRow'],
-			),
+		),
 			array(
 				'name' => esc_html__( 'Send Booking Codes automated by E-mail', 'commonsbooking' ),
-				'desc' => 'Custom Address Field',
 				'desc_cb' => esc_html__("Enable automated sending of Booking Codes by email", 'commonsbooking' ),
 				'name_start'        => esc_html__( 'Start Date', 'commonsbooking' ),
                 'desc_start'        => commonsbooking_sanitizeHTML( __('First day to send Codes (List starts at next month)<br>(same day used for subsequent sendings) ', 'commonsbooking')) , 
@@ -658,11 +657,11 @@ class Timeframe extends CustomPostType {
 				'default_nummonth'		=> 1,
 				'msg_next_email'		=> esc_html__( 'Next E-mail planned for: ', 'commonsbooking' ),
 				'msg_email_not_planned'		=> esc_html__( '(not planned)', 'commonsbooking' ),
-				'id'   => 'cron_email_codes',
+				'id'   => \CommonsBooking\View\BookingCodes::CRON_EMAIL_CODES,
 				'type' => 'booking_codes_email_fields',
 				'sanitization_cb' =>  ['\CommonsBooking\View\BookingCodes','sanitizeCronEmailCodes'],
 				'escape_cb'       =>  ['\CommonsBooking\View\BookingCodes','escapeCronEmailCodes'],
-				'show_on_cb' => function($field) { return (\CommonsBooking\View\BookingCodes::hasAdmins($field) && \CommonsBooking\View\BookingCodes::hasBookingCodes($field)); },
+				'show_on_cb' => function($field) { $tfModel=parent::getModel(get_post($field->object_id()));  return (!empty($tfModel->getLocation()->getAdmins()) &&  $tfModel->hasBookingCodes());  },
 			),
 			array(
 				'name'          => esc_html__( 'Booking Codes', 'commonsbooking' ),
@@ -953,7 +952,7 @@ class Timeframe extends CustomPostType {
 	public function initHooks() {
 		// Add custom cmb2 type for email booking codes by cron
 		add_action( 'cmb2_render_booking_codes_email_fields', ['\CommonsBooking\View\BookingCodes','renderCronEmailFields'], 10, 5 );
-		add_action("cmb2_save_field_cron_email_codes",['\CommonsBooking\View\BookingCodes','cronEmailCodesSaved'],10,3);
+		add_action("cmb2_save_field_" . \CommonsBooking\View\BookingCodes::CRON_EMAIL_CODES,['\CommonsBooking\View\BookingCodes','cronEmailCodesSaved'],10,3);
 	
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );

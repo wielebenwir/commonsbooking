@@ -3,17 +3,19 @@
 namespace CommonsBooking\Messages;
 
 use CommonsBooking\Settings\Settings;
-use \CommonsBooking\Repository\BookingCodes;
+use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Model\Timeframe;
+use CommonsBooking\Service\iCalendar;
 use CommonsBooking\Plugin;
-
+use DateTimeImmutable;
 
 class BookingCodesMessage extends Message {
 
 	protected $validActions = [ "codes" ];
     protected $to;
-    private $tsFrom=null;
-    private $tsTo=null;
+    private $tsFrom;
+    private $tsTo;
+    private $locationAdmins;
 
 	/**
 	 * @param int /post $postId     ID or Post of timeframe
@@ -33,55 +35,40 @@ class BookingCodesMessage extends Message {
      * @return bool                  Successfully initiated sending.
      */
 	public function sendMessage(): bool {
-		/** @var \CommonsBooking\Repository\BookingCodes $bookingCodes */
-        $postID=(int)$this->getPostId();
-		$bookingCodes = BookingCodes::getCodes($postID);
-        $timeframe=new Timeframe($postID);
-        $item=$timeframe->getItem();
-                  
-        $itemAdmins = self::getItemAdminsByItem($item);// get_users( $args );
-        if(empty($itemAdmins)){
-            do_action( 'commonsbooking_mail_sent', $this->getAction(),
-                        new \WP_Error(
-                            "e-mail",
-                            commonsbooking_sanitizeHTML( __( "Could not find CBManagers for this item. Check item -> Item Admin(s)", "commonsbooking" ) ),
-                            [ 'title' => commonsbooking_sanitizeHTML( __( "Error sending booking codes", "commonsbooking" ) ) ]
-                        )
-                );
+        $timeframeId=(int)$this->getPostId();
+        $timeframe=new Timeframe($timeframeId);
 
-            return false;
-        }
+        $this->locationAdmins = self::getUsersFromIds($timeframe->getLocation()->getAdmins());        
+        if(empty($this->locationAdmins)) return $this->raiseError( 
+                __( "Unable to send Emails to location Managers. None configured, check Location -> Location Admin(s)", "commonsbooking" ));
 
-        $bookingTable=$this->getCodes($bookingCodes);
-        if(empty($bookingTable['table'])) {
-            do_action( 'commonsbooking_mail_sent', $this->getAction(),
-                        new \WP_Error(
-                            "e-mail",
-                            commonsbooking_sanitizeHTML( __( "Could not find Booking codes for this timeframe/period", "commonsbooking" ) ),
-                            [ 'title' => commonsbooking_sanitizeHTML( __( "Error sending booking codes", "commonsbooking" ) ) ]
-                        )
-            );
-            
-            return false;
-        }
-
-        //add Table content to post_meta of item for template rendering
-        update_post_meta( $item->ID, '_codeTable', $bookingTable['table'] );
+		$bookingCodes = BookingCodes::getCodes($timeframeId, $this->tsFrom,$this->tsTo);
+        if(empty($bookingCodes)) return $this->raiseError( __( "Could not find Booking codes for this timeframe/period", "commonsbooking" ));
         
-        $dispFrom= wp_date("M-Y",$bookingTable['startDate']);
-        $dispTo= wp_date("M-Y",$bookingTable['endDate']);
-        if($dispFrom == $dispTo)
-            update_post_meta( $item->ID, '_dateRange', $dispFrom );
-        else
-            update_post_meta( $item->ID, '_dateRange', $dispFrom . " - " . $dispTo );
+        $bookingTable=apply_filters('commonsbooking_emailcodes_rendertable',
+                                        \CommonsBooking\View\BookingCodes::renderBookingCodesTable( $bookingCodes ),
+                                        $bookingCodes,'email');
+        
+        $bAddIcal=apply_filters('commonsbooking_emailcodes_addical',
+                            Settings::getOption( 'commonsbooking_options_bookingcodes', 'mail-booking-' . $this->action . '-attach-ical' ),
+                            $timeframe);
+        $attachment=$bAddIcal?$this->getIcalAttachment($bookingCodes):null;
+        
+        //Workaround: arbitrary object for template parser
+        $codes=new \WP_User(new \stdClass());
+        $codes->codeTable=$bookingTable;
+        
+        $dispTo= wp_date("M-Y",strtotime(end($bookingCodes)->getDate()));
+        $dispFrom= wp_date("M-Y",strtotime(reset($bookingCodes)->getDate()));
+        $codes->formatDateRange=($dispFrom == $dispTo)?$dispFrom:$dispFrom . " - " . $dispTo;
 
 		// get templates from Admin Options
-		$template_body    = Settings::getOption( 'commonsbooking_options_templates',
-			'emailtemplates_mail-booking-' . $this->action . '-body' );
-        $template_subject = Settings::getOption( 'commonsbooking_options_templates',
-			'emailtemplates_mail-booking-' . $this->action . '-subject' );
-        $template_bcc = sanitize_email(Settings::getOption( 'commonsbooking_options_templates',
-			'email_mail-booking-' . $this->action . '-bcc' ));
+		$template_body    = Settings::getOption( 'commonsbooking_options_bookingcodes',
+			'mail-booking-' . $this->action . '-body' );
+        $template_subject = Settings::getOption( 'commonsbooking_options_bookingcodes',
+			'mail-booking-' . $this->action . '-subject' );
+        $template_bcc = sanitize_email(Settings::getOption( 'commonsbooking_options_bookingcodes',
+			'mail-booking-' . $this->action . '-bcc' ));
 
 		// Setup email: From
 		$fromHeaders = sprintf(
@@ -91,102 +78,116 @@ class BookingCodesMessage extends Message {
 		);
 
 		$this->prepareMail(
-			$itemAdmins[0],
+			$this->locationAdmins[0],
 			$template_body,
 			$template_subject,
 			$fromHeaders,
 			$template_bcc,
 			[
-                'item' => $item,
+                'codes' => $codes,
+                'item' => $timeframe->getItem(),
                 'location' => $timeframe->getLocation(),
-            ]
+            ],
+            [ $attachment]
 		);
         
-        //cleanup post_meta thats only used for template rendering
-        delete_post_meta( $item->ID, '_codeTable');
-        delete_post_meta( $item->ID, '_dateRange');
-
-        //in the case of multiple receivers add real to: because base class does not allow multiple users
-        if(count($itemAdmins) > 1)
-        {
-            $this->to=array();
-            foreach($itemAdmins as $admin)
-                $this->to[]=sprintf( '%s <%s>', $admin->user_nicename, $admin->user_email );
+        add_action( 'commonsbooking_mail_sent',array($this,'updateEmailSent'), 5, 2 );
+        
+        if(count($this->locationAdmins) > 1) {
+            add_filter('commonsbooking_mail_to', array($this,'addMultiTo'), 25);
+            $this->SendNotificationMail();
+            remove_filter('commonsbooking_mail_to', array($this,'addMultiTo'), 25);
         }
+        else
+		    $this->SendNotificationMail();
 
-
-		$this->SendNotificationMail();
-
+        remove_action( 'commonsbooking_mail_sent',array($this,'updateEmailSent'), 5 );
+        
         return true;
     }
-
- 	/**
-	 * renders Booking Codes Table
-	 *
-     * @param  array $bookingCodes    array of Booking Codes for this timeframe.
-     *
-     * @return array                  HTML of table and dates of first and last Code.
- 	 */
-      protected function getCodes($bookingCodes): array {
-        
-        $lines=[];
-        $startDate=null;
-        $endDate=null;
-        foreach($bookingCodes as $bookingCode) {
-            $ts=strtotime($bookingCode->getDate());
-            if($this->tsFrom != null && $ts < $this->tsFrom) continue;
-            if($this->tsTo != null && $ts > $this->tsTo) break;
-            if($startDate == null) $startDate=$ts;
-            $endDate=$ts;
-            $fmtDate=wp_date("D j. F Y", $ts);
-            $lines[]="<tr><td>{$fmtDate}</td><td>{$bookingCode->getCode()}</td></tr>";
+   
+    public function updateEmailSent($action,$result)
+    {
+        if($this->action != $action) return;
+            
+        if($result === true)
+        {
+            update_post_meta( (int)$this->getPostId(), \CommonsBooking\View\BookingCodes::LAST_CODES_EMAIL, time() ); 
         }
 
-        // if odd number of lines add empty row
-        if(count($lines) % 2 != 0) {
-            array_push($lines,"<tr><td>&nbsp;</td><td>&nbsp;</td></tr>");
-        }
-        $parts=array_chunk($lines,ceil(count($lines) / 2));
-
-        $table="<table  cellspacing='0' cellpadding='20' ><tbody><tr><td><table cellspacing=\"0\" cellpadding=\"10\" border=\"1\"><tbody>" . 
-                        implode("",$parts[0]) . 
-                        "</tbody></table></td><td><table  cellspacing=\"0\" cellpadding=\"10\" border=\"1\"><tbody>" . 
-                        implode("",$parts[1]) . 
-                        "</tbody></table></td></tr></tbody></table>";
-        return [
-            "startDate" => $startDate,
-            "endDate" => $endDate,
-            "table" => $table,
-        ];
-
-
-	}
-
- 	/**
-	 * get admins of timeframe item
-	 *
-     * @param  int $timeframeId  ID of Timeframe
-     *
-     * @return array             Item admins.
- 	 */
-      public static function getItemAdminsByTimeframeId($timeframeId): array {
-        $timeframe=new Timeframe($timeframeId);
-        $item=$timeframe->getItem();
-                
-        return self::getItemAdminsByItem($item);
     }
 
  	/**
-	 * get admins of timeframe item
-	 *
-     * @param  CommonBookings\Model\Timeframe $item  Timeframe object
-     *
-     * @return array             Item admins.
+	 * filter commonsbooking_mail_to for adding multiple to email adresses
+     * 
+     * @return array
  	 */
-      public static function getItemAdminsByItem($item): array {
-        $itemAdmins=$item->getPost()->_cb_item_admins;
+    public function addMultiTo()
+    {
+        $to=array();
+        foreach($this->locationAdmins as $admin)
+            $to[]=sprintf( '%s <%s>', $admin->user_nicename, $admin->user_email );
+
+        return $to;
+    }
+
+ 	/**
+	 * generates iCalendar attachment with all requested booking codes
+	 *
+     * @param  array  $bookingCodes   List of BookingCode objects
+     * 
+     * @return array
+ 	 */
+    protected function getIcalAttachment($bookingCodes)
+    {
+		$calendar = new iCalendar();
+
+        foreach($bookingCodes as $bookingCode) {
+            $title=apply_filters('commonsbooking_emailcodes_icalevent_title',
+                            $bookingCode->getItemName() . " (" . $bookingCode->getCode() . ")", $bookingCode);
+            $desc=apply_filters('commonsbooking_emailcodes_icalevent_desc',
+                        sprintf( __( 'Booking code for item "%1$s": %2$s', 'commonsbooking' ), $bookingCode->getItemName(),$bookingCode->getCode()),
+                        $bookingCode);
+
+		    $calendar->addEvent( DateTimeImmutable::createFromFormat('Y-m-d',$bookingCode->getDate()), $title, $desc);
+        }
+
+        $attachment = [
+            'string' => $calendar->getCalendarData(), // String attachment data (required)
+            'filename' => "BookingCodes" . '.ics', // Name of the attachment (required)
+            'encoding' => 'base64', // File encoding (defaults to 'base64')
+            'type' => 'text/calendar', // File MIME type (if left unspecified, PHPMailer will try to work it out from the file name)
+            'disposition' => 'attachment' // Disposition to use (defaults to 'attachment')
+        ];
+
+		return $attachment;
+        
+    }
+
+ 	/**
+	 * raises mail_sent action with error info
+	 *
+     * @param  string  $title   Error msg title
+     * @param  string  $msg     Error msg content
+     * 
+     * @return bool false
+ 	 */
+      protected function raiseError(  $msg): bool {
+        do_action( 'commonsbooking_mail_sent', $this->getAction(),new \WP_Error("e-mail",$msg));
+        return false;
+    }
+
+ 	/**
+	 * returns a list of CBManager user objects
+	 *
+     * @param  array  $userIds 
+     *
+     * @return array   user objects.
+ 	 */
+      public static function getUsersFromIds($userIds): array {
+        if(empty($userIds)) return [];
         $args = [
-            'include' => $itemAdmins,
+            'include' => $userIds,
             'role__in' => [ Plugin::$CB_MANAGER_ID ],
         ];
         

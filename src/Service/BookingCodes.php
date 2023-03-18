@@ -4,8 +4,9 @@ namespace CommonsBooking\Service;
 
 use CommonsBooking\Messages\BookingCodesMessage;
 use CommonsBooking\Model\BookingCode;
-
+use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use WP_Query;
+use DateTimeImmutable;
 
 class BookingCodes {
 
@@ -17,10 +18,10 @@ class BookingCodes {
 	 */
 	public static function sendBookingCodesMessage() {
 		$query = new WP_Query( [
-			'post_type'    => 'cb_timeframe',
+			'post_type'    => Timeframe::$postType,
 			'meta_query' => array(
 					array(
-						'key'     => \CommonsBooking\View\BookingCodes::$nextCronEmailID,
+						'key'     => \CommonsBooking\View\BookingCodes::NEXT_CRON_EMAIL,
 						'value'   => strtotime("today"),
 						'type'    => 'numeric',
 						'compare' => '<='
@@ -30,7 +31,7 @@ class BookingCodes {
 
 		if($query->have_posts()){
 			foreach( $query->posts as $post ) {
-				$params=\CommonsBooking\View\BookingCodes::getCodesChunkParams($post->ID);
+				$params=self::getCronParams($post->ID);
 				if($params === false) continue;
 
 				$booking_msg = new BookingCodesMessage($post->ID, "codes",$params['from'],$params['to'] );
@@ -44,11 +45,46 @@ class BookingCodes {
 					);
 				}
 				else {
-					update_post_meta( $post->ID, \CommonsBooking\View\BookingCodes::$nextCronEmailID, $params['nextCronEventTs'] ); 
+					update_post_meta( $post->ID, \CommonsBooking\View\BookingCodes::NEXT_CRON_EMAIL, $params['nextCronEventTs'] ); 
 				}
 
 			}	
 		}
 	}
+
+	/**
+	 * Retrieves Parameters of the next Booking Codes by Email Cron event.
+	 *
+	 * @param int $timeframeId
+     * 
+     * @return array   Parameters.
+	 */
+    public static function getCronParams($timeframeId): array {
+        $tsCurrentCronEvent=get_post_meta( $timeframeId, \CommonsBooking\View\BookingCodes::NEXT_CRON_EMAIL, true );
+        if(empty($tsCurrentCronEvent)) return false;
+
+        $cronEmailCodes=get_post_meta( $timeframeId, \CommonsBooking\View\BookingCodes::CRON_EMAIL_CODES, true);
+        if(!is_numeric($cronEmailCodes['cron-email-booking-code-nummonth']) || empty(@$cronEmailCodes['cron-booking-codes-enabled'])) 
+            return false;
+        
+        $dtCurrentCronEvent=new DateTimeImmutable("@" . $tsCurrentCronEvent);
+        $dtFrom=$dtCurrentCronEvent->modify("midnight first day of next month");
+        $dtTo=$dtCurrentCronEvent->modify("midnight last day of next month +" . ($cronEmailCodes['cron-email-booking-code-nummonth'] - 1) . " month");
+
+        $dtInitial=new DateTimeImmutable("@" . $cronEmailCodes['cron-email-booking-code-start']);
+        $daydiff=$dtTo->format("j") - $dtInitial->format("j");
+        if($daydiff > 0 ) {
+            $dtNextCronEvent=$dtTo->modify("-" . $daydiff . " days");
+        } 
+        else 
+            $dtNextCronEvent=$dtTo;
+
+        return array(
+            "from" => $dtFrom->getTimestamp(),
+            "to" => $dtTo->getTimestamp(),
+            "nextCronEventTs" => $dtNextCronEvent->getTimestamp(),
+        );
+    }
+
 
 }

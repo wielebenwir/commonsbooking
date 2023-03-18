@@ -167,24 +167,44 @@ return array(
 					),
 				)
 			),
-			'bookingcodes_timeframe' => array(
-				'title'  => commonsbooking_sanitizeHTML( __( 'Timeframe', 'commonsbooking' ) ),
-				'id'     => 'bookingcodes_timeframe',
+			'mail_booking_codes' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Booking codes by email', 'commonsbooking' ) ),
+				'id'     => 'mail-booking-codes',
 				'desc'   =>
-					commonsbooking_sanitizeHTML( __( 'Display settings for Booking Codes on timeframe pages', 'commonsbooking' ) ),
+					commonsbooking_sanitizeHTML( __( 'Automated sending of Booking codes by email to Location admin(s)', 'commonsbooking' ) ),
 				'fields' => array(
 					array(
-						'name'       => commonsbooking_sanitizeHTML( __( 'Booking Codes visible on timeframe page', 'commonsbooking' ) ),
-						'id'         => 'booking-codes-num-show-timeframe',
-						'desc'       => '<p>' . commonsbooking_sanitizeHTML( __('Limits the number of Booking Codes to display on timeframe page (starts on current date, -1 means "no limitation"), this does not limit the amount of generated Codes'
-								, 'commonsbooking' ) ) . '</p>',
-						'type'       => 'text_small',
-						'attributes' => array(
-							'type' => 'number',
-							'min'  => '-1',
-						),
-						'default'    => 60,
+						'name'    => commonsbooking_sanitizeHTML( __( 'Subject for automated Booking codes email', 'commonsbooking' ) ),
+						'id'      => 'mail-booking-codes-subject',
+						'type'    => 'text',
+						'default' => commonsbooking_sanitizeHTML( __( 'Booking codes for {{codes:formatDateRange}} {{item:post_title}}', 'commonsbooking' ) ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Body for automated Booking codes email', 'commonsbooking' ) ),
+						'id'      => 'mail-booking-codes-body',
+						'type'    => 'textarea',
+						'default' => commonsbooking_sanitizeHTML( __( '
+<h1>{{item:post_title}} of {{codes:formatDateRange}}</h1>
 
+<p>Booking Codes Table:</p>
+<br>   
+{{codes:codeTable}}
+<br>          
+<p>Thanks, the Team.</p>
+                            ', 'commonsbooking' ) ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Backup E-Mail for automated Booking codes email', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'E-Mail that receives a copy of mailed Booking codes (leave empty if not)', 'commonsbooking' ) ),
+						'id'      => 'mail-booking-codes-bcc',
+						'type'    => 'text',
+						'default' => '',
+					),
+					array(
+						'name'        => commonsbooking_sanitizeHTML( __('Attach iCalendar file to Booking codes email', 'commonsbooking') ),
+						'id'          => 'mail-booking-codes-attach-ical',
+						'description' => commonsbooking_sanitizeHTML( __( 'Will attach an iCalendar compatible file with Booking codes per day to import in their respective calendar application.', 'commonsbooking' ) ),
+						'type'        => 'checkbox',
 					),
 				)
 			)
@@ -308,33 +328,6 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 <br>          
 {{booking:getEmailSignature}}
                             ', 'commonsbooking' ) ),
-					),
-					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Booking codes email subject', 'commonsbooking' ) ),
-						'id'      => 'emailtemplates_mail-booking-codes-subject',
-						'type'    => 'text',
-						'default' => commonsbooking_sanitizeHTML( __( 'Booking codes for {{item:_dateRange}} {{item:post_title}}', 'commonsbooking' ) ),
-					),
-					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Booking codes email body', 'commonsbooking' ) ),
-						'id'      => 'emailtemplates_mail-booking-codes-body',
-						'type'    => 'textarea',
-						'default' => commonsbooking_sanitizeHTML( __( '
-<h1>{{item:post_title}} of {{item:_dateRange}}</h1>
-
-<p>Booking Codes Table:</p>
-<br>   
-{{item:_codeTable}}
-<br>          
-<p>Thanks, the Team.</p>
-                            ', 'commonsbooking' ) ),
-					),
-					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'E-Mail for Booking codes copy', 'commonsbooking' ) ),
-						'desc'    => commonsbooking_sanitizeHTML( __( 'E-Mail that receives a copy of mailed Booking codes (leave empty if not)', 'commonsbooking' ) ),
-						'id'      => 'email_mail-booking-codes-bcc',
-						'type'    => 'text',
-						'default' => '',
 					),
 				)
 			),
