@@ -528,9 +528,10 @@ class Plugin {
 		add_action(
             'in_plugin_update_message-' . COMMONSBOOKING_PLUGIN_BASE,
             function ( $plugin_data ) {
-                $this->UpdateNotice( COMMONSBOOKING_VERSION, $plugin_data['new_version'] );
-
-		// iCal rewrite
+                $this->UpdateNotice( COMMONSBOOKING_VERSION, $plugin_data['new_version'] )
+        );
+        
+    	// iCal rewrite
 		iCalendar::initRewrite();
 
 	}
