@@ -528,14 +528,20 @@ class Plugin {
 		add_action(
             'in_plugin_update_message-' . COMMONSBOOKING_PLUGIN_BASE,
             function ( $plugin_data ) {
-                $this->UpdateNotice( COMMONSBOOKING_VERSION, $plugin_data['new_version'] )
+                $this->UpdateNotice( COMMONSBOOKING_VERSION, $plugin_data['new_version'] );
+            }
         );
-        
+             
     	// iCal rewrite
 		iCalendar::initRewrite();
 
 	}
-
+	
+	/**
+	 * Loads text domain for (from local file or wordpress plugin-dir)
+	 *
+	 * @return void
+	 */
 	public function commonsbooking_load_textdomain() {
 		/**
 		 * We want to ensure that new translations are available directly after update
