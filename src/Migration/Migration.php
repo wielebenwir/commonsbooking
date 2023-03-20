@@ -29,6 +29,8 @@ class Migration {
 	private static bool $includeGeoData = false;
 
 	/**
+	 * The migration function called from the frontend request. This function is called via ajax.
+	 * It is called multiple times until all tasks are done.
 	 * @return void
 	 */
 	public static function ajaxMigrateAll() {
