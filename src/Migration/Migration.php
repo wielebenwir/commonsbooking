@@ -342,7 +342,9 @@ class Migration {
 		if ( $query->have_posts() ) {
 			$posts = $query->get_posts();
 			if ( count( $posts ) > 1 ) {
-				wp_delete_post($posts);
+				foreach ($posts as $post) {
+					wp_delete_post($post->ID,true);
+				}
 				return null;
 			}
 			if ( count( $posts ) == 1 ) {
