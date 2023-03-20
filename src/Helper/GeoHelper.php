@@ -31,9 +31,14 @@ class GeoHelper {
 			]
 		);
 
+		if ( array_key_exists( 'HTTP_USER_AGENT', $_SERVER ) && ! empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
+			$userAgent = $_SERVER['HTTP_USER_AGENT'];
+		} else {
+			$userAgent = $defaultUserAgent;
+		}
 		$provider = Nominatim::withOpenStreetMapServer(
 			$client,
-			array_key_exists('HTTP_USER_AGENT', $_SERVER) ? $_SERVER['HTTP_USER_AGENT'] : $defaultUserAgent
+			$userAgent
 		);
 		$geoCoder = new StatefulGeocoder( $provider, 'en' );
 

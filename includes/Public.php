@@ -160,7 +160,7 @@ add_action( 'wp_ajax_cb_cache_warmup', array( \CommonsBooking\Plugin::class, 'wa
 add_action( 'wp_ajax_nopriv_cb_cache_warmup', array( \CommonsBooking\Plugin::class, 'warmupCache' ) );
 
 if ( is_admin() ) {
-	add_action( 'wp_ajax_cb_start_migration', array( Migration::class, 'migrateAll' ) );
+	add_action( 'wp_ajax_cb_start_migration', array( Migration::class, 'ajaxMigrateAll' ) );
 	add_action( 'wp_ajax_cb_start_booking_migration', array( \CommonsBooking\Migration\Booking::class, 'ajaxMigrate' ) );
 }
 

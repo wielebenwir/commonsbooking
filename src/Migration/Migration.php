@@ -26,11 +26,12 @@ class Migration {
 		'_edit_last',
 		'_edit_lock',
 	];
+	private static bool $includeGeoData = false;
 
 	/**
 	 * @return void
 	 */
-	public static function migrateAll() {
+	public static function ajaxMigrateAll() {
 		// sanitize
 		if ( $_POST['data'] == 'false' ) {
 			$post_data = 'false';
@@ -40,149 +41,21 @@ class Migration {
 		}
 
 		if ( $post_data == 'false' ) {
-			$tasks = [
-				'locations'    => [
-					'index'    => 0,
-					'complete' => 0,
-					'failed'   => 0,
-				],
-				'items'        => [
-					'index'    => 0,
-					'complete' => 0,
-					'failed'   => 0,
-				],
-				'timeframes'   => [
-					'index'    => 0,
-					'complete' => 0,
-					'failed'   => 0,
-				],
-				'bookings'     => [
-					'index'    => 0,
-					'complete' => 0,
-					'failed'   => 0,
-				],
-				'bookingCodes' => [
-					'index'    => 0,
-					'complete' => 0,
-					'failed'   => 0,
-				],
-				'termsUrl'     => [
-					'index'    => 0,
-					'complete' => 0,
-					'failed'   => 0,
-				],
-				'options'      => [
-					'index'    => 0,
-					'complete' => 0,
-					'failed'   => 0,
-				],
-				'taxonomies'   => [
-					'index'    => 0,
-					'complete' => 0,
-					'failed'   => 0,
-				],
-			];
+			$tasks = self::getDefaultTasks();
 		} else {
 			$tasks = $post_data;
 		}
 
-		$taskIndex = 0;
+		if (
+			array_key_exists( 'geodata', $_POST )
+			&& sanitize_text_field( $_POST['geodata'] ) == 'true' ) {
+			self::$includeGeoData = true;
+		}
+
+		// Limit the number of tasks to run per ajax request
 		$taskLimit = 40;
 
-		$taskFunctions = [
-			'locations'    => [
-				'repoFunction'      => 'getLocations',
-				'migrationFunction' => 'migrateLocation',
-			],
-			'items'        => [
-				'repoFunction'      => 'getItems',
-				'migrationFunction' => 'migrateItem',
-			],
-			'timeframes'   => [
-				'repoFunction'      => 'getTimeframes',
-				'migrationFunction' => 'migrateTimeframe',
-			],
-			'bookings'     => [
-				'repoFunction'      => 'getBookings',
-				'migrationFunction' => 'migrateBooking',
-			],
-			'bookingCodes' => [
-				'repoFunction'      => 'getBookingCodes',
-				'migrationFunction' => 'migrateBookingCode',
-			],
-			'termsUrl'     => [
-				'repoFunction'      => false,
-				'migrationFunction' => 'migrateUserAgreementUrl',
-			],
-			'options'      => [
-				'repoFunction'      => false,
-				'migrationFunction' => 'migrateCB1Options',
-			],
-			'taxonomies'   => [
-				'repoFunction'      => 'getCB1Taxonomies',
-				'migrationFunction' => 'migrateTaxonomy',
-			],
-		];
-
-		foreach ( $tasks as $key => &$task ) {
-			if (
-				$task['complete'] == 0 &&
-				array_key_exists( 'migrationFunction', $taskFunctions[ $key ] ) &&
-				$taskFunctions[ $key ]['migrationFunction']
-			) {
-
-				if ( $taskIndex >= $taskLimit ) {
-					break;
-				}
-
-				// Multi migration
-				if (
-					array_key_exists( 'repoFunction', $taskFunctions[ $key ] ) &&
-					$taskFunctions[ $key ]['repoFunction']
-				) {
-					$items         = CB1::{$taskFunctions[ $key ]['repoFunction']}();
-					$task['count'] = count( $items );
-
-					// If there are items to migrate
-					if ( count( $items ) ) {
-						for ( $index = $task['index']; $index < count( $items ); $index ++ ) {
-
-							if ( $taskIndex ++ >= $taskLimit ) {
-								break;
-							}
-
-							$item = $items[ $index ];
-							if ( ! self::{$taskFunctions[ $key ]['migrationFunction']}( $item ) ) {
-								$task['failed'] += 1;
-							}
-							$task['index'] += 1;
-						}
-						if ( $task['index'] == count( $items ) ) {
-							$task['complete'] = 1;
-						}
-
-						// No items for migration found
-					} else {
-						if ( $taskIndex ++ >= $taskLimit ) {
-							break;
-						}
-						$task['complete'] = 1;
-					}
-
-					// Single Migration
-				} else {
-					if ( $taskIndex ++ >= $taskLimit ) {
-						break;
-					}
-
-					if ( ! self::{$taskFunctions[ $key ]['migrationFunction']}() ) {
-						$task['failed'] += 1;
-					}
-					$task['index']   += 1;
-					$task['complete'] = 1;
-				}
-			}
-		}
+		$tasks = self::runTasks( $tasks, self::getTaskFunctions(), $taskLimit );
 
 		wp_send_json( $tasks );
 	}
@@ -252,7 +125,7 @@ class Migration {
 
 		$existingPost = self::getExistingPost( $location->ID, Location::$postType );
 
-		return self::savePostData( $existingPost, $postData, $postMeta );
+		return self::savePostData( $existingPost, $postData, $postMeta, self::$includeGeoData );
 	}
 
 	/**
@@ -353,16 +226,15 @@ class Migration {
 	}
 
 	/**
-	 * @param $existingPost
-	 * @param $postData array Post data
-	 * @param $postMeta array Post meta
+	 * @param         $existingPost
+	 * @param         $postData array Post data
+	 * @param         $postMeta array Post meta
+	 * @param   bool  $includeGeoData
 	 *
 	 * @return bool
 	 * @throws \Geocoder\Exception\Exception
 	 */
-	protected static function savePostData( $existingPost, array $postData, array $postMeta ): bool {
-
-		$includeGeoData = array_key_exists( 'geodata', $_POST ) && sanitize_text_field( $_POST['geodata'] ) == 'true';
+	protected static function savePostData( $existingPost, array $postData, array $postMeta, bool $includeGeoData = false): bool {
 
 		if ( $existingPost instanceof WP_Post ) {
 			$updatedPost = array_merge( $existingPost->to_array(), $postData );
@@ -638,6 +510,193 @@ class Migration {
 
 			wp_set_object_terms( $cb2PostId, $term, $cb1Taxonomy->taxonomy );
 		}
+	}
+
+	/**
+	 * Runs the migration tasks, needs to be provided with the tasks and their corresponding functions.
+	 * Will return the tasks with their updated status. This function will run a maximum of $taskLimit tasks
+	 * in order to prevent timeouts.
+	 *
+	 * @param   array  $tasks  - The array of tasks with their current status
+	 * @param   array  $taskFunctions -  The corresponding functions for each task
+	 * @param   int    $taskLimit - The number of tasks to run in one go
+	 *
+	 * @return array
+	 */
+	private static function runTasks(
+		array $tasks,
+		array $taskFunctions,
+		int $taskLimit
+	): array {
+		$taskIndex = 0;
+		foreach ( $tasks as $key => &$task ) {
+			if (
+				$task['complete'] == 0
+				&& array_key_exists( 'migrationFunction',
+					$taskFunctions[ $key ] )
+				&& $taskFunctions[ $key ]['migrationFunction']
+			) {
+				if ( $taskIndex >= $taskLimit ) {
+					break;
+				}
+
+				// Multi migration
+				if (
+					array_key_exists( 'repoFunction', $taskFunctions[ $key ] )
+					&& $taskFunctions[ $key ]['repoFunction']
+				) {
+					$items         = CB1::{$taskFunctions[ $key ]['repoFunction']}();
+					$task['count'] = count( $items );
+
+					// If there are items to migrate
+					if ( count( $items ) ) {
+						for (
+							$index = $task['index']; $index < count( $items );
+							$index ++
+						) {
+							if ( $taskIndex ++ >= $taskLimit ) {
+								break;
+							}
+
+							$item = $items[ $index ];
+							if ( ! self::{$taskFunctions[ $key ]['migrationFunction']}( $item ) ) {
+								$task['failed'] += 1;
+							}
+							$task['index'] += 1;
+						}
+						if ( $task['index'] == count( $items ) ) {
+							$task['complete'] = 1;
+						}
+						// No items for migration found
+					} else {
+						if ( $taskIndex ++ >= $taskLimit ) {
+							break;
+						}
+						$task['complete'] = 1;
+					}
+					// Single Migration
+				} else {
+					if ( $taskIndex ++ >= $taskLimit ) {
+						break;
+					}
+
+					if ( ! self::{$taskFunctions[ $key ]['migrationFunction']}() ) {
+						$task['failed'] += 1;
+					}
+					$task['index']    += 1;
+					$task['complete'] = 1;
+				}
+			}
+		}
+
+		return $tasks;
+	}
+
+	/**
+	 * Gets the post types and their associated functions for migration.
+	 * The repoFunction is the function that gets the data from the CB1 repo.
+	 * The migrationFunction is the function that migrates the data and are in this class.
+	 * @return array
+	 */
+	private static function getTaskFunctions(): array {
+		return [
+			'locations'    => [
+				'repoFunction'      => 'getLocations',
+				'migrationFunction' => 'migrateLocation',
+			],
+			'items'        => [
+				'repoFunction'      => 'getItems',
+				'migrationFunction' => 'migrateItem',
+			],
+			'timeframes'   => [
+				'repoFunction'      => 'getTimeframes',
+				'migrationFunction' => 'migrateTimeframe',
+			],
+			'bookings'     => [
+				'repoFunction'      => 'getBookings',
+				'migrationFunction' => 'migrateBooking',
+			],
+			'bookingCodes' => [
+				'repoFunction'      => 'getBookingCodes',
+				'migrationFunction' => 'migrateBookingCode',
+			],
+			'termsUrl'     => [
+				'repoFunction'      => FALSE,
+				'migrationFunction' => 'migrateUserAgreementUrl',
+			],
+			'options'      => [
+				'repoFunction'      => FALSE,
+				'migrationFunction' => 'migrateCB1Options',
+			],
+			'taxonomies'   => [
+				'repoFunction'      => 'getCB1Taxonomies',
+				'migrationFunction' => 'migrateTaxonomy',
+			],
+		];
+	}
+
+	/**
+	 * Gets the default tasks for migration.
+	 * @return array[]
+	 */
+	private static function getDefaultTasks(): array {
+		return [
+			'locations'    => [
+				'index'    => 0,
+				'complete' => 0,
+				'failed'   => 0,
+			],
+			'items'        => [
+				'index'    => 0,
+				'complete' => 0,
+				'failed'   => 0,
+			],
+			'timeframes'   => [
+				'index'    => 0,
+				'complete' => 0,
+				'failed'   => 0,
+			],
+			'bookings'     => [
+				'index'    => 0,
+				'complete' => 0,
+				'failed'   => 0,
+			],
+			'bookingCodes' => [
+				'index'    => 0,
+				'complete' => 0,
+				'failed'   => 0,
+			],
+			'termsUrl'     => [
+				'index'    => 0,
+				'complete' => 0,
+				'failed'   => 0,
+			],
+			'options'      => [
+				'index'    => 0,
+				'complete' => 0,
+				'failed'   => 0,
+			],
+			'taxonomies'   => [
+				'index'    => 0,
+				'complete' => 0,
+				'failed'   => 0,
+			],
+		];
+	}
+
+	/**
+	 * Checks if all tasks are done from the tasks array.
+	 * @param   array  $tasks
+	 *
+	 * @return bool
+	 */
+	private static function tasksDone(array $tasks): bool {
+		foreach ($tasks as $task) {
+			if ($task['complete'] == 0) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }
