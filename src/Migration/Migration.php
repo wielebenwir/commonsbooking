@@ -28,6 +28,9 @@ class Migration {
 	];
 	private static bool $includeGeoData = false;
 
+	//tells us if migration has been called from the CLI
+	private static bool $cliCall = false;
+
 	/**
 	 * The migration function called from the frontend request. This function is called via ajax.
 	 * It is called multiple times until all tasks are done.
@@ -70,10 +73,11 @@ class Migration {
 	 */
 	public static function cliMigrateAll(bool $includeGeoData){
 		self::$includeGeoData = $includeGeoData;
+		self::$cliCall = true;
 		\WP_CLI::log( 'CommonsBooking: Starting migration...' );
 		$tasks = self::getDefaultTasks();
 		while ( ! self::tasksDone( $tasks) ){
-			$tasks = self::runTasks( $tasks, self::getTaskFunctions(), 10 );
+			$tasks = self::runTasks( $tasks, self::getTaskFunctions(), 0 );
 			foreach ( $tasks as $key => $task) {
 				if ( $task['complete'] == 1) {
 					continue;
@@ -552,7 +556,7 @@ class Migration {
 	private static function runTasks(
 		array $tasks,
 		array $taskFunctions,
-		int $taskLimit
+		int $taskLimit = 0
 	): array {
 		$taskIndex = 0;
 		foreach ( $tasks as $key => &$task ) {
@@ -562,7 +566,7 @@ class Migration {
 					$taskFunctions[ $key ] )
 				&& $taskFunctions[ $key ]['migrationFunction']
 			) {
-				if ( $taskIndex >= $taskLimit ) {
+				if ( $taskIndex >= $taskLimit && $taskLimit <> 0 ) {
 					break;
 				}
 
@@ -580,13 +584,17 @@ class Migration {
 							$index = $task['index']; $index < count( $items );
 							$index ++
 						) {
-							if ( $taskIndex ++ >= $taskLimit ) {
+							if ( $taskIndex ++ >= $taskLimit  && $taskLimit <> 0) {
 								break;
 							}
 
 							$item = $items[ $index ];
 							if ( ! self::{$taskFunctions[ $key ]['migrationFunction']}( $item ) ) {
+								\WP_CLI::log(sprintf("Migrating %s item %s out of %s FAILED.",$key,$index,$task['count']));
 								$task['failed'] += 1;
+							}
+							if (self::$cliCall) {
+								\WP_CLI::log(sprintf("Migrating %s %s/%s successful",$key,$index,$task['count']));
 							}
 							$task['index'] += 1;
 						}
@@ -595,14 +603,14 @@ class Migration {
 						}
 						// No items for migration found
 					} else {
-						if ( $taskIndex ++ >= $taskLimit ) {
+						if ( $taskIndex ++ >= $taskLimit  && $taskLimit <> 0) {
 							break;
 						}
 						$task['complete'] = 1;
 					}
 					// Single Migration
 				} else {
-					if ( $taskIndex ++ >= $taskLimit ) {
+					if ( $taskIndex ++ >= $taskLimit && $taskLimit <> 0 ) {
 						break;
 					}
 
