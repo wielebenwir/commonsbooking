@@ -164,6 +164,12 @@ if ( is_admin() ) {
 	add_action( 'wp_ajax_cb_start_booking_migration', array( \CommonsBooking\Migration\Booking::class, 'ajaxMigrate' ) );
 }
 
+//add WP CLI Migration command
+if ( class_exists( 'WP_CLI' )) {
+	WP_CLI::add_command( 'plugin ' . COMMONSBOOKING_PLUGIN_SLUG .' migrate', function( $args ) {
+		Migration::cliMigrateAll(in_array('geodata', $args));
+	} );
+}
 // Map ajax
 add_action( 'wp_ajax_cb_map_locations', array( MapShortcode::class, 'get_locations' ) );
 add_action( 'wp_ajax_nopriv_cb_map_locations', array( MapShortcode::class, 'get_locations' ) );

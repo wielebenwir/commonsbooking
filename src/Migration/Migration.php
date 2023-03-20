@@ -61,6 +61,29 @@ class Migration {
 	}
 
 	/**
+	 * The migration function that is called from the CLI.
+	 * @param   bool  $includeGeoData
+	 *
+	 * @return void
+	 */
+	public static function cliMigrateAll(bool $includeGeoData){
+		self::$includeGeoData = $includeGeoData;
+		\WP_CLI::log( 'CommonsBooking: Starting migration...' );
+		$tasks = self::getDefaultTasks();
+		while ( ! self::tasksDone( $tasks) ){
+			$tasks = self::runTasks( $tasks, self::getTaskFunctions(), 10 );
+			foreach ( $tasks as $key => $task) {
+				if ( $task['complete'] == 1) {
+					continue;
+				}
+				\WP_CLI::log( 'Migrating ' . $key. ': ' . $task['index'] . '/' . $task['count'] );
+				break;
+			}
+		}
+		\WP_CLI::success( 'CommonsBooking: Migration done.' );
+	}
+
+	/**
 	 * @param WP_Post $location CB1 Location
 	 *
 	 * @throws Exception|\Geocoder\Exception\Exception
