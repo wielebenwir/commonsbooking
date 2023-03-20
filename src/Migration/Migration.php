@@ -240,7 +240,8 @@ class Migration {
 		if ( $query->have_posts() ) {
 			$posts = $query->get_posts();
 			if ( count( $posts ) > 1 ) {
-				throw new Exception( 'Migration duplicates found.' );
+				wp_delete_post($posts);
+				return null;
 			}
 			if ( count( $posts ) == 1 ) {
 				return $posts[0];
