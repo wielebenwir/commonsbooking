@@ -449,7 +449,7 @@ class Calendar {
 		array $items,
 		$advanceBookingDays = null,
 		$lastBookableDate = null,
-        $firstBookableDay = null,
+        $firstBookableDay = null
 	): array {
 
         $current_user   = wp_get_current_user();
