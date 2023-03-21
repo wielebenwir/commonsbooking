@@ -356,7 +356,7 @@ class Calendar {
 		if ( count( $bookableTimeframes ) ) {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday( $bookableTimeframes );
 			$advanceBookingDays       = intval( $closestBookableTimeframe->getFieldValue( 'timeframe-advance-booking-days' ) );
-            $bookingStartDayOffset    = intval( $closestBookableTimeframe->getFieldValue( 'booking-startday-offset' ) );
+            $firstBookableDay = $closestBookableTimeframe->getFirstBookableDay();
 
 			// Only if passed daterange must not be kept
 			if ( ! $keepDaterange ) {
@@ -389,7 +389,7 @@ class Calendar {
 			}
 		}
 
-		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays, $lastBookableDate, $bookingStartDayOffset );
+		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays, $lastBookableDate, $firstBookableDay );
 	}
 
 	/**
@@ -449,7 +449,7 @@ class Calendar {
 		array $items,
 		$advanceBookingDays = null,
 		$lastBookableDate = null,
-        $bookingStartDayOffset = null
+        $firstBookableDay = null,
 	): array {
 
         $current_user   = wp_get_current_user();
@@ -503,7 +503,7 @@ class Calendar {
 			foreach ( $calendar->getWeeks() as $week ) {
 				/** @var Day $day */
 				foreach ( $week->getDays() as $day ) {
-					self::mapDay( $day, $lastBookableDate, $endDate, $jsonResponse, $bookingStartDayOffset );
+					self::mapDay( $day, $lastBookableDate, $endDate, $jsonResponse, $firstBookableDay );
 				}
 			}
 
@@ -524,7 +524,7 @@ class Calendar {
 	 *
 	 * @return void
 	 */
-	protected static function mapDay( $day, $lastBookableDate, $endDate, &$jsonResponse, $bookingStartDayOffset ) {
+	protected static function mapDay( $day, $lastBookableDate, $endDate, &$jsonResponse, $firstBookableDay ) {
 		$dayArray = [
 			'date'               => $day->getFormattedDate( 'd.m.Y' ),
 			'slots'              => [],
@@ -537,14 +537,6 @@ class Calendar {
 			'firstSlotBooked'    => null,
 			'lastSlotBooked'     => null,
 		];
-
-        // adding the minimum booking start offset and calculate the first allowed bookable day based on the timeframe settings
-        if ( empty( $bookingStartDayOffset ) ) {
-            $bookingStartDayOffset = 0;
-        }
-        $date             = Wordpress::getLocalDateTime( current_time( 'timestamp' ) );
-        $today            = $date->format( 'Y-m-d' );
-        $firstBookableDay = date( 'Y-m-d', strtotime( $today . ' + ' . $bookingStartDayOffset . ' days' ) );
 
         // If all slots are locked, day cannot be selected
 		$allLocked = true;
@@ -578,9 +570,9 @@ class Calendar {
 			$dayArray = self::getLockedDayArray( $day );
 		}
 
-       // if day is before minium bookable offset, day is locked
-       // We need to add this here and in section predefined day types below twice, because
-       // renderTable function uses only the days array to generate the calendar.
+        // if day is before minium bookable offset, day is locked
+        // We need to add this here and in section predefined day types below too, because
+        // renderTable function uses only the days array to generate the calendar.
         if ( $day->getFormattedDate( 'Y-m-d' ) < $firstBookableDay ) {
             $dayArray['locked'] = true;
         }
@@ -606,7 +598,6 @@ class Calendar {
 		}
 
         // if day is before minium bookable offset, day is locked
-        commonsbooking_write_log("day" . $day->getFormattedDate( 'Y-m-d' ));
         if ( $day->getFormattedDate( 'Y-m-d' ) < $firstBookableDay ) {
             $jsonResponse['lockDays'][] = $day->getFormattedDate( 'Y-m-d' );
         }

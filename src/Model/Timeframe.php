@@ -586,7 +586,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function getStartDateDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
-		return Wordpress::getUTCDateTimeByTimestamp($startDateString);
+		return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 	}
 
 	/**
@@ -599,7 +599,7 @@ class Timeframe extends CustomPost {
 		$startTimeString = $this->getMeta( 'start-time' );
 		$startDate       = Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		if ( $startTimeString ) {
-			$startTime = Wordpress::getUTCDateTimeByTimestamp(strtotime( $startTimeString ));
+			$startTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $startTimeString ) );
 			$startDate->setTime( $startTime->format( 'H' ), $startTime->format( 'i' ) );
 		}
 
@@ -613,7 +613,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function getEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
-		return Wordpress::getUTCDateTimeByTimestamp($endDateString);
+		return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 	}
 
 	/**
@@ -625,7 +625,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function getEndTimeDateTime( $endDateString = null ): DateTime {
 		$endTimeString = $this->getMeta( 'end-time' );
-		$endDate = Wordpress::getUTCDateTime();
+		$endDate       = Wordpress::getUTCDateTime();
 
 		if ( $endTimeString ) {
 			$endTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $endTimeString ) );
@@ -672,4 +672,16 @@ class Timeframe extends CustomPost {
 	public function getRepetition() {
 		return $this->getMeta( self::META_REPETITION );
 	}
+
+    /**
+     * Returns first bookable day based on the defined booking startday offset in timeframe
+     *
+     * @return date string Y-m-d
+     */
+    public function getFirstBookableDay() {
+        $offset = $this->getFieldValue( 'booking-startday-offset' ) ?: 0;
+        $today = current_datetime()->format('Y-m-d');
+        return date( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
+
+    }
 }
