@@ -14,6 +14,7 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use Exception;
 use WP_Post;
 use WP_Query;
+use \Closure;
 
 class Migration {
 
