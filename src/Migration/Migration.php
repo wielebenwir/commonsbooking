@@ -89,8 +89,16 @@ class Migration {
 		self::$cliCall = true;
 
 		\WP_CLI::log( 'CommonsBooking: Starting migration...' );
-		\WP_CLI::log( 'CommonsBooking: Enabling wp_defer_term_counting to speed up migration. Will be disabled after migration.' );
+		\WP_CLI::log( 'CommonsBooking: Setting WP_IMPORTING to true.');
+		define( 'WP_IMPORTING', true );
+		\WP_CLI::log( 'CommonsBooking: Enabling wp_defer_term_counting  && wp_defer_comment_counting to speed up migration. Will be disabled after migration.' );
 		wp_defer_term_counting(true);
+		wp_defer_comment_counting( true );
+
+		\WP_CLI::log('CommonsBooking: Disabling autocommit to speed up migration. Will be enabled after migration.' );
+		global $wpdb;
+		$wpdb->query( 'SET autocommit = 0;' );
+
 		$tasks = self::getDefaultTasks();
 		while ( ! self::tasksDone( $tasks) ){
 			$tasks = self::runTasks( $tasks, self::getTaskFunctions(), 0 );
@@ -102,8 +110,13 @@ class Migration {
 				break;
 			}
 		}
-		\WP_CLI::log( 'CommonsBooking: Disabling wp_defer_term_counting.' );
+		\WP_CLI::log( 'CommonsBooking: Disabling wp_defer_term_counting && wp_defer_comment_counting.' );
 		wp_defer_term_counting(false);
+		wp_defer_comment_counting( false );
+		\WP_CLI::log( 'CommonsBooking: Committing to database' );
+		$wpdb->query( 'COMMIT;' );
+		\WP_CLI::log( 'CommonsBooking: Enabling autocommit' );
+		$wpdb->query( 'SET autocommit = 1;' );
 		\WP_CLI::success( 'CommonsBooking: Migration done.' );
 	}
 
