@@ -593,7 +593,7 @@ class Migration {
 					array_key_exists( 'repoFunction', $taskFunctions[ $key ] )
 					&& $taskFunctions[ $key ]['repoFunction']
 				) {
-					$items         = CB1::{$taskFunctions[ $key ]['repoFunction']}();
+					$items         = $taskFunctions[ $key ]['repoFunction']();
 					$task['count'] = count( $items );
 
 					// If there are items to migrate
@@ -607,11 +607,13 @@ class Migration {
 							}
 
 							$item = $items[ $index ];
-							if ( ! self::{$taskFunctions[ $key ]['migrationFunction']}( $item ) ) {
-								\WP_CLI::log(sprintf("Migrating %s item %s out of %s FAILED.",$key,$index,$task['count']));
+							if ( ! $taskFunctions[ $key ]['migrationFunction'] ( $item ) ) {
+								if (self::$cliCall) {
+									\WP_CLI::log(sprintf("Migrating %s item %s out of %s FAILED.",$key,$index,$task['count']));
+								}
 								$task['failed'] += 1;
 							}
-							if (self::$cliCall) {
+							elseif (self::$cliCall) {
 								\WP_CLI::log(sprintf("Migrating %s %s/%s successful",$key,$index,$task['count']));
 							}
 							$task['index'] += 1;
@@ -645,13 +647,11 @@ class Migration {
 	}
 
 	/**
-	 * Gets the post types and their associated functions for migration.
-	 * The repoFunction is the function that gets the data from the CB1 repo.
-	 * The migrationFunction is the function that migrates the data and are in this class.
+	 * Gets the post types and their associated functions as Closures for the migration tasks.
 	 * @return array
 	 */
 	private static function getTaskFunctions(): array {
-		return [
+		$defaultFunctions = [
 			'locations'    => [
 				'repoFunction'      => 'getLocations',
 				'migrationFunction' => 'migrateLocation',
@@ -685,6 +685,13 @@ class Migration {
 				'migrationFunction' => 'migrateTaxonomy',
 			],
 		];
+		//map the default functions to the correct class
+		foreach ($defaultFunctions as &$defaultFunction){
+			$defaultFunction['repoFunction'] = Closure::fromCallable(CB1::class . '::' . $defaultFunction['repoFunction']);
+			$defaultFunction['migrationFunction'] = Closure::fromCallable(self::class . '::' . $defaultFunction['migrationFunction']);
+		}
+
+		return apply_filters( 'commonsbooking_migration_task_functions', $defaultFunctions );
 	}
 
 	/**
@@ -692,7 +699,7 @@ class Migration {
 	 * @return array[]
 	 */
 	private static function getDefaultTasks(): array {
-		return [
+		return apply_filters('commonsbooking_migration_tasks', [
 			'locations'    => [
 				'index'    => 0,
 				'complete' => 0,
@@ -733,7 +740,7 @@ class Migration {
 				'complete' => 0,
 				'failed'   => 0,
 			],
-		];
+		]);
 	}
 
 	/**

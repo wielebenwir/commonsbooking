@@ -167,7 +167,7 @@ if ( is_admin() ) {
 //add WP CLI Migration command
 if ( class_exists( 'WP_CLI' )) {
 	WP_CLI::add_command( 'plugin ' . COMMONSBOOKING_PLUGIN_SLUG .' migrate', function( $args ) {
-		Migration::cliMigrateAll(in_array('geodata', $args));
+		Migration::cliMigrateAll(in_array('geodata', $args),in_array('nocheck', $args));
 	} );
 }
 // Map ajax
