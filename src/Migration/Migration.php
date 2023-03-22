@@ -75,6 +75,8 @@ class Migration {
 		self::$includeGeoData = $includeGeoData;
 		self::$cliCall = true;
 		\WP_CLI::log( 'CommonsBooking: Starting migration...' );
+		\WP_CLI::log( 'CommonsBooking: Enabling wp_defer_term_counting to speed up migration. Will be disabled after migration.' );
+		wp_defer_term_counting(true);
 		$tasks = self::getDefaultTasks();
 		while ( ! self::tasksDone( $tasks) ){
 			$tasks = self::runTasks( $tasks, self::getTaskFunctions(), 0 );
@@ -86,6 +88,8 @@ class Migration {
 				break;
 			}
 		}
+		\WP_CLI::log( 'CommonsBooking: Disabling wp_defer_term_counting.' );
+		wp_defer_term_counting(false);
 		\WP_CLI::success( 'CommonsBooking: Migration done.' );
 	}
 
