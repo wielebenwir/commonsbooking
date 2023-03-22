@@ -534,18 +534,17 @@ class Migration {
 	}
 
 	public static function migrateBookingsPreTask() {
-		add_filter( 'pre_wp_unique_post_slug',array('\CommonsBooking\Migration','slugGenerator') ,10, 6
+		add_filter( 'pre_wp_unique_post_slug',
+			fn( $override_slug, $slug, $post_id, $post_status, $post_type, $post_parent ) => Helper::generateRandomString(), 10, 6
 		);
 		wp_suspend_cache_addition(true);
 	}
 	
 	public static function migrateBookingsPostTask() {
-		remove_filter( 'pre_wp_unique_post_slug',array('\CommonsBooking\Migration','slugGenerator') ,10 );
+		remove_filter( 'pre_wp_unique_post_slug',
+			fn( $override_slug, $slug, $post_id, $post_status, $post_type, $post_parent ) => Helper::generateRandomString()
+		);
 		wp_suspend_cache_addition(false);
-	}
-
-	public static function slugGenerator($override_slug, $slug, $post_id, $post_status, $post_type, $post_parent) {
-		return Helper::generateRandomString();
 	}
 
 	/**
