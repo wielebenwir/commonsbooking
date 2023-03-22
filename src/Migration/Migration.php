@@ -313,7 +313,7 @@ class Migration {
 		}
 		if ( $postId ) {
 
-			if ( get_post_type( $postId ) == Location::$postType && $includeGeoData ) {
+			if ( $includeGeoData && get_post_type( $postId ) == Location::$postType) {
 				$location = new \CommonsBooking\Model\Location( $postId );
 				$location->updateGeoLocation();
 				sleep( 1 );
