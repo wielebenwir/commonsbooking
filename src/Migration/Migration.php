@@ -35,6 +35,7 @@ class Migration {
 	private static bool $noPostCheck = false;
 	private static array $itemCache = [];
 	private static array $locationCache = [];
+	private static bool $elementorActive;
 
 	/**
 	 * The migration function called from the frontend request. This function is called via ajax.
@@ -319,7 +320,7 @@ class Migration {
 			}
 
 			// if elementor is active, we clone the elementor meta-keys
-			if ( is_plugin_active( 'elementor/elementor.php' ) ) {
+			if ( self::$elementorActive ) {
 				self::migrateElementorMetaKeys( $existingPost->ID, $postId );
 			}
 
@@ -628,6 +629,7 @@ class Migration {
 			global $wpdb;
 		}
 		$taskIndex = 0;
+		self::$elementorActive = is_plugin_active( 'elementor/elementor.php' );
 		foreach ( $tasks as $key => &$task ) {
 			if (
 				$task['complete'] == 0
