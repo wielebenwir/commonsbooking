@@ -455,6 +455,9 @@ class Migration {
 	 * @throws Exception
 	 */
 	public static function migrateBooking( $booking ): bool {
+		if (self::$cliCall) {
+			$before = hrtime();
+		}
 		$user       = get_user_by( 'id', $booking['user_id'] );
 		$cbItem     = self::getExistingPost( $booking['item_id'], Item::$postType );
 		$cbLocation = self::getExistingPost( $booking['location_id'], Location::$postType );
@@ -498,7 +501,15 @@ class Migration {
 			$existingPost = null;
 		}
 
-		return self::savePostData( $existingPost, $postData, $postMeta );
+		$savePostData = self::savePostData( $existingPost,
+			$postData,
+			$postMeta );
+
+		if (self::$cliCall) {
+			$after = hrtime();
+			\WP_CLI::log( 'Migrated booking ' . $booking['id'] . ' in ' . ($after - $before) . ' nanoseconds.' );
+		}
+		return $savePostData;
 	}
 
 	/**
