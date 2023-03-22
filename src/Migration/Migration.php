@@ -104,7 +104,7 @@ class Migration {
 
 		$tasks = self::getDefaultTasks();
 		while ( ! self::tasksDone( $tasks) ){
-			$tasks = self::runTasks( $tasks, self::getTaskFunctions(), 0 );
+			$tasks = self::runTasks( $tasks, self::getTaskFunctions(), 100 );
 			foreach ( $tasks as $key => $task) {
 				if ( $task['complete'] == 1) {
 					continue;
@@ -611,6 +611,8 @@ class Migration {
 	 * Will return the tasks with their updated status. This function will run a maximum of $taskLimit tasks
 	 * in order to prevent timeouts.
 	 *
+	 * When run from the CLI, the task limit will not cause the function to break but will instead commit to the database.
+	 *
 	 * @param   array  $tasks  - The array of tasks with their current status
 	 * @param   array  $taskFunctions -  The corresponding functions for each task
 	 * @param   int    $taskLimit - The number of tasks to run in one go
@@ -622,6 +624,9 @@ class Migration {
 		array $taskFunctions,
 		int $taskLimit = 0
 	): array {
+		if (self::$cliCall){
+			global $wpdb;
+		}
 		$taskIndex = 0;
 		foreach ( $tasks as $key => &$task ) {
 			if (
@@ -631,7 +636,14 @@ class Migration {
 				&& $taskFunctions[ $key ]['migrationFunction']
 			) {
 				if ( $taskIndex >= $taskLimit && $taskLimit <> 0 ) {
-					break;
+					if (self::$cliCall) {
+						\WP_CLI::log("Committing to database");
+						$wpdb->query('COMMIT');
+						$taskIndex = 0;
+					}
+					else {
+						break;
+					}
 				}
 
 				// Multi migration
@@ -652,7 +664,14 @@ class Migration {
 							$index ++
 						) {
 							if ( $taskIndex ++ >= $taskLimit  && $taskLimit <> 0) {
-								break;
+								if (self::$cliCall) {
+									\WP_CLI::log("Committing to database");
+									$wpdb->query('COMMIT');
+									$taskIndex = 0;
+								}
+								else {
+									break;
+								}
 							}
 
 							$item = $items[ $index ];
@@ -673,14 +692,28 @@ class Migration {
 						// No items for migration found
 					} else {
 						if ( $taskIndex ++ >= $taskLimit  && $taskLimit <> 0) {
-							break;
+							if (self::$cliCall) {
+								\WP_CLI::log("Committing to database");
+								$wpdb->query('COMMIT');
+								$taskIndex = 0;
+							}
+							else {
+								break;
+							}
 						}
 						$task['complete'] = 1;
 					}
 					// Single Migration
 				} else {
 					if ( $taskIndex ++ >= $taskLimit && $taskLimit <> 0 ) {
-						break;
+						if (self::$cliCall) {
+							\WP_CLI::log("Committing to database");
+							$wpdb->query('COMMIT');
+							$taskIndex = 0;
+						}
+						else {
+							break;
+						}
 					}
 
 					if ( ! self::{$taskFunctions[ $key ]['migrationFunction']}() ) {
