@@ -507,17 +507,7 @@ class Migration {
 		];
 
 		// CB2 <-> CB1
-		if ( self::$cliCall) {
-			if (empty(self::$bookingCodeCache[$booking['code_id']])) {
-				$bookingCode = CB1::getBookingCode( $booking['code_id'] );
-				self::$bookingCodeCache[ $booking['code_id'] ] = $bookingCode;
-				\WP_CLI::log('Wrote booking code to cache');
-			}
-			$bookingCode = self::$bookingCodeCache[ $booking['code_id'] ];
-		}
-		else {
-			$bookingCode = CB1::getBookingCode( $booking['code_id'] );
-		}
+		$bookingCode = CB1::getBookingCode( $booking['code_id'] );
 		$postMeta    = [
 			COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID' => $booking['id'],
 			\CommonsBooking\Model\Timeframe::REPETITION_START  => strtotime( $booking['date_start'] ),
