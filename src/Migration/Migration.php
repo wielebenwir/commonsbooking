@@ -283,6 +283,9 @@ class Migration {
 	 */
 	protected static function savePostData( $existingPost, array $postData, array $postMeta, bool $includeGeoData = false): bool {
 
+		//append postMeta to postData
+		$postData['meta_input'] = $postMeta;
+
 		if ( $existingPost instanceof WP_Post ) {
 			$updatedPost = array_merge( $existingPost->to_array(), $postData );
 			$postId      = wp_update_post( $updatedPost );
@@ -290,13 +293,6 @@ class Migration {
 			$postId = wp_insert_post( $postData );
 		}
 		if ( $postId ) {
-			foreach ( $postMeta as $key => $value ) {
-				update_post_meta(
-					$postId,
-					$key,
-					$value
-				);
-			}
 
 			if ( get_post_type( $postId ) == Location::$postType && $includeGeoData ) {
 				$location = new \CommonsBooking\Model\Location( $postId );
