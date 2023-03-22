@@ -30,6 +30,8 @@ class Migration {
 
 	//tells us if migration has been called from the CLI
 	private static bool $cliCall = false;
+	//will disable check for already existing posts, warning, may cause corrupted data
+	private static bool $noPostCheck = false;
 
 	/**
 	 * The migration function called from the frontend request. This function is called via ajax.
@@ -67,13 +69,24 @@ class Migration {
 
 	/**
 	 * The migration function that is called from the CLI.
+	 *
 	 * @param   bool  $includeGeoData
+	 * @param   bool  $noPostCheck
 	 *
 	 * @return void
 	 */
-	public static function cliMigrateAll(bool $includeGeoData){
-		self::$includeGeoData = $includeGeoData;
+	public static function cliMigrateAll(bool $includeGeoData, bool $noPostCheck = false){
+		if ($includeGeoData) {
+			\WP_CLI::log( 'CommonsBooking: Including geodata in migration. This may take a while.' );
+			self::$includeGeoData = true;
+		}
+		if ($noPostCheck) {
+			\WP_CLI::log( 'CommonsBooking: No post check enabled for booking migration. This might speed up migration times but might also leave you with doubled bookings.' );
+			self::$noPostCheck = true;
+		}
+
 		self::$cliCall = true;
+
 		\WP_CLI::log( 'CommonsBooking: Starting migration...' );
 		\WP_CLI::log( 'CommonsBooking: Enabling wp_defer_term_counting to speed up migration. Will be disabled after migration.' );
 		wp_defer_term_counting(true);
@@ -468,7 +481,12 @@ class Migration {
 			COMMONSBOOKING_METABOX_PREFIX . 'bookingcode'      => CB1::getBookingCode( $booking['code_id'] ),
 		];
 
-		$existingPost = self::getExistingPost( $booking['id'], \CommonsBooking\Wordpress\CustomPostType\Booking::$postType );
+		if ( ! self::$noPostCheck) {
+			$existingPost = self::getExistingPost( $booking['id'], \CommonsBooking\Wordpress\CustomPostType\Booking::$postType );
+		}
+		else {
+			$existingPost = null;
+		}
 
 		return self::savePostData( $existingPost, $postData, $postMeta );
 	}
