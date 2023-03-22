@@ -97,7 +97,6 @@ class Migration {
 		\WP_CLI::log( 'CommonsBooking: Enabling wp_defer_term_counting  && wp_defer_comment_counting to speed up migration. Will be disabled after migration.' );
 		wp_defer_term_counting(true);
 		wp_defer_comment_counting( true );
-		wp_suspend_cache_addition(true);
 
 		\WP_CLI::log('CommonsBooking: Disabling autocommit to speed up migration. Will be enabled after migration.' );
 		global $wpdb;
@@ -534,6 +533,21 @@ class Migration {
 		return $savePostData;
 	}
 
+	public static function migrateBookingsPreTask() {
+		add_filter( 'pre_wp_unique_post_slug',array('\CommonsBooking\Migration','slugGenerator') ,10, 6
+		);
+		wp_suspend_cache_addition(true);
+	}
+	
+	public static function migrateBookingsPostTask() {
+		remove_filter( 'pre_wp_unique_post_slug',array('\CommonsBooking\Migration','slugGenerator') ,10 );
+		wp_suspend_cache_addition(false);
+	}
+
+	public static function slugGenerator($override_slug, $slug, $post_id, $post_status, $post_type, $post_parent) {
+		return Helper::generateRandomString();
+	}
+
 	/**
 	 * Migrates CB1 Booking Code to CB2.
 	 *
@@ -656,6 +670,10 @@ class Migration {
 					$items         = $taskFunctions[ $key ]['repoFunction']();
 					$task['count'] = count( $items );
 
+					if (! empty( $taskFunctions[ $key ]['preTask'] ) ) {
+						$taskFunctions[ $key ]['preTask']();
+					}
+
 					// If there are items to migrate
 					if ( count( $items ) ) {
 						if (self::$cliCall) {
@@ -705,6 +723,10 @@ class Migration {
 						}
 						$task['complete'] = 1;
 					}
+
+					if (! empty( $taskFunctions[ $key ]['postTask'] ) ) {
+						$taskFunctions[ $key ]['postTask']();
+					}
 					// Single Migration
 				} else {
 					if ( $taskIndex ++ >= $taskLimit && $taskLimit <> 0 ) {
@@ -749,8 +771,10 @@ class Migration {
 				'migrationFunction' => 'migrateTimeframe',
 			],
 			'bookings'     => [
+				'preTask'           => 'migrateBookingsPreTask',
 				'repoFunction'      => 'getBookings',
 				'migrationFunction' => 'migrateBooking',
+				'postTask'          => 'migrateBookingsPostTask',
 			],
 			'bookingCodes' => [
 				'repoFunction'      => 'getBookingCodes',
@@ -786,6 +810,24 @@ class Migration {
 					= Closure::fromCallable( [
 					self::class,
 					$defaultFunction['migrationFunction']
+				] );
+			}
+
+			if ( ! empty( $defaultFunction['preTask'] ) ) {
+				$defaultFunctions[ $key ]['preTask']
+					= $defaultFunction['preTask']
+					= Closure::fromCallable( [
+					self::class,
+					$defaultFunction['preTask']
+				] );
+			}
+
+			if ( ! empty( $defaultFunction['postTask'] ) ) {
+				$defaultFunctions[ $key ]['postTask']
+					= $defaultFunction['postTask']
+					= Closure::fromCallable( [
+					self::class,
+					$defaultFunction['postTask']
 				] );
 			}
 		}
