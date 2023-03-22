@@ -33,6 +33,8 @@ class Migration {
 	private static bool $cliCall = false;
 	//will disable check for already existing posts, warning, may cause corrupted data
 	private static bool $noPostCheck = false;
+	private static array $itemCache = [];
+	private static array $locationCache = [];
 
 	/**
 	 * The migration function called from the frontend request. This function is called via ajax.
@@ -456,11 +458,25 @@ class Migration {
 	 */
 	public static function migrateBooking( $booking ): bool {
 		if (self::$cliCall) {
-			$before = hrtime();
+			$before = hrtime(true);
 		}
 		$user       = get_user_by( 'id', $booking['user_id'] );
-		$cbItem     = self::getExistingPost( $booking['item_id'], Item::$postType );
-		$cbLocation = self::getExistingPost( $booking['location_id'], Location::$postType );
+		if ( self::$cliCall) {
+			if ( empty(self::$itemCache['item_id']) ){
+				$existingItem = self::getExistingPost( $booking['item_id'], Item::$postType );
+				self::$itemCache[ $booking['item_id'] ] = $existingItem;
+			}
+			if (empty(self::$locationCache['location_id'])) {
+				$existingLocation = self::getExistingPost( $booking['location_id'], Location::$postType );
+				self::$locationCache[ $booking['location_id'] ] = $existingLocation;
+			}
+			$cbItem     = self::$itemCache[ $booking['item_id'] ];
+			$cbLocation = self::$locationCache[ $booking['location_id'] ];
+		}
+		else {
+			$cbItem     = self::getExistingPost( $booking['item_id'], Item::$postType );
+			$cbLocation = self::getExistingPost( $booking['location_id'], Location::$postType );
+		}
 
 		// Collect post data
 		$userName = 'unknown user';
@@ -506,8 +522,9 @@ class Migration {
 			$postMeta );
 
 		if (self::$cliCall) {
-			$after = hrtime();
-			\WP_CLI::log( 'Migrated booking ' . $booking['id'] . ' in ' . ($after - $before) . ' nanoseconds.' );
+			$after = hrtime(true);
+			$eta = $after - $before;
+			\WP_CLI::log( 'Migrated booking ' . $booking['id'] . ' in ' . $eta/1e+6  . ' milliseconds.' );
 		}
 		return $savePostData;
 	}
@@ -623,6 +640,9 @@ class Migration {
 
 					// If there are items to migrate
 					if ( count( $items ) ) {
+						if (self::$cliCall) {
+							\WP_CLI::log(sprintf("Starting migration of %s posts",count($items)));
+						}
 						for (
 							$index = $task['index']; $index < count( $items );
 							$index ++
