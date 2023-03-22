@@ -687,9 +687,9 @@ class Migration {
 			],
 		];
 		//map the default functions to the correct class
-		foreach ($defaultFunctions as &$defaultFunction){
-			$defaultFunction['repoFunction'] = Closure::fromCallable(CB1::class . '::' . $defaultFunction['repoFunction']);
-			$defaultFunction['migrationFunction'] = Closure::fromCallable(self::class . '::' . $defaultFunction['migrationFunction']);
+		foreach ($defaultFunctions as $key => $defaultFunction){
+			$defaultFunctions[$key]['repoFunction'] = $defaultFunction['repoFunction'] = Closure::fromCallable(array(CB1::class, $defaultFunction['repoFunction']));
+			$defaultFunctions[$key]['migrationFunction'] = $defaultFunction['migrationFunction'] = Closure::fromCallable(array( self::class, $defaultFunction['migrationFunction']));
 		}
 
 		return apply_filters( 'commonsbooking_migration_task_functions', $defaultFunctions );
