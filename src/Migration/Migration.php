@@ -96,6 +96,7 @@ class Migration {
 		\WP_CLI::log( 'CommonsBooking: Enabling wp_defer_term_counting  && wp_defer_comment_counting to speed up migration. Will be disabled after migration.' );
 		wp_defer_term_counting(true);
 		wp_defer_comment_counting( true );
+		wp_suspend_cache_addition(true);
 
 		\WP_CLI::log('CommonsBooking: Disabling autocommit to speed up migration. Will be enabled after migration.' );
 		global $wpdb;
@@ -115,6 +116,7 @@ class Migration {
 		\WP_CLI::log( 'CommonsBooking: Disabling wp_defer_term_counting && wp_defer_comment_counting.' );
 		wp_defer_term_counting(false);
 		wp_defer_comment_counting( false );
+		wp_suspend_cache_addition(false);
 		\WP_CLI::log( 'CommonsBooking: Committing to database' );
 		$wpdb->query( 'COMMIT;' );
 		\WP_CLI::log( 'CommonsBooking: Enabling autocommit' );
@@ -465,10 +467,12 @@ class Migration {
 			if ( empty(self::$itemCache['item_id']) ){
 				$existingItem = self::getExistingPost( $booking['item_id'], Item::$postType );
 				self::$itemCache[ $booking['item_id'] ] = $existingItem;
+				\WP_CLI::log('Wrote item to cache');
 			}
 			if (empty(self::$locationCache['location_id'])) {
 				$existingLocation = self::getExistingPost( $booking['location_id'], Location::$postType );
 				self::$locationCache[ $booking['location_id'] ] = $existingLocation;
+				\WP_CLI::log('Wrote location to cache');
 			}
 			$cbItem     = self::$itemCache[ $booking['item_id'] ];
 			$cbLocation = self::$locationCache[ $booking['location_id'] ];
