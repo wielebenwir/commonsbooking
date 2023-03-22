@@ -309,7 +309,14 @@ class Migration {
 			$updatedPost = array_merge( $existingPost->to_array(), $postData );
 			$postId      = wp_update_post( $updatedPost );
 		} else {
+			//measure time needed to insert post
+			$before = hrtime( true );
 			$postId = wp_insert_post( $postData );
+			$after  = hrtime( true );
+			$diff   = $after - $before;
+			if (self::$cliCall){
+				\WP_CLI::log( 'Time needed to insert post: ' . $diff / 1e+6 . 'ms' );
+			}
 		}
 		if ( $postId ) {
 
@@ -523,7 +530,7 @@ class Migration {
 			'end-time'                                         => '23:59',
 			'full-day'                                         => 'on',
 			'grid'                                             => '0',
-			COMMONSBOOKING_METABOX_PREFIX . 'bookingcode'      => CB1::getBookingCode( $booking['code_id'] ),
+			COMMONSBOOKING_METABOX_PREFIX . 'bookingcode'      => $bookingCode,
 		];
 
 		if ( ! self::$noPostCheck) {
