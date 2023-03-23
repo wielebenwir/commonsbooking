@@ -748,7 +748,7 @@ class Migration {
 						}
 					}
 
-					if ( ! self::{$taskFunctions[ $key ]['migrationFunction']}() ) {
+					if ( ! $taskFunctions[ $key ]['migrationFunction']() ) {
 						$task['failed'] += 1;
 					}
 					$task['index']    += 1;
