@@ -467,9 +467,6 @@ class Migration {
 	 * @throws Exception
 	 */
 	public static function migrateBooking( $booking ): bool {
-		if (self::$cliCall) {
-			$before = hrtime(true);
-		}
 		$user       = get_user_by( 'id', $booking['user_id'] );
 		if ( self::$cliCall) {
 			if ( empty(self::$itemCache[$booking['item_id']]) ){
@@ -530,16 +527,9 @@ class Migration {
 			$existingPost = null;
 		}
 
-		$savePostData = self::savePostData( $existingPost,
+		return self::savePostData( $existingPost,
 			$postData,
 			$postMeta );
-
-		if (self::$cliCall) {
-			$after = hrtime(true);
-			$eta = $after - $before;
-			\WP_CLI::log( 'Migrated booking ' . $booking['id'] . ' in ' . $eta/1e+6  . ' milliseconds.' );
-		}
-		return $savePostData;
 	}
 
 	public static function migrateBookingsPreTask() {
