@@ -81,6 +81,7 @@ class Migration {
 	 * @return void
 	 */
 	public static function cliMigrateAll(bool $includeGeoData, bool $noPostCheck = false){
+		$currentTime = time();
 		if ($includeGeoData) {
 			\WP_CLI::log( 'CommonsBooking: Including geodata in migration. This may take a while.' );
 			self::$includeGeoData = true;
@@ -122,7 +123,7 @@ class Migration {
 		$wpdb->query( 'COMMIT;' );
 		\WP_CLI::log( 'CommonsBooking: Enabling autocommit' );
 		$wpdb->query( 'SET autocommit = 1;' );
-		\WP_CLI::success( 'CommonsBooking: Migration done.' );
+		\WP_CLI::success( sprintf('CommonsBooking: Migration done in %s hours %s minutes %s seconds.', floor((time() - $currentTime) / 3600), floor(((time() - $currentTime) / 60) % 60), floor((time() - $currentTime) % 60)));
 	}
 
 	/**
