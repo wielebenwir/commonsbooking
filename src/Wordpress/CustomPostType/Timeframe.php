@@ -703,7 +703,7 @@ class Timeframe extends CustomPostType {
 	 */
 	public function savePost( $post_id, WP_Post $post ) {
 		// This is just for timeframes
-		if ( $post->post_type !== static::getPostType() ) {
+		if ( class_exists('WP_CLI' ) || $post->post_type !== static::getPostType() ) {
 			return;
 		}
 
