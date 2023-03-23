@@ -57,6 +57,20 @@ class Timeframe extends CustomPost {
 
 		return $startDate;
 	}
+    
+    /**
+     * Return defined end (repetition) date of timeframe 
+     *
+     * @return void
+     */
+    public function getTimeframeEndDate() {
+        $endDate = $this->getMeta( self::REPETITION_END );
+		if ( (string) intval( $endDate ) !== $endDate ) {
+			$endDate = strtotime( $endDate );
+		}
+
+        return $endDate;
+    }
 
 	/**
 	 * Return End (repetition) date and respects advance booking days setting.
@@ -487,21 +501,22 @@ class Timeframe extends CustomPost {
 	 * @return bool
 	 */
 	protected function hasTimeframeDateOverlap( $timeframe1, $timeframe2 ) {
-		return ! $timeframe1->getEndDate() && ! $timeframe2->getEndDate() ||
+
+		return ! $timeframe1->getTimeframeEndDate() && ! $timeframe2->getTimeframeEndDate() ||
 			(
-				$timeframe1->getEndDate() && ! $timeframe2->getEndDate() &&
-				$timeframe2->getStartDate() <= $timeframe1->getEndDate() &&
+				$timeframe1->getTimeframeEndDate() && ! $timeframe2->getTimeframeEndDate() &&
+				$timeframe2->getStartDate() <= $timeframe1->getTimeframeEndDate() &&
 				$timeframe2->getStartDate() >= $timeframe1->getStartDate()
 			) ||
 			(
-				! $timeframe1->getEndDate() && $timeframe2->getEndDate() &&
-				$timeframe2->getEndDate() > $timeframe1->getStartDate()
+				! $timeframe1->getTimeframeEndDate() && $timeframe2->getTimeframeEndDate() &&
+				$timeframe2->getTimeframeEndDate() > $timeframe1->getStartDate()
 			) ||
 			(
-				$timeframe1->getEndDate() && $timeframe2->getEndDate() &&
+				$timeframe1->getTimeframeEndDate() && $timeframe2->getTimeframeEndDate() &&
 				(
-					( $timeframe1->getEndDate() >= $timeframe2->getStartDate() && $timeframe1->getEndDate() <= $timeframe2->getEndDate() ) ||
-					( $timeframe2->getEndDate() >= $timeframe1->getStartDate() && $timeframe2->getEndDate() <= $timeframe1->getEndDate() )
+					( $timeframe1->getTimeframeEndDate() >= $timeframe2->getStartDate() && $timeframe1->getTimeframeEndDate() <= $timeframe2->getTimeframeEndDate() ) ||
+					( $timeframe2->getTimeframeEndDate() >= $timeframe1->getStartDate() && $timeframe2->getTimeframeEndDate() <= $timeframe1->getTimeframeEndDate() )
 				)
 			);
 	}
