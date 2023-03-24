@@ -1,8 +1,9 @@
 <?php
 
-namespace CommonsBooking\Model;
+namespace CommonsBooking\Tests\Model;
 
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use CommonsBooking\Model\Timeframe;
 
 class TimeframeTest extends CustomPostTypeTest {
 
