@@ -502,23 +502,29 @@ class Timeframe extends CustomPost {
 	 */
 	public static function hasTimeframeDateOverlap( Timeframe $timeframe1, Timeframe $timeframe2 ): bool {
 
-		return ! $timeframe1->getTimeframeEndDate() && ! $timeframe2->getTimeframeEndDate() ||
-			(
-				$timeframe1->getTimeframeEndDate() && ! $timeframe2->getTimeframeEndDate() &&
-				$timeframe2->getStartDate() <= $timeframe1->getTimeframeEndDate() &&
-				$timeframe2->getStartDate() >= $timeframe1->getStartDate()
-			) ||
-			(
-				! $timeframe1->getTimeframeEndDate() && $timeframe2->getTimeframeEndDate() &&
-				$timeframe2->getTimeframeEndDate() > $timeframe1->getStartDate()
-			) ||
-			(
-				$timeframe1->getTimeframeEndDate() && $timeframe2->getTimeframeEndDate() &&
-				(
-					( $timeframe1->getTimeframeEndDate() >= $timeframe2->getStartDate() && $timeframe1->getTimeframeEndDate() <= $timeframe2->getTimeframeEndDate() ) ||
-					( $timeframe2->getTimeframeEndDate() >= $timeframe1->getStartDate() && $timeframe2->getTimeframeEndDate() <= $timeframe1->getTimeframeEndDate() )
-				)
-			);
+        // Check if both timeframes have no end date or if both are ongoing
+        if (!$timeframe1->getEndDate() && !$timeframe2->getEndDate()) {
+            return true;
+        }
+    
+        // Check if only one timeframe has an end date
+        if ($timeframe1->getEndDate() && !$timeframe2->getEndDate()) {
+            return ($timeframe2->getStartDate() <= $timeframe1->getEndDate() && $timeframe2->getStartDate() >= $timeframe1->getStartDate());
+        }
+    
+        if (!$timeframe1->getEndDate() && $timeframe2->getEndDate()) {
+            return ($timeframe2->getEndDate() > $timeframe1->getStartDate());
+        }
+    
+        // Check if both timeframes have an end date
+        if ($timeframe1->getEndDate() && $timeframe2->getEndDate()) {
+            return (
+                // Check if the end date of the first timeframe is within the second timeframe
+                ($timeframe1->getEndDate() >= $timeframe2->getStartDate() && $timeframe1->getEndDate() <= $timeframe2->getEndDate()) ||
+                // Check if the end date of the second timeframe is within the first timeframe
+                ($timeframe2->getEndDate() >= $timeframe1->getStartDate() && $timeframe2->getEndDate() <= $timeframe1->getEndDate())
+            );
+        }
 	}
 
 	/**
