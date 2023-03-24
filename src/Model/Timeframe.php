@@ -61,7 +61,7 @@ class Timeframe extends CustomPost {
     /**
      * Return defined end (repetition) date of timeframe 
      *
-     * @return void
+     * @return false|int|string
      */
     public function getTimeframeEndDate() {
         $endDate = $this->getMeta( self::REPETITION_END );
@@ -495,12 +495,12 @@ class Timeframe extends CustomPost {
 	/**
 	 * Checks if timeframes are overlapping in date range.
 	 *
-	 * @param $timeframe1
-	 * @param $timeframe2
+	 * @param \CommonsBooking\Model\Timeframe $timeframe1
+	 * @param \CommonsBooking\Model\Timeframe $timeframe2
 	 *
 	 * @return bool
 	 */
-	protected function hasTimeframeDateOverlap( $timeframe1, $timeframe2 ) {
+	public static function hasTimeframeDateOverlap( Timeframe $timeframe1, Timeframe $timeframe2 ): bool {
 
 		return ! $timeframe1->getTimeframeEndDate() && ! $timeframe2->getTimeframeEndDate() ||
 			(
