@@ -3,7 +3,11 @@
   "description": "~",
   "version": "0.0.1",
   "config": {
-    "platform-check": false
+    "platform-check": false,
+    "allow-plugins": {
+      "composer/installers": true,
+      "php-http/discovery": true
+    }
     },
   "autoload": {
     "files": [
