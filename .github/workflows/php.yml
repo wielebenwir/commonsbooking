@@ -50,4 +50,5 @@ jobs:
 
     - name: Run test suite
       run: |
+        composer dumpautload -o
         ./vendor/bin/phpunit -c phpunit.xml.dist
