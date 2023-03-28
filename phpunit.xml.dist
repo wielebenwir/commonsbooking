@@ -18,8 +18,9 @@
         <ini name="xdebug.mode" value="coverage" />
     </php>
     <logging>
-        <testdoxXml outputFile="./coverage.xml" />
-        <testdoxHtml outputFile="./coverage" />
+        <testdoxXml outputFile="build/logs/xml.log" />
+        <testdoxHtml outputFile="build/logs/html.log" />
+        <text outputFile="build/logs/text.log"/>
     </logging>
 
     <coverage>
@@ -27,8 +28,8 @@
             <directory>./src</directory>
         </include>
         <report>
-            <clover outputFile="./coverage.xml"/>
-            <html outputDirectory="report" />
+            <clover outputFile="build/logs/clover.xml"/>
+            <html outputDirectory="build/report" />
         </report>
     </coverage>
 </phpunit>
