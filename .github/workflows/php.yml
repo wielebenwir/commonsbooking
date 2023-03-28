@@ -31,6 +31,8 @@ jobs:
       with:
         php-version: '7.4'
         coverage: xdebug2
+        ini-values: xdebug.mode=coverage
+        tools: phpunit
 
     - name: Validate composer.json and composer.lock
       run: composer validate
