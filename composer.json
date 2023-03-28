@@ -51,5 +51,10 @@
     "phpunit/php-code-coverage": "^9.2",
     "yoast/phpunit-polyfills": "^1.0",
     "wp-coding-standards/wpcs": "^2.3"
+  },
+
+  "scripts" : {
+    "phpunit": "./vendor/bin/phpunit",
+    "test": "@phpunit -c phpunit.xml.dist"
   }
 }
