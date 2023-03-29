@@ -54,3 +54,10 @@ jobs:
         curl -ksSfL -o ~/phpunit-9.phar https://phar.phpunit.de/phpunit-9.phar
         php ~/phpunit-9.phar --version
         php ~/phpunit-9.phar
+        
+    - name: Upload coverage results to Coveralls
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        composer global require php-coveralls/php-coveralls
+        php-coveralls --coverage_clover=build/logs/clover.xml -v
