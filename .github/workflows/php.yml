@@ -53,3 +53,11 @@ jobs:
         curl -ksSfL -o ~/phpunit-7.phar https://phar.phpunit.de/phpunit-7.phar
         php ~/phpunit-7.phar --version
         php ~/phpunit-7.phar
+
+    - name: The PHP Security Checker
+    - uses: actions/cache@v2
+      id: cache-db
+      with:
+        path: ~/.symfony/cache
+        key: db
+    - uses: symfonycorp/security-checker-action@v4
