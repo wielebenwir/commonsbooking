@@ -50,7 +50,7 @@ jobs:
 
     - name: Run test suite
       run: |
-        composer dumpautload -o
+        composer dump-autload -o
         curl -ksSfL -o ~/phpunit-9.phar https://phar.phpunit.de/phpunit-9.phar
         php ~/phpunit-9.phar --version
         php ~/phpunit-9.phar
