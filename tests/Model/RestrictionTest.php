@@ -17,6 +17,32 @@ class RestrictionTest extends CustomPostTypeTest {
 	 */
 	private $restrictionWithoutEndDateId;
 
+	private $old_tfmt;
+	private $old_dfmt;
+
+	/**
+	 * @before
+	 */
+	protected function setUpFormatConfiguration() {
+                $this->old_tfmt = get_option( 'time_format' );
+                $this->old_dfmt = get_option( 'date_format' );
+                update_option( 'time_format', 'H:i' );
+                update_option( 'date_format', 'd.m.Y' );
+                $this->assertEquals( get_option( 'time_format' ), 'H:i');
+                $this->assertEquals( get_option( 'date_format' ), 'd.m.Y');
+
+		
+	}
+
+	/**
+	 * @after
+	 */
+	protected function tearDownFormatConfiguration() {
+		// reverts options, see comment above
+		update_option( 'time_format', $this->old_tfmt );
+		update_option( 'date_format', $this->old_dfmt );
+	}
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -55,15 +81,6 @@ class RestrictionTest extends CustomPostTypeTest {
 	}
 
 	public function test_get_formatted_datetimes() {
-
-		// TODO maybe this can be generalized into @beforeEach when tests are separated into different methods
-		$old_tfmt = get_option( 'time_format' );
-		$old_dfmt = get_option( 'date_format' );
-		update_option( 'time_format', 'H:i' );
-		update_option( 'date_format', 'd.m.Y' );
-		$this->assertEquals( get_option( 'time_format' ), 'H:i');
-		$this->assertEquals( get_option( 'date_format' ), 'd.m.Y');
-
 		$restrictionWithoutEndDate = new Restriction($this->restrictionWithoutEndDateId);
 		$this->assertEquals( $restrictionWithoutEndDate->getFormattedStartDateTime(), "01.07.2021 00:00" );
                 $this->assertEquals( $restrictionWithoutEndDate->getFormattedEndDateTime(),   "01.01.1970 00:00" ); // TODO shouldn't null end-dates be handeled differently?
@@ -72,8 +89,5 @@ class RestrictionTest extends CustomPostTypeTest {
 		$this->assertEquals( $restrictionWithEndDate->getFormattedStartDateTime(), "01.07.2021 00:00");
 		$this->assertEquals( $restrictionWithEndDate->getFormattedEndDateTime(),   "22.07.2021 00:00");
 
-		// reverts options, see comment above
-		update_option( 'time_format', $old_tfmt );
-		update_option( 'date_format', $old_dfmt );
 	}
 }

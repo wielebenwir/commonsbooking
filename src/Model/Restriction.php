@@ -149,7 +149,6 @@ class Restriction extends CustomPost {
 	 * @return string
 	 */
 	public function getFormattedStartDateTime() {
-//		return $this->getStartTimeDateTime()->format( 'd.m.Y H:i' );
 		return Helper::FormattedDateTime( $this->getStartTimeDateTime()->getTimestamp() );
 	}
 
@@ -172,7 +171,6 @@ class Restriction extends CustomPost {
 	 * @return string
 	 */
 	public function getFormattedEndDateTime() {
-//		return $this->getEndDateDateTime()->format( 'd.m.Y H:i' );
 		return Helper::FormattedDateTime( $this->getEndDateDateTime()->getTimestamp() );
 	}
 
