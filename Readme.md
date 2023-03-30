@@ -7,7 +7,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar,  
 Requires at least: 5.2  
 Tested up to: 6.0
-Stable Tag: 2.7.3 
+Stable Tag: 2.8
 Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -88,6 +88,28 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog 
+
+### 2.8 (xx.04.2023)
+* NEW: Added option to set a minimum offset for bookings. This allows to set a minimum time between booking and pickup.
+* NEW: Added ability to create bookings from the backend.
+* NEW: Can now add a signature that will be added to each email sent from the instance.
+* NEW: Additional user fields can be shown in booking confirmation.
+* NEW: iCalendar files can be attached to booking confirmation emails.
+* NEW: Experimental support of iCalendar feed to subscribe to all bookings that can be seen by the user.
+* ENHANCED: Added ability for item admins to also receive copy of restriction emails.
+* ENHANCED: Added ability to use REDIS as cache backend.
+* ENHANCED: Export of booking data now conforms to ISO 8601 standard. Thanks to @splines
+* ENHANCED: Can now filter items / locations by category in admin.
+* ENHANCED: ORDER and ORDER BY can be used in shortcodes to define the order of items / locations.
+* ENHANCED: Added filter hooks for timeframe defaults. Advanced users can now define their own default settings for timeframes through a filter hook.
+* ENHANCED: Added filter hooks for mail attachment. Advanced users can now define their own mail attachments through a filter hook. ( Frontend settings are not yet available )
+* ENHANCED: Added a key for the item availability table.
+* FIXED: Cronjobs were not re-scheduled when the execution time was changed. All cronjobs are re-scheduled on plugin update.
+* FIXED: Dark and light text color options now work properly.
+* FIXED: No clustering with max_cluster_radius set to 0
+* FIXED: Missing translations
+* FIXED: Vulnerability in dependency
+* FIXED: Wrong month shown in calendar due to timezone issues
 
 ### 2.7.3 (20.10.2022)
 * FIXED: Fatal error when trying to export timeframes with deleted items
