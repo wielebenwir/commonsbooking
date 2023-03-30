@@ -4,6 +4,7 @@
 namespace CommonsBooking\Model;
 
 use CommonsBooking\Helper\Wordpress;
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\RestrictionMessage;
 use DateTime;
 
@@ -148,8 +149,8 @@ class Restriction extends CustomPost {
 	 * @return string
 	 */
 	public function getFormattedStartDateTime() {
-		// TODO timeformat should be configurable
-		return $this->getStartTimeDateTime()->format( 'd.m.Y H:i' );
+//		return $this->getStartTimeDateTime()->format( 'd.m.Y H:i' );
+		return Helper::FormattedDateTime( $this->getStartTimeDateTime()->getTimestamp() );
 	}
 
 	/**
@@ -171,8 +172,8 @@ class Restriction extends CustomPost {
 	 * @return string
 	 */
 	public function getFormattedEndDateTime() {
-		// TODO timeformat should be configurable
-		return $this->getEndDateDateTime()->format( 'd.m.Y H:i' );
+//		return $this->getEndDateDateTime()->format( 'd.m.Y H:i' );
+		return Helper::FormattedDateTime( $this->getEndDateDateTime()->getTimestamp() );
 	}
 
 	/**
