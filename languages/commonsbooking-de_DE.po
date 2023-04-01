@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2023-04-01T21:50:17+00:00\n"
+"POT-Creation-Date: 2023-03-12T19:46:09+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
@@ -110,7 +110,6 @@ msgstr ""
 msgid "Items slug"
 msgstr "Artikel slug"
 
-#. translators: %s = example url (like website.com/cb-items/)
 #: includes/OptionsArray.php:91
 msgid ""
 "The slug for article detail page. Type in the slug without slashes. Example: "
@@ -125,7 +124,6 @@ msgstr ""
 msgid "Locations slug"
 msgstr "Standorte Slug"
 
-#. translators: %s = example url (like website.com/cb-locations/)
 #: includes/OptionsArray.php:102
 msgid ""
 "The slug for location detail page. Type in the slug without slashes. "
@@ -140,7 +138,6 @@ msgstr ""
 msgid "Bookings Page"
 msgstr "Buchungsseite"
 
-#. translators: %s = example url (like website.com/cb-locations/)
 #: includes/OptionsArray.php:113
 msgid ""
 "The page where you included the [cb_bookings] shortcode. This is used in the "
@@ -436,7 +433,7 @@ msgstr "Template und Buchungsprozess-Meldungen"
 
 #: includes/OptionsArray.php:302
 msgid "Booking confirmed message"
-msgstr "E-Mail-Text für bestätige Buchungen"
+msgstr "Text für bestätigte Buchungen"
 
 #: includes/OptionsArray.php:305
 msgid ""
@@ -1503,7 +1500,6 @@ msgstr "Ich akzeptiere die Nutzungsbedindungen"
 msgid "Please accept the terms & conditions"
 msgstr "Bitte akzeptiere die Nutzungsbedindungen"
 
-#. translators: %s = terms and service url
 #: src/CB/CB1UserFields.php:160
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
 msgstr "<a href=\"%s\" target=\"_blank\">Lies die Nutzungsbedingungen</a>"
@@ -1838,6 +1834,10 @@ msgstr ""
 "Es konnten keine Buchungscodes erstellt werden, da keine Buchungscodes zur "
 "Auswahl standen. Bitte lege einige Buchungscodes in den CommonsBooking-"
 "Einstellungen fest."
+
+#: src/Service/Cache.php:261
+msgid "Connection status:"
+msgstr "Aktueller Verbindungsstatus:"
 
 #: src/Service/Cache.php:268
 msgid "Successfully connected to REDIS database!"
@@ -3017,18 +3017,6 @@ msgid "Maximum booking duration in days"
 msgstr "Maximale Buchungsdauer in Tagen"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:491
-msgid "Minimum booking period"
-msgstr "Mindestbuchungszeitraum"
-
-#: src/Wordpress/CustomPostType/Timeframe.php:492
-msgid ""
-"Enter the number of days that should be blocked for bookings as a booking "
-"lead time (calculated from the current day)."
-msgstr ""
-"Gib die Anzahl der Tage ein, die als Buchungsvorlaufzeit für Buchungen "
-"gesperrt werden sollen (berechnet vom aktuellen Tag)."
-
-#: src/Wordpress/CustomPostType/Timeframe.php:504
 msgid "Maximum booking days in advance"
 msgstr "Maximale Buchungstage im Voraus"
 
@@ -3176,12 +3164,13 @@ msgid ""
 "day (e.g. for holidays or blocked days) set the start and the end date to "
 "same day."
 msgstr ""
-"Bitte setze das Enddatum fest, wenn du die Wiederholung ausgewählt hast, ist "
-"dies das Enddatum des Intervalls. Lasse es leer, wenn du kein Enddatum "
-"festlegen möchtest.\n"
-"<br><strong>Hinweis:</strong> Wenn du nur einen Tag auswählen möchtest (z. "
-"B. für Feiertage oder blockierte Tage), lege Start- und Enddatum auf "
-"denselben Tag fest."
+"Lege das Enddatum fest. Wenn Du Wiederholung ausgewählt hast, ist dies das "
+"Enddatum des Intervalls. Lasse das Feld leer, wenn Du kein Enddatum "
+"festlegen möchten.                <br><strong>Hinweis:</strong> Wenn das "
+"Enddatum leer ist und keine Wiederholung ausgewählt wurde, gilt dieser "
+"Zeitrahmen nur für das festgelegte Startdatum. Nur wenn eine Wiederholung "
+"ausgewählt ist und das Enddatum leer ist, wird die Wiederholung unendlich "
+"wiederholt."
 
 #: src/Wordpress/CustomPostType/Timeframe.php:634
 msgid ""
