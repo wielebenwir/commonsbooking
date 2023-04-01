@@ -237,7 +237,22 @@ class Map extends CustomPostType {
 					];
 				}
 
+				$images[] = [
+					'thumbnail' => get_the_post_thumbnail_url( $item->ID, 'thumbnail' ),
+					'medium'    => get_the_post_thumbnail_url( $item->ID, 'medium' ),
+					'large'     => get_the_post_thumbnail_url( $item->ID, 'large' ),
+					'full'      => get_the_post_thumbnail_url( $item->ID, 'full' ),
+				];
+
 				$thumbnail = get_the_post_thumbnail_url( $item->ID, 'thumbnail' );
+
+				$thumbnailID = get_post_thumbnail_id( $item->ID );
+				$images = [
+					'thumbnail' => wp_get_attachment_image_src( $thumbnailID, 'thumbnail' ),
+					'medium'    => wp_get_attachment_image_src( $thumbnailID, 'medium' ),
+					'large'     => wp_get_attachment_image_src( $thumbnailID, 'large' ),
+					'full'      => wp_get_attachment_image_src( $thumbnailID, 'full' ),
+				];
 				$items[]   = [
 					'id'         => $item->ID,
 					'name'       => $item->post_title,
@@ -246,6 +261,7 @@ class Map extends CustomPostType {
 					'terms'      => $item_terms,
 					'link'       => add_query_arg( 'cb-location', $post->ID, get_permalink( $item->ID ) ),
 					'thumbnail'  => $thumbnail ?: null,
+					'images'     => $images,
 					'timeframes' => $timeframesData
 				];
 			}
