@@ -65,10 +65,7 @@ class Helper {
 	 */
 	public static function FormattedDateTime( $timestamp ) {
 
-		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
-		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
-
-		return date_i18n( $date_format, $timestamp ) . ' ' . date_i18n( $time_format, $timestamp );
+		return Helper::FormattedDate( $timestamp ) . ' ' . Helper::FormattedTime( $timestamp );
 	}
 
 	/**

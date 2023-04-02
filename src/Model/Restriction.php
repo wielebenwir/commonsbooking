@@ -171,7 +171,12 @@ class Restriction extends CustomPost {
 	 * @return string
 	 */
 	public function getFormattedEndDateTime() {
-		return Helper::FormattedDateTime( $this->getEndDateDateTime()->getTimestamp() );
+		$ts = $this->getEndDateDateTime()->getTimestamp();
+		if ( $ts == null) {
+                    // Return max date time
+                    $ts = PHP_INT_MAX;
+		}
+		return Helper::FormattedDateTime( $ts );
 	}
 
 	/**
