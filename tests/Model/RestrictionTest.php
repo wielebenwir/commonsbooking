@@ -24,14 +24,12 @@ class RestrictionTest extends CustomPostTypeTest {
 	 * @before
 	 */
 	protected function set_up_format_de_locale_format_configuration() {
-                $this->old_tfmt = get_option( 'time_format' );
-                $this->old_dfmt = get_option( 'date_format' );
-                update_option( 'time_format', 'H:i' );
-                update_option( 'date_format', 'd.m.Y' );
-                $this->assertEquals( get_option( 'time_format' ), 'H:i');
-                $this->assertEquals( get_option( 'date_format' ), 'd.m.Y');
-
-		
+		$this->old_tfmt = get_option( 'time_format' );
+		$this->old_dfmt = get_option( 'date_format' );
+		update_option( 'time_format', 'H:i' );
+		update_option( 'date_format', 'd.m.Y' );
+		$this->assertEquals( get_option( 'time_format' ), 'H:i');
+		$this->assertEquals( get_option( 'date_format' ), 'd.m.Y');
 	}
 
 	/**
