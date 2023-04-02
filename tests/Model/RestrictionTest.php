@@ -82,9 +82,9 @@ class RestrictionTest extends CustomPostTypeTest {
 	public function test_get_formatted_datetimes() {
 		$restrictionWithoutEndDate = new Restriction($this->restrictionWithoutEndDateId);
 		$this->assertEquals( $restrictionWithoutEndDate->getFormattedStartDateTime(), "01.07.2021 00:00" );
-                $this->assertEquals( $restrictionWithoutEndDate->getFormattedEndDateTime(),   "04.12.6596 15:30" );
+		$this->assertEquals( $restrictionWithoutEndDate->getFormattedEndDateTime(),   "04.12.6596 15:30" );
 
-                $restrictionWithEndDate = new Restriction($this->restrictionWithEndDateId);
+		$restrictionWithEndDate = new Restriction($this->restrictionWithEndDateId);
 		$this->assertEquals( $restrictionWithEndDate->getFormattedStartDateTime(), "01.07.2021 00:00");
 		$this->assertEquals( $restrictionWithEndDate->getFormattedEndDateTime(),   "22.07.2021 00:00");
 
