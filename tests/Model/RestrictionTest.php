@@ -23,7 +23,7 @@ class RestrictionTest extends CustomPostTypeTest {
 	/**
 	 * @before
 	 */
-	protected function setUpFormatConfiguration() {
+	protected function set_up_format_de_locale_format_configuration() {
                 $this->old_tfmt = get_option( 'time_format' );
                 $this->old_dfmt = get_option( 'date_format' );
                 update_option( 'time_format', 'H:i' );
@@ -37,8 +37,7 @@ class RestrictionTest extends CustomPostTypeTest {
 	/**
 	 * @after
 	 */
-	protected function tearDownFormatConfiguration() {
-		// reverts options, see comment above
+	protected function tear_down_de_locale_format_configuration() {
 		update_option( 'time_format', $this->old_tfmt );
 		update_option( 'date_format', $this->old_dfmt );
 	}
