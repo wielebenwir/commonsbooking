@@ -104,11 +104,18 @@ class iCalendar {
             $booking_endDateDateTime = DateTimeImmutable::createFromMutable( $booking->getEndDateDateTime() );
 
             // Create timezone entity
-            $timezone = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone(
-                wp_timezone(),
-                $booking_startDateDateTime,
-                $booking_endDateDateTime
-            );
+	        $php_date_time_zone = wp_timezone();
+			//will only get timezone object if current timezone has transitions that can be fetched
+			if ($php_date_time_zone->getTransitions()){
+				$timezone           = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone(
+					$php_date_time_zone,
+					$booking_startDateDateTime,
+					$booking_endDateDateTime
+				);
+				if (empty($this->calendar->getTimeZones())){
+					$this->calendar->addTimeZone($timezone);
+				}
+			}
 
             //Create event occurence
             if ($booking->isFullDay()){
