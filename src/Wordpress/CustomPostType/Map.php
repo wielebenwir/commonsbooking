@@ -237,13 +237,6 @@ class Map extends CustomPostType {
 					];
 				}
 
-				$images[] = [
-					'thumbnail' => get_the_post_thumbnail_url( $item->ID, 'thumbnail' ),
-					'medium'    => get_the_post_thumbnail_url( $item->ID, 'medium' ),
-					'large'     => get_the_post_thumbnail_url( $item->ID, 'large' ),
-					'full'      => get_the_post_thumbnail_url( $item->ID, 'full' ),
-				];
-
 				$thumbnail = get_the_post_thumbnail_url( $item->ID, 'thumbnail' );
 
 				$thumbnailID = get_post_thumbnail_id( $item->ID );
