@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-03-31T00:24:51+02:00\n"
+"POT-Creation-Date: 2023-04-03T16:12:31+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: commonsbooking\n"
@@ -1345,6 +1345,10 @@ msgstr ""
 
 #: src/View/Booking.php:117
 msgid "Details"
+msgstr ""
+
+#: src/View/Booking.php:123
+msgid "Use this link to import the data into your own calendar. Usually you just need to provide the URL as an external source and the calendar will figure it out. Do not try to download this file."
 msgstr ""
 
 #: src/View/Booking.php:124

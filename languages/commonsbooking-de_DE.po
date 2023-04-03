@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2023-03-12T19:46:09+00:00\n"
+"POT-Creation-Date: 2023-04-03T16:12:31+02:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: \n"
@@ -1863,6 +1863,16 @@ msgstr "Enddatum"
 msgid "Details"
 msgstr "Details"
 
+#: src/View/Booking.php:123
+msgid ""
+"Use this link to import the data into your own calendar. Usually you just "
+"need to provide the URL as an external source and the calendar will figure "
+"it out. Do not try to download this file."
+msgstr ""
+"Benutze diesen Link um die Buchungsdaten automatisch in deinem Kalender zu "
+"abonnieren. Bitte gib die URL in deinem Kalenderprogramm an und versuche "
+"nicht die Datei herunterzuladen."
+
 #: src/View/Booking.php:124
 msgid "iCalendar Link:"
 msgstr "iCalendar Link:"
@@ -3017,6 +3027,18 @@ msgid "Maximum booking duration in days"
 msgstr "Maximale Buchungsdauer in Tagen"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:491
+msgid "Minimum booking period"
+msgstr "Mindestbuchungsdauer"
+
+#: src/Wordpress/CustomPostType/Timeframe.php:492
+msgid ""
+"Enter the number of days that should be blocked for bookings as a booking "
+"lead time (calculated from the current day)."
+msgstr ""
+"Bitte gib die Anzahl der Tage ein, die zwischen Buchung und Abholung des "
+"Artikels liegen sollen. Die Rechnung geht vom heutigen Tag aus."
+
+#: src/Wordpress/CustomPostType/Timeframe.php:504
 msgid "Maximum booking days in advance"
 msgstr "Maximale Buchungstage im Voraus"
 
