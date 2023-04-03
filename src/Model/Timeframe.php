@@ -31,8 +31,7 @@ class Timeframe extends CustomPost {
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
 	/**
-	 * Return residence in a human-readable format
-	 * Will return an empty value for startDate or
+	 * Return residence in a human readable format
 	 *
 	 * "From xx.xx.",  "Until xx.xx.", "From xx.xx. until xx.xx.", "no longer available"
 	 *
@@ -59,6 +58,20 @@ class Timeframe extends CustomPost {
 
 		return $startDate;
 	}
+
+    /**
+     * Return defined end (repetition) date of timeframe
+     *
+     * @return false|int|string
+     */
+    public function getTimeframeEndDate() {
+        $endDate = $this->getMeta( self::REPETITION_END );
+		if ( (string) intval( $endDate ) !== $endDate ) {
+			$endDate = strtotime( $endDate );
+		}
+
+        return $endDate;
+    }
 
 	/**
 	 * Return End (repetition) date and respects advance booking days setting.
@@ -437,31 +450,39 @@ class Timeframe extends CustomPost {
 		return $this->getMeta( 'full-day' ) == 'on';
 	}
 
-    /**
-     * Checks if the current timeframe overlaps with another timeframe
-     *
-     * @param Timeframe $otherTimeframe - The timeframe to check current object against
-     *
-     * @return bool
-     */
-	protected function hasTimeframeDateOverlap( Timeframe $otherTimeframe ): bool {
-		return ! $this->getEndDate() && ! $otherTimeframe->getEndDate() ||
-               (
-                   $this->getEndDate() && ! $otherTimeframe->getEndDate() &&
-                   $otherTimeframe->getStartDate() <= $this->getEndDate() &&
-                   $otherTimeframe->getStartDate() >= $this->getStartDate()
-			) ||
-			(
-                   ! $this->getEndDate() && $otherTimeframe->getEndDate() &&
-                   $otherTimeframe->getEndDate() > $this->getStartDate()
-			) ||
-			(
-                   $this->getEndDate() && $otherTimeframe->getEndDate() &&
-                   (
-                       ($this->getEndDate() >= $otherTimeframe->getStartDate() && $this->getEndDate() <= $otherTimeframe->getEndDate() ) ||
-                       ($otherTimeframe->getEndDate() >= $this->getStartDate() && $otherTimeframe->getEndDate() <= $this->getEndDate() )
-				)
-			);
+	/**
+	 * Checks if timeframes are overlapping in date range.
+	 *
+	 * @param \CommonsBooking\Model\Timeframe $timeframe1
+	 * @param \CommonsBooking\Model\Timeframe $timeframe2
+	 *
+	 * @return bool
+	 */
+	public static function hasTimeframeDateOverlap( Timeframe $timeframe1, Timeframe $timeframe2 ): bool {
+
+        // Check if both timeframes have no end date or if both are ongoing
+        if ( ! $timeframe1->getEndDate() && ! $timeframe2->getEndDate() ) {
+            return true;
+        }
+
+        // Check if only one timeframe has an end date
+        if ( $timeframe1->getEndDate() && ! $timeframe2->getEndDate() ) {
+            return ( $timeframe2->getStartDate() <= $timeframe1->getEndDate() && $timeframe2->getStartDate() >= $timeframe1->getStartDate() );
+        }
+
+        if ( ! $timeframe1->getEndDate() && $timeframe2->getEndDate() ) {
+            return ( $timeframe2->getEndDate() > $timeframe1->getStartDate() );
+        }
+
+        // Check if both timeframes have an end date
+        if ( $timeframe1->getEndDate() && $timeframe2->getEndDate() ) {
+            return (
+                // Check if the end date of the first timeframe is within the second timeframe
+                ( $timeframe1->getEndDate() >= $timeframe2->getStartDate() && $timeframe1->getEndDate() <= $timeframe2->getEndDate() ) ||
+                // Check if the end date of the second timeframe is within the first timeframe
+                ( $timeframe2->getEndDate() >= $timeframe1->getStartDate() && $timeframe2->getEndDate() <= $timeframe1->getEndDate() )
+            );
+        }
 	}
 
 	/**
@@ -473,33 +494,46 @@ class Timeframe extends CustomPost {
 		return $this->getMeta( 'grid' );
 	}
 
-    /**
-     * Checks if the current timeframe overlaps with another in daily slots.
-     *
-     * @param Timeframe $otherTimeframe - The timeframe to check current object against
-     *
-     * @return bool
-     */
-	protected function hasTimeframeTimeOverlap( Timeframe $otherTimeframe ): bool
-    {
-		return ! strtotime( $this->getEndTime() ) && ! strtotime( $otherTimeframe->getEndTime() ) ||
-               (
-                   strtotime( $this->getEndTime() ) && ! strtotime( $otherTimeframe->getEndTime() ) &&
-                   strtotime( $otherTimeframe->getStartTime() ) <= strtotime( $this->getEndTime() ) &&
-                   strtotime( $otherTimeframe->getStartTime() ) >= strtotime( $this->getStartTime() )
-			) ||
-			(
-                   ! strtotime( $this->getEndTime() ) && strtotime( $otherTimeframe->getEndTime() ) &&
-                   strtotime( $otherTimeframe->getEndTime() ) > strtotime( $this->getStartTime() )
-			) ||
-			(
-                   strtotime( $this->getEndTime() ) && strtotime( $otherTimeframe->getEndTime() ) &&
-                   (
-                       (strtotime( $this->getEndTime() ) > strtotime( $otherTimeframe->getStartTime() ) && strtotime( $this->getEndTime() ) < strtotime( $otherTimeframe->getEndTime() ) ) ||
-                       (strtotime( $otherTimeframe->getEndTime() ) > strtotime( $this->getStartTime() ) && strtotime( $otherTimeframe->getEndTime() ) < strtotime( $this->getEndTime() ) )
-				)
-			);
-	}
+	/**
+	 * Checks if timeframes are overlapping in daily slots.
+	 *
+	 * @param $timeframe1
+	 * @param $timeframe2
+	 *
+	 * @return bool
+	 */
+
+    protected function hasTimeframeTimeOverlap( $timeframe1, $timeframe2 ) {
+        // Check if both timeframes have an end time, if not, there is no overlap
+        if ( ! strtotime( $timeframe1->getEndTime() ) && ! strtotime( $timeframe2->getEndTime() ) ) {
+            return true;
+        }
+
+        // Check if only timeframe1 has an end time and if it overlaps with the other timeframe
+        if ( strtotime( $timeframe1->getEndTime() ) && ! strtotime( $timeframe2->getEndTime() )
+            && strtotime( $timeframe2->getStartTime() ) <= strtotime( $timeframe1->getEndTime() )
+            && strtotime( $timeframe2->getStartTime() ) >= strtotime( $timeframe1->getStartTime() ) ) {
+            return true;
+        }
+
+        // Check if only timeframe2 has an end time and if it overlaps with the other timeframe
+        if ( ! strtotime( $timeframe1->getEndTime() ) && strtotime( $timeframe2->getEndTime() )
+            && strtotime( $timeframe2->getEndTime() ) > strtotime( $timeframe1->getStartTime() ) ) {
+            return true;
+        }
+
+        // Check if both timeframes have an end time and if they overlap
+        if ( strtotime( $timeframe1->getEndTime() ) && strtotime( $timeframe2->getEndTime() )
+            && ( ( strtotime( $timeframe1->getEndTime() ) > strtotime( $timeframe2->getStartTime() )
+                && strtotime( $timeframe1->getEndTime() ) < strtotime( $timeframe2->getEndTime() ) )
+                || ( strtotime( $timeframe2->getEndTime() ) > strtotime( $timeframe1->getStartTime() )
+                    && strtotime( $timeframe2->getEndTime() ) < strtotime( $timeframe1->getEndTime() ) ) ) ) {
+            return true;
+        }
+
+        // If none of the above conditions are true, there is no overlap
+        return false;
+    }
 
 	/**
 	 * Returns weekdays array.
@@ -545,7 +579,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function getStartDateDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
-		return Wordpress::getUTCDateTimeByTimestamp($startDateString);
+		return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 	}
 
 	/**
@@ -558,7 +592,7 @@ class Timeframe extends CustomPost {
 		$startTimeString = $this->getMeta( 'start-time' );
 		$startDate       = Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		if ( $startTimeString ) {
-			$startTime = Wordpress::getUTCDateTimeByTimestamp(strtotime( $startTimeString ));
+			$startTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $startTimeString ) );
 			$startDate->setTime( $startTime->format( 'H' ), $startTime->format( 'i' ) );
 		}
 
@@ -572,7 +606,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function getEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
-		return Wordpress::getUTCDateTimeByTimestamp($endDateString);
+		return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 	}
 
 	/**
@@ -584,7 +618,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function getEndTimeDateTime( $endDateString = null ): DateTime {
 		$endTimeString = $this->getMeta( 'end-time' );
-		$endDate = Wordpress::getUTCDateTime();
+		$endDate       = Wordpress::getUTCDateTime();
 
 		if ( $endTimeString ) {
 			$endTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $endTimeString ) );

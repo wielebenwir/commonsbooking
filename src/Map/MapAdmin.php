@@ -429,11 +429,7 @@ class MapAdmin {
 
 		update_post_meta( $cb_map_id, 'cb_map_options', $validated_input );
 
-        commonsbooking_write_log($_POST);
-
-        commonsbooking_write_log($validated_input);
-
-		return $validated_input;
+    	return $validated_input;
 	}
 
 	/**

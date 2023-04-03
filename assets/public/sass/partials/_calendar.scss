@@ -9,20 +9,20 @@
 :root {
 	--litepickerBgColor: transparent;
 
-	--litepickerMonthHeaderTextColor: #333;
+	--litepickerMonthHeaderTextColor: var(--commonsbooking-textcolor-dark);
 	--litepickerMonthButton: #9e9e9e;
 	--litepickerMonthButtonHover: #2196f3;
 	--litepickerDayWidth: 36px;
 	--litepickerMonthWidth: calc(var(--litepickerDayWidth) * 7); // 7 days
-	--litepickerMonthWeekdayColor: #9e9e9e;
+	--litepickerMonthWeekdayColor: var(--commonsbooking-textcolor-light);
 
-	--litepickerDayColor: #000;
+	--litepickerDayColor: var(--commonsbooking-textcolor-dark);
 	--litepickerDayColorBg: var(--commonsbooking-color-success);
 	--litepickerDayColorHover: var(--commonsbooking-color-secondary);
-	--litepickerDayIsTodayColor: #000;
+	--litepickerDayIsTodayColor: var(--commonsbooking-textcolor-dark);
 	--litepickerDayIsInRange: #2096f3;
-	--litepickerDayIsLockedColor: var(--commonsbooking-color-greyedout);
-	--litepickerDayIsLockedColorBg: var(--commonsbooking-color-bg);
+	--litepickerDayIsLockedColor: var(--commonsbooking-textcolor-light);
+	--litepickerDayIsLockedColorBg: var(--commonsbooking-color-greyedout);
 	--litepickerDayIsHolidayColor: #000000;
 	--litepickerDayIsHolidayColorBg: var(--commonsbooking-color-holiday);
 	--litepickerDayIsPartiallyLockedColor: #333;
