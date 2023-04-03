@@ -3,7 +3,10 @@
   "description": "~",
   "version": "0.0.1",
   "config": {
-    "platform-check": false
+    "platform-check": false,
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
     },
   "autoload": {
     "files": [
@@ -27,7 +30,7 @@
     }
   ],
   "require": {
-    "php": ">=7.3",
+    "php": ">=7.4",
     "cmb2/cmb2": "^2.7",
     "mustardbees/cmb-field-select2": "^3.0",
     "geocoder-php/nominatim-provider": "^5.2",
@@ -38,7 +41,7 @@
     "ext-json": "*",
     "symfony/cache": "^5.4",
     "symfony/service-contracts": "v1.1.11",
-    "eluceo/ical": "^2.5",
+    "eluceo/ical": "^2.11",
     "phpmailer/phpmailer": "^6.6"
   },
   "require-dev": {
