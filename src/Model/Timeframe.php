@@ -453,36 +453,38 @@ class Timeframe extends CustomPost {
 	/**
 	 * Checks if timeframes are overlapping in date range.
 	 *
-	 * @param \CommonsBooking\Model\Timeframe $timeframe1
-	 * @param \CommonsBooking\Model\Timeframe $timeframe2
+	 * @param   \CommonsBooking\Model\Timeframe  $otherTimeframe
 	 *
 	 * @return bool
 	 */
-	public static function hasTimeframeDateOverlap( Timeframe $timeframe1, Timeframe $timeframe2 ): bool {
+	public function hasTimeframeDateOverlap( Timeframe $otherTimeframe ): bool {
 
         // Check if both timeframes have no end date or if both are ongoing
-        if ( ! $timeframe1->getEndDate() && ! $timeframe2->getEndDate() ) {
+        if ( ! $this->getEndDate() && ! $otherTimeframe->getEndDate() ) {
             return true;
         }
 
         // Check if only one timeframe has an end date
-        if ( $timeframe1->getEndDate() && ! $timeframe2->getEndDate() ) {
-            return ( $timeframe2->getStartDate() <= $timeframe1->getEndDate() && $timeframe2->getStartDate() >= $timeframe1->getStartDate() );
+        if ( $this->getEndDate() && ! $otherTimeframe->getEndDate() ) {
+            return ( $otherTimeframe->getStartDate() <= $this->getEndDate() && $otherTimeframe->getStartDate() >= $this->getStartDate() );
         }
 
-        if ( ! $timeframe1->getEndDate() && $timeframe2->getEndDate() ) {
-            return ( $timeframe2->getEndDate() > $timeframe1->getStartDate() );
+        if ( ! $this->getEndDate() && $otherTimeframe->getEndDate() ) {
+            return ( $otherTimeframe->getEndDate() > $this->getStartDate() );
         }
 
         // Check if both timeframes have an end date
-        if ( $timeframe1->getEndDate() && $timeframe2->getEndDate() ) {
+        if ( $this->getEndDate() && $otherTimeframe->getEndDate() ) {
             return (
                 // Check if the end date of the first timeframe is within the second timeframe
-                ( $timeframe1->getEndDate() >= $timeframe2->getStartDate() && $timeframe1->getEndDate() <= $timeframe2->getEndDate() ) ||
-                // Check if the end date of the second timeframe is within the first timeframe
-                ( $timeframe2->getEndDate() >= $timeframe1->getStartDate() && $timeframe2->getEndDate() <= $timeframe1->getEndDate() )
+	            ( $this->getEndDate() >= $otherTimeframe->getStartDate() && $this->getEndDate() <= $otherTimeframe->getEndDate() ) ||
+	            // Check if the end date of the second timeframe is within the first timeframe
+	            ( $otherTimeframe->getEndDate() >= $this->getStartDate() && $otherTimeframe->getEndDate() <= $this->getEndDate() )
             );
         }
+		else {
+			return false;
+		}
 	}
 
 	/**
@@ -497,37 +499,36 @@ class Timeframe extends CustomPost {
 	/**
 	 * Checks if timeframes are overlapping in daily slots.
 	 *
-	 * @param $timeframe1
-	 * @param $timeframe2
+	 * @param   \CommonsBooking\Model\Timeframe  $otherTimeframe
 	 *
 	 * @return bool
 	 */
 
-    protected function hasTimeframeTimeOverlap( $timeframe1, $timeframe2 ) {
+    protected function hasTimeframeTimeOverlap( Timeframe $otherTimeframe ) {
         // Check if both timeframes have an end time, if not, there is no overlap
-        if ( ! strtotime( $timeframe1->getEndTime() ) && ! strtotime( $timeframe2->getEndTime() ) ) {
+        if ( ! strtotime( $this->getEndTime() ) && ! strtotime( $otherTimeframe->getEndTime() ) ) {
             return true;
         }
 
         // Check if only timeframe1 has an end time and if it overlaps with the other timeframe
-        if ( strtotime( $timeframe1->getEndTime() ) && ! strtotime( $timeframe2->getEndTime() )
-            && strtotime( $timeframe2->getStartTime() ) <= strtotime( $timeframe1->getEndTime() )
-            && strtotime( $timeframe2->getStartTime() ) >= strtotime( $timeframe1->getStartTime() ) ) {
+        if ( strtotime( $this->getEndTime() ) && ! strtotime( $otherTimeframe->getEndTime() )
+            && strtotime( $otherTimeframe->getStartTime() ) <= strtotime( $this->getEndTime() )
+            && strtotime( $otherTimeframe->getStartTime() ) >= strtotime( $this->getStartTime() ) ) {
             return true;
         }
 
         // Check if only timeframe2 has an end time and if it overlaps with the other timeframe
-        if ( ! strtotime( $timeframe1->getEndTime() ) && strtotime( $timeframe2->getEndTime() )
-            && strtotime( $timeframe2->getEndTime() ) > strtotime( $timeframe1->getStartTime() ) ) {
+        if ( ! strtotime( $this->getEndTime() ) && strtotime( $otherTimeframe->getEndTime() )
+            && strtotime( $otherTimeframe->getEndTime() ) > strtotime( $this->getStartTime() ) ) {
             return true;
         }
 
         // Check if both timeframes have an end time and if they overlap
-        if ( strtotime( $timeframe1->getEndTime() ) && strtotime( $timeframe2->getEndTime() )
-            && ( ( strtotime( $timeframe1->getEndTime() ) > strtotime( $timeframe2->getStartTime() )
-                && strtotime( $timeframe1->getEndTime() ) < strtotime( $timeframe2->getEndTime() ) )
-                || ( strtotime( $timeframe2->getEndTime() ) > strtotime( $timeframe1->getStartTime() )
-                    && strtotime( $timeframe2->getEndTime() ) < strtotime( $timeframe1->getEndTime() ) ) ) ) {
+        if ( strtotime( $this->getEndTime() ) && strtotime( $otherTimeframe->getEndTime() )
+            && ( ( strtotime( $this->getEndTime() ) > strtotime( $otherTimeframe->getStartTime() )
+                && strtotime( $this->getEndTime() ) < strtotime( $otherTimeframe->getEndTime() ) )
+                || ( strtotime( $otherTimeframe->getEndTime() ) > strtotime( $this->getStartTime() )
+                    && strtotime( $otherTimeframe->getEndTime() ) < strtotime( $this->getEndTime() ) ) ) ) {
             return true;
         }
 
