@@ -199,20 +199,12 @@ class Booking extends PostRepository {
 		$query = new WP_Query( $args );
 		if ( $query->have_posts() ) {
 			$posts = $query->get_posts();
-			$posts = array_filter( $posts, function ( $post ) {
-				return in_array( $post->post_status, array( 'confirmed', 'unconfirmed' ) );
-			} );
 
 			// If there is exactly one result, return it.
 			if ( count( $posts ) == 1 ) {
-				$booking = new \CommonsBooking\Model\Booking( $posts[0] );
-				if ( in_array( $booking->getPost()->post_status, array( 'confirmed', 'unconfirmed' ) ) ) {
-					return $booking;
-				}
-			}
-
-			// This shouldn't happen.
-			if ( count( $posts ) > 1 ) {
+				return new \CommonsBooking\Model\Booking( $posts[0] );
+			} elseif ( count( $posts ) > 1 ) {
+				// This shouldn't happen.
 				throw new Exception( __CLASS__ . "::" . __LINE__ . ": Found more than one bookings" );
 			}
 		}
@@ -228,7 +220,7 @@ class Booking extends PostRepository {
 	 * @param array $customArgs
 	 * @param array $postStatus
 	 *
-	 * @return \CommonsBooking\Model\Booking[]|null
+	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
 	 */
 	public static function getByTimerange(
@@ -238,7 +230,7 @@ class Booking extends PostRepository {
 		$itemId,
 		array $customArgs = [],
 		array $postStatus = ['confirmed', 'unconfirmed']
-	): ?array {
+	): array {
 		// Default query
 		$args = array(
 			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
