@@ -282,8 +282,8 @@ class Booking extends View {
 	}
 
 	public static function getBookingListiCal($user = null):String{
-		$eventTitle_unparsed = 	Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
-		$eventDescription_unparsed = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-description' );
+		$eventTitle_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
+		$eventDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );
 
 		$user = get_user_by('id', $user);
 
