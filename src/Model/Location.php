@@ -37,7 +37,7 @@ class Location extends BookablePost {
 	 *
 	 * Returns the location address including location name in multiple lanes with <br> line breaks
 	 *
-	 * @TODO: turn this into a user-configurable template.
+	 * @TODO: - turn this into a user-configurable template.
 	 * E.g. a textarea "location format" in the backend that gets run through CB::get():
 	 * {{location_street}}<br>{{location_postcode}} {{location_city}}
 	 *
@@ -47,11 +47,20 @@ class Location extends BookablePost {
 	public function formattedAddress() {
 		$html_after    = '<br>';
 		$html_output[] = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, 'post_title', $this->post ) . $html_after;
-		$html_output[] = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_street',
-				$this->post ) . $html_after;
-		$html_output[] = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post ) . ' ';
-		$html_output[] = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_city',
-				$this->post ) . $html_after;
+		$location_street = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_street',
+			$this->post );
+		if (!empty($location_street)){
+			$html_output[] = $location_street . $html_after;
+		}
+		$location_postcode = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post );
+		if (!empty($location_postcode)){
+			$html_output[] = $location_postcode . ' ';
+		}
+		$location_city = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_city',
+			$this->post );
+		if (!empty($location_city)){
+			$html_output[] = $location_city . $html_after;
+		}
 
 		return implode( ' ', $html_output );
 	}
@@ -60,17 +69,30 @@ class Location extends BookablePost {
 	 * formattedAddressOneLine
 	 *
 	 * Returns the formatted Location address in one line, separated by comma
-	 *
-	 * @TODO: Do not return tags (,) if values are empty. This applies to  formattedAddress(), too
-	 *
 	 * @return string html
 	 */
-	public function formattedAddressOneLine() {
+	public function formattedAddressOneLine(): string {
+		$location_street = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_street', $this->post );
+
+		$location_postcode = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post );
+
+		$location_city = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_city', $this->post );
+
+		if (empty($location_street) && empty($location_postcode) && empty($location_city)){
+			return "";
+		}
+		elseif (empty($location_street) || empty($location_postcode)){
+			return sprintf('%s %s %s',
+				$location_street,
+				$location_postcode,
+				$location_city
+			);
+		}
 		return sprintf(
 			'%s, %s %s',
-			CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_street', $this->post ),
-			CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post ),
-			CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_city', $this->post )
+			$location_street,
+			$location_postcode,
+			$location_city
 		);
 	}
 
