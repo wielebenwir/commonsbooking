@@ -43,7 +43,10 @@ if ( isset( $form_post_status ) ) {
         <input type="hidden" name="post_status" value="<?php echo esc_attr( $form_post_status ); ?>"/>
         <input type="hidden" name="repetition-start" value="<?php echo esc_attr( $booking->getMeta( 'repetition-start' ) ); ?>">
         <input type="hidden" name="repetition-end" value="<?php echo esc_attr( $booking->getMeta( 'repetition-end' ) ); ?>">
-        <input type="submit" value="<?php echo esc_attr( $button_label ); ?>" class="<?php echo 'cb-action-' . commonsbooking_sanitizeHTML( $form_post_status ); ?>"/>
+	    <input type="submit" name="booking-update" value="<?php echo esc_attr( $button_label ); ?>" class="<?php echo 'cb-action-' . commonsbooking_sanitizeHTML( $form_post_status ); ?>"/>
+		<?php if ( ! empty($icalbutton_label) ) { ?>
+			<input type="submit" name="calendar-download" value="<?php echo esc_attr( $icalbutton_label ) ?>" class="cb-action-get_ics"/>
+		<?php } ?>
     </form>
     <?php
 }
