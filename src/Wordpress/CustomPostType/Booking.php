@@ -5,6 +5,7 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 use CommonsBooking\Exception\OverlappingException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
+use CommonsBooking\Settings\Settings;
 use Exception;
 use function wp_verify_nonce;
 use function commonsbooking_write_log;
@@ -142,6 +143,30 @@ class Booking extends Timeframe {
 			$post_slug = get_post( $postId )->post_name;
 
 			wp_redirect( add_query_arg( self::getPostType(), $post_slug, home_url() ) );
+			exit;
+		}
+		elseif (
+			function_exists( 'wp_verify_nonce' ) &&
+			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
+			wp_verify_nonce( $_REQUEST[ static::getWPNonceId() ], static::getWPAction() ) &&
+			isset ( $_POST['calendar-download'] )
+		){
+			$postID     = intval($_POST['post_ID']);
+			$booking  = New \CommonsBooking\Model\Booking( $postID );
+			$template_objects = [
+				'booking'  => $booking,
+				'item'     => $booking->getItem(),
+				'location' => $booking->getLocation(),
+				'user'     => $booking->getUserData(),
+			];
+			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
+			$eventTitle = commonsbooking_sanitizeHTML ( commonsbooking_parse_template ( $eventTitle, $template_objects ) );
+			$eventDescription = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-description' );
+			$eventDescription = commonsbooking_sanitizeHTML ( strip_tags ( commonsbooking_parse_template ( $eventDescription, $template_objects ) ) );
+			$calendar = $booking->getiCal($eventTitle,$eventDescription);
+			header('Content-Type: text/calendar; charset=utf-8');
+			header('Content-Disposition: attachment; filename="cal.ics"');
+			echo $calendar;
 			exit;
 		}
 	}

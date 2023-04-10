@@ -15,6 +15,7 @@ if ( $current_status === 'unconfirmed' && $form_action === 'confirm' ) {
 
 if ( $current_status === 'confirmed' && $form_action === 'cancel' && ! $booking->isPast() ) {
     $form_post_status = 'canceled';
+	$icalbutton_label = esc_html__( 'Add to Calendar', 'commonsbooking' );
     $button_label     = esc_html__( 'Cancel Booking', 'commonsbooking' );
 }
 
