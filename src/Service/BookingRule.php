@@ -118,7 +118,7 @@ class BookingRule {
 	 */
 	public static function getRulesJSON(): string {
 		try {
-			$ruleObjects = self::init();
+			$ruleObjects = static::init();
 		} catch ( BookingRuleException $e ) {
 			set_transient(
 				OptionsTab::ERROR_TYPE,
@@ -129,7 +129,7 @@ class BookingRule {
 		if ( isset( $ruleObjects ) ) {
 			return wp_json_encode(
 				array_map(
-					function( BookingRule $rule){
+					function( $rule){
 						return get_object_vars($rule);
 					}, $ruleObjects )
 			);

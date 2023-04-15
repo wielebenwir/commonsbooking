@@ -141,7 +141,7 @@ class BookingRuleApplied extends BookingRule {
 	 */
 	public static function bookingConformsToRules( Booking $booking):void {
 		try {
-			$ruleset = self::getAll();
+			$ruleset = self::init();
 		} catch ( BookingRuleException $e ) {
 			//booking always conforms to rules if ruleset is not available / invalid
 			return;
@@ -192,10 +192,41 @@ class BookingRuleApplied extends BookingRule {
 	}
 
 	/**
+	 * Gets a string of all rule properties, so they can be displayed using CMB2
+	 *
+	 * I would love to not repeat myself here, but I don't know how to do it. This is a carbon copy of the function in BookingRule.
+	 * TODO: Find a way to not repeat myself here
+	 * @return string
+	 */
+	public static function getRulesJSON(): string {
+		try {
+			$ruleObjects = static::init();
+		} catch ( BookingRuleException $e ) {
+			set_transient(
+				OptionsTab::ERROR_TYPE,
+				$e->getMessage()
+			);
+		}
+
+		if ( isset( $ruleObjects ) ) {
+			return wp_json_encode(
+				array_map(
+					function( $rule){
+						return get_object_vars($rule);
+					}, $ruleObjects )
+			);
+		}
+		else {
+			return "";
+		}
+	}
+
+	/**
 	 * Tries to create objects for all applied Booking rules from the settings
 	 * @throws BookingRuleException
+	 * @OVERRIDE
 	 */
-	public static function getAll():array{
+	public static function init():array{
 		$validRules = parent::init();
 		$rulesConfig = Settings::getOption('commonsbooking_options_restrictions', 'rules_group');
 		$appliedRules = [];
@@ -261,7 +292,7 @@ class BookingRuleApplied extends BookingRule {
 	 */
 	public static function validateRules():void{
 		try {
-			self::getAll();
+			self::init();
 		} catch ( BookingRuleException $e ) {
 			set_transient(
 				OptionsTab::ERROR_TYPE,

@@ -43,7 +43,8 @@ function commonsbooking_admin() {
 	// Additional info for CMB2 to handle booking rules
 	wp_add_inline_script(
 		'cb-scripts-admin',
-'cb_booking_rules=' . \CommonsBooking\Service\BookingRule::getRulesJSON()
+'cb_booking_rules=' . \CommonsBooking\Service\BookingRule::getRulesJSON() . ';'
+		. 'cb_applied_booking_rules=' . \CommonsBooking\Service\BookingRuleApplied::getRulesJSON() . ';',
 	);
 
 	/**
