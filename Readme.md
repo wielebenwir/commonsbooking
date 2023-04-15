@@ -99,6 +99,14 @@ For example you can activate the [kasimir theme](github.com/flegfleg/kasimir-the
 wp-env run cli wp theme activate kasimir-theme
 ```
 
+### Update translations
+
+Create a new .pot file using the 
+```
+wp i18n make-pot . languages/commonsbooking.pot
+```
+command in the plugin directory. Make sure that all of your strings use the `__` function with the domain `commonsbooking`. Then you can use `poedit` to open the `commonsbooking-de_DE.po` and update the strings from the `pot` file. 
+
 ## Frequently Asked Questions
 
 ### Where can i find help/report bugs?
