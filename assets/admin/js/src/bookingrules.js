@@ -10,7 +10,6 @@
         const ruleParam1ID = 'rule-param1';
         const ruleParam2ID = 'rule-param2';
         const ruleSelectParamID = 'rule-select-param';
-        console.log(cb_booking_rules);
         const handleRuleSelection = function() {
             let groupFields = $('#' + groupName + '_repeat');
 
@@ -76,7 +75,16 @@
                                     text: ruleOptions[key]
                                 }));
                             }
-                            //TODO: set select field to saved value
+
+                            //find the correct applied rule for the current rule
+                            let appliedRule = cb_applied_booking_rules.filter( appliedRule => {
+                                return appliedRule.name == rule.name;
+                            });
+
+                            //set the select field to the saved value if it exists
+                            if (appliedRule.length ===  1) {
+                                ruleSelectParamOptions.val(appliedRule[0].appliedSelectParam);
+                            }
                         }
                         else {
                             ruleSelectParam.hide();
