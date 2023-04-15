@@ -10,7 +10,6 @@
         const ruleParam1ID = "rule-param1";
         const ruleParam2ID = "rule-param2";
         const ruleSelectParamID = "rule-select-param";
-        console.log(cb_booking_rules);
         const handleRuleSelection = function() {
             let groupFields = $("#" + groupName + "_repeat");
             groupFields.on("cmb2_add_row cmb2_remove_row cmb2_shift_rows_complete", function() {
@@ -65,6 +64,12 @@
                                     value: key,
                                     text: ruleOptions[key]
                                 }));
+                            }
+                            let appliedRule = cb_applied_booking_rules.filter(appliedRule => {
+                                return appliedRule.name == rule.name;
+                            });
+                            if (appliedRule.length === 1) {
+                                ruleSelectParamOptions.val(appliedRule[0].appliedSelectParam);
                             }
                         } else {
                             ruleSelectParam.hide();
