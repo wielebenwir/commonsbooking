@@ -1,8 +1,10 @@
 name: PHP Unit Tests
 
-on:
+on: 
   pull_request:
-    types: [opened, synchronize]
+    branches:
+      - 'master'
+      - 'release/**'
     paths-ignore:
       - '**.md'
       
