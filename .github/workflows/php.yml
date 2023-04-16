@@ -2,16 +2,10 @@ name: PHP Unit Tests
 
 on:
   push:
-    branches:
-      - 'master'
-      - 'release/**'
     paths-ignore:
       - '**.md'
       - '**.txt'
   pull_request:
-    branches:
-      - 'master'
-      - 'release/**'
     paths-ignore:
       - '**.md'
       - '**.txt'
