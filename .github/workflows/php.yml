@@ -6,6 +6,7 @@ on:
       - 'master'
       - 'release/**'
     paths-ignore:
+      - 'README.md'
       - '**.md'
       
 
