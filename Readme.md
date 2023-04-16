@@ -2,8 +2,6 @@
 
 # CommonsBooking
 
-teständerung die nicht triggert
-
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen  
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, commons, sharing, calendar,  
