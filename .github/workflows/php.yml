@@ -9,7 +9,7 @@ on:
       - 'master'
       - 'release/**'
     paths-ignore:
-      - 'README.md'
+      - 'Readme.md'
       - '**.md'
 
 env:
