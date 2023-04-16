@@ -18,6 +18,7 @@ on:
       - 'includes/**'
       - 'src/**'
       - 'tests/**'
+      - '**.ya?ml'
 
 env:
   DB_DATABASE: wordpress_test
