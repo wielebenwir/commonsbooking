@@ -6,7 +6,9 @@ on:
       - 'master'
       - 'release/**'
     paths:
-      - '**.(php|json|xml|dist|yml)'
+      - 'includes/**'
+      - 'src/**'
+      - 'tests/**'
   pull_request:
     branches:
       - 'master'
