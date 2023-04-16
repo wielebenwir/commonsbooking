@@ -1,14 +1,18 @@
 name: PHP Unit Tests
 
 on: 
-  pull_request:
+  push:
+    paths-ignore:
+      - '**.md'
+      - README.md
     branches:
       - 'master'
       - 'release/**'
-    paths-ignore:
-      - 'README.md'
-      - '**.md'
-      
+    tags:
+      - 'v*.*.*'
+  pull_request:
+    branches:
+      - 'master'      
 
 env:
   DB_DATABASE: wordpress_test
