@@ -5,6 +5,10 @@ on:
     paths-ignore:
       - '**.md'
       - '**.txt'
+  pull_request:
+    types: opened
+    branches:
+      - 'master'
 
 env:
   DB_DATABASE: wordpress_test
