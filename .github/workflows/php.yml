@@ -9,10 +9,7 @@ on:
       - 'master'
       - 'release/**'
     tags:
-      - 'v*.*.*'
-  pull_request:
-    branches:
-      - 'master'      
+      - 'v*.*.*' 
 
 env:
   DB_DATABASE: wordpress_test
