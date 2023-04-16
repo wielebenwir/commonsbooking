@@ -5,10 +5,14 @@ on:
     branches:
       - 'master'
       - 'release/**'
+    paths:
+      - '**.(php|js|json|xml|dist)'
   pull_request:
     branches:
       - 'master'
       - 'release/**'
+    paths:
+      - '**.(php|js|json|xml|dist)'
 
 env:
   DB_DATABASE: wordpress_test
