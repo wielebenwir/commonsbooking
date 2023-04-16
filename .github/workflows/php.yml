@@ -8,9 +8,8 @@ on:
     branches:
       - 'master'
       - 'release/**'
-    paths-ignore:
-      - 'Readme.md'
-      - '**.md'
+    paths:
+      - '**.php'
 
 env:
   DB_DATABASE: wordpress_test
