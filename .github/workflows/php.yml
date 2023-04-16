@@ -2,7 +2,7 @@ name: PHP Unit Tests
 
 on:
   pull_request:
-    types: opened
+    types: [opened, synchronize]
     paths-ignore:
       - '**.md'
       
