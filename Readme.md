@@ -76,15 +76,15 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ### Run plugin
 
-The most easy way to start hacking wordpress plugins (if you have no development environment set up) is using [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/). Install it and fire up in your favorite bash:
+The most easy way to start hacking wordpress plugins in gernal (if you have no other development environment set up) is using [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/). Install it and it's dependencies (mainly Docker) and fire up in your favorite bash:
 ```
 wp-env start
 ```
-The provided `.wp-env.json` should be sufficient for normal development, for details see the [documentation of wp-env config](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/#wp-env-json).
+The provided `.wp-env.json` should be sufficient for normal development, for details see the [documentation of wp-env config](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/#wp-env-json). [You can create](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/#wp-env-override-json) an `.wp-env.override.json` for a custom configuration you don't want to check in.
 
 ### Test plugin
 
-To test the code you first run the [preparation scripts](https://github.com/wp-cli/scaffold-command#wp-scaffold-plugin-tests) to load the wordpress core and configure database connection via `wp-config.php`. The following line can vary on your system, use the appropriate credentials, port and version of wordpress:
+To test the code you first run the [preparation scripts](https://github.com/wp-cli/scaffold-command#wp-scaffold-plugin-tests) to load the wordpress core and configure database connection via `wp-config.php`. The following line can vary on your system, use the appropriate credentials, databse port and version of wordpress. The appropriate database port is printed out by `wp-env start`:
 ```
 bash bin/install-wp-tests.sh wordpress root password 127.0.0.1:49153 latest
 ```
