@@ -2,11 +2,15 @@ name: PHP Unit Tests
 
 on: 
   push:
-    paths-ignore:
-      - '**.md'
+    branches:
+      - 'master'
+  pull_request:
     branches:
       - 'master'
       - 'release/**'
+    paths-ignore:
+      - 'README.md'
+      - '**.md'
 
 env:
   DB_DATABASE: wordpress_test
