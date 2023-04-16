@@ -6,13 +6,13 @@ on:
       - 'master'
       - 'release/**'
     paths:
-      - '**.(php|js|json|xml|dist)'
+      - '**.(php|json|xml|dist)'
   pull_request:
     branches:
       - 'master'
       - 'release/**'
     paths:
-      - '**.(php|js|json|xml|dist)'
+      - '**.(php|json|xml|dist)'
 
 env:
   DB_DATABASE: wordpress_test
