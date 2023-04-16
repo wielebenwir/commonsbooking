@@ -4,7 +4,7 @@ on:
   pull_request:
     paths-ignore:
       - '**.md'
-      - '**.txt'
+      
 
 env:
   DB_DATABASE: wordpress_test
