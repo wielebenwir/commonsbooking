@@ -9,6 +9,7 @@ on:
       - 'includes/**'
       - 'src/**'
       - 'tests/**'
+      - '**.ya?ml'
   pull_request:
     branches:
       - 'master'
