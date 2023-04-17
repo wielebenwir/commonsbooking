@@ -1041,22 +1041,24 @@ Please let us know if any problems occurred.<br>
 						'id'   => 'feed_enabled',
 						'type' => 'checkbox',
 					),
+					//TODO: Consider to switch first_name and last_name with user_login since the other fields are not required.
 					array(
 						'name'	=> esc_html__( 'Event title', 'commonsbooking'),
-						'desc'	=> esc_html__( 'You can use template tags here as well', 'commonsbooking'),
-						'default'       => commonsbooking_sanitizeHTML( __( '{{item:post_title}} at {{location:post_title}}',
+						'desc'	=> esc_html__( 'This is the event title that will be given to bookings that do not belong to the current user. This is what the CB-Manager will see when they subscribe to the station calendar. You can use template tags here as well', 'commonsbooking'),
+						'default'       => commonsbooking_sanitizeHTML( __( '{{item:post_title}} @ {{user:first_name}} {{user:last_name}}',
 						'commonsbooking' ) ),
 						'id'	=> 'event_title',
 						'type'	=> 'text',
 					),
+					//TODO: more useful default template tags; better description
 					array(
 						'name'	=> esc_html__( 'Event description', 'commonsbooking'),
-						'desc'	=> esc_html__( 'You can use template tags here as well', 'commonsbooking'),
+						'desc'	=> esc_html__( 'This is the event description that will be given to bookings that do not belong to the current user. This is what the CB-Manager will see when they subscribe to the station calendar. You can use template tags here.', 'commonsbooking'),
 						'default'       => commonsbooking_sanitizeHTML( __( '
 Pick up: {{booking:pickupDatetime}}
 Return date: {{booking:returnDatetime}}
-{{location:formattedPickupInstructions}}
-{{booking:formattedBookingCode}} ',
+Booking code: {{booking:formattedBookingCode}} 
+User Email: {{user:user_email}}',
 						'commonsbooking' ) ),
 						'id'	=> 'event_desc',
 						'type'	=> 'textarea',
