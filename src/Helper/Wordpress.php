@@ -259,11 +259,36 @@ class Wordpress {
 		return $itemsAndLocations;
 	}
 
+	/**
+	 * This would theoretically work if the timestamp we get from the database is in UTC.
+	 * The problem is, that the timestamp is in the local timezone of the server.
+	 * If we convert it to UTC, we get the wrong date and everything breaks.
+	 *
+	 * @param $timestamp
+	 *
+	 * @return DateTime
+	 * @throws \Exception
+	 */
 	public static function getUTCDateTimeByTimestamp($timestamp) {
 		$dto = new DateTime();
 		$dto->setTimestamp(
 			intval( $timestamp )
 		);
+		$dto->setTimezone(new \DateTimeZone('UTC'));
+
+		return $dto;
+	}
+
+	/**
+	 * This function does what probably the getUTCDateTimeByTimestamp was originally supposed to do.
+	 * @param $timestamp
+	 *
+	 * @return DateTime
+	 * @throws \Exception
+	 */
+	public static function convertTimestampToUTCDatetime($timestamp) {
+		$datetime = date( "Y-m-d H:i:s", $timestamp );
+		$dto      = new DateTime( $datetime,new \DateTimeZone(wp_timezone_string()));
 		$dto->setTimezone(new \DateTimeZone('UTC'));
 
 		return $dto;
