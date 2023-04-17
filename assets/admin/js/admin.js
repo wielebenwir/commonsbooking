@@ -3,21 +3,23 @@
     $(function() {
         if ($("#holiday_load_btn").length) {
             var fillHolidays = (year, state) => {
-                $.post(cb_ajax_holiday_get.ajax_url, {
-                    _ajax_nonce: cb_ajax_holiday_get.nonce,
-                    action: "holiday_get",
-                    year: year,
-                    state: state
-                }, function(data) {
-                    var array = $.parseJSON(data);
-                    array = Object.entries(array).map(item => item[1]);
-                    if ($("#timeframe_manual_date").val().length > 0) {
-                        if ($("#timeframe_manual_date").val().slice(-1) !== ",") {
-                            $("#timeframe_manual_date").val($("#timeframe_manual_date").val() + "," + array.join(","));
+                var holidays = feiertagejs.getHolidays(year, state);
+                const inputField = $("#timeframe_manual_date");
+                const DATE_SEPERATOR = ",";
+                holidays.forEach(holiday => {
+                    var date = new Date(holiday.date);
+                    var dd = date.getDate().length == 1 ? "0" + date.getDate() : date.getDate();
+                    var mm = (date.getMonth() + 1).length == 1 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                    var yyyy = date.getFullYear();
+                    var dateStr = yyyy + "-" + mm + "-" + dd;
+                    if (inputField.val().length > 0) {
+                        if (inputField.val().slice(-1) !== DATE_SEPERATOR) {
+                            inputField.val(inputField.val() + DATE_SEPERATOR + dateStr);
+                        } else {
+                            inputField.val(inputField.val() + dateStr);
                         }
-                        $("#timeframe_manual_date").val($("#timeframe_manual_date").val() + array.join(","));
                     } else {
-                        $("#timeframe_manual_date").val(array.join(",") + ",");
+                        inputField.val(dateStr + DATE_SEPERATOR);
                     }
                 });
             };
@@ -124,7 +126,6 @@
 (function($) {
     "use strict";
     $(function() {
-        console.log(feiertagejs.getHolidays(2024, "NW"));
         const arrayDiff = function(array1, array2) {
             var newItems = [];
             jQuery.grep(array2, function(i) {
@@ -163,7 +164,6 @@
             const bookingCodesList = $("#booking-codes-list");
             const holidayField = $(".cmb2-id--cmb2-holiday");
             const holidayInput = $("#timeframe_manual_date");
-            const holidayButton = $("#holiday_load_btn");
             const manualDateField = $(".cmb2-id-timeframe-manual-date");
             const maxDaysSelect = $(".cmb2-id-timeframe-max-days");
             const advanceBookingDays = $(".cmb2-id-timeframe-advance-booking-days");
@@ -198,7 +198,12 @@
                     advanceBookingDays.hide();
                     allowUserRoles.hide();
                     hideFieldset(bookingCodeTitle);
-                    if (selectedType == 3 && selectedRepetition == "manual") {} else {}
+                    if (selectedType == 3 && selectedRepetition == "manual") {
+                        holidayField.show();
+                    } else {
+                        holidayField.hide();
+                        holidayInput.val("");
+                    }
                 }
             };
             handleTypeSelection();
@@ -290,13 +295,6 @@
                 input.change(function() {
                     handleBookingCodesSelection();
                 });
-            });
-            const handleHolidayLoading = function() {
-                const today = new Date();
-                console.log(isHoliday(today, "BW"));
-            };
-            holidayButton.click(function() {
-                handleHolidayLoading();
             });
         }
     });
