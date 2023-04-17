@@ -132,6 +132,14 @@ class Timeframe extends CustomPostType {
 		\CommonsBooking\View\BookingCodes::renderTable( $field->object_id() );
 	}
 
+	public static function renderDateSelector( $field_args, $field ) {
+		?>
+		<label for="cmb2_multiselect_datepicker">Select Dates:</label>
+		<input type="text" id="cmb2_multiselect_datepicker">
+		<br>
+		<?php
+	}
+
 	/**
 	 * Priorities:
 	 * 1 => esc_html__("Opening Hours", 'commonsbooking'),
@@ -588,10 +596,11 @@ class Timeframe extends CustomPostType {
 				'type' => 'title',
 			),
 			array(
-				'name' => esc_html__( "Manual date input", 'commonsbooking' ),
-				'desc' => esc_html__( 'Here comma separated date input ', 'commonsbooking' ),//TODO: Change Description
-				'id' => \CommonsBooking\Model\Timeframe::META_MANUAL_SELECTION,
-				'type' => 'textarea_small'
+				'name'          => esc_html__( "Selected manual dates", 'commonsbooking' ),
+				'desc'          => esc_html__( 'Here comma separated date input ', 'commonsbooking' ),//TODO: Change Description
+				'id'            => \CommonsBooking\Model\Timeframe::META_MANUAL_SELECTION,
+				'type'          => 'textarea_small',
+				'before_row'    => array( self::class, 'renderDateSelector' )
 			),
 			array(
 				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
