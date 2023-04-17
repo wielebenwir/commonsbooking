@@ -112,10 +112,11 @@ class BaseRoute extends WP_REST_Controller {
 
 	/**
 	 * Returnes schema json for current route.
+	 *
 	 * @return false|string
 	 */
 	protected function getSchemaJson() {
-		return file_get_contents( $this->schemaUrl );
+		return wp_remote_get( $this->schemaUrl );
 	}
 
 	/**
