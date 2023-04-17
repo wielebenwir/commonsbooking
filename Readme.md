@@ -109,7 +109,7 @@ command in the plugin directory. Make sure that all of your strings use the `__`
 
 ### Build plugin zip
 
-To create the plugin zip file for upoading to a development server for example:
+To create the plugin zip file for uploading to a development server:
 ```
 bin/build-zip.sh
 ```
