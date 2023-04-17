@@ -244,26 +244,26 @@ class BookingRuleApplied extends BookingRule {
 
 				$ruleParams = [];
  				if (
-					 isset($ruleConfig['rule-param1']) &&
+				    ! empty($ruleConfig['rule-param1']) &&
 					 count($validRule->params) >= 1)
 				 {
 					 $ruleParams[] = $ruleConfig['rule-param1'];
 				 }
 				if (
-					isset($ruleConfig['rule-param2']) &&
+					! empty($ruleConfig['rule-param2']) &&
 					count($validRule->params) >= 2
 					)
 				{
 					$ruleParams[] = $ruleConfig['rule-param2'];
 				}
 
-				if (isset($ruleConfig['rule-select-param'])) { $selectParam = $ruleConfig['rule-select-param']; }
+				if (! empty ( $ruleConfig['rule-select-param'] )) { $selectParam = $ruleConfig['rule-select-param']; }
 
-				if (isset ( $ruleConfig['rule-applies-all'] ) && $ruleConfig['rule-applies-all'] === 'on'){
+				if (! empty ( $ruleConfig['rule-applies-all'] ) && $ruleConfig['rule-applies-all'] === 'on'){
 					$appliesToAll = true;
 				}
 
-				if ( isset( $ruleConfig['rule-applies-categories']) && $ruleConfig['rule-applies-categories'] !== FALSE ){
+				if ( ! empty ( $ruleConfig['rule-applies-categories'] ) ){
 					$appliedTerms = $ruleConfig['rule-applies-categories'];
 				}
 
