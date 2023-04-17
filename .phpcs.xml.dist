@@ -18,6 +18,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https:
 	<arg name="extensions" value="php"/>
 	<arg name="parallel" value="8"/><!-- Enables parallel processing when available for faster results. -->
 
+    <!-- Cache the results between runs. -->
+	<arg name="cache" value="./.cache-phpcs-free.cache"/>
+
 	<!-- Rules: Check PHP version compatibility -->
 	<!-- https://github.com/PHPCompatibility/PHPCompatibility#sniffing-your-code-for-compatibility-with-specific-php-versions -->
 	<config name="testVersion" value="7.3-" />
