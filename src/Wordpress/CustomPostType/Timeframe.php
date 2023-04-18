@@ -475,8 +475,13 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'       => esc_html__( 'Maximum booking duration', 'commonsbooking' ),
-				'desc'       => esc_html__( 'Maximum booking duration in days', 'commonsbooking' ),
+				'name' => esc_html__( "Configure bookings", 'commonsbooking' ),
+				'id'   => "title-bookings-config",
+				'type' => 'title',
+			),
+			array(
+				'name'       => esc_html__( 'Maximum', 'commonsbooking' ),
+				'desc'       => esc_html__( 'days in a row', 'commonsbooking' ),
 				'id'         => "timeframe-max-days",
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
@@ -488,8 +493,8 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
             array(
-				'name'       => esc_html__( 'Minimum booking period', 'commonsbooking' ),
-				'desc'       => esc_html__( 'Enter the number of days that should be blocked for bookings as a booking lead time (calculated from the current day).', 'commonsbooking' ),
+				'name'       => esc_html__( 'Lead time:', 'commonsbooking' ),
+				'desc'       => commonsbooking_sanitizeHTML(__( 'days. <br> The booking must happen X days before pickup.', 'commonsbooking' ) ),
 				'id'         => 'booking-startday-offset',
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
@@ -501,8 +506,8 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'       => esc_html__( 'Maximum booking days in advance', 'commonsbooking' ),
-				'desc'       => esc_html__( 'Select for how many days in advance the calendar should display bookable days. Calculated from the current date.', 'commonsbooking' ),
+				'name'       => esc_html__( 'Calendar shows', 'commonsbooking' ),
+				'desc'       => commonsbooking_sanitizeHTML( __( 'days. <br> The calendar will show the next X days. <br> Booking only possible in this time range.', 'commonsbooking' ) ),
 				'id'         => "timeframe-advance-booking-days",
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
@@ -514,11 +519,14 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'    => esc_html__( "Restrict bookings to user roles", 'commonsbooking' ),
+				'name'    => esc_html__( "Allowed for", 'commonsbooking' ),
 				'id'      => "allowed_user_roles",
-				'desc'    => esc_html__( 'Select one or more user roles to restrict bookings based on these timeframe configuration to these user roles. Leave empty for no restrictions', 'commonsbooking' ),
+				'desc'    => commonsbooking_sanitizeHTML(__( '<br> Select one or more user roles that will be allowed to book the item exclusively. <br> <b> Leave this blank to allow all users to book the item. </b>', 'commonsbooking' ) ),
 				'type'    => 'pw_multiselect',
 				'options' => self::sanitizeOptions( UserRepository::getUserRoles() ),
+				'attributes' => array(
+					'placeholder' => esc_html__( 'User roles', 'commonsbooking' ),
+				),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
