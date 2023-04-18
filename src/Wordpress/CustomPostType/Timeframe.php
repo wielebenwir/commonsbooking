@@ -494,7 +494,7 @@ class Timeframe extends CustomPostType {
 			),
             array(
 				'name'       => esc_html__( 'Lead time:', 'commonsbooking' ),
-				'desc'       => esc_html__( 'days. The booking must happen X days before pickup.', 'commonsbooking' ),
+				'desc'       => commonsbooking_sanitizeHTML(__( 'days. <br> The booking must happen X days before pickup.', 'commonsbooking' ) ),
 				'id'         => 'booking-startday-offset',
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
@@ -507,7 +507,7 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'       => esc_html__( 'Calendar shows', 'commonsbooking' ),
-				'desc'       => esc_html__( 'days. The calendar will show the next X days. Booking only possible in this time range.', 'commonsbooking' ),
+				'desc'       => commonsbooking_sanitizeHTML( __( 'days. <br> The calendar will show the next X days. <br> Booking only possible in this time range.', 'commonsbooking' ) ),
 				'id'         => "timeframe-advance-booking-days",
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
@@ -521,9 +521,12 @@ class Timeframe extends CustomPostType {
 			array(
 				'name'    => esc_html__( "Allowed for", 'commonsbooking' ),
 				'id'      => "allowed_user_roles",
-				'desc'    => esc_html__( 'Select one or more user roles that will be allowed to book the item exclusively. Leave this blank to allow all users to book the item.', 'commonsbooking' ),
+				'desc'    => commonsbooking_sanitizeHTML(__( '<br> Select one or more user roles that will be allowed to book the item exclusively. <br> <b> Leave this blank to allow all users to book the item. </b>', 'commonsbooking' ) ),
 				'type'    => 'pw_multiselect',
 				'options' => self::sanitizeOptions( UserRepository::getUserRoles() ),
+				'attributes' => array(
+					'placeholder' => esc_html__( 'User roles', 'commonsbooking' ),
+				),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
