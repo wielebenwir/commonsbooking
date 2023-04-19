@@ -170,11 +170,11 @@ class BookingRuleTest extends CustomPostTypeTest
 				$this->normalUser
 			)
 		));
-		$mondayFollowingWeek = $nextWeekDate;
+		$mondayFollowingWeek = clone $nextWeekDate;
 		$mondayFollowingWeek->modify('monday this week');
 		$mondayFollowingWeek->modify('+1 week');
 
-		$tuesdayFollowingWeek = $nextWeekDate;
+		$tuesdayFollowingWeek = clone $nextWeekDate;
 		$tuesdayFollowingWeek->modify('tuesday this week');
 		$tuesdayFollowingWeek->modify('+1 week');
 
@@ -196,6 +196,154 @@ class BookingRuleTest extends CustomPostTypeTest
 		));
 		$this->assertNull(BookingRule::checkMaxBookingsPerWeek($testBookingFour, array(2,null,0)));
 	}
+
+	public function testMaxBookingPerMonth() {
+		//we chose a different year than the self::CURRENT_DATE to make sure that the test does not interfere with the other tests
+		$testYear = 2022;
+
+		$maxDaysPerMonth = 5;
+		$resetDay = 1;
+		$confirmedBookingObjects = array(
+			array(
+				'start' => strtotime('01.05.'. $testYear),
+				'end' => strtotime('04.05.'. $testYear),
+			),
+			array(
+				'start' => strtotime('05.05.'. $testYear),
+				'end' => strtotime('06.05.'. $testYear),
+			),
+		);
+		$confirmedBookingObjects = $this->createBookingsFromDates($confirmedBookingObjects);
+		$deniedBooking = new Booking(get_post(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime('07.05.'. $testYear),
+				strtotime('09.05.'. $testYear),
+				'8:00 AM',
+				'12:00 PM',
+				'unconfirmed',
+				$this->normalUser
+			)
+		));
+		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($deniedBooking, array($maxDaysPerMonth,$resetDay,0)));
+
+		//check if the reset day is working
+		$maxDaysPerMonth = 3;
+		$resetDay = 5;
+		$previousMonthBooking = new Booking(get_post(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime('01.06.'. $testYear),
+				strtotime('04.06.'. $testYear),
+				'8:00 AM',
+				'12:00 PM',
+				'confirmed',
+				$this->normalUser
+			)
+		));
+		$confirmedBookingObjects = array(
+			array(
+				'start' => strtotime('06.06.'. $testYear),
+				'end' => strtotime('07.06.'. $testYear),
+			),
+			array(
+				'start' => strtotime('08.06.'. $testYear),
+				'end' => strtotime('10.06.'. $testYear),
+			)
+		);
+		$confirmedBookingObjects = $this->createBookingsFromDates($confirmedBookingObjects);
+		$allowedBooking = new Booking(get_post(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime('03.06.'. $testYear),
+				strtotime('03.06.'. $testYear),
+				'8:00 AM',
+				'12:00 PM',
+				'unconfirmed',
+				$this->normalUser
+			)
+		));
+		$disallowedBooking = new Booking(get_post(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime('12.06.'. $testYear),
+				strtotime('13.06.'. $testYear),
+				'8:00 AM',
+				'12:00 PM',
+				'unconfirmed',
+				$this->normalUser
+			)
+		));
+		$this->assertNull(BookingRule::checkMaxBookingsPerMonth($allowedBooking, array($maxDaysPerMonth,$resetDay,0)));
+		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($disallowedBooking, array($maxDaysPerMonth,$resetDay,0)));
+
+		//check if the month of february is working when the reset day has exceeded the number of days in the month
+		$maxDaysPerMonth = 4;
+		$resetDay = 31;
+		$confirmedBookingObjects = array(
+			array(
+				'start' => strtotime('01.02.'. $testYear),
+				'end' => strtotime('03.02.'. $testYear),
+			),
+			array(
+				'start' => strtotime('03.02.'. $testYear),
+				'end' => strtotime('05.02.'. $testYear),
+			)
+		);
+		$confirmedBookingObjects = $this->createBookingsFromDates($confirmedBookingObjects);
+		$deniedBooking = new Booking(get_post(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime('05.02.'. $testYear),
+				strtotime('06.02.'. $testYear),
+				'8:00 AM',
+				'12:00 PM',
+				'unconfirmed',
+				$this->normalUser
+			)
+		));
+		$allowedBooking = new Booking(get_post(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime('01.03.'. $testYear),
+				strtotime('02.03.'. $testYear),
+				'8:00 AM',
+				'12:00 PM',
+				'unconfirmed',
+				$this->normalUser
+			)
+		));
+
+		$this->assertNull(BookingRule::checkMaxBookingsPerMonth($allowedBooking, array($maxDaysPerMonth,$resetDay,0)));
+		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($deniedBooking, array($maxDaysPerMonth,$resetDay,0)));
+
+	}
+
+	protected function createBookingsFromDates(array $datearray){
+		$bookings = array();
+		foreach ($datearray as $date){
+			$bookings[] = new Booking(get_post(
+				$this->createBooking(
+					$this->locationId,
+					$this->itemId,
+					$date['start'],
+					$date['end'],
+					'8:00 AM',
+					'12:00 PM',
+					'confirmed',
+					$this->normalUser
+				)
+			));
+		}
+		return $bookings;
+	}
+
 	protected function setUp() {
 		parent::setUp();
 		$this->alwaysallow = new BookingRule(

@@ -369,7 +369,6 @@ class BookingRule {
 	public static function checkMaxBookingsPerWeek(Booking $booking, array $args, $appliedTerms = false): ?array {
 		$allowedBookableDays = $args[0];
 		$resetDay = $args[2];
-		$resetDayString = 'monday';
 		switch ($resetDay):
 			case 0:
 				$resetDayString = 'monday';
@@ -391,6 +390,9 @@ class BookingRule {
 				break;
 			case 6:
 				$resetDayString = 'sunday';
+				break;
+			default:
+				$resetDayString = 'monday';
 				break;
 		endswitch;
 		$bookingDate = $booking->getStartDateDateTime();
@@ -435,13 +437,45 @@ class BookingRule {
 	 * @param   bool|array                     $appliedTerms
 	 *
 	 * @return array|null
+	 */
 	public static function checkMaxBookingsPerMonth(Booking $booking, array $args, $appliedTerms = false): ?array {
 		$allowedBookableDays = $args[0];
-		$resetDay = $args[1];
+		$resetDay = $args[1] - 1;
+		$bookingDate = $booking->getStartDateDateTime();
+		// if the reset day is higher than the current max day of the month, we need to adjust the reset day
+		$maxDayOfMonth = $bookingDate->format('t');
+		$resetDay = ($resetDay > $maxDayOfMonth) ? $maxDayOfMonth - 1: $resetDay;
 
+		$startOfMonth = clone $bookingDate;
+		$startOfMonth->modify('first day of this month');
+		$endOfMonth = clone $startOfMonth;
+		$startOfMonth->modify('+' . $resetDay . ' days');
+		$endOfMonth->modify('next month');
+		$endOfMonth->modify('+'. $resetDay . ' days');
+
+		$rangeBookingsArray = \CommonsBooking\Repository\Booking::getByTimerange(
+			$startOfMonth->getTimestamp(),
+			$endOfMonth->getTimestamp(),
+			null,
+			null,
+			[],
+			[ 'confirmed' ]
+		);
+		$rangeBookingsArray = self::filterBookingsForTermsAndUser($rangeBookingsArray, $booking->getUserData(), $appliedTerms);
+		if (empty ($rangeBookingsArray)) {
+			return null;
+		}
+		$totalLength     = Booking::getTotalLength( $rangeBookingsArray );
+		$length          = $booking->getLength();
+		$totalLengthDays = $totalLength + $length;
+		if ($totalLengthDays > $allowedBookableDays){
+			return $rangeBookingsArray;
+		}
+		else {
+			return null;
+		}
 
 	}
-	*/
 
 	/**
 	 * Will filter an array of bookings on the condition that they are from a specific user AND that the terms apply
