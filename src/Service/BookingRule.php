@@ -408,6 +408,7 @@ class BookingRule {
 			$startOfWeek->modify('last ' . $resetDayString);
 			$endOfWeek->modify('next ' . $resetDayString);
 		}
+		return self::checkBookingRange( $startOfWeek, $endOfWeek, $booking, $appliedTerms, $allowedBookableDays );
 
 	}
 
@@ -461,6 +462,8 @@ class BookingRule {
 		else {
 			return null;
 		}
+
+		return self::checkBookingRange( $startDate, $endDate, $booking, $appliedTerms, $allowedBookableDays );
 
 	}
 
