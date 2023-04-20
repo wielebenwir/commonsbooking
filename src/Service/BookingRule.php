@@ -432,35 +432,23 @@ class BookingRule {
 		$bookingDate = $booking->getStartDateDateTime();
 		// if the reset day is higher than the current max day of the month, we need to adjust the reset day
 		$maxDayOfMonth = $bookingDate->format('t');
-		$resetDay = ($resetDay > $maxDayOfMonth) ? $maxDayOfMonth - 1: $resetDay;
+		$resetDay = ($resetDay > $maxDayOfMonth) ? $maxDayOfMonth: $resetDay;
 
-		$startOfMonth = clone $bookingDate;
-		$startOfMonth->modify('first day of this month');
-		$endOfMonth = clone $startOfMonth;
-		$startOfMonth->modify('+' . $resetDay . ' days');
-		$endOfMonth->modify('next month');
-		$endOfMonth->modify('+'. $resetDay . ' days');
 
-		$rangeBookingsArray = \CommonsBooking\Repository\Booking::getByTimerange(
-			$startOfMonth->getTimestamp(),
-			$endOfMonth->getTimestamp(),
-			null,
-			null,
-			[],
-			[ 'confirmed' ]
-		);
-		$rangeBookingsArray = self::filterBookingsForTermsAndUser($rangeBookingsArray, $booking->getUserData(), $appliedTerms);
-		if (empty ($rangeBookingsArray)) {
-			return null;
-		}
-		$totalLength     = Booking::getTotalLength( $rangeBookingsArray );
-		$length          = $booking->getLength();
-		$totalLengthDays = $totalLength + $length;
-		if ($totalLengthDays > $allowedBookableDays){
-			return $rangeBookingsArray;
+		//get the current month and year
+
+		$day = $bookingDate->format('d');
+		$month = $bookingDate->format('m');
+		$year = $bookingDate->format('Y');
+
+		// if the reset day is higher than the current day, we need to adjust the month and year
+		$startDate = new \DateTime($resetDay . '.' . $month . '.' . $year);
+		$endDate = clone $startDate;
+		if ($resetDay > $day){
+			$startDate->modify('-1 month');
 		}
 		else {
-			return null;
+			$endDate->modify('+1 month');
 		}
 
 		return self::checkBookingRange( $startDate, $endDate, $booking, $appliedTerms, $allowedBookableDays );
