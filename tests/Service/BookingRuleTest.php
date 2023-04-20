@@ -197,7 +197,7 @@ class BookingRuleTest extends CustomPostTypeTest
 		$this->assertNull(BookingRule::checkMaxBookingsPerWeek($testBookingFour, array(2,null,0)));
 	}
 
-	public function testMaxBookingPerMonth() {
+	public function testRegularMaxBookingPerMonth() {
 		//we chose a different year than the self::CURRENT_DATE to make sure that the test does not interfere with the other tests
 		$testYear = 2022;
 
@@ -227,8 +227,11 @@ class BookingRuleTest extends CustomPostTypeTest
 			)
 		));
 		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($deniedBooking, array($maxDaysPerMonth,$resetDay,0)));
+	}
 
+	public function testResetDayMaxBookingPerMonth(){
 		//check if the reset day is working
+		$testYear = 2022;
 		$maxDaysPerMonth = 3;
 		$resetDay = 5;
 		$previousMonthBooking = new Booking(get_post(
@@ -280,8 +283,11 @@ class BookingRuleTest extends CustomPostTypeTest
 		));
 		$this->assertNull(BookingRule::checkMaxBookingsPerMonth($allowedBooking, array($maxDaysPerMonth,$resetDay,0)));
 		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($disallowedBooking, array($maxDaysPerMonth,$resetDay,0)));
+	}
 
+	public function testFebruaryMaxBookingPerMonth(){
 		//check if the month of february is working when the reset day has exceeded the number of days in the month
+		$testYear = 2022;
 		$maxDaysPerMonth = 4;
 		$resetDay = 31;
 		$confirmedBookingObjects = array(
@@ -322,7 +328,6 @@ class BookingRuleTest extends CustomPostTypeTest
 
 		$this->assertNull(BookingRule::checkMaxBookingsPerMonth($allowedBooking, array($maxDaysPerMonth,$resetDay,0)));
 		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($deniedBooking, array($maxDaysPerMonth,$resetDay,0)));
-
 	}
 
 	protected function createBookingsFromDates(array $datearray){

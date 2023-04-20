@@ -428,7 +428,7 @@ class BookingRule {
 	 */
 	public static function checkMaxBookingsPerMonth(Booking $booking, array $args, $appliedTerms = false): ?array {
 		$allowedBookableDays = $args[0];
-		$resetDay = $args[1] - 1;
+		$resetDay = $args[1];
 		$bookingDate = $booking->getStartDateDateTime();
 		// if the reset day is higher than the current max day of the month, we need to adjust the reset day
 		$maxDayOfMonth = $bookingDate->format('t');
