@@ -226,7 +226,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				$this->normalUser
 			)
 		));
-		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($deniedBooking, array($maxDaysPerMonth,$resetDay,0)));
+		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($deniedBooking, array($maxDaysPerMonth,0,$resetDay)));
 	}
 
 	public function testResetDayMaxBookingPerMonth(){
@@ -234,12 +234,13 @@ class BookingRuleTest extends CustomPostTypeTest
 		$testYear = 2022;
 		$maxDaysPerMonth = 3;
 		$resetDay = 5;
+		$testMonth = "06";
 		$previousMonthBooking = new Booking(get_post(
 			$this->createBooking(
 				$this->locationId,
 				$this->itemId,
-				strtotime('01.06.'. $testYear),
-				strtotime('04.06.'. $testYear),
+				strtotime('01.' . $testMonth . '.'. $testYear),
+				strtotime('04.' . $testMonth . '.'. $testYear),
 				'8:00 AM',
 				'12:00 PM',
 				'confirmed',
@@ -248,12 +249,12 @@ class BookingRuleTest extends CustomPostTypeTest
 		));
 		$confirmedBookingObjects = array(
 			array(
-				'start' => strtotime('06.06.'. $testYear),
-				'end' => strtotime('07.06.'. $testYear),
+				'start' => strtotime('06.' . $testMonth . '.'. $testYear),
+				'end' => strtotime('07.' . $testMonth . '.'. $testYear),
 			),
 			array(
-				'start' => strtotime('08.06.'. $testYear),
-				'end' => strtotime('10.06.'. $testYear),
+				'start' => strtotime('08.' . $testMonth . '.'. $testYear),
+				'end' => strtotime('10.' . $testMonth . '.'. $testYear),
 			)
 		);
 		$confirmedBookingObjects = $this->createBookingsFromDates($confirmedBookingObjects);
@@ -261,8 +262,8 @@ class BookingRuleTest extends CustomPostTypeTest
 			$this->createBooking(
 				$this->locationId,
 				$this->itemId,
-				strtotime('03.06.'. $testYear),
-				strtotime('03.06.'. $testYear),
+				strtotime('03.' . $testMonth . '.'. $testYear),
+				strtotime('03.' . $testMonth . '.'. $testYear),
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
@@ -273,16 +274,16 @@ class BookingRuleTest extends CustomPostTypeTest
 			$this->createBooking(
 				$this->locationId,
 				$this->itemId,
-				strtotime('12.06.'. $testYear),
-				strtotime('13.06.'. $testYear),
+				strtotime('12.' . $testMonth . '.'. $testYear),
+				strtotime('13.' . $testMonth . '.'. $testYear),
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
 				$this->normalUser
 			)
 		));
-		$this->assertNull(BookingRule::checkMaxBookingsPerMonth($allowedBooking, array($maxDaysPerMonth,$resetDay,0)));
-		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($disallowedBooking, array($maxDaysPerMonth,$resetDay,0)));
+		$this->assertNull(BookingRule::checkMaxBookingsPerMonth($allowedBooking, array($maxDaysPerMonth,0,$resetDay)));
+		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($disallowedBooking, array($maxDaysPerMonth,0,$resetDay)));
 	}
 
 	public function testFebruaryMaxBookingPerMonth(){
@@ -326,8 +327,8 @@ class BookingRuleTest extends CustomPostTypeTest
 			)
 		));
 
-		$this->assertNull(BookingRule::checkMaxBookingsPerMonth($allowedBooking, array($maxDaysPerMonth,$resetDay,0)));
-		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($deniedBooking, array($maxDaysPerMonth,$resetDay,0)));
+		$this->assertNull(BookingRule::checkMaxBookingsPerMonth($allowedBooking, array($maxDaysPerMonth,0,$resetDay)));
+		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($deniedBooking, array($maxDaysPerMonth,0,$resetDay)));
 	}
 
 	protected function createBookingsFromDates(array $datearray){

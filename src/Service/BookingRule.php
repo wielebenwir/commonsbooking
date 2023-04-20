@@ -185,6 +185,52 @@ class BookingRule {
 				)
 			),
 			new BookingRule(
+				"maxBookingPerMonth",
+				__("Maximum booked days per month",'commonsbooking'),
+				__("Users are only allowed to book a limited amount of days per month.",'commonsbooking'),
+				__("You have reached your booking limit. Please leave some time in between bookings.",'commonsbooking'),
+				Closure::fromCallable(array(self::class,'checkMaxBookingsPerMonth')),
+				array(
+					__("Number of days each user is allowed to book per month",'commonsbooking'),
+				),
+				array(
+					__("At what day of the month should the counter be reset?",'commonsbooking'),
+					array(
+						1 => __("1st",'commonsbooking'),
+						2 => __("2nd",'commonsbooking'),
+						3 => __("3rd",'commonsbooking'),
+						4 => __("4th",'commonsbooking'),
+						5 => __("5th",'commonsbooking'),
+						6 => __("6th",'commonsbooking'),
+						7 => __("7th",'commonsbooking'),
+						8 => __("8th",'commonsbooking'),
+						9 => __("9th",'commonsbooking'),
+						10 => __("10th",'commonsbooking'),
+						11 => __("11th",'commonsbooking'),
+						12 => __("12th",'commonsbooking'),
+						13 => __("13th",'commonsbooking'),
+						14 => __("14th",'commonsbooking'),
+						15 => __("15th",'commonsbooking'),
+						16 => __("16th",'commonsbooking'),
+						17 => __("17th",'commonsbooking'),
+						18 => __("18th",'commonsbooking'),
+						19 => __("19th",'commonsbooking'),
+						20 => __("20th",'commonsbooking'),
+						21 => __("21st",'commonsbooking'),
+						22 => __("22nd",'commonsbooking'),
+						23 => __("23rd",'commonsbooking'),
+						24 => __("24th",'commonsbooking'),
+						25 => __("25th",'commonsbooking'),
+						26 => __("26th",'commonsbooking'),
+						27 => __("27th",'commonsbooking'),
+						28 => __("28th",'commonsbooking'),
+						29 => __("29th",'commonsbooking'),
+						30 => __("30th",'commonsbooking'),
+						31 => __("31st",'commonsbooking'),
+					)
+				)
+			),
+			new BookingRule(
 				"maxBookingDays",
 				__("Maximum of bookable days",'commonsbooking'),
 				__("Allow x booked days over the period of y days for user.",'commonsbooking'),
@@ -428,7 +474,7 @@ class BookingRule {
 	 */
 	public static function checkMaxBookingsPerMonth(Booking $booking, array $args, $appliedTerms = false): ?array {
 		$allowedBookableDays = $args[0];
-		$resetDay = $args[1];
+		$resetDay = $args[2];
 		$bookingDate = $booking->getStartDateDateTime();
 		// if the reset day is higher than the current max day of the month, we need to adjust the reset day
 		$maxDayOfMonth = $bookingDate->format('t');
