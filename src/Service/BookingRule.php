@@ -241,15 +241,6 @@ class BookingRule {
 					__("In the period of y days",'commonsbooking')
 				)
 			),
-			new BookingRule(
-				__("FailRule",'commonsbooking'),
-				__("Alwaysfailnoparam",'commonsbooking'),
-				__("This is a rule without params that will always fail",'commonsbooking'),
-				__("It has always failed alwaysfailnoparam",'commonsbooking'),
-				function( Booking $booking,array $args = [], $appliedTerms = false):?array{
-					return array($booking);
-				}
-			)
 		];
 
 		return apply_filters( COMMONSBOOKING_PLUGIN_SLUG . '_booking-rules',$defaultRuleSet);
