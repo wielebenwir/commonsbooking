@@ -174,13 +174,13 @@ class BookingRule {
 				array(
 					__("At what day of the week should the counter be reset?",'commonsbooking'),
 					array(
-						0 => __("Monday",'commonsbooking'),
-						1 => __("Tuesday",'commonsbooking'),
-						2 => __("Wednesday",'commonsbooking'),
-						3 => __("Thursday",'commonsbooking'),
-						4 => __("Friday",'commonsbooking'),
-						5 => __("Saturday",'commonsbooking'),
-						6 => __("Sunday",'commonsbooking')
+						0 => __("Sunday",'commonsbooking'),
+						1 => __("Montag",'commonsbooking'),
+						2 => __("Tuesday",'commonsbooking'),
+						3 => __("Wednesday",'commonsbooking'),
+						4 => __("Thursday",'commonsbooking'),
+						5 => __("Friday",'commonsbooking'),
+						6 => __("Saturday",'commonsbooking')
 					)
 				)
 			),
@@ -371,25 +371,25 @@ class BookingRule {
 		$resetDay = $args[2];
 		switch ($resetDay):
 			case 0:
-				$resetDayString = 'monday';
+				$resetDayString = 'sunday';
 				break;
 			case 1:
-				$resetDayString = 'tuesday';
+				$resetDayString = 'monday';
 				break;
 			case 2:
-				$resetDayString = 'wednesday';
+				$resetDayString = 'tuesday';
 				break;
 			case 3:
-				$resetDayString = 'thursday';
+				$resetDayString = 'wednesday';
 				break;
 			case 4:
-				$resetDayString = 'friday';
+				$resetDayString = 'thursday';
 				break;
 			case 5:
-				$resetDayString = 'saturday';
+				$resetDayString = 'friday';
 				break;
 			case 6:
-				$resetDayString = 'sunday';
+				$resetDayString = 'saturday';
 				break;
 			default:
 				$resetDayString = 'monday';
@@ -397,29 +397,16 @@ class BookingRule {
 		endswitch;
 		$bookingDate = $booking->getStartDateDateTime();
 		$startOfWeek = clone $bookingDate;
-		$startOfWeek->modify('last ' . $resetDayString);
 		$endOfWeek = clone $bookingDate;
-		$endOfWeek->modify('next ' . $resetDayString);
-		$rangeBookingsArray = \CommonsBooking\Repository\Booking::getByTimerange(
-			$startOfWeek->getTimestamp(),
-			$endOfWeek->getTimestamp(),
-			null,
-			null,
-			[],
-			[ 'confirmed' ]
-		);
-		$rangeBookingsArray = self::filterBookingsForTermsAndUser($rangeBookingsArray, $booking->getUserData(), $appliedTerms);
-		if (empty ($rangeBookingsArray)) {
-			return null;
-		}
-		$totalLength     = Booking::getTotalLength( $rangeBookingsArray );
-		$length          = $booking->getLength();
-		$totalLengthDays = $totalLength + $length;
-		if ($totalLengthDays > $allowedBookableDays){
-			return $rangeBookingsArray;
+
+		//check if the current day is the reset day
+		if ($startOfWeek->format('w') == $resetDay) {
+			//if so, we need to just need to add 7 days to the end of the week
+			$endOfWeek->modify('+7 days');
 		}
 		else {
-			return null;
+			$startOfWeek->modify('last ' . $resetDayString);
+			$endOfWeek->modify('next ' . $resetDayString);
 		}
 
 	}
@@ -494,6 +481,44 @@ class BookingRule {
 			return Booking::filterForUser($bookings, $user);
 		}
 		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Will check if a range of bookings exceeds the allowed amount of days.
+	 * Will also filter out bookings that are not in the same category as the booking.
+	 * Will also filter out bookings that are not made by the same user as the booking.
+	 * Will return the conflicting bookings if a user has too many in the range.
+	 *
+	 * @param $startOfMonth
+	 * @param $endOfMonth
+	 * @param Booking $booking
+	 * @param $appliedTerms
+	 * @param $allowedBookableDays
+	 *
+	 * @return array|null - conflicting bookings
+	 * @throws Exception
+	 */
+	private static function checkBookingRange( $startOfMonth, $endOfMonth, Booking $booking, $appliedTerms, $allowedBookableDays ): ?array {
+		$rangeBookingsArray = \CommonsBooking\Repository\Booking::getByTimerange(
+			$startOfMonth->getTimestamp(),
+			$endOfMonth->getTimestamp(),
+			null,
+			null,
+			[],
+			[ 'confirmed' ]
+		);
+		$rangeBookingsArray = self::filterBookingsForTermsAndUser( $rangeBookingsArray, $booking->getUserData(), $appliedTerms );
+		if ( empty ( $rangeBookingsArray ) ) {
+			return null;
+		}
+		$totalLength     = Booking::getTotalLength( $rangeBookingsArray );
+		$length          = $booking->getLength();
+		$totalLengthDays = $totalLength + $length;
+		if ( $totalLengthDays > $allowedBookableDays ) {
+			return $rangeBookingsArray;
+		} else {
 			return null;
 		}
 	}
