@@ -194,9 +194,9 @@ class BookingCodes {
 		}
 
 		// Before we add new codes, we remove old ones, that are not relevant anymore
-		self::deleteOldCodes( $timeframe, $timeframe->getLocation()->ID, $timeframe->getItem()->ID );
+		self::deleteOldCodes( $timeframe->ID, $timeframe->getLocation()->ID, $timeframe->getItem()->ID );
 
-		$bookingCodesRandomizer = intval( $timeframe );
+		$bookingCodesRandomizer = intval( $timeframe->ID );
 		$bookingCodesRandomizer += $timeframe->getItem()->ID;
 		$bookingCodesRandomizer += $timeframe->getLocation()->ID;
 
@@ -207,7 +207,7 @@ class BookingCodes {
 					$dt->format( 'Y-m-d' ),
 					$timeframe->getItem()->ID,
 					$timeframe->getLocation()->ID,
-					$timeframe,
+					$timeframe->ID,
 					$bookingCodesArray[ ( (int) $dt->format( 'z' ) + $bookingCodesRandomizer ) % count( $bookingCodesArray ) ]
 				);
 				self::persist( $bookingCode );
