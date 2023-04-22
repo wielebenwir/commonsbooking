@@ -145,11 +145,11 @@ class Location extends CustomPostType {
 			// Post Type in der oberen Admin-Bar anzeigen?
 			'show_in_admin_bar' => true,
 
-			// in den Navigations Menüs sichtbar machen?
+			// in den Navigationsmenüs sichtbar machen?
 			'show_in_nav_menus' => true,
 
 			// Hier können Berechtigungen in einem Array gesetzt werden
-			// oder die standart Werte post und page in form eines Strings gesetzt werden
+			// oder die standard Werte post und page in Form eines Strings gesetzt werden
 			'capability_type'   => array( self::$postType, self::$postType . 's' ),
 
 			'map_meta_cap'        => true,
@@ -195,7 +195,7 @@ class Location extends CustomPostType {
 	 * @return void
 	 */
 	public function registerMetabox() {
-		// Initiate the metabox Adress
+		// Initiate the metabox address
 		$cmb = new_cmb2_box( array(
 			'id'           => COMMONSBOOKING_METABOX_PREFIX . 'location_adress',
 			'title'        => esc_html__( 'Address', 'commonsbooking' ),
@@ -304,7 +304,7 @@ class Location extends CustomPostType {
 			'show_names'   => true, // Show field names on the left
 		) );
 
-		// short description
+		// location email
 		$cmb->add_field( array(
 			'name'       => esc_html__( 'Location email', 'commonsbooking' ),
 			'desc'       => esc_html__( 'Email addresses to which a copy of the booking confirmation / cancellation should be sent. You can enter multiple addresses separated by commas.',

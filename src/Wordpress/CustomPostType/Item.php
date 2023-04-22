@@ -212,6 +212,8 @@ class Item extends CustomPostType {
 			foreach ( $users as $user ) {
 				$userOptions[ $user->ID ] = $user->get( 'user_nicename' ) . " (" . $user->first_name . " " . $user->last_name . ")";
 			}
+
+			//Item Administrators
 			$cmb->add_field( array(
 				'name'       => esc_html__( 'Item Admin(s)', 'commonsbooking' ),
 				'desc'       => esc_html__( 'choose one or more users to give them the permisssion to edit and manage this specific item. Only users with the role cb_manager can be selected here', 'commonsbooking' ),
@@ -221,6 +223,16 @@ class Item extends CustomPostType {
 				'attributes' => array(
 					'placeholder' => esc_html__( 'Select item admins.', 'commonsbooking' )
 				),
+			) );
+
+			// item maintainer(s) emails
+			$cmb->add_field( array(
+				'name'       => esc_html__( 'Item maintainer email', 'commonsbooking' ),
+				'desc'       => esc_html__( 'Email addresses to which notifications about a change of item status (restriction, breakdown) shall be sent. You can enter multiple addresses separated by commas.',
+					'commonsbooking' ),
+				'id'         => COMMONSBOOKING_METABOX_PREFIX . 'item_maintainer_email',
+				'type'       => 'text',
+				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 			) );
 		}
 

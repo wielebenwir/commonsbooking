@@ -169,13 +169,15 @@ abstract class View {
 		$variables = [
 			'color-primary'   => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_primarycolor' ),
 			'color-secondary' => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_secondarycolor' ),
-			'color-buttons'   => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_buttoncolor' ),
+			'color-buttons'	  => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_buttoncolor' ),
 			'color-accept'    => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_acceptcolor' ),
 			'color-cancel'    => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_cancelcolor' ),
 			'color-holiday'   => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_holidaycolor' ),
 			'color-greyedout' => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor' ),
 			'color-bg'        => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_backgroundcolor' ),
 			'color-noticebg'  => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_noticebackgroundcolor' ),
+			'color-lighttext' => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_lighttext' ),
+			'color-darktext'  => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_darktext' ),
 		];
 
 		foreach ( $variables as &$variable ) { //iterate over array, convert valid values.

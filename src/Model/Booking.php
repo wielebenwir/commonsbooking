@@ -394,7 +394,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * return plain booking URL
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function bookingLinkUrl() {
 		return add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) );
@@ -433,13 +433,24 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Returns formatted user info based on the template field in settings -> templates
+	 * Helper to return the email signature configured in the options array
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public static function getFormattedUserInfo() {
-		return commonsbooking_parse_template(
-			Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'user_details_template' )
+	public function getEmailSignature(): string {
+		return commonsbooking_sanitizeHTML(
+			Settings::getOption( 'commonsbooking_options_templates', 'emailbody_signature' )
 		);
 	}
+
+    /**
+     * Returns formatted user info based on the template field in settings -> templates
+     *
+     * @return void
+     */
+    public static function getFormattedUserInfo() {
+        return commonsbooking_parse_template(
+            Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'user_details_template' )
+        );
+    }
 }

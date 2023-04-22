@@ -117,8 +117,11 @@ function CB_Map() {
 
         var markers;
 
-        // @TODO: Check real problem with markers.getBounds() error.
-        if(!this.settings.max_cluster_radius || this.settings.max_cluster_radius <= 0) {
+        // As the documentation states, a valid cluster radius is:
+        //   => 10px to enable  clustering
+        //   == 0px  to disable clustering 
+        //   1px-9px are ignored and 10px is assumed
+        if(this.settings.max_cluster_radius == undefined || (0 < this.settings.max_cluster_radius < 10)) {
             this.settings.max_cluster_radius = 10;
         }
 
@@ -150,8 +153,9 @@ function CB_Map() {
             }
 
             markers = L.markerClusterGroup(marker_cluster_options);
-
         } else {
+            // No clustering
+            // NOTE layergroup uses another api
             markers = L.layerGroup();
         }
 
@@ -289,6 +293,16 @@ function CB_Map() {
         //adjust map section to marker bounds based on settings
         if ((!init && this.settings.marker_map_bounds_filter) || (init && this.settings.marker_map_bounds_initial)) {
             if (Object.keys(data).length > 0) {
+
+                // If max_cluster_radius == 0, markers is a layerGroup and doesn't define getBounds, 
+                //  so the next if statement will fail, when center_position happens to be undefined
+                // TODO why center_position can be undefined
+                if (markers.getBounds === undefined && center_position === undefined) {
+                    center_position = {
+                        lat: data.map( location => location.lat ).reduce( (a, b) => a+b) / data.length,
+                        lon: data.map( location => location.lon ).reduce( (a, b) => a+b) / data.length
+                    }
+                }
 
                 //keep center position & set bounds based on markers to show around
                 if (center_position) {
