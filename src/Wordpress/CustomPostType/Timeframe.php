@@ -724,7 +724,7 @@ class Timeframe extends CustomPostType {
 			$this->sanitizeRepetitionEndDate($post_id);
 
 			if ( $createBookingCodes == "on" && $timeframe->bookingCodesApplieable() ) {
-				BookingCodes::generate( $post_id );
+				BookingCodes::generate( $timeframe );
 			}
 		}
 	}

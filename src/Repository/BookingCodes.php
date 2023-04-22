@@ -145,17 +145,17 @@ class BookingCodes {
 	/**
 	 * Generates booking codes for timeframe.
 	 *
-	 * @param $timeframeId
+	 * @param \CommonsBooking\Model\Timeframe $timeframe
 	 *
+	 * @return bool
 	 * @throws Exception
 	 */
-	public static function generate( $timeframeId ): bool {
-		$bookablePost = new \CommonsBooking\Model\Timeframe( $timeframeId );
+	public static function generate( \CommonsBooking\Model\Timeframe $timeframe ): bool {
 
 		$begin = Wordpress::getUTCDateTime();
-		$begin->setTimestamp( $bookablePost->getStartDate() );
+		$begin->setTimestamp( $timeframe->getStartDate() );
 		$end = Wordpress::getUTCDateTime();
-		$end->setTimestamp( $bookablePost->getRawEndDate() );
+		$end->setTimestamp( $timeframe->getRawEndDate() );
 		$end->setTimestamp( $end->getTimestamp() + 1 );
 
 		$interval = DateInterval::createFromDateString( '1 day' );
@@ -181,20 +181,20 @@ class BookingCodes {
 		}
 
 		// Before we add new codes, we remove old ones, that are not relevant anymore
-		self::deleteOldCodes( $timeframeId, $bookablePost->getLocation()->ID, $bookablePost->getItem()->ID );
+		self::deleteOldCodes( $timeframe, $timeframe->getLocation()->ID, $timeframe->getItem()->ID );
 
-		$bookingCodesRandomizer = intval( $timeframeId );
-		$bookingCodesRandomizer += $bookablePost->getItem()->ID;
-		$bookingCodesRandomizer += $bookablePost->getLocation()->ID;
+		$bookingCodesRandomizer = intval( $timeframe );
+		$bookingCodesRandomizer += $timeframe->getItem()->ID;
+		$bookingCodesRandomizer += $timeframe->getLocation()->ID;
 
 		foreach ( $period as $dt ) {
 			$day = new Day( $dt->format( 'Y-m-d' ) );
-			if ( $day->isInTimeframe( $bookablePost ) ) {
+			if ( $day->isInTimeframe( $timeframe ) ) {
 				$bookingCode = new BookingCode(
 					$dt->format( 'Y-m-d' ),
-					$bookablePost->getItem()->ID,
-					$bookablePost->getLocation()->ID,
-					$timeframeId,
+					$timeframe->getItem()->ID,
+					$timeframe->getLocation()->ID,
+					$timeframe,
 					$bookingCodesArray[ ( (int) $dt->format( 'z' ) + $bookingCodesRandomizer ) % count( $bookingCodesArray ) ]
 				);
 				self::persist( $bookingCode );
