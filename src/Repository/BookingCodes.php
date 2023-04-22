@@ -23,7 +23,15 @@ class BookingCodes {
 	public static $tablename = 'cb_bookingcodes';
 
 	/**
-	 * Returns booking codes for timeframe.
+	 * Days to advance generation of booking codes.
+	 * @var int
+	 */
+	public const ADVANCE_GENERATION_DAYS = 365;
+
+	/**
+	 * Returns booking codes for timeframe to display in backend Timeframe window.
+	 *
+	 *
 	 *
 	 * @param   int       $timeframeId - ID of timeframe to get codes for
 	 * @param   int|null  $startDate - Where to get booking codes from (timestamp)
@@ -175,9 +183,15 @@ class BookingCodes {
 		}
 		$begin = Wordpress::getUTCDateTime();
 		$begin->setTimestamp( $timeframe->getStartDate() );
-		$end = Wordpress::getUTCDateTime();
-		$end->setTimestamp( $timeframe->getRawEndDate() );
-		$end->setTimestamp( $end->getTimestamp() + 1 );
+		if ($timeframe->getRawEndDate()){
+			$end = Wordpress::getUTCDateTime();
+			$end->setTimestamp( $timeframe->getRawEndDate() );
+			$end->setTimestamp( $end->getTimestamp() + 1 );
+		}
+		else {
+			$end = new DateTime();
+			$end->modify( '+' . self::ADVANCE_GENERATION_DAYS . 'days');
+		}
 
 		$interval = DateInterval::createFromDateString( '1 day' );
 		$period   = new DatePeriod( $begin, $interval, $end );
