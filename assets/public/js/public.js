@@ -960,7 +960,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 break;
 
                               default:
-                                t.options.numberOfMonths = 1, t.options.numberOfColumns = 1;
+                                t.options.numberOfMonths = 2, t.options.numberOfColumns = 1;
                             }
                             if (t.render(), !t.options.inlineMode) {
                                 var e = t.picker.getBoundingClientRect();
