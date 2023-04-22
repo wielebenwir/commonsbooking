@@ -148,20 +148,20 @@ return array(
 	),
 	/* Tab: general end*/
 
-	/* Tab Booking Codes start */
+	/* Tab booking codes start */
 	'bookingcodes' => array(
-		'title'        => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
+		'title'        => commonsbooking_sanitizeHTML( __( 'Booking codes', 'commonsbooking' ) ),
 		'id'           => 'bookingcodes',
 		'field_groups' => array(
 			'bookingcodes' => array(
-				'title'  => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
+				'title'  => commonsbooking_sanitizeHTML( __( 'Booking codes', 'commonsbooking' ) ),
 				'id'     => 'bookingcodes',
 				'desc'   =>
 					commonsbooking_sanitizeHTML( __( 'Enter the booking codes to be generated in advance for booking types with all-day booking time frames.  Enter booking codes as a comma separated list, e.g.: Code1,Code2,Code3,Code4
-                <br>More information in the documentation: <a href="https://commonsbooking.org/?p=870" target="_blank">Booking Codes</a>', 'commonsbooking' ) ),
+                <br>More information in the documentation: <a href="https://commonsbooking.org/?p=870" target="_blank">Booking codes</a>', 'commonsbooking' ) ),
 				'fields' => array(
 					array(
-						'name' => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
+						'name' => commonsbooking_sanitizeHTML( __( 'Booking codes', 'commonsbooking' ) ),
 						'id'   => 'bookingcodes',
 						'type' => 'textarea',
 					),
@@ -171,22 +171,22 @@ return array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'Booking codes by email', 'commonsbooking' ) ),
 				'id'     => 'mail-booking-codes',
 				'desc'   =>
-					commonsbooking_sanitizeHTML( __( 'Automated sending of Booking codes by email to Location admin(s)', 'commonsbooking' ) ),
+					commonsbooking_sanitizeHTML( __( 'Automated sending of booking codes by email to Location admin(s)', 'commonsbooking' ) ),
 				'fields' => array(
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Subject for automated Booking codes email', 'commonsbooking' ) ),
+						'name'    => commonsbooking_sanitizeHTML( __( 'Subject for automated booking codes email', 'commonsbooking' ) ),
 						'id'      => 'mail-booking-codes-subject',
 						'type'    => 'text',
 						'default' => commonsbooking_sanitizeHTML( __( 'Booking codes for {{codes:formatDateRange}} {{item:post_title}}', 'commonsbooking' ) ),
 					),
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Body for automated Booking codes email', 'commonsbooking' ) ),
+						'name'    => commonsbooking_sanitizeHTML( __( 'Body for automated booking codes email', 'commonsbooking' ) ),
 						'id'      => 'mail-booking-codes-body',
 						'type'    => 'textarea',
 						'default' => commonsbooking_sanitizeHTML( __( '
 <h1>{{item:post_title}} of {{codes:formatDateRange}}</h1>
 
-<p>Booking Codes Table:</p>
+<p>Booking codes Table:</p>
 <br>   
 {{codes:codeTable}}
 <br>          
@@ -194,16 +194,16 @@ return array(
                             ', 'commonsbooking' ) ),
 					),
 					array(
-						'name'    => commonsbooking_sanitizeHTML( __( 'Backup E-Mail for automated Booking codes email', 'commonsbooking' ) ),
-						'desc'    => commonsbooking_sanitizeHTML( __( 'E-Mail that receives a copy of mailed Booking codes (leave empty if not)', 'commonsbooking' ) ),
+						'name'    => commonsbooking_sanitizeHTML( __( 'Backup E-Mail for automated booking codes email', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'E-Mail that receives a copy of mailed booking codes (leave empty if not)', 'commonsbooking' ) ),
 						'id'      => 'mail-booking-codes-bcc',
 						'type'    => 'text',
 						'default' => '',
 					),
 					array(
-						'name'        => commonsbooking_sanitizeHTML( __('Attach iCalendar file to Booking codes email', 'commonsbooking') ),
+						'name'        => commonsbooking_sanitizeHTML( __('Attach iCalendar file to booking codes email', 'commonsbooking') ),
 						'id'          => 'mail-booking-codes-attach-ical',
-						'description' => commonsbooking_sanitizeHTML( __( 'Will attach an iCalendar compatible file with Booking codes per day to import in their respective calendar application.', 'commonsbooking' ) ),
+						'description' => commonsbooking_sanitizeHTML( __( 'Will attach an iCalendar compatible file with booking codes per day to import in their respective calendar application.', 'commonsbooking' ) ),
 						'type'        => 'checkbox',
 					),
 				)

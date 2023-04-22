@@ -138,7 +138,7 @@ class Scheduler {
 			'update_option_commonsbooking_options_reminder'
 		);
 
-		// Init email Booking Codes job
+		// Init email booking codes job
 		New Scheduler(
 			'email_bookingcodes',
 			array( \CommonsBooking\Service\BookingCodes::class, 'sendBookingCodesMessage' ),

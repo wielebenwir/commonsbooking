@@ -12,7 +12,7 @@ class BookingCodes {
 
 
 	/**
-	 * Send Booking Codes by E-mail.
+	 * Send booking codes by E-mail.
      * is triggered in  Service\Scheduler initHooks()
 	 * 
 	 */
@@ -39,7 +39,7 @@ class BookingCodes {
 					set_transient(
 						BookingCode::ERROR_TYPE,
 						commonsbooking_sanitizeHTML(
-							__( "Error sending Booking Codes by E-mail for Timeframe ", 'commonsbooking' ) . get_the_title($post) . " ({$post->ID})"
+							__( "Error sending booking codes by E-mail for Timeframe ", 'commonsbooking' ) . get_the_title($post) . " ({$post->ID})"
 						),
 						0
 					);
@@ -53,7 +53,7 @@ class BookingCodes {
 	}
 
 	/**
-	 * Retrieves Parameters of the next Booking Codes by Email Cron event.
+	 * Retrieves Parameters of the next booking codes by Email Cron event.
 	 *
 	 * @param int $timeframeId
      * 

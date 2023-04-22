@@ -17,6 +17,23 @@ class UserRepository {
 		return get_users( [ 'role__in' => [ Plugin::$CB_MANAGER_ID ] ] );
 	}
 
+ 	/**
+	 * returns a list of CBManager user objects
+	 *
+     * @param  array  $userIds 
+     *
+     * @return array   user objects.
+ 	 */
+      public static function getCBManagersByIds($userIds): array {
+        if(empty($userIds)) return [];
+        $args = [
+            'include' => $userIds,
+            'role__in' => [ Plugin::$CB_MANAGER_ID ],
+        ];
+        
+        return get_users( $args );
+    }
+
 	/**
 	 * Returns all users with items/locations.
 	 * @return array

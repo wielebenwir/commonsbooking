@@ -4,6 +4,7 @@ namespace CommonsBooking\Messages;
 
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
+use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Service\iCalendar;
 use CommonsBooking\Plugin;
@@ -38,12 +39,12 @@ class BookingCodesMessage extends Message {
         $timeframeId=(int)$this->getPostId();
         $timeframe=new Timeframe($timeframeId);
 
-        $this->locationAdmins = self::getUsersFromIds($timeframe->getLocation()->getAdmins());        
+        $this->locationAdmins = UserRepository::getCBManagersByIds($timeframe->getLocation()->getAdmins());        
         if(empty($this->locationAdmins)) return $this->raiseError( 
                 __( "Unable to send Emails to location Managers. None configured, check Location -> Location Admin(s)", "commonsbooking" ));
 
 		$bookingCodes = BookingCodes::getCodes($timeframeId, $this->tsFrom,$this->tsTo);
-        if(empty($bookingCodes)) return $this->raiseError( __( "Could not find Booking codes for this timeframe/period", "commonsbooking" ));
+        if(empty($bookingCodes)) return $this->raiseError( __( "Could not find booking codes for this timeframe/period", "commonsbooking" ));
         
         $bookingTable=apply_filters('commonsbooking_emailcodes_rendertable',
                                         \CommonsBooking\View\BookingCodes::renderBookingCodesTable( $bookingCodes ),
@@ -146,7 +147,7 @@ class BookingCodesMessage extends Message {
             $title=apply_filters('commonsbooking_emailcodes_icalevent_title',
                             $bookingCode->getItemName() . " (" . $bookingCode->getCode() . ")", $bookingCode);
             $desc=apply_filters('commonsbooking_emailcodes_icalevent_desc',
-                        sprintf( __( 'Booking code for item "%1$s": %2$s', 'commonsbooking' ), $bookingCode->getItemName(),$bookingCode->getCode()),
+                        sprintf( __( 'booking code for item "%1$s": %2$s', 'commonsbooking' ), $bookingCode->getItemName(),$bookingCode->getCode()),
                         $bookingCode);
 
 		    $calendar->addEvent( DateTimeImmutable::createFromFormat('Y-m-d',$bookingCode->getDate()), $title, $desc);
@@ -177,20 +178,4 @@ class BookingCodesMessage extends Message {
         return false;
     }
 
- 	/**
-	 * returns a list of CBManager user objects
-	 *
-     * @param  array  $userIds 
-     *
-     * @return array   user objects.
- 	 */
-      public static function getUsersFromIds($userIds): array {
-        if(empty($userIds)) return [];
-        $args = [
-            'include' => $userIds,
-            'role__in' => [ Plugin::$CB_MANAGER_ID ],
-        ];
-        
-        return get_users( $args );
-    }
 }

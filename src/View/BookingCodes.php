@@ -3,6 +3,7 @@
 namespace CommonsBooking\View;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Messages\BookingCodesMessage;
+use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Helper\Wordpress;
 use DateTime;
@@ -15,7 +16,7 @@ class BookingCodes
     public const CRON_EMAIL_CODES = COMMONSBOOKING_METABOX_PREFIX . 'cron_email_codes';
 
  	/**
-	 * Next Booking Codes by Email Cron event for timeframe.
+	 * Next booking codes by Email Cron event for timeframe.
      * based on current timestamp calculated start and period 
 	 *
 	 * @param Timestamp $tsInitial
@@ -219,11 +220,11 @@ HTML;
             return false;
 
         $locationAdminIds=$timeframe->getLocation()->getAdmins();
-        $admins=BookingCodesMessage::getUsersFromIds($locationAdminIds);
+        $admins=UserRepository::getCBManagersByIds($locationAdminIds);
 
         echo '<div class="cmb-row cmb2-id-email-booking-codes-info">
                 <div class="cmb-th">
-                    <label for="email-booking-codes-list">'. commonsbooking_sanitizeHTML( __('Send Booking Codes by email', 'commonsbooking')) .'</label>
+                    <label for="email-booking-codes-list">'. commonsbooking_sanitizeHTML( __('Send booking codes by email', 'commonsbooking')) .'</label>
                 </div>
 
                 <div class="cmb-td">';
@@ -237,7 +238,7 @@ HTML;
             
             echo '      <a id="email-booking-codes-list" 
                                 href="'. esc_url(add_query_arg([  "action" => "emailcodes", "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
-                            <strong>'. commonsbooking_sanitizeHTML( __('Email Booking Codes of the entire timeframe', 'commonsbooking')) .'</strong>
+                            <strong>'. commonsbooking_sanitizeHTML( __('Email booking codes of the entire timeframe', 'commonsbooking')) .'</strong>
                         </a>
                         <br>
                         '. commonsbooking_sanitizeHTML( __('<b>All codes for the entire timeframe</b> will be emailed to the CBManagers, given in bold below.', 'commonsbooking'));
@@ -247,7 +248,7 @@ HTML;
             $to=strtotime("midnight last day of this month");
             echo '          <br><a id="email-booking-codes-list-current" 
                                     href="'. esc_url(add_query_arg([  "action" => "emailcodes", "from" => $from, "to" =>$to, "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
-                            <strong>'. commonsbooking_sanitizeHTML( __('Email Booking Codes of current month', 'commonsbooking')) .'</strong>
+                            <strong>'. commonsbooking_sanitizeHTML( __('Email booking codes of current month', 'commonsbooking')) .'</strong>
                         </a><br>
                         '. commonsbooking_sanitizeHTML( __('The codes <b>of the current month</b> will be sent to all the CBManagers, given in bold below', 'commonsbooking'));
             
@@ -256,7 +257,7 @@ HTML;
 
             echo '          <br><a id="email-booking-codes-list-next" 
                                     href="'. esc_url(add_query_arg([  "action" => "emailcodes", "from" => $from, "to" =>$to, "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
-                            <strong>'. commonsbooking_sanitizeHTML( __('Email Booking Codes of next month', 'commonsbooking')) .'</strong>
+                            <strong>'. commonsbooking_sanitizeHTML( __('Email booking codes of next month', 'commonsbooking')) .'</strong>
                         </a><br>
                         '. commonsbooking_sanitizeHTML( __('The codes <b>of the next month</b> will be sent to all the CBManagers, given in bold below.', 'commonsbooking')) .
                         '<br><br>
@@ -265,7 +266,7 @@ HTML;
             $lastBookingEmail=get_post_meta( $timeframeId, \CommonsBooking\View\BookingCodes::LAST_CODES_EMAIL, true);
             if(!empty($lastBookingEmail)) {
                 echo '<p  class="cmb2-metabox-description"><b>'
-                        . commonsbooking_sanitizeHTML( __('Last Booking codes email sent:', 'commonsbooking')) . ' </b>'
+                        . commonsbooking_sanitizeHTML( __('Last booking codes email sent:', 'commonsbooking')) . ' </b>'
                         . wp_date(get_option( 'date_format' ) . ' ' . get_option( 'time_format' ),$lastBookingEmail) . '</p>';
             }
         }
@@ -294,10 +295,10 @@ HTML;
         echo '
             <div class="cmb-row cmb2-id-booking-codes-info">
                 <div class="cmb-th">
-                    <label for="booking-codes-download">' . commonsbooking_sanitizeHTML( __( 'Download Booking Codes', 'commonsbooking' ) ) . '</label>
+                    <label for="booking-codes-download">' . commonsbooking_sanitizeHTML( __( 'Download booking codes', 'commonsbooking' ) ) . '</label>
                 </div>
                 <div class="cmb-td">
-                    <a id="booking-codes-download" href="' . esc_url(add_query_arg([  "action" => "csvexport",  ])) . '" target="_blank"><strong>Download Booking Codes</strong></a>
+                    <a id="booking-codes-download" href="' . esc_url(add_query_arg([  "action" => "csvexport",  ])) . '" target="_blank"><strong>Download booking codes</strong></a>
                     <p  class="cmb2-metabox-description">
                     ' . commonsbooking_sanitizeHTML( __( 'The file will be exported as tab delimited .txt file so you can choose wether you want to print it, open it in a separate application (like Word, Excel etc.)', 'commonsbooking' ) ) . '
                     </p>
@@ -389,7 +390,7 @@ HTML;
 
         if(empty($timeframeId)) {
             wp_die(
-                commonsbooking_sanitizeHTML( __( "Unable to retrieve Booking Codes", "commonsbooking" ) ),
+                commonsbooking_sanitizeHTML( __( "Unable to retrieve booking codes", "commonsbooking" ) ),
                 commonsbooking_sanitizeHTML( __( "Missing ID of timeframe post", "commonsbooking" ) ),
                 [ 'back_link' => true ]
             );
