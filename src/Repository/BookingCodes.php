@@ -39,6 +39,11 @@ class BookingCodes {
 			$timeframeStartDate      = $timeframe->getStartDate();
 			$timeframeEndDate   = $timeframe->getEndDate();
 
+			// If timeframe does not qualify for booking codes, return empty array
+			if ( ! $timeframe->bookingCodesApplieable() ){
+				return [];
+			}
+
 			if ( ! $startDate || $startDate < $timeframeStartDate ) {
 				$startDate = $timeframeStartDate;
 			}
