@@ -720,10 +720,9 @@ class Timeframe extends CustomPostType {
 
 		if ( $isValid ) {
 			$timeframe          = new \CommonsBooking\Model\Timeframe( $post_id );
-			$createBookingCodes = get_post_meta( $post_id, 'create-booking-codes', true );
 			$this->sanitizeRepetitionEndDate($post_id);
 
-			if ( $createBookingCodes == "on" && $timeframe->bookingCodesApplieable() ) {
+			if ( $timeframe->usesBookingCodes() && $timeframe->bookingCodesApplieable() ) {
 				BookingCodes::generate( $timeframe );
 			}
 		}

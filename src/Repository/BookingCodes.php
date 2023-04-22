@@ -220,11 +220,11 @@ class BookingCodes {
 	/**
 	 * Removes all codes for the post, that don't have the current location-id or item-id.
 	 *
-	 * @param $postId
-	 * @param $locationId
-	 * @param $itemId
+	 * @param int $postId
+	 * @param int $locationId
+	 * @param int $itemId
 	 */
-	public static function deleteOldCodes( $postId, $locationId, $itemId ) {
+	public static function deleteOldCodes( int $postId, int $locationId, int $itemId ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::$tablename;
 

@@ -618,7 +618,7 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return bool
 	 */
-	public function hasBookingCodes(): bool {
+	public function usesBookingCodes(): bool {
 		return $this->getMeta( 'create-booking-codes' ) == 'on';
 	}
 
