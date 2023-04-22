@@ -182,8 +182,7 @@ class Timeframe extends CustomPost {
 		if ( (string) $endDate != $endDate ) {
 			$endDate = strtotime( $endDate );
 		}
-
-		return $endDate;
+		return $endDate != 0 ? $endDate : false;
 	}
 
 	/**
@@ -215,7 +214,7 @@ class Timeframe extends CustomPost {
 	public function bookingCodesApplieable(): bool {
 		try {
 			return $this->getLocation() && $this->getItem() &&
-			       $this->getStartDate() && $this->getEndDate() &&
+			       $this->getStartDate() &&
 			       $this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID;
 		} catch ( Exception $e ) {
 			return false;

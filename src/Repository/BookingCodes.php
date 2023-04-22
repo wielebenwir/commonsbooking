@@ -170,6 +170,9 @@ class BookingCodes {
 	 */
 	public static function generate( \CommonsBooking\Model\Timeframe $timeframe ): bool {
 
+		if (! $timeframe->bookingCodesApplieable() ){
+			return false;
+		}
 		$begin = Wordpress::getUTCDateTime();
 		$begin->setTimestamp( $timeframe->getStartDate() );
 		$end = Wordpress::getUTCDateTime();
