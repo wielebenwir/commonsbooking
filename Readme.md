@@ -105,11 +105,12 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 * ENHANCED: Added filter hooks for mail attachment. Advanced users can now define their own mail attachments through a filter hook. ( Frontend settings are not yet available )
 * ENHANCED: Added a key for the item availability table.
 * FIXED: Cronjobs were not re-scheduled when the execution time was changed. All cronjobs are re-scheduled on plugin update.
+* FIXED: Removed deprecated cronjobs.
 * FIXED: Dark and light text color options now work properly.
-* FIXED: No clustering with max_cluster_radius set to 0
-* FIXED: Missing translations
-* FIXED: Vulnerability in dependency
-* FIXED: Wrong month shown in calendar due to timezone issues
+* FIXED: No clustering with max_cluster_radius set to 0. You should now be able to disable map clustering.
+* FIXED: Missing translations.
+* FIXED: Vulnerability in dependency.
+* FIXED: Wrong month shown in calendar due to timezone issues.
 
 ### 2.7.3 (20.10.2022)
 * FIXED: Fatal error when trying to export timeframes with deleted items
