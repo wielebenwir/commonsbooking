@@ -281,15 +281,16 @@ class Wordpress {
 
 	/**
 	 * This function does what probably the getUTCDateTimeByTimestamp was originally supposed to do.
-	 * @param $timestamp
+	 *
+	 * @param int $timestamp
 	 *
 	 * @return DateTime
 	 * @throws \Exception
 	 */
-	public static function convertTimestampToUTCDatetime($timestamp) {
-		$datetime = date( "Y-m-d H:i:s", $timestamp );
-		$dto      = new DateTime( $datetime,new \DateTimeZone(wp_timezone_string()));
-		$dto->setTimezone(new \DateTimeZone('UTC'));
+	public static function convertTimestampToUTCDatetime( $timestamp ) {
+		$datetime = date( 'Y-m-d H:i:s', $timestamp );
+		$dto      = new DateTime( $datetime, new \DateTimeZone( wp_timezone_string() ) );
+		$dto->setTimezone( new \DateTimeZone( 'UTC' ) );
 
 		return $dto;
 	}
