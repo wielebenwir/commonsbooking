@@ -55,8 +55,8 @@ jobs:
         php ~/phpunit-9.phar --version
         php ~/phpunit-9.phar
         
-    - name: Upload coverage results to Coveralls
-      uses: coverallsapp/github-action@master
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3 
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: "./build/logs/clover.xml"
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./build/logs/clover.xml
