@@ -300,6 +300,9 @@ class Booking extends View {
 		foreach ($bookingList["data"] as $booking)
 		{
 			$booking_model = New \CommonsBooking\Model\Booking($booking["postID"]);
+			if ($booking_model->isCancelled()) {
+				continue;
+			}
 			$template_objects = [
 				'booking'  => $booking_model,
 				'item'     => $booking_model->getItem(),
