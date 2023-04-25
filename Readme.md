@@ -89,7 +89,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.8 (xx.04.2023)
+### 2.8 (27.04.2023)
 * NEW: Added option to set a minimum offset for bookings. This allows to set a minimum time between booking and pickup.
 * NEW: Added ability to create bookings from the backend.
 * NEW: Can now add a signature that will be added to each email sent from the instance.
