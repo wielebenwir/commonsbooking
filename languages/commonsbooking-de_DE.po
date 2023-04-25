@@ -348,7 +348,7 @@ msgstr ""
 
 #: includes/OptionsArray.php:249
 msgid "Attach iCalendar file to booking email"
-msgstr "iCalendar Datei anhängen"
+msgstr "iCalendar Datei an Buchungsmail anhängen"
 
 #: includes/OptionsArray.php:252
 msgid ""
@@ -3032,7 +3032,7 @@ msgstr "Tage am Stück"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:496
 msgid "Lead time:"
-msgstr "Vorlauf"
+msgstr "Vorlauf:"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:497
 msgid "days. <br> The booking must happen X days before pickup."
