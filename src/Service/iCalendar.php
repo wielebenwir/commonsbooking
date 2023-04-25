@@ -100,8 +100,8 @@ class iCalendar {
             $bookingLocation_longitude = $bookingLocation->getMeta( 'geo_longitude' );
 
             //create immutable DateTime objects from Mutable (recommended by iCal library developer)
-            $booking_startDateDateTime = DateTimeImmutable::createFromMutable( $booking->getStartDateDateTime() );
-            $booking_endDateDateTime = DateTimeImmutable::createFromMutable( $booking->getEndDateDateTime() );
+            $booking_startDateDateTime = DateTimeImmutable::createFromMutable( $booking->getUTCStartDateDateTime() );
+            $booking_endDateDateTime = DateTimeImmutable::createFromMutable( $booking->getUTCEndDateDateTime() );
 
             // Create timezone entity
 	        $php_date_time_zone = wp_timezone();

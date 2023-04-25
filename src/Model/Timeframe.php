@@ -618,9 +618,9 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getStartDateDateTime(): DateTime {
+	public function getUTCStartDateDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
-		return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
+		return Wordpress::convertTimestampToUTCDatetime( $startDateString );
 	}
 
 	/**
@@ -642,12 +642,25 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns end-date \DateTime.
+	 * This method returns a local date time object, just with the UTC timezone attached but the time is still local.
 	 *
 	 * @return DateTime
 	 */
 	public function getEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
 		return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
+	}
+
+	/**
+	 * Returns end-date \DateTime.
+	 * Provides a UTC date time object.
+	 * We need to do this weird conversion because the end date is stored as a local timestamp.
+	 *
+	 * @return DateTime
+	 */
+	public function getUTCEndDateDateTime(): DateTime {
+		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
+		return Wordpress::convertTimestampToUTCDatetime( $endDateString );
 	}
 
 	/**
