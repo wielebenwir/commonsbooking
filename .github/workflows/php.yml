@@ -59,6 +59,7 @@ jobs:
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALL_GITHUB_TOKEN }}
       run: |
+        echo ${#{{secrets.COVERALL_GITHUB_TOKEN}}}
         echo ${#COVERALLS_REPO_TOKEN}
         composer global require php-coveralls/php-coveralls
         php-coveralls --help
