@@ -9,8 +9,8 @@ use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
 class ItemTest extends CustomPostTypeTest {
 
-	private Item $itemModel;
-	private Timeframe $timeframeModel;
+	private $itemModel;
+	private $timeframeModel;
 
 	public function testGetRestrictions() {
 		$this->restrictionIds = array_unique($this->restrictionIds);
@@ -21,7 +21,7 @@ class ItemTest extends CustomPostTypeTest {
 		$this->assertEquals($restrictionArray, $this->itemModel->getRestrictions());
 	}
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->restrictionIds[] = $this->createRestriction(
 			Restriction::META_HINT,
@@ -34,7 +34,7 @@ class ItemTest extends CustomPostTypeTest {
 		$this->itemModel        = new Item( $this->itemId );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 

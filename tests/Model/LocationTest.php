@@ -21,7 +21,7 @@ class LocationTest extends CustomPostTypeTest {
 		$this->assertEquals($restrictionArray, $this->locationModel->getRestrictions());
 	}
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->restrictionIds[] = $this->createRestriction(
 			Restriction::META_HINT,
@@ -34,7 +34,7 @@ class LocationTest extends CustomPostTypeTest {
 		$this->locationModel = new Location($this->locationId);
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 
