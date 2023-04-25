@@ -58,8 +58,9 @@ jobs:
     - name: Upload coverage results to Coveralls
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALL_GITHUB_TOKEN }}
+        GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
-        echo ${#{{secrets.COVERALL_GITHUB_TOKEN}}}
+        echo "$GITHUB_CONTEXT"
         echo ${#COVERALLS_REPO_TOKEN}
         composer global require php-coveralls/php-coveralls
         php-coveralls --help
