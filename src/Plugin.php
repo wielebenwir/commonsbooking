@@ -9,6 +9,7 @@ use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\Service\Cache;
 use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Service\iCalendar;
@@ -504,6 +505,9 @@ class Plugin {
 		add_action('wp_enqueue_scripts', array(Cache::class, 'addWarmupAjaxToOutput'));
 		add_action('admin_enqueue_scripts', array(Cache::class, 'addWarmupAjaxToOutput'));
 
+		// Clear cached users on user update.
+		add_action( 'profile_update', array( UserRepository::class, 'clearUserCache' ) );
+
 		add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
 		$map_admin = new LocationMapAdmin();
@@ -564,6 +568,7 @@ class Plugin {
 		if(!in_array($post->post_status, $ignoredStates) || $update) {
 			$tags = Wordpress::getRelatedPostIds($post_id);
 			$tags[] = 'misc';
+			$tags[] = UserRepository::USER_CACHE_TAG;
 			self::clearCache($tags);
 		}
 	}
@@ -750,7 +755,7 @@ class Plugin {
 		</div>
     <?php
 	}
-    
+
     /**
      * sets advance booking days to default value for existing timeframes.
      * Advances booking timeframes are available since 2.6 - all timeframes created prior to this version need to have this value set to a default value (365 days)
