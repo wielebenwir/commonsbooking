@@ -1,7 +1,14 @@
 {
   "name": "wielebenwir/commonsbooking",
   "description": "~",
-  "version": "0.0.1",
+  "tags": [
+    "commons",
+    "commoning",
+    "cargo-bikes",
+    "booking",
+    "calendar",
+    "open-source"
+  ],
   "config": {
     "platform-check": false
     },
