@@ -24,55 +24,40 @@ class MapShortcode {
 				$cb_map_id = $post->ID;
 
 				if ( $post->post_status == 'publish' ) {
+					add_action('wp_enqueue_script', function () use($cb_map_id) {
+						wp_enqueue_style('dashicons');
 
-					//leaflet
-					wp_enqueue_style( 'cb_map_leaflet_css', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet.css' );
-					wp_enqueue_script( 'cb_map_leaflet_js', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet.js' );
+						wp_enqueue_script('cb-leaflet');
+						wp_enqueue_style('cb-leaflet');
+						wp_enqueue_script('cb-leaflet-markercluster');
+						wp_enqueue_style('cb-leaflet-markercluster');
+						wp_enqueue_script('cb-leaflet-spin');
+						wp_enqueue_script('cb-leaflet-easybutton');
+						wp_enqueue_style('cb-leaflet-easybutton');
 
-					//leaflet markercluster plugin
-					wp_enqueue_style( 'cb_map_leaflet_markercluster_css',
-						COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet-markercluster/MarkerCluster.css' );
-					wp_enqueue_style( 'cb_map_leaflet_markercluster_default_css',
-						COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet-markercluster/MarkerCluster.Default.css' );
-					wp_enqueue_script( 'cb_map_leaflet_markercluster_js',
-						COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet-markercluster/leaflet.markercluster.js' );
 
-					//leaflet messagebox plugin
-					wp_enqueue_style( 'cb_map_leaflet_messagebox_css',
-						COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet-messagebox/leaflet-messagebox.css' );
-					wp_enqueue_script( 'cb_map_leaflet_messagebox_js',
-						COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet-messagebox/leaflet-messagebox.js' );
+						// messagebox
+						wp_enqueue_style('cb_map_leaflet_messagebox_css',
+							COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet-messagebox/leaflet-messagebox.css');
+						wp_enqueue_script('cb_map_leaflet_messagebox_js',
+							COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet-messagebox/leaflet-messagebox.js');
 
-					//leaflet spin & dependencies
-					wp_enqueue_style( 'cb_map_spin_css', COMMONSBOOKING_MAP_ASSETS_URL . 'spin-js/spin.css' );
-					wp_enqueue_script( 'cb_map_spin_js', COMMONSBOOKING_MAP_ASSETS_URL . 'spin-js/spin.min.js' );
-					wp_enqueue_script( 'cb_map_leaflet_spin_js',
-						COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet-spin/leaflet.spin.min.js' );
+						//overscroll
+						wp_enqueue_script( 'cb_map_slider_js',
+							COMMONSBOOKING_MAP_ASSETS_URL . 'overscroll/jquery.overscroll.js' );
 
-					//leaflet easybutton
-					wp_enqueue_style( 'cb_map_leaflet_easybutton_css',
-						COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet-easybutton/easy-button.css' );
-					wp_enqueue_script( 'cb_map_leaflet_easybutton_js',
-						COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet-easybutton/easy-button.js' );
+						//cb map shortcode
+						wp_enqueue_style( 'cb_map_shortcode_css',
+							COMMONSBOOKING_MAP_ASSETS_URL . 'css/cb-map-shortcode.css?pv=' . COMMONSBOOKING_MAP_PLUGIN_DATA['Version'] );
+						wp_register_script( 'cb_map_shortcode_js',
+							COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-shortcode.js?pv=' . COMMONSBOOKING_MAP_PLUGIN_DATA['Version'] );
 
-					//dashicons
-					wp_enqueue_style( 'dashicons' );
+						wp_register_script( 'MapFilters_js',
+							COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-filters.js?pv=' . COMMONSBOOKING_MAP_PLUGIN_DATA['Version'] );
+						wp_enqueue_script( 'MapFilters_js' );
 
-					//overscroll
-					wp_enqueue_script( 'cb_map_slider_js', COMMONSBOOKING_MAP_ASSETS_URL . 'overscroll/jquery.overscroll.js' );
-
-					//cb map shortcode
-					wp_enqueue_style( 'cb_map_shortcode_css',
-						COMMONSBOOKING_MAP_ASSETS_URL . 'css/cb-map-shortcode.css?pv=' . COMMONSBOOKING_MAP_PLUGIN_DATA['Version'] );
-					wp_register_script( 'cb_map_shortcode_js',
-						COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-shortcode.js?pv=' . COMMONSBOOKING_MAP_PLUGIN_DATA['Version'] );
-
-					wp_register_script( 'MapFilters_js',
-						COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-filters.js?pv=' . COMMONSBOOKING_MAP_PLUGIN_DATA['Version'] );
-					wp_enqueue_script( 'MapFilters_js' );
-
-					wp_add_inline_script( 'cb_map_shortcode_js',
-						"jQuery(document).ready(function ($) {
+						wp_add_inline_script( 'cb_map_shortcode_js',
+							"jQuery(document).ready(function ($) {
                         var cb_map = new CB_Map();
                         cb_map.settings = " . wp_json_encode( self::get_settings( $cb_map_id ) ) . ";
                         cb_map.translation = " . wp_json_encode( self::get_translation( $cb_map_id ) ) . ";
@@ -80,7 +65,8 @@ class MapShortcode {
                         cb_map.init_map();
                     });" );
 
-					wp_enqueue_script( 'cb_map_shortcode_js' );
+						wp_enqueue_script( 'cb_map_shortcode_js' );
+					});
 
 					$map_height = MapAdmin::get_option( $cb_map_id, 'map_height' );
 

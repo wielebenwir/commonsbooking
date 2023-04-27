@@ -492,6 +492,61 @@ class Plugin {
 		}
 	}
 
+
+	public static function registerScriptsAndStyles() {
+		$versions = wp_json_file_decode(COMMONSBOOKING_PLUGIN_DIR . "assets/packaged/dist.json", array('associative' => true));
+		$base = COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/';
+
+		// spin.js
+		wp_register_script('cb-spin', $base . 'spin-js/spin.min.js', [], $versions['spin.js']);
+
+		// leaflet
+		wp_register_script('cb-leaflet', $base . 'leaflet/leaflet.js',[], $versions['leaflet']);
+		wp_register_style('cb-leaflet', $base . 'leaflet/leaflet.css', [], $versions['leaflet']);
+
+		// leaflet markercluster
+		wp_register_script(
+			'cb-leaflet-markercluster',
+			$base . 'leaflet-markercluster/leaflet.markercluster.js',
+			['cb-leaflet'],
+			$versions['leaflet.markercluster']
+		);
+		wp_register_style(
+			'cb-leaflet-markercluster-base',
+			$base . 'leaflet-markercluster/MarkerCluster.css',
+			[],
+			$versions['leaflet.markercluster']
+		);
+		wp_register_style(
+			'cb-leaflet-markercluster',
+			$base . 'leaflet-markercluster/MarkerCluster.Default.css',
+			['cb-leaflet-markercluster-base'],
+			$versions['leaflet.markercluster']
+		);
+
+		// leaflet-easybutton
+		wp_register_script(
+			'cb-leaflet-easybutton',
+			$base . 'leaflet-easybutton/easy-button.js',
+			['cb-leaflet'],
+			$versions['leaflet-easybutton']
+		);
+		wp_register_style(
+			'cb-leaflet-easybutton',
+			$base . 'leaflet-easybutton/easy-button.css',
+			['cb-leaflet'],
+			$versions['leaflet-easybutton']
+		);
+
+		// leaflet-spin
+		wp_register_script(
+			'cb-leaflet-spin',
+			$base . 'leaflet-spin/leaflet.spin.min.js',
+			['cb-leaflet', 'cb-spin'],
+			$versions['leaflet-spin']
+		);
+	}
+
 	/**
 	 * Gets location position for locations without coordinates.
 	 */
@@ -541,6 +596,9 @@ class Plugin {
 
 		// Parent Menu Fix
 		add_filter( 'parent_file', array( $this, 'setParentFile' ) );
+
+		// register scripts
+		add_action('wp_enqueue_scripts', array($this, 'registerScriptsAndStyles'));
 
 		// Remove cache items on save.
 		add_action( 'wp_insert_post', array( $this, 'savePostActions' ), 10, 3 );
