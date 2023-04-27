@@ -475,6 +475,67 @@ class Plugin {
 		}
 	}
 
+
+	public static function registerScriptsAndStyles() {
+		$base = COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/';
+
+		$version_file_path = COMMONSBOOKING_PLUGIN_DIR . 'assets/packaged/dist.json';
+		$version_file_content = file_get_contents($version_file_path);
+		$versions = json_decode($version_file_content, true);
+		if (JSON_ERROR_NONE !== json_last_error()) {
+			trigger_error("Unable to parse commonsbooking asset version file in $version_file_path.");
+		}
+
+		// spin.js
+		wp_register_script('cb-spin', $base . 'spin-js/spin.min.js', [], $versions['spin.js']);
+
+		// leaflet
+		wp_register_script('cb-leaflet', $base . 'leaflet/leaflet.js',[], $versions['leaflet']);
+		wp_register_style('cb-leaflet', $base . 'leaflet/leaflet.css', [], $versions['leaflet']);
+
+		// leaflet markercluster
+		wp_register_script(
+			'cb-leaflet-markercluster',
+			$base . 'leaflet-markercluster/leaflet.markercluster.js',
+			['cb-leaflet'],
+			$versions['leaflet.markercluster']
+		);
+		wp_register_style(
+			'cb-leaflet-markercluster-base',
+			$base . 'leaflet-markercluster/MarkerCluster.css',
+			[],
+			$versions['leaflet.markercluster']
+		);
+		wp_register_style(
+			'cb-leaflet-markercluster',
+			$base . 'leaflet-markercluster/MarkerCluster.Default.css',
+			['cb-leaflet-markercluster-base'],
+			$versions['leaflet.markercluster']
+		);
+
+		// leaflet-easybutton
+		wp_register_script(
+			'cb-leaflet-easybutton',
+			$base . 'leaflet-easybutton/easy-button.js',
+			['cb-leaflet'],
+			$versions['leaflet-easybutton']
+		);
+		wp_register_style(
+			'cb-leaflet-easybutton',
+			$base . 'leaflet-easybutton/easy-button.css',
+			['cb-leaflet'],
+			$versions['leaflet-easybutton']
+		);
+
+		// leaflet-spin
+		wp_register_script(
+			'cb-leaflet-spin',
+			$base . 'leaflet-spin/leaflet.spin.min.js',
+			['cb-leaflet', 'cb-spin'],
+			$versions['leaflet-spin']
+		);
+	}
+
 	/**
  	 * Registers all user data exporters ({@link https://developer.wordpress.org/plugins/privacy/adding-the-personal-data-exporter-to-your-plugin/}).
  	 *
@@ -541,6 +602,9 @@ class Plugin {
 
 		// Parent Menu Fix
 		add_filter( 'parent_file', array( $this, 'setParentFile' ) );
+
+		// register scripts
+		add_action('wp_enqueue_scripts', array($this, 'registerScriptsAndStyles'));
 
 		// Remove cache items on save.
 		add_action( 'wp_insert_post', array( $this, 'savePostActions' ), 10, 3 );

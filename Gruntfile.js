@@ -1,8 +1,10 @@
 module.exports = function (grunt) {
+	const pkg = grunt.file.readJSON('package.json')
+	const nodePackagesDestDir = 'assets/packaged/'
 	grunt.util.linefeed = '\n';
 	grunt.initConfig(
 		{
-		pkg: grunt.file.readJSON('package.json'),
+		pkg: pkg,
 		compass: {
 			admin: {
 				options: {
@@ -94,6 +96,42 @@ module.exports = function (grunt) {
 				}
 			}
 		},
+		copy: {
+			main: {
+				files: [
+					{
+						dest: nodePackagesDestDir + 'leaflet/',
+						expand: true,
+						cwd: 'node_modules/leaflet/dist/',
+						src: '**',
+					},
+					{
+						dest: nodePackagesDestDir + 'leaflet-markercluster/',
+						expand: true,
+						cwd: 'node_modules/leaflet.markercluster/dist/',
+						src: '**',
+					},
+					{
+						dest: nodePackagesDestDir + 'leaflet-easybutton/',
+						expand: true,
+						cwd: 'node_modules/leaflet-easybutton/src/',
+						src: '**',
+					},
+					{
+						dest: nodePackagesDestDir + 'leaflet-spin/',
+						expand: true,
+						cwd: 'node_modules/leaflet-spin/',
+						src: '**'
+					},
+					{
+						dest: nodePackagesDestDir + 'spin-js/',
+						expand: true,
+						cwd: 'node_modules/spin.js/',
+						src: 'spin.min.js'
+					},
+				],
+			},
+		},
 		babel: {
 			options: {
 				sourceMap: true,
@@ -133,11 +171,21 @@ module.exports = function (grunt) {
 	});
 
 	// Load tasks
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-compass');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-babel');
+	grunt.registerTask('node_versions', 'Generates a version map for dependencies', function() {
+		const deps = pkg.dependencies;
+		const versionMap = Object.fromEntries(
+			Object
+				.entries(deps)
+				.map(([name, version]) => [name, version.replace(/^\D/, '')])
+		)
+		grunt.file.write(nodePackagesDestDir + 'dist.json', JSON.stringify(versionMap))
+	})
 
 	// Register tasks
 	grunt.registerTask('default', [
@@ -147,6 +195,8 @@ module.exports = function (grunt) {
 		'uglify:dev',
 		'uglify:dist',
 		'babel',
+		'copy',
+		'node_versions',
 	]);
 	grunt.registerTask('dev', [
 		'compass:adminDev',
@@ -154,7 +204,9 @@ module.exports = function (grunt) {
 		'compass:themes',
 		'uglify:dev',
 		'babel',
-		'watch'
+		'copy',
+		'node_versions',
+		'watch',
 	]);
 	grunt.registerTask('dist', [
         'compass:clean',
@@ -162,6 +214,8 @@ module.exports = function (grunt) {
 		'compass:public',
 		'compass:themes',
 		'uglify:dist',
-		'babel'
+		'babel',
+		'copy',
+		'node_versions',
 	]);
 };
