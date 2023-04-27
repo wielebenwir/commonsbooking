@@ -96,7 +96,8 @@ class Plugin {
 			if ( ! $role ) {
 				$role = add_role(
 					$roleName,
-					__( 'CommonsBooking Manager', 'commonsbooking' )
+                    // TODO we should set a translatable role display name - for now its not defined at any place
+					$roleName
 				);
 			}
 
