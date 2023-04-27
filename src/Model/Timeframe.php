@@ -620,7 +620,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function getUTCStartDateDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
-		return Wordpress::convertTimestampToUTCDatetime( $startDateString );
+		return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 	}
 
 	/**
@@ -660,7 +660,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function getUTCEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
-		return Wordpress::convertTimestampToUTCDatetime( $endDateString );
+		return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 	}
 
 	/**
