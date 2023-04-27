@@ -4,7 +4,7 @@
 
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen  
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
-Tags: booking, commons, sharing, calendar,  
+Tags: booking, commons, sharing, calendar, commoning, open-source
 Requires at least: 5.2  
 Tested up to: 6.0
 Stable Tag: 2.8
