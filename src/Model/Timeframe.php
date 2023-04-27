@@ -651,10 +651,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function getEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
-		if ($this->isFullDay()){
-			return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
-		}
-		return Wordpress::convertTimestampToUTCDatetime( $endDateString );
+		return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 	}
 
 	/**
@@ -666,7 +663,10 @@ class Timeframe extends CustomPost {
 	 */
 	public function getUTCEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
-		return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
+		if ($this->isFullDay()){
+			return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
+		}
+		return Wordpress::convertTimestampToUTCDatetime( $endDateString );
 	}
 
 	/**
