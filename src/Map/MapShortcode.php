@@ -137,14 +137,8 @@ class MapShortcode {
 				if ( $value != null ) {
 					$settings['custom_marker_icon'] = [
 						'iconUrl'    => wp_get_attachment_url( $options['custom_marker_media_id'] ),
-						//'shadowUrl'     => 'leaf-shadow.png',
 						'iconSize'   => [ $options['marker_icon_width'], $options['marker_icon_height'] ],
-						//[27, 35], // size of the icon
-						//'shadowSize'    => [50, 64], // size of the shadow
 						'iconAnchor' => [ $options['marker_icon_anchor_x'], $options['marker_icon_anchor_y'] ],
-						//[13.5, 0], // point of the icon which will correspond to marker's location
-						//'shadowAnchor'  => [4, 62],  // the same for the shadow
-						//'popupAnchor'   => [-3, -76] // point from which the popup should open relative to the iconAnchor
 					];
 				}
 			} elseif ( $key == 'marker_item_draft_media_id' ) {
