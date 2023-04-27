@@ -102,7 +102,7 @@ FIXED: Missing translations.
 FIXED: Vulnerability in dependency.
 FIXED: Wrong month shown in calendar due to timezone issues.
 
-### 2.7.3 (xx.10.2022)
+### 2.7.3 (20.10.2022)
 FIXED: Fatal error when trying to export timeframes with deleted items
 FIXED: Fatal error when trying to access invalid data
 FIXED: Restriction e-mails now contain correct booking links again
