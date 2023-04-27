@@ -218,10 +218,8 @@ class Booking extends PostRepository {
 				if ( in_array( $booking->getPost()->post_status, array( 'confirmed', 'unconfirmed' ) ) ) {
 					return $booking;
 				}
-			}
-
-			// This shouldn't happen.
-			if ( count( $posts ) > 1 ) {
+			} elseif ( count( $posts ) > 1 ) {
+				// This shouldn't happen.
 				throw new Exception( __CLASS__ . '::' . __LINE__ . ': Found more than one bookings' );
 			}
 		}
@@ -237,7 +235,7 @@ class Booking extends PostRepository {
 	 * @param array         $customArgs
 	 * @param array         $postStatus
 	 *
-	 * @return \CommonsBooking\Model\Booking[]|null
+	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
 	 */
 	public static function getByTimerange(
@@ -294,7 +292,7 @@ class Booking extends PostRepository {
 		// Overwrite args with passed custom args
 		$args = array_merge( $args, $customArgs );
 
-        
+
 
 		$query = new WP_Query( $args );
 		if ( $query->have_posts() ) {

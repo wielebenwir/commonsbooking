@@ -68,16 +68,25 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 		<div class="cb-list-header">
 			<h3><?php echo esc_html__( 'Location: ', 'commonsbooking' ); ?><?php echo $location->title(); ?></h3>
 		</div>
-		<div class="cb-list-content cb-address cb-col-30-70">
-			<div><?php echo esc_html__( 'Address', 'commonsbooking' ); ?></div>
-			<div><?php echo commonsbooking_sanitizeHTML( $location->formattedAddressOneLine() ); ?></div>
-
-		</div><!-- .cb-address -->
-		<div class="cb-list-content cb-pickupinstructions cb-col-30-70">
-			<div><?php echo esc_html__( 'Pickup instructions', 'commonsbooking' ); ?></div>
-			<div><?php echo commonsbooking_sanitizeHTML( $location->formattedPickupInstructionsOneLine() ); ?></div>
-		</div><!-- .cb-cb-pickupinstructions -->
 		<?php
+		$location_address = $location->formattedAddressOneLine();
+		if (!empty($location_address)){
+			?>
+			<div class="cb-list-content cb-address cb-col-30-70">
+				<div><?php echo esc_html__( 'Address', 'commonsbooking' ); ?></div>
+				<div><?php echo commonsbooking_sanitizeHTML( $location_address ); ?></div>
+			</div><!-- .cb-address -->
+		<?php
+		}
+		$location_pickup_instructions = $location->formattedPickupInstructionsOneLine();
+		if (!empty($location_pickup_instructions)){
+			?>
+			<div class="cb-list-content cb-pickupinstructions cb-col-30-70">
+				<div><?php echo esc_html__( 'Pickup instructions', 'commonsbooking' ); ?></div>
+				<div><?php echo commonsbooking_sanitizeHTML( $location_pickup_instructions ); ?></div>
+			</div><!-- .cb-cb-pickupinstructions -->
+			<?php
+		}
 		// show contact details only after booking is confirmed or if options are set to show contactinfo even on unconfirmed booking status
 		if ( $post->post_status == 'confirmed' or $show_contactinfo_unconfirmed == 'on' ) {
             ?>

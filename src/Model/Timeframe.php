@@ -104,7 +104,7 @@ class Timeframe extends CustomPost {
 	public function getLatestPossibleBookingDateTimestamp() {
 		$calculationBase = time();
 
-		// if meta-value not set we define 365 days as default value
+		// if meta-value not set we define 90 days as default value
 		$advanceBookingDays = $this->getMeta( 'timeframe-advance-booking-days' ) ?:
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS;
 
@@ -592,13 +592,13 @@ class Timeframe extends CustomPost {
 	 * @return int|null
 	 */
 	public function getGridSize(): ?int {
-		if ( $this->getGrid() == 0 ) {
+		if ( $this->isFullDay() ) {
+			return 24;
+		} elseif ( $this->getGrid() == 0 ) {
 			$startTime = strtotime( $this->getMeta( 'start-time' ) );
 			$endTime   = strtotime( $this->getMeta( 'end-time' ) );
 
 			return intval( round( abs( $endTime - $startTime ) / 3600, 2 ) );
-		} elseif ( $this->isFullDay() ) {
-			return 24;
 		} else {
 			return intval( $this->getGrid() );
 		}
@@ -725,16 +725,4 @@ class Timeframe extends CustomPost {
 	public function getRepetition() {
 		return $this->getMeta( self::META_REPETITION );
 	}
-
-    /**
-     * Returns first bookable day based on the defined booking startday offset in timeframe
-     *
-     * @return date string Y-m-d
-     */
-    public function getFirstBookableDay() {
-        $offset = $this->getFieldValue( 'booking-startday-offset' ) ?: 0;
-        $today = current_datetime()->format('Y-m-d');
-        return date( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
-
-    }
 }
