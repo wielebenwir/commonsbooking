@@ -83,7 +83,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 NEW: Added option to set a minimum offset for bookings. This allows to set a minimum time between booking and pickup.
 NEW: Added ability to create bookings from the backend.
 NEW: Can now add a signature that will be added to each email sent from the instance.
-NEW: Additional user fields can be shown in booking confirmation.
+NEW: Additional user fields can be shown on booking details page.
 NEW: iCalendar files can be attached to booking confirmation emails.
 NEW: Experimental support of iCalendar feed to subscribe to all bookings that can be seen by the user.
 ENHANCED: Added ability for item admins to also receive copy of restriction emails.

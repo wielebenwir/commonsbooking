@@ -494,7 +494,8 @@ class Timeframe extends CustomPostType {
 			),
             array(
 				'name'       => esc_html__( 'Lead time:', 'commonsbooking' ),
-				'desc'       => commonsbooking_sanitizeHTML(__( 'days. <br> The booking must happen X days before pickup.', 'commonsbooking' ) ),
+				'desc'       => commonsbooking_sanitizeHTML(__( 'days. <br> The item can be picked up with a lead time of x days.<br>
+                <strong>Example:</strong> Today is the 04/27/2023. Lead time = 3 days. Earliest selectable pickup day is 04/30/2023.', 'commonsbooking' ) ),
 				'id'         => 'booking-startday-offset',
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
@@ -506,8 +507,8 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'       => esc_html__( 'Calendar shows', 'commonsbooking' ),
-				'desc'       => commonsbooking_sanitizeHTML( __( 'days. <br> The calendar will show the next X days. <br> Booking only possible in this time range.', 'commonsbooking' ) ),
+				'name'       => esc_html__( 'Calendar shows as bookable', 'commonsbooking' ),
+				'desc'       => commonsbooking_sanitizeHTML( __( 'days. <br> The calendar will show the next X days as bookable. <br> Booking only possible in this time range.', 'commonsbooking' ) ),
 				'id'         => "timeframe-advance-booking-days",
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
