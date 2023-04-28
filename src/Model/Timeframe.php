@@ -460,26 +460,26 @@ class Timeframe extends CustomPost {
 	public function hasTimeframeDateOverlap( Timeframe $otherTimeframe ): bool {
 
         // Check if both timeframes have no end date or if both are ongoing
-        if ( ! $this->getEndDate() && ! $otherTimeframe->getEndDate() ) {
+        if ( ! $this->getTimeframeEndDate() && ! $otherTimeframe->getTimeframeEndDate() ) {
             return true;
         }
 
         // Check if only one timeframe has an end date
-        if ( $this->getEndDate() && ! $otherTimeframe->getEndDate() ) {
-            return ( $otherTimeframe->getStartDate() <= $this->getEndDate() && $otherTimeframe->getStartDate() >= $this->getStartDate() );
+        if ( $this->getTimeframeEndDate() && ! $otherTimeframe->getTimeframeEndDate() ) {
+            return ( $otherTimeframe->getStartDate() <= $this->getTimeframeEndDate() && $otherTimeframe->getStartDate() >= $this->getStartDate() );
         }
 
-        if ( ! $this->getEndDate() && $otherTimeframe->getEndDate() ) {
-            return ( $otherTimeframe->getEndDate() > $this->getStartDate() );
+        if ( ! $this->getTimeframeEndDate() && $otherTimeframe->getTimeframeEndDate() ) {
+            return ( $otherTimeframe->getTimeframeEndDate() > $this->getStartDate() );
         }
 
         // Check if both timeframes have an end date
-        if ( $this->getEndDate() && $otherTimeframe->getEndDate() ) {
+        if ( $this->getTimeframeEndDate() && $otherTimeframe->getTimeframeEndDate() ) {
             return (
                 // Check if the end date of the first timeframe is within the second timeframe
-	            ( $this->getEndDate() >= $otherTimeframe->getStartDate() && $this->getEndDate() <= $otherTimeframe->getEndDate() ) ||
+	            ( $this->getTimeframeEndDate() >= $otherTimeframe->getStartDate() && $this->getTimeframeEndDate() <= $otherTimeframe->getTimeframeEndDate() ) ||
 	            // Check if the end date of the second timeframe is within the first timeframe
-	            ( $otherTimeframe->getEndDate() >= $this->getStartDate() && $otherTimeframe->getEndDate() <= $this->getEndDate() )
+	            ( $otherTimeframe->getTimeframeEndDate() >= $this->getStartDate() && $otherTimeframe->getTimeframeEndDate() <= $this->getTimeframeEndDate() )
             );
         }
 		else {
@@ -551,13 +551,13 @@ class Timeframe extends CustomPost {
 	 * @return int|null
 	 */
 	public function getGridSize(): ?int {
-		if ( $this->getGrid() == 0 ) {
+		if ( $this->isFullDay() ) {
+			return 24;
+		} elseif ( $this->getGrid() == 0 ) {
 			$startTime = strtotime( $this->getMeta( 'start-time' ) );
 			$endTime   = strtotime( $this->getMeta( 'end-time' ) );
 
 			return intval( round( abs( $endTime - $startTime ) / 3600, 2 ) );
-		} elseif ( $this->isFullDay() ) {
-			return 24;
 		} else {
 			return intval( $this->getGrid() );
 		}
@@ -578,9 +578,12 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getStartDateDateTime(): DateTime {
+	public function getUTCStartDateDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
-		return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
+		if ( $this->isFullDay() ){
+			return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
+		}
+		return Wordpress::convertTimestampToUTCDatetime( $startDateString );
 	}
 
 	/**
@@ -602,12 +605,28 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns end-date \DateTime.
+	 * This method returns a local date time object, just with the UTC timezone attached but the time is still local.
 	 *
 	 * @return DateTime
 	 */
 	public function getEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
 		return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
+	}
+
+	/**
+	 * Returns end-date \DateTime.
+	 * Provides a UTC date time object.
+	 * We need to do this weird conversion because the end date is stored as a local timestamp.
+	 *
+	 * @return DateTime
+	 */
+	public function getUTCEndDateDateTime(): DateTime {
+		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
+		if ($this->isFullDay()){
+			return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
+		}
+		return Wordpress::convertTimestampToUTCDatetime( $endDateString );
 	}
 
 	/**

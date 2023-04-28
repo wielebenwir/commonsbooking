@@ -20,7 +20,10 @@ class ItemTest extends CustomPostTypeTest {
 	}
 
 	public function testGetByLocation() {
-		$this->assertTrue(count(Item::getByLocation($this->locationId, true)) == 1);
+		$this->assertEquals([$this->itemId],
+			array_map(fn($item) => $item->ID,Item::getByLocation($this->locationId, true)
+			)
+		);
 	}
 
 }
