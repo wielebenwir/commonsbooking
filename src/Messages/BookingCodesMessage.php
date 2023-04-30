@@ -56,7 +56,7 @@ class BookingCodesMessage extends Message {
         $attachment=$bAddIcal?$this->getIcalAttachment($bookingCodes):null;
         
         //Workaround: arbitrary object for template parser
-        $codes=new \WP_User(new \stdClass());
+        $codes=new \WP_User((object)array( "ID" => -1));
         $codes->codeTable=$bookingTable;
         
         $dispTo= wp_date("M-Y",strtotime(end($bookingCodes)->getDate()));
