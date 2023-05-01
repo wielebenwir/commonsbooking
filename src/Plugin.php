@@ -774,7 +774,8 @@ class Plugin {
 
     /**
      * sets advance booking days to default value for existing timeframes.
-     * Advances booking timeframes are available since 2.6 - all timeframes created prior to this version need to have this value set to a default value (365 days)
+     * Advances booking timeframes are available since 2.6 - all timeframes created prior to this version need to have this value set to a default value.
+     * @see \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS
      *
      * @return void
      */
@@ -783,7 +784,7 @@ class Plugin {
 
         foreach ( $timeframes as $timeframe ) {
             if ( $timeframe->getMeta( 'timeframe-advance-booking-days' ) < 1 ) {
-                update_post_meta( $timeframe->ID, 'timeframe-advance-booking-days', '365' );
+                update_post_meta( $timeframe->ID, 'timeframe-advance-booking-days', strval( \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS ) );
             }
         }
     }

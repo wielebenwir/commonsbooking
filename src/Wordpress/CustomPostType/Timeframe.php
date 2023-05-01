@@ -49,7 +49,7 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Default value for possible advance booking days.
 	 */
-	const ADVANCE_BOOKING_DAYS = 365;
+	const ADVANCE_BOOKING_DAYS = 31;
 
 	/**
 	 * CPT type.
