@@ -237,9 +237,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 "selectForward": true,
                 "useResetBtn": true,
                 "maxDays": globalCalendarData['maxDays'],
+                "minDays": globalCalendarData['minDays'],
                 "buttonText": {
                     apply: 'Buchen',
                     cancel: 'Abbrechen',
+                },
+                "tooltipText": {
+                    'one': globalCalendarData['tooltipText_Day'],
+                    'other': globalCalendarData['tooltipText_Days'],
                 },
                 onAutoApply: (datePicked) => {
                     if (datePicked) {
@@ -297,6 +302,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     "startDate": moment().isAfter(globalCalendarData['startDate']) ? moment().format('YYYY-MM-DD') : globalCalendarData['startDate'],
                     "days": globalCalendarData['days'],
                     "maxDays": globalCalendarData['maxDays'],
+                    "minDays": globalCalendarData['minDays'],
                     "lockDays": globalCalendarData['lockDays'],
                     "bookedDays": globalCalendarData['bookedDays'],
                     "partiallyBookedDays": globalCalendarData['partiallyBookedDays'],

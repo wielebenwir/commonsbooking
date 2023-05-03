@@ -474,6 +474,19 @@ class Timeframe extends CustomPostType {
 				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
+            array(
+				'name'       => esc_html__( 'Minimum booking duration', 'commonsbooking' ),
+				'desc'       => esc_html__( 'Minimum booking duration in days', 'commonsbooking' ),
+				'id'         => "timeframe-min-days",
+				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+				'type'       => 'text_small',
+				'attributes' => array(
+					'type' => 'number',
+					'min'  => '0',
+				),
+				'default_value'    => 0,
+				'default_cb' => 'commonsbooking_filter_from_cmb2',
+			),
 			array(
 				'name'       => esc_html__( 'Maximum booking duration', 'commonsbooking' ),
 				'desc'       => esc_html__( 'Maximum booking duration in days', 'commonsbooking' ),

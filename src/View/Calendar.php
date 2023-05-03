@@ -475,8 +475,11 @@ class Calendar {
 				'holidays'                => [],
 				'highlightedDays'         => [],
 				'maxDays'                 => null,
+                'minDays'                 => null,
 				'disallowLockDaysInRange' => true,
-				'advanceBookingDays'      => $advanceBookingDays
+				'advanceBookingDays'      => $advanceBookingDays,
+                'tooltipText_Day'         => esc_html( __( 'day', 'commonsbooking' ) ),
+                'tooltipText_Days'        => esc_html( __( 'days', 'commonsbooking' ) ),
 			];
 
 			if ( count( $locations ) === 1 ) {
@@ -612,6 +615,12 @@ class Calendar {
 					if ( $jsonResponse['maxDays'] == null ) {
 						$timeframeMaxDays        = get_post_meta( $slot['timeframe']->ID, 'timeframe-max-days', true );
 						$jsonResponse['maxDays'] = intval( $timeframeMaxDays ?: 3 );
+					}
+
+                    // Set min-days setting based on first found timeframe
+					if ( $jsonResponse['minDays'] == null ) {
+						$timeframeMinDays        = get_post_meta( $slot['timeframe']->ID, 'timeframe-min-days', true );
+						$jsonResponse['minDays'] = intval( $timeframeMinDays ?: 5 );
 					}
 				} else {
 					$dayArray['firstSlotBooked'] = true;
