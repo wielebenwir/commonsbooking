@@ -620,7 +620,7 @@ class Calendar {
                     // Set min-days setting based on first found timeframe
 					if ( $jsonResponse['minDays'] == null ) {
 						$timeframeMinDays        = get_post_meta( $slot['timeframe']->ID, 'timeframe-min-days', true );
-						$jsonResponse['minDays'] = intval( $timeframeMinDays ?: 5 );
+						$jsonResponse['minDays'] = intval( $timeframeMinDays ?: 0 );
 					}
 				} else {
 					$dayArray['firstSlotBooked'] = true;
