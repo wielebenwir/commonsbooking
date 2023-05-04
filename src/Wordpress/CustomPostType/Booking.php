@@ -126,6 +126,7 @@ class Booking extends Timeframe {
 
             $postarr          = array(
 				'post_title'  => esc_html__( 'Admin-Booking', 'commonsbooking' ),
+                'post_name'   => Helper::generateRandomString(),
                 'post_author' => $booking_user,
                 'post_status' => $post_status,
                 'meta_input'  => [
@@ -166,7 +167,6 @@ class Booking extends Timeframe {
 			$locationId     = isset( $_REQUEST['location-id'] ) && $_REQUEST['location-id'] != '' ? sanitize_text_field( $_REQUEST['location-id'] ) : null;
 			$comment        = isset( $_REQUEST['comment'] ) && $_REQUEST['comment'] != '' ? sanitize_text_field( $_REQUEST['comment'] ) : null;
             $post_status    = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] != '' ? sanitize_text_field( $_REQUEST['post_status'] ) : null;
-            $booking_author = isset( $_REQUEST['author'] ) && $_REQUEST['author'] != '' ? sanitize_text_field( $_REQUEST['author'] ) : get_current_user_id();
 
  			if ( ! get_post( $itemId ) ) {
 				throw new Exception( 'Item does not exist. (' . $itemId . ')' );
@@ -212,10 +212,11 @@ class Booking extends Timeframe {
 			// Validate booking -> check if there are no existing bookings in timerange.
 			if (count($existingBookings) > 0) {
 				$requestedPostname = array_key_exists( 'cb_booking', $_REQUEST ) ? $_REQUEST['cb_booking'] : '';
+
 				// checks if it's an edit, but ignores exact start/end time
 				$isEdit = count( $existingBookings ) === 1 &&
 					array_values( $existingBookings )[0]->getPost()->post_name === $requestedPostname &&
-					array_values( $existingBookings )[0]->getPost()->post_author == get_current_user_id();
+					array_values( $existingBookings )[0]->getPost()->post_author === get_current_user_id();
 
 				if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status != 'canceled' ) {
                     if ($booking) {
@@ -234,7 +235,6 @@ class Booking extends Timeframe {
 				'post_status' => $post_status,
 				'post_type'   => self::getPostType(),
 				'post_title'  => esc_html__( 'Booking', 'commonsbooking' ),
-				'post_author' => $booking_author,
 				'meta_input'  => [
 					'comment' => $comment,
 				],
