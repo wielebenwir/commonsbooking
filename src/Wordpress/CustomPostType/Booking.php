@@ -208,6 +208,7 @@ class Booking extends Timeframe {
 			        $locationId,
 			        $startDate,
 			        $endDate,
+                    $booking->ID,
 		        );
 
 			// Validate booking -> check if there are no existing bookings in timerange.
