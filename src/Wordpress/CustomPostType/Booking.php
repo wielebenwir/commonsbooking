@@ -201,6 +201,7 @@ class Booking extends Timeframe {
                 $locationId,
                 $itemId
             );
+
 	        $existingBookings =
 		        \CommonsBooking\Repository\Booking::getExistingBookings(
 			        $itemId,
@@ -220,13 +221,24 @@ class Booking extends Timeframe {
 
 				if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status != 'canceled' ) {
                     if ($booking) {
-                        $post_status = 'unconfirmed';
+                         $post_status = 'unconfirmed';
                         set_transient( 'commonsbooking_overlappingBooking_' . $booking->ID, $booking->ID );
                     } else {
                         throw new Exception( 'There is already a booking in this timerange.' );
                     }
 				}
+
+                // if booking exists and admin has canceled or confirmed book we set the admin_booking_id an mark booking as edited by an admin
+                if ( $booking && $booking->post_author !== get_current_user_id() ) {
+                    $postarr['meta_input']['admin_booking_id'] = get_current_user_id();
+                    $internal_comment = esc_html__( 'Edited by an admin user via frontend (canceled / confirmed)' );
+                    $booking->appendToInternalComment( $internal_comment, get_current_user_id() );
+                }
+
+
 			}
+
+
 
 
 
@@ -733,11 +745,18 @@ class Booking extends Timeframe {
 				'type' => 'title',
 			),
 			array(
-				'name' => esc_html__( 'Comment', 'commonsbooking' ),
-				'desc' => esc_html__( 'This comment is internal for timeframes like bookable, repair, holiday. If timeframe is a booking this comment can be set by users during the booking confirmation process.', 'commonsbooking' ),
+				'name' => esc_html__( 'External comment', 'commonsbooking' ),
+				'desc' => esc_html__( 'This comment can be seen by users in booking details. It can be set by users during the booking confirmation process if comments are enabled in settings.', 'commonsbooking' ),
 				'id'   => 'comment',
 				'type' => 'textarea_small',
 			),
+            array(
+				'name' => esc_html__( 'Internal comment', 'commonsbooking' ),
+				'desc' => esc_html__( 'This internal comment can only be seen in backend by privileg users like admins or cb-managers', 'commonsbooking' ),
+				'id'   => 'internal-comment',
+				'type' => 'textarea_small',
+			),
+
 			array(
 				'name'    => esc_html__( 'Location', 'commonsbooking' ),
 				'id'      => 'location-id',

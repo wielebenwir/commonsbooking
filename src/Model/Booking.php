@@ -360,14 +360,14 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
   		if ( $currentStatus == 'unconfirmed' ) {
             // transient is set in \Model\Booking->handleFormRequest if overlapping booking exists
-            if ( get_transient( 'commonsbooking_overlappingBooking_' . $this->post->ID ) ) {
-                $noticeText = commonsbooking_sanitizeHTML( __( 
+            if ( get_transient( 'commonsbooking_overlappingBooking_' . $this->ID ) ) {
+                $noticeText = get_transient( 'commonsbooking_overlappingBooking_' . $this->ID ) . ' ' . $this->ID . commonsbooking_sanitizeHTML( __( 
                     '<h1 style="color:red">Notice:</h1> <p>We are sorry. Something went wrong. This booking could not be confirmed because there is another overlapping booking.<br>
                     Please click the "Cancel"-Button and select another booking period.</p>
                     <p>Normally, the booking system ensures that no overlapping bookings can be created. If you think there is a bug, please contact the contact persons of this website.</p> 
                 ', 'commonsbooking' ) );
 
-                delete_transient( 'commonsbooking_overlappingBooking_' . $this->post->ID );
+                delete_transient( 'commonsbooking_overlappingBooking_' . $this->ID );
             } else {
                 $noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
             }
@@ -478,4 +478,19 @@ class Booking extends \CommonsBooking\Model\Timeframe {
     public function getFormattedEditLink() {
         return '<a href=" ' . get_edit_post_link( $this->ID ) . '"> Booking #' . $this->ID . ' : ' . $this->formattedBookingDate() . ' | User: ' . $this->getUserData()->user_nicename . '</a>';
     }
+    
+    /**
+     * Updates internal booking comment by adding new comment in a new line
+     *
+     * @param  string $comment
+     * @param  int $userID
+     * @return void
+     */
+    public function appendToInternalComment( string $comment, int $userID ) {
+        $existing_comment = $this->getMeta( 'internal-comment' );
+        $meta_string = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), time(), false, true ) . ' / ' . get_the_author_meta( 'user_login', $userID ) . "\n";
+        $new_comment = $existing_comment . "\n" . $meta_string . ': ' . $comment;
+        return update_post_meta( $this->ID, 'internal-comment', $new_comment) ;
+    }
+
 }
