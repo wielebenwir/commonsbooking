@@ -229,19 +229,14 @@ class Booking extends Timeframe {
                     }
 				}
 
-                // if booking exists and admin has canceled or confirmed book we set the admin_booking_id an mark booking as edited by an admin
-                if ( $booking && $booking->post_author !== get_current_user_id() ) {
-                    $postarr['meta_input']['admin_booking_id'] = get_current_user_id();
-                    $internal_comment = esc_html__( 'Edited by an admin user via frontend (canceled / confirmed)' );
-                    $booking->appendToInternalComment( $internal_comment, get_current_user_id() );
-                }
-
-
 			}
 
-
-
-
+            // add internal comment if admin edited booking via frontend
+            if ( $booking && $booking->post_author !== get_current_user_id() ) {
+                $postarr['meta_input']['admin_booking_id'] = get_current_user_id();
+                $internal_comment = esc_html__( 'status changed by admin user via frontend (canceled / confirmed)', 'commonsbooking' );
+                $booking->appendToInternalComment( $internal_comment, get_current_user_id() );
+            }
 
             $postarr = array(
 				'type'        => sanitize_text_field( $_REQUEST['type'] ),

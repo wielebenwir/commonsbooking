@@ -485,8 +485,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
     public function appendToInternalComment( string $comment, int $userID ) {
         $existing_comment = $this->getMeta( 'internal-comment' );
         $meta_string = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), time(), false, true ) . ' / ' . get_the_author_meta( 'user_login', $userID ) . "\n";
-        $new_comment = $existing_comment . "\n" . $meta_string . ': ' . $comment;
-        return update_post_meta( $this->ID, 'internal-comment', $new_comment) ;
+        $new_comment = $existing_comment . "\n\n" . $meta_string . $comment . "\n--------------------\n";
+        return update_post_meta( $this->ID, 'internal-comment', $new_comment );
     }
 
 }
