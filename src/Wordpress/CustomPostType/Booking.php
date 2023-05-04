@@ -92,6 +92,10 @@ class Booking extends Timeframe {
     public function saveAdminBookingFields( $post_id, $post = null, $update = null ) {
         global $pagenow;
 
+        if ( ! $post ) {
+            $post = get_post( $post_id );
+        }
+
         // we check if its a new created post
         if ( ! empty( $_REQUEST ) && $pagenow === 'post.php' && commonsbooking_isCurrentUserAdmin() ) {
 
@@ -118,7 +122,6 @@ class Booking extends Timeframe {
                 $post_status = 'unconfirmed';
             }
 
-
             $full_day = '';
             if ( $start_time == '00:00' && $end_time == '23:59' ) {
                 $full_day = 'on';
@@ -126,7 +129,6 @@ class Booking extends Timeframe {
 
             $postarr          = array(
 				'post_title'  => esc_html__( 'Admin-Booking', 'commonsbooking' ),
-                'post_name'   => Helper::generateRandomString(),
                 'post_author' => $booking_user,
                 'post_status' => $post_status,
                 'meta_input'  => [
@@ -138,7 +140,13 @@ class Booking extends Timeframe {
                     'full-day'         => $full_day,
 				],
             );
-               $postarr['ID'] = $post_id;
+
+            // set post_name if new post
+            if ( in_array( $post->post_status, array( 'auto-draft', 'new' ) ) || $post->post_name === '' ) {
+                $postarr['post_name'] = Helper::generateRandomString();
+            }
+            
+            $postarr['ID'] = $post_id;
 
             // unhook this function so it doesn't loop infinitely
             remove_action( 'save_post_' . self::$postType, array( $this, 'saveAdminBookingFields' ) );
@@ -234,7 +242,7 @@ class Booking extends Timeframe {
             // add internal comment if admin edited booking via frontend
             if ( $booking && $booking->post_author !== get_current_user_id() ) {
                 $postarr['meta_input']['admin_booking_id'] = get_current_user_id();
-                $internal_comment = esc_html__( 'status changed by admin user via frontend (canceled / confirmed)', 'commonsbooking' );
+                $internal_comment = esc_html__( 'status changed by admin user via frontend. New status: ', 'commonsbooking' ) . $post_status;
                 $booking->appendToInternalComment( $internal_comment, get_current_user_id() );
             }
 
