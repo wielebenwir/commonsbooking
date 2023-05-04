@@ -3,14 +3,21 @@
 
 namespace CommonsBooking\Model;
 
-
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Timeframe;
 use Exception;
 
+/**
+ * Logical wrapper for `bookable` (timeframe) posts
+ */
 class BookablePost extends CustomPost {
 
 	/**
+	 * Returns timeframes available for booking, for a given set of locations and a set of items and optional point
+	 * in time.
+	 *
+	 * @uses Timeframe::getBookableForCurrentUser()
+	 *
 	 * @param false $asModel
 	 * @param array $locations
 	 * @param array $items
@@ -50,7 +57,7 @@ class BookablePost extends CustomPost {
 	}
 
 	/**
-	 * Returns bookable timeframes for a specific location
+	 * Returns if bookable timeframes are available for a specific location
 	 *
 	 * @return bool
 	 * @throws Exception

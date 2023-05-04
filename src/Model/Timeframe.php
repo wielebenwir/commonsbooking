@@ -7,7 +7,10 @@ use DateTime;
 use Exception;
 
 /**
- * Class Timeframe
+ * This class holds functionality for the timeframe post.
+ * It serves as a wrapper for the CustomPostType TimeFrame.
+ *
+ * @see \CommonsBooking\Wordpress\CustomPostType\Timeframe
  *
  * @package CommonsBooking\Model
  */
@@ -263,7 +266,9 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Checks if Timeframe is valid.
-     *
+	 *
+	 * First checks missing values, then validates against existing timeframes.
+	 *
 	 * @return bool
 	 * @throws Exception
 	 */
@@ -690,15 +695,31 @@ class Timeframe extends CustomPost {
 		return $endDate;
 	}
 
+	/**
+	 * Delegation only - see uses.
+	 *
+	 * @uses \CommonsBooking\Wordpress\CustomPostType\Timeframe::isOverBookable()
+	 *
+	 * @return bool
+	 */
 	public function isOverBookable(): bool {
 		return \CommonsBooking\Wordpress\CustomPostType\Timeframe::isOverBookable( self::getPost() );
 	}
 
+	/**
+	 * Delegation only - see uses.
+	 *
+	 * @uses \CommonsBooking\Wordpress\CustomPostType\Timeframe::isLocked()
+	 *
+	 * @return bool
+	 */
 	public function isLocked(): bool {
 		return \CommonsBooking\Wordpress\CustomPostType\Timeframe::isLocked( self::getPost() );
 	}
 
 	/**
+	 * Returns users with admin role for location and item, assigned to this timeframe.
+	 *
 	 * @return array|string[]
 	 * @throws Exception
 	 */
@@ -719,7 +740,7 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns type of repetition
-     *
+	 *
 	 * @return mixed
 	 */
 	public function getRepetition() {
