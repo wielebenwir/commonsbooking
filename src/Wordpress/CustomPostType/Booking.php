@@ -247,8 +247,6 @@ class Booking extends Timeframe {
             }
 
 
-			}
-
             $postarr['type']                    = sanitize_text_field( $_REQUEST['type'] );
             $postarr['post_status']             = $post_status;
             $postarr['post_type']               = self::getPostType();
