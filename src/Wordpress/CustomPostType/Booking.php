@@ -246,15 +246,14 @@ class Booking extends Timeframe {
                 $booking->appendToInternalComment( $internal_comment, get_current_user_id() );
             }
 
-            $postarr = array(
-				'type'        => sanitize_text_field( $_REQUEST['type'] ),
-				'post_status' => $post_status,
-				'post_type'   => self::getPostType(),
-				'post_title'  => esc_html__( 'Booking', 'commonsbooking' ),
-				'meta_input'  => [
-					'comment' => $comment,
-				],
-            );
+
+			}
+
+            $postarr['type']                    = sanitize_text_field( $_REQUEST['type'] );
+            $postarr['post_status']             = $post_status;
+            $postarr['post_type']               = self::getPostType();
+            $postarr['post_title']              = esc_html__( 'Booking', 'commonsbooking' );
+            $postarr['meta_input']['comment']   = $comment;
 
             // New booking
             if ( empty( $booking ) ) {
