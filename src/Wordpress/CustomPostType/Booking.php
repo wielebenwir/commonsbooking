@@ -230,7 +230,7 @@ class Booking extends Timeframe {
 
 				if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status != 'canceled' ) {
                     if ($booking) {
-                         $post_status = 'unconfirmed';
+                        $post_status = 'unconfirmed';
                         set_transient( 'commonsbooking_overlappingBooking_' . $booking->ID, $booking->ID );
                     } else {
                         throw new Exception( 'There is already a booking in this timerange.' );
@@ -240,7 +240,7 @@ class Booking extends Timeframe {
 			}
 
             // add internal comment if admin edited booking via frontend
-            if ( $booking && $booking->post_author !== get_current_user_id() ) {
+            if ( $booking && $booking->post_author !== '' && intval( $booking->post_author ) !== intval( get_current_user_id() ) ) {
                 $postarr['meta_input']['admin_booking_id'] = get_current_user_id();
                 $internal_comment = esc_html__( 'status changed by admin user via frontend. New status: ', 'commonsbooking' ) . $post_status;
                 $booking->appendToInternalComment( $internal_comment, get_current_user_id() );

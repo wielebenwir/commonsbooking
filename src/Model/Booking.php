@@ -360,7 +360,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
                 $noticeText = get_transient( 'commonsbooking_overlappingBooking_' . $this->ID ) . ' ' . $this->ID . commonsbooking_sanitizeHTML( __( 
                     '<h1 style="color:red">Notice:</h1> <p>We are sorry. Something went wrong. This booking could not be confirmed because there is another overlapping booking.<br>
                     Please click the "Cancel"-Button and select another booking period.</p>
-                    <p>Normally, the booking system ensures that no overlapping bookings can be created. If you think there is a bug, please contact the contact us.</p> 
+                    <p>Normally, the booking system ensures that no overlapping bookings can be created. If you think there is a bug, please contact us.</p> 
                 ', 'commonsbooking' ) );
 
                 delete_transient( 'commonsbooking_overlappingBooking_' . $this->ID );
