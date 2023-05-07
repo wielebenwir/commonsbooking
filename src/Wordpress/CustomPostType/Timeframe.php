@@ -9,6 +9,13 @@ use CommonsBooking\View\Admin\Filter;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\UserRepository;
 
+/**
+ * Configures WordPress custom post type for access in admin backend.
+ * It holds default values for meta fields of initial installations.
+ *
+ * We use CMB2 text_datetime_timestamp fields, the meta fields for start and end date are stored in unix
+ * timestamp (without timezone offset), when edited from admin backend.
+ */
 class Timeframe extends CustomPostType {
 
 	/**

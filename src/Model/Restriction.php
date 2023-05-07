@@ -21,8 +21,18 @@ class Restriction extends CustomPost {
 
 	const META_HINT = 'restriction-hint';
 
+	/**
+	 * 1. Used with input from CMB2-Field type text_datetime_timestamp
+	 *
+	 * type of field int = local unix timestamp (php settings?)
+	 */
 	const META_START = 'restriction-start';
 
+	/**
+	 * 1. Used with input from CMB2-Field type text_datetime_timestamp
+	 *
+	 * type of field int = local unix timestamp (
+	 */
 	const META_END = 'restriction-end';
 
 	const META_TYPE = 'restriction-type';

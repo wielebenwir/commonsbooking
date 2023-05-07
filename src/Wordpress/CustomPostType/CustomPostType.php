@@ -8,7 +8,7 @@ use CommonsBooking\View\Admin\Filter;
 use WP_Post;
 
 /**
- * Abstract wp custom post type for the CommonsBooking domain.
+ * Abstract wp custom post type for the CommonsBooking domain, implements a base of post functionality.
  */
 abstract class CustomPostType {
 

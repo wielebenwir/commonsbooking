@@ -33,7 +33,7 @@ class Timeframe extends CustomPost {
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
 	/**
-	 * Return residence in a human readable format
+	 * Return the span of a timeframe in human-readable format
 	 *
 	 * "From xx.xx.",  "Until xx.xx.", "From xx.xx. until xx.xx.", "no longer available"
 	 *

@@ -10,6 +10,10 @@ use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Service\iCalendar;
 
+/**
+ * Static functionality to deal with legacy wp actions in includes.
+ * Also creates ical feed data.
+ */
 class Booking extends View {
 
 	/**
