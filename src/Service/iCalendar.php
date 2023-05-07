@@ -18,7 +18,6 @@ use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
 
 use DateTimeImmutable;
 use DateInterval;
-use phpDocumentor\Reflection\Types\Mixed_;
 
 /**
  *
