@@ -742,11 +742,10 @@ class Timeframe extends CustomPostType {
 		$isValid = $this->validateTimeFrame( $post_id, $post );
 
 		if ( $isValid ) {
-			$timeframe          = new \CommonsBooking\Model\Timeframe( $post_id );
-			$createBookingCodes = get_post_meta( $post_id, 'create-booking-codes', true );
-			$this->sanitizeRepetitionEndDate($post_id);
+			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
+			$this->sanitizeRepetitionEndDate( $post_id );
 
-			if ( $createBookingCodes == "on" && $timeframe->bookingCodesApplicable() ) {
+			if ( $timeframe->createBookingCodes() && $timeframe->bookingCodesApplieable() ) {
 				BookingCodes::generate( $post_id );
 			}
 		}
@@ -760,11 +759,11 @@ class Timeframe extends CustomPostType {
 	 *
 	 * @return void
 	 */
-	private function sanitizeRepetitionEndDate($postId) {
-		$repetitionEnd = get_post_meta($postId, \CommonsBooking\Model\Timeframe::REPETITION_END, true);
-		if($repetitionEnd) {
+	private function sanitizeRepetitionEndDate( $postId ) : void {
+		$repetitionEnd = get_post_meta( $postId, \CommonsBooking\Model\Timeframe::REPETITION_END, true );
+		if ( $repetitionEnd ) {
 			$repetitionEnd = strtotime( '+23 Hours +59 Minutes +59 Seconds', $repetitionEnd );
-			update_post_meta($postId, \CommonsBooking\Model\Timeframe::REPETITION_END, $repetitionEnd);
+			update_post_meta( $postId, \CommonsBooking\Model\Timeframe::REPETITION_END, $repetitionEnd );
 		}
 	}
 
