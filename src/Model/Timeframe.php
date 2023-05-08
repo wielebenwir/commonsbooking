@@ -217,7 +217,7 @@ class Timeframe extends CustomPost {
 		try {
 			return $this->getLocation() && $this->getItem() &&
 			       $this->getStartDate() && $this->getEndDate() &&
-			       $this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID;
+			       $this->getType() === \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID;
 		} catch ( Exception $e ) {
 			return false;
 		}
@@ -258,8 +258,8 @@ class Timeframe extends CustomPost {
      *
 	 * @return mixed
 	 */
-	public function getType() {
-		return $this->getMeta( 'type' );
+	public function getType() : int {
+		return intval( $this->getMeta( 'type' ) );
 	}
 
 	/**
@@ -271,7 +271,7 @@ class Timeframe extends CustomPost {
 	*/
 	public function isValid(): void {
 		if (
-			$this->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID
+			$this->getType() === \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID
 		) {
 			try {
 				$item = $this->getItem();
