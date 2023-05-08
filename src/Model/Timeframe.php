@@ -62,12 +62,14 @@ class Timeframe extends CustomPost {
     /**
      * Return defined end (repetition) date of timeframe
      *
-     * @return false|int|string
+     * @return false|int
      */
     public function getTimeframeEndDate() {
         $endDate = $this->getMeta( self::REPETITION_END );
-		if ( (string) intval( $endDate ) !== $endDate ) {
+		if ( (string) intval( $endDate ) != $endDate ) {
 			$endDate = strtotime( $endDate );
+		} else {
+			$endDate = intval( $endDate );
 		}
 
         return $endDate;
@@ -79,10 +81,7 @@ class Timeframe extends CustomPost {
 	 * @return false|int
 	 */
 	public function getEndDate() {
-		$endDate = $this->getMeta( self::REPETITION_END );
-		if ( (string) intval( $endDate ) !== $endDate ) {
-			$endDate = strtotime( $endDate );
-		}
+		$endDate = $this->getTimeframeEndDate();
 
 		// Latest possible booking date
 		$latestPossibleBookingDate = $this->getLatestPossibleBookingDateTimestamp();
@@ -131,7 +130,7 @@ class Timeframe extends CustomPost {
 		$label           = commonsbooking_sanitizeHTML( __( 'Available here', 'commonsbooking' ) );
 		$availableString = '';
 
-		if ( $startDate && $endDate && $startDate == $endDate ) { // available only one day
+		if ( $startDate && $endDate && $startDate === $endDate ) { // available only one day
 			/* translators: %s = date in WordPress defined format */
 			$availableString = sprintf( commonsbooking_sanitizeHTML( __( 'on %s', 'commonsbooking' ) ), $startDateFormatted );
 		} elseif ( $startDate && ! $endDate ) { // start but no end date
@@ -175,16 +174,11 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns end (repetition) date and does not respect advance booking days setting.
-     *
+     * TODO this or getTimeFrameEndDate can be deprecated
 	 * @return false|int
 	 */
 	public function getRawEndDate() {
-		$endDate = intval( $this->getMeta( self::REPETITION_END ) );
-		if ( (string) $endDate != $endDate ) {
-			$endDate = strtotime( $endDate );
-		}
-
-		return $endDate;
+		return $this->getTimeframeEndDate();
 	}
 
 	/**
