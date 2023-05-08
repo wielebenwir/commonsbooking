@@ -46,7 +46,7 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return int
 	 */
-	public function getStartDate(): int {
+	public function getStartDate() : int {
 		$startDate = $this->getMeta( self::REPETITION_START );
 
 		if ( (string) intval( $startDate ) !== $startDate ) {
@@ -324,7 +324,8 @@ class Timeframe extends CustomPost {
 				// check if timeframes of other locations overlap in date and return error message if true
 				foreach ( $sameItemTimeframes as $sameItemTimeframe ) {
 
-					if ( $location != $sameItemTimeframe->getLocation() && $this->hasTimeframeDateOverlap( $sameItemTimeframe )
+					if ( $location != $sameItemTimeframe->getLocation()
+					     && $this->hasTimeframeDateOverlap( $sameItemTimeframe )
 					) {
 						throw new TimeframeInvalidException(
 						/* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
@@ -447,7 +448,7 @@ class Timeframe extends CustomPost {
 	 * @return bool
 	 */
 	public function isFullDay(): bool {
-		return $this->getMeta( 'full-day' ) == 'on';
+		return $this->getMeta( 'full-day' ) === 'on';
 	}
 
 	/**
@@ -553,7 +554,7 @@ class Timeframe extends CustomPost {
 	public function getGridSize(): ?int {
 		if ( $this->isFullDay() ) {
 			return 24;
-		} elseif ( $this->getGrid() == 0 ) {
+		} elseif ( $this->getGrid() === 0 ) {
 			$startTime = strtotime( $this->getMeta( 'start-time' ) );
 			$endTime   = strtotime( $this->getMeta( 'end-time' ) );
 
@@ -570,7 +571,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function showBookingCodes(): bool
     {
-		return $this->getMeta( 'show-booking-codes' ) == 'on';
+		return $this->getMeta( 'show-booking-codes' ) === 'on';
 	}
 
 	/**
@@ -637,7 +638,7 @@ class Timeframe extends CustomPost {
 	 * @return DateTime
 	 */
 	public function getEndTimeDateTime( $endDateString = null ): DateTime {
-		$endTimeString = $this->getMeta( 'end-time' );
+		$endTimeString = $this->getEndTime();
 		$endDate       = Wordpress::getUTCDateTime();
 
 		if ( $endTimeString ) {
