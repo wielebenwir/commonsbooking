@@ -477,9 +477,8 @@ class Timeframe extends CustomPost {
 	            ( $otherTimeframe->getTimeframeEndDate() >= $this->getStartDate() && $otherTimeframe->getTimeframeEndDate() <= $this->getTimeframeEndDate() )
             );
         }
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
