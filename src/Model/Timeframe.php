@@ -356,7 +356,7 @@ class Timeframe extends CustomPost {
 
 					// check if timeframes overlap
 					if (
-						$this->hasTimeframeDateOverlap(  $timeframe )
+						$this->hasTimeframeDateOverlap( $timeframe )
 					) {
 						// Compare grid types
 						if ( $timeframe->getGrid() != $this->getGrid() ) {
@@ -441,7 +441,7 @@ class Timeframe extends CustomPost {
      *
 	 * @return bool
 	 */
-	public function isFullDay(): bool {
+	public function isFullDay() : bool {
 		return $this->getMeta( 'full-day' ) === 'on';
 	}
 
@@ -563,7 +563,7 @@ class Timeframe extends CustomPost {
      *
 	 * @return bool
 	 */
-	public function showBookingCodes(): bool
+	public function showBookingCodes() : bool
     {
 		return $this->getMeta( 'show-booking-codes' ) === 'on';
 	}
