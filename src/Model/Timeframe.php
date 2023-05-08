@@ -74,7 +74,6 @@ class Timeframe extends CustomPost {
 
         return $endDate;
     }
-
 	/**
 	 * Return End (repetition) date and respects advance booking days setting.
 	 *
@@ -105,7 +104,7 @@ class Timeframe extends CustomPost {
 		$calculationBase = time();
 
 		// if meta-value not set we define 90 days as default value
-		$advanceBookingDays = $this->getMeta( 'timeframe-advance-booking-days' ) ?:
+		$advanceBookingDays = $this->getMeta( TimeFrame::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) ?:
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS;
 
 		// we subtract one day to reflect the current day in calculation
@@ -135,8 +134,8 @@ class Timeframe extends CustomPost {
 			$availableString = sprintf( commonsbooking_sanitizeHTML( __( 'on %s', 'commonsbooking' ) ), $startDateFormatted );
 		} elseif ( $startDate && ! $endDate ) { // start but no end date
 			if ( $startDate > $today ) { // start is in the future
-				/* translators: %s = date in WordPress defined format */
 				$availableString = sprintf(
+					/* translators: %s = date in WordPress defined format */
                     commonsbooking_sanitizeHTML( __( 'from %s', 'commonsbooking' ) ),
                     $startDateFormatted
                 );
@@ -145,15 +144,15 @@ class Timeframe extends CustomPost {
 			}
 		} elseif ( $startDate && $endDate ) { // start AND end date
 			if ( $startDate > $today ) { // start is in the future, with an end date
-				/* translators: %1$s = startdate, second %2$s = enddate in WordPress defined format */
 				$availableString = sprintf(
+					/* translators: %1$s = startdate, second %2$s = enddate in WordPress defined format */
                     commonsbooking_sanitizeHTML( __( ' from %1$s until %2$s', 'commonsbooking' ) ),
 					$startDateFormatted,
                     $endDateFormatted
                 );
 			} else { // start has passed, with an end date
-				/* translators: %s = enddate in WordPress defined format */
 				$availableString = sprintf(
+					/* translators: %s = enddate in WordPress defined format */
                     commonsbooking_sanitizeHTML( __( ' until %s', 'commonsbooking' ) ),
                     $endDateFormatted
                 );
@@ -359,10 +358,10 @@ class Timeframe extends CustomPost {
 						$this->hasTimeframeDateOverlap( $timeframe )
 					) {
 						// Compare grid types
-						if ( $timeframe->getGrid() != $this->getGrid() ) {
+						if ( $timeframe->getGrid() !== $this->getGrid() ) {
 							throw new TimeframeInvalidException(
-							/* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
 								sprintf(
+									/* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
 									__(
 										'Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s %2$s',
 										'commonsbooking',
@@ -387,8 +386,8 @@ class Timeframe extends CustomPost {
 						// Check if in day slots overlap
 						if ( ! $this->isFullDay() && $this->hasTimeframeTimeOverlap( $timeframe ) ) {
 							throw new TimeframeInvalidException(
-							/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
 								sprintf(
+									/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
 									__(
 										'time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s %2$s',
 										'commonsbooking'
@@ -403,6 +402,7 @@ class Timeframe extends CustomPost {
 						if ( $this->isFullDay() ) {
 							throw new TimeframeInvalidException(
 								sprintf(
+									/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
 									__(
 										'Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s %2$s',
 										'commonsbooking'
@@ -429,7 +429,6 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns end time for day-slots.
-     *
 	 * @return mixed
 	 */
 	public function getEndTime() {
@@ -438,7 +437,6 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns true if timeframe is full-day
-     *
 	 * @return bool
 	 */
 	public function isFullDay() : bool {
@@ -478,6 +476,7 @@ class Timeframe extends CustomPost {
             );
         }
 
+		// If none of the above conditions are true, there is no overlap
 		return false;
 	}
 
@@ -584,7 +583,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function getUTCStartDateDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
-		if ( $this->isFullDay() ){
+		if ( $this->isFullDay() ) {
 			return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		}
 		return Wordpress::convertTimestampToUTCDatetime( $startDateString );
@@ -627,7 +626,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function getUTCEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
-		if ($this->isFullDay()){
+		if ( $this->isFullDay() ) {
 			return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 		}
 		return Wordpress::convertTimestampToUTCDatetime( $endDateString );
