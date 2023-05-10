@@ -72,6 +72,10 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. cd into the directory commonsbooking and run `composer install`
 5. Activate the plugin in the Plugin dashboard
 
+## Contribute
+
+Either through translating wordpress into your native tounge ([see the already existing Wordpress Plugin Translations](https://translate.wordpress.org/projects/wp-plugins/commonsbooking/)) or through developing and testing new versions of the application.
+
 ## Development
 
 ### Run plugin
@@ -100,6 +104,9 @@ wp-env run cli wp theme activate kasimir-theme
 ```
 
 ### Update translations
+
+Currently we only manage german and english translations as po files in the repository, so they are available at build time. 
+See the [wordpress plugin translation page](https://translate.wordpress.org/projects/wp-plugins/commonsbooking/) for other languages available at runtime.
 
 Create a new .pot file using the 
 ```
