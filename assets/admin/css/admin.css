@@ -5782,4 +5782,14 @@ select[readonly] {
   color: var(--commonsbooking-color-success);
 }
 
+/* Edit Screens Backend  */
+/**
+ * Backend Edit Screens and messages
+ *
+ */
+/* line 6, ../sass/partials/_admin-edit.scss */
+.notice-error, div.error {
+  background-color: #f0b6b6 !important;
+}
+
 /*# sourceMappingURL=admin.css.map */

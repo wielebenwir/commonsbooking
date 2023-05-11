@@ -183,7 +183,9 @@ class Scheduler {
 			'cb_cron_hook',
 			'cb_reminder_cron_hook',
 			'cb_feedback_cron_hook',
-			'cb_cron_export'
+			'cb_cron_export',
+			'cb_map_import',
+			'cb_cron_delete_pending'
 		];
 
 		foreach ( $cbCronHooks as $cbCronHook ) {
