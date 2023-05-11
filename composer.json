@@ -42,7 +42,7 @@
     "ext-json": "*",
     "symfony/cache": "^5.4",
     "symfony/service-contracts": "v1.1.11",
-    "eluceo/ical": "^2.5",
+    "eluceo/ical": "2.09.*",
     "phpmailer/phpmailer": "^6.6"
   },
   "require-dev": {
