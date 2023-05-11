@@ -125,7 +125,7 @@ class Helper {
 	 *
 	 * @return array - Array of overlapping ranges.
 	 */
-	public static function merge_ranges_to_bookable_dates( array $array_of_ranges ): array {
+	public static function mergeRangesToBookableDates( array $array_of_ranges ): array {
 		$interval_open = function ( $interval_value ): bool {
 			return false === $interval_value;
 		};
