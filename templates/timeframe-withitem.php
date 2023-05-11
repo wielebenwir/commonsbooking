@@ -18,7 +18,8 @@ $permalink    = add_query_arg ( 'cb-location', $location->ID, get_the_permalink(
                 array_key_exists('ranges', $data) &&
                 count($data['ranges'])
             ) {
-                foreach ($data['ranges'] as $range) {
+	            $ranges = \CommonsBooking\Helper\Helper::merge_ranges_to_bookable_dates($data['ranges']);
+                foreach ($ranges as $range) {
                     echo commonsbooking_sanitizeHTML( \CommonsBooking\Model\Timeframe::formatBookableDate($range['start_date'], $range['end_date']) ) . '<br>';
                 }
             }
