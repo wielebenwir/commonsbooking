@@ -237,9 +237,9 @@ class Map extends CustomPostType {
 					];
 				}
 
-				$thumbnail = get_the_post_thumbnail_url( $item->ID, 'thumbnail' );
-
 				$thumbnailID = get_post_thumbnail_id( $item->ID );
+				//this thumbnail is kept for backwards compatibility
+				$thumbnail = wp_get_attachment_image_url( $thumbnailID, 'thumbnail' );
 				$images = [
 					'thumbnail' => wp_get_attachment_image_src( $thumbnailID, 'thumbnail' ),
 					'medium'    => wp_get_attachment_image_src( $thumbnailID, 'medium' ),
