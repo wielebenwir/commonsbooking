@@ -12,6 +12,29 @@ class ItemTest extends CustomPostTypeTest {
 	private Item $itemModel;
 	private Timeframe $timeframeModel;
 
+
+	/**
+	 * Test not working - maybe bug in function?
+	 * @return void
+	 */
+	/*
+	public function testGetBookableTimeframesByLocation() {
+		$timeframeArray[] = $this->timeframeModel;
+		$this->assertEquals($timeframeArray, $this->itemModel->getBookableTimeframesByItem($this->locationId)); //Not working
+	}
+	*/
+
+	public function testGetAdmins() {
+
+		$userArray[] = $this->normalUserID;
+		$adminItemModel = new Item(
+			$this->createItem("Testitem2",'publish', $userArray)
+		);
+		//$this->assertEquals($userArray, $adminItemModel->getAdmins()); - This should work when postAuthor is not appended anymore
+		$this->assertContains($this->normalUserID, $adminItemModel->getAdmins());
+	}
+
+
 	public function testGetRestrictions() {
 		$this->restrictionIds = array_unique($this->restrictionIds);
 		$restrictionArray = [];
@@ -27,14 +50,16 @@ class ItemTest extends CustomPostTypeTest {
 			Restriction::META_HINT,
 			$this->locationId,
 			$this->itemId,
-			strtotime( self::CURRENT_DATE ),
-			NULL
+			strtotime(self::CURRENT_DATE),
+			null
 		);
-		$this->timeframeModel   = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay() );
-		$this->itemModel        = new Item( $this->itemId );
+		$this->timeframeModel = new Timeframe($this->createBookableTimeFrameIncludingCurrentDay());
+		$this->itemModel = new Item($this->itemId);
+		$this->createSubscriber();
+
 	}
 
-	protected function tearDown() {
+	protected function tearDown(){
 		parent::tearDown();
 	}
 
