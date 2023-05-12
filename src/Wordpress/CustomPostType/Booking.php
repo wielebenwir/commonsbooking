@@ -218,13 +218,8 @@ class Booking extends Timeframe {
 					array_values( $existingBookings )[0]->getPost()->post_author == get_current_user_id();
 
 				if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status != 'canceled' ) {
-                    if ($booking) {
-                        $post_status = 'unconfirmed';
-                        set_transient( 'commonsbooking_overlappingBooking_' . $booking->ID, $booking->ID );
-                    } else {
-                        throw new Exception( 'There is already a booking in this timerange.' );
+                       throw new Exception( 'There is already a booking in this timerange.' );
                     }
-				}
 			}
 
 

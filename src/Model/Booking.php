@@ -64,7 +64,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		);
 		$wpdb->query( $sql );
 
-		add_post_meta( $this->post->ID, 'cancellation_time', current_time( 'timestamp' ) );
+		update_post_meta( $this->post->ID, 'cancellation_time', current_time( 'timestamp' ) );
 
 		$this->sendCancellationMail();
 	}
@@ -354,23 +354,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$currentStatus    = $this->post->post_status;
 		$cancellationTime = $this->getMeta( 'cancellation_time' );
 
-        if ( get_transient( 'commonsbookig_overlappingBooking_' . $this->post->ID ) && $currentStatus === 'unconfirmed' ) {
-            $noticeText = commonsbooking_sanitizeHTML( __( 'The booking could not be confirmed because there is an overlapping booking in this period.', 'commonsbooking' ) );
-        }
-
   		if ( $currentStatus == 'unconfirmed' ) {
-            // transient is set in \Model\Booking->handleFormRequest if overlapping booking exists
-            if ( get_transient( 'commonsbooking_overlappingBooking_' . $this->post->ID ) ) {
-                $noticeText = commonsbooking_sanitizeHTML( __( 
-                    '<h1 style="color:red">Notice:</h1> <p>We are sorry. Something went wrong. This booking could not be confirmed because there is another overlapping booking.<br>
-                    Please click the "Cancel"-Button and select another booking period.</p>
-                    <p>Normally, the booking system ensures that no overlapping bookings can be created. If you think there is a bug, please contact the contact persons of this website.</p> 
-                ', 'commonsbooking' ) );
-
-                delete_transient( 'commonsbooking_overlappingBooking_' . $this->post->ID );
-            } else {
-                $noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
-            }
+            $noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
 		} elseif ( $currentStatus == 'confirmed' ) {
 			$noticeText = commonsbooking_sanitizeHTML( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'booking-confirmed-notice' ) );
 		}
@@ -478,4 +463,20 @@ class Booking extends \CommonsBooking\Model\Timeframe {
     public function getFormattedEditLink() {
         return '<a href=" ' . get_edit_post_link( $this->ID ) . '"> Booking #' . $this->ID . ' : ' . $this->formattedBookingDate() . ' | User: ' . $this->getUserData()->user_nicename . '</a>';
     }
+    
+    /**
+     * Updates internal booking comment by adding new comment in a new line
+     *
+     * @param  string $comment
+     * @param  int $userID
+     * @return void
+     */
+    public function appendToInternalComment( string $comment, int $userID ) {
+        $existing_comment = $this->getMeta( 'internal-comment' );
+        $dateTimeInfo = current_datetime()->format( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
+        $meta_string = $dateTimeInfo . ' / ' . get_the_author_meta( 'user_login', $userID ) . "\n";
+        $new_comment = $existing_comment . "\n" . $meta_string . $comment . "\n--------------------";
+        return update_post_meta( $this->ID, 'internal-comment', $new_comment );
+    }
+
 }
