@@ -258,8 +258,8 @@ trait Cache {
 		?>
 		<div class="cmb-row cmb-type-text table-layout">
 			<div class="cmb-th">
-				Connection status:
-			</div>
+                <?php  echo __('Connection status:', 'commonsbooking'); ?>
+            </div>
 			<div class="cmb-th">
 				<?php
 				if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled') =='on'){
