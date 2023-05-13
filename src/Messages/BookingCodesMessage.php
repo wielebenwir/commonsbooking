@@ -4,10 +4,10 @@ namespace CommonsBooking\Messages;
 
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
-use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Service\iCalendar;
-use CommonsBooking\Plugin;
+use CommonsBooking\CB\CB;
+use CommonsBooking\Wordpress\CustomPostType\Location;
 use DateTimeImmutable;
 
 class BookingCodesMessage extends Message {
@@ -39,9 +39,8 @@ class BookingCodesMessage extends Message {
         $timeframeId=(int)$this->getPostId();
         $timeframe=new Timeframe($timeframeId);
 
-        $this->locationAdmins = UserRepository::getCBManagersByIds($timeframe->getLocation()->getAdmins());        
-        if(empty($this->locationAdmins)) return $this->raiseError( 
-                __( "Unable to send Emails to location Managers. None configured, check Location -> Location Admin(s)", "commonsbooking" ));
+        if(!$this->prepareReceivers($timeframe)) return $this->raiseError( 
+                __( "Unable to send Emails. No Location email(s) configured, check Location", "commonsbooking" ));
 
 		$bookingCodes = BookingCodes::getCodes($timeframeId, $this->tsFrom,$this->tsTo);
         if(empty($bookingCodes)) return $this->raiseError( __( "Could not find booking codes for this timeframe/period", "commonsbooking" ));
@@ -131,8 +130,29 @@ class BookingCodesMessage extends Message {
 
         return $to;
     }
-
+  
  	/**
+	 * builds e-mail receivers by creating dummy WP_User objects from location emails
+     * 
+     * @return array
+ 	 */
+    protected function prepareReceivers($timeframe)
+    {
+        $dummy_id=-2;
+        $location_emails = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $timeframe->getLocation() ) ; /*  email addresses, comma-seperated  */
+        if(!empty($location_emails)) {
+            foreach(array_map('trim', explode(',', $location_emails)) as $email) {
+                $dUser=$this->locationAdmins[]=new \WP_User((object)array( "ID" => $dummy_id--));
+                $dUser->user_nicename='';
+                $dUser->user_email=$email;           
+            }
+        }
+
+        if(empty($this->locationAdmins)) return false;
+        return true;
+    }
+    
+    /**
 	 * generates iCalendar attachment with all requested booking codes
 	 *
      * @param  array  $bookingCodes   List of BookingCode objects

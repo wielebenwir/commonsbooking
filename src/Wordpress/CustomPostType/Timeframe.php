@@ -4,6 +4,7 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 
 use WP_Post;
 use Exception;
+use CommonsBooking\CB\CB;
 use CommonsBooking\View\Calendar;
 use CommonsBooking\View\Admin\Filter;
 use CommonsBooking\Repository\BookingCodes;
@@ -661,7 +662,12 @@ class Timeframe extends CustomPostType {
 				'type' => 'booking_codes_email_fields',
 				'sanitization_cb' =>  ['\CommonsBooking\View\BookingCodes','sanitizeCronEmailCodes'],
 				'escape_cb'       =>  ['\CommonsBooking\View\BookingCodes','escapeCronEmailCodes'],
-				'show_on_cb' => function($field) { $tfModel=parent::getModel(get_post($field->object_id()));  return (!empty($tfModel->getLocation()->getAdmins()) &&  $tfModel->hasBookingCodes());  },
+				'show_on_cb' => function($field) 
+								{ 
+									$tfModel=parent::getModel(get_post($field->object_id()));  
+									return (!empty(CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $tfModel->getLocation() )) &&  
+													$tfModel->hasBookingCodes());  
+								},
 			),
 			array(
 				'name'          => esc_html__( 'Booking Codes', 'commonsbooking' ),

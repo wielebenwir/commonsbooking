@@ -311,6 +311,9 @@ class Location extends CustomPostType {
 				'commonsbooking' ),
 			'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_email',
 			'type'       => 'text',
+			'attributes' => array(
+				'class' => "regular-text cmb2-oembed",
+			),
 			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 			// 'repeatable'      => true,
 		) );
