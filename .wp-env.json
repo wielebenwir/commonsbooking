@@ -1,7 +1,12 @@
 {
 	"phpVersion": "7.4",
 	"core": "Wordpress/Wordpress#6.2",
-        "plugins": [ "." ],
+        "plugins": [ 
+		".",
+	        "https://downloads.wordpress.org/plugin/wp-crontrol.zip",
+      	        "https://downloads.wordpress.org/plugin/wordpress-importer.zip",
+	        "https://downloads.wordpress.org/plugin/query-monitor.zip"
+	],
 	"port": 1000,
   	"testsPort": 1001,
   	"config": {
