@@ -1,11 +1,13 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress Coding Standards based custom ruleset for your plugin">
+<ruleset name="WordPress Coding Standards based custom ruleset for your plugin"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
 	<description>Generally-applicable sniffs for WordPress plugins.</description>
 
 	<!-- What to scan -->
 	<file>.</file>
-	<exclude-pattern>/vendor/</exclude-pattern>
-	<exclude-pattern>/node_modules/</exclude-pattern>
+    <exclude-pattern>assets/</exclude-pattern>
+	<exclude-pattern>vendor/</exclude-pattern>
+	<exclude-pattern>node_modules/</exclude-pattern>
 
 	<!-- How to scan -->
 	<!-- Usage instructions: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage -->
@@ -16,32 +18,71 @@
 	<arg name="extensions" value="php"/>
 	<arg name="parallel" value="8"/><!-- Enables parallel processing when available for faster results. -->
 
+    <!-- Cache the results between runs. -->
+	<arg name="cache" value="./.cache-phpcs-free.cache"/>
+
 	<!-- Rules: Check PHP version compatibility -->
 	<!-- https://github.com/PHPCompatibility/PHPCompatibility#sniffing-your-code-for-compatibility-with-specific-php-versions -->
-	<config name="testVersion" value="5.6-"/>
-	<!-- https://github.com/PHPCompatibility/PHPCompatibilityWP -->
-	<rule ref="PHPCompatibilityWP"/>
+	<config name="testVersion" value="7.3-" />
 
 	<!-- Rules: WordPress Coding Standards -->
 	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
 	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties -->
-	<config name="minimum_supported_wp_version" value="4.6"/>
-	<rule ref="WordPress"/>
+	<config name="minimum_supported_wp_version" value="5.0"/>
+
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<!-- Value: replace the function, class, and variable prefixes used. Separate multiple prefixes with a comma. -->
-			<property name="prefixes" type="array" value="my-plugin"/>
+			<property name="prefixes" type="array">
+                <element value="cb_" /> <!-- globals -->
+                <element value="commonsbooking_" />
+                <element value="CommonsBooking" /> <!-- namespaces -->
+            </property>            
 		</properties>
 	</rule>
+
+    <!-- Checks if text_domain used -->
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<!-- Value: replace the text domain used. -->
-			<property name="text_domain" type="array" value="my-plugin"/>
+			<property name="text_domain" type="array" value="commonsbooking"/>
 		</properties>
 	</rule>
+    
 	<rule ref="WordPress.WhiteSpace.ControlStructureSpacing">
 		<properties>
 			<property name="blank_line_check" value="true"/>
 		</properties>
 	</rule>
+
+	<!-- https://github.com/PHPCompatibility/PHPCompatibilityWP -->
+	<rule ref="PHPCompatibility">
+        <exclude-pattern>tests/</exclude-pattern>
+    </rule>
+
+    <rule ref="PHPCompatibilityWP" />
+
+    <rule ref="Generic.Commenting">
+		<exclude-pattern>tests/</exclude-pattern>
+	</rule>
+
+    <rule ref="Squiz.Commenting.FileComment.Missing">
+		<exclude-pattern>tests/</exclude-pattern>
+	</rule>
+
+    <rule ref="WordPress">
+        <exclude name="WordPress.Files.FileName" />
+        <exclude name="Wordpress.PHP.YodaConditions" />
+        <exclude name="WordPress.NamingConventions.ValidVariableName" />
+        <exclude name="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid" />
+	
+       <!-- Too much false positives in our codebase, but please reactivate if necessary -->
+        <exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
+        <exclude name="WordPress.Arrays.MultipleStatementAlignment.LongIndexSpaceBeforeDoubleArrow" />
+
+        <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
+        <exclude name="Squiz.Commenting.FileComment" />
+        
+        <exclude-pattern>tests/</exclude-pattern>
+    </rule>
+
 </ruleset>
