@@ -9,6 +9,7 @@ use Exception;
 
 /**
  * Logical wrapper for `bookable` (timeframe) posts
+ *
  */
 class BookablePost extends CustomPost {
 

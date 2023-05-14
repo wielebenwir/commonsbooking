@@ -17,6 +17,15 @@ use CommonsBooking\Service\iCalendar;
 use DateTimeImmutable;
 use DateInterval;
 
+/**
+ * Logical wrapper for `booking` posts
+ * Bookings used to be just a type of `timeframe` post, but now they are a separate post type.
+ * This leads to a lot of post meta for bookings that only make sense in a timeframe context.
+ *
+ * Additionally, all the public functions in this class can be called through Template Tags.
+ *
+ * You can get the bookings from the database using the @see \CommonsBooking\Repository\Booking class.
+ */
 class Booking extends \CommonsBooking\Model\Timeframe {
 
 	const START_TIMEFRAME_GRIDSIZE = 'start-timeframe-gridsize';
@@ -37,7 +46,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	];
 
 	/**
-	 * Returns the booking code.
+	 * Returns the booking code as a string.
      *
 	 * @return mixed
 	 */
@@ -46,7 +55,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Sets post_status to canceled.
+	 * Cancel the current booking and send a cancellation mail to the user.
+	 * Because we are directly updating the database, we need another function to flush the database cache (wp_cache_flush()) to test this function.
 	 */
 	public function cancel() {
 
@@ -78,7 +88,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Returns rendered booking code for using in email-template (booking confirmation mail)
+	 * Returns rendered booking code for using in email-template (booking confirmation mail).
+	 * If booking code is not set, it returns an empty string.
      *
 	 * @return string
 	 * @throws Exception
@@ -109,7 +120,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Returns suitable bookable Timeframe for booking.
+	 * Returns the corresponding Timeframe object for booking.
+	 * If no timeframe is found, it returns null.
      *
 	 * @return null|\CommonsBooking\Model\Timeframe
 	 * @throws Exception
@@ -134,6 +146,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Assings relevant meta fields from related bookable timeframe to booking.
+	 * We have to do this, because bookings used to be just a type of timeframe post.
+	 * This leads to a lot of post meta for bookings that only make sense in a timeframe context.
      *
 	 * @throws Exception
 	 */
@@ -184,7 +198,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Returns time from repetition-[start/end] field
+	 * Returns time from repetition-[start/end] field in format H:i.
+	 * We need this meta-field in order to display the pick-up and return time to the user.
 	 *
 	 * @param $fieldName
 	 *
@@ -202,6 +217,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
+	 * Gets the corresponding item object for this booking.
+	 * If no item is found, it returns null.
+	 * This should not happen, because a booking is always based on an item. But this might happen if the item was deleted.
+	 *
 	 * @return ?Item
 	 * @throws Exception
 	 */
@@ -216,6 +235,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
+	 * Gets the corresponding location object for this booking.
+	 * If no location is found, it returns null.
+	 * This should not happen, because a booking is always based on a location. But this might happen if the location was deleted.
 	 * @return ?Location
 	 * @throws Exception
 	 */
@@ -229,6 +251,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
+	 * Get the booking date in a human-readable format.
+	 * This is used in the booking confirmation email as a template tag.
 	 * @return string
 	 */
 	public function formattedBookingDate(): string {
@@ -248,7 +272,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 
 	/**
-	 * pickupDatetime
 	 *
 	 * renders the pickup date and time information and returns a formatted string
 	 * this is used in templates/booking-single.php and in email-templates (configuration via admin options)
@@ -289,7 +312,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * returnDatetime
 	 *
 	 * renders the return date and time information and returns a formatted string
 	 * this is used in templates/booking-single.php and in email-templates (configuration via admin options)
@@ -327,16 +349,37 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		return $date_end . ' ' . $time_start . ' - ' . $time_end;
 	}
 
+	/**
+	 *
+	 * Get the content of the repetition start meta field.
+	 * This is a timestamp in local time. (not in UTC).
+	 * That means we do not have to do timezone conversion in order to get the corresponding local time.
+	 *
+	 * TODO: Clarify why this implementation is different from the one in the parent class.
+	 *
+	 * @return mixed|string
+	 */
 	public function getStartDate() {
 		return $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START );
 	}
 
+	/**
+	 * Get the content of the repetition end meta field.
+	 * This is a timestamp in local time. (does not start at UTC).
+	 * That means we do not have to do timezone conversion in order to get the corresponding local time.
+	 *
+	 * TODO: Clarify why this implementation is different from the one in the parent class.
+	 *
+	 * @return mixed|string
+	 */
 	public function getEndDate() {
 		return $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END );
 	}
 
 	/**
-	 * Returns comment text.
+	 * Returns comment field text.
+	 * The booking comment is a field that can be filled in by the user when booking (when enabled).
+	 * The content of the field is not publicly visible and is only visible to the admin(s) and the user who made the booking.
      *
 	 * @return string
 	 */
@@ -345,7 +388,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * show booking notice
+	 * show booking notice.
+	 * The booking notice shows the current status of the booking to the user.
+	 * This can be a confirmation, a cancellation or a notice that the booking could not be confirmed.
 	 *
 	 * @return string
 	 */
@@ -392,9 +437,13 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Return HTML Link to booking
-     *
+	 * Render HTML Link to booking.
+	 * This is not just the URL but a complete HTML link with corresponding text.
+	 * This function is used in the booking confirmation email via template tags.
+	 *
 	 * @TODO: optimize booking link to support different permalink settings or set individual slug (e.g. booking instead of cb_timeframe)
+	 *
+	 * @param null $linktext
 	 *
 	 * @return string
 	 */
@@ -405,7 +454,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			$linktext = esc_html__( 'Link to your booking', 'commonsbooking' );
 		}
 
-		return sprintf( '<a href="%1$s">%2$s</a>', add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) ), $linktext );
+		return sprintf( '<a href="%1$s">%2$s</a>', $this->bookingLinkUrl() , $linktext );
 	}
 
 	/**
@@ -418,7 +467,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Returns true when booking is cancelled
+	 * Returns true when booking is cancelled. This might not correctly reflect the status of the booking when $this->cancel() has been called.
+	 * In order to correctly reflect this, you need to call wp_cache_flush() before calling this function.
+	 *
+	 *
 	 *
 	 * @return bool
 	 */
@@ -427,7 +479,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Returns true when booking has ended
+	 * Returns true when booking has ended.
+	 * Will determine this by comparing the end date of the booking with the current time.
+	 * A booking that is currently running is not considered to be past.
 	 *
 	 * @return bool
 	 */
@@ -439,6 +493,15 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 	}
 
+	/**
+	 * Will get an iCalendar with just this booking as an event.
+	 * This is used to attach the iCalendar to the booking confirmation email.
+	 *
+	 * @param string $eventTitle
+	 * @param string $eventDescription
+	 *
+	 * @return string
+	 */
 	public function getiCal(
 		string $eventTitle,
 		string $eventDescription

@@ -20,6 +20,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * "Opening Hours" timeframe type id.
+	 * This type of timeframe is @depreacted .
 	 */
 	const OPENING_HOURS_ID = 1;
 

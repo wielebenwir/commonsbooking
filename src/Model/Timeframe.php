@@ -3,6 +3,7 @@
 namespace CommonsBooking\Model;
 
 use CommonsBooking\Helper\Wordpress;
+use CommonsBooking\Tests\Repository\TimeframeTest;
 use DateTime;
 use Exception;
 
@@ -10,7 +11,11 @@ use Exception;
  * This class holds functionality for the timeframe post.
  * It serves as a wrapper for the CustomPostType TimeFrame.
  *
+ * You can use the @see \CommonsBooking\Repository\Timeframe class to get the timeframes from the database.
+ *
  * @see \CommonsBooking\Wordpress\CustomPostType\Timeframe
+ *
+ * Additionally, all the public functions in this class can be called using Template Tags.
  *
  * @package CommonsBooking\Model
  */
@@ -47,7 +52,10 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Return Start (repetition) date timestamp
+	 * Return Start (repetition) date timestamp.
+	 *
+	 * The timestamps are stored in local time (not in UTC).
+	 * This means that we do not have to do timezone conversion in order to get the corresponding local time.
 	 *
 	 * @return string
 	 */
@@ -62,7 +70,10 @@ class Timeframe extends CustomPost {
 	}
 
     /**
-     * Return defined end (repetition) date of timeframe
+     * Return defined end (repetition) date of timeframe.
+     *
+     * The timestamps are stored in local time (not in UTC).
+     * This means that we do not have to do timezone conversion in order to get the corresponding local time.
      *
      * @return false|int|string
      */
@@ -77,6 +88,9 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Return End (repetition) date and respects advance booking days setting.
+	 * We need this function in order to display the correct end of the booking period for the user.
+	 * Do not use this function to get the actual end date of the timeframe.
+	 * Use getRawEndDate() instead.
 	 *
 	 * @return string
 	 */
@@ -101,8 +115,10 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns latest possible booking date as timestamp.
+	 * This function respects the advance booking days setting.
+	 * This means that this is the latest date that a user can currently book.
 	 *
-	 * @return string
+	 * @return false|int
 	 */
 	public function getLatestPossibleBookingDateTimestamp() {
 		$calculationBase = time();
@@ -118,6 +134,10 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * This function will get the formatted end date of the timeframe.
+	 * This is used to display the end date of the timeframe in the frontend.
+	 * This is mainly in use by the [cb_items] shortcode.
+	 *
 	 * @param $startDate
 	 * @param $endDate
 	 *
@@ -167,7 +187,7 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Return date format
+	 * Return date format from WordPress settings.
 	 *
 	 * @return string
 	 */
@@ -177,6 +197,7 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns end (repetition) date and does not respect advance booking days setting.
+	 * Use the getEndDate() function if you want to get the end date that respects the advance booking days setting.
      *
 	 * @return false|int
 	 */
@@ -202,7 +223,7 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Return  time format
+	 * Return time format
 	 *
 	 * @return string
 	 */
@@ -226,6 +247,11 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * Will get the corresponding location for this timeframe.
+	 * This function will return null if no location is set.
+	 * This should not happen, because the location is a required field.
+	 * But it might happen if the location was deleted.
+	 *
 	 * @return Location
 	 * @throws Exception
 	 */
@@ -241,6 +267,11 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * Will get corresponding item for this timeframe.
+	 * This function will return null if no item is set.
+	 * This should not happen, because the item is a required field.
+	 * But it might happen if the item was deleted.
+	 *
 	 * @return Item
 	 * @throws Exception
 	 */
@@ -257,6 +288,14 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns type id
+	 * The type of the timeframe are constants defined in @see \CommonsBooking\Wordpress\CustomPostType\Timeframe
+	 *
+	 * The types are usually:
+	 * Timeframe::BOOKABLE_ID
+	 * Timeframe::HOLIDAYS_ID
+	 * Timeframe::REPAIR_ID
+	 * Timeframe::BOOKING_ID
+	 * Timeframe::BOOKING_CANCELLED_ID
      *
 	 * @return mixed
 	 */
@@ -265,9 +304,13 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Checks if Timeframe is valid.
+	 * Checks if Timeframe is valid. This should be called before publishing a timeframe as it will prevent broken timeframes / configurations.
 	 *
 	 * First checks missing values, then validates against existing timeframes.
+	 * Will check for the mandatory item / location fields.
+	 * Will check if the start- and end-date are set.
+	 * Will check if there is no timeframe with the same item and location that overlaps with this timeframe.
+	 *
 	 *
 	 * @return bool
 	 * @throws Exception
@@ -489,7 +532,8 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns true if timeframe is full-day
+	 * Returns true if timeframe is spanning over the whole day.
+	 * This means that this is not an hourly timeframe or a slot timeframe.
      *
 	 * @return boolean
 	 */
@@ -500,8 +544,10 @@ class Timeframe extends CustomPost {
 	/**
 	 * Checks if timeframes are overlapping in date range.
 	 *
-	 * @param \CommonsBooking\Model\Timeframe $timeframe1
-	 * @param \CommonsBooking\Model\Timeframe $timeframe2
+	 * TODO: This is currently a static function although it makes more sense in an object context.
+	 * TODO: This function does not have a default return value. Although it should not happen, it should be handled.
+	 * @param Timeframe $timeframe1
+	 * @param Timeframe $timeframe2
 	 *
 	 * @return bool
 	 */
@@ -533,7 +579,8 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns grit type id
+	 * Returns grid type id.
+	 * TODO: Better description of what the timeframe grid is.
      *
 	 * @return mixed
 	 */
@@ -543,6 +590,7 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Checks if timeframes are overlapping in daily slots.
+	 * TODO: This would make more sense in an object context.
 	 *
 	 * @param $timeframe1
 	 * @param $timeframe2
@@ -584,6 +632,8 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns weekdays array.
+	 * This means what weekdays are selected for this timeframe.
+	 * This only makes sense when the grid is repeating weekly.
      *
 	 * @return mixed
 	 */
@@ -593,6 +643,7 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns grid size in hours.
+	 * TODO: Better description of what the timeframe grid is.
      *
 	 * @return int|null
 	 */
@@ -620,8 +671,15 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns repetition-start \DateTime.
+	 * This function contains a weird hotfix for full day timeframes.
+	 * This is because it is mainly used by the iCalendar export where if we don't convert the timestamp to a UTC Datetime we will get the wrong starting time.
+	 * This, however is not the case for full day timeframes where we need to use the given timestamp, else the date would span over two days when it is only supposed to span over one.
+	 *
+	 * TODO: Can throw uncaught exception.
+	 * TODO: Find better solution for weird hotfix.
 	 *
 	 * @return DateTime
+	 * @throws Exception
 	 */
 	public function getUTCStartDateDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
@@ -633,8 +691,12 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns start-time \DateTime.
+	 * This method returns a local date time object, just with the UTC timezone attached but the time is still local.
+	 *
+	 * TODO: Can throw uncaught exception.
 	 *
 	 * @return DateTime
+	 * @throws Exception
 	 */
 	public function getStartTimeDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
@@ -652,7 +714,10 @@ class Timeframe extends CustomPost {
 	 * Returns end-date \DateTime.
 	 * This method returns a local date time object, just with the UTC timezone attached but the time is still local.
 	 *
+	 * TODO: Can throw uncaught exception.
+	 *
 	 * @return DateTime
+	 * @throws Exception
 	 */
 	public function getEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
@@ -664,7 +729,9 @@ class Timeframe extends CustomPost {
 	 * Provides a UTC date time object.
 	 * We need to do this weird conversion because the end date is stored as a local timestamp.
 	 *
+	 * TODO: Can throw uncaught exception.
 	 * @return DateTime
+	 * @throws Exception
 	 */
 	public function getUTCEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
@@ -676,10 +743,14 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns endtime-time \DateTime.
+	 * This method returns a local date time object, just with the UTC timezone attached but the time is still local.
+	 *
+	 * TODO: Clarify what the exact difference between endTime and endDate is.
 	 *
 	 * @param null $endDateString
 	 *
 	 * @return DateTime
+	 * @throws Exception
 	 */
 	public function getEndTimeDateTime( $endDateString = null ): DateTime {
 		$endTimeString = $this->getMeta( 'end-time' );
@@ -719,6 +790,9 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns users with admin role for location and item, assigned to this timeframe.
+	 * Will call the respective methods on the location and item.
+	 *
+	 * This function is currently not in use.
 	 *
 	 * @return array|string[]
 	 * @throws Exception
@@ -739,7 +813,8 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns type of repetition
+	 * Returns type of repetition.
+	 * TODO: Clarify what types of restrictions there are.
 	 *
 	 * @return mixed
 	 */
