@@ -120,7 +120,7 @@ class Booking extends View {
 				$menuitems = '';
 
 				if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'feed_enabled' ) == 'on'){
-					$menuitems .= 	'<div id="icallink_text" title="'. commonsbooking_sanitizeHTML( __('Use this link to import the data into your own calendar.')) .'">' .
+					$menuitems .= 	'<div id="icallink_text" title="'. commonsbooking_sanitizeHTML( __('Use this link to import the data into your own calendar. Usually you just need to provide the URL as an external source and the calendar will figure it out. Do not try to download this file.','commonsbooking')) .'">' .
 										commonsbooking_sanitizeHTML( __('iCalendar Link:', 'commonsbooking')) .
 									'</div>' .
 									'<input type="text" id="icallink" value="' . iCalendar::getCurrentUserCalendarLink() . '" readonly>'
@@ -327,6 +327,9 @@ class Booking extends View {
 		foreach ($bookingList["data"] as $booking)
 		{
 			$booking_model = New \CommonsBooking\Model\Booking($booking["postID"]);
+			if ($booking_model->isCancelled()) {
+				continue;
+			}
 			$template_objects = [
 				'booking'  => $booking_model,
 				'item'     => $booking_model->getItem(),
