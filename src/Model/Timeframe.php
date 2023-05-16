@@ -620,6 +620,16 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
+	public function getStartDateDateTime(): DateTime {
+		$startDateString = $this->getMeta( self::REPETITION_START );
+		return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
+	}
+
+	/**
+	 * Returns repetition-start \DateTime.
+	 *
+	 * @return DateTime
+	 */
 	public function getUTCStartDateDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
 		if ( $this->isFullDay() ){
