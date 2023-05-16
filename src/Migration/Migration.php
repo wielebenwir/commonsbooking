@@ -518,6 +518,8 @@ class Migration {
 			'end-time'                                         => '23:59',
 			'full-day'                                         => 'on',
 			'grid'                                             => '0',
+			'cancellation_time'                                => $booking['cancellation_time'] ?? '',
+			'comment'                                          => $booking['comment'] ?? '',
 			COMMONSBOOKING_METABOX_PREFIX . 'bookingcode'      => $bookingCode,
 		];
 
