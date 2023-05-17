@@ -587,6 +587,9 @@ class Plugin {
 			$tags[] = UserRepository::USER_CACHE_TAG;
 			self::clearCache( $tags );
 		}
+
+		// clear user cache because it also contains info about the author's of locations and items which might have changed
+		UserRepository::clearUserCache();
 	}
 
 	/**
