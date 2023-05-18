@@ -512,8 +512,12 @@ class Plugin {
 		add_action( 'wp_enqueue_scripts', array( Cache::class, 'addWarmupAjaxToOutput' ) );
 		add_action( 'admin_enqueue_scripts', array( Cache::class, 'addWarmupAjaxToOutput' ) );
 
-		// Clear cached users on user update.
-		add_action( 'profile_update', array( UserRepository::class, 'clearUserCache' ) );
+		// Clear cached users on user role updates
+		add_action( 'add_user_role', array( UserRepository::class, 'clearUserCache' ) );
+		add_action( 'remove_user_role', array( UserRepository::class, 'clearUserCache' ) );
+		// Clear cached ownership on filted post meta updates (custom cb action is emitted for reuse)
+		add_action( 'updated_post_meta', array(self::class, 'checkMetaChangeAndEmitActionHook'), 0, 4);
+		add_action( 'cb_updated_ownership', array( UserRepository::class, 'clearUserCache' ) );
 
 		add_action( 'plugins_loaded', array( $this, 'commonsbooking_load_textdomain' ), 20 );
 
@@ -792,5 +796,20 @@ class Plugin {
             }
         }
     }
+	
+	/**
+	 * Filters `updated_post_meta` action hook for relevant meta fields and emits necessary events (or hooks)
+	 *
+	 * @return void
+	 */
+	function checkMetaChangeAndEmitActionHook( $meta_id, $post_id, $meta_key, $meta_value ) {
+		if ( COMMONSBOOKING_METABOX_PREFIX . 'location_admins' == $meta_key ) {
+			do_action( 'cb_updated_ownership', $post_id );
+		}
+		
+		if ( COMMONSBOOKING_METABOX_PREFIX . 'item_admins' == $meta_key ) {
+			do_action( 'cb_updated_ownership', $post_id );
+		}
+	}
 
 }
