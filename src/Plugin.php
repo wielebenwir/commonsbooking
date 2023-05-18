@@ -802,7 +802,7 @@ class Plugin {
 	 *
 	 * @return void
 	 */
-	function checkMetaChangeAndEmitActionHook( $meta_id, $post_id, $meta_key, $meta_value ) {
+	public static function checkMetaChangeAndEmitActionHook( $meta_id, $post_id, $meta_key, $meta_value ) {
 		if ( COMMONSBOOKING_METABOX_PREFIX . 'location_admins' == $meta_key ) {
 			do_action( 'cb_updated_ownership', $post_id );
 		}
