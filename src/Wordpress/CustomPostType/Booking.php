@@ -753,7 +753,7 @@ class Booking extends Timeframe {
 			),
             array(
 				'name' => esc_html__( 'Internal comment', 'commonsbooking' ),
-				'desc' => esc_html__( 'This internal comment can only be seen in backend by privileg users like admins or cb-managers', 'commonsbooking' ),
+				'desc' => esc_html__( 'This internal comment can only be seen in the backend by privileged users like admins or cb-managers', 'commonsbooking' ),
 				'id'   => 'internal-comment',
 				'type' => 'textarea_small',
 			),
