@@ -232,6 +232,7 @@ class Booking extends Timeframe {
 				if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status != 'canceled' ) {
                     if ($booking) {
                         $post_status = 'unconfirmed';
+						//TODO: Check if we can replace this transient with throwing a BookingDeniedException
                         set_transient( 'commonsbooking_overlappingBooking_' . $booking->ID, $booking->ID );
                     } else {
                         throw new BookingDeniedException( __('There is already a booking in this timerange.', 'commonsbooking') );
