@@ -20,8 +20,12 @@
                 let ruleSelector = currentGroup.find("#" + groupName + "_" + i + "_" + ruleSelectorID);
                 let ruleDescription = currentGroup.find('[class*="' + ruleDescriptionID + '"]').find(".cmb2-metabox-description");
                 let ruleParam1 = currentGroup.find('[class*="' + ruleParam1ID + '"]');
+                let ruleParam1Input = ruleParam1.find(".cmb2-text-small");
+                let ruleParam1InputLabel = $(ruleParam1Input.labels()[0]);
                 let ruleParam1Desc = ruleParam1.find(".cmb2-metabox-description");
                 let ruleParam2 = currentGroup.find('[class*="' + ruleParam2ID + '"]');
+                let ruleParam2Input = ruleParam2.find(".cmb2-text-small");
+                let ruleParam2InputLabel = $(ruleParam2Input.labels()[0]);
                 let ruleParam2Desc = ruleParam2.find(".cmb2-metabox-description");
                 let ruleSelectParam = currentGroup.find('[class*="' + ruleSelectParamID + '"]');
                 let ruleSelectParamDesc = ruleSelectParam.find(".cmb2-metabox-description");
@@ -38,15 +42,18 @@
                               case 1:
                                 ruleParam1.show();
                                 ruleParam2.hide();
-                                ruleParam1Desc.text(rule.params[0]);
+                                ruleParam1InputLabel.text(rule.params[0]["title"]);
+                                ruleParam1Desc.text(rule.params[0]["description"]);
                                 ruleParam2.val("");
                                 break;
 
                               case 2:
                                 ruleParam1.show();
                                 ruleParam2.show();
-                                ruleParam1Desc.text(rule.params[0]);
-                                ruleParam2Desc.text(rule.params[1]);
+                                ruleParam1InputLabel.text(rule.params[0]["title"]);
+                                ruleParam1Desc.text(rule.params[0]["description"]);
+                                ruleParam2InputLabel.text(rule.params[1]["title"]);
+                                ruleParam2Desc.text(rule.params[1]["description"]);
                                 break;
                             }
                         } else {

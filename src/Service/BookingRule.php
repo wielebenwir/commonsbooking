@@ -169,7 +169,10 @@ class BookingRule {
 				__("You have reached your booking limit. Please leave some time in between bookings.",'commonsbooking'),
 				Closure::fromCallable(array(self::class,'checkMaxBookingsPerWeek')),
 				array(
-					__("Number of days each user is allowed to book per week",'commonsbooking'),
+					array(
+						"title" => __("Maximum booked days per week",'commonsbooking'),
+						"description" => __("Number of days each user is allowed to book per week",'commonsbooking'),
+					)
 				),
 				array(
 					__("At what day of the week should the counter be reset?",'commonsbooking'),
@@ -191,7 +194,10 @@ class BookingRule {
 				__("You have reached your booking limit. Please leave some time in between bookings.",'commonsbooking'),
 				Closure::fromCallable(array(self::class,'checkMaxBookingsPerMonth')),
 				array(
-					__("Number of days each user is allowed to book per month",'commonsbooking'),
+					array(
+						"title" => __("Maximum booked days per month",'commonsbooking'),
+						"description" => __("Number of days each user is allowed to book per month",'commonsbooking'),
+					)
 				),
 				array(
 					__("At what day of the month should the counter be reset?",'commonsbooking'),
