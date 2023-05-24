@@ -304,16 +304,15 @@ class BookingRuleTest extends CustomPostTypeTest
 	public function testFebruaryMaxBookingPerMonth(){
 		//check if the month of february is working when the reset day has exceeded the number of days in the month
 		$testYear = 2022;
-		$testMonth = "02";
 		$maxDaysPerMonth = 4;
 		$resetDay = 31;
 		$confirmedBookingObjects = array(
 			array(
-				'start' => strtotime('01.' . $testMonth . '.'. $testYear),
-				'end' => strtotime('03.' . $testMonth . '.'. $testYear),
+				'start' => strtotime('01.02.' . $testYear),
+				'end' => strtotime('03.02.'. $testYear),
 			),
 			array(
-				'start' => strtotime('03.' . $testMonth . '.'. $testYear),
+				'start' => strtotime('03.02.'. $testYear),
 				'end' => strtotime('05.02.'. $testYear),
 			)
 		);
