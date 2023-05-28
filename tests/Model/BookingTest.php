@@ -84,7 +84,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->setUpTestBooking();
 	}
 
-	protected function tearDown(){
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 }
