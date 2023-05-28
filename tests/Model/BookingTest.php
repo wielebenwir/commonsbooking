@@ -69,7 +69,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->testBookingPast = new Booking(get_post($this->testBookingPastId));
 	}
 
-	protected function setUp(){
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->firstTimeframeId   = $this->createTimeframe(
