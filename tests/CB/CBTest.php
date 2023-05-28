@@ -32,7 +32,7 @@ class CBTest extends CustomPostTypeTest {
 
 	private $bookingMetaValue = 'booking-meta-value';
 
-	private $bookingId;
+	protected $bookingId;
 
 	public function testLookUp() {
 		// Test if user meta value is found when handing over WP_Post object
