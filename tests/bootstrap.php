@@ -5,10 +5,6 @@
  * @package Commonsbooking
  */
 
-if ( PHP_MAJOR_VERSION >= 8 ) {
-	echo "The scaffolded tests cannot currently be run on PHP 8.0+. See https://github.com/wp-cli/scaffold-command/issues/285" . PHP_EOL; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	exit( 1 );
-}
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 
