@@ -9,6 +9,7 @@ on:
     types: opened
     branches:
       - 'master'
+      - 'wielebenwir:master'
 
 env:
   DB_DATABASE: wordpress_test
