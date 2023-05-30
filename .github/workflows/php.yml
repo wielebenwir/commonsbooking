@@ -8,6 +8,7 @@ on:
   pull_request:
     branches:
       - 'master'
+      - 'wielebenwir:master'
 
 env:
   DB_DATABASE: wordpress_test
