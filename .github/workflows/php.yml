@@ -6,7 +6,6 @@ on:
       - '**.md'
       - '**.txt'
   pull_request:
-    types: opened
     branches:
       - 'master'
 
