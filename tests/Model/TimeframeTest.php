@@ -49,7 +49,8 @@ class TimeframeTest extends CustomPostTypeTest {
 	}
 
 	public function testIsValid() {
-		$this->assertNull($this->validTF->isValid());
+
+		$this->assertNull( $this->validTF->isValid() );
 
 		$noItemTF = new Timeframe($this->createTimeframe(
 			$this->locationId,
@@ -107,16 +108,24 @@ class TimeframeTest extends CustomPostTypeTest {
 			$pickupTimeInvalid->isValid();
 		}
 		catch ( TimeframeInvalidException $e ) {
-			$this->assertEquals("A pickup time but no return time has been set. Please set the return time.",$e->getMessage());
+			$this->assertEquals( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
 		}
+	}
+	public function test_isValid_throwsException() {
+
+		$secondLocation = $this->createLocation("Newest Location", 'publish');
 
 		$isOverlapping = new Timeframe($this->createTimeframe(
-			$this->locationId,
+			$secondLocation,
 			$this->itemId,
-			strtotime("+1 day",time()),
-			strtotime("+2 days",time())
+			strtotime( '+1 day', time() ),
+			strtotime( '+2 days', time() )
 		));
-		$this->expectException(TimeframeInvalidException::class);
+
+		$this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
+		$this->assertTrue( $isOverlapping->hasTimeframeDateOverlap( $this->validTF ) );
+
+		$this->expectException( TimeframeInvalidException::class );
 		$isOverlapping->isValid();
 	}
 
