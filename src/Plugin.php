@@ -373,6 +373,7 @@ class Plugin {
 				'rewrite'      => array( 'slug' => $customPostType . '-cat' ),
 				'hierarchical' => true,
 				'show_in_rest' => true,
+				'public' => true
 			)
 		);
 
