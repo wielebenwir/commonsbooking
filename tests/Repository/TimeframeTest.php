@@ -11,7 +11,7 @@ class TimeframeTest extends CustomPostTypeTest {
 
 	const REPETITION_END = '1661472000';
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		// Timeframe with enddate
@@ -31,7 +31,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 
