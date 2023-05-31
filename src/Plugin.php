@@ -123,6 +123,20 @@ class Plugin {
 	}
 
 	/**
+	 * Tests if a given post belongs to our CPTs
+	 * @param $post
+	 *
+	 * @return bool
+	 */
+	public static function isPostCustomPostType($post): bool {
+		if (! $post ) {
+			return false;
+		}
+		$validPostTypes = self::getCustomPostTypesLabels();
+		return in_array($post->post_type,$validPostTypes);
+	}
+
+	/**
 	 * Returns only custom post types, which are allowed for cb manager
      *
 	 * @return array
