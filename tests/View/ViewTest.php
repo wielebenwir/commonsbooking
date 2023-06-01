@@ -11,7 +11,7 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 class ViewTest extends CustomPostTypeTest {
 
 	protected const bookingDaysInAdvance = 30;
-	protected const now = time();
+	protected $now;
 
 	public function testGetShortcodeDataWithFourRangesByItem() {
 		$shortCodeData = View::getShortcodeData( new Item( $this->itemId ), 'Item' );
@@ -50,7 +50,8 @@ class ViewTest extends CustomPostTypeTest {
 	protected function setUp() : void {
 		parent::setUp();
 
-		$now = $this->now;
+		$now = time();
+		$this->now = $now;
 
 		$timeframeId = $this->createTimeframe(
 			$this->locationId,
