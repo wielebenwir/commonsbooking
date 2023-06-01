@@ -24,6 +24,33 @@ class ViewTest extends CustomPostTypeTest {
 		$this->assertTrue( count( $shortCodeData[ $this->locationId ]['ranges'] ) == 4 );
 	}
 	
+	public function testGetShortcodeDataWithUnorderedRangesByItem() {
+		// Adds another timeframe (but not in order of start-date)
+		$now = time();
+		$timeframeId = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+4 days midnight', $now ),
+			strtotime( '+5 days midnight', $now ),
+			Timeframe::BOOKABLE_ID,
+			'on',
+			'norep'
+		);
+		// set booking days in advance
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );	
+		
+		// Check for all timeframes
+		$shortCodeData = View::getShortcodeData( new Item( $this->itemId ), 'Item' );
+		$this->assertTrue( is_array( $shortCodeData[ $this->itemId ]['ranges'] ) );
+		$this->assertTrue( count( $shortCodeData[ $this->itemId ]['ranges'] ) == 5 );
+		
+		// Check for specific timeframe start date
+		$this->assertEquals( $shortCodeData[ $this->itemId]['ranges'][1]['start_date'], strtotime( '+4 days midnight', $now ) );
+		
+		// tearDown
+		wp_delete_post( $timeframeId );
+	}
+	
 	public function testShortcodeForLocationView() {
 		$body = \CommonsBooking\View\Location::shortcode( array() );
 		$html = '<html><body>' . $body . '</body></html>';
