@@ -60,8 +60,8 @@ class ViewTest extends CustomPostTypeTest {
 		$timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+2 days midnight', $now ),
-			strtotime( '+3 days midnight', $now ),
+			strtotime( '+5 days midnight', $now ),
+			strtotime( '+6 days midnight', $now ),
 			Timeframe::BOOKABLE_ID,
 			'on',
 			'norep'
@@ -72,8 +72,8 @@ class ViewTest extends CustomPostTypeTest {
 		$timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+5 days midnight', $now ),
-			strtotime( '+6 days midnight', $now ),
+			strtotime( '+2 days midnight', $now ),
+			strtotime( '+3 days midnight', $now ),
 			Timeframe::BOOKABLE_ID,
 			'on',
 			'norep'
