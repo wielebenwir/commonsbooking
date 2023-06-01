@@ -261,8 +261,8 @@ abstract class CustomPostTypeTest extends TestCase {
 		}
 	}
 
-	protected function setUp() {
-		parent::setUp();
+  protected function setUp() : void {
+    parent::setUp();
 
 		$this->setUpBookingCodesTable();
 
@@ -289,7 +289,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		$wpdb->query( $sql );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 
 		$this->tearDownAllItems();
