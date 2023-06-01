@@ -30,8 +30,8 @@ class ViewTest extends CustomPostTypeTest {
 		$timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+4 days midnight', $now ),
-			strtotime( '+5 days midnight', $now ),
+			strtotime( '+16 days midnight', $now ),
+			strtotime( '+17 days midnight', $now ),
 			Timeframe::BOOKABLE_ID,
 			'on',
 			'norep'
@@ -41,11 +41,13 @@ class ViewTest extends CustomPostTypeTest {
 		
 		// Check for all timeframes
 		$shortCodeData = View::getShortcodeData( new Item( $this->itemId ), 'Item' );
-		$this->assertTrue( is_array( $shortCodeData[ $this->itemId ]['ranges'] ) );
-		$this->assertTrue( count( $shortCodeData[ $this->itemId ]['ranges'] ) == 5 );
+		
+		$ranges = $shortCodeData[ $this->itemId ]['ranges'];
+		$this->assertTrue( is_array( $ranges ) );
+		$this->assertEquals( count( $ranges ), 5 );
 		
 		// Check for specific timeframe start date
-		$this->assertEquals( $shortCodeData[ $this->itemId]['ranges'][1]['start_date'], strtotime( '+4 days midnight', $now ) );
+		$this->assertEquals( $ranges[5]['start_date'], strtotime( '+4 days midnight', $now ) );
 		
 		// tearDown
 		wp_delete_post( $timeframeId );
