@@ -6,7 +6,6 @@ use CommonsBooking\Model\Item;
 use CommonsBooking\Model\Location;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\View\View;
-use CommonsBooking\View\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 class ViewTest extends CustomPostTypeTest {
@@ -26,7 +25,7 @@ class ViewTest extends CustomPostTypeTest {
 	}
 	
 	public function test_viewsShortcodeInvocation() {
-		$body = Location::shortcode();
+		$body = \CommonsBooking\View\Location::shortcode();
 		$html = '<html><body>' . $body . '</body></html>';
 		
 		// naive way of testing html validity
