@@ -34,8 +34,10 @@ class ViewTest extends CustomPostTypeTest {
 		$html = '<html><body>' . $body . '</body></html>';
 		
 		// naive way of testing html validity
+		libxml_use_internal_errors(true);
 		$doc = new \DOMDocument();
 		$this->assertTrue($doc->loadHTML($html));
+		$this->assertEquals( 0, count( libxml_get_errors() ));
 	}
 	
 	public function testShortcodeForItemView() {
@@ -43,8 +45,10 @@ class ViewTest extends CustomPostTypeTest {
 		$html = '<html><body>' . $body . '</body></html>';
 		
 		// naive way of testing html validity
+		libxml_use_internal_errors(true);
 		$doc = new \DOMDocument();
 		$this->assertTrue($doc->loadHTML($html));
+		$this->assertEquals( 0, count( libxml_get_errors() ));
 	}
 
 	protected function setUp() : void {
