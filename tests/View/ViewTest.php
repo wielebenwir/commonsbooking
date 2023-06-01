@@ -25,7 +25,7 @@ class ViewTest extends CustomPostTypeTest {
 	}
 	
 	public function test_viewsShortcodeInvocation() {
-		$body = \CommonsBooking\View\Location::shortcode();
+		$body = \CommonsBooking\View\Location::shortcode( array() );
 		$html = '<html><body>' . $body . '</body></html>';
 		
 		// naive way of testing html validity
