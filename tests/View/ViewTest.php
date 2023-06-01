@@ -24,8 +24,17 @@ class ViewTest extends CustomPostTypeTest {
 		$this->assertTrue( count( $shortCodeData[ $this->locationId ]['ranges'] ) == 4 );
 	}
 	
-	public function test_viewsShortcodeInvocation() {
+	public function testShortcodeForLocationView() {
 		$body = \CommonsBooking\View\Location::shortcode( array() );
+		$html = '<html><body>' . $body . '</body></html>';
+		
+		// naive way of testing html validity
+		$doc = new \DOMDocument();
+		$this->assertTrue($doc->loadHTML($html));
+	}
+	
+	public function testShortcodeForItemView() {
+		$body = \CommonsBooking\View\Item::shortcode( array() );
 		$html = '<html><body>' . $body . '</body></html>';
 		
 		// naive way of testing html validity
