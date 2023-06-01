@@ -26,9 +26,7 @@ class ViewTest extends CustomPostTypeTest {
 	}
 	
 	public function test_viewsShortcodeInvocation() {
-		$result = Location::shortcode(); // / Item:shortcode
-		$body = ob_get_clean();
-		// $body = '<p>Test</p>';
+		$body = Location::shortcode();
 		$html = '<html><body>' . $body . '</body></html>';
 		
 		// naive way of testing html validity
