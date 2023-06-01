@@ -30,7 +30,7 @@ class ViewTest extends CustomPostTypeTest {
 		$body = '<p>Test</p>';
 		$html = '<html><body>' . $body . '</body></html>';
 		
-		$doc = new DOMDocument();
+		$doc = new \DOMDocument();
 		$this->assertTrue($doc->loadHTML($html));
 	}
 
