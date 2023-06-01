@@ -23,6 +23,15 @@ class ViewTest extends CustomPostTypeTest {
 		$this->assertTrue( is_array( $shortCodeData[ $this->locationId ]['ranges'] ) );
 		$this->assertTrue( count( $shortCodeData[ $this->locationId ]['ranges'] ) == 4 );
 	}
+	
+	public function test_viewsShortcodeInvocation() {
+		// TODO call Location:shortcode / Item:shortcode
+		// $body = ob_get_clean();
+		$body = '<p>Test</p>';
+		$doc = '<html><body>' . $body . '</body></html>';
+		
+		$this->assertTrue(new DOMDocument()->loadHTML($doc));
+	}
 
 	protected function setUp() : void {
 		parent::setUp();
