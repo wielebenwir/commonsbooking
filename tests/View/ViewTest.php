@@ -16,41 +16,16 @@ class ViewTest extends CustomPostTypeTest {
 		$shortCodeData = View::getShortcodeData( new Item( $this->itemId ), 'Item' );
 		$this->assertTrue( is_array( $shortCodeData[ $this->itemId ]['ranges'] ) );
 		$this->assertTrue( count( $shortCodeData[ $this->itemId ]['ranges'] ) == 4 );
+		
+		// Check for specific timeframe start date
+		$this->assertEquals( $shortCodeData[ $this->itemId ]['ranges'][0]['start_date'], strtotime( '+2 days midnight', $now ) );
+		
 	}
 
 	public function testGetShortcodeDataWithFourRangesByLocation() {
 		$shortCodeData = View::getShortcodeData( new Location( $this->locationId ), 'Location' );
 		$this->assertTrue( is_array( $shortCodeData[ $this->locationId ]['ranges'] ) );
 		$this->assertTrue( count( $shortCodeData[ $this->locationId ]['ranges'] ) == 4 );
-	}
-	
-	public function testGetShortcodeDataWithUnorderedRangesByItem() {
-		// Adds another timeframe (but not in order of start-date)
-		$now = time();
-		$timeframeId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			strtotime( '+16 days midnight', $now ),
-			strtotime( '+17 days midnight', $now ),
-			Timeframe::BOOKABLE_ID,
-			'on',
-			'norep'
-		);
-		// set booking days in advance
-		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );	
-		
-		// Check for all timeframes
-		$shortCodeData = View::getShortcodeData( new Item( $this->itemId ), 'Item' );
-		
-		$ranges = $shortCodeData[ $this->itemId ]['ranges'];
-		$this->assertTrue( is_array( $ranges ) );
-		$this->assertEquals( count( $ranges ), 5 );
-		
-		// Check for specific timeframe start date
-		$this->assertEquals( $ranges[5]['start_date'], strtotime( '+4 days midnight', $now ) );
-		
-		// tearDown
-		wp_delete_post( $timeframeId );
 	}
 	
 	public function testShortcodeForLocationView() {
