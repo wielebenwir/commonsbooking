@@ -28,9 +28,10 @@ class ViewTest extends CustomPostTypeTest {
 		// TODO call Location:shortcode / Item:shortcode
 		// $body = ob_get_clean();
 		$body = '<p>Test</p>';
-		$doc = '<html><body>' . $body . '</body></html>';
+		$html = '<html><body>' . $body . '</body></html>';
 		
-		$this->assertTrue(new DOMDocument()->loadHTML($doc));
+		$doc = new DOMDocument();
+		$this->assertTrue($doc->loadHTML($html));
 	}
 
 	protected function setUp() : void {
