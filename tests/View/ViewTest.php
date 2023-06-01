@@ -11,6 +11,7 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 class ViewTest extends CustomPostTypeTest {
 
 	protected const bookingDaysInAdvance = 30;
+	protected const now = time();
 
 	public function testGetShortcodeDataWithFourRangesByItem() {
 		$shortCodeData = View::getShortcodeData( new Item( $this->itemId ), 'Item' );
@@ -18,7 +19,7 @@ class ViewTest extends CustomPostTypeTest {
 		$this->assertTrue( count( $shortCodeData[ $this->itemId ]['ranges'] ) == 4 );
 		
 		// Check for specific timeframe start date
-		$this->assertEquals( $shortCodeData[ $this->itemId ]['ranges'][0]['start_date'], strtotime( '+2 days midnight', $now ) );
+		$this->assertEquals( $shortCodeData[ $this->itemId ]['ranges'][0]['start_date'], strtotime( '+2 days midnight', $this->now ) );
 		
 	}
 
@@ -49,7 +50,7 @@ class ViewTest extends CustomPostTypeTest {
 	protected function setUp() : void {
 		parent::setUp();
 
-		$now = time();
+		$now = $this->now;
 
 		$timeframeId = $this->createTimeframe(
 			$this->locationId,
