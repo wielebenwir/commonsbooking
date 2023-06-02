@@ -7,6 +7,9 @@ use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Messages\RestrictionMessage;
 use DateTime;
 
+/**
+ * Timeframe for restricting access to an item.
+ */
 class Restriction extends CustomPost {
 
 	const TYPE_REPAIR = 'repair';
