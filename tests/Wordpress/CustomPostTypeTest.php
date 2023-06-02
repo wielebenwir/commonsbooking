@@ -222,8 +222,8 @@ abstract class CustomPostTypeTest extends TestCase {
 			$itemId = $this->itemId;
 		}
 		return $this->createTimeframe(
-			locationId,
-			itemId,
+			$locationId,
+			$itemId,
 			strtotime( '+7 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+30 day', strtotime( self::CURRENT_DATE ) )
 		);
