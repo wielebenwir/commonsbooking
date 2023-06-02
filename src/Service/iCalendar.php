@@ -171,16 +171,16 @@ class iCalendar {
             $this->calendar->addEvent($event);
         }
 
-    /**
-     * Adds a generic event to Calendar
-     * 
-     * @param array|DateTimeImmutable $eventDate
-     * @param string $eventTitle
-     * @param string $eventDescription
-     * 
-     * @return Event|false
-     * 
-     */
+	/**
+	 * Adds a generic event to Calendar
+	 *
+	 * @param array|DateTimeImmutable $eventDate
+	 * @param string $eventTitle
+	 * @param string $eventDescription
+	 * @param bool $isTimeSpan
+	 *
+	 * @return Event|false
+	 */
     public function addEvent(
         $eventDate,
         String $eventTitle,
@@ -191,7 +191,7 @@ class iCalendar {
                 if(count($eventDate) < 2 || !($eventDate[0] instanceof DateTimeImmutable) ||  !($eventDate[1] instanceof DateTimeImmutable) || $eventDate[0] > $eventDate[1] )
                     return false;
                 if($isTimeSpan)
-                    $occurence = new TimeSpan($eventDate[0], $eventDate[1]);
+                    $occurence = new TimeSpan(new DateTime($eventDate[0],false), new DateTime($eventDate[1],false));
                 else
                     $occurence = new MultiDay($eventDate[0], $eventDate[1]);
             }
