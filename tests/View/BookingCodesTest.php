@@ -69,7 +69,7 @@ class BookingCodesTest extends CustomPostTypeTest {
 		}		
 	}
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		//set default options for email templates
 		\CommonsBooking\Wordpress\Options\AdminOptions::setOptionsDefaultValues();
@@ -101,7 +101,7 @@ class BookingCodesTest extends CustomPostTypeTest {
 
 
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		remove_filter( 'wp_redirect', array( __CLASS__,'on_wp_redirect'), 1 );
 		delete_transient(\CommonsBooking\Model\BookingCode::ERROR_TYPE);
 		$this->deleteCBOptions();
