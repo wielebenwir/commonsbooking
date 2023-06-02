@@ -38,7 +38,7 @@ class BookingRuleAppliedTest extends BookingRuleTest {
 
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->firstTimeframeId = $this->createTimeframe(
@@ -54,7 +54,7 @@ class BookingRuleAppliedTest extends BookingRuleTest {
 		$this->appliedAlwaysDeny->setAppliesToWho(true);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 }

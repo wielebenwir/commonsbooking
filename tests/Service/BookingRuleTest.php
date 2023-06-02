@@ -365,7 +365,7 @@ class BookingRuleTest extends CustomPostTypeTest
 		return $bookings;
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->alwaysallow = new BookingRule(
 			"alwaysAllow",
@@ -402,7 +402,7 @@ class BookingRuleTest extends CustomPostTypeTest
 
 	}
 
-	protected function tearDown(){
+	protected function tearDown(): void{
 		parent::tearDown();
 	}
 }
