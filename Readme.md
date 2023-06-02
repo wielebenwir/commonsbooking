@@ -1,4 +1,5 @@
 [![PHP Composer](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml) [![WP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/wp-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest) [![PHP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/php-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest)
+[![codecov](https://codecov.io/gh/wielebenwir/commonsbooking/branch/master/graph/badge.svg?token=STJC8WPWIC)](https://codecov.io/gh/wielebenwir/commonsbooking)
 
 # CommonsBooking
 
@@ -22,7 +23,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 **Unique features:**
 
-* Items can be assigned to different locations for the duration of a timeframe, each with their own contact information.  
+* Items can be assigned to different locations for the duration of a timeframe, each with their own contact information. You can display all locations via shortcode as an interactive map.
 * Simple booking process:  bookable timeframes can be configured with hourly slots oder daily slots.
 * Auto-accept bookings: A registered user can book items without the need for administration. 
 * Codes: The plugin automatically generates booking codes, which are used at the station to validate the booking. 
