@@ -2,6 +2,7 @@
 
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
+use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
@@ -24,8 +25,6 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
 /**
  * Checks if user is allowed to edit custom post.
  *
- * TODO: Can be integrated into isCurrentUserAllowedToEdit and severely shortened after PR#1141
- *
  * @param $post
  * @param $user
  *
@@ -33,32 +32,11 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
  * @throws Exception
  */
 function commonsbooking_isUserAllowedToEdit( $post, $user): bool {
-	if (! Plugin::isPostCustomPostType($post) ) {
-		return false;
-	}
 
-	if (! is_user_logged_in()){ return false; }
+	$canView = commonsbooking_isUserAllowedToSee( $post, $user );
+    $canEdit = current_user_can('edit_post', $post->ID);
 
-	$isAuthor     = intval( $user->ID ) == intval( $post->post_author );
-	$isAdmin      = commonsbooking_isUserAdmin($user);
-	$isPostAdmin    = $isAdmin || $isAuthor;
-
-	// Check if it is the main query and one of our custom post types
-	if ( ! $isPostAdmin ) {
-
-		if(!($post instanceof WP_Post)) {
-			$post = $post->getPost();
-		}
-		$postModel = \CommonsBooking\Wordpress\CustomPostType\CustomPostType::getModel($post);
-
-		$admins = $postModel->getAdmins();
-
-		$isPostAdmin = ( is_string( $admins ) && $user->ID === $admins ) ||
-		             ( is_array( $admins ) && in_array( $user->ID . '', $admins, true ) );
-	}
-    $isPostEditor = current_user_can('edit_post', $post->ID);
-
-    return $isPostAdmin && $isPostEditor;
+    return $canView && $canEdit;
 }
 
 /**
@@ -266,31 +244,43 @@ function commonsbooking_isCurrentUserAllowedToSee( $booking ):bool{
 
 /**
  * Determines weather a user may read the current post.
- * It only makes sense to check this with booking posts as all CPTs are / should be public
- * TODO Refactor after PR #1141
- * @param $booking
+ * It only makes sense to check this directly with booking posts as all CPTs are / should be public
+ * It is, however used as a helper function for commonsbooking_isCurrentUserAllowedToEdit.
+ * We apply the logic, that only something that is allowed to be seen may be edited.
+ *
+ * @param $post
  * @param WP_User $user
  *
  * @return bool
  */
-function commonsbooking_isUserAllowedToSee($booking, WP_User $user): bool
+function commonsbooking_isUserAllowedToSee( $post, WP_User $user): bool
 {
-    if ($booking instanceof \CommonsBooking\Model\Booking){
-        $bookingModel = $booking;
+	if (! Plugin::isPostCustomPostType($post) ) {
+		return false;
+	}
+
+	if (! is_user_logged_in()){ return false; }
+
+    if ( $post instanceof \CommonsBooking\Model\Booking){
+        $postModel = $post;
     }
-    elseif ($booking instanceof WP_Post){
-        $bookingModel = \CommonsBooking\Wordpress\CustomPostType\CustomPostType::getModel( $booking );
+    elseif ( $post instanceof WP_Post){
+        $postModel = CustomPostType::getModel( $post );
     }
     else {
-        return false;
+        $post = get_post( $post );
+		if ($post === null) {
+			return false;
+		}
+		$postModel = CustomPostType::getModel( $post );
     }
 
-    $isAuthor  = $user->ID === intval( $booking->post_author );
+    $isAuthor  = $user->ID === intval( $post->post_author );
     $isAdmin   = commonsbooking_isUserAdmin( $user );
     $isAllowed = $isAdmin || $isAuthor;
 
     if ( ! $isAllowed) {
-        $admins    = $bookingModel->getAdmins();
+        $admins    = $postModel->getAdmins();
         $isAllowed = (is_string( $admins ) && $user->ID == $admins) ||
                      (is_array( $admins ) && in_array( $user->ID . '', $admins, true ));
     }
