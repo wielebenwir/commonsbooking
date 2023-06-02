@@ -3,9 +3,11 @@
 namespace CommonsBooking\Tests\Service;
 
 use CommonsBooking\Model\Booking;
+use CommonsBooking\Service\BookingRule;
 use CommonsBooking\Service\BookingRuleApplied;
+use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
-class BookingRuleAppliedTest extends BookingRuleTest {
+class BookingRuleAppliedTest extends CustomPostTypeTest {
 
 	private Booking $testBookingTomorrow;
 	private int $testBookingId;
@@ -47,6 +49,38 @@ class BookingRuleAppliedTest extends BookingRuleTest {
 			strtotime( '-5 days', time() ),
 			strtotime( '+90 days', time() )
 		);
+		$this->alwaysallow = new BookingRule(
+			"alwaysAllow",
+			"Always allow",
+			"Rule will always evaluate to null",
+			"Rule did not evaluate to null",
+			function(\CommonsBooking\Model\Booking $booking){
+				return null;
+			}
+		);
+		$this->alwaysdeny = new BookingRule(
+			"alwaysDeny",
+			"Always deny",
+			"Rule will always deny and return the current booking as conflict",
+			"Rule evaluated correctly",
+			function(\CommonsBooking\Model\Booking $booking){
+				return array($booking);
+			}
+		);
+		$this->firstTimeframeId   = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-5 days',time()),
+			strtotime( '+90 days', time())
+		);
+
+		$wp_user = get_user_by('email',"a@a.de");
+		if (! $wp_user){
+			$this->normalUser = wp_create_user("normaluser","normal","a@a.de");
+		}
+		else {
+			$this->normalUser = $wp_user->ID;
+		}
 		$this->setUpTestBooking();
 		$this->appliedAlwaysAllow = new BookingRuleApplied( $this->alwaysallow );
 		$this->appliedAlwaysAllow->setAppliesToWho(true);
