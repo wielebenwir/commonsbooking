@@ -50,7 +50,7 @@ class BookablePost extends CustomPost {
 	}
 
 	/**
-	 * Returns bookable timeframes for a specific location
+	 * Checks if a specified location or item is bookable
 	 *
 	 * @return bool
 	 * @throws Exception
