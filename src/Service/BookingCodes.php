@@ -16,7 +16,7 @@ class BookingCodes {
      * is triggered in  Service\Scheduler initHooks()
 	 * 
 	 */
-	public static function sendBookingCodesMessage() {
+	public static function sendBookingCodesMessage(): void {
 		$query = new WP_Query( [
 			'post_type'    => Timeframe::$postType,
 			'meta_query' => array(

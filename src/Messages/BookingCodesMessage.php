@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Messages;
 
+use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Model\Timeframe;
@@ -10,21 +11,26 @@ use CommonsBooking\CB\CB;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use DateTimeImmutable;
 
+/**
+ * A message that contains booking codes to be sent by mail to the location admins.
+ * These booking codes can either be sent once or can also be sent periodically.
+ * The automatic sending of booking codes is handled by a cron job.
+ */
 class BookingCodesMessage extends Message {
 
 	protected $validActions = [ "codes" ];
     protected $to;
-    private $tsFrom;
-    private $tsTo;
-    private $locationAdmins;
+    private ?int $tsFrom;
+    private ?int $tsTo;
+    private ?array $locationAdmins;
 
 	/**
 	 * @param int /post $postId     ID or Post of timeframe
 	 * @param string $action        Message action
-     * @param int $tsFrom           Timestamp of first Booking Code
-     * @param int $tsTo             Timestamp of last Booking Code
+     * @param int|null $tsFrom           Timestamp of first Booking Code
+     * @param int|null $tsTo             Timestamp of last Booking Code
 	 */
-	public function __construct( $postId, $action, $tsFrom=null, $tsTo=null ) {
+	public function __construct( $postId, string $action, int $tsFrom=null, int $tsTo=null ) {
         parent::__construct($postId, $action);
         $this->tsFrom=$tsFrom;
         $this->tsTo=$tsTo;
@@ -33,7 +39,7 @@ class BookingCodesMessage extends Message {
     /**
      * prepares Message and sends by E-mail
      * 
-     * @return bool                  Successfully initiated sending.
+     * @return bool    true if message was sent, false otherwise. If the message is not sent, an error is raised.
      */
 	public function sendMessage(): bool {
         $timeframeId=(int)$this->getPostId();
@@ -105,8 +111,18 @@ class BookingCodesMessage extends Message {
         
         return true;
     }
-   
-    public function updateEmailSent($action,$result)
+
+	/**
+	 * Updates the information about the last sent email.
+	 * This is triggered through the commonsbooking_mail_sent action.
+	 *
+	 *
+	 * @param $action
+	 * @param $result
+	 *
+	 * @return void
+	 */
+	public function updateEmailSent($action,$result)
     {
         if($this->action != $action) return;
             
@@ -118,26 +134,26 @@ class BookingCodesMessage extends Message {
     }
 
  	/**
-	 * filter commonsbooking_mail_to for adding multiple to email adresses
+	 * filter commonsbooking_mail_to for adding multiple to email addresses
      * 
      * @return array
  	 */
-    public function addMultiTo()
-    {
+    public function addMultiTo(): array {
         $to=array();
         foreach($this->locationAdmins as $admin)
             $to[]=sprintf( '%s <%s>', $admin->user_nicename, $admin->user_email );
 
         return $to;
     }
-  
- 	/**
+
+	/**
 	 * builds e-mail receivers by creating dummy WP_User objects from location emails
-     * 
-     * @return array
- 	 */
-    protected function prepareReceivers($timeframe)
-    {
+	 *
+	 * @param Timeframe $timeframe
+	 *
+	 * @return bool
+	 */
+    protected function prepareReceivers(Timeframe $timeframe): bool {
         $dummy_id=-2;
         $location_emails = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $timeframe->getLocation() ) ; /*  email addresses, comma-seperated  */
         if(!empty($location_emails)) {
@@ -155,12 +171,11 @@ class BookingCodesMessage extends Message {
     /**
 	 * generates iCalendar attachment with all requested booking codes
 	 *
-     * @param  array  $bookingCodes   List of BookingCode objects
+     * @param BookingCode[] $bookingCodes   List of BookingCode objects
      * 
      * @return array
  	 */
-    protected function getIcalAttachment($bookingCodes)
-    {
+    protected function getIcalAttachment( array $bookingCodes): array {
 		$calendar = new iCalendar();
 
         foreach($bookingCodes as $bookingCode) {
@@ -185,15 +200,14 @@ class BookingCodesMessage extends Message {
         
     }
 
- 	/**
+	/**
 	 * raises mail_sent action with error info
 	 *
-     * @param  string  $title   Error msg title
-     * @param  string  $msg     Error msg content
-     * 
-     * @return bool false
- 	 */
-      protected function raiseError(  $msg): bool {
+	 * @param string $msg Error msg content
+	 *
+	 * @return bool false
+	 */
+      protected function raiseError( string $msg): bool {
         do_action( 'commonsbooking_mail_sent', $this->getAction(),new \WP_Error("e-mail",$msg));
         return false;
     }
