@@ -69,7 +69,7 @@ class BookingCodesTest extends CustomPostTypeTest {
 		}		
 	}
 
-	protected function setUp(): void{
+	protected function setUp(): void {
 		parent::setUp();
 		//set default options for email templates
 		\CommonsBooking\Wordpress\Options\AdminOptions::setOptionsDefaultValues();

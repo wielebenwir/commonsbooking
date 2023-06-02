@@ -87,7 +87,7 @@ class BookingCodesTest extends CustomPostTypeTest {
         update_post_meta( $this->timeframeId, \CommonsBooking\View\BookingCodes::NEXT_CRON_EMAIL, $nextCronEmail ); 
 	}
 
-	protected function setUp(): void {
+	protected function setUp() : void {
 		parent::setUp();
 		//set default options for email templates
 		\CommonsBooking\Wordpress\Options\AdminOptions::setOptionsDefaultValues();
@@ -116,7 +116,7 @@ class BookingCodesTest extends CustomPostTypeTest {
 
 
 
-	protected function tearDown(): void {
+	protected function tearDown() : void {
 		delete_transient(\CommonsBooking\Model\BookingCode::ERROR_TYPE);
 		$this->deleteCBOptions();
 		parent::tearDown(); 
