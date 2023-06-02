@@ -199,19 +199,31 @@ abstract class CustomPostTypeTest extends TestCase {
 		);
 	}
 
-	protected function createBookableTimeFrameIncludingCurrentDay() {
+	protected function createBookableTimeFrameIncludingCurrentDay($locationId = null, $itemId = null) {
+		if ( $locationId === null ) {
+			$locationId = $this->locationId;
+		}
+		if ( $itemId === null ) {
+			$itemId = $this->itemId;
+		}
 		return $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$locationId,
+			$itemId,
 			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) )
 		);
 	}
 
-	protected function createBookableTimeFrameStartingInAWeek() {
+	protected function createBookableTimeFrameStartingInAWeek($locationId = null, $itemId = null) {
+		if ( $locationId === null ) {
+			$locationId = $this->locationId;
+		}
+		if ( $itemId === null ) {
+			$itemId = $this->itemId;
+		}
 		return $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			locationId,
+			itemId,
 			strtotime( '+7 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+30 day', strtotime( self::CURRENT_DATE ) )
 		);
