@@ -174,7 +174,7 @@ return array(
 							'type' => 'number',
 							'min'  => '0',
 						),
-						'default' => '0',
+						'default' => '30',
 					),
 				)
 			),
