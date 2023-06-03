@@ -130,6 +130,8 @@ abstract class BookablePost extends PostRepository {
 	/**
 	 * Returns cb-posts for a user (respects author and assigned admins).
 	 *
+	 * THIS METHOD DOES NOT SEEM TO BE USED ANYWHERE.
+	 *
 	 * @param $userId
 	 * @param false $asModel
 	 *

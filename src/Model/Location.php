@@ -187,6 +187,8 @@ class Location extends BookablePost {
 	}
 
 	/**
+	 * TODO: Currently, also the author of the post
+	 *      is considered to be an admin, this does not make a lot of sense and should maybe be re-considered.
 	 * @return array|mixed|string[]
 	 */
 	public function getAdmins() {
