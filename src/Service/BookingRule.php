@@ -543,6 +543,7 @@ class BookingRule {
 			[
 				// Ordered by post_date in ascending order
 				'orderby' => 'date',
+				'order'   => 'ASC',
 			],
 			[ 'confirmed' ]
 		);
