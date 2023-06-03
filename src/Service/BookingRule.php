@@ -531,7 +531,7 @@ class BookingRule {
 	 * @param $appliedTerms
 	 * @param $allowedBookableDays
 	 *
-	 * @return array|null - conflicting bookings
+	 * @return array|null - conflicting bookings in order of post_date
 	 * @throws Exception
 	 */
 	private static function checkBookingRange( $startOfMonth, $endOfMonth, Booking $booking, $appliedTerms, $allowedBookableDays ): ?array {
