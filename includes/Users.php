@@ -218,8 +218,9 @@ function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ):bool {
 }
 
 /**
- * Determines weather a user may read the current post.
- * It only makes sense to check this with booking posts as all CPTs are / should be public
+ * Determines whether a user may read the current post.
+ *
+ * It only makes sense to check this with booking posts as all CPTs are / should be public.
  * TODO After PR #1141 refactor doubled code
  *
  * @param $booking - A boooking of the cb_booking type
