@@ -243,12 +243,13 @@ function commonsbooking_isCurrentUserAllowedToSee( $booking ):bool{
 }
 
 /**
- * Determines weather a user may read the current post.
- * It only makes sense to check this directly with booking posts as all CPTs are / should be public
+ * Determines whether a user is able to read the current post.
+ *
+ * It only makes sense to check this directly with booking posts as all CPTs are / should be public.
  * It is, however used as a helper function for commonsbooking_isCurrentUserAllowedToEdit.
  * We apply the logic, that only something that is allowed to be seen may be edited.
  *
- * @param $post
+ * @param \CommonsBooking\Model\Booking|WP_Post|int $post
  * @param WP_User $user
  *
  * @return bool
