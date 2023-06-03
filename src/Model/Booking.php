@@ -44,10 +44,12 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 
     /**
-     * Determines if a current booking can be cancelled or not by the current user
-     * bookings which do not belong to the current user or the user is not admin of cannot be edited
-     * Returns true if booking can be cancelled
-     * False if booking may not be cancelled
+     * Determines if a current booking can be cancelled or not by the current user.
+     * Bookings which do not belong to the current user or the user is not admin of cannot be edited.
+	 *
+     * Returns true if booking can be cancelled.
+     * False if booking may not be cancelled.
+	 *
      * @return bool
      */
     public function canCancel():bool {
