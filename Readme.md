@@ -1,13 +1,14 @@
 [![PHP Composer](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml) [![WP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/wp-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest) [![PHP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/php-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest)
+[![codecov](https://codecov.io/gh/wielebenwir/commonsbooking/branch/master/graph/badge.svg?token=STJC8WPWIC)](https://codecov.io/gh/wielebenwir/commonsbooking)
 
 # CommonsBooking
 
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen  
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
-Tags: booking, commons, sharing, calendar,  
+Tags: booking, commons, sharing, calendar, commoning, open-source, booking system, booking calendar
 Requires at least: 5.2  
 Tested up to: 6.0
-Stable Tag: 2.7.3 
+Stable Tag: 2.8
 Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -22,7 +23,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 **Unique features:**
 
-* Items can be assigned to different locations for the duration of a timeframe, each with their own contact information.  
+* Items can be assigned to different locations for the duration of a timeframe, each with their own contact information. You can display all locations via shortcode as an interactive map.
 * Simple booking process:  bookable timeframes can be configured with hourly slots oder daily slots.
 * Auto-accept bookings: A registered user can book items without the need for administration. 
 * Codes: The plugin automatically generates booking codes, which are used at the station to validate the booking. 
@@ -88,6 +89,29 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog 
+
+### 2.8 (27.04.2023)
+* NEW: Added option to set a minimum offset for bookings. This allows to set a minimum time between booking and pickup.
+* NEW: Added ability to create bookings from the backend.
+* NEW: Can now add a signature that will be added to each email sent from the instance.
+* NEW: Additional user fields can be shown in booking confirmation.
+* NEW: iCalendar files can be attached to booking confirmation emails.
+* NEW: Experimental support of iCalendar feed to subscribe to all bookings that can be seen by the user.
+* ENHANCED: Added ability for item admins to also receive copy of restriction emails.
+* ENHANCED: Added ability to use REDIS as cache backend.
+* ENHANCED: Export of booking data now conforms to ISO 8601 standard. Thanks to @splines
+* ENHANCED: Can now filter items / locations by category in admin.
+* ENHANCED: ORDER and ORDER BY can be used in shortcodes to define the order of items / locations.
+* ENHANCED: Added filter hooks for timeframe defaults. Advanced users can now define their own default settings for timeframes through a filter hook.
+* ENHANCED: Added filter hooks for mail attachment. Advanced users can now define their own mail attachments through a filter hook. ( Frontend settings are not yet available )
+* ENHANCED: Added a key for the item availability table.
+* FIXED: Cronjobs were not re-scheduled when the execution time was changed. All cronjobs are re-scheduled on plugin update.
+* FIXED: Removed deprecated cronjobs.
+* FIXED: Dark and light text color options now work properly.
+* FIXED: No clustering with max_cluster_radius set to 0. You should now be able to disable map clustering.
+* FIXED: Missing translations.
+* FIXED: Vulnerability in dependency.
+* FIXED: Wrong month shown in calendar due to timezone issues.
 
 ### 2.7.3 (20.10.2022)
 * FIXED: Fatal error when trying to export timeframes with deleted items

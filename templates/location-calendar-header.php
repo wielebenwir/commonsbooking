@@ -12,7 +12,14 @@
             <?php echo commonsbooking_sanitizeHTML($location->post_title); ?>
         </a>
     </h4>
-    <div class="cb-address cb-location-address"><?php echo commonsbooking_sanitizeHTML($location->formattedAddressOneLine()); ?></div>
+	<?php
+	$locationAddress = $location->formattedAddressOneLine();
+	if (!empty($locationAddress)){
+		?>
+		<div class="cb-address cb-location-address"><?php echo commonsbooking_sanitizeHTML( $locationAddress ); ?></div>
+	<?php
+	}
+	?>
 	<?php
 	    if ( $location->hasMap() ) {
             \CommonsBooking\View\Location::renderLocationMap( $location );
