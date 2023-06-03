@@ -92,6 +92,10 @@ trait Cache {
 	}
 
 	/**
+	 * Creates cache based on user settings or defaults.
+	 * 
+	 * At the moment filesystem and redis cache are supported.
+	 *
 	 * @param string $namespace
 	 * @param int $defaultLifetime
 	 * @param string|null $directory
@@ -99,25 +103,25 @@ trait Cache {
 	 * @return TagAwareAdapterInterface
 	 */
 	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ): TagAwareAdapterInterface {
-		if ($directory == null){
-			$customCachePath = commonsbooking_sanitizeArrayorString(Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' ));
-			if ($customCachePath ){
+		if ( $directory === null ){
+			$customCachePath = commonsbooking_sanitizeArrayorString( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' ) );
+			if ( $customCachePath ){
 				$directory = $customCachePath;
 			}
 		}
 
-		if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled') =='on'){
+		if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) === 'on'){
 			try {
 				$adapter = new RedisTagAwareAdapter(
-					RedisAdapter::createConnection(Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn')),
+					RedisAdapter::createConnection( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn' ) ),
 					$namespace,
 					$defaultLifetime
 				);
 				return $adapter;
 			}
 			catch (Exception $e) {
-				commonsbooking_write_log($e . 'Falling back to Filesystem adapter');
-				set_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error',$e->getMessage());
+				commonsbooking_write_log( $e . 'Falling back to Filesystem adapter' );
+				set_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error', $e->getMessage() );
 			}
 		}
 		$adapter = new TagAwareAdapter(
