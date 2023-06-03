@@ -10,7 +10,7 @@ class BookingTest extends CustomPostTypeTest
 	private int $bookingId;
     public function testCleanupBookings()
     {
-		//first, we check if the cleanup will deleted our freshly created unconfirmed booking (it should not)
+		//first, we check if the cleanup will delete our freshly created unconfirmed booking (it should not)
 	    Booking::cleanupBookings();
 		$this->assertNotNull(get_post($this->bookingId));
 
