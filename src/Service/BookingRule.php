@@ -540,7 +540,10 @@ class BookingRule {
 			$endOfMonth->getTimestamp(),
 			null,
 			null,
-			[],
+			[
+				// Ordered by post_date in ascending order
+				'orderby' => 'date',
+			],
 			[ 'confirmed' ]
 		);
 		$rangeBookingsArray = self::filterBookingsForTermsAndUser( $rangeBookingsArray, $booking->getUserData(), $appliedTerms );
