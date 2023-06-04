@@ -134,7 +134,7 @@ class BookingTest extends CustomPostTypeTest {
 				//));
 		}
 		
-		$this->assignBookableTimeframeFields();
+		$this->testBookingTomorrow->assignBookableTimeframeFields();
 									 
 		// assert meta values of booking are set
 		foreach ( $neededMetaFields as $fieldName ) {
