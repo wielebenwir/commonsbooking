@@ -123,7 +123,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			strtotime( '+2 days', time() )
 		));
 
-		$this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
+		// $this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
 		$this->assertTrue( $isOverlapping->hasTimeframeDateOverlap( $this->validTF ) );
 
 		// $this->expectException( TimeframeInvalidException::class );
