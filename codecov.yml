@@ -1,4 +1,5 @@
 coverage:
+  github_checks: false
   status:
     project:
       default:
