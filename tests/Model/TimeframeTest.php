@@ -117,7 +117,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$secondLocation = $this->createLocation("Newest Location", 'publish');
 
 		$isOverlapping = new Timeframe($this->createTimeframe(
-			$secondLocation,
+			$this->locationId,
 			$this->itemId,
 			strtotime( '+1 day', time() ),
 			strtotime( '+2 days', time() )
