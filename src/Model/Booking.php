@@ -475,7 +475,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return bool
 	 */
-	private function isConfirmed() : bool {
+	public function isConfirmed() : bool {
 		return $this->post_status === 'confirmed';
 	}
 
@@ -484,7 +484,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return bool
 	 */
-	private function isUnconfirmed() : bool {
+	public function isUnconfirmed() : bool {
 		return $this->post_status === 'unconfirmed';
 	}
 }
