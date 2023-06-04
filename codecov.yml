@@ -8,3 +8,6 @@ coverage:
       default:
         informational: true
         target: 80%
+
+# As long as github checks deform the `commits` view (for individual commits) in pull_request, we disable this
+github_checks: false
