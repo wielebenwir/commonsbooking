@@ -121,7 +121,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->itemId,
 			strtotime( '+1 day', time() ),
 			strtotime( '+2 days', time() ),
-			Timeframe::BOOKABLE_ID,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			"off"
 		));		
 
