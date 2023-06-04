@@ -73,10 +73,16 @@ class Helper {
 
 	/**
 	 * Returns timestamp of last full hour, needed to get more cache hits.
+	 * Also used to determine if a post is still bookable because it is in the past or not.
 	 * @return int
 	 */
 	public static function getLastFullHourTimestamp() {
-		$now = current_time('timestamp');
+		if (defined('COMMONSBOOKING_PHPUNIT_TESTING_ENABLED') && COMMONSBOOKING_PHPUNIT_TESTING_ENABLED ) {
+			$now = strtotime(   \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
+		}
+		else {
+			$now = current_time('timestamp');
+		}
 		return $now - ( $now % 3600 );
 	}
 
