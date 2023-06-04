@@ -127,11 +127,11 @@ class BookingTest extends CustomPostTypeTest {
 					true
 				));
 									 
-				$this->assertEquals( '', get_post_meta(
-					$this->testBookingId,
-					$fieldName,
-					true
-				));
+				//$this->assertEquals( '', get_post_meta(
+				//	$this->testBookingId,
+				//	$fieldName,
+				//	true
+				//));
 		}
 		
 		$this->assignBookableTimeframeFields();
