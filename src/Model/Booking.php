@@ -266,8 +266,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		if ( $this->isFullDay() ) {
 			return $date_start;
 		}
-
-		if ( $this->getGrid() === 0 ) { // if grid is set to slot duration
+		
+		$grid = $this->getGrid();
+		
+		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time end
 			$timeframeGridSize = $this->getMeta( self::START_TIMEFRAME_GRIDSIZE );
 			if ( $timeframeGridSize ) {
@@ -303,7 +305,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			return $date_end;
 		}
 
-		if ( $this->getGrid() === 0 ) { // if grid is set to slot duration
+		$grid = $this->getGrid();
+		
+		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time start
 			$timeframeGridSize = $this->getMeta( self::END_TIMEFRAME_GRIDSIZE );
 			if ( $timeframeGridSize ) {
