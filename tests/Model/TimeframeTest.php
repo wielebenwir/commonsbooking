@@ -120,8 +120,10 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->locationId,
 			$this->itemId,
 			strtotime( '+1 day', time() ),
-			strtotime( '+2 days', time() )
-		));
+			strtotime( '+2 days', time() ),
+			Timeframe::BOOKABLE_ID,
+			"off"
+		));		
 
 		// $this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
 		$this->assertTrue( $isOverlapping->hasTimeframeDateOverlap( $this->validTF ) );
