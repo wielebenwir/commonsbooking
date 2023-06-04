@@ -75,10 +75,12 @@ class BookingTest extends CustomPostTypeTest {
 	public function testReturnComment() {
 		$this->assertEquals( '', $this->testBookingTomorrow->returnComment() );
 		
+		// Updates meta value
 		$commentValue = "Comment on this";
 		update_post_meta( $this->testBookingId, 'comment', $commentValue );
 		wp_cache_flush();
 		$this->testBookingTomorrow = new Booking( get_post( $this->testBookingId ) );
+		
 		$this->assertEquals( $commentValue, $this->testBookingTomorrow->returnComment() );
 	}
 	
@@ -90,6 +92,17 @@ class BookingTest extends CustomPostTypeTest {
 	public function testReturnDatetime() {		
 		// TODO 12:01? correct
 		$this->assertEquals( 'July 3, 2021 8:00 am - 12:01 am', $this->testBookingFixedDate->returnDatetime() );
+	}
+	
+	public function testShowBookingCodes() {
+		$this->assertFalse( $this->testBookingTomorrow->showBookingCodes() );
+		
+		// Updates meta value
+		update_post_meta( $this->testBookingId, 'show-booking-codes', true );
+		wp_cache_flush();
+		$this->testBookingTomorrow = new Booking( get_post( $this->testBookingId ) );
+		
+		$this->assertTrue( $this->testBookingTomorrow->showBookingCodes() );
 	}
 	
 	protected function setUpTestBooking():void{
