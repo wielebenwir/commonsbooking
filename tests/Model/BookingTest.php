@@ -146,6 +146,10 @@ class BookingTest extends CustomPostTypeTest {
 		}
 	}
 	
+	public function testFormattedBookingCode() {
+		$this->assertEquals( '', $this->testBookingTomorrow->formattedBookingCode());
+	}
+	
 	
 	protected function setUpTestBooking():void{
 		$this->testBookingId       = $this->createBooking(
