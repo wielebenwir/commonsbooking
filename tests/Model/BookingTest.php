@@ -125,13 +125,13 @@ class BookingTest extends CustomPostTypeTest {
 					$timeframe->ID,
 					$fieldName,
 					true
-				);
+				));
 									 
 				$this->assertNull( get_post_meta(
 					$this->testBookingId,
 					$fieldName,
 					true
-				);
+				));
 		}
 		
 		$this->assignBookableTimeframeFields();
@@ -142,7 +142,7 @@ class BookingTest extends CustomPostTypeTest {
 					$this->testBookingId,
 					$fieldName,
 					true
-				);
+				));
 		}
 	}
 	
