@@ -400,7 +400,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			$linktext = esc_html__( 'Link to your booking', 'commonsbooking' );
 		}
 
-		return sprintf( '<a href="%1$s">%2$s</a>', add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) ), $linktext );
+		return sprintf( '<a href="%1$s">%2$s</a>', $this->bookingLinkUrl(), $linktext );
 	}
 
 	/**
