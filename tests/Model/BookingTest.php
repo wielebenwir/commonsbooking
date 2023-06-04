@@ -77,6 +77,8 @@ class BookingTest extends CustomPostTypeTest {
 		
 		$commentValue = "Comment on this";
 		update_post_meta( $this->testBookingId, 'comment', $commentValue );
+		wp_cache_flush();
+		$this->testBookingTomorrow = new Booking(get_post($this->testBookingId));
 		$this->assertEquals( $commentValue, $this->testBookingTomorrow->getComment());
 	}
 	
