@@ -127,7 +127,7 @@ class BookingTest extends CustomPostTypeTest {
 					true
 				));
 									 
-				$this->assertNull( get_post_meta(
+				$this->assertEquals( '', get_post_meta(
 					$this->testBookingId,
 					$fieldName,
 					true
