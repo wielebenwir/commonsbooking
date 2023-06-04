@@ -83,28 +83,37 @@ class BookingTest extends CustomPostTypeTest {
 	}
 	
 	public function testPickupDatetime() {
-		$this->assertEquals( '02.07.2021 08:00-12:00', $this->testBookingTomorrow->pickupDatetime() );
+		$this->assertEquals( '02.07.2021 08:00-12:00', $this->testBookingFixedDate->pickupDatetime() );
 	}
 	
-	public function testReturnDatetime() {
-		$this->assertEquals( '03.07.2021 08:00-12:00', $this->testBookingTomorrow->returnDatetime() );
+	public function testReturnDatetime() {		
+		$this->assertEquals( '03.07.2021 08:00-12:00', $this->testBookingFixedDate->returnDatetime() );
 	}
 	
 	protected function setUpTestBooking():void{
 		$this->testBookingId       = $this->createBooking(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+1 day',  strtotime( self::CURRENT_DATE ) ),
-			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
+			strtotime( '+1 day',  time() ),
+			strtotime( '+2 days', time() )
 		);
 		$this->testBookingTomorrow = new Booking(get_post($this->testBookingId));
 		$this->testBookingPastId       = $this->createBooking(
 			$this->locationId,
 			$this->itemId,
-			strtotime('-2 days', strtotime( self::CURRENT_DATE )),
-			strtotime('-1 day',  strtotime( self::CURRENT_DATE ))
+			strtotime('-2 days', time() ),
+			strtotime('-1 day',  time() )
 		);
 		$this->testBookingPast = new Booking(get_post($this->testBookingPastId));
+		
+		// Create fixed date booking
+		$this->testFixedDateBooking       = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day',  strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+		);
+		$this->testBookingFixedDate = new Booking( get_post( $this->testFixedDateBooking ) );
 	}
 
 	protected function setUp() : void {
@@ -113,8 +122,8 @@ class BookingTest extends CustomPostTypeTest {
 		$this->firstTimeframeId   = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-5 days',  strtotime( self::CURRENT_DATE )),
-			strtotime( '+90 days', strtotime( self::CURRENT_DATE ))
+			strtotime( '-5 days',  time() ),
+			strtotime( '+90 days', time() )
 		);
 		$this->testItem = new Item(get_post($this->itemId));
 		$this->testLocation = new Location(get_post($this->locationId));
