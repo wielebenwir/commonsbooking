@@ -105,6 +105,48 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertTrue( $this->testBookingTomorrow->showBookingCodes() );
 	}
 	
+	public function testAssignBookableTimeframeFields() {
+		// Prerequesites
+		$timeframe = $this->testBookingTomorrow->getBookableTimeFrame();
+		$this->assertNotNull( $timeframe );
+		
+		$neededMetaFields = [
+				'full-day',
+				'grid',
+				'start-time',
+				'end-time',
+				'show-booking-codes',
+				'timeframe-max-days',
+			];
+		
+		// assert meta value timeframe not null and booking null
+		foreach ( $neededMetaFields as $fieldName ) {
+				$this->assertNotNull( get_post_meta(
+					$timeframe->ID,
+					$fieldName,
+					true
+				);
+									 
+				$this->assertNull( get_post_meta(
+					$this->testBookingId,
+					$fieldName,
+					true
+				);
+		}
+		
+		$this->assignBookableTimeframeFields();
+									 
+		// assert meta values of booking are set
+		foreach ( $neededMetaFields as $fieldName ) {
+				$this->assertNotNull( get_post_meta(
+					$this->testBookingId,
+					$fieldName,
+					true
+				);
+		}
+	}
+	
+	
 	protected function setUpTestBooking():void{
 		$this->testBookingId       = $this->createBooking(
 			$this->locationId,
