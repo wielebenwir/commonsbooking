@@ -51,7 +51,43 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertFalse($this->testBookingTomorrow->isPast());
 		$this->assertTrue($this->testBookingPast->isPast());
 	}
-
+	
+	public function testConfirm() {
+		$this->assertTrue( $this->testBookingTomorrow->isConfirmed() );
+	}
+	
+	public function testUnconfirm() {
+		// Create booking
+		$bookingId       = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day', time()),
+			strtotime( '+2 days', time()),
+			'8:00 AM',
+			'12:00 PM',
+			'unconfirmed',
+		);
+		$bookingObj = new Booking( get_post( $bookingId ) );
+		
+		$this->assertTrue( $bookingObj->isUnconfirmed() );
+	}
+	
+	public function testGetComment() {
+		$this->assertNull( $this->testBookingTomorrow->getComment() );
+		
+		$commentValue = "Comment on this";
+		update_post_meta( $this->testBookingId, 'comment', $commentValue );
+		$this->assertEquals( $commentValue, $this->testBookingTomorrow->getComment());
+	}
+	
+	public function testPickupDatetime() {
+		$this->assertEquals( '02.07.2021 08:00-12:00', $this->testBookingTomorrow->pickupDatetime() );
+	}
+	
+	public function testReturnDatetime() {
+		$this->assertEquals( '03.07.2021 08:00-12:00', $this->testBookingTomorrow->returnDatetime() );
+	}
+	
 	protected function setUpTestBooking():void{
 		$this->testBookingId       = $this->createBooking(
 			$this->locationId,
