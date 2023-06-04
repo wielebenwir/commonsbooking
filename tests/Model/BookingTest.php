@@ -72,14 +72,14 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertTrue( $bookingObj->isUnconfirmed() );
 	}
 	
-	public function testGetComment() {
-		$this->assertNull( $this->testBookingTomorrow->getComment() );
+	public function testReturnComment() {
+		$this->assertNull( $this->testBookingTomorrow->returnComment() );
 		
 		$commentValue = "Comment on this";
 		update_post_meta( $this->testBookingId, 'comment', $commentValue );
 		wp_cache_flush();
-		$this->testBookingTomorrow = new Booking(get_post($this->testBookingId));
-		$this->assertEquals( $commentValue, $this->testBookingTomorrow->getComment());
+		$this->testBookingTomorrow = new Booking( get_post( $this->testBookingId ) );
+		$this->assertEquals( $commentValue, $this->testBookingTomorrow->returnComment() );
 	}
 	
 	public function testPickupDatetime() {
