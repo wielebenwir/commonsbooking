@@ -73,7 +73,7 @@ class BookingTest extends CustomPostTypeTest {
 	}
 	
 	public function testReturnComment() {
-		$this->assertNull( $this->testBookingTomorrow->returnComment() );
+		$this->assertEquals( '', $this->testBookingTomorrow->returnComment() );
 		
 		$commentValue = "Comment on this";
 		update_post_meta( $this->testBookingId, 'comment', $commentValue );
