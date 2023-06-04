@@ -110,12 +110,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		catch ( TimeframeInvalidException $e ) {
 			$this->assertEquals( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
 		}
-	}
-	
-	public function test_isValid_throwsException() {
-
-		$secondLocation = $this->createLocation("Newest Location", 'publish');
-
+		
 		$isOverlapping = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
@@ -130,6 +125,28 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		// $this->expectException( TimeframeInvalidException::class );
 		$isOverlapping->isValid();
+	}
+	
+	public function test_isValid_throwsException() {
+
+		$secondLocation = $this->createLocation("Newest Location", 'publish');
+
+		$isOverlapping = new Timeframe($this->createTimeframe(
+			$secondLocation,
+			$this->itemId,
+			strtotime( '+1 day', time() ),
+			strtotime( '+2 days', time() )
+		));		
+
+		// $this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
+		$this->assertTrue( $isOverlapping->hasTimeframeDateOverlap( $this->validTF ) );
+
+		// $this->expectException( TimeframeInvalidException::class );
+		try {
+			$isOverlapping->isValid();
+		} catch (TimeframeInvalidException $e ) {
+			$this->assertStringContainsString( "Item is already bookable at another location within the same date range.", $e->getMessage() );
+		}
 	}
 
 	public function testIsBookable() {
