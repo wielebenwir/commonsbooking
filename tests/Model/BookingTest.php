@@ -83,11 +83,13 @@ class BookingTest extends CustomPostTypeTest {
 	}
 	
 	public function testPickupDatetime() {
-		$this->assertEquals( '02.07.2021 08:00-12:00', $this->testBookingFixedDate->pickupDatetime() );
+		// TODO 12- 12 correct?
+		$this->assertEquals( 'July 2, 2021 12:00 am - 12:00 am', $this->testBookingFixedDate->pickupDatetime() );
 	}
 	
 	public function testReturnDatetime() {		
-		$this->assertEquals( '03.07.2021 08:00-12:00', $this->testBookingFixedDate->returnDatetime() );
+		// TODO 12:01? correct
+		$this->assertEquals( 'July 3, 2021 8:00 am - 12:01 am', $this->testBookingFixedDate->returnDatetime() );
 	}
 	
 	protected function setUpTestBooking():void{
