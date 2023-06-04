@@ -94,15 +94,15 @@ class BookingTest extends CustomPostTypeTest {
 		$this->testBookingId       = $this->createBooking(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+1 day', time()),
-			strtotime( '+2 days', time())
+			strtotime( '+1 day',  strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
 		);
 		$this->testBookingTomorrow = new Booking(get_post($this->testBookingId));
 		$this->testBookingPastId       = $this->createBooking(
 			$this->locationId,
 			$this->itemId,
-			strtotime('-2 days', time()),
-			strtotime('-1 day', time())
+			strtotime('-2 days', strtotime( self::CURRENT_DATE )),
+			strtotime('-1 day',  strtotime( self::CURRENT_DATE ))
 		);
 		$this->testBookingPast = new Booking(get_post($this->testBookingPastId));
 	}
@@ -113,8 +113,8 @@ class BookingTest extends CustomPostTypeTest {
 		$this->firstTimeframeId   = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-5 days',time()),
-			strtotime( '+90 days', time())
+			strtotime( '-5 days',  strtotime( self::CURRENT_DATE )),
+			strtotime( '+90 days', strtotime( self::CURRENT_DATE ))
 		);
 		$this->testItem = new Item(get_post($this->itemId));
 		$this->testLocation = new Location(get_post($this->locationId));
