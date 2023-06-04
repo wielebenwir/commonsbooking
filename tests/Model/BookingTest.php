@@ -95,14 +95,15 @@ class BookingTest extends CustomPostTypeTest {
 	}
 	
 	public function testShowBookingCodes() {
-		$this->assertFalse( $this->testBookingTomorrow->showBookingCodes() );
+		// 'show-booking-codes' defaults to 'on'
+		$this->assertTrue( $this->testBookingTomorrow->showBookingCodes() );
 		
 		// Updates meta value
-		update_post_meta( $this->testBookingId, 'show-booking-codes', true );
+		update_post_meta( $this->testBookingId, 'show-booking-codes', 'off' );
 		wp_cache_flush();
 		$this->testBookingTomorrow = new Booking( get_post( $this->testBookingId ) );
 		
-		$this->assertTrue( $this->testBookingTomorrow->showBookingCodes() );
+		$this->assertFalse( $this->testBookingTomorrow->showBookingCodes() );
 	}
 	
 	protected function setUpTestBooking():void{
