@@ -34,7 +34,11 @@ abstract class CustomPostTypeTest extends TestCase {
 
 	protected $itemIds = [];
 
-	protected $normalUserID;
+	protected $subscriberId;
+
+	protected int $adminUserID;
+
+	protected int $cbManagerUserID;
 
 	protected function createTimeframe(
 		$locationId,
@@ -263,13 +267,47 @@ abstract class CustomPostTypeTest extends TestCase {
 		return $locationId;
 	}
 
+	/**
+	 * We create the subscriber this way, because sometimes the user is already created.
+	 * In that case, the unit tests would fail, because there is already the user with this ID in the database.
+	 * @return void
+	 */
 	public function createSubscriber(){
 		$wp_user = get_user_by('email',"a@a.de");
 		if (! $wp_user){
-			$this->normalUserID = wp_create_user("normaluser","normal","a@a.de");
+			$this->subscriberId = wp_create_user("normaluser","normal","a@a.de");
 		}
 		else {
-			$this->normalUserID = $wp_user->ID;
+			$this->subscriberId = $wp_user->ID;
+		}
+	}
+
+	/**
+	 * We create the administrator this way, because sometimes the user is already created.
+	 * In that case, the unit tests would fail, because there is already the user with this ID in the database.
+	 * @return void
+	 */
+	public function createAdministrator(){
+		$wp_user = get_user_by('email',"admin@admin.de");
+		if (! $wp_user) {
+			$this->adminUserID = wp_create_user( "adminuser", "admin", "admin@admin.de" );
+			$user = new \WP_User( $this->adminUserID );
+			$user->set_role( 'administrator' );
+		}
+		else {
+			$this->adminUserID = $wp_user->ID;
+		}
+	}
+
+	public function createCBManager(){
+		$wp_user = get_user_by('email',"cbmanager@cbmanager.de");
+		if (! $wp_user) {
+			$this->cbManagerUserID = wp_create_user( "cbmanager", "cbmanager", "cbmanager@cbmanager.de" );
+			$user = new \WP_User( $this->cbManagerUserID );
+			$user->set_role( \CommonsBooking\Plugin::$CB_MANAGER_ID );
+		}
+		else {
+			$this->cbManagerUserID = $wp_user->ID;
 		}
 	}
 
