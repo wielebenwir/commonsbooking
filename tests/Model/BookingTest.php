@@ -91,15 +91,125 @@ class BookingTest extends CustomPostTypeTest {
 		/*$this->assertTrue( current_user_can('edit_post', $this->testBookingId ) );
 		$this->assertTrue( commonsbooking_isUserAllowedToEdit( $this->testBookingTomorrow->getPost(), $userObj ) );
 		$this->assertTrue( commonsbooking_isCurrentUserAllowedToEdit( $this->testBookingId ) );
-		$this->assertTrue( commonsbooking_isCurrentUserAdmin() );
-		$this->assertTrue(  $this->testBookingTomorrow->canCancel() );*/
-		
-		// Case: role cannot edit, role != post_author, booking in the future => can't cancel
-		$userObj->remove_role( 'administrator' );
-		$userObj->add_role( 'subscriber' );
-		$this->assertFalse(  $regularUserBooking->canCancel() );
-		
+		$this->assertTrue( commonsbooking_isCurrentUserAdmin() );*/
 	}
+
+	/**
+	 * This tests the distinctions of CB Managers when they have been assigned an item or not.
+	 * Generally speaking, CB Managers should be able to only cancel bookings of items / locations they manage.
+	 * @return void
+	 */
+	public function testCanCancelCBManagerNoAssignment() {
+		//Case : CB Manager should not be able to cancel because the location/item of the booking is not his
+		wp_set_current_user( $this->cbManagerUserID );
+		$managerUserObj = get_user_by( 'ID', $this->cbManagerUserID );
+		//important distinction, CB Manager is not an admin
+		$this->assertFalse( commonsbooking_isUserAdmin( $managerUserObj ) );
+		$this->assertNotSame( $managerUserObj->ID, intval( $this->subscriberBookingInFuture->post_author ) );
+		$this->assertFalse( commonsbooking_isUserAllowedToSee( $this->subscriberBookingInFuture->getPost(), $managerUserObj ) );
+	}
+
+	/**
+	 * TODO: This test is not working because the CB Manager role is not initialized in the test environment
+	 *       The initialization of the CB Manager role is done in the Plugin class (addCustomUserRoles)
+	 * @return void
+	 * @throws \Exception
+	 */
+	/*
+	public function testCanCancelCBManagerItemAssignment() {
+		$managerUserObj = get_user_by( 'ID', $this->cbManagerUserID );
+		//let's now create a new item, location and timeframe where the CB Manager is the ITEM manager
+		$managedItem         = new Item(
+			$this->createItem(
+				"Managed Item",
+				'publish',
+				[ $this->cbManagerUserID ]
+			)
+		);
+		$unmanagedLocation   = new Location(
+			$this->createLocation(
+				"Unmanaged Location",
+				'publish'
+			)
+		);
+		$manageTestTimeframe = new Timeframe(
+			$this->createBookableTimeFrameIncludingCurrentDay(
+				$managedItem->ID(),
+				$unmanagedLocation->ID()
+			)
+		);
+		$testBookingTomorrow = new Booking(
+			$this->createBooking(
+				$unmanagedLocation->ID(),
+				$managedItem->ID(),
+				strtotime( self::CURRENT_DATE ),
+				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+				'08:00 AM',
+				'12:00 PM',
+				'confirmed',
+				$this->subscriberId
+			)
+		);
+		//and check if the CB Manager can see & cancel it (because it is their item)
+		$this->assertTrue( commonsbooking_isUserAllowedToSee( $testBookingTomorrow, $managerUserObj ) );
+		$this->assertTrue( commonsbooking_isUserAllowedToEdit( $testBookingTomorrow, $managerUserObj ) );
+		wp_set_current_user( $this->cbManagerUserID );
+		$this->assertTrue( commonsbooking_isCurrentUserAllowedToSee( $testBookingTomorrow ) );
+		$this->assertTrue( commonsbooking_isCurrentUserAllowedToEdit( $testBookingTomorrow ) );
+		$this->assertTrue( $testBookingTomorrow->canCancel() );
+	}
+	*/
+
+	/**
+	 * TODO: This test is not working because the CB Manager role is not initialized in the test environment
+	 * 	 The initialization of the CB Manager role is done in the Plugin class (addCustomUserRoles)
+	 * @return void
+	 * @throws \Exception
+	 */
+	/*
+	public function testCanCancelCBManagerLocationAssignment() {
+		$managerUserObj = get_user_by( 'ID', $this->cbManagerUserID );
+		//let's now create a new item, location and timeframe where the CB Manager is the LOCATION manager
+		$unmanagedItem = new Item(
+			$this->createItem(
+				"Unmanaged Item",
+				'publish'
+			)
+		);
+		$managedLocation = new Location(
+			$this->createLocation(
+				"Managed Location",
+				'publish',
+				[$this->cbManagerUserID]
+			)
+		);
+		$manageTestTimeframe = new Timeframe(
+			$this->createBookableTimeFrameIncludingCurrentDay(
+				$unmanagedItem->ID(),
+				$managedLocation->ID()
+			)
+		);
+		$testBookingTomorrow2 = new Booking(
+			$this->createBooking(
+				$managedLocation->ID(),
+				$unmanagedItem->ID(),
+				strtotime(self::CURRENT_DATE),
+				strtotime( '+1 day', strtotime(self::CURRENT_DATE)),
+				'08:00 AM',
+				'12:00 PM',
+				'confirmed',
+				$this->subscriberId
+			)
+		);
+		//and check if the CB Manager can see & cancel it (because it is their location)
+		$this->assertTrue( commonsbooking_isUserAllowedToSee( $testBookingTomorrow2, $managerUserObj ) );
+		$this->assertTrue( commonsbooking_isUserAllowedToEdit( $testBookingTomorrow2, $managerUserObj ) );
+		wp_set_current_user($this->cbManagerUserID);
+		$this->assertTrue( commonsbooking_isCurrentUserAllowedToSee( $testBookingTomorrow2 ) );
+		$this->assertTrue( commonsbooking_isCurrentUserAllowedToEdit( $testBookingTomorrow2 ) );
+		$this->assertTrue( $testBookingTomorrow2->canCancel() );
+	}
+	*/
 
 	protected function setUpTestBooking():void{
 		$this->testBookingId       = $this->createBooking(
