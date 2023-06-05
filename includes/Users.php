@@ -178,11 +178,13 @@ function commonsbooking_isCurrentUserAdmin() {
  * Will check if user has one of the admin roles and is therefore considered an admin for CB.
  * Admin roles can be extended with the filter commonsbooking_admin_roles.
  *
+ * An admin is allowed to edit and see all posts.
+ *
  * @param   \WP_User  $user
  *
  * @return bool
  */
-function commonsbooking_isUserAdmin(WP_User $user) {
+function commonsbooking_isUserAdmin(\WP_User $user) {
 	$adminRoles = ['administrator'];
 	$adminRoles = apply_filters('commonsbooking_admin_roles', $adminRoles);
 	foreach ($adminRoles as $adminRole) {
@@ -294,7 +296,7 @@ function commonsbooking_isUserAllowedToSee( $post, WP_User $user): bool
     if ( ! $isAllowed) {
         $admins    = $postModel->getAdmins();
         $isAllowed = (is_string( $admins ) && $user->ID == $admins) ||
-                     (is_array( $admins ) && in_array( $user->ID . '', $admins, true ));
+                     (is_array( $admins ) && in_array( $user->ID , $admins, true ));
     }
 
     return $isAllowed;
