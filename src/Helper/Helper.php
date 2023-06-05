@@ -77,12 +77,7 @@ class Helper {
 	 * @return int
 	 */
 	public static function getLastFullHourTimestamp() {
-		if (defined('COMMONSBOOKING_PHPUNIT_TESTING_ENABLED') && COMMONSBOOKING_PHPUNIT_TESTING_ENABLED ) {
-			$now = strtotime(   \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
-		}
-		else {
-			$now = current_time('timestamp');
-		}
+		$now = Helper::getCurrentTimestamp();
 		return $now - ( $now % 3600 );
 	}
 
@@ -96,6 +91,20 @@ class Helper {
 		if($timestamp === null) $timestamp = current_time('timestamp');
 
 		return $timestamp - ( $timestamp % (3600 * 24) );
+	}
+
+	/**
+	 * Get the current timestamp based on the current time.
+	 * We need this method so we can mock the current time in unit tests.
+	 * @return false|int|string
+	 */
+	public static function getCurrentTimestamp() {
+		if (defined('COMMONSBOOKING_PHPUNIT_TESTING_ENABLED') && COMMONSBOOKING_PHPUNIT_TESTING_ENABLED ) {
+			return strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
+		}
+		else {
+			return current_time('timestamp');
+		}
 	}
 
 	/**

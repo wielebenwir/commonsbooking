@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\View;
 
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use Exception;
@@ -47,7 +48,7 @@ class Location extends View {
 					$itemIds,
 					null,
 					true,
-					current_time('timestamp')
+					Helper::getCurrentTimestamp()
 				)
 			];
 
