@@ -66,7 +66,17 @@ class BookingTest extends CustomPostTypeTest {
 			// What the function should return when called.
 			->andReturn( self::USER_ID );
 			*/
-		$this->assertTrue(  $this->testBookingTomorrow->canCancel() );
+		wp_set_current_user( self::USER_ID );
+		$regularUserBooking = new Booking(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+1 day', strtotime(self::CURRENT_DATE)),
+				strtotime( '+2 days', strtotime(self::CURRENT_DATE)),
+				self::USER_ID
+			)
+		);
+		$this->assertTrue(  $regularUserBooking->canCancel() );
 		
 		// TODO Case: role can edit and != post_author => can cancel
 		
