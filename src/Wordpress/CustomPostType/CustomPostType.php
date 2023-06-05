@@ -316,6 +316,9 @@ abstract class CustomPostType {
 	 * @throws \Exception
 	 */
 	public static function getModel( $post ) {
+		if ( $post instanceof \CommonsBooking\Model\CustomPost ) {
+			return $post;
+		}
 		if (is_int($post)) {
 			$post = get_post($post);
 		}
