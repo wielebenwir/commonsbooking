@@ -6,6 +6,7 @@ use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\Item;
 use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Timeframe;
+use CommonsBooking\Plugin;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
 class BookingTest extends CustomPostTypeTest {
@@ -53,19 +54,11 @@ class BookingTest extends CustomPostTypeTest {
 	}
 	
 	public function testCanCancel() {
-		
-		
+				
 		// Case: Booking in the past, no one can cancel
 		$this->assertFalse( $this->testBookingPast->canCancel() );
 		
 		// Case: Booking in the future and same author
-		// TODO: Maybe mock get_current_user_id
-		/** Brain\Monkey\Functions\expect( 'get_current_user_id' )
-			// We expect the function to be called once.
-			->once()
-			// What the function should return when called.
-			->andReturn( self::USER_ID );
-			*/
 		wp_set_current_user( self::USER_ID );
 		$regularUserBooking = new Booking(
 			$this->createBooking(
@@ -76,11 +69,36 @@ class BookingTest extends CustomPostTypeTest {
 				self::USER_ID
 			)
 		);
-		$this->assertTrue(  $regularUserBooking->canCancel() );
+		$this->assertTrue( $regularUserBooking->canCancel() );
+
+		// Case: role can edit and != post_author => can cancel
+		$userId = wp_create_user('user_who_can_edit', '');
+		$userObj = get_user_by( 'id', $userId );
+		$userObj->remove_role( 'subscriber' );
+		$userObj->add_role( 'administrator' );
+		wp_update_user( $userObj );
+
+		wp_set_current_user( $userId );
+
+		$this->assertTrue( $userObj->exists() );
+		$this->assertTrue( Plugin::isPostCustomPostType( $regularUserBooking ) );
+		$this->assertTrue( commonsbooking_isUserAdmin( $userObj ) );
+		$this->assertNotSame( $userObj->ID, intval( $regularUserBooking->post_author ) );
+		$this->assertTrue( commonsbooking_isUserAllowedToSee( $regularUserBooking->getPost(), $userObj ) );
+		$this->assertTrue( current_user_can('administrator' ) );
+		$this->assertTrue( current_user_can('edit_posts' ) );
+		$this->assertTrue( current_user_can('edit_others_posts' ) );
+		// TODO admin $userObj won't be able to edit post
+		/*$this->assertTrue( current_user_can('edit_post', $this->testBookingId ) );
+		$this->assertTrue( commonsbooking_isUserAllowedToEdit( $this->testBookingTomorrow->getPost(), $userObj ) );
+		$this->assertTrue( commonsbooking_isCurrentUserAllowedToEdit( $this->testBookingId ) );
+		$this->assertTrue( commonsbooking_isCurrentUserAdmin() );
+		$this->assertTrue(  $this->testBookingTomorrow->canCancel() );*/
 		
-		// TODO Case: role can edit and != post_author => can cancel
-		
-		// TODO role cannot edit, role != post_author, booking in the future => can't cancel
+		// Case: role cannot edit, role != post_author, booking in the future => can't cancel
+		$userObj->remove_role( 'administrator' );
+		$userObj->add_role( 'subscriber' );
+		$this->assertFalse(  $regularUserBooking->canCancel() );
 		
 	}
 

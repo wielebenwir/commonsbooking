@@ -135,6 +135,9 @@ class Plugin {
 		if ( empty( $post ) ) {
 			return false;
 		}
+
+		// TODO if post is integer, breaks ...
+
 		$validPostTypes = self::getCustomPostTypesLabels();
 		return in_array($post->post_type,$validPostTypes);
 	}

@@ -57,7 +57,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
             return false;
         }
 
-        if ($this->post_author === get_current_user_id() ){
+        if ( intval( $this->post_author ) === get_current_user_id() ){
             return true;
         }
         elseif (commonsbooking_isCurrentUserAllowedToEdit($this->post)){
