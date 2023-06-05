@@ -62,7 +62,7 @@ class BookingTest extends CustomPostTypeTest {
 		// Case: Booking in the future and same author
 		wp_set_current_user( $this->subscriberId );
 
-		$this->assertTrue( Plugin::isPostCustomPostType( $this->subscriberBookingInFuture ) );
+		$this->assertTrue( Plugin::isPostCustomPostType( $this->subscriberBookingInFuture->getPost() ) );
 		$this->assertTrue( $this->subscriberBookingInFuture->canCancel() );
 
 		// Case: role can edit and != post_author => can cancel | This is the case for WordPress administrators
