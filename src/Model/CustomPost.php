@@ -146,10 +146,6 @@ class CustomPost {
 		return '';
 	}
 
-
-		
-
-
 	/**
 	 * @return mixed
 	 */
@@ -163,6 +159,17 @@ class CustomPost {
 	 */
 	public function getUserData() {
 		return get_userdata( $this->post_author );
+	}
+
+
+	/**
+	 * Checks if the given user is the author of the current post.
+	 * @param WP_User $user
+	 *
+	 * @return boolean - true if user is author, false if not.
+	 */
+	public function isAuthor (WP_User $user): bool {
+		return $user->ID === intval( $this->post_author );
 	}
 
 	/**

@@ -31,9 +31,20 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
  * @return bool
  * @throws Exception
  */
-function commonsbooking_isUserAllowedToEdit( $post, $user): bool {
+function commonsbooking_isUserAllowedToEdit( $post, WP_User $user): bool {
 
-	$canView = commonsbooking_isUserAllowedToSee( $post, $user );
+	if (! Plugin::isPostCustomPostType($post) ){
+		return false;
+	}
+
+	$postModel = CustomPostType::getModel($post);
+
+	//authors are always allowed to edit their posts
+	if ( $postModel->isAuthor($user) ) {
+		return true;
+	}
+
+	$canView = commonsbooking_isUserAllowedToSee( $postModel, $user );
     $canEdit = current_user_can('edit_post', $post->ID);
 
     return $canView && $canEdit;
@@ -221,9 +232,8 @@ function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ):bool {
  * Determines whether a user may read the current post.
  *
  * It only makes sense to check this with booking posts as all CPTs are / should be public.
- * TODO After PR #1141 refactor doubled code
  *
- * @param $booking - A boooking of the cb_booking type
+ * @param $booking - A booking of the cb_booking type
  *
  * @return void
  */
@@ -274,7 +284,8 @@ function commonsbooking_isUserAllowedToSee( $post, WP_User $user): bool
 		$postModel = $post;
 	}
 
-    $isAuthor  = $user->ID === intval( $post->post_author );
+
+    $isAuthor  = $post->isAuthor( $user );
     $isAdmin   = commonsbooking_isUserAdmin( $user );
     $isAllowed = $isAdmin || $isAuthor;
 
