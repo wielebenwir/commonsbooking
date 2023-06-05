@@ -87,7 +87,7 @@ class BookingTest extends CustomPostTypeTest {
 
 		$this->assertTrue(  $this->testBookingTomorrow->canCancel() );
 
-		// TODO admin $userObj won't be able to edit post
+		// TODO investigate further, $userObj (with admin role) isn't able to edit post
 		/*$this->assertTrue( current_user_can('edit_post', $this->testBookingId ) );
 		$this->assertTrue( commonsbooking_isUserAllowedToEdit( $this->testBookingTomorrow->getPost(), $userObj ) );
 		$this->assertTrue( commonsbooking_isCurrentUserAllowedToEdit( $this->testBookingId ) );
