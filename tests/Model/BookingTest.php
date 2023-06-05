@@ -72,14 +72,13 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertTrue( $regularUserBooking->canCancel() );
 
 		// Case: role can edit and != post_author => can cancel
+		// Prerequisites
 		$userId = wp_create_user('user_who_can_edit', '');
 		$userObj = get_user_by( 'id', $userId );
 		$userObj->remove_role( 'subscriber' );
 		$userObj->add_role( 'administrator' );
-		wp_update_user( $userObj );
-
 		wp_set_current_user( $userId );
-
+		// Pre-Test asserts
 		$this->assertTrue( $userObj->exists() );
 		$this->assertTrue( Plugin::isPostCustomPostType( $regularUserBooking ) );
 		$this->assertTrue( commonsbooking_isUserAdmin( $userObj ) );
@@ -88,16 +87,18 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertTrue( current_user_can('administrator' ) );
 		$this->assertTrue( current_user_can('edit_posts' ) );
 		$this->assertTrue( current_user_can('edit_others_posts' ) );
-		// TODO admin $userObj won't be able to edit post
+		// TODO investigate further, $userObj (with admin role) isn't able to edit post
 		/*$this->assertTrue( current_user_can('edit_post', $this->testBookingId ) );
 		$this->assertTrue( commonsbooking_isUserAllowedToEdit( $this->testBookingTomorrow->getPost(), $userObj ) );
 		$this->assertTrue( commonsbooking_isCurrentUserAllowedToEdit( $this->testBookingId ) );
 		$this->assertTrue( commonsbooking_isCurrentUserAdmin() );
+		// Tests
 		$this->assertTrue(  $this->testBookingTomorrow->canCancel() );*/
 		
 		// Case: role cannot edit, role != post_author, booking in the future => can't cancel
 		$userObj->remove_role( 'administrator' );
 		$userObj->add_role( 'subscriber' );
+		// Tests
 		$this->assertFalse(  $regularUserBooking->canCancel() );
 		
 	}
