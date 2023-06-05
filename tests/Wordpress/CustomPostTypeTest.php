@@ -234,7 +234,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
 	// Create Item
-	public function createItem($title, $postStatus, $admins = []) {
+	protected function createItem($title, $postStatus, $admins = []) {
 		$itemId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Item::$postType,
@@ -251,7 +251,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
 	// Create Location
-	public function createLocation($title, $postStatus, $admins = []) {
+	protected function createLocation($title, $postStatus, $admins = []) {
 		$locationId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Location::$postType,
@@ -272,7 +272,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	 * In that case, the unit tests would fail, because there is already the user with this ID in the database.
 	 * @return void
 	 */
-	public function createSubscriber(){
+	protected function createSubscriber(){
 		$wp_user = get_user_by('email',"a@a.de");
 		if (! $wp_user){
 			$this->subscriberId = wp_create_user("normaluser","normal","a@a.de");
