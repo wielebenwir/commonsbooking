@@ -310,6 +310,8 @@ abstract class CustomPostTypeTest extends TestCase {
 		$this->tearDownAllBookings();
 		$this->tearDownAllRestrictions();
 		$this->tearDownBookingCodesTable();
+
+		wp_logout();
 	}
 
 	protected function tearDownAllLocation() {
