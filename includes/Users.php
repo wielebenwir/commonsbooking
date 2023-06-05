@@ -257,25 +257,22 @@ function commonsbooking_isCurrentUserAllowedToSee( $booking ):bool{
  */
 function commonsbooking_isUserAllowedToSee( $post, WP_User $user): bool
 {
-	if (! Plugin::isPostCustomPostType($post) ) {
-		return false;
-	}
-
 	if (! is_user_logged_in()){ return false; }
 
-    if ( $post instanceof \CommonsBooking\Model\Booking){
-        $postModel = $post;
-    }
-    elseif ( $post instanceof WP_Post){
-        $postModel = CustomPostType::getModel( $post );
-    }
-    else {
-        $post = get_post( $post );
-		if ($post === null) {
+	if (! $post instanceof \CommonsBooking\Model\CustomPost) {
+		if (! Plugin::isPostCustomPostType($post) ) {
 			return false;
 		}
-		$postModel = CustomPostType::getModel( $post );
-    }
+
+		try {
+			$postModel = CustomPostType::getModel($post);
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+	else {
+		$postModel = $post;
+	}
 
     $isAuthor  = $user->ID === intval( $post->post_author );
     $isAdmin   = commonsbooking_isUserAdmin( $user );

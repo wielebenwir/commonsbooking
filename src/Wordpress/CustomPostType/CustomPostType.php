@@ -310,12 +310,18 @@ abstract class CustomPostType {
 	/**
 	 * Returns Model for CPT.
 	 *
-	 * @param WP_Post $post
+	 * @param int|WP_Post $post - Post ID or Post Object
 	 *
 	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|\CommonsBooking\Model\Restriction|\CommonsBooking\Model\Timeframe
 	 * @throws \Exception
 	 */
-	public static function getModel(WP_Post $post) {
+	public static function getModel( $post ) {
+		if (is_int($post)) {
+			$post = get_post($post);
+		}
+		if (! $post instanceof WP_Post) {
+			throw new \Exception('No suitable post object.');
+		}
 		switch($post->post_type) {
 			case Booking::$postType:
 				return new \CommonsBooking\Model\Booking($post);

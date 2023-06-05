@@ -124,12 +124,15 @@ class Plugin {
 
 	/**
 	 * Tests if a given post belongs to our CPTs
-	 * @param $post
+	 * @param $post int|WP_Post - post id or post object
 	 *
 	 * @return bool
 	 */
 	public static function isPostCustomPostType($post): bool {
-		if (! $post ) {
+		if (is_int($post)) {
+			$post = get_post($post);
+		}
+		if ( empty( $post ) ) {
 			return false;
 		}
 		$validPostTypes = self::getCustomPostTypesLabels();
