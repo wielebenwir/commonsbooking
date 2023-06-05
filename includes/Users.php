@@ -285,7 +285,7 @@ function commonsbooking_isUserAllowedToSee( $post, WP_User $user): bool
 	}
 
 
-    $isAuthor  = $post->isAuthor( $user );
+    $isAuthor  = $postModel->isAuthor( $user );
     $isAdmin   = commonsbooking_isUserAdmin( $user );
     $isAllowed = $isAdmin || $isAuthor;
 

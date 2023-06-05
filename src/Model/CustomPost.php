@@ -168,7 +168,7 @@ class CustomPost {
 	 *
 	 * @return boolean - true if user is author, false if not.
 	 */
-	public function isAuthor (WP_User $user): bool {
+	public function isAuthor (\WP_User $user): bool {
 		return $user->ID === intval( $this->post_author );
 	}
 
