@@ -47,7 +47,7 @@ function commonsbooking_isUserAllowedToEdit( $post, WP_User $user): bool {
 	}
 
 	$canView = commonsbooking_isUserAllowedToSee( $postModel, $user );
-    $canEdit = current_user_can('edit_post', $post->ID);
+    $canEdit = user_can($user, 'edit_post', $post->ID);
 
     return $canView && $canEdit;
 }
