@@ -114,6 +114,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->testLocation = new Location(get_post($this->locationId));
 		$this->testTimeFrame = new Timeframe(get_post($this->firstTimeframeId));
 		$this->setUpTestBooking();
+		$this->createSubscriber();
 	}
 
 	protected function tearDown() : void {
