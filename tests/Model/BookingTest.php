@@ -51,6 +51,28 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertFalse($this->testBookingTomorrow->isPast());
 		$this->assertTrue($this->testBookingPast->isPast());
 	}
+	
+	public function testCanCancel() {
+		
+		
+		// Case: Booking in the past, no one can cancel
+		$this->assertFalse( $this->testBookingPast->canCancel() );
+		
+		// Case: Booking in the future and same author
+		// TODO: Maybe mock get_current_user_id
+		/** Brain\Monkey\Functions\expect( 'get_current_user_id' )
+			// We expect the function to be called once.
+			->once()
+			// What the function should return when called.
+			->andReturn( self::USER_ID );
+			*/
+		$this->assertTrue(  $this->testBookingTomorrow->canCancel() );
+		
+		// TODO Case: role can edit and != post_author => can cancel
+		
+		// TODO role cannot edit, role != post_author, booking in the future => can't cancel
+		
+	}
 
 	protected function setUpTestBooking():void{
 		$this->testBookingId       = $this->createBooking(
