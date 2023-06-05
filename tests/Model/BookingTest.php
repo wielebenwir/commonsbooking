@@ -110,8 +110,8 @@ class BookingTest extends CustomPostTypeTest {
 	}
 
 	/**
-	 * TODO: This test is not working because the CB Manager role is not initialized in the test environment
-	 *       The initialization of the CB Manager role is done in the Plugin class (addCustomUserRoles)
+	 * TODO: This test is currently not working, the CB Manager somehow lacks the capability to edit the booking.
+	 *       Investigate.
 	 * @return void
 	 * @throws \Exception
 	 */
@@ -161,8 +161,8 @@ class BookingTest extends CustomPostTypeTest {
 	*/
 
 	/**
-	 * TODO: This test is not working because the CB Manager role is not initialized in the test environment
-	 * 	 The initialization of the CB Manager role is done in the Plugin class (addCustomUserRoles)
+	 * TODO: This test is currently not working, the CB Manager somehow lacks the capability to edit the booking.
+	 *       Investigate.
 	 * @return void
 	 * @throws \Exception
 	 */
