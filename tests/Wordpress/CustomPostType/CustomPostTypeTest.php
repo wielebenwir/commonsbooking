@@ -7,8 +7,8 @@ use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Restriction;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Model\Booking;
+use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
-use PHPUnit\Framework\TestCase;
 
 /**
  * This is the method to test the CustomPostType class.
@@ -74,6 +74,7 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 	}
 	protected function setUp(): void {
 		parent::setUp();
+		Plugin::activation();
 		$this->timeframeId    = $this->createBookableTimeFrameIncludingCurrentDay();
 		$this->timeframeModel = new Timeframe(
 			$this->timeframeId
