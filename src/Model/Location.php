@@ -204,7 +204,8 @@ class Location extends BookablePost {
 		}
 		$locationAdminIds[] = get_post_field( 'post_author', $locationId );
 
-		return $locationAdminIds;
+		//intval and unique the array
+		return array_unique(array_map('intval', $locationAdminIds));
 	}
 
 	/**

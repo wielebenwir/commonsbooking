@@ -685,7 +685,7 @@ class Timeframe extends CustomPost {
 			$admins = array_merge( $locationAdminIds, $itemAdminIds );
 		}
 
-		return $admins;
+		return array_unique( $admins );
 	}
 
 	/**
