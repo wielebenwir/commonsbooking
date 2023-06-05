@@ -17,6 +17,8 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
  * @throws Exception
  */
 function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
+	if (! is_user_logged_in()){ return false; }
+
 	$current_user = wp_get_current_user();
 
 	return commonsbooking_isUserAllowedToEdit($post,$current_user);
@@ -39,8 +41,8 @@ function commonsbooking_isUserAllowedToEdit( $post, WP_User $user): bool {
 
 	$postModel = CustomPostType::getModel($post);
 
-	//authors are always allowed to edit their posts
-	if ( $postModel->isAuthor($user) ) {
+	//authors are always allowed to edit their posts, admins are also allowed to edit all posts
+	if ( $postModel->isAuthor($user) || commonsbooking_isUserAdmin( $user ) ) {
 		return true;
 	}
 
@@ -238,7 +240,8 @@ function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ):bool {
  * @return void
  */
 function commonsbooking_isCurrentUserAllowedToSee( $booking ):bool{
-    if ( ! $booking ) {
+	if (! is_user_logged_in()){ return false; }
+	if ( ! $booking ) {
         return false;
     }
 
@@ -267,7 +270,6 @@ function commonsbooking_isCurrentUserAllowedToSee( $booking ):bool{
  */
 function commonsbooking_isUserAllowedToSee( $post, WP_User $user): bool
 {
-	if (! is_user_logged_in()){ return false; }
 
 	if (! $post instanceof \CommonsBooking\Model\CustomPost) {
 		if (! Plugin::isPostCustomPostType($post) ) {
