@@ -668,7 +668,7 @@ class Timeframe extends CustomPostType {
 				'id'            => 'direct-email-booking-codes-list',
 				'type'          => 'title',
 				'render_row_cb' => ['\CommonsBooking\View\BookingCodes','renderDirectEmailRow'],
-		),
+			),
 			array(
 				'name' => esc_html__( 'Send booking codes automated by E-mail', 'commonsbooking' ),
 				'desc_cb' => esc_html__("Enable automated sending of booking codes by email", 'commonsbooking' ),
@@ -685,12 +685,6 @@ class Timeframe extends CustomPostType {
 				'type' => 'booking_codes_email_fields',
 				'sanitization_cb' =>  ['\CommonsBooking\View\BookingCodes','sanitizeCronEmailCodes'],
 				'escape_cb'       =>  ['\CommonsBooking\View\BookingCodes','escapeCronEmailCodes'],
-				'show_on_cb' => function($field) 
-								{ 
-									$tfModel=parent::getModel(get_post($field->object_id()));  
-									return (!empty(CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $tfModel->getLocation() )) &&  
-													$tfModel->hasBookingCodes());  
-								},
 			),
 			array(
 				'name'          => esc_html__( 'Booking Codes', 'commonsbooking' ),

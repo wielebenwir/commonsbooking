@@ -46,7 +46,7 @@ class BookingCodesMessage extends Message {
         $timeframe=new Timeframe($timeframeId);
 
         if(!$this->prepareReceivers($timeframe)) return $this->raiseError( 
-                __( "Unable to send Emails. No Location email(s) configured, check Location", "commonsbooking" ));
+                __( "Unable to send Emails. No location email(s) configured, check location", "commonsbooking" ));
 
 		$bookingCodes = BookingCodes::getCodes($timeframeId, $this->tsFrom,$this->tsTo);
         if(empty($bookingCodes)) return $this->raiseError( __( "Could not find booking codes for this timeframe/period", "commonsbooking" ));
@@ -164,8 +164,7 @@ class BookingCodesMessage extends Message {
             }
         }
 
-        if(empty($this->locationAdmins)) return false;
-        return true;
+        return !empty($this->locationAdmins);
     }
     
     /**

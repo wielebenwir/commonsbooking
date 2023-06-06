@@ -182,7 +182,7 @@ return array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'Booking codes by email', 'commonsbooking' ) ),
 				'id'     => 'mail-booking-codes',
 				'desc'   =>
-					commonsbooking_sanitizeHTML( __( 'Send booking codes by email to Location email(s) (automated by cron or ad hoc)', 'commonsbooking' ) ),
+					commonsbooking_sanitizeHTML( __( 'Send booking codes by email to location email(s) (automated by cron or ad hoc)', 'commonsbooking' ) ),
 				'fields' => array(
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Subject for booking codes email', 'commonsbooking' ) ),

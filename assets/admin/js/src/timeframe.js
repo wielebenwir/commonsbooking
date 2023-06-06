@@ -50,6 +50,8 @@
             const createBookingCodesInput = $('#create-booking-codes');
             const bookingCodesDownload = $('#booking-codes-download');
             const bookingCodesList = $('#booking-codes-list');
+            const emailBookingCodesList = $("#email-booking-codes-list");
+            const cronEmailBookingCodesList = $("#cron-email-booking-code");
 
             const bookingConfigTitle = $('.cmb2-id-title-bookings-config');
             const maxDaysSelect = $('.cmb2-id-timeframe-max-days');
@@ -59,7 +61,7 @@
             const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
             const noRepSet = [fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput];
             const repTimeFieldsSet = [gridInput, startTimeInput, endTimeInput];
-            const bookingCodeSet = [createBookingCodesInput, bookingCodesList, bookingCodesDownload, showBookingCodes];
+            const bookingCodeSet = [createBookingCodesInput, bookingCodesList, bookingCodesDownload, showBookingCodes, emailBookingCodesList, cronEmailBookingCodesList];
 
             /**
              * Show repetition fields.

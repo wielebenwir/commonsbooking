@@ -90,9 +90,10 @@ class BookingCodes
      * @param  array      $field_args Array of field arguments.
      * @param  CMB2_Field $field      The field object
      *
-     * @return array                  Sanitized value to be stored.
+     * @return ?array                  Sanitized value to be stored.
  	 */
-    public static function sanitizeCronEmailCodes( $value, $field_args, $field ): array {
+    public static function sanitizeCronEmailCodes( $value, $field_args, $field ): ?array {
+        if($value == null) return null;
 
         $dt=DateTime::createFromFormat($field_args['date_format_start'], @$value['cron-email-booking-code-start']);
         if($dt) $dt->setTime(0,0); //normalize to midnight, otherwise always modified/updated state
@@ -116,19 +117,23 @@ class BookingCodes
  	*/
     public static function escapeCronEmailCodes( $value, $field_args, $field ): array {
 
-        $dateStr="";
-        try {
-            $dt=new DateTime("@" . @$value['cron-email-booking-code-start']);
-            $dateStr=$dt->format($field_args['date_format_start']);
-        } catch( \Exception $e) {
-            $dateStr=date($field_args['date_format_start'],$field->args['default_start']);
+        if(is_array($value)) {
+            return array(
+                'cron-booking-codes-enabled' =>  !empty(@$value['cron-booking-codes-enabled'])?$value['cron-booking-codes-enabled']:'',
+                'cron-email-booking-code-nummonth' => is_numeric(@$value['cron-email-booking-code-nummonth'])?$value['cron-email-booking-code-nummonth']:
+                                                                                                            $field->args['default_nummonth'],
+                'cron-email-booking-code-start' => is_numeric(@$value['cron-email-booking-code-start'])?
+                                                        date($field_args['date_format_start'],$value['cron-email-booking-code-start']):
+                                                        date($field_args['date_format_start'],$field->args['default_start']),
+            );
         }
-
-        return array(
-            'cron-booking-codes-enabled' =>  @$value['cron-booking-codes-enabled'],
-            'cron-email-booking-code-nummonth' => @$value['cron-email-booking-code-nummonth']?$value['cron-email-booking-code-nummonth']:$field->args['default_nummonth'],
-            'cron-email-booking-code-start' => $dateStr,
-        );
+        else {
+            return array(
+                'cron-booking-codes-enabled' =>  '',
+                'cron-email-booking-code-nummonth' => $field->args['default_nummonth'],
+                'cron-email-booking-code-start' => date($field_args['date_format_start'],$field->args['default_start']),
+            );           
+        }
     }
     
  	/**
@@ -141,6 +146,32 @@ class BookingCodes
      * @param  $field_type_object: This is an instance of the CMB2_Types object and gives you access to all of the methods
   	*/
      public static function renderCronEmailFields($field, $escaped_value, $object_id, $object_type, $field_type): void {
+
+        $timeframeId=$object_id;
+        $timeframe=new Timeframe($timeframeId);
+
+        $location=$timeframe->getLocation();
+        $location_emails = $location?
+                            CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $timeframe->getLocation() ):
+                            array() ;
+        
+        $errMsg=null;
+        if(empty($location)) {
+            $errMsg=commonsbooking_sanitizeHTML( __('No location configured for this timeframe', 'commonsbooking'));
+        }
+        elseif( empty($location_emails)) {
+            $errMsg=commonsbooking_sanitizeHTML( __('Unable to send Emails. No location email configured, check location', 'commonsbooking') . 
+            sprintf( ' <a href="%s" class="cb-title cb-title-link">%s</a>', esc_url(get_edit_post_link( $location->ID )), commonsbooking_sanitizeHTML($location->post_title) ));
+        }
+        elseif( !$timeframe->hasBookingCodes()){
+            $errMsg=commonsbooking_sanitizeHTML( __('This timeframe has no booking codes', 'commonsbooking'));
+        }
+
+        if($errMsg != null) {
+            printf('<div id="cron-email-booking-code">%s</div>', $errMsg);
+            return;
+        }
+
         $value = wp_parse_args( $escaped_value, array(
             'cron-booking-codes-enabled' => '',
             'cron-email-booking-code-start' => $field->args['default_start'],
@@ -171,7 +202,7 @@ class BookingCodes
         echo <<< HTML
             <input type="checkbox" class="cmb2-option cmb2-list" name="{$field_type->_name( '[cron-booking-codes-enabled]' )}" 
                                         id="{$field_type->_id( '[cron-booking-codes-enabled]' )}" value="on" {$checked} >
-            <label for="{$field_type->_id( '[cron-booking-codes-enabled]' )}">
+            <label id="cron-email-booking-code" for="{$field_type->_id( '[cron-booking-codes-enabled]' )}">
                 <span class="cmb2-metabox-description">{$field->args['desc_cb']} </span>
             </label>
 
@@ -217,28 +248,36 @@ HTML;
         $timeframeId=$field->object_id();
         $timeframe=new Timeframe($timeframeId);
 
-        if(!$timeframe->hasBookingCodes())
-            return false;
-
-        $location_emails = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $timeframe->getLocation() ) ; /*  email addresses, comma-seperated  */
+        $location=$timeframe->getLocation();
+        $location_emails = $location?
+                            CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $timeframe->getLocation() ):
+                            array() ;
         
         echo '<div class="cmb-row cmb2-id-email-booking-codes-info">
                 <div class="cmb-th">
                     <label for="email-booking-codes-list">'. commonsbooking_sanitizeHTML( __('Send booking codes by email', 'commonsbooking')) .'</label>
                 </div>
 
-                <div class="cmb-td">';
-
-        if (!empty($location_emails)) 
+                <div id="email-booking-codes-list" class="cmb-td">';
+        
+        if(empty($location)) {
+            echo commonsbooking_sanitizeHTML( __('No location configured for this timeframe', 'commonsbooking'));
+        }
+        elseif( empty($location_emails)) {
+            echo commonsbooking_sanitizeHTML( __('Unable to send Emails. No location email configured, check location', 'commonsbooking') . 
+            sprintf( ' <a href="%s" class="cb-title cb-title-link">%s</a>', esc_url(get_edit_post_link( $location->ID )), commonsbooking_sanitizeHTML($location->post_title) ));
+        }
+        elseif( !$timeframe->hasBookingCodes()){
+            echo commonsbooking_sanitizeHTML( __('This timeframe has no booking codes', 'commonsbooking'));
+        }
+        else 
         {
-            // $adminEmailsList = implode(', ', $adminEmails);
-            
-            echo '      <a id="email-booking-codes-list" 
+            echo '      <a id="email-booking-codes-list-all" 
                                 href="'. esc_url(add_query_arg([  "action" => "emailcodes", "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
                             <strong>'. commonsbooking_sanitizeHTML( __('Email booking codes of the entire timeframe', 'commonsbooking')) .'</strong>
                         </a>
                         <br>
-                        '. commonsbooking_sanitizeHTML( __('<b>All codes for the entire timeframe</b> will be emailed to the Location email(s), given in bold below.', 'commonsbooking'));
+                        '. commonsbooking_sanitizeHTML( __('<b>All codes for the entire timeframe</b> will be emailed to the location email(s), given in bold below.', 'commonsbooking'));
 
 
             $from=strtotime("midnight first day of this month");
@@ -247,7 +286,7 @@ HTML;
                                     href="'. esc_url(add_query_arg([  "action" => "emailcodes", "from" => $from, "to" =>$to, "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
                             <strong>'. commonsbooking_sanitizeHTML( __('Email booking codes of current month', 'commonsbooking')) .'</strong>
                         </a><br>
-                        '. commonsbooking_sanitizeHTML( __('The codes <b>of the current month</b> will be sent to all the Location email(s), given in bold below', 'commonsbooking'));
+                        '. commonsbooking_sanitizeHTML( __('The codes <b>of the current month</b> will be sent to all the location email(s), given in bold below', 'commonsbooking'));
             
             $from=strtotime("midnight first day of next month");
             $to=strtotime("midnight last day of next month");
@@ -256,9 +295,9 @@ HTML;
                                     href="'. esc_url(add_query_arg([  "action" => "emailcodes", "from" => $from, "to" =>$to, "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
                             <strong>'. commonsbooking_sanitizeHTML( __('Email booking codes of next month', 'commonsbooking')) .'</strong>
                         </a><br>
-                        '. commonsbooking_sanitizeHTML( __('The codes <b>of the next month</b> will be sent to all the Location email(s), given in bold below.', 'commonsbooking')) .
+                        '. commonsbooking_sanitizeHTML( __('The codes <b>of the next month</b> will be sent to all the location email(s), given in bold below.', 'commonsbooking')) .
                         '<br><br>
-                        <div>'. commonsbooking_sanitizeHTML( __('Currently configured Location email(s): ', 'commonsbooking')) .'<b>' . $location_emails . '</b></div>';
+                        <div>'. commonsbooking_sanitizeHTML( __('Currently configured location email(s): ', 'commonsbooking')) .'<b>' . $location_emails . '</b></div>';
 
             $lastBookingEmail=get_post_meta( $timeframeId, \CommonsBooking\View\BookingCodes::LAST_CODES_EMAIL, true);
             if(!empty($lastBookingEmail)) {
@@ -267,9 +306,7 @@ HTML;
                         . wp_date(get_option( 'date_format' ) . ' ' . get_option( 'time_format' ),$lastBookingEmail) . '</p>';
             }
         }
-        else {
-            echo commonsbooking_sanitizeHTML( __('Unable to send Emails. No Location email configured, check Location', 'commonsbooking')) ; 
-        }
+
         echo '
                 </div>
             </div>';
@@ -283,34 +320,40 @@ HTML;
 	 * @param $timeframeId
 	 */
 	public static function renderTable( $timeframeId ) {
-        
+        $timeframe=new Timeframe($timeframeId);
+
         echo '
             <div class="cmb-row cmb2-id-booking-codes-info">
                 <div class="cmb-th">
-                    <label for="booking-codes-download">' . commonsbooking_sanitizeHTML( __( 'Download booking codes', 'commonsbooking' ) ) . '</label>
+                    <label for="booking-codes-download-link">' . commonsbooking_sanitizeHTML( __( 'Download booking codes', 'commonsbooking' ) ) . '</label>
                 </div>
-                <div class="cmb-td">
-                    <a id="booking-codes-download" href="' . esc_url(add_query_arg([  "action" => "csvexport",  ])) . '" target="_blank"><strong>Download booking codes</strong></a>
+                <div id="booking-codes-download" class="cmb-td">' . ($timeframe->hasBookingCodes()?'
+                    <a id="booking-codes-download-link" href="' . esc_url(add_query_arg([  "action" => "csvexport",  ])) . '" target="_blank"><strong>Download booking codes</strong></a>
                     <p  class="cmb2-metabox-description">
                     ' . commonsbooking_sanitizeHTML( __( 'The file will be exported as tab delimited .txt file so you can choose wether you want to print it, open it in a separate application (like Word, Excel etc.)', 'commonsbooking' ) ) . '
-                    </p>
+                    </p>':commonsbooking_sanitizeHTML( __('This timeframe has no booking codes', 'commonsbooking'))) . '
                 </div>
             </div>';
 
         $bcToShow=Settings::getOption( 'commonsbooking_options_bookingcodes','bookingcodes-listed-timeframe' );
         if($bcToShow > 0) {
-            $timeframe=new Timeframe($timeframeId);
-            $bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId,Wordpress::getUTCDateTime("today")->getTimestamp(),
-                                                                            Wordpress::getUTCDateTime("+" . ( $bcToShow - 1 ) . " days")->getTimestamp() );
+            // $timeframe=new Timeframe($timeframeId);
+            $tsStart=max(Wordpress::getUTCDateTime("today")->getTimestamp(), $timeframe->getStartDate());
+            $tsEnd=strtotime("@" . $tsStart . " +" . ( $bcToShow - 1 ) . " days");
+            $bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId,$tsStart,$tsEnd);
+
             echo '<div class="cmb-row cmb2-id-booking-codes-list">
                 <div class="cmb-th">
-                    <label for="booking-codes-list">' . commonsbooking_sanitizeHTML( __( 'Booking codes list', 'commonsbooking' ) ) . '</label>
+                    <label id="booking-codes-list">' . commonsbooking_sanitizeHTML( __( 'Booking codes list', 'commonsbooking' ) ) . '</label>
                 </div>
                 <div class="cmb-td">';
-        
-            echo apply_filters('commonsbooking_emailcodes_rendertable',
-                            self::renderBookingCodesTable($bookingCodes),$bookingCodes,'timeframe_form');
-
+            if($timeframe->hasBookingCodes()) {
+                echo apply_filters('commonsbooking_emailcodes_rendertable',
+                                self::renderBookingCodesTable($bookingCodes),$bookingCodes,'timeframe_form');
+            }
+            else {
+                echo commonsbooking_sanitizeHTML( __('This timeframe has no booking codes', 'commonsbooking'));
+            }
             echo '</div></div>';
         }
 
@@ -325,6 +368,8 @@ HTML;
      * @return string HTML table
 	 */
 	public static function renderBookingCodesTable( $bookingCodes ) : string {
+        if(empty($bookingCodes)) return '';
+
         $lines=[];
         foreach($bookingCodes as $bookingCode) {
             $lines[]='<tr><td>' . commonsbooking_sanitizeHTML(wp_date("D j. F Y", strtotime ($bookingCode->getDate() )) ) . 
