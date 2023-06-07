@@ -219,7 +219,7 @@ class Wordpress {
 	 *
 	 * @return array
 	 */
-	public static function getTags($posts, array $items = [], array $locations = []) {
+	public static function getTags($posts, array $items = [], array $locations = []): array {
 		$itemsAndLocations = Wordpress::getLocationAndItemIdsFromPosts($posts);
 
 		if(!count($items) && !count($locations)) {
@@ -242,7 +242,7 @@ class Wordpress {
 	 *
 	 * @return array
 	 */
-	public static function getLocationAndItemIdsFromPosts($posts) {
+	public static function getLocationAndItemIdsFromPosts($posts): array {
 		$itemsAndLocations = [];
 		array_walk($posts, function ($timeframe) use (&$itemsAndLocations) {
 			$itemsAndLocations[] = get_post_meta(
@@ -269,7 +269,7 @@ class Wordpress {
 	 * @return DateTime
 	 * @throws \Exception
 	 */
-	public static function getUTCDateTimeByTimestamp($timestamp) {
+	public static function getUTCDateTimeByTimestamp($timestamp): DateTime {
 		$dto = new DateTime();
 		$dto->setTimestamp(
 			intval( $timestamp )
@@ -295,14 +295,14 @@ class Wordpress {
 		return $dto;
 	}
 
-	public static function getUTCDateTime($datetime = 'now') {
+	public static function getUTCDateTime($datetime = 'now'): DateTime {
 		$dto = new DateTime($datetime);
 		$dto->setTimezone(new \DateTimeZone('UTC'));
 
 		return $dto;
 	}
 
-	public static function getLocalDateTime($timestamp) {
+	public static function getLocalDateTime($timestamp): DateTime {
 		$dto = new DateTime();
 		$dto->setTimestamp(
 			$timestamp

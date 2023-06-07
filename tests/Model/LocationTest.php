@@ -48,7 +48,7 @@ class LocationTest extends CustomPostTypeTest {
 	}
 	*/
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->restrictionIds[] = $this->createRestriction(
 			Restriction::META_HINT,
@@ -62,7 +62,7 @@ class LocationTest extends CustomPostTypeTest {
 		$this->createSubscriber();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 
