@@ -156,6 +156,12 @@ class Booking extends Timeframe {
 
             // readd the hook
             add_action( 'save_post_' . self::$postType, array( $this, 'saveAdminBookingFields' ) );
+
+			//if we just created a new confirmed booking we trigger the confirmation mail
+	        if ( $post_status == 'confirmed' ) {
+		        $booking_msg = new BookingMessage( $post_id, $post_status );
+		        $booking_msg->triggerMail();
+	        }
         }
     }
 
