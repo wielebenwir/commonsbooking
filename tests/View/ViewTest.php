@@ -27,6 +27,9 @@ class ViewTest extends CustomPostTypeTest {
 		$shortCodeData = View::getShortcodeData( new Location( $this->locationId ), 'Location' );
 		$this->assertTrue( is_array( $shortCodeData[ $this->locationId ]['ranges'] ) );
 		$this->assertTrue( count( $shortCodeData[ $this->locationId ]['ranges'] ) == 4 );
+		
+		// Check for specific timeframe start date
+		$this->assertEquals( $shortCodeData[ $this->locationId ]['ranges'][0]['start_date'], strtotime( '+2 days midnight', $this->now ) );
 	}
 	
 	public function testShortcodeForLocationView() {
