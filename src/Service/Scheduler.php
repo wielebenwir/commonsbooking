@@ -13,14 +13,23 @@ class Scheduler {
 
 	const UNSCHEDULER_HOOK = COMMONSBOOKING_PLUGIN_SLUG . '_unschedule';
 
-	//constructs the class, if job does not exist yet it is created
+	/**
+	 * 	Constructs the class, if job does not exist it is created.
+	 * 
+	 * @param string $jobhook The action hook to run when the event is executed
+	 * @param callable $callback The callback function of that hook
+	 * @param string $reccurence How often the event should subsequently recur
+	 * @param string $executionTime Takes time of day the job should be executed, only for daily recurrence
+	 * @param array $option First element is the options_key, second is the field_id. If set, the field is checked and determines whether the hook should be run
+	 * @param string $updateHook The WordPress hook that should update the option
+	 */
 	function __construct(
-		string $jobhook, //the action hook to run when the event is executed
-		callable $callback, //the callback function of that hook
-		string $reccurence, //how often the event should subsequently recur
-		string $executionTime = '', //takes time of day the job should be executed, only for daily reccurence
-		array $option = array(), //first element is the options_key, second is the field_id. If set, the field is checked and determines wether the hook should be ran
-		string $updateHook= ''  //The wordpress hook that should update the option
+		string $jobhook,
+		callable $callback,
+		string $reccurence,
+		string $executionTime = '',
+		array $option = array(),
+		string $updateHook= ''
 	)
 	{
 		// Add custom cron intervals
@@ -151,6 +160,15 @@ class Scheduler {
 			array( 'commonsbooking_options_export', 'export-cron'  ),
 			'update_option_commonsbooking_options_export'
 		);
+	}
+
+	/**
+	 * Returns the jobhook of the current job
+	 *
+	 * @return string
+	 */
+	public function getJobhook(): string {
+		return $this->jobhook;
 	}
 
 	/**
