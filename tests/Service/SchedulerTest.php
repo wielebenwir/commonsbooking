@@ -89,7 +89,7 @@ class SchedulerTest extends CustomPostTypeTest
 		$this->jobhooks[] = 'test2';
 		
 		// Should contain custom cron intervals, because Scheduler(...) adds filter 
-		$this->assertContains( 'thirty_minutes', array_keys( wp_get_schedules() ) )
+		$this->assertContains( 'thirty_minutes', array_keys( wp_get_schedules() ) );
 
 		$now = new DateTime();
 		$now->modify('+30 minutes');
