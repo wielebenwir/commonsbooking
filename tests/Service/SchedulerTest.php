@@ -48,7 +48,7 @@ class SchedulerTest extends CustomPostTypeTest
 			array($this->dummyOptionsKey,$this->dummyFieldId),
 			$this->dummyUpdateHook
 		);
-		$this->jobhooks[] = 'test2';
+		$this->jobhooks[] = $dailyJob->getJobhook()
 
 		$now = new DateTime();
 		$nextTime = DateTime::createFromFormat('H:i', '13:00');
@@ -86,7 +86,7 @@ class SchedulerTest extends CustomPostTypeTest
 			array($this->dummyOptionsKey,$this->dummyFieldId),
 			$this->dummyUpdateHook
 		);
-		$this->jobhooks[] = 'test2';
+		$this->jobhooks[] = $customSchedule->getJobhook();
 		
 		// Should contain custom cron intervals, because Scheduler(...) adds filter 
 		$this->assertContains( 'thirty_minutes', array_keys( wp_get_schedules() ) );
@@ -112,7 +112,7 @@ class SchedulerTest extends CustomPostTypeTest
 			array($this->dummyOptionsKey,$this->dummyFieldId),
 			$this->dummyUpdateHook
 		);
-		$this->jobhooks[] = 'test';
+		$this->jobhooks[] = $this->scheduler->getJobhook();
 	}
 
 	protected function tearDown(): void {
