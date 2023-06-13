@@ -44,7 +44,7 @@ class SchedulerTest extends CustomPostTypeTest
 			'test2',
 			'CommonsBooking\Tests\Service\dummyFunction',
 			'daily',
-			'12:00',
+			'13:00',
 			array($this->dummyOptionsKey,$this->dummyFieldId),
 			$this->dummyUpdateHook
 		);
@@ -87,6 +87,9 @@ class SchedulerTest extends CustomPostTypeTest
 			$this->dummyUpdateHook
 		);
 		$this->jobhooks[] = 'test2';
+		
+		// Should contain custom cron intervals, because Scheduler(...) adds filter 
+		$this->assertContains( 'thirty_minutes', array_keys( wp_get_schedules() ) );
 
 		$now = new DateTime();
 		$now->modify('+30 minutes');
