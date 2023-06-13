@@ -44,7 +44,7 @@ class SchedulerTest extends CustomPostTypeTest
 			'test2',
 			'CommonsBooking\Tests\Service\dummyFunction',
 			'daily',
-			'12:00',
+			'13:00',
 			array($this->dummyOptionsKey,$this->dummyFieldId),
 			$this->dummyUpdateHook
 		);
