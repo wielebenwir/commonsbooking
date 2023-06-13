@@ -48,7 +48,7 @@ class SchedulerTest extends CustomPostTypeTest
 			array($this->dummyOptionsKey,$this->dummyFieldId),
 			$this->dummyUpdateHook
 		);
-		$this->jobhooks[] = $dailyJob->getJobhook()
+		$this->jobhooks[] = $dailyJob->getJobhook();
 
 		$now = new DateTime();
 		$nextTime = DateTime::createFromFormat('H:i', '13:00');
