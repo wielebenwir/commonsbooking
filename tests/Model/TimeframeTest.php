@@ -1,15 +1,30 @@
 <?php
 
-namespace CommonsBooking\Tests\Model;
+namespace CommonsBooking\Model;
 
-use CommonsBooking\Model\Item;
-use CommonsBooking\Model\Location;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
-use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Exception\TimeframeInvalidException;
 
 
+/**
+ * Mocks strtotime on the input of 'now'.
+ * Override strtotime() in current namespace for testing in \TimeframeTest.test_formatBookableDate.
+ *
+ * @return int
+ */
+#[Pure(true)]
+function strtotime(string $arg1, int $arg2 = null): int {
+	if ( TimeframeTest::$now && 'now' == $arg1 ) {
+		return TimeframeTest::$now;
+	}
+	return \strtotime( $arg1, $arg2 );
+}
 class TimeframeTest extends CustomPostTypeTest {
+
+	/**
+	 * @var int $now Timestamp that will be returned by time()
+	 */
+	public static $now;
 
 	protected Timeframe $firstTimeframe;
 	protected Timeframe $secondTimeframe;
@@ -170,6 +185,62 @@ class TimeframeTest extends CustomPostTypeTest {
 	public function testGetItem() {
 		$item = New Item($this->itemId);
 		$this->assertEquals($item,$this->validTF->getItem());
+	}
+
+	/**
+	 * @return void
+	 *
+	 * @dataProvider providerFormatBookableDate()
+	 */
+	public function test_formatBookableDate($todayMockDate, $expectedString, $start, $end) {
+
+		// Mocks strtotime
+		self::$now = $todayMockDate;
+
+		$result = Timeframe::formatBookableDate( $start, $end );
+		$this->assertEquals( $expectedString,  $result);
+	}
+
+	public function providerFormatBookableDate() {
+
+		return array(
+			// case: only one day (start = end)
+			'Available here on January 24, 2021' => array(
+				strtotime('2021-01-22'),
+				'Available here on January 24, 2021',
+				strtotime( '2021-01-24' ),
+				strtotime( '2021-01-24' )
+			),
+			// case: open end
+			'Available here from January 24, 2021 (open end)' => array(
+				strtotime('2021-01-22'),
+				'Available here from January 24, 2021',
+				strtotime( '2021-01-24' ),
+				false
+			),
+			// case: start passed, open end date
+			'Available here permanently' => array(
+				strtotime('2021-01-25'),
+				'Available here permanently',
+				strtotime( '2021-01-24' ),
+				false
+			),
+			// case: start and end
+			'Available here from January 24, 2021 until January 26, 2021' => array(
+				strtotime('2021-01-22'),
+				'Available here from January 24, 2021 until January 26, 2021',
+				strtotime( '2021-01-24' ),
+				strtotime( '2021-01-26' )
+			),
+			// case: start passed, with end date
+			'Available here until January 26, 2021' => array(
+				strtotime('2021-01-25'),
+				'Available here until January 26, 2021',
+				strtotime( '2021-01-24' ),
+				strtotime( '2021-01-26' )
+			),
+		);
+
 	}
 
   protected function setUp() : void {
