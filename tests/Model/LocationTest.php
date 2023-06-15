@@ -48,6 +48,37 @@ class LocationTest extends CustomPostTypeTest {
 	}
 	*/
 
+	public function testGetFormattedAddress() {
+
+		// Case: Empty meta fields
+		$this->assertEquals( 'Testlocation<br>', $this->locationModel->formattedAddress() );
+		$this->assertEquals( '', $this->locationModel->formattedAddressOneLine() );
+
+		// Case: Partial emtpy meta fields
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_street', 'Karl-Marx-Allee' );
+		wp_cache_flush();
+		$this->locationModel = new Location( $this->locationId );
+		$this->assertEquals( 'Karl-Marx-Allee  ', $this->locationModel->formattedAddressOneLine() );
+
+		// Case: Complete meta fields
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', '10115' );
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_city', 'Berlin' );
+		wp_cache_flush();
+		$this->locationModel = new Location( $this->locationId );
+		$this->assertEquals( 'Testlocation<br> Karl-Marx-Allee<br> 10115 Berlin<br>', $this->locationModel->formattedAddress() );
+
+		$this->assertEquals( 'Karl-Marx-Allee, 10115 Berlin', $this->locationModel->formattedAddressOneLine() );
+
+	}
+
+	public function testGetFormattedContactInfo() {
+		// Case: Complete contact meta fields
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', 'Max Weber');
+		wp_cache_flush();
+		$this->locationModel = new Location( $this->locationId );
+		$this->assertEquals( '<br><br>Please contact the contact persons at the location directly if you have any questions regarding collection or return:<br>Max Weber', $this->locationModel->formattedContactInfo() );
+	}
+
 	protected function setUp() : void {
 		parent::setUp();
 		$this->restrictionIds[] = $this->createRestriction(
