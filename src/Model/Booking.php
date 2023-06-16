@@ -354,23 +354,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$currentStatus    = $this->post->post_status;
 		$cancellationTime = $this->getMeta( 'cancellation_time' );
 
-        if ( get_transient( 'commonsbookig_overlappingBooking_' . $this->post->ID ) && $currentStatus === 'unconfirmed' ) {
-            $noticeText = commonsbooking_sanitizeHTML( __( 'The booking could not be confirmed because there is an overlapping booking in this period.', 'commonsbooking' ) );
-        }
-
-  		if ( $currentStatus == 'unconfirmed' ) {
-            // transient is set in \Model\Booking->handleFormRequest if overlapping booking exists
-            if ( get_transient( 'commonsbooking_overlappingBooking_' . $this->post->ID ) ) {
-                $noticeText = commonsbooking_sanitizeHTML( __( 
-                    '<h1 style="color:red">Notice:</h1> <p>We are sorry. Something went wrong. This booking could not be confirmed because there is another overlapping booking.<br>
-                    Please click the "Cancel"-Button and select another booking period.</p>
-                    <p>Normally, the booking system ensures that no overlapping bookings can be created. If you think there is a bug, please contact the contact persons of this website.</p> 
-                ', 'commonsbooking' ) );
-
-                delete_transient( 'commonsbooking_overlappingBooking_' . $this->post->ID );
-            } else {
+    		if ( $currentStatus == 'unconfirmed' ) {
                 $noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
-            }
 		} elseif ( $currentStatus == 'confirmed' ) {
 			$noticeText = commonsbooking_sanitizeHTML( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'booking-confirmed-notice' ) );
 		}

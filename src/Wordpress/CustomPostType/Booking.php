@@ -179,6 +179,7 @@ class Booking extends Timeframe {
 			$comment        = isset( $_REQUEST['comment'] ) && $_REQUEST['comment'] != '' ? sanitize_text_field( $_REQUEST['comment'] ) : null;
             $post_status    = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] != '' ? sanitize_text_field( $_REQUEST['post_status'] ) : null;
             $booking_author = isset( $_REQUEST['author'] ) && $_REQUEST['author'] != '' ? sanitize_text_field( $_REQUEST['author'] ) : get_current_user_id();
+            $post_ID        = isset( $_REQUEST['post_ID'] ) && $_REQUEST['post_ID'] != '' ? intval( $_REQUEST['post_ID'] ) : null;
 
  			if ( ! get_post( $itemId ) ) {
 			    throw new BookingDeniedException(__ ( sprintf ( 'Item does not exist. (%s)', $itemId ),'commonsbooking' ) );
@@ -213,6 +214,7 @@ class Booking extends Timeframe {
                 $locationId,
                 $itemId
             );
+            
 	        $existingBookings =
 		        \CommonsBooking\Repository\Booking::getExistingBookings(
 			        $itemId,
@@ -220,6 +222,14 @@ class Booking extends Timeframe {
 			        $startDate,
 			        $endDate,
 		        );
+
+
+            // delete unconfirmed booking if booking process is canceld by user
+            if ($post_status === 'delete_unconfirmed' && $booking->ID === $post_ID) {
+                wp_delete_post( $post_ID );
+                wp_redirect( add_query_arg( 'cb-location', $locationId, get_permalink( get_post( $itemId ) ) ) );
+                exit;
+            }
 
 			// Validate booking -> check if there are no existing bookings in timerange.
 			if (count($existingBookings) > 0) {
@@ -232,10 +242,8 @@ class Booking extends Timeframe {
 				if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status != 'canceled' ) {
                     if ($booking) {
                         $post_status = 'unconfirmed';
-						//TODO: Check if we can replace this transient with throwing a BookingDeniedException
-                        set_transient( 'commonsbooking_overlappingBooking_' . $booking->ID, $booking->ID );
                     } else {
-                        throw new BookingDeniedException( __('There is already a booking in this timerange.', 'commonsbooking') );
+                        throw new BookingDeniedException( __('There is already a booking in this timerange. This notice may also appear if there is an unconfirmed booking in the requested period. Unconfirmed bookings are deleted after about 10 minutes. Please try again in a few minutes.', 'commonsbooking') );
                     }
 				}
 			}
