@@ -109,6 +109,7 @@ class BookingTest extends CustomPostTypeTest
 	}
 
 	public function testHandleBookingRequestExceptions(){
+		
 
 	}
 	protected function setUp(): void {
