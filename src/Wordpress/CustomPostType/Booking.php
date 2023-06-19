@@ -248,10 +248,10 @@ class Booking extends Timeframe {
 		?string $requestedPostName,
 		?string $postType
 	): int {
-		if ( ! get_post( $itemId ) ) {
+		if ( $itemId == null || ! get_post( $itemId ) ) {
 			throw new BookingDeniedException( __( sprintf( 'Item does not exist. (%s)', $itemId ), 'commonsbooking' ) );
 		}
-		if ( ! get_post( $locationId ) ) {
+		if ( $locationId == null || ! get_post( $locationId ) ) {
 			throw new BookingDeniedException( __( sprintf( 'Location does not exist. (%s)', $locationId ), 'commonsbooking' ) );
 		}
 

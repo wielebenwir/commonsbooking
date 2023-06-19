@@ -16,7 +16,6 @@ class BookingTest extends CustomPostTypeTest
 	 * @return void
 	 */
 	public function testHandleBookingRequestDefautl() {
-		wp_set_current_user($this->normalUserID);
 		//Case 1: We create an unconfirmed booking for a bookable timeframe. The unconfirmed booking should be created
 		$bookingId = Booking::handleBookingRequest(
 			$this->itemId,
@@ -79,7 +78,7 @@ class BookingTest extends CustomPostTypeTest
 		$bookingId = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
-			'delete_unconfirmed',
+			'unconfirmed',
 			null,
 			null,
 			strtotime( self::CURRENT_DATE ),
@@ -89,12 +88,14 @@ class BookingTest extends CustomPostTypeTest
 		);
 		$this->assertIsInt( $bookingId );
 		$bookingModel = new \CommonsBooking\Model\Booking( $bookingId );
-		$postName = $bookingModel->post_name;
+		$postName     = $bookingModel->post_name;
 		$this->assertTrue( $bookingModel->isUnconfirmed() );
-		$canceledUnconfirmedId = Booking::handleBookingRequest(
+		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
+		$this->expectExceptionMessage( 'Booking canceled.' );
+		Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
-			'canceled',
+			'delete_unconfirmed',
 			$bookingId,
 			null,
 			strtotime( self::CURRENT_DATE ),
@@ -102,15 +103,88 @@ class BookingTest extends CustomPostTypeTest
 			$postName,
 			null
 		);
-		$this->assertEquals( $bookingId, $canceledUnconfirmedId );
-		$bookingModel = new \CommonsBooking\Model\Booking( $bookingId );
-		$this->assertTrue( $bookingModel->isCancelled() );
-		$this->assertFalse( $bookingModel->isUnconfirmed() );
 	}
 
-	public function testHandleBookingRequestExceptions(){
-		
-
+	public function testBookingWithoutLoc() {
+		//Case 1: We try to create a booking without a defined location
+		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
+		$this->expectExceptionMessage( 'Location does not exist. ()' );
+		$booking = Booking::handleBookingRequest(
+			$this->itemId,
+			null,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+	}
+	public function testBookingWithoutItem() {
+		//Case 2: We try to create a booking without a defined item
+		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
+		$this->expectExceptionMessage( 'Item does not exist. ()' );
+		$booking = Booking::handleBookingRequest(
+			null,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+	}
+	public function testBookingWithoutStart() {
+		//Case 3: We try to create a booking without a defined start date
+		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
+		$this->expectExceptionMessage('Start- and/or end-date is missing.');
+		$booking = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			null,
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+	}
+	public function testBookingWithoutEnd() {
+		//Case 4: We try to create a booking without a defined end date
+		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
+		$this->expectExceptionMessage('Start- and/or end-date is missing.');
+		$booking = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			null,
+			null,
+			null
+		);
+	}
+	public function testBookingOverlapping() {
+		//Case 5: Overlapping booking in the same timerange
+		$this->createConfirmedBookingStartingToday();
+		$this->expectException(\CommonsBooking\Exception\BookingDeniedException::class);
+		$this->expectExceptionMessage('There is already a booking in this time-range. This notice may also appear if there is an unconfirmed booking in the requested period. Unconfirmed bookings are deleted after about 10 minutes. Please try again in a few minutes.');
+		$booking = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
 	}
 	protected function setUp(): void {
 		parent::setUp();
@@ -118,6 +192,7 @@ class BookingTest extends CustomPostTypeTest
 			$this->createBookableTimeFrameIncludingCurrentDay()
 		);
 		$this->createSubscriber();
+		wp_set_current_user($this->normalUserID);
 	}
 
 	protected function tearDown(): void {
