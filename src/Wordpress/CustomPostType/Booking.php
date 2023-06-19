@@ -187,7 +187,7 @@ class Booking extends Timeframe {
 		if (
 			function_exists( 'wp_verify_nonce' ) &&
 			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
-			wp_verify_nonce( $_REQUEST[ static::getWPNonceId() ], static::getWPAction() )
+			wp_verify_nonce( $_REQUEST[ static::getWPNonceId() ], static::getWPAction() ) // phpcs:ignore
 		) {
 			$itemId          = isset( $_REQUEST['item-id'] ) && $_REQUEST['item-id'] !== '' ? sanitize_text_field( wp_unslash( $_REQUEST['item-id'] ) ) : null;
 			$locationId      = isset( $_REQUEST['location-id'] ) && $_REQUEST['location-id'] !== '' ? sanitize_text_field( wp_unslash( $_REQUEST['location-id'] ) ) : null;
