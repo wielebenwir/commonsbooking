@@ -10,6 +10,9 @@ use DateTime;
 
 /**
  * Timeframe for restricting access to an item.
+ * 
+ * Note: Timeframes are date intervals, with a start date and either an end date or no end date (which leaves the interval open).
+ * This should be kept in mind when processing/rendering information in user templates.
  */
 class Restriction extends CustomPost {
 
@@ -148,8 +151,8 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns nicely formatted start datetime.
-     *
-	 * @return string
+     * 
+	 * @return string, if META_START is not null.
 	 */
 	public function getFormattedStartDateTime() {
 		return Helper::FormattedDateTime( $this->getStartTimeDateTime()->getTimestamp() );
@@ -171,7 +174,7 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns nicely formatted end datetime.
      *
-	 * @return string
+	 * @return string, if META_END is not null.
 	 */
 	public function getFormattedEndDateTime() {
 		return Helper::FormattedDateTime( $this->getEndDateDateTime()->getTimestamp() );
