@@ -23,7 +23,7 @@ class RestrictionTest extends CustomPostTypeTest {
 	/**
 	 * @before
 	 */
-	protected function set_up_format_de_locale_format_configuration() {
+	protected function setUp_FormatDeLocaleFormatConfiguration() {
 		$this->old_tfmt = get_option( 'time_format' );
 		$this->old_dfmt = get_option( 'date_format' );
 		update_option( 'time_format', 'H:i' );
@@ -35,7 +35,7 @@ class RestrictionTest extends CustomPostTypeTest {
 	/**
 	 * @after
 	 */
-	protected function tear_down_de_locale_format_configuration() {
+	protected function tearDown_FormatDeLocaleFormatConfiguration() {
 		update_option( 'time_format', $this->old_tfmt );
 		update_option( 'date_format', $this->old_dfmt );
 	}
@@ -78,7 +78,7 @@ class RestrictionTest extends CustomPostTypeTest {
 		$this->assertTrue($restrictionWithEndDate->hasEnddate());
 	}
 
-	public function test_get_formatted_datetimes() {
+	public function testGetFormattedDateTime() {
 		$restrictionWithoutEndDate = new Restriction($this->restrictionWithoutEndDateId);
 		$this->assertEquals( $restrictionWithoutEndDate->getFormattedStartDateTime(), "01.07.2021 00:00" );
 		// End Date is null, therefore getFormattedEndTime() won't compute a string
