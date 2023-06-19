@@ -342,16 +342,13 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 */
 	public function bookingNotice(): ?string {
 
-		$currentStatus    = $this->post->post_status;
 		$cancellationTime = $this->getMeta( 'cancellation_time' );
 
-		if ( $currentStatus == 'unconfirmed' ) {
+		if ( $this->isUnconfirmed() ) {
 			$noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
-		} elseif ( $currentStatus == 'confirmed' ) {
+		} elseif ( $this->isConfirmed() ) {
 			$noticeText = commonsbooking_sanitizeHTML( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'booking-confirmed-notice' ) );
-		}
-
-		if ( $currentStatus == 'canceled' ) {
+		} elseif ( $this->isCancelled() ) {
 			if ( $cancellationTime ) {
 				$cancellationTimeFormatted = Helper::FormattedDateTime( $cancellationTime );
 				$noticeText                = sprintf( commonsbooking_sanitizeHTML( __( 'Your booking has been canceled at %s.', 'commonsbooking' ) ), $cancellationTimeFormatted );
@@ -361,7 +358,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		if ( isset( $noticeText ) ) {
-			return sprintf( '<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $currentStatus, $noticeText );
+			return sprintf( '<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $this->post_status, $noticeText );
 		}
 
 		return null;
