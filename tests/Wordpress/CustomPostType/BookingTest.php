@@ -5,6 +5,12 @@ namespace CommonsBooking\Tests\Wordpress\CustomPostType;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 
+/**
+ * This class tests the form request for the frontend booking process
+ *
+ * TODO: Test the case, where one user creates an unconfirmed booking and an admin creates a booking for the same item, location and timeframe.
+ *       Right now, it will show the booking of the user to the admin. Instead, the admin should be notified that there is already a booking for this timeframe.
+ */
 class BookingTest extends CustomPostTypeTest
 {
 
