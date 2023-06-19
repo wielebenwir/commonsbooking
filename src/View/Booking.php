@@ -290,15 +290,15 @@ class Booking extends View {
 			\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id()
 		];
 
-		foreach ($errorTypes as $errorType) {
-			if ($error = get_transient($errorType)) {
+		foreach ( $errorTypes as $errorType ) {
+			if ( $error = get_transient( $errorType ) ) {
 				$class = 'cb-notice error';
 				printf(
 					'<div class="%1$s"><p>%2$s</p></div>',
-					esc_attr($class),
-					nl2br(commonsbooking_sanitizeHTML($error))
+					esc_attr( $class ),
+					nl2br( commonsbooking_sanitizeHTML( $error ) )
 				);
-				delete_transient($errorType);
+				delete_transient( $errorType );
 			}
 		}
 	}
