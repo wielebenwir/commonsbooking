@@ -186,6 +186,41 @@ class BookingTest extends CustomPostTypeTest
 			null
 		);
 	}
+
+	public function testReAccessUnconfirmed(){
+		//this tests the case where the same user tries to access their unconfirmed booking again
+		$bookingId = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+		$this->assertIsInt($bookingId);
+		$bookingModel = new \CommonsBooking\Model\Booking($bookingId);
+		$postName = $bookingModel->post_name;
+		$this->assertTrue($bookingModel->isUnconfirmed());
+		$sameBookingId = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+		//we now make sure that we got the same booking back
+		$this->assertEquals($bookingId, $sameBookingId);
+		$sameBookingModel = new \CommonsBooking\Model\Booking($sameBookingId);
+		$this->assertEquals($bookingModel->post_name, $sameBookingModel->post_name);
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->timeframeModel = new \CommonsBooking\Model\Timeframe(
