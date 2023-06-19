@@ -128,6 +128,7 @@ class Map extends CustomPostType {
 		if ( $item_draft_appearance == 3 ) {
 			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -290,10 +291,7 @@ class Map extends CustomPostType {
 
 	public static function get_cb_items_category_groups( $preset_categories ) {
 		$groups         = [];
-		$category_terms = get_terms( [
-			'taxonomy'   => 'cb_items_category',
-			'hide_empty' => false,
-		] );
+		$category_terms = Item::getTerms();
 
 		foreach ( $category_terms as $term ) {
 			if ( in_array( $term->term_id, $preset_categories ) ) {

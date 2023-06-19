@@ -22,6 +22,7 @@ $text_hidden_contactinfo      = Settings::getOption( 'commonsbooking_options_tem
 $formatted_user_info          = $booking::getFormattedUserInfo();
 $admin_booking_id             = $booking->getMeta( 'admin_booking_id' );
 $current_status               = $booking->post_status;
+$internal_comment             = $booking->getMeta( 'internal-comment' );
 
 
 do_action( 'commonsbooking_before_booking-single' );
@@ -114,13 +115,21 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 			<h3><?php echo esc_html__( 'Your profile', 'commonsbooking' ); ?></h3>
 		</div>
         <?php
-       if (commonsbooking_isCurrentUserAdmin() && $current_status == 'confirmed' && $admin_booking_id ) { //
+       if (commonsbooking_isCurrentUserAdmin() && $admin_booking_id ) { //
         ?>
-                <div class="cb-list-content cb-user cb-col-30-70">
+         <div class="cb-list-content cb-user cb-col-30-70">
        	<div><?php echo esc_html__( 'Admin Booking by', 'commonsbooking' ); ?></div>
 			<div><?php
                 $booking_admin = get_user_by('ID', $admin_booking_id);
                 echo esc_html( $booking_admin->user_login . " (" . $booking_admin->first_name . " " . $booking_admin->last_name . ")" );
+                ?>
+        </div>
+		</div>
+        <!-- internal comment /-->
+        <div class="cb-list-content cb-user cb-col-30-70">
+       	<div><?php echo esc_html__( 'Internal comment', 'commonsbooking' ); ?></div>
+			<div><?php
+                     echo nl2br( commonsbooking_sanitizeHTML( $internal_comment ) );
                 ?>
         </div>
 		</div>
@@ -134,7 +143,7 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 		<div class="cb-list-content cb-user cb-col-30-70">
 			<div><?php echo esc_html__( 'User data', 'commonsbooking' ); ?></div>
 			<div><a href="<?php echo get_edit_profile_url( $user->ID ); ?>"><?php echo esc_html( $user->first_name ) . ' ' . esc_html( $user->last_name ) . ' (' . esc_html( $user->user_login ) . ')'; ?> </a>
-
+                <br>
                 <?php echo commonsbooking_sanitizeHTML( $formatted_user_info ); ?>
 			</div>
 		</div>

@@ -23,7 +23,7 @@ class iCalendarTest extends CBTest {
 		$this->assertEquals("END:VCALENDAR",end($iCalendarArray));
 	}
 
-	protected function setUp(){
+	protected function setUp() : void {
 		parent::setUp();
 		$this->calendar = new iCalendar();
 		$booking = new Booking( $this->bookingId );

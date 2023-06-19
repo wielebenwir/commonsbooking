@@ -82,7 +82,7 @@ class CalendarTest extends CustomPostTypeTest {
 		$this->assertTrue($jsonresponse['minDate'] == date('Y-m-d'));
 	}
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$now               = time();
