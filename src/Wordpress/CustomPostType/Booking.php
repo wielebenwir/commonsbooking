@@ -249,14 +249,16 @@ class Booking extends Timeframe {
 		?string $requestedPostName,
 		?string $postType
 	): int {
-		if ( $itemId == null || ! get_post( $itemId ) ) {
-			throw new BookingDeniedException( __( sprintf( 'Item does not exist. (%s)', $itemId ), 'commonsbooking' ) );
+		if ( $itemId === null || ! get_post( $itemId ) ) {
+			// translators: $s = id of the item
+			throw new BookingDeniedException( sprintf( __( 'Item does not exist. (%s)', 'commonsbooking' ), $itemId ) );
 		}
-		if ( $locationId == null || ! get_post( $locationId ) ) {
-			throw new BookingDeniedException( __( sprintf( 'Location does not exist. (%s)', $locationId ), 'commonsbooking' ) );
+		if ( $locationId === null || ! get_post( $locationId ) ) {
+			// translators: $s = id of the location
+			throw new BookingDeniedException( sprintf( __( 'Location does not exist. (%s)', 'commonsbooking' ), $locationId ) );
 		}
 
-		if ( $repetitionStart == null || $repetitionEnd == null ) {
+		if ( $repetitionStart === null || $repetitionEnd === null ) {
 			throw new BookingDeniedException( __( 'Start- and/or end-date is missing.', 'commonsbooking' ) );
 		}
 
@@ -277,7 +279,6 @@ class Booking extends Timeframe {
 				$booking->ID ?? null,
 			);
 
-
 		// delete unconfirmed booking if booking process is canceled by user
 		if ( $post_status === 'delete_unconfirmed' && $booking->ID === $post_ID ) {
 			wp_delete_post( $post_ID );
@@ -291,18 +292,17 @@ class Booking extends Timeframe {
 		if ( count( $existingBookings ) > 0 ) {
 			// checks if it's an edit, but ignores exact start/end time
 			$isEdit = count( $existingBookings ) === 1 &&
-			          array_values( $existingBookings )[0]->getPost()->post_name === $requestedPostName &&
-			          array_values( $existingBookings )[0]->getPost()->post_author === get_current_user_id();
+						array_values( $existingBookings )[0]->getPost()->post_name === $requestedPostName &&
+						array_values( $existingBookings )[0]->getPost()->post_author === get_current_user_id();
 
-			if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status != 'canceled' ) {
+			if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status !== 'canceled' ) {
 				if ( $booking ) {
 					$post_status = 'unconfirmed';
 				} else {
 					throw new BookingDeniedException( __( 'There is already a booking in this time-range. This notice may also appear if there is an unconfirmed booking in the requested period. Unconfirmed bookings are deleted after about 10 minutes. Please try again in a few minutes.', 'commonsbooking' ) );
 				}
 			}
-
-			}
+		}
 
 		// add internal comment if admin edited booking via frontend
 		if ( $booking && $booking->post_author !== '' && intval( $booking->post_author ) !== intval( get_current_user_id() ) ) {
@@ -310,7 +310,6 @@ class Booking extends Timeframe {
 			$internal_comment                          = esc_html__( 'status changed by admin user via frontend. New status: ', 'commonsbooking' ) . $post_status;
 			$booking->appendToInternalComment( $internal_comment, get_current_user_id() );
 		}
-
 
 		$postarr['type']                  = $postType;
 		$postarr['post_status']           = $post_status;
@@ -321,13 +320,13 @@ class Booking extends Timeframe {
 		// New booking
 		if ( empty( $booking ) ) {
 			$postarr['post_name']  = Helper::generateRandomString();
-			$postarr['meta_input'] = [
+			$postarr['meta_input'] = array(
 				\CommonsBooking\Model\Timeframe::META_LOCATION_ID => $locationId,
 				\CommonsBooking\Model\Timeframe::META_ITEM_ID     => $itemId,
 				\CommonsBooking\Model\Timeframe::REPETITION_START => $repetitionStart,
 				\CommonsBooking\Model\Timeframe::REPETITION_END   => $repetitionEnd,
 				'type'                                            => Timeframe::BOOKING_ID,
-			];
+			);
 
 			$postId = wp_insert_post( $postarr, true );
 
