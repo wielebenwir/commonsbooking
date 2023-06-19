@@ -79,7 +79,7 @@ class BookingTest extends CustomPostTypeTest
 		$bookingId = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
-			'unconfirmed',
+			'delete_unconfirmed',
 			null,
 			null,
 			strtotime( self::CURRENT_DATE ),
