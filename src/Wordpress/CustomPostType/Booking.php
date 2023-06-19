@@ -184,23 +184,23 @@ class Booking extends Timeframe {
 	 * @throws BookingDeniedException - if booking is not allowed, contains translated error message for the user
 	 */
 	public function handleFormRequest() {
-
-        if (
+		if (
 			function_exists( 'wp_verify_nonce' ) &&
 			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
 			wp_verify_nonce( $_REQUEST[ static::getWPNonceId() ], static::getWPAction() )
 		) {
-			$itemId          = isset( $_REQUEST['item-id'] ) && $_REQUEST['item-id'] != '' ? sanitize_text_field( $_REQUEST['item-id'] ) : null;
-			$locationId      = isset( $_REQUEST['location-id'] ) && $_REQUEST['location-id'] != '' ? sanitize_text_field( $_REQUEST['location-id'] ) : null;
-			$comment         = isset( $_REQUEST['comment'] ) && $_REQUEST['comment'] != '' ? sanitize_text_field( $_REQUEST['comment'] ) : null;
-			$post_status     = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] != '' ? sanitize_text_field( $_REQUEST['post_status'] ) : null;
-			$post_ID         = isset( $_REQUEST['post_ID'] ) && $_REQUEST['post_ID'] != '' ? intval( $_REQUEST['post_ID'] ) : null;
-			$repetitionStart = isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] ) && $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] != '' ? sanitize_text_field( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] ) : null;
-			$repetitionEnd   = isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] ) && $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] != '' ? sanitize_text_field( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] ) : null;
-			$postName        = isset( $_REQUEST['cb_booking'] ) ? sanitize_text_field( $_REQUEST['cb_booking'] ) : null;
-			$postType        = isset( $_REQUEST['type'] ) ? sanitize_text_field( $_REQUEST['type'] ) : null;
+			$itemId          = isset( $_REQUEST['item-id'] ) && $_REQUEST['item-id'] !== '' ? sanitize_text_field( wp_unslash( $_REQUEST['item-id'] ) ) : null;
+			$locationId      = isset( $_REQUEST['location-id'] ) && $_REQUEST['location-id'] !== '' ? sanitize_text_field( wp_unslash( $_REQUEST['location-id'] ) ) : null;
+			$comment         = isset( $_REQUEST['comment'] ) && $_REQUEST['comment'] !== '' ? sanitize_text_field( wp_unslash( $_REQUEST['comment'] ) ) : null;
+			$post_status     = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] !== '' ? sanitize_text_field( wp_unslash( $_REQUEST['post_status'] ) ) : null;
+			$post_ID         = isset( $_REQUEST['post_ID'] ) && $_REQUEST['post_ID'] !== '' ? intval( $_REQUEST['post_ID'] ) : null;
+			$repetitionStart = isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] ) && $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] !== '' ? sanitize_text_field( wp_unslash( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] ) ) : null;
+			$repetitionEnd   = isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] ) && $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] !== '' ? sanitize_text_field( wp_unslash( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] ) ) : null;
+			$postName        = isset( $_REQUEST['cb_booking'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['cb_booking'] ) ) : null;
+			$postType        = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : null;
 
-			$postId = $this->handleBookingRequest( $itemId,
+			$postId = $this->handleBookingRequest(
+				$itemId,
 				$locationId,
 				$post_status,
 				$post_ID,
@@ -208,12 +208,13 @@ class Booking extends Timeframe {
 				$repetitionStart,
 				$repetitionEnd,
 				$postName,
-				$postType );
+				$postType
+			);
 
 			// get slug as parameter
 			$post_slug = get_post( $postId )->post_name;
 
-			wp_redirect( add_query_arg( self::getPostType(), $post_slug, home_url() ) );
+			wp_safe_redirect( add_query_arg( self::getPostType(), $post_slug, home_url() ) );
 			exit;
 		}
 	}
