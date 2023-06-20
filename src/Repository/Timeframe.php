@@ -188,8 +188,6 @@ class Timeframe extends PostRepository {
 			global $wpdb;
 			$table_postmeta = $wpdb->prefix . 'postmeta';
 
-			$itemQuery = "";
-
 			$items     = array_filter( $items );
 			$locations = array_filter( $locations );
 
@@ -198,69 +196,27 @@ class Timeframe extends PostRepository {
             $locations  = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
             $types      = commonsbooking_sanitizeArrayorString( $types, 'intval' );
 
-			//TODO: Query for items individually where META_ITEM_SELECTION = SELECTION_MANUAL_ID
-			/*PSEUDOCODE Formulierung für Query, gedacht wie ein Filter. Alle UPPERCASE sind die Tabellen, die ->beziehen sich auf die Postmeta Werte. Alles UPPERCASE sind die jeweiligen Tables. Alles mit $sind die übergebenen Variablen
-			*  FOR TIMEFRAMES AS timeframe{
-			*   IF (timeframe->item-select= 0){ //Manuell
-		    *       IF (timeframe->item-id IN ($items)){
-			*           Return true;
-			 *      }
-			*   }
-			*   ELSEIF (item-select = 1){ //kategorien
-			*        For TERM_RELATIONSHIPS as relationship{
-			*               If (WHERE relationship->object_id IN ($items) DANN PRÜFE ZEILE  OB relationship->term_taxonomy_id = timeframe->item-category-id){
-			 *                  Return true;
-			 *              }
-			 *      }
-			*   }
-			 *  ELSE (item-select = 2) {
-			 *      return true;
-			 * }
-			 *
-			 * UND GENAU DAS GLEICHE NOCHMAL FÜR DIE LOCATIONS
-			*/
+			$itemQuery = "";
 			if ( count( $items ) > 0 ) {
-				$itemQuery = " 
-                    INNER JOIN $table_postmeta pm2 ON
-                        pm2.post_id = pm1.post_id AND
-                        pm2.meta_key = '". \CommonsBooking\Model\Timeframe::META_ITEM_ID . "' AND
-                        pm2.meta_value IN (" . implode( ',', $items ) . ")
-                ";
+				$itemQuery = self::getEntityQuery(
+					"pm2",
+					$table_postmeta,
+					$items,
+					\CommonsBooking\Model\Timeframe::META_ITEM_ID,
+					\CommonsBooking\Model\Timeframe::META_ITEM_IDS
+				);
 			}
 
-			// Todo Query for location(s) where timeframe meta META_ITEM_SELECTION = SELECTION_MANUAL_ID
 			$locationQuery = "";
 			if ( count( $locations ) > 0 ) {
-				$locationQuery = " 
-                    INNER JOIN $table_postmeta pm3 ON
-                        pm3.post_id = pm1.post_id AND
-                        pm3.meta_key = '". \CommonsBooking\Model\Timeframe::META_LOCATION_ID ."' AND
-                        pm3.meta_value IN (" . implode( ',', $locations ) . ")
-                ";
+				$locationQuery = self::getEntityQuery(
+					"pm3",
+					$table_postmeta,
+					$locations,
+					\CommonsBooking\Model\Timeframe::META_LOCATION_ID,
+					\CommonsBooking\Model\Timeframe::META_LOCATION_IDS
+				);
 			}
-
-			// Todo Write correct query Add timeframes that apply to all items (timeframe meta META_ITEM_SELECTION = SELECTION_ALL_ID)
-			$allItemsQuery = "
-				SELECT ALL $table_postmeta pm3 ON
-					pm3.post_id = pm1.post_id AND
-					pm3.meta_key = ". \CommonsBooking\Model\Timeframe::META_ITEM_SELECT ." AND
-					pm3.meta_value 	
-			";
-
-			// Todo Write correct query Add timeframes that apply to all locations (timeframe meta META_ITEM_SELECTION = SELECTION_ALL_ID)
-			$allLocationsQuery = "
-				SELECT ALL $table_postmeta pm3 ON
-					pm3.post_id = pm1.post_id AND
-					pm3.meta_key = ". \CommonsBooking\Model\Timeframe::META_ITEM_SELECT ." AND
-					pm3.meta_value 	
-			";
-
-			//ToDo Query for timeframes that apply to all locations from category (timeframe META_ITEM_CATEGORY_ID) in given (Timeframe Meta META_ITEM_SELECTION = SELECTION_CATEGORY_ID )
-			$locationCategoryQuery = "";
-
-			//ToDo Query for timeframes that apply to all items from category (timeframe META_LOCATION_CATEGORY_ID) in given (Timeframe Meta META_LOCATION_SELECTION = SELECTION_CATEGORY_ID )
-			$itemCategoryQuery = "";
-
 
 			// Complete query, including types
 			$query = "
@@ -295,6 +251,35 @@ class Timeframe extends PostRepository {
 
 			return $postIds;
 		}
+	}
+
+	/**
+	* Returns entity query which considers single and multi selection.
+	*/
+	private static function getEntityQuery($joinAlias, $table_postmeta, $entities, $singleEntityKey, $multiEntityKey) {
+		$locationQueryParts = [];
+
+		// Single select
+		$singleLocationQuery = "(
+		                        $joinAlias.meta_key = '". $singleEntityKey ."' AND
+		                        $joinAlias.meta_value IN (" . implode( ',', $entities ) . ")
+	                        )";
+		$locationQueryParts[] = $singleLocationQuery;
+
+		// Multi select
+		$multiLocationQueries = [];
+		foreach($entities as $entityId) {
+			$multiLocationQueries[] = "$joinAlias.meta_value LIKE '%:\"$entityId\";%'";
+		}
+		$multiLocationQuery = "(
+					$joinAlias.meta_key = '". $multiEntityKey ."' AND
+					(" . implode(' OR ', $multiLocationQueries) . ") 
+				)";
+		$locationQueryParts[] = $multiLocationQuery;
+
+		return "INNER JOIN $table_postmeta $joinAlias ON
+                    $joinAlias.post_id = pm1.post_id AND
+                    (".implode(' OR ', $locationQueryParts).")";
 	}
 
 	/**
