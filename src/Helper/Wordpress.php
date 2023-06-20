@@ -58,7 +58,7 @@ class Wordpress {
 	 */
 	public static function getPostIdArray($posts): array {
 		 return array_map( function ( $post ) {
-			return strval($post->ID);
+			return intval($post->ID);
 		}, $posts);
 	}
 
@@ -95,9 +95,7 @@ class Wordpress {
 		// Remove empty tags
 		$postIds = array_filter($postIds);
 
-		return array_map( function ( $postId ) {
-			return strval($postId);
-		}, $postIds);
+		return array_map( 'strval', $postIds );
 	}
 
 	/**
@@ -119,6 +117,7 @@ class Wordpress {
 
 	/**
 	 * Returns all post ids in relation to $postId.
+	 * CAREFUL: This will not get the location that the item is in relation to.
 	 * @param $postId
 	 *
 	 * @return array
@@ -207,7 +206,9 @@ class Wordpress {
 			$relatedPostIds = array_merge($relatedPostIds, Wordpress::getPostIdArray($timeframes));
 		}
 
-		return $relatedPostIds;
+		return array_unique(
+			array_map( 'intval', $relatedPostIds)
+		);
 	}
 
 	/**
@@ -256,7 +257,7 @@ class Wordpress {
 				true
 			);
 		});
-		return $itemsAndLocations;
+		return array_map('intval', $itemsAndLocations);
 	}
 
 	/**
