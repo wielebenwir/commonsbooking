@@ -158,12 +158,13 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
-	 * Returns Post-IDs by type(s), item(s), location(s)
+	 * Returns Post-IDs of timeframes by type(s), item(s), location(s)
+	 *
 	 * Why? It's because of performance. We use the ids as base set for following filter queries.
 	 *
-	 * @param array $types
-	 * @param array $items
-	 * @param array $locations
+	 * @param array $types the types of timeframes to return, will return default set when not set
+	 * @param array $items the items that the timeframes should be applicable to, will return all if not set
+	 * @param array $locations the locations that the timeframes should be applicable to, will return all if not set
 	 *
 	 * @return mixed
 	 * @throws \Psr\Cache\InvalidArgumentException
@@ -197,27 +198,69 @@ class Timeframe extends PostRepository {
             $locations  = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
             $types      = commonsbooking_sanitizeArrayorString( $types, 'intval' );
 
-
-			// Query for item(s)
+			//TODO: Query for items individually where META_ITEM_SELECTION = SELECTION_MANUAL_ID
+			/*PSEUDOCODE Formulierung für Query, gedacht wie ein Filter. Alle UPPERCASE sind die Tabellen, die ->beziehen sich auf die Postmeta Werte. Alles UPPERCASE sind die jeweiligen Tables. Alles mit $sind die übergebenen Variablen
+			*  FOR TIMEFRAMES AS timeframe{
+			*   IF (timeframe->item-select= 0){ //Manuell
+		    *       IF (timeframe->item-id IN ($items)){
+			*           Return true;
+			 *      }
+			*   }
+			*   ELSEIF (item-select = 1){ //kategorien
+			*        For TERM_RELATIONSHIPS as relationship{
+			*               If (WHERE relationship->object_id IN ($items) DANN PRÜFE ZEILE  OB relationship->term_taxonomy_id = timeframe->item-category-id){
+			 *                  Return true;
+			 *              }
+			 *      }
+			*   }
+			 *  ELSE (item-select = 2) {
+			 *      return true;
+			 * }
+			 *
+			 * UND GENAU DAS GLEICHE NOCHMAL FÜR DIE LOCATIONS
+			*/
 			if ( count( $items ) > 0 ) {
 				$itemQuery = " 
                     INNER JOIN $table_postmeta pm2 ON
                         pm2.post_id = pm1.post_id AND
-                        pm2.meta_key = 'item-id' AND
+                        pm2.meta_key = '". \CommonsBooking\Model\Timeframe::META_ITEM_ID . "' AND
                         pm2.meta_value IN (" . implode( ',', $items ) . ")
                 ";
 			}
 
-			// Query for location(s)
+			// Todo Query for location(s) where timeframe meta META_ITEM_SELECTION = SELECTION_MANUAL_ID
 			$locationQuery = "";
 			if ( count( $locations ) > 0 ) {
 				$locationQuery = " 
                     INNER JOIN $table_postmeta pm3 ON
                         pm3.post_id = pm1.post_id AND
-                        pm3.meta_key = 'location-id' AND
+                        pm3.meta_key = '". \CommonsBooking\Model\Timeframe::META_LOCATION_ID ."' AND
                         pm3.meta_value IN (" . implode( ',', $locations ) . ")
                 ";
 			}
+
+			// Todo Write correct query Add timeframes that apply to all items (timeframe meta META_ITEM_SELECTION = SELECTION_ALL_ID)
+			$allItemsQuery = "
+				SELECT ALL $table_postmeta pm3 ON
+					pm3.post_id = pm1.post_id AND
+					pm3.meta_key = ". \CommonsBooking\Model\Timeframe::META_ITEM_SELECT ." AND
+					pm3.meta_value 	
+			";
+
+			// Todo Write correct query Add timeframes that apply to all locations (timeframe meta META_ITEM_SELECTION = SELECTION_ALL_ID)
+			$allLocationsQuery = "
+				SELECT ALL $table_postmeta pm3 ON
+					pm3.post_id = pm1.post_id AND
+					pm3.meta_key = ". \CommonsBooking\Model\Timeframe::META_ITEM_SELECT ." AND
+					pm3.meta_value 	
+			";
+
+			//ToDo Query for timeframes that apply to all locations from category (timeframe META_ITEM_CATEGORY_ID) in given (Timeframe Meta META_ITEM_SELECTION = SELECTION_CATEGORY_ID )
+			$locationCategoryQuery = "";
+
+			//ToDo Query for timeframes that apply to all items from category (timeframe META_LOCATION_CATEGORY_ID) in given (Timeframe Meta META_LOCATION_SELECTION = SELECTION_CATEGORY_ID )
+			$itemCategoryQuery = "";
+
 
 			// Complete query, including types
 			$query = "

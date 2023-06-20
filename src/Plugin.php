@@ -246,6 +246,9 @@ class Plugin {
             // Set default values to existing timeframes for advance booking days
             self::setAdvanceBookingDaysDefault();
 
+			//set default values for timeframe multi-select
+			self::setMultiSelectTimeFrameDefault();
+
 			// Clear cache
 			self::clearCache();
 
@@ -550,12 +553,12 @@ class Plugin {
                 $this->UpdateNotice( COMMONSBOOKING_VERSION, $plugin_data['new_version'] );
             }
         );
-             
+
     	// iCal rewrite
 		iCalendar::initRewrite();
 
 	}
-	
+
 	/**
 	 * Loads text domain for (from local file or wordpress plugin-dir)
 	 *
@@ -797,14 +800,34 @@ class Plugin {
      *
      * @return void
      */
-    public static function setAdvanceBookingDaysDefault() {
+    private static function setAdvanceBookingDaysDefault() {
         $timeframes = \CommonsBooking\Repository\Timeframe::getBookable( [], [], null, true );
 
         foreach ( $timeframes as $timeframe ) {
-            if ( $timeframe->getMeta( 'timeframe-advance-booking-days' ) < 1 ) {
-                update_post_meta( $timeframe->ID, 'timeframe-advance-booking-days', strval( \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS ) );
+            if ( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) < 1 ) {
+                update_post_meta( $timeframe->ID, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, strval( \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS ) );
             }
         }
     }
+
+	/**
+	 * sets the default value for multi selection to manual in all existing timeframes.
+	 * Multi selection for timeframes are available since 2.8 (estimated) - all timeframes created prior to this version need to have a value for selection
+	 *
+	 * @return void
+	 * @throws InvalidArgumentException
+	 */
+	private static function setMultiSelectTimeFrameDefault() {
+		$timeframes = \CommonsBooking\Repository\Timeframe::get( [],[],[],true );
+
+		foreach ($timeframes as $timeframe) {
+			if ( empty($timeframe->getMeta(\CommonsBooking\Model\Timeframe::META_ITEM_SELECT ) ) ) {
+				update_post_meta($timeframe->ID, \CommonsBooking\Model\Timeframe::META_ITEM_SELECT, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
+			}
+			if ( empty($timeframe->getMeta(\CommonsBooking\Model\Timeframe::META_LOCATION_SELECT ) ) ) {
+				update_post_meta($timeframe->ID, \CommonsBooking\Model\Timeframe::META_ITEM_SELECT, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
+			}
+		}
+	}
 
 }
