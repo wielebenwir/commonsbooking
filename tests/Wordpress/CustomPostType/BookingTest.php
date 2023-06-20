@@ -22,7 +22,7 @@ class BookingTest extends CustomPostTypeTest
 	 * @return void
 	 */
 	public function testHandleBookingRequestDefautl() {
-		//Case 1: We create an unconfirmed booking for a bookable timeframe. The unconfirmed booking should be created
+		// Case 1: We create an unconfirmed booking for a bookable timeframe. The unconfirmed booking should be created
 		$bookingId = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
@@ -42,7 +42,7 @@ class BookingTest extends CustomPostTypeTest
 		$this->assertTrue( $bookingModel->isUnconfirmed() );
 		$this->assertFalse( $bookingModel->isConfirmed() );
 
-		//Case 2: We now confirm the booking. The booking should be confirmed
+		// Case 2: We now confirm the booking. The booking should be confirmed
 		$newBookingId = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
@@ -55,14 +55,14 @@ class BookingTest extends CustomPostTypeTest
 			null
 		);
 
-		//the id should be the same
+		// the id should be the same
 		$this->assertEquals( $bookingId, $newBookingId );
-		//we create a new model, just to be sure
+		// we create a new model, just to be sure
 		$bookingModel = new \CommonsBooking\Model\Booking( $bookingId );
 		$this->assertTrue( $bookingModel->isConfirmed() );
 		$this->assertFalse( $bookingModel->isUnconfirmed() );
 
-		//Case 3: We now try to cancel our booking. The booking should be cancelled.
+		// Case 3: We now try to cancel our booking. The booking should be cancelled.
 		$canceledId = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
@@ -80,7 +80,7 @@ class BookingTest extends CustomPostTypeTest
 		$this->assertFalse( $bookingModel->isConfirmed() );
 		$this->assertFalse( $bookingModel->isUnconfirmed() );
 
-		//Case 4: We create an unconfirmed booking and then cancel the booking. The booking should be canceled
+		// Case 4: We create an unconfirmed booking and then cancel the booking. The booking should be canceled
 		$bookingId = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
@@ -112,7 +112,7 @@ class BookingTest extends CustomPostTypeTest
 	}
 
 	public function testBookingWithoutLoc() {
-		//Case 1: We try to create a booking without a defined location
+		// Case 1: We try to create a booking without a defined location
 		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
 		$this->expectExceptionMessage( 'Location does not exist. ()' );
 		$booking = Booking::handleBookingRequest(
@@ -128,7 +128,7 @@ class BookingTest extends CustomPostTypeTest
 		);
 	}
 	public function testBookingWithoutItem() {
-		//Case 2: We try to create a booking without a defined item
+		// Case 2: We try to create a booking without a defined item
 		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
 		$this->expectExceptionMessage( 'Item does not exist. ()' );
 		$booking = Booking::handleBookingRequest(
@@ -144,9 +144,9 @@ class BookingTest extends CustomPostTypeTest
 		);
 	}
 	public function testBookingWithoutStart() {
-		//Case 3: We try to create a booking without a defined start date
+		// Case 3: We try to create a booking without a defined start date
 		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
-		$this->expectExceptionMessage('Start- and/or end-date is missing.');
+		$this->expectExceptionMessage( 'Start- and/or end-date is missing.' );
 		$booking = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
@@ -160,9 +160,9 @@ class BookingTest extends CustomPostTypeTest
 		);
 	}
 	public function testBookingWithoutEnd() {
-		//Case 4: We try to create a booking without a defined end date
+		// Case 4: We try to create a booking without a defined end date
 		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
-		$this->expectExceptionMessage('Start- and/or end-date is missing.');
+		$this->expectExceptionMessage( 'Start- and/or end-date is missing.' );
 		$booking = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
@@ -176,10 +176,10 @@ class BookingTest extends CustomPostTypeTest
 		);
 	}
 	public function testBookingOverlapping() {
-		//Case 5: Overlapping booking in the same timerange
+		// Case 5: Overlapping booking in the same timerange
 		$this->createConfirmedBookingStartingToday();
-		$this->expectException(\CommonsBooking\Exception\BookingDeniedException::class);
-		$this->expectExceptionMessage('There is already a booking in this time-range. This notice may also appear if there is an unconfirmed booking in the requested period. Unconfirmed bookings are deleted after about 10 minutes. Please try again in a few minutes.');
+		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
+		$this->expectExceptionMessage( 'There is already a booking in this time-range. This notice may also appear if there is an unconfirmed booking in the requested period. Unconfirmed bookings are deleted after about 10 minutes. Please try again in a few minutes.' );
 		$booking = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
@@ -193,8 +193,8 @@ class BookingTest extends CustomPostTypeTest
 		);
 	}
 
-	public function testReAccessUnconfirmed(){
-		//this tests the case where the same user tries to access their unconfirmed booking again
+	public function testReAccessUnconfirmed() {
+		// this tests the case where the same user tries to access their unconfirmed booking again
 		$bookingId = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
@@ -206,10 +206,9 @@ class BookingTest extends CustomPostTypeTest
 			null,
 			null
 		);
-		$this->assertIsInt($bookingId);
-		$bookingModel = new \CommonsBooking\Model\Booking($bookingId);
-		$postName = $bookingModel->post_name;
-		$this->assertTrue($bookingModel->isUnconfirmed());
+		$this->assertIsInt( $bookingId );
+		$bookingModel = new \CommonsBooking\Model\Booking( $bookingId );
+		$this->assertTrue( $bookingModel->isUnconfirmed() );
 		$sameBookingId = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
@@ -221,10 +220,10 @@ class BookingTest extends CustomPostTypeTest
 			null,
 			null
 		);
-		//we now make sure that we got the same booking back
-		$this->assertEquals($bookingId, $sameBookingId);
-		$sameBookingModel = new \CommonsBooking\Model\Booking($sameBookingId);
-		$this->assertEquals($bookingModel->post_name, $sameBookingModel->post_name);
+		// we now make sure that we got the same booking back
+		$this->assertEquals( $bookingId, $sameBookingId );
+		$sameBookingModel = new \CommonsBooking\Model\Booking( $sameBookingId );
+		$this->assertEquals( $bookingModel->post_name, $sameBookingModel->post_name );
 	}
 
 	protected function setUp(): void {
@@ -233,7 +232,7 @@ class BookingTest extends CustomPostTypeTest
 			$this->createBookableTimeFrameIncludingCurrentDay()
 		);
 		$this->createSubscriber();
-		wp_set_current_user($this->normalUserID);
+		wp_set_current_user( $this->normalUserID );
 	}
 
 	protected function tearDown(): void {
