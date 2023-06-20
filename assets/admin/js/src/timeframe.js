@@ -94,6 +94,24 @@
             }
 
             /**
+             * "Moves" selection from single item selection to multiselect.
+             */
+            const migrateSingleSelection = () => {
+                // get single selection
+                const singleSelectionOption = singleItemSelection.find('option:selected');
+
+                // if it has a value, remove selection from single select and activate checkbox in multiselect
+                if(singleSelectionOption.prop('value')) {
+                    const multiItemSelectionOption = multiItemSelection.find(`input[value=${singleSelectionOption.prop('value')}]`);
+                    if(multiItemSelectionOption) {
+                        multiItemSelectionOption.prop('checked', true);
+                    }
+                    singleSelectionOption.prop('selected', false);
+                }
+            }
+            migrateSingleSelection();
+
+            /**
              * Shows/hides max day selection and user role restriction depending on timeframe type (for bookings).
              */
             const handleTypeSelection = function () {
