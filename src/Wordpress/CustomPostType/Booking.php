@@ -344,11 +344,15 @@ class Booking extends Timeframe {
 		try {
 			$bookingModel->assignBookableTimeframeFields();
 		} catch ( \Exception $e ) {
-			throw new BookingDeniedException( __( 'There was an error while saving the booking. Please try again.', 'commonsbooking' ) );
+			throw new BookingDeniedException( __( 'There was an error while saving the booking. Please try again. Thrown error:', 'commonsbooking' ) .
+			                                  PHP_EOL . $e->getMessage()
+			);
 		}
 
 		if ( $postId instanceof \WP_Error ) {
-			throw new BookingDeniedException( __( 'There was an error while saving the booking. Please try again.', 'commonsbooking' ) );
+			throw new BookingDeniedException( __( 'There was an error while saving the booking. Please try again. Resulting WP_ERROR: ', 'commonsbooking' ) .
+											  PHP_EOL . $postId->get_error_messages()
+			);
 		}
 
 		return $postId;
