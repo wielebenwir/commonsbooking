@@ -16,12 +16,11 @@ class LocationTest extends CustomPostTypeTest {
 	 * @return void
 	 * @throws \Exception
 	 */
-	/*
+
 	public function testGetBookableTimeframesByItem() {
 		$timeframeArray[] = $this->timeframeModel;
-		$this->assertEquals($timeframeArray, $this->locationModel->getBookableTimeframesByItem($this->itemId)); //Not working
+		$this->assertEquals($timeframeArray, $this->locationModel->getBookableTimeframesByItem($this->itemId, true));
 	}
-	*/
 
 	public function testGetAdmins() {
 		$userArray[] = $this->normalUserID;
