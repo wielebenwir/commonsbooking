@@ -7,13 +7,17 @@
     "allow-plugins": {
       "php-http/discovery": true
     }
-    },
+  },
   "autoload": {
+    "files": [
+      "includes/OptionsArray.php",
+      "includes/Shortcodes.php",
+      "includes/Template.php",
+      "includes/TemplateParser.php",
+      "includes/Users.php"
+    ],
     "psr-4": {
-      "CommonsBooking\\": [
-        "src/",
-        "includes/"
-      ]
+      "CommonsBooking\\": "src/"
     }
   },
   "autoload-dev": {
