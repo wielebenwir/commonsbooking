@@ -6,6 +6,7 @@ namespace CommonsBooking;
 use CommonsBooking\CB\CB1UserFields;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Map\LocationMapAdmin;
+use CommonsBooking\Map\SearchShortcode;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Service\Cache;
@@ -575,6 +576,27 @@ class Plugin {
 			['dashicons', 'cb-leaflet', 'cb-leaflet-easybutton', 'cb-leaflet-markercluster', 'cb-leaflet-messagebox'],
 			COMMONSBOOKING_MAP_PLUGIN_DATA['Version']
 		);
+
+		// vue
+		wp_register_script('cb-vue', $base . 'vue/vue.runtime.global.prod.js', [], $versions['vue']);
+
+		// commons-search
+		wp_register_script(
+			'cb-commons-search',
+			$base . 'commons-search/commons-search.umd.cjs',
+			['cb-leaflet', 'cb-leaflet-markercluster', 'cb-vue'],
+			$versions['@commonsbooking/frontend']
+		);
+		wp_register_style(
+			'cb-commons-search',
+			$base . 'commons-search/style.css',
+			['cb-leaflet', 'cb-leaflet-markercluster'],
+			$versions['@commonsbooking/frontend']
+		);
+	}
+
+	public function registerShortcodes() {
+		add_shortcode('cb_search', array(new SearchShortcode(), 'execute'));
 	}
 
 	/**
@@ -646,6 +668,9 @@ class Plugin {
 
 		// register scripts
 		add_action('wp_enqueue_scripts', array($this, 'registerScriptsAndStyles'));
+
+		// register shortcodes
+		add_action('init', array($this, 'registerShortcodes'));
 
 		// Remove cache items on save.
 		add_action( 'wp_insert_post', array( $this, 'savePostActions' ), 10, 3 );

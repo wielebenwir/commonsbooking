@@ -129,6 +129,18 @@ module.exports = function (grunt) {
 						cwd: 'node_modules/spin.js/',
 						src: 'spin.min.js'
 					},
+					{
+						dest: nodePackagesDestDir + 'commons-search/',
+						expand: true,
+						cwd: 'node_modules/@commonsbooking/frontend/dist/lib/commons-search/',
+						src: ['commons-search.umd.cjs', 'style.css'],
+					},
+					{
+						dest: nodePackagesDestDir + 'vue/',
+						expand: true,
+						cwd: 'node_modules/vue/dist/',
+						src: 'vue.runtime.global.prod.js',
+					},
 				],
 			},
 		},
