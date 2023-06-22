@@ -3,13 +3,14 @@
 namespace CommonsBooking\Tests\API;
 
 use CommonsBooking\Plugin;
+use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use SlopeIt\ClockMock\ClockMock;
 
-class AvailabilityTest extends \WP_UnitTestCase {
+class AvailabilityRouteTest extends \WP_UnitTestCase {
 
 	const USER_ID = 1;
 	const CURRENT_DATE = '2021-05-21';
@@ -36,18 +37,28 @@ class AvailabilityTest extends \WP_UnitTestCase {
 		// Applies hook
 		do_action( 'rest_api_init' );
 
+		// TODO creates initial data (should be mocked in the future)
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+
 		// Create location
 		$this->locationId = self::createLocation('Testlocation', 'publish');
 
 		// Create Item
 		$this->itemId = self::createItem('TestItem', 'publish');
 
+		$mocked = new \DateTimeImmutable( self::CURRENT_DATE );
+
+		$start =  $mocked->modify( '-1 days');
+		$end = $mocked->modify( '+1 days');
+
 		$this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-1 day', self::CURRENT_DATE ),
-			strtotime( '+1 day', self::CURRENT_DATE )
+			$start->getTimestamp(),
+			$end->getTimestamp()
 		);
+
+		ClockMock::reset();
 	}
 
 	// TODO move to abstract test case
@@ -58,7 +69,7 @@ class AvailabilityTest extends \WP_UnitTestCase {
 
 	public function testsAvailabilitySuccess() {
 
-		ClockMock::freeze( new \DateTime( '2021-05-21T12:00:29' ) );
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 
 		$request = new \WP_REST_Request( 'GET', $this->ENDPOINT );
 
@@ -66,10 +77,12 @@ class AvailabilityTest extends \WP_UnitTestCase {
 
 		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( 2, count( $response->get_data()->availability ) );
+
+		// Checks availability for the first day
 		$this->assertEquals( $this->locationId, $response->get_data()->availability[0]->locationId );
 		$this->assertEquals( $this->itemId, $response->get_data()->availability[0]->itemId );
-		$this->assertEquals( '2021-05-21T12:00:29+00:00', $response->get_data()->availability[0]->start );
-		$this->assertEquals( '2021-05-21T12:00:29+00:00', $response->get_data()->availability[0]->end );
+		$this->assertEquals( self::CURRENT_DATE . 'T00:00:00+00:00', $response->get_data()->availability[0]->start );
+		$this->assertEquals( self::CURRENT_DATE . 'T23:59:59+00:00', $response->get_data()->availability[0]->end );
 
 		ClockMock::reset();
 	}
