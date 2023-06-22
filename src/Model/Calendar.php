@@ -4,6 +4,11 @@ namespace CommonsBooking\Model;
 
 use CommonsBooking\Plugin;
 
+/**
+ * Represents a span of weeks, which is used to display a calendar.
+ *
+ * @uses Week
+ */
 class Calendar {
 
 	/**
@@ -55,6 +60,7 @@ class Calendar {
 
 	/**
 	 * Returns weeks for calendar time range.
+	 *
 	 * @return array
 	 */
 	public function getWeeks(): array {
@@ -74,10 +80,10 @@ class Calendar {
 		if ( $cacheItem ) {
 			return $cacheItem;
 		} else {
-			$weeks = [];
+			$weeks = array();
 			while ( $startDate <= $endDate ) {
 				$dayOfYear = date( 'z', $startDate );
-				$year = date( 'Y', $startDate );
+				$year      = date( 'Y', $startDate );
 				$weeks[]   = new Week(
 					$year,
 					$dayOfYear,
@@ -85,15 +91,13 @@ class Calendar {
 					$this->items,
 					$this->types
 				);
-				$startDate = strtotime( "next monday", $startDate );
+				$startDate = strtotime( 'next monday', $startDate );
 			}
 
 			// set cache expiration to force daily fresh after midnight
-			Plugin::setCacheItem( $weeks, ['misc'], $customId, 'midnight' );
+			Plugin::setCacheItem( $weeks, array( 'misc' ), $customId, 'midnight' );
 
 			return $weeks;
 		}
 	}
-
-
 }
