@@ -12,10 +12,10 @@ class ItemTest extends CustomPostTypeTest {
 
 		// Create timeframe with location and item, so that we can search vor it
 		$this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			strtotime( 'midnight'),
-			strtotime( '+90 days' )
+            $this->locationId,
+            $this->itemId,
+            strtotime('midnight'),
+            strtotime('+90 days')
 		);
 	}
 

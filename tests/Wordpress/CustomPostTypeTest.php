@@ -41,6 +41,8 @@ abstract class CustomPostTypeTest extends TestCase {
 		$itemId,
 		$repetitionStart,
 		$repetitionEnd,
+		$itemsID = [],
+		$locationsID = [],
 		$type = Timeframe::BOOKABLE_ID,
 		$fullday = "on",
 		$repetition = 'w',
@@ -65,8 +67,10 @@ abstract class CustomPostTypeTest extends TestCase {
 		] );
 
 		update_post_meta( $timeframeId, 'type', $type );
-		update_post_meta( $timeframeId, 'location-id', $locationId );
-		update_post_meta( $timeframeId, 'item-id', $itemId );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_LOCATION_ID, $locationId );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_LOCATION_IDS, $locationsID);
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_ITEM_ID, $itemId );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_ITEM_IDS, $itemsID );
 		update_post_meta( $timeframeId, 'timeframe-max-days', $maxDays );
 		update_post_meta( $timeframeId, 'timeframe-advance-booking-days', $advanceBookingDays );
 		update_post_meta( $timeframeId, 'full-day', $fullday );
@@ -230,7 +234,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
 	// Create Item
-	public function createItem($title, $postStatus, $admins = []) {
+	public function createItem($title, $postStatus = 'publish', $admins = []) {
 		$itemId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Item::$postType,
@@ -247,7 +251,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
 	// Create Location
-	public function createLocation($title, $postStatus, $admins = []) {
+	public function createLocation($title, $postStatus = 'publish', $admins = []) {
 		$locationId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Location::$postType,

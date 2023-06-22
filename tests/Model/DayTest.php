@@ -23,33 +23,39 @@ class DayTest extends CustomPostTypeTest {
 		$this->bookableTimeframeForCurrentDayId = $this->createBookableTimeFrameIncludingCurrentDay();
 
 		$this->bookableTimeframeNoRepSingleDayTomorrowId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
-			null,
-			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			'on',
-			"norep"
+            $this->locationId,
+            $this->itemId,
+            strtotime('+1 days', strtotime(self::CURRENT_DATE)),
+            null,
+            [],
+            [],
+            \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+            'on',
+            "norep"
 		);
 
 		$this->bookableTimeframeNoRepSingleDayTodayId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			strtotime(self::CURRENT_DATE),
-			null,
-			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			'on',
-			"norep"
+            $this->locationId,
+            $this->itemId,
+            strtotime(self::CURRENT_DATE),
+            null,
+            [],
+            [],
+            \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+            'on',
+            "norep"
 		);
 
 		$this->bookableTimeframeNoRepStartsYesterdayEndsTomorrowId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			strtotime( '-1 days', strtotime( self::CURRENT_DATE ) ),
-			strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
-			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			'on',
-			"norep"
+            $this->locationId,
+            $this->itemId,
+            strtotime('-1 days', strtotime(self::CURRENT_DATE)),
+            strtotime('+1 days', strtotime(self::CURRENT_DATE)),
+            [],
+            [],
+            \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+            'on',
+            "norep"
 		);
 
 		$this->createUnconfirmedBookingEndingTomorrow();
