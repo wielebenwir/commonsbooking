@@ -7,10 +7,12 @@ use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
+use SlopeIt\ClockMock\ClockMock;
 
 class AvailabilityTest extends \WP_UnitTestCase {
 
 	const USER_ID = 1;
+	const CURRENT_DATE = '2021-05-21';
 	protected $ENDPOINT = '/commonsbooking/v1/availability';
 
 	protected $server;
@@ -43,8 +45,8 @@ class AvailabilityTest extends \WP_UnitTestCase {
 		$this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-1 day' ),
-			strtotime( '+1 day' )
+			strtotime( '-1 day', self::CURRENT_DATE ),
+			strtotime( '+1 day', self::CURRENT_DATE )
 		);
 	}
 
@@ -56,6 +58,8 @@ class AvailabilityTest extends \WP_UnitTestCase {
 
 	public function testsAvailabilitySuccess() {
 
+		ClockMock::freeze( new \DateTime( '2021-05-21T12:00:29' ) );
+
 		$request = new \WP_REST_Request( 'GET', $this->ENDPOINT );
 
 		$response = rest_do_request( $request );
@@ -64,6 +68,10 @@ class AvailabilityTest extends \WP_UnitTestCase {
 		$this->assertSame( 2, count( $response->get_data()->availability ) );
 		$this->assertEquals( $this->locationId, $response->get_data()->availability[0]->locationId );
 		$this->assertEquals( $this->itemId, $response->get_data()->availability[0]->itemId );
+		$this->assertEquals( '2021-05-21T12:00:29+00:00', $response->get_data()->availability[0]->start );
+		$this->assertEquals( '2021-05-21T12:00:29+00:00', $response->get_data()->availability[0]->end );
+
+		ClockMock::reset();
 	}
 
 	protected function createTimeframe(
