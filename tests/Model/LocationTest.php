@@ -6,6 +6,7 @@ use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Restriction;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use SlopeIt\ClockMock\ClockMock;
 
 class LocationTest extends CustomPostTypeTest {
 	private Location $locationModel;
@@ -18,6 +19,7 @@ class LocationTest extends CustomPostTypeTest {
 	 */
 
 	public function testGetBookableTimeframesByItem() {
+		ClockMock::freeze(new \DateTime( self::CURRENT_DATE) );
 		$timeframeArray[] = $this->timeframeModel;
 		$this->assertEquals($timeframeArray, $this->locationModel->getBookableTimeframesByItem($this->itemId, true));
 	}
