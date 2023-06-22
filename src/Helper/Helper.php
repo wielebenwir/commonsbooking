@@ -106,7 +106,6 @@ class Helper {
 			$post = new Booking( $post->ID );
 		}
 		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Item::$postType) {
-
 			$post = new Item( $post->ID );
 		}
 		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Location::$postType) {

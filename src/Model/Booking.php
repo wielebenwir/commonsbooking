@@ -266,8 +266,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		if ( $this->isFullDay() ) {
 			return $date_start;
 		}
-
-		if ( $this->getGrid() === 0 ) { // if grid is set to slot duration
+		
+		$grid = $this->getGrid();
+		
+		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time end
 			$timeframeGridSize = $this->getMeta( self::START_TIMEFRAME_GRIDSIZE );
 			if ( $timeframeGridSize ) {
@@ -303,7 +305,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			return $date_end;
 		}
 
-		if ( $this->getGrid() === 0 ) { // if grid is set to slot duration
+		$grid = $this->getGrid();
+		
+		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time start
 			$timeframeGridSize = $this->getMeta( self::END_TIMEFRAME_GRIDSIZE );
 			if ( $timeframeGridSize ) {
@@ -392,7 +396,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			$linktext = esc_html__( 'Link to your booking', 'commonsbooking' );
 		}
 
-		return sprintf( '<a href="%1$s">%2$s</a>', add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) ), $linktext );
+		return sprintf( '<a href="%1$s">%2$s</a>', $this->bookingLinkUrl(), $linktext );
 	}
 
 	/**
@@ -487,7 +491,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return bool
 	 */
-	private function isConfirmed() : bool {
+	public function isConfirmed() : bool {
 		return $this->post_status === 'confirmed';
 	}
 
@@ -496,7 +500,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return bool
 	 */
-	private function isUnconfirmed() : bool {
+	public function isUnconfirmed() : bool {
 		return $this->post_status === 'unconfirmed';
 	}
 }
