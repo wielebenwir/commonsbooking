@@ -27,6 +27,34 @@ class Item extends CustomPostType {
 
 		// Filter only for current user allowed posts
 		add_action( 'pre_get_posts', array( $this, 'filterAdminList' ) );
+
+		// Save-handling
+		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
+	}
+
+	/**
+	 * Handles the creation and editing of the terms in the taxonomy for the location post type
+	 * @param $term_id
+	 * @param $tt_id
+	 * @param $taxonomy
+	 *
+	 * @return void
+	 */
+	public static function termChange($term_id, $tt_id, $taxonomy) {
+		if ( isset ($taxonomy['taxonomy']) && $taxonomy['taxonomy'] == self::$postType . 's_category' ) {
+			//update all dynamic timeframes
+			Timeframe::updateAllTimeframes();
+		}
+	}
+
+	/**
+	 * Handles save-Request for items.
+	 */
+	public function savePost($post_id, \WP_Post $post) {
+		if ( $post->post_type == self::$postType && $post_id ) {
+			//update all dynamic timeframes
+			Timeframe::updateAllTimeframes();
+		}
 	}
 
 

@@ -22,21 +22,21 @@ class Timeframe extends CustomPost {
 
 	public const REPETITION_END = 'repetition-end';
 
-	public const META_ITEM_SELECT = 'item-select';
+	public const META_ITEM_SELECTION_TYPE = 'item-select';
 
 	public const META_ITEM_ID = 'item-id';
 
 	public const META_ITEM_IDS = 'item-ids';
 
-	public const META_ITEM_CATEGORY_ID = 'item-category-id';
+	public const META_ITEM_CATEGORY_IDS = 'item-category-ids';
 
-	public const META_LOCATION_SELECT = 'location-select';
+	public const META_LOCATION_SELECTION_TYPE = 'location-select';
 
 	public const META_LOCATION_ID = 'location-id';
 
 	public const META_LOCATION_IDS = 'location-ids';
 
-	public const META_LOCATION_CATEGORY_ID = 'location-category-id';
+	public const META_LOCATION_CATEGORY_IDS = 'location-category-ids';
 
 	public const META_REPETITION = 'timeframe-repetition';
 
@@ -255,7 +255,7 @@ class Timeframe extends CustomPost {
 	 * @throws Exception
 	 */
 	public function getLocations(): ?array {
-		$locationSelect = $this->getMeta(self::META_LOCATION_SELECT);
+		$locationSelect = $this->getMeta(self::META_LOCATION_SELECTION_TYPE);
 		$locations[] = null;
 		switch ($locationSelect) {
 			case self::SELECTION_MANUAL_ID:
@@ -267,7 +267,7 @@ class Timeframe extends CustomPost {
 				}
 				break;
 			case self::SELECTION_CATEGORY_ID:
-				$categoryIds = $this->getMeta(self::META_LOCATION_CATEGORY_ID);
+				$categoryIds = $this->getMeta(self::META_LOCATION_CATEGORY_IDS);
 				foreach ($categoryIds as $categoryId){
 					$term = get_term($categoryId);
 					array_merge($locations, Locations::get(
@@ -314,11 +314,13 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Get the corresponding item array for a timeframe
+	 *
+	 * DEPRECATED: THIS FUNCTION IS CURRENTLY NOT IN USE ANYWHERE
 	 * @return array|null of Items
 	 * @throws Exception
 	 */
 	public function getItems(): ?array {
-		$itemSelect = $this->getMeta(self::META_ITEM_SELECT);
+		$itemSelect = $this->getMeta(self::META_ITEM_SELECTION_TYPE);
 		$items[] = null;
 		switch ($itemSelect) {
 			case self::SELECTION_MANUAL_ID:

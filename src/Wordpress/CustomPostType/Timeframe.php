@@ -461,7 +461,7 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'    => esc_html__( 'Location', 'commonsbooking' ),
-				'id'      => \CommonsBooking\Model\Timeframe::META_LOCATION_SELECT,
+				'id'      => \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE,
 				'type'    => 'select',
 				'options' => self::getSelectionOptions(),
 				'default' => \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID,
@@ -469,8 +469,8 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'             => esc_html__( "Location Category Selection", 'commonsbooking' ),
-				'id'               => \CommonsBooking\Model\Timeframe::META_LOCATION_CATEGORY_ID,
-				'type'             => 'select',
+				'id'               => \CommonsBooking\Model\Timeframe::META_LOCATION_CATEGORY_IDS,
+				'type'             => 'multicheck',
 				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Location::getTerms() ),
 				'select_all_button' => false,
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
@@ -492,7 +492,7 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'    => esc_html__( 'Item Selection', 'commonsbooking' ),
-				'id'      => \CommonsBooking\Model\Timeframe::META_ITEM_SELECT,
+				'id'      => \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE,
 				'type'    => 'select',
 				'options' => self::getSelectionOptions(),
 				'default' => \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID,
@@ -507,8 +507,8 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'             => esc_html__( "Item Category Selection", 'commonsbooking' ),
-				'id'               => \CommonsBooking\Model\Timeframe::META_ITEM_CATEGORY_ID,
-				'type'             => 'select',
+				'id'               => \CommonsBooking\Model\Timeframe::META_ITEM_CATEGORY_IDS,
+				'type'             => 'multicheck',
 				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Item::getTerms() ),
 				'select_all_button' => false,
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
@@ -807,6 +807,9 @@ class Timeframe extends CustomPostType {
 				BookingCodes::generate( $post_id );
 			}
 		}
+
+		// Update postmeta related to dynamic selection fields
+		Timeframe::manageTimeframeMeta( $post_id );
 	}
 
 	/**
@@ -856,6 +859,115 @@ class Timeframe extends CustomPostType {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Will update the dynamic item / location assignment for all timeframes.
+	 *
+	 * @return void
+	 */
+	public static function updateAllTimeframes() {
+		$timeframes = \CommonsBooking\Repository\Timeframe::get(
+			[],
+			[],
+			[
+				Timeframe::HOLIDAYS_ID,
+				Timeframe::BOOKABLE_ID,
+				Timeframe::REPAIR_ID
+			]
+		);
+		foreach ( $timeframes as $timeframe ) {
+			static::manageTimeframeMeta( $timeframe->ID );
+		}
+	}
+
+	/**
+	 * This function is for the timeframes which do not have specific item(s) or location(s) assigned
+	 * but rather use a dynamic selection type like an entire category of items / locations or all items / locations.
+	 * Since the count of items or locations that count as ALL can change without the timeframe changing, we need
+	 * to constantly update the timeframes which have this setting.
+	 *
+	 * THIS FUNCTIONALITY IS THEORETICALLY IMPLEMENTED FOR ALL TIMEFRAMES, BUT ONLY TESTED AND AVAILABLE FOR HOLIDAYS.
+	 *
+	 * This should run in the following cases:
+	 * 1. Item / Location is assigned / removed from category
+	 * 2. Categories are re-ordered
+	 * 3. Item / Location is removed entirely
+	 * 4. Item / Location is added
+	 *
+	 * @param $post_id
+	 *
+	 * @return void
+	 */
+	public static function manageTimeframeMeta ( $post_id ) {
+		$postModel = get_post($post_id);
+		// This is just for timeframes
+		if ( $postModel->post_type !== static::getPostType() ) {
+			return;
+		}
+
+		$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
+		$itemSelectionType = intval ( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE ) );
+		$locationSelectionType = intval ( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE ) );
+
+		//we only need to update the timeframes which have the dynamic selection type
+		if ( $itemSelectionType === \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID && $locationSelectionType === \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID ) {
+			return;
+		}
+
+		if ($itemSelectionType === \CommonsBooking\Model\Timeframe::SELECTION_CATEGORY_ID) {
+			$itemCategorySelection = $timeframe->getMeta( \CommonsBooking\Model\Timeframe::META_ITEM_CATEGORY_IDS );
+			$taxQuery = array (
+				'tax_query' => array(
+					array(
+					'taxonomy' => Item::getPostType() . 's_category',
+					'field' => 'term_id',
+					'terms' => $itemCategorySelection
+					),
+				)
+			);
+			$items = \CommonsBooking\Repository\Item::get( $taxQuery );
+			//for some reason, the item ids need to be saved as strings
+			$itemIds = array_map( function ( $item ) {
+				return strval ($item->ID);
+			}, $items );
+			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_ITEM_IDS, $itemIds );
+		}
+		else if ($itemSelectionType === \CommonsBooking\Model\Timeframe::SELECTION_ALL_ID) {
+			$items = \CommonsBooking\Repository\Item::get();
+			//for some reason, the item ids need to be saved as strings
+			$itemIds = array_map( function ( $item ) {
+				return strval ($item->ID);
+			}, $items );
+			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_ITEM_IDS, $itemIds );
+		}
+
+		if ($locationSelectionType === \CommonsBooking\Model\Timeframe::SELECTION_CATEGORY_ID) {
+			$locationCategorySelection = $timeframe->getMeta( \CommonsBooking\Model\Timeframe::META_LOCATION_CATEGORY_IDS );
+			$taxQuery = array (
+				'tax_query' => array(
+					array(
+					'taxonomy' => Location::getPostType() . 's_category',
+					'field' => 'term_id',
+					'terms' => $locationCategorySelection
+					),
+				)
+			);
+			$locations = \CommonsBooking\Repository\Location::get( $taxQuery );
+			//for some reason, the location ids need to be saved as strings
+			$locationIds = array_map( function ( $location ) {
+				return strval ($location->ID);
+			}, $locations );
+			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_LOCATION_IDS, $locationIds );
+		}
+		else if ($locationSelectionType === \CommonsBooking\Model\Timeframe::SELECTION_ALL_ID) {
+			$locations = \CommonsBooking\Repository\Location::get();
+			//for some reason, the location ids need to be saved as strings
+			$locationIds = array_map( function ( $location ) {
+				return strval ($location->ID);
+			}, $locations );
+			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_LOCATION_IDS, $locationIds );
+		}
 	}
 
 	/**

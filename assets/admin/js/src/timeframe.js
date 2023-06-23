@@ -67,8 +67,8 @@
             const multiLocationSelection = $(".cmb2-id-location-ids");
             const singleItemSelection = $('.cmb2-id-item-id');
             const multiItemSelection = $(".cmb2-id-item-ids");
-            const categoryLocationSelection = $('.cmb2-id-location-category-id');
-            const categoryItemSelection = $('.cmb2-id-item-category-id');
+            const categoryLocationSelection = $('.cmb2-id-location-category-ids');
+            const categoryItemSelection = $('.cmb2-id-item-category-ids');
             const bookingConfigTitle = $('.cmb2-id-title-bookings-config');
             const maxDaysSelect = $('.cmb2-id-timeframe-max-days');
             const advanceBookingDays = $('.cmb2-id-timeframe-advance-booking-days');
@@ -158,7 +158,12 @@
 
                 //we migrate the single selection to the multiselect (new holiday timeframes do not have a single selection anymore)
                 if (selectedType == HOLIDAY_TYPE) {
+                    itemSelectionInput.show();
+                    locationSelectionInput.show();
                     migrateSingleSelection();
+                } else {
+                    itemSelectionInput.hide();
+                    locationSelectionInput.hide();
                 }
             }
             handleTypeSelection();
