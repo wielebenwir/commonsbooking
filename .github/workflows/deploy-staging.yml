@@ -11,19 +11,19 @@ jobs:
 
     - uses: actions/setup-node@v2
       with:
-        node-version: 12.x
+        node-version: 12.x # todo: correct?
 
     - name: Install dependencies
       run: |
-        composer install -o
+        composer install -o --no-dev # todo: dist build script
         npm install
-    
+        
     - name: Build
-      run: npm run build
+      run: npm run build # todo: grunt?
     
     - name: Sync
       env:
-        dest: 'ssh-user@example.com:/mydir/wp-content/themes/mytheme' # Replace with secret
+        dest: 'ssh-user@example.com:/mydir/wp-content/themes/mytheme' # todo: Replace with secret
       run: |
         echo "${{secrets.DEPLOY_KEY}}" > deploy_key
         chmod 600 ./deploy_key
