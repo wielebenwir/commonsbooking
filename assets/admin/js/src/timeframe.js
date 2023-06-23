@@ -34,8 +34,18 @@
         const timeframeForm = $('#cmb2-metabox-cb_timeframe-custom-fields');
 
         if (timeframeForm.length) {
-            const timeframeRepetitionInput = $('#timeframe-repetition');
             const typeInput = $('#type');
+            //the assigned numbers for the typeinput
+            const BOOKABLE_TYPE = 2;
+            const HOLIDAY_TYPE = 3;
+            const BLOCKED_TYPE = 5;
+
+            // the assigned numbers for the location selection input
+            const SELECTION_MANUAL = 0;
+            const SELECTION_CATEGORY = 1;
+            const SELECTION_ALL = 2;
+
+            const timeframeRepetitionInput = $('#timeframe-repetition');
             const locationSelectionInput = $('#location-select');
             const itemSelectionInput = $('#item-select');
             const gridInput = $('#grid');
@@ -53,8 +63,10 @@
             const bookingCodesDownload = $('#booking-codes-download');
             const bookingCodesList = $('#booking-codes-list');
 
-            const manualLocationSelection = $('.cmb2-id-location-id');
-            const manualItemSelection = $('.cmb2-id-item-id');
+            const singleLocationSelection = $('.cmb2-id-location-id');
+            const multiLocationSelection = $(".cmb2-id-location-ids");
+            const singleItemSelection = $('.cmb2-id-item-id');
+            const multiItemSelection = $(".cmb2-id-item-ids");
             const categoryLocationSelection = $('.cmb2-id-location-category-id');
             const categoryItemSelection = $('.cmb2-id-item-category-id');
             const bookingConfigTitle = $('.cmb2-id-title-bookings-config');
@@ -94,9 +106,14 @@
             }
 
             /**
-             * "Moves" selection from single item selection to multiselect.
+             * "Moves" selection from single item /location selection to multiselect.
+             * Currently only for holidays.
              */
             const migrateSingleSelection = () => {
+
+                if (typeInput.val() != HOLIDAY_TYPE) {
+                    return;
+                }
                 // get single selection
                 const singleSelectionOption = singleItemSelection.find('option:selected');
 
@@ -108,6 +125,15 @@
                     }
                     singleSelectionOption.prop('selected', false);
                 }
+
+                const singleLocationSelectionOption = singleLocationSelection.find('option:selected');
+                if (singleLocationSelectionOption.prop('value')) {
+                    const multiLocationSelectionOption = multiLocationSelection.find(`input[value=${singleLocationSelectionOption.prop('value')}]`);
+                    if(multiLocationSelectionOption) {
+                        multiLocationSelectionOption.prop('checked', true);
+                    }
+                    singleLocationSelectionOption.prop('selected', false);
+                }
             }
             migrateSingleSelection();
 
@@ -116,7 +142,7 @@
              */
             const handleTypeSelection = function () {
                 const selectedType = $("option:selected", typeInput).val();
-                if (selectedType == 2) {
+                if (selectedType == BOOKABLE_TYPE) {
                     maxDaysSelect.show();
                     advanceBookingDays.show();
                     allowUserRoles.show();
@@ -128,6 +154,11 @@
                     allowUserRoles.hide();
                     BookingStartDayOffset.hide();
                     bookingConfigTitle.hide();
+                }
+
+                //we migrate the single selection to the multiselect (new holiday timeframes do not have a single selection anymore)
+                if (selectedType == HOLIDAY_TYPE) {
+                    migrateSingleSelection();
                 }
             }
             handleTypeSelection();
@@ -142,21 +173,26 @@
              */
             const handleLocationSelection = function () {
                 const selectedType = $("option:selected", typeInput).val();
-                //disable the mass selection for bookable timeframes (for now)
-                if (selectedType == 2) {
-                    manualLocationSelection.show();
-                    categoryLocationSelection.hide();
-                    locationSelectionInput.hide();
+                //disable the mass selection for all timeframes except holidays
+                if (selectedType == HOLIDAY_TYPE) {
+                    singleLocationSelection.hide();
+                    //handle different selection types
+                    const selectedOption = $("option:selected", locationSelectionInput).val();
+                    if (selectedOption == SELECTION_MANUAL) {
+                        multiLocationSelection.show();
+                        categoryLocationSelection.hide();
+                    } else if (selectedOption == SELECTION_CATEGORY){
+                        categoryLocationSelection.show();
+                        multiLocationSelection.hide();
+                    }
+                    else if (selectedOption == SELECTION_ALL) {
+                        multiLocationSelection.hide();
+                        categoryLocationSelection.hide();
+                    }
                 }
-                const selectedOption = $("option:selected", locationSelectionInput).val();
-                if (selectedOption == 0) {
-                    categoryLocationSelection.hide();
-                    manualLocationSelection.show();
-                } else if (selectedOption == 1){
-                    categoryLocationSelection.show();
-                    manualLocationSelection.hide();
-                } else {
-                    manualLocationSelection.hide();
+                else {
+                    singleLocationSelection.show();
+                    multiLocationSelection.hide();
                     categoryLocationSelection.hide();
                 }
             };
@@ -170,22 +206,26 @@
              */
             const handleItemSelection = function () {
                 const selectedType = $("option:selected", typeInput).val();
-                //disable the mass selection for bookable timeframes (for now)
-                if (selectedType == 2) {
-                    manualItemSelection.show();
-                    categoryItemSelection.hide();
-                    itemSelectionInput.hide();
-                }
-                const selectedOption = $("option:selected", itemSelectionInput).val();
-                if (selectedOption == 0) {
-                    manualItemSelection.show();
-                    categoryItemSelection.hide();
-                } else if (selectedOption == 1){
-                    categoryItemSelection.show();
-                    manualItemSelection.hide();
+                //disable the mass selection for all timeframes except holidays (for now)
+                if (selectedType == HOLIDAY_TYPE) {
+                    singleItemSelection.hide();
+                    //handle different selection types
+                    const selectedOption = $("option:selected", itemSelectionInput).val();
+                    if (selectedOption == SELECTION_MANUAL) {
+                        multiItemSelection.show();
+                        categoryItemSelection.hide();
+                    } else if (selectedOption == SELECTION_CATEGORY){
+                        categoryItemSelection.show();
+                        multiItemSelection.hide();
+                    }
+                    else if (selectedOption == SELECTION_ALL) {
+                        multiItemSelection.hide();
+                        categoryItemSelection.hide();
+                    }
                 }
                 else {
-                    manualItemSelection.hide();
+                    singleItemSelection.show();
+                    multiItemSelection.hide();
                     categoryItemSelection.hide();
                 }
             };
@@ -252,7 +292,7 @@
 
                 hideFieldset(bookingCodeSet);
 
-                if (repStart && repEnd && fullday && type == 2) {
+                if (repStart && repEnd && fullday && type == BOOKABLE_TYPE) {
                     showFieldset(bookingCodeSet);
 
                     // If booking codes shall not be created we disable and hide option to show them
