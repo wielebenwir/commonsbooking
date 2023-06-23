@@ -1,0 +1,36 @@
+name: Deployment to staging
+on:
+  push:
+    branches: [ release/** ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 12.x
+
+    - name: Install dependencies
+      run: |
+        composer install -o
+        npm install
+    
+    - name: Build
+      run: npm run build
+    
+    - name: Sync
+      env:
+        dest: 'ssh-user@example.com:/mydir/wp-content/themes/mytheme' # Replace with secret
+      run: |
+        echo "${{secrets.DEPLOY_KEY}}" > deploy_key
+        chmod 600 ./deploy_key
+        rsync -chav --delete \
+          -e 'ssh -i ./deploy_key -o StrictHostKeyChecking=no' \
+          --exclude /deploy_key \
+          --exclude /.git/ \
+          --exclude /.github/ \
+          --exclude /node_modules/ \
+          ./ ${{env.dest}}
