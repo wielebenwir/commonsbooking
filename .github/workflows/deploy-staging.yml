@@ -13,9 +13,9 @@ jobs:
       with:
         node-version: 12.x # todo: correct?
 
-    - name: Install dependencies
+    - name: Install dependencies # todo: dist build script
       run: |
-        composer install -o --no-dev # todo: dist build script
+        composer install -o --no-dev 
         npm install
         
     - name: Build
