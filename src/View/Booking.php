@@ -281,6 +281,28 @@ class Booking extends View {
 		return ob_get_clean();
 	}
 
+	/**
+	 * Renders error for frontend notice. We use transients to pass the error message.
+	 * It is ensured that only the user where the error occurred can see the error message.
+	 */
+	public static function renderError() {
+		$errorTypes = [
+			\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id()
+		];
+
+		foreach ( $errorTypes as $errorType ) {
+			if ( $error = get_transient( $errorType ) ) {
+				$class = 'cb-notice error';
+				printf(
+					'<div class="%1$s"><p>%2$s</p></div>',
+					esc_attr( $class ),
+					nl2br( commonsbooking_sanitizeHTML( $error ) )
+				);
+				delete_transient( $errorType );
+			}
+		}
+	}
+
 	public static function getBookingListiCal($user = null):String{
 		$eventTitle_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
 		$eventDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );

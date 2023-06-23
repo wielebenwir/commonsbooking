@@ -263,7 +263,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		return $locationId;
 	}
 
-	public function createSubscriber(){
+	protected function createSubscriber(){
 		$wp_user = get_user_by('email',"a@a.de");
 		if (! $wp_user){
 			$this->normalUserID = wp_create_user("normaluser","normal","a@a.de");

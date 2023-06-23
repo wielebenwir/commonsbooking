@@ -342,37 +342,23 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 */
 	public function bookingNotice(): ?string {
 
-		$currentStatus    = $this->post->post_status;
 		$cancellationTime = $this->getMeta( 'cancellation_time' );
 
-  		if ( $currentStatus == 'unconfirmed' ) {
-            // transient is set in \Model\Booking->handleFormRequest if overlapping booking exists
-            if ( get_transient( 'commonsbooking_overlappingBooking_' . $this->ID ) ) {
-                $noticeText = get_transient( 'commonsbooking_overlappingBooking_' . $this->ID ) . ' ' . $this->ID . commonsbooking_sanitizeHTML( __(
-                    '<h1 style="color:red">Notice:</h1> <p>We are sorry. Something went wrong. This booking could not be confirmed because there is another overlapping booking.<br>
-                    Please click the "Cancel"-Button and select another booking period.</p>
-                    <p>Normally, the booking system ensures that no overlapping bookings can be created. If you think there is a bug, please contact us.</p> 
-                ', 'commonsbooking' ) );
-
-                delete_transient( 'commonsbooking_overlappingBooking_' . $this->ID );
-            } else {
-                $noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
-            }
+		if ( $this->isUnconfirmed() ) {
+			$noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
 		} elseif ( $this->isConfirmed() ) {
 			$noticeText = commonsbooking_sanitizeHTML( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'booking-confirmed-notice' ) );
-		}
-
-		if ( $this->isCancelled() ) {
-            if ( $cancellationTime ) {
-                $cancellationTimeFormatted = Helper::FormattedDateTime( $cancellationTime );
-			    $noticeText                = sprintf( commonsbooking_sanitizeHTML( __( 'Your booking has been canceled at %s.', 'commonsbooking' ) ), $cancellationTimeFormatted );
-            } else {
-                $noticeText = commonsbooking_sanitizeHTML( __( 'Your booking has been canceled', 'commonsbooking' ) );
-            }
+		} elseif ( $this->isCancelled() ) {
+			if ( $cancellationTime ) {
+				$cancellationTimeFormatted = Helper::FormattedDateTime( $cancellationTime );
+				$noticeText                = sprintf( commonsbooking_sanitizeHTML( __( 'Your booking has been canceled at %s.', 'commonsbooking' ) ), $cancellationTimeFormatted );
+			} else {
+				$noticeText = commonsbooking_sanitizeHTML( __( 'Your booking has been canceled', 'commonsbooking' ) );
+			}
 		}
 
 		if ( isset( $noticeText ) ) {
-			return sprintf( '<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $currentStatus, $noticeText );
+			return sprintf( '<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $this->post_status, $noticeText );
 		}
 
 		return null;
@@ -487,7 +473,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return bool
 	 */
-	private function isConfirmed() : bool {
+	public function isConfirmed() : bool {
 		return $this->post_status === 'confirmed';
 	}
 
@@ -496,7 +482,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return bool
 	 */
-	private function isUnconfirmed() : bool {
+	public function isUnconfirmed() : bool {
 		return $this->post_status === 'unconfirmed';
 	}
 }
