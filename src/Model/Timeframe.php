@@ -251,6 +251,9 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Get the corresponding location array for a timeframe
+	 *
+	 * DEPRECATED: THIS FUNCTION IS NOT USED ANYWHERE
+	 *
 	 * @return array|null of Locations
 	 * @throws Exception
 	 */
