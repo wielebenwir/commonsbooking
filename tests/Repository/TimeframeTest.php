@@ -313,10 +313,9 @@ class TimeframeTest extends CustomPostTypeTest {
 		// Timeframe with enddate and two items
 		$this->timeframeId = $this->createTimeframe(
 			$this->locationId,
-			$this->itemId,
+			[$this->itemId, $otherItemId],
 			self::REPETITION_START,
-			self::REPETITION_END,
-			[ $this->itemId, $otherItemId ]
+			self::REPETITION_END
 		);
 		$fromFirstItem     = Timeframe::getPostIdsByType(
 			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
@@ -361,12 +360,10 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		//create holiday applicable for both
 		$holidayId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			[$this->locationId, $this->otherLocationId],
+			[$this->itemId, $this->otherItemId],
 			self::REPETITION_START,
 			self::REPETITION_END,
-			[$this->itemId, $this->otherItemId],
-			[ $this->locationId, $this->otherLocationId ],
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID
 		);
 

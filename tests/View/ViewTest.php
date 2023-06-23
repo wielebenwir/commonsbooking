@@ -34,8 +34,6 @@ class ViewTest extends CustomPostTypeTest {
             $this->itemId,
             strtotime('+2 days midnight', $now),
             strtotime('+3 days midnight', $now),
-            [],
-            [],
             Timeframe::BOOKABLE_ID,
             'on',
             'norep'
@@ -48,8 +46,6 @@ class ViewTest extends CustomPostTypeTest {
             $this->itemId,
             strtotime('+5 days midnight', $now),
             strtotime('+6 days midnight', $now),
-            [],
-            [],
             Timeframe::BOOKABLE_ID,
             'on',
             'norep'
@@ -61,8 +57,6 @@ class ViewTest extends CustomPostTypeTest {
             $this->itemId,
             strtotime('+8 days midnight', $now),
             strtotime('+9 days midnight', $now),
-            [],
-            [],
             Timeframe::BOOKABLE_ID,
             'on',
             'norep'
@@ -75,8 +69,6 @@ class ViewTest extends CustomPostTypeTest {
             $this->itemId,
             strtotime('+12 days midnight', $now),
             strtotime('+13 days midnight', $now),
-            [],
-            [],
             Timeframe::BOOKABLE_ID,
             'on',
             'norep'
@@ -89,8 +81,6 @@ class ViewTest extends CustomPostTypeTest {
             $this->itemId,
             strtotime('+14 days midnight', $now),
             strtotime('+15 days midnight', $now),
-            [],
-            [],
             Timeframe::BOOKABLE_ID,
             'on',
             'norep'
@@ -104,8 +94,6 @@ class ViewTest extends CustomPostTypeTest {
             $this->itemId,
             strtotime('+32 days midnight', $now),
             strtotime('+33 days midnight', $now),
-            [],
-            [],
             Timeframe::BOOKABLE_ID,
             'on',
             'norep'

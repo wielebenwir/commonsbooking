@@ -41,8 +41,6 @@ abstract class CustomPostTypeTest extends TestCase {
 		$itemId,
 		$repetitionStart,
 		$repetitionEnd,
-		$itemsID = [],
-		$locationsID = [],
 		$type = Timeframe::BOOKABLE_ID,
 		$fullday = "on",
 		$repetition = 'w',
@@ -67,10 +65,27 @@ abstract class CustomPostTypeTest extends TestCase {
 		] );
 
 		update_post_meta( $timeframeId, 'type', $type );
-		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_LOCATION_ID, $locationId );
-		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_LOCATION_IDS, $locationsID);
-		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_ITEM_ID, $itemId );
-		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_ITEM_IDS, $itemsID );
+		// we need to map the multi-location array and multi-item array on a string array because that is the way it is also saved from the WP-backend
+		if ( is_array($locationId) ) {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_LOCATION_IDS,
+				array_map('strval',$locationId ));
+		}
+		else {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_LOCATION_ID,
+				$locationId );
+		}
+		if (is_array($itemId)) {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_ITEM_IDS,
+				array_map('strval', $itemId ));
+		}
+		else {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_ITEM_ID,
+				$itemId );
+		}
 		update_post_meta( $timeframeId, 'timeframe-max-days', $maxDays );
 		update_post_meta( $timeframeId, 'timeframe-advance-booking-days', $advanceBookingDays );
 		update_post_meta( $timeframeId, 'full-day', $fullday );
