@@ -1,0 +1,49 @@
+services:
+  wordpress:
+    container_name: cb-wordpress
+    image: wordpress:latest
+    ports:
+      - 0.0.0.0:8090:80
+    env_file: [docker/env]
+    environment:
+      WORDPRESS_DB_HOST: database
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DEBUG: 1
+    volumes:
+      - ./docker/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
+      - ./:/var/www/html/wp-content/plugins/commonsbooking/
+    depends_on:
+      - database
+
+  phpmyadmin:
+    container_name: cb-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 0.0.0.0:8091:80
+    env_file: [docker/env]
+    environment:
+      # https://docs.phpmyadmin.net/en/latest/setup.html#docker-environment-variables
+      PMA_HOST: database
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 50M
+    depends_on:
+      - database
+
+  database:
+    container_name: cb-database
+    image: mariadb:lts
+    ports:
+      - 0.0.0.0:8092:3306
+    command: [
+        '--default-authentication-plugin=mysql_native_password',
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_unicode_ci'
+    ]
+    env_file: [docker/env]
+    volumes:
+      - ./docker/init-sql/:/docker-entrypoint-initdb.d
+      - ./docker/export-database:/bin/export-database
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

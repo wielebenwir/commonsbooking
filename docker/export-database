@@ -1,0 +1,7 @@
+#!/bin/sh
+
+exec mariadb-dump "$MARIADB_DATABASE" \
+  --user=root \
+  --password="$MARIADB_ROOT_PASSWORD" \
+  --single-transaction \
+  "$@"
