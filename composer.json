@@ -3,8 +3,11 @@
   "description": "~",
   "version": "0.0.1",
   "config": {
-    "platform-check": false
-    },
+    "platform-check": false,
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  },
   "autoload": {
     "files": [
       "includes/OptionsArray.php",
@@ -13,7 +16,9 @@
       "includes/TemplateParser.php",
       "includes/Users.php"
     ],
-    "psr-4": {"CommonsBooking\\": "src/"}
+    "psr-4": {
+      "CommonsBooking\\": "src/"
+    }
   },
   "autoload-dev": {
     "psr-4": {
@@ -44,7 +49,8 @@
   "require-dev": {
     "mockery/mockery": "1.*",
     "phpunit/phpunit": "7.*",
-    "yoast/phpunit-polyfills": "^1.0",
-    "wp-coding-standards/wpcs": "^2.3"
+    "slope-it/clock-mock": "^0.3.8",
+    "wp-coding-standards/wpcs": "^2.3",
+    "yoast/phpunit-polyfills": "^1.0"
   }
 }

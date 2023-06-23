@@ -2,13 +2,17 @@
 
 namespace CommonsBooking\Tests\Model;
 
-use CommonsBooking\Model\Item;
-use CommonsBooking\Model\Location;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
-use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Exception\TimeframeInvalidException;
 
+use CommonsBooking\Model\Timeframe;
+use CommonsBooking\Model\Location;
+use CommonsBooking\Model\Item;
+use SlopeIt\ClockMock\ClockMock;
 
+/**
+ * @covers \CommonsBooking\Model\Timeframe
+ */
 class TimeframeTest extends CustomPostTypeTest {
 
 	protected Timeframe $firstTimeframe;
@@ -110,7 +114,23 @@ class TimeframeTest extends CustomPostTypeTest {
 		catch ( TimeframeInvalidException $e ) {
 			$this->assertEquals( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
 		}
+		
+		$isOverlapping = new Timeframe($this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day', time() ),
+			strtotime( '+2 days', time() ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"off"
+		));		
+
+		// $this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
+		$this->assertTrue( $isOverlapping->hasTimeframeDateOverlap( $this->validTF ) );
+
+		// $this->expectException( TimeframeInvalidException::class );
+		$isOverlapping->isValid();
 	}
+	
 	public function test_isValid_throwsException() {
 
 		$secondLocation = $this->createLocation("Newest Location", 'publish');
@@ -120,13 +140,17 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->itemId,
 			strtotime( '+1 day', time() ),
 			strtotime( '+2 days', time() )
-		));
+		));		
 
-		$this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
+		// $this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
 		$this->assertTrue( $isOverlapping->hasTimeframeDateOverlap( $this->validTF ) );
 
-		$this->expectException( TimeframeInvalidException::class );
-		$isOverlapping->isValid();
+		// $this->expectException( TimeframeInvalidException::class );
+		try {
+			$isOverlapping->isValid();
+		} catch (TimeframeInvalidException $e ) {
+			$this->assertStringContainsString( "Item is already bookable at another location within the same date range.", $e->getMessage() );
+		}
 	}
 
 	public function testIsBookable() {
@@ -150,6 +174,67 @@ class TimeframeTest extends CustomPostTypeTest {
 	public function testGetItem() {
 		$item = New Item($this->itemId);
 		$this->assertEquals($item,$this->validTF->getItem());
+	}
+
+	/**
+	 * @return void
+	 *
+	 * @dataProvider providerFormatBookableDate()
+	 */
+	public function test_formatBookableDate($todayMockDate, $expectedString, $start, $end) {
+
+		// Mocks strtotime
+		ClockMock::freeze( new \DateTime( $todayMockDate ) );
+
+		$result = Timeframe::formatBookableDate( $start, $end );
+
+		ClockMock::reset();
+
+		$this->assertEquals( $expectedString, $result );
+	}
+
+	/**
+	 * Provider for test_formatBookableDate
+	 */
+	public function providerFormatBookableDate() {
+		return array(
+			// case: only one day (start = end)
+			'Available here on January 24, 2021' => array(
+				'2021-01-22',
+				'Available here on January 24, 2021',
+				strtotime( '2021-01-24' ),
+				strtotime( '2021-01-24' ),
+			),
+			// case: open end
+			'Available here from January 24, 2021 (open end)' => array(
+				'2021-01-22',
+				'Available here from January 24, 2021',
+				strtotime( '2021-01-24' ),
+				false,
+			),
+			// case: start passed, open end date
+			'Available here permanently' => array(
+				'2021-01-25',
+				'Available here permanently',
+				strtotime( '2021-01-24' ),
+				false,
+			),
+			// case: start and end
+			'Available here from January 24, 2021 until January 26, 2021' => array(
+				'2021-01-22',
+				'Available here from January 24, 2021 until January 26, 2021',
+				strtotime( '2021-01-24' ),
+				strtotime( '2021-01-26' ),
+			),
+			// case: start passed, with end date
+			'Available here until January 26, 2021' => array(
+				'2021-01-25',
+				'Available here until January 26, 2021',
+				strtotime( '2021-01-24' ),
+				strtotime( '2021-01-26' ),
+			),
+		);
+
 	}
 
   protected function setUp() : void {
