@@ -611,7 +611,7 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'          => esc_html__( "Selected manual dates", 'commonsbooking' ),
-				'desc'          => esc_html__( 'Here comma separated date input ', 'commonsbooking' ),//TODO: Change Description
+				'desc'          => commonsbooking_sanitizeHTML( __( "Enter the dates in the YYYY-MM-DD format here, the dates are separated by a comma. <br> Example: 2023-05-24,2023-06-24 <br> You can also use the datepicker above to pick dates for this field.", 'commonsbooking' ) ),
 				'id'            => \CommonsBooking\Model\Timeframe::META_MANUAL_SELECTION,
 				'type'          => 'textarea_small',
 				'before_row'    => array( self::class, 'renderDateSelector' )
