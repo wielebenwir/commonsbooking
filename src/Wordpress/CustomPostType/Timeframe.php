@@ -642,7 +642,7 @@ class Timeframe extends CustomPostType {
 				'name' => esc_html__( "Booking Codes", 'commonsbooking' ),
 				'desc' => commonsbooking_sanitizeHTML( __( 'You can automatically generate booking codes. Codes can be generated only with the following settings:</br>
 				- Whole day is enabled</br>
-				- Start date and end date are set</br>
+				- Timeframe is bookable</br>
 				<a href="https://commonsbooking.org/?p=437" target="_blank">More Information in the documentation</a>
 				', 'commonsbooking' ) ),
 				'id'   => "title-timeframe-booking-codes",
