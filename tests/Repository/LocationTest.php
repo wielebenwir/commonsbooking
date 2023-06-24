@@ -7,14 +7,14 @@ use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
 class LocationTest extends CustomPostTypeTest {
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		// Create timeframe with location and item, so that we can search vor it
 		$this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( 'midnight'),
+			strtotime( 'midnight' ),
 			strtotime( '+90 days' )
 		);
 	}

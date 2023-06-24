@@ -219,7 +219,7 @@ class Wordpress {
 	 *
 	 * @return array
 	 */
-	public static function getTags($posts, array $items = [], array $locations = []) {
+	public static function getTags($posts, array $items = [], array $locations = []): array {
 		$itemsAndLocations = Wordpress::getLocationAndItemIdsFromPosts($posts);
 
 		if(!count($items) && !count($locations)) {
@@ -242,7 +242,7 @@ class Wordpress {
 	 *
 	 * @return array
 	 */
-	public static function getLocationAndItemIdsFromPosts($posts) {
+	public static function getLocationAndItemIdsFromPosts($posts): array {
 		$itemsAndLocations = [];
 		array_walk($posts, function ($timeframe) use (&$itemsAndLocations) {
 			$itemsAndLocations[] = get_post_meta(
@@ -259,24 +259,50 @@ class Wordpress {
 		return $itemsAndLocations;
 	}
 
-	public static function getUTCDateTimeByTimestamp($timestamp) {
+	/**
+	 * This would theoretically work if the timestamp we get from the database is in UTC.
+	 * The problem is, that the timestamp is in the local timezone of the server.
+	 * If we convert it to UTC, we get the wrong date and everything breaks.
+	 *
+	 * @param $timestamp
+	 *
+	 * @return DateTime
+	 * @throws \Exception
+	 */
+	public static function getUTCDateTimeByTimestamp($timestamp): DateTime {
 		$dto = new DateTime();
 		$dto->setTimestamp(
-			$timestamp
+			intval( $timestamp )
 		);
 		$dto->setTimezone(new \DateTimeZone('UTC'));
 
 		return $dto;
 	}
 
-	public static function getUTCDateTime($datetime = 'now') {
+	/**
+	 * This function does what probably the getUTCDateTimeByTimestamp was originally supposed to do.
+	 *
+	 * @param int $timestamp
+	 *
+	 * @return DateTime
+	 * @throws \Exception
+	 */
+	public static function convertTimestampToUTCDatetime( $timestamp ) {
+		$datetime = date( 'Y-m-d H:i:s', $timestamp );
+		$dto      = new DateTime( $datetime, new \DateTimeZone( wp_timezone_string() ) );
+		$dto->setTimezone( new \DateTimeZone( 'UTC' ) );
+
+		return $dto;
+	}
+
+	public static function getUTCDateTime($datetime = 'now'): DateTime {
 		$dto = new DateTime($datetime);
 		$dto->setTimezone(new \DateTimeZone('UTC'));
 
 		return $dto;
 	}
 
-	public static function getLocalDateTime($timestamp) {
+	public static function getLocalDateTime($timestamp): DateTime {
 		$dto = new DateTime();
 		$dto->setTimestamp(
 			$timestamp
