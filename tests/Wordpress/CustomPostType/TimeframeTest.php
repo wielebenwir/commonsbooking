@@ -35,4 +35,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertFalse( Timeframe::isOverBookable( $timeframe ) );
 	}
 
+	public function testGetTimeframeRepetitions() {
+		$this->assertIsArray( Timeframe::getTimeFrameRepetitions( ) );
+	}
+
 }
