@@ -77,12 +77,7 @@ class Helper {
 	 * @return int
 	 */
 	public static function getLastFullHourTimestamp() {
-		if (defined('COMMONSBOOKING_PHPUNIT_TESTING_ENABLED') && COMMONSBOOKING_PHPUNIT_TESTING_ENABLED ) {
-			$now = strtotime(   \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
-		}
-		else {
-			$now = current_time('timestamp');
-		}
+		$now = current_time('timestamp');
 		return $now - ( $now % 3600 );
 	}
 
@@ -111,7 +106,6 @@ class Helper {
 			$post = new Booking( $post->ID );
 		}
 		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Item::$postType) {
-
 			$post = new Item( $post->ID );
 		}
 		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Location::$postType) {
