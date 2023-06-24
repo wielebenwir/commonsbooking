@@ -59,8 +59,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$noItemTF = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			"",
-			strtotime("+1 day",time()),
-			strtotime("+3 days",time())
+			strtotime( "+1 day", time() ),
+			strtotime( "+3 days", time() )
 		));
 		try {
 			$noItemTF->isValid();
@@ -72,8 +72,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$noLocationTF = new Timeframe($this->createTimeframe(
 			"",
 			$this->itemId,
-			strtotime("+20 day",time()),
-			strtotime("+25 days",time())
+			strtotime( "+20 day", time() ),
+			strtotime( "+25 days", time() )
 		));
 
 		try {
@@ -87,7 +87,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->locationId,
 			$this->itemId,
 			"",
-			strtotime("+10 days",time())
+			strtotime( "+10 days", time() )
 		));
 		try {
 			$noStartDateTF->isValid();
@@ -99,8 +99,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$pickupTimeInvalid = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime("+10 day",time()),
-			strtotime("+13 days",time()),
+			strtotime( "+10 day", time() ),
+			strtotime( "+13 days", time() ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			"off",
 			'w',
@@ -247,8 +247,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->validTF = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime("+1 day",time()),
-			strtotime("+3 days",time())
+			strtotime( "+1 day", time() ),
+			strtotime( "+3 days", time() )
 		));
 	}
 

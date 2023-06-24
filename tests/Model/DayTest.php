@@ -18,6 +18,12 @@ class DayTest extends CustomPostTypeTest {
 
 	protected $bookableTimeframeNoRepStartsYesterdayEndsTomorrowId;
 
+	protected $bookableTimeframeOnceWeeklyValidTodayNoEnd;
+
+	protected $bookableTimeframeOnceWeeklyValidTodayWithEnd;
+
+	protected $bookableTimeframeManualDateInputOnlyForToday;
+
 	protected function setUp() : void {
 		parent::setUp();
 		$this->bookableTimeframeForCurrentDayId = $this->createBookableTimeFrameIncludingCurrentDay();
@@ -35,7 +41,7 @@ class DayTest extends CustomPostTypeTest {
 		$this->bookableTimeframeNoRepSingleDayTodayId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime(self::CURRENT_DATE),
+			strtotime( self::CURRENT_DATE ),
 			null,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			'on',
@@ -50,6 +56,56 @@ class DayTest extends CustomPostTypeTest {
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			'on',
 			"norep"
+		);
+
+		//get the current weekday of the current date
+		$weekday = date('w', strtotime(self::CURRENT_DATE)) + 1; // +1 because the weekdays in the timeframe are 1-7, not 0-6
+
+		$this->bookableTimeframeOnceWeeklyValidTodayNoEnd = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-7 days', self::CURRENT_DATE ),
+			null,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			"w",
+			0,
+			"8:00 AM",
+			"12:00 PM",
+			"publish",
+			[ strval( $weekday ) ]
+		);
+
+		$this->bookableTimeframeOnceWeeklyValidTodayWithEnd = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-7 days', self::CURRENT_DATE ),
+			strtotime( '+7 days', self::CURRENT_DATE ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			"w",
+			0,
+			"8:00 AM",
+			"12:00 PM",
+			"publish",
+			[ strval( $weekday ) ]
+		);
+
+		$currentDayFormatted = date( 'd.m.Y', strtotime( self::CURRENT_DATE ) );
+		$this->bookableTimeframeManualDateInputOnlyForToday = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( self::CURRENT_DATE ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			"manual",
+			0,
+			"8:00 AM",
+			"12:00 PM",
+			"publish",
+			[ "1", "2", "3", "4", "5", "6", "7" ],
+			[$currentDayFormatted]
 		);
 
 		$this->createUnconfirmedBookingEndingTomorrow();
@@ -88,6 +144,15 @@ class DayTest extends CustomPostTypeTest {
 		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
 
 		$timeframe = new Timeframe( $this->bookableTimeframeNoRepStartsYesterdayEndsTomorrowId );
+		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
+
+		$timeframe = new Timeframe( $this->bookableTimeframeOnceWeeklyValidTodayNoEnd );
+		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
+
+		$timeframe = new Timeframe( $this->bookableTimeframeOnceWeeklyValidTodayWithEnd );
+		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
+
+		$timeframe = new Timeframe( $this->bookableTimeframeManualDateInputOnlyForToday );
 		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
 	}
 

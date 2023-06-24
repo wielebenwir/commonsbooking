@@ -50,6 +50,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		$endTime = '12:00 PM',
 		$postStatus = 'publish',
 		$weekdays = [ "1", "2", "3", "4", "5", "6", "7" ],
+		$manualSelectionDays = [],
 		$postAuthor = self::USER_ID,
 		$maxDays = 3,
 		$advanceBookingDays = 30,
@@ -78,11 +79,11 @@ abstract class CustomPostTypeTest extends TestCase {
 		if ( $repetitionEnd ) {
 			update_post_meta( $timeframeId, 'repetition-end', $repetitionEnd );
 		}
-
 		update_post_meta( $timeframeId, 'start-time', $startTime );
 		update_post_meta( $timeframeId, 'end-time', $endTime );
 		update_post_meta( $timeframeId, 'grid', $grid );
 		update_post_meta( $timeframeId, 'weekdays', $weekdays );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_MANUAL_SELECTION, $manualSelectionDays);
 		update_post_meta( $timeframeId, 'show-booking-codes', $showBookingCodes );
 		update_post_meta( $timeframeId, 'create-booking-codes', $createBookingCodes );
 

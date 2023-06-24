@@ -183,7 +183,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->firstTimeframeId   = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-5 days',  time() ),
+			strtotime( '-5 days', time() ),
 			strtotime( '+90 days', time() )
 		);
 		$this->testItem = new Item(get_post($this->itemId));
