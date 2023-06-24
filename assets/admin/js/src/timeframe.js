@@ -52,6 +52,7 @@
             const bookingCodesDownload = $('#booking-codes-download');
             const bookingCodesList = $('#booking-codes-list');
 
+            const holidayField = $('.cmb2-id--cmb2-holiday');
             const holidayInput = $('#timeframe_manual_date');
             const manualDatePicker = $("#cmb2_multiselect_datepicker");
             const manualDateField = $('.cmb2-id-timeframe-manual-date');
