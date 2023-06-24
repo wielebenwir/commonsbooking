@@ -745,7 +745,7 @@ class Timeframe extends CustomPostType {
 			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
 			$this->sanitizeRepetitionEndDate( $post_id );
 
-			if ( $timeframe->usesBookingCodes() && $timeframe->bookingCodesApplieable() ) {
+			if ( $timeframe->usesBookingCodes() && $timeframe->bookingCodesApplicable() ) {
 				BookingCodes::generate( $timeframe );
 			}
 		}

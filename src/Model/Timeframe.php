@@ -209,7 +209,7 @@ class Timeframe extends CustomPost {
 	public function bookingCodesApplicable(): bool {
 		try {
 			return $this->getLocation() && $this->getItem() &&
-			       $this->getStartDate() &&
+			       $this->getStartDate() && $this->usesBookingCodes() &&
 			       $this->getType() === \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID;
 		} catch ( Exception $e ) {
 			return false;

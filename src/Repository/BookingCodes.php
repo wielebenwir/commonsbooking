@@ -47,7 +47,7 @@ class BookingCodes {
 			$timeframeEndDate   = $timeframe->getEndDate();
 
 			// If timeframe does not qualify for booking codes, return empty array
-			if ( ! $timeframe->bookingCodesApplieable() ){
+			if ( ! $timeframe->bookingCodesApplicable() ){
 				return [];
 			}
 
@@ -57,6 +57,10 @@ class BookingCodes {
 
 			if (! $endDate || $endDate > $timeframeEndDate ) {
 				$endDate = $timeframeEndDate;
+			}
+			//when we still don't have an end-date, we will just get the coming year
+			if (! $endDate ) {
+				$endDate = strtotime( '+' . self::ADVANCE_GENERATION_DAYS . ' days', $startDate );
 			}
 
 			$startDate = date( 'Y-m-d', $startDate );
@@ -98,14 +102,14 @@ class BookingCodes {
 	/**
 	 * Returns booking code by timeframe, location, item and date.
 	 *
-	 * @param $timeframeId
-	 * @param $itemId
-	 * @param $locationId
-	 * @param $date
+	 * @param $timeframeId - ID of timeframe to get code for
+	 * @param $itemId - ID of item attached to timeframe
+	 * @param $locationId - ID of location attached to timeframe
+	 * @param $date - Date in format Y-m-d
 	 *
-	 * @return BookingCode|mixed|null
+	 * @return BookingCode|null
 	 */
-	public static function getCode( $timeframeId, $itemId, $locationId, $date ) {
+	public static function getCode( $timeframeId, $itemId, $locationId, $date ) : ?BookingCode {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
@@ -178,7 +182,7 @@ class BookingCodes {
      */
 	public static function generate( \CommonsBooking\Model\Timeframe $timeframe ): bool {
 
-		if (! $timeframe->bookingCodesApplieable() ){
+		if (! $timeframe->bookingCodesApplicable() ){
 			return false;
 		}
 		$begin = Wordpress::getUTCDateTime();
@@ -189,7 +193,7 @@ class BookingCodes {
 			$end->setTimestamp( $end->getTimestamp() + 1 );
 		}
 		else {
-			$end = new DateTime();
+			$end = new \DateTime();
 			$end->modify( '+' . self::ADVANCE_GENERATION_DAYS . 'days');
 		}
 
