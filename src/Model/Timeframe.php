@@ -30,6 +30,10 @@ class Timeframe extends CustomPost {
 
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
+	/**
+	 * Expected format for this meta key:
+	 * YYYY-mm-dd
+	 */
 	public const META_MANUAL_SELECTION = 'timeframe_manual_date';
 
 	/**

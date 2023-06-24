@@ -23,6 +23,7 @@ class DayTest extends CustomPostTypeTest {
 	protected $bookableTimeframeOnceWeeklyValidTodayWithEnd;
 
 	protected $bookableTimeframeManualDateInputOnlyForToday;
+	private $dateFormatted;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -59,12 +60,13 @@ class DayTest extends CustomPostTypeTest {
 		);
 
 		//get the current weekday of the current date
-		$weekday = date('w', strtotime(self::CURRENT_DATE)) + 1; // +1 because the weekdays in the timeframe are 1-7, not 0-6
+		$weekday = date('w', strtotime(self::CURRENT_DATE)) ;
+		$weekday = $weekday == 0 ? 7 : $weekday;
 
 		$this->bookableTimeframeOnceWeeklyValidTodayNoEnd = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-7 days', self::CURRENT_DATE ),
+			strtotime( '-7 days', strtotime(self::CURRENT_DATE )),
 			null,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			'on',
@@ -79,8 +81,8 @@ class DayTest extends CustomPostTypeTest {
 		$this->bookableTimeframeOnceWeeklyValidTodayWithEnd = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-7 days', self::CURRENT_DATE ),
-			strtotime( '+7 days', self::CURRENT_DATE ),
+			strtotime( '-7 days', strtotime ( self::CURRENT_DATE ) ),
+			strtotime( '+7 days', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			'on',
 			"w",
@@ -91,7 +93,7 @@ class DayTest extends CustomPostTypeTest {
 			[ strval( $weekday ) ]
 		);
 
-		$currentDayFormatted = date( 'd.m.Y', strtotime( self::CURRENT_DATE ) );
+		$this->dateFormatted  = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
 		$this->bookableTimeframeManualDateInputOnlyForToday = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
@@ -105,13 +107,13 @@ class DayTest extends CustomPostTypeTest {
 			"12:00 PM",
 			"publish",
 			[ "1", "2", "3", "4", "5", "6", "7" ],
-			[$currentDayFormatted]
+			$this->dateFormatted
 		);
 
 		$this->createUnconfirmedBookingEndingTomorrow();
 
 		$this->instance = new Day(
-			self::CURRENT_DATE,
+			$this->dateFormatted,
 			[ $this->locationId ],
 			[ $this->itemId ]
 		);
@@ -130,7 +132,7 @@ class DayTest extends CustomPostTypeTest {
 	}
 
 	public function testGetDate() {
-		$this->assertTrue( self::CURRENT_DATE == $this->instance->getDate() );
+		$this->assertEquals($this->dateFormatted ,$this->instance->getDate() );
 	}
 
 	public function testIsInTimeframe() {
@@ -162,7 +164,7 @@ class DayTest extends CustomPostTypeTest {
 
 	public function testGetTimeframes() {
 		// Should only find confirmed timeframes
-		$this->assertTrue(count($this->instance->getTimeframes()) == 3);
+		$this->assertEquals(6,count($this->instance->getTimeframes()) );
 	}
 
 	public function testGetRestrictions() {
