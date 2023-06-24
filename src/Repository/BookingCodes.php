@@ -131,6 +131,20 @@ class BookingCodes {
 			);
 			$bookingCodes = $wpdb->get_results($sql);
 
+			if ( empty( $bookingCodes ) ) {
+				$timeframeObject = new \CommonsBooking\Model\Timeframe($timeframeId);
+				//when we have a timeframe without end-date we generate as many codes as we need
+				if (! $timeframeObject->getRawEndDate() && $timeframeObject->bookingCodesApplicable() ) {
+					$begin = $timeframeObject->getUTCStartDateDateTime();
+					$endDate = new \DateTime($date);
+					$endDate->modify('+' . self::ADVANCE_GENERATION_DAYS . ' days');
+					$interval = DateInterval::createFromDateString( '1 day' );
+					$period = new DatePeriod( $begin, $interval, $endDate );
+					static::generatePeriod($timeframeObject,$period);
+					$bookingCodes = $wpdb->get_results($sql);
+				}
+			}
+
 			$bookingCodeObject = null;
 			if ( count( $bookingCodes ) ) {
 				$bookingCodeObject = new BookingCode(
@@ -199,12 +213,7 @@ class BookingCodes {
 
 		$interval = DateInterval::createFromDateString( '1 day' );
 		$period   = new DatePeriod( $begin, $interval, $end );
-
-		$bookingCodes      = Settings::getOption( 'commonsbooking_options_bookingcodes', 'bookingcodes' );
-		$bookingCodesArray = array_filter( explode( ',', trim( $bookingCodes ) ) );
-		$bookingCodesArray = array_map( function ( $item ) {
-			return preg_replace( "/\r|\n/", "", $item );
-		}, $bookingCodesArray );
+		$bookingCodesArray = static::getCodesArray();
 
 		// Check if codes are available, show error if not.
 		if ( ! count( $bookingCodesArray ) ) {
@@ -219,6 +228,16 @@ class BookingCodes {
 			return false;
 		}
 
+		return static::generatePeriod( $timeframe, $period );
+
+	}
+
+	private static function generatePeriod( \CommonsBooking\Model\Timeframe $timeframe, DatePeriod $period){
+
+		$bookingCodesArray = static::getCodesArray();
+		if (! $bookingCodesArray ){
+			throw new BookingCodeException( __( 'No booking codes available.', 'commonsbooking' ) );
+		}
 		// Before we add new codes, we remove old ones, that are not relevant anymore
 		self::deleteOldCodes( $timeframe->ID, $timeframe->getLocation()->ID, $timeframe->getItem()->ID );
 
@@ -285,6 +304,22 @@ class BookingCodes {
 		$wpdb->show_errors( 1 );
 
 		return $result;
+	}
+
+	/**
+	 * Will get the configured booking codes from the settings and return them as an array.
+	 *
+	 * @return array - Array of booking codes, empty array if no booking codes are configured.
+	 */
+	private static function getCodesArray(): array {
+		$bookingCodes      = Settings::getOption( 'commonsbooking_options_bookingcodes', 'bookingcodes' );
+		if ( ! $bookingCodes ) {
+			return array();
+		}
+		$bookingCodesArray = array_filter( explode( ',', trim( $bookingCodes ) ) );
+		return array_map( function ( $item ) {
+			return preg_replace( "/\r|\n/", "", $item );
+		}, $bookingCodesArray );
 	}
 
 	/**
