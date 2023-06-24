@@ -1,6 +1,40 @@
 (function($) {
     "use strict";
     $(function() {
+        const manualDateInput = $("#timeframe_manual_date");
+        const manualDatePicker = $("#cmb2_multiselect_datepicker");
+        var addHolidayToInput = date => {
+            const DATES_SEPERATOR = ",";
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var dd = day <= 9 ? "0" + day : day;
+            var mm = month <= 9 ? "0" + month : month;
+            var yyyy = date.getFullYear();
+            var dateStr = yyyy + "-" + mm + "-" + dd;
+            if (manualDateInput.val().length > 0) {
+                if (manualDateInput.val().slice(-1) !== DATES_SEPERATOR) {
+                    manualDateInput.val(manualDateInput.val() + DATES_SEPERATOR + dateStr);
+                } else {
+                    manualDateInput.val(manualDateInput.val() + dateStr);
+                }
+            } else {
+                manualDateInput.val(dateStr + DATES_SEPERATOR);
+            }
+        };
+        if (manualDatePicker.length) {
+            manualDatePicker.datepicker({
+                onSelect: function(dateText, inst) {
+                    var date = $(this).datepicker("getDate");
+                    addHolidayToInput(date);
+                }
+            });
+        }
+    });
+})(jQuery);
+
+(function($) {
+    "use strict";
+    $(function() {
         $("#cmb2-metabox-migration #migration-start").on("click", function(event) {
             event.preventDefault();
             $("#migration-state").show();
@@ -130,8 +164,8 @@
             const createBookingCodesInput = $("#create-booking-codes");
             const bookingCodesDownload = $("#booking-codes-download");
             const bookingCodesList = $("#booking-codes-list");
-            const holidayField = $(".cmb2-id--cmb2-holiday");
             const holidayInput = $("#timeframe_manual_date");
+            const manualDatePicker = $("#cmb2_multiselect_datepicker");
             const manualDateField = $(".cmb2-id-timeframe-manual-date");
             const maxDaysSelect = $(".cmb2-id-timeframe-max-days");
             const advanceBookingDays = $(".cmb2-id-timeframe-advance-booking-days");
@@ -179,14 +213,12 @@
                 const selectedType = $("option:selected", typeInput).val();
                 if (selectedRepetition !== "manual") {
                     manualDateField.hide();
-                    holidayField.hide();
+                    manualDatePicker.hide();
                     holidayInput.val("");
                 } else {
                     manualDateField.show();
-                    if (selectedType == 3) {
-                        holidayField.show();
-                    } else {
-                        holidayField.hide();
+                    manualDatePicker.show();
+                    if (selectedType == 3) {} else {
                         holidayInput.val("");
                     }
                 }

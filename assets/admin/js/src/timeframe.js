@@ -52,8 +52,8 @@
             const bookingCodesDownload = $('#booking-codes-download');
             const bookingCodesList = $('#booking-codes-list');
 
-            const holidayField = $('.cmb2-id--cmb2-holiday');
             const holidayInput = $('#timeframe_manual_date');
+            const manualDatePicker = $("#cmb2_multiselect_datepicker");
             const manualDateField = $('.cmb2-id-timeframe-manual-date');
             const maxDaysSelect = $('.cmb2-id-timeframe-max-days');
             const advanceBookingDays = $('.cmb2-id-timeframe-advance-booking-days');
@@ -127,14 +127,14 @@
                 const selectedType = $("option:selected", typeInput).val();
                 if (selectedRepetition !== 'manual') {
                     manualDateField.hide()
-                    holidayField.hide();
+                    manualDatePicker.hide();
                     holidayInput.val('');
                 } else {
                     manualDateField.show();
+                    manualDatePicker.show();
                     if (selectedType == 3) {
-                        holidayField.show();
+                        //do nothing
                     } else {
-                        holidayField.hide();
                         holidayInput.val('');
                     }
                 }
