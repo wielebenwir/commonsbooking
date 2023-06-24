@@ -32,7 +32,6 @@
         }
         if (holidayLoadButton.length) {
             var fillHolidays = (year, state) => {
-                debugger;
                 var holidays = feiertagejs.getHolidays(year, state);
                 holidays.forEach(holiday => {
                     var date = new Date(holiday.date);
@@ -40,7 +39,6 @@
                 });
             };
             holidayLoadButton.click(function() {
-                debugger;
                 fillHolidays($("#_cmb2_holidayholiday_year").val(), $("#_cmb2_holidayholiday_state").val());
             });
         }
@@ -164,8 +162,16 @@
         };
         const timeframeForm = $("#cmb2-metabox-cb_timeframe-custom-fields");
         if (timeframeForm.length) {
-            const timeframeRepetitionInput = $("#timeframe-repetition");
             const typeInput = $("#type");
+            const BOOKABLE_TYPE = 2;
+            const HOLIDAY_TYPE = 3;
+            const BLOCKED_TYPE = 5;
+            const SELECTION_MANUAL = 0;
+            const SELECTION_CATEGORY = 1;
+            const SELECTION_ALL = 2;
+            const timeframeRepetitionInput = $("#timeframe-repetition");
+            const locationSelectionInput = $("#location-select");
+            const itemSelectionInput = $("#item-select");
             const gridInput = $("#grid");
             const weekdaysInput = $("#weekdays1");
             const startTimeInput = $("#start-time");
@@ -179,6 +185,13 @@
             const createBookingCodesInput = $("#create-booking-codes");
             const bookingCodesDownload = $("#booking-codes-download");
             const bookingCodesList = $("#booking-codes-list");
+            const singleLocationSelection = $(".cmb2-id-location-id");
+            const multiLocationSelection = $(".cmb2-id-location-ids");
+            const singleItemSelection = $(".cmb2-id-item-id");
+            const multiItemSelection = $(".cmb2-id-item-ids");
+            const categoryLocationSelection = $(".cmb2-id-location-category-ids");
+            const categoryItemSelection = $(".cmb2-id-item-category-ids");
+            const bookingConfigTitle = $(".cmb2-id-title-bookings-config");
             const holidayField = $(".cmb2-id--cmb2-holiday");
             const holidayInput = $("#timeframe_manual_date");
             const manualDatePicker = $("#cmb2_multiselect_datepicker");
@@ -204,10 +217,32 @@
                     $(this).prop("checked", false);
                 });
             };
+            const migrateSingleSelection = () => {
+                if (typeInput.val() != HOLIDAY_TYPE) {
+                    return;
+                }
+                const singleSelectionOption = singleItemSelection.find("option:selected");
+                if (singleSelectionOption.prop("value")) {
+                    const multiItemSelectionOption = multiItemSelection.find(`input[value=${singleSelectionOption.prop("value")}]`);
+                    if (multiItemSelectionOption) {
+                        multiItemSelectionOption.prop("checked", true);
+                    }
+                    singleSelectionOption.prop("selected", false);
+                }
+                const singleLocationSelectionOption = singleLocationSelection.find("option:selected");
+                if (singleLocationSelectionOption.prop("value")) {
+                    const multiLocationSelectionOption = multiLocationSelection.find(`input[value=${singleLocationSelectionOption.prop("value")}]`);
+                    if (multiLocationSelectionOption) {
+                        multiLocationSelectionOption.prop("checked", true);
+                    }
+                    singleLocationSelectionOption.prop("selected", false);
+                }
+            };
+            migrateSingleSelection();
             const handleTypeSelection = function() {
                 const selectedType = $("option:selected", typeInput).val();
                 const selectedRepetition = $("option:selected", timeframeRepetitionInput).val();
-                if (selectedType == 2) {
+                if (selectedType == BOOKABLE_TYPE) {
                     maxDaysSelect.show();
                     advanceBookingDays.show();
                     allowUserRoles.show();
@@ -224,10 +259,70 @@
                         holidayInput.val("");
                     }
                 }
+                if (selectedType == HOLIDAY_TYPE) {
+                    itemSelectionInput.show();
+                    locationSelectionInput.show();
+                    migrateSingleSelection();
+                } else {
+                    itemSelectionInput.hide();
+                    locationSelectionInput.hide();
+                }
             };
             handleTypeSelection();
             typeInput.change(function() {
                 handleTypeSelection();
+                handleItemSelection();
+                handleLocationSelection();
+            });
+            const handleLocationSelection = function() {
+                const selectedType = $("option:selected", typeInput).val();
+                if (selectedType == HOLIDAY_TYPE) {
+                    singleLocationSelection.hide();
+                    const selectedOption = $("option:selected", locationSelectionInput).val();
+                    if (selectedOption == SELECTION_MANUAL) {
+                        multiLocationSelection.show();
+                        categoryLocationSelection.hide();
+                    } else if (selectedOption == SELECTION_CATEGORY) {
+                        categoryLocationSelection.show();
+                        multiLocationSelection.hide();
+                    } else if (selectedOption == SELECTION_ALL) {
+                        multiLocationSelection.hide();
+                        categoryLocationSelection.hide();
+                    }
+                } else {
+                    singleLocationSelection.show();
+                    multiLocationSelection.hide();
+                    categoryLocationSelection.hide();
+                }
+            };
+            handleLocationSelection();
+            locationSelectionInput.change(function() {
+                handleLocationSelection();
+            });
+            const handleItemSelection = function() {
+                const selectedType = $("option:selected", typeInput).val();
+                if (selectedType == HOLIDAY_TYPE) {
+                    singleItemSelection.hide();
+                    const selectedOption = $("option:selected", itemSelectionInput).val();
+                    if (selectedOption == SELECTION_MANUAL) {
+                        multiItemSelection.show();
+                        categoryItemSelection.hide();
+                    } else if (selectedOption == SELECTION_CATEGORY) {
+                        categoryItemSelection.show();
+                        multiItemSelection.hide();
+                    } else if (selectedOption == SELECTION_ALL) {
+                        multiItemSelection.hide();
+                        categoryItemSelection.hide();
+                    }
+                } else {
+                    singleItemSelection.show();
+                    multiItemSelection.hide();
+                    categoryItemSelection.hide();
+                }
+            };
+            handleItemSelection();
+            itemSelectionInput.change(function() {
+                handleItemSelection();
             });
             const handleRepititionSelection = function() {
                 const selectedRepetition = $("option:selected", timeframeRepetitionInput).val();
@@ -298,7 +393,7 @@
             const handleBookingCodesSelection = function() {
                 const fullday = fullDayInput.prop("checked"), type = typeInput.val(), repStart = repetitionStartInput.val(), repEnd = repetitionEndInput.val();
                 hideFieldset(bookingCodeSet);
-                if (repStart && repEnd && fullday && type == 2) {
+                if (repStart && repEnd && fullday && type == BOOKABLE_TYPE) {
                     showFieldset(bookingCodeSet);
                     if (!createBookingCodesInput.prop("checked")) {
                         hideFieldset([ showBookingCodes ]);
