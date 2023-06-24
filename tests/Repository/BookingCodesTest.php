@@ -59,6 +59,7 @@ class BookingCodesTest extends CustomPostTypeTest
     }
 
 	public function testGetCode() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		//make sure, that non-existing codes are not returned
 		$code = BookingCodes::getCode( $this->timeframeWithEndDate->ID,
 			$this->itemId,
@@ -117,6 +118,7 @@ class BookingCodesTest extends CustomPostTypeTest
 	}
 
 	public function testGetCodes() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		//make sure that we get no codes before generation
 		$codes = BookingCodes::getCodes( $this->timeframeWithEndDate->ID);
 		$this->assertEmpty( $codes );
@@ -132,7 +134,7 @@ class BookingCodesTest extends CustomPostTypeTest
 		//now we should get all codes
 		$codes = BookingCodes::getCodes( $this->timeframeWithEndDate->ID);
 		$this->assertNotEmpty( $codes );
-		$this->assertCount( 32, $codes );
+		$this->assertCount( 31, $codes );
 		//check that the codes are in the correct order
 		$lastCode = null;
 		foreach ( $codes as $code ) {
