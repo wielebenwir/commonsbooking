@@ -11,7 +11,6 @@ use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
 use DateInterval;
 use DatePeriod;
-use DateTime;
 use Exception;
 
 class BookingCodes {
@@ -20,7 +19,7 @@ class BookingCodes {
 	 * Table name of booking codes.
 	 * @var string
 	 */
-	public static $tablename = 'cb_bookingcodes';
+	public static string $tablename = 'cb_bookingcodes';
 
 	/**
 	 * Days to advance generation of booking codes.
@@ -147,7 +146,7 @@ class BookingCodes {
 	/**
 	 * Creates booking-codes table;
 	 */
-	public static function initBookingCodesTable() {
+	public static function initBookingCodesTable() :void {
 		global $wpdb;
 		global $cb_db_version;
 
@@ -168,14 +167,15 @@ class BookingCodes {
 		add_option( COMMONSBOOKING_PLUGIN_SLUG . '_bookingcodes_db_version', $cb_db_version );
 	}
 
-	/**
-	 * Generates booking codes for timeframe.
+    /**
+     * Generates booking codes for timeframe.
+     *
+     * @param \CommonsBooking\Model\Timeframe $timeframe
 	 *
-	 * @param \CommonsBooking\Model\Timeframe $timeframe
-	 *
-	 * @return bool
-	 * @throws Exception
-	 */
+     * @return bool
+     * @return bool
+     * @throws Exception
+     */
 	public static function generate( \CommonsBooking\Model\Timeframe $timeframe ): bool {
 
 		if (! $timeframe->bookingCodesApplieable() ){
@@ -246,7 +246,7 @@ class BookingCodes {
 	 * @param int $locationId
 	 * @param int $itemId
 	 */
-	public static function deleteOldCodes( int $postId, int $locationId, int $itemId ) {
+	public static function deleteOldCodes( int $postId, int $locationId, int $itemId ) : void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::$tablename;
 

@@ -9,6 +9,7 @@ use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use PHPUnit\Framework\TestCase;
+use SlopeIt\ClockMock\ClockMock;
 
 abstract class CustomPostTypeTest extends TestCase {
 
@@ -33,6 +34,8 @@ abstract class CustomPostTypeTest extends TestCase {
 	protected $locationIds = [];
 
 	protected $itemIds = [];
+
+	protected $normalUserID;
 
 	protected function createTimeframe(
 		$locationId,
@@ -197,26 +200,38 @@ abstract class CustomPostTypeTest extends TestCase {
 		);
 	}
 
-	protected function createBookableTimeFrameIncludingCurrentDay() {
+	protected function createBookableTimeFrameIncludingCurrentDay($locationId = null, $itemId = null) {
+		if ( $locationId === null ) {
+			$locationId = $this->locationId;
+		}
+		if ( $itemId === null ) {
+			$itemId = $this->itemId;
+		}
 		return $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$locationId,
+			$itemId,
 			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) )
 		);
 	}
 
-	protected function createBookableTimeFrameStartingInAWeek() {
+	protected function createBookableTimeFrameStartingInAWeek($locationId = null, $itemId = null) {
+		if ( $locationId === null ) {
+			$locationId = $this->locationId;
+		}
+		if ( $itemId === null ) {
+			$itemId = $this->itemId;
+		}
 		return $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$locationId,
+			$itemId,
 			strtotime( '+7 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+30 day', strtotime( self::CURRENT_DATE ) )
 		);
 	}
 
 	// Create Item
-	public function createItem($title, $postStatus) {
+	public function createItem($title, $postStatus, $admins = []) {
 		$itemId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Item::$postType,
@@ -225,11 +240,15 @@ abstract class CustomPostTypeTest extends TestCase {
 
 		$this->itemIds[] = $itemId;
 
+		if (! empty($admins)) {
+			update_post_meta( $itemId, COMMONSBOOKING_METABOX_PREFIX . 'item_admins', $admins );
+		}
+
 		return $itemId;
 	}
 
 	// Create Location
-	public function createLocation($title, $postStatus) {
+	public function createLocation($title, $postStatus, $admins = []) {
 		$locationId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Location::$postType,
@@ -237,11 +256,26 @@ abstract class CustomPostTypeTest extends TestCase {
 		] );
 
 		$this->locationIds[] = $locationId;
+
+		if (! empty($admins)) {
+			update_post_meta( $locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_admins', $admins );
+		}
+
 		return $locationId;
 	}
 
-	protected function setUp() {
-		parent::setUp();
+	public function createSubscriber(){
+		$wp_user = get_user_by('email',"a@a.de");
+		if (! $wp_user){
+			$this->normalUserID = wp_create_user("normaluser","normal","a@a.de");
+		}
+		else {
+			$this->normalUserID = $wp_user->ID;
+		}
+	}
+
+  protected function setUp() : void {
+    parent::setUp();
 
 		$this->setUpBookingCodesTable();
 
@@ -268,9 +302,10 @@ abstract class CustomPostTypeTest extends TestCase {
 		$wpdb->query( $sql );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 
+		ClockMock::reset();
 		$this->tearDownAllItems();
 		$this->tearDownAllLocation();
 		$this->tearDownAllTimeframes();

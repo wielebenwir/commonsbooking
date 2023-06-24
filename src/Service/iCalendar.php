@@ -102,15 +102,22 @@ class iCalendar {
             $bookingLocation_longitude = $bookingLocation->getMeta( 'geo_longitude' );
 
             //create immutable DateTime objects from Mutable (recommended by iCal library developer)
-            $booking_startDateDateTime = DateTimeImmutable::createFromMutable( $booking->getStartDateDateTime() );
-            $booking_endDateDateTime = DateTimeImmutable::createFromMutable( $booking->getEndDateDateTime() );
+            $booking_startDateDateTime = DateTimeImmutable::createFromMutable( $booking->getUTCStartDateDateTime() );
+            $booking_endDateDateTime = DateTimeImmutable::createFromMutable( $booking->getUTCEndDateDateTime() );
 
             // Create timezone entity
-            $timezone = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone(
-                wp_timezone(),
-                $booking_startDateDateTime,
-                $booking_endDateDateTime
-            );
+	        $php_date_time_zone = wp_timezone();
+			//will only get timezone object if current timezone has transitions that can be fetched
+			if ($php_date_time_zone->getTransitions()){
+				$timezone           = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone(
+					$php_date_time_zone,
+					$booking_startDateDateTime,
+					$booking_endDateDateTime
+				);
+				if (empty($this->calendar->getTimeZones())){
+					$this->calendar->addTimeZone($timezone);
+				}
+			}
 
             //Create event occurrence
             if ($booking->isFullDay()){

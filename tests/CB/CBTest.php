@@ -32,7 +32,7 @@ class CBTest extends CustomPostTypeTest {
 
 	private $bookingMetaValue = 'booking-meta-value';
 
-	private $bookingId;
+	protected $bookingId;
 
 	public function testLookUp() {
 		// Test if user meta value is found when handing over WP_Post object
@@ -105,7 +105,7 @@ class CBTest extends CustomPostTypeTest {
 		) );
 	}
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->userInstanceId = wp_create_user(
@@ -132,7 +132,7 @@ class CBTest extends CustomPostTypeTest {
 		add_post_meta( $this->bookingId, $this->bookingMetaKey, $this->bookingMetaValue );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 
 		wp_delete_user( $this->userInstanceId );
