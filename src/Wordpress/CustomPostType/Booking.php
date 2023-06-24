@@ -145,7 +145,7 @@ class Booking extends Timeframe {
             if ( in_array( $post->post_status, array( 'auto-draft', 'new' ) ) || $post->post_name === '' ) {
                 $postarr['post_name'] = Helper::generateRandomString();
             }
-            
+
             $postarr['ID'] = $post_id;
 
             // unhook this function so it doesn't loop infinitely
@@ -709,7 +709,7 @@ class Booking extends Timeframe {
 	 * @return array
 	 */
 	protected function getCustomFields() {
-		// We need static types, because german month names dont't work for datepicker
+		// We need static types, because german month names don't work for datepicker
 		$dateFormat = 'd/m/Y';
 		if ( strpos( get_locale(), 'de_' ) !== false ) {
 			$dateFormat = 'd.m.Y';

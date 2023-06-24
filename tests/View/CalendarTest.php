@@ -87,26 +87,26 @@ class CalendarTest extends CustomPostTypeTest {
 
 		$now               = time();
 		$this->timeframeId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			strtotime( '+' . self::timeframeStart . ' days midnight', $now ),
-			strtotime( '+' . self::timeframeEnd . ' days midnight', $now )
+            $this->locationId,
+            $this->itemId,
+            strtotime('+' . self::timeframeStart . ' days midnight', $now),
+            strtotime('+' . self::timeframeEnd . ' days midnight', $now)
 		);
 		// set booking days in advance
 		update_post_meta( $this->timeframeId, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
 
 		$this->closestTimeframe = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			strtotime( '-100 days midnight' ),
-			strtotime( '+13 days midnight' )
+            $this->locationId,
+            $this->itemId,
+            strtotime('-100 days midnight'),
+            strtotime('+13 days midnight')
 		);
 
 		$this->secondClosestTimeframe = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			strtotime( '+14 days midnight' ),
-			strtotime( '+300 days midnight' )
+            $this->locationId,
+            $this->itemId,
+            strtotime('+14 days midnight'),
+            strtotime('+300 days midnight')
 		);
 	}
 

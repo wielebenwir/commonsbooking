@@ -67,8 +67,27 @@ abstract class CustomPostTypeTest extends TestCase {
 		] );
 
 		update_post_meta( $timeframeId, 'type', $type );
-		update_post_meta( $timeframeId, 'location-id', $locationId );
-		update_post_meta( $timeframeId, 'item-id', $itemId );
+		// we need to map the multi-location array and multi-item array on a string array because that is the way it is also saved from the WP-backend
+		if ( is_array($locationId) ) {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_LOCATION_IDS,
+				array_map('strval',$locationId ));
+		}
+		else {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_LOCATION_ID,
+				$locationId );
+		}
+		if (is_array($itemId)) {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_ITEM_IDS,
+				array_map('strval', $itemId ));
+		}
+		else {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_ITEM_ID,
+				$itemId );
+		}
 		update_post_meta( $timeframeId, 'timeframe-max-days', $maxDays );
 		update_post_meta( $timeframeId, 'timeframe-advance-booking-days', $advanceBookingDays );
 		update_post_meta( $timeframeId, 'full-day', $fullday );
@@ -232,7 +251,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
 	// Create Item
-	public function createItem($title, $postStatus, $admins = []) {
+	public function createItem($title, $postStatus = 'publish', $admins = []) {
 		$itemId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Item::$postType,
@@ -249,7 +268,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
 	// Create Location
-	public function createLocation($title, $postStatus, $admins = []) {
+	public function createLocation($title, $postStatus = 'publish', $admins = []) {
 		$locationId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Location::$postType,

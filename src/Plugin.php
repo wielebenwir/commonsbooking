@@ -246,6 +246,9 @@ class Plugin {
             // Set default values to existing timeframes for advance booking days
             self::setAdvanceBookingDaysDefault();
 
+			//set default values for timeframe multi-select
+			self::setMultiSelectTimeFrameDefault();
+
 			// Clear cache
 			self::clearCache();
 
@@ -374,13 +377,16 @@ class Plugin {
     /**
 	 * Registers category taxonomy for Custom Post Type Item
      *
+     * TODO: This can probably be re-factored to the more generic CustomPostType
+     *
 	 * @return void
 	 */
 	public static function registerItemTaxonomy() {
 		$customPostType = Item::getPostType();
+		$taxonomy = $customPostType . 's_category';
 
-		$result = register_taxonomy(
-			$customPostType . 's_category',
+		$result   = register_taxonomy(
+			$taxonomy,
 			$customPostType,
 			array(
 				'label'        => esc_html__( 'Item Category', 'commonsbooking' ),
@@ -394,6 +400,9 @@ class Plugin {
 		if ( is_wp_error( $result ) ) {
 			wp_die( $result->get_error_message() );
 		}
+
+		//hook the term updates to the item post type function. This only runs when a term is updated but that is enough. When a term is added, the post is saved and therefore the other hook is triggered which also runs the same function.
+		add_action( 'edited_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Item', 'termChange' ), 10, 3 );
 	}
 
 	/**
@@ -403,9 +412,10 @@ class Plugin {
 	 */
 	public static function registerLocationTaxonomy() {
 		$customPostType = Location::getPostType();
+		$taxonomy = $customPostType . 's_category';
 
-		$result = register_taxonomy(
-			$customPostType . 's_category',
+		$result   = register_taxonomy(
+			$taxonomy,
 			$customPostType,
 			array(
 				'label'        => esc_html__( 'Location Category', 'commonsbooking' ),
@@ -419,6 +429,9 @@ class Plugin {
 		if ( is_wp_error( $result ) ) {
 			wp_die( $result->get_error_message() );
 		}
+
+		//hook the term updates to the location post type function. This only runs when a term is updated but that is enough. When a term is added, the post is saved and therefore the other hook is triggered which also runs the same function.
+		add_action( 'saved_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Location', 'termChange' ), 10, 3 );
 	}
 
 	/**
@@ -550,12 +563,12 @@ class Plugin {
                 $this->UpdateNotice( COMMONSBOOKING_VERSION, $plugin_data['new_version'] );
             }
         );
-             
+
     	// iCal rewrite
 		iCalendar::initRewrite();
 
 	}
-	
+
 	/**
 	 * Loads text domain for (from local file or wordpress plugin-dir)
 	 *
@@ -590,7 +603,7 @@ class Plugin {
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public function savePostActions( $post_id, $post, $update ) {
-		if ( ! in_array( $post->post_type, self::getCustomPostTypesLabels() ) ) {
+		if ( ! self::isPostCustomPostType( $post ) ) {
 			return;
 		}
 
@@ -797,14 +810,34 @@ class Plugin {
      *
      * @return void
      */
-    public static function setAdvanceBookingDaysDefault() {
+    private static function setAdvanceBookingDaysDefault() {
         $timeframes = \CommonsBooking\Repository\Timeframe::getBookable( [], [], null, true );
 
         foreach ( $timeframes as $timeframe ) {
-            if ( $timeframe->getMeta( 'timeframe-advance-booking-days' ) < 1 ) {
-                update_post_meta( $timeframe->ID, 'timeframe-advance-booking-days', strval( \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS ) );
+            if ( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) < 1 ) {
+                update_post_meta( $timeframe->ID, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, strval( \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS ) );
             }
         }
     }
+
+	/**
+	 * sets the default value for multi selection to manual in all existing timeframes.
+	 * Multi selection for timeframes are available since 2.8 (estimated) - all timeframes created prior to this version need to have a value for selection
+	 *
+	 * @return void
+	 * @throws InvalidArgumentException
+	 */
+	private static function setMultiSelectTimeFrameDefault() {
+		$timeframes = \CommonsBooking\Repository\Timeframe::get( [],[],[],true );
+
+		foreach ($timeframes as $timeframe) {
+			if ( empty($timeframe->getMeta(\CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE ) ) ) {
+				update_post_meta($timeframe->ID, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
+			}
+			if ( empty($timeframe->getMeta(\CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE ) ) ) {
+				update_post_meta($timeframe->ID, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
+			}
+		}
+	}
 
 }

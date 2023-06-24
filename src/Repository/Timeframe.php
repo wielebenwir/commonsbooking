@@ -158,12 +158,13 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
-	 * Returns Post-IDs by type(s), item(s), location(s)
+	 * Returns Post-IDs of timeframes by type(s), item(s), location(s)
+	 *
 	 * Why? It's because of performance. We use the ids as base set for following filter queries.
 	 *
-	 * @param array $types
-	 * @param array $items
-	 * @param array $locations
+	 * @param array $types the types of timeframes to return, will return default set when not set
+	 * @param array $items the items that the timeframes should be applicable to, will return all if not set
+	 * @param array $locations the locations that the timeframes should be applicable to, will return all if not set
 	 *
 	 * @return mixed
 	 * @throws \Psr\Cache\InvalidArgumentException
@@ -187,8 +188,6 @@ class Timeframe extends PostRepository {
 			global $wpdb;
 			$table_postmeta = $wpdb->prefix . 'postmeta';
 
-			$itemQuery = "";
-
 			$items     = array_filter( $items );
 			$locations = array_filter( $locations );
 
@@ -197,26 +196,26 @@ class Timeframe extends PostRepository {
             $locations  = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
             $types      = commonsbooking_sanitizeArrayorString( $types, 'intval' );
 
-
-			// Query for item(s)
+			$itemQuery = "";
 			if ( count( $items ) > 0 ) {
-				$itemQuery = " 
-                    INNER JOIN $table_postmeta pm2 ON
-                        pm2.post_id = pm1.post_id AND
-                        pm2.meta_key = 'item-id' AND
-                        pm2.meta_value IN (" . implode( ',', $items ) . ")
-                ";
+				$itemQuery = self::getEntityQuery(
+					"pm2",
+					$table_postmeta,
+					$items,
+					\CommonsBooking\Model\Timeframe::META_ITEM_ID,
+					\CommonsBooking\Model\Timeframe::META_ITEM_IDS
+				);
 			}
 
-			// Query for location(s)
 			$locationQuery = "";
 			if ( count( $locations ) > 0 ) {
-				$locationQuery = " 
-                    INNER JOIN $table_postmeta pm3 ON
-                        pm3.post_id = pm1.post_id AND
-                        pm3.meta_key = 'location-id' AND
-                        pm3.meta_value IN (" . implode( ',', $locations ) . ")
-                ";
+				$locationQuery = self::getEntityQuery(
+					"pm3",
+					$table_postmeta,
+					$locations,
+					\CommonsBooking\Model\Timeframe::META_LOCATION_ID,
+					\CommonsBooking\Model\Timeframe::META_LOCATION_IDS
+				);
 			}
 
 			// Complete query, including types
@@ -252,6 +251,35 @@ class Timeframe extends PostRepository {
 
 			return $postIds;
 		}
+	}
+
+	/**
+	* Returns entity query which considers single and multi selection.
+	*/
+	private static function getEntityQuery($joinAlias, $table_postmeta, $entities, $singleEntityKey, $multiEntityKey) {
+		$locationQueryParts = [];
+
+		// Single select
+		$singleLocationQuery = "(
+		                        $joinAlias.meta_key = '". $singleEntityKey ."' AND
+		                        $joinAlias.meta_value IN (" . implode( ',', $entities ) . ")
+	                        )";
+		$locationQueryParts[] = $singleLocationQuery;
+
+		// Multi select
+		$multiLocationQueries = [];
+		foreach($entities as $entityId) {
+			$multiLocationQueries[] = "$joinAlias.meta_value LIKE '%:\"$entityId\";%'";
+		}
+		$multiLocationQuery = "(
+					$joinAlias.meta_key = '". $multiEntityKey ."' AND
+					(" . implode(' OR ', $multiLocationQueries) . ") 
+				)";
+		$locationQueryParts[] = $multiLocationQuery;
+
+		return "INNER JOIN $table_postmeta $joinAlias ON
+                    $joinAlias.post_id = pm1.post_id AND
+                    (".implode(' OR ', $locationQueryParts).")";
 	}
 
 	/**

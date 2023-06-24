@@ -58,7 +58,7 @@ class Wordpress {
 	 */
 	public static function getPostIdArray($posts): array {
 		 return array_map( function ( $post ) {
-			return strval($post->ID);
+			return intval($post->ID);
 		}, $posts);
 	}
 
@@ -95,9 +95,7 @@ class Wordpress {
 		// Remove empty tags
 		$postIds = array_filter($postIds);
 
-		return array_map( function ( $postId ) {
-			return strval($postId);
-		}, $postIds);
+		return array_map( 'strval', $postIds );
 	}
 
 	/**
@@ -119,6 +117,7 @@ class Wordpress {
 
 	/**
 	 * Returns all post ids in relation to $postId.
+	 * CAREFUL: This will not get the location that the item is in relation to.
 	 * @param $postId
 	 *
 	 * @return array
@@ -207,7 +206,9 @@ class Wordpress {
 			$relatedPostIds = array_merge($relatedPostIds, Wordpress::getPostIdArray($timeframes));
 		}
 
-		return $relatedPostIds;
+		return array_unique(
+			array_map( 'intval', $relatedPostIds)
+		);
 	}
 
 	/**
@@ -245,18 +246,31 @@ class Wordpress {
 	public static function getLocationAndItemIdsFromPosts($posts): array {
 		$itemsAndLocations = [];
 		array_walk($posts, function ($timeframe) use (&$itemsAndLocations) {
-			$itemsAndLocations[] = get_post_meta(
+			$items = get_post_meta(
 				$timeframe->ID,
 				Timeframe::META_ITEM_ID,
 				true
 			);
-			$itemsAndLocations[] = get_post_meta(
+			// depends on single or multiselect
+			if(is_array($items)) {
+				foreach ($items as $item) $itemsAndLocations[] = $item;
+			} else {
+				$itemsAndLocations[] = $items;
+			}
+
+			$locations = get_post_meta(
 				$timeframe->ID,
 				Timeframe::META_LOCATION_ID,
 				true
 			);
+			// depends on single or multiselect
+			if(is_array($locations)) {
+				foreach ($locations as $location) $itemsAndLocations[] = $location;
+			} else {
+				$itemsAndLocations[] = $locations;
+			}
 		});
-		return $itemsAndLocations;
+		return array_map('intval', $itemsAndLocations);
 	}
 
 	/**
