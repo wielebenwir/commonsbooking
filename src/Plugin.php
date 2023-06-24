@@ -222,8 +222,16 @@ class Plugin {
 			Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor', '#f6f6f6' );
 
 			// reset iCalendar Titles when upgrading, see issue #1251
-			Settings::updateOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title', '' );
-			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' , '' );
+			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
+			$otherEventTitle = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
+			if ( str_contains( $eventTitle, 'post_name' ) ){
+				$updatedString = str_replace( 'post_name', 'post_title', $eventTitle );
+				Settings::updateOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title', $updatedString );
+			}
+			if ( str_contains( $otherEventTitle, 'post_name' ) ){
+				$updatedString = str_replace( 'post_name', 'post_title', $otherEventTitle );
+				Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title', $updatedString );
+			}
 
 			// set Options default values (e.g. if there are new fields added)
 			AdminOptions::SetOptionsDefaultValues();
