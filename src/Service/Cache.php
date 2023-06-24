@@ -91,6 +91,10 @@ trait Cache {
 	}
 
 	/**
+	 * Creates cache based on user settings or defaults.
+	 * 
+	 * At the moment filesystem and redis cache are supported.
+	 *
 	 * @param string $namespace
 	 * @param int $defaultLifetime
 	 * @param string|null $directory
@@ -98,18 +102,25 @@ trait Cache {
 	 * @return TagAwareAdapterInterface
 	 */
 	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ): TagAwareAdapterInterface {
-		if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled') =='on'){
+		if ( $directory === null ){
+			$customCachePath = commonsbooking_sanitizeArrayorString( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' ) );
+			if ( $customCachePath ){
+				$directory = $customCachePath;
+			}
+		}
+
+		if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) === 'on'){
 			try {
 				$adapter = new RedisTagAwareAdapter(
-					RedisAdapter::createConnection(Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn')),
+					RedisAdapter::createConnection( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn' ) ),
 					$namespace,
 					$defaultLifetime
 				);
 				return $adapter;
 			}
 			catch (Exception $e) {
-				commonsbooking_write_log($e . 'Falling back to Filesystem adapter');
-				set_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error',$e->getMessage());
+				commonsbooking_write_log( $e . 'Falling back to Filesystem adapter' );
+				set_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error', $e->getMessage() );
 			}
 		}
 		$adapter = new TagAwareAdapter(
@@ -277,6 +288,37 @@ trait Cache {
 				else {
 					echo '<div style="color:orange">';
 						echo __('REDIS database not enabled','commonsbooking');
+					echo '</div>';
+				}
+				?>
+			</div>
+		</div>
+		<?php
+	}
+
+	public static function renderFilesystemStatus( array $field_ars, CMB2_Field $field){
+		?>
+		<div class="cmb-row cmb-type-text table-layout">
+			<div class="cmb-th">
+				Directory status:
+			</div>
+			<div class="cmb-th">
+				<?php
+				$cachePath = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' );
+				if (empty($cachePath)){
+					$cachePath = sys_get_temp_dir().\DIRECTORY_SEPARATOR.'symfony-cache';
+				}
+				else {
+					$cachePath = realpath($cachePath) ?: $cachePath;
+				}
+				if (is_writable($cachePath)){
+					echo '<div style="color:green">';
+					echo sprintf( commonsbooking_sanitizeHTML(__('Directory %s is writeable.', 'commonsbooking') ), $cachePath);
+					echo '</div>';
+				}
+				else {
+					echo '<div style="color:red">';
+					echo sprintf( commonsbooking_sanitizeHTML(__('Directory %s could not be written to.', 'commonsbooking') ), $cachePath);
 					echo '</div>';
 				}
 				?>

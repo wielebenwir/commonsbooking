@@ -50,7 +50,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		$endTime = '12:00 PM',
 		$postStatus = 'publish',
 		$weekdays = [ "1", "2", "3", "4", "5", "6", "7" ],
-		$manualSelectionDays = [],
+		$manualSelectionDays = "",
 		$postAuthor = self::USER_ID,
 		$maxDays = 3,
 		$advanceBookingDays = 30,
