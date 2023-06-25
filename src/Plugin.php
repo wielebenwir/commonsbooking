@@ -22,6 +22,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\Options\AdminOptions;
+use CommonsBooking\Wordpress\Options\OptionsArray;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
 
@@ -443,7 +444,7 @@ class Plugin {
 	 * Register Admin-Options
 	 */
 	public static function registerAdminOptions() {
-		$options_array = include(COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php');
+		$options_array = OptionsArray::getOptions();
 		foreach ($options_array as $tab_id => $tab) {
 			new OptionsTab($tab_id, $tab);
 		}
