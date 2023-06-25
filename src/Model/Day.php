@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\CB\Users;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
@@ -117,7 +118,7 @@ class Day {
 			// check if user is allowed to book this timeframe and remove unallowed timeframes from array
 			// OR: Check for repetition timeframe selected days
 			foreach ( $timeFrames as $key => $timeframe ) {
-				if ( ! commonsbooking_isCurrentUserAllowedToBook( $timeframe->ID ) ||
+				if ( ! Users::commonsbooking_isCurrentUserAllowedToBook( $timeframe->ID ) ||
 				     ! $this->isInTimeframe( $timeframe )) {
 					unset( $timeFrames[ $key ] );
 				}

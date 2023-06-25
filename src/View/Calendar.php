@@ -5,6 +5,7 @@ namespace CommonsBooking\View;
 
 
 use CommonsBooking\CB\CB;
+use CommonsBooking\CB\Users;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\CustomPost;
@@ -601,7 +602,7 @@ class Calendar {
 				$timeFrameType = get_post_meta( $slot['timeframe']->ID, \CommonsBooking\Model\Restriction::META_TYPE, true );
 			}
 
-			$isUserAllowedtoBook = commonsbooking_isCurrentUserAllowedToBook( $slot['timeframe']->ID );
+			$isUserAllowedtoBook = Users::commonsbooking_isCurrentUserAllowedToBook( $slot['timeframe']->ID );
 
 			// save bookable state for first and last slot
 			if ( $dayArray['firstSlotBooked'] === null ) {

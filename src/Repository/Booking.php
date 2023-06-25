@@ -4,6 +4,7 @@
 namespace CommonsBooking\Repository;
 
 
+use CommonsBooking\CB\Users;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
@@ -330,7 +331,7 @@ class Booking extends PostRepository {
 			if ( $posts ) {
 				// Check if it is the main query and one of our custom post types
 				$posts = array_filter( $posts, function ( $post ) use ($user) {
-					return commonsbooking_isUserAllowedToEdit( $post, $user);
+					return Users::commonsbooking_isUserAllowedToEdit( $post, $user);
 				} );
 			}
 

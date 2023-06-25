@@ -12,13 +12,13 @@ class AdminOptions {
 	private static $option_key = COMMONSBOOKING_PLUGIN_SLUG . '_options';
 
 	/**
-	 * set default values to admin options fields as defined in includes/OptionsArray.php
+	 * set default values to admin options fields as defined in OptionsArray
 	 *
 	 * @return void
 	 */
 	public static function setOptionsDefaultValues() {
 
-		$options_array   = include( COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php' );
+		$options_array   = OptionsArray::getOptions();
 		$restored_fields = false;
 
 		foreach ( $options_array as $tab_id => $tab ) {

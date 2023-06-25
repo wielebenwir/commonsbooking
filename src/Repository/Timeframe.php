@@ -4,6 +4,7 @@
 namespace CommonsBooking\Repository;
 
 
+use CommonsBooking\CB\Users;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
@@ -506,7 +507,7 @@ class Timeframe extends PostRepository {
 	private static function filterTimeframesForCurrentUser( $posts ): array {
 		return array_filter( $posts, function ( $post ) {
 			try {
-				return commonsbooking_isCurrentUserAllowedToBook( $post->ID );
+				return Users::commonsbooking_isCurrentUserAllowedToBook( $post->ID );
 			} catch ( Exception $e ) {
 				error_log( $e->getMessage() );
 
