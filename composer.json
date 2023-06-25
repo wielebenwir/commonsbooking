@@ -11,11 +11,8 @@
     },
   "autoload": {
     "files": [
-      "includes/OptionsArray.php",
-      "includes/Shortcodes.php",
       "includes/Template.php",
-      "includes/TemplateParser.php",
-      "includes/Users.php"
+      "includes/TemplateParser.php"
     ],
     "psr-4": {"CommonsBooking\\": "src/"}
   },
