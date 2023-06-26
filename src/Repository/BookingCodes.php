@@ -22,7 +22,15 @@ class BookingCodes {
 	public static string $tablename = 'cb_bookingcodes';
 
 	/**
-	 * Returns booking codes for timeframe.
+	 * Days to advance generation of booking codes.
+	 * @var int
+	 */
+	public const ADVANCE_GENERATION_DAYS = 365;
+
+	/**
+	 * Returns booking codes for timeframe to display in backend Timeframe window.
+	 *
+	 *
 	 *
 	 * @param   int       $timeframeId - ID of timeframe to get codes for
 	 * @param   int|null  $startDate - Where to get booking codes from (timestamp)
@@ -36,7 +44,12 @@ class BookingCodes {
 		} else {
 			$timeframe = New \CommonsBooking\Model\Timeframe($timeframeId);
 			$timeframeStartDate      = $timeframe->getStartDate();
-			$timeframeEndDate   =  $timeframe->getRawEndDate();
+			$timeframeEndDate   = $timeframe->getEndDate();
+
+			// If timeframe does not qualify for booking codes, return empty array
+			if ( ! $timeframe->bookingCodesApplicable() ){
+				return [];
+			}
 
 			if ( ! $startDate || $startDate < $timeframeStartDate ) {
 				$startDate = $timeframeStartDate;
@@ -44,6 +57,10 @@ class BookingCodes {
 
 			if (! $endDate || $endDate > $timeframeEndDate ) {
 				$endDate = $timeframeEndDate;
+			}
+			//when we still don't have an end-date, we will just get the coming year
+			if (! $endDate ) {
+				$endDate = strtotime( '+' . self::ADVANCE_GENERATION_DAYS . ' days', $startDate );
 			}
 
 			$startDate = date( 'Y-m-d', $startDate );
@@ -85,14 +102,14 @@ class BookingCodes {
 	/**
 	 * Returns booking code by timeframe, location, item and date.
 	 *
-	 * @param $timeframeId
-	 * @param $itemId
-	 * @param $locationId
-	 * @param $date
+	 * @param $timeframeId - ID of timeframe to get code for
+	 * @param $itemId - ID of item attached to timeframe
+	 * @param $locationId - ID of location attached to timeframe
+	 * @param $date - Date in format Y-m-d
 	 *
-	 * @return BookingCode|mixed|null
+	 * @return BookingCode|null
 	 */
-	public static function getCode( $timeframeId, $itemId, $locationId, $date ) {
+	public static function getCode( $timeframeId, $itemId, $locationId, $date ) : ?BookingCode {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
@@ -113,6 +130,20 @@ class BookingCodes {
 				$date
 			);
 			$bookingCodes = $wpdb->get_results($sql);
+
+			if ( empty( $bookingCodes ) ) {
+				$timeframeObject = new \CommonsBooking\Model\Timeframe($timeframeId);
+				//when we have a timeframe without end-date we generate as many codes as we need
+				if (! $timeframeObject->getRawEndDate() && $timeframeObject->bookingCodesApplicable() ) {
+					$begin = $timeframeObject->getUTCStartDateDateTime();
+					$endDate = new \DateTime($date);
+					$endDate->modify('+' . self::ADVANCE_GENERATION_DAYS . ' days');
+					$interval = DateInterval::createFromDateString( '1 day' );
+					$period = new DatePeriod( $begin, $interval, $endDate );
+					static::generatePeriod($timeframeObject,$period);
+					$bookingCodes = $wpdb->get_results($sql);
+				}
+			}
 
 			$bookingCodeObject = null;
 			if ( count( $bookingCodes ) ) {
@@ -157,28 +188,32 @@ class BookingCodes {
     /**
      * Generates booking codes for timeframe.
      *
-     * @param $timeframeId
-     *
+     * @param \CommonsBooking\Model\Timeframe $timeframe
+	 *
+     * @return bool
      * @return bool
      * @throws Exception
      */
-	public static function generate( $timeframeId ): bool {
-		$bookablePost = new \CommonsBooking\Model\Timeframe( $timeframeId );
+	public static function generate( \CommonsBooking\Model\Timeframe $timeframe ): bool {
 
+		if (! $timeframe->bookingCodesApplicable() ){
+			return false;
+		}
 		$begin = Wordpress::getUTCDateTime();
-		$begin->setTimestamp( $bookablePost->getStartDate() );
-		$end = Wordpress::getUTCDateTime();
-		$end->setTimestamp( $bookablePost->getRawEndDate() );
-		$end->setTimestamp( $end->getTimestamp() + 1 );
+		$begin->setTimestamp( $timeframe->getStartDate() );
+		if ($timeframe->getRawEndDate()){
+			$end = Wordpress::getUTCDateTime();
+			$end->setTimestamp( $timeframe->getRawEndDate() );
+			$end->setTimestamp( $end->getTimestamp() + 1 );
+		}
+		else {
+			$end = new \DateTime();
+			$end->modify( '+' . self::ADVANCE_GENERATION_DAYS . 'days');
+		}
 
 		$interval = DateInterval::createFromDateString( '1 day' );
 		$period   = new DatePeriod( $begin, $interval, $end );
-
-		$bookingCodes      = Settings::getOption( 'commonsbooking_options_bookingcodes', 'bookingcodes' );
-		$bookingCodesArray = array_filter( explode( ',', trim( $bookingCodes ) ) );
-		$bookingCodesArray = array_map( function ( $item ) {
-			return preg_replace( "/\r|\n/", "", $item );
-		}, $bookingCodesArray );
+		$bookingCodesArray = static::getCodesArray();
 
 		// Check if codes are available, show error if not.
 		if ( ! count( $bookingCodesArray ) ) {
@@ -193,21 +228,31 @@ class BookingCodes {
 			return false;
 		}
 
-		// Before we add new codes, we remove old ones, that are not relevant anymore
-		self::deleteOldCodes( $timeframeId, $bookablePost->getLocation()->ID, $bookablePost->getItem()->ID );
+		return static::generatePeriod( $timeframe, $period );
 
-		$bookingCodesRandomizer = intval( $timeframeId );
-		$bookingCodesRandomizer += $bookablePost->getItem()->ID;
-		$bookingCodesRandomizer += $bookablePost->getLocation()->ID;
+	}
+
+	private static function generatePeriod( \CommonsBooking\Model\Timeframe $timeframe, DatePeriod $period){
+
+		$bookingCodesArray = static::getCodesArray();
+		if (! $bookingCodesArray ){
+			throw new BookingCodeException( __( 'No booking codes available.', 'commonsbooking' ) );
+		}
+		// Before we add new codes, we remove old ones, that are not relevant anymore
+		self::deleteOldCodes( $timeframe->ID, $timeframe->getLocation()->ID, $timeframe->getItem()->ID );
+
+		$bookingCodesRandomizer = intval( $timeframe->ID );
+		$bookingCodesRandomizer += $timeframe->getItem()->ID;
+		$bookingCodesRandomizer += $timeframe->getLocation()->ID;
 
 		foreach ( $period as $dt ) {
 			$day = new Day( $dt->format( 'Y-m-d' ) );
-			if ( $day->isInTimeframe( $bookablePost ) ) {
+			if ( $day->isInTimeframe( $timeframe ) ) {
 				$bookingCode = new BookingCode(
 					$dt->format( 'Y-m-d' ),
-					$bookablePost->getItem()->ID,
-					$bookablePost->getLocation()->ID,
-					$timeframeId,
+					$timeframe->getItem()->ID,
+					$timeframe->getLocation()->ID,
+					$timeframe->ID,
 					$bookingCodesArray[ ( (int) $dt->format( 'z' ) + $bookingCodesRandomizer ) % count( $bookingCodesArray ) ]
 				);
 				self::persist( $bookingCode );
@@ -220,11 +265,11 @@ class BookingCodes {
 	/**
 	 * Removes all codes for the post, that don't have the current location-id or item-id.
 	 *
-	 * @param $postId
-	 * @param $locationId
-	 * @param $itemId
+	 * @param int $postId
+	 * @param int $locationId
+	 * @param int $itemId
 	 */
-	public static function deleteOldCodes( $postId, $locationId, $itemId ) : void {
+	public static function deleteOldCodes( int $postId, int $locationId, int $itemId ) : void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::$tablename;
 
@@ -259,6 +304,22 @@ class BookingCodes {
 		$wpdb->show_errors( 1 );
 
 		return $result;
+	}
+
+	/**
+	 * Will get the configured booking codes from the settings and return them as an array.
+	 *
+	 * @return array - Array of booking codes, empty array if no booking codes are configured.
+	 */
+	private static function getCodesArray(): array {
+		$bookingCodes      = Settings::getOption( 'commonsbooking_options_bookingcodes', 'bookingcodes' );
+		if ( ! $bookingCodes ) {
+			return array();
+		}
+		$bookingCodesArray = array_filter( explode( ',', trim( $bookingCodes ) ) );
+		return array_map( function ( $item ) {
+			return preg_replace( "/\r|\n/", "", $item );
+		}, $bookingCodesArray );
 	}
 
 	/**

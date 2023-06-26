@@ -209,7 +209,7 @@ class Timeframe extends CustomPost {
 	public function bookingCodesApplicable(): bool {
 		try {
 			return $this->getLocation() && $this->getItem() &&
-			       $this->getStartDate() && $this->getEndDate() &&
+			       $this->getStartDate() && $this->usesBookingCodes() &&
 			       $this->getType() === \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID;
 		} catch ( Exception $e ) {
 			return false;
@@ -567,13 +567,12 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns true if booking codes shall be created.
+	 * Returns true if booking codes were enabled for this timeframe
 	 *
 	 * @return bool
 	 */
-	public function createBookingCodes() : bool
-	{
-		return $this->getMeta( 'create-booking-codes' ) === 'on';
+	public function usesBookingCodes(): bool {
+		return $this->getMeta( 'create-booking-codes' ) == 'on';
 	}
 
 	/**

@@ -172,7 +172,7 @@
 
                 hideFieldset(bookingCodeSet);
 
-                if (repStart && repEnd && fullday && type == 2) {
+                if (repStart && fullday && type == 2) {
                     showFieldset(bookingCodeSet);
 
                     // If booking codes shall not be created we disable and hide option to show them

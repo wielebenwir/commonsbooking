@@ -90,7 +90,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			)
 		) {
 			// translators: %s = Booking code
-			$htmloutput = '<br>' . sprintf( commonsbooking_sanitizeHTML( __( 'Your booking code is: %s', 'commonsbooking' ) ), $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode' ) ) . '<br>';
+			$htmloutput = '<br>' . sprintf( commonsbooking_sanitizeHTML( __( 'Your booking code is: %s', 'commonsbooking' ) ), $this->getBookingCode() ) . '<br>';
 		}
 
 		return $htmloutput;
