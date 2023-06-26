@@ -29,8 +29,9 @@ class BookingCodes {
 	 * @return array
 	 */
 	public static function getCodes( $timeframeId ): array {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 
 			$startDate = date( 'Y-m-d', intval( get_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::REPETITION_START, true ) ) );
@@ -80,8 +81,9 @@ class BookingCodes {
 	 * @return BookingCode|mixed|null
 	 */
 	public static function getCode( $timeframeId, $itemId, $locationId, $date ) {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			global $wpdb;
 			$table_name = $wpdb->prefix . self::$tablename;

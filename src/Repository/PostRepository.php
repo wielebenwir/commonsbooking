@@ -20,8 +20,9 @@ abstract class PostRepository {
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function getPostById( $postId ) {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$post = get_post( $postId );
 
