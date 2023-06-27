@@ -65,7 +65,9 @@ class BookingCodesTest extends CustomPostTypeTest
 			$this->timeframeWithEndDate,
 			$this->itemId,
 			$this->locationId,
-			strtotime('+31 days', strtotime( self::CURRENT_DATE) )
+			date('Y-m-d',
+				strtotime('+31 days', strtotime( self::CURRENT_DATE) )
+			)
 		);
 		$this->assertNull( $code );
 
