@@ -45,7 +45,7 @@ class BookingCodes {
 		} else {
 			$timeframe = New \CommonsBooking\Model\Timeframe($timeframeId);
 			$timeframeStartDate      = $timeframe->getStartDate();
-			$timeframeEndDate   = $timeframe->getEndDate();
+			$timeframeEndDate   = $timeframe->getRawEndDate();
 
 			// If timeframe does not qualify for booking codes, return empty array
 			if ( ! $timeframe->bookingCodesApplicable() ){
