@@ -163,7 +163,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 			// If there exists a booking code, add it.
 			$bookingCode = BookingCodes::getCode(
-				$timeframe->ID,
+				$timeframe,
 				$this->getItem()->ID,
 				$this->getLocation()->ID,
 				date( 'Y-m-d', $this->getStartDate() )

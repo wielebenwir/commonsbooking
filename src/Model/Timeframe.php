@@ -589,8 +589,11 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getUTCStartDateDateTime(): DateTime {
+	public function getUTCStartDateDateTime(): ?DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
+		if ( ! $startDateString ) {
+			return null;
+		}
 		if ( $this->isFullDay() ) {
 			return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		}
@@ -602,9 +605,12 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getStartTimeDateTime(): DateTime {
+	public function getStartTimeDateTime(): ?DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
 		$startTimeString = $this->getMeta( 'start-time' );
+		if ( ! $startDateString ) {
+			return null;
+		}
 		$startDate       = Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		if ( $startTimeString ) {
 			$startTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $startTimeString ) );
@@ -620,8 +626,11 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getEndDateDateTime(): DateTime {
+	public function getEndDateDateTime(): ?DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
+		if (! $endDateString ){
+			return null;
+		}
 		return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 	}
 
@@ -632,8 +641,11 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getUTCEndDateDateTime(): DateTime {
+	public function getUTCEndDateDateTime(): ?DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
+		if (! $endDateString ){
+			return null;
+		}
 		if ( $this->isFullDay() ) {
 			return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 		}
