@@ -146,9 +146,19 @@ class BookingCodesTest extends CustomPostTypeTest
 			$lastCode = $code;
 		}
 
+		//test for timeframe with end date only getting a limited range of codes
+		$amountOfCodes = 10;
+		$startDate = new \DateTime( self::CURRENT_DATE );
+		$endDate = new \DateTime( self::CURRENT_DATE );
+		$endDate->modify( '+'. $amountOfCodes . 'days' );
+		$codes = BookingCodes::getCodes( $this->timeframeWithEndDate->ID, $startDate->getTimestamp(), $endDate->getTimestamp() );
+		$this->assertNotEmpty( $codes );
+		//+1 because we also have to consider the current day
+		$this->assertCount( $amountOfCodes + 1, $codes );
+
 		//test infinite booking days timeframes
 		BookingCodes::generate( $this->timeframeWithoutEndDate );
-		//now we should get all codes
+		//now we should get all codes for the max generation days
 		$codeAmount = BookingCodes::ADVANCE_GENERATION_DAYS + 1;
 		$codes = BookingCodes::getCodes( $this->timeframeWithoutEndDate->ID);
 		$this->assertNotEmpty( $codes );
@@ -161,6 +171,45 @@ class BookingCodesTest extends CustomPostTypeTest
 			}
 			$lastCode = $code;
 		}
+
+		//now we try to get more codes than the max generation days
+		$startDate = new \DateTime( self::CURRENT_DATE );
+		$endDate = new \DateTime( self::CURRENT_DATE );
+		$codeAmount         = BookingCodes::ADVANCE_GENERATION_DAYS * 2;
+		$endDate->modify( '+' . $codeAmount . 'days' );
+		$codes = BookingCodes::getCodes( $this->timeframeWithoutEndDate->ID, $startDate->getTimestamp(), $endDate->getTimestamp() );
+		$this->assertNotEmpty( $codes );
+		$this->assertCount( $codeAmount + 1, $codes );
+		//check that the codes are in the correct order
+		$lastCode = null;
+		foreach ( $codes as $code ) {
+			if ( $lastCode ) {
+				$this->assertGreaterThan( $lastCode->getDate(), $code->getDate() );
+			}
+			$lastCode = $code;
+		}
+
+	}
+
+	public function testGetLastCode() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		BookingCodes::generate( $this->timeframeWithEndDate );
+		$lastCode = BookingCodes::getLastCode( $this->timeframeWithEndDate );
+		$this->assertNotNull( $lastCode );
+		$this->assertEquals( $this->timeframeWithEndDate->ID, $lastCode->getTimeframe() );
+		$this->assertEquals( $this->itemId, $lastCode->getItem() );
+		$this->assertEquals( $this->locationId, $lastCode->getLocation() );
+		$this->assertEquals( strtotime( '+29 day', strtotime( self::CURRENT_DATE ) ), strtotime($lastCode->getDate() ) );
+		$advanceGenerationDays = BookingCodes::ADVANCE_GENERATION_DAYS;
+		BookingCodes::generate( $this->timeframeWithoutEndDate );
+		$lastCode = BookingCodes::getLastCode( $this->timeframeWithoutEndDate );
+		$this->assertNotNull( $lastCode );
+		$this->assertEquals( $this->timeframeWithoutEndDate->ID, $lastCode->getTimeframe() );
+		$this->assertEquals( $this->itemId, $lastCode->getItem() );
+		$this->assertEquals( $this->locationId, $lastCode->getLocation() );
+		//The DatePeriod does not include the endDay, so we have to subtract one day
+		$advanceGenerationDays -= 1;
+		$this->assertEquals( strtotime( '+' . $advanceGenerationDays . ' day', strtotime( self::CURRENT_DATE ) ), strtotime($lastCode->getDate() ) );
 	}
 
 	protected function setUp(): void {
