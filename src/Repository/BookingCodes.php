@@ -7,6 +7,7 @@ namespace CommonsBooking\Repository;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Model\Day;
+use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
 use DateInterval;
@@ -102,14 +103,14 @@ class BookingCodes {
 	/**
 	 * Returns booking code by timeframe, location, item and date.
 	 *
-	 * @param $timeframeId - ID of timeframe to get code for
+	 * @param Timeframe $timeframe - Timeframe object to get code for
 	 * @param $itemId - ID of item attached to timeframe
 	 * @param $locationId - ID of location attached to timeframe
 	 * @param $date - Date in format Y-m-d
 	 *
 	 * @return BookingCode|null
 	 */
-	public static function getCode( $timeframeId, $itemId, $locationId, $date ) : ?BookingCode {
+	public static function getCode(\CommonsBooking\Model\Timeframe $timeframe, int $itemId, int $locationId, string $date ) : ?BookingCode {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
@@ -124,7 +125,7 @@ class BookingCodes {
                     location = %s AND 
                     date = %s
                 ORDER BY item ASC ,date ASC",
-				$timeframeId,
+				$timeframe->ID,
 				$itemId,
 				$locationId,
 				$date
@@ -132,15 +133,14 @@ class BookingCodes {
 			$bookingCodes = $wpdb->get_results($sql);
 
 			if ( empty( $bookingCodes ) ) {
-				$timeframeObject = new \CommonsBooking\Model\Timeframe($timeframeId);
 				//when we have a timeframe without end-date we generate as many codes as we need
-				if (! $timeframeObject->getRawEndDate() && $timeframeObject->bookingCodesApplicable() ) {
-					$begin = $timeframeObject->getUTCStartDateDateTime();
+				if (! $timeframe->getRawEndDate() && $timeframe->bookingCodesApplicable() ) {
+					$begin = $timeframe->getUTCStartDateDateTime();
 					$endDate = new \DateTime($date);
 					$endDate->modify('+' . self::ADVANCE_GENERATION_DAYS . ' days');
 					$interval = DateInterval::createFromDateString( '1 day' );
 					$period = new DatePeriod( $begin, $interval, $endDate );
-					static::generatePeriod($timeframeObject,$period);
+					static::generatePeriod($timeframe,$period);
 					$bookingCodes = $wpdb->get_results($sql);
 				}
 			}
@@ -155,7 +155,7 @@ class BookingCodes {
 					$bookingCodes[0]->code
 				);
 			}
-			Plugin::setCacheItem( $bookingCodeObject, [$timeframeId] );
+			Plugin::setCacheItem( $bookingCodeObject, [$timeframe->ID] );
 
 			return $bookingCodeObject;
 		}

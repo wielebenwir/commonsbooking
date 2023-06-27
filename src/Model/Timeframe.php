@@ -611,8 +611,11 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getEndDateDateTime(): DateTime {
+	public function getEndDateDateTime(): ?DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
+		if (! $endDateString ){
+			return null;
+		}
 		return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 	}
 
