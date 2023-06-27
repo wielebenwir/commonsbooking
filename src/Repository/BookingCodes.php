@@ -56,16 +56,34 @@ class BookingCodes {
 				$startDate = $timeframeStartDate;
 			}
 
-			if (! $endDate || $endDate > $timeframeEndDate ) {
+			if ($timeframeEndDate && (! $endDate || $endDate > $timeframeEndDate ) ) {
 				$endDate = $timeframeEndDate;
 			}
-			//when we still don't have an end-date, we will just get the coming year
+			//when we still don't have an end-date, we will just get the coming ADVANCE_GENERATION_DAYS (should default to 365 days)
 			if (! $endDate ) {
 				$endDate = strtotime( '+' . self::ADVANCE_GENERATION_DAYS . ' days', $startDate );
 			}
 
 			$startDate = date( 'Y-m-d', $startDate );
 			$endDate   = date( 'Y-m-d', $endDate );
+
+			//check, if we have enough codes for the timeframe or if we need to generate more
+			//we only need to check, if we have an open-ended timeframe
+			//we check, if the end date of the last generated code is before the end date of the requested time period
+			if ( ! $timeframe->getRawEndDate() &&
+			     strtotime(self::getLastCode($timeframe)->getDate()) < strtotime($endDate)
+			) {
+				$startGenerationPeriod = new \DateTime( self::getLastCode($timeframe)->getDate() );
+				$endGenerationPeriod = new \DateTime( $endDate );
+				$endGenerationPeriod->modify( '+' . self::ADVANCE_GENERATION_DAYS . ' days' );
+				static::generatePeriod( $timeframe,
+					new DatePeriod(
+						$startGenerationPeriod,
+						new DateInterval( 'P1D' ),
+						$endGenerationPeriod,
+					)
+				);
+			}
 
 			global $wpdb;
 			$table_name = $wpdb->prefix . self::$tablename;
@@ -159,6 +177,43 @@ class BookingCodes {
 
 			return $bookingCodeObject;
 		}
+	}
+
+	/**
+	 * Will get the last booking code that was generated for a given timeframe, item and location.
+	 * This can be used to determine if we need to generate new codes.
+	 *
+	 * @param Timeframe $timeframe
+	 * @param int $itemId
+	 * @param int $locationId
+	 *
+	 * @return BookingCode|null
+	 */
+	public static function getLastCode(Timeframe $timeframe) : ?BookingCode {
+		global $wpdb;
+		$table_name = $wpdb->prefix . self::$tablename;
+
+		$sql = $wpdb->prepare(
+			"SELECT * FROM $table_name
+			WHERE 
+				timeframe = %s
+			ORDER BY date DESC",
+			$timeframe->ID
+		);
+		$bookingCodes = $wpdb->get_results($sql);
+
+		$bookingCodeObject = null;
+		if ( count( $bookingCodes ) ) {
+			$bookingCodeObject = new BookingCode(
+				$bookingCodes[0]->date,
+				$bookingCodes[0]->item,
+				$bookingCodes[0]->location,
+				$bookingCodes[0]->timeframe,
+				$bookingCodes[0]->code
+			);
+		}
+
+		return $bookingCodeObject;
 	}
 
 	/**
