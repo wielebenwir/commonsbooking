@@ -81,8 +81,9 @@ class Booking extends View {
 			serialize( $user->ID )
 		);
 
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$bookingDataArray             = [];
 			$bookingDataArray['page']     = $page;

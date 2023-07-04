@@ -131,8 +131,9 @@ class Calendar {
 				// loop through location
 				foreach ( $locations as $locationId => $locationName ) {
 					$customCacheKey = $item->ID . $locationId . $today;
-					if ( Plugin::getCacheItem($customCacheKey) ) {
-						$rowHtml .= Plugin::getCacheItem($customCacheKey);
+					$cacheItem     = Plugin::getCacheItem( $customCacheKey );
+					if ( $cacheItem ) {
+						$rowHtml .= $cacheItem;
 					} else {
 						// Check for category term
 						if ( $locationCategory ) {
@@ -231,8 +232,9 @@ class Calendar {
 	 * @throws Exception
 	 */
 	protected static function renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display ): string {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$divider  = "</td><td>";
 			$itemName = $item->post_title;
