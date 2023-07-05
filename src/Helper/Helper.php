@@ -73,6 +73,7 @@ class Helper {
 
 	/**
 	 * Returns timestamp of last full hour, needed to get more cache hits.
+	 * Also used to determine if a post is still bookable because it is in the past or not.
 	 * @return int
 	 */
 	public static function getLastFullHourTimestamp() {
@@ -105,7 +106,6 @@ class Helper {
 			$post = new Booking( $post->ID );
 		}
 		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Item::$postType) {
-
 			$post = new Item( $post->ID );
 		}
 		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Location::$postType) {

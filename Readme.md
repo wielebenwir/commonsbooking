@@ -5,10 +5,10 @@
 
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen  
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
-Tags: booking, commons, sharing, calendar,  
+Tags: booking, commons, sharing, calendar, commoning, open-source, booking system, booking calendar  
 Requires at least: 5.2  
-Tested up to: 6.0
-Stable Tag: 2.8
+Tested up to: 6.0  
+Stable Tag: 2.8  
 Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -71,11 +71,12 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 2. Navigate into your wp-content/plugins directory
 3. Open a terminal and run `git clone https://github.com/wielebenwir/commonsbooking`
 4. cd into the directory commonsbooking and run `composer install`
+> This might fail, if you don't have the PHP extension [uopz](https://www.php.net/manual/en/book.uopz.php) installed. Try running `composer install --no-dev` if you just quickly want to test a specific branch without installing the extension.
 5. Activate the plugin in the Plugin dashboard
 
 ## Frequently Asked Questions
 
-### Where can i find help/report bugs?
+### Where can I find help/report bugs?
 
 * [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues)
 * [Support](https://commonsbooking.org/kontakt/)
