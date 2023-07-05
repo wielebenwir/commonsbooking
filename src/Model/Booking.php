@@ -13,6 +13,7 @@ use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Service\iCalendar;
+use DateTime;
 use WP_User;
 
 class Booking extends \CommonsBooking\Model\Timeframe {
@@ -570,21 +571,31 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * The behaviour of this function depends on the type of booking.
 	 * When a booking is confirmed or unconfirmed, it will return the whole amount of days in the booking interval.
 	 * When a booking is cancelled, it will only return the amount of days the item has been "used" (from start to cancellation).
+	 *
+	 * A day counts as "used", when it has started. That means if a booking is cancelled at 00:01, the day is still counted.
 	 * @return int
 	 */
 	public function getLength(): int{
-		$days = 0;
+		$interval = null;
 		if ( $this->isUnconfirmed() || $this->isConfirmed() ) {
 			$interval = $this->getStartDateDateTime()->diff($this->getEndDateDateTime()->modify("+5 min"));
-			$days = $interval->d;
 		}
 		elseif ($this->isCancelled()){
 			$interval = $this->getStartDateDateTime()->diff($this->getCancellationDateDateTime());
-			$days = $interval->d;
 		}
 		else {
 			//Booking has no valid status
 			return 0;
+		}
+		if ($interval === null){
+			//no interval created
+			return 0;
+		}
+		//get the fully completed days and also count a just started day as one day
+		$days = $interval->d;
+		//when we have already moved into the next day for more one hour,it is counted as another day even if it is not completed
+		if ($interval->h > 0){
+			$days++;
 		}
 		return $days;
 	}
