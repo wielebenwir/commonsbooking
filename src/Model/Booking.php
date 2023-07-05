@@ -566,12 +566,41 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Gets the length of a booking in days
+	 * Gets the length of a booking in days.
+	 * The behaviour of this function depends on the type of booking.
+	 * When a booking is confirmed or unconfirmed, it will return the whole amount of days in the booking interval.
+	 * When a booking is cancelled, it will only return the amount of days the item has been "used" (from start to cancellation).
 	 * @return int
 	 */
 	public function getLength(): int{
-		$interval = $this->getStartDateDateTime()->diff($this->getEndDateDateTime()->modify("+5 min"));
-		return $interval->d;
+		$days = 0;
+		if ( $this->isUnconfirmed() || $this->isConfirmed() ) {
+			$interval = $this->getStartDateDateTime()->diff($this->getEndDateDateTime()->modify("+5 min"));
+			$days = $interval->d;
+		}
+		elseif ($this->isCancelled()){
+			$interval = $this->getStartDateDateTime()->diff($this->getCancellationDateDateTime());
+			$days = $interval->d;
+		}
+		else {
+			//Booking has no valid status
+			return 0;
+		}
+		return $days;
+	}
+
+	/**
+	 * Will get the DateTime object of the cancellation date.
+	 * The cancellation date will be saved as postmeta when a booking is cancelled.
+	 * Will return null when the booking is not cancelled.
+	 * @return DateTime
+	 */
+	public function getCancellationDateDateTime(): ?DateTime {
+		if ( ! $this->isCancelled() ) {
+			return null;
+		}
+		$cancellationTimestamp = $this->getMeta( 'cancellation_time' );
+		return Wordpress::getUTCDateTimeByTimestamp( $cancellationTimestamp );
 	}
 
 	public function getiCal(

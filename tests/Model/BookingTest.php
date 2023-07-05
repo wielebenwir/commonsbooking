@@ -52,6 +52,12 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertTrue($this->testBookingPast->isPast());
 	}
 
+	public function testGetLength(){
+		$this->assertEquals(1,$this->testBookingTomorrow->getLength());
+		$this->assertEquals(1,$this->testBookingPast->getLength());
+
+	}
+
 	protected function setUpTestBooking():void{
 		$this->testBookingId       = $this->createBooking(
 			$this->locationId,
