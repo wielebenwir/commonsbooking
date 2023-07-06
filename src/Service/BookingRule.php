@@ -5,6 +5,7 @@ namespace CommonsBooking\Service;
 use Closure;
 use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Model\Booking;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 use Exception;
 
@@ -29,7 +30,7 @@ class BookingRule {
 	 * @param   array    $params
 	 * @param   array    $selectParam
 	 *
-	 * @throws \CommonsBooking\Exception\BookingRuleException
+	 * @throws BookingRuleException
 	 */
 	public function __construct(String $name,String $title, String $description,String $errorMessage, Closure $validationFunction,array $params = [], array $selectParam = []) {
 		if (! empty($params) ){
@@ -399,11 +400,12 @@ class BookingRule {
 	 * Will return the conflicting bookings if a user has too many in the week
 	 *
 	 * Params: $args[0] : The amount of days the user is allowed to book per week
-	 *         $args[1]:  The day on which the counter is reset, default: 0 = monday
+	 * 	       $args[1] : Unused
+	 *         $args[2]:  The day on which the counter is reset, default: 0 = monday
 	 *                     1 = Tuesday, 2 = Wednesday, ..., 6 = sunday
 	 *
 	 *
-	 * @param   \CommonsBooking\Model\Booking  $booking
+	 * @param Booking $booking
 	 * @param   array                          $args
 	 * @param   bool|array                     $appliedTerms
 	 *
@@ -460,10 +462,11 @@ class BookingRule {
 	 * Will return the conflicting bookings if a user has too many in the month
 	 *
 	 * Params: $args[0] : The amount of days the user is allowed to book per week
-	 *         $args[1]:  The day on which the counter is reset, from 0 to max 31.
+	 * 	       $args[1] : Unused
+	 *         $args[2]:  The day on which the counter is reset, from 0 to max 31.
 	 *
 	 *
-	 * @param   \CommonsBooking\Model\Booking  $booking
+	 * @param   Booking $booking
 	 * @param   array                          $args
 	 * @param   bool|array                     $appliedTerms
 	 *
@@ -524,6 +527,7 @@ class BookingRule {
 	 * Will also filter out bookings that are not in the same category as the booking.
 	 * Will also filter out bookings that are not made by the same user as the booking.
 	 * Will return the conflicting bookings if a user has too many in the range.
+	 * Will also consider the setting if cancelled bookings should be considered.
 	 *
 	 * @param $startOfMonth
 	 * @param $endOfMonth
@@ -535,6 +539,10 @@ class BookingRule {
 	 * @throws Exception
 	 */
 	private static function checkBookingRange( $startOfMonth, $endOfMonth, Booking $booking, $appliedTerms, $allowedBookableDays ): ?array {
+		$countedPostTypes        = [ 'confirmed' ];
+		if (Settings::getOption('commonsbooking_options_restrictions','bookingrules-count-cancelled') == 'on') {
+			$countedPostTypes[] = 'canceled';
+		}
 		$rangeBookingsArray = \CommonsBooking\Repository\Booking::getByTimerange(
 			$startOfMonth->getTimestamp(),
 			$endOfMonth->getTimestamp(),
@@ -545,7 +553,7 @@ class BookingRule {
 				'orderby' => 'date',
 				'order'   => 'ASC',
 			],
-			[ 'confirmed' ]
+			$countedPostTypes
 		);
 		$rangeBookingsArray = self::filterBookingsForTermsAndUser( $rangeBookingsArray, $booking->getUserData(), $appliedTerms );
 		if ( empty ( $rangeBookingsArray ) ) {

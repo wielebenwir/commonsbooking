@@ -626,6 +626,12 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 				'id'    => 'bookingrules',
 				'fields'=> array(
 					array(
+						'name'  => commonsbooking_sanitizeHTML( __('Count cancelled bookings towards quota', 'commonsbooking') ),
+						'desc'  => commonsbooking_sanitizeHTML( __('Check if bookings that have been cancelled in the booking period shall be counted towards the amount of booked days for the user. More info: //TODO LINK TO DOKU', 'commonsbooking') ),
+						'id'    => 'bookingrules-count-cancelled',
+						'type'  => 'checkbox'
+					),
+					array(
 						'id'        => 'rules_group',
 						'type'      => 'group',
 						'repeatable'=> true,
@@ -643,20 +649,21 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 								'options'   => BookingRule::getRulesForSelect(),
 
 							),
+							//The following labels are not translated because they are replaced by the rule
 							array(
-								'name' => commonsbooking_sanitizeHTML( __('Rule description', 'commonsbooking') ),
-								'desc' => commonsbooking_sanitizeHTML( __('You shall be replaced', 'commonsbooking') ),
+								'name' => commonsbooking_sanitizeHTML( __( 'Rule description', 'commonsbooking' ) ),
+								'desc' => commonsbooking_sanitizeHTML( 'You shall be replaced' ),
 								'id'   => 'rule-description',
 								'type' => 'title',
 							),
 							array(
-								'name'  => commonsbooking_sanitizeHTML( __('Parameter 1', 'commonsbooking') ),
+								'name'  => commonsbooking_sanitizeHTML( 'Parameter 1' ),
 								'desc'  => 'Parameter description',
 								'id'    => 'rule-param1',
 								'type'  => 'text_small'
 							),
 							array(
-								'name'  => commonsbooking_sanitizeHTML( __('Parameter 2', 'commonsbooking') ),
+								'name'  => commonsbooking_sanitizeHTML( 'Parameter 2' ),
 								'desc'  => 'Parameter description',
 								'id'    => 'rule-param2',
 								'type'  => 'text_small'
@@ -694,7 +701,8 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 								)
 							)
 						)
-					),
+					)
+
 				)
 			)
 			/* field group email templates end */
