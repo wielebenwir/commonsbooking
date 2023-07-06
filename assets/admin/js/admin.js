@@ -1,6 +1,28 @@
 (function($) {
     "use strict";
     $(function() {
+        const form = $("input[name=post_type][value=cb_location]").parent("form");
+        const countLockedDaysCheckbox = $("#_cb_count_lockdays_in_range");
+        const countAmountLockedDays = $("#_cb_count_lockdays_maximum");
+        console.log(countLockedDaysCheckbox);
+        console.log(countAmountLockedDays);
+        var handleCountLockedDays = function() {
+            if (countLockedDaysCheckbox.prop("checked")) {
+                countAmountLockedDays.show();
+            } else {
+                countAmountLockedDays.hide();
+            }
+        };
+        handleCountLockedDays();
+        countLockedDaysCheckbox.change(function() {
+            handleCountLockedDays();
+        });
+    });
+})(jQuery);
+
+(function($) {
+    "use strict";
+    $(function() {
         $("#cmb2-metabox-migration #migration-start").on("click", function(event) {
             event.preventDefault();
             $("#migration-state").show();
