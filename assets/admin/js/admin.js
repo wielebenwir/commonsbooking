@@ -4,13 +4,11 @@
         const form = $("input[name=post_type][value=cb_location]").parent("form");
         const countLockedDaysCheckbox = $("#_cb_count_lockdays_in_range");
         const countAmountLockedDays = $("#_cb_count_lockdays_maximum");
-        console.log(countLockedDaysCheckbox);
-        console.log(countAmountLockedDays);
         var handleCountLockedDays = function() {
             if (countLockedDaysCheckbox.prop("checked")) {
-                countAmountLockedDays.show();
+                countAmountLockedDays.prop("disabled", false);
             } else {
-                countAmountLockedDays.hide();
+                countAmountLockedDays.prop("disabled", true);
             }
         };
         handleCountLockedDays();

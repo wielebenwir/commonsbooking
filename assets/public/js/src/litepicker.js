@@ -222,6 +222,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 "inlineMode": true,
                 "firstDay": 1,
                 "countLockedDays": globalCalendarData['countLockDaysInRange'],
+                "countLockedDaysMax": globalCalendarData['countLockDaysMaxDays'],
                 "lang": globalCalendarData['lang'],
                 "numberOfMonths": numberOfMonths,
                 "numberOfColumns": numberOfColumns,

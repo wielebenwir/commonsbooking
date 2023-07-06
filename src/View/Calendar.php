@@ -499,9 +499,7 @@ class Calendar {
 
 				//if yes, what is the maximum amount of days they should count?
 				$maxDays = get_post_meta( $locations[0], COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', true );
-				if ( $maxDays ) {
-					$jsonResponse['maxDays'] = (int) $maxDays;
-				}
+				$jsonResponse['countLockDaysMaxDays'] = (int) $maxDays;
 			}
 
 			/** @var Week $week */

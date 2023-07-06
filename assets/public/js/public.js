@@ -1262,6 +1262,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     disallowLockDaysInRange: !0,
                     lockDaysInclusivity: "[]",
                     countLockedDays: !1,
+                    countLockedDaysMax: 0,
                     holidaysFormat: "YYYY-MM-DD",
                     holidays: [],
                     disallowHolidaysInRange: !1,
@@ -1455,16 +1456,32 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (this.options.maxDays && 1 === this.datePicked.length) {
                     n = Number(this.options.hotelMode), s = this.datePicked[0].clone().subtract(this.options.maxDays + n, "day");
                     var d = 0;
-                    if (!this.options.countLockedDays && !this.options.disallowLockDaysInRange) {
-                        for (var c = this.datePicked[0].clone(), h = this.options.maxDays, p = [], u = 0, m = [ this.options.lockDays ]; u < m.length; u++) for (var f = 0, y = m[u]; f < y.length; f++) {
-                            var g = y[f];
-                            this.datePicked[0].getTime() < g.getTime() && p.push(g);
+                    if (this.options.countLockedDays) {
+                        if (0 !== this.options.countLockedDaysMax) {
+                            g = this.datePicked[0].clone(), k = this.options.maxDays;
+                            for (var c = this.options.countLockedDaysMax, h = (D = [], 
+                            0), p = [ this.options.lockDays ]; h < p.length; h++) for (var u = 0, m = p[h]; u < m.length; u++) {
+                                x = m[u];
+                                this.datePicked[0].getTime() < x.getTime() && D.push(x);
+                            }
+                            for (;k > 0; ) {
+                                k -= 1, g = g.add(1, "day");
+                                for (var f = 0, y = D; f < y.length; f++) {
+                                    (x = y[f]).getTime() === g.getTime() && (this.dateIsBooked(g, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(g, this.options.partiallyBookedDaysInclusivity) || (c <= 0 ? (d += 1, 
+                                    k += 1) : c -= 1));
+                                }
+                            }
                         }
-                        for (;h > 0; ) {
-                            h -= 1, c = c.add(1, "day");
-                            for (var k = 0, D = p; k < D.length; k++) {
-                                (g = D[k]).getTime() === c.getTime() && (this.dateIsBooked(c, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(c, this.options.partiallyBookedDaysInclusivity) || (d += 1, 
-                                h += 1));
+                    } else if (!this.options.disallowLockDaysInRange) {
+                        for (var g = this.datePicked[0].clone(), k = this.options.maxDays, D = [], v = 0, b = [ this.options.lockDays ]; v < b.length; v++) for (var w = 0, M = b[v]; w < M.length; w++) {
+                            var x = M[w];
+                            this.datePicked[0].getTime() < x.getTime() && D.push(x);
+                        }
+                        for (;k > 0; ) {
+                            k -= 1, g = g.add(1, "day");
+                            for (var T = 0, B = D; T < B.length; T++) {
+                                (x = B[T]).getTime() === g.getTime() && (this.dateIsBooked(g, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(g, this.options.partiallyBookedDaysInclusivity) || (d += 1, 
+                                k += 1));
                             }
                         }
                     }
@@ -1476,13 +1493,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 this.options.lockDays.length) && (this.options.lockDays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.lockDaysInclusivity) : i.isSame(t, "day");
                 }).length && i.classList.add(r.isLocked));
-                this.options.bookedDays.length && ((w = this.options.bookedDays.filter(function(i) {
+                this.options.bookedDays.length && ((L = this.options.bookedDays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.bookedDaysInclusivity) : i.isSame(t, "day");
                 }).length) && (i.classList.add(r.isBooked), this.datePicked.length > 0 && !this.bookedDayAfterSelection && this.datePicked[0].getTime() < t.getTime() && (this.bookedDayAfterSelection = t.getTime())));
-                this.options.partiallyBookedDays.length && ((I = this.options.partiallyBookedDays.filter(function(i) {
+                this.options.partiallyBookedDays.length && ((Y = this.options.partiallyBookedDays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.partiallyBookedDaysInclusivity) : i.isSame(t, "day");
-                }).length) && (!1 === (_ = this.options.days[t.format(this.options.format)]).firstSlotBooked && i.classList.add(r.isPartiallyBookedStart), 
-                !1 === _.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd)));
+                }).length) && (!1 === (N = this.options.days[t.format(this.options.format)]).firstSlotBooked && i.classList.add(r.isPartiallyBookedStart), 
+                !1 === N.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd)));
                 this.options.holidays.length && (this.options.holidays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.holidaysInclusivity) : i.isSame(t, "day");
                 }).length && i.classList.add(r.isHoliday));
@@ -1490,20 +1507,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     return e instanceof Array ? t.isBetween(e[0], e[1], "[]") : e.isSame(t, "day");
                 }).length && i.classList.add(r.isHighlighted));
                 if (this.datePicked.length <= 1) {
-                    var v = t.clone();
-                    if (v.subtract(1, "day"), t.clone().add(1, "day"), this.options.bookedDays.length) {
-                        var b = this.options.bookedDaysInclusivity;
-                        this.options.hotelMode && 1 === this.datePicked.length && (b = "()");
-                        var w = this.dateIsBooked(t, b), M = this.dateIsBooked(v, "[]"), x = this.dateIsBooked(t, "(]"), T = 0 === this.datePicked.length && w || 1 === this.datePicked.length && M && w || 1 === this.datePicked.length && M && x, B = this.options.anyBookedDaysAsCheckout && 1 === this.datePicked.length;
-                        T && !B && i.classList.add(r.isBooked);
+                    var _ = t.clone();
+                    if (_.subtract(1, "day"), t.clone().add(1, "day"), this.options.bookedDays.length) {
+                        var I = this.options.bookedDaysInclusivity;
+                        this.options.hotelMode && 1 === this.datePicked.length && (I = "()");
+                        var L = this.dateIsBooked(t, I), P = this.dateIsBooked(_, "[]"), S = this.dateIsBooked(t, "(]"), C = 0 === this.datePicked.length && L || 1 === this.datePicked.length && P && L || 1 === this.datePicked.length && P && S, E = this.options.anyBookedDaysAsCheckout && 1 === this.datePicked.length;
+                        C && !E && i.classList.add(r.isBooked);
                     }
                     if (this.options.partiallyBookedDays.length) {
-                        b = this.options.partiallyBookedDaysInclusivity;
-                        this.options.hotelMode && 1 === this.datePicked.length && (b = "()");
-                        var _, I = this.dateIsPartiallyBooked(t, b), L = (M = this.dateIsPartiallyBooked(v, "[]"), 
-                        x = this.dateIsPartiallyBooked(t, "(]"), 0 === this.datePicked.length && I || 1 === this.datePicked.length && M && I || 1 === this.datePicked.length && M && x), P = this.options.anyPartiallyBookedDaysAsCheckout && 1 === this.datePicked.length;
-                        if (L && !P) !1 === (_ = this.options.days[t.format(this.options.format)]).firstSlotBooked && i.classList.add(r.isPartiallyBookedStart), 
-                        !1 === _.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd);
+                        I = this.options.partiallyBookedDaysInclusivity;
+                        this.options.hotelMode && 1 === this.datePicked.length && (I = "()");
+                        var N, Y = this.dateIsPartiallyBooked(t, I), O = (P = this.dateIsPartiallyBooked(_, "[]"), 
+                        S = this.dateIsPartiallyBooked(t, "(]"), 0 === this.datePicked.length && Y || 1 === this.datePicked.length && P && Y || 1 === this.datePicked.length && P && S), A = this.options.anyPartiallyBookedDaysAsCheckout && 1 === this.datePicked.length;
+                        if (O && !A) !1 === (N = this.options.days[t.format(this.options.format)]).firstSlotBooked && i.classList.add(r.isPartiallyBookedStart), 
+                        !1 === N.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd);
                     }
                 }
                 return !this.options.disableWeekends || 6 !== t.getDay() && 0 !== t.getDay() || i.classList.add(r.isLocked), 
@@ -2040,6 +2057,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 inlineMode: true,
                 firstDay: 1,
                 countLockedDays: globalCalendarData["countLockDaysInRange"],
+                countLockedDaysMax: globalCalendarData["countLockDaysMaxDays"],
                 lang: globalCalendarData["lang"],
                 numberOfMonths: numberOfMonths,
                 numberOfColumns: numberOfColumns,
