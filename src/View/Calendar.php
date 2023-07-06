@@ -55,8 +55,7 @@ class Calendar {
 		$days = is_array( $atts ) && array_key_exists( 'days', $atts ) ? $atts['days'] : 31;
 
 		$desc  = $atts['desc'] ?? '';
-		$date  = new DateTime();
-		$date->setTimestamp(current_time('timestamp'));
+		$date  = Wordpress::getUTCDateTimeByTimestamp(current_time('timestamp'));
 		$today = $date->format( "Y-m-d" );
 
 		$days_display = array_fill( 0, $days, 'n' );
@@ -161,8 +160,21 @@ class Calendar {
 		$print .= "</tbody></table>";
 		$print .= '</div>';
 
+		$print .= '<div id="cb-table-footnote">';
 
 		return $print;
+	}
+
+	public static function shortcode( $atts) {
+		global $templateData;
+		$templateData = [];
+		$templateData['data'] = self::renderTable($atts);
+
+		if (!empty($templateData['data'])) {
+			ob_start();
+			commonsbooking_get_template_part( 'shortcode', 'items_table', true, false, false ) ;
+			return ob_get_clean();
+		}
 	}
 
 	/**
@@ -177,10 +189,10 @@ class Calendar {
 		foreach ( $month_cols as $month => $colspan ) {
 			$print .= "<th class='sortless' colspan='" . $colspan . "'>";
 
-			if ( $colspan > 3 ) {
-				$print .= date_i18n( 'F', strtotime( $month ) ) . "</th>";
+     		if ( $colspan > 3 ) {
+				$print .= date_i18n( 'F', strtotime( get_date_from_gmt( $month ) ) ). "</th>";
 			} else {
-				$print .= date_i18n( 'M', strtotime( $month ) ) . "</th>";
+				$print .= date_i18n( 'M', strtotime( get_date_from_gmt( $month ) ) ). "</th>";
 			}
 		}
 

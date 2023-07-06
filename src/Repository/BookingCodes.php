@@ -4,13 +4,13 @@
 namespace CommonsBooking\Repository;
 
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
 use DateInterval;
 use DatePeriod;
-use DateTime;
 use Exception;
 
 class BookingCodes {
@@ -19,7 +19,7 @@ class BookingCodes {
 	 * Table name of booking codes.
 	 * @var string
 	 */
-	public static $tablename = 'cb_bookingcodes';
+	public static string $tablename = 'cb_bookingcodes';
 
 	/**
 	 * Returns booking codes for timeframe.
@@ -33,8 +33,8 @@ class BookingCodes {
 			return Plugin::getCacheItem();
 		} else {
 
-			$startDate = date( 'Y-m-d', intval( get_post_meta( $timeframeId, 'repetition-start', true ) ) );
-			$endDate   = date( 'Y-m-d', intval( get_post_meta( $timeframeId, 'repetition-end', true ) ) );
+			$startDate = date( 'Y-m-d', intval( get_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::REPETITION_START, true ) ) );
+			$endDate   = date( 'Y-m-d', intval( get_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::REPETITION_END, true ) ) );
 
 			global $wpdb;
 			$table_name = $wpdb->prefix . self::$tablename;
@@ -120,7 +120,7 @@ class BookingCodes {
 	/**
 	 * Creates booking-codes table;
 	 */
-	public static function initBookingCodesTable() {
+	public static function initBookingCodesTable() :void {
 		global $wpdb;
 		global $cb_db_version;
 
@@ -141,19 +141,20 @@ class BookingCodes {
 		add_option( COMMONSBOOKING_PLUGIN_SLUG . '_bookingcodes_db_version', $cb_db_version );
 	}
 
-	/**
-	 * Generates booking codes for timeframe.
-	 *
-	 * @param $timeframeId
-	 *
-	 * @throws Exception
-	 */
+    /**
+     * Generates booking codes for timeframe.
+     *
+     * @param $timeframeId
+     *
+     * @return bool
+     * @throws Exception
+     */
 	public static function generate( $timeframeId ): bool {
 		$bookablePost = new \CommonsBooking\Model\Timeframe( $timeframeId );
 
-		$begin = new DateTime();
+		$begin = Wordpress::getUTCDateTime();
 		$begin->setTimestamp( $bookablePost->getStartDate() );
-		$end = new DateTime();
+		$end = Wordpress::getUTCDateTime();
 		$end->setTimestamp( $bookablePost->getRawEndDate() );
 		$end->setTimestamp( $end->getTimestamp() + 1 );
 
@@ -210,7 +211,7 @@ class BookingCodes {
 	 * @param $locationId
 	 * @param $itemId
 	 */
-	public static function deleteOldCodes( $postId, $locationId, $itemId ) {
+	public static function deleteOldCodes( $postId, $locationId, $itemId ) : void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::$tablename;
 

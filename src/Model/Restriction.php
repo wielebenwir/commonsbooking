@@ -3,9 +3,13 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Messages\RestrictionMessage;
 use DateTime;
 
+/**
+ * Timeframe for restricting access to an item.
+ */
 class Restriction extends CustomPost {
 
 	const TYPE_REPAIR = 'repair';
@@ -58,10 +62,10 @@ class Restriction extends CustomPost {
 	 */
 	public function getEndTimeDateTime( $endDateString = null ): DateTime {
 		$endTimeString = $this->getMeta( self::META_END );
-		$endDate       = new DateTime();
+		$endDate       = Wordpress::getUTCDateTime();
 
 		if ( $endTimeString ) {
-			$endTime = new DateTime();
+			$endTime = Wordpress::getUTCDateTime();
 			$endTime->setTimestamp( $endTimeString );
 			$endDate->setTime( $endTime->format( 'H' ), $endTime->format( 'i' ) );
 		} else {
@@ -158,7 +162,7 @@ class Restriction extends CustomPost {
 	 */
 	public function getStartTimeDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::META_START );
-		$startDate       = new DateTime();
+		$startDate       = Wordpress::getUTCDateTime();
 		$startDate->setTimestamp( $startDateString );
 
 		return $startDate;
@@ -181,7 +185,7 @@ class Restriction extends CustomPost {
 	 */
 	public function getEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::META_END ) );
-		$endDate       = new DateTime();
+		$endDate       = Wordpress::getUTCDateTime();
 		$endDate->setTimestamp( $endDateString );
 
 		return $endDate;
@@ -243,10 +247,14 @@ class Restriction extends CustomPost {
 		if ( $this->isActive() ) {
 			$bookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
 			if ( $bookings ) {
+                // send restriction mails to all affected bookings
+                $this->sendRestrictionMails( $bookings );
+
+                // cancel all affected booking
 				if ( $this->isActive() && $this->getType() == self::TYPE_REPAIR ) {
 					$this->cancelBookings( $bookings );
 				}
-				$this->sendRestrictionMails( $bookings );
+				
 			}
 		}
 
@@ -285,18 +293,15 @@ class Restriction extends CustomPost {
 	 * @param Booking[] $bookings booking post objects.
 	 */
 	protected function sendRestrictionMails( $bookings ) {
-		$userIds = [];
+		foreach ( $bookings as $key => $booking ) {
+			// get User ID from booking
+			$userId = $booking->getUserData()->ID;
 
-		foreach ( $bookings as $booking ) {
-			// User IDs from booking
-			$userIds[] = $booking->getUserData()->ID;
-        }
+			//checks if this is the first booking that is processed
+			$firstMessage = ( $key === array_key_first( $bookings ) );
 
-        // Delete duplicate user-ids so that restriction mail will only be send once to each user
-        $userIds = array_unique( $userIds );
-
-        foreach ( $userIds as $userId ) {
-            $hintMail = new RestrictionMessage( $this, get_userdata( $userId ), $booking, $this->getType() );
+            // send restriction message for each booking 
+            $hintMail = new RestrictionMessage( $this, get_userdata( $userId ), $booking, $this->getType(),$firstMessage);
             $hintMail->triggerMail();
         }
     }

@@ -3,20 +3,24 @@
 
 namespace CommonsBooking\Model;
 
-use DateTime;
+use CommonsBooking\Helper\Wordpress;
 use Exception;
+
 use CommonsBooking\CB\CB;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Repository\BookingCodes;
+use CommonsBooking\Service\iCalendar;
 
 class Booking extends \CommonsBooking\Model\Timeframe {
 
 	const START_TIMEFRAME_GRIDSIZE = 'start-timeframe-gridsize';
 
 	const END_TIMEFRAME_GRIDSIZE = 'end-timeframe-gridsize';
+
+    public const ERROR_TYPE = 'BookingValidationFailed';
 
 	/**
 	 * Booking states.
@@ -41,11 +45,11 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * Sets post_status to canceled.
 	 */
-	public function cancel() {
+	public function cancel() : void {
 
 		// check if booking has ended
 		if ( $this->isPast() ) {
-			return false;
+			return;
 		}
 
 		// workaround, because wp_update_post deletes all meta data
@@ -57,7 +61,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		);
 		$wpdb->query( $sql );
 
-		add_post_meta( $this->post->ID, 'cancellation_time', current_time('timestamp') );
+		update_post_meta( $this->post->ID, 'cancellation_time', current_time( 'timestamp' ) );
 
 		$this->sendCancellationMail();
 	}
@@ -80,7 +84,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$htmloutput = '';
 		if (
 			$this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode' ) &&
-			$this->post_status == 'confirmed' && (
+			$this->isConfirmed() && (
 				$this->showBookingCodes() ||
 				( $this->getBookableTimeFrame() && $this->getBookableTimeFrame()->showBookingCodes() )
 			)
@@ -98,7 +102,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return bool
 	 */
 	public function showBookingCodes(): bool {
-		return $this->getMeta( 'show-booking-codes' ) == 'on';
+		return $this->getMeta( 'show-booking-codes' ) === 'on';
 	}
 
 	/**
@@ -108,13 +112,13 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @throws Exception
 	 */
 	public function getBookableTimeFrame(): ?\CommonsBooking\Model\Timeframe {
-		$locationId = $this->getMeta( 'location-id' );
-		$itemId     = $this->getMeta( 'item-id' );
+		$locationId = $this->getMeta( \CommonsBooking\Model\Timeframe::META_LOCATION_ID );
+		$itemId     = $this->getMeta( \CommonsBooking\Model\Timeframe::META_ITEM_ID );
 
 		$response = Timeframe::getBookable(
 			[ $locationId ],
 			[ $itemId ],
-			date( CB::getInternalDateFormat(), intval( $this->getMeta( 'repetition-start' ) ) ),
+			date( CB::getInternalDateFormat(), intval( $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) ) ),
 			true
 		);
 
@@ -147,7 +151,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 					$fieldName,
 					true
 				);
-				if ( in_array( $fieldName, [ 'start-time', 'end-time' ] ) ) {
+				if ( in_array( $fieldName, [ 'start-time', 'end-time' ], true ) ) {
 					$fieldValue = $this->sanitizeTimeField( $fieldName );
 				}
 				update_post_meta(
@@ -162,11 +166,11 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 				$timeframe->ID,
 				$this->getItem()->ID,
 				$this->getLocation()->ID,
-				date( 'Y-m-d', $this->getMeta( 'repetition-start' ) )
+				date( 'Y-m-d', $this->getStartDate() )
 			);
 
 			// only add booking code if the booking is based on a full day timeframe
-			if ( $bookingCode && $this->getMeta( 'full-day' ) == 'on' ) {
+			if ( $bookingCode && $this->isFullDay() ) {
 				update_post_meta(
 					$this->post->ID,
 					COMMONSBOOKING_METABOX_PREFIX . 'bookingcode',
@@ -184,10 +188,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return string
 	 */
 	private function sanitizeTimeField( $fieldName ): string {
-		$time       = new DateTime();
-		$fieldValue = $this->getMeta( 'repetition-start' );
-		if ( $fieldName == 'end-time' ) {
-			$fieldValue = $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END );
+		$time       = Wordpress::getUTCDateTime();
+		$fieldValue = $this->getStartDate();
+		if ( $fieldName === 'end-time' ) {
+			$fieldValue = $this->getRawEndDate();
 		}
 		$time->setTimestamp( $fieldValue );
 
@@ -227,10 +231,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function formattedBookingDate(): string {
 		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 
-		$startdate = date_i18n( $date_format, $this->getMeta( 'repetition-start' ) );
-		$enddate   = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
+		$startdate = date_i18n( $date_format, $this->getStartDate() );
+		$enddate   = date_i18n( $date_format, $this->getRawEndDate() );
 
-		if ( $startdate == $enddate ) {
+		if ( $startdate === $enddate ) {
 			/* translators: %s = date in WordPress defined format */
 			return sprintf( sanitize_text_field( __( ' on %s ', 'commonsbooking' ) ), $startdate );
 		} else {
@@ -253,21 +257,19 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
 
-		$repetitionStart = $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START );
+		$repetitionStart = $this->getStartDate();
 
 		$date_start = date_i18n( $date_format, $repetitionStart );
 		$time_start = date_i18n( $time_format, $repetitionStart );
+		$time_end   = date_i18n( $time_format, $repetitionStart ); // TODO Ist das korrekt?
 
-		$grid     = $this->getMeta( 'grid' );
-		$full_day = $this->getMeta( 'full-day' );
-
-		if ( $full_day == 'on' ) {
+		if ( $this->isFullDay() ) {
 			return $date_start;
 		}
-
-		if ( $grid == 0 ) { // if grid is set to slot duration
-			$time_end = date_i18n( $time_format, $repetitionStart );
-
+		
+		$grid = $this->getGrid();
+		
+		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time end
 			$timeframeGridSize = $this->getMeta( self::START_TIMEFRAME_GRIDSIZE );
 			if ( $timeframeGridSize ) {
@@ -283,7 +285,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * pickupDatetime
+	 * returnDatetime
 	 *
 	 * renders the return date and time information and returns a formatted string
 	 * this is used in templates/booking-single.php and in email-templates (configuration via admin options)
@@ -295,19 +297,17 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
 
-		$date_end = date_i18n( $date_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
-		$time_end = date_i18n( $time_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
+		$date_end   = date_i18n( $date_format, $this->getRawEndDate() );
+		$time_end   = date_i18n( $time_format, $this->getRawEndDate() + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
+		$time_start = date_i18n( $time_format, strtotime( $this->getStartTime() ) );
 
-		$grid     = $this->getMeta( 'grid' );
-		$full_day = $this->getMeta( 'full-day' );
-
-		if ( $full_day == 'on' ) {
+		if ( $this->isFullDay() ) {
 			return $date_end;
 		}
 
-		if ( $grid == 0 ) { // if grid is set to slot duration
-			$time_start = date_i18n( $time_format, strtotime( $this->getMeta( 'start-time' ) ) );
-
+		$grid = $this->getGrid();
+		
+		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time start
 			$timeframeGridSize = $this->getMeta( self::END_TIMEFRAME_GRIDSIZE );
 			if ( $timeframeGridSize ) {
@@ -316,18 +316,18 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		if ( $grid > 0 ) { // if grid is set to hourly (grid = 1) or a multiple of an hour
-			$time_start = date_i18n( $time_format, $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) + 1 - ( 60 * 60 * $grid ) );
+			$time_start = date_i18n( $time_format, $this->getRawEndDate() + 1 - ( 60 * 60 * $grid ) );
 		}
 
 		return $date_end . ' ' . $time_start . ' - ' . $time_end;
 	}
 
-	public function getStartDate() {
-		return $this->getMeta( 'repetition-start' );
+	public function getStartDate() : int {
+		return intval( $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) );
 	}
 
-	public function getEndDate() {
-		return $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END );
+	public function getEndDate() : int{
+		return intval($this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ));
 	}
 
 	/**
@@ -349,13 +349,24 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$currentStatus    = $this->post->post_status;
 		$cancellationTime = $this->getMeta( 'cancellation_time' );
 
-		if ( $currentStatus == 'unconfirmed' ) {
-			$noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
-		} elseif ( $currentStatus == 'confirmed' ) {
+  		if ( $currentStatus == 'unconfirmed' ) {
+            // transient is set in \Model\Booking->handleFormRequest if overlapping booking exists
+            if ( get_transient( 'commonsbooking_overlappingBooking_' . $this->ID ) ) {
+                $noticeText = get_transient( 'commonsbooking_overlappingBooking_' . $this->ID ) . ' ' . $this->ID . commonsbooking_sanitizeHTML( __(
+                    '<h1 style="color:red">Notice:</h1> <p>We are sorry. Something went wrong. This booking could not be confirmed because there is another overlapping booking.<br>
+                    Please click the "Cancel"-Button and select another booking period.</p>
+                    <p>Normally, the booking system ensures that no overlapping bookings can be created. If you think there is a bug, please contact us.</p> 
+                ', 'commonsbooking' ) );
+
+                delete_transient( 'commonsbooking_overlappingBooking_' . $this->ID );
+            } else {
+                $noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
+            }
+		} elseif ( $this->isConfirmed() ) {
 			$noticeText = commonsbooking_sanitizeHTML( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'booking-confirmed-notice' ) );
 		}
 
-		if ( $currentStatus == 'canceled' ) {
+		if ( $this->isCancelled() ) {
             if ( $cancellationTime ) {
                 $cancellationTimeFormatted = Helper::FormattedDateTime( $cancellationTime );
 			    $noticeText                = sprintf( commonsbooking_sanitizeHTML( __( 'Your booking has been canceled at %s.', 'commonsbooking' ) ), $cancellationTimeFormatted );
@@ -381,19 +392,19 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function bookingLink( $linktext = null ): string {
 
 		// if no linktext is set we use standard text
-		if ( $linktext == null ) {
+		if ( $linktext === null ) {
 			$linktext = esc_html__( 'Link to your booking', 'commonsbooking' );
 		}
 
-		return sprintf( '<a href="%1$s">%2$s</a>', add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) ), $linktext );
+		return sprintf( '<a href="%1$s">%2$s</a>', $this->bookingLinkUrl(), $linktext );
 	}
 
 	/**
 	 * return plain booking URL
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function bookingLinkUrl() {
+	public function bookingLinkUrl(): string {
 		return add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) );
 	}
 
@@ -403,7 +414,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return bool
 	 */
 	public function isCancelled(): bool {
-		return ( $this->post_status === 'canceled' ? : false );
+		return $this->post_status === 'canceled';
 	}
 
 	/**
@@ -412,11 +423,84 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return bool
 	 */
 	public function isPast(): bool {
-		if ( $this->getMeta( 'repetition-end' ) < current_time( 'timestamp' ) ) {
+		if ( $this->getEndDate() < current_time( 'timestamp' ) ) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
+	public function getiCal(
+		string $eventTitle,
+		string $eventDescription
+	): string {
+		$calendar = new iCalendar();
+		$calendar->addBookingEvent( $this, $eventTitle, $eventDescription );
+		return $calendar->getCalendarData();
+	}
+
+	/**
+	 * Helper to return the email signature configured in the options array
+	 * 
+	 * @return string
+	 */
+	public function getEmailSignature(): string {
+		return commonsbooking_sanitizeHTML(
+			Settings::getOption( 'commonsbooking_options_templates', 'emailbody_signature' )
+		);
+	}
+
+    /**
+     * Returns formatted user info based on the template field in settings -> templates
+     *
+     * @return void
+     */
+    public static function getFormattedUserInfo() {
+        return commonsbooking_parse_template(
+            Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'user_details_template' )
+        );
+    }
+    
+    /**
+     * Returns formatted backend edit link of current booking
+     *
+     * @return string
+     */
+    public function getFormattedEditLink() {
+        return '<a href=" ' . get_edit_post_link( $this->ID ) . '"> Booking #' . $this->ID . ' : ' . $this->formattedBookingDate() . ' | User: ' . $this->getUserData()->user_nicename . '</a>';
+    }
+
+    /**
+     * Updates internal booking comment by adding new comment in a new line
+     *
+     * @param  string $comment
+     * @param  int $userID
+     * @return void
+     */
+    public function appendToInternalComment( string $comment, int $userID ) {
+        $existing_comment = $this->getMeta( 'internal-comment' );
+        $dateTimeInfo = current_datetime()->format( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
+        $meta_string = $dateTimeInfo . ' / ' . get_the_author_meta( 'user_login', $userID ) . "\n";
+        $new_comment = $existing_comment . "\n" . $meta_string . $comment . "\n--------------------";
+        return update_post_meta( $this->ID, 'internal-comment', $new_comment );
+    }
+
+
+	/**
+	 * Checks wp post filed if booking status is confirmed
+	 *
+	 * @return bool
+	 */
+	public function isConfirmed() : bool {
+		return $this->post_status === 'confirmed';
+	}
+
+	/**
+	 * Checks wp post field if booking status is unconfirmed
+	 *
+	 * @return bool
+	 */
+	public function isUnconfirmed() : bool {
+		return $this->post_status === 'unconfirmed';
+	}
 }

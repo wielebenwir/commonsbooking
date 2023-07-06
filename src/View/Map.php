@@ -23,7 +23,7 @@ class Map extends View {
 			'latitude'  => $options['lat_start'],
 			'longitude' => $options['lon_start'],
 		];
-		echo '<script>cb_map_positioning.defaults = ' . wp_json_encode( $defaults ) . ';</script>';
+        wp_add_inline_script('cb-map-positioning_js','cb_map_positioning.defaults =' . wp_json_encode($defaults) );
 	}
 
 	public static function renderGeoRefreshButton() {

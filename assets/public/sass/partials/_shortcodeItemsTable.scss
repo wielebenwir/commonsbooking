@@ -95,18 +95,19 @@
 
 	tbody {
 		tr {
-			background: $color-white;
+			background: var(--commonsbooking-color-bg);
 			height: 50px;
 			overflow: hidden;
 
 			&:hover {
-				background: var(--commonsbooking-color-bg);;
+				background: var(--commonsbooking-color-bg);
 			}
 
 			td {
+                color: var(--commonsbooking-textcolor-dark);
 				border-top: 1px solid var(--commonsbooking-color-greyedout);
 				border-left: 1px solid var(--commonsbooking-color-gray-background);
-				border-bottom: 1px solid $color-white;
+				border-bottom: 1px solid var(--commonsbooking-color-bg);
 			}
 		}
 	}
@@ -149,4 +150,11 @@
             }
 		}
 	}
+}
+
+#cb-table-footnote {
+	background-color: #FFF;
+	margin-top: 10px;
+	padding: 10px;
+	font-size: var(--commonsbooking-font-size-normal);
 }

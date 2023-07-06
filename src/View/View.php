@@ -32,7 +32,10 @@ abstract class View {
 		// Pagination: https://developer.wordpress.org/reference/classes/wp_query/#pagination-parameters
 		'posts_per_page' => '',
 		'nopaging'       => '',
-		'offset'         => ''
+		'offset'         => '',
+		// Order: https://developer.wordpress.org/reference/classes/wp_query/#order-orderby-parameters
+		'order'          => '',
+		'orderby'		 => '',
 	);
 
 	/**
@@ -71,7 +74,7 @@ abstract class View {
 			$item = $timeframe->{'get' . $type}();
 
 			// We need only published items
-			if ( $item->post_status !== 'publish' ) {
+			if ( !$item || $item->post_status !== 'publish' ) {
 				continue;
 			}
 
@@ -171,6 +174,8 @@ abstract class View {
 			'color-greyedout' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_greyedoutcolor'),
 			'color-bg' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_backgroundcolor'),
 			'color-noticebg' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_noticebackgroundcolor'),
+			'color-lighttext' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_lighttext'),
+			'color-darktext' => Settings::getOption('commonsbooking_options_templates', 'colorscheme_darktext'),
 		];
 
 		foreach ($variables as &$variable){ //iterate over array, convert valid values.

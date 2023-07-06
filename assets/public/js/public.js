@@ -39,7 +39,7 @@ class BookingList {
     _resetListParams() {
         this.listParams = new FormData();
         this.listParams.append("_ajax_nonce", cb_ajax_bookings.nonce);
-        this.listParams.append("action", "bookings_data");
+        this.listParams.append("action", "cb_bookings_data");
         this.listParams.append("page", 1);
     }
     _bindEventListeners() {
@@ -73,6 +73,9 @@ class BookingList {
             $endDatePicker.datepicker("option", "onSelect", this._onEndDateChange);
             $endDatePicker.change(this._onEndDateChange);
         }
+        this._onMenuButton = this._handleMenuButton.bind(this);
+        const $menuButton = jQuery("#cb-bookingdropbtn");
+        if ($menuButton) $menuButton.on("click", this._onMenuButton);
     }
     _handleStartDateChange() {
         this.filters.startDate = [];
@@ -244,6 +247,9 @@ class BookingList {
         var page = evt.currentTarget.dataset.page;
         this.listParams.set("page", page);
         this._reloadData();
+    }
+    _handleMenuButton() {
+        jQuery(".cb-dropdown-content").toggle();
     }
     filter() {
         jQuery("#filter").addClass("loading");
@@ -1450,7 +1456,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     n = Number(this.options.hotelMode), s = this.datePicked[0].clone().subtract(this.options.maxDays + n, "day");
                     var d = 0;
                     if (!this.options.countLockedDays && !this.options.disallowLockDaysInRange) {
-                        for (var c = this.datePicked[0].clone(), h = this.options.maxDays, p = [], u = 0, m = [ this.options.holidays, this.options.lockDays ]; u < m.length; u++) for (var f = 0, y = m[u]; f < y.length; f++) {
+                        for (var c = this.datePicked[0].clone(), h = this.options.maxDays, p = [], u = 0, m = [ this.options.lockDays ]; u < m.length; u++) for (var f = 0, y = m[u]; f < y.length; f++) {
                             var g = y[f];
                             this.datePicked[0].getTime() < g.getTime() && p.push(g);
                         }
@@ -2033,7 +2039,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 scrollToDate: true,
                 inlineMode: true,
                 firstDay: 1,
-                countLockedDays: globalCalendarData["countLockDaysInRange"],
                 lang: globalCalendarData["lang"],
                 numberOfMonths: numberOfMonths,
                 numberOfColumns: numberOfColumns,
@@ -2071,7 +2076,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     const calEndDate = moment(date.format("YYYY-MM-DD")).add(numberOfMonths, "months").date(1).format("YYYY-MM-DD");
                     jQuery.post(cb_ajax.ajax_url, {
                         _ajax_nonce: cb_ajax.nonce,
-                        action: "calendar_data",
+                        action: "cb_calendar_data",
                         item: jQuery("#booking-form input[name=item-id]").val(),
                         location: jQuery("#booking-form input[name=location-id]").val(),
                         sd: calStartDate,
@@ -2097,7 +2102,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 days: globalCalendarData["days"],
                 maxDays: globalCalendarData["maxDays"],
                 lockDays: globalCalendarData["lockDays"],
-                countLockedDays: globalCalendarData["countLockDaysInRange"],
                 bookedDays: globalCalendarData["bookedDays"],
                 partiallyBookedDays: globalCalendarData["partiallyBookedDays"],
                 highlightedDays: globalCalendarData["highlightedDays"],

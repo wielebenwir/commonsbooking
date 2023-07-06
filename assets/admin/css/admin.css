@@ -3312,12 +3312,13 @@
 /* Colors: CB Brand */
 /* Colors: text */
 /* Colors: Theme, can be modified by user */
+/* Colors: Text colors, can be modified by user */
 /* Colors: Backgrounds */
 /* Colors: Message statuses */
 /* Font sizes */
 /* Layout Variables */
 /* Fonts */
-/* line 73, ../../global/sass/partials/_variables.scss */
+/* line 77, ../../global/sass/partials/_variables.scss */
 :root {
   --commonsbooking-color-primary: #A3BC55;
   --commonsbooking-color-secondary: #506CA9;
@@ -3325,9 +3326,11 @@
   --commonsbooking-color-accept: #74ce3c;
   --commonsbooking-color-cancel: #d5425c;
   --commonsbooking-color-holiday: #ff9218;
-  --commonsbooking-color-greyedout: #c4c4c4;
+  --commonsbooking-color-greyedout: #f6f6f6;
   --commonsbooking-color-bg: #f6f6f6;
   --commonsbooking-color-noticebg: #FFF9C5;
+  --commonsbooking-textcolor-light: #c4c4c4;
+  --commonsbooking-textcolor-dark: #000;
   --commonsbooking-color-gray-background: #f6f6f6;
   --commonsbooking-color-gray-border: #f6f6f6;
   --commonsbooking-color-error: #d5425c;
@@ -5744,6 +5747,16 @@ select[readonly] {
 /* line 33, ../sass/partials/_plugin_update.scss */
 .notice-warning .cb-major-update-warning__icon {
   color: var(--commonsbooking-color-success);
+}
+
+/* Edit Screens Backend  */
+/**
+ * Backend Edit Screens and messages
+ *
+ */
+/* line 6, ../sass/partials/_admin-edit.scss */
+.notice-error, div.error {
+  background-color: #f0b6b6 !important;
 }
 
 /*# sourceMappingURL=admin.css.map */

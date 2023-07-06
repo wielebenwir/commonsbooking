@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ $# -lt 3 ]; then
-	echo "usage: $0 <db-name> <db-user> <db-pass> [db-host] [wp-version] [skip-database-creation]"
+	echo "usage: $0 <db-name> <db-user> <db-pass> [db-host] [wp-version] [skip-database-creation] [docker-env] [override]"
 	exit 1
 fi
 
@@ -12,6 +12,7 @@ DB_HOST=${4-localhost}
 WP_VERSION=${5-latest}
 SKIP_DB_CREATE=${6-false}
 DOCKER_ENV=${7-false}
+OVERRIDE=${8-false}
 
 TMPDIR=${TMPDIR-/tmp}
 TMPDIR=$(echo $TMPDIR | sed -e "s/\/$//")
@@ -147,7 +148,7 @@ create_db() {
     $(mysql -h db --user="root" --password="somewordpress" -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';")
     $(mysql -h db --user="root" --password="somewordpress" -e "FLUSH PRIVILEGES;")
   else
-    $(mysql -h ${DB_HOST} --user="${DB_USER}" --password="${DB_PASS}" -e "CREATE DATABASE ${DB_NAME} /*\!40100 DEFAULT CHARACTER SET utf8 */;")
+    mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
   fi
 }
 
@@ -177,8 +178,13 @@ install_db() {
 	if [ $(mysql --user="$DB_USER" --password="$DB_PASS"$EXTRA --execute='show databases;' | grep ^$DB_NAME$) ]
 	then
 		echo "Reinstalling will delete the existing test database ($DB_NAME)"
-		read -p 'Are you sure you want to proceed? [y/N]: ' DELETE_EXISTING_DB
-		recreate_db $DELETE_EXISTING_DB
+		if [ ${OVERRIDE} == "true" ]
+		then
+			recreate_db yes
+		else
+			read -p 'Are you sure you want to proceed? [y/N]: ' DELETE_EXISTING_DB
+			recreate_db $DELETE_EXISTING_DB
+		fi
 	else
 		create_db
 	fi

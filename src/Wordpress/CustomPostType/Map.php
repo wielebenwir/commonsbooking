@@ -128,6 +128,7 @@ class Map extends CustomPostType {
 		if ( $item_draft_appearance == 3 ) {
 			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -180,7 +181,7 @@ class Map extends CustomPostType {
 			 */
 
 			 if ($preset_location_categories) {
-				if ( !has_term( $preset_categories , 'cb_locations_category' , $post->ID) ) {
+				if ( !has_term( $preset_location_categories , 'cb_locations_category' , $post->ID) ) {
 					continue; //skip to next location in loop
 				}
 			 }
@@ -237,7 +238,15 @@ class Map extends CustomPostType {
 					];
 				}
 
-				$thumbnail = get_the_post_thumbnail_url( $item->ID, 'thumbnail' );
+				$thumbnailID = get_post_thumbnail_id( $item->ID );
+				//this thumbnail is kept for backwards compatibility
+				$thumbnail = wp_get_attachment_image_url( $thumbnailID, 'thumbnail' );
+				$images = [
+					'thumbnail' => wp_get_attachment_image_src( $thumbnailID, 'thumbnail' ),
+					'medium'    => wp_get_attachment_image_src( $thumbnailID, 'medium' ),
+					'large'     => wp_get_attachment_image_src( $thumbnailID, 'large' ),
+					'full'      => wp_get_attachment_image_src( $thumbnailID, 'full' ),
+				];
 				$items[]   = [
 					'id'         => $item->ID,
 					'name'       => $item->post_title,
@@ -246,6 +255,7 @@ class Map extends CustomPostType {
 					'terms'      => $item_terms,
 					'link'       => add_query_arg( 'cb-location', $post->ID, get_permalink( $item->ID ) ),
 					'thumbnail'  => $thumbnail ?: null,
+					'images'     => $images,
 					'timeframes' => $timeframesData
 				];
 			}
@@ -281,10 +291,7 @@ class Map extends CustomPostType {
 
 	public static function get_cb_items_category_groups( $preset_categories ) {
 		$groups         = [];
-		$category_terms = get_terms( [
-			'taxonomy'   => 'cb_items_category',
-			'hide_empty' => false,
-		] );
+		$category_terms = Item::getTerms();
 
 		foreach ( $category_terms as $term ) {
 			if ( in_array( $term->term_id, $preset_categories ) ) {
