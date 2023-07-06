@@ -1,13 +1,14 @@
 [![PHP Composer](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml) [![WP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/wp-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest) [![PHP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/php-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest)
+[![codecov](https://codecov.io/gh/wielebenwir/commonsbooking/branch/master/graph/badge.svg?token=STJC8WPWIC)](https://codecov.io/gh/wielebenwir/commonsbooking)
 
 # CommonsBooking
 
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen  
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
-Tags: booking, commons, sharing, calendar,  
+Tags: booking, commons, sharing, calendar, commoning, open-source, booking system, booking calendar  
 Requires at least: 5.2  
-Tested up to: 6.0
-Stable Tag: 2.8
+Tested up to: 6.0  
+Stable Tag: 2.8  
 Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -22,7 +23,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 **Unique features:**
 
-* Items can be assigned to different locations for the duration of a timeframe, each with their own contact information.  
+* Items can be assigned to different locations for the duration of a timeframe, each with their own contact information. You can display all locations via shortcode as an interactive map.
 * Simple booking process:  bookable timeframes can be configured with hourly slots oder daily slots.
 * Auto-accept bookings: A registered user can book items without the need for administration. 
 * Codes: The plugin automatically generates booking codes, which are used at the station to validate the booking. 
@@ -70,11 +71,12 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 2. Navigate into your wp-content/plugins directory
 3. Open a terminal and run `git clone https://github.com/wielebenwir/commonsbooking`
 4. cd into the directory commonsbooking and run `composer install`
+> This might fail, if you don't have the PHP extension [uopz](https://www.php.net/manual/en/book.uopz.php) installed. Try running `composer install --no-dev` if you just quickly want to test a specific branch without installing the extension.
 5. Activate the plugin in the Plugin dashboard
 
 ## Frequently Asked Questions
 
-### Where can i find help/report bugs?
+### Where can I find help/report bugs?
 
 * [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues)
 * [Support](https://commonsbooking.org/kontakt/)

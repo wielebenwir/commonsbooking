@@ -371,8 +371,7 @@ msgstr "Der Titel des angehängten Termins"
 
 #: includes/OptionsArray.php:259 includes/OptionsArray.php:1047
 msgid "{{item:post_title}} at {{location:post_title}}"
-msgstr ""
-"Deine Buchung von {{item:post_name}} am Standort {{location:post_name}}."
+msgstr "{{item:post_title}} am Standort {{location:post_title}}."
 
 #: includes/OptionsArray.php:263
 msgid "iCalendar event description"

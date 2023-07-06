@@ -61,7 +61,7 @@ class Location extends BookablePost {
 		}
 		$location_postcode = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post );
 		if (!empty($location_postcode)){
-			$html_output[] = $location_postcode . ' ';
+			$html_output[] = $location_postcode;
 		}
 		$location_city = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_city',
 			$this->post );
@@ -119,7 +119,7 @@ class Location extends BookablePost {
 	 */
 	public function formattedContactInfo() {
 		$contact = array();
-		if ( ! empty( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact' ) ) ) {
+		if ( ! empty( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post ) ) ) {
 			$contact[] = "<br>"; // needed for email template
 			$contact[] = esc_html__( 'Please contact the contact persons at the location directly if you have any questions regarding collection or return:',
 				'commonsbooking' );

@@ -9,6 +9,7 @@ use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use PHPUnit\Framework\TestCase;
+use SlopeIt\ClockMock\ClockMock;
 
 abstract class CustomPostTypeTest extends TestCase {
 
@@ -199,19 +200,31 @@ abstract class CustomPostTypeTest extends TestCase {
 		);
 	}
 
-	protected function createBookableTimeFrameIncludingCurrentDay() {
+	protected function createBookableTimeFrameIncludingCurrentDay($locationId = null, $itemId = null) {
+		if ( $locationId === null ) {
+			$locationId = $this->locationId;
+		}
+		if ( $itemId === null ) {
+			$itemId = $this->itemId;
+		}
 		return $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$locationId,
+			$itemId,
 			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) )
 		);
 	}
 
-	protected function createBookableTimeFrameStartingInAWeek() {
+	protected function createBookableTimeFrameStartingInAWeek($locationId = null, $itemId = null) {
+		if ( $locationId === null ) {
+			$locationId = $this->locationId;
+		}
+		if ( $itemId === null ) {
+			$itemId = $this->itemId;
+		}
 		return $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$locationId,
+			$itemId,
 			strtotime( '+7 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+30 day', strtotime( self::CURRENT_DATE ) )
 		);
@@ -261,8 +274,8 @@ abstract class CustomPostTypeTest extends TestCase {
 		}
 	}
 
-	protected function setUp() {
-		parent::setUp();
+  protected function setUp() : void {
+    parent::setUp();
 
 		$this->setUpBookingCodesTable();
 
@@ -289,9 +302,10 @@ abstract class CustomPostTypeTest extends TestCase {
 		$wpdb->query( $sql );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 
+		ClockMock::reset();
 		$this->tearDownAllItems();
 		$this->tearDownAllLocation();
 		$this->tearDownAllTimeframes();
