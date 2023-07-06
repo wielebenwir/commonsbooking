@@ -216,8 +216,7 @@ class Location extends BookablePost {
 	 * This will not get the admins of the items in the location. To get both, use the function from the Model/Timeframe class.
 	 *
 	 *  TODO: This currently includes the author of the location as an admin.
-	 *        This is not intended and should be fixed.
-	 *        This function is currently not used anywhere.
+	 *        This does not make sense in all contexts and should be changed.
 	 *
 	 * @return array|mixed|string[]
 	 */

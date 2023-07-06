@@ -42,8 +42,7 @@ class Item extends BookablePost {
 	 * This will not get the admins of the location that this item belongs to. If you want that, use the function from the Model/Timeframe class.
 	 *
 	 * TODO: This currently includes the author of the item as an admin.
-	 *       This is not intended and should be fixed.
-	 *       But also this function is not used anywhere yet.
+	 *       This does not make sense in all contexts and should be fixed.
 	 *
 	 * @return array|mixed|string[]
 	 */

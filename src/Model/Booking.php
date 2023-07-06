@@ -142,7 +142,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Assings relevant meta fields from related bookable timeframe to booking.
+	 * Assigns relevant meta fields from related bookable timeframe to booking.
 	 * We have to do this, because bookings used to be just a type of timeframe post.
 	 * This leads to a lot of post meta for bookings that only make sense in a timeframe context.
      *

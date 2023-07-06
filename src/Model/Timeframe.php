@@ -496,7 +496,7 @@ class Timeframe extends CustomPost {
 	/**
 	 * Checks if timeframes are overlapping in date range.
 	 *
-	 * @param   \CommonsBooking\Model\Timeframe  $otherTimeframe
+	 * @param Timeframe $otherTimeframe
 	 *
 	 * @return bool
 	 */
@@ -542,9 +542,8 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Checks if timeframes are overlapping in daily slots.
-	 * TODO: This would make more sense in an object context.
 	 *
-	 * @param   \CommonsBooking\Model\Timeframe  $otherTimeframe
+	 * @param Timeframe $otherTimeframe
 	 *
 	 * @return bool
 	 */
@@ -753,8 +752,6 @@ class Timeframe extends CustomPost {
 	/**
 	 * Returns users with admin role for location and item, assigned to this timeframe.
 	 * Will call the respective methods on the location and item.
-	 *
-	 * This function is currently not in use.
 	 *
 	 * @return array|string[]
 	 * @throws Exception

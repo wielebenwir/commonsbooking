@@ -98,7 +98,7 @@ class Timeframe extends PostRepository {
 	 *
 	 * @return array
 	 * @throws Exception
-	 * @throws \Psr\Cache\InvalidArgumentException
+	 * @throws \Psr\Cache\InvalidArgumentException|\Psr\Cache\CacheException
 	 */
 	public static function get(
 		array $locations = [],

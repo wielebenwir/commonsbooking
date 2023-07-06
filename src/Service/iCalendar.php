@@ -20,7 +20,10 @@ use DateTimeImmutable;
 use DateInterval;
 
 /**
+ * The class used to generate ics files for the user.
+ * These ics files can either be per booking, contain all bookings for the user or even all bookings that a CB-Manager or an admin has access to.
  *
+ * The functionality of this heavily relies on the iCal library by eluceo.
  */
 class iCalendar {
 
@@ -32,12 +35,13 @@ class iCalendar {
 
     public function __construct()
     {
-        $this->calendar = New Calendar();
+		// Create new calendar instance (eluceo/iCal)
+        $this->calendar = new Calendar();
     }
 
 	/**
 	 * Registers url to download ics file.
-     * Only enabled, when the Setting is set in the advanced options
+     * Only enabled, when the setting is set in the advanced options
 	 * @return void
 	 */
 	public static function initRewrite() {
@@ -67,7 +71,7 @@ class iCalendar {
      * This should be relatively secure, since the hash is salted.
      * Returns false when user is not logged in
      *
-     * @return string | bool
+     * @return string | bool - false when user is not logged in
      */
     public static function getCurrentUserCalendarLink() {
         if (!is_user_logged_in()) { return false;}
@@ -86,10 +90,18 @@ class iCalendar {
         );
     }
 
-    /**
-     * Adds Model\Booking to Calendar
-     * 
-     */
+	/**
+	 * Adds Model\Booking to Calendar.
+	 * This will take all the information like title, description, location, start and end date and add it to the calendar as an event.
+	 *
+	 * The title and description for the iCalendar, that can be set by the user in the options, will be used as the title and description of the event.
+	 *
+	 * @param Booking $booking - The booking to add to the calendar
+	 * @param String $eventTitle - The title of the event in the ics calendar
+	 * @param String $eventDescription - The description of the event in the ics calendar
+	 *
+	 * @throws \Exception
+	 */
     public function addBookingEvent(
         Booking $booking,
         String $eventTitle,
@@ -171,7 +183,13 @@ class iCalendar {
             $this->calendar->addEvent($event);
         }
 
-    public function getCalendarData (): String {
+	/**
+	 * Will get the string representation of the current calendar.
+	 * This can be used to display to save the calendar to a file or serve it via URL.
+	 *
+	 * @return String - The string representation of the calendar
+	 */
+	public function getCalendarData (): String {
         // Transform domain entity into an iCalendar component
 		$componentFactory = new CalendarFactory();
 		$calendarComponent = $componentFactory->createCalendar($this->calendar);
@@ -181,6 +199,14 @@ class iCalendar {
 
 	/**
 	 * Returns ics download file for current user.
+	 * This will check if the user is logged in and if the user id and hash are correct.
+	 * If they are correct, all of the user's bookings will be added to the calendar and the calendar will be returned as a file.
+	 *
+	 * This can be used to integrate the calendar dynamically via URL into other calendar applications.
+	 *
+	 * This function is called when the user visits the site with the URL_SLUG parameter.
+	 * ie. https://example.org/?commonsbooking_user=13&commonsbooking_userhash=51679946bee67c128a82a2219b7d00a2&commonsbooking_ical_download=1
+	 *
 	 * @return void
 	 */
 	public static function getICSDownload() {
