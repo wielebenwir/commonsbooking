@@ -3,8 +3,10 @@
 namespace CommonsBooking\Tests\Service;
 
 use CommonsBooking\Model\Booking;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Service\BookingRule;
+use SlopeIt\ClockMock\ClockMock;
 
 class BookingRuleTest extends CustomPostTypeTest
 {
@@ -132,6 +134,15 @@ class BookingRuleTest extends CustomPostTypeTest
 	}
 
 	public function testMaxBookingPerWeek() {
+		//rule settings
+		$allowedPerWeek = 2;
+		$resetDay = '0'; //monday
+		$optionsArray = array(
+			$allowedPerWeek,
+			null,
+			$resetDay
+		);
+
 		$nextWeekDate = new \DateTime(self::CURRENT_DATE);
 		// we add one week here so that it does not interfere with the bookings of the other tests
 		$nextWeekDate->modify('+1 week');
@@ -192,9 +203,9 @@ class BookingRuleTest extends CustomPostTypeTest
 		));
 
 		$this->assertEquals(array($testBookingOne,$testBookingTwo),BookingRule::checkMaxBookingsPerWeek(
-			$testBookingThree, array(2,null,0)
+			$testBookingThree, $optionsArray
 		));
-		$this->assertNull(BookingRule::checkMaxBookingsPerWeek($testBookingFour, array(2,null,0)));
+		$this->assertNull(BookingRule::checkMaxBookingsPerWeek($testBookingFour, $optionsArray));
 	}
 
 	public function testRegularMaxBookingPerMonth() {
@@ -344,6 +355,63 @@ class BookingRuleTest extends CustomPostTypeTest
 
 		$this->assertNull(BookingRule::checkMaxBookingsPerMonth($allowedBooking, array($maxDaysPerMonth,0,$resetDay)));
 		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($deniedBooking, array($maxDaysPerMonth,0,$resetDay)));
+	}
+
+	/**
+	 * This requires that the maxBookingsPerWeek function is working
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function testCancelledDayCounting(){
+		//settings for maxBookingsPerWeek
+		$allowedDaysPerWeek = 2;
+		$resetDay = 0; //monday
+		$optionsArray = array($allowedDaysPerWeek,null,$resetDay);
+
+		//make sure the option is off
+		Settings::updateOption('commonsbooking_options_restrictions','bookingrules-count-cancelled','off');
+		//first, we create a booking that can be cancelled with the setting disabled, the other booking should be allowed
+		$testMonday = '03.01.2022';
+		$testWednesday = '05.01.2022';
+		//This booking goes from monday to wednesday and is cancelled on tuesday
+		$cancelledBookingThisWeek = new Booking(
+			$this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime($testMonday),
+			strtotime($testWednesday),
+			'8:00 AM',
+			'12:00 PM',
+			'confirmed',
+			$this->normalUser
+		));
+		//We need to use the cancel function here so that the cancellation date is set correctly. In this case we cancel shortly before the booking ends
+		$shortlyBeforeEnd = new \DateTime($testWednesday);
+		$shortlyBeforeEnd->modify('-30 minutes');
+		ClockMock::freeze($shortlyBeforeEnd);
+		$cancelledBookingThisWeek->cancel();
+
+		//this is the booking that would be allowed when cancelled bookings are not counted but should be denied when they are counted
+		$testThursday = '06.01.2022';
+		$testSaturday = '08.01.2022';
+		$conditionallyAllowedBooking = new Booking(
+			$this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime($testThursday),
+			strtotime($testSaturday),
+			'8:00 AM',
+			'12:00 PM',
+			'unconfirmed',
+			$this->normalUser
+		));
+		$this->assertNull(BookingRule::checkMaxBookingsPerWeek($conditionallyAllowedBooking, $optionsArray));
+
+		//now, let's enable the option and see if the booking is denied
+		Settings::updateOption('commonsbooking_options_restrictions','bookingrules-count-cancelled','on');
+		$this->assertEquals(array($cancelledBookingThisWeek),BookingRule::checkMaxBookingsPerWeek($conditionallyAllowedBooking, $optionsArray));
+
+
 	}
 
 	protected function createBookingsFromDates(array $datearray){
