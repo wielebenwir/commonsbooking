@@ -60,6 +60,9 @@ class UserRepository {
 	 */
 	public static function getUserRoles(): array {
 		global $wp_roles;
+		if ( $wp_roles === null ){
+			return [];
+		}
 		$rolesArray = $wp_roles->roles;
 		$roles      = [];
 		foreach ( $rolesArray as $roleID => $value ) {

@@ -50,7 +50,7 @@ abstract class CustomPostType {
 	 */
 	public static function sanitizeOptions( $data ) {
 		$options = [];
-		if ( $data ) {
+		if ( $data && is_array( $data ) ) {
 			foreach ( $data as $key => $item ) {
 				if ( $item instanceof WP_Post ) {
 
