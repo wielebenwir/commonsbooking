@@ -47,7 +47,7 @@ class BookingCodesTest extends CustomPostTypeTest {
 		$this->assertFalse(get_transient(\CommonsBooking\Model\BookingCode::ERROR_TYPE));
 		$this->assertNotEmpty( $e_data );
 		$this->assertStringEndsWith('#email-booking-codes-list',$e_data['location']);
-		$this->assertRegExp('/' . implode('|',self::bookingCodes) . '/',$email->get_sent()->body);
+		$this->assertMatchesRegularExpression('/' . implode('|',self::bookingCodes) . '/',$email->get_sent()->body);
 	}
 
 	public static function on_wp_redirect($location, $status){

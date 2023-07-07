@@ -28,7 +28,7 @@ class BookingCodesTest extends CustomPostTypeTest {
 	/* Tests if cron event for email_bookingscodes is registered */
 	public function testEmailBookingCodesScheduled() {
         $schedule=wp_get_scheduled_event('commonsbooking_email_bookingcodes');
-        $this->assertObjectHasAttribute('schedule', $schedule);
+        $this->assertIsObject($schedule);
     }
     
 	/* Tests if cron initiated booking codes email is sent and contains codes */
@@ -40,7 +40,7 @@ class BookingCodesTest extends CustomPostTypeTest {
 		BookingCodes::sendBookingCodesMessage();
 
 		$this->assertNotFalse($email->get_sent());
-		$this->assertRegExp('/' . implode('|',self::bookingCodes) . '/',$email->get_sent()->body);
+		$this->assertMatchesRegularExpression('/' . implode('|',self::bookingCodes) . '/',$email->get_sent()->body);
 	}
 
     /* Tests some exceptional calculations for emailing booking codes (range and next event) */
