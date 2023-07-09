@@ -39,7 +39,7 @@ class BookingCodes {
 	 *
 	 * @return array
 	 */
-	public static function getCodes( int $timeframeId, int $startDate = null, int $endDate = null ): array {
+	public static function getCodes( int $timeframeId, int $startDate = null, int $endDate = null, int $advanceGenerationDays = self::ADVANCE_GENERATION_DAYS ): array {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
@@ -61,7 +61,7 @@ class BookingCodes {
 			}
 			//when we still don't have an end-date, we will just get the coming ADVANCE_GENERATION_DAYS (should default to 365 days)
 			if (! $endDate ) {
-				$endDate = strtotime( '+' . self::ADVANCE_GENERATION_DAYS . ' days', $startDate );
+				$endDate = strtotime( '+' . $advanceGenerationDays . ' days', $startDate );
 			}
 
 			$startDate = date( 'Y-m-d', $startDate );
@@ -75,7 +75,7 @@ class BookingCodes {
 			) {
 				$startGenerationPeriod = new \DateTime( self::getLastCode($timeframe)->getDate() );
 				$endGenerationPeriod = new \DateTime( $endDate );
-				$endGenerationPeriod->modify( '+' . self::ADVANCE_GENERATION_DAYS . ' days' );
+				$endGenerationPeriod->modify( '+' . $advanceGenerationDays . ' days' );
 				static::generatePeriod( $timeframe,
 					new DatePeriod(
 						$startGenerationPeriod,
@@ -128,7 +128,7 @@ class BookingCodes {
 	 *
 	 * @return BookingCode|null
 	 */
-	public static function getCode(\CommonsBooking\Model\Timeframe $timeframe, int $itemId, int $locationId, string $date ) : ?BookingCode {
+	public static function getCode(\CommonsBooking\Model\Timeframe $timeframe, int $itemId, int $locationId, string $date, int $advanceGenerationDays = self::ADVANCE_GENERATION_DAYS ) : ?BookingCode {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
@@ -155,7 +155,7 @@ class BookingCodes {
 				if (! $timeframe->getRawEndDate() && $timeframe->bookingCodesApplicable() ) {
 					$begin = $timeframe->getUTCStartDateDateTime();
 					$endDate = new \DateTime($date);
-					$endDate->modify('+' . self::ADVANCE_GENERATION_DAYS . ' days');
+					$endDate->modify('+' . $advanceGenerationDays . ' days');
 					$interval = DateInterval::createFromDateString( '1 day' );
 					$period = new DatePeriod( $begin, $interval, $endDate );
 					static::generatePeriod($timeframe,$period);
@@ -249,7 +249,7 @@ class BookingCodes {
      * @return bool
      * @throws Exception
      */
-	public static function generate( \CommonsBooking\Model\Timeframe $timeframe ): bool {
+	public static function generate( \CommonsBooking\Model\Timeframe $timeframe, int $advanceGenerationDays = self::ADVANCE_GENERATION_DAYS ): bool {
 
 		if (! $timeframe->bookingCodesApplicable() ){
 			return false;
@@ -263,7 +263,7 @@ class BookingCodes {
 		}
 		else {
 			$end = new \DateTime();
-			$end->modify( '+' . self::ADVANCE_GENERATION_DAYS . 'days');
+			$end->modify( '+' . $advanceGenerationDays . 'days');
 		}
 
 		$interval = DateInterval::createFromDateString( '1 day' );
