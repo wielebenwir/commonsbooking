@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2023-06-24T17:00:09+02:00\n"
-"PO-Revision-Date: 2023-06-24 17:30+0200\n"
+"POT-Creation-Date: 2023-07-09T20:04:06+02:00\n"
+"PO-Revision-Date: 2023-07-09 20:09+0200\n"
 "Last-Translator: hansm <hansmo@systemausfall.org>\n"
 "Language-Team: English <kde-i18n-doc@kde.org>\n"
 "Language: de_DE\n"
@@ -1764,28 +1764,28 @@ msgstr ""
 "überlappende Zeiträume zu vermeiden. Siehe betroffene Zeitrahmen-ID: %1$s "
 "%2$s"
 
-#: src/Plugin.php:301 src/Plugin.php:302
+#: src/Plugin.php:309 src/Plugin.php:310
 msgid "Item Categories"
 msgstr "Artikel-Kategorien"
 
-#: src/Plugin.php:311 src/Plugin.php:312
+#: src/Plugin.php:319 src/Plugin.php:320
 msgid "Location Categories"
 msgstr "Standort-Kategorien"
 
-#: src/Plugin.php:386
+#: src/Plugin.php:394
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:411
+#: src/Plugin.php:419
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
-#: src/Plugin.php:767
+#: src/Plugin.php:775
 msgid "New features and changes: Please backup before upgrade!"
 msgstr ""
 "Neue Funktionen und Änderungen: Bitte vor dem Upgrade Backup durchführen!"
 
-#: src/Plugin.php:774
+#: src/Plugin.php:782
 msgid ""
 "\n"
 "\t\t\t\t\tThis CommonsBooking update has a lot of new features and changes "
@@ -1806,7 +1806,7 @@ msgstr ""
 "die Update-Informationen %2$s </strong> zu lesen und vor dem Upgrade eine "
 "Sicherungskopie deiner Site zu erstellen."
 
-#: src/Repository/BookingCodes.php:175
+#: src/Repository/BookingCodes.php:177
 msgid ""
 "No booking codes could be created because there were no booking codes to "
 "choose from. Please set some booking codes in the CommonsBooking settings."
@@ -1839,11 +1839,11 @@ msgstr "Startdatum"
 msgid "End date"
 msgstr "Enddatum"
 
-#: src/View/Booking.php:117
+#: src/View/Booking.php:118
 msgid "Details"
 msgstr "Details"
 
-#: src/View/Booking.php:123
+#: src/View/Booking.php:124
 msgid ""
 "Use this link to import the data into your own calendar. Usually you just "
 "need to provide the URL as an external source and the calendar will figure "
@@ -1853,25 +1853,25 @@ msgstr ""
 "abonnieren. Bitte gib die URL in deinem Kalenderprogramm an und versuche "
 "nicht die Datei herunterzuladen."
 
-#: src/View/Booking.php:124
+#: src/View/Booking.php:125
 msgid "iCalendar Link:"
 msgstr "iCalendar Link:"
 
-#: src/View/Booking.php:131 src/View/Booking.php:133
+#: src/View/Booking.php:132 src/View/Booking.php:134
 msgid "Not available"
 msgstr "Nicht verfügbar"
 
-#: src/View/Booking.php:154 src/Wordpress/CustomPostType/Booking.php:522
+#: src/View/Booking.php:155 src/Wordpress/CustomPostType/Booking.php:522
 #: src/Wordpress/CustomPostType/Timeframe.php:87
 #: templates/shortcode-bookings.php:73
 msgid "User"
 msgstr "Nutzende*r"
 
-#: src/View/Booking.php:158
+#: src/View/Booking.php:159
 msgid "Status"
 msgstr "Status"
 
-#: src/View/Booking.php:167 src/View/BookingCodes.php:38
+#: src/View/Booking.php:168 src/View/BookingCodes.php:38
 msgid "Code"
 msgstr "Code"
 
@@ -1897,7 +1897,7 @@ msgstr "Liste der Buchungscodes"
 msgid "Pickup date"
 msgstr "Abholdatum"
 
-#: src/View/BookingCodes.php:37 src/View/Calendar.php:214
+#: src/View/BookingCodes.php:37 src/View/Calendar.php:215
 #: src/Wordpress/CustomPostType/Booking.php:523
 #: src/Wordpress/CustomPostType/Booking.php:839
 #: src/Wordpress/CustomPostType/Item.php:87
@@ -1909,11 +1909,11 @@ msgstr "Abholdatum"
 msgid "Item"
 msgstr "Artikel"
 
-#: src/View/Calendar.php:154
+#: src/View/Calendar.php:155
 msgid "No items found."
 msgstr "Keine Artikel gefunden."
 
-#: src/View/Calendar.php:215 src/Wordpress/CustomPostType/Booking.php:524
+#: src/View/Calendar.php:216 src/Wordpress/CustomPostType/Booking.php:524
 #: src/Wordpress/CustomPostType/Booking.php:833
 #: src/Wordpress/CustomPostType/Location.php:104
 #: src/Wordpress/CustomPostType/Restriction.php:51
@@ -1928,11 +1928,11 @@ msgstr "Standort"
 msgid "at"
 msgstr "bei"
 
-#: src/View/Item.php:136
+#: src/View/Item.php:137
 msgid "No bookable items found."
 msgstr "Keine Buchungen im Papierkorb gefunden."
 
-#: src/View/Location.php:137
+#: src/View/Location.php:138
 msgid "No locations found."
 msgstr "Leider wurden keine Standorte gefunden."
 
@@ -2392,9 +2392,9 @@ msgstr ""
 "                        Wenn die Buchung von einem/einer Nutzenden über den "
 "Frontend-Buchungsprozess vorgenommen wurde, wird der/die Nutzende in diesem "
 "Feld angezeigt.\n"
-"                        <br><strong>Hinweis:</strong>Der/die Nutzende erhält "
-"eine Buchungsbestätigung, sobald die Buchung mit dem Status „bestätigt“ "
-"gespeichert wurde."
+"                        <br><strong>Hinweis: </strong>Der/die Nutzende "
+"erhält eine Buchungsbestätigung, sobald die Buchung mit dem Status "
+"„bestätigt“ gespeichert wurde."
 
 #: src/Wordpress/CustomPostType/Booking.php:900
 msgid "Admin Booking User"
