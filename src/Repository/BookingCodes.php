@@ -4,6 +4,7 @@
 namespace CommonsBooking\Repository;
 
 
+use CommonsBooking\Exception\BookingCodeException;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Model\Day;
@@ -12,7 +13,6 @@ use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
 use DateInterval;
 use DatePeriod;
-use Exception;
 
 class BookingCodes {
 
@@ -33,17 +33,18 @@ class BookingCodes {
 	 *
 	 *
 	 *
-	 * @param   int       $timeframeId - ID of timeframe to get codes for
-	 * @param   int|null  $startDate - Where to get booking codes from (timestamp)
-	 * @param   int|null  $endDate - Where to get booking codes to (timestamp)
+	 * @param int $timeframeId - ID of timeframe to get codes for
+	 * @param int|null $startDate - Where to get booking codes from (timestamp)
+	 * @param int|null $endDate - Where to get booking codes to (timestamp)
 	 *
 	 * @return array
+	 * @throws BookingCodeException
 	 */
-	public static function getCodes( int $timeframeId, int $startDate = null, int $endDate = null ): array {
+	public static function getCodes( int $timeframeId, int $startDate = null, int $endDate = null, int $advanceGenerationDays = self::ADVANCE_GENERATION_DAYS ): array {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
-			$timeframe = New \CommonsBooking\Model\Timeframe($timeframeId);
+			$timeframe = New Timeframe($timeframeId);
 			$timeframeStartDate      = $timeframe->getStartDate();
 			$timeframeEndDate   = $timeframe->getRawEndDate();
 
@@ -61,7 +62,7 @@ class BookingCodes {
 			}
 			//when we still don't have an end-date, we will just get the coming ADVANCE_GENERATION_DAYS (should default to 365 days)
 			if (! $endDate ) {
-				$endDate = strtotime( '+' . self::ADVANCE_GENERATION_DAYS . ' days', $startDate );
+				$endDate = strtotime( '+' . $advanceGenerationDays . ' days', $startDate );
 			}
 
 			$startDate = date( 'Y-m-d', $startDate );
@@ -75,7 +76,7 @@ class BookingCodes {
 			) {
 				$startGenerationPeriod = new \DateTime( self::getLastCode($timeframe)->getDate() );
 				$endGenerationPeriod = new \DateTime( $endDate );
-				$endGenerationPeriod->modify( '+' . self::ADVANCE_GENERATION_DAYS . ' days' );
+				$endGenerationPeriod->modify( '+' . $advanceGenerationDays . ' days' );
 				static::generatePeriod( $timeframe,
 					new DatePeriod(
 						$startGenerationPeriod,
@@ -122,13 +123,15 @@ class BookingCodes {
 	 * Returns booking code by timeframe, location, item and date.
 	 *
 	 * @param Timeframe $timeframe - Timeframe object to get code for
-	 * @param $itemId - ID of item attached to timeframe
-	 * @param $locationId - ID of location attached to timeframe
-	 * @param $date - Date in format Y-m-d
+	 * @param int $itemId - ID of item attached to timeframe
+	 * @param int $locationId - ID of location attached to timeframe
+	 * @param string $date - Date in format Y-m-d
+	 * @param int $advanceGenerationDays
 	 *
 	 * @return BookingCode|null
+	 * @throws BookingCodeException
 	 */
-	public static function getCode(\CommonsBooking\Model\Timeframe $timeframe, int $itemId, int $locationId, string $date ) : ?BookingCode {
+	public static function getCode( Timeframe $timeframe, int $itemId, int $locationId, string $date, int $advanceGenerationDays = self::ADVANCE_GENERATION_DAYS ) : ?BookingCode {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
@@ -155,7 +158,7 @@ class BookingCodes {
 				if (! $timeframe->getRawEndDate() && $timeframe->bookingCodesApplicable() ) {
 					$begin = $timeframe->getUTCStartDateDateTime();
 					$endDate = new \DateTime($date);
-					$endDate->modify('+' . self::ADVANCE_GENERATION_DAYS . ' days');
+					$endDate->modify('+' . $advanceGenerationDays . ' days');
 					$interval = DateInterval::createFromDateString( '1 day' );
 					$period = new DatePeriod( $begin, $interval, $endDate );
 					static::generatePeriod($timeframe,$period);
@@ -243,13 +246,13 @@ class BookingCodes {
     /**
      * Generates booking codes for timeframe.
      *
-     * @param \CommonsBooking\Model\Timeframe $timeframe
+     * @param Timeframe $timeframe
 	 *
      * @return bool
      * @return bool
-     * @throws Exception
+     * @throws BookingCodeException
      */
-	public static function generate( \CommonsBooking\Model\Timeframe $timeframe ): bool {
+	public static function generate( Timeframe $timeframe, int $advanceGenerationDays = self::ADVANCE_GENERATION_DAYS ): bool {
 
 		if (! $timeframe->bookingCodesApplicable() ){
 			return false;
@@ -263,50 +266,54 @@ class BookingCodes {
 		}
 		else {
 			$end = new \DateTime();
-			$end->modify( '+' . self::ADVANCE_GENERATION_DAYS . 'days');
+			$end->modify( '+' . $advanceGenerationDays . 'days');
 		}
 
 		$interval = DateInterval::createFromDateString( '1 day' );
 		$period   = new DatePeriod( $begin, $interval, $end );
-		$bookingCodesArray = static::getCodesArray();
-
-		// Check if codes are available, show error if not.
-		if ( ! count( $bookingCodesArray ) ) {
-			set_transient(
-				BookingCode::ERROR_TYPE,
-				commonsbooking_sanitizeHTML(
-					__( "No booking codes could be created because there were no booking codes to choose from. Please set some booking codes in the CommonsBooking settings.", 'commonsbooking' )
-				),
-				45
-			);
-
-			return false;
-		}
 
 		return static::generatePeriod( $timeframe, $period );
-
 	}
 
-	private static function generatePeriod( \CommonsBooking\Model\Timeframe $timeframe, DatePeriod $period){
+	/**
+	 * Generate booking codes for a given period
+	 * @param Timeframe $timeframe
+	 * @param DatePeriod $period
+	 *
+	 * @return true
+	 * @throws BookingCodeException
+	 */
+	private static function generatePeriod( Timeframe $timeframe, DatePeriod $period): bool {
 
 		$bookingCodesArray = static::getCodesArray();
 		if (! $bookingCodesArray ){
-			throw new BookingCodeException( __( 'No booking codes available.', 'commonsbooking' ) );
+			throw new BookingCodeException( __( "No booking codes could be created because there were no booking codes to choose from. Please set some booking codes in the CommonsBooking settings.", 'commonsbooking' )  );
 		}
 		// Before we add new codes, we remove old ones, that are not relevant anymore
-		self::deleteOldCodes( $timeframe->ID, $timeframe->getLocation()->ID, $timeframe->getItem()->ID );
+		try {
+			$location = $timeframe->getLocation();
+		} catch ( \Exception $e ) {
+			throw new BookingCodeException( __( "No booking codes could be created because the location of the timeframe could not be found.", 'commonsbooking' )  );
+		}
+		try {
+			$item = $timeframe->getItem();
+		} catch ( \Exception $e ) {
+			throw new BookingCodeException( __( "No booking codes could be created because the item of the timeframe could not be found.", 'commonsbooking' )  );
+		}
+
+		self::deleteOldCodes( $timeframe->ID, $location->ID, $item->ID );
 
 		$bookingCodesRandomizer = intval( $timeframe->ID );
-		$bookingCodesRandomizer += $timeframe->getItem()->ID;
-		$bookingCodesRandomizer += $timeframe->getLocation()->ID;
+		$bookingCodesRandomizer += $item->ID;
+		$bookingCodesRandomizer += $location->ID;
 
 		foreach ( $period as $dt ) {
 			$day = new Day( $dt->format( 'Y-m-d' ) );
 			if ( $day->isInTimeframe( $timeframe ) ) {
 				$bookingCode = new BookingCode(
 					$dt->format( 'Y-m-d' ),
-					$timeframe->getItem()->ID,
-					$timeframe->getLocation()->ID,
+					$item->ID,
+					$location->ID,
 					$timeframe->ID,
 					$bookingCodesArray[ ( (int) $dt->format( 'z' ) + $bookingCodesRandomizer ) % count( $bookingCodesArray ) ]
 				);

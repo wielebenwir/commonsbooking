@@ -2,7 +2,9 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Exception\BookingCodeException;
 use CommonsBooking\Exception\TimeframeInvalidException;
+use CommonsBooking\Model\BookingCode;
 use WP_Post;
 use Exception;
 use CommonsBooking\CB\CB;
@@ -770,7 +772,15 @@ class Timeframe extends CustomPostType {
 			$this->sanitizeRepetitionEndDate( $post_id );
 
 			if ( $timeframe->usesBookingCodes() && $timeframe->bookingCodesApplicable() ) {
-				BookingCodes::generate( $timeframe );
+				try {
+					BookingCodes::generate( $timeframe );
+				} catch ( BookingCodeException $e ) {
+					set_transient(
+						BookingCode::ERROR_TYPE,
+						$e->getMessage(),
+						45
+					);
+				}
 			}
 		}
 	}

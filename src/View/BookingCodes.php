@@ -1,6 +1,9 @@
 <?php
 
 namespace CommonsBooking\View;
+
+
+use CommonsBooking\Exception\BookingCodeException;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\CB\CB;
 use CommonsBooking\Model\BookingCode;
@@ -18,11 +21,11 @@ class BookingCodes
 
  	/**
 	 * Next booking codes by Email Cron event for timeframe.
-     * based on current timestamp calculated start and period 
+     * based on current timestamp calculated start and period
 	 *
 	 * @param Timestamp $tsInitial
 	 * @param int $periodMonths
-     * 
+     *
      * @return DateTime   Datetime of nex Cron Event.
 	 */
     public static function initialCronEmailEvent($tsInitial,$periodMonths): DateTimeImmutable {
@@ -32,24 +35,24 @@ class BookingCodes
 
         $end = new DateTime("today");
         $diff = $start->diff($end);
-        
+
         $yearsInMonths = $diff->format('%r%y') * 12;
         $months = $diff->format('%r%m');
         $totalMonths = $yearsInMonths + $months;
-        $numPeriods=floor($totalMonths / $periodMonths) + 1;        
+        $numPeriods=floor($totalMonths / $periodMonths) + 1;
         $fullMonth=$numPeriods * $periodMonths;
 
         $dtTo=$start->modify("midnight last day of next month +" . ($fullMonth - 1) . " month");
-        
+
         $daydiff=$dtTo->format("j") - $start->format("j");
         if($daydiff > 0 ) {
           $dtNextCronEvent=$dtTo->modify("-" . $daydiff . " days");
-        } 
-        else 
+        }
+        else
            $dtNextCronEvent=$dtTo;
-        
+
         return $dtNextCronEvent;
-                
+
     }
 
  	/**
@@ -61,7 +64,7 @@ class BookingCodes
  	 */
     public static function cronEmailCodesSaved( $updated, $action, $field): void {
         if(!$updated || empty($field->object_id())) return;
-            
+
         switch($action) {
             case 'updated':
                 if(empty(@$field->value()['cron-booking-codes-enabled']))
@@ -69,7 +72,7 @@ class BookingCodes
                 else
                 {
                     $dtNextCron=self::initialCronEmailEvent(@$field->value()['cron-email-booking-code-start'], @$field->value()['cron-email-booking-code-nummonth']);
-                    update_post_meta( $field->object_id(), self::NEXT_CRON_EMAIL, $dtNextCron->getTimestamp() ); 
+                    update_post_meta( $field->object_id(), self::NEXT_CRON_EMAIL, $dtNextCron->getTimestamp() );
                 }
                 break;
 
@@ -82,7 +85,7 @@ class BookingCodes
 
         }
     }
-    
+
  	/**
 	 * CMB2 sanitize field callback
 	 *
@@ -102,7 +105,7 @@ class BookingCodes
             'cron-email-booking-code-nummonth' => absint(@$value['cron-email-booking-code-nummonth']),
             'cron-email-booking-code-start' => $dt?$dt->getTimestamp():$field->args['default_start'],
         );
- 
+
         return $toSave;
     }
 
@@ -132,17 +135,17 @@ class BookingCodes
                 'cron-booking-codes-enabled' =>  '',
                 'cron-email-booking-code-nummonth' => $field->args['default_nummonth'],
                 'cron-email-booking-code-start' => date($field_args['date_format_start'],$field->args['default_start']),
-            );           
+            );
         }
     }
-    
+
  	/**
 	 * renders custom CMB2 field settings for Cron Booking Codes
 	 *
      * @param  $field: The current CMB2_Field object.
-     * @param  $escaped_value: The value of this field passed through the escaping filter. 
+     * @param  $escaped_value: The value of this field passed through the escaping filter.
      * @param  $object_id: The id of the object you are working with. Most commonly, the post id.
-     * @param  $object_type: The type of object you are working with. 
+     * @param  $object_type: The type of object you are working with.
      * @param  $field_type_object: This is an instance of the CMB2_Types object and gives you access to all of the methods
   	*/
      public static function renderCronEmailFields($field, $escaped_value, $object_id, $object_type, $field_type): void {
@@ -154,13 +157,13 @@ class BookingCodes
         $location_emails = $location?
                             CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $timeframe->getLocation() ):
                             array() ;
-        
+
         $errMsg=null;
         if(empty($location)) {
             $errMsg=commonsbooking_sanitizeHTML( __('No location configured for this timeframe', 'commonsbooking'));
         }
         elseif( empty($location_emails)) {
-            $errMsg=commonsbooking_sanitizeHTML( __('Unable to send Emails. No location email configured, check location', 'commonsbooking') . 
+            $errMsg=commonsbooking_sanitizeHTML( __('Unable to send Emails. No location email configured, check location', 'commonsbooking') .
             sprintf( ' <a href="%s" class="cb-title cb-title-link">%s</a>', esc_url(get_edit_post_link( $location->ID )), commonsbooking_sanitizeHTML($location->post_title) ));
         }
         elseif( !$timeframe->hasBookingCodes()){
@@ -179,7 +182,7 @@ class BookingCodes
         ) );
 
         $checked       = !empty($value['cron-booking-codes-enabled'])?'checked="checked"':'';
-        
+
         $jsDateFormat=\CMB2_Utils::php_to_js_dateformat($field->args['date_format_start'] );
         wp_add_inline_script( 'jquery-ui-datepicker', "
             jQuery( function() {
@@ -191,7 +194,7 @@ class BookingCodes
                 });
             } );        
         ", 'after');
-        
+
         $tsNextCronEvent=get_post_meta( $field->object_id(), self::NEXT_CRON_EMAIL, true );
         if(!empty($tsNextCronEvent)) {
             $nextCronEventFmt=wp_date(get_option( 'date_format' ),$tsNextCronEvent);
@@ -252,25 +255,25 @@ HTML;
         $location_emails = $location?
                             CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $timeframe->getLocation() ):
                             array() ;
-        
+
         echo '<div class="cmb-row cmb2-id-email-booking-codes-info">
                 <div class="cmb-th">
                     <label for="email-booking-codes-list">'. commonsbooking_sanitizeHTML( __('Send booking codes by email', 'commonsbooking')) .'</label>
                 </div>
 
                 <div id="email-booking-codes-list" class="cmb-td">';
-        
+
         if(empty($location)) {
             echo commonsbooking_sanitizeHTML( __('No location configured for this timeframe', 'commonsbooking'));
         }
         elseif( empty($location_emails)) {
-            echo commonsbooking_sanitizeHTML( __('Unable to send Emails. No location email configured, check location', 'commonsbooking') . 
+            echo commonsbooking_sanitizeHTML( __('Unable to send Emails. No location email configured, check location', 'commonsbooking') .
             sprintf( ' <a href="%s" class="cb-title cb-title-link">%s</a>', esc_url(get_edit_post_link( $location->ID )), commonsbooking_sanitizeHTML($location->post_title) ));
         }
         elseif( !$timeframe->hasBookingCodes()){
             echo commonsbooking_sanitizeHTML( __('This timeframe has no booking codes', 'commonsbooking'));
         }
-        else 
+        else
         {
             echo '      <a id="email-booking-codes-list-all" 
                                 href="'. esc_url(add_query_arg([  "action" => "emailcodes", "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
@@ -287,7 +290,7 @@ HTML;
                             <strong>'. commonsbooking_sanitizeHTML( __('Email booking codes of current month', 'commonsbooking')) .'</strong>
                         </a><br>
                         '. commonsbooking_sanitizeHTML( __('The codes <b>of the current month</b> will be sent to all the location email(s), given in bold below', 'commonsbooking'));
-            
+
             $from=strtotime("midnight first day of next month");
             $to=strtotime("midnight last day of next month");
 
@@ -311,7 +314,7 @@ HTML;
                 </div>
             </div>';
 
-        return true;            
+        return true;
     }
 
 	/**
@@ -320,7 +323,12 @@ HTML;
 	 * @param $timeframeId
 	 */
 	public static function renderTable( $timeframeId ) {
-        $timeframe=new Timeframe($timeframeId);
+		try {
+			$bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId );
+		} catch ( BookingCodeException $e ) {
+			echo $e->getMessage();
+			return;
+		}
 
         echo '
             <div class="cmb-row cmb2-id-booking-codes-info">
@@ -364,7 +372,7 @@ HTML;
 	 * Renders HTML table of bookingCodes List.
 	 *
 	 * @param $bookingCodes array : CommonsBooking\Model\BookingCode
-     * 
+     *
      * @return string HTML table
 	 */
 	public static function renderBookingCodesTable( $bookingCodes ) : string {
@@ -372,20 +380,20 @@ HTML;
 
         $lines=[];
         foreach($bookingCodes as $bookingCode) {
-            $lines[]='<tr><td>' . commonsbooking_sanitizeHTML(wp_date("D j. F Y", strtotime ($bookingCode->getDate() )) ) . 
+            $lines[]='<tr><td>' . commonsbooking_sanitizeHTML(wp_date("D j. F Y", strtotime ($bookingCode->getDate() )) ) .
                         '</td><td>' . commonsbooking_sanitizeHTML( $bookingCode->getCode() ) . '</td></tr>';
         }
-    
+
         // if odd number of lines add empty row
         if(count($lines) % 2 != 0) {
             array_push($lines,"<tr><td>&nbsp;</td><td>&nbsp;</td></tr>");
         }
         $parts=array_chunk($lines,ceil(count($lines) / 2));
 
-        return "<table  cellspacing='0' cellpadding='20' class='cmb2-codes-outer-table' ><tbody><tr><td><table class='cmb2-codes-column' cellspacing=\"0\" cellpadding=\"8\" border=\"1\"><tbody>" . 
-                        implode("",$parts[0]) . 
-                        "</tbody></table></td><td><table class='cmb2-codes-column'  cellspacing=\"0\" cellpadding=\"8\" border=\"1\"><tbody>" . 
-                        implode("",$parts[1]) . 
+        return "<table  cellspacing='0' cellpadding='20' class='cmb2-codes-outer-table' ><tbody><tr><td><table class='cmb2-codes-column' cellspacing=\"0\" cellpadding=\"8\" border=\"1\"><tbody>" .
+                        implode("",$parts[0]) .
+                        "</tbody></table></td><td><table class='cmb2-codes-column'  cellspacing=\"0\" cellpadding=\"8\" border=\"1\"><tbody>" .
+                        implode("",$parts[1]) .
                         "</tbody></table></td></tr></tbody></table>";
 
     }
@@ -399,9 +407,6 @@ HTML;
 			$timeframeId = intval( $_GET['post'] );
 		}
 
-        $timeframe=new Timeframe($timeframeId);
-		$bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId, Wordpress::getUTCDateTime("today")->getTimestamp(), $timeframe->getRawEndDate() );
-
 		header( 'Content-Encoding: UTF-8' );
 		header( 'Content-type: text/csv; charset=UTF-8' );
 		header( "Content-Disposition: attachment; filename=buchungscode-" . commonsbooking_sanitizeHTML( $timeframeId ) . ".txt" );
@@ -409,6 +414,13 @@ HTML;
 		header( "Pragma: no-cache" );
 		header( "Expires: 0" );
 		echo "\xEF\xBB\xBF"; // UTF-8 BOM
+
+		try {
+			$bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId );
+		} catch ( BookingCodeException $e ) {
+			echo $e->getMessage();
+			die;
+		}
 
 		foreach ( $bookingCodes as $bookingCode ) {
 			echo commonsbooking_sanitizeHTML( $bookingCode->getDate() ) .
@@ -420,12 +432,12 @@ HTML;
 
     /**
      * action for sending Booking Codes by E-mail
-     * 
+     *
      * @param int $timeframeId      ID of requested timeframe
      * @param int $tsFrom           Timestamp of first Booking Code
      * @param int $tsTo             Timestamp of last Booking Code
      */
-    public static function emailCodes($timeframeId = null, $tsFrom=null, $tsTo=null) { 
+    public static function emailCodes($timeframeId = null, $tsFrom=null, $tsTo=null) {
 
         if($timeframeId == null) {
             $timeframeId = sanitize_text_field(@$_GET['post']);
@@ -464,7 +476,7 @@ HTML;
                 // $redir=add_query_arg([ 'cmb2_bookingcodes_result' => 'success' ],$redir);
                 $redir=explode('#',$redir)[0] . '#email-booking-codes-list';
             }
-            
+
             wp_safe_redirect($redir);
             exit;
 
