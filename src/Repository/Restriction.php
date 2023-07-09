@@ -182,6 +182,9 @@ class Restriction extends PostRepository {
 	/**
 	 * Filters posts by locations and items.
 	 *
+	 * WARNING: This method will filter out posts that are only queried by item OR location.
+	 * Meaning, if a restriction is created that has a location and an item, but the query only contains the location, the restriction will not be returned.
+	 *
 	 * @param array $posts
 	 * @param array $locations
 	 * @param array $items

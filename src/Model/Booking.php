@@ -143,7 +143,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 				'start-time',
 				'end-time',
 				'show-booking-codes',
-				'timeframe-max-days',
+				\CommonsBooking\Model\Timeframe::META_MAX_DAYS,
 			];
 			foreach ( $neededMetaFields as $fieldName ) {
 				$fieldValue = get_post_meta(
