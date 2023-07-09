@@ -4,7 +4,7 @@ namespace CommonsBooking\Tests\Repository;
 
 use CommonsBooking\Repository\Restriction;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
-use PHPUnit\Framework\TestCase;
+use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 
 class RestrictionTest extends CustomPostTypeTest
 {
@@ -27,6 +27,26 @@ class RestrictionTest extends CustomPostTypeTest
 	    $this->assertIsArray( $restrictions );
 	    $this->assertEquals( 1, count( $restrictions ) );
 	    $this->assertEquals( $this->restrictionId, $restrictions[0]->ID );
+	}
+
+	public function testGetSetAll() {
+		$allRestriction = new \CommonsBooking\Model\Restriction(
+			$this->createRestriction(
+				"hint",
+				CustomPostType::SELECTION_ALL_POSTS,
+				CustomPostType::SELECTION_ALL_POSTS,
+				strtotime(self::CURRENT_DATE),
+				strtotime("+1 day", strtotime(self::CURRENT_DATE)),
+			)
+		);
+		$restrictions = Restriction::get( [$this->locationId], [$this->itemId],null,true);
+		//make sure that we get both restrictions
+		$this->assertEquals( 2, count( $restrictions ) );
+		$restrictionIds = array_map( function( $restriction ) {
+			return $restriction->ID;
+		}, $restrictions );
+		$this->assertContains( $allRestriction->ID, $restrictionIds );
+		$this->assertContains( $this->restrictionId, $restrictionIds );
 	}
 
 

@@ -19,6 +19,8 @@ abstract class CustomPostType {
 	 */
 	protected $menuPosition;
 
+	const SELECTION_ALL_POSTS = 'all_posts';
+
 	/**
 	 * @return string
 	 */
@@ -42,13 +44,24 @@ abstract class CustomPostType {
 
 	/**
 	 * Replaces WP_Posts by their title for options array.
+	 * If $allOption is true, an additional option is added to the beginning of the array that allows to select all posts
+	 * This option will only be shown to the Administrator role, since only Administrators can usually see all posts
+	 *
+	 * TODO:
+	 *  - All could be interpreted differently depending on the context of the editor. So in the case of a CB Manager "All" could mean all items or locations they manage.
 	 *
 	 * @param $data
 	 *
 	 * @return array
 	 */
-	public static function sanitizeOptions( $data ) {
+	public static function sanitizeOptions( $data, $allOption = false ) {
 		$options = [];
+
+		// Add option to select all items
+		if ( $allOption && current_user_can( 'administrator' ) ) {
+			$options[self::SELECTION_ALL_POSTS] = __( 'All', 'commonsbooking' );
+		}
+
 		if ( $data ) {
 			foreach ( $data as $key => $item ) {
 				if ( $item instanceof WP_Post ) {
