@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Exception\BookingCodeException;
 use CommonsBooking\Helper\Wordpress;
 use Exception;
 
@@ -90,7 +91,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			)
 		) {
 			// translators: %s = Booking code
-			$htmloutput = '<br>' . sprintf( commonsbooking_sanitizeHTML( __( 'Your booking code is: %s', 'commonsbooking' ) ), $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode' ) ) . '<br>';
+			$htmloutput = '<br>' . sprintf( commonsbooking_sanitizeHTML( __( 'Your booking code is: %s', 'commonsbooking' ) ), $this->getBookingCode() ) . '<br>';
 		}
 
 		return $htmloutput;
@@ -162,12 +163,17 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			}
 
 			// If there exists a booking code, add it.
-			$bookingCode = BookingCodes::getCode(
-				$timeframe->ID,
-				$this->getItem()->ID,
-				$this->getLocation()->ID,
-				date( 'Y-m-d', $this->getStartDate() )
-			);
+			try {
+				$bookingCode = BookingCodes::getCode(
+					$timeframe,
+					$this->getItem()->ID,
+					$this->getLocation()->ID,
+					date( 'Y-m-d', $this->getStartDate() )
+				);
+			} catch ( BookingCodeException $e ) {
+				//do nothing, just set the booking code to null
+				$bookingCode = null;
+			}
 
 			// only add booking code if the booking is based on a full day timeframe
 			if ( $bookingCode && $this->isFullDay() ) {
