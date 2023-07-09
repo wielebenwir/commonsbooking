@@ -214,15 +214,18 @@ class Booking extends Timeframe {
                 $itemId
             );
 
-	        $existingBookings =
-		        \CommonsBooking\Repository\Booking::getExistingBookings(
-			        $itemId,
-			        $locationId,
-			        $startDate,
-			        $endDate,
-                    $booking->ID,
-		        );
-
+			if ( $booking !== null ) {
+				$existingBookings =
+					\CommonsBooking\Repository\Booking::getExistingBookings(
+						$itemId,
+						$locationId,
+						$startDate,
+						$endDate,
+						$booking->ID,
+					);
+			} else {
+				$existingBookings = [];
+			}
 			// Validate booking -> check if there are no existing bookings in timerange.
 			if (count($existingBookings) > 0) {
 				$requestedPostname = array_key_exists( 'cb_booking', $_REQUEST ) ? $_REQUEST['cb_booking'] : '';
