@@ -24,9 +24,9 @@ class BookingRuleApplied extends BookingRule {
 	private array $excludedRoles;
 
 	/**
-	 * @param   \CommonsBooking\Service\BookingRule  $rule
+	 * @param BookingRule $rule
 	 *
-	 * @throws \CommonsBooking\Exception\BookingRuleException
+	 * @throws BookingRuleException
 	 */
 	public function __construct( BookingRule $rule) {
 		parent::__construct(
@@ -37,6 +37,7 @@ class BookingRuleApplied extends BookingRule {
 			$rule->validationFunction,
 			$rule->params ?? [],
 			$rule->selectParam ?? [],
+			$rule->errorFromArgs ?? null
 		);
 	}
 
@@ -47,7 +48,7 @@ class BookingRuleApplied extends BookingRule {
 	 * @param   bool   $appliesToAll
 	 * @param   array  $appliedTerms
 	 *
-	 * @throws \CommonsBooking\Exception\BookingRuleException
+	 * @throws BookingRuleException
 	 */
 	public function setAppliesToWho(bool $appliesToAll, array $appliedTerms = []): void {
 		if (! $appliesToAll){
@@ -68,7 +69,7 @@ class BookingRuleApplied extends BookingRule {
 	 * @param   array       $paramsToSet
 	 * @param   int|string  $selectParamSet
 	 *
-	 * @throws \CommonsBooking\Exception\BookingRuleException - if not enough params were specified for the BookingRule
+	 * @throws BookingRuleException - if not enough params were specified for the BookingRule
 	 */
 	public function setAppliedParams( array $paramsToSet, $selectParamSet ): void {
 		if (! empty($this->params)){
@@ -117,17 +118,8 @@ class BookingRuleApplied extends BookingRule {
 		$validationFunction = $this->validationFunction;
 
 		//construct the args array
-		$args = $this->appliedSelectParam ?? [null,null];
-		//add null value to array to keep the params in the right order
-		if (count($args) == 1) {
-			$args[] = null;
-		}
-		if (! empty ($this->appliedSelectParam)){
-			$args[] = $this->appliedSelectParam;
-		}
-		else {
-			$args[] = null;
-		}
+		$args = $this->getArgs();
+
 		return $validationFunction( $booking, $args, $this->appliesToAll ? false : $this->appliedTerms );
 	}
 
@@ -151,7 +143,6 @@ class BookingRuleApplied extends BookingRule {
 			return;
 		}
 
-		/** @var BookingRuleApplied $rule */
 		foreach ( $ruleset as $rule ) {
 
 			// Check if a rule is excluded for the user because of their role
@@ -171,7 +162,7 @@ class BookingRuleApplied extends BookingRule {
 			$conflictingBookings = $rule->checkBookingCompliance( $booking );
 			if ( $conflictingBookings ){
 				$errorMessage =
-					$rule->getErrorMessage() .
+					$rule->getErrorMessage($rule->getArgs()) .
 					PHP_EOL .
 					__( "This affects the following bookings:", 'commonsbooking' ) .
 					PHP_EOL
@@ -224,6 +215,8 @@ class BookingRuleApplied extends BookingRule {
 	/**
 	 * Tries to create objects for all applied Booking rules from the settings
 	 * @throws BookingRuleException
+	 * @return BookingRuleApplied[]
+	 *
 	 * @OVERRIDE
 	 */
 	public static function init():array{
@@ -299,5 +292,24 @@ class BookingRuleApplied extends BookingRule {
 				$e->getMessage()
 			);
 		}
+	}
+
+	/**
+	 * Will get the args array that belongs to the rule
+	 * @return int|null[]|string
+	 */
+	private function getArgs() {
+		$args = $this->appliedParams ?? [ null, null ];
+		//add null value to array to keep the params in the right order
+		if ( count( $args ) == 1 ) {
+			$args[] = null;
+		}
+		if ( ! empty ( $this->appliedSelectParam ) ) {
+			$args[] = $this->appliedSelectParam;
+		} else {
+			$args[] = null;
+		}
+
+		return $args;
 	}
 }
