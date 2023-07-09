@@ -70,6 +70,7 @@ class BookingRuleTest extends CustomPostTypeTest
 	}
 
 	public function testCheckChainBooking(){
+		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
 		$testBookingOne       = new Booking( get_post( $this->createBooking(
 			$this->locationId,
 			$this->itemId,
@@ -93,6 +94,54 @@ class BookingRuleTest extends CustomPostTypeTest
 			)
 		));
 		$this->assertBookingsPresent(array($testBookingOne),BookingRule::checkChainBooking($testBookingTwo));
+	}
+
+	/**
+	 * Tests the case where the booking would fulfill the middle of a chain and should therefore be denied
+	 * @return void
+	 */
+	public function testCheckChainLeftRightBooking(){
+		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
+		//set the timeframe MaxDays a bit higher so we can properly test the chain
+		update_post_meta($this->firstTimeframeId,'timeframe-max-days',5);
+		$beforeBooking 	 = new Booking( get_post( $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-3 days', strtotime(self::CURRENT_DATE)),
+			strtotime( '-1 day', strtotime(self::CURRENT_DATE)),
+			'8:00 AM',
+			'12:00 PM',
+			'confirmed',
+			$this->normalUser
+		) ) );
+		$afterBooking = new Booking(get_post(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime('+1 day', strtotime(self::CURRENT_DATE)),
+				strtotime('+3 days', strtotime(self::CURRENT_DATE)),
+				'8:00 AM',
+				'12:00 PM',
+				'confirmed',
+				$this->normalUser
+			)
+		));
+		//just check that both are allowed
+		$this->assertNull(BookingRule::checkChainBooking($beforeBooking));
+		$this->assertNull(BookingRule::checkChainBooking($afterBooking));
+		$testBooking = new Booking(get_post(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime('-1 day', strtotime(self::CURRENT_DATE)),
+				strtotime('+1 day', strtotime(self::CURRENT_DATE)),
+				'8:00 AM',
+				'12:00 PM',
+				'unconfirmed',
+				$this->normalUser
+			)
+		));
+		$this->assertBookingsPresent(array($beforeBooking,$afterBooking),BookingRule::checkChainBooking($testBooking));
 	}
 
 	public function testCheckMaxBookingDays(){
@@ -485,8 +534,8 @@ class BookingRuleTest extends CustomPostTypeTest
 		$this->firstTimeframeId   = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-5 days',time()),
-			strtotime( '+90 days', time())
+			strtotime( '-5 days', strtotime(self::CURRENT_DATE)),
+			strtotime( '+90 days', strtotime(self::CURRENT_DATE))
 		);
 
 		$wp_user = get_user_by('email',"a@a.de");

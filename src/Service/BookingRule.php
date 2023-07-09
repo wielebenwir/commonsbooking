@@ -7,6 +7,7 @@ use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\Options\OptionsTab;
+use DateTime;
 use Exception;
 
 class BookingRule {
@@ -296,6 +297,9 @@ class BookingRule {
 	 */
 	public static function checkChainBooking( Booking $booking, array $args = [], $appliedTerms = false):?array{
 		$timeframe = $booking->getBookableTimeFrame();
+		if ($timeframe === null){
+			return null;
+		}
 		$adjacentBookings = $booking->getAdjacentBookings();
 		$bookingUser = $booking->getUserData();
 		if ( empty($adjacentBookings))
@@ -321,9 +325,10 @@ class BookingRule {
 			return null;
 		}
 		else {
-			//remove last element from collection again as it is the booking we are currently processing
-			array_pop($bookingCollection);
-			return $bookingCollection;
+			//remove the checked unallowed booking from the collection
+			return array_filter($bookingCollection, function (Booking $collectionItem) use ($booking){
+				return $collectionItem->ID !== $booking->ID;
+			});
 		}
 	}
 
