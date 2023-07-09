@@ -11,13 +11,47 @@ use DateTime;
 use Exception;
 
 class BookingRule {
+	/**
+	 * The name of the rule, needs to be unique and is used to identify the rule in the code
+	 * @var String
+	 */
 	protected string $name;
+	/**
+	 * The title of the rule, will be shown to the configuration admin
+	 * @var String
+	 */
 	protected string $title;
+	/**
+	 * A detailed description of the rule, will be shown to the configuration admin
+	 * @var String
+	 */
 	protected string $description;
+	/**
+	 * The static error message that will be shown to the booking user if the rule is not met
+	 * @var String
+	 */
 	protected string $errorMessage;
+	/**
+	 * Allows to set a custom error message that can be based on parameters (i.e. "You can only book for %s days")
+	 * @var Closure
+	 */
+	protected ?Closure $errorFromArgs;
+	/**
+	 * Array where the key "title" is the title of the parameter and "description" is the description of the parameter.
+	 * These parameters are text fields that can be used to configure the rule. We can currently only support 2 parameters
+	 * @var array
+	 */
 	protected array $params;
-	// Array where first element is the description of the parameter and second element is an associative array with the options
+	/**
+	 * Array where first element is the description of the select field and the second element is an associative array of the select options
+	 * @var array
+	 */
 	protected array $selectParam;
+	/**
+	 * The function that will be called to validate the rule. This is a closure that takes a Booking object, the passed args and an array of the selected terms as arguments
+	 * and returns either null if the rule is met or an array of bookings that are in conflict with the current booking.
+	 * @var Closure
+	 */
 	protected Closure $validationFunction;
 
 	/**
@@ -180,7 +214,7 @@ class BookingRule {
 					__("At what day of the week should the counter be reset?",'commonsbooking'),
 					array(
 						0 => __("Sunday",'commonsbooking'),
-						1 => __("Montag",'commonsbooking'),
+						1 => __("Monday",'commonsbooking'),
 						2 => __("Tuesday",'commonsbooking'),
 						3 => __("Wednesday",'commonsbooking'),
 						4 => __("Thursday",'commonsbooking'),
@@ -242,7 +276,7 @@ class BookingRule {
 				"maxBookingDays",
 				__("Maximum of bookable days",'commonsbooking'),
 				__("Allow x booked days over the period of y days for user.",'commonsbooking'),
-				__("Too many booked days over the period of y days TODO",'commonsbooking'),
+				__("Booking limit exceeded. ",'commonsbooking'),
 				Closure::fromCallable(array(self::class,'checkMaxBookingDays')),
 				array(
 					__("Allow x booked days",'commonsbooking'),
@@ -349,13 +383,6 @@ class BookingRule {
 	 * @throws Exception
 	 */
 	public static function checkMaxBookingDays(Booking $booking, array $args, $appliedTerms = false): ?array {
-		/*
-		 * TODO:
-		 * Diese Funktion ist vielleicht noch nicht so super durchdacht, sie
-		 * holt sich immer nur die Tage, die genau in der Mitte des Zeitraums y liegen.
-		 *  - Verlagern von y Tagen auf Mitte des Arrays
-		 *  - sprintf aus dem Fehlernamen machen
-		 */
 		$allowedBookedDays = $args[0];
 		$periodDays        = $args[1];
 		//when the zeitraum is uneven
