@@ -709,12 +709,12 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * Checks if it has actually received $terms and not an empty variable so that it can just return all bookings if not checking against any terms
 	 *
-	 * @param   \CommonsBooking\Model\Booking[]  $bookings
-	 * @param                                    $terms
+	 * @param Booking[] $bookings
+	 * @param array|false $terms
 	 *
 	 * @return array|null
 	 */
-	public static function filterTermsApply ( array $bookings,  $terms): ?array {
+	public static function filterTermsApply ( array $bookings, $terms): ?array {
 		if ( ! empty($terms) ){
 			$filteredBookingsArray = array_filter($bookings,
 				fn( Booking $booking ) => $booking->termsApply($terms)

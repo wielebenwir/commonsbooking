@@ -366,38 +366,10 @@ class BookingRule {
 		} else {
 			$daysLeft = $daysRight = $daysHalf;
 		}
-		$rangeBookingsArray = array_merge(
-			\CommonsBooking\Repository\Booking::getByTimerange(
-				$booking->getStartDateDateTime()->modify( "-" . $daysLeft . " days" )->getTimestamp(),
-				$booking->getStartDateDateTime()->getTimestamp(),
-				null,
-				null,
-				[],
-				[ 'confirmed' ]
-			),
-			\CommonsBooking\Repository\Booking::getByTimerange(
-				$booking->getEndDateDateTime()->getTimestamp(),
-				$booking->getEndDateDateTime()->modify( "+" . $daysRight . " days" )->getTimestamp(),
-				null,
-				null,
-				[],
-				[ 'confirmed' ]
-			),
-		);
+		$startOfPeriod      = $booking->getStartDateDateTime()->modify( "-" . $daysLeft . " days" );
+		$endOfPeriod          = $booking->getEndDateDateTime()->modify( "+" . $daysRight . " days" );
 
-		$rangeBookingsArray = self::filterBookingsForTermsAndUser($rangeBookingsArray, $booking->getUserData(), $appliedTerms);
-		if (empty ($rangeBookingsArray)) {
-			return null;
-		}
-
-		$totalLengthDays = Booking::getTotalLength($rangeBookingsArray) + $booking->getLength();
-
-		if ($totalLengthDays > $allowedBookedDays){
-			return $rangeBookingsArray;
-		}
-		else {
-			return null;
-		}
+		return self::checkBookingRange($startOfPeriod, $endOfPeriod, $booking, $appliedTerms, $allowedBookedDays);
 	}
 
 	/**
@@ -493,7 +465,7 @@ class BookingRule {
 		$year = $bookingDate->format('Y');
 
 		// if the reset day is higher than the current day, we need to adjust the month and year
-		$startDate = new \DateTime($resetDay . '.' . $month . '.' . $year);
+		$startDate = new DateTime($resetDay . '.' . $month . '.' . $year);
 		$endDate = clone $startDate;
 		if ($resetDay > $day){
 			$startDate->modify('-1 month');
@@ -534,16 +506,16 @@ class BookingRule {
 	 * Will return the conflicting bookings if a user has too many in the range.
 	 * Will also consider the setting if cancelled bookings should be considered.
 	 *
-	 * @param $startOfMonth
-	 * @param $endOfMonth
+	 * @param DateTime $startOfMonth
+	 * @param DateTime $endOfMonth
 	 * @param Booking $booking
-	 * @param $appliedTerms
-	 * @param $allowedBookableDays
+	 * @param array|false $appliedTerms
+	 * @param int $allowedBookableDays
 	 *
 	 * @return array|null - conflicting bookings in order of post_date
 	 * @throws Exception
 	 */
-	private static function checkBookingRange( $startOfMonth, $endOfMonth, Booking $booking, $appliedTerms, $allowedBookableDays ): ?array {
+	private static function checkBookingRange( DateTime $startOfMonth, DateTime $endOfMonth, Booking $booking, $appliedTerms, int $allowedBookableDays ): ?array {
 		$countedPostTypes        = [ 'confirmed' ];
 		if (Settings::getOption('commonsbooking_options_restrictions','bookingrules-count-cancelled') == 'on') {
 			$countedPostTypes[] = 'canceled';
