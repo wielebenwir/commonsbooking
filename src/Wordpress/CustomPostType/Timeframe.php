@@ -90,9 +90,7 @@ class Timeframe extends CustomPostType {
 			\CommonsBooking\Model\Timeframe::META_LOCATION_ID                    => esc_html__( 'Location', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::REPETITION_START                    => esc_html__( 'Start Date', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::REPETITION_END                      => esc_html__( 'End Date', 'commonsbooking' ),
-			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS => esc_html__( 'Max. Booking Duration', 'commonsbooking' ),
-			'timeframe-advance-booking-days'                                     => esc_html__( 'Days Booking In Advance', 'commonsbooking' ),
-
+			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS => esc_html__( 'Days Booking In Advance', 'commonsbooking' ),
 		];
 
 
@@ -529,7 +527,7 @@ class Timeframe extends CustomPostType {
 			array(
 				'name'       => esc_html__( 'Maximum', 'commonsbooking' ),
 				'desc'       => esc_html__( 'days in a row', 'commonsbooking' ),
-				'id'         => "timeframe-max-days",
+				'id'         => \CommonsBooking\Model\Timeframe::META_MAX_DAYS,
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
 				'attributes' => array(
@@ -556,7 +554,7 @@ class Timeframe extends CustomPostType {
 			array(
 				'name'       => esc_html__( 'Calendar shows as bookable', 'commonsbooking' ),
 				'desc'       => commonsbooking_sanitizeHTML( __( 'days. <br> The calendar will show the next X days as bookable. <br> Booking only possible in this time range.', 'commonsbooking' ) ),
-				'id'         => "timeframe-advance-booking-days",
+				'id'         => \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS,
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
 				'attributes' => array(
@@ -621,7 +619,6 @@ class Timeframe extends CustomPostType {
 				'name'        => esc_html__( "End time", 'commonsbooking' ),
 				'id'          => "end-time",
 				'type'        => 'text_time',
-				'time_format' => 'H:i',
 				'attributes'  => array(
 					'data-timepicker' => wp_json_encode(
 						array(

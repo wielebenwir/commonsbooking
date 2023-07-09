@@ -719,10 +719,11 @@ class Booking extends Timeframe {
 			$dateFormat = 'm/d/Y';
 		}
 
+		$userOptions = [];
+
         // Generate user list for admin bookings
 		if ( commonsbooking_isCurrentUserAdmin() || commonsbooking_isCurrentUserCBManager() ) {
 			$users       = get_users();
-			$userOptions = [];
 			foreach ( $users as $user ) {
 				$userOptions[ $user->ID ] = $user->get( 'user_nicename' ) . ' (' . $user->first_name . ' ' . $user->last_name . ')';
 			}

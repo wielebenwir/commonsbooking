@@ -42,6 +42,8 @@ class Timeframe extends CustomPost {
 
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
+	public const META_MAX_DAYS = 'timeframe-max-days';
+
 	public const SELECTION_MANUAL_ID = 0;
 
 	public const SELECTION_CATEGORY_ID = 1;
