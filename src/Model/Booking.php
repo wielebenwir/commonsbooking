@@ -450,7 +450,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return bool
 	 */
 	public function isPast(): bool {
-		if ( $this->getEndDate() < Helper::getCurrentTimestamp() ) {
+		if ( $this->getEndDate() < current_time( 'timestamp' ) ) {
 			return true;
 		} else {
 			return false;

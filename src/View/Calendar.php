@@ -55,7 +55,7 @@ class Calendar {
 		$days = is_array( $atts ) && array_key_exists( 'days', $atts ) ? $atts['days'] : 31;
 
 		$desc  = $atts['desc'] ?? '';
-		$date  = Wordpress::getUTCDateTimeByTimestamp(Helper::getCurrentTimestamp());
+		$date  = Wordpress::getUTCDateTimeByTimestamp(current_time('timestamp'));
 		$today = $date->format( "Y-m-d" );
 
 		$days_display = array_fill( 0, $days, 'n' );
