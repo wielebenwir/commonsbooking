@@ -164,7 +164,7 @@ class DayTest extends CustomPostTypeTest {
 
 	public function testGetTimeframes() {
 		// Should only find confirmed timeframes
-		$this->assertEquals(6,count($this->instance->getTimeframes()) );
+		$this->assertEquals( 6, count( $this->instance->getTimeframes() ) );
 	}
 
 	public function testGetRestrictions() {
