@@ -323,6 +323,7 @@ HTML;
 	 * @param $timeframeId
 	 */
 	public static function renderTable( $timeframeId ) {
+		$timeframe = new Timeframe( $timeframeId );
 		try {
 			$bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId );
 		} catch ( BookingCodeException $e ) {
