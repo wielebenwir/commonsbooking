@@ -252,56 +252,6 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Get the corresponding location array for a timeframe
-	 *
-	 * DEPRECATED: THIS FUNCTION IS NOT USED ANYWHERE
-	 *
-	 * @return array|null of Locations
-	 * @throws Exception
-	 */
-	public function getLocations(): ?array {
-		$locationSelect = $this->getMeta(self::META_LOCATION_SELECTION_TYPE);
-		$locations[] = null;
-		switch ($locationSelect) {
-			case self::SELECTION_MANUAL_ID:
-				$locationIds = $this->getMeta( self::META_LOCATION_ID );
-				foreach ($locationIds as $locationId){
-					if ( $post = get_post( $locationId)) {
-						$locations[] = new Location( $post);
-					}
-				}
-				break;
-			case self::SELECTION_CATEGORY_ID:
-				$categoryIds = $this->getMeta(self::META_LOCATION_CATEGORY_IDS);
-				foreach ($categoryIds as $categoryId){
-					$term = get_term($categoryId);
-					array_merge($locations, Locations::get(
-						array(
-							'category_slug' => $term->slug
-						)
-					)
-					);
-				}
-				break;
-			case self::SELECTION_ALL_ID:
-				array_merge($locations, Locations::get());
-				break;
-
-			default: //When other value is set this most likely means, that the old timeframe model is still being used
-				$locationIds = $this->getMeta( self::META_LOCATION_ID );
-				if ( is_string($locationIds )) {
-					if ( $post = get_post( $locationIds ) ) {
-						$locations[] = New Location($post);
-					}
-				}
-				else {
-					return null;
-				}
-		}
-		return $locations;
-	}
-
-	/**
 	 * Get the corresponding single item for a timeframe
 	 * @return Item
 	 * @throws Exception
@@ -315,57 +265,6 @@ class Timeframe extends CustomPost {
 		}
 
 		return null;
-	}
-
-	/**
-	 * Get the corresponding item array for a timeframe
-	 *
-	 * DEPRECATED: THIS FUNCTION IS CURRENTLY NOT IN USE ANYWHERE
-	 * @return array|null of Items
-	 * @throws Exception
-	 */
-	public function getItems(): ?array {
-		$itemSelect = $this->getMeta(self::META_ITEM_SELECTION_TYPE);
-		$items[] = null;
-		switch ($itemSelect) {
-			case self::SELECTION_MANUAL_ID:
-				$itemIds = $this->getMeta( self::META_ITEM_ID );
-				foreach ($itemIds as $itemId){
-					if ( $post = get_post( $itemId)) {
-						$items[] = new Item( $post);
-					}
-				}
-				break;
-			/*
-			case self::SELECTION_CATEGORY_ID:
-				$categoryIds = $this->getMeta(self::META_ITEM_CATEGORY_ID);
-				foreach ($categoryIds as $categoryId){
-					$term = get_term($categoryId);
-					array_merge($items, Items::get(
-						array(
-							'category_slug' => $term->slug
-						)
-					)
-					);
-				}
-				break;
-			*/
-			case self::SELECTION_ALL_ID:
-				array_merge($items, Items::get());
-				break;
-
-			default: //When other value is set this most likely means, that the old timeframe model is still being used
-				$itemIds = $this->getMeta( self::META_ITEM_ID );
-				if ( is_string($itemIds )) {
-					if ( $post = get_post( $itemIds ) ) {
-						$items[] = New Item($post);
-					}
-				}
-				else {
-					return null;
-				}
-		}
-		return $items;
 	}
 
 	/**

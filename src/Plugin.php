@@ -822,7 +822,7 @@ class Plugin {
 
 	/**
 	 * sets the default value for multi selection to manual in all existing timeframes.
-	 * Multi selection for timeframes are available since 2.8 (estimated) - all timeframes created prior to this version need to have a value for selection
+	 * Multi selection for timeframes are available since 2.9 (estimated) - all timeframes created prior to this version need to have a value for selection
 	 *
 	 * @return void
 	 * @throws InvalidArgumentException
