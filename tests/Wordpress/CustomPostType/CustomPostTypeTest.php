@@ -74,7 +74,6 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 	}
 	protected function setUp(): void {
 		parent::setUp();
-		Plugin::activation();
 		$this->timeframeId    = $this->createBookableTimeFrameIncludingCurrentDay();
 		$this->timeframeModel = new Timeframe(
 			$this->timeframeId
