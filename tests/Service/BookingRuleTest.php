@@ -65,6 +65,19 @@ class BookingRuleTest extends CustomPostTypeTest
 				$this->normalUser
 			)
 		));
+		//we create one booking that is not simultaneous to test that it is not returned
+		$testBookingThree = new Booking(get_post(
+			$this->createBooking(
+				$locationtwo,
+				$itemtwo,
+				strtotime('+3 day', strtotime(self::CURRENT_DATE)),
+				strtotime('+4 days', strtotime(self::CURRENT_DATE)),
+				'8:00 AM',
+				'12:00 PM',
+				'confirmed',
+				$this->normalUser
+			)
+		));
 		$this->assertBookingsPresent(array($testBookingOne),BookingRule::checkSimultaneousBookings($testBookingTwo));
 		$this->tearDownAllBookings();
 	}
