@@ -8,6 +8,7 @@ use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use SlopeIt\ClockMock\ClockMock;
 
 class BookingTest extends CustomPostTypeTest {
 
@@ -32,6 +33,7 @@ class BookingTest extends CustomPostTypeTest {
 	}
 
 	public function testCancel() {
+		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
 		$this->testBookingTomorrow->cancel();
 		$this->testBookingPast->cancel();
 		//flush cache to reflect updated post
@@ -50,6 +52,7 @@ class BookingTest extends CustomPostTypeTest {
 	}
 
 	public function testIsPast(){
+		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
 		$this->assertFalse($this->testBookingTomorrow->isPast());
 		$this->assertTrue($this->testBookingPast->isPast());
 	}
@@ -155,6 +158,7 @@ class BookingTest extends CustomPostTypeTest {
 
 
 	public function testCanCancelBaseCase() {
+		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
 
 		// Case: Booking in the past, no one can cancel
 		$this->assertFalse( $this->testBookingPast->canCancel() );
@@ -214,6 +218,7 @@ class BookingTest extends CustomPostTypeTest {
 	 * @throws \Exception
 	 */
 	public function testCanCancelCBManagerItemAssignment() {
+		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
 		$managerUserObj = get_user_by( 'ID', $this->cbManagerUserID );
 		//let's now create a new item, location and timeframe where the CB Manager is the ITEM manager
 		$managedItem         = new Item(
@@ -311,6 +316,7 @@ class BookingTest extends CustomPostTypeTest {
 	 * @throws \Exception
 	 */
 	public function testCanCancelCBManagerLocationAssignment() {
+		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
 		$managerUserObj = get_user_by( 'ID', $this->cbManagerUserID );
 		//let's now create a new item, location and timeframe where the CB Manager is the LOCATION manager
 		$unmanagedItem = new Item(
