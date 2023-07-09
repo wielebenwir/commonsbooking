@@ -149,6 +149,16 @@ class BookingTest extends CustomPostTypeTest {
 	public function testFormattedBookingCode() {
 		$this->assertEquals( '', $this->testBookingTomorrow->formattedBookingCode());
 	}
+
+	public function testIsOrphaned() {
+		$this->assertFalse( $this->testBookingTomorrow->isOrphaned() );
+		$newLocationId = $this->createLocation("New Location",'confirmed');
+
+		// Update Timeframe to new Location
+		update_post_meta( $this->firstTimeframeId, 'location-id', $newLocationId );
+
+		$this->assertTrue( $this->testBookingTomorrow->isOrphaned() );
+	}
 	
 	
 	protected function setUpTestBooking():void{

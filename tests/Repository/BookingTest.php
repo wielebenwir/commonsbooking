@@ -6,11 +6,12 @@ use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use Exception;
+use SlopeIt\ClockMock\ClockMock;
 use WP_Post;
 
 class BookingTest extends CustomPostTypeTest {
 
-	private $timeframeOne;
+	private $bookingOne;
 
 	private $testItem;
 
@@ -21,6 +22,8 @@ class BookingTest extends CustomPostTypeTest {
 	private $restriction2;
 
 	private $testBooking;
+
+	private $testTimeframe;
 
 	/**
 	 * Test that we only get the booking, endig today.
@@ -49,14 +52,14 @@ class BookingTest extends CustomPostTypeTest {
 	 */
 	public function testGetByTimerange() {
 		$booking = Booking::getByDate(
-			get_post_meta( $this->timeframeOne, Timeframe::REPETITION_START, true ),
-			get_post_meta( $this->timeframeOne, Timeframe::REPETITION_END, true ),
+			get_post_meta( $this->bookingOne, Timeframe::REPETITION_START, true ),
+			get_post_meta( $this->bookingOne, Timeframe::REPETITION_END, true ),
 			$this->locationId,
 			$this->itemId
 		);
 
 		$this->assertTrue( $booking instanceof \CommonsBooking\Model\Booking );
-		$this->assertTrue( $booking->getPost()->ID == $this->timeframeOne );
+		$this->assertTrue( $booking->getPost()->ID == $this->bookingOne );
 
 		$booking = Booking::getByDate(
 			strtotime( 'midnight' ),
@@ -172,12 +175,35 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertCount(0, Booking::getByRestriction($restriction));
 	}
 
+	public function testGetOrphaned() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE));
+		//create a new booking on a new timeframe and orphan it
+		$newLocation = $this->createLocation( 'newlocation', 'publish' );
+		$newItem = $this->createItem( 'newitem', 'publish' );
+		$newTimeframe = $this->createBookableTimeFrameIncludingCurrentDay($newLocation, $newItem);
+		$newBooking = $this->createBooking(
+			$newLocation,
+			$newItem,
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+		);
+		$evenNewerLocation = $this->createLocation( 'evennewerlocation', 'publish' );
+		update_post_meta( $newTimeframe, 'location-id', $evenNewerLocation );
+
+		//now retrieve all orphaned bookings and make sure we find the new one
+		$orphanedBookings = Booking::getOrphaned();
+		$this->assertCount(1, $orphanedBookings);
+		$this->assertEquals($newBooking, $orphanedBookings[0]->ID);
+	}
+
 	protected function setUp() : void {
 		parent::setUp();
-		$this->timeframeOne = parent::createConfirmedBookingEndingToday();
-		$this->timeframeTwo = parent::createConfirmedBookingStartingToday();
-		$this->testItem     = parent::createItem( 'testitem', 'publish' );
+		$this->firstTimeframeId = $this->createBookableTimeFrameIncludingCurrentDay();
+		$this->bookingOne = parent::createConfirmedBookingEndingToday();
+		$this->bookingTwo = parent::createConfirmedBookingStartingToday();
+		$this->testItem   = parent::createItem( 'testitem', 'publish' );
 		$this->testLocation = parent::createLocation( 'testlocation', 'publish' );
+		$this->testTimeframe = $this->createBookableTimeFrameIncludingCurrentDay($this->testLocation, $this->testItem);
 
 		$this->testBooking = $this->createBooking(
 			$this->testLocation,
