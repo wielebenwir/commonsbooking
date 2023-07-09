@@ -19,6 +19,11 @@ $item                         = $booking->getItem();
 $user                         = $booking->getUserData();
 $show_contactinfo_unconfirmed = Settings::getOption( 'commonsbooking_options_templates', 'show_contactinfo_unconfirmed' );
 $text_hidden_contactinfo      = Settings::getOption( 'commonsbooking_options_templates', 'text_hidden-contactinfo' );
+$formatted_user_info          = $booking::getFormattedUserInfo();
+$admin_booking_id             = $booking->getMeta( 'admin_booking_id' );
+$current_status               = $booking->post_status;
+$internal_comment             = $booking->getMeta( 'internal-comment' );
+
 
 do_action( 'commonsbooking_before_booking-single' );
 
@@ -64,16 +69,25 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 		<div class="cb-list-header">
 			<h3><?php echo esc_html__( 'Location: ', 'commonsbooking' ); ?><?php echo $location->title(); ?></h3>
 		</div>
-		<div class="cb-list-content cb-address cb-col-30-70">
-			<div><?php echo esc_html__( 'Address', 'commonsbooking' ); ?></div>
-			<div><?php echo commonsbooking_sanitizeHTML( $location->formattedAddressOneLine() ); ?></div>
-
-		</div><!-- .cb-address -->
-		<div class="cb-list-content cb-pickupinstructions cb-col-30-70">
-			<div><?php echo esc_html__( 'Pickup instructions', 'commonsbooking' ); ?></div>
-			<div><?php echo commonsbooking_sanitizeHTML( $location->formattedPickupInstructionsOneLine() ); ?></div>
-		</div><!-- .cb-cb-pickupinstructions -->
 		<?php
+		$location_address = $location->formattedAddressOneLine();
+		if (!empty($location_address)){
+			?>
+			<div class="cb-list-content cb-address cb-col-30-70">
+				<div><?php echo esc_html__( 'Address', 'commonsbooking' ); ?></div>
+				<div><?php echo commonsbooking_sanitizeHTML( $location_address ); ?></div>
+			</div><!-- .cb-address -->
+		<?php
+		}
+		$location_pickup_instructions = $location->formattedPickupInstructionsOneLine();
+		if (!empty($location_pickup_instructions)){
+			?>
+			<div class="cb-list-content cb-pickupinstructions cb-col-30-70">
+				<div><?php echo esc_html__( 'Pickup instructions', 'commonsbooking' ); ?></div>
+				<div><?php echo commonsbooking_sanitizeHTML( $location_pickup_instructions ); ?></div>
+			</div><!-- .cb-cb-pickupinstructions -->
+			<?php
+		}
 		// show contact details only after booking is confirmed or if options are set to show contactinfo even on unconfirmed booking status
 		if ( $post->post_status == 'confirmed' or $show_contactinfo_unconfirmed == 'on' ) {
             ?>
@@ -100,15 +114,37 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 		<div class="cb-list-header">
 			<h3><?php echo esc_html__( 'Your profile', 'commonsbooking' ); ?></h3>
 		</div>
+        <?php
+       if (commonsbooking_isCurrentUserAdmin() && $admin_booking_id ) { //
+        ?>
+         <div class="cb-list-content cb-user cb-col-30-70">
+       	<div><?php echo esc_html__( 'Admin Booking by', 'commonsbooking' ); ?></div>
+			<div><?php
+                $booking_admin = get_user_by('ID', $admin_booking_id);
+                echo esc_html( $booking_admin->user_login . " (" . $booking_admin->first_name . " " . $booking_admin->last_name . ")" );
+                ?>
+        </div>
+		</div>
+        <!-- internal comment /-->
+        <div class="cb-list-content cb-user cb-col-30-70">
+       	<div><?php echo esc_html__( 'Internal comment', 'commonsbooking' ); ?></div>
+			<div><?php
+                     echo nl2br( commonsbooking_sanitizeHTML( $internal_comment ) );
+                ?>
+        </div>
+		</div>
+        <?php
+        } // end if
+        ?>
 		<div class="cb-list-content cb-user cb-col-30-70">
        			<div><?php echo esc_html__( 'Your E-Mail', 'commonsbooking' ); ?></div>
 			<div><?php echo commonsbooking_sanitizeHTML( CB::get( 'user', 'user_email' ) ); ?></div>
 		</div>
 		<div class="cb-list-content cb-user cb-col-30-70">
-			<div><?php echo esc_html__( 'Your User name', 'commonsbooking' ); ?></div>
+			<div><?php echo esc_html__( 'User data', 'commonsbooking' ); ?></div>
 			<div><a href="<?php echo get_edit_profile_url( $user->ID ); ?>"><?php echo esc_html( $user->first_name ) . ' ' . esc_html( $user->last_name ) . ' (' . esc_html( $user->user_login ) . ')'; ?> </a>
-				<br>
-				<?php echo commonsbooking_sanitizeHTML( CB::get( 'user', 'address' ) ); ?>
+                <br>
+                <?php echo commonsbooking_sanitizeHTML( $formatted_user_info ); ?>
 			</div>
 		</div>
 	</div>
@@ -151,13 +187,13 @@ if ( $bookingCommentActive ) {
 		}
 	}
 }
-$current_status = $booking->post_status;
 if ( $current_status && $current_status !== 'draft' ) {
 
 	?>
 
 	<!-- Buttons & Form action -->
 	<div class="cb-action cb-wrapper">
+
 		<?php
 		$form_action = 'confirm';
 		include COMMONSBOOKING_PLUGIN_DIR . 'templates/booking-single-form.php';

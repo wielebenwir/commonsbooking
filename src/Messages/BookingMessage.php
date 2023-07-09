@@ -15,7 +15,7 @@ class BookingMessage extends Message {
 		/** @var \CommonsBooking\Model\Booking $booking */
 		$booking = Booking::getPostById( $this->getPostId() );
 
-		$booking_user = get_userdata( $this->getPost()->post_author );
+		$booking_user = $booking->getUserData();
 
 		$template_objects = [
 			'booking'  => $booking,
@@ -26,7 +26,7 @@ class BookingMessage extends Message {
 
 		// get location email adresses to send them bcc copies
 		$location = get_post($booking->getMeta('location-id'));
-		$location_emails = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $location ) ; /*  email adresses, comma-seperated  */
+		$location_emails = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $location ) ; /*  email addresses, comma-seperated  */
 		$bcc_adresses = str_replace(' ','',$location_emails); 
 
 		// get templates from Admin Options
@@ -44,6 +44,7 @@ class BookingMessage extends Message {
 		);
 
 		//generate attachment when set in settings and booking is not cancelled
+		$attachment = null;
 		if ((Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_attach' ) == 'on') && (!$booking->isCancelled() )){
 			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
 			$eventTitle = commonsbooking_sanitizeHTML ( commonsbooking_parse_template ( $eventTitle, $template_objects ) );

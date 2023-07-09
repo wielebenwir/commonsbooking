@@ -3,9 +3,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\View\Map;
-use CommonsBooking\View\View;
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Repository\UserRepository;
 
 class Location extends CustomPostType {
@@ -21,6 +19,9 @@ class Location extends CustomPostType {
 
 		// Listing of items for location
 		add_shortcode( 'cb_items', array( \CommonsBooking\View\Item::class, 'shortcode' ) );
+
+		//Add filter to backend list view
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminCategoryFilter' ) );
 
 		// Filter only for current user allowed posts
 		add_action( 'pre_get_posts', array( $this, 'filterAdminList' ) );
@@ -66,6 +67,19 @@ class Location extends CustomPostType {
 
 				$query->query_vars['post__in'] = $locations;
 			}
+
+			if (
+				isset( $_GET['admin_filter_post_category'] ) &&
+				$_GET['admin_filter_post_category'] != ''
+			) {
+				$query->query_vars['tax_query'] = array(
+						array(
+						'taxonomy'	=>	self::$postType . 's_category',
+						'field'		=>	'term_id',
+						'terms'		=>	$_GET['admin_filter_post_category']
+						)
+				);
+			}
 		}
 	}
 
@@ -75,7 +89,7 @@ class Location extends CustomPostType {
 
 	public function getTemplate( $content ) {
 		$cb_content = '';
-		if ( is_singular( self::getPostType() ) ) {
+		if ( is_singular( self::getPostType() ) && is_main_query() ) {
 			ob_start();
 			commonsbooking_get_template_part( 'location', 'single' );
 			$cb_content = ob_get_clean();
@@ -131,11 +145,11 @@ class Location extends CustomPostType {
 			// Post Type in der oberen Admin-Bar anzeigen?
 			'show_in_admin_bar' => true,
 
-			// in den Navigations Menüs sichtbar machen?
+			// in den Navigationsmenüs sichtbar machen?
 			'show_in_nav_menus' => true,
 
 			// Hier können Berechtigungen in einem Array gesetzt werden
-			// oder die standart Werte post und page in form eines Strings gesetzt werden
+			// oder die standard Werte post und page in Form eines Strings gesetzt werden
 			'capability_type'   => array( self::$postType, self::$postType . 's' ),
 
 			'map_meta_cap'        => true,
@@ -181,7 +195,7 @@ class Location extends CustomPostType {
 	 * @return void
 	 */
 	public function registerMetabox() {
-		// Initiate the metabox Adress
+		// Initiate the metabox address
 		$cmb = new_cmb2_box( array(
 			'id'           => COMMONSBOOKING_METABOX_PREFIX . 'location_adress',
 			'title'        => esc_html__( 'Address', 'commonsbooking' ),
@@ -290,7 +304,7 @@ class Location extends CustomPostType {
 			'show_names'   => true, // Show field names on the left
 		) );
 
-		// short description
+		// location email
 		$cmb->add_field( array(
 			'name'       => esc_html__( 'Location email', 'commonsbooking' ),
 			'desc'       => esc_html__( 'Email addresses to which a copy of the booking confirmation / cancellation should be sent. You can enter multiple addresses separated by commas.',

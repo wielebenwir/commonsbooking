@@ -1,7 +1,6 @@
 "use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-
 (function (global, factory) {
   (typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object' && typeof module !== 'undefined' ? module.exports = factory() : typeof define === 'function' && define.amd ? define(factory) : (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Shuffle = factory());
 })(void 0, function () {
@@ -12,7 +11,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       throw new TypeError("Cannot call a class as a function");
     }
   }
-
   function _defineProperties(target, props) {
     for (var i = 0; i < props.length; i++) {
       var descriptor = props[i];
@@ -22,18 +20,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       Object.defineProperty(target, descriptor.key, descriptor);
     }
   }
-
   function _createClass(Constructor, protoProps, staticProps) {
     if (protoProps) _defineProperties(Constructor.prototype, protoProps);
     if (staticProps) _defineProperties(Constructor, staticProps);
     return Constructor;
   }
-
   function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
       throw new TypeError("Super expression must either be null or a function");
     }
-
     subClass.prototype = Object.create(superClass && superClass.prototype, {
       constructor: {
         value: subClass,
@@ -43,28 +38,23 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     });
     if (superClass) _setPrototypeOf(subClass, superClass);
   }
-
   function _getPrototypeOf(o) {
     _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
       return o.__proto__ || Object.getPrototypeOf(o);
     };
     return _getPrototypeOf(o);
   }
-
   function _setPrototypeOf(o, p) {
     _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
       o.__proto__ = p;
       return o;
     };
-
     return _setPrototypeOf(o, p);
   }
-
   function _isNativeReflectConstruct() {
     if (typeof Reflect === "undefined" || !Reflect.construct) return false;
     if (Reflect.construct.sham) return false;
     if (typeof Proxy === "function") return true;
-
     try {
       Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
       return true;
@@ -72,50 +62,39 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       return false;
     }
   }
-
   function _assertThisInitialized(self) {
     if (self === void 0) {
       throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     }
-
     return self;
   }
-
   function _possibleConstructorReturn(self, call) {
     if (call && (_typeof(call) === "object" || typeof call === "function")) {
       return call;
     }
-
     return _assertThisInitialized(self);
   }
-
   function _createSuper(Derived) {
     var hasNativeReflectConstruct = _isNativeReflectConstruct();
-
     return function _createSuperInternal() {
       var Super = _getPrototypeOf(Derived),
-          result;
-
+        result;
       if (hasNativeReflectConstruct) {
         var NewTarget = _getPrototypeOf(this).constructor;
-
         result = Reflect.construct(Super, arguments, NewTarget);
       } else {
         result = Super.apply(this, arguments);
       }
-
       return _possibleConstructorReturn(this, result);
     };
   }
-
   var tinyEmitter = {
     exports: {}
   };
-
-  function E() {// Keep this empty so it's easier to inherit from
+  function E() {
+    // Keep this empty so it's easier to inherit from
     // (via https://github.com/lipsmack from https://github.com/scottcorgan/tiny-emitter/issues/3)
   }
-
   E.prototype = {
     on: function on(name, callback, ctx) {
       var e = this.e || (this.e = {});
@@ -127,12 +106,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     },
     once: function once(name, callback, ctx) {
       var self = this;
-
       function listener() {
         self.off(name, listener);
         callback.apply(ctx, arguments);
       }
-
       listener._ = callback;
       return this.on(name, listener, ctx);
     },
@@ -141,26 +118,24 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       var evtArr = ((this.e || (this.e = {}))[name] || []).slice();
       var i = 0;
       var len = evtArr.length;
-
       for (i; i < len; i++) {
         evtArr[i].fn.apply(evtArr[i].ctx, data);
       }
-
       return this;
     },
     off: function off(name, callback) {
       var e = this.e || (this.e = {});
       var evts = e[name];
       var liveEvents = [];
-
       if (evts && callback) {
         for (var i = 0, len = evts.length; i < len; i++) {
           if (evts[i].fn !== callback && evts[i].fn._ !== callback) liveEvents.push(evts[i]);
         }
-      } // Remove event from queue to prevent memory leak
+      }
+
+      // Remove event from queue to prevent memory leak
       // Suggested by https://github.com/lazd
       // Ref: https://github.com/scottcorgan/tiny-emitter/commit/c6ebfaa9bc973b33d110a84a307742b7cf94c953#commitcomment-5024910
-
 
       liveEvents.length ? e[name] = liveEvents : delete e[name];
       return this;
@@ -172,6 +147,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
   var proto = typeof Element !== 'undefined' ? Element.prototype : {};
   var vendor = proto.matches || proto.matchesSelector || proto.webkitMatchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector || proto.oMatchesSelector;
   var matchesSelector = match;
+
   /**
    * Match `el` to `selector`.
    *
@@ -185,15 +161,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     if (!el || el.nodeType !== 1) return false;
     if (vendor) return vendor.call(el, selector);
     var nodes = el.parentNode.querySelectorAll(selector);
-
     for (var i = 0; i < nodes.length; i++) {
       if (nodes[i] == el) return true;
     }
-
     return false;
   }
-
   var throttleit = throttle;
+
   /**
    * Returns a new function that, when invoked, invokes `func` at most once per `wait` milliseconds.
    *
@@ -204,7 +178,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 
   function throttle(func, wait) {
     var ctx, args, rtn, timeoutID; // caching
-
     var last = 0;
     return function throttled() {
       ctx = this;
@@ -213,7 +186,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       if (!timeoutID) if (delta >= wait) call();else timeoutID = setTimeout(call, wait - delta);
       return rtn;
     };
-
     function call() {
       timeoutID = 0;
       last = +new Date();
@@ -222,7 +194,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       args = null;
     }
   }
-
   var arrayParallel = function parallel(fns, context, callback) {
     if (!callback) {
       if (typeof context === 'function') {
@@ -232,7 +203,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         callback = noop;
       }
     }
-
     var pending = fns && fns.length;
     if (!pending) return callback(null, []);
     var finished = false;
@@ -242,35 +212,29 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     } : function (fn, i) {
       fn(maybeDone(i));
     });
-
     function maybeDone(i) {
       return function (err, result) {
         if (finished) return;
-
         if (err) {
           callback(err, results);
           finished = true;
           return;
         }
-
         results[i] = result;
         if (! --pending) callback(null, results);
       };
     }
   };
-
   function noop() {}
+
   /**
    * Always returns a numeric value, given a value. Logic from jQuery's `isNumeric`.
    * @param {*} value Possibly numeric value.
    * @return {number} `value` or zero if `value` isn't numeric.
    */
-
-
   function getNumber(value) {
     return parseFloat(value) || 0;
   }
-
   var Point = /*#__PURE__*/function () {
     /**
      * Represents a coordinate pair.
@@ -279,7 +243,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
      */
     function Point(x, y) {
       _classCallCheck(this, Point);
-
       this.x = getNumber(x);
       this.y = getNumber(y);
     }
@@ -290,17 +253,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
      * @return {boolean}
      */
 
-
     _createClass(Point, null, [{
       key: "equals",
       value: function equals(a, b) {
         return a.x === b.x && a.y === b.y;
       }
     }]);
-
     return Point;
   }();
-
   var Rect = /*#__PURE__*/function () {
     /**
      * Class for representing rectangular regions.
@@ -314,7 +274,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
      */
     function Rect(x, y, w, h, id) {
       _classCallCheck(this, Rect);
-
       this.id = id;
       /** @type {number} */
 
@@ -336,17 +295,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
      * @return {boolean} Whether a and b intersect.
      */
 
-
     _createClass(Rect, null, [{
       key: "intersects",
       value: function intersects(a, b) {
         return a.left < b.left + b.width && b.left < a.left + a.width && a.top < b.top + b.height && b.top < a.top + a.height;
       }
     }]);
-
     return Rect;
   }();
-
   var Classes = {
     BASE: 'shuffle',
     SHUFFLE_ITEM: 'shuffle-item',
@@ -354,11 +310,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     HIDDEN: 'shuffle-item--hidden'
   };
   var id$1 = 0;
-
   var ShuffleItem = /*#__PURE__*/function () {
     function ShuffleItem(element, isRTL) {
       _classCallCheck(this, ShuffleItem);
-
       id$1 += 1;
       this.id = id$1;
       this.element = element;
@@ -381,7 +335,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 
       this.isHidden = false;
     }
-
     _createClass(ShuffleItem, [{
       key: "show",
       value: function show() {
@@ -411,7 +364,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       key: "addClasses",
       value: function addClasses(classes) {
         var _this = this;
-
         classes.forEach(function (className) {
           _this.element.classList.add(className);
         });
@@ -420,7 +372,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       key: "removeClasses",
       value: function removeClasses(classes) {
         var _this2 = this;
-
         classes.forEach(function (className) {
           _this2.element.classList.remove(className);
         });
@@ -429,7 +380,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       key: "applyCss",
       value: function applyCss(obj) {
         var _this3 = this;
-
         Object.keys(obj).forEach(function (key) {
           _this3.element.style[key] = obj[key];
         });
@@ -442,10 +392,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         this.element = null;
       }
     }]);
-
     return ShuffleItem;
   }();
-
   ShuffleItem.Css = {
     INITIAL: {
       position: 'absolute',
@@ -485,25 +433,22 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     HIDDEN: 0.001
   };
   var value = null;
-
   var testComputedSize = function testComputedSize() {
     if (value !== null) {
       return value;
     }
-
     var element = document.body || document.documentElement;
     var e = document.createElement('div');
     e.style.cssText = 'width:10px;padding:2px;box-sizing:border-box;';
     element.appendChild(e);
-
     var _window$getComputedSt = window.getComputedStyle(e, null),
-        width = _window$getComputedSt.width; // Fix for issue #314
-
+      width = _window$getComputedSt.width; // Fix for issue #314
 
     value = Math.round(getNumber(width)) === 10;
     element.removeChild(e);
     return value;
   };
+
   /**
    * Retrieve the computed style for an element, parsed as a float.
    * @param {Element} element Element to get style for.
@@ -515,7 +460,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
    *     the computed style.
    */
 
-
   function getNumberStyle(element, style) {
     var styles = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : window.getComputedStyle(element, null);
     var value = getNumber(styles[style]); // Support IE<=11 and W3C spec.
@@ -525,9 +469,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     } else if (!testComputedSize() && style === 'height') {
       value += getNumber(styles.paddingTop) + getNumber(styles.paddingBottom) + getNumber(styles.borderTopWidth) + getNumber(styles.borderBottomWidth);
     }
-
     return value;
   }
+
   /**
    * Fisher-Yates shuffle.
    * http://stackoverflow.com/a/962890/373422
@@ -535,11 +479,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
    * @param {Array} array Array to shuffle.
    * @return {Array} Randomly sorted array.
    */
-
-
   function randomize(array) {
     var n = array.length;
-
     while (n) {
       n -= 1;
       var i = Math.floor(Math.random() * (n + 1));
@@ -547,10 +488,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       array[i] = array[n];
       array[n] = temp;
     }
-
     return array;
   }
-
   var defaults = {
     // Use array.reverse() to reverse the results
     reverse: false,
@@ -576,16 +515,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     var opts = Object.assign({}, defaults, options);
     var original = Array.from(arr);
     var revert = false;
-
     if (!arr.length) {
       return [];
     }
-
     if (opts.randomize) {
       return randomize(arr);
     } // Sort the elements by the opts.by function.
     // If we don't have opts.by, default to DOM order
-
 
     if (typeof opts.by === 'function') {
       arr.sort(function (a, b) {
@@ -593,7 +529,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         if (revert) {
           return 0;
         }
-
         var valA = opts.by(a[opts.key]);
         var valB = opts.by(b[opts.key]); // If both values are undefined, use the DOM order
 
@@ -601,62 +536,49 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           revert = true;
           return 0;
         }
-
         if (valA < valB || valA === 'sortFirst' || valB === 'sortLast') {
           return -1;
         }
-
         if (valA > valB || valA === 'sortLast' || valB === 'sortFirst') {
           return 1;
         }
-
         return 0;
       });
     } else if (typeof opts.compare === 'function') {
       arr.sort(opts.compare);
     } // Revert to the original array if necessary
 
-
     if (revert) {
       return original;
     }
-
     if (opts.reverse) {
       arr.reverse();
     }
-
     return arr;
   }
-
   var transitions = {};
   var eventName = 'transitionend';
   var count = 0;
-
   function uniqueId() {
     count += 1;
     return eventName + count;
   }
-
   function cancelTransitionEnd(id) {
     if (transitions[id]) {
       transitions[id].element.removeEventListener(eventName, transitions[id].listener);
       transitions[id] = null;
       return true;
     }
-
     return false;
   }
-
   function onTransitionEnd(element, callback) {
     var id = uniqueId();
-
     var listener = function listener(evt) {
       if (evt.currentTarget === evt.target) {
         cancelTransitionEnd(id);
         callback(evt);
       }
     };
-
     element.addEventListener(eventName, listener);
     transitions[id] = {
       element: element,
@@ -664,7 +586,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     };
     return id;
   }
-
   function arrayMax(array) {
     return Math.max.apply(Math, array); // eslint-disable-line prefer-spread
   }
@@ -672,6 +593,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
   function arrayMin(array) {
     return Math.min.apply(Math, array); // eslint-disable-line prefer-spread
   }
+
   /**
    * Determine the number of columns an items spans.
    * @param {number} itemWidth Width of the item.
@@ -680,7 +602,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
    * @param {number} threshold A buffer value for the size of the column to fit.
    * @return {number}
    */
-
 
   function getColumnSpan(itemWidth, columnWidth, columns, threshold) {
     var columnSpan = itemWidth / columnWidth; // If the difference between the rounded column span number and the
@@ -692,7 +613,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       columnSpan = Math.round(columnSpan);
     } // Ensure the column span is not more than the amount of columns in the whole layout.
 
-
     return Math.min(Math.ceil(columnSpan), columns);
   }
   /**
@@ -701,7 +621,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
    * @param {number} columns The total columns in the grid.
    * @return {Array.<number>} An array of numbers represeting the column set.
    */
-
 
   function getAvailablePositions(positions, columnSpan, columns) {
     // The item spans only one column.
@@ -730,14 +649,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     // Another example where the second column's item extends past the first:
     // [10, 20, 10, 0] => [20, 20, 10] => 10
 
-
     var available = []; // For how many possible positions for this item there are.
 
     for (var i = 0; i <= columns - columnSpan; i++) {
       // Find the bigger value for each place it could fit.
       available.push(arrayMax(positions.slice(i, i + columnSpan)));
     }
-
     return available;
   }
   /**
@@ -749,16 +666,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
    * @return {number} Index of the short column.
    */
 
-
   function getShortColumn(positions, buffer) {
     var minPosition = arrayMin(positions);
-
     for (var i = 0, len = positions.length; i < len; i++) {
       if (positions[i] >= minPosition - buffer && positions[i] <= minPosition + buffer) {
         return i;
       }
     }
-
     return 0;
   }
   /**
@@ -772,14 +686,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
    * @return {Point}
    */
 
-
   function getItemPosition(_ref) {
     var itemSize = _ref.itemSize,
-        positions = _ref.positions,
-        gridSize = _ref.gridSize,
-        total = _ref.total,
-        threshold = _ref.threshold,
-        buffer = _ref.buffer;
+      positions = _ref.positions,
+      gridSize = _ref.gridSize,
+      total = _ref.total,
+      threshold = _ref.threshold,
+      buffer = _ref.buffer;
     var span = getColumnSpan(itemSize.width, gridSize, total, threshold);
     var setY = getAvailablePositions(positions, span, total);
     var shortColumnIndex = getShortColumn(setY, buffer); // Position the item
@@ -789,11 +702,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     // which spans 2 columns. After it would be [250, itemHeight, itemHeight, 0].
 
     var setHeight = setY[shortColumnIndex] + itemSize.height;
-
     for (var i = 0; i < span; i++) {
       positions[shortColumnIndex + i] = setHeight;
     }
-
     return point;
   }
   /**
@@ -804,7 +715,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
    * @param {number} containerWidth Width of the containing element.
    * @return {Array.<Point>}
    */
-
 
   function getCenteredPositions(itemRects, containerWidth) {
     var rowMap = {}; // Populate rows by their offset because items could jump between rows like:
@@ -834,7 +744,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       var offset = Math.round((containerWidth - end) / 2);
       var finalRects = itemRects;
       var canMove = false;
-
       if (offset > 0) {
         var newRects = [];
         canMove = itemRects.every(function (r) {
@@ -854,17 +763,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       // placement for this row will not overlap previous rows (row-spanning
       // elements could be in the way).
 
-
       if (!canMove) {
         var intersectingRect;
         var hasOverlap = itemRects.some(function (itemRect) {
           return rects.some(function (r) {
             var intersects = Rect.intersects(itemRect, r);
-
             if (intersects) {
               intersectingRect = r;
             }
-
             return intersects;
           });
         }); // If there is any overlap, replace the overlapping row with the original.
@@ -876,7 +782,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           centeredRows.splice(rowIndex, 1, rows[rowIndex]);
         }
       }
-
       rects = rects.concat(finalRects);
       centeredRows.push(finalRects);
     }); // Reduce array of arrays to a single array of points.
@@ -891,31 +796,27 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       return new Point(itemRect.left, itemRect.top);
     });
   }
+
   /**
    * Hyphenates a javascript style string to a css one. For example:
    * MozBoxSizing -> -moz-box-sizing.
    * @param {string} str The string to hyphenate.
    * @return {string} The hyphenated string.
    */
-
-
   function hyphenate(str) {
     return str.replace(/([A-Z])/g, function (str, m1) {
       return "-".concat(m1.toLowerCase());
     });
   }
-
   function arrayUnique(x) {
     return Array.from(new Set(x));
   } // Used for unique instance variables
 
-
   var id = 0;
-
   var Shuffle = /*#__PURE__*/function (_TinyEmitter) {
     _inherits(Shuffle, _TinyEmitter);
-
     var _super = _createSuper(Shuffle);
+
     /**
      * Categorize, sort, and filter a responsive grid of items.
      *
@@ -923,15 +824,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
      * @param {Object} [options=Shuffle.options] Options object.
      * @constructor
      */
-
-
     function Shuffle(element) {
       var _this;
-
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
       _classCallCheck(this, Shuffle);
-
       _this = _super.call(this); // eslint-disable-next-line prefer-object-spread
 
       _this.options = Object.assign({}, Shuffle.options, options); // Allow misspelling of delimiter since that's how it used to be.
@@ -940,7 +836,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       if (_this.options.delimeter) {
         _this.options.delimiter = _this.options.delimeter;
       }
-
       _this.lastSort = {};
       _this.group = Shuffle.ALL_ITEMS;
       _this.lastFilter = Shuffle.ALL_ITEMS;
@@ -950,23 +845,17 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       _this._transitions = [];
       _this.isTransitioning = false;
       _this._queue = [];
-
       var el = _this._getElementOption(element);
-
       if (!el) {
         throw new TypeError('Shuffle needs to be initialized with an element.');
       }
-
       _this.element = el;
       _this.id = 'shuffle_' + id;
       id += 1;
-
       _this._init();
-
       _this.isInitialized = true;
       return _this;
     }
-
     _createClass(Shuffle, [{
       key: "_init",
       value: function _init() {
@@ -977,7 +866,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         this.element.classList.add(Shuffle.Classes.BASE); // Set initial css for each item
 
         this._initItems(this.items); // Bind resize events
-
 
         this._onResize = this._getResizeFunction();
         window.addEventListener('resize', this._onResize); // If the page has not already emitted the `load` event, call layout on load.
@@ -992,16 +880,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           });
         } // Get container css all in one request. Causes reflow
 
-
         var containerCss = window.getComputedStyle(this.element, null);
         var containerWidth = Shuffle.getSize(this.element).width; // Add styles to the container if it doesn't have them.
 
         this._validateStyles(containerCss); // We already got the container's width above, no need to cause another
         // reflow getting it again... Calculate the number of columns there will be
 
-
         this._setColumns(containerWidth); // Kick off!
-
 
         this.filter(this.options.group, this.options.initialSort); // The shuffle items haven't had transitions set on them yet so the user
         // doesn't see the first layout. Set them now that the first layout is done.
@@ -1018,12 +903,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @return {function}
        * @private
        */
-
     }, {
       key: "_getResizeFunction",
       value: function _getResizeFunction() {
         var resizeFunction = this._handleResize.bind(this);
-
         return this.options.throttle ? this.options.throttle(resizeFunction, this.options.throttleTime) : resizeFunction;
       }
       /**
@@ -1032,7 +915,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @return {?Element} The plain element or null.
        * @private
        */
-
     }, {
       key: "_getElementOption",
       value: function _getElementOption(option) {
@@ -1042,16 +924,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           return this.element.querySelector(option);
         } // Check for an element
 
-
         if (option && option.nodeType && option.nodeType === 1) {
           return option;
         } // Check for jQuery object
 
-
         if (option && option.jquery) {
           return option[0];
         }
-
         return null;
       }
       /**
@@ -1059,7 +938,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {Object} styles Key value pairs for position and overflow.
        * @private
        */
-
     }, {
       key: "_validateStyles",
       value: function _validateStyles(styles) {
@@ -1067,7 +945,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         if (styles.position === 'static') {
           this.element.style.position = 'relative';
         } // Overflow has to be hidden.
-
 
         if (styles.overflow !== 'hidden') {
           this.element.style.overflow = 'hidden';
@@ -1082,18 +959,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @return {{visible: ShuffleItem[], hidden: ShuffleItem[]}}
        * @private
        */
-
     }, {
       key: "_filter",
       value: function _filter() {
         var category = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.lastFilter;
         var collection = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.items;
-
         var set = this._getFilteredSets(category, collection); // Individually add/remove hidden/visible classes
 
-
         this._toggleFilterClasses(set); // Save the last filter in case elements are appended.
-
 
         this.lastFilter = category; // This is saved mainly because providing a filter function (like searching)
         // will overwrite the `lastFilter` property every time its called.
@@ -1101,7 +974,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         if (typeof category === 'string') {
           this.group = category;
         }
-
         return set;
       }
       /**
@@ -1111,12 +983,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @return {{visible: ShuffleItem[], hidden: ShuffleItem[]}}
        * @private
        */
-
     }, {
       key: "_getFilteredSets",
       value: function _getFilteredSets(category, items) {
         var _this2 = this;
-
         var visible = [];
         var hidden = []; // category === 'all', add visible class to everything
 
@@ -1132,7 +1002,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             }
           });
         }
-
         return {
           visible: visible,
           hidden: hidden
@@ -1145,7 +1014,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @return {boolean} Whether it passes the category/filter.
        * @private
        */
-
     }, {
       key: "_doesPassFilter",
       value: function _doesPassFilter(category, element) {
@@ -1153,22 +1021,17 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           return category.call(element, element, this);
         } // Check each element's data-groups attribute against the given category.
 
-
         var attr = element.getAttribute('data-' + Shuffle.FILTER_ATTRIBUTE_KEY);
         var keys = this.options.delimiter ? attr.split(this.options.delimiter) : JSON.parse(attr);
-
         function testCategory(category) {
           return keys.includes(category);
         }
-
         if (Array.isArray(category)) {
           if (this.options.filterMode === Shuffle.FilterMode.ANY) {
             return category.some(testCategory);
           }
-
           return category.every(testCategory);
         }
-
         return keys.includes(category);
       }
       /**
@@ -1176,12 +1039,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {{visible, hidden}} Object with visible and hidden arrays.
        * @private
        */
-
     }, {
       key: "_toggleFilterClasses",
       value: function _toggleFilterClasses(_ref) {
         var visible = _ref.visible,
-            hidden = _ref.hidden;
+          hidden = _ref.hidden;
         visible.forEach(function (item) {
           item.show();
         });
@@ -1194,7 +1056,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {ShuffleItem[]} items Set to initialize.
        * @private
        */
-
     }, {
       key: "_initItems",
       value: function _initItems(items) {
@@ -1207,7 +1068,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {ShuffleItem[]} items Set to dispose.
        * @private
        */
-
     }, {
       key: "_disposeItems",
       value: function _disposeItems(items) {
@@ -1219,7 +1079,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * Updates the visible item count.
        * @private
        */
-
     }, {
       key: "_updateItemCount",
       value: function _updateItemCount() {
@@ -1232,13 +1091,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {ShuffleItem[]} items Shuffle items to set transitions on.
        * @protected
        */
-
     }, {
       key: "setItemTransitions",
       value: function setItemTransitions(items) {
         var _this$options = this.options,
-            speed = _this$options.speed,
-            easing = _this$options.easing;
+          speed = _this$options.speed,
+          easing = _this$options.easing;
         var positionProps = this.options.useTransforms ? ['transform'] : ['top', 'left']; // Allow users to transtion other properties if they exist in the `before`
         // css mapping of the shuffle item.
 
@@ -1256,7 +1114,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       key: "_getItems",
       value: function _getItems() {
         var _this3 = this;
-
         return Array.from(this.element.children).filter(function (el) {
           return matchesSelector(el, _this3.options.itemSelector);
         }).map(function (el) {
@@ -1268,7 +1125,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {ShuffleItem[]} items Items to track.
        * @return {ShuffleItem[]}
        */
-
     }, {
       key: "_mergeNewItems",
       value: function _mergeNewItems(items) {
@@ -1300,7 +1156,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @return {number}
        * @private
        */
-
     }, {
       key: "_getColumnSize",
       value: function _getColumnSize(containerWidth, gutterSize) {
@@ -1318,11 +1173,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           size = containerWidth;
         } // Don't let them set a column width of zero.
 
-
         if (size === 0) {
           size = containerWidth;
         }
-
         return size + gutterSize;
       }
       /**
@@ -1331,12 +1184,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @return {number}
        * @private
        */
-
     }, {
       key: "_getGutterSize",
       value: function _getGutterSize(containerWidth) {
         var size;
-
         if (typeof this.options.gutterWidth === 'function') {
           size = this.options.gutterWidth(containerWidth);
         } else if (this.options.sizer) {
@@ -1344,7 +1195,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         } else {
           size = this.options.gutterWidth;
         }
-
         return size;
       }
       /**
@@ -1352,23 +1202,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {number} [containerWidth] Optionally specify a container width if
        *    it's already available.
        */
-
     }, {
       key: "_setColumns",
       value: function _setColumns() {
         var containerWidth = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : Shuffle.getSize(this.element).width;
-
         var gutter = this._getGutterSize(containerWidth);
-
         var columnWidth = this._getColumnSize(containerWidth, gutter);
-
         var calculatedColumns = (containerWidth + gutter) / columnWidth; // Widths given from getStyles are not precise enough...
 
         if (Math.abs(Math.round(calculatedColumns) - calculatedColumns) < this.options.columnThreshold) {
           // e.g. calculatedColumns = 11.998876
           calculatedColumns = Math.round(calculatedColumns);
         }
-
         this.cols = Math.max(Math.floor(calculatedColumns || 0), 1);
         this.containerWidth = containerWidth;
         this.colWidth = columnWidth;
@@ -1376,7 +1221,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       /**
        * Adjust the height of the grid
        */
-
     }, {
       key: "_setContainerSize",
       value: function _setContainerSize() {
@@ -1387,7 +1231,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @return {number}
        * @private
        */
-
     }, {
       key: "_getContainerSize",
       value: function _getContainerSize() {
@@ -1398,7 +1241,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {number} index Index of the item to be staggered.
        * @return {number}
        */
-
     }, {
       key: "_getStaggerAmount",
       value: function _getStaggerAmount(index) {
@@ -1409,16 +1251,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {string} name Event name.
        * @param {Object} [data={}] Optional object data.
        */
-
     }, {
       key: "_dispatch",
       value: function _dispatch(name) {
         var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
         if (this.isDestroyed) {
           return;
         }
-
         data.shuffle = this;
         this.emit(name, data);
       }
@@ -1426,13 +1265,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * Zeros out the y columns array, which is used to determine item placement.
        * @private
        */
-
     }, {
       key: "_resetCols",
       value: function _resetCols() {
         var i = this.cols;
         this.positions = [];
-
         while (i) {
           i -= 1;
           this.positions.push(0);
@@ -1443,14 +1280,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {ShuffleItem[]} items Array of items that will be shown/layed
        *     out in order in their array.
        */
-
     }, {
       key: "_layout",
       value: function _layout(items) {
         var _this4 = this;
-
         var itemPositions = this._getNextPositions(items);
-
         var count = 0;
         items.forEach(function (item, i) {
           function callback() {
@@ -1458,28 +1292,23 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           } // If the item will not change its position, do not add it to the render
           // queue. Transitions don't fire when setting a property to the same value.
 
-
           if (Point.equals(item.point, itemPositions[i]) && !item.isHidden) {
             item.applyCss(ShuffleItem.Css.VISIBLE.before);
             callback();
             return;
           }
-
           item.point = itemPositions[i];
           item.scale = ShuffleItem.Scale.VISIBLE;
           item.isHidden = false; // Clone the object so that the `before` object isn't modified when the
           // transition delay is added.
 
           var styles = _this4.getStylesForTransition(item, ShuffleItem.Css.VISIBLE.before);
-
           styles.transitionDelay = _this4._getStaggerAmount(count) + 'ms';
-
           _this4._queue.push({
             item: item,
             styles: styles,
             callback: callback
           });
-
           count += 1;
         });
       }
@@ -1490,26 +1319,22 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @return {Point[]}
        * @private
        */
-
     }, {
       key: "_getNextPositions",
       value: function _getNextPositions(items) {
-        var _this5 = this; // If position data is going to be changed, add the item's size to the
+        var _this5 = this;
+
+        // If position data is going to be changed, add the item's size to the
         // transformer to allow for calculations.
-
-
         if (this.options.isCentered) {
           var itemsData = items.map(function (item, i) {
             var itemSize = Shuffle.getSize(item.element, true);
-
             var point = _this5._getItemPosition(itemSize);
-
             return new Rect(point.x, point.y, itemSize.width, itemSize.height, i);
           });
           return this.getTransformedPositions(itemsData, this.containerWidth);
         } // If no transforms are going to happen, simply return an array of the
         // future points of each item.
-
 
         return items.map(function (item) {
           return _this5._getItemPosition(Shuffle.getSize(item.element, true));
@@ -1521,7 +1346,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @return {Point}
        * @private
        */
-
     }, {
       key: "_getItemPosition",
       value: function _getItemPosition(itemSize) {
@@ -1541,7 +1365,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @return {Point[]}
        * @protected
        */
-
     }, {
       key: "getTransformedPositions",
       value: function getTransformedPositions(itemRects, containerWidth) {
@@ -1552,12 +1375,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {ShuffleItem[]} collection Collection to shrink.
        * @private
        */
-
     }, {
       key: "_shrink",
       value: function _shrink() {
         var _this6 = this;
-
         var collection = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this._getConcealedItems();
         var count = 0;
         collection.forEach(function (item) {
@@ -1570,26 +1391,20 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           // after the transitionend event because the transitionend could be
           // canceled if another animation starts.
 
-
           if (item.isHidden) {
             item.applyCss(ShuffleItem.Css.HIDDEN.before);
             callback();
             return;
           }
-
           item.scale = ShuffleItem.Scale.HIDDEN;
           item.isHidden = true;
-
           var styles = _this6.getStylesForTransition(item, ShuffleItem.Css.HIDDEN.before);
-
           styles.transitionDelay = _this6._getStaggerAmount(count) + 'ms';
-
           _this6._queue.push({
             item: item,
             styles: styles,
             callback: callback
           });
-
           count += 1;
         });
       }
@@ -1597,7 +1412,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * Resize handler.
        * @private
        */
-
     }, {
       key: "_handleResize",
       value: function _handleResize() {
@@ -1605,7 +1419,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         if (!this.isEnabled || this.isDestroyed) {
           return;
         }
-
         this.update();
       }
       /**
@@ -1616,14 +1429,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @return {!Object} Transforms for transitions, left/top for animate.
        * @protected
        */
-
     }, {
       key: "getStylesForTransition",
       value: function getStylesForTransition(item, styleObject) {
         // Clone the object to avoid mutating the original.
         // eslint-disable-next-line prefer-object-spread
         var styles = Object.assign({}, styleObject);
-
         if (this.options.useTransforms) {
           var sign = this.options.isRTL ? '-' : '';
           var x = this.options.roundTransforms ? Math.round(item.point.x) : item.point.x;
@@ -1635,10 +1446,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           } else {
             styles.left = item.point.x + 'px';
           }
-
           styles.top = item.point.y + 'px';
         }
-
         return styles;
       }
       /**
@@ -1648,7 +1457,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {function} itemCallback Callback for the item.
        * @param {function} done Callback to notify `parallel` that this one is done.
        */
-
     }, {
       key: "_whenTransitionDone",
       value: function _whenTransitionDone(element, itemCallback, done) {
@@ -1656,7 +1464,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           itemCallback();
           done(null, evt);
         });
-
         this._transitions.push(id);
       }
       /**
@@ -1665,15 +1472,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {Object} opts Transition object.
        * @return {function} A function to be called with a `done` function.
        */
-
     }, {
       key: "_getTransitionFunction",
       value: function _getTransitionFunction(opts) {
         var _this7 = this;
-
         return function (done) {
           opts.item.applyCss(opts.styles);
-
           _this7._whenTransitionDone(opts.item.element, opts.callback, done);
         };
       }
@@ -1682,30 +1486,24 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * triggering transitions.
        * @private
        */
-
     }, {
       key: "_processQueue",
       value: function _processQueue() {
         if (this.isTransitioning) {
           this._cancelMovement();
         }
-
         var hasSpeed = this.options.speed > 0;
         var hasQueue = this._queue.length > 0;
-
         if (hasQueue && hasSpeed && this.isInitialized) {
           this._startTransitions(this._queue);
         } else if (hasQueue) {
           this._styleImmediately(this._queue);
-
           this._dispatch(Shuffle.EventType.LAYOUT); // A call to layout happened, but none of the newly visible items will
           // change position or the transition duration is zero, which will not trigger
           // the transitionend event.
-
         } else {
           this._dispatch(Shuffle.EventType.LAYOUT);
         } // Remove everything in the style queue
-
 
         this._queue.length = 0;
       }
@@ -1713,13 +1511,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * Wait for each transition to finish, the emit the layout event.
        * @param {Object[]} transitions Array of transition objects.
        */
-
     }, {
       key: "_startTransitions",
       value: function _startTransitions(transitions) {
-        var _this8 = this; // Set flag that shuffle is currently in motion.
+        var _this8 = this;
 
-
+        // Set flag that shuffle is currently in motion.
         this.isTransitioning = true; // Create an array of functions to be called.
 
         var callbacks = transitions.map(function (obj) {
@@ -1733,7 +1530,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         // Remove the transition end event for each listener.
         this._transitions.forEach(cancelTransitionEnd); // Reset the array.
 
-
         this._transitions.length = 0; // Show it's no longer active.
 
         this.isTransitioning = false;
@@ -1743,7 +1539,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {Object[]} objects Array of transition objects.
        * @private
        */
-
     }, {
       key: "_styleImmediately",
       value: function _styleImmediately(objects) {
@@ -1751,7 +1546,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           var elements = objects.map(function (obj) {
             return obj.item.element;
           });
-
           Shuffle._skipTransitions(elements, function () {
             objects.forEach(function (obj) {
               obj.item.applyCss(obj.styles);
@@ -1765,7 +1559,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       value: function _movementFinished() {
         this._transitions.length = 0;
         this.isTransitioning = false;
-
         this._dispatch(Shuffle.EventType.LAYOUT);
       }
       /**
@@ -1774,26 +1567,21 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        *     Can be a function, string, or array of strings.
        * @param {SortOptions} [sortOptions] A sort object which can sort the visible set
        */
-
     }, {
       key: "filter",
       value: function filter(category, sortOptions) {
         if (!this.isEnabled) {
           return;
         }
-
         if (!category || category && category.length === 0) {
           category = Shuffle.ALL_ITEMS; // eslint-disable-line no-param-reassign
         }
 
         this._filter(category); // Shrink each hidden item
 
-
         this._shrink(); // How many visible elements?
 
-
         this._updateItemCount(); // Update transforms on visible elements so they will animate to their new positions.
-
 
         this.sort(sortOptions);
       }
@@ -1801,48 +1589,37 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * Gets the visible elements, sorts them, and passes them to layout.
        * @param {SortOptions} [sortOptions] The options object to pass to `sorter`.
        */
-
     }, {
       key: "sort",
       value: function sort() {
         var sortOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.lastSort;
-
         if (!this.isEnabled) {
           return;
         }
-
         this._resetCols();
-
         var items = sorter(this._getFilteredItems(), sortOptions);
         this.sortedItems = items;
-
         this._layout(items); // `_layout` always happens after `_shrink`, so it's safe to process the style
         // queue here with styles from the shrink method.
 
-
         this._processQueue(); // Adjust the height of the container.
 
-
         this._setContainerSize();
-
         this.lastSort = sortOptions;
       }
       /**
        * Reposition everything.
        * @param {boolean} [isOnlyLayout=false] If true, column and gutter widths won't be recalculated.
        */
-
     }, {
       key: "update",
       value: function update() {
         var isOnlyLayout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
         if (this.isEnabled) {
           if (!isOnlyLayout) {
             // Get updated colCount
             this._setColumns();
           } // Layout items
-
 
           this.sort();
         }
@@ -1852,7 +1629,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * Maybe an image inside `shuffle` loaded (and now has a height), which means calculations
        * could be off.
        */
-
     }, {
       key: "layout",
       value: function layout() {
@@ -1863,31 +1639,23 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * filter or sort status.
        * @param {Element[]} newItems Collection of new items.
        */
-
     }, {
       key: "add",
       value: function add(newItems) {
         var _this9 = this;
-
         var items = arrayUnique(newItems).map(function (el) {
           return new ShuffleItem(el, _this9.options.isRTL);
         }); // Add classes and set initial positions.
 
         this._initItems(items); // Determine which items will go with the current filter.
 
-
         this._resetCols();
-
         var allItems = this._mergeNewItems(items);
-
         var sortedItems = sorter(allItems, this.lastSort);
-
         var allSortedItemsSet = this._filter(this.lastFilter, sortedItems);
-
         var isNewItem = function isNewItem(item) {
           return items.includes(item);
         };
-
         var applyHiddenState = function applyHiddenState(item) {
           item.scale = ShuffleItem.Scale.HIDDEN;
           item.isHidden = true;
@@ -1896,9 +1664,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         }; // Layout all items again so that new items get positions.
         // Synchonously apply positions.
 
-
         var itemPositions = this._getNextPositions(allSortedItemsSet.visible);
-
         allSortedItemsSet.visible.forEach(function (item, i) {
           if (isNewItem(item)) {
             item.point = itemPositions[i];
@@ -1924,7 +1690,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       /**
        * Disables shuffle from updating dimensions and layout on resize
        */
-
     }, {
       key: "disable",
       value: function disable() {
@@ -1934,13 +1699,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * Enables shuffle again
        * @param {boolean} [isUpdateLayout=true] if undefined, shuffle will update columns and gutters
        */
-
     }, {
       key: "enable",
       value: function enable() {
         var isUpdateLayout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
         this.isEnabled = true;
-
         if (isUpdateLayout) {
           this.update();
         }
@@ -1951,53 +1714,42 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        *     elements in shuffle
        * @return {Shuffle} The shuffle instance.
        */
-
     }, {
       key: "remove",
       value: function remove(elements) {
         var _this10 = this;
-
         if (!elements.length) {
           return;
         }
-
         var collection = arrayUnique(elements);
         var oldItems = collection.map(function (element) {
           return _this10.getItemByElement(element);
         }).filter(function (item) {
           return !!item;
         });
-
         var handleLayout = function handleLayout() {
           _this10._disposeItems(oldItems); // Remove the collection in the callback
-
 
           collection.forEach(function (element) {
             element.parentNode.removeChild(element);
           });
-
           _this10._dispatch(Shuffle.EventType.REMOVED, {
             collection: collection
           });
         }; // Hide collection first.
 
-
         this._toggleFilterClasses({
           visible: [],
           hidden: oldItems
         });
-
         this._shrink(oldItems);
-
         this.sort(); // Update the list of items here because `remove` could be called again
         // with an item that is in the process of being removed.
 
         this.items = this.items.filter(function (item) {
           return !oldItems.includes(item);
         });
-
         this._updateItemCount();
-
         this.once(Shuffle.EventType.LAYOUT, handleLayout);
       }
       /**
@@ -2005,7 +1757,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {Element} element Element to look for.
        * @return {?ShuffleItem} A shuffle item or undefined if it's not found.
        */
-
     }, {
       key: "getItemByElement",
       value: function getItemByElement(element) {
@@ -2017,25 +1768,21 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * Dump the elements currently stored and reinitialize all child elements which
        * match the `itemSelector`.
        */
-
     }, {
       key: "resetItems",
       value: function resetItems() {
-        var _this11 = this; // Remove refs to current items.
+        var _this11 = this;
 
-
+        // Remove refs to current items.
         this._disposeItems(this.items);
-
         this.isInitialized = false; // Find new items in the DOM.
 
         this.items = this._getItems(); // Set initial styles on the new items.
 
         this._initItems(this.items);
-
         this.once(Shuffle.EventType.LAYOUT, function () {
           // Add transition to each item.
           _this11.setItemTransitions(_this11.items);
-
           _this11.isInitialized = true;
         }); // Lay out all items.
 
@@ -2044,19 +1791,16 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       /**
        * Destroys shuffle, removes events, styles, and classes
        */
-
     }, {
       key: "destroy",
       value: function destroy() {
         this._cancelMovement();
-
         window.removeEventListener('resize', this._onResize); // Reset container styles
 
         this.element.classList.remove('shuffle');
         this.element.removeAttribute('style'); // Reset individual item styles
 
         this._disposeItems(this.items);
-
         this.items.length = 0;
         this._transitions.length = 0; // Null DOM references
 
@@ -2089,16 +1833,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        * @param {boolean} [includeMargins=false] Whether to include margins.
        * @return {{width: number, height: number}} The width and height.
        */
-
     }], [{
       key: "getSize",
       value: function getSize(element) {
-        var includeMargins = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false; // Store the styles so that they can be used by others without asking for it again.
-
+        var includeMargins = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+        // Store the styles so that they can be used by others without asking for it again.
         var styles = window.getComputedStyle(element, null);
         var width = getNumberStyle(element, 'width', styles);
         var height = getNumberStyle(element, 'height', styles);
-
         if (includeMargins) {
           var marginLeft = getNumberStyle(element, 'marginLeft', styles);
           var marginRight = getNumberStyle(element, 'marginRight', styles);
@@ -2107,7 +1849,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           width += marginLeft + marginRight;
           height += marginTop + marginBottom;
         }
-
         return {
           width: width,
           height: height
@@ -2120,7 +1861,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
        *     is set to 0ms.
        * @private
        */
-
     }, {
       key: "_skipTransitions",
       value: function _skipTransitions(elements, callback) {
@@ -2149,10 +1889,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         });
       }
     }]);
-
     return Shuffle;
   }(TinyEmitter);
-
   Shuffle.ShuffleItem = ShuffleItem;
   Shuffle.ALL_ITEMS = 'all';
   Shuffle.FILTER_ATTRIBUTE_KEY = 'groups';

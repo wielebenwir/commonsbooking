@@ -377,19 +377,13 @@ class MapAdmin {
 			}
 
 		//cb_items_available_categories
-		$category_terms = get_terms( [
-			'taxonomy'   => Item::$postType . 's_category',
-			'hide_empty' => false,
-		] );
+		$category_terms = \CommonsBooking\Repository\Item::getTerms();
 		$valid_term_ids = [];
 		foreach ( $category_terms as $category_term ) {
 			$valid_term_ids[] = $category_term->term_id;
 		}
 
-		$loc_category_terms = get_terms( [
-			'taxonomy'   => Location::$postType . 's_category',
-			'hide_empty' => false,
-		] );
+		$loc_category_terms = \CommonsBooking\Repository\Item::getTerms();
 
 		$valid_loc_term_ids = [];
 		foreach ( $loc_category_terms as $loc_category_term ) {
@@ -435,11 +429,7 @@ class MapAdmin {
 
 		update_post_meta( $cb_map_id, 'cb_map_options', $validated_input );
 
-        commonsbooking_write_log($_POST);
-
-        commonsbooking_write_log($validated_input);
-
-		return $validated_input;
+    	return $validated_input;
 	}
 
 	/**

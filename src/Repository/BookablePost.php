@@ -113,12 +113,24 @@ abstract class BookablePost extends PostRepository {
 	}
 
 	/**
+	 * Gets all the defined terms for locations / items
+	 * @return int[]|string|string[]|\WP_Error|\WP_Term[]
+	 */
+	public static function getTerms() {
+		return get_terms(array(
+			'taxonomy'	=> static::getPostType() . 's_category',
+			'hide_empty' => false,
+		));
+	}
+	/**
 	 * @return string
 	 */
 	abstract protected static function getPostType();
 
 	/**
 	 * Returns cb-posts for a user (respects author and assigned admins).
+	 *
+	 * THIS METHOD DOES NOT SEEM TO BE USED ANYWHERE.
 	 *
 	 * @param $userId
 	 * @param false $asModel
@@ -190,7 +202,8 @@ abstract class BookablePost extends PostRepository {
 	public static function get( array $args = array(), bool $bookable = false ) {
 		$posts             = [];
 		$args['post_type'] = static::getPostType();
-
+		$args['nopaging'] = true;
+		
 		// Add custom taxonomy filter
 		if ( array_key_exists( 'category_slug', $args ) ) {
 			$args['taxonomy'] = static::getPostType() . 's_category';

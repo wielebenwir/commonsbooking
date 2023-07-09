@@ -22,9 +22,14 @@ class Item extends CustomPostType {
 		// Listing of locations for item
 		add_shortcode( 'cb_locations', array( \CommonsBooking\View\Location::class, 'shortcode' ) );
 
+		//Add filter to backend list view
+		add_action( 'restrict_manage_posts', array( self::class, 'addAdminCategoryFilter' ) );
+
 		// Filter only for current user allowed posts
 		add_action( 'pre_get_posts', array( $this, 'filterAdminList' ) );
 	}
+
+
 
 	/**
 	 * Filters admin list by type (e.g. bookable, repair etc. )
@@ -51,6 +56,19 @@ class Item extends CustomPostType {
 					}
 				);
 				$query->query_vars['post__in'] = $items;
+			}
+
+			if (
+				isset( $_GET['admin_filter_post_category'] ) &&
+				$_GET['admin_filter_post_category'] != ''
+			) {
+				$query->query_vars['tax_query'] = array(
+						array(
+						'taxonomy'	=>	self::$postType . 's_category',
+						'field'		=>	'term_id',
+						'terms'		=>	$_GET['admin_filter_post_category']
+						)
+				);
 			}
 		}
 	}
@@ -157,7 +175,7 @@ class Item extends CustomPostType {
 
 	public function getTemplate( $content ) {
 		$cb_content = '';
-		if ( is_singular( self::getPostType() ) ) {
+		if ( is_singular( self::getPostType() ) && is_main_query() && get_post_type() == self::getPostType() ) {
 			ob_start();
 			global $post;
 
@@ -195,6 +213,8 @@ class Item extends CustomPostType {
 			foreach ( $users as $user ) {
 				$userOptions[ $user->ID ] = $user->get( 'user_nicename' ) . " (" . $user->first_name . " " . $user->last_name . ")";
 			}
+
+			//Item Administrators
 			$cmb->add_field( array(
 				'name'       => esc_html__( 'Item Admin(s)', 'commonsbooking' ),
 				'desc'       => esc_html__( 'choose one or more users to give them the permisssion to edit and manage this specific item. Only users with the role cb_manager can be selected here', 'commonsbooking' ),
@@ -204,6 +224,16 @@ class Item extends CustomPostType {
 				'attributes' => array(
 					'placeholder' => esc_html__( 'Select item admins.', 'commonsbooking' )
 				),
+			) );
+
+			// item maintainer(s) emails
+			$cmb->add_field( array(
+				'name'       => esc_html__( 'Item maintainer email', 'commonsbooking' ),
+				'desc'       => esc_html__( 'Email addresses to which notifications about a change of item status (restriction, breakdown) shall be sent. You can enter multiple addresses separated by commas.',
+					'commonsbooking' ),
+				'id'         => COMMONSBOOKING_METABOX_PREFIX . 'item_maintainer_email',
+				'type'       => 'text',
+				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 			) );
 		}
 

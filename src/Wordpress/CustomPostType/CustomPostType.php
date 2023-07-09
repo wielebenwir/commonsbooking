@@ -4,6 +4,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Settings\Settings;
+use CommonsBooking\View\Admin\Filter;
 use WP_Post;
 
 abstract class CustomPostType {
@@ -80,7 +81,7 @@ abstract class CustomPostType {
 	 */
 	public static function getCMB2FieldsArrayFromCustomMetadata( $type ): ?array {
 
-		$metaDataRaw    = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_metadata', 'metadata' );
+		$metaDataRaw    = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'metadata' );
 		$metaDataLines  = explode( "\r\n", $metaDataRaw );
 		$metaDataFields = array();
 
@@ -220,6 +221,10 @@ abstract class CustomPostType {
 	 * Configures list-view
 	 */
 	public function initListView() {
+		if ( array_key_exists('post_type', $_GET) && static::$postType !== $_GET['post_type'] ) {
+			return;
+		}
+
 		// List-View
 		add_filter( 'manage_' . static::getPostType() . '_posts_columns', array( $this, 'setCustomColumns' ) );
 		add_action( 'manage_' . static::getPostType() . '_posts_custom_column', array(
@@ -266,6 +271,26 @@ abstract class CustomPostType {
 				echo '-';
 			}
 		}
+	}
+
+	/**
+	 * Adds Category filter to backend list view
+	 * 
+	 */
+	public static function addAdminCategoryFilter() {
+		$values = [];
+		$terms = get_terms(array(
+			'taxonomy'	=> static::$postType . 's_category'
+		));
+		foreach ( $terms as $term ) {
+			$values[ $term->term_id ] = $term->name;
+		}
+		Filter::renderFilter(
+			static::$postType,
+			esc_html__( 'Filter By Category ', 'commonsbooking' ),
+			'filter_post_category',
+			$values
+		);
 	}
 
 	/**

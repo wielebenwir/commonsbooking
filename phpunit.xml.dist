@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
 	bootstrap="tests/bootstrap.php"
 	backupGlobals="false"
 	colors="true"
@@ -8,9 +10,26 @@
 	convertWarningsToExceptions="true"
 	>
 	<testsuites>
-		<testsuite>
-			<directory prefix="test-" suffix=".php">./tests/</directory>
-			<exclude>./tests/test-sample.php</exclude>
+		<testsuite name="default">
+			<directory>tests</directory>
 		</testsuite>
 	</testsuites>
+    <php>
+        <ini name="xdebug.mode" value="coverage" />
+    </php>
+    <logging>
+        <testdoxXml outputFile="build/logs/xml.log" />
+        <testdoxHtml outputFile="build/logs/html.log" />
+        <text outputFile="build/logs/text.log"/>
+    </logging>
+
+    <coverage>
+        <include>
+            <directory>./src</directory>
+        </include>
+        <report>
+            <clover outputFile="build/logs/clover.xml"/>
+            <html outputDirectory="build/report" />
+        </report>
+    </coverage>
 </phpunit>

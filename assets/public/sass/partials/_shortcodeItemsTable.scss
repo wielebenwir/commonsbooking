@@ -95,18 +95,19 @@
 
 	tbody {
 		tr {
-			background: $color-white;
+			background: var(--commonsbooking-color-bg);
 			height: 50px;
 			overflow: hidden;
 
 			&:hover {
-				background: var(--commonsbooking-color-bg);;
+				background: var(--commonsbooking-color-bg);
 			}
 
 			td {
+                color: var(--commonsbooking-textcolor-dark);
 				border-top: 1px solid var(--commonsbooking-color-greyedout);
 				border-left: 1px solid var(--commonsbooking-color-gray-background);
-				border-bottom: 1px solid $color-white;
+				border-bottom: 1px solid var(--commonsbooking-color-bg);
 			}
 		}
 	}
@@ -156,29 +157,4 @@
 	margin-top: 10px;
 	padding: 10px;
 	font-size: var(--commonsbooking-font-size-normal);
-
-	#cb-table-footnote-colorkey {
-
-		.colorkey-square {
-			width:10px;
-			height:10px;
-			display:inline-block;
-		}
-
-		.colorkey-accept {
-			background-color: var(--commonsbooking-color-accept);
-		}
-		
-		.colorkey-cancel {
-			background-color: var(--commonsbooking-color-cancel);
-		}
-
-		.colorkey-holiday {
-			background-color: var(--commonsbooking-color-holiday)
-		}
-
-		.colorkey-greyedout {
-			background-color: var(--commonsbooking-color-greyedout);
-		}
-	}
 }

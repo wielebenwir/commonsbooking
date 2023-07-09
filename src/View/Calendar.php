@@ -55,8 +55,7 @@ class Calendar {
 		$days = is_array( $atts ) && array_key_exists( 'days', $atts ) ? $atts['days'] : 31;
 
 		$desc  = $atts['desc'] ?? '';
-		$date  = new DateTime();
-		$date->setTimestamp(current_time('timestamp'));
+		$date  = Wordpress::getUTCDateTimeByTimestamp(current_time('timestamp'));
 		$today = $date->format( "Y-m-d" );
 
 		$days_display = array_fill( 0, $days, 'n' );
@@ -162,16 +161,20 @@ class Calendar {
 		$print .= '</div>';
 
 		$print .= '<div id="cb-table-footnote">';
-		$print .= commonsbooking_sanitizeHTML( __('<div id="cb-table-footnote-colorkey">
-			<strong>Table info</strong><br>
-				<div class="colorkey-square colorkey-accept"></div> bookable | 
-				<div class="colorkey-square colorkey-cancel"></div> booked/blocked  | 
-				<div class="colorkey-square colorkey-holiday"></div> station closed  | 
-				<div class="colorkey-square colorkey-greyedout"></div> not bookable <br>
-			</div>', 'commonsbooking'), 'commonsbooking' );
-		$print .= '</div>';
 
 		return $print;
+	}
+
+	public static function shortcode( $atts) {
+		global $templateData;
+		$templateData = [];
+		$templateData['data'] = self::renderTable($atts);
+
+		if (!empty($templateData['data'])) {
+			ob_start();
+			commonsbooking_get_template_part( 'shortcode', 'items_table', true, false, false ) ;
+			return ob_get_clean();
+		}
 	}
 
 	/**
@@ -186,10 +189,10 @@ class Calendar {
 		foreach ( $month_cols as $month => $colspan ) {
 			$print .= "<th class='sortless' colspan='" . $colspan . "'>";
 
-			if ( $colspan > 3 ) {
-				$print .= date_i18n( 'F', strtotime( $month ) ) . "</th>";
+     		if ( $colspan > 3 ) {
+				$print .= date_i18n( 'F', strtotime( get_date_from_gmt( $month ) ) ). "</th>";
 			} else {
-				$print .= date_i18n( 'M', strtotime( $month ) ) . "</th>";
+				$print .= date_i18n( 'M', strtotime( get_date_from_gmt( $month ) ) ). "</th>";
 			}
 		}
 
@@ -294,7 +297,7 @@ class Calendar {
 			}
 
 			$dayStr         = implode( $divider, $days_display );
-			$itemLink       = add_query_arg( 'location', $locationId, get_permalink( $item->ID ) );
+			$itemLink       = add_query_arg( 'cb-location', $locationId, get_permalink( $item->ID ) );
 			$locationString = '<div data-title="' . $locationName . '">' . $locationName . '</div>';
 			$locationLink = get_permalink($locationId);
 
@@ -607,7 +610,7 @@ class Calendar {
 
 					// Set max-days setting based on first found timeframe
 					if ( $jsonResponse['maxDays'] == null ) {
-						$timeframeMaxDays        = get_post_meta( $slot['timeframe']->ID, 'timeframe-max-days', true );
+						$timeframeMaxDays        = get_post_meta( $slot['timeframe']->ID, \CommonsBooking\Model\Timeframe::META_MAX_DAYS, true );
 						$jsonResponse['maxDays'] = intval( $timeframeMaxDays ?: 3 );
 					}
 				} else {
