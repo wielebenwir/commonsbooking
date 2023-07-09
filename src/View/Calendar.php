@@ -610,7 +610,7 @@ class Calendar {
 
 					// Set max-days setting based on first found timeframe
 					if ( $jsonResponse['maxDays'] == null ) {
-						$timeframeMaxDays        = get_post_meta( $slot['timeframe']->ID, 'timeframe-max-days', true );
+						$timeframeMaxDays        = get_post_meta( $slot['timeframe']->ID, \CommonsBooking\Model\Timeframe::META_MAX_DAYS, true );
 						$jsonResponse['maxDays'] = intval( $timeframeMaxDays ?: 3 );
 					}
 				} else {

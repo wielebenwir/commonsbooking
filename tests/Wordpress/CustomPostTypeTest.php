@@ -10,6 +10,7 @@ use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use PHPUnit\Framework\TestCase;
+use SlopeIt\ClockMock\ClockMock;
 
 abstract class CustomPostTypeTest extends TestCase {
 
@@ -350,6 +351,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	protected function tearDown() : void {
 		parent::tearDown();
 
+		ClockMock::reset();
 		$this->tearDownAllItems();
 		$this->tearDownAllLocation();
 		$this->tearDownAllTimeframes();

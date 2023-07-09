@@ -88,7 +88,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		);
 		$wpdb->query( $sql );
 
-		add_post_meta( $this->post->ID, 'cancellation_time', current_time( 'timestamp' ) );
+		update_post_meta( $this->post->ID, 'cancellation_time', current_time( 'timestamp' ) );
 
 		$this->sendCancellationMail();
 	}
@@ -170,7 +170,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 				'start-time',
 				'end-time',
 				'show-booking-codes',
-				'timeframe-max-days',
+				\CommonsBooking\Model\Timeframe::META_MAX_DAYS,
 			];
 			foreach ( $neededMetaFields as $fieldName ) {
 				$fieldValue = get_post_meta(
@@ -293,8 +293,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		if ( $this->isFullDay() ) {
 			return $date_start;
 		}
-
-		if ( $this->getGrid() === 0 ) { // if grid is set to slot duration
+		
+		$grid = $this->getGrid();
+		
+		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time end
 			$timeframeGridSize = $this->getMeta( self::START_TIMEFRAME_GRIDSIZE );
 			if ( $timeframeGridSize ) {
@@ -330,7 +332,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			return $date_end;
 		}
 
-		if ( $this->getGrid() === 0 ) { // if grid is set to slot duration
+		$grid = $this->getGrid();
+		
+		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time start
 			$timeframeGridSize = $this->getMeta( self::END_TIMEFRAME_GRIDSIZE );
 			if ( $timeframeGridSize ) {
@@ -372,20 +376,16 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$currentStatus    = $this->post->post_status;
 		$cancellationTime = $this->getMeta( 'cancellation_time' );
 
-        if ( get_transient( 'commonsbookig_overlappingBooking_' . $this->post->ID ) && $this->isUnconfirmed() ) {
-            $noticeText = commonsbooking_sanitizeHTML( __( 'The booking could not be confirmed because there is an overlapping booking in this period.', 'commonsbooking' ) );
-        }
-
-  		if ( $this->isUnconfirmed() ) {
+  		if ( $currentStatus == 'unconfirmed' ) {
             // transient is set in \Model\Booking->handleFormRequest if overlapping booking exists
-            if ( get_transient( 'commonsbooking_overlappingBooking_' . $this->post->ID ) ) {
-                $noticeText = commonsbooking_sanitizeHTML( __( 
+            if ( get_transient( 'commonsbooking_overlappingBooking_' . $this->ID ) ) {
+                $noticeText = get_transient( 'commonsbooking_overlappingBooking_' . $this->ID ) . ' ' . $this->ID . commonsbooking_sanitizeHTML( __(
                     '<h1 style="color:red">Notice:</h1> <p>We are sorry. Something went wrong. This booking could not be confirmed because there is another overlapping booking.<br>
                     Please click the "Cancel"-Button and select another booking period.</p>
-                    <p>Normally, the booking system ensures that no overlapping bookings can be created. If you think there is a bug, please contact the contact persons of this website.</p> 
+                    <p>Normally, the booking system ensures that no overlapping bookings can be created. If you think there is a bug, please contact us.</p> 
                 ', 'commonsbooking' ) );
 
-                delete_transient( 'commonsbooking_overlappingBooking_' . $this->post->ID );
+                delete_transient( 'commonsbooking_overlappingBooking_' . $this->ID );
             } else {
                 $noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
             }
@@ -423,7 +423,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			$linktext = esc_html__( 'Link to your booking', 'commonsbooking' );
 		}
 
-		return sprintf( '<a href="%1$s">%2$s</a>', add_query_arg( $this->post->post_type, $this->post->post_name, home_url( '/' ) ), $linktext );
+		return sprintf( '<a href="%1$s">%2$s</a>', $this->bookingLinkUrl(), $linktext );
 	}
 
 	/**
@@ -497,12 +497,28 @@ class Booking extends \CommonsBooking\Model\Timeframe {
         return '<a href=" ' . get_edit_post_link( $this->ID ) . '"> Booking #' . $this->ID . ' : ' . $this->formattedBookingDate() . ' | User: ' . $this->getUserData()->user_nicename . '</a>';
     }
 
+    /**
+     * Updates internal booking comment by adding new comment in a new line
+     *
+     * @param  string $comment
+     * @param  int $userID
+     * @return void
+     */
+    public function appendToInternalComment( string $comment, int $userID ) {
+        $existing_comment = $this->getMeta( 'internal-comment' );
+        $dateTimeInfo = current_datetime()->format( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
+        $meta_string = $dateTimeInfo . ' / ' . get_the_author_meta( 'user_login', $userID ) . "\n";
+        $new_comment = $existing_comment . "\n" . $meta_string . $comment . "\n--------------------";
+        return update_post_meta( $this->ID, 'internal-comment', $new_comment );
+    }
+
+
 	/**
 	 * Checks wp post filed if booking status is confirmed
 	 *
 	 * @return bool
 	 */
-	private function isConfirmed() : bool {
+	public function isConfirmed() : bool {
 		return $this->post_status === 'confirmed';
 	}
 
@@ -511,7 +527,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return bool
 	 */
-	private function isUnconfirmed() : bool {
+	public function isUnconfirmed() : bool {
 		return $this->post_status === 'unconfirmed';
 	}
 }

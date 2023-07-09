@@ -30,6 +30,8 @@ class Timeframe extends CustomPost {
 
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
+	public const META_MAX_DAYS = 'timeframe-max-days';
+
 	/**
 	 * Return residence in a human readable format
 	 *
@@ -146,14 +148,14 @@ class Timeframe extends CustomPost {
 			if ( $startDate > $today ) { // start is in the future, with an end date
 				$availableString = sprintf(
 					/* translators: %1$s = startdate, second %2$s = enddate in WordPress defined format */
-                    commonsbooking_sanitizeHTML( __( ' from %1$s until %2$s', 'commonsbooking' ) ),
+                    commonsbooking_sanitizeHTML( __( 'from %1$s until %2$s', 'commonsbooking' ) ),
 					$startDateFormatted,
                     $endDateFormatted
                 );
 			} else { // start has passed, with an end date
 				$availableString = sprintf(
 					/* translators: %s = enddate in WordPress defined format */
-                    commonsbooking_sanitizeHTML( __( ' until %s', 'commonsbooking' ) ),
+                    commonsbooking_sanitizeHTML( __( 'until %s', 'commonsbooking' ) ),
                     $endDateFormatted
                 );
 			}

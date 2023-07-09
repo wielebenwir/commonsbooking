@@ -6,6 +6,7 @@ use CommonsBooking\Model\Item;
 use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use SlopeIt\ClockMock\ClockMock;
 
 class BookablePostTest extends CustomPostTypeTest
 {
@@ -16,6 +17,7 @@ class BookablePostTest extends CustomPostTypeTest
 
     public function testIsBookable()
     {
+		ClockMock::freeze(new \DateTime( self::CURRENT_DATE ) );
 		//test basic getting with just one bookable timeframe for a location
 	    $this->assertTrue($this->locationModel->isBookable());
 
@@ -26,6 +28,7 @@ class BookablePostTest extends CustomPostTypeTest
 
     public function testGetBookableTimeframes()
     {
+		ClockMock::freeze(new \DateTime( self::CURRENT_DATE) );
 		//test basic getting with just one bookable timeframe for a location
 	    $bookableTimeframes = $this->locationModel->getBookableTimeframes(true);
 		$this->assertEquals(1,count($bookableTimeframes));
@@ -53,6 +56,7 @@ class BookablePostTest extends CustomPostTypeTest
 
 	protected function setUp(): void {
 		parent::setUp();
+
 		$this->timeframeId = $this->createBookableTimeFrameIncludingCurrentDay();
 		$this->locationModel = new Location( $this->locationId );
 		$this->itemModel = new Item( $this->itemId );

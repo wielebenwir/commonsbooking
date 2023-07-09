@@ -92,6 +92,10 @@ class Booking extends Timeframe {
     public function saveAdminBookingFields( $post_id, $post = null, $update = null ) {
         global $pagenow;
 
+        if ( ! $post ) {
+            $post = get_post( $post_id );
+        }
+
         // we check if its a new created post
         if ( ! empty( $_REQUEST ) && $pagenow === 'post.php' && commonsbooking_isCurrentUserAdmin() ) {
 
@@ -118,7 +122,6 @@ class Booking extends Timeframe {
                 $post_status = 'unconfirmed';
             }
 
-
             $full_day = '';
             if ( $start_time == '00:00' && $end_time == '23:59' ) {
                 $full_day = 'on';
@@ -137,7 +140,13 @@ class Booking extends Timeframe {
                     'full-day'         => $full_day,
 				],
             );
-               $postarr['ID'] = $post_id;
+
+            // set post_name if new post
+            if ( in_array( $post->post_status, array( 'auto-draft', 'new' ) ) || $post->post_name === '' ) {
+                $postarr['post_name'] = Helper::generateRandomString();
+            }
+            
+            $postarr['ID'] = $post_id;
 
             // unhook this function so it doesn't loop infinitely
             remove_action( 'save_post_' . self::$postType, array( $this, 'saveAdminBookingFields' ) );
@@ -147,6 +156,12 @@ class Booking extends Timeframe {
 
             // readd the hook
             add_action( 'save_post_' . self::$postType, array( $this, 'saveAdminBookingFields' ) );
+
+			//if we just created a new confirmed booking we trigger the confirmation mail
+	        if ( $post_status == 'confirmed' ) {
+		        $booking_msg = new BookingMessage( $post_id, $post_status );
+		        $booking_msg->triggerMail();
+	        }
         }
     }
 
@@ -166,7 +181,6 @@ class Booking extends Timeframe {
 			$locationId     = isset( $_REQUEST['location-id'] ) && $_REQUEST['location-id'] != '' ? sanitize_text_field( $_REQUEST['location-id'] ) : null;
 			$comment        = isset( $_REQUEST['comment'] ) && $_REQUEST['comment'] != '' ? sanitize_text_field( $_REQUEST['comment'] ) : null;
             $post_status    = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] != '' ? sanitize_text_field( $_REQUEST['post_status'] ) : null;
-            $booking_author = isset( $_REQUEST['author'] ) && $_REQUEST['author'] != '' ? sanitize_text_field( $_REQUEST['author'] ) : get_current_user_id();
 
  			if ( ! get_post( $itemId ) ) {
 				throw new Exception( 'Item does not exist. (' . $itemId . ')' );
@@ -201,21 +215,24 @@ class Booking extends Timeframe {
                 $locationId,
                 $itemId
             );
+
 	        $existingBookings =
 		        \CommonsBooking\Repository\Booking::getExistingBookings(
 			        $itemId,
 			        $locationId,
 			        $startDate,
 			        $endDate,
+                    $booking->ID,
 		        );
 
 			// Validate booking -> check if there are no existing bookings in timerange.
 			if (count($existingBookings) > 0) {
 				$requestedPostname = array_key_exists( 'cb_booking', $_REQUEST ) ? $_REQUEST['cb_booking'] : '';
+
 				// checks if it's an edit, but ignores exact start/end time
 				$isEdit = count( $existingBookings ) === 1 &&
 					array_values( $existingBookings )[0]->getPost()->post_name === $requestedPostname &&
-					array_values( $existingBookings )[0]->getPost()->post_author == get_current_user_id();
+					array_values( $existingBookings )[0]->getPost()->post_author === get_current_user_id();
 
 				if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status != 'canceled' ) {
                     if ($booking) {
@@ -225,20 +242,22 @@ class Booking extends Timeframe {
                         throw new Exception( 'There is already a booking in this timerange.' );
                     }
 				}
+
 			}
 
+            // add internal comment if admin edited booking via frontend
+            if ( $booking && $booking->post_author !== '' && intval( $booking->post_author ) !== intval( get_current_user_id() ) ) {
+                $postarr['meta_input']['admin_booking_id'] = get_current_user_id();
+                $internal_comment = esc_html__( 'status changed by admin user via frontend. New status: ', 'commonsbooking' ) . $post_status;
+                $booking->appendToInternalComment( $internal_comment, get_current_user_id() );
+            }
 
 
-            $postarr = array(
-				'type'        => sanitize_text_field( $_REQUEST['type'] ),
-				'post_status' => $post_status,
-				'post_type'   => self::getPostType(),
-				'post_title'  => esc_html__( 'Booking', 'commonsbooking' ),
-				'post_author' => $booking_author,
-				'meta_input'  => [
-					'comment' => $comment,
-				],
-            );
+            $postarr['type']                    = sanitize_text_field( $_REQUEST['type'] );
+            $postarr['post_status']             = $post_status;
+            $postarr['post_type']               = self::getPostType();
+            $postarr['post_title']              = esc_html__( 'Booking', 'commonsbooking' );
+            $postarr['meta_input']['comment']   = $comment;
 
             // New booking
             if ( empty( $booking ) ) {
@@ -700,10 +719,11 @@ class Booking extends Timeframe {
 			$dateFormat = 'm/d/Y';
 		}
 
+		$userOptions = [];
+
         // Generate user list for admin bookings
 		if ( commonsbooking_isCurrentUserAdmin() || commonsbooking_isCurrentUserCBManager() ) {
 			$users       = get_users();
-			$userOptions = [];
 			foreach ( $users as $user ) {
 				$userOptions[ $user->ID ] = $user->get( 'user_nicename' ) . ' (' . $user->first_name . ' ' . $user->last_name . ')';
 			}
@@ -733,11 +753,18 @@ class Booking extends Timeframe {
 				'type' => 'title',
 			),
 			array(
-				'name' => esc_html__( 'Comment', 'commonsbooking' ),
-				'desc' => esc_html__( 'This comment is internal for timeframes like bookable, repair, holiday. If timeframe is a booking this comment can be set by users during the booking confirmation process.', 'commonsbooking' ),
+				'name' => esc_html__( 'External comment', 'commonsbooking' ),
+				'desc' => esc_html__( 'This comment can be seen by users in booking details. It can be set by users during the booking confirmation process if comments are enabled in settings.', 'commonsbooking' ),
 				'id'   => 'comment',
 				'type' => 'textarea_small',
 			),
+            array(
+				'name' => esc_html__( 'Internal comment', 'commonsbooking' ),
+				'desc' => esc_html__( 'This internal comment can only be seen in the backend by privileged users like admins or cb-managers', 'commonsbooking' ),
+				'id'   => 'internal-comment',
+				'type' => 'textarea_small',
+			),
+
 			array(
 				'name'    => esc_html__( 'Location', 'commonsbooking' ),
 				'id'      => 'location-id',
