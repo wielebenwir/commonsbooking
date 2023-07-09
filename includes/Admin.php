@@ -39,6 +39,16 @@ function commonsbooking_admin() {
 			'nonce'    => wp_create_nonce( 'cb_start_booking_migration' ),
 		)
 	);
+
+	//orphaned bookings migration - re-assign booking when timeframe has changed
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_orphaned_booking_migration',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_orphaned_booking_migration' ),
+		)
+	);
 	/**
 	 * Ajax - cache warmup
 	 */

@@ -751,10 +751,18 @@ class Timeframe extends CustomPostType {
 
 	public function updatedPostMeta($meta_id,$object_id,$meta_key,$meta_value)
 	{
+		//make sure, that action is only executed if timeframe is changed
+		if (get_post($object_id)->post_type !== Timeframe::getPostType()) {
+			return;
+		}
 		if ($meta_key == \CommonsBooking\Model\Timeframe::META_LOCATION_ID){ //Location ID was changed, the only evidence we still have is the item ID
-			$item_id = reset(get_post_meta($object_id,\CommonsBooking\Model\Timeframe::META_ITEM_ID)); //value has to be reset in order to retrieve first value
+			$correspondingItems            = get_post_meta( $object_id, \CommonsBooking\Model\Timeframe::META_ITEM_ID );
+			$item_id          = reset( $correspondingItems ); //value has to be reset in order to retrieve first value
 			$orphanedBookings = \CommonsBooking\Repository\Booking::getOrphaned(null,[$item_id]);
 			if ($orphanedBookings) {
+				foreach ($orphanedBookings as $booking) {
+					update_post_meta($booking->ID,\CommonsBooking\Model\Booking::META_LAST_TIMEFRAME,$object_id);
+				}
 				set_transient(
 					\CommonsBooking\Model\Timeframe::ORPHANED_TYPE,
 					/* translators: first %s = timeframe-ID, second %s is timeframe post_title */

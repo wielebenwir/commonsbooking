@@ -15,6 +15,7 @@ use CommonsBooking\Service\iCalendar;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
+use CommonsBooking\View\MassOperations;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
@@ -312,6 +313,17 @@ class Plugin {
 				esc_html__( 'Location Categories', 'commonsbooking' ),
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
 				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::$postType . 's_category',
+				''
+			);
+
+			//Add menu item for mass operations
+			add_submenu_page(
+				'cb-dashboard',
+				esc_html__( 'Mass Operations', 'commonsbooking' ),
+				esc_html__( 'Mass Operations', 'commonsbooking' ),
+				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
+				'cb-mass-operations',
+				array( MassOperations::class, 'index' ),
 				''
 			);
 		}
