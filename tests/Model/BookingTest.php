@@ -270,6 +270,7 @@ class BookingTest extends CustomPostTypeTest {
 	 */
 	public function testOnlyViewerRole() {
 		$subscriberUserObj = get_user_by( 'ID', $this->subscriberId );
+		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
 		//let's now create a new item, location and timeframe and assign the SUBSCRIBER to it
 		$managedItem         = new Item(
 			$this->createItem(
