@@ -30,7 +30,7 @@ class Timeframe extends CustomPost {
 
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
-	public const META_TIMEFRAME_MAX_DAYS = 'timeframe-max-days';
+	public const META_MAX_DAYS = 'timeframe-max-days';
 
 	/**
 	 * Return residence in a human readable format
