@@ -124,7 +124,7 @@ class Plugin {
 
 	/**
 	 * Tests if a given post belongs to our CPTs
-	 * @param $post int|WP_Post - post id or post object
+	 * @param $post int|\WP_Post - post id or post object
 	 *
 	 * @return bool
 	 */

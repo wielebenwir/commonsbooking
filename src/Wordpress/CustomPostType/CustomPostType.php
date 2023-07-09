@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\Admin\Filter;
 use WP_Post;
@@ -310,7 +311,7 @@ abstract class CustomPostType {
 	/**
 	 * Returns Model for CPT.
 	 *
-	 * @param int|WP_Post $post - Post ID or Post Object
+	 * @param int|WP_Post|CustomPost $post - Post ID or Post Object
 	 *
 	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|\CommonsBooking\Model\Restriction|\CommonsBooking\Model\Timeframe
 	 * @throws \Exception
