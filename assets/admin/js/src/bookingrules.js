@@ -76,6 +76,9 @@
                             ruleSelectParam.show();
                             ruleSelectParamDesc.text(rule.selectParam[0]);
                             let ruleOptions = rule.selectParam[1];
+                            //clear the select field
+                            ruleSelectParamOptions.empty();
+                            //now add the options one by one
                             for (var key in ruleOptions) {
                                 ruleSelectParamOptions.append($('<option>', {
                                     value: key,
