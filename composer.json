@@ -49,8 +49,9 @@
   "require-dev": {
     "mockery/mockery": "1.*",
     "phpunit/phpunit": "7.*",
-    "slope-it/clock-mock": "^0.3.8",
+    "yoast/phpunit-polyfills": "^1.0",
     "wp-coding-standards/wpcs": "^2.3",
-    "yoast/phpunit-polyfills": "^1.0"
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "slope-it/clock-mock": "^0.3.8"
   }
 }
