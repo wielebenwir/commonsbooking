@@ -44,8 +44,8 @@ class BookingCodes {
 		if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		} else {
-			$timeframe = New Timeframe($timeframeId);
-			$timeframeStartDate      = $timeframe->getStartDate();
+			$timeframe          = new Timeframe( $timeframeId );
+			$timeframeStartDate = $timeframe->getStartDate();
 			$timeframeEndDate   = $timeframe->getRawEndDate();
 
 			// If timeframe does not qualify for booking codes, return empty array
