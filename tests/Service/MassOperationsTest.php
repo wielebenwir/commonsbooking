@@ -23,7 +23,7 @@ class MassOperationsTest extends CustomPostTypeTest
 		$this->assertTrue($toOrphan->isOrphaned());
 		$orphans = \CommonsBooking\Repository\Booking::getOrphaned();
 		$this->assertCount(1,$orphans);
-		MassOperations::migrateOrphaned();
+		MassOperations::migrateOrphaned([$toOrphan->ID]);
 		$this->assertFalse($toOrphan->isOrphaned());
     }
 
