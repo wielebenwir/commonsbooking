@@ -25,24 +25,28 @@ class MassOperations
 			echo '<p>No bookings found.</p>';
 			return;
 		}
+		$tableString = '';
 
-		?>
+		$tableString .= '
 		<table class="wp-list-table widefat fixed striped">
 			<thead>
 			<tr>
-				<th scope="col" class="manage-column column-cb_id">ID</th>
-				<th scope="col" class="manage-column column-cb_user_nicename">User</th>
-				<th scope="col" class="manage-column column-cb_item">Item name</th>
-				<th scope="col" class="manage-column column-cb_start">Start-Date</th>
-				<th scope="col" class="manage-column column-cb_end">End-Date</th>
-				<th scope="col" class="manage-column column-cb_status">Status</th>
-				<th scope="col" class="manage-column column-cb_location">Location name</th>
-				<th scope="col" class="manage-column column-cb_new_location">New Location Name</th>
+				<th scope="col" class="manage-column column-cb check-column">
+					<label class="screen-reader-text" for="cb-select-all-1">Select All</label>
+					<input type="checkbox" id="cb-select-all-1">
+				</th>
+				<th scope="col" class="manage-column column-title column-primary" id="id">' . esc_html__("ID",'commonsbooking') . '</th>
+				<th scope="col" class="manage-column column-title column-primary" id="user">' . esc_html__("User",'commonsbooking') . '</th>
+				<th scope="col" class="manage-column column-title column-primary" id="item-name">' . esc_html__("Item name",'commonsbooking') . '
+				<th scope="col" class="manage-column column-title column-primary" id="date-start">' . esc_html__("Start-date",'commonsbooking') . '</th>
+				<th scope="col" class="manage-column column-title column-primary" id="date-end">' . esc_html__("End-date",'commonsbooking') . '</th>
+				<th scope="col" class="manage-column column-title column-primary" id="status">' . esc_html__("Status",'commonsbooking') . '</th>
+				<th scope="col" class="manage-column column-title column-primary" id="location-name">' . esc_html__("Location name",'commonsbooking') . '</th>
+				<th scope="col" class="manage-column column-title column-primary" id="new-location-name">' . esc_html__("New location name",'commonsbooking') . '</th>
 			</tr>
 			</thead>
-			<tbody>
-			<?php foreach ($bookings as $booking): ?>
-				<?php
+			<tbody> ';
+			foreach ($bookings as $booking):
 				try {
 					$itemTitle = $booking->getItem()->post_title;
 				} catch ( \Exception $e ) {
@@ -61,21 +65,26 @@ class MassOperations
 					$newLocationTitle = 'New Location not found';
 				}
 
-				?>
-				<tr>
-					<td class="manage-column column-cb_id"><?php echo $booking->ID; ?></td>
-					<td class="manage-column column-cb_user_nicename"><?php echo $booking->getUserData()->user_nicename ?></td>
-					<td class="manage-column column-cb_item"><?php echo $itemTitle ?></td>
-					<td class="manage-column column-cb_start"><?php echo $booking->getFormattedStartDate() ?></td>
-					<td class="manage-column column-cb_end"><?php echo $booking->getFormattedEndDate() ?></td>
-					<td class="manage-column column-cb_status"><?php echo $booking->post_status ?></td>
-					<td class="manage-column column-cb_location"><?php echo $locationTitle ?></td>
-					<td class="manage-column column-cb_new_location"><?php echo $newLocationTitle ?></td>
-				</tr>
-			<?php endforeach; ?>
+				$tableString .= '
+				<tr id="row-booking-'.$booking->ID.'">
+					<th scope="row" class="check-column">
+						<input type="checkbox" class="post-checkboxes" value="'. $booking->ID  .'">
+					</th>
+					<td class="manage-column column-cb_id">' . $booking->ID .'</td>
+					<td class="manage-column column-cb_user_nicename">' . $booking->getUserData()->user_nicename . '</td>
+					<td class="manage-column column-cb_item">' . $itemTitle  . '</td>
+					<td class="manage-column column-cb_start">' . $booking->getFormattedStartDate()  . '</td>
+					<td class="manage-column column-cb_end">' . $booking->getFormattedEndDate()  . '</td>
+					<td class="manage-column column-cb_status">' . $booking->post_status  . '</td>
+					<td class="manage-column column-cb_location">' . $locationTitle  . '</td>
+					<td class="manage-column column-cb_new_location">' . $newLocationTitle  . '</td>
+				</tr>';
+			endforeach;
+			$tableString .= '
 			</tbody>
 		</table>
-		<?php
+		';
+		echo $tableString;
 	}
 
 	public static function renderOrphanedMigrationButton() {
@@ -83,21 +92,23 @@ class MassOperations
 		<div class="cmb-row cmb-type-text">
 			<div id="orphans-migration-in-progress">
 				<strong style="color: red">
-					' . esc_html__( 'migration in process .. please wait ...', 'commonsbooking' ) . '
+					<span>' . esc_html__( 'migration in process .. please wait ...', 'commonsbooking' ) . '</span>
 				</strong>
 			</div>
 			<div id="orphans-migration-done">
 				<strong style="color: green">
-					' . esc_html__( 'Migration finished', 'commonsbooking' ) . '
+					<span>' . esc_html__( 'Migration finished', 'commonsbooking' ) . '</span>
 				</strong>
 			</div>
 			<div id="orphans-migration-failed">
 				<strong style="color: red">
-					' . esc_html__( 'Migration failed', 'commonsbooking' ) . '
+					<span>' . esc_html__( 'Migration failed', 'commonsbooking' ) . '</span>
 				</strong>
 			</div>
 			<a id="orphans-migration-start" class="button button-secondary" href="#">
-				' . esc_html__( 'Migrate bookings', 'commonsbooking' ) . '
+				<span>
+					' . esc_html__( 'Migrate bookings', 'commonsbooking' ) . '
+				</span>
 			</a>
 		</div>';
 	}

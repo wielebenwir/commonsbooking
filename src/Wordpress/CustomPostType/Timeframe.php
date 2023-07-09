@@ -766,15 +766,12 @@ class Timeframe extends CustomPostType {
 				set_transient(
 					\CommonsBooking\Model\Timeframe::ORPHANED_TYPE,
 					/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
-					sprintf(
-						commonsbooking_sanitizeHTML(
-							__(
-								'Orphaned bookings found, can migrate. Click here to migrate: %1$s',
-								'commonsbooking',
-								5
-							)
-						),
-						'<a href=" ' . 'URL' . '?item_id=' . $item_id . '&location_id_new=' .  '</a>', //TODO
+					commonsbooking_sanitizeHTML(
+						__(
+							'Orphaned bookings found, can migrate. <a href="admin.php?page=cb-mass-operations"> Click here to migrate </a>',
+							'commonsbooking',
+							5
+						)
 					)
 				);
 			}
