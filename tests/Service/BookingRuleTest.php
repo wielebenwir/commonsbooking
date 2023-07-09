@@ -34,11 +34,12 @@ class BookingRuleTest extends CustomPostTypeTest
     }
 
 	public function testCheckSimultaneousBookings(){
+		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
 		$testBookingOne       = new Booking( get_post( $this->createBooking(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+1 day', time()),
-			strtotime( '+2 days', time()),
+			strtotime( '+1 day', strtotime(self::CURRENT_DATE)),
+			strtotime( '+2 days', strtotime(self::CURRENT_DATE)),
 			'8:00 AM',
 			'12:00 PM',
 			'confirmed',
@@ -49,22 +50,22 @@ class BookingRuleTest extends CustomPostTypeTest
 		$this->secondTimeframeId = $this->createTimeframe(
 			$locationtwo,
 			$itemtwo,
-			strtotime( '-5 days',time()),
-			strtotime( '+90 days', time()),
+			strtotime( '-5 days',strtotime(self::CURRENT_DATE)),
+			strtotime( '+90 days', strtotime(self::CURRENT_DATE)),
 		);
 		$testBookingTwo = new Booking(get_post(
 			$this->createBooking(
 				$locationtwo,
 				$itemtwo,
-				strtotime('+1 day', time()),
-				strtotime('+2 days', time()),
+				strtotime('+1 day', strtotime(self::CURRENT_DATE)),
+				strtotime('+2 days', strtotime(self::CURRENT_DATE)),
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
 				$this->normalUser
 			)
 		));
-		$this->assertEquals(array($testBookingOne),BookingRule::checkSimultaneousBookings($testBookingTwo));
+		$this->assertBookingsPresent(array($testBookingOne),BookingRule::checkSimultaneousBookings($testBookingTwo));
 		$this->tearDownAllBookings();
 	}
 
@@ -72,8 +73,8 @@ class BookingRuleTest extends CustomPostTypeTest
 		$testBookingOne       = new Booking( get_post( $this->createBooking(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+1 day', time()),
-			strtotime( '+4 days', time()),
+			strtotime( '+1 day', strtotime(self::CURRENT_DATE)),
+			strtotime( '+4 days', strtotime(self::CURRENT_DATE)),
 			'8:00 AM',
 			'12:00 PM',
 			'confirmed',
@@ -83,23 +84,24 @@ class BookingRuleTest extends CustomPostTypeTest
 			$this->createBooking(
 				$this->locationId,
 				$this->itemId,
-				strtotime('+4 day', time()),
-				strtotime('+5 days', time()),
+				strtotime('+4 day', strtotime(self::CURRENT_DATE)),
+				strtotime('+5 days', strtotime(self::CURRENT_DATE)),
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
 				$this->normalUser
 			)
 		));
-		$this->assertEquals(array($testBookingOne),BookingRule::checkChainBooking($testBookingTwo));
+		$this->assertBookingsPresent(array($testBookingOne),BookingRule::checkChainBooking($testBookingTwo));
 	}
 
 	public function testCheckMaxBookingDays(){
+		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
 		$testBookingOne       = new Booking( get_post( $this->createBooking(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+1 day', time()),
-			strtotime( '+2 days', time()),
+			strtotime( '+1 day', strtotime(self::CURRENT_DATE)),
+			strtotime( '+2 days', strtotime(self::CURRENT_DATE)),
 			'8:00 AM',
 			'12:00 PM',
 			'confirmed',
@@ -109,8 +111,8 @@ class BookingRuleTest extends CustomPostTypeTest
 			$this->createBooking(
 				$this->locationId,
 				$this->itemId,
-				strtotime('+4 day', time()),
-				strtotime('+5 days', time()),
+				strtotime('+4 day', strtotime(self::CURRENT_DATE)),
+				strtotime('+5 days', strtotime(self::CURRENT_DATE)),
 				'8:00 AM',
 				'12:00 PM',
 				'confirmed',
@@ -122,15 +124,15 @@ class BookingRuleTest extends CustomPostTypeTest
 			$this->createBooking(
 				$this->locationId,
 				$this->itemId,
-				strtotime('+6 day', time()),
-				strtotime('+7 days', time()),
+				strtotime('+6 day', strtotime(self::CURRENT_DATE)),
+				strtotime('+7 days', strtotime(self::CURRENT_DATE)),
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
 				$this->normalUser
 			)
 		));
-		$this->assertEquals(array($testBookingOne,$testBookingTwo),BookingRule::checkMaxBookingDays($testBookingThree,array(2,30)));
+		$this->assertBookingsPresent(array($testBookingOne,$testBookingTwo),BookingRule::checkMaxBookingDays($testBookingThree,array(2,30)));
 	}
 
 	public function testMaxBookingPerWeek() {
@@ -202,7 +204,7 @@ class BookingRuleTest extends CustomPostTypeTest
 			)
 		));
 
-		$this->assertEquals(array($testBookingOne,$testBookingTwo),BookingRule::checkMaxBookingsPerWeek(
+		$this->assertBookingsPresent(array($testBookingOne,$testBookingTwo),BookingRule::checkMaxBookingsPerWeek(
 			$testBookingThree, $optionsArray
 		));
 		$this->assertNull(BookingRule::checkMaxBookingsPerWeek($testBookingFour, $optionsArray));
@@ -251,7 +253,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				$this->normalUser
 			)
 		));
-		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($deniedBooking, array($maxDaysPerMonth,0,$resetDay)));
+		$this->assertBookingsPresent($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($deniedBooking, array($maxDaysPerMonth,0,$resetDay)));
 		$this->assertNull(BookingRule::checkMaxBookingsPerMonth($allowedBooking, array($maxDaysPerMonth,0,$resetDay)));
 	}
 
@@ -309,7 +311,7 @@ class BookingRuleTest extends CustomPostTypeTest
 			)
 		));
 		$this->assertNull(BookingRule::checkMaxBookingsPerMonth($allowedBooking, array($maxDaysPerMonth,0,$resetDay)));
-		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($disallowedBooking, array($maxDaysPerMonth,0,$resetDay)));
+		$this->assertBookingsPresent($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($disallowedBooking, array($maxDaysPerMonth,0,$resetDay)));
 	}
 
 	public function testFebruaryMaxBookingPerMonth(){
@@ -354,7 +356,7 @@ class BookingRuleTest extends CustomPostTypeTest
 		));
 
 		$this->assertNull(BookingRule::checkMaxBookingsPerMonth($allowedBooking, array($maxDaysPerMonth,0,$resetDay)));
-		$this->assertEquals($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($deniedBooking, array($maxDaysPerMonth,0,$resetDay)));
+		$this->assertBookingsPresent($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($deniedBooking, array($maxDaysPerMonth,0,$resetDay)));
 	}
 
 	/**
@@ -409,12 +411,39 @@ class BookingRuleTest extends CustomPostTypeTest
 
 		//now, let's enable the option and see if the booking is denied
 		Settings::updateOption('commonsbooking_options_restrictions','bookingrules-count-cancelled','on');
-		$this->assertEquals(array($cancelledBookingThisWeek),BookingRule::checkMaxBookingsPerWeek($conditionallyAllowedBooking, $optionsArray));
+		$this->assertBookingsPresent(array($cancelledBookingThisWeek),BookingRule::checkMaxBookingsPerWeek($conditionallyAllowedBooking, $optionsArray));
 
 
 	}
 
-	protected function createBookingsFromDates(array $datearray){
+	/**
+	 * Will check if the IDs of two arrays of booking models match.
+	 * We do this because we can not always compare the instances directly and the order of the array is not important
+	 * @param Booking[] $expected
+	 * @param Booking[] $result
+	 *
+	 * @return void
+	 */
+	protected function assertBookingsPresent(array $expected,array $result){
+		$this->assertEquals(count($expected),count($result));
+		$resultIds = array_map(function(Booking $booking){
+			return $booking->ID;
+		},$result);
+		$expectedIds = array_map(function(Booking $booking){
+			return $booking->ID;
+		},$expected);
+		foreach ($expectedIds as $id){
+			$this->assertContains($id,$resultIds);
+		}
+	}
+
+	/**
+	 * @param array $datearray
+	 *
+	 * @return Booking[]
+	 * @throws \Exception
+	 */
+	protected function createBookingsFromDates(array $datearray): array {
 		$bookings = array();
 		foreach ($datearray as $date){
 			$bookings[] = new Booking(get_post(

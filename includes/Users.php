@@ -36,8 +36,6 @@ function commonsbooking_isUserAllowedToEdit( $post, $user): bool {
 		return false;
 	}
 
-	if (! is_user_logged_in()){ return false; }
-
 	$isAuthor     = intval( $user->ID ) == intval( $post->post_author );
 
 	if ( isset( $user->ID ) ) {
