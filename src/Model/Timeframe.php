@@ -710,6 +710,6 @@ class Timeframe extends CustomPost {
 	}
 
 	public function getMaxDays():int{
-		return $this->getMeta(self::META_TIMEFRAME_MAX_DAYS);
+		return $this->getMeta(self::META_MAX_DAYS);
 	}
 }
