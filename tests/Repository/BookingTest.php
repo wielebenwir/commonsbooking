@@ -193,7 +193,7 @@ class BookingTest extends CustomPostTypeTest {
 		//now retrieve all orphaned bookings and make sure we find the new one
 		$orphanedBookings = Booking::getOrphaned();
 		$this->assertCount(1, $orphanedBookings);
-		$this->assertEquals($newBooking, $orphanedBookings[0]->ID);
+		$this->assertEquals($newBooking, reset($orphanedBookings)->ID);
 	}
 
 	protected function setUp() : void {
