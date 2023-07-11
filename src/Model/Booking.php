@@ -468,7 +468,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
         $dateTimeInfo = current_datetime()->format( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
         $meta_string = $dateTimeInfo . ' / ' . get_the_author_meta( 'user_login', $userID ) . "\n";
         $new_comment = $existing_comment . "\n" . $meta_string . $comment . "\n--------------------";
-        return update_post_meta( $this->ID, 'internal-comment', $new_comment );
+        update_post_meta( $this->ID, 'internal-comment', $new_comment );
     }
 
 
