@@ -3484,8 +3484,8 @@
 }
 /* line 118, ../../global/sass/partials/_extends.scss */
 .cb-button[disabled=disabled], .cb-button-container a[disabled=disabled] {
-  background-color: var(--commonsbooking-color-bg);
-  color: var(--commonsbooking-color-greyedout);
+  background-color: var(--commonsbooking-color-greyedout);
+  color: var(--commonsbooking-textcolor-light);
 }
 /* line 123, ../../global/sass/partials/_extends.scss */
 .cb-button.no-right-radius, .cb-button-container a.no-right-radius {

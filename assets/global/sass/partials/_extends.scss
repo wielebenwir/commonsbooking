@@ -116,8 +116,8 @@
 	}
 
 	&[disabled=disabled] {
-		background-color: var(--commonsbooking-color-bg);
-		color: var(--commonsbooking-color-greyedout);
+		background-color: var(--commonsbooking-color-greyedout);
+		color: var(--commonsbooking-textcolor-light);
 	}
 	
 	&.no-right-radius {
