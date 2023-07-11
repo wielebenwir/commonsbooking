@@ -267,7 +267,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			return $date_start;
 		}
 
-		if ( $this->getGrid() === 0 ) { // if grid is set to slot duration
+		$grid = $this->getGrid();
+
+		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time end
 			$timeframeGridSize = $this->getMeta( self::START_TIMEFRAME_GRIDSIZE );
 			if ( $timeframeGridSize ) {
