@@ -24,7 +24,7 @@ class Booking extends Timeframe {
      *
 	 * @var int
 	 */
-	protected $menuPosition = 4;
+	protected int $menuPosition = 4;
 
 	public function __construct() {
 

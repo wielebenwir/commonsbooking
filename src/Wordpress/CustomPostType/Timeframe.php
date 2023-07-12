@@ -72,11 +72,11 @@ class Timeframe extends CustomPostType {
 	 * Position in backend menu.
 	 * @var int
 	 */
-	protected $menuPosition = 1;
+	protected int $menuPosition = 1;
 	/**
 	 * @var array
 	 */
-	protected $types;
+	protected array $types;
 
 	public function __construct() {
 		$this->types = self::getTypes();
