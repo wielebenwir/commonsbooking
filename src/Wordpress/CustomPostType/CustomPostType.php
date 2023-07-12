@@ -313,11 +313,11 @@ abstract class CustomPostType {
 	 *
 	 * @param int|WP_Post|CustomPost $post - Post ID or Post Object
 	 *
-	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|\CommonsBooking\Model\Restriction|\CommonsBooking\Model\Timeframe
+	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|\CommonsBooking\Model\Restriction|\CommonsBooking\Model\Timeframe|\CommonsBooking\Model\Map
 	 * @throws \Exception
 	 */
 	public static function getModel( $post ) {
-		if ( $post instanceof \CommonsBooking\Model\CustomPost ) {
+		if ( $post instanceof CustomPost ) {
 			return $post;
 		}
 		if (is_int($post)) {
@@ -337,6 +337,8 @@ abstract class CustomPostType {
 				return new \CommonsBooking\Model\Restriction($post);
 			case Timeframe::$postType:
 				return new \CommonsBooking\Model\Timeframe($post);
+			case Map::$postType:
+				return new \CommonsBooking\Model\Map($post);
 		}
 		throw new \Exception('No suitable model found.');
 	}
