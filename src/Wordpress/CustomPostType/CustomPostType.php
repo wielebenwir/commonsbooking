@@ -13,12 +13,13 @@ abstract class CustomPostType {
 	/**
 	 * @var string
 	 */
-	public static $postType;
+	public static string $postType;
 
 	/**
-	 * @var
+	 * Position in backend menu
+	 * @int|null
 	 */
-	protected $menuPosition;
+	protected int $menuPosition;
 
 	/**
 	 * @return string

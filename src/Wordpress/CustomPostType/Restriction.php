@@ -13,7 +13,7 @@ class Restriction extends CustomPostType {
 	/**
 	 * @var string
 	 */
-	public static $postType = 'cb_restriction';
+	public static string $postType = 'cb_restriction';
 
 	/**
 	 * @inheritDoc

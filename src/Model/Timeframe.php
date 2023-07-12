@@ -448,7 +448,7 @@ class Timeframe extends CustomPost {
 	/**
 	 * Checks if timeframes are overlapping in date range.
 	 *
-	 * @param   \CommonsBooking\Model\Timeframe  $otherTimeframe
+	 * @param Timeframe $otherTimeframe
 	 *
 	 * @return bool
 	 */
@@ -494,12 +494,12 @@ class Timeframe extends CustomPost {
 	/**
 	 * Checks if timeframes are overlapping in daily slots.
 	 *
-	 * @param   \CommonsBooking\Model\Timeframe  $otherTimeframe
+	 * @param Timeframe $otherTimeframe
 	 *
 	 * @return bool
 	 */
 
-    protected function hasTimeframeTimeOverlap( Timeframe $otherTimeframe ) {
+    protected function hasTimeframeTimeOverlap( Timeframe $otherTimeframe ): bool {
         // Check if both timeframes have an end time, if not, there is no overlap
         if ( ! strtotime( $this->getEndTime() ) && ! strtotime( $otherTimeframe->getEndTime() ) ) {
             return true;

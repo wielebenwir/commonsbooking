@@ -10,7 +10,7 @@ class Item extends CustomPostType {
 	/**
 	 * @var string
 	 */
-	public static $postType = 'cb_item';
+	public static string $postType = 'cb_item';
 
 	/**
 	 * Initiates needed hooks.

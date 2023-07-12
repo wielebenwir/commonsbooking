@@ -17,7 +17,7 @@ class Booking extends Timeframe {
 	/**
 	 * @var string
 	 */
-	public static $postType = 'cb_booking';
+	public static string $postType = 'cb_booking';
 
 	/**
 	 * Position in backend menu.

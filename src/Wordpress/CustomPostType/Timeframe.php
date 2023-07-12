@@ -58,7 +58,7 @@ class Timeframe extends CustomPostType {
 	 * CPT type.
 	 * @var string
 	 */
-	public static $postType = 'cb_timeframe';
+	public static string $postType = 'cb_timeframe';
 
 	/**
 	 * Timeframetypes which cannot be "overbooked".

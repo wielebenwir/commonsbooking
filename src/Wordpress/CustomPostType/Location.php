@@ -8,7 +8,7 @@ use CommonsBooking\Repository\UserRepository;
 
 class Location extends CustomPostType {
 
-	public static $postType = 'cb_location';
+	public static string $postType = 'cb_location';
 
 	/**
 	 * Initiates needed hooks.

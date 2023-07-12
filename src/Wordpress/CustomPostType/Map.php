@@ -18,7 +18,7 @@ class Map extends CustomPostType {
 	/**
 	 * @var string
 	 */
-	public static $postType = 'cb_map';
+	public static string $postType = 'cb_map';
 
 	/**
 	 * Initiates needed hooks.

@@ -7,6 +7,7 @@ use CommonsBooking\View\Calendar;
 use CommonsBooking\Settings\Settings;
 use Exception;
 use CMB2_Field;
+use Psr\Cache\CacheException;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
@@ -23,7 +24,6 @@ trait Cache {
 	 * @param null $custom_id
 	 *
 	 * @return mixed
-	 * @throws InvalidArgumentException
 	 */
 	public static function getCacheItem( $custom_id = null ) {
 		if ( WP_DEBUG ) {
@@ -37,7 +37,9 @@ trait Cache {
 			if ( $cacheItem->isHit() ) {
 				return $cacheItem->get();
 			}
-		} catch (\Exception $exception) {}
+		} catch ( InvalidArgumentException $e ) {
+			return false;
+		}
 
 		return false;
 	}
@@ -111,22 +113,21 @@ trait Cache {
 
 		if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) === 'on'){
 			try {
-				$adapter = new RedisTagAwareAdapter(
+				return new RedisTagAwareAdapter(
 					RedisAdapter::createConnection( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn' ) ),
 					$namespace,
 					$defaultLifetime
 				);
-				return $adapter;
 			}
 			catch (Exception $e) {
 				commonsbooking_write_log( $e . 'Falling back to Filesystem adapter' );
 				set_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error', $e->getMessage() );
 			}
 		}
-		$adapter = new TagAwareAdapter(
+
+		return new TagAwareAdapter(
 			new FilesystemAdapter( $namespace, $defaultLifetime, $directory )
 		);
-		return $adapter;
 	}
 
 	/**
@@ -138,8 +139,6 @@ trait Cache {
 	 * @param string|null $expirationString set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
 	 *
 	 * @return bool
-	 * @throws InvalidArgumentException
-	 * @throws \Psr\Cache\CacheException
 	 */
 	public static function setCacheItem( $value, array $tags, $custom_id = null, ?string $expirationString = null ): bool {
 		// Set a default expiration to make sure, that we get rid of stale items, if there are some
@@ -162,8 +161,15 @@ trait Cache {
 		$cache = self::getCache( '', intval( $expiration ) );
 		/** @var CacheItem $cacheItem */
 		$cacheKey  = self::getCacheId( $custom_id );
-		$cacheItem = $cache->getItem( $cacheKey );
-		$cacheItem->tag($tags);
+		try {
+			$cacheItem = $cache->getItem( $cacheKey );
+			$cacheItem->tag($tags);
+		} catch ( InvalidArgumentException|CacheException $e ) {
+			// If we can't get the cache item, we can't save it
+			commonsbooking_write_log( $e );
+			return false;
+		}
+
 		$cacheItem->set( $value );
 		$cacheItem->expiresAfter(intval( $expiration ));
 
@@ -175,13 +181,16 @@ trait Cache {
 	 *
 	 * @param array $tags
 	 *
-	 * @throws InvalidArgumentException
 	 */
 	public static function clearCache( array $tags = [] ) {
 		if(!count($tags)) {
 			self::getCache()->clear();
 		} else {
-			self::getCache()->invalidateTags($tags);
+			try {
+				self::getCache()->invalidateTags( $tags );
+			} catch ( InvalidArgumentException $e ) {
+				// do nothing
+			}
 		}
 
 		// Delete expired cache items (only for Pruneable Interfaces)
@@ -255,7 +264,7 @@ trait Cache {
 			self::runShortcodeCalls($shortCodeCalls);
 
 			wp_send_json("cache successfully warmed up");
-		} catch (\Exception $exception) {
+		} catch (Exception $exception) {
 			wp_send_json("something went wrong with cache warm up");
 		}
 	}
@@ -277,19 +286,17 @@ trait Cache {
 					if (is_a(self::getCache(),'Symfony\Component\Cache\Adapter\RedisTagAwareAdapter')){
 						echo '<div style="color:green">';
 							echo __('Successfully connected to REDIS database!', 'commonsbooking');
-						echo '</div>';
 					}
 					else {
 						echo '<div style="color:red">';
 							echo get_transient(COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error');
-						echo '</div>';
 					}
 				}
 				else {
 					echo '<div style="color:orange">';
 						echo __('REDIS database not enabled','commonsbooking');
-					echo '</div>';
 				}
+				echo '</div>';
 				?>
 			</div>
 		</div>
@@ -314,13 +321,12 @@ trait Cache {
 				if (is_writable($cachePath)){
 					echo '<div style="color:green">';
 					echo sprintf( commonsbooking_sanitizeHTML(__('Directory %s is writeable.', 'commonsbooking') ), $cachePath);
-					echo '</div>';
 				}
 				else {
 					echo '<div style="color:red">';
 					echo sprintf( commonsbooking_sanitizeHTML(__('Directory %s could not be written to.', 'commonsbooking') ), $cachePath);
-					echo '</div>';
 				}
+				echo '</div>';
 				?>
 			</div>
 		</div>
@@ -356,8 +362,8 @@ trait Cache {
 		$shortCodeParts = array_map(
 			function($part) {
 				$trimmed = trim($part);
-				$trimmed = str_replace("\xc2\xa0", '', $trimmed);
-				return $trimmed;
+
+				return str_replace("\xc2\xa0", '', $trimmed);
 			}, $shortCodeParts);
 
 		$shortCode = array_shift($shortCodeParts);
