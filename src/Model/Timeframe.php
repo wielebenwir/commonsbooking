@@ -307,7 +307,7 @@ class Timeframe extends CustomPost {
 				}
 
 				//check if end date is before start date
-				if ($this->getStartDate() > $this->getTimeframeEndDate()){
+				if (($this->getStartDate() && $this->getEndDate()) && ($this->getStartDate() > $this->getTimeframeEndDate())){
 					throw new TimeframeInvalidException( __(
 							'End date is before start date. Please set a valid end date.',
 							'commonsbooking' )

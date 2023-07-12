@@ -76,6 +76,16 @@ class TimeframeTest extends CustomPostTypeTest {
 
 	public function testIsValid() {
 
+		$newLoc = $this->createLocation("New Location", 'publish');
+		$newItem = $this->createItem("New Item", 'publish');
+		$noEndDateTf = new Timeframe($this->createTimeframe(
+			$newLoc,
+			$newItem,
+			strtotime("+1 day",time()),
+			"",
+		));
+		$this->assertTrue( $noEndDateTf->isValid() );
+
 		$this->assertTrue( $this->validTF->isValid() );
 
 		$exceptionCaught = false;
