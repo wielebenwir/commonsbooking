@@ -51,7 +51,7 @@ abstract class CustomPostType {
 	 * TODO:
 	 *  - All could be interpreted differently depending on the context of the editor. So in the case of a CB Manager "All" could mean all items or locations they manage.
 	 *
-	 * @param $data
+	 * @param WP_Post[]|string[] $data
 	 *
 	 * @return array
 	 */
@@ -75,8 +75,12 @@ abstract class CustomPostType {
 
 					$key   = $item->ID;
 					$label = $item->post_title . $statusLabel;
-				} else {
+				} elseif ( is_string( $item ) ) {
 					$label = $item;
+				}
+				else {
+					//All other data types are not supported
+					continue;
 				}
 				$options[ $key ] = $label;
 			}

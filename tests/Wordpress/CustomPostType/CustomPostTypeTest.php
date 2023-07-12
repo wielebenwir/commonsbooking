@@ -72,6 +72,59 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 		}
 
 	}
+
+	public function testSanitizeOptions() {
+		//create an array of locations and see if it is sanitized correctly
+		$locationOne = get_post($this->createLocation("Location One",'publish'));
+		$locationTwo = get_post($this->createLocation("Location Two",'publish'));
+		$locationThree = get_post($this->createLocation("Location Three",'publish'));
+		$locationsArray = [$locationOne, $locationTwo, $locationThree];
+		$locationArray = [
+			$locationOne->ID => $locationOne->post_title,
+			$locationTwo->ID => $locationTwo->post_title,
+			$locationThree->ID => $locationThree->post_title
+		];
+		$this->assertEquals($locationArray, CustomPostType::sanitizeOptions($locationsArray));
+
+		//now do the same with items
+		$itemOne = get_post($this->createItem("Item One",'publish'));
+		$itemTwo = get_post($this->createItem("Item Two",'publish'));
+		$itemThree = get_post($this->createItem("Item Three",'publish'));
+		$itemsArray = [$itemOne, $itemTwo, $itemThree];
+		$itemArray = [
+			$itemOne->ID => $itemOne->post_title,
+			$itemTwo->ID => $itemTwo->post_title,
+			$itemThree->ID => $itemThree->post_title
+		];
+		$this->assertEquals($itemArray, CustomPostType::sanitizeOptions($itemsArray));
+
+		//and now with an associative array of strings (should return the same array)
+		$array = [
+			'one' => 'One',
+			'two' => 'Two',
+			'three' => 'Three'
+		];
+		$this->assertEquals($array, CustomPostType::sanitizeOptions($array));
+
+		//make sure that unsupported post types are not returned
+		$unsupported = [new \DateTime()];
+		$this->assertEmpty(CustomPostType::sanitizeOptions($unsupported));
+
+		//make sure, that for the admin user all is passed along when requested but not for the other users
+		$this->createAdministrator();
+		$this->createSubscriber();
+		$itemArrayAndAll = [
+			CustomPostType::SELECTION_ALL_POSTS => 'All',
+			$itemOne->ID => $itemOne->post_title,
+			$itemTwo->ID => $itemTwo->post_title,
+			$itemThree->ID => $itemThree->post_title
+		];
+		wp_set_current_user($this->adminUserID);
+		$this->assertEquals($itemArrayAndAll, CustomPostType::sanitizeOptions($itemsArray, true));
+		wp_set_current_user($this->subscriberId);
+		$this->assertEquals($itemArray, CustomPostType::sanitizeOptions($itemsArray, true));
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->timeframeId    = $this->createBookableTimeFrameIncludingCurrentDay();
