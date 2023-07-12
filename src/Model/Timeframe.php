@@ -384,11 +384,10 @@ class Timeframe extends CustomPost {
 
 						// Check if different weekdays are set
 						if (
-							array_key_exists( 'weekdays', $_REQUEST ) &&
-							is_array( $_REQUEST['weekdays'] ) &&
+							$this->getWeekDays() &&
 							$timeframe->getWeekDays()
 						) {
-							if ( ! array_intersect( $timeframe->getWeekDays(), $_REQUEST['weekdays'] ) ) {
+							if ( ! array_intersect( $timeframe->getWeekDays(), $this->getWeekDays() ) ) {
 								return true;
 							}
 						}
