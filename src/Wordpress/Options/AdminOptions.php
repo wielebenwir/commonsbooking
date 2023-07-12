@@ -19,7 +19,7 @@ class AdminOptions {
 	public static function setOptionsDefaultValues() {
 
 		$options_array   = include( COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php' );
-		$restored_fields = false;
+		$restored_fields = [];
 
 		foreach ( $options_array as $tab_id => $tab ) {
 			$groups     = $tab['field_groups'];
@@ -48,7 +48,7 @@ class AdminOptions {
 		}
 
 		// maybe show admin notice if fields are restored to their default value
-		if ( $restored_fields ) {
+		if ( ! empty($restored_fields) ) {
 			$message = commonsbooking_sanitizeHTML( __( '<strong>Default values for following fields automatically set or restored, because they were empty:</strong><br> ', 'commonsbooking' ) );
 			$message .= implode( "<br> ", $restored_fields );
 			new AdminMessage( $message );

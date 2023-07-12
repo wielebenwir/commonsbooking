@@ -21,6 +21,16 @@ abstract class CustomPostType {
 	protected $menuPosition;
 
 	/**
+	 * @var array
+	 */
+	protected $listColumns = null;
+
+	/**
+	 * @var array
+	 */
+	protected $types = null;
+
+	/**
 	 * @return string
 	 */
 	public static function getWPAction(): string {

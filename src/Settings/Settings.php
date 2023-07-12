@@ -69,6 +69,7 @@ class Settings {
 
 	/**
 	 * Updates a single field in a multidimensional options-array in wp_options
+	 * Will create the option if it does not exist yet.
 	 * 
 	 *
 	 * @param mixed $option_name the options name as defined in wp_options table, column option_name
@@ -80,6 +81,12 @@ class Settings {
 	public static function updateOption( $option_name, $field_id, $field_value ) {
 		// Load all the option values from wp_options
 		$options = get_option( $option_name );
+
+		//if the option does not exist, we need to create an empty
+		//array instead because we cannot convert false to an array
+		if ( $options === false ) {
+			$options = [];
+		}
 
 		// Update just the specific field
 		$options[ $field_id ] = $field_value;
