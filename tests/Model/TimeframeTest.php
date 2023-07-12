@@ -54,8 +54,9 @@ class TimeframeTest extends CustomPostTypeTest {
 
 	public function testIsValid() {
 
-		$this->assertNull( $this->validTF->isValid() );
+		$this->assertTrue( $this->validTF->isValid() );
 
+		$exceptionCaught = false;
 		$noItemTF = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			"",
@@ -67,8 +68,11 @@ class TimeframeTest extends CustomPostTypeTest {
 		}
 		catch ( TimeframeInvalidException $e ) {
 			$this->assertEquals("Item or location is missing. Please set item and location. Timeframe is saved as draft",$e->getMessage());
+			$exceptionCaught = true;
 		}
+		$this->assertTrue($exceptionCaught);
 
+		$exceptionCaught = false;
 		$noLocationTF = new Timeframe($this->createTimeframe(
 			"",
 			$this->itemId,
@@ -81,8 +85,11 @@ class TimeframeTest extends CustomPostTypeTest {
 		}
 		catch ( TimeframeInvalidException $e ) {
 			$this->assertEquals("Item or location is missing. Please set item and location. Timeframe is saved as draft",$e->getMessage());
+			$exceptionCaught = true;
 		}
+		$this->assertTrue($exceptionCaught);
 
+		$exceptionCaught = false;
 		$noStartDateTF = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
@@ -94,8 +101,11 @@ class TimeframeTest extends CustomPostTypeTest {
 		}
 		catch (TimeframeInvalidException $e ){
 			$this->assertEquals("Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.",$e->getMessage());
+			$exceptionCaught = true;
 		}
+		$this->assertTrue($exceptionCaught);
 
+		$exceptionCaught = false;
 		$pickupTimeInvalid = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
@@ -113,7 +123,9 @@ class TimeframeTest extends CustomPostTypeTest {
 		}
 		catch ( TimeframeInvalidException $e ) {
 			$this->assertEquals( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
+			$exceptionCaught = true;
 		}
+		$this->assertTrue( $exceptionCaught );
 		
 		$isOverlapping = new Timeframe($this->createTimeframe(
 			$this->locationId,
@@ -128,7 +140,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertTrue( $isOverlapping->hasTimeframeDateOverlap( $this->validTF ) );
 
 		// $this->expectException( TimeframeInvalidException::class );
-		$isOverlapping->isValid();
+		$this->assertTrue($isOverlapping->isValid());
 	}
 	
 	public function test_isValid_throwsException() {
@@ -145,12 +157,14 @@ class TimeframeTest extends CustomPostTypeTest {
 		// $this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
 		$this->assertTrue( $isOverlapping->hasTimeframeDateOverlap( $this->validTF ) );
 
-		// $this->expectException( TimeframeInvalidException::class );
+		$exceptionCaught = false;
 		try {
 			$isOverlapping->isValid();
 		} catch (TimeframeInvalidException $e ) {
 			$this->assertStringContainsString( "Item is already bookable at another location within the same date range.", $e->getMessage() );
+			$exceptionCaught = true;
 		}
+		$this->assertTrue($exceptionCaught);
 	}
 
 	public function testIsBookable() {

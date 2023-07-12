@@ -261,10 +261,10 @@ class Timeframe extends CustomPost {
 	* Checks if Timeframe is valid.
 	* Will throw a TimeframeInvalidException with error message
 	*
-	* @return void
+	* @return true if valid
 	* @throws \CommonsBooking\Exception\TimeframeInvalidException
 	*/
-	public function isValid(): void {
+	public function isValid(): bool {
 		if (
 			$this->getType() === \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID
 		) {
@@ -381,7 +381,7 @@ class Timeframe extends CustomPost {
 							$timeframe->getWeekDays()
 						) {
 							if ( ! array_intersect( $timeframe->getWeekDays(), $_REQUEST['weekdays'] ) ) {
-								return;
+								return true;
 							}
 						}
 
@@ -418,6 +418,7 @@ class Timeframe extends CustomPost {
 				}
 			}
 		}
+		return true;
 	}
 
 	/**
