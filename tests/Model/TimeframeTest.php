@@ -50,6 +50,28 @@ class TimeframeTest extends CustomPostTypeTest {
 		));
 		$this->assertTrue( $farFutureTimeframe->hasTimeframeDateOverlap( $farFutureTimeframeTwo ) );
 
+		//timeframe that does not overlap but is directly adjacent #1095
+		//we make this even further in the future to make sure it does not overlap with the other timeframe
+		$endFirstTf = new \DateTime(self::CURRENT_DATE);
+		$endFirstTf->modify('+1 year')->modify('+5 days')->setTime(23,59,59);
+		$startSecondTf = clone $endFirstTf;
+		$startSecondTf->modify('+1 second');
+		$endSecondTf = clone $startSecondTf;
+		$endSecondTf->modify('+5 days');
+		$adjacentTimeframe = new Timeframe($this->createTimeframe(
+			$secondLocationID,
+			$secondItemID,
+			strtotime( '+1 year', strtotime( self::CURRENT_DATE ) ),
+			$endFirstTf->getTimestamp(),
+		));
+		$adjacentTimeframeTwo = new Timeframe($this->createTimeframe(
+			$secondLocationID,
+			$secondItemID,
+			$startSecondTf->getTimestamp(),
+			$endSecondTf->getTimestamp(),
+		));
+		$this->assertFalse( $adjacentTimeframe->hasTimeframeDateOverlap( $adjacentTimeframeTwo ) );
+		$this->assertFalse( $adjacentTimeframeTwo->hasTimeframeDateOverlap( $adjacentTimeframe ) );
 	}
 
 	public function testIsValid() {
@@ -141,6 +163,51 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		// $this->expectException( TimeframeInvalidException::class );
 		$this->assertTrue($isOverlapping->isValid());
+	}
+
+	/**
+	 * The unit test for issue #1095.
+	 * Will check, that a timeframe is valid even if it is directly adjacent to another timeframe the same location.
+	 * If this works, it should also work for adjacent timeframes with the second timeframe for another location.
+	 * @return void
+	 */
+	public function test_isValid_directAdjacent() {
+		//we create a new location and item just to make sure that the overlap does not come from elsewhere
+		$location = $this->createLocation("New Location", 'publish');
+		$item = $this->createItem("New Item", 'publish');
+		//we set the repetition start and end to only have one second between them, so that the timeframes are directly adjacent
+		$endFirstTf = new \DateTime(self::CURRENT_DATE);
+		$endFirstTf->modify('+1 day')->setTime(23,59,59);
+		$startSecondTf = clone $endFirstTf;
+		$startSecondTf->modify('+1 second');
+		$timeframe = $this->createTimeframe(
+			$location,
+			$item,
+			strtotime( self::CURRENT_DATE),
+			$endFirstTf->getTimestamp(),
+		);
+		$firstTimeframe = new Timeframe($timeframe);
+		$this->assertTrue($firstTimeframe->isValid());
+		$secondTimeframe = $this->createTimeframe(
+			$location,
+			$item,
+			$startSecondTf->getTimestamp(),
+			strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
+		);
+		$secondTimeframe = new Timeframe($secondTimeframe);
+		$this->assertTrue($secondTimeframe->isValid());
+
+		//now test if the same is possible with second timeframe at another location
+		wp_delete_post($secondTimeframe->ID,true);
+		$secondLocation = $this->createLocation("Newest Location", 'publish');
+		$secondTimeframe = $this->createTimeframe(
+			$secondLocation,
+			$item,
+			$startSecondTf->getTimestamp(),
+			strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
+		);
+		$secondTimeframe = new Timeframe($secondTimeframe);
+		$this->assertTrue($secondTimeframe->isValid());
 	}
 	
 	public function test_isValid_throwsException() {
