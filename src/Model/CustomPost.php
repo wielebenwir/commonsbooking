@@ -11,7 +11,7 @@ use WP_Post;
  * Pseudo extends WP_Post class.
  * @package CommonsBooking\Model
  */
-class CustomPost {
+abstract class CustomPost {
 	/**
 	 * @var WP_Post
 	 */

@@ -8,7 +8,7 @@ use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Timeframe;
 use Exception;
 
-class BookablePost extends CustomPost {
+abstract class BookablePost extends CustomPost {
 
 	/**
 	 * Will return an array of bookable timeframes for the current object.
