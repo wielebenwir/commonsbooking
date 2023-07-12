@@ -181,7 +181,7 @@ class TimeframeTest extends CustomPostTypeTest {
 	 * If this works, it should also work for adjacent timeframes with the second timeframe for another location.
 	 * @return void
 	 */
-	public function test_isValid_directAdjacent() {
+	public function testisValid_directAdjacent() {
 		//we create a new location and item just to make sure that the overlap does not come from elsewhere
 		$location = $this->createLocation("New Location", 'publish');
 		$item = $this->createItem("New Item", 'publish');
@@ -220,7 +220,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertTrue($secondTimeframe->isValid());
 	}
 	
-	public function test_isValid_throwsException() {
+	public function testisValid_throwsException() {
 
 		$secondLocation = $this->createLocation("Newest Location", 'publish');
 
@@ -271,6 +271,75 @@ class TimeframeTest extends CustomPostTypeTest {
 		));
 		$this->assertFalse($passedTimeframe->isBookable());*/
 		//This test does not work, function maybe broken?
+	}
+
+	/**
+	 * Will check if the overlap of two timeframes with the same location and item is detected correctly.
+	 * It should be detected, if a weekly repetition is set and the timeframes overlap on at least one day.
+	 *  (i.e. first TF is from Monday to Wednesday and second TF is from Tuesday to Thursday)
+	 * It should not be detected, if there is no overlap on any day.
+	 * (i.e. first TF is from Monday to Wednesday and second TF is from Thursday to Saturday)
+	 * @return void
+	 */
+	public function testIsValid_WeekDays(){
+		$location = $this->createLocation("New Location", 'publish');
+		$item = $this->createItem("New Item", 'publish');
+		$mondayToWednesdayWeekly = $this->createTimeframe(
+			$location,
+			$item,
+			strtotime( self::CURRENT_DATE),
+			strtotime( '+1 year', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"on",
+			'w',
+			0,
+			'08:00 AM',
+			'12:00 PM',
+			'publish',
+			[ "1", "2", "3" ]
+		);
+		$mondayToWednesdayWeekly = new Timeframe($mondayToWednesdayWeekly);
+		$this->assertTrue($mondayToWednesdayWeekly->isValid());
+		$thursdayToSaturday = $this->createTimeframe(
+			$location,
+			$item,
+			strtotime( self::CURRENT_DATE),
+			strtotime( '+1 year', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"on",
+			'w',
+			0,
+			'08:00 AM',
+			'12:00 PM',
+			'publish',
+			[ "4", "5", "6" ]
+		);
+		$thursdayToSaturday = new Timeframe($thursdayToSaturday);
+		$this->assertTrue($thursdayToSaturday->isValid());
+
+		$tuesdayToThursday = $this->createTimeframe(
+			$location,
+			$item,
+			strtotime( self::CURRENT_DATE),
+			strtotime( '+1 year', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"on",
+			'w',
+			0,
+			'08:00 AM',
+			'12:00 PM',
+			'publish',
+			[ "2", "3", "4" ]
+		);
+		$tuesdayToThursday = new Timeframe($tuesdayToThursday);
+		$exceptionCaught = false;
+		try {
+			$tuesdayToThursday->isValid();
+		} catch (TimeframeInvalidException $e ) {
+			$this->assertStringContainsString( "Date periods are not allowed to overlap", $e->getMessage() );
+			$exceptionCaught = true;
+		}
+		$this->assertTrue($exceptionCaught);
 	}
 
 	public function testGetLocation() {
