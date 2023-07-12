@@ -289,7 +289,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	 * In that case, the unit tests would fail, because there is already the user with this ID in the database.
 	 * @return void
 	 */
-	public function createAdministrator(){
+	protected function createAdministrator(){
 		$wp_user = get_user_by('email',"admin@admin.de");
 		if (! $wp_user) {
 			$this->adminUserID = wp_create_user( "adminuser", "admin", "admin@admin.de" );
@@ -301,7 +301,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		}
 	}
 
-	public function createCBManager(){
+	protected function createCBManager(){
 		//we need to run the functions that add the custom user role and assign it to the user
 		Plugin::addCustomUserRoles();
 		//and add the caps for each of our custom post types
