@@ -232,6 +232,22 @@ class TimeframeTest extends CustomPostTypeTest {
 			$exceptionCaught = true;
 		}
 		$this->assertTrue($exceptionCaught);
+
+		//test, if end date is before start date (should throw exception)
+		$exceptionCaught = false;
+		$endBeforeStart = new Timeframe($this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+5 days', time() ),
+			strtotime( '+4 day', time() )
+		));
+		try {
+			$endBeforeStart->isValid();
+		} catch (TimeframeInvalidException $e ) {
+			$this->assertStringContainsString( "End date is before start date.", $e->getMessage() );
+			$exceptionCaught = true;
+		}
+		$this->assertTrue($exceptionCaught);
 	}
 
 	public function testIsBookable() {
