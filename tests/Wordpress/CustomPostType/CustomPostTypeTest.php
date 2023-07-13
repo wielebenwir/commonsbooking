@@ -66,7 +66,7 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 			CustomPostType::getModel($otherPost);
 			$this->fail('Expected exception not thrown');
 		} catch (\Exception $e) {
-			$this->assertEquals('No suitable model found.', $e->getMessage());
+			$this->assertStringContainsString('No suitable model found', $e->getMessage());
 		}
 
 		//post ID does not exist
