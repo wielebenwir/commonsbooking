@@ -232,7 +232,7 @@ class BookingTest extends CustomPostTypeTest
 			$this->createBookableTimeFrameIncludingCurrentDay()
 		);
 		$this->createSubscriber();
-		wp_set_current_user( $this->normalUserID );
+		wp_set_current_user( $this->subscriberId );
 	}
 
 	protected function tearDown(): void {
