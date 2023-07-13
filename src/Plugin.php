@@ -109,7 +109,11 @@ class Plugin {
 	}
 
 	/**
-	 * @return array
+	 * Will get all registered custom post types for this plugin as an instance of the CustomPostType class
+	 * All CustomPostType classes extend the CustomPostType class and must be registered in this method.
+	 * When defining a CustomPostType, you must also define a model for it, which extends the CustomPost class.
+	 * The existence of a model is checked in the @see PluginTest::testGetCustomPostTypes() test.
+	 * @return CustomPostType[]
 	 */
 	public static function getCustomPostTypes(): array {
 		return [
