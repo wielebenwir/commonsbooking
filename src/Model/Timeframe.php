@@ -30,6 +30,8 @@ class Timeframe extends CustomPost {
 
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
+	public const META_MAX_DAYS = 'timeframe-max-days';
+
 	/**
 	 * Return residence in a human readable format
 	 *
@@ -146,14 +148,14 @@ class Timeframe extends CustomPost {
 			if ( $startDate > $today ) { // start is in the future, with an end date
 				$availableString = sprintf(
 					/* translators: %1$s = startdate, second %2$s = enddate in WordPress defined format */
-                    commonsbooking_sanitizeHTML( __( ' from %1$s until %2$s', 'commonsbooking' ) ),
+                    commonsbooking_sanitizeHTML( __( 'from %1$s until %2$s', 'commonsbooking' ) ),
 					$startDateFormatted,
                     $endDateFormatted
                 );
 			} else { // start has passed, with an end date
 				$availableString = sprintf(
 					/* translators: %s = enddate in WordPress defined format */
-                    commonsbooking_sanitizeHTML( __( ' until %s', 'commonsbooking' ) ),
+                    commonsbooking_sanitizeHTML( __( 'until %s', 'commonsbooking' ) ),
                     $endDateFormatted
                 );
 			}
@@ -209,7 +211,7 @@ class Timeframe extends CustomPost {
 	public function bookingCodesApplicable(): bool {
 		try {
 			return $this->getLocation() && $this->getItem() &&
-			       $this->getStartDate() && $this->getEndDate() &&
+			       $this->getStartDate() && $this->usesBookingCodes() &&
 			       $this->getType() === \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID;
 		} catch ( Exception $e ) {
 			return false;
@@ -567,13 +569,12 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns true if booking codes shall be created.
+	 * Returns true if booking codes were enabled for this timeframe
 	 *
 	 * @return bool
 	 */
-	public function createBookingCodes() : bool
-	{
-		return $this->getMeta( 'create-booking-codes' ) === 'on';
+	public function usesBookingCodes(): bool {
+		return $this->getMeta( 'create-booking-codes' ) == 'on';
 	}
 
 	/**
@@ -581,8 +582,11 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getUTCStartDateDateTime(): DateTime {
+	public function getUTCStartDateDateTime(): ?DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
+		if ( ! $startDateString ) {
+			return null;
+		}
 		if ( $this->isFullDay() ) {
 			return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		}
@@ -594,9 +598,12 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getStartTimeDateTime(): DateTime {
+	public function getStartTimeDateTime(): ?DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
 		$startTimeString = $this->getMeta( 'start-time' );
+		if ( ! $startDateString ) {
+			return null;
+		}
 		$startDate       = Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		if ( $startTimeString ) {
 			$startTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $startTimeString ) );
@@ -612,8 +619,11 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getEndDateDateTime(): DateTime {
+	public function getEndDateDateTime(): ?DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
+		if (! $endDateString ){
+			return null;
+		}
 		return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 	}
 
@@ -624,8 +634,11 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getUTCEndDateDateTime(): DateTime {
+	public function getUTCEndDateDateTime(): ?DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
+		if (! $endDateString ){
+			return null;
+		}
 		if ( $this->isFullDay() ) {
 			return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 		}
@@ -685,7 +698,7 @@ class Timeframe extends CustomPost {
 			$admins = array_merge( $locationAdminIds, $itemAdminIds );
 		}
 
-		return $admins;
+		return array_unique( $admins );
 	}
 
 	/**

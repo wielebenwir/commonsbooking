@@ -8,8 +8,12 @@ use PHPUnit\Framework\TestCase;
 class GeoHelperTest extends TestCase
 {
 
+	/*
+	 * DISABLED BECAUSE IT KEEPS FAILING IN CI. TODO: PROBABLY MOCK THE API CALLS
+	 */
     public function testGetAddressData()
     {
+		$this->assertTrue(true);
 		/*
 		$address = GeoHelper::getAddressData('Karl-Marx-Straße 1, 12043 Berlin');
 
@@ -21,7 +25,5 @@ class GeoHelperTest extends TestCase
 		$this->assertEquals('52.4863922', $address->getCoordinates()->getLatitude());
 		$this->assertEquals('13.424689', $address->getCoordinates()->getLongitude());
 		*/
-	    //DISABLED because it would fail in CI, TODO: find a way to mock the API call
-	    $this->assertTrue(true); //just a placeholder to make the test pass
     }
 }

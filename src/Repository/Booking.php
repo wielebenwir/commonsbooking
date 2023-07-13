@@ -317,7 +317,7 @@ class Booking extends PostRepository {
 	}
 
 	/**
-	 * Returns all bookings, allowed to see/edit for user.
+	 * Returns all bookings, allowed to see for user.
 	 *
 	 * @param bool $asModel
 	 * @param null $startDate
@@ -345,7 +345,7 @@ class Booking extends PostRepository {
 				$posts = array_filter(
                     $posts,
                     function ( $post ) use ( $user ) {
-                        return commonsbooking_isUserAllowedToEdit( $post, $user );
+                        return commonsbooking_isUserAllowedToSee( $post, $user );
                     }
                 );
 			}
