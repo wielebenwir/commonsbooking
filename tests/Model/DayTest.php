@@ -23,9 +23,8 @@ class DayTest extends CustomPostTypeTest {
 	protected $bookableTimeframeOnceWeeklyValidTodayWithEnd;
 
 	protected $bookableTimeframeManualDateInputOnlyForToday;
-	private $bookableTimeframeManualDateInputTomorrow;
 
-	private $dateFormatted;
+	private $bookableTimeframeManualDateInputTomorrow;
 
 	protected function setUp() : void {
 		parent::setUp();

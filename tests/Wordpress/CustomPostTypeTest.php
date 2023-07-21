@@ -14,7 +14,17 @@ use SlopeIt\ClockMock\ClockMock;
 
 abstract class CustomPostTypeTest extends TestCase {
 
+	/**
+	 * This is the date that is used in the tests.
+	 * It is a thursday.
+	 */
 	const CURRENT_DATE = '01.07.2021';
+
+	/**
+	 * The same date, but in Y-m-d format
+	 * @var string
+	 */
+	protected string $dateFormatted;
 
 	const USER_ID = 1;
 
@@ -324,7 +334,10 @@ abstract class CustomPostTypeTest extends TestCase {
   protected function setUp() : void {
     parent::setUp();
 
-		$this->setUpBookingCodesTable();
+	$this->dateFormatted  = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
+
+
+	  $this->setUpBookingCodesTable();
 
 		// Create location
 		$this->locationId = self::createLocation('Testlocation', 'publish');
