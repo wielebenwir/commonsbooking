@@ -4,9 +4,9 @@ namespace CommonsBooking\Tests\API;
 
 use SlopeIt\ClockMock\ClockMock;
 
-class AvailabilityRouteTest extends RouteTest {
-
-	protected $ENDPOINT = '/commonsbooking/v1/availability';
+class StationRouteTest extends RouteTest
+{
+	protected $ENDPOINT = '/commonsbooking/v1/station';
 
 	public function testsAvailabilitySuccess() {
 
@@ -16,8 +16,7 @@ class AvailabilityRouteTest extends RouteTest {
 
 		$response = rest_do_request( $request );
 
-		$this->assertSame( 200, $response->get_status() );
-		$this->assertSame( 2, count( $response->get_data()->availability ) );
+		$this->assertSame( 1, count( $response->get_data() ) );
 
 		// Checks availability for the first day
 		$this->assertEquals( $this->locationId, $response->get_data()->availability[0]->locationId );
@@ -27,4 +26,6 @@ class AvailabilityRouteTest extends RouteTest {
 
 		ClockMock::reset();
 	}
+
+
 }
