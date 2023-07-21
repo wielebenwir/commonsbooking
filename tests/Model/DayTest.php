@@ -94,7 +94,6 @@ class DayTest extends CustomPostTypeTest {
 			[ strval( $weekday ) ]
 		);
 
-		$this->dateFormatted  = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
 		$this->bookableTimeframeManualDateInputOnlyForToday = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
@@ -110,6 +109,9 @@ class DayTest extends CustomPostTypeTest {
 			[ "1", "2", "3", "4", "5", "6", "7" ],
 			$this->dateFormatted
 		);
+		//we need to save the post so that a valid repetition_start and repetition_end is set
+		$timeframes = new \CommonsBooking\Wordpress\CustomPostType\Timeframe();
+		$timeframes->savePost( $this->bookableTimeframeManualDateInputOnlyForToday, get_post( $this->bookableTimeframeManualDateInputOnlyForToday ) );
 
 		$this->bookableTimeframeManualDateInputTomorrow = $this->createTimeframe(
 			$this->locationId,
@@ -126,6 +128,8 @@ class DayTest extends CustomPostTypeTest {
 			[ "1", "2", "3", "4", "5", "6", "7" ],
 			date( 'Y-m-d', strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ) )
 		);
+		//we need to save the post so that a valid repetition_start and repetition_end is set
+		$timeframes->savePost( $this->bookableTimeframeManualDateInputTomorrow, get_post( $this->bookableTimeframeManualDateInputTomorrow ) );
 
 		$this->createUnconfirmedBookingEndingTomorrow();
 

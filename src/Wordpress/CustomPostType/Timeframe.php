@@ -758,6 +758,14 @@ class Timeframe extends CustomPostType {
 
 		if ( $isValid ) {
 			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
+
+			if ($timeframe->getRepetition() == 'manual') {
+				$timestamps = array_map('strtotime', $timeframe->getManualSelectionDates());
+				asort($timestamps);
+				update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::REPETITION_START, reset($timestamps) );
+				update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::REPETITION_END, end($timestamps) );
+			}
+
 			$this->sanitizeRepetitionEndDate( $post_id );
 
 			if ( $timeframe->usesBookingCodes() && $timeframe->bookingCodesApplicable() ) {
