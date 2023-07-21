@@ -292,12 +292,24 @@ class Timeframe extends CustomPost {
 				);
 			}
 
-			if ( ! $this->getStartDate() ) {
-				// If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
-				throw new TimeframeInvalidException( __(
-						'Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.',
-						'commonsbooking' )
-				);
+			//a timeframe with a manual repetition does not need a start date
+			if ($this->getRepetition() == 'manual') {
+				$manual_selection_dates = $this->getManualSelectionDates();
+				if ( empty( $manual_selection_dates ) ){
+					throw new TimeframeInvalidException(__(
+							'No dates selected. Please select at least one date. Timeframe is saved as draft.',
+							'commonsbooking'   )
+					);
+				}
+			}
+			else {
+				if ( ! $this->getStartDate() ) {
+					// If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
+					throw new TimeframeInvalidException( __(
+							'Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.',
+							'commonsbooking' )
+					);
+				}
 			}
 
 			if (
@@ -562,6 +574,15 @@ class Timeframe extends CustomPost {
 		} else {
 			return intval( $this->getGrid() );
 		}
+	}
+
+	/**
+	 * Gets the postmeta value for the manual selection dates.
+	 * They are usually saved in a string like this: "2018-01-01,2018-01-02,2018-01-03"
+	 * @return mixed
+	 */
+	public function getManualSelectionDates() {
+		return $this->getMeta( self::META_MANUAL_SELECTION );
 	}
 
 	/**

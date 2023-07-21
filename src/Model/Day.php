@@ -341,9 +341,7 @@ class Day {
 
 				// Manual Rep
 				case "manual":
-					$manualDatesString = trim( $timeframe->getMeta(
-						\CommonsBooking\Model\Timeframe::META_MANUAL_SELECTION
-					));
+					$manualDatesString = trim( $timeframe->getManualSelectionDates());
 
 					if( $manualDatesString ) {
 						$manualDates = array_map(
