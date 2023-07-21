@@ -96,7 +96,7 @@
             const handleTypeSelection = function () {
                 const selectedType = $("option:selected", typeInput).val();
                 const selectedRepetition = $("option:selected", timeframeRepetitionInput).val();
-                if (selectedType == 2) {
+                if (selectedType === 2) {
                     maxDaysSelect.show();
                     advanceBookingDays.show();
                     allowUserRoles.show();
@@ -106,12 +106,6 @@
                     advanceBookingDays.hide();
                     allowUserRoles.hide();
                     hideFieldset(bookingCodeTitle);
-                    if (selectedType == 3 && selectedRepetition == 'manual') {
-                        //holidayField.show();
-                    } else {
-                        //holidayField.hide();
-                        //holidayInput.val('');
-                    }
                 }
             }
 
@@ -132,7 +126,7 @@
                 } else {
                     manualDateField.show();
                     manualDatePicker.show();
-                    if (selectedType == 3) {
+                    if (selectedType === 3) {
                         //do nothing
                     } else {
                         holidayInput.val('');
