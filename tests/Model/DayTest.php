@@ -8,7 +8,7 @@ use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
 class DayTest extends CustomPostTypeTest {
 
-	private $instance;
+	private Day $instance;
 
 	protected $bookableTimeframeForCurrentDayId;
 
@@ -23,6 +23,8 @@ class DayTest extends CustomPostTypeTest {
 	protected $bookableTimeframeOnceWeeklyValidTodayWithEnd;
 
 	protected $bookableTimeframeManualDateInputOnlyForToday;
+	private $bookableTimeframeManualDateInputTomorrow;
+
 	private $dateFormatted;
 
 	protected function setUp() : void {
@@ -97,8 +99,8 @@ class DayTest extends CustomPostTypeTest {
 		$this->bookableTimeframeManualDateInputOnlyForToday = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( self::CURRENT_DATE ),
-			strtotime( self::CURRENT_DATE ),
+			null,
+			null,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			'on',
 			"manual",
@@ -108,6 +110,22 @@ class DayTest extends CustomPostTypeTest {
 			"publish",
 			[ "1", "2", "3", "4", "5", "6", "7" ],
 			$this->dateFormatted
+		);
+
+		$this->bookableTimeframeManualDateInputTomorrow = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			null,
+			null,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			"manual",
+			0,
+			"8:00 AM",
+			"12:00 PM",
+			"publish",
+			[ "1", "2", "3", "4", "5", "6", "7" ],
+			date( 'Y-m-d', strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ) )
 		);
 
 		$this->createUnconfirmedBookingEndingTomorrow();
@@ -156,6 +174,9 @@ class DayTest extends CustomPostTypeTest {
 
 		$timeframe = new Timeframe( $this->bookableTimeframeManualDateInputOnlyForToday );
 		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
+
+		$timeframe = new Timeframe( $this->bookableTimeframeManualDateInputTomorrow );
+		$this->assertFalse( $this->instance->isInTimeframe( $timeframe ) );
 	}
 
 	public function testGetName() {

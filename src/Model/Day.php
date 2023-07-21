@@ -98,7 +98,7 @@ class Day {
 	}
 
 	/**
-	 * Returns array with timeframes.
+	 * Returns array with timeframes for the current day.
 	 * @return array
 	 * @throws Exception
 	 */
