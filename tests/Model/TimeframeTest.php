@@ -278,6 +278,31 @@ class TimeframeTest extends CustomPostTypeTest {
 
 	}
 
+	public function testGetManualSelectionDate() {
+		//check, that they are properly presented in an array
+		$dateFormattedInAWeek = date('Y-m-d', strtotime('+1 week', strtotime( self::CURRENT_DATE ) ) );
+		$tfWithManualSelectionDates = new Timeframe($this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day', time() ),
+			strtotime( '+2 days', time() ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"off",
+			"manual",
+			0,
+			'08:00 AM',
+			'12:00 PM',
+			'publish',
+			'[]',
+			"{$this->dateFormatted},{$dateFormattedInAWeek}"
+		) );
+		$expectedDates = array(
+			$this->dateFormatted,
+			$dateFormattedInAWeek
+		);
+		$this->assertEquals($expectedDates,$tfWithManualSelectionDates->getManualSelectionDates());
+	}
+
   protected function setUp() : void {
 
 		parent::setUp();

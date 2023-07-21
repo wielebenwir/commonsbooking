@@ -292,7 +292,8 @@ class Timeframe extends CustomPost {
 				);
 			}
 
-			//a timeframe with a manual repetition does not need a start date
+			//a timeframe with a manual repetition does not need a start date.
+			//start- and enddate are automatically set upon saving the post
 			if ($this->getRepetition() == 'manual') {
 				$manual_selection_dates = $this->getManualSelectionDates();
 				if ( empty( $manual_selection_dates ) ){
@@ -577,12 +578,19 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Gets the postmeta value for the manual selection dates.
-	 * They are usually saved in a string like this: "2018-01-01,2018-01-02,2018-01-03"
-	 * @return mixed
+	 * Gets an array of dates that were manually selected by the user.
+	 * The dates are in the format YYYY-MM-DD
+	 * @return String[]
 	 */
-	public function getManualSelectionDates() {
-		return $this->getMeta( self::META_MANUAL_SELECTION );
+	public function getManualSelectionDates(): array {
+		$manualDatesString = $this->getMeta( self::META_MANUAL_SELECTION );
+		if ( ! $manualDatesString ) {
+			return [];
+		}
+		return array_map(
+			'trim',
+			explode( ',', $manualDatesString )
+		);
 	}
 
 	/**
