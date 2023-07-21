@@ -3,9 +3,9 @@
  * This template is called in the method \CommonsBooking\Model\Booking\booking_action_buttons($form_action)
  */
 
-if ( $current_status === 'unconfirmed' && $form_action === 'cancel' ) {
-    $form_post_status = 'canceled';
-    $button_label     = esc_html__( 'Cancel', 'commonsbooking' );
+if ( $current_status === 'unconfirmed' && $form_action === 'delete_unconfirmed' ) {
+    $form_post_status = 'delete_unconfirmed';
+    $button_label     = esc_html__( 'Cancel booking process', 'commonsbooking' );
 }
 
 if ( $current_status === 'unconfirmed' && $form_action === 'confirm' ) {
