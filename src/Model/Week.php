@@ -73,8 +73,9 @@ class Week {
 			serialize( $this->types )
 		);
 
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$yearTimestamp = mktime( 0, 0, 0, 1, 1, $this->year );
 			$dayOfYear     = $this->dayOfYear;

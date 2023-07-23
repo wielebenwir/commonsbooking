@@ -25,8 +25,9 @@ class Location extends View {
 		$item     = get_query_var( 'cb-item' ) ?: false;
 		$customId = md5($item . $location->ID);
 
-		if ( Plugin::getCacheItem($customId) ) {
-			return Plugin::getCacheItem($customId);
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$items    = \CommonsBooking\Repository\Item::getByLocation( $location->ID, true );
 			$itemIds = array_map(

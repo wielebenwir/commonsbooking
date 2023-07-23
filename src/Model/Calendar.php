@@ -76,8 +76,9 @@ class Calendar {
 		);
 
 
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$weeks = array();
 			while ( $startDate <= $endDate ) {
