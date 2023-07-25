@@ -96,6 +96,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 * FIXED: Availability text for items in item shortcode (Merged display of overlapping timeframes)
 * FIXED: Location without addresses not displayed correctly
 * FIXED: Incorrect error messages displayed to user during booking process
+* FIXED: Not all routes of GBFS API were initialized (thanks @futuretap)
 * ENHANCED: Improved booking validation
 * ENHANCED: Default value for days that are bookable in advance set to 31
 
