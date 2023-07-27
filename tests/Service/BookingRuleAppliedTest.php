@@ -45,8 +45,24 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 			$this->assertEquals("You need to specify a category, if the rule does not apply to all items",$e->getMessage());
 		}
 
+		$alwaysAllowWithParams = new BookingRule(
+			"alwaysAllow",
+			"Always allow",
+			"Rule will always evaluate to null",
+			"Rule did not evaluate to null",
+			function(\CommonsBooking\Model\Booking $booking){
+				return null;
+			},
+			array(
+				array(
+					"title" => "Test Param",
+					"description" => "Test Param Description",
+				)
+			)
+		);
+		$bookingRule = new BookingRuleApplied($alwaysAllowWithParams);
 		try {
-			$bookingRule->setAppliedParams(["testParam"]);
+			$bookingRule->setAppliedParams([],"");
 			$this->fail("Expected exception not thrown");
 		} catch ( BookingRuleException $e ) {
 			$this->assertEquals("Booking rules: Not enough parameters specified.",$e->getMessage());
