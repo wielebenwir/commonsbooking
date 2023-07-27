@@ -484,7 +484,7 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'       => esc_html__( "Select multiple locations", 'commonsbooking' ),
+				'name'       => esc_html__( "Select one or more locations", 'commonsbooking' ),
 				'id'         => \CommonsBooking\Model\Timeframe::META_LOCATION_IDS,
 				'type'       => 'multicheck',
 				'options'    => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
@@ -499,7 +499,7 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'       => esc_html__( "Select multiple items", 'commonsbooking' ),
+				'name'       => esc_html__( "Select one or more items", 'commonsbooking' ),
 				'id'         => \CommonsBooking\Model\Timeframe::META_ITEM_IDS,
 				'type'       => 'multicheck',
 				'options'    => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
