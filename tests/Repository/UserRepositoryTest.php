@@ -4,7 +4,6 @@ namespace CommonsBooking\Tests\Repository;
 
 use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
-use http\Client\Curl\User;
 
 class UserRepositoryTest extends CustomPostTypeTest
 {
