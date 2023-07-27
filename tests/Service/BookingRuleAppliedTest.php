@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Tests\Service;
 
+use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Service\BookingRule;
 use CommonsBooking\Service\BookingRuleApplied;
@@ -32,6 +33,24 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 			$wp_user
 		);
 		$this->testBookingTomorrow = new Booking( get_post( $this->testBookingId ) );
+	}
+
+	public function testRuleExceptions() {
+		$bookingRule = new BookingRuleApplied($this->alwaysallow);
+		try {
+			$bookingRule->setAppliesToWho(false,[]);
+			$this->fail("Expected exception not thrown");
+		}
+		catch (BookingRuleException $e){
+			$this->assertEquals("You need to specify a category, if the rule does not apply to all items",$e->getMessage());
+		}
+
+		try {
+			$bookingRule->setAppliedParams(["testParam"]);
+			$this->fail("Expected exception not thrown");
+		} catch ( BookingRuleException $e ) {
+			$this->assertEquals("Booking rules: Not enough parameters specified.",$e->getMessage());
+		}
 	}
 	public function testCheckBooking()
 	{

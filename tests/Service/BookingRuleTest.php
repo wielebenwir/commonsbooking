@@ -109,6 +109,20 @@ class BookingRuleTest extends CustomPostTypeTest
 		$this->assertBookingsPresent(array($testBookingOne),BookingRule::checkChainBooking($testBookingTwo));
 	}
 
+	public function testGetRulesForSelect(){
+		$selectRules = BookingRule::getRulesForSelect();
+		$this->assertIsArray($selectRules);
+		//check, that it is also an associative array
+		$this->assertArrayHasKey('noSimultaneousBooking',$selectRules);
+	}
+
+	public function testGetRulesJSON(){
+		$rules = BookingRule::getRulesJSON();
+		$this->assertIsString($rules);
+		json_decode($rules);
+		$this->assertEquals( JSON_ERROR_NONE, json_last_error() );
+	}
+
 	/**
 	 * Tests the case where the booking would fulfill the middle of a chain and should therefore be denied
 	 * @return void
