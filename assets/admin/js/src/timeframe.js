@@ -44,8 +44,14 @@
         const REPETITION_MONTHLY = "m";
         const REPETITION_YEARLY = "y";
 
+        const SELECTION_MANUAL = 0;
+        const SELECTION_CATEGORY = 1;
+        const SELECTION_ALL = 2;
+
         if (timeframeForm.length) {
             const timeframeRepetitionInput = $('#timeframe-repetition');
+            const locationSelectionInput = $('#location-select');
+            const itemSelectionInput = $('#item-select');
             const typeInput = $('#type');
             const gridInput = $('#grid');
             const weekdaysInput = $('#weekdays1'); // TODO: find better solution.
@@ -117,7 +123,7 @@
              */
             const migrateSingleSelection = () => {
 
-                if (typeInput.val() != HOLIDAY_TYPE) {
+                if (typeInput.val() != HOLIDAYS_ID) {
                     return;
                 }
                 // get single selection
@@ -149,13 +155,13 @@
             const handleTypeSelection = function () {
                 const selectedType =  $("option:selected", typeInput).val();
                 const selectedRepetition = $("option:selected", timeframeRepetitionInput).val()
-                if (selectedType === BOOKABLE_ID) {
+                if (selectedType == BOOKABLE_ID) {
                     showFieldset(bookingConfigSet);
                     showFieldset(bookingCodeTitle);
                 } else {
                     hideFieldset(bookingConfigSet);
                     hideFieldset(bookingCodeTitle);
-                    if (selectedType == 3 && selectedRepetition == 'manual') {
+                    if (selectedType == 3 && selectedRepetition == REPETITION_MANUAL) {
                         holidayField.show();
                     } else {
                         holidayField.hide();
@@ -164,7 +170,7 @@
                 }
 
                 //we migrate the single selection to the multiselect (new holiday timeframes do not have a single selection anymore)
-                if (selectedType == HOLIDAY_TYPE) {
+                if (selectedType == HOLIDAYS_ID) {
                     itemSelectionInput.show();
                     locationSelectionInput.show();
                     migrateSingleSelection();
@@ -187,7 +193,7 @@
             const handleLocationSelection = function () {
                 const selectedType = $("option:selected", typeInput).val();
                 //disable the mass selection for all timeframes except holidays
-                if (selectedType == HOLIDAY_TYPE) {
+                if (selectedType == HOLIDAYS_ID) {
                     singleLocationSelection.hide();
                     //handle different selection types
                     const selectedOption = $("option:selected", locationSelectionInput).val();
@@ -220,7 +226,7 @@
             const handleItemSelection = function () {
                 const selectedType = $("option:selected", typeInput).val();
                 //disable the mass selection for all timeframes except holidays (for now)
-                if (selectedType == HOLIDAY_TYPE) {
+                if (selectedType == HOLIDAYS_ID) {
                     singleItemSelection.hide();
                     //handle different selection types
                     const selectedOption = $("option:selected", itemSelectionInput).val();
@@ -252,7 +258,7 @@
             const handleRepititionSelection = function () {
                 const selectedRepetition = $("option:selected", timeframeRepetitionInput).val();
                 const selectedType = $("option:selected", typeInput).val();
-                if (selectedRepetition !== REPETITION_MANUAL) {
+                if (selectedRepetition != REPETITION_MANUAL) {
                     manualDateField.hide()
                     manualDatePicker.hide();
                 } else {
@@ -296,7 +302,7 @@
                         showRepFields();
                     }
 
-                    if (selectedType === REPETITION_MANUAL) {
+                    if (selectedType == REPETITION_MANUAL) {
                         manualDateField.show();
                         hideFieldset(repetitionStartInput);
                         hideFieldset(repetitionEndInput);
@@ -306,7 +312,7 @@
                         showFieldset(repetitionEndInput);
                     }
 
-                    if (selectedType === REPETITION_WEEKLY) {
+                    if (selectedType == REPETITION_WEEKLY) {
                         weekdaysInput.parents('.cmb-row').show();
                     } else {
                         weekdaysInput.parents('.cmb-row').hide();
@@ -333,7 +339,7 @@
 
                 hideFieldset(bookingCodeSet);
 
-                if (repStart && fullday && type === BOOKABLE_ID) {
+                if (repStart && fullday && type == BOOKABLE_ID) {
                     showFieldset(bookingCodeSet);
 
                     // If booking codes shall not be created we disable and hide option to show them

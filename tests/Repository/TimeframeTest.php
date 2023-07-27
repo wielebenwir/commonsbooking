@@ -34,7 +34,7 @@ class TimeframeTest extends CustomPostTypeTest {
 	 * Create a completely seperate item, location and timeframe.
 	 * @return void
 	 */
-	private function createOtherTimeframe( $start = self::REPETITION_START, $end = self::REPETITION_END ) {
+	private function createOtherTimeframe( $start = $this->repetition_start, $end = $this->repetition_end ) {
 		$this->otherItemId      = $this->createItem( "Other Item" );
 		$this->otherLocationId  = $this->createLocation( "Other Location" );
 		$this->otherTimeframeId = $this->createTimeframe(
@@ -45,7 +45,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		);
 	}
 
-	private function createOtherTFwithItemAtFirstLocation( $start = self::REPETITION_START, $end = self::REPETITION_END ) {
+	private function createOtherTFwithItemAtFirstLocation( $start = $this->repetition_start, $end = $this->repetition_end ) {
 		$this->otherItemId      = $this->createItem( "Other Item" );
 		$this->otherTimeframeId = $this->createTimeframe(
 			$this->locationId,
@@ -71,7 +71,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->repetition_end
 		);
 		$this->allTimeframes[] = $this->timeframeWithEndDate;
-		$inRangeTimeFrames = Timeframe::getInRange( self::REPETITION_START, self::REPETITION_END );
+		$inRangeTimeFrames = Timeframe::getInRange( $this->repetition_start, $this->repetition_end);
 		$postIds           = array_map( function ( $timeframe ) {
 			return $timeframe->ID;
 		}, $inRangeTimeFrames );
@@ -80,7 +80,7 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		// Create a completely seperate item, location and timeframe. This should now also be in the range.
 		$this->createOtherTimeframe();
-		$inRangeTimeFrames = Timeframe::getInRange( self::REPETITION_START, self::REPETITION_END );
+		$inRangeTimeFrames = Timeframe::getInRange( $this->repetition_start, $this->repetition_end );
 		$this->assertEquals( 2, count( $inRangeTimeFrames ) );
 		$postIds = array_map( function ( $timeframe ) {
 			return $timeframe->ID;
@@ -89,7 +89,7 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		//different location, same item, should be in range
 		$this->createOtherTFwithItemAtFirstLocation();
-		$inRangeTimeFrames = Timeframe::getInRange( self::REPETITION_START, self::REPETITION_END );
+		$inRangeTimeFrames = Timeframe::getInRange( $this->repetition_start, $this->repetition_end );
 		$this->assertEquals( 3, count( $inRangeTimeFrames ) );
 		$postIds = array_map( function ( $timeframe ) {
 			return $timeframe->ID;
@@ -98,7 +98,7 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		//item and location are the same, but timeframe is not in range because it ends before the start of the range
 		$earlierStart = new \DateTime();
-		$earlierStart->setTimestamp( self::REPETITION_START );
+		$earlierStart->setTimestamp( $this->repetition_start );
 		$earlierStart->modify( '-10 day' );
 
 		$earlierEnd = clone $earlierStart;
@@ -110,7 +110,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$earlierStart->getTimestamp(),
 			$earlierEnd->getTimestamp()
 		);
-		$inRangeTimeFrames = Timeframe::getInRange( self::REPETITION_START, self::REPETITION_END );
+		$inRangeTimeFrames = Timeframe::getInRange( $this->repetition_start, $this->repetition_end );
 		$this->assertEquals( 3, count( $inRangeTimeFrames ) );
 		$postIds = array_map( function ( $timeframe ) {
 			return $timeframe->ID;
@@ -180,16 +180,12 @@ class TimeframeTest extends CustomPostTypeTest {
 		asort($this->allTimeframes);
 	}
 
-	protected function tearDown() : void {
-		parent::tearDown();
-	}
-
 	public function testGetInRange() {
 		$inRangeTimeFrames = Timeframe::getInRange($this->repetition_start, $this->repetition_end);
 		//All timeframes should be in range
 		$this->assertEquals(count($this->allTimeframes),count($inRangeTimeFrames) );
 		$postIds = array_map(function($timeframe) {
-		$inRangeTimeFrames = Timeframe::getInRange( self::REPETITION_START, self::REPETITION_END );
+		$inRangeTimeFrames = Timeframe::getInRange( $this->repetition_start, $this->repetition_end );
 		$postIds           = array_map( function ( $timeframe ) {
 			return $timeframe->ID;
 		}, $inRangeTimeFrames);
@@ -205,8 +201,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END
+			$this->repetition_start,
+			$this->repetition_end
 		);
 		$inItemTimeframes  = Timeframe::get(
 			[],
@@ -218,7 +214,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		//test for one item that is first at one location and then at another location, should get both timeframes
 		$otherLocationId = $this->createLocation( "Other Location" );
 		$earlierStart    = new \DateTime();
-		$earlierStart->setTimestamp( self::REPETITION_START );
+		$earlierStart->setTimestamp( $this->repetition_start );
 		$earlierStart->modify( '-10 day' );
 
 		$earlierEnd = clone $earlierStart;
@@ -251,8 +247,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->timeframeId    = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END
+			$this->repetition_start,
+			$this->repetition_end
 		);
 		$inLocationTimeframes = Timeframe::get(
 			[ $this->locationId ],
@@ -283,8 +279,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->timeframeId           = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END
+			$this->repetition_start,
+			$this->repetition_end
 		);
 		$inLocationAndItemTimeframes = Timeframe::get(
 			[ $this->locationId ],
@@ -314,8 +310,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END
+			$this->repetition_start,
+			$this->repetition_end
 		);
 		$postIds           = Timeframe::getPostIdsByType(
 			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
@@ -327,7 +323,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		//test for one item that is first at one location and then at another location, should get both timeframes
 		$otherLocationId = $this->createLocation( "Other Location" );
 		$earlierStart    = new \DateTime();
-		$earlierStart->setTimestamp( self::REPETITION_START );
+		$earlierStart->setTimestamp( $this->repetition_start );
 		$earlierStart->modify( '-10 day' );
 		$earlierEnd = clone $earlierStart;
 		$earlierEnd->modify( '+5 day' );
@@ -352,8 +348,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END
+			$this->repetition_start,
+			$this->repetition_end
 		);
 		$postIds           = Timeframe::getPostIdsByType(
 			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
@@ -381,8 +377,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END
+			$this->repetition_start,
+			$this->repetition_end
 		);
 		$postIds           = Timeframe::getPostIdsByType(
 			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
@@ -409,8 +405,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->timeframeId = $this->createTimeframe(
 			$this->locationId,
 			[$this->itemId, $otherItemId],
-			self::REPETITION_START,
-			self::REPETITION_END
+			$this->repetition_start,
+			$this->repetition_end
 		);
 		$fromFirstItem     = Timeframe::getPostIdsByType(
 			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
@@ -448,8 +444,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END,
+			$this->repetition_start,
+			$this->repetition_end,
 		);
 		$this->createOtherTimeframe();
 
@@ -457,8 +453,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$holidayId = $this->createTimeframe(
 			[$this->locationId, $this->otherLocationId],
 			[$this->itemId, $this->otherItemId],
-			self::REPETITION_START,
-			self::REPETITION_END,
+			$this->repetition_start,
+			$this->repetition_end,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID
 		);
 
