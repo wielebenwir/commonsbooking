@@ -607,10 +607,10 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name' => esc_html__( 'Holiday', 'commonsbooking' ), //TODO: Set name
+				'name' => esc_html__( 'Import holidays', 'commonsbooking' ),
 				'desc' => esc_html__(
-					'TEXT TO DESCRIBE FUNCTION'
-					, 'commonsbooking' ), //TODO: Change Description
+					'Select the year and state to import holidays for (as of now only German holidays are supported)'
+					, 'commonsbooking' ),
 				'id'   => "_cmb2_holiday",
 				'type' => 'holiday_get_fields'
 			),
@@ -889,7 +889,7 @@ class Timeframe extends CustomPostType {
 			// Post Type in der oberen Admin-Bar anzeigen?
 			'show_in_admin_bar' => true,
 
-			// in den Navigations Menüs sichtbar machen?
+			// in den Navigationsmenüs sichtbar machen?
 			'show_in_nav_menus' => true,
 
 			// Hier können Berechtigungen in einem Array gesetzt werden
@@ -1010,87 +1010,6 @@ class Timeframe extends CustomPostType {
 		// Listing of available items/locations
 		add_shortcode( 'cb_items_table', array( Calendar::class, 'shortcode' ) );
 
-		add_filter( 'cmb2_render_holiday_get_fields', array( Timeframe::class, 'cmb2_render_holiday_get_fields' ), 10, 5 );
-	}
-
-	/**
-	 * Render Holiday Field
-	 */
-	public static function cmb2_render_holiday_get_fields( $field, $value, $object_id, $object_type, $field_type ) {
-
-		// make sure we specify each part of the value we need.
-		$value = wp_parse_args( $value, array(
-			'holiday_year'  => '',
-			'holiday_state' => '',
-		) );
-
-		?>
-		<div class="cb_admin_holiday_table_wrapper">
-		<div class="cb_admin_holiday_table">
-			<label
-				for="<?php echo $field_type->_id( 'holiday_year' ); ?>"><?php echo esc_html__( 'Year', 'commonsbooking' );//TODO: set name ?></label>
-			<?php echo $field_type->select( array(
-				'name'  => $field_type->_name( '[holiday_year]' ),
-				'id'    => $field_type->_id( 'holiday_year' ),
-				'class' => 'multicheck',
-				'desc' => '',
-				'options' => self::cmb2_get_year_options(),
-			) ); ?>
-		<br>
-		</div>
-		<div class="cb_admin_holiday_table">
-			<label
-				for="<?php echo $field_type->_id( 'holiday_state' ); ?>"><?php echo esc_html__( 'STATE', 'commonsbooking' );//TODO: set name ?></label>
-			<?php echo $field_type->select( array(
-				'name'  => $field_type->_name( '[holiday_state]' ),
-				'id'    => $field_type->_id( 'holiday_state' ),
-				'desc'  => '',
-				'type' => 'multicheck',
-				'class' => 'cmb2_select',
-				'options' => self::cmb2_get_state_options(),
-			) ); ?>
-			<br>
-		</div>
-		<div class="cb_admin_holiday_table">
-			<button type="button" id="holiday_load_btn"
-			><?php echo esc_html__( 'Load Holidays', 'commonsbooking' ); //TODO: set name?></button>
-		</div>
-	</div>
-
-
-		<br class="clear">
-		<?php
-		echo $field_type->_desc( true );
-	}
-
-	/**
-	 * Create State Options for Holiday
-	 */
-	public static function cmb2_get_state_options( $value = false ) {
-		$state_list = Holiday::returnStates();
-		$state_options = '';
-		foreach ( $state_list as $abrev => $state ) {
-			$state_options .= '<option value="'. $abrev .'" '. selected( $value, $abrev, false ) .'>'. $state .'</option>';
-		}
-
-		return $state_options;
-	}
-
-	/**
-	 * Create Year Options for Holiday
-	 */
-	public static function cmb2_get_year_options( $value = false ) {
-		$year = intval(date('Y'));
-		$year_options = '';
-
-		for ( $i = 0 ; $i < 3; $i++ ) {
-			$year_options .= '<option value="'. $year .'" ';
-			if($i === 0){
-				$year_options .= ' selected ';
-			};
-
-			$year_options .='>'. $year++ .'</option>';
-		}
-		return $year_options;
+		add_filter( 'cmb2_render_holiday_get_fields', array( Holiday::class, 'renderFields'), 10, 5 );
 	}
 }
