@@ -543,7 +543,7 @@ class Plugin {
 		add_action( 'wp_enqueue_scripts', array( Cache::class, 'addWarmupAjaxToOutput' ) );
 		add_action( 'admin_enqueue_scripts', array( Cache::class, 'addWarmupAjaxToOutput' ) );
 
-		add_action( 'plugins_loaded', array( $this, 'commonsbooking_load_textdomain' ), 20 );
+		add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
 		$map_admin = new LocationMapAdmin();
 		add_action( 'plugins_loaded', array( $map_admin, 'load_location_map_admin' ) );
@@ -564,12 +564,17 @@ class Plugin {
                 $this->UpdateNotice( COMMONSBOOKING_VERSION, $plugin_data['new_version'] );
             }
         );
-             
+
+        // add ajax search for cmb2 fields (e.g. user search etc.)
+        add_filter('cmb2_field_ajax_search_url', function(){
+            return (COMMONSBOOKING_PLUGIN_URL . '/vendor/ed-itsolutions/cmb2-field-ajax-search/');
+        });
+
     	// iCal rewrite
 		iCalendar::initRewrite();
 
 	}
-	
+
 	/**
 	 * Loads text domain for (from local file or wordpress plugin-dir)
 	 *

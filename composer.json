@@ -44,7 +44,8 @@
     "symfony/cache": "^5.4",
     "symfony/service-contracts": "v1.1.11",
     "eluceo/ical": "2.09.*",
-    "phpmailer/phpmailer": "^6.6"
+    "phpmailer/phpmailer": "^6.6",
+    "ed-itsolutions/cmb2-field-ajax-search": "^2.0"
   },
   "require-dev": {
     "mockery/mockery": "1.*",
