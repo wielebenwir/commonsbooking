@@ -124,6 +124,25 @@ class Plugin {
 	}
 
 	/**
+	 * Tests if a given post belongs to our CPTs
+	 * @param $post int|\WP_Post - post id or post object
+	 *
+	 * @return bool
+	 */
+	public static function isPostCustomPostType($post): bool {
+		if (is_int($post)) {
+			$post = get_post($post);
+		}
+
+		if ( empty( $post ) ) {
+			return false;
+		}
+
+		$validPostTypes = self::getCustomPostTypesLabels();
+		return in_array($post->post_type,$validPostTypes);
+	}
+
+	/**
 	 * Returns only custom post types, which are allowed for cb manager
      *
 	 * @return array
@@ -206,7 +225,20 @@ class Plugin {
 		if ( COMMONSBOOKING_VERSION != $commonsbooking_installed_version or ! isset( $commonsbooking_installed_version ) ) {
 
 			// reset greyed out color when upgrading, see issue #1121
-			Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor', '#f6f6f6' );
+			Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor', '#e0e0e0' );
+			Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_lighttext', '#a0a0a0');
+
+			// reset iCalendar Titles when upgrading, see issue #1251
+			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
+			$otherEventTitle = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
+			if ( str_contains( $eventTitle, 'post_name' ) ){
+				$updatedString = str_replace( 'post_name', 'post_title', $eventTitle );
+				Settings::updateOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title', $updatedString );
+			}
+			if ( str_contains( $otherEventTitle, 'post_name' ) ){
+				$updatedString = str_replace( 'post_name', 'post_title', $otherEventTitle );
+				Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title', $updatedString );
+			}
 
 			// set Options default values (e.g. if there are new fields added)
 			AdminOptions::SetOptionsDefaultValues();
@@ -634,6 +666,10 @@ class Plugin {
 					new \CommonsBooking\API\LocationsRoute(),
 					// new \CommonsBooking\API\OwnersRoute(),
 					new \CommonsBooking\API\ProjectsRoute(),
+					new \CommonsBooking\API\GBFS\Discovery(),
+					new \CommonsBooking\API\GBFS\StationInformation(),
+					new \CommonsBooking\API\GBFS\StationStatus(),
+					new \CommonsBooking\API\GBFS\SystemInformation(),
 
 				];
 				foreach ( $routes as $route ) {
@@ -788,7 +824,8 @@ class Plugin {
 
     /**
      * sets advance booking days to default value for existing timeframes.
-     * Advances booking timeframes are available since 2.6 - all timeframes created prior to this version need to have this value set to a default value (365 days)
+     * Advances booking timeframes are available since 2.6 - all timeframes created prior to this version need to have this value set to a default value.
+     * @see \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS
      *
      * @return void
      */
@@ -797,7 +834,7 @@ class Plugin {
 
         foreach ( $timeframes as $timeframe ) {
             if ( $timeframe->getMeta( 'timeframe-advance-booking-days' ) < 1 ) {
-                update_post_meta( $timeframe->ID, 'timeframe-advance-booking-days', '365' );
+                update_post_meta( $timeframe->ID, 'timeframe-advance-booking-days', strval( \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS ) );
             }
         }
     }

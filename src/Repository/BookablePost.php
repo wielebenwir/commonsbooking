@@ -39,8 +39,9 @@ abstract class BookablePost extends PostRepository {
 
 		$customId = md5( $current_user->ID . static::getPostType() );
 
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			// Get all Locations where current user is author
 			$args = array(
@@ -113,12 +114,24 @@ abstract class BookablePost extends PostRepository {
 	}
 
 	/**
+	 * Gets all the defined terms for locations / items
+	 * @return int[]|string|string[]|\WP_Error|\WP_Term[]
+	 */
+	public static function getTerms() {
+		return get_terms(array(
+			'taxonomy'	=> static::getPostType() . 's_category',
+			'hide_empty' => false,
+		));
+	}
+	/**
 	 * @return string
 	 */
 	abstract protected static function getPostType();
 
 	/**
 	 * Returns cb-posts for a user (respects author and assigned admins).
+	 *
+	 * THIS METHOD DOES NOT SEEM TO BE USED ANYWHERE.
 	 *
 	 * @param $userId
 	 * @param false $asModel
@@ -128,8 +141,9 @@ abstract class BookablePost extends PostRepository {
 	public static function getByUserId( $userId, bool $asModel = false ): array {
 		$cbPosts = [];
 
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$userId = intval( $userId );
 			// Get all Locations where current user is author
@@ -201,8 +215,9 @@ abstract class BookablePost extends PostRepository {
 
 		$customCacheKey = md5( serialize( $args ) );
 
-		if ( Plugin::getCacheItem( $customCacheKey ) ) {
-			return Plugin::getCacheItem( $customCacheKey );
+		$cacheItem = Plugin::getCacheItem( $customCacheKey );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$defaults = array(
 				'post_status' => array( 'publish', 'inherit' ),
@@ -253,8 +268,9 @@ abstract class BookablePost extends PostRepository {
 			$postId = $postId->ID;
 		}
 
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$posts = self::getRelatedPosts( $postId, $originType, $relatedType );
 			foreach ( $posts as $key => &$relatedPost ) {
@@ -293,8 +309,9 @@ abstract class BookablePost extends PostRepository {
 			$postId = $postId->ID;
 		}
 
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$relatedPosts   = [];
 			$relatedPostIds = [];

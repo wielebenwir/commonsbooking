@@ -208,7 +208,7 @@ class Item extends CustomPostType {
 
 		// Show selection only to admins
 		if ( commonsbooking_isCurrentUserAdmin() || commonsbooking_isCurrentUserCBManager() ) {
-			$users       = UserRepository::getCBManagers();
+			$users       = UserRepository::getSelectableCBManagers();
 			$userOptions = [];
 			foreach ( $users as $user ) {
 				$userOptions[ $user->ID ] = $user->get( 'user_nicename' ) . " (" . $user->first_name . " " . $user->last_name . ")";

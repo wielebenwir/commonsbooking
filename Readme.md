@@ -1,13 +1,14 @@
 [![PHP Composer](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml) [![WP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/wp-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest) [![PHP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/php-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest)
+[![codecov](https://codecov.io/gh/wielebenwir/commonsbooking/branch/master/graph/badge.svg?token=STJC8WPWIC)](https://codecov.io/gh/wielebenwir/commonsbooking)
 
 # CommonsBooking
 
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen  
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
-Tags: booking, commons, sharing, calendar,  
+Tags: booking, commons, sharing, calendar, commoning, open-source, booking system, booking calendar  
 Requires at least: 5.2  
-Tested up to: 6.0
-Stable Tag: 2.8
+Tested up to: 6.0  
+Stable Tag: 2.8.1 
 Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -70,11 +71,12 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 2. Navigate into your wp-content/plugins directory
 3. Open a terminal and run `git clone https://github.com/wielebenwir/commonsbooking`
 4. cd into the directory commonsbooking and run `composer install`
+> This might fail, if you don't have the PHP extension [uopz](https://www.php.net/manual/en/book.uopz.php) installed. Try running `composer install --no-dev` if you just quickly want to test a specific branch without installing the extension.
 5. Activate the plugin in the Plugin dashboard
 
 ## Frequently Asked Questions
 
-### Where can i find help/report bugs?
+### Where can I find help/report bugs?
 
 * [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues)
 * [Support](https://commonsbooking.org/kontakt/)
@@ -88,6 +90,15 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog 
+
+### 2.8.1 (xx.06.2023)
+* FIXED: Wrong field value for iCal events (the field value is reset, you have to re-set your values after updating)
+* FIXED: Bug sending cancellation mail to admin on admin cancellation
+* FIXED: Availability text for items in item shortcode (Merged display of overlapping timeframes)
+* FIXED: Location without addresses not displayed correctly
+* FIXED: Incorrect error messages displayed to user during booking process
+* ENHANCED: Improved booking validation
+* ENHANCED: Default value for days that are bookable in advance set to 31
 
 ### 2.8 (27.04.2023)
 * NEW: Added option to set a minimum offset for bookings. This allows to set a minimum time between booking and pickup.

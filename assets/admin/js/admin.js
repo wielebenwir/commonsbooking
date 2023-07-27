@@ -132,6 +132,7 @@
             const bookingConfigTitle = $(".cmb2-id-title-bookings-config");
             const maxDaysSelect = $(".cmb2-id-timeframe-max-days");
             const advanceBookingDays = $(".cmb2-id-timeframe-advance-booking-days");
+            const BookingStartDayOffset = $(".cmb2-id-booking-startday-offset");
             const allowUserRoles = $(".cmb2-id-allowed-user-roles");
             const repSet = [ repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput ];
             const noRepSet = [ fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput ];
@@ -210,7 +211,7 @@
             const handleBookingCodesSelection = function() {
                 const fullday = fullDayInput.prop("checked"), type = typeInput.val(), repStart = repetitionStartInput.val(), repEnd = repetitionEndInput.val();
                 hideFieldset(bookingCodeSet);
-                if (repStart && repEnd && fullday && type == 2) {
+                if (repStart && fullday && type == 2) {
                     showFieldset(bookingCodeSet);
                     if (!createBookingCodesInput.prop("checked")) {
                         hideFieldset([ showBookingCodes ]);

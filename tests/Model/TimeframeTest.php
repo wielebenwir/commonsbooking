@@ -2,11 +2,17 @@
 
 namespace CommonsBooking\Tests\Model;
 
-use CommonsBooking\Model\Item;
-use CommonsBooking\Model\Location;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
-use CommonsBooking\Model\Timeframe;
+use CommonsBooking\Exception\TimeframeInvalidException;
 
+use CommonsBooking\Model\Timeframe;
+use CommonsBooking\Model\Location;
+use CommonsBooking\Model\Item;
+use SlopeIt\ClockMock\ClockMock;
+
+/**
+ * @covers \CommonsBooking\Model\Timeframe
+ */
 class TimeframeTest extends CustomPostTypeTest {
 
 	protected Timeframe $firstTimeframe;
@@ -15,7 +21,7 @@ class TimeframeTest extends CustomPostTypeTest {
 
 	public function testHasTimeframeDateOverlap() {
 		//timeframe for only yesterday and today should not overlap with timeframe for next week
-		$this->assertFalse( Timeframe::hasTimeframeDateOverlap( $this->firstTimeframe, $this->secondTimeframe ) );
+		$this->assertFalse( $this->firstTimeframe->hasTimeframeDateOverlap( $this->secondTimeframe ) );
 
 		$secondLocationID = $this->createLocation("Second Location", 'publish');
 		$secondItemID = $this->createItem("Second Item", 'publish');
@@ -27,7 +33,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+30 day', strtotime( self::CURRENT_DATE ) ),
 		));
-		$this->assertTrue( Timeframe::hasTimeframeDateOverlap( $this->secondTimeframe, $thisMonthTimeframe ) );
+		$this->assertTrue( $this->secondTimeframe->hasTimeframeDateOverlap(  $thisMonthTimeframe ) );
 
 		//timeframe overlap test for far future (beyond max booking days)
 		$farFutureTimeframe = new Timeframe($this->createTimeframe(
@@ -42,12 +48,13 @@ class TimeframeTest extends CustomPostTypeTest {
 			strtotime( '+70 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+100 day', strtotime( self::CURRENT_DATE ) ),
 		));
-		$this->assertTrue( Timeframe::hasTimeframeDateOverlap( $farFutureTimeframe, $farFutureTimeframeTwo ) );
+		$this->assertTrue( $farFutureTimeframe->hasTimeframeDateOverlap( $farFutureTimeframeTwo ) );
 
 	}
 
 	public function testIsValid() {
-		$this->assertTrue($this->validTF->isValid());
+
+		$this->assertNull( $this->validTF->isValid() );
 
 		$noItemTF = new Timeframe($this->createTimeframe(
 			$this->locationId,
@@ -55,7 +62,12 @@ class TimeframeTest extends CustomPostTypeTest {
 			strtotime("+1 day",time()),
 			strtotime("+3 days",time())
 		));
-		$this->assertFalse($noItemTF->isValid());
+		try {
+			$noItemTF->isValid();
+		}
+		catch ( TimeframeInvalidException $e ) {
+			$this->assertEquals("Item or location is missing. Please set item and location. Timeframe is saved as draft",$e->getMessage());
+		}
 
 		$noLocationTF = new Timeframe($this->createTimeframe(
 			"",
@@ -63,7 +75,13 @@ class TimeframeTest extends CustomPostTypeTest {
 			strtotime("+20 day",time()),
 			strtotime("+25 days",time())
 		));
-		$this->assertFalse($noLocationTF->isValid());
+
+		try {
+			$noLocationTF->isValid();
+		}
+		catch ( TimeframeInvalidException $e ) {
+			$this->assertEquals("Item or location is missing. Please set item and location. Timeframe is saved as draft",$e->getMessage());
+		}
 
 		$noStartDateTF = new Timeframe($this->createTimeframe(
 			$this->locationId,
@@ -71,7 +89,12 @@ class TimeframeTest extends CustomPostTypeTest {
 			"",
 			strtotime("+10 days",time())
 		));
-		$this->assertFalse($noStartDateTF->isValid());
+		try {
+			$noStartDateTF->isValid();
+		}
+		catch (TimeframeInvalidException $e ){
+			$this->assertEquals("Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.",$e->getMessage());
+		}
 
 		$pickupTimeInvalid = new Timeframe($this->createTimeframe(
 			$this->locationId,
@@ -85,16 +108,49 @@ class TimeframeTest extends CustomPostTypeTest {
 			'09:00 AM',
 			null
 		));
-		$this->assertFalse($pickupTimeInvalid->isValid());
-
+		try {
+			$pickupTimeInvalid->isValid();
+		}
+		catch ( TimeframeInvalidException $e ) {
+			$this->assertEquals( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
+		}
+		
 		$isOverlapping = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime("+1 day",time()),
-			strtotime("+2 days",time())
-		));
-		$this->assertFalse($isOverlapping->isValid());
+			strtotime( '+1 day', time() ),
+			strtotime( '+2 days', time() ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"off"
+		));		
 
+		// $this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
+		$this->assertTrue( $isOverlapping->hasTimeframeDateOverlap( $this->validTF ) );
+
+		// $this->expectException( TimeframeInvalidException::class );
+		$isOverlapping->isValid();
+	}
+	
+	public function test_isValid_throwsException() {
+
+		$secondLocation = $this->createLocation("Newest Location", 'publish');
+
+		$isOverlapping = new Timeframe($this->createTimeframe(
+			$secondLocation,
+			$this->itemId,
+			strtotime( '+1 day', time() ),
+			strtotime( '+2 days', time() )
+		));		
+
+		// $this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
+		$this->assertTrue( $isOverlapping->hasTimeframeDateOverlap( $this->validTF ) );
+
+		// $this->expectException( TimeframeInvalidException::class );
+		try {
+			$isOverlapping->isValid();
+		} catch (TimeframeInvalidException $e ) {
+			$this->assertStringContainsString( "Item is already bookable at another location within the same date range.", $e->getMessage() );
+		}
 	}
 
 	public function testIsBookable() {
@@ -120,7 +176,69 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals($item,$this->validTF->getItem());
 	}
 
-	protected function setUp() {
+	/**
+	 * @return void
+	 *
+	 * @dataProvider providerFormatBookableDate()
+	 */
+	public function test_formatBookableDate($todayMockDate, $expectedString, $start, $end) {
+
+		// Mocks strtotime
+		ClockMock::freeze( new \DateTime( $todayMockDate ) );
+
+		$result = Timeframe::formatBookableDate( $start, $end );
+
+		ClockMock::reset();
+
+		$this->assertEquals( $expectedString, $result );
+	}
+
+	/**
+	 * Provider for test_formatBookableDate
+	 */
+	public function providerFormatBookableDate() {
+		return array(
+			// case: only one day (start = end)
+			'Available here on January 24, 2021' => array(
+				'2021-01-22',
+				'Available here on January 24, 2021',
+				strtotime( '2021-01-24' ),
+				strtotime( '2021-01-24' ),
+			),
+			// case: open end
+			'Available here from January 24, 2021 (open end)' => array(
+				'2021-01-22',
+				'Available here from January 24, 2021',
+				strtotime( '2021-01-24' ),
+				false,
+			),
+			// case: start passed, open end date
+			'Available here permanently' => array(
+				'2021-01-25',
+				'Available here permanently',
+				strtotime( '2021-01-24' ),
+				false,
+			),
+			// case: start and end
+			'Available here from January 24, 2021 until January 26, 2021' => array(
+				'2021-01-22',
+				'Available here from January 24, 2021 until January 26, 2021',
+				strtotime( '2021-01-24' ),
+				strtotime( '2021-01-26' ),
+			),
+			// case: start passed, with end date
+			'Available here until January 26, 2021' => array(
+				'2021-01-25',
+				'Available here until January 26, 2021',
+				strtotime( '2021-01-24' ),
+				strtotime( '2021-01-26' ),
+			),
+		);
+
+	}
+
+  protected function setUp() : void {
+
 		parent::setUp();
 		$this->firstTimeframeId = $this->createBookableTimeFrameIncludingCurrentDay();
 		$this->secondTimeframeId = $this->createBookableTimeFrameStartingInAWeek();
@@ -134,7 +252,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		));
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown(); // TODO: Change the autogenerated stub
 	}
 

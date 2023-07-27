@@ -12,16 +12,18 @@ class UserRepository {
 	const USER_CACHE_TAG = 'users';
 
 	/**
-	 * Returns all users with cb manager role.
+	 * Returns all users with role that can be assigned to item / location.
 	 * Cached to improve backend performance.
 	 * @return mixed
 	 */
-	public static function getCBManagers() {
-		if ( Plugin::getCacheItem() ) {
+	public static function getSelectableCBManagers() {
+        $managerRoles = [ Plugin::$CB_MANAGER_ID ];
+        $managerRoles = apply_filters( "commonsbooking_manager_roles" , $managerRoles );
+        if ( Plugin::getCacheItem() ) {
 			return Plugin::getCacheItem();
 		}
 		else {
-			$cbManagers = get_users( [ 'role__in' => [ Plugin::$CB_MANAGER_ID ] ] );
+			$cbManagers = get_users( [ 'role__in' => $managerRoles ]  );
 			Plugin::setCacheItem( $cbManagers, [ self::USER_CACHE_TAG ] );
 			return $cbManagers;
 		}
