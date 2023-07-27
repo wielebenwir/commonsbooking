@@ -129,7 +129,7 @@ class BookingRuleApplied extends BookingRule {
 	 * @param Booking $booking
 	 *
 	 * @return void
-	 * @throws BookingDeniedException|BookingRuleException
+	 * @throws BookingDeniedException
 	 */
 	public static function bookingConformsToRules( Booking $booking):void {
 		try {
@@ -157,7 +157,7 @@ class BookingRuleApplied extends BookingRule {
 			}
 
 			if ( ! ($rule instanceof BookingRuleApplied )) {
-				throw new BookingRuleException( "Value must be a BookingRuleApplied" );
+				continue; //skip invalid rules during booking validation
 			}
 			$conflictingBookings = $rule->checkBookingCompliance( $booking );
 			if ( $conflictingBookings ){

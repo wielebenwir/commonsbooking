@@ -201,7 +201,7 @@ class Booking extends Timeframe {
 			$postName        = isset( $_REQUEST['cb_booking'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['cb_booking'] ) ) : null;
 			$postType        = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : null;
 
-			$postId = $this->handleBookingRequest(
+			$postId = self::handleBookingRequest(
 				$itemId,
 				$locationId,
 				$post_status,
@@ -331,20 +331,21 @@ class Booking extends Timeframe {
 			);
 
 			$postId = wp_insert_post( $postarr, true );
+			$needsValidation = true;
 
 			// Existing booking
 		} else {
 			$postarr['ID'] = $booking->ID;
 			$postId        = wp_update_post( $postarr );
 
-				//we check if this is an already denied booking and demand validation again
-				if ($postarr["post_status"] == "unconfirmed"){
-					$needsValidation = true;
-				}
-				else {
-					$needsValidation = false;
-				}
+			//we check if this is an already denied booking and demand validation again
+			if ($postarr["post_status"] == "unconfirmed"){
+				$needsValidation = true;
 			}
+			else {
+				$needsValidation = false;
+			}
+		}
 
 		self::saveGridSizes( $postId, $locationId, $itemId, $repetitionStart, $repetitionEnd );
 
@@ -369,8 +370,6 @@ class Booking extends Timeframe {
 				}
 			}
 
-			// get slug as parameter
-            $post_slug = get_post( $postId )->post_name;
 		if ( $postId instanceof \WP_Error ) {
 			throw new BookingDeniedException( __( 'There was an error while saving the booking. Please try again. Resulting WP_ERROR: ', 'commonsbooking' ) .
 											  PHP_EOL . $postId->get_error_messages()
