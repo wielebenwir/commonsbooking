@@ -3325,13 +3325,13 @@
   --commonsbooking-color-accept: #74ce3c;
   --commonsbooking-color-cancel: #d5425c;
   --commonsbooking-color-holiday: #ff9218;
-  --commonsbooking-color-greyedout: #f6f6f6;
-  --commonsbooking-color-bg: #f6f6f6;
+  --commonsbooking-color-greyedout: #e0e0e0;
+  --commonsbooking-color-bg: #e0e0e0;
   --commonsbooking-color-noticebg: #FFF9C5;
-  --commonsbooking-textcolor-light: #c4c4c4;
+  --commonsbooking-textcolor-light: #a0a0a0;
   --commonsbooking-textcolor-dark: #000;
-  --commonsbooking-color-gray-background: #f6f6f6;
-  --commonsbooking-color-gray-border: #f6f6f6;
+  --commonsbooking-color-gray-background: #e0e0e0;
+  --commonsbooking-color-gray-border: #e0e0e0;
   --commonsbooking-color-error: #d5425c;
   --commonsbooking-color-success: #74ce3c;
   --commonsbooking-color-warning: #ff9218;
@@ -3411,7 +3411,7 @@
 }
 
 /* line 52, ../../global/sass/partials/_extends.scss */
-.shadow-small, .cb-hover, .cb-button:hover, .cb-button-container a:hover, .cb-wrapper .cb-action input:hover, .cb-wrapper #booking-form input:hover, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:hover {
+.shadow-small, .cb-hover, .cb-button:hover, .cb-button-container a:hover, .cb-wrapper .cb-action input:hover, .cb-wrapper #booking-form input:hover, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:hover, .cb-button[disabled=disabled], .cb-button-container a[disabled=disabled], .cb-wrapper .cb-action input[disabled=disabled], .cb-wrapper #booking-form input[disabled=disabled], .cb-map-filters.cb-wrapper .cb-map-button-wrapper button[disabled=disabled] {
   box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -3483,25 +3483,25 @@
 }
 /* line 118, ../../global/sass/partials/_extends.scss */
 .cb-button[disabled=disabled], .cb-button-container a[disabled=disabled], .cb-wrapper .cb-action input[disabled=disabled], .cb-wrapper #booking-form input[disabled=disabled], .cb-map-filters.cb-wrapper .cb-map-button-wrapper button[disabled=disabled] {
-  background-color: var(--commonsbooking-color-bg);
-  color: var(--commonsbooking-color-greyedout);
+  background-color: var(--commonsbooking-color-greyedout);
+  color: var(--commonsbooking-textcolor-light);
 }
-/* line 123, ../../global/sass/partials/_extends.scss */
+/* line 124, ../../global/sass/partials/_extends.scss */
 .cb-button.no-right-radius, .cb-button-container a.no-right-radius, .cb-wrapper .cb-action input.no-right-radius, .cb-wrapper #booking-form input.no-right-radius, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.no-right-radius {
   border-radius: var(--commonsbooking-radius) 0;
 }
-/* line 126, ../../global/sass/partials/_extends.scss */
+/* line 127, ../../global/sass/partials/_extends.scss */
 .cb-button.no-left-radius, .cb-button-container a.no-left-radius, .cb-wrapper .cb-action input.no-left-radius, .cb-wrapper #booking-form input.no-left-radius, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.no-left-radius {
   border-radius: 0 var(--commonsbooking-radius);
 }
 
-/* line 134, ../../global/sass/partials/_extends.scss */
+/* line 135, ../../global/sass/partials/_extends.scss */
 .cb-pill {
   border-radius: var(--commonsbooking-radius-pill);
   padding: 0;
   margin: 0;
 }
-/* line 138, ../../global/sass/partials/_extends.scss */
+/* line 139, ../../global/sass/partials/_extends.scss */
 .cb-pill a {
   text-decoration: none;
   color: #FFF;
@@ -3891,7 +3891,7 @@
   margin-left: var(--commonsbooking-spacer-big);
 }
 /* line 84, ../sass/partials/_forms.scss */
-.cb-wrapper input.cb-action-canceled {
+.cb-wrapper input.cb-action-canceled, .cb-wrapper input.cb-action-delete_unconfirmed {
   background-color: var(--commonsbooking-color-cancel);
   box-shadow: none !important;
   font-size: 0.875rem;

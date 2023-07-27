@@ -200,7 +200,8 @@ if ( $current_status && $current_status !== 'draft' ) {
 
 		// if booking is unconfirmed cancel link throws user back to item detail page
 		if ( $booking->post_status() == 'unconfirmed' ) {
-			echo '<a href="' . esc_url( get_permalink( $item->ID ) ) . '">' . esc_html__( 'Cancel', 'commonsbooking' ) . '</a>';
+            $form_action = 'delete_unconfirmed';
+            include COMMONSBOOKING_PLUGIN_DIR . 'templates/booking-single-form.php';
 		} else {
 			// if booking is confirmed we display the cancel booking button
 			$form_action = 'cancel';

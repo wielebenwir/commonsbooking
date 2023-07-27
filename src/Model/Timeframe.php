@@ -30,6 +30,8 @@ class Timeframe extends CustomPost {
 
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
+	public const META_MAX_DAYS = 'timeframe-max-days';
+
 	/**
 	 * Expected format for this meta key:
 	 * YYYY-mm-dd
@@ -215,7 +217,7 @@ class Timeframe extends CustomPost {
 	public function bookingCodesApplicable(): bool {
 		try {
 			return $this->getLocation() && $this->getItem() &&
-			       $this->getStartDate() && $this->getEndDate() &&
+			       $this->getStartDate() && $this->usesBookingCodes() &&
 			       $this->getType() === \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID;
 		} catch ( Exception $e ) {
 			return false;
@@ -290,12 +292,25 @@ class Timeframe extends CustomPost {
 				);
 			}
 
-			if ( ! $this->getStartDate() ) {
-				// If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
-				throw new TimeframeInvalidException( __(
-						'Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.',
-						'commonsbooking' )
-				);
+			//a timeframe with a manual repetition does not need a start date.
+			//start- and enddate are automatically set upon saving the post
+			if ($this->getRepetition() == 'manual') {
+				$manual_selection_dates = $this->getManualSelectionDates();
+				if ( empty( $manual_selection_dates ) ){
+					throw new TimeframeInvalidException(__(
+							'No dates selected. Please select at least one date. Timeframe is saved as draft.',
+							'commonsbooking'   )
+					);
+				}
+			}
+			else {
+				if ( ! $this->getStartDate() ) {
+					// If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
+					throw new TimeframeInvalidException( __(
+							'Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.',
+							'commonsbooking' )
+					);
+				}
 			}
 
 			if (
@@ -563,6 +578,22 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * Gets an array of dates that were manually selected by the user.
+	 * The dates are in the format YYYY-MM-DD
+	 * @return String[]
+	 */
+	public function getManualSelectionDates(): array {
+		$manualDatesString = $this->getMeta( self::META_MANUAL_SELECTION );
+		if ( ! $manualDatesString ) {
+			return [];
+		}
+		return array_map(
+			'trim',
+			explode( ',', $manualDatesString )
+		);
+	}
+
+	/**
 	 * Returns true if booking codes shall be shown in frontend.
      *
 	 * @return bool
@@ -573,13 +604,12 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns true if booking codes shall be created.
+	 * Returns true if booking codes were enabled for this timeframe
 	 *
 	 * @return bool
 	 */
-	public function createBookingCodes() : bool
-	{
-		return $this->getMeta( 'create-booking-codes' ) === 'on';
+	public function usesBookingCodes(): bool {
+		return $this->getMeta( 'create-booking-codes' ) == 'on';
 	}
 
 	/**
@@ -587,8 +617,11 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getUTCStartDateDateTime(): DateTime {
+	public function getUTCStartDateDateTime(): ?DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
+		if ( ! $startDateString ) {
+			return null;
+		}
 		if ( $this->isFullDay() ) {
 			return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		}
@@ -600,9 +633,12 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getStartTimeDateTime(): DateTime {
+	public function getStartTimeDateTime(): ?DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
 		$startTimeString = $this->getMeta( 'start-time' );
+		if ( ! $startDateString ) {
+			return null;
+		}
 		$startDate       = Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		if ( $startTimeString ) {
 			$startTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $startTimeString ) );
@@ -618,8 +654,11 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getEndDateDateTime(): DateTime {
+	public function getEndDateDateTime(): ?DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
+		if (! $endDateString ){
+			return null;
+		}
 		return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 	}
 
@@ -630,8 +669,11 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getUTCEndDateDateTime(): DateTime {
+	public function getUTCEndDateDateTime(): ?DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
+		if (! $endDateString ){
+			return null;
+		}
 		if ( $this->isFullDay() ) {
 			return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 		}
@@ -691,7 +733,7 @@ class Timeframe extends CustomPost {
 			$admins = array_merge( $locationAdminIds, $itemAdminIds );
 		}
 
-		return $admins;
+		return array_unique( $admins );
 	}
 
 	/**

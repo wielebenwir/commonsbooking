@@ -6,6 +6,7 @@ namespace CommonsBooking\Repository;
 
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Helper\Wordpress;
+use CommonsBooking\Model\Day;
 use CommonsBooking\Plugin;
 use Exception;
 
@@ -120,8 +121,9 @@ class Timeframe extends PostRepository {
 		}
 
 		$customId = md5( serialize( $types ) );
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 
 			$posts = [];
@@ -181,8 +183,9 @@ class Timeframe extends PostRepository {
 		}
 
 		$customId = md5( serialize( $types ) );
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			global $wpdb;
 			$table_postmeta = $wpdb->prefix . 'postmeta';
@@ -267,8 +270,9 @@ class Timeframe extends PostRepository {
 	 * @return array
 	 */
 	private static function getPostsByBaseParams( ?string $date, ?int $minTimestamp, ?int $maxTimestamp, array $postIds, array $postStatus ): array {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			global $wpdb;
 			$table_postmeta = $wpdb->prefix . 'postmeta';
@@ -449,22 +453,28 @@ class Timeframe extends PostRepository {
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	private static function filterTimeframesByConfiguredDays( array $posts, ?string $date ): array {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			if ( $date ) {
 				$posts = array_filter( $posts, function ( $post ) use ( $date ) {
-					if ( $weekdays = get_post_meta( $post->ID, 'weekdays', true ) ) {
-						$day = date( 'N', strtotime( $date ) );
+					try {
+						$timeframe = new \CommonsBooking\Model\Timeframe( $post );
+						$day       = new Day( $date );
 
-						return in_array( $day, $weekdays );
+						return $day->isInTimeframe( $timeframe );
+					} catch ( Exception $e ) {
+						//this was also default behaviour before #802 (before #802 the function would just check the weekly repetition and if it was active on the given day return true)
+						//When none were set, it would return true for all days.
+						return true;
 					}
-
-					return true;
-				} );
+				}
+				);
 			}
 
-			Plugin::setCacheItem($posts, Wordpress::getTags($posts));
+			Plugin::setCacheItem( $posts, Wordpress::getTags( $posts ) );
+
 			return $posts;
 		}
 	}
@@ -550,8 +560,9 @@ class Timeframe extends PostRepository {
 	 * @throws Exception
 	 */
 	public static function getByLocationItemTimestamp( int $locationId, int $itemId, int $timestamp ): ?\CommonsBooking\Model\Timeframe {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$time_format        = esc_html(get_option( 'time_format' ));
 			$startTimestampTime = date( $time_format, $timestamp );
@@ -617,8 +628,9 @@ class Timeframe extends PostRepository {
 		}
 
 		$customId = md5( serialize( $types ) );
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$posts = [];
 

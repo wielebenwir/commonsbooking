@@ -25,8 +25,9 @@ class Restriction extends PostRepository {
 	): array {
 		$customCacheKey = serialize( $postStatus );
 
-		if ( Plugin::getCacheItem( $customCacheKey ) ) {
-			return Plugin::getCacheItem( $customCacheKey );
+		$cacheItem = Plugin::getCacheItem( $customCacheKey );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 
 			$posts = self::queryPosts( $date, $minTimestamp, $postStatus );
@@ -63,8 +64,9 @@ class Restriction extends PostRepository {
 	 * @return array|object|null
 	 */
 	private static function queryPosts( $date, $minTimestamp, $postStatus ) {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			global $wpdb;
 			$table_posts = $wpdb->prefix . 'posts';
@@ -181,6 +183,9 @@ class Restriction extends PostRepository {
 
 	/**
 	 * Filters posts by locations and items.
+	 *
+	 * WARNING: This method will filter out posts that are only queried by item OR location.
+	 * Meaning, if a restriction is created that has a location and an item, but the query only contains the location, the restriction will not be returned.
 	 *
 	 * @param array $posts
 	 * @param array $locations

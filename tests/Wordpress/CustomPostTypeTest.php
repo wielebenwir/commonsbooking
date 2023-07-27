@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Tests\Wordpress;
 
+use CommonsBooking\Plugin;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
@@ -13,7 +14,17 @@ use SlopeIt\ClockMock\ClockMock;
 
 abstract class CustomPostTypeTest extends TestCase {
 
+	/**
+	 * This is the date that is used in the tests.
+	 * It is a thursday.
+	 */
 	const CURRENT_DATE = '01.07.2021';
+
+	/**
+	 * The same date, but in Y-m-d format
+	 * @var string
+	 */
+	protected string $dateFormatted;
 
 	const USER_ID = 1;
 
@@ -35,7 +46,11 @@ abstract class CustomPostTypeTest extends TestCase {
 
 	protected $itemIds = [];
 
-	protected $normalUserID;
+	protected $subscriberId;
+
+	protected int $adminUserID;
+
+	protected int $cbManagerUserID;
 
 	protected function createTimeframe(
 		$locationId,
@@ -232,7 +247,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
 	// Create Item
-	public function createItem($title, $postStatus, $admins = []) {
+	protected function createItem($title, $postStatus, $admins = []) {
 		$itemId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Item::$postType,
@@ -249,7 +264,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
 	// Create Location
-	public function createLocation($title, $postStatus, $admins = []) {
+	protected function createLocation($title, $postStatus, $admins = []) {
 		$locationId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Location::$postType,
@@ -265,20 +280,64 @@ abstract class CustomPostTypeTest extends TestCase {
 		return $locationId;
 	}
 
-	public function createSubscriber(){
+	/**
+	 * We create the subscriber this way, because sometimes the user is already created.
+	 * In that case, the unit tests would fail, because there is already the user with this ID in the database.
+	 * @return void
+	 */
+	protected function createSubscriber(){
 		$wp_user = get_user_by('email',"a@a.de");
 		if (! $wp_user){
-			$this->normalUserID = wp_create_user("normaluser","normal","a@a.de");
+			$this->subscriberId = wp_create_user("normaluser","normal","a@a.de");
 		}
 		else {
-			$this->normalUserID = $wp_user->ID;
+			$this->subscriberId = $wp_user->ID;
+		}
+	}
+
+	/**
+	 * We create the administrator this way, because sometimes the user is already created.
+	 * In that case, the unit tests would fail, because there is already the user with this ID in the database.
+	 * @return void
+	 */
+	public function createAdministrator(){
+		$wp_user = get_user_by('email',"admin@admin.de");
+		if (! $wp_user) {
+			$this->adminUserID = wp_create_user( "adminuser", "admin", "admin@admin.de" );
+			$user = new \WP_User( $this->adminUserID );
+			$user->set_role( 'administrator' );
+		}
+		else {
+			$this->adminUserID = $wp_user->ID;
+		}
+	}
+
+	public function createCBManager(){
+		//we need to run the functions that add the custom user role and assign it to the user
+		Plugin::addCustomUserRoles();
+		//and add the caps for each of our custom post types
+		$postTypes = Plugin::getCustomPostTypes();
+		foreach ($postTypes as $customPostType) {
+			Plugin::addRoleCaps($customPostType::$postType);
+		}
+		$wp_user = get_user_by('email',"cbmanager@cbmanager.de");
+		if (! $wp_user) {
+			$this->cbManagerUserID = wp_create_user( "cbmanager", "cbmanager", "cbmanager@cbmanager.de" );
+			$user = new \WP_User( $this->cbManagerUserID );
+			$user->set_role( Plugin::$CB_MANAGER_ID );
+		}
+		else {
+			$this->cbManagerUserID = $wp_user->ID;
 		}
 	}
 
   protected function setUp() : void {
     parent::setUp();
 
-		$this->setUpBookingCodesTable();
+	$this->dateFormatted  = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
+
+
+	  $this->setUpBookingCodesTable();
 
 		// Create location
 		$this->locationId = self::createLocation('Testlocation', 'publish');
@@ -313,6 +372,8 @@ abstract class CustomPostTypeTest extends TestCase {
 		$this->tearDownAllBookings();
 		$this->tearDownAllRestrictions();
 		$this->tearDownBookingCodesTable();
+
+		wp_logout();
 	}
 
 	protected function tearDownAllLocation() {

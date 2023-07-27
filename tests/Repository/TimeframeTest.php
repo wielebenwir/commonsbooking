@@ -7,28 +7,98 @@ use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
 class TimeframeTest extends CustomPostTypeTest {
 
-	const REPETITION_START = '1623801600';
+	protected int $repetition_start;
+	protected int $repetition_end;
 
-	const REPETITION_END = '1661472000';
+	protected string $formattedDate;
+
+	protected int $timeframeWithEndDate;
+	protected int $timeframeWithoutEndDate;
+	protected int $timeframeDailyRepetition;
+	protected int $timeframeWeeklyRepetition;
+	protected int $timeframeManualRepetition;
+
+	/**
+	 * The tests are designed in a way, that all timeframes should lie in the CURRENT_DATE plus 10 days.
+	 * The only exception is the manual repetition timeframe, which is only valid for today and in a week.
+	 * all apply to the location with id $this->locationId and the item with id $this->itemId
+	 * @var array|int|\WP_Error
+	 */
+	protected array $allTimeframes;
 
 	protected function setUp() : void {
 		parent::setUp();
 
+		$this->repetition_start = strtotime(self::CURRENT_DATE);
+		$this->repetition_end = strtotime('+10 days', $this->repetition_start);
+
 		// Timeframe with enddate
-		$this->createTimeframe(
+		$this->timeframeWithEndDate = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END
+			$this->repetition_start,
+			$this->repetition_end
 		);
+		$this->allTimeframes[] = $this->timeframeWithEndDate;
 
 		// Timeframe without enddate
-		$this->createTimeframe(
+		$this->timeframeWithoutEndDate = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			self::REPETITION_START,
+			$this->repetition_start,
 			null
 		);
+		$this->allTimeframes[] = $this->timeframeWithoutEndDate;
+
+		//timeframe with daily repetition
+		$this->timeframeDailyRepetition = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			$this->repetition_start,
+			$this->repetition_end,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			'd'
+		);
+		$this->allTimeframes[] = $this->timeframeDailyRepetition;
+
+		//timeframe with weekly repetition from monday to friday
+		$this->timeframeWeeklyRepetition = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			$this->repetition_start,
+			$this->repetition_end,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			'w',
+			0,
+			'08:00 AM',
+			'12:00 PM',
+			'publish',
+			["1","2","3","4","5"]
+		);
+		$this->allTimeframes[] = $this->timeframeWeeklyRepetition;
+
+		$dateInAWeek = date('Y-m-d', strtotime('+1 week', $this->repetition_start));
+		//timeframe with manual repetition for today and in a week
+		$this->timeframeManualRepetition = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			$this->repetition_start,
+			$this->repetition_end,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			'manual',
+			0,
+			'08:00 AM',
+			'12:00 PM',
+			'publish',
+			[],
+			"{$this->dateFormatted},{$dateInAWeek}"
+		);
+		$this->allTimeframes[] = $this->timeframeManualRepetition;
+
+		asort($this->allTimeframes);
 	}
 
 	protected function tearDown() : void {
@@ -36,8 +106,95 @@ class TimeframeTest extends CustomPostTypeTest {
 	}
 
 	public function testGetInRange() {
-		$inRangeTimeFrames = Timeframe::getInRange(self::REPETITION_START, self::REPETITION_END);
-		$this->assertTrue(count($inRangeTimeFrames) == 2);
+		$inRangeTimeFrames = Timeframe::getInRange($this->repetition_start, $this->repetition_end);
+		//All timeframes should be in range
+		$this->assertEquals(count($this->allTimeframes),count($inRangeTimeFrames) );
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $inRangeTimeFrames);
+		asort($postIds);
+		$this->assertEquals($this->allTimeframes, $postIds);
+	}
+
+	public function testGetForItem() {
+		$inItemTimeframes = Timeframe::get(
+			[],
+			[$this->itemId],
+		);
+		$this->assertEquals(count($this->allTimeframes),count($inItemTimeframes));
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $inItemTimeframes);
+		asort($postIds);
+		$this->assertEquals($this->allTimeframes, $postIds);
+	}
+
+	public function testGetForLocation() {
+		$inLocationTimeframes = Timeframe::get(
+			[$this->locationId],
+		);
+		$this->assertEquals(count($this->allTimeframes),count($inLocationTimeframes));
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $inLocationTimeframes);
+		asort($postIds);
+		$this->assertEquals($this->allTimeframes, $postIds);
+	}
+
+	public function testGetForLocationAndItem() {
+		$inLocationAndItemTimeframes = Timeframe::get(
+			[$this->locationId],
+			[$this->itemId],
+		);
+		$this->assertEquals(count($this->allTimeframes),count($inLocationAndItemTimeframes));
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $inLocationAndItemTimeframes);
+		asort($postIds);
+		$this->assertEquals($this->allTimeframes, $postIds);
+	}
+
+	public function testGetForSpecificDate() {
+		$inSpecificDate = Timeframe::get(
+			[$this->locationId],
+			[$this->itemId],
+			[],
+			$this->dateFormatted
+		);
+		$this->assertEquals(count($this->allTimeframes),count($inSpecificDate));
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $inSpecificDate);
+		asort($postIds);
+		$this->assertEquals($this->allTimeframes, $postIds);
+
+		$inOneWeek = Timeframe::get(
+			[$this->locationId],
+			[$this->itemId],
+			[],
+			date('Y-m-d', strtotime('+1 week', $this->repetition_start))
+		);
+		//it should contain everything
+		$this->assertEquals(count($this->allTimeframes),count($inOneWeek));
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $inOneWeek);
+		asort($postIds);
+		$this->assertEquals($this->allTimeframes, $postIds);
+
+		$tomorrow = Timeframe::get(
+			[$this->locationId],
+			[$this->itemId],
+			[],
+			date('Y-m-d', strtotime('+1 day', $this->repetition_start))
+		);
+		//it should contain everything except the manual repetition
+		$this->assertEquals(count($this->allTimeframes) - 1,count($tomorrow));
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $tomorrow);
+		asort($postIds);
+		$this->assertEquals(array_diff($this->allTimeframes, [$this->timeframeManualRepetition]), $postIds);
 	}
 
 }

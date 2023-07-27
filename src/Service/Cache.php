@@ -224,8 +224,10 @@ trait Cache {
 			// First get all pages with cb shortcodes
 			$sql = "SELECT post_content FROM $table_posts WHERE 
 		      post_content LIKE '%cb_items%' OR
-			  post_content LIKE '%cb_location%' OR
-		      post_content LIKE '%cb_map%'";
+			  post_content LIKE '%cb_locations%' OR
+		      post_content LIKE '%cb_map%' OR
+			  post_content LIKE '%cb_items_table%' OR
+			  post_content LIKE '%cb_bookings%'";
 			$pages = $wpdb->get_results( $sql );
 
 			// Now extract shortcode calles incl. attributes
