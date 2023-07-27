@@ -33,21 +33,6 @@ class Booking extends Timeframe {
 		// does not trigger when initiated in initHooks
 		add_action( 'post_updated', array( $this, 'postUpdated' ), 1, 3 );
 
-		// Frontend request
-		try {
-			$this->handleFormRequest();
-		} catch ( BookingDeniedException $e ) {
-			set_transient(
-				\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id(),
-				$e->getMessage(),
-				30 //Expires very quickly, so that outdated messsages will not be shown to the user
-			);
-			$targetUrl = $e->getRedirectUrl();
-			if ( $targetUrl ) {
-				header( 'Location: ' . $targetUrl );
-				exit();
-			}
-		}
 	}
 
 
@@ -359,16 +344,16 @@ class Booking extends Timeframe {
 			);
 		}
 
-            //check if the Booking we want to create conforms to the set booking rules
-			if( $needsValidation){
-				try {
-					BookingRuleApplied::bookingConformsToRules( $bookingModel );
-				}
-				catch (BookingDeniedException $e) {
-					wp_delete_post($bookingModel->ID);
-					throw new BookingDeniedException($e->getMessage());
-				}
+        //check if the Booking we want to create conforms to the set booking rules
+		if( $needsValidation){
+			try {
+				BookingRuleApplied::bookingConformsToRules( $bookingModel );
 			}
+			catch (BookingDeniedException $e) {
+				wp_delete_post($bookingModel->ID);
+				throw new BookingDeniedException($e->getMessage());
+			}
+		}
 
 		if ( $postId instanceof \WP_Error ) {
 			throw new BookingDeniedException( __( 'There was an error while saving the booking. Please try again. Resulting WP_ERROR: ', 'commonsbooking' ) .
