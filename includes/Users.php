@@ -2,6 +2,7 @@
 
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
+use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
@@ -10,13 +11,14 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 /**
  * Checks if current user is allowed to edit custom post.
- *
  * @param $post
  *
  * @return bool
  * @throws Exception
  */
 function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
+	if (! is_user_logged_in()){ return false; }
+
 	$current_user = wp_get_current_user();
 
 	return commonsbooking_isUserAllowedToEdit($post,$current_user);
@@ -31,32 +33,23 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
  * @return bool
  * @throws Exception
  */
-function commonsbooking_isUserAllowedToEdit( $post, $user): bool {
-	if (! Plugin::isPostCustomPostType($post) ) {
+function commonsbooking_isUserAllowedToEdit( $post, WP_User $user): bool {
+
+	if (! Plugin::isPostCustomPostType($post) ){
 		return false;
 	}
 
-	if (! is_user_logged_in()){ return false; }
+	$postModel = CustomPostType::getModel($post);
 
-	$isAuthor     = intval( $user->ID ) == intval( $post->post_author );
-	$isAdmin      = commonsbooking_isUserAdmin($user);
-	$isAllowed    = $isAdmin || $isAuthor;
-
-	// Check if it is the main query and one of our custom post types
-	if ( ! $isAllowed ) {
-
-		if(!($post instanceof WP_Post)) {
-			$post = $post->getPost();
-		}
-		$postModel = \CommonsBooking\Wordpress\CustomPostType\CustomPostType::getModel($post);
-
-		$admins = $postModel->getAdmins();
-
-		$isAllowed = ( is_string( $admins ) && $user->ID === $admins ) ||
-		             ( is_array( $admins ) && in_array( $user->ID . '', $admins, true ) );
+	//authors are always allowed to edit their posts, admins are also allowed to edit all posts
+	if ( $postModel->isAuthor($user) || commonsbooking_isUserAdmin( $user ) ) {
+		return true;
 	}
 
-	return $isAllowed;
+	$canView = commonsbooking_isUserAllowedToSee( $postModel, $user );
+    $canEdit = user_can($user, 'edit_post', $post->ID);
+
+    return $canView && $canEdit;
 }
 
 /**
@@ -181,9 +174,25 @@ function commonsbooking_isCurrentUserAdmin() {
 	return apply_filters( 'commonsbooking_isCurrentUserAdmin', in_array( 'administrator', $user->roles ), $user );
 }
 
-// Check if user has admin role
-function commonsbooking_isUserAdmin($user) {
-	return apply_filters( 'commonsbooking_isUserAdmin', in_array( 'administrator', $user->roles ), $user );
+/**
+ * Will check if user has one of the admin roles and is therefore considered an admin for CB.
+ * Admin roles can be extended with the filter commonsbooking_admin_roles.
+ *
+ * An admin is allowed to edit and see all posts.
+ *
+ * @param   \WP_User  $user
+ *
+ * @return bool
+ */
+function commonsbooking_isUserAdmin(\WP_User $user) {
+	$adminRoles = ['administrator'];
+	$adminRoles = apply_filters('commonsbooking_admin_roles', $adminRoles);
+	foreach ($adminRoles as $adminRole) {
+		if (in_array($adminRole, $user->roles)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 // Check if current user has subscriber role
@@ -208,7 +217,7 @@ function commonsbooking_isCurrentUserCBManager() {
  *
  * @return bool
  */
-function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ) {
+function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ):bool {
 	$allowedUserRoles = get_post_meta( $timeframeID, 'allowed_user_roles', true );
 
 	if ( empty( $allowedUserRoles ) || ( current_user_can('administrator') ) ) {
@@ -224,14 +233,87 @@ function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ) {
 }
 
 /**
- * Checks if the given user_id and user_hash match, generates
- * a new hash from the given user id and checks it against the given hash.
- * 
- * Used by Service\iCalendar for authentication.
+ * Determines whether a user may read the current post.
+ *
+ * It only makes sense to check this with booking posts as all CPTs are / should be public.
+ *
+ * @param $booking - A booking of the cb_booking type
+ *
+ * @return void
+ */
+function commonsbooking_isCurrentUserAllowedToSee( $booking ):bool{
+	if (! is_user_logged_in()){ return false; }
+	if ( ! $booking ) {
+        return false;
+    }
+
+    $user = wp_get_current_user();
+
+    if ($user){
+        return commonsbooking_isUserAllowedToSee( $booking, $user );
+    }
+    else {
+        return false;
+    }
+
+}
+
+/**
+ * Determines whether a user is able to read the current post.
+ *
+ * It only makes sense to check this directly with booking posts as all CPTs are / should be public.
+ * It is, however used as a helper function for commonsbooking_isCurrentUserAllowedToEdit.
+ * We apply the logic, that only something that is allowed to be seen may be edited.
+ *
+ * @param \CommonsBooking\Model\Booking|WP_Post|int $post
+ * @param WP_User $user
  *
  * @return bool
  */
-function commonsbooking_isUIDHashComboCorrect( $user_id, $user_hash){
+function commonsbooking_isUserAllowedToSee( $post, WP_User $user): bool
+{
+
+	if (! $post instanceof \CommonsBooking\Model\CustomPost) {
+		if (! Plugin::isPostCustomPostType($post) ) {
+			return false;
+		}
+
+		try {
+			$postModel = CustomPostType::getModel($post);
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+	else {
+		$postModel = $post;
+	}
+
+
+    $isAuthor  = $postModel->isAuthor( $user );
+    $isAdmin   = commonsbooking_isUserAdmin( $user );
+    $isAllowed = $isAdmin || $isAuthor;
+
+    if ( ! $isAllowed) {
+        $admins    = $postModel->getAdmins();
+        $isAllowed = (is_string( $admins ) && $user->ID == $admins) ||
+                     (is_array( $admins ) && in_array( $user->ID , $admins, true ));
+    }
+
+    return $isAllowed;
+}
+
+/**
+ * Checks if the given user_id and user_hash match, generates
+ * a new hash from the given user id and checks it against the given hash.
+ *
+ * Used by Service\iCalendar for authentication.
+ *
+ * @param $user_id
+ * @param $user_hash
+ *
+ * @return bool
+ */
+function commonsbooking_isUIDHashComboCorrect( $user_id, $user_hash): bool {
 	if (wp_hash($user_id) == $user_hash) {
 		return true;
 	}

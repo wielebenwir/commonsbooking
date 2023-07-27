@@ -2,40 +2,19 @@
 
 namespace CommonsBooking\Tests\API;
 
-use CommonsBooking\Plugin;
-use CommonsBooking\Repository\BookingCodes;
-use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use SlopeIt\ClockMock\ClockMock;
 
-class AvailabilityRouteTest extends \WP_UnitTestCase {
+class AvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 
 	const USER_ID = 1;
 	const CURRENT_DATE = '2021-05-21';
 	protected $ENDPOINT = '/commonsbooking/v1/availability';
 
-	protected $server;
-
-	/**
-	 * TODO move to abstract api test router
-	 */
 	public function setUp() : void {
 		parent::setUp();
-		/** @var WP_REST_Server $wp_rest_server */
-		global $wp_rest_server;
-		$this->server = $wp_rest_server = new \WP_REST_Server;
-
-		// Enables api
-		Settings::updateOption( 'commonsbooking_options_api', 'api-activated' , 'on' );
-		Settings::updateOption( 'commonsbooking_options_api', 'apikey_not_required', 'on' );
-
-		// Registers routes (via rest_api_init hook)
-		( new Plugin() )->initRoutes();
-
-		// Applies hook
-		do_action( 'rest_api_init' );
 
 		// TODO creates initial data (should be mocked in the future)
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
@@ -59,12 +38,6 @@ class AvailabilityRouteTest extends \WP_UnitTestCase {
 		);
 
 		ClockMock::reset();
-	}
-
-	// TODO move to abstract test case
-	public function testRoutes() {
-		$routes = $this->server->get_routes();
-		$this->assertArrayHasKey( $this->ENDPOINT, $routes );
 	}
 
 	public function testsAvailabilitySuccess() {

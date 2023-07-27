@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Exception\BookingCodeException;
 use CommonsBooking\Helper\Wordpress;
 use Exception;
 
@@ -41,6 +42,33 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function getBookingCode() {
 		return $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode' );
 	}
+
+
+    /**
+     * Determines if a current booking can be cancelled or not by the current user.
+     * Bookings which do not belong to the current user or the user is not admin of cannot be edited.
+	 *
+     * Returns true if booking can be cancelled.
+     * False if booking may not be cancelled.
+	 *
+     * @return bool
+     */
+    public function canCancel():bool {
+        if ($this->isPast() ){
+            return false;
+        }
+
+        if ( intval( $this->post_author ) === get_current_user_id() ){
+            return true;
+        }
+        elseif (commonsbooking_isCurrentUserAllowedToEdit($this->post)){
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
 
 	/**
 	 * Sets post_status to canceled.
@@ -90,7 +118,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			)
 		) {
 			// translators: %s = Booking code
-			$htmloutput = '<br>' . sprintf( commonsbooking_sanitizeHTML( __( 'Your booking code is: %s', 'commonsbooking' ) ), $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode' ) ) . '<br>';
+			$htmloutput = '<br>' . sprintf( commonsbooking_sanitizeHTML( __( 'Your booking code is: %s', 'commonsbooking' ) ), $this->getBookingCode() ) . '<br>';
 		}
 
 		return $htmloutput;
@@ -162,12 +190,17 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			}
 
 			// If there exists a booking code, add it.
-			$bookingCode = BookingCodes::getCode(
-				$timeframe->ID,
-				$this->getItem()->ID,
-				$this->getLocation()->ID,
-				date( 'Y-m-d', $this->getStartDate() )
-			);
+			try {
+				$bookingCode = BookingCodes::getCode(
+					$timeframe,
+					$this->getItem()->ID,
+					$this->getLocation()->ID,
+					date( 'Y-m-d', $this->getStartDate() )
+				);
+			} catch ( BookingCodeException $e ) {
+				//do nothing, just set the booking code to null
+				$bookingCode = null;
+			}
 
 			// only add booking code if the booking is based on a full day timeframe
 			if ( $bookingCode && $this->isFullDay() ) {
@@ -266,9 +299,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		if ( $this->isFullDay() ) {
 			return $date_start;
 		}
-		
+
 		$grid = $this->getGrid();
-		
+
 		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time end
 			$timeframeGridSize = $this->getMeta( self::START_TIMEFRAME_GRIDSIZE );
@@ -306,7 +339,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		$grid = $this->getGrid();
-		
+
 		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time start
 			$timeframeGridSize = $this->getMeta( self::END_TIMEFRAME_GRIDSIZE );
@@ -346,37 +379,23 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 */
 	public function bookingNotice(): ?string {
 
-		$currentStatus    = $this->post->post_status;
 		$cancellationTime = $this->getMeta( 'cancellation_time' );
 
-  		if ( $currentStatus == 'unconfirmed' ) {
-            // transient is set in \Model\Booking->handleFormRequest if overlapping booking exists
-            if ( get_transient( 'commonsbooking_overlappingBooking_' . $this->ID ) ) {
-                $noticeText = get_transient( 'commonsbooking_overlappingBooking_' . $this->ID ) . ' ' . $this->ID . commonsbooking_sanitizeHTML( __(
-                    '<h1 style="color:red">Notice:</h1> <p>We are sorry. Something went wrong. This booking could not be confirmed because there is another overlapping booking.<br>
-                    Please click the "Cancel"-Button and select another booking period.</p>
-                    <p>Normally, the booking system ensures that no overlapping bookings can be created. If you think there is a bug, please contact us.</p> 
-                ', 'commonsbooking' ) );
-
-                delete_transient( 'commonsbooking_overlappingBooking_' . $this->ID );
-            } else {
-                $noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
-            }
+		if ( $this->isUnconfirmed() ) {
+			$noticeText = commonsbooking_sanitizeHTML( __( 'Please check your booking and click confirm booking', 'commonsbooking' ) );
 		} elseif ( $this->isConfirmed() ) {
 			$noticeText = commonsbooking_sanitizeHTML( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'booking-confirmed-notice' ) );
-		}
-
-		if ( $this->isCancelled() ) {
-            if ( $cancellationTime ) {
-                $cancellationTimeFormatted = Helper::FormattedDateTime( $cancellationTime );
-			    $noticeText                = sprintf( commonsbooking_sanitizeHTML( __( 'Your booking has been canceled at %s.', 'commonsbooking' ) ), $cancellationTimeFormatted );
-            } else {
-                $noticeText = commonsbooking_sanitizeHTML( __( 'Your booking has been canceled', 'commonsbooking' ) );
-            }
+		} elseif ( $this->isCancelled() ) {
+			if ( $cancellationTime ) {
+				$cancellationTimeFormatted = Helper::FormattedDateTime( $cancellationTime );
+				$noticeText                = sprintf( commonsbooking_sanitizeHTML( __( 'Your booking has been canceled at %s.', 'commonsbooking' ) ), $cancellationTimeFormatted );
+			} else {
+				$noticeText = commonsbooking_sanitizeHTML( __( 'Your booking has been canceled', 'commonsbooking' ) );
+			}
 		}
 
 		if ( isset( $noticeText ) ) {
-			return sprintf( '<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $currentStatus, $noticeText );
+			return sprintf( '<div class="cb-notice cb-booking-notice cb-status-%s">%s</div>', $this->post_status, $noticeText );
 		}
 
 		return null;
@@ -482,7 +501,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
         $dateTimeInfo = current_datetime()->format( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
         $meta_string = $dateTimeInfo . ' / ' . get_the_author_meta( 'user_login', $userID ) . "\n";
         $new_comment = $existing_comment . "\n" . $meta_string . $comment . "\n--------------------";
-        return update_post_meta( $this->ID, 'internal-comment', $new_comment );
+        update_post_meta( $this->ID, 'internal-comment', $new_comment );
     }
 
 

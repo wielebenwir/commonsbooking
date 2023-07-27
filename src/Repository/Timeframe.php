@@ -120,8 +120,9 @@ class Timeframe extends PostRepository {
 		}
 
 		$customId = md5( serialize( $types ) );
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 
 			$posts = [];
@@ -182,8 +183,9 @@ class Timeframe extends PostRepository {
 		}
 
 		$customId = md5( serialize( $types ) );
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			global $wpdb;
 			$table_postmeta = $wpdb->prefix . 'postmeta';
@@ -295,8 +297,9 @@ class Timeframe extends PostRepository {
 	 * @return array
 	 */
 	private static function getPostsByBaseParams( ?string $date, ?int $minTimestamp, ?int $maxTimestamp, array $postIds, array $postStatus ): array {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			global $wpdb;
 			$table_postmeta = $wpdb->prefix . 'postmeta';
@@ -477,8 +480,9 @@ class Timeframe extends PostRepository {
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	private static function filterTimeframesByConfiguredDays( array $posts, ?string $date ): array {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			if ( $date ) {
 				$posts = array_filter( $posts, function ( $post ) use ( $date ) {
@@ -578,8 +582,9 @@ class Timeframe extends PostRepository {
 	 * @throws Exception
 	 */
 	public static function getByLocationItemTimestamp( int $locationId, int $itemId, int $timestamp ): ?\CommonsBooking\Model\Timeframe {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$time_format        = esc_html(get_option( 'time_format' ));
 			$startTimestampTime = date( $time_format, $timestamp );
@@ -645,8 +650,9 @@ class Timeframe extends PostRepository {
 		}
 
 		$customId = md5( serialize( $types ) );
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$posts = [];
 
