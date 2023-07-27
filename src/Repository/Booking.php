@@ -317,7 +317,7 @@ class Booking extends PostRepository {
 	}
 
 	/**
-	 * Returns all bookings, allowed to see/edit for user.
+	 * Returns all bookings, allowed to see for user.
 	 *
 	 * @param bool $asModel
 	 * @param null $minTimestamp
@@ -328,8 +328,9 @@ class Booking extends PostRepository {
 	public static function getForUser( $user, bool $asModel = false, $minTimestamp = null, array $postStatus = null ): array {
 		$customId = $user->ID;
 		$postStatus ??= [ 'canceled', 'confirmed', 'unconfirmed' ];
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$posts = self::get(
 				[],
@@ -344,7 +345,7 @@ class Booking extends PostRepository {
 				$posts = array_filter(
                     $posts,
                     function ( $post ) use ( $user ) {
-                        return commonsbooking_isUserAllowedToEdit( $post, $user );
+                        return commonsbooking_isUserAllowedToSee( $post, $user );
                     }
                 );
 			}

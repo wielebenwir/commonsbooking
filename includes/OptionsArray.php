@@ -474,7 +474,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 						'id'      => 'colorscheme_greyedoutcolor',
 						'type'    => 'colorpicker',
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used to signify that no timeframe has been created for an item or a button that is not yet clickable', 'commonsbooking' ) ),
-						'default' => '#f6f6f6',
+						'default' => '#e0e0e0',
 					),
 
 					array(
@@ -497,7 +497,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 						'id'      => 'colorscheme_lighttext',
 						'type'    => 'colorpicker',
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used for light text on dark backgrounds', 'commonsbooking' ) ),
-						'default' => '#c4c4c4',
+						'default' => '#a0a0a0',
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Dark text color', 'commonsbooking' ) ),
