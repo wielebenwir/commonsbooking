@@ -79,13 +79,14 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.8.1 (xx.06.2023)
+### 2.8.1 (xx.08.2023)
 FIXED: Wrong field value for iCal events (the field value is reset, you have to re-set your values after updating)
 FIXED: Bug sending cancellation mail to admin on admin cancellation
 FIXED: Availability text for items in item shortcode (Merged display of overlapping timeframes)
 FIXED: Location without addresses not displayed correctly
 FIXED: Incorrect error messages displayed to user during booking process
 FIXED: Not all routes of GBFS API were initialized (thanks @futuretap)
+FIXED: User data loading in backend caused timeout on large instances
 ENHANCED: Improved booking validation
 ENHANCED: Default value for days that are bookable in advance set to 31
 
