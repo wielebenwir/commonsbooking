@@ -347,9 +347,10 @@ class Plugin {
 		catch ( BookingDeniedException $e ) {
 			set_transient(
 				\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id(),
-				$e->getMessage()
+				$e->getMessage(),
+				30 //Expires very quickly, so that outdated messsages will not be shown to the user
 			);
-			$targetUrl = sanitize_url( wp_get_referer());
+			$targetUrl = $e->getRedirectUrl();
 			if ( $targetUrl) {
 				header( 'Location: ' . $targetUrl );
 				exit();
