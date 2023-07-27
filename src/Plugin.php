@@ -830,19 +830,4 @@ class Plugin {
         }
     }
 
-	/**
-	 * Filters `updated_post_meta` action hook for relevant meta fields and emits necessary events (or hooks)
-	 *
-	 * @return void
-	 */
-	public static function checkMetaChangeAndEmitActionHook( $meta_id, $post_id, $meta_key, $meta_value ) {
-		if ( COMMONSBOOKING_METABOX_PREFIX . 'location_admins' == $meta_key ) {
-			do_action( 'cb_updated_ownership', $post_id );
-		}
-
-		if ( COMMONSBOOKING_METABOX_PREFIX . 'item_admins' == $meta_key ) {
-			do_action( 'cb_updated_ownership', $post_id );
-		}
-	}
-
 }
