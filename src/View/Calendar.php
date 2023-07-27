@@ -11,10 +11,10 @@ use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Week;
 use CommonsBooking\Plugin;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use DateTime;
 use Exception;
 use WP_Post;
 
@@ -482,23 +482,39 @@ class Calendar {
 
 			if ( count( $locations ) === 1 ) {
 				// are overbooking allowed in location options?
-				$allowLockedDaysInRange                  = get_post_meta(
-					$locations[0],
-					COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
-					true
-				);
-				$jsonResponse['disallowLockDaysInRange'] = $allowLockedDaysInRange !== 'on';
+				$useGlobalSettings = get_post_meta( $locations[0], COMMONSBOOKING_METABOX_PREFIX . 'use_global_settings', true ) === 'on';
+				if ( $useGlobalSettings ) {
+					$allowLockedDaysInRange = Settings::getOption('commonsbooking_options_general', COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range');
+				}
+				else {
+					$allowLockedDaysInRange                  = get_post_meta(
+						$locations[0],
+						COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
+						true
+					);
+				}
+				$jsonResponse['disallowLockDaysInRange'] = ! ( $allowLockedDaysInRange === 'on' );
 
 				// should overbooked non bookable days be counted into maxdays selection?
-				$countLockedDaysInRange                  = get_post_meta(
-					$locations[0],
-					COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range',
-					true
-				);
+				if ( $useGlobalSettings ) {
+					$countLockedDaysInRange = Settings::getOption('commonsbooking_options_general', COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range');
+				}
+				else {
+					$countLockedDaysInRange = get_post_meta(
+						$locations[0],
+						COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range',
+						true
+					);
+				}
 				$jsonResponse['countLockDaysInRange'] = $countLockedDaysInRange === 'on';
 
 				//if yes, what is the maximum amount of days they should count?
-				$maxDays = get_post_meta( $locations[0], COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', true );
+				if ( $useGlobalSettings ) {
+					$maxDays = Settings::getOption('commonsbooking_options_general', COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum');
+				}
+				else {
+					$maxDays = get_post_meta( $locations[0], COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', true );
+				}
 				$jsonResponse['countLockDaysMaxDays'] = (int) $maxDays;
 			}
 
