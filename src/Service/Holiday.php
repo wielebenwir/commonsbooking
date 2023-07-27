@@ -32,6 +32,7 @@ class Holiday {
 
 	/**
 	 * Will render the holiday fields in the timeframe settings.
+	 * TODO: These do not necessarily need to be CMB2 fields but can just be custom HTML fields. All the necessary information is pulled through javascript already.
 	 * @param $field
 	 * @param $value
 	 * @param $object_id
@@ -52,7 +53,7 @@ class Holiday {
 		<div class="cb_admin_holiday_table_wrapper">
 			<div class="cb_admin_holiday_table">
 				<label
-					for="<?php echo $field_type->_id( 'holiday_year' ); ?>"><?php echo esc_html__( 'Year', 'commonsbooking' );//TODO: set name ?></label>
+					for="<?php echo $field_type->_id( 'holiday_year' ); ?>"><?php echo esc_html__( 'Year', 'commonsbooking' );?></label>
 				<?php echo $field_type->select( array(
 					'name'  => $field_type->_name( '[holiday_year]' ),
 					'id'    => $field_type->_id( 'holiday_year' ),
