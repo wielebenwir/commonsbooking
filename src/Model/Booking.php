@@ -581,7 +581,13 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			$interval = $this->getStartDateDateTime()->diff($this->getEndDateDateTime()->modify("+5 min"));
 		}
 		elseif ($this->isCancelled()){
-			$interval = $this->getStartDateDateTime()->diff($this->getCancellationDateDateTime());
+			$startDate = $this->getStartDateDateTime();
+			$cancellationDate = $this->getCancellationDateDateTime();
+			//count as 0 days when booking is cancelled before it has started
+			if ($cancellationDate < $startDate){
+				return 0;
+			}
+			$interval  = $startDate->diff( $cancellationDate );
 		}
 		else {
 			//Booking has no valid status

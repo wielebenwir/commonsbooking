@@ -89,7 +89,7 @@ class BookingTest extends CustomPostTypeTest {
 		ClockMock::freeze($shortlyBeforeEnd);
 		$cancelBooking->cancel();
 		wp_cache_flush();
-		$cancelBooking = new Booking(get_post($cancelBookingId));
+		$cancelBooking = new Booking( $cancelBookingId );
 
 		$this->assertEquals(3,$cancelBooking->getLength());
 
@@ -110,9 +110,27 @@ class BookingTest extends CustomPostTypeTest {
 		ClockMock::freeze($halfBeforeEnd);
 		$cancelBooking->cancel();
 		wp_cache_flush();
-		$cancelBooking = new Booking(get_post($cancelBookingId));
+		$cancelBooking = new Booking( $cancelBookingId );
 		$this->assertEquals(2,$cancelBooking->getLength());
 
+		//now we test what happens when a booking is cancelled before it starts. It should have a length of 0
+		$cancelBookingId = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+15 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+17 days', strtotime( self::CURRENT_DATE ) ),
+		);
+		$cancelBooking = new Booking(
+			$cancelBookingId
+		);
+		$this->assertEquals(2,$cancelBooking->getLength());
+		$shortlyBeforeStart = new \DateTime();
+		$shortlyBeforeStart->setTimestamp(strtotime( '+10 day', strtotime( self::CURRENT_DATE ) ));
+		ClockMock::freeze($shortlyBeforeStart);
+		$cancelBooking->cancel();
+		wp_cache_flush();
+		$cancelBooking = new Booking( $cancelBookingId );
+		$this->assertEquals(0,$cancelBooking->getLength());
 	}
 
 
@@ -131,7 +149,7 @@ class BookingTest extends CustomPostTypeTest {
 			'12:00 PM',
 			'unconfirmed',
 		);
-		$bookingObj = new Booking( get_post( $bookingId ) );
+		$bookingObj = new Booking( $bookingId );
 
 		$this->assertTrue( $bookingObj->isUnconfirmed() );
 	}
@@ -143,7 +161,7 @@ class BookingTest extends CustomPostTypeTest {
 		$commentValue = "Comment on this";
 		update_post_meta( $this->testBookingId, 'comment', $commentValue );
 		wp_cache_flush();
-		$this->testBookingTomorrow = new Booking( get_post( $this->testBookingId ) );
+		$this->testBookingTomorrow = new Booking( $this->testBookingId );
 
 		$this->assertEquals( $commentValue, $this->testBookingTomorrow->returnComment() );
 	}
@@ -164,7 +182,7 @@ class BookingTest extends CustomPostTypeTest {
 		// Updates meta value
 		update_post_meta( $this->testBookingId, 'show-booking-codes', 'on' );
 		wp_cache_flush();
-		$this->testBookingTomorrow = new Booking( get_post( $this->testBookingId ) );
+		$this->testBookingTomorrow = new Booking( $this->testBookingId );
 
 		$this->assertTrue( $this->testBookingTomorrow->showBookingCodes() );
 	}
@@ -222,14 +240,14 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
 		);
-		$this->testBookingTomorrow = new Booking( get_post( $this->testBookingId ) );
+		$this->testBookingTomorrow = new Booking( $this->testBookingId );
 		$this->testBookingPastId   = $this->createBooking(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '-2 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) )
 		);
-		$this->testBookingPast     = new Booking( get_post( $this->testBookingPastId ) );
+		$this->testBookingPast     = new Booking( $this->testBookingPastId );
 
 	}
 
@@ -242,9 +260,9 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( '-5 days',  strtotime(self::CURRENT_DATE) ),
 			strtotime( '+90 days', strtotime(self::CURRENT_DATE) )
 		);
-		$this->testItem = new Item(get_post($this->itemId));
-		$this->testLocation = new Location(get_post($this->locationId));
-		$this->testTimeFrame = new Timeframe(get_post($this->firstTimeframeId));
+		$this->testItem = new Item($this->itemId);
+		$this->testLocation = new Location($this->locationId);
+		$this->testTimeFrame = new Timeframe($this->firstTimeframeId);
 		$this->setUpTestBooking();
 	}
 
