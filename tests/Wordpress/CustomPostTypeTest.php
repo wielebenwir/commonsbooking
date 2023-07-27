@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Tests\Wordpress;
 
+use CommonsBooking\Plugin;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
@@ -36,6 +37,10 @@ abstract class CustomPostTypeTest extends TestCase {
 	protected $itemIds = [];
 
 	protected $normalUserID;
+	/**
+	 * @var int|\WP_Error
+	 */
+	protected $cbManagerUserID;
 
 	protected function createTimeframe(
 		$locationId,
@@ -349,6 +354,25 @@ abstract class CustomPostTypeTest extends TestCase {
 		$table_name = $wpdb->prefix . BookingCodes::$tablename;
 		$sql        = "DROP TABLE $table_name";
 		$wpdb->query( $sql );
+	}
+
+	protected function createCBManager(){
+		//we need to run the functions that add the custom user role and assign it to the user
+		Plugin::addCustomUserRoles();
+		//and add the caps for each of our custom post types
+		$postTypes = Plugin::getCustomPostTypes();
+		foreach ($postTypes as $customPostType) {
+			Plugin::addRoleCaps($customPostType::$postType);
+		}
+		$wp_user = get_user_by('email',"cbmanager@cbmanager.de");
+		if (! $wp_user) {
+			$this->cbManagerUserID = wp_create_user( "cbmanager", "cbmanager", "cbmanager@cbmanager.de" );
+			$user = new \WP_User( $this->cbManagerUserID );
+			$user->set_role( Plugin::$CB_MANAGER_ID );
+		}
+		else {
+			$this->cbManagerUserID = $wp_user->ID;
+		}
 	}
 
 }
