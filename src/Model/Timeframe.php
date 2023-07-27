@@ -42,6 +42,8 @@ class Timeframe extends CustomPost {
 
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
+	public const META_MAX_DAYS = 'timeframe-max-days';
+
 	public const SELECTION_MANUAL_ID = 0;
 
 	public const SELECTION_CATEGORY_ID = 1;
@@ -233,7 +235,7 @@ class Timeframe extends CustomPost {
 	public function bookingCodesApplicable(): bool {
 		try {
 			return $this->getLocation() && $this->getItem() &&
-			       $this->getStartDate() && $this->getEndDate() &&
+			       $this->getStartDate() && $this->usesBookingCodes() &&
 			       $this->getType() === \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID;
 		} catch ( Exception $e ) {
 			return false;
@@ -256,56 +258,6 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Get the corresponding location array for a timeframe
-	 *
-	 * DEPRECATED: THIS FUNCTION IS NOT USED ANYWHERE
-	 *
-	 * @return array|null of Locations
-	 * @throws Exception
-	 */
-	public function getLocations(): ?array {
-		$locationSelect = $this->getMeta(self::META_LOCATION_SELECTION_TYPE);
-		$locations[] = null;
-		switch ($locationSelect) {
-			case self::SELECTION_MANUAL_ID:
-				$locationIds = $this->getMeta( self::META_LOCATION_ID );
-				foreach ($locationIds as $locationId){
-					if ( $post = get_post( $locationId)) {
-						$locations[] = new Location( $post);
-					}
-				}
-				break;
-			case self::SELECTION_CATEGORY_ID:
-				$categoryIds = $this->getMeta(self::META_LOCATION_CATEGORY_IDS);
-				foreach ($categoryIds as $categoryId){
-					$term = get_term($categoryId);
-					array_merge($locations, Locations::get(
-						array(
-							'category_slug' => $term->slug
-						)
-					)
-					);
-				}
-				break;
-			case self::SELECTION_ALL_ID:
-				array_merge($locations, Locations::get());
-				break;
-
-			default: //When other value is set this most likely means, that the old timeframe model is still being used
-				$locationIds = $this->getMeta( self::META_LOCATION_ID );
-				if ( is_string($locationIds )) {
-					if ( $post = get_post( $locationIds ) ) {
-						$locations[] = New Location($post);
-					}
-				}
-				else {
-					return null;
-				}
-		}
-		return $locations;
-	}
-
-	/**
 	 * Get the corresponding single item for a timeframe
 	 * @return Item
 	 * @throws Exception
@@ -319,57 +271,6 @@ class Timeframe extends CustomPost {
 		}
 
 		return null;
-	}
-
-	/**
-	 * Get the corresponding item array for a timeframe
-	 *
-	 * DEPRECATED: THIS FUNCTION IS CURRENTLY NOT IN USE ANYWHERE
-	 * @return array|null of Items
-	 * @throws Exception
-	 */
-	public function getItems(): ?array {
-		$itemSelect = $this->getMeta(self::META_ITEM_SELECTION_TYPE);
-		$items[] = null;
-		switch ($itemSelect) {
-			case self::SELECTION_MANUAL_ID:
-				$itemIds = $this->getMeta( self::META_ITEM_ID );
-				foreach ($itemIds as $itemId){
-					if ( $post = get_post( $itemId)) {
-						$items[] = new Item( $post);
-					}
-				}
-				break;
-			/*
-			case self::SELECTION_CATEGORY_ID:
-				$categoryIds = $this->getMeta(self::META_ITEM_CATEGORY_ID);
-				foreach ($categoryIds as $categoryId){
-					$term = get_term($categoryId);
-					array_merge($items, Items::get(
-						array(
-							'category_slug' => $term->slug
-						)
-					)
-					);
-				}
-				break;
-			*/
-			case self::SELECTION_ALL_ID:
-				array_merge($items, Items::get());
-				break;
-
-			default: //When other value is set this most likely means, that the old timeframe model is still being used
-				$itemIds = $this->getMeta( self::META_ITEM_ID );
-				if ( is_string($itemIds )) {
-					if ( $post = get_post( $itemIds ) ) {
-						$items[] = New Item($post);
-					}
-				}
-				else {
-					return null;
-				}
-		}
-		return $items;
 	}
 
 	/**
@@ -693,13 +594,12 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns true if booking codes shall be created.
+	 * Returns true if booking codes were enabled for this timeframe
 	 *
 	 * @return bool
 	 */
-	public function createBookingCodes() : bool
-	{
-		return $this->getMeta( 'create-booking-codes' ) === 'on';
+	public function usesBookingCodes(): bool {
+		return $this->getMeta( 'create-booking-codes' ) == 'on';
 	}
 
 	/**
@@ -707,8 +607,11 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getUTCStartDateDateTime(): DateTime {
+	public function getUTCStartDateDateTime(): ?DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
+		if ( ! $startDateString ) {
+			return null;
+		}
 		if ( $this->isFullDay() ) {
 			return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		}
@@ -720,9 +623,12 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getStartTimeDateTime(): DateTime {
+	public function getStartTimeDateTime(): ?DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
 		$startTimeString = $this->getMeta( 'start-time' );
+		if ( ! $startDateString ) {
+			return null;
+		}
 		$startDate       = Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		if ( $startTimeString ) {
 			$startTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $startTimeString ) );
@@ -738,8 +644,11 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getEndDateDateTime(): DateTime {
+	public function getEndDateDateTime(): ?DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
+		if (! $endDateString ){
+			return null;
+		}
 		return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 	}
 
@@ -750,8 +659,11 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return DateTime
 	 */
-	public function getUTCEndDateDateTime(): DateTime {
+	public function getUTCEndDateDateTime(): ?DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
+		if (! $endDateString ){
+			return null;
+		}
 		if ( $this->isFullDay() ) {
 			return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 		}
@@ -811,7 +723,7 @@ class Timeframe extends CustomPost {
 			$admins = array_merge( $locationAdminIds, $itemAdminIds );
 		}
 
-		return $admins;
+		return array_unique( $admins );
 	}
 
 	/**

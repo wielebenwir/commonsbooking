@@ -3,7 +3,9 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Service\Holiday;
+use CommonsBooking\Exception\BookingCodeException;
 use CommonsBooking\Exception\TimeframeInvalidException;
+use CommonsBooking\Model\BookingCode;
 use WP_Post;
 use Exception;
 use CommonsBooking\View\Calendar;
@@ -491,7 +493,7 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'       => esc_html__( "Select multiple locations", 'commonsbooking' ),
+				'name'       => esc_html__( "Select one or more locations", 'commonsbooking' ),
 				'id'         => \CommonsBooking\Model\Timeframe::META_LOCATION_IDS,
 				'type'       => 'multicheck',
 				'options'    => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
@@ -506,7 +508,7 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'       => esc_html__( "Select multiple items", 'commonsbooking' ),
+				'name'       => esc_html__( "Select one or more items", 'commonsbooking' ),
 				'id'         => \CommonsBooking\Model\Timeframe::META_ITEM_IDS,
 				'type'       => 'multicheck',
 				'options'    => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
@@ -536,7 +538,7 @@ class Timeframe extends CustomPostType {
 			array(
 				'name'       => esc_html__( 'Maximum', 'commonsbooking' ),
 				'desc'       => esc_html__( 'days in a row', 'commonsbooking' ),
-				'id'         => "timeframe-max-days",
+				'id'         => \CommonsBooking\Model\Timeframe::META_MAX_DAYS,
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
 				'attributes' => array(
@@ -563,7 +565,7 @@ class Timeframe extends CustomPostType {
 			array(
 				'name'       => esc_html__( 'Calendar shows as bookable', 'commonsbooking' ),
 				'desc'       => commonsbooking_sanitizeHTML( __( 'days. <br> The calendar will show the next X days as bookable. <br> Booking only possible in this time range.', 'commonsbooking' ) ),
-				'id'         => "timeframe-advance-booking-days",
+				'id'         => \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS,
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
 				'attributes' => array(
@@ -709,7 +711,7 @@ class Timeframe extends CustomPostType {
 				'name' => esc_html__( "Booking Codes", 'commonsbooking' ),
 				'desc' => commonsbooking_sanitizeHTML( __( 'You can automatically generate booking codes. Codes can be generated only with the following settings:</br>
 				- Whole day is enabled</br>
-				- Start date and end date are set</br>
+				- Timeframe is bookable</br>
 				<a href="https://commonsbooking.org/?p=437" target="_blank">More Information in the documentation</a>
 				', 'commonsbooking' ) ),
 				'id'   => "title-timeframe-booking-codes",
@@ -825,8 +827,16 @@ class Timeframe extends CustomPostType {
 			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
 			$this->sanitizeRepetitionEndDate( $post_id );
 
-			if ( $timeframe->createBookingCodes() && $timeframe->bookingCodesApplicable() ) {
-				BookingCodes::generate( $post_id );
+			if ( $timeframe->usesBookingCodes() && $timeframe->bookingCodesApplicable() ) {
+				try {
+					BookingCodes::generate( $timeframe );
+				} catch ( BookingCodeException $e ) {
+					set_transient(
+						BookingCode::ERROR_TYPE,
+						$e->getMessage(),
+						45
+					);
+				}
 			}
 		}
 
