@@ -64,6 +64,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		));
 		try {
 			$noItemTF->isValid();
+			$this->fail("TimeframeInvalidException was not thrown");
 		}
 		catch ( TimeframeInvalidException $e ) {
 			$this->assertEquals("Item or location is missing. Please set item and location. Timeframe is saved as draft",$e->getMessage());
@@ -78,6 +79,7 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		try {
 			$noLocationTF->isValid();
+			$this->fail("TimeframeInvalidException was not thrown");
 		}
 		catch ( TimeframeInvalidException $e ) {
 			$this->assertEquals("Item or location is missing. Please set item and location. Timeframe is saved as draft",$e->getMessage());
@@ -91,9 +93,46 @@ class TimeframeTest extends CustomPostTypeTest {
 		));
 		try {
 			$noStartDateTF->isValid();
+			$this->fail("TimeframeInvalidException was not thrown");
 		}
 		catch (TimeframeInvalidException $e ){
 			$this->assertEquals("Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.",$e->getMessage());
+		}
+
+		//make sure, that timeframes with manual repetition can be saved without a start date or end date
+		$noStartDateManualRep = new Timeframe($this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			"",
+			"",
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"on",
+			"manual",
+			0,
+			'08:00 AM',
+			'12:00 PM',
+			'publish',
+			["1","2","3","4","5","6","7"],
+			"01-07-2021",
+		));
+		$this->assertNull( $noStartDateManualRep->isValid() );
+
+		//but also make sure, that timeframes with manual repetition do not have empty manual repetition values
+		try {
+			$noManualRepValues = new Timeframe( $this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				"",
+				"",
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				"on",
+				"manual",
+			) );
+			$noManualRepValues->isValid();
+			$this->fail("TimeframeInvalidException was not thrown");
+		}
+		catch (TimeframeInvalidException $e) {
+			$this->assertEquals("No dates selected. Please select at least one date. Timeframe is saved as draft.",$e->getMessage());
 		}
 
 		$pickupTimeInvalid = new Timeframe($this->createTimeframe(
@@ -110,6 +149,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		));
 		try {
 			$pickupTimeInvalid->isValid();
+			$this->fail("TimeframeInvalidException was not thrown");
 		}
 		catch ( TimeframeInvalidException $e ) {
 			$this->assertEquals( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
@@ -148,6 +188,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		// $this->expectException( TimeframeInvalidException::class );
 		try {
 			$isOverlapping->isValid();
+			$this->fail("TimeframeInvalidException was not thrown");
 		} catch (TimeframeInvalidException $e ) {
 			$this->assertStringContainsString( "Item is already bookable at another location within the same date range.", $e->getMessage() );
 		}
@@ -235,6 +276,31 @@ class TimeframeTest extends CustomPostTypeTest {
 			),
 		);
 
+	}
+
+	public function testGetManualSelectionDate() {
+		//check, that they are properly presented in an array
+		$dateFormattedInAWeek = date('Y-m-d', strtotime('+1 week', strtotime( self::CURRENT_DATE ) ) );
+		$tfWithManualSelectionDates = new Timeframe($this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day', time() ),
+			strtotime( '+2 days', time() ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"off",
+			"manual",
+			0,
+			'08:00 AM',
+			'12:00 PM',
+			'publish',
+			'[]',
+			"{$this->dateFormatted},{$dateFormattedInAWeek}"
+		) );
+		$expectedDates = array(
+			$this->dateFormatted,
+			$dateFormattedInAWeek
+		);
+		$this->assertEquals($expectedDates,$tfWithManualSelectionDates->getManualSelectionDates());
 	}
 
   protected function setUp() : void {

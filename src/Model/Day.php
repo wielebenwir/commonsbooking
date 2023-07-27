@@ -98,7 +98,7 @@ class Day {
 	}
 
 	/**
-	 * Returns array with timeframes.
+	 * Returns array with timeframes for the current day.
 	 * @return array
 	 * @throws Exception
 	 */
@@ -341,19 +341,9 @@ class Day {
 
 				// Manual Rep
 				case "manual":
-					$manualDatesString = trim($timeframe->getMeta(
-						\CommonsBooking\Model\Timeframe::META_MANUAL_SELECTION
-					));
+					return in_array( $this->getDate(), $timeframe->getManualSelectionDates() );
 
-					if($manualDatesString) {
-						$manualDates = array_map(
-							'trim',
-							explode(',', $manualDatesString)
-						);
-						return in_array($this->getDate(), $manualDates);
-					} else {
-						return false;
-					}
+				// No Repetition
 				case "norep":
 					$timeframeStartTimestamp = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ));
 					$timeframeEndTimestamp   = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ));

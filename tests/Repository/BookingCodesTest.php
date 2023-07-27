@@ -256,7 +256,9 @@ class BookingCodesTest extends CustomPostTypeTest
 			3,
 			30,
 			"off",
-			"off"
+			"off",
+			"off",
+			"Timeframe Disabled Booking Code"
 		));
 
 		$this->timeframeWithDisabledBookingCodesWithoutEndDate = new Timeframe($this->createTimeframe(
@@ -276,7 +278,9 @@ class BookingCodesTest extends CustomPostTypeTest
 			3,
 			30,
 			"off",
-			"off"
+			"off",
+			"off",
+			"Timeframe Disabled Booking Code"
 		));
 
 		Settings::updateOption('commonsbooking_options_bookingcodes','bookingcodes','Turn,and,face,the,strange,Ch-ch-changes');

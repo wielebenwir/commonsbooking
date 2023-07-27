@@ -6,6 +6,7 @@ namespace CommonsBooking\Repository;
 
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Helper\Wordpress;
+use CommonsBooking\Model\Day;
 use CommonsBooking\Plugin;
 use Exception;
 
@@ -486,17 +487,22 @@ class Timeframe extends PostRepository {
 		} else {
 			if ( $date ) {
 				$posts = array_filter( $posts, function ( $post ) use ( $date ) {
-					if ( $weekdays = get_post_meta( $post->ID, 'weekdays', true ) ) {
-						$day = date( 'N', strtotime( $date ) );
+					try {
+						$timeframe = new \CommonsBooking\Model\Timeframe( $post );
+						$day       = new Day( $date );
 
-						return in_array( $day, $weekdays );
+						return $day->isInTimeframe( $timeframe );
+					} catch ( Exception $e ) {
+						//this was also default behaviour before #802 (before #802 the function would just check the weekly repetition and if it was active on the given day return true)
+						//When none were set, it would return true for all days.
+						return true;
 					}
-
-					return true;
-				} );
+				}
+				);
 			}
 
-			Plugin::setCacheItem($posts, Wordpress::getTags($posts));
+			Plugin::setCacheItem( $posts, Wordpress::getTags( $posts ) );
+
 			return $posts;
 		}
 	}

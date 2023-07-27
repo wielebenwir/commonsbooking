@@ -51,18 +51,6 @@ function commonsbooking_admin() {
 		)
 	);
 
-	/**
-	 * Ajax - get Holidays
-	 */
-	wp_localize_script(
-		'cb-scripts-admin',
-		'cb_ajax_holiday_get',
-		array(
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'holiday_get' ),
-		)
-	);
-
 }
 
 add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );

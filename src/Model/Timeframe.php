@@ -311,12 +311,25 @@ class Timeframe extends CustomPost {
 				);
 			}
 
-			if ( ! $this->getStartDate() ) {
-				// If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
-				throw new TimeframeInvalidException( __(
-						'Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.',
-						'commonsbooking' )
-				);
+			//a timeframe with a manual repetition does not need a start date.
+			//start- and enddate are automatically set upon saving the post
+			if ($this->getRepetition() == 'manual') {
+				$manual_selection_dates = $this->getManualSelectionDates();
+				if ( empty( $manual_selection_dates ) ){
+					throw new TimeframeInvalidException(__(
+							'No dates selected. Please select at least one date. Timeframe is saved as draft.',
+							'commonsbooking'   )
+					);
+				}
+			}
+			else {
+				if ( ! $this->getStartDate() ) {
+					// If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
+					throw new TimeframeInvalidException( __(
+							'Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.',
+							'commonsbooking' )
+					);
+				}
 			}
 
 			if (
@@ -581,6 +594,22 @@ class Timeframe extends CustomPost {
 		} else {
 			return intval( $this->getGrid() );
 		}
+	}
+
+	/**
+	 * Gets an array of dates that were manually selected by the user.
+	 * The dates are in the format YYYY-MM-DD
+	 * @return String[]
+	 */
+	public function getManualSelectionDates(): array {
+		$manualDatesString = $this->getMeta( self::META_MANUAL_SELECTION );
+		if ( ! $manualDatesString ) {
+			return [];
+		}
+		return array_map(
+			'trim',
+			explode( ',', $manualDatesString )
+		);
 	}
 
 	/**
