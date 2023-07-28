@@ -755,6 +755,10 @@ class Booking extends Timeframe {
 	 * Registers metaboxes for cpt.
 	 */
 	public function registerMetabox() {
+		//do not render the metabox if the user is on the login page (not yet logged in)
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
 		$cmb = new_cmb2_box(
 			[
 				'id'           => static::getPostType() . '-custom-fields',
