@@ -1316,9 +1316,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }, this.calendars = [], this.datePicked = [];
             }
             return t.prototype.render = function() {
-                var t = this;
-                console.log("hey, what's wrong with you?");
-                var e = document.createElement("div");
+                var t = this, e = document.createElement("div");
                 e.className = r.containerMain;
                 var i = document.createElement("div");
                 i.className = r.containerMonths, r["columns" + this.options.numberOfColumns] && (i.classList.remove(r.columns2, r.columns3, r.columns4), 
@@ -1459,7 +1457,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     n = Number(this.options.hotelMode), s = this.datePicked[0].clone().subtract(this.options.maxDays + n, "day");
                     var d = 0;
                     if ((!this.options.countLockedDays || this.options.countLockedDaysMax > 0) && !this.options.disallowLockDaysInRange) {
-                        for (var c = this.datePicked[0].clone(), h = this.options.maxDays, p = this.options.countLockedDaysMax, u = [], m = 0, y = [ this.options.lockDays ]; m < y.length; m++) for (var f = 0, g = y[m]; f < g.length; f++) {
+                        for (var c = this.datePicked[0].clone(), h = this.options.maxDays, p = this.options.countLockedDaysMax, u = [], m = 0, y = [ this.options.holidays, this.options.lockDays ]; m < y.length; m++) for (var f = 0, g = y[m]; f < g.length; f++) {
                             var k = g[f];
                             this.datePicked[0].getTime() < k.getTime() && u.push(k);
                         }
@@ -1467,7 +1465,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             h -= 1, c = c.add(1, "day");
                             for (var D = 0, v = u; D < v.length; D++) {
                                 (k = v[D]).getTime() === c.getTime() && (this.dateIsBooked(c, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(c, this.options.partiallyBookedDaysInclusivity) || (this.options.countLockedDays && p <= 0 ? (d += 1, 
-                                console.log("added one to maxDays"), h += 1) : this.options.countLockedDays && p > 0 ? p -= 1 : this.options.countLockedDays || (d += 1)));
+                                h += 1) : this.options.countLockedDays && p > 0 ? p -= 1 : this.options.countLockedDays || (console.log("Not counting anything"), 
+                                d += 1)));
                             }
                         }
                     }
