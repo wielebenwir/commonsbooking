@@ -1130,7 +1130,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         var i = new c.DateTime(t.dataset.time), o = e.renderDay(i);
                         if (i.isBetween(n, s)) {
                             var a = e.options.days[i.format(e.options.bookedDaysFormat)];
-                            a.bookedDay ? o.classList.add(h.isBooked) : a.partiallyBookedDay && (a.firstSlotBooked && o.classList.add(h.isPartiallyBookedStart), 
+                            a.bookedDay ? o.classList.add(h.isBooked) : a.partiallyBookedDay && (a.firstSlotBooked && (console.log("added style from line 668 litepicker.ts"), 
+                            console.log(a), a.holiday ? o.classList.add(h.isLocked) : o.classList.add(h.isPartiallyBookedStart)), 
                             a.lastSlotBooked && o.classList.add(h.isPartiallyBookedEnd)), 
                             o.classList.add(h.isInRange);
                         }
@@ -1465,8 +1466,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             h -= 1, c = c.add(1, "day");
                             for (var D = 0, v = u; D < v.length; D++) {
                                 (k = v[D]).getTime() === c.getTime() && (this.dateIsBooked(c, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(c, this.options.partiallyBookedDaysInclusivity) || (this.options.countLockedDays && p <= 0 ? (d += 1, 
-                                h += 1) : this.options.countLockedDays && p > 0 ? p -= 1 : this.options.countLockedDays || (console.log("Not counting anything"), 
-                                d += 1)));
+                                h += 1) : this.options.countLockedDays && p > 0 ? p -= 1 : this.options.countLockedDays || (d += 1)));
                             }
                         }
                     }
@@ -1483,8 +1483,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 }).length) && (i.classList.add(r.isBooked), this.datePicked.length > 0 && !this.bookedDayAfterSelection && this.datePicked[0].getTime() < t.getTime() && (this.bookedDayAfterSelection = t.getTime())));
                 this.options.partiallyBookedDays.length && ((I = this.options.partiallyBookedDays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.partiallyBookedDaysInclusivity) : i.isSame(t, "day");
-                }).length) && (!1 === (L = this.options.days[t.format(this.options.format)]).firstSlotBooked && i.classList.add(r.isPartiallyBookedStart), 
-                !1 === L.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd)));
+                }).length) && (!1 === (L = this.options.days[t.format(this.options.format)]).firstSlotBooked && (console.log("Added style from calendar.ts line 650"), 
+                i.classList.add(r.isPartiallyBookedStart)), !1 === L.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd)));
                 this.options.holidays.length && (this.options.holidays.filter(function(i) {
                     return i instanceof Array ? t.isBetween(i[0], i[1], e.options.holidaysInclusivity) : i.isSame(t, "day");
                 }).length && i.classList.add(r.isHoliday));
@@ -1504,8 +1504,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         this.options.hotelMode && 1 === this.datePicked.length && (w = "()");
                         var L, I = this.dateIsPartiallyBooked(t, w), P = (x = this.dateIsPartiallyBooked(b, "[]"), 
                         T = this.dateIsPartiallyBooked(t, "(]"), 0 === this.datePicked.length && I || 1 === this.datePicked.length && x && I || 1 === this.datePicked.length && x && T), S = this.options.anyPartiallyBookedDaysAsCheckout && 1 === this.datePicked.length;
-                        if (P && !S) !1 === (L = this.options.days[t.format(this.options.format)]).firstSlotBooked && i.classList.add(r.isPartiallyBookedStart), 
-                        !1 === L.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd);
+                        if (P && !S) !1 === (L = this.options.days[t.format(this.options.format)]).firstSlotBooked && (console.log("Added style from calendar.ts line 650"), 
+                        i.classList.add(r.isPartiallyBookedStart)), !1 === L.lastSlotBooked && i.classList.add(r.isPartiallyBookedEnd);
                     }
                 }
                 return !this.options.disableWeekends || 6 !== t.getDay() && 0 !== t.getDay() || i.classList.add(r.isLocked), 
