@@ -2,6 +2,9 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Exception\BookingCodeException;
+use CommonsBooking\Exception\TimeframeInvalidException;
+use CommonsBooking\Model\BookingCode;
 use WP_Post;
 use Exception;
 use CommonsBooking\View\Calendar;
@@ -49,7 +52,7 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Default value for possible advance booking days.
 	 */
-	const ADVANCE_BOOKING_DAYS = 365;
+	const ADVANCE_BOOKING_DAYS = 31;
 
 	/**
 	 * CPT type.
@@ -89,9 +92,7 @@ class Timeframe extends CustomPostType {
 			\CommonsBooking\Model\Timeframe::META_LOCATION_ID                    => esc_html__( 'Location', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::REPETITION_START                    => esc_html__( 'Start Date', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::REPETITION_END                      => esc_html__( 'End Date', 'commonsbooking' ),
-			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS => esc_html__( 'Max. Booking Duration', 'commonsbooking' ),
-			'timeframe-advance-booking-days'                                     => esc_html__( 'Days Booking In Advance', 'commonsbooking' ),
-
+			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS => esc_html__( 'Days Booking In Advance', 'commonsbooking' ),
 		];
 
 
@@ -475,9 +476,14 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'       => esc_html__( 'Maximum booking duration', 'commonsbooking' ),
-				'desc'       => esc_html__( 'Maximum booking duration in days', 'commonsbooking' ),
-				'id'         => "timeframe-max-days",
+				'name' => esc_html__( "Configure bookings", 'commonsbooking' ),
+				'id'   => "title-bookings-config",
+				'type' => 'title',
+			),
+			array(
+				'name'       => esc_html__( 'Maximum', 'commonsbooking' ),
+				'desc'       => esc_html__( 'days in a row', 'commonsbooking' ),
+				'id'         => \CommonsBooking\Model\Timeframe::META_MAX_DAYS,
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
 				'attributes' => array(
@@ -487,10 +493,24 @@ class Timeframe extends CustomPostType {
 				'default_value'    => 3,
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
+            array(
+				'name'       => esc_html__( 'Lead time:', 'commonsbooking' ),
+				'desc'       => commonsbooking_sanitizeHTML(__( 'days. <br> The item can be picked up with a lead time of x days.<br>
+                <strong>Example:</strong> Today is the 04/27/2023. Lead time = 3 days. Earliest selectable pickup day is 04/30/2023.', 'commonsbooking' ) ),
+				'id'         => 'booking-startday-offset',
+				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+				'type'       => 'text_small',
+				'attributes' => array(
+					'type' => 'number',
+					'min'  => '0',
+				),
+				'default_value'    => 0,
+				'default_cb' => 'commonsbooking_filter_from_cmb2',
+			),
 			array(
-				'name'       => esc_html__( 'Maximum booking days in advance', 'commonsbooking' ),
-				'desc'       => esc_html__( 'Select for how many days in advance the calendar should display bookable days. Calculated from the current date.', 'commonsbooking' ),
-				'id'         => "timeframe-advance-booking-days",
+				'name'       => esc_html__( 'Calendar shows as bookable', 'commonsbooking' ),
+				'desc'       => commonsbooking_sanitizeHTML( __( 'days. <br> The calendar will show the next X days as bookable. <br> Booking only possible in this time range.', 'commonsbooking' ) ),
+				'id'         => \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS,
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
 				'attributes' => array(
@@ -501,11 +521,14 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'    => esc_html__( "Restrict bookings to user roles", 'commonsbooking' ),
+				'name'    => esc_html__( "Allowed for", 'commonsbooking' ),
 				'id'      => "allowed_user_roles",
-				'desc'    => esc_html__( 'Select one or more user roles to restrict bookings based on these timeframe configuration to these user roles. Leave empty for no restrictions', 'commonsbooking' ),
+				'desc'    => commonsbooking_sanitizeHTML(__( '<br> Select one or more user roles that will be allowed to book the item exclusively. <br> <b> Leave this blank to allow all users to book the item. </b>', 'commonsbooking' ) ),
 				'type'    => 'pw_multiselect',
 				'options' => self::sanitizeOptions( UserRepository::getUserRoles() ),
+				'attributes' => array(
+					'placeholder' => esc_html__( 'User roles', 'commonsbooking' ),
+				),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
@@ -552,7 +575,6 @@ class Timeframe extends CustomPostType {
 				'name'        => esc_html__( "End time", 'commonsbooking' ),
 				'id'          => "end-time",
 				'type'        => 'text_time',
-				'time_format' => 'H:i',
 				'attributes'  => array(
 					'data-timepicker' => wp_json_encode(
 						array(
@@ -619,7 +641,7 @@ class Timeframe extends CustomPostType {
 				'name' => esc_html__( "Booking Codes", 'commonsbooking' ),
 				'desc' => commonsbooking_sanitizeHTML( __( 'You can automatically generate booking codes. Codes can be generated only with the following settings:</br>
 				- Whole day is enabled</br>
-				- Start date and end date are set</br>
+				- Timeframe is bookable</br>
 				<a href="https://commonsbooking.org/?p=437" target="_blank">More Information in the documentation</a>
 				', 'commonsbooking' ) ),
 				'id'   => "title-timeframe-booking-codes",
@@ -656,7 +678,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Get allowed timeframe types for selection box in timeframe editor
-	 * TODO: can be removed if type cleanup has been done (e.g. move BOOKIG_ID to Booking-Class and rename existing types )
+	 * TODO: can be removed if type cleanup has been done (e.g. move BOOKING_ID to Booking-Class and rename existing types )
 	 *
 	 * @return array
 	 */
@@ -719,12 +741,19 @@ class Timeframe extends CustomPostType {
 		$isValid = $this->validateTimeFrame( $post_id, $post );
 
 		if ( $isValid ) {
-			$timeframe          = new \CommonsBooking\Model\Timeframe( $post_id );
-			$createBookingCodes = get_post_meta( $post_id, 'create-booking-codes', true );
-			$this->sanitizeRepetitionEndDate($post_id);
+			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
+			$this->sanitizeRepetitionEndDate( $post_id );
 
-			if ( $createBookingCodes == "on" && $timeframe->bookingCodesApplieable() ) {
-				BookingCodes::generate( $post_id );
+			if ( $timeframe->usesBookingCodes() && $timeframe->bookingCodesApplicable() ) {
+				try {
+					BookingCodes::generate( $timeframe );
+				} catch ( BookingCodeException $e ) {
+					set_transient(
+						BookingCode::ERROR_TYPE,
+						$e->getMessage(),
+						45
+					);
+				}
 			}
 		}
 	}
@@ -737,11 +766,11 @@ class Timeframe extends CustomPostType {
 	 *
 	 * @return void
 	 */
-	private function sanitizeRepetitionEndDate($postId) {
-		$repetitionEnd = get_post_meta($postId, \CommonsBooking\Model\Timeframe::REPETITION_END, true);
-		if($repetitionEnd) {
+	private function sanitizeRepetitionEndDate( $postId ) : void {
+		$repetitionEnd = get_post_meta( $postId, \CommonsBooking\Model\Timeframe::REPETITION_END, true );
+		if ( $repetitionEnd ) {
 			$repetitionEnd = strtotime( '+23 Hours +59 Minutes +59 Seconds', $repetitionEnd );
-			update_post_meta($postId, \CommonsBooking\Model\Timeframe::REPETITION_END, $repetitionEnd);
+			update_post_meta( $postId, \CommonsBooking\Model\Timeframe::REPETITION_END, $repetitionEnd );
 		}
 	}
 
@@ -756,13 +785,19 @@ class Timeframe extends CustomPostType {
 	protected function validateTimeFrame( $post_id, $post ): bool {
 		try {
 			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
-			if ( ! $timeframe->isValid() ) {
+			try {
+				$timeframe->isValid();
+			}
+			catch (TimeframeInvalidException $e){
+				set_transient(
+					\CommonsBooking\Model\Timeframe::ERROR_TYPE,
+					commonsbooking_sanitizeHTML($e->getMessage()),
+					45 );
 				// set post_status to draft if not valid
 				if ( $post->post_status !== 'draft' ) {
 					$post->post_status = 'draft';
 					wp_update_post( $post );
 				}
-
 				return false;
 			}
 		} catch ( Exception $e ) {
@@ -825,7 +860,7 @@ class Timeframe extends CustomPostType {
 			'show_in_nav_menus' => true,
 
 			// Hier können Berechtigungen in einem Array gesetzt werden
-			// oder die standart Werte post und page in form eines Strings gesetzt werden
+			// oder die standard Werte post und page in Form eines Strings gesetzt werden
 			'capability_type'   => array( self::$postType, self::$postType . 's' ),
 
 			'map_meta_cap'        => true,

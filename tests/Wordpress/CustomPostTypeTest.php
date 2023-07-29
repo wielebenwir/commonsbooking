@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Tests\Wordpress;
 
+use CommonsBooking\Plugin;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
@@ -9,6 +10,7 @@ use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use PHPUnit\Framework\TestCase;
+use SlopeIt\ClockMock\ClockMock;
 
 abstract class CustomPostTypeTest extends TestCase {
 
@@ -33,6 +35,12 @@ abstract class CustomPostTypeTest extends TestCase {
 	protected $locationIds = [];
 
 	protected $itemIds = [];
+
+	protected $subscriberId;
+
+	protected int $adminUserID;
+
+	protected int $cbManagerUserID;
 
 	protected function createTimeframe(
 		$locationId,
@@ -197,26 +205,38 @@ abstract class CustomPostTypeTest extends TestCase {
 		);
 	}
 
-	protected function createBookableTimeFrameIncludingCurrentDay() {
+	protected function createBookableTimeFrameIncludingCurrentDay($locationId = null, $itemId = null) {
+		if ( $locationId === null ) {
+			$locationId = $this->locationId;
+		}
+		if ( $itemId === null ) {
+			$itemId = $this->itemId;
+		}
 		return $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$locationId,
+			$itemId,
 			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) )
 		);
 	}
 
-	protected function createBookableTimeFrameStartingInAWeek() {
+	protected function createBookableTimeFrameStartingInAWeek($locationId = null, $itemId = null) {
+		if ( $locationId === null ) {
+			$locationId = $this->locationId;
+		}
+		if ( $itemId === null ) {
+			$itemId = $this->itemId;
+		}
 		return $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$locationId,
+			$itemId,
 			strtotime( '+7 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+30 day', strtotime( self::CURRENT_DATE ) )
 		);
 	}
 
 	// Create Item
-	public function createItem($title, $postStatus) {
+	protected function createItem($title, $postStatus, $admins = []) {
 		$itemId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Item::$postType,
@@ -225,11 +245,15 @@ abstract class CustomPostTypeTest extends TestCase {
 
 		$this->itemIds[] = $itemId;
 
+		if (! empty($admins)) {
+			update_post_meta( $itemId, COMMONSBOOKING_METABOX_PREFIX . 'item_admins', $admins );
+		}
+
 		return $itemId;
 	}
 
 	// Create Location
-	public function createLocation($title, $postStatus) {
+	protected function createLocation($title, $postStatus, $admins = []) {
 		$locationId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Location::$postType,
@@ -237,11 +261,67 @@ abstract class CustomPostTypeTest extends TestCase {
 		] );
 
 		$this->locationIds[] = $locationId;
+
+		if (! empty($admins)) {
+			update_post_meta( $locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_admins', $admins );
+		}
+
 		return $locationId;
 	}
 
-	protected function setUp() {
-		parent::setUp();
+	/**
+	 * We create the subscriber this way, because sometimes the user is already created.
+	 * In that case, the unit tests would fail, because there is already the user with this ID in the database.
+	 * @return void
+	 */
+	protected function createSubscriber(){
+		$wp_user = get_user_by('email',"a@a.de");
+		if (! $wp_user){
+			$this->subscriberId = wp_create_user("normaluser","normal","a@a.de");
+		}
+		else {
+			$this->subscriberId = $wp_user->ID;
+		}
+	}
+
+	/**
+	 * We create the administrator this way, because sometimes the user is already created.
+	 * In that case, the unit tests would fail, because there is already the user with this ID in the database.
+	 * @return void
+	 */
+	public function createAdministrator(){
+		$wp_user = get_user_by('email',"admin@admin.de");
+		if (! $wp_user) {
+			$this->adminUserID = wp_create_user( "adminuser", "admin", "admin@admin.de" );
+			$user = new \WP_User( $this->adminUserID );
+			$user->set_role( 'administrator' );
+		}
+		else {
+			$this->adminUserID = $wp_user->ID;
+		}
+	}
+
+	public function createCBManager(){
+		//we need to run the functions that add the custom user role and assign it to the user
+		Plugin::addCustomUserRoles();
+		//and add the caps for each of our custom post types
+		$postTypes = Plugin::getCustomPostTypes();
+		foreach ($postTypes as $customPostType) {
+			Plugin::addRoleCaps($customPostType::$postType);
+		}
+		$wp_user = get_user_by('email',"cbmanager@cbmanager.de");
+		if (! $wp_user) {
+			$this->cbManagerUserID = wp_create_user( "cbmanager", "cbmanager", "cbmanager@cbmanager.de" );
+			$user = new \WP_User( $this->cbManagerUserID );
+			$user->set_role( Plugin::$CB_MANAGER_ID );
+		}
+		else {
+			$this->cbManagerUserID = $wp_user->ID;
+		}
+	}
+
+  protected function setUp() : void {
+    parent::setUp();
 
 		$this->setUpBookingCodesTable();
 
@@ -268,15 +348,18 @@ abstract class CustomPostTypeTest extends TestCase {
 		$wpdb->query( $sql );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 
+		ClockMock::reset();
 		$this->tearDownAllItems();
 		$this->tearDownAllLocation();
 		$this->tearDownAllTimeframes();
 		$this->tearDownAllBookings();
 		$this->tearDownAllRestrictions();
 		$this->tearDownBookingCodesTable();
+
+		wp_logout();
 	}
 
 	protected function tearDownAllLocation() {

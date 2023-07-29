@@ -81,8 +81,9 @@ class Booking extends View {
 			serialize( $user->ID )
 		);
 
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$bookingDataArray             = [];
 			$bookingDataArray['page']     = $page;
@@ -120,7 +121,7 @@ class Booking extends View {
 				$menuitems = '';
 
 				if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'feed_enabled' ) == 'on'){
-					$menuitems .= 	'<div id="icallink_text" title="'. commonsbooking_sanitizeHTML( __('Use this link to import the data into your own calendar.')) .'">' .
+					$menuitems .= 	'<div id="icallink_text" title="'. commonsbooking_sanitizeHTML( __('Use this link to import the data into your own calendar. Usually you just need to provide the URL as an external source and the calendar will figure it out. Do not try to download this file.','commonsbooking')) .'">' .
 										commonsbooking_sanitizeHTML( __('iCalendar Link:', 'commonsbooking')) .
 									'</div>' .
 									'<input type="text" id="icallink" value="' . iCalendar::getCurrentUserCalendarLink() . '" readonly>'
@@ -281,6 +282,28 @@ class Booking extends View {
 		return ob_get_clean();
 	}
 
+	/**
+	 * Renders error for frontend notice. We use transients to pass the error message.
+	 * It is ensured that only the user where the error occurred can see the error message.
+	 */
+	public static function renderError() {
+		$errorTypes = [
+			\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id()
+		];
+
+		foreach ( $errorTypes as $errorType ) {
+			if ( $error = get_transient( $errorType ) ) {
+				$class = 'cb-notice error';
+				printf(
+					'<div class="%1$s"><p>%2$s</p></div>',
+					esc_attr( $class ),
+					nl2br( commonsbooking_sanitizeHTML( $error ) )
+				);
+				delete_transient( $errorType );
+			}
+		}
+	}
+
 	public static function getBookingListiCal($user = null):String{
 		$eventTitle_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
 		$eventDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );
@@ -300,6 +323,9 @@ class Booking extends View {
 		foreach ($bookingList["data"] as $booking)
 		{
 			$booking_model = New \CommonsBooking\Model\Booking($booking["postID"]);
+			if ($booking_model->isCancelled()) {
+				continue;
+			}
 			$template_objects = [
 				'booking'  => $booking_model,
 				'item'     => $booking_model->getItem(),

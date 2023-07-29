@@ -95,30 +95,39 @@ class iCalendar {
         String $eventTitle,
         String $eventDescription)
         {
+			$eventDescription = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $eventDescription); //remove empty lines from the description, they are not part of the standard
+
             $bookingLocation = $booking->getLocation();
             $bookingLocation_latitude = $bookingLocation->getMeta( 'geo_latitude' );
             $bookingLocation_longitude = $bookingLocation->getMeta( 'geo_longitude' );
 
             //create immutable DateTime objects from Mutable (recommended by iCal library developer)
-            $booking_startDateDateTime = DateTimeImmutable::createFromMutable( $booking->getStartDateDateTime() );
-            $booking_endDateDateTime = DateTimeImmutable::createFromMutable( $booking->getEndDateDateTime() );
+            $booking_startDateDateTime = DateTimeImmutable::createFromMutable( $booking->getUTCStartDateDateTime() );
+            $booking_endDateDateTime = DateTimeImmutable::createFromMutable( $booking->getUTCEndDateDateTime() );
 
             // Create timezone entity
-            $timezone = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone(
-                wp_timezone(),
-                $booking_startDateDateTime,
-                $booking_endDateDateTime
-            );
+	        $php_date_time_zone = wp_timezone();
+			//will only get timezone object if current timezone has transitions that can be fetched
+			if ($php_date_time_zone->getTransitions()){
+				$timezone           = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone(
+					$php_date_time_zone,
+					$booking_startDateDateTime,
+					$booking_endDateDateTime
+				);
+				if (empty($this->calendar->getTimeZones())){
+					$this->calendar->addTimeZone($timezone);
+				}
+			}
 
-            //Create event occurence
+            //Create event occurrence
             if ($booking->isFullDay()){
                 if ($booking_startDateDateTime->format('Y-m-d') == $booking_endDateDateTime->format('Y-m-d') ) { //is single day event
-                    $occurence = new SingleDay(
+                    $occurrence = new SingleDay(
                         new Date( $booking_startDateDateTime )
                     );
                 }
                 else { //is multi day event
-                    $occurence = new MultiDay(
+                    $occurrence = new MultiDay(
                         new Date( $booking_startDateDateTime ),
                         new Date( $booking_endDateDateTime )
                     );
@@ -127,9 +136,9 @@ class iCalendar {
             else { //is timespan
 
                 //add one minute to EndDate (this minute was removed to prevent overlapping but would confuse users)
-                $booking_endDateDateTime = $booking_endDateDateTime->add(new DateInterval('PT1M'));
+                $booking_endDateDateTime     = $booking_endDateDateTime->add(new DateInterval('PT1M'));
 
-                $occurence = new TimeSpan(
+                $occurrence = new TimeSpan(
                         new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_startDateDateTime, true),
                         new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_endDateDateTime, true)
                 );
@@ -140,19 +149,24 @@ class iCalendar {
             $event
                 ->setSummary($eventTitle)
                 ->setDescription($eventDescription)
-                ->setLocation(
-                    (
-                        new Location($bookingLocation->formattedAddressOneLine(), $bookingLocation->post_title))
-                        ->withGeographicPosition(
-                            new GeographicPosition(
-                                floatval( $bookingLocation_latitude ),
-                                floatval( $bookingLocation_longitude )
-                                )
-                            )
-                    )
-                ->setOccurrence($occurence)
+                ->setOccurrence($occurrence)
                 ;
-            
+
+			//Add location to domain entity
+
+	        $location_address = $bookingLocation->formattedAddressOneLine();
+			if (!empty($location_address)){
+				$event->setLocation(
+					(
+					new Location( $location_address, $bookingLocation->post_title))
+						->withGeographicPosition(
+							new GeographicPosition(
+								floatval( $bookingLocation_latitude ),
+								floatval( $bookingLocation_longitude )
+							)
+						)
+				);
+			}
 
             $this->calendar->addEvent($event);
         }
