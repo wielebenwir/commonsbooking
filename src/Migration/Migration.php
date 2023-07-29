@@ -189,6 +189,9 @@ class Migration {
 			$postMeta[ $cb2Field ] = get_post_meta( $location->ID, $cb1Field, true );
 		}
 
+		//set all locations to use global settings (just for fLotte)
+		$postMeta[ COMMONSBOOKING_METABOX_PREFIX . 'use_global_settings' ] = 'on';
+
 		$existingPost = self::getExistingPost( $location->ID, Location::$postType );
 
 		return self::savePostData( $existingPost, $postData, $postMeta, self::$includeGeoData );
