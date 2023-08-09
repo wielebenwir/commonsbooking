@@ -90,7 +90,8 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.8.1 (xx.08.2023)
+### 2.8.1 (09.08.2023)
+* FIXED: fatal error om admin backend after upgrading to wordpress 6.3
 * FIXED: Wrong field value for iCal events (the field value is reset, you have to re-set your values after updating)
 * FIXED: Bug sending cancellation mail to admin on admin cancellation
 * FIXED: Availability text for items in item shortcode (Merged display of overlapping timeframes)
