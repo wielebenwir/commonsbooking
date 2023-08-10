@@ -335,6 +335,12 @@
                     manualDateField.hide();
                     manualDatePicker.hide();
                 } else {
+                    if (selectedType == HOLIDAYS_ID) {
+                        holidayField.show();
+                    } else {
+                        holidayField.hide();
+                        holidayInput.val("");
+                    }
                     manualDateField.show();
                     manualDatePicker.show();
                 }
