@@ -262,7 +262,7 @@ class TimeframeExport {
 		}
 
 		// populate simple meta fields
-		$timeframeData["timeframe-max-days"]  = $timeframePost->getFieldValue( "timeframe-max-days" );
+		$timeframeData[ \CommonsBooking\Model\Timeframe::META_MAX_DAYS ]  = $timeframePost->getFieldValue( \CommonsBooking\Model\Timeframe::META_MAX_DAYS );
 		$timeframeData["full-day"]            = $timeframePost->getFieldValue( "full-day" );
 		$timeframeData[\CommonsBooking\Model\Timeframe::REPETITION_START] =
 			$timeframePost->getStartDate() ?

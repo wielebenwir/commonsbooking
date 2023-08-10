@@ -1064,13 +1064,26 @@ Return date: {{booking:returnDatetime}}
 				]
 			),
 			'experimental' => array(
-				'title'  => commonsbooking_sanitizeHTML( __( 'Connect to REDIS database.', 'commonsbooking' ) ),
-				'id'     => 'redis_group',
+				'title'  => commonsbooking_sanitizeHTML( __( 'Advanced caching settings', 'commonsbooking' ) ),
+				'id'     => 'caching_group',
 				'desc'   =>
-					commonsbooking_sanitizeHTML( __( 'Allows you to connect the cache to a REDIS database. This feature is experimental.', 'commonsbooking' ) ),
+					commonsbooking_sanitizeHTML( __( 'Allows you to change options regarding the caching system', 'commonsbooking' ) ),
 				'fields' => array(
 					array(
-						'name' => commonsbooking_sanitizeHTML( __( 'Enable REDIS Caching', 'commonsbooking' ) ),
+						'name'          => commonsbooking_sanitizeHTML( __( 'Filesystem cache path', 'commonsbooking' ) ),
+						'desc'          => commonsbooking_sanitizeHTML( __( 'Where the filesystem cache should be created. Only change when filesystem caching is not working. Default when empty: /tmp/symfony-cache/', 'commonsbooking' ) ),
+						'id'            => 'cache_path',
+						'type'          => 'text',
+						'default'       => '',
+					),
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
+						'id'            => 'filesystem-status',
+						'type'          => 'text',
+						'render_row_cb' => array( Cache::class, 'renderFilesystemStatus' ),
+					),
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'Enable REDIS Caching (experimental)', 'commonsbooking' ) ),
 						'id'   => 'redis_enabled',
 						'type' => 'checkbox',
 					),
@@ -1081,7 +1094,7 @@ Return date: {{booking:returnDatetime}}
 						'default' => 'redis://localhost:6379'
 					),
 					array(
-						'name'          => commonsbooking_sanitizeHTML( __( 'Current connections status', 'commonsbooking' ) ),
+						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
 						'id'            => 'redis_connection-status',
 						'type'          => 'text',
 						'render_row_cb' => array( Cache::class, 'renderREDISConnectionStatus' ),

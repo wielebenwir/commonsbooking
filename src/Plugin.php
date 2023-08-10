@@ -124,14 +124,19 @@ class Plugin {
 
 	/**
 	 * Tests if a given post belongs to our CPTs
-	 * @param $post
+	 * @param $post int|\WP_Post - post id or post object
 	 *
 	 * @return bool
 	 */
 	public static function isPostCustomPostType($post): bool {
-		if (! $post ) {
+		if (is_int($post)) {
+			$post = get_post($post);
+		}
+
+		if ( empty( $post ) ) {
 			return false;
 		}
+
 		$validPostTypes = self::getCustomPostTypesLabels();
 		return in_array($post->post_type,$validPostTypes);
 	}
@@ -538,7 +543,7 @@ class Plugin {
 		add_action( 'wp_enqueue_scripts', array( Cache::class, 'addWarmupAjaxToOutput' ) );
 		add_action( 'admin_enqueue_scripts', array( Cache::class, 'addWarmupAjaxToOutput' ) );
 
-		add_action( 'plugins_loaded', array( $this, 'commonsbooking_load_textdomain' ), 20 );
+		add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
 		$map_admin = new LocationMapAdmin();
 		add_action( 'plugins_loaded', array( $map_admin, 'load_location_map_admin' ) );
@@ -559,10 +564,12 @@ class Plugin {
                 $this->UpdateNotice( COMMONSBOOKING_VERSION, $plugin_data['new_version'] );
             }
         );
-             // add ajax search for cmb2 fields (e.g. user search etc.)
+
+        // add ajax search for cmb2 fields (e.g. user search etc.)
         add_filter('cmb2_field_ajax_search_url', function(){
             return (COMMONSBOOKING_PLUGIN_URL . '/vendor/ed-itsolutions/cmb2-field-ajax-search/');
         });
+
     	// iCal rewrite
 		iCalendar::initRewrite();
 

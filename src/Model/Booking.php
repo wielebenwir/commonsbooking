@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Exception\BookingCodeException;
 use CommonsBooking\Helper\Wordpress;
 use Exception;
 
@@ -41,6 +42,33 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function getBookingCode() {
 		return $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode' );
 	}
+
+
+    /**
+     * Determines if a current booking can be cancelled or not by the current user.
+     * Bookings which do not belong to the current user or the user is not admin of cannot be edited.
+	 *
+     * Returns true if booking can be cancelled.
+     * False if booking may not be cancelled.
+	 *
+     * @return bool
+     */
+    public function canCancel():bool {
+        if ($this->isPast() ){
+            return false;
+        }
+
+        if ( intval( $this->post_author ) === get_current_user_id() ){
+            return true;
+        }
+        elseif (commonsbooking_isCurrentUserAllowedToEdit($this->post)){
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
 
 	/**
 	 * Sets post_status to canceled.
@@ -90,7 +118,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			)
 		) {
 			// translators: %s = Booking code
-			$htmloutput = '<br>' . sprintf( commonsbooking_sanitizeHTML( __( 'Your booking code is: %s', 'commonsbooking' ) ), $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'bookingcode' ) ) . '<br>';
+			$htmloutput = '<br>' . sprintf( commonsbooking_sanitizeHTML( __( 'Your booking code is: %s', 'commonsbooking' ) ), $this->getBookingCode() ) . '<br>';
 		}
 
 		return $htmloutput;
@@ -143,7 +171,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 				'start-time',
 				'end-time',
 				'show-booking-codes',
-				'timeframe-max-days',
+				\CommonsBooking\Model\Timeframe::META_MAX_DAYS,
 			];
 			foreach ( $neededMetaFields as $fieldName ) {
 				$fieldValue = get_post_meta(
@@ -162,12 +190,17 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			}
 
 			// If there exists a booking code, add it.
-			$bookingCode = BookingCodes::getCode(
-				$timeframe->ID,
-				$this->getItem()->ID,
-				$this->getLocation()->ID,
-				date( 'Y-m-d', $this->getStartDate() )
-			);
+			try {
+				$bookingCode = BookingCodes::getCode(
+					$timeframe,
+					$this->getItem()->ID,
+					$this->getLocation()->ID,
+					date( 'Y-m-d', $this->getStartDate() )
+				);
+			} catch ( BookingCodeException $e ) {
+				//do nothing, just set the booking code to null
+				$bookingCode = null;
+			}
 
 			// only add booking code if the booking is based on a full day timeframe
 			if ( $bookingCode && $this->isFullDay() ) {

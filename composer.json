@@ -32,7 +32,7 @@
     }
   ],
   "require": {
-    "php": ">=7.4",
+    "php": ">=7.3",
     "cmb2/cmb2": "^2.7",
     "mustardbees/cmb-field-select2": "^3.0",
     "geocoder-php/nominatim-provider": "^5.2",
@@ -50,8 +50,9 @@
   "require-dev": {
     "mockery/mockery": "1.*",
     "phpunit/phpunit": "7.*",
-    "slope-it/clock-mock": "^0.3.8",
+    "yoast/phpunit-polyfills": "^1.0",
     "wp-coding-standards/wpcs": "^2.3",
-    "yoast/phpunit-polyfills": "^1.0"
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "slope-it/clock-mock": "^0.3.8"
   }
 }
