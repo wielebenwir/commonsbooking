@@ -160,7 +160,10 @@ class Location extends View {
 
 
 			echo '<div id="cb_locationview_map" style="width: 100%; height: 300px;"></div>';
-            wp_enqueue_script( 'cb-map-locationview_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-locationview.js' );
+            echo '<input type="hidden" id="geo_latitude" value="' . $latitude . '"/>
+                 <input type="hidden" id="geo_longitude" value="' . $longitude . '"/>';
+
+           wp_enqueue_script( 'cb-map-locationview_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-locationview.js' );
 
 			//map defaults
 			$defaults = [
