@@ -49,7 +49,12 @@ module.exports = function (grunt) {
 					relativeAssets: true,
 					sourcemap: true
 				}
-			}
+			},
+            clean: {
+                options: {
+                    clean: true
+                },
+            },
 		},
 		// concat and minify our JS
 		uglify: {
@@ -148,6 +153,7 @@ module.exports = function (grunt) {
 		'watch'
 	]);
 	grunt.registerTask('dist', [
+        'compass:clean',
 		'compass:admin',
 		'compass:public',
 		'compass:themes',
