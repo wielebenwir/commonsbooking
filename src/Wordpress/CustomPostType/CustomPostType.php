@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Exception\PostException;
 use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\Admin\Filter;
@@ -325,18 +326,18 @@ abstract class CustomPostType {
 	 *
 	 * @param int|WP_Post|CustomPost $post - Post ID or Post Object
 	 *
-	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|\CommonsBooking\Model\Restriction|\CommonsBooking\Model\Timeframe
-	 * @throws \Exception
+	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|\CommonsBooking\Model\Restriction|\CommonsBooking\Model\Timeframe|\CommonsBooking\Model\Map
+	 * @throws PostException
 	 */
 	public static function getModel( $post ) {
-		if ( $post instanceof \CommonsBooking\Model\CustomPost ) {
+		if ( $post instanceof CustomPost ) {
 			return $post;
 		}
 		if (is_int($post)) {
 			$post = get_post($post);
 		}
 		if (! $post instanceof WP_Post) {
-			throw new \Exception('No suitable post object.');
+			throw new PostException('No suitable post object.');
 		}
 		switch($post->post_type) {
 			case Booking::$postType:
@@ -349,8 +350,10 @@ abstract class CustomPostType {
 				return new \CommonsBooking\Model\Restriction($post);
 			case Timeframe::$postType:
 				return new \CommonsBooking\Model\Timeframe($post);
+			case Map::$postType:
+				return new \CommonsBooking\Model\Map($post);
 		}
-		throw new \Exception('No suitable model found.');
+		throw new PostException('No suitable model found for ' . $post->post_type);
 	}
 
 }
