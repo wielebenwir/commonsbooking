@@ -755,6 +755,10 @@ class Booking extends Timeframe {
 	 * Registers metaboxes for cpt.
 	 */
 	public function registerMetabox() {
+		//do not render the metabox if the user is on the login page (not yet logged in)
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
 		$cmb = new_cmb2_box(
 			[
 				'id'           => static::getPostType() . '-custom-fields',
@@ -784,16 +788,7 @@ class Booking extends Timeframe {
 			$dateFormat = 'm/d/Y';
 		}
 
-		$userOptions = [];
-
-        // Generate user list for admin bookings
-		if ( commonsbooking_isCurrentUserAdmin() || commonsbooking_isCurrentUserCBManager() ) {
-			$users       = get_users();
-			foreach ( $users as $user ) {
-				$userOptions[ $user->ID ] = $user->get( 'user_nicename' ) . ' (' . $user->first_name . ' ' . $user->last_name . ')';
-			}
-		}
-
+        $booking_user = get_user_by('ID', get_current_user_id());
 
         // define form fields based on CMB2
 		return array(
@@ -884,9 +879,8 @@ class Booking extends Timeframe {
             array(
 				'name'             => esc_html__( 'Booking User', 'commonsbooking' ),
 				'id'               => 'booking_user',
-				'type'             => 'pw_select',
-                'show_option_none' => true,
-                'options'          => $userOptions,
+				'type'             => 'user_ajax_search',
+                'multiple-items'   => true,
                 'default'          => array( self::class, 'getFrontendBookingAuthor' ),
                 'desc'             => commonsbooking_sanitizeHTML(
                     __(
@@ -902,8 +896,9 @@ class Booking extends Timeframe {
 				'id'               => 'admin_booking_id',
 				'type'             => 'select',
                 'default'          => get_current_user_id(),
-                'show_option_none' => true,
-                'options'          => $userOptions,
+                'options'          => array (
+                                            $booking_user->ID => $booking_user->get( 'user_nicename' ) . ' (' . $booking_user->first_name . ' ' . $booking_user->last_name . ')',
+                ),
                 'attributes'       => array(
                     'readonly' => true,
                 ),
