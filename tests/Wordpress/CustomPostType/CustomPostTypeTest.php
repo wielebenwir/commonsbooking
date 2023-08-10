@@ -4,6 +4,7 @@ namespace CommonsBooking\Tests\Wordpress\CustomPostType;
 
 use CommonsBooking\Model\Item;
 use CommonsBooking\Model\Location;
+use CommonsBooking\Model\Map;
 use CommonsBooking\Model\Restriction;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Model\Booking;
@@ -24,6 +25,8 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 	protected Timeframe $timeframeModel;
 	protected int $restrictionId;
 	protected Restriction $restrictionModel;
+	protected int $map;
+	protected Map $mapModel;
 	public function testGetModel() {
 		$itemModel = new Item($this->itemId);
 		$locationModel = new Location($this->locationId);
@@ -34,6 +37,7 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 		$this->assertEquals($this->timeframeModel, CustomPostType::getModel( $this->timeframeId ) );
 		$this->assertEquals($this->bookingModel, CustomPostType::getModel( $this->bookingId ) );
 		$this->assertEquals($this->restrictionModel, CustomPostType::getModel( $this->restrictionId ));
+		$this->assertEquals($this->mapModel, CustomPostType::getModel( $this->map ));
 
 		//get model by post object
 		$this->assertEquals($itemModel, CustomPostType::getModel( $itemModel->getPost() ) );
@@ -41,6 +45,7 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 		$this->assertEquals($this->timeframeModel, CustomPostType::getModel( $this->timeframeModel->getPost() ) );
 		$this->assertEquals($this->bookingModel, CustomPostType::getModel( $this->bookingModel->getPost() ) );
 		$this->assertEquals($this->restrictionModel, CustomPostType::getModel( $this->restrictionModel->getPost() ));
+		$this->assertEquals($this->mapModel, CustomPostType::getModel( $this->mapModel->getPost() ));
 
 		//get model by model (this should just return the object)
 		$this->assertEquals($itemModel, CustomPostType::getModel( $itemModel ) );
@@ -48,6 +53,7 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 		$this->assertEquals($this->timeframeModel, CustomPostType::getModel( $this->timeframeModel ) );
 		$this->assertEquals($this->bookingModel, CustomPostType::getModel( $this->bookingModel ) );
 		$this->assertEquals($this->restrictionModel, CustomPostType::getModel( $this->restrictionModel ));
+		$this->assertEquals($this->mapModel, CustomPostType::getModel( $this->mapModel ));
 
 		//check that assertions are thrown, when trying to get a model for a post type that is not supported
 		$otherPost = wp_insert_post([
@@ -60,7 +66,7 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 			CustomPostType::getModel($otherPost);
 			$this->fail('Expected exception not thrown');
 		} catch (\Exception $e) {
-			$this->assertEquals('No suitable model found.', $e->getMessage());
+			$this->assertStringContainsString('No suitable model found', $e->getMessage());
 		}
 
 		//post ID does not exist
@@ -92,6 +98,64 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 		$this->restrictionModel = new Restriction(
 			$this->restrictionId
 		);
+		$mapOptions = array (
+					'base_map' => 1,
+					'show_scale' => true,
+					'map_height' => 400,
+					'custom_no_locations_message' => '',
+					'custom_filterbutton_label' => '',
+					'zoom_min' => 9,
+					'zoom_max' => 19,
+					'scrollWheelZoom' => true,
+					'zoom_start' => 9,
+					'lat_start' => 50.937531,
+					'lon_start' => 6.960279,
+					'marker_map_bounds_initial' => true,
+					'marker_map_bounds_filter' => true,
+					'max_cluster_radius' => 80,
+					'marker_tooltip_permanent' => false,
+					'custom_marker_media_id' => 0,
+					'marker_icon_width' => 0.0,
+					'marker_icon_height' => 0.0,
+					'marker_icon_anchor_x' => 0.0,
+					'marker_icon_anchor_y' => 0.0,
+					'show_location_contact' => false,
+					'label_location_contact' => '',
+					'show_location_opening_hours' => false,
+					'label_location_opening_hours' => '',
+					'show_item_availability' => false,
+					'custom_marker_cluster_media_id' => 0,
+					'marker_cluster_icon_width' => 0.0,
+					'marker_cluster_icon_height' => 0.0,
+					'address_search_bounds_left_bottom_lon' => NULL,
+					'address_search_bounds_left_bottom_lat' => NULL,
+					'address_search_bounds_right_top_lon' => NULL,
+					'address_search_bounds_right_top_lat' => NULL,
+					'show_location_distance_filter' => false,
+					'label_location_distance_filter' => '',
+					'show_item_availability_filter' => false,
+					'label_item_availability_filter' => '',
+					'label_item_category_filter' => '',
+					'item_draft_appearance' => '1',
+					'marker_item_draft_media_id' => 0,
+					'marker_item_draft_icon_width' => 0.0,
+					'marker_item_draft_icon_height' => 0.0,
+					'marker_item_draft_icon_anchor_x' => 0.0,
+					'marker_item_draft_icon_anchor_y' => 0.0,
+					'cb_items_available_categories' =>
+						array (
+						),
+					'cb_items_preset_categories' =>
+						array (
+						),
+					'cb_locations_preset_categories' =>
+						array (
+						),
+					'availability_max_days_to_show' => 11,
+					'availability_max_day_count' => 14,
+		);
+		$this->map = $this->createMap($mapOptions);
+		$this->mapModel = new Map($this->map);
 	}
 	protected function tearDown(): void {
 		parent::tearDown();
