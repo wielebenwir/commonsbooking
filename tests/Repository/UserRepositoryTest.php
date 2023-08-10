@@ -22,6 +22,10 @@ class UserRepositoryTest extends CustomPostTypeTest
 	public function testGetOwners()
 	{
 		$owners = UserRepository::getOwners();
+		//filter out the original author
+		$owners = array_filter($owners, function ($owner) {
+			return $owner->ID !== self::USER_ID;
+		});
 		$this->assertIsArray($owners);
 		$this->assertEmpty($owners);
 		$ownedLocation = $this->createLocation(
@@ -32,11 +36,14 @@ class UserRepositoryTest extends CustomPostTypeTest
 			]
 		);
 		$owners = UserRepository::getOwners();
+		$owners = array_filter($owners, function ($owner) {
+			return $owner->ID !== self::USER_ID;
+		});
 		$this->assertIsArray($owners);
 		$this->assertNotEmpty($owners);
 		$this->assertContainsOnlyInstancesOf(\WP_User::class, $owners);
 		$this->assertCount(1, $owners);
-		$this->assertEquals($this->cbManagerUserID, $owners[0]->ID);
+		$this->assertEquals($this->cbManagerUserID, reset($owners)->ID);
 	}
 
 	protected function setUp(): void {
