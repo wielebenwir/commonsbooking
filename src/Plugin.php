@@ -109,7 +109,11 @@ class Plugin {
 	}
 
 	/**
-	 * @return array
+	 * Will get all registered custom post types for this plugin as an instance of the CustomPostType class
+	 * All CustomPostType classes extend the CustomPostType class and must be registered in this method.
+	 * When defining a CustomPostType, you must also define a model for it, which extends the CustomPost class.
+	 * The existence of a model is checked in the @see PluginTest::testGetCustomPostTypes() test.
+	 * @return CustomPostType[]
 	 */
 	public static function getCustomPostTypes(): array {
 		return [
@@ -543,7 +547,7 @@ class Plugin {
 		add_action( 'wp_enqueue_scripts', array( Cache::class, 'addWarmupAjaxToOutput' ) );
 		add_action( 'admin_enqueue_scripts', array( Cache::class, 'addWarmupAjaxToOutput' ) );
 
-		add_action( 'plugins_loaded', array( $this, 'commonsbooking_load_textdomain' ), 20 );
+		add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
 		$map_admin = new LocationMapAdmin();
 		add_action( 'plugins_loaded', array( $map_admin, 'load_location_map_admin' ) );
@@ -564,12 +568,17 @@ class Plugin {
                 $this->UpdateNotice( COMMONSBOOKING_VERSION, $plugin_data['new_version'] );
             }
         );
-             
+
+        // add ajax search for cmb2 fields (e.g. user search etc.)
+        add_filter('cmb2_field_ajax_search_url', function(){
+            return (COMMONSBOOKING_PLUGIN_URL . '/vendor/ed-itsolutions/cmb2-field-ajax-search/');
+        });
+
     	// iCal rewrite
 		iCalendar::initRewrite();
 
 	}
-	
+
 	/**
 	 * Loads text domain for (from local file or wordpress plugin-dir)
 	 *
@@ -652,6 +661,10 @@ class Plugin {
 					new \CommonsBooking\API\LocationsRoute(),
 					// new \CommonsBooking\API\OwnersRoute(),
 					new \CommonsBooking\API\ProjectsRoute(),
+					new \CommonsBooking\API\GBFS\Discovery(),
+					new \CommonsBooking\API\GBFS\StationInformation(),
+					new \CommonsBooking\API\GBFS\StationStatus(),
+					new \CommonsBooking\API\GBFS\SystemInformation(),
 
 				];
 				foreach ( $routes as $route ) {
