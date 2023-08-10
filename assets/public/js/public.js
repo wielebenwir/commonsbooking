@@ -501,12 +501,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         };
                         n[0].index > 0 && (a.value += ".*?");
                         for (var r = 0, l = Object.entries(n); r < l.length; r++) {
-                            var d = l[r], c = d[0], h = d[1], p = Number(c), u = t.formatPatterns(h[0], o), m = u.group, y = u.pattern;
-                            a[m] = p + 1, a.value += y, a.value += ".*?";
+                            var d = l[r], c = d[0], h = d[1], p = Number(c), u = t.formatPatterns(h[0], o), m = u.group, f = u.pattern;
+                            a[m] = p + 1, a.value += f, a.value += ".*?";
                         }
-                        var f = new RegExp("^" + a.value + "$");
-                        if (f.test(e)) {
-                            var g = f.exec(e), k = Number(g[a.year]), D = null;
+                        var y = new RegExp("^" + a.value + "$");
+                        if (y.test(e)) {
+                            var g = y.exec(e), k = Number(g[a.year]), D = null;
                             a.month ? D = Number(g[a.month]) - 1 : a.shortMonth ? D = t.shortMonths(o).indexOf(g[a.shortMonth]) : a.longMonth && (D = t.longMonths(o).indexOf(g[a.longMonth]));
                             var v = Number(g[a.day]) || 1;
                             return new Date(k, D, v, 0, 0, 0, 0);
@@ -1054,17 +1054,17 @@ document.addEventListener("DOMContentLoaded", () => {
                         m && !u && (this.datePicked.length = 0, "function" == typeof this.options.onError && this.options.onError.call(this, "INVALID_RANGE"));
                     }
                     if (this.shouldCheckBookedDays()) {
-                        var m, y = this.options.bookedDaysInclusivity;
+                        var m, f = this.options.bookedDaysInclusivity;
                         (m = this.options.bookedDays.filter(function(t) {
-                            return t instanceof Array ? t[0].isBetween(e.datePicked[0], e.datePicked[1], y) || t[1].isBetween(e.datePicked[0], e.datePicked[1], y) : t.isBetween(e.datePicked[0], e.datePicked[1], y);
+                            return t instanceof Array ? t[0].isBetween(e.datePicked[0], e.datePicked[1], f) || t[1].isBetween(e.datePicked[0], e.datePicked[1], f) : t.isBetween(e.datePicked[0], e.datePicked[1], f);
                         }).length) && (this.datePicked.length = 0, "function" == typeof this.options.onError && this.options.onError.call(this, "INVALID_RANGE"));
                     }
                     if ("function" == typeof this.options.onDaySelect && this.options.onDaySelect.call(this, c.DateTime.parseDateTime(i.dataset.time), this.datePicked.length), 
                     this.render(), this.options.autoApply) {
-                        var f = !1;
+                        var y = !1;
                         this.options.singleMode && this.datePicked.length ? (this.setDate(this.datePicked[0]), 
-                        this.hide(), f = !0) : this.options.singleMode || 2 !== this.datePicked.length || (this.setDateRange(this.datePicked[0], this.datePicked[1]), 
-                        this.hide(), f = !0), "function" == typeof this.options.onAutoApply && this.options.onAutoApply.call(this, f);
+                        this.hide(), y = !0) : this.options.singleMode || 2 !== this.datePicked.length || (this.setDateRange(this.datePicked[0], this.datePicked[1]), 
+                        this.hide(), y = !0), "function" == typeof this.options.onAutoApply && this.options.onAutoApply.call(this, y);
                     }
                 } else {
                     if (i.classList.contains(h.buttonPreviousMonth)) {
@@ -1372,27 +1372,27 @@ document.addEventListener("DOMContentLoaded", () => {
                     }), d.appendChild(m);
                 }
                 if (this.options.dropdowns.years) {
-                    var y = document.createElement("select");
-                    y.className = r.monthItemYear;
-                    var f = this.options.dropdowns.minYear, g = this.options.dropdowns.maxYear ? this.options.dropdowns.maxYear : new Date().getFullYear();
+                    var f = document.createElement("select");
+                    f.className = r.monthItemYear;
+                    var y = this.options.dropdowns.minYear, g = this.options.dropdowns.maxYear ? this.options.dropdowns.maxYear : new Date().getFullYear();
                     if (t.getFullYear() > g) (p = document.createElement("option")).value = String(t.getFullYear()), 
                     p.text = String(t.getFullYear()), p.selected = !0, p.disabled = !0, 
-                    y.appendChild(p);
-                    for (h = g; h >= f; h -= 1) {
+                    f.appendChild(p);
+                    for (h = g; h >= y; h -= 1) {
                         var p = document.createElement("option"), k = new a.DateTime(new Date(h, 0, 1, 0, 0, 0));
                         p.value = h, p.text = h, p.disabled = this.options.minDate && k.isBefore(new a.DateTime(this.options.minDate), "year") || this.options.maxDate && k.isAfter(new a.DateTime(this.options.maxDate), "year"), 
-                        p.selected = t.getFullYear() === h, y.appendChild(p);
+                        p.selected = t.getFullYear() === h, f.appendChild(p);
                     }
-                    if (t.getFullYear() < f) (p = document.createElement("option")).value = String(t.getFullYear()), 
+                    if (t.getFullYear() < y) (p = document.createElement("option")).value = String(t.getFullYear()), 
                     p.text = String(t.getFullYear()), p.selected = !0, p.disabled = !0, 
-                    y.appendChild(p);
+                    f.appendChild(p);
                     if ("asc" === this.options.dropdowns.years) {
-                        var D = Array.prototype.slice.call(y.childNodes).reverse();
-                        y.innerHTML = "", D.forEach(function(t) {
-                            t.innerHTML = t.value, y.appendChild(t);
+                        var D = Array.prototype.slice.call(f.childNodes).reverse();
+                        f.innerHTML = "", D.forEach(function(t) {
+                            t.innerHTML = t.value, f.appendChild(t);
                         });
                     }
-                    y.addEventListener("change", function(t) {
+                    f.addEventListener("change", function(t) {
                         var i = t.target, o = 0;
                         if (e.options.splitView) {
                             var n = i.closest("." + r.monthItem);
@@ -1400,7 +1400,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                         e.calendars[o].setFullYear(Number(i.value)), e.render(), 
                         "function" == typeof e.options.onChangeYear && e.options.onChangeYear.call(e, e.calendars[o], o);
-                    }), d.appendChild(y);
+                    }), d.appendChild(f);
                 } else {
                     var v = document.createElement("span");
                     v.className = r.monthItemYear, v.innerHTML = String(t.getFullYear()), 
@@ -1457,12 +1457,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     n = Number(this.options.hotelMode), s = this.datePicked[0].clone().subtract(this.options.maxDays + n, "day");
                     var d = 0;
                     if ((!this.options.countLockedDays || this.options.countLockedDaysMax > 0) && !this.options.disallowLockDaysInRange) {
-                        for (var c = this.datePicked[0].clone(), h = this.options.maxDays, p = this.options.countLockedDaysMax, u = [], m = 0, y = [ this.options.holidays, this.options.lockDays ]; m < y.length; m++) for (var f = 0, g = y[m]; f < g.length; f++) {
-                            var k = g[f];
+                        for (var c = this.datePicked[0].clone(), h = this.options.maxDays, p = this.options.countLockedDaysMax, u = [], m = 0, f = [ this.options.holidays, this.options.lockDays ]; m < f.length; m++) for (var y = 0, g = f[m]; y < g.length; y++) {
+                            var k = g[y];
                             this.datePicked[0].getTime() < k.getTime() && u.push(k);
                         }
                         for (;h > 0; ) {
-                            console.log("maxDaysCount: " + p), h -= 1, c = c.add(1, "day");
+                            h -= 1, c = c.add(1, "day");
                             for (var D = 0, v = u; D < v.length; D++) {
                                 (k = v[D]).getTime() === c.getTime() && (this.dateIsBooked(c, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(c, this.options.partiallyBookedDaysInclusivity) || (this.options.countLockedDays && p <= 0 ? (d += 1, 
                                 h += 1) : this.options.countLockedDays && p > 0 ? p -= 1 : this.options.countLockedDays || (d += 1)));
@@ -1592,7 +1592,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 };
                 -1 !== h ? (a[h].references++, a[h].updater(p)) : a.push({
                     identifier: c,
-                    updater: f(p, e),
+                    updater: y(p, e),
                     references: 1
                 }), o.push(c);
             }
@@ -1631,11 +1631,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 t.appendChild(document.createTextNode(o));
             }
         }
-        var m = null, y = 0;
-        function f(t, e) {
+        var m = null, f = 0;
+        function y(t, e) {
             var i, o, n;
             if (e.singleton) {
-                var s = y++;
+                var s = f++;
                 i = m || (m = d(e)), o = p.bind(null, i, s, !1), n = p.bind(null, i, s, !0);
             } else i = d(e), o = u.bind(null, i, e), n = function() {
                 !function(t) {
