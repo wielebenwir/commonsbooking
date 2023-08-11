@@ -7,6 +7,7 @@ use CommonsBooking\Model\Booking;
 use CommonsBooking\Service\BookingRule;
 use CommonsBooking\Service\BookingRuleApplied;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use CommonsBooking\Wordpress\CustomPostType\Item;
 
 class BookingRuleAppliedTest extends CustomPostTypeTest {
 
@@ -15,13 +16,6 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 	protected BookingRuleApplied $appliedAlwaysAllow,$appliedAlwaysDeny;
 
 	protected function setUpTestBooking(): void {
-		$wp_user = get_user_by('email',"a@a.de");
-		if (! $wp_user){
-			$wp_user = wp_create_user("normaluser","normal","a@a.de");
-		}
-		else {
-			$wp_user = $wp_user->ID;
-		}
 		$this->testBookingId       = $this->createBooking(
 			$this->locationId,
 			$this->itemId,
@@ -30,7 +24,7 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 			'8:00 AM',
 			'12:00 PM',
 			'unconfirmed',
-			$wp_user
+			$this->subscriberId
 		);
 		$this->testBookingTomorrow = new Booking( get_post( $this->testBookingId ) );
 	}
@@ -75,9 +69,38 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 
 	}
 
+	public function testCheckTermsApplied() {
+		//set up the term named test
+		$term = wp_insert_term("test-item",Item::$postType . 's_category');
+		$itemWithTerm  = $this->createItem("Test item with test-item term",'publish');
+		wp_set_post_terms($itemWithTerm,array($term['term_id']),Item::$postType . 's_category');
+		$newLocation = $this->createLocation("Test Location",'publish');
+		$termTimeframe = $this->createBookableTimeFrameIncludingCurrentDay($newLocation,$itemWithTerm);
+		$termBooking = new Booking(
+			$this->createBooking(
+				$newLocation,
+				$itemWithTerm,
+				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+				'8:00 AM',
+				'12:00 PM',
+				'unconfirmed',
+				$this->subscriberId
+			)
+		);
+		$termRule =  new BookingRuleApplied($this->alwaysdeny);
+		$termRule->setAppliesToWho(false,array($term['term_id']));
+		//this should not fail because the rule is only applied to items with the test-item term
+		$this->assertNull($termRule->checkBookingCompliance($this->testBookingTomorrow));
+		//this should fail
+		$sameBooking = $termRule->checkBookingCompliance($termBooking);
+		$this->assertNotNull($sameBooking);
+		$this->assertEquals($termBooking->ID,reset($sameBooking)->ID);
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
-
+		$this->createSubscriber();
 		$this->firstTimeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
@@ -108,14 +131,6 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 			strtotime( '-5 days',time()),
 			strtotime( '+90 days', time())
 		);
-
-		$wp_user = get_user_by('email',"a@a.de");
-		if (! $wp_user){
-			$this->normalUser = wp_create_user("normaluser","normal","a@a.de");
-		}
-		else {
-			$this->normalUser = $wp_user->ID;
-		}
 		$this->setUpTestBooking();
 		$this->appliedAlwaysAllow = new BookingRuleApplied( $this->alwaysallow );
 		$this->appliedAlwaysAllow->setAppliesToWho(true);
