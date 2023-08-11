@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Exception\PostException;
 use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\Admin\Filter;
@@ -249,10 +250,22 @@ abstract class CustomPostType {
 					return;
 				}
 
+				//TODO: This does correctly sort the items by meta value, since WP 6.3 the meta value is not passed to the query anymore. Maybe the filter needs to be changed?
 				$orderby = $query->get( 'orderby' );
+				//Prior to WP 6.3, this was not an associative array (see #1309) but a string
+				if (is_array($orderby)) {
+					$orderKeys = array_keys( $orderby );
+				}
+				else {
+					$orderKeys = array($orderby);
+				}
+				//we only want to sort by meta value if there is no sort by post_* value
+				$orderKeys = array_filter($orderKeys, function($key) {
+					return strpos($key, 'post_') !== false;
+				});
 				if (
-					strpos( $orderby, 'post_' ) === false &&
-					in_array( $orderby, array_keys( $this->listColumns ) )
+					empty($orderKeys) &&
+					in_array( $orderKeys, array_keys( $this->listColumns ) )
 				) {
 					$query->set( 'meta_key', $orderby );
 					$query->set( 'orderby', 'meta_value' );
@@ -319,18 +332,18 @@ abstract class CustomPostType {
 	 *
 	 * @param int|WP_Post|CustomPost $post - Post ID or Post Object
 	 *
-	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|\CommonsBooking\Model\Restriction|\CommonsBooking\Model\Timeframe
-	 * @throws \Exception
+	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|\CommonsBooking\Model\Restriction|\CommonsBooking\Model\Timeframe|\CommonsBooking\Model\Map
+	 * @throws PostException
 	 */
 	public static function getModel( $post ) {
-		if ( $post instanceof \CommonsBooking\Model\CustomPost ) {
+		if ( $post instanceof CustomPost ) {
 			return $post;
 		}
 		if (is_int($post)) {
 			$post = get_post($post);
 		}
 		if (! $post instanceof WP_Post) {
-			throw new \Exception('No suitable post object.');
+			throw new PostException('No suitable post object.');
 		}
 		switch($post->post_type) {
 			case Booking::$postType:
@@ -343,8 +356,10 @@ abstract class CustomPostType {
 				return new \CommonsBooking\Model\Restriction($post);
 			case Timeframe::$postType:
 				return new \CommonsBooking\Model\Timeframe($post);
+			case Map::$postType:
+				return new \CommonsBooking\Model\Map($post);
 		}
-		throw new \Exception('No suitable model found.');
+		throw new PostException('No suitable model found for ' . $post->post_type);
 	}
 
 }
