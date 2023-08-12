@@ -494,6 +494,19 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
             array(
+				'name'       => esc_html__( 'Minimum booking period', 'commonsbooking' ),
+				'desc'       => esc_html__( 'Enter the number of days that should be blocked for bookings as a booking lead time (calculated from the current day).', 'commonsbooking' ),
+				'id'         => 'booking-startday-offset',
+				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+				'type'       => 'text_small',
+				'attributes' => array(
+					'type' => 'number',
+					'min'  => '0',
+				),
+				'default_value'    => 0,
+				'default_cb' => 'commonsbooking_filter_from_cmb2',
+			),
+            array(
 				'name'       => esc_html__( 'Lead time:', 'commonsbooking' ),
 				'desc'       => commonsbooking_sanitizeHTML(__( 'days. <br> The item can be picked up with a lead time of x days.<br>
                 <strong>Example:</strong> Today is the 04/27/2023. Lead time = 3 days. Earliest selectable pickup day is 04/30/2023.', 'commonsbooking' ) ),
@@ -596,6 +609,7 @@ class Timeframe extends CustomPostType {
 				'type'    => 'select',
 				'options' => self::getTimeFrameRepetitions(),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
+                'default' => 'w',
 			),
 			array(
 				'name' => esc_html__( "Configure repetition", 'commonsbooking' ),
@@ -630,7 +644,7 @@ class Timeframe extends CustomPostType {
 			array(
 				'name'        => esc_html__( 'End date', 'commonsbooking' ),
                 'desc'        => commonsbooking_sanitizeHTML( __('Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.
-                <br><strong>Notice:</strong> If the end date is empty and no repetition has been selected, this time frame applies only to the set start date. Only if a repetition is selected and the end date is empty, the repetition will be repeated infinitely.', 'commonsbooking') ),
+                <br><strong>Notice:</strong> If you want to select only one day (e.g. for holidays or blocked days) set the start and the end date to same day.', 'commonsbooking') ),
 				'id'          => \CommonsBooking\Model\Timeframe::REPETITION_END,
 				'type'        => 'text_date_timestamp',
 				'time_format' => esc_html(get_option( 'time_format' )),

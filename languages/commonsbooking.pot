@@ -2453,7 +2453,7 @@ msgstr ""
 #: src/Wordpress/CustomPostType/Timeframe.php:633
 msgid ""
 "Set the end date. If you have selected repetition, this is the end date of the interval. Leave blank if you do not want to set an end date.\n"
-"                <br><strong>Notice:</strong> If the end date is empty and no repetition has been selected, this time frame applies only to the set start date. Only if a repetition is selected and the end date is empty, the repetition will be repeated infinitely."
+"                <br><strong>Notice:</strong> If you want to select only one day (e.g. for holidays or blocked days) set the start and the end date to same day."
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Timeframe.php:643
