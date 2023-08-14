@@ -47,7 +47,7 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 	private function get_feed( $name ): stdClass {
 		$feed = new stdClass();
 		$feed->name = $name;
-		$feed->url = site_url() . '/wp-json/commonsbooking/v1/' . $name . '.json';
+		$feed->url = get_rest_url() . 'commonsbooking/v1/' . $name . '.json';
 		return $feed;
 	}
 }
