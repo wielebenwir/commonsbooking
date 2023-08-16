@@ -303,7 +303,7 @@
                 handleRepetitionSelection();
             });
             const handleBookingCodesSelection = function() {
-                const fullday = fullDayInput.prop("checked"), type = typeInput.val(), repStart = repetitionStartInput.val(), repEnd = repetitionEndInput.val();
+                const fullday = fullDayInput.prop("checked"), type = typeInput.val(), repStart = repetitionStartInput.val();
                 hideFieldset(bookingCodeSet);
                 if (repStart && fullday && type === BOOKABLE_ID) {
                     showFieldset(bookingCodeSet);
