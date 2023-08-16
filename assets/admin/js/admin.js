@@ -268,14 +268,10 @@
                     maxDaysSelect.show();
                     advanceBookingDays.show();
                     allowUserRoles.show();
-                    BookingStartDayOffset.show();
-                    bookingConfigTitle.show();
                 } else {
                     maxDaysSelect.hide();
                     advanceBookingDays.hide();
                     allowUserRoles.hide();
-                    BookingStartDayOffset.hide();
-                    bookingConfigTitle.hide();
                 }
             };
             handleTypeSelection();

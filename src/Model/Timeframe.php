@@ -720,6 +720,18 @@ class Timeframe extends CustomPost {
 		return $this->getMeta( self::META_REPETITION );
 	}
 
+    /**
+     * Returns first bookable day based on the defined booking startday offset in timeframe
+     *
+     * @return date string Y-m-d
+     */
+    public function getFirstBookableDay() {
+        $offset = $this->getFieldValue( 'booking-startday-offset' ) ?: 0;
+        $today = current_datetime()->format('Y-m-d');
+        return date( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
+
+    }
+
 	public function getMaxDays():int{
 		return $this->getMeta(self::META_MAX_DAYS);
 	}

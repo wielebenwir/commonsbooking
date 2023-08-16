@@ -100,4 +100,5 @@ class Calendar {
 			return $weeks;
 		}
 	}
+    
 }
