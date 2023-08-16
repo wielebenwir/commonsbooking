@@ -260,6 +260,8 @@ class BookingRuleApplied extends BookingRule {
 					$appliedTerms = $ruleConfig['rule-applies-categories'];
 				}
 
+				$ruleExemptRoles = empty($ruleConfig['rule-exempt-roles']) ? null : $ruleConfig['rule-exempt-roles'];
+
 				$bookingRule = new self($validRule);
 				$bookingRule->setAppliesToWho(
 					$appliesToAll ?? false,
@@ -270,7 +272,7 @@ class BookingRuleApplied extends BookingRule {
 					$selectParam ?? null
 				);
 				$bookingRule->setExcludedRoles(
-					$ruleConfig['rule-exempt-roles'] ?? []);
+					$ruleExemptRoles ?? []);
 				$appliedRules[] = $bookingRule;
 
 				}
