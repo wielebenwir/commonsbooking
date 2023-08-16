@@ -444,7 +444,12 @@ class Migration {
         // CB2 <-> CB1
 		$postMeta[ COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID' ] = $timeframe['id'];
 		$postMeta[ \CommonsBooking\Model\Timeframe::REPETITION_START ]  = strtotime( $timeframe['date_start'] );
-		//$postMeta[ \CommonsBooking\Model\Timeframe::REPETITION_END ]    = strtotime( $timeframe['date_end'] ); removed for fLotte Migration
+		$tfEnd = strtotime( $timeframe['date_end'] );
+		//only keep, if it's in the future
+		if ($tfEnd > time())
+		{
+			$postMeta[ \CommonsBooking\Model\Timeframe::REPETITION_END ]    = strtotime( $timeframe['date_end'] );
+		}
 		$postMeta[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ]      = $cbItem ? $cbItem->ID : '';
 		$postMeta[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ]  = $cbLocation ? $cbLocation->ID : '';
 		$postMeta['type']                                               = Timeframe::BOOKABLE_ID;
