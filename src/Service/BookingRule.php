@@ -288,8 +288,14 @@ class BookingRule {
 				__("Booking limit exceeded. ",'commonsbooking'),
 				Closure::fromCallable(array(self::class,'checkMaxBookingDays')),
 				array(
-					__("Allow x booked days",'commonsbooking'),
-					__("In the period of y days",'commonsbooking')
+					array(
+						"title"       => __("Allow x booked days",'commonsbooking'),
+						"description" => __("How many days are free to book in the given period of days",'commonsbooking'),
+					),
+					array(
+						"title"       => __("In the period of y days",'commonsbooking'),
+						"description" => __("The length of the period for which the booking is limited. This period always lies in the middle, so if you define 30 days, the 15 days before and after will count towards the maximum quota.",'commonsbooking'),
+					)
 				),
 				[],
 				Closure::fromCallable(array(self::class,'maxBookingDaysErrorMessage'))
