@@ -20,7 +20,7 @@ class BookingRuleApplied extends BookingRule {
 	/**
 	 * @var int|string
 	 */
-	private $appliedSelectParam;
+	private string|int $appliedSelectParam;
 	private array $excludedRoles;
 
 	/**
@@ -190,14 +190,7 @@ class BookingRuleApplied extends BookingRule {
 	 * @return string
 	 */
 	public static function getRulesJSON(): string {
-		try {
-			$ruleObjects = static::init();
-		} catch ( BookingRuleException $e ) {
-			set_transient(
-				OptionsTab::ERROR_TYPE,
-				$e->getMessage()
-			);
-		}
+		$ruleObjects = static::init( true );
 
 		if ( isset( $ruleObjects ) ) {
 			return wp_json_encode(
@@ -214,17 +207,23 @@ class BookingRuleApplied extends BookingRule {
 
 	/**
 	 * Tries to create objects for all applied Booking rules from the settings
-	 * @throws BookingRuleException
+	 *
+	 * @param bool $ignoreErrors - When this variable is set, the objects are created no matter what. This is used for the settings page to still get the selected values even if they are invalid.
+	 *
 	 * @return BookingRuleApplied[]
 	 *
+	 * @throws BookingRuleException
 	 * @OVERRIDE
 	 */
-	public static function init():array{
+	public static function init( bool $ignoreErrors = false ):array{
 		$validRules = parent::init();
 		$rulesConfig = Settings::getOption('commonsbooking_options_restrictions', 'rules_group');
 		$appliedRules = [];
 
 		if (!is_array($rulesConfig)) {
+			if ($ignoreErrors){
+				return [];
+			}
 			throw new BookingRuleException('No valid booking rules found');
 		}
 
@@ -263,14 +262,32 @@ class BookingRuleApplied extends BookingRule {
 				$ruleExemptRoles = empty($ruleConfig['rule-exempt-roles']) ? null : $ruleConfig['rule-exempt-roles'];
 
 				$bookingRule = new self($validRule);
-				$bookingRule->setAppliesToWho(
-					$appliesToAll ?? false,
-					$appliedTerms ?? []
-				);
-				$bookingRule->setAppliedParams(
-					$ruleParams ?? [],
-					$selectParam ?? null
-				);
+				try {
+					$bookingRule->setAppliesToWho(
+						$appliesToAll ?? false,
+						$appliedTerms ?? []
+					);
+				} catch ( BookingRuleException $e ) {
+					if ( $ignoreErrors ) {
+						continue;
+					}
+					else {
+						throw $e;
+					}
+				}
+				try {
+					$bookingRule->setAppliedParams(
+						$ruleParams ?? [],
+						$selectParam ?? null
+					);
+				} catch ( BookingRuleException $e ) {
+					if ( $ignoreErrors ) {
+						continue;
+					}
+					else {
+						throw $e;
+					}
+				}
 				$bookingRule->setExcludedRoles(
 					$ruleExemptRoles ?? []);
 				$appliedRules[] = $bookingRule;
@@ -298,9 +315,9 @@ class BookingRuleApplied extends BookingRule {
 
 	/**
 	 * Will get the args array that belongs to the rule
-	 * @return int|null[]|string
+	 * @return null[]
 	 */
-	private function getArgs() {
+	private function getArgs(): array {
 		$args = $this->appliedParams ?? [ null, null ];
 		//add null value to array to keep the params in the right order
 		if ( count( $args ) == 1 ) {
