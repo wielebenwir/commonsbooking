@@ -627,7 +627,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 				'fields'=> array(
 					array(
 						'name'  => commonsbooking_sanitizeHTML( __('Count cancelled bookings towards quota', 'commonsbooking') ),
-						'desc'  => commonsbooking_sanitizeHTML( __('Check if bookings that have been cancelled in the booking period shall be counted towards the amount of booked days for the user. More info: //TODO LINK TO DOKU', 'commonsbooking') ),
+						'desc'  => commonsbooking_sanitizeHTML( __('Check if bookings that have been cancelled in the booking period shall be counted towards the amount of booked days for the user. <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/?p=2157\">More info in the documentation</a>', 'commonsbooking') ),
 						'id'    => 'bookingrules-count-cancelled',
 						'type'  => 'checkbox'
 					),
@@ -721,7 +721,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 				'title'  => commonsbooking_sanitizeHTML( __( 'Booking reminder', 'commonsbooking' ) ),
 				'id'     => 'pre-booking-reminder',
 				'desc'   => commonsbooking_sanitizeHTML( __(
-					'You can set here whether users should receive a reminder email before the start of a booking.<br><a href="https://commonsbooking.org/?p=1763" target="_blank">More Information in the documentation</a>'
+					'You can set here whether users should receive a reminder email before the start of a booking.<br><a href="https://commonsbooking.org/?p=1763" target="_blank">More Information in the documentation</a>.'
 					, 'commonsbooking' ) ),
 				'fields' => array(
 					// settings pre booking reminder -- activate reminder
