@@ -204,8 +204,7 @@
             const handleBookingCodesSelection = function () {
                 const fullday = fullDayInput.prop('checked'),
                 type = typeInput.val(),
-                repStart = repetitionStartInput.val(),
-                repEnd = repetitionEndInput.val();
+                repStart = repetitionStartInput.val();
 
                 hideFieldset(bookingCodeSet);
 
