@@ -85,6 +85,7 @@
                                     text: ruleOptions[key]
                                 }));
                             }
+                            ruleSelectParamOptions.width(150); // Just make it big enough to fit most options
 
                             //find the correct applied rule for the current rule
                             let appliedRule = cb_applied_booking_rules.filter( appliedRule => {

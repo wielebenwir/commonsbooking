@@ -66,12 +66,14 @@
                             ruleSelectParam.show();
                             ruleSelectParamDesc.text(rule.selectParam[0]);
                             let ruleOptions = rule.selectParam[1];
+                            ruleSelectParamOptions.empty();
                             for (var key in ruleOptions) {
                                 ruleSelectParamOptions.append($("<option>", {
                                     value: key,
                                     text: ruleOptions[key]
                                 }));
                             }
+                            ruleSelectParamOptions.width(150);
                             let appliedRule = cb_applied_booking_rules.filter(appliedRule => {
                                 return appliedRule.name == rule.name;
                             });
