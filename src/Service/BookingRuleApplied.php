@@ -109,6 +109,19 @@ class BookingRuleApplied extends BookingRule {
 			return null;
 		}
 
+		// Check if a rule is excluded for the user because of their role
+		if (isset ($this->excludedRoles)){
+			if (
+				UserRepository::userHasRoles(
+					$booking->getUserData()->ID,
+					$this->excludedRoles
+				)
+			){
+				return null;
+			}
+		}
+
+
 		if (! $this->appliesToAll){
 			if (! $booking->termsApply($this->appliedTerms) ){
 				return null;
@@ -144,17 +157,6 @@ class BookingRuleApplied extends BookingRule {
 		}
 
 		foreach ( $ruleset as $rule ) {
-
-			// Check if a rule is excluded for the user because of their role
-			if ($rule->excludedRoles){
-				if (
-					 UserRepository::userHasRoles(
-						$booking->getUserData()->ID,
-						$rule->excludedRoles
-					)){
-						continue;
-					}
-			}
 
 			if ( ! ($rule instanceof BookingRuleApplied )) {
 				continue; //skip invalid rules during booking validation
