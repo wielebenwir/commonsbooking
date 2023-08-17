@@ -69,6 +69,30 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertFalse($this->testBookingTomorrow->termsApply($otherTerm['term_id']));
 	}
 
+	public function testFilterTermsApply() {
+		\CommonsBooking\Plugin::registerItemTaxonomy();
+		//now let's assign our item to a category, that timeframe also to the same category and check if we can still get the timeframe
+		$taxonomy  = \CommonsBooking\Wordpress\CustomPostType\Item::getPostType() . 's_category';
+		$term      = wp_create_term( 'Test Category', $taxonomy );
+		$otherItem = $this->createItem( "Other Item",'publish' );
+		$otherLocation = $this->createLocation( "Other Location",'publish' );
+		$otherTimeframe = $this->createBookableTimeFrameIncludingCurrentDay($otherLocation,$otherItem);
+		$otherBooking = $this->createBooking(
+			$otherLocation,
+			$otherItem,
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+		);
+		wp_set_post_terms( $this->itemId, [ $term['term_id'] ], $taxonomy );
+		$bookingArr = array(
+			$this->testBookingTomorrow,
+			new Booking ($otherBooking)
+		);
+		$filteredBookings = Booking::filterTermsApply($bookingArr,$term['term_id']);
+		$this->assertEquals(1,count($filteredBookings));
+		$this->assertEquals($this->testBookingTomorrow,$filteredBookings[0]);
+	}
+
 	public function testGetLength(){
 		$this->assertEquals(1,$this->testBookingTomorrow->getLength());
 		$this->assertEquals(1,$this->testBookingPast->getLength());
