@@ -494,7 +494,7 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
             array(
-				'name'       => esc_html__( 'Minimum booking period', 'commonsbooking' ),
+				'name'       => esc_html__( 'Booking lead time', 'commonsbooking' ),
 				'desc'       => esc_html__( 'Enter the number of days that should be blocked for bookings as a booking lead time (calculated from the current day).', 'commonsbooking' ),
 				'id'         => 'booking-startday-offset',
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
@@ -506,23 +506,9 @@ class Timeframe extends CustomPostType {
 				'default_value'    => 0,
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
-            array(
-				'name'       => esc_html__( 'Lead time:', 'commonsbooking' ),
-				'desc'       => commonsbooking_sanitizeHTML(__( 'days. <br> The item can be picked up with a lead time of x days.<br>
-                <strong>Example:</strong> Today is the 04/27/2023. Lead time = 3 days. Earliest selectable pickup day is 04/30/2023.', 'commonsbooking' ) ),
-				'id'         => 'booking-startday-offset',
-				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
-				'type'       => 'text_small',
-				'attributes' => array(
-					'type' => 'number',
-					'min'  => '0',
-				),
-				'default_value'    => 0,
-				'default_cb' => 'commonsbooking_filter_from_cmb2',
-			),
 			array(
-				'name'       => esc_html__( 'Calendar shows as bookable', 'commonsbooking' ),
-				'desc'       => commonsbooking_sanitizeHTML( __( 'days. <br> The calendar will show the next X days as bookable. <br> Booking only possible in this time range.', 'commonsbooking' ) ),
+				'name'       => esc_html__( 'Maximum booking days in advance', 'commonsbooking' ),
+				'desc'       => esc_html__( 'Select for how many days in advance the calendar should display bookable days. Calculated from the current date.', 'commonsbooking' ),
 				'id'         => \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS,
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
