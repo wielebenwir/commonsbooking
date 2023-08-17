@@ -283,7 +283,7 @@ class BookingRule {
 			),
 			new BookingRule(
 				"maxBookingDays",
-				__("Maximum of bookable days",'commonsbooking'),
+				__("Maximum of bookable days in time period",'commonsbooking'),
 				__("Allow x booked days over the period of y days for user.",'commonsbooking'),
 				__("Booking limit exceeded. ",'commonsbooking'),
 				Closure::fromCallable(array(self::class,'checkMaxBookingDays')),
