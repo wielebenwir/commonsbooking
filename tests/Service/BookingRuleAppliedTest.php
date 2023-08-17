@@ -32,7 +32,7 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 	public function testRuleExceptions() {
 		$bookingRule = new BookingRuleApplied($this->alwaysallow);
 		try {
-			$bookingRule->setAppliesToWho(false,[]);
+			$bookingRule->setAppliesToWhat(false,[]);
 			$this->fail("Expected exception not thrown");
 		}
 		catch (BookingRuleException $e){
@@ -89,7 +89,7 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 			)
 		);
 		$termRule =  new BookingRuleApplied($this->alwaysdeny);
-		$termRule->setAppliesToWho(false,array($term['term_id']));
+		$termRule->setAppliesToWhat(false,array($term['term_id']));
 		//this should not fail because the rule is only applied to items with the test-item term
 		$this->assertNull($termRule->checkBookingCompliance($this->testBookingTomorrow));
 		//this should fail
@@ -184,9 +184,9 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 		);
 		$this->setUpTestBooking();
 		$this->appliedAlwaysAllow = new BookingRuleApplied( $this->alwaysallow );
-		$this->appliedAlwaysAllow->setAppliesToWho(true);
+		$this->appliedAlwaysAllow->setAppliesToWhat(true);
 		$this->appliedAlwaysDeny = new BookingRuleApplied( $this->alwaysdeny );
-		$this->appliedAlwaysDeny->setAppliesToWho(true);
+		$this->appliedAlwaysDeny->setAppliesToWhat(true);
 	}
 
 	protected function tearDown(): void {

@@ -42,7 +42,7 @@ class BookingRuleApplied extends BookingRule {
 	}
 
 	/**
-	 * Will set who this Booking Rule applies to, either needs to be all or at least one category
+	 * Will set what this Booking Rule applies to, either needs to be all or at least one category
 	 *
 	 *
 	 * @param   bool   $appliesToAll
@@ -50,7 +50,7 @@ class BookingRuleApplied extends BookingRule {
 	 *
 	 * @throws BookingRuleException
 	 */
-	public function setAppliesToWho(bool $appliesToAll, array $appliedTerms = []): void {
+	public function setAppliesToWhat(bool $appliesToAll, array $appliedTerms = []): void {
 		if (! $appliesToAll){
 			$this->appliesToAll = false;
 			if (empty($appliedTerms)){
@@ -265,7 +265,7 @@ class BookingRuleApplied extends BookingRule {
 
 				$bookingRule = new self($validRule);
 				try {
-					$bookingRule->setAppliesToWho(
+					$bookingRule->setAppliesToWhat(
 						$appliesToAll ?? false,
 						$appliedTerms ?? []
 					);
