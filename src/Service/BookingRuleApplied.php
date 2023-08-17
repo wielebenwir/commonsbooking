@@ -20,7 +20,7 @@ class BookingRuleApplied extends BookingRule {
 	/**
 	 * @var int|string
 	 */
-	private string|int $appliedSelectParam;
+	private $appliedSelectParam;
 	private array $excludedRoles;
 
 	/**
