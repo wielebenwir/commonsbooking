@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar, commoning, open-source, booking system, booking calendar
 Requires at least: 5.2  
 Tested up to: 6.3  
-Stable Tag: 2.8.0
+Stable Tag: 2.8.2
 Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -78,6 +78,9 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog 
+
+### 2.8.3 (xx.08.2023)
+FIXED: 
 
 ### 2.8.1 (09.08.2023)
 FIXED: fatal error om admin backend after upgrading to wordpress 6.3
