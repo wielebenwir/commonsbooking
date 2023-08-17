@@ -45,6 +45,7 @@
                 cb_booking_rules.forEach(rule => {
                     if (rule.name == selectedRule) {
                         ruleDescription.text(rule.description);
+                        ruleSelector.width(300); // Just make it big enough to fit most options
                         //check if params exist and set description / visibility accordingly
                         if (rule.hasOwnProperty("params") && rule.params.length > 0){
                             switch (rule.params.length) {

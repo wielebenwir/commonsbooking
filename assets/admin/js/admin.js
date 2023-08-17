@@ -37,6 +37,7 @@
                 cb_booking_rules.forEach(rule => {
                     if (rule.name == selectedRule) {
                         ruleDescription.text(rule.description);
+                        ruleSelector.width(300);
                         if (rule.hasOwnProperty("params") && rule.params.length > 0) {
                             switch (rule.params.length) {
                               case 1:
