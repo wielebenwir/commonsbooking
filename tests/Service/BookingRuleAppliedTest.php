@@ -98,6 +98,57 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 		$this->assertEquals($termBooking->ID,reset($sameBooking)->ID);
 	}
 
+	public function testCheckExcludedRoles() {
+		//first, we check if the rule applies to the subscriber (as it should)
+		$subscriberBooking = new Booking(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+				'8:00 AM',
+				'12:00 PM',
+				'unconfirmed',
+				$this->subscriberId
+			)
+		);
+		$this->assertNotNull($this->appliedAlwaysDeny->checkBookingCompliance($subscriberBooking));
+		//no we check if the rule applies to the admin (as it should not)
+		$this->createAdministrator();
+		$adminBooking = new Booking(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+				'8:00 AM',
+				'12:00 PM',
+				'unconfirmed',
+				$this->adminUserID
+			)
+		);
+		$this->assertNull($this->appliedAlwaysDeny->checkBookingCompliance($adminBooking));
+		//now we check if the rule applies to the editor (should still apply)
+		$this->createEditor();
+		$editorBooking = new Booking(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+				'8:00 AM',
+				'12:00 PM',
+				'unconfirmed',
+				$this->editorUserID
+			)
+		);
+		$this->assertNotNull($this->appliedAlwaysDeny->checkBookingCompliance($editorBooking));
+		//now we add the editor role to the excluded roles
+		$this->appliedAlwaysDeny->setExcludedRoles(array('editor'));
+		$this->assertNull($this->appliedAlwaysDeny->checkBookingCompliance($editorBooking));
+
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->createSubscriber();

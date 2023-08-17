@@ -42,6 +42,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	protected int $adminUserID;
 
 	protected int $cbManagerUserID;
+	protected int $editorUserID;
 
 	protected function createTimeframe(
 		$locationId,
@@ -311,6 +312,22 @@ abstract class CustomPostTypeTest extends TestCase {
 		}
 		else {
 			$this->adminUserID = $wp_user->ID;
+		}
+	}
+
+	/**
+	 * We use this role to test assigning capabilities to other roles than the CBManager.
+	 * @return void
+	 */
+	protected function createEditor(){
+		$wp_user = get_user_by('email',"editor@editor.de");
+		if (! $wp_user) {
+			$this->editorUserID = wp_create_user( "editoruser", "editor", "editor@editor.de" );
+			$user               = new \WP_User( $this->editorUserID );
+			$user->set_role( 'editor' );
+		}
+		else {
+			$this->editorUserID = $wp_user->ID;
 		}
 	}
 
