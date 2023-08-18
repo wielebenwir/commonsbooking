@@ -1,5 +1,8 @@
 name: Deploy to WordPress.org
 on:
+  push:
+    tags:
+    - "*"
   workflow_call:
     inputs:
       dry-run:
@@ -7,9 +10,6 @@ on:
         default: false
         required: true
         type: boolean
-  push:
-    tags:
-    - "*"
 jobs:
   tag:
     name: New tag
