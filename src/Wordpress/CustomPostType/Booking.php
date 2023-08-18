@@ -105,40 +105,23 @@ class Booking extends Timeframe {
     public function saveAdminBookingFields( $post_id, $post = null, $update = null ) {
         global $pagenow;
 
-        if ( ! $post ) {
-            $post = get_post( $post_id );
-        }
+        $post = $post ?? get_post( $post_id );
+        $is_trash_action = str_contains(($_REQUEST ?? array())['action'] ?? '', 'trash');
 
         // we check if its a new created post
-        if ( ! empty( $_REQUEST ) && $pagenow === 'post.php' && commonsbooking_isCurrentUserAdmin() ) {
-
+        if ( ! empty( $_REQUEST ) && !$is_trash_action && $pagenow === 'post.php' && commonsbooking_isCurrentUserAdmin() ) {
             // set request variables
-            if ( isset( $_REQUEST['post_status'] ) ) {
-                $post_status = esc_html( $_REQUEST['post_status'] ) ?? false;
-            }
-            if ( isset( $_REQUEST['repetition-start']['time'] ) ) {
-                $start_time = esc_html( $_REQUEST['repetition-start']['time'] ) ?? false;
-            }
-            if ( isset( $_REQUEST['repetition-end']['time'] ) ) {
-                $end_time = esc_html( $_REQUEST['repetition-end']['time'] ) ?? false;
-            }
-            if ( isset( $_REQUEST['booking_user'] ) ) {
-                $booking_user = esc_html( $_REQUEST['booking_user'] ) ?? false;
-            }
+            $booking_user = isset( $_REQUEST['booking_user'] ) ? esc_html( $_REQUEST['booking_user'] ) : false;
 
-            if ( $post_status == 'draft' || ! ( $post_status ) ) {
-                $post_status = 'unconfirmed';
-            }
-
+            $post_status = esc_html( $_REQUEST['post_status'] ?? '' );
             // if there are overlapping bookings we set status to unconfirmed
-            if ( get_transient( 'commonsbooking_booking_validation_failed_' . $post_id ) ) {
+            if ( $post_status === 'draft' || !( $post_status ) || get_transient( 'commonsbooking_booking_validation_failed_' . $post_id ) ) {
                 $post_status = 'unconfirmed';
             }
 
-            $full_day = '';
-            if ( $start_time == '00:00' && $end_time == '23:59' ) {
-                $full_day = 'on';
-            }
+            $start_time = isset( $_REQUEST['repetition-start'] ) ? esc_html( $_REQUEST['repetition-start']['time'] ?? '' ) : false;
+            $end_time = isset( $_REQUEST['repetition-end'] ) ? esc_html( $_REQUEST['repetition-end']['time'] ?? '' ) : false;
+            $full_day = ( $start_time === '00:00' && $end_time === '23:59' ) ? 'on' : '';
 
             $postarr          = array(
 				'post_title'  => esc_html__( 'Admin-Booking', 'commonsbooking' ),
