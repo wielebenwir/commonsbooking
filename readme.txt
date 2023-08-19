@@ -80,7 +80,12 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 ## Changelog 
 
 ### 2.8.3 (xx.08.2023)
-FIXED: 
+ENHANCED: Booking codes are now available for timeframes without a configured end-date
+ENHANCED: Added option to change directory of filesystem cache
+ENHANCED: Fixed permission system to allow for creation of custom roles ( see  https://commonsbooking.org/docs/grundlagen/rechte-des-commonsbooking-manager/ )
+ENHANCED: Added filter to allow selecting other roles to be assigned to items / locations
+FIXED: Location map view not working since 2.8.1
+FIXED: Booking offset should work again
 
 ### 2.8.2 (09.08.2023)
 FIXED: fatal error om admin backend after upgrading to wordpress 6.3
