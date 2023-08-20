@@ -10,13 +10,13 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
-Commons Booking is a plugin for management and booking of common goods. 
-
-This plugin gives associations, groups and individuals the ability to share items (e.g. cargo bikes, tools) with users. It is based on the idea of Commons and sharing resources for the benefit of the community. 
+Commons Booking is a plugin for management and booking of common goods. This plugin gives associations, groups and individuals the ability to share items (e.g. cargo bikes, tools) with users. It is based on the idea of Commons and sharing resources for the benefit of the community. 
 
 * [Wordpress Plugin Page](https://wordpress.org/plugins/commonsbooking/)
 * [Official Website](https://commonsbooking.org)
-* [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues) 
+* For users get [Support](https://commonsbooking.org/kontakt/)
+* For developers use the [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues) 
+
 
 ## Development Installation
 
@@ -26,13 +26,4 @@ This plugin gives associations, groups and individuals the ability to share item
 4. cd into the directory commonsbooking and run `composer install`
 > This might fail, if you don't have the PHP extension [uopz](https://www.php.net/manual/en/book.uopz.php) installed. Try running `composer install --no-dev` if you just quickly want to test a specific branch without installing the extension.
 5. Activate the plugin in the Plugin dashboard
-
-## Frequently Asked Questions
-
-### Where can I find help/report bugs?
-
-* [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues)
-* [Support](https://commonsbooking.org/kontakt/)
-
-
-
+> 
