@@ -45,13 +45,15 @@ abstract class CustomPostType {
 
 	/**
 	 * Replaces WP_Posts by their title for options array.
-	 * If $allOption is true, an additional option is added to the beginning of the array that allows to select all posts
-	 * This option will only be shown to the Administrator role, since only Administrators can usually see all posts
+     *
+	 * If $allOption is true, an additional option that allows to select all posts is added to the beginning of the array.
+	 * This option is only visible to administrator roles, since usually only they can see all posts.
 	 *
 	 * TODO:
 	 *  - All could be interpreted differently depending on the context of the editor. So in the case of a CB Manager "All" could mean all items or locations they manage.
 	 *
 	 * @param WP_Post[]|string[] $data
+     * @param bool $allOption
 	 *
 	 * @return array
 	 */
