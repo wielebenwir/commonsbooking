@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@master
     - name: Build # Remove or modify this step as needed
       run: |
-        composer install --ignore-platform-req=php # doesn't work due to php 8 incompatibilites in some packages
+        composer install --ignore-platform-req=php --ignore-platform-req=ext-uopz # doesn't work due to php 8 incompatibilites in some packages
         npm install --legacy-peer-deps
         grunt
         npm install --no-dev --legacy-peer-deps
@@ -21,7 +21,7 @@ jobs:
     - name: WordPress Plugin Deploy
       uses: 10up/action-wordpress-plugin-deploy@stable
       with:
-        dry-run: false
+        dry-run: true
       env:
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
