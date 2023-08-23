@@ -13,6 +13,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 CommonsBooking is a plugin for the management and booking of common goods. This plugin provides associations, groups, and individuals with the ability to share items (such as cargo bikes and tools) among users. It is based on the concept of Commons, where resources are shared for the benefit of the community.
 
 * [Wordpress Plugin Page](https://wordpress.org/plugins/commonsbooking/)
+* [View Changelog](https://wordpress.org/plugins/commonsbooking/#developers)
 * [Official Website](https://commonsbooking.org)
 * For users get [Support](https://commonsbooking.org/kontakt/)
 * For developers use the [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues) 
