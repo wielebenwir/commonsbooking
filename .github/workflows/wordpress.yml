@@ -6,18 +6,47 @@ on:
     - "*"
     
 jobs:
-  tag:
+  deploy:
     name: New tag
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+
     - uses: actions/checkout@master
+    
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.0.6' # Not needed with a .ruby-version file
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - run: gem install compass
+    
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 12
+    
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+   
+
+    - name: Compile with Grunt
+      uses: elstudio/actions-js-build/build@v4
+      with:
+        args: build
+
+    - name: Commit changes
+      uses: elstudio/actions-js-build/commit@v4
+      with:
+        commitMessage: Ran grunt 
+   
     - name: Build # Remove or modify this step as needed
       run: |
-        composer install --ignore-platform-req=php --ignore-platform-req=ext-uopz # doesn't work due to php 8 incompatibilites in some packages
-        npm install --legacy-peer-deps
-        grunt
-        npm install --no-dev --legacy-peer-deps
+        npm ci --production --legacy-peer-deps
+        php -v
         composer install --ignore-platform-req=php --no-dev
+        
     - name: WordPress Plugin Deploy
       uses: 10up/action-wordpress-plugin-deploy@stable
       with:
