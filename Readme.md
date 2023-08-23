@@ -10,7 +10,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
-Commons Booking is a plugin for management and booking of common goods. This plugin gives associations, groups and individuals the ability to share items (e.g. cargo bikes, tools) with users. It is based on the idea of Commons and sharing resources for the benefit of the community. 
+CommonsBooking is a plugin for the management and booking of common goods. This plugin provides associations, groups, and individuals with the ability to share items (such as cargo bikes and tools) among users. It is based on the concept of Commons, where resources are shared for the benefit of the community.
 
 * [Wordpress Plugin Page](https://wordpress.org/plugins/commonsbooking/)
 * [Official Website](https://commonsbooking.org)
