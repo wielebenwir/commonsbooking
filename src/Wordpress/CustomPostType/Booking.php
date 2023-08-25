@@ -121,7 +121,7 @@ class Booking extends Timeframe {
 
             $start_time = isset( $_REQUEST['repetition-start'] ) ? esc_html( $_REQUEST['repetition-start']['time'] ?? '' ) : false;
             $end_time = isset( $_REQUEST['repetition-end'] ) ? esc_html( $_REQUEST['repetition-end']['time'] ?? '' ) : false;
-            $full_day = ( $start_time === '00:00' && $end_time === '23:59' ) ? 'on' : '';
+            $full_day = ( !$start_time || $start_time === '0:00' || $start_time === '00:00' ) && ( !$end_time || $end_time === '23:59' ) ? 'on' : '';
 
             $postarr          = array(
 				'post_title'  => esc_html__( 'Admin-Booking', 'commonsbooking' ),
