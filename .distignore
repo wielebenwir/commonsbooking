@@ -3,10 +3,11 @@
 /bin
 /tests
 /.git
-
+/.saas-cache
 .distignore
 .editorconfig
 .phpcs.xml.dist
+.gitignore
 codecov.yml
 commonsbooking.zip
 composer.json
@@ -18,3 +19,4 @@ package-lock.json
 phpunit.xml.dist
 zipdist.sh
 README.md
+
