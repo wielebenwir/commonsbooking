@@ -79,7 +79,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.8.3 (xx.08.2023)
+### 2.8.3 (25.08.2023)
 ENHANCED: Booking codes are now available for timeframes without a configured end-date
 ENHANCED: Added option to change directory of filesystem cache
 ENHANCED: Fixed permission system to allow for creation of custom roles ( see  https://commonsbooking.org/docs/grundlagen/rechte-des-commonsbooking-manager/ )
