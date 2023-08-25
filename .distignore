@@ -2,6 +2,7 @@
 /.saas-cache
 /bin
 /tests
+/.git
 
 .distignore
 .editorconfig
