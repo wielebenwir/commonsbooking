@@ -1077,10 +1077,10 @@ Return date: {{booking:returnDatetime}}
 				'fields' => array(
 					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Filesystem cache path', 'commonsbooking' ) ),
-						'desc'          => commonsbooking_sanitizeHTML( __( 'Where the filesystem cache should be created. Only change when filesystem caching is not working. Default when empty: /tmp/symfony-cache/', 'commonsbooking' ) ),
+						'desc'          => commonsbooking_sanitizeHTML( __( 'Where the filesystem cache should be created. Only change when filesystem caching is not working.', 'commonsbooking' ) ),
 						'id'            => 'cache_path',
 						'type'          => 'text',
-						'default'       => '',
+						'default'       => '/tmp/symfony-cache/',
 					),
 					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
