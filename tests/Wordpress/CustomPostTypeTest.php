@@ -7,6 +7,7 @@ use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
+use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use PHPUnit\Framework\TestCase;
@@ -269,6 +270,18 @@ abstract class CustomPostTypeTest extends TestCase {
 		return $locationId;
 	}
 
+	protected function createMap($options) {
+		$mapId = wp_insert_post( [
+			'post_title'  => 'Map',
+			'post_type'   => Map::$postType,
+			'post_status' => 'publish'
+		] );
+
+		update_post_meta( $mapId, 'cb_map_options', $options );
+
+		return $mapId;
+	}
+
 	/**
 	 * We create the subscriber this way, because sometimes the user is already created.
 	 * In that case, the unit tests would fail, because there is already the user with this ID in the database.
@@ -321,7 +334,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
   protected function setUp() : void {
-    parent::setUp();
+        parent::setUp();
 
 		$this->setUpBookingCodesTable();
 

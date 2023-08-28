@@ -20,11 +20,13 @@ if ( ! file_exists( "{$_tests_dir}/includes/functions.php" ) ) {
 // Give access to tests_add_filter() function.
 require_once "{$_tests_dir}/includes/functions.php";
 
-/**
- * Manually load the plugin being tested.
- */
-function _manually_load_plugin() {
-	require dirname( dirname( __FILE__ ) ) . '/commonsbooking.php';
+if ( ! function_exists( '_manually_load_plugin' ) ) {
+	/**
+	 * Manually load the plugin being tested.
+	 */
+	function _manually_load_plugin() {
+		require dirname( dirname( __FILE__ ) ) . '/commonsbooking.php';
+	}
 }
 
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
@@ -32,4 +34,4 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 require_once dirname( __FILE__, 2 ) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
 
 // Start up the WP testing environment.
-require "{$_tests_dir}/includes/bootstrap.php";
+require_once "{$_tests_dir}/includes/bootstrap.php";
