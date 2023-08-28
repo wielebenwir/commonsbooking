@@ -17,7 +17,6 @@ views/.DS_Store
 /composer.phar
 copy-svn.sh
 .vscode/settings.json
-package-lock.json
 .idea
 cb-local-1.code-workspace
 commonsbookingdocker.code-workspace

@@ -41,8 +41,9 @@ class BookingCodes {
 	 * @throws BookingCodeException
 	 */
 	public static function getCodes( int $timeframeId, int $startDate = null, int $endDate = null, int $advanceGenerationDays = self::ADVANCE_GENERATION_DAYS ): array {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$timeframe          = new Timeframe( $timeframeId );
 			$timeframeStartDate = $timeframe->getStartDate();
@@ -132,8 +133,9 @@ class BookingCodes {
 	 * @throws BookingCodeException
 	 */
 	public static function getCode( Timeframe $timeframe, int $itemId, int $locationId, string $date, int $advanceGenerationDays = self::ADVANCE_GENERATION_DAYS ) : ?BookingCode {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			global $wpdb;
 			$table_name = $wpdb->prefix . self::$tablename;

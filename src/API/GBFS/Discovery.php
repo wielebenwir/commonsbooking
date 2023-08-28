@@ -27,13 +27,15 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 		$feeds[] = $this->get_feed('system_information');
 		$feeds[] = $this->get_feed('station_information');
 		$feeds[] = $this->get_feed('station_status');
-
+		
+		$lang				  = get_bloginfo('language');
 		$data                 = new stdClass();
 		$data->data           = new stdClass();
-		$data->data->feeds    = $feeds;
+		$data->data->$lang    = new stdClass();
+		$data->data->$lang->feeds = $feeds;
 		$data->last_updated   = current_time('timestamp');
 		$data->ttl            = 86400;
-		$data->version        = "2.2";
+		$data->version        = "2.3";
 
 		if ( WP_DEBUG ) {
 			$this->validateData( $data );
@@ -45,7 +47,7 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 	private function get_feed( $name ): stdClass {
 		$feed = new stdClass();
 		$feed->name = $name;
-		$feed->url = site_url() . '/wp-json/commonsbooking/v1/' . $name . '.json';
+		$feed->url = get_rest_url() . 'commonsbooking/v1/' . $name . '.json';
 		return $feed;
 	}
 }

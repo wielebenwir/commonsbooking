@@ -328,8 +328,9 @@ class Booking extends PostRepository {
 	public static function getForUser( $user, bool $asModel = false, $startDate = null ): array {
 		$customId = $user->ID;
 
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$posts = self::get(
 				[],
