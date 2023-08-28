@@ -25,7 +25,7 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 		$data->data->stations = $this->getItemData( $request );
 		$data->last_updated   = current_time('timestamp');
 		$data->ttl            = 60;
-		$data->version        = "2.2";
+		$data->version        = "2.3";
 
 		if ( WP_DEBUG ) {
 			$this->validateData( $data );

@@ -1,53 +1,25 @@
-[![PHP Composer](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml) [![WP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/wp-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest) [![PHP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/php-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest)
+[![PHP Composer](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml) 
+[![WP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/wp-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest) 
+[![PHP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/php-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest)
+[![codecov](https://codecov.io/gh/wielebenwir/commonsbooking/branch/master/graph/badge.svg?token=STJC8WPWIC)](https://codecov.io/gh/wielebenwir/commonsbooking)
 
 # CommonsBooking
 
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen  
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
-Tags: booking, commons, sharing, calendar,  
-Requires at least: 5.2  
-Tested up to: 6.0
-Stable Tag: 2.8
-Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
-Commons Booking is a plugin for management and booking of common goods. 
+CommonsBooking is a plugin for the management and booking of common goods. This plugin provides associations, groups, and individuals with the ability to share items (such as cargo bikes and tools) among users. It is based on the concept of Commons, where resources are shared for the benefit of the community.
 
-## Description
+## Links
 
-This plugin gives associations, groups and individuals the ability to share items (e.g. cargo bikes, tools) with users. It is based on the idea of Commons and sharing resources for the benefit of the community. 
-
-CommonsBooking was developed for the ["Commons Cargobike" movement](http://commons-cargobikes.org/), but it can be used for any kind items.
-
-**Unique features:**
-
-* Items can be assigned to different locations for the duration of a timeframe, each with their own contact information. You can display all locations via shortcode as an interactive map.
-* Simple booking process:  bookable timeframes can be configured with hourly slots oder daily slots.
-* Auto-accept bookings: A registered user can book items without the need for administration. 
-* Codes: The plugin automatically generates booking codes, which are used at the station to validate the booking. 
-* Managers can set holidays or repair slots to prevent items from beeing booked.
-
-
-**Use cases:**
-
-* Your association owns special tools that are not in use every day, and you want to make them available to a local group.
-* You own a cargo bike that you want to share with the community, and it will be placed at different locations throughout the year.
-
-**Plugin websites**
-
+* [Wordpress Plugin Page](https://wordpress.org/plugins/commonsbooking/)
+* [View Changelog](https://wordpress.org/plugins/commonsbooking/#developers)
 * [Official Website](https://commonsbooking.org)
-* [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues) 
+* For users get [Support](https://commonsbooking.org/kontakt/)
+* For developers use the [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues) 
 
-
-## Installation
-
-### Using The WordPress Dashboard 
-
-1. Navigate to the 'Add New' in the plugins dashboard
-2. Search for 'commonsbooking'
-3. Click 'Install Now'
-4. Activate the plugin on the Plugin dashboard
 
 ### Uploading in WordPress Dashboard 
 
@@ -70,6 +42,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 2. Navigate into your wp-content/plugins directory
 3. Open a terminal and run `git clone https://github.com/wielebenwir/commonsbooking`
 4. cd into the directory commonsbooking and run `composer install`
+> This might fail, if you don't have the PHP extension [uopz](https://www.php.net/manual/en/book.uopz.php) installed. Try running `composer install --no-dev` if you just quickly want to test a specific branch without installing the extension.
 5. Activate the plugin in the Plugin dashboard
 
 ## Contribute

@@ -26,12 +26,12 @@ class ItemTest extends CustomPostTypeTest {
 
 	public function testGetAdmins() {
 
-		$userArray[] = $this->normalUserID;
+		$userArray[] = $this->subscriberId;
 		$adminItemModel = new Item(
 			$this->createItem("Testitem2",'publish', $userArray)
 		);
 		//$this->assertEquals($userArray, $adminItemModel->getAdmins()); - This should work when postAuthor is not appended anymore
-		$this->assertContains($this->normalUserID, $adminItemModel->getAdmins());
+		$this->assertContains($this->subscriberId, $adminItemModel->getAdmins());
 	}
 
 
@@ -51,7 +51,7 @@ class ItemTest extends CustomPostTypeTest {
 	}
 	*/
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->restrictionIds[] = $this->createRestriction(
 			Restriction::META_HINT,
@@ -66,7 +66,7 @@ class ItemTest extends CustomPostTypeTest {
 
 	}
 
-	protected function tearDown(){
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 

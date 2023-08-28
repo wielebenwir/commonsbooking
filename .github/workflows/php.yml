@@ -6,7 +6,6 @@ on:
       - '**.md'
       - '**.txt'
   pull_request:
-    types: opened
     branches:
       - 'master'
 
@@ -30,6 +29,7 @@ jobs:
     - uses: shivammathur/setup-php@v2
       with:
         php-version: '7.4'
+        extensions: uopz
 
     - name: Validate composer.json and composer.lock
       run: composer validate
@@ -50,6 +50,13 @@ jobs:
 
     - name: Run test suite
       run: |
-        curl -ksSfL -o ~/phpunit-7.phar https://phar.phpunit.de/phpunit-7.phar
-        php ~/phpunit-7.phar --version
-        php ~/phpunit-7.phar
+        composer dump-autoload -o
+        curl -ksSfL -o ~/phpunit-9.phar https://phar.phpunit.de/phpunit-9.phar
+        php ~/phpunit-9.phar --version
+        php ~/phpunit-9.phar
+ 
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./build/logs/clover.xml

@@ -30,6 +30,8 @@ class Item extends BookablePost {
 	}
 
 	/**
+	 * TODO: Currently, also the author of the post
+	 *       is considered to be an admin, this does not make a lot of sense and should maybe be re-considered.
 	 * @return array|mixed|string[]
 	 */
 	public function getAdmins() {
@@ -44,7 +46,8 @@ class Item extends BookablePost {
 		}
 		$itemAdminIds[] = get_post_field( 'post_author', $this->ID );
 
-		return $itemAdminIds;
+		//intval and unique the array
+		return array_unique(array_map('intval', $itemAdminIds));
 	}
 
 	/**
