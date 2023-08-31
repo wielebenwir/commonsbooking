@@ -11,5 +11,10 @@ describe( 'Run a pull', function() {
 	it( 'can run a pull', function() {
 		cy.wait( 2000 );
 		cy.url().should('eq', 'http://localhost:1001/wp-admin/');
+        // Assert that the page title contains "Dashboard"
+        cy.title().should('include', 'Dashboard');
+
+        // Assert that the "Welcome to WordPress!" message is present
+        cy.contains('Welcome to WordPress!');
 	} );
 });
