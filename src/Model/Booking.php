@@ -291,10 +291,11 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
 
 		$repetitionStart = $this->getStartDate();
+		$repetitionEnd = $this->getEndDate();
 
 		$date_start = date_i18n( $date_format, $repetitionStart );
 		$time_start = date_i18n( $time_format, $repetitionStart );
-		$time_end   = date_i18n( $time_format, $repetitionStart ); // TODO Ist das korrekt?
+		$time_end   = date_i18n( $time_format, $repetitionEnd );
 
 		if ( $this->isFullDay() ) {
 			return $date_start;
