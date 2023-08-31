@@ -59,6 +59,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		$postAuthor = self::USER_ID,
 		$maxDays = 3,
 		$advanceBookingDays = 30,
+		$bookingStartdayOffset = 0,
 		$showBookingCodes = "on",
 		$createBookingCodes = "on",
 		$postTitle = 'TestTimeframe'
@@ -76,6 +77,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		update_post_meta( $timeframeId, 'item-id', $itemId );
 		update_post_meta( $timeframeId, 'timeframe-max-days', $maxDays );
 		update_post_meta( $timeframeId, 'timeframe-advance-booking-days', $advanceBookingDays );
+		update_post_meta( $timeframeId, 'booking-startday-offset', $bookingStartdayOffset );
 		update_post_meta( $timeframeId, 'full-day', $fullday );
 		update_post_meta( $timeframeId, 'timeframe-repetition', $repetition );
 		if ( $repetitionStart ) {
