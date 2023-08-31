@@ -245,6 +245,7 @@ abstract class CustomPostType {
 				}
 
 				//TODO: This does correctly sort the items by meta value, since WP 6.3 the meta value is not passed to the query anymore. Maybe the filter needs to be changed?
+				trigger_error("Oops!", E_USER_ERROR);
 				$orderby = $query->get( 'orderby' );
 				//Prior to WP 6.3, this was not an associative array (see #1309) but a string
 				if (is_array($orderby)) {
