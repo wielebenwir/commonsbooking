@@ -17,6 +17,8 @@ abstract class CustomPostTypeTest extends TestCase {
 
 	const CURRENT_DATE = '01.07.2021';
 
+	const CURRENT_DATE_FORMATTED = 'July 1, 2021';
+
 	const USER_ID = 1;
 
 	protected $locationId;
@@ -221,6 +223,54 @@ abstract class CustomPostTypeTest extends TestCase {
 			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) )
 		);
+	}
+
+	/**
+	 * Will create two timeframes for the same item / location combination on the same day spanning over a week.
+	 *
+	 * The two slots for the timeframes go from 10:00 - 15:00 and from 15:00 to 18:00.
+	 *
+	 * @param null $locationId
+	 * @param null $itemId
+	 *
+	 * @return array An array where the first element is the 10:00-15:00 timeframe and the second is the 15:00 - 18:00 timeframe.
+	 */
+	protected function createTwoBookableTimeframeSlotsIncludingCurrentDay( $locationId = null, $itemId = null): array {
+		if ( $locationId === null ) {
+			$locationId = $this->locationId;
+		}
+		if ( $itemId === null ) {
+			$itemId = $this->itemId;
+		}
+		$tf1 = $this->createTimeframe(
+			$locationId,
+			$itemId,
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+7 days', strtotime( self::CURRENT_DATE ) ),
+			Timeframe::BOOKABLE_ID,
+			'',
+			'd',
+			0,
+			'10:00',
+			'15:00',
+			"publish",
+			'',
+		);
+		$tf2 = $this->createTimeframe(
+			$locationId,
+			$itemId,
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			Timeframe::BOOKABLE_ID,
+			'',
+			'd',
+			0,
+			'15:00',
+			'18:00',
+			"publish",
+			'',
+		);
+		return [ $tf1, $tf2 ];
 	}
 
 	protected function createBookableTimeFrameStartingInAWeek($locationId = null, $itemId = null) {
