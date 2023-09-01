@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Exception\OverlappingException;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Wordpress;
 use DateTime;
@@ -373,66 +374,10 @@ class Timeframe extends CustomPost {
 
 				// Validate against existing other timeframes
 				foreach ( $existingTimeframes as $timeframe ) {
-
-					// check if timeframes overlap
-					if (
-						$this->hasTimeframeDateOverlap( $timeframe )
-					) {
-						// Compare grid types
-						if ( $timeframe->getGrid() !== $this->getGrid() ) {
-							throw new TimeframeInvalidException(
-								sprintf(
-									/* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
-									__(
-										'Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s %2$s',
-										'commonsbooking',
-									),
-									'<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->ID . '</a>',
-									'<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->post_title . '</a>',
-								)
-							);
-						}
-
-						// Check if different weekdays are set
-						if (
-							array_key_exists( 'weekdays', $_REQUEST ) &&
-							is_array( $_REQUEST['weekdays'] ) &&
-							$timeframe->getWeekDays()
-						) {
-							if ( ! array_intersect( $timeframe->getWeekDays(), $_REQUEST['weekdays'] ) ) {
-								return;
-							}
-						}
-
-						// Check if in day slots overlap
-						if ( ! $this->isFullDay() && $this->hasTimeframeTimeOverlap( $timeframe ) ) {
-							throw new TimeframeInvalidException(
-								sprintf(
-									/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
-									__(
-										'time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s %2$s',
-										'commonsbooking'
-									),
-									'<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->ID . '</a>',
-									'<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->post_title . '</a>',
-								)
-							);
-						}
-
-						// Check if full-day slots overlap
-						if ( $this->isFullDay() ) {
-							throw new TimeframeInvalidException(
-								sprintf(
-									/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
-									__(
-										'Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s %2$s',
-										'commonsbooking'
-									),
-									'<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->ID . '</a>',
-									'<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->post_title . '</a>'
-								)
-							);
-						}
+					try {
+						$this->overlaps( $timeframe );
+					} catch ( OverlappingException $e ) {
+						throw new TimeframeInvalidException( $e->getMessage() );
 					}
 				}
 			}
@@ -465,7 +410,8 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Checks if timeframes are overlapping in date range.
+	 * Checks if timeframes are overlapping in date range. Will not check for time overlap, only for general date overlap.
+	 * To check if two Timeframes actually overlap, use overlaps() instead.
 	 *
 	 * @param   \CommonsBooking\Model\Timeframe  $otherTimeframe
 	 *
@@ -500,6 +446,78 @@ class Timeframe extends CustomPost {
 		// If none of the above conditions are true, there is no overlap
 		return false;
 	}
+
+	/**
+	 * Will return false if the timeframes do not overlap in date range or time range.
+	 * Will throw an exception with the formatted error message and the affected timeframe if the timeframes overlap.
+	 *
+	 * @param Timeframe $otherTimeframe
+	 *
+	 * @return false
+	 * @throws OverlappingException
+	 */
+	public function overlaps (Timeframe $otherTimeframe) : bool {
+		if (
+			$this->hasTimeframeDateOverlap( $otherTimeframe )
+		) {
+			// Compare grid types
+			if ( $otherTimeframe->getGrid() !== $this->getGrid() ) {
+				throw new OverlappingException(
+					sprintf(
+					/* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
+						__(
+							'Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s %2$s',
+							'commonsbooking',
+						),
+						'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->ID . '</a>',
+						'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->post_title . '</a>',
+					)
+				);
+			}
+
+			// Check if different weekdays are set
+			if (
+				$this->getWeekDays() &&
+				$otherTimeframe->getWeekDays()
+			) {
+				if ( ! array_intersect( $otherTimeframe->getWeekDays(), $this->getWeekDays() ) ) {
+					return false;
+				}
+			}
+
+			// Check if in day slots overlap
+			if ( ! $this->isFullDay() && $this->hasTimeframeTimeOverlap( $otherTimeframe ) ) {
+				throw new OverlappingException(
+					sprintf(
+					/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
+						__(
+							'time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s %2$s',
+							'commonsbooking'
+						),
+						'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->ID . '</a>',
+						'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->post_title . '</a>',
+					)
+				);
+			}
+
+			// Check if full-day slots overlap
+			if ( $this->isFullDay() ) {
+				throw new OverlappingException(
+					sprintf(
+					/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
+						__(
+							'Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s %2$s',
+							'commonsbooking'
+						),
+						'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->ID . '</a>',
+						'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->post_title . '</a>'
+					)
+				);
+			}
+		}
+		return false;
+	}
+
 
 	/**
 	 * Returns grit type id
