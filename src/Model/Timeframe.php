@@ -373,11 +373,19 @@ class Timeframe extends CustomPost {
 				);
 
 				// Validate against existing other timeframes
-				foreach ( $existingTimeframes as $timeframe ) {
+				foreach ( $existingTimeframes as $otherTimeframe ) {
 					try {
-						$this->overlaps( $timeframe );
+						$this->overlaps( $otherTimeframe );
 					} catch ( OverlappingException $e ) {
-						throw new TimeframeInvalidException( $e->getMessage() );
+						throw new TimeframeInvalidException(
+							$e->getMessage() .
+						sprintf(
+						/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
+						__('See overlapping timeframe ID: %1$s %2$s', 'commonsbooking'),
+							'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->ID . '</a>',
+							'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->post_title . '</a>'
+						)
+						);
 					}
 				}
 			}
@@ -451,6 +459,8 @@ class Timeframe extends CustomPost {
 	 * Will return false if the timeframes do not overlap in date range or time range.
 	 * Will throw an exception with the formatted error message and the affected timeframe if the timeframes overlap.
 	 *
+	 * TODO: Refactor to return true if timeframes overlap and false if not. Throw exception in calling function.
+	 *
 	 * @param Timeframe $otherTimeframe
 	 *
 	 * @return false
@@ -463,57 +473,92 @@ class Timeframe extends CustomPost {
 			// Compare grid types
 			if ( $otherTimeframe->getGrid() !== $this->getGrid() ) {
 				throw new OverlappingException(
-					sprintf(
-					/* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
-						__(
-							'Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s %2$s',
-							'commonsbooking',
-						),
-						'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->ID . '</a>',
-						'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->post_title . '</a>',
-					)
+					__( 'Overlapping bookable timeframes are only allowed to have the same grid.', 'commonsbooking' )
 				);
 			}
+			$otherTimeframeRepetition = $otherTimeframe->getRepetition();
+			$repetition               = $this->getRepetition();
 
-			// Check if different weekdays are set
-			if (
-				$this->getWeekDays() &&
-				$otherTimeframe->getWeekDays()
-			) {
-				if ( ! array_intersect( $otherTimeframe->getWeekDays(), $this->getWeekDays() ) ) {
-					return false;
-				}
+			//we concatenate the repetitions to make the switch statement more readable
+			switch ( $repetition . '|' . $otherTimeframeRepetition ) {
+				case 'd|d':
+					if ( $this->isFullDay() || $otherTimeframe->isFullDay() ) {
+						throw new OverlappingException(
+							__( 'Full day periods are not allowed to overlap...', 'commonsbooking' )
+						);
+					} else {
+						if ( $this->hasTimeframeTimeOverlap( $otherTimeframe ) ) {
+							throw new OverlappingException(
+								__( 'Time periods are not allowed to overlap...', 'commonsbooking' )
+							);
+						}
+					}
+					break;
+				case 'w|w':
+					if ( $this->getWeekDays() && $otherTimeframe->getWeekDays() ) {
+						$weekDaysOverlap = array_intersect(
+							$this->getWeekDays(),
+							$otherTimeframe->getWeekDays()
+						);
+						if ( ! empty( $weekDaysOverlap ) ) {
+							throw new OverlappingException(
+								__( 'Overlapping bookable timeframes are not allowed to have the same weekdays.', 'commonsbooking' )
+							);
+						}
+					}
+					break;
+				case 'manual|manual':
+					$manualDateOverlap = array_intersect(
+						$this->getManualSelectionDates(),
+						$otherTimeframe->getManualSelectionDates()
+					);
+					if ( ! empty( $manualDateOverlap ) ) {
+						throw new OverlappingException(
+							__( 'Overlapping bookable timeframes are not allowed to have the same dates.', 'commonsbooking' )
+						);
+					}
+					break;
+				case 'w|manual':
+					if ( self::hasWeeklyManualOverlap( $this, $otherTimeframe ) ) {
+						throw new OverlappingException(
+							__( 'The other timeframe is overlapping with your weekly configuration.', 'commonsbooking' )
+						);
+					}
+					break;
+				case 'manual|w':
+					if ( self::hasWeeklyManualOverlap( $otherTimeframe, $this ) ) {
+						throw new OverlappingException(
+							__( 'The other timeframe is overlapping with your weekly configuration.', 'commonsbooking' )
+						);
+					}
+					break;
 			}
+		}
+		return false;
+	}
 
-			// Check if in day slots overlap
-			if ( ! $this->isFullDay() && $this->hasTimeframeTimeOverlap( $otherTimeframe ) ) {
-				throw new OverlappingException(
-					sprintf(
-					/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
-						__(
-							'time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s %2$s',
-							'commonsbooking'
-						),
-						'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->ID . '</a>',
-						'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->post_title . '</a>',
-					)
-				);
-			}
-
-			// Check if full-day slots overlap
-			if ( $this->isFullDay() ) {
-				throw new OverlappingException(
-					sprintf(
-					/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
-						__(
-							'Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s %2$s',
-							'commonsbooking'
-						),
-						'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->ID . '</a>',
-						'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->post_title . '</a>'
-					)
-				);
-			}
+	/**
+	 * Checks if timeframes are overlapping in weekly slot and slot with manual repetition.
+	 * @param $weeklyTimeframe
+	 * @param $manualTimeframe
+	 *
+	 * @return bool
+	 */
+	private static function hasWeeklyManualOverlap( $weeklyTimeframe, $manualTimeframe ): bool {
+		$manualSelectionWeekdays = array_unique(
+			array_map(
+				fn ( $date ) => date( 'w', strtotime( $date ) ),
+				$manualTimeframe->getManualSelectionDates()
+			)
+		);
+		//we have to make the sunday a 7 instead of 0 in order to detect overlaps with our other array correctly
+		$manualSelectionWeekdays = array_map(
+			fn ( $weekday ) => $weekday == 0 ? 7 : $weekday,
+			$manualSelectionWeekdays
+		);
+		$weekDaysOverlap = array_intersect(  $weeklyTimeframe->getWeekDays(), $manualSelectionWeekdays ) ;
+		if ( ! empty( $weekDaysOverlap ) ) {
+			return true;
 		}
 		return false;
 	}
@@ -755,7 +800,14 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns type of repetition
+	 * Returns type of repetition.
+	 * Possible values:
+	 * d = daily
+	 * w = weekly
+	 * m = monthly
+	 * y = yearly
+	 * manual = manual selection of dates
+	 * norep = no repetition
      *
 	 * @return mixed
 	 */
