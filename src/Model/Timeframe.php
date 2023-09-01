@@ -499,7 +499,7 @@ class Timeframe extends CustomPost {
 	 * @return bool
 	 */
 
-    protected function hasTimeframeTimeOverlap( Timeframe $otherTimeframe ) {
+    public function hasTimeframeTimeOverlap( Timeframe $otherTimeframe ) {
         // Check if both timeframes have an end time, if not, there is no overlap
         if ( ! strtotime( $this->getEndTime() ) && ! strtotime( $otherTimeframe->getEndTime() ) ) {
             return true;

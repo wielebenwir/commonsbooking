@@ -52,6 +52,40 @@ class TimeframeTest extends CustomPostTypeTest {
 
 	}
 
+	public function testHasTimeframeTimeOverlap() {
+		//check for #1344
+		$slotTf = new Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				'',
+				'w',
+				0,
+				'09:00 AM',
+				'05:00 PM'
+			)
+		);
+		//exactly the same settings as $slotTf
+		$slotTf2 = new Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				'',
+				'w',
+				0,
+				'09:00 AM',
+				'05:00 PM'
+			)
+		);
+		$this->assertTrue( $slotTf->hasTimeframeTimeOverlap( $slotTf2 ) );
+	}
+
 	public function testIsValid() {
 
 		$this->assertNull( $this->validTF->isValid() );
