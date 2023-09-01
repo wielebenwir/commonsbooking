@@ -136,7 +136,9 @@ class Timeframe extends CustomPostType {
 
 	public static function renderDateSelector( $field_args, $field ) {
 		?>
-		<label for="cmb2_multiselect_datepicker">Select Dates:</label>
+		<label for="cmb2_multiselect_datepicker">
+			<?php echo commonsbooking_sanitizeHTML( __("Select Dates:", 'commonsbooking') ); ?>
+		</label>
 		<input type="text" id="cmb2_multiselect_datepicker">
 		<br>
 		<?php

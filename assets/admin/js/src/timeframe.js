@@ -123,24 +123,6 @@
                 handleTypeSelection();
             });
             /**
-             * Shows/hides max day selection and user role restriction depending on timeframe Repitition tyoe (for bookings).
-             */
-            const handleRepititionSelection = function () {
-                const selectedRepetition = $("option:selected", timeframeRepetitionInput).val();
-                const selectedType = $("option:selected", typeInput).val();
-                if (selectedRepetition !== REPETITION_MANUAL) {
-                    manualDateField.hide()
-                    manualDatePicker.hide();
-                } else {
-                    manualDateField.show();
-                    manualDatePicker.show();
-                }
-            }
-            handleRepititionSelection();
-            timeframeRepetitionInput.change(function () {
-                handleRepititionSelection();
-            });
-            /**
              * Shows/hides grid selection depending on checked-state.
              */
             const handleFullDaySelection = function () {
@@ -174,10 +156,12 @@
 
                     if (selectedType === REPETITION_MANUAL) {
                         manualDateField.show();
+                        manualDatePicker.show();
                         hideFieldset(repetitionStartInput);
                         hideFieldset(repetitionEndInput);
                     } else {
                         manualDateField.hide();
+                        manualDatePicker.hide();
                         showFieldset(repetitionStartInput);
                         showFieldset(repetitionEndInput);
                     }

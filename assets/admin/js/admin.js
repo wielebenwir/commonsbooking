@@ -214,21 +214,6 @@
             typeInput.change(function() {
                 handleTypeSelection();
             });
-            const handleRepititionSelection = function() {
-                const selectedRepetition = $("option:selected", timeframeRepetitionInput).val();
-                const selectedType = $("option:selected", typeInput).val();
-                if (selectedRepetition !== REPETITION_MANUAL) {
-                    manualDateField.hide();
-                    manualDatePicker.hide();
-                } else {
-                    manualDateField.show();
-                    manualDatePicker.show();
-                }
-            };
-            handleRepititionSelection();
-            timeframeRepetitionInput.change(function() {
-                handleRepititionSelection();
-            });
             const handleFullDaySelection = function() {
                 const selectedRep = $("option:selected", timeframeRepetitionInput).val();
                 if (fullDayInput.prop("checked")) {
@@ -253,10 +238,12 @@
                     }
                     if (selectedType === REPETITION_MANUAL) {
                         manualDateField.show();
+                        manualDatePicker.show();
                         hideFieldset(repetitionStartInput);
                         hideFieldset(repetitionEndInput);
                     } else {
                         manualDateField.hide();
+                        manualDatePicker.hide();
                         showFieldset(repetitionStartInput);
                         showFieldset(repetitionEndInput);
                     }
