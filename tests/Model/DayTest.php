@@ -106,7 +106,7 @@ class DayTest extends CustomPostTypeTest {
 			"8:00 AM",
 			"12:00 PM",
 			"publish",
-			[ "1", "2", "3", "4", "5", "6", "7" ],
+			'',
 			$this->dateFormatted
 		);
 		//we need to save the post so that a valid repetition_start and repetition_end is set
@@ -125,7 +125,7 @@ class DayTest extends CustomPostTypeTest {
 			"8:00 AM",
 			"12:00 PM",
 			"publish",
-			[ "1", "2", "3", "4", "5", "6", "7" ],
+			'',
 			date( 'Y-m-d', strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ) )
 		);
 		//we need to save the post so that a valid repetition_start and repetition_end is set
