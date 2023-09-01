@@ -756,18 +756,19 @@ class Timeframe extends CustomPostType {
 			return;
 		}
 
+		//assign the startDate and EndDate for manual repetition (needs to be done before validation in order for validation to work)
+		$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
+		if ($timeframe->getRepetition() == 'manual') {
+			$timestamps = array_map('strtotime', $timeframe->getManualSelectionDates());
+			asort($timestamps);
+			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::REPETITION_START, reset($timestamps) );
+			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::REPETITION_END, end($timestamps) );
+		}
+
 		// Validate timeframe
 		$isValid = $this->validateTimeFrame( $post_id, $post );
 
 		if ( $isValid ) {
-			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
-
-			if ($timeframe->getRepetition() == 'manual') {
-				$timestamps = array_map('strtotime', $timeframe->getManualSelectionDates());
-				asort($timestamps);
-				update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::REPETITION_START, reset($timestamps) );
-				update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::REPETITION_END, end($timestamps) );
-			}
 
 			$this->sanitizeRepetitionEndDate( $post_id );
 
