@@ -53,6 +53,49 @@ class TimeframeTest extends CustomPostTypeTest {
 	}
 
 	/**
+	 * Only tests the very basic functionality of the overlaps function
+	 * @return void
+	 */
+	public function testOverlaps() {
+		$tfBase = new Timeframe($this->createBookableTimeFrameIncludingCurrentDay());
+		$tfNextWeek = new Timeframe(
+			$this->createBookableTimeFrameStartingInAWeek()
+		);
+		$this->assertFalse( $tfBase->overlaps( $tfNextWeek ) );
+
+		$tfIdentical = new Timeframe($this->createBookableTimeFrameIncludingCurrentDay());
+		try {
+			$tfBase->overlaps( $tfIdentical );
+			$this->fail( "OverlappingException was not thrown" );
+		}
+		catch ( OverlappingException $e ) {
+			$this->assertStringContainsString( "Overlapping bookable timeframes are not allowed to have the same weekdays.", $e->getMessage() );
+		}
+
+		$tfOtherGrid = new Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( self::CURRENT_DATE ),
+				strtotime( '+10 days', strtotime( self::CURRENT_DATE ) ),
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				'on',
+				'd',
+				1,
+				'08:00 AM',
+				'10:00 AM',
+			)
+		);
+		try {
+			$tfBase->overlaps( $tfOtherGrid );
+			$this->fail( "OverlappingException was not thrown" );
+		}
+		catch ( OverlappingException $e ) {
+			$this->assertStringContainsString( "Overlapping bookable timeframes are only allowed to have the same grid.", $e->getMessage() );
+		}
+	}
+
+	/**
 	 * Tests all possible combinations of daily repetitions with hourly grid
 	 * @return void
 	 */
