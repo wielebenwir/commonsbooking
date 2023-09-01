@@ -563,6 +563,22 @@ class Timeframe extends CustomPost {
 		return false;
 	}
 
+	/**
+	 * Will add the timeframe start and end date to the post meta when the repetition is set to manual.
+	 * We have to do this so the user doesn't have to set the start and end date manually when selecting dates.
+	 *
+	 * TODO: Find a better name for this method.
+	 * @return void
+	 */
+	public function addStartAndEndDate() : void {
+		if ($this->getRepetition() == 'manual') {
+			$timestamps = array_map('strtotime', $this->getManualSelectionDates());
+			asort($timestamps);
+			update_post_meta( $this->ID, \CommonsBooking\Model\Timeframe::REPETITION_START, reset($timestamps) );
+			update_post_meta( $this->ID, \CommonsBooking\Model\Timeframe::REPETITION_END, end($timestamps) );
+		}
+	}
+
 
 	/**
 	 * Returns grit type id

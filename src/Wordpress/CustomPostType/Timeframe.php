@@ -757,16 +757,19 @@ class Timeframe extends CustomPostType {
 		}
 
 		//assign the startDate and EndDate for manual repetition (needs to be done before validation in order for validation to work)
-		$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
-		if ($timeframe->getRepetition() == 'manual') {
-			$timestamps = array_map('strtotime', $timeframe->getManualSelectionDates());
-			asort($timestamps);
-			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::REPETITION_START, reset($timestamps) );
-			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::REPETITION_END, end($timestamps) );
+		try {
+			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
+		} catch ( Exception $e ) {
+			set_transient(
+				\CommonsBooking\Model\Timeframe::ERROR_TYPE,
+				$e->getMessage(),
+				45
+			);
 		}
+		$timeframe->addStartAndEndDate();
 
 		// Validate timeframe
-		$isValid = $this->validateTimeFrame( $post_id, $post );
+		$isValid = $this->validateTimeFrame( $timeframe );
 
 		if ( $isValid ) {
 
@@ -805,30 +808,25 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Validates timeframe and sets state to draft if invalid.
 	 *
-	 * @param $post_id
-	 * @param $post
+	 * @param Timeframe $timeframe
 	 *
 	 * @return bool
 	 */
-	protected function validateTimeFrame( $post_id, $post ): bool {
+	protected function validateTimeFrame( $timeframe ): bool {
 		try {
-			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
-			try {
-				$timeframe->isValid();
+			$timeframe->isValid();
+		}
+		catch (TimeframeInvalidException $e){
+			set_transient(
+				\CommonsBooking\Model\Timeframe::ERROR_TYPE,
+				commonsbooking_sanitizeHTML($e->getMessage()),
+				45 );
+			// set post_status to draft if not valid
+			$post = $timeframe->getPost();
+			if ( $post->post_status !== 'draft' ) {
+				$post->post_status = 'draft';
+				wp_update_post( $post );
 			}
-			catch (TimeframeInvalidException $e){
-				set_transient(
-					\CommonsBooking\Model\Timeframe::ERROR_TYPE,
-					commonsbooking_sanitizeHTML($e->getMessage()),
-					45 );
-				// set post_status to draft if not valid
-				if ( $post->post_status !== 'draft' ) {
-					$post->post_status = 'draft';
-					wp_update_post( $post );
-				}
-				return false;
-			}
-		} catch ( Exception $e ) {
 			return false;
 		}
 
