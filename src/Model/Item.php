@@ -51,7 +51,8 @@ class Item extends BookablePost {
 	}
 
 	/**
-	 * @return array
+	 * ATTENTION: THIS FUNCTION DOESN'T WORK, CORRESPONDING PR IS #1179 AND TEST IS IN tests/Model/ItemTest.php (commented out)
+	 * @return Restriction[]
 	 * @throws Exception
 	 */
 	public function getRestrictions(): array {
