@@ -527,6 +527,13 @@ class Timeframe extends CustomPost {
             return true;
         }
 
+		//Check if both timeframes have the same start and end time
+        if ( strtotime( $this->getEndTime() ) && strtotime( $otherTimeframe->getEndTime() )
+			&& strtotime( $this->getEndTime() ) === strtotime( $otherTimeframe->getEndTime() )
+			&& strtotime( $this->getStartTime() ) === strtotime( $otherTimeframe->getStartTime() ) ) {
+			return true;
+		}
+
         // If none of the above conditions are true, there is no overlap
         return false;
     }
