@@ -158,10 +158,11 @@
                 if (selectedType == BOOKABLE_ID) {
                     showFieldset(bookingConfigSet);
                     showFieldset(bookingCodeTitle);
+                    holidayField.hide();
                 } else {
                     hideFieldset(bookingConfigSet);
                     hideFieldset(bookingCodeTitle);
-                    if (selectedType == 3 && selectedRepetition == REPETITION_MANUAL) {
+                    if (selectedType == HOLIDAYS_ID && selectedRepetition == REPETITION_MANUAL) {
                         holidayField.show();
                     } else {
                         holidayField.hide();
@@ -253,30 +254,6 @@
                 handleItemSelection();
             });
             /**
-             * Shows/hides max day selection and user role restriction depending on timeframe Repitition tyoe (for bookings).
-             */
-            const handleRepititionSelection = function () {
-                const selectedRepetition = $("option:selected", timeframeRepetitionInput).val();
-                const selectedType = $("option:selected", typeInput).val();
-                if (selectedRepetition != REPETITION_MANUAL) {
-                    manualDateField.hide()
-                    manualDatePicker.hide();
-                } else {
-                    if ( selectedType == HOLIDAYS_ID ) {
-                        holidayField.show();
-                    } else {
-                        holidayField.hide();
-                        holidayInput.val('');
-                    }
-                    manualDateField.show();
-                    manualDatePicker.show();
-                }
-            }
-            handleRepititionSelection();
-            timeframeRepetitionInput.change(function () {
-                handleRepititionSelection();
-            });
-            /**
              * Shows/hides grid selection depending on checked-state.
              */
             const handleFullDaySelection = function () {
@@ -298,27 +275,35 @@
              * Handles repetition selection.
              */
             const handleRepetitionSelection = function () {
-                const selectedType = $('option:selected', timeframeRepetitionInput).val();
-                const selectedTimeframeType = $("option:selected", typeInput).val();
+                const selectedRepetition = $('option:selected', timeframeRepetitionInput).val();
+                const selectedType =  $("option:selected", typeInput).val();
 
-                if (selectedType) {
-                    if (selectedType == REPETITION_NONE) {
+                if (selectedRepetition) {
+                    if (selectedRepetition == REPETITION_NONE) {
                         showNoRepFields();
                     } else {
                         showRepFields();
                     }
 
-                    if (selectedType == REPETITION_MANUAL) {
+                    if (selectedRepetition == REPETITION_MANUAL) {
                         manualDateField.show();
+                        manualDatePicker.show();
                         hideFieldset(repetitionStartInput);
                         hideFieldset(repetitionEndInput);
+                        if ( selectedType == HOLIDAYS_ID ) {
+                            holidayField.show();
+                        } else {
+                            holidayField.hide();
+                            holidayInput.val('');
+                        }
                     } else {
                         manualDateField.hide();
+                        manualDatePicker.hide();
                         showFieldset(repetitionStartInput);
                         showFieldset(repetitionEndInput);
                     }
 
-                    if (selectedType == REPETITION_WEEKLY) {
+                    if (selectedRepetition == REPETITION_WEEKLY) {
                         weekdaysInput.parents('.cmb-row').show();
                     } else {
                         weekdaysInput.parents('.cmb-row').hide();
@@ -340,8 +325,7 @@
             const handleBookingCodesSelection = function () {
                 const fullday = fullDayInput.prop('checked'),
                 type = typeInput.val(),
-                repStart = repetitionStartInput.val(),
-                repEnd = repetitionEndInput.val();
+                repStart = repetitionStartInput.val();
 
                 hideFieldset(bookingCodeSet);
 
