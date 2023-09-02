@@ -1,6 +1,7 @@
 (function($) {
     "use strict";
     $(function() {
+        let holidayLoadButton = $("#holiday_load_btn");
         const manualDateInput = $("#timeframe_manual_date");
         const manualDatePicker = $("#cmb2_multiselect_datepicker");
         var addHolidayToInput = date => {
@@ -27,6 +28,18 @@
                     var date = $(this).datepicker("getDate");
                     addHolidayToInput(date);
                 }
+            });
+        }
+        if (holidayLoadButton.length) {
+            var fillHolidays = (year, state) => {
+                var holidays = feiertagejs.getHolidays(year, state);
+                holidays.forEach(holiday => {
+                    var date = new Date(holiday.date);
+                    addHolidayToInput(date);
+                });
+            };
+            holidayLoadButton.click(function() {
+                fillHolidays($("#_cmb2_holidayholiday_year").val(), $("#_cmb2_holidayholiday_state").val());
             });
         }
     });
@@ -173,6 +186,7 @@
             const createBookingCodesInput = $("#create-booking-codes");
             const bookingCodesDownload = $("#booking-codes-download");
             const bookingCodesList = $("#booking-codes-list");
+            const holidayField = $(".cmb2-id--cmb2-holiday");
             const holidayInput = $("#timeframe_manual_date");
             const manualDatePicker = $("#cmb2_multiselect_datepicker");
             const manualDateField = $(".cmb2-id-timeframe-manual-date");
@@ -205,9 +219,16 @@
                 if (selectedType === BOOKABLE_ID) {
                     showFieldset(bookingConfigSet);
                     showFieldset(bookingCodeTitle);
+                    holidayField.hide();
                 } else {
                     hideFieldset(bookingConfigSet);
                     hideFieldset(bookingCodeTitle);
+                    if (selectedType == HOLIDAYS_ID && selectedRepetition == REPETITION_MANUAL) {
+                        holidayField.show();
+                    } else {
+                        holidayField.hide();
+                        holidayInput.val("");
+                    }
                 }
             };
             handleTypeSelection();
@@ -228,26 +249,32 @@
                 handleFullDaySelection();
             });
             const handleRepetitionSelection = function() {
-                const selectedType = $("option:selected", timeframeRepetitionInput).val();
-                const selectedTimeframeType = $("option:selected", typeInput).val();
-                if (selectedType) {
-                    if (selectedType == REPETITION_NONE) {
+                const selectedRepetition = $("option:selected", timeframeRepetitionInput).val();
+                const selectedType = $("option:selected", typeInput).val();
+                if (selectedRepetition) {
+                    if (selectedRepetition == REPETITION_NONE) {
                         showNoRepFields();
                     } else {
                         showRepFields();
                     }
-                    if (selectedType === REPETITION_MANUAL) {
+                    if (selectedRepetition === REPETITION_MANUAL) {
                         manualDateField.show();
                         manualDatePicker.show();
                         hideFieldset(repetitionStartInput);
                         hideFieldset(repetitionEndInput);
+                        if (selectedType == HOLIDAYS_ID) {
+                            holidayField.show();
+                        } else {
+                            holidayField.hide();
+                            holidayInput.val("");
+                        }
                     } else {
                         manualDateField.hide();
                         manualDatePicker.hide();
                         showFieldset(repetitionStartInput);
                         showFieldset(repetitionEndInput);
                     }
-                    if (selectedType === REPETITION_WEEKLY) {
+                    if (selectedRepetition === REPETITION_WEEKLY) {
                         weekdaysInput.parents(".cmb-row").show();
                     } else {
                         weekdaysInput.parents(".cmb-row").hide();
