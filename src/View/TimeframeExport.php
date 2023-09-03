@@ -92,17 +92,47 @@ class TimeframeExport {
 			foreach ( $inputFields as $type => $fields ) {
 				// Location fields
 				if ( $type == 'location' ) {
-					$location = $timeframePost->getLocation();
+					$locations = $timeframePost->getLocations();
 					foreach ( $fields as $field ) {
-						$valueColumns[] = $location->getFieldValue( $field );
+						if ( count($locations) > 1) {
+							$columnText = '(';
+							foreach ($locations as $location) {
+								$fieldValue = $location->getFieldValue( $field );
+								if ( ! empty( $fieldValue ) ) {
+									$columnText  .= $fieldValue . '; ';
+								}
+							}
+							//cut last comma
+							$columnText = substr($columnText, 0, -2);
+							$columnText .= ')';
+							$valueColumns[] = $columnText;
+						}
+						else {
+							$valueColumns[] = reset($locations)->getFieldValue($field);
+						}
 					}
 				}
 
 				// Item fields
 				if ( $type == 'item' ) {
-					$item = $timeframePost->getItem();
+					$items = $timeframePost->getItems();
 					foreach ( $fields as $field ) {
-						$valueColumns[] = $item->getFieldValue( $field );
+						if ( count($items) > 1) {
+							$columnText = '(';
+							foreach ($items as $item) {
+								$fieldValue = $item->getFieldValue( $field );
+								if ( ! empty( $fieldValue ) ) {
+									$columnText  .= $fieldValue . '; ';
+								}
+							}
+							//cut last comma
+							$columnText = substr($columnText, 0, -2);
+							$columnText .= ')';
+							$valueColumns[] = $columnText;
+						}
+						else {
+							$valueColumns[] = reset($items)->getFieldValue($field);
+						}
 					}
 				}
 
@@ -244,18 +274,41 @@ class TimeframeExport {
 			$gridOptions[ $gridOptionId ] : __( 'Unknown', 'commonsbooking' );
 
 		// get corresponding item title
-		$item = $timeframePost->getItem();
-		if ($item != null){
-			$item_title = $item->post_title;
+		$items = $timeframePost->getItems();
+		if ($items != null){
+			if (count($items) > 1){
+				$item_title = '(';
+				foreach ($items as $item){
+					$item_title .= $item->post_title . '; ';
+				}
+				//cut last comma
+				$item_title = substr($item_title, 0, -2);
+				$item_title .= ')';
+			}
+			else {
+				$item_title = reset ($items)->post_title;
+			}
 		}
 		else {
 			$item_title = __( 'Unknown', 'commonsbooking' );
 		}
 
 		// get corresponding location title
-		$location = $timeframePost->getLocation();
-		if ($location != null){
-			$location_title = $location->post_title;
+		$locations = $timeframePost->getLocations();
+		//TODO: Discuss if multiple locations should be displayed in one line or in multiple lines (same timeframe would appear multiple times)
+		if ($locations != null){
+			if (count($locations) > 1){
+				$location_title = '(';
+				foreach ($locations as $location){
+					$location_title .= $location->post_title . '; ';
+				}
+				//cut last comma
+				$location_title = substr($location_title, 0, -2);
+				$location_title .= ')';
+			}
+			else {
+				$location_title = reset ($locations)->post_title;
+			}
 		}
 		else {
 			$location_title = __( 'Unknown', 'commonsbooking' );
