@@ -162,6 +162,55 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertContains( $otherTimeframeId, $postIds );
 	}
 
+	/**
+	 * Tests for timeframes which have more than one assigned item or location
+	 * @return void
+	 */
+	public function testGetMultiTimeframe() {
+		$otherItem = $this->createItem( "Other Item" );
+		$otherLocation = $this->createLocation( "Other Location" );
+		// Timeframe just for original item and location
+		$this->timeframeId = $this->createBookableTimeFrameIncludingCurrentDay();
+		$holidayTF = $this->createHolidayTimeframeForAllItemsAndLocations();
+		//from first item
+		$inItemTimeframes = Timeframe::get(
+			[],
+			[ $this->itemId ],
+		);
+		$this->assertEquals( 2, count( $inItemTimeframes ) );
+		$postIds = array_map( function ( $timeframe ) {
+			return $timeframe->ID;
+		}, $inItemTimeframes );
+		$this->assertContains( $this->timeframeId, $postIds );
+		$this->assertContains( $holidayTF, $postIds );
+
+		//from second item
+		$inItemTimeframes = Timeframe::get(
+			[],
+			[ $otherItem ],
+		);
+		$this->assertEquals( 1, count( $inItemTimeframes ) );
+		$this->assertEquals( $holidayTF, $inItemTimeframes[0]->ID );
+
+		//from first location
+		$inLocationTimeframes = Timeframe::get(
+			[ $this->locationId ],
+		);
+		$this->assertEquals( 2, count( $inLocationTimeframes ) );
+		$postIds = array_map( function ( $timeframe ) {
+			return $timeframe->ID;
+		}, $inLocationTimeframes );
+		$this->assertContains( $this->timeframeId, $postIds );
+		$this->assertContains( $holidayTF, $postIds );
+
+		//from second location
+		$inLocationTimeframes = Timeframe::get(
+			[ $otherLocation ],
+		);
+		$this->assertEquals( 1, count( $inLocationTimeframes ) );
+		$this->assertEquals( $holidayTF, $inLocationTimeframes[0]->ID );
+	}
+
 	public function testGetForLocation() {
 		// Timeframe with enddate
 		$this->timeframeId    = $this->createTimeframe(

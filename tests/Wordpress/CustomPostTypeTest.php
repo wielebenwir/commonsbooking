@@ -240,6 +240,29 @@ abstract class CustomPostTypeTest extends TestCase {
 		);
 	}
 
+	protected function createHolidayTimeframeForAllItemsAndLocations() {
+		$timeframe =  $this->createTimeframe(
+			$this->locationId,
+			"",
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			Timeframe::HOLIDAYS_ID,
+		);
+
+		//now, let's set our timeframe to be assigned to all items
+		update_post_meta( $timeframe,
+			\CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE,
+			\CommonsBooking\Model\Timeframe::SELECTION_ALL_ID
+		);
+		update_post_meta( $timeframe,
+			\CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE,
+			\CommonsBooking\Model\Timeframe::SELECTION_ALL_ID
+		);
+		//and run our function to update the information
+		\CommonsBooking\Wordpress\CustomPostType\Timeframe::manageTimeframeMeta($timeframe);
+		return $timeframe;
+	}
+
 	protected function createBookableTimeFrameStartingInAWeek($locationId = null, $itemId = null) {
 		if ( $locationId === null ) {
 			$locationId = $this->locationId;
