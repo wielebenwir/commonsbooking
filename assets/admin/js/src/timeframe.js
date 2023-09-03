@@ -72,7 +72,7 @@
             const bookingConfigTitle = $('.cmb2-id-title-bookings-config');
             const maxDaysSelect = $('.cmb2-id-timeframe-max-days');
             const advanceBookingDays = $('.cmb2-id-timeframe-advance-booking-days');
-            const BookingStartDayOffset = $('.cmb2-id-booking-startday-offset');
+            const BookingStartDayOffset = $('.cmb2-id-booking-startday-offset');       
             const allowUserRoles = $('.cmb2-id-allowed-user-roles');
             const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
             const noRepSet = [fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput];
@@ -146,14 +146,10 @@
                     maxDaysSelect.show();
                     advanceBookingDays.show();
                     allowUserRoles.show();
-                    BookingStartDayOffset.show();
-                    bookingConfigTitle.show();
                 } else {
                     maxDaysSelect.hide();
                     advanceBookingDays.hide();
                     allowUserRoles.hide();
-                    BookingStartDayOffset.hide();
-                    bookingConfigTitle.hide();
                 }
 
                 //we migrate the single selection to the multiselect (new holiday timeframes do not have a single selection anymore)

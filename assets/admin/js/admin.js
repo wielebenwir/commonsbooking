@@ -193,14 +193,10 @@
                     maxDaysSelect.show();
                     advanceBookingDays.show();
                     allowUserRoles.show();
-                    BookingStartDayOffset.show();
-                    bookingConfigTitle.show();
                 } else {
                     maxDaysSelect.hide();
                     advanceBookingDays.hide();
                     allowUserRoles.hide();
-                    BookingStartDayOffset.hide();
-                    bookingConfigTitle.hide();
                 }
                 if (selectedType == HOLIDAY_TYPE) {
                     itemSelectionInput.show();
