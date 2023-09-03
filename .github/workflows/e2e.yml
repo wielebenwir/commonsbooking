@@ -49,6 +49,6 @@ jobs:
         run: npm run env:start
 
       - name: Cypress run
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           install: false
