@@ -41,7 +41,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version-file: 'cypress/.nvmrc'
           cache: 'npm'
       - run: npm ci --legacy-peer-deps --include=dev
       - run: docker-compose -v
