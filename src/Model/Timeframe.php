@@ -224,6 +224,7 @@ class Timeframe extends CustomPost {
 	/**
 	 * Validates if there can be booking codes created for this timeframe.
      *
+	 * TODO: #507
 	 * @return bool
 	 */
 	public function bookingCodesApplicable(): bool {

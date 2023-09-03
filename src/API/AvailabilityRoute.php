@@ -68,11 +68,13 @@ class AvailabilityRoute extends BaseRoute {
 					$availabilitySlot->end = $dateTimeend->format( 'Y-m-d\TH:i:sP' );
 
 					$availabilitySlot->locationId = "";
+					//TODO #507
 					if ( $timeframe->getLocation() ) {
 						$availabilitySlot->locationId = $timeframe->getLocation()->ID . "";
 					}
 
 					$availabilitySlot->itemId = "";
+					//TODO #507
 					if ( $timeframe->getLocation() ) {
 						$availabilitySlot->itemId = $timeframe->getItem()->ID . "";
 					}

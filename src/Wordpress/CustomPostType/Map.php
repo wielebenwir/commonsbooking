@@ -91,6 +91,7 @@ class Map extends CustomPostType {
 
 		/** @var \CommonsBooking\Model\Timeframe $timeframe */
 		foreach ( $timeframes as $timeframe ) {
+			//TODO #507
 			$item     = $timeframe->getItem();
 			$location = $timeframe->getLocation();
 

@@ -128,6 +128,7 @@ class Calendar {
 				// Collect unique locations from timeframes
 				$locations = [];
 				foreach ( $timeframes as $timeframe ) {
+					// TODO #507
 					$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
 				}
 
