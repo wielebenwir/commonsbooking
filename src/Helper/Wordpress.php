@@ -144,11 +144,14 @@ class Wordpress {
 		$timeframe = new Timeframe($postId);
 		$ids = [$postId];
 
-		if($timeframe->getItem()) {
-			$ids[] = $timeframe->getItem()->ID;
+		$items = $timeframe->getItems();
+		if( $items ) {
+			foreach ($items as $item) $ids[] = $item->ID;
 		}
-		if($timeframe->getLocation()) {
-			$ids[] = $timeframe->getLocation()->ID;
+
+		$locations = $timeframe->getLocations();
+		if( $locations ) {
+			foreach ($locations as $location) $ids[] = $location->ID;
 		}
 
 		return $ids;

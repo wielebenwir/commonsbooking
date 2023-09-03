@@ -244,6 +244,8 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * IMPORTANT: Going from 2.9 onwards you should NOT use this method for timeframes of the type HOLIDAYS_ID.
+	 * Use the getLocations() method instead.
 	 * @return Location
 	 * @throws Exception
 	 */
@@ -259,7 +261,38 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Get the corresponding single item for a timeframe
+	 * Returns the corresponding multiple locations for a timeframe.
+	 * If multiple locations are not available, it will call the getLocation() method and return an array with one location.
+	 *
+	 * @since 2.9 (anticipated)
+	 * @return Location[]
+	 */
+	public function getLocations(): ?array {
+		$locationIds = $this->getMeta( self::META_LOCATION_IDS );
+		if ( $locationIds ) {
+			$locations = [];
+			foreach ( $locationIds as $locationId ) {
+				if ( $post = get_post( $locationId ) ) {
+					$locations[] = new Location( $post );
+				}
+			}
+
+			return $locations;
+		}
+		else {
+			$location = $this->getLocation();
+			if ( $location ) {
+				return [ $location ];
+			}
+			else {
+				return null;
+			}
+		}
+	}
+
+	/**
+	 * Get the corresponding single item for a timeframe.
+	 * IMPORTANT: Going from 2.9 onwards you should NOT use this method for timeframes of the type HOLIDAYS_ID.
 	 * @return Item
 	 * @throws Exception
 	 */
@@ -272,6 +305,36 @@ class Timeframe extends CustomPost {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Gets the corresponding multiple items for a timeframe.
+	 * If multiple items are not available, it will call the getItem() method and return an array with one item.
+	 *
+	 * @since 2.9 (anticipated)
+	 * @return Item[]
+	 */
+	public function getItems(): ?array {
+		$itemIds = $this->getMeta( self::META_ITEM_IDS );
+		if ( $itemIds ) {
+			$items = [];
+			foreach ( $itemIds as $itemId ) {
+				if ( $post = get_post( $itemId ) ) {
+					$items[] = new Item( $post );
+				}
+			}
+
+			return $items;
+		}
+		else {
+			$item = $this->getItem();
+			if ( $item ) {
+				return [ $item ];
+			}
+			else {
+				return null;
+			}
+		}
 	}
 
 	/**
