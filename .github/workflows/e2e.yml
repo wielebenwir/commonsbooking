@@ -52,3 +52,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           install: false
+      - uses: actions/upload-artifact@v3
+        with:
+          name: cypress-screenshots
+          path: /home/runner/work/commonsbooking/commonsbooking/cypress/screenshots
