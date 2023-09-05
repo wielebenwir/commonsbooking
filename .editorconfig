@@ -17,6 +17,9 @@ ij_wrap_on_typing = false
 [Gruntfile]
 indent_style = tab
 
+[Makefile]
+indent_style = tab
+
 [*.blade.php]
 ij_blade_keep_indents_on_empty_lines = false
 
