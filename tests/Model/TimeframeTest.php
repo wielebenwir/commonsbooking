@@ -204,10 +204,10 @@ class TimeframeTest extends CustomPostTypeTest {
 			"off"
 		));		
 
-		// $this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
 		$this->assertTrue( $isOverlapping->hasTimeframeDateOverlap( $this->validTF ) );
 
-		// $this->expectException( TimeframeInvalidException::class );
+		$this->expectException( TimeframeInvalidException::class );
+		//overlaps exactly with $this->validTF
 		$isOverlapping->isValid();
 	}
 	
