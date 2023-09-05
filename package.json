@@ -12,20 +12,20 @@
 		"@babel/preset-env": "^7.23.2",
 		"@wordpress/env": "^5.0.0",
 		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
-		"compass": "^0.1.1",
 		"cypress": "^13.1.0",
 		"editorconfig": "^0.15.3",
 		"grunt": "^1.6.1",
 		"grunt-babel": "^8.0.0",
 		"grunt-cli": "^1.4.3",
-		"grunt-contrib-compass": "^1.1.1",
 		"grunt-contrib-concat": "^2.1.0",
 		"grunt-contrib-copy": "^1.0.0",
 		"grunt-contrib-jshint": "^3.2.0",
 		"grunt-contrib-nodeunit": "^5.0.0",
 		"grunt-contrib-uglify": "^5.2.2",
 		"grunt-contrib-watch": "^1.1.0",
-		"matchdep": "^2.0.0"
+		"grunt-dart-sass": "^2.0.1",
+		"matchdep": "^2.0.0",
+		"sass": "^1.66.1"
 	},
 	"scripts": {
 		"start": "composer install --ignore-platform-reqs && npm install",
