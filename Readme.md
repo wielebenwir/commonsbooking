@@ -71,6 +71,16 @@ Testing the plugin code via `phpunit`. At the moment it works only with a manual
 php ~/phpunit.phar --bootstrap tests/bootstrap.php
 ```
 
+E2E (end to end) tests are written in [cypress](https://www.cypress.io/). To run them you need to install cypress and start the wordpress environment:
+```bash
+npm install --legacy-peer-deps
+wp-env start
+```
+Then you can run the tests:
+```bash
+npx cypress run
+```
+
 For example, you can activate the [kasimir theme](github.com/flegfleg/kasimir-theme) via [wp cli](https://make.wordpress.org/cli/handbook/) inside the wp-env docker container:
 ```
 wp-env run cli wp theme activate kasimir-theme
