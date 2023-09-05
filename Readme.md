@@ -36,7 +36,7 @@ CommonsBooking is a plugin for the management and booking of common goods. This 
 3. Upload the `commonsbooking` directory to the `/wp-content/plugins/` directory
 4. Activate the plugin in the Plugin dashboard
 
-### Using Github (developers only)
+### Using GitHub (developers only)
 
 1. Make sure that composer is installed on your system
 2. Navigate into your wp-content/plugins directory
@@ -47,17 +47,22 @@ CommonsBooking is a plugin for the management and booking of common goods. This 
 
 ## Contribute
 
-Either through translating wordpress into your native tounge ([see the already existing Wordpress Plugin Translations](https://translate.wordpress.org/projects/wp-plugins/commonsbooking/)) or through developing and testing new versions of the application.
+Either through translating WordPress into your native tongue ([see the already existing WordPress Plugin Translations](https://translate.wordpress.org/projects/wp-plugins/commonsbooking/)) or through developing and testing new versions of the application.
 
 ## Development
 
 ### Run plugin
 
-The most easy way to start hacking wordpress plugins in gernal (if you have no other development environment set up) is using [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/). Install it and it's dependencies (mainly Docker) and fire up in your favorite bash:
+The most easy way to start hacking WordPress plugins in gernal (if you have no other development environment set up) is using [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/). Install it and it's dependencies (mainly Docker) and fire up in your favorite bash:
 ```
 wp-env start
 ```
 The provided `.wp-env.json` should be sufficient for normal development, for details see the [documentation of wp-env config](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/#wp-env-json). [You can create](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/#wp-env-override-json) an `.wp-env.override.json` for a custom configuration you don't want to check in.
+
+For testing, you can activate the [kasimir theme](github.com/flegfleg/kasimir-theme) via [wp cli](https://make.wordpress.org/cli/handbook/) inside the wp-env docker container:
+```
+wp-env run cli wp theme activate kasimir-theme
+```
 
 ### Test plugin
 
@@ -81,15 +86,10 @@ Then you can run the tests:
 npx cypress run
 ```
 
-For example, you can activate the [kasimir theme](github.com/flegfleg/kasimir-theme) via [wp cli](https://make.wordpress.org/cli/handbook/) inside the wp-env docker container:
-```
-wp-env run cli wp theme activate kasimir-theme
-```
-
 ### Update translations
 
-Currently we only manage german and english translations as po files in the repository, so they are available at build time. 
-See the [wordpress plugin translation page](https://translate.wordpress.org/projects/wp-plugins/commonsbooking/) for other languages available at runtime.
+Currently, we only manage German and English translations as po files in the repository, so they are available at build time. 
+See the [WordPress plugin translation page](https://translate.wordpress.org/projects/wp-plugins/commonsbooking/) for other languages available at runtime.
 
 Create a new .pot file using the 
 ```
