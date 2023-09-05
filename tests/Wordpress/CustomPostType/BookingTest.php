@@ -34,6 +34,9 @@ class BookingTest extends CustomPostTypeTest
 			null,
 			null
 		);
+		//add this to the array so it can be destroyed later
+		$this->bookingIds[] = $bookingId;
+
 		$this->assertIsInt( $bookingId );
 		$bookingModel = new \CommonsBooking\Model\Booking( $bookingId );
 
@@ -54,6 +57,7 @@ class BookingTest extends CustomPostTypeTest
 			$postName,
 			null
 		);
+		$this->bookingIds[] = $newBookingId;
 
 		// the id should be the same
 		$this->assertEquals( $bookingId, $newBookingId );
@@ -74,6 +78,8 @@ class BookingTest extends CustomPostTypeTest
 			$postName,
 			null
 		);
+		$this->bookingIds[] = $canceledId;
+
 		$this->assertEquals( $bookingId, $canceledId );
 		$bookingModel = new \CommonsBooking\Model\Booking( $bookingId );
 		$this->assertTrue( $bookingModel->isCancelled() );
@@ -92,6 +98,8 @@ class BookingTest extends CustomPostTypeTest
 			null,
 			null
 		);
+		$this->bookingIds[] = $bookingId;
+
 		$this->assertIsInt( $bookingId );
 		$bookingModel = new \CommonsBooking\Model\Booking( $bookingId );
 		$postName     = $bookingModel->post_name;
@@ -109,6 +117,7 @@ class BookingTest extends CustomPostTypeTest
 			$postName,
 			null
 		);
+
 	}
 
 	public function testBookingWithoutLoc() {
@@ -206,6 +215,9 @@ class BookingTest extends CustomPostTypeTest
 			null,
 			null
 		);
+		//add this to the array so it can be destroyed later
+		$this->bookingIds[] = $bookingId;
+
 		$this->assertIsInt( $bookingId );
 		$bookingModel = new \CommonsBooking\Model\Booking( $bookingId );
 		$this->assertTrue( $bookingModel->isUnconfirmed() );
@@ -220,6 +232,8 @@ class BookingTest extends CustomPostTypeTest
 			null,
 			null
 		);
+		$this->bookingIds[] = $sameBookingId;
+
 		// we now make sure that we got the same booking back
 		$this->assertEquals( $bookingId, $sameBookingId );
 		$sameBookingModel = new \CommonsBooking\Model\Booking( $sameBookingId );

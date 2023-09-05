@@ -483,12 +483,12 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns grit type id
+	 * Returns grid type id
      *
 	 * @return mixed
 	 */
-	public function getGrid() {
-		return $this->getMeta( 'grid' );
+	public function getGrid(): int {
+		return intval($this->getMeta( 'grid' ));
 	}
 
 	/**
