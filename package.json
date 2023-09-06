@@ -14,11 +14,12 @@
 		"compass": "^0.1.1",
 		"editorconfig": "^0.15.3",
 		"grunt": "^1.4.1",
+		"grunt-cli": "^1.4.3",
 		"grunt-babel": "^8.0.0",
 		"grunt-contrib-compass": "^0.8.0",
 		"grunt-contrib-concat": "^2.0.0",
 		"grunt-contrib-jshint": "^3.1.1",
-		"grunt-contrib-nodeunit": "^4.0.0",
+		"grunt-contrib-nodeunit": "^5.0.0",
 		"grunt-contrib-uglify": "^5.0.1",
 		"grunt-contrib-watch": "^1.1.0",
 		"matchdep": "^2.0.0"

@@ -158,7 +158,7 @@ class Location extends CustomPostType {
 			'publicly_queryable'  => true,
 
 			// Soll der Post Type aus der Suchfunktion ausgeschlossen werden?
-			'exclude_from_search' => true,
+			'exclude_from_search' => false,
 
 			// Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
 			'supports'            => array(

@@ -4,11 +4,15 @@
 namespace CommonsBooking\Model;
 
 use CommonsBooking\Helper\Wordpress;
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\RestrictionMessage;
 use DateTime;
 
 /**
  * Timeframe for restricting access to an item.
+ * 
+ * Note: Timeframes are date intervals, with a start date and either an end date or no end date (which leaves the interval open).
+ * This should be kept in mind when processing/rendering information in user templates.
  */
 class Restriction extends CustomPost {
 
@@ -147,12 +151,11 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns nicely formatted start datetime.
-     *
-	 * @return string
+     * 
+	 * @return string, if META_START is not null.
 	 */
 	public function getFormattedStartDateTime() {
-		// TODO timeformat should be configurable
-		return $this->getStartTimeDateTime()->format( 'd.m.Y H:i' );
+		return Helper::FormattedDateTime( $this->getStartTimeDateTime()->getTimestamp() );
 	}
 
 	/**
@@ -171,11 +174,10 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns nicely formatted end datetime.
      *
-	 * @return string
+	 * @return string, if META_END is not null.
 	 */
 	public function getFormattedEndDateTime() {
-		// TODO timeformat should be configurable
-		return $this->getEndDateDateTime()->format( 'd.m.Y H:i' );
+		return Helper::FormattedDateTime( $this->getEndDateDateTime()->getTimestamp() );
 	}
 
 	/**

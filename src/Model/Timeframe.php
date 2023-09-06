@@ -491,12 +491,12 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns grit type id
+	 * Returns grid type id
      *
 	 * @return mixed
 	 */
-	public function getGrid() {
-		return $this->getMeta( 'grid' );
+	public function getGrid(): int {
+		return intval($this->getMeta( 'grid' ));
 	}
 
 	/**
@@ -507,7 +507,7 @@ class Timeframe extends CustomPost {
 	 * @return bool
 	 */
 
-    protected function hasTimeframeTimeOverlap( Timeframe $otherTimeframe ) {
+    public function hasTimeframeTimeOverlap( Timeframe $otherTimeframe ) {
         // Check if both timeframes have an end time, if not, there is no overlap
         if ( ! strtotime( $this->getEndTime() ) && ! strtotime( $otherTimeframe->getEndTime() ) ) {
             return true;
@@ -534,6 +534,13 @@ class Timeframe extends CustomPost {
                     && strtotime( $otherTimeframe->getEndTime() ) < strtotime( $this->getEndTime() ) ) ) ) {
             return true;
         }
+
+		//Check if both timeframes have the same start and end time
+        if ( strtotime( $this->getEndTime() ) && strtotime( $otherTimeframe->getEndTime() )
+			&& strtotime( $this->getEndTime() ) === strtotime( $otherTimeframe->getEndTime() )
+			&& strtotime( $this->getStartTime() ) === strtotime( $otherTimeframe->getStartTime() ) ) {
+			return true;
+		}
 
         // If none of the above conditions are true, there is no overlap
         return false;
@@ -717,4 +724,16 @@ class Timeframe extends CustomPost {
 	public function getRepetition() {
 		return $this->getMeta( self::META_REPETITION );
 	}
+
+    /**
+     * Returns first bookable day based on the defined booking startday offset in timeframe
+     *
+     * @return date string Y-m-d
+     */
+    public function getFirstBookableDay() {
+        $offset = $this->getFieldValue( 'booking-startday-offset' ) ?: 0;
+        $today = current_datetime()->format('Y-m-d');
+        return date( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
+
+    }
 }

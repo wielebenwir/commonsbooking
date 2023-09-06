@@ -7,6 +7,7 @@ use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
+use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use PHPUnit\Framework\TestCase;
@@ -15,6 +16,8 @@ use SlopeIt\ClockMock\ClockMock;
 abstract class CustomPostTypeTest extends TestCase {
 
 	const CURRENT_DATE = '01.07.2021';
+
+	const CURRENT_DATE_FORMATTED = 'July 1, 2021';
 
 	const USER_ID = 1;
 
@@ -58,6 +61,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		$postAuthor = self::USER_ID,
 		$maxDays = 3,
 		$advanceBookingDays = 30,
+		$bookingStartdayOffset = 0,
 		$showBookingCodes = "on",
 		$createBookingCodes = "on",
 		$postTitle = 'TestTimeframe'
@@ -75,6 +79,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		update_post_meta( $timeframeId, 'item-id', $itemId );
 		update_post_meta( $timeframeId, 'timeframe-max-days', $maxDays );
 		update_post_meta( $timeframeId, 'timeframe-advance-booking-days', $advanceBookingDays );
+		update_post_meta( $timeframeId, 'booking-startday-offset', $bookingStartdayOffset );
 		update_post_meta( $timeframeId, 'full-day', $fullday );
 		update_post_meta( $timeframeId, 'timeframe-repetition', $repetition );
 		if ( $repetitionStart ) {
@@ -220,6 +225,54 @@ abstract class CustomPostTypeTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Will create two timeframes for the same item / location combination on the same day spanning over a week.
+	 *
+	 * The two slots for the timeframes go from 10:00 - 15:00 and from 15:00 to 18:00.
+	 *
+	 * @param null $locationId
+	 * @param null $itemId
+	 *
+	 * @return array An array where the first element is the 10:00-15:00 timeframe and the second is the 15:00 - 18:00 timeframe.
+	 */
+	protected function createTwoBookableTimeframeSlotsIncludingCurrentDay( $locationId = null, $itemId = null): array {
+		if ( $locationId === null ) {
+			$locationId = $this->locationId;
+		}
+		if ( $itemId === null ) {
+			$itemId = $this->itemId;
+		}
+		$tf1 = $this->createTimeframe(
+			$locationId,
+			$itemId,
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+7 days', strtotime( self::CURRENT_DATE ) ),
+			Timeframe::BOOKABLE_ID,
+			'',
+			'd',
+			0,
+			'10:00',
+			'15:00',
+			"publish",
+			'',
+		);
+		$tf2 = $this->createTimeframe(
+			$locationId,
+			$itemId,
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			Timeframe::BOOKABLE_ID,
+			'',
+			'd',
+			0,
+			'15:00',
+			'18:00',
+			"publish",
+			'',
+		);
+		return [ $tf1, $tf2 ];
+	}
+
 	protected function createBookableTimeFrameStartingInAWeek($locationId = null, $itemId = null) {
 		if ( $locationId === null ) {
 			$locationId = $this->locationId;
@@ -267,6 +320,18 @@ abstract class CustomPostTypeTest extends TestCase {
 		}
 
 		return $locationId;
+	}
+
+	protected function createMap($options) {
+		$mapId = wp_insert_post( [
+			'post_title'  => 'Map',
+			'post_type'   => Map::$postType,
+			'post_status' => 'publish'
+		] );
+
+		update_post_meta( $mapId, 'cb_map_options', $options );
+
+		return $mapId;
 	}
 
 	/**
@@ -321,7 +386,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
   protected function setUp() : void {
-    parent::setUp();
+        parent::setUp();
 
 		$this->setUpBookingCodesTable();
 
