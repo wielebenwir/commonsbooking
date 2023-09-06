@@ -261,10 +261,10 @@ class Timeframe extends CustomPost {
 	* Checks if Timeframe is valid.
 	* Will throw a TimeframeInvalidException with error message
 	*
-	* @return void
+	* @return true if valid
 	* @throws \CommonsBooking\Exception\TimeframeInvalidException
 	*/
-	public function isValid(): void {
+	public function isValid(): bool {
 		if (
 			$this->getType() === \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID
 		) {
@@ -302,6 +302,14 @@ class Timeframe extends CustomPost {
 				if ( $this->getStartTime() && ! $this->getEndTime() && ! $this->isFullDay() ) {
 					throw new TimeframeInvalidException( __(
 							'A pickup time but no return time has been set. Please set the return time.',
+							'commonsbooking' )
+					);
+				}
+
+				//check if end date is before start date
+				if (($this->getStartDate() && $this->getEndDate()) && ($this->getStartDate() > $this->getTimeframeEndDate())){
+					throw new TimeframeInvalidException( __(
+							'End date is before start date. Please set a valid end date.',
 							'commonsbooking' )
 					);
 				}
@@ -376,12 +384,11 @@ class Timeframe extends CustomPost {
 
 						// Check if different weekdays are set
 						if (
-							array_key_exists( 'weekdays', $_REQUEST ) &&
-							is_array( $_REQUEST['weekdays'] ) &&
+							$this->getWeekDays() &&
 							$timeframe->getWeekDays()
 						) {
-							if ( ! array_intersect( $timeframe->getWeekDays(), $_REQUEST['weekdays'] ) ) {
-								return;
+							if ( ! array_intersect( $timeframe->getWeekDays(), $this->getWeekDays() ) ) {
+								return true;
 							}
 						}
 
@@ -418,6 +425,7 @@ class Timeframe extends CustomPost {
 				}
 			}
 		}
+		return true;
 	}
 
 	/**
