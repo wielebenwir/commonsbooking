@@ -472,7 +472,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 						'id'      => 'colorscheme_greyedoutcolor',
 						'type'    => 'colorpicker',
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used to signify that no timeframe has been created for an item or a button that is not yet clickable', 'commonsbooking' ) ),
-						'default' => '#f6f6f6',
+						'default' => '#e0e0e0',
 					),
 
 					array(
@@ -495,7 +495,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 						'id'      => 'colorscheme_lighttext',
 						'type'    => 'colorpicker',
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used for light text on dark backgrounds', 'commonsbooking' ) ),
-						'default' => '#c4c4c4',
+						'default' => '#a0a0a0',
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Dark text color', 'commonsbooking' ) ),
@@ -1071,10 +1071,10 @@ Return date: {{booking:returnDatetime}}
 				'fields' => array(
 					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Filesystem cache path', 'commonsbooking' ) ),
-						'desc'          => commonsbooking_sanitizeHTML( __( 'Where the filesystem cache should be created. Only change when filesystem caching is not working. Default when empty: /tmp/symfony-cache/', 'commonsbooking' ) ),
+						'desc'          => commonsbooking_sanitizeHTML( __( 'Where the filesystem cache should be created. Only change when filesystem caching is not working.', 'commonsbooking' ) ),
 						'id'            => 'cache_path',
 						'type'          => 'text',
-						'default'       => '',
+						'default'       => '/tmp/symfony-cache/',
 					),
 					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),

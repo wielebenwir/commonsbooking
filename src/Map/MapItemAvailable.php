@@ -75,13 +75,12 @@ class MapItemAvailable {
 					];
 				}
 
-				// get calendardata based on availability range
-				$calendarData = Calendar::prepareJsonResponse(
-					$startDay,
-					$endDay,
-					[ $location_id ],
-					[ $item['id'] ]
-				);
+                $calendarData = Calendar::getCalendarDataArray(
+                    $item['id'],
+                    $location_id,
+                    $startDay->getFormattedDate( 'Y-m-d' ),
+                    $endDay->getFormattedDate( 'Y-m-d' ),
+                );
 
 				//mark days in timeframe
 				$availability = self::markDaysInTimeframe( $calendarData, $availability );
@@ -124,7 +123,9 @@ class MapItemAvailable {
 					$availability['status'] = self::ITEM_BOOKED;
 				} elseif ( $day['locked'] && $day['partiallyBookedDay']) {
 					$availability['status'] = self::ITEM_PARTIALLY_BOOKED;
-				}  else {
+                } elseif ( $day['locked'] ) {
+                    $availability['status'] = self::ITEM_LOCKED;
+                }  else {
 					$availability['status'] = self::ITEM_AVAILABLE;
 				}
 			}

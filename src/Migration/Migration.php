@@ -515,8 +515,8 @@ class Migration {
 		$postMeta['grid']                                               = '0';
 		$postMeta['weekdays']                                           = $weekdays;
 		$postMeta['show-booking-codes']                                 = 'on';
-		$postMeta['timeframe-advance-booking-days']                     = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_daystoshow' );
-		$postMeta['timeframe-max-days']                                 = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_maxdays' );
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS] = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_daystoshow' );
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_MAX_DAYS ]     = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_maxdays' );
 
 		$existingPost = self::getExistingPost( $timeframe['id'], Timeframe::$postType, Timeframe::BOOKABLE_ID );
 

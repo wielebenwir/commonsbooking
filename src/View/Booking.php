@@ -85,8 +85,9 @@ class Booking extends View {
 			serialize( $user->ID )
 		);
 
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$bookingDataArray             = [];
 			$bookingDataArray['page']     = $page;
@@ -286,7 +287,29 @@ class Booking extends View {
 	}
 
 	/**
-	 * Will get the booking list as an iCalendar string for the specified user.
+	 * Renders error for frontend notice. We use transients to pass the error message.
+	 * It is ensured that only the user where the error occurred can see the error message.
+	 */
+	public static function renderError() {
+		$errorTypes = [
+			\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id()
+		];
+
+		foreach ( $errorTypes as $errorType ) {
+			if ( $error = get_transient( $errorType ) ) {
+				$class = 'cb-notice error';
+				printf(
+					'<div class="%1$s"><p>%2$s</p></div>',
+					esc_attr( $class ),
+					nl2br( commonsbooking_sanitizeHTML( $error ) )
+				);
+				delete_transient( $errorType );
+			}
+		}
+	}
+
+  /**
+   * Will get the booking list as an iCalendar string for the specified user.
 	 * This means, that this will include all the bookings the user has access to (e.g. bookings of his own items) and
 	 * bookings for items/locations that CB-Managers have access to.
 	 *

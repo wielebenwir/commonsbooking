@@ -44,13 +44,15 @@
     "symfony/cache": "^5.4",
     "symfony/service-contracts": "v1.1.11",
     "eluceo/ical": "2.09.*",
-    "phpmailer/phpmailer": "^6.6"
+    "phpmailer/phpmailer": "^6.6",
+    "ed-itsolutions/cmb2-field-ajax-search": "^2.0"
   },
   "require-dev": {
     "mockery/mockery": "1.*",
     "phpunit/phpunit": "7.*",
-    "slope-it/clock-mock": "^0.3.8",
+    "yoast/phpunit-polyfills": "^1.0",
     "wp-coding-standards/wpcs": "^2.3",
-    "yoast/phpunit-polyfills": "^1.0"
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "slope-it/clock-mock": "^0.3.8"
   }
 }

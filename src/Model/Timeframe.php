@@ -38,6 +38,8 @@ class Timeframe extends CustomPost {
 
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
+	public const META_MAX_DAYS = 'timeframe-max-days';
+
 	/**
 	 * Return the span of a timeframe in human-readable format
 	 *
@@ -234,7 +236,7 @@ class Timeframe extends CustomPost {
 	public function bookingCodesApplicable(): bool {
 		try {
 			return $this->getLocation() && $this->getItem() &&
-			       $this->getStartDate() && $this->getEndDate() &&
+			       $this->getStartDate() && $this->usesBookingCodes() &&
 			       $this->getType() === \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID;
 		} catch ( Exception $e ) {
 			return false;
@@ -532,12 +534,12 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns grid type id.
-	 * TODO: Better description of what the timeframe grid is.
+	 * TODO: Better description of what the timeframe grid is
      *
 	 * @return mixed
 	 */
-	public function getGrid() {
-		return $this->getMeta( 'grid' );
+	public function getGrid(): int {
+		return intval($this->getMeta( 'grid' ));
 	}
 
 	/**
@@ -621,13 +623,12 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns true if booking codes shall be created.
+	 * Returns true if booking codes were enabled for this timeframe
 	 *
 	 * @return bool
 	 */
-	public function createBookingCodes() : bool
-	{
-		return $this->getMeta( 'create-booking-codes' ) === 'on';
+	public function usesBookingCodes(): bool {
+		return $this->getMeta( 'create-booking-codes' ) == 'on';
 	}
 
 	/**
@@ -642,8 +643,11 @@ class Timeframe extends CustomPost {
 	 * @return DateTime
 	 * @throws Exception
 	 */
-	public function getUTCStartDateDateTime(): DateTime {
+	public function getUTCStartDateDateTime(): ?DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
+		if ( ! $startDateString ) {
+			return null;
+		}
 		if ( $this->isFullDay() ) {
 			return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		}
@@ -659,9 +663,12 @@ class Timeframe extends CustomPost {
 	 * @return DateTime
 	 * @throws Exception
 	 */
-	public function getStartTimeDateTime(): DateTime {
+	public function getStartTimeDateTime(): ?DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
 		$startTimeString = $this->getMeta( 'start-time' );
+		if ( ! $startDateString ) {
+			return null;
+		}
 		$startDate       = Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		if ( $startTimeString ) {
 			$startTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $startTimeString ) );
@@ -680,8 +687,11 @@ class Timeframe extends CustomPost {
 	 * @return DateTime
 	 * @throws Exception
 	 */
-	public function getEndDateDateTime(): DateTime {
+	public function getEndDateDateTime(): ?DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
+		if (! $endDateString ){
+			return null;
+		}
 		return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 	}
 
@@ -694,8 +704,11 @@ class Timeframe extends CustomPost {
 	 * @return DateTime
 	 * @throws Exception
 	 */
-	public function getUTCEndDateDateTime(): DateTime {
+	public function getUTCEndDateDateTime(): ?DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
+		if (! $endDateString ){
+			return null;
+		}
 		if ( $this->isFullDay() ) {
 			return Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 		}
@@ -775,7 +788,7 @@ class Timeframe extends CustomPost {
 			$admins = array_merge( $locationAdminIds, $itemAdminIds );
 		}
 
-		return $admins;
+		return array_unique( $admins );
 	}
 
 	/**
@@ -787,4 +800,16 @@ class Timeframe extends CustomPost {
 	public function getRepetition() {
 		return $this->getMeta( self::META_REPETITION );
 	}
+
+    /**
+     * Returns first bookable day based on the defined booking startday offset in timeframe
+     *
+     * @return date string Y-m-d
+     */
+    public function getFirstBookableDay() {
+        $offset = $this->getFieldValue( 'booking-startday-offset' ) ?: 0;
+        $today = current_datetime()->format('Y-m-d');
+        return date( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
+
+    }
 }

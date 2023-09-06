@@ -158,7 +158,7 @@ class Location extends CustomPostType {
 			'publicly_queryable'  => true,
 
 			// Soll der Post Type aus der Suchfunktion ausgeschlossen werden?
-			'exclude_from_search' => true,
+			'exclude_from_search' => false,
 
 			// Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
 			'supports'            => array(
@@ -339,7 +339,7 @@ class Location extends CustomPostType {
 		// Show selection only to admins
 		if ( commonsbooking_isCurrentUserAdmin() || commonsbooking_isCurrentUserCBManager() ) {
 			// Location admin selection
-			$users       = UserRepository::getCBManagers();
+			$users       = UserRepository::getSelectableCBManagers();
 			$userOptions = [];
 			foreach ( $users as $user ) {
 				$userOptions[ $user->ID ] = $user->get( 'user_nicename' ) . " (" . $user->first_name . " " . $user->last_name . ")";

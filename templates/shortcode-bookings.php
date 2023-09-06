@@ -3,10 +3,10 @@
  * Shortcode [cb_bookings]
  * Model: Booking
  * View: Booking::shortcode
- * $templateData is set in Model/View/getBookingListData()
+ * $templateData is set in
+ * @see \CommonsBooking\View\Booking::getBookingListData()
  *
  * List all allowed bookings with filter
- * 
  *
  */
 
@@ -26,7 +26,7 @@ if ($templateData && $templateData['total'] > 0) {
     $response .= '
 	<div class="booking-list">';
 
-	$response .= $templateData['menu'];
+	$response .= $templateData['menu'] ?? '';
 
     $response .= '
         <div class="booking-list--filters cb-filter' . ($showFilters ?: ' hide') . '">
