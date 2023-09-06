@@ -10,26 +10,61 @@ use DateTime;
 
 /**
  * Timeframe for restricting access to an item.
+ * This is the logical wrapper for the restriction custom post type.
  * 
+ * Retrieve restrictions from the database using the @see \CommonsBooking\Repository\Restriction class.
+ * Additionally, all the public functions in this class can be called using Template Tags.
+ *
  * Note: Timeframes are date intervals, with a start date and either an end date or no end date (which leaves the interval open).
- * This should be kept in mind when processing/rendering information in user templates.
+ *       This should be kept in mind when processing/rendering information in user templates.
  */
 class Restriction extends CustomPost {
 
+	/**
+	 * Referred to in the frontend as "total breakdown".
+	 * This means, that the item is not available for booking and that all corresponding bookings will be cancelled.
+	 */
 	const TYPE_REPAIR = 'repair';
 
+	/**
+	 * This means, that the item is still bookable, but that users will be notified about the restriction.
+	 * This is used for example when the item is only available in a limited manner.
+	 *
+	 */
 	const TYPE_HINT = 'hint';
 
+	/**
+	 * This is unused, maybe @depreacted ?
+	 */
 	const STATE_NONE = 'none';
 
+	/**
+	 * This is an active restriction that will be displayed to the user.
+	 */
 	const STATE_ACTIVE = 'active';
 
+	/**
+	 * This is a solved restriction that will not be displayed to the user.
+	 */
 	const STATE_SOLVED = 'solved';
 
+	/**
+	 * The meta-field that holds the message containing information about the restriction for the user.
+	 */
 	const META_HINT = 'restriction-hint';
 
+	/**
+	 * 1. Used with input from CMB2-Field type text_datetime_timestamp
+	 *
+	 * type of field int = local unix timestamp (php settings?)
+	 */
 	const META_START = 'restriction-start';
 
+	/**
+	 * 1. Used with input from CMB2-Field type text_datetime_timestamp
+	 *
+	 * type of field int = local unix timestamp (
+	 */
 	const META_END = 'restriction-end';
 
 	const META_TYPE = 'restriction-type';
@@ -87,7 +122,9 @@ class Restriction extends CustomPost {
 	}
 
 	/**
-	 * Returns true if there is set an enddate
+	 * Returns true if the restriction has an enddate.
+	 *
+	 * As far as I know, this is never used.
      *
 	 * @return bool
 	 */
@@ -96,7 +133,7 @@ class Restriction extends CustomPost {
 	}
 
 	/**
-	 * Returns end timestamp. Of no enddate is set it retunrs a date far in the future.
+	 * Returns end timestamp. Of no end-date is set it returns a date far in the future.
      *
 	 * @return int Timestamp
 	 */
@@ -142,6 +179,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns restriction hint.
+	 * The restriction hint is the little message explaining why the item is restricted.
      *
 	 * @return mixed
 	 */
@@ -160,6 +198,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns start-time \DateTime.
+	 * This will get a DateTime object with the UTC timezone attached but the timestamp will still be in the local timezone.
 	 *
 	 * @return DateTime
 	 */
@@ -182,6 +221,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns end-date \DateTime.
+	 * This will get a DateTime object with the UTC timezone attached but the timestamp will still be in the local timezone.
 	 *
 	 * @return DateTime
 	 */
@@ -194,7 +234,7 @@ class Restriction extends CustomPost {
 	}
 
 	/**
-	 * Returns item name.
+	 * Returns item name for the item that is restricted.
      *
 	 * @return string
 	 */
@@ -209,7 +249,7 @@ class Restriction extends CustomPost {
 	}
 
 	/**
-	 * Returns itemId
+	 * Returns itemId for the item that is restricted.
      *
 	 * @return mixed
 	 */
@@ -218,7 +258,7 @@ class Restriction extends CustomPost {
 	}
 
 	/**
-	 * Returns location name.
+	 * Returns location name for the location that the restricted item is in.
      *
 	 * @return string
 	 */
@@ -233,7 +273,7 @@ class Restriction extends CustomPost {
 	}
 
 	/**
-	 * Returns location id.
+	 * Returns location id for the location that the restricted item is in.
      *
 	 * @return mixed
 	 */
@@ -243,6 +283,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Apply restriction workflow.
+	 * Will cancel the bookings if restriction is active and type is total breakdown.
 	 */
 	public function apply() {
 		// Check if this is an active restriction
@@ -271,7 +312,9 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns restriction type.
-     *
+	 * We currently have two types: hint and repair.
+	 * They can be differentiated using the constants TYPE_HINT and TYPE_REPAIR.
+	 *
 	 * @return mixed
 	 */
 	public function getType() {
@@ -279,7 +322,7 @@ class Restriction extends CustomPost {
 	}
 
 	/**
-	 * Cancels bookings if restriction is active and of type repair.
+	 * Will cancel all bookings that belong to this restriction.
 	 *
 	 * @param Booking[] $bookings booking post objects.
 	 */
@@ -290,7 +333,10 @@ class Restriction extends CustomPost {
 	}
 
 	/**
-	 * Send restriction mails regarding item/location admins and booked timeslots.
+	 * Send information about the restriction to all affected users.
+	 * Currently, this will notify a user multiple times if he has multiple bookings that are affected by the restriction.
+	 * Trying to implement a better solution, where each user would only get one mail, led to the problem that the booking link in the mail no longer made sense.
+	 * Because the booking link is different for multiple bookings of the same user. So we would have to send multiple links to the same user.
 	 *
 	 * @param Booking[] $bookings booking post objects.
 	 */
@@ -309,7 +355,8 @@ class Restriction extends CustomPost {
     }
 
 	/**
-     * Returns true if a restriction status in cancelled
+     * Returns true if a restriction status in cancelled.
+	 * Maybe it would make more sense to create an isActive() method and use that instead.
      *
 	 * @return bool
 	 */
