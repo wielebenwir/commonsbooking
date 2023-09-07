@@ -16,7 +16,7 @@ use WP_Query;
 abstract class BookablePost extends PostRepository {
 
 	/**
-	 * Types which are able to be found each other by a timeframe.
+	 * Types which can be connected to each other via a Timeframe
 	 * @var string[]
 	 */
 	private static $relationalTypes = [
@@ -134,7 +134,7 @@ abstract class BookablePost extends PostRepository {
 	 * THIS METHOD DOES NOT SEEM TO BE USED ANYWHERE.
 	 *
 	 * @param $userId
-	 * @param false $asModel
+	 * @param false $asModel - Wether the posts should be returned as their respective model class or as WP_Post
 	 *
 	 * @return array
 	 */
@@ -188,6 +188,7 @@ abstract class BookablePost extends PostRepository {
 	}
 
 	/**
+	 * Will get the class name of the model class that belongs to this post type.
 	 * @return mixed
 	 */
 	abstract protected static function getModelClass();

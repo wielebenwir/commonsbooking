@@ -4,6 +4,9 @@ namespace CommonsBooking\View;
 
 use CommonsBooking\Map\MapAdmin;
 
+/**
+ * The Map shortcode. Further logic is found in @see \CommonsBooking\Map\
+ */
 class Map extends View {
 
 	/**

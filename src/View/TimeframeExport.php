@@ -12,6 +12,12 @@ use DateInterval;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\Timeframe;
 
+/**
+ * The TimeframeExport class handles the download of timeframe data as CSV.
+ * This also includes booking data (bookings used to be a type of timeframe).
+ * This is used by users to export all their data or a time range of their data for statistical analysis.
+ * This can not be used for backups, as it does not include all data and there is no way to import it again.
+ */
 class TimeframeExport {
 
 	/**
