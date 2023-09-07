@@ -13,6 +13,7 @@ abstract class View {
 
 	/**
 	 * List of allowed query params for shortcodes.
+	 * All other query params will be ignored.
 	 * @var string[]
 	 */
 	protected static $allowedShortCodeArgs = array(

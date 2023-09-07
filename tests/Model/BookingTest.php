@@ -14,6 +14,7 @@ class BookingTest extends CustomPostTypeTest {
 
 	private Booking $testBookingTomorrow;
 	private Booking $testBookingPast;
+	private Booking $testBookingSpanningOverTwoSlots;
 	private int $testBookingId;
 	private Item  $testItem;
 	private Location $testLocation;
@@ -92,11 +93,17 @@ class BookingTest extends CustomPostTypeTest {
 	public function testPickupDatetime() {
 		// TODO 12- 12 correct?
 		$this->assertEquals( 'July 2, 2021 12:00 am - 12:00 am', $this->testBookingFixedDate->pickupDatetime() );
+
+		//Test Pickup for Slot Timeframes (#1342)
+		$this->assertEquals( self::CURRENT_DATE_FORMATTED . ' 10:00 am - 3:00 pm', $this->testBookingSpanningOverTwoSlots->pickupDatetime() );
 	}
 
 	public function testReturnDatetime() {
 		// TODO 12:01? correct
 		$this->assertEquals( 'July 3, 2021 8:00 am - 12:01 am', $this->testBookingFixedDate->returnDatetime() );
+
+		//Test Return for Slot Timeframes (#1342)
+		$this->assertEquals( self::CURRENT_DATE_FORMATTED . ' 3:00 pm - 6:00 pm', $this->testBookingSpanningOverTwoSlots->returnDatetime() );
 	}
 
 	public function testShowBookingCodes() {
@@ -398,6 +405,41 @@ class BookingTest extends CustomPostTypeTest {
 		);
 	}
 
+	/**
+	 * Sets up a test booking that takes place at the CURRENT_DATE and goes from 10:00 to 17:59:59 while the two
+	 * TFs go from 10:00 - 15:00 and from 15:00 - 18:00. Therefore the created booking spans over the two timeframes.
+	 * @return void
+	 * @throws \Exception
+	 */
+	protected function setUpTestBookingOverSlotsTimeframes(): void {
+		$separateItem = $this->createItem("SlotItem", 'publish');
+		$separateLocation = $this->createLocation("SlotLocation",'publish');
+		$this->createTwoBookableTimeframeSlotsIncludingCurrentDay($separateLocation,$separateItem);
+		//create booking spanning over two slots
+		$beginningTime = new \DateTime(self::CURRENT_DATE);
+		$beginningTime->setTime(10,00);
+		$endingTime = new \DateTime(self::CURRENT_DATE);
+		$endingTime->setTime(17,59,59);
+		//we need to create this booking in the "frontend" way in order to save the correct grid sizes for the generation
+		//pickup and returntimes
+		$testBookingSpanningOverTwoSlotsID  = \CommonsBooking\Wordpress\CustomPostType\Booking::handleBookingRequest(
+			$separateItem,
+			$separateLocation,
+			'confirmed',
+			null,
+			null,
+			$beginningTime->getTimestamp(),
+			$endingTime->getTimestamp(),
+			null,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID
+		);
+		$this->testBookingSpanningOverTwoSlots = new Booking(
+			$testBookingSpanningOverTwoSlotsID
+		);
+		//add this to the array so it can be destroyed later
+		$this->bookingIds[] = $testBookingSpanningOverTwoSlotsID;
+	}
+
 	protected function setUp() : void {
 		parent::setUp();
 
@@ -414,6 +456,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->createAdministrator();
 		$this->createCBManager();
 		$this->setUpTestBooking();
+		$this->setUpTestBookingOverSlotsTimeframes();
 	}
 
 	protected function tearDown() : void {

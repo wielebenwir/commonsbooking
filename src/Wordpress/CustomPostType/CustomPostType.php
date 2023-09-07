@@ -8,9 +8,10 @@ use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\Admin\Filter;
 use WP_Post;
-use WP_Term;
 
 /**
+ * Abstract wp custom post type for the CommonsBooking domain, implements a base of post functionality.
+ *
  *  TODO: Refactor this class to incorporate the initHooks() method. Many of the child classes have the same code there.
  */
 abstract class CustomPostType {

@@ -14,6 +14,10 @@ use CommonsBooking\Settings\Settings;
 use DateInterval;
 use DatePeriod;
 
+/**
+ *  This class generates booking codes for a timeframe.
+ *  Currently, booking codes can only be created for timeframes with an end date and where one slot fills the whole day.
+ */
 class BookingCodes {
 
 	/**
