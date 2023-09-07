@@ -5,11 +5,19 @@ namespace CommonsBooking\Model;
 use CommonsBooking\Exception\OverlappingException;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Wordpress;
+use CommonsBooking\Tests\Repository\TimeframeTest;
 use DateTime;
 use Exception;
 
 /**
- * Class Timeframe
+ * This class holds functionality for the timeframe post.
+ * It serves as a wrapper for the CustomPostType TimeFrame.
+ *
+ * You can use the @see \CommonsBooking\Repository\Timeframe class to get the timeframes from the database.
+ *
+ * @see \CommonsBooking\Wordpress\CustomPostType\Timeframe
+ *
+ * Additionally, all the public functions in this class can be called using Template Tags.
  *
  * @package CommonsBooking\Model
  */
@@ -52,13 +60,13 @@ class Timeframe extends CustomPost {
 	public const SELECTION_ALL_ID = 2;
 
 	/**
-	 * Expected format for this meta key:
-	 * YYYY-mm-dd
+	 * Dates stored comma separated in the format YYYY-mm-dd.
+	 * Example: 2020-01-01,2020-01-02,2020-01-03
 	 */
 	public const META_MANUAL_SELECTION = 'timeframe_manual_date';
 
 	/**
-	 * Return residence in a human readable format
+	 * Return the span of a timeframe in human-readable format
 	 *
 	 * "From xx.xx.",  "Until xx.xx.", "From xx.xx. until xx.xx.", "no longer available"
 	 *
@@ -69,7 +77,10 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Return Start (repetition) date timestamp
+	 * Return Start (repetition) date timestamp.
+	 *
+	 * The timestamps are stored in local time (not in UTC).
+	 * This means that we do not have to do timezone conversion in order to get the corresponding local time.
 	 *
 	 * @return int
 	 */
@@ -87,7 +98,10 @@ class Timeframe extends CustomPost {
 	}
 
     /**
-     * Return defined end (repetition) date of timeframe
+     * Return defined end (repetition) date of timeframe.
+     *
+     * The timestamps are stored in local time (not in UTC).
+     * This means that we do not have to do timezone conversion in order to get the corresponding local time.
      *
      * @return false|int
      */
@@ -103,6 +117,9 @@ class Timeframe extends CustomPost {
     }
 	/**
 	 * Return End (repetition) date and respects advance booking days setting.
+	 * We need this function in order to display the correct end of the booking period for the user.
+	 * Do not use this function to get the actual end date of the timeframe.
+	 * Use getRawEndDate() instead.
 	 *
 	 * @return false|int
 	 */
@@ -124,6 +141,8 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns the latest possible booking date as timestamp.
+	 * This function respects the advance booking days setting.
+	 * This means that this is the latest date that a user can currently book.
 	 *
 	 * @return false|int
 	 */
@@ -141,6 +160,10 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * This function will get the formatted end date of the timeframe.
+	 * This is used to display the end date of the timeframe in the frontend.
+	 * This is mainly in use by the [cb_items] shortcode.
+	 *
 	 * @param   int  $startDate
 	 * @param   int  $endDate
 	 *
@@ -190,7 +213,7 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Return date format
+	 * Return date format from WordPress settings.
 	 *
 	 * @return string
 	 */
@@ -200,6 +223,8 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns end (repetition) date and does not respect advance booking days setting.
+	 * Use the getEndDate() function if you want to get the end date that respects the advance booking days setting.
+     *
      * TODO this or getTimeFrameEndDate can be deprecated
 	 * @return false|int
 	 */
@@ -220,7 +245,7 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Return  time format
+	 * Return time format
 	 *
 	 * @return string
 	 */
@@ -244,6 +269,11 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * Will get the corresponding location for this timeframe.
+	 * This function will return null if no location is set.
+	 * This should not happen, because the location is a required field.
+	 * But it might happen if the location was deleted.
+	 *
 	 * IMPORTANT: Going from 2.9 onwards you should NOT use this method for timeframes of the type HOLIDAYS_ID.
 	 * Use the getLocations() method instead.
 	 * @return Location
@@ -261,6 +291,11 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * Will get corresponding item for this timeframe.
+	 * This function will return null if no item is set.
+	 * This should not happen, because the item is a required field.
+	 * But it might happen if the item was deleted.
+	 *
 	 * Returns the corresponding multiple locations for a timeframe.
 	 * If multiple locations are not available, it will call the getLocation() method and return an array with one location.
 	 *
@@ -339,6 +374,14 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns type id
+	 * The type of the timeframe are constants defined in @see \CommonsBooking\Wordpress\CustomPostType\Timeframe
+	 *
+	 * The types are usually:
+	 * Timeframe::BOOKABLE_ID
+	 * Timeframe::HOLIDAYS_ID
+	 * Timeframe::REPAIR_ID
+	 * Timeframe::BOOKING_ID
+	 * Timeframe::BOOKING_CANCELLED_ID
      *
 	 * @return mixed
 	 */
@@ -347,13 +390,19 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	* Checks if Timeframe is valid.
-	* Will throw a TimeframeInvalidException with error message
+	 * Checks if Timeframe is valid. This should be called before publishing a timeframe as it will prevent broken timeframes / configurations.
+	 *
+	 * First checks missing values, then validates against existing timeframes.
+	 * Will check for the mandatory item / location fields.
+	 * Will check if the start- and end-date are set.
+	 * Will check if there is no timeframe with the same item and location that overlaps with this timeframe.
+	 *
+	 *Will throw a TimeframeInvalidException with error message
 	*
-	* @return void
+	* @return true if valid
 	* @throws \CommonsBooking\Exception\TimeframeInvalidException
 	*/
-	public function isValid(): void {
+	public function isValid(): bool {
 		if (
 			$this->getType() === \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID
 		) {
@@ -385,6 +434,14 @@ class Timeframe extends CustomPost {
 							'commonsbooking'   )
 					);
 				}
+				//make sure that there are no duplicate dates
+				$unique_dates = array_unique($manual_selection_dates);
+				if ( count($unique_dates) != count($manual_selection_dates) ){
+					throw new TimeframeInvalidException(__(
+							'The same date was selected multiple times. Please select each date only once. Timeframe is saved as draft.',
+							'commonsbooking'   )
+					);
+				}
 			}
 			else {
 				if ( ! $this->getStartDate() ) {
@@ -404,6 +461,14 @@ class Timeframe extends CustomPost {
 				if ( $this->getStartTime() && ! $this->getEndTime() && ! $this->isFullDay() ) {
 					throw new TimeframeInvalidException( __(
 							'A pickup time but no return time has been set. Please set the return time.',
+							'commonsbooking' )
+					);
+				}
+
+				//check if end date is before start date
+				if (($this->getStartDate() && $this->getEndDate()) && ($this->getStartDate() > $this->getTimeframeEndDate())){
+					throw new TimeframeInvalidException( __(
+							'End date is before start date. Please set a valid end date.',
 							'commonsbooking' )
 					);
 				}
@@ -472,6 +537,7 @@ class Timeframe extends CustomPost {
 				}
 			}
 		}
+		return true;
 	}
 
 	/**
@@ -492,7 +558,8 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns true if timeframe is full-day
+	 * Returns true if timeframe is spanning over the whole day.
+	 * This means that this is not an hourly timeframe or a slot timeframe.
 	 * @return bool
 	 */
 	public function isFullDay() : bool {
@@ -503,7 +570,7 @@ class Timeframe extends CustomPost {
 	 * Checks if timeframes are overlapping in date range. Will not check for time overlap, only for general date overlap.
 	 * To check if two Timeframes actually overlap, use overlaps() instead.
 	 *
-	 * @param   \CommonsBooking\Model\Timeframe  $otherTimeframe
+	 * @param Timeframe $otherTimeframe
 	 *
 	 * @return bool
 	 */
@@ -534,6 +601,7 @@ class Timeframe extends CustomPost {
         }
 
 		// If none of the above conditions are true, there is no overlap
+		//TODO: When does this condition ever apply?
 		return false;
 	}
 
@@ -566,12 +634,12 @@ class Timeframe extends CustomPost {
 				case 'd|d':
 					if ( $this->isFullDay() || $otherTimeframe->isFullDay() ) {
 						throw new OverlappingException(
-							__( 'Full day periods are not allowed to overlap...', 'commonsbooking' )
+							__( 'Full day periods are not allowed to overlap.', 'commonsbooking' )
 						);
 					} else {
 						if ( $this->hasTimeframeTimeOverlap( $otherTimeframe ) ) {
 							throw new OverlappingException(
-								__( 'Time periods are not allowed to overlap...', 'commonsbooking' )
+								__( 'Time periods are not allowed to overlap.', 'commonsbooking' )
 							);
 						}
 					}
@@ -649,10 +717,9 @@ class Timeframe extends CustomPost {
 	 * Will add the timeframe start and end date to the post meta when the repetition is set to manual.
 	 * We have to do this so the user doesn't have to set the start and end date manually when selecting dates.
 	 *
-	 * TODO: Find a better name for this method.
 	 * @return void
 	 */
-	public function addStartAndEndDate() : void {
+	public function updatePostMetaStartAndEndDate() : void {
 		if ($this->getRepetition() == 'manual') {
 			$timestamps = array_map('strtotime', $this->getManualSelectionDates());
 			asort($timestamps);
@@ -663,23 +730,26 @@ class Timeframe extends CustomPost {
 
 
 	/**
-	 * Returns grit type id
+	 * Returns grid type id.
+	 * The timeframe grid describes if either the full slot is bookable or if the timeframe is bookable hourly.
+	 * 0 = slot
+	 * 1 = hourly
      *
 	 * @return mixed
 	 */
-	public function getGrid() {
-		return $this->getMeta( 'grid' );
+	public function getGrid(): int {
+		return intval($this->getMeta( 'grid' ));
 	}
 
 	/**
 	 * Checks if timeframes are overlapping in daily slots.
 	 *
-	 * @param   \CommonsBooking\Model\Timeframe  $otherTimeframe
+	 * @param Timeframe $otherTimeframe
 	 *
 	 * @return bool
 	 */
 
-    protected function hasTimeframeTimeOverlap( Timeframe $otherTimeframe ) {
+    public function hasTimeframeTimeOverlap( Timeframe $otherTimeframe ) {
         // Check if both timeframes have an end time, if not, there is no overlap
         if ( ! strtotime( $this->getEndTime() ) && ! strtotime( $otherTimeframe->getEndTime() ) ) {
             return true;
@@ -707,12 +777,21 @@ class Timeframe extends CustomPost {
             return true;
         }
 
+		//Check if both timeframes have the same start and end time
+        if ( strtotime( $this->getEndTime() ) && strtotime( $otherTimeframe->getEndTime() )
+			&& strtotime( $this->getEndTime() ) === strtotime( $otherTimeframe->getEndTime() )
+			&& strtotime( $this->getStartTime() ) === strtotime( $otherTimeframe->getStartTime() ) ) {
+			return true;
+		}
+
         // If none of the above conditions are true, there is no overlap
         return false;
     }
 
 	/**
 	 * Returns weekdays array.
+	 * This means what weekdays are selected for this timeframe.
+	 * This only makes sense when the grid is repeating weekly.
      *
 	 * @return mixed
 	 */
@@ -722,6 +801,8 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns grid size in hours.
+	 * This means the length of the individual bookable slots.
+	 * For example if the grid is 2, the bookable slots are 2 hours long.
      *
 	 * @return int|null
 	 */
@@ -729,11 +810,13 @@ class Timeframe extends CustomPost {
 		if ( $this->isFullDay() ) {
 			return 24;
 		} elseif ( $this->getGrid() === 0 ) {
+			//this is for slot timeframes
 			$startTime = strtotime( $this->getMeta( 'start-time' ) );
 			$endTime   = strtotime( $this->getMeta( 'end-time' ) );
 
 			return intval( round( abs( $endTime - $startTime ) / 3600, 2 ) );
 		} else {
+			//this is for hourly timeframes, the grid will be 1, because each hour is bookable
 			return intval( $this->getGrid() );
 		}
 	}
@@ -775,8 +858,15 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns repetition-start \DateTime.
+	 * This function contains a weird hotfix for full day timeframes.
+	 * This is because it is mainly used by the iCalendar export where if we don't convert the timestamp to a UTC Datetime we will get the wrong starting time.
+	 * This, however is not the case for full day timeframes where we need to use the given timestamp, else the date would span over two days when it is only supposed to span over one.
+	 *
+	 * TODO: Can throw uncaught exception.
+	 * TODO: Find better solution for weird hotfix.
 	 *
 	 * @return DateTime
+	 * @throws Exception
 	 */
 	public function getUTCStartDateDateTime(): ?DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
@@ -791,8 +881,12 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns start-time \DateTime.
+	 * This method returns a local date time object, just with the UTC timezone attached but the time is still local.
+	 *
+	 * TODO: Can throw uncaught exception.
 	 *
 	 * @return DateTime
+	 * @throws Exception
 	 */
 	public function getStartTimeDateTime(): ?DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
@@ -813,7 +907,10 @@ class Timeframe extends CustomPost {
 	 * Returns end-date \DateTime.
 	 * This method returns a local date time object, just with the UTC timezone attached but the time is still local.
 	 *
+	 * TODO: Can throw uncaught exception.
+	 *
 	 * @return DateTime
+	 * @throws Exception
 	 */
 	public function getEndDateDateTime(): ?DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
@@ -828,7 +925,9 @@ class Timeframe extends CustomPost {
 	 * Provides a UTC date time object.
 	 * We need to do this weird conversion because the end date is stored as a local timestamp.
 	 *
+	 * TODO: Can throw uncaught exception.
 	 * @return DateTime
+	 * @throws Exception
 	 */
 	public function getUTCEndDateDateTime(): ?DateTime {
 		$endDateString = intval( $this->getMeta( self::REPETITION_END ) );
@@ -843,10 +942,14 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns endtime-time \DateTime.
+	 * This method returns a local date time object, just with the UTC timezone attached but the time is still local.
+	 *
+	 * TODO: Clarify what the exact difference between endTime and endDate is.
 	 *
 	 * @param null $endDateString
 	 *
 	 * @return DateTime
+	 * @throws Exception
 	 */
 	public function getEndTimeDateTime( $endDateString = null ): DateTime {
 		$endTimeString = $this->getEndTime();
@@ -862,17 +965,33 @@ class Timeframe extends CustomPost {
 		return $endDate;
 	}
 
+	/**
+	 * Delegation only - see uses.
+	 *
+	 * @uses \CommonsBooking\Wordpress\CustomPostType\Timeframe::isOverBookable()
+	 *
+	 * @return bool
+	 */
 	public function isOverBookable(): bool {
 		return \CommonsBooking\Wordpress\CustomPostType\Timeframe::isOverBookable( self::getPost() );
 	}
 
+	/**
+	 * Delegation only - see uses.
+	 *
+	 * @uses \CommonsBooking\Wordpress\CustomPostType\Timeframe::isLocked()
+	 *
+	 * @return bool
+	 */
 	public function isLocked(): bool {
 		return \CommonsBooking\Wordpress\CustomPostType\Timeframe::isLocked( self::getPost() );
 	}
 
 	/**
-     * Gets the admins for the current timeframe, will combine location and item admins.
-	 * @return array|string[] - An array with User IDs
+	 * Returns users with admin role for location and item, assigned to this timeframe.
+	 * Will call the respective methods on the location and item.
+	 *
+	 * @return array|string[]
 	 * @throws Exception
 	 */
 	public function getAdmins(): array {

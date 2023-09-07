@@ -11,7 +11,7 @@ use WP_Post;
 use WP_Term;
 
 /**
- *  TODO: Refactor this class to incorporate the initHooks() method. Many of the child classes have the same code there.
+ * Abstract wp custom post type for the CommonsBooking domain, implements a base of post functionality.
  */
 abstract class CustomPostType {
 

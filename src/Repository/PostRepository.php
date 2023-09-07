@@ -12,6 +12,7 @@ abstract class PostRepository {
 
 	/**
 	 * Returns post by id as CB-CPT if possible.
+	 * Will try to return a model class if possible.
 	 *
 	 * @param $postId
 	 *

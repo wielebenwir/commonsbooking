@@ -13,10 +13,18 @@ use CommonsBooking\View\Admin\Filter;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\UserRepository;
 
+/**
+ * Configures WordPress custom post type for access in admin backend.
+ * It holds default values for meta fields of initial installations.
+ *
+ * We use CMB2 text_datetime_timestamp fields, the meta fields for start and end date are stored in unix
+ * timestamp (without timezone offset), when edited from admin backend.
+ */
 class Timeframe extends CustomPostType {
 
 	/**
 	 * "Opening Hours" timeframe type id.
+	 * This type of timeframe is @depreacted .
 	 */
 	const OPENING_HOURS_ID = 1;
 
@@ -649,7 +657,7 @@ class Timeframe extends CustomPostType {
 				'desc'    => esc_html__(
 					'Choose whether the time frame should repeat at specific intervals. The repetitions refer to the unit of a day. With the start and end date you define when the repetition interval starts and ends. If you choose "weekly", you can select specific days of the week below. Read the documentation for more information and examples.'
 					, 'commonsbooking' ),
-				'id'      => "timeframe-repetition",
+				'id'      => \CommonsBooking\Model\Timeframe::META_REPETITION,
 				'type'    => 'select',
 				'options' => self::getTimeFrameRepetitions(),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
@@ -833,7 +841,7 @@ class Timeframe extends CustomPostType {
 				45
 			);
 		}
-		$timeframe->addStartAndEndDate();
+		$timeframe->updatePostMetaStartAndEndDate();
 
 		// Validate timeframe
 		$isValid = $this->validateTimeFrame( $timeframe );
