@@ -352,6 +352,14 @@ class Timeframe extends CustomPost {
 							'commonsbooking'   )
 					);
 				}
+				//make sure that there are no duplicate dates
+				$unique_dates = array_unique($manual_selection_dates);
+				if ( count($unique_dates) != count($manual_selection_dates) ){
+					throw new TimeframeInvalidException(__(
+							'The same date was selected multiple times. Please select each date only once. Timeframe is saved as draft.',
+							'commonsbooking'   )
+					);
+				}
 			}
 			else {
 				if ( ! $this->getStartDate() ) {
