@@ -298,10 +298,9 @@ class Day {
 	 * @throws Exception
 	 */
 	public function isInTimeframe( \CommonsBooking\Model\Timeframe $timeframe ): bool {
-		$repetitionType = get_post_meta( $timeframe->ID, 'timeframe-repetition', true );
 
-		if ($repetitionType) {
-			switch ( $repetitionType ) {
+		if ( $timeframe->getRepetition() ) {
+			switch ( $timeframe->getRepetition() ) {
 				// Weekly Rep
 				case "w":
 					$dayOfWeek         = intval( $this->getDateObject()->format( 'w' ) );

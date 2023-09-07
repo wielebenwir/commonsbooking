@@ -23,7 +23,7 @@ class BookingTest extends CustomPostTypeTest {
 	private $testBooking;
 
 	/**
-	 * Test that we only get the booking, endig today.
+	 * Test that we only get the booking, ending today.
 	 * @return void
 	 * @throws Exception
 	 */

@@ -5,9 +5,13 @@ namespace CommonsBooking\Settings;
 use function get_option;
 
 /**
- * Settings
+ * Settings class
  *
+ * The Options are determined in the settings page and saved in the options table.
+ * Each setting has a unique key and a field_id.
+ * Both are needed to write and read the option from the options table.
  *
+ * The options are determined in the \includes\OptionsArray.php file
  */
 class Settings {
 
