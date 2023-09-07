@@ -10,6 +10,11 @@ use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * Endpoint for published items, that are bookable.
+ *
+ * @see Item for exposed api data
+ */
 class ItemsRoute extends BaseRoute {
 
 	/**

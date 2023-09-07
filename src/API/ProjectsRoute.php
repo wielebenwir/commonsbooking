@@ -7,6 +7,9 @@ namespace CommonsBooking\API;
 use stdClass;
 use WP_REST_Response;
 
+/**
+ * TODO what is a project? can there be different projects?
+ */
 class ProjectsRoute extends BaseRoute {
 
 	/**

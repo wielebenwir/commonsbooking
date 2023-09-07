@@ -3,16 +3,27 @@
 
 namespace CommonsBooking\API;
 
+use Exception;
+use RuntimeException;
+
 use CommonsBooking\Repository\ApiShares;
 use CommonsBooking\Settings\Settings;
-use Opis\JsonSchema\Exception\SchemaNotFoundException;
 use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\Validator;
+use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Server;
 
 /**
- * Basic functionality for the different api routes
+ * Basic functionality for the different api routes.
+ *
+ * If you extend from this class, you need to implement the following public methods:
+ *  - get_items
+ *  - get_item
+ *  - get_public_item_schema
+ *
+ * This class relies on WP rest-api.php implementations and another assumption is
+ * that commonsbooking json schema files are in place.
  */
 class BaseRoute extends WP_REST_Controller {
 
@@ -111,9 +122,9 @@ class BaseRoute extends WP_REST_Controller {
 	}
 
 	/**
-	 * Returnes schema json for current route.
+	 * Returns schema json for current route.
 	 *
-	 * @return false|string
+	 * @return array|WP_Error
 	 */
 	protected function getSchemaJson() {
 		return wp_remote_get( $this->schemaUrl );
@@ -127,7 +138,7 @@ class BaseRoute extends WP_REST_Controller {
 	 * @return array
 	 */
 	public function add_additional_fields_schema( $schema ): array {
-		$schemaArray = json_decode( $this->getSchemaJson(), true );
+		$schemaArray = json_decode( $this->getSchemaJson(), true ); // TODO verify that this works and doesn't expects ['body'] from wp_remote_get?
 
 		return array_merge( $schema, $schemaArray );
 	}
@@ -148,7 +159,7 @@ class BaseRoute extends WP_REST_Controller {
 	 *
 	 * @return bool
 	 */
-	public static function hasPermission() {
+	public static function hasPermission() : bool {
 		$isApiActive            = Settings::getOption( 'commonsbooking_options_api', 'api-activated' );
 		$anonymousAccessAllowed = Settings::getOption( 'commonsbooking_options_api', 'apikey_not_required' );
 		$apiKey                 = array_key_exists( self::API_KEY_PARAM, $_REQUEST ) ? sanitize_text_field( $_REQUEST[ self::API_KEY_PARAM ] ) : false;

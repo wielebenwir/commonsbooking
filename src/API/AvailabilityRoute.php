@@ -16,6 +16,11 @@ use stdClass;
 use WP_Error;
 use WP_REST_Response;
 
+/**
+ * Endpoint exposes item availability
+ *
+ * @See Calendar for computing item availability
+ */
 class AvailabilityRoute extends BaseRoute {
 
 	/**
@@ -32,6 +37,8 @@ class AvailabilityRoute extends BaseRoute {
 	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "node_modules/commons-api/commons-api.availability.schema.json";
 
 	/**
+	 * This retrieves bookable timeframes and the different items assigned, with their respective availability.
+	 *
 	 * @throws Exception
 	 */
 	public function getItemData( $id = false ): array {

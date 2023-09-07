@@ -8,7 +8,7 @@ use stdClass;
 use WP_REST_Response;
 
 /**
- * Assembles feed urls for different endpoints
+ * Assembles feed urls for different gbfs endpoints and it's purpose is service discovery.
  */
 class Discovery extends \CommonsBooking\API\BaseRoute {
 
