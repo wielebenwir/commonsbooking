@@ -511,6 +511,7 @@ class Timeframe extends CustomPost {
         }
 
 		// If none of the above conditions are true, there is no overlap
+		//TODO: When does this condition ever apply?
 		return false;
 	}
 
@@ -640,7 +641,9 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns grid type id.
-	 * TODO: Better description of what the timeframe grid is
+	 * The timeframe grid describes if either the full slot is bookable or if the timeframe is bookable hourly.
+	 * 0 = slot
+	 * 1 = hourly
      *
 	 * @return mixed
 	 */
@@ -708,7 +711,8 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns grid size in hours.
-	 * TODO: Better description of what the timeframe grid is.
+	 * This means the length of the individual bookable slots.
+	 * For example if the grid is 2, the bookable slots are 2 hours long.
      *
 	 * @return int|null
 	 */
@@ -716,11 +720,13 @@ class Timeframe extends CustomPost {
 		if ( $this->isFullDay() ) {
 			return 24;
 		} elseif ( $this->getGrid() === 0 ) {
+			//this is for slot timeframes
 			$startTime = strtotime( $this->getMeta( 'start-time' ) );
 			$endTime   = strtotime( $this->getMeta( 'end-time' ) );
 
 			return intval( round( abs( $endTime - $startTime ) / 3600, 2 ) );
 		} else {
+			//this is for hourly timeframes, the grid will be 1, because each hour is bookable
 			return intval( $this->getGrid() );
 		}
 	}
