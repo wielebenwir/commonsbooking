@@ -99,10 +99,10 @@ class BaseRoute extends WP_REST_Controller {
 					die;
 				}
 			}
-		} catch ( SchemaNotFoundException $schemaNotFoundException ) {
-			// TODO: Resolve problem, that schemas cannot resolved.
+		} catch ( Exception $e ) {
 			if ( WP_DEBUG ) {
 				error_log( 'Problem while trying to access wp rest endpoint url for schema ' . $this->schemaUrl );
+				error_log( $e );
 				die;
 			}
 		}
@@ -127,7 +127,12 @@ class BaseRoute extends WP_REST_Controller {
 	 * @return array|WP_Error
 	 */
 	protected function getSchemaJson() {
-		return wp_remote_get( $this->schemaUrl );
+		$schemaArray = wp_remote_get( $this->schemaUrl );
+		if ( is_array( $schemaArray ) && ! is_wp_error( $schemaArray )) {
+			return $schemaArray;
+		} else {
+			throw new RuntimeException("Could not retrieve schema json from " . $this->schemaUrl );
+		}
 	}
 
 	/**
