@@ -110,7 +110,7 @@ class DayTest extends CustomPostTypeTest {
 			$this->dateFormatted
 		);
 		$tfModel = new Timeframe($this->bookableTimeframeManualDateInputOnlyForToday);
-		$tfModel->addStartAndEndDate();
+		$tfModel->updatePostMetaStartAndEndDate();
 
 		$this->bookableTimeframeManualDateInputTomorrow = $this->createTimeframe(
 			$this->locationId,
@@ -129,7 +129,7 @@ class DayTest extends CustomPostTypeTest {
 		);
 		//we need to save the post so that a valid repetition_start and repetition_end is set
 		$tfModel = new Timeframe($this->bookableTimeframeManualDateInputTomorrow);
-		$tfModel->addStartAndEndDate();
+		$tfModel->updatePostMetaStartAndEndDate();
 
 		$this->createUnconfirmedBookingEndingTomorrow();
 

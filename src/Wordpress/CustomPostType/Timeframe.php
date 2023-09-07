@@ -774,7 +774,7 @@ class Timeframe extends CustomPostType {
 				45
 			);
 		}
-		$timeframe->addStartAndEndDate();
+		$timeframe->updatePostMetaStartAndEndDate();
 
 		// Validate timeframe
 		$isValid = $this->validateTimeFrame( $timeframe );
