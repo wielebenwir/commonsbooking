@@ -107,6 +107,10 @@ trait Cache {
 			if ( $customCachePath ){
 				$directory = $customCachePath;
 			}
+			//Since this is the default cache path by Symfony we'd rather set it to null so that Symfony can take over with it's own default value.
+			else if ( $customCachePath == '/tmp/symfony-cache/' ) {
+				$directory = null;
+			}
 		}
 
 		if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) === 'on'){
@@ -185,7 +189,7 @@ trait Cache {
 		}
 
 		// Delete expired cache items (only for Pruneable Interfaces)
-		if (is_a(self::getCache(),'Symfony\Component\Cache\Adapter\TagAwareAdapter')) {
+		if (is_a(self::getCache(),'Symfony\Component\Cache\PruneableInterface')) {
 			self::getCache()->prune();
 		}
 

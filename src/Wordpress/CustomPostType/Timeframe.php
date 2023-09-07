@@ -12,10 +12,18 @@ use CommonsBooking\View\Admin\Filter;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\UserRepository;
 
+/**
+ * Configures WordPress custom post type for access in admin backend.
+ * It holds default values for meta fields of initial installations.
+ *
+ * We use CMB2 text_datetime_timestamp fields, the meta fields for start and end date are stored in unix
+ * timestamp (without timezone offset), when edited from admin backend.
+ */
 class Timeframe extends CustomPostType {
 
 	/**
 	 * "Opening Hours" timeframe type id.
+	 * This type of timeframe is @depreacted .
 	 */
 	const OPENING_HOURS_ID = 1;
 
@@ -92,7 +100,7 @@ class Timeframe extends CustomPostType {
 			\CommonsBooking\Model\Timeframe::META_LOCATION_ID                    => esc_html__( 'Location', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::REPETITION_START                    => esc_html__( 'Start Date', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::REPETITION_END                      => esc_html__( 'End Date', 'commonsbooking' ),
-			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS => esc_html__( 'Days Booking In Advance', 'commonsbooking' ),
+			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS => esc_html__( 'Max. Booking Duration', 'commonsbooking' ),
 		];
 
 
@@ -494,8 +502,8 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
             array(
-				'name'       => esc_html__( 'Booking lead time', 'commonsbooking' ),
-				'desc'       => esc_html__( 'Enter the number of days that should be blocked for bookings as a booking lead time (calculated from the current day).', 'commonsbooking' ),
+				'name'       => esc_html__( 'Lead time:', 'commonsbooking' ),
+				'desc'       => commonsbooking_sanitizeHTML(__( 'Enter the number of days that should be blocked for bookings as a booking lead time (calculated from the current day).', 'commonsbooking' ) ),
 				'id'         => 'booking-startday-offset',
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
@@ -507,8 +515,8 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'       => esc_html__( 'Maximum booking days in advance', 'commonsbooking' ),
-				'desc'       => esc_html__( 'Select for how many days in advance the calendar should display bookable days. Calculated from the current date.', 'commonsbooking' ),
+				'name'       => esc_html__( 'Calendar shows as bookable', 'commonsbooking' ),
+				'desc'       => commonsbooking_sanitizeHTML( __( 'Select for how many days in advance the calendar should display bookable days. Calculated from the current date.', 'commonsbooking' ) ),
 				'id'         => \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS,
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
@@ -574,6 +582,7 @@ class Timeframe extends CustomPostType {
 				'name'        => esc_html__( "End time", 'commonsbooking' ),
 				'id'          => "end-time",
 				'type'        => 'text_time',
+                'timeFormat' => 'HH:mm',
 				'attributes'  => array(
 					'data-timepicker' => wp_json_encode(
 						array(
@@ -678,7 +687,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Get allowed timeframe types for selection box in timeframe editor
-	 * TODO: can be removed if type cleanup has been done (e.g. move BOOKING_ID to Booking-Class and rename existing types )
+	 * TODO: can be removed if type cleanup has been done (e.g. move BOOKIG_ID to Booking-Class and rename existing types )
 	 *
 	 * @return array
 	 */
@@ -860,7 +869,7 @@ class Timeframe extends CustomPostType {
 			'show_in_nav_menus' => true,
 
 			// Hier können Berechtigungen in einem Array gesetzt werden
-			// oder die standard Werte post und page in Form eines Strings gesetzt werden
+			// oder die Standar-Werte post und page in form eines Strings gesetzt werden
 			'capability_type'   => array( self::$postType, self::$postType . 's' ),
 
 			'map_meta_cap'        => true,

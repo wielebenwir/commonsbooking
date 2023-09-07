@@ -10,6 +10,10 @@ use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Service\iCalendar;
 
+/**
+ * Static functionality to deal with legacy wp actions in includes.
+ * Also creates ical feed data.
+ */
 class Booking extends View {
 
 	/**
@@ -304,12 +308,17 @@ class Booking extends View {
 		}
 	}
 
-	/**
-	 * Gets all bookings that the user is authorized to see and converts them to the iCal format
+  /**
+   * Will get the booking list as an iCalendar string for the specified user.
+	 * This means, that this will include all the bookings the user has access to (e.g. bookings of his own items) and
+	 * bookings for items/locations that CB-Managers have access to.
+	 *
+	 * This only includes confirmed bookings in the future.
+	 *
 	 * @param $user
 	 *
-	 * @return String in valid iCal format
-	 * @throws Exception when BookingListData can not be fetched
+	 * @return String
+	 * @throws Exception
 	 */
 	public static function getBookingListiCal($user = null):String{
 		$eventTitle_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
@@ -330,7 +339,7 @@ class Booking extends View {
 		foreach ($bookingList["data"] as $booking)
 		{
 			$booking_model = New \CommonsBooking\Model\Booking($booking["postID"]);
-			if ($booking_model->isCancelled()) {
+			if (! $booking_model->isConfirmed() ) {
 				continue;
 			}
 			$template_objects = [
