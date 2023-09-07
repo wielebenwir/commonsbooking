@@ -187,10 +187,9 @@ abstract class CustomPostType {
 	public function setSortableColumns( $columns ) {
 		if ( isset( $this->listColumns ) ) {
 			foreach ( $this->listColumns as $key => $label ) {
-				$columns[ $key ] = $key;
+				$columns[ $key ] = $key === 'timeframe-author' ? 'author' : $key;
 			}
 		}
-
 		return $columns;
 	}
 
@@ -241,30 +240,27 @@ abstract class CustomPostType {
 			$this,
 			'setSortableColumns'
 		) );
+
 		if ( isset( $this->listColumns ) ) {
 			add_action( 'pre_get_posts', function ( $query ) {
-				if ( ! is_admin() ) {
+				if ( ! is_admin() || $query->get('post_type') !== static::$postType ) {
 					return;
 				}
 
-				//TODO: This does correctly sort the items by meta value, since WP 6.3 the meta value is not passed to the query anymore. Maybe the filter needs to be changed?
+				// This does correctly sort the items by meta value, since WP 6.3 the meta value is not passed to the query anymore. Maybe the filter needs to be changed?
 				$orderby = $query->get( 'orderby' );
-				//Prior to WP 6.3, this was not an associative array (see #1309) but a string
-				if (is_array($orderby)) {
-					$orderKeys = array_keys( $orderby );
-				}
-				else {
-					$orderKeys = array($orderby);
-				}
-				//we only want to sort by meta value if there is no sort by post_* value
+				// Prior to WP 6.3, this was not an associative array (see #1309) but a string
+				$orderKeys = is_array($orderby) ? array_keys($orderby) : array($orderby);
+				// We only want to sort by meta value if there is a non-post_* value
 				$orderKeys = array_filter($orderKeys, function($key) {
-					return strpos($key, 'post_') !== false;
+					return strpos($key, 'post_') === false;
 				});
+
 				if (
-					empty($orderKeys) &&
-					in_array( $orderKeys, array_keys( $this->listColumns ) )
+					!empty($orderKeys) &&
+					in_array( $orderKeys[0], array_keys( $this->listColumns ) )
 				) {
-					$query->set( 'meta_key', $orderby );
+					$query->set( 'meta_key', $orderKeys[0] );
 					$query->set( 'orderby', 'meta_value' );
 				}
 			} );
