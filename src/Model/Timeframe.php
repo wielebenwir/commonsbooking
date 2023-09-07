@@ -544,12 +544,12 @@ class Timeframe extends CustomPost {
 				case 'd|d':
 					if ( $this->isFullDay() || $otherTimeframe->isFullDay() ) {
 						throw new OverlappingException(
-							__( 'Full day periods are not allowed to overlap...', 'commonsbooking' )
+							__( 'Full day periods are not allowed to overlap.', 'commonsbooking' )
 						);
 					} else {
 						if ( $this->hasTimeframeTimeOverlap( $otherTimeframe ) ) {
 							throw new OverlappingException(
-								__( 'Time periods are not allowed to overlap...', 'commonsbooking' )
+								__( 'Time periods are not allowed to overlap.', 'commonsbooking' )
 							);
 						}
 					}
