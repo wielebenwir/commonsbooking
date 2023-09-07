@@ -45,7 +45,7 @@ class AvailabilityRoute extends BaseRoute {
 		$slots    = [];
 		$calendar = new Calendar(
 			new Day( date( 'Y-m-d', time() ) ),
-			new Day( date( 'Y-m-d', strtotime( '+2 weeks' ) ) ),
+			new Day( date( 'Y-m-d', strtotime( '+2 weeks' ) ) ), // TODO why two weeks? seems like a configurable option
 			[],
 			$id ? [ $id ] : []
 		);
