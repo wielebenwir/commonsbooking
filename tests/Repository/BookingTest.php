@@ -23,7 +23,7 @@ class BookingTest extends CustomPostTypeTest {
 	private $testBooking;
 
 	/**
-	 * Test that we only get the booking, endig today.
+	 * Test that we only get the booking, ending today.
 	 * @return void
 	 * @throws Exception
 	 */
@@ -172,7 +172,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertCount(0, Booking::getByRestriction($restriction));
 	}
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->timeframeOne = parent::createConfirmedBookingEndingToday();
 		$this->timeframeTwo = parent::createConfirmedBookingStartingToday();
@@ -203,7 +203,7 @@ class BookingTest extends CustomPostTypeTest {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 }

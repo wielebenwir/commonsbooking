@@ -4,8 +4,14 @@
 namespace CommonsBooking\View;
 
 
+use CommonsBooking\Exception\BookingCodeException;
 use CommonsBooking\Model\BookingCode;
 
+/**
+ * Booking codes can be get using the @see \CommonsBooking\Repository\BookingCodes class.
+ * They will then be present as a @see CommonsBooking\Model\BookingCode object.
+ *
+ */
 class BookingCodes {
 
 	/**
@@ -14,7 +20,12 @@ class BookingCodes {
 	 * @param $timeframeId
 	 */
 	public static function renderTable( $timeframeId ) {
-		$bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId );
+		try {
+			$bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId );
+		} catch ( BookingCodeException $e ) {
+			echo $e->getMessage();
+			return;
+		}
 
 		echo '
             <div class="cmb-row cmb2-id-booking-codes-info">
@@ -59,7 +70,7 @@ class BookingCodes {
 		if ( $timeframeId == null ) {
 			$timeframeId = intval( $_GET['post'] );
 		}
-		$bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId );
+
 		header( 'Content-Encoding: UTF-8' );
 		header( 'Content-type: text/csv; charset=UTF-8' );
 		header( "Content-Disposition: attachment; filename=buchungscode-" . commonsbooking_sanitizeHTML( $timeframeId ) . ".txt" );
@@ -67,6 +78,13 @@ class BookingCodes {
 		header( "Pragma: no-cache" );
 		header( "Expires: 0" );
 		echo "\xEF\xBB\xBF"; // UTF-8 BOM
+
+		try {
+			$bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId );
+		} catch ( BookingCodeException $e ) {
+			echo $e->getMessage();
+			die;
+		}
 
 		foreach ( $bookingCodes as $bookingCode ) {
 			echo commonsbooking_sanitizeHTML( $bookingCode->getDate() ) .
