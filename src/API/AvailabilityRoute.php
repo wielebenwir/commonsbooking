@@ -80,7 +80,7 @@ class AvailabilityRoute extends BaseRoute {
 					}
 
 					$availabilitySlot->itemId = "";
-					if ( $timeframe->getLocation() ) {
+					if ( $timeframe->getItem() ) {
 						$availabilitySlot->itemId = $timeframe->getItem()->ID . "";
 					}
 
