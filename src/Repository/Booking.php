@@ -412,6 +412,9 @@ class Booking extends PostRepository {
 	}
 
 	/**
+	 * Gets all bookings that are affected by the given restriction.
+	 *
+	 *
 	 * @param \CommonsBooking\Model\Restriction $restriction
 	 *
 	 * @return \WP_Post[]|null
