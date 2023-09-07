@@ -11,6 +11,7 @@ use DatePeriod;
 use DateInterval;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\Timeframe;
+use const CommonsBooking\Model\Timeframe\META_REPETITION;
 
 class TimeframeExport {
 
@@ -233,8 +234,8 @@ class TimeframeExport {
 
 		// Repetition option
 		$repetitions                           = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTimeFrameRepetitions();
-		$repetitionId                          = $timeframePost->getFieldValue( "timeframe-repetition" );
-		$timeframeData["timeframe-repetition"] = array_key_exists( $repetitionId, $repetitions ) ?
+		$repetitionId                          = $timeframePost->getFieldValue( META_REPETITION );
+		$timeframeData[ META_REPETITION ] = array_key_exists( $repetitionId, $repetitions ) ?
 			$repetitions[ $repetitionId ] : __( 'Unknown', 'commonsbooking' );
 
 		// Grid option

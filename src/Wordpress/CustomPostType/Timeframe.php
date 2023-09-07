@@ -602,7 +602,7 @@ class Timeframe extends CustomPostType {
 				'desc'    => esc_html__(
 					'Choose whether the time frame should repeat at specific intervals. The repetitions refer to the unit of a day. With the start and end date you define when the repetition interval starts and ends. If you choose "weekly", you can select specific days of the week below. Read the documentation for more information and examples.'
 					, 'commonsbooking' ),
-				'id'      => "timeframe-repetition",
+				'id'      => \CommonsBooking\Model\Timeframe::META_REPETITION,
 				'type'    => 'select',
 				'options' => self::getTimeFrameRepetitions(),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
