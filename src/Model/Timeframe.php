@@ -42,8 +42,8 @@ class Timeframe extends CustomPost {
 	public const META_MAX_DAYS = 'timeframe-max-days';
 
 	/**
-	 * Expected format for this meta key:
-	 * YYYY-mm-dd
+	 * Dates stored comma separated in the format YYYY-mm-dd.
+	 * Example: 2020-01-01,2020-01-02,2020-01-03
 	 */
 	public const META_MANUAL_SELECTION = 'timeframe_manual_date';
 
@@ -626,10 +626,9 @@ class Timeframe extends CustomPost {
 	 * Will add the timeframe start and end date to the post meta when the repetition is set to manual.
 	 * We have to do this so the user doesn't have to set the start and end date manually when selecting dates.
 	 *
-	 * TODO: Find a better name for this method.
 	 * @return void
 	 */
-	public function addStartAndEndDate() : void {
+	public function updatePostMetaStartAndEndDate() : void {
 		if ($this->getRepetition() == 'manual') {
 			$timestamps = array_map('strtotime', $this->getManualSelectionDates());
 			asort($timestamps);
