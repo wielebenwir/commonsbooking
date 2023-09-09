@@ -523,12 +523,12 @@ class Calendar {
 
 				//if yes, what is the maximum amount of days they should count?
 				if ( $useGlobalSettings ) {
-					$maxDays = Settings::getOption('commonsbooking_options_general', COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum');
+					$countLockdaysMaximum = Settings::getOption('commonsbooking_options_general', COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum');
 				}
 				else {
-					$maxDays = get_post_meta( $locations[0], COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', true );
+					$countLockdaysMaximum = get_post_meta( $locations[0], COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', true );
 				}
-				$jsonResponse['countLockDaysMaxDays'] = (int) $maxDays;
+				$jsonResponse['countLockDaysMaxDays'] = (int) $countLockdaysMaximum;
 			}
 
 			/** @var Week $week */
