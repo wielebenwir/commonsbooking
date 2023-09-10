@@ -265,6 +265,19 @@ abstract class CustomPostType {
 				}
 			} );
 		}
+
+		// add ability to use WP_QUERY orderby for post_status
+		add_filter('posts_orderby', function ($args, $wp_query) {
+			if(isset ($wp_query->query_vars['orderby']) && $wp_query->query_vars['orderby'] == 'post_status') {
+				if($wp_query->query_vars['order']) {
+					return 'post_status '.$wp_query->query_vars['order'];
+				}
+				else {
+					return 'post_status ASC';
+				}
+			}
+			return $args;
+		}, 10,2);
 	}
 
 	/**
