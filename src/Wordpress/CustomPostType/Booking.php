@@ -574,7 +574,7 @@ class Booking extends Timeframe {
 			'view_item'             => esc_html__( 'Show booking', 'commonsbooking' ),
 			'view_items'            => esc_html__( 'Show bookings', 'commonsbooking' ),
 			'search_items'          => esc_html__( 'Search bookings', 'commonsbooking' ),
-			'not_found'             => esc_html__( 'Timeframes not found', 'commonsbooking' ),
+			'not_found'             => esc_html__( 'Bookings not found', 'commonsbooking' ),
 			'not_found_in_trash'    => esc_html__( 'No bookings found in trash', 'commonsbooking' ),
 			'parent_item_colon'     => esc_html__( 'Parent bookings:', 'commonsbooking' ),
 			'all_items'             => esc_html__( 'All bookings', 'commonsbooking' ),
