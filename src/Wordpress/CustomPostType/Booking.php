@@ -489,7 +489,7 @@ class Booking extends Timeframe {
 
 		// Backend listing columns.
 		$this->listColumns = [
-			'timeframe-author' => esc_html__( 'User', 'commonsbooking' ),
+			'booking_author'   => esc_html__( 'User', 'commonsbooking' ),
 			'item-id'          => esc_html__( 'Item', 'commonsbooking' ),
 			'location-id'      => esc_html__( 'Location', 'commonsbooking' ),
 			'post_date'        => esc_html__( 'Bookingdate', 'commonsbooking' ),
@@ -654,10 +654,10 @@ class Booking extends Timeframe {
         }
 
 		// we alter the  author column data and link the username to the user profile
-		if ( $column == 'timeframe-author' ) {
+		if ( $column == 'booking_author' ) {
 			$post           = get_post( $post_id );
-			$timeframe_user = get_user_by( 'id', $post->post_author );
-			echo '<a href="' . get_edit_user_link( $timeframe_user->ID ) . '">' . commonsbooking_sanitizeHTML( $timeframe_user->user_login ) . '</a>';
+			$bookingUser = get_user_by( 'id', $post->post_author );
+			echo '<a href="' . get_edit_user_link( $bookingUser->ID ) . '">' . commonsbooking_sanitizeHTML( $bookingUser->user_login ) . '</a>';
 		}
 
 		if ( $value = get_post_meta( $post_id, $column, true ) ) {
