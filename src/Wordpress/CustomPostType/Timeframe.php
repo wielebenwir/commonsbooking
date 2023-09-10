@@ -966,6 +966,29 @@ class Timeframe extends CustomPostType {
 		}
 	}
 
+	public function setCustomColumnSortOrder( \WP_Query $query ) {
+		parent::setCustomColumnSortOrder( $query );
+		//TODO: Refactor this so we don't have to repeat ourselves in every inheritance
+		if ( ! is_admin() || ! $query->is_main_query() || $query->get( 'post_type' ) !== static::$postType ) {
+			return;
+		}
+		switch ($query->get( 'orderby' )) {
+			case 'location-id':
+			case 'type':
+			case 'item-id':
+				$value = $query->get( 'orderby' );
+				$query->set( 'meta_key', $value );
+				$query->set( 'orderby', 'meta_value' );
+			break;
+			case \CommonsBooking\Model\Timeframe::REPETITION_START:
+			case \CommonsBooking\Model\Timeframe::REPETITION_END:
+				$query->set( 'meta_key', $query->get( 'orderby' ) );
+				$query->set( 'orderby', 'meta_value_num' );
+			break;
+		}
+	}
+
+
 	/**
 	 * Initiates needed hooks.
 	 */

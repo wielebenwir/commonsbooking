@@ -242,28 +242,7 @@ abstract class CustomPostType {
 		) );
 
 		if ( isset( $this->listColumns ) ) {
-			add_action( 'pre_get_posts', function ( $query ) {
-				if ( ! is_admin() || $query->get('post_type') !== static::$postType ) {
-					return;
-				}
-
-				// This does correctly sort the items by meta value, since WP 6.3 the meta value is not passed to the query anymore. Maybe the filter needs to be changed?
-				$orderby = $query->get( 'orderby' );
-				// Prior to WP 6.3, this was not an associative array (see #1309) but a string
-				$orderKeys = is_array($orderby) ? array_keys($orderby) : array($orderby);
-				// We only want to sort by meta value if there is a non-post_* value
-				$orderKeys = array_filter($orderKeys, function($key) {
-					return strpos($key, 'post_') === false;
-				});
-
-				if (
-					!empty($orderKeys) &&
-					in_array( $orderKeys[0], array_keys( $this->listColumns ) )
-				) {
-					$query->set( 'meta_key', $orderKeys[0] );
-					$query->set( 'orderby', 'meta_value' );
-				}
-			} );
+			add_action( 'pre_get_posts', array( $this, 'setCustomColumnSortOrder' ) );
 		}
 
 		// add ability to use WP_QUERY orderby for post_status
@@ -366,6 +345,24 @@ abstract class CustomPostType {
 				return new \CommonsBooking\Model\Map($post);
 		}
 		throw new PostException('No suitable model found for ' . $post->post_type);
+	}
+
+	/**
+	 * @param \WP_Query $query
+	 *
+	 * @return void
+	 */
+	public function setCustomColumnSortOrder(\WP_Query $query) {
+		if ( ! is_admin() || ! $query->is_main_query() || $query->get( 'post_type' ) !== static::$postType ) {
+			return;
+		}
+		$orderby = $query->get( 'orderby' );
+
+		switch ( $orderby ) {
+			case 'title':
+				$query->set( 'orderby', 'title' );
+				break;
+		}
 	}
 
 }
