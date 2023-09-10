@@ -187,7 +187,7 @@ abstract class CustomPostType {
 	public function setSortableColumns( $columns ) {
 		if ( isset( $this->listColumns ) ) {
 			foreach ( $this->listColumns as $key => $label ) {
-				$columns[ $key ] = $key === 'timeframe-author' ? 'author' : $key;
+				$columns[ $key ] = $key;
 			}
 		}
 		return $columns;
