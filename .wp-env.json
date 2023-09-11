@@ -2,11 +2,11 @@
 	"phpVersion": "7.4",
 	"core": "Wordpress/Wordpress#6.3.1",
         "plugins": [ 
-		".",
+		      ".",
 	        "https://downloads.wordpress.org/plugin/wp-crontrol.zip",
-      	        "https://downloads.wordpress.org/plugin/wordpress-importer.zip",
+          "https://downloads.wordpress.org/plugin/wordpress-importer.zip",
 	        "https://downloads.wordpress.org/plugin/query-monitor.zip",
-		"https://downloads.wordpress.org/plugin/wp-mail-logging.zip"
+		      "https://downloads.wordpress.org/plugin/wp-mail-logging.zip"
 	],
 	"port": 1000,
   	"testsPort": 1001,
