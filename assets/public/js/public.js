@@ -1259,8 +1259,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     days: [],
                     lockDaysFormat: "YYYY-MM-DD",
                     lockDays: [],
-                    disallowLockDaysInRange: !0,
                     lockDaysInclusivity: "[]",
+                    disallowLockDaysInRange: !0,
                     countLockedDays: !1,
                     countLockedDaysMax: 0,
                     holidaysFormat: "YYYY-MM-DD",
@@ -1456,7 +1456,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (this.options.maxDays && 1 === this.datePicked.length) {
                     n = Number(this.options.hotelMode), s = this.datePicked[0].clone().subtract(this.options.maxDays + n, "day");
                     var d = 0;
-                    if ((!this.options.countLockedDays || this.options.countLockedDaysMax > 0) && !this.options.disallowLockDaysInRange) {
+                    if (this.options.countLockedDays && this.options.countLockedDaysMax > 0 && !this.options.disallowLockDaysInRange) {
                         for (var c = this.datePicked[0].clone(), h = this.options.maxDays, p = this.options.countLockedDaysMax, u = [], m = 0, f = [ this.options.holidays, this.options.lockDays ]; m < f.length; m++) for (var y = 0, g = f[m]; y < g.length; y++) {
                             var k = g[y];
                             this.datePicked[0].getTime() < k.getTime() && u.push(k);
@@ -1464,8 +1464,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         for (;h > 0; ) {
                             h -= 1, c = c.add(1, "day");
                             for (var D = 0, v = u; D < v.length; D++) {
-                                (k = v[D]).getTime() === c.getTime() && (this.dateIsBooked(c, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(c, this.options.partiallyBookedDaysInclusivity) || (this.options.countLockedDays && p <= 0 ? (d += 1, 
-                                h += 1) : this.options.countLockedDays && p > 0 ? p -= 1 : this.options.countLockedDays || (d += 1)));
+                                v[D].getTime() === c.getTime() && (this.dateIsBooked(c, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(c, this.options.partiallyBookedDaysInclusivity) || (this.options.countLockedDays && p <= 0 ? (d += 1, 
+                                h += 1) : this.options.countLockedDays && p > 0 && (p -= 1)));
                             }
                         }
                     }
