@@ -27,4 +27,13 @@ describe('load shortcodes', () => {
         cy.get('.cb-shortcode-items_table').find('tbody > tr > :nth-child(1)').find('b > a').click()
         cy.url().should('include', '/?cb_item=basictest-noadmin&cb-location=32')
     } )
+
+    it ('can load cb_map shortcode', () => {
+        cy.visit('/?page_id=22')
+        const mapID = 'cb-map-36'
+        cy.get('#' + mapID).should('be.visible')
+        // Unfortunately I couldn't find a way to test the map itself without creating a new instance (which would not check if the data is correct)
+        //That's why there is only the screenshot test
+        cy.screenshot('cb-map-shortcode')
+    } )
 })
