@@ -7,6 +7,11 @@ namespace CommonsBooking\View;
 use CommonsBooking\Exception\BookingCodeException;
 use CommonsBooking\Model\BookingCode;
 
+/**
+ * Booking codes can be get using the @see \CommonsBooking\Repository\BookingCodes class.
+ * They will then be present as a @see CommonsBooking\Model\BookingCode object.
+ *
+ */
 class BookingCodes {
 
 	/**
