@@ -7,4 +7,7 @@
 
 #!/bin/bash
 
+# Install our example posts from a WP export file
 ./bin/wp-env-cli tests-wordpress "wp --allow-root import /var/www/html/wp-content/plugins/commonsbooking/cypress/wordpress-files/content-example.xml --authors=create"
+# Create subscriber with username "subscriber" and password "password"
+./bin/wp-env-cli tests-wordpress "wp --allow-root user create subscriber sub@sub.de --role=subscriber --user_pass=password"

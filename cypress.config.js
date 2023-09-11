@@ -2,7 +2,8 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   env: {
-      wpUser:'admin',
+      wpAdmin:'admin',
+      wpSubscriber: 'subscriber',
       wpPassword:'password',
   },
   e2e: {
