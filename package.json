@@ -27,6 +27,7 @@
 		"matchdep": "^2.0.0"
 	},
 	"scripts": {
+	"start": "composer install --ignore-platform-reqs && npm install",
     "env": "wp-env",
     "env:install-tests-cli": "./bin/install-wp-cli.sh tests-wordpress",
     "env:start": "wp-env start && npm run env:install-tests-cli",
