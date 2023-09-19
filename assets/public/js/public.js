@@ -472,6 +472,19 @@ document.addEventListener("DOMContentLoaded", () => {
             return Object.prototype.hasOwnProperty.call(t, e);
         }, i.p = "", i(i.s = 4);
     }([ function(t, e, i) {
+        var o = i(6), n = i(7);
+        "string" == typeof (n = n.__esModule ? n.default : n) && (n = [ [ t.i, n, "" ] ]);
+        var s = {
+            insert: function(t) {
+                var e = document.querySelector("head"), i = window._lastElementInsertedByStyleLoader;
+                window.disableLitepickerStyles || (i ? i.nextSibling ? e.insertBefore(t, i.nextSibling) : e.appendChild(t) : e.insertBefore(t, e.firstChild), 
+                window._lastElementInsertedByStyleLoader = t);
+            },
+            singleton: !1
+        };
+        o(n, s);
+        t.exports = n.locals || {};
+    }, function(t, e, i) {
         "use strict";
         Object.defineProperty(e, "__esModule", {
             value: !0
@@ -501,12 +514,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         };
                         n[0].index > 0 && (a.value += ".*?");
                         for (var r = 0, l = Object.entries(n); r < l.length; r++) {
-                            var d = l[r], c = d[0], h = d[1], p = Number(c), u = t.formatPatterns(h[0], o), m = u.group, f = u.pattern;
-                            a[m] = p + 1, a.value += f, a.value += ".*?";
+                            var d = l[r], c = d[0], h = d[1], p = Number(c), u = t.formatPatterns(h[0], o), m = u.group, y = u.pattern;
+                            a[m] = p + 1, a.value += y, a.value += ".*?";
                         }
-                        var y = new RegExp("^" + a.value + "$");
-                        if (y.test(e)) {
-                            var g = y.exec(e), k = Number(g[a.year]), D = null;
+                        var f = new RegExp("^" + a.value + "$");
+                        if (f.test(e)) {
+                            var g = f.exec(e), k = Number(g[a.year]), D = null;
                             a.month ? D = Number(g[a.month]) - 1 : a.shortMonth ? D = t.shortMonths(o).indexOf(g[a.shortMonth]) : a.longMonth && (D = t.longMonths(o).indexOf(g[a.longMonth]));
                             var v = Number(g[a.day]) || 1;
                             return new Date(k, D, v, 0, 0, 0, 0);
@@ -811,19 +824,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }();
         e.DateTime = o;
     }, function(t, e, i) {
-        var o = i(6), n = i(7);
-        "string" == typeof (n = n.__esModule ? n.default : n) && (n = [ [ t.i, n, "" ] ]);
-        var s = {
-            insert: function(t) {
-                var e = document.querySelector("head"), i = window._lastElementInsertedByStyleLoader;
-                window.disableLitepickerStyles || (i ? i.nextSibling ? e.insertBefore(t, i.nextSibling) : e.appendChild(t) : e.insertBefore(t, e.firstChild), 
-                window._lastElementInsertedByStyleLoader = t);
-            },
-            singleton: !1
-        };
-        o(n, s);
-        t.exports = n.locals || {};
-    }, function(t, e, i) {
         "use strict";
         function o() {
             return window.matchMedia("(orientation: portrait)").matches ? "portrait" : "landscape";
@@ -885,7 +885,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Object.defineProperty(e, "__esModule", {
             value: !0
         }), e.Litepicker = void 0;
-        var d = i(5), c = i(0), h = l(i(1)), p = i(2), u = function(t) {
+        var d = i(5), c = i(1), h = l(i(0)), p = i(2), u = i(0), m = function(t) {
             function e(e) {
                 var i = t.call(this) || this;
                 i.options = s(s({}, i.options), e.element.dataset), Object.keys(i.options).forEach(function(t) {
@@ -1054,17 +1054,17 @@ document.addEventListener("DOMContentLoaded", () => {
                         m && !u && (this.datePicked.length = 0, "function" == typeof this.options.onError && this.options.onError.call(this, "INVALID_RANGE"));
                     }
                     if (this.shouldCheckBookedDays()) {
-                        var m, f = this.options.bookedDaysInclusivity;
+                        var m, y = this.options.bookedDaysInclusivity;
                         (m = this.options.bookedDays.filter(function(t) {
-                            return t instanceof Array ? t[0].isBetween(e.datePicked[0], e.datePicked[1], f) || t[1].isBetween(e.datePicked[0], e.datePicked[1], f) : t.isBetween(e.datePicked[0], e.datePicked[1], f);
+                            return t instanceof Array ? t[0].isBetween(e.datePicked[0], e.datePicked[1], y) || t[1].isBetween(e.datePicked[0], e.datePicked[1], y) : t.isBetween(e.datePicked[0], e.datePicked[1], y);
                         }).length) && (this.datePicked.length = 0, "function" == typeof this.options.onError && this.options.onError.call(this, "INVALID_RANGE"));
                     }
                     if ("function" == typeof this.options.onDaySelect && this.options.onDaySelect.call(this, c.DateTime.parseDateTime(i.dataset.time), this.datePicked.length), 
                     this.render(), this.options.autoApply) {
-                        var y = !1;
+                        var f = !1;
                         this.options.singleMode && this.datePicked.length ? (this.setDate(this.datePicked[0]), 
-                        this.hide(), y = !0) : this.options.singleMode || 2 !== this.datePicked.length || (this.setDateRange(this.datePicked[0], this.datePicked[1]), 
-                        this.hide(), y = !0), "function" == typeof this.options.onAutoApply && this.options.onAutoApply.call(this, y);
+                        this.hide(), f = !0) : this.options.singleMode || 2 !== this.datePicked.length || (this.setDateRange(this.datePicked[0], this.datePicked[1]), 
+                        this.hide(), f = !0), "function" == typeof this.options.onAutoApply && this.options.onAutoApply.call(this, f);
                     }
                 } else {
                     if (i.classList.contains(h.buttonPreviousMonth)) {
@@ -1130,9 +1130,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         var i = new c.DateTime(t.dataset.time), o = e.renderDay(i);
                         if (i.isBetween(n, s)) {
                             var a = e.options.days[i.format(e.options.bookedDaysFormat)];
-                            a.bookedDay ? o.classList.add(h.isBooked) : a.partiallyBookedDay && (a.firstSlotBooked && (a.holiday ? o.classList.add(h.isLocked) : o.classList.add(h.isPartiallyBookedStart)), 
+                            a.bookedDay ? o.classList.add(h.isBooked) : !a.partiallyBookedDay || a.holiday || a.locked || (a.firstSlotBooked && o.classList.add(h.isPartiallyBookedStart), 
                             a.lastSlotBooked && o.classList.add(h.isPartiallyBookedEnd)), 
-                            o.classList.add(h.isInRange);
+                            e.options.disallowLockDaysInRange || (a.holiday ? o.classList.remove(h.isHoliday) : a.locked && o.classList.remove(h.isLocked), 
+                            o.classList.add(u.isInRange));
                         }
                         t.className = o.className;
                     }), i.classList.add(h.isEndDate), a ? (o && o.classList.add(h.isFlipped), 
@@ -1181,7 +1182,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }, e;
         }(d.Calendar);
-        e.Litepicker = u;
+        e.Litepicker = m;
     }, function(t, e, i) {
         "use strict";
         Object.defineProperty(e, "__esModule", {
@@ -1221,7 +1222,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Object.defineProperty(e, "__esModule", {
             value: !0
         }), e.Calendar = void 0;
-        var a = i(0), r = s(i(1)), l = i(2), d = function() {
+        var a = i(1), r = s(i(0)), l = i(2), d = function() {
             function t() {
                 this.options = {
                     element: null,
@@ -1372,27 +1373,27 @@ document.addEventListener("DOMContentLoaded", () => {
                     }), d.appendChild(m);
                 }
                 if (this.options.dropdowns.years) {
-                    var f = document.createElement("select");
-                    f.className = r.monthItemYear;
-                    var y = this.options.dropdowns.minYear, g = this.options.dropdowns.maxYear ? this.options.dropdowns.maxYear : new Date().getFullYear();
+                    var y = document.createElement("select");
+                    y.className = r.monthItemYear;
+                    var f = this.options.dropdowns.minYear, g = this.options.dropdowns.maxYear ? this.options.dropdowns.maxYear : new Date().getFullYear();
                     if (t.getFullYear() > g) (p = document.createElement("option")).value = String(t.getFullYear()), 
                     p.text = String(t.getFullYear()), p.selected = !0, p.disabled = !0, 
-                    f.appendChild(p);
-                    for (h = g; h >= y; h -= 1) {
+                    y.appendChild(p);
+                    for (h = g; h >= f; h -= 1) {
                         var p = document.createElement("option"), k = new a.DateTime(new Date(h, 0, 1, 0, 0, 0));
                         p.value = h, p.text = h, p.disabled = this.options.minDate && k.isBefore(new a.DateTime(this.options.minDate), "year") || this.options.maxDate && k.isAfter(new a.DateTime(this.options.maxDate), "year"), 
-                        p.selected = t.getFullYear() === h, f.appendChild(p);
+                        p.selected = t.getFullYear() === h, y.appendChild(p);
                     }
-                    if (t.getFullYear() < y) (p = document.createElement("option")).value = String(t.getFullYear()), 
+                    if (t.getFullYear() < f) (p = document.createElement("option")).value = String(t.getFullYear()), 
                     p.text = String(t.getFullYear()), p.selected = !0, p.disabled = !0, 
-                    f.appendChild(p);
+                    y.appendChild(p);
                     if ("asc" === this.options.dropdowns.years) {
-                        var D = Array.prototype.slice.call(f.childNodes).reverse();
-                        f.innerHTML = "", D.forEach(function(t) {
-                            t.innerHTML = t.value, f.appendChild(t);
+                        var D = Array.prototype.slice.call(y.childNodes).reverse();
+                        y.innerHTML = "", D.forEach(function(t) {
+                            t.innerHTML = t.value, y.appendChild(t);
                         });
                     }
-                    f.addEventListener("change", function(t) {
+                    y.addEventListener("change", function(t) {
                         var i = t.target, o = 0;
                         if (e.options.splitView) {
                             var n = i.closest("." + r.monthItem);
@@ -1400,7 +1401,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                         e.calendars[o].setFullYear(Number(i.value)), e.render(), 
                         "function" == typeof e.options.onChangeYear && e.options.onChangeYear.call(e, e.calendars[o], o);
-                    }), d.appendChild(f);
+                    }), d.appendChild(y);
                 } else {
                     var v = document.createElement("span");
                     v.className = r.monthItemYear, v.innerHTML = String(t.getFullYear()), 
@@ -1444,7 +1445,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     var o = document.getElementsByClassName("is-end-date").length > 0;
                     this.options.startDate.toDateString() === t.toDateString() && o && (i.classList.add(r.isStartDate), 
                     this.options.singleMode && i.classList.add(r.isEndDate)), this.options.endDate && this.options.endDate.toDateString() === t.toDateString() && i.classList.add(r.isEndDate), 
-                    this.options.startDate && this.options.endDate && t.isBetween(this.options.startDate, this.options.endDate) && i.classList.add(r.isInRange);
+                    this.options.startDate && this.options.endDate && t.isBetween(this.options.startDate, this.options.endDate) && (i.classList.add(r.isInRange), 
+                    this.options.disallowLockDaysInRange || console.log(i));
                 }
                 if (this.options.minDate && t.isBefore(new a.DateTime(this.options.minDate)) && i.classList.add(r.isLocked), 
                 this.options.maxDate && t.isAfter(new a.DateTime(this.options.maxDate)) && i.classList.add(r.isLocked), 
@@ -1456,16 +1458,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (this.options.maxDays && 1 === this.datePicked.length) {
                     n = Number(this.options.hotelMode), s = this.datePicked[0].clone().subtract(this.options.maxDays + n, "day");
                     var d = 0;
-                    if (this.options.countLockedDays && this.options.countLockedDaysMax > 0 && !this.options.disallowLockDaysInRange) {
-                        for (var c = this.datePicked[0].clone(), h = this.options.maxDays, p = this.options.countLockedDaysMax, u = [], m = 0, f = [ this.options.holidays, this.options.lockDays ]; m < f.length; m++) for (var y = 0, g = f[m]; y < g.length; y++) {
-                            var k = g[y];
+                    if (this.options.countLockedDays && this.options.countLockedDaysMax > 0) {
+                        for (var c = this.datePicked[0].clone(), h = this.options.maxDays, p = this.options.countLockedDaysMax, u = [], m = 0, y = [ this.options.holidays, this.options.lockDays ]; m < y.length; m++) for (var f = 0, g = y[m]; f < g.length; f++) {
+                            var k = g[f];
                             this.datePicked[0].getTime() < k.getTime() && u.push(k);
                         }
                         for (;h > 0; ) {
                             h -= 1, c = c.add(1, "day");
                             for (var D = 0, v = u; D < v.length; D++) {
-                                v[D].getTime() === c.getTime() && (this.dateIsBooked(c, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(c, this.options.partiallyBookedDaysInclusivity) || (this.options.countLockedDays && p <= 0 ? (d += 1, 
-                                h += 1) : this.options.countLockedDays && p > 0 && (p -= 1)));
+                                v[D].getTime() === c.getTime() && (this.dateIsBooked(c, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(c, this.options.partiallyBookedDaysInclusivity) || (p <= 0 ? (d += 1, 
+                                h += 1) : p > 0 && (p -= 1)));
                             }
                         }
                     }
@@ -1592,7 +1594,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 };
                 -1 !== h ? (a[h].references++, a[h].updater(p)) : a.push({
                     identifier: c,
-                    updater: y(p, e),
+                    updater: f(p, e),
                     references: 1
                 }), o.push(c);
             }
@@ -1631,11 +1633,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 t.appendChild(document.createTextNode(o));
             }
         }
-        var m = null, f = 0;
-        function y(t, e) {
+        var m = null, y = 0;
+        function f(t, e) {
             var i, o, n;
             if (e.singleton) {
-                var s = f++;
+                var s = y++;
                 i = m || (m = d(e)), o = p.bind(null, i, s, !1), n = p.bind(null, i, s, !0);
             } else i = d(e), o = u.bind(null, i, e), n = function() {
                 !function(t) {
@@ -1668,7 +1670,7 @@ document.addEventListener("DOMContentLoaded", () => {
             };
         };
     }, function(t, e, i) {
-        (e = i(8)(!1)).push([ t.i, ':root{--litepickerBgColor: #fff;--litepickerMonthHeaderTextColor: #333;--litepickerMonthButton: #9e9e9e;--litepickerMonthButtonHover: #2196f3;--litepickerMonthWidth: calc(var(--litepickerDayWidth) * 7);--litepickerMonthWeekdayColor: #9e9e9e;--litepickerDayColor: #333;--litepickerDayColorBg: #20c527;--litepickerDayColorHover: #2196f3;--litepickerDayIsTodayColor: #f44336;--litepickerDayIsInRange: #bbdefb;--litepickerDayIsLockedColor: #9e9e9e;--litepickerDayIsLockedColorBg: #a0a0a0;--litepickerDayIsHolidayColor: #000000;--litepickerDayIsHolidayColorBg: #ff9218;--litepickerDayIsBookedColor: #9e9e9e;--litepickerDayIsBookedColorBg: #f06f6f;--litepickerDayIsPartiallyBookedColor: #9e9e9e;--litepickerDayIsStartColor: #fff;--litepickerDayIsStartBg: #2196f3;--litepickerDayIsEndColor: #fff;--litepickerDayIsEndBg: #2196f3;--litepickerDayWidth: 38px;--litepickerButtonCancelColor: #fff;--litepickerButtonCancelBg: #9e9e9e;--litepickerButtonApplyColor: #fff;--litepickerButtonApplyBg: #2196f3;--litepickerButtonResetBtn: #909090;--litepickerButtonResetBtnHover: #2196f3;--litepickerHighlightedDayColor: #333;--litepickerHighlightedDayBg: #ffeb3b}.show-week-numbers{--litepickerMonthWidth: calc(var(--litepickerDayWidth) * 8)}.litepicker{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;font-size:0.8em;display:none}.litepicker .container__main{display:-webkit-box;display:-ms-flexbox;display:flex}.litepicker .container__months{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;background-color:var(--litepickerBgColor);border-radius:5px;-webkit-box-shadow:0 0 5px #ddd;box-shadow:0 0 5px #ddd;width:calc(var(--litepickerMonthWidth) + 10px);-webkit-box-sizing:content-box;box-sizing:content-box}.litepicker .container__months.columns-2{width:calc((var(--litepickerMonthWidth) * 2) + 20px)}.litepicker .container__months.columns-3{width:calc((var(--litepickerMonthWidth) * 3) + 30px)}.litepicker .container__months.columns-4{width:calc((var(--litepickerMonthWidth) * 4) + 40px)}.litepicker .container__months.split-view .month-item-header .button-previous-month,.litepicker .container__months.split-view .month-item-header .button-next-month{visibility:visible}.litepicker .container__months .month-item{padding:5px;width:var(--litepickerMonthWidth);-webkit-box-sizing:content-box;box-sizing:content-box}.litepicker .container__months .month-item-header{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;font-weight:500;padding:10px 5px;text-align:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;color:var(--litepickerMonthHeaderTextColor)}.litepicker .container__months .month-item-header div{-webkit-box-flex:1;-ms-flex:1;flex:1}.litepicker .container__months .month-item-header div>.month-item-name{margin-right:5px}.litepicker .container__months .month-item-header div>.month-item-year{padding:0}.litepicker .container__months .month-item-header .reset-button{color:var(--litepickerButtonResetBtn)}.litepicker .container__months .month-item-header .reset-button>svg,.litepicker .container__months .month-item-header .reset-button>img{fill:var(--litepickerButtonResetBtn);pointer-events:none}.litepicker .container__months .month-item-header .reset-button:hover{color:var(--litepickerButtonResetBtnHover)}.litepicker .container__months .month-item-header .reset-button:hover>svg{fill:var(--litepickerButtonResetBtnHover)}.litepicker .container__months .month-item-header .button-previous-month,.litepicker .container__months .month-item-header .button-next-month{visibility:hidden;text-decoration:none;color:var(--litepickerMonthButton);padding:3px 5px;border-radius:3px;-webkit-transition:color 0.3s, border 0.3s;transition:color 0.3s, border 0.3s;cursor:default}.litepicker .container__months .month-item-header .button-previous-month>svg,.litepicker .container__months .month-item-header .button-previous-month>img,.litepicker .container__months .month-item-header .button-next-month>svg,.litepicker .container__months .month-item-header .button-next-month>img{fill:var(--litepickerMonthButton);pointer-events:none}.litepicker .container__months .month-item-header .button-previous-month:hover,.litepicker .container__months .month-item-header .button-next-month:hover{color:var(--litepickerMonthButtonHover)}.litepicker .container__months .month-item-header .button-previous-month:hover>svg,.litepicker .container__months .month-item-header .button-next-month:hover>svg{fill:var(--litepickerMonthButtonHover)}.litepicker .container__months .month-item-weekdays-row{display:-webkit-box;display:-ms-flexbox;display:flex;justify-self:center;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;color:var(--litepickerMonthWeekdayColor)}.litepicker .container__months .month-item-weekdays-row>div{padding:5px 0;font-size:85%;-webkit-box-flex:1;-ms-flex:1;flex:1;width:var(--litepickerDayWidth);text-align:center}.litepicker .container__months .month-item:first-child .button-previous-month{visibility:visible}.litepicker .container__months .month-item:last-child .button-next-month{visibility:visible}.litepicker .container__months .month-item.no-previous-month .button-previous-month{visibility:hidden}.litepicker .container__months .month-item.no-next-month .button-next-month{visibility:hidden}.litepicker .container__days{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;justify-self:center;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;text-align:center;-webkit-box-sizing:content-box;box-sizing:content-box}.litepicker .container__days>div,.litepicker .container__days>a{padding:5px 0;width:var(--litepickerDayWidth)}.litepicker .container__days .day-item{color:var(--litepickerDayColor);text-align:center;text-decoration:none;border-radius:3px;-webkit-transition:color 0.3s, border 0.3s;transition:color 0.3s, border 0.3s;cursor:default}.litepicker .container__days .day-item:hover{color:var(--litepickerDayColorHover);-webkit-box-shadow:inset 0 0 0 1px var(--litepickerDayColorHover);box-shadow:inset 0 0 0 1px var(--litepickerDayColorHover)}.litepicker .container__days .day-item.is-today{color:var(--litepickerDayIsTodayColor)}.litepicker .container__days .day-item.is-locked{color:var(--litepickerDayIsLockedColor)}.litepicker .container__days .day-item.is-locked:hover{color:var(--litepickerDayIsLockedColor);-webkit-box-shadow:none;box-shadow:none;cursor:default}.litepicker .container__days .day-item.is-holiday{background-color:orange}.litepicker .container__days .day-item.is-holiday:hover{color:var(--litepickerDayIsLockedColor);-webkit-box-shadow:none;box-shadow:none;cursor:default}.litepicker .container__days .day-item.is-partially-booked-start{background:-webkit-gradient(linear, left top, right bottom, from(var(--litepickerDayColorBg)), color-stop(50%, var(--litepickerDayColorBg)), color-stop(50%, var(--litepickerDayIsBookedColorBg)), to(var(--litepickerDayIsBookedColorBg)));background:linear-gradient(to bottom right, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%)}.litepicker .container__days .day-item.is-partially-booked-end{background:-webkit-gradient(linear, right bottom, left top, from(var(--litepickerDayColorBg)), color-stop(50%, var(--litepickerDayColorBg)), color-stop(50%, var(--litepickerDayIsBookedColorBg)), to(var(--litepickerDayIsBookedColorBg)));background:linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%)}.litepicker .container__days .day-item.is-booked{color:var(--litepickerDayIsBookedColor)}.litepicker .container__days .day-item.is-booked:hover{color:var(--litepickerDayIsBookedColor);-webkit-box-shadow:none;box-shadow:none;cursor:default}.litepicker .container__days .day-item.is-in-range{background-color:var(--litepickerDayIsInRange);border-radius:0}.litepicker .container__days .day-item.is-start-date{color:var(--litepickerDayIsStartColor);background-color:var(--litepickerDayIsStartBg);border-top-left-radius:5px;border-bottom-left-radius:5px;border-top-right-radius:0;border-bottom-right-radius:0}.litepicker .container__days .day-item.is-start-date.is-flipped{border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:5px;border-bottom-right-radius:5px}.litepicker .container__days .day-item.is-end-date{color:var(--litepickerDayIsEndColor);background-color:var(--litepickerDayIsEndBg);border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:5px;border-bottom-right-radius:5px}.litepicker .container__days .day-item.is-end-date.is-flipped{border-top-left-radius:5px;border-bottom-left-radius:5px;border-top-right-radius:0;border-bottom-right-radius:0}.litepicker .container__days .day-item.is-start-date.is-end-date{border-top-left-radius:5px;border-bottom-left-radius:5px;border-top-right-radius:5px;border-bottom-right-radius:5px}.litepicker .container__days .day-item.is-highlighted{color:var(--litepickerHighlightedDayColor);background-color:var(--litepickerHighlightedDayBg)}.litepicker .container__days .week-number{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;color:#9e9e9e;font-size:85%}.litepicker .container__footer{text-align:right;padding:10px 5px;margin:0 5px;background-color:#fafafa;-webkit-box-shadow:inset 0px 3px 3px 0px #ddd;box-shadow:inset 0px 3px 3px 0px #ddd;border-bottom-left-radius:5px;border-bottom-right-radius:5px}.litepicker .container__footer .preview-date-range{margin-right:10px;font-size:90%}.litepicker .container__footer .button-cancel{background-color:var(--litepickerButtonCancelBg);color:var(--litepickerButtonCancelColor);border:0;padding:3px 7px 4px;border-radius:3px}.litepicker .container__footer .button-cancel>svg,.litepicker .container__footer .button-cancel>img{pointer-events:none}.litepicker .container__footer .button-apply{background-color:var(--litepickerButtonApplyBg);color:var(--litepickerButtonApplyColor);border:0;padding:3px 7px 4px;border-radius:3px;margin-left:10px;margin-right:10px}.litepicker .container__footer .button-apply:disabled{opacity:0.7}.litepicker .container__footer .button-apply>svg,.litepicker .container__footer .button-apply>img{pointer-events:none}.litepicker .container__tooltip{position:absolute;margin-top:-4px;padding:4px 8px;border-radius:4px;background-color:#fff;-webkit-box-shadow:0 1px 3px rgba(0,0,0,0.25);box-shadow:0 1px 3px rgba(0,0,0,0.25);white-space:nowrap;font-size:11px;pointer-events:none;visibility:hidden}.litepicker .container__tooltip:before{position:absolute;bottom:-5px;left:calc(50% - 5px);border-top:5px solid rgba(0,0,0,0.12);border-right:5px solid transparent;border-left:5px solid transparent;content:""}.litepicker .container__tooltip:after{position:absolute;bottom:-4px;left:calc(50% - 4px);border-top:4px solid #fff;border-right:4px solid transparent;border-left:4px solid transparent;content:""}.litepicker-open{overflow:hidden}.litepicker-backdrop{display:none;background-color:#000;opacity:0.3;position:fixed;top:0;right:0;bottom:0;left:0}\n', "" ]), 
+        (e = i(8)(!1)).push([ t.i, ':root{--litepickerBgColor: #fff;--litepickerMonthHeaderTextColor: #333;--litepickerMonthButton: #9e9e9e;--litepickerMonthButtonHover: #2196f3;--litepickerMonthWidth: calc(var(--litepickerDayWidth) * 7);--litepickerMonthWeekdayColor: #9e9e9e;--litepickerDayColor: #333;--litepickerDayColorBg: #20c527;--litepickerDayColorHover: #2196f3;--litepickerDayIsTodayColor: #f44336;--litepickerDayIsInRange: #bbdefb;--litepickerDayIsLockedColor: #9e9e9e;--litepickerDayIsLockedColorBg: #a0a0a0;--litepickerDayIsHolidayColor: #000000;--litepickerDayIsHolidayColorBg: #ff9218;--litepickerDayIsBookedColor: #9e9e9e;--litepickerDayIsBookedColorBg: #f06f6f;--litepickerDayIsPartiallyBookedColor: #9e9e9e;--litepickerDayIsStartColor: #fff;--litepickerDayIsStartBg: #2196f3;--litepickerDayIsEndColor: #fff;--litepickerDayIsEndBg: #2196f3;--litepickerDayWidth: 38px;--litepickerButtonCancelColor: #fff;--litepickerButtonCancelBg: #9e9e9e;--litepickerButtonApplyColor: #fff;--litepickerButtonApplyBg: #2196f3;--litepickerButtonResetBtn: #909090;--litepickerButtonResetBtnHover: #2196f3;--litepickerHighlightedDayColor: #333;--litepickerHighlightedDayBg: #ffeb3b}.show-week-numbers{--litepickerMonthWidth: calc(var(--litepickerDayWidth) * 8)}.litepicker{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;font-size:0.8em;display:none}.litepicker .container__main{display:-webkit-box;display:-ms-flexbox;display:flex}.litepicker .container__months{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;background-color:var(--litepickerBgColor);border-radius:5px;-webkit-box-shadow:0 0 5px #ddd;box-shadow:0 0 5px #ddd;width:calc(var(--litepickerMonthWidth) + 10px);-webkit-box-sizing:content-box;box-sizing:content-box}.litepicker .container__months.columns-2{width:calc((var(--litepickerMonthWidth) * 2) + 20px)}.litepicker .container__months.columns-3{width:calc((var(--litepickerMonthWidth) * 3) + 30px)}.litepicker .container__months.columns-4{width:calc((var(--litepickerMonthWidth) * 4) + 40px)}.litepicker .container__months.split-view .month-item-header .button-previous-month,.litepicker .container__months.split-view .month-item-header .button-next-month{visibility:visible}.litepicker .container__months .month-item{padding:5px;width:var(--litepickerMonthWidth);-webkit-box-sizing:content-box;box-sizing:content-box}.litepicker .container__months .month-item-header{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;font-weight:500;padding:10px 5px;text-align:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;color:var(--litepickerMonthHeaderTextColor)}.litepicker .container__months .month-item-header div{-webkit-box-flex:1;-ms-flex:1;flex:1}.litepicker .container__months .month-item-header div>.month-item-name{margin-right:5px}.litepicker .container__months .month-item-header div>.month-item-year{padding:0}.litepicker .container__months .month-item-header .reset-button{color:var(--litepickerButtonResetBtn)}.litepicker .container__months .month-item-header .reset-button>svg,.litepicker .container__months .month-item-header .reset-button>img{fill:var(--litepickerButtonResetBtn);pointer-events:none}.litepicker .container__months .month-item-header .reset-button:hover{color:var(--litepickerButtonResetBtnHover)}.litepicker .container__months .month-item-header .reset-button:hover>svg{fill:var(--litepickerButtonResetBtnHover)}.litepicker .container__months .month-item-header .button-previous-month,.litepicker .container__months .month-item-header .button-next-month{visibility:hidden;text-decoration:none;color:var(--litepickerMonthButton);padding:3px 5px;border-radius:3px;-webkit-transition:color 0.3s, border 0.3s;transition:color 0.3s, border 0.3s;cursor:default}.litepicker .container__months .month-item-header .button-previous-month>svg,.litepicker .container__months .month-item-header .button-previous-month>img,.litepicker .container__months .month-item-header .button-next-month>svg,.litepicker .container__months .month-item-header .button-next-month>img{fill:var(--litepickerMonthButton);pointer-events:none}.litepicker .container__months .month-item-header .button-previous-month:hover,.litepicker .container__months .month-item-header .button-next-month:hover{color:var(--litepickerMonthButtonHover)}.litepicker .container__months .month-item-header .button-previous-month:hover>svg,.litepicker .container__months .month-item-header .button-next-month:hover>svg{fill:var(--litepickerMonthButtonHover)}.litepicker .container__months .month-item-weekdays-row{display:-webkit-box;display:-ms-flexbox;display:flex;justify-self:center;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;color:var(--litepickerMonthWeekdayColor)}.litepicker .container__months .month-item-weekdays-row>div{padding:5px 0;font-size:85%;-webkit-box-flex:1;-ms-flex:1;flex:1;width:var(--litepickerDayWidth);text-align:center}.litepicker .container__months .month-item:first-child .button-previous-month{visibility:visible}.litepicker .container__months .month-item:last-child .button-next-month{visibility:visible}.litepicker .container__months .month-item.no-previous-month .button-previous-month{visibility:hidden}.litepicker .container__months .month-item.no-next-month .button-next-month{visibility:hidden}.litepicker .container__days{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;justify-self:center;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;text-align:center;-webkit-box-sizing:content-box;box-sizing:content-box}.litepicker .container__days>div,.litepicker .container__days>a{padding:5px 0;width:var(--litepickerDayWidth)}.litepicker .container__days .day-item{color:var(--litepickerDayColor);text-align:center;text-decoration:none;border-radius:3px;-webkit-transition:color 0.3s, border 0.3s;transition:color 0.3s, border 0.3s;cursor:default}.litepicker .container__days .day-item:hover{color:var(--litepickerDayColorHover);-webkit-box-shadow:inset 0 0 0 1px var(--litepickerDayColorHover);box-shadow:inset 0 0 0 1px var(--litepickerDayColorHover)}.litepicker .container__days .day-item.is-today{color:var(--litepickerDayIsTodayColor)}.litepicker .container__days .day-item.is-locked{color:var(--litepickerDayIsLockedColor)}.litepicker .container__days .day-item.is-locked:hover{color:var(--litepickerDayIsLockedColor);-webkit-box-shadow:none;box-shadow:none;cursor:default}.litepicker .container__days .day-item.is-holiday{background-color:orange}.litepicker .container__days .day-item.is-holiday:hover{color:var(--litepickerDayIsLockedColor);-webkit-box-shadow:none;box-shadow:none;cursor:default}.litepicker .container__days .day-item.is-partially-booked-start{background:-webkit-gradient(linear, left top, right bottom, from(var(--litepickerDayColorBg)), color-stop(50%, var(--litepickerDayColorBg)), color-stop(50%, var(--litepickerDayIsBookedColorBg)), to(var(--litepickerDayIsBookedColorBg)));background:linear-gradient(to bottom right, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%)}.litepicker .container__days .day-item.is-partially-booked-end{background:-webkit-gradient(linear, right bottom, left top, from(var(--litepickerDayColorBg)), color-stop(50%, var(--litepickerDayColorBg)), color-stop(50%, var(--litepickerDayIsBookedColorBg)), to(var(--litepickerDayIsBookedColorBg)));background:linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%, var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%)}.litepicker .container__days .day-item.is-booked{color:var(--litepickerDayIsBookedColor)}.litepicker .container__days .day-item.is-booked:hover{color:var(--litepickerDayIsBookedColor);-webkit-box-shadow:none;box-shadow:none;cursor:default}.litepicker .container__days .day-item.is-in-range{background-color:var(--litepickerDayIsInRange);border-radius:0}.litepicker .container__days .day-item.is-in-range.is-holiday{background-color:var(--litepickerDayIsInRange)}.litepicker .container__days .day-item.is-start-date{color:var(--litepickerDayIsStartColor);background-color:var(--litepickerDayIsStartBg);border-top-left-radius:5px;border-bottom-left-radius:5px;border-top-right-radius:0;border-bottom-right-radius:0}.litepicker .container__days .day-item.is-start-date.is-flipped{border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:5px;border-bottom-right-radius:5px}.litepicker .container__days .day-item.is-end-date{color:var(--litepickerDayIsEndColor);background-color:var(--litepickerDayIsEndBg);border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:5px;border-bottom-right-radius:5px}.litepicker .container__days .day-item.is-end-date.is-flipped{border-top-left-radius:5px;border-bottom-left-radius:5px;border-top-right-radius:0;border-bottom-right-radius:0}.litepicker .container__days .day-item.is-start-date.is-end-date{border-top-left-radius:5px;border-bottom-left-radius:5px;border-top-right-radius:5px;border-bottom-right-radius:5px}.litepicker .container__days .day-item.is-highlighted{color:var(--litepickerHighlightedDayColor);background-color:var(--litepickerHighlightedDayBg)}.litepicker .container__days .week-number{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;color:#9e9e9e;font-size:85%}.litepicker .container__footer{text-align:right;padding:10px 5px;margin:0 5px;background-color:#fafafa;-webkit-box-shadow:inset 0px 3px 3px 0px #ddd;box-shadow:inset 0px 3px 3px 0px #ddd;border-bottom-left-radius:5px;border-bottom-right-radius:5px}.litepicker .container__footer .preview-date-range{margin-right:10px;font-size:90%}.litepicker .container__footer .button-cancel{background-color:var(--litepickerButtonCancelBg);color:var(--litepickerButtonCancelColor);border:0;padding:3px 7px 4px;border-radius:3px}.litepicker .container__footer .button-cancel>svg,.litepicker .container__footer .button-cancel>img{pointer-events:none}.litepicker .container__footer .button-apply{background-color:var(--litepickerButtonApplyBg);color:var(--litepickerButtonApplyColor);border:0;padding:3px 7px 4px;border-radius:3px;margin-left:10px;margin-right:10px}.litepicker .container__footer .button-apply:disabled{opacity:0.7}.litepicker .container__footer .button-apply>svg,.litepicker .container__footer .button-apply>img{pointer-events:none}.litepicker .container__tooltip{position:absolute;margin-top:-4px;padding:4px 8px;border-radius:4px;background-color:#fff;-webkit-box-shadow:0 1px 3px rgba(0,0,0,0.25);box-shadow:0 1px 3px rgba(0,0,0,0.25);white-space:nowrap;font-size:11px;pointer-events:none;visibility:hidden}.litepicker .container__tooltip:before{position:absolute;bottom:-5px;left:calc(50% - 5px);border-top:5px solid rgba(0,0,0,0.12);border-right:5px solid transparent;border-left:5px solid transparent;content:""}.litepicker .container__tooltip:after{position:absolute;bottom:-4px;left:calc(50% - 4px);border-top:4px solid #fff;border-right:4px solid transparent;border-left:4px solid transparent;content:""}.litepicker-open{overflow:hidden}.litepicker-backdrop{display:none;background-color:#000;opacity:0.3;position:fixed;top:0;right:0;bottom:0;left:0}\n', "" ]), 
         e.locals = {
             showWeekNumbers: "show-week-numbers",
             litepicker: "litepicker",
@@ -1778,7 +1780,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Object.defineProperty(e, "__esModule", {
             value: !0
         });
-        var r = i(0), l = i(3), d = a(i(1)), c = i(2);
+        var r = i(1), l = i(3), d = a(i(0)), c = i(2);
         l.Litepicker.prototype.show = function(t) {
             void 0 === t && (t = null);
             var e = t || this.options.element;
