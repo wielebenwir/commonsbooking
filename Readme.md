@@ -21,6 +21,15 @@ CommonsBooking is a plugin for the management and booking of common goods. This 
 * For users get [Support](https://commonsbooking.org/kontakt/)
 * For developers use the [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues) 
 
+## Installation
+
+### Using The WordPress Dashboard
+
+1. Navigate to the 'Add New' in the plugins dashboard
+2. Search for 'commonsbooking'
+3. Click 'Install Now'
+4. Activate the plugin in the plugins dashboard
+ 
 
 ### Uploading in WordPress Dashboard 
 
@@ -28,14 +37,14 @@ CommonsBooking is a plugin for the management and booking of common goods. This 
 2. Navigate to the 'Upload' area
 3. Select `commonsbooking.zip` from your computer
 4. Click 'Install Now'
-5. Activate the plugin in the Plugin dashboard
+5. Activate the plugin in the plugins dashboard
 
 ### Using FTP
 
 1. Download `commonsbooking.zip`
 2. Extract the `commonsbooking` directory to your computer
 3. Upload the `commonsbooking` directory to the `/wp-content/plugins/` directory
-4. Activate the plugin in the Plugin dashboard
+4. Activate the plugin in the plugins dashboard
 
 ### Using GitHub (developers only)
 
@@ -44,7 +53,7 @@ CommonsBooking is a plugin for the management and booking of common goods. This 
 3. Open a terminal and run `git clone https://github.com/wielebenwir/commonsbooking`
 4. cd into the directory commonsbooking and run `composer install`
 > This might fail, if you don't have the PHP extension [uopz](https://www.php.net/manual/en/book.uopz.php) installed. Try running `composer install --no-dev` if you just quickly want to test a specific branch without installing the extension.
-5. Activate the plugin in the Plugin dashboard
+5. Activate the plugin in the plugins dashboard
 
 ## Contribute
 
@@ -54,11 +63,11 @@ Either through translating WordPress into your native tongue ([see the already e
 
 ### Run plugin
 
-The most easy way to start hacking WordPress plugins in gernal (if you have no other development environment set up) is using [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/). Install it and it's dependencies (mainly Docker) and fire up in your favorite bash:
+The most easy way to start hacking WordPress plugins in general (if you have no other development environment set up) is using [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/). Install it and it's dependencies (mainly Docker) and fire it up in your favorite shell:
 ```
 wp-env start
 ```
-The provided `.wp-env.json` should be sufficient for normal development, for details see the [documentation of wp-env config](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/#wp-env-json). [You can create](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/#wp-env-override-json) an `.wp-env.override.json` for a custom configuration you don't want to check in.
+The provided `.wp-env.json` should be sufficient for normal development, for details see the [documentation of wp-env config](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/#wp-env-json). [You can create](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/#wp-env-override-json) a `.wp-env.override.json` for a custom configuration you don't want to check in.
 
 For testing, you can activate the [kasimir theme](github.com/flegfleg/kasimir-theme) via [wp cli](https://make.wordpress.org/cli/handbook/) inside the wp-env docker container:
 ```
