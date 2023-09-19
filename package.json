@@ -32,7 +32,9 @@
     "env:install-tests-cli": "./bin/install-wp-cli.sh tests-wordpress",
     "env:start": "wp-env start && npm run env:install-tests-cli",
     "env:stop": "wp-env stop",
-    "cypress:setup": "./bin/setup-cypress-env.sh"
+    "cypress:setup": "./bin/setup-cypress-env.sh",
+	"cypress:open": "cypress open --config-file tests/cypress/cypress.config.js",
+	"cypress:run": "cypress run --config-file tests/cypress/cypress.config.js"
   },
 	"dependencies": {
 		"leaflet": "^1.7.1",

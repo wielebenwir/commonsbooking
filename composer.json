@@ -22,7 +22,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "CommonsBooking\\Tests\\": "tests/"
+      "CommonsBooking\\Tests\\": "tests/php/"
     }
   },
   "repositories": [

@@ -1,6 +1,10 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
+  fixturesFolder: 'tests/cypress/fixtures',
+	screenshotsFolder: 'tests/cypress/screenshots',
+	videosFolder: 'tests/cypress/videos',
+	downloadsFolder: 'tests/cypress/downloads',
   env: {
       wpAdmin:'admin',
       wpSubscriber: 'subscriber',
@@ -11,6 +15,8 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
-    video: false
+    video: false,
+    specPattern: 'tests/cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
+		supportFile: 'tests/cypress/support/e2e.js',
   },
 });
