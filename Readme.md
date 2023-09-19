@@ -103,7 +103,11 @@ npm run cypress:setup
 
 Then you can run the tests:
 ```bash
-npx cypress run
+npm run cypress:run
+```
+Or open Cypress using
+```bash
+npm run cypress:open
 ```
 
 ### Update translations
