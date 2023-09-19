@@ -25,8 +25,9 @@ class Item extends View {
 		$location  = get_query_var( 'cb-location' ) ?: false;
 		$customId = md5($item->ID . $location);
 
-		if ( Plugin::getCacheItem($customId) ) {
-			return Plugin::getCacheItem($customId);
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$locations = \CommonsBooking\Repository\Location::getByItem( $item->ID, true );
 			$locationIds = array_map(
@@ -94,12 +95,10 @@ class Item extends View {
 	public static function shortcode( $atts ) {
 		global $templateData;
 		$templateData = [];
-		$items        = [];
 		$queryArgs    = shortcode_atts( static::$allowedShortCodeArgs, $atts, \CommonsBooking\Wordpress\CustomPostType\Item::getPostType() );
 
 		if ( is_array( $atts ) && array_key_exists( 'location-id', $atts ) ) {
-			$item    = \CommonsBooking\Repository\Item::getByLocation( $atts['location-id'] );
-			$items[] = $item;
+			$items = \CommonsBooking\Repository\Item::getByLocation( $atts['location-id'] );
 		} else {
 			$items = \CommonsBooking\Repository\Item::get( $queryArgs );
 		}

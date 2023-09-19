@@ -25,8 +25,9 @@ class Location extends View {
 		$item     = get_query_var( 'cb-item' ) ?: false;
 		$customId = md5($item . $location->ID);
 
-		if ( Plugin::getCacheItem($customId) ) {
-			return Plugin::getCacheItem($customId);
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$items    = \CommonsBooking\Repository\Item::getByLocation( $location->ID, true );
 			$itemIds = array_map(
@@ -159,9 +160,10 @@ class Location extends View {
 
 
 			echo '<div id="cb_locationview_map" style="width: 100%; height: 300px;"></div>';
-            wp_enqueue_script( 'cb-map-locationview_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-locationview.js' );
 
-			//map defaults
+            wp_enqueue_script( 'cb-map-locationview_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-locationview.js', array(), false, true );
+
+			//location geo-coordinates
 			$defaults = [
 				'latitude'  => $latitude,
 				'longitude' => $longitude,
