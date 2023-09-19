@@ -7,6 +7,10 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 use Exception;
 use CommonsBooking\View\Admin\Filter;
 
+/**
+ * Because we use CMB2 text_datetime_timestamp fields, the meta fields for start and end date are stored in unix
+ * timestamp (without timezone offset), when edited from admin backend.
+ */
 class Restriction extends CustomPostType {
 
 	private const SEND_BUTTON_ID = 'restriction-send';

@@ -5,24 +5,62 @@ namespace CommonsBooking\Messages;
 use WP_Error;
 use function commonsbooking_parse_template;
 
+/**
+ * This is the base class for all messages
+ */
 abstract class Message {
 
+	/**
+	 * The actions that are valid for this message. Usually a string.
+	 * @var array
+	 */
 	protected $validActions = [];
 
-	protected $postId;
-
+	/**
+	 * The action that is used for this message. Needs to be contained in $validActions
+	 * @var
+	 */
 	protected $action;
 
+	/**
+	 * The post that this message is about
+	 * @var
+	 */
 	protected $post;
 
+	/**
+	 * The recipient(s) of this message
+	 * @var
+	 */
 	protected $to;
 
+	/**
+	 * The e-mail headers
+	 * @var
+	 */
 	protected $headers;
 
+	/**
+	 * The subject text of this message
+	 * @var
+	 */
 	protected $subject;
 
+	/**
+	 * The body text of this message
+	 * @var
+	 */
 	protected $body;
 
+	/**
+	 * An associative array of a string attachment.
+	 *    'string' => String attachment data (required)
+	 *    'filename' => Name for the attachment (required)
+	 *    'encoding' => File encoding (defaults to 'base64')
+	 *    'type' => File MIME type (if left unspecified, PHPMailer will try to work it out from the file name)
+	 *    'disposition' => Disposition to use (defaults to 'attachment')
+	 * @var array
+	 */
 	protected $attachment = [];
 
 	/**
