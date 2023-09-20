@@ -11,7 +11,6 @@ use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use Exception;
 use WP_Post;
 use WP_Query;
@@ -67,11 +66,6 @@ class Migration {
 					'complete' => 0,
 					'failed'   => 0,
 				],
-				'restrictions' => [
-					'index'    => 0,
-					'complete' => 0,
-					'failed'   => 0,
-				],
 				'bookingCodes' => [
 					'index'    => 0,
 					'complete' => 0,
@@ -116,10 +110,6 @@ class Migration {
 			'bookings'     => [
 				'repoFunction'      => 'getBookings',
 				'migrationFunction' => 'migrateBooking',
-			],
-			'restrictions' => [
-				'repoFunction'		=> 'getRestrictions',
-				'migrationFunction'	=> 'migrateRestriction',
 			],
 			'bookingCodes' => [
 				'repoFunction'      => 'getBookingCodes',
@@ -579,29 +569,6 @@ class Migration {
 
 		$existingPost = self::getExistingPost( $booking['id'], \CommonsBooking\Wordpress\CustomPostType\Booking::$postType );
 
-		return self::savePostData( $existingPost, $postData, $postMeta );
-	}
-
-	public static function migrateRestriction( $restriction ): bool {
-
-		// Nothing to change for migration
-		$postData = array();
-		// Nothing to change for migration
-		$postMeta = array();
-				
-		$existingPost = self::getExistingPost( $restriction['id'], \CommonsBooking\Wordpress\CustomPostType\Restriction::$postType );
-
-		// Conditionally migrate
-		$restrictionItems     = get_post_meta( $existingPost->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID );
-		if ( empty( $restrictionItems) ) {
-			$postMeta[ \CommonsBooking\Model\Restriction::META_ITEM_ID ] = CustomPostType::SELECTION_ALL_POSTS;
-		}
-
-		$restrictionLocations = get_post_meta( $existingPost->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID );
-		if ( empty( $restrictionLocations) ) {
-			$postMeta[ \CommonsBooking\Model\Restriction::META_LOCATION_ID ] = CustomPostType::SELECTION_ALL_POSTS;
-		}
-		
 		return self::savePostData( $existingPost, $postData, $postMeta );
 	}
 
