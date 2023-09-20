@@ -1,0 +1,275 @@
+<?php
+
+namespace CommonsBooking\Service;
+
+use CommonsBooking\Model\Timeframe;
+use CommonsBooking\Plugin;
+use CommonsBooking\Settings\Settings;
+use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
+use CommonsBooking\Wordpress\Options\AdminOptions;
+use Psr\Cache\InvalidArgumentException;
+
+/**
+ * This class contains all the functions that are run when the plugin is upgraded to a new version.
+ * When upgrading, create a new instance of this class and call the run() function.
+ *
+ * The versions should use semantic versioning (https://semver.org/).
+ */
+class Upgrade
+{
+	const VERSION_OPTION = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
+	private string $previousVersion;
+	private string $currentVersion;
+
+	/**
+	 * This array contains all the tasks that need to be run when upgrading from a version lower than the key to the version of the value.
+	 * For example, if you introduce a new feature in version 2.6.0,
+	 * you would add a new entry to this array with the key being "2.6.0" and the value being the function that needs to be run.
+	 *
+	 * This is so that once the upgrade from a specific version has been run, it will not be run again.
+	 * @var array[]
+	 */
+	private static array $upgradeTasks = [
+		'2.6.0' => [
+			[\CommonsBooking\Migration\Booking::class, 'migrate'],
+			[self::class, 'setAdvanceBookingDaysDefault']
+		],
+		'2.8.0' => [
+			[\CommonsBooking\Service\Scheduler::class, 'unscheduleOldEvents']
+		],
+		'2.8.2' => [
+			[self::class, 'resetBrokenColorScheme']
+		],
+		'2.8.5' => [
+			[self::class, 'setRestrictionAllOption']
+		]
+	];
+
+	public function __construct( string $previousVersion, string $currentVersion ) {
+		$this->previousVersion = $previousVersion;
+		$this->currentVersion  = $currentVersion;
+	}
+
+	/**
+	 * Run a complete upgrade from the previous version to the current version.
+	 * Will return true if the version has changed and the upgrade has been run.
+	 * Will return false if the version has not changed and the upgrade has not been run.
+	 */
+	public function run(): bool {
+		// check if version has changed, or it is a new installation
+		if ( empty($this->currentVersion) || $this->previousVersion == $this->currentVersion ) {
+			return false;
+		}
+
+		// run upgrade tasks
+		$this->runUpgradeTasks();
+
+		// set Options default values (e.g. if there are new fields added)
+		AdminOptions::SetOptionsDefaultValues();
+
+		// flush rewrite rules
+		flush_rewrite_rules();
+
+		// Update Location Coordinates
+		self::updateLocationCoordinates();
+
+		// add role caps for custom post types
+		Plugin::addCPTRoleCaps();
+
+		// update version number in options
+		update_option( self::VERSION_OPTION, $this->currentVersion );
+
+		// Clear cache
+		try {
+			Cache::clearCache();
+		} catch ( InvalidArgumentException $e ) {
+			// Do nothing
+		}
+		return true;
+	}
+
+	/**
+	 * This runs the tasks that are specific for version updates and should only run once.
+	 * @return void
+	 */
+	public function runUpgradeTasks() {
+		foreach (self::$upgradeTasks as $version => $tasks) {
+			if (version_compare($this->previousVersion, $version, '<') && version_compare($this->currentVersion, $version, '>=')) {
+				foreach ($tasks as $task) {
+					list($className, $methodName) = $task;
+					call_user_func([$className, $methodName]);
+				}
+			}
+		}
+	}
+
+	/**
+	 * This function will determine if the plugin has been updated and run the upgrade tasks if necessary.
+	 *
+	 * @return void
+	 */
+	public static function runTasksAfterUpdate() {
+		$upgrade = new Upgrade(
+			esc_html( get_option( self::VERSION_OPTION ) ),
+			COMMONSBOOKING_VERSION );
+		$upgrade->run();
+	}
+
+	/**
+	 * renders a custom update notice in plugin list if the version number increases
+	 * in a major release e.g. 2.5 -> 2.6
+	 * This is a warning to users BEFORE they update to a new version.
+	 *
+	 * @return void
+	 */
+	public function updateNotice() {
+		if (! $this->isMajorUpdate()) {
+			return;
+		}
+		?>
+		<hr class="cb-major-update-warning__separator" />
+		<div class="cb-major-update-warning">
+			<div class="cb-major-update-warning__icon">
+				<i class="dashicons dashicons-megaphone"></i>
+			</div>
+			<div>
+				<div class="cb-major-update-warning__title">
+					<?php echo esc_html__( 'New features and changes: Please backup your site before upgrading!', 'commonsbooking' ); ?>
+				</div>
+				<div class="e-major-update-warning__message">
+					<?php
+					printf(
+					/* translators: %1$s Link open tag, %2$s: Link close tag. */
+						commonsbooking_sanitizeHTML(
+							__(
+								'
+					This CommonsBooking update has a lot of new features and changes on some templates.<br>
+					If you have modified any template files, please back them up and re-apply your changes after the update. <br>
+					<br><br>We highly recommend you to <strong>%1$sread the update information%2$s </strong> and make a backup of your site before upgrading.',
+								'commonsbooking'
+							)
+						),
+						'<a target="_blank" href="https://commonsbooking.org/docs/installation/update-info/">',
+						'</a>'
+					);
+					?>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Will get if the current version is a major update.
+	 * Note, that in CB, major updates are not the same as in semantic versioning.
+	 *
+	 * We consider a major update to be a change in the first or second number of the version.
+	 * The third number is considered a minor update or a patch.
+	 *
+	 * We do not usually update the first number, but if we do, it is a major update.
+	 *
+	 * Example:
+	 * 2.5.0 -> 2.6.0 is a major update
+	 * 2.5.0 -> 2.5.1 is a minor update
+	 *
+	 * @return bool
+	 */
+	public function isMajorUpdate() : bool {
+		$previousVersion = explode( '.', $this->previousVersion );
+		$currentVersion  = explode( '.', $this->currentVersion );
+
+		if ( $previousVersion[0] < $currentVersion[0] ) {
+			return true;
+		}
+
+		if ( $previousVersion[1] < $currentVersion[1] ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Gets location position for locations without coordinates.
+	 */
+	public static function updateLocationCoordinates() {
+		$locations = \CommonsBooking\Repository\Location::get();
+
+		foreach ( $locations as $location ) {
+			if ( ! ( $location->getMeta( 'geo_latitude' ) && $location->getMeta( 'geo_longitude' ) ) ) {
+				$location->updateGeoLocation();
+			}
+		}
+	}
+
+	/**
+	 * sets advance booking days to default value for existing timeframes.
+	 * Advances booking timeframes are available since 2.6 - all timeframes created prior to this version need to have this value set to a default value.
+	 * @since 2.6
+	 * @see \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS
+	 *
+	 * @return void
+	 */
+	public static function setAdvanceBookingDaysDefault() {
+		$timeframes = \CommonsBooking\Repository\Timeframe::getBookable( [], [], null, true );
+
+		foreach ( $timeframes as $timeframe ) {
+			if ( $timeframe->getMeta( Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) < 1 ) {
+				update_post_meta( $timeframe->ID, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, strval( \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS ) );
+			}
+		}
+	}
+
+
+	/**
+	 * In the past, if you wanted a restriction to apply to all items / locations, you would leave the respective field empty.
+	 * This would cause permission issues (more details see #1273).
+	 * This function migrates all restrictions to have the "all" option selected when the field was left empty.
+	 * @since 2.8.5
+	 * @return void
+	 * @throws \Exception
+	 */
+	public static function setRestrictionAllOption() {
+		$restrictions = \CommonsBooking\Repository\Restriction::get();
+
+		foreach ( $restrictions as $restriction ) {
+			$restrictionItems     = get_post_meta( $restriction->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID );
+			if ( empty( $restrictionItems) ) {
+				update_post_meta( $restriction->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID, CustomPostType::SELECTION_ALL_POSTS );
+			}
+
+			$restrictionLocations = get_post_meta( $restriction->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID );
+			if ( empty( $restrictionLocations) ) {
+				update_post_meta( $restriction->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID, CustomPostType::SELECTION_ALL_POSTS );
+			}
+		}
+	}
+
+	/**
+	 * reset greyed out color when upgrading, see issue #1121
+	 * @since 2.8.2
+	 * @return void
+	 */
+	public static function resetBrokenColorScheme() {
+		Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor', '#e0e0e0' );
+		Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_lighttext', '#a0a0a0');
+	}
+
+	/**
+	 * reset iCalendar Titles when upgrading, see issue #1251
+	 * @since 2.8.2
+	 * @return void
+	 */
+	public static function fixBrokenICalTitle() {
+		$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
+		$otherEventTitle = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
+		if ( str_contains( $eventTitle, 'post_name' ) ){
+			$updatedString = str_replace( 'post_name', 'post_title', $eventTitle );
+			Settings::updateOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title', $updatedString );
+		}
+		if ( str_contains( $otherEventTitle, 'post_name' ) ){
+			$updatedString = str_replace( 'post_name', 'post_title', $otherEventTitle );
+			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title', $updatedString );
+		}
+	}
+}
