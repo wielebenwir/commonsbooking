@@ -3,7 +3,7 @@ name: Deploy to WordPress.org
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "*.*.*"
     
 jobs:
   deploy:
