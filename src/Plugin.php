@@ -493,6 +493,15 @@ class Plugin {
 		}
 	}
 
+	public static function registerUserDataExporters( $exporters ) {
+		$exporters[COMMONSBOOKING_PLUGIN_SLUG] = array(
+			'exporter_friendly_name' => __( 'CommonsBooking Bookings', 'commonsbooking' ),
+			'callback'               => array( \CommonsBooking\Wordpress\CustomPostType\Booking::class, 'exportUserBookingsByEmail' ),
+		);
+
+		return $exporters;
+	}
+
 	/**
 	 * Gets location position for locations without coordinates.
 	 */
@@ -574,6 +583,9 @@ class Plugin {
         add_filter('cmb2_field_ajax_search_url', function(){
             return (COMMONSBOOKING_PLUGIN_URL . '/vendor/ed-itsolutions/cmb2-field-ajax-search/');
         });
+
+		//hook into WordPress personal data exporter
+		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'registerUserDataExporters' ) );
 
     	// iCal rewrite
 		iCalendar::initRewrite();

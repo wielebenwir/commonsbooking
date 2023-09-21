@@ -325,7 +325,7 @@ class Booking extends PostRepository {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getForUser( $user, bool $asModel = false, $startDate = null ): array {
+	public static function getForUser( \WP_User $user, bool $asModel = false, $startDate = null ): array {
 		$customId = $user->ID;
 
 		$cacheItem = Plugin::getCacheItem( $customId );

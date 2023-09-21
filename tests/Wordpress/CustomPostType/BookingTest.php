@@ -240,6 +240,44 @@ class BookingTest extends CustomPostTypeTest
 		$this->assertEquals( $bookingModel->post_name, $sameBookingModel->post_name );
 	}
 
+	/**
+	 * This will check if the bookings can be exported through the WordPress personal data export tool
+	 * @return void
+	 */
+	public function testExportUserBookingsByEmail() {
+		$booking = new \CommonsBooking\Model\Booking(
+			$this->createBooking(
+				$this->itemId,
+				$this->locationId,
+				strtotime( self::CURRENT_DATE ),
+				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+				'08:00 AM',
+				'12:00 PM',
+				'confirmed',
+				$this->subscriberId
+			)
+		);
+		$fullExport = Booking::exportUserBookingsByEmail( get_user_by('ID',$this->subscriberId)->user_email );
+		$this->assertIsArray( $fullExport );
+		$this->assertCount(1, $fullExport['data']);
+		$this->assertTrue( $fullExport['done'] );
+		$data = $fullExport['data'][0]['data'];
+		$this->assertEquals( $booking->pickupDatetime(), $data[0]['value'] );
+
+		//get empty export when e-mail is unknown
+		$emptyExport = Booking::exportUserBookingsByEmail( 'doi@knowy.ou' );
+		$this->assertIsArray( $emptyExport );
+		$this->assertCount(0, $emptyExport['data']);
+		$this->assertTrue( $emptyExport['done'] );
+
+		//make sure, that the export does not contain any other bookings (like bookings that are not the user's own)
+		$this->createAdministrator();
+		$emptyExport = Booking::exportUserBookingsByEmail( get_user_by('ID',$this->adminUserID)->user_email );
+		$this->assertIsArray( $emptyExport );
+		$this->assertCount(0, $emptyExport['data']);
+		$this->assertTrue( $emptyExport['done'] );
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->timeframeModel = new \CommonsBooking\Model\Timeframe(

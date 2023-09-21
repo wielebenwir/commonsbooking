@@ -940,6 +940,98 @@ class Booking extends Timeframe {
         }
     }
 
+	/**
+	 * Export user bookings using the supplied email. This is for integration with the WordPress personal data exporter.
+	 * TODO: FIX: We can't add pagination because of the way the @see \CommonsBooking\Repository\Booking::getForUser() works.
+	 *
+	 * @param string $emailAddress
+	 *
+	 * @return array
+	 */
+	public static function exportUserBookingsByEmail( string $emailAddress ): array {
+		 $exportItems = array();
+		 //The internal group ID used by WordPress to group the data exported by this exporter.
+		 $groupID = 'bookings';
+		 $groupLabel = __( 'CommonsBooking Buchungen', 'commonsbooking' );
+
+		 $user = get_user_by( 'email', $emailAddress );
+		 if ( ! $user ) {
+		 	return array(
+                'data' => $exportItems,
+                'done' => true,
+		    );
+		 }
+		 $bookings = \CommonsBooking\Repository\Booking::getForUser( $user, true );
+		 if ( ! $bookings ) {
+		 	return array(
+				'data' => $exportItems,
+				'done' => true,
+		    );
+		 }
+		/** @var \CommonsBooking\Model\Booking $booking */
+		foreach ($bookings as $booking) {
+			$bookingID = $booking->ID;
+			//exclude bookings that the user is eligible to see but are not their own
+			// we are only concerned about one user's personal data
+			if ( $booking->getUserData()->user_email !== $emailAddress ) {
+				continue;
+			}
+			$bookingData = [
+				[
+					'name'  => __( 'Booking start', 'commonsbooking' ),
+					'value' => $booking->pickupDatetime() ,
+				],
+				[
+					'name'  => __( 'Booking end', 'commonsbooking' ),
+					'value' => $booking->returnDatetime(),
+				],
+				[
+					'name'  => __( 'Time of booking', 'commonsbooking' ),
+					'value' => Helper::FormattedDateTime(get_post_timestamp( $bookingID ) ),
+				],
+				[
+					'name'  => __( 'Status', 'commonsbooking' ),
+					'value' => $booking->getStatus(),
+				],
+				[
+					'name'  => __( 'Booking code', 'commonsbooking' ),
+					'value' => $booking->getBookingCode(),
+				],
+				[
+					'name'  => __( 'Comment', 'commonsbooking' ),
+					'value' => $booking->returnComment(),
+				],
+				[
+					'name'  => __( 'Location', 'commonsbooking' ),
+					'value' => $booking->getLocation()->post_title,
+				],
+				[
+					'name'  => __( 'Item', 'commonsbooking' ),
+					'value' => $booking->getItem()->post_title,
+				],
+				[
+					'name'  => __( 'Time of cancellation', 'commonsbooking' ),
+					'value' => $booking->getMeta( 'cancellation_time' ) ? Helper::FormattedDateTime( $booking->getMeta( 'cancellation_time' ) ) : '',
+				],
+				[
+					'name'  => __( 'Admin booking by', 'commonsbooking' ),
+					'value' => $booking->getMeta( 'admin_booking_id' ) ? get_user_by( 'id', $booking->getMeta( 'admin_booking_id' ) )->display_name : '',
+				],
+			];
+
+			$exportItems[] = [
+				'group_id'    => $groupID,
+				'group_label' => $groupLabel,
+				'item_id'     => $bookingID,
+				'data'        => $bookingData,
+			];
+		 }
+		return array(
+			'data' => $exportItems,
+			'done' => true,
+		);
+	}
+
     /**
      * Returns the booking author if booking exists, otherwise returns current user
      * This is helper function
