@@ -1,9 +1,9 @@
+*.md
 /.github
-/.saas-cache
+/.sass-cache
 /bin
 /tests
 /.git
-/.saas-cache
 .distignore
 .editorconfig
 .phpcs.xml.dist
