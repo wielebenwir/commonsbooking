@@ -6,12 +6,12 @@ namespace CommonsBooking;
 use CommonsBooking\CB\CB1UserFields;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Map\LocationMapAdmin;
-use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Service\Cache;
 use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Service\iCalendar;
+use CommonsBooking\Service\Upgrade;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
@@ -239,7 +239,7 @@ class Plugin {
 
 	public static function admin_init() {
 		// check if we have a new version and run tasks
-		self::runTasksAfterUpdate();
+		Upgrade::runTasksAfterUpdate();
 
 		// Check if we need to run post options updated actions
 		if ( get_transient( 'commonsbooking_options_saved' ) == 1 ) {
@@ -247,62 +247,6 @@ class Plugin {
 
 			flush_rewrite_rules();
 			set_transient( 'commonsbooking_options_saved', 0 );
-		}
-	}
-
-	/**
-	 * Check if plugin is installed or updated an run tasks
-	 */
-	public static function runTasksAfterUpdate() {
-		$commonsbooking_version_option    = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
-		$commonsbooking_installed_version = esc_html( get_option( $commonsbooking_version_option ) );
-
-		// check if installed version differs from plugin version in database
-		if ( COMMONSBOOKING_VERSION != $commonsbooking_installed_version or ! isset( $commonsbooking_installed_version ) ) {
-
-			// reset greyed out color when upgrading, see issue #1121
-			Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor', '#e0e0e0' );
-			Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_lighttext', '#a0a0a0');
-
-			// reset iCalendar Titles when upgrading, see issue #1251
-			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
-			$otherEventTitle = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
-			if ( str_contains( $eventTitle, 'post_name' ) ){
-				$updatedString = str_replace( 'post_name', 'post_title', $eventTitle );
-				Settings::updateOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title', $updatedString );
-			}
-			if ( str_contains( $otherEventTitle, 'post_name' ) ){
-				$updatedString = str_replace( 'post_name', 'post_title', $otherEventTitle );
-				Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title', $updatedString );
-			}
-
-			// set Options default values (e.g. if there are new fields added)
-			AdminOptions::SetOptionsDefaultValues();
-
-			// flush rewrite rules
-			flush_rewrite_rules();
-
-			// Update Location Coordinates
-			self::updateLocationCoordinates();
-
-			// add role caps for custom post types
-			self::addCPTRoleCaps();
-
-			// update version number in options
-			update_option( $commonsbooking_version_option, COMMONSBOOKING_VERSION );
-
-			// migrate bookings to new cpt
-			\CommonsBooking\Migration\Booking::migrate();
-
-            // Set default values to existing timeframes for advance booking days
-            self::setAdvanceBookingDaysDefault();
-
-			// Clear cache
-			self::clearCache();
-
-			// unschedules deprecated cronjobs
-			Scheduler::unscheduleOldEvents();
-
 		}
 	}
 
@@ -629,7 +573,8 @@ class Plugin {
 		add_action(
             'in_plugin_update_message-' . COMMONSBOOKING_PLUGIN_BASE,
             function ( $plugin_data ) {
-                $this->UpdateNotice( COMMONSBOOKING_VERSION, $plugin_data['new_version'] );
+				$upgrade = new Upgrade(COMMONSBOOKING_VERSION, $plugin_data['new_version']);
+                $upgrade->updateNotice();
             }
         );
 
@@ -835,73 +780,4 @@ class Plugin {
 			$crop
 		);
 	}
-
-	/**
-	 * renders a custom update notice in plugin list if the version number increases
-	 * in a major release e.g. 2.5 -> 2.6
-	 *
-	 * @param  mixed $current_version
-	 * @param  mixed $new_version
-	 * @return void
-	 */
-	function UpdateNotice( $current_version, $new_version ) {
-
-		$current_version_minor_part = explode( '.', $current_version )[1];
-		$new_version_minor_part     = explode( '.', $new_version )[1];
-
-		if ( $current_version_minor_part === $new_version_minor_part ) {
-			return;
-		}
-
-        ?>
-		<hr class="cb-major-update-warning__separator" />
-		<div class="cb-major-update-warning">
-			<div class="cb-major-update-warning__icon">
-				<i class="dashicons dashicons-megaphone"></i>
-			</div>
-			<div>
-				<div class="cb-major-update-warning__title">
-					<?php echo esc_html__( 'New features and changes: Please backup before upgrade!', 'commonsbooking' ); ?>
-				</div>
-				<div class="e-major-update-warning__message">
-					<?php
-					printf(
-						/* translators: %1$s Link open tag, %2$s: Link close tag. */
-						commonsbooking_sanitizeHTML(
-                            __(
-                                '
-					This CommonsBooking update has a lot of new features and changes on some templates.<br>
-					If you have modified any template files, please backup and check them after update. <br>
-                    This update contains new features like reminder emails, restriction management, advance booking limits and more.
-					<br><br>We highly recommend you to <strong>%1$sread the update information%2$s </strong> and make a backup of your site before upgrading.',
-                                'commonsbooking'
-                            )
-                        ),
-						'<a target="_blank" href="https://commonsbooking.org/docs/installation/update-info/">',
-						'</a>'
-					);
-					?>
-				</div>
-			</div>
-		</div>
-        <?php
-	}
-
-    /**
-     * sets advance booking days to default value for existing timeframes.
-     * Advances booking timeframes are available since 2.6 - all timeframes created prior to this version need to have this value set to a default value.
-     * @see \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS
-     *
-     * @return void
-     */
-    public static function setAdvanceBookingDaysDefault() {
-        $timeframes = \CommonsBooking\Repository\Timeframe::getBookable( [], [], null, true );
-
-        foreach ( $timeframes as $timeframe ) {
-            if ( $timeframe->getMeta( 'timeframe-advance-booking-days' ) < 1 ) {
-                update_post_meta( $timeframe->ID, 'timeframe-advance-booking-days', strval( \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS ) );
-            }
-        }
-    }
-
 }
