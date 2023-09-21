@@ -952,7 +952,7 @@ class Booking extends Timeframe {
 		 $exportItems = array();
 		 //The internal group ID used by WordPress to group the data exported by this exporter.
 		 $groupID = 'bookings';
-		 $groupLabel = __( 'CommonsBooking Buchungen', 'commonsbooking' );
+		 $groupLabel = __( 'CommonsBooking Bookings', 'commonsbooking' );
 
 		 $user = get_user_by( 'email', $emailAddress );
 		 if ( ! $user ) {
