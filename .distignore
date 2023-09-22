@@ -1,13 +1,17 @@
 *.md
+/.wordpress-org
 /.github
+/.git
 /.sass-cache
+/node_modules
 /bin
 /tests
-/.git
+
 .distignore
 .editorconfig
 .phpcs.xml.dist
 .gitignore
+
 codecov.yml
 commonsbooking.zip
 composer.json
@@ -19,4 +23,3 @@ package-lock.json
 phpunit.xml.dist
 zipdist.sh
 README.md
-
