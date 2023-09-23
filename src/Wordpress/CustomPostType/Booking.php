@@ -1079,8 +1079,6 @@ class Booking extends Timeframe {
 			$removedItems = true;
 		}
 
-		wp_cache_flush();
-
 		$done = count( $bookings ) < $itemsPerPage;
 		return array(
 			'items_removed'  => $removedItems,
