@@ -609,7 +609,7 @@ class Plugin {
 		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'registerUserDataExporters' ) );
 
 		//hook into WordPress personal data eraser
-		add_filter( 'wp_privacy_personal_data_erasers', 'registerUserDataErasers' );
+		add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'registerUserDataErasers' ) );
 
     	// iCal rewrite
 		iCalendar::initRewrite();
