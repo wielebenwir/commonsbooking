@@ -942,7 +942,6 @@ class Booking extends Timeframe {
 
 	/**
 	 * Export user bookings using the supplied email. This is for integration with the WordPress personal data exporter.
-	 * TODO: FIX: We can't add pagination because of the way the @see \CommonsBooking\Repository\Booking::getForUser() works.
 	 *
 	 * @param string $emailAddress
 	 *
