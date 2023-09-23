@@ -1034,6 +1034,62 @@ class Booking extends Timeframe {
 		);
 	}
 
+	/**
+	 * Remove user bookings using the supplied email. This is for integration with the WordPress personal data eraser.
+	 * @param string $emailAddress The email address
+	 * @param $page This parameter has no real use in this function, we just use it to stick to WordPress expected parameters.
+	 *
+	 * @return array
+	 */
+	public static function removeUserBookingsByEmail( string $emailAddress, $page = 1 ): array {
+		//we reset the page to 1, because we are deleting our results as we go. Therefore, increasing the page number would skip some results.
+		$page = 1;
+		$itemsPerPage = 10;
+		$removedItems = false;
+
+		$user = get_user_by( 'email', $emailAddress );
+		if ( ! $user ) {
+			return array(
+				'items_removed'  => $removedItems,
+				'items_retained' => false,
+				'messages'       => array(),
+				'done'           => true,
+			);
+		}
+		$bookings = \CommonsBooking\Repository\Booking::getForUserPaginated( $user, $page, $itemsPerPage );
+		if ( ! $bookings ) {
+			return array(
+				'items_removed'  => $removedItems,
+				'items_retained' => false,
+				'messages'       => array(),
+				'done'           => true,
+			);
+		}
+		foreach ($bookings as $booking) {
+			$bookingID = $booking->ID;
+			//exclude bookings that the user is eligible to see but are not their own
+			// we are only concerned about one user's personal data
+			if ( $booking->getUserData()->user_email !== $emailAddress ) {
+				continue;
+			}
+			//Cancel the booking before deletion so that status change emails are sent
+			$booking->cancel();
+			//Delete the booking
+			wp_delete_post( $bookingID, true );
+			$removedItems = true;
+		}
+
+		wp_cache_flush();
+
+		$done = count( $bookings ) < $itemsPerPage;
+		return array(
+			'items_removed'  => $removedItems,
+			'items_retained' => false, // always false, we don't retain any data
+			'messages'       => array(),
+			'done'           => $done,
+		);
+	}
+
     /**
      * Returns the booking author if booking exists, otherwise returns current user
      * This is helper function

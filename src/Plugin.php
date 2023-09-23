@@ -505,8 +505,22 @@ class Plugin {
 			'exporter_friendly_name' => __( 'CommonsBooking Bookings', 'commonsbooking' ),
 			'callback'               => array( \CommonsBooking\Wordpress\CustomPostType\Booking::class, 'exportUserBookingsByEmail' ),
 		);
-
 		return $exporters;
+	}
+
+	/**
+	 * Registers all user data erasers ({@link https://developer.wordpress.org/plugins/privacy/adding-the-personal-data-eraser-to-your-plugin/}).
+	 *
+	 * @param $erasers
+	 *
+	 * @return mixed
+	 */
+	public static function registerUserDataErasers( $erasers ) {
+		$erasers[COMMONSBOOKING_PLUGIN_SLUG] = array(
+			'eraser_friendly_name' => __( 'CommonsBooking Bookings', 'commonsbooking' ),
+			'callback'             => array( \CommonsBooking\Wordpress\CustomPostType\Booking::class, 'removeUserBookingsByEmail'),
+		);
+		return $erasers;
 	}
 
 	/**
@@ -593,6 +607,9 @@ class Plugin {
 
 		//hook into WordPress personal data exporter
 		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'registerUserDataExporters' ) );
+
+		//hook into WordPress personal data eraser
+		add_filter( 'wp_privacy_personal_data_erasers', 'registerUserDataErasers' );
 
     	// iCal rewrite
 		iCalendar::initRewrite();
