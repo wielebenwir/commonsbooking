@@ -948,27 +948,28 @@ class Booking extends Timeframe {
 	 *
 	 * @return array
 	 */
-	public static function exportUserBookingsByEmail( string $emailAddress ): array {
-		 $exportItems = array();
-		 //The internal group ID used by WordPress to group the data exported by this exporter.
-		 $groupID = 'bookings';
-		 $groupLabel = __( 'CommonsBooking Bookings', 'commonsbooking' );
+	public static function exportUserBookingsByEmail( string $emailAddress, $page = 1 ): array {
+		$page = intval( $page );
+		$itemsPerPage = 10;
+		$exportItems = array();
+		//The internal group ID used by WordPress to group the data exported by this exporter.
+		$groupID = 'bookings';
+		$groupLabel = __( 'CommonsBooking Bookings', 'commonsbooking' );
 
-		 $user = get_user_by( 'email', $emailAddress );
-		 if ( ! $user ) {
-		 	return array(
-                'data' => $exportItems,
-                'done' => true,
-		    );
-		 }
-		 $bookings = \CommonsBooking\Repository\Booking::getForUser( $user, true );
-		 if ( ! $bookings ) {
-		 	return array(
-				'data' => $exportItems,
-				'done' => true,
-		    );
-		 }
-		/** @var \CommonsBooking\Model\Booking $booking */
+		$user = get_user_by( 'email', $emailAddress );
+		if ( ! $user ) {
+		   return array(
+	           'data' => $exportItems,
+	           'done' => true,
+		   );
+		}
+		$bookings = \CommonsBooking\Repository\Booking::getForUserPaginated( $user, $page, $itemsPerPage );
+		if ( ! $bookings ) {
+		   return array(
+			'data' => $exportItems,
+			'done' => true,
+		   );
+		}
 		foreach ($bookings as $booking) {
 			$bookingID = $booking->ID;
 			//exclude bookings that the user is eligible to see but are not their own
@@ -1026,9 +1027,10 @@ class Booking extends Timeframe {
 				'data'        => $bookingData,
 			];
 		 }
+		$done = count( $bookings ) < $itemsPerPage;
 		return array(
 			'data' => $exportItems,
-			'done' => true,
+			'done' => $done,
 		);
 	}
 

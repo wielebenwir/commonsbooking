@@ -66,6 +66,94 @@ class BookingTest extends CustomPostTypeTest {
 		);
 		$this->assertNull( $booking );
 	}
+	
+	public function testGetForUsersPaginated() {
+		//let's use the subscriber here to not get confused with the other tests
+		$this->createSubscriber();
+		$subscriber = get_user_by('id', $this->subscriberId);
+		$nextWeek = new \CommonsBooking\Model\Booking(
+			$this->createBooking(
+				$this->testLocation,
+				$this->testItem,
+				strtotime( '+8 day', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+9 days', strtotime( self::CURRENT_DATE ) ),
+				'8:00 AM',
+				'12:00 PM',
+				'confirmed',
+				$this->subscriberId
+			)
+		);
+		Booking::getForUserPaginated($subscriber);
+		$this->assertCount(1, Booking::getForUserPaginated($subscriber));
+		$this->assertCount(0, Booking::getForUserPaginated($subscriber, 2));
+
+		//now, let's automatically create a whole bunch of bookings for the subscriber
+		$bookingIds = [ $nextWeek->ID ];
+		for ($i = 0; $i < 20; $i++) {
+			$bookingIds[] = $this->createBooking(
+				$this->testLocation,
+				$this->testItem,
+				strtotime( '+'.($i+10).' day', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+'.($i+11).' days', strtotime( self::CURRENT_DATE ) ),
+				'8:00 AM',
+				'12:00 PM',
+				'confirmed',
+				$this->subscriberId
+			);
+		}
+		$this->assertCount(21, Booking::getForUserPaginated($subscriber, 1, 21));
+		//all should fit on one page
+		$this->assertCount(0, Booking::getForUserPaginated($subscriber, 2, 21));
+
+		$firstPage = Booking::getForUserPaginated($subscriber, 1, 10);
+		$secondPage = Booking::getForUserPaginated($subscriber, 2, 10);
+		$thirdPage = Booking::getForUserPaginated($subscriber, 3, 10);
+
+		$firstPage = array_map(function($booking) {
+			return $booking->ID;
+		}, $firstPage);
+		$secondPage = array_map(function($booking) {
+			return $booking->ID;
+		}, $secondPage);
+		$thirdPage = array_map(function($booking) {
+			return $booking->ID;
+		}, $thirdPage);
+
+		$this->assertEmpty(array_intersect($firstPage, $secondPage, $thirdPage));
+		$this->assertCount(10, $firstPage);
+		$this->assertCount(10, $secondPage);
+		$this->assertCount(1, $thirdPage);
+		//remove the bookings one by one to make sure there are no doubled posts as well
+		foreach ($firstPage as $booking) {
+			$key = array_search($booking, $bookingIds);
+			if ($key !== false) {
+				unset($bookingIds[$key]);
+			}
+			else {
+				$this->fail('Booking with ID '.$booking.' not found in bookingIds array');
+			}
+		}
+		foreach ($secondPage as $booking) {
+			$key = array_search($booking, $bookingIds);
+			if ($key !== false) {
+				unset($bookingIds[$key]);
+			}
+			else {
+				$this->fail('Booking with ID '.$booking.' not found in bookingIds array');
+			}
+		}
+		foreach ($thirdPage as $booking) {
+			$key = array_search($booking, $bookingIds);
+			if ($key !== false) {
+				unset($bookingIds[$key]);
+			}
+			else {
+				$this->fail('Booking with ID '.$booking.' not found in bookingIds array');
+			}
+		}
+		//now, our array should be empty
+		$this->assertCount(0, $bookingIds);
+	}
 
 	/**
 	 * Test if we get bookings for current user.

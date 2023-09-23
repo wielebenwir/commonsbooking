@@ -276,6 +276,33 @@ class BookingTest extends CustomPostTypeTest
 		$this->assertIsArray( $emptyExport );
 		$this->assertCount(0, $emptyExport['data']);
 		$this->assertTrue( $emptyExport['done'] );
+
+		//now, we test the proper export of multiple bookings with pagination
+		$bookingIds = [ $booking->ID ];
+		for ($i = 0; $i < 20; $i++) {
+			$bookingIds[] = $this->createBooking(
+				$this->itemId,
+				$this->locationId,
+				strtotime( '+'.($i+10).' day', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+'.($i+11).' days', strtotime( self::CURRENT_DATE ) ),
+				'08:00 AM',
+				'12:00 PM',
+				'confirmed',
+				$this->subscriberId
+			);
+		}
+		$partialExport = Booking::exportUserBookingsByEmail( get_user_by('ID',$this->subscriberId)->user_email );
+		$this->assertIsArray( $partialExport );
+		$this->assertCount(10, $partialExport['data']);
+		$this->assertFalse( $partialExport['done'] );
+		$otherPartialExport = Booking::exportUserBookingsByEmail( get_user_by('ID',$this->subscriberId)->user_email, 2 );
+		$this->assertIsArray( $otherPartialExport );
+		$this->assertCount(10, $otherPartialExport['data']);
+		$this->assertFalse( $otherPartialExport['done'] );
+		$lastPartialExport = Booking::exportUserBookingsByEmail( get_user_by('ID',$this->subscriberId)->user_email, 3 );
+		$this->assertIsArray( $lastPartialExport );
+		$this->assertCount(1, $lastPartialExport['data']);
+		$this->assertTrue( $lastPartialExport['done'] );
 	}
 
 	protected function setUp(): void {
