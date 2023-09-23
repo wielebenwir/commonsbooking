@@ -84,6 +84,7 @@ class Timeframe extends PostRepository {
 	 * Why? We have different types of timeframes and in some cases we need multiple of them.
 	 *      In this case we need this function.
 	 *      Other functions use this one as base function for more specialized searches.
+	 * This function is not based on the WP_Query class, probably because of performance reasons.
 	 *
 	 * @param array $locations
 	 * @param array $items

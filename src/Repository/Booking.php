@@ -77,26 +77,7 @@ class Booking extends PostRepository {
 		// Overwrite args with passed custom args
 		$args = array_merge( $args, $customArgs );
 
-		$query = new WP_Query( $args );
-		if ( $query->have_posts() ) {
-			$posts = $query->get_posts();
-
-			// Filter by post_status, query seems not to work reliable
-			$posts = array_filter(
-                $posts,
-                function ( $post ) use ( $args ) {
-                    return in_array( $post->post_status, $args['post_status'] );
-                }
-            );
-
-			foreach ( $posts as &$post ) {
-				$post = new \CommonsBooking\Model\Booking( $post );
-			}
-
-			return $posts;
-		}
-
-		return [];
+		return self::getModelsFromQuery( $args );
 	}
 
 	/**
@@ -293,27 +274,7 @@ class Booking extends PostRepository {
 		$args = array_merge( $args, $customArgs );
 
 
-
-		$query = new WP_Query( $args );
-		if ( $query->have_posts() ) {
-			$posts = $query->get_posts();
-
-			// Filter by post_status, query seems not to work reliable
-			$posts = array_filter(
-                $posts,
-                function ( $post ) use ( $args ) {
-                    return in_array( $post->post_status, $args['post_status'] );
-                }
-            );
-
-			foreach ( $posts as &$post ) {
-				$post = new \CommonsBooking\Model\Booking( $post );
-			}
-
-			return $posts;
-		}
-
-		return [];
+		return self::getModelsFromQuery( $args );
 	}
 
 	/**
@@ -380,7 +341,8 @@ class Booking extends PostRepository {
 	}
 
 	/**
-	 * Returns bookings.
+	 * Returns bookings. This uses the CommonsBooking\Repository\Timeframe::get() method which
+	 * is not based on the WP_Query class but will perform its own SQL query.
 	 *
 	 * @param array        $locations
 	 * @param array        $items
@@ -465,6 +427,37 @@ class Booking extends PostRepository {
 
 		return $existingBookingsInRange;
 
+	}
+
+	/**
+	 * Will take a valid WP_Query args array and return an array of Booking models.
+	 *
+	 * @param array $args
+	 *
+	 * @return \CommonsBooking\Model\Booking[]
+	 * @throws Exception
+	 */
+	private static function getModelsFromQuery( array $args ): array {
+		$query = new WP_Query( $args );
+		if ( $query->have_posts() ) {
+			$posts = $query->get_posts();
+
+			// Filter by post_status, query seems not to work reliable
+			$posts = array_filter(
+				$posts,
+				function ( $post ) use ( $args ) {
+					return in_array( $post->post_status, $args['post_status'] );
+				}
+			);
+
+			foreach ( $posts as &$post ) {
+				$post = new \CommonsBooking\Model\Booking( $post );
+			}
+
+			return $posts;
+		}
+
+		return [];
 	}
 
 }

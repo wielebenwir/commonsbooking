@@ -10,7 +10,7 @@ use WP_Post;
 
 class BookingTest extends CustomPostTypeTest {
 
-	private $timeframeOne;
+	private $confirmedBookingEndingToday;
 
 	private $testItem;
 
@@ -49,14 +49,14 @@ class BookingTest extends CustomPostTypeTest {
 	 */
 	public function testGetByTimerange() {
 		$booking = Booking::getByDate(
-			get_post_meta( $this->timeframeOne, Timeframe::REPETITION_START, true ),
-			get_post_meta( $this->timeframeOne, Timeframe::REPETITION_END, true ),
+			get_post_meta( $this->confirmedBookingEndingToday, Timeframe::REPETITION_START, true ),
+			get_post_meta( $this->confirmedBookingEndingToday, Timeframe::REPETITION_END, true ),
 			$this->locationId,
 			$this->itemId
 		);
 
 		$this->assertTrue( $booking instanceof \CommonsBooking\Model\Booking );
-		$this->assertTrue( $booking->getPost()->ID == $this->timeframeOne );
+		$this->assertTrue( $booking->getPost()->ID == $this->confirmedBookingEndingToday );
 
 		$booking = Booking::getByDate(
 			strtotime( 'midnight' ),
@@ -174,9 +174,9 @@ class BookingTest extends CustomPostTypeTest {
 
 	protected function setUp() : void {
 		parent::setUp();
-		$this->timeframeOne = parent::createConfirmedBookingEndingToday();
-		$this->timeframeTwo = parent::createConfirmedBookingStartingToday();
-		$this->testItem     = parent::createItem( 'testitem', 'publish' );
+		$this->confirmedBookingEndingToday   = parent::createConfirmedBookingEndingToday();
+		$this->confirmedBookingStartingToday = parent::createConfirmedBookingStartingToday();
+		$this->testItem                      = parent::createItem( 'testitem', 'publish' );
 		$this->testLocation = parent::createLocation( 'testlocation', 'publish' );
 
 		$this->testBooking = $this->createBooking(
