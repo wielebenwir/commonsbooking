@@ -119,40 +119,13 @@ class BookingTest extends CustomPostTypeTest {
 			return $booking->ID;
 		}, $thirdPage);
 
+		//make sure, that there are no duplicates
 		$this->assertEmpty(array_intersect($firstPage, $secondPage, $thirdPage));
 		$this->assertCount(10, $firstPage);
 		$this->assertCount(10, $secondPage);
 		$this->assertCount(1, $thirdPage);
-		//remove the bookings one by one to make sure there are no doubled posts as well
-		foreach ($firstPage as $booking) {
-			$key = array_search($booking, $bookingIds);
-			if ($key !== false) {
-				unset($bookingIds[$key]);
-			}
-			else {
-				$this->fail('Booking with ID '.$booking.' not found in bookingIds array');
-			}
-		}
-		foreach ($secondPage as $booking) {
-			$key = array_search($booking, $bookingIds);
-			if ($key !== false) {
-				unset($bookingIds[$key]);
-			}
-			else {
-				$this->fail('Booking with ID '.$booking.' not found in bookingIds array');
-			}
-		}
-		foreach ($thirdPage as $booking) {
-			$key = array_search($booking, $bookingIds);
-			if ($key !== false) {
-				unset($bookingIds[$key]);
-			}
-			else {
-				$this->fail('Booking with ID '.$booking.' not found in bookingIds array');
-			}
-		}
-		//now, our array should be empty
-		$this->assertCount(0, $bookingIds);
+		$allTogether = array_merge($firstPage, $secondPage, $thirdPage);
+		$this->assertEqualsCanonicalizing($allTogether, $bookingIds);
 	}
 
 	/**
