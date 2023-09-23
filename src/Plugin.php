@@ -493,6 +493,13 @@ class Plugin {
 		}
 	}
 
+	/**
+ 	 * Registers all user data exporters ({@link https://developer.wordpress.org/plugins/privacy/adding-the-personal-data-exporter-to-your-plugin/}).
+ 	 *
+ 	 * @param array $exporters
+ 	 *
+ 	 * @return mixed
+ 	 */
 	public static function registerUserDataExporters( $exporters ) {
 		$exporters[COMMONSBOOKING_PLUGIN_SLUG] = array(
 			'exporter_friendly_name' => __( 'CommonsBooking Bookings', 'commonsbooking' ),
