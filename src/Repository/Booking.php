@@ -406,7 +406,7 @@ class Booking extends PostRepository {
 			'posts_per_page' => $perPage,
 			'paged' => $page,
 			'orderby' => 'ID',
-			'order' => 'DESC',
+			'order' => 'ASC',
 		);
 		// Overwrite args with passed custom args
 		$args = array_merge( $args, $customArgs );

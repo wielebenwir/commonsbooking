@@ -944,6 +944,7 @@ class Booking extends Timeframe {
 	 * Export user bookings using the supplied email. This is for integration with the WordPress personal data exporter.
 	 *
 	 * @param string $emailAddress
+	 * @param $page
 	 *
 	 * @return array
 	 */
