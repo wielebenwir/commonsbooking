@@ -4,6 +4,7 @@ namespace CommonsBooking\Tests\Model;
 
 use CommonsBooking\Model\Restriction;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 
 class RestrictionTest extends CustomPostTypeTest {
 
@@ -60,6 +61,65 @@ class RestrictionTest extends CustomPostTypeTest {
 			strtotime("+3 weeks", strtotime(self::CURRENT_DATE))
 		);
 
+	}
+
+	public function testIsValid() {
+		$restriction = new Restriction($this->restrictionWithoutEndDateId);
+		$this->assertTrue( $restriction->isValid() );
+
+		$restriction = new Restriction($this->restrictionWithEndDateId);
+		$this->assertTrue( $restriction->isValid() );
+
+		$restriction = new Restriction($this->restrictionForEverything);
+		$this->assertTrue( $restriction->isValid() );
+
+		$restrictionNoItem = new Restriction(
+			$this->createRestriction(
+				Restriction::TYPE_HINT,
+				$this->locationId,
+				"",
+				strtotime(self::CURRENT_DATE),
+				strtotime("+3 weeks", strtotime(self::CURRENT_DATE))
+			)
+		);
+		try {
+			$restrictionNoItem->isValid();
+			$this->fail("Expected exception not thrown");
+		} catch (\Exception $e) {
+			$this->assertStringContainsString("No item selected", $e->getMessage());
+		}
+
+		$restrictionNoLocation = new Restriction(
+			$this->createRestriction(
+				Restriction::TYPE_HINT,
+				"",
+				$this->itemId,
+				strtotime(self::CURRENT_DATE),
+				strtotime("+3 weeks", strtotime(self::CURRENT_DATE))
+			)
+		);
+		try {
+			$restrictionNoLocation->isValid();
+			$this->fail("Expected exception not thrown");
+		} catch (\Exception $e) {
+			$this->assertStringContainsString("No location selected", $e->getMessage());
+		}
+
+		$restrictionDatesWrong = new Restriction(
+			$this->createRestriction(
+				Restriction::TYPE_HINT,
+				$this->locationId,
+				$this->itemId,
+				strtotime("+2 months", strtotime(self::CURRENT_DATE)),
+				strtotime("+1 months", strtotime(self::CURRENT_DATE))
+			)
+		);
+		try {
+			$restrictionDatesWrong->isValid();
+			$this->fail("Expected exception not thrown");
+		} catch (\Exception $e) {
+			$this->assertStringContainsString("Start date is after end date", $e->getMessage());
+		}
 	}
 
 	protected function tearDown() : void {

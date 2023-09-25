@@ -3,9 +3,11 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Exception\RestrictionInvalidException;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\RestrictionMessage;
+use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use DateTime;
 
 /**
@@ -20,6 +22,7 @@ use DateTime;
  */
 class Restriction extends CustomPost {
 
+	public const ERROR_TYPE = 'restrictionValidationFailed';
 	/**
 	 * Referred to in the frontend as "total breakdown".
 	 * This means, that the item is not available for booking and that all corresponding bookings will be cancelled.
@@ -308,6 +311,29 @@ class Restriction extends CustomPost {
 				$this->sendRestrictionMails( $canceledBookings );
 			}
 		}
+	}
+
+	/**
+	 * Returns true if restriction is valid.
+	 * This is used to check if the restriction is valid before it will be published.
+	 * Will throw an exception containing the error message if the restriction is not valid. The error message is expanded in the exception class.
+	 * @return true
+	 * @throws RestrictionInvalidException
+	 */
+	public function isValid(): bool {
+		if ($this->getItemIds() == [] ) {
+			throw new RestrictionInvalidException( __( 'No item selected.', 'commonsbooking' ) );
+		}
+
+		if ($this->getLocationIds() == [] ) {
+			throw new RestrictionInvalidException( __( 'No location selected.', 'commonsbooking' ) );
+		}
+
+		if ( $this->getStartDate() > $this->getEndDate() ) {
+			throw new RestrictionInvalidException( __( 'Start date is after end date.', 'commonsbooking' ) );
+		}
+
+		return true;
 	}
 
 	/**

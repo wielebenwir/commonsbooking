@@ -4,6 +4,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 
+use CommonsBooking\Exception\RestrictionInvalidException;
 use Exception;
 use CommonsBooking\View\Admin\Filter;
 
@@ -521,18 +522,33 @@ Select the desired status and then click the "Send" button to send the e-mail.<b
 	}
 
 	/**
-	 * Handles save-Request for location.
+	 * Handles save-Request for restriction.
 	 */
 	public function savePost( $post_id, $post ) {
 		if ( $post->post_type == self::$postType && $post_id ) {
 			if ( $this->hasRunBefore( __METHOD__ ) ) {
 				return;
 			}
+			try {
+				$restriction = new \CommonsBooking\Model\Restriction( $post_id );
+				$restriction->isValid();
+			} catch ( RestrictionInvalidException $e ) {
+				set_transient(
+					\CommonsBooking\Model\Restriction::ERROR_TYPE,
+					commonsbooking_sanitizeHTML($e->getMessage()),
+					45 );
+
+				// set post_status to draft if not valid
+				if ( $post->post_status !== 'draft' ) {
+					$post->post_status = 'draft';
+					wp_update_post( $post );
+				}
+				return;
+			}
 
 			if ( array_key_exists( self::SEND_BUTTON_ID, $_REQUEST ) ) {
 				update_post_meta( $post_id, \CommonsBooking\Model\Restriction::META_SENT, time() );
 				try {
-					$restriction = new \CommonsBooking\Model\Restriction( $post_id );
 					$restriction->apply();
 				} catch ( Exception $e ) {
 					// nothing to do in this case.
