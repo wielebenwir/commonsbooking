@@ -265,6 +265,39 @@ class Booking extends View {
 		}
 	}
 
+	public static function getLocationForItem_AJAX() {
+		//verify nonce
+		check_ajax_referer( 'cb_get_bookable_location', 'nonce' );
+
+		$postData = isset( $_POST['data'] ) ? (array) $_POST['data'] : array();
+		$postData = commonsbooking_sanitizeArrayorString( $postData );
+		$itemID = intval ($postData['itemID']);
+
+		try {
+			$itemModel = new \CommonsBooking\Model\Item($itemID);
+			$location = \CommonsBooking\Repository\Location::getByItem($itemID, true);
+		}
+		catch (Exception $e) {
+			wp_send_json_error( array(
+				'message' => $e->getMessage()
+			) );
+		}
+		//pick the first location, no matter what
+		$location = reset($location);
+		if ($location) {
+			wp_send_json( array(
+				'success' => true,
+				'locationID'                 => $location->ID
+				)
+			);
+		}
+		else {
+			wp_send_json_error( array(
+				'message' => 'No location found for this item.'
+			) );
+		}
+	}
+
 	/**
 	 * Bookings shortcode
 	 *
