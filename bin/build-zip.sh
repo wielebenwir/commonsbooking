@@ -15,7 +15,7 @@ npm ci
 echo "Running JS Build..."
 grunt dist || exit "$?"
 echo "Cleaning up PHP dependencies..."
-composer install --no-dev || exit "$?"
+composer install --no-dev --ignore-platform-reqs || exit "$?"
 echo "Run makepot..."
 wp i18n make-pot . languages/commonsbooking.pot
 echo "Syncing files..."
