@@ -796,29 +796,16 @@ class Booking extends Timeframe {
 				'type' => 'title',
 			),
 			array(
-				'name' => esc_html__( 'External comment', 'commonsbooking' ),
-				'desc' => esc_html__( 'This comment can be seen by users in booking details. It can be set by users during the booking confirmation process if comments are enabled in settings.', 'commonsbooking' ),
-				'id'   => 'comment',
-				'type' => 'textarea_small',
+				'name'    => esc_html__( 'Item', 'commonsbooking' ),
+				'id'      => 'item-id',
+				'type'    => 'select',
+				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 			),
-            array(
-				'name' => esc_html__( 'Internal comment', 'commonsbooking' ),
-				'desc' => esc_html__( 'This internal comment can only be seen in the backend by privileged users like admins or cb-managers', 'commonsbooking' ),
-				'id'   => 'internal-comment',
-				'type' => 'textarea_small',
-			),
-
 			array(
 				'name'    => esc_html__( 'Location', 'commonsbooking' ),
 				'id'      => 'location-id',
 				'type'    => 'select',
 				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
-			),
-			array(
-				'name'    => esc_html__( 'Item', 'commonsbooking' ),
-				'id'      => 'item-id',
-				'type'    => 'select',
-				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 			),
 			array(
 				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
@@ -891,6 +878,18 @@ class Booking extends Timeframe {
                         'commonsbooking'
                     )
                 ),
+			),
+			array(
+				'name' => esc_html__( 'External comment', 'commonsbooking' ),
+				'desc' => esc_html__( 'This comment can be seen by users in booking details. It can be set by users during the booking confirmation process if comments are enabled in settings.', 'commonsbooking' ),
+				'id'   => 'comment',
+				'type' => 'textarea_small',
+			),
+			array(
+				'name' => esc_html__( 'Internal comment', 'commonsbooking' ),
+				'desc' => esc_html__( 'This internal comment can only be seen in the backend by privileged users like admins or cb-managers', 'commonsbooking' ),
+				'id'   => 'internal-comment',
+				'type' => 'textarea_small',
 			),
 			array(
 				'type'    => 'hidden',
