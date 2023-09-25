@@ -71,8 +71,8 @@ class BookingTest extends CustomPostTypeTest {
 		$bookingIDs = Booking::getByTimerange(
 			get_post_meta( $this->timeframeOne, Timeframe::REPETITION_START, true ),
 			get_post_meta( $this->timeframeOne, Timeframe::REPETITION_END, true ),
-			$this->locationId,
-			$this->itemId
+			[$this->locationId],
+			[$this->itemId]
 		);
 
 		$this->assertCount( 2, $bookingIDs );
@@ -89,8 +89,8 @@ class BookingTest extends CustomPostTypeTest {
 		$bookingIDs = Booking::getByTimerange(
 			strtotime( 'midnight' ),
 			time(),
-			$this->locationId,
-			$this->itemId
+			[$this->locationId],
+			[$this->itemId]
 		);
 		$this->assertEmpty( $bookingIDs );
 
@@ -114,8 +114,8 @@ class BookingTest extends CustomPostTypeTest {
 		$bookingIDs = Booking::getByTimerange(
 			strtotime( '+28 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
-			$this->locationId,
-			$this->itemId
+			[$this->locationId],
+			[$this->itemId]
 		);
 		$this->assertCount( 1, $bookingIDs );
 		$this->assertEquals( $nextMonthBooking, $bookingIDs[0]->ID );
@@ -124,8 +124,8 @@ class BookingTest extends CustomPostTypeTest {
 		$bookingIDs = Booking::getByTimerange(
 			strtotime( '+31 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+32 days', strtotime( self::CURRENT_DATE ) ),
-			$this->locationId,
-			$this->itemId
+			[$this->locationId],
+			[$this->itemId]
 		);
 		$this->assertCount( 1, $bookingIDs );
 		$this->assertEquals( $nextMonthBooking, $bookingIDs[0]->ID );
@@ -134,8 +134,8 @@ class BookingTest extends CustomPostTypeTest {
 		$bookingIDs = Booking::getByTimerange(
 			strtotime( '+33 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+34 days', strtotime( self::CURRENT_DATE ) ),
-			$this->locationId,
-			$this->itemId
+			[$this->locationId],
+			[$this->itemId]
 		);
 		$this->assertCount( 0, $bookingIDs );
 
@@ -152,8 +152,8 @@ class BookingTest extends CustomPostTypeTest {
 		$bookings = Booking::getByTimerange(
 			strtotime( '+60 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+70 days', strtotime( self::CURRENT_DATE ) ),
-			$this->locationId,
-			$this->itemId
+			[$this->locationId],
+			[$this->itemId]
 		);
 		$this->assertCount( 10, $bookings );
 		$this->assertEqualsCanonicalizing(
@@ -173,22 +173,6 @@ class BookingTest extends CustomPostTypeTest {
 			array_map( function ( $booking ) {
 				return $booking->ID;
 			}, $bookings ),
-			$bookingIDs
-		);
-
-		//THIS DOES NOT BELONG HERE, REMOVE LATER:
-		$bookings = \CommonsBooking\Repository\Timeframe::getInRangePaginated(
-			strtotime( '+60 days', strtotime( self::CURRENT_DATE ) ),
-			strtotime( '+70 days', strtotime( self::CURRENT_DATE ) ),
-			1,
-			10,
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID ],
-		);
-		$this->assertCount( 10, $bookings['posts'] );
-		$this->assertEqualsCanonicalizing(
-			array_map( function ( $booking ) {
-				return $booking->ID;
-			}, $bookings['posts'] ),
 			$bookingIDs
 		);
 
