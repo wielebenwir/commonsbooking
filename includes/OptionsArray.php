@@ -629,7 +629,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 						'name'    => commonsbooking_sanitizeHTML( __( 'Do not cancel bookings on total breakdown', 'commonsbooking' ) ),
 						'id'      => 'restrictions-no-cancel-on-total-breakdown',
 						'type'    => 'checkbox',
-						'desc'    => commonsbooking_sanitizeHTML( __( 'If checked, bookings will not be cancelled if the item is completely unavailable. Instead, the booking will be marked as cancelled and the user will be notified. Once the item becomes available again, the old bookings are still valid.', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'If checked, bookings will not be cancelled if the item has broken down. The user will be notified and once the item becomes available again, the old bookings are still valid.', 'commonsbooking' ) ),
 					)
 				)
 			)
