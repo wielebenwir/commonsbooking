@@ -1070,6 +1070,12 @@ Return date: {{booking:returnDatetime}}
 					commonsbooking_sanitizeHTML( __( 'Allows you to change options regarding the caching system', 'commonsbooking' ) ),
 				'fields' => array(
 					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Clear Cache', 'commonsbooking' ) ),
+						'id'            => 'clearCache-custom-field',
+						'type'          => 'text',
+						'render_row_cb' => array( Cache::class, 'renderClearCacheButton' )
+					),
+					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Filesystem cache path', 'commonsbooking' ) ),
 						'desc'          => commonsbooking_sanitizeHTML( __( 'Where the filesystem cache should be created. Only change when filesystem caching is not working.', 'commonsbooking' ) ),
 						'id'            => 'cache_path',
