@@ -198,6 +198,18 @@ abstract class CustomPostTypeTest extends TestCase {
 		return $bookingId;
 	}
 
+	/**
+	 * This method is Unit Test specific. Because we need to flush the cache after cancelling.
+	 * @param \CommonsBooking\Model\Booking $b
+	 *
+	 * @return void
+	 */
+	protected function cancelBooking( \CommonsBooking\Model\Booking $b ) {
+		$b->cancel();
+		//flush cache to reflect updated post
+		wp_cache_flush();
+	}
+
 	protected function getEndOfDayTimestamp( $date ) {
 		return strtotime( '+1 day midnight', strtotime( $date ) ) - 1;
 	}

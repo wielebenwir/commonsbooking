@@ -13,7 +13,6 @@ class BookingRuleTest extends CustomPostTypeTest
 	protected $testBooking;
 	protected BookingRule $alwaysdeny;
 	protected BookingRule $alwaysallow;
-	protected int $normalUser;
 
     public function test__construct()
     {
@@ -43,7 +42,7 @@ class BookingRuleTest extends CustomPostTypeTest
 			'8:00 AM',
 			'12:00 PM',
 			'confirmed',
-			$this->normalUser
+			$this->subscriberId
 		) ) );
 		$itemtwo = $this->createItem("Item2",'publish');
 		$locationtwo = $this->createLocation("Location2",'publish');
@@ -62,7 +61,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 		//we create one booking that is not simultaneous to test that it is not returned
@@ -75,7 +74,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				'8:00 AM',
 				'12:00 PM',
 				'confirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 		$this->assertBookingsPresent(array($testBookingOne),BookingRule::checkSimultaneousBookings($testBookingTwo));
@@ -92,7 +91,7 @@ class BookingRuleTest extends CustomPostTypeTest
 			'8:00 AM',
 			'12:00 PM',
 			'confirmed',
-			$this->normalUser
+			$this->subscriberId
 		) ) );
 		$testBookingTwo = new Booking(get_post(
 			$this->createBooking(
@@ -103,7 +102,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 		$this->assertBookingsPresent(array($testBookingOne),BookingRule::checkChainBooking($testBookingTwo));
@@ -139,7 +138,7 @@ class BookingRuleTest extends CustomPostTypeTest
 			'8:00 AM',
 			'12:00 PM',
 			'confirmed',
-			$this->normalUser
+			$this->subscriberId
 		) ) );
 		$afterBooking = new Booking(get_post(
 			$this->createBooking(
@@ -150,7 +149,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				'8:00 AM',
 				'12:00 PM',
 				'confirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 		//just check that both are allowed
@@ -165,7 +164,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 		$this->assertBookingsPresent(array($beforeBooking,$afterBooking),BookingRule::checkChainBooking($testBooking));
@@ -176,23 +175,23 @@ class BookingRuleTest extends CustomPostTypeTest
 		$testBookingOne       = new Booking( get_post( $this->createBooking(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+1 day', strtotime(self::CURRENT_DATE)),
-			strtotime( '+2 days', strtotime(self::CURRENT_DATE)),
+			strtotime( '+1 day' ),
+			strtotime( '+2 days' ),
 			'8:00 AM',
 			'12:00 PM',
 			'confirmed',
-			$this->normalUser
+			$this->subscriberId
 		) ) );
 		$testBookingTwo = new Booking(get_post(
 			$this->createBooking(
 				$this->locationId,
 				$this->itemId,
-				strtotime('+4 day', strtotime(self::CURRENT_DATE)),
-				strtotime('+5 days', strtotime(self::CURRENT_DATE)),
+				strtotime('+4 day' ),
+				strtotime('+5 days' ),
 				'8:00 AM',
 				'12:00 PM',
 				'confirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 
@@ -200,15 +199,52 @@ class BookingRuleTest extends CustomPostTypeTest
 			$this->createBooking(
 				$this->locationId,
 				$this->itemId,
-				strtotime('+6 day', strtotime(self::CURRENT_DATE)),
-				strtotime('+7 days', strtotime(self::CURRENT_DATE)),
+				strtotime('+6 day' ),
+				strtotime('+7 days' ),
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 		$this->assertBookingsPresent(array($testBookingOne,$testBookingTwo),BookingRule::checkMaxBookingDays($testBookingThree,array(2,30)));
+	}
+
+	public function testCheckMaxBookingDays_earlyCancel() {
+		Settings::updateOption('commonsbooking_options_restrictions','bookingrules-count-cancelled', 'on');
+		//we create a scenario, where a user makes a booking in a week but cancels it before beginning of start
+		$currentDate = new \DateTime( self::CURRENT_DATE );
+		ClockMock::freeze( $currentDate );
+		$cancelBooking = new Booking(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+7 days'),
+				strtotime( '+10 days'),
+				'8:00 AM',
+				'12:00 PM',
+				'confirmed',
+				$this->subscriberId
+			)
+		);
+		//two days pass and they cancel it
+		$currentDate->modify('+2 days');
+		ClockMock::freeze( $currentDate );
+		$this->cancelBooking( $cancelBooking );
+		//now we create a booking that should be allowed
+		$allowedBooking = new Booking(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+6 days' ),
+				strtotime( '+9 days' ),
+				'8:00 AM',
+				'12:00 PM',
+				'unconfirmed',
+				$this->subscriberId
+			)
+		);
+		$this->assertNull( BookingRule::checkMaxBookingDays( $allowedBooking, array( 4, 30 ) ) );
 	}
 
 	public function testMaxBookingPerWeek() {
@@ -232,7 +268,7 @@ class BookingRuleTest extends CustomPostTypeTest
 			'8:00 AM',
 			'12:00 PM',
 			'confirmed',
-			$this->normalUser
+			$this->subscriberId
 		) ) );
 		$testBookingTwo = new Booking(get_post(
 			$this->createBooking(
@@ -243,7 +279,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				'8:00 AM',
 				'12:00 PM',
 				'confirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 
@@ -256,7 +292,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 		$mondayFollowingWeek = clone $nextWeekDate;
@@ -276,7 +312,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 
@@ -313,7 +349,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 		$testMonth = "0" . (intval($testMonth) - 1);
@@ -326,7 +362,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 		$this->assertBookingsPresent($confirmedBookingObjects,BookingRule::checkMaxBookingsPerMonth($deniedBooking, array($maxDaysPerMonth,0,$resetDay)));
@@ -348,7 +384,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				'8:00 AM',
 				'12:00 PM',
 				'confirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 		$confirmedBookingObjects = array(
@@ -371,7 +407,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 		$disallowedBooking = new Booking(get_post(
@@ -383,7 +419,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 		$this->assertNull(BookingRule::checkMaxBookingsPerMonth($allowedBooking, array($maxDaysPerMonth,0,$resetDay)));
@@ -415,7 +451,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 		$allowedBooking = new Booking(get_post(
@@ -427,7 +463,7 @@ class BookingRuleTest extends CustomPostTypeTest
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->normalUser
+				$this->subscriberId
 			)
 		));
 
@@ -461,7 +497,7 @@ class BookingRuleTest extends CustomPostTypeTest
 			'8:00 AM',
 			'12:00 PM',
 			'confirmed',
-			$this->normalUser
+			$this->subscriberId
 		));
 		//We need to use the cancel function here so that the cancellation date is set correctly. In this case we cancel shortly before the booking ends
 		$shortlyBeforeEnd = new \DateTime($testWednesday);
@@ -481,7 +517,7 @@ class BookingRuleTest extends CustomPostTypeTest
 			'8:00 AM',
 			'12:00 PM',
 			'unconfirmed',
-			$this->normalUser
+			$this->subscriberId
 		));
 		$this->assertNull(BookingRule::checkMaxBookingsPerWeek($conditionallyAllowedBooking, $optionsArray));
 
@@ -531,7 +567,7 @@ class BookingRuleTest extends CustomPostTypeTest
 					'8:00 AM',
 					'12:00 PM',
 					'confirmed',
-					$this->normalUser
+					$this->subscriberId
 				)
 			));
 		}
@@ -565,13 +601,7 @@ class BookingRuleTest extends CustomPostTypeTest
 			strtotime( '+90 days', strtotime(self::CURRENT_DATE))
 		);
 
-		$wp_user = get_user_by('email',"a@a.de");
-		if (! $wp_user){
-			$this->normalUser = wp_create_user("normaluser","normal","a@a.de");
-		}
-		else {
-			$this->normalUser = $wp_user->ID;
-		}
+		$this->createSubscriber();
 
 	}
 

@@ -37,9 +37,7 @@ class BookingTest extends CustomPostTypeTest {
 	public function testCancel() {
 		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
 		$this->testBookingTomorrow->cancel();
-		$this->testBookingPast->cancel();
-		//flush cache to reflect updated post
-		wp_cache_flush();
+		$this->cancelBooking($this->testBookingPast);
 		$this->testBookingTomorrow = new Booking(get_post($this->testBookingId));
 		$this->testBookingPast = new Booking(get_post($this->testBookingPastId));
 		$this->assertTrue($this->testBookingTomorrow->isCancelled());
@@ -114,8 +112,7 @@ class BookingTest extends CustomPostTypeTest {
 		$shortlyBeforeEnd = new \DateTime();
 		$shortlyBeforeEnd->setTimestamp($endTime)->modify('-10 minutes');
 		ClockMock::freeze($shortlyBeforeEnd);
-		$cancelBooking->cancel();
-		wp_cache_flush();
+		$this->cancelBooking($cancelBooking);
 		$cancelBooking = new Booking( $cancelBookingId );
 
 		$this->assertEquals(3,$cancelBooking->getLength());
@@ -135,8 +132,7 @@ class BookingTest extends CustomPostTypeTest {
 		$halfBeforeEnd = new \DateTime();
 		$halfBeforeEnd->setTimestamp($endTime)->modify('-2 days');
 		ClockMock::freeze($halfBeforeEnd);
-		$cancelBooking->cancel();
-		wp_cache_flush();
+		$this->cancelBooking($cancelBooking);
 		$cancelBooking = new Booking( $cancelBookingId );
 		$this->assertEquals(2,$cancelBooking->getLength());
 
@@ -154,8 +150,7 @@ class BookingTest extends CustomPostTypeTest {
 		$shortlyBeforeStart = new \DateTime();
 		$shortlyBeforeStart->setTimestamp(strtotime( '+10 day', strtotime( self::CURRENT_DATE ) ));
 		ClockMock::freeze($shortlyBeforeStart);
-		$cancelBooking->cancel();
-		wp_cache_flush();
+		$this->cancelBooking($cancelBooking);
 		$cancelBooking = new Booking( $cancelBookingId );
 		$this->assertEquals(0,$cancelBooking->getLength());
 	}
