@@ -4,6 +4,7 @@ namespace CommonsBooking\Tests\Repository;
 
 use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use SlopeIt\ClockMock\ClockMock;
 
 class TimeframeTest extends CustomPostTypeTest {
 
@@ -105,6 +106,11 @@ class TimeframeTest extends CustomPostTypeTest {
 			3,
 			30
 		);
+		//This is necessary, because the getLatestPossibleBookingDateTimestamp takes time() as the calculation base.
+		//the getLatestPossibleBookingDateTimestamp function takes the current time and adds the extra days on top to determine at what day you are allowed to book.
+		//Because our CURRENT_DATE is so far in the past, the latest possible booking date is also very far in the past which means that the test would not fail for a broken filterTimeframesByMaxBookingDays function.
+		//Therefore we have to freeze the time or else the test would make no sense.
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		$allTimeframesForLocAndItem = Timeframe::get(
 			[$this->locationId],
 			[$this->itemId],
