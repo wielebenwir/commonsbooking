@@ -486,12 +486,6 @@ class Timeframe extends PostRepository {
 			if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() ) {
 				try {
 					$timeframe = new \CommonsBooking\Model\Timeframe( $post );
-					//these types of timeframes should not be filtered out because they are not bookable
-					if ($timeframe->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID
-						|| $timeframe->getType() == \CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID
-					) {
-						return true;
-					}
 
 					return $timeframe->isBookable();
 				} catch ( Exception $e ) {
