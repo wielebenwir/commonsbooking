@@ -9,6 +9,8 @@ use WP_Post;
 /**
  * Class CustomPost
  * Pseudo extends WP_Post class.
+ *
+ * All the public methods are available as template tags.
  * @package CommonsBooking\Model
  */
 class CustomPost {
@@ -68,6 +70,13 @@ class CustomPost {
 		return get_post_meta( $this->post->ID, $field, true );
 	}
 
+	/**
+	 * When getting a value from a Model Object, we can use this magic method to get the value from the WP_Post object instead.
+	 * This, for example, allows us to use $booking->post_title instead of $booking->post->post_title.
+	 * @param $name
+	 *
+	 * @return array|mixed|void
+	 */
 	public function __get( $name ) {
 		if ( $this->post == null ) {
 			return;
@@ -90,6 +99,7 @@ class CustomPost {
 	}
 
 	/**
+	 * Get the corresponding WP_Post object
 	 * @return WP_Post
 	 */
 	public function getPost(): WP_Post {
@@ -111,7 +121,8 @@ class CustomPost {
 	}
 
 	/**
-	 * Return Title with permalink
+	 * Return Title with permalink.
+	 * This is mainly used by template tags.
 	 *
 	 * @return string html
 	 */

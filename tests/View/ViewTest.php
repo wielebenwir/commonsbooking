@@ -11,29 +11,60 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 class ViewTest extends CustomPostTypeTest {
 
 	protected const bookingDaysInAdvance = 30;
+	protected $now;
 
 	public function testGetShortcodeDataWithFourRangesByItem() {
 		$shortCodeData = View::getShortcodeData( new Item( $this->itemId ), 'Item' );
 		$this->assertTrue( is_array( $shortCodeData[ $this->itemId ]['ranges'] ) );
 		$this->assertTrue( count( $shortCodeData[ $this->itemId ]['ranges'] ) == 4 );
+		
+		// Check for specific timeframe start date
+		$this->assertEquals( $shortCodeData[ $this->itemId ]['ranges'][0]['start_date'], strtotime( '+2 days midnight', $this->now ) );
+		
 	}
 
 	public function testGetShortcodeDataWithFourRangesByLocation() {
 		$shortCodeData = View::getShortcodeData( new Location( $this->locationId ), 'Location' );
 		$this->assertTrue( is_array( $shortCodeData[ $this->locationId ]['ranges'] ) );
 		$this->assertTrue( count( $shortCodeData[ $this->locationId ]['ranges'] ) == 4 );
+		
+		// Check for specific timeframe start date
+		$this->assertEquals( $shortCodeData[ $this->locationId ]['ranges'][0]['start_date'], strtotime( '+2 days midnight', $this->now ) );
+	}
+	
+	public function testShortcodeForLocationView() {
+		$body = \CommonsBooking\View\Location::shortcode( array() );
+		$html = '<html><body>' . $body . '</body></html>';
+		
+		// naive way of testing html validity
+		libxml_use_internal_errors(true);
+		$doc = new \DOMDocument();
+		$this->assertTrue($doc->loadHTML($html));
+		$this->assertEquals( 0, count( libxml_get_errors() ));
+	}
+	
+	public function testShortcodeForItemView() {
+		$body = \CommonsBooking\View\Item::shortcode( array() );
+		$html = '<html><body>' . $body . '</body></html>';
+		
+		// naive way of testing html validity
+		libxml_use_internal_errors(true);
+		$doc = new \DOMDocument();
+		$this->assertTrue($doc->loadHTML($html));
+		$this->assertEquals( 0, count( libxml_get_errors() ));
 	}
 
 	protected function setUp() : void {
 		parent::setUp();
 
 		$now = time();
+		$this->now = $now;
 
 		$timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+2 days midnight', $now ),
-			strtotime( '+3 days midnight', $now ),
+			strtotime( '+5 days midnight', $now ),
+			strtotime( '+6 days midnight', $now ),
 			Timeframe::BOOKABLE_ID,
 			'on',
 			'norep'
@@ -44,8 +75,8 @@ class ViewTest extends CustomPostTypeTest {
 		$timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+5 days midnight', $now ),
-			strtotime( '+6 days midnight', $now ),
+			strtotime( '+2 days midnight', $now ),
+			strtotime( '+3 days midnight', $now ),
 			Timeframe::BOOKABLE_ID,
 			'on',
 			'norep'

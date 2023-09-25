@@ -189,7 +189,7 @@ trait Cache {
 		}
 
 		// Delete expired cache items (only for Pruneable Interfaces)
-		if (is_a(self::getCache(),'Symfony\Component\Cache\Adapter\TagAwareAdapter')) {
+		if (is_a(self::getCache(),'Symfony\Component\Cache\PruneableInterface')) {
 			self::getCache()->prune();
 		}
 
