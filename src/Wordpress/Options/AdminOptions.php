@@ -7,6 +7,8 @@ use CommonsBooking\Settings\Settings;
 
 /**
  * AdminOptions
+ * The options are saved in wp_options table.
+ * The options are defined in includes/OptionsArray.php
  */
 class AdminOptions {
 	private static $option_key = COMMONSBOOKING_PLUGIN_SLUG . '_options';

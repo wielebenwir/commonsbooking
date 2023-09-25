@@ -3,8 +3,14 @@
 namespace CommonsBooking\Messages;
 
 use CommonsBooking\Repository\Booking;
+use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Settings\Settings;
 
+/**
+ * This message is sent out to users to remind them of their upcoming booking.
+ * This is sent using a cron job.
+ * @see \CommonsBooking\Service\Scheduler
+ */
 class BookingReminderMessage extends Message {
 
 	/**
