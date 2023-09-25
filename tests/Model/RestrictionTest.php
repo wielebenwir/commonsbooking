@@ -61,6 +61,42 @@ class RestrictionTest extends CustomPostTypeTest {
 			strtotime("+3 weeks", strtotime(self::CURRENT_DATE))
 		);
 
+		$this->restrictionForEverything = parent::createRestriction(
+			Restriction::TYPE_HINT,
+			CustomPostType::SELECTION_ALL_POSTS,
+			CustomPostType::SELECTION_ALL_POSTS,
+			strtotime( "+2 months", strtotime(self::CURRENT_DATE)),
+			strtotime( "+3 months", strtotime(self::CURRENT_DATE))
+		);
+
+	}
+
+	public function testGetItemIDs() {
+		$restriction = new Restriction($this->restrictionWithoutEndDateId);
+		$this->assertEquals( [$this->itemId], $restriction->getItemIDs() );
+
+		$restriction = new Restriction($this->restrictionWithEndDateId);
+		$this->assertEquals( [$this->itemId], $restriction->getItemIDs() );
+
+		//create secondary item to test "all" configuration
+		$itemTwoId = $this->createItem("Item Two",'publish');
+		$restriction = new Restriction($this->restrictionForEverything);
+		$this->assertCount( 2, $restriction->getItemIDs() );
+		$this->assertEqualsCanonicalizing( [$itemTwoId,$this->itemId], $restriction->getItemIDs() );
+	}
+
+	public function testGetLocationIDs() {
+		$restriction = new Restriction($this->restrictionWithoutEndDateId);
+		$this->assertEquals( [$this->locationId], $restriction->getLocationIDs() );
+
+		$restriction = new Restriction($this->restrictionWithEndDateId);
+		$this->assertEquals( [$this->locationId], $restriction->getLocationIDs() );
+
+		//create secondary location to test "all" configuration
+		$locationTwoId = $this->createLocation("Location Two",'publish');
+		$restriction = new Restriction($this->restrictionForEverything);
+		$this->assertCount( 2, $restriction->getLocationIDs() );
+		$this->assertEqualsCanonicalizing( [$locationTwoId,$this->locationId], $restriction->getLocationIDs() );
 	}
 
 	public function testIsValid() {

@@ -238,13 +238,15 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns item name for the item that is restricted.
+	 *
+	 * DEPRECATED: This is not used anywhere in the code. Besides, the function is broken since it does not consider the case where multiple items are selected.
      *
 	 * @return string
 	 */
 	public function getItemName(): string {
 		$itemName = esc_html__( 'Not set', 'commonsbooking' );
-		if ( $this->getItemId() ) {
-			$item     = get_post( $this->getItemId() );
+		if ( $this->getItemIds() ) {
+			$item     = get_post( $this->getItemIds() );
 			$itemName = $item->post_title;
 		}
 
@@ -252,23 +254,32 @@ class Restriction extends CustomPost {
 	}
 
 	/**
-	 * Returns itemId for the item that is restricted.
+	 * Gets all of the itemIDs that this restriction applies to.
      *
-	 * @return mixed
+	 * @return int[]
 	 */
-	public function getItemId() {
-		return $this->getMeta( self::META_ITEM_ID );
+	public function getItemIds(): array {
+		$metaField = $this->getMeta( self::META_ITEM_ID );
+		if ( is_numeric( $metaField ) ) {
+			return [ $metaField ];
+		} elseif ( $metaField == CustomPostType::SELECTION_ALL_POSTS ) {
+			return Wordpress::getPostIdArray( \CommonsBooking\Repository\Item::get());
+		} else {
+			return [];
+		}
 	}
 
 	/**
 	 * Returns location name for the location that the restricted item is in.
+	 *
+	 * DEPRECATED: This is not used anywhere in the code. Besides, the function is broken since it does not consider the case where multiple locations are selected.
      *
 	 * @return string
 	 */
 	public function getLocationName(): string {
 		$locationName = esc_html__( 'Not set', 'commonsbooking' );
-		if ( $this->getLocationId() ) {
-			$location     = get_post( $this->getLocationId() );
+		if ( $this->getLocationIds() ) {
+			$location     = get_post( $this->getLocationIds() );
 			$locationName = $location->post_title;
 		}
 
@@ -276,12 +287,19 @@ class Restriction extends CustomPost {
 	}
 
 	/**
-	 * Returns location id for the location that the restricted item is in.
+	 * Gets all of the locationIDs that this restriction applies to.
      *
 	 * @return mixed
 	 */
-	public function getLocationId() {
-		return $this->getMeta( self::META_LOCATION_ID );
+	public function getLocationIds() {
+		$metaField = $this->getMeta( self::META_LOCATION_ID );
+		if ( is_numeric( $metaField ) ) {
+			return [ $metaField ];
+		} elseif ( $metaField == CustomPostType::SELECTION_ALL_POSTS ) {
+			return Wordpress::getPostIdArray( \CommonsBooking\Repository\Location::get());
+		} else {
+			return [];
+		}
 	}
 
 	/**

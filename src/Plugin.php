@@ -390,6 +390,7 @@ class Plugin {
 	public static function renderError() {
 		$errorTypes = [
 			Model\Timeframe::ERROR_TYPE,
+			Model\Restriction::ERROR_TYPE,
 			BookingCode::ERROR_TYPE,
 			OptionsTab::ERROR_TYPE,
             Model\Booking::ERROR_TYPE,

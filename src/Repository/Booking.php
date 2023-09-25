@@ -228,21 +228,22 @@ class Booking extends PostRepository {
 	}
 
 	/**
+	 * Will return all bookings that are in a specific timerange.
+	 *
 	 * @param $startDate int
 	 * @param $endDate int
-	 * @param $locationId
-	 * @param $itemId
-	 * @param array         $customArgs
-	 * @param array         $postStatus
+	 * @param array $locationIds
+	 * @param array $itemIds
+	 * @param array $customArgs
+	 * @param array $postStatus
 	 *
 	 * @return \CommonsBooking\Model\Booking[]
-	 * @throws Exception
 	 */
 	public static function getByTimerange(
 		int $startDate,
 		int $endDate,
-		$locationId,
-		$itemId,
+		$locationIds = [],
+		$itemIds = [],
 		array $customArgs = [],
 		array $postStatus = [ 'confirmed', 'unconfirmed' ]
 	): ?array {
@@ -273,19 +274,19 @@ class Booking extends PostRepository {
 			'nopaging'    => true,
 		);
 
-		if ( $locationId ) {
+		if ( $locationIds !== [] ) {
 			$args['meta_query'][] = array(
-				'key'     => 'location-id',
-				'value'   => $locationId,
-				'compare' => '=',
+				'key'     => \CommonsBooking\Model\Booking::META_LOCATION_ID,
+				'value'   => $locationIds,
+				'compare' => 'IN',
 			);
 		}
 
-		if ( $itemId ) {
+		if ( $locationIds !== [] ) {
 			$args['meta_query'][] = array(
-				'key'     => 'item-id',
-				'value'   => $itemId,
-				'compare' => '=',
+				'key'     => \CommonsBooking\Model\Booking::META_ITEM_ID,
+				'value'   => $itemIds,
+				'compare' => 'IN',
 			);
 		}
 
@@ -424,8 +425,8 @@ class Booking extends PostRepository {
 		return self::getByTimerange(
 			$restriction->getStartDate(),
 			$restriction->getEndDate(),
-			$restriction->getLocationId(),
-			$restriction->getItemId(),
+			$restriction->getLocationIds(),
+			$restriction->getItemIds(),
 			[],
 			[ 'confirmed' ]
 		);

@@ -157,6 +157,10 @@ class Restriction extends CustomPostType {
 			switch ( $column ) {
 				case \CommonsBooking\Model\Restriction::META_LOCATION_ID:
 				case \CommonsBooking\Model\Restriction::META_ITEM_ID:
+					if ( $value == CustomPostType::SELECTION_ALL_POSTS ) {
+						echo esc_html__( 'All', 'commonsbooking' );
+						break;
+					}
 					if ( $post = get_post( $value ) ) {
 						if ( get_post_type( $post ) == Location::getPostType() || get_post_type(
 							                                                          $post
@@ -220,8 +224,10 @@ class Restriction extends CustomPostType {
 		}
 	}
 
-		/**
-	 * Filters admin list by type, timerange, user 
+	/**
+	 * Filters admin list by type, timerange, user
+	 *
+	 * TODO: What is the purpose of this function? I can't find any references to the admin_filter_xxx values
 	 *
 	 * @param  (wp_query object) $query
 	 *
@@ -283,6 +289,7 @@ class Restriction extends CustomPostType {
 					$item = $item->ID;
 				} );
 
+				//TODO: If this query is in use: the META_LOCATION_ID can now contain CustomPostType::SELECTION_ALL_POSTS, which is not an integer.
 				$query->query_vars['meta_query'][] = array(
 					'relation' => 'OR',
 					array(
