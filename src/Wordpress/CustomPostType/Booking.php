@@ -304,6 +304,9 @@ class Booking extends Timeframe {
 			// Existing booking
 		} else {
 			$postarr['ID'] = $booking->ID;
+			if ( $postarr['post_status'] === 'canceled' ) {
+				$postarr['meta_input']['cancellation_time'] = current_time('timestamp');
+			}
 			$postId        = wp_update_post( $postarr );
 
 			//we check if this is an already denied booking and demand validation again
