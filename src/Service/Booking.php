@@ -9,7 +9,11 @@ use WP_Query;
 
 class Booking {
 
-	// Removes all unconfirmed bookings older than 10 minutes
+	/**
+	 * Removes all unconfirmed bookings older than 10 minutes
+	 * is triggered in  Service\Scheduler initHooks()
+	 * @return void
+	 */
 	public static function cleanupBookings() {
 		$args = array(
 			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
