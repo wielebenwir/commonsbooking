@@ -142,7 +142,7 @@ class CustomPostTypeClassTest extends \CommonsBooking\Tests\Wordpress\CustomPost
 			$this->bookingId
 		);
 		$this->restrictionId = $this->createRestriction(
-			Restriction::META_HINT,
+			Restriction::TYPE_HINT,
 			$this->locationId,
 			$this->itemId,
 			strtotime(self::CURRENT_DATE),

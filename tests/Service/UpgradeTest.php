@@ -14,7 +14,7 @@ class UpgradeTest extends CustomPostTypeTest
     public function testSetRestrictionAllOption()
     {
 		$oldRestrictionForAll = $this->createRestriction(
-			Restriction::META_HINT,
+			Restriction::TYPE_HINT,
 			'',
 			'',
 			strtotime(self::CURRENT_DATE),

@@ -46,7 +46,7 @@ class RestrictionTest extends CustomPostTypeTest {
 		parent::setUp();
 
 		$this->restrictionWithoutEndDateId = parent::createRestriction(
-			Restriction::META_HINT,
+			Restriction::TYPE_HINT,
 			$this->locationId,
 			$this->itemId,
 			strtotime(self::CURRENT_DATE),
@@ -54,7 +54,7 @@ class RestrictionTest extends CustomPostTypeTest {
 		);
 
 		$this->restrictionWithEndDateId = parent::createRestriction(
-			Restriction::META_HINT,
+			Restriction::TYPE_HINT,
 			$this->locationId,
 			$this->itemId,
 			strtotime(self::CURRENT_DATE),

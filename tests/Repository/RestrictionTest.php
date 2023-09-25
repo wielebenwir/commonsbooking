@@ -32,7 +32,7 @@ class RestrictionTest extends CustomPostTypeTest
 	public function testGetSetAll() {
 		$allRestriction = new \CommonsBooking\Model\Restriction(
 			$this->createRestriction(
-				"hint",
+				\CommonsBooking\Model\Restriction::TYPE_REPAIR,
 				CustomPostType::SELECTION_ALL_POSTS,
 				CustomPostType::SELECTION_ALL_POSTS,
 				strtotime(self::CURRENT_DATE),
@@ -55,7 +55,7 @@ class RestrictionTest extends CustomPostTypeTest
 		parent::setUp();
 		$this->timeframeId = $this->createBookableTimeFrameIncludingCurrentDay();
 		$this->restrictionId = 	$this->createRestriction(
-			"hint",
+ 			\CommonsBooking\Model\Restriction::TYPE_HINT,
 			$this->locationId,
 			$this->itemId,
 			strtotime(self::CURRENT_DATE),

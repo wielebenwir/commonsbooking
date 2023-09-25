@@ -54,7 +54,7 @@ class ItemTest extends CustomPostTypeTest {
 	protected function setUp() : void {
 		parent::setUp();
 		$this->restrictionIds[] = $this->createRestriction(
-			Restriction::META_HINT,
+			Restriction::TYPE_HINT,
 			$this->locationId,
 			$this->itemId,
 			strtotime(self::CURRENT_DATE),
