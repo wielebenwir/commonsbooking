@@ -81,6 +81,8 @@ class Migration {
 	 * @return void
 	 */
 	public static function cliMigrateAll(bool $includeGeoData, bool $noPostCheck = false){
+		//disable geoData fetching for fLotte
+		$includeGeoData = false;
 		$currentTime = time();
 		if ($includeGeoData) {
 			\WP_CLI::log( 'CommonsBooking: Including geodata in migration. This may take a while.' );
@@ -172,6 +174,8 @@ class Migration {
 			COMMONSBOOKING_METABOX_PREFIX . 'location_contact' => 'commons-booking_location_contactinfo_text',
 			COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions' => 'commons-booking_location_openinghours',
 			'_thumbnail_id' => '_thumbnail_id',
+			'geo_latitude'  => 'cb-map_latitude',
+			'geo_longitude' => 'cb-map_longitude'
 		];
 
 		// Get all post meta;
