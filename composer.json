@@ -7,7 +7,7 @@
     "allow-plugins": {
       "php-http/discovery": true
     }
-  },
+    },
   "autoload": {
     "files": [
       "includes/Shortcodes.php",
@@ -21,7 +21,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "CommonsBooking\\Tests\\": "tests/"
+      "CommonsBooking\\Tests\\": "tests/php/"
     }
   },
   "repositories": [
