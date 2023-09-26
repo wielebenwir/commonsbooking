@@ -41,7 +41,7 @@ class BookingRule {
 	 * These parameters are text fields that can be used to configure the rule. We can currently only support 2 parameters
 	 * @var array
 	 */
-	protected array $params;
+	protected array $params = [];
 	/**
 	 * Array where first element is the description of the select field and the second element is an associative array of the select options
 	 * @var array

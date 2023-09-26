@@ -155,8 +155,8 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 		$this->firstTimeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-5 days', time() ),
-			strtotime( '+90 days', time() )
+			strtotime( '-5 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+90 days', strtotime( self::CURRENT_DATE ) )
 		);
 		$this->alwaysallow = new BookingRule(
 			"alwaysAllow",
@@ -179,8 +179,8 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 		$this->firstTimeframeId   = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-5 days',time()),
-			strtotime( '+90 days', time())
+			strtotime( '-5 days',strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+90 days', strtotime( self::CURRENT_DATE ) )
 		);
 		$this->setUpTestBooking();
 		$this->appliedAlwaysAllow = new BookingRuleApplied( $this->alwaysallow );

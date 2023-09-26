@@ -51,16 +51,11 @@ class BookingRuleApplied extends BookingRule {
 	 * @throws BookingRuleException
 	 */
 	public function setAppliesToWhat(bool $appliesToAll, array $appliedTerms = []): void {
-		if (! $appliesToAll){
-			$this->appliesToAll = false;
-			if (empty($appliedTerms)){
-				throw new BookingRuleException(__("You need to specify a category, if the rule does not apply to all items", 'commonsbooking'));
-			}
-			$this->appliedTerms = $appliedTerms;
+		if (! $appliesToAll && empty($appliedTerms)){
+			throw new BookingRuleException(__("You need to specify a category, if the rule does not apply to all items", 'commonsbooking'));
 		}
-		else {
-			$this->appliesToAll = true;
-		}
+		$this->appliesToAll = $appliesToAll;
+		$this->appliedTerms = $appliedTerms;
 	}
 
 	/**
@@ -81,7 +76,7 @@ class BookingRuleApplied extends BookingRule {
 			}
 		}
 		if (! empty($this->selectParam)){
-			$this->appliedSelectParam = $selectParamSet;
+ 			$this->appliedSelectParam = $selectParamSet;
 		}
 	}
 
@@ -121,19 +116,12 @@ class BookingRuleApplied extends BookingRule {
 			}
 		}
 
-
-		if (! $this->appliesToAll){
-			if (! $booking->termsApply($this->appliedTerms) ){
-				return null;
-			}
+		if (! $this->appliesToAll && ! $booking->termsApply($this->appliedTerms)){
+			return null;
 		}
 
 		$validationFunction = $this->validationFunction;
-
-		//construct the args array
-		$args = $this->getArgs();
-
-		return $validationFunction( $booking, $args, $this->appliesToAll ? false : $this->appliedTerms );
+		return $validationFunction( $booking, $this->getArgs(), $this->appliesToAll ? false : $this->appliedTerms );
 	}
 
 	/**
@@ -187,8 +175,7 @@ class BookingRuleApplied extends BookingRule {
 	/**
 	 * Gets a string of all rule properties, so they can be displayed using CMB2
 	 *
-	 * I would love to not repeat myself here, but I don't know how to do it. This is a carbon copy of the function in BookingRule.
-	 * TODO: Find a way to not repeat myself here
+	 * Will ignore errors, so that the settings page can still display the selected values even if they are invalid
 	 * @return string
 	 */
 	public static function getRulesJSON(): string {
