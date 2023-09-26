@@ -10,11 +10,13 @@ use WP_Query;
 class UserRepository {
 
 	/**
-	 * Returns all users with cb manager role.
+	 * Returns all users with role that can be assigned to item / location.
 	 * @return mixed
 	 */
-	public static function getCBManagers() {
-		return get_users( [ 'role__in' => [ Plugin::$CB_MANAGER_ID ] ] );
+	public static function getSelectableCBManagers() {
+        $managerRoles = [Plugin::$CB_MANAGER_ID];
+        $managerRoles = apply_filters("commonsbooking_manager_roles",$managerRoles);
+        return get_users( ['role__in' => $managerRoles] );
 	}
 
 	/**

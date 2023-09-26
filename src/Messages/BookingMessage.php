@@ -7,8 +7,15 @@ use CommonsBooking\Repository\Booking;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 
+/**
+ * This is the message that is sent out to a booking user when their booking is confirmed or canceled.
+ */
 class BookingMessage extends Message {
 
+	/**
+	 * Booking messages can either notify a user about a confirmed booking or a canceled booking.
+	 * @var string[]
+	 */
 	protected $validActions = [ "confirmed", "canceled" ];
 
 	public function sendMessage() {
