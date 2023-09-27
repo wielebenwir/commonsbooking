@@ -125,7 +125,6 @@
             const repetitionStartInput = $("#repetition-start");
             const repetitionEndInput = $("#repetition-end");
             const fullDayInput = $("#full-day");
-            const deleteExpiredTimeframes = $("#delete-expired-timeframe");
             const showBookingCodes = $("#show-booking-codes");
             const createBookingCodesInput = $("#create-booking-codes");
             const bookingCodesDownload = $("#booking-codes-download");
@@ -158,14 +157,10 @@
                     maxDaysSelect.show();
                     advanceBookingDays.show();
                     allowUserRoles.show();
-                    BookingStartDayOffset.show();
-                    bookingConfigTitle.show();
                 } else {
                     maxDaysSelect.hide();
                     advanceBookingDays.hide();
                     allowUserRoles.hide();
-                    BookingStartDayOffset.hide();
-                    bookingConfigTitle.hide();
                 }
             };
             handleTypeSelection();
@@ -212,10 +207,8 @@
             const handleBookingCodesSelection = function() {
                 const fullday = fullDayInput.prop("checked"), type = typeInput.val(), repStart = repetitionStartInput.val(), repEnd = repetitionEndInput.val();
                 hideFieldset(bookingCodeSet);
-                hideFieldset([ deleteExpiredTimeframes ]);
-                if (repStart && repEnd && fullday && type == 2) {
+                if (repStart && fullday && type == 2) {
                     showFieldset(bookingCodeSet);
-                    showFieldset([ deleteExpiredTimeframes ]);
                     if (!createBookingCodesInput.prop("checked")) {
                         hideFieldset([ showBookingCodes ]);
                         showBookingCodes.prop("checked", false);

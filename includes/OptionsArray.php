@@ -472,7 +472,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 						'id'      => 'colorscheme_greyedoutcolor',
 						'type'    => 'colorpicker',
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used to signify that no timeframe has been created for an item or a button that is not yet clickable', 'commonsbooking' ) ),
-						'default' => '#f6f6f6',
+						'default' => '#e0e0e0',
 					),
 
 					array(
@@ -495,7 +495,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 						'id'      => 'colorscheme_lighttext',
 						'type'    => 'colorpicker',
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used for light text on dark backgrounds', 'commonsbooking' ) ),
-						'default' => '#c4c4c4',
+						'default' => '#a0a0a0',
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Dark text color', 'commonsbooking' ) ),
@@ -1064,13 +1064,26 @@ Return date: {{booking:returnDatetime}}
 				]
 			),
 			'experimental' => array(
-				'title'  => commonsbooking_sanitizeHTML( __( 'Connect to REDIS database.', 'commonsbooking' ) ),
-				'id'     => 'redis_group',
+				'title'  => commonsbooking_sanitizeHTML( __( 'Advanced caching settings', 'commonsbooking' ) ),
+				'id'     => 'caching_group',
 				'desc'   =>
-					commonsbooking_sanitizeHTML( __( 'Allows you to connect the cache to a REDIS database. This feature is experimental.', 'commonsbooking' ) ),
+					commonsbooking_sanitizeHTML( __( 'Allows you to change options regarding the caching system', 'commonsbooking' ) ),
 				'fields' => array(
 					array(
-						'name' => commonsbooking_sanitizeHTML( __( 'Enable REDIS Caching', 'commonsbooking' ) ),
+						'name'          => commonsbooking_sanitizeHTML( __( 'Filesystem cache path', 'commonsbooking' ) ),
+						'desc'          => commonsbooking_sanitizeHTML( __( 'Where the filesystem cache should be created. Only change when filesystem caching is not working.', 'commonsbooking' ) ),
+						'id'            => 'cache_path',
+						'type'          => 'text',
+						'default'       => '/tmp/symfony-cache/',
+					),
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
+						'id'            => 'filesystem-status',
+						'type'          => 'text',
+						'render_row_cb' => array( Cache::class, 'renderFilesystemStatus' ),
+					),
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'Enable REDIS Caching (experimental)', 'commonsbooking' ) ),
 						'id'   => 'redis_enabled',
 						'type' => 'checkbox',
 					),
@@ -1081,7 +1094,7 @@ Return date: {{booking:returnDatetime}}
 						'default' => 'redis://localhost:6379'
 					),
 					array(
-						'name'          => commonsbooking_sanitizeHTML( __( 'Current connections status', 'commonsbooking' ) ),
+						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
 						'id'            => 'redis_connection-status',
 						'type'          => 'text',
 						'render_row_cb' => array( Cache::class, 'renderREDISConnectionStatus' ),

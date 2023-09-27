@@ -1,10 +1,10 @@
 === CommonsBooking ===
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
-Tags: booking, commons, sharing, calendar,  
+Tags: booking, commons, sharing, calendar, commoning, open-source, booking system, booking calendar
 Requires at least: 5.2  
-Tested up to: 6.2  
-Stable Tag: 2.8
+Tested up to: 6.3  
+Stable Tag: 2.8.4
 Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -78,6 +78,35 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog 
+
+### 2.8.4 (xx.09.2023)
+FIXED: Incorrect time in booking confirmation
+FIXED: Can now trash bookings again (thanks @danielappelt)
+FIXED: URL prefix for GBFS root (thanks @futuretap)
+FIXED: Shortcode Parameter causing fatal error
+ENHANCED: Made items, locations & taxonomies searchable (thanks @flegfleg)
+
+### 2.8.3 (25.08.2023)
+ENHANCED: Booking codes are now available for timeframes without a configured end-date
+ENHANCED: Added option to change directory of filesystem cache
+ENHANCED: Fixed permission system to allow for creation of custom roles ( see  https://commonsbooking.org/docs/grundlagen/rechte-des-commonsbooking-manager/ )
+ENHANCED: Added filter to allow selecting other roles to be assigned to items / locations
+FIXED: Location map view not working since 2.8.1
+FIXED: Booking offset should work again
+
+### 2.8.2 (09.08.2023)
+FIXED: fatal error om admin backend after upgrading to wordpress 6.3
+FIXED: Wrong field value for iCal events (the field value is reset, you have to re-set your values after updating)
+FIXED: Bug sending cancellation mail to admin on admin cancellation
+FIXED: Availability text for items in item shortcode (Merged display of overlapping timeframes)
+FIXED: Location without addresses not displayed correctly
+FIXED: Incorrect error messages displayed to user during booking process
+FIXED: Not all routes of GBFS API were initialized (thanks @futuretap)
+FIXED: User data loading in backend caused timeout on large instances
+ENHANCED: Improved booking validation
+ENHANCED: Default value for days that are bookable in advance set to 31
+
+
 
 ### 2.8 (27.04.2023)
 NEW: Added option to set a minimum offset for bookings. This allows to set a minimum time between booking and pickup.

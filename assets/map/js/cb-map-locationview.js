@@ -31,51 +31,8 @@ var cb_map_locationview = {
         }).addTo(map);
 
     },
-
-    search: function () {
-
-        var url = 'https://nominatim.openstreetmap.org/search';
-        var params = {
-            street: jQuery('#_cb_location_street').val(),
-            city: jQuery('#_cb_location_city').val(),
-            postalcode: jQuery('#_cb_location_postcode').val(),
-            format: 'json',
-            limit: 1
-        }
-
-        jQuery.getJSON(url, params, function (data) {
-
-            if (data.length > 0) {
-                cb_map_locationview.init_map(data[0].lat, data[0].lon, true);
-                jQuery('#geo_latitude').val(data[0].lat);
-                jQuery('#geo_longitude').val(data[0].lon);
-
-            } else {
-                cb_map_locationview.init_map(
-                    cb_map_locationview.defaults.latitude || 52.49333,
-                    cb_map_locationview.defaults.longitude || 13.37933,
-                    true
-                );
-            }
-
-        });
-    },
-
-    is_lat_lon(latitude, longitude) {
-        return isNaN(parseFloat(latitude)) || isNaN(parseFloat(longitude)) ? false : true;
-    }
 }
 
 jQuery(document).ready(function ($) {
-
-    var $latitude = jQuery('#geo_latitude');
-    var $longitude = jQuery('#geo_longitude');
-
-    //set initial marker: check if lat/lon is given, otherwise search nominatim
-    if (!cb_map_locationview.is_lat_lon($latitude.val(), $longitude.val())) {
-        cb_map_locationview.search();
-    } else {
-        cb_map_locationview.init_map(parseFloat($latitude.val()), parseFloat($longitude.val()), true);
-    }
-
+    cb_map_locationview.init_map(parseFloat(cb_map_locationview.defaults.latitude), parseFloat(cb_map_locationview.defaults.longitude), true);
 });
