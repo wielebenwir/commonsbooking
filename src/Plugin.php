@@ -407,7 +407,12 @@ class Plugin {
 	 */
 	public static function registerCustomPostTypes() {
 		foreach ( self::getCustomPostTypes() as $customPostType ) {
-			register_post_type( $customPostType::getPostType(), $customPostType->getArgs() );
+			$cptArgs = $customPostType->getArgs();
+			//make export possible when using WP_DEBUG, this allows us to use the export feature for creating new E2E tests
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				$cptArgs['can_export'] = true;
+			}
+			register_post_type( $customPostType::getPostType(), $cptArgs );
 			$customPostType->initListView();
 			$customPostType->initHooks();
 		}
