@@ -42,20 +42,22 @@ class Booking {
 	 * @return void
 	 */
 	private static function cleanupTimeframes() {
-		$args = array(
-			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType,
-			'post_status' => 'publish',
-			'meta_key'    => 'delete-expired-timeframe',
-			'meta_value'  => 'on',
-			'fields'      => 'ids',
-			'nopaging'    => true,
+
+		$timeframes = \CommonsBooking\Repository\Timeframe::get(
+			[],
+			[],
+			[
+				Timeframe::HOLIDAYS_ID,
+				Timeframe::BOOKABLE_ID,
+				Timeframe::REPAIR_ID
+			],
+			null,
+			true
 		);
-		$posts = get_posts($args);
-		if ( $posts) {
-			foreach ($posts as $post){
-				$timeframe = new \CommonsBooking\Model\Timeframe($post);
+		if ( $timeframes) {
+			foreach ($timeframes as $timeframe){
 				if ($timeframe->getMeta('delete-expired-timeframe') == "on" &&  $timeframe->isPast()){
-					wp_delete_post($post);
+					wp_delete_post($timeframe->ID);
 				}
 			}
 		}
