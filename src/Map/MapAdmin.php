@@ -7,7 +7,10 @@ use CommonsBooking\Wordpress\CustomPostType\Location;
 
 
 /**
+ * This defines the map settings page in the admin area.
+ * This has been imported from flotte-berlin, therefore it does not use CMB2 fields that are used in other parts of the plugin.
  *
+ * TODO: Refactor this to use CMB2 fields.
  **/
 class MapAdmin {
 

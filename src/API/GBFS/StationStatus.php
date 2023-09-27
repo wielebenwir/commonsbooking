@@ -34,12 +34,12 @@ class StationStatus extends BaseRoute {
 	public function prepare_item_for_response( $item, $request ): stdClass {
 		$preparedItem                      = new stdClass();
 		$preparedItem->station_id          = $item->ID . "";
-		$preparedItem->num_bikes_available = count( Item::getByLocation( $item->ID ) );
+		$preparedItem->num_bikes_available = count( Item::getByLocation( $item->ID ) ); // TODO should be the item availability in this moment
 		$preparedItem->is_installed        = true;
 		$preparedItem->is_renting          = true;
 		$preparedItem->is_returning        = true;
+		$preparedItem->last_reported       = current_time('timestamp');
 
 		return $preparedItem;
 	}
-
 }
