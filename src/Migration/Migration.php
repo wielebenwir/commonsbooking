@@ -342,6 +342,7 @@ class Migration {
 					$timeframe->isValid();
 				} catch ( TimeframeInvalidException $e ) {
 					\WP_CLI::log( 'Timeframe ' . $postId . ' did not pass the validity check. We are still keeping it.' );
+					\WP_CLI::log( 'Reason: ' . $e->getMessage() );
 					return false;
 				}
 			}
