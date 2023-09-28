@@ -95,7 +95,7 @@ class Calendar {
 			}
 
 			// set cache expiration to force daily fresh after midnight
-			Plugin::setCacheItem( $weeks, array( 'misc' ), $customId, 'midnight' );
+			Plugin::setCacheItem( $weeks, array( 'misc' ), $customId, true, 'midnight' );
 
 			return $weeks;
 		}
