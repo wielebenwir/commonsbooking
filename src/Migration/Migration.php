@@ -463,7 +463,7 @@ class Migration {
 		$postMeta[ \CommonsBooking\Model\Timeframe::REPETITION_START ]  = strtotime( $timeframe['date_start'] );
 		$tfEnd = strtotime( $timeframe['date_end'] );
 		//only keep, if it's in the future
-		if ($tfEnd > time())
+		if ($tfEnd < time())
 		{
 			$postMeta[ \CommonsBooking\Model\Timeframe::REPETITION_END ]    = strtotime( $timeframe['date_end'] );
 		}
