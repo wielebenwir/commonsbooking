@@ -3,6 +3,7 @@
 namespace CommonsBooking\Service;
 
 use CommonsBooking\Map\MapShortcode;
+use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\View\Calendar;
 use CommonsBooking\Settings\Settings;
 use Exception;
@@ -54,11 +55,13 @@ trait Cache {
 	public static function getCacheId( $custom_id = null ): string {
 		$backtrace     = debug_backtrace()[2];
 		$backtrace     = self::sanitizeArgsArray( $backtrace );
+		$userGroupID   = UserRepository::getRoleTypeID();
         $namespace     = COMMONSBOOKING_PLUGIN_DIR;
 		$namespace     .= '_' . str_replace( '\\', '_', strtolower( $backtrace['class'] ) );
 		$namespace     .= '_' . $backtrace['function'];
 		$backtraceArgs = $backtrace['args'];
 		$namespace     .= '_' . serialize( $backtraceArgs );
+		$namespace     .= '_' . $userGroupID;
 		if ( $custom_id ) {
 			$namespace .= $custom_id;
 		}

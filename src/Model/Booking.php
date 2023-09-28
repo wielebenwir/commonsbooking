@@ -488,6 +488,18 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
+	 * Checks if the given user / current user is administrator of item / location or the website and therefore enjoys special booking rights
+	 *
+	 * @param \WP_User|null $user
+	 *
+	 * @return bool
+	 */
+	public function isUserPrivileged(\WP_User $user = null): bool {
+		$user ??= $this->getUserData();
+		return parent::isUserPrivileged($user);
+	}
+
+	/**
 	 * Returns true when booking has ended.
 	 * Will determine this by comparing the end date of the booking with the current time.
 	 * A booking that is currently running is not considered to be past.
@@ -541,7 +553,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
             Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'user_details_template' )
         );
     }
-    
+
     /**
      * Returns formatted backend edit link of current booking
      *
