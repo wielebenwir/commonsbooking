@@ -357,7 +357,7 @@ class Calendar {
 
 		if ( count( $bookableTimeframes ) ) {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday( $bookableTimeframes );
-			$advanceBookingDays       = intval( $closestBookableTimeframe->getFieldValue( 'timeframe-advance-booking-days' ) );
+			$advanceBookingDays       = $closestBookableTimeframe->getAdvanceBookingDays();
             $firstBookableDay = $closestBookableTimeframe->getFirstBookableDay();
 
 			// Only if passed daterange must not be kept

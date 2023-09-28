@@ -593,16 +593,13 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * Checks if the given user / current user is administrator of item / location or the website and therefore enjoys special booking rights
 	 *
-	 * @param WP_User|null $user
+	 * @param \WP_User|null $user
 	 *
 	 * @return bool
 	 */
-	public function isUserPrivileged(WP_User $user = null): bool {
+	public function isUserPrivileged(\WP_User $user = null): bool {
 		$user ??= $this->getUserData();
-
-		$itemAdmin = commonsbooking_isUserAllowedToEdit($this->getItem(),$user);
-		$locationAdmin = commonsbooking_isUserAllowedToEdit($this->getLocation(),$user);
-		return ($itemAdmin || $locationAdmin);
+		return parent::isUserPrivileged($user);
 	}
 
 	/**
