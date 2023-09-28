@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\Migration;
 
+use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Repository\BookingCodes;
@@ -334,6 +335,17 @@ class Migration {
 				sleep( 1 );
 			}
 
+			//fLotte Migration: Prüfen ob alle Timeframes die erstellt wurden auch gültig sind (keine Überlappungen)
+			if ( get_post_type ( $postId ) == Timeframe::$postType ) {
+				$timeframe = new \CommonsBooking\Model\Timeframe( $postId );
+				try {
+					$timeframe->isValid();
+				} catch ( TimeframeInvalidException $e ) {
+					\WP_CLI::log( 'Timeframe ' . $postId . ' did not pass the validity check. We are still keeping it.' );
+					return false;
+				}
+			}
+
 			// if elementor is active, we clone the elementor meta-keys
 			if ( self::$elementorActive ) {
 				self::migrateElementorMetaKeys( $existingPost->ID, $postId );
@@ -463,6 +475,8 @@ class Migration {
 		$postMeta['full-day']                                           = 'on';
 		$postMeta['grid']                                               = '0';
 		$postMeta['weekdays']                                           = $weekdays;
+		//Enable for fLotte Migration
+		$postMeta['create-booking-codes']                               = 'on';
 		$postMeta['show-booking-codes']                                 = 'on';
 		$postMeta[ \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS] = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_daystoshow' );
 		$postMeta[ \CommonsBooking\Model\Timeframe::META_MAX_DAYS ]     = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_maxdays' );
@@ -481,6 +495,10 @@ class Migration {
 	 */
 	public static function migrateBooking( $booking ): bool {
 		$user       = get_user_by( 'id', $booking['user_id'] );
+		//fLotte Migration: Pending Buchungen nicht übernehmen. Das gibt ein "failed" zurück, was aber nicht schlimm ist.
+		if ( $booking['status'] == 'pending' ) {
+			return false;
+		}
 		if ( self::$cliCall) {
 			if ( empty(self::$itemCache[$booking['item_id']]) ){
 				$existingItem = self::getExistingPost( $booking['item_id'], Item::$postType );
