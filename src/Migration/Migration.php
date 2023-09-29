@@ -737,7 +737,7 @@ class Migration {
 								}
 								$task['failed'] += 1;
 							}
-							elseif (self::$cliCall && $taskIndex >= ($taskLimit - 1)) {
+							elseif (self::$cliCall && $taskIndex >= $taskLimit ) {
 								\WP_CLI::log(sprintf("Migrating %s %s/%s successful",$key,$index,$task['count']));
 							}
 							$task['index'] += 1;
