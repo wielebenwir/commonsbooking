@@ -97,6 +97,7 @@ class Migration {
 		self::$cliCall = true;
 
 		\WP_CLI::log( 'CommonsBooking: Starting migration...' );
+		self::writeToErrorLog("Migration started at " . date('Y-m-d H:i:s'));
 		\WP_CLI::log( 'CommonsBooking: Setting WP_IMPORTING to true.');
 		define( 'WP_IMPORTING', true );
 		\WP_CLI::log( 'CommonsBooking: Enabling wp_defer_term_counting  && wp_defer_comment_counting to speed up migration. Will be disabled after migration.' );
@@ -126,7 +127,10 @@ class Migration {
 		$wpdb->query( 'COMMIT;' );
 		\WP_CLI::log( 'CommonsBooking: Enabling autocommit' );
 		$wpdb->query( 'SET autocommit = 1;' );
-		\WP_CLI::success( sprintf('CommonsBooking: Migration done in %s hours %s minutes %s seconds.', floor((time() - $currentTime) / 3600), floor(((time() - $currentTime) / 60) % 60), floor((time() - $currentTime) % 60)));
+		$doneMessage = sprintf( 'CommonsBooking: Migration done in %s hours %s minutes %s seconds.', floor( ( time() - $currentTime ) / 3600 ), floor( ( ( time() - $currentTime ) / 60 ) % 60 ), floor( ( time() - $currentTime ) % 60 ) );
+		\WP_CLI::success( $doneMessage );
+		self::writeToErrorLog( $doneMessage );
+		self::writeToErrorLog("Migration done at " . date('Y-m-d H:i:s'));
 	}
 
 	/**
@@ -336,6 +340,7 @@ class Migration {
 				} catch ( TimeframeInvalidException $e ) {
 					\WP_CLI::log( 'Timeframe ' . $postId . ' did not pass the validity check. We are still keeping it.' );
 					\WP_CLI::log( 'Reason: ' . $e->getMessage() );
+					self::writeToErrorLog( 'Timeframe ' . $postId . ' invalid. Reason: ' . $e->getMessage() );
 					return false;
 				}
 			}
@@ -728,11 +733,13 @@ class Migration {
 							$item = $items[ $index ];
 							if ( ! $taskFunctions[ $key ]['migrationFunction'] ( $item ) ) {
 								if (self::$cliCall) {
-									\WP_CLI::log(sprintf("Migrating %s item %s out of %s FAILED.",$key,$index,$task['count']));
+									$errorMessage = sprintf( "Migrating %s item %s out of %s FAILED.", $key, $index, $task['count'] );
+									\WP_CLI::log( $errorMessage );
+									self::writeToErrorLog($errorMessage);
 								}
 								$task['failed'] += 1;
 							}
-							elseif (self::$cliCall) {
+							elseif (self::$cliCall && $taskIndex >= ($taskLimit - 1)) {
 								\WP_CLI::log(sprintf("Migrating %s %s/%s successful",$key,$index,$task['count']));
 							}
 							$task['index'] += 1;
@@ -928,6 +935,15 @@ class Migration {
 			}
 		}
 		return true;
+	}
+
+	private static function writeToErrorLog($msg) {
+		$folderName = "migrationErrorLogs";
+		if (!file_exists($folderName)) {
+			mkdir($folderName,0777,true);
+		}
+		$logFileName = $folderName . '/log_' . date('d-M-Y') . '.log';
+		file_put_contents($logFileName, $msg . "\n", FILE_APPEND);
 	}
 
 }
