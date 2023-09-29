@@ -689,7 +689,6 @@ class Migration {
 			) {
 				if ( $taskIndex >= $taskLimit && $taskLimit <> 0 ) {
 					if (self::$cliCall) {
-						\WP_CLI::log("Committing to database");
 						$wpdb->query('COMMIT');
 						$taskIndex = 0;
 					}
@@ -721,7 +720,6 @@ class Migration {
 						) {
 							if ( $taskIndex ++ >= $taskLimit  && $taskLimit <> 0) {
 								if (self::$cliCall) {
-									//\WP_CLI::log("Committing to database");
 									$wpdb->query('COMMIT');
 									$taskIndex = 0;
 								}
@@ -751,7 +749,6 @@ class Migration {
 					} else {
 						if ( $taskIndex ++ >= $taskLimit  && $taskLimit <> 0) {
 							if (self::$cliCall) {
-								\WP_CLI::log("Committing to database");
 								$wpdb->query('COMMIT');
 								$taskIndex = 0;
 							}
@@ -769,7 +766,6 @@ class Migration {
 				} else {
 					if ( $taskIndex ++ >= $taskLimit && $taskLimit <> 0 ) {
 						if (self::$cliCall) {
-							\WP_CLI::log("Committing to database");
 							$wpdb->query('COMMIT');
 							$taskIndex = 0;
 						}
@@ -938,15 +934,7 @@ class Migration {
 	}
 
 	private static function writeToErrorLog($msg) {
-		$folderName = "migrationErrorLogs";
-		if (!file_exists($folderName)) {
-			mkdir($folderName,0777,true);
-		}
-		$logFileName = $folderName . '/log_' . date('d-M-Y') . '.log';
-		if (!file_exists($logFileName)) {
-			file_put_contents($logFileName, '');
-		}
-		file_put_contents($logFileName, $msg . "\n", FILE_APPEND);
+		error_log($msg);
 	}
 
 }
