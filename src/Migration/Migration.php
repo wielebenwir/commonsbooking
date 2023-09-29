@@ -721,7 +721,7 @@ class Migration {
 						) {
 							if ( $taskIndex ++ >= $taskLimit  && $taskLimit <> 0) {
 								if (self::$cliCall) {
-									\WP_CLI::log("Committing to database");
+									//\WP_CLI::log("Committing to database");
 									$wpdb->query('COMMIT');
 									$taskIndex = 0;
 								}
