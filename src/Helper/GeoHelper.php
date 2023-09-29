@@ -17,7 +17,6 @@ class GeoHelper {
 	 * @param $addressString
 	 *
 	 * @return ?Location
-	 * @throws Exception
 	 */
 	public static function getAddressData( $addressString ): ?Location {
 		$defaultUserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0";
@@ -42,7 +41,7 @@ class GeoHelper {
 			if ( ! $addresses->isEmpty() ) {
 				return $addresses->first();
 			}
-		} catch (\Exception $exception) {
+		} catch (Exception $exception) {
 			// Nothing to do in this case
 		}
 

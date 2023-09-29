@@ -8,6 +8,9 @@ use CommonsBooking\Model\Restriction;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 
+/**
+ * This message is sent out to a user to inform them that their booking is influenced by a restriction.
+ */
 class RestrictionMessage extends Message {
 
 	protected $user;

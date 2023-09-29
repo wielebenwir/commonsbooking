@@ -14,7 +14,7 @@ class Booking extends PostRepository {
 
 	/**
 	 * Returns 0:00 timestamp for day of $timestamp.
-	 *
+     *
 	 * @param $timestamp
 	 *
 	 * @return false|int
@@ -25,7 +25,7 @@ class Booking extends PostRepository {
 
 	/**
 	 * Returns 23:59 timestamp for day of $timestamp.
-	 *
+     *
 	 * @param $startTimestamp
 	 *
 	 * @return false|int
@@ -36,8 +36,8 @@ class Booking extends PostRepository {
 
 	/**
 	 * Returns bookings ending at day of timestamp.
-	 *
-	 * @param int $timestamp
+     *
+	 * @param int   $timestamp
 	 * @param array $customArgs
 	 *
 	 * @return array|int[]|WP_Post[]
@@ -83,11 +83,11 @@ class Booking extends PostRepository {
 
 			// Filter by post_status, query seems not to work reliable
 			$posts = array_filter(
-				$posts,
-				function ( $post ) use ( $args ) {
-					return in_array( $post->post_status, $args['post_status'] );
-				}
-			);
+                $posts,
+                function ( $post ) use ( $args ) {
+                    return in_array( $post->post_status, $args['post_status'] );
+                }
+            );
 
 			foreach ( $posts as &$post ) {
 				$post = new \CommonsBooking\Model\Booking( $post );
@@ -101,8 +101,8 @@ class Booking extends PostRepository {
 
 	/**
 	 * Returns bookings beginning at day of timestamp.
-	 *
-	 * @param int $timestamp
+     *
+	 * @param int   $timestamp
 	 * @param array $customArgs
 	 *
 	 * @return array|int[]|WP_Post[]
@@ -206,11 +206,11 @@ class Booking extends PostRepository {
 		if ( $query->have_posts() ) {
 			$posts = $query->get_posts();
 			$posts = array_filter(
-				$posts,
-				function ( $post ) {
-					return in_array( $post->post_status, array( 'confirmed', 'unconfirmed' ) );
-				}
-			);
+                $posts,
+                function ( $post ) {
+                    return in_array( $post->post_status, array( 'confirmed', 'unconfirmed' ) );
+                }
+            );
 
 			// If there is exactly one result, return it.
 			if ( count( $posts ) == 1 ) {
@@ -232,8 +232,8 @@ class Booking extends PostRepository {
 	 * @param $endDate int
 	 * @param $locationId
 	 * @param $itemId
-	 * @param array $customArgs
-	 * @param array $postStatus
+	 * @param array         $customArgs
+	 * @param array         $postStatus
 	 *
 	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
@@ -292,18 +292,17 @@ class Booking extends PostRepository {
 		// Overwrite args with passed custom args
 		$args = array_merge( $args, $customArgs );
 
-
 		$query = new WP_Query( $args );
 		if ( $query->have_posts() ) {
 			$posts = $query->get_posts();
 
 			// Filter by post_status, query seems not to work reliable
 			$posts = array_filter(
-				$posts,
-				function ( $post ) use ( $args ) {
-					return in_array( $post->post_status, $args['post_status'] );
-				}
-			);
+                $posts,
+                function ( $post ) use ( $args ) {
+                    return in_array( $post->post_status, $args['post_status'] );
+                }
+            );
 
 			foreach ( $posts as &$post ) {
 				$post = new \CommonsBooking\Model\Booking( $post );
@@ -316,7 +315,7 @@ class Booking extends PostRepository {
 	}
 
 	/**
-	 * Returns all bookings, allowed to see/edit for user.
+	 * Returns all bookings, allowed to see for user.
 	 *
 	 * @param bool $asModel
 	 * @param null $startDate
@@ -327,8 +326,9 @@ class Booking extends PostRepository {
 	public static function getForUser( $user, bool $asModel = false, $startDate = null ): array {
 		$customId = $user->ID;
 
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$posts = self::get(
 				[],
@@ -343,7 +343,7 @@ class Booking extends PostRepository {
 				$posts = array_filter(
 					$posts,
 					function ( $post ) use ( $user ) {
-						return commonsbooking_isUserAllowedToEdit( $post, $user );
+						return commonsbooking_isUserAllowedToSee( $post, $user );
 					}
 				);
 			}
@@ -410,6 +410,9 @@ class Booking extends PostRepository {
 	}
 
 	/**
+	 * Gets all bookings that are affected by the given restriction.
+	 *
+	 *
 	 * @param \CommonsBooking\Model\Restriction $restriction
 	 *
 	 * @return \WP_Post[]|null

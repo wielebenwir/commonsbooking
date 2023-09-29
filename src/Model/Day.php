@@ -210,7 +210,7 @@ class Day {
 	 *
 	 * @param $grid
 	 * @param Restriction $restriction
-	 *
+	 
 	 * @return float|int
 	 */
 	protected function getRestrictionStartSlot( $grid, \CommonsBooking\Model\Restriction $restriction ) {
@@ -254,7 +254,7 @@ class Day {
 		}
 
 		// If we have a overbooked day, we need to mark all slots as booked
-		if ( ! $timeframe->isOverBookable() ) {
+		if ( ! $timeframe->isOverBookable() && !empty( $endDate ) ) {
 			// Check if timeframe ends after the current day
 			if ( strtotime( $this->getFormattedDate( 'd.m.Y 23:59' ) ) < $endDate->getTimestamp() ) {
 				$endSlot = count( $slots );
@@ -485,8 +485,9 @@ class Day {
 	protected function getTimeframeSlots(): array {
 		$customCacheKey = $this->getDate() . serialize( $this->items ) . serialize( $this->locations );
 		$customCacheKey = md5( $customCacheKey );
-		if ( Plugin::getCacheItem( $customCacheKey ) ) {
-			return Plugin::getCacheItem( $customCacheKey );
+		$cacheItem     = Plugin::getCacheItem( $customCacheKey );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$slots       = [];
 			$slotsPerDay = 24;
