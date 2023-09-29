@@ -642,8 +642,13 @@ class Migration {
 				$term[] = $t->slug;
 			}
 
-			wp_set_object_terms( $cb2PostId, $term, $cb1Taxonomy->taxonomy );
+			$result = wp_set_object_terms( $cb2PostId, $term, $cb1Taxonomy->taxonomy );
+			if ($result instanceof \WP_Error) {
+				\WP_CLI::log( sprintf( 'Error migrating taxonomy %s for post %s', $cb1Taxonomy->taxonomy, $cb2PostId ) );
+				return false;
+			}
 		}
+		return true;
 	}
 
 	/**
