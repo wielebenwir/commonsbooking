@@ -13,7 +13,10 @@
 global $templateData;
 
 echo $templateData['data'];
-
-commonsbooking_get_template_part( 'calendar', 'key'); // file: calendar-key.php
-
 ?>
+
+<div id="cb-table-footnote">
+    <?php
+    commonsbooking_get_template_part( 'calendar', 'key'); // file: calendar-key.php
+    ?>
+</div>
