@@ -91,7 +91,9 @@ class Calendar {
 		$print .= '</tr>';
 
 		// Render Headline Days
+		$print .= '<tr>';
 		$print .= self::renderHeadlineDays( $days_display );
+		$print .=  '</tr></thead><tbody>';
 
 		$items = get_posts(
             array(
@@ -211,10 +213,8 @@ class Calendar {
 		$divider = "</th><th class='cal sortless'>";
 		$dayStr  = implode( $divider, $days_display );
 
-		return '<tr>' .
-		       '<th>' . __( 'Item', 'commonsbooking' ) . '</th>' .
-		       '<th>' . __( 'Location', 'commonsbooking' ) . "<th class='cal sortless'>" . $dayStr . '</th>' .
-		       '</tr></thead><tbody>';
+		return '<th>' . __( 'Item', 'commonsbooking' ) . '</th>' .
+		       '<th>' . __( 'Location', 'commonsbooking' ) . "<th class='cal sortless'>" . $dayStr . '</th>';
 	}
 
 	/**
