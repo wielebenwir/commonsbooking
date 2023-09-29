@@ -616,15 +616,16 @@ class Migration {
 	public static function migrateCB1Options() {
 		// migrate Booking-Codes
 		$cb1_bookingcodes = Settings::getOption( 'commons-booking-settings-codes', 'commons-booking_codes_pool' );
-		Settings::updateOption( 'commonsbooking_options_bookingcodes', 'bookingcodes', $cb1_bookingcodes );
+		$migratedBookingCodes = Settings::updateOption( 'commonsbooking_options_bookingcodes', 'bookingcodes', $cb1_bookingcodes );
 
 		// update sender e-mail
 		$cb1_sender_email = Settings::getOption( 'commons-booking-settings-mail', 'commons-booking_mail_from' );
-		Settings::updateOption( 'commonsbooking_options_templates', 'emailheaders_from-email', $cb1_sender_email );
+		$migratedSenderEmail = Settings::updateOption( 'commonsbooking_options_templates', 'emailheaders_from-email', $cb1_sender_email );
 
 		// sender name
 		$cb1_sender_name = Settings::getOption( 'commons-booking-settings-mail', 'commons-booking_mail_from_name' );
-		Settings::updateOption( 'commonsbooking_options_templates', 'emailheaders_from-name', $cb1_sender_name );
+		$migratedSenderName = Settings::updateOption( 'commonsbooking_options_templates', 'emailheaders_from-name', $cb1_sender_name );
+		return ($migratedBookingCodes && $migratedSenderEmail && $migratedSenderName);
 	}
 
 	/**
