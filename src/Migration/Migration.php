@@ -318,14 +318,7 @@ class Migration {
 			$updatedPost = array_merge( $existingPost->to_array(), $postData );
 			$postId      = wp_update_post( $updatedPost );
 		} else {
-			//measure time needed to insert post
-			$before = hrtime( true );
 			$postId = wp_insert_post( $postData );
-			$after  = hrtime( true );
-			$diff   = $after - $before;
-			if (self::$cliCall){
-				\WP_CLI::log( 'Time needed to insert post: ' . $diff / 1e+6 . 'ms' );
-			}
 		}
 		if ( $postId ) {
 
