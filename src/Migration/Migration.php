@@ -502,12 +502,10 @@ class Migration {
 			if ( empty(self::$itemCache[$booking['item_id']]) ){
 				$existingItem = self::getExistingPost( $booking['item_id'], Item::$postType );
 				self::$itemCache[ $booking['item_id'] ] = $existingItem;
-				\WP_CLI::log('Wrote item to cache');
 			}
 			if (empty(self::$locationCache[$booking['location_id']])) {
 				$existingLocation = self::getExistingPost( $booking['location_id'], Location::$postType );
 				self::$locationCache[ $booking['location_id'] ] = $existingLocation;
-				\WP_CLI::log('Wrote location to cache');
 			}
 			$cbItem     = self::$itemCache[ $booking['item_id'] ];
 			$cbLocation = self::$locationCache[ $booking['location_id'] ];
