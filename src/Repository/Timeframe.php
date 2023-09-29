@@ -155,7 +155,7 @@ class Timeframe extends PostRepository {
 
 			Plugin::setCacheItem(
 				$posts,
-				Wordpress::getTags($posts, $items, $locations),
+				Wordpress::getTags( $posts, $items, $locations ),
 				$customId
 			);
 			return $posts;
@@ -186,7 +186,7 @@ class Timeframe extends PostRepository {
 		}
 
 		$customId = md5( serialize( $types ) );
-		$cacheItem = Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId, false );
 		if ( $cacheItem ) {
 			return $cacheItem;
 		} else {
@@ -252,8 +252,9 @@ class Timeframe extends PostRepository {
 
 			Plugin::setCacheItem(
 				$postIds,
-				Wordpress::getTags($posts, $items, $locations),
-				$customId
+				Wordpress::getTags( $posts, $items, $locations ),
+				$customId,
+				false
 			);
 
 			return $postIds;
@@ -273,7 +274,7 @@ class Timeframe extends PostRepository {
 	 * @return array
 	 */
 	private static function getPostsByBaseParams( ?string $date, ?int $minTimestamp, ?int $maxTimestamp, array $postIds, array $postStatus ): array {
-		$cacheItem = Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem('', false);
 		if ( $cacheItem ) {
 			return $cacheItem;
 		} else {
@@ -312,7 +313,9 @@ class Timeframe extends PostRepository {
 
 			Plugin::setCacheItem(
 				$posts,
-				Wordpress::getTags($posts, $postIds)
+				Wordpress::getTags( $posts, $postIds ),
+				'',
+				false
 			);
 
 			return $posts;
@@ -477,7 +480,6 @@ class Timeframe extends PostRepository {
 			}
 
 			Plugin::setCacheItem( $posts, Wordpress::getTags( $posts ) );
-
 			return $posts;
 		}
 	}
@@ -585,7 +587,7 @@ class Timeframe extends PostRepository {
 					date( $time_format, strtotime( $timeframe->getStartTime() ) ) == $startTimestampTime ||
 					date( $time_format, strtotime( $timeframe->getEndTime() ) ) == $endTimestampTime
 				) {
-					Plugin::setCacheItem( $timeframe, [$timeframe->ID, $itemId, $locationId] );
+					Plugin::setCacheItem( $timeframe, [ $timeframe->ID, $itemId, $locationId ] );
 
 					return $timeframe;
 				}
@@ -659,7 +661,7 @@ class Timeframe extends PostRepository {
 
 			Plugin::setCacheItem(
 				$posts,
-				Wordpress::getTags($posts, $locations, $items),
+				Wordpress::getTags( $posts, $locations, $items ),
 				$customId
 			);
 

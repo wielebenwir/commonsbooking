@@ -21,19 +21,20 @@ trait Cache {
 	/**
 	 * Returns cache item based on calling class, function and args.
 	 *
-	 * @param null $custom_id
+	 * @param null $custom_id custom id to add to cache id
+	 * @param bool $userRoleSensitive if false, the cache will be shared between all users
 	 *
 	 * @return mixed
 	 * @throws InvalidArgumentException
 	 */
-	public static function getCacheItem( $custom_id = null ) {
+	public static function getCacheItem( $custom_id = null, bool $userRoleSensitive = true ) {
 		if ( WP_DEBUG ) {
 			return false;
 		}
 
 		try {
 			/** @var CacheItem $cacheItem */
-			$cacheKey  = self::getCacheId( $custom_id );
+			$cacheKey  = self::getCacheId( $custom_id, $userRoleSensitive );
 			$cacheItem = self::getCache()->getItem( $cacheKey );
 			if ( $cacheItem->isHit() ) {
 				return $cacheItem->get();
@@ -45,23 +46,25 @@ trait Cache {
 
 	/**
 	 * Returns cache id, based on calling class, function and args.
-     * 
-     * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
 	 *
 	 * @param null $custom_id
+	 * @param bool $userRoleSensitive if false, the cache will be shared between all users
 	 *
 	 * @return string
+	 * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
 	 */
-	public static function getCacheId( $custom_id = null ): string {
+	public static function getCacheId( $custom_id = null, bool $userRoleSensitive = true ): string {
 		$backtrace     = debug_backtrace()[2];
 		$backtrace     = self::sanitizeArgsArray( $backtrace );
-		$userGroupID   = UserRepository::getRoleTypeID();
         $namespace     = COMMONSBOOKING_PLUGIN_DIR;
 		$namespace     .= '_' . str_replace( '\\', '_', strtolower( $backtrace['class'] ) );
 		$namespace     .= '_' . $backtrace['function'];
 		$backtraceArgs = $backtrace['args'];
 		$namespace     .= '_' . serialize( $backtraceArgs );
-		$namespace     .= '_' . $userGroupID;
+		if ( $userRoleSensitive ) {
+			$userGroupID   = UserRepository::getRoleTypeID();
+			$namespace     .= '_' . $userGroupID;
+		}
 		if ( $custom_id ) {
 			$namespace .= $custom_id;
 		}
@@ -142,13 +145,14 @@ trait Cache {
 	 * @param $value
 	 * @param array $tags
 	 * @param null $custom_id
+	 * @param bool $userRoleSensitive if false, the cache will be shared between all users
 	 * @param string|null $expirationString set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
 	 *
 	 * @return bool
 	 * @throws InvalidArgumentException
 	 * @throws \Psr\Cache\CacheException
 	 */
-	public static function setCacheItem( $value, array $tags, $custom_id = null, ?string $expirationString = null ): bool {
+	public static function setCacheItem( $value, array $tags, $custom_id = null, bool $userRoleSensitive = true, ?string $expirationString = null ): bool {
 		// Set a default expiration to make sure, that we get rid of stale items, if there are some
 		// too much space
 		$expiration = 604800;
@@ -168,7 +172,7 @@ trait Cache {
 
 		$cache = self::getCache( '', intval( $expiration ) );
 		/** @var CacheItem $cacheItem */
-		$cacheKey  = self::getCacheId( $custom_id );
+		$cacheKey  = self::getCacheId( $custom_id, $userRoleSensitive );
 		$cacheItem = $cache->getItem( $cacheKey );
 		$cacheItem->tag($tags);
 		$cacheItem->set( $value );

@@ -538,7 +538,7 @@ class Calendar {
 			}
 
 			// set transient expiration time to midnight to force cache refresh by daily basis to allow dynamic advanced booking day feature
-			Plugin::setCacheItem( $jsonResponse, [ 'misc' ], $customCacheKey, 'midnight' );
+			Plugin::setCacheItem( $jsonResponse, [ 'misc' ], $customCacheKey, true, 'midnight' );
 		}
 
 		return $jsonResponse;
