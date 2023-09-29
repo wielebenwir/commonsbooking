@@ -3,7 +3,10 @@
   "description": "~",
   "version": "0.0.1",
   "config": {
-    "platform-check": false
+    "platform-check": false,
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
     },
   "autoload": {
     "files": [
@@ -13,11 +16,13 @@
       "includes/TemplateParser.php",
       "includes/Users.php"
     ],
-    "psr-4": {"CommonsBooking\\": "src/"}
+    "psr-4": {
+      "CommonsBooking\\": "src/"
+    }
   },
   "autoload-dev": {
     "psr-4": {
-      "CommonsBooking\\Tests\\": "tests/"
+      "CommonsBooking\\Tests\\": "tests/php/"
     }
   },
   "repositories": [
@@ -38,13 +43,16 @@
     "ext-json": "*",
     "symfony/cache": "^5.4",
     "symfony/service-contracts": "v1.1.11",
-    "eluceo/ical": "^2.5",
-    "phpmailer/phpmailer": "^6.6"
+    "eluceo/ical": "2.09.*",
+    "phpmailer/phpmailer": "^6.6",
+    "ed-itsolutions/cmb2-field-ajax-search": "^2.0"
   },
   "require-dev": {
     "mockery/mockery": "1.*",
     "phpunit/phpunit": "7.*",
     "yoast/phpunit-polyfills": "^1.0",
-    "wp-coding-standards/wpcs": "^2.3"
+    "wp-coding-standards/wpcs": "^2.3",
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "slope-it/clock-mock": "^0.3.8"
   }
 }

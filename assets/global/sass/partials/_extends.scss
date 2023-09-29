@@ -116,10 +116,11 @@
 	}
 
 	&[disabled=disabled] {
-		background-color: var(--commonsbooking-color-bg);
-		color: var(--commonsbooking-color-greyedout);
+		background-color: var(--commonsbooking-color-greyedout);
+		color: var(--commonsbooking-textcolor-light);
+        @extend .shadow-small;
 	}
-	
+
 	&.no-right-radius {
 		border-radius: var(--commonsbooking-radius) 0 ;
 	}	
