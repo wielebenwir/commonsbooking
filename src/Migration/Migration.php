@@ -943,6 +943,9 @@ class Migration {
 			mkdir($folderName,0777,true);
 		}
 		$logFileName = $folderName . '/log_' . date('d-M-Y') . '.log';
+		if (!file_exists($logFileName)) {
+			file_put_contents($logFileName, '');
+		}
 		file_put_contents($logFileName, $msg . "\n", FILE_APPEND);
 	}
 
