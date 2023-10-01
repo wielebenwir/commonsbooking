@@ -126,14 +126,20 @@ class Timeframe extends CustomPost {
 	public function getLatestPossibleBookingDateTimestamp() {
 		$calculationBase = time();
 
-		// if meta-value not set we define a default value
-		$advanceBookingDays = $this->getMeta( TimeFrame::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) ?:
-			\CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS;
+		// if meta-value not set we define a default value far in the future
+		$advanceBookingDays = $this->getMeta( TimeFrame::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) ?: 365;
+		$endDate = $this->getTimeframeEndDate();
 
 		// we subtract one day to reflect the current day in calculation
 		$advanceBookingDays --;
 
-		return strtotime( '+ ' . $advanceBookingDays . ' days', $calculationBase );
+		$advanceBookingTime = strtotime( '+ ' . $advanceBookingDays . ' days', $calculationBase );
+
+		if ($endDate && $advanceBookingTime > $endDate ){
+			return $endDate;
+		}
+		return $advanceBookingTime;
+
 	}
 
 	/**
