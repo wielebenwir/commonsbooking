@@ -40,6 +40,8 @@ class Timeframe extends CustomPost {
 
 	public const META_MAX_DAYS = 'timeframe-max-days';
 
+	public const META_ALLOWED_USER_ROLES = 'allowed_user_roles';
+
 	/**
 	 * Return the span of a timeframe in human-readable format
 	 *
@@ -78,7 +80,7 @@ class Timeframe extends CustomPost {
      * The timestamps are stored in local time (not in UTC).
      * This means that we do not have to do timezone conversion in order to get the corresponding local time.
      *
-     * @return false|int
+     * @return false|int Timestamp of end date, false if no end date is set
      */
     public function getTimeframeEndDate() {
         $endDate = $this->getMeta( self::REPETITION_END );
