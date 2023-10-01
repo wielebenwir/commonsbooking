@@ -121,6 +121,8 @@ class Timeframe extends CustomPost {
 	 * This function respects the advance booking days setting.
 	 * This means that this is the latest date that a user can currently book.
 	 *
+	 * If the timeframe has no end date and the advance booking days setting is set to 0, this function will return a timestamp in the next year.
+	 *
 	 * @return false|int
 	 */
 	public function getLatestPossibleBookingDateTimestamp() {
