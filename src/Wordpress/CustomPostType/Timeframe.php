@@ -751,8 +751,10 @@ class Timeframe extends CustomPostType {
 
 		if ( $isValid ) {
 			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
-			$this->sanitizeRepetitionEndDate( $post_id );
 			self::sanitizeRepetitionEndDate( $post_id );
+
+			//delete unused postmeta
+			self::removeIrrelevantPostmeta( $timeframe );
 
 			if ( $timeframe->usesBookingCodes() && $timeframe->bookingCodesApplicable() ) {
 				try {
@@ -815,6 +817,30 @@ class Timeframe extends CustomPostType {
 		}
 
 		return true;
+	}
+
+	/**
+	 * For different types of timeframes, different types of postmeta is relevant.
+	 * This function removes the postmeta irrelevant for the current type from the post.
+	 *
+	 * @param \CommonsBooking\Model\Timeframe $timeframe
+	 *
+	 * @return void
+	 */
+	private static function removeIrrelevantPostmeta( \CommonsBooking\Model\Timeframe $timeframe ) {
+		$onlyRelevantForBookable = [
+			\CommonsBooking\Model\Timeframe::META_MAX_DAYS,
+			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS,
+			\CommonsBooking\Model\Timeframe::META_ALLOWED_USER_ROLES,
+			'booking-startday-offset',
+			'create-booking-codes',
+			'show-booking-codes',
+		];
+		if ($timeframe->getType() != Timeframe::BOOKABLE_ID) {
+			foreach ( $onlyRelevantForBookable as $metaKey ) {
+				delete_post_meta( $timeframe->ID, $metaKey );
+			}
+		}
 	}
 
 	/**

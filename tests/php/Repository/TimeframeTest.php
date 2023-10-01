@@ -88,7 +88,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		);
 
 		//Test-case for #1357 . The holiday should be returned regardless of the 'maxBookingDays'(aka advanceBookingDays) setting for the holiday. The maxBookingDays setting is only applicable for bookable timeframes.
-		//The culprit here was the filterTimeframesByMaxBookingDays function, which filtered the timeframe regardless of type.
+		//We remove the irrelevant postmeta so that it is not processed by the filtering functions anymore
 		$holidayInFuture = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
@@ -105,6 +105,10 @@ class TimeframeTest extends CustomPostTypeTest {
 			self::USER_ID,
 			3,
 			30
+		);
+		\CommonsBooking\Wordpress\CustomPostType\Timeframe::savePost(
+			$holidayInFuture,
+			get_post($holidayInFuture)
 		);
 		//This is necessary, because the getLatestPossibleBookingDateTimestamp takes time() as the calculation base.
 		//the getLatestPossibleBookingDateTimestamp function takes the current time and adds the extra days on top to determine at what day you are allowed to book.
