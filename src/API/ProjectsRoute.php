@@ -7,6 +7,12 @@ namespace CommonsBooking\API;
 use stdClass;
 use WP_REST_Response;
 
+/**
+ * Endpoint for information about the lending organisation.
+ * Infos like site name, description etc. is retrieved from general Wordpress settings @see https://wordpress.com/support/general-settings/
+ * 
+ * Full schema see, @see https://github.com/wielebenwir/commons-api/blob/master/commons-api.projects.schema.json
+ */
 class ProjectsRoute extends BaseRoute {
 
 	/**
