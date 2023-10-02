@@ -3,17 +3,23 @@
 
 namespace CommonsBooking\Model;
 
-
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Timeframe;
 use Exception;
 
+/**
+ * Logical wrapper for `bookable` (timeframe) posts
+ * Inherited by Location and Item.
+ *
+ */
 class BookablePost extends CustomPost {
 
 	/**
 	 * Will return an array of bookable timeframes for the current object.
 	 * Since currently, BookablePost is only inherited by Location and Item, it's main purpose is to
 	 * return the corresponding bookable timeframe for a location or item.
+	 *
+	 * @uses Timeframe::getBookableForCurrentUser()
 	 *
 	 * @param false $asModel - Whether to return the timeframes as model (CommonsBooking\Model\Timeframe) or as array of WP_Post
 	 * @param array $locations - If called from Item, this array should contain the location IDs to filter the timeframes

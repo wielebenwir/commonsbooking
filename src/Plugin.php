@@ -59,32 +59,65 @@ class Plugin {
 		do_action( Scheduler::UNSCHEDULER_HOOK );
 	}
 
-	protected static function addCPTRoleCaps() {
-		$customPostTypes = commonsbooking_isCurrentUserAdmin() ? self::getCustomPostTypes() : self::getCBManagerCustomPostTypes();
-
+	/**
+	 * Adds capabilities for custom post types.
+	 * This function runs after plugin activation and upon plugin update.
+	 *
+	 * NOTE: Before the change, this function did not work because it was dependent
+	 * on the role of the user upon activation. This did not make sense, as this is always
+	 * the admin. The function was changed to add the correct capabilities for all roles.
+	 *
+	 * This usually only happens, when the plugin is activated through wp-cli (because no user is logged in there)
+	 * The way this function has worked before is instead to assign the CB-Manager the capabilites of the admin.
+	 *
+	 * When we change the behaviour to what was probably intended, we break the functionality for the CB Manager to edit posts (like bookings or items).
+	 * This is why we now assign the CB-Manager the capabilities of the admin, the supposedly correct behaviour is commented out below.
+	 *
+	 * Therefore, this function does not work differently, it just has the same behaviour when plugin is activated through wp-cli or through the admin interface.
+	 * @return void
+	 */
+	public static function addCPTRoleCaps() {
+		//admins are allowed to see all custom post types
+		$adminAllowedCPT = self::getCustomPostTypes();
+		$CBManagerAllowedCPT = self::getCBManagerCustomPostTypes();
 		// Add capabilities for user roles
-		foreach ( $customPostTypes as $customPostType ) {
-			self::addRoleCaps( $customPostType::$postType );
+		foreach ( $adminAllowedCPT as $customPostType ) {
+			self::addRoleCaps( $customPostType::$postType, 'administrator' );
+			//assign all capabilities of admin to CB-Manager (see comment above)
+			self::addRoleCaps( $customPostType::$postType, self::$CB_MANAGER_ID );
 		}
+		/*
+		foreach ( $CBManagerAllowedCPT as $customPostType ) {
+			self::addRoleCaps( $customPostType::$postType, self::$CB_MANAGER_ID );
+		}
+		*/
 	}
 
 	/**
-	 * Returns needed roles and caps.
+	 * Returns needed roles and caps for specific roles
      *
 	 * @return \bool[][]
 	 */
-	public static function getRoleCapMapping() {
-		return [
-			self::$CB_MANAGER_ID => [
-				'read'                                 => true,
-				'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
-			],
-			'administrator'      => [
-				'read'                                 => true,
-				'edit_posts'                           => true,
-				'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
-			],
-		];
+	public static function getRoleCapMapping( $roleName = null) {
+		if ( $roleName === null ) {
+			return [
+				self::$CB_MANAGER_ID => [
+					'read'                                 => true,
+					'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
+				],
+				'administrator'      => [
+					'read'                                 => true,
+					'edit_posts'                           => true,
+					'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
+				],
+			];
+		}
+		else {
+			$roleCapMapping = self::getRoleCapMapping();
+			return [
+				$roleName => $roleCapMapping[$roleName]
+			];
+		}
 	}
 
 	/**
@@ -109,7 +142,11 @@ class Plugin {
 	}
 
 	/**
-	 * @return array
+	 * Will get all registered custom post types for this plugin as an instance of the CustomPostType class
+	 * All CustomPostType classes extend the CustomPostType class and must be registered in this method.
+	 * When defining a CustomPostType, you must also define a model for it, which extends the CustomPost class.
+	 * The existence of a model is checked in the @see PluginTest::testGetCustomPostTypes() test.
+	 * @return CustomPostType[]
 	 */
 	public static function getCustomPostTypes(): array {
 		return [
@@ -124,14 +161,19 @@ class Plugin {
 
 	/**
 	 * Tests if a given post belongs to our CPTs
-	 * @param $post
+	 * @param $post int|\WP_Post - post id or post object
 	 *
 	 * @return bool
 	 */
 	public static function isPostCustomPostType($post): bool {
-		if (! $post ) {
+		if (is_int($post)) {
+			$post = get_post($post);
+		}
+
+		if ( empty( $post ) ) {
 			return false;
 		}
+
 		$validPostTypes = self::getCustomPostTypesLabels();
 		return in_array($post->post_type,$validPostTypes);
 	}
@@ -152,13 +194,13 @@ class Plugin {
 	}
 
 	/**
-	 * Adds permissions for cb users.
+	 * Adds permissions to edit custom post types for specified role.
 	 *
 	 * @param $postType
 	 */
-	public static function addRoleCaps( $postType ) {
+	protected static function addRoleCaps( $postType, $roleName ) {
 		// Add the roles you'd like to administer the custom post types
-		$roles = array_keys( self::getRoleCapMapping() );
+		$roles = array_keys( self::getRoleCapMapping( $roleName ) );
 
 		// Loop through each role and assign capabilities
 		foreach ( $roles as $the_role ) {
@@ -219,11 +261,20 @@ class Plugin {
 		if ( COMMONSBOOKING_VERSION != $commonsbooking_installed_version or ! isset( $commonsbooking_installed_version ) ) {
 
 			// reset greyed out color when upgrading, see issue #1121
-			Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor', '#f6f6f6' );
+			Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor', '#e0e0e0' );
+			Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_lighttext', '#a0a0a0');
 
 			// reset iCalendar Titles when upgrading, see issue #1251
-			Settings::updateOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title', '' );
-			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' , '' );
+			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
+			$otherEventTitle = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
+			if ( str_contains( $eventTitle, 'post_name' ) ){
+				$updatedString = str_replace( 'post_name', 'post_title', $eventTitle );
+				Settings::updateOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title', $updatedString );
+			}
+			if ( str_contains( $otherEventTitle, 'post_name' ) ){
+				$updatedString = str_replace( 'post_name', 'post_title', $otherEventTitle );
+				Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title', $updatedString );
+			}
 
 			// set Options default values (e.g. if there are new fields added)
 			AdminOptions::SetOptionsDefaultValues();
@@ -387,6 +438,7 @@ class Plugin {
 				'rewrite'      => array( 'slug' => $customPostType . '-cat' ),
 				'hierarchical' => true,
 				'show_in_rest' => true,
+				'public' => true
 			)
 		);
 
@@ -529,7 +581,7 @@ class Plugin {
 		add_action( 'wp_enqueue_scripts', array( Cache::class, 'addWarmupAjaxToOutput' ) );
 		add_action( 'admin_enqueue_scripts', array( Cache::class, 'addWarmupAjaxToOutput' ) );
 
-		add_action( 'plugins_loaded', array( $this, 'commonsbooking_load_textdomain' ), 20 );
+		add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
 		$map_admin = new LocationMapAdmin();
 		add_action( 'plugins_loaded', array( $map_admin, 'load_location_map_admin' ) );
@@ -550,7 +602,10 @@ class Plugin {
                 $this->UpdateNotice( COMMONSBOOKING_VERSION, $plugin_data['new_version'] );
             }
         );
-
+		// add ajax search for cmb2 fields (e.g. user search etc.)
+        add_filter('cmb2_field_ajax_search_url', function(){
+            return (COMMONSBOOKING_PLUGIN_URL . '/vendor/ed-itsolutions/cmb2-field-ajax-search/');
+        });
     	// iCal rewrite
 		iCalendar::initRewrite();
 
@@ -638,6 +693,10 @@ class Plugin {
 					new \CommonsBooking\API\LocationsRoute(),
 					// new \CommonsBooking\API\OwnersRoute(),
 					new \CommonsBooking\API\ProjectsRoute(),
+					new \CommonsBooking\API\GBFS\Discovery(),
+					new \CommonsBooking\API\GBFS\StationInformation(),
+					new \CommonsBooking\API\GBFS\StationStatus(),
+					new \CommonsBooking\API\GBFS\SystemInformation(),
 
 				];
 				foreach ( $routes as $route ) {

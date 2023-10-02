@@ -159,14 +159,10 @@
                     maxDaysSelect.show();
                     advanceBookingDays.show();
                     allowUserRoles.show();
-                    BookingStartDayOffset.show();
-                    bookingConfigTitle.show();
                 } else {
                     maxDaysSelect.hide();
                     advanceBookingDays.hide();
                     allowUserRoles.hide();
-                    BookingStartDayOffset.hide();
-                    bookingConfigTitle.hide();
                 }
             };
             handleTypeSelection();
@@ -213,7 +209,7 @@
             const handleBookingCodesSelection = function() {
                 const fullday = fullDayInput.prop("checked"), type = typeInput.val(), repStart = repetitionStartInput.val(), repEnd = repetitionEndInput.val();
                 hideFieldset(bookingCodeSet);
-                if (repStart && repEnd && fullday && type == 2) {
+                if (repStart && fullday && type == 2) {
                     showFieldset(bookingCodeSet);
                     if (!createBookingCodesInput.prop("checked")) {
                         hideFieldset([ showBookingCodes ]);

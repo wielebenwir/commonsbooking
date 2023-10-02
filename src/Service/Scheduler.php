@@ -5,6 +5,14 @@ namespace CommonsBooking\Service;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\TimeframeExport;
 
+/**
+ * This class is used to schedule jobs that are executed in the background.
+ * The jobs are scheduled using the WordPress cron system.
+ * We enhance this system by adding
+ * custom intervals,
+ * hooks that allow us to unschedule jobs and re-schedule them when the execution time in the settings is changed
+ * and the check for an option that determines weather the job should be run.
+ */
 class Scheduler {
 
 	protected string $jobhook; 
@@ -13,7 +21,19 @@ class Scheduler {
 
 	const UNSCHEDULER_HOOK = COMMONSBOOKING_PLUGIN_SLUG . '_unschedule';
 
-	//constructs the class, if job does not exist yet it is created
+
+	/**
+	 * Every job will be constructed again when the page is loaded.
+	 * The constructor determines if the job is scheduled and if it should be scheduled.
+	 * It also hooks the appropriate actions that will un-schedule the job upon certain changes.
+	 * We can safely un-schedule the job upon changes, because the job will be re-scheduled with the correct settings when the page is loaded again.
+	 * @param string $jobhook the action hook to run when the event is executed
+	 * @param callable $callback the callback function of that hook
+	 * @param string $reccurence how often the event should subsequently recur
+	 * @param string $executionTime takes time of day the job should be executed, only for daily reccurence
+	 * @param array $option first element is the options_key, second is the field_id. If set, the field is checked and determines wether the hook should be ran
+	 * @param string $updateHook The wordpress hook that should update the option
+	 */
 	function __construct(
 		string $jobhook, //the action hook to run when the event is executed
 		callable $callback, //the callback function of that hook
@@ -109,6 +129,10 @@ class Scheduler {
 
 	/**
 	 * Inits scheduler hooks.
+	 * If you want to add a new job, add it here.
+	 * These hooks will be executed when the page is loaded.
+	 *
+	 * @return void
 	 */
 	public static function initHooks() {
 		// Init booking cleanup job
@@ -162,8 +186,11 @@ class Scheduler {
 	}
 
 	/**
-	 * Unschedules the current job
-	 * 
+	 * Unschedules the current job.
+	 * This can have multiple reasons:
+	 * - The job is no longer needed
+	 * - The job has been updated and needs to be rescheduled
+	 * - The plugin has been deactivated
 	 * @return boolean
 	 */
 	private function unscheduleJob() {
@@ -176,7 +203,10 @@ class Scheduler {
 	}
 
 	/**
-	 * Unschedules legacy jobs
+	 * Unschedules legacy jobs.
+	 * These jobs come from earlier versions of CommonsBooking 2.x and are no longer needed.
+	 * There are also jobs still from CommonsBooking 0.X listed here.
+	 * It is important to remove the jobs, because WordPress does not delete them on it's own, not even on plugin deactivation.
 	 */
 	public static function unscheduleOldEvents() {
 		$cbCronHooks = [

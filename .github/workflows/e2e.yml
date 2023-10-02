@@ -1,0 +1,63 @@
+name: E2E Tests
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+  pull_request:
+    branches:
+      - 'master'
+
+env:
+  DB_DATABASE: wordpress_test
+  DB_USER: root
+  DB_PASSWORD: ''
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: |
+          composer install --no-dev --prefer-dist --no-progress
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci --legacy-peer-deps --include=dev
+      - run: docker-compose -v
+      - name: setup wp env
+        run: npm run env:start
+
+      - name: install test data for e2e test
+        run: npm run cypress:setup
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          config-file: tests/cypress/cypress.config.js
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: cypress-screenshots
+          path: ${{ github.workspace }}/tests/cypress/screenshots/

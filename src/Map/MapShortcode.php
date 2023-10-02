@@ -25,6 +25,10 @@ class MapShortcode {
 
 				if ( $post->post_status == 'publish' ) {
 
+					//jquery
+					//TODO: This is likely enqueueing jquery twice. The other enqueue happens in @see commonsbooking_public() . A better solution would be to fix load order.
+					wp_enqueue_script( 'jquery' );
+
 					//leaflet
 					wp_enqueue_style( 'cb_map_leaflet_css', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet.css' );
 					wp_enqueue_script( 'cb_map_leaflet_js', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet.js' );
