@@ -794,7 +794,6 @@ class Timeframe extends CustomPost {
 	 * @throws Exception
 	 */
 	public function getAdmins(): array {
-		$admins           = [];
 		$location = $this->getLocation();
 		if (! empty($location)) {
 			$locationAdminIds = $location->getAdmins();
@@ -804,15 +803,7 @@ class Timeframe extends CustomPost {
 			$itemAdminIds = $item->getAdmins();
 		}
 
-		if (
-			isset ($locationAdminIds) && isset ($itemAdminIds) &&
-			is_array( $locationAdminIds ) && count( $locationAdminIds ) &&
-			is_array( $itemAdminIds ) && count( $itemAdminIds )
-		) {
-			$admins = array_merge( $locationAdminIds, $itemAdminIds );
-		}
-
-		return array_unique( $admins );
+		return array_unique( array_merge ($locationAdminIds,$itemAdminIds) );
 	}
 
 	/**

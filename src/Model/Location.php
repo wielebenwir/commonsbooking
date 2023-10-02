@@ -236,8 +236,11 @@ class Location extends BookablePost {
 			}
 		}
 
-		//intval and unique the array
-		return array_unique(array_map('intval', $locationAdminIds));
+		return array_unique(
+			array_map('intval',
+				array_values($locationAdminIds)
+			)
+		);
 	}
 
 	/**
