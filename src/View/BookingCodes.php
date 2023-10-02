@@ -26,7 +26,7 @@ class BookingCodes
 	 * Next booking codes by Email Cron event for timeframe.
      * based on current timestamp calculated start and period
 	 *
-	 * @param Timestamp $tsInitial
+	 * @param int $tsInitial - Timestamp of the inital date
 	 * @param int $periodMonths
      *
      * @return DateTime   Datetime of nex Cron Event.
@@ -91,6 +91,7 @@ class BookingCodes
 
  	/**
 	 * CMB2 sanitize field callback
+	 * Will take the entered start date and saves it as a timestamp.
 	 *
      * @param  mixed      $value      The unsanitized value from the form.
      * @param  array      $field_args Array of field arguments.
@@ -101,11 +102,15 @@ class BookingCodes
     public static function sanitizeCronEmailCodes( $value, $field_args, $field ): ?array {
         if($value == null) return null;
 
-        $dt=DateTime::createFromFormat($field_args['date_format_start'], @$value['cron-email-booking-code-start']);
+	    $automatedSendingActivated = $value['cron-booking-codes-enabled'];
+	    $sendInitialCodes = $value['cron-email-booking-code-start'];
+	    $monthsToSendPerEmail = $value['cron-email-booking-code-nummonth'];
+
+	    $dt  = DateTime::createFromFormat($field_args['date_format_start'], $sendInitialCodes );
         if($dt) $dt->setTime(0,0); //normalize to midnight, otherwise always modified/updated state
-        $toSave = array(
-            'cron-booking-codes-enabled' => sanitize_text_field( @$value['cron-booking-codes-enabled'] ),
-            'cron-email-booking-code-nummonth' => absint(@$value['cron-email-booking-code-nummonth']),
+	    $toSave                           = array(
+            'cron-booking-codes-enabled' => sanitize_text_field( $automatedSendingActivated ),
+            'cron-email-booking-code-nummonth' => absint($monthsToSendPerEmail ),
             'cron-email-booking-code-start' => $dt?$dt->getTimestamp():$field->args['default_start'],
         );
 
@@ -125,10 +130,10 @@ class BookingCodes
 
         if(is_array($value)) {
             return array(
-                'cron-booking-codes-enabled' =>  !empty(@$value['cron-booking-codes-enabled'])?$value['cron-booking-codes-enabled']:'',
-                'cron-email-booking-code-nummonth' => is_numeric(@$value['cron-email-booking-code-nummonth'])?$value['cron-email-booking-code-nummonth']:
+                'cron-booking-codes-enabled' =>  !empty($value['cron-booking-codes-enabled'])?$value['cron-booking-codes-enabled']:'',
+                'cron-email-booking-code-nummonth' => !empty ($value['cron-email-booking-code-nummonth']) && is_numeric($value['cron-email-booking-code-nummonth']) ?$value['cron-email-booking-code-nummonth']:
                                                                                                             $field->args['default_nummonth'],
-                'cron-email-booking-code-start' => is_numeric(@$value['cron-email-booking-code-start'])?
+                'cron-email-booking-code-start' => !empty ($value['cron-email-booking-code-start']) && is_numeric($value['cron-email-booking-code-start'])?
                                                         date($field_args['date_format_start'],$value['cron-email-booking-code-start']):
                                                         date($field_args['date_format_start'],$field->args['default_start']),
             );
