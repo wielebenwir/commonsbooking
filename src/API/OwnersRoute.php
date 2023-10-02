@@ -10,6 +10,15 @@ use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * Endpoint for item/location owners data
+ *
+ * Unused at the moment.
+ *
+ * TODO Think about a dto/model abstraction, application layer in OwnersRoute type shouldn't contain the code to retrieve data from database/wp-post layer
+ *
+ * TODO Personal identifieable information is potentially exposed via firstname and lastname, this should be disclosed or configurable
+ */
 class OwnersRoute extends BaseRoute {
 
 	/**
