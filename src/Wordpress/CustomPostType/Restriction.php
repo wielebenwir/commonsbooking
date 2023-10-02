@@ -536,6 +536,11 @@ Select the desired status and then click the "Send" button to send the e-mail.<b
 			if ( $this->hasRunBefore( __METHOD__ ) ) {
 				return;
 			}
+
+			if ( $post->post_status == 'trash' || $post->post_status == 'auto-draft' || $post->post_status == 'draft' ) {
+				return;
+			}
+
 			try {
 				$restriction = new \CommonsBooking\Model\Restriction( $post_id );
 				$restriction->isValid();
