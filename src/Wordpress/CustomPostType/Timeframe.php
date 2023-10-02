@@ -681,7 +681,7 @@ class Timeframe extends CustomPostType {
 				'name' => esc_html__( 'Send booking codes automated by E-mail', 'commonsbooking' ),
 				'desc_cb' => esc_html__("Enable automated sending of booking codes by email", 'commonsbooking' ),
 				'name_start'        => esc_html__( 'Start Date', 'commonsbooking' ),
-                'desc_start'        => commonsbooking_sanitizeHTML( __('First day to send Codes (List starts at next month)<br>(same day used for subsequent sendings) ', 'commonsbooking')) , 
+                'desc_start'        => commonsbooking_sanitizeHTML( __('First day to send Codes (List starts at next month)<br>(Same day will be used for subsequent messages) ', 'commonsbooking')) ,
 				'date_format_start' => $dateFormat,
 				'default_start'		=> strtotime("now"),
 				'name_nummonth'       => esc_html__( "Month's to send", 'commonsbooking' ),

@@ -5656,35 +5656,42 @@ select[readonly] {
   touch-action: none !important;
 }
 
-/* line 30, ../sass/partials/_form-timeframe.scss */
+/* line 28, ../sass/partials/_form-timeframe.scss */
+a.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: default;
+}
+
+/* line 37, ../sass/partials/_form-timeframe.scss */
 .cmb2-id-booking-codes-list .cmb-td > table.cmb2-codes-outer-table {
   width: 100%;
 }
-/* line 32, ../sass/partials/_form-timeframe.scss */
+/* line 39, ../sass/partials/_form-timeframe.scss */
 .cmb2-id-booking-codes-list .cmb-td > table.cmb2-codes-outer-table > tbody > tr {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: 1rem;
 }
-/* line 37, ../sass/partials/_form-timeframe.scss */
+/* line 44, ../sass/partials/_form-timeframe.scss */
 .cmb2-id-booking-codes-list .cmb-td > table.cmb2-codes-outer-table > tbody > tr > td {
   margin-bottom: unset;
   padding-bottom: unset;
   padding-top: unset;
 }
-/* line 43, ../sass/partials/_form-timeframe.scss */
+/* line 50, ../sass/partials/_form-timeframe.scss */
 .cmb2-id-booking-codes-list .cmb-td > table.cmb2-codes-outer-table table.cmb2-codes-column {
   border: none;
 }
-/* line 45, ../sass/partials/_form-timeframe.scss */
+/* line 52, ../sass/partials/_form-timeframe.scss */
 .cmb2-id-booking-codes-list .cmb-td > table.cmb2-codes-outer-table table.cmb2-codes-column td {
   border: none;
   display: table-cell;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
-/* line 51, ../sass/partials/_form-timeframe.scss */
+/* line 58, ../sass/partials/_form-timeframe.scss */
 .cmb2-id-booking-codes-list .cmb-td > table.cmb2-codes-outer-table table.cmb2-codes-column tr:nth-child(odd) {
   background-color: #f2f2f2;
 }

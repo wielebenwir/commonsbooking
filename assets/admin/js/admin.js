@@ -131,6 +131,10 @@
             const bookingCodesList = $("#booking-codes-list");
             const emailBookingCodesList = $("#email-booking-codes-list");
             const cronEmailBookingCodesList = $("#cron-email-booking-code");
+            const boxSendEntireTimeframeCodes = $("#timeframe-bookingcodes-sendall");
+            const linkSendEntireTimeframeCodes = $("#email-booking-codes-list-all");
+            const linkSendCurrentMonth = $("#email-booking-codes-list-current");
+            const linkSendNextMonth = $("#email-booking-codes-list-next");
             const bookingConfigTitle = $(".cmb2-id-title-bookings-config");
             const maxDaysSelect = $(".cmb2-id-timeframe-max-days");
             const advanceBookingDays = $(".cmb2-id-timeframe-advance-booking-days");
@@ -140,6 +144,7 @@
             const noRepSet = [ fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput ];
             const repTimeFieldsSet = [ gridInput, startTimeInput, endTimeInput ];
             const bookingCodeSet = [ createBookingCodesInput, bookingCodesList, bookingCodesDownload, showBookingCodes, emailBookingCodesList, cronEmailBookingCodesList ];
+            const form = $("input[name=post_type][value=cb_timeframe]").parent("form");
             const showRepFields = function() {
                 showFieldset(repSet);
                 hideFieldset(arrayDiff(repSet, noRepSet));
@@ -215,9 +220,19 @@
                         hideFieldset([ showBookingCodes ]);
                         showBookingCodes.prop("checked", false);
                     }
+                    if (!repEnd) {
+                        boxSendEntireTimeframeCodes.hide();
+                    } else {
+                        boxSendEntireTimeframeCodes.show();
+                    }
                 }
             };
             handleBookingCodesSelection();
+            form.find("input, select, textarea").on("keyup change paste", function() {
+                linkSendEntireTimeframeCodes.addClass("disabled");
+                linkSendCurrentMonth.addClass("disabled");
+                linkSendNextMonth.addClass("disabled");
+            });
             const bookingCodeSelectionInputs = [ repetitionStartInput, repetitionEndInput, fullDayInput, typeInput, createBookingCodesInput ];
             $.each(bookingCodeSelectionInputs, function(key, input) {
                 input.change(function() {

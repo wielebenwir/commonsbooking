@@ -275,32 +275,42 @@ HTML;
         }
         else
         {
-            echo '      <a id="email-booking-codes-list-all" 
+            echo '
+            	<div id ="timeframe-bookingcodes-sendall">
+                  <a id="email-booking-codes-list-all" 
                                 href="'. esc_url(add_query_arg([  "action" => "emailcodes", "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
-                            <strong>'. commonsbooking_sanitizeHTML( __('Email booking codes of the entire timeframe', 'commonsbooking')) .'</strong>
+                            <strong>'. commonsbooking_sanitizeHTML( __('Email booking codes for the entire timeframe', 'commonsbooking')) .'</strong>
                         </a>
-                        <br>
-                        '. commonsbooking_sanitizeHTML( __('<b>All codes for the entire timeframe</b> will be emailed to the location email(s), given in bold below.', 'commonsbooking'));
-
+                    <br>
+                    '. commonsbooking_sanitizeHTML( __('<b>All codes for the entire timeframe</b> will be emailed to the location email(s), given in bold below.', 'commonsbooking'))
+	            . '</div>';
 
             $from=strtotime("midnight first day of this month");
             $to=strtotime("midnight last day of this month");
-            echo '          <br><a id="email-booking-codes-list-current" 
+            echo '
+			<div id ="timeframe-bookingcodes-send_current_month">
+          		<br><a id="email-booking-codes-list-current" 
                                     href="'. esc_url(add_query_arg([  "action" => "emailcodes", "from" => $from, "to" =>$to, "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
                             <strong>'. commonsbooking_sanitizeHTML( __('Email booking codes of current month', 'commonsbooking')) .'</strong>
                         </a><br>
-                        '. commonsbooking_sanitizeHTML( __('The codes <b>of the current month</b> will be sent to all the location email(s), given in bold below', 'commonsbooking'));
-
+                        '. commonsbooking_sanitizeHTML( __('The codes <b>of the current month</b> will be sent to all the location email(s), given in bold below', 'commonsbooking'))
+            . '</div>';
             $from=strtotime("midnight first day of next month");
             $to=strtotime("midnight last day of next month");
 
-            echo '          <br><a id="email-booking-codes-list-next" 
+            echo '
+			<div id ="timeframe-bookingcodes-send_next_month">
+          	<br><a id="email-booking-codes-list-next" 
                                     href="'. esc_url(add_query_arg([  "action" => "emailcodes", "from" => $from, "to" =>$to, "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
                             <strong>'. commonsbooking_sanitizeHTML( __('Email booking codes of next month', 'commonsbooking')) .'</strong>
                         </a><br>
                         '. commonsbooking_sanitizeHTML( __('The codes <b>of the next month</b> will be sent to all the location email(s), given in bold below.', 'commonsbooking')) .
                         '<br><br>
-                        <div>'. commonsbooking_sanitizeHTML( __('Currently configured location email(s): ', 'commonsbooking')) .'<b>' . $location_emails . '</b></div>';
+                        <div>'. commonsbooking_sanitizeHTML( __('Currently configured location email(s): ', 'commonsbooking')) .'<b>' . $location_emails . '</b></div>'
+                 . '<br><br>
+                 <div>'. commonsbooking_sanitizeHTML(__('<b>IMPORTANT</b>: You need to save the timeframe before you can send out the booking codes.')) .'</div>'
+            . '</div>'
+            ;
 
             $lastBookingEmail=get_post_meta( $timeframeId, \CommonsBooking\View\BookingCodes::LAST_CODES_EMAIL, true);
             if(!empty($lastBookingEmail)) {
@@ -342,9 +352,9 @@ HTML;
                 </div>
             </div>';
 
+		//This settings is the amount of booking codes that should be shown to the user
         $bcToShow=Settings::getOption( 'commonsbooking_options_bookingcodes','bookingcodes-listed-timeframe' );
         if($bcToShow > 0) {
-            // $timeframe=new Timeframe($timeframeId);
             $tsStart=max(Wordpress::getUTCDateTime("today")->getTimestamp(), $timeframe->getStartDate());
             $tsEnd=strtotime("@" . $tsStart . " +" . ( $bcToShow - 1 ) . " days");
             $bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId,$tsStart,$tsEnd);
@@ -357,6 +367,12 @@ HTML;
             if($timeframe->hasBookingCodes()) {
                 echo apply_filters('commonsbooking_emailcodes_rendertable',
                                 self::renderBookingCodesTable($bookingCodes),$bookingCodes,'timeframe_form');
+				echo '<br>';
+				echo '<p  class="cmb2-metabox-description">';
+	                echo sprintf( __('Only showing booking codes for the next %s days.', 'commonsbooking'), $bcToShow );
+					echo '<br>';
+					echo __('The amount of booking codes shown in the overview can be changed in the settings.', 'commonsbooking');
+				echo '</p>';
             }
             else {
                 echo commonsbooking_sanitizeHTML( __('This timeframe has no booking codes', 'commonsbooking'));

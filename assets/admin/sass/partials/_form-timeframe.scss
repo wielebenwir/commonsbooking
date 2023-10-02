@@ -25,6 +25,13 @@ select[readonly] {
     touch-action: none !important;
 }
 
+a.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+}
+
+
 .cmb2-id-booking-codes-list {
     .cmb-td {
         > table.cmb2-codes-outer-table {
