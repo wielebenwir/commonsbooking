@@ -412,10 +412,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		//we need to run the functions that add the custom user role and assign it to the user
 		Plugin::addCustomUserRoles();
 		//and add the caps for each of our custom post types
-		$postTypes = Plugin::getCustomPostTypes();
-		foreach ($postTypes as $customPostType) {
-			Plugin::addRoleCaps($customPostType::$postType);
-		}
+		Plugin::addCPTRoleCaps();
 		$wp_user = get_user_by('email',"cbmanager@cbmanager.de");
 		if (! $wp_user) {
 			$this->cbManagerUserID = wp_create_user( "cbmanager", "cbmanager", "cbmanager@cbmanager.de" );
