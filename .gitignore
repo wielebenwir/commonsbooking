@@ -5,9 +5,12 @@ yarn.lock
 cache
 commonsbooking.zip
 node_modules
-./phpunit
+./phpunit*
+.phpunit.*
+assets/packaged
 src/Wordpress/.DS_Store
 /vendor
+/build
 src/.DS_Store
 assets/.DS_Store
 #assets/admin/css
