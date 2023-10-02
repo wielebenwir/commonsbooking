@@ -120,21 +120,21 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
 			<?php } ?>
         </form>
     </div>
-	<div id="calendar-footnote">
-			<?php
-			// get Calendar Data
-			$calendarData = json_decode( $templateData['calendar_data'] );
-            commonsbooking_get_template_part( 'calendar', 'key' ); // file: calendar-key.php
-            // translators: %1$s is a number of days
-            echo sprintf( commonsbooking_sanitizeHTML( __( 'Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend).', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->maxDays ) );
-            ?>
-                
-            <?php
-            // translators: %1$s is a number of days
-            echo sprintf( commonsbooking_sanitizeHTML( __( 'Bookings are limited to a maximum of %1$s days in advance.', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->advanceBookingDays ) );
-            ?>
-            <div style="display:none"><?php echo commonsbooking_sanitizeHTML( 'CommonsBooking ' . COMMONSBOOKING_VERSION ); ?></div>
-	</div>
+        <div id="calendar-footnote">
+                <?php
+                // get Calendar Data
+                $calendarData = json_decode( $templateData['calendar_data'] );
+                commonsbooking_get_template_part( 'calendar', 'key' ); // file: calendar-key.php
+                // translators: %1$s is a number of days
+                echo sprintf( commonsbooking_sanitizeHTML( __( 'Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend).', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->maxDays ) );
+                ?>
+                    
+                <?php
+                // translators: %1$s is a number of days
+                echo sprintf( commonsbooking_sanitizeHTML( __( 'Bookings are limited to a maximum of %1$s days in advance.', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->advanceBookingDays ) );
+                ?>
+                <div style="display:none"><?php echo commonsbooking_sanitizeHTML( 'CommonsBooking ' . COMMONSBOOKING_VERSION ); ?></div>
+        </div> <!-- end calendar-footnote -->
     <?php
 
     // if template is used in backend
