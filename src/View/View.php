@@ -40,7 +40,8 @@ abstract class View {
 	);
 
 	/**
-	 * Generates data needed for shortcode listing.
+	 * Will generate the shortcode view for ONE item / location.
+	 * This includes the availability timeframe.
 	 *
 	 * @param \CommonsBooking\Model\Item|\CommonsBooking\Model\Location $cpt
 	 * @param string $type
@@ -64,6 +65,8 @@ abstract class View {
 				continue;
 			}
 
+			//We only get the latest possible booking date from the first timeframe
+			//The timeframes are sorted by start date, so we just need the closest one.
 			if(!$latestPossibleBookingDate) {
 				$latestPossibleBookingDate = $timeframe->getLatestPossibleBookingDateTimestamp();
 			}
