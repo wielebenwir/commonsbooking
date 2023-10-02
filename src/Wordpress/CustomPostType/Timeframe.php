@@ -827,7 +827,7 @@ class Timeframe extends CustomPostType {
 	 *
 	 * @return void
 	 */
-	private static function removeIrrelevantPostmeta( \CommonsBooking\Model\Timeframe $timeframe ) {
+	public static function removeIrrelevantPostmeta( \CommonsBooking\Model\Timeframe $timeframe ) {
 		$onlyRelevantForBookable = [
 			\CommonsBooking\Model\Timeframe::META_MAX_DAYS,
 			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS,

@@ -297,6 +297,9 @@ class Plugin {
             // Set default values to existing timeframes for advance booking days
             self::setAdvanceBookingDaysDefault();
 
+			// fix timeframes with irrelevant postmeta
+			self::removeBreakingPostmeta();
+
 			// Clear cache
 			self::clearCache();
 
@@ -867,5 +870,26 @@ class Plugin {
             }
         }
     }
+
+	/**
+	 * Fixing #1357. The holiday timeframe field had postmeta that would make
+	 * it get filtered out through our GET functions and not display holidays correctly.
+	 * Therefore, we iterate ovr our timeframes and remove the breaking postmeta.
+	 *
+	 * @since 2.8.5
+	 * @return void
+	 */
+	public static function removeBreakingPostmeta() {
+		$timeframes = \CommonsBooking\Repository\Timeframe::get(
+			[],
+			[],
+			[],
+			null,
+			true
+		);
+		foreach ($timeframes as $timeframe) {
+			Timeframe::removeIrrelevantPostmeta($timeframe);
+		}
+	}
 
 }
