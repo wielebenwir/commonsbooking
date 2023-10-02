@@ -121,25 +121,22 @@ class Timeframe extends CustomPost {
 	 * This function respects the advance booking days setting.
 	 * This means that this is the latest date that a user can currently book.
 	 *
-	 * If the timeframe has no end date and the advance booking days setting is set to 0, this function will return a timestamp in the next year.
+	 * TODO / CAREFUL: This does not respect the end of the timeframe. So if the timeframe ends before
+	 *       the configured "advance booking days" setting, the function will return a date later than the end date of the timeframe.
 	 *
 	 * @return false|int
 	 */
 	public function getLatestPossibleBookingDateTimestamp() {
 		$calculationBase = time();
 
-		// if meta-value not set we define a default value far in the future
+		// if meta-value not set we define a default value far in the future so that we count all possibly relevant timeframes
 		$advanceBookingDays = $this->getMeta( TimeFrame::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) ?: 365;
-		$endDate = $this->getTimeframeEndDate();
 
 		// we subtract one day to reflect the current day in calculation
 		$advanceBookingDays --;
 
 		$advanceBookingTime = strtotime( '+ ' . $advanceBookingDays . ' days', $calculationBase );
 
-		if ($endDate && $advanceBookingTime > $endDate ){
-			return $endDate;
-		}
 		return $advanceBookingTime;
 
 	}
