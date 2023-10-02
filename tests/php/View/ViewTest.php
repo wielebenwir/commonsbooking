@@ -7,7 +7,6 @@ use CommonsBooking\Model\Location;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\View\View;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use SlopeIt\ClockMock\ClockMock;
 
 class ViewTest extends CustomPostTypeTest {
 
@@ -58,7 +57,6 @@ class ViewTest extends CustomPostTypeTest {
 	protected function setUp() : void {
 		parent::setUp();
 
-		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
 		$now = time();
 		$this->now = $now;
 
