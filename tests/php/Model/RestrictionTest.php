@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Tests\Model;
 
+use CommonsBooking\Exception\RestrictionInvalidException;
 use CommonsBooking\Model\Restriction;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
@@ -106,6 +107,9 @@ class RestrictionTest extends CustomPostTypeTest {
 		$restriction = new Restriction($this->restrictionWithEndDateId);
 		$this->assertTrue( $restriction->isValid() );
 
+		$this->createAdministrator();
+		wp_set_current_user( $this->adminUserID );
+
 		$restriction = new Restriction($this->restrictionForEverything);
 		$this->assertTrue( $restriction->isValid() );
 
@@ -121,7 +125,7 @@ class RestrictionTest extends CustomPostTypeTest {
 		try {
 			$restrictionNoItem->isValid();
 			$this->fail("Expected exception not thrown");
-		} catch (\Exception $e) {
+		} catch (RestrictionInvalidException $e) {
 			$this->assertStringContainsString("No item selected", $e->getMessage());
 		}
 
@@ -137,7 +141,7 @@ class RestrictionTest extends CustomPostTypeTest {
 		try {
 			$restrictionNoLocation->isValid();
 			$this->fail("Expected exception not thrown");
-		} catch (\Exception $e) {
+		} catch (RestrictionInvalidException $e) {
 			$this->assertStringContainsString("No location selected", $e->getMessage());
 		}
 
@@ -153,8 +157,27 @@ class RestrictionTest extends CustomPostTypeTest {
 		try {
 			$restrictionDatesWrong->isValid();
 			$this->fail("Expected exception not thrown");
-		} catch (\Exception $e) {
+		} catch (RestrictionInvalidException $e) {
 			$this->assertStringContainsString("Start date is after end date", $e->getMessage());
+		}
+
+		//try to create a restriction for all items as  CB Manager (non-admin)
+		$this->createCBManager();
+		wp_set_current_user( $this->cbManagerUserID );
+		$restrictionForEverything = new Restriction(
+			$this->createRestriction(
+				Restriction::TYPE_HINT,
+				CustomPostType::SELECTION_ALL_POSTS,
+				CustomPostType::SELECTION_ALL_POSTS,
+				strtotime( "+2 months", strtotime(self::CURRENT_DATE)),
+				strtotime( "+3 months", strtotime(self::CURRENT_DATE))
+			)
+		);
+		try {
+			$restrictionForEverything->isValid();
+			$this->fail("Expected exception not thrown");
+		} catch (RestrictionInvalidException $e) {
+			$this->assertStringContainsString("Only admins are allowed to create a restriction for all items / locations.", $e->getMessage());
 		}
 	}
 

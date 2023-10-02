@@ -351,6 +351,13 @@ class Restriction extends CustomPost {
 			throw new RestrictionInvalidException( __( 'Start date is after end date.', 'commonsbooking' ) );
 		}
 
+		if (
+			( $this->getMeta(self::META_ITEM_ID) === CustomPostType::SELECTION_ALL_POSTS || $this->getMeta(self::META_LOCATION_ID) === CustomPostType::SELECTION_ALL_POSTS )
+			&& ! commonsbooking_isCurrentUserAdmin()
+		) {
+			throw new RestrictionInvalidException( __( 'Only admins are allowed to create a restriction for all items / locations.', 'commonsbooking' ) );
+		}
+
 		return true;
 	}
 
