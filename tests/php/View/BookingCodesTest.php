@@ -6,6 +6,7 @@ use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\View\BookingCodes;
 use CommonsBooking\Settings\Settings;
+use SlopeIt\ClockMock\ClockMock;
 
 
 /**
@@ -48,6 +49,41 @@ class BookingCodesTest extends CustomPostTypeTest {
 		$this->assertNotEmpty( $e_data );
 		$this->assertStringEndsWith('#email-booking-codes-list',$e_data['location']);
 		$this->assertMatchesRegularExpression('/' . implode('|',self::bookingCodes) . '/',$email->get_sent()->body);
+	}
+
+
+	public function testInitialCronEmailEvent() {
+		$todayDate = new \DateTime(self::CURRENT_DATE);
+		ClockMock::freeze($todayDate);
+
+		//Case 1: Send every month starting from tomorrow
+		$tomorrow = clone $todayDate;
+		$tomorrow->modify('+1 day');
+		$expectedNextSendDate = clone $tomorrow;
+		$actualNextSendDate = BookingCodes::initialCronEmailEvent($tomorrow->getTimestamp(),1);
+		$this->assertEquals($expectedNextSendDate->getTimestamp(),$actualNextSendDate->getTimestamp());
+
+		//Case 2: Send every month starting from day in past (should be next month) - we set arbitrary dates for this test to make it easier to understand
+		ClockMock::freeze(new \DateTime('15.07.2021'));
+		$configuredAsStartDate = new \DateTime('12.06.2021');
+		$expectedNextSendDate = new \DateTime('12.08.2021');
+		$actualNextSendDate = BookingCodes::initialCronEmailEvent($configuredAsStartDate->getTimestamp(),1);
+		$this->assertEquals($expectedNextSendDate->getTimestamp(),$actualNextSendDate->getTimestamp());
+
+		//Case 3: Send every 2 months starting from day in past (should be next month)
+		ClockMock::freeze(new \DateTime('15.07.2021'));
+		$configuredAsStartDate = new \DateTime('12.06.2021');
+		$expectedNextSendDate = new \DateTime('12.08.2021');
+		$actualNextSendDate = BookingCodes::initialCronEmailEvent($configuredAsStartDate->getTimestamp(),2);
+		$this->assertEquals($expectedNextSendDate->getTimestamp(),$actualNextSendDate->getTimestamp());
+
+		//Case 4: Send every 2 months starting from day just shortly in past (should still start at start date)
+		//A little bit confusing but this will NOT start at the next available date immediatly but at the date plus x months. Is that intended?
+		ClockMock::freeze(new \DateTime('15.07.2021'));
+		$configuredAsStartDate = new \DateTime('12.07.2021');
+		$expectedNextSendDate = new \DateTime('12.09.2021');
+		$actualNextSendDate = BookingCodes::initialCronEmailEvent($configuredAsStartDate->getTimestamp(),2);
+		$this->assertEquals($expectedNextSendDate->getTimestamp(),$actualNextSendDate->getTimestamp());
 	}
 
 	public static function on_wp_redirect($location, $status){
