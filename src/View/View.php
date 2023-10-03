@@ -51,11 +51,10 @@ abstract class View {
 	 * This includes the availability timeframe, see assumptions in class docstring for more details.
 	 *
 	 * @param \CommonsBooking\Model\Item|\CommonsBooking\Model\Location $cpt location or item model object to retrieve timeframe data from.
-		 * @param string $type 'Item' or 'Location'.
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getShortcodeData( $cpt, string $type ): array {
+	public static function getShortcodeData( $cpt ): array {
 		$cptData    = [];
 		$timeframes = $cpt->getBookableTimeframes( true );
 
@@ -81,7 +80,7 @@ abstract class View {
 			$endOfStartDay = strtotime('+1 day midnight', $timeframe->getStartDate()) - 1;
 			if($endOfStartDay > $latestPossibleBookingDate) continue;
 
-			$item = $timeframe->{'get' . $type}();
+			$item = $timeframe->{'get' . get_class( $cpt ) }();
 
 			// We need only published items
 			if ( !$item || $item->post_status !== 'publish' ) {

@@ -106,7 +106,7 @@ class Item extends View {
 		$itemData = [];
 		/** @var \CommonsBooking\Model\Item $item */
 		foreach ( $items as $item ) {
-			$itemData[ $item->ID ] = self::getShortcodeData( $item, 'Location' );
+			$itemData[ $item->ID ] = self::getShortcodeData( $item );
 		}
 
 		if ($itemData) {

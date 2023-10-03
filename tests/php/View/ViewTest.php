@@ -14,7 +14,7 @@ class ViewTest extends CustomPostTypeTest {
 	protected $now;
 
 	public function testGetShortcodeDataWithFourRangesByItem() {
-		$shortCodeData = View::getShortcodeData( new Item( $this->itemId ), 'Item' );
+		$shortCodeData = View::getShortcodeData( new Item( $this->itemId ) );
 		$this->assertTrue( is_array( $shortCodeData[ $this->itemId ]['ranges'] ) );
 		$this->assertCount(4, $shortCodeData[ $this->itemId ]['ranges']);
 
@@ -24,7 +24,7 @@ class ViewTest extends CustomPostTypeTest {
 	}
 
 	public function testGetShortcodeDataWithFourRangesByLocation() {
-		$shortCodeData = View::getShortcodeData( new Location( $this->locationId ), 'Location' );
+		$shortCodeData = View::getShortcodeData( new Location( $this->locationId ) );
 		$this->assertTrue( is_array( $shortCodeData[ $this->locationId ]['ranges'] ) );
 		$this->assertCount( 4, $shortCodeData[ $this->locationId ]['ranges'] );
 
