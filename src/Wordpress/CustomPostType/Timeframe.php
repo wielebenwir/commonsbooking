@@ -987,3 +987,28 @@ class Timeframe extends CustomPostType {
 		add_shortcode( 'cb_items_table', array( Calendar::class, 'shortcode' ) );
 	}
 }
+
+
+// Joins locations posts via post_meta into any posts
+add_filter('posts_join', function ($join) {
+	global $wp_query, $wpdb;
+
+	if ( ! empty( $wp_query->query_vars['orderby'] ) && $wp_query->query_vars['orderby'] === \CommonsBooking\Model\Timeframe::META_LOCATION_ID ) {
+		$join .= "LEFT JOIN $wpdb->postmeta joined_meta_locations "
+				. "ON $wpdb->posts.ID = joined_meta_locations.post_id AND joined_meta_locations.meta_key = '" . \CommonsBooking\Model\Timeframe::META_LOCATION_ID . "' ";
+		$join .= "JOIN $wpdb->posts joined_locations ON joined_meta_locations.meta_value = joined_locations.ID ";
+	}
+
+	return $join;
+});
+
+// Orders by locations posts post_title
+add_filter( 'posts_orderby', function ( $orderby ) {
+	global $wp_query;
+
+	if ( ! empty( $wp_query->query_vars['orderby'] ) && $wp_query->query_vars['orderby'] === \CommonsBooking\Model\Timeframe::META_LOCATION_ID ) {
+		$orderby = 'joined_locations.post_title ' . $wp_query->query_vars['order'];
+	}
+
+	return $orderby;
+});
