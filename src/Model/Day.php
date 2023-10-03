@@ -477,6 +477,25 @@ class Day {
 	}
 
 	/**
+	 * Will get all IDS of items that are bookable on this day.
+	 * Bookable means, that they would be marked green in the calendar.
+	 *
+	 * @return int[]
+	 */
+	public function getBookableItems () {
+		$bookableItems = [];
+
+		foreach ($this->getTimeframes() as $timeframe) {
+			$item = $timeframe->getItem();
+			if ($item) {
+				$bookableItems[] = $item->ID;
+			}
+		}
+
+		return array_unique($bookableItems);
+	}
+
+	/**
 	 * Returns array of timeslots filled with timeframes.
 	 *
 	 * @return array

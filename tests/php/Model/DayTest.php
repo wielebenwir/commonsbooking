@@ -65,6 +65,32 @@ class DayTest extends CustomPostTypeTest {
 		parent::tearDown();
 	}
 
+	public function testGetBookableItems() {
+		$this->assertCount( 1, $this->instance->getBookableItems() );
+
+		//create separate item / location for the other tests because that norep stuff seems broken to me
+		$secondLocation = $this->createLocation("second location",'publish');
+		$secondItem = $this->createItem("second item",'publish');
+		$this->createBookableTimeFrameIncludingCurrentDay($secondLocation,$secondItem);
+		$day = new Day(
+			self::CURRENT_DATE,
+			[ $secondLocation ],
+			[ $secondItem ]
+		);
+		$this->assertCount( 1, $day->getBookableItems() );
+
+		$inTwoDays = new Day(
+			date( 'Y-m-d', strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ) ),
+			[ $secondLocation ],
+			[ $secondItem ]
+		);
+		$this->assertEmpty( $inTwoDays->getBookableItems() );
+
+		//now, let's book tomorrow
+		$this->createConfirmedBookingStartingToday($secondLocation,$secondItem);
+		$this->assertEmpty( $day->getBookableItems() );
+	}
+
 	public function testGetFormattedDate() {
 		$this->assertTrue( self::CURRENT_DATE == $this->instance->getFormattedDate( 'd.m.Y' ) );
 	}

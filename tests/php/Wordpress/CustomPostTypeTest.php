@@ -201,10 +201,16 @@ abstract class CustomPostTypeTest extends TestCase {
 		return strtotime( '+1 day midnight', strtotime( $date ) ) - 1;
 	}
 
-	protected function createConfirmedBookingStartingToday() {
+	protected function createConfirmedBookingStartingToday($locationId = null, $itemId = null) {
+		if ( $locationId === null ) {
+			$locationId = $this->locationId;
+		}
+		if ( $itemId === null ) {
+			$itemId = $this->itemId;
+		}
 		return $this->createBooking(
-			$this->locationId,
-			$this->itemId,
+			$locationId,
+			$itemId,
 			strtotime( 'midnight', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
 		);
