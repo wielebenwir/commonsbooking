@@ -52,7 +52,7 @@ class Calendar {
 
 		// defines the number of days shown in the calendar table view. If not set, default is 31 days
 		// TODO: max days should be made configurable in options
-		$days = is_array( $atts ) && array_key_exists( 'days', $atts ) ? $atts['days'] : 31;
+		$days = is_array( $atts ) && array_key_exists( 'days', $atts ) ? $atts['days'] : \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS;
 
 		$desc  = $atts['desc'] ?? '';
 		$date  = Wordpress::getUTCDateTimeByTimestamp( current_time( 'timestamp' ) );
