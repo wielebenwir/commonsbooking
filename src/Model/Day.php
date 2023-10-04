@@ -484,15 +484,16 @@ class Day {
 	 */
 	public function getBookableItems () {
 		$bookableItems = [];
-
-		foreach ($this->getTimeframes() as $timeframe) {
-			$item = $timeframe->getItem();
-			if ($item) {
-				$bookableItems[] = $item->ID;
+		$grid          = $this->getGrid();
+		foreach ( $grid as $slot) {
+			if ($slot['timeframe']->post_type === Timeframe::$postType) {
+				$itemId = get_post_meta($slot['timeframe']->ID, 'item-id', true);
+				if ($itemId) {
+					$bookableItems[] = $itemId;
+				}
 			}
 		}
-
-		return array_unique($bookableItems);
+		return $bookableItems;
 	}
 
 	/**
