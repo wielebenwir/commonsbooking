@@ -98,7 +98,9 @@ class Day {
 	}
 
 	/**
-	 * Returns array with timeframes.
+	 * Returns array with timeframes relevant for the Day.
+	 * This function will only be able to run once.
+	 * When on the first try, no Timeframes are found, it will set it to an empty array
 	 * @return array
 	 * @throws Exception
 	 */
@@ -474,26 +476,6 @@ class Day {
 				unset( $slots[ $slotNr ] );
 			}
 		}
-	}
-
-	/**
-	 * Will get all IDS of items that are bookable on this day.
-	 * Bookable means, that they would be marked green in the calendar.
-	 *
-	 * @return int[]
-	 */
-	public function getBookableItems () {
-		$bookableItems = [];
-		$grid          = $this->getGrid();
-		foreach ( $grid as $slot) {
-			if ($slot['timeframe']->post_type === Timeframe::$postType) {
-				$itemId = get_post_meta($slot['timeframe']->ID, 'item-id', true);
-				if ($itemId) {
-					$bookableItems[] = $itemId;
-				}
-			}
-		}
-		return $bookableItems;
 	}
 
 	/**
