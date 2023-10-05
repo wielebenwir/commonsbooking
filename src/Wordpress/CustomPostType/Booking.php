@@ -945,7 +945,9 @@ class Booking extends Timeframe {
     }
 
     /**
-     * Returns the user that a specific booking is for if booking exists, otherwise returns current user
+     * Returns the user that a specific booking is for if booking exists, otherwise returns current user.
+     * The post_author of a booking is always who the booking is for but not always the one who MADE the booking.
+     * A booking can be created by an admin but still be for a different user.
      * This is helper function
      *
      * @return int|string
