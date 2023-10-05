@@ -274,7 +274,7 @@ class Booking extends Timeframe {
 			}
 		}
 
-		// add internal comment if admin edited booking via frontend
+		// add internal comment if admin edited booking via frontend TODO: This does not happen anymore, no admin bookings are made through the frontend
 		if ( $booking && $booking->post_author !== '' && intval( $booking->post_author ) !== intval( get_current_user_id() ) ) {
 			$postarr['meta_input']['admin_booking_id'] = get_current_user_id();
 			$internal_comment                          = esc_html__( 'status changed by admin user via frontend. New status: ', 'commonsbooking' ) . $post_status;
