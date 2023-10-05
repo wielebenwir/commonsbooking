@@ -489,7 +489,7 @@ class Booking extends Timeframe {
 
 		// Backend listing columns.
 		$this->listColumns = [
-			'booking_author'   => esc_html__( 'User', 'commonsbooking' ),
+			'booking_user'   => esc_html__( 'User', 'commonsbooking' ),
 			'item-id'          => esc_html__( 'Item', 'commonsbooking' ),
 			'location-id'      => esc_html__( 'Location', 'commonsbooking' ),
 			'post_date'        => esc_html__( 'Bookingdate', 'commonsbooking' ),
@@ -654,7 +654,7 @@ class Booking extends Timeframe {
         }
 
 		// we alter the  author column data and link the username to the user profile
-		if ( $column == 'booking_author' ) {
+		if ( $column == 'booking_user' ) {
 			$post           = get_post( $post_id );
 			$bookingUser = get_user_by( 'id', $post->post_author );
 			echo '<a href="' . get_edit_user_link( $bookingUser->ID ) . '">' . commonsbooking_sanitizeHTML( $bookingUser->user_login ) . '</a>';
@@ -728,7 +728,7 @@ class Booking extends Timeframe {
 			return;
 		}
 		switch ( $query->get( 'orderby' ) ) {
-			case 'booking_author':
+			case 'booking_user':
 				$query->set( 'orderby', 'author' );
 				break;
 			case 'post_status':
@@ -868,7 +868,7 @@ class Booking extends Timeframe {
 				'id'               => 'booking_user',
 				'type'             => 'user_ajax_search',
                 'multiple-items'   => true,
-                'default'          => array( self::class, 'getFrontendBookingAuthor' ),
+                'default'          => array( self::class, 'getFrontendBookingUser' ),
                 'desc'             => commonsbooking_sanitizeHTML(
                     __(
                         'Here you must select the user for whom the booking is made.<br>
@@ -945,12 +945,12 @@ class Booking extends Timeframe {
     }
 
     /**
-     * Returns the booking author if booking exists, otherwise returns current user
+     * Returns the user that a specific booking is for if booking exists, otherwise returns current user
      * This is helper function
      *
      * @return int|string
      */
-    public static function getFrontendBookingAuthor() {
+    public static function getFrontendBookingUser() {
         global $post;
         if ( $post ) {
             $authorID = $post->post_author;
