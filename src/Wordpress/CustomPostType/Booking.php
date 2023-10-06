@@ -808,6 +808,12 @@ class Booking extends Timeframe {
 				'options' => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
 			),
 			array(
+				'name'    => esc_html__( 'Book full day', 'commonsbooking' ),
+				'id'      => 'full-day',
+				'type'    => 'checkbox',
+				'desc'	  => esc_html__( 'The booking should apply to the entire day(s)', 'commonsbooking' ),
+			),
+			array(
 				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
 				'desc'        => '<br>' . esc_html__( 'Set the start date. You must set the time to 00:00 if you want to book the full day ', 'commonsbooking' ),
 				'id'          => \CommonsBooking\Model\Timeframe::REPETITION_START,
