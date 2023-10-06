@@ -192,7 +192,11 @@ class Location extends BookablePost {
 		}
 
 		$addressString = $street . ", " . $postCode . " " . $city . ", " . $country;
-		$addressData   = GeoHelper::getAddressData( $addressString );
+		try {
+			$addressData = GeoHelper::getAddressData( $addressString );
+		} catch ( Exception $e ) {
+			$addressData = null;
+		}
 
 		if ( $addressData ) {
 			$coordinates = $addressData->getCoordinates()->toArray();
