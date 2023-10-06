@@ -63,6 +63,18 @@ function commonsbooking_admin() {
 			'nonce'    => wp_create_nonce( 'cb_get_bookable_location' ),
 		)
 	);
+
+	/**
+	 * Ajax - get booking code for backend booking
+	 */
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_get_booking_code',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_get_booking_code' ),
+		)
+	);
 }
 
 add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );

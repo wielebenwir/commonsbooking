@@ -20,6 +20,9 @@
 
         let itemInput = $('#item-id');
         let locationInput = $('#location-id');
+        let startDateInput = $('#repetition-start_date');
+        let bookingCodeInput = $('#_cb_bookingcode');
+
         itemInput.on('change', function (event) {
             let data = {
                 itemID: itemInput.val(),
@@ -38,6 +41,35 @@
                     });
             };
             fetchLocation(data);
+        });
+
+        const fetchBookingCode = () => {
+            if (! fullDayCheckbox.is(':checked')) {
+                return;
+            }
+            let data = {
+                itemID: itemInput.val(),
+                locationID: locationInput.val(),
+                startDate: startDateInput.val()
+            };
+            $.post(
+                cb_ajax_get_booking_code.ajax_url,
+                {
+                    _ajax_nonce: cb_ajax_get_booking_code.nonce,
+                    action: "cb_get_booking_code",
+                    data: data
+                }, function (data) {
+                    if (data.success) {
+                        bookingCodeInput.val(data.bookingCode);
+                    }
+                });
+        };
+
+        startDateInput.on('change', function (event) {
+            fetchBookingCode();
+        });
+        fullDayCheckbox.on('change', function (event) {
+            fetchBookingCode();
         });
     });
 })(jQuery);

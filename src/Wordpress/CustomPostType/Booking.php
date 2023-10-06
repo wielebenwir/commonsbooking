@@ -851,6 +851,7 @@ class Booking extends Timeframe {
 				'name' => esc_html__( 'Booking Code', 'commonsbooking' ),
 				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'bookingcode',
 				'type' => 'text',
+				'desc' => esc_html__( 'Valid booking code will be automatically retrieved for bookings that apply to the full day.', 'commonsbooking' ),
 			),
             array(
 				'name'             => esc_html__( 'Booking User', 'commonsbooking' ),

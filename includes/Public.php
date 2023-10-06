@@ -166,6 +166,9 @@ if ( is_admin() ) {
 
 	//getting bookable Location for item AJAX
 	add_action( 'wp_ajax_cb_get_bookable_location', array( \CommonsBooking\View\Booking::class, 'getLocationForItem_AJAX' ) );
+
+	//getting booking code for new backend booking AJAX
+	add_action( 'wp_ajax_cb_get_booking_code', array( \CommonsBooking\View\Booking::class, 'getBookingCode_AJAX' ) );
 }
 
 // Map ajax
