@@ -323,14 +323,14 @@ class Timeframe extends CustomPost {
 			}
 			catch ( \Exception $e ) {
 				throw new TimeframeInvalidException(__(
-						'Could not get item or location. Please set a valid item and location. Timeframe is saved as draft',
+						'Could not get item or location. Please set a valid item and location.',
 						'commonsbooking')
 				);
 			}
 			if ( ! $item || ! $location ) {
 				// if location or item is missing
 				throw new TimeframeInvalidException(__(
-						'Item or location is missing. Please set item and location. Timeframe is saved as draft',
+						'Item or location is missing. Please set item and location.',
 						'commonsbooking'   )
 				);
 			}
@@ -338,7 +338,7 @@ class Timeframe extends CustomPost {
 			if ( ! $this->getStartDate() ) {
 				// If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
 				throw new TimeframeInvalidException( __(
-						'Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.',
+						'Startdate is missing. Please enter a start date to publish this timeframe.',
 						'commonsbooking' )
 				);
 			}
@@ -447,7 +447,7 @@ class Timeframe extends CustomPost {
 								sprintf(
 									/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
 									__(
-										'time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s %2$s',
+										'Time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s %2$s',
 										'commonsbooking'
 									),
 									'<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->ID . '</a>',
