@@ -58,7 +58,7 @@ describe('test overbooking process', () => {
 
 
     beforeEach( function() {
-        //freeze our date to the 6th of November 2023, a Friday
+        //freeze our date to the 6th of October 2023, a Friday
         cy.clock(new Date(2023, 9, 6).getTime());
         //get data from fixtures
         cy.fixture('bookableItems').then( (regItems) => {
