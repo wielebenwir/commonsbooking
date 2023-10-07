@@ -4,6 +4,7 @@
         let fullDayCheckbox = $("#full-day");
         let startTimeInput = $("#repetition-start_time");
         let endTimeInput = $("#repetition-end_time");
+        let preserveManualCode = false;
         fullDayCheckbox.on("change", function(event) {
             if (fullDayCheckbox.is(":checked")) {
                 startTimeInput.val("00:00");
@@ -33,6 +34,8 @@
                     if (data.success) {
                         locationInput.val(data.locationID);
                     }
+                }).then(() => {
+                    fetchBookingCode();
                 });
             };
             fetchLocation(data);
@@ -53,9 +56,15 @@
             }, function(data) {
                 if (data.success) {
                     bookingCodeInput.val(data.bookingCode);
+                    preserveManualCode = false;
+                } else if (!preserveManualCode) {
+                    bookingCodeInput.val("");
                 }
             });
         };
+        bookingCodeInput.on("keyup", function(event) {
+            preserveManualCode = true;
+        });
         startDateInput.on("change", function(event) {
             fetchBookingCode();
         });
