@@ -4,6 +4,7 @@
 namespace CommonsBooking\Model;
 
 use CommonsBooking\Exception\BookingCodeException;
+use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Wordpress;
 use Exception;
 
@@ -445,6 +446,62 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Will check if a backend booking is valid.
+	 * Throws a TimeframeInvalidException containing the error message if the booking is not valid.
+	 * @return true if booking is valid
+	 * @throws TimeframeInvalidException
+	 */
+	public function isValid(): bool {
+		if ($this->getStartDate() > $this->getEndDate()) {
+			throw new TimeframeInvalidException('Start date is after end date' );
+		}
+
+
+		try {
+			$item = $this->getItem();
+			if ( ! $item ) {
+				throw new Exception();
+			}
+		} catch ( Exception $e ) {
+			throw new TimeframeInvalidException( 'Item not found' );
+		}
+
+		try {
+			$location = $this->getLocation();
+			if ( ! $location ) {
+				throw new Exception();
+			}
+		} catch ( Exception $e ) {
+			throw new TimeframeInvalidException( 'Location not found' );
+		}
+
+		// validate if overlapping bookings exist
+		$overlappingBookings = \CommonsBooking\Repository\Booking::getExistingBookings(
+			$item->ID,
+			$location->ID,
+			$this->getStartDate(),
+			$this->getEndDate(),
+			$this->ID
+		);
+
+		if ( $overlappingBookings && count( $overlappingBookings ) >= 1 ) {
+
+			foreach ( $overlappingBookings as $overlappingBooking ) {
+				$overlappingBookingLinks[] = $overlappingBooking->getFormattedEditLink();
+			}
+
+			$formattedOverlappingLinks = implode( '<br>', $overlappingBookingLinks );
+
+			throw new TimeframeInvalidException(
+				__( 'There are one ore more overlapping bookings within the chosen timerange', 'commonsbooking' ) . '\n' .
+				__( 'Please adjust the start- or end-date.', 'commonsbooking' ) . '\n' .
+				sprintf( __( 'Affected Bookings: %s', 'commonsbooking' ), commonsbooking_sanitizeHTML( $formattedOverlappingLinks ) ),
+			);
+		}
+		return true;
 	}
 
 	/**
