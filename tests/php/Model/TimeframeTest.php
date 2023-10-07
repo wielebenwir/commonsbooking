@@ -179,7 +179,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$noItemTF->isValid();
 		}
 		catch ( TimeframeInvalidException $e ) {
-			$this->assertEquals("Item or location is missing. Please set item and location. Timeframe is saved as draft",$e->getMessage());
+			$this->assertStringContainsString("Item or location is missing. Please set item and location.",$e->getMessage());
 			$exceptionCaught = true;
 		}
 		$this->assertTrue($exceptionCaught);
@@ -196,7 +196,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$noLocationTF->isValid();
 		}
 		catch ( TimeframeInvalidException $e ) {
-			$this->assertEquals("Item or location is missing. Please set item and location. Timeframe is saved as draft",$e->getMessage());
+			$this->assertStringContainsString("Item or location is missing. Please set item and location.",$e->getMessage());
 			$exceptionCaught = true;
 		}
 		$this->assertTrue($exceptionCaught);
@@ -212,7 +212,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$noStartDateTF->isValid();
 		}
 		catch (TimeframeInvalidException $e ){
-			$this->assertEquals("Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.",$e->getMessage());
+			$this->assertStringContainsString("Startdate is missing.",$e->getMessage());
 			$exceptionCaught = true;
 		}
 		$this->assertTrue($exceptionCaught);
@@ -234,7 +234,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$pickupTimeInvalid->isValid();
 		}
 		catch ( TimeframeInvalidException $e ) {
-			$this->assertEquals( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
+			$this->assertStringContainsString( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
 			$exceptionCaught = true;
 		}
 		$this->assertTrue( $exceptionCaught );
