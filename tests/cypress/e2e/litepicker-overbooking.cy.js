@@ -56,10 +56,30 @@ describe('test overbooking process', () => {
         }
     }
 
+    function getNextFirstFriday() {
+        const today = new Date();
+        const currentMonth = today.getMonth();
+        let nextMonth = currentMonth + 1;
+        let year = today.getFullYear();
+    
+        if (nextMonth > 11) {
+            nextMonth = 0;
+            year++;
+        }
+    
+        let firstFridayDate = new Date(year, nextMonth, 1);
+    
+        while (firstFridayDate.getDay() !== 5) {
+            firstFridayDate.setDate(firstFridayDate.getDate() + 1);
+        }
+    
+        return firstFridayDate.getTime();
+    }
+
 
     beforeEach( function() {
-        //freeze our date to the 6th of November 2023, a Friday
-        cy.clock(new Date(2023, 9, 6).getTime());
+        //freeze our date to the first friday in the next month
+        cy.clock(getNextFirstFriday());
         //get data from fixtures
         cy.fixture('bookableItems').then( (regItems) => {
             this.bookableItems = regItems.data
