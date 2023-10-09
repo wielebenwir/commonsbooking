@@ -9,11 +9,11 @@
             if (fullDayCheckbox.is(':checked')) {
                 startTimeInput.val('00:00');
                 endTimeInput.val('23:59');
-                startTimeInput.prop('disabled', true);
-                endTimeInput.prop('disabled', true);
+                startTimeInput.hide();
+                endTimeInput.hide();
             } else {
-                startTimeInput.prop('disabled', false);
-                endTimeInput.prop('disabled', false);
+                startTimeInput.show();
+                endTimeInput.show();
             }
         });
         fullDayCheckbox.trigger('change');
