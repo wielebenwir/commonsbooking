@@ -450,4 +450,40 @@ class Booking extends View {
 
 	}
 
+	/**
+	 * Callback function to render the button that submits the backend booking.
+	 *
+	 * @param $field_args
+	 * @param $field
+	 */
+	public static function renderSubmitButton( $field_args, $field ) {
+		$id     = $field->args( 'id' );
+		$label  = $field->args( 'name' );
+		$desc   = $field->args( 'desc' );
+		$postId = $field->object_id();
+
+		//don't render button if we are editing an existing booking
+		$postStatus = get_post( $postId )->post_status;
+		if ( $postId && ! ( $postStatus == 'auto-draft' || $postStatus == 'draft')) {
+			return;
+		}
+
+		?>
+		<div class="cmb-row cmb-type-text">
+			<div class="cmb-th">
+				<label for="<?php echo esc_attr($id); ?>"><?php echo commonsbooking_sanitizeHTML($label); ?></label>
+			</div>
+			<div class="cmb-td">
+				<input type="submit" name="<?php echo esc_attr($id); ?>" id="cb-submit-booking"
+				       value="<?php echo esc_html__( 'Submit booking', 'commonsbooking' ); ?>"/>
+				<?php if ( $desc ) { ?>
+					<p class="cmb2-metabox-description">
+						<?php echo commonsbooking_sanitizeHTML($desc); ?>
+					</p>
+				<?php } ?>
+			</div>
+		</div>
+		<?php
+	}
+
 }

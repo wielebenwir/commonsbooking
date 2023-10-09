@@ -3,6 +3,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Exception\BookingDeniedException;
+use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
 use function wp_verify_nonce;
@@ -15,6 +16,7 @@ class Booking extends Timeframe {
 	//this is the error type for the validation that failed for the FRONTEND user
 	//TODO: Switch the error type with the one from Model/Booking, because most functions regarding backend booking are in this class
 	public const ERROR_TYPE = COMMONSBOOKING_PLUGIN_SLUG . '-bookingValidationError';
+	private const SUBMIT_BUTTON_ID = 'booking-submit';
 
 	/**
 	 * @var string
@@ -57,8 +59,6 @@ class Booking extends Timeframe {
 	public function initHooks() {
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
-
-		add_action( 'pre_post_update', array( $this, 'preSavePost' ), 1, 2 );
 
         // we need to add some additional fields and modify the autor if admin booking is made
         add_action( 'save_post_' . self::$postType, array( $this, 'saveAdminBookingFields' ), 10 );
@@ -115,11 +115,7 @@ class Booking extends Timeframe {
             // set request variables
             $booking_user = isset( $_REQUEST['booking_user'] ) ? esc_html( $_REQUEST['booking_user'] ) : false;
 
-            $post_status = esc_html( $_REQUEST['post_status'] ?? '' );
-            // if there are overlapping bookings we set status to unconfirmed
-            if ( $post_status === 'draft' || !( $post_status ) || get_transient( 'commonsbooking_booking_validation_failed_' . $post_id ) ) {
-                $post_status = 'unconfirmed';
-            }
+		    $post_status = esc_html( $_REQUEST['post_status'] ?? '' );
 
             $start_time = isset( $_REQUEST['repetition-start'] ) ? esc_html( $_REQUEST['repetition-start']['time'] ?? '' ) : false;
             $end_time = isset( $_REQUEST['repetition-end'] ) ? esc_html( $_REQUEST['repetition-end']['time'] ?? '' ) : false;
@@ -152,8 +148,33 @@ class Booking extends Timeframe {
             // update this post
             wp_update_post( $postarr, true, true );
 
-            // readd the hook
-            add_action( 'save_post_' . self::$postType, array( $this, 'saveAdminBookingFields' ) );
+			//run validation only on new posts (the submit button is only available on new posts)
+	        if ( array_key_exists( self::SUBMIT_BUTTON_ID, $_REQUEST ) ) {
+		        try {
+			        $booking = new \CommonsBooking\Model\Booking( $post_id );
+			        $booking->isValid();
+			        wp_update_post( array(
+					        'ID'          => $post_id,
+					        'post_status' => 'confirmed'
+				        )
+			        );
+			        $post_status = 'confirmed';
+		        } catch ( TimeframeInvalidException $e ) {
+			        // set to draft and display error message
+			        wp_update_post( array(
+				        'ID'          => $post_id,
+				        'post_status' => 'draft',
+			        ) );
+			        set_transient(
+				        \CommonsBooking\Model\Booking::ERROR_TYPE,
+				        nl2br(commonsbooking_sanitizeHTML( $e->getMessage() )),
+				        30 //Expires very quickly, so that outdated messsages will not be shown to the user
+			        );
+		        }
+            }
+
+	        // readd the hook
+	        add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ) );
 
 			//if we just created a new confirmed booking we trigger the confirmation mail
 	        if ( $post_status == 'confirmed' ) {
@@ -371,121 +392,6 @@ class Booking extends Timeframe {
 			);
 		}
 	}
-
-	/**
-	 * Check if booking overlaps before its been saved.
-	 *
-	 * @param $postId
-	 * @param $data
-	 *
-	 * @return void
-	 */
-	public static function preSavePost( $postId, $data ) {
-        global $pagenow;
-
-		if ( static::$postType !== $data['post_type'] ||
-                $pagenow === 'post-new.php' ||
-                ! isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] ) ||
-                ! isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ] ) ||
-                ! isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] ) ||
-                ! isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] )
-            ) {
-			return;
-		}
-
-        // prepare needed params
-            $itemId          = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ] );
-            $locationId      = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ] );
-            $repetitionStart = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] );
-            $repetitionEnd   = commonsbooking_sanitizeArrayorString( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] );
-
-        if ( is_array( $repetitionStart ) ) {
-            $repetitionStart = strtotime( $repetitionStart['date'] . ' ' . $repetitionStart['time'] );
-        } else {
-            $repetitionStart = intval( $repetitionStart );
-        }
-
-        if ( is_array( $repetitionEnd ) ) {
-            $repetitionEnd = strtotime( $repetitionEnd['date'] . ' ' . $repetitionEnd['time'] );
-        } else {
-            $repetitionEnd = intval( $repetitionEnd );
-        }
-
-        // validate start / enddate
-        if ( $repetitionEnd < $repetitionStart ) {
-
-            set_transient(
-                \CommonsBooking\Model\Booking::ERROR_TYPE,
-                '<h2>' . commonsbooking_sanitizeHTML(
-                    __(
-                        'End date is before start date',
-                        'commonsbooking'
-                    )
-                ) . '</h2><p>' .
-
-                commonsbooking_sanitizeHTML(
-                    __(
-                        'Please adjust the start date or end date.<br>Changes on this booking have not been saved.<br>',
-                        'commonsbooking'
-                    ) . '</p>'
-                ),
-                120
-            );
-            wp_safe_redirect( wp_get_raw_referer() ) ;
-            exit();
-
-        }
-
-        // validate if overlapping bookings exist
-        $overlappingBookings = \CommonsBooking\Repository\Booking::getExistingBookings(
-            $itemId,
-            $locationId,
-            $repetitionStart,
-            $repetitionEnd,
-            $postId
-        );
-
-        if ( $overlappingBookings && count( $overlappingBookings ) >= 1 ) {
-
-            foreach ( $overlappingBookings as $overlappingBooking ) {
-                    $overlappingBookingLinks[] = $overlappingBooking->getFormattedEditLink();
-            }
-
-            $formattedOverlappingLinks = implode( '<br>', $overlappingBookingLinks );
-
-			set_transient(
-                'commonsbooking_booking_validation_failed_' . $postId,
-                sprintf(
-                    '<div style="background-color:#e6aeae; padding:20px; border:5px solid red"><h2>' . commonsbooking_sanitizeHTML(
-                        __(
-                            'Warning: There are one ore more overlapping bookings within the choosen timerange',
-                            'commonsbooking'
-                        )
-                    ) . '</h2><p>' .
-
-                    commonsbooking_sanitizeHTML(
-                        __(
-                            'Please adjust the startdate or enddate.<br>The booking status has been set to <strong>unconfirmed</strong>.<br>
-                                <strong>Affected Bookings:</strong><br>
-                                %1$s',
-                            'commonsbooking'
-                        ) . '</p></div>'
-                    ),
-                    commonsbooking_sanitizeHTML( $formattedOverlappingLinks )
-                ),
-                120
-            );
-
-            $data['post_status'] = 'unconfirmed';
-            return $data;
-
-		} else {
-            delete_transient( 'commonsbooking_booking_validation_failed_' . $postId );
-        }
-	}
-
-
-
 
 	/**
 	 * @inheritDoc
@@ -784,9 +690,7 @@ class Booking extends Timeframe {
                         '<h1>Notice</h1><p>In this view, you as an admin can create or modify existing bookings. Please use it with caution. <br>
 				<ul>
                     <li>Click on the <strong>preview button on the right panel</strong> to view more booking details and to cancel the booking via the cancel button.</li>
-                    <li>The booking is initially <strong>saved as <i>unconfirmed</i></strong>. Please change the booking status (confirmed, unconfirmed, canceled) using the status dropdown in publish panel.</li>
-                    <li>When the booking is saved with status <i>confirmed</i>, the booking user will receive a booking confirmation mail</li>
-                    <li>Unconfirmed bookings will be <strong>deleted automatically after a few minutes</strong></li>
+                    <li>Click on the <strong>Submit booking</strong> button at the end of the page to submit a new booking.</li>
                 </ul>
 				<strong>Please note</strong>: Only a few basic checks against existing bookings are performed. Please be wary of overlapping bookings.
                 </p> 
@@ -864,8 +768,8 @@ class Booking extends Timeframe {
                 'desc'             => commonsbooking_sanitizeHTML(
                     __(
                         'Here you must select the user for whom the booking is made.<br>
-                        If the booking was was made by a user via frontend booking process, the user will be shown in this field.
-                        <br><strong>Notice:</strong>The user will receive a booking confirmation as soon as the booking has been saved with the status confirmed.',
+                        If the booking was made by a user via frontend booking process, the user will be shown in this field.
+                        <br><strong>Notice:</strong>The user will receive a booking confirmation as soon as the booking is submitted.',
                         'commonsbooking'
                     )
                 ),
@@ -899,6 +803,13 @@ class Booking extends Timeframe {
 				'desc' => esc_html__( 'This internal comment can only be seen in the backend by privileged users like admins or cb-managers', 'commonsbooking' ),
 				'id'   => 'internal-comment',
 				'type' => 'textarea_small',
+			),
+			array(
+				'name'          => esc_html__( 'Submit booking', 'commonsbooking' ),
+				'desc'          => esc_html__( 'This will create the specified booking and send out the booking confirmation email.', 'commonsbooking' ),
+				'id'            => self::SUBMIT_BUTTON_ID,
+				'type'          => 'text',
+				'render_row_cb' => array( \CommonsBooking\View\Booking::class, 'renderSubmitButton' ),
 			),
 			array(
 				'type'    => 'hidden',

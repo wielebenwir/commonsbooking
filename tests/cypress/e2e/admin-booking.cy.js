@@ -23,17 +23,14 @@ describe('test backend booking', () => {
     cy.get('body').click(0,0)
     cy.get('#repetition-end_date').clear().type(expectedEndDate)
     cy.get('body').click(0,0)
-    //set status to confirmed
-    cy.get('.edit-post-status > [aria-hidden="true"]').click()
-    cy.get('#post_status').select('Confirmed')
-    cy.get('.save-post-status').click()
-    cy.get('#save-post').click()
+    //click post button
+    cy.get('#cb-submit-booking').click()
     cy.get('#message > p').contains('Post updated.')
     cy.get('#post-status-display').contains('Confirmed')
 
     //let's go to the frontend booking calendar and check that our item exists there
-    //set date to 20th of october 2023
-    cy.clock(new Date(2023,9,20))
+    //set date to today (this is probably unnecessary, but just to be sure)
+    cy.clock(today.getTime())
     cy.visit('/?cb_item=basictest-noadmin&cb-location=32')
     cy.get('.is-today').should('have.class', 'is-booked')
   })
