@@ -31,6 +31,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	const END_TIMEFRAME_GRIDSIZE = 'end-timeframe-gridsize';
 
+	//This is the error type that is user for the ADMIN Notice for creating an invalid backend booking
     public const ERROR_TYPE = 'BookingValidationFailed';
 
 	/**
@@ -496,8 +497,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			$formattedOverlappingLinks = implode( '<br>', $overlappingBookingLinks );
 
 			throw new TimeframeInvalidException(
-				__( 'There are one ore more overlapping bookings within the chosen timerange', 'commonsbooking' ) . '\n' .
-				__( 'Please adjust the start- or end-date.', 'commonsbooking' ) . '\n' .
+				__( 'There are one ore more overlapping bookings within the chosen timerange', 'commonsbooking' ) . PHP_EOL .
+				__( 'Please adjust the start- or end-date.', 'commonsbooking' ) . PHP_EOL .
 				sprintf( __( 'Affected Bookings: %s', 'commonsbooking' ), commonsbooking_sanitizeHTML( $formattedOverlappingLinks ) ),
 			);
 		}

@@ -12,6 +12,8 @@ use function wp_verify_nonce;
  */
 class Booking extends Timeframe {
 
+	//this is the error type for the validation that failed for the FRONTEND user
+	//TODO: Switch the error type with the one from Model/Booking, because most functions regarding backend booking are in this class
 	public const ERROR_TYPE = COMMONSBOOKING_PLUGIN_SLUG . '-bookingValidationError';
 
 	/**
@@ -108,7 +110,7 @@ class Booking extends Timeframe {
         $post = $post ?? get_post( $post_id );
         $is_trash_action = str_contains(($_REQUEST ?? array())['action'] ?? '', 'trash');
 
-        // we check if its a new created post
+        // we check if it's a new created post
         if ( ! empty( $_REQUEST ) && !$is_trash_action && $pagenow === 'post.php' && commonsbooking_isCurrentUserAdmin() ) {
             // set request variables
             $booking_user = isset( $_REQUEST['booking_user'] ) ? esc_html( $_REQUEST['booking_user'] ) : false;
@@ -786,7 +788,7 @@ class Booking extends Timeframe {
                     <li>When the booking is saved with status <i>confirmed</i>, the booking user will receive a booking confirmation mail</li>
                     <li>Unconfirmed bookings will be <strong>deleted automatically after a few minutes</strong></li>
                 </ul>
-				<strong>Please note</strong>: There are only basic checks agains existing bookings. Please check if there are no conflicting bookings.
+				<strong>Please note</strong>: Only a few basic checks against existing bookings are performed. Please be wary of overlapping bookings.
                 </p> 
 				',
                         'commonsbooking'
