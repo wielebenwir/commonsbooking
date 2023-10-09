@@ -61,7 +61,7 @@ class Booking extends Timeframe {
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
         // we need to add some additional fields and modify the autor if admin booking is made
-        add_action( 'save_post_' . self::$postType, array( $this, 'saveAdminBookingFields' ), 10 );
+        add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 10 );
 
 		// Set Tepmlates
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
@@ -104,7 +104,7 @@ class Booking extends Timeframe {
      * @param  mixed $update
      * @return void
      */
-    public function saveAdminBookingFields( $post_id, $post = null, $update = null ) {
+    public function savePost( $post_id, $post = null, $update = null ) {
         global $pagenow;
 
         $post = $post ?? get_post( $post_id );
@@ -143,7 +143,7 @@ class Booking extends Timeframe {
             $postarr['ID'] = $post_id;
 
             // unhook this function so it doesn't loop infinitely
-            remove_action( 'save_post_' . self::$postType, array( $this, 'saveAdminBookingFields' ) );
+            remove_action( 'save_post_' . self::$postType, array( $this, 'savePost' ) );
 
             // update this post
             wp_update_post( $postarr, true, true );
