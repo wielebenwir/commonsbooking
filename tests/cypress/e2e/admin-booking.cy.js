@@ -7,8 +7,11 @@ describe('test backend booking', () => {
         cy.get( '#wp-submit' ).click();
     } );
   it('can create entirely new admin booking', () => {
-    const expectedStartDate = '10/20/2023'
-    const expectedEndDate = '10/22/2023'
+    let today = new Date()
+    let inTwoDays = new Date()
+    inTwoDays.setDate(today.getDate() + 2)
+    const expectedStartDate = today.toLocaleDateString()
+    const expectedEndDate = inTwoDays.toLocaleDateString()
     cy.visit('/wp-admin/post-new.php?post_type=cb_booking')
     cy.get('#title').type('Test booking')
     //TODO: get this data from fixtures
