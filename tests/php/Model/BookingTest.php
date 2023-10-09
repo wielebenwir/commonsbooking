@@ -354,7 +354,7 @@ class BookingTest extends CustomPostTypeTest {
 		} catch ( TimeframeInvalidException $e ) {
 			$this->assertInstanceOf( TimeframeInvalidException::class, $e );
 			$this->assertStringContainsString( 'There are one ore more overlapping bookings within the chosen timerange', $e->getMessage() );
-			//also test, that correct notice for Timeframe is shown
+			//also test, that correct notice for Bookings is shown
 			$this->assertStringContainsString('Booking is saved as draft.', $e->getMessage());
 			$this->assertStringContainsString( $validBooking->getFormattedEditLink(), $e->getMessage() );
 		}

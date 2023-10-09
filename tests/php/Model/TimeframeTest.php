@@ -180,6 +180,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		}
 		catch ( TimeframeInvalidException $e ) {
 			$this->assertStringContainsString("Item or location is missing. Please set item and location.",$e->getMessage());
+			//also test, that correct notice for Timeframes is shown
+			$this->assertStringContainsString('Timeframe is saved as draft.', $e->getMessage());
 			$exceptionCaught = true;
 		}
 		$this->assertTrue($exceptionCaught);
