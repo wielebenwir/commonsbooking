@@ -13,10 +13,6 @@ class StationStatusTest extends CustomPostTypeTest
 
     public function testPrepare_item_for_response()
     {
-
-    }
-
-	public function testGetBookableItems() {
 		$currDate = new \DateTime( self::CURRENT_DATE );
 		$locationObject = new Location($this->locationId);
 		ClockMock::freeze( $currDate );
