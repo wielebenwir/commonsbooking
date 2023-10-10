@@ -53,6 +53,11 @@ class Calendar {
 	 * @param array $types
 	 */
 	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [] ) {
+		//check, that it spans at least two days
+		if ( $startDate->getDate() == $endDate->getDate() ) {
+			throw new \InvalidArgumentException( 'Calendar must span at least two days' );
+		}
+
 		$this->startDate = $startDate;
 		$this->endDate   = $endDate;
 		$this->items     = $items;
@@ -105,7 +110,11 @@ class Calendar {
 
 	/**
 	 * Will retrieve the respective availability slots for a given calendar.
-	 * This is used to display availabilites for the API routes.
+	 * This is used to display availabilities for the API routes.
+	 *
+	 * Because we process the calendar by weeks, at least two days are needed to get a valid calendar.
+	 * The calendar does not consider the individual boundaries set by $startDate and $endDate but will always return a full week.
+	 *
 	 * @return array
 	 * @throws \Exception
 	 */
