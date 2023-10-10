@@ -33,6 +33,14 @@ jobs:
 
     - name: Run build script
       run: bin/build-zip.sh
+
+    - name: Check i18n coverage before release
+      uses: alexkiro/i18n-coverage@v1.0.1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        translations-path: 'languages/*.po'
+        ignore-languages: 'en'
+        min-coverage: 100
         
     - name: WordPress Plugin Deploy
       uses: 10up/action-wordpress-plugin-deploy@stable
