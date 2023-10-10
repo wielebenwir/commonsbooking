@@ -40,11 +40,11 @@ jobs:
         commitMessage: Ran grunt 
         
     - name: Run build script
-      run: bin/build-zip.sh
+      run: bin/build-zip.sh 1
 
     - name: Generate zip
       uses: 10up/action-wordpress-plugin-build-zip@stable
       env:
         SLUG: commonsbooking
-        BUILD_DIR: build/commonsbooking
+        BUILD_DIR: ./build/commonsbooking
     
