@@ -17,6 +17,7 @@ use SlopeIt\ClockMock\ClockMock;
 class CalendarTest extends CustomPostTypeTest {
 
 	private Calendar $calendar;
+	private \DateTime $now;
 
 	public function testGetDays() {
 		$this->calendar = new Calendar( new Day( '2023-05-01' ), new Day( '2023-06-01' ) );
@@ -36,27 +37,22 @@ class CalendarTest extends CustomPostTypeTest {
 	public function testGetAvailabilitySlots() {
 		$this->createBookableTimeFrameIncludingCurrentDay();
 		$this->createBookableTimeFrameStartingInAWeek();
-		$yesterday         = date( 'Y-m-d', strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ) );
+		$today 		       = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
+		$todayEnd          = $this->getEndOfDayTimestamp( self::CURRENT_DATE );
 		$tomorrow          = date( 'Y-m-d', strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ) );
+		$tomorrowEnd       = $this->getEndOfDayTimestamp( $tomorrow );
+
 		$this->calendar    = new Calendar(
-			new Day( $yesterday, [ $this->locationId ], [ $this->itemId ] ),
+			new Day( $today, [ $this->locationId ], [ $this->itemId ] ),
 			new Day( $tomorrow, [ $this->locationId ], [ $this->itemId ] ),
 			[ $this->locationId ],
 			[ $this->itemId ]
 		);
 		$availabilitySlots = $this->calendar->getAvailabilitySlots();
-		$yesterdayEnd      = $this->getEndOfDayTimestamp( $yesterday );
-		$todayEnd          = $this->getEndOfDayTimestamp( self::CURRENT_DATE );
-		$tomorrowEnd       = $this->getEndOfDayTimestamp( $tomorrow );
 
-		$this->assertEquals( 3, count( $availabilitySlots ) );
+
+		$this->assertEquals( 2, count( $availabilitySlots ) );
 		$expectedSlotObject = [
-			(object) [
-				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( $yesterday ) ),
-				'end'        => date( 'Y-m-d\TH:i:sP', $yesterdayEnd ),
-				'itemId'     => $this->itemId,
-				'locationId' => $this->locationId
-			],
 			(object) [
 				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( self::CURRENT_DATE ) ),
 				'end'        => date( 'Y-m-d\TH:i:sP', $todayEnd ),
@@ -72,14 +68,19 @@ class CalendarTest extends CustomPostTypeTest {
 		];
 		$this->assertEquals( $expectedSlotObject, $availabilitySlots );
 
-		//now let's book the current day and check, that only yesterday is available
-		$this->createConfirmedBookingStartingToday();
+		//now let's book the current day and check, that only tomorrow is available
+		$this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime($today),
+			$todayEnd
+		);
 		$availabilitySlots = $this->calendar->getAvailabilitySlots();
 		$this->assertEquals( 1, count( $availabilitySlots ) );
 		$expectedSlotObject = [
 			(object) [
-				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( $yesterday ) ),
-				'end'        => date( 'Y-m-d\TH:i:sP', $yesterdayEnd ),
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( $tomorrow ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', $tomorrowEnd ),
 				'itemId'     => $this->itemId,
 				'locationId' => $this->locationId
 			]
@@ -140,10 +141,8 @@ class CalendarTest extends CustomPostTypeTest {
 			30,
 			2
 		);
-		$now = new \DateTime( self::CURRENT_DATE );
-		ClockMock::freeze( $now );
 		$this->calendar = new Calendar(
-			new Day($now->format('Y-m-d'), [$this->locationId], [$this->itemId]),
+			new Day($this->now->format('Y-m-d'), [$this->locationId], [$this->itemId]),
 			new Day(date('Y-m-d', strtotime('+1 weeks', strtotime(self::CURRENT_DATE))), [$this->locationId], [$this->itemId]),
 			[ $this->locationId ],
 			[ $this->itemId ]
@@ -151,38 +150,38 @@ class CalendarTest extends CustomPostTypeTest {
 		$availabilitySlots = $this->calendar->getAvailabilitySlots();
 		$expectedSlotsObject = [
 			(object) [
-				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days', $now->getTimestamp() ) ),
-				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days 23:59:59', $now->getTimestamp() ) ),
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days', $this->now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
 				'locationId' => $this->locationId
 			],
 			(object) [
-				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days', $now->getTimestamp() ) ),
-				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days 23:59:59', $now->getTimestamp() ) ),
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days', $this->now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
 				'locationId' => $this->locationId
 			],
 			(object) [
-				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days', $now->getTimestamp() ) ),
-				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days 23:59:59', $now->getTimestamp() ) ),
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days', $this->now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
 				'locationId' => $this->locationId
 			],
 			(object) [
-				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+5 days', $now->getTimestamp() ) ),
-				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+5 days 23:59:59', $now->getTimestamp() ) ),
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+5 days', $this->now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+5 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
 				'locationId' => $this->locationId
 			],
 			(object) [
-				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+6 days', $now->getTimestamp() ) ),
-				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+6 days 23:59:59', $now->getTimestamp() ) ),
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+6 days', $this->now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+6 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
 				'locationId' => $this->locationId
 			],
 			(object) [
-				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+7 days', $now->getTimestamp() ) ),
-				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+7 days 23:59:59', $now->getTimestamp() ) ),
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+7 days', $this->now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+7 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
 				'locationId' => $this->locationId
 			]
@@ -204,10 +203,8 @@ class CalendarTest extends CustomPostTypeTest {
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			Timeframe::HOLIDAYS_ID
 		);
-		$now = new \DateTime( self::CURRENT_DATE );
-		ClockMock::freeze( $now );
 		$this->calendar = new Calendar(
-			new Day($now->format('Y-m-d'), [$this->locationId], [$this->itemId]),
+			new Day($this->now->format('Y-m-d'), [$this->locationId], [$this->itemId]),
 			new Day(date('Y-m-d', strtotime('+1 week', strtotime(self::CURRENT_DATE))), [$this->locationId], [$this->itemId]),
 			[ $this->locationId ],
 			[ $this->itemId ]
@@ -215,20 +212,20 @@ class CalendarTest extends CustomPostTypeTest {
 		$availabilitySlots = $this->calendar->getAvailabilitySlots();
 		$expectedSlotsObject = [
 			(object) [
-				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days', $now->getTimestamp() ) ),
-				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days 23:59:59', $now->getTimestamp() ) ),
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days', $this->now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
 				'locationId' => $this->locationId
 			],
 			(object) [
-				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days', $now->getTimestamp() ) ),
-				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days 23:59:59', $now->getTimestamp() ) ),
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days', $this->now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
 				'locationId' => $this->locationId
 			],
 			(object) [
-				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days', $now->getTimestamp() ) ),
-				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days 23:59:59', $now->getTimestamp() ) ),
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days', $this->now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
 				'locationId' => $this->locationId
 			]
@@ -238,5 +235,7 @@ class CalendarTest extends CustomPostTypeTest {
 
 	protected function setUp(): void {
 		parent::setUp();
+		$this->now = new \DateTime( self::CURRENT_DATE );
+		ClockMock::freeze( $this->now );
 	}
 }
