@@ -31,8 +31,8 @@ jobs:
         chmod +x wp-cli.phar
         sudo mv wp-cli.phar /usr/local/bin/wp
 
-    - name: Run build script
-      run: bin/build-zip.sh
+    - name: Run build script (without zip generation)
+      run: bin/build-zip.sh 1
 
     - name: Check i18n coverage before release
       uses: alexkiro/i18n-coverage@v1.0.1

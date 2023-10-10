@@ -5,6 +5,7 @@ PLUGIN_SLUG="commonsbooking"
 PROJECT_PATH=$(pwd)
 BUILD_PATH="${PROJECT_PATH}/build"
 DEST_PATH="$BUILD_PATH/$PLUGIN_SLUG"
+SKIP_ZIP=${1-0}
 
 echo "Generating build directory..."
 rm -rf "$BUILD_PATH"
@@ -18,6 +19,11 @@ echo "Cleaning up PHP dependencies..."
 composer install --no-dev --ignore-platform-reqs || exit "$?"
 echo "Syncing files..."
 rsync -rc --exclude-from="$PROJECT_PATH/.distignore" "$PROJECT_PATH/" "$DEST_PATH/" --delete --delete-excluded
+
+if [ "$SKIP_ZIP" = "0" ]; then
+  echo "Build done! (Skipped zip file generation)"
+  exit 0
+fi
 
 echo "Generating zip file..."
 cd "$BUILD_PATH" || exit

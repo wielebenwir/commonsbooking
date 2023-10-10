@@ -40,7 +40,7 @@ jobs:
         commitMessage: Ran grunt 
         
     - name: Run build script
-      run: bin/build-zip.sh
+      run: bin/build-zip.sh 1
 
     - uses: actions/upload-artifact@v3
       with:
