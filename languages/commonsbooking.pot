@@ -2,16 +2,16 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Commons Booking 2.8.3\n"
+"Project-Id-Version: Commons Booking 2.8.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-15T04:04:14+02:00\n"
+"POT-Creation-Date: 2023-10-10T22:11:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.5.0\n"
+"X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: commonsbooking\n"
 
 #. Plugin Name of the plugin
@@ -78,6 +78,7 @@ msgstr ""
 msgid "Items slug"
 msgstr ""
 
+#. translators: %s = example url (like website.com/cb-items/)
 #: includes/OptionsArray.php:91
 msgid "The slug for article detail page. Type in the slug without slashes. Example: <strong>cb_item</strong> or <strong>article</strong>.  The url for the items detail will be like %s"
 msgstr ""
@@ -86,6 +87,7 @@ msgstr ""
 msgid "Locations slug"
 msgstr ""
 
+#. translators: %s = example url (like website.com/cb-locations/)
 #: includes/OptionsArray.php:102
 msgid "The slug for location detail page. Type in the slug without slashes. Example: <strong>cb_location</strong> or <strong>location</strong>.  The url for the items detail will be like %s"
 msgstr ""
@@ -94,6 +96,7 @@ msgstr ""
 msgid "Bookings Page"
 msgstr ""
 
+#. translators: %s = example url (like website.com/cb-locations/)
 #: includes/OptionsArray.php:113
 msgid "The page where you included the [cb_bookings] shortcode. This is used in the Users Widget"
 msgstr ""
@@ -1060,6 +1063,7 @@ msgstr ""
 msgid "Please accept the terms & conditions"
 msgstr ""
 
+#. translators: %s = terms and service url
 #: src/CB/CB1UserFields.php:160
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
 msgstr ""
@@ -1104,77 +1108,77 @@ msgstr ""
 msgid "Commons Booking Map"
 msgstr ""
 
-#: src/Map/MapShortcode.php:90
+#: src/Map/MapShortcode.php:94
 msgid "map is not published"
 msgstr ""
 
-#: src/Map/MapShortcode.php:93
 #: src/Map/MapShortcode.php:97
+#: src/Map/MapShortcode.php:101
 msgid "no valid map id provided"
 msgstr ""
 
-#: src/Map/MapShortcode.php:234
+#: src/Map/MapShortcode.php:238
 #: templates/map-admin-page-template.php:229
 #: templates/map-admin-page-template.php:248
 msgid "opening hours"
 msgstr ""
 
-#: src/Map/MapShortcode.php:235
+#: src/Map/MapShortcode.php:239
 msgid "contact"
 msgstr ""
 
-#: src/Map/MapShortcode.php:236
+#: src/Map/MapShortcode.php:240
 msgid "from"
 msgstr ""
 
-#: src/Map/MapShortcode.php:237
+#: src/Map/MapShortcode.php:241
 msgid "until"
 msgstr ""
 
-#: src/Map/MapShortcode.php:238
+#: src/Map/MapShortcode.php:242
 msgid "for at least"
 msgstr ""
 
-#: src/Map/MapShortcode.php:239
+#: src/Map/MapShortcode.php:243
 msgid "day(s)"
 msgstr ""
 
-#: src/Map/MapShortcode.php:240
+#: src/Map/MapShortcode.php:244
 msgid "Sorry, no locations found."
 msgstr ""
 
-#: src/Map/MapShortcode.php:241
+#: src/Map/MapShortcode.php:245
 msgid "filter"
 msgstr ""
 
-#: src/Map/MapShortcode.php:242
+#: src/Map/MapShortcode.php:246
 #: templates/map-admin-page-template.php:599
 msgid "availability"
 msgstr ""
 
-#: src/Map/MapShortcode.php:243
+#: src/Map/MapShortcode.php:247
 #: templates/map-admin-page-template.php:609
 msgid "categories"
 msgstr ""
 
-#: src/Map/MapShortcode.php:244
+#: src/Map/MapShortcode.php:248
 #: templates/map-admin-page-template.php:546
 msgid "distance"
 msgstr ""
 
-#: src/Map/MapShortcode.php:245
+#: src/Map/MapShortcode.php:249
 msgid "address"
 msgstr ""
 
-#: src/Map/MapShortcode.php:246
+#: src/Map/MapShortcode.php:250
 msgid "Sorry, an error occured during your request. Please try again later."
 msgstr ""
 
-#: src/Map/MapShortcode.php:247
+#: src/Map/MapShortcode.php:251
 msgid "The service is currently not available. Please try again later."
 msgstr ""
 
-#: src/Map/MapShortcode.php:248
+#: src/Map/MapShortcode.php:252
 msgid "comming soon"
 msgstr ""
 
@@ -1289,29 +1293,29 @@ msgstr ""
 msgid "Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s %2$s"
 msgstr ""
 
-#: src/Plugin.php:319
-#: src/Plugin.php:320
+#: src/Plugin.php:352
+#: src/Plugin.php:353
 msgid "Item Categories"
 msgstr ""
 
-#: src/Plugin.php:329
-#: src/Plugin.php:330
+#: src/Plugin.php:362
+#: src/Plugin.php:363
 msgid "Location Categories"
 msgstr ""
 
-#: src/Plugin.php:404
+#: src/Plugin.php:437
 msgid "Item Category"
 msgstr ""
 
-#: src/Plugin.php:430
+#: src/Plugin.php:463
 msgid "Location Category"
 msgstr ""
 
-#: src/Plugin.php:795
+#: src/Plugin.php:828
 msgid "New features and changes: Please backup before upgrade!"
 msgstr ""
 
-#: src/Plugin.php:802
+#: src/Plugin.php:835
 msgid ""
 "\n"
 "\t\t\t\t\tThis CommonsBooking update has a lot of new features and changes on some templates.<br>\n"
@@ -1416,7 +1420,7 @@ msgid "Pickup date"
 msgstr ""
 
 #: src/View/BookingCodes.php:48
-#: src/View/Calendar.php:217
+#: src/View/Calendar.php:216
 #: src/Wordpress/CustomPostType/Booking.php:506
 #: src/Wordpress/CustomPostType/Booking.php:818
 #: src/Wordpress/CustomPostType/Item.php:87
@@ -1428,11 +1432,11 @@ msgstr ""
 msgid "Item"
 msgstr ""
 
-#: src/View/Calendar.php:158
+#: src/View/Calendar.php:160
 msgid "No items found."
 msgstr ""
 
-#: src/View/Calendar.php:218
+#: src/View/Calendar.php:217
 #: src/Wordpress/CustomPostType/Booking.php:507
 #: src/Wordpress/CustomPostType/Booking.php:812
 #: src/Wordpress/CustomPostType/Location.php:104
@@ -1449,11 +1453,11 @@ msgstr ""
 msgid "at"
 msgstr ""
 
-#: src/View/Item.php:137
+#: src/View/Item.php:124
 msgid "No bookable items found."
 msgstr ""
 
-#: src/View/Location.php:138
+#: src/View/Location.php:127
 msgid "No locations found."
 msgstr ""
 
