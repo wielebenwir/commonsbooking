@@ -82,6 +82,45 @@ class CalendarTest extends CustomPostTypeTest {
 		$this->assertTrue($jsonresponse['minDate'] == date('Y-m-d'));
 	}
 
+	public function testBookingOffset() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ));
+		$startDate = date( 'Y-m-d', strtotime( '-1 day', strtotime(self::CURRENT_DATE) ) );
+		$today = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
+		$endDate   = date( 'Y-m-d', strtotime( '+60 days midnight', strtotime(self::CURRENT_DATE) ) );
+		$otherItemId = $this->createItem("Other Item",'publish');
+		$otherLocationId = $this->createLocation("Other Location",'publish');
+		$offsetTF = $this->createTimeframe(
+			$otherLocationId,
+			$otherItemId,
+			strtotime($startDate),
+			strtotime($endDate),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"on",
+			'd',
+			0,
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
+			[],
+			self::USER_ID,
+			3,
+			30,
+			2
+		);
+		$jsonresponse = Calendar::getCalendarDataArray(
+			$otherItemId,
+			$otherLocationId,
+			$startDate,
+			$endDate
+		);
+		//considering the advance booking days
+		$days = $jsonresponse['days'];
+		$this->assertEquals(32, count($days));
+		//considering the offset, today and tomorrow should be locked
+		$this->assertTrue($days[$today]['locked']);
+		$this->assertTrue($days[date('Y-m-d', strtotime('+1 day', strtotime($today)))]['locked']);
+	}
+
 	protected function setUp() : void {
 		parent::setUp();
 

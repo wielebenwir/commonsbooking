@@ -51,8 +51,6 @@ class StationStatus extends BaseRoute {
 	 * or can only be booked through overbooking.
 	 * This is because the GBFS spec only accounts for items available in that instant.
 	 *
-	 * TODO: If an item is booked from 08:00AM to 10:00AM, it will be shown as available before and after, regardless of the grid set in the timeframe.
-	 *       This means that an item that can only be booked for two hours each day will be shown as available for the rest of the day.
 	 * @param $locationId
 	 *
 	 * @return int|null
