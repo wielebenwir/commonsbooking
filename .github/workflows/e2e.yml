@@ -44,7 +44,13 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
       - run: npm ci --legacy-peer-deps --include=dev
-      - run: docker-compose -v
+
+      - name: Run build script
+        run: bin/build-zip.sh
+
+      - name: Overwrite settings for wp-env to use generated zip
+        run: cp tests/cypress/wordpress-files/e2e-override.json .wp-env.override.json
+
       - name: setup wp env
         run: npm run env:start
 
