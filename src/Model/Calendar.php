@@ -133,6 +133,12 @@ class Calendar {
 					if ( $timeFrameType != \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ) {
 						continue;
 					}
+
+					//Skip timeframes that are not bookable today
+					if ( $timeframe->getFirstBookableDay() > $day->getDate() ) {
+						continue;
+					}
+
 					$availabilitySlot = new stdClass();
 
 					// Init DateTime object for start

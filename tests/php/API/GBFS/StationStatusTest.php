@@ -43,6 +43,36 @@ class StationStatusTest extends CustomPostTypeTest
 		$stationStatus = $routeObject->prepare_item_for_response($locationObject, null);
 		$this->assertEquals(0, $stationStatus->num_bikes_available);
 
+		//very important for GBFS: when bookings are only allowed with a certain offset (time difference between booking and start of booking), the station should be empty
+	    ClockMock::freeze(new \DateTime( self::CURRENT_DATE) );
+	    $otherLocationId = $this->createLocation("Other Location",'publish');
+		$otherItemId = $this->createItem("Other Item",'publish');
+		$timeframeID = $this->createTimeframe(
+			$otherLocationId,
+			$otherItemId,
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+10 days', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"on",
+			'd',
+			0,
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
+			[],
+			self::USER_ID,
+			3,
+			30,
+			2
+		);
+		$stationStatus = $routeObject->prepare_item_for_response(new Location($otherLocationId), null);
+		$this->assertEquals(0, $stationStatus->num_bikes_available);
+		//remove the offset and the station should have the item
+	    update_post_meta($timeframeID, 'booking-startday-offset', 0);
+		$stationStatus = $routeObject->prepare_item_for_response(new Location($otherLocationId), null);
+
+
+
 	}
 
 	protected function setUp(): void {

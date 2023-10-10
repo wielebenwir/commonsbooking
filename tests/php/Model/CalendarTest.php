@@ -8,6 +8,7 @@ use CommonsBooking\Model\Calendar;
 
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
+use SlopeIt\ClockMock\ClockMock;
 
 
 /**
@@ -33,41 +34,43 @@ class CalendarTest extends CustomPostTypeTest {
 	}
 
 	public function testGetAvailabilitySlots() {
-		$yesterday = date( 'Y-m-d', strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ) );
-		$tomorrow = date( 'Y-m-d', strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ) );
-		$this->calendar = new Calendar(
-			new Day($yesterday, [$this->locationId], [$this->itemId]),
-			new Day($tomorrow, [$this->locationId], [$this->itemId]),
+		$this->createBookableTimeFrameIncludingCurrentDay();
+		$this->createBookableTimeFrameStartingInAWeek();
+		$yesterday         = date( 'Y-m-d', strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ) );
+		$tomorrow          = date( 'Y-m-d', strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ) );
+		$this->calendar    = new Calendar(
+			new Day( $yesterday, [ $this->locationId ], [ $this->itemId ] ),
+			new Day( $tomorrow, [ $this->locationId ], [ $this->itemId ] ),
 			[ $this->locationId ],
 			[ $this->itemId ]
 		);
 		$availabilitySlots = $this->calendar->getAvailabilitySlots();
-		$yesterdayEnd = $this->getEndOfDayTimestamp($yesterday);
-		$todayEnd = $this->getEndOfDayTimestamp(self::CURRENT_DATE);
-		$tomorrowEnd = $this->getEndOfDayTimestamp($tomorrow);
+		$yesterdayEnd      = $this->getEndOfDayTimestamp( $yesterday );
+		$todayEnd          = $this->getEndOfDayTimestamp( self::CURRENT_DATE );
+		$tomorrowEnd       = $this->getEndOfDayTimestamp( $tomorrow );
 
 		$this->assertEquals( 3, count( $availabilitySlots ) );
 		$expectedSlotObject = [
 			(object) [
-				'start' => date('Y-m-d\TH:i:sP', strtotime($yesterday)),
-				'end' => date('Y-m-d\TH:i:sP', $yesterdayEnd),
-				'itemId' => $this->itemId,
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( $yesterday ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', $yesterdayEnd ),
+				'itemId'     => $this->itemId,
 				'locationId' => $this->locationId
 			],
 			(object) [
-				'start' => date('Y-m-d\TH:i:sP', strtotime(self::CURRENT_DATE)),
-				'end' => date('Y-m-d\TH:i:sP', $todayEnd),
-				'itemId' => $this->itemId,
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( self::CURRENT_DATE ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', $todayEnd ),
+				'itemId'     => $this->itemId,
 				'locationId' => $this->locationId
 			],
 			(object) [
-				'start' => date('Y-m-d\TH:i:sP', strtotime($tomorrow)),
-				'end' => date('Y-m-d\TH:i:sP', $tomorrowEnd),
-				'itemId' => $this->itemId,
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( $tomorrow ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', $tomorrowEnd ),
+				'itemId'     => $this->itemId,
 				'locationId' => $this->locationId
 			]
 		];
-		$this->assertEquals($expectedSlotObject, $availabilitySlots);
+		$this->assertEquals( $expectedSlotObject, $availabilitySlots );
 
 		//now let's book the current day and check, that only yesterday is available
 		$this->createConfirmedBookingStartingToday();
@@ -75,20 +78,19 @@ class CalendarTest extends CustomPostTypeTest {
 		$this->assertEquals( 1, count( $availabilitySlots ) );
 		$expectedSlotObject = [
 			(object) [
-				'start' => date('Y-m-d\TH:i:sP', strtotime($yesterday)),
-				'end' => date('Y-m-d\TH:i:sP', $yesterdayEnd),
-				'itemId' => $this->itemId,
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( $yesterday ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', $yesterdayEnd ),
+				'itemId'     => $this->itemId,
 				'locationId' => $this->locationId
 			]
 		];
-		$this->assertEquals($expectedSlotObject, $availabilitySlots);
+		$this->assertEquals( $expectedSlotObject, $availabilitySlots );
+	}
 
-		//test with hourly available timeframe, we create a new item and location for that test to prevent overlapping with next week
-		$itemID = $this->createItem("Hourly Item",'publish');
-		$locationID = $this->createLocation("Hourly Location",'publish');
+	public function testGetAvailabilitySlotsWithHourlyTimeframe() {
 		$this->createTimeframe(
-			$locationID,
-			$itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( self::CURRENT_DATE ),
 			strtotime( self::CURRENT_DATE ),
 			Timeframe::BOOKABLE_ID,
@@ -98,29 +100,143 @@ class CalendarTest extends CustomPostTypeTest {
 			'8:00 AM',
 			'12:00 PM'
 		);
-		$start = new \DateTime( self::CURRENT_DATE);
-		$start->setTime(8,0,0);
-		$end = new \DateTime( self::CURRENT_DATE);
-		$end->setTime(24,0,0);
-		$expectedPeriod = new \DatePeriod(
+		$start = new \DateTime( self::CURRENT_DATE );
+		$start->setTime( 8, 0, 0 );
+		$end = new \DateTime( self::CURRENT_DATE );
+		$end->setTime( 24, 0, 0 );
+		$expectedPeriod    = new \DatePeriod(
 			$start,
-			new \DateInterval('PT1H'),
+			new \DateInterval( 'PT1H' ),
 			$end
 		);
-		$this->calendar = new Calendar(
-			new Day($start->format('Y-m-d'), [$locationID], [$itemID]),
+		$this->calendar    = new Calendar(
+			new Day( $start->format( 'Y-m-d' ), [ $this->locationId ], [ $this->itemId ] ),
 			//we do this because the calendar needs to span at least one day
-			new Day(date('Y-m-d', strtotime('+1 day', $end->getTimestamp())), [$locationID], [$itemID]),
-			[ $locationID ],
-			[ $itemID ]
+			new Day( date( 'Y-m-d', strtotime( '+1 day', $end->getTimestamp() ) ), [ $this->locationId ], [ $this->itemId ] ),
+			[ $this->locationId ],
+			[ $this->itemId ]
 		);
 		$availabilitySlots = $this->calendar->getAvailabilitySlots();
-		$this->assertEquals( iterator_count($expectedPeriod), count( $availabilitySlots ) );
+		$this->assertEquals( iterator_count( $expectedPeriod ), count( $availabilitySlots ) );
+	}
+
+	public function testGetAvailabilitySlotsWithOffset() {
+		//check with offset, first two days should not be marked as bookable
+		$offsetTF = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( self::CURRENT_DATE ) ,
+			strtotime( '+1 week', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"on",
+			'd',
+			0,
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
+			[],
+			self::USER_ID,
+			3,
+			30,
+			2
+		);
+		$now = new \DateTime( self::CURRENT_DATE );
+		ClockMock::freeze( $now );
+		$this->calendar = new Calendar(
+			new Day($now->format('Y-m-d'), [$this->locationId], [$this->itemId]),
+			new Day(date('Y-m-d', strtotime('+1 weeks', strtotime(self::CURRENT_DATE))), [$this->locationId], [$this->itemId]),
+			[ $this->locationId ],
+			[ $this->itemId ]
+		);
+		$availabilitySlots = $this->calendar->getAvailabilitySlots();
+		$expectedSlotsObject = [
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days', $now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days 23:59:59', $now->getTimestamp() ) ),
+				'itemId'     => $this->itemId,
+				'locationId' => $this->locationId
+			],
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days', $now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days 23:59:59', $now->getTimestamp() ) ),
+				'itemId'     => $this->itemId,
+				'locationId' => $this->locationId
+			],
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days', $now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days 23:59:59', $now->getTimestamp() ) ),
+				'itemId'     => $this->itemId,
+				'locationId' => $this->locationId
+			],
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+5 days', $now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+5 days 23:59:59', $now->getTimestamp() ) ),
+				'itemId'     => $this->itemId,
+				'locationId' => $this->locationId
+			],
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+6 days', $now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+6 days 23:59:59', $now->getTimestamp() ) ),
+				'itemId'     => $this->itemId,
+				'locationId' => $this->locationId
+			],
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+7 days', $now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+7 days 23:59:59', $now->getTimestamp() ) ),
+				'itemId'     => $this->itemId,
+				'locationId' => $this->locationId
+			]
+		];
+		$this->assertEquals( $expectedSlotsObject, $availabilitySlots );
+	}
+
+	public function testGetAvailabilitySlotsWithHoliday() {
+		$this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( self::CURRENT_DATE ) ,
+			strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
+		);
+		$this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			Timeframe::HOLIDAYS_ID
+		);
+		$now = new \DateTime( self::CURRENT_DATE );
+		ClockMock::freeze( $now );
+		$this->calendar = new Calendar(
+			new Day($now->format('Y-m-d'), [$this->locationId], [$this->itemId]),
+			new Day(date('Y-m-d', strtotime('+1 week', strtotime(self::CURRENT_DATE))), [$this->locationId], [$this->itemId]),
+			[ $this->locationId ],
+			[ $this->itemId ]
+		);
+		$availabilitySlots = $this->calendar->getAvailabilitySlots();
+		$expectedSlotsObject = [
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days', $now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days 23:59:59', $now->getTimestamp() ) ),
+				'itemId'     => $this->itemId,
+				'locationId' => $this->locationId
+			],
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days', $now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days 23:59:59', $now->getTimestamp() ) ),
+				'itemId'     => $this->itemId,
+				'locationId' => $this->locationId
+			],
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days', $now->getTimestamp() ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days 23:59:59', $now->getTimestamp() ) ),
+				'itemId'     => $this->itemId,
+				'locationId' => $this->locationId
+			]
+		];
+		$this->assertEquals( $expectedSlotsObject, $availabilitySlots );
 	}
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->createBookableTimeFrameIncludingCurrentDay();
-		$this->createBookableTimeFrameStartingInAWeek();
 	}
 }

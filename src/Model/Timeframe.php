@@ -819,7 +819,7 @@ class Timeframe extends CustomPost {
     /**
      * Returns first bookable day based on the defined booking startday offset in timeframe
      *
-     * @return date string Y-m-d
+     * @return string  date format Y-m-d
      */
     public function getFirstBookableDay() {
         $offset = $this->getFieldValue( 'booking-startday-offset' ) ?: 0;
