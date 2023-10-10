@@ -6,6 +6,7 @@ use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\View\Calendar;
 use DateTime;
+use SlopeIt\ClockMock\ClockMock;
 
 /**
  * @TODO: Write test for restriction cache invalidation.

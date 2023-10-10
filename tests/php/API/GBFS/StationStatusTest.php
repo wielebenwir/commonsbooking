@@ -33,10 +33,6 @@ class StationStatusTest extends CustomPostTypeTest
 
 		//now let's book the current day and check, that the station is empty
 		$this->createConfirmedBookingStartingToday();
-		//we set the time to lunch, because the booking start at 08:00AM. If we set the time to 00:00AM, the booking would not be recognized
-		//This is regardless of the fact if more than one booking is available today or not
-		$currDate->setTime(12,0,0);
-		ClockMock::freeze( $currDate );
 		$stationStatus = $routeObject->prepare_item_for_response($locationObject, null);
 		$this->assertEquals(0, $stationStatus->num_bikes_available);
 
