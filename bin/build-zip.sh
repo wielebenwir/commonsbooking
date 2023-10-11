@@ -5,7 +5,22 @@ PLUGIN_SLUG="commonsbooking"
 PROJECT_PATH=$(pwd)
 BUILD_PATH="${PROJECT_PATH}/build"
 DEST_PATH="$BUILD_PATH/$PLUGIN_SLUG"
-SKIP_ZIP=${1-0}
+SKIP_ZIP=0
+
+
+# Parse command line options
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --skip-zip)
+      SKIP_ZIP=1
+      shift
+      ;;
+    *)
+      echo "Invalid option: $1"
+      exit 1
+      ;;
+  esac
+done
 
 echo "Generating build directory..."
 rm -rf "$BUILD_PATH"
@@ -22,7 +37,7 @@ wp i18n make-pot . languages/commonsbooking.pot
 echo "Syncing files..."
 rsync -rc --exclude-from="$PROJECT_PATH/.distignore" "$PROJECT_PATH/" "$DEST_PATH/" --delete --delete-excluded
 
-if [ "$SKIP_ZIP" = "0" ]; then
+if [ "$SKIP_ZIP" -eq 1 ]; then
   echo "Build done! (Skipped zip file generation)"
   exit 0
 fi
