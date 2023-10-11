@@ -67,7 +67,7 @@ class ViewTest extends CustomPostTypeTest {
 			strtotime( '+6 days midnight', $now ),
 			Timeframe::BOOKABLE_ID,
 			'on',
-			'norep'
+			'd'
 		);
 		// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
@@ -79,7 +79,7 @@ class ViewTest extends CustomPostTypeTest {
 			strtotime( '+3 days midnight', $now ),
 			Timeframe::BOOKABLE_ID,
 			'on',
-			'norep'
+			'd'
 		);// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
 
@@ -90,7 +90,6 @@ class ViewTest extends CustomPostTypeTest {
 			strtotime( '+9 days midnight', $now ),
 			Timeframe::BOOKABLE_ID,
 			'on',
-			'norep'
 		);
 		// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
@@ -102,7 +101,6 @@ class ViewTest extends CustomPostTypeTest {
 			strtotime( '+13 days midnight', $now ),
 			Timeframe::BOOKABLE_ID,
 			'on',
-			'norep'
 		);
 		// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
@@ -114,7 +112,6 @@ class ViewTest extends CustomPostTypeTest {
 			strtotime( '+15 days midnight', $now ),
 			Timeframe::BOOKABLE_ID,
 			'on',
-			'norep'
 		);
 		// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
@@ -127,7 +124,6 @@ class ViewTest extends CustomPostTypeTest {
 			strtotime( '+33 days midnight', $now ),
 			Timeframe::BOOKABLE_ID,
 			'on',
-			'norep'
 		);
 		// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );

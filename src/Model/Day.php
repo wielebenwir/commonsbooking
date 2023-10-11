@@ -338,21 +338,6 @@ class Day {
 					} else {
 						return false;
 					}
-				case "norep":
-					$timeframeStartTimestamp = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ));
-					$timeframeEndTimestamp   = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ));
-
-					$currentDayStartTimestamp = strtotime('midnight', $this->getDateObject()->getTimestamp());
-					$currentDayEndTimestamp = strtotime('+1 day midnight', $this->getDateObject()->getTimestamp()) - 1;
-
-					$timeframeStartsBeforeEndOfToday = $timeframeStartTimestamp <= $currentDayEndTimestamp;
-					$timeframeEndsAfterStartOfToday = $timeframeEndTimestamp >= $currentDayStartTimestamp;
-
-					if(!$timeframeEndTimestamp) {
-						return $timeframeStartsBeforeEndOfToday;
-					} else {
-						return $timeframeStartsBeforeEndOfToday && $timeframeEndsAfterStartOfToday;
-					}
 			}
 		}
 

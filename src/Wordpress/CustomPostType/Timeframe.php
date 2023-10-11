@@ -721,7 +721,6 @@ class Timeframe extends CustomPostType {
 	 */
 	public static function getTimeFrameRepetitions() {
 		return [
-			'norep' => esc_html__( "No Repetition", 'commonsbooking' ),
 			'd'     => esc_html__( "Daily", 'commonsbooking' ),
 			'w'     => esc_html__( "Weekly", 'commonsbooking' ),
 			'm'     => esc_html__( "Monthly", 'commonsbooking' ),
