@@ -297,6 +297,9 @@ class Plugin {
             // Set default values to existing timeframes for advance booking days
             self::setAdvanceBookingDaysDefault();
 
+			//will  migrate old timeframes with no repetitions to new timeframes with daily repetition
+			self::timeframeNoRepToDaily();
+
 			// Clear cache
 			self::clearCache();
 
@@ -867,5 +870,31 @@ class Plugin {
             }
         }
     }
+
+	/**
+	 * Will convert all timeframes with the old "norep" setting to use the "daily" setting in the repetition
+	 *
+	 * @since 2.9 (expected)
+	 * @return void
+	 * @throws \Exception
+	 */
+	public static function timeframeNoRepToDaily() {
+		$timeframes = \CommonsBooking\Repository\Timeframe::getBookable( [], [], null, true );
+		/** @var \CommonsBooking\Model\Timeframe $timeframe */
+		foreach ( $timeframes as $timeframe ) {
+			if ($timeframe->getRepetition() === 'norep') {
+				//you could previously set a timeframe with norep to just have a start-date and it would just be valid for the start-date.
+				//so we have to give norep timeframes without an end-date the start-date as end-date
+				if ( empty ( $timeframe->getMeta(\CommonsBooking\Model\Timeframe::REPETITION_END) ) ) {
+					update_post_meta(
+						$timeframe->ID,
+						\CommonsBooking\Model\Timeframe::REPETITION_END,
+						$timeframe->getMeta(\CommonsBooking\Model\Timeframe::REPETITION_START)
+					);
+				}
+				update_post_meta( $timeframe->ID, \CommonsBooking\Model\Timeframe::META_REPETITION, 'd' );
+			}
+		}
+	}
 
 }
