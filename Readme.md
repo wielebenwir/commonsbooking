@@ -77,7 +77,7 @@ The provided `.wp-env.json` should be sufficient for normal development, for det
 
 For testing, you can activate the [kasimir theme](github.com/flegfleg/kasimir-theme) via [wp cli](https://make.wordpress.org/cli/handbook/) inside the wp-env docker container:
 ```
-wp-env run cli wp theme activate kasimir-theme
+npm run env run cli wp theme activate kasimir-theme
 ```
 
 ### Test plugin

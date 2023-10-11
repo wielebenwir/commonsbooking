@@ -10,9 +10,10 @@ var cb_map_positioning = {
         const self = this;
         
         // possible fix to avoid missing tiles, found on: https://stackoverflow.com/questions/38832273/leafletjs-not-loading-all-tiles-until-moving-map
-        map.on("load",function() { setTimeout(() => {
+        // also see https://github.com/wielebenwir/commonsbooking/issues/1060
+        map.on("load", function() { setTimeout(() => {
             map.invalidateSize();
-        }, 1); });
+        }, 500); });
 
         // create the tile layer with correct attribution
         var osmUrl = 'https://{s}.tile.osm.org/{z}/{x}/{y}.png';
