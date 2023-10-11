@@ -1,7 +1,9 @@
+name: i18n coverage
 on:
   push:
     branches:
       - master
+      - 'release/**'
 
 jobs:
   i18n-coverage:
@@ -21,14 +23,17 @@ jobs:
           sudo mv wp-cli.phar /usr/local/bin/wp
 
       - name: Generate pot files
-        run: wp i18n make-pot ${{ github.workspace }} ${{ github.workspace }}/languages/commonsbooking.pot
+        run: bin/update-pot.sh
+        
       - name: Commit changes
         uses: elstudio/actions-js-build/commit@v4
         with:
           commitMessage: Ran wp i18n make-pot
+
       - name: Check i18n coverage
         uses: alexkiro/i18n-coverage@v1.0.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           translations-path: 'languages/*.po'
           ignore-languages: 'en'
+          min-coverage: 100
