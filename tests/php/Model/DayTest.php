@@ -26,7 +26,7 @@ class DayTest extends CustomPostTypeTest {
 			$this->locationId,
 			$this->itemId,
 			strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
-			null,
+			strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			'on',
 		);
@@ -35,7 +35,7 @@ class DayTest extends CustomPostTypeTest {
 			$this->locationId,
 			$this->itemId,
 			strtotime(self::CURRENT_DATE),
-			null,
+			strtotime(self::CURRENT_DATE),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			'on',
 		);

@@ -300,6 +300,15 @@ class Day {
 	public function isInTimeframe( \CommonsBooking\Model\Timeframe $timeframe ): bool {
 		$repetitionType = get_post_meta( $timeframe->ID, 'timeframe-repetition', true );
 
+		//not in timeframe when start date has not been reached yet
+		if ( $timeframe->getStartDate() > $this->getDateObject()->getTimestamp() ) {
+			return false;
+		}
+		//not in timeframe when end date has not been reached yet.
+		if ($timeframe->getEndDate() && ($timeframe->getEndDate() < $this->getDateObject()->getTimestamp())) {
+			return false;
+		}
+
 		if ($repetitionType) {
 			switch ( $repetitionType ) {
 				// Weekly Rep
