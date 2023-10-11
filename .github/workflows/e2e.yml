@@ -69,7 +69,9 @@ jobs:
           install: false
           config-file: tests/cypress/cypress.config.js
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload Cypress screenshots
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
         with:
           name: cypress-screenshots
           path: ${{ github.workspace }}/tests/cypress/screenshots/
