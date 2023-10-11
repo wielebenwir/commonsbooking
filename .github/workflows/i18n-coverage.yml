@@ -26,6 +26,7 @@ jobs:
         uses: elstudio/actions-js-build/commit@v4
         with:
           commitMessage: Ran wp i18n make-pot
+          
       - name: Check i18n coverage
         uses: alexkiro/i18n-coverage@v1.0.1
         with:

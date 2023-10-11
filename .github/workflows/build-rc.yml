@@ -21,9 +21,12 @@ jobs:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - run: gem install compass
 
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
       with:
-        node-version: 12
+        node-version-file: '.nvmrc'
+        cache: 'npm'
+
+    - run: npm ci --legacy-peer-deps --include=dev
 
     - name: Validate composer.json and composer.lock
       run: composer validate
@@ -39,8 +42,8 @@ jobs:
       with:
         commitMessage: Ran grunt 
         
-    - name: Run build script
-      run: bin/build-zip.sh 1
+    - name: Run build script (without zip generation)
+      run: bin/build-zip.sh --skip-zip
 
     - name: Generate zip
       uses: 10up/action-wordpress-plugin-build-zip@stable
