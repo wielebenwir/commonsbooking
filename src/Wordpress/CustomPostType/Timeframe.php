@@ -967,11 +967,10 @@ class Timeframe extends CustomPostType {
 	}
 
 	public function setCustomColumnSortOrder( \WP_Query $query ) {
-		parent::setCustomColumnSortOrder( $query );
-		//TODO: Refactor this so we don't have to repeat ourselves in every inheritance
-		if ( ! is_admin() || ! $query->is_main_query() || $query->get( 'post_type' ) !== static::$postType ) {
+		if (! parent::setCustomColumnSortOrder( $query ) ) {
 			return;
 		}
+
 		switch ($query->get( 'orderby' )) {
 			case 'item-id':
 				add_filter('posts_join', function ($join) {
@@ -1018,8 +1017,7 @@ class Timeframe extends CustomPostType {
 				});
 				break;
 			case 'type':
-				$value = $query->get( 'orderby' );
-				$query->set( 'meta_key', $value );
+				$query->set( 'meta_key', 'type' );
 				$query->set( 'orderby', 'meta_value' );
 				break;
 			case \CommonsBooking\Model\Timeframe::REPETITION_START:
@@ -1027,6 +1025,9 @@ class Timeframe extends CustomPostType {
 				$query->set( 'meta_key', $query->get( 'orderby' ) );
 				$query->set( 'orderby', 'meta_value_num' );
 				break;
+			default:
+				//this means, that further sorting is done by the inheriting method
+				return true;
 		}
 	}
 

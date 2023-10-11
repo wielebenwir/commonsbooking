@@ -722,17 +722,13 @@ class Booking extends Timeframe {
     }
 
 	public function setCustomColumnSortOrder( \WP_Query $query ) {
-		parent::setCustomColumnSortOrder( $query );
-		//TODO: Refactor this so we don't have to repeat ourselves in every inheritance
-		if ( ! is_admin() || ! $query->is_main_query() || $query->get( 'post_type' ) !== static::$postType ) {
+		if (! parent::setCustomColumnSortOrder( $query ) ) {
 			return;
 		}
+
 		switch ( $query->get( 'orderby' ) ) {
 			case 'booking_user':
 				$query->set( 'orderby', 'author' );
-				break;
-			case 'post_status':
-				$query->set( 'orderby', 'post_status' );
 				break;
 		}
 	}

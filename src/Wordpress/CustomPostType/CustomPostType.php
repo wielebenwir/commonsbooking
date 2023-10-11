@@ -348,21 +348,17 @@ abstract class CustomPostType {
 	}
 
 	/**
+	 * This is called by the inheritances of the customPosts, it will just check if we
+	 * are processing one of our CPTs.
 	 * @param \WP_Query $query
 	 *
 	 * @return void
 	 */
 	public function setCustomColumnSortOrder(\WP_Query $query) {
 		if ( ! is_admin() || ! $query->is_main_query() || $query->get( 'post_type' ) !== static::$postType ) {
-			return;
+			return false;
 		}
-		$orderby = $query->get( 'orderby' );
-
-		switch ( $orderby ) {
-			case 'title':
-				$query->set( 'orderby', 'title' );
-				break;
-		}
+		return true;
 	}
 
 }
