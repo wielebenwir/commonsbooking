@@ -49,5 +49,5 @@ jobs:
       uses: 10up/action-wordpress-plugin-build-zip@stable
       env:
         SLUG: commonsbooking
-        BUILD_DIR: build/commonsbooking
-
+        BUILD_DIR: ./build/commonsbooking
+    
