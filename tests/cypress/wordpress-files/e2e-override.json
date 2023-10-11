@@ -5,6 +5,7 @@
     "./build/commonsbooking",
     "https://downloads.wordpress.org/plugin/wordpress-importer.zip"
   ],
+  
   "port": 1000,
   "testsPort": 1001,
   "config": {
@@ -18,7 +19,8 @@
   "env": {
     "tests": {
       "mappings": {
-        "wp-content/plugins/commonsbooking": "./build/commonsbooking"
+        "wp-content/plugins/commonsbooking": "./build/commonsbooking",
+        "wp-content/plugins/commonsbooking/tests/cypress/wordpress-files": "./tests/cypress/wordpress-files"
       }
     }
   }
