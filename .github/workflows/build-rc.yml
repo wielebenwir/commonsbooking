@@ -40,9 +40,11 @@ jobs:
         commitMessage: Ran grunt 
         
     - name: Run build script
-      run: bin/build-zip.sh
+      run: bin/build-zip.sh --skip-zip
 
-    - uses: actions/upload-artifact@v3
-      with:
-        name: commonsbooking.zip
-        path: ./commonsbooking.zip
+    - name: Generate zip
+      uses: 10up/action-wordpress-plugin-build-zip@stable
+      env:
+        SLUG: commonsbooking
+        BUILD_DIR: ./build/commonsbooking
+    
