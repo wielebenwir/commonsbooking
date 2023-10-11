@@ -1,0 +1,78 @@
+name: E2E Tests (PHP 8.2)
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+
+env:
+  DB_DATABASE: wordpress_test
+  DB_USER: root
+  DB_PASSWORD: ''
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      #We still use php 7.4 to install the dependencies to avoid errors when using composer install
+      #The wp-env uses PHP8 though
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0.6' # Not needed with a .ruby-version file
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - run: gem install compass
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: |
+          composer install --no-dev --prefer-dist --no-progress
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci --legacy-peer-deps --include=dev
+
+      - name: Run build script
+        run: bin/build-zip.sh --skip-zip
+
+      - name: Overwrite settings for wp-env to use generated zip
+        run: cp tests/cypress/wordpress-files/e2e-override_php8.json .wp-env.override.json
+
+      - name: setup wp env
+        run: npm run env:start
+
+      - name: install test data for e2e test
+        run: npm run cypress:setup
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          config-file: tests/cypress/cypress.config.js
+
+      - name: Upload Cypress screenshots
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-screenshots
+          path: ${{ github.workspace }}/tests/cypress/screenshots/

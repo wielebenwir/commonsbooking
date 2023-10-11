@@ -1,0 +1,23 @@
+{
+  "phpVersion": "8.2",
+  "plugins": [
+    "./build/commonsbooking",
+    "https://downloads.wordpress.org/plugin/wordpress-importer.zip"
+  ],
+  "config": {
+    "WP_DEBUG": true,
+    "WP_DEBUG_LOG": true,
+    "WP_DEBUG_DISPLAY": false
+  },
+  "themes": [
+    "flegfleg/kasimir-theme"
+  ],
+  "env": {
+    "tests": {
+      "mappings": {
+        "wp-content/plugins/commonsbooking": "./build/commonsbooking",
+        "wp-content/plugins/commonsbooking/tests/cypress/wordpress-files": "./tests/cypress/wordpress-files"
+      }
+    }
+  }
+}
