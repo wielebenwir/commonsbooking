@@ -20,13 +20,13 @@ jobs:
       uses: ./.github/workflows/phpunit.yml 
       with:
         php-version: '8.2'
-        codecov-upload: 
+        codecov-upload: false
         
   e2e-php74:
       uses: ./.github/workflows/e2e.yml 
       with:
         php-version: '7.4'
-        
+
   e2e-php82:
       uses: ./.github/workflows/e2e.yml 
       with:
