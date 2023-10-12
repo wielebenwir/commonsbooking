@@ -5,38 +5,15 @@ on:
     types: [published]
 
 jobs:
-  tag:
+  build-plugin:
+    uses: ./.github/workflows/build.yml
+
+  publish:
+    needs: build-plugin
     name: New Release
     runs-on: ubuntu-20.04
     steps:
-    - uses: shivammathur/setup-php@v2
-      with:
-        php-version: '7.4'
-
-    - uses: actions/checkout@v3
     
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.0.6' # Not needed with a .ruby-version file
-        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - run: gem install compass
-    
-    - uses: actions/setup-node@v3
-      with:
-        node-version-file: '.nvmrc'
-        cache: 'npm'
-    
-    - run: npm ci --legacy-peer-deps --include=dev
-
-    - name: Install WP-CLI
-      run: |
-        curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-        chmod +x wp-cli.phar
-        sudo mv wp-cli.phar /usr/local/bin/wp
-
-    - name: Run build script (without zip generation)
-      run: bin/build-zip.sh --skip-zip
-
     - name: Check i18n coverage before release
       uses: alexkiro/i18n-coverage@v1.0.1
       with:

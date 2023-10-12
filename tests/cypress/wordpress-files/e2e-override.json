@@ -1,4 +1,5 @@
 {
+  "phpVersion": "VERSION_PLACEHOLDER",
   "plugins": [
     "./build/commonsbooking",
     "https://downloads.wordpress.org/plugin/wordpress-importer.zip"

@@ -1,0 +1,33 @@
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+  pull_request:
+    branches:
+      - 'master'
+
+jobs:
+  phpunit-php74:
+      uses: ./.github/workflows/phpunit.yml 
+      with:
+        php-version: '7.4'
+        codecov-upload: true
+      secrets:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  phpunit-php82:
+      uses: ./.github/workflows/phpunit.yml 
+      with:
+        php-version: '8.2'
+        codecov-upload: 
+        
+  e2e-php74:
+      uses: ./.github/workflows/e2e.yml 
+      with:
+        php-version: '7.4'
+        
+  e2e-php82:
+      uses: ./.github/workflows/e2e.yml 
+      with:
+        php-version: '8.2'
