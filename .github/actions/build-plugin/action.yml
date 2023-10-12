@@ -4,8 +4,7 @@ description: 'Builds plugin into ./build/commonsbooking'
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v3
-
+  
     - uses: shivammathur/setup-php@v2
       with:
         php-version: '7.4'

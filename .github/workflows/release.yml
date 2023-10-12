@@ -10,8 +10,10 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
 
+    - uses: actions/checkout@v3
+
     - uses: ./.github/actions/build-plugin
-    
+
     - name: Check i18n coverage before release
       uses: alexkiro/i18n-coverage@v1.0.1
       with:
