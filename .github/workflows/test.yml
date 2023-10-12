@@ -1,3 +1,4 @@
+name: Run automated tests
 on:
   push:
     paths-ignore:
@@ -9,6 +10,7 @@ on:
 
 jobs:
   phpunit-php74:
+      name: PHP Unit Tests (PHP 7.4)
       uses: ./.github/workflows/phpunit.yml 
       with:
         php-version: '7.4'
@@ -17,17 +19,20 @@ jobs:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   phpunit-php82:
+      name: PHP Unit Tests (PHP 8.2)
       uses: ./.github/workflows/phpunit.yml 
       with:
         php-version: '8.2'
         codecov-upload: false
         
   e2e-php74:
+      name: E2E Tests (PHP 7.4)
       uses: ./.github/workflows/e2e.yml 
       with:
         php-version: '7.4'
 
   e2e-php82:
+      name: E2E Tests (PHP 8.2)
       uses: ./.github/workflows/e2e.yml 
       with:
         php-version: '8.2'
