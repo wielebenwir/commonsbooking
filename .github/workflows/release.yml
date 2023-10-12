@@ -5,14 +5,12 @@ on:
     types: [published]
 
 jobs:
-  build-plugin:
-    uses: ./.github/workflows/build.yml
-
   publish:
-    needs: build-plugin
     name: New Release
     runs-on: ubuntu-20.04
     steps:
+
+    - uses: ./.github/actions/build-plugin
     
     - name: Check i18n coverage before release
       uses: alexkiro/i18n-coverage@v1.0.1

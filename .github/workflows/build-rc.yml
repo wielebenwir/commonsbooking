@@ -5,13 +5,11 @@ on:
       - 'release/**'
 
 jobs:
-  build-plugin:
-    uses: ./.github/workflows/build.yml
-
   zip-rc:
-    needs: build-plugin
     runs-on: ubuntu-20.04
     steps:
+     - uses: ./.github/actions/build-plugin
+
      - name: Generate zip
        uses: 10up/action-wordpress-plugin-build-zip@stable
        env:

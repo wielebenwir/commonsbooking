@@ -13,15 +13,13 @@ env:
   DB_PASSWORD: ''
 
 jobs:
-  build-plugin:
-    uses: ./.github/workflows/build.yml
-
   e2e:
-    needs: build-plugin
     runs-on: ubuntu-20.04
 
     steps:
-        
+
+      - uses: ./.github/actions/build-plugin
+
       - name: Overwrite PHP version for wp-env configuration
         run: jq '. + {"phpVersion":"${{ inputs.php-version }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
 
