@@ -23,10 +23,7 @@ jobs:
     steps:
         
       - name: Overwrite PHP version for wp-env configuration
-        run: sed -e s/VERSION_PLACEHOLDER/${{ inputs.php-version }}/g
-
-      - name: Overwrite settings for wp-env to use generated zip
-        run: cp tests/cypress/wordpress-files/e2e-override.json .wp-env.override.json
+        run: jq '. + {"phpVersion":"${{ inputs.php-version }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
 
       - name: setup wp env
         run: npm run env:start
