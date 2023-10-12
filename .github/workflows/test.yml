@@ -1,6 +1,9 @@
 name: Run automated tests
 on:
   push:
+    branches:
+      - 'master'
+      - 'release/**'
     paths-ignore:
       - '**.md'
       - '**.txt'
