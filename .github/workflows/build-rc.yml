@@ -1,0 +1,50 @@
+name: Build from release branch
+on:
+  push:
+    branches:
+      - 'release/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+
+    - uses: ruby/setup-ruby@v1
+      with:
+          ruby-version: '3.0.6' # Not needed with a .ruby-version file
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - run: gem install compass
+
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 12
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+
+    - name: Compile with Grunt
+      uses: elstudio/actions-js-build/build@v4
+      with:
+        args: build
+
+    - name: Commit changes
+      uses: elstudio/actions-js-build/commit@v4
+      with:
+        commitMessage: Ran grunt 
+        
+    - name: Run build script
+      run: bin/build-zip.sh --skip-zip
+
+    - name: Generate zip
+      uses: 10up/action-wordpress-plugin-build-zip@stable
+      env:
+        SLUG: commonsbooking
+        BUILD_DIR: ./build/commonsbooking
+    
