@@ -1,11 +1,17 @@
 name: E2E Tests
 
 on:
-  workflow_call:
-    inputs:
-      php-version:
-        required: true
-        type: string
+  push:
+    branches:
+      - 'master'
+      - 'release/**'
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+  pull_request:
+    branches:
+      - 'master'
+
 
 env:
   DB_DATABASE: wordpress_test
@@ -14,16 +20,26 @@ env:
 
 jobs:
   e2e:
+    name: '${{ matrix.core.name }} on PHP ${{ matrix.php }}'
     runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        php:
+          - '7.4'
+          - '8.2'
+        core:
+          - {name: 'WP latest', version: 'latest'}
+          - {name: 'WP minimum', version: 'WordPress/WordPress#5.2'}
+          - {name: 'WP trunk', version: 'WordPress/WordPress#master'}
 
     steps:
       - uses: actions/checkout@v3
 
       - uses: ./.github/actions/build-plugin
 
-      - name: Overwrite PHP version for wp-env configuration
-        run: jq '. + {"phpVersion":"${{ inputs.php-version }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
-
+      - name: Overwrite PHP versions & core for wp-env configuration
+        run: jq '. + {"phpVersion":"${{ matrix.php }}","core":"${{ matrix.core.name }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
       - name: setup wp env
         run: npm run env:start
 

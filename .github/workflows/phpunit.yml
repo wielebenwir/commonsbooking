@@ -1,17 +1,17 @@
 name: PHP Unit Tests
 
 on:
-  workflow_call:
-    inputs:
-      php-version:
-        required: true
-        type: string
-      codecov-upload:
-        required: true
-        type: boolean
-    secrets:
-      CODECOV_TOKEN:
-        required: false
+  push:
+    branches:
+      - 'master'
+      - 'release/**'
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+  pull_request:
+    branches:
+      - 'master'
+
 
 env:
   DB_DATABASE: wordpress_test
@@ -23,6 +23,12 @@ jobs:
 
     runs-on: ubuntu-20.04
 
+    strategy:
+      matrix:
+        php:
+          - '7.4'
+          - '8.2'
+
     steps:
     - uses: actions/checkout@v3
 
@@ -32,7 +38,7 @@ jobs:
 
     - uses: shivammathur/setup-php@v2
       with:
-        php-version: ${{ inputs.php-version }}
+        php-version: ${{ matrix.php }}
         extensions: uopz
 
     - name: Validate composer.json and composer.lock
@@ -48,13 +54,13 @@ jobs:
           ${{ runner.os }}-php-
 
     - name: Install dependencies (PHP 7.4)
-      if: inputs.php-version == '7.4'
+      if: matrix.php == '7.4'
       run: |
         bash bin/install-wp-tests.sh wordpress_test root root localhost latest
         composer install --prefer-dist --no-progress
 
     - name: Install dependencies (other PHP versions)
-      if: inputs.php-version != '7.4'
+      if: matrix.php != '7.4'
       run: |
         bash bin/install-wp-tests.sh wordpress_test root root localhost latest
         composer install --prefer-dist --no-progress --ignore-platform-reqs
@@ -67,7 +73,6 @@ jobs:
         php ~/phpunit-9.phar
  
     - name: Upload coverage reports to Codecov
-      if: inputs.codecov-upload
       uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
