@@ -39,12 +39,13 @@ jobs:
       with:
         commitMessage: Ran grunt 
         
-    - name: Run build script
-      run: bin/build-zip.sh --skip-zip
+    - name: Build # Remove or modify this step as needed
+      run: |
+        npm ci --production --legacy-peer-deps
+        php -v
+        composer install --ignore-platform-req=php --no-dev
 
     - name: Generate zip
       uses: 10up/action-wordpress-plugin-build-zip@stable
       env:
-        SLUG: commonsbooking
-        BUILD_DIR: ./build/commonsbooking
-    
+        SLUG: commonsbooking    
