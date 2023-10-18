@@ -20,7 +20,7 @@ env:
 
 jobs:
   e2e:
-    name: '${{ matrix.core.name }} on PHP ${{ matrix.php }}'
+    name: 'WP ${{ matrix.core.name }} on PHP ${{ matrix.php }}'
     runs-on: ubuntu-20.04
 
     strategy:
@@ -30,9 +30,9 @@ jobs:
           - '7.4'
           - '8.2'
         core:
-          - {name: 'WP tested up to', version: 'null'}
-          - {name: 'WP minimum', version: 'WordPress/WordPress#5.2'}
-          - {name: 'WP trunk', version: 'WordPress/WordPress#master'}
+          - {name: 'tested', version: 'null'}
+          - {name: 'minimum', version: 'WordPress/WordPress#5.2'}
+          - {name: 'trunk', version: 'WordPress/WordPress#master'}
 
     steps:
       - uses: actions/checkout@v3
@@ -64,5 +64,5 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
-          name: cypress-screenshots
+          name: cypress-screenshots-${{ matrix.php }}_${{ matrix.core.name }}
           path: ${{ github.workspace }}/tests/cypress/screenshots/
