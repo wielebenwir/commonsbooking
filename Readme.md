@@ -89,7 +89,7 @@ bash bin/install-wp-tests.sh wordpress root password 127.0.0.1:49153 latest
 
 Testing the plugin code via `phpunit`. At the moment it works only with a manually downloaded phar. We are using PHPUnit 9 and PHP7.4 for the automated tests. The tests might fail if you are using a different version.
 ```
-php ~/phpunit.phar --bootstrap tests/bootstrap.php
+php ~/phpunit.phar --bootstrap tests/php/bootstrap.php
 ```
 
 E2E (end to end) tests are written in [cypress](https://www.cypress.io/). To run them you need to install cypress and start the wordpress environment:
