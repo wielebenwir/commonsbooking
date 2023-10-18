@@ -1,9 +1,9 @@
 === CommonsBooking ===
-Contributors: wielebenwirteam, m0rb, flegfleg, chriwen
+Contributors: wielebenwirteam, m0rb, flegfleg, chriwen, hansmorb
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, commons, sharing, calendar, commoning, open-source, booking system, booking calendar
 Requires at least: 5.2  
-Tested up to: 6.3  
+Tested up to: 6.3.1  
 Stable Tag: 2.8.4
 Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
@@ -79,7 +79,11 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog 
 
-### 2.8.4 (xx.09.2023)
+### 2.8.5 (xx.10.2023)
+FIXED: Rendering error in item table
+FIXED: Map sometimes not loading
+
+### 2.8.4 (20.09.2023)
 FIXED: Incorrect time in booking confirmation
 FIXED: Can now trash bookings again (thanks @danielappelt)
 FIXED: URL prefix for GBFS root (thanks @futuretap)
