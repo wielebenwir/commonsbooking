@@ -1,7 +1,19 @@
 {
+	"name": "commonsbooking",
+	"version": "2.6.8",
+	"description": "Wordpress plugin for managing and booking of common goods.",
+	"author": "The CommonsBooking Team <info@commonsbooking.org>",
+	"license": "SEE LICENSE IN LICENSE.txt",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wielebenwir/cb"
+	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.16.11",
+		"@wordpress/env": "^5.0.0",
 		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
+		"compass": "^0.1.1",
+		"cypress": "^13.1.0",
 		"editorconfig": "^0.15.3",
 		"grunt": "^1.6.1",
 		"grunt-babel": "^8.0.0",
@@ -15,6 +27,16 @@
 		"grunt-dart-sass": "^2.0.1",
 		"matchdep": "^2.0.0",
 		"sass": "^1.66.1"
+	},
+	"scripts": {
+		"start": "composer install --ignore-platform-reqs && npm install",
+		"env": "wp-env",
+		"env:install-tests-cli": "./bin/install-wp-cli.sh tests-wordpress",
+		"env:start": "wp-env start && npm run env:install-tests-cli",
+		"env:stop": "wp-env stop",
+		"cypress:setup": "./bin/setup-cypress-env.sh",
+		"cypress:open": "cypress open --config-file tests/cypress/cypress.config.js",
+		"cypress:run": "cypress run --config-file tests/cypress/cypress.config.js"
 	},
 	"dependencies": {
 		"@commonsbooking/frontend": "^0.1.0-beta.3",

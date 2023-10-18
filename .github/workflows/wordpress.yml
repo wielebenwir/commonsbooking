@@ -3,7 +3,7 @@ name: Deploy to WordPress.org
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "*"
     
 jobs:
   deploy:
@@ -29,11 +29,6 @@ jobs:
       uses: elstudio/actions-js-build/build@v4
       with:
         args: build
-
-    - name: Commit changes
-      uses: elstudio/actions-js-build/commit@v4
-      with:
-        commitMessage: Ran grunt 
    
     - name: Build # Remove or modify this step as needed
       run: |
