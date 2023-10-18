@@ -29,7 +29,7 @@ jobs:
           - '7.4'
           - '8.2'
         core:
-          - {name: 'WP latest', version: 'latest'}
+          - {name: 'WP tested up to', version: 'null'}
           - {name: 'WP minimum', version: 'WordPress/WordPress#5.2'}
           - {name: 'WP trunk', version: 'WordPress/WordPress#master'}
 
@@ -38,8 +38,15 @@ jobs:
 
       - uses: ./.github/actions/build-plugin
 
-      - name: Overwrite PHP versions & core for wp-env configuration
+      - name: Overwrite PHP versions & core for wp-env 
+        if: matrix.core.version != 'null'
         run: jq '. + {"phpVersion":"${{ matrix.php }}","core":"${{ matrix.core.name }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
+      - name: setup wp env
+        run: npm run env:start
+
+      - name: Overwrite PHP version for wp-env
+        if: matrix.core.version == 'null'
+        run: jq '. + {"phpVersion":"${{ matrix.php }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
       - name: setup wp env
         run: npm run env:start
 
