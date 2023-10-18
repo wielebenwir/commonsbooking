@@ -195,12 +195,7 @@ class Scheduler {
 	 * @return boolean
 	 */
 	private function unscheduleJob() {
-		$timestamp = wp_next_scheduled($this->jobhook);
-		if ($timestamp){
-			wp_unschedule_event($timestamp,$this->jobhook);
-			return true;
-		}
-		return false;
+		return wp_clear_scheduled_hook($this->jobhook);
 	}
 
 	/**
@@ -220,8 +215,7 @@ class Scheduler {
 		];
 
 		foreach ( $cbCronHooks as $cbCronHook ) {
-			$timestamp = wp_next_scheduled( $cbCronHook );
-			wp_unschedule_event( $timestamp, $cbCronHook );
+			wp_clear_scheduled_hook($cbCronHook);
 		}
 	}
 }

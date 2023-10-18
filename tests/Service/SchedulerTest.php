@@ -117,8 +117,7 @@ class SchedulerTest extends CustomPostTypeTest
 
 	protected function tearDown(): void {
 		foreach ($this->jobhooks as $jobhook){
-			$timestamp = wp_next_scheduled($jobhook);
-			wp_unschedule_event($timestamp,$jobhook);
+			wp_clear_scheduled_hook($jobhook);
 		}
 		parent::tearDown();
 	}
