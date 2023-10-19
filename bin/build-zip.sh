@@ -32,8 +32,6 @@ echo "Running JS Build..."
 grunt dist || exit "$?"
 echo "Cleaning up PHP dependencies..."
 composer install --no-dev --ignore-platform-reqs || exit "$?"
-echo "Run makepot..."
-wp i18n make-pot . languages/commonsbooking.pot
 echo "Syncing files..."
 rsync -rc --exclude-from="$PROJECT_PATH/.distignore" "$PROJECT_PATH/" "$DEST_PATH/" --delete --delete-excluded
 
