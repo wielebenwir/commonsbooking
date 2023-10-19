@@ -485,8 +485,7 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Checks if timeframes are overlapping in date range. Will not check for time overlap, only for general date overlap.
-	 * To check if two Timeframes actually overlap, use overlaps() instead.
+	 * Checks if timeframes are overlapping in date range.
 	 *
 	 * @param Timeframe $otherTimeframe
 	 *
