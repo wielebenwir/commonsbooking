@@ -17,7 +17,7 @@ describe('load shortcodes', () => {
         cy.get('.cb-shortcode-items').should('have.length', this.bookableItems.length)
         //iterate over fixture and check that all items are present
         this.bookableItems.forEach( (item) => {
-            cy.contains('.cb-shortcode-items', item.post_title)
+            cy.contains('.cb-shortcode-items', convertEnDashToHyphen(item.post_title) )
                 .should('be.visible')
                 .find('.cb-button')
                 .should('be.visible')
@@ -36,7 +36,7 @@ describe('load shortcodes', () => {
         cy.get('.cb-shortcode-locations').should('have.length', this.bookableLocations.length)
         //iterate over fixture and check that all locations are present
         this.bookableLocations.forEach( (location) => {
-            cy.contains('.cb-shortcode-locations', location.post_title)
+            cy.contains('.cb-shortcode-locations', convertEnDashToHyphen( location.post_title ) )
                 .should('be.visible')
                 .find('.cb-button')
                 .should('be.visible')
