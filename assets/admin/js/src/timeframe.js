@@ -111,12 +111,16 @@
 
             /**
              * Shows/hides grid selection depending on checked-state.
+             * Will also clear grid selection if full-day is selected so that
+             * full-day timeframes won't have the wrong grid selected.
+             * Grid is either the full slot or an hourly slot.
              */
             const handleFullDaySelection = function () {
                 const selectedRep = $("option:selected", timeframeRepetitionInput).val();
                 // Full-day setting
                 if (fullDayInput.prop("checked")) {
                     gridInput.prop("selected", false);
+                    gridInput.val(0);
                     hideFieldset(repTimeFieldsSet);
                 } else {
                     showFieldset(repTimeFieldsSet);
