@@ -18,11 +18,8 @@ describe('test backend booking', () => {
     cy.get('#item-id').select('BasicTest - NoAdmin')
     cy.get('#location-id').select('BasicTest - Köln Dom LocMap NoAdmin')
     cy.get('#full-day').check()
-    cy.get('#repetition-start_date').clear().type(expectedStartDate)
-    //click somewhere outside of the datepicker to close it
-    cy.get('body').click(0,0)
-    cy.get('#repetition-end_date').clear().type(expectedEndDate)
-    cy.get('body').click(0,0)
+    cy.get('#repetition-start_date').clear().type(expectedStartDate).type('{esc}');
+    cy.get('#repetition-end_date').clear().type(expectedEndDate).type('{esc}');
     //click post button
     cy.get('#cb-submit-booking').click()
     cy.get('#message > p').contains('Post updated.')
