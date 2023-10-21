@@ -64,9 +64,6 @@ class Booking extends Timeframe {
 		// Set Tepmlates
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
 
-        // remove author metabox because we set author in the booking user field
-        add_action( 'init', array( $this, 'removeAuthorField' ), 99 );
-
 		// Listing of bookings for current user
 		add_shortcode( 'cb_bookings', array( \CommonsBooking\View\Booking::class, 'shortcode' ) );
 
@@ -82,16 +79,6 @@ class Booking extends Timeframe {
 		add_action( 'admin_notices', array( $this, 'displayBookingsAdminListNotice' ) );
         add_action( 'edit_form_top', array( $this, 'displayOverlappingBookingNotice' ), 99 );
 	}
-
-    /**
-     * Removes author field in CPT booking
-     * Why: we set the autor dynamically based on admin bookins so we don't want the ability to override this setting by user
-     *
-     * @return void
-     */
-    public function removeAuthorField() : void {
-        remove_post_type_support( self::$postType, 'author' );
-    }
 
     /**
      * Adds and modifies some booking CPT fields in order to make admin boookings
@@ -637,7 +624,7 @@ class Booking extends Timeframe {
 			'exclude_from_search' => true,
 
 			// Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
-			'supports'            => array( 'title', 'author', 'revisions' ),
+			'supports'            => array( 'title', 'revisions' ),
 
 			// Soll der Post Type Archiv-Seiten haben?
 			'has_archive'         => false,
