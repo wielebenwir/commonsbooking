@@ -383,7 +383,7 @@ class Booking extends PostRepository {
 	 * @param int $perPage The number of bookings per page. A lower number will result in faster queries.
 	 * @param array $customArgs Valid WP_Query args array.
 	 *
-	 * @return array
+	 * @return Booking[] An array of Booking models.
 	 */
 	public static function getForUserPaginated(
 		\WP_User $user,
