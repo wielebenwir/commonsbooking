@@ -70,9 +70,7 @@ class StationStatusTest extends CustomPostTypeTest
 		//remove the offset and the station should have the item
 	    update_post_meta($timeframeID, 'booking-startday-offset', 0);
 		$stationStatus = $routeObject->prepare_item_for_response(new Location($otherLocationId), null);
-
-
-
+		$this->assertEquals(1, $stationStatus->num_bikes_available);
 	}
 
 	protected function setUp(): void {
