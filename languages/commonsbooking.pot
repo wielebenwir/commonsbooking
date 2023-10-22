@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-10-19T00:29:05+00:00\n"
+"POT-Creation-Date: 2023-10-21T18:49:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: commonsbooking\n"
@@ -1217,6 +1217,27 @@ msgstr ""
 msgid "Link to your booking"
 msgstr ""
 
+#: src/Model/Booking.php:594
+msgid "Confirmed"
+msgstr ""
+
+#: src/Model/Booking.php:596
+msgid "Unconfirmed"
+msgstr ""
+
+#: src/Model/Booking.php:598
+msgid "Cancelled"
+msgstr ""
+
+#: src/Model/Booking.php:600
+#: src/View/TimeframeExport.php:234
+#: src/View/TimeframeExport.php:244
+#: src/View/TimeframeExport.php:250
+#: src/View/TimeframeExport.php:258
+#: src/View/TimeframeExport.php:267
+msgid "Unknown"
+msgstr ""
+
 #: src/Model/Location.php:124
 msgid "Please contact the contact persons at the location directly if you have any questions regarding collection or return:"
 msgstr ""
@@ -1311,11 +1332,17 @@ msgstr ""
 msgid "Location Category"
 msgstr ""
 
-#: src/Plugin.php:828
+#: src/Plugin.php:538
+#: src/Plugin.php:553
+#: src/Wordpress/CustomPostType/Booking.php:944
+msgid "CommonsBooking Bookings"
+msgstr ""
+
+#: src/Plugin.php:864
 msgid "New features and changes: Please backup before upgrade!"
 msgstr ""
 
-#: src/Plugin.php:835
+#: src/Plugin.php:871
 msgid ""
 "\n"
 "\t\t\t\t\tThis CommonsBooking update has a lot of new features and changes on some templates.<br>\n"
@@ -1370,35 +1397,36 @@ msgstr ""
 msgid "End date"
 msgstr ""
 
-#: src/View/Booking.php:122
+#: src/View/Booking.php:125
 msgid "Details"
 msgstr ""
 
-#: src/View/Booking.php:128
+#: src/View/Booking.php:131
 msgid "Use this link to import the data into your own calendar. Usually you just need to provide the URL as an external source and the calendar will figure it out. Do not try to download this file."
 msgstr ""
 
-#: src/View/Booking.php:129
+#: src/View/Booking.php:132
 msgid "iCalendar Link:"
 msgstr ""
 
-#: src/View/Booking.php:136
-#: src/View/Booking.php:138
+#: src/View/Booking.php:139
+#: src/View/Booking.php:141
 msgid "Not available"
 msgstr ""
 
-#: src/View/Booking.php:159
+#: src/View/Booking.php:162
 #: src/Wordpress/CustomPostType/Booking.php:492
 #: src/Wordpress/CustomPostType/Timeframe.php:97
 #: templates/shortcode-bookings.php:73
 msgid "User"
 msgstr ""
 
-#: src/View/Booking.php:163
+#: src/View/Booking.php:166
+#: src/Wordpress/CustomPostType/Booking.php:981
 msgid "Status"
 msgstr ""
 
-#: src/View/Booking.php:172
+#: src/View/Booking.php:175
 #: src/View/BookingCodes.php:49
 msgid "Code"
 msgstr ""
@@ -1423,6 +1451,7 @@ msgstr ""
 #: src/View/Calendar.php:216
 #: src/Wordpress/CustomPostType/Booking.php:493
 #: src/Wordpress/CustomPostType/Booking.php:805
+#: src/Wordpress/CustomPostType/Booking.php:997
 #: src/Wordpress/CustomPostType/Item.php:87
 #: src/Wordpress/CustomPostType/Restriction.php:54
 #: src/Wordpress/CustomPostType/Restriction.php:435
@@ -1439,6 +1468,7 @@ msgstr ""
 #: src/View/Calendar.php:217
 #: src/Wordpress/CustomPostType/Booking.php:494
 #: src/Wordpress/CustomPostType/Booking.php:799
+#: src/Wordpress/CustomPostType/Booking.php:993
 #: src/Wordpress/CustomPostType/Location.php:104
 #: src/Wordpress/CustomPostType/Restriction.php:55
 #: src/Wordpress/CustomPostType/Restriction.php:428
@@ -1558,14 +1588,6 @@ msgstr ""
 msgid "Download Export"
 msgstr ""
 
-#: src/View/TimeframeExport.php:234
-#: src/View/TimeframeExport.php:244
-#: src/View/TimeframeExport.php:250
-#: src/View/TimeframeExport.php:258
-#: src/View/TimeframeExport.php:267
-msgid "Unknown"
-msgstr ""
-
 #: src/Wordpress/CustomPostType/Booking.php:114
 msgid "Admin-Booking"
 msgstr ""
@@ -1651,6 +1673,7 @@ msgid "Booking Status"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:499
+#: src/Wordpress/CustomPostType/Booking.php:989
 #: src/Wordpress/CustomPostType/Timeframe.php:456
 msgid "Comment"
 msgstr ""
@@ -1820,6 +1843,30 @@ msgid ""
 "\t\tClick on preview to show booking details in frontend<br>\n"
 "\t\tTo search and filter bookings please integrate the frontend booking list via shortcode. \n"
 "\t\tSee here <a target=\"_blank\" href=\"https://commonsbooking.org/?p=1433\">How to display the booking list</a>"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Booking.php:969
+msgid "Booking start"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Booking.php:973
+msgid "Booking end"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Booking.php:977
+msgid "Time of booking"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Booking.php:985
+msgid "Booking code"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Booking.php:1001
+msgid "Time of cancellation"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Booking.php:1005
+msgid "Admin booking by"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/CustomPostType.php:307
