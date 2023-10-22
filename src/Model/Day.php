@@ -98,7 +98,9 @@ class Day {
 	}
 
 	/**
-	 * Returns array with timeframes.
+	 * Returns array with timeframes relevant for the Day.
+	 * This function will only be able to run once.
+	 * When on the first try, no Timeframes are found, it will set it to an empty array
 	 * @return array
 	 * @throws Exception
 	 */
