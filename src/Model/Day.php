@@ -166,11 +166,11 @@ class Day {
 	 * Returns the slot number for specific timeframe and time.
 	 *
 	 * @param DateTime $date
-	 * @param $grid
+	 * @param int $grid
 	 *
 	 * @return float|int
 	 */
-	protected function getSlotByTime( DateTime $date, $grid ) {
+	protected function getSlotByTime( DateTime $date, int $grid ) {
 		$hourSlots   = $date->format( 'H' ) / $grid;
 		$minuteSlots = $date->format( 'i' ) / 60 / $grid;
 
@@ -180,13 +180,13 @@ class Day {
 	/**
 	 * Returns start-slot id.
 	 *
-	 * @param $grid
+	 * @param int $grid
 	 * @param \CommonsBooking\Model\Timeframe $timeframe
 	 *
 	 * @return float|int
 	 * @throws Exception
 	 */
-	protected function getStartSlot( $grid, \CommonsBooking\Model\Timeframe $timeframe ) {
+	protected function getStartSlot( int $grid, \CommonsBooking\Model\Timeframe $timeframe ) {
 		// Timeframe
 		$fullDay   = $timeframe->isFullDay();
 		$startTime = $timeframe->getStartTimeDateTime();
@@ -216,12 +216,12 @@ class Day {
 	/**
 	 * Returns start slot for restriction.
 	 *
-	 * @param $grid
+	 * @param int $grid
 	 * @param Restriction $restriction
 	 
 	 * @return float|int
 	 */
-	protected function getRestrictionStartSlot( $grid, \CommonsBooking\Model\Restriction $restriction ) {
+	protected function getRestrictionStartSlot( int $grid, \CommonsBooking\Model\Restriction $restriction ) {
 
 		$startTime = $restriction->getStartTimeDateTime();
 		$startSlot = $this->getSlotByTime( $startTime, $grid );
@@ -240,14 +240,14 @@ class Day {
 	/**
 	 * Returns end-slot id.
 	 *
-	 * @param $slots
-	 * @param $grid
+	 * @param array $slots
+	 * @param int $grid
 	 * @param \CommonsBooking\Model\Timeframe $timeframe
 	 *
 	 * @return float|int
 	 * @throws Exception
 	 */
-	protected function getEndSlot( $slots, $grid, \CommonsBooking\Model\Timeframe $timeframe ) {
+	protected function getEndSlot( array $slots, int $grid, \CommonsBooking\Model\Timeframe $timeframe ) {
 		// Timeframe
 		$fullDay = get_post_meta( $timeframe->ID, 'full-day', true );
 		$endTime = $timeframe->getEndTimeDateTime( $this->getDateObject()->getTimestamp() );
@@ -275,14 +275,14 @@ class Day {
 	/**
 	 * Returns end slot for restriction.
 	 *
-	 * @param $slots
-	 * @param $grid
+	 * @param array $slots
+	 * @param int $grid
 	 * @param Restriction $restriction
 	 *
 	 * @return float|int
 	 * @throws Exception
 	 */
-	protected function getRestrictionEndSlot( $slots, $grid, \CommonsBooking\Model\Restriction $restriction ) {
+	protected function getRestrictionEndSlot( array $slots, int $grid, \CommonsBooking\Model\Restriction $restriction ) {
 		$endTime = $restriction->getEndTimeDateTime( $this->getDateObject()->getTimestamp() );
 		$endDate = $restriction->getEndDateDateTime();
 
@@ -370,12 +370,11 @@ class Day {
 	/**
 	 * Maps timeframes to timeslots.
 	 *
-	 * @param $slots
-	 * @param $timeframes
+	 * @param array $slots
 	 *
 	 * @throws Exception
 	 */
-	protected function mapTimeFrames( &$slots ) {
+	protected function mapTimeFrames( array &$slots ) {
 		$grid = 24 / count( $slots );
 
 		// Iterate through timeframes and fill slots
@@ -405,11 +404,11 @@ class Day {
 	/**
 	 * Overwrites restricted slots
 	 *
-	 * @param $slots
+	 * @param array $slots
 	 *
 	 * @throws Exception
 	 */
-	protected function mapRestrictions( &$slots ) {
+	protected function mapRestrictions( array &$slots ) {
 		$grid = 24 / count( $slots );
 
 		// Iterate through timeframes and fill slots
@@ -439,7 +438,7 @@ class Day {
 	 *
 	 * @param array $slots Given an array of assocs in hourly slot resolution.
 	 */
-	protected function sanitizeSlots( &$slots ) {
+	protected function sanitizeSlots( array &$slots ) {
 		$this->removeEmptySlots( $slots );
 
 		// merge multiple slots if they are of same type
