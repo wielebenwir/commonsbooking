@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-10-21T18:49:44+00:00\n"
+"POT-Creation-Date: 2023-10-22T20:22:36+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: commonsbooking\n"
@@ -1334,7 +1334,7 @@ msgstr ""
 
 #: src/Plugin.php:538
 #: src/Plugin.php:553
-#: src/Wordpress/CustomPostType/Booking.php:944
+#: src/Wordpress/CustomPostType/Booking.php:957
 msgid "CommonsBooking Bookings"
 msgstr ""
 
@@ -1384,14 +1384,14 @@ msgid "Directory %s could not be written to."
 msgstr ""
 
 #: src/View/Admin/Filter.php:58
-#: src/Wordpress/CustomPostType/Booking.php:811
+#: src/Wordpress/CustomPostType/Booking.php:824
 #: src/Wordpress/CustomPostType/Restriction.php:448
 #: src/Wordpress/CustomPostType/Timeframe.php:616
 msgid "Start date"
 msgstr ""
 
 #: src/View/Admin/Filter.php:62
-#: src/Wordpress/CustomPostType/Booking.php:828
+#: src/Wordpress/CustomPostType/Booking.php:841
 #: src/Wordpress/CustomPostType/Restriction.php:458
 #: src/Wordpress/CustomPostType/Timeframe.php:640
 msgid "End date"
@@ -1422,7 +1422,7 @@ msgid "User"
 msgstr ""
 
 #: src/View/Booking.php:166
-#: src/Wordpress/CustomPostType/Booking.php:981
+#: src/Wordpress/CustomPostType/Booking.php:994
 msgid "Status"
 msgstr ""
 
@@ -1450,8 +1450,8 @@ msgstr ""
 #: src/View/BookingCodes.php:48
 #: src/View/Calendar.php:216
 #: src/Wordpress/CustomPostType/Booking.php:493
-#: src/Wordpress/CustomPostType/Booking.php:805
-#: src/Wordpress/CustomPostType/Booking.php:997
+#: src/Wordpress/CustomPostType/Booking.php:818
+#: src/Wordpress/CustomPostType/Booking.php:1010
 #: src/Wordpress/CustomPostType/Item.php:87
 #: src/Wordpress/CustomPostType/Restriction.php:54
 #: src/Wordpress/CustomPostType/Restriction.php:435
@@ -1467,8 +1467,8 @@ msgstr ""
 
 #: src/View/Calendar.php:217
 #: src/Wordpress/CustomPostType/Booking.php:494
-#: src/Wordpress/CustomPostType/Booking.php:799
-#: src/Wordpress/CustomPostType/Booking.php:993
+#: src/Wordpress/CustomPostType/Booking.php:812
+#: src/Wordpress/CustomPostType/Booking.php:1006
 #: src/Wordpress/CustomPostType/Location.php:104
 #: src/Wordpress/CustomPostType/Restriction.php:55
 #: src/Wordpress/CustomPostType/Restriction.php:428
@@ -1620,7 +1620,7 @@ msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:287
 #: src/Wordpress/CustomPostType/Booking.php:569
-#: src/Wordpress/CustomPostType/Booking.php:735
+#: src/Wordpress/CustomPostType/Booking.php:748
 #: src/Wordpress/CustomPostType/Timeframe.php:124
 msgid "Booking"
 msgstr ""
@@ -1673,7 +1673,7 @@ msgid "Booking Status"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:499
-#: src/Wordpress/CustomPostType/Booking.php:989
+#: src/Wordpress/CustomPostType/Booking.php:1002
 #: src/Wordpress/CustomPostType/Timeframe.php:456
 msgid "Comment"
 msgstr ""
@@ -1697,7 +1697,7 @@ msgid "Add new booking"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:572
-#: src/Wordpress/CustomPostType/Booking.php:766
+#: src/Wordpress/CustomPostType/Booking.php:779
 msgid "Edit booking"
 msgstr ""
 
@@ -1714,8 +1714,7 @@ msgid "Search bookings"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:577
-#: src/Wordpress/CustomPostType/Timeframe.php:834
-msgid "Timeframes not found"
+msgid "Bookings not found"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:578
@@ -1772,7 +1771,7 @@ msgstr ""
 msgid "Timeframes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:768
+#: src/Wordpress/CustomPostType/Booking.php:781
 msgid ""
 "<h1>Notice</h1><p>In this view, you as an admin can create or modify existing bookings. Please use it with caution. <br>\n"
 "\t\t\t\t<ul>\n"
@@ -1786,56 +1785,56 @@ msgid ""
 "\t\t\t\t"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:786
+#: src/Wordpress/CustomPostType/Booking.php:799
 msgid "External comment"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:787
+#: src/Wordpress/CustomPostType/Booking.php:800
 msgid "This comment can be seen by users in booking details. It can be set by users during the booking confirmation process if comments are enabled in settings."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:792
+#: src/Wordpress/CustomPostType/Booking.php:805
 #: templates/booking-single.php:130
 msgid "Internal comment"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:793
+#: src/Wordpress/CustomPostType/Booking.php:806
 msgid "This internal comment can only be seen in the backend by privileged users like admins or cb-managers"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:812
+#: src/Wordpress/CustomPostType/Booking.php:825
 msgid "Set the start date. You must set the time to 00:00 if you want to book the full day "
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:829
+#: src/Wordpress/CustomPostType/Booking.php:842
 msgid "Set the end date. You must set time to 23:59 if you want to book the full day"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:845
+#: src/Wordpress/CustomPostType/Booking.php:858
 #: templates/booking-single.php:59
 msgid "Booking Code"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:850
+#: src/Wordpress/CustomPostType/Booking.php:863
 msgid "Booking User"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:856
+#: src/Wordpress/CustomPostType/Booking.php:869
 msgid ""
 "Here you must select the user for whom the booking is made.<br>\n"
 "                        If the booking was was made by a user via frontend booking process, the user will be shown in this field.\n"
 "                        <br><strong>Notice:</strong>The user will receive a booking confirmation as soon as the booking has been saved with the status confirmed."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:865
+#: src/Wordpress/CustomPostType/Booking.php:878
 msgid "Admin Booking User"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:876
+#: src/Wordpress/CustomPostType/Booking.php:889
 msgid "This is the admin user who created or modified this booking."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:899
+#: src/Wordpress/CustomPostType/Booking.php:912
 msgid ""
 "Bookings should be created via frontend booking calendar. <br>\n"
 "\t\tAs an admin you can create bookings via this admin interface. Please be aware that admin bookings are not validated\n"
@@ -1845,31 +1844,31 @@ msgid ""
 "\t\tSee here <a target=\"_blank\" href=\"https://commonsbooking.org/?p=1433\">How to display the booking list</a>"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:969
+#: src/Wordpress/CustomPostType/Booking.php:982
 msgid "Booking start"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:973
+#: src/Wordpress/CustomPostType/Booking.php:986
 msgid "Booking end"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:977
+#: src/Wordpress/CustomPostType/Booking.php:990
 msgid "Time of booking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:985
+#: src/Wordpress/CustomPostType/Booking.php:998
 msgid "Booking code"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:1001
+#: src/Wordpress/CustomPostType/Booking.php:1014
 msgid "Time of cancellation"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:1005
+#: src/Wordpress/CustomPostType/Booking.php:1018
 msgid "Admin booking by"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/CustomPostType.php:307
+#: src/Wordpress/CustomPostType/CustomPostType.php:305
 msgid "Filter By Category "
 msgstr ""
 
@@ -2604,6 +2603,10 @@ msgstr ""
 msgid "Search timeframes"
 msgstr ""
 
+#: src/Wordpress/CustomPostType/Timeframe.php:834
+msgid "Timeframes not found"
+msgstr ""
+
 #: src/Wordpress/CustomPostType/Timeframe.php:835
 msgid "No timeframes found in trash"
 msgstr ""
@@ -2640,15 +2643,15 @@ msgstr ""
 msgid "<strong>Default values for following fields automatically set or restored, because they were empty:</strong><br> "
 msgstr ""
 
-#: src/Wordpress/Options/OptionsTab.php:44
+#: src/Wordpress/Options/OptionsTab.php:48
 msgid "CommonsBooking"
 msgstr ""
 
-#: src/Wordpress/Options/OptionsTab.php:133
+#: src/Wordpress/Options/OptionsTab.php:137
 msgid "The export path does not exist or is not readable."
 msgstr ""
 
-#: src/Wordpress/Options/OptionsTab.php:141
+#: src/Wordpress/Options/OptionsTab.php:145
 msgid "The export path is not writeable."
 msgstr ""
 

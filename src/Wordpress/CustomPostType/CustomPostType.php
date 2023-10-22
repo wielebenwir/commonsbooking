@@ -24,6 +24,16 @@ abstract class CustomPostType {
 	 */
 	protected $menuPosition;
 
+	/**
+	 * @var array
+	 */
+	protected $listColumns = null;
+
+	/**
+	 * @var array
+	 */
+	protected $types = null;
+
 	const SELECTION_ALL_POSTS = 'all_posts';
 
 	/**
@@ -97,7 +107,7 @@ abstract class CustomPostType {
 
 	/**
 	 * retrieve Custom Meta Data from CommonsBooking Options and convert them to cmb2 fields array
-	 * The content is managed by user via options -> metadata sets 
+	 * The content is managed by user via options -> metadata sets
 	 *
 	 * @param mixed $type (item or location)
 	 *
@@ -112,7 +122,7 @@ abstract class CustomPostType {
 		foreach ( $metaDataLines as $metaDataLine ) {
 			$metaDataArray = explode( ';', $metaDataLine );
 
-			if ( count( $metaDataArray ) == 5 ) 
+			if ( count( $metaDataArray ) == 5 )
 			{
 				// $metaDataArray[0] = Type
 				$metaDataFields[ $metaDataArray[0] ][] = array(
@@ -141,8 +151,8 @@ abstract class CustomPostType {
 	public static function modifyRowActions( $actions, $post ) {
 
 		// remove quick edit for timeframes, restrictions and bookings
-		if ( $post->post_type == Timeframe::getPostType() 
-			OR $post->post_type == Restriction::getPostType() 
+		if ( $post->post_type == Timeframe::getPostType()
+			OR $post->post_type == Restriction::getPostType()
 			OR $post->post_type == Booking::getPostType()) {
 			unset( $actions['inline hide-if-no-js'] );
 		}
@@ -209,7 +219,6 @@ abstract class CustomPostType {
 				$columns[ $key ] = $key;
 			}
 		}
-
 		return $columns;
 	}
 
@@ -260,34 +269,23 @@ abstract class CustomPostType {
 			$this,
 			'setSortableColumns'
 		) );
-		if ( isset( $this->listColumns ) ) {
-			add_action( 'pre_get_posts', function ( $query ) {
-				if ( ! is_admin() ) {
-					return;
-				}
 
-				//TODO: This does correctly sort the items by meta value, since WP 6.3 the meta value is not passed to the query anymore. Maybe the filter needs to be changed?
-				$orderby = $query->get( 'orderby' );
-				//Prior to WP 6.3, this was not an associative array (see #1309) but a string
-				if (is_array($orderby)) {
-					$orderKeys = array_keys( $orderby );
+		if ( isset( $this->listColumns ) ) {
+			add_action( 'pre_get_posts', array( $this, 'setCustomColumnSortOrder' ) );
+		}
+
+		// add ability to use WP_QUERY orderby for post_status
+		add_filter('posts_orderby', function ($args, $wp_query) {
+			if(isset ($wp_query->query_vars['orderby']) && $wp_query->query_vars['orderby'] == 'post_status') {
+				if($wp_query->query_vars['order']) {
+					return 'post_status '.$wp_query->query_vars['order'];
 				}
 				else {
-					$orderKeys = array($orderby);
+					return 'post_status ASC';
 				}
-				//we only want to sort by meta value if there is no sort by post_* value
-				$orderKeys = array_filter($orderKeys, function($key) {
-					return strpos($key, 'post_') !== false;
-				});
-				if (
-					empty($orderKeys) &&
-					in_array( $orderKeys, array_keys( $this->listColumns ) )
-				) {
-					$query->set( 'meta_key', $orderby );
-					$query->set( 'orderby', 'meta_value' );
-				}
-			} );
-		}
+			}
+			return $args;
+		}, 10,2);
 	}
 
 	/**
@@ -311,7 +309,7 @@ abstract class CustomPostType {
 
 	/**
 	 * Adds Category filter to backend list view
-	 * 
+	 *
 	 */
 	public static function addAdminCategoryFilter() {
 		$values = [];
@@ -376,6 +374,20 @@ abstract class CustomPostType {
 				return new \CommonsBooking\Model\Map($post);
 		}
 		throw new PostException('No suitable model found for ' . $post->post_type);
+	}
+
+	/**
+	 * This is called by the inheritances of the customPosts, it will just check if we
+	 * are processing one of our CPTs.
+	 * @param \WP_Query $query
+	 *
+	 * @return void
+	 */
+	public function setCustomColumnSortOrder(\WP_Query $query) {
+		if ( ! is_admin() || ! $query->is_main_query() || $query->get( 'post_type' ) !== static::$postType ) {
+			return false;
+		}
+		return true;
 	}
 
 }
