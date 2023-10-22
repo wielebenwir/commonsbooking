@@ -37,7 +37,9 @@ class BookingTest_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		} catch ( \WPAjaxDieContinueException $e ) {
 			// We expect this exception to be thrown
 		}
-		$response = json_decode( $this->_last_response );
+		//we have to remove the deprecation warnings from the response
+		$response = explode( "\n", $this->_last_response );
+		$response = json_decode( end( $response ) );
 		$this->assertTrue ( $response->success );
 		$this->assertContains( $response->bookingCode, $this->bookingCodes );
 	}
@@ -55,7 +57,9 @@ class BookingTest_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		} catch ( \WPAjaxDieContinueException $e ) {
 			// We expect this exception to be thrown
 		}
-		$response = json_decode( $this->_last_response );
+		//we have to remove the deprecation warnings from the response
+		$response = explode( "\n", $this->_last_response );
+		$response = json_decode( end( $response ) );
 		$this->assertTrue ( $response->success );
 		$this->assertEquals( $response->locationID, $this->locationID );
 	}
