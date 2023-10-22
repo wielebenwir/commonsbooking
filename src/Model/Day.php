@@ -9,6 +9,12 @@ use DateTime;
 use Exception;
 use WP_Post;
 
+/**
+ * Serves as abstraction for days of a week in the Week object of the Calendar.
+ * Computes booking slots according to the timeframes available.
+ *
+ * @see Week
+ */
 class Day {
 
 	/**
@@ -147,6 +153,8 @@ class Day {
 
 	/**
 	 * Returns grid for the day defined by the timeframes.
+	 *
+	 * @see Day::getTimeframeSlots()
 	 * @return array
 	 * @throws Exception
 	 */
@@ -429,7 +437,7 @@ class Day {
 	/**
 	 * Remove empty and merge connected slots.
 	 *
-	 * @param $slots
+	 * @param array $slots Given an array of assocs in hourly slot resolution.
 	 */
 	protected function sanitizeSlots( &$slots ) {
 		$this->removeEmptySlots( $slots );
@@ -477,7 +485,11 @@ class Day {
 	}
 
 	/**
-	 * Returns array of timeslots filled with timeframes.
+	 * Returns an array of timeslots, which is build according the relevant timeframes and their configuration.
+	 * So this takes the hourly-, daily or custom-sized-slot configuration of timeframes into account.
+	 *
+	 * Implementation note: An hourly resolution is used, but as a last step, the hourly slots are merged into
+	 * the representation that is configured in the timeframes.
 	 *
 	 * @return array
 	 * @throws Exception
