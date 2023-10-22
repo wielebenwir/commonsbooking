@@ -286,6 +286,7 @@
                 const selectedRep = $("option:selected", timeframeRepetitionInput).val();
                 if (fullDayInput.prop("checked")) {
                     gridInput.prop("selected", false);
+                    gridInput.val(0);
                     hideFieldset(repTimeFieldsSet);
                 } else {
                     showFieldset(repTimeFieldsSet);

@@ -582,8 +582,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * Returns true when booking is cancelled. This might not correctly reflect the status of the booking when $this->cancel() has been called.
 	 * In order to correctly reflect this, you need to call wp_cache_flush() before calling this function.
 	 *
-	 *
-	 *
 	 * @return bool
 	 */
 	public function isCancelled(): bool {
@@ -711,7 +709,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Helper to return the email signature configured in the options array
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getEmailSignature(): string {
@@ -831,4 +829,20 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		);
 	}
 
+
+	/**
+	 * Will get the status of a booking as a human-readable string
+	 * @return string
+	 */
+	public function getStatus() : string {
+		if ( $this->isConfirmed() ) {
+			return __( 'Confirmed', 'commonsbooking' );
+		} elseif ( $this->isUnconfirmed() ) {
+			return __( 'Unconfirmed', 'commonsbooking' );
+		} elseif ( $this->isCancelled() ) {
+			return __( 'Cancelled', 'commonsbooking' );
+		} else {
+			return __( 'Unknown', 'commonsbooking' );
+		}
+	}
 }

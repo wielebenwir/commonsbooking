@@ -554,6 +554,36 @@ class Plugin {
 	}
 
 	/**
+ 	 * Registers all user data exporters ({@link https://developer.wordpress.org/plugins/privacy/adding-the-personal-data-exporter-to-your-plugin/}).
+ 	 *
+ 	 * @param array $exporters
+ 	 *
+ 	 * @return mixed
+ 	 */
+	public static function registerUserDataExporters( $exporters ) {
+		$exporters[COMMONSBOOKING_PLUGIN_SLUG] = array(
+			'exporter_friendly_name' => __( 'CommonsBooking Bookings', 'commonsbooking' ),
+			'callback'               => array( \CommonsBooking\Wordpress\CustomPostType\Booking::class, 'exportUserBookingsByEmail' ),
+		);
+		return $exporters;
+	}
+
+	/**
+	 * Registers all user data erasers ({@link https://developer.wordpress.org/plugins/privacy/adding-the-personal-data-eraser-to-your-plugin/}).
+	 *
+	 * @param $erasers
+	 *
+	 * @return mixed
+	 */
+	public static function registerUserDataErasers( $erasers ) {
+		$erasers[COMMONSBOOKING_PLUGIN_SLUG] = array(
+			'eraser_friendly_name' => __( 'CommonsBooking Bookings', 'commonsbooking' ),
+			'callback'             => array( \CommonsBooking\Wordpress\CustomPostType\Booking::class, 'removeUserBookingsByEmail'),
+		);
+		return $erasers;
+	}
+
+	/**
 	 * Gets location position for locations without coordinates.
 	 */
 	public static function updateLocationCoordinates() {
@@ -637,6 +667,12 @@ class Plugin {
         add_filter('cmb2_field_ajax_search_url', function(){
             return (COMMONSBOOKING_PLUGIN_URL . '/vendor/ed-itsolutions/cmb2-field-ajax-search/');
         });
+
+		//hook into WordPress personal data exporter
+		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'registerUserDataExporters' ) );
+
+		//hook into WordPress personal data eraser
+		add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'registerUserDataErasers' ) );
 
     	// iCal rewrite
 		iCalendar::initRewrite();
