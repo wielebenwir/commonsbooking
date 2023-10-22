@@ -10,12 +10,14 @@
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.16.11",
+		"@wordpress/env": "^5.0.0",
 		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
 		"compass": "^0.1.1",
+		"cypress": "^13.1.0",
 		"editorconfig": "^0.15.3",
 		"grunt": "^1.4.1",
-		"grunt-cli": "^1.4.3",
 		"grunt-babel": "^8.0.0",
+		"grunt-cli": "^1.4.3",
 		"grunt-contrib-compass": "^0.8.0",
 		"grunt-contrib-concat": "^2.0.0",
 		"grunt-contrib-jshint": "^3.1.1",
@@ -24,7 +26,16 @@
 		"grunt-contrib-watch": "^1.1.0",
 		"matchdep": "^2.0.0"
 	},
-	"scripts": {},
+	"scripts": {
+		"start": "composer install --ignore-platform-reqs && npm install",
+		"env": "wp-env",
+		"env:install-tests-cli": "./bin/install-wp-cli.sh tests-wordpress",
+		"env:start": "wp-env start && npm run env:install-tests-cli",
+		"env:stop": "wp-env stop",
+		"cypress:setup": "./bin/setup-cypress-env.sh",
+		"cypress:open": "cypress open --config-file tests/cypress/cypress.config.js",
+		"cypress:run": "cypress run --config-file tests/cypress/cypress.config.js"
+	},
 	"dependencies": {
 		"leaflet": "^1.7.1",
 		"leaflet-easybutton": "^2.4.0",

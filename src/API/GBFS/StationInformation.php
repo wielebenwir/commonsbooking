@@ -53,7 +53,7 @@ class StationInformation extends BaseRoute {
 //        $preparedItem->is_valet_station = "";
 //        $preparedItem->vehicle_type_capacity = "";
 
-		$latitude  = get_post_meta( $item->ID, 'geo_latitude', true );
+		$latitude  = get_post_meta( $item->ID, 'geo_latitude', true ); // TODO this can be part of model $item Location
 		$longitude = get_post_meta( $item->ID, 'geo_longitude', true );
 
 		// If we have latitude and longitude defined, we use them.

@@ -416,8 +416,8 @@ class Timeframe extends CustomPost {
 					if (
 						$this->hasTimeframeDateOverlap( $timeframe )
 					) {
-						// Compare grid types
-						if ( $timeframe->getGrid() !== $this->getGrid() ) {
+						// Compare grid types. We only need to do this when full day is not set
+						if ( ! $this->isFullDay() && ($timeframe->getGrid() !== $this->getGrid()) ) {
 							throw new TimeframeInvalidException(
 								sprintf(
 									/* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
@@ -819,7 +819,7 @@ class Timeframe extends CustomPost {
     /**
      * Returns first bookable day based on the defined booking startday offset in timeframe
      *
-     * @return date string Y-m-d
+     * @return string  date format Y-m-d
      */
     public function getFirstBookableDay() {
         $offset = $this->getFieldValue( 'booking-startday-offset' ) ?: 0;

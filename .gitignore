@@ -5,8 +5,12 @@ yarn.lock
 cache
 commonsbooking.zip
 node_modules
+./phpunit*
+.phpunit.*
+assets/packaged
 src/Wordpress/.DS_Store
 /vendor
+/build
 src/.DS_Store
 assets/.DS_Store
 #assets/admin/css
@@ -21,3 +25,4 @@ copy-svn.sh
 cb-local-1.code-workspace
 commonsbookingdocker.code-workspace
 wp-core
+tests/cypress/screenshots

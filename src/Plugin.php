@@ -59,32 +59,65 @@ class Plugin {
 		do_action( Scheduler::UNSCHEDULER_HOOK );
 	}
 
-	protected static function addCPTRoleCaps() {
-		$customPostTypes = commonsbooking_isCurrentUserAdmin() ? self::getCustomPostTypes() : self::getCBManagerCustomPostTypes();
-
+	/**
+	 * Adds capabilities for custom post types.
+	 * This function runs after plugin activation and upon plugin update.
+	 *
+	 * NOTE: Before the change, this function did not work because it was dependent
+	 * on the role of the user upon activation. This did not make sense, as this is always
+	 * the admin. The function was changed to add the correct capabilities for all roles.
+	 *
+	 * This usually only happens, when the plugin is activated through wp-cli (because no user is logged in there)
+	 * The way this function has worked before is instead to assign the CB-Manager the capabilites of the admin.
+	 *
+	 * When we change the behaviour to what was probably intended, we break the functionality for the CB Manager to edit posts (like bookings or items).
+	 * This is why we now assign the CB-Manager the capabilities of the admin, the supposedly correct behaviour is commented out below.
+	 *
+	 * Therefore, this function does not work differently, it just has the same behaviour when plugin is activated through wp-cli or through the admin interface.
+	 * @return void
+	 */
+	public static function addCPTRoleCaps() {
+		//admins are allowed to see all custom post types
+		$adminAllowedCPT = self::getCustomPostTypes();
+		$CBManagerAllowedCPT = self::getCBManagerCustomPostTypes();
 		// Add capabilities for user roles
-		foreach ( $customPostTypes as $customPostType ) {
-			self::addRoleCaps( $customPostType::$postType );
+		foreach ( $adminAllowedCPT as $customPostType ) {
+			self::addRoleCaps( $customPostType::$postType, 'administrator' );
+			//assign all capabilities of admin to CB-Manager (see comment above)
+			self::addRoleCaps( $customPostType::$postType, self::$CB_MANAGER_ID );
 		}
+		/*
+		foreach ( $CBManagerAllowedCPT as $customPostType ) {
+			self::addRoleCaps( $customPostType::$postType, self::$CB_MANAGER_ID );
+		}
+		*/
 	}
 
 	/**
-	 * Returns needed roles and caps.
+	 * Returns needed roles and caps for specific roles
      *
 	 * @return \bool[][]
 	 */
-	public static function getRoleCapMapping() {
-		return [
-			self::$CB_MANAGER_ID => [
-				'read'                                 => true,
-				'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
-			],
-			'administrator'      => [
-				'read'                                 => true,
-				'edit_posts'                           => true,
-				'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
-			],
-		];
+	public static function getRoleCapMapping( $roleName = null) {
+		if ( $roleName === null ) {
+			return [
+				self::$CB_MANAGER_ID => [
+					'read'                                 => true,
+					'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
+				],
+				'administrator'      => [
+					'read'                                 => true,
+					'edit_posts'                           => true,
+					'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
+				],
+			];
+		}
+		else {
+			$roleCapMapping = self::getRoleCapMapping();
+			return [
+				$roleName => $roleCapMapping[$roleName]
+			];
+		}
 	}
 
 	/**
@@ -161,13 +194,13 @@ class Plugin {
 	}
 
 	/**
-	 * Adds permissions for cb users.
+	 * Adds permissions to edit custom post types for specified role.
 	 *
 	 * @param $postType
 	 */
-	public static function addRoleCaps( $postType ) {
+	protected static function addRoleCaps( $postType, $roleName ) {
 		// Add the roles you'd like to administer the custom post types
-		$roles = array_keys( self::getRoleCapMapping() );
+		$roles = array_keys( self::getRoleCapMapping( $roleName ) );
 
 		// Loop through each role and assign capabilities
 		foreach ( $roles as $the_role ) {
@@ -494,6 +527,36 @@ class Plugin {
 	}
 
 	/**
+ 	 * Registers all user data exporters ({@link https://developer.wordpress.org/plugins/privacy/adding-the-personal-data-exporter-to-your-plugin/}).
+ 	 *
+ 	 * @param array $exporters
+ 	 *
+ 	 * @return mixed
+ 	 */
+	public static function registerUserDataExporters( $exporters ) {
+		$exporters[COMMONSBOOKING_PLUGIN_SLUG] = array(
+			'exporter_friendly_name' => __( 'CommonsBooking Bookings', 'commonsbooking' ),
+			'callback'               => array( \CommonsBooking\Wordpress\CustomPostType\Booking::class, 'exportUserBookingsByEmail' ),
+		);
+		return $exporters;
+	}
+
+	/**
+	 * Registers all user data erasers ({@link https://developer.wordpress.org/plugins/privacy/adding-the-personal-data-eraser-to-your-plugin/}).
+	 *
+	 * @param $erasers
+	 *
+	 * @return mixed
+	 */
+	public static function registerUserDataErasers( $erasers ) {
+		$erasers[COMMONSBOOKING_PLUGIN_SLUG] = array(
+			'eraser_friendly_name' => __( 'CommonsBooking Bookings', 'commonsbooking' ),
+			'callback'             => array( \CommonsBooking\Wordpress\CustomPostType\Booking::class, 'removeUserBookingsByEmail'),
+		);
+		return $erasers;
+	}
+
+	/**
 	 * Gets location position for locations without coordinates.
 	 */
 	public static function updateLocationCoordinates() {
@@ -574,6 +637,12 @@ class Plugin {
         add_filter('cmb2_field_ajax_search_url', function(){
             return (COMMONSBOOKING_PLUGIN_URL . '/vendor/ed-itsolutions/cmb2-field-ajax-search/');
         });
+
+		//hook into WordPress personal data exporter
+		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'registerUserDataExporters' ) );
+
+		//hook into WordPress personal data eraser
+		add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'registerUserDataErasers' ) );
 
     	// iCal rewrite
 		iCalendar::initRewrite();

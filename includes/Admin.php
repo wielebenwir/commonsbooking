@@ -65,6 +65,9 @@ add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
 function commonsbooking_sanitizeHTML( $string ): string {
 	global $allowedposttags;
 
+	if ( empty ( $string ) ) {
+		return '';
+	}
 	$allowed_atts = array(
 		'align'      => array(),
 		'checked'    => array(),

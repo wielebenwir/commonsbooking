@@ -82,7 +82,7 @@ function commonsbooking_parse_template_callback( $match, array $objects = [] ) {
             }
 
             $rendered_template_tag = CB::get( commonsbooking_getCBType( $path[0] ), $path[1], $post );
-            if ( strlen( $rendered_template_tag ) > 0 ) {
+            if ( $rendered_template_tag !== null && strlen( $rendered_template_tag ) > 0 ) {
                 return $html_before . $rendered_template_tag . $html_after;
             } else {
                 return $rendered_template_tag;
