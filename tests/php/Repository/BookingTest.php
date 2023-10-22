@@ -12,6 +12,8 @@ class BookingTest extends CustomPostTypeTest {
 
 	private $confirmedBookingEndingToday;
 
+	private $confirmedBookingStartingToday;
+
 	private $testItem;
 
 	private $testLocation;
@@ -66,7 +68,7 @@ class BookingTest extends CustomPostTypeTest {
 		);
 		$this->assertNull( $booking );
 	}
-	
+
 	public function testGetForUsersPaginated() {
 		//let's use the subscriber here to not get confused with the other tests
 		$this->createSubscriber();
@@ -130,8 +132,8 @@ class BookingTest extends CustomPostTypeTest {
 
 	public function testGetByTimerange() {
 		$bookingIDs = Booking::getByTimerange(
-			get_post_meta( $this->timeframeOne, Timeframe::REPETITION_START, true ),
-			get_post_meta( $this->timeframeOne, Timeframe::REPETITION_END, true ),
+			get_post_meta( $this->confirmedBookingEndingToday, Timeframe::REPETITION_START, true ),
+			get_post_meta( $this->confirmedBookingEndingToday, Timeframe::REPETITION_END, true ),
 			[$this->locationId],
 			[$this->itemId]
 		);
@@ -142,8 +144,8 @@ class BookingTest extends CustomPostTypeTest {
 				return $booking->ID;
 			}, $bookingIDs ),
 			[
-				$this->timeframeOne,
-				$this->timeframeTwo
+				$this->confirmedBookingEndingToday,
+				$this->confirmedBookingStartingToday
 			]
 		);
 
