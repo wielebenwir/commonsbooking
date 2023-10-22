@@ -33,15 +33,13 @@ class StationStatusTest extends CustomPostTypeTest
 
 		//now let's book the current day and check, that the station is empty
 		$this->createConfirmedBookingStartingToday();
-		$stationStatus = $routeObject->prepare_item_for_response($locationObject, null);
-		$this->assertEquals(0, $stationStatus->num_bikes_available);
+		$this->assertEquals(0, $routeObject->prepare_item_for_response($locationObject, null)->num_bikes_available);
 
 
 		//the timeframe has ended now, so the station should be empty
 		$currDate->modify('+11 days');
 		ClockMock::freeze( $currDate );
-		$stationStatus = $routeObject->prepare_item_for_response($locationObject, null);
-		$this->assertEquals(0, $stationStatus->num_bikes_available);
+		$this->assertEquals(0, $routeObject->prepare_item_for_response($locationObject, null)->num_bikes_available);
 
 		//very important for GBFS: when bookings are only allowed with a certain offset (time difference between booking and start of booking), the station should be empty
 	    ClockMock::freeze(new \DateTime( self::CURRENT_DATE) );
@@ -65,12 +63,58 @@ class StationStatusTest extends CustomPostTypeTest
 			30,
 			2
 		);
-		$stationStatus = $routeObject->prepare_item_for_response(new Location($otherLocationId), null);
-		$this->assertEquals(0, $stationStatus->num_bikes_available);
+		$this->assertEquals(0, $routeObject->prepare_item_for_response(new Location($otherLocationId), null)->num_bikes_available);
 		//remove the offset and the station should have the item
 	    update_post_meta($timeframeID, 'booking-startday-offset', 0);
-		$stationStatus = $routeObject->prepare_item_for_response(new Location($otherLocationId), null);
-		$this->assertEquals(1, $stationStatus->num_bikes_available);
+		$this->assertEquals(1, $routeObject->prepare_item_for_response(new Location($otherLocationId), null)->num_bikes_available);
+	}
+
+	public function testPrepare_item_for_response_hourly() {
+		$currDate = new \DateTime( self::CURRENT_DATE );
+		$currDate->setTime( 8, 0, 0 );
+		$locationObject = new Location($this->locationId);
+		ClockMock::freeze( $currDate );
+		$routeObject = new StationStatus();
+		$hourlyTimeframe = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"off",
+			'd',
+			1,
+			'8:00 AM',
+			'12:00 PM'
+		);
+		$this->assertEquals(1, $routeObject->prepare_item_for_response($locationObject, null)->num_bikes_available);
+
+		//before 08:00AM the bike is not available
+		$currDate->setTime( 6, 0, 0 );
+		ClockMock::freeze( $currDate );
+		$this->assertEquals(0, $routeObject->prepare_item_for_response($locationObject, null)->num_bikes_available);
+
+		//now let's book two hours out of the timeframe and check that the station is empty for those two hours
+		$startBooking = new \DateTime( self::CURRENT_DATE );
+		$startBooking->setTime( 10, 0, 0 );
+		$endBooking = clone $startBooking;
+		$endBooking->setTime( 13, 0, 0 );
+		$this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '10:00 AM', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '01:00 PM', strtotime( self::CURRENT_DATE ) ),
+			'10:00 AM',
+		    '01:00 PM'
+		);
+		ClockMock::freeze( $startBooking );
+		$this->assertEquals(0, $routeObject->prepare_item_for_response($locationObject, null)->num_bikes_available);
+		$startBooking->modify('+1 hour');
+		ClockMock::freeze( $startBooking );
+		$this->assertEquals(0, $routeObject->prepare_item_for_response($locationObject, null)->num_bikes_available);
+		ClockMock::freeze( $endBooking );
+		$this->assertEquals(1, $routeObject->prepare_item_for_response($locationObject, null)->num_bikes_available);
+
 	}
 
 	protected function setUp(): void {

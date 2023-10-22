@@ -119,6 +119,18 @@ class CalendarTest extends CustomPostTypeTest {
 		);
 		$availabilitySlots = $this->calendar->getAvailabilitySlots();
 		$this->assertEquals( iterator_count( $expectedPeriod ), count( $availabilitySlots ) );
+
+		//book two hours and check that the slots are not available
+		$this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '10:00 AM', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '01:00 PM', strtotime( self::CURRENT_DATE ) ),
+			'10:00 AM',
+			'01:00 PM'
+		);
+		$availabilitySlots = $this->calendar->getAvailabilitySlots();
+		$this->assertEquals( iterator_count( $expectedPeriod ) - 3, count( $availabilitySlots ) );
 	}
 
 	public function testGetAvailabilitySlotsWithOffset() {
