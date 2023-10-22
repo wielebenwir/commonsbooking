@@ -21,7 +21,7 @@ class AdminOptions {
 	public static function setOptionsDefaultValues() {
 
 		$options_array   = include( COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php' );
-		$restored_fields = [];
+		$restored_fields = array();
 
 		foreach ( $options_array as $tab_id => $tab ) {
 			$groups     = $tab['field_groups'];
