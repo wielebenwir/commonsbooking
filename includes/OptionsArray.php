@@ -22,11 +22,6 @@ if ( strpos( get_locale(), 'en_' ) !== false ) {
 	$dateFormat = "m/d/Y";
 }
 
-$typeOptions = [
-	'all' => esc_html__( 'All timeframe types', 'commonsbooking' )
-];
-$typeOptions += Timeframe::getTypes();
-
 /**
  * Plugin Options
  *
@@ -837,26 +832,26 @@ Please let us know if any problems occurred.<br>
 						'desc'    => esc_html__( 'Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information.', 'commonsbooking' ),
 						'id'      => "export-type",
 						'type'    => 'select',
-						'options' => $typeOptions,
+						'options' => Timeframe::getTypes(true),
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Location-Fields', 'commonsbooking' ) ),
 						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
 						commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields('cb_location') ) ),
-						'id'   => 'location-fields',
+						'id'   => TimeframeExport::LOCATION_FIELD,
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Item-Fields', 'commonsbooking' ) ),
 						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
 						commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields('cb_item') ) ),
-						'id'   => 'item-fields',
+						'id'   => TimeframeExport::ITEM_FIELD,
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'User-Fields', 'commonsbooking' ) ),
 						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a userfield or a meta-field. Comma separated list.', 'commonsbooking' ) ), 
-						'id'   => 'user-fields',
+						'id'   => TimeframeExport::USER_FIELD,
 						'type' => 'text'
 					),
 					array(
@@ -882,7 +877,7 @@ Please let us know if any problems occurred.<br>
 						'name'          => commonsbooking_sanitizeHTML( __( 'Export', 'commonsbooking' ) ),
 						'id'            => 'export-custom-field',
 						'type'          => 'text',
-						'render_row_cb' => array( TimeframeExport::class, 'renderExportForm' ),
+						'render_row_cb' => array( TimeframeExport::class, 'renderExportButton' ),
 					)
 				]
 			),

@@ -5686,6 +5686,28 @@ select[readonly] {
     opacity: 1;
   }
 }
+/** Export Screen */
+/* line 1, ../sass/partials/_form-export.scss */
+#timeframe-export-done,
+#timeframe-export-failed,
+#timeframe-export-in-progress {
+  margin-bottom: 1rem;
+  display: none;
+}
+
+@keyframes blinkText {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* line 14, ../sass/partials/_form-export.scss */
+#timeframe-export-in-progress .blinking {
+  animation: blinkText 1s infinite alternate;
+}
+
 /* Booking form  */
 /* line 2, ../sass/partials/_form-booking.scss */
 .post-type-cb_booking #publish {

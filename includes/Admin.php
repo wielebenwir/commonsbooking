@@ -39,6 +39,15 @@ function commonsbooking_admin() {
 			'nonce'    => wp_create_nonce( 'cb_start_booking_migration' ),
 		)
 	);
+
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_export_timeframes',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_export_timeframes' ),
+		)
+	);
 	/**
 	 * Ajax - cache warmup
 	 */
