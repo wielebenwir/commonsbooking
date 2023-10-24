@@ -112,6 +112,9 @@ class CalendarTest extends CustomPostTypeTest {
 			30,
 			2
 		);
+		//set our user to a normal subscriber so that the booking is not privileged
+		//we need to do this after creating our custom posts, or else the subscriber would be the author
+		wp_set_current_user( $this->subscriberId);
 		$jsonresponse = Calendar::getCalendarDataArray(
 			$otherItemId,
 			$otherLocationId,
@@ -124,6 +127,7 @@ class CalendarTest extends CustomPostTypeTest {
 		//considering the offset, today and tomorrow should be locked
 		$this->assertTrue($days[$today]['locked']);
 		$this->assertTrue($days[date('Y-m-d', strtotime('+1 day', strtotime($today)))]['locked']);
+		wp_logout();
 	}
 
 	protected function setUp() : void {

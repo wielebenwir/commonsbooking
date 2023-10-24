@@ -463,7 +463,9 @@ public function testCanCancelBaseCase() {
 			$this->locationId,
 			$this->itemId,
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
-			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+			'08:00 AM',
+			'12:00 PM'
 		);
 		$this->testBookingTomorrow = new Booking( $this->testBookingId );
 		$this->testBookingPastId   = $this->createBooking(

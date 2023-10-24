@@ -171,7 +171,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		$itemId,
 		$repetitionStart,
 		$repetitionEnd,
-		$startTime = '0:00 AM',
+		$startTime = '12:00 AM',
 		$endTime = '23:59 PM',
 		$postStatus = 'confirmed',
 		$postAuthor = self::USER_ID,
@@ -468,7 +468,7 @@ abstract class CustomPostTypeTest extends TestCase {
             location bigint(20) unsigned NOT NULL,
             item bigint(20) unsigned NOT NULL,
             code varchar(100) NOT NULL,
-            PRIMARY KEY (date, timeframe, location, item, code) 
+            PRIMARY KEY (date, timeframe, location, item, code)
         ) $charset_collate;";
 
 		$wpdb->query( $sql );
