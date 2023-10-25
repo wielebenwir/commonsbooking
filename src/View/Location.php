@@ -144,8 +144,8 @@ class Location extends View {
 		if ( $post->getMeta( 'loc_showmap' ) ) {
 			$latitude  = $post->getMeta( 'geo_latitude' );
 			$longitude = $post->getMeta( 'geo_longitude' );
-			wp_enqueue_style( 'cb_map_leaflet_css', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet.css' );
-			wp_enqueue_script( 'cb_map_leaflet_js', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet-src.js' );
+			wp_enqueue_style( 'cb-leaflet');
+			wp_enqueue_script( 'cb-leaflet');
 
 
 			echo '<div id="cb_locationview_map" style="width: 100%; height: 300px;"></div>';
