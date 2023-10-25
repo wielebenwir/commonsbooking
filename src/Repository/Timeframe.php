@@ -85,6 +85,9 @@ class Timeframe extends PostRepository {
 	 *      In this case we need this function.
 	 *      Other functions use this one as base function for more specialized searches.
 	 *
+	 * TODO: Investigate
+	 *       This function is not based on the WP_Query class, probably because of performance reasons.
+	 *
 	 * @param array $locations
 	 * @param array $items
 	 * @param array $types
@@ -222,11 +225,11 @@ class Timeframe extends PostRepository {
 
 			// Complete query, including types
 			$query = "
-                SELECT DISTINCT pm1.post_id from $table_postmeta pm1 
+                SELECT DISTINCT pm1.post_id from $table_postmeta pm1
                 " .
 			         $itemQuery .
 			         $locationQuery .
-			         "   
+			         "
                  WHERE
                     pm1.meta_key = 'type' AND
 	                pm1.meta_value IN (" . implode( ',', $types ) . ")
@@ -360,7 +363,7 @@ class Timeframe extends PostRepository {
 			"INNER JOIN $table_postmeta pm4 ON
                 pm4.post_id = pm1.id AND
                 pm4.meta_key = %s AND
-                pm4.meta_value BETWEEN 0 AND %d 
+                pm4.meta_value BETWEEN 0 AND %d
             INNER JOIN $table_postmeta pm5 ON
                 pm5.post_id = pm1.id AND (
                     (
@@ -369,12 +372,12 @@ class Timeframe extends PostRepository {
                     ) OR
                     (
                         pm1.id not in (
-                            SELECT post_id FROM $table_postmeta 
-                            WHERE 
+                            SELECT post_id FROM $table_postmeta
+                            WHERE
                                 meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "'
                         )
                     )
-                )                        
+                )
             ",
 			\CommonsBooking\Model\Timeframe::REPETITION_START,
 			strtotime( $date . 'T23:59' ),
@@ -397,13 +400,13 @@ class Timeframe extends PostRepository {
 		return $wpdb->prepare(
 			"INNER JOIN $table_postmeta pm4 ON
 	            pm4.post_id = pm1.id AND (
-	                ( 
+	                (
 	                    pm4.meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "' AND
 	                    pm4.meta_value >= %d
 	                ) OR
 	                (
 	                    pm1.id not in (
-	                        SELECT post_id FROM $table_postmeta 
+	                        SELECT post_id FROM $table_postmeta
 	                        WHERE
 	                            meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "'
 	                    )
@@ -427,21 +430,21 @@ class Timeframe extends PostRepository {
 			"INNER JOIN $table_postmeta pm4 ON
 	            pm4.post_id = pm1.id AND (
 	                pm4.meta_key = %s AND
-	                pm4.meta_value <= %d                  
+	                pm4.meta_value <= %d
 	            )
 	        INNER JOIN $table_postmeta pm5 ON
-	            pm5.post_id = pm1.id AND (   
-	                (                         
+	            pm5.post_id = pm1.id AND (
+	                (
 	                    pm5.meta_key = %s AND
 	                    pm5.meta_value >= %d
 	                ) OR (
-	                    NOT EXISTS ( 
-	                        SELECT * FROM $table_postmeta 
+	                    NOT EXISTS (
+	                        SELECT * FROM $table_postmeta
 	                        WHERE
 	                            meta_key = %s AND
 	                            post_id = pm5.post_id
 	                    )
-	                )                          
+	                )
 	            )
 	        ",
 			\CommonsBooking\Model\Timeframe::REPETITION_START,

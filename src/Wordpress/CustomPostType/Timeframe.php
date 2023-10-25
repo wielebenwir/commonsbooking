@@ -1136,6 +1136,72 @@ class Timeframe extends CustomPostType {
 		}
 	}
 
+	public function setCustomColumnSortOrder( \WP_Query $query ) {
+		if (! parent::setCustomColumnSortOrder( $query ) ) {
+			return;
+		}
+
+		switch ($query->get( 'orderby' )) {
+			case 'item-id':
+				add_filter('posts_join', function ($join) {
+					global $wp_query, $wpdb;
+
+					if ( ! empty( $wp_query->query_vars['orderby'] ) && $wp_query->query_vars['orderby'] === \CommonsBooking\Model\Timeframe::META_ITEM_ID ) {
+						$join .= "LEFT JOIN $wpdb->postmeta joined_meta_items "
+						         . "ON $wpdb->posts.ID = joined_meta_items.post_id AND joined_meta_items.meta_key = '" . \CommonsBooking\Model\Timeframe::META_ITEM_ID . "' ";
+						$join .= "JOIN $wpdb->posts joined_items ON joined_meta_items.meta_value = joined_items.ID ";
+					}
+
+					return $join;
+				});
+				add_filter( 'posts_orderby', function ( $orderby ) {
+					global $wp_query;
+
+					if ( ! empty( $wp_query->query_vars['orderby'] ) && $wp_query->query_vars['orderby'] === \CommonsBooking\Model\Timeframe::META_ITEM_ID ) {
+						$orderby = 'joined_items.post_title ' . $wp_query->query_vars['order'];
+					}
+
+					return $orderby;
+				});
+				break;
+			case 'location-id':
+				add_filter('posts_join', function ($join) {
+					global $wp_query, $wpdb;
+
+					if ( ! empty( $wp_query->query_vars['orderby'] ) && $wp_query->query_vars['orderby'] === \CommonsBooking\Model\Timeframe::META_LOCATION_ID ) {
+						$join .= "LEFT JOIN $wpdb->postmeta joined_meta_locations "
+						         . "ON $wpdb->posts.ID = joined_meta_locations.post_id AND joined_meta_locations.meta_key = '" . \CommonsBooking\Model\Timeframe::META_LOCATION_ID . "' ";
+						$join .= "JOIN $wpdb->posts joined_locations ON joined_meta_locations.meta_value = joined_locations.ID ";
+					}
+
+					return $join;
+				});
+				add_filter( 'posts_orderby', function ( $orderby ) {
+					global $wp_query;
+
+					if ( ! empty( $wp_query->query_vars['orderby'] ) && $wp_query->query_vars['orderby'] === \CommonsBooking\Model\Timeframe::META_LOCATION_ID ) {
+						$orderby = 'joined_locations.post_title ' . $wp_query->query_vars['order'];
+					}
+
+					return $orderby;
+				});
+				break;
+			case 'type':
+				$query->set( 'meta_key', 'type' );
+				$query->set( 'orderby', 'meta_value' );
+				break;
+			case \CommonsBooking\Model\Timeframe::REPETITION_START:
+			case \CommonsBooking\Model\Timeframe::REPETITION_END:
+				$query->set( 'meta_key', $query->get( 'orderby' ) );
+				$query->set( 'orderby', 'meta_value_num' );
+				break;
+			default:
+				//this means, that further sorting is done by the inheriting method
+				return true;
+		}
+	}
+
+
 	/**
 	 * Initiates needed hooks.
 	 */

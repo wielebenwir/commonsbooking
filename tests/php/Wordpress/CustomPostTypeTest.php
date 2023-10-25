@@ -155,6 +155,10 @@ abstract class CustomPostTypeTest extends TestCase {
 		return $restrictionId;
 	}
 
+	/**
+	 * Creates booking from -1 day -> +1 day midnight (relative to self::CURRENT_DATE)
+	 * @return int|\WP_Error
+	 */
 	protected function createConfirmedBookingEndingToday() {
 		return $this->createBooking(
 			$this->locationId,
@@ -164,6 +168,10 @@ abstract class CustomPostTypeTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Creates booking from -1 day -> +2 days midnight (relative to self::CURRENT_DATE)
+	 * @return int|\WP_Error
+	 */
 	protected function createUnconfirmedBookingEndingTomorrow() {
 		return $this->createBooking(
 			$this->locationId,
@@ -181,8 +189,8 @@ abstract class CustomPostTypeTest extends TestCase {
 		$itemId,
 		$repetitionStart,
 		$repetitionEnd,
-		$startTime = '8:00 AM',
-		$endTime = '12:00 PM',
+		$startTime = '0:00 AM',
+		$endTime = '23:59 PM',
 		$postStatus = 'confirmed',
 		$postAuthor = self::USER_ID,
 		$timeframeRepetition = 'w',
@@ -220,15 +228,35 @@ abstract class CustomPostTypeTest extends TestCase {
 		return strtotime( '+1 day midnight', strtotime( $date ) ) - 1;
 	}
 
-	protected function createConfirmedBookingStartingToday() {
+	/**
+	 * Creates booking from midnight -> +2 days (relative to self::CURRENT_DATE)
+	 * @param $locationId
+	 * @param $itemId
+	 *
+	 * @return int|\WP_Error
+	 */
+	protected function createConfirmedBookingStartingToday($locationId = null, $itemId = null) {
+		if ( $locationId === null ) {
+			$locationId = $this->locationId;
+		}
+		if ( $itemId === null ) {
+			$itemId = $this->itemId;
+		}
 		return $this->createBooking(
-			$this->locationId,
-			$this->itemId,
+			$locationId,
+			$itemId,
 			strtotime( 'midnight', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
 		);
 	}
 
+	/**
+	 * Creates timeframe from -1 day -> +1 day (relative to self::CURRENT_DATE)
+	 * @param $locationId
+	 * @param $itemId
+	 *
+	 * @return int|\WP_Error
+	 */
 	protected function createBookableTimeFrameIncludingCurrentDay($locationId = null, $itemId = null) {
 		if ( $locationId === null ) {
 			$locationId = $this->locationId;
@@ -315,6 +343,13 @@ abstract class CustomPostTypeTest extends TestCase {
 		return [ $tf1, $tf2 ];
 	}
 
+	/**
+	 * Creates timeframe from +7 days -> +30 days (relative to self::CURRENT_DATE)
+	 * @param $locationId
+	 * @param $itemId
+	 *
+	 * @return int|\WP_Error
+	 */
 	protected function createBookableTimeFrameStartingInAWeek($locationId = null, $itemId = null) {
 		if ( $locationId === null ) {
 			$locationId = $this->locationId;

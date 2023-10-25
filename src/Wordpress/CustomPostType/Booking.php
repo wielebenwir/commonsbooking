@@ -64,9 +64,6 @@ class Booking extends Timeframe {
 		// Set Tepmlates
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
 
-        // remove author metabox because we set author in the booking user field
-        add_action( 'init', array( $this, 'removeAuthorField' ), 99 );
-
 		// Listing of bookings for current user
 		add_shortcode( 'cb_bookings', array( \CommonsBooking\View\Booking::class, 'shortcode' ) );
 
@@ -82,16 +79,6 @@ class Booking extends Timeframe {
 		add_action( 'admin_notices', array( $this, 'displayBookingsAdminListNotice' ) );
         add_action( 'edit_form_top', array( $this, 'displayOverlappingBookingNotice' ), 99 );
 	}
-
-    /**
-     * Removes author field in CPT booking
-     * Why: we set the autor dynamically based on admin bookins so we don't want the ability to override this setting by user
-     *
-     * @return void
-     */
-    public function removeAuthorField() : void {
-        remove_post_type_support( self::$postType, 'author' );
-    }
 
     /**
      * Adds and modifies some booking CPT fields in order to make admin boookings
@@ -287,7 +274,7 @@ class Booking extends Timeframe {
 			}
 		}
 
-		// add internal comment if admin edited booking via frontend
+		// add internal comment if admin edited booking via frontend TODO: This does not happen anymore, no admin bookings are made through the frontend
 		if ( $booking && $booking->post_author !== '' && intval( $booking->post_author ) !== intval( get_current_user_id() ) ) {
 			$postarr['meta_input']['admin_booking_id'] = get_current_user_id();
 			$internal_comment                          = esc_html__( 'status changed by admin user via frontend. New status: ', 'commonsbooking' ) . $post_status;
@@ -502,7 +489,7 @@ class Booking extends Timeframe {
 
 		// Backend listing columns.
 		$this->listColumns = [
-			'timeframe-author' => esc_html__( 'User', 'commonsbooking' ),
+			'booking_user'   => esc_html__( 'User', 'commonsbooking' ),
 			'item-id'          => esc_html__( 'Item', 'commonsbooking' ),
 			'location-id'      => esc_html__( 'Location', 'commonsbooking' ),
 			'post_date'        => esc_html__( 'Bookingdate', 'commonsbooking' ),
@@ -587,7 +574,7 @@ class Booking extends Timeframe {
 			'view_item'             => esc_html__( 'Show booking', 'commonsbooking' ),
 			'view_items'            => esc_html__( 'Show bookings', 'commonsbooking' ),
 			'search_items'          => esc_html__( 'Search bookings', 'commonsbooking' ),
-			'not_found'             => esc_html__( 'Timeframes not found', 'commonsbooking' ),
+			'not_found'             => esc_html__( 'Bookings not found', 'commonsbooking' ),
 			'not_found_in_trash'    => esc_html__( 'No bookings found in trash', 'commonsbooking' ),
 			'parent_item_colon'     => esc_html__( 'Parent bookings:', 'commonsbooking' ),
 			'all_items'             => esc_html__( 'All bookings', 'commonsbooking' ),
@@ -637,7 +624,7 @@ class Booking extends Timeframe {
 			'exclude_from_search' => true,
 
 			// Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
-			'supports'            => array( 'title', 'author', 'revisions' ),
+			'supports'            => array( 'title', 'revisions' ),
 
 			// Soll der Post Type Archiv-Seiten haben?
 			'has_archive'         => false,
@@ -667,10 +654,10 @@ class Booking extends Timeframe {
         }
 
 		// we alter the  author column data and link the username to the user profile
-		if ( $column == 'timeframe-author' ) {
+		if ( $column == 'booking_user' ) {
 			$post           = get_post( $post_id );
-			$timeframe_user = get_user_by( 'id', $post->post_author );
-			echo '<a href="' . get_edit_user_link( $timeframe_user->ID ) . '">' . commonsbooking_sanitizeHTML( $timeframe_user->user_login ) . '</a>';
+			$bookingUser = get_user_by( 'id', $post->post_author );
+			echo '<a href="' . get_edit_user_link( $bookingUser->ID ) . '">' . commonsbooking_sanitizeHTML( $bookingUser->user_login ) . '</a>';
 		}
 
 		if ( $value = get_post_meta( $post_id, $column, true ) ) {
@@ -733,6 +720,19 @@ class Booking extends Timeframe {
             }
 		}
     }
+
+	public function setCustomColumnSortOrder( \WP_Query $query ) {
+		if (! parent::setCustomColumnSortOrder( $query ) ) {
+			return;
+		}
+
+		switch ( $query->get( 'orderby' ) ) {
+			case 'booking_user':
+				$query->set( 'orderby', 'author' );
+				break;
+		}
+	}
+
 
 	/**
 	 * Registers metaboxes for cpt.
@@ -864,7 +864,7 @@ class Booking extends Timeframe {
 				'id'               => 'booking_user',
 				'type'             => 'user_ajax_search',
                 'multiple-items'   => true,
-                'default'          => array( self::class, 'getFrontendBookingAuthor' ),
+                'default'          => array( self::class, 'getFrontendBookingUser' ),
                 'desc'             => commonsbooking_sanitizeHTML(
                     __(
                         'Here you must select the user for whom the booking is made.<br>
@@ -940,13 +940,163 @@ class Booking extends Timeframe {
         }
     }
 
+	/**
+	 * Export user bookings using the supplied email. This is for integration with the WordPress personal data exporter.
+	 *
+	 * @param string $emailAddress
+	 * @param $page
+	 *
+	 * @return array
+	 */
+	public static function exportUserBookingsByEmail( string $emailAddress, $page = 1 ): array {
+		$page = intval( $page );
+		$itemsPerPage = 10;
+		$exportItems = array();
+		//The internal group ID used by WordPress to group the data exported by this exporter.
+		$groupID = 'bookings';
+		$groupLabel = __( 'CommonsBooking Bookings', 'commonsbooking' );
+
+		$user = get_user_by( 'email', $emailAddress );
+		if ( ! $user ) {
+		   return array(
+	           'data' => $exportItems,
+	           'done' => true,
+		   );
+		}
+		$bookings = \CommonsBooking\Repository\Booking::getForUserPaginated( $user, $page, $itemsPerPage );
+		if ( ! $bookings ) {
+		   return array(
+			'data' => $exportItems,
+			'done' => true,
+		   );
+		}
+		foreach ($bookings as $booking) {
+			$bookingID = $booking->ID;
+			//exclude bookings that the user is eligible to see but are not their own
+			// we are only concerned about one user's personal data
+			if ( $booking->getUserData()->user_email !== $emailAddress ) {
+				continue;
+			}
+			$bookingData = [
+				[
+					'name'  => __( 'Booking start', 'commonsbooking' ),
+					'value' => $booking->pickupDatetime() ,
+				],
+				[
+					'name'  => __( 'Booking end', 'commonsbooking' ),
+					'value' => $booking->returnDatetime(),
+				],
+				[
+					'name'  => __( 'Time of booking', 'commonsbooking' ),
+					'value' => Helper::FormattedDateTime(get_post_timestamp( $bookingID ) ),
+				],
+				[
+					'name'  => __( 'Status', 'commonsbooking' ),
+					'value' => $booking->getStatus(),
+				],
+				[
+					'name'  => __( 'Booking code', 'commonsbooking' ),
+					'value' => $booking->getBookingCode(),
+				],
+				[
+					'name'  => __( 'Comment', 'commonsbooking' ),
+					'value' => $booking->returnComment(),
+				],
+				[
+					'name'  => __( 'Location', 'commonsbooking' ),
+					'value' => $booking->getLocation()->post_title,
+				],
+				[
+					'name'  => __( 'Item', 'commonsbooking' ),
+					'value' => $booking->getItem()->post_title,
+				],
+				[
+					'name'  => __( 'Time of cancellation', 'commonsbooking' ),
+					'value' => $booking->getMeta( 'cancellation_time' ) ? Helper::FormattedDateTime( $booking->getMeta( 'cancellation_time' ) ) : '',
+				],
+				[
+					'name'  => __( 'Admin booking by', 'commonsbooking' ),
+					'value' => $booking->getMeta( 'admin_booking_id' ) ? get_user_by( 'id', $booking->getMeta( 'admin_booking_id' ) )->display_name : '',
+				],
+			];
+
+			$exportItems[] = [
+				'group_id'    => $groupID,
+				'group_label' => $groupLabel,
+				'item_id'     => $bookingID,
+				'data'        => $bookingData,
+			];
+		 }
+		$done = count( $bookings ) < $itemsPerPage;
+		return array(
+			'data' => $exportItems,
+			'done' => $done,
+		);
+	}
+
+	/**
+	 * Remove user bookings using the supplied email. This is for integration with the WordPress personal data eraser.
+	 * @param string $emailAddress The email address
+	 * @param $page This parameter has no real use in this function, we just use it to stick to WordPress expected parameters.
+	 *
+	 * @return array
+	 */
+	public static function removeUserBookingsByEmail( string $emailAddress, $page = 1 ): array {
+		//we reset the page to 1, because we are deleting our results as we go. Therefore, increasing the page number would skip some results.
+		$page = 1;
+		$itemsPerPage = 10;
+		$removedItems = false;
+
+		$user = get_user_by( 'email', $emailAddress );
+		if ( ! $user ) {
+			return array(
+				'items_removed'  => $removedItems,
+				'items_retained' => false,
+				'messages'       => array(),
+				'done'           => true,
+			);
+		}
+		$bookings = \CommonsBooking\Repository\Booking::getForUserPaginated( $user, $page, $itemsPerPage );
+		if ( ! $bookings ) {
+			return array(
+				'items_removed'  => $removedItems,
+				'items_retained' => false,
+				'messages'       => array(),
+				'done'           => true,
+			);
+		}
+		foreach ($bookings as $booking) {
+			$bookingID = $booking->ID;
+			//exclude bookings that the user is eligible to see but are not their own
+			// we are only concerned about one user's personal data
+			if ( $booking->getUserData()->user_email !== $emailAddress ) {
+				continue;
+			}
+			//Cancel the booking before deletion so that status change emails are sent
+			$booking->cancel();
+			//Delete the booking
+			wp_delete_post( $bookingID, true );
+			$removedItems = true;
+		}
+
+		$done = count( $bookings ) < $itemsPerPage;
+		return array(
+			'items_removed'  => $removedItems,
+			'items_retained' => false, // always false, we don't retain any data
+			'messages'       => array(),
+			'done'           => $done,
+		);
+	}
+
     /**
-     * Returns the booking author if booking exists, otherwise returns current user
+     * Returns the user that a specific booking is for if booking exists, otherwise returns current user.
+     * The post_author of a booking is always who the booking is for but not always the one who MADE the booking.
+     * A booking can be created by an admin but still be for a different user.
      * This is helper function
      *
      * @return int|string
      */
-    public static function getFrontendBookingAuthor() {
+    public static function getFrontendBookingUser() {
         global $post;
         if ( $post ) {
             $authorID = $post->post_author;

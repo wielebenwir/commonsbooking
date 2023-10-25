@@ -29,10 +29,13 @@ class Booking extends View {
 	}
 
 	/**
+	 * @param int $postsPerPage
+	 * @param \WP_User|null $user
+	 *
 	 * @return array|false|mixed
 	 * @throws Exception
 	 */
-	public static function getBookingListData($postsPerPage = 6, $user = null) {
+	public static function getBookingListData( int $postsPerPage = 6, \WP_User $user = null) {
 
 		//sets selected user to current user when no specific user is passed
 		if ($user == null) {
@@ -325,6 +328,10 @@ class Booking extends View {
 		$eventDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );
 
 		$user = get_user_by('id', $user);
+
+		if (!$user){
+			return false;
+		}
 
 		$bookingList = self::getBookingListData(999,$user);
 
