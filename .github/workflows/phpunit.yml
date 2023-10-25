@@ -69,9 +69,8 @@ jobs:
       run: |
         composer dump-autoload -o
         curl -ksSfL -o ~/phpunit-9.phar https://phar.phpunit.de/phpunit-9.phar
-        php ~/phpunit-9.phar --version
         php ~/phpunit-9.phar
- 
+
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
       with:
