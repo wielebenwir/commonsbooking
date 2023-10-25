@@ -479,6 +479,11 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			throw new TimeframeInvalidException( __('Location not found', 'commonsbooking' ) );
 		}
 
+		$timeframe = $this->getBookableTimeFrame();
+		if ( $timeframe === null ) {
+			throw new TimeframeInvalidException( __( 'There is no timeframe for this booking. Please create a timeframe first.', 'commonsbooking' ) );
+		}
+
 		// validate if overlapping bookings exist
 		$overlappingBookings = \CommonsBooking\Repository\Booking::getExistingBookings(
 			$item->ID,
@@ -580,7 +585,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Helper to return the email signature configured in the options array
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getEmailSignature(): string {
@@ -599,7 +604,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
             Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'user_details_template' )
         );
     }
-    
+
     /**
      * Returns formatted backend edit link of current booking
      *

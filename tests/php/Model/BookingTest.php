@@ -406,6 +406,22 @@ class BookingTest extends CustomPostTypeTest {
 			$this->assertInstanceOf( TimeframeInvalidException::class, $e );
 			$this->assertStringContainsString( 'Location not found', $e->getMessage() );
 		}
+
+		$bookingPastTimeframe = new Booking(
+			$this->createBooking(
+				$locationID,
+				$itemID,
+				strtotime( '+25 days',  strtotime(self::CURRENT_DATE) ),
+				strtotime( '+30 days', strtotime(self::CURRENT_DATE) ),
+			)
+		);
+		try {
+			$bookingPastTimeframe->isValid();
+			$this->fail( 'Expected exception not thrown' );
+		} catch ( TimeframeInvalidException $e ) {
+			$this->assertInstanceOf( TimeframeInvalidException::class, $e );
+			$this->assertStringContainsString( 'There is no timeframe for this booking. Please create a timeframe first.', $e->getMessage() );
+		}
 	}
 
 	/**
