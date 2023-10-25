@@ -32,8 +32,9 @@ describe('load shortcodes', () => {
         cy.visit('/?page_id=22')
         //wait a little bit to make sure the map tiles are loaded
         cy.wait(5000)
-        const mapID = 'cb-map-36'
-        cy.get('#' + mapID).should('be.visible')
+        //const mapID = 'cb-map-36'
+        //cy.get('#cb-app').should('be.visible')
+        cy.get('.leaflet-container').should('be.visible')
         // Unfortunately I couldn't find a way to test the map itself without creating a new instance (which would not check if the data is correct)
         //That's why there is only the screenshot test
         cy.screenshot('cb-map-shortcode')

@@ -30,6 +30,8 @@ echo "Installing PHP and JS dependencies..."
 npm ci
 echo "Running JS Build..."
 grunt dist || exit "$?"
+echo "Running copy task"
+npx grunt copy node_versions
 echo "Cleaning up PHP dependencies..."
 composer install --no-dev --ignore-platform-reqs || exit "$?"
 echo "Syncing files..."
