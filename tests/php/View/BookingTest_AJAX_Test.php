@@ -1,6 +1,6 @@
 <?php
 
-namespace CommonsBooking\Tests\Service;
+namespace CommonsBooking\Tests\View;
 
 use CommonsBooking\Service\TimeframeExport;
 use CommonsBooking\Settings\Settings;
@@ -59,9 +59,12 @@ class BookingTest_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		}
 		//we have to remove the deprecation warnings from the response
 		$response = explode( "\n", $this->_last_response );
-		$response = json_decode( end( $response ) );
+		$jsonResponse      = end( $response );
+		$this->assertJson($jsonResponse);
+		$response = json_decode( $jsonResponse );
 		$this->assertTrue ( $response->success );
 		$this->assertEquals( $response->locationID, $this->locationID );
+		$this->assertTrue( $response->fullDay );
 	}
 
 	public function set_up() {

@@ -272,6 +272,8 @@ class Booking extends View {
 
 	/**
 	 * The function that processes the AJAX request to get a corresponding location for an item.
+	 *
+	 * Test @see \CommonsBooking\Tests\View\BookingTest_AJAX_TEST::testGetLocationForItem_AJAX()
 	 * @return void
 	 */
 	public static function getLocationForItem_AJAX() {
@@ -285,6 +287,16 @@ class Booking extends View {
 		try {
 			$itemModel = new \CommonsBooking\Model\Item($itemID);
 			$location = \CommonsBooking\Repository\Location::getByItem($itemID, true);
+			//pick the first location, no matter what
+			$location = reset($location);
+			$timeframe = Timeframe::getBookable(
+				[ $location->ID ],
+				[ $itemID ],
+				null,
+				true
+			);
+			/** @var \CommonsBooking\Model\Timeframe $timeframe */
+			$timeframe = reset($timeframe);
 		}
 		catch (Exception $e) {
 			//This won't be displayed anywhere
@@ -292,12 +304,11 @@ class Booking extends View {
 				'message' => $e->getMessage()
 			) );
 		}
-		//pick the first location, no matter what
-		$location = reset($location);
 		if ($location) {
 			wp_send_json( array(
-				'success' => true,
-				'locationID'                 => $location->ID
+				'success'     => true,
+				'locationID'  => $location->ID,
+				'fullDay'     => $timeframe->isFullDay()
 				)
 			);
 		}
@@ -311,6 +322,8 @@ class Booking extends View {
 
 	/**
 	 * The function that processes the AJAX request to get a valid booking code for
+	 *
+	 * Test @see \CommonsBooking\Tests\View\BookingTest_AJAX_TEST::testGetBookingCode_AJAX()
 	 * @return void
 	 */
 	public static function getBookingCode_AJAX() {
