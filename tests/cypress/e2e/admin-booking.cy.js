@@ -16,8 +16,10 @@ describe('test backend booking', () => {
     cy.get('#title').type('Test booking')
     //TODO: get this data from fixtures
     cy.get('#item-id').select('BasicTest - NoAdmin')
-    cy.get('#location-id').select('BasicTest - Köln Dom LocMap NoAdmin')
-    cy.get('#full-day').check()
+    //make sure, that the correct location is automatically selected, 32 is the id of the location
+    cy.get('#location-id').should('have.value','32')
+    //the checkbox should be checked because the timeframe is a full-day timeframe
+    cy.get('#full-day').should('be.checked')
     cy.get('#repetition-start_date').clear().type(expectedStartDate).type('{esc}');
     cy.get('#repetition-end_date').clear().type(expectedEndDate).type('{esc}');
     //click post button

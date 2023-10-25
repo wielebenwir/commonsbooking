@@ -38,6 +38,8 @@
                     }, function (data) {
                         if (data.success) {
                             locationInput.val(data.locationID);
+                            fullDayCheckbox.prop('checked', data.fullDay);
+                            fullDayCheckbox.trigger('change');
                         }
                     }).then(() =>  {
                         fetchBookingCode()
@@ -45,6 +47,8 @@
             };
             fetchLocation(data);
         });
+        //immediately fetch location (and booking code) when the page is loaded
+        itemInput.trigger('change');
 
         const fetchBookingCode = () => {
             if (! fullDayCheckbox.is(':checked')) {
