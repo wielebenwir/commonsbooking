@@ -467,7 +467,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 				throw new Exception();
 			}
 		} catch ( Exception $e ) {
-			throw new TimeframeInvalidException( 'Item not found' );
+			throw new TimeframeInvalidException( __('Item not found', 'commonsbooking' ) );
 		}
 
 		try {
@@ -476,7 +476,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 				throw new Exception();
 			}
 		} catch ( Exception $e ) {
-			throw new TimeframeInvalidException( 'Location not found' );
+			throw new TimeframeInvalidException( __('Location not found', 'commonsbooking' ) );
 		}
 
 		// validate if overlapping bookings exist
