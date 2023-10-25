@@ -10,6 +10,10 @@ use CommonsBooking\Wordpress\Options\OptionsTab;
 use DateTime;
 use Exception;
 
+/**
+ * This class is a Booking Rule BEFORE it is applied, an object from this class can be used to show the configuration for a
+ * BookingRule in the backend. It also contains the definitions and closures for the individual rules.
+ */
 class BookingRule {
 	/**
 	 * The name of the rule, needs to be unique and is used to identify the rule in the code

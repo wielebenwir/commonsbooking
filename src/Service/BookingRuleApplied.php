@@ -10,7 +10,9 @@ use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 
 /**
- *
+ * An object of this class represents a saved BookingRule, that can be applied to bookings.
+ * Apart from the properties and methods of the BookingRule class, this also contains
+ * the configured parameters for the rule, the categories it applies to and the roles it is exempt from. (Configured when setting up a rule from the backend)
  */
 class BookingRuleApplied extends BookingRule {
 
@@ -24,6 +26,7 @@ class BookingRuleApplied extends BookingRule {
 	private array $excludedRoles;
 
 	/**
+	 * Will construct a BookingRuleApplied object from an existing BookingRule.
 	 * @param BookingRule $rule
 	 *
 	 * @throws BookingRuleException
@@ -43,7 +46,6 @@ class BookingRuleApplied extends BookingRule {
 
 	/**
 	 * Will set what this Booking Rule applies to, either needs to be all or at least one category
-	 *
 	 *
 	 * @param   bool   $appliesToAll
 	 * @param   array  $appliedTerms
