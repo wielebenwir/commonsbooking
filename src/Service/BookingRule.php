@@ -429,8 +429,7 @@ class BookingRule {
 	 *
 	 * Params: $args[0] : The amount of days the user is allowed to book per week
 	 * 	       $args[1] : Unused
-	 *         $args[2]:  The day on which the counter is reset, default: 0 = monday
-	 *                     1 = Tuesday, 2 = Wednesday, ..., 6 = sunday
+	 *         $args[2]:  The day on which the counter is reset, default: 0 = sunday, 1 = monday, 2 = tuesday, ..., 6 = saturday
 	 *
 	 *
 	 * @param Booking $booking
@@ -441,48 +440,26 @@ class BookingRule {
 	 */
 	public static function checkMaxBookingsPerWeek(Booking $booking, array $args, $appliedTerms = false): ?array {
 		$allowedBookableDays = $args[0];
-		$resetDay = $args[2];
-		switch ($resetDay):
-			case 0:
-				$resetDayString = 'sunday';
-				break;
-			case 1:
-				$resetDayString = 'monday';
-				break;
-			case 2:
-				$resetDayString = 'tuesday';
-				break;
-			case 3:
-				$resetDayString = 'wednesday';
-				break;
-			case 4:
-				$resetDayString = 'thursday';
-				break;
-			case 5:
-				$resetDayString = 'friday';
-				break;
-			case 6:
-				$resetDayString = 'saturday';
-				break;
-			default:
-				$resetDayString = 'monday';
-				break;
-		endswitch;
+		//default is sunday
+		$resetDay = ($args[2] < 6 && $args[2] >= 0) ? $args[2] : 0;
+		//now apply the reset day to the booking date to get the string for the reset day
+		// 0 = sunday, 1 = monday, 2 = tuesday, ..., 6 = saturday
+		$resetDayString = strtolower(date('l', strtotime("Sunday +{$resetDay} days")));
+
 		$bookingDate = $booking->getStartDateDateTime();
 		$startOfWeek = clone $bookingDate;
 		$endOfWeek = clone $bookingDate;
 
-		//check if the current day is the reset day
+		// Check if the current day is the reset day
 		if ($startOfWeek->format('w') == $resetDay) {
-			//if so, we need to just need to add 7 days to the end of the week
+			// If so, just add 7 days to the end of the week
 			$endOfWeek->modify('+7 days');
-		}
-		else {
+		} else {
 			$startOfWeek->modify('last ' . $resetDayString);
 			$endOfWeek->modify('next ' . $resetDayString);
 		}
-		return self::checkBookingRange( $startOfWeek, $endOfWeek, $booking, $appliedTerms, $allowedBookableDays );
 
+		return self::checkBookingRange($startOfWeek, $endOfWeek, $booking, $appliedTerms, $allowedBookableDays);
 	}
 
 	public static function maxDaysWeekErrorMessage(array $args): string {

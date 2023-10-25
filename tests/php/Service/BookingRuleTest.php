@@ -247,10 +247,10 @@ class BookingRuleTest extends CustomPostTypeTest
 		$this->assertNull( BookingRule::checkMaxBookingDays( $allowedBooking, array( 4, 30 ) ) );
 	}
 
-	public function testMaxBookingPerWeek() {
+	public function testCheckMaxBookingsPerWeek() {
 		//rule settings
 		$allowedPerWeek = 2;
-		$resetDay = '0'; //monday
+		$resetDay = '0'; //sunday
 		$optionsArray = array(
 			$allowedPerWeek,
 			null,
