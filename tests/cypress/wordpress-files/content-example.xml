@@ -183,7 +183,7 @@
 		<guid isPermaLink="false">http://localhost:1001/?page_id=22</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:shortcode -->
-[cb_map id=36]
+[cb_search id=36]
 <!-- /wp:shortcode -->]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
 		<wp:post_id>22</wp:post_id>
