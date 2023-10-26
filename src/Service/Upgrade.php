@@ -55,7 +55,7 @@ class Upgrade
 	 */
 	public function run(): bool {
 		// check if version has changed, or it is a new installation
-		if ( empty($this->currentVersion) || $this->previousVersion == $this->currentVersion ) {
+		if ( ! empty($this->previousVersion) && ( $this->previousVersion == $this->currentVersion  ) ) {
 			return false;
 		}
 
