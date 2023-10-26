@@ -33,7 +33,7 @@ class UpgradeTest extends CustomPostTypeTest
 		\CommonsBooking\Settings\Settings::updateOption(
 			'commonsbooking_options_templates',
 			'emailtemplates_mail-booking_ics_event-title',
-			'Booking for {{item:post_name}}'
+		'Booking for {{item:post_name}}'
 		);
 		\CommonsBooking\Settings\Settings::updateOption(
 			COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options',
@@ -45,8 +45,8 @@ class UpgradeTest extends CustomPostTypeTest
 		$this->assertEquals('Booking for {{item:post_title}}', \CommonsBooking\Settings\Settings::getOption(COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title'));
 	}
 
-	public function testIsMajorUpdate()
-	{
+    public function testIsMajorUpdate()
+    {
 		$majorUpdate = new Upgrade('2.5.0', '2.6.0');
 		$this->assertTrue($majorUpdate->isMajorUpdate());
 		$minorUpdate = new Upgrade('2.5.0', '2.5.1');
