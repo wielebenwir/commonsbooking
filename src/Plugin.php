@@ -501,19 +501,6 @@ class Plugin {
 	}
 
 	/**
-	 * Gets location position for locations without coordinates.
-	 */
-	public static function updateLocationCoordinates() {
-		$locations = Repository\Location::get();
-
-		foreach ( $locations as $location ) {
-			if ( ! ( $location->getMeta( 'geo_latitude' ) && $location->getMeta( 'geo_longitude' ) ) ) {
-				$location->updateGeoLocation();
-			}
-		}
-	}
-
-	/**
 	 *  Init hooks.
 	 */
 	public function init() {
