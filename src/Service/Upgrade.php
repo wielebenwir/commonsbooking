@@ -38,7 +38,8 @@ class Upgrade
 			[\CommonsBooking\Service\Scheduler::class, 'unscheduleOldEvents']
 		],
 		'2.8.2' => [
-			[self::class, 'resetBrokenColorScheme']
+			[self::class, 'resetBrokenColorScheme'],
+			[self::class, 'fixBrokenICalTitle']
 		]
 	];
 
