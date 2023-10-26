@@ -13,6 +13,20 @@ class Restriction extends PostRepository {
 
 	/**
 	 * Returns active restrictions.
+	 *
+	 * If both $locations and $items are empty, all restrictions will be returned.
+	 *
+	 * WARNING: When setting either $locations or $items, the query will be filtered by both.
+	 *          Meaning, that if $locations is not empty, but $items is, only restrictions that apply to all items will be returned.
+	 *          So, if a restriction is created that applies to the location but only to one item, it will not be returned if you just query for the location.
+	 *
+	 * @param array $locations Array of location ids
+	 * @param array $items Array of item ids
+	 * @param string|null $date
+	 * @param bool $returnAsModel
+	 * @param null $minTimestamp
+	 * @param array $postStatus
+	 *
 	 * @return \CommonsBooking\Model\Restriction[]
 	 * @throws Exception
 	 */

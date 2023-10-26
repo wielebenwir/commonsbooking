@@ -244,6 +244,9 @@ class Location extends BookablePost {
 	/**
 	 * Will get the currently applicable restrictions for the location.
 	 *
+	 * This function is not used anywhere yet.
+	 * WARNING: This function is partially broken, the \CommonsBooking\Repository\Restriction::get
+	 * will only return restrictions that apply to all items, when the $locations or $items parameter is left empty.
 	 * @return Restriction[]
 	 * @throws \Exception
 	 */

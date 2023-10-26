@@ -66,6 +66,8 @@ class Item extends BookablePost {
 	 * Returns all applicable restrictions for this item.
 	 *
 	 * This function is not used anywhere yet.
+	 * WARNING: This function is partially broken, the \CommonsBooking\Repository\Restriction::get
+	 * will only return restrictions that apply to all items, when the $locations or $items parameter is left empty.
 	 * @return array
 	 * @throws Exception
 	 */
