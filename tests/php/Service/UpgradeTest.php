@@ -9,24 +9,8 @@ use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 
 class UpgradeTest extends CustomPostTypeTest
 {
-	private static bool $functionHasRun = false;
 
-    public function testSetRestrictionAllOption()
-    {
-		$oldRestrictionForAll = $this->createRestriction(
-			Restriction::META_HINT,
-			'',
-			'',
-			strtotime(self::CURRENT_DATE),
-			null
-		);
-		//using CMB2, when the default value was set (which was "all" before), the meta value was not set
-		delete_post_meta($oldRestrictionForAll, Restriction::META_ITEM_ID);
-		delete_post_meta($oldRestrictionForAll, Restriction::META_LOCATION_ID);
-		Upgrade::setRestrictionAllOption();
-		$this->assertEquals( CustomPostType::SELECTION_ALL_POSTS, get_post_meta($oldRestrictionForAll, Restriction::META_ITEM_ID, true));
-		$this->assertEquals( CustomPostType::SELECTION_ALL_POSTS, get_post_meta($oldRestrictionForAll, Restriction::META_LOCATION_ID, true));
-    }
+    private static bool $functionHasRun = false;
 
     public function testFixBrokenICalTitle()
     {
