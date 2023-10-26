@@ -239,7 +239,7 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns item name for the item that is restricted.
 	 *
-	 * DEPRECATED: This is not used anywhere in the code. Besides, the function is broken since it does not consider the case where multiple items are selected.
+	 * @deprecated: This is not used anywhere in the code. Besides, the function is broken since it does not consider the case where multiple items are selected.
      *
 	 * @return string
 	 */
