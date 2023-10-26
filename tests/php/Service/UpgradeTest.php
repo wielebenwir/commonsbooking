@@ -54,6 +54,13 @@ class UpgradeTest extends CustomPostTypeTest
 		$this->assertEquals($shouldRunFunction, self::$functionHasRun);
 	}
 
+	/**
+	 * The set_up defines a fake upgrade task that should only run when upgrading on or over version 2.5.2.
+	 * The data provider will provide different upgrade conditions and the test will check if the function has run or not.
+	 * true means, that the function is expected to run under these conditions, false means it is not expected to run.
+	 *
+	 * @return array[]
+	 */
 	public function provideUpgradeConditions() {
 		return array(
 			"Upgrade directly on version with new function (major)" => ["2.4.0", "2.5.2", true],
