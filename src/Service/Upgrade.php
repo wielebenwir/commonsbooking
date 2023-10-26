@@ -59,8 +59,10 @@ class Upgrade
 			return false;
 		}
 
-		// run upgrade tasks
+		// run upgrade tasks that are specific for version updates and should only run once
 		$this->runUpgradeTasks();
+
+		//the following tasks will be run on every update
 
 		// set Options default values (e.g. if there are new fields added)
 		AdminOptions::SetOptionsDefaultValues();
