@@ -9,10 +9,13 @@ use CommonsBooking\Wordpress\Options\AdminOptions;
 use Psr\Cache\InvalidArgumentException;
 
 /**
- * This class contains all the functions that are run when the plugin is upgraded to a new version.
- * When upgrading, create a new instance of this class and call the run() function.
+ * This class contains migration functionality that is run when the plugin is upgraded
+ * to a newer version. When upgrading, create a new instance of this class and call the
+ * run() function.
  *
- * The versions should use semantic versioning (https://semver.org/).
+ * At the moment you can implement your own migrations in $upgradeTasks.
+ *
+ * A version string must be given in semantic versioning format (https://semver.org/).
  */
 class Upgrade {
 
@@ -42,6 +45,12 @@ class Upgrade {
 		]
 	];
 
+	/**
+	 * Constructs new upgrade object for a version range
+	 *
+	 * @param string $previousVersion
+	 * @param string $currentVersion
+	 */
 	public function __construct( string $previousVersion, string $currentVersion ) {
 		$this->previousVersion = $previousVersion;
 		$this->currentVersion  = $currentVersion;
@@ -54,7 +63,7 @@ class Upgrade {
 	 */
 	public function run(): bool {
 		// check if version has changed, or it is a new installation
-		if ( ! empty( $this->previousVersion ) && ( $this->previousVersion == $this->currentVersion ) ) {
+		if ( ! empty( $this->previousVersion ) && ( $this->previousVersion === $this->currentVersion ) ) {
 			return false;
 		}
 
@@ -93,6 +102,7 @@ class Upgrade {
 	 * @return void
 	 */
 	public function runUpgradeTasks() : void {
+		// TODO let thirdparty plugins be able to hook into this part, then they don't have to add their own implementation of this class
 		foreach ( self::$upgradeTasks as $version => $tasks ) {
 			if ( version_compare( $this->previousVersion, $version, '<' ) && version_compare( $this->currentVersion, $version, '>=' ) ) {
 				foreach ( $tasks as $task ) {
@@ -108,7 +118,7 @@ class Upgrade {
 	 *
 	 * @return void
 	 */
-	public static function runTasksAfterUpdate() : void  {
+	public static function runTasksAfterUpdate() : void {
 		$upgrade = new Upgrade(
 			esc_html( get_option( self::VERSION_OPTION ) ),
 			COMMONSBOOKING_VERSION
