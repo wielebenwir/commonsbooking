@@ -5,7 +5,6 @@ namespace CommonsBooking\Service;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\Options\AdminOptions;
 use Psr\Cache\InvalidArgumentException;
 
@@ -93,7 +92,7 @@ class Upgrade {
 	 *
 	 * @return void
 	 */
-	public function runUpgradeTasks() {
+	public function runUpgradeTasks() : void {
 		foreach ( self::$upgradeTasks as $version => $tasks ) {
 			if ( version_compare( $this->previousVersion, $version, '<' ) && version_compare( $this->currentVersion, $version, '>=' ) ) {
 				foreach ( $tasks as $task ) {
@@ -109,7 +108,7 @@ class Upgrade {
 	 *
 	 * @return void
 	 */
-	public static function runTasksAfterUpdate() {
+	public static function runTasksAfterUpdate() : void  {
 		$upgrade = new Upgrade(
 			esc_html( get_option( self::VERSION_OPTION ) ),
 			COMMONSBOOKING_VERSION
@@ -122,9 +121,9 @@ class Upgrade {
 	 * in a major release e.g. 2.5 -> 2.6
 	 * This is a warning to users BEFORE they update to a new version.
 	 *
-	 * @return void
+	 * @return void (but renders html)
 	 */
-	public function updateNotice() {
+	public function updateNotice() : void {
 		if ( ! $this->isMajorUpdate() ) {
 			return;
 		}
@@ -194,7 +193,7 @@ class Upgrade {
 	/**
 	 * Gets location position for locations without coordinates.
 	 */
-	public static function updateLocationCoordinates() {
+	public static function updateLocationCoordinates() : void {
 		$locations = \CommonsBooking\Repository\Location::get();
 
 		foreach ( $locations as $location ) {
@@ -212,7 +211,7 @@ class Upgrade {
 	 *
 	 * @return void
 	 */
-	public static function setAdvanceBookingDaysDefault() {
+	public static function setAdvanceBookingDaysDefault() : void {
 		$timeframes = \CommonsBooking\Repository\Timeframe::getBookable( [], [], null, true );
 
 		foreach ( $timeframes as $timeframe ) {
@@ -228,7 +227,7 @@ class Upgrade {
 	 * @since 2.8.2
 	 * @return void
 	 */
-	public static function resetBrokenColorScheme() {
+	public static function resetBrokenColorScheme() : void {
 		Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor', '#e0e0e0' );
 		Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_lighttext', '#a0a0a0' );
 	}
@@ -239,7 +238,7 @@ class Upgrade {
 	 * @since 2.8.2
 	 * @return void
 	 */
-	public static function fixBrokenICalTitle() {
+	public static function fixBrokenICalTitle() : void {
 		$eventTitle      = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
 		$otherEventTitle = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
 		if ( str_contains( $eventTitle, 'post_name' ) ) {
