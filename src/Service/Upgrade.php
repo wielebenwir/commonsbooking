@@ -15,8 +15,8 @@ use Psr\Cache\InvalidArgumentException;
  *
  * The versions should use semantic versioning (https://semver.org/).
  */
-class Upgrade
-{
+class Upgrade {
+
 	const VERSION_OPTION = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
 	private string $previousVersion;
 	private string $currentVersion;
@@ -55,14 +55,14 @@ class Upgrade
 	 */
 	public function run(): bool {
 		// check if version has changed, or it is a new installation
-		if ( ! empty($this->previousVersion) && ( $this->previousVersion == $this->currentVersion  ) ) {
+		if ( ! empty( $this->previousVersion ) && ( $this->previousVersion == $this->currentVersion ) ) {
 			return false;
 		}
 
 		// run upgrade tasks that are specific for version updates and should only run once
 		$this->runUpgradeTasks();
 
-		//the following tasks will be run on every update
+		// the following tasks will be run on every update
 
 		// set Options default values (e.g. if there are new fields added)
 		AdminOptions::SetOptionsDefaultValues();
@@ -90,14 +90,15 @@ class Upgrade
 
 	/**
 	 * This runs the tasks that are specific for version updates and should only run once.
+	 *
 	 * @return void
 	 */
 	public function runUpgradeTasks() {
-		foreach (self::$upgradeTasks as $version => $tasks) {
-			if (version_compare($this->previousVersion, $version, '<') && version_compare($this->currentVersion, $version, '>=')) {
-				foreach ($tasks as $task) {
+		foreach ( self::$upgradeTasks as $version => $tasks ) {
+			if ( version_compare( $this->previousVersion, $version, '<' ) && version_compare( $this->currentVersion, $version, '>=' ) ) {
+				foreach ( $tasks as $task ) {
 					list($className, $methodName) = $task;
-					call_user_func([$className, $methodName]);
+					call_user_func( array( $className, $methodName ) );
 				}
 			}
 		}
@@ -111,7 +112,8 @@ class Upgrade
 	public static function runTasksAfterUpdate() {
 		$upgrade = new Upgrade(
 			esc_html( get_option( self::VERSION_OPTION ) ),
-			COMMONSBOOKING_VERSION );
+			COMMONSBOOKING_VERSION
+		);
 		$upgrade->run();
 	}
 
@@ -123,7 +125,7 @@ class Upgrade
 	 * @return void
 	 */
 	public function updateNotice() {
-		if (! $this->isMajorUpdate()) {
+		if ( ! $this->isMajorUpdate() ) {
 			return;
 		}
 		?>
@@ -222,27 +224,29 @@ class Upgrade
 
 	/**
 	 * reset greyed out color when upgrading, see issue #1121
+	 *
 	 * @since 2.8.2
 	 * @return void
 	 */
 	public static function resetBrokenColorScheme() {
 		Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor', '#e0e0e0' );
-		Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_lighttext', '#a0a0a0');
+		Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_lighttext', '#a0a0a0' );
 	}
 
 	/**
 	 * reset iCalendar Titles when upgrading, see issue #1251
+	 *
 	 * @since 2.8.2
 	 * @return void
 	 */
 	public static function fixBrokenICalTitle() {
-		$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
+		$eventTitle      = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
 		$otherEventTitle = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
-		if ( str_contains( $eventTitle, 'post_name' ) ){
+		if ( str_contains( $eventTitle, 'post_name' ) ) {
 			$updatedString = str_replace( 'post_name', 'post_title', $eventTitle );
 			Settings::updateOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title', $updatedString );
 		}
-		if ( str_contains( $otherEventTitle, 'post_name' ) ){
+		if ( str_contains( $otherEventTitle, 'post_name' ) ) {
 			$updatedString = str_replace( 'post_name', 'post_title', $otherEventTitle );
 			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title', $updatedString );
 		}
