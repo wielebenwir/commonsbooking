@@ -5,18 +5,20 @@ namespace CommonsBooking\Service;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\Options\AdminOptions;
 use Psr\Cache\InvalidArgumentException;
 
 /**
- * This class contains all the functions that are run when the plugin is upgraded to a new version.
- * When upgrading, create a new instance of this class and call the run() function.
+ * This class contains migration functionality that is run when the plugin is upgraded
+ * to a newer version. When upgrading, create a new instance of this class and call the
+ * run() function.
  *
- * The versions should use semantic versioning (https://semver.org/).
+ * At the moment you can implement your own migrations in $upgradeTasks.
+ *
+ * A version string must be given in semantic versioning format (https://semver.org/).
  */
-class Upgrade
-{
+class Upgrade {
+
 	const VERSION_OPTION = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
 	private string $previousVersion;
 	private string $currentVersion;
@@ -38,13 +40,20 @@ class Upgrade
 			[\CommonsBooking\Service\Scheduler::class, 'unscheduleOldEvents']
 		],
 		'2.8.2' => [
-			[self::class, 'resetBrokenColorScheme']
+			[self::class, 'resetBrokenColorScheme'],
+			[self::class, 'fixBrokenICalTitle']
 		],
 		'2.8.5' => [
 			[self::class, 'setRestrictionAllOption']
 		]
 	];
 
+	/**
+	 * Constructs new upgrade object for a version range
+	 *
+	 * @param string $previousVersion
+	 * @param string $currentVersion
+	 */
 	public function __construct( string $previousVersion, string $currentVersion ) {
 		$this->previousVersion = $previousVersion;
 		$this->currentVersion  = $currentVersion;
@@ -57,12 +66,14 @@ class Upgrade
 	 */
 	public function run(): bool {
 		// check if version has changed, or it is a new installation
-		if ( empty($this->currentVersion) || $this->previousVersion == $this->currentVersion ) {
+		if ( ! empty( $this->previousVersion ) && ( $this->previousVersion === $this->currentVersion ) ) {
 			return false;
 		}
 
-		// run upgrade tasks
+		// run upgrade tasks that are specific for version updates and should only run once
 		$this->runUpgradeTasks();
+
+		// the following tasks will be run on every update
 
 		// set Options default values (e.g. if there are new fields added)
 		AdminOptions::SetOptionsDefaultValues();
@@ -90,14 +101,16 @@ class Upgrade
 
 	/**
 	 * This runs the tasks that are specific for version updates and should only run once.
+	 *
 	 * @return void
 	 */
-	public function runUpgradeTasks() {
-		foreach (self::$upgradeTasks as $version => $tasks) {
-			if (version_compare($this->previousVersion, $version, '<') && version_compare($this->currentVersion, $version, '>=')) {
-				foreach ($tasks as $task) {
+	public function runUpgradeTasks() : void {
+		// TODO let thirdparty plugins be able to hook into this part, then they don't have to add their own implementation of this class
+		foreach ( self::$upgradeTasks as $version => $tasks ) {
+			if ( version_compare( $this->previousVersion, $version, '<' ) && version_compare( $this->currentVersion, $version, '>=' ) ) {
+				foreach ( $tasks as $task ) {
 					list($className, $methodName) = $task;
-					call_user_func([$className, $methodName]);
+					call_user_func( array( $className, $methodName ) );
 				}
 			}
 		}
@@ -108,10 +121,11 @@ class Upgrade
 	 *
 	 * @return void
 	 */
-	public static function runTasksAfterUpdate() {
+	public static function runTasksAfterUpdate() : void {
 		$upgrade = new Upgrade(
 			esc_html( get_option( self::VERSION_OPTION ) ),
-			COMMONSBOOKING_VERSION );
+			COMMONSBOOKING_VERSION
+		);
 		$upgrade->run();
 	}
 
@@ -120,10 +134,10 @@ class Upgrade
 	 * in a major release e.g. 2.5 -> 2.6
 	 * This is a warning to users BEFORE they update to a new version.
 	 *
-	 * @return void
+	 * @return void (but renders html)
 	 */
-	public function updateNotice() {
-		if (! $this->isMajorUpdate()) {
+	public function updateNotice() : void {
+		if ( ! $this->isMajorUpdate() ) {
 			return;
 		}
 		?>
@@ -192,7 +206,7 @@ class Upgrade
 	/**
 	 * Gets location position for locations without coordinates.
 	 */
-	public static function updateLocationCoordinates() {
+	public static function updateLocationCoordinates() : void {
 		$locations = \CommonsBooking\Repository\Location::get();
 
 		foreach ( $locations as $location ) {
@@ -210,7 +224,7 @@ class Upgrade
 	 *
 	 * @return void
 	 */
-	public static function setAdvanceBookingDaysDefault() {
+	public static function setAdvanceBookingDaysDefault() : void {
 		$timeframes = \CommonsBooking\Repository\Timeframe::getBookable( [], [], null, true );
 
 		foreach ( $timeframes as $timeframe ) {
@@ -247,27 +261,29 @@ class Upgrade
 
 	/**
 	 * reset greyed out color when upgrading, see issue #1121
+	 *
 	 * @since 2.8.2
 	 * @return void
 	 */
-	public static function resetBrokenColorScheme() {
+	public static function resetBrokenColorScheme() : void {
 		Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor', '#e0e0e0' );
-		Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_lighttext', '#a0a0a0');
+		Settings::updateOption( 'commonsbooking_options_templates', 'colorscheme_lighttext', '#a0a0a0' );
 	}
 
 	/**
 	 * reset iCalendar Titles when upgrading, see issue #1251
+	 *
 	 * @since 2.8.2
 	 * @return void
 	 */
-	public static function fixBrokenICalTitle() {
-		$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
+	public static function fixBrokenICalTitle() : void {
+		$eventTitle      = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
 		$otherEventTitle = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
-		if ( str_contains( $eventTitle, 'post_name' ) ){
+		if ( str_contains( $eventTitle, 'post_name' ) ) {
 			$updatedString = str_replace( 'post_name', 'post_title', $eventTitle );
 			Settings::updateOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title', $updatedString );
 		}
-		if ( str_contains( $otherEventTitle, 'post_name' ) ){
+		if ( str_contains( $otherEventTitle, 'post_name' ) ) {
 			$updatedString = str_replace( 'post_name', 'post_title', $otherEventTitle );
 			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title', $updatedString );
 		}
