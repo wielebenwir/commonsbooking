@@ -359,7 +359,7 @@ class Location extends CustomPostType {
 
 		$cmb->add_field( array (
 			'name' => esc_html__( 'Use global location settings', 'commonsbooking' ),
-			'desc' => esc_html__( 'If selected, the global location settings (set in the general settings) will be used for this location. If not selected, the settings below will be used.', 'commonsbooking' ),
+			'desc' => esc_html__( 'If selected, the global location settings (under the "General" tab) will be used for this location. If not selected, the settings below will be used.', 'commonsbooking' ),
 			'id'   => COMMONSBOOKING_METABOX_PREFIX . 'use_global_settings',
 			'type' => 'checkbox',
 			'default_cb' => 'cmb2_set_checkbox_default_for_new_post',
