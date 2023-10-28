@@ -1,10 +1,12 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
-  fixturesFolder: 'tests/cypress/fixtures',
+    fixturesFolder: 'tests/cypress/fixtures',
 	screenshotsFolder: 'tests/cypress/screenshots',
 	videosFolder: 'tests/cypress/videos',
-	downloadsFolder: 'tests/cypress/downloads',
+    downloadsFolder: 'tests/cypress/downloads',
+    viewportHeight: 1080,
+    viewportWidth: 1920,
   env: {
       wpAdmin:'admin',
       wpSubscriber: 'subscriber',
