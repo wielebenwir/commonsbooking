@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-10-27T17:20:14+00:00\n"
+"POT-Creation-Date: 2023-10-30T19:11:01+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: commonsbooking\n"
@@ -1318,41 +1318,28 @@ msgstr ""
 msgid "Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s %2$s"
 msgstr ""
 
-#: src/Plugin.php:352
-#: src/Plugin.php:353
+#: src/Plugin.php:296
+#: src/Plugin.php:297
 msgid "Item Categories"
 msgstr ""
 
-#: src/Plugin.php:362
-#: src/Plugin.php:363
+#: src/Plugin.php:306
+#: src/Plugin.php:307
 msgid "Location Categories"
 msgstr ""
 
-#: src/Plugin.php:437
+#: src/Plugin.php:381
 msgid "Item Category"
 msgstr ""
 
-#: src/Plugin.php:463
+#: src/Plugin.php:407
 msgid "Location Category"
 msgstr ""
 
-#: src/Plugin.php:538
-#: src/Plugin.php:553
+#: src/Plugin.php:482
+#: src/Plugin.php:497
 #: src/Wordpress/CustomPostType/Booking.php:957
 msgid "CommonsBooking Bookings"
-msgstr ""
-
-#: src/Plugin.php:864
-msgid "New features and changes: Please backup before upgrade!"
-msgstr ""
-
-#: src/Plugin.php:871
-msgid ""
-"\n"
-"\t\t\t\t\tThis CommonsBooking update has a lot of new features and changes on some templates.<br>\n"
-"\t\t\t\t\tIf you have modified any template files, please backup and check them after update. <br>\n"
-"                    This update contains new features like reminder emails, restriction management, advance booking limits and more.\n"
-"\t\t\t\t\t<br><br>We highly recommend you to <strong>%1$sread the update information%2$s </strong> and make a backup of your site before upgrading."
 msgstr ""
 
 #: src/Repository/BookingCodes.php:296
@@ -1385,6 +1372,18 @@ msgstr ""
 
 #: src/Service/Cache.php:327
 msgid "Directory %s could not be written to."
+msgstr ""
+
+#: src/Service/Upgrade.php:148
+msgid "New features and changes: Please backup your site before upgrading!"
+msgstr ""
+
+#: src/Service/Upgrade.php:155
+msgid ""
+"\n"
+"\t\t\t\t\tThis CommonsBooking update has a lot of new features and changes on some templates.<br>\n"
+"\t\t\t\t\tIf you have modified any template files, please back them up and re-apply your changes after the update. <br>\n"
+"\t\t\t\t\t<br><br>We highly recommend you to <strong>%1$sread the update information%2$s </strong> and make a backup of your site before upgrading."
 msgstr ""
 
 #: src/View/Admin/Filter.php:58

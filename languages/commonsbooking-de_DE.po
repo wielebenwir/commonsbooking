@@ -1402,38 +1402,23 @@ msgstr "Zeiträume dürfen sich nicht überschneiden. Überprüfe, den Zeitrahme
 msgid "Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s %2$s"
 msgstr "Zeiträume dürfen sich nicht überschneiden. Überprüfe, den Zeitrahmen, um überlappende Zeiträume zu vermeiden. Siehe betroffene Zeitrahmen-ID: %1$s %2$s"
 
-#: src/Plugin.php:352
-#: src/Plugin.php:353
+#: src/Plugin.php:296
+#: src/Plugin.php:297
 msgid "Item Categories"
 msgstr "Artikel-Kategorien"
 
-#: src/Plugin.php:362
-#: src/Plugin.php:363
+#: src/Plugin.php:306
+#: src/Plugin.php:307
 msgid "Location Categories"
 msgstr "Standort-Kategorien"
 
-#: src/Plugin.php:437
+#: src/Plugin.php:381
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:463
+#: src/Plugin.php:407
 msgid "Location Category"
 msgstr "Standort-Kategorie"
-
-#: src/Plugin.php:864
-msgid "New features and changes: Please backup before upgrade!"
-msgstr "Neue Funktionen und Änderungen: Bitte vor dem Upgrade Backup durchführen!"
-
-#: src/Plugin.php:871
-msgid ""
-"\n"
-"\t\t\t\t\tThis CommonsBooking update has a lot of new features and changes on some templates.<br>\n"
-"\t\t\t\t\tIf you have modified any template files, please backup and check them after update. <br>\n"
-"                    This update contains new features like reminder emails, restriction management, advance booking limits and more.\n"
-"\t\t\t\t\t<br><br>We highly recommend you to <strong>%1$sread the update information%2$s </strong> and make a backup of your site before upgrading."
-msgstr ""
-"\n"
-"Dieses CommonsBooking-Update hat viele neue Funktionen und Änderungen an einigen Vorlagen.<br>Wenn Du Vorlagendateien (Templates) geändert hast, sichere diese bitte und überprüfe diese nach dem Update. <br>Dieses Update enthält neue Funktionen wie Erinnerungs-E-Mails, Einschränkungsmanagement, Vorausbuchungslimits und mehr.<br><br>Wir empfehlen dringend, <strong> %1$s die Update-Informationen %2$s </strong> zu lesen und vor dem Upgrade eine Sicherungskopie deiner Site zu erstellen."
 
 #: src/Repository/BookingCodes.php:296
 msgid "No booking codes could be created because there were no booking codes to choose from. Please set some booking codes in the CommonsBooking settings."
@@ -3494,8 +3479,8 @@ msgstr ""
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr ""
 
-#: src/Plugin.php:538
-#: src/Plugin.php:553
+#: src/Plugin.php:482
+#: src/Plugin.php:497
 #: src/Wordpress/CustomPostType/Booking.php:957
 msgid "CommonsBooking Bookings"
 msgstr ""
@@ -3526,4 +3511,16 @@ msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:1018
 msgid "Admin booking by"
+msgstr ""
+
+#: src/Service/Upgrade.php:148
+msgid "New features and changes: Please backup your site before upgrading!"
+msgstr ""
+
+#: src/Service/Upgrade.php:155
+msgid ""
+"\n"
+"\t\t\t\t\tThis CommonsBooking update has a lot of new features and changes on some templates.<br>\n"
+"\t\t\t\t\tIf you have modified any template files, please back them up and re-apply your changes after the update. <br>\n"
+"\t\t\t\t\t<br><br>We highly recommend you to <strong>%1$sread the update information%2$s </strong> and make a backup of your site before upgrading."
 msgstr ""
