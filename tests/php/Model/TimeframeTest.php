@@ -714,6 +714,21 @@ class TimeframeTest extends CustomPostTypeTest {
 		catch (TimeframeInvalidException $e ){
 			$this->assertEquals("Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.",$e->getMessage());
 		}
+
+		$isOverlapping = new Timeframe($this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day', time() ),
+			strtotime( '+2 days', time() ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"off"
+		));
+
+		$this->assertTrue( $isOverlapping->hasTimeframeDateOverlap( $this->validTF ) );
+
+		$this->expectException( TimeframeInvalidException::class );
+		//overlaps exactly with $this->validTF
+		$this->assertTrue($isOverlapping->isValid());
 	}
 
 	/**
