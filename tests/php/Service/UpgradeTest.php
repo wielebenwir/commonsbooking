@@ -3,6 +3,7 @@
 namespace CommonsBooking\Tests\Service;
 
 use CommonsBooking\Model\Restriction;
+use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Service\Upgrade;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
@@ -110,6 +111,13 @@ class UpgradeTest extends CustomPostTypeTest
 		update_post_meta($timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, '');
 		Upgrade::setAdvanceBookingDaysDefault();
 		$this->assertEquals(\CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS, get_post_meta($timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, true));
+	}
+
+	public function testSetMultiSelectTimeFrameDefault() {
+		$tf = $this->createBookableTimeFrameIncludingCurrentDay();
+		update_post_meta($tf, Timeframe::META_ITEM_SELECTION_TYPE, '');
+		Upgrade::setMultiSelectTimeFrameDefault();
+		$this->assertEquals(Timeframe::SELECTION_MANUAL_ID, get_post_meta($tf, Timeframe::META_ITEM_SELECTION_TYPE, true));
 	}
 
 	protected function setUp(): void {
