@@ -40,6 +40,8 @@ class Timeframe extends CustomPost {
 
 	public const META_MAX_DAYS = 'timeframe-max-days';
 
+	public const META_ALLOWED_USER_ROLES = 'allowed_user_roles';
+
 	/**
 	 * Return the span of a timeframe in human-readable format
 	 *

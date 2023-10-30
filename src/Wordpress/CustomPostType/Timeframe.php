@@ -529,7 +529,7 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'    => esc_html__( "Allowed for", 'commonsbooking' ),
-				'id'      => "allowed_user_roles",
+				'id'      => \CommonsBooking\Model\Timeframe::META_ALLOWED_USER_ROLES,
 				'desc'    => commonsbooking_sanitizeHTML(__( '<br> Select one or more user roles that will be allowed to book the item exclusively. <br> <b> Leave this blank to allow all users to book the item. </b>', 'commonsbooking' ) ),
 				'type'    => 'pw_multiselect',
 				'options' => self::sanitizeOptions( UserRepository::getUserRoles() ),
