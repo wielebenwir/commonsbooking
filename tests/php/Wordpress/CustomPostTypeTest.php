@@ -114,6 +114,8 @@ abstract class CustomPostTypeTest extends TestCase {
 		update_post_meta( $timeframeId, 'weekdays', $weekdays );
 		update_post_meta( $timeframeId, 'show-booking-codes', $showBookingCodes );
 		update_post_meta( $timeframeId, 'create-booking-codes', $createBookingCodes );
+		//TODO: Make this value configurable
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
 
 		$this->timeframeIds[] = $timeframeId;
 
