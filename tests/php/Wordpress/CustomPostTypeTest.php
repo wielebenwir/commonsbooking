@@ -89,7 +89,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		update_post_meta( $timeframeId, 'location-id', $locationId );
 		update_post_meta( $timeframeId, 'item-id', $itemId );
 		update_post_meta( $timeframeId, 'timeframe-max-days', $maxDays );
-		update_post_meta( $timeframeId, 'timeframe-advance-booking-days', $advanceBookingDays );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, $advanceBookingDays );
 		update_post_meta( $timeframeId, 'booking-startday-offset', $bookingStartdayOffset );
 		update_post_meta( $timeframeId, 'full-day', $fullday );
 		update_post_meta( $timeframeId, 'timeframe-repetition', $repetition );

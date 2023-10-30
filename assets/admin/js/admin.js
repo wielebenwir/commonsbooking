@@ -1,34 +1,59 @@
 (function($) {
     "use strict";
     $(function() {
-        const manualDateInput = $("#timeframe_manual_date");
-        const manualDatePicker = $("#cmb2_multiselect_datepicker");
-        var addHolidayToInput = date => {
-            const DATES_SEPERATOR = ",";
-            var day = date.getDate();
-            var month = date.getMonth() + 1;
-            var dd = day <= 9 ? "0" + day : day;
-            var mm = month <= 9 ? "0" + month : month;
-            var yyyy = date.getFullYear();
-            var dateStr = yyyy + "-" + mm + "-" + dd;
-            if (manualDateInput.val().length > 0) {
-                if (manualDateInput.val().slice(-1) !== DATES_SEPERATOR) {
-                    manualDateInput.val(manualDateInput.val() + DATES_SEPERATOR + dateStr);
-                } else {
-                    manualDateInput.val(manualDateInput.val() + dateStr);
-                }
+        const hideFieldset = function(set) {
+            $.each(set, function() {
+                $(this).parents(".cmb-row").hide();
+            });
+        };
+        const showFieldset = function(set) {
+            $.each(set, function() {
+                $(this).parents(".cmb-row").show();
+            });
+        };
+        const useGlobalSettings = $("#_cb_use_global_settings");
+        const allowLockDaysCheckbox = $("#_cb_allow_lockdays_in_range");
+        const countLockedDaysCheckbox = $("#_cb_count_lockdays_in_range");
+        const countAmountLockedDays = $("#_cb_count_lockdays_maximum");
+        const handleCountLockedDays = function() {
+            if (countLockedDaysCheckbox.prop("checked")) {
+                showFieldset(countAmountLockedDays);
             } else {
-                manualDateInput.val(dateStr + DATES_SEPERATOR);
+                hideFieldset(countAmountLockedDays);
             }
         };
-        if (manualDatePicker.length) {
-            manualDatePicker.datepicker({
-                onSelect: function(dateText, inst) {
-                    var date = $(this).datepicker("getDate");
-                    addHolidayToInput(date);
-                }
-            });
-        }
+        handleCountLockedDays();
+        countLockedDaysCheckbox.change(function() {
+            handleCountLockedDays();
+        });
+        const handleAllowLockDays = function() {
+            if (allowLockDaysCheckbox.prop("checked")) {
+                showFieldset(countLockedDaysCheckbox);
+                handleCountLockedDays();
+            } else {
+                hideFieldset(countLockedDaysCheckbox);
+                hideFieldset(countAmountLockedDays);
+            }
+        };
+        handleAllowLockDays();
+        allowLockDaysCheckbox.change(function() {
+            handleAllowLockDays();
+        });
+        const handleUseGlobalSettings = function() {
+            if (useGlobalSettings.prop("checked")) {
+                hideFieldset(allowLockDaysCheckbox);
+                hideFieldset(countLockedDaysCheckbox);
+                hideFieldset(countAmountLockedDays);
+            } else {
+                showFieldset(allowLockDaysCheckbox);
+                showFieldset(countLockedDaysCheckbox);
+                handleCountLockedDays();
+            }
+        };
+        handleUseGlobalSettings();
+        useGlobalSettings.change(function() {
+            handleUseGlobalSettings();
+        });
     });
 })(jQuery);
 
@@ -166,12 +191,13 @@
             const bookingConfigTitle = $(".cmb2-id-title-bookings-config");
             const maxDaysSelect = $(".cmb2-id-timeframe-max-days");
             const advanceBookingDays = $(".cmb2-id-timeframe-advance-booking-days");
-            const BookingStartDayOffset = $(".cmb2-id-booking-startday-offset");
+            const bookingStartDayOffset = $(".cmb2-id-booking-startday-offset");
             const allowUserRoles = $(".cmb2-id-allowed-user-roles");
             const repSet = [ repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput ];
             const noRepSet = [ fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput ];
             const repTimeFieldsSet = [ gridInput, startTimeInput, endTimeInput ];
             const bookingCodeSet = [ createBookingCodesInput, bookingCodesList, bookingCodesDownload, showBookingCodes ];
+            const bookingSettings = [ bookingConfigTitle, maxDaysSelect, advanceBookingDays, bookingStartDayOffset, allowUserRoles ];
             const showRepFields = function() {
                 showFieldset(repSet);
                 hideFieldset(arrayDiff(repSet, noRepSet));
@@ -188,13 +214,13 @@
             const handleTypeSelection = function() {
                 const selectedType = $("option:selected", typeInput).val();
                 if (selectedType == 2) {
-                    maxDaysSelect.show();
-                    advanceBookingDays.show();
-                    allowUserRoles.show();
+                    $.each(bookingSettings, function() {
+                        $(this).show();
+                    });
                 } else {
-                    maxDaysSelect.hide();
-                    advanceBookingDays.hide();
-                    allowUserRoles.hide();
+                    $.each(bookingSettings, function() {
+                        $(this).hide();
+                    });
                 }
             };
             handleTypeSelection();
@@ -205,6 +231,7 @@
                 const selectedRep = $("option:selected", timeframeRepetitionInput).val();
                 if (fullDayInput.prop("checked")) {
                     gridInput.prop("selected", false);
+                    gridInput.val(0);
                     hideFieldset(repTimeFieldsSet);
                 } else {
                     showFieldset(repTimeFieldsSet);

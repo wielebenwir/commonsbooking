@@ -160,6 +160,20 @@ function commonsbooking_filter_from_cmb2( $field_args ) {
 }
 
 /**
+ * Only return default value if we don't have a post ID (in the 'post' query variable)
+ *
+ * @param  bool  $default On/Off (true/false)
+ * @return mixed          Returns true or '', the blank default
+ */
+function cmb2_set_checkbox_default_for_new_post() {
+	return isset( $_GET['post'] )
+		// No default value.
+		? ''
+		// Default to true.
+		: true;
+}
+
+/**
  * Recursive sanitation for text or array
  *
  * @param mixed  array_or_string (array|string)
