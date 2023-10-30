@@ -32,6 +32,7 @@ describe('correctly render metaboxes for backend CPT creation', () => {
         cy.get('.page-title-action').click();
         cy.get('#_cb_location_adress').should('exist');
         cy.get('#_cb_location_info').should('exist');
+	//TODO: This does not capture all metaboxes in screenshot because of a scrolling div, fix to show metaboxes
         cy.screenshot('cb-location-metaboxes')
     })
 
@@ -49,3 +50,4 @@ describe('correctly render metaboxes for backend CPT creation', () => {
         cy.screenshot('cb-timeframe-metaboxes-repair')
     })
 })
+
