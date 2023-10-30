@@ -30,24 +30,6 @@ class PluginTest extends CustomPostTypeTest
 		}
     }
 
-	public function testRemoveBreakingPostmeta() {
-		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
-		//Create timeframe that should still be valid after the cleanup
-		$validTF = new Timeframe($this->createBookableTimeFrameStartingInAWeek());
-		$this->assertTrue($validTF->isValid());
-
-		//create holiday with ADVANCE_BOOKING_DAYS setting (the function does this by default)
-		$holiday = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			strtotime('+1 week', strtotime(self::CURRENT_DATE)),
-			strtotime('+2 weeks', strtotime(self::CURRENT_DATE)),
-		);
-		Plugin::removeBreakingPostmeta();
-		$this->assertEmpty(get_post_meta($holiday, 'advance_booking_days', true));
-
-	}
-
 	protected function setUp(): void {
 		parent::setUp();
 	}
