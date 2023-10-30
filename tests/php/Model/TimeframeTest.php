@@ -338,6 +338,29 @@ class TimeframeTest extends CustomPostTypeTest {
 			$exceptionCaught = true;
 		}
 		$this->assertTrue($exceptionCaught);
+
+		//test if slot is too short (should throw exception) #1353
+		//we have to create that more in the future so that it does not overlap with other timeframes
+		$notCorrectSlot = new Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+31 days', strtotime(self::CURRENT_DATE) ),
+				strtotime( '+32 days', strtotime(self::CURRENT_DATE) ),
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				"",
+				'd',
+				0,
+				'00:00 AM',
+				'00:00 AM'
+			)
+		);
+		try {
+			$notCorrectSlot->isValid();
+			$this->fail("Expected Exception not thrown");
+		} catch (TimeframeInvalidException $e ) {
+			$this->assertStringContainsString( "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day.", $e->getMessage() );
+		}
 	}
 
 	public function testGetTimeframeEndDate() {

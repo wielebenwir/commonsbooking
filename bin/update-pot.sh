@@ -9,5 +9,7 @@ if diff -I '^"POT-Creation-Date:' languages/commonsbooking.pot languages/commons
   echo "no changes detected"
 else
   mv languages/commonsbooking.pot.new languages/commonsbooking.pot
+  echo "updating po file from change .pot"
+  wp i18n update-po languages/commonsbooking.pot languages/commonsbooking-de_DE.po
   echo "updated translation file"
 fi

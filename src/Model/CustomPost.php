@@ -166,7 +166,7 @@ class CustomPost {
 
 	/**
 	 * Returns user data.
-	 * @return mixed
+	 * @return false|\WP_User
 	 */
 	public function getUserData() {
 		return get_userdata( $this->post_author );

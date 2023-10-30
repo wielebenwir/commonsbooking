@@ -256,7 +256,7 @@ abstract class BookablePost extends PostRepository {
 	 * @param $relatedType
 	 * @param bool $bookable
 	 *
-	 * @return array
+	 * @return int[] Array of post ids
 	 * @throws Exception
 	 */
 	protected static function getByRelatedPost( $postId, $originType, $relatedType, bool $bookable = false ): array {
