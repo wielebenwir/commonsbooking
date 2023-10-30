@@ -218,7 +218,7 @@ function commonsbooking_isCurrentUserCBManager() {
  * @return bool
  */
 function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ):bool {
-	$allowedUserRoles = get_post_meta( $timeframeID, \CommonsBooking\Model\Timeframe::META_ALLOWED_USER_ROLES, true );
+	$allowedUserRoles = get_post_meta( $timeframeID, 'allowed_user_roles', true );
 
 	if ( empty( $allowedUserRoles ) || ( current_user_can('administrator') ) ) {
 		return true;
