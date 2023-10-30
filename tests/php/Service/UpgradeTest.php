@@ -9,7 +9,8 @@ use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 
 class UpgradeTest extends CustomPostTypeTest
 {
-	private static bool $functionHasRun = false;
+
+    private static bool $functionHasRun = false;
 
 	public function testSetRestrictionAllOption()
 	{
@@ -43,7 +44,7 @@ class UpgradeTest extends CustomPostTypeTest
 		Upgrade::fixBrokenICalTitle();
 		$this->assertEquals('Booking for {{item:post_title}}', \CommonsBooking\Settings\Settings::getOption('commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title'));
 		$this->assertEquals('Booking for {{item:post_title}}', \CommonsBooking\Settings\Settings::getOption(COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title'));
-	}
+    }
 
     public function testIsMajorUpdate()
     {
@@ -55,7 +56,7 @@ class UpgradeTest extends CustomPostTypeTest
 		$this->assertTrue($majorestUpdate->isMajorUpdate());
 		$downgrade = new Upgrade('2.6.0', '2.5.0');
 		$this->assertFalse($downgrade->isMajorUpdate());
-	}
+    }
 
 	/**
 	 * This will test if the upgrade tasks are run correctly.

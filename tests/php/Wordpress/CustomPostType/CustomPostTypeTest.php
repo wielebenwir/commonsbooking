@@ -17,7 +17,7 @@ use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
  * parent class for all the custom post type tests.
  * This, however extends this class because we need it's methods
  */
-class CustomPostTypeClassTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeTest
+class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeTest
 {
 	protected int $bookingId;
 	protected Booking $bookingModel;
