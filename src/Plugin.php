@@ -13,6 +13,7 @@ use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Service\Cache;
 use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Service\iCalendar;
+use CommonsBooking\Service\Upgrade;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
@@ -240,7 +241,7 @@ class Plugin {
 
 	public static function admin_init() {
 		// check if we have a new version and run tasks
-		self::runTasksAfterUpdate();
+		Upgrade::runTasksAfterUpdate();
 
 		// Check if we need to run post options updated actions
 		if ( get_transient( 'commonsbooking_options_saved' ) == 1 ) {
@@ -408,7 +409,12 @@ class Plugin {
 	 */
 	public static function registerCustomPostTypes() {
 		foreach ( self::getCustomPostTypes() as $customPostType ) {
-			register_post_type( $customPostType::getPostType(), $customPostType->getArgs() );
+			$cptArgs = $customPostType->getArgs();
+			//make export possible when using WP_DEBUG, this allows us to use the export feature for creating new E2E tests
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				$cptArgs['can_export'] = true;
+			}
+			register_post_type( $customPostType::getPostType(), $cptArgs );
 			$customPostType->initListView();
 			$customPostType->initHooks();
 		}
@@ -753,7 +759,8 @@ class Plugin {
 		add_action(
             'in_plugin_update_message-' . COMMONSBOOKING_PLUGIN_BASE,
             function ( $plugin_data ) {
-                $this->UpdateNotice( COMMONSBOOKING_VERSION, $plugin_data['new_version'] );
+				$upgrade = new Upgrade(COMMONSBOOKING_VERSION, $plugin_data['new_version']);
+                $upgrade->updateNotice();
             }
         );
 
