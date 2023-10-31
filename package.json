@@ -40,6 +40,7 @@
 		"cypress:run": "cypress run --config-file tests/cypress/cypress.config.js"
 	},
 	"dependencies": {
+		"@commonsbooking/frontend": "^0.1.0-beta.3",
 		"leaflet": "^1.7.1",
 		"leaflet-easybutton": "^2.4.0",
 		"leaflet-spin": "^1.1.2",
