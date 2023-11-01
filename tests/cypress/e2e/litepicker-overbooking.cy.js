@@ -53,6 +53,8 @@ describe('test overbooking process', () => {
             else {
                 //the tuesday should be clickable when we don't count any overbooked days
                 cy.get('.is-start-date').next('.day-item').next('.day-item').next('.day-item').next('.day-item').should('not.have.class', 'is-locked')
+                //likewise, the wednesday should not be clickable
+                cy.get('.is-start-date').next('.day-item').next('.day-item').next('.day-item').next('.day-item').next('.day-item').should('have.class', 'is-locked')
                 //and we should be able to proceed booking
                 cy.get('.is-start-date').next('.day-item').next('.day-item').next('.day-item').next('.day-item').click();
                 cy.get('#booking-form > [type="submit"]').should('not.be.disabled');
