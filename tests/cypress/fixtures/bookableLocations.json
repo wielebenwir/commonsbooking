@@ -40,6 +40,12 @@
       "post_title": "DailyRep Holiday Overbooking CountOne- NoAdmin; NoGeo",
       "post_name": "dailyrep-holiday-overbooking-countone-noadmin-nogeo",
       "test_name": "DailyRep Holiday Overbooking CountOne"
+    },
+    {
+      "post_id": 88,
+      "post_title": "WeeklyRepetition Overbooking NoCount – NoAdmin; NoGeo",
+      "post_name": "weeklyrepetition-overbooking-nocount-noadmin-nogeo",
+      "test_name": "WeeklyRepetition Overbooking NoCount"
     }
   ]
 }
