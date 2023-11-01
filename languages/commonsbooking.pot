@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-10-30T19:55:17+00:00\n"
+"POT-Creation-Date: 2023-11-01T19:43:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: commonsbooking\n"
@@ -2176,7 +2176,7 @@ msgid "Count locked days when overbooking"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Location.php:416
-msgid "If selected, days that are overbooked will be counted towards the maximum number of bookable days. This means that if for example you try to book over an item over a week-end where the station is not open, the maximum bookable days will not be increased to allow longer booking periods."
+msgid "If selected, days that are overbooked will be counted towards the maximum number of bookable days. If this option is disabled, locked days that are overbooked will allow for bookings that are longer than the maximum number of bookable days configured for the timeframe."
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Location.php:421

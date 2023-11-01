@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2023-09-15T04:04:14+02:00\n"
-"PO-Revision-Date: 2023-09-14 22:05-0400\n"
+"PO-Revision-Date: 2023-11-01 15:41-0400\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.3.2\n"
@@ -3463,59 +3463,51 @@ msgstr "Buchungen sind auf maximal %1$s Tage im Voraus beschränkt."
 msgid "It is not possible to access this timeframe on frontend. Please edit timeframe in backend. If you want to check the result of your timeframe settings visit the item or location in frontend to see the booking calender"
 msgstr "Es ist nicht möglich, diesen Zeitrahmen im Frontend abzurufen. Bitte bearbeite den Zeitrahmen im Backend. Wenn du das Ergebnis deiner Zeitrahmeneinstellungen überprüfen möchtest, rufe den Artikel oder Standort im Frontend auf, um den Buchungskalender zu sehen"
 
-#: src/Model/Booking.php:596
-#~ msgid "Unconfirmed"
-#~ msgstr "Unbestätigt"
-
-#: src/Model/Booking.php:594
-#~ msgid "Confirmed"
-#~ msgstr "Bestätigt"
-
 #: src/Model/Booking.php:598
 msgid "Cancelled"
-msgstr ""
+msgstr "Storniert"
 
 #: src/Model/Timeframe.php:368
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
-msgstr ""
+msgstr "Die Start- und Endzeit des Zeitrahmens dürfen nicht gleich sein. Wenn der gesamte Tag buchbar sein soll muss die Option \"Ganzer Tag\" angewählt sein."
 
 #: src/Plugin.php:487
 #: src/Plugin.php:502
 #: src/Wordpress/CustomPostType/Booking.php:957
 msgid "CommonsBooking Bookings"
-msgstr ""
+msgstr "CommonsBooking Buchungen"
 
 #: src/Wordpress/CustomPostType/Booking.php:577
 msgid "Bookings not found"
-msgstr ""
+msgstr "Keine Buchungen gefunden"
 
 #: src/Wordpress/CustomPostType/Booking.php:982
 msgid "Booking start"
-msgstr ""
+msgstr "Buchungsbeginn"
 
 #: src/Wordpress/CustomPostType/Booking.php:986
 msgid "Booking end"
-msgstr ""
+msgstr "Buchungsende"
 
 #: src/Wordpress/CustomPostType/Booking.php:990
 msgid "Time of booking"
-msgstr ""
+msgstr "Buchungszeit"
 
 #: src/Wordpress/CustomPostType/Booking.php:998
 msgid "Booking code"
-msgstr ""
+msgstr "Buchungscode"
 
 #: src/Wordpress/CustomPostType/Booking.php:1014
 msgid "Time of cancellation"
-msgstr ""
+msgstr "Storniert am"
 
 #: src/Wordpress/CustomPostType/Booking.php:1018
 msgid "Admin booking by"
-msgstr ""
+msgstr "Adminbuchung von"
 
 #: src/Service/Upgrade.php:148
 msgid "New features and changes: Please backup your site before upgrading!"
-msgstr ""
+msgstr "Neue Funktionen und Änderungen: Bitte die Website vor dem Upgrade sichern!"
 
 #: src/Service/Upgrade.php:155
 msgid ""
@@ -3524,35 +3516,47 @@ msgid ""
 "\t\t\t\t\tIf you have modified any template files, please back them up and re-apply your changes after the update. <br>\n"
 "\t\t\t\t\t<br><br>We highly recommend you to <strong>%1$sread the update information%2$s </strong> and make a backup of your site before upgrading."
 msgstr ""
+"\n"
+"\t\t\t\t\tDieses CommonsBooking update beinhaltet einige neue Funktionen und nimmt Änderungen an den Templates vor.<br>\n"
+"\t\t\t\t\tWenn du Templates geändert hast, sichere sie bitte und wende deine Änderungen nach dem Update erneut an. <br>\n"
+"\t\t\t\t\t<br><br>Bitte lies auch die <strong>%1$sUpdate Informationen%2$s </strong> und erstelle ein komplettes Backup deiner Seite vor dem Upgrade."
 
 #: includes/OptionsArray.php:148
 msgid "Global location settings"
-msgstr ""
+msgstr "Globale Standorteinstellungen"
 
 #: includes/OptionsArray.php:149
 msgid "These settings are used for all locations. You can overwrite these settings for each location in the location settings."
-msgstr ""
+msgstr "Diese Einstellungen werden für alle Standorte verwendet. Die Einstellungen können Sie für jeden Standort individuell in den Standorteinstellungen überschreiben werden."
 
 #: src/Wordpress/CustomPostType/Location.php:361
 msgid "Use global location settings"
-msgstr ""
+msgstr "Globale Standorteinstellungen nutzen"
 
 #: src/Wordpress/CustomPostType/Location.php:362
 msgid "If selected, the global location settings (under the \"General\" tab) will be used for this location. If not selected, the settings below will be used."
-msgstr ""
+msgstr "Wenn diese Option ausgewählt ist, werden die globalen Standorteinstellungen ( im Reiter \"Allgemein\") für diesen Standort verwendet. Wenn sie nicht ausgewählt ist, werden die Einstellungen unten verwendet."
 
 #: src/Wordpress/CustomPostType/Location.php:415
 msgid "Count locked days when overbooking"
-msgstr ""
-
-#: src/Wordpress/CustomPostType/Location.php:416
-msgid "If selected, days that are overbooked will be counted towards the maximum number of bookable days. This means that if for example you try to book over an item over a week-end where the station is not open, the maximum bookable days will not be increased to allow longer booking periods."
-msgstr ""
+msgstr "Gesperrte Tage bei Überbuchung zählen"
 
 #: src/Wordpress/CustomPostType/Location.php:421
 msgid "Count connected locked days as one"
-msgstr ""
+msgstr "Zusammenhängende gesperrte Tage werden als Einheit zählen"
 
 #: src/Wordpress/CustomPostType/Location.php:422
 msgid "Here you can specify, if a connected span of locked days should be counted individually or just use up x amount of the maximum quota the user is allowed to book. If you set this field to 0, every day will be counted individually. If you set this field to 1, all overbooked days, no matter how many, will always count for 1 day. If you set this to 2, they will count a maximum of two days and so on."
-msgstr ""
+msgstr "Hier kann festgelegt werden, ob eine zusammenhängende Spanne von überbuchten Tagen einzeln gezählt werden soll oder ob nur x Tage des maximalen Kontingents, das der Benutzer buchen darf, verbraucht werden sollen. Wenn dieses Feld auf 0 gesetzt wird, wird jeder Tag einzeln gezählt. Wenn dieses Feld auf 1 gesetzt wird, werden alle überbuchten Tage, egal wie viele, immer nur als 1 Tag gezählt. Wenn dieses Feld auf 2 gesetzt wird, werden maximal zwei Tage gezählt und so weiter."
+
+#: src/Wordpress/CustomPostType/Location.php:416
+msgid "If selected, days that are overbooked will be counted towards the maximum number of bookable days. If this option is disabled, locked days that are overbooked will allow for bookings that are longer than the maximum number of bookable days configured for the timeframe."
+msgstr "Ist diese Option aktiviert, werden überbuchte Tage auf die maximale Anzahl buchbarer Tage angerechnet. Wenn diese Option deaktiviert ist, dann werden überbuchte Tage nicht zusätzlich gezählt und ermöglichen Buchungszeiträume die länger sind als die im Zeitrahmen konfigurierte maximale Anzahl an gebuchten Tagen."
+
+#: src/Model/Booking.php:596
+#~ msgid "Unconfirmed"
+#~ msgstr "Unbestätigt"
+
+#: src/Model/Booking.php:594
+#~ msgid "Confirmed"
+#~ msgstr "Bestätigt"
