@@ -360,4 +360,5 @@ abstract class BookablePost extends PostRepository {
 			return $relatedPosts;
 		}
 	}
+
 }

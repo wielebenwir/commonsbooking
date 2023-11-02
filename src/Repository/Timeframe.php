@@ -154,7 +154,7 @@ class Timeframe extends PostRepository {
 
 			Plugin::setCacheItem(
 				$posts,
-				Wordpress::getTags( $posts, $items, $locations ),
+				Wordpress::getTags($posts, $items, $locations),
 				$customId
 			);
 			return $posts;
@@ -474,7 +474,7 @@ class Timeframe extends PostRepository {
 				} );
 			}
 
-			Plugin::setCacheItem( $posts, Wordpress::getTags( $posts ) );
+			Plugin::setCacheItem($posts, Wordpress::getTags($posts));
 			return $posts;
 		}
 	}
@@ -549,7 +549,7 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
-	 * Returns timeframe that matches for timestamp based on date AND it's time.
+	 * Returns timeframe that matches for timestamp based on date AND its time.
 	 * Why? Needed for booking creation based on multiple timeframes with different multi slot grids.
 	 *
 	 * @param int $locationId
@@ -582,7 +582,7 @@ class Timeframe extends PostRepository {
 					date( $time_format, strtotime( $timeframe->getStartTime() ) ) == $startTimestampTime ||
 					date( $time_format, strtotime( $timeframe->getEndTime() ) ) == $endTimestampTime
 				) {
-					Plugin::setCacheItem( $timeframe, [ $timeframe->ID, $itemId, $locationId ] );
+					Plugin::setCacheItem( $timeframe, [$timeframe->ID, $itemId, $locationId] );
 
 					return $timeframe;
 				}
@@ -656,7 +656,7 @@ class Timeframe extends PostRepository {
 
 			Plugin::setCacheItem(
 				$posts,
-				Wordpress::getTags( $posts, $locations, $items ),
+				Wordpress::getTags($posts, $locations, $items),
 				$customId
 			);
 

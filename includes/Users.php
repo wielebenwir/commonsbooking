@@ -25,7 +25,7 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
 }
 
 /**
- * Checks if user is allowed to edit custom post. Take either WP_USER object or user_id
+ * Checks if user is allowed to edit custom post.
  *
  * @param $post
  * @param $user

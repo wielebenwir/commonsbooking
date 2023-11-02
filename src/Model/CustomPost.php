@@ -166,7 +166,6 @@ class CustomPost {
 
 	/**
 	 * Returns user data.
-	 *
 	 * @return false|\WP_User
 	 */
 	public function getUserData() {
