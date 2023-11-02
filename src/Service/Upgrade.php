@@ -42,6 +42,9 @@ class Upgrade {
 		'2.8.2' => [
 			[self::class, 'resetBrokenColorScheme'],
 			[self::class, 'fixBrokenICalTitle']
+		],
+		'2.9.0' => [
+			[self::class, 'timeframeNoRepToDaily']
 		]
 	];
 
@@ -258,6 +261,32 @@ class Upgrade {
 		if ( str_contains( $otherEventTitle, 'post_name' ) ) {
 			$updatedString = str_replace( 'post_name', 'post_title', $otherEventTitle );
 			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title', $updatedString );
+		}
+	}
+
+	/**
+	 * Will convert all timeframes with the old "norep" setting to use the "daily" setting in the repetition
+	 *
+	 * @since 2.9 (expected)
+	 * @return void
+	 * @throws \Exception
+	 */
+	public static function timeframeNoRepToDaily() {
+		$timeframes = \CommonsBooking\Repository\Timeframe::getBookable( [], [], null, true );
+		/** @var Timeframe $timeframe */
+		foreach ( $timeframes as $timeframe ) {
+			if ($timeframe->getRepetition() === 'norep') {
+				//you could previously set a timeframe with norep to just have a start-date and it would just be valid for the start-date.
+				//so we have to give norep timeframes without an end-date the start-date as end-date
+				if ( empty ( $timeframe->getMeta( Timeframe::REPETITION_END) ) ) {
+					update_post_meta(
+						$timeframe->ID,
+						Timeframe::REPETITION_END,
+						$timeframe->getMeta( Timeframe::REPETITION_START)
+					);
+				}
+				update_post_meta( $timeframe->ID, Timeframe::META_REPETITION, 'd' );
+			}
 		}
 	}
 }

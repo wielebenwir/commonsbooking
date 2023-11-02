@@ -112,6 +112,36 @@ class UpgradeTest extends CustomPostTypeTest
 		$this->assertEquals(\CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS, get_post_meta($timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, true));
 	}
 
+	public function testTimeframeNoRepToDaily() {
+		$timeframeNoRepWEnd = new \CommonsBooking\Model\Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				'on',
+				'norep',
+			)
+		);
+		$timeframeNoRepWithoutEnd = new \CommonsBooking\Model\Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
+				null,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				'on',
+				'norep',
+			)
+		);
+		$this->assertFalse($timeframeNoRepWithoutEnd->getEndDate());
+		Upgrade::timeframeNoRepToDaily();
+		$this->assertEquals('d',$timeframeNoRepWEnd->getRepetition());
+		$this->assertEquals('d',$timeframeNoRepWithoutEnd->getRepetition());
+		$this->assertEquals(strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),$timeframeNoRepWithoutEnd->getEndDate());
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		//This replaces the original update tasks with a internal test function that just sets a variable to true
