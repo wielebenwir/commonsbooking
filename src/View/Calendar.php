@@ -36,7 +36,11 @@ class Calendar {
 	 * Many thanks to fLotte Berlin!
 	 * Forked from https://github.com/flotte-berlin/cb-shortcodes/blob/master/custom-shortcodes-cb-items.php
 	 *
-	 * @param $atts
+	 * @param $atts array Supports the following attributes:
+	 * 			          - locationcat: Filter by location category
+	 * 			          - itemcat: Filter by item category
+	 * 			          - days: Number of days to show in calendar table view
+	 * 			          - desc: Description text
 	 *
 	 * @return string
 	 * @throws Exception
