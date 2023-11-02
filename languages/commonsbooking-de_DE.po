@@ -1217,77 +1217,77 @@ msgstr "Einstellungen für Commons Booking Karten"
 msgid "Commons Booking Map"
 msgstr "CommonsBooking Karte"
 
-#: src/Map/MapShortcode.php:94
+#: src/Map/BaseShortcode.php:24
 msgid "map is not published"
 msgstr "Karte ist nicht veröffentlicht"
 
-#: src/Map/MapShortcode.php:97
-#: src/Map/MapShortcode.php:101
+#: src/Map/BaseShortcode.php:14
+#: src/Map/BaseShortcode.php:20
 msgid "no valid map id provided"
 msgstr "keine gültige Karten-ID angegeben"
 
-#: src/Map/MapShortcode.php:238
+#: src/Map/MapShortcode.php:40
 #: templates/map-admin-page-template.php:229
 #: templates/map-admin-page-template.php:248
 msgid "opening hours"
 msgstr "Öffnungszeiten"
 
-#: src/Map/MapShortcode.php:239
+#: src/Map/MapShortcode.php:41
 msgid "contact"
 msgstr "Kontakt"
 
-#: src/Map/MapShortcode.php:240
+#: src/Map/MapShortcode.php:42
 msgid "from"
 msgstr "von"
 
-#: src/Map/MapShortcode.php:241
+#: src/Map/MapShortcode.php:43
 msgid "until"
 msgstr "bis %s"
 
-#: src/Map/MapShortcode.php:242
+#: src/Map/MapShortcode.php:44
 msgid "for at least"
 msgstr "mindestens"
 
-#: src/Map/MapShortcode.php:243
+#: src/Map/MapShortcode.php:45
 msgid "day(s)"
 msgstr "Tag(e)"
 
-#: src/Map/MapShortcode.php:244
+#: src/Map/MapShortcode.php:46
 msgid "Sorry, no locations found."
 msgstr "Leider wurden keine Standorte gefunden."
 
-#: src/Map/MapShortcode.php:245
+#: src/Map/MapShortcode.php:47
 msgid "filter"
 msgstr "Filter"
 
-#: src/Map/MapShortcode.php:246
+#: src/Map/MapShortcode.php:48
 #: templates/map-admin-page-template.php:599
 msgid "availability"
 msgstr "Verfügbarkeit"
 
-#: src/Map/MapShortcode.php:247
+#: src/Map/MapShortcode.php:49
 #: templates/map-admin-page-template.php:609
 msgid "categories"
 msgstr "Kategorien"
 
-#: src/Map/MapShortcode.php:248
+#: src/Map/MapShortcode.php:50
 #: templates/map-admin-page-template.php:546
 msgid "distance"
 msgstr "Entfernung"
 
-#: src/Map/MapShortcode.php:249
+#: src/Map/MapShortcode.php:51
 msgid "address"
 msgstr "Adresse"
 
-#: src/Map/MapShortcode.php:250
+#: src/Map/MapShortcode.php:52
 msgid "Sorry, an error occured during your request. Please try again later."
 msgstr "Es ist leider ein Fehler während der Anfrage aufgetreten. Versuche es später erneut."
 
-#: src/Map/MapShortcode.php:251
+#: src/Map/MapShortcode.php:53
 msgid "The service is currently not available. Please try again later."
 msgstr "Der Dienst ist derzeit nicht verfügbar. Versuche  später erneut."
 
-#: src/Map/MapShortcode.php:252
+#: src/Map/MapShortcode.php:54
 msgid "comming soon"
 msgstr "Bald verfügbar"
 
@@ -1402,21 +1402,21 @@ msgstr "Zeiträume dürfen sich nicht überschneiden. Überprüfe, den Zeitrahme
 msgid "Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s %2$s"
 msgstr "Zeiträume dürfen sich nicht überschneiden. Überprüfe, den Zeitrahmen, um überlappende Zeiträume zu vermeiden. Siehe betroffene Zeitrahmen-ID: %1$s %2$s"
 
-#: src/Plugin.php:296
-#: src/Plugin.php:297
+#: src/Plugin.php:354
+#: src/Plugin.php:355
 msgid "Item Categories"
 msgstr "Artikel-Kategorien"
 
-#: src/Plugin.php:306
-#: src/Plugin.php:307
+#: src/Plugin.php:364
+#: src/Plugin.php:365
 msgid "Location Categories"
 msgstr "Standort-Kategorien"
 
-#: src/Plugin.php:386
+#: src/Plugin.php:444
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:412
+#: src/Plugin.php:470
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
@@ -3479,8 +3479,8 @@ msgstr ""
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr ""
 
-#: src/Plugin.php:487
-#: src/Plugin.php:502
+#: src/Plugin.php:662
+#: src/Plugin.php:677
 #: src/Wordpress/CustomPostType/Booking.php:957
 msgid "CommonsBooking Bookings"
 msgstr ""
@@ -3545,14 +3545,27 @@ msgstr ""
 msgid "Count locked days when overbooking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:416
-msgid "If selected, days that are overbooked will be counted towards the maximum number of bookable days. This means that if for example you try to book over an item over a week-end where the station is not open, the maximum bookable days will not be increased to allow longer booking periods."
-msgstr ""
-
 #: src/Wordpress/CustomPostType/Location.php:421
 msgid "Count connected locked days as one"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Location.php:422
 msgid "Here you can specify, if a connected span of locked days should be counted individually or just use up x amount of the maximum quota the user is allowed to book. If you set this field to 0, every day will be counted individually. If you set this field to 1, all overbooked days, no matter how many, will always count for 1 day. If you set this to 2, they will count a maximum of two days and so on."
+msgstr ""
+
+#: src/Plugin.php:995
+msgid "New features and changes: Please backup before upgrade!"
+msgstr ""
+
+#: src/Plugin.php:1002
+msgid ""
+"\n"
+"\t\t\t\t\tThis CommonsBooking update has a lot of new features and changes on some templates.<br>\n"
+"\t\t\t\t\tIf you have modified any template files, please backup and check them after update. <br>\n"
+"                    This update contains new features like reminder emails, restriction management, advance booking limits and more.\n"
+"\t\t\t\t\t<br><br>We highly recommend you to <strong>%1$sread the update information%2$s </strong> and make a backup of your site before upgrading."
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:416
+msgid "If selected, days that are overbooked will be counted towards the maximum number of bookable days. If this option is disabled, locked days that are overbooked will allow for bookings that are longer than the maximum number of bookable days configured for the timeframe."
 msgstr ""
