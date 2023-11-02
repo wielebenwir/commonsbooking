@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "953310402ee20c1480f836938e1859cd",
+    "content-hash": "61bd94332e0a188dc8da968d7992c51f",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -988,31 +988,26 @@
         },
         {
             "name": "php-http/promise",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/promise.git",
-                "reference": "4c4c1f9b7289a2ec57cde7f1e9762a5789506f88"
+                "reference": "ef4905bfb492ff389eb7f12e26925a0f20073050"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/promise/zipball/4c4c1f9b7289a2ec57cde7f1e9762a5789506f88",
-                "reference": "4c4c1f9b7289a2ec57cde7f1e9762a5789506f88",
+                "url": "https://api.github.com/repos/php-http/promise/zipball/ef4905bfb492ff389eb7f12e26925a0f20073050",
+                "reference": "ef4905bfb492ff389eb7f12e26925a0f20073050",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1 || ^8.0"
             },
             "require-dev": {
-                "friends-of-phpspec/phpspec-code-coverage": "^4.3.2",
-                "phpspec/phpspec": "^5.1.2 || ^6.2"
+                "friends-of-phpspec/phpspec-code-coverage": "^4.3.2 || ^6.3",
+                "phpspec/phpspec": "^5.1.2 || ^6.2 || ^7.4"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Http\\Promise\\": "src/"
@@ -1039,9 +1034,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/promise/issues",
-                "source": "https://github.com/php-http/promise/tree/1.1.0"
+                "source": "https://github.com/php-http/promise/tree/1.2.0"
             },
-            "time": "2020-07-07T09:29:14+00:00"
+            "time": "2023-10-24T09:20:26+00:00"
         },
         {
             "name": "phpmailer/phpmailer",
@@ -3880,16 +3875,16 @@
         },
         {
             "name": "slope-it/clock-mock",
-            "version": "0.3.8",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slope-it/clock-mock.git",
-                "reference": "45403adcf816a65f2eec1562c971628d6275e9ea"
+                "reference": "075d6052b1c029b62a0e757b62082697546e08fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slope-it/clock-mock/zipball/45403adcf816a65f2eec1562c971628d6275e9ea",
-                "reference": "45403adcf816a65f2eec1562c971628d6275e9ea",
+                "url": "https://api.github.com/repos/slope-it/clock-mock/zipball/075d6052b1c029b62a0e757b62082697546e08fe",
+                "reference": "075d6052b1c029b62a0e757b62082697546e08fe",
                 "shasum": ""
             },
             "require": {
@@ -3898,8 +3893,8 @@
             },
             "require-dev": {
                 "ext-calendar": "*",
-                "mockery/mockery": "1.4.3",
-                "phpunit/phpunit": "9.5.4"
+                "mockery/mockery": "^1.4.3",
+                "phpunit/phpunit": "^9.6 || ^10"
             },
             "type": "library",
             "autoload": {
@@ -3928,9 +3923,9 @@
             ],
             "support": {
                 "issues": "https://github.com/slope-it/clock-mock/issues",
-                "source": "https://github.com/slope-it/clock-mock/tree/0.3.8"
+                "source": "https://github.com/slope-it/clock-mock/tree/0.4.0"
             },
-            "time": "2023-05-19T13:07:29+00:00"
+            "time": "2023-08-21T12:01:30+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -4161,5 +4156,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
