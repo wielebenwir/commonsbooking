@@ -125,11 +125,11 @@
                     }
                 }
             }
-
             handleTypeSelection();
             typeInput.change(function () {
                 handleTypeSelection();
             });
+
             /**
              * Shows/hides grid selection depending on checked-state.
              */

@@ -128,9 +128,9 @@ module.exports = function (grunt) {
 				tasks: [
 					'uglify:dev', 'babel'
 				],
-				options: {
-					livereload: true,
-				},
+                options: {
+                    livereload: true
+                }
 			}
 		}
 	});
