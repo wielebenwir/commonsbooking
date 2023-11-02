@@ -504,7 +504,7 @@ class Timeframe extends CustomPostType {
             array(
 				'name'       => esc_html__( 'Lead time:', 'commonsbooking' ),
 				'desc'       => commonsbooking_sanitizeHTML(__( 'Enter the number of days that should be blocked for bookings as a booking lead time (calculated from the current day).', 'commonsbooking' ) ),
-				'id'         => 'booking-startday-offset',
+				'id'         => \CommonsBooking\Model\Timeframe::META_BOOKING_START_DAY_OFFSET,
 				'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				'type'       => 'text_small',
 				'attributes' => array(
@@ -659,14 +659,14 @@ class Timeframe extends CustomPostType {
 			array(
 				'name' => esc_html__( 'Create Booking Codes', 'commonsbooking' ),
 				'desc' => esc_html__( 'Select to generate booking codes for each day within the start/end date. The booking codes will be generated after clicking "Save / Update".', 'commonsbooking' ),
-				'id'   => "create-booking-codes",
+				'id'   => \CommonsBooking\Model\Timeframe::META_CREATE_BOOKING_CODES,
 				'type' => 'checkbox',
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
 				'name' => esc_html__( 'Show Booking Codes', 'commonsbooking' ),
 				'desc' => esc_html__( 'Select whether users should be shown a booking code when booking.', 'commonsbooking' ),
-				'id'   => "show-booking-codes",
+				'id'   => \CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES,
 				'type' => 'checkbox',
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
@@ -832,9 +832,9 @@ class Timeframe extends CustomPostType {
 			\CommonsBooking\Model\Timeframe::META_MAX_DAYS,
 			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS,
 			\CommonsBooking\Model\Timeframe::META_ALLOWED_USER_ROLES,
-			'booking-startday-offset',
-			'create-booking-codes',
-			'show-booking-codes',
+			\CommonsBooking\Model\Timeframe::META_BOOKING_START_DAY_OFFSET,
+			\CommonsBooking\Model\Timeframe::META_CREATE_BOOKING_CODES,
+			\CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES,
 		];
 		if ($timeframe->getType() != Timeframe::BOOKABLE_ID) {
 			foreach ( $onlyRelevantForBookable as $metaKey ) {

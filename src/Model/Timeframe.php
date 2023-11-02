@@ -40,6 +40,12 @@ class Timeframe extends CustomPost {
 
 	public const META_MAX_DAYS = 'timeframe-max-days';
 
+	public const META_CREATE_BOOKING_CODES = 'create-booking-codes';
+
+	public const META_BOOKING_START_DAY_OFFSET = 'booking-startday-offset';
+
+	public const META_SHOW_BOOKING_CODES = 'show-booking-codes';
+
 	public const META_ALLOWED_USER_ROLES = 'allowed_user_roles';
 
 	/**
@@ -649,7 +655,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function showBookingCodes() : bool
     {
-		return $this->getMeta( 'show-booking-codes' ) === 'on';
+		return $this->getMeta( self::META_SHOW_BOOKING_CODES ) === 'on';
 	}
 
 	/**
@@ -658,7 +664,7 @@ class Timeframe extends CustomPost {
 	 * @return bool
 	 */
 	public function usesBookingCodes(): bool {
-		return $this->getMeta( 'create-booking-codes' ) == 'on';
+		return $this->getMeta( self::META_CREATE_BOOKING_CODES ) == 'on';
 	}
 
 	/**
@@ -837,7 +843,7 @@ class Timeframe extends CustomPost {
      * @return string  date format Y-m-d
      */
     public function getFirstBookableDay() {
-        $offset = $this->getFieldValue( 'booking-startday-offset' ) ?: 0;
+        $offset = $this->getFieldValue( Timeframe::META_BOOKING_START_DAY_OFFSET ) ?: 0;
         $today = current_datetime()->format('Y-m-d');
         return date( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
 
