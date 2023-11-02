@@ -664,7 +664,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$noEndDateTf = new Timeframe($this->createTimeframe(
 			$newLoc,
 			$newItem,
-			strtotime("+1 day",time()),
+			strtotime("+1 day",strtotime( self::CURRENT_DATE )),
 			"",
 		));
 		$this->assertTrue( $noEndDateTf->isValid() );
@@ -674,8 +674,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$noItemTF = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			"",
-			strtotime( "+1 day", time() ),
-			strtotime( "+3 days", time() )
+			strtotime( "+1 day", strtotime( self::CURRENT_DATE ) ),
+			strtotime( "+3 days", strtotime( self::CURRENT_DATE ) )
 		));
 		try {
 			$noItemTF->isValid();
@@ -688,8 +688,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$noLocationTF = new Timeframe($this->createTimeframe(
 			"",
 			$this->itemId,
-			strtotime( "+20 day", time() ),
-			strtotime( "+25 days", time() )
+			strtotime( "+20 day", strtotime( self::CURRENT_DATE ) ),
+			strtotime( "+25 days", strtotime( self::CURRENT_DATE ) )
 		));
 
 		try {
@@ -705,7 +705,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->locationId,
 			$this->itemId,
 			"",
-			strtotime( "+10 days", time() )
+			strtotime( "+10 days", strtotime( self::CURRENT_DATE ) )
 		));
 		try {
 			$noStartDateTF->isValid();
@@ -718,8 +718,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$isOverlapping = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+1 day', time() ),
-			strtotime( '+2 days', time() ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			"off"
 		));
