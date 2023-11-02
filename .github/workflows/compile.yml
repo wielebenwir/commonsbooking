@@ -43,6 +43,7 @@ jobs:
   grunt:
     runs-on: ubuntu-20.04
     name: Run grunt and commit changes
+    needs: i18n-coverage
     steps:
 
     - uses: actions/checkout@v3
