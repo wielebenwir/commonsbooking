@@ -776,6 +776,173 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertTrue($secondTimeframe->isValid());
 	}
 
+	public function testisValid_throwsException() {
+
+		$secondLocation = $this->createLocation("Newest Location", 'publish');
+
+		$isOverlapping = new Timeframe($this->createTimeframe(
+			$secondLocation,
+			$this->itemId,
+			strtotime( '+1 day', time() ),
+			strtotime( '+2 days', time() )
+		));		
+
+		// $this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
+		$this->assertTrue( $isOverlapping->hasTimeframeDateOverlap( $this->validTF ) );
+
+		$exceptionCaught = false;
+		try {
+			$isOverlapping->isValid();
+		} catch (TimeframeInvalidException $e ) {
+			$this->assertStringContainsString( "Item is already bookable at another location within the same date range.", $e->getMessage() );
+			$exceptionCaught = true;
+		}
+		$this->assertTrue($exceptionCaught);
+
+		//test, if end date is before start date (should throw exception)
+		$exceptionCaught = false;
+		$endBeforeStart = new Timeframe($this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+5 days', time() ),
+			strtotime( '+4 day', time() )
+		));
+		try {
+			$endBeforeStart->isValid();
+		} catch (TimeframeInvalidException $e ) {
+			$this->assertStringContainsString( "End date is before start date.", $e->getMessage() );
+			$exceptionCaught = true;
+		}
+		$this->assertTrue($exceptionCaught);
+
+		//test if slot is too short (should throw exception) #1353
+		//we have to create that more in the future so that it does not overlap with other timeframes
+		$notCorrectSlot = new Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+31 days', strtotime(self::CURRENT_DATE) ),
+				strtotime( '+32 days', strtotime(self::CURRENT_DATE) ),
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				"",
+				'd',
+				0,
+				'00:00 AM',
+				'00:00 AM'
+			)
+		);
+		try {
+			$notCorrectSlot->isValid();
+			$this->fail("Expected Exception not thrown");
+		} catch (TimeframeInvalidException $e ) {
+			$this->assertStringContainsString( "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day.", $e->getMessage() );
+		}
+	}
+
+	public function testGetTimeframeEndDate() {
+
+		$this->assertEquals(
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			$this->firstTimeframe->getTimeframeEndDate()
+		);
+
+		$this->assertEquals(
+			strtotime( '+30 day', strtotime( self::CURRENT_DATE ) ),
+			$this->secondTimeframe->getTimeframeEndDate()
+		);
+
+
+		$noEndDate = new Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+1 day', strtotime(self::CURRENT_DATE) ),
+				''
+			)
+		);
+		$this->assertFalse( $noEndDate->getEndDate() );
+	}
+
+	public function testGetLatestPossibleBookingDateTimestamp() {
+		//the default advance booking days in our tests are 30
+		$advanceBookingDays = 30;
+		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
+		//case 1: timeframe is longer than advance booking days
+		$lateTimeframe = new Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+100 days', strtotime( self::CURRENT_DATE ) ),
+			)
+		);
+
+		$this->assertEquals(
+			strtotime( '+29 days', strtotime( self::CURRENT_DATE )),
+			$lateTimeframe->getLatestPossibleBookingDateTimestamp()
+		);
+
+		/* NOT SUPPORTED
+		//case 2: timeframe ends before the advance booking days
+		$this->assertEquals(
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			$this->firstTimeframe->getLatestPossibleBookingDateTimestamp()
+		);
+		*/
+		//case 3: timeframe is infinite and no advance booking days are set, should default to one year
+		$noEndDate = new Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '-1 day', strtotime(self::CURRENT_DATE) ),
+				''
+			)
+		);
+		update_post_meta($noEndDate->ID, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, '');
+		$this->assertEquals(
+			strtotime( '+364 days', strtotime( self::CURRENT_DATE ) ),
+			$noEndDate->getLatestPossibleBookingDateTimestamp()
+		);
+
+		//case 4: timeframe is infinite and advance booking days are set
+		update_post_meta($noEndDate->ID, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, $advanceBookingDays);
+		$this->assertEquals(
+			strtotime( '+' . $advanceBookingDays - 1 . ' days', strtotime( self::CURRENT_DATE ) ),
+			$noEndDate->getLatestPossibleBookingDateTimestamp()
+		);
+
+		/* NOT SUPPORTED
+		//case 5: timeframe is not infinite and no advance booking days are set
+		$yesEndDate = new Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '-1 day', strtotime(self::CURRENT_DATE) ),
+				strtotime( '+1 day', strtotime(self::CURRENT_DATE) )
+			)
+		);
+		update_post_meta($yesEndDate->ID, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, '');
+		$this->assertEquals(
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			$yesEndDate->getLatestPossibleBookingDateTimestamp()
+		);
+		*/
+
+	}
+
+	public function testIsBookable() {
+		$this->assertTrue($this->validTF->isBookable());
+
+		/*$passedTimeframe = new Timeframe($this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime("-5 days",time()),
+			strtotime("-3 days",time())
+		));
+		$this->assertFalse($passedTimeframe->isBookable());*/
+		//This test does not work, function maybe broken?
+	}
+
 	/**
 	 * Will check if the overlap of two timeframes with the same location and item is detected correctly.
 	 * It should be detected, if a weekly repetition is set and the timeframes overlap on at least one day.
@@ -922,7 +1089,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->itemId,
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
-		));		
+		));
 
 		// $this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
 		$this->assertTrue( $isOverlapping->hasTimeframeDateOverlap( $this->validTF ) );

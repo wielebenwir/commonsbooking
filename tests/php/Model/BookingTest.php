@@ -110,7 +110,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertFalse( $this->testBookingTomorrow->showBookingCodes() );
 
 		// Updates meta value
-		update_post_meta( $this->testBookingId, 'show-booking-codes', 'on' );
+		update_post_meta( $this->testBookingId, Timeframe::META_SHOW_BOOKING_CODES, 'on' );
 		wp_cache_flush();
 		$this->testBookingTomorrow = new Booking( get_post( $this->testBookingId ) );
 
@@ -127,7 +127,7 @@ class BookingTest extends CustomPostTypeTest {
 				'grid',
 				'start-time',
 				'end-time',
-				'show-booking-codes',
+				Timeframe::META_SHOW_BOOKING_CODES,
 				'timeframe-max-days',
 			];
 

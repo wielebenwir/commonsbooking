@@ -90,7 +90,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		update_post_meta( $timeframeId, 'item-id', $itemId );
 		update_post_meta( $timeframeId, 'timeframe-max-days', $maxDays );
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, $advanceBookingDays );
-		update_post_meta( $timeframeId, 'booking-startday-offset', $bookingStartdayOffset );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_BOOKING_START_DAY_OFFSET, $bookingStartdayOffset );
 		update_post_meta( $timeframeId, 'full-day', $fullday );
 		update_post_meta( $timeframeId, 'timeframe-repetition', $repetition );
 		if ( $repetitionStart ) {
@@ -104,8 +104,8 @@ abstract class CustomPostTypeTest extends TestCase {
 		update_post_meta( $timeframeId, 'grid', $grid );
 		update_post_meta( $timeframeId, 'weekdays', $weekdays );
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_MANUAL_SELECTION, $manualSelectionDays);
-		update_post_meta( $timeframeId, 'show-booking-codes', $showBookingCodes );
-		update_post_meta( $timeframeId, 'create-booking-codes', $createBookingCodes );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES, $showBookingCodes );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_CREATE_BOOKING_CODES, $createBookingCodes );
 
 		$this->timeframeIds[] = $timeframeId;
 
