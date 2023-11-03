@@ -86,6 +86,7 @@ FIXED: Sorting the table of bookings / locations / timeframes in backend
 FIXED: Wrong error messages when creating a new timeframe
 FIXED: Availabilities of items in GBFS API
 FIXED: Rendering error in item table
+FIXED: Holidays not working when they are more than 30 days in the future
 FIXED: Map sometimes not loading
 
 ### 2.8.4 (20.09.2023)
