@@ -783,8 +783,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$isOverlapping = new Timeframe($this->createTimeframe(
 			$secondLocation,
 			$this->itemId,
-			strtotime( '+1 day', time() ),
-			strtotime( '+2 days', time() )
+			strtotime( '+1 day', strtotime(self::CURRENT_DATE) ),
+			strtotime( '+2 days', strtotime(self::CURRENT_DATE) )
 		));		
 
 		// $this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
@@ -804,8 +804,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$endBeforeStart = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+5 days', time() ),
-			strtotime( '+4 day', time() )
+			strtotime( '+5 days', strtotime(self::CURRENT_DATE) ),
+			strtotime( '+4 day', strtotime(self::CURRENT_DATE) )
 		));
 		try {
 			$endBeforeStart->isValid();
@@ -836,6 +836,26 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->fail("Expected Exception not thrown");
 		} catch (TimeframeInvalidException $e ) {
 			$this->assertStringContainsString( "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day.", $e->getMessage() );
+		}
+
+		$pickupTimeInvalid = new Timeframe($this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( "+10 day", strtotime( self::CURRENT_DATE ) ),
+			strtotime( "+13 days", strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"off",
+			'w',
+			0,
+			'09:00 AM',
+			null
+		));
+		try {
+			$pickupTimeInvalid->isValid();
+			$this->fail("TimeframeInvalidException was not thrown");
+		}
+		catch ( TimeframeInvalidException $e ) {
+			$this->assertEquals( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
 		}
 	}
 
@@ -1078,62 +1098,6 @@ class TimeframeTest extends CustomPostTypeTest {
 		catch (TimeframeInvalidException $e) {
 			$this->assertStringContainsString("The same date was selected multiple times. Please select each date only once.",$e->getMessage());
 		}
-	}
-
-	public function testisValid_throwsException() {
-
-		$secondLocation = $this->createLocation("Newest Location", 'publish');
-
-		$isOverlapping = new Timeframe($this->createTimeframe(
-			$secondLocation,
-			$this->itemId,
-			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
-			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
-		));
-
-		// $this->assertNotEquals( $isOverlapping->getLocation(), $this->validTF->getLocation() );
-		$this->assertTrue( $isOverlapping->hasTimeframeDateOverlap( $this->validTF ) );
-
-		try {
-			$isOverlapping->isValid();
-			$this->fail("TimeframeInvalidException was not thrown");
-		} catch (TimeframeInvalidException $e ) {
-			$this->assertStringContainsString( "Item is already bookable at another location within the same date range.", $e->getMessage() );
-			$exceptionCaught = true;
-		}
-
-		$pickupTimeInvalid = new Timeframe($this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			strtotime( "+10 day", strtotime( self::CURRENT_DATE ) ),
-			strtotime( "+13 days", strtotime( self::CURRENT_DATE ) ),
-			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			"off",
-			'w',
-			0,
-			'09:00 AM',
-			null
-		));
-		try {
-			$pickupTimeInvalid->isValid();
-			$this->fail("TimeframeInvalidException was not thrown");
-		}
-		catch ( TimeframeInvalidException $e ) {
-			$this->assertEquals( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
-		}
-	}
-
-	public function testIsBookable() {
-		$this->assertTrue($this->validTF->isBookable());
-
-		/*$passedTimeframe = new Timeframe($this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			strtotime("-5 days",time()),
-			strtotime("-3 days",time())
-		));
-		$this->assertFalse($passedTimeframe->isBookable());*/
-		//This test does not work, function maybe broken?
 	}
 
 	public function testGetLocation() {
