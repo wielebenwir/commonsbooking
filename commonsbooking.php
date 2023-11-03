@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name:         Commons Booking
- * Version:             2.8.5 RC1
+ * Version:             2.8.5
  * Requires at least:   5.2
  * Requires PHP:        7.4
  * Plugin URI:          https://commonsbooking.org
