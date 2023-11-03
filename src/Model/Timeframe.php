@@ -40,6 +40,14 @@ class Timeframe extends CustomPost {
 
 	public const META_MAX_DAYS = 'timeframe-max-days';
 
+	public const META_CREATE_BOOKING_CODES = 'create-booking-codes';
+
+	public const META_BOOKING_START_DAY_OFFSET = 'booking-startday-offset';
+
+	public const META_SHOW_BOOKING_CODES = 'show-booking-codes';
+
+	public const META_ALLOWED_USER_ROLES = 'allowed_user_roles';
+
 	/**
 	 * Return the span of a timeframe in human-readable format
 	 *
@@ -78,7 +86,7 @@ class Timeframe extends CustomPost {
      * The timestamps are stored in local time (not in UTC).
      * This means that we do not have to do timezone conversion in order to get the corresponding local time.
      *
-     * @return false|int
+     * @return false|int Timestamp of end date, false if no end date is set
      */
     public function getTimeframeEndDate() {
         $endDate = $this->getMeta( self::REPETITION_END );
@@ -119,19 +127,24 @@ class Timeframe extends CustomPost {
 	 * This function respects the advance booking days setting.
 	 * This means that this is the latest date that a user can currently book.
 	 *
+	 * TODO / CAREFUL: This does not respect the end of the timeframe. So if the timeframe ends before
+	 *       the configured "advance booking days" setting, the function will return a date later than the end date of the timeframe.
+	 *
 	 * @return false|int
 	 */
 	public function getLatestPossibleBookingDateTimestamp() {
 		$calculationBase = time();
 
-		// if meta-value not set we define a default value
-		$advanceBookingDays = $this->getMeta( TimeFrame::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) ?:
-			\CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS;
+		// if meta-value not set we define a default value far in the future so that we count all possibly relevant timeframes
+		$advanceBookingDays = $this->getMeta( TimeFrame::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) ?: 365;
 
 		// we subtract one day to reflect the current day in calculation
 		$advanceBookingDays --;
 
-		return strtotime( '+ ' . $advanceBookingDays . ' days', $calculationBase );
+		$advanceBookingTime = strtotime( '+ ' . $advanceBookingDays . ' days', $calculationBase );
+
+		return $advanceBookingTime;
+
 	}
 
 	/**
@@ -642,7 +655,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function showBookingCodes() : bool
     {
-		return $this->getMeta( 'show-booking-codes' ) === 'on';
+		return $this->getMeta( self::META_SHOW_BOOKING_CODES ) === 'on';
 	}
 
 	/**
@@ -651,7 +664,7 @@ class Timeframe extends CustomPost {
 	 * @return bool
 	 */
 	public function usesBookingCodes(): bool {
-		return $this->getMeta( 'create-booking-codes' ) == 'on';
+		return $this->getMeta( self::META_CREATE_BOOKING_CODES ) == 'on';
 	}
 
 	/**
@@ -830,7 +843,7 @@ class Timeframe extends CustomPost {
      * @return string  date format Y-m-d
      */
     public function getFirstBookableDay() {
-        $offset = $this->getFieldValue( 'booking-startday-offset' ) ?: 0;
+        $offset = $this->getFieldValue( Timeframe::META_BOOKING_START_DAY_OFFSET ) ?: 0;
         $today = current_datetime()->format('Y-m-d');
         return date( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
 

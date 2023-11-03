@@ -363,6 +363,97 @@ class TimeframeTest extends CustomPostTypeTest {
 		}
 	}
 
+	public function testGetTimeframeEndDate() {
+
+		$this->assertEquals(
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			$this->firstTimeframe->getTimeframeEndDate()
+		);
+
+		$this->assertEquals(
+			strtotime( '+30 day', strtotime( self::CURRENT_DATE ) ),
+			$this->secondTimeframe->getTimeframeEndDate()
+		);
+
+
+		$noEndDate = new Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+1 day', strtotime(self::CURRENT_DATE) ),
+				''
+			)
+		);
+		$this->assertFalse( $noEndDate->getEndDate() );
+	}
+
+	public function testGetLatestPossibleBookingDateTimestamp() {
+		//the default advance booking days in our tests are 30
+		$advanceBookingDays = 30;
+		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
+		//case 1: timeframe is longer than advance booking days
+		$lateTimeframe = new Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+100 days', strtotime( self::CURRENT_DATE ) ),
+			)
+		);
+
+		$this->assertEquals(
+			strtotime( '+29 days', strtotime( self::CURRENT_DATE )),
+			$lateTimeframe->getLatestPossibleBookingDateTimestamp()
+		);
+
+		/* NOT SUPPORTED
+		//case 2: timeframe ends before the advance booking days
+		$this->assertEquals(
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			$this->firstTimeframe->getLatestPossibleBookingDateTimestamp()
+		);
+		*/
+		//case 3: timeframe is infinite and no advance booking days are set, should default to one year
+		$noEndDate = new Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '-1 day', strtotime(self::CURRENT_DATE) ),
+				''
+			)
+		);
+		update_post_meta($noEndDate->ID, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, '');
+		$this->assertEquals(
+			strtotime( '+364 days', strtotime( self::CURRENT_DATE ) ),
+			$noEndDate->getLatestPossibleBookingDateTimestamp()
+		);
+
+		//case 4: timeframe is infinite and advance booking days are set
+		update_post_meta($noEndDate->ID, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, $advanceBookingDays);
+		$this->assertEquals(
+			strtotime( '+' . $advanceBookingDays - 1 . ' days', strtotime( self::CURRENT_DATE ) ),
+			$noEndDate->getLatestPossibleBookingDateTimestamp()
+		);
+
+		/* NOT SUPPORTED
+		//case 5: timeframe is not infinite and no advance booking days are set
+		$yesEndDate = new Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '-1 day', strtotime(self::CURRENT_DATE) ),
+				strtotime( '+1 day', strtotime(self::CURRENT_DATE) )
+			)
+		);
+		update_post_meta($yesEndDate->ID, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, '');
+		$this->assertEquals(
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			$yesEndDate->getLatestPossibleBookingDateTimestamp()
+		);
+		*/
+
+	}
+
 	public function testIsBookable() {
 		$this->assertTrue($this->validTF->isBookable());
 
