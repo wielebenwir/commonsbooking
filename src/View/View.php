@@ -80,8 +80,7 @@ abstract class View {
 			$endOfStartDay = strtotime('+1 day midnight', $timeframe->getStartDate()) - 1;
 			if($endOfStartDay > $latestPossibleBookingDate) continue;
 
-			$type = ( new \ReflectionClass( $cpt ) )->getShortName();
-			$item = $timeframe->{'get' . $type }();
+			$item = $timeframe->{'get' . get_class( $cpt ) }();
 
 			// We need only published items
 			if ( !$item || $item->post_status !== 'publish' ) {
