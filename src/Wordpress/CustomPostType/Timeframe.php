@@ -142,6 +142,16 @@ class Timeframe extends CustomPostType {
 		\CommonsBooking\View\BookingCodes::renderTable( $field->object_id() );
 	}
 
+	public static function renderDateSelector( $field_args, $field ) {
+		?>
+		<label for="cmb2_multiselect_datepicker">
+			<?php echo commonsbooking_sanitizeHTML( __("Select Dates:", 'commonsbooking') ); ?>
+		</label>
+		<input type="text" id="cmb2_multiselect_datepicker">
+		<br>
+		<?php
+	}
+
 	/**
 	 * Priorities:
 	 * 1 => esc_html__("Opening Hours", 'commonsbooking'),
@@ -600,7 +610,7 @@ class Timeframe extends CustomPostType {
 				'desc'    => esc_html__(
 					'Choose whether the time frame should repeat at specific intervals. The repetitions refer to the unit of a day. With the start and end date you define when the repetition interval starts and ends. If you choose "weekly", you can select specific days of the week below. Read the documentation for more information and examples.'
 					, 'commonsbooking' ),
-				'id'      => "timeframe-repetition",
+				'id'      => \CommonsBooking\Model\Timeframe::META_REPETITION,
 				'type'    => 'select',
 				'options' => self::getTimeFrameRepetitions(),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
@@ -613,11 +623,18 @@ class Timeframe extends CustomPostType {
 				'type' => 'title',
 			),
 			array(
+				'name'          => esc_html__( "Selected manual dates", 'commonsbooking' ),
+				'desc'          => commonsbooking_sanitizeHTML( __( "Enter the dates in the YYYY-MM-DD format here, the dates are separated by a comma. <br> Example: 2023-05-24,2023-06-24 <br> You can also use the datepicker above to pick dates for this field.", 'commonsbooking' ) ),
+				'id'            => \CommonsBooking\Model\Timeframe::META_MANUAL_SELECTION,
+				'type'          => 'textarea_small',
+				'before_row'    => array( self::class, 'renderDateSelector' )
+			),
+			array(
 				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
 				'desc'        => esc_html__( 'Set the start date. If you have selected repetition, this is the start date of the interval. ', 'commonsbooking' ),
 				'id'          => \CommonsBooking\Model\Timeframe::REPETITION_START,
 				'type'        => 'text_date_timestamp',
-				'time_format' => esc_html(get_option( 'time_format' )),
+				'time_format' => esc_html( get_option( 'time_format' ) ),
 				'date_format' => $dateFormat,
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
@@ -705,7 +722,7 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-	 * Retuns grid options.
+	 * Returns grid options.
 	 * @return array
 	 */
 	public static function getGridOptions() {
@@ -721,7 +738,8 @@ class Timeframe extends CustomPostType {
 	 */
 	public static function getTimeFrameRepetitions() {
 		return [
-			'norep' => esc_html__( "No Repetition", 'commonsbooking' ),
+			'norep' => esc_html__( "No repetition", 'commonsbooking' ),
+			'manual' => esc_html__( "Manual repetition", 'commonsbooking' ),
 			'd'     => esc_html__( "Daily", 'commonsbooking' ),
 			'w'     => esc_html__( "Weekly", 'commonsbooking' ),
 			'm'     => esc_html__( "Monthly", 'commonsbooking' ),
@@ -746,11 +764,23 @@ class Timeframe extends CustomPostType {
 			return;
 		}
 
+		//assign the startDate and EndDate for manual repetition (needs to be done before validation in order for validation to work)
+		try {
+			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
+		} catch ( Exception $e ) {
+			set_transient(
+				\CommonsBooking\Model\Timeframe::ERROR_TYPE,
+				$e->getMessage(),
+				45
+			);
+		}
+		$timeframe->updatePostMetaStartAndEndDate();
+
 		// Validate timeframe
-		$isValid = self::validateTimeFrame( $post_id, $post );
+		$isValid = self::validateTimeFrame( $timeframe );
 
 		if ( $isValid ) {
-			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
+
 			self::sanitizeRepetitionEndDate( $post_id );
 
 			//delete unused postmeta
@@ -789,30 +819,25 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Validates timeframe and sets state to draft if invalid.
 	 *
-	 * @param $post_id
-	 * @param $post
+	 * @param Timeframe $timeframe
 	 *
 	 * @return bool
 	 */
-	protected static function validateTimeFrame( $post_id, $post ): bool {
+	protected static function validateTimeFrame( $timeframe ): bool {
 		try {
-			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
-			try {
-				$timeframe->isValid();
+			$timeframe->isValid();
+		}
+		catch (TimeframeInvalidException $e){
+			set_transient(
+				\CommonsBooking\Model\Timeframe::ERROR_TYPE,
+				commonsbooking_sanitizeHTML($e->getMessage()),
+				45 );
+			// set post_status to draft if not valid
+			$post = $timeframe->getPost();
+			if ( $post->post_status !== 'draft' ) {
+				$post->post_status = 'draft';
+				wp_update_post( $post );
 			}
-			catch (TimeframeInvalidException $e){
-				set_transient(
-					\CommonsBooking\Model\Timeframe::ERROR_TYPE,
-					commonsbooking_sanitizeHTML($e->getMessage()),
-					45 );
-				// set post_status to draft if not valid
-				if ( $post->post_status !== 'draft' ) {
-					$post->post_status = 'draft';
-					wp_update_post( $post );
-				}
-				return false;
-			}
-		} catch ( Exception $e ) {
 			return false;
 		}
 
