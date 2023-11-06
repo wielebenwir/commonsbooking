@@ -33,21 +33,29 @@
 
         const timeframeForm = $('#cmb2-metabox-cb_timeframe-custom-fields');
 
+        const BOOKABLE_ID = "2";
+        const HOLIDAYS_ID = "3";
+        const REPAIR_ID = "5";
+
+        const REPETITION_NONE = "norep";
+        const REPETITION_MANUAL = "manual";
+        const REPETITION_DAILY = "d";
+        const REPETITION_WEEKLY = "w";
+        const REPETITION_MONTHLY = "m";
+        const REPETITION_YEARLY = "y";
+
+        // the assigned numbers for the location selection input
+        const SELECTION_MANUAL = 0;
+        const SELECTION_CATEGORY = 1;
+        const SELECTION_ALL = 2;
+
+        const timeframeRepetitionInput = $('#timeframe-repetition');
+        const locationSelectionInput = $('#location-select');
+        const itemSelectionInput = $('#item-select');
+
         if (timeframeForm.length) {
-            const typeInput = $('#type');
-            //the assigned numbers for the typeinput
-            const BOOKABLE_TYPE = 2;
-            const HOLIDAY_TYPE = 3;
-            const BLOCKED_TYPE = 5;
-
-            // the assigned numbers for the location selection input
-            const SELECTION_MANUAL = 0;
-            const SELECTION_CATEGORY = 1;
-            const SELECTION_ALL = 2;
-
             const timeframeRepetitionInput = $('#timeframe-repetition');
-            const locationSelectionInput = $('#location-select');
-            const itemSelectionInput = $('#item-select');
+            const typeInput = $('#type');
             const gridInput = $('#grid');
             const weekdaysInput = $('#weekdays1'); // TODO: find better solution.
             const startTimeInput = $('#start-time');
@@ -58,6 +66,7 @@
             const fullDayInput = $('#full-day');
 
             // booking codes
+            const bookingCodeTitle = $('#title-timeframe-booking-codes');
             const showBookingCodes = $('#show-booking-codes');
             const createBookingCodesInput = $('#create-booking-codes');
             const bookingCodesDownload = $('#booking-codes-download');
@@ -69,17 +78,19 @@
             const multiItemSelection = $(".cmb2-id-item-ids");
             const categoryLocationSelection = $('.cmb2-id-location-category-ids');
             const categoryItemSelection = $('.cmb2-id-item-category-ids');
-            const bookingConfigTitle = $('.cmb2-id-title-bookings-config');
-            const maxDaysSelect = $('.cmb2-id-timeframe-max-days');
-            const advanceBookingDays = $('.cmb2-id-timeframe-advance-booking-days');
-            const bookingStartDayOffset = $('.cmb2-id-booking-startday-offset');
-            const allowUserRoles = $('.cmb2-id-allowed-user-roles');
+            const holidayInput = $('#timeframe_manual_date');
+            const manualDatePicker = $("#cmb2_multiselect_datepicker");
+            const manualDateField = $('.cmb2-id-timeframe-manual-date');
+            const maxDaysSelect = $('#timeframe-max-days');
+            const advanceBookingDays = $('#timeframe-advance-booking-days');
+            const bookingStartDayOffset = $('#booking-startday-offset');const bookingConfigurationTitle = $('#title-bookings-config');
+            const allowUserRoles = $('#allowed_user_roles');
             const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
             const noRepSet = [fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput];
             const repTimeFieldsSet = [gridInput, startTimeInput, endTimeInput];
             const bookingCodeSet = [createBookingCodesInput, bookingCodesList, bookingCodesDownload, showBookingCodes];
+            const bookingConfigSet = [maxDaysSelect, advanceBookingDays, bookingStartDayOffset, allowUserRoles, bookingConfigurationTitle];
 
-            const bookingSettings = [bookingConfigTitle, maxDaysSelect, advanceBookingDays, bookingStartDayOffset, allowUserRoles];
             /**
              * Show repetition fields.
              */
@@ -112,7 +123,7 @@
              */
             const migrateSingleSelection = () => {
 
-                if (typeInput.val() != HOLIDAY_TYPE) {
+                if (typeInput.val() != HOLIDAYS_ID) {
                     return;
                 }
                 // get single selection
@@ -142,19 +153,18 @@
              * Shows/hides max day selection and user role restriction depending on timeframe type (for bookings).
              */
             const handleTypeSelection = function () {
-                const selectedType = $("option:selected", typeInput).val();
-                if (selectedType == BOOKABLE_TYPE) {
-                    $.each(bookingSettings, function() {
-                        $(this).show();
-                    });
+                const selectedType =  $("option:selected", typeInput).val();
+                const selectedRepetition = $("option:selected", timeframeRepetitionInput).val()
+                if (selectedType === BOOKABLE_ID) {
+                    showFieldset(bookingConfigSet);
+                    showFieldset(bookingCodeTitle);
                 } else {
-                    $.each(bookingSettings, function() {
-                        $(this).hide();
-                    });
+                    hideFieldset(bookingConfigSet);
+                    hideFieldset(bookingCodeTitle);
                 }
 
                 //we migrate the single selection to the multiselect (new holiday timeframes do not have a single selection anymore)
-                if (selectedType == HOLIDAY_TYPE) {
+                if (selectedType == HOLIDAYS_ID) {
                     itemSelectionInput.show();
                     locationSelectionInput.show();
                     migrateSingleSelection();
@@ -176,7 +186,7 @@
             const handleLocationSelection = function () {
                 const selectedType = $("option:selected", typeInput).val();
                 //disable the mass selection for all timeframes except holidays
-                if (selectedType == HOLIDAY_TYPE) {
+                if (selectedType == HOLIDAYS_ID) {
                     singleLocationSelection.hide();
                     //handle different selection types
                     const selectedOption = $("option:selected", locationSelectionInput).val();
@@ -209,7 +219,7 @@
             const handleItemSelection = function () {
                 const selectedType = $("option:selected", typeInput).val();
                 //disable the mass selection for all timeframes except holidays (for now)
-                if (selectedType == HOLIDAY_TYPE) {
+                if (selectedType == HOLIDAYS_ID) {
                     singleItemSelection.hide();
                     //handle different selection types
                     const selectedOption = $("option:selected", itemSelectionInput).val();
@@ -238,16 +248,12 @@
 
             /**
              * Shows/hides grid selection depending on checked-state.
-             * Will also clear grid selection if full-day is selected so that
-             * full-day timeframes won't have the wrong grid selected.
-             * Grid is either the full slot or an hourly slot.
              */
             const handleFullDaySelection = function () {
                 const selectedRep = $("option:selected", timeframeRepetitionInput).val();
                 // Full-day setting
                 if (fullDayInput.prop("checked")) {
                     gridInput.prop("selected", false);
-                    gridInput.val(0);
                     hideFieldset(repTimeFieldsSet);
                 } else {
                     showFieldset(repTimeFieldsSet);
@@ -263,15 +269,28 @@
              */
             const handleRepetitionSelection = function () {
                 const selectedType = $('option:selected', timeframeRepetitionInput).val();
+                const selectedTimeframeType = $("option:selected", typeInput).val();
 
                 if (selectedType) {
-                    if (selectedType == 'norep') {
+                    if (selectedType == REPETITION_NONE) {
                         showNoRepFields();
                     } else {
                         showRepFields();
                     }
 
-                    if (selectedType == 'w') {
+                    if (selectedType === REPETITION_MANUAL) {
+                        manualDateField.show();
+                        manualDatePicker.show();
+                        hideFieldset(repetitionStartInput);
+                        hideFieldset(repetitionEndInput);
+                    } else {
+                        manualDateField.hide();
+                        manualDatePicker.hide();
+                        showFieldset(repetitionStartInput);
+                        showFieldset(repetitionEndInput);
+                    }
+
+                    if (selectedType === REPETITION_WEEKLY) {
                         weekdaysInput.parents('.cmb-row').show();
                     } else {
                         weekdaysInput.parents('.cmb-row').hide();
@@ -292,13 +311,12 @@
 
             const handleBookingCodesSelection = function () {
                 const fullday = fullDayInput.prop('checked'),
-                    type = typeInput.val(),
-                    repStart = repetitionStartInput.val(),
-                    repEnd = repetitionEndInput.val();
+                type = typeInput.val(),
+                repStart = repetitionStartInput.val();
 
                 hideFieldset(bookingCodeSet);
 
-                if (repStart && fullday && type == BOOKABLE_TYPE) {
+                if (repStart && fullday && type === BOOKABLE_ID) {
                     showFieldset(bookingCodeSet);
 
                     // If booking codes shall not be created we disable and hide option to show them

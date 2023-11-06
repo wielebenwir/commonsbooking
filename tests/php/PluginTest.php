@@ -2,13 +2,14 @@
 
 namespace CommonsBooking\Tests;
 
-use CommonsBooking\Exception\PostException;
 use CommonsBooking\Model\CustomPost;
+use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
+use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
-use PHPUnit\Framework\TestCase;
+use SlopeIt\ClockMock\ClockMock;
 
-class PluginTest extends TestCase
+class PluginTest extends CustomPostTypeTest
 {
 
     public function testGetCustomPostTypes()
@@ -28,4 +29,12 @@ class PluginTest extends TestCase
 			$this->assertInstanceOf(CustomPost::class, CustomPostType::getModel($post));
 		}
     }
+
+	protected function setUp(): void {
+		parent::setUp();
+	}
+
+	protected function tearDown(): void {
+		parent::tearDown();
+	}
 }

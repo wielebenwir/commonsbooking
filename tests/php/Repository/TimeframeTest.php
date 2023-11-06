@@ -4,21 +4,28 @@ namespace CommonsBooking\Tests\Repository;
 
 use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use SlopeIt\ClockMock\ClockMock;
 
 class TimeframeTest extends CustomPostTypeTest {
 
-	const REPETITION_START = '1623801600';
+	protected int $repetition_start;
+	protected int $repetition_end;
 
-	const REPETITION_END = '1661472000';
+	protected string $formattedDate;
 
-	protected int $timeframeId;
+	protected int $timeframeWithEndDate;
+	protected int $timeframeWithoutEndDate;
+	protected int $timeframeDailyRepetition;
+	protected int $timeframeWeeklyRepetition;
+	protected int $timeframeManualRepetition;
 
-	protected int $otherItemId;
-	protected int $otherLocationId;
-	protected int $otherTimeframeId;
-
-	protected function setUp(): void {
-		parent::setUp();
+	/**
+	 * The tests are designed in a way, that all timeframes should lie in the CURRENT_DATE plus 10 days.
+	 * The only exception is the manual repetition timeframe, which is only valid for today and in a week.
+	 * all apply to the location with id $this->locationId and the item with id $this->itemId
+	 * @var array|int|\WP_Error
+	 */
+	protected array $allTimeframes;
 	}
 
 	/**
@@ -36,401 +43,314 @@ class TimeframeTest extends CustomPostTypeTest {
 		);
 	}
 
-	private function createOtherTFwithItemAtFirstLocation( $start = self::REPETITION_START, $end = self::REPETITION_END ) {
-		$this->otherItemId      = $this->createItem( "Other Item" );
-		$this->otherTimeframeId = $this->createTimeframe(
-			$this->locationId,
-			$this->otherItemId,
-			$start,
-			$end
-		);
-	}
 
-	protected function tearDown(): void {
-		parent::tearDown();
-	}
 
-	public function testGetInRange_withEndDate() {
-		// Timeframe with enddate
-		$this->timeframeId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END
-		);
-		$inRangeTimeFrames = Timeframe::getInRange( self::REPETITION_START, self::REPETITION_END );
-		$postIds           = array_map( function ( $timeframe ) {
+	public function testGetInRange() {
+		$inRangeTimeFrames = Timeframe::getInRange($this->repetition_start, $this->repetition_end);
+		//All timeframes should be in range
+		$this->assertEquals(count($this->allTimeframes),count($inRangeTimeFrames) );
+		$postIds = array_map(function($timeframe) {
 			return $timeframe->ID;
-		}, $inRangeTimeFrames );
-		$this->assertContains( $this->timeframeId, $postIds );
-		$this->assertEquals( 1, count( $inRangeTimeFrames ) );
-
-		// Create a completely seperate item, location and timeframe. This should now also be in the range.
-		$this->createOtherTimeframe();
-		$inRangeTimeFrames = Timeframe::getInRange( self::REPETITION_START, self::REPETITION_END );
-		$this->assertEquals( 2, count( $inRangeTimeFrames ) );
-		$postIds = array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $inRangeTimeFrames );
-		$this->assertContains( $this->otherTimeframeId, $postIds );
-
-		//different location, same item, should be in range
-		$this->createOtherTFwithItemAtFirstLocation();
-		$inRangeTimeFrames = Timeframe::getInRange( self::REPETITION_START, self::REPETITION_END );
-		$this->assertEquals( 3, count( $inRangeTimeFrames ) );
-		$postIds = array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $inRangeTimeFrames );
-		$this->assertContains( $this->otherTimeframeId, $postIds );
-
-		//item and location are the same, but timeframe is not in range because it ends before the start of the range
-		$earlierStart = new \DateTime();
-		$earlierStart->setTimestamp( self::REPETITION_START );
-		$earlierStart->modify( '-10 day' );
-
-		$earlierEnd = clone $earlierStart;
-		$earlierEnd->modify( '+5 day' );
-
-		$this->timeframeId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			$earlierStart->getTimestamp(),
-			$earlierEnd->getTimestamp()
-		);
-		$inRangeTimeFrames = Timeframe::getInRange( self::REPETITION_START, self::REPETITION_END );
-		$this->assertEquals( 3, count( $inRangeTimeFrames ) );
-		$postIds = array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $inRangeTimeFrames );
-		$this->assertNotContains( $this->timeframeId, $postIds );
-	}
-
-	public function testGetInRange_withoutEndDate() {
-		// Timeframe without enddate
-		$this->timeframeId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			self::REPETITION_START,
-			null
-		);
-		$inRangeTimeFrames = Timeframe::getInRange( self::REPETITION_START, self::REPETITION_END );
-		$postIds           = array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $inRangeTimeFrames );
-		$this->assertContains( $this->timeframeId, $postIds );
-		$this->assertEquals( 1, count( $inRangeTimeFrames ) );
+		}, $inRangeTimeFrames);
+		asort($postIds);
+		$this->assertEquals($this->allTimeframes, $postIds);
 	}
 
 	public function testGetForItem() {
-		// Timeframe with enddate
-		$this->timeframeId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END
-		);
-		$inItemTimeframes  = Timeframe::get(
-			[],
-			[ $this->itemId ],
-		);
-		$this->assertEquals( 1, count( $inItemTimeframes ) );
-		$this->assertEquals( $this->timeframeId, $inItemTimeframes[0]->ID );
-
-		//test for one item that is first at one location and then at another location, should get both timeframes
-		$otherLocationId = $this->createLocation( "Other Location" );
-		$earlierStart    = new \DateTime();
-		$earlierStart->setTimestamp( self::REPETITION_START );
-		$earlierStart->modify( '-10 day' );
-
-		$earlierEnd = clone $earlierStart;
-		$earlierEnd->modify( '+5 day' );
-		$otherTimeframeId = $this->createTimeframe(
-			$otherLocationId,
-			$this->itemId,
-			$earlierStart->getTimestamp(),
-			$earlierEnd->getTimestamp()
-		);
 		$inItemTimeframes = Timeframe::get(
 			[],
-			[ $this->itemId ],
+			[$this->itemId],
 		);
-		$this->assertEquals( 2, count( $inItemTimeframes ) );
-		$postIds = array_map( function ( $timeframe ) {
+		$this->assertEquals(count($this->allTimeframes),count($inItemTimeframes));
+		$postIds = array_map(function($timeframe) {
 			return $timeframe->ID;
-		}, $inItemTimeframes );
-		$this->assertContains( $this->timeframeId, $postIds );
-		$this->assertContains( $otherTimeframeId, $postIds );
-	}
-
-	/**
-	 * Tests for timeframes which have more than one assigned item or location
-	 * @return void
-	 */
-	public function testGetMultiTimeframe() {
-		$otherItem = $this->createItem( "Other Item" );
-		$otherLocation = $this->createLocation( "Other Location" );
-		// Timeframe just for original item and location
-		$this->timeframeId = $this->createBookableTimeFrameIncludingCurrentDay();
-		$holidayTF = $this->createHolidayTimeframeForAllItemsAndLocations();
-		//from first item
-		$inItemTimeframes = Timeframe::get(
-			[],
-			[ $this->itemId ],
-		);
-		$this->assertEquals( 2, count( $inItemTimeframes ) );
-		$postIds = array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $inItemTimeframes );
-		$this->assertContains( $this->timeframeId, $postIds );
-		$this->assertContains( $holidayTF, $postIds );
-
-		//from second item
-		$inItemTimeframes = Timeframe::get(
-			[],
-			[ $otherItem ],
-		);
-		$this->assertEquals( 1, count( $inItemTimeframes ) );
-		$this->assertEquals( $holidayTF, $inItemTimeframes[0]->ID );
-
-		//from first location
-		$inLocationTimeframes = Timeframe::get(
-			[ $this->locationId ],
-		);
-		$this->assertEquals( 2, count( $inLocationTimeframes ) );
-		$postIds = array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $inLocationTimeframes );
-		$this->assertContains( $this->timeframeId, $postIds );
-		$this->assertContains( $holidayTF, $postIds );
-
-		//from second location
-		$inLocationTimeframes = Timeframe::get(
-			[ $otherLocation ],
-		);
-		$this->assertEquals( 1, count( $inLocationTimeframes ) );
-		$this->assertEquals( $holidayTF, $inLocationTimeframes[0]->ID );
+		}, $inItemTimeframes);
+		asort($postIds);
+		$this->assertEquals($this->allTimeframes, $postIds);
 	}
 
 	public function testGetForLocation() {
-		// Timeframe with enddate
-		$this->timeframeId    = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END
-		);
 		$inLocationTimeframes = Timeframe::get(
-			[ $this->locationId ],
+			[$this->locationId],
 		);
-		$this->assertEquals( 1, count( $inLocationTimeframes ) );
-		$this->assertEquals( $this->timeframeId, $inLocationTimeframes[0]->ID );
-
-		//test for one location that has two items, should get both timeframes
-		$this->createOtherTFwithItemAtFirstLocation();
-		$inLocationTimeframes = Timeframe::get(
-			[ $this->locationId ],
-		);
-		$this->assertEquals( 2, count( $inLocationTimeframes ) );
-		$postIds = array_map( function ( $timeframe ) {
+		$this->assertEquals(count($this->allTimeframes),count($inLocationTimeframes));
+		$postIds = array_map(function($timeframe) {
 			return $timeframe->ID;
-		}, $inLocationTimeframes );
-		$this->assertContains( $this->timeframeId, $postIds );
-		$this->assertContains( $this->otherTimeframeId, $postIds );
+		}, $inLocationTimeframes);
+		asort($postIds);
+		$this->assertEquals($this->allTimeframes, $postIds);
 	}
 
 	public function testGetForLocationAndItem() {
-		// Timeframe with enddate
-		$this->timeframeId           = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END
-		);
 		$inLocationAndItemTimeframes = Timeframe::get(
-			[ $this->locationId ],
-			[ $this->itemId ],
+			[$this->locationId],
+			[$this->itemId],
 		);
-		$this->assertEquals( 1, count( $inLocationAndItemTimeframes ) );
-		$this->assertEquals( $this->timeframeId, $inLocationAndItemTimeframes[0]->ID );
-
-		//test for one location that has two items and completely separate item/location combo should still only get the specific timeframe
-		$this->createOtherTFwithItemAtFirstLocation();
-		$inLocationAndItemTimeframes = Timeframe::get(
-			[ $this->locationId ],
-			[ $this->itemId ],
-		);
-		$this->assertEquals( 1, count( $inLocationAndItemTimeframes ) );
-		$this->assertEquals( $this->timeframeId, $inLocationAndItemTimeframes[0]->ID );
-	}
-
-	public function testGetPostIdsByType_singleItem() {
-		// Timeframe with enddate
-		$this->timeframeId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END
-		);
-		$postIds           = Timeframe::getPostIdsByType(
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
-			[ $this->itemId ],
-		);
-		$this->assertEquals( 1, count( $postIds ) );
-		$this->assertEquals( $this->timeframeId, $postIds[0] );
-
-		//test for one item that is first at one location and then at another location, should get both timeframes
-		$otherLocationId = $this->createLocation( "Other Location" );
-		$earlierStart    = new \DateTime();
-		$earlierStart->setTimestamp( self::REPETITION_START );
-		$earlierStart->modify( '-10 day' );
-		$earlierEnd = clone $earlierStart;
-		$earlierEnd->modify( '+5 day' );
-		$otherTimeframeId = $this->createTimeframe(
-			$otherLocationId,
-			$this->itemId,
-			$earlierStart->getTimestamp(),
-			$earlierEnd->getTimestamp()
-		);
-		$postIds          = Timeframe::getPostIdsByType(
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
-			[ $this->itemId ]
-		);
-		$this->assertEquals( 2, count( $postIds ) );
-		$postIds = array_map( 'intval', $postIds ); //the assertContains can not handle string/int comparison
-		$this->assertContains( $this->timeframeId, $postIds );
-		$this->assertContains( $otherTimeframeId, $postIds );
-	}
-
-	public function testGetPostIdsByType_singleLocation() {
-		// Timeframe with enddate
-		$this->timeframeId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END
-		);
-		$postIds           = Timeframe::getPostIdsByType(
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
-			[],
-			[ $this->locationId ]
-		);
-		$this->assertEquals( 1, count( $postIds ) );
-		$this->assertEquals( $this->timeframeId, $postIds[0] );
-
-		//test for one location that has two items, should get both timeframes
-		$this->createOtherTFwithItemAtFirstLocation();
-		$postIds = Timeframe::getPostIdsByType(
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
-			[],
-			[ $this->locationId ]
-		);
-		$postIds = array_map( 'intval', $postIds ); //the assertContains can not handle string/int comparison
-		$this->assertEquals( 2, count( $postIds ) );
-		$this->assertContains( $this->timeframeId, $postIds );
-		$this->assertContains( $this->otherTimeframeId, $postIds );
-	}
-
-	public function testGetPostIdsByType_singleLocationAndItem() {
-		// Timeframe with enddate
-		$this->timeframeId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END
-		);
-		$postIds           = Timeframe::getPostIdsByType(
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
-			[ $this->itemId ],
-			[ $this->locationId ]
-		);
-		$this->assertEquals( 1, count( $postIds ) );
-		$this->assertEquals( $this->timeframeId, $postIds[0] );
-
-		//test for one location that has two items and completely separate item/location combo should still only get the specific timeframe
-		$this->createOtherTFwithItemAtFirstLocation();
-		$postIds = Timeframe::getPostIdsByType(
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
-			[ $this->itemId ],
-			[ $this->locationId ]
-		);
-		$this->assertEquals( 1, count( $postIds ) );
-		$this->assertEquals( $this->timeframeId, $postIds[0] );
-	}
-
-	public function testGetPostIdsByType_oneLocationMultiItem() {
-		$otherItemId = $this->createItem( "Other Item" );
-		// Timeframe with enddate and two items
-		$this->timeframeId = $this->createTimeframe(
-			$this->locationId,
-			[$this->itemId, $otherItemId],
-			self::REPETITION_START,
-			self::REPETITION_END
-		);
-		$fromFirstItem     = Timeframe::getPostIdsByType(
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
-			[ $this->itemId ],
-			[ $this->locationId ]
-		);
-		$this->assertEquals( 1, count( $fromFirstItem ) );
-		$this->assertEquals( $this->timeframeId, $fromFirstItem[0] );
-
-		$fromSecondItem     = Timeframe::getPostIdsByType(
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
-			[ $otherItemId ],
-			[ $this->locationId ]
-		);
-		$this->assertEquals( 1, count( $fromSecondItem ) );
-		$this->assertEquals( $this->timeframeId, $fromSecondItem[0] );
-
-		$fromBothItems     = Timeframe::getPostIdsByType(
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
-			[ $this->itemId, $otherItemId ],
-			[ $this->locationId ]
-		);
-		$this->assertEquals( 1, count( $fromBothItems ) );
-		$this->assertEquals( $this->timeframeId, $fromBothItems[0] );
+		$this->assertEquals(count($this->allTimeframes),count($inLocationAndItemTimeframes));
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $inLocationAndItemTimeframes);
+		asort($postIds);
+		$this->assertEquals($this->allTimeframes, $postIds);
 	}
 
 	/**
-	 * This test is tricky because it only makes sense for holiday timeframes.
-	 * Otherwise, this configuration would create a conflict.
-	 *
+	 * Will check if we can get a timeframe of the holiday type just the same as a normal timeframe
 	 * @return void
 	 */
-	public function testGetPostIdsByType_multiLocationMultiItem() {
-		// Timeframe with enddate and one item
-		$this->timeframeId = $this->createTimeframe(
+	public function testGetHoliday() {
+		$holidayId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			self::REPETITION_START,
-			self::REPETITION_END,
-		);
-		$this->createOtherTimeframe();
-
-		//create holiday applicable for both
-		$holidayId = $this->createTimeframe(
-			[$this->locationId, $this->otherLocationId],
-			[$this->itemId, $this->otherItemId],
-			self::REPETITION_START,
-			self::REPETITION_END,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE )),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID
 		);
-
-		$holidayFromFirstItemAndLoc = Timeframe::getPostIdsByType(
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID ],
-			[ $this->itemId ],
-			[ $this->locationId ]
+		$allTimeframesForLocAndItem = Timeframe::get(
+			[$this->locationId],
+			[$this->itemId],
 		);
-		$this->assertEquals( 1, count( $holidayFromFirstItemAndLoc ) );
-		$this->assertEquals( $holidayId, $holidayFromFirstItemAndLoc[0] );
-
-		$holidayFromSecondItemAndLoc = Timeframe::getPostIdsByType(
-			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID ],
-			[ $this->otherItemId ],
-			[ $this->otherLocationId ]
+		$this->assertEquals(6,count($allTimeframesForLocAndItem));
+		$this->assertEqualsCanonicalizing(
+			[$this->timeframeWithEndDate, $this->timeframeWithoutEndDate,$this->timeframeDailyRepetition, $this->timeframeWeeklyRepetition,$this->timeframeManualRepetition, $holidayId],
+			array_map(function($timeframe) {
+				return $timeframe->ID;
+			}, $allTimeframesForLocAndItem)
 		);
-		$this->assertEquals( 1, count( $holidayFromSecondItemAndLoc ) );
-		$this->assertEquals( $holidayId, $holidayFromSecondItemAndLoc[0] );
 
+		//Test-case for #1357 . The holiday should be returned regardless of the 'maxBookingDays'(aka advanceBookingDays) setting for the holiday. The maxBookingDays setting is only applicable for bookable timeframes.
+		//We remove the irrelevant postmeta so that it is not processed by the filtering functions anymore
+		$holidayInFuture = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+61 days', strtotime( self::CURRENT_DATE )),
+			strtotime( '+62 days', strtotime( self::CURRENT_DATE )),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
+			"on",
+			"d",
+			0,
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
+			[],
+			self::USER_ID,
+			3,
+			30
+		);
+		\CommonsBooking\Wordpress\CustomPostType\Timeframe::savePost(
+			$holidayInFuture,
+			get_post($holidayInFuture)
+		);
+		//This is necessary, because the getLatestPossibleBookingDateTimestamp takes time() as the calculation base.
+		//the getLatestPossibleBookingDateTimestamp function takes the current time and adds the extra days on top to determine at what day you are allowed to book.
+		//Because our CURRENT_DATE is so far in the past, the latest possible booking date is also very far in the past which means that the test would not fail for a broken filterTimeframesByMaxBookingDays function.
+		//Therefore we have to freeze the time or else the test would make no sense.
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		$allTimeframesForLocAndItem = Timeframe::get(
+			[$this->locationId],
+			[$this->itemId],
+		);
+		$this->assertEquals(7,count($allTimeframesForLocAndItem));
+		$this->assertEqualsCanonicalizing(
+			[$this->timeframeWithEndDate, $this->timeframeWithoutEndDate,$this->timeframeDailyRepetition, $this->timeframeWeeklyRepetition,$this->timeframeManualRepetition, $holidayId, $holidayInFuture],
+			array_map(function($timeframe) {
+				return $timeframe->ID;
+			}, $allTimeframesForLocAndItem)
+		);
 	}
+
+	protected function setUp() : void {
+		parent::setUp();
+		$this->repetition_start = strtotime(self::CURRENT_DATE);
+		$this->repetition_end = strtotime('+10 days', $this->repetition_start);
+
+		// Timeframe with enddate
+		$this->timeframeWithEndDate = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			$this->repetition_start,
+			$this->repetition_end
+		);
+		$this->allTimeframes[] = $this->timeframeWithEndDate;
+
+		// Timeframe without enddate
+		$this->timeframeWithoutEndDate = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			$this->repetition_start,
+			null
+		);
+		$this->allTimeframes[] = $this->timeframeWithoutEndDate;
+
+		//timeframe with daily repetition
+		$this->timeframeDailyRepetition = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			$this->repetition_start,
+			$this->repetition_end,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			'd'
+		);
+		$this->allTimeframes[] = $this->timeframeDailyRepetition;
+
+		//timeframe with weekly repetition from monday to friday
+		$this->timeframeWeeklyRepetition = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			$this->repetition_start,
+			$this->repetition_end,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			'w',
+			0,
+			'08:00 AM',
+			'12:00 PM',
+			'publish',
+			["1","2","3","4","5"]
+		);
+		$this->allTimeframes[] = $this->timeframeWeeklyRepetition;
+
+		$dateInAWeek = date('Y-m-d', strtotime('+1 week', $this->repetition_start));
+		//timeframe with manual repetition for today and in a week
+		$this->timeframeManualRepetition = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			$this->repetition_start,
+			$this->repetition_end,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			'manual',
+			0,
+			'08:00 AM',
+			'12:00 PM',
+			'publish',
+			[],
+			"{$this->dateFormatted},{$dateInAWeek}"
+		);
+		$this->allTimeframes[] = $this->timeframeManualRepetition;
+
+		asort($this->allTimeframes);
+	}
+
+	public function testGetForSpecificDate() {
+		$inSpecificDate = Timeframe::get(
+			[$this->locationId],
+			[$this->itemId],
+			[],
+			$this->dateFormatted
+		);
+		$this->assertEquals(count($this->allTimeframes),count($inSpecificDate));
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $inSpecificDate);
+		asort($postIds);
+		$this->assertEquals($this->allTimeframes, $postIds);
+
+		$inOneWeek = Timeframe::get(
+			[$this->locationId],
+			[$this->itemId],
+			[],
+			date('Y-m-d', strtotime('+1 week', $this->repetition_start))
+		);
+		//it should contain everything
+		$this->assertEquals(count($this->allTimeframes),count($inOneWeek));
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $inOneWeek);
+		asort($postIds);
+		$this->assertEquals($this->allTimeframes, $postIds);
+
+		$tomorrow = Timeframe::get(
+			[$this->locationId],
+			[$this->itemId],
+			[],
+			date('Y-m-d', strtotime('+1 day', $this->repetition_start))
+		);
+		//it should contain everything except the manual repetition
+		$this->assertEquals(count($this->allTimeframes) - 1,count($tomorrow));
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $tomorrow);
+		asort($postIds);
+		$this->assertEquals(array_diff($this->allTimeframes, [$this->timeframeManualRepetition]), $postIds);
+	}
+
+public function testGetPostIdsByType_oneLocationMultiItem() {
+	$otherItemId = $this->createItem( "Other Item" );
+	// Timeframe with enddate and two items
+	$this->timeframeId = $this->createTimeframe(
+		$this->locationId,
+		[$this->itemId, $otherItemId],
+		self::REPETITION_START,
+		self::REPETITION_END
+	);
+	$fromFirstItem     = Timeframe::getPostIdsByType(
+		[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
+		[ $this->itemId ],
+		[ $this->locationId ]
+	);
+	$this->assertEquals( 1, count( $fromFirstItem ) );
+	$this->assertEquals( $this->timeframeId, $fromFirstItem[0] );
+
+	$fromSecondItem     = Timeframe::getPostIdsByType(
+		[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
+		[ $otherItemId ],
+		[ $this->locationId ]
+	);
+	$this->assertEquals( 1, count( $fromSecondItem ) );
+	$this->assertEquals( $this->timeframeId, $fromSecondItem[0] );
+
+	$fromBothItems     = Timeframe::getPostIdsByType(
+		[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
+		[ $this->itemId, $otherItemId ],
+		[ $this->locationId ]
+	);
+	$this->assertEquals( 1, count( $fromBothItems ) );
+	$this->assertEquals( $this->timeframeId, $fromBothItems[0] );
+}
+
+/**
+ * This test is tricky because it only makes sense for holiday timeframes.
+ * Otherwise, this configuration would create a conflict.
+ *
+ * @return void
+ */
+public function testGetPostIdsByType_multiLocationMultiItem() {
+	// Timeframe with enddate and one item
+	$this->timeframeId = $this->createTimeframe(
+		$this->locationId,
+		$this->itemId,
+		self::REPETITION_START,
+		self::REPETITION_END,
+	);
+	$this->createOtherTimeframe();
+
+	//create holiday applicable for both
+	$holidayId = $this->createTimeframe(
+		[$this->locationId, $this->otherLocationId],
+		[$this->itemId, $this->otherItemId],
+		self::REPETITION_START,
+		self::REPETITION_END,
+		\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID
+	);
+
+	$holidayFromFirstItemAndLoc = Timeframe::getPostIdsByType(
+		[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID ],
+		[ $this->itemId ],
+		[ $this->locationId ]
+	);
+	$this->assertEquals( 1, count( $holidayFromFirstItemAndLoc ) );
+	$this->assertEquals( $holidayId, $holidayFromFirstItemAndLoc[0] );
+
+	$holidayFromSecondItemAndLoc = Timeframe::getPostIdsByType(
+		[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID ],
+		[ $this->otherItemId ],
+		[ $this->otherLocationId ]
+	);
+	$this->assertEquals( 1, count( $holidayFromSecondItemAndLoc ) );
+	$this->assertEquals( $holidayId, $holidayFromSecondItemAndLoc[0] );
+
+}
+
 }
