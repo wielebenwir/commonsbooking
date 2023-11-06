@@ -3,32 +3,6 @@
 namespace CommonsBooking\Service;
 
 class Holiday {
-	/**
-	 * Returns state mapping. According to https://de.wikipedia.org/wiki/Land_(Deutschland)#Amtliche_bzw._Eigenbezeichnungen
-	 * @return string[]
-	 */
-	static function returnStates(): array {
-		return [
-			'BW' => 'BADEN WUERTEMBERG',
-			'BY' => 'BAYERN',
-			'BE' => 'BERLIN',
-			'BB' => 'BRANDENBURG',
-			'HB' => 'BREMEN',
-			'HH' => 'HAMBURG',
-			'HE' => 'HESSEN',
-			'MV' => 'MECKLENBURG VORPOMMERN',
-			'NI' => 'NIEDERSACHSEN',
-			'NW' => 'NORDRHEIN WESTPHALEN',
-			'RP' => 'RHEINLAND PFALZ',
-			'SL' => 'SAARLAND',
-			'SN' => 'SACHSEN',
-			'ST' => 'SACHSEN ANHALT',
-			'SH' => 'SCHLESWIG HOLSTEIN',
-			'TH' => 'THUERINGEN',
-			'BUND' => 'NATIONAL'
-		];
-	}
-
 
 	/**
 	 * Will render the holiday fields in the timeframe settings.
@@ -91,18 +65,37 @@ class Holiday {
 
 
 	/**
-	 * Will get the states defined in the holiday class and return them as HTML select options.
+	 * Will get the options values for the different German states to populate the select field.
+	 * Formatted in HTML select options
+	 * According to https://de.wikipedia.org/wiki/Land_(Deutschland)#Amtliche_bzw._Eigenbezeichnungen
 	 *
 	 * @return string
 	 */
 	public static function getStatesOption( ): string {
-		$state_list = self::returnStates();
-		$state_options = '';
-		foreach ( $state_list as $abrev => $state ) {
-			$state_options .= '<option value="'. $abrev .'" '. selected( false, $abrev, false ) .'>'. $state .'</option>';
+		$states = [
+			'BW' => 'BADEN WUERTEMBERG',
+			'BY' => 'BAYERN',
+			'BE' => 'BERLIN',
+			'BB' => 'BRANDENBURG',
+			'HB' => 'BREMEN',
+			'HH' => 'HAMBURG',
+			'HE' => 'HESSEN',
+			'MV' => 'MECKLENBURG VORPOMMERN',
+			'NI' => 'NIEDERSACHSEN',
+			'NW' => 'NORDRHEIN WESTPHALEN',
+			'RP' => 'RHEINLAND PFALZ',
+			'SL' => 'SAARLAND',
+			'SN' => 'SACHSEN',
+			'ST' => 'SACHSEN ANHALT',
+			'SH' => 'SCHLESWIG HOLSTEIN',
+			'TH' => 'THUERINGEN',
+			'BUND' => 'NATIONAL'
+		];
+		$stateOptions = '';
+		foreach ( $states as $abbrev => $state ) {
+			$stateOptions .= '<option value="'. $abbrev .'" '. selected( false, $abbrev, false ) .'>'. $state .'</option>';
 		}
-
-		return $state_options;
+		return $stateOptions;
 	}
 
 	/**
