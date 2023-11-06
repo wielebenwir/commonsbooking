@@ -19,6 +19,10 @@ class TimeframeTest extends CustomPostTypeTest {
 	protected Timeframe $firstTimeframe;
 	protected Timeframe $secondTimeframe;
 	private Timeframe $validTF;
+	private Location $firstLocation;
+	private Location $otherLocation;
+	private Item $firstItem;
+	private Item $otherItem;
 
 	public function testHasTimeframeDateOverlap() {
 		//timeframe for only yesterday and today should not overlap with timeframe for next week
@@ -1106,19 +1110,15 @@ class TimeframeTest extends CustomPostTypeTest {
 	}
 
 	public function testGetLocations() {
-		$otherLocation = $this->createLocation("Other Location");
 		$holiday4all = $this->createHolidayTimeframeForAllItemsAndLocations();
-		$firstLocation = new Location($this->locationId);
-		$secondLocation = new Location($otherLocation);
 		$holiday = new Timeframe($holiday4all);
-		$locations = $holiday->getLocations();
-		$this->assertIsArray($locations);
+		$retrievedLocations = $holiday->getLocations();
+		$this->assertIsArray($retrievedLocations);
 		$locationIds = array_map(function($location) {
 			return $location->ID;
-		}, $locations);
-		$this->assertContains($firstLocation->ID,$locationIds);
-		$this->assertContains($secondLocation->ID,$locationIds);
-		$this->assertCount(2,$locations);
+		}, $retrievedLocations);
+		$this->assertCount(2,$retrievedLocations);
+		$this->assertEqualsCanonicalizing($locationIds,[$this->firstLocation->ID,$this->otherLocation->ID]);
 	}
 
 	public function testGetItem() {
@@ -1128,29 +1128,22 @@ class TimeframeTest extends CustomPostTypeTest {
 
 	public function testGetItems() {
 		//for just one item
-		$item = New Item($this->itemId);
 		$singleItem = $this->validTF->getItems();
 		$this->assertIsArray($singleItem);
 		$itemIds = array_map(function($item) {
 			return $item->ID;
 		}, $singleItem);
-		$this->assertContains($item->ID,$itemIds);
-		$this->assertCount(1,$singleItem);
+		$this->assertEquals([$this->otherItem->ID],$itemIds);
 
 		//for multiple defined items
-		$otherItem = $this->createItem("Other Item");
 		$holiday4all = $this->createHolidayTimeframeForAllItemsAndLocations();
-		$firstItem = new Item($this->itemId);
-		$secondItem = new Item($otherItem);
 		$holiday = new Timeframe($holiday4all);
 		$items = $holiday->getItems();
 		$this->assertIsArray($items);
 		$itemIds = array_map(function($item) {
 			return $item->ID;
 		}, $items);
-		$this->assertContains($firstItem->ID,$itemIds);
-		$this->assertContains($secondItem->ID,$itemIds);
-		$this->assertCount(2,$items);
+		$this->assertEqualsCanonicalizing([$this->firstItem->ID,$this->otherItem->ID],$itemIds);
 	}
 
 	/**
@@ -1292,8 +1285,12 @@ $this->locationId,
 		$this->secondTimeframeId = $this->createBookableTimeFrameStartingInAWeek();
 		$this->firstTimeframe = new Timeframe( $this->firstTimeframeId );
 		$this->secondTimeframe = new Timeframe( $this->secondTimeframeId );
+		$this->firstItem = new Item($this->itemId);
+		$this->firstLocation = new Location($this->locationId);
 		$otherItem = $this->createItem("Other Item", 'publish');
+		$this->otherItem = new Item($otherItem);
 		$otherLocation = $this->createLocation("Other Location", 'publish');
+		$this->otherLocation = new Location($otherLocation);
 		$this->validTF = new Timeframe($this->createTimeframe(
 			$otherLocation,
 			$otherItem,

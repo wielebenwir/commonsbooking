@@ -26,13 +26,18 @@ class TimeframeTest extends CustomPostTypeTest {
 	 * @var array|int|\WP_Error
 	 */
 	protected array $allTimeframes;
-	}
 
 	/**
 	 * Create a completely seperate item, location and timeframe.
 	 * @return void
 	 */
-	private function createOtherTimeframe( $start = self::REPETITION_START, $end = self::REPETITION_END ) {
+	private function createOtherTimeframe( $start = null, $end = null ) {
+		if ($start = null){
+			$start = $this->repetition_start;
+		}
+		if ($end = null){
+			$end = $this->repetition_end;
+		}
 		$this->otherItemId      = $this->createItem( "Other Item" );
 		$this->otherLocationId  = $this->createLocation( "Other Location" );
 		$this->otherTimeframeId = $this->createTimeframe(
@@ -282,8 +287,8 @@ public function testGetPostIdsByType_oneLocationMultiItem() {
 	$this->timeframeId = $this->createTimeframe(
 		$this->locationId,
 		[$this->itemId, $otherItemId],
-		self::REPETITION_START,
-		self::REPETITION_END
+		$this->repetition_start,
+		$this->repetition_end
 	);
 	$fromFirstItem     = Timeframe::getPostIdsByType(
 		[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
@@ -321,8 +326,8 @@ public function testGetPostIdsByType_multiLocationMultiItem() {
 	$this->timeframeId = $this->createTimeframe(
 		$this->locationId,
 		$this->itemId,
-		self::REPETITION_START,
-		self::REPETITION_END,
+		$this->repetition_start,
+		$this->repetition_end,
 	);
 	$this->createOtherTimeframe();
 
@@ -330,8 +335,8 @@ public function testGetPostIdsByType_multiLocationMultiItem() {
 	$holidayId = $this->createTimeframe(
 		[$this->locationId, $this->otherLocationId],
 		[$this->itemId, $this->otherItemId],
-		self::REPETITION_START,
-		self::REPETITION_END,
+		$this->repetition_start,
+		$this->repetition_end,
 		\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID
 	);
 
