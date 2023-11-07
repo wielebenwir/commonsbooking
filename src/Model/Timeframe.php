@@ -564,24 +564,25 @@ class Timeframe extends CustomPost {
 					__( 'Overlapping bookable timeframes are only allowed to have the same grid.', 'commonsbooking' )
 				);
 			}
+
+			//timeframes that don't overlap in time range are not overlapping
+			if (! $this->hasTimeframeTimeOverlap( $otherTimeframe) ) {
+				return false;
+			}
+
 			$otherTimeframeRepetition = $otherTimeframe->getRepetition();
 			$repetition               = $this->getRepetition();
 
+			//One of the timeframes takes up the full day and therefore none of the dates can overlap
+			//at this stage there is already overlap in the date range and time range, therefore we must check if the repetitions create an overlap
+			if ( $repetition === 'd' || $otherTimeframeRepetition === 'd' ) {
+				throw new OverlappingException(
+					__( 'Daily repeated time periods are not allowed to overlap.', 'commonsbooking' )
+				);
+			}
+
 			//we concatenate the repetitions to make the switch statement more readable
 			switch ( $repetition . '|' . $otherTimeframeRepetition ) {
-				case 'd|d':
-					if ( $this->isFullDay() || $otherTimeframe->isFullDay() ) {
-						throw new OverlappingException(
-							__( 'Full day periods are not allowed to overlap.', 'commonsbooking' )
-						);
-					} else {
-						if ( $this->hasTimeframeTimeOverlap( $otherTimeframe ) ) {
-							throw new OverlappingException(
-								__( 'Time periods are not allowed to overlap.', 'commonsbooking' )
-							);
-						}
-					}
-					break;
 				case 'w|w':
 					if ( $this->getWeekDays() && $otherTimeframe->getWeekDays() ) {
 						$weekDaysOverlap = array_intersect(
@@ -589,15 +590,9 @@ class Timeframe extends CustomPost {
 							$otherTimeframe->getWeekDays()
 						);
 						if ( ! empty( $weekDaysOverlap ) ) {
-							if ( $this->isFullDay() || $otherTimeframe->isFullDay() ) {
-								throw new OverlappingException(
-									__( 'Overlapping bookable timeframes are not allowed to have the same weekdays.', 'commonsbooking' )
-								);
-							} elseif ( $this->hasTimeframeTimeOverlap( $otherTimeframe ) ) {
-								throw new OverlappingException(
-									__( 'Overlapping bookable timeframes are not allowed to have the same weekdays.', 'commonsbooking' )
-								);
-							}
+							throw new OverlappingException(
+								__( 'Overlapping bookable timeframes are not allowed to have the same weekdays.', 'commonsbooking' )
+							);
 						}
 					}
 					break;
@@ -694,6 +689,12 @@ class Timeframe extends CustomPost {
 	 */
 
     public function hasTimeframeTimeOverlap( Timeframe $otherTimeframe ) {
+
+		// If one of the timeframes is a full day timeframe, there will always be a time overlap
+        if ( $this->isFullDay() || $otherTimeframe->isFullDay() ) {
+			return true;
+		}
+
         // Check if both timeframes have an end time, if not, there is no overlap
         if ( ! strtotime( $this->getEndTime() ) && ! strtotime( $otherTimeframe->getEndTime() ) ) {
             return true;
