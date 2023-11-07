@@ -732,6 +732,48 @@ class TimeframeTest extends CustomPostTypeTest {
 	}
 
 	/**
+	 * This will test, if two timeframes which are set to be bookable in slots and have a weekly repetition are considered valid.
+	 * Tests for #1404
+	 * @return void
+	 */
+	public function testIsValid_WeeklySlots() {
+		$otherItem = $this->createItem("Other Item", 'publish');
+		$otherLocation = $this->createLocation("Other Location", 'publish');
+		$beforeNoonSlot = $this->createTimeframe(
+			$otherLocation,
+			$otherItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'',
+			'w',
+			0,
+			'08:00 AM',
+			'12:00 PM',
+			'publish',
+			["1","2","3","4","5"]
+		);
+		$beforeNoonSlot = new Timeframe($beforeNoonSlot);
+		$this->assertTrue( $beforeNoonSlot->isValid() );
+		$afterNoonSlot = $this->createTimeframe(
+			$otherLocation,
+			$otherItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'',
+			'w',
+			0,
+			'01:00 PM',
+			'05:00 PM',
+			'publish',
+			["1","2","3","4","5"]
+		);
+		$afterNoonSlot = new Timeframe($afterNoonSlot);
+		$this->assertTrue( $afterNoonSlot->isValid() );
+	}
+
+	/**
 	 * The unit test for issue #1095.
 	 * Will check, that a timeframe is valid even if it is directly adjacent to another timeframe the same location.
 	 * If this works, it should also work for adjacent timeframes with the second timeframe for another location.
