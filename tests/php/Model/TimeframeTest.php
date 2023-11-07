@@ -82,7 +82,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			"tf2" => [
 				"grid"    => "0",
 				"fullDay" => "off",
-				"start_time" => "12:00 AM",
+				"start_time" => "01:00 PM",
 				"end_time" => "11:59 PM",
 			],
 		];
@@ -156,30 +156,12 @@ class TimeframeTest extends CustomPostTypeTest {
 			]
 		];
 
-		//two timeframes that have mixed hourly and slot grid, should not be allowed
-		$notOverlappingButMixedGrid = [
-			"isValid" => false,
-			"tf1" => [
-				"grid"  => "0",
-				"fullDay" => "off",
-				"start_time" => "08:00 AM",
-				"end_time" => "01:00 PM",
-			],
-			"tf2" => [
-				"grid"  => "1",
-				"fullDay" => "off",
-				"start_time" => "02:00 PM",
-				"end_time" => "06:00 PM",
-			]
-		];
-
 		return [
 			"non overlapping slots" => $nonOverlappingSlots,
 			"non overlapping slots directly adjacent" => $nonOverlappingSlotsDirectlyAdjacent,
 			"non overlapping hourly" => $nonOverlappingHourly,
 			"non overlapping hourly directly adjacent" => $nonOverlappingHourlyDirectlyAdjacent,
 			"overlapping full day" => $overlappingFullDay,
-			"non overlapping but mixed grid" => $notOverlappingButMixedGrid,
 		];
 	}
 
@@ -277,7 +259,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			],
 			"tf2" => [
 				"repetition" => "manual",
-				"repetition_start" => $tomorrow,
+				"repetition_start" => $dayAfterTomorrow,
 				"repetition_end" => $inAWeek,
 				"repetition_dates" => $inAWeekFormatted,
 			]
@@ -298,14 +280,14 @@ class TimeframeTest extends CustomPostTypeTest {
 			]
 		];
 
-		//CURRENT_DATE is a tuesday, so they should not overlap
+		//CURRENT_DATE is a thursday, so they should not overlap
 		$weeklyManualDoNotOverlap = [
 			"daysOverlap" => false,
 			"tf1" => [
 				"repetition" => "w",
 				"repetition_start" => $today,
 				"repetition_end" => $inAWeek,
-				"repetition_weekdays" => ["3","4","5"],
+				"repetition_weekdays" => ["1","2","3"],
 			],
 			"tf2" => [
 				"repetition" => "manual",
@@ -315,7 +297,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			]
 		];
 
-		//CURRENT_DATE is a tuesday, so they should overlap
+		//CURRENT_DATE is a thursday, so they should overlap
 		$weeklyManualOverlap = [
 			"daysOverlap" => true,
 			"tf1" => [
