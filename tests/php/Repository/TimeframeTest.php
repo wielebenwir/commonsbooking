@@ -284,7 +284,7 @@ class TimeframeTest extends CustomPostTypeTest {
 public function testGetPostIdsByType_oneLocationMultiItem() {
 	$otherItemId = $this->createItem( "Other Item" );
 	// Timeframe with enddate and two items
-	$this->timeframeId = $this->createTimeframe(
+	$multiItemTF = $this->createTimeframe(
 		$this->locationId,
 		[$this->itemId, $otherItemId],
 		$this->repetition_start,
@@ -295,8 +295,8 @@ public function testGetPostIdsByType_oneLocationMultiItem() {
 		[ $this->itemId ],
 		[ $this->locationId ]
 	);
-	$this->assertEquals( 1, count( $fromFirstItem ) );
-	$this->assertEquals( $this->timeframeId, $fromFirstItem[0] );
+	$this->assertEquals( 6, count( $fromFirstItem ) );
+	$this->assertEqualsCanonicalizing( [$multiItemTF, $this->timeframeManualRepetition, $this->timeframeWeeklyRepetition, $this->timeframeDailyRepetition, $this->timeframeWithoutEndDate, $this->timeframeWithEndDate], $fromFirstItem );
 
 	$fromSecondItem     = Timeframe::getPostIdsByType(
 		[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
@@ -304,15 +304,15 @@ public function testGetPostIdsByType_oneLocationMultiItem() {
 		[ $this->locationId ]
 	);
 	$this->assertEquals( 1, count( $fromSecondItem ) );
-	$this->assertEquals( $this->timeframeId, $fromSecondItem[0] );
+	$this->assertEquals( $multiItemTF, $fromSecondItem[0] );
 
 	$fromBothItems     = Timeframe::getPostIdsByType(
 		[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
 		[ $this->itemId, $otherItemId ],
 		[ $this->locationId ]
 	);
-	$this->assertEquals( 1, count( $fromBothItems ) );
-	$this->assertEquals( $this->timeframeId, $fromBothItems[0] );
+	$this->assertEquals( 6, count( $fromBothItems ) );
+	$this->assertEqualsCanonicalizing( [$multiItemTF, $this->timeframeManualRepetition, $this->timeframeWeeklyRepetition, $this->timeframeDailyRepetition, $this->timeframeWithoutEndDate, $this->timeframeWithEndDate], $fromBothItems );
 }
 
 /**
