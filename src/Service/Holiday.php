@@ -7,7 +7,6 @@ class Holiday {
 	/**
 	 * Will render the fields in the timeframe settings where the user can define the holidays to get for the different states and years.
 	 * The actual holidays will be loaded through feiertagejs.
-	 * TODO: These do not necessarily need to be CMB2 fields but can just be custom HTML fields. All the necessary information is pulled through javascript already.
 	 * @param $field
 	 * @param $value
 	 * @param $object_id
