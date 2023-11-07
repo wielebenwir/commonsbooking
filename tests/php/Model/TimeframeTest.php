@@ -771,6 +771,30 @@ class TimeframeTest extends CustomPostTypeTest {
 		);
 		$afterNoonSlot = new Timeframe($afterNoonSlot);
 		$this->assertTrue( $afterNoonSlot->isValid() );
+
+		//now we create a timeframe that overlaps with both of them
+		$overlappingTimeframe = $this->createTimeframe(
+			$otherLocation,
+			$otherItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'',
+			'w',
+			0,
+			'08:00 AM',
+			'05:00 PM',
+			'publish',
+			["1","2","3","4","5"]
+		);
+		$overlappingTimeframe = new Timeframe($overlappingTimeframe);
+		try {
+			$overlappingTimeframe->isValid();
+			$this->fail( "TimeframeInvalidException was not thrown" );
+		}
+		catch ( TimeframeInvalidException $e ) {
+			$this->assertStringContainsString( "Overlapping bookable timeframes are not allowed to have the same weekdays.", $e->getMessage() );
+		}
 	}
 
 	/**
