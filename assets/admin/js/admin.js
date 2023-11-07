@@ -1,114 +1,34 @@
 (function($) {
     "use strict";
     $(function() {
-        const groupName = "rules_group";
-        const groupID = "cmb-group-rules_group-";
-        const ruleSelectorID = "rule-type";
-        const ruleDescriptionID = "rule-description";
-        const ruleAppliesAllID = "rule-applies-all";
-        const ruleAppliesCategoriesID = "rule-applies-categories";
-        const ruleParam1ID = "rule-param1";
-        const ruleParam2ID = "rule-param2";
-        const ruleSelectParamID = "rule-select-param";
-        const handleRuleSelection = function() {
-            let groupFields = $("#" + groupName + "_repeat");
-            groupFields.on("cmb2_add_row cmb2_remove_row cmb2_shift_rows_complete", function() {
-                handleRuleSelection();
-            });
-            for (let i = 0; i < groupFields.children().length - 1; i++) {
-                let currentGroup = $("#" + groupID + i);
-                let ruleSelector = currentGroup.find("#" + groupName + "_" + i + "_" + ruleSelectorID);
-                let ruleDescription = currentGroup.find('[class*="' + ruleDescriptionID + '"]').find(".cmb2-metabox-description");
-                let ruleParam1 = currentGroup.find('[class*="' + ruleParam1ID + '"]');
-                let ruleParam1Input = ruleParam1.find(".cmb2-text-small");
-                let ruleParam1InputLabel = $(ruleParam1Input.labels()[0]);
-                let ruleParam1Desc = ruleParam1.find(".cmb2-metabox-description");
-                let ruleParam2 = currentGroup.find('[class*="' + ruleParam2ID + '"]');
-                let ruleParam2Input = ruleParam2.find(".cmb2-text-small");
-                let ruleParam2InputLabel = $(ruleParam2Input.labels()[0]);
-                let ruleParam2Desc = ruleParam2.find(".cmb2-metabox-description");
-                let ruleSelectParam = currentGroup.find('[class*="' + ruleSelectParamID + '"]');
-                let ruleSelectParamDesc = ruleSelectParam.find(".cmb2-metabox-description");
-                let ruleSelectParamOptions = ruleSelectParam.find(".cmb2_select");
-                ruleSelector.change(function() {
-                    handleRuleSelection();
-                });
-                const selectedRule = $("option:selected", ruleSelector).val();
-                cb_booking_rules.forEach(rule => {
-                    if (rule.name == selectedRule) {
-                        ruleDescription.text(rule.description);
-                        ruleSelector.width(300);
-                        if (rule.hasOwnProperty("params") && rule.params.length > 0) {
-                            switch (rule.params.length) {
-                              case 1:
-                                ruleParam1.show();
-                                ruleParam2.hide();
-                                ruleParam1InputLabel.text(rule.params[0]["title"]);
-                                ruleParam1Desc.text(rule.params[0]["description"]);
-                                ruleParam2.val("");
-                                break;
-
-                              case 2:
-                                ruleParam1.show();
-                                ruleParam2.show();
-                                ruleParam1InputLabel.text(rule.params[0]["title"]);
-                                ruleParam1Desc.text(rule.params[0]["description"]);
-                                ruleParam2InputLabel.text(rule.params[1]["title"]);
-                                ruleParam2Desc.text(rule.params[1]["description"]);
-                                break;
-                            }
-                        } else {
-                            ruleParam1.hide();
-                            ruleParam1.val("");
-                            ruleParam2.hide();
-                            ruleParam2.val("");
-                        }
-                        if (rule.hasOwnProperty("selectParam") && rule.selectParam.length > 0) {
-                            ruleSelectParam.show();
-                            ruleSelectParamDesc.text(rule.selectParam[0]);
-                            let ruleOptions = rule.selectParam[1];
-                            ruleSelectParamOptions.empty();
-                            for (var key in ruleOptions) {
-                                ruleSelectParamOptions.append($("<option>", {
-                                    value: key,
-                                    text: ruleOptions[key]
-                                }));
-                            }
-                            ruleSelectParamOptions.width(150);
-                            let appliedRule = cb_applied_booking_rules.filter(appliedRule => {
-                                return appliedRule.name == rule.name;
-                            });
-                            if (appliedRule.length === 1) {
-                                ruleSelectParamOptions.val(appliedRule[0].appliedSelectParam);
-                            }
-                        } else {
-                            ruleSelectParam.hide();
-                        }
-                    }
-                });
-            }
-        };
-        const handleAppliesToAll = function() {
-            let groupFields = $("#" + groupName + "_repeat");
-            groupFields.on("cmb2_add_row cmb2_remove_row cmb2_shift_rows_complete", function() {
-                handleAppliesToAll();
-            });
-            for (let i = 0; i < groupFields.children().length - 1; i++) {
-                let currentGroup = $("#" + groupID + i);
-                let ruleAppliesAll = currentGroup.find('[class*="' + ruleAppliesAllID + '"]').find(".cmb2-option");
-                let ruleAppliesCategories = currentGroup.find('[class*="' + ruleAppliesCategoriesID + '"]');
-                ruleAppliesAll.change(function() {
-                    handleAppliesToAll();
-                });
-                if (ruleAppliesAll.prop("checked")) {
-                    ruleAppliesCategories.hide();
+        const manualDateInput = $("#timeframe_manual_date");
+        const manualDatePicker = $("#cmb2_multiselect_datepicker");
+        var addHolidayToInput = date => {
+            const DATES_SEPERATOR = ",";
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var dd = day <= 9 ? "0" + day : day;
+            var mm = month <= 9 ? "0" + month : month;
+            var yyyy = date.getFullYear();
+            var dateStr = yyyy + "-" + mm + "-" + dd;
+            if (manualDateInput.val().length > 0) {
+                if (manualDateInput.val().slice(-1) !== DATES_SEPERATOR) {
+                    manualDateInput.val(manualDateInput.val() + DATES_SEPERATOR + dateStr);
                 } else {
-                    ruleAppliesCategories.show();
+                    manualDateInput.val(manualDateInput.val() + dateStr);
                 }
+            } else {
+                manualDateInput.val(dateStr + DATES_SEPERATOR);
             }
         };
-        handleRuleSelection();
-        handleAppliesToAll();
+        if (manualDatePicker.length) {
+            manualDatePicker.datepicker({
+                onSelect: function(dateText, inst) {
+                    var date = $(this).datepicker("getDate");
+                    addHolidayToInput(date);
+                }
+            });
+        }
     });
 })(jQuery);
 
@@ -287,6 +207,15 @@
             });
         };
         const timeframeForm = $("#cmb2-metabox-cb_timeframe-custom-fields");
+        const BOOKABLE_ID = "2";
+        const HOLIDAYS_ID = "3";
+        const REPAIR_ID = "5";
+        const REPETITION_NONE = "norep";
+        const REPETITION_MANUAL = "manual";
+        const REPETITION_DAILY = "d";
+        const REPETITION_WEEKLY = "w";
+        const REPETITION_MONTHLY = "m";
+        const REPETITION_YEARLY = "y";
         if (timeframeForm.length) {
             const timeframeRepetitionInput = $("#timeframe-repetition");
             const typeInput = $("#type");
@@ -298,20 +227,24 @@
             const repetitionStartInput = $("#repetition-start");
             const repetitionEndInput = $("#repetition-end");
             const fullDayInput = $("#full-day");
+            const bookingCodeTitle = $("#title-timeframe-booking-codes");
             const showBookingCodes = $("#show-booking-codes");
             const createBookingCodesInput = $("#create-booking-codes");
             const bookingCodesDownload = $("#booking-codes-download");
             const bookingCodesList = $("#booking-codes-list");
-            const bookingConfigTitle = $(".cmb2-id-title-bookings-config");
-            const maxDaysSelect = $(".cmb2-id-timeframe-max-days");
-            const advanceBookingDays = $(".cmb2-id-timeframe-advance-booking-days");
-            const bookingStartDayOffset = $(".cmb2-id-booking-startday-offset");
-            const allowUserRoles = $(".cmb2-id-allowed-user-roles");
+            const holidayInput = $("#timeframe_manual_date");
+            const manualDatePicker = $("#cmb2_multiselect_datepicker");
+            const manualDateField = $(".cmb2-id-timeframe-manual-date");
+            const maxDaysSelect = $("#timeframe-max-days");
+            const advanceBookingDays = $("#timeframe-advance-booking-days");
+            const bookingStartDayOffset = $("#booking-startday-offset");
+            const bookingConfigurationTitle = $("#title-bookings-config");
+            const allowUserRoles = $("#allowed_user_roles");
             const repSet = [ repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput ];
             const noRepSet = [ fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput ];
             const repTimeFieldsSet = [ gridInput, startTimeInput, endTimeInput ];
             const bookingCodeSet = [ createBookingCodesInput, bookingCodesList, bookingCodesDownload, showBookingCodes ];
-            const bookingSettings = [ bookingConfigTitle, maxDaysSelect, advanceBookingDays, bookingStartDayOffset, allowUserRoles ];
+            const bookingConfigSet = [ maxDaysSelect, advanceBookingDays, bookingStartDayOffset, allowUserRoles, bookingConfigurationTitle ];
             const showRepFields = function() {
                 showFieldset(repSet);
                 hideFieldset(arrayDiff(repSet, noRepSet));
@@ -327,14 +260,13 @@
             };
             const handleTypeSelection = function() {
                 const selectedType = $("option:selected", typeInput).val();
-                if (selectedType == 2) {
-                    $.each(bookingSettings, function() {
-                        $(this).show();
-                    });
+                const selectedRepetition = $("option:selected", timeframeRepetitionInput).val();
+                if (selectedType === BOOKABLE_ID) {
+                    showFieldset(bookingConfigSet);
+                    showFieldset(bookingCodeTitle);
                 } else {
-                    $.each(bookingSettings, function() {
-                        $(this).hide();
-                    });
+                    hideFieldset(bookingConfigSet);
+                    hideFieldset(bookingCodeTitle);
                 }
             };
             handleTypeSelection();
@@ -345,7 +277,6 @@
                 const selectedRep = $("option:selected", timeframeRepetitionInput).val();
                 if (fullDayInput.prop("checked")) {
                     gridInput.prop("selected", false);
-                    gridInput.val(0);
                     hideFieldset(repTimeFieldsSet);
                 } else {
                     showFieldset(repTimeFieldsSet);
@@ -357,13 +288,25 @@
             });
             const handleRepetitionSelection = function() {
                 const selectedType = $("option:selected", timeframeRepetitionInput).val();
+                const selectedTimeframeType = $("option:selected", typeInput).val();
                 if (selectedType) {
-                    if (selectedType == "norep") {
+                    if (selectedType == REPETITION_NONE) {
                         showNoRepFields();
                     } else {
                         showRepFields();
                     }
-                    if (selectedType == "w") {
+                    if (selectedType === REPETITION_MANUAL) {
+                        manualDateField.show();
+                        manualDatePicker.show();
+                        hideFieldset(repetitionStartInput);
+                        hideFieldset(repetitionEndInput);
+                    } else {
+                        manualDateField.hide();
+                        manualDatePicker.hide();
+                        showFieldset(repetitionStartInput);
+                        showFieldset(repetitionEndInput);
+                    }
+                    if (selectedType === REPETITION_WEEKLY) {
                         weekdaysInput.parents(".cmb-row").show();
                     } else {
                         weekdaysInput.parents(".cmb-row").hide();
@@ -380,9 +323,9 @@
                 handleRepetitionSelection();
             });
             const handleBookingCodesSelection = function() {
-                const fullday = fullDayInput.prop("checked"), type = typeInput.val(), repStart = repetitionStartInput.val(), repEnd = repetitionEndInput.val();
+                const fullday = fullDayInput.prop("checked"), type = typeInput.val(), repStart = repetitionStartInput.val();
                 hideFieldset(bookingCodeSet);
-                if (repStart && fullday && type == 2) {
+                if (repStart && fullday && type === BOOKABLE_ID) {
                     showFieldset(bookingCodeSet);
                     if (!createBookingCodesInput.prop("checked")) {
                         hideFieldset([ showBookingCodes ]);

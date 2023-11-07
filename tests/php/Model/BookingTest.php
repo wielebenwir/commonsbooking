@@ -205,7 +205,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertFalse( $this->testBookingTomorrow->showBookingCodes() );
 
 		// Updates meta value
-		update_post_meta( $this->testBookingId, 'show-booking-codes', 'on' );
+		update_post_meta( $this->testBookingId, Timeframe::META_SHOW_BOOKING_CODES, 'on' );
 		wp_cache_flush();
 		$this->testBookingTomorrow = new Booking( $this->testBookingId );
 		$this->assertTrue( $this->testBookingTomorrow->showBookingCodes() );
@@ -221,7 +221,7 @@ class BookingTest extends CustomPostTypeTest {
 				'grid',
 				'start-time',
 				'end-time',
-				'show-booking-codes',
+				Timeframe::META_SHOW_BOOKING_CODES,
 				'timeframe-max-days',
 			];
 
@@ -541,7 +541,7 @@ public function testCanCancelBaseCase() {
 		$this->firstTimeframeId   = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-5 days',  strtotime(self::CURRENT_DATE) ),
+			strtotime( '-5 days', strtotime(self::CURRENT_DATE) ),
 			strtotime( '+90 days', strtotime(self::CURRENT_DATE) )
 		);
 		$this->testItem = new Item($this->itemId);
