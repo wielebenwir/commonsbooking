@@ -589,9 +589,15 @@ class Timeframe extends CustomPost {
 							$otherTimeframe->getWeekDays()
 						);
 						if ( ! empty( $weekDaysOverlap ) ) {
-							throw new OverlappingException(
-								__( 'Overlapping bookable timeframes are not allowed to have the same weekdays.', 'commonsbooking' )
-							);
+							if ( $this->isFullDay() || $otherTimeframe->isFullDay() ) {
+								throw new OverlappingException(
+									__( 'Overlapping bookable timeframes are not allowed to have the same weekdays.', 'commonsbooking' )
+								);
+							} elseif ( $this->hasTimeframeTimeOverlap( $otherTimeframe ) ) {
+								throw new OverlappingException(
+									__( 'Overlapping bookable timeframes are not allowed to have the same weekdays.', 'commonsbooking' )
+								);
+							}
 						}
 					}
 					break;
