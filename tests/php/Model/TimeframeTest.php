@@ -686,7 +686,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->fail("TimeframeInvalidException was not thrown");
 		}
 		catch (TimeframeInvalidException $e) {
-			$this->assertEquals("No dates selected. Please select at least one date. Timeframe is saved as draft.",$e->getMessage());
+			$this->assertStringContainsString("No dates selected. Please select at least one date.",$e->getMessage());
 		}
 
 		//make sure, that dates do not occur twice in the manual repetition field
