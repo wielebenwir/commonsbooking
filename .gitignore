@@ -9,6 +9,7 @@ node_modules
 .phpunit.*
 assets/packaged
 src/Wordpress/.DS_Store
+tests/cypress/screenshots
 /vendor
 /build
 src/.DS_Store
@@ -25,4 +26,4 @@ copy-svn.sh
 cb-local-1.code-workspace
 commonsbookingdocker.code-workspace
 wp-core
-cypress/screenshots
+tests/cypress/screenshots
