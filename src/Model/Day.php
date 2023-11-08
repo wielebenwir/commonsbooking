@@ -309,15 +309,6 @@ class Day {
 	 */
 	public function isInTimeframe( \CommonsBooking\Model\Timeframe $timeframe ): bool {
 
-		//not in timeframe when start date has not been reached yet
-		if ( $timeframe->getStartDate() > $this->getDateObject()->getTimestamp() ) {
-			return false;
-		}
-		//not in timeframe when end date has not been reached yet.
-		if ($timeframe->getEndDate() && ($timeframe->getEndDate() < $this->getDateObject()->getTimestamp())) {
-			return false;
-		}
-
 		if ( $timeframe->getRepetition() ) {
 			switch ( $timeframe->getRepetition() ) {
 				// Weekly Rep
