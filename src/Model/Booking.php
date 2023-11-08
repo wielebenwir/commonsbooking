@@ -141,7 +141,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return bool
 	 */
 	public function showBookingCodes(): bool {
-		return $this->getMeta( 'show-booking-codes' ) === 'on';
+		return $this->getMeta( self::META_SHOW_BOOKING_CODES ) === 'on';
 	}
 
 	/**
@@ -184,7 +184,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 				'grid',
 				'start-time',
 				'end-time',
-				'show-booking-codes',
+				\CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES,
 				\CommonsBooking\Model\Timeframe::META_MAX_DAYS,
 			];
 			foreach ( $neededMetaFields as $fieldName ) {
@@ -481,8 +481,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * Returns true when booking is cancelled. This might not correctly reflect the status of the booking when $this->cancel() has been called.
 	 * In order to correctly reflect this, you need to call wp_cache_flush() before calling this function.
 	 *
-	 *
-	 *
 	 * @return bool
 	 */
 	public function isCancelled(): bool {
@@ -585,5 +583,21 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 */
 	public function isUnconfirmed() : bool {
 		return $this->post_status === 'unconfirmed';
+	}
+
+	/**
+	 * Will get the status of a booking as a human-readable string
+	 * @return string
+	 */
+	public function getStatus() : string {
+		if ( $this->isConfirmed() ) {
+			return __( 'Confirmed', 'commonsbooking' );
+		} elseif ( $this->isUnconfirmed() ) {
+			return __( 'Unconfirmed', 'commonsbooking' );
+		} elseif ( $this->isCancelled() ) {
+			return __( 'Cancelled', 'commonsbooking' );
+		} else {
+			return __( 'Unknown', 'commonsbooking' );
+		}
 	}
 }

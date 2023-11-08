@@ -64,7 +64,7 @@ class CustomPost {
 	 *
 	 * @param $field
 	 *
-	 * @return mixed
+	 * @return string The value of the meta field. An empty string if the field doesn't exist.
 	 */
 	public function getMeta( $field ) {
 		return get_post_meta( $this->post->ID, $field, true );
@@ -166,7 +166,7 @@ class CustomPost {
 
 	/**
 	 * Returns user data.
-	 * @return mixed
+	 * @return false|\WP_User
 	 */
 	public function getUserData() {
 		return get_userdata( $this->post_author );
