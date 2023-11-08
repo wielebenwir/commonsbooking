@@ -308,7 +308,6 @@ class Day {
 	 * @throws Exception
 	 */
 	public function isInTimeframe( \CommonsBooking\Model\Timeframe $timeframe ): bool {
-		$repetitionType = get_post_meta( $timeframe->ID, 'timeframe-repetition', true );
 
 		//not in timeframe when start date has not been reached yet
 		if ( $timeframe->getStartDate() > $this->getDateObject()->getTimestamp() ) {
@@ -319,8 +318,8 @@ class Day {
 			return false;
 		}
 
-		if ($repetitionType) {
-			switch ( $repetitionType ) {
+		if ( $timeframe->getRepetition() ) {
+			switch ( $timeframe->getRepetition() ) {
 				// Weekly Rep
 				//These repetitions take place on the weekdays that are configured in the timeframe
 				case "w":
@@ -360,6 +359,10 @@ class Day {
 					} else {
 						return false;
 					}
+
+				// Manual Rep
+				case "manual":
+					return in_array( $this->getDate(), $timeframe->getManualSelectionDates() );
 			}
 		}
 

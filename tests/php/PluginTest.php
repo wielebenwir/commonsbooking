@@ -3,9 +3,11 @@
 namespace CommonsBooking\Tests;
 
 use CommonsBooking\Model\CustomPost;
+use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
+use SlopeIt\ClockMock\ClockMock;
 
 class PluginTest extends CustomPostTypeTest
 {
@@ -30,5 +32,9 @@ class PluginTest extends CustomPostTypeTest
 
 	protected function setUp(): void {
 		parent::setUp();
+	}
+
+	protected function tearDown(): void {
+		parent::tearDown();
 	}
 }

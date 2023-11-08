@@ -43,6 +43,9 @@ class Upgrade {
 			[self::class, 'resetBrokenColorScheme'],
 			[self::class, 'fixBrokenICalTitle']
 		],
+		'2.8.5' => [
+			[self::class, 'removeBreakingPostmeta']
+		],
 		'2.9.0' => [
 			[self::class, 'timeframeNoRepToDaily']
 		]
@@ -231,6 +234,27 @@ class Upgrade {
 			if ( $timeframe->getMeta( Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) < 1 ) {
 				update_post_meta( $timeframe->ID, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, strval( \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS ) );
 			}
+		}
+	}
+
+	/**
+	 * Fixing #1357. The holiday timeframe field had postmeta that would make
+	 * it get filtered out through our GET functions and not display holidays correctly.
+	 * Therefore, we iterate ovr our timeframes and remove the breaking postmeta.
+	 *
+	 * @since 2.8.5
+	 * @return void
+	 */
+	public static function removeBreakingPostmeta() {
+		$timeframes = \CommonsBooking\Repository\Timeframe::get(
+			[],
+			[],
+			[],
+			null,
+			true
+		);
+		foreach ($timeframes as $timeframe) {
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::removeIrrelevantPostmeta($timeframe);
 		}
 	}
 
