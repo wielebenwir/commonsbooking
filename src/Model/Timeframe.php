@@ -361,7 +361,7 @@ class Timeframe extends CustomPost {
 				$manual_selection_dates = $this->getManualSelectionDates();
 				if ( empty( $manual_selection_dates ) ){
 					throw new TimeframeInvalidException(__(
-							'No dates selected. Please select at least one date. Timeframe is saved as draft.',
+							'No dates selected. Please select at least one date.',
 							'commonsbooking'   )
 					);
 				}
@@ -369,7 +369,7 @@ class Timeframe extends CustomPost {
 				$unique_dates = array_unique($manual_selection_dates);
 				if ( count($unique_dates) != count($manual_selection_dates) ){
 					throw new TimeframeInvalidException(__(
-							'The same date was selected multiple times. Please select each date only once. Timeframe is saved as draft.',
+							'The same date was selected multiple times. Please select each date only once.',
 							'commonsbooking'   )
 					);
 				}
