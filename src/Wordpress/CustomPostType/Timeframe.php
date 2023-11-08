@@ -1274,12 +1274,4 @@ class Timeframe extends CustomPostType {
 		// Listing of available items/locations
 		add_shortcode( 'cb_items_table', array( Calendar::class, 'shortcode' ) );
 	}
-
-	/**
-	 * Gets the corresponding repository for the Timeframe CPT
-	 * @return string
-	 */
-	protected function getRepository(): string {
-		return \CommonsBooking\Repository\Timeframe::class;
-	}
 }

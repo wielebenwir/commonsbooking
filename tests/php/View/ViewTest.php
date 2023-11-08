@@ -17,6 +17,7 @@ class ViewTest extends CustomPostTypeTest {
 		$shortCodeData = View::getShortcodeData( new Item( $this->itemId ), 'Item' );
 		$this->assertTrue( is_array( $shortCodeData[ $this->itemId ]['ranges'] ) );
 		$this->assertCount(4, $shortCodeData[ $this->itemId ]['ranges']);
+
 		// Check for specific timeframe start date
 		$this->assertEquals( $shortCodeData[ $this->itemId ]['ranges'][0]['start_date'], strtotime( '+2 days midnight', $this->now ) );
 		
@@ -26,6 +27,7 @@ class ViewTest extends CustomPostTypeTest {
 		$shortCodeData = View::getShortcodeData( new Location( $this->locationId ), 'Location' );
 		$this->assertTrue( is_array( $shortCodeData[ $this->locationId ]['ranges'] ) );
 		$this->assertCount( 4, $shortCodeData[ $this->locationId ]['ranges'] );
+
 		// Check for specific timeframe start date
 		$this->assertEquals( $shortCodeData[ $this->locationId ]['ranges'][0]['start_date'], strtotime( '+2 days midnight', $this->now ) );
 	}
@@ -60,55 +62,55 @@ class ViewTest extends CustomPostTypeTest {
 		$this->now = $now;
 
 		$timeframeId = $this->createTimeframe(
-            $this->locationId,
-            $this->itemId,
-            strtotime('+5 days midnight', $now),
-            strtotime('+6 days midnight', $now),
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+5 days midnight', $now ),
+			strtotime( '+6 days midnight', $now ),
 		);
 		// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
 
 		$timeframeId = $this->createTimeframe(
-            $this->locationId,
-            $this->itemId,
-            strtotime('+2 days midnight', $now),
-            strtotime('+3 days midnight', $now),
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+2 days midnight', $now ),
+			strtotime( '+3 days midnight', $now ),
 		);// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
 
 		$timeframeId = $this->createTimeframe(
-            $this->locationId,
-            $this->itemId,
-            strtotime('+8 days midnight', $now),
-            strtotime('+9 days midnight', $now),
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+8 days midnight', $now ),
+			strtotime( '+9 days midnight', $now ),
 		);
 		// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
 
 		$timeframeId = $this->createTimeframe(
-            $this->locationId,
-            $this->itemId,
-            strtotime('+12 days midnight', $now),
-            strtotime('+13 days midnight', $now),
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+12 days midnight', $now ),
+			strtotime( '+13 days midnight', $now ),
 		);
 		// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
 
 		$timeframeId = $this->createTimeframe(
-            $this->locationId,
-            $this->itemId,
-            strtotime('+14 days midnight', $now),
-            strtotime('+15 days midnight', $now),
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+14 days midnight', $now ),
+			strtotime( '+15 days midnight', $now ),
 		);
 		// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
 
 		// this timeframe should not be in shortcode data, because it's out of 30 days advanced booking range
 		$timeframeId = $this->createTimeframe(
-            $this->locationId,
-            $this->itemId,
-            strtotime('+32 days midnight', $now),
-            strtotime('+33 days midnight', $now),
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+32 days midnight', $now ),
+			strtotime( '+33 days midnight', $now ),
 		);
 		// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );

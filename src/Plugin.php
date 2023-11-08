@@ -579,7 +579,8 @@ class Plugin {
                 $upgrade->updateNotice();
             }
         );
-// add ajax search for cmb2 fields (e.g. user search etc.)
+
+        // add ajax search for cmb2 fields (e.g. user search etc.)
         add_filter('cmb2_field_ajax_search_url', function(){
             return (COMMONSBOOKING_PLUGIN_URL . '/vendor/ed-itsolutions/cmb2-field-ajax-search/');
         });
