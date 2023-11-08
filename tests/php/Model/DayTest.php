@@ -36,7 +36,6 @@ class DayTest extends CustomPostTypeTest {
 			strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			'on',
 		);
 
 		$this->bookableTimeframeSingleDayTodayId = $this->createTimeframe(
@@ -45,7 +44,6 @@ class DayTest extends CustomPostTypeTest {
 			strtotime( self::CURRENT_DATE ),
 			strtotime(self::CURRENT_DATE),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			'on',
 		);
 
 		$this->bookableTimeframeStartsYesterdayEndsTomorrowId = $this->createTimeframe(
@@ -54,7 +52,6 @@ class DayTest extends CustomPostTypeTest {
 			strtotime( '-1 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			'on',
 		);
 
 		//get the current weekday of the current date
