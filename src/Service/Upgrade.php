@@ -298,7 +298,7 @@ class Upgrade {
 	 * @throws InvalidArgumentException
 	 */
 	public static function setMultiSelectTimeFrameDefault() {
-		$timeframes = \CommonsBooking\Repository\Timeframe::get( [],[],[],true );
+		$timeframes = \CommonsBooking\Repository\Timeframe::get( [],[],[], null, true );
 
 		foreach ($timeframes as $timeframe) {
 			if ( empty($timeframe->getMeta(\CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE ) ) ) {
