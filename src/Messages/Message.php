@@ -62,6 +62,7 @@ abstract class Message {
 	 * @var array
 	 */
 	protected $attachment = [];
+	private mixed $postId;
 
 	/**
 	 * @param $postId
