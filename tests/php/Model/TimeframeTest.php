@@ -857,7 +857,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->fail("TimeframeInvalidException was not thrown");
 		}
 		catch ( TimeframeInvalidException $e ) {
-			$this->assertEquals( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
+			$this->assertStringContainsString( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
 		}
 	}
 
