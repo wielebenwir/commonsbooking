@@ -16,6 +16,9 @@ class AvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 	private array $itemIds;
 	private array $timeframeIds;
 
+	private $locationId;
+	private $itemId;
+
 	public function setUp() : void {
 		parent::setUp();
 
