@@ -77,5 +77,42 @@ describe( 'Visit backend sites', function() {
         cy.visit( '/wp-admin/options-general.php?page=commonsbooking_options' );
         cy.contains("Welcome to CommonsBooking");
         cy.screenshot( 'wp-admin-cb-settings' )
+
+        //now cycle through all the settings tabs
+        //general tab
+        cy.visit( '/wp-admin/admin.php?page=commonsbooking_options_general' );
+        cy.screenshot( 'wp-admin-cb-settings-general' )
+
+        //booking-codes tab
+        cy.visit( '/wp-admin/admin.php?page=commonsbooking_options_bookingcodes' );
+        cy.screenshot( 'wp-admin-cb-settings-bookingcodes' )
+
+        //templates tab
+        cy.visit( '/wp-admin/admin.php?page=commonsbooking_options_templates' );
+        cy.screenshot( 'wp-admin-cb-settings-templates' )
+
+        //restrictions tab
+        cy.visit( '/wp-admin/admin.php?page=commonsbooking_options_restrictions' );
+        cy.screenshot( 'wp-admin-cb-settings-restrictions' )
+
+        //reminder tab
+        cy.visit( '/wp-admin/admin.php?page=commonsbooking_options_reminder' );
+        cy.screenshot( 'wp-admin-cb-settings-reminder' )
+
+        //migration tab
+        cy.visit( '/wp-admin/admin.php?page=commonsbooking_options_migration' );
+        cy.screenshot( 'wp-admin-cb-settings-migration' )
+
+        //export tab
+        cy.visit( '/wp-admin/admin.php?page=commonsbooking_options_export' );
+        cy.screenshot( 'wp-admin-cb-settings-export' )
+
+        //api tab
+        cy.visit( '/wp-admin/admin.php?page=commonsbooking_options_api' );
+        cy.screenshot( 'wp-admin-cb-settings-api' )
+
+        //advanced options tab
+        cy.visit( '/wp-admin/admin.php?page=commonsbooking_options_advanced-options' );
+        cy.screenshot( 'wp-admin-cb-settings-advanced-options' )
     } );
 });

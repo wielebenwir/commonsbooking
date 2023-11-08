@@ -75,6 +75,9 @@ add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
 function commonsbooking_sanitizeHTML( $string ): string {
 	global $allowedposttags;
 
+	if ( empty ( $string ) ) {
+		return '';
+	}
 	$allowed_atts = array(
 		'align'      => array(),
 		'checked'    => array(),
@@ -164,6 +167,20 @@ function commonsbooking_filter_from_cmb2( $field_args ) {
 		$default_value = array_key_exists( 'default_value', $field_args ) ? $field_args['default_value'] : '';
 		return apply_filters( $filterName, $default_value );
 	}
+}
+
+/**
+ * Only return default value if we don't have a post ID (in the 'post' query variable)
+ *
+ * @param  bool  $default On/Off (true/false)
+ * @return mixed          Returns true or '', the blank default
+ */
+function cmb2_set_checkbox_default_for_new_post() {
+	return isset( $_GET['post'] )
+		// No default value.
+		? ''
+		// Default to true.
+		: true;
 }
 
 /**

@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Exception\OverlappingException;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Tests\Repository\TimeframeTest;
@@ -42,6 +43,20 @@ class Timeframe extends CustomPost {
 
 	public const META_MAX_DAYS = 'timeframe-max-days';
 
+	public const META_CREATE_BOOKING_CODES = 'create-booking-codes';
+
+	public const META_BOOKING_START_DAY_OFFSET = 'booking-startday-offset';
+
+	public const META_SHOW_BOOKING_CODES = 'show-booking-codes';
+
+	public const META_ALLOWED_USER_ROLES = 'allowed_user_roles';
+
+	/**
+	 * Dates stored comma separated in the format YYYY-mm-dd.
+	 * Example: 2020-01-01,2020-01-02,2020-01-03
+	 */
+	public const META_MANUAL_SELECTION = 'timeframe_manual_date';
+
 	/**
 	 * Return the span of a timeframe in human-readable format
 	 *
@@ -80,7 +95,7 @@ class Timeframe extends CustomPost {
      * The timestamps are stored in local time (not in UTC).
      * This means that we do not have to do timezone conversion in order to get the corresponding local time.
      *
-     * @return false|int
+     * @return false|int Timestamp of end date, false if no end date is set
      */
     public function getTimeframeEndDate() {
         $endDate = $this->getMeta( self::REPETITION_END );
@@ -121,19 +136,24 @@ class Timeframe extends CustomPost {
 	 * This function respects the advance booking days setting.
 	 * This means that this is the latest date that a user can currently book.
 	 *
+	 * TODO / CAREFUL: This does not respect the end of the timeframe. So if the timeframe ends before
+	 *       the configured "advance booking days" setting, the function will return a date later than the end date of the timeframe.
+	 *
 	 * @return false|int
 	 */
 	public function getLatestPossibleBookingDateTimestamp() {
 		$calculationBase = time();
 
-		// if meta-value not set we define a default value
-		$advanceBookingDays = $this->getMeta( TimeFrame::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) ?:
-			\CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS;
+		// if meta-value not set we define a default value far in the future so that we count all possibly relevant timeframes
+		$advanceBookingDays = $this->getMeta( TimeFrame::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) ?: 365;
 
 		// we subtract one day to reflect the current day in calculation
 		$advanceBookingDays --;
 
-		return strtotime( '+ ' . $advanceBookingDays . ' days', $calculationBase );
+		$advanceBookingTime = strtotime( '+ ' . $advanceBookingDays . ' days', $calculationBase );
+
+		return $advanceBookingTime;
+
 	}
 
 	/**
@@ -337,12 +357,33 @@ class Timeframe extends CustomPost {
 				);
 			}
 
-			if ( ! $this->getStartDate() ) {
-				// If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
-				throw new TimeframeInvalidException( __(
-						'Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.',
-						'commonsbooking' )
-				);
+			//a timeframe with a manual repetition does not need a start date.
+			//start- and enddate are automatically set upon saving the post
+			if ($this->getRepetition() == 'manual') {
+				$manual_selection_dates = $this->getManualSelectionDates();
+				if ( empty( $manual_selection_dates ) ){
+					throw new TimeframeInvalidException(__(
+							'No dates selected. Please select at least one date. Timeframe is saved as draft.',
+							'commonsbooking'   )
+					);
+				}
+				//make sure that there are no duplicate dates
+				$unique_dates = array_unique($manual_selection_dates);
+				if ( count($unique_dates) != count($manual_selection_dates) ){
+					throw new TimeframeInvalidException(__(
+							'The same date was selected multiple times. Please select each date only once. Timeframe is saved as draft.',
+							'commonsbooking'   )
+					);
+				}
+			}
+			else {
+				if ( ! $this->getStartDate() ) {
+					// If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
+					throw new TimeframeInvalidException( __(
+							'Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.',
+							'commonsbooking' )
+					);
+				}
 			}
 
 			if (
@@ -361,6 +402,14 @@ class Timeframe extends CustomPost {
 				if (($this->getStartDate() && $this->getEndDate()) && ($this->getStartDate() > $this->getTimeframeEndDate())){
 					throw new TimeframeInvalidException( __(
 							'End date is before start date. Please set a valid end date.',
+							'commonsbooking' )
+					);
+				}
+
+				//check if start-time and end-time are the same
+				if (($this->getStartTime() && $this->getEndTime()) && ($this->getStartTime() == $this->getEndTime())){
+					throw new TimeframeInvalidException( __(
+							'The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day.',
 							'commonsbooking' )
 					);
 				}
@@ -412,66 +461,19 @@ class Timeframe extends CustomPost {
 				);
 
 				// Validate against existing other timeframes
-				foreach ( $existingTimeframes as $timeframe ) {
-
-					// check if timeframes overlap
-					if (
-						$this->hasTimeframeDateOverlap( $timeframe )
-					) {
-						// Compare grid types
-						if ( $timeframe->getGrid() !== $this->getGrid() ) {
-							throw new TimeframeInvalidException(
-								sprintf(
-									/* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
-									__(
-										'Overlapping bookable timeframes are only allowed to have the same grid. See overlapping timeframe ID: %1$s %2$s',
-										'commonsbooking',
-									),
-									'<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->ID . '</a>',
-									'<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->post_title . '</a>',
-								)
-							);
-						}
-
-						// Check if different weekdays are set
-						if (
-							$this->getWeekDays() &&
-							$timeframe->getWeekDays()
-						) {
-							if ( ! array_intersect( $timeframe->getWeekDays(), $this->getWeekDays() ) ) {
-								return true;
-							}
-						}
-
-						// Check if in day slots overlap
-						if ( ! $this->isFullDay() && $this->hasTimeframeTimeOverlap( $timeframe ) ) {
-							throw new TimeframeInvalidException(
-								sprintf(
-									/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
-									__(
-										'time periods are not allowed to overlap. Please check the other timeframe to avoid overlapping time periods during one specific day. See affected timeframe ID: %1$s %2$s',
-										'commonsbooking'
-									),
-									'<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->ID . '</a>',
-									'<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->post_title . '</a>',
-								)
-							);
-						}
-
-						// Check if full-day slots overlap
-						if ( $this->isFullDay() ) {
-							throw new TimeframeInvalidException(
-								sprintf(
-									/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
-									__(
-										'Date periods are not allowed to overlap. Please check the other timeframe to avoid overlapping Date periods. See affected timeframe ID: %1$s %2$s',
-										'commonsbooking'
-									),
-									'<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->ID . '</a>',
-									'<a href=" ' . get_edit_post_link( $timeframe->ID ) . '">' . $timeframe->post_title . '</a>'
-								)
-							);
-						}
+				foreach ( $existingTimeframes as $otherTimeframe ) {
+					try {
+						$this->overlaps( $otherTimeframe );
+					} catch ( OverlappingException $e ) {
+						throw new TimeframeInvalidException(
+							$e->getMessage() .
+						sprintf(
+						/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
+						__('See overlapping timeframe ID: %1$s %2$s', 'commonsbooking'),
+							'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->ID . '</a>',
+							'<a href=" ' . get_edit_post_link( $otherTimeframe->ID ) . '">' . $otherTimeframe->post_title . '</a>'
+						)
+						);
 					}
 				}
 			}
@@ -539,12 +541,139 @@ class Timeframe extends CustomPost {
         }
 
 		// If none of the above conditions are true, there is no overlap
+		//TODO: When does this condition ever apply?
 		return false;
 	}
 
 	/**
+	 * Will return false if the timeframes do not overlap in date range or time range.
+	 * Will throw an exception with the formatted error message and the affected timeframe if the timeframes overlap.
+	 *
+	 * TODO: Refactor to return true if timeframes overlap and false if not. Throw exception in calling function.
+	 *
+	 * @param Timeframe $otherTimeframe
+	 *
+	 * @return false
+	 * @throws OverlappingException
+	 */
+	public function overlaps (Timeframe $otherTimeframe) : bool {
+		if (
+			$this->hasTimeframeDateOverlap( $otherTimeframe )
+		) {
+			// Compare grid types
+			if ( $otherTimeframe->getGrid() !== $this->getGrid() ) {
+				throw new OverlappingException(
+					__( 'Overlapping bookable timeframes are only allowed to have the same grid.', 'commonsbooking' )
+				);
+			}
+			$otherTimeframeRepetition = $otherTimeframe->getRepetition();
+			$repetition               = $this->getRepetition();
+
+			//we concatenate the repetitions to make the switch statement more readable
+			switch ( $repetition . '|' . $otherTimeframeRepetition ) {
+				case 'd|d':
+					if ( $this->isFullDay() || $otherTimeframe->isFullDay() ) {
+						throw new OverlappingException(
+							__( 'Full day periods are not allowed to overlap.', 'commonsbooking' )
+						);
+					} else {
+						if ( $this->hasTimeframeTimeOverlap( $otherTimeframe ) ) {
+							throw new OverlappingException(
+								__( 'Time periods are not allowed to overlap.', 'commonsbooking' )
+							);
+						}
+					}
+					break;
+				case 'w|w':
+					if ( $this->getWeekDays() && $otherTimeframe->getWeekDays() ) {
+						$weekDaysOverlap = array_intersect(
+							$this->getWeekDays(),
+							$otherTimeframe->getWeekDays()
+						);
+						if ( ! empty( $weekDaysOverlap ) ) {
+							throw new OverlappingException(
+								__( 'Overlapping bookable timeframes are not allowed to have the same weekdays.', 'commonsbooking' )
+							);
+						}
+					}
+					break;
+				case 'manual|manual':
+					$manualDateOverlap = array_intersect(
+						$this->getManualSelectionDates(),
+						$otherTimeframe->getManualSelectionDates()
+					);
+					if ( ! empty( $manualDateOverlap ) ) {
+						throw new OverlappingException(
+							__( 'Overlapping bookable timeframes are not allowed to have the same dates.', 'commonsbooking' )
+						);
+					}
+					break;
+				case 'w|manual':
+					if ( self::hasWeeklyManualOverlap( $this, $otherTimeframe ) ) {
+						throw new OverlappingException(
+							__( 'The other timeframe is overlapping with your weekly configuration.', 'commonsbooking' )
+						);
+					}
+					break;
+				case 'manual|w':
+					if ( self::hasWeeklyManualOverlap( $otherTimeframe, $this ) ) {
+						throw new OverlappingException(
+							__( 'The other timeframe is overlapping with your weekly configuration.', 'commonsbooking' )
+						);
+					}
+					break;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks if timeframes are overlapping in weekly slot and slot with manual repetition.
+	 * @param $weeklyTimeframe
+	 * @param $manualTimeframe
+	 *
+	 * @return bool
+	 */
+	private static function hasWeeklyManualOverlap( $weeklyTimeframe, $manualTimeframe ): bool {
+		$manualSelectionWeekdays = array_unique(
+			array_map(
+				fn ( $date ) => date( 'w', strtotime( $date ) ),
+				$manualTimeframe->getManualSelectionDates()
+			)
+		);
+		//we have to make the sunday a 7 instead of 0 in order to detect overlaps with our other array correctly
+		$manualSelectionWeekdays = array_map(
+			fn ( $weekday ) => $weekday == 0 ? 7 : $weekday,
+			$manualSelectionWeekdays
+		);
+		$weekDaysOverlap = array_intersect(  $weeklyTimeframe->getWeekDays(), $manualSelectionWeekdays ) ;
+		if ( ! empty( $weekDaysOverlap ) ) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Will add the timeframe start and end date to the post meta when the repetition is set to manual.
+	 * We have to do this so the user doesn't have to set the start and end date manually when selecting dates.
+	 *
+	 * @return void
+	 */
+	public function updatePostMetaStartAndEndDate() : void {
+		if ($this->getRepetition() == 'manual') {
+			$timestamps = array_map('strtotime', $this->getManualSelectionDates());
+			asort($timestamps);
+			update_post_meta( $this->ID, \CommonsBooking\Model\Timeframe::REPETITION_START, reset($timestamps) );
+			update_post_meta( $this->ID, \CommonsBooking\Model\Timeframe::REPETITION_END, end($timestamps) );
+		}
+	}
+
+
+	/**
 	 * Returns grid type id.
-	 * TODO: Better description of what the timeframe grid is
+	 * The timeframe grid describes if either the full slot is bookable or if the timeframe is bookable hourly.
+	 * 0 = slot
+	 * 1 = hourly
      *
 	 * @return mixed
 	 */
@@ -612,7 +741,8 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns grid size in hours.
-	 * TODO: Better description of what the timeframe grid is.
+	 * This means the length of the individual bookable slots.
+	 * For example if the grid is 2, the bookable slots are 2 hours long.
      *
 	 * @return int|null
 	 */
@@ -620,13 +750,31 @@ class Timeframe extends CustomPost {
 		if ( $this->isFullDay() ) {
 			return 24;
 		} elseif ( $this->getGrid() === 0 ) {
+			//this is for slot timeframes
 			$startTime = strtotime( $this->getMeta( 'start-time' ) );
 			$endTime   = strtotime( $this->getMeta( 'end-time' ) );
 
 			return intval( round( abs( $endTime - $startTime ) / 3600, 2 ) );
 		} else {
+			//this is for hourly timeframes, the grid will be 1, because each hour is bookable
 			return intval( $this->getGrid() );
 		}
+	}
+
+	/**
+	 * Gets an array of dates that were manually selected by the user.
+	 * The dates are in the format YYYY-MM-DD
+	 * @return String[]
+	 */
+	public function getManualSelectionDates(): array {
+		$manualDatesString = $this->getMeta( self::META_MANUAL_SELECTION );
+		if ( ! $manualDatesString ) {
+			return [];
+		}
+		return array_map(
+			'trim',
+			explode( ',', $manualDatesString )
+		);
 	}
 
 	/**
@@ -636,7 +784,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function showBookingCodes() : bool
     {
-		return $this->getMeta( 'show-booking-codes' ) === 'on';
+		return $this->getMeta( self::META_SHOW_BOOKING_CODES ) === 'on';
 	}
 
 	/**
@@ -645,7 +793,7 @@ class Timeframe extends CustomPost {
 	 * @return bool
 	 */
 	public function usesBookingCodes(): bool {
-		return $this->getMeta( 'create-booking-codes' ) == 'on';
+		return $this->getMeta( self::META_CREATE_BOOKING_CODES ) == 'on';
 	}
 
 	/**
@@ -810,8 +958,14 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns type of repetition.
-	 * TODO: Clarify what types of restrictions there are.
-	 *
+	 * Possible values:
+	 * d = daily
+	 * w = weekly
+	 * m = monthly
+	 * y = yearly
+	 * manual = manual selection of dates
+	 * norep = no repetition
+     *
 	 * @return mixed
 	 */
 	public function getRepetition() {
@@ -821,10 +975,10 @@ class Timeframe extends CustomPost {
     /**
      * Returns first bookable day based on the defined booking startday offset in timeframe
      *
-     * @return date string Y-m-d
+     * @return string  date format Y-m-d
      */
     public function getFirstBookableDay() {
-        $offset = $this->getFieldValue( 'booking-startday-offset' ) ?: 0;
+        $offset = $this->getFieldValue( Timeframe::META_BOOKING_START_DAY_OFFSET ) ?: 0;
         $today = current_datetime()->format('Y-m-d');
         return date( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
 
