@@ -907,6 +907,10 @@ class TimeframeTest extends CustomPostTypeTest {
 		//the default advance booking days in our tests are 30
 		$advanceBookingDays = 30;
 		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
+		//we have to do this as a subscriber, because admins can book anytime
+		$this->createSubscriber();
+		wp_set_current_user($this->subscriberId);
+
 		//case 1: timeframe is longer than advance booking days
 		$lateTimeframe = new Timeframe(
 			$this->createTimeframe(
