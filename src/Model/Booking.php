@@ -143,7 +143,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return bool
 	 */
 	public function showBookingCodes(): bool {
-		return $this->getMeta( 'show-booking-codes' ) === 'on';
+		return $this->getMeta( self::META_SHOW_BOOKING_CODES ) === 'on';
 	}
 
 	/**
@@ -186,7 +186,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 				'grid',
 				'start-time',
 				'end-time',
-				'show-booking-codes',
+				\CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES,
 				\CommonsBooking\Model\Timeframe::META_MAX_DAYS,
 			];
 			foreach ( $neededMetaFields as $fieldName ) {
