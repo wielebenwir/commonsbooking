@@ -9,10 +9,13 @@ hero:
   actions:
     - theme: brand
       text: Schritt-für-Schritt Anleitung
-      link: /anleitung
+      link: /anleitung/
     - theme: alt
       text: Dokumentation
-      link: /dokumentation
+      link: /dokumentation/
+  image:
+    src: /logo-big.png
+    alt: CommonsBooking Logo
 
 features:
   - title: Artikel und Standorte flexibel organisieren
