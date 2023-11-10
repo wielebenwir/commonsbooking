@@ -45,6 +45,31 @@ add_action( 'commonsbooking_before_item-single', 'itemsingle_callback' );
 * commonsbooking_after_item-single
 * commonsbooking_mail_sent
 
+### `commonsbooking_before_booking-single`
+
+```php
+/*
+ * Hiermit fügst du auf der Buchungs-Bestätigungs-Seite vor dem Inhalt einen
+ * Link ein, der die User zum Mailprogramm mit vorbefüllter Nachricht führt.
+ */
+add_action( 'commonsbooking_before_booking-single', 'my_booking_reparatur_mail' );
+function my_booking_reparatur_mail() {
+        global $post;
+
+        $mailTo = "helpme@example.com";
+
+        if (get_current_user_id() == $post->post_author) {
+
+                $booking = new \CommonsBooking\Model\Booking( $post->ID );
+                $bookingUrl = site_url() . "/cb_booking/" . $post->post_name . "/";
+
+                echo "<div class=\"cb-notice\"> <p>Melde technische Probleme während der Fahrt via <a href=\"mailto:" . $mailTo . "?subject=Hilfe%20mit%20" . $booking->getItem()->post_title . "&body=Hallo Team, ich brauche Hilfe:%20" . $bookingUrl . "%0D%0A%0D%0ADanke und Grüße\">Mail über unserer Vorlage.</a></p></div>";
+
+        }
+}
+
+```
+
 ## Filter Hooks
 
 Filter Hooks (https://developer.wordpress.org/plugins/hooks/filters/) funktionieren ähnlich wie Action Hooks jedoch mit dem Unterschied, dass die Callback Funktion einen Wert übergeben bekommt, diesen modifiziert und ihn dann wieder zurückgibt.
