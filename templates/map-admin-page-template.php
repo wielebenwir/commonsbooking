@@ -706,25 +706,6 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
             $('textarea').show();
         });
 
-        //----------------------------------------------------------------------------
-        // grouping & custom markup of user filters
-
-        $('.cb_items_available_category_choice').change(function () {
-            var $this = $(this);
-            var el_id_arr = $this.attr('id').split('-');
-            var cat_id = el_id_arr[el_id_arr.length - 1];
-            //console.log(cat_id);
-
-            if ($this.prop("checked")) {
-                //console.log('checked');
-                add_custom_markup_option(cat_id, $this.parent().text(), $this.parent().text().trim());
-            } else {
-                //console.log('unchecked');
-                $('#available_category_cutom_markup_' + cat_id).remove();
-            }
-
-        });
-
     });
 
 </script>
