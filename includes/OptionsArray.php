@@ -514,6 +514,43 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 			),
 			/* color settings end*/
 
+			/* filter groups start */
+			'filtergroups' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Filter groups', 'commonsbooking' ) ),
+				'id'     => 'filtergroups',
+				'desc'   => commonsbooking_sanitizeHTML( __( 'Filter groups can group item or location categories together to allow for filtering in the map.', 'commonsbooking' ) ),
+				'fields' => array(
+					array(
+						'id'      => 'filtergroups_group',
+						'type'    => 'group',
+						'repeatable' => true,
+						'options' => array(
+							'group_title'   => commonsbooking_sanitizeHTML( __( 'Filter group {#}', 'commonsbooking' ) ),
+							'add_button'    => commonsbooking_sanitizeHTML( __( 'Add another filter group', 'commonsbooking' ) ),
+							'remove_button' => commonsbooking_sanitizeHTML( __( 'Remove filter group', 'commonsbooking' ) ),
+							'sortable'      => false,
+						),
+						'fields' => array(
+							array(
+								'name'    => commonsbooking_sanitizeHTML( __( 'Name', 'commonsbooking' ) ),
+								'id'      => 'name',
+								'type'    => 'text',
+								'desc'    => commonsbooking_sanitizeHTML( __( 'The name of the filter group', 'commonsbooking' ) ),
+								'default' => '',
+							),
+							array(
+								'name'    => commonsbooking_sanitizeHTML( __( 'Categories', 'commonsbooking' ) ),
+								'id'      => 'categories',
+								'type'    => 'taxonomy_multicheck',
+								'desc'    => commonsbooking_sanitizeHTML( __( 'The categories to be included in the filter group', 'commonsbooking' ) ),
+								'taxonomy' => 'cb_items_category',
+								'field_type' => 'multi_select',
+								'default' => '',
+							),
+						),
+					)
+				)
+			)
 		)
 	),
 	/* Tab: templates end*/

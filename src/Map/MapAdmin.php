@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Map;
 
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 
@@ -58,7 +59,7 @@ class MapAdmin {
 		'marker_item_draft_icon_height',
 		'marker_item_draft_icon_anchor_x',
 		'marker_item_draft_icon_anchor_y',
-		'cb_items_available_categories',
+		'cb_items_available_filtergroups',
 		'cb_items_preset_categories',
 		'cb_locations_preset_categories'
 	];
@@ -116,7 +117,7 @@ class MapAdmin {
 	const SHOW_ITEM_AVAILABILITY_FILTER_DEFAULT = false;
 	const LABEL_ITEM_AVAILABILITY_FILTER_DEFAULT = "";
 	const LABEL_ITEM_CATEGORY_FILTER_DEFAULT = "";
-	const CB_ITEMS_AVAILABLE_CATEGORIES_DEFAULT = [];
+	const CB_ITEMS_AVAILABLE_FILTERGROUPS_DEFAULT = [];
 	const CB_ITEMS_PRESET_CATEGORIES_DEFAULT = [];
 	const CB_LOCATIONS_PRESET_CATEGORIES_DEFAULT = [];
 	const ITEM_DRAFT_APPEARANCE_DEFAULT = 1;
@@ -392,24 +393,7 @@ class MapAdmin {
 			$valid_loc_term_ids[] = $loc_category_term->term_id;
 		}
 
-		if ( isset( $input['cb_items_available_categories'] ) ) {
-			//first element has to be a filter group and has to contain at least one category
-			$array_keys = array_keys( $input['cb_items_available_categories'] );
-			if ( count( $input['cb_items_available_categories'] ) > 1 && substr( $array_keys[0], 0,
-					1 ) == 'g' && substr( $array_keys[1], 0, 1 ) != 'g' ) {
-				foreach ( $input['cb_items_available_categories'] as $key => $value ) {
-					//filter group
-					if ( substr( $key, 0, 1 ) == 'g' ) {
-						$validated_input['cb_items_available_categories'][ $key ] = sanitize_text_field( $value );
-					} //custom markup for category
-					else {
-						if ( in_array( (int) $key, $valid_term_ids ) ) {
-							$validated_input['cb_items_available_categories'][ $key ] = self::strip_script_tags( $value );
-						}
-					}
-				}
-			}
-		}
+		$valid_filtergroups = Settings::getOption( 'commonsbooking_options_templates','filtergroups_group');
 
 		//cb_items_preset_categories
 		if ( isset( $input['cb_items_preset_categories'] ) ) {
@@ -420,10 +404,20 @@ class MapAdmin {
 			}
 		}
 
+		//cb_locations_preset_categories
 		if ( isset( $input['cb_locations_preset_categories'] ) ) {
 			foreach ( $input['cb_locations_preset_categories'] as $cb_locations_category_id ) {
 				if ( in_array( (int) $cb_locations_category_id, $valid_loc_term_ids ) ) {
 					$validated_input['cb_locations_preset_categories'][] = $cb_locations_category_id;
+				}
+			}
+		}
+
+		//cb_items_available_filtergroups
+		if ( isset( $input['cb_items_available_filtergroups'] ) ) {
+			foreach ( $input['cb_items_available_filtergroups'] as $cb_items_filtergroup_id ) {
+				if ( in_array( (int) $cb_items_filtergroup_id, array_keys( $valid_filtergroups ) ) ) {
+					$validated_input['cb_items_available_filtergroups'][] = $cb_items_filtergroup_id;
 				}
 			}
 		}
@@ -474,27 +468,14 @@ class MapAdmin {
 		];
 		echo '<script>cb_map_marker_upload.translation = ' . wp_json_encode( $translation ) . ';</script>';
 
-		//available categories
-		$available_categories_args             = [
-			'taxonomy'      => 'cb_items_category',
-			'echo'          => false,
-			'checked_ontop' => false,
-			'selected_cats' => array_keys( self::get_option( $cb_map_id, 'cb_items_available_categories' ) ),
-		];
-		$available_categories_checklist_markup = wp_terms_checklist( 0, $available_categories_args );
-		$available_categories_checklist_markup = str_replace( 'name="tax_input[cb_items_category][]"',
-			'class="cb_items_available_category_choice"', $available_categories_checklist_markup );
-		$available_categories_checklist_markup = str_replace( 'id="in-cb_items_category-',
-			'id="cb_items_available_category-', $available_categories_checklist_markup );
-
-		//rearrange to nummeric array, because object property order isn't stable in js
-		$cb_items_available_categories = self::get_option( $cb_map_id, 'cb_items_available_categories' );
-		$available_categories          = [];
-		foreach ( $cb_items_available_categories as $id => $content ) {
-			$available_categories[] = [
-				'id'      => (string) $id,
-				'content' => $content,
-			];
+		//the filter groups that can be configured in the options under templates
+		$settings_filtergroups = Settings::getOption( 'commonsbooking_options_templates','filtergroups_group');
+		$selected_filtergroups = self::get_option( $cb_map_id, 'cb_items_available_filtergroups' );
+		$available_filtergroups_markup = "";
+		if ( is_array( $settings_filtergroups ) ) {
+			foreach ($settings_filtergroups as $key => $filtergroup) {
+				$available_filtergroups_markup = '<li id=' . $key . '><label class="selectit"><input value=' . $key . ' type="checkbox" class="cb_items_available_category_choice" name=' . $key  . '>' . $filtergroup['name'] . '</label></li>';
+			}
 		}
 
 		//preset item categories
