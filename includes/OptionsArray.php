@@ -734,7 +734,7 @@ For booking details and cancellation, click on this booking link: {{booking:book
 					<br>The email will be sent around midnight after the booking day has ended.'
 					, 'commonsbooking' ) ),
 				'fields' => array(
-					// settings pre booking reminder -- activate reminder
+					// settings post booking reminder -- activate reminder
 					array(
 						'name' => esc_html__( 'Activate', 'commonsbooking' ),
 						'id'   => 'post-booking-notice-activate',
@@ -761,6 +761,214 @@ Please let us know if any problems occurred.<br>
 				),
 			),
 			/* field group post booking reminder settings end */
+
+			/* field group booking start reminder for locations */
+			'booking-start-location-reminder' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Reminder for locations before booking starts', 'commonsbooking' ) ),
+				'id'     => 'booking-start-location-reminder',
+				'desc'   => commonsbooking_sanitizeHTML( __(
+					'You can set here whether locations should receive a reminder email before the start of a booking.<br><a href="https://commonsbooking.org/?p=1763" target="_blank">More Information in the documentation</a>'
+					, 'commonsbooking' ) ),
+				'fields' => array(
+					// settings booking start reminder -- activate reminder
+					array(
+						'name' => esc_html__( 'Activate', 'commonsbooking' ),
+						'id'   => 'booking-start-location-reminder-activate',
+						'type' => 'checkbox',
+					),
+					// E-Mail booking start reminder for locations
+					array(
+					'name'    => commonsbooking_sanitizeHTML( __( 'E-mail subject', 'commonsbooking' ) ),
+					'id'      => 'booking-start-location-reminder-subject',
+					'type'    => 'text',
+					'default' => commonsbooking_sanitizeHTML( __( 'Upcoming booking of {{item:post_title}} {{booking:formattedBookingDate}}', 'commonsbooking' ) ),
+				),
+				array(
+					'name'    => commonsbooking_sanitizeHTML( __( 'email body', 'commonsbooking' ) ),
+					'id'      => 'booking-start-location-reminder-body',
+					'type'    => 'textarea',
+					'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi,</h2>
+<p>The booking period for the item {{item:post_title}} will start soon.<br>
+The booking period: {{booking:formattedBookingDate}}<br><br>
+
+{{booking:getEmailSignature}}', 'commonsbooking' ) ),
+				),
+				// settings booking start reminder -- set sending time
+				array(
+					'name'             => esc_html__( 'Time', 'commonsbooking' ),
+					'id'               => 'booking-start-location-reminder-time',
+					'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
+							'Define when the reminder should be sent. The actual sending may differ from the defined value by a few hours, depending on how your WordPress is configured.'
+							, 'commonsbooking' ) ),
+					'type'             => 'select',
+					'show_option_none' => false,
+					'default'          => '1',
+					'options'          => array(
+						'0'  => '00:00',
+						'1'  => '01:00',
+						'2'  => '02:00',
+						'3'  => '03:00',
+						'4'  => '04:00',
+						'5'  => '05:00',
+						'6'  => '06:00',
+						'7'  => '07:00',
+						'8'  => '08:00',
+						'9'  => '09:00',
+						'10' => '10:00',
+						'11' => '11:00',
+						'12' => '12:00',
+						'13' => '13:00',
+						'14' => '14:00',
+						'15' => '15:00',
+						'16' => '16:00',
+						'17' => '17:00',
+						'18' => '18:00',
+						'19' => '19:00',
+						'20' => '20:00',
+						'21' => '21:00',
+						'22' => '22:00',
+						'23' => '23:00',
+						),
+					),
+					array(
+						'name'             => esc_html__( 'Bookings of', 'commonsbooking' ),
+						'id'               => 'booking-start-location-reminder-day',
+						'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
+								'Define for which booking start day the notifications should be sent'
+								, 'commonsbooking' ) ),
+						'type'             => 'select',
+						'show_option_none' => false,
+						'default'          => '0',
+						'options'          => array(
+							'0' => 'current day',
+							'1' => 'next day',
+						),
+					),
+					array(
+						'name'             => esc_html__( 'Ignore roles', 'commonsbooking' ),
+						'id'               => 'booking-atart-location-reminder-ignore-roles',
+						'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
+								'Define roles which bookings are ignored when reminders to locations are sent'
+								, 'commonsbooking' ) ),
+						'type'             => 'multicheck',
+						'inline'          => true,
+						'select_all_button' => false,
+						'options_cb'          => function() {
+							global $wp_roles;
+							$roles = [];
+							foreach ($wp_roles->roles as $key => $wp_role) {
+								$roles[$key] = $wp_role['name'];
+							}
+							return $roles;
+						},
+					),
+				),
+			),
+			/* field group booking start reminder for locations end */
+
+			/* field group booking end reminder for locations */
+			'booking-end-location-reminder' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Reminder for locations before booking ends', 'commonsbooking' ) ),
+				'id'     => 'booking-end-location-reminder',
+				'desc'   => commonsbooking_sanitizeHTML( __(
+					'You can set here whether locations should receive a reminder email before the end of a booking.<br><a href="https://commonsbooking.org/?p=1763" target="_blank">More Information in the documentation</a>'
+					, 'commonsbooking' ) ),
+				'fields' => array(
+					// settings booking end reminder -- activate reminder
+					array(
+						'name' => esc_html__( 'Activate', 'commonsbooking' ),
+						'id'   => 'booking-end-location-reminder-activate',
+						'type' => 'checkbox',
+					),
+					// E-Mail booking end reminder for locations
+					array(
+					'name'    => commonsbooking_sanitizeHTML( __( 'E-mail subject', 'commonsbooking' ) ),
+					'id'      => 'booking-end-location-reminder-subject',
+					'type'    => 'text',
+					'default' => commonsbooking_sanitizeHTML( __( 'Booking of {{item:post_title}} {{booking:formattedBookingDate}}', 'commonsbooking' ) ),
+				),
+				array(
+					'name'    => commonsbooking_sanitizeHTML( __( 'email body', 'commonsbooking' ) ),
+					'id'      => 'booking-end-location-reminder-body',
+					'type'    => 'textarea',
+					'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi,</h2>
+<p>The booking period for the item {{item:post_title}} will end soon.<br>
+The booking period: {{booking:formattedBookingDate}}<br><br>
+
+{{booking:getEmailSignature}}', 'commonsbooking' ) ),
+				),
+				// settings booking end reminder -- set sending time
+				array(
+					'name'             => esc_html__( 'Time', 'commonsbooking' ),
+					'id'               => 'booking-end-location-reminder-time',
+					'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
+							'Define when the reminder should be sent. The actual sending may differ from the defined value by a few hours, depending on how your WordPress is configured.'
+							, 'commonsbooking' ) ),
+					'type'             => 'select',
+					'show_option_none' => false,
+					'default'          => '1',
+					'options'          => array(
+						'0'  => '00:00',
+						'1'  => '01:00',
+						'2'  => '02:00',
+						'3'  => '03:00',
+						'4'  => '04:00',
+						'5'  => '05:00',
+						'6'  => '06:00',
+						'7'  => '07:00',
+						'8'  => '08:00',
+						'9'  => '09:00',
+						'10' => '10:00',
+						'11' => '11:00',
+						'12' => '12:00',
+						'13' => '13:00',
+						'14' => '14:00',
+						'15' => '15:00',
+						'16' => '16:00',
+						'17' => '17:00',
+						'18' => '18:00',
+						'19' => '19:00',
+						'20' => '20:00',
+						'21' => '21:00',
+						'22' => '22:00',
+						'23' => '23:00',
+						),
+					),
+					array(
+						'name'             => esc_html__( 'Bookings of', 'commonsbooking' ),
+						'id'               => 'booking-end-location-reminder-day',
+						'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
+								'Define for which booking end day the notifications should be sent'
+								, 'commonsbooking' ) ),
+						'type'             => 'select',
+						'show_option_none' => false,
+						'default'          => '0',
+						'options'          => array(
+							'0' => 'current day',
+							'1' => 'next day',
+						),
+					),
+					array(
+						'name'             => esc_html__( 'Ignore roles', 'commonsbooking' ),
+						'id'               => 'booking-end-location-reminder-ignore-roles',
+						'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
+								'Define roles which bookings are ignored when reminders to locations are sent'
+								, 'commonsbooking' ) ),
+						'type'             => 'multicheck',
+						'inline'          => true,
+						'select_all_button' => false,
+						'options_cb'          => function() {
+							global $wp_roles;
+							$roles = [];
+							foreach ($wp_roles->roles as $key => $wp_role) {
+								$roles[$key] = $wp_role['name'];
+							}
+							return $roles;
+						},
+					),
+				),
+			),
+			/* field group booking end reminder for locations end */
 		),
 		/* field group container end */
 	),

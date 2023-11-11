@@ -3,6 +3,7 @@
 namespace CommonsBooking\Service;
 
 use CommonsBooking\Messages\BookingReminderMessage;
+use CommonsBooking\Messages\LocationBookingReminderMessage;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use WP_Query;
@@ -119,4 +120,65 @@ class Booking {
 		}
 	}
 
+	public static function sendBookingStartLocationReminderMessage() {
+		self::sendLocationBookingReminderMessage('start');
+	}
+
+	public static function sendBookingEndLocationReminderMessage() {
+		self::sendLocationBookingReminderMessage('end');
+	}
+
+	protected static function sendLocationBookingReminderMessage(string $type) {
+
+		if (Settings::getOption('commonsbooking_options_reminder', 'booking-'.$type.'-location-reminder-activate') != 'on') {
+			return;
+		}
+
+		$daysBeforeStart = Settings::getOption( 'commonsbooking_options_reminder', 'booking-'.$type.'-location-reminder-day' );
+		$startDate = strtotime( '+' . $daysBeforeStart . ' days midnight' );
+
+		// start day of booking at 23:59
+		$endDate = strtotime( '+23 Hours +59 Minutes +59 Seconds', $startDate );
+
+		$key = '';
+		switch($type) {
+			case 'start':
+				$key = \CommonsBooking\Model\Booking::REPETITION_START;
+				break;
+			case 'end':
+				$key = \CommonsBooking\Model\Booking::REPETITION_END;
+				break;
+		}
+		
+		$bookings = \CommonsBooking\Repository\Booking::getByTimerange(
+			0, //overwritten by customArgs metaquery
+			0, //overwritten by customArgs metaquery
+			null,
+			null,
+			[
+				'meta_query' => [
+					[
+						'key'     => $key,
+						'value'   => array( $startDate, $endDate ),
+						'compare' => 'BETWEEN',
+						'type'    => 'numeric'
+					]
+				]
+			],
+			['confirmed']
+		);
+
+		if ( count( $bookings ) ) {
+			foreach ( $bookings as $booking ) {
+				//filter by user roles
+				$user_roles = get_userdata($booking->post_author)->roles;
+				$exception_roles = Settings::getOption('commonsbooking_options_reminder', 'booking-'.$type.'-location-reminder-ignore-roles');
+				
+				if(!is_array($exception_roles) || is_array($exception_roles) && !array_intersect($exception_roles, $user_roles)) {
+					$reminderMessage = new LocationBookingReminderMessage( $booking->getPost()->ID, 'booking-'.$type.'-location-reminder' );
+					$reminderMessage->sendMessage();
+				}
+			}
+		}
+	}
 }
