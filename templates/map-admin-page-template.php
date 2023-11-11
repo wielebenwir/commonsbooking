@@ -616,8 +616,9 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                         <span class="dashicons dashicons-editor-help"
                               title="<?php echo commonsbooking_sanitizeHTML( __('the text for the button used for filtering' ,'commonsbooking')); ?>"></span>
                     </th>
-                    <td><input type="text"
-                                name="cb_map_options[custom_filterbutton_label]" value="<?php echo esc_attr(MapAdmin::get_option($cb_map_id, 'custom_filterbutton_label')); ?>"></td>
+                    <td><input type="text" name="cb_map_options[custom_filterbutton_label]"
+                               placeholder="<?php echo commonsbooking_sanitizeHTML( __( 'filter' ,'commonsbooking')); ?>"
+                               value="<?php echo esc_attr(MapAdmin::get_option($cb_map_id, 'custom_filterbutton_label')); ?>"></td>
                 </tr>
 
                 <tr>
@@ -650,13 +651,13 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
 
     <div class="option-group" id="option-group-filter-presets">
         <details>
-            <summary><?php echo commonsbooking_sanitizeHTML( __( 'Filter Item Presets' ,'commonsbooking')); ?></summary>
+            <summary><?php echo commonsbooking_sanitizeHTML( __( 'Available Item Categories' ,'commonsbooking')); ?></summary>
             <table class="text-left">
                 <tr>
                     <th>
-                        <?php echo commonsbooking_sanitizeHTML( __( 'preset categories' ,'commonsbooking')); ?>:
+                        <?php echo commonsbooking_sanitizeHTML( __( 'Available categories' ,'commonsbooking')); ?>:
                         <span class="dashicons dashicons-editor-help"
-                              title="<?php echo commonsbooking_sanitizeHTML( __('select the categories that are used to prefilter the items that are shown on the map - none for all items' ,'commonsbooking')); ?>"></span>
+                              title="<?php echo commonsbooking_sanitizeHTML( __('Select the categories that the items must belong to to be shown on the map - none for all items' ,'commonsbooking')); ?>"></span>
                     </th>
                     <td>
                         <ul class="cb-map-settings-cat-filter-list">
@@ -676,9 +677,9 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
             <table class="text-left">
                 <tr>
                     <th>
-                        <?php echo commonsbooking_sanitizeHTML( __( 'preset categories' ,'commonsbooking')); ?>:
+                        <?php echo commonsbooking_sanitizeHTML( __( 'Available categories' ,'commonsbooking')); ?>:
                         <span class="dashicons dashicons-editor-help"
-                              title="<?php echo commonsbooking_sanitizeHTML( __('select the categories that are used to prefilter the location categories that are shown on the map - none for all locations' ,'commonsbooking')); ?>"></span>
+                              title="<?php echo commonsbooking_sanitizeHTML( __('Select the categories that the location must belong to to be shown on the map - none for all locations' ,'commonsbooking')); ?>"></span>
                     </th>
                     <td>
                         <ul class="cb-map-settings-cat-filter-list">

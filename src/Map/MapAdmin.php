@@ -379,15 +379,14 @@ class MapAdmin {
 				$validated_input['custom_filterbutton_label'] = sanitize_text_field( $input['custom_filterbutton_label'] );
 			}
 
-		//cb_items_available_categories
+		//load terms for items
 		$category_terms = \CommonsBooking\Repository\Item::getTerms();
-		$valid_term_ids = [];
+		$valid_item_term_ids = [];
 		foreach ( $category_terms as $category_term ) {
-			$valid_term_ids[] = $category_term->term_id;
+			$valid_item_term_ids[] = $category_term->term_id;
 		}
 
-		$loc_category_terms = \CommonsBooking\Repository\Item::getTerms();
-
+		$loc_category_terms = \CommonsBooking\Repository\Location::getTerms();
 		$valid_loc_term_ids = [];
 		foreach ( $loc_category_terms as $loc_category_term ) {
 			$valid_loc_term_ids[] = $loc_category_term->term_id;
@@ -415,7 +414,7 @@ class MapAdmin {
 		//cb_items_preset_categories
 		if ( isset( $input['cb_items_preset_categories'] ) ) {
 			foreach ( $input['cb_items_preset_categories'] as $cb_items_category_id ) {
-				if ( in_array( (int) $cb_items_category_id, $valid_term_ids ) ) {
+				if ( in_array( (int) $cb_items_category_id, $valid_item_term_ids ) ) {
 					$validated_input['cb_items_preset_categories'][] = $cb_items_category_id;
 				}
 			}
