@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-11-05T16:43:15+00:00\n"
+"POT-Creation-Date: 2023-11-13T14:22:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: commonsbooking\n"
@@ -1190,7 +1190,7 @@ msgstr ""
 msgid "comming soon"
 msgstr ""
 
-#: src/Messages/Message.php:113
+#: src/Messages/Message.php:114
 msgid "Could not send email because mail-template was not available. Check options -> templates"
 msgstr ""
 
