@@ -689,12 +689,6 @@ class Timeframe extends CustomPost {
 	 */
 
     public function hasTimeframeTimeOverlap( Timeframe $otherTimeframe ) {
-
-		// If one of the timeframes is a full day timeframe, there will always be a time overlap
-        if ( $this->isFullDay() || $otherTimeframe->isFullDay() ) {
-			return true;
-		}
-
         // Check if both timeframes have an end time, if not, there is no overlap
         if ( ! strtotime( $this->getEndTime() ) && ! strtotime( $otherTimeframe->getEndTime() ) ) {
             return true;
