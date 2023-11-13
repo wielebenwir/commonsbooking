@@ -549,6 +549,9 @@ class Timeframe extends CustomPost {
 	 *
 	 * TODO: Refactor to return true if timeframes overlap and false if not. Throw exception in calling function.
 	 *
+     * @uses Timeframe::hasTimeframeDateOverlap()
+	 * @uses Timeframe::hasTimeframeTimeOverlap()
+     *
 	 * @param Timeframe $otherTimeframe
 	 *
 	 * @return false
@@ -681,11 +684,13 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Checks if timeframes are overlapping in daily slots.
-	 *
+	 * Checks if timeframes are overlapping in time ranges or daily slots.
+     *
+	 * Use {@see Timeframe::overlaps()} if you want to compute full-overlap between two timeframes.
+     * 
 	 * @param Timeframe $otherTimeframe
 	 *
-	 * @return bool
+	 * @return bool If start-time and end-time overlaps, regardless of overlapping start-date and end-date.
 	 */
 
     public function hasTimeframeTimeOverlap( Timeframe $otherTimeframe ) {
