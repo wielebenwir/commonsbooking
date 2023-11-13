@@ -11,6 +11,7 @@ use CommonsBooking\View\Calendar;
 use CommonsBooking\View\Admin\Filter;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\UserRepository;
+use CommonsBooking\Service\Holiday;
 
 /**
  * Configures WordPress custom post type for access in admin backend.
@@ -663,6 +664,14 @@ class Timeframe extends CustomPostType {
                 'default' => 'w',
 			),
 			array(
+				'name' => esc_html__( 'Import holidays', 'commonsbooking' ),
+				'desc' => esc_html__(
+					'Select the year and state to import holidays for (as of now only German holidays are supported)'
+					, 'commonsbooking' ),
+				'id'   => "_cmb2_holiday",
+				'type' => 'holiday_get_fields'
+			),
+			array(
 				'name' => esc_html__( "Configure repetition", 'commonsbooking' ),
 				'desc' => esc_html__( 'Below you can make settings regarding the time frame repetition. ', 'commonsbooking' ),
 				'id'   => "title-timeframe-rep-config",
@@ -1273,5 +1282,8 @@ class Timeframe extends CustomPostType {
 
 		// Listing of available items/locations
 		add_shortcode( 'cb_items_table', array( Calendar::class, 'shortcode' ) );
+
+		//rendering callback for field with id _cmb2_holiday
+		add_filter( 'cmb2_render_holiday_get_fields', array( Holiday::class, 'renderFields'), 10, 5 );
 	}
 }

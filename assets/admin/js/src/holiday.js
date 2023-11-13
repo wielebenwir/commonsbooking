@@ -1,6 +1,7 @@
 (function ($) {
     'use strict';
     $(function () {
+        const holidayLoadButton = $("#holiday_load_btn");
         const manualDateInput = $("#timeframe_manual_date");
         const manualDatePicker = $("#cmb2_multiselect_datepicker");
 
@@ -31,6 +32,23 @@
                     var date = $(this).datepicker( "getDate" );
                     addHolidayToInput(date);
                 }
+            });
+        }
+        if (holidayLoadButton.length) {
+            var fillHolidays = (year, state) => {
+                var holidays = feiertagejs.getHolidays(year, state);
+                //add holidays to input field, comma separated in format (d.m.Y) and with trailing semi-colon
+                holidays.forEach((holiday) => {
+                    var date = new Date(holiday.date);
+                    addHolidayToInput(date);
+                });
+            };
+
+            holidayLoadButton.click(function () {
+                fillHolidays(
+                    $('#_cmb2_holidayholiday_year').val(),
+                    $('#_cmb2_holidayholiday_state').val()
+                );
             });
         }
     });
