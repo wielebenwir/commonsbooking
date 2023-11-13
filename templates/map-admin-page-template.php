@@ -7,7 +7,11 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
 <div class="inside">
 
     <p><?php echo commonsbooking_sanitizeHTML( __( 'These settings help you to configure the usage and appearance of Commons Booking Map.' ,'commonsbooking')); ?></p>
-
+	<h1>
+		<b><?php echo commonsbooking_sanitizeHTML( __('CAREFUL: Filter groups have changed since the last update.', 'commonsbooking') ); ?><br>
+		<?php echo commonsbooking_sanitizeHTML( __(' Please read the documentation: ', 'commonsbooking') ); ?> <a href="https://commonsbooking.org/?p=2256" target="_blank">https://commonsbooking.org/?p=2256</a> <br>
+		<?php echo commonsbooking_sanitizeHTML( __('If you save this map with the old filtergroups enabled, your settings will be lost.', 'commonsbooking') );?> </b>
+	</h1>
     <div class="option-group" id="option-group-map-presentation">
         <details>
             <summary><?php echo commonsbooking_sanitizeHTML( __( 'Map Presentation' ,'commonsbooking')); ?></summary>
