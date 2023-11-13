@@ -927,7 +927,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		//case 4: timeframe is infinite and advance booking days are set
 		update_post_meta($noEndDate->ID, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, $advanceBookingDays);
 		$this->assertEquals(
-			strtotime( '+' . $advanceBookingDays - 1 . ' days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+' . ($advanceBookingDays - 1) . ' days', strtotime( self::CURRENT_DATE ) ),
 			$noEndDate->getLatestPossibleBookingDateTimestamp()
 		);
 
