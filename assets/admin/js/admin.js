@@ -1,7 +1,7 @@
 (function($) {
     "use strict";
     $(function() {
-        let holidayLoadButton = $("#holiday_load_btn");
+        const holidayLoadButton = $("#holiday_load_btn");
         const manualDateInput = $("#timeframe_manual_date");
         const manualDatePicker = $("#cmb2_multiselect_datepicker");
         var addHolidayToInput = date => {
