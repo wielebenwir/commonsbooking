@@ -3556,28 +3556,20 @@ msgstr ""
 msgid "See overlapping timeframe ID: %1$s %2$s"
 msgstr ""
 
-#: src/Model/Timeframe.php:564
+#: src/Model/Timeframe.php:567
 msgid "Overlapping bookable timeframes are only allowed to have the same grid."
 msgstr ""
 
-#: src/Model/Timeframe.php:575
-msgid "Full day periods are not allowed to overlap."
-msgstr ""
-
-#: src/Model/Timeframe.php:580
-msgid "Time periods are not allowed to overlap."
-msgstr ""
-
-#: src/Model/Timeframe.php:593
+#: src/Model/Timeframe.php:597
 msgid "Overlapping bookable timeframes are not allowed to have the same weekdays."
 msgstr ""
 
-#: src/Model/Timeframe.php:605
+#: src/Model/Timeframe.php:609
 msgid "Overlapping bookable timeframes are not allowed to have the same dates."
 msgstr ""
 
-#: src/Model/Timeframe.php:612
-#: src/Model/Timeframe.php:619
+#: src/Model/Timeframe.php:616
+#: src/Model/Timeframe.php:623
 msgid "The other timeframe is overlapping with your weekly configuration."
 msgstr ""
 
@@ -3615,4 +3607,8 @@ msgstr ""
 
 #: src/Wordpress/CustomPostType/Timeframe.php:622
 msgid "Select the year and state to import holidays for (as of now only German holidays are supported)"
+msgstr ""
+
+#: src/Model/Timeframe.php:583
+msgid "Daily repeated time periods are not allowed to overlap."
 msgstr ""
