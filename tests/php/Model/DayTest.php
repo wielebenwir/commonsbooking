@@ -12,11 +12,11 @@ class DayTest extends CustomPostTypeTest {
 
 	protected $bookableTimeframeForCurrentDayId;
 
-	protected $bookableTimeframeNoRepSingleDayTomorrowId;
+	protected $bookableTimeframeSingleDayTomorrowId;
 
-	protected $bookableTimeframeNoRepSingleDayTodayId;
+	protected $bookableTimeframeSingleDayTodayId;
 
-	protected $bookableTimeframeNoRepStartsYesterdayEndsTomorrowId;
+	protected $bookableTimeframeStartsYesterdayEndsTomorrowId;
 
 	protected $bookableTimeframeOnceWeeklyValidTodayNoEnd;
 
@@ -30,34 +30,28 @@ class DayTest extends CustomPostTypeTest {
 		parent::setUp();
 		$this->bookableTimeframeForCurrentDayId = $this->createBookableTimeFrameIncludingCurrentDay();
 
-		$this->bookableTimeframeNoRepSingleDayTomorrowId = $this->createTimeframe(
+		$this->bookableTimeframeSingleDayTomorrowId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
-			null,
+			strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			'on',
-			"norep"
 		);
 
-		$this->bookableTimeframeNoRepSingleDayTodayId = $this->createTimeframe(
+		$this->bookableTimeframeSingleDayTodayId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( self::CURRENT_DATE ),
-			null,
+			strtotime(self::CURRENT_DATE),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			'on',
-			"norep"
 		);
 
-		$this->bookableTimeframeNoRepStartsYesterdayEndsTomorrowId = $this->createTimeframe(
+		$this->bookableTimeframeStartsYesterdayEndsTomorrowId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '-1 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			'on',
-			"norep"
 		);
 
 		//get the current weekday of the current date
@@ -160,13 +154,13 @@ class DayTest extends CustomPostTypeTest {
 		$timeframe = new Timeframe( $this->bookableTimeframeForCurrentDayId );
 		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
 
-		$timeframe = new Timeframe( $this->bookableTimeframeNoRepSingleDayTomorrowId );
+		$timeframe = new Timeframe( $this->bookableTimeframeSingleDayTomorrowId );
 		$this->assertFalse( $this->instance->isInTimeframe( $timeframe ) );
 
-		$timeframe = new Timeframe( $this->bookableTimeframeNoRepSingleDayTodayId );
+		$timeframe = new Timeframe( $this->bookableTimeframeSingleDayTodayId );
 		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
 
-		$timeframe = new Timeframe( $this->bookableTimeframeNoRepStartsYesterdayEndsTomorrowId );
+		$timeframe = new Timeframe( $this->bookableTimeframeStartsYesterdayEndsTomorrowId );
 		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
 
 		$timeframe = new Timeframe( $this->bookableTimeframeOnceWeeklyValidTodayNoEnd );

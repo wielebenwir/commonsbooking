@@ -962,7 +962,6 @@ class Timeframe extends CustomPost {
 	 * m = monthly
 	 * y = yearly
 	 * manual = manual selection of dates
-	 * norep = no repetition
      *
 	 * @return mixed
 	 */

@@ -312,6 +312,7 @@ class Day {
 		if ( $timeframe->getRepetition() ) {
 			switch ( $timeframe->getRepetition() ) {
 				// Weekly Rep
+				//These repetitions take place on the weekdays that are configured in the timeframe
 				case "w":
 					$dayOfWeek         = intval( $this->getDateObject()->format( 'w' ) );
 					$timeframeWeekdays = get_post_meta( $timeframe->ID, 'weekdays', true );
@@ -328,6 +329,7 @@ class Day {
 					}
 
 				// Monthly Rep
+				//These repetitions take place on the same day of the month as the start date
 				case "m":
 					$dayOfMonth               = intval( $this->getDateObject()->format( 'j' ) );
 					$timeframeStartDayOfMonth = date('j',$timeframe->getStartDate());
@@ -339,6 +341,7 @@ class Day {
 					}
 
 				// Yearly Rep
+				// These repetitions take place on the same day of the year as the start date
 				case "y":
 					$date          = intval( $this->getDateObject()->format( 'dm' ) );
 					$timeframeDate = date('dm',$timeframe->getStartDate());
@@ -351,23 +354,6 @@ class Day {
 				// Manual Rep
 				case "manual":
 					return in_array( $this->getDate(), $timeframe->getManualSelectionDates() );
-
-				// No Repetition
-				case "norep":
-					$timeframeStartTimestamp = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ));
-					$timeframeEndTimestamp   = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ));
-
-					$currentDayStartTimestamp = strtotime('midnight', $this->getDateObject()->getTimestamp());
-					$currentDayEndTimestamp = strtotime('+1 day midnight', $this->getDateObject()->getTimestamp()) - 1;
-
-					$timeframeStartsBeforeEndOfToday = $timeframeStartTimestamp <= $currentDayEndTimestamp;
-					$timeframeEndsAfterStartOfToday = $timeframeEndTimestamp >= $currentDayStartTimestamp;
-
-					if(!$timeframeEndTimestamp) {
-						return $timeframeStartsBeforeEndOfToday;
-					} else {
-						return $timeframeStartsBeforeEndOfToday && $timeframeEndsAfterStartOfToday;
-					}
 			}
 		}
 

@@ -559,7 +559,7 @@ class Migration {
 			\CommonsBooking\Model\Timeframe::META_ITEM_ID      => $cbItem ? $cbItem->ID : '',
 			\CommonsBooking\Model\Timeframe::META_LOCATION_ID  => $cbLocation ? $cbLocation->ID : '',
 			'type'                                             => Timeframe::BOOKING_ID,
-			\CommonsBooking\Model\Timeframe::META_REPETITION   => 'norep',
+			\CommonsBooking\Model\Timeframe::META_REPETITION   => 'd',
 			'start-time'                                       => '00:00',
 			'end-time'                                         => '23:59',
 			'full-day'                                         => 'on',

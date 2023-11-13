@@ -37,7 +37,6 @@
         const HOLIDAYS_ID = "3";
         const REPAIR_ID = "5";
 
-        const REPETITION_NONE = "norep";
         const REPETITION_MANUAL = "manual";
         const REPETITION_DAILY = "d";
         const REPETITION_WEEKLY = "w";
@@ -72,26 +71,9 @@
             const bookingConfigurationTitle = $('#title-bookings-config');
             const allowUserRoles = $('#allowed_user_roles');
             const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
-            const noRepSet = [fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput];
             const repTimeFieldsSet = [gridInput, startTimeInput, endTimeInput];
             const bookingCodeSet = [createBookingCodesInput, bookingCodesList, bookingCodesDownload, showBookingCodes];
             const bookingConfigSet = [maxDaysSelect, advanceBookingDays, bookingStartDayOffset, allowUserRoles, bookingConfigurationTitle];
-
-            /**
-             * Show repetition fields.
-             */
-            const showRepFields = function () {
-                showFieldset(repSet);
-                hideFieldset(arrayDiff(repSet, noRepSet));
-            }
-
-            /**
-             * Show no-repetition fields.
-             */
-            const showNoRepFields = function () {
-                showFieldset(noRepSet);
-                hideFieldset(arrayDiff(noRepSet, repSet));
-            }
 
             /**
              * Uncheck checkboxes.
@@ -148,12 +130,6 @@
                 const selectedTimeframeType = $("option:selected", typeInput).val();
 
                 if (selectedType) {
-                    if (selectedType == REPETITION_NONE) {
-                        showNoRepFields();
-                    } else {
-                        showRepFields();
-                    }
-
                     if (selectedType === REPETITION_MANUAL) {
                         manualDateField.show();
                         manualDatePicker.show();
@@ -174,11 +150,7 @@
                     }
 
                     handleFullDaySelection();
-                } else {
-                    hideFieldset(noRepSet);
-                    hideFieldset(repSet);
                 }
-
             }
             handleRepetitionSelection();
             timeframeRepetitionInput.change(function () {
