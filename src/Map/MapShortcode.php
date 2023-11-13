@@ -228,7 +228,26 @@ class MapShortcode {
 					];
 				}
 			}
-
+			//filtergroups are only meant to be shown on local maps
+			//old filtergroups, kept for backwards compatibility
+			elseif ( $key == 'cb_items_available_categories' ) {
+				$settings['filter_cb_item_categories'] = [];
+				$current_group_id                      = null;
+				foreach ( $options['cb_items_available_categories'] as $categoryKey => $content ) {
+					if ( substr( $categoryKey, 0, 1 ) == 'g' ) {
+						$current_group_id                                      = $categoryKey;
+						$settings['filter_cb_item_categories'][ $categoryKey ] = [
+							'name'     => $content,
+							'elements' => [],
+						];
+					} else {
+						$settings['filter_cb_item_categories'][ $current_group_id ]['elements'][] = [
+							'cat_id' => $categoryKey,
+							'markup' => $content,
+						];
+					}
+				}
+			}
 		}
 
 		return $settings;
