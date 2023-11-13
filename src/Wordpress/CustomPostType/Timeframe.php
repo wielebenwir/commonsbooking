@@ -1113,6 +1113,7 @@ class Timeframe extends CustomPostType {
 		// Listing of available items/locations
 		add_shortcode( 'cb_items_table', array( Calendar::class, 'shortcode' ) );
 
+		//rendering callback for field with id _cmb2_holiday
 		add_filter( 'cmb2_render_holiday_get_fields', array( Holiday::class, 'renderFields'), 10, 5 );
 	}
 }

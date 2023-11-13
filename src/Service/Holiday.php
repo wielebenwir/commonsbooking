@@ -5,7 +5,7 @@ namespace CommonsBooking\Service;
 class Holiday {
 
 	/**
-	 * Will render the fields in the timeframe settings where the user can define the holidays to get for the different states and years.
+	 * Will render the fields in the timeframe settings where the user can define the holidays to get for the different German states and years.
 	 * The actual holidays will be loaded through feiertagejs.
 	 * @param $field
 	 * @param $value
