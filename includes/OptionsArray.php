@@ -540,13 +540,33 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 								'default' => '',
 							),
 							array(
+								'name'    => commonsbooking_sanitizeHTML( __( 'Type', 'commonsbooking' ) ),
+								'id'      => 'type',
+								'type'    => 'select',
+								'desc'    => commonsbooking_sanitizeHTML( __( 'This is not available yet. Which data source should be used for the filter group. Taxonomy stands for the assigned categories, post-meta can be individually configured custom fields for item posts. When this item field contains data, it will be included. If it does not contain data or does not exist, the item will be excluded.', 'commonsbooking' ) ),
+								'options' => array(
+									'taxonomy'     => commonsbooking_sanitizeHTML( __( 'Taxonomy', 'commonsbooking' ) ),
+									'postmeta'     => commonsbooking_sanitizeHTML( __( 'Post-meta', 'commonsbooking' ) ),
+								),
+								'default' => 'taxonomy',
+								//TODO: disabled until postmeta is implemented
+								'attributes' => array(
+									'disabled' => true
+								),
+							),
+							array(
+								'name'    => commonsbooking_sanitizeHTML( __( 'Single select', 'commonsbooking' ) ),
+								'id'      => 'singleselect',
+								'type'    => 'checkbox',
+								'desc'    => commonsbooking_sanitizeHTML( __( 'If checked, only one category can be selected in this filter group. If unchecked, multiple categories can be selected.', 'commonsbooking' ) ),
+							),
+							array(
 								'name'    => commonsbooking_sanitizeHTML( __( 'Categories', 'commonsbooking' ) ),
 								'id'      => 'categories',
-								'type'    => 'taxonomy_multicheck',
+								'type'    => 'multicheck',
 								'desc'    => commonsbooking_sanitizeHTML( __( 'The categories to be included in the filter group', 'commonsbooking' ) ),
-								'taxonomy' => 'cb_items_category',
-								'field_type' => 'multi_select',
-								'default' => '',
+								'options' => CommonsBooking\Wordpress\CustomPostType\CustomPostType::sanitizeOptions( \CommonsBooking\Repository\Item::getTerms() ),
+								'select_all_button' => false,
 							),
 						),
 					)
