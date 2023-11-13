@@ -475,7 +475,7 @@ class MapAdmin {
 		if ( is_array( $settings_filtergroups ) ) {
 			foreach ($settings_filtergroups as $key => $filtergroup) {
 				$checked = in_array( $key, $selected_filtergroups ) ? 'checked' : '';
-				$available_filtergroups_markup = '<li id=' . $key . '><label class="selectit"><input value=' . $key . ' type="checkbox" name="cb_map_options[cb_items_available_filtergroups][]" id="cb_filtergroups_selected-' . $key . '" ' . $checked . '>' . $filtergroup['name'] . '</label></li>';
+				$available_filtergroups_markup .= '<li id=' . $key . '><label class="selectit"><input value=' . $key . ' type="checkbox" name="cb_map_options[cb_items_available_filtergroups][]" id="cb_filtergroups_selected-' . $key . '" ' . $checked . '>' . $filtergroup['name'] . '</label></li>';
 			}
 		}
 
