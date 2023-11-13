@@ -198,7 +198,8 @@ class MapShortcode {
 						],
 					];
 				}
-			} //filtergroups are only meant to be shown on local maps
+			}
+			//@since 2.9 new filtergroups pulled from settings
 			elseif ( $key == 'cb_items_available_filtergroups' ) {
 				$settings['filter_cb_item_categories'] = [];
 				$optionGroups = Settings::getOption( 'commonsbooking_options_templates','filtergroups_group');
@@ -212,8 +213,7 @@ class MapShortcode {
 				);
 
 				//old datastructure for backwards compatibility, markup used to be a user defined string
-				foreach ( $selectedFilterGroups as $key => $selectedFilterGroup ) {
-					$current_group_id = $key;
+				foreach ( $selectedFilterGroups as $current_group_id => $selectedFilterGroup ) {
 					$elements = [];
 					foreach ( $selectedFilterGroup['categories'] as $termID) {
 						$term = get_term( $termID );
