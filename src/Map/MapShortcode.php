@@ -218,7 +218,7 @@ class MapShortcode {
 					foreach ( $selectedFilterGroup['categories'] as $termID) {
 						$term = get_term( $termID );
 						$elements[] = [
-							'cat_id' => $termID,
+							'cat_id' => intval( $termID ),
 							'markup' => $term->name,
 						];
 					}
