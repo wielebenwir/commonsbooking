@@ -173,7 +173,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals( 1, count( $timeframe ) );
 		$this->assertEquals( $timeframeId, $timeframe[0]->ID );
 
-		\CommonsBooking\Plugin::registerItemTaxonomy();
+		\CommonsBooking\Plugin::registerLocationTaxonomy();
 
 		// Let's assign our location to a category, that timeframe also to the same category and check if we can
 		// still get the timeframe
