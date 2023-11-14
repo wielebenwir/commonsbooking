@@ -840,8 +840,8 @@ The booking period: {{booking:formattedBookingDate}}<br><br>
 						'show_option_none' => false,
 						'default'          => '0',
 						'options'          => array(
-							'0' => 'current day',
-							'1' => 'next day',
+							'0' => esc_html__( 'current day', 'commonsbooking' ),
+							'1' => esc_html__( 'next day', 'commonsbooking' ),
 						),
 					),
 					array(
@@ -857,7 +857,7 @@ The booking period: {{booking:formattedBookingDate}}<br><br>
 							global $wp_roles;
 							$roles = [];
 							foreach ($wp_roles->roles as $key => $wp_role) {
-								$roles[$key] = $wp_role['name'];
+								$roles[$key] = translate_user_role($wp_role['name']);
 							}
 							return $roles;
 						},
@@ -944,8 +944,8 @@ The booking period: {{booking:formattedBookingDate}}<br><br>
 						'show_option_none' => false,
 						'default'          => '0',
 						'options'          => array(
-							'0' => 'current day',
-							'1' => 'next day',
+							'0' => esc_html__( 'current day', 'commonsbooking' ),
+							'1' => esc_html__( 'next day', 'commonsbooking' ),
 						),
 					),
 					array(
@@ -961,7 +961,7 @@ The booking period: {{booking:formattedBookingDate}}<br><br>
 							global $wp_roles;
 							$roles = [];
 							foreach ($wp_roles->roles as $key => $wp_role) {
-								$roles[$key] = $wp_role['name'];
+								$roles[$key] = translate_user_role($wp_role['name']);
 							}
 							return $roles;
 						},

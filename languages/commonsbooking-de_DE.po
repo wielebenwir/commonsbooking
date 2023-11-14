@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2023-11-11 15:58+0100\n"
-"PO-Revision-Date: 2023-11-11 16:01+0100\n"
+"POT-Creation-Date: 2023-11-14 17:00+0100\n"
+"PO-Revision-Date: 2023-11-14 17:01+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: English <kde-i18n-doc@kde.org>\n"
 "Language: de_DE\n"
@@ -1091,6 +1091,14 @@ msgid "Define for which booking start day the notifications should be sent"
 msgstr ""
 "Definiere, für welchen Tag des Buchungsbeginns die Benachrichtigung gesendet "
 "werden soll"
+
+#: includes/OptionsArray.php:843 includes/OptionsArray.php:947
+msgid "current day"
+msgstr "diesem Tag"
+
+#: includes/OptionsArray.php:844 includes/OptionsArray.php:948
+msgid "next day"
+msgstr "nächstem Tag"
 
 #: includes/OptionsArray.php:848 includes/OptionsArray.php:952
 msgid "Ignore roles"
