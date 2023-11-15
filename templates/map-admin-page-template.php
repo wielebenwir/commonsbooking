@@ -304,71 +304,29 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
     <div class="option-group" id="option-group-custom-marker">
         <details>
             <summary><?php echo commonsbooking_sanitizeHTML( __( 'Custom Marker' ,'commonsbooking')); ?></summary>
-            <b> <?php echo commonsbooking_sanitizeHTML( __( 'Set a custom image that will be displayed inside a pre-defined marker. You can also set individual markers for each item category that will override this setting.' ,'commonsbooking')); ?></b>
-            <table class="text-left">
-                <tr>
-                    <th>
-                        <?php echo commonsbooking_sanitizeHTML( __( 'icon image file' ,'commonsbooking')); ?>:
-                        <span class="dashicons dashicons-editor-help"
-                              title="<?php echo commonsbooking_sanitizeHTML( __('this image will be shown inside of a marker shape' ,'commonsbooking')); ?>"></span>
-                    </th>
-                    <td>
-                        <input id="select-marker-icon-button" type="button" class="button"
-                               value="<?php echo commonsbooking_sanitizeHTML( __( 'select' ,'commonsbooking')); ?>"/>
-                        <input id="remove-marker-icon-button" type="button" class="button"
-                               value="<?php echo commonsbooking_sanitizeHTML( __( 'remove' ,'commonsbooking')); ?>"/>
-                    </td>
-                </tr>
-                <tr id="marker-icon-preview-settings" class="display-none">
-                    <td>
-                        <div>
-                            <img id="marker-icon-preview"
-                                    src="<?php echo  wp_get_attachment_url(MapAdmin::get_option($cb_map_id,
-                                        'custom_marker_icon_media_id')); ?>">
-                        </div>
-                        <input type="hidden" name="cb_map_options[custom_marker_icon_media_id]"
-                               value="<?php echo  commonsbooking_sanitizeHTML( MapAdmin::get_option($cb_map_id, 'custom_marker_icon_media_id') ); ?>">
-                    </td>
-                    <td>
-                        <div id="marker-icon-choose-color"></div>
-                    </td>
-                </tr>
-                <tr id="marker-icon-color" class="display-none">
-                    <th>
-                        <?php echo commonsbooking_sanitizeHTML( __( 'marker color' ,'commonsbooking')); ?>:
-                        <span class="dashicons dashicons-editor-help"
-                              title="<?php echo commonsbooking_sanitizeHTML( __('the color of the marker shape sorrounding the icon' ,'commonsbooking')); ?>"></span>
-                    </th>
-                    <td>
-                        <input type="color" name="cb_map_options[marker_icon_color]"
-                               value="<?php echo esc_attr(MapAdmin::get_option($cb_map_id, 'marker_icon_color')); ?>">
-                    </td>
-                </tr>
-            </table>
-            <b> <?php echo commonsbooking_sanitizeHTML( __( 'Set an entirely custom marker image that will be used. Anything set here will override the above settings.' ,'commonsbooking')); ?></b>
             <table class="text-left">
                 <tr>
                     <th>
                         <?php echo commonsbooking_sanitizeHTML( __( 'image file' ,'commonsbooking')); ?>:
                         <span class="dashicons dashicons-editor-help"
-                            title="<?php echo commonsbooking_sanitizeHTML( __('the default marker icon can be replaced by a custom image' ,'commonsbooking')); ?>"></span>
+                              title="<?php echo commonsbooking_sanitizeHTML( __('the default marker icon can be replaced by a custom image' ,'commonsbooking')); ?>"></span>
                     </th>
                     <td>
                         <input id="select-marker-image-button" type="button" class="button"
-                            value="<?php echo commonsbooking_sanitizeHTML( __( 'select' ,'commonsbooking')); ?>"/>
+                               value="<?php echo commonsbooking_sanitizeHTML( __( 'select' ,'commonsbooking')); ?>"/>
                         <input id="remove-marker-image-button" type="button" class="button"
-                            value="<?php echo commonsbooking_sanitizeHTML( __( 'remove' ,'commonsbooking')); ?>"/>
+                               value="<?php echo commonsbooking_sanitizeHTML( __( 'remove' ,'commonsbooking')); ?>"/>
                     </td>
                 </tr>
                 <tr id="marker-image-preview-settings" class="display-none">
                     <td>
                         <div>
                             <img id="marker-image-preview"
-                                src="<?php echo  wp_get_attachment_url(MapAdmin::get_option($cb_map_id,
-                                    'custom_marker_media_id')); ?>">
+                                 src="<?php echo  wp_get_attachment_url(MapAdmin::get_option($cb_map_id,
+                                     'custom_marker_media_id')); ?>">
                         </div>
                         <input type="hidden" name="cb_map_options[custom_marker_media_id]"
-                            value="<?php echo  commonsbooking_sanitizeHTML( MapAdmin::get_option($cb_map_id, 'custom_marker_media_id') ); ?>">
+                               value="<?php echo  commonsbooking_sanitizeHTML( MapAdmin::get_option($cb_map_id, 'custom_marker_media_id') ); ?>">
                     </td>
                     <td>
                         <div id="marker-image-preview-measurements"></div>
@@ -378,15 +336,15 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                     <th>
                         <?php echo commonsbooking_sanitizeHTML( __( 'icon size' ,'commonsbooking')); ?>:
                         <span class="dashicons dashicons-editor-help"
-                            title="<?php echo commonsbooking_sanitizeHTML( __('the size of the custom marker icon image as it is shown on the map' ,'commonsbooking')); ?>"></span>
+                              title="<?php echo commonsbooking_sanitizeHTML( __('the size of the custom marker icon image as it is shown on the map' ,'commonsbooking')); ?>"></span>
                     </th>
                     <td>
                         <input type="text" name="cb_map_options[marker_icon_width]"
-                            value="<?php echo esc_attr(MapAdmin::get_option($cb_map_id, 'marker_icon_width')); ?>" size="3">
+                               value="<?php echo esc_attr(MapAdmin::get_option($cb_map_id, 'marker_icon_width')); ?>" size="3">
                         x
                         <input type="text" name="cb_map_options[marker_icon_height]"
-                            value="<?php echo esc_attr(MapAdmin::get_option($cb_map_id, 'marker_icon_height')); ?>"
-                            size="3"> px
+                               value="<?php echo esc_attr(MapAdmin::get_option($cb_map_id, 'marker_icon_height')); ?>"
+                               size="3"> px
                     </td>
 
                 </tr>
@@ -394,15 +352,15 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                     <th>
                         <?php echo commonsbooking_sanitizeHTML( __( 'anchor point' ,'commonsbooking')); ?>:
                         <span class="dashicons dashicons-editor-help"
-                            title="<?php echo commonsbooking_sanitizeHTML( __('the position of the anchor point of the icon image, seen from the left top corner of the icon, often it is half of the width and full height of the icon size - this point is used to place the marker on the geo coordinates' ,'commonsbooking')); ?>"></span>
+                              title="<?php echo commonsbooking_sanitizeHTML( __('the position of the anchor point of the icon image, seen from the left top corner of the icon, often it is half of the width and full height of the icon size - this point is used to place the marker on the geo coordinates' ,'commonsbooking')); ?>"></span>
                     </th>
                     <td>
                         <input type="text" name="cb_map_options[marker_icon_anchor_x]"
-                            value="<?php echo esc_attr(MapAdmin::get_option($cb_map_id, 'marker_icon_anchor_x')); ?>"
-                            size="3"> x
+                               value="<?php echo esc_attr(MapAdmin::get_option($cb_map_id, 'marker_icon_anchor_x')); ?>"
+                               size="3"> x
                         <input type="text" name="cb_map_options[marker_icon_anchor_y]"
-                            value="<?php echo esc_attr(MapAdmin::get_option($cb_map_id, 'marker_icon_anchor_y')); ?>"
-                            size="3"> px
+                               value="<?php echo esc_attr(MapAdmin::get_option($cb_map_id, 'marker_icon_anchor_y')); ?>"
+                               size="3"> px
                     </td>
                 </tr>
             </table>
