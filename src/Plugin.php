@@ -395,6 +395,32 @@ class Plugin {
 		if ( is_wp_error( $result ) ) {
 			wp_die( $result->get_error_message() );
 		}
+
+		//hook this for later, if we run it now, it would fail
+		add_action( 'cmb2_admin_init', array( self::class, 'registerItemTaxonomyMetaboxes' ) );
+	}
+
+	public static function registerItemTaxonomyMetaboxes() {
+		$taxonomy = Item::getPostType() . 's_category';
+
+		$cmb_taxonomy = new_cmb2_box(
+			array(
+				'id'           => COMMONSBOOKING_METABOX_PREFIX . 'edit',
+				'title'        => esc_html__( 'Item Category', 'commonsbooking' ),
+				'object_types' => array( 'term' ),
+				'taxonomies'   => array( 'category', $taxonomy ),
+				'context'      => 'side',
+			)
+		);
+
+		$cmb_taxonomy->add_field(
+			array (
+				'name' => __( 'Add custom title for filter', 'commonsbooking' ),
+				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'markup',
+				'type' => 'textarea_small',
+				'desc' => __( 'Define name that should be used for the category if it is displayed in the map as a filter group. You can also use this to add custom HTML to the category name. When left empty, the defined name of the category will be used.', 'commonsbooking' ),
+			)
+		);
 	}
 
 	/**

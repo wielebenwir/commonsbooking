@@ -212,14 +212,17 @@ class MapShortcode {
 					$selectedFilterGroupIDs
 				);
 
-				//old datastructure for backwards compatibility, markup used to be a user defined string
+				//new filtergroups (since 2.9)
 				foreach ( $selectedFilterGroups as $current_group_id => $selectedFilterGroup ) {
 					$elements = [];
 					foreach ( $selectedFilterGroup['categories'] as $termID) {
 						$term = get_term( $termID );
+						$customMarkup = get_term_meta( $termID, COMMONSBOOKING_METABOX_PREFIX . 'markup', true );
+						$termName = empty($customMarkup) ? $term->name : $customMarkup;
+
 						$elements[] = [
 							'cat_id' => intval( $termID ),
-							'markup' => $term->name,
+							'markup' => $termName,
 						];
 					}
 					$settings['filter_cb_item_categories'][ $current_group_id ] = [
