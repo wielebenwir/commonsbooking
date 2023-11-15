@@ -198,6 +198,13 @@ class MapShortcode {
 						],
 					];
 				}
+			} elseif ( $key == 'custom_marker_icon_media_id') {
+				if ($value != null ) {
+					$settings['marker_icon'] = [
+						'url'  => wp_get_attachment_url( $options['custom_marker_icon_media_id'] ),
+						'color' => $options['marker_icon_color'],
+					];
+				}
 			}
 			//@since 2.9 new filtergroups pulled from settings
 			elseif ( $key == 'cb_items_available_filtergroups' ) {

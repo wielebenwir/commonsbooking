@@ -405,7 +405,7 @@ class Plugin {
 
 		$cmb_taxonomy = new_cmb2_box(
 			array(
-				'id'           => COMMONSBOOKING_METABOX_PREFIX . 'edit',
+				'id'           => COMMONSBOOKING_METABOX_PREFIX . 'taxonomy_metabox',
 				'title'        => esc_html__( 'Item Category', 'commonsbooking' ),
 				'object_types' => array( 'term' ),
 				'taxonomies'   => array( 'category', $taxonomy ),
@@ -419,6 +419,32 @@ class Plugin {
 				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'markup',
 				'type' => 'textarea_small',
 				'desc' => __( 'Define name that should be used for the category if it is displayed in the map as a filter group. You can also use this to add custom HTML to the category name. When left empty, the defined name of the category will be used.', 'commonsbooking' ),
+			)
+		);
+		$cmb_taxonomy->add_field( 
+			array(
+				'name'    => __( 'Map Marker image', 'commonsbooking'),
+				'desc'    => __( 'Add a custom image that will be used in the marker for this category. (Optional)', 'commonsbooking' ),
+				'id'      => COMMONSBOOKING_METABOX_PREFIX . 'map_marker',
+				'type'    => 'file',
+				'options' => array(
+					'url' => false,
+				),
+				'query_args' => array(
+					'type' => array(
+						'image/png',
+					),
+				),
+				'preview_size' => 'small', // Image size to use when previewing in the admin.
+			) 
+		);
+		$cmb_taxonomy->add_field(
+			array (
+				'name' => __( 'Map Marker base color', 'commonsbooking' ),
+				'desc' => __( 'Define the color that makes up the marker sorrounding the image.', 'commonsbooking' ),
+				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'map_marker_color',
+				'type' => 'colorpicker',
+				'default' => '#84AE53',
 			)
 		);
 	}

@@ -114,6 +114,91 @@ var cb_map_marker_upload = {
   }
 }
 
+var cb_map_icon_upload = {
+  translation: {},
+
+  //based on: https://jeroensormani.com/how-to-include-the-wordpress-media-selector-in-your-plugin/
+  init: function($, data) {
+    // uploading files
+  	var file_frame;
+  	var wp_media_post_id = wp.media.model.settings.post.id; // Store the old id
+  	var set_to_post_id = data.$custom_marker_media_id.val();
+
+    data.$remove_image_button.on('click', function(event) {
+      event.preventDefault();
+
+      data.$custom_marker_media_id.val('');
+      data.$image_preview.attr('src', '');
+
+      data.$marker_icon_color.val(0);
+
+      data.$image_preview_settings.hide();
+    });
+
+  	data.$select_image_button.on('click', function(event) {
+
+  		event.preventDefault();
+  		// if the media frame already exists, reopen it.
+  		if ( file_frame ) {
+  			// Set the post ID to what we want
+  			file_frame.uploader.uploader.param( 'post_id', set_to_post_id );
+  			// Open frame
+  			file_frame.open();
+  			return;
+
+  		} else {
+  			// set the wp.media post id so the uploader grabs the ID we want when initialised
+  			wp.media.model.settings.post.id = set_to_post_id;
+  		}
+
+  		// create the media frame
+  		file_frame = wp.media.frames.file_frame = wp.media({
+  			title: cb_map_marker_upload.translation.SELECT_IMAGE,
+  			button: {
+  				text: cb_map_marker_upload.translation.SAVE,
+  			},
+  			multiple: false
+  		});
+
+  		// image select callback
+  		file_frame.on( 'select', function() {
+  			var attachment = file_frame.state().get('selection').first().toJSON();
+
+  			// Do something with attachment.id and/or attachment.url here
+  			data.$image_preview.attr( 'src', attachment.url ).css( 'width', 'auto' );
+  			data.$custom_marker_media_id.val( attachment.id );
+  			// restore the main post ID
+  			wp.media.model.settings.post.id = wp_media_post_id;
+  		});
+
+  		// finally, open the modal
+  		file_frame.open();
+  	});
+
+  	// restore the main ID when the add media button is pressed
+  	$( 'a.add_media' ).on( 'click', function() {
+  		wp.media.model.settings.post.id = wp_media_post_id;
+  	});
+
+    data.$image_preview.on('load', function() {
+
+      data.$image_preview_settings.show();
+      data.$marker_icon_color.show();
+    });
+
+    //if parent details got opened, trigger load for cached images
+    var $parent_details = data.$image_preview.closest('details');
+    $parent_details.on('toggle', function() {
+      var src = data.$image_preview.attr('src');
+      if($parent_details.prop('open') == true && src.length > 0) {
+        setTimeout(function() {
+          data.$image_preview.load();
+        }, 0);
+      }
+    });
+  }
+}
+
 jQuery(document).ready(function($) {
 
   var marker_data = {
@@ -166,4 +251,14 @@ jQuery(document).ready(function($) {
   };
 
   cb_map_marker_upload.init($, marker_item_draft_data);
+
+  var marker_icon_data = {
+    $select_image_button: $('#select-marker-icon-button'),
+    $remove_image_button: $('#remove-marker-icon-button'),
+    $custom_marker_media_id: $('input[name="cb_map_options[custom_marker_icon_media_id]"'),
+    $image_preview: $('#marker-icon-preview'),
+    $marker_icon_color: $('#marker-icon-color'),
+    $image_preview_settings: $('#marker-icon-preview-settings')
+  };
+  cb_map_icon_upload.init($, marker_icon_data);
 });

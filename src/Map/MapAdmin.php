@@ -36,6 +36,8 @@ class MapAdmin {
 		'marker_icon_height',
 		'marker_icon_anchor_x',
 		'marker_icon_anchor_y',
+		'custom_marker_icon_media_id',
+		'marker_icon_color',
 		'show_location_contact',
 		'label_location_contact',
 		'show_location_opening_hours',
@@ -128,6 +130,8 @@ class MapAdmin {
 	const MARKER_ITEM_DRAFT_ICON_ANCHOR_Y_DEFAULT = 0;
 	const AVAILABILITY_MAX_DAYS_TO_SHOW_DEFAULT = 11;
 	const AVAILABILITY_MAX_DAY_COUNT_DEFAULT = 14;
+	const CUSTOM_MARKER_ICON_MEDIA_ID_DEFAULT = null;
+	const MARKER_ICON_COLOR_DEFAULT = '#84AE53';
 
 	//const MARKER_POPUP_CONTENT_DEFAULT = "'<b>' + location.location_name + '</b><br>' + location.address.street + '<br>' + location.address.zip + ' ' + location.address.city + '<p>' + location.opening_hours + '</p>'";
 
