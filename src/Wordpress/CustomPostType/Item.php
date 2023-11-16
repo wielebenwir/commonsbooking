@@ -41,7 +41,7 @@ class Item extends CustomPostType {
 	 * @return void
 	 */
 	public static function termChange($term_id, $tt_id, $taxonomy) {
-		if ( isset ($taxonomy['taxonomy']) && $taxonomy['taxonomy'] == self::$postType . 's_category' ) {
+		if ( $taxonomy == self::$postType . 's_category' ) {
 			//update all dynamic timeframes
 			Timeframe::updateAllTimeframes();
 		}

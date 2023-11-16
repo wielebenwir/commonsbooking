@@ -400,7 +400,8 @@ class Plugin {
 		}
 
 		//hook the term updates to the item post type function. This only runs when a term is updated but that is enough. When a term is added, the post is saved and therefore the other hook is triggered which also runs the same function.
-		add_action( 'edited_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Item', 'termChange' ), 10, 3 );
+		add_action( 'saved_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Item', 'termChange' ), 10, 3 );
+		add_action( 'delete_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Item', 'termChange' ), 10, 3 );
 	}
 
 	/**
@@ -430,6 +431,7 @@ class Plugin {
 
 		//hook the term updates to the location post type function. This only runs when a term is updated but that is enough. When a term is added, the post is saved and therefore the other hook is triggered which also runs the same function.
 		add_action( 'saved_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Location', 'termChange' ), 10, 3 );
+		add_action( 'delete_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Location', 'termChange' ), 10, 3 );
 	}
 
 	/**
