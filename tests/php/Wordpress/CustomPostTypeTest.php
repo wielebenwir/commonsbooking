@@ -2,22 +2,18 @@
 
 namespace CommonsBooking\Tests\Wordpress;
 
-use CommonsBooking\Helper\GeoCoderServiceProxy;
-use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Plugin;
 use CommonsBooking\Repository\BookingCodes;
-use CommonsBooking\Tests\Helper\GeoHelperTest;
+use CommonsBooking\Tests\BaseTestCase;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use Geocoder\Model\AddressBuilder;
-use PHPUnit\Framework\TestCase;
 use SlopeIt\ClockMock\ClockMock;
 
-abstract class CustomPostTypeTest extends TestCase {
+abstract class CustomPostTypeTest extends BaseTestCase {
 
 	/**
 	 * This is the date that is used in the tests.
@@ -434,7 +430,6 @@ abstract class CustomPostTypeTest extends TestCase {
 
   protected function setUp() : void {
 		parent::setUp();
-		GeoHelperTest::setupGeoHelperMock( $this );
 
 	$this->dateFormatted  = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
 

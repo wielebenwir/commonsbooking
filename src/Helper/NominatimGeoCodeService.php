@@ -10,19 +10,10 @@ use Geocoder\StatefulGeocoder;
 use Http\Client\Curl\Client;
 
 /**
- * Proxy to wrap web service calls, so we can properly test/mock them.
+ * Implementation of geocoding web service calls.
+ * Helps to properly mock/unit-test 3rd-party components.
  */
-class GeoCoderServiceProxy {
-
-	/**
-	 * @var GeoCoderServiceProxy Singleton holder
-	 */
-	private static GeoCoderServiceProxy $geoCoder;
-
-	/**
-	 * Singleton
-	 */
-	private function __construct() {}
+class NominatimGeoCodeService implements GeoCodeService {
 
 	/**
 	 * @param $addressString
@@ -30,7 +21,7 @@ class GeoCoderServiceProxy {
 	 * @return ?Location
 	 */
 	public function getAddressData( $addressString ): ?Location {
-		$defaultUserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0";
+		$defaultUserAgent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0';
 
 		$client = new Client(
 			null,
@@ -57,24 +48,5 @@ class GeoCoderServiceProxy {
 		}
 
 		return null;
-	}
-
-	/**
-	 * @return GeoCoderServiceProxy singleton instance
-	 */
-	public static function getInstance() : GeoCoderServiceProxy {
-		if ( self::$geoCoder === null ) {
-			self::$geoCoder = new GeoCoderServiceProxy();
-		}
-		return self::$geoCoder;
-	}
-
-	/**
-	 * @param GeoCoderSerivceProxy $inst
-	 *
-	 * @return void
-	 */
-	public static function setInstance(GeoCoderServiceProxy $inst) : void {
-		self::$geoCoder = $inst;
 	}
 }

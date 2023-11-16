@@ -2,15 +2,15 @@
 
 namespace CommonsBooking\Tests\Helper;
 
-use CommonsBooking\Helper\GeoCoderServiceProxy;
+use CommonsBooking\Helper\GeoCodeService;
 use CommonsBooking\Helper\GeoHelper;
+use CommonsBooking\Tests\BaseTestCase;
 use Geocoder\Location;
 use Geocoder\Model\AddressBuilder;
 use PHPUnit\Framework\TestCase;
 
-class GeoHelperTest extends TestCase
+class GeoHelperTest extends BaseTestCase
 {
-
 	/**
 	 * Mocks a location
 	 *
@@ -23,7 +23,7 @@ class GeoHelperTest extends TestCase
 		         ->setPostalCode("12043")
 		         ->setLocality("Berlin")
 		         ->setCountry("Germany")
-		         ->setCoordinates(52.4863922, 13.424689);
+		         ->setCoordinates(52.4863573, 13.4247667);
 
 		return $location->build();
 	}
@@ -35,29 +35,33 @@ class GeoHelperTest extends TestCase
 	 *
 	 * @return void
 	 */
-	public static function setupGeoHelperMock( TestCase $case ) : void {
+	public static function setUpGeoHelperMock( TestCase $case ) : void {
 
-		$sut = $case->createStub(GeoCoderServiceProxy::class);
-		$sut->method('getAddressData')
-		           ->willReturn(self::mockedLocation());
-		GeoCoderServiceProxy::setInstance($sut);
+		$sut = $case->createStub( GeoCodeService::class );
+		$sut->method( 'getAddressData' )
+		           ->willReturn( self::mockedLocation() );
+		GeoHelper::setGeoCodeServiceInstance( $sut );
+	}
+	public function testThatGeoCoding_worksOffline() {
+		$address = GeoHelper::getAddressData( 'Karl-Marx-Straße 1, 12043 Berlin' );
+		$this->assertThatKarlMarxLocationIsProperlyGeoCoded( $address );
 	}
 
-	public function setup() : void {
-		self::setupGeoHelperMock($this);
+	public function testThatGeoCoding_worksOnline() {
+		GeoHelper::resetGeoCoder();
+
+		$address = GeoHelper::getAddressData( 'Karl-Marx-Straße 1, 12043 Berlin' );
+		$this->assertThatKarlMarxLocationIsProperlyGeoCoded( $address );
 	}
+    private function assertThatKarlMarxLocationIsProperlyGeoCoded( Location $address ) : void {
 
-    public function testGetAddressData()
-    {
-		$address = GeoHelper::getAddressData('Karl-Marx-Straße 1, 12043 Berlin');
-
-		$this->assertEquals('Karl-Marx-Straße', $address->getStreetName());
-		$this->assertEquals('1', $address->getStreetNumber());
-		$this->assertEquals('12043', $address->getPostalCode());
-		$this->assertEquals('Berlin', $address->getLocality());
-		$this->assertEquals('Germany', $address->getCountry());
-		$this->assertEquals('52.4863922', $address->getCoordinates()->getLatitude());
-		$this->assertEquals('13.424689', $address->getCoordinates()->getLongitude());
+	    $this->assertEquals( 'Karl-Marx-Straße', $address->getStreetName() );
+	    $this->assertEquals( '1', $address->getStreetNumber() );
+	    $this->assertEquals( '12043', $address->getPostalCode() );
+	    $this->assertEquals( 'Berlin', $address->getLocality() );
+	    $this->assertEquals( 'Germany', $address->getCountry() );
+	    $this->assertEquals( 52.4863573, $address->getCoordinates()->getLatitude() );
+	    $this->assertEquals( 13.4247667, $address->getCoordinates()->getLongitude() );
 
     }
 }
