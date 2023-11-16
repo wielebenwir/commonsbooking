@@ -10,7 +10,6 @@ use CommonsBooking\View\TimeframeExport;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use CommonsBooking\Service\Cache;
 
 // We need static types, because german month names don't work for datepicker
 $dateFormat = "d/m/Y";
@@ -1079,7 +1078,7 @@ Return date: {{booking:returnDatetime}}
 						'name'          => commonsbooking_sanitizeHTML( __( 'Clear Cache', 'commonsbooking' ) ),
 						'id'            => 'clearCache-custom-field',
 						'type'          => 'text',
-						'render_row_cb' => array( Cache::class, 'renderClearCacheButton' )
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderClearCacheButton' )
 					),
 					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Filesystem cache path', 'commonsbooking' ) ),

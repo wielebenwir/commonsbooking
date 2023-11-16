@@ -2,8 +2,7 @@
 
 namespace CommonsBooking\Wordpress\Options;
 
-use CommonsBooking\Service\Cache;
-use CommonsBooking\Settings\Settings;
+use CommonsBooking\Plugin;
 use CommonsBooking\View\TimeframeExport;
 use Exception;
 
@@ -152,7 +151,7 @@ class OptionsTab {
 		elseif ( array_key_exists( 'action', $_REQUEST ) && $_REQUEST['action'] == "commonsbooking_options_advanced-options" ) {
 			//Check for request to clear cache
 			if ( array_key_exists( 'submit-cmb', $_REQUEST ) && $_REQUEST['submit-cmb'] == "clear-cache" ) {
-				Cache::clearCache();
+				Plugin::clearCache();
 				set_transient(
 			self::ERROR_TYPE,
 					commonsbooking_sanitizeHTML( __( "Cache cleared.", 'commonsbooking' ) ),
