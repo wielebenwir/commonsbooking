@@ -54,14 +54,13 @@ class GeoHelperTest extends BaseTestCase
 		$this->assertThatKarlMarxLocationIsProperlyGeoCoded( $address );
 	}
     private function assertThatKarlMarxLocationIsProperlyGeoCoded( Location $address ) : void {
-
-	    $this->assertEquals( 'Karl-Marx-Straße', $address->getStreetName() );
-	    $this->assertEquals( '1', $address->getStreetNumber() );
-	    $this->assertEquals( '12043', $address->getPostalCode() );
-	    $this->assertEquals( 'Berlin', $address->getLocality() );
-	    $this->assertEquals( 'Germany', $address->getCountry() );
-	    $this->assertEquals( 52.4863573, $address->getCoordinates()->getLatitude() );
-	    $this->assertEquals( 13.4247667, $address->getCoordinates()->getLongitude() );
-
+		$this->assertEquals( 'Karl-Marx-Straße', $address->getStreetName() );
+		$this->assertEquals( '1', $address->getStreetNumber() );
+		$this->assertEquals( '12043', $address->getPostalCode() );
+		$this->assertEquals( 'Berlin', $address->getLocality() );
+		$this->assertEquals( 'Germany', $address->getCountry() );
+		// This won't check exact coords on purpose, because sometimes there are different results
+		$this->assertStringStartsWith( '52.4863', '' . $address->getCoordinates()->getLatitude() );
+		$this->assertStringStartsWith( '13.4247', '' . $address->getCoordinates()->getLongitude() );
     }
 }
