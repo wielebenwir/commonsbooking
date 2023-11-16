@@ -72,6 +72,7 @@
             const linkSendNextMonth = $('#email-booking-codes-list-next');
 
 
+            const holidayField = $('.cmb2-id--cmb2-holiday');
             const holidayInput = $('#timeframe_manual_date');
             const manualDatePicker = $("#cmb2_multiselect_datepicker");
             const manualDateField = $('.cmb2-id-timeframe-manual-date');
@@ -124,9 +125,15 @@
                 if (selectedType === BOOKABLE_ID) {
                     showFieldset(bookingConfigSet);
                     showFieldset(bookingCodeTitle);
+                    holidayField.hide();
                 } else {
                     hideFieldset(bookingConfigSet);
                     hideFieldset(bookingCodeTitle);
+                    if (selectedType == HOLIDAYS_ID && selectedRepetition == REPETITION_MANUAL) {
+                        holidayField.show();
+                    } else {
+                        holidayField.hide();
+                    }
                 }
             }
             handleTypeSelection();
@@ -156,21 +163,27 @@
              * Handles repetition selection.
              */
             const handleRepetitionSelection = function () {
-                const selectedType = $('option:selected', timeframeRepetitionInput).val();
+                const selectedRepetition = $('option:selected', timeframeRepetitionInput).val();
                 const selectedTimeframeType = $("option:selected", typeInput).val();
 
-                if (selectedType) {
-                    if (selectedType == REPETITION_NONE) {
+                if (selectedRepetition) {
+                    if (selectedRepetition == REPETITION_NONE) {
                         showNoRepFields();
                     } else {
                         showRepFields();
                     }
 
-                    if (selectedType === REPETITION_MANUAL) {
+                    if (selectedRepetition === REPETITION_MANUAL) {
                         manualDateField.show();
                         manualDatePicker.show();
                         hideFieldset(repetitionStartInput);
                         hideFieldset(repetitionEndInput);
+                        if (selectedTimeframeType == HOLIDAYS_ID) {
+                            holidayField.show();
+                        }
+                        else {
+                            holidayField.hide();
+                        }
                     } else {
                         manualDateField.hide();
                         manualDatePicker.hide();
@@ -178,7 +191,7 @@
                         showFieldset(repetitionEndInput);
                     }
 
-                    if (selectedType === REPETITION_WEEKLY) {
+                    if (selectedRepetition === REPETITION_WEEKLY) {
                         weekdaysInput.parents('.cmb-row').show();
                     } else {
                         weekdaysInput.parents('.cmb-row').hide();

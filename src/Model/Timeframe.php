@@ -549,6 +549,9 @@ class Timeframe extends CustomPost {
 	 *
 	 * TODO: Refactor to return true if timeframes overlap and false if not. Throw exception in calling function.
 	 *
+     * @uses Timeframe::hasTimeframeDateOverlap()
+	 * @uses Timeframe::hasTimeframeTimeOverlap()
+     *
 	 * @param Timeframe $otherTimeframe
 	 *
 	 * @return false
@@ -564,24 +567,25 @@ class Timeframe extends CustomPost {
 					__( 'Overlapping bookable timeframes are only allowed to have the same grid.', 'commonsbooking' )
 				);
 			}
+
+			//timeframes that don't overlap in time range are not overlapping
+			if (! $this->hasTimeframeTimeOverlap( $otherTimeframe) ) {
+				return false;
+			}
+
 			$otherTimeframeRepetition = $otherTimeframe->getRepetition();
 			$repetition               = $this->getRepetition();
 
+			//One of the timeframes takes up the full day and therefore none of the dates can overlap
+			//at this stage there is already overlap in the date range and time range, therefore we must check if the repetitions create an overlap
+			if ( $repetition === 'd' || $otherTimeframeRepetition === 'd' ) {
+				throw new OverlappingException(
+					__( 'Daily repeated time periods are not allowed to overlap.', 'commonsbooking' )
+				);
+			}
+
 			//we concatenate the repetitions to make the switch statement more readable
 			switch ( $repetition . '|' . $otherTimeframeRepetition ) {
-				case 'd|d':
-					if ( $this->isFullDay() || $otherTimeframe->isFullDay() ) {
-						throw new OverlappingException(
-							__( 'Full day periods are not allowed to overlap.', 'commonsbooking' )
-						);
-					} else {
-						if ( $this->hasTimeframeTimeOverlap( $otherTimeframe ) ) {
-							throw new OverlappingException(
-								__( 'Time periods are not allowed to overlap.', 'commonsbooking' )
-							);
-						}
-					}
-					break;
 				case 'w|w':
 					if ( $this->getWeekDays() && $otherTimeframe->getWeekDays() ) {
 						$weekDaysOverlap = array_intersect(
@@ -680,11 +684,13 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Checks if timeframes are overlapping in daily slots.
-	 *
+	 * Checks if timeframes are overlapping in time ranges or daily slots.
+     *
+	 * Use {@see Timeframe::overlaps()} if you want to compute full-overlap between two timeframes.
+     * 
 	 * @param Timeframe $otherTimeframe
 	 *
-	 * @return bool
+	 * @return bool If start-time and end-time overlaps, regardless of overlapping start-date and end-date.
 	 */
 
     public function hasTimeframeTimeOverlap( Timeframe $otherTimeframe ) {

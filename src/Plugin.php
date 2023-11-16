@@ -544,8 +544,8 @@ class Plugin {
 
 		// Remove cache items on save.
 		add_action( 'wp_insert_post', array( $this, 'savePostActions' ), 10, 3 );
-		add_action( 'wp_enqueue_scripts', array( Cache::class, 'addWarmupAjaxToOutput' ) );
-		add_action( 'admin_enqueue_scripts', array( Cache::class, 'addWarmupAjaxToOutput' ) );
+		add_action( 'wp_enqueue_scripts', array( Plugin::class, 'addWarmupAjaxToOutput' ) );
+		add_action( 'admin_enqueue_scripts', array( Plugin::class, 'addWarmupAjaxToOutput' ) );
 
 		add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
