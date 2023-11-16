@@ -814,6 +814,10 @@ class Timeframe extends CustomPostType {
 				try {
 					BookingCodes::generate( $timeframe );
 				} catch ( BookingCodeException $e ) {
+					//unset checkboxes if booking codes could not be generated
+					delete_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_CREATE_BOOKING_CODES );
+					delete_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES );
+
 					set_transient(
 						BookingCode::ERROR_TYPE,
 						$e->getMessage(),
