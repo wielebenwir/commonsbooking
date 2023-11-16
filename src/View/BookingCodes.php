@@ -173,7 +173,7 @@ class BookingCodes
 		     $errMsg = commonsbooking_sanitizeHTML( __( 'Unable to send Emails. No location email configured, check location', 'commonsbooking' ) .
 		                                            sprintf( ' <a href="%s" class="cb-title cb-title-link">%s</a>', esc_url( get_edit_post_link( $location->ID ) ), commonsbooking_sanitizeHTML( $location->post_title ) ) );
 	     } elseif ( ! $timeframe->hasBookingCodes() ) {
-		     $errMsg = commonsbooking_sanitizeHTML( __( 'This timeframe has no booking codes', 'commonsbooking' ) );
+		     $errMsg = commonsbooking_sanitizeHTML( __( 'This timeframe has no booking codes. To generate booking codes you need to save the timeframe.', 'commonsbooking' ) );
 	     }
 
 	     if ( $errMsg != null ) {
@@ -276,7 +276,7 @@ HTML;
             sprintf( ' <a href="%s" class="cb-title cb-title-link">%s</a>', esc_url(get_edit_post_link( $location->ID )), commonsbooking_sanitizeHTML($location->post_title) ));
         }
         elseif( !$timeframe->hasBookingCodes()){
-            echo commonsbooking_sanitizeHTML( __('This timeframe has no booking codes', 'commonsbooking'));
+            echo commonsbooking_sanitizeHTML( __('This timeframe has no booking codes. To generate booking codes you need to save the timeframe.', 'commonsbooking'));
         }
         else
         {
@@ -353,7 +353,7 @@ HTML;
                     <a id="booking-codes-download-link" href="' . esc_url(add_query_arg([  "action" => "csvexport",  ])) . '" target="_blank"><strong>Download booking codes</strong></a>
                     <p  class="cmb2-metabox-description">
                     ' . commonsbooking_sanitizeHTML( __( 'The file will be exported as tab delimited .txt file so you can choose wether you want to print it, open it in a separate application (like Word, Excel etc.)', 'commonsbooking' ) ) . '
-                    </p>':commonsbooking_sanitizeHTML( __('This timeframe has no booking codes', 'commonsbooking'))) . '
+                    </p>':commonsbooking_sanitizeHTML( __('This timeframe has no booking codes. To generate booking codes you need to save the timeframe.', 'commonsbooking'))) . '
                 </div>
             </div>';
 
@@ -380,7 +380,7 @@ HTML;
 				echo '</p>';
             }
             else {
-                echo commonsbooking_sanitizeHTML( __('This timeframe has no booking codes', 'commonsbooking'));
+                echo commonsbooking_sanitizeHTML( __('This timeframe has no booking codes. To generate booking codes you need to save the timeframe.', 'commonsbooking'));
             }
             echo '</div></div>';
         }
