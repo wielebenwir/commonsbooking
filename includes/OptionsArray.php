@@ -800,35 +800,16 @@ The booking period: {{booking:formattedBookingDate}}<br><br>
 					'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
 							'Define when the reminder should be sent. The actual sending may differ from the defined value by a few hours, depending on how your WordPress is configured.'
 							, 'commonsbooking' ) ),
-					'type'             => 'select',
-					'show_option_none' => false,
-					'default'          => '1',
-					'options'          => array(
-						'0'  => '00:00',
-						'1'  => '01:00',
-						'2'  => '02:00',
-						'3'  => '03:00',
-						'4'  => '04:00',
-						'5'  => '05:00',
-						'6'  => '06:00',
-						'7'  => '07:00',
-						'8'  => '08:00',
-						'9'  => '09:00',
-						'10' => '10:00',
-						'11' => '11:00',
-						'12' => '12:00',
-						'13' => '13:00',
-						'14' => '14:00',
-						'15' => '15:00',
-						'16' => '16:00',
-						'17' => '17:00',
-						'18' => '18:00',
-						'19' => '19:00',
-						'20' => '20:00',
-						'21' => '21:00',
-						'22' => '22:00',
-						'23' => '23:00',
-						),
+							'type'        => 'text_time',
+							'attributes'  => array(
+								'data-timepicker' => wp_json_encode(
+									array(
+										'stepMinute' => 60,
+										'timeFormat' => 'HH:mm',
+									)
+								),
+							),
+							'time_format' => esc_html(get_option( 'time_format' )),
 					),
 					array(
 						'name'             => esc_html__( 'Bookings of', 'commonsbooking' ),
@@ -846,7 +827,7 @@ The booking period: {{booking:formattedBookingDate}}<br><br>
 					),
 					array(
 						'name'             => esc_html__( 'Ignore roles', 'commonsbooking' ),
-						'id'               => 'booking-atart-location-reminder-ignore-roles',
+						'id'               => 'booking-start-location-reminder-ignore-roles',
 						'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
 								'Define roles which bookings are ignored when reminders to locations are sent'
 								, 'commonsbooking' ) ),
@@ -904,35 +885,17 @@ The booking period: {{booking:formattedBookingDate}}<br><br>
 					'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
 							'Define when the reminder should be sent. The actual sending may differ from the defined value by a few hours, depending on how your WordPress is configured.'
 							, 'commonsbooking' ) ),
-					'type'             => 'select',
-					'show_option_none' => false,
-					'default'          => '1',
-					'options'          => array(
-						'0'  => '00:00',
-						'1'  => '01:00',
-						'2'  => '02:00',
-						'3'  => '03:00',
-						'4'  => '04:00',
-						'5'  => '05:00',
-						'6'  => '06:00',
-						'7'  => '07:00',
-						'8'  => '08:00',
-						'9'  => '09:00',
-						'10' => '10:00',
-						'11' => '11:00',
-						'12' => '12:00',
-						'13' => '13:00',
-						'14' => '14:00',
-						'15' => '15:00',
-						'16' => '16:00',
-						'17' => '17:00',
-						'18' => '18:00',
-						'19' => '19:00',
-						'20' => '20:00',
-						'21' => '21:00',
-						'22' => '22:00',
-						'23' => '23:00',
+					'type'        => 'text_time',
+					'default' => '1',
+					'attributes'  => array(
+						'data-timepicker' => wp_json_encode(
+							array(
+								'stepMinute' => 60,
+								'timeFormat' => 'HH:mm',
+							)
 						),
+					),
+					'time_format' => esc_html(get_option( 'time_format' )),
 					),
 					array(
 						'name'             => esc_html__( 'Bookings of', 'commonsbooking' ),
