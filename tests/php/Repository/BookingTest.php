@@ -12,6 +12,8 @@ class BookingTest extends CustomPostTypeTest {
 
 	private $confirmedBookingEndingToday;
 
+	private $confirmedBookingStartingToday;
+
 	private $testItem;
 
 	private $testLocation;
