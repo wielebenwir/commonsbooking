@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
-"POT-Creation-Date: 2023-11-14 17:00+0100\n"
-"PO-Revision-Date: 2023-11-14 17:01+0100\n"
+"POT-Creation-Date: 2023-09-15T04:04:14+02:00\n"
+"PO-Revision-Date: 2023-09-14 22:05-0400\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: English <kde-i18n-doc@kde.org>\n"
 "Language: de_DE\n"
@@ -12,13 +12,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.1\n"
-"X-Poedit-KeywordsList: __;esc_html__\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: vendor\n"
+"X-Generator: Poedit 3.3.2\n"
+
+#. Plugin Name of the plugin
+msgid "Commons Booking"
+msgstr "Commons Booking"
+
+#. Plugin URI of the plugin
+msgid "https://commonsbooking.org"
+msgstr "https://commonsbooking.org"
+
+#. Description of the plugin
+msgid "A wordpress plugin for management and booking of common goods."
+msgstr "Ein WordPress-Plugin für die Verwaltung und Buchung von Gemeingütern."
+
+#. Author of the plugin
+msgid "wielebenwir e.V."
+msgstr "wielebenwir e.V."
+
+#. Author URI of the plugin
+msgid "https://wielebenwir.de/"
+msgstr "https://wielebenwir.de/"
 
 #: includes/OptionsArray.php:26
 msgid "All timeframe types"
@@ -49,9 +63,9 @@ msgid ""
 "\n"
 "                            <h2>Contribute</h2>\n"
 "                            The future of this plugin depends on your "
-"support. You can support us by make a donation on our website: <a target="
-"\"_blank\" href=\"https://www.wielebenwir.de/verein/unterstutzen"
-"\">wielebenwir</a>"
+"support. You can support us by make a donation on our website: <a "
+"target=\"_blank\" href=\"https://www.wielebenwir.de/verein/"
+"unterstutzen\">wielebenwir</a>"
 msgstr ""
 "Du nutzt CommonsBooking Version %s\n"
 "\n"
@@ -68,8 +82,8 @@ msgstr ""
 "                <h2>Mitmachen?</h2>\n"
 "                Die Zukunft dieses Plugins ist abhängig von deiner "
 "Unterstützung. Du kannst uns mit einer Spende unterstützen unter:  <a  "
-"target=\"_blank\" href=\"https://www.wielebenwir.de/verein/unterstutzen"
-"\">wielebenwir.de</a>"
+"target=\"_blank\" href=\"https://www.wielebenwir.de/verein/"
+"unterstutzen\">wielebenwir.de</a>"
 
 #: includes/OptionsArray.php:73
 msgid "General"
@@ -79,7 +93,7 @@ msgstr "Allgemein"
 msgid "Naming and permalinks"
 msgstr "Namen und Permalinks"
 
-#: includes/OptionsArray.php:83
+#: includes/OptionsArray.php:82
 msgid ""
 "Customize names & slugs. You can set an individual slug for items and "
 "locations to create individual permalinks. <br><b>Notice</b>: If the new "
@@ -98,7 +112,7 @@ msgstr ""
 msgid "Items slug"
 msgstr "Artikel slug"
 
-#: includes/OptionsArray.php:92
+#: includes/OptionsArray.php:91
 msgid ""
 "The slug for article detail page. Type in the slug without slashes. Example: "
 "<strong>cb_item</strong> or <strong>article</strong>.  The url for the items "
@@ -112,7 +126,7 @@ msgstr ""
 msgid "Locations slug"
 msgstr "Standorte Slug"
 
-#: includes/OptionsArray.php:103
+#: includes/OptionsArray.php:102
 msgid ""
 "The slug for location detail page. Type in the slug without slashes. "
 "Example: <strong>cb_location</strong> or <strong>location</strong>.  The url "
@@ -126,7 +140,7 @@ msgstr ""
 msgid "Bookings Page"
 msgstr "Buchungsseite"
 
-#: includes/OptionsArray.php:114
+#: includes/OptionsArray.php:113
 msgid ""
 "The page where you included the [cb_bookings] shortcode. This is used in the "
 "Users Widget"
@@ -134,7 +148,7 @@ msgstr ""
 "Die Seite, auf der Du den [cb_bookings]-Kurzcode eingefügt hast. Dies wird "
 "im Benutzer*in Widget verwendet"
 
-#: includes/OptionsArray.php:122 includes/OptionsArray.php:136
+#: includes/OptionsArray.php:122
 msgid "Booking comment"
 msgstr "Buchungskommentar"
 
@@ -354,7 +368,7 @@ msgstr "iCalendar Termin Titel"
 msgid "The title of the attached event"
 msgstr "Der Titel des angehängten Termins"
 
-#: includes/OptionsArray.php:259 includes/OptionsArray.php:1255
+#: includes/OptionsArray.php:259 includes/OptionsArray.php:1047
 msgid "{{item:post_title}} at {{location:post_title}}"
 msgstr "{{item:post_title}} am Standort {{location:post_title}}."
 
@@ -920,27 +934,25 @@ msgstr "Erinnerung"
 msgid "Booking reminder"
 msgstr "Buchungserinnerung"
 
-#: includes/OptionsArray.php:637
+#: includes/OptionsArray.php:636
 msgid ""
 "You can set here whether users should receive a reminder email before the "
-"start of a booking.<br><a href=\"https://commonsbooking.org/?p=1763\" target="
-"\"_blank\">More Information in the documentation</a>"
+"start of a booking.<br><a href=\"https://commonsbooking.org/?p=1763\" "
+"target=\"_blank\">More Information in the documentation</a>"
 msgstr ""
 "Hier kannst du einstellen, ob Nutzende vor Beginn einer Buchung eine "
 "Erinnerungs-E-Mail erhalten sollen.<br><a href=\"https://commonsbooking.org/?"
 "p=1763\" target=\"_blank\">Weitere Informationen in der Dokumentation</a>"
 
 #: includes/OptionsArray.php:642 includes/OptionsArray.php:739
-#: includes/OptionsArray.php:775 includes/OptionsArray.php:879
 msgid "Activate"
 msgstr "Aktivieren"
 
 #: includes/OptionsArray.php:648 includes/OptionsArray.php:745
-#: includes/OptionsArray.php:781 includes/OptionsArray.php:885
 msgid "E-mail subject"
 msgstr "E-Mail Betreff"
 
-#: includes/OptionsArray.php:651 includes/OptionsArray.php:784
+#: includes/OptionsArray.php:651
 msgid ""
 "Upcoming booking of {{item:post_title}} {{booking:formattedBookingDate}}"
 msgstr ""
@@ -948,7 +960,6 @@ msgstr ""
 "formattedBookingDate}}"
 
 #: includes/OptionsArray.php:654 includes/OptionsArray.php:751
-#: includes/OptionsArray.php:787 includes/OptionsArray.php:891
 msgid "email body"
 msgstr "E-Mail-Text"
 
@@ -985,7 +996,7 @@ msgstr ""
 msgid "Sent reminder x days before booking start"
 msgstr "Sende eine Erinnerung x Tage vor Buchungsbeginn"
 
-#: includes/OptionsArray.php:674
+#: includes/OptionsArray.php:673
 msgid ""
 "This reminder email will be sent to users x days before the start of the "
 "booking. If the booking is made less days before the specified days, no "
@@ -995,13 +1006,11 @@ msgstr ""
 "gesendet. Wenn die Buchung in weniger als den angegebenen Tagen erfolgt, "
 "wird keine Erinnerungs-E-Mail gesendet"
 
-#: includes/OptionsArray.php:687 includes/OptionsArray.php:798
-#: includes/OptionsArray.php:902
+#: includes/OptionsArray.php:687
 msgid "Time"
 msgstr "Uhrzeit"
 
-#: includes/OptionsArray.php:690 includes/OptionsArray.php:801
-#: includes/OptionsArray.php:905
+#: includes/OptionsArray.php:689
 msgid ""
 "Define when the reminder should be sent. The actual sending may differ from "
 "the defined value by a few hours, depending on how your WordPress is "
@@ -1015,7 +1024,7 @@ msgstr ""
 msgid "email after booking has ended"
 msgstr "E-Mail nach Ende der Buchung"
 
-#: includes/OptionsArray.php:733
+#: includes/OptionsArray.php:732
 msgid ""
 "Here you can set whether users should receive an additional e-mail after "
 "completing a booking. This can be used, for example, to inquire about the "
@@ -1053,157 +1062,61 @@ msgstr ""
 "<br>Bitte lass uns uns wissen, wenn Probleme aufgetreten sind.<br>\n"
 "{{booking:getEmailSignature}}"
 
-#: includes/OptionsArray.php:767
-msgid "Reminder for locations before booking starts"
-msgstr "Erinnerung für Standorte, vor Buchungsbeginn"
-
-#: includes/OptionsArray.php:770
-msgid ""
-"You can set here whether locations should receive a reminder email before "
-"the start of a booking.<br><a href=\"https://commonsbooking.org/?p=1763\" "
-"target=\"_blank\">More Information in the documentation</a>"
-msgstr ""
-"Hier kannst du einstellen, ob Standorte vor Beginn einer Buchung eine "
-"Erinnerungs-E-Mail erhalten sollen.<br><a href=\"https://commonsbooking.org/?"
-"p=1763\" target=\"_blank\">Weitere Informationen in der Dokumentation</a>"
-
-#: includes/OptionsArray.php:790
-msgid ""
-"<h2>Hi,</h2>\n"
-"<p>The booking period for the item {{item:post_title}} will start soon.<br>\n"
-"The booking period: {{booking:formattedBookingDate}}<br><br>\n"
-"\n"
-"{{booking:getEmailSignature}}"
-msgstr ""
-"<h2>Hallo,</h2>\n"
-"<p>der Buchungszeitraum für den Artikel {{item:post_title}} startet bald."
-"<br>\n"
-"Der Buchungszeitraum: {{booking:formattedBookingDate}}<br><br>\n"
-"\n"
-"{{booking:getEmailSignature}}"
-
-#: includes/OptionsArray.php:834 includes/OptionsArray.php:938
-msgid "Bookings of"
-msgstr "Buchungen von"
-
-#: includes/OptionsArray.php:837
-msgid "Define for which booking start day the notifications should be sent"
-msgstr ""
-"Definiere, für welchen Tag des Buchungsbeginns die Benachrichtigung gesendet "
-"werden soll"
-
-#: includes/OptionsArray.php:843 includes/OptionsArray.php:947
-msgid "current day"
-msgstr "diesem Tag"
-
-#: includes/OptionsArray.php:844 includes/OptionsArray.php:948
-msgid "next day"
-msgstr "nächstem Tag"
-
-#: includes/OptionsArray.php:848 includes/OptionsArray.php:952
-msgid "Ignore roles"
-msgstr "Ignoriere Benutzer:innen-Rollen"
-
-#: includes/OptionsArray.php:851 includes/OptionsArray.php:955
-msgid ""
-"Define roles which bookings are ignored when reminders to locations are sent"
-msgstr ""
-"Definiere Rollen, für welche Buchungen ignoriert werden, wenn Erinnerungen "
-"an Standorte gesendet werden"
-
-#: includes/OptionsArray.php:871
-msgid "Reminder for locations before booking ends"
-msgstr "Erinnerung für Standorte, vor Buchungsende"
-
-#: includes/OptionsArray.php:874
-msgid ""
-"You can set here whether locations should receive a reminder email before "
-"the end of a booking.<br><a href=\"https://commonsbooking.org/?p=1763\" "
-"target=\"_blank\">More Information in the documentation</a>"
-msgstr ""
-"Hier kannst du einstellen, ob Standorte vor Ende einer Buchung eine "
-"Erinnerungs-E-Mail erhalten sollen.<br><a href=\"https://commonsbooking.org/?"
-"p=1763\" target=\"_blank\">Weitere Informationen in der Dokumentation</a>"
-
-#: includes/OptionsArray.php:888
-msgid "Booking of {{item:post_title}} {{booking:formattedBookingDate}}"
-msgstr "Buchung von {{item:post_title}} {{booking:formattedBookingDate}}"
-
-#: includes/OptionsArray.php:894
-msgid ""
-"<h2>Hi,</h2>\n"
-"<p>The booking period for the item {{item:post_title}} will end soon.<br>\n"
-"The booking period: {{booking:formattedBookingDate}}<br><br>\n"
-"\n"
-"{{booking:getEmailSignature}}"
-msgstr ""
-"<h2>Hallo,</h2>\n"
-"<p>Der Buchungszeitraum für den Artikel {{item:post_title}} endet bald.<br>\n"
-"Der Buchungszeitraum: {{booking:formattedBookingDate}}<br><br>\n"
-"\n"
-"{{booking:getEmailSignature}}"
-
-#: includes/OptionsArray.php:941
-msgid "Define for which booking end day the notifications should be sent"
-msgstr ""
-"Definiere, für welchen Tag des Buchungsendes die Benachrichtigungen gesendet "
-"werden sollen"
-
-#: includes/OptionsArray.php:979
+#: includes/OptionsArray.php:771
 msgid "Migration"
 msgstr "Migration"
 
-#: includes/OptionsArray.php:983
+#: includes/OptionsArray.php:775
 msgid "Migrate from Commons Booking Version 0.X"
 msgstr "Migriere von Commons Booking Version 0.X"
 
-#: includes/OptionsArray.php:985
+#: includes/OptionsArray.php:777
 msgid ""
 "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: "
 "locations, items, timeframes and bookings. <br><span style=\"color:red\">If "
 "you have clicked \"Migrate\" before, starting the migration again will "
 "overwrite any changes you made to  locations, items, timeframes and "
-"bookings</span>.<br>Please read the documentation <a target=\"_blank\" href="
-"\"https://commonsbooking.org/dokumentation/?p=434\">How to migrate from "
+"bookings</span>.<br>Please read the documentation <a target=\"_blank\" "
+"href=\"https://commonsbooking.org/dokumentation/?p=434\">How to migrate from "
 "version 0.9.x to 2.x.x </a> before you start migration."
 msgstr ""
 "Migriere Daten aus CommonsBooking Version 0.X. <br>Die Migration umfasst: "
-"Standorte, Artikel, Zeitrahmen und Buchungen. <br><span style=\"color:red"
-"\">Wenn du bereits zuvor \"Migrieren\" geklickt hast, startet die Migration "
-"erneut und wird alle Änderungen an Standorten, Artikeln, Zeitrahmen oder "
-"Buchungen, die du in der Zwischenzeit gemacht hast, überschreiben.</"
-"span><br>Bitte lies die Dokumentation auf <a  target=\"_blank\" href="
-"\"https://commonsbooking.org/?p=434\">Migration von Version 0.9.x auf 2.x.x.,"
-"</a> bevor Du mit der Migration beginnst."
+"Standorte, Artikel, Zeitrahmen und Buchungen. <br><span style=\"color:"
+"red\">Wenn du bereits zuvor \"Migrieren\" geklickt hast, startet die "
+"Migration erneut und wird alle Änderungen an Standorten, Artikeln, "
+"Zeitrahmen oder Buchungen, die du in der Zwischenzeit gemacht hast, "
+"überschreiben.</span><br>Bitte lies die Dokumentation auf <a  "
+"target=\"_blank\" href=\"https://commonsbooking.org/?p=434\">Migration von "
+"Version 0.9.x auf 2.x.x.,</a> bevor Du mit der Migration beginnst."
 
-#: includes/OptionsArray.php:988 src/View/Migration.php:72
+#: includes/OptionsArray.php:780 src/View/Migration.php:72
 msgid "Start Migration"
 msgstr "Migration starten"
 
-#: includes/OptionsArray.php:999
+#: includes/OptionsArray.php:791
 msgid "CommonsBooking Version 0.X profile fields"
 msgstr "CommonsBooking Version 0.X Nutzerprofil-Felder"
 
-#: includes/OptionsArray.php:1001
+#: includes/OptionsArray.php:793
 msgid ""
 "Enable the following legacy CommonsBooking Version 0.X user profile fields:"
 msgstr ""
 "Aktiviere die folgenden veralteten Nutzer-Profilfelder aus Commons Booking "
 "Version 0.X:"
 
-#: includes/OptionsArray.php:1004
+#: includes/OptionsArray.php:796
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: includes/OptionsArray.php:1009
+#: includes/OptionsArray.php:801
 msgid "Terms & Services Url"
 msgstr "Nutzungsbedingungen & Services URL"
 
-#: includes/OptionsArray.php:1018
+#: includes/OptionsArray.php:810
 msgid "Migrate bookings to new version"
 msgstr "Buchungen auf neue Version migrieren"
 
-#: includes/OptionsArray.php:1020
+#: includes/OptionsArray.php:812
 msgid ""
 "Migrate bookings to new format so that they are listed at bookings menu "
 "item. <br><strong>This function is only for special cases during migration. "
@@ -1214,19 +1127,19 @@ msgstr ""
 "Sonderfälle während der Migration. Bitte nur bei Problemen währen der "
 "Migration verwenden. </strong>"
 
-#: includes/OptionsArray.php:1023 src/View/Migration.php:106
+#: includes/OptionsArray.php:815 src/View/Migration.php:106
 msgid "Migrate bookings"
 msgstr "Buchungen migrieren"
 
-#: includes/OptionsArray.php:1036 includes/OptionsArray.php:1090
+#: includes/OptionsArray.php:828 includes/OptionsArray.php:882
 msgid "Export"
 msgstr "Export"
 
-#: includes/OptionsArray.php:1040
+#: includes/OptionsArray.php:832
 msgid "Download timeframes export"
 msgstr "Zeitrahmen-Export herunterladen"
 
-#: includes/OptionsArray.php:1044
+#: includes/OptionsArray.php:836
 #: src/Wordpress/CustomPostType/Restriction.php:53
 #: src/Wordpress/CustomPostType/Restriction.php:417
 #: src/Wordpress/CustomPostType/Timeframe.php:98
@@ -1234,7 +1147,7 @@ msgstr "Zeitrahmen-Export herunterladen"
 msgid "Type"
 msgstr "Typ"
 
-#: includes/OptionsArray.php:1045
+#: includes/OptionsArray.php:837
 msgid ""
 "Select Type of this timeframe (e.g. bookable, repair, holidays, booking). "
 "See Documentation for detailed information."
@@ -1242,11 +1155,11 @@ msgstr ""
 "Wähle den Typ dieses Zeitrahmens (z.B. buchbar, Reparatur, Urlaub, Buchung). "
 "Ausführliche Informationen findest Du in der Dokumentation."
 
-#: includes/OptionsArray.php:1051
+#: includes/OptionsArray.php:843
 msgid "Location-Fields"
 msgstr "Standort-Felder"
 
-#: includes/OptionsArray.php:1052 includes/OptionsArray.php:1059
+#: includes/OptionsArray.php:844 includes/OptionsArray.php:851
 msgid ""
 "Just add field names, no matter if its a post- or a meta-field. Comma "
 "separated list. Beside the standard post fields and standard postmeta-"
@@ -1259,15 +1172,15 @@ msgstr ""
 "Metafelder zur Verfügung. Kopieren nur die Werte in [] in das Feld ohne die "
 "Klammern. %s"
 
-#: includes/OptionsArray.php:1058
+#: includes/OptionsArray.php:850
 msgid "Item-Fields"
 msgstr "Artikel-Felder"
 
-#: includes/OptionsArray.php:1065
+#: includes/OptionsArray.php:857
 msgid "User-Fields"
 msgstr "User-Felder"
 
-#: includes/OptionsArray.php:1066
+#: includes/OptionsArray.php:858
 msgid ""
 "Just add field names, no matter if its a userfield or a meta-field. Comma "
 "separated list."
@@ -1275,47 +1188,47 @@ msgstr ""
 "Fügen Sie einfach Feldnamen hinzu, egal ob es sich um ein Benutzerfeld oder "
 "ein Metafeld handelt. Kommagetrennte Liste."
 
-#: includes/OptionsArray.php:1071
+#: includes/OptionsArray.php:863
 msgid "Export start date"
 msgstr "Export Startdatum"
 
-#: includes/OptionsArray.php:1081
+#: includes/OptionsArray.php:873
 msgid "Export end date"
 msgstr "Export-Enddatum"
 
-#: includes/OptionsArray.php:1098
+#: includes/OptionsArray.php:890
 msgid "Cron settings for timeframes export"
 msgstr "Cron-Einstellungen für den Zeitrahmenexport"
 
-#: includes/OptionsArray.php:1102
+#: includes/OptionsArray.php:894
 msgid "Run as cronjob"
 msgstr "Als Cronjob anlegen"
 
-#: includes/OptionsArray.php:1107
+#: includes/OptionsArray.php:899
 msgid "Export interval"
 msgstr "Exportintervall"
 
-#: includes/OptionsArray.php:1111 includes/OptionsArray.php:1112
+#: includes/OptionsArray.php:903 includes/OptionsArray.php:904
 msgid "minutes"
 msgstr "Minuten"
 
-#: includes/OptionsArray.php:1113
+#: includes/OptionsArray.php:905
 msgid "daily"
 msgstr "täglich"
 
-#: includes/OptionsArray.php:1117
+#: includes/OptionsArray.php:909
 msgid "Export timerange"
 msgstr "Export-Zeitbereich"
 
-#: includes/OptionsArray.php:1118
+#: includes/OptionsArray.php:910
 msgid "Export timerange in days."
 msgstr "Exportiere diesen Zeitraum (in Tagen)"
 
-#: includes/OptionsArray.php:1127
+#: includes/OptionsArray.php:919
 msgid "Filepath"
 msgstr "Dateipfad"
 
-#: includes/OptionsArray.php:1128
+#: includes/OptionsArray.php:920
 msgid ""
 "Absolute path on your webserver (including trailing slash) where export file "
 "will be saved to."
@@ -1323,19 +1236,19 @@ msgstr ""
 "Absoluter Pfad auf deinem Webserver (einschließlich abschließender "
 "Schrägstrich), in dem die Exportdatei gespeichert wird."
 
-#: includes/OptionsArray.php:1140 includes/OptionsArray.php:1168
+#: includes/OptionsArray.php:932 includes/OptionsArray.php:960
 msgid "API"
 msgstr "Schnittstelle"
 
-#: includes/OptionsArray.php:1144
+#: includes/OptionsArray.php:936
 msgid "Configure API Access"
 msgstr "Konfigurieren des API-Zugriffs"
 
-#: includes/OptionsArray.php:1148
+#: includes/OptionsArray.php:940
 msgid "Activate API"
 msgstr "API aktivieren"
 
-#: includes/OptionsArray.php:1149
+#: includes/OptionsArray.php:941
 msgid ""
 "If selected, the API is enabled. See more information in the documentation: "
 "<a target=\"_blank\" href=\"https://commonsbooking.org/docs/schnittstellen-"
@@ -1346,11 +1259,11 @@ msgstr ""
 "commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/\">API-"
 "Dokumentation</a>"
 
-#: includes/OptionsArray.php:1154
+#: includes/OptionsArray.php:946
 msgid "Enable API Access without API-Key"
 msgstr "Aktiviert den API-Zugang ohne API-Schlüssel"
 
-#: includes/OptionsArray.php:1155
+#: includes/OptionsArray.php:947
 msgid ""
 "If selected, the API is accessible without an API-Key. For details see: <a "
 "target=\"_blank\" href=\"https://commonsbooking.org/docs/schnittstellen-api/"
@@ -1361,51 +1274,51 @@ msgstr ""
 "commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/\">API-"
 "Dokumentation</a>"
 
-#: includes/OptionsArray.php:1162
+#: includes/OptionsArray.php:954
 msgid "API shares"
 msgstr "API Freigaben"
 
-#: includes/OptionsArray.php:1163
+#: includes/OptionsArray.php:955
 msgid ""
 "You can define on or more API shares. Read the documentation for more "
-"information about API shares and configuration <a target=\"_blank\" href="
-"\"https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/"
+"information about API shares and configuration <a target=\"_blank\" "
+"href=\"https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/"
 "\">API documentation</a>"
 msgstr ""
 "Du kannst ein oder mehrere API-Freigaben definieren. Weitere Informationen "
-"zu API-Freigaben und zur Konfiguration findest du in der <a target=\"_blank"
-"\" href=\"https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-"
-"api/\">API-Dokumentation</a>"
+"zu API-Freigaben und zur Konfiguration findest du in der <a "
+"target=\"_blank\" href=\"https://commonsbooking.org/docs/schnittstellen-api/"
+"commonsbooking-api/\">API-Dokumentation</a>"
 
-#: includes/OptionsArray.php:1169
+#: includes/OptionsArray.php:961
 msgid "Add Another API"
 msgstr "Weitere API hinzufügen"
 
-#: includes/OptionsArray.php:1170
+#: includes/OptionsArray.php:962
 msgid "Remove API"
 msgstr "API entfernen"
 
-#: includes/OptionsArray.php:1177
+#: includes/OptionsArray.php:969
 msgid "API name"
 msgstr "Schnittstellen Name"
 
-#: includes/OptionsArray.php:1178
+#: includes/OptionsArray.php:970
 msgid "Internal name for this API share"
 msgstr "Interner Name für diese API-Freigabe"
 
-#: includes/OptionsArray.php:1183
+#: includes/OptionsArray.php:975
 msgid "API enabled"
 msgstr "Schnittelle aktiviert"
 
-#: includes/OptionsArray.php:1184
+#: includes/OptionsArray.php:976
 msgid "If checked this API share is enabled"
 msgstr "Wenn ausgewählt, ist diese API-Freigabe aktiviert"
 
-#: includes/OptionsArray.php:1189
+#: includes/OptionsArray.php:981
 msgid "Push URL"
 msgstr "Push URL"
 
-#: includes/OptionsArray.php:1190
+#: includes/OptionsArray.php:982
 msgid ""
 "URL that gets push information everytime there was a change on "
 "CommonsBooking data"
@@ -1413,11 +1326,11 @@ msgstr ""
 "URL, welche eine Push-Information bekommt, sobald es Änderungen den "
 "CommonsBooking Daten gibt"
 
-#: includes/OptionsArray.php:1195
+#: includes/OptionsArray.php:987
 msgid "API Key"
 msgstr "API Schlüssel"
 
-#: includes/OptionsArray.php:1198
+#: includes/OptionsArray.php:990
 msgid ""
 " You must set an API-Key. The API key should consist of alphanumeric "
 "characters and be at least 24 characters long."
@@ -1425,11 +1338,11 @@ msgstr ""
 " Du musst einen API-Key setzen. Der API-Schlüssel sollte aus "
 "alphanumerischen Zeichen bestehen und mindestens 24 Zeichen lang sein."
 
-#: includes/OptionsArray.php:1201
+#: includes/OptionsArray.php:993
 msgid "API Owner"
 msgstr "API-Besitzer"
 
-#: includes/OptionsArray.php:1202
+#: includes/OptionsArray.php:994
 msgid ""
 "The owner value is provided by the API. It is set to the blog name by "
 "default in this version. In future versions you may be able to change this "
@@ -1439,15 +1352,15 @@ msgstr ""
 "standardmäßig der Blogname festgelegt. In zukünftigen Versionen können diese "
 "Informationen möglicherweise selbst geändert werden"
 
-#: includes/OptionsArray.php:1222
+#: includes/OptionsArray.php:1014
 msgid "Advanced Options"
 msgstr "Erweiterte Optionen"
 
-#: includes/OptionsArray.php:1226
+#: includes/OptionsArray.php:1018
 msgid "Set Custom metadata to locations and items"
 msgstr "Festlegen von benutzerdefinierten Metadaten für Standorte und Artikel"
 
-#: includes/OptionsArray.php:1228
+#: includes/OptionsArray.php:1019
 msgid ""
 "This is an advanced feature and should only be used if you are experienced "
 "or instructed how to set it up properly. In future versions we will add more "
@@ -1458,11 +1371,11 @@ msgstr ""
 "Versionen werden wir detailliertere Informationen und Dokumentationen "
 "hinzufügen."
 
-#: includes/OptionsArray.php:1233
+#: includes/OptionsArray.php:1025
 msgid "Meta Data"
 msgstr "Metadaten"
 
-#: includes/OptionsArray.php:1234
+#: includes/OptionsArray.php:1026
 msgid ""
 "Use only this format, separated by semicolon and each entry in a new line: "
 "<br>post_type(item/location);field-name;label(english),type(checkbox,number,"
@@ -1476,11 +1389,11 @@ msgstr ""
 "wasserdicht; Wasserdichtes Material;Checkbox;\" Dieser Artikel ist "
 "wasserdicht und kann bei starkem Regen verwendet werden\" "
 
-#: includes/OptionsArray.php:1242
+#: includes/OptionsArray.php:1034
 msgid "iCalendar Feed"
 msgstr "iCalendar Feed"
 
-#: includes/OptionsArray.php:1243
+#: includes/OptionsArray.php:1035
 msgid ""
 "Enables users to copy a url for a dynamic iCalendar feed into their own "
 "digital calendars. This feature is experimental."
@@ -1488,23 +1401,23 @@ msgstr ""
 "Erlaubt Nutzenden eine URL für einen dynamischen iCalendar in ihre eigenen "
 "digitalen Kalender zu kopieren. Dieses Feature ist experimentell."
 
-#: includes/OptionsArray.php:1248
+#: includes/OptionsArray.php:1040
 msgid "Enable iCalendar feed"
 msgstr "iCalendar Feed aktivieren"
 
-#: includes/OptionsArray.php:1253
+#: includes/OptionsArray.php:1045
 msgid "Event title"
 msgstr "Termin Titel"
 
-#: includes/OptionsArray.php:1254 includes/OptionsArray.php:1262
+#: includes/OptionsArray.php:1046 includes/OptionsArray.php:1054
 msgid "You can use template tags here as well"
 msgstr "Hier können auch Template Tags verwendet werden"
 
-#: includes/OptionsArray.php:1261
+#: includes/OptionsArray.php:1053
 msgid "Event description"
 msgstr "Terminbeschreibung"
 
-#: includes/OptionsArray.php:1263
+#: includes/OptionsArray.php:1055
 msgid ""
 "\n"
 "Pick up: {{booking:pickupDatetime}}\n"
@@ -1518,19 +1431,19 @@ msgstr ""
 "{{location:formattedPickupInstructions}}\n"
 "{{booking:formattedBookingCode}} "
 
-#: includes/OptionsArray.php:1275
+#: includes/OptionsArray.php:1067
 msgid "Advanced caching settings"
 msgstr "Erweiterte Cachingoptionen"
 
-#: includes/OptionsArray.php:1278
+#: includes/OptionsArray.php:1070
 msgid "Allows you to change options regarding the caching system"
 msgstr "Erlaubt die Anpassung der Optionen für das Caching-System"
 
-#: includes/OptionsArray.php:1281
+#: includes/OptionsArray.php:1073
 msgid "Filesystem cache path"
 msgstr "Dateisystem-Cache Pfad"
 
-#: includes/OptionsArray.php:1282
+#: includes/OptionsArray.php:1074
 msgid ""
 "Where the filesystem cache should be created. Only change when filesystem "
 "caching is not working."
@@ -1538,15 +1451,15 @@ msgstr ""
 "Wo der Dateisystem-Cache angelegt werden soll. Nur ändern, wenn das "
 "Dateisystem-Caching nicht funktioniert."
 
-#: includes/OptionsArray.php:1288 includes/OptionsArray.php:1305
+#: includes/OptionsArray.php:1080 includes/OptionsArray.php:1097
 msgid "Current connection status"
 msgstr "Aktueller Verbindungsstatus"
 
-#: includes/OptionsArray.php:1294
+#: includes/OptionsArray.php:1086
 msgid "Enable REDIS Caching (experimental)"
 msgstr "REDIS-Caching aktivieren (experimentell)"
 
-#: includes/OptionsArray.php:1299
+#: includes/OptionsArray.php:1091
 msgid "REDIS DSN (REDIS Server URL)"
 msgstr "REDIS DSN (REDIS-Server-URL)"
 
@@ -1574,7 +1487,8 @@ msgstr "Telefonnummer"
 msgid "Please enter your phone number"
 msgstr "Bitte gib Deine Telefonnummer ein"
 
-#: src/CB/CB1UserFields.php:65 src/Wordpress/CustomPostType/Location.php:201
+#: src/CB/CB1UserFields.php:65 src/CB/CB1UserFields.php:255
+#: src/Wordpress/CustomPostType/Location.php:201
 #: templates/booking-single.php:77
 msgid "Address"
 msgstr "Adresse"
@@ -1598,6 +1512,22 @@ msgstr "Bitte akzeptiere die Nutzungsbedingungen"
 #: src/CB/CB1UserFields.php:160
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
 msgstr "<a href=\"%s\" target=\"_blank\">Lies die Nutzungsbedingungen</a>"
+
+#: src/CB/CB1UserFields.php:243
+msgid "Extra Fields"
+msgstr "Zusatzfelder"
+
+#: src/CB/CB1UserFields.php:247
+msgid "Phone number"
+msgstr "Telefonnummer"
+
+#: src/CB/CB1UserFields.php:263
+msgid "Terms and conditions"
+msgstr "Nutzungsbedingungen"
+
+#: src/CB/CB1UserFields.php:269
+msgid "Accepted Terms & Conditions"
+msgstr "Nutzungsbedingungen akzeptiert"
 
 #: src/Map/MapAdmin.php:138
 msgid "Map Configuration"
@@ -1623,78 +1553,74 @@ msgstr "Einstellungen für Commons Booking Karten"
 msgid "Commons Booking Map"
 msgstr "CommonsBooking Karte"
 
-#: src/Map/MapSettings.php:100 templates/dashboard-index.php:57
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: src/Map/MapShortcode.php:94
+#: src/Map/MapShortcode.php:90
 msgid "map is not published"
 msgstr "Karte ist nicht veröffentlicht"
 
-#: src/Map/MapShortcode.php:97 src/Map/MapShortcode.php:101
+#: src/Map/MapShortcode.php:93 src/Map/MapShortcode.php:97
 msgid "no valid map id provided"
 msgstr "keine gültige Karten-ID angegeben"
 
-#: src/Map/MapShortcode.php:238 templates/map-admin-page-template.php:229
+#: src/Map/MapShortcode.php:234 templates/map-admin-page-template.php:229
 #: templates/map-admin-page-template.php:248
 msgid "opening hours"
 msgstr "Öffnungszeiten"
 
-#: src/Map/MapShortcode.php:239
+#: src/Map/MapShortcode.php:235
 msgid "contact"
 msgstr "Kontakt"
 
-#: src/Map/MapShortcode.php:240
+#: src/Map/MapShortcode.php:236
 msgid "from"
 msgstr "von"
 
-#: src/Map/MapShortcode.php:241
+#: src/Map/MapShortcode.php:237
 msgid "until"
 msgstr "bis %s"
 
-#: src/Map/MapShortcode.php:242
+#: src/Map/MapShortcode.php:238
 msgid "for at least"
 msgstr "mindestens"
 
-#: src/Map/MapShortcode.php:243
+#: src/Map/MapShortcode.php:239
 msgid "day(s)"
 msgstr "Tag(e)"
 
-#: src/Map/MapShortcode.php:244
+#: src/Map/MapShortcode.php:240
 msgid "Sorry, no locations found."
 msgstr "Leider wurden keine Standorte gefunden."
 
-#: src/Map/MapShortcode.php:245
+#: src/Map/MapShortcode.php:241
 msgid "filter"
 msgstr "Filter"
 
-#: src/Map/MapShortcode.php:246 templates/map-admin-page-template.php:599
+#: src/Map/MapShortcode.php:242 templates/map-admin-page-template.php:599
 msgid "availability"
 msgstr "Verfügbarkeit"
 
-#: src/Map/MapShortcode.php:247 templates/map-admin-page-template.php:609
+#: src/Map/MapShortcode.php:243 templates/map-admin-page-template.php:609
 msgid "categories"
 msgstr "Kategorien"
 
-#: src/Map/MapShortcode.php:248 templates/map-admin-page-template.php:546
+#: src/Map/MapShortcode.php:244 templates/map-admin-page-template.php:546
 msgid "distance"
 msgstr "Entfernung"
 
-#: src/Map/MapShortcode.php:249
+#: src/Map/MapShortcode.php:245
 msgid "address"
 msgstr "Adresse"
 
-#: src/Map/MapShortcode.php:250
+#: src/Map/MapShortcode.php:246
 msgid "Sorry, an error occured during your request. Please try again later."
 msgstr ""
 "Es ist leider ein Fehler während der Anfrage aufgetreten. Versuche es später "
 "erneut."
 
-#: src/Map/MapShortcode.php:251
+#: src/Map/MapShortcode.php:247
 msgid "The service is currently not available. Please try again later."
 msgstr "Der Dienst ist derzeit nicht verfügbar. Versuche  später erneut."
 
-#: src/Map/MapShortcode.php:252
+#: src/Map/MapShortcode.php:248
 msgid "comming soon"
 msgstr "Bald verfügbar"
 
@@ -1777,7 +1703,7 @@ msgstr "von %1$s bis %2$s"
 msgid "until %s"
 msgstr "bis %s"
 
-#: src/Model/Timeframe.php:326
+#: src/Model/Timeframe.php:325
 msgid ""
 "Could not get item or location. Please set a valid item and location. "
 "Timeframe is saved as draft"
@@ -1785,7 +1711,7 @@ msgstr ""
 "Artikel oder Standort fehlt. Bitte lege einen Artikel und Standort fest. Der "
 "Zeitrahmen wird als Entwurf gespeichert"
 
-#: src/Model/Timeframe.php:333
+#: src/Model/Timeframe.php:332
 msgid ""
 "Item or location is missing. Please set item and location. Timeframe is "
 "saved as draft"
@@ -1793,7 +1719,7 @@ msgstr ""
 "Artikel oder Standort fehlt. Bitte lege einen Artikel und Standort fest. Der "
 "Zeitrahmen wird als Entwurf gespeichert"
 
-#: src/Model/Timeframe.php:341
+#: src/Model/Timeframe.php:340
 msgid ""
 "Startdate is missing. Timeframe is saved as draft. Please enter a start date "
 "to publish this timeframe."
@@ -1801,18 +1727,18 @@ msgstr ""
 "Startdatum fehlt. Zeitrahmen wird als Entwurf gespeichert. Gib ein "
 "Startdatum ein, um diesen Zeitrahmen zu veröffentlichen."
 
-#: src/Model/Timeframe.php:353
+#: src/Model/Timeframe.php:352
 msgid ""
 "A pickup time but no return time has been set. Please set the return time."
 msgstr ""
 "Eine Abholzeit, aber keine Rückgabezeit wurde festgelegt. Lege bitte eine "
 "Rückgabezeit fest."
 
-#: src/Model/Timeframe.php:361
+#: src/Model/Timeframe.php:360
 msgid "End date is before start date. Please set a valid end date."
 msgstr "Enddatum liegt vor dem Startdatum. Bitte setze ein gültiges Enddatum."
 
-#: src/Model/Timeframe.php:386
+#: src/Model/Timeframe.php:385
 msgid ""
 "Item is already bookable at another location within the same date range. See "
 "other timeframe ID: %1$s: %2$s"
@@ -1820,7 +1746,8 @@ msgstr ""
 "Artikel ist bereits an einem anderen Ort innerhalb desselben Datumsbereichs "
 "buchbar. Siehe andere Zeitrahmen ID: %1$s: %2$s"
 
-#: src/Model/Timeframe.php:425
+#. translators: %1$s = timeframe-ID, %2$s is timeframe post_title
+#: src/Model/Timeframe.php:424
 msgid ""
 "Overlapping bookable timeframes are only allowed to have the same grid. See "
 "overlapping timeframe ID: %1$s %2$s"
@@ -1828,7 +1755,8 @@ msgstr ""
 "Überlappende buchbare Zeitrahmen dürfen nur über dasselbe Raster verfügen. "
 "Siehe überlappende Zeitrahmen-ID: %1$s %2$s"
 
-#: src/Model/Timeframe.php:450
+#. translators: first %s = timeframe-ID, second %s is timeframe post_title
+#: src/Model/Timeframe.php:449
 msgid ""
 "time periods are not allowed to overlap. Please check the other timeframe to "
 "avoid overlapping time periods during one specific day. See affected "
@@ -1838,7 +1766,8 @@ msgstr ""
 "überlappende Zeiträume an einem bestimmten Tag zu vermeiden. Siehe "
 "betroffene Zeitrahmen-ID: %1$s %2$s"
 
-#: src/Model/Timeframe.php:465
+#. translators: first %s = timeframe-ID, second %s is timeframe post_title
+#: src/Model/Timeframe.php:464
 msgid ""
 "Date periods are not allowed to overlap. Please check the other timeframe to "
 "avoid overlapping Date periods. See affected timeframe ID: %1$s %2$s"
@@ -1847,28 +1776,28 @@ msgstr ""
 "überlappende Zeiträume zu vermeiden. Siehe betroffene Zeitrahmen-ID: %1$s "
 "%2$s"
 
-#: src/Plugin.php:352 src/Plugin.php:353
+#: src/Plugin.php:319 src/Plugin.php:320
 msgid "Item Categories"
 msgstr "Artikel-Kategorien"
 
-#: src/Plugin.php:362 src/Plugin.php:363
+#: src/Plugin.php:329 src/Plugin.php:330
 msgid "Location Categories"
 msgstr "Standort-Kategorien"
 
-#: src/Plugin.php:437
+#: src/Plugin.php:404
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:463
+#: src/Plugin.php:430
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
-#: src/Plugin.php:828
+#: src/Plugin.php:795
 msgid "New features and changes: Please backup before upgrade!"
 msgstr ""
 "Neue Funktionen und Änderungen: Bitte vor dem Upgrade Backup durchführen!"
 
-#: src/Plugin.php:836
+#: src/Plugin.php:802
 msgid ""
 "\n"
 "\t\t\t\t\tThis CommonsBooking update has a lot of new features and changes "
@@ -1934,13 +1863,13 @@ msgstr "Der Ordner %s ist beschreibbar."
 msgid "Directory %s could not be written to."
 msgstr "Der Ordner %s ist nicht beschreibbar."
 
-#: src/View/Admin/Filter.php:59 src/Wordpress/CustomPostType/Booking.php:824
+#: src/View/Admin/Filter.php:58 src/Wordpress/CustomPostType/Booking.php:824
 #: src/Wordpress/CustomPostType/Restriction.php:448
 #: src/Wordpress/CustomPostType/Timeframe.php:616
 msgid "Start date"
 msgstr "Startdatum"
 
-#: src/View/Admin/Filter.php:63 src/Wordpress/CustomPostType/Booking.php:841
+#: src/View/Admin/Filter.php:62 src/Wordpress/CustomPostType/Booking.php:841
 #: src/Wordpress/CustomPostType/Restriction.php:458
 #: src/Wordpress/CustomPostType/Timeframe.php:640
 msgid "End date"
@@ -2004,7 +1933,7 @@ msgstr "Liste der Buchungscodes"
 msgid "Pickup date"
 msgstr "Abholdatum"
 
-#: src/View/BookingCodes.php:48 src/View/Calendar.php:216
+#: src/View/BookingCodes.php:48 src/View/Calendar.php:217
 #: src/Wordpress/CustomPostType/Booking.php:506
 #: src/Wordpress/CustomPostType/Booking.php:818
 #: src/Wordpress/CustomPostType/Item.php:87
@@ -2016,11 +1945,11 @@ msgstr "Abholdatum"
 msgid "Item"
 msgstr "Artikel"
 
-#: src/View/Calendar.php:160
+#: src/View/Calendar.php:158
 msgid "No items found."
 msgstr "Keine Artikel gefunden."
 
-#: src/View/Calendar.php:217 src/Wordpress/CustomPostType/Booking.php:507
+#: src/View/Calendar.php:218 src/Wordpress/CustomPostType/Booking.php:507
 #: src/Wordpress/CustomPostType/Booking.php:812
 #: src/Wordpress/CustomPostType/Location.php:104
 #: src/Wordpress/CustomPostType/Restriction.php:55
@@ -2035,11 +1964,11 @@ msgstr "Standort"
 msgid "at"
 msgstr "bei"
 
-#: src/View/Item.php:124
+#: src/View/Item.php:137
 msgid "No bookable items found."
 msgstr "Keine Buchungen im Papierkorb gefunden."
 
-#: src/View/Location.php:127
+#: src/View/Location.php:138
 msgid "No locations found."
 msgstr "Leider wurden keine Standorte gefunden."
 
@@ -2241,11 +2170,11 @@ msgid ""
 "WP_ERROR: "
 msgstr "Es gab einen Fehler während der Buchung. WP_ERROR: "
 
-#: src/Wordpress/CustomPostType/Booking.php:419
+#: src/Wordpress/CustomPostType/Booking.php:418
 msgid "End date is before start date"
 msgstr "Enddatum liegt vor dem Startdatum"
 
-#: src/Wordpress/CustomPostType/Booking.php:426
+#: src/Wordpress/CustomPostType/Booking.php:425
 msgid ""
 "Please adjust the start date or end date.<br>Changes on this booking have "
 "not been saved.<br>"
@@ -2253,7 +2182,7 @@ msgstr ""
 "Bitte passe das Start- oder Enddatum an.<br>Änderungen an dieser Buchung "
 "wurden nicht gespeichert.<br>"
 
-#: src/Wordpress/CustomPostType/Booking.php:459
+#: src/Wordpress/CustomPostType/Booking.php:458
 msgid ""
 "Warning: There are one ore more overlapping bookings within the choosen "
 "timerange"
@@ -2261,7 +2190,7 @@ msgstr ""
 "Achtung: Es gibt eine oder mehrere sich überschneidende Buchungen innerhalb "
 "des gewählten Zeitraums"
 
-#: src/Wordpress/CustomPostType/Booking.php:466
+#: src/Wordpress/CustomPostType/Booking.php:465
 msgid ""
 "Please adjust the startdate or enddate.<br>The booking status has been set "
 "to <strong>unconfirmed</strong>.<br>\n"
@@ -2392,7 +2321,7 @@ msgstr "als Buchungsbild verwenden"
 msgid "Timeframes"
 msgstr "Zeitrahmen"
 
-#: src/Wordpress/CustomPostType/Booking.php:782
+#: src/Wordpress/CustomPostType/Booking.php:781
 msgid ""
 "<h1>Notice</h1><p>In this view, you as an admin can create or modify "
 "existing bookings. Please use it with caution. <br>\n"
@@ -2485,7 +2414,7 @@ msgstr "Buchungscode"
 msgid "Booking User"
 msgstr "Buchende Person"
 
-#: src/Wordpress/CustomPostType/Booking.php:870
+#: src/Wordpress/CustomPostType/Booking.php:869
 msgid ""
 "Here you must select the user for whom the booking is made.<br>\n"
 "                        If the booking was was made by a user via frontend "
@@ -2507,13 +2436,13 @@ msgstr ""
 msgid "Admin Booking User"
 msgstr "Admin Booking Konto"
 
-#: src/Wordpress/CustomPostType/Booking.php:890
+#: src/Wordpress/CustomPostType/Booking.php:889
 msgid "This is the admin user who created or modified this booking."
 msgstr ""
 "Dies ist der/die Admin-Nutzende, der diese Buchung erstellt oder geändert "
 "hat."
 
-#: src/Wordpress/CustomPostType/Booking.php:913
+#: src/Wordpress/CustomPostType/Booking.php:912
 msgid ""
 "Bookings should be created via frontend booking calendar. <br>\n"
 "\t\tAs an admin you can create bookings via this admin interface. Please be "
@@ -2869,45 +2798,7 @@ msgstr ""
 "Standort verknüpft sind. Lies die Dokumentation unter <a href=\"https://"
 "commonsbooking.org/?p=435\">Standorte anlegen</a> für mehr Informationen."
 
-#: src/Wordpress/CustomPostType/Location.php:368
-msgid "Receive booking start reminder"
-msgstr "Erhalte Erinnerung zu Buchungsbeginn"
-
-#: src/Wordpress/CustomPostType/Location.php:369
-msgid ""
-"If selected, this location receives reminder emails of bookings starting "
-"soon. The notifications are sent to all addresses specified in the location "
-"email list (first as receiver, all following as BCC). This type of reminder "
-"needs to be activated in the <a href=\"admin.php?"
-"page=commonsbooking_options_reminder\"> general CommonsBooking settings</a>."
-msgstr ""
-"Wenn diese Option ausgewählt ist, erhält dieser Standort Erinnerungs-E-Mails "
-"für bald beginnende Buchungen. Die Benachrichtigungen werden an alle in der "
-"E-Mail-Liste des Standorts angegebenen Adressen gesendet (zuerst als "
-"Empfänger, alle folgenden als BCC). Diese Art der Erinnerung muss in den <a "
-"href=\"admin.php?page=commonsbooking_options_reminder\"> allgemeinen "
-"CommonsBooking-Einstellungen</a> aktiviert werden."
-
-#: src/Wordpress/CustomPostType/Location.php:375
-msgid "Receive booking end reminder"
-msgstr "Erhalte Erinnerung zu Buchungsende"
-
-#: src/Wordpress/CustomPostType/Location.php:376
-msgid ""
-"If selected, this location receives reminder emails of bookings ending soon. "
-"The notifications are sent to all addresses specified in the location email "
-"list (first as receiver, all following as BCC). This type of reminder needs "
-"to be activated in the <a href=\"admin.php?"
-"page=commonsbooking_options_reminder\"> general CommonsBooking settings</a>."
-msgstr ""
-"Wenn diese Option ausgewählt ist, erhält dieser Standort Erinnerungs-E-Mails "
-"für bald endende Buchungen. Die Benachrichtigungen werden an alle in der E-"
-"Mail-Liste des Standorts angegebenen Adressen gesendet (zuerst als "
-"Empfänger, alle folgenden als BCC). Diese Art der Erinnerung muss in den <a "
-"href=\"admin.php?page=commonsbooking_options_reminder\"> allgemeinen "
-"CommonsBooking-Einstellungen</a> aktiviert werden."
-
-#: src/Wordpress/CustomPostType/Location.php:388
+#: src/Wordpress/CustomPostType/Location.php:374
 msgid "Location Meta-Data"
 msgstr "Standort-Metadaten"
 
@@ -3271,7 +3162,7 @@ msgstr "Konfigurieren des Zeitrahmens"
 msgid "Full day"
 msgstr "Ganzer Tag"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:549
+#: src/Wordpress/CustomPostType/Timeframe.php:548
 msgid ""
 "If this option is selected, users can choose only whole days for pickup and "
 "return. No specific time slots for pickup or return are offered. Select this "
@@ -3313,13 +3204,13 @@ msgstr "Endzeit"
 msgid "Timeframe Repetition"
 msgstr "Zeitrahmenwiederholung"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:601
+#: src/Wordpress/CustomPostType/Timeframe.php:600
 msgid ""
 "Choose whether the time frame should repeat at specific intervals. The "
 "repetitions refer to the unit of a day. With the start and end date you "
-"define when the repetition interval starts and ends. If you choose \"weekly"
-"\", you can select specific days of the week below. Read the documentation "
-"for more information and examples."
+"define when the repetition interval starts and ends. If you choose "
+"\"weekly\", you can select specific days of the week below. Read the "
+"documentation for more information and examples."
 msgstr ""
 "Wähle aus, ob sich der Zeitrahmen in bestimmten Intervallen wiederholen "
 "soll. Die Wiederholungen beziehen sich auf die Einheit eines Tages. Mit dem "
@@ -3407,8 +3298,8 @@ msgstr ""
 "Du kannst Buchungscodes automatisch generieren. Codes können nur mit den "
 "folgenden Einstellungen generiert werden:<br>- Der ganze Tag ist aktiviert</"
 "br>- Zeitrahmen ist buchbar</br>\n"
-"\t\t\t\t<a href=\"https://commonsbooking.org/?p=437\" target=\"_blank"
-"\">Weitere Informationen in der Dokumentation</a>\n"
+"\t\t\t\t<a href=\"https://commonsbooking.org/?p=437\" "
+"target=\"_blank\">Weitere Informationen in der Dokumentation</a>\n"
 "\t\t\t\t"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:660
@@ -3690,6 +3581,10 @@ msgstr "Buchungen einsehen & Einschränkungen verwalten"
 msgid "Configuration"
 msgstr "Konfiguration"
 
+#: templates/dashboard-index.php:57
+msgid "Settings"
+msgstr "Einstellungen"
+
 #: templates/dashboard-index.php:69
 msgid "Today's pickups"
 msgstr "Heutige Abholungen"
@@ -3709,8 +3604,8 @@ msgstr "Keine Rückgaben heute"
 #. translators: %1$s: wp_login_url, 1$s: wp_registration_url
 #: templates/item-single.php:44 templates/location-single.php:42
 msgid ""
-"To be able to book, you must first <a href=\"%1$s\">login</a> or <a href="
-"\"%2$s\">register</a>."
+"To be able to book, you must first <a href=\"%1$s\">login</a> or <a "
+"href=\"%2$s\">register</a>."
 msgstr ""
 "Um buchen zu können, musst du dich zuerst <a href=\"%1$s\">anmelden</a> oder "
 "<a href=\"%2$s\">registrieren</a>."
@@ -3965,7 +3860,7 @@ msgstr "aktivieren, um die Artikelverfügbarkeit im Marker-Popup anzuzeigen"
 msgid "Max. available days in popup"
 msgstr "Max. Anzahl verfügbare Tage im Popup"
 
-#: templates/map-admin-page-template.php:271
+#: templates/map-admin-page-template.php:270
 msgid "Set how many days are displayed on the popup (starting from today)"
 msgstr "Lege fest, wie viele Tage im Popup angezeigt werden (ab heute)"
 
@@ -4344,34 +4239,6 @@ msgstr ""
 "bearbeite den Zeitrahmen im Backend. Wenn du das Ergebnis deiner "
 "Zeitrahmeneinstellungen überprüfen möchtest, rufe den Artikel oder Standort "
 "im Frontend auf, um den Buchungskalender zu sehen"
-
-#~ msgid "Commons Booking"
-#~ msgstr "Commons Booking"
-
-#~ msgid "https://commonsbooking.org"
-#~ msgstr "https://commonsbooking.org"
-
-#~ msgid "A wordpress plugin for management and booking of common goods."
-#~ msgstr ""
-#~ "Ein WordPress-Plugin für die Verwaltung und Buchung von Gemeingütern."
-
-#~ msgid "wielebenwir e.V."
-#~ msgstr "wielebenwir e.V."
-
-#~ msgid "https://wielebenwir.de/"
-#~ msgstr "https://wielebenwir.de/"
-
-#~ msgid "Extra Fields"
-#~ msgstr "Zusatzfelder"
-
-#~ msgid "Phone number"
-#~ msgstr "Telefonnummer"
-
-#~ msgid "Terms and conditions"
-#~ msgstr "Nutzungsbedingungen"
-
-#~ msgid "Accepted Terms & Conditions"
-#~ msgstr "Nutzungsbedingungen akzeptiert"
 
 #~ msgid "Days Booking In Advance"
 #~ msgstr "Maximale Buchungstage im Voraus"
