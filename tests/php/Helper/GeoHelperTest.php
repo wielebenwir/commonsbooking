@@ -9,6 +9,9 @@ use Geocoder\Location;
 use Geocoder\Model\AddressBuilder;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Tests wrapper impl for nominatim and provides mocking code to prevent real service calls
+ */
 class GeoHelperTest extends BaseTestCase
 {
 	/**
@@ -42,6 +45,7 @@ class GeoHelperTest extends BaseTestCase
 		           ->willReturn( self::mockedLocation() );
 		GeoHelper::setGeoCodeServiceInstance( $sut );
 	}
+
 	public function testThatGeoCoding_worksOffline() {
 		$address = GeoHelper::getAddressData( 'Karl-Marx-Straße 1, 12043 Berlin' );
 		$this->assertThatKarlMarxLocationIsProperlyGeoCoded( $address );
