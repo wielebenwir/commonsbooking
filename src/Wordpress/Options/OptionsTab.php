@@ -16,6 +16,10 @@ class OptionsTab {
 
 	// Error type for backend error output
 	public const ERROR_TYPE = "commonsbooking-options-error";
+	/**
+	 * @var \CMB2
+	 */
+	private $metabox;
 
 	public function __construct( string $id, array $content ) {
 		$this->id        = $id;

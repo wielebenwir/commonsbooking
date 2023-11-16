@@ -143,6 +143,12 @@ return array(
 						'default'     => __( 'Here you can leave a comment about your booking. This will be sent to the station.', 'commonsbooking' ),
 					),
 				)
+			),
+			'globalLocationSettings' => array(
+				'title'  => __( "Global location settings", 'commonsbooking' ),
+				'desc'   => commonsbooking_sanitizeHTML( __( 'These settings are used for all locations. You can overwrite these settings for each location in the location settings.', 'commonsbooking' ) ),
+				'id'     => 'globalLocationSettings',
+				'fields' => Location::getOverbookingSettingsMetaboxes()
 			)
 		)
 	),
@@ -1251,7 +1257,7 @@ Return date: {{booking:returnDatetime}}
 						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
 						'id'            => 'filesystem-status',
 						'type'          => 'text',
-						'render_row_cb' => array( Cache::class, 'renderFilesystemStatus' ),
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderFilesystemStatus' ),
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Enable REDIS Caching (experimental)', 'commonsbooking' ) ),
@@ -1268,7 +1274,7 @@ Return date: {{booking:returnDatetime}}
 						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
 						'id'            => 'redis_connection-status',
 						'type'          => 'text',
-						'render_row_cb' => array( Cache::class, 'renderREDISConnectionStatus' ),
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderREDISConnectionStatus' ),
 					)
 				)
 			),
