@@ -215,7 +215,6 @@ return array(
 						'desc'    => commonsbooking_sanitizeHTML( __( 'Email address that receives a bcc copy of booking codes mailing (not used if empty)', 'commonsbooking' ) ),
 						'id'      => 'mail-booking-codes-bcc',
 						'type'    => 'text',
-						'default' => '',
 					),
 					array(
 						'name'        => commonsbooking_sanitizeHTML( __('Attach iCalendar file to booking codes email', 'commonsbooking') ),
