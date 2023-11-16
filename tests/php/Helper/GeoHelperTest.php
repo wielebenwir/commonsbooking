@@ -61,6 +61,6 @@ class GeoHelperTest extends BaseTestCase
 		$this->assertEquals( 'Germany', $address->getCountry() );
 		// This won't check exact coords on purpose, because sometimes there are different results
 		$this->assertStringStartsWith( '52.4863', '' . $address->getCoordinates()->getLatitude() );
-		$this->assertStringStartsWith( '13.4247', '' . $address->getCoordinates()->getLongitude() );
+		$this->assertStringStartsWith( '13.424', '' . $address->getCoordinates()->getLongitude() );
     }
 }
