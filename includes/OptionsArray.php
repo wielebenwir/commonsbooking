@@ -1076,7 +1076,7 @@ Return date: {{booking:returnDatetime}}
 				'fields' => array(
 					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Clear Cache', 'commonsbooking' ) ),
-						'id'            => 'clearCache-custom-field',
+						'id'            => 'commonsbooking-clear_cache-button',
 						'type'          => 'text',
 						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderClearCacheButton' )
 					),
