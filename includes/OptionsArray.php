@@ -1173,7 +1173,7 @@ Return date: {{booking:returnDatetime}}
 						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
 						'id'            => 'filesystem-status',
 						'type'          => 'text',
-						'render_row_cb' => array( Cache::class, 'renderFilesystemStatus' ),
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderFilesystemStatus' ),
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Enable REDIS Caching (experimental)', 'commonsbooking' ) ),
@@ -1190,7 +1190,7 @@ Return date: {{booking:returnDatetime}}
 						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
 						'id'            => 'redis_connection-status',
 						'type'          => 'text',
-						'render_row_cb' => array( Cache::class, 'renderREDISConnectionStatus' ),
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderREDISConnectionStatus' ),
 					)
 				)
 			),

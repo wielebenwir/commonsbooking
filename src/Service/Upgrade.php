@@ -92,7 +92,7 @@ class Upgrade {
 
 		// Clear cache
 		try {
-			Cache::clearCache();
+			Plugin::clearCache();
 		} catch ( InvalidArgumentException $e ) {
 			// Do nothing
 		}
