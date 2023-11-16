@@ -283,7 +283,7 @@ HTML;
             echo '
             	<div id ="timeframe-bookingcodes-sendall">
                   <a id="email-booking-codes-list-all" 
-                                href="'. esc_url(add_query_arg([  "action" => "emailcodes", "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
+                                href="'. esc_url(add_query_arg([  "action" => "cb_email-bookingcodes", "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
                             <strong>'. commonsbooking_sanitizeHTML( __('Email booking codes for the entire timeframe', 'commonsbooking')) .'</strong>
                         </a>
                     <br>
@@ -295,7 +295,7 @@ HTML;
             echo '
 			<div id ="timeframe-bookingcodes-send_current_month">
           		<br><a id="email-booking-codes-list-current" 
-                                    href="'. esc_url(add_query_arg([  "action" => "emailcodes", "from" => $from, "to" =>$to, "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
+                                    href="'. esc_url(add_query_arg([  "action" => "cb_email-bookingcodes", "from" => $from, "to" =>$to, "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
                             <strong>'. commonsbooking_sanitizeHTML( __('Email booking codes of current month', 'commonsbooking')) .'</strong>
                         </a><br>
                         '. commonsbooking_sanitizeHTML( __('The codes <b>of the current month</b> will be sent to all the location email(s), given in bold below', 'commonsbooking'))
@@ -306,7 +306,7 @@ HTML;
             echo '
 			<div id ="timeframe-bookingcodes-send_next_month">
           	<br><a id="email-booking-codes-list-next" 
-                                    href="'. esc_url(add_query_arg([  "action" => "emailcodes", "from" => $from, "to" =>$to, "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
+                                    href="'. esc_url(add_query_arg([  "action" => "cb_email-bookingcodes", "from" => $from, "to" =>$to, "redir" => rawurlencode(add_query_arg([])) ]))  . '" >
                             <strong>'. commonsbooking_sanitizeHTML( __('Email booking codes of next month', 'commonsbooking')) .'</strong>
                         </a><br>
                         '. commonsbooking_sanitizeHTML( __('The codes <b>of the next month</b> will be sent to all the location email(s), given in bold below.', 'commonsbooking')) .
@@ -350,7 +350,7 @@ HTML;
                     <label for="booking-codes-download-link">' . commonsbooking_sanitizeHTML( __( 'Download booking codes', 'commonsbooking' ) ) . '</label>
                 </div>
                 <div id="booking-codes-download" class="cmb-td">' . ($timeframe->hasBookingCodes()?'
-                    <a id="booking-codes-download-link" href="' . esc_url(add_query_arg([  "action" => "csvexport",  ])) . '" target="_blank"><strong>Download booking codes</strong></a>
+                    <a id="booking-codes-download-link" href="' . esc_url(add_query_arg([  "action" => "cb_download-bookingscodes-csv",  ])) . '" target="_blank"><strong>Download booking codes</strong></a>
                     <p  class="cmb2-metabox-description">
                     ' . commonsbooking_sanitizeHTML( sprintf( __( 'Will download all available booking codes for this timeframe. If the timeframe has no end-date, the booking codes for the next %s days will be retrieved.', 'commonsbooking' ), \CommonsBooking\Repository\BookingCodes::ADVANCE_GENERATION_DAYS ) ) . '<br>
                     ' . commonsbooking_sanitizeHTML( __( 'The file will be exported as tab delimited .txt file so you can choose wether you want to print it, open it in a separate application (like Word, Excel etc.)', 'commonsbooking' ) ) . '
