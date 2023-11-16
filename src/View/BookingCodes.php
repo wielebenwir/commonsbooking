@@ -31,16 +31,17 @@ class BookingCodes
      *
      * @return DateTime   Datetime of nex Cron Event.
 	 */
-    public static function initialCronEmailEvent($tsInitial,$periodMonths): DateTimeImmutable {
-        $start = new DateTimeImmutable("@{$tsInitial}");
+    public static function initialCronEmailEvent(int $tsInitial,int $periodMonths): DateTimeImmutable {
+        $start = new DateTimeImmutable();
+		$start = $start->setTimestamp($tsInitial);
         if($tsInitial >= strtotime("today"))
             return $start;
 
         $end = new DateTime("today");
         $diff = $start->diff($end);
 
-        $yearsInMonths = $diff->format('%r%y') * 12;
-        $months = $diff->format('%r%m');
+        $yearsInMonths = intval( $diff->format('%r%y') ) * 12;
+        $months = intval ( $diff->format('%r%m') );
         $totalMonths = $yearsInMonths + $months;
         $numPeriods=floor($totalMonths / $periodMonths) + 1;
         $fullMonth=$numPeriods * $periodMonths;
@@ -66,21 +67,24 @@ class BookingCodes
      * @param CMB2_Field object $field   This field object
  	 */
     public static function cronEmailCodesSaved( $updated, $action, $field): void {
-        if(!$updated || empty($field->object_id())) return;
+	    $postID = $field->object_id();
+	    if( !$updated || empty( $postID )) return;
 
         switch($action) {
             case 'updated':
-                if(empty(@$field->value()['cron-booking-codes-enabled']))
-                    delete_post_meta($field->object_id(), self::NEXT_CRON_EMAIL);
-                else
+                $value = $field->value();
+	            if( empty( $value['cron-booking-codes-enabled'] ) ) {
+		            delete_post_meta( $postID, self::NEXT_CRON_EMAIL);
+	            } elseif ( ! empty( $value['cron-email-booking-code-start'] )
+	                       && ! empty( $value['cron-email-booking-code-nummonth'] ) )
                 {
-                    $dtNextCron=self::initialCronEmailEvent(@$field->value()['cron-email-booking-code-start'], @$field->value()['cron-email-booking-code-nummonth']);
-                    update_post_meta( $field->object_id(), self::NEXT_CRON_EMAIL, $dtNextCron->getTimestamp() );
+                    $dtNextCron=self::initialCronEmailEvent($value['cron-email-booking-code-start'], $value['cron-email-booking-code-nummonth']);
+                    update_post_meta( $postID, self::NEXT_CRON_EMAIL, $dtNextCron->getTimestamp() );
                 }
                 break;
 
             case 'removed':
-                delete_post_meta($field->object_id(), self::NEXT_CRON_EMAIL);
+                delete_post_meta( $postID, self::NEXT_CRON_EMAIL);
                 break;
 
             default:
@@ -106,12 +110,12 @@ class BookingCodes
 	    $sendInitialCodes = $value['cron-email-booking-code-start'];
 	    $monthsToSendPerEmail = $value['cron-email-booking-code-nummonth'];
 
-	    $dt  = DateTime::createFromFormat($field_args['date_format_start'], $sendInitialCodes );
-        if($dt) $dt->setTime(0,0); //normalize to midnight, otherwise always modified/updated state
+	    $startOfFirstEmail  = DateTime::createFromFormat($field_args['date_format_start'], $sendInitialCodes );
+        if($startOfFirstEmail) $startOfFirstEmail->setTime(0,0); //normalize to midnight, otherwise always modified/updated state
 	    $toSave                           = array(
             'cron-booking-codes-enabled' => sanitize_text_field( $automatedSendingActivated ),
             'cron-email-booking-code-nummonth' => absint($monthsToSendPerEmail ),
-            'cron-email-booking-code-start' => $dt?$dt->getTimestamp():$field->args['default_start'],
+            'cron-email-booking-code-start' => $startOfFirstEmail?$startOfFirstEmail->getTimestamp():$field->args['default_start'],
         );
 
         return $toSave;
@@ -170,7 +174,7 @@ class BookingCodes
 	     if ( empty( $location ) ) {
 		     $errMsg = commonsbooking_sanitizeHTML( __( 'No location configured for this timeframe', 'commonsbooking' ) );
 	     } elseif ( empty( $location_emails ) ) {
-		     $errMsg = commonsbooking_sanitizeHTML( __( 'Unable to send Emails. No location email configured, check location', 'commonsbooking' ) .
+		     $errMsg = commonsbooking_sanitizeHTML( __( 'Unable to send emails. No location email configured, check location', 'commonsbooking' ) .
 		                                            sprintf( ' <a href="%s" class="cb-title cb-title-link">%s</a>', esc_url( get_edit_post_link( $location->ID ) ), commonsbooking_sanitizeHTML( $location->post_title ) ) );
 	     } elseif ( ! $timeframe->hasBookingCodes() ) {
 		     $errMsg = commonsbooking_sanitizeHTML( __( 'This timeframe has no booking codes. To generate booking codes you need to save the timeframe.', 'commonsbooking' ) );
@@ -362,7 +366,7 @@ HTML;
         $bcToShow=Settings::getOption( 'commonsbooking_options_bookingcodes','bookingcodes-listed-timeframe' );
         if($bcToShow > 0) {
             $tsStart=max(Wordpress::getUTCDateTime("today")->getTimestamp(), $timeframe->getStartDate());
-            $tsEnd=strtotime("@" . $tsStart . " +" . ( $bcToShow - 1 ) . " days");
+            $tsEnd=strtotime(" +" . ( $bcToShow - 1 ) . " days",$tsStart);
             $bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId,$tsStart,$tsEnd);
 
             echo '<div class="cmb-row cmb2-id-booking-codes-list">
@@ -427,7 +431,6 @@ HTML;
 		if ( $timeframeId == null ) {
 			$timeframeId = intval( $_GET['post'] );
 		}
-		$bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId );
 		header( 'Content-Encoding: UTF-8' );
 		header( 'Content-type: text/csv; charset=UTF-8' );
 		header( "Content-Disposition: attachment; filename=buchungscode-" . commonsbooking_sanitizeHTML( $timeframeId ) . ".txt" );
@@ -461,7 +464,7 @@ HTML;
     public static function emailCodes($timeframeId = null, $tsFrom=null, $tsTo=null) {
 
         if($timeframeId == null) {
-            $timeframeId = sanitize_text_field(@$_GET['post']);
+	        $timeframeId = empty($_GET['post']) ? null : sanitize_text_field( $_GET['post'] );
         }
 
 
@@ -474,15 +477,15 @@ HTML;
         }
 
         if($tsFrom == null) {
-            $tsFrom = absint(@$_GET['from']);
+            $tsFrom = empty($_GET['from']) ? null : absint( $_GET['from'] );
         }
         if($tsTo == null) {
-            $tsTo = absint(@$_GET['to']);
+            $tsTo = empty($_GET['to']) ? null : absint( $_GET['to'] );
         }
 
 
         add_action( 'commonsbooking_mail_sent',function($action,$result) use ($timeframeId){
-            $redir=empty(@$_GET['redir'])?add_query_arg([ "post" => $timeframeId, "action" => "edit"],admin_url('post.php')):$_GET['redir'];
+            $redir=empty($_GET['redir'])?add_query_arg([ "post" => $timeframeId, "action" => "edit"],admin_url('post.php')):$_GET['redir'];
 
             if(is_wp_error($result))
             {
