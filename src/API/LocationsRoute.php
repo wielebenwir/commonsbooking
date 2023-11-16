@@ -14,6 +14,11 @@ use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * Endpoint for places, where items are located.
+ *
+ * @see Location for exposed api data
+ */
 class LocationsRoute extends BaseRoute {
 
 	/**
