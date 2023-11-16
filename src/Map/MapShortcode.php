@@ -211,8 +211,6 @@ class MapShortcode {
 					},
 					$selectedFilterGroupIDs
 				);
-
-				//new filtergroups (since 2.9)
 				foreach ( $selectedFilterGroups as $current_group_id => $selectedFilterGroup ) {
 					$elements = [];
 					foreach ( $selectedFilterGroup['categories'] as $termID) {
@@ -228,6 +226,7 @@ class MapShortcode {
 					$settings['filter_cb_item_categories'][ $current_group_id ] = [
 						'name'     => $selectedFilterGroup['name'],
 						'elements' => $elements,
+						'isExclusive' => $selectedFilterGroup['isExclusive'] == 'on',
 					];
 				}
 			}

@@ -555,10 +555,10 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 								),
 							),
 							array(
-								'name'    => commonsbooking_sanitizeHTML( __( 'Single select', 'commonsbooking' ) ),
-								'id'      => 'singleselect',
+								'name'    => commonsbooking_sanitizeHTML( __( 'Exclusive selection', 'commonsbooking' ) ),
+								'id'      => 'isExclusive',
 								'type'    => 'checkbox',
-								'desc'    => commonsbooking_sanitizeHTML( __( 'If checked, only one category can be selected in this filter group. If unchecked, multiple categories can be selected.', 'commonsbooking' ) ),
+								'desc'    => commonsbooking_sanitizeHTML( __( 'WARNING: This feature is only available for the cb_search shortcode, not for cb_map. If checked, only one category can be selected in this filter group. If unchecked, multiple categories can be selected.', 'commonsbooking' ) ),
 							),
 							array(
 								'name'    => commonsbooking_sanitizeHTML( __( 'Categories', 'commonsbooking' ) ),
