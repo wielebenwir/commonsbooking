@@ -201,7 +201,7 @@ return array(
 						'id'      => 'mail-booking-codes-body',
 						'type'    => 'textarea',
 						'default' => commonsbooking_sanitizeHTML( __( '
-<h1>{{item:post_title}} of {{codes:formatDateRange}}</h1>
+<h1>Booking codes for {{item:post_title}} : {{codes:formatDateRange}}</h1>
 
 <p>Booking codes Table:</p>
 <br>   
