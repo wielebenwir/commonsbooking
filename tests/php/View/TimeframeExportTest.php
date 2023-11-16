@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Tests\View;
 
+use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\View\TimeframeExport;
@@ -36,5 +37,9 @@ class TimeframeExportTest extends CustomPostTypeTest {
 		);
 		$dataArray = TimeframeExport::getTimeframeData( [ $timeframeTwoItemsTwoLocations ] );
 		$this->assertEquals( 4, count( $dataArray ) );
+
+		$booking = new Booking($this->createConfirmedBookingStartingToday());
+		$dataArray = TimeframeExport::getTimeframeData( [ $booking ] );
+		$this->assertEquals( 1, count( $dataArray ) );
 	}
 }

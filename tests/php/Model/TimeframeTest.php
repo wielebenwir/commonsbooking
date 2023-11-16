@@ -387,6 +387,39 @@ class TimeframeTest extends CustomPostTypeTest {
 			$tf1->overlaps($tf2);
 		}
 	}
+
+	public function testOverlaps_differentGrid() {
+		$testItem     = $this->createItem( "Test Item", 'publish' );
+		$testLocation = $this->createLocation( "Test Location", 'publish' );
+		$tf1          = new Timeframe( $this->createTimeframe(
+			$testLocation,
+			$testItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"off",
+			'd',
+			0,
+			'08:00 AM',
+			'10:00 AM',
+		) );
+
+		$tf2 = new Timeframe( $this->createTimeframe(
+			$testLocation,
+			$testItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"off",
+			'd',
+			1,
+			'10:00 AM',
+			'12:00 PM',
+		) );
+
+		$this->expectException( OverlappingException::class );
+		$tf1->overlaps( $tf2 );
+	}
 	public function testIsValid() {
 
 		$newLoc = $this->createLocation("New Location", 'publish');
