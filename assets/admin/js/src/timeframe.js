@@ -84,6 +84,7 @@
             const noRepSet = [fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput];
             const repTimeFieldsSet = [gridInput, startTimeInput, endTimeInput];
             const bookingCodeSet = [createBookingCodesInput, bookingCodesList, bookingCodesDownload, showBookingCodes, emailBookingCodesList, cronEmailBookingCodesList];
+            const bookingCodeConfigSet = [showBookingCodes, bookingCodesList, bookingCodesDownload, emailBookingCodesList, cronEmailBookingCodesList];
 
             const form = $('input[name=post_type][value=cb_timeframe]').parent('form');
             const bookingConfigSet = [maxDaysSelect, advanceBookingDays, bookingStartDayOffset, allowUserRoles, bookingConfigurationTitle];
@@ -199,7 +200,9 @@
             const handleBookingCodesSelection = function () {
                 const fullday = fullDayInput.prop('checked'),
                 type = typeInput.val(),
-                repStart = repetitionStartInput.val();
+                repStart = repetitionStartInput.val(),
+                repEnd = repetitionEndInput.val();
+
 
                 hideFieldset(bookingCodeSet);
 
@@ -208,8 +211,11 @@
 
                     // If booking codes shall not be created we disable and hide option to show them
                     if (!createBookingCodesInput.prop('checked')) {
-                        hideFieldset([showBookingCodes]);
+                        hideFieldset(bookingCodeConfigSet);
                         showBookingCodes.prop('checked', false);
+                    }
+                    else {
+                        showFieldset(bookingCodeConfigSet);
                     }
 
                     // If no end-date is selected, we hide the option to send codes for the entire timeframe
