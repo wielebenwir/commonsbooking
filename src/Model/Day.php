@@ -110,7 +110,7 @@ class Day {
 	 * @return array
 	 * @throws Exception
 	 */
-	public function getTimeframes(): array {
+	public function getTimeframes($preFilteredPostIds = []): array {
 		if ( $this->timeframes === null ) {
 			$timeFrames = \CommonsBooking\Repository\Timeframe::get(
 				$this->locations,
@@ -119,7 +119,8 @@ class Day {
 				$this->getDate(),
 				true,
 				null,
-				[ 'publish', 'confirmed' ]
+				[ 'publish', 'confirmed' ],
+				$preFilteredPostIds
 			);
 
 			// check if user is allowed to book this timeframe and remove unallowed timeframes from array
@@ -160,8 +161,8 @@ class Day {
 	 * @return array
 	 * @throws Exception
 	 */
-	public function getGrid(): array {
-		return $this->getTimeframeSlots();
+	public function getGrid($preFilteredPostIds = []): array {
+		return $this->getTimeframeSlots($preFilteredPostIds);
 	}
 
 	/**
@@ -381,12 +382,12 @@ class Day {
 	 *
 	 * @throws Exception
 	 */
-	protected function mapTimeFrames( array &$slots ) {
+	protected function mapTimeFrames( array &$slots, $preFilteredPostIds = [] ) {
 		$grid = 24 / count( $slots );
 
 		// Iterate through timeframes and fill slots
 		/** @var \CommonsBooking\Model\Timeframe $timeframe */
-		foreach ( $this->getTimeframes() as $timeframe ) {
+		foreach ( $this->getTimeframes($preFilteredPostIds) as $timeframe ) {
 			// Slots
 			$startSlot = $this->getStartSlot( $grid, $timeframe );
 			$endSlot   = $this->getEndSlot( $slots, $grid, $timeframe );
@@ -500,7 +501,7 @@ class Day {
 	 * @return array
 	 * @throws Exception
 	 */
-	protected function getTimeframeSlots(): array {
+	protected function getTimeframeSlots($preFilteredPostIds = []): array {
 		$customCacheKey = $this->getDate() . serialize( $this->items ) . serialize( $this->locations );
 		$customCacheKey = md5( $customCacheKey );
 		$cacheItem     = Plugin::getCacheItem( $customCacheKey );
@@ -520,7 +521,7 @@ class Day {
 				];
 			}
 
-			$this->mapTimeFrames( $slots );
+			$this->mapTimeFrames( $slots, $preFilteredPostIds );
 			$this->mapRestrictions( $slots );
 			$this->sanitizeSlots( $slots );
 

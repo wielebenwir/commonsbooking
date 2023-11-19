@@ -209,8 +209,8 @@ class Booking extends PostRepository {
 	}
 
 	/**
-	 * @param $startDate int
-	 * @param $endDate int
+	 * @param $startDate int Timestamp
+	 * @param $endDate int Timestamp
 	 * @param $locationId
 	 * @param $itemId
 	 * @param array         $customArgs
@@ -360,7 +360,8 @@ class Booking extends PostRepository {
 		?string $date = null,
 		bool $returnAsModel = false,
 		$minTimestamp = null,
-		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ],
+		$preFilteredPostIds = []
 	): array {
 		return \CommonsBooking\Repository\Timeframe::get(
 			$locations,
@@ -369,7 +370,8 @@ class Booking extends PostRepository {
 			$date,
 			$returnAsModel,
 			$minTimestamp,
-			$postStatus
+			$postStatus,
+			$preFilteredPostIds
 		);
 	}
 
