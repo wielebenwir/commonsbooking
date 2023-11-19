@@ -696,4 +696,70 @@ class Timeframe extends PostRepository {
 		$bookableTimeframes = self::filterTimeframesForCurrentUser($bookableTimeframes);
 		return $bookableTimeframes;
 	}
+
+	public static function getInRangeWPQuery(
+		$minTimestamp,
+		$maxTimestamp,
+		array $locations = [],
+		array $items = [],
+		array $types = [],
+		bool $returnAsModel = false,
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+	): array
+	{
+		$args = [
+			'post_type' => \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType(),
+			'post_status' => $postStatus,
+			'posts_per_page' => -1,
+			'meta_query' => [
+				[
+					'key' => \CommonsBooking\Model\Timeframe::REPETITION_START,
+					'value' => $minTimestamp,
+					'compare' => '>=',
+					'type' => 'NUMERIC'
+				],
+				array(
+					'relation' => 'OR',
+					[
+						'key' => \CommonsBooking\Model\Timeframe::REPETITION_END,
+						'value' => $maxTimestamp,
+						'compare' => '>=',
+						'type' => 'NUMERIC'
+					],
+					// if no end is set, we assume it is infinite
+					[
+						'key' => \CommonsBooking\Model\Timeframe::REPETITION_END,
+						'compare' => 'NOT EXISTS'
+					]
+				)
+			]
+		];
+		if ( count( $types ) ) {
+			$args['meta_query'][] = [
+				'key' => 'type',
+				'value' => $types,
+				'compare' => 'IN'
+			];
+		}
+		if ( count( $locations ) ) {
+			$args['meta_query'][] = [
+				'key' => 'location-id',
+				'value' => $locations,
+				'compare' => 'IN'
+			];
+		}
+		if ( count( $items ) ) {
+			$args['meta_query'][] = [
+				'key' => 'item-id',
+				'value' => $items,
+				'compare' => 'IN'
+			];
+		}
+		$query = new \WP_Query($args);
+		$posts = $query->get_posts();
+		if ( $returnAsModel ) {
+			self::castPostsToModels( $posts );
+		}
+		return $posts;
+	}
 }
