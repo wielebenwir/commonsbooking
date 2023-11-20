@@ -200,6 +200,8 @@ class Migration {
 
 		//set all locations to use global settings (just for fLotte)
 		$postMeta[ COMMONSBOOKING_METABOX_PREFIX . 'use_global_settings' ] = 'on';
+		//enable location map (just for fLotte)
+		$postMeta[ 'loc_showmap' ] = 'on';
 
 		$existingPost = self::getExistingPost( $location->ID, Location::$postType );
 
