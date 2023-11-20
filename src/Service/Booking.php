@@ -170,12 +170,11 @@ class Booking {
 
 		if ( count( $bookings ) ) {
 			foreach ( $bookings as $booking ) {
-				//filter by user roles
-				$user_roles = get_userdata($booking->post_author)->roles;
-				$exception_roles = Settings::getOption('commonsbooking_options_reminder', 'booking-'.$type.'-location-reminder-ignore-roles');
+				$reminderMessage = new LocationBookingReminderMessage( $booking->getPost()->ID, 'booking-'.$type.'-location-reminder' );
+				$reminderMessage->prepareMessage();
+				$reminderMessage = apply_filters( 'commonsbooking_before_send_location_reminder_mail', $reminderMessage );
 				
-				if(!is_array($exception_roles) || is_array($exception_roles) && !array_intersect($exception_roles, $user_roles)) {
-					$reminderMessage = new LocationBookingReminderMessage( $booking->getPost()->ID, 'booking-'.$type.'-location-reminder' );
+				if($reminderMessage) {
 					$reminderMessage->sendMessage();
 				}
 			}

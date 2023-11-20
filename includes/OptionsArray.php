@@ -831,24 +831,6 @@ The booking period: {{booking:formattedBookingDate}}<br><br>
 							'1' => esc_html__( 'next day', 'commonsbooking' ),
 						),
 					),
-					array(
-						'name'             => esc_html__( 'Ignore roles', 'commonsbooking' ),
-						'id'               => 'booking-start-location-reminder-ignore-roles',
-						'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
-								'Define roles which bookings are ignored when reminders to locations are sent'
-								, 'commonsbooking' ) ),
-						'type'             => 'multicheck',
-						'inline'          => true,
-						'select_all_button' => false,
-						'options_cb'          => function() {
-							global $wp_roles;
-							$roles = [];
-							foreach ($wp_roles->roles as $key => $wp_role) {
-								$roles[$key] = translate_user_role($wp_role['name']);
-							}
-							return $roles;
-						},
-					),
 				),
 			),
 			/* field group booking start reminder for locations end */
@@ -916,24 +898,6 @@ The booking period: {{booking:formattedBookingDate}}<br><br>
 							'0' => esc_html__( 'current day', 'commonsbooking' ),
 							'1' => esc_html__( 'next day', 'commonsbooking' ),
 						),
-					),
-					array(
-						'name'             => esc_html__( 'Ignore roles', 'commonsbooking' ),
-						'id'               => 'booking-end-location-reminder-ignore-roles',
-						'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
-								'Define roles which bookings are ignored when reminders to locations are sent'
-								, 'commonsbooking' ) ),
-						'type'             => 'multicheck',
-						'inline'          => true,
-						'select_all_button' => false,
-						'options_cb'          => function() {
-							global $wp_roles;
-							$roles = [];
-							foreach ($wp_roles->roles as $key => $wp_role) {
-								$roles[$key] = translate_user_role($wp_role['name']);
-							}
-							return $roles;
-						},
 					),
 				),
 			),

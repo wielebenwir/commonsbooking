@@ -18,13 +18,12 @@ class LocationBookingReminderMessage extends Message {
   /**
 	 * @var array|string[]
 	 */
-	protected $validActions = [ "booking-start-location-reminder" ];
+	protected $validActions = [ "booking-start-location-reminder", "booking-end-location-reminder"  ];
 
 	/**
-	 * Sends reminder message.
-	 * @throws \Exception
+	 * Prepares reminder message
 	 */
-	public function sendMessage() {
+	public function prepareMessage() {
 		/** @var \CommonsBooking\Model\Booking $booking */
 		$booking = Booking::getPostById( $this->getPostId() );
 		$booking_user = get_userdata( $this->getPost()->post_author );
@@ -74,6 +73,13 @@ class LocationBookingReminderMessage extends Message {
         'user'     => $booking_user,
 			]
 		);
-		$this->SendNotificationMail();
 	}
+
+	/**
+	 * Sends reminder message.
+	 * @throws \Exception
+	 */
+	public function sendMessage() {
+		$this->SendNotificationMail();
+	 }
 }
