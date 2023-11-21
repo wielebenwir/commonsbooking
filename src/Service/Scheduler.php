@@ -162,6 +162,14 @@ class Scheduler {
 			'update_option_commonsbooking_options_reminder'
 		);
 
+		// Init email booking codes job
+		New Scheduler(
+			'email_bookingcodes',
+			array( \CommonsBooking\Service\BookingCodes::class, 'sendBookingCodesMessage' ),
+			'daily',
+			'today midnight +3 hour'
+		);
+
 		// Init timeframe export job
 		$exportPath = Settings::getOption( 'commonsbooking_options_export', 'export-filepath' );
 		$exportInterval = Settings::getOption( 'commonsbooking_options_export', 'export-interval' );

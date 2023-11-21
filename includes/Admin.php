@@ -95,6 +95,9 @@ function commonsbooking_sanitizeHTML( $string ): string {
 		'height'     => array(),
 		'data'       => array(),
 		'title'      => array(),
+		'cellspacing'      => array(),
+		'cellpadding'      => array(),
+		'border'      => array(),
 	);
 
 	$allowedposttags['form']     = $allowed_atts;
