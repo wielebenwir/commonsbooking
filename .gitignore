@@ -7,7 +7,6 @@ commonsbooking.zip
 node_modules
 ./phpunit*
 .phpunit.*
-assets/packaged
 src/Wordpress/.DS_Store
 tests/cypress/screenshots
 /vendor
