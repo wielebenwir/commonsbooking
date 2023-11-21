@@ -1217,77 +1217,77 @@ msgstr "Einstellungen für Commons Booking Karten"
 msgid "Commons Booking Map"
 msgstr "CommonsBooking Karte"
 
-#: src/Map/MapShortcode.php:94
+#: src/Map/BaseShortcode.php:24
 msgid "map is not published"
 msgstr "Karte ist nicht veröffentlicht"
 
-#: src/Map/MapShortcode.php:97
-#: src/Map/MapShortcode.php:101
+#: src/Map/BaseShortcode.php:14
+#: src/Map/BaseShortcode.php:20
 msgid "no valid map id provided"
 msgstr "keine gültige Karten-ID angegeben"
 
-#: src/Map/MapShortcode.php:238
+#: src/Map/MapShortcode.php:40
 #: templates/map-admin-page-template.php:229
 #: templates/map-admin-page-template.php:248
 msgid "opening hours"
 msgstr "Öffnungszeiten"
 
-#: src/Map/MapShortcode.php:239
+#: src/Map/MapShortcode.php:41
 msgid "contact"
 msgstr "Kontakt"
 
-#: src/Map/MapShortcode.php:240
+#: src/Map/MapShortcode.php:42
 msgid "from"
 msgstr "von"
 
-#: src/Map/MapShortcode.php:241
+#: src/Map/MapShortcode.php:43
 msgid "until"
 msgstr "bis %s"
 
-#: src/Map/MapShortcode.php:242
+#: src/Map/MapShortcode.php:44
 msgid "for at least"
 msgstr "mindestens"
 
-#: src/Map/MapShortcode.php:243
+#: src/Map/MapShortcode.php:45
 msgid "day(s)"
 msgstr "Tag(e)"
 
-#: src/Map/MapShortcode.php:244
+#: src/Map/MapShortcode.php:46
 msgid "Sorry, no locations found."
 msgstr "Leider wurden keine Standorte gefunden."
 
-#: src/Map/MapShortcode.php:245
+#: src/Map/MapShortcode.php:47
 msgid "filter"
 msgstr "Filter"
 
-#: src/Map/MapShortcode.php:246
+#: src/Map/MapShortcode.php:48
 #: templates/map-admin-page-template.php:599
 msgid "availability"
 msgstr "Verfügbarkeit"
 
-#: src/Map/MapShortcode.php:247
+#: src/Map/MapShortcode.php:49
 #: templates/map-admin-page-template.php:609
 msgid "categories"
 msgstr "Kategorien"
 
-#: src/Map/MapShortcode.php:248
+#: src/Map/MapShortcode.php:50
 #: templates/map-admin-page-template.php:546
 msgid "distance"
 msgstr "Entfernung"
 
-#: src/Map/MapShortcode.php:249
+#: src/Map/MapShortcode.php:51
 msgid "address"
 msgstr "Adresse"
 
-#: src/Map/MapShortcode.php:250
+#: src/Map/MapShortcode.php:52
 msgid "Sorry, an error occured during your request. Please try again later."
 msgstr "Es ist leider ein Fehler während der Anfrage aufgetreten. Versuche es später erneut."
 
-#: src/Map/MapShortcode.php:251
+#: src/Map/MapShortcode.php:53
 msgid "The service is currently not available. Please try again later."
 msgstr "Der Dienst ist derzeit nicht verfügbar. Versuche  später erneut."
 
-#: src/Map/MapShortcode.php:252
+#: src/Map/MapShortcode.php:54
 msgid "comming soon"
 msgstr "Bald verfügbar"
 
@@ -1387,21 +1387,21 @@ msgstr "Enddatum liegt vor dem Startdatum. Bitte setze ein gültiges Enddatum."
 msgid "Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s"
 msgstr "Artikel ist bereits an einem anderen Ort innerhalb desselben Datumsbereichs buchbar. Siehe andere Zeitrahmen ID: %1$s: %2$s"
 
-#: src/Plugin.php:296
 #: src/Plugin.php:297
+#: src/Plugin.php:298
 msgid "Item Categories"
 msgstr "Artikel-Kategorien"
 
-#: src/Plugin.php:306
 #: src/Plugin.php:307
+#: src/Plugin.php:308
 msgid "Location Categories"
 msgstr "Standort-Kategorien"
 
-#: src/Plugin.php:386
+#: src/Plugin.php:387
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:412
+#: src/Plugin.php:413
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
@@ -3453,8 +3453,8 @@ msgstr "Storniert"
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr "Die Start- und Endzeit des Zeitrahmens dürfen nicht gleich sein. Wenn der gesamte Tag buchbar sein soll muss die Option \"Ganzer Tag\" angewählt sein."
 
-#: src/Plugin.php:487
-#: src/Plugin.php:502
+#: src/Plugin.php:611
+#: src/Plugin.php:626
 #: src/Wordpress/CustomPostType/Booking.php:957
 msgid "CommonsBooking Bookings"
 msgstr "CommonsBooking Buchungen"
