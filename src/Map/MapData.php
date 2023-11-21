@@ -3,6 +3,7 @@
 namespace CommonsBooking\Map;
 
 use CommonsBooking\Helper\Wordpress;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Map;
 
 class MapData {
