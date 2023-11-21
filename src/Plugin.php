@@ -535,7 +535,9 @@ class Plugin {
 
 
 	public static function registerScriptsAndStyles() {
-		$versions = wp_json_file_decode(COMMONSBOOKING_PLUGIN_DIR . "assets/packaged/dist.json", array('associative' => true));
+
+		// FIXME when we drop support for wordpress lower than 5.9
+		$versions = json_decode( file_get_contents( COMMONSBOOKING_PLUGIN_DIR . "assets/packaged/dist.json" ), true);
 		$base = COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/';
 
 		// spin.js
