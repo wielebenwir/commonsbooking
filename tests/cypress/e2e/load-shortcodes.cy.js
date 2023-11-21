@@ -79,6 +79,25 @@ describe('load shortcodes', () => {
         //That's why there is only the screenshot test
         cy.screenshot('cb-map-shortcode')
     })
+
+    it ('can load cb_search shortcode: MapWithAutoSidebar,Filter', function () {
+        cy.visit('/?page_id=102')
+        //wait a little bit to make sure the map tiles are loaded
+        cy.wait(5000)
+        cy.get('.leaflet-container').should('be.visible')
+        cy.get('.cb-common-filter').should('be.visible')
+        cy.screenshot('cb-search-shortcode-map-filter')
+    })
+
+    it ('can load cb_search shortcode: FilterList', function () {
+        cy.visit('/?page_id=108')
+        //give time to fetch data
+        cy.wait(5000);
+        cy.get('.cb-common-filter').should('be.visible')
+        cy.screenshot('cb-search-shortcode-filter-list')
+        //TODO: Check for presence of individual items (needs fixing of #1419)
+    })
+
     function convertEnDashToHyphen(text) {
         const regex = /–/g; // U+2013 is used here
         const hyphenMinus = '-';
