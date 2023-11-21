@@ -3479,8 +3479,8 @@ msgstr ""
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr ""
 
-#: src/Plugin.php:662
-#: src/Plugin.php:677
+#: src/Plugin.php:664
+#: src/Plugin.php:679
 #: src/Wordpress/CustomPostType/Booking.php:957
 msgid "CommonsBooking Bookings"
 msgstr ""
@@ -3553,11 +3553,11 @@ msgstr ""
 msgid "Here you can specify, if a connected span of locked days should be counted individually or just use up x amount of the maximum quota the user is allowed to book. If you set this field to 0, every day will be counted individually. If you set this field to 1, all overbooked days, no matter how many, will always count for 1 day. If you set this to 2, they will count a maximum of two days and so on."
 msgstr ""
 
-#: src/Plugin.php:995
+#: src/Plugin.php:997
 msgid "New features and changes: Please backup before upgrade!"
 msgstr ""
 
-#: src/Plugin.php:1002
+#: src/Plugin.php:1004
 msgid ""
 "\n"
 "\t\t\t\t\tThis CommonsBooking update has a lot of new features and changes on some templates.<br>\n"
