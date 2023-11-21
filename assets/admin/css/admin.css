@@ -5029,6 +5029,46 @@ select[readonly] {
   touch-action: none !important;
 }
 
+/* line 28, ../sass/partials/_form-timeframe.scss */
+a.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: default;
+}
+
+/* line 37, ../sass/partials/_form-timeframe.scss */
+.cmb2-id-booking-codes-list .cmb-td > table.cmb2-codes-outer-table {
+  width: 100%;
+}
+/* line 39, ../sass/partials/_form-timeframe.scss */
+.cmb2-id-booking-codes-list .cmb-td > table.cmb2-codes-outer-table > tbody > tr {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+/* line 44, ../sass/partials/_form-timeframe.scss */
+.cmb2-id-booking-codes-list .cmb-td > table.cmb2-codes-outer-table > tbody > tr > td {
+  margin-bottom: unset;
+  padding-bottom: unset;
+  padding-top: unset;
+}
+/* line 50, ../sass/partials/_form-timeframe.scss */
+.cmb2-id-booking-codes-list .cmb-td > table.cmb2-codes-outer-table table.cmb2-codes-column {
+  border: none;
+}
+/* line 52, ../sass/partials/_form-timeframe.scss */
+.cmb2-id-booking-codes-list .cmb-td > table.cmb2-codes-outer-table table.cmb2-codes-column td {
+  border: none;
+  display: table-cell;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+/* line 58, ../sass/partials/_form-timeframe.scss */
+.cmb2-id-booking-codes-list .cmb-td > table.cmb2-codes-outer-table table.cmb2-codes-column tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
 /** Migration Settings */
 #migration-in-progress,
 #migration-state,
