@@ -150,6 +150,8 @@ class CalendarTest extends CustomPostTypeTest {
 			30,
 			2
 		);
+		//this has to be done as a regular user
+		wp_set_current_user( $this->subscriberId );
 		$jsonresponse = Calendar::getCalendarDataArray(
 			$otherItemId,
 			$otherLocationId,
