@@ -162,7 +162,7 @@ class Timeframe extends CustomPost {
 		$calculationBase = time();
 
 		// if meta-value not set we define a default value far in the future so that we count all possibly relevant timeframes
-		$advanceBookingDays = $this->getAdvanceBookingDays( TimeFrame::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) ?: 365;
+		$advanceBookingDays = $this->getMeta( TimeFrame::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) ?: 365;
 
 		// we subtract one day to reflect the current day in calculation
 		$advanceBookingDays --;
@@ -171,21 +171,6 @@ class Timeframe extends CustomPost {
 
 		return $advanceBookingTime;
 
-	}
-
-	/**
-	 * Gets the maximum number of days that can be booked in advance.
-	 * @return void
-	 */
-	public function getAdvanceBookingDays() {
-		if ( $this->isUserPrivileged()) {
-			return 365;
-		}
-		else {
-			return intval(
-				$this->getMeta( self::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) ?? \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS
-			);
-		}
 	}
 
 	/**
