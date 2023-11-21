@@ -35,7 +35,7 @@ mkdir -p "$DEST_PATH"
 echo "Installing PHP and JS dependencies..."
 npm ci
 echo "Running JS Build..."
-grunt dist
+npm run dist
 echo "Cleaning up PHP dependencies..."
 composer install --no-dev --ignore-platform-reqs
 echo "Syncing files..."
