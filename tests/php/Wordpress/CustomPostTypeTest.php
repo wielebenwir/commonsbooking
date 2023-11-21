@@ -482,7 +482,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
             location bigint(20) unsigned NOT NULL,
             item bigint(20) unsigned NOT NULL,
             code varchar(100) NOT NULL,
-            PRIMARY KEY (date, timeframe, location, item, code)
+            PRIMARY KEY (date, timeframe, location, item, code) 
         ) $charset_collate;";
 
 		$wpdb->query( $sql );

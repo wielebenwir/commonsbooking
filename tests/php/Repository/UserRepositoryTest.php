@@ -65,17 +65,6 @@ class UserRepositoryTest extends CustomPostTypeTest
 		$user->remove_role( Plugin::$CB_MANAGER_ID );
 	}
 
-	public function testGetRoleTypeID() {
-		$subscriber = get_user_by('id', $this->subscriberId);
-		$manager = get_user_by('id', $this->cbManagerUserID);
-		$admin = get_user_by('id', $this->adminUserID);
-		$this->assertEquals(0, UserRepository::getRoleTypeID($subscriber));
-		wp_logout();
-		$this->assertEquals(0, UserRepository::getRoleTypeID());
-		$this->assertEquals(1, UserRepository::getRoleTypeID($admin));
-		$this->assertEquals($manager->ID, UserRepository::getRoleTypeID($manager));
-	}
-
 	protected function setUp(): void {
 		parent::setUp();
 		$this->createCBManager();

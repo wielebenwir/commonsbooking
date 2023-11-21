@@ -42,8 +42,6 @@ class CalendarTest extends CustomPostTypeTest {
 	}
 
 	public function testAdvancedBookingDays() {
-		//set our user to a normal subscriber so that the booking is not privileged
-		wp_set_current_user( $this->subscriberId);
 		$startDate    = date( 'Y-m-d', strtotime( 'midnight' ) );
 		$endDate      = date( 'Y-m-d', strtotime( '+60 days midnight' ) );
 		$jsonresponse = Calendar::getCalendarDataArray(
@@ -73,8 +71,6 @@ class CalendarTest extends CustomPostTypeTest {
 		$maxBookableDays = date_diff( $latestPossibleBookingDate, $timeframeStart )->days;
 
 		$this->assertTrue( $maxBookableDays == (self::bookingDaysInAdvance - self::timeframeStart - 1) );
-
-		wp_logout();
 	}
 
 	public function testClosestBookableTimeFrameFuntion() {
@@ -150,9 +146,6 @@ class CalendarTest extends CustomPostTypeTest {
 			30,
 			2
 		);
-		//set our user to a normal subscriber so that the booking is not privileged
-		//we need to do this after creating our custom posts, or else the subscriber would be the author
-		wp_set_current_user( $this->subscriberId);
 		$jsonresponse = Calendar::getCalendarDataArray(
 			$otherItemId,
 			$otherLocationId,
@@ -165,7 +158,6 @@ class CalendarTest extends CustomPostTypeTest {
 		//considering the offset, today and tomorrow should be locked
 		$this->assertTrue($days[$today]['locked']);
 		$this->assertTrue($days[date('Y-m-d', strtotime('+1 day', strtotime($today)))]['locked']);
-		wp_logout();
 	}
 
 	protected function setUp() : void {
@@ -180,8 +172,6 @@ class CalendarTest extends CustomPostTypeTest {
 		);
 		// set booking days in advance
 		update_post_meta( $this->timeframeId, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
-
-		$this->createSubscriber();
 
 		$this->closestTimeframe = $this->createTimeframe(
 			$this->locationId,
