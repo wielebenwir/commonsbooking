@@ -835,6 +835,15 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * Returns true if booking codes were enabled for this timeframe
+	 *
+	 * @return bool
+	 */
+	public function hasBookingCodes(): bool {
+		return $this->getMeta( 'create-booking-codes' ) == 'on';
+	}
+
+	/**
 	 * Returns repetition-start \DateTime.
 	 * This function contains a weird hotfix for full day timeframes.
 	 * This is because it is mainly used by the iCalendar export where if we don't convert the timestamp to a UTC Datetime we will get the wrong starting time.
@@ -983,7 +992,6 @@ class Timeframe extends CustomPost {
 	 * @throws Exception
 	 */
 	public function getAdmins(): array {
-		$admins           = [];
 		$location = $this->getLocation();
 		if (! empty($location)) {
 			$locationAdminIds = $location->getAdmins();
@@ -993,15 +1001,7 @@ class Timeframe extends CustomPost {
 			$itemAdminIds = $item->getAdmins();
 		}
 
-		if (
-			isset ($locationAdminIds) && isset ($itemAdminIds) &&
-			is_array( $locationAdminIds ) && count( $locationAdminIds ) &&
-			is_array( $itemAdminIds ) && count( $itemAdminIds )
-		) {
-			$admins = array_merge( $locationAdminIds, $itemAdminIds );
-		}
-
-		return array_unique( $admins );
+		return array_unique( array_merge ($locationAdminIds,$itemAdminIds) );
 	}
 
 	/**

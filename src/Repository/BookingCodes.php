@@ -35,8 +35,6 @@ class BookingCodes {
 	/**
 	 * Returns booking codes for timeframe to display in backend Timeframe window.
 	 *
-	 *
-	 *
 	 * @param int $timeframeId - ID of timeframe to get codes for
 	 * @param int|null $startDate - Where to get booking codes from (timestamp)
 	 * @param int|null $endDate - Where to get booking codes to (timestamp)
@@ -76,8 +74,8 @@ class BookingCodes {
 			//check, if we have enough codes for the timeframe or if we need to generate more
 			//we only need to check, if we have an open-ended timeframe
 			//we check, if the end date of the last generated code is before the end date of the requested time period
-			if ( ! $timeframe->getRawEndDate() &&
-			     strtotime(self::getLastCode($timeframe)->getDate()) < strtotime($endDate)
+			if ( ! $timeframe->getRawEndDate() && self::getLastCode( $timeframe )
+				&& strtotime( self::getLastCode( $timeframe )->getDate() ) < strtotime( $endDate )
 			) {
 				$startGenerationPeriod = new \DateTime( self::getLastCode($timeframe)->getDate() );
 				$endGenerationPeriod = new \DateTime( $endDate );

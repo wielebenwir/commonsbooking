@@ -4,16 +4,16 @@ namespace CommonsBooking\Tests\Wordpress;
 
 use CommonsBooking\Plugin;
 use CommonsBooking\Repository\BookingCodes;
+use CommonsBooking\Tests\BaseTestCase;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use PHPUnit\Framework\TestCase;
 use SlopeIt\ClockMock\ClockMock;
 
-abstract class CustomPostTypeTest extends TestCase {
+abstract class CustomPostTypeTest extends BaseTestCase {
 
 	/**
 	 * This is the date that is used in the tests.
@@ -458,7 +458,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
   protected function setUp() : void {
-        parent::setUp();
+		parent::setUp();
 
 	$this->dateFormatted  = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
 
