@@ -72,7 +72,7 @@ export default defineConfig({
 function sidebarAnleitung(): DefaultTheme.SidebarItem[] {
     return [
       {
-        text: 'Erste Schritte',
+        text: 'Grundlagen', base: '/anleitung/',
         items: [
           { text: 'Installation',  link: 'installation' }
         , { text: 'Einrichtung',   link: 'einrichtung-1' }
@@ -80,17 +80,17 @@ function sidebarAnleitung(): DefaultTheme.SidebarItem[] {
         ]
       },
       {
-        text: 'Erweitert',
+        text: 'Erweitert', base: '/anleitung/use-cases/',
         items: [
-          { text: 'Buchungscodes erstellen',  link: 'installation' }
-        , { text: 'E-Mail Template anpassen',   link: 'einrichtung-1' }
-        , { text: 'Karten einbinden', link: 'einrichtung-2' }
+          { text: 'Buchungscodes erstellen',  link: 'buchungscodes-erstellen' }
+        , { text: 'E-Mail Template anpassen',   link: 'email-template-anpassen' }
+        , { text: 'Karten einbinden', link: 'karten-anbinden' }
         ]
       },
       {
-        text: 'Anwendungsfälle',
+        text: 'Anwendungsfälle', base: '/anleitung/use-cases/',
         items: [
-          { text: 'Andbindung Schloßsystem',  link: 'installation' }
+          { text: 'Anbindung Schloßsystem',  link: 'externes-schloss-system' }
         , { text: 'Einrichtung',   link: 'einrichtung-1' }
         , { text: 'Erste Buchung', link: 'einrichtung-2' }
         ]
@@ -102,7 +102,7 @@ function sidebarAnleitung(): DefaultTheme.SidebarItem[] {
 function sidebarDokumentation(): DefaultTheme.SidebarItem[] { 
     return [
       {
-        text: 'Benutzer-Dokumentation',
+        text: 'Benutzer-Dokumentation', link: '/',
         items: [
           { text: 'Artikel',  link: 'artikel' }
         , { text: 'Standorte',   link: 'standorte' }
@@ -115,12 +115,17 @@ function sidebarDokumentation(): DefaultTheme.SidebarItem[] {
             , { text: 'Hooks und Filter', link: 'hooks-und-filter' }
             ]
           }
+        , { text: 'Administration',
+            items: [
+             { text: 'Rollen', link: 'rollen' }
+            ]
+          }
         ]
       },
       {
-        text: 'Entwickler-Dokumentation',
+        text: 'Entwickler-Dokumentation', 
         items: [
-          { text: 'Überblick', link: 'überblick' }
+          { text: 'Überblick', link: 'dev-überblick' }
         , { text: 'API-Design', link: 'api-design' }
         , { text: 'Roadmap', 'link': 'roadmap' }
         ]
