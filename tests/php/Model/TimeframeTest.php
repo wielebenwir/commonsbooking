@@ -636,6 +636,10 @@ class TimeframeTest extends CustomPostTypeTest {
 			)
 		);
 
+		//do this as a regular user so that we are not unlimited like privileged users
+		$this->createSubscriber();
+		wp_set_current_user($this->subscriberId);
+
 		$this->assertEquals(
 			strtotime( '+29 days', strtotime( self::CURRENT_DATE )),
 			$lateTimeframe->getLatestPossibleBookingDateTimestamp()
