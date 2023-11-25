@@ -41,7 +41,7 @@ class Calendar {
 	 * @return string
 	 * @throws Exception
 	 */
-	public static function renderTable( $atts ): string {
+	public static function renderTable( $atts = [] ): string {
 		$locationCategory = false;
 		if ( is_array( $atts ) && array_key_exists( 'locationcat', $atts ) ) {
 			$locationCategory = $atts['locationcat'];
@@ -96,6 +96,8 @@ class Calendar {
 		$print .= self::renderHeadlineDays( $days_display );
 		$print .=  '</tr></thead><tbody>';
 
+		$time = time();
+
 		$items = get_posts(
             array(
 				'post_type'      => 'cb_item',
@@ -104,6 +106,10 @@ class Calendar {
 				'posts_per_page' => - 1,
             )
         );
+
+		if ( class_exists('WP_CLI') ) {
+			\WP_CLI::log( 'Found ' . count( $items ) . ' items in ' . ( time() - $time ) . ' seconds.' );
+		}
 
 		$itemRowsHTML = '';
 
@@ -118,6 +124,8 @@ class Calendar {
 			$rowHtml = ' ';
 
 			// Get timeframes for item
+			$time = time();
+
 			$timeframes = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
 				strtotime( $today ),
 				strtotime( $last_day ),
@@ -126,6 +134,10 @@ class Calendar {
 				[ Timeframe::BOOKABLE_ID ],
 				true
 			);
+
+			if ( class_exists('WP_CLI') ) {
+				\WP_CLI::log( 'Found ' . count( $timeframes ) . ' timeframes for item ' . $item->ID . ' in ' . ( time() - $time ) . ' seconds.' );
+			}
 
 			if ( $timeframes ) {
 				// Collect unique locations from timeframes
@@ -140,6 +152,9 @@ class Calendar {
 					$cacheItem     = Plugin::getCacheItem( $customCacheKey );
 					if ( $cacheItem ) {
 						$rowHtml .= $cacheItem;
+						if ( class_exists('WP_CLI') ) {
+							\WP_CLI::log( 'Found cached item ' . $item->ID . ' for location ' . $locationId  );
+						}
 					} else {
 						// Check for category term
 						if ( $locationCategory ) {
@@ -147,8 +162,11 @@ class Calendar {
 								continue;
 							}
 						}
-
+						$time = time();
 						$locationHtml = self::renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display );
+						if ( class_exists('WP_CLI') ) {
+							\WP_CLI::log( 'Rendered row for item ' . $item->ID . ' and location ' . $locationId . ' in ' . ( time() - $time ) . ' seconds.' );
+						}
 						Plugin::setCacheItem( $locationHtml, [ strval( $item->ID ), strval( $locationId ) ], $customCacheKey );
 						$rowHtml .= $locationHtml;
 					}
