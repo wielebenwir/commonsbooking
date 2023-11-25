@@ -43,6 +43,9 @@ class Calendar {
 	 */
 	protected $weeks;
 
+	//an array of post ids relevant for this calendar, used to speed up the calendar generation
+	protected $postIds;
+
 	/**
 	 * Calendar constructor.
 	 *
@@ -52,7 +55,7 @@ class Calendar {
 	 * @param array $items
 	 * @param array $types
 	 */
-	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [] ) {
+	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [], array $postIds = [] ) {
 		//check, that it spans at least two days
 		if ( $startDate->getDate() == $endDate->getDate() ) {
 			throw new \InvalidArgumentException( 'Calendar must span at least two days' );
@@ -63,6 +66,7 @@ class Calendar {
 		$this->items     = $items;
 		$this->locations = $locations;
 		$this->types     = $types;
+		$this->postIds   = $postIds;
 	}
 
 	/**
@@ -89,6 +93,32 @@ class Calendar {
 		} else {
 			$weeks = array();
 			while ( $startDate <= $endDate ) {
+				//sort out relevant timeframes
+				if (! empty($this->postIds)) {
+					$relevantPosts = array_filter(
+						function ( $post ) use ( $startDate ) {
+							$start = get_post_meta( $post, Timeframe::REPETITION_START, true );
+							$end   = get_post_meta( $post, Timeframe::REPETITION_END, true );
+							//we just check if the start-date is in the range of the week
+							if ( $start && $end ) {
+								if ( $start <= strtotime($startDate) && $end >= strtotime($startDate) ) {
+									return true;
+								}
+							}
+							elseif ( $start && ! $end ) {
+								if ( $start <= strtotime($startDate) ) {
+									return true;
+								}
+							}
+							return false;
+						},
+						$this->postIds
+					);
+				}
+				else {
+					$relevantPosts = array();
+				}
+
 				$dayOfYear = date( 'z', $startDate );
 				$year      = date( 'Y', $startDate );
 				$weeks[]   = new Week(
@@ -96,7 +126,8 @@ class Calendar {
 					$dayOfYear,
 					$this->locations,
 					$this->items,
-					$this->types
+					$this->types,
+					$relevantPosts
 				);
 				$startDate = strtotime( 'next monday', $startDate );
 			}
