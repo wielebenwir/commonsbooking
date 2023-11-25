@@ -96,8 +96,6 @@ class Calendar {
 		$print .= self::renderHeadlineDays( $days_display );
 		$print .=  '</tr></thead><tbody>';
 
-		$time = time();
-
 		$items = get_posts(
             array(
 				'post_type'      => 'cb_item',
@@ -107,12 +105,11 @@ class Calendar {
             )
         );
 
-		if ( class_exists('WP_CLI') ) {
-			\WP_CLI::log( 'Found ' . count( $items ) . ' items in ' . ( time() - $time ) . ' seconds.' );
-		}
-
 		$itemRowsHTML = '';
 
+		if (class_exists('WP_CLI')) {
+			\WP_CLI::log( 'Found ' . count( $items ) . ' items.' );
+		}
 		foreach ( $items as $item ) {
 			// Check for category term
 			if ( $itemCategory ) {
@@ -124,7 +121,6 @@ class Calendar {
 			$rowHtml = ' ';
 
 			// Get timeframes for item
-			$time = time();
 
 			$timeframes = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
 				strtotime( $today ),
@@ -135,10 +131,6 @@ class Calendar {
 				true
 			);
 
-			if ( class_exists('WP_CLI') ) {
-				\WP_CLI::log( 'Found ' . count( $timeframes ) . ' timeframes for item ' . $item->ID . ' in ' . ( time() - $time ) . ' seconds.' );
-			}
-
 			if ( $timeframes ) {
 				// Collect unique locations from timeframes
 				$locations = [];
@@ -146,6 +138,9 @@ class Calendar {
 					$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
 				}
 
+				if (class_exists('WP_CLI')) {
+					\WP_CLI::log( 'Found ' . count( $locations ) . ' locations for item ' . $item->ID );
+				}
 				// loop through location
 				foreach ( $locations as $locationId => $locationName ) {
 					$customCacheKey = $item->ID . $locationId . $today;
@@ -259,7 +254,6 @@ class Calendar {
 			$itemName = $item->post_title;
 
 			// Get data for current item/location combination
-			$time = time();
 			$calendarData = self::getCalendarDataArray(
 				$item->ID,
 				$locationId,
@@ -267,9 +261,6 @@ class Calendar {
 				date( 'Y-m-d', strtotime( '+' . $days . ' days', time() ) ),
 				true
 			);
-			if ( class_exists('WP_CLI') ) {
-				\WP_CLI::log( 'Getting calendar data for item ' . $item->ID . ' and location ' . $locationId  . ' in ' . ( time() - $time ) . ' seconds.');
-			}
 
             $gotStartDate = false;
 			$gotEndDate   = false;
