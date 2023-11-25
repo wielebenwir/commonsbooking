@@ -7,6 +7,7 @@ use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Model\BookingCode;
 use WP_Post;
 use Exception;
+use CommonsBooking\CB\CB;
 use CommonsBooking\View\Calendar;
 use CommonsBooking\View\Admin\Filter;
 use CommonsBooking\Repository\BookingCodes;
@@ -698,6 +699,29 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'          => esc_html__( 'Booking Codes', 'commonsbooking' ),
+				'id'            => 'direct-email-booking-codes-list',
+				'type'          => 'title',
+				'render_row_cb' => ['\CommonsBooking\View\BookingCodes','renderDirectEmailRow'],
+			),
+			array(
+				'name' => esc_html__( 'Send booking codes automated by email', 'commonsbooking' ),
+				'desc_cb' => esc_html__("Enable automated sending of booking codes by email", 'commonsbooking' ),
+				'name_start'        => esc_html__( 'Start Date', 'commonsbooking' ),
+                'desc_start'        => commonsbooking_sanitizeHTML( __('First day to send Codes (List starts at next month)<br>(Same day will be used for subsequent messages) ', 'commonsbooking')) ,
+				'date_format_start' => $dateFormat,
+				'default_start'		=> strtotime("now"),
+				'name_nummonth'       => esc_html__( "Months to send", 'commonsbooking' ),
+				'desc_nummonth'       => esc_html__( "Send booking codes for this amount of month's in one email", 'commonsbooking' ),
+				'default_nummonth'		=> 1,
+				'msg_next_email'		=> esc_html__( 'Next email planned for: ', 'commonsbooking' ),
+				'msg_email_not_planned'		=> esc_html__( '(not planned)', 'commonsbooking' ),
+				'id'   => \CommonsBooking\View\BookingCodes::CRON_EMAIL_CODES,
+				'type' => 'booking_codes_email_fields',
+				'sanitization_cb' =>  ['\CommonsBooking\View\BookingCodes','sanitizeCronEmailCodes'],
+				'escape_cb'       =>  ['\CommonsBooking\View\BookingCodes','escapeCronEmailCodes'],
+			),
+			array(
+				'name'          => esc_html__( 'Booking Codes', 'commonsbooking' ),
 				'id'            => 'booking-codes-list',
 				'type'          => 'title',
 				'render_row_cb' => array( self::class, 'renderBookingCodeList' ),
@@ -799,6 +823,10 @@ class Timeframe extends CustomPostType {
 				try {
 					BookingCodes::generate( $timeframe );
 				} catch ( BookingCodeException $e ) {
+					//unset checkboxes if booking codes could not be generated
+					delete_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_CREATE_BOOKING_CODES );
+					delete_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES );
+
 					set_transient(
 						BookingCode::ERROR_TYPE,
 						$e->getMessage(),
@@ -1097,6 +1125,10 @@ class Timeframe extends CustomPostType {
 	 * Initiates needed hooks.
 	 */
 	public function initHooks() {
+		// Add custom cmb2 type for email booking codes by cron
+		add_action( 'cmb2_render_booking_codes_email_fields', ['\CommonsBooking\View\BookingCodes','renderCronEmailFields'], 10, 5 );
+		add_action("cmb2_save_field_" . \CommonsBooking\View\BookingCodes::CRON_EMAIL_CODES,['\CommonsBooking\View\BookingCodes','cronEmailCodesSaved'],10,3);
+	
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
