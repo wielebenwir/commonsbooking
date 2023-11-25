@@ -41,12 +41,6 @@ class Week {
 	protected $types;
 
 	/**
-	 * Keeps the postIds relevant for this week in memory, to speed up the calendar generation
-	 * @var array
-	 */
-	protected $postIds;
-
-	/**
 	 * Week constructor.
 	 *
 	 * @param $year
@@ -55,7 +49,7 @@ class Week {
 	 * @param array $items
 	 * @param array $types
 	 */
-	public function __construct( $year, $dayOfYear, array $locations = [], array $items = [], array $types = [], array $postIds = [] ) {
+	public function __construct( $year, $dayOfYear, array $locations = [], array $items = [], array $types = [] ) {
 		if ( $year === null ) {
 			$year = date( 'Y' );
 		}
@@ -64,7 +58,6 @@ class Week {
 		$this->locations = $locations;
 		$this->items     = $items;
 		$this->types     = $types;
-		$this->postIds   = $postIds;
 	}
 
 	/**
@@ -92,31 +85,7 @@ class Week {
 			$days = array();
 			for ( $i = 0; $i < 7; $i ++ ) {
 				$dayDate   = $dto->format( 'Y-m-d' );
-				if ( ! empty ($this->postIds) ) {
-					//split up the relevant timeframes
-					$relevantPosts = array_filter(
-						function ( $post ) use ( $dto ) {
-							$start = get_post_meta( $post, Timeframe::REPETITION_START, true );
-							$end   = get_post_meta( $post, Timeframe::REPETITION_END, true );
-							if ( $start && $end ) {
-								if ( $start <= $dto->getTimestamp() && $end >= $dto->getTimestamp() ) {
-									return true;
-								}
-							}
-							elseif ( $start && ! $end ) {
-								if ( $start <= $dto->getTimestamp() ) {
-									return true;
-								}
-							}
-							return false;
-						},
-						$this->postIds
-					);
-				}
-				else {
-					$relevantPosts = array();
-				}
-				$days[]    = new Day( $dayDate, $this->locations, $this->items, $this->types, $relevantPosts );
+				$days[]    = new Day( $dayDate, $this->locations, $this->items, $this->types );
 				$dayOfWeek = $dto->format( 'w' );
 				if ( $dayOfWeek === '0' ) {
 					break;

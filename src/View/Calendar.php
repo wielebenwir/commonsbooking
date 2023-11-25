@@ -118,7 +118,7 @@ class Calendar {
 			$rowHtml = ' ';
 
 			// Get timeframes for item
-			$timeframes = \CommonsBooking\Repository\Timeframe::getInRangeWPQuery(
+			$timeframes = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
 				strtotime( $today ),
 				strtotime( $last_day ),
 				[],
@@ -163,8 +163,8 @@ class Calendar {
 						 *
 						 * @return bool
 						 */ $timeframes,
-							function ( $timeframe ) use ( $locationId ) {
-								return ( $timeframe->getLocation()->ID == $locationId );
+							function ( $timeframe ) use ( $locationId, $item ) {
+								return ( $timeframe->getLocation()->ID == $locationId ) && ( $timeframe->getItem()->ID == $item->ID  ) ;
 							}
 						);
 
@@ -493,9 +493,7 @@ class Calendar {
 				$startDate,
 				$endDate,
 				$locations,
-				$items,
-				[],
-				$preFilteredPostIds
+				$items
 			);
 
 			$jsonResponse = [
@@ -557,7 +555,7 @@ class Calendar {
 			foreach ( $calendar->getWeeks() as $week ) {
 				/** @var Day $day */
 				foreach ( $week->getDays() as $day ) {
-					self::mapDay( $day, $lastBookableDate, $endDate, $jsonResponse, $firstBookableDay );
+					self::mapDay( $day, $lastBookableDate, $endDate, $jsonResponse, $firstBookableDay, $preFilteredPostIds );
 				}
 			}
 
@@ -578,7 +576,7 @@ class Calendar {
 	 *
 	 * @return void
 	 */
-	protected static function mapDay( $day, $lastBookableDate, $endDate, &$jsonResponse, $firstBookableDay) {
+	protected static function mapDay( $day, $lastBookableDate, $endDate, &$jsonResponse, $firstBookableDay, $preFilteredPostIds = [] ) {
 		$dayArray = [
 			'date'               => $day->getFormattedDate( 'd.m.Y' ),
 			'slots'              => [],

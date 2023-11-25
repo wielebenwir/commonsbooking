@@ -112,6 +112,7 @@ class Timeframe extends PostRepository {
 		bool $returnAsModel = false,
 		?int $minTimestamp = null,
 		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ],
+		array $preFilteredPostIds = []
 	): array {
 		if ( ! count( $types ) ) {
 			$types = [
@@ -132,7 +133,11 @@ class Timeframe extends PostRepository {
 			$posts = [];
 
 			// Get Post-IDs considering types, items and locations
-			$postIds = self::getPostIdsByType( $types, $items, $locations );
+			if ( count( $preFilteredPostIds ) ) {
+				$postIds = $preFilteredPostIds;
+			} else {
+				$postIds = self::getPostIdsByType( $types, $items, $locations );
+			}
 
 			if ( $postIds && count( $postIds ) ) {
 				$posts = self::getPostsByBaseParams(

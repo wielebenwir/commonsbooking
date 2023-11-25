@@ -42,7 +42,6 @@ class Day {
 	 */
 	protected $timeframes;
 
-	protected $timeframesHaveBeenChecked = false;
 	/**
 	 * Day constructor.
 	 *
@@ -51,7 +50,7 @@ class Day {
 	 * @param array $items
 	 * @param array $types
 	 */
-	public function __construct( string $date, array $locations = [], array $items = [], array $types = [], array $timeframes = [] ) {
+	public function __construct( string $date, array $locations = [], array $items = [], array $types = [] ) {
 		$this->date      = $date;
 		$this->locations = array_map( function ( $location ) {
 			return $location instanceof WP_Post ? $location->ID : $location;
@@ -61,10 +60,6 @@ class Day {
 		}, $items );
 
 		$this->types = $types;
-
-		if ( ! empty( $timeframes ) ) {
-			$this->timeframes = $timeframes;
-		}
 	}
 
 	/**
@@ -115,7 +110,7 @@ class Day {
 	 * @return array
 	 * @throws Exception
 	 */
-	public function getTimeframes(): array {
+	public function getTimeframes($preFilteredPostIds = []): array {
 		if ( $this->timeframes === null ) {
 			$timeFrames = \CommonsBooking\Repository\Timeframe::get(
 				$this->locations,
@@ -125,23 +120,21 @@ class Day {
 				true,
 				null,
 				[ 'publish', 'confirmed' ],
+				$preFilteredPostIds
 			);
-		}
-		else {
-			$timeFrames = $this->timeframes;
-		}
-		// check if user is allowed to book this timeframe and remove unallowed timeframes from array
-		// OR: Check for repetition timeframe selected days
-		if (! $this->timeframesHaveBeenChecked) {
+
+			// check if user is allowed to book this timeframe and remove unallowed timeframes from array
+			// OR: Check for repetition timeframe selected days
 			foreach ( $timeFrames as $key => $timeframe ) {
 				if ( ! commonsbooking_isCurrentUserAllowedToBook( $timeframe->ID ) ||
 				     ! $this->isInTimeframe( $timeframe )) {
 					unset( $timeFrames[ $key ] );
 				}
 			}
-			$this->timeframesHaveBeenChecked = true;
+
 			$this->timeframes = $timeFrames;
 		}
+
 		return $this->timeframes;
 	}
 
@@ -168,8 +161,8 @@ class Day {
 	 * @return array
 	 * @throws Exception
 	 */
-	public function getGrid(): array {
-		return $this->getTimeframeSlots();
+	public function getGrid($preFilteredPostIds = []): array {
+		return $this->getTimeframeSlots($preFilteredPostIds);
 	}
 
 	/**
@@ -389,12 +382,12 @@ class Day {
 	 *
 	 * @throws Exception
 	 */
-	protected function mapTimeFrames( array &$slots ) {
+	protected function mapTimeFrames( array &$slots, $preFilteredPostIds = [] ) {
 		$grid = 24 / count( $slots );
 
 		// Iterate through timeframes and fill slots
 		/** @var \CommonsBooking\Model\Timeframe $timeframe */
-		foreach ( $this->getTimeframes() as $timeframe ) {
+		foreach ( $this->getTimeframes($preFilteredPostIds) as $timeframe ) {
 			// Slots
 			$startSlot = $this->getStartSlot( $grid, $timeframe );
 			$endSlot   = $this->getEndSlot( $slots, $grid, $timeframe );
@@ -508,7 +501,7 @@ class Day {
 	 * @return array
 	 * @throws Exception
 	 */
-	protected function getTimeframeSlots(): array {
+	protected function getTimeframeSlots($preFilteredPostIds = []): array {
 		$customCacheKey = $this->getDate() . serialize( $this->items ) . serialize( $this->locations );
 		$customCacheKey = md5( $customCacheKey );
 		$cacheItem     = Plugin::getCacheItem( $customCacheKey );
@@ -528,7 +521,7 @@ class Day {
 				];
 			}
 
-			$this->mapTimeFrames( $slots );
+			$this->mapTimeFrames( $slots, $preFilteredPostIds );
 			$this->mapRestrictions( $slots );
 			$this->sanitizeSlots( $slots );
 
