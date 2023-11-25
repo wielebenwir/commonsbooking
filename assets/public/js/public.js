@@ -2023,6 +2023,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 disallowBookedDaysInRange: true,
                 disallowPartiallyBookedDaysInRange: true,
                 disallowLockDaysInRange: globalCalendarData["disallowLockDaysInRange"],
+                disallowHolidaysInRange: globalCalendarData["disallowLockDaysInRange"],
                 mobileFriendly: true,
                 selectForward: true,
                 useResetBtn: true,
