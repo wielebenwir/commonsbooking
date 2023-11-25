@@ -144,11 +144,14 @@ class Wordpress {
 		$timeframe = new Timeframe($postId);
 		$ids = [$postId];
 
-		if($timeframe->getItem()) {
-			$ids[] = $timeframe->getItem()->ID;
+		$items = $timeframe->getItems();
+		if( $items ) {
+			foreach ($items as $item) $ids[] = $item->ID;
 		}
-		if($timeframe->getLocation()) {
-			$ids[] = $timeframe->getLocation()->ID;
+
+		$locations = $timeframe->getLocations();
+		if( $locations ) {
+			foreach ($locations as $location) $ids[] = $location->ID;
 		}
 
 		return $ids;
@@ -246,16 +249,29 @@ class Wordpress {
 	public static function getLocationAndItemIdsFromPosts($posts): array {
 		$itemsAndLocations = [];
 		array_walk($posts, function ($timeframe) use (&$itemsAndLocations) {
-			$itemsAndLocations[] = get_post_meta(
+			$items = get_post_meta(
 				$timeframe->ID,
 				Timeframe::META_ITEM_ID,
 				true
 			);
-			$itemsAndLocations[] = get_post_meta(
+			// depends on single or multiselect
+			if(is_array($items)) {
+				foreach ($items as $item) $itemsAndLocations[] = $item;
+			} else {
+				$itemsAndLocations[] = $items;
+			}
+
+			$locations = get_post_meta(
 				$timeframe->ID,
 				Timeframe::META_LOCATION_ID,
 				true
 			);
+			// depends on single or multiselect
+			if(is_array($locations)) {
+				foreach ($locations as $location) $itemsAndLocations[] = $location;
+			} else {
+				$itemsAndLocations[] = $locations;
+			}
 		});
 		return array_map('intval', $itemsAndLocations);
 	}

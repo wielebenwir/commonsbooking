@@ -31,15 +31,33 @@ class Timeframe extends CustomPost {
 
 	public const REPETITION_END = 'repetition-end';
 
-	public const META_LOCATION_ID = 'location-id';
+	public const META_ITEM_SELECTION_TYPE = 'item-select';
 
 	public const META_ITEM_ID = 'item-id';
+
+	public const META_ITEM_IDS = 'item-ids';
+
+	public const META_ITEM_CATEGORY_IDS = 'item-category-ids';
+
+	public const META_LOCATION_SELECTION_TYPE = 'location-select';
+
+	public const META_LOCATION_ID = 'location-id';
+
+	public const META_LOCATION_IDS = 'location-ids';
+
+	public const META_LOCATION_CATEGORY_IDS = 'location-category-ids';
 
 	public const META_REPETITION = 'timeframe-repetition';
 
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
 	public const META_MAX_DAYS = 'timeframe-max-days';
+
+	public const SELECTION_MANUAL_ID = 0;
+
+	public const SELECTION_CATEGORY_ID = 1;
+
+	public const SELECTION_ALL_ID = 2;
 
 	public const META_CREATE_BOOKING_CODES = 'create-booking-codes';
 
@@ -124,8 +142,8 @@ class Timeframe extends CustomPost {
 			return $endDate;
 		}
 
-		// if overall enddate of timeframe is > than latest possible booking date,
-		// we use latest possible booking date as end date
+		// if overall enddate of timeframe is > than the latest possible booking date,
+		// we use the latest possible booking date as end date
 		return $latestPossibleBookingDate;
 	}
 
@@ -270,6 +288,7 @@ class Timeframe extends CustomPost {
 	/**
 	 * Validates if there can be booking codes created for this timeframe.
      *
+	 * TODO: #507
 	 * @return bool
 	 */
 	public function bookingCodesApplicable(): bool {
@@ -288,6 +307,8 @@ class Timeframe extends CustomPost {
 	 * This should not happen, because the location is a required field.
 	 * But it might happen if the location was deleted.
 	 *
+	 * IMPORTANT: Going from 2.9 onwards you should NOT use this method for timeframes of the type HOLIDAYS_ID.
+	 * Use the getLocations() method instead.
 	 * @return Location
 	 * @throws Exception
 	 */
@@ -303,6 +324,38 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * Returns the corresponding multiple locations for a timeframe.
+	 * If multiple locations are not available, it will call the getLocation() method and return an array with one location.
+	 *
+	 * @since 2.9 (anticipated)
+	 * @return Location[]
+	 */
+	public function getLocations(): ?array {
+		$locationIds = $this->getMeta( self::META_LOCATION_IDS );
+		if ( $locationIds ) {
+			$locations = [];
+			foreach ( $locationIds as $locationId ) {
+				if ( $post = get_post( $locationId ) ) {
+					$locations[] = new Location( $post );
+				}
+			}
+
+			return $locations;
+		}
+		else {
+			$location = $this->getLocation();
+			if ( $location ) {
+				return [ $location ];
+			}
+			else {
+				return null;
+			}
+		}
+	}
+
+	/**
+	 * Get the corresponding single item for a timeframe.
+	 * IMPORTANT: Going from 2.9 onwards you should NOT use this method for timeframes of the type HOLIDAYS_ID.
 	 * Will get corresponding item for this timeframe.
 	 * This function will return null if no item is set.
 	 * This should not happen, because the item is a required field.
@@ -320,6 +373,36 @@ class Timeframe extends CustomPost {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Gets the corresponding multiple items for a timeframe.
+	 * If multiple items are not available, it will call the getItem() method and return an array with one item.
+	 *
+	 * @since 2.9 (anticipated)
+	 * @return Item[]
+	 */
+	public function getItems(): ?array {
+		$itemIds = $this->getMeta( self::META_ITEM_IDS );
+		if ( $itemIds ) {
+			$items = [];
+			foreach ( $itemIds as $itemId ) {
+				if ( $post = get_post( $itemId ) ) {
+					$items[] = new Item( $post );
+				}
+			}
+
+			return $items;
+		}
+		else {
+			$item = $this->getItem();
+			if ( $item ) {
+				return [ $item ];
+			}
+			else {
+				return null;
+			}
+		}
 	}
 
 	/**
