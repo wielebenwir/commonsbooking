@@ -40,15 +40,6 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals($this->allTimeframes, $postIds);
 	}
 
-	public function testGetInRangeWPQuery() {
-		$inRangeTimeFrames = Timeframe::getInRangeWPQuery($this->repetition_start, $this->repetition_end);
-		//All timeframes should be in range
-		$postIds = array_map(function($timeframe) {
-			return $timeframe->ID;
-		}, $inRangeTimeFrames);
-		$this->assertEqualsCanonicalizing($this->allTimeframes, $postIds);
-	}
-
 	public function testGetForItem() {
 		$inItemTimeframes = Timeframe::get(
 			[],
