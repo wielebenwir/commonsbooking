@@ -4,6 +4,7 @@
 namespace CommonsBooking\Model;
 
 use CommonsBooking\Exception\BookingCodeException;
+use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Wordpress;
 use Exception;
 
@@ -32,6 +33,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	const END_TIMEFRAME_GRIDSIZE = 'end-timeframe-gridsize';
 
+	//This is the error type that is user for the ADMIN Notice for creating an invalid backend booking
     public const ERROR_TYPE = 'BookingValidationFailed';
 
 	/**
@@ -546,6 +548,67 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Will check if a backend booking is valid.
+	 * Throws a TimeframeInvalidException containing the error message if the booking is not valid.
+	 * @return true if booking is valid
+	 * @throws TimeframeInvalidException
+	 */
+	public function isValid(): bool {
+		if ($this->getStartDate() > $this->getEndDate()) {
+			throw new TimeframeInvalidException('Start date is after end date' );
+		}
+
+
+		try {
+			$item = $this->getItem();
+			if ( ! $item ) {
+				throw new Exception();
+			}
+		} catch ( Exception $e ) {
+			throw new TimeframeInvalidException( __('Item not found', 'commonsbooking' ) );
+		}
+
+		try {
+			$location = $this->getLocation();
+			if ( ! $location ) {
+				throw new Exception();
+			}
+		} catch ( Exception $e ) {
+			throw new TimeframeInvalidException( __('Location not found', 'commonsbooking' ) );
+		}
+
+		$timeframe = $this->getBookableTimeFrame();
+		if ( $timeframe === null ) {
+			throw new TimeframeInvalidException( __( 'There is no timeframe for this booking. Please create a timeframe first.', 'commonsbooking' ) );
+		}
+
+		// validate if overlapping bookings exist
+		$overlappingBookings = \CommonsBooking\Repository\Booking::getExistingBookings(
+			$item->ID,
+			$location->ID,
+			$this->getStartDate(),
+			$this->getEndDate(),
+			$this->ID
+		);
+
+		if ( $overlappingBookings && count( $overlappingBookings ) >= 1 ) {
+
+			foreach ( $overlappingBookings as $overlappingBooking ) {
+				$overlappingBookingLinks[] = $overlappingBooking->getFormattedEditLink();
+			}
+
+			$formattedOverlappingLinks = implode( '<br>', $overlappingBookingLinks );
+
+			throw new TimeframeInvalidException(
+				__( 'There are one ore more overlapping bookings within the chosen timerange', 'commonsbooking' ) . PHP_EOL .
+				__( 'Please adjust the start- or end-date.', 'commonsbooking' ) . PHP_EOL .
+				sprintf( __( 'Affected Bookings: %s', 'commonsbooking' ), commonsbooking_sanitizeHTML( $formattedOverlappingLinks ) ),
+			);
+		}
+		return true;
 	}
 
 	/**
