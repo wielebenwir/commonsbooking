@@ -126,16 +126,6 @@ class Calendar {
 				[ Timeframe::BOOKABLE_ID ],
 				true
 			);
-			$bookings = \CommonsBooking\Repository\Booking::getByTimerange(
-				strtotime( $today ),
-				strtotime( $last_day ),
-				[],
-				[ $item->ID ],
-				[],
-				['confirmed']
-			);
-			//bookings are just timeframes anyway, eh ;)
-			array_merge( $timeframes, $bookings);
 
 			if ( $timeframes ) {
 				// Collect unique locations from timeframes
@@ -157,18 +147,8 @@ class Calendar {
 								continue;
 							}
 						}
-						$relevantTimeframes = array_filter(
-						/**
-						 * @param \CommonsBooking\Model\Timeframe $timeframe
-						 *
-						 * @return bool
-						 */ $timeframes,
-							function ( $timeframe ) use ( $locationId, $item ) {
-								return ( $timeframe->getLocation()->ID == $locationId ) && ( $timeframe->getItem()->ID == $item->ID  ) ;
-							}
-						);
 
-						$locationHtml = self::renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display, $relevantTimeframes );
+						$locationHtml = self::renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display );
 						Plugin::setCacheItem( $locationHtml, [ strval( $item->ID ), strval( $locationId ) ], $customCacheKey );
 						$rowHtml .= $locationHtml;
 					}
@@ -252,7 +232,7 @@ class Calendar {
 	 * @return string
 	 * @throws Exception
 	 */
-	protected static function renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display, $relevantTimeframes = [] ): string {
+	protected static function renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display ): string {
 		$cacheItem = Plugin::getCacheItem();
 		if ( $cacheItem ) {
 			return $cacheItem;
@@ -266,8 +246,7 @@ class Calendar {
 				$locationId,
 				$today,
 				date( 'Y-m-d', strtotime( '+' . $days . ' days', time() ) ),
-				true,
-				$relevantTimeframes
+				true
 			);
 
             $gotStartDate = false;
@@ -346,7 +325,7 @@ class Calendar {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getCalendarDataArray( $item, $location, string $startDateString, string $endDateString, bool $keepDaterange = false, $preFilteredPostIds = [] ): array {
+	public static function getCalendarDataArray( $item, $location, string $startDateString, string $endDateString, bool $keepDaterange = false ): array {
 		if ( $item instanceof WP_Post || $item instanceof CustomPost ) {
 			$item = $item->ID;
 		}
@@ -411,7 +390,7 @@ class Calendar {
 			}
 		}
 
-		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays, $lastBookableDate, $firstBookableDay, $preFilteredPostIds );
+		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays, $lastBookableDate, $firstBookableDay );
 	}
 
 	/**
@@ -471,8 +450,7 @@ class Calendar {
 		array $items,
 		$advanceBookingDays = null,
 		$lastBookableDate = null,
-        $firstBookableDay = null,
-		$preFilteredPostIds = []
+        $firstBookableDay = null
 	): array {
 
         $current_user   = wp_get_current_user();
@@ -555,7 +533,7 @@ class Calendar {
 			foreach ( $calendar->getWeeks() as $week ) {
 				/** @var Day $day */
 				foreach ( $week->getDays() as $day ) {
-					self::mapDay( $day, $lastBookableDate, $endDate, $jsonResponse, $firstBookableDay, $preFilteredPostIds );
+					self::mapDay( $day, $lastBookableDate, $endDate, $jsonResponse, $firstBookableDay );
 				}
 			}
 
@@ -576,7 +554,7 @@ class Calendar {
 	 *
 	 * @return void
 	 */
-	protected static function mapDay( $day, $lastBookableDate, $endDate, &$jsonResponse, $firstBookableDay, $preFilteredPostIds = [] ) {
+	protected static function mapDay( $day, $lastBookableDate, $endDate, &$jsonResponse, $firstBookableDay ) {
 		$dayArray = [
 			'date'               => $day->getFormattedDate( 'd.m.Y' ),
 			'slots'              => [],
@@ -599,7 +577,7 @@ class Calendar {
 		// Only process slot if it's in bookingdays in advance range
 		if ( $day->getDateObject()->getTimestamp() < $lastBookableDate ) {
 			// we process all slots and check status of each slot
-			foreach ( $day->getGrid($preFilteredPostIds) as $slot ) {
+			foreach ( $day->getGrid() as $slot ) {
 				self::processSlot( $slot, $dayArray, $jsonResponse, $allLocked, $noSlots );
 			}
 
