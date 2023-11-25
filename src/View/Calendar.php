@@ -137,10 +137,6 @@ class Calendar {
 				foreach ( $timeframes as $timeframe ) {
 					$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
 				}
-
-				if (class_exists('WP_CLI')) {
-					\WP_CLI::log( 'Found ' . count( $locations ) . ' locations for item ' . $item->ID );
-				}
 				// loop through location
 				foreach ( $locations as $locationId => $locationName ) {
 					$customCacheKey = $item->ID . $locationId . $today;
@@ -367,9 +363,6 @@ class Calendar {
 			true,
 			Helper::getLastFullHourTimestamp()
 		);
-		if ( class_exists('WP_CLI') ) {
-			\WP_CLI::log( 'Getting bookable timeframes for item ' . $item . ' and location ' . $location  . ' in ' . ( time() - $time ) . ' seconds.');
-		}
 
 		if ( count( $bookableTimeframes ) ) {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday( $bookableTimeframes );
@@ -547,9 +540,17 @@ class Calendar {
 			}
 
 			/** @var Week $week */
-			foreach ( $calendar->getWeeks() as $week ) {
+			$weeks = $calendar->getWeeks();
+			if (class_exists('WP_CLI')) {
+				\WP_CLI::log( 'Got '  . count( $weeks ) );
+			}
+			foreach ( $weeks as $week ) {
 				/** @var Day $day */
-				foreach ( $week->getDays() as $day ) {
+				$days = $week->getDays();
+				if (class_exists('WP_CLI')) {
+					\WP_CLI::log( 'Got '  . count( $days ) . ' days for week ' );
+				}
+				foreach ( $days as $day ) {
 					self::mapDay( $day, $lastBookableDate, $endDate, $jsonResponse, $firstBookableDay );
 				}
 			}
