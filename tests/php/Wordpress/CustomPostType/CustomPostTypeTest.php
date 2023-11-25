@@ -181,7 +181,7 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 					'marker_item_draft_icon_height' => 0.0,
 					'marker_item_draft_icon_anchor_x' => 0.0,
 					'marker_item_draft_icon_anchor_y' => 0.0,
-					'cb_items_available_categories' =>
+					'cb_items_available_filtergroups' =>
 						array (
 						),
 					'cb_items_preset_categories' =>

@@ -3,6 +3,7 @@
 namespace CommonsBooking\Map;
 
 use CommonsBooking\Helper\Wordpress;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Map;
 
 class MapData {
@@ -238,7 +239,40 @@ class MapData {
 						],
 					];
 				}
-			} //categories are only meant to be shown on local maps
+			}
+			//@since 2.9 new filtergroups pulled from settings
+			elseif ( $key == 'cb_items_available_filtergroups' ) {
+				$settings['filter_cb_item_categories'] = [];
+				$optionGroups = Settings::getOption( 'commonsbooking_options_templates','filtergroups_group');
+				$selectedFilterGroupIDs = $options['cb_items_available_filtergroups'];
+				//map our additional filtergroup data to the selected filtergroups
+				$selectedFilterGroups = array_map(
+					function($filterGroupID) use ($optionGroups) {
+						return $optionGroups[ intval($filterGroupID)];
+					},
+					$selectedFilterGroupIDs
+				);
+				foreach ( $selectedFilterGroups as $current_group_id => $selectedFilterGroup ) {
+					$elements = [];
+					foreach ( $selectedFilterGroup['categories'] as $termID) {
+						$term = get_term( $termID );
+						$customMarkup = get_term_meta( $termID, COMMONSBOOKING_METABOX_PREFIX . 'markup', true );
+						$termName = empty($customMarkup) ? $term->name : $customMarkup;
+
+						$elements[] = [
+							'cat_id' => intval( $termID ),
+							'markup' => $termName,
+						];
+					}
+					$settings['filter_cb_item_categories'][ $current_group_id ] = [
+						'name'     => $selectedFilterGroup['name'],
+						'elements' => $elements,
+						'isExclusive' => $selectedFilterGroup['isExclusive'] == 'on',
+					];
+				}
+			}
+			//old filtergroups, kept for backwards compatibility
+			//categories are only meant to be shown on local maps
 			elseif ( $key == 'cb_items_available_categories' ) {
 				$settings['filter_cb_item_categories'] = [];
 				$current_group_id                      = null;

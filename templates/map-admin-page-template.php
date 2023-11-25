@@ -7,7 +7,11 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
 <div class="inside">
 
     <p><?php echo commonsbooking_sanitizeHTML( __( 'These settings help you to configure the usage and appearance of Commons Booking Map.' ,'commonsbooking')); ?></p>
-
+	<h1>
+		<b><?php echo commonsbooking_sanitizeHTML( __('CAREFUL: Filter groups have changed since the last update.', 'commonsbooking') ); ?><br>
+		<?php echo commonsbooking_sanitizeHTML( __(' Please read the documentation: ', 'commonsbooking') ); ?> <a href="https://commonsbooking.org/?p=2256" target="_blank">https://commonsbooking.org/?p=2256</a> <br>
+		<?php echo commonsbooking_sanitizeHTML( __('If you save this map with the old filtergroups enabled, your settings will be lost.', 'commonsbooking') );?> </b>
+	</h1>
     <div class="option-group" id="option-group-map-presentation">
         <details>
             <summary><?php echo commonsbooking_sanitizeHTML( __( 'Map Presentation' ,'commonsbooking')); ?></summary>
@@ -616,32 +620,24 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                         <span class="dashicons dashicons-editor-help"
                               title="<?php echo commonsbooking_sanitizeHTML( __('the text for the button used for filtering' ,'commonsbooking')); ?>"></span>
                     </th>
-                    <td><input type="text"
-                                name="cb_map_options[custom_filterbutton_label]" value="<?php echo esc_attr(MapAdmin::get_option($cb_map_id, 'custom_filterbutton_label')); ?>"></td>
-                </tr>
-
-                <tr>
-                    <th>
-                        <?php echo commonsbooking_sanitizeHTML( __( 'available categories' ,'commonsbooking')); ?>:
-                        <span class="dashicons dashicons-editor-help"
-                              title="<?php echo commonsbooking_sanitizeHTML( __('select the categories that are presented the users to filter items - none for no filters' ,'commonsbooking')); ?>"></span>
-                    </th>
-                    <td>
-                        <ul class="cb-map-settings-cat-filter-list">
-                            <div class="category-wrapper">
-                                <?php echo  commonsbooking_sanitizeHTML( $available_categories_checklist_markup ) ?>
-                            </div>
-                        </ul>
-                    </td>
+                    <td><input type="text" name="cb_map_options[custom_filterbutton_label]"
+                               placeholder="<?php echo commonsbooking_sanitizeHTML( __( 'filter' ,'commonsbooking')); ?>"
+                               value="<?php echo esc_attr(MapAdmin::get_option($cb_map_id, 'custom_filterbutton_label')); ?>"></td>
                 </tr>
             </table>
 
             <table class="text-left" id="available-categories-custom-markup-wrapper">
                 <tr>
-                    <th><?php echo commonsbooking_sanitizeHTML( __(     'grouping of and custom markup for filters' ,'commonsbooking')); ?></th>
+                    <th>
+	                    <?php echo commonsbooking_sanitizeHTML( __(     'Use filter groups' ,'commonsbooking')); ?> <br>
+                       <a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=commonsbooking_options_templates#filtergroups-header"><?php echo commonsbooking_sanitizeHTML( __('Add / modify available filter groups', 'commonsbooking') )?></a>
+                    </th>
                     <td>
-                        <button id="add-filter-group-button" class="button"
-                                title="<?php echo commonsbooking_sanitizeHTML( __('add filter group' ,'commonsbooking')); ?>"><span class="dashicons dashicons-plus"></span></button>
+	                    <ul class="cb-map-settings-cat-filter-list">
+		                    <div class="category-wrapper">
+			                    <?php echo  commonsbooking_sanitizeHTML( $available_filtergroups_markup ) ?>
+		                    </div>
+	                    </ul>
                     </td>
                 </tr>
             </table>
@@ -650,13 +646,13 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
 
     <div class="option-group" id="option-group-filter-presets">
         <details>
-            <summary><?php echo commonsbooking_sanitizeHTML( __( 'Filter Item Presets' ,'commonsbooking')); ?></summary>
+            <summary><?php echo commonsbooking_sanitizeHTML( __( 'Available Item Categories' ,'commonsbooking')); ?></summary>
             <table class="text-left">
                 <tr>
                     <th>
-                        <?php echo commonsbooking_sanitizeHTML( __( 'preset categories' ,'commonsbooking')); ?>:
+                        <?php echo commonsbooking_sanitizeHTML( __( 'Available categories' ,'commonsbooking')); ?>:
                         <span class="dashicons dashicons-editor-help"
-                              title="<?php echo commonsbooking_sanitizeHTML( __('select the categories that are used to prefilter the items that are shown on the map - none for all items' ,'commonsbooking')); ?>"></span>
+                              title="<?php echo commonsbooking_sanitizeHTML( __('Select the categories that the items must belong to to be shown on the map - none for all items' ,'commonsbooking')); ?>"></span>
                     </th>
                     <td>
                         <ul class="cb-map-settings-cat-filter-list">
@@ -676,9 +672,9 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
             <table class="text-left">
                 <tr>
                     <th>
-                        <?php echo commonsbooking_sanitizeHTML( __( 'preset categories' ,'commonsbooking')); ?>:
+                        <?php echo commonsbooking_sanitizeHTML( __( 'Available categories' ,'commonsbooking')); ?>:
                         <span class="dashicons dashicons-editor-help"
-                              title="<?php echo commonsbooking_sanitizeHTML( __('select the categories that are used to prefilter the location categories that are shown on the map - none for all locations' ,'commonsbooking')); ?>"></span>
+                              title="<?php echo commonsbooking_sanitizeHTML( __('Select the categories that the location must belong to to be shown on the map - none for all locations' ,'commonsbooking')); ?>"></span>
                     </th>
                     <td>
                         <ul class="cb-map-settings-cat-filter-list">
@@ -712,76 +708,6 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
             //show options
             $('input').show();
             $('textarea').show();
-        });
-
-        //----------------------------------------------------------------------------
-        // grouping & custom markup of user filters
-
-        $('.cb_items_available_category_choice').change(function () {
-            var $this = $(this);
-            var el_id_arr = $this.attr('id').split('-');
-            var cat_id = el_id_arr[el_id_arr.length - 1];
-            //console.log(cat_id);
-
-            if ($this.prop("checked")) {
-                //console.log('checked');
-                add_custom_markup_option(cat_id, $this.parent().text(), $this.parent().text().trim());
-            } else {
-                //console.log('unchecked');
-                $('#available_category_cutom_markup_' + cat_id).remove();
-            }
-
-        });
-
-        function add_filter_group(group_id, group_name) {
-            var $accm_table = $('#available-categories-custom-markup-wrapper');
-            group_id = group_id ? group_id : 'g' + new Date().getTime() + '-' + Math.floor(Math.random() * 1000000);
-            group_name = group_name ? group_name : '';
-            var $row = $('<tr><th><?php echo commonsbooking_sanitizeHTML( __(     'filter group' ,'commonsbooking')); ?>:</th><td><input style="width: 250px;" type="text" placeholder="<?php echo commonsbooking_sanitizeHTML( __(     'group name' ,'commonsbooking')); ?>" name="cb_map_options[cb_items_available_categories][' + group_id + ']" value="' + group_name + '"></td></tr>');
-            $accm_table.append($row);
-            if (!$row.is(':nth-child(2)')) {
-                var $group_remove_button = $('<button style="margin-left: 10px;" class="button" title="<?php echo commonsbooking_sanitizeHTML( __( 'remove filter group' ,'commonsbooking')); ?>"><span class="dashicons dashicons-trash"></span></button>');
-
-                $($group_remove_button).click(function (event) {
-                    event.preventDefault();
-
-                    $(this).parent('tr').remove();
-                });
-
-                $row.append($group_remove_button);
-            }
-        }
-
-        function add_custom_markup_option(cat_id, label_text, markup) {
-            var $accm_table = $('#available-categories-custom-markup-wrapper');
-            var $row = $('<tr id="available_category_cutom_markup_' + cat_id + '"><th class="filter-label-name">' + label_text + ':</th><td><textarea style="width: 250px;" name="cb_map_options[cb_items_available_categories][' + cat_id + ']">' + markup + '</textarea></td></tr>');
-            $accm_table.append($row);
-        }
-
-        function add_custom_markup_options() {
-            var custom_markup_options_data = <?php echo  wp_json_encode($available_categories); ?>;
-
-            if (custom_markup_options_data.length > 0) {
-                $.each(custom_markup_options_data, function (index, item) {
-                    if (item.id.substring(0, 1) == 'g' ,'commonsbooking') {
-                        add_filter_group(item.id, item.content);
-                    } else {
-                        var $cat_choice = $(".cb_items_available_category_choice[value='" + item.id + "']");
-                        var markup = custom_markup_options_data[item.id] || $cat_choice.parent().text().trim();
-                        add_custom_markup_option(item.id, $cat_choice.parent().text(), item.content);
-                    }
-                });
-            } else {
-                add_filter_group();
-            }
-
-        }
-
-        add_custom_markup_options();
-
-        $('#add-filter-group-button').click(function (event) {
-            event.preventDefault();
-            add_filter_group();
         });
 
     });
