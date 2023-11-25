@@ -4,6 +4,7 @@ namespace CommonsBooking\Tests\Wordpress\CustomPostType;
 
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
+use SlopeIt\ClockMock\ClockMock;
 
 /**
  * This class tests the form request for the frontend booking process
@@ -21,7 +22,10 @@ class BookingTest extends CustomPostTypeTest
 	 * These are the regular scenarios where nothing should go wrong.
 	 * @return void
 	 */
-	public function testHandleBookingRequestDefautl() {
+	public function testHandleBookingRequest_Default() {
+		$date = new \DateTime( self::CURRENT_DATE );
+		$date->modify('-1 day');
+		ClockMock::freeze( $date );
 		// Case 1: We create an unconfirmed booking for a bookable timeframe. The unconfirmed booking should be created
 		$bookingId = Booking::handleBookingRequest(
 			$this->itemId,
@@ -66,7 +70,9 @@ class BookingTest extends CustomPostTypeTest
 		$this->assertTrue( $bookingModel->isConfirmed() );
 		$this->assertFalse( $bookingModel->isUnconfirmed() );
 
-		// Case 3: We now try to cancel our booking. The booking should be cancelled.
+		// Case 3: We now try to cancel our booking a little bit later. The booking should be cancelled.
+		$date->modify('+ 5 hours');
+		ClockMock::freeze( $date );
 		$canceledId = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
@@ -86,15 +92,22 @@ class BookingTest extends CustomPostTypeTest
 		$this->assertFalse( $bookingModel->isConfirmed() );
 		$this->assertFalse( $bookingModel->isUnconfirmed() );
 
-		// Case 4: We create an unconfirmed booking and then cancel the booking. The booking should be canceled
+		//check, if the cancel time is correct
+		$cancelDate = $bookingModel->getCancellationDateDateTime();
+		$this->assertEquals( $date->format('Y-m-d H:i:s'), $cancelDate->format('Y-m-d H:i:s') );
+	}
+
+	public function testHandleBookingRequest_deleteUnconfirmed() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		//  We create an unconfirmed booking and then cancel the booking. The booking should be canceled
 		$bookingId = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'unconfirmed',
 			null,
 			null,
-			strtotime( self::CURRENT_DATE ),
-			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime('+1 day'),
+			strtotime('+2 days'),
 			null,
 			null
 		);
@@ -112,12 +125,11 @@ class BookingTest extends CustomPostTypeTest
 			'delete_unconfirmed',
 			$bookingId,
 			null,
-			strtotime( self::CURRENT_DATE ),
-			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime('+1 day'),
+			strtotime('+2 days'),
 			$postName,
 			null
 		);
-
 	}
 
 	public function testBookingWithoutLoc() {

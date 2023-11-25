@@ -3,8 +3,10 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Exception\BookingDeniedException;
+use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
+use CommonsBooking\Service\BookingRuleApplied;
 use function wp_verify_nonce;
 
 /**
@@ -31,21 +33,6 @@ class Booking extends Timeframe {
 		// does not trigger when initiated in initHooks
 		add_action( 'post_updated', array( $this, 'postUpdated' ), 1, 3 );
 
-		// Frontend request
-		try {
-			$this->handleFormRequest();
-		} catch ( BookingDeniedException $e ) {
-			set_transient(
-				\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id(),
-				$e->getMessage(),
-				30 //Expires very quickly, so that outdated messsages will not be shown to the user
-			);
-			$targetUrl = $e->getRedirectUrl();
-			if ( $targetUrl ) {
-				header( 'Location: ' . $targetUrl );
-				exit();
-			}
-		}
 	}
 
 
@@ -153,7 +140,7 @@ class Booking extends Timeframe {
 	 *
 	 * @throws BookingDeniedException - if booking is not allowed, contains translated error message for the user
 	 */
-	public function handleFormRequest() {
+	public static function handleFormRequest() {
 		if (
 			function_exists( 'wp_verify_nonce' ) &&
 			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
@@ -169,7 +156,7 @@ class Booking extends Timeframe {
 			$postName        = isset( $_REQUEST['cb_booking'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['cb_booking'] ) ) : null;
 			$postType        = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : null;
 
-			$postId = $this->handleBookingRequest(
+			$postId = self::handleBookingRequest(
 				$itemId,
 				$locationId,
 				$post_status,
@@ -299,12 +286,23 @@ class Booking extends Timeframe {
 			);
 
 			$postId = wp_insert_post( $postarr, true );
+			$needsValidation = true;
 
 			// Existing booking
 		} else {
 			$postarr['ID'] = $booking->ID;
+			if ( $postarr['post_status'] === 'canceled' ) {
+				$postarr['meta_input']['cancellation_time'] = current_time('timestamp');
+			}
 			$postId        = wp_update_post( $postarr );
 
+			//we check if this is an already denied booking and demand validation again
+			if ($postarr["post_status"] == "unconfirmed"){
+				$needsValidation = true;
+			}
+			else {
+				$needsValidation = false;
+			}
 		}
 
 		self::saveGridSizes( $postId, $locationId, $itemId, $repetitionStart, $repetitionEnd );
@@ -317,6 +315,17 @@ class Booking extends Timeframe {
 			throw new BookingDeniedException( __( 'There was an error while saving the booking. Please try again. Thrown error:', 'commonsbooking' ) .
 			                                  PHP_EOL . $e->getMessage()
 			);
+		}
+
+        //check if the Booking we want to create conforms to the set booking rules
+		if( $needsValidation){
+			try {
+				BookingRuleApplied::bookingConformsToRules( $bookingModel );
+			}
+			catch (BookingDeniedException $e) {
+				wp_delete_post($bookingModel->ID);
+				throw new BookingDeniedException($e->getMessage());
+			}
 		}
 
 		if ( $postId instanceof \WP_Error ) {
@@ -358,7 +367,7 @@ class Booking extends Timeframe {
 	}
 
 	/**
-	 * Check if booking overlaps before its been saved.
+	 * Check if the booking has been denied for some reason
 	 *
 	 * @param $postId
 	 * @param $data

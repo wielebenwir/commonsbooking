@@ -130,6 +130,25 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * Checks if the given user is administrator of item / location or the website and therefore enjoys special booking rights
+	 *
+	 * @param \WP_User|null $user
+	 *
+	 * @return bool
+	 */
+	public function isUserPrivileged(\WP_User $user = null): bool {
+		if ( ! $user ) {
+			$user = wp_get_current_user();
+		}
+		if ( ! $user ) {
+			return false;
+		}
+		$itemAdmin = commonsbooking_isUserAllowedToEdit($this->getItem(),$user);
+		$locationAdmin = commonsbooking_isUserAllowedToEdit($this->getLocation(),$user);
+		return ($itemAdmin || $locationAdmin);
+	}
+
+	/**
 	 * Returns the latest possible booking date as timestamp.
 	 * This function respects the advance booking days setting.
 	 * This means that this is the latest date that a user can currently book.
@@ -821,6 +840,16 @@ class Timeframe extends CustomPost {
 	 * @return DateTime
 	 * @throws Exception
 	 */
+	public function getStartDateDateTime(): DateTime {
+		$startDateString = $this->getMeta( self::REPETITION_START );
+		return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
+	}
+
+	/**
+	 * Returns repetition-start \DateTime.
+	 *
+	 * @return DateTime
+	 */
 	public function getUTCStartDateDateTime(): ?DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
 		if ( ! $startDateString ) {
@@ -987,4 +1016,8 @@ class Timeframe extends CustomPost {
         return date( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
 
     }
+
+	public function getMaxDays():int{
+		return $this->getMeta(self::META_MAX_DAYS);
+	}
 }
