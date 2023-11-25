@@ -259,6 +259,7 @@ class Calendar {
 			$itemName = $item->post_title;
 
 			// Get data for current item/location combination
+			$time = time();
 			$calendarData = self::getCalendarDataArray(
 				$item->ID,
 				$locationId,
@@ -266,6 +267,9 @@ class Calendar {
 				date( 'Y-m-d', strtotime( '+' . $days . ' days', time() ) ),
 				true
 			);
+			if ( class_exists('WP_CLI') ) {
+				\WP_CLI::log( 'Getting calendar data for item ' . $item->ID . ' and location ' . $locationId  . ' in ' . ( time() - $time ) . ' seconds.');
+			}
 
             $gotStartDate = false;
 			$gotEndDate   = false;
@@ -364,6 +368,7 @@ class Calendar {
 		$endDate            = new Day( $endDateString );
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
+		$time = time();
 		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
 			[ $location ],
 			[ $item ],
@@ -371,6 +376,9 @@ class Calendar {
 			true,
 			Helper::getLastFullHourTimestamp()
 		);
+		if ( class_exists('WP_CLI') ) {
+			\WP_CLI::log( 'Getting bookable timeframes for item ' . $item . ' and location ' . $location  . ' in ' . ( time() - $time ) . ' seconds.');
+		}
 
 		if ( count( $bookableTimeframes ) ) {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday( $bookableTimeframes );
