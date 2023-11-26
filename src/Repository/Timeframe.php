@@ -214,6 +214,93 @@ class Timeframe extends PostRepository {
 		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
 
+	// this function is not cached, because it uses WP_Query
+		// this is probably not a problem because it is used for the availability calendar
+		// and the availability calendar is cached
+		$args = array(
+			'post_type'      => \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType,
+			'post_status'    => $postStatus,
+			'no_found_rows'  => true,
+			'posts_per_page' => - 1,
+			'meta_query'     => array(
+				'relation' => 'AND',
+				array(
+					'key'     => 'type',
+					'value'   => $types,
+					'compare' => 'IN'
+				),
+				array(
+					'key'     => 'location-id',
+					'value'   => $locations,
+					'compare' => 'IN'
+				),
+				array(
+					'key'     => 'item-id',
+					'value'   => $items,
+					'compare' => 'IN'
+				),
+			)
+		);
+
+		if ($date) {
+			$ts            = strtotime( $date );
+			$args['meta_query'][] = array(
+				'relation' => 'AND',
+				array(
+					'key'     => 'repetition-start',
+					'value'   => $ts,
+					'compare' => '<=',
+					'type'    => 'NUMERIC'
+				),
+				array(
+					'relation' => 'OR',
+					array(
+						'key'     => 'repetition-end',
+						'value'   => $ts,
+						'compare' => '>=',
+						'type'    => 'NUMERIC'
+					),
+					array(
+						'key'     => 'repetition-end',
+						'compare' => 'NOT EXISTS'
+					)
+				)
+			);
+		}
+
+		if ($minTimestamp) {
+			$args['meta_query'][] = array(
+				'relation' => 'AND',
+				array(
+					'key'     => 'repetition-start',
+					'value'   => $minTimestamp,
+					'compare' => '<=',
+					'type'    => 'NUMERIC'
+				),
+				array(
+					'relation' => 'OR',
+					array(
+						'key'     => 'repetition-end',
+						'value'   => $minTimestamp,
+						'compare' => '>=',
+						'type'    => 'NUMERIC'
+					),
+					array(
+						'key'     => 'repetition-end',
+						'compare' => 'NOT EXISTS'
+					)
+				)
+			);
+		}
+
+		$query = new \WP_Query($args);
+		$posts = $query->posts;
+
+		if ($returnAsModel) {
+			self::castPostsToModels($posts);
+		}
+
+		return $posts;
 	}
 
 

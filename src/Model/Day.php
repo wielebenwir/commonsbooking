@@ -113,7 +113,7 @@ class Day {
 	public function getTimeframes(): array {
 		if ( $this->timeframes === null ) {
 			$time = hrtime(true);
-			$timeFrames = \CommonsBooking\Repository\Timeframe::get(
+			$timeFrames = \CommonsBooking\Repository\Timeframe::get_WPQuery(
 				$this->locations,
 				$this->items,
 				$this->types,

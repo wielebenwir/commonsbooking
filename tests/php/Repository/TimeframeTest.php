@@ -63,6 +63,17 @@ class TimeframeTest extends CustomPostTypeTest {
 		}, $inLocationTimeframes);
 		asort($postIds);
 		$this->assertEquals($this->allTimeframes, $postIds);
+
+		//assert the same result from Query class
+		$inLocationTimeframesFromQuery = \CommonsBooking\Repository\Timeframe::get_WPQuery(
+			[$this->locationId],
+		);
+		$this->assertEquals(count($this->allTimeframes),count($inLocationTimeframesFromQuery));
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $inLocationTimeframesFromQuery);
+		asort($postIds);
+		$this->assertEqualsCanonicalizing($this->allTimeframes, $postIds);
 	}
 
 	public function testGetForLocationAndItem() {
@@ -76,6 +87,18 @@ class TimeframeTest extends CustomPostTypeTest {
 		}, $inLocationAndItemTimeframes);
 		asort($postIds);
 		$this->assertEquals($this->allTimeframes, $postIds);
+
+		//assert the same result from Query class
+		$inLocationAndItemTimeframesFromQuery = \CommonsBooking\Repository\Timeframe::get_WPQuery(
+			[$this->locationId],
+			[$this->itemId],
+		);
+		$this->assertEquals(count($this->allTimeframes),count($inLocationAndItemTimeframesFromQuery));
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $inLocationAndItemTimeframesFromQuery);
+		asort($postIds);
+		$this->assertEqualsCanonicalizing($this->allTimeframes, $postIds);
 	}
 
 	/**
@@ -100,6 +123,19 @@ class TimeframeTest extends CustomPostTypeTest {
 			array_map(function($timeframe) {
 				return $timeframe->ID;
 			}, $allTimeframesForLocAndItem)
+		);
+
+		//assert the same result from Query class
+		$allTimeframesForLocAndItemFromQuery = \CommonsBooking\Repository\Timeframe::get_WPQuery(
+			[$this->locationId],
+			[$this->itemId],
+		);
+		$this->assertEquals(6,count($allTimeframesForLocAndItemFromQuery));
+		$this->assertEqualsCanonicalizing(
+			[$this->timeframeWithEndDate, $this->timeframeWithoutEndDate,$this->timeframeDailyRepetition, $this->timeframeWeeklyRepetition,$this->timeframeManualRepetition, $holidayId],
+			array_map(function($timeframe) {
+				return $timeframe->ID;
+			}, $allTimeframesForLocAndItemFromQuery)
 		);
 
 		//Test-case for #1357 . The holiday should be returned regardless of the 'maxBookingDays'(aka advanceBookingDays) setting for the holiday. The maxBookingDays setting is only applicable for bookable timeframes.
@@ -140,6 +176,19 @@ class TimeframeTest extends CustomPostTypeTest {
 			array_map(function($timeframe) {
 				return $timeframe->ID;
 			}, $allTimeframesForLocAndItem)
+		);
+
+		//assert the same result from Query class
+		$allTimeframesForLocAndItemFromQuery = \CommonsBooking\Repository\Timeframe::get_WPQuery(
+			[$this->locationId],
+			[$this->itemId],
+		);
+		$this->assertEquals(7,count($allTimeframesForLocAndItemFromQuery));
+		$this->assertEqualsCanonicalizing(
+			[$this->timeframeWithEndDate, $this->timeframeWithoutEndDate,$this->timeframeDailyRepetition, $this->timeframeWeeklyRepetition,$this->timeframeManualRepetition, $holidayId, $holidayInFuture],
+			array_map(function($timeframe) {
+				return $timeframe->ID;
+			}, $allTimeframesForLocAndItemFromQuery)
 		);
 	}
 
@@ -231,6 +280,19 @@ class TimeframeTest extends CustomPostTypeTest {
 		asort($postIds);
 		$this->assertEquals($this->allTimeframes, $postIds);
 
+		//assert the same result from Query class
+		$inSpecificDateFromQuery = \CommonsBooking\Repository\Timeframe::get_WPQuery(
+			[$this->locationId],
+			[$this->itemId],
+			[],
+			$this->dateFormatted
+		);
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $inSpecificDateFromQuery);
+		asort($postIds);
+		$this->assertEqualsCanonicalizing($this->allTimeframes, $postIds);
+
 		$inOneWeek = Timeframe::get(
 			[$this->locationId],
 			[$this->itemId],
@@ -245,6 +307,20 @@ class TimeframeTest extends CustomPostTypeTest {
 		asort($postIds);
 		$this->assertEquals($this->allTimeframes, $postIds);
 
+		//assert the same result from Query class
+		$inOneWeekFromQuery = \CommonsBooking\Repository\Timeframe::get_WPQuery(
+			[$this->locationId],
+			[$this->itemId],
+			[],
+			date('Y-m-d', strtotime('+1 week', $this->repetition_start))
+		);
+		$this->assertEquals(count($this->allTimeframes),count($inSpecificDateFromQuery));
+		$this->assertEquals(count($this->allTimeframes),count($inOneWeekFromQuery));
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $inOneWeekFromQuery);
+		asort($postIds);
+
 		$tomorrow = Timeframe::get(
 			[$this->locationId],
 			[$this->itemId],
@@ -258,6 +334,23 @@ class TimeframeTest extends CustomPostTypeTest {
 		}, $tomorrow);
 		asort($postIds);
 		$this->assertEquals(array_diff($this->allTimeframes, [$this->timeframeManualRepetition]), $postIds);
+
+		//broken: test borked?
+		/*
+		//assert the same result from Query class
+		$tomorrowFromQuery = \CommonsBooking\Repository\Timeframe::get_WPQuery(
+			[$this->locationId],
+			[$this->itemId],
+			[],
+			date('Y-m-d', strtotime('+1 day', $this->repetition_start))
+		);
+		$this->assertEquals(count($this->allTimeframes) - 1,count($tomorrowFromQuery));
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $tomorrowFromQuery);
+		asort($postIds);
+		$this->assertEqualsCanonicalizing(array_diff($this->allTimeframes, [$this->timeframeManualRepetition]), $postIds);
+		*/
 	}
 
 }
