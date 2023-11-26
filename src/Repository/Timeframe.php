@@ -392,16 +392,7 @@ class Timeframe extends PostRepository {
 				return get_post($post);
 			}, $postIds);
 
-			//filter out timestamps that are not reached yet
-			if ($minTimestamp) {
-				$posts = array_filter($posts, function($post) use ($minTimestamp) {
-					$repetitionStart = get_post_meta($post->ID, 'repetition-start', true);
-					$repetitionEnd = get_post_meta($post->ID, 'repetition-end', true);
-					if ($repetitionStart > $minTimestamp) return false;
-					if ($repetitionEnd && $repetitionEnd < $minTimestamp) return false;
-					return true;
-				});
-			}
+
 
 			if ($date) {
 				$posts = array_filter($posts, function($post) use ($date) {
@@ -412,6 +403,10 @@ class Timeframe extends PostRepository {
 					return true;
 				});
 			}
+			//map back to post ids
+			$postIds = array_map(function($post) {
+				return $post->ID;
+			}, $posts);
 
 			Plugin::setCacheItem(
 				$postIds,
