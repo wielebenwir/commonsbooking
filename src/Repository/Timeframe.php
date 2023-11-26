@@ -133,7 +133,7 @@ class Timeframe extends PostRepository {
 
 			$time = hrtime(true);
 			// Get Post-IDs considering types, items and locations
-			$postIds = self::getPostIdsByType( $types, $items, $locations );
+			$postIds = self::getPostIdsByType( $types, $items, $locations, $minTimestamp );
 
 			if (class_exists('WP_CLI')) {
 				$elapsed = hrtime(true) - $time;
@@ -315,7 +315,7 @@ class Timeframe extends PostRepository {
 	 * @return mixed
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
-	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
+	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [], int $minTimestamp = null ): array {
 
 		if ( ! count( $types ) ) {
 			$types = [
@@ -327,7 +327,7 @@ class Timeframe extends PostRepository {
             ];
 		}
 
-		$customId = md5( serialize( $types ) );
+		$customId = md5( serialize( $types ) . serialize( $items ) . serialize( $locations ) . serialize( $minTimestamp ) );
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
 			return $cacheItem;
@@ -391,6 +391,17 @@ class Timeframe extends PostRepository {
 			$posts = array_map(function($post) {
 				return get_post($post);
 			}, $postIds);
+
+			//filter out timestamps that are not reached yet
+			if ($minTimestamp) {
+				$posts = array_filter($posts, function($post) use ($minTimestamp) {
+					$repetitionStart = get_post_meta($post->ID, 'repetition-start', true);
+					$repetitionEnd = get_post_meta($post->ID, 'repetition-end', true);
+					if ($repetitionStart > $minTimestamp) return false;
+					if ($repetitionEnd && $repetitionEnd < $minTimestamp) return false;
+					return true;
+				});
+			}
 
 			Plugin::setCacheItem(
 				$postIds,
