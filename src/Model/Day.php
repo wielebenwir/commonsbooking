@@ -112,6 +112,7 @@ class Day {
 	 */
 	public function getTimeframes(): array {
 		if ( $this->timeframes === null ) {
+			$time = hrtime(true);
 			$timeFrames = \CommonsBooking\Repository\Timeframe::get(
 				$this->locations,
 				$this->items,
@@ -121,6 +122,10 @@ class Day {
 				null,
 				[ 'publish', 'confirmed' ]
 			);
+
+			if (class_exists('WP_CLI')) {
+				\WP_CLI::log("Took " . (hrtime(true) - $time)/1e+6 . " milliseconds to query timeframes");
+			}
 
 			// check if user is allowed to book this timeframe and remove unallowed timeframes from array
 			// OR: Check for repetition timeframe selected days
@@ -505,8 +510,13 @@ class Day {
 		$customCacheKey = md5( $customCacheKey );
 		$cacheItem     = Plugin::getCacheItem( $customCacheKey );
 		if ( $cacheItem ) {
+			if (class_exists('WP_CLI')) {
+				\WP_CLI::log("Cache hit for timeframe slot");
+			}
+
 			return $cacheItem;
 		} else {
+			$time = hrtime(true);
 			$slots       = [];
 			$slotsPerDay = 24;
 
@@ -520,9 +530,28 @@ class Day {
 				];
 			}
 
+			$ht = hrtime(true);
 			$this->mapTimeFrames( $slots );
+
+			if (class_exists('WP_CLI')) {
+				\WP_CLI::log( "Took " . (hrtime(true) - $ht)/1e+6 . " milliseconds to map timeframes");
+			}
+			$ht = hrtime(true);
 			$this->mapRestrictions( $slots );
+			if (class_exists('WP_CLI')) {
+				\WP_CLI::log( "Took " . (hrtime(true) - $ht)/1e+6 . " millisceonds to map restrictions");
+			}
+			$ht = hrtime(true);
 			$this->sanitizeSlots( $slots );
+			if (class_exists('WP_CLI')) {
+				\WP_CLI::log( "Took " . (hrtime(true) - $ht)/1e+6 . " milliseconds to sanitize slots");
+			}
+
+
+			if (class_exists('WP_CLI')) {
+				$secondswhole = (hrtime(true) - $time)/1e+6;
+				\WP_CLI::log("Took $secondswhole seconds to generate timeframe slot");
+			}
 
 			Plugin::setCacheItem(
 				$slots,

@@ -109,9 +109,13 @@ class Calendar {
 
 		if (class_exists('WP_CLI')) {
 			\WP_CLI::log( 'Found ' . count( $items ) . ' items.' );
+			\WP_CLI::log( 'Clearing cache before takeoff' );
+			Plugin::clearCache();
 		}
+		$itemcount = 0;
 		foreach ( $items as $item ) {
 			// Check for category term
+			$itemcount++;
 			if ( $itemCategory ) {
 				if ( ! has_term( $itemCategory, Item::$postType . 's_category', $item->ID ) ) {
 					continue;
@@ -153,16 +157,20 @@ class Calendar {
 								continue;
 							}
 						}
-						$time = time();
+						$time = hrtime(true);
 						$locationHtml = self::renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display );
 						if ( class_exists('WP_CLI') ) {
-							\WP_CLI::log( 'Rendered row for item ' . $item->ID . ' and location ' . $locationId . ' in ' . ( time() - $time ) . ' seconds.' );
+							\WP_CLI::log( 'Rendered row for item ' . $item->ID . ' and location ' . $locationId . ' in ' . ( hrtime(true) - $time )/1e+6 . ' milliseconds.' );
 						}
 						Plugin::setCacheItem( $locationHtml, [ strval( $item->ID ), strval( $locationId ) ], $customCacheKey );
 						$rowHtml .= $locationHtml;
 					}
 				}
 				$itemRowsHTML .= $rowHtml;
+			}
+
+			if (class_exists('WP_CLI')) {
+				\WP_CLI::log("Done with " . $itemcount . "/" . count($items) );
 			}
 		}
 
@@ -355,7 +363,7 @@ class Calendar {
 		$endDate            = new Day( $endDateString );
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
-		$time = time();
+		$time = hrtime(true);
 		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
 			[ $location ],
 			[ $item ],
@@ -363,6 +371,10 @@ class Calendar {
 			true,
 			Helper::getLastFullHourTimestamp()
 		);
+
+		if (class_exists('WP_CLI')) {
+			\WP_CLI::log("Got bookable timeframes in " . (hrtime(true) - $time)/1e+6 . "milliseconds" );
+		}
 
 		if ( count( $bookableTimeframes ) ) {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday( $bookableTimeframes );
@@ -544,17 +556,22 @@ class Calendar {
 			if (class_exists('WP_CLI')) {
 				\WP_CLI::log( 'Got '  . count( $weeks ) );
 			}
+			$startTime = hrtime(true);
+			$time = hrtime(true);
+			$timeAverages = array();
 			foreach ( $weeks as $week ) {
 				/** @var Day $day */
 				$days = $week->getDays();
-				if (class_exists('WP_CLI')) {
-					\WP_CLI::log( 'Got '  . count( $days ) . ' days for week ' );
-				}
 				foreach ( $days as $day ) {
+					$timeAverages[] = hrtime(true) - $time;
+					$time = hrtime(true);
 					self::mapDay( $day, $lastBookableDate, $endDate, $jsonResponse, $firstBookableDay );
 				}
 			}
-
+			if (class_exists('WP_CLI')) {
+				\WP_CLI::log( 'Mapped ' . count($timeAverages) . ' days in ' . ( hrtime(true) - $startTime ) / 1e+6 . ' milliseconds.' );
+				\WP_CLI::log( 'Average mapping time per day: ' . ( array_sum( $timeAverages ) / count( $timeAverages ) )/1e+6 . ' milliseconds.' );
+			}
 			// set transient expiration time to midnight to force cache refresh by daily basis to allow dynamic advanced booking day feature
 			Plugin::setCacheItem( $jsonResponse, [ 'misc' ], $customCacheKey, 'midnight' );
 		}

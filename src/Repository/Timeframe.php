@@ -131,9 +131,17 @@ class Timeframe extends PostRepository {
 
 			$posts = [];
 
+			$time = hrtime(true);
 			// Get Post-IDs considering types, items and locations
 			$postIds = self::getPostIdsByType( $types, $items, $locations );
 
+			if (class_exists('WP_CLI')) {
+				$elapsed = hrtime(true) - $time;
+				\WP_CLI::log("Timeframe::getPostIdsByType() took " . $elapsed / 1e+6 . "ms");
+				$time = hrtime(true);
+			}
+
+			$time = hrtime(true);
 			if ( $postIds && count( $postIds ) ) {
 				$posts = self::getPostsByBaseParams(
 					$date,
@@ -144,8 +152,21 @@ class Timeframe extends PostRepository {
 				);
 			}
 
+			if (class_exists('WP_CLI')) {
+				$elapsed = hrtime(true) - $time;
+				\WP_CLI::log("Timeframe::getPostsByBaseParams() took " . $elapsed / 1e+6 . "ms");
+				$time = hrtime(true);
+			}
+
+
+			$time = hrtime(true);
 			if ( $posts && count( $posts ) ) {
 				$posts = self::filterTimeframes( $posts, $date );
+			}
+			if (class_exists('WP_CLI')) {
+				$elapsed = hrtime(true) - $time;
+				\WP_CLI::log("Timeframe::filterTimeframes() took " . $elapsed / 1e+6 . "ms");
+				$time = hrtime(true);
 			}
 
 			// if returnAsModel == TRUE the result is a timeframe model instead of a wordpress object
@@ -161,6 +182,40 @@ class Timeframe extends PostRepository {
 			return $posts;
 		}
 	}
+
+	/**
+	 * Function to get timeframes with all possible options/params.
+	 * Why? We have different types of timeframes and in some cases we need multiple of them.
+	 *      In this case we need this function.
+	 *      Other functions use this one as base function for more specialized searches.
+	 *
+	 * Behaves exactly like the above class but uses WP_Query instead
+	 *
+	 * @param array $locations
+	 * @param array $items
+	 * @param array $types
+	 * @param string|null $date Date-String in format YYYY-mm-dd
+	 *
+	 * @param bool $returnAsModel
+	 *
+	 * @param int|null $minTimestamp
+	 *
+	 * @param string[] $postStatus
+	 *
+	 * @return array
+	 */
+	public static function get_WPQuery(
+		array $locations = [],
+		array $items = [],
+		array $types = [],
+		?string $date = null,
+		bool $returnAsModel = false,
+		?int $minTimestamp = null,
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+	): array {
+
+	}
+
 
 	/**
 	 * Returns Post-IDs by type(s), item(s), location(s)
