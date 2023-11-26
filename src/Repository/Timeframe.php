@@ -111,7 +111,8 @@ class Timeframe extends PostRepository {
 		?string $date = null,
 		bool $returnAsModel = false,
 		?int $minTimestamp = null,
-		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ],
+		bool $ignorepast = false
 	): array {
 		if ( ! count( $types ) ) {
 			$types = [
@@ -133,7 +134,7 @@ class Timeframe extends PostRepository {
 
 			$time = hrtime(true);
 			// Get Post-IDs considering types, items and locations
-			$postIds = self::getPostIdsByType( $types, $items, $locations, $minTimestamp, $date );
+			$postIds = self::getPostIdsByType( $types, $items, $locations, $ignorepast);
 
 			if (class_exists('WP_CLI')) {
 				$elapsed = hrtime(true) - $time;
@@ -315,7 +316,7 @@ class Timeframe extends PostRepository {
 	 * @return mixed
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
-	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [], int $minTimestamp = null, string $date = null ): array {
+	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [], bool $ignorePast = false ): array {
 
 		if ( ! count( $types ) ) {
 			$types = [
@@ -327,7 +328,7 @@ class Timeframe extends PostRepository {
             ];
 		}
 
-		$customId = md5( serialize( $types ) . serialize( $items ) . serialize( $locations ) . serialize( $minTimestamp ) . serialize( $date ) );
+		$customId = md5( serialize( $types ) . serialize( $ignorePast )  );
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
 			return $cacheItem;
@@ -392,18 +393,13 @@ class Timeframe extends PostRepository {
 				return get_post($post);
 			}, $postIds);
 
-
-
-			if ($date) {
-				$posts = array_filter($posts, function($post) use ($date) {
-					$repetitionStart = get_post_meta($post->ID, 'repetition-start', true);
-					$repetitionEnd = get_post_meta($post->ID, 'repetition-end', true);
-					if ($repetitionStart > strtotime($date)) return false;
-					if ($repetitionEnd && $repetitionEnd < strtotime($date)) return false;
-					return true;
+			if ($ignorePast) {
+				$posts = array_filter($posts, function($post) {
+					$timeframe = new \CommonsBooking\Model\Timeframe($post);
+					return $timeframe->getEndDate() > Helper::getLastFullHourTimestamp();
 				});
 			}
-			//map back to post ids
+
 			$postIds = array_map(function($post) {
 				return $post->ID;
 			}, $posts);
