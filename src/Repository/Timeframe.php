@@ -137,7 +137,7 @@ class Timeframe extends PostRepository {
 
 			if (class_exists('WP_CLI')) {
 				$elapsed = hrtime(true) - $time;
-				\WP_CLI::log("Timeframe::getPostIdsByType() took " . $elapsed / 1e+6 . "ms");
+				\WP_CLI::log("Timeframe::getPostIdsByType() took " . $elapsed / 1e+6 . "ms and returned " . count($postIds) . " posts");
 				$time = hrtime(true);
 			}
 
