@@ -16,58 +16,30 @@ use function get_option;
 class Settings {
 
 	/**
-	 * array_flatten
-	 * Flattens a multidimensional array to get $key->value into a single dimension.
-	 *
-	 * @param mixed $array
-     * @param string|bool $parent
-     * @return array|bool
-     */
-	static function flattenArray( $array , $parent = false) {
-		if ( ! is_array( $array ) ) {
-			return false;
-		}
-		$result = array();
-
-		foreach ( $array as $key => $value ) {
-			if($parent === false) {
-				if ( is_array( $value ) ) {
-	                    $result = array_merge($result, self::flattenArray($value, $key));
-				} else {
-					$result[ $key ] = commonsbooking_sanitizeHTML($value);
-				}
-            } else {
-                $result[$parent][$key] = $value;
-            }
-
-		}
-
-		return $result;
-	}
-
-	/**
 	 * GetOption
 	 *
 	 * Retrieves a single value from the options table based on the options key and field_id
 	 *
 	 * @param $options_key
 	 * @param $field_id
+	 * @param $sanitizeFunction Optional. Function to sanitize return value (if array: each element recursively). Default: 'commonsbooking_sanitizeHTML'. Use false to not sanitize.
 	 *
-     * @return mixed
+	 * @return mixed
 	 */
-	public static function getOption( $options_key, $field_id ) {
+	public static function getOption( $options_key, $field_id, $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
 		$cb_options_array = get_option( $options_key );
 
-		// as multiple values can be  stored as an multidimensional array we need to flatten the array into one dimensional array
-		$flat_array = self::flattenArray( $cb_options_array );
-
-		if ( is_array( $cb_options_array ) && array_key_exists( $field_id, $flat_array ) ) {
-			$result = $flat_array[ $field_id ];
+		if ( is_array( $cb_options_array ) && array_key_exists( $field_id, $cb_options_array ) ) {
+			$optionValue = $cb_options_array[ $field_id ];
+			if (function_exists($sanitizeFunction)) {
+				return map_deep($optionValue, $sanitizeFunction);
+			} else {
+				return $optionValue;
+			}
 		} else {
-			$result = false;
+			return false;
 		}
 
-		return $result;
 	}
 
 
