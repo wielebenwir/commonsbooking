@@ -27,11 +27,12 @@ describe('correctly render metaboxes for backend CPT creation', () => {
         cy.screenshot('cb-item-metaboxes')
     })
 
-    it.only('shows location metaboxes', () => {
+    it('shows location metaboxes', () => {
         cy.visit( '/wp-admin/edit.php?post_type=cb_location' );
         cy.get('.page-title-action').click();
         cy.get('#_cb_location_adress').should('exist');
         cy.get('#_cb_location_info').should('exist');
+        cy.screenshot('cb-location-metaboxes')
 	    //TODO: This does not capture all metaboxes in screenshot because of a scrolling div, fix to show metaboxes
         //we abuse the fact here, that cypress refuses to take a screenshot if the map does not work, maybe we can do this more elegantly
         //wait a bit for the map to load
