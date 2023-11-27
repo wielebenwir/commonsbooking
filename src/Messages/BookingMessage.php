@@ -50,7 +50,7 @@ class BookingMessage extends Message {
 		// Setup email: From
 		$fromHeaders = sprintf(
 			"From: %s <%s>",
-			Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-name', array($this, 'sanitizeNameInEmailHeader') ),
+			Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-name', 'sanitize_text_field' ),
 			sanitize_email( Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-email' ) )
 		);
 
