@@ -36,7 +36,7 @@ class BookingReminderMessage extends Message {
 		// Setup email: From
 		$fromHeaders = sprintf(
 			"From: %s <%s>",
-			Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-name' ),
+			Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-name', false ),
 			sanitize_email( Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-email' ) )
 		);
 

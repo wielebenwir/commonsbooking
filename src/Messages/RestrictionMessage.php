@@ -116,7 +116,7 @@ class RestrictionMessage extends Message {
 	 * @throws \Exception
 	 */
 	protected function prepareRestrictionMail( $body, $subject ) {
-		$fromHeader = 'From: ' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-name' ) .
+		$fromHeader = 'From: ' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-name', false ) .
 		              ' <' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-email' ) . '>';
 		$restriction = $this->getRestriction();
 
