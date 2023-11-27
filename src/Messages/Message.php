@@ -284,4 +284,22 @@ abstract class Message {
 		}
 		return $atts;
 	}
+
+	/**
+	 * Sanitize the name part of e-mail From/To/Reply-To/Cc/Bcc header:
+	 * Firstname Lastname <firstname.lastname@example.com>
+	 * "Firstname Lastname" is the name and it should not contain
+	 * any HTML entities, control characters, line breaks or < and >
+	 * These get stripped out by this function.
+	 * Also " and ' will be stripped out.
+	 *
+	 * @param $input The name as input string
+	 * @return The sanitized name
+	 *
+	 */
+	public static function sanitizeNameInEmailHeader($input) {
+
+		return preg_replace('/[\x00-\x1F\x7F\"\'<>]/u', '', $input);
+
+	}
 }

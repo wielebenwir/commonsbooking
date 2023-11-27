@@ -31,7 +31,7 @@ class Settings {
 
 		if ( is_array( $cb_options_array ) && array_key_exists( $field_id, $cb_options_array ) ) {
 			$optionValue = $cb_options_array[ $field_id ];
-			if (function_exists($sanitizeFunction)) {
+			if (is_callable($sanitizeFunction)) {
 				return map_deep($optionValue, $sanitizeFunction);
 			} else {
 				return $optionValue;
