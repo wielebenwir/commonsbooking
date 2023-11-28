@@ -134,7 +134,7 @@ class Booking {
 			return;
 		}
 
-		$daysBeforeStart = (int) Settings::getOption( 'commonsbooking_options_reminder', 'booking-'.$type.'-location-reminder-day' );
+		$daysBeforeStart = (int) Settings::getOption( 'commonsbooking_options_reminder', 'booking-'.$type.'-location-reminder-day' ) - 1;
 		$startDate = strtotime( '+' . $daysBeforeStart . ' days midnight' );
 
 		// start day of booking at 23:59
