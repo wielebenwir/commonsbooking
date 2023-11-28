@@ -67,7 +67,7 @@ class RestrictionMessage extends Message {
 	 */
 	protected function sendHintMail() {
 		$body    = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-hint-body' );
-		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-hint-subject' );
+		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-hint-subject', 'sanitize_text_field' );
 
 		$this->prepareRestrictionMail(
 			$body,
@@ -82,7 +82,7 @@ class RestrictionMessage extends Message {
 	 */
 	protected function sendRepairMail() {
 		$body    = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-repair-body' );
-		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-repair-subject' );
+		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-repair-subject', 'sanitize_text_field' );
 
 		$this->prepareRestrictionMail(
 			$body,
@@ -97,7 +97,7 @@ class RestrictionMessage extends Message {
 	 */
 	protected function sendRestrictionCancelationMail() {
 		$body    = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-restriction-cancelled-body' );
-		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-restriction-cancelled-subject' );
+		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-restriction-cancelled-subject', 'sanitize_text_field' );
 
 		$this->prepareRestrictionMail(
 			$body,

@@ -44,7 +44,7 @@ class BookingMessage extends Message {
 		$template_body    = Settings::getOption( 'commonsbooking_options_templates',
 			'emailtemplates_mail-booking-' . $this->action . '-body' );
 		$template_subject = Settings::getOption( 'commonsbooking_options_templates',
-			'emailtemplates_mail-booking-' . $this->action . '-subject' );
+			'emailtemplates_mail-booking-' . $this->action . '-subject', 'sanitize_text_field' );
 
 
 		// Setup email: From
