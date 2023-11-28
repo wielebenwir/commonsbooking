@@ -1,3 +1,7 @@
+---
+status: wip
+---
+
 # Schnittstellen und API Design
 
 [[toc]]
@@ -11,14 +15,25 @@ Andere Schnittstellen wie [Ajax]()-Requests oder die [Wordpress-REST-API]() sind
 
 ## CommonsAPI
 
+`Status der Umsetzung: Wartend`
+
 Diese API basiert auf der Wordpress REST-API und ist über eigenes [JSON-Schema]() definiert.
-Es soll ermöglichen Artikel von unterschiedlichen Verleih-Organisationen über eine einheitliche Schnittstelle erreichbar
-zu machen.
+Es soll ermöglichen Artikel von unterschiedlichen Verleih-Organisationen über eine einheitliche 
+Schnittstelle erreichbar zu machen.
+
+Bisherige Arbeiten zu einem Anwendungsfall wurden in [commons-api-frontend]() und [commons-api-backend]() 
+beschrieben. Seit 2021 wurde hier nicht aktiv weitergearbeitet.
 
 ## GBFS
 
-Falls du über das Plugin Fahrräder verleihst, ist dieses Format sinnvoll, da du so Fahrräder die zum Verleih verfübar
-sind veröffentlichen kannst.
+`Status der Umsetzung: Fertig`
+
+Die General Bikesharing Feed Specification hilft dir Transportmöglichkeiten zum Ausleihen für 
+internetfähige Geräte konsumierbar zu machen.
+
+Falls du über das Plugin Fahrräder oder sonstige Transportmöglichkeiten verleihst, ist eine Schnittstelle in 
+diesem Format sinnvoll, da du so Fahrräder die zum Verleih verfübar sind in einem etablierten Format 
+veröffentlichst.
 
 Dieses Schema ist in [Version 2]() der Spezifikation veröffentlicht.
 

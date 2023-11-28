@@ -34,11 +34,11 @@ export default defineConfig({
       items: [
         {
           text: 'Changelog',
-          link: 'https://github.com/vuejs/vitepress/blob/main/CHANGELOG.md'
+          link: 'https://github.com/wielebenwir/commonsbooking/blob/master/CHANGELOG.md'
         },
         {
           text: 'Contributing',
-          link: 'https://github.com/vuejs/vitepress/blob/main/.github/contributing.md'
+          link: 'https://github.com/wielebenwir/commonsbooking/blob/master/.github/contributing.md'
         }
       ]
     }
@@ -102,7 +102,7 @@ function sidebarAnleitung(): DefaultTheme.SidebarItem[] {
 function sidebarDokumentation(): DefaultTheme.SidebarItem[] { 
     return [
       {
-        text: 'Benutzer-Dokumentation', link: '/',
+        text: 'Benutzer-Dokumentation', link: 'user',
         items: [
           { text: 'Artikel',  link: 'artikel' }
         , { text: 'Standorte',   link: 'standorte' }
@@ -117,13 +117,15 @@ function sidebarDokumentation(): DefaultTheme.SidebarItem[] {
           }
         , { text: 'Administration',
             items: [
-             { text: 'Rollen', link: 'rollen' }
+              { text: 'Rollen', link: 'rollen' }
+            , { text: 'Plugins', link: 'plugins' }
+            , { text: 'Buchungs-Codes', link: 'buchungs-codes' }
             ]
           }
         ]
       },
       {
-        text: 'Entwickler-Dokumentation', 
+        text: 'Entwickler-Dokumentation', link: 'dev', 
         items: [
           { text: 'Überblick', link: 'dev-überblick' }
         , { text: 'API-Design', link: 'api-design' }
