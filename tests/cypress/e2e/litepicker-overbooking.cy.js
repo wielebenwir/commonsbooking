@@ -134,6 +134,18 @@ describe('test overbooking process', () => {
         //click the monday and assert that we can't proceed booking
         cy.get('.is-today').next('.day-item').next('.day-item').next('.day-item').click();
         cy.get('#booking-form > [type="submit"]').should('be.disabled');
+
+        //now, enable overbooking
+        updatePostMetaAndReload(getLocIDForTest(testName,this.bookableLocations), '_cb_allow_lockdays_in_range', 'on')
+        //assert that we can book over the sunday
+        cy.get('.is-today').next('.day-item').click(); //this is the saturday
+        //click the monday
+        cy.get('.is-today').next('.day-item').next('.day-item').next('.day-item').click();
+        //assert that we can proceed booking
+        cy.get('#booking-form > [type="submit"]').should('not.be.disabled');
+
+        //reset, so that we can run the tests again
+        updatePostMetaAndReload(getLocIDForTest(testName,this.bookableLocations), '_cb_allow_lockdays_in_range', '0')
     })
 
     it('Daily Repetition is not overbookable (1 day to overbook) works', function () {
@@ -157,6 +169,18 @@ describe('test overbooking process', () => {
         //click the monday and assert that we can't proceed booking
         cy.get('.is-today').next('.day-item').next('.day-item').next('.day-item').click();
         cy.get('#booking-form > [type="submit"]').should('be.disabled');
+
+        //now, enable overbooking
+        updatePostMetaAndReload(getLocIDForTest(testName,this.bookableLocations), '_cb_allow_lockdays_in_range', 'on')
+        //assert that we can book over the sunday
+        cy.get('.is-today').next('.day-item').click(); //this is the saturday
+        //click the monday
+        cy.get('.is-today').next('.day-item').next('.day-item').next('.day-item').click();
+        //assert that we can proceed booking
+        cy.get('#booking-form > [type="submit"]').should('not.be.disabled');
+
+        //reset, so that we can run the tests again
+        updatePostMetaAndReload(getLocIDForTest(testName,this.bookableLocations), '_cb_allow_lockdays_in_range', '0')
     })
 
     it("Weekly Repetition is overbookable count each day works", function () {
