@@ -7,22 +7,24 @@ use function get_option;
 /**
  * Settings class
  *
- * The Options are determined in the settings page and saved in the options table.
- * Each setting has a unique key and a field_id.
+ * The Options are accessible via the settings page and saved in the wp options table.
+ * Each setting has a unique options_key and a field_id.
  * Both are needed to write and read the option from the options table.
  *
- * The options are determined in the \includes\OptionsArray.php file
+ * The options are defined in the \includes\OptionsArray.php file
  */
 class Settings {
 
 	/**
 	 * GetOption
 	 *
-	 * Retrieves a single value from the options table based on the options key and field_id
+	 * Retrieves a single value from the options table based on options_key and field_id.
 	 *
-	 * @param $options_key
-	 * @param $field_id
-	 * @param $sanitizeFunction Optional. Function to sanitize return value (if array: each element recursively). Default: 'commonsbooking_sanitizeHTML'. Use false to not sanitize.
+	 * @param mixed $options_key
+	 * @param mixed $field_id
+	 * @param mixed $sanitizeFunction Optional. Function to sanitize return value. If an array, each element 
+     *                                 is sanitized recursively. Use false to not sanitize. 
+	 *                                 Default: 'commonsbooking_sanitizeHTML'. 
 	 *
 	 * @return mixed
 	 */
@@ -31,8 +33,8 @@ class Settings {
 
 		if ( is_array( $cb_options_array ) && array_key_exists( $field_id, $cb_options_array ) ) {
 			$optionValue = $cb_options_array[ $field_id ];
-			if (is_callable($sanitizeFunction)) {
-				return map_deep($optionValue, $sanitizeFunction);
+			if ( is_callable( $sanitizeFunction ) ) {
+				return map_deep( $optionValue, $sanitizeFunction );
 			} else {
 				return $optionValue;
 			}
