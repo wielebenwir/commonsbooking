@@ -235,6 +235,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 "disallowBookedDaysInRange": true,
                 "disallowPartiallyBookedDaysInRange": true,
                 "disallowLockDaysInRange": globalCalendarData['disallowLockDaysInRange'],
+                "disallowHolidaysInRange": globalCalendarData['disallowLockDaysInRange'], //we treat holidays as locked days
                 "mobileFriendly": true,
                 "selectForward": true,
                 "useResetBtn": true,
