@@ -1719,7 +1719,7 @@
 		</wp:postmeta>
 							<wp:postmeta>
 		<wp:meta_key><![CDATA[timeframe-advance-booking-days]]></wp:meta_key>
-		<wp:meta_value><![CDATA[31]]></wp:meta_value>
+		<wp:meta_value><![CDATA[365]]></wp:meta_value>
 		</wp:postmeta>
 							<wp:postmeta>
 		<wp:meta_key><![CDATA[full-day]]></wp:meta_key>
@@ -1799,7 +1799,7 @@
 		</wp:postmeta>
 							<wp:postmeta>
 		<wp:meta_key><![CDATA[timeframe-advance-booking-days]]></wp:meta_key>
-		<wp:meta_value><![CDATA[31]]></wp:meta_value>
+		<wp:meta_value><![CDATA[365]]></wp:meta_value>
 		</wp:postmeta>
 							<wp:postmeta>
 		<wp:meta_key><![CDATA[full-day]]></wp:meta_key>
