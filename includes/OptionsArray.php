@@ -831,6 +831,7 @@ Please let us know if any problems occurred.<br>
 						'name' => esc_html__( 'Activate', 'commonsbooking' ),
 						'id'   => 'booking-start-location-reminder-activate',
 						'type' => 'checkbox',
+						'desc' => esc_html__( 'The reminders need to be enabled for all locations individually. This is only the main on/off switch.', 'commonsbooking' ),
 					),
 					// E-Mail booking start reminder for locations
 					array(
@@ -898,6 +899,7 @@ The booking period: {{booking:formattedBookingDate}}<br><br>
 						'name' => esc_html__( 'Activate', 'commonsbooking' ),
 						'id'   => 'booking-end-location-reminder-activate',
 						'type' => 'checkbox',
+						'desc' => esc_html__( 'The reminders need to be enabled for all locations individually. This is only the main on/off switch.', 'commonsbooking' ),
 					),
 					// E-Mail booking end reminder for locations
 					array(
