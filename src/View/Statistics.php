@@ -13,6 +13,10 @@ class Statistics extends View {
 			$metaValue = str_replace('count_', '', $name);
 			return self::countMeta($arguments[0], $metaValue);
 		}
+		elseif ( strpos( $name, 'avg_' ) === 0 ) {
+			$metaValue = str_replace('avg_', '', $name);
+			return self::avgMeta($arguments[0], $metaValue);
+		}
 	}
 
 	public static function shortcode( $args ) {
@@ -64,5 +68,11 @@ class Statistics extends View {
 
 	public static function countMeta( $posts, $metaValue ): int {
 		return count( array_filter( $posts, fn( $post ) => self::getProperty( $post, $metaValue ) ) );
+	}
+
+	public static function avgMeta( $posts, $metaValue ): int {
+		$sum = self::sumMeta($posts, $metaValue);
+		$count = self::countMeta($posts, $metaValue);
+		return $sum / $count;
 	}
 }
