@@ -34,7 +34,7 @@ class Statistics extends View {
 
 		switch ($type) {
 			case 'booking':
-				$posts = \CommonsBooking\Repository\Booking::get( [], [], null, true );
+				$posts = \CommonsBooking\Repository\Booking::get( [], [], null, true, null, ['confirmed', 'unconfirmed', 'canceled', 'publish', 'inherit'] );
 				break;
 			case 'item':
 				$posts = \CommonsBooking\Repository\Item::get([],true);
