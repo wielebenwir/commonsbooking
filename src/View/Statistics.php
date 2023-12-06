@@ -50,16 +50,19 @@ class Statistics extends View {
 		return count( $posts );
 	}
 
-	public static function countConfirmed( $posts ): int {
-		$bookings = array_filter( $posts, fn( $post ) => $post->post_type == 'cb_booking' );
-		return count( array_filter( $bookings, fn( $booking ) => $booking->isConfirmed() ) );
+	private static function getProperty( $post, $property ) {
+		if ( method_exists( $post, $property ) ) {
+			return $post->{$property}();
+		} else {
+			return $post->getMeta( $property );
+		}
 	}
 
 	public static function sumMeta( $posts, $metaValue ): int {
-		return array_sum( array_map( fn( $post ) => $post->getMeta( $metaValue ), $posts ) );
+		return array_sum( array_map( fn( $post ) => self::getProperty( $post, $metaValue ), $posts ) );
 	}
 
 	public static function countMeta( $posts, $metaValue ): int {
-		return count( array_filter( $posts, fn( $post ) => $post->getMeta( $metaValue ) ) );
+		return count( array_filter( $posts, fn( $post ) => self::getProperty( $post, $metaValue ) ) );
 	}
 }
