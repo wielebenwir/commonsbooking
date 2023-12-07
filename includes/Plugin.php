@@ -3,6 +3,7 @@
 use CommonsBooking\Plugin;
 
 add_action( 'admin_notices', array( Plugin::class, 'renderError' ) );
+add_action( 'admin_notices', array( Plugin::class, 'renderInfo' ) );
 
 // Initialize booking codes table
 register_activation_hook( COMMONSBOOKING_PLUGIN_FILE, array( Plugin::class, 'activation' ) );

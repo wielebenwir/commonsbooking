@@ -181,11 +181,11 @@ trait Cache {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public static function clearCache( array $tags = [] ) {
-		if(!count($tags)) {
+	public static function clearCache( array $tags = [] ): void {
+		if( ! count( $tags ) ) {
 			self::getCache()->clear();
 		} else {
-			self::getCache()->invalidateTags($tags);
+			self::getCache()->invalidateTags( $tags );
 		}
 
 		// Delete expired cache items (only for Pruneable Interfaces)
@@ -200,9 +200,9 @@ trait Cache {
 	 * Add js to frontend on cache clear.
 	 * @return void
 	 */
-	public static function addWarmupAjaxToOutput() {
-		if(get_transient("clearCacheHasBeenDone")) {
-			delete_transient("clearCacheHasBeenDone");
+	public static function addWarmupAjaxToOutput(): void {
+		if( get_transient("clearCacheHasBeenDone") ) {
+			delete_transient( "clearCacheHasBeenDone" );
 			wp_register_script( 'cache_warmup', '', array("jquery"), '', true );
 			wp_enqueue_script( 'cache_warmup'  );
 			wp_add_inline_script(

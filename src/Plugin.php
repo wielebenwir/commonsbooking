@@ -448,6 +448,27 @@ class Plugin {
 	}
 
 	/**
+	 * Renders info for backend_notice.
+	 */
+	public static function renderInfo() {
+		$errorTypes = [
+			OptionsTab::INFO_TYPE,
+		];
+
+		foreach ( $errorTypes as $errorType ) {
+			if ( $error = get_transient( $errorType ) ) {
+				$class = 'notice notice-success';
+				printf(
+					'<div class="%1$s"><p>%2$s</p></div>',
+					esc_attr( $class ),
+					commonsbooking_sanitizeHTML( $error )
+				);
+				delete_transient( $errorType );
+			}
+		}
+	}
+
+	/**
 	 * Enable Legacy CB1 profile fields.
 	 */
 	public static function maybeEnableCB1UserFields() {

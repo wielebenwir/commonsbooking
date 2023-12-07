@@ -8,11 +8,15 @@ use Exception;
 
 class OptionsTab {
 
+
 	public $option_key = COMMONSBOOKING_PLUGIN_SLUG . '_options';
 	public $id;
 	public $tab_title;
 	public $content;
 	public $groups;
+
+	// Info type for backend output
+	public const INFO_TYPE = "commonsbooking-options-info";
 
 	// Error type for backend error output
 	public const ERROR_TYPE = "commonsbooking-options-error";
@@ -153,7 +157,7 @@ class OptionsTab {
 			if ( array_key_exists( 'submit-cmb', $_REQUEST ) && $_REQUEST['submit-cmb'] == "clear-cache" ) {
 				Plugin::clearCache();
 				set_transient(
-			self::ERROR_TYPE,
+			self::INFO_TYPE,
 					commonsbooking_sanitizeHTML( __( "Cache cleared.", 'commonsbooking' ) ),
 					45
 				);
