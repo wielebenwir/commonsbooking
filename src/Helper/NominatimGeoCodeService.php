@@ -21,6 +21,12 @@ class NominatimGeoCodeService implements GeoCodeService {
 	 * @return ?Location
 	 */
 	public function getAddressData( $addressString ): ?Location {
+		
+		// The Nomination service requires the curl extension to be installed
+		if (! function_exists('curl_version')) {
+			return null;
+		}
+
 		$defaultUserAgent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0';
 
 		$client = new Client(
