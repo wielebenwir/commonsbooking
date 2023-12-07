@@ -79,7 +79,7 @@ abstract class CustomPostType {
 					$key   = $item->ID;
 					$label = $item->post_title . $statusLabel;
 				}
-				elseif ( $item instanceof WP_Term){
+				elseif ( $item instanceof \WP_Term){
 					$key = $item->term_id;
 					$label = $item->name . ' (' . $item->slug . ')';
 				}
