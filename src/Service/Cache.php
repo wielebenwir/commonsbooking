@@ -7,15 +7,27 @@ use CommonsBooking\View\Calendar;
 use CommonsBooking\Settings\Settings;
 use Exception;
 use CMB2_Field;
+use PDO;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Adapter\PdoAdapter;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Symfony\Component\Cache\CacheItem;
 
+/**
+ * Defines an interface to use the different symfony caching adapters.
+ * For supported adapters {@see Cache::getCache()}.
+ *
+ * Implementation considerations:
+ *   - Caching is based on a cache key, which is computed of runtime params ({@see Cache::getCacheId()})
+ *     and an optional custom id to make it even more specific.
+ */
 trait Cache {
+
+	private static TagAwareAdapterInterface $pdoAdapter;
 
 	/**
 	 * Returns cache item based on calling class, function and args.
@@ -37,7 +49,9 @@ trait Cache {
 			if ( $cacheItem->isHit() ) {
 				return $cacheItem->get();
 			}
-		} catch (\Exception $exception) {}
+		} catch (\Exception $exception) {
+			error_log( $exception );
+		}
 
 		return false;
 	}
@@ -113,24 +127,67 @@ trait Cache {
 			}
 		}
 
-		if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) === 'on'){
+		$adapter      = null;
+		$redisEnabled = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) === 'on';
+		$pdoEnabled   = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'pdo_enabled' ) === 'on';
+
+		if ( $redisEnabled ) {
 			try {
 				$adapter = new RedisTagAwareAdapter(
 					RedisAdapter::createConnection( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn' ) ),
 					$namespace,
 					$defaultLifetime
 				);
-				return $adapter;
-			}
-			catch (Exception $e) {
+
+				if ( ! $pdoEnabled ) {
+					return $adapter;
+				}
+			} catch (Exception $e) {
 				commonsbooking_write_log( $e . 'Falling back to Filesystem adapter' );
 				set_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error', $e->getMessage() );
 			}
 		}
-		$adapter = new TagAwareAdapter(
+
+		if ( $pdoEnabled ) {
+			try {
+
+				$pdoDsn = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'pdo_dsn' );
+				if ( empty( $pdoDsn ) ) {
+					$pdoDsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;
+				}
+
+				$pdoUser = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'pdo_user' );
+				if ( empty( $pdoUser ) ) {
+					$pdoUser = DB_USER;
+				}
+
+				$pdoPass = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'pdo_pass' );
+				if ( empty( $pdoPass ) ) {
+					$pdoPass = DB_PASSWORD;
+				}
+
+				if ( ! self::$pdoAdapter ) { // TODO what if pdo dsn changed
+					$pa = new PdoAdapter(
+						new PDO( $pdoDsn, $pdoUser, $pdoPass),
+						$namespace,
+						$defaultLifetime
+					);
+
+					// TODO here we could check if filesystem adapter is functional and (redis not enabled) and then use one of them for the tags adapter argument of the TagAwareAdapter-Wrapper
+					self::$pdoAdapter = new TagAwareAdapter( $pa, $redisEnabled ? $adapter : $pa );
+				}
+
+				return self::$pdoAdapter;
+
+			} catch ( Exception $e ) {
+				commonsbooking_write_log( $e . 'Falling back to Filesystem adapter' );
+				set_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error', $e->getMessage() );
+			}
+		}
+
+		return new TagAwareAdapter(
 			new FilesystemAdapter( $namespace, $defaultLifetime, $directory )
 		);
-		return $adapter;
 	}
 
 	/**
@@ -294,6 +351,45 @@ trait Cache {
 				else {
 					echo '<div style="color:orange">';
 						echo __('REDIS database not enabled','commonsbooking');
+					echo '</div>';
+				}
+				?>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Renders status information for PDO connection to database
+	 *
+	 * @param array $field_args
+	 * @param CMB2_Field $field
+	 *
+	 * @return void
+	 */
+	public static function renderPDOConnectionStatus( array $field_args, CMB2_Field $field ){
+		?>
+		<div class="cmb-row cmb-type-text table-layout">
+			<div class="cmb-th">
+				<?php  echo __('Connection status:', 'commonsbooking'); ?>
+			</div>
+			<div class="cmb-th">
+				<?php
+				if ( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'pdo_enabled') =='on' ) {
+					if ( is_a( self::getCache(), 'Symfony\Component\Cache\Adapter\TagAwareAdapter' ) ) {
+						echo '<div style="color:green">';
+						echo __('Successfully connected via PDO to database!', 'commonsbooking');
+						echo '</div>';
+					}
+					else {
+						echo '<div style="color:red">';
+						echo get_transient(COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error');
+						echo '</div>';
+					}
+				}
+				else {
+					echo '<div style="color:orange">';
+					echo __('PDO not enabled','commonsbooking');
 					echo '</div>';
 				}
 				?>
