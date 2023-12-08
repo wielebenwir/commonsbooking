@@ -317,17 +317,17 @@ class Wordpress {
 	 *
 	 * As opposed to @see self::getUTCDateTime()
 	 * this function sees the datestring as local time and converts the time to UTC.
-	 * @param $dateString
+	 * @param $localDateString
 	 *
 	 * @return DateTime
 	 * @throws \Exception
 	 */
-	public static function getUTCFromDate ($dateString): DateTime {
-		$datetime = date_create( $dateString, wp_timezone() );
+	public static function getUTCFromDate ($localDateString): DateTime {
+		$datetime = date_create( $localDateString, wp_timezone() );
 
 		if ( $datetime === false ) {
 			//use this as fallback if date_create fails
-			return self::getUTCDateTime( $dateString );
+			return self::getUTCDateTime( $localDateString );
 		}
 
 		$datetime->setTimezone( new \DateTimeZone( 'UTC' ) );
