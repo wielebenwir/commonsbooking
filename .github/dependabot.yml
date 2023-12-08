@@ -14,6 +14,9 @@ updates:
     allow:
       - dependency-name: "*"
         dependency-type: "production"
+    commit-message:
+      prefix: "npm"
+      include: "scope"
 
   # Maintain dependencies for Composer
   - package-ecosystem: "composer"
@@ -23,3 +26,6 @@ updates:
     allow:
       - dependency-name: "*"
         dependency-type: "production"
+    commit-message:
+      prefix: "composer"
+      include: "scope"
