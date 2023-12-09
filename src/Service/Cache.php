@@ -14,6 +14,7 @@ use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Symfony\Component\Cache\CacheItem;
+use ValueError;
 
 trait Cache {
 
@@ -161,6 +162,11 @@ trait Cache {
 		if ( $expirationString == 'midnight' ) {
 			$datetime   = current_time( 'timestamp' );
 			$expiration = strtotime( 'tomorrow', $datetime ) - $datetime;
+		} else if ( $expirationString != null ) {
+			$expiration = intval( $expirationString );
+			if ( $expiration < 0 ) {
+				throw new ValueError( 'Illegal value for expriation found' . $expirationString . '. Either provide a valid name-string or timestamp > 0');
+			}
 		}
 
 		$cache = self::getCache( '', intval( $expiration ) );
