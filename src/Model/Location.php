@@ -196,6 +196,10 @@ class Location extends BookablePost {
 			$addressData = GeoHelper::getAddressData( $addressString );
 		} catch ( Exception $e ) {
 			$addressData = null;
+
+			if ( WP_DEBUG ) {
+				error_log( $e->getMessage() );
+			}
 		}
 
 		if ( $addressData ) {
