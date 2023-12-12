@@ -9,7 +9,6 @@ use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Map\SearchShortcode;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
-use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\Service\Cache;
 use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Service\iCalendar;
@@ -84,9 +83,7 @@ class Plugin {
 		$CBManagerAllowedCPT = self::getCBManagerCustomPostTypes();
 		// Add capabilities for user roles
 		foreach ( $adminAllowedCPT as $customPostType ) {
-			foreach ( UserRepository::getAdminRoles() as $adminRole ){
-				self::addRoleCaps( $customPostType::$postType, $adminRole );
-			}
+			self::addRoleCaps( $customPostType::$postType, 'administrator' );
 			//assign all capabilities of admin to CB-Manager (see comment above)
 			self::addRoleCaps( $customPostType::$postType, self::$CB_MANAGER_ID );
 		}
@@ -104,20 +101,17 @@ class Plugin {
 	 */
 	public static function getRoleCapMapping( $roleName = null) {
 		if ( $roleName === null ) {
-			$capabilities = [
+			return [
 				self::$CB_MANAGER_ID => [
 					'read'                                 => true,
 					'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
-				]
-			];
-			foreach ( UserRepository::getAdminRoles() as $adminRole ) {
-				$capabilities[$adminRole] = [
+				],
+				'administrator'      => [
 					'read'                                 => true,
 					'edit_posts'                           => true,
 					'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
-				];
-			}
-			return $capabilities;
+				],
+			];
 		}
 		else {
 			$roleCapMapping = self::getRoleCapMapping();
