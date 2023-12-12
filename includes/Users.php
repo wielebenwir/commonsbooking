@@ -206,7 +206,9 @@ function commonsbooking_isCurrentUserSubscriber() {
 function commonsbooking_isCurrentUserCBManager() {
 	$user = wp_get_current_user();
 
-	return apply_filters( 'commonsbooking_isCurrentUserCBManager', in_array( Plugin::$CB_MANAGER_ID, $user->roles ), $user );
+	$isManager = ! empty( array_intersect( \CommonsBooking\Repository\UserRepository::getManagerRoles(), $user->roles ) );
+
+	return apply_filters( 'commonsbooking_isCurrentUserCBManager', $isManager, $user );
 
 }
 
