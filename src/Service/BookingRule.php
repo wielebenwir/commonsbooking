@@ -359,6 +359,9 @@ class BookingRule {
 			return null;
 		}
 		$adjacentBookings = self::filterBookingsForTermsAndUser($adjacentBookings, $bookingUser, $appliedTerms);
+		if ( empty($adjacentBookings) ){
+			return null;
+		}
 		$adjacentBookings = self::filterEmptyBookings($adjacentBookings);
 		if ( empty($adjacentBookings) ){
 			return null;
@@ -608,6 +611,9 @@ class BookingRule {
 			$countedPostTypes
 		);
 		$rangeBookingsArray = self::filterBookingsForTermsAndUser( $rangeBookingsArray, $booking->getUserData(), $appliedTerms );
+		if ( empty ( $rangeBookingsArray ) ) {
+			return null;
+		}
 		$rangeBookingsArray = self::filterEmptyBookings( $rangeBookingsArray );
 		if ( empty ( $rangeBookingsArray ) ) {
 			return null;
