@@ -874,6 +874,9 @@ class Timeframe extends CustomPostType {
 
 			self::sanitizeRepetitionEndDate( $post_id );
 
+			// Update postmeta related to dynamic selection fields
+			Timeframe::manageTimeframeMeta( $post_id );
+
 			//delete unused postmeta
 			self::removeIrrelevantPostmeta( $timeframe );
 
@@ -893,9 +896,6 @@ class Timeframe extends CustomPostType {
 				}
 			}
 		}
-
-		// Update postmeta related to dynamic selection fields
-		Timeframe::manageTimeframeMeta( $post_id );
 	}
 
 	/**
