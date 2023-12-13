@@ -161,13 +161,15 @@ class BookingRuleApplied extends BookingRule {
 				;
 				/** @var Booking $conflictingBooking */
 				foreach ($conflictingBookings as $conflictingBooking){
-					$errorMessage .= sprintf(
-						'%1s - %2s | %3s @ %4s',
-						$conflictingBooking->pickupDatetime(),
-						$conflictingBooking->returnDatetime(),
-						$conflictingBooking->getItem()->post_title,
-						$conflictingBooking->getLocation()->post_title
-					) . PHP_EOL;
+					$errorMessage .= $conflictingBooking->bookingLink(
+						sprintf(
+							'%1s - %2s | %3s @ %4s',
+							$conflictingBooking->pickupDatetime(),
+							$conflictingBooking->returnDatetime(),
+							$conflictingBooking->getItem()->post_title,
+							$conflictingBooking->getLocation()->post_title
+						) . PHP_EOL
+					);
 				}
 				throw new BookingDeniedException( $errorMessage );
 			}
