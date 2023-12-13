@@ -359,6 +359,7 @@ class BookingRule {
 			return null;
 		}
 		$adjacentBookings = self::filterBookingsForTermsAndUser($adjacentBookings, $bookingUser, $appliedTerms);
+		$adjacentBookings = self::filterEmptyBookings($adjacentBookings);
 		if ( empty($adjacentBookings) ){
 			return null;
 		}
@@ -552,7 +553,7 @@ class BookingRule {
 	 *
 	 * @return array|null
 	 */
-	public static function filterBookingsForTermsAndUser(array $bookings, \WP_User $user, $terms ): ?array {
+	private static function filterBookingsForTermsAndUser(array $bookings, \WP_User $user, $terms ): ?array {
 		$filteredTerms = Booking::filterTermsApply($bookings, $terms);
 		if (! empty ($filteredTerms)) {
 			return Booking::filterForUser($bookings, $user);
@@ -560,6 +561,17 @@ class BookingRule {
 		else {
 			return null;
 		}
+	}
+
+	/**
+	 * Will filter out all bookings that have a length of 0 (that usually means cancelled before the start of the period)
+	 * This needs to be done so that cancelled bookings will not show in the error message telling the user which bookings exceed the limit
+	 * @param Booking[] $bookings
+	 *
+	 * @return void
+	 */
+	private static function filterEmptyBookings( array $bookings ) {
+		return array_filter($bookings, fn($booking) => $booking->getLength() > 0);
 	}
 
 	/**
@@ -596,6 +608,7 @@ class BookingRule {
 			$countedPostTypes
 		);
 		$rangeBookingsArray = self::filterBookingsForTermsAndUser( $rangeBookingsArray, $booking->getUserData(), $appliedTerms );
+		$rangeBookingsArray = self::filterEmptyBookings( $rangeBookingsArray );
 		if ( empty ( $rangeBookingsArray ) ) {
 			return null;
 		}
