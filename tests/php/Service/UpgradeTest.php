@@ -132,8 +132,10 @@ class UpgradeTest extends CustomPostTypeTest
 	public function testSetMultiSelectTimeFrameDefault() {
 		$tf = $this->createBookableTimeFrameIncludingCurrentDay();
 		update_post_meta($tf, Timeframe::META_ITEM_SELECTION_TYPE, '');
+		update_post_meta($tf, Timeframe::META_LOCATION_SELECTION_TYPE, '');
 		Upgrade::setMultiSelectTimeFrameDefault();
 		$this->assertEquals(Timeframe::SELECTION_MANUAL_ID, get_post_meta($tf, Timeframe::META_ITEM_SELECTION_TYPE, true));
+		$this->assertEquals(Timeframe::SELECTION_MANUAL_ID, get_post_meta($tf, Timeframe::META_LOCATION_SELECTION_TYPE, true));
 	}
 
 	protected function setUp(): void {
