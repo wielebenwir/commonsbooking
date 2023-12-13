@@ -143,6 +143,14 @@ class Timeframe extends CustomPost {
 		if ( ! $user ) {
 			return false;
 		}
+
+		//these roles are always allowed to book
+		$privilegedRoles = [ 'administrator' ];
+		apply_filters( 'commonsbooking_privileged_roles', $privilegedRoles );
+		if (! empty( array_intersect($privilegedRoles, $user->roles) ) ) {
+			return true;
+		}
+
 		$itemAdmin = commonsbooking_isUserAllowedToEdit($this->getItem(),$user);
 		$locationAdmin = commonsbooking_isUserAllowedToEdit($this->getLocation(),$user);
 		return ($itemAdmin || $locationAdmin);
