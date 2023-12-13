@@ -1068,10 +1068,29 @@ class Timeframe extends CustomPostType {
 			\CommonsBooking\Model\Timeframe::META_CREATE_BOOKING_CODES,
 			\CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES,
 		];
+		//remove multi-select postmeta if not relevant (#507)
+		$onlyRelevantForHolidays = [
+			\CommonsBooking\Model\Timeframe::META_ITEM_IDS,
+			\CommonsBooking\Model\Timeframe::META_LOCATION_IDS,
+			\CommonsBooking\Model\Timeframe::META_ITEM_CATEGORY_IDS,
+			\CommonsBooking\Model\Timeframe::META_LOCATION_CATEGORY_IDS,
+			\CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE,
+			\CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE,
+		];
+
 		if ($timeframe->getType() != Timeframe::BOOKABLE_ID) {
 			foreach ( $onlyRelevantForBookable as $metaKey ) {
 				delete_post_meta( $timeframe->ID, $metaKey );
 			}
+		}
+
+		if ($timeframe->getType() != Timeframe::HOLIDAYS_ID) {
+			foreach ( $onlyRelevantForHolidays as $metaKey ) {
+				delete_post_meta( $timeframe->ID, $metaKey );
+			}
+			//reset to manual selection
+			update_post_meta($timeframe->ID, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
+			update_post_meta($timeframe->ID, \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
 		}
 	}
 

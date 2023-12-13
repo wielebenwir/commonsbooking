@@ -210,4 +210,32 @@ class TimeframeTest extends CustomPostTypeTest {
 
 	}
 
+	/**
+	 * This test just checks for the functionality of removing the multi-select option item-ids and location-ids
+	 * for Timeframes that are NOT Holidays (not yet supported #507)
+	 *
+	 * The other part is tested in
+	 * @see \CommonsBooking\Tests\Service\UpgradeTest::testRemoveBreakingPostmeta()
+	 * @return void
+	 */
+	public function testRemoveIrrelevantPostmeta() {
+		$tf = new \CommonsBooking\Model\Timeframe( $this->createBookableTimeFrameIncludingCurrentDay() );
+		update_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_ITEM_IDS, [ $this->itemId ] );
+		update_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_LOCATION_IDS, [ $this->locationId ] );
+		update_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_ALL_ID );
+		update_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_ALL_ID );
+		update_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_LOCATION_CATEGORY_IDS, [ '123' ] );
+		update_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_ITEM_CATEGORY_IDS, [ '123' ] );
+		Timeframe::removeIrrelevantPostmeta( $tf );
+		//especially assert, that no item ids are assigned when updating the multi-select
+		Timeframe::manageTimeframeMeta( $tf->ID );
+		$this->assertEmpty( get_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_ITEM_IDS, true ) );
+		$this->assertEmpty( get_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_LOCATION_IDS, true ) );
+		$this->assertEmpty( get_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE, true ) );
+		$this->assertEmpty( get_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, true ) );
+		$this->assertEmpty( get_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_LOCATION_CATEGORY_IDS, true ) );
+		$this->assertEmpty( get_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_ITEM_CATEGORY_IDS, true ) );
+
+	}
+
 }
