@@ -116,7 +116,7 @@ abstract class Message {
 
 		// parse templates & replaces template tags (e.g. {{item:name}})
 		$this->body    = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $template_body, $objects ) );
-		$this->subject = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $template_subject, $objects ) );
+		$this->subject = sanitize_text_field( commonsbooking_parse_template( $template_subject, $objects ) );
 
 		// Setup mime type
 		$this->headers[] = "MIME-Version: 1.0";
@@ -145,7 +145,7 @@ abstract class Message {
 	 */
 	public function SendNotificationMail() {
 		$to      = apply_filters( 'commonsbooking_mail_to', $this->to, $this->action );
-		$subject = apply_filters( 'commonsbooking_mail_subject', $this->subject, $this->action );
+		$subject = apply_filters( 'commonsbooking_mail_subject', $this->subject, $this->action, 'sanitize_text_field' );
 		$body    = apply_filters( 'commonsbooking_mail_body', $this->body, $this->action );
 		$attachment = apply_filters( 'commonsbooking_mail_attachment', $this->attachment, $this->action);
 		$headers = implode( "\r\n", $this->headers );
