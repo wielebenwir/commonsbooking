@@ -5,6 +5,7 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 use CommonsBooking\Exception\BookingCodeException;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Service\FloodPosts;
 use WP_Post;
 use Exception;
 use CommonsBooking\View\Calendar;
@@ -1116,8 +1117,10 @@ class Timeframe extends CustomPostType {
 		// Listing of available items/locations
 		add_shortcode( 'cb_items_table', array( Calendar::class, 'shortcode' ) );
 
+		//these commands just added for experiment/queries-test branch
 		if (class_exists( 'WP_CLI') ) {
 			\WP_CLI::add_command( 'table', array( Calendar::class, 'renderTable' ) );
+			\WP_CLI::add_command( 'flood', array( FloodPosts::class, 'run' ) );
 		}
 
 		//rendering callback for field with id _cmb2_holiday
