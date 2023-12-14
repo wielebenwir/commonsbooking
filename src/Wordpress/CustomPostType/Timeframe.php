@@ -1101,8 +1101,11 @@ class Timeframe extends CustomPostType {
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
 		// must be 'save_post' only because of priority in relation to cmb2
-		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
-		
+		//just skip check for experiment/queries-test Branch
+		if (! class_exists("WP_CLI") ) {
+			add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
+		}
+
 		// Add type filter to backend list view
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );

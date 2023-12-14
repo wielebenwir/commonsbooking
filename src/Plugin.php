@@ -543,7 +543,10 @@ class Plugin {
 		add_filter( 'parent_file', array( $this, 'setParentFile' ) );
 
 		// Remove cache items on save.
-		add_action( 'wp_insert_post', array( $this, 'savePostActions' ), 10, 3 );
+		//just skip check for experiment/queries-test Branch
+		if (! class_exists("WP_CLI") ) {
+			add_action( 'wp_insert_post', array( $this, 'savePostActions' ), 10, 3 );
+		}
 		add_action( 'wp_enqueue_scripts', array( Plugin::class, 'addWarmupAjaxToOutput' ) );
 		add_action( 'admin_enqueue_scripts', array( Plugin::class, 'addWarmupAjaxToOutput' ) );
 

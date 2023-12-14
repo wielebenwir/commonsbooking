@@ -56,10 +56,15 @@ class Booking extends Timeframe {
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
-		add_action( 'pre_post_update', array( $this, 'preSavePost' ), 1, 2 );
-
+		//just skip check for experiment/queries-test Branch
+		if (! class_exists("WP_CLI") ) {
+			add_action( 'pre_post_update', array( $this, 'preSavePost' ), 1, 2 );
+		}
         // we need to add some additional fields and modify the autor if admin booking is made
-        add_action( 'save_post_' . self::$postType, array( $this, 'saveAdminBookingFields' ), 10 );
+		//just skip check for experiment/queries-test Branch
+		if (! class_exists("WP_CLI") ) {
+			add_action( 'save_post_' . self::$postType, array( $this, 'saveAdminBookingFields' ), 10 );
+		}
 
 		// Set Tepmlates
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
