@@ -111,8 +111,7 @@ class Timeframe extends PostRepository {
 		?string $date = null,
 		bool $returnAsModel = false,
 		?int $minTimestamp = null,
-		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ],
-		bool $ignorepast = false
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
 		if ( ! count( $types ) ) {
 			$types = [
@@ -134,7 +133,7 @@ class Timeframe extends PostRepository {
 
 			$time = hrtime(true);
 			// Get Post-IDs considering types, items and locations
-			$postIds = self::getPostIdsByType( $types, $items, $locations, $ignorepast);
+			$postIds = self::getPostIdsByType( $types, $items, $locations );
 
 			if (class_exists('WP_CLI')) {
 				$elapsed = hrtime(true) - $time;
@@ -316,7 +315,7 @@ class Timeframe extends PostRepository {
 	 * @return mixed
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
-	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [], bool $ignorePast = false ): array {
+	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
 
 		if ( ! count( $types ) ) {
 			$types = [
@@ -328,7 +327,7 @@ class Timeframe extends PostRepository {
             ];
 		}
 
-		$customId = md5( serialize( $types ) . serialize( $ignorePast )  );
+		$customId = md5( serialize( $types ) );
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
 			return $cacheItem;
@@ -392,17 +391,6 @@ class Timeframe extends PostRepository {
 			$posts = array_map(function($post) {
 				return get_post($post);
 			}, $postIds);
-
-			if ($ignorePast) {
-				$posts = array_filter($posts, function($post) {
-					$timeframe = new \CommonsBooking\Model\Timeframe($post);
-					return $timeframe->getEndDate() > Helper::getLastFullHourTimestamp();
-				});
-			}
-
-			$postIds = array_map(function($post) {
-				return $post->ID;
-			}, $posts);
 
 			Plugin::setCacheItem(
 				$postIds,

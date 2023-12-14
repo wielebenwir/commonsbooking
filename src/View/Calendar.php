@@ -141,6 +141,7 @@ class Calendar {
 				foreach ( $timeframes as $timeframe ) {
 					$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
 				}
+
 				// loop through location
 				foreach ( $locations as $locationId => $locationName ) {
 					$customCacheKey = $item->ID . $locationId . $today;

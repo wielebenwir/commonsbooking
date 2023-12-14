@@ -120,8 +120,7 @@ class Day {
 				$this->getDate(),
 				true,
 				null,
-				[ 'publish', 'confirmed' ],
-				true
+				[ 'publish', 'confirmed' ]
 			);
 
 			if (class_exists('WP_CLI')) {
