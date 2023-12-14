@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Service;
 
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
@@ -111,8 +112,8 @@ class FloodPosts
 		$maxDays = 3,
 		$advanceBookingDays = 30,
 		$bookingStartdayOffset = 0,
-		$showBookingCodes = "on",
-		$createBookingCodes = "on",
+		$showBookingCodes = "off",
+		$createBookingCodes = "off",
 		$postTitle = 'TestTimeframe'
 	) {
 		// Create Timeframe
