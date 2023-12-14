@@ -22,6 +22,17 @@ class FloodPosts
 		if (!class_exists('WP_CLI')) {
 			return;
 		}
+
+		//Bunch of performance tweaks
+		global $wpdb;
+		$wpdb->query( 'SET autocommit = 0;' );
+		wp_defer_term_counting( true );
+		wp_defer_comment_counting( true );
+		define( 'WP_IMPORTING', true );
+		add_filter( 'pre_wp_unique_post_slug',
+			fn( $override_slug, $slug, $post_id, $post_status, $post_type, $post_parent ) => Helper::generateRandomString(), 10, 6
+		);
+
 		$repetitions = [];
 		$start = new \DateTime(CustomPostTypeTest::CURRENT_DATE);
 		$end = new \DateTime(CustomPostTypeTest::CURRENT_DATE);
@@ -60,7 +71,16 @@ class FloodPosts
 			}
 		}
 
+		//disable performance tweaks
+		wp_defer_term_counting( false );
+		wp_defer_comment_counting( false );
 		\WP_CLI::success("Done");
+		$wpdb->query( 'COMMIT;' );
+		$wpdb->query( 'SET autocommit = 1;' );
+		remove_filter( 'pre_wp_unique_post_slug',
+			fn( $override_slug, $slug, $post_id, $post_status, $post_type, $post_parent ) => Helper::generateRandomString()
+		);
+
 	}
 
 	//extracted from CustomPostTypeTest because they were object oriented on Test class

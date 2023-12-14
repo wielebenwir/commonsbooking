@@ -623,6 +623,10 @@ class Plugin {
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public function savePostActions( $post_id, $post, $update ) {
+		//just skip check for experiment/queries-test Branch
+		if (class_exists("WP_CLI") ) {
+			return;
+		}
 		if ( ! in_array( $post->post_type, self::getCustomPostTypesLabels() ) ) {
 			return;
 		}
