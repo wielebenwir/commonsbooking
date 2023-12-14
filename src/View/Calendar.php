@@ -109,8 +109,11 @@ class Calendar {
 
 		if (class_exists('WP_CLI')) {
 			\WP_CLI::log( 'Found ' . count( $items ) . ' items.' );
-			\WP_CLI::log( 'Clearing cache before takeoff' );
-			Plugin::clearCache();
+			$clearCache = boolval($atts[0]) ?? false;
+			if ($clearCache) {
+				\WP_CLI::log( 'Clearing cache before takeoff' );
+				Plugin::clearCache();
+			}
 		}
 		$itemcount = 0;
 		foreach ( $items as $item ) {
