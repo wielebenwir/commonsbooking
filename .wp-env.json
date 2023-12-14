@@ -8,7 +8,8 @@
 	        "https://downloads.wordpress.org/plugin/query-monitor.zip",
 		"https://downloads.wordpress.org/plugin/wp-mail-logging.zip",
 		"https://downloads.wordpress.org/plugin/jsm-show-post-meta.zip",
-		"https://downloads.wordpress.org/plugin/disable-welcome-messages-and-tips.zip"
+		"https://downloads.wordpress.org/plugin/disable-welcome-messages-and-tips.zip",
+		"https://downloads.wordpress.org/plugin/index-wp-mysql-for-speed.zip"
 	],
 	"port": 1000,
   	"testsPort": 1001,
