@@ -112,6 +112,77 @@ describe('test overbooking process', () => {
       assertFridayAndMondayAreClickable(true)
       assertWeekendOverbooking(false)
   })
+
+    it('Weekly Repetitions is not overbookable (1 day to overbook) works', function () {
+        const testName = 'WeeklyRepetition NoOverbooking 1Day'
+        visitTestPage(testName, this.bookableItems, this.bookableLocations)
+        //this test is different from the others, as it only tries to overbook sunday and not the whole weekend
+
+        //assert saturday and monday are clickable
+        cy.get('.is-today').next('.day-item').should('not.have.class', 'is-locked');
+        //and that sunday is locked
+        cy.get('.is-today').next('.day-item').next('.day-item').should( 'have.class', 'is-locked' );
+        cy.get('.is-today').next('.day-item').next('.day-item').next('.day-item').should('not.have.class', 'is-locked');
+
+        //now assert that we can't book over the sunday
+        cy.get('.is-today').next('.day-item').click(); //this is the saturday
+        //sunday should still be locked
+        cy.get('.is-today').next('.day-item').next('.day-item').should( 'have.class', 'is-locked' );
+        //monday should now be locked
+        //this does not work because of #1087, still the submit button should be disabled
+        //cy.get('.is-today').next('.day-item').next('.day-item').next('.day-item').should('have.class', 'is-locked');
+        //click the monday and assert that we can't proceed booking
+        cy.get('.is-today').next('.day-item').next('.day-item').next('.day-item').click();
+        cy.get('#booking-form > [type="submit"]').should('be.disabled');
+
+        //now, enable overbooking
+        updatePostMetaAndReload(getLocIDForTest(testName,this.bookableLocations), '_cb_allow_lockdays_in_range', 'on')
+        //assert that we can book over the sunday
+        cy.get('.is-today').next('.day-item').click(); //this is the saturday
+        //click the monday
+        cy.get('.is-today').next('.day-item').next('.day-item').next('.day-item').click();
+        //assert that we can proceed booking
+        cy.get('#booking-form > [type="submit"]').should('not.be.disabled');
+
+        //reset, so that we can run the tests again
+        updatePostMetaAndReload(getLocIDForTest(testName,this.bookableLocations), '_cb_allow_lockdays_in_range', '0')
+    })
+
+    it('Daily Repetition is not overbookable (1 day to overbook) works', function () {
+        const testName = 'DailyRep Holiday NoOverbooking 1Day'
+        visitTestPage(testName, this.bookableItems, this.bookableLocations)
+        //this test is different from the others, as it only tries to overbook sunday and not the whole weekend
+
+        //assert saturday and monday are clickable
+        cy.get('.is-today').next('.day-item').should('not.have.class', 'is-holiday');
+        //and that sunday is locked
+        cy.get('.is-today').next('.day-item').next('.day-item').should( 'have.class', 'is-holiday' );
+        cy.get('.is-today').next('.day-item').next('.day-item').next('.day-item').should('not.have.class', 'is-locked');
+
+        //now assert that we can't book over the sunday
+        cy.get('.is-today').next('.day-item').click(); //this is the saturday
+        //sunday should still be holiday
+        cy.get('.is-today').next('.day-item').next('.day-item').should( 'have.class', 'is-holiday' );
+        //monday should now be locked
+        //this does not work because of #1087, still the submit button should be disabled
+        //cy.get('.is-today').next('.day-item').next('.day-item').next('.day-item').should('have.class', 'is-locked');
+        //click the monday and assert that we can't proceed booking
+        cy.get('.is-today').next('.day-item').next('.day-item').next('.day-item').click();
+        cy.get('#booking-form > [type="submit"]').should('be.disabled');
+
+        //now, enable overbooking
+        updatePostMetaAndReload(getLocIDForTest(testName,this.bookableLocations), '_cb_allow_lockdays_in_range', 'on')
+        //assert that we can book over the sunday
+        cy.get('.is-today').next('.day-item').click(); //this is the saturday
+        //click the monday
+        cy.get('.is-today').next('.day-item').next('.day-item').next('.day-item').click();
+        //assert that we can proceed booking
+        cy.get('#booking-form > [type="submit"]').should('not.be.disabled');
+
+        //reset, so that we can run the tests again
+        updatePostMetaAndReload(getLocIDForTest(testName,this.bookableLocations), '_cb_allow_lockdays_in_range', '0')
+    })
+
     it("Weekly Repetition is overbookable count each day works", function () {
       //initially, overbooking should not work becasue the maximum bookable days are 3
         let timeframeID = 51 //TODO: get this from fixtures

@@ -31,12 +31,12 @@ class BookingReminderMessage extends Message {
 		$template_body    = Settings::getOption( 'commonsbooking_options_reminder',
 			$this->action . '-body' );
 		$template_subject = Settings::getOption( 'commonsbooking_options_reminder',
-			$this->action . '-subject' );
+			$this->action . '-subject', 'sanitize_text_field' );
 
 		// Setup email: From
 		$fromHeaders = sprintf(
 			"From: %s <%s>",
-			Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-name' ),
+			Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-name', 'sanitize_text_field' ),
 			sanitize_email( Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-email' ) )
 		);
 

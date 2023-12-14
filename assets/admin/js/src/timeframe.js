@@ -62,6 +62,15 @@
             const createBookingCodesInput = $('#create-booking-codes');
             const bookingCodesDownload = $('#booking-codes-download');
             const bookingCodesList = $('#booking-codes-list');
+            const emailBookingCodesList = $("#email-booking-codes-list");
+            const cronEmailBookingCodesList = $("#cron-email-booking-code");
+
+            // The links for sending booking codes for part of the timeframe
+            const boxSendEntireTimeframeCodes = $('#timeframe-bookingcodes-sendall');
+            const linkSendEntireTimeframeCodes = $('#email-booking-codes-list-all');
+            const linkSendCurrentMonth = $('#email-booking-codes-list-current');
+            const linkSendNextMonth = $('#email-booking-codes-list-next');
+
 
             const holidayField = $('.cmb2-id--cmb2-holiday');
             const holidayInput = $('#timeframe_manual_date');
@@ -75,7 +84,10 @@
             const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
             const noRepSet = [fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput];
             const repTimeFieldsSet = [gridInput, startTimeInput, endTimeInput];
-            const bookingCodeSet = [createBookingCodesInput, bookingCodesList, bookingCodesDownload, showBookingCodes];
+            const bookingCodeSet = [createBookingCodesInput, bookingCodesList, bookingCodesDownload, showBookingCodes, emailBookingCodesList, cronEmailBookingCodesList];
+            const bookingCodeConfigSet = [showBookingCodes, bookingCodesList, bookingCodesDownload, emailBookingCodesList, cronEmailBookingCodesList];
+
+            const form = $('input[name=post_type][value=cb_timeframe]').parent('form');
             const bookingConfigSet = [maxDaysSelect, advanceBookingDays, bookingStartDayOffset, allowUserRoles, bookingConfigurationTitle];
 
             /**
@@ -201,7 +213,9 @@
             const handleBookingCodesSelection = function () {
                 const fullday = fullDayInput.prop('checked'),
                 type = typeInput.val(),
-                repStart = repetitionStartInput.val();
+                repStart = repetitionStartInput.val(),
+                repEnd = repetitionEndInput.val();
+
 
                 hideFieldset(bookingCodeSet);
 
@@ -210,12 +224,31 @@
 
                     // If booking codes shall not be created we disable and hide option to show them
                     if (!createBookingCodesInput.prop('checked')) {
-                        hideFieldset([showBookingCodes]);
+                        hideFieldset(bookingCodeConfigSet);
                         showBookingCodes.prop('checked', false);
                     }
+                    else {
+                        showFieldset(bookingCodeConfigSet);
+                    }
+
+                    // If no end-date is selected, we hide the option to send codes for the entire timeframe
+                    if (!repEnd) {
+                        boxSendEntireTimeframeCodes.hide();
+                    }
+                    else {
+                        boxSendEntireTimeframeCodes.show();
+                    }
+
                 }
             };
             handleBookingCodesSelection();
+
+            // disable sending booking code emails before saving the form
+            form.find('input, select, textarea').on('keyup change paste', function () {
+                linkSendEntireTimeframeCodes.addClass('disabled');
+                linkSendCurrentMonth.addClass('disabled');
+                linkSendNextMonth.addClass('disabled');
+            });
 
             // Add handler to relevant fields
             const bookingCodeSelectionInputs = [
