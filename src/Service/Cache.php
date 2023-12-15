@@ -28,7 +28,7 @@ trait Cache {
 	public static function getCacheItem( $custom_id = null ) {
 		if ( WP_DEBUG ) {
 			//just skip check for experiment/queries-test Branch
-			if (! class_exists("WP_CLI") ) {
+			if ( class_exists("WP_CLI") ) {
 				\WP_CLI::log("Skipped Cache because of WP_DEBUG");
 			}
 			return false;
