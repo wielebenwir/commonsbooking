@@ -39,7 +39,7 @@ class StationStatus extends BaseRoute {
 		$preparedItem->is_installed        = true;
 		$preparedItem->is_renting          = true;
 		$preparedItem->is_returning        = true;
-		$preparedItem->last_reported       = current_time('timestamp');
+		$preparedItem->last_reported       = current_time('timestamp', true);
 
 		return $preparedItem;
 	}

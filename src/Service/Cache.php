@@ -333,6 +333,22 @@ trait Cache {
 		<?php
 	}
 
+	public static function renderClearCacheButton( $field_args, $field ) {
+		?>
+		<div class="cmb-row cmb-type-text ">
+			<div class="cmb-th">
+				<label for="clear-cache-button"><?php echo esc_html__( 'Clear all cache items', 'commonsbooking' ); ?></label>
+			</div>
+			<div class="cmb-td">
+				<button type="submit" id="clear-cache-button" class="button button-secondary" name="submit-cmb"
+				        value="clear-cache">
+					<?php echo esc_html__( 'Clear Cache', 'commonsbooking' ); ?>
+				</button>
+			</div>
+		</div>
+	<?php
+	}
+
 	/**
 	 * Iterates through array and executes shortcodecalls.
 	 * @param $shortCodeCalls

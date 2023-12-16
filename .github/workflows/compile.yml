@@ -54,13 +54,7 @@ jobs:
       with:
         php-version: '7.4'
 
-    - uses: ruby/setup-ruby@v1
-      with:
-          ruby-version: '3.0.6' # Not needed with a .ruby-version file
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - run: gem install compass
-
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version-file: '.nvmrc'
         cache: 'npm'
