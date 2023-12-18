@@ -313,7 +313,7 @@ class Timeframe extends CustomPost {
 	public function getLocationID(): ?int {
 		$locationId = $this->getMeta( self::META_LOCATION_ID );
 		if ( $locationId ) {
-			return $locationId;
+			return intval($locationId);
 		}
 
 		return null;
@@ -327,7 +327,7 @@ class Timeframe extends CustomPost {
 	 * @return Location[]
 	 */
 	public function getLocations(): ?array {
-		$locationIds = $this->getMeta( self::META_LOCATION_IDS );
+		$locationIds = $this->getLocationIDs();
 		if ( $locationIds ) {
 			$locations = [];
 			foreach ( $locationIds as $locationId ) {
@@ -353,7 +353,7 @@ class Timeframe extends CustomPost {
 	public function getLocationIDs(): array {
 		$locationIds = $this->getMeta( self::META_LOCATION_IDS );
 		if ( $locationIds ) {
-			return $locationIds;
+			return array_map('intval', $locationIds);
 		}
 		else {
 			$locationId = $this->getLocationID();
@@ -397,7 +397,7 @@ class Timeframe extends CustomPost {
 	public function getItemID(): ?int {
 		$itemId = $this->getMeta( self::META_ITEM_ID );
 		if ( $itemId ) {
-			return $itemId;
+			return intval($itemId);
 		}
 
 		return null;
@@ -437,7 +437,7 @@ class Timeframe extends CustomPost {
 	public function getItemIDs(): array {
 		$itemIds = $this->getMeta( self::META_ITEM_IDS );
 		if ( $itemIds ) {
-			return $itemIds;
+			return array_map('intval', $itemIds);
 		}
 		else {
 			$itemId = $this->getItemID();
