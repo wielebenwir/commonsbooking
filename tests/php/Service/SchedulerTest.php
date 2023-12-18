@@ -51,8 +51,8 @@ class SchedulerTest extends CustomPostTypeTest
 		$this->jobhooks[] = $dailyJob->getJobhook();
 
 		$now = new DateTime();
-		//time is saved in UTC format, will be fixed in #1429
-		$nextTime = DateTime::createFromFormat('H:i', '13:00', new \DateTimeZone('UTC'));
+		$nextTime = DateTime::createFromFormat('H:i', '13:00', wp_timezone() );
+		$nextTime->setTimezone(new \DateTimeZone('UTC'));
 
 		if ($nextTime < $now) {
 			$nextTime->modify('+1 day');
