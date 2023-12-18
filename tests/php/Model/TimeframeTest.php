@@ -757,6 +757,12 @@ class TimeframeTest extends CustomPostTypeTest {
 	}
 
 	public function testGetLocations() {
+		//for just one location
+		$oneLocation = $this->firstTimeframe->getLocations();
+		$this->assertCount(1, $oneLocation );
+		$this->assertEquals($this->locationId, $oneLocation[0]->ID);
+
+		//for multiple defined locations
 		$holiday4all = $this->createHolidayTimeframeForAllItemsAndLocations();
 		$holiday = new Timeframe($holiday4all);
 		$retrievedLocations = $holiday->getLocations();
