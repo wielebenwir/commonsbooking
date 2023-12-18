@@ -337,7 +337,7 @@ class Timeframe extends CustomPost {
 	/**
 	 * Get the corresponding single item for a timeframe.
 	 * IMPORTANT: Going from 2.9 onwards you should NOT use this method for timeframes of the type HOLIDAYS_ID.
-	 * Will get corresponding item for this timeframe.
+	 * Will get corresponding item object for this timeframe.
 	 * This function will return null if no item is set.
 	 * This should not happen, because the item is a required field.
 	 * But it might happen if the item was deleted.
