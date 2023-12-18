@@ -37,8 +37,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - uses: ./.github/actions/build-plugin
-
     - name: Set up MySQL
       run: |
         sudo /etc/init.d/mysql start
