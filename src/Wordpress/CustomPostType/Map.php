@@ -100,7 +100,7 @@ class Map extends CustomPostType {
 				$thumbnail = get_the_post_thumbnail_url( $item, 'thumbnail' );
 
 				$result[] = [
-					'location_id' => $timeframe->getLocation()->ID,
+					'location_id' => $timeframe->getLocationID(),
 					'item'        => [
 						'id'         => $item->ID,
 						'name'       => $item->post_title,

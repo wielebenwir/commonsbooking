@@ -562,7 +562,7 @@ class Timeframe extends CustomPost {
 				// First we check if the item is already connected to another location to avoid overlapping bookable dates
 				$sameItemTimeframes = \CommonsBooking\Repository\Timeframe::getBookable(
 					[],
-					[ $this->getItem()->ID ],
+					[ $this->getItemID() ],
 					null,
 					true,
 					null,
@@ -591,8 +591,8 @@ class Timeframe extends CustomPost {
 
 				// Get Timeframes with same location, item and a startdate
 				$existingTimeframes = \CommonsBooking\Repository\Timeframe::getBookable(
-					[ $this->getLocation()->ID ],
-					[ $this->getItem()->ID ],
+					[ $this->getLocationID() ],
+					[ $this->getItemID() ],
 					null,
 					true
 				);

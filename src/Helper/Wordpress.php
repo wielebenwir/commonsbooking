@@ -143,18 +143,7 @@ class Wordpress {
 	public static function getRelatedPostsIdsForTimeframe($postId): array {
 		$timeframe = new Timeframe($postId);
 		$ids = [$postId];
-
-		$items = $timeframe->getItems();
-		if( $items ) {
-			foreach ($items as $item) $ids[] = $item->ID;
-		}
-
-		$locations = $timeframe->getLocations();
-		if( $locations ) {
-			foreach ($locations as $location) $ids[] = $location->ID;
-		}
-
-		return $ids;
+		return array_merge($ids, $timeframe->getItemIDs(), $timeframe->getLocationIDs() );
 	}
 
 	/**
@@ -169,10 +158,10 @@ class Wordpress {
 		$ids = [$postId];
 
 		if($booking->getItem()) {
-			$ids[] = $booking->getItem()->ID;
+			$ids[] = $booking->getItemID();
 		}
 		if($booking->getLocation()) {
-			$ids[] = $booking->getLocation()->ID;
+			$ids[] = $booking->getLocationID();
 		}
 		if($booking->getBookableTimeFrame()) {
 			$ids[] = $booking->getBookableTimeFrame()->ID;

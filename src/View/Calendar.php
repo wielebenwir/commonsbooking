@@ -132,7 +132,7 @@ class Calendar {
 				$locations = [];
 				foreach ( $timeframes as $timeframe ) {
 					// TODO #507
-					$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
+					$locations[ $timeframe->getLocationID() ] = $timeframe->getLocation()->post_title;
 				}
 
 				// loop through location
