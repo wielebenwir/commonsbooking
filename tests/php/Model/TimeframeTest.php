@@ -752,6 +752,10 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals($location,$this->firstTimeframe->getLocation());
 	}
 
+	public function testGetLocationID() {
+		$this->assertEquals($this->locationId,$this->firstTimeframe->getLocationID());
+	}
+
 	public function testGetLocations() {
 		$holiday4all = $this->createHolidayTimeframeForAllItemsAndLocations();
 		$holiday = new Timeframe($holiday4all);
@@ -764,9 +768,24 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEqualsCanonicalizing($locationIds,[$this->firstLocation->ID,$this->otherLocation->ID]);
 	}
 
+	public function testGetLocationIDs() {
+		$holiday4all = $this->createHolidayTimeframeForAllItemsAndLocations();
+		$holiday = new Timeframe($holiday4all);
+		$retrievedLocations = $holiday->getLocationIDs();
+		$this->assertIsArray($retrievedLocations);
+		$this->assertCount(2,$retrievedLocations);
+		$this->assertEqualsCanonicalizing($retrievedLocations,[$this->firstLocation->ID,$this->otherLocation->ID]);
+
+		$this->assertEquals([$this->locationId],$this->firstTimeframe->getLocationIDs());
+	}
+
 	public function testGetItem() {
 		$item = New Item($this->itemId);
 		$this->assertEquals($item,$this->firstTimeframe->getItem());
+	}
+
+	public function testGetItemID() {
+		$this->assertEquals($this->itemId,$this->firstTimeframe->getItemID());
 	}
 
 	public function testGetItems() {
@@ -787,6 +806,20 @@ class TimeframeTest extends CustomPostTypeTest {
 			return $item->ID;
 		}, $items);
 		$this->assertEqualsCanonicalizing([$this->firstItem->ID,$this->otherItem->ID],$itemIds);
+	}
+
+	public function testGetItemIDs() {
+		//for just one item
+		$singleItem = $this->validTF->getItemIDs();
+		$this->assertIsArray($singleItem);
+		$this->assertEquals([$this->otherItem->ID],$singleItem);
+
+		//for multiple defined items
+		$holiday4all = $this->createHolidayTimeframeForAllItemsAndLocations();
+		$holiday = new Timeframe($holiday4all);
+		$items = $holiday->getItemIDs();
+		$this->assertIsArray($items);
+		$this->assertEqualsCanonicalizing([$this->firstItem->ID,$this->otherItem->ID],$items);
 	}
 
 	/**

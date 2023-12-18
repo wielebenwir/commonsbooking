@@ -294,11 +294,26 @@ class Timeframe extends CustomPost {
 	 * @throws Exception
 	 */
 	public function getLocation(): ?Location {
-		$locationId = $this->getMeta( self::META_LOCATION_ID );
+		$locationId = $this->getLocationID();
 		if ( $locationId ) {
 			if ( $post = get_post( $locationId ) ) {
 				return new Location( $post );
 			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the corresponding single location id for a timeframe.
+	 * IMPORTANT: Going from 2.9 onwards you should NOT use this method for timeframes of the type HOLIDAYS_ID.
+	 *
+	 * @return int|null
+	 */
+	public function getLocationID(): ?int {
+		$locationId = $this->getMeta( self::META_LOCATION_ID );
+		if ( $locationId ) {
+			return $locationId;
 		}
 
 		return null;
@@ -324,12 +339,29 @@ class Timeframe extends CustomPost {
 			return $locations;
 		}
 		else {
-			$location = $this->getLocation();
-			if ( $location ) {
-				return [ $location ];
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the corresponding location ids for a timeframe.
+	 * If multiple locations are not available, it will call the getLocationID() method and return an array with one location id.
+	 *
+	 * @since 2.9 (anticipated)
+	 * @return int[]
+	 */
+	public function getLocationIDs(): array {
+		$locationIds = $this->getMeta( self::META_LOCATION_IDS );
+		if ( $locationIds ) {
+			return $locationIds;
+		}
+		else {
+			$locationId = $this->getLocationID();
+			if ( $locationId ) {
+				return [ $locationId ];
 			}
 			else {
-				return null;
+				return [];
 			}
 		}
 	}
@@ -346,11 +378,26 @@ class Timeframe extends CustomPost {
 	 * @throws Exception
 	 */
 	public function getItem(): ?Item {
-		$itemId = $this->getMeta( self::META_ITEM_ID );
+		$itemId = $this->getItemID();
 		if ( $itemId ) {
 			if ( $post = get_post( $itemId ) ) {
 				return new Item( $post );
 			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the corresponding single item id for a timeframe.
+	 * IMPORTANT: Going from 2.9 onwards you should NOT use this method for timeframes of the type HOLIDAYS_ID.
+	 *
+	 * @return int|null
+	 */
+	public function getItemID(): ?int {
+		$itemId = $this->getMeta( self::META_ITEM_ID );
+		if ( $itemId ) {
+			return $itemId;
 		}
 
 		return null;
@@ -364,7 +411,7 @@ class Timeframe extends CustomPost {
 	 * @return Item[]
 	 */
 	public function getItems(): ?array {
-		$itemIds = $this->getMeta( self::META_ITEM_IDS );
+		$itemIds = $this->getItemIDs();
 		if ( $itemIds ) {
 			$items = [];
 			foreach ( $itemIds as $itemId ) {
@@ -376,12 +423,29 @@ class Timeframe extends CustomPost {
 			return $items;
 		}
 		else {
-			$item = $this->getItem();
-			if ( $item ) {
-				return [ $item ];
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the corresponding item ids for a timeframe.
+	 * If multiple items are not available, it will call the getItemID() method and return an array with one item id.
+	 *
+	 * @since 2.9 (anticipated)
+	 * @return int[] - array of item ids, empty array if no item ids are set
+	 */
+	public function getItemIDs(): array {
+		$itemIds = $this->getMeta( self::META_ITEM_IDS );
+		if ( $itemIds ) {
+			return $itemIds;
+		}
+		else {
+			$itemId = $this->getItemID();
+			if ( $itemId ) {
+				return [ $itemId ];
 			}
 			else {
-				return null;
+				return [];
 			}
 		}
 	}
