@@ -235,32 +235,26 @@ class Wordpress {
 	 *
 	 * @return array
 	 */
-	public static function getLocationAndItemIdsFromPosts($posts): array {
+	public static function getLocationAndItemIdsFromPosts(array $posts): array {
 		$itemsAndLocations = [];
 		array_walk($posts, function ($timeframe) use (&$itemsAndLocations) {
-			$items = get_post_meta(
-				$timeframe->ID,
-				Timeframe::META_ITEM_ID,
-				true
-			);
-			// depends on single or multiselect
-			if(is_array($items)) {
-				foreach ($items as $item) $itemsAndLocations[] = $item;
-			} else {
-				$itemsAndLocations[] = $items;
+			//only run for timeframe or booking
+			if ( ! in_array( $timeframe->post_type, [ \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType, Booking::$postType ] ) ) {
+				return;
 			}
-
-			$locations = get_post_meta(
-				$timeframe->ID,
-				Timeframe::META_LOCATION_ID,
-				true
-			);
-			// depends on single or multiselect
-			if(is_array($locations)) {
-				foreach ($locations as $location) $itemsAndLocations[] = $location;
-			} else {
-				$itemsAndLocations[] = $locations;
+			if (! $timeframe instanceof Timeframe) {
+				if ( $timeframe->post_type == Booking::$postType ) {
+					$timeframe = new \CommonsBooking\Model\Booking( $timeframe );
+				}
+				elseif ( $timeframe->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType ) {
+					$timeframe = new Timeframe( $timeframe );
+				}
 			}
+			$itemsAndLocations = array_merge(
+				$itemsAndLocations,
+				$timeframe->getItemIDs(),
+				$timeframe->getLocationIDs()
+			);
 		});
 		return array_map('intval', $itemsAndLocations);
 	}
