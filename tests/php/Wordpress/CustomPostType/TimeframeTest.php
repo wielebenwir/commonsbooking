@@ -41,6 +41,14 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertIsArray( Timeframe::getTimeFrameRepetitions( ) );
 	}
 
+	public function testGetSelectionOptions() {
+		$this->assertIsArray( Timeframe::getSelectionOptions() );
+	}
+
+	public function testGetGridOptions() {
+		$this->assertIsArray( Timeframe::getGridOptions() );
+	}
+
 	/**
 	 * Tests that the save post function validates the timeframe and saves it as draft if it is invalid.
 	 * Also tests, that the timeframes with manual repetition are assigned a valid REPETITION_START and REPETITION_END dynamically.
