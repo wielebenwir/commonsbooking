@@ -750,6 +750,10 @@ class TimeframeTest extends CustomPostTypeTest {
 	public function testGetLocation() {
 		$location = New Location($this->locationId);
 		$this->assertEquals($location,$this->firstTimeframe->getLocation());
+
+		//when location has been deleted
+		wp_delete_post($this->locationId);
+		$this->assertNull($this->firstTimeframe->getLocation());
 	}
 
 	public function testGetLocationID() {
@@ -772,6 +776,12 @@ class TimeframeTest extends CustomPostTypeTest {
 		}, $retrievedLocations);
 		$this->assertCount(2,$retrievedLocations);
 		$this->assertEqualsCanonicalizing($locationIds,[$this->firstLocation->ID,$this->otherLocation->ID]);
+
+		//when location has been deleted
+		wp_delete_post($this->locationId);
+		$locations = $this->firstTimeframe->getLocations();
+		$this->assertIsArray($locations);
+		$this->assertCount(0,$locations);
 	}
 
 	public function testGetLocationIDs() {
@@ -788,6 +798,10 @@ class TimeframeTest extends CustomPostTypeTest {
 	public function testGetItem() {
 		$item = New Item($this->itemId);
 		$this->assertEquals($item,$this->firstTimeframe->getItem());
+
+		//when item has been deleted
+		wp_delete_post($this->itemId);
+		$this->assertNull($this->firstTimeframe->getItem());
 	}
 
 	public function testGetItemID() {
@@ -812,6 +826,13 @@ class TimeframeTest extends CustomPostTypeTest {
 			return $item->ID;
 		}, $items);
 		$this->assertEqualsCanonicalizing([$this->firstItem->ID,$this->otherItem->ID],$itemIds);
+
+
+		//when item has been deleted
+		wp_delete_post($this->itemId);
+		$items = $this->firstTimeframe->getItems();
+		$this->assertIsArray($items);
+		$this->assertCount(0,$items);
 	}
 
 	public function testGetItemIDs() {

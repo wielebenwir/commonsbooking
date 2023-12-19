@@ -306,6 +306,8 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns the corresponding single location id for a timeframe.
+	 * This will solely rely on the location id stored in the timeframe.
+	 * If the location is deleted, this function will still return the old location id.
 	 * IMPORTANT: Going from 2.9 onwards you should NOT use this method for timeframes of the type HOLIDAYS_ID.
 	 *
 	 * @return int|null
@@ -390,6 +392,7 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns the corresponding single item id for a timeframe.
+	 * This will solely rely on the item id stored in the timeframe. If the item is deleted, this function will still return the old item id.
 	 * IMPORTANT: Going from 2.9 onwards you should NOT use this method for timeframes of the type HOLIDAYS_ID.
 	 *
 	 * @return int|null
