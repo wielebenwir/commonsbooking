@@ -852,6 +852,31 @@ $this->locationId,
 		$this->assertEquals( 1, $hourlyBookable->getGridSize() );
 	}
 
+	public function testGetAdmins() {
+		//Case 1: no admins set
+		//$this->assertEquals( [], $this->firstTimeframe->getAdmins() ); - The author is currently always included as admin
+		$this->assertEquals( [self::USER_ID], $this->firstTimeframe->getAdmins() );
+
+		//Case 2: Item admin set
+		$this->createCBManager();
+		$managedItem = $this->createItem("Managed Item", 'publish', [$this->cbManagerUserID]);
+		$unmanagedLocation = $this->createLocation("Unmanaged Location", 'publish');
+		$timeframe = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay($unmanagedLocation, $managedItem) );
+		$this->assertEqualsCanonicalizing( [$this->cbManagerUserID, self::USER_ID], $timeframe->getAdmins() );
+
+		//Case 3: Location admin set
+		$managedLocation = $this->createLocation("Managed Location", 'publish', [$this->cbManagerUserID]);
+		$unmanagedItem = $this->createItem("Unmanaged Item", 'publish');
+		$timeframe = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay($managedLocation, $unmanagedItem) );
+		$this->assertEqualsCanonicalizing( [$this->cbManagerUserID, self::USER_ID], $timeframe->getAdmins() );
+
+		//Case 4: Both admins set
+		$otherManagedLocation = $this->createLocation("Other Managed Location", 'publish', [$this->cbManagerUserID]);
+		$otherManagedItem = $this->createItem("Other Managed Item", 'publish', [$this->cbManagerUserID]);
+		$timeframe = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay($otherManagedLocation, $otherManagedItem) );
+		$this->assertEqualsCanonicalizing( [$this->cbManagerUserID, self::USER_ID], $timeframe->getAdmins() );
+	}
+
   protected function setUp() : void {
 
 		parent::setUp();
