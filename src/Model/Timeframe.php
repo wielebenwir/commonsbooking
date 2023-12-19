@@ -341,7 +341,7 @@ class Timeframe extends CustomPost {
 			return $locations;
 		}
 		else {
-			return null;
+			return [];
 		}
 	}
 
@@ -426,7 +426,7 @@ class Timeframe extends CustomPost {
 			return $items;
 		}
 		else {
-			return null;
+			return [];
 		}
 	}
 
