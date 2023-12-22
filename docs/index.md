@@ -13,6 +13,9 @@ hero:
     - theme: alt
       text: Dokumentation
       link: /dokumentation/
+    - theme: alt
+      text: Über
+      link: /über/
   image:
     src: /logo-big.png
     alt: CommonsBooking Logo

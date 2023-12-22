@@ -27,8 +27,8 @@ export default defineConfig({
     logo: { src: '/logo.png', width: 24, height: 24 },
 
     nav: [
-     { text: 'Anleitung', link: '/anleitung/', activeMatch: '/anleitung/' }
-    , { text: 'Dokumentation', link: '/dokumentation/', activeMatch: '/dokumentation/' }
+      { text: 'Anleitung',      link: '/anleitung/',       activeMatch: '/anleitung/' }
+    , { text: 'Dokumentation',  link: '/dokumentation/',    activeMatch: '/dokumentation/' }
     , { 
       text: pkg.version,
       items: [
