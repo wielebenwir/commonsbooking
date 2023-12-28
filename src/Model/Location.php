@@ -59,12 +59,12 @@ class Location extends BookablePost {
 		if (!empty($location_street)){
 			$html_output[] = $location_street . $html_after;
 		}
-		$location_postcode = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post );
+		$location_postcode = commonsbooking_sanitizeHTML( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post ) );
 		if (!empty($location_postcode)){
 			$html_output[] = $location_postcode;
 		}
-		$location_city = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_city',
-			$this->post );
+		$location_city = commonsbooking_sanitizeHTML( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_city',
+			$this->post ) );
 		if (!empty($location_city)){
 			$html_output[] = $location_city . $html_after;
 		}
@@ -81,11 +81,11 @@ class Location extends BookablePost {
 	 * @throws \Exception
 	 */
 	public function formattedAddressOneLine(): string {
-		$location_street = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_street', $this->post );
+		$location_street = commonsbooking_sanitizeHTML( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_street', $this->post ) );;
 
-		$location_postcode = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post );
+		$location_postcode = commonsbooking_sanitizeHTML( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post ) );
 
-		$location_city = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_city', $this->post );
+		$location_city = commonsbooking_sanitizeHTML(  CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_city', $this->post ) );
 
 		if (empty($location_street) && empty($location_postcode) && empty($location_city)){
 			return "";
@@ -123,7 +123,7 @@ class Location extends BookablePost {
 			$contact[] = "<br>"; // needed for email template
 			$contact[] = esc_html__( 'Please contact the contact persons at the location directly if you have any questions regarding collection or return:',
 				'commonsbooking' );
-			$contact[] = nl2br( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post ) );
+			$contact[] = nl2br( commonsbooking_sanitizeHTML( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post ) ) );
 		}
 
 		return implode( '<br>', $contact );
@@ -156,8 +156,9 @@ class Location extends BookablePost {
 	public function formattedPickupInstructions(): string {
 		$html_br     = '<br>';
 
-		return $html_br . $html_br . CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType,
-				COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions', $this->post ) . $html_br;
+		return commonsbooking_sanitizeHTML( $html_br . $html_br . CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType,
+				COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions', $this->post ) . $html_br
+            );
 	}
 
 	/**
@@ -170,7 +171,9 @@ class Location extends BookablePost {
 	 * @throws \Exception
 	 */
 	public function formattedPickupInstructionsOneLine() {
-		return CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions', $this->post );
+		return commonsbooking_sanitizeHTML( 
+            CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions', $this->post )
+        );
 	}
 
 	/**

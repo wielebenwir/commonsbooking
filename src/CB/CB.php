@@ -26,7 +26,7 @@ class CB {
 	 * @param \WP_Post|WP_User $wpObject
 	 * @param mixed $args
 	 *
-	 * @return mixed
+	 * @return mixed (don't forget to sanitize)
 	 * @throws Exception
 	 */
 	public static function get( $key, $property, $wpObject = null, $args = null ) {
@@ -103,7 +103,7 @@ class CB {
 	 * @param $post
 	 * @param $args
 	 *
-	 * @return string|null
+	 * @return string|null (don't forget to sanitize)
 	 * @throws Exception
 	 */
 	public static function lookUp( string $key, string $property, $post, $args ): ?string {
@@ -116,11 +116,6 @@ class CB {
 			$result = self::getUserProperty( $post, $property, $args );
 		} else {
 			$result = self::getPostProperty( $post, $property, $args );
-		}
-
-		if ( $result ) {
-			// sanitize output
-			return commonsbooking_sanitizeHTML( $result );
 		}
 
 		return $result;

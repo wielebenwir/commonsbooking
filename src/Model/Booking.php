@@ -537,9 +537,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
      * @return void
      */
     public static function getFormattedUserInfo() {
-        return commonsbooking_parse_template(
-            Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'user_details_template' )
-        );
+        $template = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'user_details_template' );
+        return commonsbooking_sanitizeHTML ( commonsbooking_parse_template( $template ) );
     }
     
     /**

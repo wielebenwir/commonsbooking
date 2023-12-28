@@ -8,7 +8,7 @@ use CommonsBooking\CB\CB;
  * @param string $template
  * @param array  $objects
  *
- * @return mixed
+ * @return The parsed template as string (don't forget to sanitize)
  */
 function commonsbooking_parse_template( string $template = '', $objects = [] ) {
 	$template = preg_replace_callback(
@@ -51,14 +51,14 @@ function commonsbooking_parse_template_callback( $match, array $objects = [] ) {
 
         // extract the html before part, looking for {{[*] pattern
         if ( preg_match( '/\{\{\[([^\]]*)\]/m', $match, $html_before ) === 1 ) {
-            $html_before = commonsbooking_sanitizeHTML( preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_before[1] ) );
+            $html_before = preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_before[1] );
         } else {
             $html_before = '';
         }
 
         // extract the html after part looking for [*]}} pattern
         if ( preg_match( '/\[([^\]]*)\]\}\}/m', $match, $html_after ) === 1 ) {
-            $html_after = commonsbooking_sanitizeHTML( preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_after[1] ) );
+            $html_after = preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_after[1] );
         } else {
             $html_after = '';
         }
