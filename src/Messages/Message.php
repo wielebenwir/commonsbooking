@@ -116,7 +116,7 @@ abstract class Message {
 
 		// parse templates & replaces template tags (e.g. {{item:name}})
 		$this->body    = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $template_body, $objects ) );
-		$this->subject = sanitize_text_field( commonsbooking_parse_template( $template_subject, $objects ) );
+		$this->subject = sanitize_text_field( commonsbooking_parse_template( $template_subject, $objects, "sanitize_text_field" ) );
 
 		// Setup mime type
 		$this->headers[] = "MIME-Version: 1.0";

@@ -10,11 +10,11 @@ use CommonsBooking\CB\CB;
  *
  * @return mixed
  */
-function commonsbooking_parse_template( string $template = '', $objects = [] ) {
+function commonsbooking_parse_template( string $template = '', $objects = [], $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
 	$template = preg_replace_callback(
 		'/\{{.*?\}}/',
-		function ( $match ) use ( $objects ) {
-			return commonsbooking_parse_template_callback( $match, $objects );
+		function ( $match ) use ( $objects, $sanitizeFunction ) {
+			return commonsbooking_parse_template_callback( $match, $objects, $sanitizeFunction );
 		},
 		$template
 	);
@@ -24,13 +24,13 @@ function commonsbooking_parse_template( string $template = '', $objects = [] ) {
     if ( preg_match_all( '/{{.*?}}/', $template ) === 0 ) {
         return apply_filters( 'commonsbooking_template_tag', $template );
     } else {
-        return commonsbooking_parse_template( $template, $objects );
+        return commonsbooking_parse_template( $template, $objects, $sanitizeFunction );
     }
 }
 
-function commonsbooking_parse_shortcode( $tag ) {
+function commonsbooking_parse_shortcode( $tag, $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
 	$tag = (array) $tag;
-	return commonsbooking_parse_template_callback( $tag );
+	return commonsbooking_parse_template_callback( $tag, [], $sanitizeFunction );
 }
 
 /**
@@ -44,21 +44,23 @@ function commonsbooking_parse_shortcode( $tag ) {
  *
  * @return false|mixed
  */
-function commonsbooking_parse_template_callback( $match, array $objects = [] ) {
+function commonsbooking_parse_template_callback( $match, array $objects = [], $sanitizeFunction ) {
 
     if ( isset( $match[0] ) ) {
         $match = $match[0];
 
         // extract the html before part, looking for {{[*] pattern
         if ( preg_match( '/\{\{\[([^\]]*)\]/m', $match, $html_before ) === 1 ) {
-            $html_before = commonsbooking_sanitizeHTML( preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_before[1] ) );
+            $html_before = preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_before[1] );
+            $html_before = call_user_func( $sanitizeFunction, $html_before );
         } else {
             $html_before = '';
         }
 
         // extract the html after part looking for [*]}} pattern
         if ( preg_match( '/\[([^\]]*)\]\}\}/m', $match, $html_after ) === 1 ) {
-            $html_after = commonsbooking_sanitizeHTML( preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_after[1] ) );
+            $html_after = preg_replace( '/(\{\{)|(\}\})|(\[)|(\])/m', '', $html_after[1] );
+            $html_after = call_user_func( $sanitizeFunction, $html_after );
         } else {
             $html_after = '';
         }
@@ -81,7 +83,7 @@ function commonsbooking_parse_template_callback( $match, array $objects = [] ) {
                 $post = $objects[ $path[0] ];
             }
 
-            $rendered_template_tag = CB::get( commonsbooking_getCBType( $path[0] ), $path[1], $post );
+            $rendered_template_tag = CB::get( commonsbooking_getCBType( $path[0] ), $path[1], $post, null, $sanitizeFunction );
             if ( $rendered_template_tag !== null && strlen( $rendered_template_tag ) > 0 ) {
                 return $html_before . $rendered_template_tag . $html_after;
             } else {
