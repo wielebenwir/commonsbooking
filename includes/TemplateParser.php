@@ -29,9 +29,9 @@ function commonsbooking_parse_template( string $template = '', $objects = [], $s
     }
 }
 
-function commonsbooking_parse_shortcode( $tag, $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
+function commonsbooking_parse_shortcode( $tag ) {
 	$tag = (array) $tag;
-	return commonsbooking_parse_template_callback( $tag, [], $sanitizeFunction );
+	return commonsbooking_parse_template_callback( $tag, [], 'commonsbooking_sanitizeHTML' );
 }
 
 /**
