@@ -115,6 +115,8 @@ abstract class Message {
 		}
 
 		// parse templates & replaces template tags (e.g. {{item:name}})
+		// 'body' is HTML. 'subject' is not HTML needs alternative sanitation such that characters like &
+		// do not get converted to HTML-entities like &amp;
 		$this->body    = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $template_body, $objects ) );
 		$this->subject = sanitize_text_field( commonsbooking_parse_template( $template_subject, $objects, "sanitize_text_field" ) );
 

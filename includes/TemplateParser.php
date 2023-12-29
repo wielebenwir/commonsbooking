@@ -7,6 +7,7 @@ use CommonsBooking\CB\CB;
  *
  * @param string $template
  * @param array  $objects
+ * @param callable $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
  *
  * @return mixed
  */
@@ -41,6 +42,7 @@ function commonsbooking_parse_shortcode( $tag, $sanitizeFunction = 'commonsbooki
  *
  * @param mixed $match
  * @param array $objects
+ * @param callable $sanitizeFunction The callable used to remove unwanted tags/characters
  *
  * @return false|mixed
  */
