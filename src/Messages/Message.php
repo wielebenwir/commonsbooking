@@ -147,7 +147,7 @@ abstract class Message {
 	 */
 	public function SendNotificationMail() {
 		$to      = apply_filters( 'commonsbooking_mail_to', $this->to, $this->action );
-		$subject = apply_filters( 'commonsbooking_mail_subject', $this->subject, $this->action, 'sanitize_text_field' );
+		$subject = apply_filters( 'commonsbooking_mail_subject', $this->subject, $this->action );
 		$body    = apply_filters( 'commonsbooking_mail_body', $this->body, $this->action );
 		$attachment = apply_filters( 'commonsbooking_mail_attachment', $this->attachment, $this->action);
 		$headers = implode( "\r\n", $this->headers );
