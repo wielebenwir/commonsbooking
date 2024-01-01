@@ -324,8 +324,6 @@ class BookingCodes {
 			throw new BookingCodeException( __( "No booking codes could be created because the item of the timeframe could not be found.", 'commonsbooking' )  );
 		}
 
-		self::deleteOldCodes( $timeframe->ID, $location->ID, $item->ID );
-
 		$bookingCodesRandomizer = intval( $timeframe->ID );
 		$bookingCodesRandomizer += $item->ID;
 		$bookingCodesRandomizer += $location->ID;
@@ -333,6 +331,12 @@ class BookingCodes {
 		foreach ( $period as $dt ) {
 			$day = new Day( $dt->format( 'Y-m-d' ) );
 			if ( $day->isInTimeframe( $timeframe ) ) {
+
+				// Check if a code already exists, if so DO NOT generate new
+				if ( static::lookupCode($timeframe->ID, $item->ID, $location->ID, $dt->format( 'Y-m-d' )) ) {
+					continue;
+				}
+
 				$bookingCode = new BookingCode(
 					$dt->format( 'Y-m-d' ),
 					$item->ID,
