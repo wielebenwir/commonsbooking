@@ -160,6 +160,37 @@ class MessageTest extends Email_Test_Case {
 		$this->assertEquals(self::ATTACHMENT_STRING, $wp_mail_attachments[0]);
 	}
 
+	/**
+	 * Tests for https://github.com/wielebenwir/commonsbooking/issues/1433
+	 * This concerns all FROM fields that contain a special character and subject lines
+	 * @return void
+	 */
+	public function test_1433() {
+		$specialChar = '&';
+		$fromName = 'Test ' . $specialChar . ' Name';
+		$fromMail = self::FROM_MAIL;
+		$fromHeader = 'From: ' . $fromName . ' <' . $fromMail . '>';
+		$subject = 'Test ' . $specialChar . ' Subject';
+		
+		$this->message = $this->getMockBuilder(Message::class)
+		                      ->onlyMethods(['sendMessage'])
+		                      ->setConstructorArgs([$this->postID, self::ACTION])
+		                      ->getMock();
+		$prepareMail   = $this->getReflectionMethod();
+		$prepareMail->invokeArgs( $this->message, [
+			$this->user,
+			self::BODY,
+			$subject,
+			$fromHeader,
+		] );
+		$this->message->SendNotificationMail();
+		/** @var \PHPMailer\PHPMailer\PHPMailer $mailer */
+		$mailer = $this->getMockMailer();
+		$this->assertEquals($fromMail, $mailer->From);
+		$this->assertEquals($fromName, $mailer->FromName);
+		$this->assertEquals($subject, $mailer->Subject);
+	}
+
 	public function setUp(): void {
 		parent::setUp();
 
