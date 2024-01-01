@@ -141,6 +141,8 @@ abstract class Message {
 	/**
 	 * Send the email using wp_mail function
 	 *
+	 * You need to run prepareMail() before calling this function
+	 *
 	 * @return void
 	 */
 	public function SendNotificationMail() {
@@ -164,6 +166,10 @@ abstract class Message {
 
 	abstract public function sendMessage();
 
+	/**
+	 * Only send mail if action is valid
+	 * @return void
+	 */
 	public function triggerMail(): void {
 		if ( in_array( $this->getAction(), $this->getValidActions() ) ) {
 			$this->sendMessage();
