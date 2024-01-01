@@ -36,6 +36,7 @@ class MessageTest extends Email_Test_Case {
 		'type' => 'text/plain',
 		'disposition' => 'attachment'
 	];
+	private $user;
 
 	public function testGetAction() {
 		$this->assertEquals(self::ACTION, $this->message->getAction() );
@@ -171,22 +172,20 @@ class MessageTest extends Email_Test_Case {
 			'post_status' => 'publish',
 			'post_type' => 'post'
 		]);
-		$user = get_userdata( wp_insert_user([
-			'user_login' => self::RECIPIENT_USERNAME,
+		$this->user = get_userdata( wp_insert_user( [
+			'user_login'    => self::RECIPIENT_USERNAME,
 			'user_nicename' => self::RECIPIENT_NICENAME,
-			'user_email' => self::RECIPIENT_EMAIL,
-			'user_pass' => 'testPassword'
-		]) );
+			'user_email'    => self::RECIPIENT_EMAIL,
+			'user_pass'     => 'testPassword'
+		] ) );
 
 		$this->message = $this->getMockBuilder(Message::class)
 		                      ->onlyMethods(['sendMessage'])
 		                      ->setConstructorArgs([$this->postID, self::ACTION])
 		                      ->getMock();
-		$reflection = new \ReflectionClass($this->message);
-		$prepareMail = $reflection->getMethod('prepareMail');
-		$prepareMail->setAccessible(true);
+		$prepareMail   = $this->getReflectionMethod();
 		$prepareMail->invokeArgs( $this->message, [
-			$user,
+			$this->user,
 			self::BODY,
 			self::SUBJECT,
 			self::FROM_HEADER,
@@ -198,5 +197,16 @@ class MessageTest extends Email_Test_Case {
 
 	public function tearDown(): void {
 		parent::tearDown();
+	}
+
+	/**
+	 * @return \ReflectionMethod
+	 * @throws \ReflectionException
+	 */
+	private function getReflectionMethod(): \ReflectionMethod {
+		$reflection  = new \ReflectionClass( $this->message );
+		$prepareMail = $reflection->getMethod( 'prepareMail' );
+		$prepareMail->setAccessible(true);
+		return $prepareMail;
 	}
 }
