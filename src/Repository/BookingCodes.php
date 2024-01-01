@@ -352,25 +352,6 @@ class BookingCodes {
 	}
 
 	/**
-	 * Removes all codes for the post, that don't have the current location-id or item-id.
-	 *
-	 * @param int $postId
-	 * @param int $locationId
-	 * @param int $itemId
-	 */
-	public static function deleteOldCodes( int $postId, int $locationId, int $itemId ) : void {
-		global $wpdb;
-		$table_name = $wpdb->prefix . self::$tablename;
-
-		$query = $wpdb->prepare( 'DELETE FROM ' . $table_name . ' WHERE timeframe = %d AND (location != %d OR item != %d)',
-			$postId,
-			$locationId,
-			$itemId
-		);
-		$wpdb->query( $query );
-	}
-
-	/**
 	 * @param BookingCode $bookingCode
 	 *
 	 * @return mixed
