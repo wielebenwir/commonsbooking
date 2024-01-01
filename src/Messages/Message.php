@@ -219,7 +219,7 @@ abstract class Message {
 	 *
 	 * @return void
 	 */
-	public function add_bcc( array $address_array ) {
+	protected function add_bcc( array $address_array ) {
 		// sanitize emails
 		$address_array = array_filter( array_map( 'sanitize_email', $address_array) );
 		$this->headers[] = sprintf( "BCC:%s", implode(',', $address_array ) );
