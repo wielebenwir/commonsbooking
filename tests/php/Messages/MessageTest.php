@@ -17,16 +17,6 @@ class MessageTest extends Email_Test_Case {
 	const SUBJECT = 'Test Subject';
 	const BODY = 'Test Body';
 
-	const FROM_MAIL = 'test@example.com';
-	const FROM_NAME = 'siteAdmin';
-	const FROM_HEADER = 'From: ' . self::FROM_NAME . ' <' . self::FROM_MAIL . '>';
-
-	const RECIPIENT_USERNAME = 'testuser';
-	const RECIPIENT_NICENAME = 'testuser';
-	const RECIPIENT_EMAIL = 'user@example.com';
-
-	const BCC_ADDRESS = 'bcc@example.com';
-
 	const ATTACHMENT_FILENAME = '/tmp/test.txt';
 	const ATTACHMENT_STRING_FILENAME = 'stringattachment.txt';
 	const ATTACHMENT_STRING = [
@@ -36,7 +26,6 @@ class MessageTest extends Email_Test_Case {
 		'type' => 'text/plain',
 		'disposition' => 'attachment'
 	];
-	private $user;
 
 	public function testGetAction() {
 		$this->assertEquals(self::ACTION, $this->message->getAction() );
@@ -120,6 +109,7 @@ class MessageTest extends Email_Test_Case {
 		$this->message->SendNotificationMail();
 	    /** @var \PHPMailer\PHPMailer\PHPMailer $mailer */
 	    $mailer = $this->getMockMailer();
+	    $this->assertEmpty($mailer->ErrorInfo);
 		$this->assertEquals(self::FROM_MAIL, $mailer->From);
 		$this->assertEquals(self::FROM_NAME, $mailer->FromName);
 
@@ -129,10 +119,10 @@ class MessageTest extends Email_Test_Case {
 		$this->assertEquals(self::RECIPIENT_EMAIL, $to[0]);
 		$this->assertEquals(self::RECIPIENT_NICENAME, $to[1]);
 
-	   $bcc = $mailer->getBccAddresses();
-	   $this->assertCount(1, $bcc);
-	   $bcc = $bcc[0];
-	   $this->assertEquals(self::BCC_ADDRESS, $bcc[0]);
+	    $bcc = $mailer->getBccAddresses();
+	    $this->assertCount(1, $bcc);
+	    $bcc = $bcc[0];
+	    $this->assertEquals(self::BCC_ADDRESS, $bcc[0]);
 
 
 	    $this->assertEquals(self::SUBJECT, $mailer->Subject);
@@ -178,7 +168,7 @@ class MessageTest extends Email_Test_Case {
 		                      ->getMock();
 		$prepareMail   = $this->getReflectionMethod();
 		$prepareMail->invokeArgs( $this->message, [
-			$this->user,
+			get_userdata( $this->userId ),
 			self::BODY,
 			$subject,
 			$fromHeader,
@@ -203,12 +193,6 @@ class MessageTest extends Email_Test_Case {
 			'post_status' => 'publish',
 			'post_type' => 'post'
 		]);
-		$this->user = get_userdata( wp_insert_user( [
-			'user_login'    => self::RECIPIENT_USERNAME,
-			'user_nicename' => self::RECIPIENT_NICENAME,
-			'user_email'    => self::RECIPIENT_EMAIL,
-			'user_pass'     => 'testPassword'
-		] ) );
 
 		$this->message = $this->getMockBuilder(Message::class)
 		                      ->onlyMethods(['sendMessage'])
@@ -216,7 +200,7 @@ class MessageTest extends Email_Test_Case {
 		                      ->getMock();
 		$prepareMail   = $this->getReflectionMethod();
 		$prepareMail->invokeArgs( $this->message, [
-			$this->user,
+			get_userdata( $this->userId ),
 			self::BODY,
 			self::SUBJECT,
 			self::FROM_HEADER,
