@@ -44,7 +44,7 @@
     "ext-json": "*",
     "symfony/cache": "^5.4.30",
     "symfony/service-contracts": "^v2.5.2",
-    "eluceo/ical": "~2.12.1",
+    "eluceo/ical": "~2.13.0",
     "phpmailer/phpmailer": "^6.8.1",
     "ed-itsolutions/cmb2-field-ajax-search": "^2.0"
   },
