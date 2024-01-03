@@ -77,9 +77,6 @@ abstract class Message {
 		$this->action = $action;
 	}
 
-	/**
-	 * @return mixed
-	 */
 	public function getAction() {
 		return $this->action;
 	}
