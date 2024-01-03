@@ -18,7 +18,8 @@ abstract class Email_Test_Case extends \WP_UnitTestCase {
 	const RECIPIENT_NICENAME = 'testuser';
 	const RECIPIENT_EMAIL = 'user@example.com';
 
-	const BCC_ADDRESS = 'bcc@example.com';
+	const LOCATION_BCC_ADDRESS = 'location-bcc@example.com';
+	const ITEM_BCC_ADDRESS = 'item-bcc@example.com';
 
 	const ITEM_NAME = 'Test Item';
 	const LOCATION_NAME = 'Test Location';
@@ -47,7 +48,10 @@ abstract class Email_Test_Case extends \WP_UnitTestCase {
 		$this->itemId     = wp_insert_post( [
 			'post_type'   => Item::$postType,
 			'post_title'  => self::ITEM_NAME,
-			'post_status' => 'publish'
+			'post_status' => 'publish',
+			'meta_input'  => [
+				COMMONSBOOKING_METABOX_PREFIX . 'item_maintainer_email' => self::ITEM_BCC_ADDRESS
+			]
 		] );
 		$this->locationId = wp_insert_post( [
 			'post_type'   => Location::$postType,

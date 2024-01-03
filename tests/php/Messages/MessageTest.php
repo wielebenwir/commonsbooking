@@ -44,7 +44,7 @@ class MessageTest extends Email_Test_Case {
 		$this->assertContains('Content-Type: text/html', $this->message->getHeaders());
 		$this->assertContains('MIME-Version: 1.0', $this->message->getHeaders());
 		$this->assertContains(self::FROM_HEADER, $this->message->getHeaders());
-		$this->assertContains('BCC:' . self::BCC_ADDRESS, $this->message->getHeaders());
+		$this->assertContains('BCC:' . self::LOCATION_BCC_ADDRESS, $this->message->getHeaders());
 	}
 
 	public function testGetSubject() {
@@ -122,7 +122,7 @@ class MessageTest extends Email_Test_Case {
 	    $bcc = $mailer->getBccAddresses();
 	    $this->assertCount(1, $bcc);
 	    $bcc = $bcc[0];
-	    $this->assertEquals(self::BCC_ADDRESS, $bcc[0]);
+	    $this->assertEquals(self::LOCATION_BCC_ADDRESS, $bcc[0]);
 
 
 	    $this->assertEquals(self::SUBJECT, $mailer->Subject);
@@ -204,7 +204,7 @@ class MessageTest extends Email_Test_Case {
 			self::BODY,
 			self::SUBJECT,
 			self::FROM_HEADER,
-			self::BCC_ADDRESS,
+			self::LOCATION_BCC_ADDRESS,
 			[],
 			[ self::ATTACHMENT_FILENAME, self::ATTACHMENT_STRING ]
 		] );
