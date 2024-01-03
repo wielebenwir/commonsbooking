@@ -31,7 +31,7 @@ function commonsbooking_parse_template( string $template = '', $objects = [], $s
 
 function commonsbooking_parse_shortcode( $tag ) {
 	$tag = (array) $tag;
-	return commonsbooking_parse_template_callback( $tag, [], 'commonsbooking_sanitizeHTML' );
+	return commonsbooking_parse_template_callback( $tag );
 }
 
 /**
@@ -46,7 +46,7 @@ function commonsbooking_parse_shortcode( $tag ) {
  *
  * @return false|mixed
  */
-function commonsbooking_parse_template_callback( $match, array $objects = [], $sanitizeFunction ) {
+function commonsbooking_parse_template_callback( $match, array $objects = [], $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
 
     if ( isset( $match[0] ) ) {
         $match = $match[0];
