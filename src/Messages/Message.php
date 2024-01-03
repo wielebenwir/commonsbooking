@@ -77,11 +77,28 @@ abstract class Message {
 		$this->action = $action;
 	}
 
-	/**
-	 * @return mixed
-	 */
 	public function getAction() {
 		return $this->action;
+	}
+
+	public function getTo() {
+		return apply_filters( 'commonsbooking_mail_to', $this->to, $this->getAction() );
+	}
+
+	public function getHeaders() {
+		return $this->headers;
+	}
+
+	public function getSubject() {
+		return apply_filters( 'commonsbooking_mail_subject', $this->subject, $this->getAction(), 'sanitize_text_field' );
+	}
+
+	public function getBody() {
+		return apply_filters( 'commonsbooking_mail_body', $this->body, $this->getAction() );
+	}
+
+	public function getAttachment(): array {
+		return apply_filters( 'commonsbooking_mail_attachment', $this->attachment, $this->getAction() );
 	}
 
 	/**
@@ -141,13 +158,15 @@ abstract class Message {
 	/**
 	 * Send the email using wp_mail function
 	 *
+	 * You need to run prepareMail() before calling this function
+	 *
 	 * @return void
 	 */
 	public function SendNotificationMail() {
-		$to      = apply_filters( 'commonsbooking_mail_to', $this->to, $this->action );
-		$subject = apply_filters( 'commonsbooking_mail_subject', $this->subject, $this->action, 'sanitize_text_field' );
-		$body    = apply_filters( 'commonsbooking_mail_body', $this->body, $this->action );
-		$attachment = apply_filters( 'commonsbooking_mail_attachment', $this->attachment, $this->action);
+		$to      = $this->getTo();
+		$subject = $this->getSubject();
+		$body    = $this->getBody();
+		$attachment = $this->getAttachment();
 		$headers = implode( "\r\n", $this->headers );
 		
 		if (!empty($attachment)) { //When attachment exists, modify wp_mail function to support attachment strings
@@ -164,6 +183,10 @@ abstract class Message {
 
 	abstract public function sendMessage();
 
+	/**
+	 * Only send mail if action is valid
+	 * @return void
+	 */
 	public function triggerMail(): void {
 		if ( in_array( $this->getAction(), $this->getValidActions() ) ) {
 			$this->sendMessage();
@@ -193,7 +216,7 @@ abstract class Message {
 	 *
 	 * @return void
 	 */
-	public function add_bcc( array $address_array ) {
+	protected function add_bcc( array $address_array ) {
 		// sanitize emails
 		$address_array = array_filter( array_map( 'sanitize_email', $address_array) );
 		$this->headers[] = sprintf( "BCC:%s", implode(',', $address_array ) );
