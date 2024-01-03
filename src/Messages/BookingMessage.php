@@ -44,13 +44,13 @@ class BookingMessage extends Message {
 		$template_body    = Settings::getOption( 'commonsbooking_options_templates',
 			'emailtemplates_mail-booking-' . $this->action . '-body' );
 		$template_subject = Settings::getOption( 'commonsbooking_options_templates',
-			'emailtemplates_mail-booking-' . $this->action . '-subject' );
+			'emailtemplates_mail-booking-' . $this->action . '-subject', 'sanitize_text_field' );
 
 
 		// Setup email: From
 		$fromHeaders = sprintf(
 			"From: %s <%s>",
-			Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-name' ),
+			Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-name', 'sanitize_text_field' ),
 			sanitize_email( Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-email' ) )
 		);
 

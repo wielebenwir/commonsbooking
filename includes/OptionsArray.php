@@ -11,7 +11,6 @@ use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use CommonsBooking\Service\Cache;
 
 // We need static types, because german month names don't work for datepicker
 $dateFormat = "d/m/Y";
@@ -1184,6 +1183,12 @@ Return date: {{booking:returnDatetime}}
 				'desc'   =>
 					commonsbooking_sanitizeHTML( __( 'Allows you to change options regarding the caching system', 'commonsbooking' ) ),
 				'fields' => array(
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Clear Cache', 'commonsbooking' ) ),
+						'id'            => 'commonsbooking-clear_cache-button',
+						'type'          => 'text',
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderClearCacheButton' )
+					),
 					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Filesystem cache path', 'commonsbooking' ) ),
 						'desc'          => commonsbooking_sanitizeHTML( __( 'Where the filesystem cache should be created. Only change when filesystem caching is not working.', 'commonsbooking' ) ),
