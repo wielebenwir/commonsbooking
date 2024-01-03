@@ -2,7 +2,16 @@
 
 namespace CommonsBooking\Messages;
 
+/**
+ * This is not an e-mail message like the others, but a notice that is displayed to admins and managers in the backend.
+ */
 class AdminMessage {
+
+    
+    private string $message;
+    
+    private string $notice_type;
+
 
 	/**
 	 * __construct

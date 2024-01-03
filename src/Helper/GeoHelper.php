@@ -1,52 +1,44 @@
 <?php
 
-
 namespace CommonsBooking\Helper;
 
-
-use Geocoder\Exception\Exception;
 use Geocoder\Location;
-use Geocoder\Provider\Nominatim\Nominatim;
-use Geocoder\Query\GeocodeQuery;
-use Geocoder\StatefulGeocoder;
-use Http\Client\Curl\Client;
 
+/**
+ * Wrapper for calling the geoCoder service.
+ * Defaults to implementation of {@see NominatimGeoCodeService}.
+ */
 class GeoHelper {
 
 	/**
-	 * @param $addressString
+	 * @var GeoCodeService Singleton instance
+	 */
+	private static GeoCodeService $geoCodeService;
+
+	/**
+	 * @param string $addressString
 	 *
-	 * @return ?Location
-	 * @throws Exception
+	 * @return Location|null
 	 */
 	public static function getAddressData( $addressString ): ?Location {
-		$defaultUserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0";
-
-		$client = new Client(
-			null,
-			null,
-			[
-				CURLOPT_SSL_VERIFYHOST => 0,
-				CURLOPT_SSL_VERIFYPEER => 0,
-			]
-		);
-
-		$provider = Nominatim::withOpenStreetMapServer(
-			$client,
-			array_key_exists('HTTP_USER_AGENT', $_SERVER) ? $_SERVER['HTTP_USER_AGENT'] : $defaultUserAgent
-		);
-		$geoCoder = new StatefulGeocoder( $provider, 'en' );
-
-		try {
-			$addresses = $geoCoder->geocodeQuery( GeocodeQuery::create( $addressString ) );
-			if ( ! $addresses->isEmpty() ) {
-				return $addresses->first();
-			}
-		} catch (\Exception $exception) {
-			// Nothing to do in this case
+		if ( ! isset( self::$geoCodeService ) ) {
+			self::resetGeoCoder();
 		}
-
-		return null;
+		return self::$geoCodeService->getAddressData( $addressString );
 	}
 
+	/**
+	 * Configure the service implementation in use
+	 *
+	 * @param GeoCodeService $instance
+	 *
+	 * @return void
+	 */
+	public static function setGeoCodeServiceInstance( GeoCodeService $instance ) : void {
+		self::$geoCodeService = $instance;
+	}
+
+	public static function resetGeoCoder() : void {
+		GeoHelper::setGeoCodeServiceInstance( new NominatimGeoCodeService() );
+	}
 }

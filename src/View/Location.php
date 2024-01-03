@@ -25,8 +25,9 @@ class Location extends View {
 		$item     = get_query_var( 'cb-item' ) ?: false;
 		$customId = md5($item . $location->ID);
 
-		if ( Plugin::getCacheItem($customId) ) {
-			return Plugin::getCacheItem($customId);
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$items    = \CommonsBooking\Repository\Item::getByLocation( $location->ID, true );
 			$itemIds = array_map(
@@ -106,18 +107,7 @@ class Location extends View {
 		$locationData = [];
 		/** @var \CommonsBooking\Model\Location $location */
 		foreach ( $locations as $location ) {
-			$shortCodeData = self::getShortcodeData( $location, 'Item' );
-
-			// Sort by start_date when no other order is defined
-			if (empty($queryArgs['orderby'])){
-				foreach ($shortCodeData as $item) {
-					uasort( $item['ranges'], function ( $a, $b ) {
-						return $a['start_date'] <=> $b['start_date'];
-					} );
-				}
-			}
-
-			$locationData[ $location->ID ] = $shortCodeData;
+			$locationData[ $location->ID ] = self::getShortcodeData( $location, 'Item' );
 		}
 
 		if ($locationData){
@@ -154,14 +144,15 @@ class Location extends View {
 		if ( $post->getMeta( 'loc_showmap' ) ) {
 			$latitude  = $post->getMeta( 'geo_latitude' );
 			$longitude = $post->getMeta( 'geo_longitude' );
-			wp_enqueue_style( 'cb_map_leaflet_css', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet.css' );
-			wp_enqueue_script( 'cb_map_leaflet_js', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet-src.js' );
+			wp_enqueue_style( 'cb-leaflet');
+			wp_enqueue_script( 'cb-leaflet');
 
 
 			echo '<div id="cb_locationview_map" style="width: 100%; height: 300px;"></div>';
-            wp_enqueue_script( 'cb-map-locationview_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-locationview.js' );
 
-			//map defaults
+            wp_enqueue_script( 'cb-map-locationview_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-locationview.js', array(), false, true );
+
+			//location geo-coordinates
 			$defaults = [
 				'latitude'  => $latitude,
 				'longitude' => $longitude,

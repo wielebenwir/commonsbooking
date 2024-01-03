@@ -5,25 +5,64 @@ namespace CommonsBooking\Messages;
 use WP_Error;
 use function commonsbooking_parse_template;
 
+/**
+ * This is the base class for all messages
+ */
 abstract class Message {
 
+	/**
+	 * The actions that are valid for this message. Usually a string.
+	 * @var array
+	 */
 	protected $validActions = [];
 
-	protected $postId;
-
+	/**
+	 * The action that is used for this message. Needs to be contained in $validActions
+	 * @var
+	 */
 	protected $action;
 
+	/**
+	 * The post that this message is about
+	 * @var
+	 */
 	protected $post;
 
+	/**
+	 * The recipient(s) of this message
+	 * @var
+	 */
 	protected $to;
 
+	/**
+	 * The e-mail headers
+	 * @var
+	 */
 	protected $headers;
 
+	/**
+	 * The subject text of this message
+	 * @var
+	 */
 	protected $subject;
 
+	/**
+	 * The body text of this message
+	 * @var
+	 */
 	protected $body;
 
+	/**
+	 * An associative array of a string attachment.
+	 *    'string' => String attachment data (required)
+	 *    'filename' => Name for the attachment (required)
+	 *    'encoding' => File encoding (defaults to 'base64')
+	 *    'type' => File MIME type (if left unspecified, PHPMailer will try to work it out from the file name)
+	 *    'disposition' => Disposition to use (defaults to 'attachment')
+	 * @var array
+	 */
 	protected $attachment = [];
+	private $postId;
 
 	/**
 	 * @param $postId
@@ -38,11 +77,28 @@ abstract class Message {
 		$this->action = $action;
 	}
 
-	/**
-	 * @return mixed
-	 */
 	public function getAction() {
 		return $this->action;
+	}
+
+	public function getTo() {
+		return apply_filters( 'commonsbooking_mail_to', $this->to, $this->getAction() );
+	}
+
+	public function getHeaders() {
+		return $this->headers;
+	}
+
+	public function getSubject() {
+		return apply_filters( 'commonsbooking_mail_subject', $this->subject, $this->getAction(), 'sanitize_text_field' );
+	}
+
+	public function getBody() {
+		return apply_filters( 'commonsbooking_mail_body', $this->body, $this->getAction() );
+	}
+
+	public function getAttachment(): array {
+		return apply_filters( 'commonsbooking_mail_attachment', $this->attachment, $this->getAction() );
 	}
 
 	/**
@@ -77,7 +133,7 @@ abstract class Message {
 
 		// parse templates & replaces template tags (e.g. {{item:name}})
 		$this->body    = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $template_body, $objects ) );
-		$this->subject = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $template_subject, $objects ) );
+		$this->subject = sanitize_text_field( commonsbooking_parse_template( $template_subject, $objects ) );
 
 		// Setup mime type
 		$this->headers[] = "MIME-Version: 1.0";
@@ -102,13 +158,15 @@ abstract class Message {
 	/**
 	 * Send the email using wp_mail function
 	 *
+	 * You need to run prepareMail() before calling this function
+	 *
 	 * @return void
 	 */
 	public function SendNotificationMail() {
-		$to      = apply_filters( 'commonsbooking_mail_to', $this->to, $this->action );
-		$subject = apply_filters( 'commonsbooking_mail_subject', $this->subject, $this->action );
-		$body    = apply_filters( 'commonsbooking_mail_body', $this->body, $this->action );
-		$attachment = apply_filters( 'commonsbooking_mail_attachment', $this->attachment, $this->action);
+		$to      = $this->getTo();
+		$subject = $this->getSubject();
+		$body    = $this->getBody();
+		$attachment = $this->getAttachment();
 		$headers = implode( "\r\n", $this->headers );
 		
 		if (!empty($attachment)) { //When attachment exists, modify wp_mail function to support attachment strings
@@ -125,6 +183,10 @@ abstract class Message {
 
 	abstract public function sendMessage();
 
+	/**
+	 * Only send mail if action is valid
+	 * @return void
+	 */
 	public function triggerMail(): void {
 		if ( in_array( $this->getAction(), $this->getValidActions() ) ) {
 			$this->sendMessage();
@@ -154,7 +216,7 @@ abstract class Message {
 	 *
 	 * @return void
 	 */
-	public function add_bcc( array $address_array ) {
+	protected function add_bcc( array $address_array ) {
 		// sanitize emails
 		$address_array = array_filter( array_map( 'sanitize_email', $address_array) );
 		$this->headers[] = sprintf( "BCC:%s", implode(',', $address_array ) );

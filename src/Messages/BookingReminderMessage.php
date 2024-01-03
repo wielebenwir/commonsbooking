@@ -3,8 +3,14 @@
 namespace CommonsBooking\Messages;
 
 use CommonsBooking\Repository\Booking;
+use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Settings\Settings;
 
+/**
+ * This message is sent out to users to remind them of their upcoming booking.
+ * This is sent using a cron job.
+ * @see \CommonsBooking\Service\Scheduler
+ */
 class BookingReminderMessage extends Message {
 
 	/**
@@ -25,12 +31,12 @@ class BookingReminderMessage extends Message {
 		$template_body    = Settings::getOption( 'commonsbooking_options_reminder',
 			$this->action . '-body' );
 		$template_subject = Settings::getOption( 'commonsbooking_options_reminder',
-			$this->action . '-subject' );
+			$this->action . '-subject', 'sanitize_text_field' );
 
 		// Setup email: From
 		$fromHeaders = sprintf(
 			"From: %s <%s>",
-			Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-name' ),
+			Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-name', 'sanitize_text_field' ),
 			sanitize_email( Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-email' ) )
 		);
 

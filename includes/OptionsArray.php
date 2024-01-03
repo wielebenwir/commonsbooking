@@ -10,7 +10,6 @@ use CommonsBooking\View\TimeframeExport;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use CommonsBooking\Service\Cache;
 
 // We need static types, because german month names don't work for datepicker
 $dateFormat = "d/m/Y";
@@ -133,7 +132,7 @@ return array(
 						'id'          => 'booking-comment-title',
 						'description' => commonsbooking_sanitizeHTML( __( 'Text that will be shown above the comment field in the booking confirmation page.', 'commonsbooking' ) ),
 						'type'        => 'text',
-						'default'     => __( 'Booking comment', 'commonstbooking' ),
+						'default'     => __( 'Booking comment', 'commonsbooking' ),
 					),
 					array(
 						'name'        => commonsbooking_sanitizeHTML( __( 'Description', 'commonsbooking' ) ),
@@ -143,27 +142,84 @@ return array(
 						'default'     => __( 'Here you can leave a comment about your booking. This will be sent to the station.', 'commonsbooking' ),
 					),
 				)
+			),
+			'globalLocationSettings' => array(
+				'title'  => __( "Global location settings", 'commonsbooking' ),
+				'desc'   => commonsbooking_sanitizeHTML( __( 'These settings are used for all locations. You can overwrite these settings for each location in the location settings.', 'commonsbooking' ) ),
+				'id'     => 'globalLocationSettings',
+				'fields' => Location::getOverbookingSettingsMetaboxes()
 			)
 		)
 	),
 	/* Tab: general end*/
 
-	/* Tab Booking Codes start */
+	/* Tab booking codes start */
 	'bookingcodes' => array(
-		'title'        => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
+		'title'        => commonsbooking_sanitizeHTML( __( 'Booking codes', 'commonsbooking' ) ),
 		'id'           => 'bookingcodes',
 		'field_groups' => array(
 			'bookingcodes' => array(
-				'title'  => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
+				'title'  => commonsbooking_sanitizeHTML( __( 'Booking codes', 'commonsbooking' ) ),
 				'id'     => 'bookingcodes',
 				'desc'   =>
 					commonsbooking_sanitizeHTML( __( 'Enter the booking codes to be generated in advance for booking types with all-day booking time frames.  Enter booking codes as a comma separated list, e.g.: Code1,Code2,Code3,Code4
-                <br>More information in the documentation: <a href="https://commonsbooking.org/?p=870" target="_blank">Booking Codes</a>', 'commonsbooking' ) ),
+                <br>More information in the documentation: <a href="https://commonsbooking.org/?p=870" target="_blank">Booking codes</a>', 'commonsbooking' ) ),
 				'fields' => array(
 					array(
-						'name' => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
+						'name' => commonsbooking_sanitizeHTML( __( 'Booking codes', 'commonsbooking' ) ),
 						'id'   => 'bookingcodes',
 						'type' => 'textarea',
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Show booking codes for x days', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'Displays booking codes for the next x days on the timeframe page', 'commonsbooking' ) ),
+						'id'      => 'bookingcodes-listed-timeframe',
+						'type'       => 'text_small',
+						'attributes' => array(
+							'type' => 'number',
+							'min'  => '0',
+						),
+						'default' => '30',
+					),
+				)
+			),
+			'mail_booking_codes' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Booking codes by email', 'commonsbooking' ) ),
+				'id'     => 'mail-booking-codes',
+				'desc'   =>
+					commonsbooking_sanitizeHTML( __( 'Send booking codes by email to location email(s) (automated by cron or ad hoc)', 'commonsbooking' ) ),
+				'fields' => array(
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Subject for booking codes email', 'commonsbooking' ) ),
+						'id'      => 'mail-booking-codes-subject',
+						'type'    => 'text',
+						'default' => commonsbooking_sanitizeHTML( __( 'Booking codes for {{codes:formatDateRange}} {{item:post_title}}', 'commonsbooking' ) ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Body for booking codes email', 'commonsbooking' ) ),
+						'id'      => 'mail-booking-codes-body',
+						'type'    => 'textarea',
+						'default' => commonsbooking_sanitizeHTML( __( '
+<h1>Booking codes for {{item:post_title}} : {{codes:formatDateRange}}</h1>
+
+<p>Booking codes Table:</p>
+<br>   
+{{codes:codeTable}}
+<br>          
+<p>Thanks, the Team.</p>
+                            ', 'commonsbooking' ) ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Backup E-Mail for booking codes email', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'Email address that receives a bcc copy of booking codes mailing (not used if empty)', 'commonsbooking' ) ),
+						'id'      => 'mail-booking-codes-bcc',
+						'type'    => 'text',
+					),
+					array(
+						'name'        => commonsbooking_sanitizeHTML( __('Attach iCalendar file to booking codes email', 'commonsbooking') ),
+						'id'          => 'mail-booking-codes-attach-ical',
+						'description' => commonsbooking_sanitizeHTML( __( 'Will attach an iCalendar compatible file with booking codes per day to import in their respective calendar application.', 'commonsbooking' ) ),
+						'type'        => 'checkbox',
 					),
 				)
 			)
@@ -472,7 +528,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 						'id'      => 'colorscheme_greyedoutcolor',
 						'type'    => 'colorpicker',
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used to signify that no timeframe has been created for an item or a button that is not yet clickable', 'commonsbooking' ) ),
-						'default' => '#f6f6f6',
+						'default' => '#e0e0e0',
 					),
 
 					array(
@@ -495,7 +551,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 						'id'      => 'colorscheme_lighttext',
 						'type'    => 'colorpicker',
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used for light text on dark backgrounds', 'commonsbooking' ) ),
-						'default' => '#c4c4c4',
+						'default' => '#a0a0a0',
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Dark text color', 'commonsbooking' ) ),
@@ -1064,13 +1120,32 @@ Return date: {{booking:returnDatetime}}
 				]
 			),
 			'experimental' => array(
-				'title'  => commonsbooking_sanitizeHTML( __( 'Connect to REDIS database.', 'commonsbooking' ) ),
-				'id'     => 'redis_group',
+				'title'  => commonsbooking_sanitizeHTML( __( 'Advanced caching settings', 'commonsbooking' ) ),
+				'id'     => 'caching_group',
 				'desc'   =>
-					commonsbooking_sanitizeHTML( __( 'Allows you to connect the cache to a REDIS database. This feature is experimental.', 'commonsbooking' ) ),
+					commonsbooking_sanitizeHTML( __( 'Allows you to change options regarding the caching system', 'commonsbooking' ) ),
 				'fields' => array(
 					array(
-						'name' => commonsbooking_sanitizeHTML( __( 'Enable REDIS Caching', 'commonsbooking' ) ),
+						'name'          => commonsbooking_sanitizeHTML( __( 'Clear Cache', 'commonsbooking' ) ),
+						'id'            => 'commonsbooking-clear_cache-button',
+						'type'          => 'text',
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderClearCacheButton' )
+					),
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Filesystem cache path', 'commonsbooking' ) ),
+						'desc'          => commonsbooking_sanitizeHTML( __( 'Where the filesystem cache should be created. Only change when filesystem caching is not working.', 'commonsbooking' ) ),
+						'id'            => 'cache_path',
+						'type'          => 'text',
+						'default'       => '/tmp/symfony-cache/',
+					),
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
+						'id'            => 'filesystem-status',
+						'type'          => 'text',
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderFilesystemStatus' ),
+					),
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'Enable REDIS Caching (experimental)', 'commonsbooking' ) ),
 						'id'   => 'redis_enabled',
 						'type' => 'checkbox',
 					),
@@ -1081,10 +1156,10 @@ Return date: {{booking:returnDatetime}}
 						'default' => 'redis://localhost:6379'
 					),
 					array(
-						'name'          => commonsbooking_sanitizeHTML( __( 'Current connections status', 'commonsbooking' ) ),
+						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
 						'id'            => 'redis_connection-status',
 						'type'          => 'text',
-						'render_row_cb' => array( Cache::class, 'renderREDISConnectionStatus' ),
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderREDISConnectionStatus' ),
 					)
 				)
 			),

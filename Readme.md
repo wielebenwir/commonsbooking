@@ -1,53 +1,35 @@
-[![PHP Composer](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/php.yml) [![WP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/wp-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest) [![PHP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/php-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest)
+[![PHP Composer](https://github.com/wielebenwir/commonsbooking/actions/workflows/phpunit.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/phpunit.yml)
+[![E2E Tests](https://github.com/wielebenwir/commonsbooking/actions/workflows/e2e.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/e2e.yml)
+[![WP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/wp-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest) 
+[![PHP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/php-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest)
+[![codecov](https://codecov.io/gh/wielebenwir/commonsbooking/branch/master/graph/badge.svg?token=STJC8WPWIC)](https://codecov.io/gh/wielebenwir/commonsbooking)
 
 # CommonsBooking
 
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen  
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
-Tags: booking, commons, sharing, calendar,  
-Requires at least: 5.2  
-Tested up to: 6.0
-Stable Tag: 2.7.3 
-Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
-Commons Booking is a plugin for management and booking of common goods. 
+CommonsBooking is a plugin for the management and booking of common goods. This plugin provides associations, groups, and individuals with the ability to share items (such as cargo bikes and tools) among users. It is based on the concept of Commons, where resources are shared for the benefit of the community.
 
-## Description
+## Links
 
-This plugin gives associations, groups and individuals the ability to share items (e.g. cargo bikes, tools) with users. It is based on the idea of Commons and sharing resources for the benefit of the community. 
-
-CommonsBooking was developed for the ["Commons Cargobike" movement](http://commons-cargobikes.org/), but it can be used for any kind items.
-
-**Unique features:**
-
-* Items can be assigned to different locations for the duration of a timeframe, each with their own contact information.  
-* Simple booking process:  bookable timeframes can be configured with hourly slots oder daily slots.
-* Auto-accept bookings: A registered user can book items without the need for administration. 
-* Codes: The plugin automatically generates booking codes, which are used at the station to validate the booking. 
-* Managers can set holidays or repair slots to prevent items from beeing booked.
-
-
-**Use cases:**
-
-* Your association owns special tools that are not in use every day, and you want to make them available to a local group.
-* You own a cargo bike that you want to share with the community, and it will be placed at different locations throughout the year.
-
-**Plugin websites**
-
+* [WordPress Plugin Page](https://wordpress.org/plugins/commonsbooking/)
+* [View Changelog](https://wordpress.org/plugins/commonsbooking/#developers)
 * [Official Website](https://commonsbooking.org)
-* [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues) 
-
+* For users get [Support](https://commonsbooking.org/kontakt/)
+* For developers use the [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues) 
 
 ## Installation
 
-### Using The WordPress Dashboard 
+### Using The WordPress Dashboard
 
 1. Navigate to the 'Add New' in the plugins dashboard
 2. Search for 'commonsbooking'
 3. Click 'Install Now'
-4. Activate the plugin on the Plugin dashboard
+4. Activate the plugin in the plugins dashboard
+ 
 
 ### Uploading in WordPress Dashboard 
 
@@ -55,262 +37,93 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 2. Navigate to the 'Upload' area
 3. Select `commonsbooking.zip` from your computer
 4. Click 'Install Now'
-5. Activate the plugin in the Plugin dashboard
+5. Activate the plugin in the plugins dashboard
 
 ### Using FTP
 
 1. Download `commonsbooking.zip`
 2. Extract the `commonsbooking` directory to your computer
 3. Upload the `commonsbooking` directory to the `/wp-content/plugins/` directory
-4. Activate the plugin in the Plugin dashboard
+4. Activate the plugin in the plugins dashboard
 
-### Using Github (developers only)
+### Using GitHub (developers only)
 
 1. Make sure that composer is installed on your system
 2. Navigate into your wp-content/plugins directory
 3. Open a terminal and run `git clone https://github.com/wielebenwir/commonsbooking`
 4. cd into the directory commonsbooking and run `composer install`
-5. Activate the plugin in the Plugin dashboard
+> This might fail, if you don't have the PHP extension [uopz](https://www.php.net/manual/en/book.uopz.php) installed. Try running `composer install --no-dev` if you just quickly want to test a specific branch without installing the extension.
+5. Activate the plugin in the plugins dashboard
 
-## Frequently Asked Questions
+## Contribute
 
-### Where can i find help/report bugs?
+Either through translating WordPress into your native tongue ([see the already existing WordPress Plugin Translations](https://translate.wordpress.org/projects/wp-plugins/commonsbooking/)) or through developing and testing new versions of the application.
 
-* [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues)
-* [Support](https://commonsbooking.org/kontakt/)
+## Development
 
+### Run plugin
 
-## Screenshots
+First, we have to install the necessary dependencies and packages, we can do this by using the 
+```
+npm run start
+```
+command. 
 
-1. Booking calendar
-2. Items list
-3. Booking confirmation
-4. User bookings list
+The most easy way to start hacking WordPress plugins in general (if you have no other development environment set up) is using [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/). Install it and it's dependencies (mainly Docker) and run this to start the enviroment:
+```
+npm run env:start
+```
+The provided `.wp-env.json` should be sufficient for normal development, for details see the [documentation of wp-env config](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/#wp-env-json). [You can create](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/#wp-env-override-json) a `.wp-env.override.json` for a custom configuration you don't want to check in.
 
-## Changelog 
+For testing, you can activate the [kasimir theme](github.com/flegfleg/kasimir-theme) via [wp cli](https://make.wordpress.org/cli/handbook/) inside the wp-env docker container:
+```
+npm run env run cli wp theme activate kasimir-theme
+```
 
-### 2.7.3 (20.10.2022)
-* FIXED: Fatal error when trying to export timeframes with deleted items
-* FIXED: Fatal error when trying to access invalid data
-* FIXED: Restriction e-mails now contain correct booking links again
-* FIXED: Issue with map category presets
-* FIXED: Booking overview not shown when events manager plugin in use
+### Test plugin
 
-### 2.7.2 (30.06.2022)
-* FIXED: Plugin incompatibility with WPBakery
-* FIXED: Plugin incompatibility with Events Manager
-* FIXED: Plugin incompatibility with All-in One Events Calendar
-* FIXED: Shortcodes sometimes not showing all items
-* FIXED: Overbooking was possible when combining hourly and daily slots
-* ENHANCED: Optimized caching to avoid caching conflicts on multiple instances on same server
-* FIXED: Location map sometimes rendered not properly on location edit screen
+To test the code you first run the [preparation scripts](https://github.com/wp-cli/scaffold-command#wp-scaffold-plugin-tests) to load the wordpress core and configure database connection via `wp-config.php`. The following line can vary on your system, use the appropriate credentials, databse port and version of wordpress. The appropriate database port is printed out by `npm run env:start`:
+```
+bash bin/install-wp-tests.sh wordpress root password 127.0.0.1:49153 latest
+```
 
-### 2.7.1 (05.05.2022)
-* FIXED: Fixed Fatal error when PHP Version is < 7.4 / we recommend updating you PHP version to 7.4. because 7.3 is no longer maintained. Please ask you hosting provider for support.
-* FIXED: Migration did not work properly
-* ADDED: You can now add html text-snippets before and after an email template tag. This allows to add e.g. a label that is only shown when the template variable has content. Syntax: Add optional text in square brackets [xxx] directly before and after the template tag. Example: {{[optional text before ]item:post_title[optional text after]}} 
-* ENHANCED: Unified filter hooks. New hook prefix is commonsbooking_xxx . Please check your custom filters.
+Testing the plugin code via `phpunit`. At the moment it works only with a manually downloaded phar. We are using PHPUnit 9 and PHP7.4 for the automated tests. The tests might fail if you are using a different version.
+```
+php ~/phpunit.phar --bootstrap tests/php/bootstrap.php
+```
 
+E2E (end to end) tests are written in [cypress](https://www.cypress.io/). To run them you need to install cypress and start the wordpress environment:
+```bash
+npm run env:start
+```
+Now, install the test data needed for the tests:
+```bash
+npm run cypress:setup
+```
 
-### 2.7 (26.04.2022)
-* NEW: You can now choose your individual colors to customize Commonsbooking to your liking. Try it via Options -> CommonsBooking -> Templates (scroll down to color section).
-* NEW: Added action hooks to templates.
-* ENHANCED: Optimized the commonsbooking internal caching so booking lists and maps are rendered faster.
-* ENHANCED: Modified CSS styles for calendar.
-* ENHANCED: Item lists and availability tables will now output a warning when no items have been found.
-* ENHANCED: Added links to location pages in maps, booking lists, availability tables and item overview page.
-* ENHANCED: Items, which are restricted to a certain user group are now hidden for non-eligible users.
-* ENHANCED: Map: Pre-Filtering of items by item-categorys and location categorys is now possible
-* FIXED: Set default advance booking days for existing timeframes to 365 days.
-* FIXED: Some rendering issues with the calendar have been fixed.
-* FIXED: Issues with already past bookings where cancellation was still possible
-* FIXED: Wrong time displayed in cancellation messages
+Then you can run the tests:
+```bash
+npm run cypress:run
+```
+Or open Cypress using
+```bash
+npm run cypress:open
+```
 
+### Update translations
 
-### 2.6.12 (27.02.2022)
-FIXED: Fixes issue that prevents user meta data (.e.g phone number etc.) to be shown in booking emails 
+Currently, we only manage German and English translations as po files in the repository, so they are available at build time. 
+See the [WordPress plugin translation page](https://translate.wordpress.org/projects/wp-plugins/commonsbooking/) for other languages available at runtime.
 
-### 2.6.11 (23.02.2022)
-FIXED: Some users reported that bookings were no longer possible. After clicking on "continue to booking check" the expected booking page was not loaded. Since this only occurred on some systems and sporadically, it was not possible to determine the cause in the individual cases. However, our analysis showed that it was likely related to a Wordpress function for validating user input. We have adjusted this in the current version. 
+Create a new .pot file using the 
+```
+wp i18n make-pot . languages/commonsbooking.pot
+```
+command in the plugin directory. Make sure that all of your strings use the `__` function with the domain `commonsbooking`. Then you can use `poedit` to open the `commonsbooking-de_DE.po` and update the strings from the `pot` file. 
 
-### 2.6.10 (20.02.2022)
-* FIXED: With certain time frame settings it could happen that the calendar was only displayed starting with the next month. This is now fixed. 
-* FIXED: The map on the location page always showed a default location. It now shows the correct location.
-* FIXED: In some systems, bookings could not be executed because the booking confirmation page did not load.   
+### Build plugin zip
 
-### 2.6.9 (18.02.2022)
-FIXED: When an a href link was included in the site pickup instructions, it caused the booking calendar to not load correctly. 
-
-### 2.6.8 (14.02.2022)
-* FIXED: fixed sanitizing issues
-* FIXED: reminder mails have been sent to users even if not activated in options
-* FIXED: error on location detail pages in some cases
-
-### 2.6.7 (13.02.2022)
-FIXED: fixed minor technical issue that leads to hidden gps refresh button in some environments
-
-### 2.6.5 (13.02.2022)
-* FIXED: fixed issue of missing user data in booking and restriction related emails
-* MODIFIED: Internal refactoring of codebase
-
-## 2.6.4 (10.02.2022)
-FIXED: fixed issue that produces an error when sending restriction mails in some environments and cases 
-
-### 2.6.3 (10.02.2022)
-FIXED: fixed issue with classic editor and gps button on location editor
-
-### 2.6.2 (10.02.2022)
-FIXED: fixed minor technical issue
-
-### 2.6.1 (10.02.2022)
-FIXED: Map geo-coordinates are not updated after saving location without page reload with gutenberg editor. Added button to manually update / set geo coordinates and added some minor map improvements.
-
-### 2.6 (03.02.2022)
-Notice: Version 2.5 was only a release candidate is skipped as a stable release to to technial reasons
-
-#### New
-* Bookings as a separate menu item, better overview in the backend. The bookings are no longer listed under menu item "time frame" They moved to  a new menu item "Bookings". 
-* Dashboard: Revision of the dashboard. Now shows today's pickups and returns.
-* Reminder emails: Users will receive reminder and feedback emails before and after a booking.* Manage Usage Restrictions: Restrictions can now be managed. These can be notifications of broken or missing parts or the declaration of a total breakdown (e.g. due to a repair). Bookings that are within the affected time frame are automatically cancelled in case of a total breakdown and an info email is sent to users and CB managers. Notices are displayed in the booking calendar and users can be notified about changes.
-* A map view can now be set for the location page. The setting can be activated via the location editor.
-* Customizable booking confirmation text on booking page ("Your booking has been confirmed"). Can now be customized in Settings -> Templates.
-* Maximum advance booking period is now customizable.The period is set to 365 days by default.  This setting also applies to all existing time frames.  The setting is done via the time frames. The time frame can thus be created for a longer or infinite period. Users can then always only book a maximum of x days in advance, calculated from today.
-* Thumbnail size in article and location lists now adjustable (Settings -> Templates -> Image formatting).
-* GBFS API integrated to enable standardized data exchange with other mobility platforms.
-* Calendar Legend:The booking calendar has now received a legend to explain the colors and settings of the calendar.
-* For experts: metadata sets (individual attributes / fields can be added to items or categories here).API extended (individual API releases possible).
-
-#### Enhanced or changed
-* The map view no longer shows pickup notes and contact details in the small preview popup, as we want to output these only in the booking process. Also, these options have been removed from the map settings.
-* In the export function, the custom fields created by CommonsBooking are displayed to be able to add them to the export.
-* The booking list has been revised. The design has been adjusted accordingly and the booking status has been integrated.
-* Export function extended with more standard fields (name of the borrower etc.).
-* In the booking calendar, the time selection in the calendar can now be reset.
-* Booking codes are now also displayed in the booking list (My bookings).
-* Pickup notes are now displayed differently in the booking calendar and in the booking confirmation. Attention: Template change. If you change the template manually, please check the adjustments and correct them if necessary.
-* For cancellations, the cancellation time is saved and displayed in the booking details view at the top of the status message.
-
-#### Fixed bugs
-* Locations in time frame editing are now sorted alphabetically.
-* On misconfigured servers, there could be an error related to geo-coding that prevented locations from being saved. Switching to a different software library should fix this bug.
-* Minor adjustments to guarantee compatibility with Wordpress 5.9 and PHP 8.
-
-### 2.4.5 (10.05.2021)
-* NEW: Restrict bookings to user groups. It is now possible to restrict bookable timeframes to one or more user groups to restrict bookings based on these timeframes.
-* FIXED: In case of consecutive time frames, it could happen that not all time frames were displayed in the calendar. This is now fixed. (#612)
-* FIXED: In a some combination of time frames it could happen that an already existing booking could be overwritten (in case of slotwise booking). (#610)
-* FIXED: Some parts in the calendar were not translated to English when the website language was set to English. (#545)
-* FIXED: API was available by default - this is standard behaviour of the wordpress integrated API too. Now the CommonsBooking API is deactived by default an can be activated in CommonsBooking options. We also removed the Owner information from items that has been available via the API (first and last name)
-* FIXED: In the email template tags, the tag following the pattern {{xxx:yyy}} could not be used within an a href link as it is not allowed by Wordpress security methods. We have now added the alternative divider #. This now also works in a href links. Example a href="{{xxxx#yyyy}}"
-* FIXED: New booking codes could not be generated in some cases.
-
-
-### 2.4.4 (26.04.2021) 
-* NEW: Added category filter in items and locations shortcode. You can use [cb_items category_slug=category_slug] to show items by a single category.
-* NEW: Added the p attribute to cb_items shortcode, so you can display a single item by using [cb_items p=POSTID]
-* CHANGED: Item and location list in select dropdown in timeframe editor is not restricted to published elements anymore. 
-* ENHANCED: template improvements: not available notice now in separate line in item/location lists
-* ENHANCED: pickupinstructions now inclueded in the location section on the booking page (changed template: booking-single.php)
-* ENHANCED: inlcuded pickupinstructions in the following templates: location-calendar-header.php / location-single-meta.php
-* ENHANCED: Changed the standard image thumbnail size in listings
-* FIXED: If multiple timeframes are set the calendar only showed the last timeframe in booking calendar. 
-* FIXED: Fixed some issues with map category filter
-* FIXED: fixed interaction issues with calender when using timeslots. pickup field resets when selecting pickup time (fixed issues #629 and #619)
-
-
-### 2.4.3 (09.04.2021)
-* NEW: Eport-Tool for exporting timeframes (Bookings etc.) with flexible data fields. Useful for external analytics or to create connections to external systems like automatic lockers etc.
-* NEW: Booking comment: Users can add an internal comment to a booking that can be viewed by location administrators and can be used in email template via template tags (see template tags in documentation)
-* NEW: Maximum bookable days are now without limitation. You can choose the maximum days in the timeframe editor.
-* NEW: We added 2 new menu items in the CommonsBooking section so that you can now the edit Commonsbooking categories for locations and items (rename, remove etc.)
-* NEW: Hide Contact Details: It is now possible to configure whether contact details of the station are only displayed after the booking has been confirmed by the user. This prevents users from already receiving booking details for an unconfirmed booking and thus possibly already contacting the location without having completed the booking.
-* ENHANCED: Added migration of elementor special fields
-* ENHANCED: Added map link to dashboard
-* ENHANCED: Validation of bookings optimized
-* FIXED: Bookable timeframe without enddate caused some issues in frontend calendar. Now it is possible to leave end date empty to allow infinite booking timeframe
-* FIXED: performance issue on some systems in backend view (issue #546)
-* FIXED: cancelation of an unconfirmed booking triggered a cancelation mail to user and location. Now the cancelation mail will not be send anymore.  (issue #532)
-* FIXED: fixed a timeframe validation error (isse #548)
-* FIXED: calendar not shown in edge / explorer in some versions. Thanks to @danielappelt for fixing it
-* FIXED: Added tooltips in map configuration
-* FIXED: Multiple categories are not imported during migration.
-* TEMPLATES: modification in templates: booking-single-form.php and booking-single.php 
-* ENHANCED: Make CommonsBooking Menu entry fit better in WP Admin für Wordpress 5.7 #593
-
-### 2.4.2 (15.02.2021)
-* FIXED: Fixed permission issue on booking lists
-
-### 2.4.1 (14.02.2021)
-* FIXED: Avoid Uncaught Exception during Geo Coding on Update
-
-### 2.4.0 (12.02.2021)
-* NEW: Booking list for frontend users now available (my bookings)
-* NEW: Booking Widget now available (Widget display links to my bookings, login, logout) 
-* MODIFIED: Permissions changed so that only administrators can assign CBManagers to locations and items. #478
-* ENHANCED: Implementent message if backend users try to open preview of timeframes other than bookings
-* ENHANCED: Interface and layout map filter optimized
-* FIXED: generated duplicate booking codes if location was changed in existing timeframe. Now booking codes are deleted if location is not assigned to a timeframe #466
-* FIXED: Export booking codes as CSV caused formatting issues when opening in Excel for some users due to incorrect character encoding. UTF-8 encoding added to avoid this error. #467
-* FIXED: Small Commons API compatibility issues #281
-* ENHANCED: Added internal Class for better admin message management
-* FIXED: issue with filtered item list with role CB Manager (pagination based on inital filter)
-* FIXED: minor issue: Headers already sent error on restore default options
-* ADDED: function to remove deprecated user roles from former commonsbooking versions. affected users will get the role 'subscriber'
-* FIXED: migration issues when using elementor are solved. all postmeta fields are imported
-
-### 2.3.2 (18.01.2021
-* FIXED: map error due to missing option value
-
-### 2.3.1 (16.01.2021)
-* FIXED: minor translation issue
-
-### 2.3 (15.01.2021)
-* NEW: Map Feature now included in CommonsBooking. Map Feature was originally based on the Map Plugin made by fLotte Berlin. Many many thanks to fLotte for their great work and support.
-* NEW: added automatic reset to default values for some options if they are empty but needed for the plugin to work properly
-* NEW: Added customizable avilablity messages for location and item pages (can be set in options -> templates)
-* ENHANCED: reworked save options process so that permalink page refresh is not longer needed after updating url slugs
-* ENHANCED: Optimized timframe validation so that not overlapping weekdays on overlapping timeframes doesn't result in an validation error
-* ENHANCED: API route
-* ENHANCED: Removed default limitation of 2 months for maxium advance booking time. Now users can book as long as the timeframe is defined in advance. In a future release we will add the option to set the maximum advance booking time in admin options.
-* FIXED: booking caelndar not shown on some iphone models in portrait mode
-
-### 2.2.15 (25.12.2020)
-* optmizized migration process
-* fixed issue when default options fields are missing after migration
-* added: set show booking-codes default=on to all imported timeframes from cb1
-
-### 2.2.14
-* fixed: error when using individual table prefix other than wp_
-* fixed: refresh permalink on save individual slug (no need to call permalinks settings page after saving slug)
-* fixed: categories not shown in gutenberg editor
-* added: You can set if booking codes should be shown to user or not on fullday booking slots in timeframe settings (timeframe editor)
-
-### 2.2.13
-* Added notice to refresh permalinks due to unsolved issue
-
-### 2.2.11
-* Fixed bug default options not set on update
-
-### 2.2.10
-* Fixed template issues (usernmame not shown, formatting issues in mail an booking template)
-
-### 2.2.9
-* Fixed template issup pickup instructions not shown on booking page
-
-### 2.2.8
-* Updated translation and minor text edits
-* Set default values on activation and upates
-* Fix: 404-page after installation because of missing permalink refresh
-
-### 2.2.7
-* add: Updated translation
-
-### 2.2.6
-* Enhanced import wizard for automatic migration from previous Commons Booking version (version < 1.0). Migration of time frames, articles, locations, bookings, booking codes, settings for blocked days. During migration, parallel operation of the old and new version is possible. No data from the previous installation is deleted or changed.
-* Unconfirmed bookings are automatically deleted (after approx. 10 minutes)
-* Several usability improvements and bug fixes
-* Improvements of the CommonsBooking API
-
-### 2.2.0
-* inital stable release
-
+To create the plugin zip file for uploading to a development server:
+```
+bin/build-zip.sh
+```

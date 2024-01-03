@@ -1,0 +1,21 @@
+name: Build zip from release branch
+on:
+  push:
+    branches:
+      - 'release/**'
+
+jobs:
+  zip-rc:
+    runs-on: ubuntu-20.04
+    steps:
+    
+     - uses: actions/checkout@v4
+
+     - uses: ./.github/actions/build-plugin
+
+     - name: Generate zip
+       uses: 10up/action-wordpress-plugin-build-zip@stable
+       env:
+         SLUG: commonsbooking
+         BUILD_DIR: ./build/commonsbooking
+    

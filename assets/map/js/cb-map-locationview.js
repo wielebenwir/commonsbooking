@@ -7,10 +7,17 @@ var cb_map_locationview = {
         // set up the map
         map = new L.Map('cb_locationview_map');
 
+        // TODO generalize this part into method/class construct (see cb-map-positioning.js)
+        // possible fix to avoid missing tiles, found on: https://stackoverflow.com/questions/38832273/leafletjs-not-loading-all-tiles-until-moving-map
+        // also see https://github.com/wielebenwir/commonsbooking/issues/1060
+        map.on("load", function() { setTimeout(() => {
+            map.invalidateSize();
+        }, 500); });
+
         // create the tile layer with correct attribution
-        var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        var osmUrl = 'https://{s}.tile.osm.org/{z}/{x}/{y}.png';
         var osmAttrib = 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-        var osm = new L.TileLayer(osmUrl, {minZoom: 10, maxZoom: 19, attribution: osmAttrib});
+        var osm = new L.TileLayer(osmUrl, {minZoom: 10, maxZoom: 17, attribution: osmAttrib});
 
         map.setView(new L.LatLng(latitude, longitude), 18);
         map.addLayer(osm);
@@ -31,51 +38,8 @@ var cb_map_locationview = {
         }).addTo(map);
 
     },
-
-    search: function () {
-
-        var url = 'https://nominatim.openstreetmap.org/search';
-        var params = {
-            street: jQuery('#_cb_location_street').val(),
-            city: jQuery('#_cb_location_city').val(),
-            postalcode: jQuery('#_cb_location_postcode').val(),
-            format: 'json',
-            limit: 1
-        }
-
-        jQuery.getJSON(url, params, function (data) {
-
-            if (data.length > 0) {
-                cb_map_locationview.init_map(data[0].lat, data[0].lon, true);
-                jQuery('#geo_latitude').val(data[0].lat);
-                jQuery('#geo_longitude').val(data[0].lon);
-
-            } else {
-                cb_map_locationview.init_map(
-                    cb_map_locationview.defaults.latitude || 52.49333,
-                    cb_map_locationview.defaults.longitude || 13.37933,
-                    true
-                );
-            }
-
-        });
-    },
-
-    is_lat_lon(latitude, longitude) {
-        return isNaN(parseFloat(latitude)) || isNaN(parseFloat(longitude)) ? false : true;
-    }
 }
 
 jQuery(document).ready(function ($) {
-
-    var $latitude = jQuery('#geo_latitude');
-    var $longitude = jQuery('#geo_longitude');
-
-    //set initial marker: check if lat/lon is given, otherwise search nominatim
-    if (!cb_map_locationview.is_lat_lon($latitude.val(), $longitude.val())) {
-        cb_map_locationview.search();
-    } else {
-        cb_map_locationview.init_map(parseFloat($latitude.val()), parseFloat($longitude.val()), true);
-    }
-
+    cb_map_locationview.init_map(parseFloat(cb_map_locationview.defaults.latitude), parseFloat(cb_map_locationview.defaults.longitude), true);
 });

@@ -2,7 +2,7 @@
 
 namespace CommonsBooking\Wordpress\Options;
 
-use CommonsBooking\Settings\Settings;
+use CommonsBooking\Plugin;
 use CommonsBooking\View\TimeframeExport;
 use Exception;
 
@@ -16,6 +16,10 @@ class OptionsTab {
 
 	// Error type for backend error output
 	public const ERROR_TYPE = "commonsbooking-options-error";
+	/**
+	 * @var \CMB2
+	 */
+	private $metabox;
 
 	public function __construct( string $id, array $content ) {
 		$this->id        = $id;
@@ -142,6 +146,17 @@ class OptionsTab {
 							45 );
 					}
 				}
+			}
+		}
+		elseif ( array_key_exists( 'action', $_REQUEST ) && $_REQUEST['action'] == "commonsbooking_options_advanced-options" ) {
+			//Check for request to clear cache
+			if ( array_key_exists( 'submit-cmb', $_REQUEST ) && $_REQUEST['submit-cmb'] == "clear-cache" ) {
+				Plugin::clearCache();
+				set_transient(
+			self::ERROR_TYPE,
+					commonsbooking_sanitizeHTML( __( "Cache cleared.", 'commonsbooking' ) ),
+					45
+				);
 			}
 		}
 
