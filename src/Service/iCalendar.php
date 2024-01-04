@@ -189,13 +189,57 @@ class iCalendar {
 	 *
 	 * @return String - The string representation of the calendar
 	 */
-	public function getCalendarData (): String {
+    public function getCalendarData (): String {
         // Transform domain entity into an iCalendar component
 		$componentFactory = new CalendarFactory();
 		$calendarComponent = $componentFactory->createCalendar($this->calendar);
 
 		return $calendarComponent->__toString();
     }
+
+	/**
+	 * Adds a generic event to Calendar
+	 *
+	 * @param array|DateTimeImmutable $eventDate
+	 * @param string $eventTitle
+	 * @param string $eventDescription
+	 * @param bool $isTimeSpan
+	 *
+	 * @return Event|false
+	 */
+	public function addEvent(
+		$eventDate,
+		String $eventTitle,
+		String $eventDescription,
+		bool $isTimeSpan=false):Event {
+
+		if ( is_array( $eventDate ) ) {
+			if ( count( $eventDate ) < 2 || ! ( $eventDate[0] instanceof DateTimeImmutable ) || ! ( $eventDate[1] instanceof DateTimeImmutable ) || $eventDate[0] > $eventDate[1] ) {
+				return false;
+			}
+			if ( $isTimeSpan ) {
+				$occurence = new TimeSpan( new DateTime( $eventDate[0], false ), new DateTime( $eventDate[1], false ) );
+			} else {
+				$occurence = new MultiDay( $eventDate[0], $eventDate[1] );
+			}
+		} elseif ( $eventDate instanceof DateTimeImmutable ) {
+			$occurence = new SingleDay( new Date( $eventDate ) );
+		} else {
+			return false;
+		}
+
+		// Create Event domain entity.
+		$event = new Event();
+		$event
+			->setSummary( $eventTitle )
+			->setDescription( $eventDescription )
+			->setOccurrence( $occurence );
+
+
+		$this->calendar->addEvent( $event );
+
+		return $event;
+	}
 
 	/**
 	 * Returns ics download file for current user.

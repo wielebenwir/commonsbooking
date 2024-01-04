@@ -22,6 +22,10 @@ class CalendarTest extends CustomPostTypeTest {
 
 	protected $timeframeId;
 
+	protected $closestTimeframe;
+
+	protected $secondClosestTimeframe;
+
 	public function testKeepDateRangeParam() {
 		$startDate    = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
 		$jsonresponse = Calendar::getCalendarDataArray(
@@ -136,6 +140,7 @@ class CalendarTest extends CustomPostTypeTest {
 			'12:00 PM',
 			'publish',
 			[],
+			'',
 			self::USER_ID,
 			3,
 			30,

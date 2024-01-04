@@ -1,13 +1,9 @@
-/* line 2, ../../sass/themes/graphene.scss */
 #booking-form-container select {
   height: 40px;
   width: 30%;
 }
-/* line 7, ../../sass/themes/graphene.scss */
 #booking-form-container span.date {
   background-color: transparent;
   border: none;
   width: 20%;
 }
-
-/*# sourceMappingURL=graphene.css.map */
