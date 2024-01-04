@@ -99,6 +99,10 @@ class ItemsRoute extends BaseRoute {
 
 		}
 
+		if ( WP_DEBUG ) {
+			$this->validateData( $data );
+		}
+
 		return new WP_REST_Response( $data, 200 );
 	}
 

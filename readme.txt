@@ -3,8 +3,8 @@ Contributors: wielebenwirteam, m0rb, flegfleg, chriwen, hansmorb, datengraben
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, commons, sharing, calendar, commoning, open-source, booking system, booking calendar
 Requires at least: 5.6  
-Tested up to: 6.3.2  
-Stable Tag: 2.8.5
+Tested up to: 6.4.1
+Stable Tag: 2.8.6
 Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -77,7 +77,10 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 3. Booking confirmation
 4. User bookings list
 
-## Changelog 
+## Changelog
+
+### 2.8.6 (02.12.2023)
+FIXED: Holidays sometimes bookable when they should not be bookable
 
 ### 2.8.5 (03.11.2023)
 ADDED: Support for WordPress Personal Data Exporter & Personal Data Eraser
