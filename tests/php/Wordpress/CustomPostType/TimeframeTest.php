@@ -48,7 +48,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$validDailyTimeframe = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+10 days', strtotime( self::CURRENT_DATE ) ),
 			Timeframe::BOOKABLE_ID,
 			'on',

@@ -49,5 +49,16 @@ describe('correctly render metaboxes for backend CPT creation', () => {
         cy.get('#type').select(REPAIR_ID);
         cy.screenshot('cb-timeframe-metaboxes-repair')
     })
+    
+    it('can load holidays from timeframe settings', () => {
+        cy.visit( '/wp-admin/edit.php?post_type=cb_timeframe' );
+        const HOLIDAY_ID = "3";
+        const MANUAL_SELECTION = "manual";
+        cy.get('.page-title-action').click();
+        cy.get('#type').select(HOLIDAY_ID);
+        cy.get('#timeframe-repetition').select(MANUAL_SELECTION);
+        cy.get('#holiday_load_btn').click();
+        cy.get('#timeframe_manual_date').should('have.prop', 'value').should('not.be.empty')
+    })
 })
 

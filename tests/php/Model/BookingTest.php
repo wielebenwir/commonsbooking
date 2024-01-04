@@ -15,6 +15,7 @@ class BookingTest extends CustomPostTypeTest {
 	private Booking $testBookingTomorrow;
 	private Booking $testBookingPast;
 	private Booking $testBookingSpanningOverTwoSlots;
+	private Booking $testBookingFixedDate;
 	private int $testBookingId;
 	private Item  $testItem;
 	private Location $testLocation;
@@ -405,15 +406,16 @@ class BookingTest extends CustomPostTypeTest {
 		$this->testBookingPast = new Booking(get_post($this->testBookingPastId));
 
 		// Create fixed date booking
-		$this->testFixedDateBooking       = $this->createBooking(
-			$this->locationId,
-			$this->itemId,
-			strtotime( '+1 day',  strtotime( self::CURRENT_DATE ) ),
-			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
-			'08:00 AM',
-			'12:00 PM'
+		$this->testBookingFixedDate       = new Booking (
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+1 day',  strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+				'08:00 AM',
+				'12:00 PM'
+			)
 		);
-		$this->testBookingFixedDate = new Booking( get_post( $this->testFixedDateBooking ) );
 		$this->subscriberBookingInFuture = new Booking(
 			$this->createBooking(
 				$this->locationId,
