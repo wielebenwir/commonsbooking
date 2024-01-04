@@ -90,7 +90,7 @@ abstract class Message {
 	}
 
 	public function getSubject() {
-		return apply_filters( 'commonsbooking_mail_subject', $this->subject, $this->getAction(), 'sanitize_text_field' );
+		return apply_filters( 'commonsbooking_mail_subject', $this->subject, $this->getAction() );
 	}
 
 	public function getBody() {
