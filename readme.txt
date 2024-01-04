@@ -1,10 +1,10 @@
 === CommonsBooking ===
-Contributors: wielebenwirteam, m0rb, flegfleg, chriwen, hansmorb
+Contributors: wielebenwirteam, m0rb, flegfleg, chriwen, hansmorb, datengraben
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, commons, sharing, calendar, commoning, open-source, booking system, booking calendar
 Requires at least: 5.6  
-Tested up to: 6.3.1  
-Stable Tag: 2.8.4
+Tested up to: 6.4.1
+Stable Tag: 2.8.6
 Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -77,10 +77,19 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 3. Booking confirmation
 4. User bookings list
 
-## Changelog 
+## Changelog
 
-### 2.8.5 (xx.10.2023)
+### 2.8.6 (02.12.2023)
+FIXED: Holidays sometimes bookable when they should not be bookable
+
+### 2.8.5 (03.11.2023)
+ADDED: Support for WordPress Personal Data Exporter & Personal Data Eraser
+ENHANCED: The amount of days that will be counted when creating a booking over closed days / holidays is now configurable.
+FIXED: Sorting the table of bookings / locations / timeframes in backend
+FIXED: Wrong error messages when creating a new timeframe
+FIXED: Availabilities of items in GBFS API
 FIXED: Rendering error in item table
+FIXED: Holidays not working when they are more than 30 days in the future
 FIXED: Map sometimes not loading
 
 ### 2.8.4 (20.09.2023)

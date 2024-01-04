@@ -311,6 +311,9 @@ class Location extends CustomPostType {
 				'commonsbooking' ),
 			'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_email',
 			'type'       => 'text',
+			'attributes' => array(
+				'class' => "regular-text cmb2-oembed",
+			),
 			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 			// 'repeatable'      => true,
 		) );
@@ -413,7 +416,7 @@ class Location extends CustomPostType {
 			),
 			array(
 				'name' => esc_html__( 'Count locked days when overbooking', 'commonsbooking' ),
-				'desc' => commonsbooking_sanitizeHTML( __( 'If selected, days that are overbooked will be counted towards the maximum number of bookable days. This means that if for example you try to book over an item over a week-end where the station is not open, the maximum bookable days will not be increased to allow longer booking periods.', 'commonsbooking' ) ),
+				'desc' => commonsbooking_sanitizeHTML( __( 'If selected, days that are overbooked will be counted towards the maximum number of bookable days. If this option is disabled, locked days that are overbooked will allow for bookings that are longer than the maximum number of bookable days configured for the timeframe.', 'commonsbooking' ) ),
 				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range',
 				'type' => 'checkbox',
 			),

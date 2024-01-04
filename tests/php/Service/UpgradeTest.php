@@ -2,10 +2,10 @@
 
 namespace CommonsBooking\Tests\Service;
 
-use CommonsBooking\Model\Restriction;
+use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Service\Upgrade;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
-use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
+use SlopeIt\ClockMock\ClockMock;
 
 class UpgradeTest extends CustomPostTypeTest
 {
@@ -127,6 +127,23 @@ class UpgradeTest extends CustomPostTypeTest
 		update_post_meta($timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, '');
 		Upgrade::setAdvanceBookingDaysDefault();
 		$this->assertEquals(\CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS, get_post_meta($timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, true));
+	}
+
+	public function testRemoveBreakingPostmeta() {
+		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
+		//Create timeframe that should still be valid after the cleanup
+		$validTF = new Timeframe($this->createBookableTimeFrameStartingInAWeek());
+		$this->assertTrue($validTF->isValid());
+
+		//create holiday with ADVANCE_BOOKING_DAYS setting (the function does this by default)
+		$holiday = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime('+1 week', strtotime(self::CURRENT_DATE)),
+			strtotime('+2 weeks', strtotime(self::CURRENT_DATE)),
+		);
+		Upgrade::removeBreakingPostmeta();
+		$this->assertEmpty(get_post_meta($holiday, 'advance_booking_days', true));
 	}
 
 	protected function setUp(): void {

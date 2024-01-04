@@ -4,20 +4,30 @@ namespace CommonsBooking\Tests\Wordpress;
 
 use CommonsBooking\Plugin;
 use CommonsBooking\Repository\BookingCodes;
+use CommonsBooking\Tests\BaseTestCase;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use PHPUnit\Framework\TestCase;
 use SlopeIt\ClockMock\ClockMock;
 
-abstract class CustomPostTypeTest extends TestCase {
+abstract class CustomPostTypeTest extends BaseTestCase {
 
+	/**
+	 * This is the date that is used in the tests.
+	 * It is a thursday.
+	 */
 	const CURRENT_DATE = '01.07.2021';
 
 	const CURRENT_DATE_FORMATTED = 'July 1, 2021';
+
+	/**
+	 * The same date, but in Y-m-d format
+	 * @var string
+	 */
+	protected string $dateFormatted;
 
 	const USER_ID = 1;
 
@@ -58,6 +68,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		$endTime = '12:00 PM',
 		$postStatus = 'publish',
 		$weekdays = [ "1", "2", "3", "4", "5", "6", "7" ],
+		$manualSelectionDays = "",
 		$postAuthor = self::USER_ID,
 		$maxDays = 3,
 		$advanceBookingDays = 30,
@@ -79,7 +90,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		update_post_meta( $timeframeId, 'item-id', $itemId );
 		update_post_meta( $timeframeId, 'timeframe-max-days', $maxDays );
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, $advanceBookingDays );
-		update_post_meta( $timeframeId, 'booking-startday-offset', $bookingStartdayOffset );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_BOOKING_START_DAY_OFFSET, $bookingStartdayOffset );
 		update_post_meta( $timeframeId, 'full-day', $fullday );
 		update_post_meta( $timeframeId, 'timeframe-repetition', $repetition );
 		if ( $repetitionStart ) {
@@ -88,13 +99,13 @@ abstract class CustomPostTypeTest extends TestCase {
 		if ( $repetitionEnd ) {
 			update_post_meta( $timeframeId, 'repetition-end', $repetitionEnd );
 		}
-
 		update_post_meta( $timeframeId, 'start-time', $startTime );
 		update_post_meta( $timeframeId, 'end-time', $endTime );
 		update_post_meta( $timeframeId, 'grid', $grid );
 		update_post_meta( $timeframeId, 'weekdays', $weekdays );
-		update_post_meta( $timeframeId, 'show-booking-codes', $showBookingCodes );
-		update_post_meta( $timeframeId, 'create-booking-codes', $createBookingCodes );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_MANUAL_SELECTION, $manualSelectionDays);
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES, $showBookingCodes );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_CREATE_BOOKING_CODES, $createBookingCodes );
 
 		$this->timeframeIds[] = $timeframeId;
 
@@ -418,9 +429,12 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
   protected function setUp() : void {
-        parent::setUp();
+		parent::setUp();
 
-		$this->setUpBookingCodesTable();
+	$this->dateFormatted  = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
+
+
+	  $this->setUpBookingCodesTable();
 
 		// Create location
 		$this->locationId = self::createLocation('Testlocation', 'publish');

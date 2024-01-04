@@ -901,14 +901,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (this.options.maxDays && 1 === this.datePicked.length) {
                             n = Number(this.options.hotelMode), s = this.datePicked[0].clone().subtract(this.options.maxDays + n, "day");
                             var d = 0;
-                            if (this.options.countLockedDays && this.options.countLockedDaysMax > 0) {
+                            if (!this.options.disallowLockDaysInRange && (this.options.countLockedDaysMax > 0 || !this.options.countLockedDays)) {
                                 for (var c = this.datePicked[0].clone(), h = this.options.maxDays, p = this.options.countLockedDaysMax, u = [], m = 0, y = [ this.options.holidays, this.options.lockDays ]; m < y.length; m++) for (var f = 0, g = y[m]; f < g.length; f++) {
                                     var k = g[f];
                                     this.datePicked[0].getTime() < k.getTime() && u.push(k);
                                 }
                                 for (;h > 0; ) {
                                     h -= 1, c = c.add(1, "day");
-                                    for (var D = 0, v = u; D < v.length; D++) v[D].getTime() === c.getTime() && (this.dateIsBooked(c, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(c, this.options.partiallyBookedDaysInclusivity) || (p <= 0 ? (d += 1, 
+                                    for (var D = 0, v = u; D < v.length; D++) v[D].getTime() === c.getTime() && (this.dateIsBooked(c, this.options.bookedDaysInclusivity) || this.dateIsPartiallyBooked(c, this.options.partiallyBookedDaysInclusivity) || (p <= 0 || !this.options.countLockedDays ? (d += 1, 
                                     h += 1) : p > 0 && (p -= 1)));
                                 }
                             }
@@ -2023,6 +2023,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 disallowBookedDaysInRange: true,
                 disallowPartiallyBookedDaysInRange: true,
                 disallowLockDaysInRange: globalCalendarData["disallowLockDaysInRange"],
+                disallowHolidaysInRange: globalCalendarData["disallowLockDaysInRange"],
                 mobileFriendly: true,
                 selectForward: true,
                 useResetBtn: true,

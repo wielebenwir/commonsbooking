@@ -44,6 +44,9 @@ class Upgrade {
 			[self::class, 'fixBrokenICalTitle']
 		],
 		'2.8.5' => [
+			[self::class, 'removeBreakingPostmeta']
+		],
+		'2.9' => [
 			[self::class, 'setRestrictionAllOption']
 		]
 	];
@@ -92,7 +95,7 @@ class Upgrade {
 
 		// Clear cache
 		try {
-			Cache::clearCache();
+			Plugin::clearCache();
 		} catch ( InvalidArgumentException $e ) {
 			// Do nothing
 		}
@@ -234,12 +237,33 @@ class Upgrade {
 		}
 	}
 
+	/**
+	 * Fixing #1357. The holiday timeframe field had postmeta that would make
+	 * it get filtered out through our GET functions and not display holidays correctly.
+	 * Therefore, we iterate ovr our timeframes and remove the breaking postmeta.
+	 *
+	 * @since 2.8.5
+	 * @return void
+	 */
+	public static function removeBreakingPostmeta() {
+		$timeframes = \CommonsBooking\Repository\Timeframe::get(
+			[],
+			[],
+			[],
+			null,
+			true
+		);
+		foreach ($timeframes as $timeframe) {
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::removeIrrelevantPostmeta($timeframe);
+		}
+	}
+
 
 	/**
 	 * In the past, if you wanted a restriction to apply to all items / locations, you would leave the respective field empty.
 	 * This would cause permission issues (more details see #1273).
 	 * This function migrates all restrictions to have the "all" option selected when the field was left empty.
-	 * @since 2.8.5
+	 * @since 2.9 (anticipated)
 	 * @return void
 	 * @throws \Exception
 	 */
