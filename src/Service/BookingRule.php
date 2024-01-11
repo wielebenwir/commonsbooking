@@ -194,6 +194,7 @@ class BookingRule {
 	 * @throws BookingRuleException
 	 */
 	public static function init(): array {
+		$weekDays = __('Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday', 'cmb2');
 		$defaultRuleSet = [
 			new BookingRule(
 				"noSimultaneousBooking",
@@ -205,7 +206,7 @@ class BookingRule {
 			new BookingRule(
 				"prohibitChainBooking",
 				__("Prohibit chain-bookings",'commonsbooking'),
-				__("Users can no longer work around the maximum booking limit by chaining two bookings directly after another.",'commonsbooking'),
+				__("Users can no longer work around the maximum booking limit by chaining two bookings directly after one another.",'commonsbooking'),
 				__("You have reached your booking limit. Please leave some time in between bookings.",'commonsbooking'),
 				Closure::fromCallable(array(self::class,'checkChainBooking'))
 			),
@@ -223,15 +224,7 @@ class BookingRule {
 				),
 				array(
 					__("At what day of the week should the counter be reset?",'commonsbooking'),
-					array(
-						0 => __("Sunday",'commonsbooking'),
-						1 => __("Monday",'commonsbooking'),
-						2 => __("Tuesday",'commonsbooking'),
-						3 => __("Wednesday",'commonsbooking'),
-						4 => __("Thursday",'commonsbooking'),
-						5 => __("Friday",'commonsbooking'),
-						6 => __("Saturday",'commonsbooking')
-					)
+					explode(', ', $weekDays)
 				),
 				Closure::fromCallable(array(self::class,'maxDaysWeekErrorMessage'))
 			),
@@ -249,39 +242,7 @@ class BookingRule {
 				),
 				array(
 					__("At what day of the month should the counter be reset?",'commonsbooking'),
-					array(
-						1 => __("1st",'commonsbooking'),
-						2 => __("2nd",'commonsbooking'),
-						3 => __("3rd",'commonsbooking'),
-						4 => __("4th",'commonsbooking'),
-						5 => __("5th",'commonsbooking'),
-						6 => __("6th",'commonsbooking'),
-						7 => __("7th",'commonsbooking'),
-						8 => __("8th",'commonsbooking'),
-						9 => __("9th",'commonsbooking'),
-						10 => __("10th",'commonsbooking'),
-						11 => __("11th",'commonsbooking'),
-						12 => __("12th",'commonsbooking'),
-						13 => __("13th",'commonsbooking'),
-						14 => __("14th",'commonsbooking'),
-						15 => __("15th",'commonsbooking'),
-						16 => __("16th",'commonsbooking'),
-						17 => __("17th",'commonsbooking'),
-						18 => __("18th",'commonsbooking'),
-						19 => __("19th",'commonsbooking'),
-						20 => __("20th",'commonsbooking'),
-						21 => __("21st",'commonsbooking'),
-						22 => __("22nd",'commonsbooking'),
-						23 => __("23rd",'commonsbooking'),
-						24 => __("24th",'commonsbooking'),
-						25 => __("25th",'commonsbooking'),
-						26 => __("26th",'commonsbooking'),
-						27 => __("27th",'commonsbooking'),
-						28 => __("28th",'commonsbooking'),
-						29 => __("29th",'commonsbooking'),
-						30 => __("30th",'commonsbooking'),
-						31 => __("31st",'commonsbooking'),
-					)
+					range(1, 31)
 				),
 				Closure::fromCallable(array(self::class,'maxDaysMonthErrorMessage'))
 			),
