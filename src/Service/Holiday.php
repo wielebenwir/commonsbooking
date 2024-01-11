@@ -39,7 +39,7 @@ class Holiday {
 			</div>
 			<div class="cb_admin_holiday_table">
 				<label
-					for="<?php echo $field_type->_id( 'holiday_state' ); ?>"><?php echo esc_html__( 'State', 'commonsbooking' ); ?></label>
+					for="<?php echo $field_type->_id( 'holiday_state' ); ?>"><?php echo esc_html_x( 'State', 'territory', 'commonsbooking' ); ?></label>
 				<?php echo $field_type->select( array(
 					'name'  => $field_type->_name( '[holiday_state]' ),
 					'id'    => $field_type->_id( 'holiday_state' ),
