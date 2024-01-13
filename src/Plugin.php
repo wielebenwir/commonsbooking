@@ -814,7 +814,7 @@ class Plugin {
 	/**
 	 * Adds bookingcode actions.
 	 * They:
-	 * 1. Delete booking codes when a booking is deleted.
+	 * 1. Delete booking codes for timeframe when a timeframe is deleted.
 	 * 2. Hook appropriate function to button that downloads the booking codes in the backend.
 	 *    @see \CommonsBooking\View\BookingCodes::renderTable()
 	 * 3. Hook appropriate function to button that sends out emails with booking codes to the station.
