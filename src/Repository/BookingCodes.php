@@ -74,7 +74,7 @@ class BookingCodes {
 			//check, if we have enough codes for the timeframe or if we need to generate more
 			//we only need to check, if we have an open-ended timeframe
 			//we check, if the end date of the last generated code is before the end date of the requested time period
-			if ( ! $timeframe->getRawEndDate() && self::getLastCode( $timeframe )
+			if ( ! $timeframe->getRawEndDate() && self::getLastCodeDate( $timeframe )
 				&& strtotime( self::getLastCodeDate( $timeframe ) ) < strtotime( $endDate )
 			) {
 				$startGenerationPeriod = new \DateTime( self::getLastCodeDate($timeframe) );
@@ -202,12 +202,12 @@ class BookingCodes {
 	}
 
 	/**
-	 * Will get the date of the last booking code that was generated for a given timeframe.
-	 * This can be used to determine if we need to generate new codes.
+	 * Get the date of the last booking code generated for a given timeframe by checking available codes.
+	 * It will return the code with the latest date, or, if there is a gap, the last code before the gap.
+	 * This can be used to determine if new codes need to be generated.
 	 *
 	 * @param Timeframe $timeframe
-	 *
-	 * @return Date (yyyy-mm-dd) or null
+	 * @return string|null Date as string (yyyy-mm-dd) or null 
 	 */
 	public static function getLastCodeDate(Timeframe $timeframe) {
 		global $wpdb;
@@ -226,20 +226,22 @@ class BookingCodes {
 
 		$dates = $wpdb->get_col($sql);
 
-		// Find the last date before a gap
-		$last_date_before_gap = null;
+		// if no codes found, return null instead of a date
+		if ( empty($dates) ) return null;
+
 		$previous_date = null;
 
 		foreach ($dates as $date) {
 			if ($previous_date !== null && strtotime($date) > strtotime($previous_date) + 86400) {
-				// Gap detected, set the last date before the gap
-				$last_date_before_gap = $previous_date;
+				// gap in dates found, return last code before gap
+				return $previous_date;
 			}
 
 			$previous_date = $date;
 		}
 
-		return $last_date_before_gap;
+		// one or more dates found, but no gaps, so return last date
+		return end($dates);
 
 	}
 
