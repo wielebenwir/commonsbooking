@@ -75,9 +75,9 @@ class BookingCodes {
 			//we only need to check, if we have an open-ended timeframe
 			//we check, if the end date of the last generated code is before the end date of the requested time period
 			if ( ! $timeframe->getRawEndDate() && self::getLastCode( $timeframe )
-				&& strtotime( self::getLastCode( $timeframe )->getDate() ) < strtotime( $endDate )
+				&& strtotime( self::getLastCodeDate( $timeframe ) ) < strtotime( $endDate )
 			) {
-				$startGenerationPeriod = new \DateTime( self::getLastCode($timeframe)->getDate() );
+				$startGenerationPeriod = new \DateTime( self::getLastCodeDate($timeframe) );
 				$endGenerationPeriod = new \DateTime( $endDate );
 				$endGenerationPeriod->modify( '+' . $advanceGenerationDays . ' days' );
 				static::generatePeriod( $timeframe,
@@ -94,11 +94,11 @@ class BookingCodes {
 
 			$sql = $wpdb->prepare(
 				"SELECT * FROM $table_name
-                WHERE timeframe = %d
+                WHERE item = %d
                 AND date BETWEEN %s AND %s
                 ORDER BY item ASC ,date ASC
             	",
-				$timeframeId,
+				$timeframe->getItem()->ID,
 				$startDate,
 				$endDate
 			);
@@ -132,22 +132,18 @@ class BookingCodes {
 	 *
 	 * @return BookingCode|null
 	 */
-	protected static function lookupCode(int $timeframeId, int $itemId, int $locationId, string $date): ?BookingCode {
+	protected static function lookupCode(int $itemId, string $date): ?BookingCode {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::$tablename;
 
 		$sql = $wpdb->prepare(
 			"SELECT * FROM $table_name
 			WHERE 
-				timeframe = %s AND 
 				item = %s AND 
-				location = %s AND 
 				date = %s
 			ORDER BY item ASC, date ASC
 			LIMIT 1",
-			$timeframeId,
 			$itemId,
-			$locationId,
 			$date
 		);
 
@@ -184,7 +180,7 @@ class BookingCodes {
 			return $cacheItem;
 		} else {
 
-			$bookingCodeObject = static::lookupCode($timeframe->ID, $itemId, $locationId, $date);
+			$bookingCodeObject = static::lookupCode($itemId, $date);
 
 			if ( ! $bookingCodeObject ) {
 				//when we have a timeframe without end-date we generate as many codes as we need
@@ -195,7 +191,7 @@ class BookingCodes {
 					$interval = DateInterval::createFromDateString( '1 day' );
 					$period = new DatePeriod( $begin, $interval, $endDate );
 					static::generatePeriod($timeframe,$period);
-					$bookingCodeObject = static::lookupCode($timeframe->ID, $itemId, $locationId, $date);
+					$bookingCodeObject = static::lookupCode($itemId, $date);
 				}
 			}
 
@@ -206,40 +202,45 @@ class BookingCodes {
 	}
 
 	/**
-	 * Will get the last booking code that was generated for a given timeframe, item and location.
+	 * Will get the date of the last booking code that was generated for a given timeframe.
 	 * This can be used to determine if we need to generate new codes.
 	 *
 	 * @param Timeframe $timeframe
-	 * @param int $itemId
-	 * @param int $locationId
 	 *
-	 * @return BookingCode|null
+	 * @return Date (yyyy-mm-dd) or null
 	 */
-	public static function getLastCode(Timeframe $timeframe) : ?BookingCode {
+	public static function getLastCodeDate(Timeframe $timeframe) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::$tablename;
-
+		$startDate = date( 'Y-m-d', $timeframe->getStartDate() );
+		$itemId = $timeframe->getItem()->ID;
 		$sql = $wpdb->prepare(
-			"SELECT * FROM $table_name
-			WHERE 
-				timeframe = %s
-			ORDER BY date DESC",
-			$timeframe->ID
+			"SELECT date FROM $table_name 
+			WHERE
+				item = %s AND
+				date >= %s
+			ORDER BY date",
+			$itemId,
+			$startDate
 		);
-		$bookingCodes = $wpdb->get_results($sql);
 
-		$bookingCodeObject = null;
-		if ( count( $bookingCodes ) ) {
-			$bookingCodeObject = new BookingCode(
-				$bookingCodes[0]->date,
-				$bookingCodes[0]->item,
-				$bookingCodes[0]->location,
-				$bookingCodes[0]->timeframe,
-				$bookingCodes[0]->code
-			);
+		$dates = $wpdb->get_col($sql);
+
+		// Find the last date before a gap
+		$last_date_before_gap = null;
+		$previous_date = null;
+
+		foreach ($dates as $date) {
+			if ($previous_date !== null && strtotime($date) > strtotime($previous_date) + 86400) {
+				// Gap detected, set the last date before the gap
+				$last_date_before_gap = $previous_date;
+			}
+
+			$previous_date = $date;
 		}
 
-		return $bookingCodeObject;
+		return $last_date_before_gap;
+
 	}
 
 	/**
@@ -333,7 +334,7 @@ class BookingCodes {
 			if ( $day->isInTimeframe( $timeframe ) ) {
 
 				// Check if a code already exists, if so DO NOT generate new
-				if ( static::lookupCode($timeframe->ID, $item->ID, $location->ID, $dt->format( 'Y-m-d' )) ) {
+				if ( static::lookupCode($item->ID, $dt->format( 'Y-m-d' )) ) {
 					continue;
 				}
 
@@ -364,9 +365,9 @@ class BookingCodes {
 		$result = $wpdb->replace(
 			$table_name,
 			array(
-				'timeframe' => $bookingCode->getTimeframe(),
+				'timeframe' => 0,
 				'date'      => $bookingCode->getDate(),
-				'location'  => $bookingCode->getLocation(),
+				'location'  => 0,
 				'item'      => $bookingCode->getItem(),
 				'code'      => $bookingCode->getCode()
 			)
@@ -390,34 +391,6 @@ class BookingCodes {
 		return array_map( function ( $item ) {
 			return preg_replace( "/\r|\n/", "", $item );
 		}, $bookingCodesArray );
-	}
-
-	/**
-	 * Deletes booking codes for current post or if posted for post with $postId.
-	 *
-	 * @param null $postId
-	 */
-	public static function deleteBookingCodes( $postId = null ) {
-		if ( $postId ) {
-			$post = get_post( $postId );
-		} else {
-			global $post;
-		}
-		if (
-			$post &&
-			$post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType
-		) {
-			global $wpdb;
-			$table_name = $wpdb->prefix . self::$tablename;
-
-
-			$query = $wpdb->prepare( 'SELECT timeframe FROM ' . $table_name . ' WHERE timeframe = %d', $post->ID );
-			$var   = $wpdb->get_var( $query );
-			if ( $var ) {
-				$query2 = $wpdb->prepare( 'DELETE FROM ' . $table_name . ' WHERE timeframe = %d', $post->ID );
-				$wpdb->query( $query2 );
-			}
-		}
 	}
 
 }
