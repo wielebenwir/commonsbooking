@@ -32,18 +32,6 @@ class BookingCode {
 	protected $item;
 
 	/**
-	 * Location ID
-	 * @var int
-	 */
-	protected $location;
-
-	/**
-	 * Timeframe ID
-	 * @var int
-	 */
-	protected $timeframe;
-
-	/**
 	 * Code string
 	 * @var string
 	 */
@@ -54,15 +42,11 @@ class BookingCode {
 	 *
 	 * @param $date
 	 * @param $item
-	 * @param $location
-	 * @param $timeframe
 	 * @param $code
 	 */
 	public function __construct( $date, $item, $location, $timeframe, $code ) {
 		$this->date      = $date;
 		$this->item      = $item;
-		$this->location  = $location;
-		$this->timeframe = $timeframe;
 		$this->code      = $code;
 	}
 
@@ -112,45 +96,6 @@ class BookingCode {
 		return $this;
 	}
 
-	/**
-	 * @return int
-	 */
-	public function getLocation(): int {
-		return $this->location;
-	}
-
-	/**
-	 * TODO: The setters should be obsolete because these values should not be changed after creation.
-	 * CURRENTLY NOT USED
-	 * @param mixed $location
-	 *
-	 * @return BookingCode
-	 */
-	public function setLocation( $location ): BookingCode {
-		$this->location = $location;
-
-		return $this;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getTimeframe(): int {
-		return $this->timeframe;
-	}
-
-	/**
-	 * TODO: The setters should be obsolete because these values should not be changed after creation.
-	 * CURRENTLY NOT USED
-	 * @param mixed $timeframe
-	 *
-	 * @return BookingCode
-	 */
-	public function setTimeframe( $timeframe ): BookingCode {
-		$this->timeframe = $timeframe;
-
-		return $this;
-	}
 
 	/**
 	 * @return string
