@@ -70,7 +70,7 @@ class BookingCodesTest extends CustomPostTypeTest
 		);
 		$this->assertNull( $code );
 
-		BookingCodes::generate( $this->timeframeWithoutEndDate );
+		BookingCodes::generate( $this->timeframeWithoutEndDate, self::ADVANCE_GENERATION_DAYS );
 		//test infinite booking days timeframes
 		$advanceDays = self::ADVANCE_GENERATION_DAYS + 1; //advance one day beyond the max generation days
 		$dayInFuture = date( 'Y-m-d',
