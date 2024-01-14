@@ -44,7 +44,7 @@ class BookingCode {
 	 * @param $item
 	 * @param $code
 	 */
-	public function __construct( $date, $item, $location, $timeframe, $code ) {
+	public function __construct( $date, $item, $code ) {
 		$this->date      = $date;
 		$this->item      = $item;
 		$this->code      = $code;

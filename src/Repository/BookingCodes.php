@@ -109,8 +109,6 @@ class BookingCodes {
 				$bookingCodeObject = new BookingCode(
 					$bookingCode->date,
 					$bookingCode->item,
-					$bookingCode->location,
-					$bookingCode->timeframe,
 					$bookingCode->code
 				);
 				$codes[]           = $bookingCodeObject;
@@ -151,8 +149,6 @@ class BookingCodes {
 			return new BookingCode(
 				$bookingCodes[0]->date,
 				$bookingCodes[0]->item,
-				$bookingCodes[0]->location,
-				$bookingCodes[0]->timeframe,
 				$bookingCodes[0]->code
 			);
 		}
@@ -253,6 +249,7 @@ class BookingCodes {
 		$table_name      = $wpdb->prefix . self::$tablename;
 		$charset_collate = $wpdb->get_charset_collate();
 
+		// To be deprecated later: timeframe, location (not used anymore)
 		$sql = "CREATE TABLE $table_name (
             date date DEFAULT '0000-00-00' NOT NULL,
             timeframe bigint(20) unsigned NOT NULL,
@@ -341,8 +338,6 @@ class BookingCodes {
 				$bookingCode = new BookingCode(
 					$dt->format( 'Y-m-d' ),
 					$item->ID,
-					$location->ID,
-					$timeframe->ID,
 					$bookingCodesArray[ ( (int) $dt->format( 'z' ) + $bookingCodesRandomizer ) % count( $bookingCodesArray ) ]
 				);
 				self::persist( $bookingCode );
