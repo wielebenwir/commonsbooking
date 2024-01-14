@@ -123,16 +123,14 @@ class BookingCodes {
 	}
 
 	/**
-	 * Gets a specific booking code by timeframe ID, item ID, location ID, and date.
+	 * Gets a specific booking code by item ID and date.
 	 *
-	 * @param int $timeframeId - ID of the timeframe
 	 * @param int $itemId - ID of item attached to timeframe
-	 * @param int $locationId - ID of location attached to timeframe
 	 * @param string $date - Date in format Y-m-d
 	 *
 	 * @return BookingCode|null
 	 */
-	protected static function lookupCode(int $itemId, string $date): ?BookingCode {
+	private static function lookupCode(int $itemId, string $date): ?BookingCode {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::$tablename;
 
@@ -206,7 +204,7 @@ class BookingCodes {
 	 * It will return the code with the latest date, or, if there is a gap, the last code before the gap.
 	 * This can be used to determine if new codes need to be generated.
 	 *
-	 * @param Timeframe $timeframe
+	 * @param Timeframe $timeframe (test with bookingCodesApplicable() before, in particular it should have a valid itemId)
 	 * @return string|null Date as string (yyyy-mm-dd) or null 
 	 */
 	public static function getLastCodeDate(Timeframe $timeframe) {
