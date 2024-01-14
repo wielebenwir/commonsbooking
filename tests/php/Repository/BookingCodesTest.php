@@ -193,21 +193,6 @@ class BookingCodesTest extends CustomPostTypeTest
 
 	}
 
-	public function testGetLastCode() {
-		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
-		BookingCodes::generate( $this->timeframeWithEndDate, self::ADVANCE_GENERATION_DAYS );
-		$lastCodeDate = BookingCodes::getLastCodeDate( $this->timeframeWithEndDate );
-		$this->assertNotNull( $lastCodeDate );
-		$this->assertEquals( strtotime( '+29 day', strtotime( self::CURRENT_DATE ) ), strtotime( $lastCodeDate) );
-		$advanceGenerationDays = self::ADVANCE_GENERATION_DAYS;
-		BookingCodes::generate( $this->timeframeWithoutEndDate, self::ADVANCE_GENERATION_DAYS );
-		$lastCodeDate = BookingCodes::getLastCodeDate( $this->timeframeWithoutEndDate );
-		$this->assertNotNull( $lastCodeDate );
-		//The DatePeriod does not include the endDay, so we have to subtract one day
-		$advanceGenerationDays -= 1;
-		$this->assertEquals( strtotime( '+' . $advanceGenerationDays . ' day', strtotime( self::CURRENT_DATE ) ), strtotime( $lastCodeDate ) );
-	}
-
 	protected function setUp(): void {
 		parent::setUp();
 		$this->timeframeWithEndDate = new Timeframe($this->createTimeframe(

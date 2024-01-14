@@ -73,11 +73,12 @@ class BookingCodes {
 
 			//check, if we have enough codes for the timeframe or if we need to generate more
 			//we only need to check, if we have an open-ended timeframe
-			//we check, if the end date of the last generated code is before the end date of the requested time period
-			if ( ! $timeframe->getRawEndDate() && self::getLastCodeDate( $timeframe )
-				&& strtotime( self::getLastCodeDate( $timeframe ) ) < strtotime( $endDate )
-			) {
-				$startGenerationPeriod = new \DateTime( self::getLastCodeDate($timeframe) );
+			// NOTE: there used to be a check if generation is necessary by checking the date of the last code. However,
+			// as the codes are never deleted anymore, it is possible that they get fragmented with date gaps and the
+			// check is not trivial anymore. Is is easier and safer to always try to generate codes. It is no serious
+			// performance issue as getCodes() is only used in admin pages on particular admin actions.
+			if ( ! $timeframe->getRawEndDate() ) {
+				$startGenerationPeriod = new \DateTime( $startDate );
 				$endGenerationPeriod = new \DateTime( $endDate );
 				$endGenerationPeriod->modify( '+' . $advanceGenerationDays . ' days' );
 				static::generatePeriod( $timeframe,
@@ -193,50 +194,6 @@ class BookingCodes {
 
 			return $bookingCodeObject;
 		}
-	}
-
-	/**
-	 * Get the date of the last booking code generated for a given timeframe by checking available codes.
-	 * It will return the code with the latest date, or, if there is a gap, the last code before the gap.
-	 * This can be used to determine if new codes need to be generated.
-	 *
-	 * @param Timeframe $timeframe (test with bookingCodesApplicable() before, in particular it should have a valid itemId)
-	 * @return string|null Date as string (yyyy-mm-dd) or null 
-	 */
-	public static function getLastCodeDate(Timeframe $timeframe) {
-		global $wpdb;
-		$table_name = $wpdb->prefix . self::$tablename;
-		$startDate = date( 'Y-m-d', $timeframe->getStartDate() );
-		$itemId = $timeframe->getItem()->ID;
-		$sql = $wpdb->prepare(
-			"SELECT date FROM $table_name 
-			WHERE
-				item = %s AND
-				date >= %s
-			ORDER BY date",
-			$itemId,
-			$startDate
-		);
-
-		$dates = $wpdb->get_col($sql);
-
-		// if no codes found, return null instead of a date
-		if ( empty($dates) ) return null;
-
-		$previous_date = null;
-
-		foreach ($dates as $date) {
-			if ($previous_date !== null && strtotime($date) > strtotime($previous_date) + 86400) {
-				// gap in dates found, return last code before gap
-				return $previous_date;
-			}
-
-			$previous_date = $date;
-		}
-
-		// one or more dates found, but no gaps, so return last date
-		return end($dates);
-
 	}
 
 	/**
