@@ -65,7 +65,7 @@ class BookingCodes {
 			}
 			//when we still don't have an end-date, we will just get the coming ADVANCE_GENERATION_DAYS (should default to 365 days)
 			if (! $endDate ) {
-				$endDate = strtotime( '+' . $advanceGenerationDays . ' days', $startDate );
+				$endDate = strtotime( '+' . $advanceGenerationDays . ' days', null ); // null means now
 			}
 
 			$startDate = date( 'Y-m-d', $startDate );
@@ -80,7 +80,6 @@ class BookingCodes {
 			if ( ! $timeframe->getRawEndDate() ) {
 				$startGenerationPeriod = new \DateTime( $startDate );
 				$endGenerationPeriod = new \DateTime( $endDate );
-				$endGenerationPeriod->modify( '+' . $advanceGenerationDays . ' days' );
 				static::generatePeriod( $timeframe,
 					new DatePeriod(
 						$startGenerationPeriod,
