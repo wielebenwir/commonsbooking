@@ -80,6 +80,7 @@ class BookingCodes {
 			if ( ! $timeframe->getRawEndDate() ) {
 				$startGenerationPeriod = new \DateTime( $startDate );
 				$endGenerationPeriod = new \DateTime( $endDate );
+				$endGenerationPeriod->modify( '+1 days' ); // alternatively, DatePeriod::INCLUDE_END_DATE can be used (PHP>8.2)
 				static::generatePeriod( $timeframe,
 					new DatePeriod(
 						$startGenerationPeriod,
