@@ -38,7 +38,7 @@ class BookingCodes {
 	 * @param int $timeframeId - ID of timeframe to get codes for
 	 * @param int|null $startDate - Where to get booking codes from (timestamp)
 	 * @param int|null $endDate - Where to get booking codes to (timestamp)
-	 * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generate code(s) until timeframe startdate. If >0 generate additional codes after timeframe startdate. (NOTE: it seems wrong to reference to timeframe startdate; maybe rather reference to today's date?)
+	 * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generate code(s) until today. If >0, generate additional codes after today
 	 *
 	 * @return array
 	 * @throws BookingCodeException
@@ -66,7 +66,8 @@ class BookingCodes {
 			}
 			//when we still don't have an end-date, we will just get the coming ADVANCE_GENERATION_DAYS (should default to 365 days)
 			if (! $endDate ) {
-				$endDate = strtotime( '+' . $advanceGenerationDays . ' days', $startDate );
+				$endDate = strtotime( '+' . $advanceGenerationDays . ' days', null ); // null means date and time now
+				// a code will be generated for $endDate because time generally > 00:00:00 (due to initialitaion with current date and time)
 			}
 
 			$startDate = date( 'Y-m-d', $startDate );
@@ -132,7 +133,7 @@ class BookingCodes {
 	 * @param int $itemId - ID of item attached to timeframe
 	 * @param int $locationId - ID of location attached to timeframe
 	 * @param string $date - Date in format Y-m-d
-	 * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generates code(s) until $date. If >0 generate additional codes after $date.
+	 * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generates code(s) until $date. If >0, generate additional codes after $date.
 	 *
 	 * @return BookingCode|null
 	 * @throws BookingCodeException
@@ -257,7 +258,7 @@ class BookingCodes {
      * Generates booking codes for timeframe.
      *
      * @param Timeframe $timeframe
-     * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generate code(s) until today. If >0 generate additional codes after today.
+     * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generate code(s) until today. If >0, generate additional codes after today.
 	 *
      * @return bool
      * @return bool
