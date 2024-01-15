@@ -132,7 +132,7 @@ class BookingCodes {
 	 * @param int $itemId - ID of item attached to timeframe
 	 * @param int $locationId - ID of location attached to timeframe
 	 * @param string $date - Date in format Y-m-d
-	 * @param int $advanceGenerationDays - Open-ended timeframes: If 1, generate code(s) until $date. If >1 generate additional codes after $date.
+	 * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generates code(s) until $date. If >0 generate additional codes after $date.
 	 *
 	 * @return BookingCode|null
 	 * @throws BookingCodeException
@@ -166,6 +166,9 @@ class BookingCodes {
 					$begin = $timeframe->getUTCStartDateDateTime();
 					$endDate = new \DateTime($date);
 					$endDate->modify('+' . $advanceGenerationDays . ' days');
+					// set $endDate's time > 00:00:00 so it will included in DatePeriod iteration and a code will be
+					// generated for $endDate
+					$endDate->setTime(0, 0, 1);
 					$interval = DateInterval::createFromDateString( '1 day' );
 					$period = new DatePeriod( $begin, $interval, $endDate );
 					static::generatePeriod($timeframe,$period);
@@ -254,7 +257,7 @@ class BookingCodes {
      * Generates booking codes for timeframe.
      *
      * @param Timeframe $timeframe
-     * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generates code(s) until today. If >0 generate additional codes after today.
+     * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generate code(s) until today. If >0 generate additional codes after today.
 	 *
      * @return bool
      * @return bool
