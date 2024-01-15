@@ -80,7 +80,9 @@ class BookingCodes {
 			) {
 				$startGenerationPeriod = new \DateTime( self::getLastCode($timeframe)->getDate() );
 				$endGenerationPeriod = new \DateTime( $endDate );
-				$endGenerationPeriod->modify( '+' . $advanceGenerationDays . ' days' );
+				// set $endGenerationPeriod's time > 00:00:00 such that $endDate is included in DatePeriod iteration
+				// and code is generated for $endDate
+				$endGenerationPeriod->setTime(0, 0, 1);
 				static::generatePeriod( $timeframe,
 					new DatePeriod(
 						$startGenerationPeriod,
@@ -268,9 +270,8 @@ class BookingCodes {
 		if ($timeframe->getRawEndDate()){
 			$end = Wordpress::getUTCDateTime();
 			$end->setTimestamp( $timeframe->getRawEndDate() );
-			// set $end's time > 00:00:00 such that DatePeriod-iteration will include $end.
-			// TODO BETTER: $end->setTime(0,0,1) because no date overflow.
-			$end->setTimestamp( $end->getTimestamp() + 1 );
+			// set $end's time > 00:00:00 such that DatePeriod-iteration will include $end:
+			$end->setTime(0, 0, 1);
 		}
 		else {
 			$end = new \DateTime();
