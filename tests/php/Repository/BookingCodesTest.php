@@ -193,6 +193,30 @@ class BookingCodesTest extends CustomPostTypeTest
 
 	}
 
+	public function testGetCodesFuture() {
+		// test of getCodes() when today is a date in future, in particular later than timeframe start + BookingCodes::ADVANCE_GENERATION_DAYS
+		$daysInFuture = 400;
+		$futureDate = new \DateTime( self::CURRENT_DATE );
+		$futureDate->modify( "+$daysInFuture days" );
+		ClockMock::freeze( $futureDate );
+
+		// test current behavior of getCodes() without specified startDate and endDate:
+		// the amount of codes generates depend on timeframe start and BookingCodes::ADVANCE_GENERATION_DAYS only,
+		// so no code will be generated for today (which is surprising?)
+		$codeAmount = BookingCodes::ADVANCE_GENERATION_DAYS + 1;
+		$codes = BookingCodes::getCodes( $this->timeframeWithoutEndDate->ID );
+		$this->assertNotEmpty( $codes );
+		$this->assertCount( $codeAmount, $codes );
+		//check that the codes are in the correct order
+		$lastCode = null;
+		foreach ( $codes as $code ) {
+			if ( $lastCode ) {
+				$this->assertGreaterThan( $lastCode->getDate(), $code->getDate() );
+			}
+			$lastCode = $code;
+		}
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->timeframeWithEndDate = new Timeframe($this->createTimeframe(
