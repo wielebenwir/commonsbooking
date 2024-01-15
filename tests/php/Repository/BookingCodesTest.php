@@ -161,7 +161,8 @@ class BookingCodesTest extends CustomPostTypeTest
 		//test infinite booking days timeframes
 		BookingCodes::generate( $this->timeframeWithoutEndDate, self::ADVANCE_GENERATION_DAYS );
 		//now we should get all codes for the max generation days
-		$codeAmount = BookingCodes::ADVANCE_GENERATION_DAYS + 1;
+        // codes will be generated starting from timeframe start, yesterday, for today and for BookingCodes::ADVANCE_GENERATION_DAYS additional days
+		$codeAmount = BookingCodes::ADVANCE_GENERATION_DAYS + 2;
 		$codes = BookingCodes::getCodes( $this->timeframeWithoutEndDate->ID );
 		$this->assertNotEmpty( $codes );
 		$this->assertCount( $codeAmount, $codes );
@@ -200,10 +201,13 @@ class BookingCodesTest extends CustomPostTypeTest
 		$futureDate->modify( "+$daysInFuture days" );
 		ClockMock::freeze( $futureDate );
 
-		// test current behavior of getCodes() without specified startDate and endDate:
-		// the amount of codes generates depend on timeframe start and BookingCodes::ADVANCE_GENERATION_DAYS only,
-		// so no code will be generated for today (which is surprising?)
-		$codeAmount = BookingCodes::ADVANCE_GENERATION_DAYS + 1;
+		// test behavior of getCodes() without specified startDate and endDate:
+        // codes will be generated and returned
+        // - for day before self::CURRENT_DATE which is timeframe start date (1), 
+        // - for $daysInFuture,
+        // - for today (1) and
+        // - for additional BookingCodes::ADVANCE_GENERATION_DAYS
+		$codeAmount = BookingCodes::ADVANCE_GENERATION_DAYS + $daysInFuture + 2;
 		$codes = BookingCodes::getCodes( $this->timeframeWithoutEndDate->ID );
 		$this->assertNotEmpty( $codes );
 		$this->assertCount( $codeAmount, $codes );
