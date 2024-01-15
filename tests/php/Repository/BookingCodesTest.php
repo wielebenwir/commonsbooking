@@ -172,7 +172,7 @@ class BookingCodesTest extends CustomPostTypeTest
 		BookingCodes::generate( $this->timeframeWithoutEndDate, self::ADVANCE_GENERATION_DAYS );
 		//now we should get all codes for the max generation days
 		$codeAmount = BookingCodes::ADVANCE_GENERATION_DAYS + 1;
-		$codes = BookingCodes::getCodes( $this->timeframeWithoutEndDate->ID, self::ADVANCE_GENERATION_DAYS);
+		$codes = BookingCodes::getCodes( $this->timeframeWithoutEndDate->ID );
 		$this->assertNotEmpty( $codes );
 		$this->assertCount( $codeAmount, $codes );
 		//check that the codes are in the correct order
