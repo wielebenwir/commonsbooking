@@ -32,6 +32,11 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	const END_TIMEFRAME_GRIDSIZE = 'end-timeframe-gridsize';
 
+	/**
+	 * Meta value for the amount of days that have been overbooked for this booking.
+	 */
+	const META_OVERBOOKED_DAYS = 'days-overbooked';
+
     public const ERROR_TYPE = 'BookingValidationFailed';
 
 	/**
@@ -380,6 +385,14 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	public function getLocationID(){
 		return $this->getMeta('location-id');
+	}
+
+	public function getOverbookedDays(): int {
+		$metaField = $this->getMeta( self::META_OVERBOOKED_DAYS );
+		if ( ! $metaField ) {
+			return 0;
+		}
+		return intval ( $metaField );
 	}
 	/**
 	 * Get the booking date in a human-readable format.

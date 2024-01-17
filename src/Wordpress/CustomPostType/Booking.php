@@ -151,6 +151,7 @@ class Booking extends Timeframe {
 			$comment         = isset( $_REQUEST['comment'] ) && $_REQUEST['comment'] !== '' ? sanitize_text_field( wp_unslash( $_REQUEST['comment'] ) ) : null;
 			$post_status     = isset( $_REQUEST['post_status'] ) && $_REQUEST['post_status'] !== '' ? sanitize_text_field( wp_unslash( $_REQUEST['post_status'] ) ) : null;
 			$post_ID         = isset( $_REQUEST['post_ID'] ) && $_REQUEST['post_ID'] !== '' ? intval( $_REQUEST['post_ID'] ) : null;
+			$overbookedDays  = isset( $_REQUEST['days-overbooked'] ) && $_REQUEST['days-overbooked'] !== '' ? intval( $_REQUEST['days-overbooked'] ) : 0;
 			$repetitionStart = isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] ) && $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] !== '' ? sanitize_text_field( wp_unslash( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_START ] ) ) : null;
 			$repetitionEnd   = isset( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] ) && $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] !== '' ? sanitize_text_field( wp_unslash( $_REQUEST[ \CommonsBooking\Model\Timeframe::REPETITION_END ] ) ) : null;
 			$postName        = isset( $_REQUEST['cb_booking'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['cb_booking'] ) ) : null;
@@ -165,7 +166,8 @@ class Booking extends Timeframe {
 				$repetitionStart,
 				$repetitionEnd,
 				$postName,
-				$postType
+				$postType,
+				$overbookedDays
 			);
 
 			// get slug as parameter
@@ -204,7 +206,8 @@ class Booking extends Timeframe {
 		?string $repetitionStart,
 		?string $repetitionEnd,
 		?string $requestedPostName,
-		?string $postType
+		?string $postType,
+		int $overbookedDays = 0
 	): int {
 		if ( $itemId === null || ! get_post( $itemId ) ) {
 			// translators: $s = id of the item
@@ -278,11 +281,12 @@ class Booking extends Timeframe {
 		if ( empty( $booking ) ) {
 			$postarr['post_name']  = Helper::generateRandomString();
 			$postarr['meta_input'] = array(
-				\CommonsBooking\Model\Timeframe::META_LOCATION_ID => $locationId,
-				\CommonsBooking\Model\Timeframe::META_ITEM_ID     => $itemId,
-				\CommonsBooking\Model\Timeframe::REPETITION_START => $repetitionStart,
-				\CommonsBooking\Model\Timeframe::REPETITION_END   => $repetitionEnd,
-				'type'                                            => Timeframe::BOOKING_ID,
+				\CommonsBooking\Model\Timeframe::META_LOCATION_ID   => $locationId,
+				\CommonsBooking\Model\Timeframe::META_ITEM_ID       => $itemId,
+				\CommonsBooking\Model\Timeframe::REPETITION_START   => $repetitionStart,
+				\CommonsBooking\Model\Timeframe::REPETITION_END     => $repetitionEnd,
+				\CommonsBooking\Model\Booking::META_OVERBOOKED_DAYS => $overbookedDays,
+				'type'                                              => Timeframe::BOOKING_ID,
 			);
 
 			$postId = wp_insert_post( $postarr, true );
