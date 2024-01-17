@@ -20,6 +20,14 @@ class UserRepository {
 	}
 
 	/**
+	 * Will get all roles that are considered by CommonsBooking as "Administrator" roles
+	 * @return array
+	 */
+	public static function getAdminRoles() : array {
+		return apply_filters('commonsbooking_admin_roles', ['administrator']);
+	}
+
+	/**
 	 * Returns all users with items/locations.
 	 * @return array
 	 */

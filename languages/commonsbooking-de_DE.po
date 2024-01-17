@@ -8,10 +8,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2023-09-15T04:04:14+02:00\n"
-"PO-Revision-Date: 2023-11-01 15:41-0400\n"
+"PO-Revision-Date: 2024-01-10 10:43-0700\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
 #. Plugin Name of the plugin
 msgid "Commons Booking"
@@ -1284,7 +1284,7 @@ msgstr "Der Dienst ist derzeit nicht verfügbar. Versuche  später erneut."
 msgid "comming soon"
 msgstr "Bald verfügbar"
 
-#: src/Messages/Message.php:114
+#: src/Messages/Message.php:131
 msgid "Could not send email because mail-template was not available. Check options -> templates"
 msgstr "E-Mail konnte nicht gesendet werden, da keine E-Mail-Vorlage verfügbar war. Optionen überprüfen -> Vorlagen"
 
@@ -1398,15 +1398,15 @@ msgstr "Artikel-Kategorie"
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
-#: src/Repository/BookingCodes.php:294
+#: src/Repository/BookingCodes.php:304
 msgid "No booking codes could be created because there were no booking codes to choose from. Please set some booking codes in the CommonsBooking settings."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da keine Buchungscodes zur Auswahl standen. Bitte lege einige Buchungscodes in den CommonsBooking-Einstellungen fest."
 
-#: src/Repository/BookingCodes.php:300
+#: src/Repository/BookingCodes.php:310
 msgid "No booking codes could be created because the location of the timeframe could not be found."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da der Standort nicht gefunden wurde."
 
-#: src/Repository/BookingCodes.php:305
+#: src/Repository/BookingCodes.php:315
 msgid "No booking codes could be created because the item of the timeframe could not be found."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da der Artikel nicht gefunden wurde."
 
@@ -3509,7 +3509,7 @@ msgstr "Gesperrte Tage bei Überbuchung zählen"
 
 #: src/Wordpress/CustomPostType/Location.php:424
 msgid "Count connected locked days as one"
-msgstr "Zusammenhängende gesperrte Tage werden als Einheit zählen"
+msgstr "Zusammenhängende gesperrte Tage werden als Einheit gezählt"
 
 #: src/Wordpress/CustomPostType/Location.php:425
 msgid "Here you can specify, if a connected span of locked days should be counted individually or just use up x amount of the maximum quota the user is allowed to book. If you set this field to 0, every day will be counted individually. If you set this field to 1, all overbooked days, no matter how many, will always count for 1 day. If you set this to 2, they will count a maximum of two days and so on."
@@ -3519,123 +3519,117 @@ msgstr "Hier kann festgelegt werden, ob eine zusammenhängende Spanne von überb
 msgid "If selected, days that are overbooked will be counted towards the maximum number of bookable days. If this option is disabled, locked days that are overbooked will allow for bookings that are longer than the maximum number of bookable days configured for the timeframe."
 msgstr "Ist diese Option aktiviert, werden überbuchte Tage auf die maximale Anzahl buchbarer Tage angerechnet. Wenn diese Option deaktiviert ist, dann werden überbuchte Tage nicht zusätzlich gezählt und ermöglichen Buchungszeiträume die länger sind als die im Zeitrahmen konfigurierte maximale Anzahl an gebuchten Tagen."
 
-#: src/Model/Booking.php:596
-#~ msgid "Unconfirmed"
-#~ msgstr "Unbestätigt"
-
-#: src/Model/Booking.php:594
-#~ msgid "Confirmed"
-#~ msgstr "Bestätigt"
-
 #: src/Model/Timeframe.php:363
 msgid "No dates selected. Please select at least one date. Timeframe is saved as draft."
-msgstr ""
+msgstr "Keine Daten ausgewählt, bitte wähle mindestens ein Datum aus. Zeitrahmen wurde als Entwurf gespeichert."
 
 #: src/Model/Timeframe.php:371
 msgid "The same date was selected multiple times. Please select each date only once. Timeframe is saved as draft."
-msgstr ""
+msgstr "Das gleiche Datum wurde mehrfach ausgewählt. Bitte wählen Sie jedes Datum nur einmal aus. Zeitrahmen wurde als Entwurf gespeichert."
 
 #. translators: first %s = timeframe-ID, second %s is timeframe post_title
 #: src/Model/Timeframe.php:470
 msgid "See overlapping timeframe ID: %1$s %2$s"
-msgstr ""
+msgstr "Sich überschneidende Zeitrahmen ID: %1$s %2$s"
 
 #: src/Model/Timeframe.php:567
 msgid "Overlapping bookable timeframes are only allowed to have the same grid."
-msgstr ""
+msgstr "Sich überschneidende buchbare Zeiträume müssen das gleiche Raster haben."
 
 #: src/Model/Timeframe.php:597
 msgid "Overlapping bookable timeframes are not allowed to have the same weekdays."
-msgstr ""
+msgstr "Mehrere buchbare Zeiträume überschneiden sich in den definierten Wochentagen."
 
 #: src/Model/Timeframe.php:609
 msgid "Overlapping bookable timeframes are not allowed to have the same dates."
-msgstr ""
+msgstr "Mehrere buchbare Zeiträume überschneiden sich in dem definierten Datumsbereich."
 
 #: src/Model/Timeframe.php:616
 #: src/Model/Timeframe.php:623
 msgid "The other timeframe is overlapping with your weekly configuration."
-msgstr ""
+msgstr "Der andere Zeitrahmen überschneidet sich mit einer wöchentlichen Konfiguration."
 
 #: src/Wordpress/CustomPostType/Timeframe.php:150
 msgid "Select Dates:"
-msgstr ""
+msgstr "Ausgewählte Daten:"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:636
 msgid "Selected manual dates"
-msgstr ""
+msgstr "Manuell ausgewählte Daten"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:637
 msgid "Enter the dates in the YYYY-MM-DD format here, the dates are separated by a comma. <br> Example: 2023-05-24,2023-06-24 <br> You can also use the datepicker above to pick dates for this field."
-msgstr ""
+msgstr "Gib hier die Daten im JJJ-MM-TT Format kommasepariert ein. <br> Beispiel: 2023-05-24,2023-06-24 <br> Du kannst auch den obigen Kalender verwenden, um Daten für dieses Feld auszuwählen."
 
 #: src/Wordpress/CustomPostType/Timeframe.php:774
 msgid "No repetition"
-msgstr ""
+msgstr "Keine Wiederholung"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:775
 msgid "Manual repetition"
-msgstr ""
+msgstr "Manuelle Wiederholung"
 
 #: src/Service/Holiday.php:30
 msgid "Year"
-msgstr ""
+msgstr "Jahr"
 
 #: src/Service/Holiday.php:56
 msgid "Load Holidays"
-msgstr ""
+msgstr "Feiertage laden"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:622
 msgid "Import holidays"
-msgstr ""
+msgstr "Feiertage importieren"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:623
 msgid "Select the year and state to import holidays for (as of now only German holidays are supported)"
-msgstr ""
+msgstr "Wählen Sie das Jahr und das Bundesland, für das Sie Feiertage importieren möchten (derzeit werden Feiertage in Deutschland unterstützt)"
 
 #: src/Model/Timeframe.php:583
 msgid "Daily repeated time periods are not allowed to overlap."
-msgstr ""
+msgstr "Täglich wiederholende Zeiträume dürfen sich nicht überschneiden."
 
 #: includes/OptionsArray.php:158
 #: includes/OptionsArray.php:162
 #: includes/OptionsArray.php:169
 msgid "Booking codes"
-msgstr ""
+msgstr "Buchungscodes"
 
 #: includes/OptionsArray.php:165
 msgid ""
 "Enter the booking codes to be generated in advance for booking types with all-day booking time frames.  Enter booking codes as a comma separated list, e.g.: Code1,Code2,Code3,Code4\n"
 "                <br>More information in the documentation: <a href=\"https://commonsbooking.org/?p=870\" target=\"_blank\">Booking codes</a>"
 msgstr ""
+"Geben Sie die Buchungscodes ein, die für Buchungen mit ganztägigen Buchungszeiträumen im Voraus generiert werden sollen.  Geben Sie die Buchungscodes als kommagetrennte Liste ein, z.B.: Code1,Code2,Code3,Code4\n"
+"                <br>Mehr Informationen dazu in der Dokumentation: <a href=\"https://commonsbooking.org/?p=870\" target=\"_blank\">Buchungscodes</a>"
 
 #: includes/OptionsArray.php:174
 msgid "Show booking codes for x days"
-msgstr ""
+msgstr "Buchungscodes für x Tage anzeigen"
 
 #: includes/OptionsArray.php:175
 msgid "Displays booking codes for the next x days on the timeframe page"
-msgstr ""
+msgstr "Zeigt Buchungscodes für die nächsten x Tage auf der Zeitrahmenseite an"
 
 #: includes/OptionsArray.php:187
 msgid "Booking codes by email"
-msgstr ""
+msgstr "Buchungscodes per E-Mail"
 
 #: includes/OptionsArray.php:190
 msgid "Send booking codes by email to location email(s) (automated by cron or ad hoc)"
-msgstr ""
+msgstr "Senden von Buchungscodes per E-Mail an die Standort-E-Mail(s) (automatisch per Cron oder ad hoc)"
 
 #: includes/OptionsArray.php:193
 msgid "Subject for booking codes email"
-msgstr ""
+msgstr "Betreff für Buchungscodes E-Mail"
 
 #: includes/OptionsArray.php:196
 msgid "Booking codes for {{codes:formatDateRange}} {{item:post_title}}"
-msgstr ""
+msgstr "Buchungscodes für {{codes:formatDateRange}} {{item:post_title}}"
 
 #: includes/OptionsArray.php:199
 msgid "Body for booking codes email"
-msgstr ""
+msgstr "Nachricht für Buchungscoes E-Mail"
 
 #: includes/OptionsArray.php:202
 msgid ""
@@ -3649,168 +3643,185 @@ msgid ""
 "<p>Thanks, the Team.</p>\n"
 "                            "
 msgstr ""
+"\n"
+"<h1>Buchungscodes für {{item:post_title}} : {{codes:formatDateRange}}</h1>\n"
+"\n"
+"<p>Buchungscode Tabelle:</p>\n"
+"<br>   \n"
+"{{codes:codeTable}}\n"
+"<br>          \n"
+"<p>Danke, das Team.</p>\n"
+"                            "
 
 #: includes/OptionsArray.php:213
 msgid "Backup E-Mail for booking codes email"
-msgstr ""
+msgstr "Backup E-Mail für Buchungscodes E-Mail"
 
 #: includes/OptionsArray.php:214
 msgid "Email address that receives a bcc copy of booking codes mailing (not used if empty)"
-msgstr ""
+msgstr "E-Mail-Adresse, die eine BCC-Kopie der Buchungscodes erhält (zum Deaktivieren Feld leer lassen)"
 
 #: includes/OptionsArray.php:219
 msgid "Attach iCalendar file to booking codes email"
-msgstr ""
+msgstr "iCalendar-Datei an eine E-Mail mit Buchungscodes anhängen"
 
 #: includes/OptionsArray.php:221
 msgid "Will attach an iCalendar compatible file with booking codes per day to import in their respective calendar application."
-msgstr ""
+msgstr "Fügt eine iCalendar-kompatible Datei mit Buchungscodes für die einzelnen Tage bei, um sie in die jeweilige Kalenderanwendung zu importieren."
 
 #: src/Messages/BookingCodesMessage.php:49
 msgid "Unable to send Emails. No location email(s) configured, check location"
-msgstr ""
+msgstr "Emails können nicht gesendet werden. Keine Standort-E-Mail(s) konfiguriert, bitte Standort prüfen"
 
 #: src/Messages/BookingCodesMessage.php:52
 msgid "Could not find booking codes for this timeframe/period"
-msgstr ""
+msgstr "Es konnten keine Buchungscodes für diesen Zeitrahmen/Zeitraum gefunden werden"
 
 #: src/Messages/BookingCodesMessage.php:184
 msgid "booking code for item \"%1$s\": %2$s"
-msgstr ""
+msgstr "Buchungscodes für Artikel \"%1$s\": %2$s"
 
 #: src/Service/BookingCodes.php:42
 msgid "Error sending booking codes by E-mail for Timeframe "
-msgstr ""
+msgstr "Fehler beim Senden von Buchungscodes per E-Mail für Zeitrahmen "
 
 #: src/View/BookingCodes.php:175
 #: src/View/BookingCodes.php:276
 msgid "No location configured for this timeframe"
-msgstr ""
+msgstr "Kein Standort für diesen Zeitraum konfiguriert"
 
 #: src/View/BookingCodes.php:177
 msgid "Unable to send emails. No location email configured, check location"
-msgstr ""
+msgstr "E-Mails konnten nicht gesendet werden. Keine Standort-E-Mail konfiguriert, bitte Standort prüfen"
 
 #: src/View/BookingCodes.php:180
 #: src/View/BookingCodes.php:283
 #: src/View/BookingCodes.php:361
 #: src/View/BookingCodes.php:388
 msgid "This timeframe has no booking codes. To generate booking codes you need to save the timeframe."
-msgstr ""
+msgstr "Dieser Zeitrahmen hat keine Buchungscodes. Um Buchungscodes zu generieren, muss der Zeitrahmen gespeichert werden."
 
 #: src/View/BookingCodes.php:270
 msgid "Send booking codes by email"
-msgstr ""
+msgstr "Buchungscodes per E-Mail versenden"
 
 #: src/View/BookingCodes.php:279
 msgid "Unable to send Emails. No location email configured, check location"
-msgstr ""
+msgstr "Emails konnten nicht gesendet werden. Keine Standort-E-Mail konfiguriert, bitte Standort prüfen"
 
 #: src/View/BookingCodes.php:291
 msgid "Email booking codes for the entire timeframe"
-msgstr ""
+msgstr "E-Mail mit Buchungscodes für den gesamten Zeitraum senden"
 
 #: src/View/BookingCodes.php:294
 msgid "<b>All codes for the entire timeframe</b> will be emailed to the location email(s), given in bold below."
-msgstr ""
+msgstr "<b>Alle Codes für den gesamten Zeitraum</b> werden an die unten fett gedruckte(n) E-Mail-Adresse(n) des Standorts geschickt."
 
 #: src/View/BookingCodes.php:303
 msgid "Email booking codes of current month"
-msgstr ""
+msgstr "E-Mail mit Buchungscodes für den aktuellen Monat senden"
 
 #: src/View/BookingCodes.php:305
 msgid "The codes <b>of the current month</b> will be sent to all the location email(s), given in bold below"
-msgstr ""
+msgstr "Die Codes des <b>laufenden Monats</b> werden an alle fettgedruckten E-Mail-Adressen der Standorte gesendet"
 
 #: src/View/BookingCodes.php:314
 msgid "Email booking codes of next month"
-msgstr ""
+msgstr "E-Mail mit Buchungscodes für den nächsten Monat senden"
 
 #: src/View/BookingCodes.php:316
 msgid "The codes <b>of the next month</b> will be sent to all the location email(s), given in bold below."
-msgstr ""
+msgstr "Die Codes des <b>nächsten Monats</b> werden an alle fettgedruckten E-Mail-Adressen der Standorte gesendet"
 
 #: src/View/BookingCodes.php:318
 msgid "Currently configured location email(s): "
-msgstr ""
+msgstr "Derzeit konfigurierte Standort-E-Mail(s): "
 
 #: src/View/BookingCodes.php:327
 msgid "Last booking codes email sent:"
-msgstr ""
+msgstr "Letzte Buchungscodes wurden per E-Mail verschickt am:"
 
 #: src/View/BookingCodes.php:354
 msgid "Download booking codes"
-msgstr ""
+msgstr "Buchungscodes herunterladen"
 
 #: src/View/BookingCodes.php:359
 msgid "Will download all available booking codes for this timeframe. If the timeframe has no end-date, the booking codes for the next %s days will be retrieved."
-msgstr ""
+msgstr "Lädt alle verfügbaren Buchungscodes für diesen Zeitrahmen herunter. Wenn der Zeitrahmen kein Enddatum hat, werden die Buchungscodes für die nächsten %s Tage abgerufen."
 
 #: src/View/BookingCodes.php:382
 msgid "Only showing booking codes for the next %s days."
-msgstr ""
+msgstr "Zeige nur Buchungscodes für die nächsten %s Tage."
 
 #: src/View/BookingCodes.php:384
 msgid "The amount of booking codes shown in the overview can be changed in the settings."
-msgstr ""
+msgstr "Die Anzahl der in der Übersicht angezeigten Buchungscodes kann in den Einstellungen geändert werden."
 
 #: src/View/BookingCodes.php:473
 msgid "Unable to retrieve booking codes"
-msgstr ""
+msgstr "Buchungscodes konnten nicht abgerufen werden"
 
 #: src/View/BookingCodes.php:474
 msgid "Missing ID of timeframe post"
-msgstr ""
+msgstr "Fehlende ID des Zeitrahmens"
 
 #: src/View/BookingCodes.php:496
 msgid "Error sending booking codes"
-msgstr ""
+msgstr "Fehler beim Senden von Buchungscodes"
 
 #: src/View/BookingCodes.php:515
 msgid "An unknown error occured"
-msgstr ""
+msgstr "Ein unbekannter Fehler ist aufgetreten"
 
 #: src/View/BookingCodes.php:516
 msgid "Email booking codes"
-msgstr ""
+msgstr "Buchungscodes per E-Mail versenden"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:707
 msgid "Send booking codes automated by email"
-msgstr ""
+msgstr "Buchungscodes automatisch per E-Mail versenden"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:708
 msgid "Enable automated sending of booking codes by email"
-msgstr ""
+msgstr "Automatisches Versenden von Buchungscodes per E-Mail aktivieren"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:710
 msgid "First day to send Codes (List starts at next month)<br>(Same day will be used for subsequent messages) "
-msgstr ""
+msgstr "Starttag für das regelmäßige Versenden von Codes (Liste startet im nächsten Monat)<br>(Der gleiche Tag wird für die folgenden Nachrichten genutzt werden)"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:713
 msgid "Months to send"
-msgstr ""
+msgstr "Anzahl an Monaten"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:714
 msgid "Send booking codes for this amount of month's in one email"
-msgstr ""
+msgstr "Buchungscodes für diese Anzahl von Monaten in einer E-Mail versenden"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:716
 msgid "Next email planned for: "
-msgstr ""
+msgstr "Nächste E-Mail geplant am: "
 
 #: src/Wordpress/CustomPostType/Timeframe.php:717
 msgid "(not planned)"
-msgstr ""
+msgstr "(nichts geplant)"
 
 #: includes/OptionsArray.php:1129
 #: src/Service/Cache.php:345
 msgid "Clear Cache"
-msgstr ""
+msgstr "Cache leeren"
 
 #: src/Service/Cache.php:340
 msgid "Clear all cache items"
-msgstr ""
+msgstr "Alle Cache-Elemente löschen"
 
 #: src/Wordpress/Options/OptionsTab.php:157
 msgid "Cache cleared."
-msgstr ""
+msgstr "Cache geleert."
+
+#: src/Model/Booking.php:596
+#~ msgid "Unconfirmed"
+#~ msgstr "Unbestätigt"
+
+#: src/Model/Booking.php:594
+#~ msgid "Confirmed"
+#~ msgstr "Bestätigt"

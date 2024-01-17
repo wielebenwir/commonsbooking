@@ -150,20 +150,6 @@ class RestrictionMessage extends Message {
 	}
 
 	/**
-	 * @return mixed
-	 */
-	public function getAction() {
-		return $this->action;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getValidActions(): array {
-		return $this->validActions;
-	}
-
-	/**
 	 * @return Restriction
 	 */
 	public function getRestriction() {
