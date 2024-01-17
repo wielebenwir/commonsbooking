@@ -528,6 +528,11 @@ class BookingRuleTest extends CustomPostTypeTest
 
 	}
 
+	public function testHasDefaultSettings() {
+		Settings::updateOption('commonsbooking_options_restrictions','rules_group',null);
+		$this->assertTrue(BookingRule::hasDefaultSettings());
+	}
+
 	/**
 	 * Will check if the IDs of two arrays of booking models match.
 	 * We do this because we can not always compare the instances directly and the order of the array is not important

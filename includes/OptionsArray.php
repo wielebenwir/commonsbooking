@@ -702,6 +702,8 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 								'desc'      => commonsbooking_sanitizeHTML( __('Select the kind of rule', 'commonsbooking') ),
 								'id'        => 'rule-type',
 								'type'      => 'select',
+								'show_option_none' => true,
+								'default'   => 'none',
 								'options'   => BookingRule::getRulesForSelect(),
 
 							),

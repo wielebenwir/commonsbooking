@@ -10,6 +10,7 @@
         const ruleParam1ID = "rule-param1";
         const ruleParam2ID = "rule-param2";
         const ruleSelectParamID = "rule-select-param";
+        const exemptRolesID = "exempt-roles";
         const handleRuleSelection = function() {
             let groupFields = $("#" + groupName + "_repeat");
             groupFields.on("cmb2_add_row cmb2_remove_row cmb2_shift_rows_complete", function() {
@@ -19,6 +20,9 @@
                 let currentGroup = $("#" + groupID + i);
                 let ruleSelector = currentGroup.find("#" + groupName + "_" + i + "_" + ruleSelectorID);
                 let ruleDescription = currentGroup.find('[class*="' + ruleDescriptionID + '"]').find(".cmb2-metabox-description");
+                let ruleAppliesAll = currentGroup.find('[class*="' + ruleAppliesAllID + '"]');
+                let ruleAppliesCategories = currentGroup.find('[class*="' + ruleAppliesCategoriesID + '"]');
+                let exemptRoles = currentGroup.find('[class*="' + exemptRolesID + '"]');
                 let ruleParam1 = currentGroup.find('[class*="' + ruleParam1ID + '"]');
                 let ruleParam1Input = ruleParam1.find(".cmb2-text-small");
                 let ruleParam1InputLabel = $(ruleParam1Input.labels()[0]);
@@ -34,10 +38,24 @@
                     handleRuleSelection();
                 });
                 const selectedRule = $("option:selected", ruleSelector).val();
+                if (selectedRule === "") {
+                    ruleDescription.hide();
+                    ruleParam1.hide();
+                    ruleParam2.hide();
+                    ruleSelectParam.hide();
+                    ruleAppliesAll.hide();
+                    ruleAppliesCategories.hide();
+                    exemptRoles.hide();
+                    return;
+                }
                 cb_booking_rules.forEach(rule => {
                     if (rule.name == selectedRule) {
                         ruleDescription.text(rule.description);
                         ruleSelector.width(300);
+                        ruleAppliesAll.show();
+                        ruleAppliesCategories.show();
+                        exemptRoles.show();
+                        ruleDescription.show();
                         if (rule.hasOwnProperty("params") && rule.params.length > 0) {
                             switch (rule.params.length) {
                               case 1:
@@ -107,8 +125,8 @@
                 }
             }
         };
-        handleRuleSelection();
         handleAppliesToAll();
+        handleRuleSelection();
     });
 })(jQuery);
 

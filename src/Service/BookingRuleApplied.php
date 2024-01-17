@@ -223,6 +223,9 @@ class BookingRuleApplied extends BookingRule {
 		foreach ($rulesConfig as $ruleConfig) {
 			/** @var BookingRule $validRule */
 			foreach ($validRules as $validRule){
+				if ( ! isset( $ruleConfig['rule-type'] ) ) {
+					throw new BookingRuleException( __( 'Booking rules: No rule type specified.', 'commonsbooking' ) );
+				}
 				if ($validRule->name !== $ruleConfig['rule-type']) {
 					continue;
 				}
@@ -296,6 +299,10 @@ class BookingRuleApplied extends BookingRule {
 	 * @return void
 	 */
 	public static function validateRules():void{
+
+		if ( self::hasDefaultSettings() ) {
+			return;
+		}
 		try {
 			self::init();
 		} catch ( BookingRuleException $e ) {

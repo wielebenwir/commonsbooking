@@ -190,7 +190,7 @@ class BookingRule {
 	 * Returns an array with the default ruleset applied, can be filtered using a filter hook
 	 *
 	 * Closure::fromCallable can be replaced with First Class Callable Syntax in PHP8.1
-	 * @return array
+	 * @return BookingRule[]
 	 * @throws BookingRuleException
 	 */
 	public static function init(): array {
@@ -525,6 +525,16 @@ class BookingRule {
 		else {
 			return null;
 		}
+	}
+
+	/**
+	 * Check, if the BookingRules settings have been modified from what is defined by default.
+	 * Used to check, if the setting has been touched by the user.
+	 * @return bool
+	 */
+	public static function hasDefaultSettings(): bool {
+		$rulesConfig = Settings::getOption('commonsbooking_options_restrictions', 'rules_group');
+		return empty ( $rulesConfig );
 	}
 
 	/**
