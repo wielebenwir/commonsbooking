@@ -76,7 +76,7 @@ class BookingCodesTest extends CustomPostTypeTest
 		);
 		$this->assertNull( $code );
 
-		BookingCodes::generate( $this->timeframeWithoutEndDate );
+		BookingCodes::generate( $this->timeframeWithoutEndDate, self::ADVANCE_GENERATION_DAYS );
 		//test infinite booking days timeframes
 		$advanceDays = self::ADVANCE_GENERATION_DAYS + 1; //advance one day beyond the max generation days
 		$dayInFuture = date( 'Y-m-d',
@@ -170,9 +170,13 @@ class BookingCodesTest extends CustomPostTypeTest
 
 		//test infinite booking days timeframes
 		BookingCodes::generate( $this->timeframeWithoutEndDate, self::ADVANCE_GENERATION_DAYS );
-		//now we should get all codes for the max generation days
-		$codeAmount = BookingCodes::ADVANCE_GENERATION_DAYS + 1;
-		$codes = BookingCodes::getCodes( $this->timeframeWithoutEndDate->ID, self::ADVANCE_GENERATION_DAYS);
+
+		// codes will be generated and returned
+		// - for yesterday which is timeframe start date (1),
+		// - for today (1) and
+		// - for additional BookingCodes::ADVANCE_GENERATION_DAYS
+		$codeAmount = BookingCodes::ADVANCE_GENERATION_DAYS + 2;
+		$codes = BookingCodes::getCodes( $this->timeframeWithoutEndDate->ID );
 		$this->assertNotEmpty( $codes );
 		$this->assertCount( $codeAmount, $codes );
 		//check that the codes are in the correct order
@@ -201,6 +205,36 @@ class BookingCodesTest extends CustomPostTypeTest
 			$lastCode = $code;
 		}
 
+	}
+
+	public function testGetCodesFuture() {
+		// test of getCodes() when today is a date in future, in particular later than timeframe start + BookingCodes::ADVANCE_GENERATION_DAYS
+		$daysInFuture = 400;
+		$futureDate = new \DateTime( self::CURRENT_DATE );
+		$futureDate->modify( "+$daysInFuture days" );
+		ClockMock::freeze( $futureDate );
+
+		//test infinite booking days timeframes: getCodes() currently only works if at least a few codes are available
+		BookingCodes::generate( $this->timeframeWithoutEndDate, self::ADVANCE_GENERATION_DAYS );
+
+		// test behavior of getCodes() without specified startDate and endDate:
+		// codes will be generated and returned
+		// - for day before self::CURRENT_DATE which is timeframe start date (1),
+		// - for $daysInFuture,
+		// - for today (1) and
+		// - for additional BookingCodes::ADVANCE_GENERATION_DAYS
+		$codeAmount = BookingCodes::ADVANCE_GENERATION_DAYS + $daysInFuture + 2;
+		$codes = BookingCodes::getCodes( $this->timeframeWithoutEndDate->ID );
+		$this->assertNotEmpty( $codes );
+		$this->assertCount( $codeAmount, $codes );
+		//check that the codes are in the correct order
+		$lastCode = null;
+		foreach ( $codes as $code ) {
+			if ( $lastCode ) {
+				$this->assertGreaterThan( $lastCode->getDate(), $code->getDate() );
+			}
+			$lastCode = $code;
+		}
 	}
 
 	public function testGetLastCode() {
