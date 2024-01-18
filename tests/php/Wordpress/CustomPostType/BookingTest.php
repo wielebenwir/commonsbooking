@@ -132,6 +132,60 @@ class BookingTest extends CustomPostTypeTest
 		);
 	}
 
+	public function testHandleBookingRequest_Overbooking() {
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX. 'count_lockdays_in_range', 'on' );
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX. 'count_lockdays_maximum', '1' );
+		$date = new \DateTime( self::CURRENT_DATE );
+		$date->modify('-1 day');
+		ClockMock::freeze( $date );
+		// 3 Days are overbooked, that means that the Litepicker had 3 locked / holidays in range
+		$bookingId = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+5 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null,
+			3
+		);
+		//add this to the array so it can be destroyed later
+		$this->bookingIds[] = $bookingId;
+
+		$this->assertIsInt( $bookingId );
+		$bookingModel = new \CommonsBooking\Model\Booking( $bookingId );
+
+		$postName = $bookingModel->post_name;
+
+		$this->assertTrue( $bookingModel->isUnconfirmed() );
+		$this->assertFalse( $bookingModel->isConfirmed() );
+
+		// The overbooked days are not present anymore when confirming the booking cause they are only calculated on the Litepicker screen
+		$newBookingId = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'confirmed',
+			$bookingId,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+5 day', strtotime( self::CURRENT_DATE ) ),
+			$postName,
+			null
+		);
+		$this->bookingIds[] = $newBookingId;
+
+		// the id should be the same
+		$this->assertEquals( $bookingId, $newBookingId );
+		// we create a new model, just to be sure
+		$bookingModel = new \CommonsBooking\Model\Booking( $bookingId );
+		$this->assertTrue( $bookingModel->isConfirmed() );
+		$this->assertFalse( $bookingModel->isUnconfirmed() );
+		//two of those days are counted as overbooked, first day is still counted to maximum quota
+		$this->assertEquals(2, $bookingModel->getOverbookedDays() );
+	}
+
 	public function testBookingWithoutLoc() {
 		// Case 1: We try to create a booking without a defined location
 		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );

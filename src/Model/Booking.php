@@ -387,6 +387,37 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		return $this->getMeta('location-id');
 	}
 
+	/**
+	 * Will set the postmeta field for the amount of days that have been overbooked for this booking.
+	 * The raw amount of days that span a locked / holiday are passed to this function, and it uses
+	 * the location settings to determine how many days were not counted towards the maximum booking length.
+	 * Overbooked days are taken into account when calculating the booking length, all days that are considered overbooked are not counted towards the length.
+	 *
+	 * @param int $rawDaysOverbooked The days a booking spans over a locked / holiday.
+	 *
+	 * @return int
+	 */
+	public function setOverbookedDays(int $rawDaysOverbooked): int {
+		$location = $this->getLocation();
+		$countLockdaysInRange = $location->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range') === 'on';
+		$countLockdaysMaximum = $location->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum');
+
+		if (!$countLockdaysInRange) {
+			$days = $rawDaysOverbooked;
+		} elseif ($countLockdaysMaximum == 0) {
+			$days = 0;
+		} else {
+			$days = max(0, $rawDaysOverbooked - $countLockdaysMaximum);
+		}
+
+		update_post_meta($this->post->ID, self::META_OVERBOOKED_DAYS, $days);
+		return $days;
+	}
+
+	/**
+	 * Will get the amount of days that were not counted towards the maximum booking length because they were overbooked.
+	 * @return int
+	 */
 	public function getOverbookedDays(): int {
 		$metaField = $this->getMeta( self::META_OVERBOOKED_DAYS );
 		if ( ! $metaField ) {

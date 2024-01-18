@@ -459,6 +459,30 @@ public function testCanCancelBaseCase() {
 		$this->assertTrue( $testBookingTomorrow2->canCancel() );
 	}
 
+
+	public function testSetOverbookedDays() {
+		//case 1: no overbooked days are counted towards the booking limit
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range', 'off' );
+		$this->assertEquals(2,$this->testBookingTomorrow->setOverbookedDays(2));
+		$this->assertEquals(2, $this->testBookingTomorrow->getOverbookedDays());
+
+		//case 2: one overbooked day is counted towards the booking limit, the rest was overbooked
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range', 'on' );
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', '1' );
+		$this->assertEquals(6,$this->testBookingTomorrow->setOverbookedDays(7));
+		$this->assertEquals(6, $this->testBookingTomorrow->getOverbookedDays());
+
+		//case 3: two days are counted but only one is overbooked
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', '2' );
+		$this->assertEquals(0,$this->testBookingTomorrow->setOverbookedDays(1));
+		$this->assertEquals(0, $this->testBookingTomorrow->getOverbookedDays());
+
+		//case 4: all overbooked days are counted towards the booking limit
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', '0' );
+		$this->assertEquals(0,$this->testBookingTomorrow->setOverbookedDays(2));
+		$this->assertEquals(0, $this->testBookingTomorrow->getOverbookedDays());
+	}
+
 	protected function setUpTestBooking():void {
 		$this->testBookingId       = $this->createBooking(
 			$this->locationId,

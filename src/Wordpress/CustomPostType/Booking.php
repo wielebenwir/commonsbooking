@@ -285,7 +285,6 @@ class Booking extends Timeframe {
 				\CommonsBooking\Model\Timeframe::META_ITEM_ID       => $itemId,
 				\CommonsBooking\Model\Timeframe::REPETITION_START   => $repetitionStart,
 				\CommonsBooking\Model\Timeframe::REPETITION_END     => $repetitionEnd,
-				\CommonsBooking\Model\Booking::META_OVERBOOKED_DAYS => $overbookedDays,
 				'type'                                              => Timeframe::BOOKING_ID,
 			);
 
@@ -315,6 +314,9 @@ class Booking extends Timeframe {
 		// we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
 		try {
 			$bookingModel->assignBookableTimeframeFields();
+			if ( $overbookedDays > 0 ) { //avoid setting the value when not present (for example when updating the booking)
+				$bookingModel->setOverbookedDays( $overbookedDays );
+			}
 		} catch ( \Exception $e ) {
 			throw new BookingDeniedException( __( 'There was an error while saving the booking. Please try again. Thrown error:', 'commonsbooking' ) .
 			                                  PHP_EOL . $e->getMessage()
