@@ -716,7 +716,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		if ($interval->h > 0){
 			$days++;
 		}
-		return $days;
+		return $days - $this->getOverbookedDays();
 	}
 
 	/**

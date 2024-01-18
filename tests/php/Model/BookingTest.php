@@ -154,6 +154,19 @@ class BookingTest extends CustomPostTypeTest {
 		$this->cancelBooking($cancelBooking);
 		$cancelBooking = new Booking( $cancelBookingId );
 		$this->assertEquals(0,$cancelBooking->getLength());
+
+		// now test with overbooked days
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX. 'count_lockdays_in_range', 'on' );
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX. 'count_lockdays_maximum', '1' );
+		$overbookedBooking = new Booking( $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
+		));
+		$overbookedBooking->setOverbookedDays(2);
+		$this->assertEquals(2,$overbookedBooking->getLength());
+
 	}
 
 	public function testConfirm() {
