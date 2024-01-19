@@ -9,8 +9,6 @@
     $noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'item-not-available' );
     $bookThisItemText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'text_book-this-item');
 
-	\CommonsBooking\View\Booking::renderError();
-
     do_action( 'commonsbooking_before_item-single' );
 
     // Single Item View
