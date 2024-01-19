@@ -61,32 +61,32 @@ class BookingRule {
 	/**
 	 * The constructor for BookingRules before they are applied
 	 *
-	 * @param   String   $name The name of the rule, needs to be unique and is used to identify the rule in the code
-	 * @param   String   $title The title of the rule, will be shown to the configuration admin
-	 * @param   String   $description A detailed description of the rule, will be shown to the configuration admin
-	 * @param   String   $errorMessage The static error message that will be shown to the booking user if the rule is not met
-	 * @param   Closure  $validationFunction The function that will be called to validate the rule. This is a closure that takes a Booking object, the passed args and an array of the selected terms as arguments
-	 * @param   array    $params Array of associative arrays in which the key "title" is the title of the parameter and "description" is the description of the parameter.
-	 * @param   array    $selectParam Array where first element is the description of the select field and the second element is an associative array of the select options
+	 * @param String $name The name of the rule, needs to be unique and is used to identify the rule in the code
+	 * @param String $title The title of the rule, will be shown to the configuration admin
+	 * @param String $description A detailed description of the rule, will be shown to the configuration admin
+	 * @param String $errorMessage The static error message that will be shown to the booking user if the rule is not met
+	 * @param Closure $validationFunction The function that will be called to validate the rule. This is a closure that takes a Booking object, the passed args and an array of the selected terms as arguments
+	 * @param array $params Array of associative arrays in which the key "title" is the title of the parameter and "description" is the description of the parameter.
+	 * @param array $selectParam Array where first element is the description of the select field and the second element is an associative array of the select options
 	 *
 	 * @throws BookingRuleException
 	 */
-	public function __construct(String $name,String $title, String $description,String $errorMessage, Closure $validationFunction,array $params = [], array $selectParam = [], ?Closure $errorFromArgs = null) {
-		if (! empty($params) ){
+	public function __construct( string $name, string $title, string $description, string $errorMessage, Closure $validationFunction, array $params = [], array $selectParam = [], ?Closure $errorFromArgs = null ) {
+		if ( ! empty( $params ) ) {
 
-			if (count($params) > 2 ){
-				throw new BookingRuleException("No more than 2 parameters are currently supported");
+			if ( count( $params ) > 2 ) {
+				throw new BookingRuleException( "No more than 2 parameters are currently supported" );
 			}
 
 			$this->params = $params;
 		}
-		$this->name = $name;
-		$this->title = $title;
-		$this->description = $description;
-		$this->errorMessage = $errorMessage;
+		$this->name               = $name;
+		$this->title              = $title;
+		$this->description        = $description;
+		$this->errorMessage       = $errorMessage;
 		$this->validationFunction = $validationFunction;
-		$this->selectParam = $selectParam;
-		$this->errorFromArgs = $errorFromArgs;
+		$this->selectParam        = $selectParam;
+		$this->errorFromArgs      = $errorFromArgs;
 	}
 
 	/**
@@ -94,7 +94,7 @@ class BookingRule {
 	 * @return string
 	 */
 	public function getTitle(): string {
-		return commonsbooking_sanitizeHTML($this->title);
+		return commonsbooking_sanitizeHTML( $this->title );
 	}
 
 	/**
@@ -102,20 +102,21 @@ class BookingRule {
 	 * @return string
 	 */
 	public function getDescription(): string {
-		return commonsbooking_sanitizeHTML($this->description);
+		return commonsbooking_sanitizeHTML( $this->description );
 	}
 
 	/**
 	 * Gets the sanitized version of the BookingRule error message
 	 * @return string
 	 */
-	public function getErrorMessage($args = []): string {
+	public function getErrorMessage( $args = [] ): string {
 		$errorMessage = commonsbooking_sanitizeHTML( $this->errorMessage );
-		if ( $this->errorFromArgs !== null) {
+		if ( $this->errorFromArgs !== null ) {
 			$errorMessageFunction = $this->errorFromArgs;
-			$errorMessage .= PHP_EOL;
-			$errorMessage .= $errorMessageFunction($args);
+			$errorMessage         .= PHP_EOL;
+			$errorMessage         .= $errorMessageFunction( $args );
 		}
+
 		return $errorMessage;
 	}
 
@@ -156,6 +157,7 @@ class BookingRule {
 				$e->getMessage()
 			);
 		}
+
 		return $assoc_array;
 	}
 
@@ -176,12 +178,11 @@ class BookingRule {
 		if ( isset( $ruleObjects ) ) {
 			return wp_json_encode(
 				array_map(
-					function( $rule){
-						return get_object_vars($rule);
+					function ( $rule ) {
+						return get_object_vars( $rule );
 					}, $ruleObjects )
 			);
-		}
-		else {
+		} else {
 			return "";
 		}
 	}
@@ -194,80 +195,116 @@ class BookingRule {
 	 * @throws BookingRuleException
 	 */
 	public static function init(): array {
-		$weekDays = __('Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday', 'cmb2');
+		$weekDays       = __( 'Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday', 'cmb2' );
 		$defaultRuleSet = [
 			new BookingRule(
 				"noSimultaneousBooking",
-				__("Forbid simultaneous Bookings",'commonsbooking'),
-				__("Users can no longer book two items on the same day.",'commonsbooking'),
-				__("You can not book more than one item at a time.",'commonsbooking'),
-				Closure::fromCallable(array(self::class,'checkSimultaneousBookings'))
+				__( "Forbid simultaneous Bookings", 'commonsbooking' ),
+				__( "Users can no longer book two items on the same day.", 'commonsbooking' ),
+				__( "You can not book more than one item at a time.", 'commonsbooking' ),
+				Closure::fromCallable( array( self::class, 'checkSimultaneousBookings' ) )
 			),
 			new BookingRule(
 				"prohibitChainBooking",
-				__("Prohibit chain-bookings",'commonsbooking'),
-				__("Users can no longer work around the maximum booking limit by chaining two bookings directly after one another.",'commonsbooking'),
-				__("You have reached your booking limit. Please leave some time in between bookings.",'commonsbooking'),
-				Closure::fromCallable(array(self::class,'checkChainBooking'))
+				__( "Prohibit chain-bookings", 'commonsbooking' ),
+				__( "Users can no longer work around the maximum booking limit by chaining two bookings directly after one another.", 'commonsbooking' ),
+				__( "You have reached your booking limit. Please leave some time in between bookings.", 'commonsbooking' ),
+				Closure::fromCallable( array( self::class, 'checkChainBooking' ) )
 			),
 			new BookingRule(
-				"maxBookingPerWeek",
-				__( "Maximum booked days per week", 'commonsbooking'),
-				__("Users are only allowed to book a limited amount of days per week.",'commonsbooking'),
-				__("You have reached your booking limit. Please leave some time in between bookings.",'commonsbooking'),
-				Closure::fromCallable(array(self::class,'checkMaxBookingsPerWeek')),
+				"maxBookingDaysPerWeek",
+				__( "Maximum booked days per week", 'commonsbooking' ),
+				__( "Users are only allowed to book a limited amount of days per week.", 'commonsbooking' ),
+				__( "You have reached your booking limit. Please leave some time in between bookings.", 'commonsbooking' ),
+				Closure::fromCallable( array( self::class, 'checkMaxBookingDaysPerWeek' ) ),
 				array(
 					array(
-						"title" => __("Maximum booked days per week",'commonsbooking'),
-						"description" => __("Number of days each user is allowed to book per week",'commonsbooking'),
+						"title"       => __( "Maximum booked days per week", 'commonsbooking' ),
+						"description" => __( "Number of days each user is allowed to book per week", 'commonsbooking' ),
 					)
 				),
 				array(
-					__("At what day of the week should the counter be reset?",'commonsbooking'),
-					explode(', ', $weekDays)
+					__( "At what day of the week should the counter be reset?", 'commonsbooking' ),
+					explode( ', ', $weekDays )
 				),
-				Closure::fromCallable(array(self::class,'maxDaysWeekErrorMessage'))
+				Closure::fromCallable( array( self::class, 'maxDaysWeekErrorMessage' ) )
 			),
 			new BookingRule(
-				"maxBookingPerMonth",
-				__("Maximum booked days per month",'commonsbooking'),
-				__("Users are only allowed to book a limited amount of days per month.",'commonsbooking'),
-				__("You have reached your booking limit. Please leave some time in between bookings.",'commonsbooking'),
-				Closure::fromCallable(array(self::class,'checkMaxBookingsPerMonth')),
+				"maxBookingDaysPerMonth",
+				__( "Maximum booked days per month", 'commonsbooking' ),
+				__( "Users are only allowed to book a limited amount of days per month.", 'commonsbooking' ),
+				__( "You have reached your booking limit. Please leave some time in between bookings.", 'commonsbooking' ),
+				Closure::fromCallable( array( self::class, 'checkMaxBookingDaysPerMonth' ) ),
 				array(
 					array(
-						"title" => __("Maximum booked days per month",'commonsbooking'),
-						"description" => __("Number of days each user is allowed to book per month",'commonsbooking'),
+						"title"       => __( "Maximum booked days per month", 'commonsbooking' ),
+						"description" => __( "Number of days each user is allowed to book per month", 'commonsbooking' ),
 					)
 				),
 				array(
-					__("At what day of the month should the counter be reset?",'commonsbooking'),
-					range(1, 31)
+					__( "At what day of the month should the counter be reset?", 'commonsbooking' ),
+					range( 1, 31 )
 				),
-				Closure::fromCallable(array(self::class,'maxDaysMonthErrorMessage'))
+				Closure::fromCallable( array( self::class, 'maxDaysMonthErrorMessage' ) )
 			),
 			new BookingRule(
 				"maxBookingDays",
-				__("Maximum of bookable days in time period",'commonsbooking'),
-				__("Allow x booked days over the period of y days for user.",'commonsbooking'),
-				__("Booking limit exceeded. ",'commonsbooking'),
-				Closure::fromCallable(array(self::class,'checkMaxBookingDays')),
+				__( "Maximum of bookable days in time period", 'commonsbooking' ),
+				__( "Allow x booked days over the period of y days for user.", 'commonsbooking' ),
+				__( "Booking limit exceeded. ", 'commonsbooking' ),
+				Closure::fromCallable( array( self::class, 'checkMaxBookingDays' ) ),
 				array(
 					array(
-						"title"       => __("Allow x booked days",'commonsbooking'),
-						"description" => __("How many days are free to book in the given period of days",'commonsbooking'),
+						"title"       => __( "Allow x booked days", 'commonsbooking' ),
+						"description" => __( "How many days are free to book in the given period of days", 'commonsbooking' ),
 					),
 					array(
-						"title"       => __("In the period of y days",'commonsbooking'),
-						"description" => __("The length of the period for which the booking is limited. This period always lies in the middle, so if you define 30 days, the 15 days before and after will count towards the maximum quota.",'commonsbooking'),
+						"title"       => __( "In the period of y days", 'commonsbooking' ),
+						"description" => __( "The length of the period for which the booking is limited. This period always lies in the middle, so if you define 30 days, the 15 days before and after will count towards the maximum quota.", 'commonsbooking' ),
 					)
 				),
 				[],
-				Closure::fromCallable(array(self::class,'maxBookingDaysErrorMessage'))
+				Closure::fromCallable( array( self::class, 'maxBookingDaysErrorMessage' ) )
 			),
+			new BookingRule(
+				"maxBookingsWeek",
+				__( "Maximum number of bookings per week", 'commonsbooking' ),
+				__( "Users are only allowed to make that many bookings per week (Irrespective of their length).", 'commonsbooking' ),
+				__( "You have reached your booking limit. Please leave some time in between bookings.", 'commonsbooking' ),
+				Closure::fromCallable( array( self::class, 'checkMaxBookingsWeek' ) ),
+				array(
+					array(
+						"title"       => __( "Maximum number of bookings per week", 'commonsbooking' ),
+						"description" => __( "Number of bookings each user is allowed to make per week", 'commonsbooking' ),
+					)
+				),
+				array(
+					__( "At what day of the week should the counter be reset?", 'commonsbooking' ),
+					explode( ', ', $weekDays )
+				),
+				Closure::fromCallable( array( self::class, 'maxBookingsWeekErrorMessage' ) )
+			),
+			new BookingRule(
+				"maxBookingsMonth",
+				__( "Maximum number of bookings per month", 'commonsbooking' ),
+				__( "Users are only allowed to make that many bookings per month (Irrespective of their length).", 'commonsbooking' ),
+				__( "You have reached your booking limit. Please leave some time in between bookings.", 'commonsbooking' ),
+				Closure::fromCallable( array( self::class, 'checkMaxBookingsMonth' ) ),
+				array(
+					array(
+						"title"       => __( "Maximum number of bookings per month", 'commonsbooking' ),
+						"description" => __( "Number of bookings each user is allowed to make per month", 'commonsbooking' ),
+					)
+				),
+				array(
+					__( "At what day of the month should the counter be reset?", 'commonsbooking' ),
+					range( 1, 31 )
+				),
+				Closure::fromCallable( array( self::class, 'maxBookingsMonthErrorMessage' ) )
+			)
 		];
 
-		return apply_filters( COMMONSBOOKING_PLUGIN_SLUG . '_booking-rules',$defaultRuleSet);
+		return apply_filters( COMMONSBOOKING_PLUGIN_SLUG . '_booking-rules', $defaultRuleSet );
 	}
 
 	/**
@@ -283,16 +320,16 @@ class BookingRule {
 	 * @return array|null
 	 * @throws Exception
 	 */
-	public static function checkSimultaneousBookings( Booking $booking, array $args = [], $appliedTerms = false):?array {
-		$userBookings = \CommonsBooking\Repository\Booking::getForUser($booking->getUserData(),true,time(),['confirmed']);
-		$userBookings = Booking::filterTermsApply($userBookings,$appliedTerms);
-		if (empty($userBookings)){
+	public static function checkSimultaneousBookings( Booking $booking, array $args = [], $appliedTerms = false ): ?array {
+		$userBookings = \CommonsBooking\Repository\Booking::getForUser( $booking->getUserData(), true, time(), [ 'confirmed' ] );
+		$userBookings = Booking::filterTermsApply( $userBookings, $appliedTerms );
+		if ( empty( $userBookings ) ) {
 			return null;
 		}
 
-		return array_filter($userBookings,function($userBooking) use ($booking){
-			return $userBooking->hasTimeframeDateOverlap($booking);
-		});
+		return array_filter( $userBookings, function ( $userBooking ) use ( $booking ) {
+			return $userBooking->hasTimeframeDateOverlap( $booking );
+		} );
 	}
 
 	/**
@@ -308,44 +345,42 @@ class BookingRule {
 	 * @return array|null
 	 * @throws Exception
 	 */
-	public static function checkChainBooking( Booking $booking, array $args = [], $appliedTerms = false):?array{
+	public static function checkChainBooking( Booking $booking, array $args = [], $appliedTerms = false ): ?array {
 		$timeframe = $booking->getBookableTimeFrame();
-		if ($timeframe === null){
+		if ( $timeframe === null ) {
 			return null;
 		}
 		$adjacentBookings = $booking->getAdjacentBookings();
-		$bookingUser = $booking->getUserData();
-		if ( empty($adjacentBookings))
-		{
+		$bookingUser      = $booking->getUserData();
+		if ( empty( $adjacentBookings ) ) {
 			return null;
 		}
-		$adjacentBookings = self::filterBookingsForTermsAndUser($adjacentBookings, $bookingUser, $appliedTerms);
-		if ( empty($adjacentBookings) ){
+		$adjacentBookings = self::filterBookingsForTermsAndUser( $adjacentBookings, $bookingUser, $appliedTerms );
+		if ( empty( $adjacentBookings ) ) {
 			return null;
 		}
-		$adjacentBookings = self::filterEmptyBookings($adjacentBookings);
-		if ( empty($adjacentBookings) ){
+		$adjacentBookings = self::filterEmptyBookings( $adjacentBookings );
+		if ( empty( $adjacentBookings ) ) {
 			return null;
 		}
-		$bookingCollection = $booking->getBookingChain($bookingUser);
+		$bookingCollection = $booking->getBookingChain( $bookingUser );
 		//add our current booking to the collection
-		 $bookingCollection[] = $booking;
+		$bookingCollection[] = $booking;
 		uasort( $bookingCollection, function ( Booking $a, Booking $b ) {
 			return $a->getStartDate() <=> $b->getStartDate();
 		} );
-		$collectionStartDate = reset( $bookingCollection)->getStartDateDateTime();
-		$collectionEndDate   = end($bookingCollection)->getEndDateDateTime()->modify("+1 second");
-		$collectionTotalDays  = $collectionStartDate->diff($collectionEndDate)->d;
+		$collectionStartDate = reset( $bookingCollection )->getStartDateDateTime();
+		$collectionEndDate   = end( $bookingCollection )->getEndDateDateTime()->modify( "+1 second" );
+		$collectionTotalDays = $collectionStartDate->diff( $collectionEndDate )->d;
 		//checks if the collection of chained bookings ist still in the allowed limit
 		$max_days = $timeframe->getMaxDays();
-		if ( $collectionTotalDays <= $max_days ){
+		if ( $collectionTotalDays <= $max_days ) {
 			return null;
-		}
-		else {
+		} else {
 			//remove the checked unallowed booking from the collection
-			return array_filter($bookingCollection, function (Booking $collectionItem) use ($booking){
+			return array_filter( $bookingCollection, function ( Booking $collectionItem ) use ( $booking ) {
 				return $collectionItem->ID !== $booking->ID;
-			});
+			} );
 		}
 	}
 
@@ -365,7 +400,7 @@ class BookingRule {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function checkMaxBookingDays(Booking $booking, array $args, $appliedTerms = false): ?array {
+	public static function checkMaxBookingDays( Booking $booking, array $args, $appliedTerms = false ): ?array {
 		$allowedBookedDays = $args[0];
 		$periodDays        = $args[1];
 		//when the zeitraum is uneven
@@ -376,15 +411,16 @@ class BookingRule {
 		} else {
 			$daysLeft = $daysRight = $daysHalf;
 		}
-		$startOfPeriod      = $booking->getStartDateDateTime()->modify( "-" . $daysLeft . " days" );
-		$endOfPeriod          = $booking->getEndDateDateTime()->modify( "+" . $daysRight . " days" );
+		$startOfPeriod = $booking->getStartDateDateTime()->modify( "-" . $daysLeft . " days" );
+		$endOfPeriod   = $booking->getEndDateDateTime()->modify( "+" . $daysRight . " days" );
 
-		return self::checkBookingRange($startOfPeriod, $endOfPeriod, $booking, $appliedTerms, $allowedBookedDays);
+		return self::checkBookingRangeForDays( $startOfPeriod, $endOfPeriod, $booking, $appliedTerms, $allowedBookedDays );
 	}
 
-	public static function maxBookingDaysErrorMessage( $args ){
+	public static function maxBookingDaysErrorMessage( $args ) {
 		$allowedBookedDays = $args[0];
 		$periodDays        = $args[1];
+
 		return sprintf( __( 'You can only book %1$s days out of %2$s days. Please wait a while in-between bookings.', 'commonsbooking' ), $allowedBookedDays, $periodDays );
 	}
 
@@ -398,62 +434,45 @@ class BookingRule {
 	 *
 	 *
 	 * @param Booking $booking
-	 * @param   array                          $args
-	 * @param   bool|array                     $appliedTerms
+	 * @param array $args
+	 * @param bool|array $appliedTerms
 	 *
 	 * @return array|null
 	 */
-	public static function checkMaxBookingsPerWeek(Booking $booking, array $args, $appliedTerms = false): ?array {
+	public static function checkMaxBookingDaysPerWeek( Booking $booking, array $args, $appliedTerms = false ): ?array {
 		$allowedBookableDays = $args[0];
 		//default is sunday
-		$resetDay = ($args[2] < 6 && $args[2] >= 0) ? $args[2] : 0;
-		//now apply the reset day to the booking date to get the string for the reset day
-		// 0 = sunday, 1 = monday, 2 = tuesday, ..., 6 = saturday
-		$resetDayString = strtolower(date('l', strtotime("Sunday +{$resetDay} days")));
+		$resetDay = ( $args[2] < 6 && $args[2] >= 0 ) ? $args[2] : 0;
+		$range = self::getBookingWeekRange( $booking, $resetDay );
 
-		$bookingDate = $booking->getStartDateDateTime();
-		$startOfWeek = clone $bookingDate;
-		$endOfWeek = clone $bookingDate;
-
-		// Check if the current day is the reset day
-		if ($startOfWeek->format('w') == $resetDay) {
-			// If so, just add 7 days to the end of the week
-			$endOfWeek->modify('+7 days');
-		} else {
-			$startOfWeek->modify('last ' . $resetDayString);
-			$endOfWeek->modify('next ' . $resetDayString);
-		}
-
-		return self::checkBookingRange($startOfWeek, $endOfWeek, $booking, $appliedTerms, $allowedBookableDays);
+		return self::checkBookingRangeForDays( $range[0], $range[1], $booking, $appliedTerms, $allowedBookableDays );
 	}
 
-	public static function maxDaysWeekErrorMessage(array $args): string {
-		$maxDays = $args[0];
-		$resetDay = $args[2];
-		switch ($resetDay):
-			case 0:
-				$resetDayString = __('Sunday', 'commonsbooking');
-				break;
-			case 2:
-				$resetDayString = __('Tuesday', 'commonsbooking');
-				break;
-			case 3:
-				$resetDayString = __('Wednesday', 'commonsbooking');
-				break;
-			case 4:
-				$resetDayString = __('Thursday', 'commonsbooking');
-				break;
-			case 5:
-				$resetDayString = __('Friday', 'commonsbooking');
-				break;
-			case 6:
-				$resetDayString = __('Saturday', 'commonsbooking');
-				break;
-			default:
-				$resetDayString = __('Monday', 'commonsbooking');
-				break;
-		endswitch;
-		return sprintf(__('You can only book %1$s days per week, starting on %2$s.', 'commonsbooking'), $maxDays, $resetDayString);
+	public static function maxDaysWeekErrorMessage( array $args ): string {
+		$maxDays        = $args[0];
+		$resetDay       = $args[2];
+		$weekDays       = __( 'Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday', 'cmb2' );
+		$resetDayString = explode( ', ', $weekDays )[ $resetDay ];
+
+		return sprintf( __( 'You can only book %1$s days per week, please try again after %2$s next week.', 'commonsbooking' ), $maxDays, $resetDayString );
+	}
+
+	public static function checkMaxBookingsWeek( Booking $booking, array $args, $appliedTerms = false ): ?array {
+		$allowedTotalBookings = $args[0];
+		//default is sunday
+		$resetDay = ( $args[2] < 6 && $args[2] >= 0 ) ? $args[2] : 0;
+		$range = self::getBookingWeekRange( $booking, $resetDay );
+
+		return self::checkBookingAmount( $range[0], $range[1], $booking, $appliedTerms, $allowedTotalBookings );
+	}
+
+	public static function maxBookingsWeekErrorMessage( array $args ): string {
+		$maxDays        = $args[0];
+		$resetDay       = $args[2];
+		$weekDays       = __( 'Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday', 'cmb2' );
+		$resetDayString = explode( ', ', $weekDays )[ $resetDay ];
+
+		return sprintf( __( 'You are only allowed to have %1$s booking(s) per week, please try again after %2$s next week.', 'commonsbooking' ), $maxDays, $resetDayString );
 	}
 
 	/**
@@ -461,49 +480,103 @@ class BookingRule {
 	 * Will return the conflicting bookings if a user has too many in the month
 	 *
 	 * Params: $args[0] : The amount of days the user is allowed to book per week
-	 * 	       $args[1] : Unused
+	 *           $args[1] : Unused
 	 *         $args[2]:  The day on which the counter is reset, from 0 to max 31.
 	 *
 	 *
-	 * @param   Booking $booking
-	 * @param   array                          $args
-	 * @param   bool|array                     $appliedTerms
+	 * @param Booking $booking
+	 * @param array $args
+	 * @param bool|array $appliedTerms
 	 *
 	 * @return array|null
 	 */
-	public static function checkMaxBookingsPerMonth(Booking $booking, array $args, $appliedTerms = false): ?array {
+	public static function checkMaxBookingDaysPerMonth( Booking $booking, array $args, $appliedTerms = false ): ?array {
 		$allowedBookableDays = $args[0];
+		$resetDay            = $args[2];
+		$range               = self::getBookingMonthRange( $booking, $resetDay );
+
+		return self::checkBookingRangeForDays( $range[0], $range[1], $booking, $appliedTerms, $allowedBookableDays );
+
+	}
+
+	public static function maxDaysMonthErrorMessage( array $args ): string {
+		$maxDays  = $args[0];
 		$resetDay = $args[2];
+
+		return sprintf( __( 'You can only book %1$s days per month, please try again after the %2$s. next month.', 'commonsbooking' ), $maxDays, $resetDay );
+	}
+
+	public static function checkMaxBookingsMonth( Booking $booking, array $args, $appliedTerms = false ): ?array {
+		$allowedTotalBookings = $args[0];
+		$resetDay             = $args[2];
+		$range                = self::getBookingMonthRange( $booking, $resetDay );
+
+		return self::checkBookingAmount( $range[0], $range[1], $booking, $appliedTerms, $allowedTotalBookings );
+	}
+
+	public static function maxBookingsMonthErrorMessage( array $args ): string {
+		$maxDays  = $args[0];
+		$resetDay = $args[2];
+
+		return sprintf( __( 'You are only allowed %1$s booking(s) per month, please try again after the %2$s. next month.', 'commonsbooking' ), $maxDays, $resetDay );
+	}
+
+	/**
+	 * Will get two datetime objects that represent the start and end of the week in which the given booking is in.
+	 *
+	 * @param Booking $booking - The booking for which the week range should be determined
+	 * @param int $resetDay - The day of the week on which the counter should be reset (0 = sunday, 1 = monday, 2 = tuesday, ..., 6 = saturday)
+	 *
+	 * @return DateTime[] - [0] = start of the week, [1] = end of the week
+	 */
+	private static function getBookingWeekRange(Booking $booking, int $resetDay): array {
+		$resetDayString = strtolower( date( 'l', strtotime( "Sunday +{$resetDay} days" ) ) );
+
 		$bookingDate = $booking->getStartDateDateTime();
+		$startOfWeek = clone $bookingDate;
+		$endOfWeek   = clone $bookingDate;
+
+		// Check if the current day is the reset day
+		if ( $startOfWeek->format( 'w' ) == $resetDay ) {
+			// If so, just add 7 days to the end of the week
+			$endOfWeek->modify( '+7 days' );
+		} else {
+			$startOfWeek->modify( 'last ' . $resetDayString );
+			$endOfWeek->modify( 'next ' . $resetDayString );
+		}
+		return [$startOfWeek, $endOfWeek];
+	}
+
+	/**
+	 * Will get two datetime objects that represent the start and end of the month in which the given booking is in.
+	 *
+	 * @param Booking $booking - The booking for which the month range should be determined
+	 * @param int $resetDay - The day of the month on which the counter should be reset
+	 *
+	 * @return DateTime[] - [0] = start of the month, [1] = end of the month
+	 */
+	private static function getBookingMonthRange(Booking $booking, int $resetDay): array {
+		$bookingDate         = $booking->getStartDateDateTime();
 		// if the reset day is higher than the current max day of the month, we need to adjust the reset day
-		$maxDayOfMonth = $bookingDate->format('t');
-		$resetDay = ($resetDay > $maxDayOfMonth) ? $maxDayOfMonth: $resetDay;
+		$maxDayOfMonth = $bookingDate->format( 't' );
+		$resetDay      = ( $resetDay > $maxDayOfMonth ) ? $maxDayOfMonth : $resetDay;
 
 
 		//get the current month and year
 
-		$day = $bookingDate->format('d');
-		$month = $bookingDate->format('m');
-		$year = $bookingDate->format('Y');
+		$day   = $bookingDate->format( 'd' );
+		$month = $bookingDate->format( 'm' );
+		$year  = $bookingDate->format( 'Y' );
 
 		// if the reset day is higher than the current day, we need to adjust the month and year
-		$startDate = new DateTime($resetDay . '.' . $month . '.' . $year);
-		$endDate = clone $startDate;
-		if ($resetDay > $day){
-			$startDate->modify('-1 month');
+		$startDate = new DateTime( $resetDay . '.' . $month . '.' . $year );
+		$endDate   = clone $startDate;
+		if ( $resetDay > $day ) {
+			$startDate->modify( '-1 month' );
+		} else {
+			$endDate->modify( '+1 month' );
 		}
-		else {
-			$endDate->modify('+1 month');
-		}
-
-		return self::checkBookingRange( $startDate, $endDate, $booking, $appliedTerms, $allowedBookableDays );
-
-	}
-
-	public static function maxDaysMonthErrorMessage(array $args): string {
-		$maxDays = $args[0];
-		$resetDay = $args[2];
-		return sprintf(__('You can only book %1$s days per month, starting on the %2$s', 'commonsbooking'), $maxDays, $resetDay);
+		return [$startDate, $endDate];
 	}
 
 	/**
@@ -511,18 +584,18 @@ class BookingRule {
 	 * to the given booking.
 	 *
 	 * Is often used by BookingRule to determine if a booking should be taken into consideration
-	 * @param   Booking[]     $bookings
-	 * @param   \WP_User  $user
+	 *
+	 * @param Booking[] $bookings
+	 * @param \WP_User $user
 	 * @param             $terms
 	 *
 	 * @return array|null
 	 */
-	private static function filterBookingsForTermsAndUser(array $bookings, \WP_User $user, $terms ): ?array {
-		$filteredTerms = Booking::filterTermsApply($bookings, $terms);
-		if (! empty ($filteredTerms)) {
-			return Booking::filterForUser($bookings, $user);
-		}
-		else {
+	private static function filterBookingsForTermsAndUser( array $bookings, \WP_User $user, $terms ): ?array {
+		$filteredTerms = Booking::filterTermsApply( $bookings, $terms );
+		if ( ! empty ( $filteredTerms ) ) {
+			return Booking::filterForUser( $bookings, $user );
+		} else {
 			return null;
 		}
 	}
@@ -533,19 +606,21 @@ class BookingRule {
 	 * @return bool
 	 */
 	public static function hasDefaultSettings(): bool {
-		$rulesConfig = Settings::getOption('commonsbooking_options_restrictions', 'rules_group');
+		$rulesConfig = Settings::getOption( 'commonsbooking_options_restrictions', 'rules_group' );
+
 		return empty ( $rulesConfig );
 	}
 
 	/**
 	 * Will filter out all bookings that have a length of 0 (that usually means cancelled before the start of the period)
 	 * This needs to be done so that cancelled bookings will not show in the error message telling the user which bookings exceed the limit
+	 *
 	 * @param Booking[] $bookings
 	 *
-	 * @return void
+	 * @return Booking[]
 	 */
 	private static function filterEmptyBookings( array $bookings ) {
-		return array_filter($bookings, fn($booking) => $booking->getLength() > 0);
+		return array_filter( $bookings, fn( $booking ) => $booking->getLength() > 0 );
 	}
 
 	/**
@@ -555,8 +630,8 @@ class BookingRule {
 	 * Will return the conflicting bookings if a user has too many in the range.
 	 * Will also consider the setting if cancelled bookings should be considered.
 	 *
-	 * @param DateTime $startOfMonth
-	 * @param DateTime $endOfMonth
+	 * @param DateTime $startOfRange
+	 * @param DateTime $endOfRange
 	 * @param Booking $booking
 	 * @param array|false $appliedTerms
 	 * @param int $allowedBookableDays
@@ -564,14 +639,14 @@ class BookingRule {
 	 * @return array|null - conflicting bookings in order of post_date
 	 * @throws Exception
 	 */
-	private static function checkBookingRange( DateTime $startOfMonth, DateTime $endOfMonth, Booking $booking, $appliedTerms, int $allowedBookableDays ): ?array {
-		$countedPostTypes        = [ 'confirmed' ];
-		if (Settings::getOption('commonsbooking_options_restrictions','bookingrules-count-cancelled') == 'on') {
+	private static function checkBookingRangeForDays( DateTime $startOfRange, DateTime $endOfRange, Booking $booking, $appliedTerms, int $allowedBookableDays ): ?array {
+		$countedPostTypes = [ 'confirmed' ];
+		if ( Settings::getOption( 'commonsbooking_options_restrictions', 'bookingrules-count-cancelled' ) == 'on' ) {
 			$countedPostTypes[] = 'canceled';
 		}
 		$rangeBookingsArray = \CommonsBooking\Repository\Booking::getByTimerange(
-			$startOfMonth->getTimestamp(),
-			$endOfMonth->getTimestamp(),
+			$startOfRange->getTimestamp(),
+			$endOfRange->getTimestamp(),
 			null,
 			null,
 			[
@@ -593,6 +668,54 @@ class BookingRule {
 		$length          = $booking->getLength();
 		$totalLengthDays = $totalLength + $length;
 		if ( $totalLengthDays > $allowedBookableDays ) {
+			return $rangeBookingsArray;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Will check if a range of bookings exceeds the allowed amount of total bookings.
+	 * Will also filter out bookings that are not in the same category as the booking.
+	 * Will also filter out bookings that are not made by the same user as the booking.
+	 * Will return the conflicting bookings if a user has too many in the range.
+	 * Cancelled bookings will be considered when they were cancelled after the start of the range.
+	 *
+	 * @param DateTime $startOfRange
+	 * @param DateTime $endOfRange
+	 * @param Booking $booking
+	 * @param $appliedTerms
+	 * @param int $allowedTotalBookings
+	 *
+	 * @return void
+	 */
+	private static function checkBookingAmount( DateTime $startOfRange, DateTime $endOfRange, Booking $booking, $appliedTerms, int $allowedTotalBookings ) {
+		$countedPostTypes = [ 'confirmed' ];
+		if ( Settings::getOption( 'commonsbooking_options_restrictions', 'bookingrules-count-cancelled' ) == 'on' ) {
+			$countedPostTypes[] = 'canceled';
+		}
+		$rangeBookingsArray = \CommonsBooking\Repository\Booking::getByTimerange(
+			$startOfRange->getTimestamp(),
+			$endOfRange->getTimestamp(),
+			null,
+			null,
+			[
+				// Ordered by post_date in ascending order
+				'orderby' => 'date',
+				'order'   => 'ASC',
+			],
+			$countedPostTypes
+		);
+		$rangeBookingsArray = self::filterBookingsForTermsAndUser( $rangeBookingsArray, $booking->getUserData(), $appliedTerms );
+		if ( empty ( $rangeBookingsArray ) ) {
+			return null;
+		}
+		$rangeBookingsArray = self::filterEmptyBookings( $rangeBookingsArray );
+		if ( empty ( $rangeBookingsArray ) ) {
+			return null;
+		}
+		$totalBookings = count( $rangeBookingsArray );
+		if ( $totalBookings >= $allowedTotalBookings ) {
 			return $rangeBookingsArray;
 		} else {
 			return null;
