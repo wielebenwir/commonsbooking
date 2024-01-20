@@ -98,11 +98,11 @@ class BookingCodes {
 
 			$sql = $wpdb->prepare(
 				"SELECT * FROM $table_name
-                WHERE timeframe = %d
+                WHERE item = %d
                 AND date BETWEEN %s AND %s
                 ORDER BY item ASC ,date ASC
             	",
-				$timeframeId,
+				$timeframe->getItem()->ID,
 				$startDate,
 				$endDate
 			);
