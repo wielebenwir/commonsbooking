@@ -362,32 +362,4 @@ class BookingCodes {
 		}, $bookingCodesArray );
 	}
 
-	/**
-	 * Deletes booking codes for current post or if posted for post with $postId.
-	 *
-	 * @param null $postId
-	 */
-	public static function deleteBookingCodes( $postId = null ) {
-		if ( $postId ) {
-			$post = get_post( $postId );
-		} else {
-			global $post;
-		}
-		if (
-			$post &&
-			$post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType
-		) {
-			global $wpdb;
-			$table_name = $wpdb->prefix . self::$tablename;
-
-
-			$query = $wpdb->prepare( 'SELECT timeframe FROM ' . $table_name . ' WHERE timeframe = %d', $post->ID );
-			$var   = $wpdb->get_var( $query );
-			if ( $var ) {
-				$query2 = $wpdb->prepare( 'DELETE FROM ' . $table_name . ' WHERE timeframe = %d', $post->ID );
-				$wpdb->query( $query2 );
-			}
-		}
-	}
-
 }
