@@ -330,8 +330,6 @@ class BookingCodes {
 			throw new BookingCodeException( __( "No booking codes could be created because the item of the timeframe could not be found.", 'commonsbooking' )  );
 		}
 
-		self::deleteOldCodes( $timeframe->ID, $location->ID, $item->ID );
-
 		$bookingCodesRandomizer = intval( $timeframe->ID );
 		$bookingCodesRandomizer += $item->ID;
 		$bookingCodesRandomizer += $location->ID;
@@ -339,6 +337,12 @@ class BookingCodes {
 		foreach ( $period as $dt ) {
 			$day = new Day( $dt->format( 'Y-m-d' ) );
 			if ( $day->isInTimeframe( $timeframe ) ) {
+
+				// Check if a code already exists, if so DO NOT generate new
+				if ( static::lookupCode($item->ID, $dt->format( 'Y-m-d' )) ) {
+					continue;
+				}
+
 				$bookingCode = new BookingCode(
 					$dt->format( 'Y-m-d' ),
 					$item->ID,
@@ -351,25 +355,6 @@ class BookingCodes {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Removes all codes for the post, that don't have the current location-id or item-id.
-	 *
-	 * @param int $postId
-	 * @param int $locationId
-	 * @param int $itemId
-	 */
-	public static function deleteOldCodes( int $postId, int $locationId, int $itemId ) : void {
-		global $wpdb;
-		$table_name = $wpdb->prefix . self::$tablename;
-
-		$query = $wpdb->prepare( 'DELETE FROM ' . $table_name . ' WHERE timeframe = %d AND (location != %d OR item != %d)',
-			$postId,
-			$locationId,
-			$itemId
-		);
-		$wpdb->query( $query );
 	}
 
 	/**
