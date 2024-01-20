@@ -139,10 +139,10 @@ class BookingCodesTest extends CustomPostTypeTest
 		$todaysCode = BookingCodes::getCode( $timeframe_1,
 			$this->itemId,
 			$this->locationId,
-			self::CURRENT_DATE,
+			date('Y-m-d', strtotime( self::CURRENT_DATE )),
 			self::ADVANCE_GENERATION_DAYS);
 
-		$this->assertNotEmpty($todaysCode);
+		$this->assertNotEmpty($todaysCode->getCode());
 
 		// Check if codes are persistant/eternal:
 		// check that codes are persistant, ie when a code is once generated for a certain item and date, it should never change again
@@ -165,10 +165,10 @@ class BookingCodesTest extends CustomPostTypeTest
 		$todaysCodeAfter = BookingCodes::getCode( $timeframe_1,
 			$this->itemId,
 			$this->locationId,
-			self::CURRENT_DATE,
+			date('Y-m-d', strtotime( self::CURRENT_DATE )),
 			self::ADVANCE_GENERATION_DAYS);
 
-		$this->assertEquals($todaysCode, $todaysCodeAfter);
+		$this->assertEquals($todaysCode->getCode(), $todaysCodeAfter->getCode());
 
 		// now delete timeframe and create another timeframe with same parameters (especially same item and overlapping in time)
 		wp_delete_post( $timeframe_1->ID, true );
@@ -187,11 +187,11 @@ class BookingCodesTest extends CustomPostTypeTest
 		$todaysCodeTimeframe2 = BookingCodes::getCode( $timeframe_2,
 			$this->itemId,
 			$this->locationId,
-			self::CURRENT_DATE,
+			date('Y-m-d', strtotime( self::CURRENT_DATE )),
 			self::ADVANCE_GENERATION_DAYS);
 
 		// even if it is another timeframe, the today's code for the same item must still be the same
-		$this->assertEquals($todaysCode, $todaysCodeTimeframe2);
+		$this->assertEquals($todaysCode->getCode(), $todaysCodeTimeframe2->getCode());
 
 	}
 
