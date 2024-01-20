@@ -38,7 +38,7 @@ class BookingCodes {
 	 * @param int $timeframeId - ID of timeframe to get codes for
 	 * @param int|null $startDate - Where to get booking codes from (timestamp)
 	 * @param int|null $endDate - Where to get booking codes to (timestamp)
-	 * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generate code(s) until today. If >0 generate additional codes after today
+	 * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generate code(s) until today. If >0, generate additional codes after today
 	 *
 	 * @return array
 	 * @throws BookingCodeException
@@ -82,9 +82,9 @@ class BookingCodes {
 			if ( ! $timeframe->getRawEndDate() ) {
 				$startGenerationPeriod = new \DateTime( $startDate );
 				$endGenerationPeriod = new \DateTime( $endDate );
-				// endGenerationPeriod's set time > 00:00:00 such that $endDate is included in DatePeriod iteration
+				// set $endGenerationPeriod's time > 00:00:00 such that $endDate is included in DatePeriod iteration
 				// and code is generated for $endDate
-				$endGenerationPeriod->setTime(0,0,1); 
+				$endGenerationPeriod->setTime(0, 0, 1);
 				static::generatePeriod( $timeframe,
 					new DatePeriod(
 						$startGenerationPeriod,
@@ -168,7 +168,7 @@ class BookingCodes {
 	 * @param int $itemId - ID of item attached to timeframe
 	 * @param int $locationId - ID of location attached to timeframe (DEPRECATED)
 	 * @param string $date - Date in format Y-m-d
-	 * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generates code(s) until $date. If >0 generate additional codes after $date.
+	 * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generates code(s) until $date. If >0, generate additional codes after $date.
 	 *
 	 * @return BookingCode|null
 	 * @throws BookingCodeException
@@ -232,7 +232,7 @@ class BookingCodes {
      * Generates booking codes for timeframe.
      *
      * @param Timeframe $timeframe
-     * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generates code(s) until today. If >0 generate additional codes after today.
+     * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generate code(s) until today. If >0, generate additional codes after today.
 	 *
      * @return bool
      * @return bool
@@ -248,12 +248,13 @@ class BookingCodes {
 		if ($timeframe->getRawEndDate()){
 			$end = Wordpress::getUTCDateTime();
 			$end->setTimestamp( $timeframe->getRawEndDate() );
-			$end->setTimestamp( $end->getTimestamp() + 1 ); // set time > 00:00:00 such that DatePeriod-iteration will include $end. BETTER: $end->setTime(0,0,1) because no date overflow.
+			// set $end's time > 00:00:00 such that DatePeriod-iteration will include $end:
+			$end->setTime(0, 0, 1);
 		}
 		else {
 			$end = new \DateTime();
 			$end->modify( '+' . $advanceGenerationDays . 'days');
-            // a code will be generated for the date in $end because time generally > 00:00:00 (due to initialitaion with current date and time)
+			// a code will be generated for the date in $end because its time generally > 00:00:00 (due to initialitaion with current date and time)
 		}
 
 		$interval = DateInterval::createFromDateString( '1 day' );
