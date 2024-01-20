@@ -16,7 +16,7 @@ use DatePeriod;
 
 /**
  *  This class generates booking codes for a timeframe.
- *  Currently, booking codes can only be created for timeframes with an end date and where one slot fills the whole day.
+ *  Currently, booking codes can only be created where one slot fills the whole day.
  */
 class BookingCodes {
 
@@ -277,7 +277,7 @@ class BookingCodes {
 		if (! $bookingCodesArray ){
 			throw new BookingCodeException( __( "No booking codes could be created because there were no booking codes to choose from. Please set some booking codes in the CommonsBooking settings.", 'commonsbooking' )  );
 		}
-		// Before we add new codes, we remove old ones, that are not relevant anymore
+
 		try {
 			//TODO #507
 			$location = $timeframe->getLocation();
