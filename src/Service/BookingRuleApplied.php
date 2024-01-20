@@ -78,6 +78,9 @@ class BookingRuleApplied extends BookingRule {
 			}
 		}
 		if (! empty($this->selectParam)){
+			if ( empty ( $selectParamSet ) | ! is_array($selectParamSet) ){
+				throw new BookingRuleException(__("Booking rules: Select parameter has not been properly set.", 'commonsbooking'));
+			}
  			$this->appliedSelectParam = $selectParamSet;
 		}
 	}
