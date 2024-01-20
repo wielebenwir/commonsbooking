@@ -127,7 +127,45 @@ class BookingCodes {
 	}
 
 	/**
-	 * Returns booking code by timeframe, location, item and date.
+	 * Gets a specific booking code by item ID and date.
+	 *
+	 * @param int $itemId - ID of item attached to timeframe
+	 * @param string $date - Date in format Y-m-d
+	 *
+	 * @return BookingCode|null
+	 */
+	private static function lookupCode(int $itemId, string $date): ?BookingCode {
+		global $wpdb;
+		$table_name = $wpdb->prefix . self::$tablename;
+
+		$sql = $wpdb->prepare(
+			"SELECT * FROM $table_name
+			WHERE 
+				item = %s AND 
+				date = %s
+			ORDER BY item ASC, date ASC
+			LIMIT 1",
+			$itemId,
+			$date
+		);
+
+		$bookingCodes = $wpdb->get_results($sql);
+
+		if (count($bookingCodes)) {
+			return new BookingCode(
+				$bookingCodes[0]->date,
+				$bookingCodes[0]->item,
+				$bookingCodes[0]->location,
+				$bookingCodes[0]->timeframe,
+				$bookingCodes[0]->code
+			);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns booking code by timeframe, location, item and date. If no code exist yet and timeframe does not have end-date, generate it.
 	 *
 	 * @param Timeframe $timeframe - Timeframe object to get code for
 	 * @param int $itemId - ID of item attached to timeframe
@@ -143,25 +181,10 @@ class BookingCodes {
 		if ( $cacheItem ) {
 			return $cacheItem;
 		} else {
-			global $wpdb;
-			$table_name = $wpdb->prefix . self::$tablename;
 
-			$sql = $wpdb->prepare(
-				"SELECT * FROM $table_name
-                WHERE 
-                    timeframe = %s AND 
-                    item = %s AND 
-                    location = %s AND 
-                    date = %s
-                ORDER BY item ASC ,date ASC",
-				$timeframe->ID,
-				$itemId,
-				$locationId,
-				$date
-			);
-			$bookingCodes = $wpdb->get_results($sql);
+			$bookingCodeObject = static::lookupCode($itemId, $date);
 
-			if ( empty( $bookingCodes ) ) {
+			if ( ! $bookingCodeObject ) {
 				//when we have a timeframe without end-date we generate as many codes as we need
 				if (! $timeframe->getRawEndDate() && $timeframe->bookingCodesApplicable() ) {
 					$begin = $timeframe->getUTCStartDateDateTime();
@@ -173,20 +196,10 @@ class BookingCodes {
 					$interval = DateInterval::createFromDateString( '1 day' );
 					$period = new DatePeriod( $begin, $interval, $endDate );
 					static::generatePeriod($timeframe,$period);
-					$bookingCodes = $wpdb->get_results($sql);
+					$bookingCodeObject = static::lookupCode($itemId, $date);
 				}
 			}
 
-			$bookingCodeObject = null;
-			if ( count( $bookingCodes ) ) {
-				$bookingCodeObject = new BookingCode(
-					$bookingCodes[0]->date,
-					$bookingCodes[0]->item,
-					$bookingCodes[0]->location,
-					$bookingCodes[0]->timeframe,
-					$bookingCodes[0]->code
-				);
-			}
 			Plugin::setCacheItem( $bookingCodeObject, [$timeframe->ID] );
 
 			return $bookingCodeObject;
