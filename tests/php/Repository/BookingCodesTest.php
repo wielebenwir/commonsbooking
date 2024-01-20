@@ -119,6 +119,7 @@ class BookingCodesTest extends CustomPostTypeTest
 			self::ADVANCE_GENERATION_DAYS);
 		$this->assertNotNull( $stillSameCode );
 		$this->assertEquals( $code->getCode(), $stillSameCode->getCode() );
+	}
 
 	public function testIfCodesAreEternal() {
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
