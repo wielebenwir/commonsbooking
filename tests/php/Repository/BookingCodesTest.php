@@ -146,7 +146,7 @@ class BookingCodesTest extends CustomPostTypeTest
 
 		// Check if codes are persistant/eternal:
 		// check that codes are persistant, ie when a code is once generated for a certain item and date, it should never change again
-		$countBefore = countBookingCodes();
+		$countBefore = $this->countBookingCodes();
 		$this->assertGreaterThan(0, $countBefore);
 
 		// add some booking codes (like a WP Admin would do on Commonbookings admin pages)
@@ -158,7 +158,7 @@ class BookingCodesTest extends CustomPostTypeTest
 		BookingCodes::generate( $timeframe_1, self::ADVANCE_GENERATION_DAYS );
 
 		// ... it should NOT lead to any new codes, because they are already existing. Check by counting:
-		$countAfter = countBookingCodes();
+		$countAfter = $this->countBookingCodes();
 		$this->assertEquals($countBefore, $countAfter);
 
 		// ... and check by comparing today's code
