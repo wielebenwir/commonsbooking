@@ -114,8 +114,6 @@ class BookingCodes {
 				$bookingCodeObject = new BookingCode(
 					$bookingCode->date,
 					$bookingCode->item,
-					$bookingCode->location,
-					$bookingCode->timeframe,
 					$bookingCode->code
 				);
 				$codes[]           = $bookingCodeObject;
@@ -156,8 +154,6 @@ class BookingCodes {
 			return new BookingCode(
 				$bookingCodes[0]->date,
 				$bookingCodes[0]->item,
-				$bookingCodes[0]->location,
-				$bookingCodes[0]->timeframe,
 				$bookingCodes[0]->code
 			);
 		}
@@ -170,7 +166,7 @@ class BookingCodes {
 	 *
 	 * @param Timeframe $timeframe - Timeframe object to get code for
 	 * @param int $itemId - ID of item attached to timeframe
-	 * @param int $locationId - ID of location attached to timeframe
+	 * @param int $locationId - ID of location attached to timeframe (DEPRECATED, has no effect)
 	 * @param string $date - Date in format Y-m-d
 	 * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generates code(s) until $date. If >0, generate additional codes after $date.
 	 *
@@ -217,6 +213,7 @@ class BookingCodes {
 		$table_name      = $wpdb->prefix . self::$tablename;
 		$charset_collate = $wpdb->get_charset_collate();
 
+		// TODO To be removed later: timeframe, location (not used anymore)
 		$sql = "CREATE TABLE $table_name (
             date date DEFAULT '0000-00-00' NOT NULL,
             timeframe bigint(20) unsigned NOT NULL,
@@ -310,8 +307,6 @@ class BookingCodes {
 				$bookingCode = new BookingCode(
 					$dt->format( 'Y-m-d' ),
 					$item->ID,
-					$location->ID,
-					$timeframe->ID,
 					$bookingCodesArray[ ( (int) $dt->format( 'z' ) + $bookingCodesRandomizer ) % count( $bookingCodesArray ) ]
 				);
 				self::persist( $bookingCode );
@@ -334,9 +329,9 @@ class BookingCodes {
 		$result = $wpdb->replace(
 			$table_name,
 			array(
-				'timeframe' => $bookingCode->getTimeframe(),
+				'timeframe' => 0,
 				'date'      => $bookingCode->getDate(),
-				'location'  => $bookingCode->getLocation(),
+				'location'  => 0,
 				'item'      => $bookingCode->getItem(),
 				'code'      => $bookingCode->getCode()
 			)

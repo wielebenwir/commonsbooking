@@ -23,46 +23,30 @@ class BookingCode {
 	 * Datestring in the format Y-m-d
 	 * @var string
 	 */
-	protected $date;
+	private $date;
 
 	/**
 	 * Item ID
 	 * @var int
 	 */
-	protected $item;
-
-	/**
-	 * Location ID
-	 * @var int
-	 */
-	protected $location;
-
-	/**
-	 * Timeframe ID
-	 * @var int
-	 */
-	protected $timeframe;
+	private $item;
 
 	/**
 	 * Code string
 	 * @var string
 	 */
-	protected $code;
+	private $code;
 
 	/**
 	 * BookingCode constructor.
 	 *
 	 * @param $date
 	 * @param $item
-	 * @param $location
-	 * @param $timeframe
 	 * @param $code
 	 */
-	public function __construct( $date, $item, $location, $timeframe, $code ) {
+	public function __construct( $date, $item, $code ) {
 		$this->date      = $date;
 		$this->item      = $item;
-		$this->location  = $location;
-		$this->timeframe = $timeframe;
 		$this->code      = $code;
 	}
 
@@ -165,6 +149,4 @@ class BookingCode {
 		$this->code = $code;
 
 		return $this;
-	}
-
 }
