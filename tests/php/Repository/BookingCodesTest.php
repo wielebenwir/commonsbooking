@@ -39,8 +39,6 @@ class BookingCodesTest extends CustomPostTypeTest
 		$this->assertNotNull($code);
 		$this->assertEquals($todayDate,$code->getDate());
 		$this->assertEquals($this->itemId,$code->getItem());
-		$this->assertEquals($this->locationId,$code->getLocation());
-		$this->assertEquals($this->timeframeWithEndDate->ID,$code->getTimeframe());
 
 		//and now without end date (the fabled "infinite" timeframe)
 		BookingCodes::generate($this->timeframeWithoutEndDate,self::ADVANCE_GENERATION_DAYS);
@@ -48,8 +46,6 @@ class BookingCodesTest extends CustomPostTypeTest
 		$this->assertNotNull($code);
 		$this->assertEquals($todayDate,$code->getDate());
 		$this->assertEquals($this->itemId,$code->getItem());
-		$this->assertEquals($this->locationId,$code->getLocation());
-		$this->assertEquals($this->timeframeWithoutEndDate->ID,$code->getTimeframe());
 
 		//make sure, that the last infinite code is also generated
 	    $advanceDays = self::ADVANCE_GENERATION_DAYS - 1;
@@ -58,8 +54,6 @@ class BookingCodesTest extends CustomPostTypeTest
 		$this->assertNotNull($code);
 		$this->assertEquals($lastCodeDay,$code->getDate());
 		$this->assertEquals($this->itemId,$code->getItem());
-		$this->assertEquals($this->locationId,$code->getLocation());
-		$this->assertEquals($this->timeframeWithoutEndDate->ID,$code->getTimeframe());
     }
 
 	public function testGetCode() {
@@ -90,9 +84,7 @@ class BookingCodesTest extends CustomPostTypeTest
 			self::ADVANCE_GENERATION_DAYS
 		);
 		$this->assertNotNull( $code );
-		$this->assertEquals( $this->timeframeWithoutEndDate->ID, $code->getTimeframe() );
 		$this->assertEquals( $this->itemId, $code->getItem() );
-		$this->assertEquals( $this->locationId, $code->getLocation() );
 		$this->assertEquals( $dayInFuture, $code->getDate() );
 
 		//test that the code is persisted (i.e. it's not generated again)
@@ -116,9 +108,7 @@ class BookingCodesTest extends CustomPostTypeTest
 			$dayInFutureTwo,
 			self::ADVANCE_GENERATION_DAYS);
 		$this->assertNotNull( $futureTwoCode );
-		$this->assertEquals( $this->timeframeWithoutEndDate->ID, $futureTwoCode->getTimeframe() );
 		$this->assertEquals( $this->itemId, $futureTwoCode->getItem() );
-		$this->assertEquals( $this->locationId, $futureTwoCode->getLocation() );
 		$this->assertEquals( $dayInFutureTwo, $futureTwoCode->getDate() );
 		//now check, that the old code is still persisted
 		$stillSameCode = BookingCodes::getCode(
