@@ -64,11 +64,11 @@ class BookingRuleApplied extends BookingRule {
 	 * Will set the necessary params for the BookingRule to work
 	 *
 	 * @param   array       $paramsToSet
-	 * @param   int|string  $selectParamSet
+	 * @param   int|string  $selectParam
 	 *
 	 * @throws BookingRuleException - if not enough params were specified for the BookingRule
 	 */
-	public function setAppliedParams( array $paramsToSet, $selectParamSet ): void {
+	public function setAppliedParams( array $paramsToSet, $selectParam ): void {
 		if (! empty($this->params)){
 			if (count($this->params) == count($paramsToSet) ){
 				$this->appliedParams = $paramsToSet;
@@ -78,10 +78,10 @@ class BookingRuleApplied extends BookingRule {
 			}
 		}
 		if (! empty($this->selectParam)){
-			if ( empty ( $selectParamSet ) | ! is_array($selectParamSet) ){
+			if ( empty ( $selectParam ) ){
 				throw new BookingRuleException(__("Booking rules: Select parameter has not been properly set.", 'commonsbooking'));
 			}
- 			$this->appliedSelectParam = $selectParamSet;
+ 			$this->appliedSelectParam = $selectParam;
 		}
 	}
 
