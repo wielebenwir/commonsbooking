@@ -474,7 +474,7 @@ class BookingRuleTest extends CustomPostTypeTest
 
 	public function testCheckMaxBookingsPerWeek() {
 		$allowedPerWeek = 1;
-		$resetDay = 0; //sunday
+		$resetDay = 1; //sunday
 		$optionsArray = array(
 			$allowedPerWeek,
 			null,

@@ -196,6 +196,8 @@ class BookingRule {
 	 */
 	public static function init(): array {
 		$weekDays       = __( 'Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday', 'cmb2' );
+		$weekDaysSelect = array_combine( range( 1, 7 ), explode( ', ', $weekDays ) );
+		$monthDaysSelect = array_combine( range( 1, 31 ), range( 1, 31 ) );
 		$defaultRuleSet = [
 			new BookingRule(
 				"noSimultaneousBooking",
@@ -225,7 +227,7 @@ class BookingRule {
 				),
 				array(
 					__( "At what day of the week should the counter be reset?", 'commonsbooking' ),
-					explode( ', ', $weekDays )
+					$weekDaysSelect
 				),
 				Closure::fromCallable( array( self::class, 'maxDaysWeekErrorMessage' ) )
 			),
@@ -243,7 +245,7 @@ class BookingRule {
 				),
 				array(
 					__( "At what day of the month should the counter be reset?", 'commonsbooking' ),
-					range( 1, 31 )
+					$monthDaysSelect
 				),
 				Closure::fromCallable( array( self::class, 'maxDaysMonthErrorMessage' ) )
 			),
@@ -280,7 +282,7 @@ class BookingRule {
 				),
 				array(
 					__( "At what day of the week should the counter be reset?", 'commonsbooking' ),
-					explode( ', ', $weekDays )
+					$weekDaysSelect
 				),
 				Closure::fromCallable( array( self::class, 'maxBookingsWeekErrorMessage' ) )
 			),
@@ -298,7 +300,7 @@ class BookingRule {
 				),
 				array(
 					__( "At what day of the month should the counter be reset?", 'commonsbooking' ),
-					range( 1, 31 )
+					$monthDaysSelect
 				),
 				Closure::fromCallable( array( self::class, 'maxBookingsMonthErrorMessage' ) )
 			)
@@ -403,7 +405,7 @@ class BookingRule {
 	public static function checkMaxBookingDays( Booking $booking, array $args, $appliedTerms = false ): ?array {
 		$allowedBookedDays = $args[0];
 		$periodDays        = $args[1];
-		//when the zeitraum is uneven
+		//split the period in half, when it is an uneven number, the left side will be one day longer
 		$daysHalf = $periodDays / 2;
 		if ( $periodDays % 2 ) {
 			$daysLeft  = $daysHalf + 1;
@@ -430,7 +432,7 @@ class BookingRule {
 	 *
 	 * Params: $args[0] : The amount of days the user is allowed to book per week
 	 * 	       $args[1] : Unused
-	 *         $args[2]:  The day on which the counter is reset, default: 0 = sunday, 1 = monday, 2 = tuesday, ..., 6 = saturday
+	 *         $args[2]:  The day on which the counter is reset, default: 1 = sunday, 2 = monday, ..., 7 = saturday
 	 *
 	 *
 	 * @param Booking $booking
@@ -441,8 +443,8 @@ class BookingRule {
 	 */
 	public static function checkMaxBookingDaysPerWeek( Booking $booking, array $args, $appliedTerms = false ): ?array {
 		$allowedBookableDays = $args[0];
-		//default is sunday
-		$resetDay = ( $args[2] < 6 && $args[2] >= 0 ) ? $args[2] : 0;
+		//default is sunday, we could not use 0 because it would be interpreted as an empty value
+		$resetDay = ( $args[2] < 7 && $args[2] >= 1 ) ? $args[2] : 1;
 		$range = self::getBookingWeekRange( $booking, $resetDay );
 
 		return self::checkBookingRangeForDays( $range[0], $range[1], $booking, $appliedTerms, $allowedBookableDays );
@@ -450,7 +452,7 @@ class BookingRule {
 
 	public static function maxDaysWeekErrorMessage( array $args ): string {
 		$maxDays        = $args[0];
-		$resetDay       = $args[2];
+		$resetDay       = $args[2] - 1;
 		$weekDays       = __( 'Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday', 'cmb2' );
 		$resetDayString = explode( ', ', $weekDays )[ $resetDay ];
 
@@ -525,11 +527,12 @@ class BookingRule {
 	 * Will get two datetime objects that represent the start and end of the week in which the given booking is in.
 	 *
 	 * @param Booking $booking - The booking for which the week range should be determined
-	 * @param int $resetDay - The day of the week on which the counter should be reset (0 = sunday, 1 = monday, 2 = tuesday, ..., 6 = saturday)
+	 * @param int $resetDay - The day of the week on which the counter should be reset (1 = sunday, 2 = monday, ..., 7 = saturday)
 	 *
 	 * @return DateTime[] - [0] = start of the week, [1] = end of the week
 	 */
 	private static function getBookingWeekRange(Booking $booking, int $resetDay): array {
+		$resetDay--; // We couldn't use 0 for sunday because it would be interpreted as an empty value, so we subtract 1 here
 		$resetDayString = strtolower( date( 'l', strtotime( "Sunday +{$resetDay} days" ) ) );
 
 		$bookingDate = $booking->getStartDateDateTime();
