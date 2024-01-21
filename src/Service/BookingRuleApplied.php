@@ -63,8 +63,8 @@ class BookingRuleApplied extends BookingRule {
 	/**
 	 * Will set the necessary params for the BookingRule to work
 	 *
-	 * @param   array       $paramsToSet
-	 * @param   int|string  $selectParam
+	 * @param   array       $paramsToSet needs to be numeric
+	 * @param   int|string  $selectParam needs to be numeric
 	 *
 	 * @throws BookingRuleException - if not enough params were specified for the BookingRule
 	 */
@@ -76,9 +76,14 @@ class BookingRuleApplied extends BookingRule {
 			else {
 				throw new BookingRuleException(__("Booking rules: Not enough parameters specified.", 'commonsbooking'));
 			}
+			foreach ( $paramsToSet as $param ) {
+				if ( ! is_numeric( $param ) ) {
+					throw new BookingRuleException( __( "Booking rules: Parameters need to be a number.", 'commonsbooking' ) );
+				}
+			}
 		}
 		if (! empty($this->selectParam)){
-			if ( empty ( $selectParam ) ){
+			if ( empty ( $selectParam ) || ! is_numeric($selectParam)){
 				throw new BookingRuleException(__("Booking rules: Select parameter has not been properly set.", 'commonsbooking'));
 			}
  			$this->appliedSelectParam = $selectParam;
