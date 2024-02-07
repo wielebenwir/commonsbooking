@@ -1107,6 +1107,16 @@ class Timeframe extends CustomPost {
 			$itemAdminIds = $item->getAdmins();
 		}
 
+		if ( empty($locationAdminIds) && empty($itemAdminIds) ) {
+			return [];
+		}
+		if ( empty($locationAdminIds) ) {
+			return $itemAdminIds;
+		}
+		if ( empty($itemAdminIds) ) {
+			return $locationAdminIds;
+		}
+
 		return array_unique( array_merge ($locationAdminIds,$itemAdminIds) );
 	}
 

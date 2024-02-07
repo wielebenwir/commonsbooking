@@ -379,11 +379,12 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 	}
 
 	// Create Item
-	protected function createItem($title, $postStatus = 'publish', $admins = []) {
+	protected function createItem($title, $postStatus = 'publish', $admins = [], $postAuthor = self::USER_ID) {
 		$itemId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Item::$postType,
-			'post_status' => $postStatus
+			'post_status' => $postStatus,
+			'post_author' => $postAuthor
 		] );
 
 		$this->itemIds[] = $itemId;
@@ -396,11 +397,12 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 	}
 
 	// Create Location
-	protected function createLocation($title, $postStatus = 'publish', $admins = []) {
+	protected function createLocation($title, $postStatus = 'publish', $admins = [], $postAuthor = self::USER_ID) {
 		$locationId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Location::$postType,
-			'post_status' => $postStatus
+			'post_status' => $postStatus,
+			'post_author' => $postAuthor
 		] );
 
 		$this->locationIds[] = $locationId;
