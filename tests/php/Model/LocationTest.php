@@ -39,11 +39,10 @@ class LocationTest extends CustomPostTypeTest {
 	}
 
 	/**
-	 * Can be used after PR #1179 is merged
+	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	/*
 	public function testGetRestrictions() {
 		$this->restrictionIds = array_unique($this->restrictionIds);
 		$restrictionArray = [];
@@ -52,7 +51,6 @@ class LocationTest extends CustomPostTypeTest {
 		}
 		$this->assertEquals($restrictionArray, $this->locationModel->getRestrictions());
 	}
-	*/
 
 	public function testGetFormattedAddress() {
 

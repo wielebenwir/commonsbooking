@@ -22,10 +22,8 @@ class WordpressTest extends CustomPostTypeTest
 	    $this->assertIsArray( $related );
 	    $this->assertContains( $this->bookingId, $related );
 	    $this->assertContains( $this->timeframeId, $related );
-		//We cannot search for the restriction, because the restriction repository will filter out queries where we are not searching for both the item and the corresponding location.
-	    //@see \CommonsBooking\Repository\Restriction::filterPosts()
-	    //$this->assertContains( $this->restrictionId, $related );
-	    $this->assertEquals( 3, count( $related ) );
+	    $this->assertContains( $this->restrictionId, $related );
+	    $this->assertEquals( 4, count( $related ) );
     }
 
     public function testGetRelatedPostsIdsForTimeframe()
@@ -56,10 +54,8 @@ class WordpressTest extends CustomPostTypeTest
 		$this->assertContains( $this->locationId, $related );
 		$this->assertContains( $this->timeframeId, $related );
 		$this->assertContains( $this->bookingId, $related );
-		//We cannot search for the restriction, because the restriction repository will filter out queries where we are not searching for both the item and the corresponding location.
-	    //@see \CommonsBooking\Repository\Restriction::filterPosts()
-		//$this->assertContains( $this->restrictionId, $related );
-	    $this->assertEquals( 3, count( $related ) );
+		$this->assertContains( $this->restrictionId, $related );
+	    $this->assertEquals( 4, count( $related ) );
     }
 
     public function testGetRelatedPostsIdsForBooking()

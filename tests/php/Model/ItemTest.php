@@ -39,12 +39,6 @@ class ItemTest extends CustomPostTypeTest {
 	}
 
 
-	/**
-	 * Can be used after PR #1179 is merged
-	 * @return void
-	 * @throws \Exception
-	 */
-	/*
 	public function testGetRestrictions() {
 		$this->restrictionIds = array_unique($this->restrictionIds);
 		$restrictionArray = [];
@@ -53,7 +47,6 @@ class ItemTest extends CustomPostTypeTest {
 		}
 		$this->assertEquals($restrictionArray, $this->itemModel->getRestrictions());
 	}
-	*/
 
 	protected function setUp() : void {
 		parent::setUp();
