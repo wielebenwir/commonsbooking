@@ -261,6 +261,8 @@ class Timeframe extends PostRepository {
 
 	/**
 	* Returns entity query which considers single and multi selection.
+	* Since we now have single and multi selection for items and locations,
+	* we wanted to avoid having two functions for each.
 	*/
 	private static function getEntityQuery($joinAlias, $table_postmeta, $entities, $singleEntityKey, $multiEntityKey) {
 		$locationQueryParts = [];

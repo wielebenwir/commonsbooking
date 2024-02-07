@@ -219,7 +219,7 @@ class TimeframeTest extends CustomPostTypeTest {
 	}
 
 	/**
-	 * This test just checks for the functionality of removing the multi-select option item-ids and location-ids
+	 * This test just checks for the functionality of removing the multi-select option item-id-list and location-id-list
 	 * for Timeframes that are NOT Holidays (not yet supported #507)
 	 *
 	 * The other part is tested in

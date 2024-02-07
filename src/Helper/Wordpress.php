@@ -231,6 +231,8 @@ class Wordpress {
 
 	/**
 	 * Returns an array of post ids of locations and items from posts.
+	 * The only posts that have items / locations assinged are timeframes and bookings.
+	 * Any other posts are skipped.
 	 * @param $posts
 	 *
 	 * @return array

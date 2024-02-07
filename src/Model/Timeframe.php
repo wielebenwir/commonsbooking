@@ -288,7 +288,7 @@ class Timeframe extends CustomPost {
 	 * This should not happen, because the location is a required field.
 	 * But it might happen if the location was deleted.
 	 *
-	 * IMPORTANT: Going from 2.9 onwards you should NOT use this method for timeframes of the type HOLIDAYS_ID.
+	 * @deprecated 2.9.0 This should not be used for Timeframes of type HOLIDAYS_ID.
 	 * Use the getLocations() method instead.
 	 * @return Location
 	 * @throws Exception
@@ -308,7 +308,7 @@ class Timeframe extends CustomPost {
 	 * Returns the corresponding single location id for a timeframe.
 	 * This will solely rely on the location id stored in the timeframe.
 	 * If the location is deleted, this function will still return the old location id.
-	 * IMPORTANT: Going from 2.9 onwards you should NOT use this method for timeframes of the type HOLIDAYS_ID.
+	 * @deprecated 2.9.0 This should not be used for Timeframes of type HOLIDAYS_ID.
 	 *
 	 * @return int|null
 	 */
@@ -370,12 +370,12 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Get the corresponding single item for a timeframe.
-	 * IMPORTANT: Going from 2.9 onwards you should NOT use this method for timeframes of the type HOLIDAYS_ID.
 	 * Will get corresponding item object for this timeframe.
 	 * This function will return null if no item is set.
 	 * This should not happen, because the item is a required field.
 	 * But it might happen if the item was deleted.
 	 *
+	 * @deprecated 2.9.0 This method should not be used for timeframes of the type HOLIDAYS_ID.
 	 * @return Item
 	 * @throws Exception
 	 */
@@ -393,8 +393,8 @@ class Timeframe extends CustomPost {
 	/**
 	 * Returns the corresponding single item id for a timeframe.
 	 * This will solely rely on the item id stored in the timeframe. If the item is deleted, this function will still return the old item id.
-	 * IMPORTANT: Going from 2.9 onwards you should NOT use this method for timeframes of the type HOLIDAYS_ID.
 	 *
+	 * @deprecated 2.9.0 This method does not work for timeframes of the type HOLIDAYS_ID.
 	 * @return int|null
 	 */
 	public function getItemID(): ?int {

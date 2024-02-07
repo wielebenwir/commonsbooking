@@ -132,7 +132,7 @@
 
             /**
              * "Moves" selection from single item /location selection to multiselect.
-             * Currently only for holidays.
+             * Currently only for holidays, holidays used to only have one assignable single selection.
              */
             const migrateSingleSelection = () => {
 
