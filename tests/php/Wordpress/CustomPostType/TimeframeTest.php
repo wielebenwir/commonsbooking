@@ -136,7 +136,7 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		//now, let's assign our timeframe meta to the same category, we clear the multi select
 		update_post_meta( $timeframeId,
-			\CommonsBooking\Model\Timeframe::META_ITEM_IDS,
+			\CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST,
 			[]
 		);
 		update_post_meta( $timeframeId,
@@ -194,7 +194,7 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		// now, let's assign our timeframe meta to the same category, we clear the multi select
 		update_post_meta( $timeframeId,
-			\CommonsBooking\Model\Timeframe::META_LOCATION_IDS,
+			\CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST,
 			[]
 		);
 		update_post_meta( $timeframeId,
@@ -228,8 +228,8 @@ class TimeframeTest extends CustomPostTypeTest {
 	 */
 	public function testRemoveIrrelevantPostmeta() {
 		$tf = new \CommonsBooking\Model\Timeframe( $this->createBookableTimeFrameIncludingCurrentDay() );
-		update_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_ITEM_IDS, [ $this->itemId ] );
-		update_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_LOCATION_IDS, [ $this->locationId ] );
+		update_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST, [ $this->itemId ] );
+		update_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST, [ $this->locationId ] );
 		update_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_ALL_ID );
 		update_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_ALL_ID );
 		update_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_LOCATION_CATEGORY_IDS, [ '123' ] );
@@ -237,8 +237,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		Timeframe::removeIrrelevantPostmeta( $tf );
 		//especially assert, that no item ids are assigned when updating the multi-select
 		Timeframe::manageTimeframeMeta( $tf->ID );
-		$this->assertEmpty( get_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_ITEM_IDS, true ) );
-		$this->assertEmpty( get_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_LOCATION_IDS, true ) );
+		$this->assertEmpty( get_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST, true ) );
+		$this->assertEmpty( get_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST, true ) );
 		$this->assertEmpty( get_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE, true ) );
 		$this->assertEmpty( get_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, true ) );
 		$this->assertEmpty( get_post_meta( $tf, \CommonsBooking\Model\Timeframe::META_LOCATION_CATEGORY_IDS, true ) );

@@ -35,7 +35,7 @@ class Timeframe extends CustomPost {
 
 	public const META_ITEM_ID = 'item-id';
 
-	public const META_ITEM_IDS = 'item-ids';
+	public const META_ITEM_ID_LIST = 'item-id-list';
 
 	public const META_ITEM_CATEGORY_IDS = 'item-category-ids';
 
@@ -43,7 +43,7 @@ class Timeframe extends CustomPost {
 
 	public const META_LOCATION_ID = 'location-id';
 
-	public const META_LOCATION_IDS = 'location-ids';
+	public const META_LOCATION_ID_LIST = 'location-id-list';
 
 	public const META_LOCATION_CATEGORY_IDS = 'location-category-ids';
 
@@ -353,7 +353,7 @@ class Timeframe extends CustomPost {
 	 * @return int[]
 	 */
 	public function getLocationIDs(): array {
-		$locationIds = $this->getMeta( self::META_LOCATION_IDS );
+		$locationIds = $this->getMeta( self::META_LOCATION_ID_LIST );
 		if ( $locationIds ) {
 			return array_map('intval', $locationIds);
 		}
@@ -438,7 +438,7 @@ class Timeframe extends CustomPost {
 	 * @return int[] - array of item ids, empty array if no item ids are set
 	 */
 	public function getItemIDs(): array {
-		$itemIds = $this->getMeta( self::META_ITEM_IDS );
+		$itemIds = $this->getMeta( self::META_ITEM_ID_LIST );
 		if ( $itemIds ) {
 			return array_map('intval', $itemIds);
 		}

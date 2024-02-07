@@ -505,7 +505,7 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'       => esc_html__( "Select one or more locations", 'commonsbooking' ),
-				'id'         => \CommonsBooking\Model\Timeframe::META_LOCATION_IDS,
+				'id'         => \CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST,
 				'type'       => 'multicheck',
 				'options'    => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
@@ -520,7 +520,7 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'       => esc_html__( "Select one or more items", 'commonsbooking' ),
-				'id'         => \CommonsBooking\Model\Timeframe::META_ITEM_IDS,
+				'id'         => \CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST,
 				'type'       => 'multicheck',
 				'options'    => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
@@ -1012,7 +1012,7 @@ class Timeframe extends CustomPostType {
 			$itemIds = array_map( function ( $item ) {
 				return strval ($item->ID);
 			}, $items );
-			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_ITEM_IDS, $itemIds );
+			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST, $itemIds );
 		}
 		else if ($itemSelectionType === \CommonsBooking\Model\Timeframe::SELECTION_ALL_ID) {
 			$items = \CommonsBooking\Repository\Item::get();
@@ -1020,7 +1020,7 @@ class Timeframe extends CustomPostType {
 			$itemIds = array_map( function ( $item ) {
 				return strval ($item->ID);
 			}, $items );
-			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_ITEM_IDS, $itemIds );
+			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST, $itemIds );
 		}
 
 		if ($locationSelectionType === \CommonsBooking\Model\Timeframe::SELECTION_CATEGORY_ID) {
@@ -1039,7 +1039,7 @@ class Timeframe extends CustomPostType {
 			$locationIds = array_map( function ( $location ) {
 				return strval ($location->ID);
 			}, $locations );
-			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_LOCATION_IDS, $locationIds );
+			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST, $locationIds );
 		}
 		else if ($locationSelectionType === \CommonsBooking\Model\Timeframe::SELECTION_ALL_ID) {
 			$locations = \CommonsBooking\Repository\Location::get();
@@ -1047,7 +1047,7 @@ class Timeframe extends CustomPostType {
 			$locationIds = array_map( function ( $location ) {
 				return strval ($location->ID);
 			}, $locations );
-			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_LOCATION_IDS, $locationIds );
+			update_post_meta( $post_id, \CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST, $locationIds );
 		}
 	}
 
@@ -1070,8 +1070,8 @@ class Timeframe extends CustomPostType {
 		];
 		//remove multi-select postmeta if not relevant (#507)
 		$onlyRelevantForHolidays = [
-			\CommonsBooking\Model\Timeframe::META_ITEM_IDS,
-			\CommonsBooking\Model\Timeframe::META_LOCATION_IDS,
+			\CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST,
+			\CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST,
 			\CommonsBooking\Model\Timeframe::META_ITEM_CATEGORY_IDS,
 			\CommonsBooking\Model\Timeframe::META_LOCATION_CATEGORY_IDS,
 			\CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE,

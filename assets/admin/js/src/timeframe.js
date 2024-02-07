@@ -82,9 +82,9 @@
 
 
             const singleLocationSelection = $('.cmb2-id-location-id');
-            const multiLocationSelection = $(".cmb2-id-location-ids");
+            const multiLocationSelection = $(".cmb2-id-location-id-list");
             const singleItemSelection = $('.cmb2-id-item-id');
-            const multiItemSelection = $(".cmb2-id-item-ids");
+            const multiItemSelection = $(".cmb2-id-item-id-list");
             const categoryLocationSelection = $('.cmb2-id-location-category-ids');
             const categoryItemSelection = $('.cmb2-id-item-category-ids');
             const holidayField = $('.cmb2-id--cmb2-holiday');

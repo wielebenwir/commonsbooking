@@ -89,7 +89,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		// we need to map the multi-location array and multi-item array on a string array because that is the way it is also saved from the WP-backend
 		if ( is_array($locationId) ) {
 			update_post_meta( $timeframeId,
-				\CommonsBooking\Model\Timeframe::META_LOCATION_IDS,
+				\CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST,
 				array_map('strval',$locationId ));
 		}
 		else {
@@ -99,7 +99,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		}
 		if (is_array($itemId)) {
 			update_post_meta( $timeframeId,
-				\CommonsBooking\Model\Timeframe::META_ITEM_IDS,
+				\CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST,
 				array_map('strval', $itemId ));
 		}
 		else {

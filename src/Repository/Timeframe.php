@@ -209,7 +209,7 @@ class Timeframe extends PostRepository {
 					$table_postmeta,
 					$items,
 					\CommonsBooking\Model\Timeframe::META_ITEM_ID,
-					\CommonsBooking\Model\Timeframe::META_ITEM_IDS
+					\CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST
 				);
 			}
 
@@ -220,7 +220,7 @@ class Timeframe extends PostRepository {
 					$table_postmeta,
 					$locations,
 					\CommonsBooking\Model\Timeframe::META_LOCATION_ID,
-					\CommonsBooking\Model\Timeframe::META_LOCATION_IDS
+					\CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST
 				);
 			}
 
