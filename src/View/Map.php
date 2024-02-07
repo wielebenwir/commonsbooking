@@ -2,15 +2,13 @@
 
 namespace CommonsBooking\View;
 
-use CommonsBooking\Map\MapAdmin;
-
 /**
  * The Map shortcode. Further logic is found in @see \CommonsBooking\Map\
  */
 class Map extends View {
 
 	/**
-	 * load needed assets for the map that provides fine tuning of the location's position
+	 * load needed assets for the map that provides fine-tuning of the location's position
 	 **/
 	public static function render_cb_map( $field, $escaped_value, $object_id, $object_type, $field_type_object ) {
 		//map
@@ -21,10 +19,9 @@ class Map extends View {
         wp_enqueue_script( 'cb-map-positioning_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-positioning.js' );
 
 		//map defaults
-		$options  = MapAdmin::get_options();
 		$defaults = [
-			'latitude'  => $options['lat_start'],
-			'longitude' => $options['lon_start'],
+			'latitude'  => \CommonsBooking\Wordpress\CustomPostType\Map::LATITUDE_DEFAULT,
+			'longitude' => \CommonsBooking\Wordpress\CustomPostType\Map::LONGITUDE_DEFAULT,
 		];
         wp_add_inline_script('cb-map-positioning_js','cb_map_positioning.defaults =' . wp_json_encode($defaults) );
 	}

@@ -5,6 +5,7 @@ namespace CommonsBooking\Service;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
+use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\Options\AdminOptions;
 use Psr\Cache\InvalidArgumentException;
 
@@ -45,6 +46,9 @@ class Upgrade {
 		],
 		'2.8.5' => [
 			[self::class, 'removeBreakingPostmeta']
+		],
+		'2.9' => [
+			[self::class, 'migrateMapSettings' ]
 		]
 	];
 
@@ -89,6 +93,11 @@ class Upgrade {
 
 		// update version number in options
 		update_option( self::VERSION_OPTION, $this->currentVersion );
+
+		//TODO: REMOVE THIS BEFORE MERGING, WE JUST USE THIS SO WE CAN TEST THE MIGRATION FUNCTION
+		//      BEFORE MERGING AND WE DO NOT HAVE TO TOUCH THE content-example.xml file!
+		self::migrateMapSettings();
+		//TODO: REMOVE THIS BEFORE MERGING!!!
 
 		// Clear cache
 		try {
@@ -282,6 +291,58 @@ class Upgrade {
 		if ( str_contains( $otherEventTitle, 'post_name' ) ) {
 			$updatedString = str_replace( 'post_name', 'post_title', $otherEventTitle );
 			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title', $updatedString );
+		}
+	}
+
+	/**
+	 * Migrate Map Settings from old options to new CMB2 options
+	 *
+	 * @since 2.9
+	 * @return void
+	 */
+	public static function migrateMapSettings() : void {
+		$maps = get_posts( [
+			'post_type' => \CommonsBooking\Wordpress\CustomPostType\Map::$postType,
+			'numberposts' => -1
+		] );
+		foreach ($maps as $map) {
+			$options = get_post_meta( $map->ID, 'cb_map_options', true );
+			if ( empty($options) ) {
+				continue;
+			}
+			//will map to an associative array with key being the option name and the value the default value
+			$defaultValues = array_reduce(
+				Map::getCustomFields(),
+				function ( $result, $option ) {
+					if ( isset( $option['default'] ) ) {
+						$result[$option['id']] = $option['default'];
+					}
+					return $result;
+				},
+				array()
+			);
+			foreach ($options as $key => $value) {
+				if ( empty($value) && isset($defaultValues[$key]) ) {
+					//fetch from default values when key happens to be empty
+					$value = $defaultValues[$key];
+				}
+				update_post_meta( $map->ID, $key, $value );
+			}
+			if ( ! empty($options['custom_marker_media_id'] ) ){
+				// write the image url to the metabox, this way CMB2 can properly display it
+				$image = wp_get_attachment_image_src( intval( $options['custom_marker_media_id'] ) );
+				update_post_meta( $map->ID, 'custom_marker_media', reset( $image ) );
+			}
+			if (! empty($options['custom_marker_cluster_id'] ) ){
+				// write the image url to the metabox, this way CMB2 can properly display it
+				$image = wp_get_attachment_image_src( intval( $options['custom_marker_cluster_id'] ) );
+				update_post_meta( $map->ID, 'custom_marker_cluster', reset( $image ) );
+			}
+			if (! empty($options['marker_item_draft_media'] ) ){
+				// write the image url to the metabox, this way CMB2 can properly display it
+				$image = wp_get_attachment_image_src( intval( $options['marker_item_draft_media'] ) );
+				update_post_meta( $map->ID, 'marker_item_draft', reset( $image ) );
+			}
 		}
 	}
 }

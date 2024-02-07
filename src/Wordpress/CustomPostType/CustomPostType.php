@@ -8,6 +8,7 @@ use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\Admin\Filter;
 use WP_Post;
+use WP_Term;
 
 /**
  * Abstract wp custom post type for the CommonsBooking domain, implements a base of post functionality.
@@ -76,7 +77,12 @@ abstract class CustomPostType {
 
 					$key   = $item->ID;
 					$label = $item->post_title . $statusLabel;
-				} else {
+				}
+				elseif ( $item instanceof WP_Term){
+					$key = $item->term_id;
+					$label = $item->name . ' (' . $item->slug . ')';
+				}
+				else {
 					$label = $item;
 				}
 				$options[ $key ] = $label;

@@ -7,6 +7,7 @@ use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\TimeframeExport;
+use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;

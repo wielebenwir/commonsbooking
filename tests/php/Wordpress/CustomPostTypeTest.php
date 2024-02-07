@@ -49,6 +49,8 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 
 	protected $itemIds = [];
 
+	protected $mapIds = [];
+
 	protected $subscriberId;
 
 	protected int $adminUserID;
@@ -379,6 +381,8 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 
 		update_post_meta( $mapId, 'cb_map_options', $options );
 
+		$this->mapIds[] = $mapId;
+
 		return $mapId;
 	}
 
@@ -471,6 +475,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		$this->tearDownAllBookings();
 		$this->tearDownAllRestrictions();
 		$this->tearDownBookingCodesTable();
+		$this->tearDownAllMaps();
 
 		wp_logout();
 	}
@@ -501,6 +506,12 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 
 	protected function tearDownAllRestrictions() {
 		foreach ( $this->restrictionIds as $id ) {
+			wp_delete_post( $id, true );
+		}
+	}
+
+	protected function tearDownAllMaps() {
+		foreach ( $this->mapIds as $id ) {
 			wp_delete_post( $id, true );
 		}
 	}
