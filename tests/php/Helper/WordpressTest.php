@@ -4,7 +4,8 @@ namespace CommonsBooking\Tests\Helper;
 
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
-use PHPUnit\Framework\TestCase;
+use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
+use Psr\Cache\InvalidArgumentException;
 
 /**
  * These are unit tests for the helper class WordPress.
@@ -73,16 +74,56 @@ class WordpressTest extends CustomPostTypeTest
 		$this->assertEquals( 4, count( $related ));
     }
 
-    public function testGetRelatedPostsIdsForRestriction()
+	/**
+	 * This function tests, if all of the related posts are returned at the example of restrictions.
+	 * This is important, because it determins our cache invalidation.
+	 * @return void
+	 * @throws InvalidArgumentException
+	 */
+	public function testGetRelatedPostsIdsForRestriction()
     {
 		$related = Wordpress::getRelatedPostsIdsForRestriction( $this->restrictionId );
 		$this->assertIsArray( $related );
-		$this->assertContains( $this->itemId, $related );
-		$this->assertContains( $this->locationId, $related );
-		$this->assertContains( $this->timeframeId, $related);
-		$this->assertContains( $this->bookingId, $related);
-		$this->assertContains( $this->restrictionId, $related);
-		$this->assertEquals( 5, count( $related ));
+	    $this->assertEqualsCanonicalizing(
+		    [
+			    $this->restrictionId,
+			    $this->itemId,
+			    $this->locationId,
+			    $this->timeframeId,
+			    $this->bookingId
+		    ],
+		    $related
+	    );
+	    $this->assertEquals( 5, count( $related ));
+
+		//let's create one more item, location & timeframe for this test
+	    $itemTwoId = $this->createItem("Item Two",'publish');
+	    $locationTwoId = $this->createLocation("Location Two",'publish');
+		$timeframeTwoID = $this->createBookableTimeFrameIncludingCurrentDay($locationTwoId,$itemTwoId);
+		//test for restriction that applies to all items / locations #1252
+	    $allItemrestrictionId = $this->createRestriction(
+			\CommonsBooking\Model\Restriction::TYPE_REPAIR,
+		    CustomPostType::SELECTION_ALL_POSTS,
+		    CustomPostType::SELECTION_ALL_POSTS,
+		    strtotime(self::CURRENT_DATE),
+		    strtotime("+1 day", strtotime(self::CURRENT_DATE)),
+	    );
+	    $related = Wordpress::getRelatedPostsIdsForRestriction( $allItemrestrictionId );
+	    $this->assertIsArray( $related );
+	    $this->assertEqualsCanonicalizing(
+		    [
+			    $allItemrestrictionId,
+			    $this->itemId,
+			    $this->locationId,
+			    $this->timeframeId,
+			    $this->bookingId,
+			    $itemTwoId,
+			    $locationTwoId,
+			    $timeframeTwoID
+		    ],
+		    $related
+	    );
+	    $this->assertEquals( 8, count( $related ));
     }
 
 	protected function setUp(): void {

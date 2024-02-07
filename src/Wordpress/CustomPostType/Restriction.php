@@ -4,6 +4,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 
+use CommonsBooking\Exception\RestrictionInvalidException;
 use Exception;
 use CommonsBooking\View\Admin\Filter;
 
@@ -156,6 +157,10 @@ class Restriction extends CustomPostType {
 			switch ( $column ) {
 				case \CommonsBooking\Model\Restriction::META_LOCATION_ID:
 				case \CommonsBooking\Model\Restriction::META_ITEM_ID:
+					if ( $value == CustomPostType::SELECTION_ALL_POSTS ) {
+						echo esc_html__( 'All', 'commonsbooking' );
+						break;
+					}
 					if ( $post = get_post( $value ) ) {
 						if ( get_post_type( $post ) == Location::getPostType() || get_post_type(
 							                                                          $post
@@ -219,8 +224,10 @@ class Restriction extends CustomPostType {
 		}
 	}
 
-		/**
-	 * Filters admin list by type, timerange, user 
+	/**
+	 * Filters admin list by type, timerange, user
+	 *
+	 * TODO: What is the purpose of this function? I can't find any references to the admin_filter_xxx values
 	 *
 	 * @param  (wp_query object) $query
 	 *
@@ -282,6 +289,7 @@ class Restriction extends CustomPostType {
 					$item = $item->ID;
 				} );
 
+				//TODO: If this query is in use: the META_LOCATION_ID can now contain CustomPostType::SELECTION_ALL_POSTS, which is not an integer.
 				$query->query_vars['meta_query'][] = array(
 					'relation' => 'OR',
 					array(
@@ -428,15 +436,15 @@ class Restriction extends CustomPostType {
 				'name'             => esc_html__( "Location", 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Restriction::META_LOCATION_ID,
 				'type'             => 'select',
-				'show_option_none' => esc_html__( 'All', 'commonsbooking' ),
-				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
+				'show_option_none' => esc_html__( '— Please select —', 'commonsbooking' ),
+				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser(), true ),
 			),
 			array(
 				'name'             => esc_html__( "Item", 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Restriction::META_ITEM_ID,
 				'type'             => 'select',
-				'show_option_none' => esc_html__( 'All', 'commonsbooking' ),
-				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
+				'show_option_none' => esc_html__( '— Please select —', 'commonsbooking' ),
+				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser(), true ),
 			),
 			array(
 				'name' => esc_html__( "Hint", 'commonsbooking' ),
@@ -521,7 +529,7 @@ Select the desired status and then click the "Send" button to send the e-mail.<b
 	}
 
 	/**
-	 * Handles save-Request for location.
+	 * Handles save-Request for restriction.
 	 */
 	public function savePost( $post_id, $post ) {
 		if ( $post->post_type == self::$postType && $post_id ) {
@@ -529,10 +537,30 @@ Select the desired status and then click the "Send" button to send the e-mail.<b
 				return;
 			}
 
+			if ( $post->post_status == 'trash' || $post->post_status == 'auto-draft' || $post->post_status == 'draft' ) {
+				return;
+			}
+
+			try {
+				$restriction = new \CommonsBooking\Model\Restriction( $post_id );
+				$restriction->isValid();
+			} catch ( RestrictionInvalidException $e ) {
+				set_transient(
+					\CommonsBooking\Model\Restriction::ERROR_TYPE,
+					commonsbooking_sanitizeHTML($e->getMessage()),
+					45 );
+
+				// set post_status to draft if not valid
+				if ( $post->post_status !== 'draft' ) {
+					$post->post_status = 'draft';
+					wp_update_post( $post );
+				}
+				return;
+			}
+
 			if ( array_key_exists( self::SEND_BUTTON_ID, $_REQUEST ) ) {
 				update_post_meta( $post_id, \CommonsBooking\Model\Restriction::META_SENT, time() );
 				try {
-					$restriction = new \CommonsBooking\Model\Restriction( $post_id );
 					$restriction->apply();
 				} catch ( Exception $e ) {
 					// nothing to do in this case.

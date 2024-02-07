@@ -34,6 +34,8 @@ abstract class CustomPostType {
 	 */
 	protected $types = null;
 
+	const SELECTION_ALL_POSTS = 'all_posts';
+
 	/**
 	 * @return string
 	 */
@@ -57,13 +59,26 @@ abstract class CustomPostType {
 
 	/**
 	 * Replaces WP_Posts by their title for options array.
+     *
+	 * If $allOption is true, an additional option that allows to select all posts is added to the beginning of the array.
+	 * This option is only visible to administrator roles, since usually only they can see all posts.
 	 *
-	 * @param $data
+	 * TODO:
+	 *  - All could be interpreted differently depending on the context of the editor. So in the case of a CB Manager "All" could mean all items or locations they manage.
+	 *
+	 * @param WP_Post[]|string[] $data
+     * @param bool $allOption
 	 *
 	 * @return array
 	 */
-	public static function sanitizeOptions( $data ) {
+	public static function sanitizeOptions( $data, $allOption = false ) {
 		$options = [];
+
+		// Add option to select all items
+		if ( $allOption && current_user_can( 'administrator' ) ) {
+			$options[self::SELECTION_ALL_POSTS] = __( 'All', 'commonsbooking' );
+		}
+
 		if ( $data ) {
 			foreach ( $data as $key => $item ) {
 				if ( $item instanceof WP_Post ) {
@@ -76,8 +91,12 @@ abstract class CustomPostType {
 
 					$key   = $item->ID;
 					$label = $item->post_title . $statusLabel;
-				} else {
+				} elseif ( is_string( $item ) ) {
 					$label = $item;
+				}
+				else {
+					//All other data types are not supported
+					continue;
 				}
 				$options[ $key ] = $label;
 			}
@@ -88,7 +107,7 @@ abstract class CustomPostType {
 
 	/**
 	 * retrieve Custom Meta Data from CommonsBooking Options and convert them to cmb2 fields array
-	 * The content is managed by user via options -> metadata sets 
+	 * The content is managed by user via options -> metadata sets
 	 *
 	 * @param mixed $type (item or location)
 	 *
@@ -103,7 +122,7 @@ abstract class CustomPostType {
 		foreach ( $metaDataLines as $metaDataLine ) {
 			$metaDataArray = explode( ';', $metaDataLine );
 
-			if ( count( $metaDataArray ) == 5 ) 
+			if ( count( $metaDataArray ) == 5 )
 			{
 				// $metaDataArray[0] = Type
 				$metaDataFields[ $metaDataArray[0] ][] = array(
@@ -132,8 +151,8 @@ abstract class CustomPostType {
 	public static function modifyRowActions( $actions, $post ) {
 
 		// remove quick edit for timeframes, restrictions and bookings
-		if ( $post->post_type == Timeframe::getPostType() 
-			OR $post->post_type == Restriction::getPostType() 
+		if ( $post->post_type == Timeframe::getPostType()
+			OR $post->post_type == Restriction::getPostType()
 			OR $post->post_type == Booking::getPostType()) {
 			unset( $actions['inline hide-if-no-js'] );
 		}
@@ -290,7 +309,7 @@ abstract class CustomPostType {
 
 	/**
 	 * Adds Category filter to backend list view
-	 * 
+	 *
 	 */
 	public static function addAdminCategoryFilter() {
 		$values = [];

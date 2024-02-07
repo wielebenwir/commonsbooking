@@ -3,9 +3,11 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Exception\RestrictionInvalidException;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\RestrictionMessage;
+use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use DateTime;
 
 /**
@@ -20,6 +22,7 @@ use DateTime;
  */
 class Restriction extends CustomPost {
 
+	public const ERROR_TYPE = 'restrictionValidationFailed';
 	/**
 	 * Referred to in the frontend as "total breakdown".
 	 * This means, that the item is not available for booking and that all corresponding bookings will be cancelled.
@@ -235,13 +238,15 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns item name for the item that is restricted.
+	 *
+	 * @deprecated: This is not used anywhere in the code. Besides, the function is broken since it does not consider the case where multiple items are selected.
      *
 	 * @return string
 	 */
 	public function getItemName(): string {
 		$itemName = esc_html__( 'Not set', 'commonsbooking' );
-		if ( $this->getItemId() ) {
-			$item     = get_post( $this->getItemId() );
+		if ( $this->getItemIds() ) {
+			$item     = get_post( $this->getItemIds() );
 			$itemName = $item->post_title;
 		}
 
@@ -249,23 +254,32 @@ class Restriction extends CustomPost {
 	}
 
 	/**
-	 * Returns itemId for the item that is restricted.
+	 * Gets all of the itemIDs that this restriction applies to.
      *
-	 * @return mixed
+	 * @return int[]
 	 */
-	public function getItemId() {
-		return $this->getMeta( self::META_ITEM_ID );
+	public function getItemIds(): array {
+		$metaField = $this->getMeta( self::META_ITEM_ID );
+		if ( is_numeric( $metaField ) ) {
+			return [ $metaField ];
+		} elseif ( $metaField == CustomPostType::SELECTION_ALL_POSTS ) {
+			return Wordpress::getPostIdArray( \CommonsBooking\Repository\Item::get());
+		} else {
+			return [];
+		}
 	}
 
 	/**
 	 * Returns location name for the location that the restricted item is in.
+	 *
+	 * DEPRECATED: This is not used anywhere in the code. Besides, the function is broken since it does not consider the case where multiple locations are selected.
      *
 	 * @return string
 	 */
 	public function getLocationName(): string {
 		$locationName = esc_html__( 'Not set', 'commonsbooking' );
-		if ( $this->getLocationId() ) {
-			$location     = get_post( $this->getLocationId() );
+		if ( $this->getLocationIds() ) {
+			$location     = get_post( $this->getLocationIds() );
 			$locationName = $location->post_title;
 		}
 
@@ -273,12 +287,19 @@ class Restriction extends CustomPost {
 	}
 
 	/**
-	 * Returns location id for the location that the restricted item is in.
+	 * Gets all of the locationIDs that this restriction applies to.
      *
 	 * @return mixed
 	 */
-	public function getLocationId() {
-		return $this->getMeta( self::META_LOCATION_ID );
+	public function getLocationIds() {
+		$metaField = $this->getMeta( self::META_LOCATION_ID );
+		if ( is_numeric( $metaField ) ) {
+			return [ $metaField ];
+		} elseif ( $metaField == CustomPostType::SELECTION_ALL_POSTS ) {
+			return Wordpress::getPostIdArray( \CommonsBooking\Repository\Location::get());
+		} else {
+			return [];
+		}
 	}
 
 	/**
@@ -308,6 +329,36 @@ class Restriction extends CustomPost {
 				$this->sendRestrictionMails( $canceledBookings );
 			}
 		}
+	}
+
+	/**
+	 * Returns true if restriction is valid.
+	 * This is used to check if the restriction is valid before it will be published.
+	 * Will throw an exception containing the error message if the restriction is not valid. The error message is expanded in the exception class.
+	 * @return true
+	 * @throws RestrictionInvalidException
+	 */
+	public function isValid(): bool {
+		if ($this->getItemIds() == [] ) {
+			throw new RestrictionInvalidException( __( 'No item selected.', 'commonsbooking' ) );
+		}
+
+		if ($this->getLocationIds() == [] ) {
+			throw new RestrictionInvalidException( __( 'No location selected.', 'commonsbooking' ) );
+		}
+
+		if ( $this->getStartDate() > $this->getEndDate() ) {
+			throw new RestrictionInvalidException( __( 'Start date is after end date.', 'commonsbooking' ) );
+		}
+
+		if (
+			( $this->getMeta(self::META_ITEM_ID) === CustomPostType::SELECTION_ALL_POSTS || $this->getMeta(self::META_LOCATION_ID) === CustomPostType::SELECTION_ALL_POSTS )
+			&& ! commonsbooking_isCurrentUserAdmin()
+		) {
+			throw new RestrictionInvalidException( __( 'Only admins are allowed to create a restriction for all items / locations.', 'commonsbooking' ) );
+		}
+
+		return true;
 	}
 
 	/**

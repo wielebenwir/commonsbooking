@@ -6,12 +6,27 @@ namespace CommonsBooking\Repository;
 
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
+use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use Exception;
 
 class Restriction extends PostRepository {
 
 	/**
 	 * Returns active restrictions.
+	 *
+	 * If both $locations and $items are empty, all restrictions will be returned.
+	 *
+	 * WARNING: When setting either $locations or $items, the query will be filtered by both.
+	 *          Meaning, that if $locations is not empty, but $items is, only restrictions that apply to all items will be returned.
+	 *          So, if a restriction is created that applies to the location but only to one item, it will not be returned if you just query for the location.
+	 *
+	 * @param array $locations Array of location ids
+	 * @param array $items Array of item ids
+	 * @param string|null $date
+	 * @param bool $returnAsModel
+	 * @param null $minTimestamp
+	 * @param array $postStatus
+	 *
 	 * @return \CommonsBooking\Model\Restriction[]
 	 * @throws Exception
 	 */
@@ -195,46 +210,25 @@ class Restriction extends PostRepository {
 	 */
 	private static function filterPosts( array $posts, array $locations, array $items ): array {
 		return array_filter( $posts, function ( $post ) use ( $locations, $items ) {
-			// Check if restriction is in relation to item and/or location
-			$location                      = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID, true ) );
-			$restrictionHasLocation        = $location !== 0;
-			$restrictedLocationInLocations = $restrictionHasLocation && in_array( $location, $locations );
+			$item      = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID, true ) );
+			$location  = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID, true ) );
 
-			$item                  = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID, true ) );
-			$restrictionHasItem    = $item !== 0;
-			$restrictedItemInItems = $restrictionHasItem && in_array( $item, $items );
+			//check, if the restriction has been set to apply to all items or all locations.
+			$appliedForAllItems     = get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID, true ) === CustomPostType::SELECTION_ALL_POSTS;
+			$appliedForAllLocations = get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID, true ) === CustomPostType::SELECTION_ALL_POSTS;
 
-			// No item or location for restriction set
-			$noLocationNoItem = ( ! $restrictionHasLocation && ! $restrictionHasItem );
-
-			// No location, item matching
-			$noLocationItemMatches = (
-				! $restrictionHasLocation &&
-				$restrictionHasItem &&
-				$restrictedItemInItems
-			);
-
-			// No item, location matching
-			$noItemLocationMatches = (
-				! $restrictionHasItem &&
-				$restrictionHasLocation &&
-				$restrictedLocationInLocations
-			);
-
-			// Item and location matching
-			$itemAndLocationMatches = (
-				$restrictionHasLocation &&
-				$restrictedLocationInLocations &&
-				$restrictionHasItem &&
-				$restrictedItemInItems
-			);
-
-			return
-				$noLocationNoItem ||
-				$noLocationItemMatches ||
-				$noItemLocationMatches ||
-				$itemAndLocationMatches;
-		} );
+			if ( $appliedForAllItems && $appliedForAllLocations ) {
+				return true;
+			} elseif ( $appliedForAllLocations && in_array( $item, $items ) ) {
+				return true;
+			} elseif ( $appliedForAllItems && in_array( $location, $locations ) ) {
+				return true;
+			} elseif ( in_array( $item, $items ) && in_array( $location, $locations ) ) {
+				return true;
+			} else {
+				return false;
+			}
+		});
 	}
 
 	/**

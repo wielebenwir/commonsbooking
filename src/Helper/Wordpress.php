@@ -193,16 +193,16 @@ class Wordpress {
 		$relatedPostIds = [ $postId ];
 
 		// Item and related timeframes
-		if($itemId = $restriction->getItemId()) {
-			$timeframes = \CommonsBooking\Repository\Timeframe::get([], [$itemId]);
-			$relatedPostIds[] = $itemId;
+		if($itemIds = $restriction->getItemIds()) {
+			$timeframes = \CommonsBooking\Repository\Timeframe::get([], $itemIds);
+			$relatedPostIds = array_merge($relatedPostIds,$itemIds);
 			$relatedPostIds = array_merge($relatedPostIds, Wordpress::getPostIdArray($timeframes));
 		}
 
 		// Location and related timeframes
-		if($locationId = $restriction->getLocationId()) {
-			$timeframes = \CommonsBooking\Repository\Timeframe::get([$locationId]);
-			$relatedPostIds[] = $locationId;
+		if($locationIds = $restriction->getLocationIds()) {
+			$timeframes = \CommonsBooking\Repository\Timeframe::get($locationIds);
+			$relatedPostIds = array_merge($relatedPostIds,$locationIds);
 			$relatedPostIds = array_merge($relatedPostIds, Wordpress::getPostIdArray($timeframes));
 		}
 

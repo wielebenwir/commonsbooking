@@ -45,6 +45,9 @@ class Upgrade {
 		],
 		'2.8.5' => [
 			[self::class, 'removeBreakingPostmeta']
+		],
+		'2.9' => [
+			[self::class, 'setRestrictionAllOption']
 		]
 	];
 
@@ -252,6 +255,31 @@ class Upgrade {
 		);
 		foreach ($timeframes as $timeframe) {
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::removeIrrelevantPostmeta($timeframe);
+		}
+	}
+
+
+	/**
+	 * In the past, if you wanted a restriction to apply to all items / locations, you would leave the respective field empty.
+	 * This would cause permission issues (more details see #1273).
+	 * This function migrates all restrictions to have the "all" option selected when the field was left empty.
+	 * @since 2.9 (anticipated)
+	 * @return void
+	 * @throws \Exception
+	 */
+	public static function setRestrictionAllOption() {
+		$restrictions = \CommonsBooking\Repository\Restriction::get();
+
+		foreach ( $restrictions as $restriction ) {
+			$restrictionItems     = get_post_meta( $restriction->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID );
+			if ( empty( $restrictionItems) ) {
+				update_post_meta( $restriction->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID, CustomPostType::SELECTION_ALL_POSTS );
+			}
+
+			$restrictionLocations = get_post_meta( $restriction->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID );
+			if ( empty( $restrictionLocations) ) {
+				update_post_meta( $restriction->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID, CustomPostType::SELECTION_ALL_POSTS );
+			}
 		}
 	}
 
