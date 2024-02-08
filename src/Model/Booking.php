@@ -379,14 +379,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		return null;
 	}
 
-	public function getItemID() {
-		return $this->getMeta('item-id');
-	}
-
-	public function getLocationID(){
-		return $this->getMeta('location-id');
-	}
-
 	/**
 	 * Will set the postmeta field for the amount of days that have been overbooked for this booking.
 	 * The raw amount of days that span a locked / holiday are passed to this function, and it uses
