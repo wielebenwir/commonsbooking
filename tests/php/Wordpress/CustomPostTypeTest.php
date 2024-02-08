@@ -87,8 +87,27 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		] );
 
 		update_post_meta( $timeframeId, 'type', $type );
-		update_post_meta( $timeframeId, 'location-id', $locationId );
-		update_post_meta( $timeframeId, 'item-id', $itemId );
+		// we need to map the multi-location array and multi-item array on a string array because that is the way it is also saved from the WP-backend
+		if ( is_array($locationId) ) {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST,
+				array_map('strval',$locationId ));
+		}
+		else {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_LOCATION_ID,
+				$locationId );
+		}
+		if (is_array($itemId)) {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST,
+				array_map('strval', $itemId ));
+		}
+		else {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_ITEM_ID,
+				$itemId );
+		}
 		update_post_meta( $timeframeId, 'timeframe-max-days', $maxDays );
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, $advanceBookingDays );
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_BOOKING_START_DAY_OFFSET, $bookingStartdayOffset );
@@ -107,6 +126,8 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_MANUAL_SELECTION, $manualSelectionDays);
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES, $showBookingCodes );
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_CREATE_BOOKING_CODES, $createBookingCodes );
+		//TODO: Make this value configurable
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
 
 		$this->timeframeIds[] = $timeframeId;
 
@@ -277,6 +298,29 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		);
 	}
 
+	protected function createHolidayTimeframeForAllItemsAndLocations() {
+		$timeframe =  $this->createTimeframe(
+			$this->locationId,
+			"",
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			Timeframe::HOLIDAYS_ID,
+		);
+
+		//now, let's set our timeframe to be assigned to all items
+		update_post_meta( $timeframe,
+			\CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE,
+			\CommonsBooking\Model\Timeframe::SELECTION_ALL_ID
+		);
+		update_post_meta( $timeframe,
+			\CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE,
+			\CommonsBooking\Model\Timeframe::SELECTION_ALL_ID
+		);
+		//and run our function to update the information
+		\CommonsBooking\Wordpress\CustomPostType\Timeframe::manageTimeframeMeta($timeframe);
+		return $timeframe;
+	}
+
 	/**
 	 * Will create two timeframes for the same item / location combination on the same day spanning over a week.
 	 *
@@ -348,11 +392,12 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 	}
 
 	// Create Item
-	protected function createItem($title, $postStatus, $admins = []) {
+	protected function createItem($title, $postStatus = 'publish', $admins = [], $postAuthor = self::USER_ID) {
 		$itemId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Item::$postType,
-			'post_status' => $postStatus
+			'post_status' => $postStatus,
+			'post_author' => $postAuthor
 		] );
 
 		$this->itemIds[] = $itemId;
@@ -365,11 +410,12 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 	}
 
 	// Create Location
-	protected function createLocation($title, $postStatus, $admins = []) {
+	protected function createLocation($title, $postStatus = 'publish', $admins = [], $postAuthor = self::USER_ID) {
 		$locationId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Location::$postType,
-			'post_status' => $postStatus
+			'post_status' => $postStatus,
+			'post_author' => $postAuthor
 		] );
 
 		$this->locationIds[] = $locationId;

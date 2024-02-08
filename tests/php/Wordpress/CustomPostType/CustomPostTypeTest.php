@@ -78,7 +78,6 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 		}
 
 	}
-
 	public function testSanitizeOptions() {
 		//test the sanitization for an array of Items
 		$firstItem = $this->createItem("First Item",'publish');

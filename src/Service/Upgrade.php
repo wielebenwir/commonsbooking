@@ -45,6 +45,9 @@ class Upgrade {
 		],
 		'2.8.5' => [
 			[self::class, 'removeBreakingPostmeta']
+		],
+		'2.9.0' => [
+			[self::class, 'setMultiSelectTimeFrameDefault']
 		]
 	];
 
@@ -282,6 +285,28 @@ class Upgrade {
 		if ( str_contains( $otherEventTitle, 'post_name' ) ) {
 			$updatedString = str_replace( 'post_name', 'post_title', $otherEventTitle );
 			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title', $updatedString );
+		}
+	}
+
+
+	/**
+	 * sets the default value for multi selection to manual in all existing timeframes.
+	 * Multi selection for timeframes are available since 2.9 (estimated) - all timeframes created prior to this version need to have a value for selection
+	 *
+	 * @since 2.9
+	 * @return void
+	 * @throws InvalidArgumentException
+	 */
+	public static function setMultiSelectTimeFrameDefault() {
+		$timeframes = \CommonsBooking\Repository\Timeframe::get( [],[],[], null, true );
+
+		foreach ($timeframes as $timeframe) {
+			if ( empty($timeframe->getMeta(\CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE ) ) ) {
+				update_post_meta($timeframe->ID, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
+			}
+			if ( empty($timeframe->getMeta(\CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE ) ) ) {
+				update_post_meta($timeframe->ID, \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
+			}
 		}
 	}
 }

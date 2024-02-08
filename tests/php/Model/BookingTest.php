@@ -578,10 +578,10 @@ public function testCanCancelBaseCase() {
 		parent::setUp();
 
 		$this->firstTimeframeId   = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			strtotime( '-5 days', strtotime(self::CURRENT_DATE) ),
-			strtotime( '+90 days', strtotime(self::CURRENT_DATE) )
+            $this->locationId,
+            $this->itemId,
+            strtotime('-5 days', strtotime(self::CURRENT_DATE)),
+            strtotime('+90 days', strtotime(self::CURRENT_DATE))
 		);
 		$this->testItem = new Item($this->itemId);
 		$this->testLocation = new Location($this->locationId);

@@ -214,8 +214,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			try {
 				$bookingCode = BookingCodes::getCode(
 					$timeframe,
-					$this->getItem()->ID,
-					$this->getLocation()->ID,
+					$this->getItemID(),
+					$this->getLocationID(),
 					date( 'Y-m-d', $this->getStartDate() )
 				);
 			} catch ( BookingCodeException $e ) {

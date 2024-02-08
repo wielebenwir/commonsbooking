@@ -305,11 +305,13 @@ class BookingCodes {
 		}
 		// Before we add new codes, we remove old ones, that are not relevant anymore
 		try {
+			//TODO #507
 			$location = $timeframe->getLocation();
 		} catch ( \Exception $e ) {
 			throw new BookingCodeException( __( "No booking codes could be created because the location of the timeframe could not be found.", 'commonsbooking' )  );
 		}
 		try {
+			//TODO #507
 			$item = $timeframe->getItem();
 		} catch ( \Exception $e ) {
 			throw new BookingCodeException( __( "No booking codes could be created because the item of the timeframe could not be found.", 'commonsbooking' )  );
