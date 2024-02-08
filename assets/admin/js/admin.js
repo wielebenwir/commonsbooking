@@ -296,13 +296,13 @@
                 if (typeInput.val() != HOLIDAYS_ID) {
                     return;
                 }
-                const singleSelectionOption = singleItemSelection.find("option:selected");
-                if (singleSelectionOption.prop("value")) {
-                    const multiItemSelectionOption = multiItemSelection.find(`input[value=${singleSelectionOption.prop("value")}]`);
+                const singleItemSelectionOption = singleItemSelection.find("option:selected");
+                if (singleItemSelectionOption.prop("value")) {
+                    const multiItemSelectionOption = multiItemSelection.find(`input[value=${singleItemSelectionOption.prop("value")}]`);
                     if (multiItemSelectionOption) {
                         multiItemSelectionOption.prop("checked", true);
                     }
-                    singleSelectionOption.prop("selected", false);
+                    singleItemSelectionOption.prop("selected", false);
                 }
                 const singleLocationSelectionOption = singleLocationSelection.find("option:selected");
                 if (singleLocationSelectionOption.prop("value")) {

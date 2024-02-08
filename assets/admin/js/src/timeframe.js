@@ -140,15 +140,15 @@
                     return;
                 }
                 // get single selection
-                const singleSelectionOption = singleItemSelection.find('option:selected');
+                const singleItemSelectionOption = singleItemSelection.find('option:selected');
 
                 // if it has a value, remove selection from single select and activate checkbox in multiselect
-                if(singleSelectionOption.prop('value')) {
-                    const multiItemSelectionOption = multiItemSelection.find(`input[value=${singleSelectionOption.prop('value')}]`);
+                if(singleItemSelectionOption.prop('value')) {
+                    const multiItemSelectionOption = multiItemSelection.find(`input[value=${singleItemSelectionOption.prop('value')}]`);
                     if(multiItemSelectionOption) {
                         multiItemSelectionOption.prop('checked', true);
                     }
-                    singleSelectionOption.prop('selected', false);
+                    singleItemSelectionOption.prop('selected', false);
                 }
 
                 const singleLocationSelectionOption = singleLocationSelection.find('option:selected');
