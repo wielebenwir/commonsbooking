@@ -91,6 +91,7 @@ class Map extends CustomPostType {
 
 		/** @var \CommonsBooking\Model\Timeframe $timeframe */
 		foreach ( $timeframes as $timeframe ) {
+			//TODO #507
 			$item     = $timeframe->getItem();
 			$location = $timeframe->getLocation();
 
@@ -99,7 +100,7 @@ class Map extends CustomPostType {
 				$thumbnail = get_the_post_thumbnail_url( $item, 'thumbnail' );
 
 				$result[] = [
-					'location_id' => $timeframe->getLocation()->ID,
+					'location_id' => $timeframe->getLocationID(),
 					'item'        => [
 						'id'         => $item->ID,
 						'name'       => $item->post_title,

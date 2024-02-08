@@ -33,8 +33,8 @@ if ( isset( $form_post_status ) ) {
 	    );
         ?>
         <input type="hidden" name="post_ID" value="<?php echo esc_attr( $booking->ID ); ?>" /><?php } ?>
-        <input type="hidden" name="location-id" value="<?php echo esc_attr( $booking->getLocation()->ID ); ?>"/>
-        <input type="hidden" name="item-id" value="<?php echo esc_attr( $booking->getItem()->ID ); ?>"/>
+        <input type="hidden" name="location-id" value="<?php echo esc_attr( $booking->getLocationID() ); ?>"/>
+        <input type="hidden" name="item-id" value="<?php echo esc_attr( $booking->getItemID() ); ?>"/>
         <input type="hidden" name="type" value="<?php echo esc_attr( $booking->getMeta( 'type' ) ); ?>"/>
         <input type="hidden" name="post_type" value="<?php echo esc_attr( $booking->post_type ); ?>"/>
         <?php if ( $form_post_status !== 'canceled' ) { ?>

@@ -143,15 +143,7 @@ class Wordpress {
 	public static function getRelatedPostsIdsForTimeframe($postId): array {
 		$timeframe = new Timeframe($postId);
 		$ids = [$postId];
-
-		if($timeframe->getItem()) {
-			$ids[] = $timeframe->getItem()->ID;
-		}
-		if($timeframe->getLocation()) {
-			$ids[] = $timeframe->getLocation()->ID;
-		}
-
-		return $ids;
+		return array_merge($ids, $timeframe->getItemIDs(), $timeframe->getLocationIDs() );
 	}
 
 	/**
@@ -166,10 +158,10 @@ class Wordpress {
 		$ids = [$postId];
 
 		if($booking->getItem()) {
-			$ids[] = $booking->getItem()->ID;
+			$ids[] = $booking->getItemID();
 		}
 		if($booking->getLocation()) {
-			$ids[] = $booking->getLocation()->ID;
+			$ids[] = $booking->getLocationID();
 		}
 		if($booking->getBookableTimeFrame()) {
 			$ids[] = $booking->getBookableTimeFrame()->ID;
@@ -239,22 +231,31 @@ class Wordpress {
 
 	/**
 	 * Returns an array of post ids of locations and items from posts.
+	 * The only posts that have items / locations assinged are timeframes and bookings.
+	 * Any other posts are skipped.
 	 * @param $posts
 	 *
 	 * @return array
 	 */
-	public static function getLocationAndItemIdsFromPosts($posts): array {
+	public static function getLocationAndItemIdsFromPosts(array $posts): array {
 		$itemsAndLocations = [];
 		array_walk($posts, function ($timeframe) use (&$itemsAndLocations) {
-			$itemsAndLocations[] = get_post_meta(
-				$timeframe->ID,
-				Timeframe::META_ITEM_ID,
-				true
-			);
-			$itemsAndLocations[] = get_post_meta(
-				$timeframe->ID,
-				Timeframe::META_LOCATION_ID,
-				true
+			//only run for timeframe or booking
+			if ( ! in_array( $timeframe->post_type, [ \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType, Booking::$postType ] ) ) {
+				return;
+			}
+			if (! $timeframe instanceof Timeframe) {
+				if ( $timeframe->post_type == Booking::$postType ) {
+					$timeframe = new \CommonsBooking\Model\Booking( $timeframe );
+				}
+				elseif ( $timeframe->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType ) {
+					$timeframe = new Timeframe( $timeframe );
+				}
+			}
+			$itemsAndLocations = array_merge(
+				$itemsAndLocations,
+				$timeframe->getItemIDs(),
+				$timeframe->getLocationIDs()
 			);
 		});
 		return array_map('intval', $itemsAndLocations);
