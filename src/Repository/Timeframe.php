@@ -10,6 +10,11 @@ use CommonsBooking\Model\Day;
 use CommonsBooking\Plugin;
 use Exception;
 
+/*
+ * Implements data access to timeframe custom post objects
+ *
+ * @since 2.9.0 Supports now single and multi selection of items and locations
+ */
 class Timeframe extends PostRepository {
 
 	/**
@@ -93,11 +98,8 @@ class Timeframe extends PostRepository {
 	 * @param array $items
 	 * @param array $types
 	 * @param string|null $date Date-String in format YYYY-mm-dd
-	 *
 	 * @param bool $returnAsModel
-	 *
 	 * @param int|null $minTimestamp
-	 *
 	 * @param string[] $postStatus
 	 *
 	 * @return array
@@ -170,6 +172,8 @@ class Timeframe extends PostRepository {
 	 * @param array $types the types of timeframes to return, will return default set when not set
 	 * @param array $items the items that the timeframes should be applicable to, will return all if not set
 	 * @param array $locations the locations that the timeframes should be applicable to, will return all if not set
+     *
+     * @since 2.9.0 Supports now single and multi selection for items and locations
 	 *
 	 * @return mixed
 	 * @throws \Psr\Cache\InvalidArgumentException
@@ -260,34 +264,36 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
-	* Returns entity query which considers single and multi selection.
-	* Since we now have single and multi selection for items and locations,
-	* we wanted to avoid having two functions for each.
+	* Returns entity query as join statement, which considers single and multi selection.
+	* 
+    * @since 2.9.0 Supports now single and multi selection for items and locations
+    *
+	* @return string join statement
 	*/
-	private static function getEntityQuery($joinAlias, $table_postmeta, $entities, $singleEntityKey, $multiEntityKey) {
+	private static function getEntityQuery( string $joinAlias, string $table_postmeta, array $entities, string $singleEntityKey, string $multiEntityKey ): string {
 		$locationQueryParts = [];
 
 		// Single select
 		$singleLocationQuery = "(
-		                        $joinAlias.meta_key = '". $singleEntityKey ."' AND
+		                        $joinAlias.meta_key = '" . $singleEntityKey . "' AND
 		                        $joinAlias.meta_value IN (" . implode( ',', $entities ) . ")
 	                        )";
 		$locationQueryParts[] = $singleLocationQuery;
 
 		// Multi select
 		$multiLocationQueries = [];
-		foreach($entities as $entityId) {
+		foreach( $entities as $entityId ) {
 			$multiLocationQueries[] = "$joinAlias.meta_value LIKE '%:\"$entityId\";%'";
 		}
 		$multiLocationQuery = "(
-					$joinAlias.meta_key = '". $multiEntityKey ."' AND
-					(" . implode(' OR ', $multiLocationQueries) . ") 
+					$joinAlias.meta_key = '" . $multiEntityKey . "' AND
+					(" . implode( ' OR ', $multiLocationQueries ) . ") 
 				)";
 		$locationQueryParts[] = $multiLocationQuery;
 
 		return "INNER JOIN $table_postmeta $joinAlias ON
                     $joinAlias.post_id = pm1.post_id AND
-                    (".implode(' OR ', $locationQueryParts).")";
+                    (" . implode( ' OR ', $locationQueryParts ) . ")";
 	}
 
 	/**
