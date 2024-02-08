@@ -455,6 +455,7 @@ class Migration {
 			'post_type'   => Timeframe::$postType,
 			'post_name'   => Helper::generateRandomString(),
 			'post_status' => 'publish',
+			'post_author' => 12, // fLotte Migration: Set to Gundula
 		];
 
 		// convert cb1 metadata in cb2 postmeta fields
