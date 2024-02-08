@@ -26,6 +26,8 @@ class CalendarTest extends CustomPostTypeTest {
 
 	protected $secondClosestTimeframe;
 
+	private $now;
+
 	public function testKeepDateRangeParam() {
 		$startDate    = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
 		$jsonresponse = Calendar::getCalendarDataArray(
@@ -160,15 +162,58 @@ class CalendarTest extends CustomPostTypeTest {
 		$this->assertTrue($days[date('Y-m-d', strtotime('+1 day', strtotime($today)))]['locked']);
 	}
 
+	public function testGetClosestBookableTimeFrameForToday() {
+		//Case 1: Timeframes do not overlap
+		$closestTimeframeModel = new Timeframe( $this->closestTimeframe );
+		$secondClosestTimeframeModel = new Timeframe( $this->secondClosestTimeframe );
+		$timeframes = [ $closestTimeframeModel, $secondClosestTimeframeModel ];
+		$this->assertEquals($closestTimeframeModel->ID, Calendar::getClosestBookableTimeFrameForToday($timeframes)->ID );
+
+		//Case 2: Timeframes overlap
+		$otherLocation = $this->createLocation("OtherLocation");
+		$otherItem = $this->createItem("OtherItem");
+		$continuedTimeframe = new Timeframe( $this->createTimeframe(
+			$otherLocation,
+			$otherItem,
+			strtotime( '-50 days midnight', $this->now ),
+			strtotime( '+365 days midnight', $this->now ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"on",
+			'w',
+			0,
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
+			[ "1", "2", "3", "4" ],
+		) );
+		$inBetweenTimeframe = new Timeframe( $this->createTimeframe(
+			$otherLocation,
+			$otherItem,
+			strtotime( '+20 days midnight', $this->now ),
+			strtotime( '+40 days midnight', $this->now ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"on",
+			'w',
+			0,
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
+			[ "5", "6" ],
+		) );
+		$timeframes = [ $inBetweenTimeframe, $continuedTimeframe ];
+		$this->assertEquals($continuedTimeframe->ID, Calendar::getClosestBookableTimeFrameForToday($timeframes)->ID);
+
+	}
+
 	protected function setUp() : void {
 		parent::setUp();
 
-		$now               = time();
+		$this->now               = time();
 		$this->timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+' . self::timeframeStart . ' days midnight', $now ),
-			strtotime( '+' . self::timeframeEnd . ' days midnight', $now )
+			strtotime( '+' . self::timeframeStart . ' days midnight', $this->now ),
+			strtotime( '+' . self::timeframeEnd . ' days midnight', $this->now )
 		);
 		// set booking days in advance
 		update_post_meta( $this->timeframeId, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );

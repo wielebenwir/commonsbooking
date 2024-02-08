@@ -401,7 +401,7 @@ class Calendar {
 	 *
 	 * @return \CommonsBooking\Model\Timeframe|null
 	 */
-	private static function getClosestBookableTimeFrameForToday( $bookableTimeframes ): ?\CommonsBooking\Model\Timeframe {
+	public static function getClosestBookableTimeFrameForToday( $bookableTimeframes ): ?\CommonsBooking\Model\Timeframe {
 		// Sort timeframes by startdate
 		usort(
             $bookableTimeframes,
