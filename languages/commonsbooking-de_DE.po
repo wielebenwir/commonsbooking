@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "POT-Creation-Date: 2023-09-15T04:04:14+02:00\n"
-"PO-Revision-Date: 2024-02-08 17:59+0100\n"
+"PO-Revision-Date: 2024-02-09 20:06+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: English <kde-i18n-doc@kde.org>\n"
 "Language: de_DE\n"
@@ -1970,7 +1970,7 @@ msgstr "E-Mail-Adresse des Artikelbetreuers"
 
 #: src/Wordpress/CustomPostType/Item.php:260
 msgid "Email addresses to which notifications about a change of item status (restriction, breakdown) shall be sent. You can enter multiple addresses separated by commas."
-msgstr "E-Mail-Adressen, an die eine Kopie der Buchungsbestätigung / Stornierung gesendet werden soll. Es können mehrere Adressen durch Komma getrennt eingeben werden."
+msgstr "E-Mail-Adressen die benachrichtigt werden soll, wenn eine Nutzungseinschränkung für den Artikel eingerichtet wurde (Hinweis oder Totalausfall). Es können mehrere Adressen durch Komma getrennt eingeben werden."
 
 #: src/Wordpress/CustomPostType/Item.php:275
 msgid "Item Meta-Data"
