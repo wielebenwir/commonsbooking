@@ -26,7 +26,15 @@ class WordpressTest extends CustomPostTypeTest
 	    //@see \CommonsBooking\Repository\Restriction::filterPosts()
 	    //$this->assertContains( $this->restrictionId, $related );
 	    $this->assertEquals( 3, count( $related ) );
-    }
+
+		//test it for timeframes with multiple assigned items
+	    $otherAssignedItemId = $this->createItem("other item");
+		$holidayTFid = $this->createHolidayTimeframeForAllItemsAndLocations();
+		$related = Wordpress::getRelatedPostsIdsForItem( $otherAssignedItemId );
+	    $this->assertIsArray( $related );
+	    $this->assertEquals( 2, count( $related ) );
+	    $this->assertContains( $holidayTFid, $related );
+		$this->assertContains( $otherAssignedItemId, $related );}
 
     public function testGetRelatedPostsIdsForTimeframe()
     {
@@ -36,6 +44,18 @@ class WordpressTest extends CustomPostTypeTest
 	    $this->assertContains( $this->itemId, $related );
 		$this->assertContains( $this->locationId, $related );
 		$this->assertEquals( 3, count( $related ) );
+
+		//test it for timeframes with multiple assigned items
+	    $otherAssignedItemId = $this->createItem("other item");
+		$holidayTFid = $this->createHolidayTimeframeForAllItemsAndLocations();
+
+		$related = Wordpress::getRelatedPostsIdsForTimeframe( $holidayTFid );
+		$this->assertIsArray( $related );
+		$this->assertContains( $holidayTFid, $related );
+		$this->assertContains( $otherAssignedItemId, $related );
+		$this->assertContains( $this->itemId, $related );
+		$this->assertContains( $this->locationId, $related );
+		$this->assertEquals( 4, count( $related ) );
     }
 
     public function testGetLocationAndItemIdsFromPosts()
@@ -47,6 +67,22 @@ class WordpressTest extends CustomPostTypeTest
 		$this->assertContains( $this->itemId, $related );
 		$this->assertContains( $this->locationId, $related );
 		$this->assertEquals( 2, count( $related ) );
+
+		//test for timeframe with multiple assigned items / locations
+	    $secondItem = $this->createItem("second item");
+	    $secondLocation = $this->createLocation("second location");
+		$secondTimeframe = $this->createBookableTimeFrameIncludingCurrentDay($secondLocation, $secondItem);
+		$holidayForAllItemsAndLocations = $this->createHolidayTimeframeForAllItemsAndLocations();
+		$holidayPost = get_post( $holidayForAllItemsAndLocations );
+		$related = Wordpress::getLocationAndItemIdsFromPosts( [$holidayPost] );
+		$this->assertIsArray( $related );
+		$this->assertEqualsCanonicalizing( [$this->itemId, $secondItem, $this->locationId, $secondLocation], $related );
+
+		//test reaction to non-timeframe post types
+        $locationPost = get_post( $this->locationId );
+		$itemPost = get_post( $this->itemId );
+		$this->assertEmpty( Wordpress::getLocationAndItemIdsFromPosts( [$locationPost, $itemPost] ) );
+		$this->assertEqualsCanonicalizing( [$this->itemId, $this->locationId], Wordpress::getLocationAndItemIdsFromPosts( [$timeframePost, $locationPost, $itemPost] ) );
     }
 
     public function testGetRelatedPostsIdsForLocation()
